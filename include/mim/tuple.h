@@ -6,7 +6,7 @@ namespace mim {
 
 /// A [dependent tuple type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A3_type).
 /// @see Tuple, Arr, Pack
-class Sigma : public Def {
+class Sigma : public Def, public Setters<Sigma> {
 private:
     Sigma(const Def* type, Defs ops)
         : Def(Node, type, ops, 0) {} ///< Constructor for an *immutable* Sigma.
@@ -17,14 +17,17 @@ public:
     /// @name Setters
     /// @see @ref set_ops "Setting Ops"
     ///@{
+    using Setters<Sigma>::set;
     Sigma* set(size_t i, const Def* def) { return Def::set(i, def)->as<Sigma>(); }
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
     Sigma* unset() { return Def::unset()->as<Sigma>(); }
     ///@}
 
+    /// @name Rebuild
+    ///@{
     const Def* immutabilize() override;
-    Sigma* stub_(World&, Ref) override;
     Sigma* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    ///@}
 
     /// @name Type Checking
     ///@{
@@ -32,23 +35,35 @@ public:
     static Ref infer(World&, Defs);
     ///@}
 
-    MIM_DEF_MIXIN(Sigma)
+    static constexpr auto Node = Node::Sigma;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+    Sigma* stub_(World&, Ref) override;
+
+    friend class World;
 };
 
 /// Data constructor for a Sigma.
 /// @see Sigma, Arr, Pack
-class Tuple : public Def {
+class Tuple : public Def, public Setters<Tuple> {
+public:
+    using Setters<Tuple>::set;
+    static constexpr auto Node = Node::Tuple;
+
 private:
     Tuple(const Def* type, Defs args)
         : Def(Node, type, args, 0) {}
 
-    MIM_DEF_MIXIN(Tuple)
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// A (possibly paramterized) Arr%ay.
 /// Arr%ays are usually homogenous but they can be *inhomogenous* as well: `«i: N; T#i»`
 /// @see Sigma, Tuple, Pack
-class Arr : public Def {
+class Arr : public Def, public Setters<Arr> {
 private:
     Arr(const Def* type, const Def* shape, const Def* body)
         : Def(Node, type, {shape, body}, 0) {} ///< Constructor for an *immutable* Arr.
@@ -63,29 +78,38 @@ public:
     ///@}
 
     /// @name Setters
-    ///@{
     /// @see @ref set_ops "Setting Ops"
+    ///@{
+    using Setters<Arr>::set;
     Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     Arr* unset() { return Def::unset()->as<Arr>(); }
     ///@}
 
-    const Def* immutabilize() override;
-    Arr* stub_(World&, Ref) override;
-    Arr* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    /// @name Rebuild
+    ///@{
     const Def* reduce(const Def* arg) const;
+    Arr* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    const Def* immutabilize() override;
+    ///@}
 
     /// @name Type Checking
     ///@{
     void check() override;
     ///@}
 
-    MIM_DEF_MIXIN(Arr)
+    static constexpr auto Node = Node::Arr;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+    Arr* stub_(World&, Ref) override;
+
+    friend class World;
 };
 
 /// A (possibly paramterized) Tuple.
 /// @see Sigma, Tuple, Arr
-class Pack : public Def {
+class Pack : public Def, public Setters<Pack> {
 private:
     Pack(const Def* type, const Def* body)
         : Def(Node, type, {body}, 0) {} ///< Constructor for an *immutable* Pack.
@@ -102,45 +126,63 @@ public:
     /// @name Setters
     /// @see @ref set_ops "Setting Ops"
     ///@{
+    using Setters<Pack>::set;
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     Pack* reset(const Def* body) { return unset()->set(body); }
     Pack* unset() { return Def::unset()->as<Pack>(); }
     ///@}
 
-    const Def* immutabilize() override;
-    Pack* stub_(World&, Ref) override;
-    Pack* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    /// @name Rebuild
+    ///@{
     const Def* reduce(const Def* arg) const;
+    Pack* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    const Def* immutabilize() override;
+    ///@}
 
-    MIM_DEF_MIXIN(Pack)
+    static constexpr auto Node = Node::Pack;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+    Pack* stub_(World&, Ref) override;
+
+    friend class World;
 };
 
 /// Extracts from a Sigma or Arr%ay-typed Extract::tuple the element at position Extract::index.
-class Extract : public Def {
+class Extract : public Def, public Setters<Extract> {
 private:
     Extract(const Def* type, const Def* tuple, const Def* index)
         : Def(Node, type, {tuple, index}, 0) {}
 
 public:
+    using Setters<Extract>::set;
+
     /// @name ops
     ///@{
     const Def* tuple() const { return op(0); }
     const Def* index() const { return op(1); }
     ///@}
 
-    MIM_DEF_MIXIN(Extract)
+    static constexpr auto Node = Node::Extract;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.
 /// @attention This is a *functional* Insert.
 ///     The Insert::tuple itself remains untouched.
 ///     The Insert itself is a *new* Tuple / Pack which contains the inserted Insert::value.
-class Insert : public Def {
+class Insert : public Def, public Setters<Insert> {
 private:
     Insert(const Def* tuple, const Def* index, const Def* value)
         : Def(Node, tuple->type(), {tuple, index, value}, 0) {}
 
 public:
+    using Setters<Insert>::set;
+
     /// @name ops
     ///@{
     const Def* tuple() const { return op(0); }
@@ -148,7 +190,12 @@ public:
     const Def* value() const { return op(2); }
     ///@}
 
-    MIM_DEF_MIXIN(Insert)
+    static constexpr auto Node = Node::Insert;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs

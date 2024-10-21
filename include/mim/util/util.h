@@ -182,24 +182,4 @@ template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<
 template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>, GIDEq<K>>;
 ///@}
 
-/// Use this to declare all kind of bit and comparison operators for an `enum` @p E.
-/// Note that the bit operators return @p E's underlying type and not the original `enum` @p E.
-/// This is because the result may not be a valid `enum` value.
-/// For the same reason, it doesn't make sense to declare operators such as `&=`.
-#define MIM_ENUM_OPERATORS(E)                                                                                                                                 \
-    constexpr auto operator&(                       E  x,                        E  y) { return std::underlying_type_t<E>(x)  &  std::underlying_type_t<E>(y); } \
-    constexpr auto operator&(std::underlying_type_t<E> x,                        E  y) { return                           x   &  std::underlying_type_t<E>(y); } \
-    constexpr auto operator&(                       E  x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x)  &                            y ; } \
-    constexpr auto operator|(                       E  x,                        E  y) { return std::underlying_type_t<E>(x)  |  std::underlying_type_t<E>(y); } \
-    constexpr auto operator|(std::underlying_type_t<E> x,                        E  y) { return                           x   |  std::underlying_type_t<E>(y); } \
-    constexpr auto operator|(                       E  x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x)  |                            y ; } \
-    constexpr auto operator^(                       E  x,                        E  y) { return std::underlying_type_t<E>(x)  ^  std::underlying_type_t<E>(y); } \
-    constexpr auto operator^(std::underlying_type_t<E> x,                        E  y) { return                           x   ^  std::underlying_type_t<E>(y); } \
-    constexpr auto operator^(                       E  x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x)  ^                            y ; } \
-    constexpr std::strong_ordering operator<=>(std::underlying_type_t<E> x, E y) { return x <=> std::underlying_type_t<E>(y); }                                  \
-    constexpr std::strong_ordering operator<=>(E x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x) <=> y; }                                  \
-    constexpr bool operator==(std::underlying_type_t<E> x, E y) { return x == std::underlying_type_t<E>(y); }                                                    \
-    constexpr bool operator==(E x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x) == y; }
-// clang-format on
-
 } // namespace mim

@@ -4,6 +4,7 @@
 
 #include <fe/assert.h>
 #include <fe/cast.h>
+#include <fe/enum.h>
 
 #include "mim/config.h"
 
@@ -14,7 +15,7 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define MIM_NODE(m)                                                        \
+#define MIM_NODE(m)                                                           \
     m(Type, type)       m(Univ, univ)   m(UMax, umax)       m(UInc, uinc)     \
     m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
     m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
@@ -77,7 +78,7 @@ template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
 using Vars                      = PooledSet<const Var*>;
-///@{
+///@}
 
 //------------------------------------------------------------------------------
 
@@ -139,6 +140,13 @@ enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
 //------------------------------------------------------------------------------
 
+using fe::operator&;
+using fe::operator|;
+using fe::operator^;
+using fe::operator<=>;
+using fe::operator==;
+using fe::operator!=;
+
 /// @name Dep
 ///@{
 enum class Dep : unsigned {
@@ -149,9 +157,14 @@ enum class Dep : unsigned {
     Proxy = 1 << 3,
     Var   = 1 << 4,
 };
-
-MIM_ENUM_OPERATORS(Dep)
 ///@}
+
+} // namespace mim
+#ifndef DOXYGEN
+template<> struct fe::is_bit_enum<mim::Dep> : std::true_type {};
+#endif
+
+namespace mim {
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define MIM_PROJ(NAME, CONST)                                                                                 \
@@ -169,38 +182,28 @@ MIM_ENUM_OPERATORS(Dep)
     template<class F> auto NAME##s(nat_t a, F f) CONST { return ((const Def*)NAME())->projs<F>(a, f); }       \
     auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
-// clang-format off
-/// Use as mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-#define MIM_SETTERS_(T)                                                                                                   \
-public:                                                                                                                      \
-    template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc()) dbg_.set(l); return this; } \
-    template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc()) dbg_.set(l); return this; } \
-    template<bool Ow = false> const T* set(       Sym s        ) const { if (Ow || !dbg_.sym()) dbg_.set(s); return this; } \
-    template<bool Ow = false>       T* set(       Sym s        )       { if (Ow || !dbg_.sym()) dbg_.set(s); return this; } \
-    template<bool Ow = false> const T* set(       std::string s) const {         set(sym(std::move(s))); return this; }      \
-    template<bool Ow = false>       T* set(       std::string s)       {         set(sym(std::move(s))); return this; }      \
-    template<bool Ow = false> const T* set(Loc l, Sym s        ) const { set(l); set(s);                 return this; }      \
-    template<bool Ow = false>       T* set(Loc l, Sym s        )       { set(l); set(s);                 return this; }      \
-    template<bool Ow = false> const T* set(Loc l, std::string s) const { set(l); set(sym(std::move(s))); return this; }      \
-    template<bool Ow = false>       T* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); return this; }      \
-    template<bool Ow = false> const T* set(Dbg d) const { set(d.loc(), d.sym()); return this; }                              \
-    template<bool Ow = false>       T* set(Dbg d)       { set(d.loc(), d.sym()); return this; }
-// clang-format on
+/// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
+template<class P, class D = Def> class Setters { // D is only needed to make the resolution `D::template set` lazy
+private:
+    P* super() { return static_cast<P*>(this); }
+    const P* super() const { return static_cast<const P*>(this); }
 
-#ifdef DOXYGEN
-#    define MIM_SETTERS(T) public: // Don't spam each and every sub class of Def with basically the same docs.
-#else
-#    define MIM_SETTERS(T) MIM_SETTERS_(T)
-#endif
-
-#define MIM_DEF_MIXIN(T)                            \
-public:                                             \
-    MIM_SETTERS(T)                                  \
-    static constexpr auto Node = Node::T;           \
-                                                    \
-private:                                            \
-    Ref rebuild_(World&, Ref, Defs) const override; \
-    friend class World;
+public:
+    // clang-format off
+    template<bool Ow = false> const P* set(Loc l               ) const { super()->D::template set<Ow>(l); return super(); }
+    template<bool Ow = false>       P* set(Loc l               )       { super()->D::template set<Ow>(l); return super(); }
+    template<bool Ow = false> const P* set(       Sym s        ) const { super()->D::template set<Ow>(s); return super(); }
+    template<bool Ow = false>       P* set(       Sym s        )       { super()->D::template set<Ow>(s); return super(); }
+    template<bool Ow = false> const P* set(       std::string s) const { super()->D::template set<Ow>(std::move(s)); return super(); }
+    template<bool Ow = false>       P* set(       std::string s)       { super()->D::template set<Ow>(std::move(s)); return super(); }
+    template<bool Ow = false> const P* set(Loc l, Sym s        ) const { super()->D::template set<Ow>(l, s); return super(); }
+    template<bool Ow = false>       P* set(Loc l, Sym s        )       { super()->D::template set<Ow>(l, s); return super(); }
+    template<bool Ow = false> const P* set(Loc l, std::string s) const { super()->D::template set<Ow>(l, std::move(s)); return super(); }
+    template<bool Ow = false>       P* set(Loc l, std::string s)       { super()->D::template set<Ow>(l, std::move(s)); return super(); }
+    template<bool Ow = false> const P* set(Dbg d               ) const { super()->D::template set<Ow>(d); return super(); }
+    template<bool Ow = false>       P* set(Dbg d               )       { super()->D::template set<Ow>(d); return super(); }
+    // clang-format on
+};
 
 /// Base class for all Def%s.
 /// The data layout (see World::alloc and Def::partial_ops) looks like this:
@@ -467,9 +470,22 @@ public:
     ///@}
 
     /// @name Dbg Setters
-    /// Every subclass `S` of Def has the same setters that return `S*`/`const S*` but will not show up in Doxygen.
+    /// Every subclass `S` of Def has the same setters that return `S*`/`const S*` via the mixin Setters.
     ///@{
-    MIM_SETTERS_(Def)
+    // clang-format off
+    template<bool Ow = false> const Def* set(Loc l) const { if (Ow || !dbg_.loc()) dbg_.set(l); return this; }
+    template<bool Ow = false>       Def* set(Loc l)       { if (Ow || !dbg_.loc()) dbg_.set(l); return this; }
+    template<bool Ow = false> const Def* set(Sym s) const { if (Ow || !dbg_.sym()) dbg_.set(s); return this; }
+    template<bool Ow = false>       Def* set(Sym s)       { if (Ow || !dbg_.sym()) dbg_.set(s); return this; }
+    template<bool Ow = false> const Def* set(       std::string s) const { set(sym(std::move(s))); return this; }
+    template<bool Ow = false>       Def* set(       std::string s)       { set(sym(std::move(s))); return this; }
+    template<bool Ow = false> const Def* set(Loc l, Sym s        ) const { set(l); set(s); return this; }
+    template<bool Ow = false>       Def* set(Loc l, Sym s        )       { set(l); set(s); return this; }
+    template<bool Ow = false> const Def* set(Loc l, std::string s) const { set(l); set(sym(std::move(s))); return this; }
+    template<bool Ow = false>       Def* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); return this; }
+    template<bool Ow = false> const Def* set(Dbg d) const { set(d.loc(), d.sym()); return this; }
+    template<bool Ow = false>       Def* set(Dbg d)       { set(d.loc(), d.sym()); return this; }
+    // clang-format on
     ///@}
 
     /// @name debug_prefix/suffix
@@ -631,70 +647,105 @@ template<class To> using DefDefMap = absl::flat_hash_map<DefDef, To, DefDefHash,
 using DefDefSet                    = absl::flat_hash_set<DefDef, DefDefHash, DefDefEq>;
 ///@}
 
-class Var : public Def {
+class Var : public Def, public Setters<Var> {
 private:
     Var(const Def* type, Def* mut)
         : Def(Node, type, Defs{mut}, 0) {}
 
 public:
+    using Setters<Var>::set;
+
     /// @name ops
     ///@{
     Def* mut() const { return op(0)->as_mut(); }
     ///@}
 
-    MIM_DEF_MIXIN(Var)
+    static constexpr auto Node = Node::Var;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
-class Univ : public Def {
+class Univ : public Def, public Setters<Univ> {
+public:
+    using Setters<Univ>::set;
+    static constexpr auto Node = Node::Univ;
+
 private:
     Univ(World& world)
         : Def(&world, Node, nullptr, Defs{}, 0) {}
 
-    MIM_DEF_MIXIN(Univ)
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
-class UMax : public Def {
+class UMax : public Def, public Setters<UMax> {
+public:
+    using Setters<UMax>::set;
+    static constexpr auto Node = Node::UMax;
+
 private:
     UMax(World&, Defs ops);
 
-    MIM_DEF_MIXIN(UMax)
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
-class UInc : public Def {
+class UInc : public Def, public Setters<UInc> {
 private:
     UInc(const Def* op, level_t offset)
         : Def(Node, op->type()->as<Univ>(), {op}, offset) {}
 
 public:
+    using Setters<UInc>::set;
+
     /// @name ops
     ///@{
     const Def* op() const { return Def::op(0); }
     level_t offset() const { return flags(); }
     ///@}
 
-    MIM_DEF_MIXIN(UInc)
+    static constexpr auto Node = Node::UInc;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
-class Type : public Def {
+class Type : public Def, public Setters<Type> {
 private:
     Type(const Def* level)
         : Def(Node, nullptr, {level}, 0) {}
 
 public:
+    using Setters<Type>::set;
+
     /// @name ops
     ///@{
     const Def* level() const { return op(0); }
     ///@}
 
-    MIM_DEF_MIXIN(Type)
+    static constexpr auto Node = Node::Type;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
-class Lit : public Def {
+class Lit : public Def, public Setters<Lit> {
 private:
     Lit(const Def* type, flags_t val)
         : Def(Node, type, Defs{}, val) {}
 
 public:
+    using Setters<Lit>::set;
+
     /// @name Get actual Constant
     ///@{
     template<class T = flags_t> T get() const {
@@ -717,23 +768,36 @@ public:
     template<class T = nat_t> static T as(Ref def) { return def->as<Lit>()->get<T>(); }
     ///@}
 
-    MIM_DEF_MIXIN(Lit)
+    static constexpr auto Node = Node::Lit;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
-class Nat : public Def {
+class Nat : public Def, public Setters<Nat> {
+public:
+    using Setters<Nat>::set;
+    static constexpr auto Node = Node::Nat;
+
 private:
     Nat(World& world);
 
-    MIM_DEF_MIXIN(Nat)
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// A built-in constant of type `Nat -> *`.
-class Idx : public Def {
+class Idx : public Def, public Setters<Idx> {
 private:
     Idx(const Def* type)
         : Def(Node, type, Defs{}, 0) {}
 
 public:
+    using Setters<Idx>::set;
+
     /// Checks if @p def is a `Idx s` and returns `s` or `nullptr` otherwise.
     static Ref size(Ref def);
 
@@ -746,33 +810,47 @@ public:
     static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 
-    MIM_DEF_MIXIN(Idx)
+    static constexpr auto Node = Node::Idx;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
-class Proxy : public Def {
+class Proxy : public Def, public Setters<Proxy> {
 private:
     Proxy(const Def* type, Defs ops, u32 pass, u32 tag)
         : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag)) {}
 
 public:
+    using Setters<Proxy>::set;
+
     /// @name Getters
     ///@{
     u32 pass() const { return u32(flags() >> 32_u64); } ///< IPass::index within PassMan.
     u32 tag() const { return u32(flags()); }
     ///@}
 
-    MIM_DEF_MIXIN(Proxy)
+    static constexpr auto Node = Node::Proxy;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// @deprecated A global variable in the data segment.
 /// A Global may be mutable or immutable.
-/// @attention WILL BE REMOVED.
-class Global : public Def {
+/// @deprecated Will be removed.
+class Global : public Def, public Setters<Global> {
 private:
     Global(const Def* type, bool is_mutable)
         : Def(Node, type, 1, is_mutable) {}
 
 public:
+    using Setters<Global>::set;
+
     /// @name ops
     ///@{
     const Def* init() const { return op(0); }
@@ -790,11 +868,18 @@ public:
     bool is_mutable() const { return flags(); }
     ///@}
 
+    /// @name Rebuild
+    ///@{
     Global* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
-    MIM_DEF_MIXIN(Global)
+    ///@}
+
+    static constexpr auto Node = Node::Global;
 
 private:
+    Ref rebuild_(World&, Ref, Defs) const override;
     Global* stub_(World&, Ref) override;
+
+    friend class World;
 };
 
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }

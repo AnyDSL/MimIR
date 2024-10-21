@@ -39,8 +39,6 @@ enum class Mode : nat_t {
 };
 // clang-format on
 
-MIM_ENUM_OPERATORS(Mode)
-
 /// Give Mode as mim::plug::math::Mode, mim::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;
 
@@ -132,3 +130,7 @@ constexpr bool is_associative(plug::math::arith id) { return is_commutative(id);
 ///@}
 
 } // namespace mim
+
+#ifndef DOXYGEN
+template<> struct fe::is_bit_enum<mim::plug::math::Mode> : std::true_type {};
+#endif
