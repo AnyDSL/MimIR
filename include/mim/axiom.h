@@ -6,11 +6,13 @@
 
 namespace mim {
 
-class Axiom : public Def {
+class Axiom : public Def, public Setters<Axiom> {
 private:
     Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, plugin_t, tag_t, sub_t);
 
 public:
+    using Setters<Axiom>::set;
+
     /// @name Normalization
     /// @anchor normalization
     /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
@@ -58,7 +60,12 @@ public:
         using type = App;
     };
 
-    MIM_DEF_MIXIN(Axiom)
+    static constexpr auto Node = Node::Axiom;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 // clang-format off

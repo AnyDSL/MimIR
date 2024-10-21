@@ -8,7 +8,7 @@ namespace mim {
 
 /// A [dependent function type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A0_type).
 /// @see Lam
-class Pi : public Def {
+class Pi : public Def, public Setters<Pi> {
 protected:
     /// Constructor for an *immutable* Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, bool implicit)
@@ -69,6 +69,7 @@ public:
     /// @name Setters
     /// @see @ref set_ops "Setting Ops"
     ///@{
+    using Setters<Pi>::set;
     Pi* set(Ref dom, Ref codom) { return set_dom(dom)->set_codom(codom); }
     Pi* set_dom(Ref dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
@@ -82,18 +83,25 @@ public:
     static Ref infer(Ref dom, Ref codom);
     ///@}
 
-    const Pi* immutabilize() override;
+    /// @name Rebuild
+    ///@{
     Pi* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    const Pi* immutabilize() override;
+    ///@}
 
-    MIM_DEF_MIXIN(Pi)
+    static constexpr auto Node = Node::Pi;
 
 private:
+    Ref rebuild_(World&, Ref, Defs) const override;
     Pi* stub_(World&, Ref) override;
+    ;
+
+    friend class World;
 };
 
 /// A function.
 /// @see Pi
-class Lam : public Def {
+class Lam : public Def, public Setters<Lam> {
 private:
     Lam(const Pi* pi, const Def* filter, const Def* body)
         : Def(Node, pi, {filter, body}, 0) {}
@@ -154,6 +162,7 @@ public:
     /// ```
     /// @see @ref set_ops "Setting Ops"
     ///@{
+    using Setters<Lam>::set;
     using Filter = std::variant<bool, const Def*>;
     Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
     Lam* set_filter(Filter);                                                ///< Set filter first.
@@ -176,10 +185,13 @@ public:
     void check() override;
     ///@}
 
-    MIM_DEF_MIXIN(Lam)
+    static constexpr auto Node = Node::Lam;
 
 private:
+    Ref rebuild_(World&, Ref, Defs) const override;
     Lam* stub_(World&, Ref) override;
+
+    friend class World;
 };
 
 /// @name Lam
@@ -190,7 +202,7 @@ using LamSet                    = GIDSet<Lam*>;
 using Lam2Lam                   = LamMap<Lam*>;
 ///@}
 
-class App : public Def {
+class App : public Def, public Setters<App> {
 private:
     App(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg)
         : Def(Node, type, {callee, arg}, 0) {
@@ -200,6 +212,8 @@ private:
     }
 
 public:
+    using Setters<App>::set;
+
     /// @name callee
     ///@{
     const Def* callee() const { return op(0); }
@@ -222,7 +236,12 @@ public:
     u8 trip() const { return trip_; }
     ///@}
 
-    MIM_DEF_MIXIN(App)
+    static constexpr auto Node = Node::App;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// @name Helpers to work with Functions

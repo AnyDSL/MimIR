@@ -457,7 +457,7 @@ public:
     ///@}
 
     /// @name Globals
-    /// @deprecated { will be removed }
+    /// @deprecated Will be removed.
     ///@{
     Global* global(Ref type, bool is_mutable = true) { return insert<Global>(1, type, is_mutable); }
     ///@}

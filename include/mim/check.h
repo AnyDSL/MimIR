@@ -9,12 +9,14 @@ namespace mim {
 /// This node is a hole in the IR that is inferred by its context later on.
 /// It is modelled as a *mut*able Def.
 /// If inference was successful, it's Infer::op will be set to the inferred Def.
-class Infer : public Def {
+class Infer : public Def, public Setters<Infer> {
 private:
     Infer(const Def* type)
         : Def(Node, type, 1, 0) {}
 
 public:
+    using Setters<Infer>::set;
+
     /// @name op
     ///@{
     const Def* op() const { return Def::op(0); }
@@ -35,12 +37,16 @@ public:
 
     Infer* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
+    static constexpr auto Node = Node::Infer;
+
 private:
-    Infer* stub_(World&, Ref) override;
     flags_t rank() const { return flags(); }
     flags_t& rank() { return flags_; }
 
-    MIM_DEF_MIXIN(Infer)
+    Ref rebuild_(World&, Ref, Defs) const override;
+    Infer* stub_(World&, Ref) override;
+
+    friend class World;
     friend class Check;
 };
 
