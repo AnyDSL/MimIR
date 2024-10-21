@@ -145,6 +145,7 @@ using fe::operator|;
 using fe::operator^;
 using fe::operator<=>;
 using fe::operator==;
+using fe::operator!=;
 
 /// @name Dep
 ///@{
