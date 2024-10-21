@@ -4,7 +4,6 @@
 plugin core;
 plugin autodiff;
 
-
 fun f(a: I32): I32 =
     let cmp = %core.icmp.sle (a,5I32);
     (twice,thrice)#cmp ()
