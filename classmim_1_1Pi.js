@@ -13,6 +13,7 @@ var classmim_1_1Pi =
     [ "isa_returning", "classmim_1_1Pi.html#a0a3e018247707de705c9f6c1066e9994", null ],
     [ "make_explicit", "classmim_1_1Pi.html#a770c4d8960a11607785f85a5ef5d7af3", null ],
     [ "make_implicit", "classmim_1_1Pi.html#a59f8c3e0615ba731254c72173dc586cb", null ],
+    [ "rebuild_", "classmim_1_1Pi.html#a8480da2e76515371e1e719043c5eb8bc", null ],
     [ "ret_dom", "classmim_1_1Pi.html#af62442085ed91d34661719d6c56e1a0b", null ],
     [ "ret_pi", "classmim_1_1Pi.html#ad2d868402614a7596ca067c9a6d21776", null ],
     [ "ret_pi", "classmim_1_1Pi.html#acd4fdefeae1d290e810df77afcd96849", null ],
@@ -22,5 +23,7 @@ var classmim_1_1Pi =
     [ "set_dom", "classmim_1_1Pi.html#af4a6f3a60ee8c6b59e0577236bfbe791", null ],
     [ "stub", "classmim_1_1Pi.html#a2ea05985584d5c4b50845e37dedf516e", null ],
     [ "stub_", "classmim_1_1Pi.html#a94f0f9739f3a1e2e80d06b20dbf01c22", null ],
-    [ "unset", "classmim_1_1Pi.html#a33ce4a2b9f089af0ca6a99385ebed77d", null ]
+    [ "unset", "classmim_1_1Pi.html#a33ce4a2b9f089af0ca6a99385ebed77d", null ],
+    [ "World", "classmim_1_1Pi.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
+    [ "Node", "classmim_1_1Pi.html#ab9dee5ab84bdc0bcd567cafe9c4a2231", null ]
 ];

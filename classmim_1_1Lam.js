@@ -15,6 +15,7 @@ var classmim_1_1Lam =
     [ "isa_mut_cn", "classmim_1_1Lam.html#a8bca0a4c848c5242900da85eea844851", null ],
     [ "isa_mut_returning", "classmim_1_1Lam.html#a7026b580de9baf340dd56c29a96309dc", null ],
     [ "isa_returning", "classmim_1_1Lam.html#afcf8a1b58be877c3d2cc420bd0efba7e", null ],
+    [ "rebuild_", "classmim_1_1Lam.html#aedeca35b5574931077593cd2059f03b4", null ],
     [ "ret_dom", "classmim_1_1Lam.html#ad2c4b8cee97f69bd7a54c1f50cba330a", null ],
     [ "ret_pi", "classmim_1_1Lam.html#a5933504e71248b855ed8652a4837846f", null ],
     [ "ret_var", "classmim_1_1Lam.html#afb804e72a45e9b1f87a74c7062bc3556", null ],
@@ -26,5 +27,7 @@ var classmim_1_1Lam =
     [ "stub_", "classmim_1_1Lam.html#a52d19ff0ff5399212b499ccb9a309f6c", null ],
     [ "test", "classmim_1_1Lam.html#a76f3b611b8351b0ff57cf6700a0a0863", null ],
     [ "type", "classmim_1_1Lam.html#a6380ad84433a405f9e2a7695ecffa6b3", null ],
-    [ "unset", "classmim_1_1Lam.html#a072eca45c3daaf3e26a30cef5c17f589", null ]
+    [ "unset", "classmim_1_1Lam.html#a072eca45c3daaf3e26a30cef5c17f589", null ],
+    [ "World", "classmim_1_1Lam.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
+    [ "Node", "classmim_1_1Lam.html#a73ebdebf9efc615941facd062fd89f4c", null ]
 ];

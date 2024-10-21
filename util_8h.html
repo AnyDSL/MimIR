@@ -119,8 +119,7 @@ $(function(){initNavTree('util_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">util.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -164,12 +163,6 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html">mim</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:af247743b141adba209e62ffc238695a7" id="r_af247743b141adba209e62ffc238695a7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af247743b141adba209e62ffc238695a7">MIM_ENUM_OPERATORS</a>(E)</td></tr>
-<tr class="memdesc:af247743b141adba209e62ffc238695a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to declare all kind of bit and comparison operators for an <code>enum</code> <code>E</code>.  <br /></td></tr>
-<tr class="separator:af247743b141adba209e62ffc238695a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -228,42 +221,6 @@ Functions</h2></td></tr>
 <tr class="memdesc:a217db174daa31eb9e4001c60c099a96f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes <code>emplace</code> on <code>container</code>, asserts that insertion actually happened, and returns the iterator.  <br /></td></tr>
 <tr class="separator:a217db174daa31eb9e4001c60c099a96f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="af247743b141adba209e62ffc238695a7" name="af247743b141adba209e62ffc238695a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af247743b141adba209e62ffc238695a7">&#9670;&#160;</a></span>MIM_ENUM_OPERATORS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MIM_ENUM_OPERATORS</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>E</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator&amp;(                       E  x,                        E  y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  &amp;  std::underlying_type_t&lt;E&gt;(y); } \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator&amp;(std::underlying_type_t&lt;E&gt; x,                        E  y) { <span class="keywordflow">return</span>                           x   &amp;  std::underlying_type_t&lt;E&gt;(y); } \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator&amp;(                       E  x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  &amp;                            y ; } \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator|(                       E  x,                        E  y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  |  std::underlying_type_t&lt;E&gt;(y); } \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator|(std::underlying_type_t&lt;E&gt; x,                        E  y) { <span class="keywordflow">return</span>                           x   |  std::underlying_type_t&lt;E&gt;(y); } \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator|(                       E  x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  |                            y ; } \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator^(                       E  x,                        E  y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  ^  std::underlying_type_t&lt;E&gt;(y); } \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator^(std::underlying_type_t&lt;E&gt; x,                        E  y) { <span class="keywordflow">return</span>                           x   ^  std::underlying_type_t&lt;E&gt;(y); } \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator^(                       E  x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  ^                            y ; } \</div>
-<div class="line">    <span class="keyword">constexpr</span> std::strong_ordering operator&lt;=&gt;(std::underlying_type_t&lt;E&gt; x, E y) { <span class="keywordflow">return</span> x &lt;=&gt; std::underlying_type_t&lt;E&gt;(y); }                                  \</div>
-<div class="line">    <span class="keyword">constexpr</span> std::strong_ordering operator&lt;=&gt;(E x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x) &lt;=&gt; y; }                                  \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator==(std::underlying_type_t&lt;E&gt; x, E y) { <span class="keywordflow">return</span> x == std::underlying_type_t&lt;E&gt;(y); }                                                    \</div>
-<div class="line">    <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator==(E x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x) == y; }</div>
-</div><!-- fragment -->
-<p>Use this to declare all kind of bit and comparison operators for an <code>enum</code> <code>E</code>. </p>
-<p>Note that the bit operators return <code>E's</code> underlying type and not the original <code>enum</code> <code>E</code>. This is because the result may not be a valid <code>enum</code> value. For the same reason, it doesn't make sense to declare operators such as <code>&amp;=</code>. </p>
-
-<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00189">189</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

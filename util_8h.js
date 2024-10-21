@@ -5,7 +5,6 @@ var util_8h =
     [ "mim::GIDHash< T >", "structmim_1_1GIDHash.html", "structmim_1_1GIDHash" ],
     [ "mim::GIDEq< T >", "structmim_1_1GIDEq.html", "structmim_1_1GIDEq" ],
     [ "mim::GIDLt< T >", "structmim_1_1GIDLt.html", "structmim_1_1GIDLt" ],
-    [ "MIM_ENUM_OPERATORS", "util_8h.html#af247743b141adba209e62ffc238695a7", null ],
     [ "GIDMap", "util_8h.html#aa50614ce42e73430eb96740aa52a0295", null ],
     [ "GIDNodeMap", "util_8h.html#abce03e9dc0a97db013513c3027b8d468", null ],
     [ "GIDNodeSet", "util_8h.html#a9a3b2e07bc8c17c548554a37b140c835", null ],

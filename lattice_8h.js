@@ -2,7 +2,7 @@ var lattice_8h =
 [
     [ "mim::Bound", "classmim_1_1Bound.html", "classmim_1_1Bound" ],
     [ "mim::TBound< Up >", "classmim_1_1TBound.html", "classmim_1_1TBound" ],
-    [ "mim::Ac", "classmim_1_1Ac.html", null ],
+    [ "mim::Ac", "classmim_1_1Ac.html", "classmim_1_1Ac" ],
     [ "mim::Vel", "classmim_1_1Vel.html", "classmim_1_1Vel" ],
     [ "mim::Pick", "classmim_1_1Pick.html", "classmim_1_1Pick" ],
     [ "mim::Test", "classmim_1_1Test.html", "classmim_1_1Test" ],

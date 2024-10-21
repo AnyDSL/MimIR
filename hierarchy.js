@@ -310,6 +310,91 @@ var hierarchy =
     [ "mim::Scope", "classmim_1_1Scope.html", null ],
     [ "mim::World::ScopedLoc", "structmim_1_1World_1_1ScopedLoc.html", null ],
     [ "mim::ast::Scopes", "classmim_1_1ast_1_1Scopes.html", null ],
+    [ "mim::Setters< P, D >", "classmim_1_1Setters.html", null ],
+    [ "mim::Setters< Ac >", "classmim_1_1Setters.html", [
+      [ "mim::Ac", "classmim_1_1Ac.html", null ]
+    ] ],
+    [ "mim::Setters< App >", "classmim_1_1Setters.html", [
+      [ "mim::App", "classmim_1_1App.html", null ]
+    ] ],
+    [ "mim::Setters< Arr >", "classmim_1_1Setters.html", [
+      [ "mim::Arr", "classmim_1_1Arr.html", null ]
+    ] ],
+    [ "mim::Setters< Axiom >", "classmim_1_1Setters.html", [
+      [ "mim::Axiom", "classmim_1_1Axiom.html", null ]
+    ] ],
+    [ "mim::Setters< Extract >", "classmim_1_1Setters.html", [
+      [ "mim::Extract", "classmim_1_1Extract.html", null ]
+    ] ],
+    [ "mim::Setters< Global >", "classmim_1_1Setters.html", [
+      [ "mim::Global", "classmim_1_1Global.html", null ]
+    ] ],
+    [ "mim::Setters< Idx >", "classmim_1_1Setters.html", [
+      [ "mim::Idx", "classmim_1_1Idx.html", null ]
+    ] ],
+    [ "mim::Setters< Infer >", "classmim_1_1Setters.html", [
+      [ "mim::Infer", "classmim_1_1Infer.html", null ]
+    ] ],
+    [ "mim::Setters< Insert >", "classmim_1_1Setters.html", [
+      [ "mim::Insert", "classmim_1_1Insert.html", null ]
+    ] ],
+    [ "mim::Setters< Lam >", "classmim_1_1Setters.html", [
+      [ "mim::Lam", "classmim_1_1Lam.html", null ]
+    ] ],
+    [ "mim::Setters< Lit >", "classmim_1_1Setters.html", [
+      [ "mim::Lit", "classmim_1_1Lit.html", null ]
+    ] ],
+    [ "mim::Setters< Nat >", "classmim_1_1Setters.html", [
+      [ "mim::Nat", "classmim_1_1Nat.html", null ]
+    ] ],
+    [ "mim::Setters< Pack >", "classmim_1_1Setters.html", [
+      [ "mim::Pack", "classmim_1_1Pack.html", null ]
+    ] ],
+    [ "mim::Setters< Pi >", "classmim_1_1Setters.html", [
+      [ "mim::Pi", "classmim_1_1Pi.html", null ]
+    ] ],
+    [ "mim::Setters< Pick >", "classmim_1_1Setters.html", [
+      [ "mim::Pick", "classmim_1_1Pick.html", null ]
+    ] ],
+    [ "mim::Setters< Proxy >", "classmim_1_1Setters.html", [
+      [ "mim::Proxy", "classmim_1_1Proxy.html", null ]
+    ] ],
+    [ "mim::Setters< Sigma >", "classmim_1_1Setters.html", [
+      [ "mim::Sigma", "classmim_1_1Sigma.html", null ]
+    ] ],
+    [ "mim::Setters< Singleton >", "classmim_1_1Setters.html", [
+      [ "mim::Singleton", "classmim_1_1Singleton.html", null ]
+    ] ],
+    [ "mim::Setters< TBound< Up > >", "classmim_1_1Setters.html", [
+      [ "mim::TBound< Up >", "classmim_1_1TBound.html", null ]
+    ] ],
+    [ "mim::Setters< Test >", "classmim_1_1Setters.html", [
+      [ "mim::Test", "classmim_1_1Test.html", null ]
+    ] ],
+    [ "mim::Setters< TExt< Up > >", "classmim_1_1Setters.html", [
+      [ "mim::TExt< Up >", "classmim_1_1TExt.html", null ]
+    ] ],
+    [ "mim::Setters< Tuple >", "classmim_1_1Setters.html", [
+      [ "mim::Tuple", "classmim_1_1Tuple.html", null ]
+    ] ],
+    [ "mim::Setters< Type >", "classmim_1_1Setters.html", [
+      [ "mim::Type", "classmim_1_1Type.html", null ]
+    ] ],
+    [ "mim::Setters< UInc >", "classmim_1_1Setters.html", [
+      [ "mim::UInc", "classmim_1_1UInc.html", null ]
+    ] ],
+    [ "mim::Setters< UMax >", "classmim_1_1Setters.html", [
+      [ "mim::UMax", "classmim_1_1UMax.html", null ]
+    ] ],
+    [ "mim::Setters< Univ >", "classmim_1_1Setters.html", [
+      [ "mim::Univ", "classmim_1_1Univ.html", null ]
+    ] ],
+    [ "mim::Setters< Var >", "classmim_1_1Setters.html", [
+      [ "mim::Var", "classmim_1_1Var.html", null ]
+    ] ],
+    [ "mim::Setters< Vel >", "classmim_1_1Setters.html", [
+      [ "mim::Vel", "classmim_1_1Vel.html", null ]
+    ] ],
     [ "std::span", null, [
       [ "mim::Span< T, N >", "classmim_1_1Span.html", null ]
     ] ],

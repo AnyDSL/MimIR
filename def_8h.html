@@ -121,6 +121,7 @@ $(function(){initNavTree('def_8h.html',''); initResizable(true); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">def.h File Reference</div></div>
@@ -129,6 +130,7 @@ $(function(){initNavTree('def_8h.html',''); initResizable(true); });
 <div class="textblock"><code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;fe/assert.h&gt;</code><br />
 <code>#include &lt;fe/cast.h&gt;</code><br />
+<code>#include &lt;fe/enum.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="config_8h_source.html">mim/config.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dbg_8h_source.html">mim/util/dbg.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hash_8h_source.html">mim/util/hash.h</a>&quot;</code><br />
@@ -159,6 +161,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1UseHash.html">mim::UseHash</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1UseEq.html">mim::UseEq</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html">mim::Setters&lt; P, D &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CRTP-based Mixin to declare setters for <a class="el" href="classmim_1_1Def.html#ababa287f8ec65ff8971c8b379a0afa2f">Def::loc</a> &amp; Def::name using a <em>covariant</em> return type.  <a href="classmim_1_1Setters.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html">mim::Def</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for all <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>s.  <a href="classmim_1_1Def.html#details">More...</a><br /></td></tr>
@@ -207,16 +212,13 @@ Macros</h2></td></tr>
 <tr class="memitem:af607f4cede9847484ec49abf7d351932" id="r_af607f4cede9847484ec49abf7d351932"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af607f4cede9847484ec49abf7d351932">MIM_PROJ</a>(NAME,  CONST)</td></tr>
 <tr class="memdesc:af607f4cede9847484ec49abf7d351932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use as mixin to wrap all kind of Def::proj and Def::projs variants.  <br /></td></tr>
 <tr class="separator:af607f4cede9847484ec49abf7d351932"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a331b006ecee185b5601257bad08f2fdc" id="r_a331b006ecee185b5601257bad08f2fdc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a331b006ecee185b5601257bad08f2fdc">MIM_SETTERS_</a>(T)</td></tr>
-<tr class="memdesc:a331b006ecee185b5601257bad08f2fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use as mixin to declare setters for Def::loc &amp; Def::name using a <em>covariant</em> return type.  <br /></td></tr>
-<tr class="separator:a331b006ecee185b5601257bad08f2fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b911f26a864cc6863541f5c3c07383e" id="r_a5b911f26a864cc6863541f5c3c07383e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b911f26a864cc6863541f5c3c07383e">MIM_SETTERS</a>(T)</td></tr>
-<tr class="separator:a5b911f26a864cc6863541f5c3c07383e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7cd7b090a885c8f1bb7728c74e107a9" id="r_ad7cd7b090a885c8f1bb7728c74e107a9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7cd7b090a885c8f1bb7728c74e107a9">MIM_DEF_MIXIN</a>(T)</td></tr>
-<tr class="separator:ad7cd7b090a885c8f1bb7728c74e107a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:af6003e65d44ce9c37f66e0aa74a53118" id="r_af6003e65d44ce9c37f66e0aa74a53118"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#af6003e65d44ce9c37f66e0aa74a53118">mim::NormalizeFn</a> = <a class="el" href="classmim_1_1Ref.html">Ref</a> (*)(<a class="el" href="classmim_1_1Ref.html">Ref</a>, <a class="el" href="classmim_1_1Ref.html">Ref</a>, <a class="el" href="classmim_1_1Ref.html">Ref</a>)</td></tr>
+<tr class="separator:af6003e65d44ce9c37f66e0aa74a53118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5a838964832f04e880e1aa8c5789343" id="r_aa5a838964832f04e880e1aa8c5789343"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#aa5a838964832f04e880e1aa8c5789343">mim::Uses</a> = absl::flat_hash_set&lt;<a class="el" href="classmim_1_1Use.html">Use</a>, <a class="el" href="structmim_1_1UseHash.html">UseHash</a>, <a class="el" href="structmim_1_1UseEq.html">UseEq</a>&gt;</td></tr>
+<tr class="separator:aa5a838964832f04e880e1aa8c5789343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Def</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>GIDSet / GIDMap keyed by <a class="el" href="classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870">Def::gid</a> of <code>conset Def*</code>. </p>
 </div></td></tr>
@@ -243,6 +245,18 @@ Typedefs</h2></td></tr>
 <tr class="separator:a9fd6d037a8eb540c32dbe840e32c90e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e9a8c388e8451e32ecc710911d05546" id="r_a5e9a8c388e8451e32ecc710911d05546"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a5e9a8c388e8451e32ecc710911d05546">mim::Muts</a> = <a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt;<a class="el" href="classmim_1_1Def.html">Def</a>*&gt;</td></tr>
 <tr class="separator:a5e9a8c388e8451e32ecc710911d05546"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Var</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>GIDSet / GIDMap keyed by <a class="el" href="classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870">Var::gid</a> of <code>const Var*</code>. </p>
+</div></td></tr>
+<tr class="memitem:a71e90dca4edd9dfdf7b1199a44faf1ab" id="r_a71e90dca4edd9dfdf7b1199a44faf1ab"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
+<tr class="memitem:a71e90dca4edd9dfdf7b1199a44faf1ab"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab">mim::VarMap</a> = <a class="el" href="namespacemim.html#aa50614ce42e73430eb96740aa52a0295">GIDMap</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>*, To&gt;</td></tr>
+<tr class="separator:a71e90dca4edd9dfdf7b1199a44faf1ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69dc278a82313ca3dc770a868a1e57d1" id="r_a69dc278a82313ca3dc770a868a1e57d1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a69dc278a82313ca3dc770a868a1e57d1">mim::VarSet</a> = <a class="el" href="namespacemim.html#a669e082739788e7a9b2d3c37a2cc0f42">GIDSet</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>*&gt;</td></tr>
+<tr class="separator:a69dc278a82313ca3dc770a868a1e57d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe12e59f7ee4253d3b71cd8c0db61d06" id="r_afe12e59f7ee4253d3b71cd8c0db61d06"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#afe12e59f7ee4253d3b71cd8c0db61d06">mim::Var2Var</a> = <a class="el" href="namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab">VarMap</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>*&gt;</td></tr>
+<tr class="separator:afe12e59f7ee4253d3b71cd8c0db61d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0eea4260d6f0e43fe7f6c7877c0d2ba" id="r_ac0eea4260d6f0e43fe7f6c7877c0d2ba"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ac0eea4260d6f0e43fe7f6c7877c0d2ba">mim::Vars</a> = <a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>*&gt;</td></tr>
+<tr class="separator:ac0eea4260d6f0e43fe7f6c7877c0d2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">DefDef</div></td></tr>
 <tr class="memitem:a5e2b9a49889ee3546fc4e7ad1b3a9170" id="r_a5e2b9a49889ee3546fc4e7ad1b3a9170"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a5e2b9a49889ee3546fc4e7ad1b3a9170">mim::DefDef</a> = std::tuple&lt;const <a class="el" href="classmim_1_1Def.html">Def</a>*, const <a class="el" href="classmim_1_1Def.html">Def</a>*&gt;</td></tr>
 <tr class="separator:a5e2b9a49889ee3546fc4e7ad1b3a9170"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -317,6 +331,21 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a047a0702a0abe4441303320b9211e6d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af93a16b3d599965fae4c0b94d51d2ac5" id="r_af93a16b3d599965fae4c0b94d51d2ac5"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5">mim::Sort</a> { <br />
+&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f">mim::Term</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508">mim::Type</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad626102cfc2416a570fc0dc582a9b771">mim::Kind</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad511f8439ecde36647437fbba67a4394">mim::Space</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946">mim::Univ</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa0db49ba470c1c9ae2128c3470339153">mim::Level</a>
+<br />
+ }</td></tr>
+<tr class="separator:af93a16b3d599965fae4c0b94d51d2ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Dep</div></td></tr>
 <tr class="memitem:a249738da6a953390b70691dd3fe7132b" id="r_a249738da6a953390b70691dd3fe7132b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132b">mim::Dep</a> : unsigned { <br />
 &#160;&#160;<a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba6adf97f83acf6453d4a6a4b1070f3754">mim::None</a> = 0
@@ -347,38 +376,6 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a5ec46e9d29f58ac19594859972dd7764" id="r_a5ec46e9d29f58ac19594859972dd7764"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1Node.html#a5ec46e9d29f58ac19594859972dd7764">mim::Node::Num_Nodes</a> = size_t(0) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1)</td></tr>
 <tr class="separator:a5ec46e9d29f58ac19594859972dd7764"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">Var</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p>GIDSet / GIDMap keyed by Var::gid of <code>const Var*</code>. </p>
-</td></tr>
-<tr class="memitem:af93a16b3d599965fae4c0b94d51d2ac5" id="r_af93a16b3d599965fae4c0b94d51d2ac5"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5">mim::Sort</a> { <br />
-&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f">mim::Term</a>
-, <br />
-&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508">mim::Type</a>
-, <br />
-&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad626102cfc2416a570fc0dc582a9b771">mim::Kind</a>
-, <br />
-&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad511f8439ecde36647437fbba67a4394">mim::Space</a>
-, <br />
-&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946">mim::Univ</a>
-, <br />
-&#160;&#160;<a class="el" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa0db49ba470c1c9ae2128c3470339153">mim::Level</a>
-<br />
- }</td></tr>
-<tr class="separator:af93a16b3d599965fae4c0b94d51d2ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71e90dca4edd9dfdf7b1199a44faf1ab" id="r_a71e90dca4edd9dfdf7b1199a44faf1ab"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
-<tr class="memitem:a71e90dca4edd9dfdf7b1199a44faf1ab"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab">mim::VarMap</a> = <a class="el" href="namespacemim.html#aa50614ce42e73430eb96740aa52a0295">GIDMap</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>*, To&gt;</td></tr>
-<tr class="separator:a71e90dca4edd9dfdf7b1199a44faf1ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69dc278a82313ca3dc770a868a1e57d1" id="r_a69dc278a82313ca3dc770a868a1e57d1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a69dc278a82313ca3dc770a868a1e57d1">mim::VarSet</a> = <a class="el" href="namespacemim.html#a669e082739788e7a9b2d3c37a2cc0f42">GIDSet</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>*&gt;</td></tr>
-<tr class="separator:a69dc278a82313ca3dc770a868a1e57d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe12e59f7ee4253d3b71cd8c0db61d06" id="r_afe12e59f7ee4253d3b71cd8c0db61d06"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#afe12e59f7ee4253d3b71cd8c0db61d06">mim::Var2Var</a> = <a class="el" href="namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab">VarMap</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>*&gt;</td></tr>
-<tr class="separator:afe12e59f7ee4253d3b71cd8c0db61d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0eea4260d6f0e43fe7f6c7877c0d2ba" id="r_ac0eea4260d6f0e43fe7f6c7877c0d2ba"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ac0eea4260d6f0e43fe7f6c7877c0d2ba">mim::Vars</a> = <a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>*&gt;</td></tr>
-<tr class="separator:ac0eea4260d6f0e43fe7f6c7877c0d2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6003e65d44ce9c37f66e0aa74a53118" id="r_af6003e65d44ce9c37f66e0aa74a53118"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#af6003e65d44ce9c37f66e0aa74a53118">mim::NormalizeFn</a> = <a class="el" href="classmim_1_1Ref.html">Ref</a> (*)(<a class="el" href="classmim_1_1Ref.html">Ref</a>, <a class="el" href="classmim_1_1Ref.html">Ref</a>, <a class="el" href="classmim_1_1Ref.html">Ref</a>)</td></tr>
-<tr class="separator:af6003e65d44ce9c37f66e0aa74a53118"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5a838964832f04e880e1aa8c5789343" id="r_aa5a838964832f04e880e1aa8c5789343"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#aa5a838964832f04e880e1aa8c5789343">mim::Uses</a> = absl::flat_hash_set&lt;<a class="el" href="classmim_1_1Use.html">Use</a>, <a class="el" href="structmim_1_1UseHash.html">UseHash</a>, <a class="el" href="structmim_1_1UseEq.html">UseEq</a>&gt;</td></tr>
-<tr class="separator:aa5a838964832f04e880e1aa8c5789343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ad04b3972ae1c6d4df84a276ed64f06cb" name="ad04b3972ae1c6d4df84a276ed64f06cb"></a>
@@ -401,7 +398,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">node,</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00038">38</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00039">39</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -425,33 +422,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">+size_t(1)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00038">38</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
-
-</div>
-</div>
-<a id="ad7cd7b090a885c8f1bb7728c74e107a9" name="ad7cd7b090a885c8f1bb7728c74e107a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7cd7b090a885c8f1bb7728c74e107a9">&#9670;&#160;</a></span>MIM_DEF_MIXIN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MIM_DEF_MIXIN</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>T</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">public</span>:                                             \</div>
-<div class="line">    MIM_SETTERS(T)                                  \</div>
-<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">auto</span> Node = Node::T;           \</div>
-<div class="line">                                                    \</div>
-<div class="line"><span class="keyword">private</span>:                                            \</div>
-<div class="line">    Ref rebuild_(World&amp;, Ref, Defs) <span class="keyword">const override</span>; \</div>
-<div class="line">    <span class="keyword">friend</span> <span class="keyword">class </span>World;</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00196">196</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00039">39</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -484,9 +455,9 @@ Variables</h2></td></tr>
 <div class="line">    m(Global, global)                                                         \</div>
 <div class="line">    m(Singleton, singleton)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00017">17</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00018">18</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00433">mim::Def::node_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00431">mim::Def::node_name()</a>.</p>
 
 </div>
 </div>
@@ -529,62 +500,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00157">157</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
-
-</div>
-</div>
-<a id="a5b911f26a864cc6863541f5c3c07383e" name="a5b911f26a864cc6863541f5c3c07383e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b911f26a864cc6863541f5c3c07383e">&#9670;&#160;</a></span>MIM_SETTERS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MIM_SETTERS</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>T</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">public</span>:</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00191">191</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
-
-</div>
-</div>
-<a id="a331b006ecee185b5601257bad08f2fdc" name="a331b006ecee185b5601257bad08f2fdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a331b006ecee185b5601257bad08f2fdc">&#9670;&#160;</a></span>MIM_SETTERS_</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define MIM_SETTERS_</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>T</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">public</span>:                                                                                                                      \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l               )<span class="keyword"> const </span>{ <span class="keywordflow">if</span> (Ow || !dbg_.loc()) dbg_.set(l); <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l               )       { <span class="keywordflow">if</span> (Ow || !dbg_.loc()) dbg_.set(l); <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(       Sym s        )<span class="keyword"> const </span>{ <span class="keywordflow">if</span> (Ow || !dbg_.sym()) dbg_.set(s); <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(       Sym s        )       { <span class="keywordflow">if</span> (Ow || !dbg_.sym()) dbg_.set(s); <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(       std::string s)<span class="keyword"> const </span>{         set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(       std::string s)       {         set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l, Sym s        )<span class="keyword"> const </span>{ set(l); set(s);                 <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l, Sym s        )       { set(l); set(s);                 <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l, std::string s)<span class="keyword"> const </span>{ set(l); set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Dbg d)<span class="keyword"> const </span>{ set(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>.loc(), <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>.sym()); <span class="keywordflow">return</span> <span class="keyword">this</span>; }                              \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Dbg d)       { set(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>.loc(), <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>.sym()); <span class="keywordflow">return</span> <span class="keyword">this</span>; }</div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1regex_html_af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad"><div class="ttname"><a href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">mim::plug::regex::cls::d</a></div><div class="ttdeci">@ d</div></div>
-</div><!-- fragment -->
-<p>Use as mixin to declare setters for Def::loc &amp; Def::name using a <em>covariant</em> return type. </p>
-
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00174">174</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00170">170</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
