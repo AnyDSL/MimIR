@@ -94,7 +94,6 @@ public:
 private:
     Ref rebuild_(World&, Ref, Defs) const override;
     Pi* stub_(World&, Ref) override;
-    ;
 
     friend class World;
 };
