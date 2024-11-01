@@ -207,7 +207,7 @@ fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
     let zero_real = %math.conv.f2f pe zero_64;
     // should be normalized to lit tuple
     let idxs = ‹i: n; %core.nat.add (1, %core.bitcast Nat i)›;
-    let (`mem, res) = %matrix.map_reduce
+    let (mem, res) = %matrix.map_reduce
         (1, (1), R,
             1,
             n,

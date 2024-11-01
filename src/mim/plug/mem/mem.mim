@@ -83,7 +83,7 @@ axm %mem.lea: [n: Nat, Ts: «n; *», as: Nat][%mem.Ptr («j: n; Ts#j», as), i: 
 /// ### %%mem.create/destroy
 ///
 /// Create side effect out of thin or pretend that the side effect does not exists.
-/// @warning Use with caution since you completely remove the `%%mem.M` dependency.
+/// @warning Use with caution since you completely remove the %%mem.M dependency.
 ///
 let %mem.m = ⊤:%mem.M;
 lam %mem.ignore {O: *} (_: %mem.M, o: O): O = o;

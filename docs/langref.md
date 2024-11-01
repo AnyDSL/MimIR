@@ -241,13 +241,13 @@ Here is another example:
 
 #### Rebind
 
-Finally, you can put a <tt>\`</tt> in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
+A `let` and `ret` expression allows you to rebind the same name to a different value:
 This is particularly useful, when dealing with memory:
 
 ```rust
-let (`mem, ptr) = %mem.alloc (I32, 0) mem;
-let `mem        = %mem.store (mem, ptr, 23:I32);
-let (`mem, val) = %mem.load (mem, ptr);
+let (mem, ptr) = %mem.alloc (I32, 0) mem;
+let mem        = %mem.store (mem, ptr, 23:I32);
+let (mem, val) = %mem.load (mem, ptr);
 ```
 
 ### Expressions {#expr}

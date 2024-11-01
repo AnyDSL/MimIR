@@ -16,8 +16,8 @@ con extern f[mem: %mem.M,
               M:%matrix.Mat (2, (k, m), I32),
               N:%matrix.Mat (2, (m, l), I32),
               return: Cn[%mem.M, %matrix.Mat (2, (k, l), I32)]] =
-    // let (`mem, MN) = %matrix.constMat (2,(k,l),I32) (mem, 0I32;
-    let (`mem, MN) = %matrix.map_reduce
+    // let (mem, MN) = %matrix.constMat (2,(k,l),I32) (mem, 0I32;
+    let (mem, MN) = %matrix.map_reduce
         (
             2, (k,l), I32,
             2,

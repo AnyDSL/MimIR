@@ -90,7 +90,6 @@
 
 #define C_PTRN_P          \
               M_id:       \
-    case Tag::T_backtick: \
     case Tag::D_brckt_l:  \
     case Tag::D_paren_l
 // clang-format on
@@ -439,15 +438,8 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
         assert(p);
         if (auto anx = accept(Tok::Tag::M_anx)) {
             auto type = parse_type_ascr();
-            return ptr<IdPtrn>(track, false, anx.dbg(), std::move(type));
+            return ptr<IdPtrn>(track, anx.dbg(), std::move(type));
         }
-    }
-
-    // p -> `s: e   b -> `s: e
-    if (accept(Tok::Tag::T_backtick)) {
-        auto dbg  = expect(Tok::Tag::M_id, "identifier pattern").dbg();
-        auto type = accept(Tok::Tag::T_colon) ? parse_expr("identifier pattern", prec) : nullptr;
-        return ptr<IdPtrn>(track, true, dbg, std::move(type));
     }
 
     // p -> (p, ..., p)
@@ -460,22 +452,22 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
             auto dbg = eat(Tag::M_id).dbg();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return ptr<IdPtrn>(track, false, dbg, std::move(type));
+            return ptr<IdPtrn>(track, dbg, std::move(type));
         } else if (p) {
             // p ->  s
             // p -> `s
             auto dbg = eat(Tag::M_id).dbg();
-            return ptr<IdPtrn>(track, false, dbg, nullptr);
+            return ptr<IdPtrn>(track, dbg, nullptr);
         } else {
             // b -> e   where e == id
             auto type = parse_expr(ctxt, prec);
-            return ptr<IdPtrn>(track, false, type->loc().anew_begin(), std::move(type));
+            return ptr<IdPtrn>(track, type->loc().anew_begin(), std::move(type));
         }
     } else if (b) {
         // b -> e   where e != id
         auto type = parse_expr(ctxt, prec);
         auto loc  = type->loc().anew_begin();
-        return ptr<IdPtrn>(track, false, Dbg(loc), std::move(type));
+        return ptr<IdPtrn>(track, Dbg(loc), std::move(type));
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -501,7 +493,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
             if (accept(Tag::T_colon)) { // identifier group: x y x: T
                 auto dbg  = dbgs.back();
                 auto type = parse_expr("type of an identifier group within a tuple pattern");
-                auto id   = ptr<IdPtrn>(dbg.loc() + type->loc().finis, false, dbg, std::move(type));
+                auto id   = ptr<IdPtrn>(dbg.loc() + type->loc().finis, dbg, std::move(type));
 
                 for (auto dbg : dbgs | std::views::take(dbgs.size() - 1))
                     ptrns.emplace_back(ptr<GrpPtrn>(dbg, id.get()));
@@ -526,14 +518,14 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
                 if (ahead().isa(Tag::T_arrow)) {
                     auto loc  = ptrn->loc();
                     auto expr = parse_pi_expr(std::move(ptrn));
-                    ptrn      = ptr<IdPtrn>(loc, false, Dbg(loc.anew_begin(), Sym()), std::move(expr));
+                    ptrn      = ptr<IdPtrn>(loc, Dbg(loc.anew_begin(), Sym()), std::move(expr));
                 } else if (auto expr = Ptrn::to_expr(ast(), std::move(ptrn))) {
                     // If we are able to parse more stuff, we got an expr instead of a binder
                     auto addr = expr.get();
                     expr      = parse_infix_expr(track, std::move(expr));
                     if (expr.get() != addr) {
                         auto loc = expr->loc();
-                        ptrn     = ptr<IdPtrn>(loc, false, Dbg(loc.anew_begin(), Sym()), std::move(expr));
+                        ptrn     = ptr<IdPtrn>(loc, Dbg(loc.anew_begin(), Sym()), std::move(expr));
                     } else {
                         if (!ptrn) ptrn = Ptrn::to_ptrn(std::move(expr));
                     }
@@ -544,13 +536,8 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
         ptrns.emplace_back(std::move(ptrn));
     });
 
-    Dbg dbg;
-    bool rebind = false;
-    if (accept(Tag::T_colon_colon)) {
-        rebind = (bool)accept(Tag::T_backtick);
-        dbg    = eat(Tag::M_id).dbg();
-    }
-    return ptr<TuplePtrn>(track, delim_l, std::move(ptrns), rebind, dbg);
+    auto dbg = accept(Tag::T_colon_colon) ? eat(Tag::M_id).dbg() : Dbg{};
+    return ptr<TuplePtrn>(track, delim_l, std::move(ptrns), dbg);
 }
 
 /*
