@@ -13,9 +13,9 @@ con seq {A: *} (n: Nat) (body: Cn [Cn A][A]) (exit: Cn A) (acc: A)@tt =
             (f, t)#cond ()
             where
                 con t() = body continue acc
-                    where
-                        con continue(acc: A) = head ((%core.nat.add (i, 1)), acc);
-                    end
+                where
+                    con continue(acc: A) = head ((%core.nat.add (i, 1)), acc);
+                end
                 con f() = exit acc;
             end;
     end;
