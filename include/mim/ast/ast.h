@@ -177,6 +177,7 @@ public:
 
     bool rebind() const { return rebind_; }
     Dbg dbg() const { return dbg_; }
+    virtual bool implicit() const { return false; }
 
     virtual void bind(Scopes&, bool quiet = false) const = 0;
     Ref emit_value(Emitter&, Ref) const;
@@ -257,6 +258,7 @@ public:
     Tok::Tag delim_r() const { return Tok::delim_l2r(delim_l()); }
     bool is_paren() const { return delim_l() == Tok::Tag::D_paren_l; }
     bool is_brckt() const { return delim_l() == Tok::Tag::D_brckt_l; }
+    bool implicit() const override { return delim_l_ == Tok::Tag::D_brace_l; }
 
     const auto& ptrns() const { return ptrns_; }
     const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
@@ -442,12 +444,11 @@ class PiExpr : public Expr {
 public:
     class Dom : public Node {
     public:
-        Dom(Loc loc, bool is_implicit, Ptr<Ptrn>&& ptrn)
+        Dom(Loc loc, Ptr<Ptrn>&& ptrn)
             : Node(loc)
-            , is_implicit_(is_implicit)
             , ptrn_(std::move(ptrn)) {}
 
-        bool is_implicit() const { return is_implicit_; }
+        bool implicit() const { return ptrn_->implicit(); }
         const Ptrn* ptrn() const { return ptrn_.get(); }
         const IdPtrn* ret() const { return ret_.get(); }
 
@@ -465,7 +466,6 @@ public:
         mutable Pi* decl_ = nullptr;
 
     private:
-        bool is_implicit_;
         Ptr<Ptrn> ptrn_;
         mutable Ptr<IdPtrn> ret_;
 
@@ -811,10 +811,11 @@ class LamDecl : public RecDecl {
 public:
     class Dom : public PiExpr::Dom {
     public:
-        Dom(Loc loc, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
-            : PiExpr::Dom(loc, is_implicit, std::move(ptrn))
+        Dom(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
+            : PiExpr::Dom(loc, std::move(ptrn))
             , filter_(std::move(filter)) {}
 
+        bool implicit() const { return ptrn()->implicit(); }
         const Expr* filter() const { return filter_.get(); }
 
         void bind(Scopes& scopes, bool quiet = false) const override;

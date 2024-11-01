@@ -78,10 +78,19 @@
     case Tag::D_paren_l: /*TupleExpr*/  \
     case Tag::D_quote_l  /*ArrExpr*/
 
-#define C_PTRN            \
+#define C_CURRIED_B       \
+              D_brace_l:  \
+    case Tag::D_brckt_l:  \
+    case Tag::D_quote_l
+
+#define C_CURRIED_P       \
+              D_brace_l:  \
+    case Tag::D_brckt_l:  \
+    case Tag::D_paren_l
+
+#define C_PTRN_P          \
               M_id:       \
     case Tag::T_backtick: \
-    case Tag::D_brace_l:  \
     case Tag::D_brckt_l:  \
     case Tag::D_paren_l
 // clang-format on
@@ -338,9 +347,11 @@ Ptr<Expr> Parser::parse_lit_expr() {
 
 Ptr<Expr> Parser::parse_sigma_expr() {
     auto ptrn = parse_tuple_ptrn();
-    if (ahead().isa(Tag::D_brace_l) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_arrow))
-        return parse_pi_expr(std::move(ptrn));
-    return ptr<SigmaExpr>(std::move(ptrn));
+    switch (ahead().tag()) {
+        case Tag::C_CURRIED_B:
+        case Tag::T_arrow: return parse_pi_expr(std::move(ptrn)); // TODO precedences for patterns
+        default: return ptr<SigmaExpr>(std::move(ptrn));
+    }
 }
 
 Ptr<Expr> Parser::parse_tuple_expr() {
@@ -369,25 +380,18 @@ Ptr<Expr> Parser::parse_pi_expr(Ptr<Ptrn>&& ptrn) {
         entity = "returning continuation type";
 
     Ptrs<PiExpr::Dom> doms;
-    if (has_first) doms.emplace_back(ptr<PiExpr::Dom>(ptrn->loc(), false, std::move(ptrn)));
+    if (has_first) doms.emplace_back(ptr<PiExpr::Dom>(ptrn->loc(), std::move(ptrn)));
 
     if (!has_first || !ahead().isa(Tag::T_arrow)) {
         while (true) {
-            auto track    = tracker();
-            auto implicit = false;
-            Ptr<Ptrn> ptrn;
-            if (ahead().isa(Tok::Tag::D_brace_l)) {
-                implicit = true;
-                ptrn     = parse_tuple_ptrn();
-            } else {
-                auto prec = tag == Tag::K_Cn ? Prec::Bot : Prec::Pi;
-                ptrn      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
-            }
-
-            doms.emplace_back(ptr<PiExpr::Dom>(track, implicit, std::move(ptrn)));
+            auto track = tracker();
+            auto prec  = tag == Tag::K_Cn ? Prec::Bot : Prec::Pi;
+            auto ptrn  = ahead().isa(Tok::Tag::D_brace_l) ? parse_tuple_ptrn()
+                                                          : parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
+            doms.emplace_back(ptr<PiExpr::Dom>(track, std::move(ptrn)));
 
             switch (ahead().tag()) {
-                case Tag::C_PTRN: continue;
+                case Tag::C_CURRIED_B: continue;
                 default: break;
             }
             break;
@@ -666,20 +670,15 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     auto dbg = decl ? parse_name(entity) : Dbg();
     Ptrs<LamDecl::Dom> doms;
     while (true) {
-        auto track    = tracker();
-        bool implicit = false;
-        Ptr<Ptrn> ptrn;
-        if (ahead().isa(Tok::Tag::D_brace_l)) {
-            implicit = true;
-            ptrn     = parse_tuple_ptrn();
-        } else {
-            ptrn = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
-        }
+        auto track  = tracker();
+        auto ptrn   = ahead().isa(Tok::Tag::D_brace_l)
+                        ? parse_tuple_ptrn()
+                        : parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
         auto filter = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
+        doms.emplace_back(ptr<LamDecl::Dom>(track, std::move(ptrn), std::move(filter)));
 
-        doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
         switch (ahead().tag()) {
-            case Tag::C_PTRN: continue;
+            case Tag::C_CURRIED_P: continue;
             default: break;
         }
         break;
