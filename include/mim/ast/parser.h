@@ -95,11 +95,10 @@ private:
     ///@}
 
     enum PtrnStyle {
-        Style_Bit     = 0b001,
-        Brckt_Style   = 0b001,
-        Paren_Style   = 0b000,
-        Implicit      = 0b010,
-        Annex_Allowed = 0b100,
+        Style_Bit   = 0b001,
+        Brckt_Style = 0b001,
+        Paren_Style = 0b000,
+        Implicit    = 0b010,
     };
 
     /// @name parse ptrns

@@ -442,16 +442,6 @@ Ptr<Ptrn> Parser::parse_ptrn(int style, std::string_view ctxt, Expr::Prec prec) 
 Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec) {
     auto track = tracker();
 
-    // p -> anx
-    // p -> anx: e
-    if (style & Annex_Allowed) {
-        assert((style & Style_Bit) == Paren_Style);
-        if (auto anx = accept(Tok::Tag::M_anx)) {
-            auto type = parse_type_ascr();
-            return ptr<IdPtrn>(track, anx.dbg(), std::move(type));
-        }
-    }
-
     // p -> (p, ..., p)
     // p -> {b, ..., b}     b -> {b, ..., b}
     // p -> [b, ..., b]     b -> [b, ..., b]
@@ -614,7 +604,15 @@ Ptr<ValDecl> Parser::parse_axiom_decl() {
 Ptr<ValDecl> Parser::parse_let_decl() {
     auto track = tracker();
     eat(Tag::K_let);
-    auto ptrn = parse_ptrn(Paren_Style | Annex_Allowed, "binding pattern of a let declaration", Expr::Prec::Bot);
+
+    Ptr<Ptrn> ptrn;
+    if (auto anx = accept(Tok::Tag::M_anx)) {
+        auto type = parse_type_ascr();
+        ptrn      = ptr<IdPtrn>(track, anx.dbg(), std::move(type));
+    } else {
+        ptrn = parse_ptrn(Paren_Style, "binding pattern of a let declaration", Expr::Prec::Bot);
+    }
+
     expect(Tag::T_assign, "let");
     auto type  = parse_type_ascr();
     auto value = parse_expr("value of a let declaration");
