@@ -10,12 +10,13 @@ class Lit;
 namespace ast {
 
 // clang-format off
-#define MIM_KEY(m)                  \
+#define MIM_KEY(m)                    \
     m(K_module, "module")             \
     m(K_import, "import")             \
     m(K_plugin, "plugin")             \
     m(K_and,    "and"   )             \
-    m(K_ax,     "axm"    )             \
+    m(K_as,     "as"    )             \
+    m(K_axm,    "axm"   )             \
     m(K_let,    "let"   )             \
     m(K_rec,    "rec"   )             \
     m(K_ret,    "ret"   )             \
@@ -85,7 +86,6 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(T_top,        "⊤")               \
     m(T_box,        "□")               \
     m(T_colon,      ":")               \
-    m(T_colon_colon,"::")              \
     m(T_comma,      ",")               \
     m(T_dollar,     "$")               \
     m(T_dot,        ".")               \
@@ -99,22 +99,6 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m("bot",    T_bot  )              \
     m("top",    T_top  )              \
     m("insert", K_ins  )              \
-
-/// @name Precedence
-///@{
-enum class Prec {
-    Err,
-    Bot,
-    Where,
-    Arrow,
-    Pi,
-    App,
-    Extract,
-    Lit,
-};
-
-inline constexpr bool is_rassoc(Prec p) { return p == Prec::Arrow; }
-///@}
 
 class Tok {
 public:

@@ -21,9 +21,9 @@ con extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I32, 0), 0), 
             let mem = %mem.store (mem, lea, a);
             continue (mem, a, b);
 
-        con for_exit [mem: %mem.M, I32, I32]::acc =
+        con for_exit [mem: %mem.M, I32, I32] =
             let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u arr_size (%core.wrap.sub 0 (argc, 4I32)));
-            let (mem, val)::ld = %mem.load (mem, lea);
+            let ld  = %mem.load (mem, lea);
             return ld;
     end;
 

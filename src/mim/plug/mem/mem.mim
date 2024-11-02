@@ -17,7 +17,7 @@ axm %mem.M: *;
 ///
 /// ### %%mem.Ptr
 ///
-/// Pointer type with *pointee* type `T` and *address space* `as`.
+/// Pointer type with *pointee* type `T` and *address space* `a`.
 /// At the moment, the *address space* is not really used and a placeholder for future work.
 axm %mem.Ptr: [*, Nat] → *;
 
@@ -30,13 +30,13 @@ lam %mem.Ptr0(T: *): * = %mem.Ptr (T, 0);
 ///
 /// ### %%mem.load
 ///
-/// Loads from a pointer of type `%%mem.Ptr (T, as)` the pointed value of type `T`.
-axm %mem.load: {T: *, Nat}::Tas [%mem.M, %mem.Ptr Tas] → [%mem.M, T], normalize_load;
+/// Loads from a pointer of type `%%mem.Ptr (T, a)` the pointed value of type `T`.
+axm %mem.load: {T: *, Nat} as Ta [%mem.M, %mem.Ptr Ta] → [%mem.M, T], normalize_load;
 ///
 /// ### %%mem.store
 ///
-/// Stores a value of type `T` to the location pointed to by a pointer of type `%%mem.Ptr (T, as)`,
-axm %mem.store: {T: *, Nat}::Tas [%mem.M, %mem.Ptr Tas, T] → %mem.M, normalize_store;
+/// Stores a value of type `T` to the location pointed to by a pointer of type `%%mem.Ptr (T, a)`,
+axm %mem.store: {T: *, Nat} as Ta [%mem.M, %mem.Ptr Ta, T] → %mem.M, normalize_store;
 ///
 /// ### %%mem.remem
 ///
@@ -45,32 +45,32 @@ axm %mem.remem: %mem.M → %mem.M, normalize_remem;
 ///
 /// ### %%mem.alloc
 ///
-/// Allocates memory of type `T` in address space `as`.
-axm %mem.alloc: [*, Nat]::Tas [%mem.M] → [%mem.M, %mem.Ptr Tas];
+/// Allocates memory of type `T` in address space `a`.
+axm %mem.alloc: [*, Nat] as Ta [%mem.M] → [%mem.M, %mem.Ptr Ta];
 ///
 /// ### %%mem.slot
 ///
-/// Reserves a memory slot for type `T` in address space `as`.
+/// Reserves a memory slot for type `T` in address space `a`.
 /// `id` has to be provided a unique id.
-axm %mem.slot: [*, Nat]::Tas [%mem.M, id: Nat] → [%mem.M, %mem.Ptr Tas];
+axm %mem.slot: [*, Nat] as Ta [%mem.M, id: Nat] → [%mem.M, %mem.Ptr Ta];
 ///
 /// ### %%mem.malloc
 ///
-/// Allocates memory of type `T` in address space `as`.
+/// Allocates memory of type `T` in address space `a`.
 /// The difference to `%%mem.alloc` is that the `size` is automatically inferred.
-axm %mem.malloc: [*, Nat]::Tas [%mem.M, Nat] → [%mem.M, %mem.Ptr Tas];
+axm %mem.malloc: [*, Nat] as Ta [%mem.M, Nat] → [%mem.M, %mem.Ptr Ta];
 ///
 /// ### %%mem.free
 ///
-/// Frees memory of type `T` in address space `as`.
-axm %mem.free: {*, Nat}::Tas [%mem.M, %mem.Ptr Tas] → %mem.M;
+/// Frees memory of type `T` in address space `a`.
+axm %mem.free: {*, Nat} as Ta [%mem.M, %mem.Ptr Ta] → %mem.M;
 ///
 /// ### %%mem.mslot
 ///
-/// Reserves a memory slot for type `T` in address space `as`.
+/// Reserves a memory slot for type `T` in address space `a`.
 /// The reserved slot will be `size` bytes large.
 /// `id` has to be provided an unique id.
-axm %mem.mslot: [*, Nat]::Tas [%mem.M, size: Nat, id: Nat] → [%mem.M, %mem.Ptr Tas];
+axm %mem.mslot: [*, Nat] as Ta [%mem.M, size: Nat, id: Nat] → [%mem.M, %mem.Ptr Ta];
 ///
 /// ## Operations w/o Side Effects
 ///
@@ -78,7 +78,7 @@ axm %mem.mslot: [*, Nat]::Tas [%mem.M, size: Nat, id: Nat] → [%mem.M, %mem.Ptr
 ///
 /// Load effective address.
 /// Performs address computation by offsetting the passed pointer with index `i`.
-axm %mem.lea: [n: Nat, Ts: «n; *», as: Nat][%mem.Ptr («j: n; Ts#j», as), i: Idx n] → %mem.Ptr (Ts#i, as), normalize_lea;
+axm %mem.lea: [n: Nat, Ts: «n; *», a: Nat][%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;
 ///
 /// ### %%mem.create/destroy
 ///

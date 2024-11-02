@@ -133,6 +133,22 @@ protected:
         : Node(loc) {}
 
 public:
+    /// @name Precedence
+    ///@{
+    enum class Prec {
+        Err,
+        Bot,
+        Where,
+        Arrow,
+        Pi,
+        App,
+        Extract,
+        Lit,
+    };
+
+    static constexpr bool is_rassoc(Prec p) { return p == Prec::Arrow; }
+    ///@}
+
     Ref emit(Emitter&) const;
     virtual void bind(Scopes&) const = 0;
     virtual Ref emit_decl(Emitter&, Ref /*type*/) const { fe::unreachable(); }
@@ -170,32 +186,26 @@ public:
 
 class Ptrn : public Decl {
 public:
-    Ptrn(Loc loc, Dbg dbg)
-        : Decl(loc)
-        , dbg_(dbg) {}
+    Ptrn(Loc loc)
+        : Decl(loc) {}
 
-    Dbg dbg() const { return dbg_; }
     virtual bool implicit() const { return false; }
 
     virtual void bind(Scopes&, bool rebind, bool quiet) const = 0;
-    Ref emit_value(Emitter&, Ref) const;
-    virtual Ref emit_type(Emitter&) const = 0;
+    virtual Ref emit_value(Emitter&, Ref) const               = 0;
+    virtual Ref emit_type(Emitter&) const                     = 0;
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
-
-private:
-    virtual void emit_value_(Emitter&, Ref) const {}
-
-    Dbg dbg_;
 };
 
 class ErrorPtrn : public Ptrn {
 public:
     ErrorPtrn(Loc loc)
-        : Ptrn(loc, Dbg()) {}
+        : Ptrn(loc) {}
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
+    Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 };
@@ -204,9 +214,11 @@ public:
 class IdPtrn : public Ptrn {
 public:
     IdPtrn(Loc loc, Dbg dbg, Ptr<Expr>&& type)
-        : Ptrn(loc, dbg)
+        : Ptrn(loc)
+        , dbg_(dbg)
         , type_(std::move(type)) {}
 
+    Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
 
     static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
@@ -219,10 +231,12 @@ public:
     }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
+    Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Dbg dbg_;
     Ptr<Expr> type_;
 };
 
@@ -230,24 +244,50 @@ private:
 class GrpPtrn : public Ptrn {
 public:
     GrpPtrn(Dbg dbg, const IdPtrn* id)
-        : Ptrn(dbg.loc(), dbg)
+        : Ptrn(dbg.loc())
+        , dbg_(dbg)
         , id_(id) {}
 
+    Dbg dbg() const { return dbg_; }
     const IdPtrn* id() const { return id_; }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
+    Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Dbg dbg_;
     const IdPtrn* id_;
 };
 
-/// `dbg::(ptrn_0, ..., ptrn_n-1)` or `dbg::[ptrn_0, ..., ptrn_n-1]`
+/// `ptrn as id`
+class AliasPtrn : public Ptrn {
+public:
+    AliasPtrn(Loc loc, Ptr<Ptrn>&& ptrn, Dbg dbg)
+        : Ptrn(loc)
+        , ptrn_(std::move(ptrn))
+        , dbg_(dbg) {}
+
+    const Ptrn* ptrn() const { return ptrn_.get(); }
+    Dbg dbg() const { return dbg_; }
+    bool implicit() const override { return ptrn()->implicit(); }
+
+    void bind(Scopes&, bool rebind, bool quiet) const override;
+    Ref emit_value(Emitter&, Ref) const override;
+    Ref emit_type(Emitter&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Ptr<Ptrn> ptrn_;
+    Dbg dbg_;
+};
+
+/// `(ptrn_0, ..., ptrn_n-1)`, `[ptrn_0, ..., ptrn_n-1]`, or `{ptrn_0, ..., ptrn_n-1}`
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Loc loc, Tok::Tag delim_l, Ptrs<Ptrn>&& ptrns, Dbg dbg)
-        : Ptrn(loc, dbg)
+    TuplePtrn(Loc loc, Tok::Tag delim_l, Ptrs<Ptrn>&& ptrns)
+        : Ptrn(loc)
         , delim_l_(delim_l)
         , ptrns_(std::move(ptrns)) {}
 
@@ -262,14 +302,13 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
+    Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     Ref emit_decl(Emitter&, Ref type) const;
     Ref emit_body(Emitter&, Ref decl) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    void emit_value_(Emitter&, Ref) const override;
-
     Tok::Tag delim_l_;
     Ptrs<Ptrn> ptrns_;
 };

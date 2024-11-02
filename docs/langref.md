@@ -220,10 +220,12 @@ Tuple patterns allow for _groups_:
 - `(a b c: Nat, d e: Bool)` means `(a: Nat, b: Nat, c: Nat, d: Bool, e: Bool)`.
 - `[a b c: Nat, d e: Bool]` means `[a: Nat, b: Nat, c: Nat, d: Bool, e: Bool]`.
 
-You can introduce an optional name for the whole tuple pattern:
+#### Alias Pattern
+
+You can wrap a pattern into an *alias pattern*:
 
 ```rust
-let abc::(a, b, c) = (1, 2, 3);
+let (a, b, c) as abc = (1, 2, 3);
 ```
 
 This will bind
@@ -236,7 +238,7 @@ This will bind
 Here is another example:
 
 ```rust
-{T: *, as: Nat}::Tas [%mem.M, %mem.Ptr Tas] → [%mem.M, T]
+{T: *, a: Nat} as Ts [%mem.M, %mem.Ptr Ts] → [%mem.M, T]
 ```
 
 #### Rebind

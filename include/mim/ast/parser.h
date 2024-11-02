@@ -74,9 +74,9 @@ private:
 
     /// @name parse exprs
     ///@{
-    Ptr<Expr> parse_expr(std::string_view ctxt, Prec = Prec::Bot);
+    Ptr<Expr> parse_expr(std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
     Ptr<Expr> parse_primary_expr(std::string_view ctxt);
-    Ptr<Expr> parse_infix_expr(Tracker, Ptr<Expr>&& lhs, Prec = Prec::Bot);
+    Ptr<Expr> parse_infix_expr(Tracker, Ptr<Expr>&& lhs, Expr::Prec = Expr::Prec::Bot);
     ///@}
 
     /// @name parse primary exprs
@@ -94,11 +94,20 @@ private:
     Ptr<Expr> parse_insert_expr();
     ///@}
 
+    enum PtrnStyle {
+        Style_Bit     = 0b001,
+        Brckt_Style   = 0b001,
+        Paren_Style   = 0b000,
+        Implicit      = 0b010,
+        Annex_Allowed = 0b100,
+    };
+
     /// @name parse ptrns
     ///@{
-    /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
-    Ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Prec = Prec::Bot, bool allow_annex = false);
-    Ptr<TuplePtrn> parse_tuple_ptrn();
+    /// Depending on @p style, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
+    Ptr<Ptrn> parse_ptrn(int style, std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
+    Ptr<Ptrn> parse_ptrn_(int style, std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
+    Ptr<TuplePtrn> parse_tuple_ptrn(int style);
     ///@}
 
     /// @name parse decls

@@ -50,15 +50,22 @@ void Import::emit(Emitter& e) const { module()->emit(e); }
  * Ptrn::emit_value
  */
 
-Ref Ptrn::emit_value(Emitter& e, Ref def) const {
-    auto _ = e.world().push(loc());
+Ref ErrorPtrn::emit_value(Emitter&, Ref def) const { return def; }
+
+Ref IdPtrn::emit_value(Emitter& e, Ref def) const {
     emit_type(e);
-    emit_value_(e, def);
     return def_ = def->set(dbg());
 }
 
-void TuplePtrn::emit_value_(Emitter& e, Ref def) const {
+Ref GrpPtrn::emit_value(Emitter&, Ref def) const { return def_ = def->set(dbg()); }
+
+Ref AliasPtrn::emit_value(Emitter& e, Ref def) const { return def_ = ptrn()->emit_value(e, def)->set(dbg()); }
+
+Ref TuplePtrn::emit_value(Emitter& e, Ref def) const {
+    auto _ = e.world().push(loc());
+    emit_type(e);
     for (size_t i = 0, n = num_ptrns(); i != n; ++i) ptrn(i)->emit_value(e, def->proj(n, i));
+    return def_ = def;
 }
 
 /*
@@ -72,6 +79,8 @@ Ref IdPtrn::emit_type(Emitter& e) const {
     return type() ? type()->emit(e) : e.world().mut_infer_type();
 }
 
+Ref AliasPtrn::emit_type(Emitter& e) const { return ptrn()->emit_type(e); }
+
 Ref GrpPtrn::emit_type(Emitter& e) const { return id()->emit_type(e); }
 
 Ref TuplePtrn::emit_type(Emitter& e) const { return emit_body(e, {}); }
@@ -84,15 +93,15 @@ Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
         sigma = decl->as_mut<Sigma>();
     } else {
         auto type = e.world().type_infer_univ();
-        sigma     = e.world().mut_sigma(type, n)->set(dbg().sym());
+        sigma     = e.world().mut_sigma(type, n);
     }
-    auto var      = sigma->var()->set(dbg());
+    auto var      = sigma->var();
     auto& sym2idx = e.sigma2sym2idx[sigma];
 
     for (size_t i = 0; i != n; ++i) {
         sigma->set(i, ptrn(i)->emit_type(e));
         ptrn(i)->emit_value(e, var->proj(n, i));
-        sym2idx[ptrn(i)->dbg().sym()] = i;
+        if (auto id = ptrn(i)->isa<IdPtrn>()) sym2idx[id->dbg().sym()] = i;
     }
 
     if (auto imm = sigma->immutabilize()) return imm;
@@ -102,7 +111,7 @@ Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
 Ref TuplePtrn::emit_decl(Emitter& e, Ref type) const {
     auto _ = e.world().push(loc());
     type   = type ? type : e.world().type_infer_univ();
-    return e.world().mut_sigma(type, num_ptrns())->set(dbg().sym());
+    return e.world().mut_sigma(type, num_ptrns());
 }
 
 /*

@@ -92,18 +92,21 @@ void Import::bind(Scopes& s) const { module()->bind(s); }
  */
 
 void ErrorPtrn::bind(Scopes&, bool, bool) const {}
+void GrpPtrn::bind(Scopes& s, bool rebind, bool quiet) const { s.bind(dbg(), this, rebind, quiet); }
 
 void IdPtrn::bind(Scopes& s, bool rebind, bool quiet) const {
     if (!quiet && type()) type()->bind(s);
     s.bind(dbg(), this, rebind, quiet);
 }
 
-void TuplePtrn::bind(Scopes& s, bool rebind, bool quiet) const {
-    for (const auto& ptrn : ptrns()) ptrn->bind(s, rebind, quiet);
+void AliasPtrn::bind(Scopes& s, bool rebind, bool quiet) const {
+    ptrn()->bind(s, rebind, quiet);
     s.bind(dbg(), this, rebind, quiet);
 }
 
-void GrpPtrn::bind(Scopes& s, bool rebind, bool quiet) const { s.bind(dbg(), this, rebind, quiet); }
+void TuplePtrn::bind(Scopes& s, bool rebind, bool quiet) const {
+    for (const auto& ptrn : ptrns()) ptrn->bind(s, rebind, quiet);
+}
 
 /*
  * Expr

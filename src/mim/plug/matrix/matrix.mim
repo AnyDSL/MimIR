@@ -36,12 +36,12 @@ axm %matrix.Mat: [n: Nat, S: «n; Nat», T: *] → *;
 /// #### Normalization
 /// * resolve shape calls at construction by replacing them with the size argument
 ///
-axm %matrix.shape: [n: Nat, S: «n; Nat», T: *]::nST [%matrix.Mat nST, i: Idx n] → Nat, normalize_shape;
+axm %matrix.shape: [n: Nat, S: «n; Nat», T: *] as nST [%matrix.Mat nST, i: Idx n] → Nat, normalize_shape;
 ///
 /// ### %%matrix.const
 ///
 /// a constant matrix
-axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, T] → [%mem.M, %matrix.Mat nST];
+axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST [%mem.M, T] → [%mem.M, %matrix.Mat nST];
 ///
 /// ### %%matrix.read
 ///
@@ -54,7 +54,7 @@ axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, T] → [%mem.M
 /// * read(insert)
 /// * read(const)
 ///
-axm %matrix.read: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M, T], normalize_read;
+axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M, T], normalize_read;
 ///
 /// ### %%matrix.insert
 ///
@@ -67,7 +67,7 @@ axm %matrix.read: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, %matrix.Mat nST, i
 /// * with other inserts
 /// * with initialization
 ///
-axm %matrix.insert: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M, %matrix.Mat nST], normalize_insert;
+axm %matrix.insert: [n: Nat, S: «n; Nat», T: *] as nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M, %matrix.Mat nST], normalize_insert;
 ///
 /// ### %%matrix.init
 ///

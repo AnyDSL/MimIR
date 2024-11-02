@@ -77,10 +77,7 @@ Tok Lexer::lex() {
         if (accept( ';')) return tok(Tag::T_semicolon);
         if (accept(U'★')) return tok(Tag::T_star);
         if (accept( '*')) return tok(Tag::T_star);
-        if (accept( ':')) {
-            if (accept( ':')) return tok(Tag::T_colon_colon);
-            return tok(Tag::T_colon);
-        }
+        if (accept( ':')) return tok(Tag::T_colon);
         // clang-format on
 
         if (accept('%')) {
