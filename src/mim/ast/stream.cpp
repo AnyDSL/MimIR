@@ -51,6 +51,8 @@ std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
  */
 
 std::ostream& ErrorPtrn::stream(Tab&, std::ostream& os) const { return os << "<error pattern>"; }
+std::ostream& AliasPtrn::stream(Tab& tab, std::ostream& os) const { return print(os, "{}: {}", S(tab, ptrn()), dbg()); }
+std::ostream& GrpPtrn::stream(Tab&, std::ostream& os) const { return os << dbg(); }
 
 std::ostream& IdPtrn::stream(Tab& tab, std::ostream& os) const {
     // clang-format off
@@ -61,12 +63,8 @@ std::ostream& IdPtrn::stream(Tab& tab, std::ostream& os) const {
     return os << "<invalid identifier pattern>";
 }
 
-std::ostream& GrpPtrn::stream(Tab&, std::ostream& os) const { return os << dbg(); }
-
 std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{}{, }{}", delim_l(), R(tab, ptrns()), delim_r());
-    if (dbg()) print(os, "::{}", dbg());
-    return os;
+    return print(os, "{}{, }{}", delim_l(), R(tab, ptrns()), delim_r());
 }
 
 /*
@@ -112,7 +110,7 @@ std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{}{}", is_implicit() ? "." : "", S(tab, ptrn()));
+    print(os, "{}{}", implicit() ? "." : "", S(tab, ptrn()));
     if (ret()) print(os, " -> {}", S(tab, ret()->type()));
     return os;
 }
@@ -187,7 +185,7 @@ std::ostream& RecDecl::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& LamDecl::Dom::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{}{}", is_implicit() ? "." : "", S(tab, ptrn()));
+    print(os, "{}{}", implicit() ? "." : "", S(tab, ptrn()));
     if (filter()) print(os, "@({})", S(tab, filter()));
     if (ret()) print(os, ": {}", S(tab, ret()->type()));
     return os;

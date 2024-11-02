@@ -24,11 +24,11 @@ con print_double_matrix_wrap [mem: %mem.M, k: Nat, l: Nat, m: %matrix.Mat (2, (k
 
 con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M, I32]] =
     con return_cont [mem:%mem.M] = return (mem, 0I32);
-    let c = 3.0:%math.F64;
-    let d = 5.0:%math.F64;
-    let (`mem,m1) = %matrix.constMat MT1 (mem,c);
-    let (`mem,m2) = %matrix.constMat MT2 (mem,d);
-    let (`mem, mP) = %matrix.prod (2,4,3, %math.f64) (mem, m1, m2);
+    let c         = 3.0:%math.F64;
+    let d         = 5.0:%math.F64;
+    let (mem,m1)  = %matrix.constMat MT1 (mem,c);
+    let (mem,m2)  = %matrix.constMat MT2 (mem,d);
+    let (mem, mP) = %matrix.prod (2,4,3, %math.f64) (mem, m1, m2);
     print_double_matrix_wrap (mem, 2, 3, mP, return_cont);
 
 // CHECK: 60.00, 60.00, 60.00,

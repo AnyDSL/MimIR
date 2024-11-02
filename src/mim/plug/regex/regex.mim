@@ -31,13 +31,13 @@ let RE = {n: Nat} [%mem.M, Str n, Idx n] → Res n;
 /// A sequence of RE's, e.g. `\d\d\d` matching 3 digits:
 /// `%%regex.conj (%%regex.cls.d, %%regex.cls.d, %%regex.cls.d)`
 ///
-axm %regex.conj: [n: Nat] [«n; RE»] → RE, normalize_conj, 2;
+axm %regex.conj: [n: Nat] «n; RE» → RE, normalize_conj, 2;
 ///
 /// ### %%regex.disj
 ///
 /// Match any of the sub expressions: `[0123456789]`
 ///
-axm %regex.disj: [n: Nat] [«n; RE»] → RE, normalize_disj, 2;
+axm %regex.disj: [n: Nat] «n; RE» → RE, normalize_disj, 2;
 ///
 /// ## Values
 ///

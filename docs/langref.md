@@ -220,10 +220,12 @@ Tuple patterns allow for _groups_:
 - `(a b c: Nat, d e: Bool)` means `(a: Nat, b: Nat, c: Nat, d: Bool, e: Bool)`.
 - `[a b c: Nat, d e: Bool]` means `[a: Nat, b: Nat, c: Nat, d: Bool, e: Bool]`.
 
-You can introduce an optional name for the whole tuple pattern:
+#### Alias Pattern
+
+You can wrap a pattern into an *alias pattern*:
 
 ```rust
-let abc::(a, b, c) = (1, 2, 3);
+let (a, b, c) as abc = (1, 2, 3);
 ```
 
 This will bind
@@ -236,18 +238,18 @@ This will bind
 Here is another example:
 
 ```rust
-{T: *, as: Nat}::Tas [%mem.M, %mem.Ptr Tas] → [%mem.M, T]
+{T: *, a: Nat} as Ts [%mem.M, %mem.Ptr Ts] → [%mem.M, T]
 ```
 
 #### Rebind
 
-Finally, you can put a <tt>\`</tt> in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
+A `let` and `ret` expression allows you to rebind the same name to a different value:
 This is particularly useful, when dealing with memory:
 
 ```rust
-let (`mem, ptr) = %mem.alloc (I32, 0) mem;
-let `mem        = %mem.store (mem, ptr, 23:I32);
-let (`mem, val) = %mem.load (mem, ptr);
+let (mem, ptr) = %mem.alloc (I32, 0) mem;
+let mem        = %mem.store (mem, ptr, 23:I32);
+let (mem, val) = %mem.load (mem, ptr);
 ```
 
 ### Expressions {#expr}

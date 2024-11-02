@@ -10,7 +10,7 @@ plugin core;
 let Tas = (I32, 0);
 
 con f(mem: %mem.M, p: %mem.Ptr0 I32, return: Cn [%mem.M, I32]) =
-    let (`mem, v) = %mem.load (mem, p);
+    let (mem, v) = %mem.load (mem, p);
     g1 (mem, cont1)
     where
         con g1 [mem: %mem.M, return: Cn [%mem.M, I32]] =
@@ -29,8 +29,8 @@ con f(mem: %mem.M, p: %mem.Ptr0 I32, return: Cn [%mem.M, I32]) =
     end;
 
 con extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8), return: Cn [%mem.M, I32]] =
-    let (`mem, p) = %mem.alloc Tas mem;
-    let `mem      = %mem.store (mem, p, argc);
+    let (mem, p) = %mem.alloc Tas mem;
+    let mem      = %mem.store (mem, p, argc);
     f (mem, p, return);
 
 // TODO: check for 1+x, 2+x, a+b

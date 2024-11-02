@@ -91,19 +91,22 @@ void Import::bind(Scopes& s) const { module()->bind(s); }
  * Ptrn
  */
 
-void ErrorPtrn::bind(Scopes&, bool) const {}
+void ErrorPtrn::bind(Scopes&, bool, bool) const {}
+void GrpPtrn::bind(Scopes& s, bool rebind, bool quiet) const { s.bind(dbg(), this, rebind, quiet); }
 
-void IdPtrn::bind(Scopes& s, bool quiet) const {
+void IdPtrn::bind(Scopes& s, bool rebind, bool quiet) const {
     if (!quiet && type()) type()->bind(s);
-    s.bind(dbg(), this, rebind(), quiet);
+    s.bind(dbg(), this, rebind, quiet);
 }
 
-void TuplePtrn::bind(Scopes& s, bool quiet) const {
-    for (const auto& ptrn : ptrns()) ptrn->bind(s, quiet);
-    s.bind(dbg(), this, rebind(), quiet);
+void AliasPtrn::bind(Scopes& s, bool rebind, bool quiet) const {
+    ptrn()->bind(s, rebind, quiet);
+    s.bind(dbg(), this, rebind, quiet);
 }
 
-void GrpPtrn::bind(Scopes& s, bool quiet) const { s.bind(dbg(), this, rebind(), quiet); }
+void TuplePtrn::bind(Scopes& s, bool rebind, bool quiet) const {
+    for (const auto& ptrn : ptrns()) ptrn->bind(s, rebind, quiet);
+}
 
 /*
  * Expr
@@ -141,8 +144,8 @@ void ArrowExpr::bind(Scopes& s) const {
 }
 
 void PiExpr::Dom::bind(Scopes& s, bool quiet) const {
-    ptrn()->bind(s, quiet);
-    if (ret()) ret()->bind(s, quiet);
+    ptrn()->bind(s, false, quiet);
+    if (ret()) ret()->bind(s, false, quiet);
 }
 
 void PiExpr::bind(Scopes& s) const {
@@ -168,13 +171,13 @@ void AppExpr::bind(Scopes& s) const {
 void RetExpr::bind(Scopes& s) const {
     callee()->bind(s);
     arg()->bind(s);
-    ptrn()->bind(s);
+    ptrn()->bind(s, true, false);
     body()->bind(s);
 }
 
 void SigmaExpr::bind(Scopes& s) const {
     s.push();
-    ptrn()->bind(s);
+    ptrn()->bind(s, false, false);
     s.pop();
 }
 
@@ -184,7 +187,7 @@ void TupleExpr::bind(Scopes& s) const {
 
 template<bool arr> void ArrOrPackExpr<arr>::bind(Scopes& s) const {
     s.push();
-    shape()->bind(s);
+    shape()->bind(s, false, false);
     body()->bind(s);
     s.pop();
 }
@@ -253,7 +256,7 @@ void LetDecl::bind(Scopes& s) const {
     s.push();
     value()->bind(s);
     s.pop();
-    ptrn()->bind(s);
+    ptrn()->bind(s, true, false);
 
     if (auto id = ptrn()->isa<IdPtrn>()) annex_ = s.ast().name2annex(id->dbg(), &sub_);
 }
@@ -321,7 +324,7 @@ void LamDecl::bind_body(Scopes& s) const {
 
 void CDecl::bind(Scopes& s) const {
     s.push();
-    dom()->bind(s);
+    dom()->bind(s, false, false);
     s.pop(); // we don't allow codom to depent on dom
     if (codom()) codom()->bind(s);
     s.bind(dbg(), this);
