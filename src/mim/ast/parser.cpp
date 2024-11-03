@@ -346,7 +346,7 @@ Ptr<Expr> Parser::parse_lit_expr() {
 
 Ptr<Expr> Parser::parse_sigma_expr() {
     auto track = tracker();
-    auto ptrn  = parse_tuple_ptrn(Brckt_Style);
+    auto ptrn  = parse_tuple_ptrn(PtrnStyle::Brckt);
     switch (ahead().tag()) {
         case Tag::K_as: {
             lex();
@@ -391,7 +391,7 @@ Ptr<Expr> Parser::parse_pi_expr(Ptr<Ptrn>&& ptrn) {
         while (true) {
             auto track = tracker();
             auto prec  = tag == Tag::K_Cn ? Expr::Prec::Bot : Expr::Prec::Pi;
-            auto ptrn  = parse_ptrn(Brckt_Style | Implicit, "domain of a "s + entity, prec);
+            auto ptrn  = parse_ptrn(PtrnStyle::Brckt, "domain of a "s + entity, true, prec);
             doms.emplace_back(ptr<PiExpr::Dom>(track, std::move(ptrn)));
 
             switch (ahead().tag()) {
@@ -418,7 +418,7 @@ Ptr<Expr> Parser::parse_lam_expr() { return ptr<LamExpr>(parse_lam_decl()); }
 Ptr<Expr> Parser::parse_ret_expr() {
     auto track = tracker();
     eat(Tag::K_ret);
-    auto ptrn = parse_ptrn(Paren_Style, "binding pattern of a ret expression");
+    auto ptrn = parse_ptrn(PtrnStyle::Paren, "binding pattern of a ret expression");
     expect(Tag::T_assign, "ret expression");
     auto callee = parse_expr("continuation expression of a ret expression");
     expect(Tag::T_dollar, "separator of a ret expression");
@@ -432,22 +432,22 @@ Ptr<Expr> Parser::parse_ret_expr() {
  * ptrns
  */
 
-Ptr<Ptrn> Parser::parse_ptrn(int style, std::string_view ctxt, Expr::Prec prec) {
+Ptr<Ptrn> Parser::parse_ptrn(PtrnStyle style, std::string_view ctxt, bool implicit, Expr::Prec prec) {
     auto track = tracker();
-    auto ptrn  = parse_ptrn_(style, ctxt, prec);
+    auto ptrn  = parse_ptrn_(style, ctxt, implicit, prec);
     if (accept(Tag::K_as)) return ptr<AliasPtrn>(track, std::move(ptrn), parse_name("alias pattern"));
     return ptrn;
 }
 
-Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec) {
+Ptr<Ptrn> Parser::parse_ptrn_(PtrnStyle style, std::string_view ctxt, bool implicit, Expr::Prec prec) {
     auto track = tracker();
 
     // p -> (p, ..., p)
+    if (style == PtrnStyle::Paren && ahead().isa(Tag::D_paren_l)) return parse_tuple_ptrn(style);
     // p -> {b, ..., b}     b -> {b, ..., b}
+    if (implicit && ahead().isa(Tag::D_brace_l)) return parse_tuple_ptrn(style);
     // p -> [b, ..., b]     b -> [b, ..., b]
-    if ((style & Style_Bit) == Paren_Style && ahead().isa(Tag::D_paren_l)) return parse_tuple_ptrn(style);
-    if (style & Implicit && ahead().isa(Tag::D_brace_l)) return parse_tuple_ptrn(style);
-    if (ahead().isa(Tag::D_brckt_l)) return parse_tuple_ptrn(Brckt_Style);
+    if (ahead().isa(Tag::D_brckt_l)) return parse_tuple_ptrn(PtrnStyle::Brckt);
 
     if (ahead(0).isa(Tag::M_id)) {
         if (ahead(1).isa(Tag::T_colon)) {
@@ -456,7 +456,7 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
             return ptr<IdPtrn>(track, dbg, std::move(type));
-        } else if ((style & Style_Bit) == Paren_Style) {
+        } else if (style == PtrnStyle::Paren) {
             // p ->  s
             // p -> `s
             auto dbg = eat(Tag::M_id).dbg();
@@ -466,7 +466,7 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
             auto type = parse_expr(ctxt, prec);
             return ptr<IdPtrn>(track, type->loc().anew_begin(), std::move(type));
         }
-    } else if ((style & Style_Bit) == Brckt_Style) {
+    } else if (style == PtrnStyle::Brckt) {
         // b -> e   where e != id
         auto type = parse_expr(ctxt, prec);
         auto loc  = type->loc().anew_begin();
@@ -480,7 +480,7 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
     return nullptr;
 }
 
-Ptr<TuplePtrn> Parser::parse_tuple_ptrn(int style) {
+Ptr<TuplePtrn> Parser::parse_tuple_ptrn(PtrnStyle style) {
     auto track   = tracker();
     auto delim_l = ahead().tag();
 
@@ -513,9 +513,9 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(int style) {
             auto expr = parse_infix_expr(track, std::move(lhs), Expr::Prec::App);
             ptrn      = IdPtrn::mk_type(ast(), std::move(expr));
         } else {
-            ptrn = parse_ptrn(style & Style_Bit, "element of a tuple pattern");
+            ptrn = parse_ptrn(style, "element of a tuple pattern");
 
-            if ((style & Style_Bit) == Brckt_Style) {
+            if (style == PtrnStyle::Brckt) {
                 // [..., [Nat, Nat] -> Nat, ...] ==> [..., _: [Nat, Nat] -> Nat, ...]
                 if (ahead().isa(Tag::T_arrow)) {
                     auto loc  = ptrn->loc();
@@ -610,7 +610,7 @@ Ptr<ValDecl> Parser::parse_let_decl() {
         auto type = parse_type_ascr();
         ptrn      = ptr<IdPtrn>(track, anx.dbg(), std::move(type));
     } else {
-        ptrn = parse_ptrn(Paren_Style, "binding pattern of a let declaration", Expr::Prec::Bot);
+        ptrn = parse_ptrn(PtrnStyle::Paren, "binding pattern of a let declaration");
     }
 
     expect(Tag::T_assign, "let");
@@ -623,7 +623,7 @@ Ptr<ValDecl> Parser::parse_c_decl() {
     auto track = tracker();
     auto tag   = lex().tag();
     auto id    = expect(Tag::M_id, "C function declaration");
-    auto dom   = parse_ptrn(Brckt_Style, "domain of a C function"s, Expr::Prec::App);
+    auto dom   = parse_ptrn(PtrnStyle::Brckt, "domain of a C function"s, false, Expr::Prec::App);
     Ptr<Expr> codom;
     if (tag == Tag::K_cfun) {
         expect(Tag::T_colon, "codomain of a C function");
@@ -667,7 +667,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     Ptrs<LamDecl::Dom> doms;
     while (true) {
         auto track  = tracker();
-        auto ptrn   = parse_ptrn(Paren_Style | Implicit, "domain pattern of a "s + entity, prec);
+        auto ptrn   = parse_ptrn(PtrnStyle::Paren, "domain pattern of a "s + entity, true, prec);
         auto filter = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
         doms.emplace_back(ptr<LamDecl::Dom>(track, std::move(ptrn), std::move(filter)));
 

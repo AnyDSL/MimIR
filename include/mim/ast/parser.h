@@ -94,19 +94,14 @@ private:
     Ptr<Expr> parse_insert_expr();
     ///@}
 
-    enum PtrnStyle {
-        Style_Bit   = 0b001,
-        Brckt_Style = 0b001,
-        Paren_Style = 0b000,
-        Implicit    = 0b010,
-    };
+    enum class PtrnStyle : bool { Paren, Brckt };
 
     /// @name parse ptrns
     ///@{
     /// Depending on @p style, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
-    Ptr<Ptrn> parse_ptrn(int style, std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
-    Ptr<Ptrn> parse_ptrn_(int style, std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
-    Ptr<TuplePtrn> parse_tuple_ptrn(int style);
+    Ptr<Ptrn> parse_ptrn(PtrnStyle, std::string_view ctxt, bool implicit = false, Expr::Prec = Expr::Prec::Bot);
+    Ptr<Ptrn> parse_ptrn_(PtrnStyle, std::string_view ctxt, bool implicit = false, Expr::Prec = Expr::Prec::Bot);
+    Ptr<TuplePtrn> parse_tuple_ptrn(PtrnStyle);
     ///@}
 
     /// @name parse decls
