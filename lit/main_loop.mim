@@ -14,8 +14,8 @@ fun extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M
             (exit, body)#cond mem
             where
                 con body m: %mem.M =
-                    let inc  = %core.wrap.add 0 (1I32, i);
-                    let `acc = %core.wrap.add 0 (i, acc);
+                    let inc = %core.wrap.add 0 (1I32, i);
+                    let acc = %core.wrap.add 0 (i, acc);
                     loop (m, inc, acc);
                 con exit(m: %mem.M) = return (m, acc);
             end

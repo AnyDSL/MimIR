@@ -12,8 +12,8 @@ namespace mim::plug::affine {
 /// con %affine.For_impl
 ///     (m: Nat , n: Nat , Ts: «n; *»)
 ///     (begin: Idx m, end: Idx m, step: Idx m, init: «i: n; Ts#i»,
-///             body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn [«i: n; Ts#i»]],
-///             exit: Cn [«i: n; Ts#i»]
+///             body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],
+///             exit: Cn «i: n; Ts#i»
 ///     ) =
 ///     con head(iter: Idx m, acc: «i: n; Ts#i») =
 ///         con new_body() = body (iter, acc, cn acc: «i: n; Ts#i» =

@@ -46,7 +46,7 @@
     case Tag::K_fun
 
 #define C_DECL        \
-              K_ax:   \
+              K_axm:  \
     case Tag::K_let:  \
     case Tag::K_rec:  \
     case Tag::K_ccon: \
@@ -78,10 +78,18 @@
     case Tag::D_paren_l: /*TupleExpr*/  \
     case Tag::D_quote_l  /*ArrExpr*/
 
-#define C_PTRN            \
+#define C_CURRIED_B       \
+              D_brace_l:  \
+    case Tag::D_brckt_l:  \
+    case Tag::D_quote_l
+
+#define C_CURRIED_P       \
+              D_brace_l:  \
+    case Tag::D_brckt_l:  \
+    case Tag::D_paren_l
+
+#define C_PTRN_P          \
               M_id:       \
-    case Tag::T_backtick: \
-    case Tag::D_brace_l:  \
     case Tag::D_brckt_l:  \
     case Tag::D_paren_l
 // clang-format on
@@ -197,43 +205,43 @@ Ptr<Expr> Parser::parse_type_ascr(std::string_view ctxt) {
  * exprs
  */
 
-Ptr<Expr> Parser::parse_expr(std::string_view ctxt, Prec curr_prec) {
+Ptr<Expr> Parser::parse_expr(std::string_view ctxt, Expr::Prec curr_prec) {
     auto track = tracker();
     auto lhs   = parse_primary_expr(ctxt);
     return parse_infix_expr(track, std::move(lhs), curr_prec);
 }
 
-Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_prec) {
+Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec curr_prec) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         switch (ahead().tag()) {
             case Tag::T_extract: {
-                if (curr_prec >= Prec::Extract) return lhs;
+                if (curr_prec >= Expr::Prec::Extract) return lhs;
                 lex();
                 if (auto tok = accept(Tag::M_id))
                     lhs = ptr<ExtractExpr>(track.loc(), std::move(lhs), tok.dbg());
                 else {
-                    auto rhs = parse_expr("right-hand side of an extract", Prec::Extract);
+                    auto rhs = parse_expr("right-hand side of an extract", Expr::Prec::Extract);
                     lhs      = ptr<ExtractExpr>(track.loc(), std::move(lhs), std::move(rhs));
                 }
                 continue;
             }
             case Tag::T_arrow: {
-                if (curr_prec > Prec::Arrow) return lhs; // ">" - Arrow is rassoc
+                if (curr_prec > Expr::Prec::Arrow) return lhs; // ">" - Arrow is rassoc
                 lex();
-                auto rhs = parse_expr("right-hand side of a function type", Prec::Arrow);
+                auto rhs = parse_expr("right-hand side of a function type", Expr::Prec::Arrow);
                 lhs      = ptr<ArrowExpr>(track.loc(), std::move(lhs), std::move(rhs));
                 continue;
             }
             case Tag::T_at: {
-                if (curr_prec >= Prec::App) return lhs;
+                if (curr_prec >= Expr::Prec::App) return lhs;
                 lex();
-                auto rhs = parse_expr("explicit argument to an application", Prec::App);
+                auto rhs = parse_expr("explicit argument to an application", Expr::Prec::App);
                 lhs      = ptr<AppExpr>(track.loc(), true, std::move(lhs), std::move(rhs));
                 continue;
             }
             case Tag::C_EXPR: {
-                if (curr_prec >= Prec::App) return lhs;
+                if (curr_prec >= Expr::Prec::App) return lhs;
                 switch (ahead().tag()) {
                     case Tag::C_DECL:
                         ast().warn(ahead().loc(), "you are passing a declaration expression as argument");
@@ -243,12 +251,12 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_pre
                         ast().note(lhs->loc().anew_finis(), "otherwise, you are probably missing a ';'");
                     default: break;
                 }
-                auto rhs = parse_expr("argument to an application", Prec::App);
+                auto rhs = parse_expr("argument to an application", Expr::Prec::App);
                 lhs      = ptr<AppExpr>(track.loc(), false, std::move(lhs), std::move(rhs));
                 continue;
             }
             case Tag::K_where: {
-                if (curr_prec >= Prec::Where) return lhs;
+                if (curr_prec >= Expr::Prec::Where) return lhs;
                 lex();
                 auto decls = parse_decls();
                 lhs        = ptr<DeclExpr>(track, std::move(decls), std::move(lhs), true);
@@ -332,15 +340,23 @@ Ptr<Expr> Parser::parse_decl_expr() {
 Ptr<Expr> Parser::parse_lit_expr() {
     auto track = tracker();
     auto tok   = lex();
-    auto type  = accept(Tag::T_colon) ? parse_expr("literal", Prec::Lit) : nullptr;
+    auto type  = accept(Tag::T_colon) ? parse_expr("literal", Expr::Prec::Lit) : nullptr;
     return ptr<LitExpr>(track, tok, std::move(type));
 }
 
 Ptr<Expr> Parser::parse_sigma_expr() {
-    auto ptrn = parse_tuple_ptrn();
-    if (ahead().isa(Tag::D_brace_l) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_arrow))
-        return parse_pi_expr(std::move(ptrn));
-    return ptr<SigmaExpr>(std::move(ptrn));
+    auto track = tracker();
+    auto ptrn  = parse_tuple_ptrn(Brckt_Style);
+    switch (ahead().tag()) {
+        case Tag::K_as: {
+            lex();
+            auto alias = ptr<AliasPtrn>(track, std::move(ptrn), parse_name("alias pattern"));
+            return parse_pi_expr(std::move(alias));
+        }
+        case Tag::C_CURRIED_B:
+        case Tag::T_arrow: return parse_pi_expr(std::move(ptrn)); // TODO precedences for patterns
+        default: return ptr<SigmaExpr>(std::move(ptrn));
+    }
 }
 
 Ptr<Expr> Parser::parse_tuple_expr() {
@@ -353,7 +369,7 @@ Ptr<Expr> Parser::parse_tuple_expr() {
 Ptr<Expr> Parser::parse_type_expr() {
     auto track = tracker();
     eat(Tag::K_Type);
-    auto level = parse_expr("type level", Prec::App);
+    auto level = parse_expr("type level", Expr::Prec::App);
     return ptr<TypeExpr>(track, std::move(level));
 }
 
@@ -369,33 +385,26 @@ Ptr<Expr> Parser::parse_pi_expr(Ptr<Ptrn>&& ptrn) {
         entity = "returning continuation type";
 
     Ptrs<PiExpr::Dom> doms;
-    if (has_first) doms.emplace_back(ptr<PiExpr::Dom>(ptrn->loc(), false, std::move(ptrn)));
+    if (has_first) doms.emplace_back(ptr<PiExpr::Dom>(ptrn->loc(), std::move(ptrn)));
 
     if (!has_first || !ahead().isa(Tag::T_arrow)) {
         while (true) {
-            auto track    = tracker();
-            auto implicit = false;
-            Ptr<Ptrn> ptrn;
-            if (ahead().isa(Tok::Tag::D_brace_l)) {
-                implicit = true;
-                ptrn     = parse_tuple_ptrn();
-            } else {
-                auto prec = tag == Tag::K_Cn ? Prec::Bot : Prec::Pi;
-                ptrn      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
-            }
-
-            doms.emplace_back(ptr<PiExpr::Dom>(track, implicit, std::move(ptrn)));
+            auto track = tracker();
+            auto prec  = tag == Tag::K_Cn ? Expr::Prec::Bot : Expr::Prec::Pi;
+            auto ptrn  = parse_ptrn(Brckt_Style | Implicit, "domain of a "s + entity, prec);
+            doms.emplace_back(ptr<PiExpr::Dom>(track, std::move(ptrn)));
 
             switch (ahead().tag()) {
-                case Tag::C_PTRN: continue;
+                case Tag::C_CURRIED_B: continue;
                 default: break;
             }
             break;
         }
     }
 
-    auto codom = tag != Tag::K_Cn ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Prec::Arrow))
-                                  : nullptr;
+    auto codom = tag != Tag::K_Cn
+                   ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Expr::Prec::Arrow))
+                   : nullptr;
 
     if (tag == Tag::K_Fn) doms.back()->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(prev_));
 
@@ -409,7 +418,7 @@ Ptr<Expr> Parser::parse_lam_expr() { return ptr<LamExpr>(parse_lam_decl()); }
 Ptr<Expr> Parser::parse_ret_expr() {
     auto track = tracker();
     eat(Tag::K_ret);
-    auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a ret expression");
+    auto ptrn = parse_ptrn(Paren_Style, "binding pattern of a ret expression");
     expect(Tag::T_assign, "ret expression");
     auto callee = parse_expr("continuation expression of a ret expression");
     expect(Tag::T_dollar, "separator of a ret expression");
@@ -423,32 +432,22 @@ Ptr<Expr> Parser::parse_ret_expr() {
  * ptrns
  */
 
-Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool allow_annex) {
+Ptr<Ptrn> Parser::parse_ptrn(int style, std::string_view ctxt, Expr::Prec prec) {
     auto track = tracker();
-    bool p     = delim_l == Tag::D_paren_l;
-    bool b     = delim_l == Tag::D_brckt_l;
-    assert((p ^ b) && "left delimiter must either be '(' or '['");
+    auto ptrn  = parse_ptrn_(style, ctxt, prec);
+    if (accept(Tag::K_as)) return ptr<AliasPtrn>(track, std::move(ptrn), parse_name("alias pattern"));
+    return ptrn;
+}
 
-    // p -> anx
-    // p -> anx: e
-    if (allow_annex) {
-        assert(p);
-        if (auto anx = accept(Tok::Tag::M_anx)) {
-            auto type = parse_type_ascr();
-            return ptr<IdPtrn>(track, false, anx.dbg(), std::move(type));
-        }
-    }
-
-    // p -> `s: e   b -> `s: e
-    if (accept(Tok::Tag::T_backtick)) {
-        auto dbg  = expect(Tok::Tag::M_id, "identifier pattern").dbg();
-        auto type = accept(Tok::Tag::T_colon) ? parse_expr("identifier pattern", prec) : nullptr;
-        return ptr<IdPtrn>(track, true, dbg, std::move(type));
-    }
+Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec) {
+    auto track = tracker();
 
     // p -> (p, ..., p)
+    // p -> {b, ..., b}     b -> {b, ..., b}
     // p -> [b, ..., b]     b -> [b, ..., b]
-    if ((p && ahead().isa(Tag::D_paren_l)) || ahead().isa(Tag::D_brckt_l)) return parse_tuple_ptrn();
+    if ((style & Style_Bit) == Paren_Style && ahead().isa(Tag::D_paren_l)) return parse_tuple_ptrn(style);
+    if (style & Implicit && ahead().isa(Tag::D_brace_l)) return parse_tuple_ptrn(style);
+    if (ahead().isa(Tag::D_brckt_l)) return parse_tuple_ptrn(Brckt_Style);
 
     if (ahead(0).isa(Tag::M_id)) {
         if (ahead(1).isa(Tag::T_colon)) {
@@ -456,22 +455,22 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
             auto dbg = eat(Tag::M_id).dbg();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return ptr<IdPtrn>(track, false, dbg, std::move(type));
-        } else if (p) {
+            return ptr<IdPtrn>(track, dbg, std::move(type));
+        } else if ((style & Style_Bit) == Paren_Style) {
             // p ->  s
             // p -> `s
             auto dbg = eat(Tag::M_id).dbg();
-            return ptr<IdPtrn>(track, false, dbg, nullptr);
+            return ptr<IdPtrn>(track, dbg, nullptr);
         } else {
             // b -> e   where e == id
             auto type = parse_expr(ctxt, prec);
-            return ptr<IdPtrn>(track, false, type->loc().anew_begin(), std::move(type));
+            return ptr<IdPtrn>(track, type->loc().anew_begin(), std::move(type));
         }
-    } else if (b) {
+    } else if ((style & Style_Bit) == Brckt_Style) {
         // b -> e   where e != id
         auto type = parse_expr(ctxt, prec);
         auto loc  = type->loc().anew_begin();
-        return ptr<IdPtrn>(track, false, Dbg(loc), std::move(type));
+        return ptr<IdPtrn>(track, Dbg(loc), std::move(type));
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -481,7 +480,7 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
     return nullptr;
 }
 
-Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
+Ptr<TuplePtrn> Parser::parse_tuple_ptrn(int style) {
     auto track   = tracker();
     auto delim_l = ahead().tag();
 
@@ -497,7 +496,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
             if (accept(Tag::T_colon)) { // identifier group: x y x: T
                 auto dbg  = dbgs.back();
                 auto type = parse_expr("type of an identifier group within a tuple pattern");
-                auto id   = ptr<IdPtrn>(dbg.loc() + type->loc().finis, false, dbg, std::move(type));
+                auto id   = ptr<IdPtrn>(dbg.loc() + type->loc().finis, dbg, std::move(type));
 
                 for (auto dbg : dbgs | std::views::take(dbgs.size() - 1))
                     ptrns.emplace_back(ptr<GrpPtrn>(dbg, id.get()));
@@ -511,25 +510,24 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
                 auto rhs = ptr<IdExpr>(dbg);
                 lhs      = ptr<AppExpr>(track, false, std::move(lhs), std::move(rhs));
             }
-            auto expr = parse_infix_expr(track, std::move(lhs), Prec::App);
+            auto expr = parse_infix_expr(track, std::move(lhs), Expr::Prec::App);
             ptrn      = IdPtrn::mk_type(ast(), std::move(expr));
         } else {
-            auto dl = delim_l == Tag::D_brace_l ? Tag::D_brckt_l : delim_l; // brace behaves just as bracket
-            ptrn    = parse_ptrn(dl, "element of a tuple pattern");
+            ptrn = parse_ptrn(style & Style_Bit, "element of a tuple pattern");
 
-            if (dl == Tag::D_brckt_l) {
+            if ((style & Style_Bit) == Brckt_Style) {
                 // [..., [Nat, Nat] -> Nat, ...] ==> [..., _: [Nat, Nat] -> Nat, ...]
                 if (ahead().isa(Tag::T_arrow)) {
                     auto loc  = ptrn->loc();
                     auto expr = parse_pi_expr(std::move(ptrn));
-                    ptrn      = ptr<IdPtrn>(loc, false, Dbg(loc.anew_begin(), Sym()), std::move(expr));
+                    ptrn      = ptr<IdPtrn>(loc, Dbg(loc.anew_begin(), Sym()), std::move(expr));
                 } else if (auto expr = Ptrn::to_expr(ast(), std::move(ptrn))) {
                     // If we are able to parse more stuff, we got an expr instead of a binder
                     auto addr = expr.get();
                     expr      = parse_infix_expr(track, std::move(expr));
                     if (expr.get() != addr) {
                         auto loc = expr->loc();
-                        ptrn     = ptr<IdPtrn>(loc, false, Dbg(loc.anew_begin(), Sym()), std::move(expr));
+                        ptrn     = ptr<IdPtrn>(loc, Dbg(loc.anew_begin(), Sym()), std::move(expr));
                     } else {
                         if (!ptrn) ptrn = Ptrn::to_ptrn(std::move(expr));
                     }
@@ -540,13 +538,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
         ptrns.emplace_back(std::move(ptrn));
     });
 
-    Dbg dbg;
-    bool rebind = false;
-    if (accept(Tag::T_colon_colon)) {
-        rebind = (bool)accept(Tag::T_backtick);
-        dbg    = eat(Tag::M_id).dbg();
-    }
-    return ptr<TuplePtrn>(track, delim_l, std::move(ptrns), rebind, dbg);
+    return ptr<TuplePtrn>(track, delim_l, std::move(ptrns));
 }
 
 /*
@@ -559,7 +551,7 @@ Ptrs<ValDecl> Parser::parse_decls() {
         // clang-format off
         switch (ahead().tag()) {
             case Tag::T_semicolon: lex(); break; // eat up stray semicolons
-            case Tag::K_ax:        decls.emplace_back(parse_axiom_decl());        break;
+            case Tag::K_axm:       decls.emplace_back(parse_axiom_decl());        break;
             case Tag::K_ccon:
             case Tag::K_cfun:      decls.emplace_back(parse_c_decl());            break;
             case Tag::K_let:       decls.emplace_back(parse_let_decl());          break;
@@ -575,7 +567,7 @@ Ptrs<ValDecl> Parser::parse_decls() {
 
 Ptr<ValDecl> Parser::parse_axiom_decl() {
     auto track = tracker();
-    eat(Tag::K_ax);
+    eat(Tag::K_axm);
     Dbg dbg, normalizer;
     Tok curry, trip;
     if (auto name = expect(Tag::M_anx, "annex name of an axiom"))
@@ -612,7 +604,15 @@ Ptr<ValDecl> Parser::parse_axiom_decl() {
 Ptr<ValDecl> Parser::parse_let_decl() {
     auto track = tracker();
     eat(Tag::K_let);
-    auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let declaration", Prec::Bot, true);
+
+    Ptr<Ptrn> ptrn;
+    if (auto anx = accept(Tok::Tag::M_anx)) {
+        auto type = parse_type_ascr();
+        ptrn      = ptr<IdPtrn>(track, anx.dbg(), std::move(type));
+    } else {
+        ptrn = parse_ptrn(Paren_Style, "binding pattern of a let declaration", Expr::Prec::Bot);
+    }
+
     expect(Tag::T_assign, "let");
     auto type  = parse_type_ascr();
     auto value = parse_expr("value of a let declaration");
@@ -623,7 +623,7 @@ Ptr<ValDecl> Parser::parse_c_decl() {
     auto track = tracker();
     auto tag   = lex().tag();
     auto id    = expect(Tag::M_id, "C function declaration");
-    auto dom   = parse_ptrn(Tag::D_brckt_l, "domain of a C function"s, Prec::App);
+    auto dom   = parse_ptrn(Brckt_Style, "domain of a C function"s, Expr::Prec::App);
     Ptr<Expr> codom;
     if (tag == Tag::K_cfun) {
         expect(Tag::T_colon, "codomain of a C function");
@@ -646,7 +646,7 @@ Ptr<RecDecl> Parser::parse_rec_decl(bool first) {
 Ptr<LamDecl> Parser::parse_lam_decl() {
     auto track    = tracker();
     auto tag      = lex().tag();
-    auto prec     = tag == Tag::K_cn || tag == Tag::K_con ? Prec::Bot : Prec::Pi;
+    auto prec     = tag == Tag::K_cn || tag == Tag::K_con ? Expr::Prec::Bot : Expr::Prec::Pi;
     bool external = (bool)accept(Tag::K_extern);
 
     bool decl;
@@ -666,26 +666,19 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     auto dbg = decl ? parse_name(entity) : Dbg();
     Ptrs<LamDecl::Dom> doms;
     while (true) {
-        auto track    = tracker();
-        bool implicit = false;
-        Ptr<Ptrn> ptrn;
-        if (ahead().isa(Tok::Tag::D_brace_l)) {
-            implicit = true;
-            ptrn     = parse_tuple_ptrn();
-        } else {
-            ptrn = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
-        }
+        auto track  = tracker();
+        auto ptrn   = parse_ptrn(Paren_Style | Implicit, "domain pattern of a "s + entity, prec);
         auto filter = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
+        doms.emplace_back(ptr<LamDecl::Dom>(track, std::move(ptrn), std::move(filter)));
 
-        doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
         switch (ahead().tag()) {
-            case Tag::C_PTRN: continue;
+            case Tag::C_CURRIED_P: continue;
             default: break;
         }
         break;
     }
 
-    auto codom = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Prec::Arrow) : nullptr;
+    auto codom = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Expr::Prec::Arrow) : nullptr;
     if (tag == Tag::K_fn || tag == Tag::K_fun)
         doms.back()->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(prev_));
 

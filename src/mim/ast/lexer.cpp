@@ -64,7 +64,6 @@ Tok Lexer::lex() {
             return tok(Tag::D_angle_r);
         }
         // further tokens
-        if (accept('`'))  return tok(Tag::T_backtick);
         if (accept(U'→')) return tok(Tag::T_arrow);
         if (accept( '@')) return tok(Tag::T_at);
         if (accept( '=')) return tok(Tag::T_assign);
@@ -78,10 +77,7 @@ Tok Lexer::lex() {
         if (accept( ';')) return tok(Tag::T_semicolon);
         if (accept(U'★')) return tok(Tag::T_star);
         if (accept( '*')) return tok(Tag::T_star);
-        if (accept( ':')) {
-            if (accept( ':')) return tok(Tag::T_colon_colon);
-            return tok(Tag::T_colon);
-        }
+        if (accept( ':')) return tok(Tag::T_colon);
         // clang-format on
 
         if (accept('%')) {

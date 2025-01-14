@@ -8,10 +8,9 @@
 plugin core;
 
 con extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), return: Cn [%mem.M, I32]) =
-    let Tas             = (I32, 0);
-    let (`mem, ptr)     = %mem.slot Tas (mem, 0);
-    let `mem            = %mem.store (mem, ptr, argc);
-    let (`mem, val)::ld = %mem.load (mem, ptr);
+    let (mem, ptr) = %mem.slot (I32, 0) (mem, 0);
+    let mem        = %mem.store (mem, ptr, argc);
+    let ld         = %mem.load (mem, ptr);
     return ld;
 
 // CHECK-DAG: con extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: I32, %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), return_[[returnId:[_0-9]*]]: Cn [%mem.M, I32]]{{(@.*)?}}= {

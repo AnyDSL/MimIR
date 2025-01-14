@@ -39,7 +39,7 @@ let %math.PXR24   = %math.F %math.pxr24;
 ///
 /// Arithmetic operations.
 axm %math.arith(add, sub, mul, div, rem):
-    {pe: «2; Nat»} [Nat] [«2; %math.F pe»] → %math.F pe, normalize_arith;
+    {pe: «2; Nat»} [Nat] «2; %math.F pe» → %math.F pe, normalize_arith;
 
 lam %math.minus {pe: «2; Nat»} (m: Nat) (a: %math.F pe): %math.F pe =
     %math.arith.sub m (0:(%math.F pe), a);
@@ -72,7 +72,7 @@ lam %math.minus {pe: «2; Nat»} (m: Nat) (a: %math.F pe): %math.F pe =
 ///
 axm %math.extrema(im = fmin,       iM = fmax,
                   Im = ieee754min, IM = ieee754max):
-    {pe: «2; Nat»} [Nat] [«2; %math.F pe»] → %math.F pe, normalize_extrema;
+    {pe: «2; Nat»} [Nat] «2; %math.F pe» → %math.F pe, normalize_extrema;
 ///
 /// ### %%math.tri
 ///
@@ -111,7 +111,7 @@ axm %math.tri(ahff =  sin     , ahfF =  cos , ahFf =  tan , ahFF,
 ///
 /// Power function: \f$x^y\f$
 ///
-axm %math.pow: {pe: «2; Nat»} [Nat] [«2; %math.F pe»] → %math.F pe, normalize_pow;
+axm %math.pow: {pe: «2; Nat»} [Nat] «2; %math.F pe» → %math.F pe, normalize_pow;
 ///
 /// ### %%math.rt
 ///
@@ -223,7 +223,7 @@ axm %math.cmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
               uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
               Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
               UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):
-    {pe: «2; Nat»} [Nat] [«2; %math.F pe»] → Bool, normalize_cmp;
+    {pe: «2; Nat»} [Nat] «2; %math.F pe» → Bool, normalize_cmp;
 ///
 /// ### %%math.conv
 ///
