@@ -123,35 +123,35 @@ $(function(){initNavTree('passes.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md56">Rewrite Pass</a>
+    <a href="#autotoc_md57">Rewrite Pass</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md57">Fixed-Point Pass</a>
+    <a href="#autotoc_md58">Fixed-Point Pass</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md58">Rewrite</a>
+        <a href="#autotoc_md59">Rewrite</a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md59">Proxy</a>
+            <a href="#autotoc_md60">Proxy</a>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md60">Analyze</a>
+        <a href="#autotoc_md61">Analyze</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md61">Other Hooks</a>
+        <a href="#autotoc_md62">Other Hooks</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md62">Caveats</a>
+    <a href="#autotoc_md63">Caveats</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md63">Construct Valid Programs</a>
+        <a href="#autotoc_md64">Construct Valid Programs</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md64">Creating Mutables</a>
+        <a href="#autotoc_md65">Creating Mutables</a>
       </li>
     </ul>
   </li>
@@ -175,7 +175,7 @@ $(function(){initNavTree('passes.html',''); initResizable(true); });
 <li><a class="el" href="classmim_1_1RWPass.html">Rewrite Pass</a></li>
 <li><a class="el" href="classmim_1_1FPPass.html">Fixed-Point Pass</a></li>
 </ol>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md57"></a>
 Rewrite Pass</h1>
 <p>In order to write a <a class="el" href="classmim_1_1RWPass.html">rewrite pass</a>, you have to inherit from <a class="el" href="classmim_1_1RWPass.html">RWPass</a>. Usually, you are only interested in looking for code patterns that only occur in specific mutables - typically <a class="el" href="classmim_1_1Lam.html">Lam</a>bdas. You can filter for these mutables by passing it as template parameter to <a class="el" href="classmim_1_1RWPass.html">RWPass</a> when inherting from it. The main hook to the <a class="el" href="classmim_1_1PassMan.html">PassMan</a>, is the <a class="el" href="classmim_1_1Pass.html#a1e2538db511c704eda02dd76f4bce8e6">rewrite</a> method. As an example, let's have a look at the <a class="el" href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html">Alloc2Malloc</a> pass. It rewrites <code>alloc</code>/<code>slot</code> calls into their more verbose siblings <code>malloc</code>/<code>mslot</code> that make the size of the alloc'ed type explicit: This is <code><a class="el" href="alloc2malloc_8h.html">alloc2malloc.h</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#pragma once</span></div>
 <div class="line"> </div>
@@ -226,7 +226,7 @@ Rewrite Pass</h1>
 <div class="ttc" id="anamespacemim_1_1plug_1_1mem_html_ae34ad21e9af0dc16eaaba90794a316f4"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4">mim::plug::mem::slot</a></div><div class="ttdeci">slot</div><div class="ttdef"><b>Definition</b> <a href="mem_2autogen_8h_source.html#l00066">autogen.h:66</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1mem_html_afaa1b7ff42fe8de01c9ae6f3531c5cbc"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html#afaa1b7ff42fe8de01c9ae6f3531c5cbc">mim::plug::mem::alloc</a></div><div class="ttdeci">alloc</div><div class="ttdef"><b>Definition</b> <a href="mem_2autogen_8h_source.html#l00059">autogen.h:59</a></div></div>
 <div class="ttc" id="anamespacemim_html_a3d33d6e168b2bc9cc4d57a24b354f451"><div class="ttname"><a href="namespacemim.html#a3d33d6e168b2bc9cc4d57a24b354f451">mim::match</a></div><div class="ttdeci">auto match(Ref def)</div><div class="ttdef"><b>Definition</b> <a href="axiom_8h_source.html#l00112">axiom.h:112</a></div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md57"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md58"></a>
 Fixed-Point Pass</h1>
 <p>A <a class="el" href="classmim_1_1FPPass.html">fixed-point pass</a> allows you to implement a data-flow analysis. Traditionally, an optimizations performs</p>
 <ol type="1">
@@ -244,22 +244,22 @@ Fixed-Point Pass</h1>
 <li>correct your assumption such that you do not make the same mistake over and over again.</li>
 </ol>
 <p>In order to write a <a class="el" href="classmim_1_1FPPass.html">fixed-point pass</a>, you have to inherit from <a class="el" href="classmim_1_1FPPass.html">FPPass</a>. This pass expects two template parameters. The first one must be the very class you are currently implementing (this is known as <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a> in C++). The second one has the same purpose as the template parameter for <a class="el" href="classmim_1_1RWPass.html">rewrite passes</a> and will most likely be <a class="el" href="classmim_1_1Lam.html">Lam</a>.</p>
-<h2><a class="anchor" id="autotoc_md58"></a>
+<h2><a class="anchor" id="autotoc_md59"></a>
 Rewrite</h2>
 <p>The <code>rewrite</code> works exactly as for <a class="el" href="classmim_1_1RWPass.html">rewrite passes</a>. However, this time around, you are guessing that the most optimistic result will happen. If you prove yourself wrong afterwards, you will gradually ascend in a <a href="https://en.wikipedia.org/wiki/Complete_lattice">lattice</a> until the <a class="el" href="classmim_1_1FPPass.html">fixed-point pass</a> stabilizes. TODO</p>
-<h3><a class="anchor" id="autotoc_md59"></a>
+<h3><a class="anchor" id="autotoc_md60"></a>
 Proxy</h3>
-<h2><a class="anchor" id="autotoc_md60"></a>
+<h2><a class="anchor" id="autotoc_md61"></a>
 Analyze</h2>
 <p>TODO</p>
-<h2><a class="anchor" id="autotoc_md61"></a>
+<h2><a class="anchor" id="autotoc_md62"></a>
 Other Hooks</h2>
-<h1><a class="anchor" id="autotoc_md62"></a>
+<h1><a class="anchor" id="autotoc_md63"></a>
 Caveats</h1>
-<h2><a class="anchor" id="autotoc_md63"></a>
+<h2><a class="anchor" id="autotoc_md64"></a>
 Construct Valid Programs</h2>
 <p>It is important to always construct a valid program. Otherwise, bad things might happen as soon as you toss other passes into the mix. The reason is that the very program you are constructing is the <b>only</b> way to communicate with the other passes without directly sharing information.</p>
-<h2><a class="anchor" id="autotoc_md64"></a>
+<h2><a class="anchor" id="autotoc_md65"></a>
 Creating Mutables</h2>
 <p>Eventually, you will need to create mutables during a <a class="el" href="classmim_1_1FPPass.html">fixed-point pass</a>. You must be super cautious to remember in which exact context you created said mutable. If you ever come into the same situation again (due to backtracking) you have to make sure that you return the <b>very same</b> mutable. Otherwise, if you create a different mutable, the <a class="el" href="classmim_1_1PassMan.html">PassMan</a> will most likely diverge as it will constantly backtrack while creating new mutables that the other passes don't know anything about. </p>
 </div></div><!-- contents -->

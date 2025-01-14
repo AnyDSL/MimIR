@@ -10,6 +10,7 @@ var annotated_dup =
     ] ],
     [ "mim", "namespacemim.html", [
       [ "ast", "namespacemim_1_1ast.html", [
+        [ "AliasPtrn", "classmim_1_1ast_1_1AliasPtrn.html", "classmim_1_1ast_1_1AliasPtrn" ],
         [ "AnnexInfo", "structmim_1_1ast_1_1AnnexInfo.html", "structmim_1_1ast_1_1AnnexInfo" ],
         [ "AnnexInfo.id", "namespacemim_1_1ast.html#structmim_1_1ast_1_1AnnexInfo_8id", "namespacemim_1_1ast_structmim_1_1ast_1_1AnnexInfo_8id_dup" ],
         [ "AnnexInfo.sym", "namespacemim_1_1ast.html#structmim_1_1ast_1_1AnnexInfo_8sym", "namespacemim_1_1ast_structmim_1_1ast_1_1AnnexInfo_8sym_dup" ],

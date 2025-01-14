@@ -194,8 +194,8 @@ Public Member Functions</h2></td></tr>
 <p>It basically mimics this implementation: </p><div class="fragment"><div class="line">con %affine.For_impl</div>
 <div class="line">    (m: <a class="code hl_class" href="classmim_1_1Nat.html">Nat</a> , n: <a class="code hl_class" href="classmim_1_1Nat.html">Nat</a> , Ts: «n; *»)</div>
 <div class="line">    (begin: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, end: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, step: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, init: «i: n; Ts#i»,</div>
-<div class="line">            body: Cn [iter: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, acc: «i: n; Ts#i», yield: Cn [«i: n; Ts#i»]],</div>
-<div class="line">            exit: Cn [«i: n; Ts#i»]</div>
+<div class="line">            body: Cn [iter: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],</div>
+<div class="line">            exit: Cn «i: n; Ts#i»</div>
 <div class="line">    ) =</div>
 <div class="line">    con head(iter: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, acc: «i: n; Ts#i») =</div>
 <div class="line">        con new_body() = body (iter, acc, cn acc: «i: n; Ts#i» =</div>

@@ -1,5 +1,6 @@
 var namespacemim_1_1ast =
 [
+    [ "AliasPtrn", "classmim_1_1ast_1_1AliasPtrn.html", "classmim_1_1ast_1_1AliasPtrn" ],
     [ "AnnexInfo", "structmim_1_1ast_1_1AnnexInfo.html", "structmim_1_1ast_1_1AnnexInfo" ],
     [ "AnnexInfo.id", "namespacemim_1_1ast.html#structmim_1_1ast_1_1AnnexInfo_8id", "namespacemim_1_1ast_structmim_1_1ast_1_1AnnexInfo_8id_dup" ],
     [ "AnnexInfo.sym", "namespacemim_1_1ast.html#structmim_1_1ast_1_1AnnexInfo_8sym", "namespacemim_1_1ast_structmim_1_1ast_1_1AnnexInfo_8sym_dup" ],
@@ -51,17 +52,6 @@ var namespacemim_1_1ast =
     [ "Ptr", "namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b", null ],
     [ "Ptrs", "namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed", null ],
     [ "Tag", "namespacemim_1_1ast.html#afde58f363ce72bbf6bef13e418749a1d", null ],
-    [ "Prec", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28a", [
-      [ "Err", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aab47f6a6092c5d7e4bffec12dff309c3b", null ],
-      [ "Bot", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aa1448e86d90e0feb307c2894c24e87767", null ],
-      [ "Where", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aab3c5b21d2cb47cc950fd4667edaf404c", null ],
-      [ "Arrow", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aa0f4e1aaabd074689b7d3ead824d1ee8e", null ],
-      [ "Pi", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aa127125672f1e85d1e676d4394d24e066", null ],
-      [ "App", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aaac863f346e618f9a959b5c95d5d28941", null ],
-      [ "Extract", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aa97478353818fc5590dc34b57b81a4b23", null ],
-      [ "Lit", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aae5e556ecf935270736f5e46e73db06e4", null ]
-    ] ],
-    [ "is_rassoc", "namespacemim_1_1ast.html#a50e9195843afe95df3aa715f91e1b32b", null ],
     [ "load_plugins", "namespacemim_1_1ast.html#a5fe7be09bffcd1f540353919cc95ee07", null ],
     [ "load_plugins", "namespacemim_1_1ast.html#abae341d79d49646bf8f2c7177be146d0", null ],
     [ "load_plugins", "namespacemim_1_1ast.html#af661ed47b30377f25191a96dd6e8b683", null ],

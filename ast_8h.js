@@ -10,6 +10,7 @@ var ast_8h =
     [ "mim::ast::ErrorPtrn", "classmim_1_1ast_1_1ErrorPtrn.html", "classmim_1_1ast_1_1ErrorPtrn" ],
     [ "mim::ast::IdPtrn", "classmim_1_1ast_1_1IdPtrn.html", "classmim_1_1ast_1_1IdPtrn" ],
     [ "mim::ast::GrpPtrn", "classmim_1_1ast_1_1GrpPtrn.html", "classmim_1_1ast_1_1GrpPtrn" ],
+    [ "mim::ast::AliasPtrn", "classmim_1_1ast_1_1AliasPtrn.html", "classmim_1_1ast_1_1AliasPtrn" ],
     [ "mim::ast::TuplePtrn", "classmim_1_1ast_1_1TuplePtrn.html", "classmim_1_1ast_1_1TuplePtrn" ],
     [ "mim::ast::ErrorExpr", "classmim_1_1ast_1_1ErrorExpr.html", "classmim_1_1ast_1_1ErrorExpr" ],
     [ "mim::ast::InferExpr", "classmim_1_1ast_1_1InferExpr.html", "classmim_1_1ast_1_1InferExpr" ],

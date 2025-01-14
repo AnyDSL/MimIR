@@ -166,7 +166,10 @@ $(function(){initNavTree('langref.html',''); initResizable(true); });
             <a href="#autotoc_md40">Groups</a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md41">Rebind</a>
+            <a href="#autotoc_md41">Alias Pattern</a>
+          </li>
+          <li class="level3">
+            <a href="#autotoc_md42">Rebind</a>
           </li>
         </ul>
       </li>
@@ -174,52 +177,52 @@ $(function(){initNavTree('langref.html',''); initResizable(true); });
         <a href="#expr">Expressions</a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md42">Kinds &amp; Builtin Types</a>
+            <a href="#autotoc_md43">Kinds &amp; Builtin Types</a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md43">Literals &amp; Co</a>
+            <a href="#autotoc_md44">Literals &amp; Co</a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md44">Functions</a>
+            <a href="#autotoc_md45">Functions</a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md45">Tuples</a>
+            <a href="#autotoc_md46">Tuples</a>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md46">Precedence</a>
+        <a href="#autotoc_md47">Precedence</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md47">Summary: Functions &amp; Types</a>
+    <a href="#autotoc_md48">Summary: Functions &amp; Types</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md48">Declarations</a>
+        <a href="#autotoc_md49">Declarations</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md49">Expressions</a>
+        <a href="#autotoc_md50">Expressions</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md50">Applications</a>
+        <a href="#autotoc_md51">Applications</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md51">Function Types</a>
+        <a href="#autotoc_md52">Function Types</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md52">Scoping</a>
+    <a href="#autotoc_md53">Scoping</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md53">Underscore</a>
+        <a href="#autotoc_md54">Underscore</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md54">Annex</a>
+        <a href="#autotoc_md55">Annex</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md55">Field Names of Sigmas</a>
+        <a href="#autotoc_md56">Field Names of Sigmas</a>
       </li>
     </ul>
   </li>
@@ -528,8 +531,10 @@ Groups</h3>
 <li><code>(a b c: Nat, d e: Bool)</code> means <code>(a: Nat, b: Nat, c: Nat, d: Bool, e: Bool)</code>.</li>
 <li><code>[a b c: Nat, d e: Bool]</code> means <code>[a: Nat, b: Nat, c: Nat, d: Bool, e: Bool]</code>.</li>
 </ul>
-<p>You can introduce an optional name for the whole tuple pattern:</p>
-<div class="fragment"><div class="line">let abc::(a, b, c) = (1, 2, 3);</div>
+<h3><a class="anchor" id="autotoc_md41"></a>
+Alias Pattern</h3>
+<p>You can wrap a pattern into an <em>alias pattern</em>:</p>
+<div class="fragment"><div class="line">let (a, b, c) as abc = (1, 2, 3);</div>
 </div><!-- fragment --><p>This will bind</p>
 <ul>
 <li><code>a</code> to <code>1</code>,</li>
@@ -538,16 +543,16 @@ Groups</h3>
 <li><code>abc</code> to <code>(1, 2, 3)</code>.</li>
 </ul>
 <p>Here is another example:</p>
-<div class="fragment"><div class="line">{T: *, as: Nat}::Tas [%mem.M, %mem.Ptr Tas] → [%mem.M, T]</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md41"></a>
+<div class="fragment"><div class="line">{T: *, a: Nat} as Ts [%mem.M, %mem.Ptr Ts] → [%mem.M, T]</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md42"></a>
 Rebind</h3>
-<p>Finally, you can put a <code>`</code> in front of an identifier of a <code>()</code>-style pattern to (potentially) rebind a name to a different value. This is particularly useful, when dealing with memory:</p>
-<div class="fragment"><div class="line">let (`mem, ptr) = %mem.alloc (I32, 0) mem;</div>
-<div class="line">let `mem        = %mem.store (mem, ptr, 23:I32);</div>
-<div class="line">let (`mem, val) = %mem.load (mem, ptr);</div>
+<p>A <code>let</code> and <code>ret</code> expression allows you to rebind the same name to a different value: This is particularly useful, when dealing with memory:</p>
+<div class="fragment"><div class="line">let (mem, ptr) = %mem.alloc (I32, 0) mem;</div>
+<div class="line">let mem        = %mem.store (mem, ptr, 23:I32);</div>
+<div class="line">let (mem, val) = %mem.load (mem, ptr);</div>
 </div><!-- fragment --><h2><a class="anchor" id="expr"></a>
 Expressions</h2>
-<h3><a class="anchor" id="autotoc_md42"></a>
+<h3><a class="anchor" id="autotoc_md43"></a>
 Kinds &amp; Builtin Types</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -567,7 +572,7 @@ Kinds &amp; Builtin Types</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>Bool</code>   </td><td class="markdownTableBodyNone">alias for <code>Bool</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Idx.html">Idx</a>   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md43"></a>
+<h3><a class="anchor" id="autotoc_md44"></a>
 Literals &amp; Co</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -598,7 +603,7 @@ Literals &amp; Co</h3>
 <li>a literal defaults to <code>Nat</code>,</li>
 <li>a bottom/top defaults to <code>*</code>.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md44"></a>
+<h3><a class="anchor" id="autotoc_md45"></a>
 Functions</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -624,7 +629,7 @@ Functions</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>ret</code> p <code>=</code> e <code>$</code> e <code>;</code> d* e   </td><td class="markdownTableBodyNone">ret expresison   </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1App.html">App</a>   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md45"></a>
+<h3><a class="anchor" id="autotoc_md46"></a>
 Tuples</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -646,7 +651,7 @@ Tuples</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">s   </td><td class="markdownTableBodyNone">e<sub>shape</sub> | S <code>:</code> e<sub>shape</sub>   </td><td class="markdownTableBodyNone">shape   </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md46"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Precedence</h2>
 <p>Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):</p>
 <table class="markdownTable">
@@ -663,7 +668,7 @@ Precedence</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">4   </td><td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone">right-to-left   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md48"></a>
 Summary: Functions &amp; Types</h1>
 <p>The following table summarizes the different tokens used for functions declarations, expressions, and types:</p>
 <table class="markdownTable">
@@ -677,41 +682,41 @@ Summary: Functions &amp; Types</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>fun</code>   </td><td class="markdownTableBodyNone"><code>fn</code>   </td><td class="markdownTableBodyNone"><code>Fn</code>   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Declarations</h2>
 <p>The following function <em>declarations</em> are all equivalent:</p>
 <div class="fragment"><div class="line">lam f(T: *)((x y: T), return: T → ⊥)@(ff): ⊥ = return x;</div>
 <div class="line">con f(T: *)((x y: T), return: Cn T)          = return x;</div>
 <div class="line">fun f(T: *) (x y: T): T                       = return x;</div>
 </div><!-- fragment --><p>Note that all partial evaluation filters default to <code>tt</code> except for <code>con</code>/<code>cn</code>/<code>fun</code>/<code>fn</code>.</p>
-<h2><a class="anchor" id="autotoc_md49"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 Expressions</h2>
 <p>The following function <em>expressions</em> are all equivalent. What is more, since they are bound by a <em>let declaration</em>, they have the exact same effect as the function <em>declarations</em> above:</p>
 <div class="fragment"><div class="line">let f =   λ (T: *)((x y: T), return: T → ⊥)@(ff): ⊥ = return x;</div>
 <div class="line">let f = lm (T: *)((x y: T), return: T → ⊥)      : ⊥ = return x;</div>
 <div class="line">let f = cn (T: *)((x y: T), return: Cn T)          = return x;</div>
 <div class="line">let f = fn (T: *) (x y: T): T                       = return x;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md50"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md51"></a>
 Applications</h2>
 <p>The following expressions for applying <code>f</code> are also equivalent:</p>
 <div class="fragment"><div class="line">f Nat ((23, 42), cn res: Nat = use(res))</div>
 <div class="line">ret res = f Nat $ (23, 42); use(res)</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md51"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md52"></a>
 Function Types</h2>
 <p>Finally, the following function types are all equivalent and denote the type of <code>f</code> above.</p>
 <div class="fragment"><div class="line">    [T:*] [[T, T], T → ⊥] → ⊥</div>
 <div class="line">Cn [T:*] [[T, T], Cn T]</div>
 <div class="line">Fn [T:*]  [T, T] → T</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md52"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md53"></a>
 Scoping</h1>
 <p>Mim uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope"><em>lexical scoping</em></a> where all names live within the same namespace - with a few exceptions noted below. </p><dl class="section note"><dt>Note</dt><dd>The grammar tables above also indiciate which constructs open new scopes (and close them again) with <b>this<sup>s</sup></b> annotation in the <em>Comments</em> column.</dd></dl>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 Underscore</h2>
 <p>The symbol <code>_</code> is special and never binds to an entity. For this reason, <code>_</code> can be bound over and over again within the same scope (without effect). Hence, using the symbol <code>_</code> will always result in a scoping error.</p>
-<h2><a class="anchor" id="autotoc_md54"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 Annex</h2>
 <p>Annex names are special and live in a global namespace.</p>
-<h2><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 Field Names of Sigmas</h2>
 <p>Named elements of mutable sigmas are available for extracts/inserts.</p>
 <dl class="section note"><dt>Note</dt><dd>These names take precedence over the usual scope. In the following example, <code>i</code> refers to the first element <code>i</code> of <code>X</code> and <b>not</b> to the <code>i</code> introduced via <code>let</code>:</dd></dl>

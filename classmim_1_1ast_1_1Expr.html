@@ -165,11 +165,69 @@ Protected Member Functions</h2></td></tr>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:acf0fdf47cc1bb8a806c8a2b8fe48e771" id="r_acf0fdf47cc1bb8a806c8a2b8fe48e771"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf0fdf47cc1bb8a806c8a2b8fe48e771">emit_</a> (<a class="el" href="classmim_1_1ast_1_1Emitter.html">Emitter</a> &amp;) const =0</td></tr>
 <tr class="separator:acf0fdf47cc1bb8a806c8a2b8fe48e771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Precedence</h2></td></tr>
+<tr class="memitem:a6ee0b3a4cf6a24da00311505b7b1b01c" id="r_a6ee0b3a4cf6a24da00311505b7b1b01c"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01c">Prec</a> { <br />
+&#160;&#160;<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01cab47f6a6092c5d7e4bffec12dff309c3b">Err</a>
+, <br />
+&#160;&#160;<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01ca1448e86d90e0feb307c2894c24e87767">Bot</a>
+, <br />
+&#160;&#160;<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01cab3c5b21d2cb47cc950fd4667edaf404c">Where</a>
+, <br />
+&#160;&#160;<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e">Arrow</a>
+, <br />
+&#160;&#160;<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01ca127125672f1e85d1e676d4394d24e066">Pi</a>
+, <br />
+&#160;&#160;<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941">App</a>
+, <br />
+&#160;&#160;<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01ca97478353818fc5590dc34b57b81a4b23">Extract</a>
+, <br />
+&#160;&#160;<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01cae5e556ecf935270736f5e46e73db06e4">Lit</a>
+<br />
+ }</td></tr>
+<tr class="separator:a6ee0b3a4cf6a24da00311505b7b1b01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7a940ad5a4e5d59c555dd2baa550fc8" id="r_ae7a940ad5a4e5d59c555dd2baa550fc8"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7a940ad5a4e5d59c555dd2baa550fc8">is_rassoc</a> (<a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01c">Prec</a> p)</td></tr>
+<tr class="separator:ae7a940ad5a4e5d59c555dd2baa550fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00130">130</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a6ee0b3a4cf6a24da00311505b7b1b01c" name="a6ee0b3a4cf6a24da00311505b7b1b01c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ee0b3a4cf6a24da00311505b7b1b01c">&#9670;&#160;</a></span>Prec</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01c">mim::ast::Expr::Prec</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6ee0b3a4cf6a24da00311505b7b1b01cab47f6a6092c5d7e4bffec12dff309c3b" name="a6ee0b3a4cf6a24da00311505b7b1b01cab47f6a6092c5d7e4bffec12dff309c3b"></a>Err&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ee0b3a4cf6a24da00311505b7b1b01ca1448e86d90e0feb307c2894c24e87767" name="a6ee0b3a4cf6a24da00311505b7b1b01ca1448e86d90e0feb307c2894c24e87767"></a>Bot&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ee0b3a4cf6a24da00311505b7b1b01cab3c5b21d2cb47cc950fd4667edaf404c" name="a6ee0b3a4cf6a24da00311505b7b1b01cab3c5b21d2cb47cc950fd4667edaf404c"></a>Where&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e" name="a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e"></a>Arrow&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ee0b3a4cf6a24da00311505b7b1b01ca127125672f1e85d1e676d4394d24e066" name="a6ee0b3a4cf6a24da00311505b7b1b01ca127125672f1e85d1e676d4394d24e066"></a>Pi&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941" name="a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941"></a>App&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ee0b3a4cf6a24da00311505b7b1b01ca97478353818fc5590dc34b57b81a4b23" name="a6ee0b3a4cf6a24da00311505b7b1b01ca97478353818fc5590dc34b57b81a4b23"></a>Extract&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6ee0b3a4cf6a24da00311505b7b1b01cae5e556ecf935270736f5e46e73db06e4" name="a6ee0b3a4cf6a24da00311505b7b1b01cae5e556ecf935270736f5e46e73db06e4"></a>Lit&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00138">138</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7fde5916e51e7be2077bad53e814f05a" name="a7fde5916e51e7be2077bad53e814f05a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7fde5916e51e7be2077bad53e814f05a">&#9670;&#160;</a></span>Expr()</h2>
 
@@ -223,7 +281,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classmim_1_1ast_1_1AppExpr.html#a4601bc541104d397632677a64ce0753c">mim::ast::AppExpr</a>, <a class="el" href="classmim_1_1ast_1_1ArrOrPackExpr.html#af84725f925a92de3e3f5191bd67e4d40">mim::ast::ArrOrPackExpr&lt; arr &gt;</a>, <a class="el" href="classmim_1_1ast_1_1ArrowExpr.html#a9b32ca78f22625faea411ab15bcec71e">mim::ast::ArrowExpr</a>, <a class="el" href="classmim_1_1ast_1_1DeclExpr.html#acfcbb1c01e0339c3c98f5951cbc95b55">mim::ast::DeclExpr</a>, <a class="el" href="classmim_1_1ast_1_1ErrorExpr.html#a405cbd838ede83529ef03bd6ad66177d">mim::ast::ErrorExpr</a>, <a class="el" href="classmim_1_1ast_1_1ExtractExpr.html#aac082f6d2a66784339bdd2668b9d0e94">mim::ast::ExtractExpr</a>, <a class="el" href="classmim_1_1ast_1_1IdExpr.html#abff887d3a5d7a437924d6b56a94bb14f">mim::ast::IdExpr</a>, <a class="el" href="classmim_1_1ast_1_1InferExpr.html#aea80e1dc8f3080a45efbf429d38345dd">mim::ast::InferExpr</a>, <a class="el" href="classmim_1_1ast_1_1InsertExpr.html#a90170d8b8e9aa34131f599a09fee355f">mim::ast::InsertExpr</a>, <a class="el" href="classmim_1_1ast_1_1LamExpr.html#a1ee20d57d6b012c26e9348a582e87ebe">mim::ast::LamExpr</a>, <a class="el" href="classmim_1_1ast_1_1LitExpr.html#aa4a62bba5c1f60cbbb6d6ae60348c747">mim::ast::LitExpr</a>, <a class="el" href="classmim_1_1ast_1_1PiExpr.html#a97a567ef11749ebf70e3d07575dfd5c1">mim::ast::PiExpr</a>, <a class="el" href="classmim_1_1ast_1_1PrimaryExpr.html#aa2d52558f651795aaec7e628afadb9c7">mim::ast::PrimaryExpr</a>, <a class="el" href="classmim_1_1ast_1_1RetExpr.html#aa1b67aa2f014a9862901c28382dfff9c">mim::ast::RetExpr</a>, <a class="el" href="classmim_1_1ast_1_1SigmaExpr.html#ad97c5e68f18fcb9cb5d9e1106c01ec85">mim::ast::SigmaExpr</a>, <a class="el" href="classmim_1_1ast_1_1TupleExpr.html#a4d4bf8036a439c086608a35e2a58c6a9">mim::ast::TupleExpr</a>, and <a class="el" href="classmim_1_1ast_1_1TypeExpr.html#aef309f10ab5eaafad1943f1a1bae8b97">mim::ast::TypeExpr</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="bind_8cpp_source.html#l00138">mim::ast::ArrowExpr::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00322">mim::ast::CDecl::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00130">mim::ast::DeclExpr::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00096">mim::ast::IdPtrn::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00120">mim::ast::LitExpr::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00148">mim::ast::PiExpr::bind()</a>, and <a class="el" href="bind_8cpp_source.html#l00285">mim::ast::LamDecl::bind_decl()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="bind_8cpp_source.html#l00141">mim::ast::ArrowExpr::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00325">mim::ast::CDecl::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00133">mim::ast::DeclExpr::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00097">mim::ast::IdPtrn::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00123">mim::ast::LitExpr::bind()</a>, <a class="el" href="bind_8cpp_source.html#l00151">mim::ast::PiExpr::bind()</a>, and <a class="el" href="bind_8cpp_source.html#l00288">mim::ast::LamDecl::bind_decl()</a>.</p>
 
 </div>
 </div>
@@ -242,11 +300,11 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emit_8cpp_source.html#l00112">112</a> of file <a class="el" href="emit_8cpp_source.html">emit.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emit_8cpp_source.html#l00121">121</a> of file <a class="el" href="emit_8cpp_source.html">emit.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="#acf0fdf47cc1bb8a806c8a2b8fe48e771">emit_()</a>, and <a class="el" href="ast_8h_source.html#l00121">mim::ast::Node::loc()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00458">mim::ast::CDecl::emit()</a>, <a class="el" href="emit_8cpp_source.html#l00275">mim::ast::ArrOrPackExpr&lt; arr &gt;::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00188">mim::ast::ArrowExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00173">mim::ast::DeclExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00156">mim::ast::LitExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00224">mim::ast::PiExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00251">mim::ast::RetExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00125">mim::ast::TypeExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00183">mim::ast::ArrowExpr::emit_body()</a>, <a class="el" href="emit_8cpp_source.html#l00452">mim::ast::LamDecl::emit_body()</a>, <a class="el" href="emit_8cpp_source.html#l00222">mim::ast::PiExpr::emit_body()</a>, <a class="el" href="emit_8cpp_source.html#l00424">mim::ast::LamDecl::emit_decl()</a>, and <a class="el" href="emit_8cpp_source.html#l00070">mim::ast::IdPtrn::emit_type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00467">mim::ast::CDecl::emit()</a>, <a class="el" href="emit_8cpp_source.html#l00284">mim::ast::ArrOrPackExpr&lt; arr &gt;::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00197">mim::ast::ArrowExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00182">mim::ast::DeclExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00165">mim::ast::LitExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00233">mim::ast::PiExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00260">mim::ast::RetExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00134">mim::ast::TypeExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00192">mim::ast::ArrowExpr::emit_body()</a>, <a class="el" href="emit_8cpp_source.html#l00461">mim::ast::LamDecl::emit_body()</a>, <a class="el" href="emit_8cpp_source.html#l00231">mim::ast::PiExpr::emit_body()</a>, <a class="el" href="emit_8cpp_source.html#l00433">mim::ast::LamDecl::emit_decl()</a>, and <a class="el" href="emit_8cpp_source.html#l00077">mim::ast::IdPtrn::emit_type()</a>.</p>
 
 </div>
 </div>
@@ -275,7 +333,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classmim_1_1ast_1_1AppExpr.html#aecbfb55f043991788c385e2afa7dacb2">mim::ast::AppExpr</a>, <a class="el" href="classmim_1_1ast_1_1ArrOrPackExpr.html#af3ed2e7f8f48506010f0ebbdb31b3704">mim::ast::ArrOrPackExpr&lt; arr &gt;</a>, <a class="el" href="classmim_1_1ast_1_1ArrowExpr.html#a41e398c66a8a99bd746ed021cd53118f">mim::ast::ArrowExpr</a>, <a class="el" href="classmim_1_1ast_1_1DeclExpr.html#abf3c16bdc4f9d587209eee7346f6ceba">mim::ast::DeclExpr</a>, <a class="el" href="classmim_1_1ast_1_1ErrorExpr.html#a1646e72053e2d63eb954b4d163990429">mim::ast::ErrorExpr</a>, <a class="el" href="classmim_1_1ast_1_1ExtractExpr.html#aedba583f3c7c9ceb99e527b98016910a">mim::ast::ExtractExpr</a>, <a class="el" href="classmim_1_1ast_1_1IdExpr.html#aed88d0178bdf8d90eb77d86f1f65d40e">mim::ast::IdExpr</a>, <a class="el" href="classmim_1_1ast_1_1InferExpr.html#abf93e18133e0a0665302cd96d450b930">mim::ast::InferExpr</a>, <a class="el" href="classmim_1_1ast_1_1InsertExpr.html#a0d6b35b513184015e353ed7c2bf2887c">mim::ast::InsertExpr</a>, <a class="el" href="classmim_1_1ast_1_1LamExpr.html#a54f9334fb3ac943f927f88aead02e5ff">mim::ast::LamExpr</a>, <a class="el" href="classmim_1_1ast_1_1LitExpr.html#af2769e6020dd8020c96b39c2c72f96ac">mim::ast::LitExpr</a>, <a class="el" href="classmim_1_1ast_1_1PiExpr.html#a7b9bfad5a3c815cfede8a85a5ebda217">mim::ast::PiExpr</a>, <a class="el" href="classmim_1_1ast_1_1PrimaryExpr.html#adc1f3b049a2eeb60fd5175dbb936ad12">mim::ast::PrimaryExpr</a>, <a class="el" href="classmim_1_1ast_1_1RetExpr.html#a5782e751e498968dfd3e7f9ea7f7fe78">mim::ast::RetExpr</a>, <a class="el" href="classmim_1_1ast_1_1SigmaExpr.html#aa69459dc14141a1a2d551bc9740cd5b7">mim::ast::SigmaExpr</a>, <a class="el" href="classmim_1_1ast_1_1TupleExpr.html#a685c8d4d9f3583b22bdcd618a4b12ebe">mim::ast::TupleExpr</a>, and <a class="el" href="classmim_1_1ast_1_1TypeExpr.html#a4604747053c3171b49e374878394d83b">mim::ast::TypeExpr</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00112">emit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00121">emit()</a>.</p>
 
 </div>
 </div>
@@ -308,7 +366,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classmim_1_1ast_1_1ArrowExpr.html#a8c11aa9a80f635626253a90c538aec66">mim::ast::ArrowExpr</a>, <a class="el" href="classmim_1_1ast_1_1LamExpr.html#a0371854b41891a187ed6421ceb06be02">mim::ast::LamExpr</a>, <a class="el" href="classmim_1_1ast_1_1PiExpr.html#a144c6eb9783f6c54e860f33a3af7eada">mim::ast::PiExpr</a>, and <a class="el" href="classmim_1_1ast_1_1SigmaExpr.html#a42200dbc1e09fcb1aa5d50bf52a56e25">mim::ast::SigmaExpr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00139">139</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00155">155</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 </div>
 </div>
@@ -341,7 +399,36 @@ Private Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classmim_1_1ast_1_1ArrowExpr.html#ad05f78a581afc963b892d48ea9406846">mim::ast::ArrowExpr</a>, <a class="el" href="classmim_1_1ast_1_1LamExpr.html#a00e5f2123ef037f12fdb13c45a0ec634">mim::ast::LamExpr</a>, <a class="el" href="classmim_1_1ast_1_1PiExpr.html#a8bb74a87941b2a26f17dd0060a1750f6">mim::ast::PiExpr</a>, and <a class="el" href="classmim_1_1ast_1_1SigmaExpr.html#ab7f46d025bd4abfa0311522c10b487eb">mim::ast::SigmaExpr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00138">138</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00154">154</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+
+</div>
+</div>
+<a id="ae7a940ad5a4e5d59c555dd2baa550fc8" name="ae7a940ad5a4e5d59c555dd2baa550fc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7a940ad5a4e5d59c555dd2baa550fc8">&#9670;&#160;</a></span>is_rassoc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr bool mim::ast::Expr::is_rassoc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01c">Prec</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00149">149</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+
+<p class="reference">References <a class="el" href="#a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e">Arrow</a>.</p>
 
 </div>
 </div>

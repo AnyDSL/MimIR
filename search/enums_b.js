@@ -15,7 +15,7 @@ var searchData=
   ['plugin_5fselect_12',['plugin_select',['../namespacemim_1_1plug_1_1compile.html#a8234dedd9c0cf467db256b27a11f7116',1,'mim::plug::compile']]],
   ['pos_13',['Pos',['../classmim_1_1EtaExp.html#a5a75570e634c37f72097c1110ca23665',1,'mim::EtaExp']]],
   ['pow_14',['pow',['../namespacemim_1_1plug_1_1math.html#a638f19e14b30d84e0a57f808645bc3d7',1,'mim::plug::math']]],
-  ['prec_15',['Prec',['../namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28a',1,'mim::ast']]],
+  ['prec_15',['Prec',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01c',1,'mim::ast::Expr']]],
   ['prod_16',['prod',['../namespacemim_1_1plug_1_1matrix.html#a83d01fd34deff3e8ddae753c596038fc',1,'mim::plug::matrix']]],
   ['ptr_17',['Ptr',['../namespacemim_1_1plug_1_1mem.html#afbf5b5fae36f11d5031d0b7672eabf06',1,'mim::plug::mem']]],
   ['ptr0_18',['Ptr0',['../namespacemim_1_1plug_1_1mem.html#ace46b7b29a70a8a286dd0a1fc74855f3',1,'mim::plug::mem']]],

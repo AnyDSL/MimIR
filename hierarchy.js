@@ -265,6 +265,7 @@ var hierarchy =
           [ "mim::ast::AxiomDecl::Alias", "classmim_1_1ast_1_1AxiomDecl_1_1Alias.html", null ],
           [ "mim::ast::DummyDecl", "classmim_1_1ast_1_1DummyDecl.html", null ],
           [ "mim::ast::Ptrn", "classmim_1_1ast_1_1Ptrn.html", [
+            [ "mim::ast::AliasPtrn", "classmim_1_1ast_1_1AliasPtrn.html", null ],
             [ "mim::ast::ErrorPtrn", "classmim_1_1ast_1_1ErrorPtrn.html", null ],
             [ "mim::ast::GrpPtrn", "classmim_1_1ast_1_1GrpPtrn.html", null ],
             [ "mim::ast::IdPtrn", "classmim_1_1ast_1_1IdPtrn.html", null ],

@@ -128,6 +128,9 @@ $(function(){initNavTree('namespacemim_1_1ast.html',''); initResizable(true); })
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1AliasPtrn.html">AliasPtrn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>ptrn as id</code>  <a href="classmim_1_1ast_1_1AliasPtrn.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1ast_1_1AnnexInfo.html">AnnexInfo</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structmim_1_1ast_1_1AnnexInfo_8id" id="r_structmim_1_1ast_1_1AnnexInfo_8id"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#structmim_1_1ast_1_1AnnexInfo_8id">AnnexInfo.id</a></td></tr>
@@ -227,7 +230,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1Scopes.html">Scopes</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1SigmaExpr.html">SigmaExpr</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just wraps <a class="el" href="classmim_1_1ast_1_1TuplePtrn.html" title="dbg::(ptrn_0, ..., ptrn_n-1) or dbg::[ptrn_0, ..., ptrn_n-1]">TuplePtrn</a> as <a class="el" href="classmim_1_1ast_1_1Expr.html">Expr</a>.  <a href="classmim_1_1ast_1_1SigmaExpr.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just wraps <a class="el" href="classmim_1_1ast_1_1TuplePtrn.html" title="(ptrn_0, ..., ptrn_n-1), [ptrn_0, ..., ptrn_n-1], or {ptrn_0, ..., ptrn_n-1}">TuplePtrn</a> as <a class="el" href="classmim_1_1ast_1_1Expr.html">Expr</a>.  <a href="classmim_1_1ast_1_1SigmaExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1Tok.html">Tok</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,7 +238,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>(elem_0, ..., elem_n-1)</code>  <a href="classmim_1_1ast_1_1TupleExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1TuplePtrn.html">TuplePtrn</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dbg::(ptrn_0, ..., ptrn_n-1)</code> or <code>dbg::[ptrn_0, ..., ptrn_n-1]</code>  <a href="classmim_1_1ast_1_1TuplePtrn.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>(ptrn_0, ..., ptrn_n-1)</code>, <code>[ptrn_0, ..., ptrn_n-1]</code>, or <code>{ptrn_0, ..., ptrn_n-1}</code>  <a href="classmim_1_1ast_1_1TuplePtrn.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1TypeExpr.html">TypeExpr</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classmim_1_1Type.html">Type</a> level</code>  <a href="classmim_1_1ast_1_1TypeExpr.html#details">More...</a><br /></td></tr>
@@ -278,31 +281,8 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a34bc31636965297acb1596eeeb396b29" id="r_a34bc31636965297acb1596eeeb396b29"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34bc31636965297acb1596eeeb396b29">Look_Ahead</a> = 2</td></tr>
 <tr class="separator:a34bc31636965297acb1596eeeb396b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4b52dbb4d1c2d76a66fbdd47af52ea9" id="r_ab4b52dbb4d1c2d76a66fbdd47af52ea9"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b52dbb4d1c2d76a66fbdd47af52ea9">Num_Keys</a> = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td></tr>
+<tr class="memitem:ab4b52dbb4d1c2d76a66fbdd47af52ea9" id="r_ab4b52dbb4d1c2d76a66fbdd47af52ea9"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b52dbb4d1c2d76a66fbdd47af52ea9">Num_Keys</a> = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td></tr>
 <tr class="separator:ab4b52dbb4d1c2d76a66fbdd47af52ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">Precedence</h2></td></tr>
-<tr class="memitem:afc6cb12ae859bd6554aebf244d2db28a" id="r_afc6cb12ae859bd6554aebf244d2db28a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> { <br />
-&#160;&#160;<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aab47f6a6092c5d7e4bffec12dff309c3b">Err</a>
-, <br />
-&#160;&#160;<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aa1448e86d90e0feb307c2894c24e87767">Bot</a>
-, <br />
-&#160;&#160;<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aab3c5b21d2cb47cc950fd4667edaf404c">Where</a>
-, <br />
-&#160;&#160;<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aa0f4e1aaabd074689b7d3ead824d1ee8e">Arrow</a>
-, <br />
-&#160;&#160;<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aa127125672f1e85d1e676d4394d24e066">Pi</a>
-, <br />
-&#160;&#160;<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aaac863f346e618f9a959b5c95d5d28941">App</a>
-, <br />
-&#160;&#160;<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aa97478353818fc5590dc34b57b81a4b23">Extract</a>
-, <br />
-&#160;&#160;<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aae5e556ecf935270736f5e46e73db06e4">Lit</a>
-<br />
- }</td></tr>
-<tr class="separator:afc6cb12ae859bd6554aebf244d2db28a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50e9195843afe95df3aa715f91e1b32b" id="r_a50e9195843afe95df3aa715f91e1b32b"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50e9195843afe95df3aa715f91e1b32b">is_rassoc</a> (<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> p)</td></tr>
-<tr class="separator:a50e9195843afe95df3aa715f91e1b32b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="structmim_1_1ast_1_1AnnexInfo_8id" id="structmim_1_1ast_1_1AnnexInfo_8id"></a>
@@ -392,7 +372,7 @@ tag</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00636">636</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00672">672</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 </div>
 </div>
@@ -424,7 +404,7 @@ tag</td>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00637">637</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00673">673</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 </div>
 </div>
@@ -480,71 +460,7 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="afc6cb12ae859bd6554aebf244d2db28a" name="afc6cb12ae859bd6554aebf244d2db28a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc6cb12ae859bd6554aebf244d2db28a">&#9670;&#160;</a></span>Prec</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">mim::ast::Prec</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afc6cb12ae859bd6554aebf244d2db28aab47f6a6092c5d7e4bffec12dff309c3b" name="afc6cb12ae859bd6554aebf244d2db28aab47f6a6092c5d7e4bffec12dff309c3b"></a>Err&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="afc6cb12ae859bd6554aebf244d2db28aa1448e86d90e0feb307c2894c24e87767" name="afc6cb12ae859bd6554aebf244d2db28aa1448e86d90e0feb307c2894c24e87767"></a>Bot&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="afc6cb12ae859bd6554aebf244d2db28aab3c5b21d2cb47cc950fd4667edaf404c" name="afc6cb12ae859bd6554aebf244d2db28aab3c5b21d2cb47cc950fd4667edaf404c"></a>Where&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="afc6cb12ae859bd6554aebf244d2db28aa0f4e1aaabd074689b7d3ead824d1ee8e" name="afc6cb12ae859bd6554aebf244d2db28aa0f4e1aaabd074689b7d3ead824d1ee8e"></a>Arrow&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="afc6cb12ae859bd6554aebf244d2db28aa127125672f1e85d1e676d4394d24e066" name="afc6cb12ae859bd6554aebf244d2db28aa127125672f1e85d1e676d4394d24e066"></a>Pi&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="afc6cb12ae859bd6554aebf244d2db28aaac863f346e618f9a959b5c95d5d28941" name="afc6cb12ae859bd6554aebf244d2db28aaac863f346e618f9a959b5c95d5d28941"></a>App&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="afc6cb12ae859bd6554aebf244d2db28aa97478353818fc5590dc34b57b81a4b23" name="afc6cb12ae859bd6554aebf244d2db28aa97478353818fc5590dc34b57b81a4b23"></a>Extract&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="afc6cb12ae859bd6554aebf244d2db28aae5e556ecf935270736f5e46e73db06e4" name="afc6cb12ae859bd6554aebf244d2db28aae5e556ecf935270736f5e46e73db06e4"></a>Lit&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00106">106</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a50e9195843afe95df3aa715f91e1b32b" name="a50e9195843afe95df3aa715f91e1b32b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50e9195843afe95df3aa715f91e1b32b">&#9670;&#160;</a></span>is_rassoc()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool mim::ast::is_rassoc </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00117">117</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
-
-<p class="reference">References <a class="el" href="#afc6cb12ae859bd6554aebf244d2db28aa0f4e1aaabd074689b7d3ead824d1ee8e">Arrow</a>.</p>
-
-</div>
-</div>
 <a id="a5fe7be09bffcd1f540353919cc95ee07" name="a5fe7be09bffcd1f540353919cc95ee07"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5fe7be09bffcd1f540353919cc95ee07">&#9670;&#160;</a></span>load_plugins() <span class="overload">[1/4]</span></h2>
 
@@ -568,7 +484,7 @@ template&lt;class T &gt; </div>
 
 <p class="reference">References <a class="el" href="flags_8h_source.html#l00017">mim::Flags::bootstrap</a>, <a class="el" href="world_8h_source.html#l00081">mim::World::driver()</a>, <a class="el" href="driver_8h_source.html#l00023">mim::Driver::flags()</a>, and <a class="el" href="driver_8cpp_source.html#l00053">mim::Driver::load()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8h_source.html#l00959">load_plugins()</a>, <a class="el" href="ast_8h_source.html#l00958">load_plugins()</a>, and <a class="el" href="ast_8h_source.html#l00955">load_plugins()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8h_source.html#l00996">load_plugins()</a>, <a class="el" href="ast_8h_source.html#l00995">load_plugins()</a>, and <a class="el" href="ast_8h_source.html#l00992">load_plugins()</a>.</p>
 
 </div>
 </div>
@@ -599,7 +515,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00959">959</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00996">996</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00190">load_plugins()</a>.</p>
 
@@ -632,7 +548,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00958">958</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00995">995</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00190">load_plugins()</a>.</p>
 
@@ -665,7 +581,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00955">955</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00992">992</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00190">load_plugins()</a>.</p>
 
@@ -729,7 +645,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto mim::ast::Num_Keys = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td>
+          <td class="memname">auto mim::ast::Num_Keys = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td>
         </tr>
       </table>
   </td>
@@ -739,7 +655,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00054">54</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00055">55</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>

@@ -123,21 +123,21 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md66">Building</a>
+    <a href="#autotoc_md67">Building</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md67">Install</a>
+        <a href="#autotoc_md68">Install</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md68">Build Switches</a>
+        <a href="#autotoc_md69">Build Switches</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md69">Dependencies</a>
+    <a href="#autotoc_md70">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md70">MimIR vs Mim</a>
+    <a href="#autotoc_md71">MimIR vs Mim</a>
   </li>
 </ul>
 </div>
@@ -158,7 +158,7 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 </ul>
 <p>In contrast to other CoC-based program representations such as <a href="https://coq.inria.fr/">Coq</a> or <a href="https://leanprover.github.io/">Lean</a>, MimIR is <em>not</em> a theorem prover but focuses on generating efficient code. For this reason, MimIR explicitly features mutable state and models imperative control flow with <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style (CPS)</a>.</p>
 <p>You can use MimIR either via it's C++-API or through its frontend language <a class="el" href="langref.html#md_docs_2langref">Mim</a>.</p>
-<h1><a class="anchor" id="autotoc_md66"></a>
+<h1><a class="anchor" id="autotoc_md67"></a>
 Building</h1>
 <p>If you have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account setup with SSH</a>, just do this:</p>
 <div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:AnyDSL/MimIR.git</div>
@@ -169,12 +169,12 @@ Building</h1>
 <div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</div>
 <div class="line">cmake --build build -j $(nproc)</div>
 </div><!-- fragment --><p>For a <code>Release</code> build simply use <code>-DCMAKE_BUILD_TYPE=Release</code>.</p>
-<h2><a class="anchor" id="autotoc_md67"></a>
+<h2><a class="anchor" id="autotoc_md68"></a>
 Install</h2>
 <p>If you want to install MimIR, specify an install prefix and build the target <code>install</code>:</p>
 <div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix</div>
 <div class="line">cmake --build build -j $(nproc) -t install</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md68"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md69"></a>
 Build Switches</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -200,7 +200,7 @@ Build Switches</h2>
 <td class="markdownTableBodyNone"><code>MIM_LIT_WITH_VALGRIND</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, the Mim CLI in the lit tests will be run under valgrind. <br  />
  (requires <code>BUILD_TESTING=ON</code>).   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md69"></a>
+<h1><a class="anchor" id="autotoc_md70"></a>
 Dependencies</h1>
 <p>In addition to the provided <a href="https://github.com/AnyDSL/MimIR/tree/master/external">submodules</a>:</p>
 <ul>
@@ -210,7 +210,7 @@ Dependencies</h1>
 <p class="startli">Simply toss the emitted <code>*.ll</code> file to your system's LLVM toolchain. But technically, you don't need LLVM.</p>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md70"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 MimIR vs Mim</h1>
 <p>MimIR is a recursive acronym for <em>MimIR is my intermediate Representation</em>. <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir or Mim</a> is also a figure in Norse mythology, renowned for his knowledge and wisdom, who is beheaded during the &AElig;sir–Vanir War. Afterward, the god Odin carries around Mímir's head and it recites secret knowledge and counsel to him. Now, you have Mímir's head at your fingertips.</p>
 <p>We use the term <b>MimIR</b>, if we speak of the internal graph-based representation and its C++-API, and the term <b>Mim</b>, if we mean MimIR's frontend language. To keep things short and simple, all code consistently uses <code>mim</code> or <code>MIM</code> for namespaces, macro prefixes, etc. And if in doubt, just use <b>Mim</b>. </p>

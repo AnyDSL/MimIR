@@ -134,8 +134,8 @@ $(function(){initNavTree('lower__for_8h_source.html',''); initResizable(true); }
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/// con %affine.For_impl</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">///     (m: Nat , n: Nat , Ts: «n; *»)</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">///     (begin: Idx m, end: Idx m, step: Idx m, init: «i: n; Ts#i»,</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">///             body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn [«i: n; Ts#i»]],</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">///             exit: Cn [«i: n; Ts#i»]</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">///             body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">///             exit: Cn «i: n; Ts#i»</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">///     ) =</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">///     con head(iter: Idx m, acc: «i: n; Ts#i») =</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">///         con new_body() = body (iter, acc, cn acc: «i: n; Ts#i» =</span></div>
