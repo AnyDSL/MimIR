@@ -20,4 +20,4 @@ let %tensor.Ring = [
 ];
 
 axm %tensor.matmul: [R: %tensor.Ring] → [l m n: Nat]
-                 →  [A: <<l, m; R#T>>, B: <<n, m; R#T>>] →  <<l, n; R#T>>;
+                 →  [A: «l, m; R#T», B: «n, m; R#T»] → «l, n; R#T», normalize_matmul;
