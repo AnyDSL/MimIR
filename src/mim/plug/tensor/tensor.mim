@@ -1,0 +1,23 @@
+/// # The tensor Plugin {#tensor}
+///
+/// @see mim::tensor
+///
+/// [TOC]
+///
+/// A minimal tensor plugin
+///
+/// ## Operations
+///
+/// ### %%tensor.const_idx
+///
+/// The 42 constant, evaluated using a normalizer
+
+let %tensor.Ring = [
+    T:   *,             // element type
+    _0:  T,             // zero element
+    add: [T, T] -> T,
+    mul: [T, T] -> T,
+];
+
+axm %tensor.matmul: [R: %tensor.Ring] → [l m n: Nat]
+                 →  [A: <<l, m; R#T>>, B: <<n, m; R#T>>] →  <<l, n; R#T>>;

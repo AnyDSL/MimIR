@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <ranges>
 
 #include "mim/driver.h"
 
@@ -314,20 +315,29 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
     auto track = tracker();
     eat(arr ? Tag::D_quote_l : Tag::D_angle_l);
 
-    Dbg dbg;
-    if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon)) {
-        dbg = eat(Tag::M_id).dbg();
-        eat(Tag::T_colon);
-    }
+    std::deque<std::pair<Ptr<IdPtrn>, Ptr<Expr>>> shapes;
 
-    auto shape = parse_expr(arr ? "shape of an array" : "shape of a pack");
-    auto ptrn  = IdPtrn::mk_id(ast(), dbg, std::move(shape));
+    do {
+        Dbg dbg;
+        if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon)) {
+            dbg = eat(Tag::M_id).dbg();
+            eat(Tag::T_colon);
+        }
+
+        auto expr = parse_expr(arr ? "shape of an array" : "shape of a pack");
+        auto ptrn = IdPtrn::mk_id(ast(), dbg, std::move(expr));
+        shapes.emplace_back(std::move(ptrn), std::move(expr));
+    } while (accept(Tag::T_comma));
+
     expect(Tag::T_semicolon, arr ? "array" : "pack");
     auto body = parse_expr(arr ? "body of an array" : "body of a pack");
     expect(arr ? Tag::D_quote_r : Tag::D_angle_r,
            arr ? "closing delimiter of an array" : "closing delimiter of a pack");
 
-    return ptr<ArrOrPackExpr<arr>>(track, std::move(ptrn), std::move(body));
+    for (auto& [ptrn, expr] : shapes | std::ranges::views::reverse)
+        body = ptr<ArrOrPackExpr<arr>>(track, std::move(ptrn), std::move(body));
+
+    return body;
 }
 
 Ptr<Expr> Parser::parse_decl_expr() {
