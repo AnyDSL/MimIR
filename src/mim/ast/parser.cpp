@@ -321,7 +321,7 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
     }
 
     auto shape = parse_expr(arr ? "shape of an array" : "shape of a pack");
-    auto ptrn  = IdPtrn::mk_id(ast(), dbg, std::move(shape));
+    auto ptrn  = ptr<TypePtrn>(ast(), dbg, std::move(shape));
     expect(Tag::T_semicolon, arr ? "array" : "pack");
     auto body = parse_expr(arr ? "body of an array" : "body of a pack");
     expect(arr ? Tag::D_quote_r : Tag::D_angle_r,
@@ -440,8 +440,6 @@ Ptr<Ptrn> Parser::parse_ptrn(PtrnStyle style, std::string_view ctxt, bool implic
 }
 
 Ptr<Ptrn> Parser::parse_ptrn_(PtrnStyle style, std::string_view ctxt, bool implicit, Expr::Prec prec) {
-    auto track = tracker();
-
     // p -> (p, ..., p)
     if (style == PtrnStyle::Paren && ahead().isa(Tag::D_paren_l)) return parse_tuple_ptrn(style);
     // p -> {b, ..., b}     b -> {b, ..., b}
@@ -455,22 +453,21 @@ Ptr<Ptrn> Parser::parse_ptrn_(PtrnStyle style, std::string_view ctxt, bool impli
             auto dbg = eat(Tag::M_id).dbg();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return ptr<IdPtrn>(track, dbg, std::move(type));
+            return ptr<TypePtrn>(ast(), dbg, std::move(type));
         } else if (style == PtrnStyle::Paren) {
             // p ->  s
             // p -> `s
             auto dbg = eat(Tag::M_id).dbg();
-            return ptr<IdPtrn>(track, dbg, nullptr);
+            return ptr<IdPtrn>(dbg);
         } else {
-            // b -> e   where e == id
+            // b -> e   where e == id ...
             auto type = parse_expr(ctxt, prec);
-            return ptr<IdPtrn>(track, type->loc().anew_begin(), std::move(type));
+            return ptr<TypePtrn>(ast(), std::move(type));
         }
     } else if (style == PtrnStyle::Brckt) {
         // b -> e   where e != id
         auto type = parse_expr(ctxt, prec);
-        auto loc  = type->loc().anew_begin();
-        return ptr<IdPtrn>(track, Dbg(loc), std::move(type));
+        return ptr<TypePtrn>(ast(), std::move(type));
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -494,13 +491,13 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(PtrnStyle style) {
             while (auto tok = accept(Tag::M_id)) dbgs.emplace_back(tok.dbg());
 
             if (accept(Tag::T_colon)) { // identifier group: x y x: T
-                auto dbg  = dbgs.back();
-                auto type = parse_expr("type of an identifier group within a tuple pattern");
-                auto id   = ptr<IdPtrn>(dbg.loc() + type->loc().finis, dbg, std::move(type));
+                auto dbg   = dbgs.back();
+                auto type  = parse_expr("type of an identifier group within a tuple pattern");
+                auto typep = ptr<TypePtrn>(ast(), dbg, std::move(type));
 
                 for (auto dbg : dbgs | std::views::take(dbgs.size() - 1))
-                    ptrns.emplace_back(ptr<GrpPtrn>(dbg, id.get()));
-                ptrns.emplace_back(std::move(id));
+                    ptrns.emplace_back(ptr<GrpPtrn>(dbg, typep.get()));
+                ptrns.emplace_back(std::move(typep));
                 return;
             }
 
@@ -511,26 +508,23 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(PtrnStyle style) {
                 lhs      = ptr<AppExpr>(track, false, std::move(lhs), std::move(rhs));
             }
             auto expr = parse_infix_expr(track, std::move(lhs), Expr::Prec::App);
-            ptrn      = IdPtrn::mk_type(ast(), std::move(expr));
+            ptrn      = ptr<TypePtrn>(ast(), std::move(expr));
         } else {
             ptrn = parse_ptrn(style, "element of a tuple pattern");
 
             if (style == PtrnStyle::Brckt) {
                 // [..., [Nat, Nat] -> Nat, ...] ==> [..., _: [Nat, Nat] -> Nat, ...]
                 if (ahead().isa(Tag::T_arrow)) {
-                    auto loc  = ptrn->loc();
                     auto expr = parse_pi_expr(std::move(ptrn));
-                    ptrn      = ptr<IdPtrn>(loc, Dbg(loc.anew_begin(), Sym()), std::move(expr));
+                    ptrn      = ptr<TypePtrn>(ast(), std::move(expr));
                 } else if (auto expr = Ptrn::to_expr(ast(), std::move(ptrn))) {
                     // If we are able to parse more stuff, we got an expr instead of a binder
                     auto addr = expr.get();
                     expr      = parse_infix_expr(track, std::move(expr));
-                    if (expr.get() != addr) {
-                        auto loc = expr->loc();
-                        ptrn     = ptr<IdPtrn>(loc, Dbg(loc.anew_begin(), Sym()), std::move(expr));
-                    } else {
-                        if (!ptrn) ptrn = Ptrn::to_ptrn(std::move(expr));
-                    }
+                    if (expr.get() != addr)
+                        ptrn = ptr<TypePtrn>(ast(), std::move(expr));
+                    else if (!ptrn)
+                        ptrn = Ptrn::to_ptrn(std::move(expr));
                 }
             }
         }
@@ -608,7 +602,7 @@ Ptr<ValDecl> Parser::parse_let_decl() {
     Ptr<Ptrn> ptrn;
     if (auto anx = accept(Tok::Tag::M_anx)) {
         auto type = parse_type_ascr();
-        ptrn      = ptr<IdPtrn>(track, anx.dbg(), std::move(type));
+        ptrn      = ptr<TypePtrn>(ast(), anx.dbg(), std::move(type));
     } else {
         ptrn = parse_ptrn(PtrnStyle::Paren, "binding pattern of a let declaration");
     }

@@ -164,15 +164,15 @@ LamExpr::LamExpr(Ptr<LamDecl>&& lam)
  * Ptrn::to_expr/to_ptrn
  */
 
-Ptr<Expr> Ptrn::to_expr(AST& ast, Ptr<Ptrn>&& ptrn) {
-    if (auto idp = ptrn->isa<IdPtrn>(); idp && !idp->dbg() && idp->type()) {
-        if (auto ide = idp->type()->isa<IdExpr>()) return ast.ptr<IdExpr>(ide->dbg());
-    } else if (auto tuple = ptrn->isa<TuplePtrn>(); tuple && tuple->is_brckt()) {
-        (void)ptrn.release();
-        return ast.ptr<SigmaExpr>(Ptr<TuplePtrn>(tuple));
-    }
-    return {};
-}
+// Ptr<Expr> Ptrn::to_expr(AST& ast, Ptr<Ptrn>&& ptrn) {
+//     if (auto idp = ptrn->isa<IdPtrn>(); idp && !idp->dbg() && idp->type()) {
+//         if (auto ide = idp->type()->isa<IdExpr>()) return ast.ptr<IdExpr>(ide->dbg());
+//     } else if (auto tuple = ptrn->isa<TuplePtrn>(); tuple && tuple->is_brckt()) {
+//         (void)ptrn.release();
+//         return ast.ptr<SigmaExpr>(Ptr<TuplePtrn>(tuple));
+//     }
+//     return {};
+// }
 
 Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
     if (auto sigma = expr->isa<SigmaExpr>())

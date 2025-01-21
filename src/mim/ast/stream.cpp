@@ -53,13 +53,17 @@ std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
 std::ostream& ErrorPtrn::stream(Tab&, std::ostream& os) const { return os << "<error pattern>"; }
 std::ostream& AliasPtrn::stream(Tab& tab, std::ostream& os) const { return print(os, "{}: {}", S(tab, ptrn()), dbg()); }
 std::ostream& GrpPtrn::stream(Tab&, std::ostream& os) const { return os << dbg(); }
+std::ostream& IdPtrn::stream(Tab&, std::ostream& os) const { return os << dbg(); }
 
-std::ostream& IdPtrn::stream(Tab& tab, std::ostream& os) const {
-    // clang-format off
-    if ( dbg() &&  type()) return print(os, "{}: {}", dbg(), S(tab, type()));
-    if ( dbg() && !type()) return print(os, "{}", dbg());
-    if (!dbg() &&  type()) return print(os, "{}", S(tab, type()));
-    // clang-format on
+std::ostream& TypePtrn::stream(Tab& tab, std::ostream& os) const {
+    if (auto id = ptrn()->isa<IdPtrn>()) {
+        assert(id->dbg());
+        // clang-format off
+        if ( id->dbg() &&  type()) return print(os, "{}: {}", id->dbg(), S(tab, type()));
+        if ( id->dbg() && !type()) return print(os, "{}", id->dbg());
+        if (!id->dbg() &&  type()) return print(os, "{}", S(tab, type()));
+        // clang-format on
+    }
     return os << "<invalid identifier pattern>";
 }
 

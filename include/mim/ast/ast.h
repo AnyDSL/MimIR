@@ -210,25 +210,23 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 };
 
-/// `dbg: type`
+/// `dbg`
 class IdPtrn : public Ptrn {
 public:
-    IdPtrn(Loc loc, Dbg dbg, Ptr<Expr>&& type)
-        : Ptrn(loc)
-        , dbg_(dbg)
-        , type_(std::move(type)) {}
+    IdPtrn(Dbg dbg)
+        : Ptrn(dbg.loc())
+        , dbg_(dbg) {}
 
     Dbg dbg() const { return dbg_; }
-    const Expr* type() const { return type_.get(); }
 
-    static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
-        auto loc = type->loc();
-        return ast.ptr<IdPtrn>(loc, Dbg(loc, ast.sym_anon()), std::move(type));
-    }
-    static Ptr<IdPtrn> mk_id(AST& ast, Dbg dbg, Ptr<Expr>&& type) {
-        auto loc = (type && dbg) ? dbg.loc() + type->loc() : type ? type->loc() : dbg.loc();
-        return ast.ptr<IdPtrn>(loc, dbg, std::move(type));
-    }
+    // static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
+    //     auto loc = type->loc();
+    //     return ast.ptr<IdPtrn>(loc, Dbg(loc, ast.sym_anon()), std::move(type));
+    // }
+    // static Ptr<IdPtrn> mk_id(AST& ast, Dbg dbg, Ptr<Expr>&& type) {
+    //     auto loc = (type && dbg) ? dbg.loc() + type->loc() : type ? type->loc() : dbg.loc();
+    //     return ast.ptr<IdPtrn>(loc, dbg, std::move(type));
+    // }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
     Ref emit_value(Emitter&, Ref) const override;
@@ -237,19 +235,53 @@ public:
 
 private:
     Dbg dbg_;
+};
+
+/// `ptrn: type`
+class TypePtrn : public Ptrn {
+public:
+    TypePtrn(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& type) ///< `ptrn: type`
+        : Ptrn(loc)
+        , ptrn_(std::move(ptrn))
+        , type_(std::move(type)) {}
+    TypePtrn(AST& ast, Ptr<Expr>&& type) ///< `_: type`
+        : Ptrn(type->loc())
+        , ptrn_(ast.ptr<IdPtrn>(ast.sym_anon()))
+        , type_(std::move(type)) {}
+    TypePtrn(AST& ast, Dbg dbg, Ptr<Expr>&& type) /// `dbg: type`
+        : Ptrn((type && dbg) ? dbg.loc() + type->loc()
+               : type        ? type->loc()
+                             : dbg.loc())
+        , ptrn_(ast.ptr<IdPtrn>(dbg))
+        , type_(std::move(type)) {}
+
+    bool is_anon() const {
+        if (auto id = ptrn()->isa<IdPtrn>()) return id->dbg().is_anon();
+        return false;
+    }
+    const Ptrn* ptrn() const { return ptrn_.get(); }
+    const Expr* type() const { return type_.get(); }
+
+    void bind(Scopes&, bool rebind, bool quiet) const override;
+    Ref emit_value(Emitter&, Ref) const override;
+    Ref emit_type(Emitter&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Ptr<Ptrn> ptrn_;
     Ptr<Expr> type_;
 };
 
 /// `dbg_0 ... dbg_n-2 id` where `id` = `dbg_n-1: type`
 class GrpPtrn : public Ptrn {
 public:
-    GrpPtrn(Dbg dbg, const IdPtrn* id)
+    GrpPtrn(Dbg dbg, const TypePtrn* type)
         : Ptrn(dbg.loc())
         , dbg_(dbg)
-        , id_(id) {}
+        , type_(type) {}
 
     Dbg dbg() const { return dbg_; }
-    const IdPtrn* id() const { return id_; }
+    const TypePtrn* type() const { return type_; }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
     Ref emit_value(Emitter&, Ref) const override;
@@ -258,7 +290,7 @@ public:
 
 private:
     Dbg dbg_;
-    const IdPtrn* id_;
+    const TypePtrn* type_;
 };
 
 /// `ptrn as id`
@@ -486,11 +518,11 @@ public:
 
         bool implicit() const { return ptrn_->implicit(); }
         const Ptrn* ptrn() const { return ptrn_.get(); }
-        const IdPtrn* ret() const { return ret_.get(); }
+        const TypePtrn* ret() const { return ret_.get(); }
 
         void add_ret(AST& ast, Ptr<Expr>&& type) const {
             auto loc = type->loc();
-            ret_     = ast.ptr<IdPtrn>(loc, Dbg(loc, ast.sym_return()), std::move(type));
+            ret_     = ast.ptr<TypePtrn>(ast, Dbg(loc, ast.sym_return()), std::move(type));
         }
 
         virtual void bind(Scopes& scopes, bool quiet = false) const;
@@ -503,7 +535,7 @@ public:
 
     private:
         Ptr<Ptrn> ptrn_;
-        mutable Ptr<IdPtrn> ret_;
+        mutable Ptr<TypePtrn> ret_;
 
         friend class PiExpr;
     };
@@ -651,12 +683,12 @@ private:
 /// `«dbg: shape; body»` or `‹dbg: shape; body›`
 template<bool arr> class ArrOrPackExpr : public Expr {
 public:
-    ArrOrPackExpr(Loc loc, Ptr<IdPtrn>&& shape, Ptr<Expr>&& body)
+    ArrOrPackExpr(Loc loc, Ptr<TypePtrn>&& shape, Ptr<Expr>&& body)
         : Expr(loc)
         , shape_(std::move(shape))
         , body_(std::move(body)) {}
 
-    const IdPtrn* shape() const { return shape_.get(); }
+    const TypePtrn* shape() const { return shape_.get(); }
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
@@ -665,7 +697,7 @@ public:
 private:
     Ref emit_(Emitter&) const override;
 
-    Ptr<IdPtrn> shape_;
+    Ptr<TypePtrn> shape_;
     Ptr<Expr> body_;
 };
 

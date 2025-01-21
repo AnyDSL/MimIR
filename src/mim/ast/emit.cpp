@@ -51,12 +51,7 @@ void Import::emit(Emitter& e) const { module()->emit(e); }
  */
 
 Ref ErrorPtrn::emit_value(Emitter&, Ref def) const { return def; }
-
-Ref IdPtrn::emit_value(Emitter& e, Ref def) const {
-    emit_type(e);
-    return def_ = def->set(dbg());
-}
-
+Ref IdPtrn::emit_value(Emitter&, Ref def) const { return def_ = def->set(dbg()); }
 Ref GrpPtrn::emit_value(Emitter&, Ref def) const { return def_ = def->set(dbg()); }
 
 Ref AliasPtrn::emit_value(Emitter& e, Ref def) const { return def_ = ptrn()->emit_value(e, def)->set(dbg()); }
@@ -76,13 +71,16 @@ Ref ErrorPtrn::emit_type(Emitter&) const { fe::unreachable(); }
 
 Ref IdPtrn::emit_type(Emitter& e) const {
     auto _ = e.world().push(loc());
-    return type() ? type()->emit(e) : e.world().mut_infer_type();
+    return e.world().mut_infer_type();
+}
+
+Ref TypePtrn::emit_type(Emitter& e) const {
+    ptrn()->emit_type(e);
+    return type()->emit(e);
 }
 
 Ref AliasPtrn::emit_type(Emitter& e) const { return ptrn()->emit_type(e); }
-
-Ref GrpPtrn::emit_type(Emitter& e) const { return id()->emit_type(e); }
-
+Ref GrpPtrn::emit_type(Emitter& e) const { return type()->emit_type(e); }
 Ref TuplePtrn::emit_type(Emitter& e) const { return emit_body(e, {}); }
 
 Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
@@ -283,7 +281,7 @@ Ref TupleExpr::emit_(Emitter& e) const {
 
 template<bool arr> Ref ArrOrPackExpr<arr>::emit_(Emitter& e) const {
     auto s = shape()->emit_type(e);
-    if (shape()->dbg().is_anon()) { // immutable
+    if (shape()->is_anon()) { // immutable
         auto b = body()->emit(e);
         return arr ? e.world().arr(s, b) : e.world().pack(s, b);
     }
