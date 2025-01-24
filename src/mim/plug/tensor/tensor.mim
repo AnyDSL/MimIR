@@ -4,13 +4,13 @@
 ///
 /// [TOC]
 ///
+/// ## Dependencies
+///
+import compile;
+///
 /// A minimal tensor plugin
 ///
 /// ## Operations
-///
-/// ### %%tensor.const_idx
-///
-/// The 42 constant, evaluated using a normalizer
 
 let %tensor.Ring = [
     T:   *,             // element type
@@ -20,4 +20,8 @@ let %tensor.Ring = [
 ];
 
 axm %tensor.matmul: [R: %tensor.Ring] → [l m n: Nat]
-                 →  [A: «l, m; R#T», B: «n, m; R#T»] → «l, n; R#T», normalize_matmul;
+                 →  [A: «l, m; R#T», B: «m, n; R#T»] → «l, n; R#T», normalize_matmul;
+
+/// ### Phases
+///
+axm %tensor.matmul_phase: %compile.Phase;

@@ -12,8 +12,14 @@ public:
         : world_(world) {}
 
     World& world() { return world_; }
+
     /// Map @p old_def to @p new_def and returns @p new_def;
     Ref map(Ref old_def, Ref new_def) { return old2new_[old_def] = new_def; }
+
+    Ref old2new(Ref new_def) {
+        if (auto i = old2new_.find(new_def); i != old2new_.end()) return i->second;
+        return {};
+    }
 
     /// @name rewrite
     /// Recursively rewrite old Def%s.

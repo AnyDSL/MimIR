@@ -15,6 +15,11 @@ Ref normalize_matmul(Ref type, Ref callee, Ref arg) {
         if (is_zero(zero, a) || is_zero(zero, b)) return mk_zero(zero, *l, *n);
     }
 
+    // (a1 * a2) * b -> a1 * (a2 * b)
+    if (auto a1a2 = match<matmul>(a)) {
+        // return world.call<matmul>(
+    }
+
     return world.raw_app(type, callee, arg);
 }
 

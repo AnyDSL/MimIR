@@ -17,6 +17,7 @@ import direct;
 import matrix;
 import refly;
 import regex;
+import tensor;
 ///
 /// ## Passes, Phases, and Pipelines
 ///
@@ -41,6 +42,7 @@ lam extern _default_compile []: %compile.Pipeline =
                 mem_opt_pass_list
             ))
         )
+        (plugin_cond_phase (%compile.tensor_plugin, %tensor.matmul_phase))
         (plugin_cond_phase
             (%compile.autodiff_plugin,
                 %compile.combined_phase
