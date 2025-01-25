@@ -157,9 +157,10 @@ template TExt<true >*   TExt<true >  ::stub_(World&, Ref);
  * immutabilize
  */
 
-// TODO check for recursion
+// TODO check for mutual recursion
 const Pi* Pi::immutabilize() {
     if (auto var = has_var(); var && codom()->free_vars().contains(var)) return nullptr;
+    if (dom() == this || codom() == this) return nullptr;
     return world().pi(dom(), codom());
 }
 
