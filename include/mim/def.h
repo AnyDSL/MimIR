@@ -515,6 +515,7 @@ public:
     /// Tries to make an immutable from a mutable.
     /// This usually works if the mutable isn't recursive and its var isn't used.
     virtual const Def* immutabilize() { return nullptr; }
+    bool is_immutabilizable();
 
     const Def* refine(size_t i, const Def* new_op) const;
 

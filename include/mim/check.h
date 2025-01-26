@@ -1,7 +1,5 @@
 #pragma once
 
-#include <deque>
-
 #include "mim/def.h"
 
 namespace mim {

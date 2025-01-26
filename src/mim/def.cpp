@@ -157,22 +157,27 @@ template TExt<true >*   TExt<true >  ::stub_(World&, Ref);
  * immutabilize
  */
 
-// TODO check for mutual recursion
+// TODO also check for mutual recursion?
+bool Def::is_immutabilizable() {
+    auto v = has_var();
+    for (auto op : extended_ops())
+        if ((v && op->free_vars().contains(v)) || op->local_muts().contains(this)) return false;
+    return true;
+}
+
 const Pi* Pi::immutabilize() {
-    if (auto var = has_var(); var && codom()->free_vars().contains(var)) return nullptr;
-    if (dom() == this || codom() == this) return nullptr;
-    return world().pi(dom(), codom());
+    if (is_immutabilizable()) return world().pi(dom(), codom());
+    return nullptr;
 }
 
 const Def* Sigma::immutabilize() {
-    if (auto v = has_var(); v && std::ranges::any_of(ops(), [v](auto op) { return op->free_vars().contains(v); }))
-        return nullptr;
-    return static_cast<const Sigma*>(*world().sigma(ops()));
+    if (is_immutabilizable()) return static_cast<const Sigma*>(*world().sigma(ops()));
+    return nullptr;
 }
 
 const Def* Arr::immutabilize() {
     auto& w = world();
-    if (auto var = has_var(); !var || !body()->free_vars().contains(var)) return w.arr(shape(), body());
+    if (is_immutabilizable()) return w.arr(shape(), body());
 
     if (auto n = Lit::isa(shape()); n && *n < w.flags().scalarize_threshold)
         return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
@@ -182,7 +187,7 @@ const Def* Arr::immutabilize() {
 
 const Def* Pack::immutabilize() {
     auto& w = world();
-    if (auto var = has_var(); !var || !body()->free_vars().contains(var)) return w.pack(shape(), body());
+    if (is_immutabilizable()) return w.pack(shape(), body());
 
     if (auto n = Lit::isa(shape()); n && *n < w.flags().scalarize_threshold)
         return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
