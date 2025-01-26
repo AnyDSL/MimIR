@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"math_2autogen_8h.html#a2ed29920a6ee618bffa2224415faaf72aa6d3a1fa39d85ca9249aac71bf763cbd":[6,0,0,1,0,0,7,0,31,22],
+"math_2autogen_8h.html#a2ed29920a6ee618bffa2224415faaf72aa7cd83fe6a92873f5118a3dd9edeff2d":[6,0,0,1,0,0,7,0,31,8],
 "math_2autogen_8h.html#a2ed29920a6ee618bffa2224415faaf72ab8613bd6a8d7b42a2fec6643bcf08f84":[6,0,0,1,0,0,7,0,31,25],
 "math_2autogen_8h.html#a2ed29920a6ee618bffa2224415faaf72ac07ef80f91e4cf51d66dd02ddcfd4d25":[6,0,0,1,0,0,7,0,31,7],
 "math_2autogen_8h.html#a2ed29920a6ee618bffa2224415faaf72acbdb2632628e9ed7d677a713d9817b0d":[6,0,0,1,0,0,7,0,31,19],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "mem_2autogen_8h.html#afbf5b5fae36f11d5031d0b7672eabf06":[6,0,0,1,0,0,9,0,13],
 "mem_2autogen_8h.html#afec7d4c3b2d264c108c5ab5d5f2cfd43":[6,0,0,1,0,0,9,0,26],
 "mem_2autogen_8h_source.html":[6,0,0,1,0,0,9,0],
-"mem_2normalizers_8cpp.html":[6,0,3,1,5,9,3],
-"mem_2normalizers_8cpp.html#a3a75785fe3ab7ee7daa574c80cbe01f2":[6,0,3,1,5,9,3,0],
-"mem_2normalizers_8cpp.html#a49d297add0b5919db09ab5791af40767":[6,0,3,1,5,9,3,2]
+"mem_2normalizers_8cpp.html":[6,0,3,1,5,9,3]
 };

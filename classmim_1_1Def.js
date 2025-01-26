@@ -34,6 +34,7 @@ var classmim_1_1Def =
     [ "immutabilize", "classmim_1_1Def.html#a8080a9a8bd58ffad7a1759c4e2efc952", null ],
     [ "is_closed", "classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69", null ],
     [ "is_external", "classmim_1_1Def.html#a6fc1ebb1ac4c1458a432b1cbaffbf9af", null ],
+    [ "is_immutabilizable", "classmim_1_1Def.html#a6c53a687bf33a26663eb3c11c06f53fc", null ],
     [ "is_open", "classmim_1_1Def.html#a7944689314d207575d41902eae1eeddc", null ],
     [ "is_set", "classmim_1_1Def.html#a075f30462bdc7ae0e435c8e15cb48fff", null ],
     [ "is_term", "classmim_1_1Def.html#a648a10d226521d9f30d10973296476b3", null ],

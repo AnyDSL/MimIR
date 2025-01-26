@@ -402,6 +402,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8080a9a8bd58ffad7a1759c4e2efc952 inherit pub_methods_classmim_1_1Def" id="r_a8080a9a8bd58ffad7a1759c4e2efc952"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a8080a9a8bd58ffad7a1759c4e2efc952">immutabilize</a> ()</td></tr>
 <tr class="memdesc:a8080a9a8bd58ffad7a1759c4e2efc952 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to make an immutable from a mutable.  <br /></td></tr>
 <tr class="separator:a8080a9a8bd58ffad7a1759c4e2efc952 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c53a687bf33a26663eb3c11c06f53fc inherit pub_methods_classmim_1_1Def" id="r_a6c53a687bf33a26663eb3c11c06f53fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a6c53a687bf33a26663eb3c11c06f53fc">is_immutabilizable</a> ()</td></tr>
+<tr class="separator:a6c53a687bf33a26663eb3c11c06f53fc inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a306749207e1a4e552e5f5dcacb0bac73 inherit pub_methods_classmim_1_1Def" id="r_a306749207e1a4e552e5f5dcacb0bac73"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a306749207e1a4e552e5f5dcacb0bac73">refine</a> (size_t i, const <a class="el" href="classmim_1_1Def.html">Def</a> *new_op) const</td></tr>
 <tr class="separator:a306749207e1a4e552e5f5dcacb0bac73 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d623954ac817640bac83d8edccd6a84 inherit pub_methods_classmim_1_1Def" id="r_a6d623954ac817640bac83d8edccd6a84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a6d623954ac817640bac83d8edccd6a84">reduce</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *arg) const</td></tr>
@@ -533,7 +535,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>This node is a hole in the IR that is inferred by its context later on. </p>
 <p>It is modelled as a *mut*able <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>. If inference was successful, it's <a class="el" href="#a92c3c77a9610d3d9c1351a493b03090c">Infer::op</a> will be set to the inferred <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00012">12</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00010">10</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0301ee9e60f3a42b29708de14433b04a" name="a0301ee9e60f3a42b29708de14433b04a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0301ee9e60f3a42b29708de14433b04a">&#9670;&#160;</a></span>eliminate()</h2>
@@ -563,7 +565,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00062">62</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, <a class="el" href="check_8h_source.html#l00031">should_eliminate()</a>, and <a class="el" href="def_8cpp_source.html#l00416">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, <a class="el" href="check_8h_source.html#l00029">should_eliminate()</a>, and <a class="el" href="def_8cpp_source.html#l00421">mim::Def::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00186">mim::World::app()</a>.</p>
 
@@ -597,7 +599,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00029">29</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00447">mim::Def::isa_mut()</a>, <a class="el" href="def_8h_source.html#l00269">mim::Def::op()</a>, <a class="el" href="check_8h_source.html#l00022">op()</a>, <a class="el" href="check_8cpp_source.html#l00027">mim::Ref::refer()</a>, <a class="el" href="def_8h_source.html#l00291">mim::Def::reset()</a>, and <a class="el" href="def_8h_source.html#l00299">mim::Def::update()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00447">mim::Def::isa_mut()</a>, <a class="el" href="def_8h_source.html#l00269">mim::Def::op()</a>, <a class="el" href="check_8h_source.html#l00020">op()</a>, <a class="el" href="check_8cpp_source.html#l00027">mim::Ref::refer()</a>, <a class="el" href="def_8h_source.html#l00291">mim::Def::reset()</a>, and <a class="el" href="def_8h_source.html#l00299">mim::Def::update()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00027">mim::Ref::refer()</a>.</p>
 
@@ -626,11 +628,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00022">22</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00020">20</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00269">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00029">find()</a>, <a class="el" href="check_8h_source.html#l00024">reset()</a>, and <a class="el" href="check_8h_source.html#l00023">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00029">find()</a>, <a class="el" href="check_8h_source.html#l00022">reset()</a>, and <a class="el" href="check_8h_source.html#l00021">set()</a>.</p>
 
 </div>
 </div>
@@ -695,9 +697,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00024">24</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00022">22</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
-<p class="reference">References <a class="el" href="check_8h_source.html#l00022">op()</a>, and <a class="el" href="def_8h_source.html#l00291">mim::Def::reset()</a>.</p>
+<p class="reference">References <a class="el" href="check_8h_source.html#l00020">op()</a>, and <a class="el" href="def_8h_source.html#l00291">mim::Def::reset()</a>.</p>
 
 </div>
 </div>
@@ -724,11 +726,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00023">23</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00021">21</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
-<p class="reference">References <a class="el" href="check_8h_source.html#l00022">op()</a>, and <a class="el" href="def_8cpp_source.html#l00247">mim::Def::set()</a>.</p>
+<p class="reference">References <a class="el" href="check_8h_source.html#l00020">op()</a>, and <a class="el" href="def_8cpp_source.html#l00252">mim::Def::set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8h_source.html#l00038">stub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8h_source.html#l00036">stub()</a>.</p>
 
 </div>
 </div>
@@ -755,7 +757,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00031">31</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00029">29</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00336">mim::Def::has_dep()</a>, <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, and <a class="el" href="def_8h_source.html#l00441">mim::Def::isa_imm()</a>.</p>
 
@@ -786,9 +788,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00038">38</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00036">36</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00466">mim::Def::dbg()</a>, <a class="el" href="check_8h_source.html#l00023">set()</a>, <a class="el" href="def_8cpp_source.html#l00130">stub_()</a>, <a class="el" href="def_8h_source.html#l00248">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00416">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00466">mim::Def::dbg()</a>, <a class="el" href="check_8h_source.html#l00021">set()</a>, <a class="el" href="def_8cpp_source.html#l00130">stub_()</a>, <a class="el" href="def_8h_source.html#l00248">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00421">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -823,7 +825,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00130">130</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8h_source.html#l00038">stub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8h_source.html#l00036">stub()</a>.</p>
 
 </div>
 </div>
@@ -850,9 +852,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00025">25</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00023">23</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00265">mim::Def::unset()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00270">mim::Def::unset()</a>.</p>
 
 </div>
 </div>
@@ -877,7 +879,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00050">50</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00048">48</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
 </div>
 </div>
@@ -901,7 +903,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00049">49</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00047">47</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
 </div>
 </div>
@@ -926,7 +928,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00040">40</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00038">38</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
 </div>
 </div>
