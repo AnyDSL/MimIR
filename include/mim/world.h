@@ -311,10 +311,9 @@ public:
     ///@{
     Ref app(Ref callee, Ref arg);
     Ref app(Ref callee, Defs args) { return app(callee, tuple(args)); }
-    template<bool Normalize = false> Ref raw_app(Ref type, Ref callee, Ref arg);
-    template<bool Normalize = false> Ref raw_app(Ref type, Ref callee, Defs args) {
-        return raw_app<Normalize>(type, callee, tuple(args));
-    }
+    Ref raw_app(const Axiom* axiom, u8 curry, u8 trip, Ref type, Ref callee, Ref arg);
+    Ref raw_app(Ref type, Ref callee, Ref arg);
+    Ref raw_app(Ref type, Ref callee, Defs args) { return raw_app(type, callee, tuple(args)); }
     ///@}
 
     /// @name Sigma

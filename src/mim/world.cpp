@@ -222,19 +222,20 @@ Ref World::app(Ref callee, Ref arg) {
         }
     }
 
-    return unify<App>(2, axiom, curry, trip, type, callee, arg);
+    return raw_app(axiom, curry, trip, type, callee, arg);
 }
 
-template<bool Normalize> Ref World::raw_app(Ref type, Ref callee, Ref arg) {
+Ref World::raw_app(Ref type, Ref callee, Ref arg) {
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
         curry = curry == 0 ? trip : curry;
         curry = curry == Axiom::Trip_End ? curry : curry - 1;
-
-        if (auto normalize = axiom->normalizer(); Normalize && normalize && curry == 0)
-            return normalize(type, callee, arg);
     }
 
+    return raw_app(axiom, curry, trip, type, callee, arg);
+}
+
+Ref World::raw_app(const Axiom* axiom, u8 curry, u8 trip, Ref type, Ref callee, Ref arg) {
     return unify<App>(2, axiom, curry, trip, type, callee, arg);
 }
 
@@ -584,8 +585,6 @@ World& World::verify() {
 #endif
 
 #ifndef DOXYGEN
-template Ref World::raw_app<true>(Ref, Ref, Ref);
-template Ref World::raw_app<false>(Ref, Ref, Ref);
 template Ref World::umax<Sort::Term>(Defs);
 template Ref World::umax<Sort::Type>(Defs);
 template Ref World::umax<Sort::Kind>(Defs);
