@@ -7,7 +7,7 @@ var searchData=
   ['range_5fhelper_2eh_4',['range_helper.h',['../range__helper_8h.html',1,'']]],
   ['rangecompare_5',['RangeCompare',['../structautomaton_1_1RangeCompare.html',1,'automaton']]],
   ['ranges_6',['Ranges',['../dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a',1,'Ranges:&#160;dfa2matcher.cpp'],['../regex_2normalizers_8cpp.html#a89da4931e7b75c7ac81211ba6b410f48',1,'Ranges:&#160;normalizers.cpp']]],
-  ['raw_5fapp_7',['raw_app',['../classmim_1_1World.html#ae0892d00d73e0de9074dbd8d9f85ebf3',1,'mim::World::raw_app(Ref type, Ref callee, Ref arg)'],['../classmim_1_1World.html#aa8f42bd894a9ab96d369c62f54d658f1',1,'mim::World::raw_app(Ref type, Ref callee, Defs args)']]],
+  ['raw_5fapp_7',['raw_app',['../classmim_1_1World.html#aa982c234436d969a5668daafd7fae15a',1,'mim::World::raw_app(const Axiom *axiom, u8 curry, u8 trip, Ref type, Ref callee, Ref arg)'],['../classmim_1_1World.html#acaf41a369be343014d35bf908f01bf28',1,'mim::World::raw_app(Ref type, Ref callee, Ref arg)'],['../classmim_1_1World.html#ada5974d13da1b5f425ae1a6e7158b9f6',1,'mim::World::raw_app(Ref type, Ref callee, Defs args)']]],
   ['rbegin_8',['rbegin',['../classmim_1_1PooledSet.html#a8b30fe26d2cf122d1b00eae131c7ddb5',1,'mim::PooledSet']]],
   ['re_9',['RE',['../regex.html#autotoc_md219',1,'']]],
   ['read_10',['read',['../matrix.html#autotoc_md170',1,'%matrix.read'],['../namespacemim_1_1plug_1_1matrix.html#ad88476eb54b27ecc6ea9b6656c378f01',1,'mim::plug::matrix::read']]],
