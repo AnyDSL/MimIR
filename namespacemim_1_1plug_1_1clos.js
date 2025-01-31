@@ -43,7 +43,7 @@ var namespacemim_1_1plug_1_1clos =
     [ "ctype", "namespacemim_1_1plug_1_1clos.html#aa1ca4c1eedf6e6a6a9cee279c59aa817", null ],
     [ "isa_clos_lit", "namespacemim_1_1plug_1_1clos.html#a0de1a3e5c37647df2de7fcf665f0866d", null ],
     [ "isa_clos_type", "namespacemim_1_1plug_1_1clos.html#a7f5b372773493e5d64a148402d8c6370", null ],
-    [ "normalize_clos", "namespacemim_1_1plug_1_1clos.html#a52bcec692a37bfed4f63fc6356338632", null ],
+    [ "normalize_clos", "namespacemim_1_1plug_1_1clos.html#a7a02c6fe7dd6e0bd61776a789e91c54b", null ],
     [ "register_normalizers", "namespacemim_1_1plug_1_1clos.html#a16d3c86f0515a0b9c2d5653f412f58d0", null ],
     [ "shift_env", "namespacemim_1_1plug_1_1clos.html#a58068280841e33b8d421a04ffc180265", null ],
     [ "skip_env", "namespacemim_1_1plug_1_1clos.html#aa48ad3e4ecbbb87cea1f4034ffe29fc2", null ],

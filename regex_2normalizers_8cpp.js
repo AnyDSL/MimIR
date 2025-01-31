@@ -15,7 +15,7 @@ var regex_2normalizers_8cpp =
     [ "merge_ranges", "regex_2normalizers_8cpp.html#a0f11dcb5b9b55f3624a6bcd966b4dcd5", null ],
     [ "normalize_conj", "regex_2normalizers_8cpp.html#ae924b24ab066d5881fbab893c32addab", null ],
     [ "normalize_disj", "regex_2normalizers_8cpp.html#ab06e1bb5c1584b89ee5c965d9b8203c1", null ],
-    [ "normalize_not", "regex_2normalizers_8cpp.html#a450d2bbf74e9f89e99dc0dffaa7620d0", null ],
+    [ "normalize_not", "regex_2normalizers_8cpp.html#aa981562625bd419f24847cf93d825254", null ],
     [ "normalize_quant", "regex_2normalizers_8cpp.html#a78fdc4f5fc7746d1c261c15fa7fe7e64", null ],
     [ "normalize_range", "regex_2normalizers_8cpp.html#a38930258dbc957555d66a485e735db74", null ]
 ];

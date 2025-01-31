@@ -19,7 +19,7 @@ var clos_2autogen_8h =
     [ "lower_typed_clos_phase", "clos_2autogen_8h.html#a9602b11d42128cf1a9d2f396e1af7243", null ],
     [ "lower_typed_clos_prep_pass", "clos_2autogen_8h.html#a0c2680156b5d79d705d4d4556d1bc007", null ],
     [ "setjmp", "clos_2autogen_8h.html#a5efb167297223d7d3a3e2f41539a6a84", null ],
-    [ "normalize_clos", "clos_2autogen_8h.html#a52bcec692a37bfed4f63fc6356338632", null ],
+    [ "normalize_clos", "clos_2autogen_8h.html#a7a02c6fe7dd6e0bd61776a789e91c54b", null ],
     [ "register_normalizers", "clos_2autogen_8h.html#a16d3c86f0515a0b9c2d5653f412f58d0", null ],
     [ "Plugin_Id", "clos_2autogen_8h.html#afb3bbdd3d8dedb19c3709d59468deb93", null ]
 ];

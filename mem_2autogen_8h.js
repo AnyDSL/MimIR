@@ -25,10 +25,10 @@ var mem_2autogen_8h =
     [ "slot", "mem_2autogen_8h.html#ae34ad21e9af0dc16eaaba90794a316f4", null ],
     [ "ssa_pass", "mem_2autogen_8h.html#a619e2889942b9d13d55e24c6e2da35b5", null ],
     [ "store", "mem_2autogen_8h.html#a0accf352be5afdd02647f035fc72cb3c", null ],
-    [ "normalize_lea", "mem_2autogen_8h.html#a3a75785fe3ab7ee7daa574c80cbe01f2", null ],
-    [ "normalize_load", "mem_2autogen_8h.html#afec7d4c3b2d264c108c5ab5d5f2cfd43", null ],
-    [ "normalize_remem", "mem_2autogen_8h.html#a49d297add0b5919db09ab5791af40767", null ],
-    [ "normalize_store", "mem_2autogen_8h.html#a8ae9f7979f0ab2521d54da38d478d606", null ],
+    [ "normalize_lea", "mem_2autogen_8h.html#ac5c6bcb42685d5cf4a0715af0948f90d", null ],
+    [ "normalize_load", "mem_2autogen_8h.html#afd53e04fb0ecc9c22395a89ea168a2ed", null ],
+    [ "normalize_remem", "mem_2autogen_8h.html#ad56f8a2350ca3aec33be29d595649513", null ],
+    [ "normalize_store", "mem_2autogen_8h.html#adfd877aefd7bc1e683dbd1d4c90e1012", null ],
     [ "register_normalizers", "mem_2autogen_8h.html#a04961411480726ed252bc02a62e51aa6", null ],
     [ "Plugin_Id", "mem_2autogen_8h.html#aa07d1f14255050ea3f0949fcb341c83f", null ]
 ];

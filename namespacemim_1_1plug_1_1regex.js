@@ -35,7 +35,7 @@ var namespacemim_1_1plug_1_1regex =
     [ "merge_ranges", "namespacemim_1_1plug_1_1regex.html#a0f11dcb5b9b55f3624a6bcd966b4dcd5", null ],
     [ "normalize_conj", "namespacemim_1_1plug_1_1regex.html#ae924b24ab066d5881fbab893c32addab", null ],
     [ "normalize_disj", "namespacemim_1_1plug_1_1regex.html#ab06e1bb5c1584b89ee5c965d9b8203c1", null ],
-    [ "normalize_not", "namespacemim_1_1plug_1_1regex.html#a450d2bbf74e9f89e99dc0dffaa7620d0", null ],
+    [ "normalize_not", "namespacemim_1_1plug_1_1regex.html#aa981562625bd419f24847cf93d825254", null ],
     [ "normalize_quant", "namespacemim_1_1plug_1_1regex.html#a78fdc4f5fc7746d1c261c15fa7fe7e64", null ],
     [ "normalize_range", "namespacemim_1_1plug_1_1regex.html#a38930258dbc957555d66a485e735db74", null ],
     [ "regex2nfa", "namespacemim_1_1plug_1_1regex.html#a53dc84da7b88302e45d50a22f69e3dea", null ],

@@ -15,12 +15,12 @@ var matrix_2autogen_8h =
     [ "shape", "matrix_2autogen_8h.html#a1a46381ed716136bd172a2ea0fd27614", null ],
     [ "sum", "matrix_2autogen_8h.html#a6c2b2ed70d211b556dfd52f59e9d827b", null ],
     [ "transpose", "matrix_2autogen_8h.html#a5b14c9f2cfc5a0f1d95a3657b2ec5be3", null ],
-    [ "normalize_insert", "matrix_2autogen_8h.html#a1f9f47d5f5f6ab744e6e947be7232397", null ],
-    [ "normalize_map_reduce", "matrix_2autogen_8h.html#a97c32ec121289eccbbcdf73d3669d583", null ],
-    [ "normalize_prod", "matrix_2autogen_8h.html#a5d343e0b1bc4d2212ff13c2946b7142b", null ],
-    [ "normalize_read", "matrix_2autogen_8h.html#aaa83cf65fe46d10573852519d9376ae4", null ],
+    [ "normalize_insert", "matrix_2autogen_8h.html#a7eee1db8129dd1f00d4745a69713bd36", null ],
+    [ "normalize_map_reduce", "matrix_2autogen_8h.html#ab6894dc19ac17f542f24655c78b2dfcb", null ],
+    [ "normalize_prod", "matrix_2autogen_8h.html#a71291eadb9c16ba82490e0ae69c3f3aa", null ],
+    [ "normalize_read", "matrix_2autogen_8h.html#ade752d7745bd1517a43baab41bc20729", null ],
     [ "normalize_shape", "matrix_2autogen_8h.html#a18768ad17afeae39f8dd43f15e59e702", null ],
-    [ "normalize_transpose", "matrix_2autogen_8h.html#ae5d6c09497f6b792a71dd21674b4b932", null ],
+    [ "normalize_transpose", "matrix_2autogen_8h.html#a1f6b7d60e186505f12c821145b7f8fa7", null ],
     [ "register_normalizers", "matrix_2autogen_8h.html#a6d735b8748b3f4626e15b3c1b0e64bdd", null ],
     [ "Plugin_Id", "matrix_2autogen_8h.html#a16779fcb9eddd2e937cd68822b511231", null ]
 ];
