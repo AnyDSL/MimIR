@@ -211,7 +211,18 @@ Ref World::app(Ref callee, Ref arg) {
     }
 
     auto type = pi->reduce(arg).back();
-    return raw_app<true>(type, callee, arg);
+
+    auto [axiom, curry, trip] = Axiom::get(callee);
+    if (axiom) {
+        curry = curry == 0 ? trip : curry;
+        curry = curry == Axiom::Trip_End ? curry : curry - 1;
+
+        if (auto normalize = axiom->normalizer(); normalize && curry == 0) {
+            if (auto norm = normalize(type, callee, arg)) return norm;
+        }
+    }
+
+    return unify<App>(2, axiom, curry, trip, type, callee, arg);
 }
 
 template<bool Normalize> Ref World::raw_app(Ref type, Ref callee, Ref arg) {

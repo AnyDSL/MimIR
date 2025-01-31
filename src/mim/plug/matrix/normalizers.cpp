@@ -16,7 +16,7 @@ namespace mim::plug::matrix {
 /// - read(transpose m, (i,j)) -> read(m, (j,i)) (TODO: check for map_reduce)
 /// - read(product m1 m2, (i,j)) -> ... (TODO: check with map_reduce)
 /// - read (map_reduce f) idx = loop f idx (TODO: implement => use inner loop from lowering phase)
-Ref normalize_read(Ref type, Ref callee, Ref arg) {
+Ref normalize_read(Ref type, Ref, Ref arg) {
     auto& world            = type->world();
     auto [mem, mat, index] = arg->projs<3>();
 
@@ -33,20 +33,12 @@ Ref normalize_read(Ref type, Ref callee, Ref arg) {
         }
     }
 
-    return world.raw_app(type, callee, arg);
+    return {};
 }
 
 /// Normalizer for write operations
 /// TODO: implement
-Ref normalize_insert(Ref type, Ref callee, Ref arg) {
-    auto& world = type->world();
-    // auto [mat, index, val] = arg->projs<3>();
-
-    // same as read
-    // TODO:
-
-    return world.raw_app(type, callee, arg);
-}
+Ref normalize_insert(Ref, Ref, Ref) { return {}; }
 
 /// Normalizer for transpose operations
 /// - transpose (constMat v) -> cosntMat v (TODO: implement)
@@ -94,22 +86,9 @@ u64 get_max_index(u64 init, Defs inputs) {
 /// - TODO: map_reduce (..., ((idx,map_reduce([out, ]...), ...))) -> unify idx, out (out is implicit), name vars apart
 ///   requires: same reduction, distributive reduction
 /// we assume distributivity of the reduction function
-Ref normalize_map_reduce(Ref type, Ref callee, Ref arg) {
-    auto& world = type->world();
-
-    //     // TODO: now that map_reduce returns a mem needs to check if extract from map_reduce
-    return world.raw_app(type, callee, arg);
-}
-
-Ref normalize_prod(Ref type, Ref callee, Ref arg) {
-    auto& world = type->world();
-    return world.raw_app(type, callee, arg);
-}
-
-Ref normalize_transpose(Ref type, Ref callee, Ref arg) {
-    auto& world = type->world();
-    return world.raw_app(type, callee, arg);
-}
+Ref normalize_map_reduce(Ref, Ref, Ref) { return {}; }
+Ref normalize_prod(Ref, Ref, Ref) { return {}; }
+Ref normalize_transpose(Ref, Ref, Ref) { return {}; }
 
 MIM_matrix_NORMALIZER_IMPL
 

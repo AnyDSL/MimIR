@@ -9,7 +9,6 @@ Ref normalize_pass_phase(Ref type, Ref, Ref arg) {
 
     auto [ax, _] = collect_args(arg);
     if (ax->flags() != flags_t(Annex::Base<pass_list>)) {
-        // return world.raw_app(type, callee, arg);
         // TODO: remove when normalizers are fixed
         if (ax->flags() == flags_t(Annex::Base<combine_pass_list>)) {
             auto arg_cpl = arg->as<App>();

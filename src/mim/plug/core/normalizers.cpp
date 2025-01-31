@@ -295,15 +295,14 @@ template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-Ref normalize_abs(Ref type, Ref c, Ref arg) {
+Ref normalize_abs(Ref type, Ref, Ref arg) {
     auto& world           = type->world();
-    auto callee           = c->as<App>();
     auto [mem, a]         = arg->projs<2>();
     auto [_, actual_type] = type->projs<2>();
     auto make_res         = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
 
     if (auto result = fold<abs>(world, actual_type, a)) return make_res(result);
-    return world.raw_app(type, callee, arg);
+    return {};
 }
 
 template<bit1 id> Ref normalize_bit1(Ref type, Ref c, Ref a) {
@@ -326,7 +325,7 @@ template<bit1 id> Ref normalize_bit1(Ref type, Ref c, Ref a) {
         if (auto la = Lit::isa(a)) return world.lit_idx_mod(*ls, ~*la);
     }
 
-    return world.raw_app(type, callee, a);
+    return {};
 }
 
 template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
@@ -418,7 +417,7 @@ Ref normalize_idx(Ref type, Ref c, Ref arg) {
         }
     }
 
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
 template<shr id> Ref normalize_shr(Ref type, Ref c, Ref arg) {
@@ -511,9 +510,8 @@ template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<div id> Ref normalize_div(Ref full_type, Ref c, Ref arg) {
+template<div id> Ref normalize_div(Ref full_type, Ref, Ref arg) {
     auto& world    = full_type->world();
-    auto callee    = c->as<App>();
     auto [mem, ab] = arg->projs<2>();
     auto [a, b]    = ab->projs<2>();
     auto [_, type] = full_type->projs<2>(); // peel off actual type
@@ -547,12 +545,11 @@ template<div id> Ref normalize_div(Ref full_type, Ref c, Ref arg) {
         }
     }
 
-    return world.raw_app(full_type, callee, arg);
+    return {};
 }
 
-template<conv id> Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
+template<conv id> Ref normalize_conv(Ref dst_t, Ref, Ref x) {
     auto& world = dst_t->world();
-    auto callee = c->as<App>();
     auto s_t    = x->type()->as<App>();
     auto d_t    = dst_t->as<App>();
     auto s      = s_t->arg();
@@ -587,10 +584,10 @@ template<conv id> Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
         // clang-format on
     }
 
-    return world.raw_app(dst_t, callee, x);
+    return {};
 }
 
-Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
+Ref normalize_bitcast(Ref dst_t, Ref, Ref src) {
     auto& world = dst_t->world();
     auto src_t  = src->type();
 
@@ -605,14 +602,14 @@ Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
         if (Idx::size(dst_t)) return world.lit(dst_t, *l);
     }
 
-    return world.raw_app(dst_t, callee, src);
+    return {};
 }
 
 // TODO this currently hard-codes x86_64 ABI
 // TODO in contrast to C, we might want to give singleton types like 'Idx 1' or '[]' a size of 0 and simply nuke each
 // and every occurance of these types in a later phase
 // TODO Pi and others
-template<trait id> Ref normalize_trait(Ref nat, Ref callee, Ref type) {
+template<trait id> Ref normalize_trait(Ref, Ref, Ref type) {
     auto& world = type->world();
     if (auto ptr = match<mem::Ptr>(type)) {
         return world.lit_nat(8);
@@ -633,7 +630,7 @@ template<trait id> Ref normalize_trait(Ref nat, Ref callee, Ref type) {
         for (auto t : type->ops()) {
             auto a = Lit::isa(core::op(trait::align, t));
             auto s = Lit::isa(core::op(trait::size, t));
-            if (!a || !s) goto out;
+            if (!a || !s) return {};
 
             align  = std::max(align, *a);
             offset = pad(offset, *a) + *s;
@@ -655,8 +652,7 @@ template<trait id> Ref normalize_trait(Ref nat, Ref callee, Ref type) {
         if (auto sigma = convert(join)) return core::op(id, sigma);
     }
 
-out:
-    return world.raw_app(nat, callee, type);
+    return {};
 }
 
 Ref normalize_zip(Ref type, Ref c, Ref arg) {
@@ -697,10 +693,10 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
         }
     }
 
-    return w.raw_app(type, callee, arg);
+    return {};
 }
 
-template<pe id> Ref normalize_pe(Ref type, Ref callee, Ref arg) {
+template<pe id> Ref normalize_pe(Ref type, Ref, Ref arg) {
     auto& world = type->world();
 
     if constexpr (id == pe::known) {
@@ -708,7 +704,7 @@ template<pe id> Ref normalize_pe(Ref type, Ref callee, Ref arg) {
         if (arg->dep_const()) return world.lit_tt();
     }
 
-    return world.raw_app(type, callee, arg);
+    return {};
 }
 
 MIM_core_NORMALIZER_IMPL

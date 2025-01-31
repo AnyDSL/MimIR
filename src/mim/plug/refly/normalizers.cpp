@@ -36,26 +36,24 @@ void debug_print(Ref lvl, Ref def) {
 
 } // namespace
 
-template<dbg id> Ref normalize_dbg(Ref type, Ref callee, Ref arg) {
-    auto& world   = arg->world();
+template<dbg id> Ref normalize_dbg(Ref, Ref, Ref arg) {
     auto [lvl, x] = arg->projs<2>();
     debug_print(lvl, x);
-    return id == dbg::perm ? world.raw_app(type, callee, arg) : Ref(x);
+    return id == dbg::perm ? Ref() : Ref(x);
 }
 
 Ref normalize_reify(Ref, Ref, Ref arg) { return do_reify(arg); }
 
 Ref normalize_reflect(Ref, Ref, Ref arg) { return do_reflect(arg); }
 
-Ref normalize_refine(Ref type, Ref callee, Ref arg) {
-    auto& world       = arg->world();
+Ref normalize_refine(Ref, Ref, Ref arg) {
     auto [code, i, x] = arg->projs<3>();
     if (auto l = Lit::isa(i)) {
         auto def = do_reflect(code);
         return do_reify(def->refine(*l, do_reflect(x)));
     }
 
-    return world.raw_app(type, callee, arg);
+    return {};
 }
 
 Ref normalize_gid(Ref, Ref, Ref arg) { return arg->world().lit_nat(arg->gid()); }

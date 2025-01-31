@@ -302,6 +302,7 @@ template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     auto [a, b] = arg->projs<2>();
     auto m      = callee->arg();
     auto lm     = Lit::isa(m);
+    // TODO commute
 
     if (auto lit = fold<extrema, id>(world, type, a, b)) return lit;
 
@@ -313,44 +314,44 @@ template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
         }
     }
 
-    return world.raw_app(type, c, arg);
+    return world.raw_app(type, c, {a, b});
 }
 
-template<tri id> Ref normalize_tri(Ref type, Ref c, Ref arg) {
+template<tri id> Ref normalize_tri(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<tri, id>(world, type, arg)) return lit;
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
-Ref normalize_pow(Ref type, Ref c, Ref arg) {
+Ref normalize_pow(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     if (auto lit = fold<pow, /*dummy*/ pow(0)>(world, type, a, b)) return lit;
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
-template<rt id> Ref normalize_rt(Ref type, Ref c, Ref arg) {
+template<rt id> Ref normalize_rt(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<rt, id>(world, type, arg)) return lit;
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
-template<exp id> Ref normalize_exp(Ref type, Ref c, Ref arg) {
+template<exp id> Ref normalize_exp(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<exp, id>(world, type, arg)) return lit;
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
-template<er id> Ref normalize_er(Ref type, Ref c, Ref arg) {
+template<er id> Ref normalize_er(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<er, id>(world, type, arg)) return lit;
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
-template<gamma id> Ref normalize_gamma(Ref type, Ref c, Ref arg) {
+template<gamma id> Ref normalize_gamma(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<gamma, id>(world, type, arg)) return lit;
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
 template<cmp id> Ref normalize_cmp(Ref type, Ref c, Ref arg) {
@@ -365,9 +366,8 @@ template<cmp id> Ref normalize_cmp(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<conv id> Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
+template<conv id> Ref normalize_conv(Ref dst_t, Ref, Ref x) {
     auto& world = dst_t->world();
-    auto callee = c->as<App>();
     auto s_t    = x->type()->as<App>();
     auto d_t    = dst_t->as<App>();
     auto s      = s_t->arg();
@@ -395,7 +395,7 @@ template<conv id> Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
                 if constexpr (S >= min_s && D >= min_d) \
                     res = fold<conv, id, S, D>(*l);     \
                 else                                    \
-                    goto out;                           \
+                    return {};                          \
             }
             M( 1,  1) M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
             M( 8,  1) M( 8,  8) M( 8, 16) M( 8, 32) M( 8, 64)
@@ -408,20 +408,20 @@ template<conv id> Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
             return world.lit(d_t, *res);
         }
     }
-out:
-    return world.raw_app(dst_t, callee, x);
+
+    return {};
 }
 
-Ref normalize_abs(Ref type, Ref c, Ref arg) {
+Ref normalize_abs(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<abs>(world, type, arg)) return lit;
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
-template<round id> Ref normalize_round(Ref type, Ref c, Ref arg) {
+template<round id> Ref normalize_round(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<round, id>(world, type, arg)) return lit;
-    return world.raw_app(type, c, arg);
+    return {};
 }
 
 MIM_math_NORMALIZER_IMPL

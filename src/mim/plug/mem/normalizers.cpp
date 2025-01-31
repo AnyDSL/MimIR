@@ -4,18 +4,17 @@
 
 namespace mim::plug::mem {
 
-Ref normalize_lea(Ref type, Ref callee, Ref arg) {
-    auto& world                = type->world();
+Ref normalize_lea(Ref, Ref, Ref arg) {
     auto [ptr, index]          = arg->projs<2>();
     auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
 
     if (auto a = Lit::isa(pointee->arity()); a && *a == 1) return ptr;
     // TODO
 
-    return world.raw_app(type, callee, {ptr, index});
+    return {};
 }
 
-Ref normalize_load(Ref type, Ref callee, Ref arg) {
+Ref normalize_load(Ref type, Ref, Ref arg) {
     auto& world                = type->world();
     auto [mem, ptr]            = arg->projs<2>();
     auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
@@ -26,18 +25,12 @@ Ref normalize_load(Ref type, Ref callee, Ref arg) {
     if (auto sigma = pointee->isa<Sigma>(); sigma && sigma->num_ops() == 0)
         return world.tuple({mem, world.tuple(sigma->type(), {})});
 
-    return world.raw_app(type, callee, {mem, ptr});
+    return {};
 }
 
-Ref normalize_remem(Ref type, Ref callee, Ref mem) {
-    auto& world = type->world();
+Ref normalize_remem(Ref, Ref, Ref) { return {}; }
 
-    // if (auto m = match<remem>(mem)) mem = m;
-    return world.raw_app(type, callee, mem);
-}
-
-Ref normalize_store(Ref type, Ref callee, Ref arg) {
-    auto& world          = type->world();
+Ref normalize_store(Ref, Ref, Ref arg) {
     auto [mem, ptr, val] = arg->projs<3>();
 
     if (ptr->isa<Bot>() || val->isa<Bot>()) return mem;
@@ -46,7 +39,7 @@ Ref normalize_store(Ref type, Ref callee, Ref arg) {
         if (std::ranges::all_of(tuple->ops(), [](Ref op) { return op->isa<Bot>(); })) return mem;
     }
 
-    return world.raw_app(type, callee, {mem, ptr, val});
+    return {};
 }
 
 MIM_mem_NORMALIZER_IMPL

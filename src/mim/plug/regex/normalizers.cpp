@@ -44,7 +44,7 @@ template<quant id> Ref normalize_quant(Ref type, Ref callee, Ref arg) {
             return world.call(quant::star, plus_app->arg());
     }
 
-    return world.raw_app(type, callee, arg);
+    return {};
 }
 
 template<class ConjOrDisj> void flatten_in_arg(Ref arg, DefVec& new_args) {
@@ -67,7 +67,7 @@ template<class ConjOrDisj> Ref make_binary_tree(Ref type, Defs args) {
     assert(!args.empty());
     auto& world = args.front()->world();
     return std::accumulate(args.begin() + 1, args.end(), args.front(), [&type, &world](const Def* lhs, const Def* rhs) {
-        return world.raw_app(type, world.call<ConjOrDisj>(world.lit_nat(2)), world.tuple({lhs, rhs}));
+        return world.raw_app(type, world.call<ConjOrDisj>(world.lit_nat(2)), {lhs, rhs});
     });
 }
 
@@ -78,8 +78,8 @@ Ref normalize_conj(Ref type, Ref callee, Ref arg) {
         auto flat_args = flatten_in_arg<conj>(arg);
         return make_binary_tree<conj>(type, flat_args);
     }
-    if (arg->as_lit_arity() > 1) return world.raw_app(type, callee, arg);
-    return arg;
+
+    return arg->as_lit_arity() == 1 ? arg : Ref();
 }
 
 bool compare_re(const Def* lhs, const Def* rhs) {
@@ -208,15 +208,12 @@ Ref normalize_range(Ref type, Ref callee, Ref arg) {
     auto [lhs, rhs] = arg->projs<2>();
 
     if (!lhs->isa<Var>() && !rhs->isa<Var>()) // before first PE.
-        if (lhs->as<Lit>()->get() > rhs->as<Lit>()->get()) return world.raw_app(type, callee, world.tuple({rhs, lhs}));
+        if (lhs->as<Lit>()->get() > rhs->as<Lit>()->get()) return world.raw_app(type, callee, {rhs, lhs});
 
-    return world.raw_app(type, callee, arg);
+    return {};
 }
 
-Ref normalize_not(Ref type, Ref callee, Ref arg) {
-    auto& world = type->world();
-    return world.raw_app(type, callee, arg);
-}
+Ref normalize_not(Ref, Ref, Ref) { return {}; }
 
 MIM_regex_NORMALIZER_IMPL
 
