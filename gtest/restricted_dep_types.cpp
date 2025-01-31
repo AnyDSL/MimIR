@@ -35,8 +35,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
         auto R = w.axiom(w.type())->set("R");
         auto W = w.axiom(w.type())->set("W");
 
-        auto RW = w.join({w.singleton(R), w.singleton(W)})->set("RW");
-        auto DT = w.join({w.singleton(i32_t), w.singleton(i64_t)})->set("DT");
+        auto RW = w.join({w.uniq(R), w.uniq(W)})->set("RW");
+        auto DT = w.join({w.uniq(i32_t), w.uniq(i64_t)})->set("DT");
 
         auto exp_pi = w.mut_pi(w.type<1>())->set_dom({DT, RW});
         exp_pi->set_codom(w.type());
@@ -129,8 +129,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
             test_on_world([&test](World& w, auto R, auto W, auto Exp) {
                 auto i32_t = w.type_i32();
                 auto i64_t = w.type_i64();
-                auto RW    = w.join({w.singleton(R), w.singleton(W)})->set("RW");
-                auto DT    = w.join({w.singleton(i32_t), w.singleton(i64_t)})->set("DT");
+                auto RW    = w.join({w.uniq(R), w.uniq(W)})->set("RW");
+                auto DT    = w.join({w.uniq(i32_t), w.uniq(i64_t)})->set("DT");
 
                 auto exp_sig = w.mut_sigma(4);
                 exp_sig->set(0, w.type());
@@ -198,8 +198,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
             test_on_world([&test](World& w, auto R, auto W, auto Exp) {
                 auto i32_t = w.type_i32();
                 auto i64_t = w.type_i64();
-                auto RW    = w.join({w.singleton(R), w.singleton(W)})->set("RW");
-                auto DT    = w.join({w.singleton(i32_t), w.singleton(i64_t)})->set("DT");
+                auto RW    = w.join({w.uniq(R), w.uniq(W)})->set("RW");
+                auto DT    = w.join({w.uniq(i32_t), w.uniq(i64_t)})->set("DT");
 
                 auto exp_sig = w.mut_sigma(3);
                 exp_sig->set(0, w.type());
@@ -230,9 +230,9 @@ TEST(RestrictedDependentTypes, ll) {
     auto R = w.axiom(w.type())->set("R");
     auto W = w.axiom(w.type())->set("W");
 
-    auto RW = w.join({w.singleton(R), w.singleton(W)})->set("RW");
+    auto RW = w.join({w.uniq(R), w.uniq(W)})->set("RW");
 
-    auto DT     = w.join({w.singleton(i32_t), w.singleton(w.annex<math::F32>())})->set("DT");
+    auto DT     = w.join({w.uniq(i32_t), w.uniq(w.annex<math::F32>())})->set("DT");
     auto exp_pi = w.mut_pi(w.type<1>())->set_dom({DT, RW});
     exp_pi->set_codom(w.type());
 

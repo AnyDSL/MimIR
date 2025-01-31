@@ -452,7 +452,7 @@ public:
     Ref vel(Ref type, Ref value);
     Ref pick(Ref type, Ref value);
     Ref test(Ref value, Ref probe, Ref match, Ref clash);
-    Ref singleton(Ref inner_type);
+    Ref uniq(Ref inhabitant);
     ///@}
 
     /// @name Globals

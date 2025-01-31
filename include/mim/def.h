@@ -29,7 +29,7 @@
     m(Var, var)                                                               \
     m(Infer, infer)                                                           \
     m(Global, global)                                                         \
-    m(Singleton, singleton)
+    m(Uniq,   Uniq)
 // clang-format on
 
 namespace mim {

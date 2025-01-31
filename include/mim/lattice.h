@@ -183,20 +183,20 @@ using Join = TBound<true>;
 /// A singleton wraps a type into a higher order type.
 /// Therefore any type can be the only inhabitant of a singleton.
 /// Use in conjunction with @ref mim::Join.
-class Singleton : public Def, public Setters<Singleton> {
+class Uniq : public Def, public Setters<Uniq> {
 private:
-    Singleton(const Def* type, const Def* inner_type)
+    Uniq(const Def* type, const Def* inner_type)
         : Def(Node, type, {inner_type}, 0) {}
 
 public:
-    using Setters<Singleton>::set;
+    using Setters<Uniq>::set;
 
     /// @name ops
     ///@{
     const Def* inhabitant() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = Node::Singleton;
+    static constexpr auto Node = Node::Uniq;
 
 private:
     Ref rebuild_(World&, Ref, Defs) const override;

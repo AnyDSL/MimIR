@@ -76,6 +76,7 @@
     case Tag::K_ret:     /*RetExpr*/    \
     case Tag::D_angle_l: /*PackExpr*/   \
     case Tag::D_brckt_l: /*SigmaExpr*/  \
+    case Tag::D_curly_l: /*UniqExpr*/   \
     case Tag::D_paren_l: /*TupleExpr*/  \
     case Tag::D_quote_l  /*ArrExpr*/
 
@@ -287,6 +288,14 @@ Ptr<Expr> Parser::parse_insert_expr() {
     return ptr<InsertExpr>(track.loc(), std::move(tuple), std::move(index), std::move(value));
 }
 
+Ptr<Expr> Parser::parse_uniq_expr() {
+    auto track = tracker();
+    expect(Tag::D_curly_l, "opening curly bracket for singleton type");
+    auto inhabitant = parse_expr("singleton type");
+    expect(Tag::D_curly_r, "closing curly bracket for singleton type");
+    return ptr<UniqExpr>(track, std::move(inhabitant));
+}
+
 Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
@@ -298,6 +307,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::C_LM:      return parse_lam_expr();
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
+        case Tag::D_curly_l: return parse_uniq_expr();
         case Tag::D_quote_l: return parse_arr_or_pack_expr<true>();
         case Tag::D_angle_l: return parse_arr_or_pack_expr<false>();
         case Tag::D_brckt_l: return parse_sigma_expr();

@@ -151,6 +151,8 @@ std::ostream& InsertExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "ins({}, {}, {})", S(tab, tuple()), S(tab, index()), S(tab, value()));
 }
 
+std::ostream& UniqExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "⦃{}⦄", S(tab, inhabitant())); }
+
 /*
  * Decl
  */

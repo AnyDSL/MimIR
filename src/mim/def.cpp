@@ -86,31 +86,31 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
-Ref Infer    ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Global   ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Idx      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
-Ref Nat      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
-Ref Univ     ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
-Ref Ac       ::rebuild_(World& w, Ref t, Defs o) const { return w.ac(t, o); }
-Ref App      ::rebuild_(World& w, Ref  , Defs o) const { return w.app(o[0], o[1]); }
-Ref Arr      ::rebuild_(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1]); }
-Ref Extract  ::rebuild_(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1]); }
-Ref Insert   ::rebuild_(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
-Ref Lam      ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
-Ref Lit      ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
-Ref Pack     ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
-Ref Pi       ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
-Ref Pick     ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
-Ref Proxy    ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
-Ref Sigma    ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
-Ref Singleton::rebuild_(World& w, Ref  , Defs o) const { return w.singleton(o[0]); }
-Ref Type     ::rebuild_(World& w, Ref  , Defs o) const { return w.type(o[0]); }
-Ref Test     ::rebuild_(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
-Ref Tuple    ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
-Ref UInc     ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
-Ref UMax     ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
-Ref Var      ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut()); }
-Ref Vel      ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0])->set(dbg()); }
+Ref Infer  ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
+Ref Global ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
+Ref Idx    ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
+Ref Nat    ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
+Ref Univ   ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
+Ref Ac     ::rebuild_(World& w, Ref t, Defs o) const { return w.ac(t, o); }
+Ref App    ::rebuild_(World& w, Ref  , Defs o) const { return w.app(o[0], o[1]); }
+Ref Arr    ::rebuild_(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1]); }
+Ref Extract::rebuild_(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1]); }
+Ref Insert ::rebuild_(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
+Ref Lam    ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
+Ref Lit    ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
+Ref Pack   ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
+Ref Pi     ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
+Ref Pick   ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
+Ref Proxy  ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
+Ref Sigma  ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
+Ref Uniq   ::rebuild_(World& w, Ref  , Defs o) const { return w.uniq(o[0]); }
+Ref Type   ::rebuild_(World& w, Ref  , Defs o) const { return w.type(o[0]); }
+Ref Test   ::rebuild_(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
+Ref Tuple  ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
+Ref UInc   ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
+Ref UMax   ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
+Ref Var    ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut()); }
+Ref Vel    ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0])->set(dbg()); }
 
 Ref Axiom    ::rebuild_(World& w, Ref t, Defs ) const {
     if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());

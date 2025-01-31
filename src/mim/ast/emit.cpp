@@ -341,6 +341,8 @@ Ref InsertExpr::emit_(Emitter& e) const {
     return e.world().insert(t, i, v);
 }
 
+Ref UniqExpr::emit_(Emitter& e) const { return e.world().uniq(inhabitant()->emit(e)); }
+
 /*
  * Decl
  */

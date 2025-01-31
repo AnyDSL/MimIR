@@ -211,6 +211,8 @@ void InsertExpr::bind(Scopes& s) const {
     value()->bind(s);
 }
 
+void UniqExpr::bind(Scopes& s) const { inhabitant()->bind(s); }
+
 /*
  * Decl
  */

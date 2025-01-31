@@ -540,7 +540,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);
 }
 
-Ref World::singleton(Ref inner_type) { return unify<Singleton>(1, this->type<1>(), inner_type); }
+Ref World::uniq(Ref inhabitant) { return unify<Uniq>(1, this->type<1>(), inhabitant); }
 
 Sym World::append_suffix(Sym symbol, std::string suffix) {
     auto name = symbol.str();

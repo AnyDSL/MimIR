@@ -74,6 +74,8 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(D_brace_r,    "}")               \
     m(D_brckt_l,    "[")               \
     m(D_brckt_r,    "]")               \
+    m(D_curly_l,    "⦃")               \
+    m(D_curly_r,    "⦄")               \
     m(D_paren_l,    "(")               \
     m(D_paren_r,    ")")               \
     m(D_quote_l,    "«")               \
