@@ -289,7 +289,7 @@ public:
     const Lam* lam(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
     const Lam* lam(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
     const Lam* lam(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* fun(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom , codom), filter(f), body); }
+    const Lam* fun(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
     const Lam* fun(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
     const Lam* fun(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
     const Lam* fun(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
