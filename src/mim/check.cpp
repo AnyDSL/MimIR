@@ -185,8 +185,6 @@ bool Checker::assignable_(Ref type, Ref val) {
     auto val_ty = Ref::refer(val->type());
     if (type == val_ty) return true;
 
-    if (auto infer = val->isa_mut<Infer>()) return alpha_<Check>(type, infer->type());
-
     if (auto sigma = type->isa<Sigma>()) {
         if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail<Check>();
 
