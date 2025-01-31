@@ -171,7 +171,7 @@ Ref World::iapp(Ref callee, Ref arg) {
         } else {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                Check::assignable(callee->type()->as<Pi>()->dom(), arg);
+                Checker::assignable(callee->type()->as<Pi>()->dom(), arg);
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
@@ -192,7 +192,7 @@ Ref World::app(Ref callee, Ref arg) {
             .error(callee->loc(), "called expression not of function type")
             .error(callee->loc(), "'{}' <--- callee type", callee->type());
     }
-    if (!Check::assignable(pi->dom(), arg)) {
+    if (!Checker::assignable(pi->dom(), arg)) {
         throw Error()
             .error(arg->loc(), "cannot apply argument to callee")
             .note(callee->loc(), "callee: '{}'", callee)
@@ -243,7 +243,7 @@ Ref World::sigma(Defs ops) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (auto uni = Check::is_uniform(ops)) return arr(n, uni);
+    if (auto uni = Checker::is_uniform(ops)) return arr(n, uni);
     return unify<Sigma>(ops.size(), Sigma::infer(*this, ops), ops);
 }
 
@@ -252,7 +252,7 @@ Ref World::tuple(Defs ops) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops);
-    if (!Check::assignable(sigma, t))
+    if (!Checker::assignable(sigma, t))
         error(t->loc(), "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
@@ -265,7 +265,7 @@ Ref World::tuple(Ref type, Defs ops) {
     if (!type->isa_mut<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        if (auto uni = Check::is_uniform(ops)) return pack(n, uni);
+        if (auto uni = Checker::is_uniform(ops)) return pack(n, uni);
     }
 
     if (n != 0) {
@@ -325,7 +325,7 @@ Ref World::extract(Ref d, Ref index) {
 
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
-    if (!Check::alpha(type->arity(), size))
+    if (!Checker::alpha<Checker::Check>(type->arity(), size))
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
@@ -366,12 +366,12 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto size = Idx::size(index->type());
     auto lidx = Lit::isa(index);
 
-    if (!Check::alpha(type->arity(), size))
+    if (!Checker::alpha<Checker::Check>(type->arity(), size))
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (lidx) {
         auto elem_type = type->proj(*lidx);
-        if (!Check::assignable(elem_type, val)) {
+        if (!Checker::assignable(elem_type, val)) {
             throw Error()
                 .error(val->loc(), "value to be inserted not assignable to element")
                 .note(val->loc(), "vvv value type vvv \n'{}'\n'{}'", val->type(), elem_type)
@@ -534,7 +534,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
     assert(m_pi && c_pi);
     auto a = m_pi->dom()->isa_lit_arity();
     assert_unused(a && *a == 2);
-    assert(Check::alpha(m_pi->dom(2, 0_s), c_pi->dom()));
+    assert(Checker::alpha<Checker::Check>(m_pi->dom(2, 0_s), c_pi->dom()));
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);

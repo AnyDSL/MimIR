@@ -241,8 +241,9 @@ const Def* Reshape::reshape(DefVec& defs, const Def* T, const Def* mem) {
         }
         // For inner function types, we override the type
         if (!def->type()->isa<Pi>()) {
-            if (!Check::alpha(def->type(), T)) world.ELOG("reconstruct T {} from def {}", T, def->type());
-            assert(Check::alpha(def->type(), T) && "Reshape: argument type mismatch");
+            if (!Checker::alpha<Checker::Check>(def->type(), T))
+                world.ELOG("reconstruct T {} from def {}", T, def->type());
+            assert(Checker::alpha<Checker::Check>(def->type(), T) && "Reshape: argument type mismatch");
         }
         return def;
     }

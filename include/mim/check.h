@@ -45,39 +45,43 @@ private:
     Infer* stub_(World&, Ref) override;
 
     friend class World;
-    friend class Check;
+    friend class Checker;
 };
 
-class Check {
+class Checker {
 public:
-    Check(World& world)
+    Checker(World& world)
         : world_(world) {}
 
     World& world() { return world_; }
 
-    /// Are d1 and d2 α-equivalent?
-    /// * In @p infer mode, type inference is happening and Infer%s will be resolved, if possible.
-    ///     Also, two *free* but *different* Var%s **are** considered α-equivalent.
-    /// * When **not* in @p infer mode, no type inference is happening and Infer%s will not be touched.
-    ///     Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
-    template<bool infer = true> static bool alpha(Ref d1, Ref d2) { return Check(d1->world()).alpha_<infer>(d1, d2); }
+    enum Mode {
+        /// In Mode::Check, type inference is happening and Infer%s will be resolved, if possible.
+        /// Also, two *free* but *different* Var%s **are** considered α-equivalent.
+        Check,
+        /// In Mode::Opt, no type inference is happening and Infer%s will not be touched.
+        /// Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
+        Opt,
+    };
+
+    template<Mode mode> static bool alpha(Ref d1, Ref d2) { return Checker(d1->world()).alpha_<mode>(d1, d2); }
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    static bool assignable(Ref type, Ref value) { return Check(type->world()).assignable_(type, value); }
+    static bool assignable(Ref type, Ref value) { return Checker(type->world()).assignable_(type, value); }
 
     /// Yields `defs.front()`, if all @p defs are Check::alpha-equivalent (`infer = false`) and `nullptr` otherwise.
     static Ref is_uniform(Defs defs);
 
 private:
 #ifdef MIM_ENABLE_CHECKS
-    template<bool> bool fail();
+    template<Mode> bool fail();
 #else
-    template<bool> bool fail() { return false; }
+    template<Mode> bool fail() { return false; }
 #endif
 
-    template<bool infer> bool alpha_(Ref d1, Ref d2);
-    template<bool infer> bool alpha_internal(Ref, Ref);
+    template<Mode> bool alpha_(Ref d1, Ref d2);
+    template<Mode> bool alpha_internal(Ref, Ref);
     bool assignable_(Ref type, Ref value);
 
     World& world_;
