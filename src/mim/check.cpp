@@ -80,6 +80,11 @@ template<Checker::Mode mode> bool Checker::fail() {
     if (mode == Check && world().flags().break_on_alpha_unequal) fe::breakpoint();
     return false;
 }
+
+Ref Checker::fail() {
+    if (world().flags().break_on_alpha_unequal) fe::breakpoint();
+    return {};
+}
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
@@ -181,31 +186,31 @@ template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     return true;
 }
 
-bool Checker::assignable_(Ref type, Ref val) {
+Ref Checker::assignable_(Ref type, Ref val) {
     auto val_ty = Ref::refer(val->type());
-    if (type == val_ty) return true;
+    if (type == val_ty) return val;
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail<Check>();
+        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
         for (size_t i = 0; i != a; ++i)
-            if (!assignable_(red[i], val->proj(a, i))) return fail<Check>();
-        return true;
+            if (!assignable_(red[i], val->proj(a, i))) return fail();
+        return val;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail<Check>();
+        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
 
         if (auto a = Lit::isa(arr->arity())) {
             for (size_t i = 0; i != *a; ++i)
-                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return fail<Check>();
-            return true;
+                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return fail();
+            return val;
         }
     } else if (auto vel = val->isa<Vel>()) {
         return assignable_(type, vel->value());
     }
 
-    return alpha_<Check>(type, val_ty);
+    return alpha_<Check>(type, val_ty) ? val : fail();
 }
 
 Ref Checker::is_uniform(Defs defs) {

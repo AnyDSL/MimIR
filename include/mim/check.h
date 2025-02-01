@@ -68,7 +68,7 @@ public:
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    static bool assignable(Ref type, Ref value) { return Checker(type->world()).assignable_(type, value); }
+    [[nodiscard]] static Ref assignable(Ref type, Ref value) { return Checker(type->world()).assignable_(type, value); }
 
     /// Yields `defs.front()`, if all @p defs are Check::alpha-equivalent (`infer = false`) and `nullptr` otherwise.
     static Ref is_uniform(Defs defs);
@@ -76,13 +76,15 @@ public:
 private:
 #ifdef MIM_ENABLE_CHECKS
     template<Mode> bool fail();
+    Ref fail();
 #else
     template<Mode> bool fail() { return false; }
+    Ref fail();
 #endif
 
     template<Mode> bool alpha_(Ref d1, Ref d2);
     template<Mode> bool alpha_internal(Ref, Ref);
-    bool assignable_(Ref type, Ref value);
+    [[nodiscard]] Ref assignable_(Ref type, Ref value);
 
     World& world_;
     using Vars = MutMap<Def*>;

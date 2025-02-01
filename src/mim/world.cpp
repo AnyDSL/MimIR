@@ -171,7 +171,9 @@ Ref World::iapp(Ref callee, Ref arg) {
         } else {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                Checker::assignable(callee->type()->as<Pi>()->dom(), arg);
+                auto new_arg = Checker::assignable(callee->type()->as<Pi>()->dom(), arg);
+                // TODO
+                // arg = new_arg;
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
@@ -192,7 +194,8 @@ Ref World::app(Ref callee, Ref arg) {
             .error(callee->loc(), "called expression not of function type")
             .error(callee->loc(), "'{}' <--- callee type", callee->type());
     }
-    if (!Checker::assignable(pi->dom(), arg)) {
+    auto new_arg = Checker::assignable(pi->dom(), arg);
+    if (!new_arg) {
         throw Error()
             .error(arg->loc(), "cannot apply argument to callee")
             .note(callee->loc(), "callee: '{}'", callee)
@@ -200,6 +203,7 @@ Ref World::app(Ref callee, Ref arg) {
             .note(callee->loc(), "vvv domain type vvv\n'{}'\n'{}'", pi->dom(), arg->type())
             .note(arg->loc(), "^^^ argument type ^^^");
     }
+    arg = new_arg;
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();
     if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
@@ -252,10 +256,11 @@ Ref World::tuple(Defs ops) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops);
-    if (!Checker::assignable(sigma, t))
+    auto new_t = Checker::assignable(sigma, t);
+    if (!new_t)
         error(t->loc(), "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
-    return t;
+    return new_t;
 }
 
 Ref World::tuple(Ref type, Defs ops) {
@@ -371,12 +376,14 @@ Ref World::insert(Ref d, Ref index, Ref val) {
 
     if (lidx) {
         auto elem_type = type->proj(*lidx);
-        if (!Checker::assignable(elem_type, val)) {
+        auto new_val   = Checker::assignable(elem_type, val);
+        if (!new_val) {
             throw Error()
                 .error(val->loc(), "value to be inserted not assignable to element")
                 .note(val->loc(), "vvv value type vvv \n'{}'\n'{}'", val->type(), elem_type)
                 .note(val->loc(), "^^^ element type ^^^", elem_type);
         }
+        val = new_val;
     }
 
     if (auto l = Lit::isa(size); l && *l == 1)
