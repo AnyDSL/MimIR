@@ -19,7 +19,7 @@ public:
     /// @name Get Element by Type
     ///@{
     size_t find(const Def* type) const;
-    const Def* get(const Def* type) const { return op(find(type)); }
+    Ref get(const Def* type) const { return op(find(type)); }
     ///@}
 };
 
@@ -77,7 +77,7 @@ public:
 
     /// @name ops
     ///@{
-    const Def* value() const { return op(0); }
+    Ref value() const { return op(0); }
     ///@}
 
     static constexpr auto Node = Node::Vel;
@@ -99,7 +99,7 @@ public:
 
     /// @name ops
     ///@{
-    const Def* value() const { return op(0); }
+    Ref value() const { return op(0); }
     ///@}
 
     static constexpr auto Node = Node::Pick;
@@ -133,10 +133,10 @@ public:
 
     /// @name ops
     ///@{
-    const Def* value() const { return op(0); }
-    const Def* probe() const { return op(1); }
-    const Def* match() const { return op(2); }
-    const Def* clash() const { return op(3); }
+    Ref value() const { return op(0); }
+    Ref probe() const { return op(1); }
+    Ref match() const { return op(2); }
+    Ref clash() const { return op(3); }
     ///@}
 
 private:
@@ -193,7 +193,7 @@ public:
 
     /// @name ops
     ///@{
-    const Def* inhabitant() const { return op(0); }
+    Ref inhabitant() const { return op(0); }
     ///@}
 
     static constexpr auto Node = Node::Uniq;

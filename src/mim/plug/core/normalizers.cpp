@@ -595,7 +595,7 @@ Ref normalize_bitcast(Ref dst_t, Ref, Ref src) {
     if (src_t == dst_t) return src;
 
     if (auto other = match<bitcast>(src))
-        return other->arg()->type() == dst_t ? other->arg() : world.call<bitcast>(dst_t, other->arg());
+        return other->arg()->type() == dst_t ? *other->arg() : world.call<bitcast>(dst_t, other->arg());
 
     if (auto l = Lit::isa(src)) {
         if (dst_t->isa<Nat>()) return world.lit(dst_t, *l);

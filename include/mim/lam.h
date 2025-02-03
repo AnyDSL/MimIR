@@ -215,7 +215,7 @@ public:
 
     /// @name callee
     ///@{
-    const Def* callee() const { return op(0); }
+    Ref callee() const { return op(0); }
     const App* decurry() const { return callee()->as<App>(); } ///< Returns App::callee again as App.
     const Pi* callee_type() const { return callee()->type()->as<Pi>(); }
     ///@}
@@ -224,7 +224,7 @@ public:
     /// @anchor app_arg
     /// @see @ref proj
     ///@{
-    const Def* arg() const { return op(1); }
+    Ref arg() const { return op(1); }
     MIM_PROJ(arg, const)
     ///@}
 
