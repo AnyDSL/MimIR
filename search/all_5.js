@@ -37,7 +37,7 @@ var searchData=
   ['flags_5f_34',['flags_',['../classmim_1_1Def.html#ad97de2c17c3c86c04d2b0078ad386588',1,'mim::Def']]],
   ['flags_5ft_35',['flags_t',['../namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f',1,'mim']]],
   ['flat_36',['Flat',['../classmim_1_1plug_1_1mem_1_1Reshape.html#a617258263a341812a1f828bfeb4751cea4c521527e62b642749fb6d1ae41df198',1,'mim::plug::mem::Reshape']]],
-  ['flatten_37',['flatten',['../namespacemim.html#a0a7202c211ff85c77fb009119a6b8fcc',1,'mim::flatten(const Def *def)'],['../namespacemim.html#a8e6c9f839670748462f9d08a17a99fd4',1,'mim::flatten(DefVec &amp;ops, const Def *def, bool flatten_sigmas=true)']]],
+  ['flatten_37',['flatten',['../namespacemim.html#a8235be78af94d88799ee797ee0f85050',1,'mim::flatten(Ref def)'],['../namespacemim.html#abc5f57d398ef5e59ed300e261c7f76bd',1,'mim::flatten(DefVec &amp;ops, Ref def, bool flatten_sigmas=true)']]],
   ['flatten_5fin_5farg_38',['flatten_in_arg',['../namespacemim_1_1plug_1_1regex.html#ae3d818edbd962f7741c9ac0d96515c2d',1,'mim::plug::regex::flatten_in_arg(Ref arg, DefVec &amp;new_args)'],['../namespacemim_1_1plug_1_1regex.html#a8d6e4f116468fc2751e751b0b6161d8a',1,'mim::plug::regex::flatten_in_arg(Ref arg)']]],
   ['fmax_39',['fmax',['../namespacemim_1_1plug_1_1math.html#ab3714a92165c9fc8ab8d7238944e428ca6245653b1ded5cde266a956a325465ce',1,'mim::plug::math']]],
   ['fmin_40',['fmin',['../namespacemim_1_1plug_1_1math.html#ab3714a92165c9fc8ab8d7238944e428ca91b8694b07e3650d5332a6d51af36421',1,'mim::plug::math']]],

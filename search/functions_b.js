@@ -8,7 +8,7 @@ var searchData=
   ['lazy_5finit_5',['lazy_init',['../namespacemim.html#a693141bb53117c22a4fb12b99463a980',1,'mim']]],
   ['least_5fcommon_5fancestor_6',['least_common_ancestor',['../classmim_1_1DomTreeBase.html#aed7ec5cd9119d462b7d914e05f1204d6',1,'mim::DomTreeBase']]],
   ['letdecl_7',['LetDecl',['../classmim_1_1ast_1_1LetDecl.html#ac8872f1a83511a2852022ff50f9fcd35',1,'mim::ast::LetDecl']]],
-  ['level_8',['level',['../classmim_1_1ast_1_1TypeExpr.html#a39453cdf57c2c95c8ca7ce9df3fcada7',1,'mim::ast::TypeExpr::level()'],['../classmim_1_1Type.html#ad08cbde7c9801e27a6181ff0cf633fc8',1,'mim::Type::level()'],['../classmim_1_1Log.html#a56d140e471c99a5737bf1b5f815de975',1,'mim::Log::level() const']]],
+  ['level_8',['level',['../classmim_1_1ast_1_1TypeExpr.html#a39453cdf57c2c95c8ca7ce9df3fcada7',1,'mim::ast::TypeExpr::level()'],['../classmim_1_1Type.html#a407c4445f797e932c51526f91cc4628d',1,'mim::Type::level()'],['../classmim_1_1Log.html#a56d140e471c99a5737bf1b5f815de975',1,'mim::Log::level() const']]],
   ['level2acro_9',['level2acro',['../classmim_1_1Log.html#ad64accaa3d6ad90906278fb11da83a41',1,'mim::Log']]],
   ['level2color_10',['level2color',['../classmim_1_1Log.html#ad8f11a38f9affff739754f54d0b33257',1,'mim::Log']]],
   ['lex_11',['lex',['../classmim_1_1ast_1_1Lexer.html#a90fea1e1e499fa571bac95fb0d3afdc0',1,'mim::ast::Lexer']]],

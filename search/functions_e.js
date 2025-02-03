@@ -2,7 +2,7 @@ var searchData=
 [
   ['offset_0',['offset',['../classmim_1_1UInc.html#ac09662b71a4e497e4aa65fa6647ba866',1,'mim::UInc']]],
   ['old2new_1',['old2new',['../classmim_1_1EtaExp.html#a94c835f16c418fbedeb51a6f32bfbd2c',1,'mim::EtaExp']]],
-  ['op_2',['op',['../classmim_1_1Infer.html#a92c3c77a9610d3d9c1351a493b03090c',1,'mim::Infer::op()'],['../classmim_1_1Def.html#a23f0a6d8b2a31ef7e60be9269bb57151',1,'mim::Def::op()'],['../classmim_1_1UInc.html#a010398edc1e1a3045628aa476b4597d7',1,'mim::UInc::op()'],['../namespacemim_1_1plug_1_1core.html#a9920219bf92c430e5b3ae913e9097d8e',1,'mim::plug::core::op(trait o, Ref type)'],['../namespacemim_1_1plug_1_1core.html#ac928fdd9fbbefe6de62a61754100492c',1,'mim::plug::core::op(pe o, Ref def)']]],
+  ['op_2',['op',['../classmim_1_1Infer.html#a92c3c77a9610d3d9c1351a493b03090c',1,'mim::Infer::op()'],['../classmim_1_1Def.html#a23f0a6d8b2a31ef7e60be9269bb57151',1,'mim::Def::op()'],['../classmim_1_1UInc.html#a03a82f840a1da2e78ebecfa28b7cf26b',1,'mim::UInc::op()'],['../namespacemim_1_1plug_1_1core.html#a9920219bf92c430e5b3ae913e9097d8e',1,'mim::plug::core::op(trait o, Ref type)'],['../namespacemim_1_1plug_1_1core.html#ac928fdd9fbbefe6de62a61754100492c',1,'mim::plug::core::op(pe o, Ref def)']]],
   ['op_5falloc_3',['op_alloc',['../namespacemim_1_1plug_1_1mem.html#aae3a12f685033fa6fc46a9eb04fad201',1,'mim::plug::mem']]],
   ['op_5fcps2ds_5fdep_4',['op_cps2ds_dep',['../namespacemim_1_1plug_1_1direct.html#a1b225bb29c286f0f55e9e4ae0e5517fd',1,'mim::plug::direct']]],
   ['op_5ffor_5',['op_for',['../namespacemim_1_1plug_1_1affine.html#a5ef9b9a665792718a913594d7be944cf',1,'mim::plug::affine']]],

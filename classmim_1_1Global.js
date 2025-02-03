@@ -1,7 +1,7 @@
 var classmim_1_1Global =
 [
-    [ "alloced_type", "classmim_1_1Global.html#a44a9e7af8e10d6dbb225a7db38926287", null ],
-    [ "init", "classmim_1_1Global.html#a278c06f8dbc9c0b9dfd28e43fd6aea2f", null ],
+    [ "alloced_type", "classmim_1_1Global.html#a0c2302caaca42ca60e472e95696bdd53", null ],
+    [ "init", "classmim_1_1Global.html#a7423d4f715beb4087dc94d1c6e8bcf1e", null ],
     [ "is_mutable", "classmim_1_1Global.html#a839917d09d37319383f232f6e5d0c56b", null ],
     [ "rebuild_", "classmim_1_1Global.html#a6bd1e3d8cd55a3eb5cd9e335325b022c", null ],
     [ "set", "classmim_1_1Global.html#a27bfa70ae2079af20d783da7b5292313", null ],

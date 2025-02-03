@@ -42,7 +42,7 @@ var searchData=
   ['least_5fcommon_5fancestor_39',['least_common_ancestor',['../classmim_1_1DomTreeBase.html#aed7ec5cd9119d462b7d914e05f1204d6',1,'mim::DomTreeBase']]],
   ['letdecl_40',['LetDecl',['../classmim_1_1ast_1_1LetDecl.html',1,'mim::ast::LetDecl'],['../classmim_1_1ast_1_1LetDecl.html#ac8872f1a83511a2852022ff50f9fcd35',1,'mim::ast::LetDecl::LetDecl()']]],
   ['level_41',['Level',['../classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590',1,'mim::Log::Level'],['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa0db49ba470c1c9ae2128c3470339153',1,'mim::Level']]],
-  ['level_42',['level',['../classmim_1_1ast_1_1TypeExpr.html#a39453cdf57c2c95c8ca7ce9df3fcada7',1,'mim::ast::TypeExpr::level()'],['../classmim_1_1Type.html#ad08cbde7c9801e27a6181ff0cf633fc8',1,'mim::Type::level()'],['../classmim_1_1Log.html#a56d140e471c99a5737bf1b5f815de975',1,'mim::Log::level()']]],
+  ['level_42',['level',['../classmim_1_1ast_1_1TypeExpr.html#a39453cdf57c2c95c8ca7ce9df3fcada7',1,'mim::ast::TypeExpr::level()'],['../classmim_1_1Type.html#a407c4445f797e932c51526f91cc4628d',1,'mim::Type::level()'],['../classmim_1_1Log.html#a56d140e471c99a5737bf1b5f815de975',1,'mim::Log::level()']]],
   ['level_20matrix_20operations_43',['High-level matrix operations',['../matrix.html#autotoc_md175',1,'']]],
   ['level2acro_44',['level2acro',['../classmim_1_1Log.html#ad64accaa3d6ad90906278fb11da83a41',1,'mim::Log']]],
   ['level2color_45',['level2color',['../classmim_1_1Log.html#ad8f11a38f9affff739754f54d0b33257',1,'mim::Log']]],

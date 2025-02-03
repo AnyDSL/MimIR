@@ -75,7 +75,7 @@ var searchData=
   ['sge_72',['sge',['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673a2a2ab400d355ac301859e4abb5432138',1,'mim::plug::core']]],
   ['sgn_73',['sgn',['../math.html#autotoc_md161',1,'%math.sgn'],['../namespacemim_1_1plug_1_1math.html#ad0d483b8c713d41e11fa417fd2c513df',1,'mim::plug::math::sgn']]],
   ['shape_74',['Shape',['../dev.html#autotoc_md31',1,'']]],
-  ['shape_75',['shape',['../matrix.html#autotoc_md167',1,'%matrix.shape'],['../classmim_1_1ast_1_1ArrOrPackExpr.html#af0e44fc42afae9133c6ee855448b456a',1,'mim::ast::ArrOrPackExpr::shape()'],['../classmim_1_1Arr.html#a95cae3fbc58e89414ce0570f46099410',1,'mim::Arr::shape()'],['../classmim_1_1Pack.html#a77fbbb34689e6055600ba220f9cc0140',1,'mim::Pack::shape()'],['../namespacemim_1_1plug_1_1matrix.html#a1a46381ed716136bd172a2ea0fd27614',1,'mim::plug::matrix::shape']]],
+  ['shape_75',['shape',['../matrix.html#autotoc_md167',1,'%matrix.shape'],['../classmim_1_1ast_1_1ArrOrPackExpr.html#af0e44fc42afae9133c6ee855448b456a',1,'mim::ast::ArrOrPackExpr::shape()'],['../classmim_1_1Arr.html#a475557809ea2609e0351997e4561306f',1,'mim::Arr::shape()'],['../classmim_1_1Pack.html#a90ea8bc613ee1d6c1adc901b2a630973',1,'mim::Pack::shape()'],['../namespacemim_1_1plug_1_1matrix.html#a1a46381ed716136bd172a2ea0fd27614',1,'mim::plug::matrix::shape']]],
   ['shared_76',['Shared',['../namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9aa6156ea9d66fef24e87e841fbabf7cca',1,'mim::plug::mem']]],
   ['shift_5fenv_77',['shift_env',['../namespacemim_1_1plug_1_1clos.html#a58068280841e33b8d421a04ffc180265',1,'mim::plug::clos']]],
   ['shl_78',['shl',['../namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efabc192716b0e1d5c96a67961dd0d3f9da',1,'mim::plug::core']]],

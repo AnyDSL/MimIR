@@ -70,7 +70,7 @@ var searchData=
   ['expressions_67',['Expressions',['../langref.html#expr',1,'Expressions'],['../langref.html#autotoc_md50',1,'Expressions'],['../compile.html#autotoc_md101',1,'Expressions']]],
   ['ext_68',['Ext',['../classmim_1_1Ext.html',1,'mim::Ext'],['../classmim_1_1Ext.html#a919d9a8e0a02bc3da5bead5347726b0d',1,'mim::Ext::Ext()']]],
   ['ext_69',['ext',['../classmim_1_1World.html#a318500ec2e4b4aa37a823e02232a74be',1,'mim::World']]],
-  ['extended_5fop_70',['extended_op',['../classmim_1_1Def.html#aee9ab7f7297c7d8a7953921fb08c9fcd',1,'mim::Def']]],
+  ['extended_5fop_70',['extended_op',['../classmim_1_1Def.html#ae824591402b629db58b6a7566b41c99e',1,'mim::Def']]],
   ['extended_5fops_71',['extended_ops',['../classmim_1_1Def.html#a39b398b0e5b70f5021d8b7d708f17477',1,'mim::Def']]],
   ['extension_72',['extension',['../namespacemim_1_1dl.html#ae6d2732db28431965eb93b89c2dbfc72',1,'mim::dl']]],
   ['external_73',['external',['../classmim_1_1World.html#aaac7d4050e707ed01cc7761b3205bb53',1,'mim::World']]],

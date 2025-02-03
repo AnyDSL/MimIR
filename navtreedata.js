@@ -89,9 +89,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "add__mem_8cpp.html",
-"classmim_1_1App.html#a76f40a1a8d14a7fbd7525271e2befbc2",
+"classmim_1_1App.html#a7683660e8ed01ddc495f8859393b720e",
 "classmim_1_1CFG.html#affb9b48760f9fea19a7f6854fc3c68b4",
-"classmim_1_1Def.html#ad7698fbea88175da33d51180ac67b811",
+"classmim_1_1Def.html#ad66cc84f37ffd79d3d34ba3b923fec3a",
 "classmim_1_1EtaExp.html#accf15aaf3296770697d4b77e3c317b9d",
 "classmim_1_1Lam.html#a072eca45c3daaf3e26a30cef5c17f589",
 "classmim_1_1Pass.html#a0d1f2c94055ee3b00915f140602d2fb5",
@@ -109,7 +109,7 @@ var NAVTREEINDEX =
 "ds2cps_8cpp_source.html",
 "math_2autogen_8h.html#a2ed29920a6ee618bffa2224415faaf72a879b0a8de070be58fdffc4df6bb76bd6",
 "mem_2autogen_8h_source.html",
-"namespacemim.html#abd0be8cef745edc10628729e7096bba0",
+"namespacemim.html#abce03e9dc0a97db013513c3027b8d468",
 "namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea84d1c26f5ac0e101a7276706d9ce99c0",
 "namespacemim_1_1plug_1_1math.html#ab3714a92165c9fc8ab8d7238944e428c",
 "optimize_8cpp_source.html",
