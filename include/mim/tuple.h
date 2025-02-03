@@ -73,8 +73,8 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* shape() const { return op(0); }
-    const Def* body() const { return op(1); }
+    Ref shape() const { return op(0); }
+    Ref body() const { return op(1); }
     ///@}
 
     /// @name Setters
@@ -119,8 +119,8 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* body() const { return op(0); }
-    const Def* shape() const;
+    Ref body() const { return op(0); }
+    Ref shape() const;
     ///@}
 
     /// @name Setters
@@ -159,8 +159,8 @@ public:
 
     /// @name ops
     ///@{
-    const Def* tuple() const { return op(0); }
-    const Def* index() const { return op(1); }
+    Ref tuple() const { return op(0); }
+    Ref index() const { return op(1); }
     ///@}
 
     static constexpr auto Node = Node::Extract;
@@ -185,9 +185,9 @@ public:
 
     /// @name ops
     ///@{
-    const Def* tuple() const { return op(0); }
-    const Def* index() const { return op(1); }
-    const Def* value() const { return op(2); }
+    Ref tuple() const { return op(0); }
+    Ref index() const { return op(1); }
+    Ref value() const { return op(2); }
     ///@}
 
     static constexpr auto Node = Node::Insert;
@@ -200,23 +200,23 @@ private:
 
 /// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs
 ///@{
-bool is_unit(const Def*);
-std::string tuple2str(const Def*);
+bool is_unit(Ref);
+std::string tuple2str(Ref);
 
 /// Flattens a sigma/array/pack/tuple.
-const Def* flatten(const Def* def);
+Ref flatten(Ref def);
 /// Same as unflatten, but uses the operands of a flattened Pack / Tuple directly.
-size_t flatten(DefVec& ops, const Def* def, bool flatten_sigmas = true);
+size_t flatten(DefVec& ops, Ref def, bool flatten_sigmas = true);
 
 /// Applies the reverse transformation on a Pack / Tuple, given the original type.
-const Def* unflatten(const Def* def, const Def* type);
+Ref unflatten(Ref def, Ref type);
 /// Same as unflatten, but uses the operands of a flattened Pack / Tuple directly.
-const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
+Ref unflatten(Defs ops, Ref type, bool flatten_muts = true);
 
 DefVec merge(Defs, Defs);
-DefVec merge(const Def* def, Defs defs);
-const Def* merge_sigma(const Def* def, Defs defs);
-const Def* merge_tuple(const Def* def, Defs defs);
+DefVec merge(Ref def, Defs defs);
+Ref merge_sigma(Ref def, Defs defs);
+Ref merge_tuple(Ref def, Defs defs);
 
 Ref tuple_of_types(Ref t);
 ///@}

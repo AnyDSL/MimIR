@@ -145,7 +145,7 @@ void Clos2SJLJ::enter() {
         auto env             = w.tuple(body->args().view().subspan(1));
         auto new_callee      = mem::mut_con(env->type())->set("sjlj_wrap");
         auto [m, env_var, _] = split(new_callee->var());
-        auto new_args = DefVec(env->num_projs() + 1, [&](size_t i) { return (i == 0) ? *m : env_var->proj(i - 1); });
+        auto new_args = DefVec(env->num_projs() + 1, [&](size_t i) { return (i == 0) ? *m : *env_var->proj(i - 1); });
         new_callee->app(false, body->callee(), new_args);
         branches[0] = clos_pack(env, new_callee, branch_type);
     }

@@ -245,9 +245,9 @@ public:
     /// @name type
     ///@{
     /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
-    const Def* type() const { return type_; }
+    Ref type() const { return type_; }
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
-    const Def* unfold_type() const;
+    Ref unfold_type() const;
     /// Yields `true` if `this:T` and `T:(Type 0)`.
     bool is_term() const;
     ///@}
@@ -309,7 +309,7 @@ public:
     /// Def::ops() is only included, if Def::is_set.
     ///@{
     Defs extended_ops() const;
-    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
+    Ref extended_op(size_t i) const { return extended_ops()[i]; }
     size_t num_extended_ops() const { return extended_ops().size(); }
     ///@}
 
@@ -319,7 +319,7 @@ public:
     /// Unset operands are `nullptr`.
     ///@{
     Defs partial_ops() const { return Defs(ops_ptr() - 1, num_ops_ + 1); }
-    const Def* partial_op(size_t i) const { return partial_ops()[i]; }
+    Ref partial_op(size_t i) const { return partial_ops()[i]; }
     size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
 
@@ -358,9 +358,9 @@ public:
     nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalarize_threshold is exceeded.
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
-    const Def* proj(nat_t a, nat_t i) const;
-    const Def* proj(nat_t i) const { return proj(num_projs(), i); }   ///< As above but takes Def::num_projs as arity.
-    const Def* tproj(nat_t i) const { return proj(num_tprojs(), i); } ///< As above but takes Def::num_tprojs.
+    Ref proj(nat_t a, nat_t i) const;
+    Ref proj(nat_t i) const { return proj(num_projs(), i); }   ///< As above but takes Def::num_projs as arity.
+    Ref tproj(nat_t i) const { return proj(num_tprojs(), i); } ///< As above but takes Def::num_tprojs.
 
     /// Splits this Def via Def::proj%ections into an Array (if `A == -1_n`) or `std::array` (otherwise).
     /// Applies @p f to each element.
@@ -706,7 +706,7 @@ public:
 
     /// @name ops
     ///@{
-    const Def* op() const { return Def::op(0); }
+    Ref op() const { return Def::op(0); }
     level_t offset() const { return flags(); }
     ///@}
 
@@ -728,7 +728,7 @@ public:
 
     /// @name ops
     ///@{
-    const Def* level() const { return op(0); }
+    Ref level() const { return op(0); }
     ///@}
 
     static constexpr auto Node = Node::Type;
@@ -854,14 +854,14 @@ public:
 
     /// @name ops
     ///@{
-    const Def* init() const { return op(0); }
+    Ref init() const { return op(0); }
     void set(const Def* init) { Def::set(0, init); }
     ///@}
 
     /// @name type
     ///@{
     const App* type() const;
-    const Def* alloced_type() const;
+    Ref alloced_type() const;
     ///@}
 
     /// @name Getters

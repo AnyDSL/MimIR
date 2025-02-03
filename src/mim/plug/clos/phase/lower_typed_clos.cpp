@@ -8,7 +8,7 @@ namespace mim::plug::clos {
 
 namespace {
 const Def* insert_ret(const Def* def, const Def* ret) {
-    auto new_ops = DefVec(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
+    auto new_ops = DefVec(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : *def->proj(i); });
     auto& w      = def->world();
     return def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
 }

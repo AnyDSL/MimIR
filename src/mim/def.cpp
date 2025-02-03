@@ -424,7 +424,7 @@ World& Def::world() const {
     return type()->world(); // TODO unroll
 }
 
-const Def* Def::unfold_type() const {
+Ref Def::unfold_type() const {
     if (!type_) {
         if (auto t = isa<Type>()) return world().type(world().uinc(t->level()));
         assert(isa<Univ>());
@@ -521,7 +521,7 @@ nat_t Def::num_tprojs() const {
     return 1;
 }
 
-const Def* Def::proj(nat_t a, nat_t i) const {
+Ref Def::proj(nat_t a, nat_t i) const {
     static constexpr int Search_In_Uses_Threshold = 8;
 
     if (a == 1) {
@@ -578,6 +578,6 @@ std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
  */
 
 const App* Global::type() const { return Def::type()->as<App>(); }
-const Def* Global::alloced_type() const { return type()->arg(0); }
+Ref Global::alloced_type() const { return type()->arg(0); }
 
 } // namespace mim
