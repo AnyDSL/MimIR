@@ -134,9 +134,10 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     }
 
     // normalize:
-    if ((d1->isa<Lit>() && !d2->isa<Lit>())      // Lit to right
-        || (!d1->isa<UMax>() && d2->isa<UMax>()) // UMax to left
-        || (d1->gid() > d2->gid()))              // smaller gid to left
+    if ((d1->isa<Lit>() && !d2->isa<Lit>())             // Lit to right
+        || (!d1->isa<UMax>() && d2->isa<UMax>())        // UMax to left
+        || (!d1->isa<Extract>() && d2->isa<Extract>())) // Extract to left
+        // || (d1->gid() > d2->gid()))                     // smaller gid to left
         std::swap(d1, d2);
 
     return alpha_internal<mode>(d1, d2);
@@ -146,6 +147,13 @@ template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
     if (mode == Opt && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
+
+    if (auto extract = d1->isa<Extract>()) {
+        if (auto tuple = extract->tuple()->isa<Tuple>()) {
+            if (auto i = Lit::isa(extract->index())) d1 = tuple->op(*i);
+        }
+    }
+
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
     // vars are equal if they appeared under the same binder

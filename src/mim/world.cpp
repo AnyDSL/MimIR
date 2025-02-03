@@ -172,6 +172,7 @@ Ref World::iapp(Ref callee, Ref arg) {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
                 auto new_arg = Checker::assignable(callee->type()->as<Pi>()->dom(), arg);
+                // assert(new_arg);
                 // TODO
                 // arg = new_arg;
                 auto apps = decurry(app);
