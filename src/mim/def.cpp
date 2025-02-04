@@ -199,29 +199,29 @@ const Def* Pack::immutabilize() {
  * reduce
  */
 
-const Def* Arr::reduce(const Def* arg) const {
+Ref Arr::reduce(Ref arg) const {
     if (auto mut = isa_mut<Arr>()) return rewrite(1, mut, arg);
     return body();
 }
 
-const Def* Pack::reduce(const Def* arg) const {
+Ref Pack::reduce(Ref arg) const {
     if (auto mut = isa_mut<Pack>()) return rewrite(0, mut, arg);
     return body();
 }
 
-DefVec Def::reduce(const Def* arg) const {
+DefVec Def::reduce(Ref arg) const {
     if (auto mut = isa_mut()) return mut->reduce(arg);
     return DefVec(ops().begin(), ops().end());
 }
 
-DefVec Def::reduce(const Def* arg) {
+DefVec Def::reduce(Ref arg) {
     auto& cache = world().move_.cache;
     if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
     return cache[{this, arg}] = rewrite(this, arg);
 }
 
-const Def* Def::refine(size_t i, const Def* new_op) const {
+Ref Def::refine(size_t i, Ref new_op) const {
     DefVec new_ops(ops().begin(), ops().end());
     new_ops[i] = new_op;
     return rebuild(type(), new_ops);
@@ -249,7 +249,7 @@ Def* Def::  set(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, 
 Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
 // clang-format on
 
-Def* Def::set(size_t i, const Def* def) {
+Def* Def::set(size_t i, Ref def) {
     invalidate();
     assert(def && !op(i) && curr_op_ == i);
 #ifndef NDEBUG
@@ -285,13 +285,13 @@ Def* Def::unset() {
 
 Def* Def::unset(size_t i) {
     invalidate();
-    assert(op(i) && op(i)->uses_.contains(Use(this, i)));
-    op(i)->uses_.erase(Use(this, i));
+    assert(ops_ptr()[i] && ops_ptr()[i]->uses_.contains(Use(this, i)));
+    ops_ptr()[i]->uses_.erase(Use(this, i));
     ops_ptr()[i] = nullptr;
     return this;
 }
 
-Def* Def::set_type(const Def* type) {
+Def* Def::set_type(Ref type) {
     if (type_ != type) {
         invalidate();
         if (type_ != nullptr) unset_type();
@@ -567,7 +567,7 @@ Ref Idx::size(Ref def) {
     return nullptr;
 }
 
-std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
+std::optional<nat_t> Idx::size2bitwidth(Ref size) {
     if (size->isa<Top>()) return 64;
     if (auto s = Lit::isa(size)) return size2bitwidth(*s);
     return {};
