@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <array>
+#include <filesystem>
 #include <iostream>
 #include <vector>
 
@@ -80,6 +81,15 @@ int run(std::string cmd, std::string args /* = {}*/) {
     cmd = "./"s + cmd;
 #endif
     return sys::system(cmd + " "s + args);
+}
+
+std::string escape(const std::filesystem::path& path) {
+    std::string str;
+    for (char c : path.string()) {
+        if (isspace(c)) str += '\\';
+        str += c;
+    }
+    return str;
 }
 
 } // namespace mim::sys

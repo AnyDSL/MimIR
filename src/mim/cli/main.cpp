@@ -160,7 +160,7 @@ int main(int argc, char** argv) {
                     *dep << autogen_h << ": ";
                     assert(!driver.imports().empty());
                     for (auto sep = ""; const auto& [path, _] : driver.imports() | std::views::drop(1)) {
-                        *dep << sep << path;
+                        *dep << sep << sys::escape(path);
                         sep = " \\\n ";
                     }
                 } else {
