@@ -1,6 +1,7 @@
 var classmim_1_1Sigma =
 [
-    [ "check", "classmim_1_1Sigma.html#ab3dd3134aa114f23b6237d748e7cd955", null ],
+    [ "check", "classmim_1_1Sigma.html#a7f0ad9c72f85948d47a483859736e6e7", null ],
+    [ "check", "classmim_1_1Sigma.html#ac2fe3168c48fd45842b8ff9a7f2452a2", null ],
     [ "immutabilize", "classmim_1_1Sigma.html#a089a8486dc18299fe74623c5e020bd6c", null ],
     [ "infer", "classmim_1_1Sigma.html#a0a9f63a5396d981489f0c7616dce0b48", null ],
     [ "rebuild_", "classmim_1_1Sigma.html#a198244a407160f0b1729c63695b39c8c", null ],

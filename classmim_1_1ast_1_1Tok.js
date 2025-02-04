@@ -57,6 +57,8 @@ var classmim_1_1ast_1_1Tok =
       [ "D_brace_r", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a9ce34fa305fe754b53b83132fa7f6755", null ],
       [ "D_brckt_l", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a54736d35195c3aa2a7159d1cdbe3f872", null ],
       [ "D_brckt_r", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aeea124ed662462016d9034366aa0e2d5", null ],
+      [ "D_curly_l", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5ad77624ed000707b7dc21aca4da80eeac", null ],
+      [ "D_curly_r", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a78b0cd5fcd191157f38b58fc10cdc174", null ],
       [ "D_paren_l", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5acd04ba93e71e6eb0d2a73e17a67a90cf", null ],
       [ "D_paren_r", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aee4f36d19b140744668c52ea6444ef44", null ],
       [ "D_quote_l", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a5be9fecd8fb8ece5f3217942ae9f6c4a", null ],

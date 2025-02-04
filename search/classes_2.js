@@ -5,7 +5,7 @@ var searchData=
   ['cfg_2',['CFG',['../classmim_1_1CFG.html',1,'mim']]],
   ['cfg_3c_20forward_20_3e_3',['CFG&lt; forward &gt;',['../classmim_1_1CFG.html',1,'mim']]],
   ['cfnode_4',['CFNode',['../classmim_1_1CFNode.html',1,'mim']]],
-  ['check_5',['Check',['../classmim_1_1Check.html',1,'mim']]],
+  ['checker_5',['Checker',['../classmim_1_1Checker.html',1,'mim']]],
   ['cleanup_6',['Cleanup',['../classmim_1_1Cleanup.html',1,'mim']]],
   ['clos2sjlj_7',['Clos2SJLJ',['../classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html',1,'mim::plug::clos']]],
   ['closconv_8',['ClosConv',['../classmim_1_1plug_1_1clos_1_1ClosConv.html',1,'mim::plug::clos']]],

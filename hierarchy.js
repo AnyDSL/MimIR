@@ -19,7 +19,7 @@ var hierarchy =
     [ "mim::CFG< bool >", "classmim_1_1CFG.html", null ],
     [ "mim::CFG< forward >", "classmim_1_1CFG.html", null ],
     [ "mim::CFNode", "classmim_1_1CFNode.html", null ],
-    [ "mim::Check", "classmim_1_1Check.html", null ],
+    [ "mim::Checker", "classmim_1_1Checker.html", null ],
     [ "mim::plug::clos::ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", null ],
     [ "mim::PooledSet< T >::Data", "structmim_1_1PooledSet_1_1Data.html", null ],
     [ "mim::Dbg", "structmim_1_1Dbg.html", null ],
@@ -246,12 +246,12 @@ var hierarchy =
         [ "mim::Pick", "classmim_1_1Pick.html", null ],
         [ "mim::Proxy", "classmim_1_1Proxy.html", null ],
         [ "mim::Sigma", "classmim_1_1Sigma.html", null ],
-        [ "mim::Singleton", "classmim_1_1Singleton.html", null ],
         [ "mim::Test", "classmim_1_1Test.html", null ],
         [ "mim::Tuple", "classmim_1_1Tuple.html", null ],
         [ "mim::Type", "classmim_1_1Type.html", null ],
         [ "mim::UInc", "classmim_1_1UInc.html", null ],
         [ "mim::UMax", "classmim_1_1UMax.html", null ],
+        [ "mim::Uniq", "classmim_1_1Uniq.html", null ],
         [ "mim::Univ", "classmim_1_1Univ.html", null ],
         [ "mim::Var", "classmim_1_1Var.html", null ],
         [ "mim::Vel", "classmim_1_1Vel.html", null ]
@@ -297,7 +297,8 @@ var hierarchy =
           [ "mim::ast::RetExpr", "classmim_1_1ast_1_1RetExpr.html", null ],
           [ "mim::ast::SigmaExpr", "classmim_1_1ast_1_1SigmaExpr.html", null ],
           [ "mim::ast::TupleExpr", "classmim_1_1ast_1_1TupleExpr.html", null ],
-          [ "mim::ast::TypeExpr", "classmim_1_1ast_1_1TypeExpr.html", null ]
+          [ "mim::ast::TypeExpr", "classmim_1_1ast_1_1TypeExpr.html", null ],
+          [ "mim::ast::UniqExpr", "classmim_1_1ast_1_1UniqExpr.html", null ]
         ] ],
         [ "mim::ast::Import", "classmim_1_1ast_1_1Import.html", null ],
         [ "mim::ast::Module", "classmim_1_1ast_1_1Module.html", null ],
@@ -363,9 +364,6 @@ var hierarchy =
     [ "mim::Setters< Sigma >", "classmim_1_1Setters.html", [
       [ "mim::Sigma", "classmim_1_1Sigma.html", null ]
     ] ],
-    [ "mim::Setters< Singleton >", "classmim_1_1Setters.html", [
-      [ "mim::Singleton", "classmim_1_1Singleton.html", null ]
-    ] ],
     [ "mim::Setters< TBound< Up > >", "classmim_1_1Setters.html", [
       [ "mim::TBound< Up >", "classmim_1_1TBound.html", null ]
     ] ],
@@ -386,6 +384,9 @@ var hierarchy =
     ] ],
     [ "mim::Setters< UMax >", "classmim_1_1Setters.html", [
       [ "mim::UMax", "classmim_1_1UMax.html", null ]
+    ] ],
+    [ "mim::Setters< Uniq >", "classmim_1_1Setters.html", [
+      [ "mim::Uniq", "classmim_1_1Uniq.html", null ]
     ] ],
     [ "mim::Setters< Univ >", "classmim_1_1Setters.html", [
       [ "mim::Univ", "classmim_1_1Univ.html", null ]

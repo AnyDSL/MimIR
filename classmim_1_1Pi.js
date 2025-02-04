@@ -2,7 +2,8 @@ var classmim_1_1Pi =
 [
     [ "Pi", "classmim_1_1Pi.html#a5a4738ffae3ee254f98847ac9421a8b9", null ],
     [ "Pi", "classmim_1_1Pi.html#a242dfa62bb156d1aa7865e86b53cb30e", null ],
-    [ "check", "classmim_1_1Pi.html#a60083a2e208f0f9475fe661bb3e2255b", null ],
+    [ "check", "classmim_1_1Pi.html#aeceb245fac375a7367171dc0584228d0", null ],
+    [ "check", "classmim_1_1Pi.html#aa395ad921b63cac1dd46ac7594b22440", null ],
     [ "codom", "classmim_1_1Pi.html#a18739a1ec47aa7fef50ee97520868d02", null ],
     [ "dom", "classmim_1_1Pi.html#ae510eb63b0ba5a052fc005819d0c6177", null ],
     [ "immutabilize", "classmim_1_1Pi.html#ac37c343301b301ee856b8a275579a2bf", null ],

@@ -30,6 +30,7 @@ var ast_8h =
     [ "mim::ast::ArrOrPackExpr< arr >", "classmim_1_1ast_1_1ArrOrPackExpr.html", "classmim_1_1ast_1_1ArrOrPackExpr" ],
     [ "mim::ast::ExtractExpr", "classmim_1_1ast_1_1ExtractExpr.html", "classmim_1_1ast_1_1ExtractExpr" ],
     [ "mim::ast::InsertExpr", "classmim_1_1ast_1_1InsertExpr.html", "classmim_1_1ast_1_1InsertExpr" ],
+    [ "mim::ast::UniqExpr", "classmim_1_1ast_1_1UniqExpr.html", "classmim_1_1ast_1_1UniqExpr" ],
     [ "mim::ast::LetDecl", "classmim_1_1ast_1_1LetDecl.html", "classmim_1_1ast_1_1LetDecl" ],
     [ "mim::ast::AxiomDecl", "classmim_1_1ast_1_1AxiomDecl.html", "classmim_1_1ast_1_1AxiomDecl" ],
     [ "mim::ast::AxiomDecl::Alias", "classmim_1_1ast_1_1AxiomDecl_1_1Alias.html", "classmim_1_1ast_1_1AxiomDecl_1_1Alias" ],

@@ -10,7 +10,7 @@ var classmim_1_1Infer =
     [ "stub", "classmim_1_1Infer.html#a22a5c26601676dd2e687fb2995a53aed", null ],
     [ "stub_", "classmim_1_1Infer.html#a17b6f9b1e5f189b368d5d59e8fd4a873", null ],
     [ "unset", "classmim_1_1Infer.html#a9cb038d695aac60c1e4f10000c2807cb", null ],
-    [ "Check", "classmim_1_1Infer.html#a340d2e0eea68faab58a9001ff666a432", null ],
+    [ "Checker", "classmim_1_1Infer.html#a42e74b7760f36154466246901e25398f", null ],
     [ "World", "classmim_1_1Infer.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "Node", "classmim_1_1Infer.html#a6dc9d39671d9a163f783342ec687f337", null ]
 ];

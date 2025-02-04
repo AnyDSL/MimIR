@@ -134,7 +134,7 @@ $(function(){initNavTree('cli.html',''); initResizable(true); });
 <h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  mim [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-mim &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalarize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha-unequal] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
+<div class="line">  mim [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-mim &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalarize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -166,8 +166,7 @@ Usage</h1>
 <div class="line">                          MimIR will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.</div>
 <div class="line">  -b, --break &lt;gid&gt;       *Triggers breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
 <div class="line">  --reeval-breakpoints    *Triggers breakpoint even upon unfying a node that has already been built.</div>
-<div class="line">  --break-on-alpha-unequal</div>
-<div class="line">                          *Triggers breakpoint as soon as two expressions turn out to be not alpha-equivalent.</div>
+<div class="line">  --break-on-alpha        *Triggers breakpoint as soon as two expressions turn out to be not alpha-equivalent.</div>
 <div class="line">  --break-on-error        *Triggers breakpoint on ELOG.</div>
 <div class="line">  --break-on-warn         *Triggers breakpoint on WLOG.</div>
 <div class="line">  --trace-gids            *Output gids during World::unify/insert.</div>
@@ -198,7 +197,7 @@ Debugging Features</h1>
 <p class="startli">For example, this will trigger a breakpoint if the <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">mim::Def</a> with <a class="el" href="classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870">global id</a> <code>4223</code> is being created:</p>
 <div class="fragment"><div class="line">mim -b 4223 in.mim</div>
 </div><!-- fragment --></li>
-<li>You can also trigger a breakpoint at some other very specific places like when a check for alpha equivalence fails via <code>--break-on-alpha-unequal</code>. </li>
+<li>You can also trigger a breakpoint at some other very specific places like when a check for alpha equivalence fails via <code>--break-on-alpha</code>. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

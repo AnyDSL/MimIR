@@ -45,6 +45,7 @@ var namespacemim_1_1ast =
     [ "TupleExpr", "classmim_1_1ast_1_1TupleExpr.html", "classmim_1_1ast_1_1TupleExpr" ],
     [ "TuplePtrn", "classmim_1_1ast_1_1TuplePtrn.html", "classmim_1_1ast_1_1TuplePtrn" ],
     [ "TypeExpr", "classmim_1_1ast_1_1TypeExpr.html", "classmim_1_1ast_1_1TypeExpr" ],
+    [ "UniqExpr", "classmim_1_1ast_1_1UniqExpr.html", "classmim_1_1ast_1_1UniqExpr" ],
     [ "ValDecl", "classmim_1_1ast_1_1ValDecl.html", "classmim_1_1ast_1_1ValDecl" ],
     [ "ArrExpr", "namespacemim_1_1ast.html#aa478301b5a142a59ebcfcb0cffa9c30b", null ],
     [ "Dbgs", "namespacemim_1_1ast.html#a09214c0845d7829eb157e8700b238366", null ],

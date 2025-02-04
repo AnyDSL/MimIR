@@ -1,12 +1,13 @@
 var classmim_1_1Arr =
 [
     [ "body", "classmim_1_1Arr.html#a313505cb46065295c2bfafc2db479077", null ],
-    [ "check", "classmim_1_1Arr.html#a188f4bdd79fa4f267e5c952c3cb5f793", null ],
+    [ "check", "classmim_1_1Arr.html#a2ffd20d96babae209907976c7950aaf3", null ],
+    [ "check", "classmim_1_1Arr.html#a634307ebf27f767b15f5961decb48400", null ],
     [ "immutabilize", "classmim_1_1Arr.html#a1600ba73ed22faa81eccba0c30d4f98f", null ],
     [ "rebuild_", "classmim_1_1Arr.html#a2def8b0a7a7c2bfa487239ad8e7dfc68", null ],
-    [ "reduce", "classmim_1_1Arr.html#ae5fde74815d345f32ead09bcc161e199", null ],
-    [ "set_body", "classmim_1_1Arr.html#a5b106c12c37f54bfecd0af8ed0e35d30", null ],
-    [ "set_shape", "classmim_1_1Arr.html#a769484eeb9c02325c49004e2d6e2cf1a", null ],
+    [ "reduce", "classmim_1_1Arr.html#a78bfb3222e5e987ad6a988c8630842cf", null ],
+    [ "set_body", "classmim_1_1Arr.html#ac0131483e310b40afab8f480a3d5497e", null ],
+    [ "set_shape", "classmim_1_1Arr.html#a4bf950638db5d8f924279fbe7a2b3558", null ],
     [ "shape", "classmim_1_1Arr.html#a475557809ea2609e0351997e4561306f", null ],
     [ "stub", "classmim_1_1Arr.html#a010b272a39a12bad326f21ad275cbecd", null ],
     [ "stub_", "classmim_1_1Arr.html#a733865ea0d7996fa39c8fc8a756878fa", null ],

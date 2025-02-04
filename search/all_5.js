@@ -18,7 +18,7 @@ var searchData=
   ['fe_3a_3alexer_3c_203_2c_20lexer_20_3e_15',['Lexer&lt; 3, Lexer &gt;',['../classmim_1_1ast_1_1Lexer.html#a4314bb33e1b8c9eb4d9fa0b79259cd29',1,'mim::ast::Lexer']]],
   ['features_16',['Debugging Features',['../cli.html#clidebug',1,'']]],
   ['field_20names_20of_20sigmas_17',['Field Names of Sigmas',['../langref.html#autotoc_md56',1,'']]],
-  ['filter_18',['Filter',['../classmim_1_1Lam.html#a0565c4cf6c92d40b051538f19417cb43',1,'mim::Lam']]],
+  ['filter_18',['Filter',['../classmim_1_1Lam.html#ad21d128df206eca5b5aeb24e690f2525',1,'mim::Lam']]],
   ['filter_19',['filter',['../classmim_1_1ast_1_1LamDecl_1_1Dom.html#a2564ec935a3265b492ac59ed97047809',1,'mim::ast::LamDecl::Dom::filter()'],['../classmim_1_1Lam.html#a0aefd08717cb87f8ee16eb9a68ef70e0',1,'mim::Lam::filter()'],['../classmim_1_1World.html#ad17a6c18637dd8430f57fc3d32f6383d',1,'mim::World::filter()']]],
   ['finalize_20',['finalize',['../classmim_1_1ll_1_1Emitter.html#a6337b35b712c541f64ec9e0f4a04d210',1,'mim::ll::Emitter']]],
   ['find_21',['find',['../classmim_1_1Infer.html#a5f53b044ac29ab53dd69b8c38f9aa393',1,'mim::Infer::find()'],['../classmim_1_1Bound.html#a449abd646077192463aa6ac09e5d21c6',1,'mim::Bound::find()'],['../classmim_1_1ast_1_1Scopes.html#a6c745af337b10780bac0723719281c7c',1,'mim::ast::Scopes::find()'],['../namespacemim.html#ae4d6eb0ad34c66ebefba58cf2f73f615',1,'mim::find(IndexMap&lt; Indexer, Key, Value * &gt; &amp;map, Key key)'],['../namespacemim.html#ab5ea5e94765b1e6b74beae887d869c97',1,'mim::find(const IndexMap&lt; Indexer, Key, Value * &gt; &amp;map, Key key)']]],

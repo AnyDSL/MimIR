@@ -409,7 +409,12 @@ add_mim_plugin</h2>
 </div><!-- fragment --><p>The <code>&lt;plugin-name&gt;</code> is the name of the plugin. This means, there should be relative to the plugin's <code>CMakeLists.txt</code> a file <code>&lt;plugin-name&gt;.mim</code> containing annexes. The command will create two targets:</p>
 <ol type="1">
 <li><p class="startli"><code>mim_internal_&lt;plugin-name&gt;</code></p>
-<p class="startli">This is an internal target to bootstrap the plugin. It will generate: _<code>&lt;plugin-name&gt;/autogen.h</code> for the C++ interface in order to identify annexes, _ <code>&lt;plugin-name&gt;.md</code>, for the documentation, and * <code>&lt;plugin-name&gt;.d</code> for the plugin's dependencies. </p><dl class="section note"><dt>Note</dt><dd>Tracking dependencies via the emitted dependency file is not supported for all CMake generators. See <a href="https://cmake.org/cmake/help/latest/command/add_custom_command.html"><code>add_custom_command</code>'s <code>DEPFILE</code> argument</a>.</dd></dl>
+<p class="startli">This is an internal target to bootstrap the plugin. It will generate:</p><ul>
+<li><code>&lt;plugin-name&gt;/autogen.h</code> for the C++ interface in order to identify annexes,</li>
+<li><code>&lt;plugin-name&gt;.md</code>, for the documentation, and</li>
+<li><code>&lt;plugin-name&gt;.d</code> for the plugin's dependencies. <dl class="section note"><dt>Note</dt><dd>Tracking dependencies via the emitted dependency file is not supported for all CMake generators. See <a href="https://cmake.org/cmake/help/latest/command/add_custom_command.html"><code>add_custom_command</code>'s <code>DEPFILE</code> argument</a>.</dd></dl>
+</li>
+</ul>
 </li>
 <li><p class="startli"><code>mim_&lt;plugin-name&gt;</code></p>
 <p class="startli">This is the actual <code>MODULE</code> <a href="https://cmake.org/cmake/help/latest/command/add_library.html">library</a>.</p><ul>

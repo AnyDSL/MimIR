@@ -126,6 +126,7 @@ $(function(){initNavTree('sys_8cpp.html',''); initResizable(true); });
 <div class="textblock"><code>#include &quot;<a class="el" href="sys_8h_source.html">mim/util/sys.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;array&gt;</code><br />
+<code>#include &lt;filesystem&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="print_8h_source.html">mim/util/print.h</a>&quot;</code><br />
@@ -162,6 +163,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a427b6a5c17042bb1943e921a81bebec4" id="r_a427b6a5c17042bb1943e921a81bebec4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1sys.html#a427b6a5c17042bb1943e921a81bebec4">mim::sys::run</a> (std::string cmd, std::string args={})</td></tr>
 <tr class="memdesc:a427b6a5c17042bb1943e921a81bebec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396" title="Wraps std::system and makes the return value usable.">sys::system</a> and puts <code>.exe</code> at the back (Windows) and <code>./</code> at the front (otherwise) of <code>cmd</code>.  <br /></td></tr>
 <tr class="separator:a427b6a5c17042bb1943e921a81bebec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93800ed312b2d2504d2027bd089acb2d" id="r_a93800ed312b2d2504d2027bd089acb2d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1sys.html#a93800ed312b2d2504d2027bd089acb2d">mim::sys::escape</a> (const std::filesystem::path &amp;path)</td></tr>
+<tr class="memdesc:a93800ed312b2d2504d2027bd089acb2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>path</code> as <code>std::string</code> and escapes all whitespaces with backslash.  <br /></td></tr>
+<tr class="separator:a93800ed312b2d2504d2027bd089acb2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

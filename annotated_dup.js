@@ -55,6 +55,7 @@ var annotated_dup =
         [ "TupleExpr", "classmim_1_1ast_1_1TupleExpr.html", "classmim_1_1ast_1_1TupleExpr" ],
         [ "TuplePtrn", "classmim_1_1ast_1_1TuplePtrn.html", "classmim_1_1ast_1_1TuplePtrn" ],
         [ "TypeExpr", "classmim_1_1ast_1_1TypeExpr.html", "classmim_1_1ast_1_1TypeExpr" ],
+        [ "UniqExpr", "classmim_1_1ast_1_1UniqExpr.html", "classmim_1_1ast_1_1UniqExpr" ],
         [ "ValDecl", "classmim_1_1ast_1_1ValDecl.html", "classmim_1_1ast_1_1ValDecl" ]
       ] ],
       [ "ll", "namespacemim_1_1ll.html", [
@@ -120,7 +121,7 @@ var annotated_dup =
       [ "CFA", "classmim_1_1CFA.html", "classmim_1_1CFA" ],
       [ "CFG", "classmim_1_1CFG.html", "classmim_1_1CFG" ],
       [ "CFNode", "classmim_1_1CFNode.html", "classmim_1_1CFNode" ],
-      [ "Check", "classmim_1_1Check.html", "classmim_1_1Check" ],
+      [ "Checker", "classmim_1_1Checker.html", "classmim_1_1Checker" ],
       [ "Cleanup", "classmim_1_1Cleanup.html", "classmim_1_1Cleanup" ],
       [ "ClosedMutPhase", "classmim_1_1ClosedMutPhase.html", "classmim_1_1ClosedMutPhase" ],
       [ "Dbg", "structmim_1_1Dbg.html", "structmim_1_1Dbg" ],
@@ -186,7 +187,6 @@ var annotated_dup =
       [ "ScopePhase", "classmim_1_1ScopePhase.html", "classmim_1_1ScopePhase" ],
       [ "Setters", "classmim_1_1Setters.html", "classmim_1_1Setters" ],
       [ "Sigma", "classmim_1_1Sigma.html", "classmim_1_1Sigma" ],
-      [ "Singleton", "classmim_1_1Singleton.html", "classmim_1_1Singleton" ],
       [ "Span", "classmim_1_1Span.html", "classmim_1_1Span" ],
       [ "Tab", "classmim_1_1Tab.html", "classmim_1_1Tab" ],
       [ "TailRecElim", "classmim_1_1TailRecElim.html", "classmim_1_1TailRecElim" ],
@@ -197,6 +197,7 @@ var annotated_dup =
       [ "Type", "classmim_1_1Type.html", "classmim_1_1Type" ],
       [ "UInc", "classmim_1_1UInc.html", "classmim_1_1UInc" ],
       [ "UMax", "classmim_1_1UMax.html", "classmim_1_1UMax" ],
+      [ "Uniq", "classmim_1_1Uniq.html", "classmim_1_1Uniq" ],
       [ "unique_queue", "classmim_1_1unique__queue.html", "classmim_1_1unique__queue" ],
       [ "unique_stack", "classmim_1_1unique__stack.html", "classmim_1_1unique__stack" ],
       [ "Univ", "classmim_1_1Univ.html", "classmim_1_1Univ" ],
