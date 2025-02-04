@@ -1,0 +1,27 @@
+/// # The fcc Plugin {#fcc}
+///
+/// @see mim::fcc
+///
+/// [TOC]
+///
+/// A minimal fcc plugin
+///
+/// ## Operations
+///
+/// ### %%fcc.const_idx
+///
+/// The 42 constant, evaluated using a normalizer
+axm %fcc.const_idx: [n: Nat] → Idx n, normalize_const;
+
+axm %fcc.Clos: [*, *] → *;
+axm %fcc.Code: [*, *] → *;
+
+lam %fcc.Flat(A B C: *): * =
+    rec alpha: * = [code: %fcc.Code([alpha, A], B), env: C];
+    alpha;
+
+axm %fcc.clos: {A B C: *} → %fcc.Flat (A, B, C) → %fcc.Clos (A, B);
+
+axm %fcc.cl: {A B: *} → [cl: %fcc.Clos (A, B)] → %fcc.Code ([⦃cl⦄, A], B);
+
+axm %fcc.accept: {A B C: *} → [cl: %fcc.Flat (A, B, C)] → %fcc.Code ((cl, A), B);
