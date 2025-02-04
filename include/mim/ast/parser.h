@@ -92,6 +92,7 @@ private:
     Ptr<Expr> parse_sigma_expr();
     Ptr<Expr> parse_tuple_expr();
     Ptr<Expr> parse_insert_expr();
+    Ptr<Expr> parse_uniq_expr();
     ///@}
 
     enum PtrnStyle {

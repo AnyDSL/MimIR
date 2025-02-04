@@ -723,6 +723,24 @@ private:
     Ptr<Expr> value_;
 };
 
+/// `⦃ expr ⦄`
+class UniqExpr : public Expr {
+public:
+    UniqExpr(Loc loc, Ptr<Expr>&& expr)
+        : Expr(loc)
+        , inhabitant_(std::move(expr)) {}
+
+    const Expr* inhabitant() const { return inhabitant_.get(); }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Ref emit_(Emitter&) const override;
+
+    Ptr<Expr> inhabitant_;
+};
+
 /*
  * Decls
  */

@@ -31,4 +31,4 @@ Mim will look for plugins in this priority:
   mim -b 4223 in.mim
   ```
 
-- You can also trigger a breakpoint at some other very specific places like when a check for alpha equivalence fails via `--break-on-alpha-unequal`.
+- You can also trigger a breakpoint at some other very specific places like when a check for alpha equivalence fails via `--break-on-alpha`.

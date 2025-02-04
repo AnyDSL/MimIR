@@ -31,7 +31,8 @@ public:
 
     /// @name Type Checking
     ///@{
-    void check() override;
+    Ref check(size_t, Ref) override;
+    Ref check() override;
     static Ref infer(World&, Defs);
     ///@}
 
@@ -81,21 +82,22 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Arr>::set;
-    Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
-    Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
+    Arr* set_shape(Ref shape) { return Def::set(0, shape)->as<Arr>(); }
+    Arr* set_body(Ref body) { return Def::set(1, body)->as<Arr>(); }
     Arr* unset() { return Def::unset()->as<Arr>(); }
     ///@}
 
     /// @name Rebuild
     ///@{
-    const Def* reduce(const Def* arg) const;
+    Ref reduce(Ref arg) const;
     Arr* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
     ///@}
 
     /// @name Type Checking
     ///@{
-    void check() override;
+    Ref check(size_t, Ref) override;
+    Ref check() override;
     ///@}
 
     static constexpr auto Node = Node::Arr;
@@ -127,14 +129,14 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Pack>::set;
-    Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
-    Pack* reset(const Def* body) { return unset()->set(body); }
+    Pack* set(Ref body) { return Def::set(0, body)->as<Pack>(); }
+    Pack* reset(Ref body) { return unset()->set(body); }
     Pack* unset() { return Def::unset()->as<Pack>(); }
     ///@}
 
     /// @name Rebuild
     ///@{
-    const Def* reduce(const Def* arg) const;
+    Ref reduce(Ref arg) const;
     Pack* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
     ///@}

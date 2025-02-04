@@ -3,6 +3,8 @@
 #include "mim/rewrite.h"
 #include "mim/world.h"
 
+#include "fe/assert.h"
+
 namespace mim {
 
 namespace {
@@ -76,18 +78,23 @@ bool Infer::eliminate(Vector<Ref*> refs) {
  */
 
 #ifdef MIM_ENABLE_CHECKS
-template<bool infer> bool Check::fail() {
-    if (infer && world().flags().break_on_alpha_unequal) fe::breakpoint();
+template<Checker::Mode mode> bool Checker::fail() {
+    if (mode == Check && world().flags().break_on_alpha_unequal) fe::breakpoint();
     return false;
+}
+
+Ref Checker::fail() {
+    if (world().flags().break_on_alpha_unequal) fe::breakpoint();
+    return {};
 }
 #endif
 
-template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
+template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
 
     if (!d1 && !d2) return true;
-    if (!d1 || !d2) return fail<infer>();
+    if (!d1 || !d2) return fail<mode>();
 
     // It is only safe to check for pointer equality if there are no Vars involved.
     // Otherwise, we have to look more thoroughly.
@@ -110,9 +117,9 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
 
-    if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return fail<infer>();
+    if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return fail<mode>();
 
-    if (infer) {
+    if (mode == Check) {
         if (i1 && i2) {
             // union by rank
             if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
@@ -129,19 +136,26 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     }
 
     // normalize:
-    if ((d1->isa<Lit>() && !d2->isa<Lit>())      // Lit to right
-        || (!d1->isa<UMax>() && d2->isa<UMax>()) // UMax to left
-        || (d1->gid() > d2->gid()))              // smaller gid to left
+    if ((d1->isa<Lit>() && !d2->isa<Lit>())             // Lit to right
+        || (!d1->isa<UMax>() && d2->isa<UMax>())        // UMax to left
+        || (!d1->isa<Extract>() && d2->isa<Extract>())) // Extract to left
         std::swap(d1, d2);
 
-    return alpha_internal<infer>(d1, d2);
+    return alpha_internal<mode>(d1, d2);
 }
 
-template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
-    if (!alpha_<infer>(d1->type(), d2->type())) return fail<infer>();
-    if (d1->isa<Top>() || d2->isa<Top>()) return infer;
-    if (!infer && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<infer>();
-    if (!alpha_<infer>(d1->arity(), d2->arity())) return fail<infer>();
+template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
+    if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
+    if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
+    if (mode == Opt && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
+
+    if (auto extract = d1->isa<Extract>()) {
+        if (auto tuple = extract->tuple()->isa<Tuple>()) {
+            if (auto i = Lit::isa(extract->index())) d1 = tuple->op(*i);
+        }
+    }
+
+    if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
     // vars are equal if they appeared under the same binder
     if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());
@@ -150,13 +164,13 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (auto ts = d1->isa<Tuple, Sigma>()) {
         size_t a = ts->num_ops();
         for (size_t i = 0; i != a; ++i)
-            if (!alpha_<infer>(ts->op(i), d2->proj(a, i))) return fail<infer>();
+            if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return fail<mode>();
         return true;
     } else if (auto pa = d1->isa<Pack, Arr>()) {
-        if (pa->node() == d2->node()) return alpha_<infer>(pa->ops().back(), d2->ops().back());
+        if (pa->node() == d2->node()) return alpha_<mode>(pa->ops().back(), d2->ops().back());
         if (auto a = pa->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (!alpha_<infer>(pa->proj(*a, i), d2->proj(*a, i))) return fail<infer>();
+                if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
             return true;
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer) && !d2->isa<UMax>()) {
@@ -166,55 +180,55 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
         d1 = umax->rebuild(umax->type(), umax->ops());
     }
 
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail<infer>();
+    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail<mode>();
 
     if (auto var1 = d1->isa<Var>()) {
         auto var2 = d2->as<Var>();
         if (auto i = vars_.find(var1->mut()); i != vars_.end()) return i->second == var2->mut();
-        if (auto i = vars_.find(var2->mut()); i != vars_.end()) return fail<infer>(); // var2 is bound
-        // both var1 and var2 are free: OK, when they are the same or in infer mode
-        return var1 == var2 || infer;
+        if (auto i = vars_.find(var2->mut()); i != vars_.end()) return fail<mode>(); // var2 is bound
+        // both var1 and var2 are free: OK, when they are the same or in Check mode
+        return var1 == var2 || mode == Check;
     }
 
     for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
-        if (!alpha_<infer>(d1->op(i), d2->op(i))) return fail<infer>();
+        if (!alpha_<mode>(d1->op(i), d2->op(i))) return fail<mode>();
     return true;
 }
 
-bool Check::assignable_(Ref type, Ref val) {
+Ref Checker::assignable_(Ref type, Ref val) {
     auto val_ty = Ref::refer(val->type());
-    if (type == val_ty) return true;
-
-    if (auto infer = val->isa_mut<Infer>()) return alpha_<true>(type, infer->type());
+    if (type == val_ty) return val;
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (!alpha_<true>(type->arity(), val_ty->arity())) return fail<true>();
+        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
         for (size_t i = 0; i != a; ++i)
-            if (!assignable_(red[i], val->proj(a, i))) return fail<true>();
-        return true;
+            if (!assignable_(red[i], val->proj(a, i))) return fail();
+        return val;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!alpha_<true>(type->arity(), val_ty->arity())) return fail<true>();
+        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
 
         if (auto a = Lit::isa(arr->arity())) {
             for (size_t i = 0; i != *a; ++i)
-                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return fail<true>();
-            return true;
+                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return fail();
+            return val;
         }
     } else if (auto vel = val->isa<Vel>()) {
         return assignable_(type, vel->value());
+    } else if (auto uniq = val->type()->isa<Uniq>()) {
+        if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
     }
 
-    return alpha_<true>(type, val_ty);
+    return alpha_<Check>(type, val_ty) ? val : fail();
 }
 
-Ref Check::is_uniform(Defs defs) {
+Ref Checker::is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
     for (size_t i = 1, e = defs.size(); i != e; ++i)
-        if (!alpha<false>(first, defs[i])) return nullptr;
+        if (!alpha<Opt>(first, defs[i])) return nullptr;
     return first;
 }
 
@@ -222,11 +236,13 @@ Ref Check::is_uniform(Defs defs) {
  * infer & check
  */
 
-void Arr::check() {
+Ref Arr::check(size_t, Ref def) { return def; } // TODO
+
+Ref Arr::check() {
     auto t = body()->unfold_type();
-    if (!Check::alpha(t, type()))
+    if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
-    if (t != type()) set_type(t);
+    return t;
 }
 
 Ref Sigma::infer(World& w, Defs ops) {
@@ -235,32 +251,39 @@ Ref Sigma::infer(World& w, Defs ops) {
     return w.umax<Sort::Kind>(kinds);
 }
 
-void Sigma::check() {
+Ref Sigma::check(size_t, Ref def) { return def; } // TODO
+
+Ref Sigma::check() {
     auto t = infer(world(), ops());
-    if (t != type()) {
+    if (*t != *type()) {
         // TODO HACK
-        if (Check::alpha(t, type()))
-            set_type(t);
-        else
+        if (Checker::alpha<Checker::Check>(t, type()))
+            return t;
+        else {
             world().WLOG(
                 "incorrect type '{}' for '{}'. Correct one would be: '{}'. I'll keep this one nevertheless due to "
                 "bugs in clos-conv",
                 type(), this, t);
+            return type();
+        }
     }
+    return t;
 }
 
-void Lam::check() {
-    if (!Check::alpha(filter()->type(), world().type_bool())) {
-        error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type 'Bool'", filter(),
-              filter()->type());
-    }
-    if (!Check::assignable(codom(), body())) {
+Ref Lam::check(size_t i, Ref def) {
+    if (i == 0) {
+        if (auto filter = Checker::assignable(world().type_bool(), def)) return filter;
+        throw Error().error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type 'Bool'",
+                            filter(), filter()->type());
+    } else if (i == 1) {
+        if (auto body = Checker::assignable(codom(), def)) return body;
         throw Error()
             .error(body()->loc(), "body of function is not assignable to declared codomain")
             .note(body()->loc(), "body: '{}'", body())
             .note(body()->loc(), "type: '{}'", body()->type())
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
+    fe::unreachable();
 }
 
 Ref Pi::infer(Ref dom, Ref codom) {
@@ -268,16 +291,18 @@ Ref Pi::infer(Ref dom, Ref codom) {
     return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
 }
 
-void Pi::check() {
+Ref Pi::check(size_t, Ref def) { return def; }
+
+Ref Pi::check() {
     auto t = infer(dom(), codom());
-    if (!Check::alpha(t, type()))
+    if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
-    if (t != type()) set_type(t);
+    return t;
 }
 
 #ifndef DOXYGEN
-template bool Check::alpha_<true>(Ref, Ref);
-template bool Check::alpha_<false>(Ref, Ref);
+template bool Checker::alpha_<Checker::Check>(Ref, Ref);
+template bool Checker::alpha_<Checker::Opt>(Ref, Ref);
 #endif
 
 } // namespace mim

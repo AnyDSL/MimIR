@@ -278,7 +278,7 @@ public:
     ///@{
     Ref filter(Lam::Filter filter) {
         if (auto b = std::get_if<bool>(&filter)) return lit_bool(*b);
-        return std::get<const Def*>(filter);
+        return std::get<Ref>(filter);
     }
     const Lam* lam(const Pi* pi, Lam::Filter f, Ref body) { return unify<Lam>(2, pi, filter(f), body); }
     Lam* mut_lam(const Pi* pi) { return insert<Lam>(2, pi); }
@@ -452,7 +452,7 @@ public:
     Ref vel(Ref type, Ref value);
     Ref pick(Ref type, Ref value);
     Ref test(Ref value, Ref probe, Ref match, Ref clash);
-    Ref singleton(Ref inner_type);
+    Ref uniq(Ref inhabitant);
     ///@}
 
     /// @name Globals
@@ -692,7 +692,7 @@ private:
         assert(&w2.univ()->world() == &w2);
     }
 
-    friend DefVec Def::reduce(const Def*);
+    friend DefVec Def::reduce(Ref);
 };
 
 } // namespace mim

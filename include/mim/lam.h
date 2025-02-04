@@ -79,7 +79,8 @@ public:
 
     /// @name Type Checking
     ///@{
-    void check() override;
+    Ref check(size_t, Ref) override;
+    Ref check() override;
     static Ref infer(Ref dom, Ref codom);
     ///@}
 
@@ -162,17 +163,17 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Lam>::set;
-    using Filter = std::variant<bool, const Def*>;
-    Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
-    Lam* set_filter(Filter);                                                ///< Set filter first.
-    Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.
+    using Filter = std::variant<bool, Ref>;
+    Lam* set(Filter filter, Ref body) { return set_filter(filter)->set_body(body); }
+    Lam* set_filter(Filter);                                         ///< Set filter first.
+    Lam* set_body(Ref body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.
     /// Set body to an App of @p callee and @p arg.
-    Lam* app(Filter filter, const Def* callee, const Def* arg);
+    Lam* app(Filter filter, Ref callee, Ref arg);
     /// Set body to an App of @p callee and @p args.
-    Lam* app(Filter filter, const Def* callee, Defs args);
+    Lam* app(Filter filter, Ref callee, Defs args);
     /// Set body to an App of `(f, t)#cond mem` or `(f, t)#cond ()` if @p mem is `nullptr`.
-    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem = nullptr);
-    Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
+    Lam* branch(Filter filter, Ref cond, Ref t, Ref f, Ref mem = nullptr);
+    Lam* test(Filter filter, Ref val, Ref idx, Ref match, Ref clash, Ref mem);
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
@@ -181,7 +182,7 @@ public:
 
     /// @name Type Checking
     ///@{
-    void check() override;
+    Ref check(size_t, Ref) override;
     ///@}
 
     static constexpr auto Node = Node::Lam;
@@ -245,7 +246,7 @@ private:
 
 /// @name Helpers to work with Functions
 ///@{
-inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
+inline const App* isa_callee(Ref def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
 
 /// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
 inline Lam* isa_workable(Lam* lam) {
@@ -253,13 +254,13 @@ inline Lam* isa_workable(Lam* lam) {
     return lam;
 }
 
-inline std::pair<const App*, Lam*> isa_apped_mut_lam(const Def* def) {
+inline std::pair<const App*, Lam*> isa_apped_mut_lam(Ref def) {
     if (auto app = def->isa<App>()) return {app, app->callee()->isa_mut<Lam>()};
     return {nullptr, nullptr};
 }
 
 /// Yields curried App%s in a flat `std::deque<const App*>`.
-std::deque<const App*> decurry(const Def*);
+std::deque<const App*> decurry(Ref);
 
 /// The high level view is:
 /// ```
@@ -277,10 +278,10 @@ std::deque<const App*> decurry(const Def*);
 /// h': Cn B
 /// h'= λ b = f (b, ret_h)
 /// ```
-const Def* compose_cn(const Def* f, const Def* g);
+Ref compose_cn(Ref f, Ref g);
 
 /// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
-std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def);
+std::pair<Ref, DefVec> collect_args(Ref def);
 ///@}
 
 } // namespace mim

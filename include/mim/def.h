@@ -29,7 +29,7 @@
     m(Var, var)                                                               \
     m(Infer, infer)                                                           \
     m(Global, global)                                                         \
-    m(Singleton, singleton)
+    m(Uniq,   Uniq)
 // clang-format on
 
 namespace mim {
@@ -94,6 +94,8 @@ public:
     operator const Def*() const { return refer(def_); }
     explicit operator bool() const { return def_; }
     static const Def* refer(const Def* def); ///< Retrieves Infer::arg from @p def.
+
+    friend std::ostream& operator<<(std::ostream&, Ref);
 
 private:
     const Def* def_ = nullptr;
@@ -266,7 +268,7 @@ public:
     /// @name ops
     ///@{
     template<size_t N = std::dynamic_extent> auto ops() const { return View<const Def*, N>(ops_ptr(), num_ops_); }
-    const Def* op(size_t i) const { return ops()[i]; }
+    Ref op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
     ///@}
 
@@ -287,21 +289,12 @@ public:
     /// MimIR assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
     ///@{
-    Def* set(size_t i, const Def* def);                                    ///< Successively   set from left to right.
-    Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
-    Def* set(Defs ops);                                                    ///< Def::set @p ops all at once.
-    Def* reset(Defs ops);                                                  ///< Def::reset @p ops all at once.
-    Def* unset(); ///< Unsets all Def::ops; works even, if not set at all or partially.
-    Def* set_type(const Def*);
-    void unset_type();
-
-    /// Resolves Infer%s of this Def's type.
-    void update() {
-        if (auto r = Ref::refer(type()); r && r != type()) set_type(r);
-    }
-
-    /// Yields `true` if empty or the last op is set.
-    bool is_set() const;
+    Def* set(size_t i, Ref);                                        ///< Successively   set from left to right.
+    Def* reset(size_t i, Ref def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
+    Def* set(Defs ops);                                             ///< Def::set @p ops all at once.
+    Def* reset(Defs ops);                                           ///< Def::reset @p ops all at once.
+    Def* unset();        ///< Unsets all Def::ops; works even, if not set at all or partially.
+    bool is_set() const; ///< Yields `true` if empty or the last op is set.
     ///@}
 
     /// @name extended_ops
@@ -362,11 +355,11 @@ public:
     Ref proj(nat_t i) const { return proj(num_projs(), i); }   ///< As above but takes Def::num_projs as arity.
     Ref tproj(nat_t i) const { return proj(num_tprojs(), i); } ///< As above but takes Def::num_tprojs.
 
-    /// Splits this Def via Def::proj%ections into an Array (if `A == -1_n`) or `std::array` (otherwise).
+    /// Splits this Def via Def::proj%ections into an Array (if `A == std::dynamic_extent`) or `std::array` (otherwise).
     /// Applies @p f to each element.
-    template<nat_t A = -1_n, class F> auto projs(F f) const {
+    template<nat_t A = std::dynamic_extent, class F> auto projs(F f) const {
         using R = std::decay_t<decltype(f(this))>;
-        if constexpr (A == -1_n) {
+        if constexpr (A == std::dynamic_extent) {
             return projs(num_projs(), f);
         } else {
             assert(A == as_lit_arity());
@@ -382,14 +375,14 @@ public:
         using R = std::decay_t<decltype(f(this))>;
         return Vector<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
-    template<nat_t A = -1_n> auto projs() const {
-        return projs<A>([](const Def* def) { return def; });
+    template<nat_t A = std::dynamic_extent> auto projs() const {
+        return projs<A>([](Ref def) { return *def; });
     }
     auto tprojs() const {
-        return tprojs([](const Def* def) { return def; });
+        return tprojs([](Ref def) { return *def; });
     }
     auto projs(nat_t a) const {
-        return projs(a, [](const Def* def) { return def; });
+        return projs(a, [](Ref def) { return *def; });
     }
     ///@}
 
@@ -517,16 +510,17 @@ public:
     virtual const Def* immutabilize() { return nullptr; }
     bool is_immutabilizable();
 
-    const Def* refine(size_t i, const Def* new_op) const;
+    Ref refine(size_t i, Ref new_op) const;
 
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
-    DefVec reduce(const Def* arg) const;
-    DefVec reduce(const Def* arg);
+    DefVec reduce(Ref arg) const;
+    DefVec reduce(Ref arg);
     ///@}
 
     /// @name Type Checking
     ///@{
-    virtual void check() {}
+    virtual Ref check(size_t, Ref def) { return def; }
+    virtual Ref check() { return type(); }
     ///@}
 
     /// @name dump
@@ -548,6 +542,8 @@ public:
     void dot(const std::string& file, uint32_t max = 0xFFFFFF, bool types = false) const {
         return dot(file.c_str(), max, types);
     }
+
+    friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
 protected:
@@ -620,12 +616,6 @@ private:
     friend class World;
     friend void swap(World&, World&) noexcept;
 };
-
-/// @name std::ostream operator
-///@{
-std::ostream& operator<<(std::ostream&, const Def*);
-std::ostream& operator<<(std::ostream&, Ref);
-///@}
 
 /// @name DefDef
 ///@{
@@ -808,7 +798,7 @@ public:
     static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }
     static constexpr nat_t size2bitwidth(nat_t n) { return n == 0 ? 64 : std::bit_width(n - 1_n); }
     // clang-format on
-    static std::optional<nat_t> size2bitwidth(const Def* size);
+    static std::optional<nat_t> size2bitwidth(Ref size);
     ///@}
 
     static constexpr auto Node = Node::Idx;
@@ -855,7 +845,7 @@ public:
     /// @name ops
     ///@{
     Ref init() const { return op(0); }
-    void set(const Def* init) { Def::set(0, init); }
+    void set(Ref init) { Def::set(0, init); }
     ///@}
 
     /// @name type

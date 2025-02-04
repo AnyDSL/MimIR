@@ -26,14 +26,14 @@ Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); 
  */
 
 Lam* Lam::set_filter(Filter filter) { return Def::set(0, world().filter(filter))->as<Lam>(); }
-Lam* Lam::app(Filter f, const Def* callee, const Def* arg) { return set_filter(f)->set_body(world().app(callee, arg)); }
-Lam* Lam::app(Filter filter, const Def* callee, Defs args) { return app(filter, callee, world().tuple(args)); }
+Lam* Lam::app(Filter f, Ref callee, Ref arg) { return set_filter(f)->set_body(world().app(callee, arg)); }
+Lam* Lam::app(Filter filter, Ref callee, Defs args) { return app(filter, callee, world().tuple(args)); }
 
-Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem) {
+Lam* Lam::branch(Filter filter, Ref cond, Ref t, Ref f, Ref mem) {
     return app(filter, world().select(cond, t, f), mem ? mem : world().tuple());
 }
 
-Lam* Lam::test(Filter filter, const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem) {
+Lam* Lam::test(Filter filter, Ref value, Ref index, Ref match, Ref clash, Ref mem) {
     return app(filter, world().test(value, index, match, clash), mem);
 }
 
@@ -41,7 +41,7 @@ Lam* Lam::test(Filter filter, const Def* value, const Def* index, const Def* mat
  * Helpers
  */
 
-std::deque<const App*> decurry(const Def* def) {
+std::deque<const App*> decurry(Ref def) {
     std::deque<const App*> apps;
     while (auto app = def->isa<App>()) {
         apps.emplace_front(app);
@@ -50,7 +50,7 @@ std::deque<const App*> decurry(const Def* def) {
     return apps;
 }
 
-const Def* compose_cn(const Def* f, const Def* g) {
+Ref compose_cn(Ref f, Ref g) {
     auto& world = f->world();
     world.DLOG("compose f (B->C): {} : {}", f, f->type());
     world.DLOG("compose g (A->B): {} : {}", g, g->type());
@@ -83,8 +83,8 @@ const Def* compose_cn(const Def* f, const Def* g) {
     return h;
 }
 
-std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
-    std::vector<const Def*> args;
+std::pair<Ref, DefVec> collect_args(Ref def) {
+    DefVec args;
     if (auto app = def->isa<App>()) {
         auto callee               = app->callee();
         auto arg                  = app->arg();

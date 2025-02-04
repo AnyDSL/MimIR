@@ -86,35 +86,35 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
-Ref Infer    ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Global   ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Idx      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
-Ref Nat      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
-Ref Univ     ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
-Ref Ac       ::rebuild_(World& w, Ref t, Defs o) const { return w.ac(t, o); }
-Ref App      ::rebuild_(World& w, Ref  , Defs o) const { return w.app(o[0], o[1]); }
-Ref Arr      ::rebuild_(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1]); }
-Ref Extract  ::rebuild_(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1]); }
-Ref Insert   ::rebuild_(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
-Ref Lam      ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
-Ref Lit      ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
-Ref Pack     ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
-Ref Pi       ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
-Ref Pick     ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
-Ref Proxy    ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
-Ref Sigma    ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
-Ref Singleton::rebuild_(World& w, Ref  , Defs o) const { return w.singleton(o[0]); }
-Ref Type     ::rebuild_(World& w, Ref  , Defs o) const { return w.type(o[0]); }
-Ref Test     ::rebuild_(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
-Ref Tuple    ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
-Ref UInc     ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
-Ref UMax     ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
-Ref Var      ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut()); }
-Ref Vel      ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0])->set(dbg()); }
+Ref Infer  ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
+Ref Global ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
+Ref Idx    ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
+Ref Nat    ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
+Ref Univ   ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
+Ref Ac     ::rebuild_(World& w, Ref t, Defs o) const { return w.ac(t, o); }
+Ref App    ::rebuild_(World& w, Ref  , Defs o) const { return w.app(o[0], o[1]); }
+Ref Arr    ::rebuild_(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1]); }
+Ref Extract::rebuild_(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1]); }
+Ref Insert ::rebuild_(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
+Ref Lam    ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
+Ref Lit    ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
+Ref Pack   ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
+Ref Pi     ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
+Ref Pick   ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
+Ref Proxy  ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
+Ref Sigma  ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
+Ref Uniq   ::rebuild_(World& w, Ref  , Defs o) const { return w.uniq(o[0]); }
+Ref Type   ::rebuild_(World& w, Ref  , Defs o) const { return w.type(o[0]); }
+Ref Test   ::rebuild_(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
+Ref Tuple  ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
+Ref UInc   ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
+Ref UMax   ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
+Ref Var    ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut()); }
+Ref Vel    ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0])->set(dbg()); }
 
 Ref Axiom    ::rebuild_(World& w, Ref t, Defs ) const {
     if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
-    assert(Check::alpha(t, type()));
+    assert(Checker::alpha<Checker::Check>(t, type()));
     return this;
 }
 
@@ -199,29 +199,29 @@ const Def* Pack::immutabilize() {
  * reduce
  */
 
-const Def* Arr::reduce(const Def* arg) const {
+Ref Arr::reduce(Ref arg) const {
     if (auto mut = isa_mut<Arr>()) return rewrite(1, mut, arg);
     return body();
 }
 
-const Def* Pack::reduce(const Def* arg) const {
+Ref Pack::reduce(Ref arg) const {
     if (auto mut = isa_mut<Pack>()) return rewrite(0, mut, arg);
     return body();
 }
 
-DefVec Def::reduce(const Def* arg) const {
+DefVec Def::reduce(Ref arg) const {
     if (auto mut = isa_mut()) return mut->reduce(arg);
     return DefVec(ops().begin(), ops().end());
 }
 
-DefVec Def::reduce(const Def* arg) {
+DefVec Def::reduce(Ref arg) {
     auto& cache = world().move_.cache;
     if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
     return cache[{this, arg}] = rewrite(this, arg);
 }
 
-const Def* Def::refine(size_t i, const Def* new_op) const {
+Ref Def::refine(size_t i, Ref new_op) const {
     DefVec new_ops(ops().begin(), ops().end());
     new_ops[i] = new_op;
     return rebuild(type(), new_ops);
@@ -249,8 +249,9 @@ Def* Def::  set(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, 
 Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
 // clang-format on
 
-Def* Def::set(size_t i, const Def* def) {
+Def* Def::set(size_t i, Ref def) {
     invalidate();
+    def = check(i, def);
     assert(def && !op(i) && curr_op_ == i);
 #ifndef NDEBUG
     curr_op_ = (curr_op_ + 1) % num_ops();
@@ -259,9 +260,15 @@ Def* Def::set(size_t i, const Def* def) {
     const auto& p = def->uses_.emplace(this, i);
     assert_unused(p.second);
 
-    if (i == num_ops() - 1) {
-        check();
-        update();
+    if (i == num_ops() - 1) { // set last, op so check kind
+        if (auto t = check(); t != type()) {
+            if (!type_->dep_const()) {
+                assert(type_->uses_.contains(Use(this, Use::Type)));
+                type_->uses_.erase(Use(this, Use::Type));
+            }
+            type_ = t;
+            t->uses_.emplace(this, Use::Type);
+        }
     }
 
     return this;
@@ -285,31 +292,10 @@ Def* Def::unset() {
 
 Def* Def::unset(size_t i) {
     invalidate();
-    assert(op(i) && op(i)->uses_.contains(Use(this, i)));
-    op(i)->uses_.erase(Use(this, i));
+    assert(ops_ptr()[i] && ops_ptr()[i]->uses_.contains(Use(this, i)));
+    ops_ptr()[i]->uses_.erase(Use(this, i));
     ops_ptr()[i] = nullptr;
     return this;
-}
-
-Def* Def::set_type(const Def* type) {
-    if (type_ != type) {
-        invalidate();
-        if (type_ != nullptr) unset_type();
-        type_ = type;
-        type->uses_.emplace(this, Use::Type);
-    }
-    return this;
-}
-
-void Def::unset_type() {
-    if (type_) {
-        invalidate();
-        if (!type_->dep_const()) {
-            assert(type_->uses_.contains(Use(this, Use::Type)));
-            type_->uses_.erase(Use(this, Use::Type));
-        }
-        type_ = nullptr;
-    }
 }
 
 bool Def::is_set() const {
@@ -567,7 +553,7 @@ Ref Idx::size(Ref def) {
     return nullptr;
 }
 
-std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
+std::optional<nat_t> Idx::size2bitwidth(Ref size) {
     if (size->isa<Top>()) return 64;
     if (auto s = Lit::isa(size)) return size2bitwidth(*s);
     return {};

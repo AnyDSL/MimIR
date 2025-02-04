@@ -86,7 +86,7 @@ cmake --build build -j $(nproc) -t install
 | `MIM_BUILD_EXAMPLES`    | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the examples.                                                                          |
 | `MIM_ENABLE_CHECKS`     | `ON` \| `OFF`                            | `ON`         | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`).                   |
 | `BUILD_TESTING`         | `ON` \| `OFF`                            | `OFF`        | If `ON`, build all unit and lit tests.                                                                |
-| `MIM_LIT_TIMEOUT`       | `<timeout_in_sec>`                       | `10`         | Timeout for lit tests. <br> (requires `BUILD_TESTING=ON`).                                            |
+| `MIM_LIT_TIMEOUT`       | `<timeout_in_sec>`                       | `20`         | Timeout for lit tests. <br> (requires `BUILD_TESTING=ON`).                                            |
 | `MIM_LIT_WITH_VALGRIND` | `ON` \| `OFF`                            | `OFF`        | If `ON`, the Mim CLI in the lit tests will be run under valgrind. <br> (requires `BUILD_TESTING=ON`). |
 
 ## Dependencies

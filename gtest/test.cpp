@@ -215,10 +215,10 @@ TEST(Check, alpha) {
     auto l_1 = w.lam(pi, false, w.lit_nat_1());
 
     auto check = [](Ref l1, Ref l2, bool infer_res, bool non_infer_res) {
-        EXPECT_EQ(Check::alpha<true>(l1, l2), infer_res);
-        EXPECT_EQ(Check::alpha<true>(l2, l1), infer_res);
-        EXPECT_EQ(Check::alpha<false>(l1, l2), non_infer_res);
-        EXPECT_EQ(Check::alpha<false>(l2, l1), non_infer_res);
+        EXPECT_EQ(Checker::alpha<Checker::Check>(l1, l2), infer_res);
+        EXPECT_EQ(Checker::alpha<Checker::Check>(l2, l1), infer_res);
+        EXPECT_EQ(Checker::alpha<Checker::Opt>(l1, l2), non_infer_res);
+        EXPECT_EQ(Checker::alpha<Checker::Opt>(l2, l1), non_infer_res);
     };
 
     check(lxx, lxx, true, true);

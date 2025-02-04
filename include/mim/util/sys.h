@@ -30,5 +30,8 @@ int system(std::string);
 /// Wraps sys::system and puts `.exe` at the back (Windows) and `./` at the front (otherwise) of @p cmd.
 int run(std::string cmd, std::string args = {});
 
+/// Returns the @p path as `std::string` and escapes all whitespaces with backslash.
+std::string escape(const std::filesystem::path& path);
+
 } // namespace sys
 } // namespace mim
