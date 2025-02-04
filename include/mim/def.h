@@ -94,6 +94,7 @@ public:
     operator const Def*() const { return refer(def_); }
     explicit operator bool() const { return def_; }
     static const Def* refer(const Def* def); ///< Retrieves Infer::arg from @p def.
+    const Def* def() const { return def_; }
 
     friend std::ostream& operator<<(std::ostream&, Ref);
 
@@ -788,9 +789,15 @@ private:
 
 public:
     using Setters<Idx>::set;
+    using Def::as;
+    using Def::isa;
 
+    /// @name isa
+    ///@{
     /// Checks if @p def is a `Idx s` and returns `s` or `nullptr` otherwise.
-    static Ref size(Ref def);
+    static Ref isa(Ref def);
+    static std::optional<nat_t> isa_lit(Ref def);
+    ///@}
 
     /// @name Convert between Idx::size and bitwidth and vice versa
     ///@{

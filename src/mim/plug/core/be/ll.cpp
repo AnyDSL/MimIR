@@ -173,7 +173,7 @@ std::string Emitter::convert(const Def* type) {
 
     if (type->isa<Nat>()) {
         return types_[type] = "i64";
-    } else if (auto size = Idx::size(type)) {
+    } else if (auto size = Idx::isa(type)) {
         return types_[type] = "i" + std::to_string(*Idx::size2bitwidth(size));
     } else if (auto w = math::isa_f(type)) {
         switch (*w) {
@@ -510,7 +510,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_i = emit(index);
         auto t_i = convert(index->type());
 
-        if (auto size = Idx::size(index->type())) {
+        if (auto size = Idx::isa(index->type())) {
             if (auto w = Idx::size2bitwidth(size); w && *w < 64) {
                 v_i = bb.assign(name + ".zext",
                                 "zext {} {} to i{} ; add one more bit for gep index as it is treated as signed value",
@@ -523,7 +523,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     };
 
     if (auto lit = def->isa<Lit>()) {
-        if (lit->type()->isa<Nat>() || Idx::size(lit->type())) {
+        if (lit->type()->isa<Nat>() || Idx::isa(lit->type())) {
             return std::to_string(lit->get());
         } else if (auto w = math::isa_f(lit->type())) {
             std::stringstream s;
@@ -650,7 +650,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "{} i64 {}, {}", op, a, b);
     } else if (auto idx = match<core::idx>(def)) {
         auto x = emit(idx->arg());
-        auto s = *Idx::size2bitwidth(Idx::size(idx->type()));
+        auto s = *Idx::size2bitwidth(Idx::isa(idx->type()));
         auto t = convert(idx->type());
         if (s < 64) return bb.assign(name, "trunc i64 {} to {}", x, t);
         return x;
@@ -769,8 +769,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_src = convert(conv->arg()->type());
         auto t_dst = convert(conv->type());
 
-        nat_t w_src = *Idx::size2bitwidth(Idx::size(conv->arg()->type()));
-        nat_t w_dst = *Idx::size2bitwidth(Idx::size(conv->type()));
+        nat_t w_src = *Idx::size2bitwidth(Idx::isa(conv->arg()->type()));
+        nat_t w_dst = *Idx::size2bitwidth(Idx::isa(conv->type()));
 
         if (w_src == w_dst) return v_src;
 
@@ -796,7 +796,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto size2width = [&](const Def* type) {
             if (type->isa<Nat>()) return 64_n;
-            if (auto size = Idx::size(type)) return *Idx::size2bitwidth(size);
+            if (auto size = Idx::isa(type)) return *Idx::size2bitwidth(size);
             return 0_n;
         };
 

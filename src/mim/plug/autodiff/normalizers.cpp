@@ -63,7 +63,7 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
                             {world.extract(a, pack->var()), world.extract(b, pack->var())}));
         world.DLOG("pack {}", pack);
         return pack;
-    } else if (Idx::size(type)) {
+    } else if (Idx::isa(type)) {
         world.DLOG("add int");
         auto width = Lit::as(world.iinfer(a));
         world.DLOG("width {}", width);

@@ -172,7 +172,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
                 // clang-format on
                 default: return print(os, "{}", lit->get());
             }
-        } else if (auto size = Idx::size(lit->type())) {
+        } else if (auto size = Idx::isa(lit->type())) {
             if (auto s = Lit::isa(size)) {
                 switch (*s) {
                         // clang-format off
@@ -216,7 +216,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
-        if (auto size = Idx::size(app)) {
+        if (auto size = Idx::isa(app)) {
             if (auto l = Lit::isa(size)) {
                 // clang-format off
                 switch (*l) {

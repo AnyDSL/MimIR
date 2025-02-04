@@ -154,7 +154,7 @@ template<Sort sort> Ref World::umax(Defs ops_) {
 // TODO more thorough & consistent checks for singleton types
 
 Ref World::var(Ref type, Def* mut) {
-    if (auto s = Idx::size(type)) {
+    if (auto s = Idx::isa(type)) {
         if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
     }
 
@@ -323,7 +323,7 @@ Ref World::extract(Ref d, Ref index) {
         return tuple(ops);
     }
 
-    Ref size = Idx::size(index->type());
+    Ref size = Idx::isa(index->type());
     Ref type = d->unfold_type();
 
     if (auto l = Lit::isa(size); l && *l == 1) {
@@ -375,7 +375,7 @@ Ref World::extract(Ref d, Ref index) {
 
 Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
-    auto size = Idx::size(index->type());
+    auto size = Idx::isa(index->type());
     auto lidx = Lit::isa(index);
 
     if (!Checker::alpha<Checker::Check>(type->arity(), size))
@@ -475,7 +475,7 @@ Ref World::pack(Defs shape, Ref body) {
 }
 
 const Lit* World::lit(Ref type, u64 val) {
-    if (auto size = Idx::size(type)) {
+    if (auto size = Idx::isa(type)) {
         if (auto s = Lit::isa(size)) {
             if (*s != 0 && val >= *s) error(type->loc(), "index '{}' does not fit within arity '{}'", size, val);
         } else if (val != 0) { // 0 of any size is allowed

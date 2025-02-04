@@ -545,12 +545,18 @@ Ref Def::proj(nat_t a, nat_t i) const {
  * Idx
  */
 
-Ref Idx::size(Ref def) {
+Ref Idx::isa(Ref def) {
     if (auto app = def->isa<App>()) {
         if (app->callee()->isa<Idx>()) return app->arg();
     }
 
     return nullptr;
+}
+
+std::optional<nat_t> Idx::isa_lit(Ref def) {
+    if (auto size = Idx::isa(def))
+        if (auto l = Lit::isa(size)) return l;
+    return {};
 }
 
 std::optional<nat_t> Idx::size2bitwidth(Ref size) {

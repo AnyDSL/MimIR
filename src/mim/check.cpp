@@ -73,6 +73,40 @@ bool Infer::eliminate(Vector<Ref*> refs) {
     }
     return false;
 }
+
+Ref Infer::explode() {
+    if (is_set()) return {};
+    auto a = type()->isa_lit_arity();
+    if (!a) return {};
+
+    auto n      = *a;
+    auto infers = DefVec(n);
+    auto& w     = world();
+
+    if (auto arr = type()->isa_imm<Arr>(); arr && n > world().flags().scalarize_threshold) {
+        auto pack = w.pack(arr->shape(), w.mut_infer(arr->body()));
+        set(pack);
+        return pack;
+    }
+
+    if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1) {
+        if (auto var = sigma->has_var()) {
+            auto rw   = VarRewriter(var, this);
+            infers[0] = w.mut_infer(sigma->op(0));
+            for (size_t i = 1; i != n; ++i) {
+                rw.map(sigma->var(n, i - 1), infers[i - 1]);
+                infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
+            }
+        }
+    } else {
+        for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type()->proj(n, i));
+    }
+
+    auto tuple = w.tuple(infers);
+    set(tuple);
+    return tuple;
+}
+
 /*
  * Check
  */
@@ -150,6 +184,11 @@ template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     if (mode == Opt && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
 
     if (auto extract = d1->isa<Extract>()) {
+        if (auto a = Idx::isa_lit(extract->index())) {
+            if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
+                if (!infer->is_set()) infer->explode();
+            }
+        }
         if (auto tuple = extract->tuple()->isa<Tuple>()) {
             if (auto i = Lit::isa(extract->index())) d1 = tuple->op(*i);
         }

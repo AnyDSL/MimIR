@@ -523,7 +523,7 @@ public:
 
     /// @name Helpers
     ///@{
-    Ref iinfer(Ref def) { return Idx::size(def->type()); }
+    Ref iinfer(Ref def) { return Idx::isa(def->type()); }
     ///@}
 
     /// @name dump/log
