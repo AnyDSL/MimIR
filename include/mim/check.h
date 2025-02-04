@@ -79,7 +79,7 @@ private:
     Ref fail();
 #else
     template<Mode> bool fail() { return false; }
-    Ref fail() {}
+    Ref fail() { return {}; }
 #endif
 
     template<Mode> bool alpha_(Ref d1, Ref d2);
