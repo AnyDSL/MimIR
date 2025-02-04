@@ -238,7 +238,7 @@ Ref Checker::is_uniform(Defs defs) {
 
 Ref Arr::check(size_t, Ref def) { return def; } // TODO
 
-Ref Arr::check_kind() {
+Ref Arr::check() {
     auto t = body()->unfold_type();
     if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
@@ -253,7 +253,7 @@ Ref Sigma::infer(World& w, Defs ops) {
 
 Ref Sigma::check(size_t, Ref def) { return def; } // TODO
 
-Ref Sigma::check_kind() {
+Ref Sigma::check() {
     auto t = infer(world(), ops());
     if (*t != *type()) {
         // TODO HACK
@@ -293,7 +293,7 @@ Ref Pi::infer(Ref dom, Ref codom) {
 
 Ref Pi::check(size_t, Ref def) { return def; }
 
-Ref Pi::check_kind() {
+Ref Pi::check() {
     auto t = infer(dom(), codom());
     if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);

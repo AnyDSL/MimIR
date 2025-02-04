@@ -250,8 +250,8 @@ Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, 
 // clang-format on
 
 Def* Def::set(size_t i, Ref def) {
-    def = check(i, def);
     invalidate();
+    def = check(i, def);
     assert(def && !op(i) && curr_op_ == i);
 #ifndef NDEBUG
     curr_op_ = (curr_op_ + 1) % num_ops();
@@ -260,8 +260,15 @@ Def* Def::set(size_t i, Ref def) {
     const auto& p = def->uses_.emplace(this, i);
     assert_unused(p.second);
 
-    if (i == num_ops() - 1) {
-        if (auto k = check_kind(); k != type()) set_type(k);
+    if (i == num_ops() - 1) { // set last, op so check kind
+        if (auto t = check(); t != type()) {
+            if (!type_->dep_const()) {
+                assert(type_->uses_.contains(Use(this, Use::Type)));
+                type_->uses_.erase(Use(this, Use::Type));
+            }
+            type_ = t;
+            t->uses_.emplace(this, Use::Type);
+        }
     }
 
     return this;
@@ -289,27 +296,6 @@ Def* Def::unset(size_t i) {
     ops_ptr()[i]->uses_.erase(Use(this, i));
     ops_ptr()[i] = nullptr;
     return this;
-}
-
-Def* Def::set_type(Ref type) {
-    if (type_ != type) {
-        invalidate();
-        if (type_ != nullptr) unset_type();
-        type_ = type;
-        type->uses_.emplace(this, Use::Type);
-    }
-    return this;
-}
-
-void Def::unset_type() {
-    if (type_) {
-        invalidate();
-        if (!type_->dep_const()) {
-            assert(type_->uses_.contains(Use(this, Use::Type)));
-            type_->uses_.erase(Use(this, Use::Type));
-        }
-        type_ = nullptr;
-    }
 }
 
 bool Def::is_set() const {

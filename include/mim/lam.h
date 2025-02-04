@@ -80,7 +80,7 @@ public:
     /// @name Type Checking
     ///@{
     Ref check(size_t, Ref) override;
-    Ref check_kind() override;
+    Ref check() override;
     static Ref infer(Ref dom, Ref codom);
     ///@}
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <optional>
-#include <span>
 
 #include <fe/assert.h>
 #include <fe/cast.h>
@@ -294,9 +293,7 @@ public:
     Def* reset(size_t i, Ref def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
     Def* set(Defs ops);                                             ///< Def::set @p ops all at once.
     Def* reset(Defs ops);                                           ///< Def::reset @p ops all at once.
-    Def* unset(); ///< Unsets all Def::ops; works even, if not set at all or partially.
-    Def* set_type(Ref);
-    void unset_type();
+    Def* unset();        ///< Unsets all Def::ops; works even, if not set at all or partially.
     bool is_set() const; ///< Yields `true` if empty or the last op is set.
     ///@}
 
@@ -523,7 +520,7 @@ public:
     /// @name Type Checking
     ///@{
     virtual Ref check(size_t, Ref def) { return def; }
-    virtual Ref check_kind() { return type(); }
+    virtual Ref check() { return type(); }
     ///@}
 
     /// @name dump
