@@ -31,7 +31,8 @@ public:
 
     /// @name Type Checking
     ///@{
-    void check() override;
+    Ref check(size_t, Ref) override;
+    Ref check_kind() override;
     static Ref infer(World&, Defs);
     ///@}
 
@@ -95,7 +96,8 @@ public:
 
     /// @name Type Checking
     ///@{
-    void check() override;
+    Ref check(size_t, Ref) override;
+    Ref check_kind() override;
     ///@}
 
     static constexpr auto Node = Node::Arr;

@@ -297,14 +297,7 @@ public:
     Def* unset(); ///< Unsets all Def::ops; works even, if not set at all or partially.
     Def* set_type(Ref);
     void unset_type();
-
-    /// Resolves Infer%s of this Def's type.
-    void update() {
-        if (auto r = Ref::refer(type()); r && r != type()) set_type(r);
-    }
-
-    /// Yields `true` if empty or the last op is set.
-    bool is_set() const;
+    bool is_set() const; ///< Yields `true` if empty or the last op is set.
     ///@}
 
     /// @name extended_ops
@@ -529,7 +522,8 @@ public:
 
     /// @name Type Checking
     ///@{
-    virtual void check() {}
+    virtual Ref check(size_t, Ref def) { return def; }
+    virtual Ref check_kind() { return type(); }
     ///@}
 
     /// @name dump

@@ -3,6 +3,8 @@
 #include "mim/rewrite.h"
 #include "mim/world.h"
 
+#include "fe/assert.h"
+
 namespace mim {
 
 namespace {
@@ -234,11 +236,13 @@ Ref Checker::is_uniform(Defs defs) {
  * infer & check
  */
 
-void Arr::check() {
+Ref Arr::check(size_t, Ref def) { return def; } // TODO
+
+Ref Arr::check_kind() {
     auto t = body()->unfold_type();
     if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
-    if (t != type()) set_type(t);
+    return t;
 }
 
 Ref Sigma::infer(World& w, Defs ops) {
@@ -247,36 +251,39 @@ Ref Sigma::infer(World& w, Defs ops) {
     return w.umax<Sort::Kind>(kinds);
 }
 
-void Sigma::check() {
+Ref Sigma::check(size_t, Ref def) { return def; } // TODO
+
+Ref Sigma::check_kind() {
     auto t = infer(world(), ops());
-    if (t != type()) {
+    if (*t != *type()) {
         // TODO HACK
         if (Checker::alpha<Checker::Check>(t, type()))
-            set_type(t);
-        else
+            return t;
+        else {
             world().WLOG(
                 "incorrect type '{}' for '{}'. Correct one would be: '{}'. I'll keep this one nevertheless due to "
                 "bugs in clos-conv",
                 type(), this, t);
+            return type();
+        }
     }
+    return t;
 }
 
-void Lam::check() {
-    if (!Checker::alpha<Checker::Check>(filter()->type(), world().type_bool())) {
-        error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type 'Bool'", filter(),
-              filter()->type());
-    }
-
-    auto new_body = Checker::assignable(codom(), body());
-    if (!new_body) {
+Ref Lam::check(size_t i, Ref def) {
+    if (i == 0) {
+        if (auto filter = Checker::assignable(world().type_bool(), def)) return filter;
+        throw Error().error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type 'Bool'",
+                            filter(), filter()->type());
+    } else if (i == 1) {
+        if (auto body = Checker::assignable(codom(), def)) return body;
         throw Error()
             .error(body()->loc(), "body of function is not assignable to declared codomain")
             .note(body()->loc(), "body: '{}'", body())
             .note(body()->loc(), "type: '{}'", body()->type())
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
-
-    if (new_body != body()) unset()->set(filter(), new_body);
+    fe::unreachable();
 }
 
 Ref Pi::infer(Ref dom, Ref codom) {
@@ -284,11 +291,13 @@ Ref Pi::infer(Ref dom, Ref codom) {
     return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
 }
 
-void Pi::check() {
+Ref Pi::check(size_t, Ref def) { return def; }
+
+Ref Pi::check_kind() {
     auto t = infer(dom(), codom());
     if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
-    if (t != type()) set_type(t);
+    return t;
 }
 
 #ifndef DOXYGEN

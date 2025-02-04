@@ -79,7 +79,8 @@ public:
 
     /// @name Type Checking
     ///@{
-    void check() override;
+    Ref check(size_t, Ref) override;
+    Ref check_kind() override;
     static Ref infer(Ref dom, Ref codom);
     ///@}
 
@@ -181,7 +182,7 @@ public:
 
     /// @name Type Checking
     ///@{
-    void check() override;
+    Ref check(size_t, Ref) override;
     ///@}
 
     static constexpr auto Node = Node::Lam;

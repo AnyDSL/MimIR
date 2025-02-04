@@ -250,6 +250,7 @@ Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, 
 // clang-format on
 
 Def* Def::set(size_t i, Ref def) {
+    def = check(i, def);
     invalidate();
     assert(def && !op(i) && curr_op_ == i);
 #ifndef NDEBUG
@@ -260,8 +261,7 @@ Def* Def::set(size_t i, Ref def) {
     assert_unused(p.second);
 
     if (i == num_ops() - 1) {
-        check();
-        update();
+        if (auto k = check_kind(); k != type()) set_type(k);
     }
 
     return this;
