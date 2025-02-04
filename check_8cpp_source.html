@@ -205,12 +205,12 @@ $(function(){initNavTree('check_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#ifdef MIM_ENABLE_CHECKS</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">template</span>&lt;Checker::Mode mode&gt; <span class="keywordtype">bool</span> Checker::fail() {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">if</span> (mode == <a class="code hl_enumvalue" href="classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa80fdeecdc4bd0801ed72c1a2f1c55da7">Check</a> &amp;&amp; <a class="code hl_function" href="classmim_1_1Checker.html#a44a75bc05e696746f4b16374102b27dc">world</a>().flags().break_on_alpha_unequal) fe::breakpoint();</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">if</span> (mode == <a class="code hl_enumvalue" href="classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa80fdeecdc4bd0801ed72c1a2f1c55da7">Check</a> &amp;&amp; <a class="code hl_function" href="classmim_1_1Checker.html#a44a75bc05e696746f4b16374102b27dc">world</a>().flags().break_on_alpha) fe::breakpoint();</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>}</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>Ref Checker::fail() {</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Checker.html#a44a75bc05e696746f4b16374102b27dc">world</a>().flags().break_on_alpha_unequal) fe::breakpoint();</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Checker.html#a44a75bc05e696746f4b16374102b27dc">world</a>().flags().break_on_alpha) fe::breakpoint();</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">return</span> {};</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">#endif</span></div>

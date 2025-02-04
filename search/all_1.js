@@ -42,7 +42,7 @@ var searchData=
   ['branch_5fclos_5felim_2eh_39',['branch_clos_elim.h',['../branch__clos__elim_8h.html',1,'']]],
   ['branch_5fclos_5fpass_40',['branch_clos_pass',['../namespacemim_1_1plug_1_1clos.html#a8946822aea593f6036e981f1d5ad4824',1,'mim::plug::clos']]],
   ['branchcloselim_41',['BranchClosElim',['../classmim_1_1plug_1_1clos_1_1BranchClosElim.html',1,'mim::plug::clos::BranchClosElim'],['../classmim_1_1plug_1_1clos_1_1BranchClosElim.html#a9d9adde407b3f7071e03c26f2695023a',1,'mim::plug::clos::BranchClosElim::BranchClosElim()']]],
-  ['break_5fon_5falpha_5funequal_42',['break_on_alpha_unequal',['../namespacemim.html#a62661493f2eb291aa90b0d071f73515c',1,'mim::Flags']]],
+  ['break_5fon_5falpha_42',['break_on_alpha',['../namespacemim.html#aecd8da1c3713216fee4463e6b7c76fe8',1,'mim::Flags']]],
   ['break_5fon_5ferror_43',['break_on_error',['../namespacemim.html#a815524784f39e99f0d5929c8ef950552',1,'mim::Flags']]],
   ['break_5fon_5fwarn_44',['break_on_warn',['../namespacemim.html#accee3d68c6800853cbb887679212d540',1,'mim::Flags']]],
   ['breakpoint_45',['breakpoint',['../classmim_1_1World.html#ae2b230faf05210f655cbfd4806fd75fb',1,'mim::World']]],

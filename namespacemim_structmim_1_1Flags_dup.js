@@ -3,7 +3,7 @@ var namespacemim_structmim_1_1Flags_dup =
     [ "aggressive_lam_spec", "namespacemim.html#aa34d78bc90a960fcde1dae529fcb452b", null ],
     [ "ascii", "namespacemim.html#ab215ed00a54cbe6b05280568ac1a6f7b", null ],
     [ "bootstrap", "namespacemim.html#aa94eca913fb20d3b0f80e74aa12349fa", null ],
-    [ "break_on_alpha_unequal", "namespacemim.html#a62661493f2eb291aa90b0d071f73515c", null ],
+    [ "break_on_alpha", "namespacemim.html#aecd8da1c3713216fee4463e6b7c76fe8", null ],
     [ "break_on_error", "namespacemim.html#a815524784f39e99f0d5929c8ef950552", null ],
     [ "break_on_warn", "namespacemim.html#accee3d68c6800853cbb887679212d540", null ],
     [ "disable_type_checking", "namespacemim.html#ad48fe9903dddefa784e0201f665fc0b3", null ],
