@@ -202,23 +202,38 @@ Ref Checker::assignable_(Ref type, Ref val) {
     if (auto sigma = type->isa<Sigma>()) {
         if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
 
-        size_t a = sigma->num_ops();
-        auto red = sigma->reduce(val);
-        for (size_t i = 0; i != a; ++i)
-            if (!assignable_(red[i], val->proj(a, i))) return fail();
-        return val;
+        size_t a     = sigma->num_ops();
+        auto red     = sigma->reduce(val);
+        auto new_ops = DefVec(red.size());
+        for (size_t i = 0; i != a; ++i) {
+            auto new_val = assignable_(red[i], val->proj(a, i));
+            if (new_val)
+                new_ops[i] = new_val;
+            else
+                return fail();
+        }
+        return world().tuple(new_ops);
     } else if (auto arr = type->isa<Arr>()) {
         if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
 
+        // TODO ack sclarize threshold
         if (auto a = Lit::isa(arr->arity())) {
-            for (size_t i = 0; i != *a; ++i)
-                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return fail();
-            return val;
+            auto new_ops = DefVec(*a);
+            for (size_t i = 0; i != *a; ++i) {
+                auto new_val = assignable_(arr->proj(*a, i), val->proj(*a, i));
+                if (new_val)
+                    new_ops[i] = new_val;
+                else
+                    return fail();
+            }
+            return world().tuple(new_ops);
         }
     } else if (auto vel = val->isa<Vel>()) {
-        return assignable_(type, vel->value());
+        if (auto new_val = assignable_(type, vel->value())) return world().vel(type, new_val);
+        return fail();
     } else if (auto uniq = val->type()->isa<Uniq>()) {
         if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
+        return fail();
     }
 
     return alpha_<Check>(type, val_ty) ? val : fail();
