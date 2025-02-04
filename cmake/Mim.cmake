@@ -35,7 +35,10 @@ function(add_mim_plugin)
             ${PLUGIN_D}
             ${PLUGIN_MD}
         DEPFILE ${PLUGIN_D}
-        COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.." --bootstrap --output-h ${AUTOGEN_H} --output-d ${PLUGIN_D} --output-md ${PLUGIN_MD}
+        COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.." --bootstrap
+            --output-h ${AUTOGEN_H}
+            --output-d ${PLUGIN_D}
+            --output-md ${PLUGIN_MD}
         MAIN_DEPENDENCY ${PLUGIN_MIM}
         DEPENDS ${MIM_TARGET_NAMESPACE}mim
         COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'"
