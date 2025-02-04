@@ -79,12 +79,12 @@ bool Infer::eliminate(Vector<Ref*> refs) {
 
 #ifdef MIM_ENABLE_CHECKS
 template<Checker::Mode mode> bool Checker::fail() {
-    if (mode == Check && world().flags().break_on_alpha_unequal) fe::breakpoint();
+    if (mode == Check && world().flags().break_on_alpha) fe::breakpoint();
     return false;
 }
 
 Ref Checker::fail() {
-    if (world().flags().break_on_alpha_unequal) fe::breakpoint();
+    if (world().flags().break_on_alpha) fe::breakpoint();
     return {};
 }
 #endif

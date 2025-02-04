@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
 #ifdef MIM_ENABLE_CHECKS
             | lyra::opt(breakpoints,    "gid"              )["-b"]["--break"                ]("*Triggers breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
             | lyra::opt(flags.reeval_breakpoints           )      ["--reeval-breakpoints"   ]("*Triggers breakpoint even upon unfying a node that has already been built.")
-            | lyra::opt(flags.break_on_alpha_unequal       )      ["--break-on-alpha"       ]("*Triggers breakpoint as soon as two expressions turn out to be not alpha-equivalent.")
+            | lyra::opt(flags.break_on_alpha               )      ["--break-on-alpha"       ]("*Triggers breakpoint as soon as two expressions turn out to be not alpha-equivalent.")
             | lyra::opt(flags.break_on_error               )      ["--break-on-error"       ]("*Triggers breakpoint on ELOG.")
             | lyra::opt(flags.break_on_warn                )      ["--break-on-warn"        ]("*Triggers breakpoint on WLOG.")
             | lyra::opt(flags.trace_gids                   )      ["--trace-gids"           ]("*Output gids during World::unify/insert.")

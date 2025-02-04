@@ -17,11 +17,11 @@ struct Flags {
     bool bootstrap               = false;
     bool aggressive_lam_spec     = false; // HACK makes LamSpec more agressive but potentially non-terminating
 #ifdef MIM_ENABLE_CHECKS
-    bool reeval_breakpoints     = false;
-    bool trace_gids             = false;
-    bool break_on_error         = false;
-    bool break_on_warn          = false;
-    bool break_on_alpha_unequal = false;
+    bool reeval_breakpoints = false;
+    bool trace_gids         = false;
+    bool break_on_error     = false;
+    bool break_on_warn      = false;
+    bool break_on_alpha     = false;
 #endif
 };
 
