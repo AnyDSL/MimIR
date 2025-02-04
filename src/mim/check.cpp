@@ -293,9 +293,9 @@ Ref Lam::check(size_t i, Ref def) {
     } else if (i == 1) {
         if (auto body = Checker::assignable(codom(), def)) return body;
         throw Error()
-            .error(body()->loc(), "body of function is not assignable to declared codomain")
-            .note(body()->loc(), "body: '{}'", body())
-            .note(body()->loc(), "type: '{}'", body()->type())
+            .error(def->loc(), "body of function is not assignable to declared codomain")
+            .note(def->loc(), "body: '{}'", def)
+            .note(def->loc(), "type: '{}'", def->type())
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
     fe::unreachable();
