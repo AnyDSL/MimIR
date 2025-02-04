@@ -172,9 +172,15 @@ Ref World::iapp(Ref callee, Ref arg) {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
                 auto new_arg = Checker::assignable(callee->type()->as<Pi>()->dom(), arg);
-                // assert(new_arg);
-                // TODO
-                // arg = new_arg;
+                if (!new_arg) { // TODO remove code duplication from below
+                    throw Error()
+                        .error(arg->loc(), "cannot apply argument to callee")
+                        .note(callee->loc(), "callee: '{}'", callee)
+                        .note(arg->loc(), "argument: '{}'", arg)
+                        .note(callee->loc(), "vvv domain type vvv\n'{}'\n'{}'", pi->dom(), arg->type())
+                        .note(arg->loc(), "^^^ argument type ^^^");
+                }
+                arg       = new_arg;
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));

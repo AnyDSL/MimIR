@@ -137,7 +137,6 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     if ((d1->isa<Lit>() && !d2->isa<Lit>())             // Lit to right
         || (!d1->isa<UMax>() && d2->isa<UMax>())        // UMax to left
         || (!d1->isa<Extract>() && d2->isa<Extract>())) // Extract to left
-        // || (d1->gid() > d2->gid()))                     // smaller gid to left
         std::swap(d1, d2);
 
     return alpha_internal<mode>(d1, d2);
@@ -216,6 +215,8 @@ Ref Checker::assignable_(Ref type, Ref val) {
         }
     } else if (auto vel = val->isa<Vel>()) {
         return assignable_(type, vel->value());
+    } else if (auto uniq = val->type()->isa<Uniq>()) {
+        if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
     }
 
     return alpha_<Check>(type, val_ty) ? val : fail();
@@ -265,13 +266,17 @@ void Lam::check() {
         error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type 'Bool'", filter(),
               filter()->type());
     }
-    if (!Checker::assignable(codom(), body())) {
+
+    auto new_body = Checker::assignable(codom(), body());
+    if (!new_body) {
         throw Error()
             .error(body()->loc(), "body of function is not assignable to declared codomain")
             .note(body()->loc(), "body: '{}'", body())
             .note(body()->loc(), "type: '{}'", body()->type())
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
+
+    if (new_body != body()) unset()->set(filter(), new_body);
 }
 
 Ref Pi::infer(Ref dom, Ref codom) {
