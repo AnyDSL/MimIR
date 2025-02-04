@@ -284,7 +284,7 @@ The command will create two targets:
    It will generate:
 
    - `<plugin-name>/autogen.h` for the C++ interface in order to identify annexes,
-   - `<plugin-name>.md`, for the documentation, and
+   - `<plugin-name>.md` for the documentation, and
    - `<plugin-name>.d` for the plugin's dependencies.
      @note Tracking dependencies via the emitted dependency file is not supported for all CMake generators.
      See [`add_custom_command`'s `DEPFILE` argument](https://cmake.org/cmake/help/latest/command/add_custom_command.html).
