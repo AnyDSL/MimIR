@@ -4,9 +4,12 @@
 
 namespace mim::plug::fcc {
 
-Ref normalize_const(Ref type, Ref, Ref arg) {
+Ref normalize_code(Ref type, Ref, Ref cl) {
     auto& world = type->world();
-    return world.lit(world.type_idx(arg), 42);
+    if (auto clos = match<fcc::clos>(cl)) {
+        // TODO
+    }
+    return {};
 }
 
 MIM_fcc_NORMALIZER_IMPL

@@ -1,27 +1,37 @@
 /// # The fcc Plugin {#fcc}
 ///
-/// @see mim::fcc
+/// @see mim::plug::fcc
 ///
 /// [TOC]
 ///
 /// A minimal fcc plugin
 ///
-/// ## Operations
+/// ## Types
 ///
-/// ### %%fcc.const_idx
-///
-/// The 42 constant, evaluated using a normalizer
-axm %fcc.const_idx: [n: Nat] → Idx n, normalize_const;
-
+/// Abstract closure.
 axm %fcc.Clos: [*, *] → *;
+///
+/// Code pointer to to closure's procedure.
 axm %fcc.Code: [*, *] → *;
-
+///
+/// Flat closure containing the code pointer and environment.
 lam %fcc.Flat(A B C: *): * =
     rec alpha: * = [code: %fcc.Code([alpha, A], B), env: C];
     alpha;
-
+///
+/// ## Operations
+///
+/// Create abstract closure from flat closure:
 axm %fcc.clos: {A B C: *} → %fcc.Flat (A, B, C) → %fcc.Clos (A, B);
-
-axm %fcc.cl: {A B: *} → [cl: %fcc.Clos (A, B)] → %fcc.Code ([⦃cl⦄, A], B);
-
-axm %fcc.accept: {A B C: *} → [cl: %fcc.Flat (A, B, C)] → %fcc.Code ((cl, A), B);
+///
+/// Project code pointer from abstract closure:
+axm %fcc.code: {A B: *} → [cl: %fcc.Clos (A, B)] → %fcc.Code ([⦃cl⦄, A], B), normalize_code;
+///
+/// Get domain from Code:
+axm %fcc.dom: {A B: *} → %fcc.Code (A, B) → A;
+///
+/// Cast `%%fcc.Code` w/ flat closure to `%%fcc.Code` w/ singleton.
+axm %fcc.accept: {A B C: *} → [code: %fcc.Code (%fcc.Flat (A, B, C), B)] → %fcc.Code (⦃%fcc.clos (%fcc.dom code)⦄, B);
+///
+/// Apply `%%fc.Code (A, B)` to argument of type `A` to obtain `B`:
+axm %fcc.apply: {A B: *} → [%fcc.Code (A, B), A] → B;
