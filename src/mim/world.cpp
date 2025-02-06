@@ -193,7 +193,7 @@ Ref World::iapp(Ref callee, Ref arg) {
 }
 
 Ref World::app(Ref callee, Ref arg) {
-    Infer::eliminate(Vector<Ref*>{&callee, &arg});
+    Infer::zonk(Vector<Ref*>{&callee, &arg});
     auto pi = callee->type()->isa<Pi>();
 
     if (!pi) {
