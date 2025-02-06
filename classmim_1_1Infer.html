@@ -453,11 +453,11 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a0301ee9e60f3a42b29708de14433b04a" id="r_a0301ee9e60f3a42b29708de14433b04a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0301ee9e60f3a42b29708de14433b04a">eliminate</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmim_1_1Ref.html">Ref</a> * &gt;)</td></tr>
-<tr class="memdesc:a0301ee9e60f3a42b29708de14433b04a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eliminate <a class="el" href="classmim_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a>s that may have been resolved in the meantime by rebuilding.  <br /></td></tr>
-<tr class="separator:a0301ee9e60f3a42b29708de14433b04a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a91df896acff981b9758a1e3aeec704" id="r_a1a91df896acff981b9758a1e3aeec704"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a91df896acff981b9758a1e3aeec704">should_eliminate</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> def)</td></tr>
-<tr class="separator:a1a91df896acff981b9758a1e3aeec704"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f49a9bb964de0d9bfef5baa4e65925c" id="r_a0f49a9bb964de0d9bfef5baa4e65925c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f49a9bb964de0d9bfef5baa4e65925c">zonk</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmim_1_1Ref.html">Ref</a> * &gt;)</td></tr>
+<tr class="memdesc:a0f49a9bb964de0d9bfef5baa4e65925c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eliminate <a class="el" href="classmim_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a>s that may have been resolved in the meantime by rebuilding.  <br /></td></tr>
+<tr class="separator:a0f49a9bb964de0d9bfef5baa4e65925c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0826a6760d776cbf87236242e9778250" id="r_a0826a6760d776cbf87236242e9778250"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0826a6760d776cbf87236242e9778250">has_infer</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> def)</td></tr>
+<tr class="separator:a0826a6760d776cbf87236242e9778250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f53b044ac29ab53dd69b8c38f9aa393" id="r_a5f53b044ac29ab53dd69b8c38f9aa393"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f53b044ac29ab53dd69b8c38f9aa393">find</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="memdesc:a5f53b044ac29ab53dd69b8c38f9aa393"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure">Union-Find</a> to unify <a class="el" href="classmim_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a> nodes.  <br /></td></tr>
 <tr class="separator:a5f53b044ac29ab53dd69b8c38f9aa393"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -532,40 +532,6 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00010">10</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0301ee9e60f3a42b29708de14433b04a" name="a0301ee9e60f3a42b29708de14433b04a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0301ee9e60f3a42b29708de14433b04a">&#9670;&#160;</a></span>eliminate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool mim::Infer::eliminate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmim_1_1Ref.html">Ref</a> * &gt;</td>          <td class="paramname"><span class="paramname"><em>refs</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Eliminate <a class="el" href="classmim_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a>s that may have been resolved in the meantime by rebuilding. </p>
-<dl class="section return"><dt>Returns</dt><dd><code>true</code>, if one of the arguements was in fact updated. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00064">64</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, <a class="el" href="check_8h_source.html#l00029">should_eliminate()</a>, and <a class="el" href="def_8cpp_source.html#l00407">mim::Def::world()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00195">mim::World::app()</a>.</p>
-
-</div>
-</div>
 <a id="a5f53b044ac29ab53dd69b8c38f9aa393" name="a5f53b044ac29ab53dd69b8c38f9aa393"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f53b044ac29ab53dd69b8c38f9aa393">&#9670;&#160;</a></span>find()</h2>
 
@@ -597,6 +563,37 @@ Additional Inherited Members</h2></td></tr>
 <p class="reference">References <a class="el" href="def_8h_source.html#l00441">mim::Def::isa_mut()</a>, <a class="el" href="def_8h_source.html#l00272">mim::Def::op()</a>, <a class="el" href="check_8h_source.html#l00020">op()</a>, <a class="el" href="check_8cpp_source.html#l00029">mim::Ref::refer()</a>, and <a class="el" href="def_8h_source.html#l00294">mim::Def::reset()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00029">mim::Ref::refer()</a>.</p>
+
+</div>
+</div>
+<a id="a0826a6760d776cbf87236242e9778250" name="a0826a6760d776cbf87236242e9778250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0826a6760d776cbf87236242e9778250">&#9670;&#160;</a></span>has_infer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool mim::Infer::has_infer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00029">29</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00330">mim::Def::has_dep()</a>, <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, and <a class="el" href="def_8h_source.html#l00435">mim::Def::isa_imm()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00065">zonk()</a>.</p>
 
 </div>
 </div>
@@ -729,37 +726,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a1a91df896acff981b9758a1e3aeec704" name="a1a91df896acff981b9758a1e3aeec704"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a91df896acff981b9758a1e3aeec704">&#9670;&#160;</a></span>should_eliminate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool mim::Infer::should_eliminate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00029">29</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8h_source.html#l00330">mim::Def::has_dep()</a>, <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, and <a class="el" href="def_8h_source.html#l00435">mim::Def::isa_imm()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00064">eliminate()</a>.</p>
-
-</div>
-</div>
 <a id="a22a5c26601676dd2e687fb2995a53aed" name="a22a5c26601676dd2e687fb2995a53aed"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22a5c26601676dd2e687fb2995a53aed">&#9670;&#160;</a></span>stub()</h2>
 
@@ -850,6 +816,40 @@ Additional Inherited Members</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00023">23</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00277">mim::Def::unset()</a>.</p>
+
+</div>
+</div>
+<a id="a0f49a9bb964de0d9bfef5baa4e65925c" name="a0f49a9bb964de0d9bfef5baa4e65925c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f49a9bb964de0d9bfef5baa4e65925c">&#9670;&#160;</a></span>zonk()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mim::Infer::zonk </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; <a class="el" href="classmim_1_1Ref.html">Ref</a> * &gt;</td>          <td class="paramname"><span class="paramname"><em>refs</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Eliminate <a class="el" href="classmim_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a>s that may have been resolved in the meantime by rebuilding. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code>, if one of the arguements was in fact updated. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00065">65</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="check_8h_source.html#l00029">has_infer()</a>, <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, and <a class="el" href="def_8cpp_source.html#l00407">mim::Def::world()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00195">mim::World::app()</a>.</p>
 
 </div>
 </div>

@@ -85,7 +85,8 @@ var NAVTREEINDEX18 =
 "functions_func_u.html":[5,3,1,19],
 "functions_func_v.html":[5,3,1,20],
 "functions_func_w.html":[5,3,1,21],
-"functions_func_~.html":[5,3,1,22],
+"functions_func_z.html":[5,3,1,22],
+"functions_func_~.html":[5,3,1,23],
 "functions_g.html":[5,3,0,6],
 "functions_h.html":[5,3,0,7],
 "functions_i.html":[5,3,0,8],
@@ -105,7 +106,8 @@ var NAVTREEINDEX18 =
 "functions_v.html":[5,3,0,20],
 "functions_vars.html":[5,3,2],
 "functions_w.html":[5,3,0,21],
-"functions_~.html":[5,3,0,22],
+"functions_z.html":[5,3,0,22],
+"functions_~.html":[5,3,0,23],
 "globals.html":[6,1,0],
 "globals_defs.html":[6,1,3],
 "globals_func.html":[6,1,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "math.html":[2,7],
 "math_2autogen_8h.html":[6,0,0,1,0,0,7,0],
 "math_2autogen_8h.html#a05a47bc13ee50875c8696d6c42ab181e":[6,0,0,1,0,0,7,0,36],
-"math_2autogen_8h.html#a05ac4b1ef1e0a51c44e4b0622835c4f4":[6,0,0,1,0,0,7,0,45],
-"math_2autogen_8h.html#a07302efd65b6f40937aad847fef4f24b":[6,0,0,1,0,0,7,0,3],
-"math_2autogen_8h.html#a077df15a1553e043b52846fafeaf6b55":[6,0,0,1,0,0,7,0,2]
+"math_2autogen_8h.html#a05ac4b1ef1e0a51c44e4b0622835c4f4":[6,0,0,1,0,0,7,0,45]
 };
