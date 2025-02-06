@@ -93,7 +93,8 @@ public:
     const Def* operator->() const { return refer(def_); }
     operator const Def*() const { return refer(def_); }
     explicit operator bool() const { return def_; }
-    static const Def* refer(const Def* def); ///< Retrieves Infer::arg from @p def.
+    static const Def* refer(const Def* def); ///< Same as Infer::find but does nothing if @p def is `nullptr`.
+    const Def* def() const { return def_; }  ///< Retrieve wrapped Def without Infer::refer%ing.
 
     friend std::ostream& operator<<(std::ostream&, Ref);
 
