@@ -11,7 +11,7 @@
 /// Abstract closure.
 axm %fcc.Clos: [*, *] → *;
 ///
-/// Code pointer to to closure's procedure.
+/// Code pointer to closure's procedure.
 axm %fcc.Code: [*, *] → *;
 ///
 /// Flat closure containing the code pointer and environment.
@@ -34,4 +34,4 @@ axm %fcc.dom: {A B: *} → %fcc.Code (A, B) → A;
 axm %fcc.accept: {A B C: *} → [code: %fcc.Code (%fcc.Flat (A, B, C), B)] → %fcc.Code (⦃%fcc.clos (%fcc.dom code)⦄, B);
 ///
 /// Apply `%%fc.Code (A, B)` to argument of type `A` to obtain `B`:
-axm %fcc.apply: {A B: *} → [%fcc.Code (A, B), A] → B;
+axm %fcc.app: {A B: *} → [%fcc.Code (A, B), A] → B;
