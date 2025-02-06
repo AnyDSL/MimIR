@@ -135,7 +135,7 @@ $(function(){initNavTree('classmim_1_1Ref.html',''); initResizable(true); });
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab24055145fbe3ab1256e2e8b179bcf2f" id="r_ab24055145fbe3ab1256e2e8b179bcf2f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab24055145fbe3ab1256e2e8b179bcf2f">Ref</a> ()=default</td></tr>
 <tr class="separator:ab24055145fbe3ab1256e2e8b179bcf2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37c5a737a92f08feeb5b32de57340470" id="r_a37c5a737a92f08feeb5b32de57340470"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37c5a737a92f08feeb5b32de57340470">Ref</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="memitem:a37c5a737a92f08feeb5b32de57340470" id="r_a37c5a737a92f08feeb5b32de57340470"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37c5a737a92f08feeb5b32de57340470">Ref</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="#a6fe4b109a4bda5e6669150145a1e976e">def</a>)</td></tr>
 <tr class="separator:a37c5a737a92f08feeb5b32de57340470"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cd5324916e1cc7f9246f573a4ff32e1" id="r_a3cd5324916e1cc7f9246f573a4ff32e1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3cd5324916e1cc7f9246f573a4ff32e1">operator*</a> () const</td></tr>
 <tr class="separator:a3cd5324916e1cc7f9246f573a4ff32e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,11 +145,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7ef5a81c6d2a88840e96695f1b8c643e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeafc89b992da0a7bc3ba4fefdea4bc21" id="r_aeafc89b992da0a7bc3ba4fefdea4bc21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeafc89b992da0a7bc3ba4fefdea4bc21">operator bool</a> () const</td></tr>
 <tr class="separator:aeafc89b992da0a7bc3ba4fefdea4bc21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fe4b109a4bda5e6669150145a1e976e" id="r_a6fe4b109a4bda5e6669150145a1e976e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fe4b109a4bda5e6669150145a1e976e">def</a> () const</td></tr>
+<tr class="memdesc:a6fe4b109a4bda5e6669150145a1e976e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve wrapped <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> without Infer::refering.  <br /></td></tr>
+<tr class="separator:a6fe4b109a4bda5e6669150145a1e976e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa3696ec96f113354ca828288f21848de" id="r_aa3696ec96f113354ca828288f21848de"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3696ec96f113354ca828288f21848de">refer</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="memdesc:aa3696ec96f113354ca828288f21848de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves Infer::arg from <code>def</code>.  <br /></td></tr>
+<tr class="memitem:aa3696ec96f113354ca828288f21848de" id="r_aa3696ec96f113354ca828288f21848de"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa3696ec96f113354ca828288f21848de">refer</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="#a6fe4b109a4bda5e6669150145a1e976e">def</a>)</td></tr>
+<tr class="memdesc:aa3696ec96f113354ca828288f21848de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="classmim_1_1Infer.html#a5f53b044ac29ab53dd69b8c38f9aa393" title="Union-Find to unify Infer nodes.">Infer::find</a> but does nothing if <code>def</code> is <code>nullptr</code>.  <br /></td></tr>
 <tr class="separator:aa3696ec96f113354ca828288f21848de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
@@ -215,6 +218,37 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6fe4b109a4bda5e6669150145a1e976e" name="a6fe4b109a4bda5e6669150145a1e976e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fe4b109a4bda5e6669150145a1e976e">&#9670;&#160;</a></span>def()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Ref::def </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve wrapped <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> without Infer::refering. </p>
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00097">97</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00029">refer()</a>.</p>
+
+</div>
+</div>
 <a id="aeafc89b992da0a7bc3ba4fefdea4bc21" name="aeafc89b992da0a7bc3ba4fefdea4bc21"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeafc89b992da0a7bc3ba4fefdea4bc21">&#9670;&#160;</a></span>operator bool()</h2>
 
@@ -352,11 +386,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Retrieves Infer::arg from <code>def</code>. </p>
+<p>Same as <a class="el" href="classmim_1_1Infer.html#a5f53b044ac29ab53dd69b8c38f9aa393" title="Union-Find to unify Infer nodes.">Infer::find</a> but does nothing if <code>def</code> is <code>nullptr</code>. </p>
 
 <p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00029">29</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="check_8cpp_source.html#l00031">mim::Infer::find()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00097">def()</a>, and <a class="el" href="check_8cpp_source.html#l00031">mim::Infer::find()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00031">mim::Infer::find()</a>, <a class="el" href="world_8cpp_source.html#l00165">mim::World::iapp()</a>, <a class="el" href="def_8h_source.html#l00094">operator const Def *()</a>, <a class="el" href="def_8h_source.html#l00092">operator*()</a>, and <a class="el" href="def_8h_source.html#l00093">operator-&gt;()</a>.</p>
 

@@ -2,6 +2,7 @@ var classmim_1_1Ref =
 [
     [ "Ref", "classmim_1_1Ref.html#ab24055145fbe3ab1256e2e8b179bcf2f", null ],
     [ "Ref", "classmim_1_1Ref.html#a37c5a737a92f08feeb5b32de57340470", null ],
+    [ "def", "classmim_1_1Ref.html#a6fe4b109a4bda5e6669150145a1e976e", null ],
     [ "operator bool", "classmim_1_1Ref.html#aeafc89b992da0a7bc3ba4fefdea4bc21", null ],
     [ "operator const Def *", "classmim_1_1Ref.html#a7ef5a81c6d2a88840e96695f1b8c643e", null ],
     [ "operator*", "classmim_1_1Ref.html#a3cd5324916e1cc7f9246f573a4ff32e1", null ],
