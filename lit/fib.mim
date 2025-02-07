@@ -20,7 +20,6 @@ con seq {A: *} (n: Nat) (body: Cn [Cn A][A]) (exit: Cn A) (acc: A)@tt =
             end;
     end;
 
-
 fun extern fib(n: Nat): Nat =
     seq n body exit (0, 1)
     where

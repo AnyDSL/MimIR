@@ -7,6 +7,9 @@
 
 #include "mim/util/print.h"
 
+// Do not zonk here!
+// We want to see all Refs in the DOT graph.
+
 namespace mim {
 
 namespace {
@@ -60,7 +63,7 @@ public:
         if (!def->is_set()) return;
 
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-            auto op = def->op(i);
+            auto op = def->op(i).def();
             recurse(op, max - 1);
             tab_.print(os_, "_{} -> _{}[taillabel=\"{}\",", def->gid(), op->gid(), i);
             if (op->isa<Lit>() || op->isa<Axiom>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
@@ -69,7 +72,7 @@ public:
                 print(os_, "];\n");
         }
 
-        if (auto t = def->type(); t && types_) {
+        if (auto t = def->type().def(); t && types_) {
             recurse(t, max - 1);
             tab_.println(os_, "_{} -> _{}[color=\"#00000000\",constraint=false,style=dashed];", def->gid(), t->gid());
         }
@@ -91,7 +94,7 @@ public:
     std::ostream& tooltip(const Def* def) {
         static constexpr auto NL = "&#13;&#10;";
         auto loc                 = escape(def->loc());
-        auto type                = escape(def->type());
+        auto type                = escape(def->type().def());
         escape(loc);
         print(os_, "tooltip=\"");
         print(os_, "<b>expr:</b> {}{}", def, NL);

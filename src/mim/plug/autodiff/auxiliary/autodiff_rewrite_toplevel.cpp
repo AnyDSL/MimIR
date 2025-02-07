@@ -5,11 +5,10 @@ namespace mim::plug::autodiff {
 
 /// Additionally to the derivation, the pullback is registered and the maps are initialized.
 Ref AutoDiffEval::derive_(Ref def) {
-    auto& world = def->world();
-    auto lam    = def->as_mut<Lam>(); // TODO check if mutable
-    world.DLOG("Derive lambda: {}", def);
+    auto lam = def->as_mut<Lam>(); // TODO check if mutable
+    world().DLOG("Derive lambda: {}", def);
     auto deriv_ty = autodiff_type_fun_pi(lam->type());
-    auto deriv    = world.mut_lam(deriv_ty)->set(lam->sym().str() + "_deriv");
+    auto deriv    = world().mut_lam(deriv_ty)->set(lam->sym().str() + "_deriv");
 
     // We first pre-register the derivatives.
     // This knowledge is needed for recursion.
@@ -33,19 +32,20 @@ Ref AutoDiffEval::derive_(Ref def) {
     auto ret_pb               = zero_pullback(lam->var(1)->type(), arg_ty);
     partial_pullback[ret_var] = ret_pb;
 
-    shadow_pullback[deriv_all_args] = world.tuple({arg_id_pb, ret_pb});
-    world.DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb, arg_id_pb->type());
-    world.DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args], shadow_pullback[deriv_all_args]->type());
+    shadow_pullback[deriv_all_args] = world().tuple({arg_id_pb, ret_pb});
+    world().DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb,
+                 arg_id_pb->type());
+    world().DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args], shadow_pullback[deriv_all_args]->type());
 
     // We pre-register the augment replacements.
     // The function and its variables are replaced by their new derived versions.
     // TODO: maybe leave out function call (duplication with derived)
     augmented[def] = deriv;
-    world.DLOG("Associate {} with {}", def, deriv);
-    world.DLOG("  {} : {}", lam, lam->type());
-    world.DLOG("  {} : {}", deriv, deriv->type());
+    world().DLOG("Associate {} with {}", def, deriv);
+    world().DLOG("  {} : {}", lam, lam->type());
+    world().DLOG("  {} : {}", deriv, deriv->type());
     augmented[lam->var()] = deriv->var();
-    world.DLOG("Associate vars {} with {}", lam->var(), deriv->var());
+    world().DLOG("Associate vars {} with {}", lam->var(), deriv->var());
 
     // already contains the correct application of
     // deriv->ret_var() by specification
