@@ -9,13 +9,13 @@ namespace mim {
 
 namespace {
 
-class InferRewriter : public Rewriter {
+class Zonker : public Rewriter {
 public:
-    InferRewriter(World& world)
+    Zonker(World& world)
         : Rewriter(world) {}
 
     Ref rewrite(Ref old_def) override {
-        if (Infer::should_eliminate(old_def)) return Rewriter::rewrite(old_def);
+        if (Infer::has_infer(old_def)) return Rewriter::rewrite(old_def);
         return old_def;
     }
 };
@@ -61,10 +61,11 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
-bool Infer::eliminate(Vector<Ref*> refs) {
-    if (std::ranges::any_of(refs, [](auto pref) { return should_eliminate(*pref); })) {
+// TODO this vastly overaproximates the nodes to visit.
+bool Infer::zonk(Vector<Ref*> refs) {
+    if (std::ranges::any_of(refs, [](auto pref) { return has_infer(*pref); })) {
         auto& world = (*refs.front())->world();
-        InferRewriter rw(world);
+        Zonker rw(world);
         for (size_t i = 0, e = refs.size(); i != e; ++i) {
             auto ref = *refs[i];
             *refs[i] = ref->has_dep(Dep::Infer) ? rw.rewrite(ref) : ref;
@@ -332,9 +333,9 @@ Ref Lam::check(size_t i, Ref def) {
     } else if (i == 1) {
         if (auto body = Checker::assignable(codom(), def)) return body;
         throw Error()
-            .error(body()->loc(), "body of function is not assignable to declared codomain")
-            .note(body()->loc(), "body: '{}'", body())
-            .note(body()->loc(), "type: '{}'", body()->type())
+            .error(def->loc(), "body of function is not assignable to declared codomain")
+            .note(def->loc(), "body: '{}'", def)
+            .note(def->loc(), "type: '{}'", def->type())
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
     fe::unreachable();

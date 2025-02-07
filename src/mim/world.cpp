@@ -193,7 +193,7 @@ Ref World::iapp(Ref callee, Ref arg) {
 }
 
 Ref World::app(Ref callee, Ref arg) {
-    Infer::eliminate(Vector<Ref*>{&callee, &arg});
+    Infer::zonk(Vector<Ref*>{&callee, &arg});
     auto pi = callee->type()->isa<Pi>();
 
     if (!pi) {
@@ -554,7 +554,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);
 }
 
-Ref World::uniq(Ref inhabitant) { return unify<Uniq>(1, this->type<1>(), inhabitant); }
+Ref World::uniq(Ref inhabitant) { return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant); }
 
 Sym World::append_suffix(Sym symbol, std::string suffix) {
     auto name = symbol.str();
