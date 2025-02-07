@@ -16,7 +16,7 @@
 namespace mim {
 
 void PipelineBuilder::def2pass(const Def* def, Pass* p) {
-    def->world().DLOG("associating {} with {}", def->gid(), p);
+    world().DLOG("associating {} with {}", def->gid(), p);
     def2pass_[def] = p;
 }
 Pass* PipelineBuilder::pass(const Def* def) { return def2pass_[def]; }

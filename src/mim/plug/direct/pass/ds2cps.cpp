@@ -9,15 +9,14 @@
 namespace mim::plug::direct {
 
 Ref DS2CPS::rewrite(Ref def) {
-    auto& world = def->world();
     if (auto app = def->isa<App>()) {
         if (auto lam = app->callee()->isa_mut<Lam>()) {
-            world.DLOG("encountered lam app");
+            world().DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
-            world.DLOG("new lam: {} : {}", new_lam, new_lam->type());
-            world.DLOG("arg: {} : {}", app->arg(), app->arg()->type());
-            auto new_app = world.app(new_lam, app->arg());
-            world.DLOG("new app: {} : {}", new_app, new_app->type());
+            world().DLOG("new lam: {} : {}", new_lam, new_lam->type());
+            world().DLOG("arg: {} : {}", app->arg(), app->arg()->type());
+            auto new_app = world().app(new_lam, app->arg());
+            world().DLOG("new app: {} : {}", new_app, new_app->type());
             return new_app;
         }
     }

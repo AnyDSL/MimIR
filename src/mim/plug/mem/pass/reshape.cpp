@@ -250,13 +250,13 @@ const Def* Reshape::reshape(DefVec& defs, const Def* T, const Def* mem) {
 }
 
 const Def* Reshape::reshape(const Def* def, const Def* target) {
-    def->world().DLOG("reshape:\n  {} =>\n  {}", def->type(), target);
+    world().DLOG("reshape:\n  {} =>\n  {}", def->type(), target);
     auto flat_defs = flatten_def(def);
     const Def* mem = nullptr;
     // find mem
     for (auto i = flat_defs.begin(); i != flat_defs.end(); i++)
         if (is_mem_ty((*i)->type()) && !mem) mem = *i;
-    def->world().DLOG("mem: {}", mem);
+    world().DLOG("mem: {}", mem);
     return reshape(flat_defs, target, mem);
 }
 
