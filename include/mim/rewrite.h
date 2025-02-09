@@ -35,7 +35,7 @@ public:
         if (var) {
             if (auto v = var->isa<Var>()) {
                 map(var, arg);
-                vars_ = world().vars(v);
+                vars_ = world().vars().create(v);
             }
         }
     }
@@ -46,8 +46,8 @@ public:
     }
 
     Ref rewrite_mut(Def* mut) override {
-        if (world().has_intersection(mut->free_vars(), vars_)) {
-            if (auto var = mut->has_var()) vars_ = world().insert(vars_, var);
+        if (world().vars().has_intersection(mut->free_vars(), vars_)) {
+            if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
             return Rewriter::rewrite_mut(mut);
         }
         return map(mut, mut);

@@ -799,7 +799,7 @@ public:
     static std::optional<nat_t> isa_lit(Ref def);
     ///@}
 
-    /// @name Convert between Idx::size and bitwidth and vice versa
+    /// @name Convert between Idx::isa and bitwidth and vice versa
     ///@{
     // clang-format off
     static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }

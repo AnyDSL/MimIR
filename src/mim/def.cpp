@@ -31,15 +31,15 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     gid_ = world().next_gid();
 
     if (auto var = isa<Var>()) {
-        vars_.local = world().vars(var);
+        vars_.local = world().vars().create(var);
         muts_.local = Muts();
     } else {
         vars_.local = Vars();
         muts_.local = Muts();
 
         for (auto op : extended_ops()) {
-            vars_.local = world().merge(vars_.local, op->local_vars());
-            muts_.local = world().merge(muts_.local, op->local_muts());
+            vars_.local = world().vars().merge(vars_.local, op->local_vars());
+            muts_.local = world().muts().merge(muts_.local, op->local_muts());
         }
     }
 
@@ -311,7 +311,7 @@ bool Def::is_set() const {
  */
 
 Muts Def::local_muts() const {
-    if (auto mut = isa_mut()) return world().muts(mut);
+    if (auto mut = isa_mut()) return world().muts().create(mut);
     return muts_.local;
 }
 
@@ -319,7 +319,7 @@ Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
     auto vars = local_vars();
-    for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars());
+    for (auto mut : local_muts()) vars = world().vars().merge(vars, mut->free_vars());
     return vars;
 }
 
@@ -350,16 +350,16 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     auto fvs0 = vars_.free;
     auto fvs  = fvs0;
 
-    for (auto op : extended_ops()) fvs = world().merge(fvs, op->local_vars());
+    for (auto op : extended_ops()) fvs = world().vars().merge(fvs, op->local_vars());
 
     for (auto op : extended_ops()) {
         for (auto local_mut : op->local_muts()) {
-            local_mut->muts_.fv_consumers = world().insert(local_mut->muts_.fv_consumers, this);
-            fvs                           = world().merge(fvs, local_mut->free_vars(todo, run));
+            local_mut->muts_.fv_consumers = world().muts().insert(local_mut->muts_.fv_consumers, this);
+            fvs                           = world().vars().merge(fvs, local_mut->free_vars(todo, run));
         }
     }
 
-    if (auto var = has_var()) fvs = world().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
+    if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
 
     todo |= fvs0 != fvs;
     return vars_.free = fvs;
