@@ -98,6 +98,8 @@ Ref Infer::explode() {
                 rw.map(sigma->var(n, i - 1), infers[i - 1]);
                 infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
             }
+        } else {
+            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(sigma->op(i));
         }
     } else {
         for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type()->proj(n, i));
@@ -135,6 +137,18 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     // Otherwise, we have to look more thoroughly.
     // Example: λx.x - λz.x
     if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
+
+    if (auto extract = r1->isa<Extract>()) {
+        if (auto a = Idx::isa_lit(extract->index()->type())) {
+            if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
+                if (!infer->is_set()) infer->explode();
+            }
+        }
+        if (auto tuple = extract->tuple()->isa<Tuple>()) {
+            if (auto i = Lit::isa(extract->index())) return alpha_<mode>(tuple->op(*i), d2);
+        }
+    }
+
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
     if (mut1 && mut2 && mut1 == mut2) return true;
@@ -185,13 +199,13 @@ template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     if (mode == Opt && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
 
     if (auto extract = d1->isa<Extract>()) {
-        if (auto a = Idx::isa_lit(extract->index())) {
+        if (auto a = Idx::isa_lit(extract->index()->type())) {
             if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
                 if (!infer->is_set()) infer->explode();
             }
         }
         if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto i = Lit::isa(extract->index())) d1 = tuple->op(*i);
+            if (auto i = Lit::isa(extract->index())) return alpha<mode>(tuple->op(*i), d2);
         }
     }
 
