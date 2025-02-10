@@ -65,10 +65,10 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
         return pack;
     } else if (Idx::isa(type)) {
         world.DLOG("add int");
-        auto width = Lit::as(world.iinfer(a));
+        auto width = Idx::as_lit(a->type());
         world.DLOG("width {}", width);
         auto int_add = world.call(core::wrap::add, 0_n, Defs{a, b});
-        world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
+        world.DLOG("int add {} : {}", int_add, Idx::isa(int_add->type()));
         return int_add;
     } else if (T->isa<App>()) {
         assert(0 && "not handled");

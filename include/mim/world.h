@@ -515,11 +515,6 @@ public:
     [[nodiscard]] const auto& muts() const { return move_.muts; }
     ///@}
 
-    /// @name Helpers
-    ///@{
-    Ref iinfer(Ref def) { return Idx::isa(def->type()); }
-    ///@}
-
     /// @name dump/log
     ///@{
     Log& log();

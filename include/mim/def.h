@@ -796,7 +796,17 @@ public:
     ///@{
     /// Checks if @p def is a `Idx s` and returns `s` or `nullptr` otherwise.
     static Ref isa(Ref def);
+    static Ref as(Ref def) {
+        auto res = isa(def);
+        assert(res);
+        return res;
+    }
     static std::optional<nat_t> isa_lit(Ref def);
+    static nat_t as_lit(Ref def) {
+        auto res = isa_lit(def);
+        assert(res.has_value());
+        return *res;
+    }
     ///@}
 
     /// @name Convert between Idx::isa and bitwidth and vice versa
