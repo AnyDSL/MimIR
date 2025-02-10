@@ -162,7 +162,7 @@ Ref World::var(Ref type, Def* mut) {
     return mut->var_ = unify<Var>(1, type, mut);
 }
 
-Ref World::iapp(Ref callee, Ref arg) {
+Ref World::implicit_app(Ref callee, Ref arg) {
     while (auto pi = callee->type()->isa<Pi>()) {
         if (pi->is_implicit()) {
             auto infer = mut_infer(pi->dom());

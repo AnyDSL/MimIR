@@ -254,7 +254,7 @@ Ref LamExpr::emit_(Emitter& e) const {
 Ref AppExpr::emit_(Emitter& e) const {
     auto c = callee()->emit(e);
     auto a = arg()->emit(e);
-    return is_explicit() ? e.world().app(c, a) : e.world().iapp(c, a);
+    return is_explicit() ? e.world().app(c, a) : e.world().implicit_app(c, a);
 }
 
 Ref RetExpr::emit_(Emitter& e) const {
