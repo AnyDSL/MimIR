@@ -502,8 +502,6 @@ public:
     // clang-format off
     template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(annex(id),   std::forward<Args>(args)...); }
     template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(annex<Id>(), std::forward<Args>(args)...); }
-    template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) { return call_(implicit_app(callee, arg), std::forward<Args>(args)...); }
-    template<class T> const Def* call_(Ref callee, T arg) { return implicit_app(callee, arg); }
     // clang-format on
     ///@}
 
@@ -539,6 +537,15 @@ public:
     ///@}
 
 private:
+    /// @name call_
+    /// Helpers to unwind World::call with variadic templates.
+    ///@{
+    template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) {
+        return call_(implicit_app(callee, arg), std::forward<Args>(args)...);
+    }
+    template<class T> const Def* call_(Ref callee, T arg) { return implicit_app(callee, arg); }
+    ///@}
+
     /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
