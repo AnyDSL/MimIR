@@ -23,9 +23,6 @@ public:
     Infer* unset() { return Def::unset()->as<Infer>(); }
     ///@}
 
-    /// Eliminate Infer%s that may have been resolved in the meantime by rebuilding.
-    static bool has_infer(Ref def) { return def->isa_imm() && def->has_dep(Dep::Infer); }
-
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
     /// Def::flags is used to keep track of rank for
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).

@@ -168,7 +168,6 @@ Ref World::implicit_app(Ref callee, Ref arg) {
 }
 
 Ref World::app(Ref callee, Ref arg) {
-    // Infer::zonk(Vector<Ref*>{&callee, &arg});
     callee  = callee->zonk();
     auto pi = callee->type()->isa<Pi>();
 

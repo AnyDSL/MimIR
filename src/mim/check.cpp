@@ -15,16 +15,15 @@ public:
         : Rewriter(world) {}
 
     Ref rewrite(Ref old_def) override {
-        if (Infer::has_infer(old_def)) return Rewriter::rewrite(old_def);
+        if (old_def->has_dep(Dep::Infer)) return Rewriter::rewrite(old_def);
         return old_def;
     }
 };
 
 } // namespace
 
-// TODO this vastly overaproximates the nodes to visit.
 const Def* Def::zonk() const {
-    if (Infer::has_infer(this)) return Zonker(world()).rewrite(this);
+    if (has_dep(Dep::Infer)) return Zonker(world()).rewrite(this);
     return this;
 }
 
@@ -152,20 +151,6 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
         }
     }
 
-    auto mut1 = d1->isa_mut();
-    auto mut2 = d2->isa_mut();
-    if (mut1 && mut2 && mut1 == mut2) return true;
-    // Globals are HACKs and require additionaly HACKs:
-    // Unless they are pointer equal (above) always consider them unequal.
-    if (d1->isa<Global>() || d2->isa<Global>()) return false;
-
-    if (mut1) {
-        if (auto [i, ins] = done_.emplace(mut1, d2); !ins) return i->second == d2;
-    }
-    if (mut2) {
-        if (auto [i, ins] = done_.emplace(mut2, d1); !ins) return i->second == d1;
-    }
-
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
 
@@ -185,6 +170,20 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
             i2->set(d1);
             return true;
         }
+    }
+
+    auto mut1 = d1->isa_mut();
+    auto mut2 = d2->isa_mut();
+    if (mut1 && mut2 && mut1 == mut2) return true;
+    // Globals are HACKs and require additionaly HACKs:
+    // Unless they are pointer equal (above) always consider them unequal.
+    if (d1->isa<Global>() || d2->isa<Global>()) return false;
+
+    if (mut1) {
+        if (auto [i, ins] = done_.emplace(mut1, d2); !ins) return i->second == d2;
+    }
+    if (mut2) {
+        if (auto [i, ins] = done_.emplace(mut2, d1); !ins) return i->second == d1;
     }
 
     // normalize:
