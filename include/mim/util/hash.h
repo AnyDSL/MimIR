@@ -43,14 +43,14 @@ inline size_t hash(size_t h) {
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash).
 ///@{
 /// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV-1 hash.
-template<class T> struct FNV1 {};
+template<size_t> struct FNV1 {};
 
-template<> struct FNV1<uint32_t> {
+template<> struct FNV1<4> {
     static const uint32_t offset = 2166136261;
     static const uint32_t prime  = 16777619;
 };
 
-template<> struct FNV1<uint64_t> {
+template<> struct FNV1<8> {
     static const uint64_t offset = 14695981039346656037ULL;
     static const uint64_t prime  = 1099511628211ULL;
 };
@@ -62,14 +62,15 @@ template<class T> size_t hash_combine(size_t seed, T v) {
     for (size_t i = 0; i < sizeof(T); ++i) {
         size_t octet = val & size_t(0xff); // extract lower 8 bits
         seed ^= octet;
-        seed *= FNV1<size_t>::prime;
+        seed *= FNV1<sizeof(size_t)>::prime;
         val >>= size_t(8);
     }
     return seed;
 }
 
-template<class T> size_t hash_begin(T val) { return hash_combine(FNV1<size_t>::offset, val); }
-inline size_t hash_begin() { return FNV1<size_t>::offset; }
+inline size_t hash_begin() { return FNV1<sizeof(size_t)>::offset; }
+
+template<class T> size_t hash_begin(T val) { return hash_combine(hash_begin(), val); }
 ///@}
 
 } // namespace mim
