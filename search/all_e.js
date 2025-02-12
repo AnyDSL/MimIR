@@ -9,7 +9,7 @@ var searchData=
   ['old2new_6',['old2new',['../classmim_1_1EtaExp.html#a94c835f16c418fbedeb51a6f32bfbd2c',1,'mim::EtaExp']]],
   ['op_7',['op',['../classmim_1_1Infer.html#a92c3c77a9610d3d9c1351a493b03090c',1,'mim::Infer::op()'],['../classmim_1_1Def.html#a513dc7dba8016a0ae985992c4f844339',1,'mim::Def::op()'],['../classmim_1_1UInc.html#a03a82f840a1da2e78ebecfa28b7cf26b',1,'mim::UInc::op()'],['../namespacemim_1_1plug_1_1core.html#a9920219bf92c430e5b3ae913e9097d8e',1,'mim::plug::core::op(trait o, Ref type)'],['../namespacemim_1_1plug_1_1core.html#ac928fdd9fbbefe6de62a61754100492c',1,'mim::plug::core::op(pe o, Ref def)']]],
   ['op_5falloc_8',['op_alloc',['../namespacemim_1_1plug_1_1mem.html#aae3a12f685033fa6fc46a9eb04fad201',1,'mim::plug::mem']]],
-  ['op_5fcps2ds_5fdep_9',['op_cps2ds_dep',['../namespacemim_1_1plug_1_1direct.html#a1b225bb29c286f0f55e9e4ae0e5517fd',1,'mim::plug::direct']]],
+  ['op_5fcps2ds_5fdep_9',['op_cps2ds_dep',['../namespacemim_1_1plug_1_1direct.html#a73bcd99eeed3365a5e6bc55b27a1975c',1,'mim::plug::direct']]],
   ['op_5ffor_10',['op_for',['../namespacemim_1_1plug_1_1affine.html#a5ef9b9a665792718a913594d7be944cf',1,'mim::plug::affine']]],
   ['op_5flea_11',['op_lea',['../namespacemim_1_1plug_1_1mem.html#ac9cf6663d541d049c175453eb6480ff3',1,'mim::plug::mem']]],
   ['op_5flea_5funsafe_12',['op_lea_unsafe',['../namespacemim_1_1plug_1_1mem.html#aef0677f2f2fdac0343dc8274532d1ade',1,'mim::plug::mem::op_lea_unsafe(Ref ptr, Ref i)'],['../namespacemim_1_1plug_1_1mem.html#a80a89a8eb5eb5850272be35ab80b54d5',1,'mim::plug::mem::op_lea_unsafe(Ref ptr, u64 i)']]],

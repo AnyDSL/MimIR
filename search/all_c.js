@@ -85,7 +85,7 @@ var searchData=
   ['mem_5fdef_82',['mem_def',['../namespacemim_1_1plug_1_1mem.html#ab5c0e57d0dab77b05dde06f0c5a58c04',1,'mim::plug::mem']]],
   ['mem_5fplugin_83',['mem_plugin',['../namespacemim_1_1plug_1_1compile.html#af10c9bd38d6ccf4ab24156e0338a42d1',1,'mim::plug::compile']]],
   ['mem_5fvar_84',['mem_var',['../namespacemim_1_1plug_1_1mem.html#ac1477ccd0b5e086739ff78aa7cf32dab',1,'mim::plug::mem']]],
-  ['merge_85',['merge',['../classmim_1_1Pool.html#a3f55fda13c547487aa4bc32afc898493',1,'mim::Pool::merge()'],['../classmim_1_1World.html#a964d04bc4e17b3ae6458f6cc7f4df1d5',1,'mim::World::merge(Vars a, Vars b)'],['../classmim_1_1World.html#a4d48992fcda5745710513c076cf96ac9',1,'mim::World::merge(Muts a, Muts b)'],['../namespacemim.html#a75c9fb5e1cf36bc411049ccc18dccd1e',1,'mim::merge(Defs, Defs)'],['../namespacemim.html#a562477b56bb061504f3fd725c11d75c6',1,'mim::merge(Ref def, Defs defs)']]],
+  ['merge_85',['merge',['../classmim_1_1Pool.html#a3f55fda13c547487aa4bc32afc898493',1,'mim::Pool::merge()'],['../namespacemim.html#a75c9fb5e1cf36bc411049ccc18dccd1e',1,'mim::merge(Defs, Defs)'],['../namespacemim.html#a562477b56bb061504f3fd725c11d75c6',1,'mim::merge(Ref def, Defs defs)']]],
   ['merge_5franges_86',['merge_ranges',['../namespaceautomaton.html#afa6a570db4fdd2ae8e3f1f5e4b654ec6',1,'automaton::merge_ranges(Range a, Range b) noexcept'],['../namespaceautomaton.html#a8e2baf2bef29fed4ef52471c06d0d421',1,'automaton::merge_ranges(const Vec &amp;old_ranges, LogF &amp;&amp;log)'],['../namespaceautomaton.html#a3ce290eb201e318c6e9716f0b35bc539',1,'automaton::merge_ranges(const Vec &amp;old_ranges)'],['../namespacemim_1_1plug_1_1regex.html#a0f11dcb5b9b55f3624a6bcd966b4dcd5',1,'mim::plug::regex::merge_ranges()']]],
   ['merge_5fsigma_87',['merge_sigma',['../namespacemim.html#aa23b39903b5dd55acf1d99ebfe6826dc',1,'mim']]],
   ['merge_5ftuple_88',['merge_tuple',['../namespacemim.html#a48cd09b84d990045bc807209b0376dfb',1,'mim']]],
@@ -184,7 +184,7 @@ var searchData=
   ['mutables_181',['Mutables',['../passes.html#autotoc_md65',1,'Creating Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables'],['../dev.html#autotoc_md21',1,'Upcast for Mutables']]],
   ['mutmap_182',['MutMap',['../namespacemim.html#afccd5f832a8d98e22ada5860ea24afd2',1,'mim']]],
   ['muts_183',['Muts',['../namespacemim.html#a5e9a8c388e8451e32ecc710911d05546',1,'mim']]],
-  ['muts_184',['muts',['../classmim_1_1World.html#ac7e189c0a6eba9286d277481a202fe54',1,'mim::World']]],
+  ['muts_184',['muts',['../classmim_1_1World.html#a1ab828141bfcd0c0bdc3608ac24ec358',1,'mim::World::muts()'],['../classmim_1_1World.html#a52b5c22ff4c01fdfa5b1c18412f38a6f',1,'mim::World::muts() const']]],
   ['mutset_185',['MutSet',['../namespacemim.html#a9cef35a428a391739d168b05bad8dfb2',1,'mim']]],
   ['my_5fprec_186',['MY_PREC',['../dump_8cpp.html#a6bff0ba92b8da6688daba417375c5449',1,'dump.cpp']]]
 ];
