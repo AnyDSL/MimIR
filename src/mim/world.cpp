@@ -164,31 +164,12 @@ Ref World::var(Ref type, Def* mut) {
 
 Ref World::implicit_app(Ref callee, Ref arg) {
     while (auto pi = Pi::isa_implicit(callee->type())) callee = app(callee, mut_infer(pi->dom()));
-
-#if 0
-    // resolve Infers now if possible before normalizers are run
-    if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-        auto new_arg = Checker::assignable(callee->type()->as<Pi>()->dom(), arg);
-        if (!new_arg) { // TODO remove code duplication from below
-            throw Error()
-                .error(arg->loc(), "cannot apply argument to callee")
-                .note(callee->loc(), "callee: '{}'", callee)
-                .note(arg->loc(), "argument: '{}'", arg)
-                // .note(callee->loc(), "vvv domain type vvv\n'{}'\n'{}'", pi->dom(), arg->type())
-                .note(arg->loc(), "^^^ argument type ^^^");
-        }
-        arg       = new_arg;
-        auto apps = decurry(app);
-        callee    = apps.front()->callee();
-        for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
-    }
-#endif
-
     return app(callee, arg);
 }
 
 Ref World::app(Ref callee, Ref arg) {
-    Infer::zonk(Vector<Ref*>{&callee, &arg});
+    // Infer::zonk(Vector<Ref*>{&callee, &arg});
+    callee  = callee->zonk();
     auto pi = callee->type()->isa<Pi>();
 
     if (!pi) {
@@ -205,8 +186,7 @@ Ref World::app(Ref callee, Ref arg) {
             .note(callee->loc(), "vvv domain type vvv\n'{}'\n'{}'", pi->dom(), arg->type())
             .note(arg->loc(), "^^^ argument type ^^^");
     }
-    arg    = new_arg;
-    callee = callee->zonk();
+    arg = new_arg;
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();
     if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {

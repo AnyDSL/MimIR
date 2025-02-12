@@ -73,19 +73,6 @@ const Def* Infer::zonk(Ref d) {
     return d;
 }
 
-bool Infer::zonk(Vector<Ref*> refs) {
-    if (std::ranges::any_of(refs, [](auto pref) { return has_infer(*pref); })) {
-        auto& world = (*refs.front())->world();
-        Zonker rw(world);
-        for (size_t i = 0, e = refs.size(); i != e; ++i) {
-            auto ref = *refs[i];
-            *refs[i] = ref->has_dep(Dep::Infer) ? rw.rewrite(ref) : ref;
-        }
-        return true;
-    }
-    return false;
-}
-
 Ref Infer::explode() {
     if (is_set()) return {};
     auto a = type()->isa_lit_arity();
