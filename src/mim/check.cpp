@@ -61,7 +61,18 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
+const Def* Def::zonk() const { return Infer::zonk(this); }
+
 // TODO this vastly overaproximates the nodes to visit.
+const Def* Infer::zonk(Ref d) {
+    if (has_infer(d)) {
+        auto& world = d->world();
+        auto zonker = Zonker(world);
+        return zonker.rewrite(d);
+    }
+    return d;
+}
+
 bool Infer::zonk(Vector<Ref*> refs) {
     if (std::ranges::any_of(refs, [](auto pref) { return has_infer(*pref); })) {
         auto& world = (*refs.front())->world();
@@ -145,7 +156,18 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
             }
         }
         if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto i = Lit::isa(extract->index())) return alpha_<mode>(tuple->op(*i), d2);
+            if (auto i = Lit::isa(extract->index())) return alpha_<mode>(tuple->op(*i), r2);
+        }
+    }
+
+    if (auto extract = r2->isa<Extract>()) {
+        if (auto a = Idx::isa_lit(extract->index()->type())) {
+            if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
+                if (!infer->is_set()) infer->explode();
+            }
+        }
+        if (auto tuple = extract->tuple()->isa<Tuple>()) {
+            if (auto i = Lit::isa(extract->index())) return alpha_<mode>(r1, tuple->op(*i));
         }
     }
 

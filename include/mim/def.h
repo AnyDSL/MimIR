@@ -522,6 +522,7 @@ public:
     ///@{
     virtual Ref check(size_t, Ref def) { return def; }
     virtual Ref check() { return type(); }
+    const Def* zonk() const;
     ///@}
 
     /// @name dump

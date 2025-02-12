@@ -23,6 +23,7 @@ public:
     Infer* unset() { return Def::unset()->as<Infer>(); }
     ///@}
 
+    static const Def* zonk(Ref);
     /// Eliminate Infer%s that may have been resolved in the meantime by rebuilding.
     /// @returns `true`, if one of the arguements was in fact updated.
     static bool zonk(Vector<Ref*>);
