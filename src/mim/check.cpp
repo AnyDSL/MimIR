@@ -22,6 +22,12 @@ public:
 
 } // namespace
 
+// TODO this vastly overaproximates the nodes to visit.
+const Def* Def::zonk() const {
+    if (Infer::has_infer(this)) return Zonker(world()).rewrite(this);
+    return this;
+}
+
 /*
  * Infer
  */
@@ -59,18 +65,6 @@ const Def* Infer::find(const Def* def) {
     }
 
     return res;
-}
-
-const Def* Def::zonk() const { return Infer::zonk(this); }
-
-// TODO this vastly overaproximates the nodes to visit.
-const Def* Infer::zonk(Ref d) {
-    if (has_infer(d)) {
-        auto& world = d->world();
-        auto zonker = Zonker(world);
-        return zonker.rewrite(d);
-    }
-    return d;
 }
 
 Ref Infer::explode() {

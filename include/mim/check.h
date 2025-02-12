@@ -24,7 +24,6 @@ public:
     ///@}
 
     /// Eliminate Infer%s that may have been resolved in the meantime by rebuilding.
-    static const Def* zonk(Ref);
     static bool has_infer(Ref def) { return def->isa_imm() && def->has_dep(Dep::Infer); }
 
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
