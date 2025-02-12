@@ -512,16 +512,9 @@ nat_t Def::num_tprojs() const {
 Ref Def::proj(nat_t a, nat_t i) const {
     static constexpr int Search_In_Uses_Threshold = 8;
 
-    if (a == 1) {
-        if (!type()) return this;
-        if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
-    }
-
     World& w = world();
 
-    if (isa<Tuple>() || isa<Sigma>()) {
-        return op(i);
-    } else if (auto arr = isa<Arr>()) {
+    if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
         return arr->reduce(w.lit_idx(a, i));
     } else if (auto pack = isa<Pack>()) {
@@ -529,6 +522,13 @@ Ref Def::proj(nat_t a, nat_t i) const {
         assert(!w.is_frozen() && "TODO");
         return pack->reduce(w.lit_idx(a, i));
     }
+
+    if (a == 1) {
+        if (!type()) return this;
+        if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
+    }
+
+    if (isa<Tuple>() || isa<Sigma>()) return op(i);
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
         for (auto u : uses()) {
