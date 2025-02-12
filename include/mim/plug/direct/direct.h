@@ -11,7 +11,7 @@ inline Ref rewrite(Ref def, Def* mut, Ref arg) { return VarRewriter(mut->var(), 
 
 /// @name %%direct.cps2ds_dep
 ///@{
-inline const Def* op_cps2ds_dep(const Def* f) {
+inline Ref op_cps2ds_dep(Ref f) {
     auto& world = f->world();
     // TODO: assert continuation
     world.DLOG("f: {} : {}", f, f->type());
