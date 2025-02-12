@@ -14,10 +14,7 @@ public:
     Zonker(World& world)
         : Rewriter(world) {}
 
-    Ref rewrite(Ref old_def) override {
-        if (old_def->has_dep(Dep::Infer)) return Rewriter::rewrite(old_def);
-        return old_def;
-    }
+    Ref rewrite(Ref old_def) override { return (old_def->has_dep(Dep::Infer)) ? Rewriter::rewrite(old_def) : old_def; }
 };
 
 } // namespace
@@ -64,52 +61,37 @@ const Def* Infer::find(const Def* def) {
 }
 
 Ref Infer::explode() {
-    if (is_set()) return {};
-    auto a = type()->isa_lit_arity();
-    if (!a) return {};
+    if (auto a = type()->isa_lit_arity(); a && !is_set()) {
+        auto n  = *a;
+        auto& w = world();
 
-    auto n      = *a;
-    auto infers = DefVec(n);
-    auto& w     = world();
+        if (auto arr = type()->isa_imm<Arr>(); arr && n > world().flags().scalarize_threshold) {
+            auto pack = w.pack(arr->shape(), w.mut_infer(arr->body()));
+            set(pack);
+            return pack;
+        }
 
-    if (auto arr = type()->isa_imm<Arr>(); arr && n > world().flags().scalarize_threshold) {
-        auto pack = w.pack(arr->shape(), w.mut_infer(arr->body()));
-        set(pack);
-        return pack;
-    }
-
-    if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1) {
-        if (auto var = sigma->has_var()) {
-            auto rw   = VarRewriter(var, this);
-            infers[0] = w.mut_infer(sigma->op(0));
-            for (size_t i = 1; i != n; ++i) {
-                rw.map(sigma->var(n, i - 1), infers[i - 1]);
-                infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
+        auto infers = DefVec(n);
+        if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1) {
+            if (auto var = sigma->has_var()) {
+                auto rw   = VarRewriter(var, this);
+                infers[0] = w.mut_infer(sigma->op(0));
+                for (size_t i = 1; i != n; ++i) {
+                    rw.map(sigma->var(n, i - 1), infers[i - 1]);
+                    infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
+                }
+            } else {
+                for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(sigma->op(i));
             }
         } else {
-            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(sigma->op(i));
+            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type()->proj(n, i));
         }
-    } else {
-        for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type()->proj(n, i));
-    }
 
-    auto tuple = w.tuple(infers);
-    set(tuple);
-    return tuple;
-}
-
-Ref Infer::extract(Ref r) {
-    if (auto extract = r->isa<Extract>()) {
-        if (auto a = Idx::isa_lit(extract->index()->type())) {
-            if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
-                if (!infer->is_set()) infer->explode();
-            }
-        }
-        if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto i = Lit::isa(extract->index())) return tuple->op(*i);
-        }
+        auto tuple = w.tuple(infers);
+        set(tuple);
+        return tuple;
     }
-    return {};
+    return this;
 }
 
 /*
@@ -139,9 +121,6 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     // Otherwise, we have to look more thoroughly.
     // Example: λx.x - λz.x
     if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
-
-    if (auto elem = Infer::extract(r1)) return alpha_<mode>(elem, r2);
-    if (auto elem = Infer::extract(r2)) return alpha_<mode>(r1, elem);
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
@@ -191,18 +170,6 @@ template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
     if (mode == Opt && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
-
-    if (auto extract = d1->isa<Extract>()) {
-        if (auto a = Idx::isa_lit(extract->index()->type())) {
-            if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
-                if (!infer->is_set()) infer->explode();
-            }
-        }
-        if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto i = Lit::isa(extract->index())) return alpha<mode>(tuple->op(*i), d2);
-        }
-    }
-
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
     // vars are equal if they appeared under the same binder

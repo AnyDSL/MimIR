@@ -284,7 +284,6 @@ Ref World::tuple(Sym sym) {
 }
 
 Ref World::extract(Ref d, Ref index) {
-    assert(d);
     if (index->isa<Tuple>()) {
         auto n   = index->num_ops();
         auto idx = DefVec(n, [&](size_t i) { return index->op(i); });
@@ -318,6 +317,7 @@ Ref World::extract(Ref d, Ref index) {
     }
 
     if (auto i = Lit::isa(index)) {
+        if (auto infer = d->isa_mut<Infer>()) d = infer->explode();
         if (auto tuple = d->isa<Tuple>()) return tuple->op(*i);
 
         // extract(insert(x, j, val), i) -> extract(x, i) where i != j (guaranteed by rule above)
