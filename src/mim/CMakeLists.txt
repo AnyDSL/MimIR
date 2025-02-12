@@ -41,7 +41,6 @@ target_sources(libmim
         util/bitset.cpp
         util/dbg.cpp
         util/dl.cpp
-        util/hash.cpp
         util/log.cpp
         util/print.cpp
         util/sys.cpp

@@ -5,6 +5,8 @@
 #include "mim/rewrite.h"
 #include "mim/world.h"
 
+#include "mim/util/hash.h"
+
 using namespace std::literals;
 
 namespace mim {
@@ -44,13 +46,13 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     }
 
     if (node == Node::Univ) {
-        hash_ = murmur3(gid());
+        hash_ = mim::hash(gid());
     } else {
-        hash_ = type ? type->gid() : 0;
-        for (auto op : ops) hash_ = murmur3(hash_, u32(op->gid()));
-        hash_ = murmur3(hash_, flags_);
-        hash_ = murmur3_rest(hash_, u8(node));
-        hash_ = murmur3_finalize(hash_, num_ops());
+        hash_ = type ? hash_begin(type->gid()) : 0;
+        for (auto op : ops) hash_ = hash_combine(hash_, u32(op->gid()));
+        hash_ = hash_combine(hash_, flags_);
+        hash_ = hash_combine(hash_, u8(node));
+        hash_ = hash_combine(hash_, num_ops());
     }
 }
 
@@ -66,7 +68,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , num_ops_(num_ops)
     , type_(type) {
     gid_               = world().next_gid();
-    hash_              = murmur3(gid());
+    hash_              = mim::hash(gid());
     var_               = nullptr;
     vars_.free         = Vars();
     muts_.fv_consumers = Muts();

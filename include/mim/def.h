@@ -129,7 +129,7 @@ private:
 };
 
 struct UseHash {
-    inline hash_t operator()(Use) const;
+    inline size_t operator()(Use) const;
 };
 
 struct UseEq {
@@ -240,7 +240,7 @@ public:
     World& world() const;
     flags_t flags() const { return flags_; }
     u32 gid() const { return gid_; }
-    hash_t hash() const { return hash_; }
+    size_t hash() const { return hash_; }
     node_t node() const { return node_; }
     std::string_view node_name() const;
     ///@}
@@ -596,9 +596,9 @@ private:
     bool external_ : 1;
     unsigned dep_  : 5;
     bool valid_    : 1;
-    hash_t hash_;
     u32 gid_;
     u32 num_ops_;
+    size_t hash_;
     mutable Uses uses_;
 
     union LocalOrFreeVars {
@@ -626,11 +626,13 @@ private:
 using DefDef = std::tuple<const Def*, const Def*>;
 
 struct DefDefHash {
-    hash_t operator()(DefDef pair) const {
-        hash_t hash = std::get<0>(pair)->gid();
-        hash        = murmur3(hash, std::get<1>(pair)->gid());
-        hash        = murmur3_finalize(hash, 8);
-        return hash;
+    size_t operator()(DefDef pair) const {
+        if constexpr (sizeof(size_t) == 4)
+            return hash_combine(hash_begin(std::get<0>(pair)->gid()), std::get<1>(pair)->gid());
+        else if constexpr (sizeof(size_t) == 8)
+            return splitmix64((u64(std::get<0>(pair)->gid()) << 32_u64) | u64(std::get<1>(pair)->gid()));
+        else
+            static_assert("unsupported size of size_t");
     }
 };
 
@@ -893,6 +895,6 @@ private:
     friend class World;
 };
 
-hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
+size_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), use->gid()); }
 
 } // namespace mim
