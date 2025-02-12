@@ -11,7 +11,7 @@
 #include <absl/container/node_hash_set.h>
 #include <fe/assert.h>
 
-#include "mim/util/hash.h"
+#include "mim/util/types.h"
 
 namespace mim {
 
@@ -162,7 +162,7 @@ private:
 };
 
 template<class T> struct GIDHash {
-    size_t operator()(T p) const { return murmur3(p->gid()); }
+    size_t operator()(T p) const { return hash(p->gid()); }
 };
 
 template<class T> struct GIDEq {
