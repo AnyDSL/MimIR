@@ -627,12 +627,10 @@ using DefDef = std::tuple<const Def*, const Def*>;
 
 struct DefDefHash {
     size_t operator()(DefDef pair) const {
-        if constexpr (sizeof(size_t) == 4)
-            return hash_combine(hash_begin(std::get<0>(pair)->gid()), std::get<1>(pair)->gid());
-        else if constexpr (sizeof(size_t) == 8)
-            return splitmix64((u64(std::get<0>(pair)->gid()) << 32_u64) | u64(std::get<1>(pair)->gid()));
+        if constexpr (sizeof(size_t) == 8)
+            return hash((u64(std::get<0>(pair)->gid()) << 32_u64) | u64(std::get<1>(pair)->gid()));
         else
-            static_assert("unsupported size of size_t");
+            return hash_combine(hash_begin(std::get<0>(pair)->gid()), std::get<1>(pair)->gid());
     }
 };
 
@@ -895,6 +893,11 @@ private:
     friend class World;
 };
 
-size_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), use->gid()); }
+size_t UseHash::operator()(Use use) const {
+    if constexpr (sizeof(size_t) == 8)
+        return hash((u64(use.index())) << 32_u64 | u64(use->gid()));
+    else
+        return hash_combine(hash_begin(u16(use.index())), use->gid());
+}
 
 } // namespace mim
