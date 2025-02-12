@@ -37,7 +37,9 @@ var hierarchy =
       [ "mim::Error", "classmim_1_1Error.html", null ]
     ] ],
     [ "mim::Flags", "namespacemim.html#structmim_1_1Flags", null ],
-    [ "mim::FNV1", "structmim_1_1FNV1.html", null ],
+    [ "mim::FNV1< size_t >", "namespacemim.html#structmim_1_1FNV1", null ],
+    [ "mim::FNV1< 4 >", "structmim_1_1FNV1_3_014_01_4.html", null ],
+    [ "mim::FNV1< 8 >", "structmim_1_1FNV1_3_018_01_4.html", null ],
     [ "mim::plug::clos::FreeDefAna", "classmim_1_1plug_1_1clos_1_1FreeDefAna.html", null ],
     [ "mim::World::Freezer", "structmim_1_1World_1_1Freezer.html", null ],
     [ "mim::GIDEq< T >", "structmim_1_1GIDEq.html", null ],

@@ -123,11 +123,13 @@ $(function(){initNavTree('hash_8h.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">hash.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="types_8h_source.html">mim/util/types.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for hash.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="hash_8h__incl.svg" width="564" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="hash_8h__incl.svg" width="290" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -139,7 +141,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1FNV1.html">mim::FNV1</a></td></tr>
+<tr class="memitem:structmim_1_1FNV1" id="r_structmim_1_1FNV1"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#structmim_1_1FNV1">mim::FNV1&lt; size_t &gt;</a></td></tr>
+<tr class="separator:structmim_1_1FNV1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1FNV1_3_014_01_4.html">mim::FNV1&lt; 4 &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1FNV1_3_018_01_4.html">mim::FNV1&lt; 8 &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -147,56 +153,48 @@ Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html">mim</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Aliases for some Base Types</div></td></tr>
-<tr class="memitem:adb8acb78758d27c55328f3b7ade04ddd" id="r_adb8acb78758d27c55328f3b7ade04ddd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">mim::hash_t</a> = uint32_t</td></tr>
-<tr class="separator:adb8acb78758d27c55328f3b7ade04ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Murmur3 Hash</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Simple Hash</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>See <a href="https://en.wikipedia.org/wiki/MurmurHash">Wikipedia</a>. </p>
 </div></td></tr>
-<tr class="memitem:a212797b762d6266d08bdd3d25cc6564a" id="r_a212797b762d6266d08bdd3d25cc6564a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a212797b762d6266d08bdd3d25cc6564a">mim::murmur_32_scramble</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> k)</td></tr>
-<tr class="separator:a212797b762d6266d08bdd3d25cc6564a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a8bde978228760f0593577f18f5b6ff" id="r_a8a8bde978228760f0593577f18f5b6ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a8a8bde978228760f0593577f18f5b6ff">mim::murmur3</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, uint32_t key)</td></tr>
-<tr class="separator:a8a8bde978228760f0593577f18f5b6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a434baa466eb721b7ab4b1b2afb51bb02" id="r_a434baa466eb721b7ab4b1b2afb51bb02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a434baa466eb721b7ab4b1b2afb51bb02">mim::murmur3</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, uint64_t key)</td></tr>
-<tr class="separator:a434baa466eb721b7ab4b1b2afb51bb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc6538721dae2ebacf64ee867ffb1b05" id="r_afc6538721dae2ebacf64ee867ffb1b05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#afc6538721dae2ebacf64ee867ffb1b05">mim::murmur3_rest</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, uint8_t key)</td></tr>
-<tr class="separator:afc6538721dae2ebacf64ee867ffb1b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9c16bf0e64f21038110ff2a1c84f6ab" id="r_ae9c16bf0e64f21038110ff2a1c84f6ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ae9c16bf0e64f21038110ff2a1c84f6ab">mim::murmur3_rest</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, uint16_t key)</td></tr>
-<tr class="separator:ae9c16bf0e64f21038110ff2a1c84f6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af15eaa32427f4e6e184511e114d810da" id="r_af15eaa32427f4e6e184511e114d810da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#af15eaa32427f4e6e184511e114d810da">mim::murmur3_finalize</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, <a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> len)</td></tr>
-<tr class="separator:af15eaa32427f4e6e184511e114d810da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d0a308c2d81a53f11d9a10b3d8424b0" id="r_a8d0a308c2d81a53f11d9a10b3d8424b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a8d0a308c2d81a53f11d9a10b3d8424b0">mim::murmur3</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h)</td></tr>
-<tr class="memdesc:a8d0a308c2d81a53f11d9a10b3d8424b0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Use.html" title="References a user.">Use</a> for a single value to hash.  <br /></td></tr>
-<tr class="separator:a8d0a308c2d81a53f11d9a10b3d8424b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41d2b518e1d57f537577c3925d915015" id="r_a41d2b518e1d57f537577c3925d915015"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a41d2b518e1d57f537577c3925d915015">mim::murmur3</a> (uint32_t h)</td></tr>
+<tr class="separator:a41d2b518e1d57f537577c3925d915015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bdb14c793d3bca13a21d6ee0a8c2999" id="r_a0bdb14c793d3bca13a21d6ee0a8c2999"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a0bdb14c793d3bca13a21d6ee0a8c2999">mim::splitmix64</a> (uint64_t h)</td></tr>
+<tr class="separator:a0bdb14c793d3bca13a21d6ee0a8c2999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab35412654c5272e29bcb324891cde06c" id="r_ab35412654c5272e29bcb324891cde06c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ab35412654c5272e29bcb324891cde06c">mim::hash</a> (size_t h)</td></tr>
+<tr class="separator:ab35412654c5272e29bcb324891cde06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">FNV-1 Hash</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>See <a href="https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash">Wikipedia</a>. </p>
 </div></td></tr>
-<tr class="memitem:a2b904bc9304140956e9b5841fb26a82e" id="r_a2b904bc9304140956e9b5841fb26a82e"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a2b904bc9304140956e9b5841fb26a82e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a2b904bc9304140956e9b5841fb26a82e">mim::hash_combine</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> seed, T v)</td></tr>
-<tr class="memdesc:a2b904bc9304140956e9b5841fb26a82e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new hash by combining the hash <code>seed</code> with <code>val</code>.  <br /></td></tr>
-<tr class="separator:a2b904bc9304140956e9b5841fb26a82e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3396fb126ee938481961f8bfc199956e" id="r_a3396fb126ee938481961f8bfc199956e"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a3396fb126ee938481961f8bfc199956e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a3396fb126ee938481961f8bfc199956e">mim::hash_combine</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> seed, T *val)</td></tr>
-<tr class="separator:a3396fb126ee938481961f8bfc199956e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab53095278eb633a821a1da07b5623a71" id="r_ab53095278eb633a821a1da07b5623a71"><td class="memTemplParams" colspan="2">template&lt;class T , class... Args&gt; </td></tr>
-<tr class="memitem:ab53095278eb633a821a1da07b5623a71"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#ab53095278eb633a821a1da07b5623a71">mim::hash_combine</a> (<a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> seed, T val, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:ab53095278eb633a821a1da07b5623a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c00c1a03b12587395798e1642ddac43" id="r_a7c00c1a03b12587395798e1642ddac43"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a7c00c1a03b12587395798e1642ddac43"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a7c00c1a03b12587395798e1642ddac43">mim::hash_begin</a> (T val)</td></tr>
-<tr class="separator:a7c00c1a03b12587395798e1642ddac43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab501e4ffe635a72a4e38abac06a7128c" id="r_ab501e4ffe635a72a4e38abac06a7128c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ab501e4ffe635a72a4e38abac06a7128c">mim::hash_begin</a> ()</td></tr>
-<tr class="separator:ab501e4ffe635a72a4e38abac06a7128c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">String Hashing</div></td></tr>
-<tr class="memitem:adf4e5e4e8429fd6b3d8825a0b4cf8ad9" id="r_adf4e5e4e8429fd6b3d8825a0b4cf8ad9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#adf4e5e4e8429fd6b3d8825a0b4cf8ad9">mim::hash</a> (const char *)</td></tr>
-<tr class="separator:adf4e5e4e8429fd6b3d8825a0b4cf8ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a114399d56b451ec684e31220ec8a7868" id="r_a114399d56b451ec684e31220ec8a7868"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a114399d56b451ec684e31220ec8a7868">mim::hash</a> (std::string_view)</td></tr>
-<tr class="separator:a114399d56b451ec684e31220ec8a7868"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88d0a0276b33ec2e6ee0211d0fa3ae1a" id="r_a88d0a0276b33ec2e6ee0211d0fa3ae1a"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a88d0a0276b33ec2e6ee0211d0fa3ae1a"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a88d0a0276b33ec2e6ee0211d0fa3ae1a">mim::hash_combine</a> (size_t seed, T v)</td></tr>
+<tr class="separator:a88d0a0276b33ec2e6ee0211d0fa3ae1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8c5de48df76227ddf9d84d440430ddf" id="r_ad8c5de48df76227ddf9d84d440430ddf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ad8c5de48df76227ddf9d84d440430ddf">mim::hash_begin</a> ()</td></tr>
+<tr class="separator:ad8c5de48df76227ddf9d84d440430ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab670f459eab07d9f94e38da218cef4c9" id="r_ab670f459eab07d9f94e38da218cef4c9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab670f459eab07d9f94e38da218cef4c9"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#ab670f459eab07d9f94e38da218cef4c9">mim::hash_begin</a> (T val)</td></tr>
+<tr class="separator:ab670f459eab07d9f94e38da218cef4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<hr/><h2 class="groupheader">Class Documentation</h2>
+<a name="structmim_1_1FNV1" id="structmim_1_1FNV1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmim_1_1FNV1">&#9670;&#160;</a></span>mim::FNV1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct mim::FNV1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><div class="compoundTemplParams">template&lt;size_t&gt;<br />
+struct mim::FNV1&lt; size_t &gt;</div><p><a href="http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var">Magic numbers</a> for FNV-1 hash. </p>
+
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00046">46</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+</div>
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

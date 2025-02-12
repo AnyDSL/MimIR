@@ -227,7 +227,11 @@ Classes</h2></td></tr>
 <tr class="memitem:structmim_1_1Flags" id="r_structmim_1_1Flags"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#structmim_1_1Flags">Flags</a></td></tr>
 <tr class="memdesc:structmim_1_1Flags"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compiler switches that must be saved and looked up in later phases of compilation.  <a href="#structmim_1_1Flags">More...</a><br /></td></tr>
 <tr class="separator:structmim_1_1Flags"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1FNV1.html">FNV1</a></td></tr>
+<tr class="memitem:structmim_1_1FNV1" id="r_structmim_1_1FNV1"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#structmim_1_1FNV1">FNV1</a></td></tr>
+<tr class="separator:structmim_1_1FNV1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1FNV1_3_014_01_4.html">FNV1&lt; 4 &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1FNV1_3_018_01_4.html">FNV1&lt; 8 &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1FPPass.html">FPPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class using <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a>, if you <b>do</b> need a <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> with a state and a fixed-point.  <a href="classmim_1_1FPPass.html#details">More...</a><br /></td></tr>
@@ -505,8 +509,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a56993a288f2c09ca7ec203a365dce3ad" id="r_a56993a288f2c09ca7ec203a365dce3ad"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56993a288f2c09ca7ec203a365dce3ad">Join</a> = <a class="el" href="classmim_1_1TBound.html">TBound</a>&lt;true&gt;</td></tr>
 <tr class="separator:a56993a288f2c09ca7ec203a365dce3ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Aliases for some Base Types</div></td></tr>
-<tr class="memitem:adb8acb78758d27c55328f3b7ade04ddd" id="r_adb8acb78758d27c55328f3b7ade04ddd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> = uint32_t</td></tr>
-<tr class="separator:adb8acb78758d27c55328f3b7ade04ddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4e6752bd834d28cb851c128dfa5b8c7" id="r_ac4e6752bd834d28cb851c128dfa5b8c7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4e6752bd834d28cb851c128dfa5b8c7">s8</a> = int8_t</td></tr>
 <tr class="separator:ac4e6752bd834d28cb851c128dfa5b8c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef2afb7040e6345a0b89b209ae7560c7" id="r_aef2afb7040e6345a0b89b209ae7560c7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef2afb7040e6345a0b89b209ae7560c7">u8</a> = uint8_t</td></tr>
@@ -770,47 +772,26 @@ Functions</h2></td></tr>
 <tr class="memitem:a7280c73fe1d622c413efcec2faa67965"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7280c73fe1d622c413efcec2faa67965">error</a> (const char *<a class="el" href="#a5404a4fed41f7478028d335289dd30fb">fmt</a>, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a7280c73fe1d622c413efcec2faa67965"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="#a299eaedf188f01c3d4634dd51dedcb83" title="Base case.">mim::print</a> to throw <code>T</code> with a formatted message.  <br /></td></tr>
 <tr class="separator:a7280c73fe1d622c413efcec2faa67965"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Murmur3 Hash</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Simple Hash</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>See <a href="https://en.wikipedia.org/wiki/MurmurHash">Wikipedia</a>. </p>
 </div></td></tr>
-<tr class="memitem:a212797b762d6266d08bdd3d25cc6564a" id="r_a212797b762d6266d08bdd3d25cc6564a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a212797b762d6266d08bdd3d25cc6564a">murmur_32_scramble</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> k)</td></tr>
-<tr class="separator:a212797b762d6266d08bdd3d25cc6564a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a8bde978228760f0593577f18f5b6ff" id="r_a8a8bde978228760f0593577f18f5b6ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a8bde978228760f0593577f18f5b6ff">murmur3</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, uint32_t key)</td></tr>
-<tr class="separator:a8a8bde978228760f0593577f18f5b6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a434baa466eb721b7ab4b1b2afb51bb02" id="r_a434baa466eb721b7ab4b1b2afb51bb02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a434baa466eb721b7ab4b1b2afb51bb02">murmur3</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, uint64_t key)</td></tr>
-<tr class="separator:a434baa466eb721b7ab4b1b2afb51bb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc6538721dae2ebacf64ee867ffb1b05" id="r_afc6538721dae2ebacf64ee867ffb1b05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc6538721dae2ebacf64ee867ffb1b05">murmur3_rest</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, uint8_t key)</td></tr>
-<tr class="separator:afc6538721dae2ebacf64ee867ffb1b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9c16bf0e64f21038110ff2a1c84f6ab" id="r_ae9c16bf0e64f21038110ff2a1c84f6ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9c16bf0e64f21038110ff2a1c84f6ab">murmur3_rest</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, uint16_t key)</td></tr>
-<tr class="separator:ae9c16bf0e64f21038110ff2a1c84f6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af15eaa32427f4e6e184511e114d810da" id="r_af15eaa32427f4e6e184511e114d810da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af15eaa32427f4e6e184511e114d810da">murmur3_finalize</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h, <a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> len)</td></tr>
-<tr class="separator:af15eaa32427f4e6e184511e114d810da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d0a308c2d81a53f11d9a10b3d8424b0" id="r_a8d0a308c2d81a53f11d9a10b3d8424b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d0a308c2d81a53f11d9a10b3d8424b0">murmur3</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> h)</td></tr>
-<tr class="memdesc:a8d0a308c2d81a53f11d9a10b3d8424b0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Use.html" title="References a user.">Use</a> for a single value to hash.  <br /></td></tr>
-<tr class="separator:a8d0a308c2d81a53f11d9a10b3d8424b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41d2b518e1d57f537577c3925d915015" id="r_a41d2b518e1d57f537577c3925d915015"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41d2b518e1d57f537577c3925d915015">murmur3</a> (uint32_t h)</td></tr>
+<tr class="separator:a41d2b518e1d57f537577c3925d915015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bdb14c793d3bca13a21d6ee0a8c2999" id="r_a0bdb14c793d3bca13a21d6ee0a8c2999"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bdb14c793d3bca13a21d6ee0a8c2999">splitmix64</a> (uint64_t h)</td></tr>
+<tr class="separator:a0bdb14c793d3bca13a21d6ee0a8c2999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab35412654c5272e29bcb324891cde06c" id="r_ab35412654c5272e29bcb324891cde06c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab35412654c5272e29bcb324891cde06c">hash</a> (size_t h)</td></tr>
+<tr class="separator:ab35412654c5272e29bcb324891cde06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">FNV-1 Hash</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>See <a href="https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash">Wikipedia</a>. </p>
 </div></td></tr>
-<tr class="memitem:a2b904bc9304140956e9b5841fb26a82e" id="r_a2b904bc9304140956e9b5841fb26a82e"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a2b904bc9304140956e9b5841fb26a82e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2b904bc9304140956e9b5841fb26a82e">hash_combine</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> seed, T v)</td></tr>
-<tr class="memdesc:a2b904bc9304140956e9b5841fb26a82e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new hash by combining the hash <code>seed</code> with <code>val</code>.  <br /></td></tr>
-<tr class="separator:a2b904bc9304140956e9b5841fb26a82e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3396fb126ee938481961f8bfc199956e" id="r_a3396fb126ee938481961f8bfc199956e"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a3396fb126ee938481961f8bfc199956e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3396fb126ee938481961f8bfc199956e">hash_combine</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> seed, T *val)</td></tr>
-<tr class="separator:a3396fb126ee938481961f8bfc199956e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab53095278eb633a821a1da07b5623a71" id="r_ab53095278eb633a821a1da07b5623a71"><td class="memTemplParams" colspan="2">template&lt;class T , class... Args&gt; </td></tr>
-<tr class="memitem:ab53095278eb633a821a1da07b5623a71"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab53095278eb633a821a1da07b5623a71">hash_combine</a> (<a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> seed, T val, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:ab53095278eb633a821a1da07b5623a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c00c1a03b12587395798e1642ddac43" id="r_a7c00c1a03b12587395798e1642ddac43"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a7c00c1a03b12587395798e1642ddac43"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7c00c1a03b12587395798e1642ddac43">hash_begin</a> (T val)</td></tr>
-<tr class="separator:a7c00c1a03b12587395798e1642ddac43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab501e4ffe635a72a4e38abac06a7128c" id="r_ab501e4ffe635a72a4e38abac06a7128c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab501e4ffe635a72a4e38abac06a7128c">hash_begin</a> ()</td></tr>
-<tr class="separator:ab501e4ffe635a72a4e38abac06a7128c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">String Hashing</div></td></tr>
-<tr class="memitem:adf4e5e4e8429fd6b3d8825a0b4cf8ad9" id="r_adf4e5e4e8429fd6b3d8825a0b4cf8ad9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf4e5e4e8429fd6b3d8825a0b4cf8ad9">hash</a> (const char *)</td></tr>
-<tr class="separator:adf4e5e4e8429fd6b3d8825a0b4cf8ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a114399d56b451ec684e31220ec8a7868" id="r_a114399d56b451ec684e31220ec8a7868"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a114399d56b451ec684e31220ec8a7868">hash</a> (std::string_view)</td></tr>
-<tr class="separator:a114399d56b451ec684e31220ec8a7868"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88d0a0276b33ec2e6ee0211d0fa3ae1a" id="r_a88d0a0276b33ec2e6ee0211d0fa3ae1a"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a88d0a0276b33ec2e6ee0211d0fa3ae1a"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a88d0a0276b33ec2e6ee0211d0fa3ae1a">hash_combine</a> (size_t seed, T v)</td></tr>
+<tr class="separator:a88d0a0276b33ec2e6ee0211d0fa3ae1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8c5de48df76227ddf9d84d440430ddf" id="r_ad8c5de48df76227ddf9d84d440430ddf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8c5de48df76227ddf9d84d440430ddf">hash_begin</a> ()</td></tr>
+<tr class="separator:ad8c5de48df76227ddf9d84d440430ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab670f459eab07d9f94e38da218cef4c9" id="r_ab670f459eab07d9f94e38da218cef4c9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab670f459eab07d9f94e38da218cef4c9"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab670f459eab07d9f94e38da218cef4c9">hash_begin</a> (T val)</td></tr>
+<tr class="separator:ab670f459eab07d9f94e38da218cef4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">IndexMap find</div></td></tr>
 <tr class="memitem:ae4d6eb0ad34c66ebefba58cf2f73f615" id="r_ae4d6eb0ad34c66ebefba58cf2f73f615"><td class="memTemplParams" colspan="2">template&lt;class Indexer , class Key , class Value &gt; </td></tr>
 <tr class="memitem:ae4d6eb0ad34c66ebefba58cf2f73f615"><td class="memTemplItemLeft" align="right" valign="top">Value *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae4d6eb0ad34c66ebefba58cf2f73f615">find</a> (<a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt; Indexer, Key, Value * &gt; &amp;map, Key key)</td></tr>
@@ -1071,6 +1052,24 @@ trace_gids = false</td>
 </td></tr>
 </table>
 
+</div>
+</div>
+<a name="structmim_1_1FNV1" id="structmim_1_1FNV1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmim_1_1FNV1">&#9670;&#160;</a></span>mim::FNV1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct mim::FNV1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><div class="compoundTemplParams">template&lt;size_t&gt;<br />
+struct mim::FNV1&lt; size_t &gt;</div><p><a href="http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var">Magic numbers</a> for FNV-1 hash. </p>
+
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00046">46</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+</div>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -1467,22 +1466,6 @@ template&lt;class K &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00180">180</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
-
-</div>
-</div>
-<a id="adb8acb78758d27c55328f3b7ade04ddd" name="adb8acb78758d27c55328f3b7ade04ddd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb8acb78758d27c55328f3b7ade04ddd">&#9670;&#160;</a></span>hash_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">mim::hash_t</a> = uint32_t</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00009">9</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 </div>
 </div>
@@ -2744,7 +2727,7 @@ template&lt;class Indexer , class Key , class Value &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00055">55</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00066">flatten()</a>, <a class="el" href="def_8cpp_source.html#l00482">mim::Def::isa_lit_arity()</a>, and <a class="el" href="def_8cpp_source.html#l00512">mim::Def::proj()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00066">flatten()</a>, <a class="el" href="def_8cpp_source.html#l00484">mim::Def::isa_lit_arity()</a>, and <a class="el" href="def_8cpp_source.html#l00514">mim::Def::proj()</a>.</p>
 
 </div>
 </div>
@@ -2767,7 +2750,7 @@ template&lt;class Indexer , class Key , class Value &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00066">66</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00066">flatten()</a>, <a class="el" href="def_8cpp_source.html#l00464">mim::Def::is_term()</a>, <a class="el" href="world_8cpp_source.html#l00225">mim::World::sigma()</a>, <a class="el" href="world_8cpp_source.html#l00233">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00409">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00066">flatten()</a>, <a class="el" href="def_8cpp_source.html#l00466">mim::Def::is_term()</a>, <a class="el" href="world_8cpp_source.html#l00225">mim::World::sigma()</a>, <a class="el" href="world_8cpp_source.html#l00233">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00411">mim::Def::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00055">flatten()</a>, <a class="el" href="tuple_8cpp_source.html#l00066">flatten()</a>, and <a class="el" href="scalarize_8cpp_source.html#l00056">mim::Scalarize::rewrite()</a>.</p>
 
@@ -2877,52 +2860,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="adf4e5e4e8429fd6b3d8825a0b4cf8ad9" name="adf4e5e4e8429fd6b3d8825a0b4cf8ad9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf4e5e4e8429fd6b3d8825a0b4cf8ad9">&#9670;&#160;</a></span>hash() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::hash </td>
-          <td>(</td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00005">5</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00102">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00082">hash_combine()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00629">mim::DefDefHash::operator()()</a>.</p>
-
-</div>
-</div>
-<a id="a114399d56b451ec684e31220ec8a7868" name="a114399d56b451ec684e31220ec8a7868"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a114399d56b451ec684e31220ec8a7868">&#9670;&#160;</a></span>hash() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::hash </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>s</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00011">11</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00102">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00082">hash_combine()</a>.</p>
-
-</div>
-</div>
-<a id="ab501e4ffe635a72a4e38abac06a7128c" name="ab501e4ffe635a72a4e38abac06a7128c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab501e4ffe635a72a4e38abac06a7128c">&#9670;&#160;</a></span>hash_begin() <span class="overload">[1/2]</span></h2>
+<a id="ab35412654c5272e29bcb324891cde06c" name="ab35412654c5272e29bcb324891cde06c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab35412654c5272e29bcb324891cde06c">&#9670;&#160;</a></span>hash()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2931,7 +2870,38 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::hash_begin </td>
+          <td class="memname">size_t mim::hash </td>
+          <td>(</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>h</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00032">32</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00014">murmur3()</a>, and <a class="el" href="hash_8h_source.html#l00023">splitmix64()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00062">mim::Def::Def()</a>, <a class="el" href="def_8cpp_source.html#l00018">mim::Def::Def()</a>, <a class="el" href="def_8h_source.html#l00629">mim::DefDefHash::operator()()</a>, <a class="el" href="util_8h_source.html#l00165">mim::GIDHash&lt; T &gt;::operator()()</a>, and <a class="el" href="def_8h_source.html#l00896">mim::UseHash::operator()()</a>.</p>
+
+</div>
+</div>
+<a id="ad8c5de48df76227ddf9d84d440430ddf" name="ad8c5de48df76227ddf9d84d440430ddf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8c5de48df76227ddf9d84d440430ddf">&#9670;&#160;</a></span>hash_begin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t mim::hash_begin </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -2944,16 +2914,14 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00102">102</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00071">71</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00077">mim::FNV1::offset</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00005">hash()</a>, <a class="el" href="hash_8cpp_source.html#l00011">hash()</a>, and <a class="el" href="def_8h_source.html#l00896">mim::UseHash::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">mim::Def::Def()</a>, <a class="el" href="hash_8h_source.html#l00073">hash_begin()</a>, <a class="el" href="def_8h_source.html#l00629">mim::DefDefHash::operator()()</a>, and <a class="el" href="def_8h_source.html#l00896">mim::UseHash::operator()()</a>.</p>
 
 </div>
 </div>
-<a id="a7c00c1a03b12587395798e1642ddac43" name="a7c00c1a03b12587395798e1642ddac43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c00c1a03b12587395798e1642ddac43">&#9670;&#160;</a></span>hash_begin() <span class="overload">[2/2]</span></h2>
+<a id="ab670f459eab07d9f94e38da218cef4c9" name="ab670f459eab07d9f94e38da218cef4c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab670f459eab07d9f94e38da218cef4c9">&#9670;&#160;</a></span>hash_begin() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2961,7 +2929,7 @@ template&lt;class T &gt; </div>
 template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::hash_begin </td>
+          <td class="memname">size_t mim::hash_begin </td>
           <td>(</td>
           <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
           <td></td>
@@ -2969,14 +2937,14 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00101">101</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00073">73</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00082">hash_combine()</a>, and <a class="el" href="hash_8h_source.html#l00077">mim::FNV1::offset</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00071">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00058">hash_combine()</a>.</p>
 
 </div>
 </div>
-<a id="a3396fb126ee938481961f8bfc199956e" name="a3396fb126ee938481961f8bfc199956e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3396fb126ee938481961f8bfc199956e">&#9670;&#160;</a></span>hash_combine() <span class="overload">[1/3]</span></h2>
+<a id="a88d0a0276b33ec2e6ee0211d0fa3ae1a" name="a88d0a0276b33ec2e6ee0211d0fa3ae1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88d0a0276b33ec2e6ee0211d0fa3ae1a">&#9670;&#160;</a></span>hash_combine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2984,36 +2952,9 @@ template&lt;class T &gt; </div>
 template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::hash_combine </td>
+          <td class="memname">size_t mim::hash_combine </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>seed</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T *</td>          <td class="paramname"><span class="paramname"><em>val</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00095">95</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00082">hash_combine()</a>.</p>
-
-</div>
-</div>
-<a id="a2b904bc9304140956e9b5841fb26a82e" name="a2b904bc9304140956e9b5841fb26a82e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b904bc9304140956e9b5841fb26a82e">&#9670;&#160;</a></span>hash_combine() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::hash_combine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>seed</em></span>, </td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>seed</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3023,45 +2964,9 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Returns a new hash by combining the hash <code>seed</code> with <code>val</code>. </p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00058">58</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00082">82</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00078">mim::FNV1::prime</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00005">hash()</a>, <a class="el" href="hash_8cpp_source.html#l00011">hash()</a>, <a class="el" href="hash_8h_source.html#l00101">hash_begin()</a>, <a class="el" href="hash_8h_source.html#l00095">hash_combine()</a>, <a class="el" href="hash_8h_source.html#l00097">hash_combine()</a>, and <a class="el" href="def_8h_source.html#l00896">mim::UseHash::operator()()</a>.</p>
-
-</div>
-</div>
-<a id="ab53095278eb633a821a1da07b5623a71" name="ab53095278eb633a821a1da07b5623a71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab53095278eb633a821a1da07b5623a71">&#9670;&#160;</a></span>hash_combine() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T , class... Args&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::hash_combine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>seed</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>val</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Args &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>args</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00097">97</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00082">hash_combine()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">mim::Def::Def()</a>, <a class="el" href="hash_8h_source.html#l00073">hash_begin()</a>, <a class="el" href="def_8h_source.html#l00629">mim::DefDefHash::operator()()</a>, and <a class="el" href="def_8h_source.html#l00896">mim::UseHash::operator()()</a>.</p>
 
 </div>
 </div>
@@ -3543,7 +3448,7 @@ template&lt;class Id &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00046">46</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00225">mim::World::sigma()</a>, <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00409">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00225">mim::World::sigma()</a>, <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00411">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -3636,7 +3541,7 @@ template&lt;class Id &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00258">258</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00425">mim::Def::is_external()</a>, and <a class="el" href="def_8cpp_source.html#l00303">mim::Def::is_set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00425">mim::Def::is_external()</a>, and <a class="el" href="def_8cpp_source.html#l00305">mim::Def::is_set()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00030">mim::BetaRed::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00159">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00007">mim::BetaRed::rewrite()</a>, <a class="el" href="lam__spec_8cpp_source.html#l00012">mim::LamSpec::rewrite()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00010">mim::plug::mem::CopyProp::rewrite()</a>, and <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>.</p>
 
@@ -3829,7 +3734,7 @@ template&lt;class Id , bool DynCast = true&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00093">93</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00435">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00086">merge()</a>, <a class="el" href="world_8cpp_source.html#l00225">mim::World::sigma()</a>, and <a class="el" href="def_8cpp_source.html#l00409">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00435">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00086">merge()</a>, <a class="el" href="world_8cpp_source.html#l00225">mim::World::sigma()</a>, and <a class="el" href="def_8cpp_source.html#l00411">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -3854,7 +3759,7 @@ template&lt;class Id , bool DynCast = true&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00098">98</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00435">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00086">merge()</a>, <a class="el" href="world_8cpp_source.html#l00233">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00409">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00435">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00086">merge()</a>, <a class="el" href="world_8cpp_source.html#l00233">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00411">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -3878,8 +3783,8 @@ template&lt;class Id , bool DynCast = true&gt; </div>
 
 </div>
 </div>
-<a id="a8d0a308c2d81a53f11d9a10b3d8424b0" name="a8d0a308c2d81a53f11d9a10b3d8424b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d0a308c2d81a53f11d9a10b3d8424b0">&#9670;&#160;</a></span>murmur3() <span class="overload">[1/3]</span></h2>
+<a id="a41d2b518e1d57f537577c3925d915015" name="a41d2b518e1d57f537577c3925d915015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d2b518e1d57f537577c3925d915015">&#9670;&#160;</a></span>murmur3()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3888,9 +3793,9 @@ template&lt;class Id , bool DynCast = true&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::murmur3 </td>
+          <td class="memname">uint32_t mim::murmur3 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>h</em></span></td><td>)</td>
+          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>h</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -3900,208 +3805,11 @@ template&lt;class Id , bool DynCast = true&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
 <p><a class="el" href="classmim_1_1Use.html" title="References a user.">Use</a> for a single value to hash. </p>
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00062">62</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00014">14</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-</div>
-</div>
-<a id="a8a8bde978228760f0593577f18f5b6ff" name="a8a8bde978228760f0593577f18f5b6ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a8bde978228760f0593577f18f5b6ff">&#9670;&#160;</a></span>murmur3() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::murmur3 </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>h</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00022">22</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00015">murmur_32_scramble()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00060">mim::Def::Def()</a>, <a class="el" href="def_8cpp_source.html#l00016">mim::Def::Def()</a>, <a class="el" href="def_8h_source.html#l00629">mim::DefDefHash::operator()()</a>, and <a class="el" href="util_8h_source.html#l00165">mim::GIDHash&lt; T &gt;::operator()()</a>.</p>
-
-</div>
-</div>
-<a id="a434baa466eb721b7ab4b1b2afb51bb02" name="a434baa466eb721b7ab4b1b2afb51bb02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a434baa466eb721b7ab4b1b2afb51bb02">&#9670;&#160;</a></span>murmur3() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::murmur3 </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>h</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00029">29</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00015">murmur_32_scramble()</a>.</p>
-
-</div>
-</div>
-<a id="af15eaa32427f4e6e184511e114d810da" name="af15eaa32427f4e6e184511e114d810da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af15eaa32427f4e6e184511e114d810da">&#9670;&#160;</a></span>murmur3_finalize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::murmur3_finalize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>h</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>len</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00051">51</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00016">mim::Def::Def()</a>, and <a class="el" href="def_8h_source.html#l00629">mim::DefDefHash::operator()()</a>.</p>
-
-</div>
-</div>
-<a id="ae9c16bf0e64f21038110ff2a1c84f6ab" name="ae9c16bf0e64f21038110ff2a1c84f6ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9c16bf0e64f21038110ff2a1c84f6ab">&#9670;&#160;</a></span>murmur3_rest() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::murmur3_rest </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>h</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00046">46</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00015">murmur_32_scramble()</a>.</p>
-
-</div>
-</div>
-<a id="afc6538721dae2ebacf64ee867ffb1b05" name="afc6538721dae2ebacf64ee867ffb1b05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc6538721dae2ebacf64ee867ffb1b05">&#9670;&#160;</a></span>murmur3_rest() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::murmur3_rest </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>h</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00041">41</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00015">murmur_32_scramble()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00016">mim::Def::Def()</a>.</p>
-
-</div>
-</div>
-<a id="a212797b762d6266d08bdd3d25cc6564a" name="a212797b762d6266d08bdd3d25cc6564a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a212797b762d6266d08bdd3d25cc6564a">&#9670;&#160;</a></span>murmur_32_scramble()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a> mim::murmur_32_scramble </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#adb8acb78758d27c55328f3b7ade04ddd">hash_t</a></td>          <td class="paramname"><span class="paramname"><em>k</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00015">15</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00022">murmur3()</a>, <a class="el" href="hash_8h_source.html#l00029">murmur3()</a>, <a class="el" href="hash_8h_source.html#l00046">murmur3_rest()</a>, and <a class="el" href="hash_8h_source.html#l00041">murmur3_rest()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00032">hash()</a>.</p>
 
 </div>
 </div>
@@ -4576,7 +4284,7 @@ template&lt;bool forward&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="optimize_8cpp_source.html#l00010">10</a> of file <a class="el" href="optimize_8cpp_source.html">optimize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8cpp_source.html#l00086">collect_args()</a>, <a class="el" href="world_8h_source.html#l00081">mim::World::driver()</a>, <a class="el" href="dbg_8h_source.html#l00122">error()</a>, <a class="el" href="world_8h_source.html#l00182">mim::World::external()</a>, <a class="el" href="world_8h_source.html#l00168">mim::World::externals()</a>, <a class="el" href="def_8h_source.html#l00241">mim::Def::flags()</a>, <a class="el" href="def_8cpp_source.html#l00503">mim::Def::make_internal()</a>, <a class="el" href="driver_8h_source.html#l00073">mim::Driver::pass()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00031">mim::PipelineBuilder::run_pipeline()</a>, <a class="el" href="world_8cpp_source.html#l00077">mim::World::sym()</a>, and <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8cpp_source.html#l00086">collect_args()</a>, <a class="el" href="world_8h_source.html#l00081">mim::World::driver()</a>, <a class="el" href="dbg_8h_source.html#l00122">error()</a>, <a class="el" href="world_8h_source.html#l00182">mim::World::external()</a>, <a class="el" href="world_8h_source.html#l00168">mim::World::externals()</a>, <a class="el" href="def_8h_source.html#l00241">mim::Def::flags()</a>, <a class="el" href="def_8cpp_source.html#l00505">mim::Def::make_internal()</a>, <a class="el" href="driver_8h_source.html#l00073">mim::Driver::pass()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00031">mim::PipelineBuilder::run_pipeline()</a>, <a class="el" href="world_8cpp_source.html#l00077">mim::World::sym()</a>, and <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00020">main()</a>.</p>
 
@@ -5163,6 +4871,35 @@ template&lt;Vectorlike Vec&gt; </div>
 
 </div>
 </div>
+<a id="a0bdb14c793d3bca13a21d6ee0a8c2999" name="a0bdb14c793d3bca13a21d6ee0a8c2999"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bdb14c793d3bca13a21d6ee0a8c2999">&#9670;&#160;</a></span>splitmix64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t mim::splitmix64 </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>h</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00023">23</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00032">hash()</a>.</p>
+
+</div>
+</div>
 <a id="afa3494e65f05e62afeb1a0fd07f41e94" name="afa3494e65f05e62afeb1a0fd07f41e94"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afa3494e65f05e62afeb1a0fd07f41e94">&#9670;&#160;</a></span>subview()</h2>
 
@@ -5220,7 +4957,7 @@ template&lt;Vectorlike Vec&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00048">48</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00475">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00763">mim::Lit::as()</a>, and <a class="el" href="def_8h_source.html#l00361">mim::Def::projs()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00477">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00763">mim::Lit::as()</a>, and <a class="el" href="def_8h_source.html#l00361">mim::Def::projs()</a>.</p>
 
 </div>
 </div>
@@ -5300,7 +5037,7 @@ template&lt;Vectorlike Vec&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00080">80</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00475">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00763">mim::Lit::as()</a>, <a class="el" href="def_8h_source.html#l00361">mim::Def::projs()</a>, and <a class="el" href="tuple_8cpp_source.html#l00080">unflatten()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00477">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00763">mim::Lit::as()</a>, <a class="el" href="def_8h_source.html#l00361">mim::Def::projs()</a>, and <a class="el" href="tuple_8cpp_source.html#l00080">unflatten()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00073">unflatten()</a>, and <a class="el" href="tuple_8cpp_source.html#l00080">unflatten()</a>.</p>
 
