@@ -23,17 +23,15 @@ public:
     Infer* unset() { return Def::unset()->as<Infer>(); }
     ///@}
 
-    /// Eliminate Infer%s that may have been resolved in the meantime by rebuilding.
-    /// @returns `true`, if one of the arguements was in fact updated.
-    static bool zonk(Vector<Ref*>);
-    static bool has_infer(Ref def) { return def->isa_imm() && def->has_dep(Dep::Infer); }
-
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
     /// Def::flags is used to keep track of rank for
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
     static const Def* find(const Def*);
 
     Infer* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    /// If unset, explode to Tuple.
+    /// @returns the new Tuple, or `this` if unsuccessful.
+    Ref explode();
 
     static constexpr auto Node = Node::Infer;
 

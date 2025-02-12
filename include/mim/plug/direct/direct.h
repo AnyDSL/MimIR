@@ -7,37 +7,24 @@
 namespace mim::plug::direct {
 
 /// @name %%direct.cps2ds_dep
+/// ```
+/// let k: Cn [t: T, Cn U t] = ...;
+/// let f: [t: T] → U = %direct.cps2ds_dep (T, lm (t': T): * = [t → t']U) k;
+/// ```
 ///@{
-inline const Def* op_cps2ds_dep(const Def* f) {
-    auto& world = f->world();
-    // TODO: assert continuation
-    world.DLOG("f: {} : {}", f, f->type());
-    auto f_ty = f->type()->as<Pi>();
-    auto T    = f_ty->dom(0);
-    auto U    = f_ty->dom(1)->as<Pi>()->dom();
-    world.DLOG("T: {}", T);
-    world.DLOG("U: {}", U);
+inline Ref op_cps2ds_dep(Ref k) {
+    auto& w   = k->world();
+    auto K    = Pi::isa_cn(k->type());
+    auto T    = K->dom(2, 0);
+    auto U    = Pi::isa_cn(K->dom(2, 1))->dom();
+    auto l    = w.mut_lam(T, w.type())->set("Uf");
+    auto body = U;
 
-    auto Uf = world.mut_lam(T, world.type())->set("Uf");
-    world.DLOG("Uf: {} : {}", Uf, Uf->type());
+    if (auto dom = K->dom()->isa_mut<Sigma>(); dom && dom->has_var())
+        body = VarRewriter(dom->var(), l->var()).rewrite(U); // TODO typeof(dom->var()) != typeof(l->var())
+    l->set(true, body);
 
-    const Def* rewritten_codom;
-
-    if (auto f_ty_sig = f_ty->dom()->isa_mut<Sigma>()) {
-        auto dom_var = f_ty_sig->var((nat_t)0);
-        world.DLOG("dom_var: {}", dom_var);
-        auto closed_dom_var = Uf->var();
-        rewritten_codom     = rewrite(U, f_ty_sig, closed_dom_var);
-    } else {
-        rewritten_codom = U;
-    }
-    Uf->set(true, rewritten_codom);
-
-    auto ax_app = world.app(world.annex<direct::cps2ds_dep>(), {T, Uf});
-
-    world.DLOG("axiom app: {} : {}", ax_app, ax_app->type());
-
-    return world.app(ax_app, f);
+    return w.app(w.app(w.annex<direct::cps2ds_dep>(), {T, l}), k);
 }
 ///@}
 

@@ -14,13 +14,12 @@ public:
     Zonker(World& world)
         : Rewriter(world) {}
 
-    Ref rewrite(Ref old_def) override {
-        if (Infer::has_infer(old_def)) return Rewriter::rewrite(old_def);
-        return old_def;
-    }
+    Ref rewrite(Ref old_def) override { return (old_def->has_dep(Dep::Infer)) ? Rewriter::rewrite(old_def) : old_def; }
 };
 
 } // namespace
+
+const Def* Def::zonk() const { return has_dep(Dep::Infer) ? *Zonker(world()).rewrite(this) : this; }
 
 /*
  * Infer
@@ -61,19 +60,29 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
-// TODO this vastly overaproximates the nodes to visit.
-bool Infer::zonk(Vector<Ref*> refs) {
-    if (std::ranges::any_of(refs, [](auto pref) { return has_infer(*pref); })) {
-        auto& world = (*refs.front())->world();
-        Zonker rw(world);
-        for (size_t i = 0, e = refs.size(); i != e; ++i) {
-            auto ref = *refs[i];
-            *refs[i] = ref->has_dep(Dep::Infer) ? rw.rewrite(ref) : ref;
+Ref Infer::explode() {
+    if (auto a = type()->isa_lit_arity(); a && !is_set()) {
+        auto n      = *a;
+        auto infers = DefVec(n);
+        if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
+            auto var  = sigma->has_var();
+            auto rw   = VarRewriter(var, this);
+            infers[0] = world().mut_infer(sigma->op(0));
+            for (size_t i = 1; i != n; ++i) {
+                rw.map(sigma->var(n, i - 1), infers[i - 1]);
+                infers[i] = world().mut_infer(rw.rewrite(sigma->op(i)));
+            }
+        } else {
+            for (size_t i = 0; i != n; ++i) infers[i] = world().mut_infer(type()->proj(n, i));
         }
-        return true;
+
+        auto tuple = world().tuple(infers);
+        set(tuple);
+        return tuple;
     }
-    return false;
+    return this;
 }
+
 /*
  * Check
  */
@@ -101,19 +110,6 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     // Otherwise, we have to look more thoroughly.
     // Example: λx.x - λz.x
     if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
-    auto mut1 = d1->isa_mut();
-    auto mut2 = d2->isa_mut();
-    if (mut1 && mut2 && mut1 == mut2) return true;
-    // Globals are HACKs and require additionaly HACKs:
-    // Unless they are pointer equal (above) always consider them unequal.
-    if (d1->isa<Global>() || d2->isa<Global>()) return false;
-
-    if (mut1) {
-        if (auto [i, ins] = done_.emplace(mut1, d2); !ins) return i->second == d2;
-    }
-    if (mut2) {
-        if (auto [i, ins] = done_.emplace(mut2, d1); !ins) return i->second == d1;
-    }
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
@@ -136,6 +132,20 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
         }
     }
 
+    auto mut1 = d1->isa_mut();
+    auto mut2 = d2->isa_mut();
+    if (mut1 && mut2 && mut1 == mut2) return true;
+    // Globals are HACKs and require additionaly HACKs:
+    // Unless they are pointer equal (above) always consider them unequal.
+    if (d1->isa<Global>() || d2->isa<Global>()) return false;
+
+    if (mut1) {
+        if (auto [i, ins] = done_.emplace(mut1, d2); !ins) return i->second == d2;
+    }
+    if (mut2) {
+        if (auto [i, ins] = done_.emplace(mut2, d1); !ins) return i->second == d1;
+    }
+
     // normalize:
     if ((d1->isa<Lit>() && !d2->isa<Lit>())             // Lit to right
         || (!d1->isa<UMax>() && d2->isa<UMax>())        // UMax to left
@@ -149,13 +159,6 @@ template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
     if (mode == Opt && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
-
-    if (auto extract = d1->isa<Extract>()) {
-        if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto i = Lit::isa(extract->index())) d1 = tuple->op(*i);
-        }
-    }
-
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
     // vars are equal if they appeared under the same binder

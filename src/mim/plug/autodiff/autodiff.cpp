@@ -116,7 +116,7 @@ const Def* autodiff_type_fun(const Def* ty) {
     if (auto pi = ty->isa<Pi>()) return autodiff_type_fun_pi(pi);
     // Also handles autodiff call from axiom declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
-    if (Idx::size(ty)) return ty;
+    if (Idx::isa(ty)) return ty;
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
@@ -150,7 +150,7 @@ const Def* zero_def(const Def* T) {
         world.DLOG("zero_def for array of shape {} with type {}", shape, body);
         world.DLOG("zero_arr: {}", zero_arr);
         return zero_arr;
-    } else if (Idx::size(T)) {
+    } else if (Idx::isa(T)) {
         // TODO: real
         auto zero = world.lit(T, 0)->set("zero");
         world.DLOG("zero_def for int is {}", zero);

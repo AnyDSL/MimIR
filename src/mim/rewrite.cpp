@@ -42,11 +42,4 @@ Ref Rewriter::rewrite_mut(Def* old_mut) {
     return new_mut;
 }
 
-DefVec rewrite(Def* mut, Ref arg) {
-    auto rw = VarRewriter(mut->var(), arg);
-    DefVec result(mut->num_ops());
-    for (size_t i = 0, e = result.size(); i != e; ++i) result[i] = rw.rewrite(mut->op(i));
-    return result;
-}
-
 } // namespace mim

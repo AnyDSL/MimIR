@@ -172,7 +172,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
                 // clang-format on
                 default: return print(os, "{}", lit->get());
             }
-        } else if (auto size = Idx::size(lit->type())) {
+        } else if (auto size = Idx::isa(lit->type())) {
             if (auto s = Lit::isa(size)) {
                 switch (*s) {
                         // clang-format off
@@ -216,7 +216,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
-        if (auto size = Idx::size(app)) {
+        if (auto size = Idx::isa(app)) {
             if (auto l = Lit::isa(size)) {
                 // clang-format off
                 switch (*l) {
@@ -305,6 +305,7 @@ void Dumper::dump(Def* mut) {
         if (def->isa<Arr>()) return ".Arr";
         if (def->isa<Pack>()) return ".pack";
         if (def->isa<Pi>()) return ".Pi";
+        if (def->isa<Infer>()) return ".Infer";
         fe::unreachable();
     };
 
@@ -313,6 +314,7 @@ void Dumper::dump(Def* mut) {
         if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
         if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
         if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
+        if (auto infer = def->isa<Infer>()) return infer->is_set() ? print(os, ", {}", infer->op()) : print(os, ", ??");
         fe::unreachable();
     };
 

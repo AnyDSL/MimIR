@@ -88,7 +88,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
 
     if (auto la = Lit::isa(a)) {
         if (auto lb = Lit::isa(b)) {
-            auto size  = Lit::as(Idx::size(a->type()));
+            auto size  = Lit::as(Idx::isa(a->type()));
             auto width = Idx::size2bitwidth(size);
             bool nsw = false, nuw = false;
             if constexpr (std::is_same_v<Id, wrap>) {
@@ -132,7 +132,7 @@ template<class Id> Ref fold(World& world, Ref type, const Def*& a) {
     if (a->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
-        auto size  = Lit::as(Idx::size(a->type()));
+        auto size  = Lit::as(Idx::isa(a->type()));
         auto width = Idx::size2bitwidth(size);
         bool nsw = false, nuw = false;
         Res res;
@@ -411,7 +411,7 @@ Ref normalize_idx(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     if (auto i = Lit::isa(arg)) {
-        if (auto s = Lit::isa(Idx::size(type))) {
+        if (auto s = Lit::isa(Idx::isa(type))) {
             if (*i < *s) return world.lit_idx(*s, *i);
             if (auto m = Lit::isa(callee->arg())) return *m ? world.bot(type) : world.lit_idx_mod(*s, *i);
         }
@@ -424,7 +424,7 @@ template<shr id> Ref normalize_shr(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto s      = Idx::size(arg->type());
+    auto s      = Idx::isa(arg->type());
     auto ls     = Lit::isa(s);
 
     if (auto result = fold<shr, id>(world, type, a, b)) return result;
@@ -455,7 +455,7 @@ template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
     auto mode   = callee->arg();
-    auto s      = Idx::size(a->type());
+    auto s      = Idx::isa(a->type());
     auto ls     = Lit::isa(s);
 
     if (auto result = fold<wrap, id>(world, type, a, b)) return result;
@@ -599,7 +599,7 @@ Ref normalize_bitcast(Ref dst_t, Ref, Ref src) {
 
     if (auto l = Lit::isa(src)) {
         if (dst_t->isa<Nat>()) return world.lit(dst_t, *l);
-        if (Idx::size(dst_t)) return world.lit(dst_t, *l);
+        if (Idx::isa(dst_t)) return world.lit(dst_t, *l);
     }
 
     return {};
@@ -615,7 +615,7 @@ template<trait id> Ref normalize_trait(Ref, Ref, Ref type) {
         return world.lit_nat(8);
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
-    } else if (auto size = Idx::size(type)) {
+    } else if (auto size = Idx::isa(type)) {
         if (auto w = Idx::size2bitwidth(size)) return world.lit_nat(std::max(1_n, std::bit_ceil(*w) / 8_n));
     } else if (auto w = math::isa_f(type)) {
         switch (*w) {

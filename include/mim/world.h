@@ -489,48 +489,35 @@ public:
     /// @name Cope with implicit Arguments
     ///@{
     /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
-    Ref iapp(Ref callee, Ref arg);
-    Ref iapp(Ref callee, Defs args) { return iapp(callee, tuple(args)); }
-    Ref iapp(Ref callee, nat_t arg) { return iapp(callee, lit_nat(arg)); }
+    Ref implicit_app(Ref callee, Ref arg);
+    Ref implicit_app(Ref callee, Defs args) { return implicit_app(callee, tuple(args)); }
+    Ref implicit_app(Ref callee, nat_t arg) { return implicit_app(callee, lit_nat(arg)); }
     template<class E>
-    Ref iapp(Ref callee, E arg) requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
+    Ref implicit_app(Ref callee, E arg) requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
     {
-        return iapp(callee, lit_nat((nat_t)arg));
+        return implicit_app(callee, lit_nat((nat_t)arg));
     }
+
+    /// Complete curried call of annexes obeying implicits.
+    // clang-format off
+    template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(annex(id),   std::forward<Args>(args)...); }
+    template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(annex<Id>(), std::forward<Args>(args)...); }
+    // clang-format on
+    ///@}
 
     /// @name Vars & Muts
     /// Manges sets of Vars and Muts.
     ///@{
-    [[nodiscard]] Vars vars(const Var* var) { return move_.vars.singleton(var); }
-    [[nodiscard]] Muts muts(Def* mut) { return move_.muts.singleton(mut); }
-    [[nodiscard]] Vars merge(Vars a, Vars b) { return move_.vars.merge(a, b); }
-    [[nodiscard]] Muts merge(Muts a, Muts b) { return move_.muts.merge(a, b); }
-    [[nodiscard]] Vars insert(Vars vars, const Var* var) { return move_.vars.insert(vars, var); }
-    [[nodiscard]] Muts insert(Muts muts, Def* mut) { return move_.muts.insert(muts, mut); }
-    [[nodiscard]] Vars erase(Vars vars, const Var* var) { return move_.vars.erase(vars, var); }
-    [[nodiscard]] Muts erase(Muts muts, Def* mut) { return move_.muts.erase(muts, mut); }
-    [[nodiscard]] bool has_intersection(Vars v1, Vars v2) { return move_.vars.has_intersection(v1, v2); }
-    [[nodiscard]] bool has_intersection(Muts m1, Muts m2) { return move_.muts.has_intersection(m1, m2); }
-    ///@}
-
-    // clang-format off
-    template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(annex(id),   std::forward<Args>(args)...); }
-    template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(annex<Id>(), std::forward<Args>(args)...); }
-    template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) { return call_(iapp(callee, arg), std::forward<Args>(args)...); }
-    template<class T> const Def* call_(Ref callee, T arg) { return iapp(callee, arg); }
-    // clang-format on
-    ///@}
-
-    /// @name Helpers
-    ///@{
-    Ref iinfer(Ref def) { return Idx::size(def->type()); }
+    [[nodiscard]] auto& vars() { return move_.vars; }
+    [[nodiscard]] auto& muts() { return move_.muts; }
+    [[nodiscard]] const auto& vars() const { return move_.vars; }
+    [[nodiscard]] const auto& muts() const { return move_.muts; }
     ///@}
 
     /// @name dump/log
     ///@{
     Log& log();
     void dummy() {}
-
     void dump(std::ostream& os);  ///< Dump to @p os.
     void dump();                  ///< Dump to `std::cout`.
     void debug_dump();            ///< Dump in Debug build if World::log::level is Log::Level::Debug.
@@ -550,6 +537,15 @@ public:
     ///@}
 
 private:
+    /// @name call_
+    /// Helpers to unwind World::call with variadic templates.
+    ///@{
+    template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) {
+        return call_(implicit_app(callee, arg), std::forward<Args>(args)...);
+    }
+    template<class T> const Def* call_(Ref callee, T arg) { return implicit_app(callee, arg); }
+    ///@}
+
     /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {

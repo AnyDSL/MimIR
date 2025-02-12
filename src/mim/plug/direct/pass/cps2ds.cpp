@@ -86,7 +86,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             world().DLOG("ret_ty {}", ret_ty);
 
             auto inst_ret_ty = ret_ty;
-            if (auto pi = ty->isa_mut<Pi>()) inst_ret_ty = pi->reduce(new_arg).back();
+            if (auto pi = ty->isa_mut<Pi>()) inst_ret_ty = pi->reduce(new_arg);
 
             // The continuation that receives the result of the cps function call.
             auto new_name = world().append_suffix(curr_lam_->sym(), "_cps_cont");

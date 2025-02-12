@@ -154,7 +154,7 @@ template<Sort sort> Ref World::umax(Defs ops_) {
 // TODO more thorough & consistent checks for singleton types
 
 Ref World::var(Ref type, Def* mut) {
-    if (auto s = Idx::size(type)) {
+    if (auto s = Idx::isa(type)) {
         if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
     }
 
@@ -162,47 +162,39 @@ Ref World::var(Ref type, Def* mut) {
     return mut->var_ = unify<Var>(1, type, mut);
 }
 
-Ref World::iapp(Ref callee, Ref arg) {
-    while (auto pi = callee->type()->isa<Pi>()) {
-        if (pi->is_implicit()) {
-            auto infer = mut_infer(pi->dom());
-            auto a     = app(callee, infer);
-            callee     = a;
-        } else {
-            // resolve Infers now if possible before normalizers are run
-            if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                auto new_arg = Checker::assignable(callee->type()->as<Pi>()->dom(), arg);
-                if (!new_arg) { // TODO remove code duplication from below
-                    throw Error()
-                        .error(arg->loc(), "cannot apply argument to callee")
-                        .note(callee->loc(), "callee: '{}'", callee)
-                        .note(arg->loc(), "argument: '{}'", arg)
-                        .note(callee->loc(), "vvv domain type vvv\n'{}'\n'{}'", pi->dom(), arg->type())
-                        .note(arg->loc(), "^^^ argument type ^^^");
-                }
-                arg       = new_arg;
-                auto apps = decurry(app);
-                callee    = apps.front()->callee();
-                for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
-            }
-            break;
-        }
-    }
-
+Ref World::implicit_app(Ref callee, Ref arg) {
+    while (auto pi = Pi::isa_implicit(callee->type())) callee = app(callee, mut_infer(pi->dom()));
     return app(callee, arg);
 }
 
 Ref World::app(Ref callee, Ref arg) {
-    Infer::zonk(Vector<Ref*>{&callee, &arg});
-    auto pi = callee->type()->isa<Pi>();
+    callee = callee->zonk();
+    if (auto pi = callee->type()->isa<Pi>()) {
+        if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
+            arg = new_arg;
+            if (auto imm = callee->isa_imm<Lam>()) return imm->body();
+            if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
+                VarRewriter rw(lam->var(), arg);
+                if (rw.rewrite(lam->filter()) == lit_tt()) {
+                    DLOG("partial evaluate: {} ({})", lam, arg);
+                    return rw.rewrite(lam->body());
+                }
+            }
 
-    if (!pi) {
-        throw Error()
-            .error(callee->loc(), "called expression not of function type")
-            .error(callee->loc(), "'{}' <--- callee type", callee->type());
-    }
-    auto new_arg = Checker::assignable(pi->dom(), arg);
-    if (!new_arg) {
+            auto type                 = pi->reduce(arg);
+            auto [axiom, curry, trip] = Axiom::get(callee);
+            if (axiom) {
+                curry = curry == 0 ? trip : curry;
+                curry = curry == Axiom::Trip_End ? curry : curry - 1;
+
+                if (auto normalize = axiom->normalizer(); normalize && curry == 0) {
+                    if (auto norm = normalize(type, callee, arg)) return norm;
+                }
+            }
+
+            return raw_app(axiom, curry, trip, type, callee, arg);
+        }
+
         throw Error()
             .error(arg->loc(), "cannot apply argument to callee")
             .note(callee->loc(), "callee: '{}'", callee)
@@ -210,30 +202,10 @@ Ref World::app(Ref callee, Ref arg) {
             .note(callee->loc(), "vvv domain type vvv\n'{}'\n'{}'", pi->dom(), arg->type())
             .note(arg->loc(), "^^^ argument type ^^^");
     }
-    arg = new_arg;
 
-    if (auto imm = callee->isa_imm<Lam>()) return imm->body();
-    if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
-        VarRewriter rw(lam->var(), arg);
-        if (rw.rewrite(lam->filter()) == lit_tt()) {
-            DLOG("partial evaluate: {} ({})", lam, arg);
-            return rw.rewrite(lam->body());
-        }
-    }
-
-    auto type = pi->reduce(arg).back();
-
-    auto [axiom, curry, trip] = Axiom::get(callee);
-    if (axiom) {
-        curry = curry == 0 ? trip : curry;
-        curry = curry == Axiom::Trip_End ? curry : curry - 1;
-
-        if (auto normalize = axiom->normalizer(); normalize && curry == 0) {
-            if (auto norm = normalize(type, callee, arg)) return norm;
-        }
-    }
-
-    return raw_app(axiom, curry, trip, type, callee, arg);
+    throw Error()
+        .error(callee->loc(), "called expression not of function type")
+        .error(callee->loc(), "'{}' <--- callee type", callee->type());
 }
 
 Ref World::raw_app(Ref type, Ref callee, Ref arg) {
@@ -312,7 +284,6 @@ Ref World::tuple(Sym sym) {
 }
 
 Ref World::extract(Ref d, Ref index) {
-    assert(d);
     if (index->isa<Tuple>()) {
         auto n   = index->num_ops();
         auto idx = DefVec(n, [&](size_t i) { return index->op(i); });
@@ -323,8 +294,8 @@ Ref World::extract(Ref d, Ref index) {
         return tuple(ops);
     }
 
-    Ref size = Idx::size(index->type());
-    Ref type = d->unfold_type();
+    Ref size = Idx::isa(index->type());
+    Ref type = d->unfold_type()->zonk();
 
     if (auto l = Lit::isa(size); l && *l == 1) {
         if (auto l = Lit::isa(index); !l || *l != 0) WLOG("unknown Idx of size 1: {}", index);
@@ -346,6 +317,7 @@ Ref World::extract(Ref d, Ref index) {
     }
 
     if (auto i = Lit::isa(index)) {
+        if (auto infer = d->isa_mut<Infer>()) d = infer->explode();
         if (auto tuple = d->isa<Tuple>()) return tuple->op(*i);
 
         // extract(insert(x, j, val), i) -> extract(x, i) where i != j (guaranteed by rule above)
@@ -375,7 +347,7 @@ Ref World::extract(Ref d, Ref index) {
 
 Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
-    auto size = Idx::size(index->type());
+    auto size = Idx::isa(index->type());
     auto lidx = Lit::isa(index);
 
     if (!Checker::alpha<Checker::Check>(type->arity(), size))
@@ -475,7 +447,7 @@ Ref World::pack(Defs shape, Ref body) {
 }
 
 const Lit* World::lit(Ref type, u64 val) {
-    if (auto size = Idx::size(type)) {
+    if (auto size = Idx::isa(type)) {
         if (auto s = Lit::isa(size)) {
             if (*s != 0 && val >= *s) error(type->loc(), "index '{}' does not fit within arity '{}'", size, val);
         } else if (val != 0) { // 0 of any size is allowed

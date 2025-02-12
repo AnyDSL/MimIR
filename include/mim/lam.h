@@ -52,6 +52,11 @@ public:
     static const Pi* isa_returning(Ref d)  { return isa_cn(d) &&  d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
     /// Is this a continuation (Pi::isa_cn) that is **not** Pi::isa_returning?
     static const Pi* isa_basicblock(Ref d) { return isa_cn(d) && !d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
+    /// Is @p d an Pi::is_implicit (mutable) Pi?
+    static Pi* isa_implicit(Ref d) {
+        if (auto pi = d->isa_mut<Pi>(); pi && pi->is_implicit()) return pi;
+        return nullptr;
+    }
     // clang-format on
     ///@}
 
@@ -86,6 +91,7 @@ public:
 
     /// @name Rebuild
     ///@{
+    Ref reduce(Ref arg) const { return Def::reduce(1, arg); }
     Pi* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Pi* immutabilize() override;
     ///@}

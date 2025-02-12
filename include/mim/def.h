@@ -516,12 +516,15 @@ public:
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
     DefVec reduce(Ref arg) const;
     DefVec reduce(Ref arg);
+    /// As above but only rewrites `this->op(i)`.
+    Ref reduce(size_t i, Ref arg) const;
     ///@}
 
     /// @name Type Checking
     ///@{
     virtual Ref check(size_t, Ref def) { return def; }
     virtual Ref check() { return type(); }
+    const Def* zonk() const;
     ///@}
 
     /// @name dump
@@ -789,11 +792,27 @@ private:
 
 public:
     using Setters<Idx>::set;
+    using Def::as;
+    using Def::isa;
 
+    /// @name isa
+    ///@{
     /// Checks if @p def is a `Idx s` and returns `s` or `nullptr` otherwise.
-    static Ref size(Ref def);
+    static Ref isa(Ref def);
+    static Ref as(Ref def) {
+        auto res = isa(def);
+        assert(res);
+        return res;
+    }
+    static std::optional<nat_t> isa_lit(Ref def);
+    static nat_t as_lit(Ref def) {
+        auto res = isa_lit(def);
+        assert(res.has_value());
+        return *res;
+    }
+    ///@}
 
-    /// @name Convert between Idx::size and bitwidth and vice versa
+    /// @name Convert between Idx::isa and bitwidth and vice versa
     ///@{
     // clang-format off
     static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }

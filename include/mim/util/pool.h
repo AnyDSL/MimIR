@@ -121,8 +121,8 @@ public:
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** PooledSet.
     ///@{
-    /// Create a PooledSet wih a single @p elem%ent: @f$\{elem\}@f$.
-    [[nodiscard]] PooledSet<T> singleton(T elem) {
+    /// Create a PooledSet wih a *single* @p elem%ent: @f$\{elem\}@f$.
+    [[nodiscard]] PooledSet<T> create(T elem) {
         auto [data, state] = allocate(1);
         data->elems[0]     = elem;
         return unify(data, state);
@@ -157,7 +157,7 @@ public:
     }
 
     /// Yields @f$a \cup \{elem\}@f$.
-    [[nodiscard]] PooledSet<T> insert(PooledSet<T> a, const T& elem) { return merge(a, singleton(elem)); }
+    [[nodiscard]] PooledSet<T> insert(PooledSet<T> a, const T& elem) { return merge(a, create(elem)); }
 
     /// Yields @f$a \setminus b@f$.
     [[nodiscard]] PooledSet<T> erase(PooledSet<T> set, const T& elem) {

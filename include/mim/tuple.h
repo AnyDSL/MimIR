@@ -89,7 +89,7 @@ public:
 
     /// @name Rebuild
     ///@{
-    Ref reduce(Ref arg) const;
+    Ref reduce(Ref arg) const { return Def::reduce(1, arg); }
     Arr* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
     ///@}
@@ -136,7 +136,7 @@ public:
 
     /// @name Rebuild
     ///@{
-    Ref reduce(Ref arg) const;
+    Ref reduce(Ref arg) const { return Def::reduce(0, arg); }
     Pack* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
     ///@}

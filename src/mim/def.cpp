@@ -31,15 +31,15 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     gid_ = world().next_gid();
 
     if (auto var = isa<Var>()) {
-        vars_.local = world().vars(var);
+        vars_.local = world().vars().create(var);
         muts_.local = Muts();
     } else {
         vars_.local = Vars();
         muts_.local = Muts();
 
         for (auto op : extended_ops()) {
-            vars_.local = world().merge(vars_.local, op->local_vars());
-            muts_.local = world().merge(muts_.local, op->local_muts());
+            vars_.local = world().vars().merge(vars_.local, op->local_vars());
+            muts_.local = world().muts().merge(muts_.local, op->local_muts());
         }
     }
 
@@ -199,26 +199,28 @@ const Def* Pack::immutabilize() {
  * reduce
  */
 
-Ref Arr::reduce(Ref arg) const {
-    if (auto mut = isa_mut<Arr>()) return rewrite(1, mut, arg);
-    return body();
-}
-
-Ref Pack::reduce(Ref arg) const {
-    if (auto mut = isa_mut<Pack>()) return rewrite(0, mut, arg);
-    return body();
-}
-
 DefVec Def::reduce(Ref arg) const {
     if (auto mut = isa_mut()) return mut->reduce(arg);
     return DefVec(ops().begin(), ops().end());
 }
 
 DefVec Def::reduce(Ref arg) {
-    auto& cache = world().move_.cache;
-    if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
+    if (auto var = has_var()) {
+        auto& cache = world().move_.cache;
+        if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
-    return cache[{this, arg}] = rewrite(this, arg);
+        auto rw  = VarRewriter(var, arg);
+        auto res = DefVec(num_ops());
+        for (size_t i = 0, e = res.size(); i != e; ++i) res[i] = rw.rewrite(op(i));
+
+        return cache[{this, arg}] = res;
+    }
+    return DefVec(ops().begin(), ops().end());
+}
+
+Ref Def::reduce(size_t i, Ref arg) const {
+    if (auto mut = isa_mut(); mut && has_var()) return mut->reduce(arg)[i];
+    return op(i);
 }
 
 Ref Def::refine(size_t i, Ref new_op) const {
@@ -311,7 +313,7 @@ bool Def::is_set() const {
  */
 
 Muts Def::local_muts() const {
-    if (auto mut = isa_mut()) return world().muts(mut);
+    if (auto mut = isa_mut()) return world().muts().create(mut);
     return muts_.local;
 }
 
@@ -319,7 +321,7 @@ Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
     auto vars = local_vars();
-    for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars());
+    for (auto mut : local_muts()) vars = world().vars().merge(vars, mut->free_vars());
     return vars;
 }
 
@@ -350,16 +352,16 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     auto fvs0 = vars_.free;
     auto fvs  = fvs0;
 
-    for (auto op : extended_ops()) fvs = world().merge(fvs, op->local_vars());
+    for (auto op : extended_ops()) fvs = world().vars().merge(fvs, op->local_vars());
 
     for (auto op : extended_ops()) {
         for (auto local_mut : op->local_muts()) {
-            local_mut->muts_.fv_consumers = world().insert(local_mut->muts_.fv_consumers, this);
-            fvs                           = world().merge(fvs, local_mut->free_vars(todo, run));
+            local_mut->muts_.fv_consumers = world().muts().insert(local_mut->muts_.fv_consumers, this);
+            fvs                           = world().vars().merge(fvs, local_mut->free_vars(todo, run));
         }
     }
 
-    if (auto var = has_var()) fvs = world().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
+    if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
 
     todo |= fvs0 != fvs;
     return vars_.free = fvs;
@@ -510,16 +512,9 @@ nat_t Def::num_tprojs() const {
 Ref Def::proj(nat_t a, nat_t i) const {
     static constexpr int Search_In_Uses_Threshold = 8;
 
-    if (a == 1) {
-        if (!type()) return this;
-        if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
-    }
-
     World& w = world();
 
-    if (isa<Tuple>() || isa<Sigma>()) {
-        return op(i);
-    } else if (auto arr = isa<Arr>()) {
+    if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
         return arr->reduce(w.lit_idx(a, i));
     } else if (auto pack = isa<Pack>()) {
@@ -527,6 +522,13 @@ Ref Def::proj(nat_t a, nat_t i) const {
         assert(!w.is_frozen() && "TODO");
         return pack->reduce(w.lit_idx(a, i));
     }
+
+    if (a == 1) {
+        if (!type()) return this;
+        if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
+    }
+
+    if (isa<Tuple>() || isa<Sigma>()) return op(i);
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
         for (auto u : uses()) {
@@ -545,12 +547,18 @@ Ref Def::proj(nat_t a, nat_t i) const {
  * Idx
  */
 
-Ref Idx::size(Ref def) {
+Ref Idx::isa(Ref def) {
     if (auto app = def->isa<App>()) {
         if (app->callee()->isa<Idx>()) return app->arg();
     }
 
     return nullptr;
+}
+
+std::optional<nat_t> Idx::isa_lit(Ref def) {
+    if (auto size = Idx::isa(def))
+        if (auto l = Lit::isa(size)) return l;
+    return {};
 }
 
 std::optional<nat_t> Idx::size2bitwidth(Ref size) {

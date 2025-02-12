@@ -197,7 +197,7 @@ Here are some examples:
 
 ```cpp
 void foo(Ref def) {
-    if (auto size = Idx::size(def)) {
+    if (auto size = Idx::isa(def)) {
         // def = Idx size
     }
 
