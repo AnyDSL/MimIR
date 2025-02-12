@@ -199,26 +199,28 @@ const Def* Pack::immutabilize() {
  * reduce
  */
 
-Ref Arr::reduce(Ref arg) const {
-    if (auto mut = isa_mut<Arr>()) return rewrite(1, mut, arg);
-    return body();
-}
-
-Ref Pack::reduce(Ref arg) const {
-    if (auto mut = isa_mut<Pack>()) return rewrite(0, mut, arg);
-    return body();
-}
-
 DefVec Def::reduce(Ref arg) const {
     if (auto mut = isa_mut()) return mut->reduce(arg);
     return DefVec(ops().begin(), ops().end());
 }
 
 DefVec Def::reduce(Ref arg) {
-    auto& cache = world().move_.cache;
-    if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
+    if (auto var = has_var()) {
+        auto& cache = world().move_.cache;
+        if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
-    return cache[{this, arg}] = rewrite(this, arg);
+        auto rw  = VarRewriter(var, arg);
+        auto res = DefVec(num_ops());
+        for (size_t i = 0, e = res.size(); i != e; ++i) res[i] = rw.rewrite(op(i));
+
+        return cache[{this, arg}] = res;
+    }
+    return DefVec(ops().begin(), ops().end());
+}
+
+Ref Def::reduce(size_t i, Ref arg) const {
+    if (auto mut = isa_mut(); mut && has_var()) return mut->reduce(arg)[i];
+    return op(i);
 }
 
 Ref Def::refine(size_t i, Ref new_op) const {

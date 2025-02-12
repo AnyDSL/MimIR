@@ -57,16 +57,4 @@ private:
     Vars vars_;
 };
 
-/// @name rewrite
-/// Rewrites @p mut's ops by substituting @p mut's @p Var with @p arg.
-///@{
-DefVec rewrite(Def* mut, Ref arg);
-
-/// As above but only rewrites @p mut's @p i^th op.
-inline Ref rewrite(size_t i, Def* mut, Ref arg) { return VarRewriter(mut->var(), arg).rewrite(mut->op(i)); }
-
-/// As above but rewrites @p def.
-inline Ref rewrite(Ref def, Def* mut, Ref arg) { return VarRewriter(mut->var(), arg).rewrite(def); }
-///@}
-
 } // namespace mim

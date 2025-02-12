@@ -516,6 +516,8 @@ public:
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
     DefVec reduce(Ref arg) const;
     DefVec reduce(Ref arg);
+    /// As above but only rewrites `this->op(i)`.
+    Ref reduce(size_t i, Ref arg) const;
     ///@}
 
     /// @name Type Checking

@@ -196,7 +196,7 @@ Ref World::app(Ref callee, Ref arg) {
         }
     }
 
-    auto type = pi->reduce(arg).back();
+    auto type = pi->reduce(arg);
 
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {

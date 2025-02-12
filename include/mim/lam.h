@@ -91,6 +91,7 @@ public:
 
     /// @name Rebuild
     ///@{
+    Ref reduce(Ref arg) const { return Def::reduce(1, arg); }
     Pi* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Pi* immutabilize() override;
     ///@}

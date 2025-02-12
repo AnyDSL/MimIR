@@ -6,6 +6,9 @@
 
 namespace mim::plug::direct {
 
+// TODO remove
+inline Ref rewrite(Ref def, Def* mut, Ref arg) { return VarRewriter(mut->var(), arg).rewrite(def); }
+
 /// @name %%direct.cps2ds_dep
 ///@{
 inline const Def* op_cps2ds_dep(const Def* f) {

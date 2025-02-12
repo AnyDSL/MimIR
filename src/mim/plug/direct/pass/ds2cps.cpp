@@ -59,7 +59,7 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     // calls handled separately
     world().DLOG("body: {} : {}", lam->body(), lam->body()->type());
 
-    auto new_ops  = mim::rewrite(lam, cps_lam->var(0_n));
+    auto new_ops  = lam->reduce(cps_lam->var(0_n));
     auto filter   = new_ops[0];
     auto cps_body = new_ops[1];
 
