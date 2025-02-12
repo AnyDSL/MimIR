@@ -98,6 +98,20 @@ Ref Infer::explode() {
     return tuple;
 }
 
+Ref Infer::extract(Ref r) {
+    if (auto extract = r->isa<Extract>()) {
+        if (auto a = Idx::isa_lit(extract->index()->type())) {
+            if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
+                if (!infer->is_set()) infer->explode();
+            }
+        }
+        if (auto tuple = extract->tuple()->isa<Tuple>()) {
+            if (auto i = Lit::isa(extract->index())) return tuple->op(*i);
+        }
+    }
+    return {};
+}
+
 /*
  * Check
  */
@@ -126,27 +140,8 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     // Example: λx.x - λz.x
     if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
 
-    if (auto extract = r1->isa<Extract>()) {
-        if (auto a = Idx::isa_lit(extract->index()->type())) {
-            if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
-                if (!infer->is_set()) infer->explode();
-            }
-        }
-        if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto i = Lit::isa(extract->index())) return alpha_<mode>(tuple->op(*i), r2);
-        }
-    }
-
-    if (auto extract = r2->isa<Extract>()) {
-        if (auto a = Idx::isa_lit(extract->index()->type())) {
-            if (auto infer = extract->tuple().def()->isa_mut<Infer>()) {
-                if (!infer->is_set()) infer->explode();
-            }
-        }
-        if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto i = Lit::isa(extract->index())) return alpha_<mode>(r1, tuple->op(*i));
-        }
-    }
+    if (auto elem = Infer::extract(r1)) return alpha_<mode>(elem, r2);
+    if (auto elem = Infer::extract(r2)) return alpha_<mode>(r1, elem);
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();

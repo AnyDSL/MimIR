@@ -32,6 +32,7 @@ public:
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `nullptr` if unsuccessful.
     Ref explode();
+    static Ref extract(Ref);
 
     static constexpr auto Node = Node::Infer;
 
