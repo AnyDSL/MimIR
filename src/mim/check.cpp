@@ -62,32 +62,21 @@ const Def* Infer::find(const Def* def) {
 
 Ref Infer::explode() {
     if (auto a = type()->isa_lit_arity(); a && !is_set()) {
-        auto n  = *a;
-        auto& w = world();
-
-        if (auto arr = type()->isa_imm<Arr>(); arr && n > world().flags().scalarize_threshold) {
-            auto pack = w.pack(arr->shape(), w.mut_infer(arr->body()));
-            set(pack);
-            return pack;
-        }
-
+        auto n      = *a;
         auto infers = DefVec(n);
-        if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1) {
-            if (auto var = sigma->has_var()) {
-                auto rw   = VarRewriter(var, this);
-                infers[0] = w.mut_infer(sigma->op(0));
-                for (size_t i = 1; i != n; ++i) {
-                    rw.map(sigma->var(n, i - 1), infers[i - 1]);
-                    infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
-                }
-            } else {
-                for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(sigma->op(i));
+        if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
+            auto var  = sigma->has_var();
+            auto rw   = VarRewriter(var, this);
+            infers[0] = world().mut_infer(sigma->op(0));
+            for (size_t i = 1; i != n; ++i) {
+                rw.map(sigma->var(n, i - 1), infers[i - 1]);
+                infers[i] = world().mut_infer(rw.rewrite(sigma->op(i)));
             }
         } else {
-            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type()->proj(n, i));
+            for (size_t i = 0; i != n; ++i) infers[i] = world().mut_infer(type()->proj(n, i));
         }
 
-        auto tuple = w.tuple(infers);
+        auto tuple = world().tuple(infers);
         set(tuple);
         return tuple;
     }
