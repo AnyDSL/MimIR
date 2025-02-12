@@ -170,7 +170,6 @@ Ref World::implicit_app(Ref callee, Ref arg) {
 Ref World::app(Ref callee, Ref arg) {
     callee = callee->zonk();
     if (auto pi = callee->type()->isa<Pi>()) {
-        std::cout << callee->gid() << std::endl;
         if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
             arg = new_arg;
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
