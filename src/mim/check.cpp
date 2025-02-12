@@ -22,10 +22,7 @@ public:
 
 } // namespace
 
-const Def* Def::zonk() const {
-    if (has_dep(Dep::Infer)) return Zonker(world()).rewrite(this);
-    return this;
-}
+const Def* Def::zonk() const { return has_dep(Dep::Infer) ? *Zonker(world()).rewrite(this) : this; }
 
 /*
  * Infer
