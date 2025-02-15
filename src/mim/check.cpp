@@ -41,23 +41,6 @@ const Def* Infer::find(const Def* def) {
     }
 
     assert((!res->isa<Infer>() || res != res->op(0)) && "an Infer shouldn't point to itself");
-
-    // If we have an Infer as operand, try to get rid of it now.
-    // TODO why does this not work?
-    // if (res->isa_imm() && res->has_dep(Dep::Infer)) {
-    if (res->isa<Tuple>() || res->isa<Type>()) {
-        auto new_type = Ref::refer(res->type());
-        bool update   = new_type != res->type();
-
-        auto new_ops = DefVec(res->num_ops(), [res, &update](size_t i) {
-            auto r = Ref::refer(res->op(i));
-            update |= r != res->op(i);
-            return r;
-        });
-
-        if (update) return res->rebuild(new_type, new_ops);
-    }
-
     return res;
 }
 
