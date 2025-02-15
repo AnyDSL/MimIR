@@ -15,6 +15,7 @@ public:
         : Rewriter(world) {}
 
     Ref rewrite(Ref old_def) override { return (old_def->has_dep(Dep::Infer)) ? Rewriter::rewrite(old_def) : old_def; }
+    Ref rewrite_mut(Def* mut) override { return mut; }
 };
 
 } // namespace
