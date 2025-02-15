@@ -317,7 +317,7 @@ Ref World::extract(Ref d, Ref index) {
     }
 
     if (auto i = Lit::isa(index)) {
-        if (auto infer = d->isa_mut<Infer>()) d = infer->explode();
+        if (auto infer = d->isa_mut<Infer>()) d = infer->tuplefy();
         if (auto tuple = d->isa<Tuple>()) return tuple->op(*i);
 
         // extract(insert(x, j, val), i) -> extract(x, i) where i != j (guaranteed by rule above)

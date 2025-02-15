@@ -31,7 +31,7 @@ public:
     Infer* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `this` if unsuccessful.
-    Ref explode();
+    Ref tuplefy();
 
     static constexpr auto Node = Node::Infer;
 

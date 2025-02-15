@@ -44,7 +44,7 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
-Ref Infer::explode() {
+Ref Infer::tuplefy() {
     if (auto a = type()->isa_lit_arity(); a && !is_set()) {
         auto n      = *a;
         auto infers = DefVec(n);
