@@ -9,7 +9,7 @@ plugin regex;
 plugin direct;
 
 let Top     = ⊤:Nat;
-let pattern = %regex.conj 2 (%regex.quant.plus  %regex.cls.w, %regex.lit '@');
+let pattern = %regex.conj (%regex.quant.plus  %regex.cls.w, %regex.lit '@');
 let len     = 10;
 
 con extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), exit : Cn [%mem.M, I32]] =

@@ -162,12 +162,12 @@ Ref World::var(Ref type, Def* mut) {
     return mut->var_ = unify<Var>(1, type, mut);
 }
 
-Ref World::implicit_app(Ref callee, Ref arg) {
+template<bool Normalize> Ref World::implicit_app(Ref callee, Ref arg) {
     while (auto pi = Pi::isa_implicit(callee->type())) callee = app(callee, mut_infer(pi->dom()));
-    return app(callee, arg);
+    return app<Normalize>(callee, arg);
 }
 
-Ref World::app(Ref callee, Ref arg) {
+template<bool Normalize> Ref World::app(Ref callee, Ref arg) {
     callee = callee->zonk();
     if (auto pi = callee->type()->isa<Pi>()) {
         if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
@@ -187,8 +187,8 @@ Ref World::app(Ref callee, Ref arg) {
                 curry = curry == 0 ? trip : curry;
                 curry = curry == Axiom::Trip_End ? curry : curry - 1;
 
-                if (auto normalize = axiom->normalizer(); normalize && curry == 0) {
-                    if (auto norm = normalize(type, callee, arg)) return norm;
+                if (auto normalizer = axiom->normalizer(); Normalize && normalizer && curry == 0) {
+                    if (auto norm = normalizer(type, callee, arg)) return norm;
                 }
             }
 
@@ -579,6 +579,10 @@ template Ref World::ext<true>(Ref);
 template Ref World::ext<false>(Ref);
 template Ref World::bound<true>(Defs);
 template Ref World::bound<false>(Defs);
+template Ref World::app<true>(Ref, Ref);
+template Ref World::app<false>(Ref, Ref);
+template Ref World::implicit_app<true>(Ref, Ref);
+template Ref World::implicit_app<false>(Ref, Ref);
 #endif
 
 } // namespace mim

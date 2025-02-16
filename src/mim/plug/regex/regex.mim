@@ -22,7 +22,7 @@ let Char = I8;
 lam Str(n: Nat): * = %mem.Ptr0 «n; Char»;
 /// A regular expression matcher.
 lam Res (n: Nat): * = [%mem.M, Bool, Idx n];
-let RE = {n: Nat} [%mem.M, Str n, Idx n] → Res n;
+let RE = {n: Nat} → [%mem.M, Str n, Idx n] → Res n;
 ///
 /// ## Meta
 ///
@@ -31,13 +31,13 @@ let RE = {n: Nat} [%mem.M, Str n, Idx n] → Res n;
 /// A sequence of RE's, e.g. `\d\d\d` matching 3 digits:
 /// `%%regex.conj (%%regex.cls.d, %%regex.cls.d, %%regex.cls.d)`
 ///
-axm %regex.conj: [n: Nat] «n; RE» → RE, normalize_conj, 2;
+axm %regex.conj: {n: Nat} → «n; RE» → RE, normalize_conj, 2;
 ///
 /// ### %%regex.disj
 ///
 /// Match any of the sub expressions: `[0123456789]`
 ///
-axm %regex.disj: [n: Nat] «n; RE» → RE, normalize_disj, 2;
+axm %regex.disj: {n: Nat} → «n; RE» → RE, normalize_disj, 2;
 ///
 /// ## Values
 ///
@@ -73,9 +73,9 @@ axm %regex.not_: RE → RE, normalize_not, 1;
 ///
 let %regex.cls.d = %regex.range ('0', '9');
 let %regex.cls.D = %regex.not_ %regex.cls.d;
-let %regex.cls.w = %regex.disj 4 (%regex.range ('0', '9'), %regex.range ('a', 'z'), %regex.range ('A', 'Z'), %regex.lit '_');
+let %regex.cls.w = %regex.disj (%regex.range ('0', '9'), %regex.range ('a', 'z'), %regex.range ('A', 'Z'), %regex.lit '_');
 let %regex.cls.W = %regex.not_ %regex.cls.w;
-let %regex.cls.s = %regex.disj 3 (%regex.range ('\t', '\n'), %regex.lit '\r', %regex.lit ' ');
+let %regex.cls.s = %regex.disj (%regex.range ('\t', '\n'), %regex.lit '\r', %regex.lit ' ');
 let %regex.cls.S = %regex.not_ %regex.cls.s;
 ///
 /// ### %%regex.any

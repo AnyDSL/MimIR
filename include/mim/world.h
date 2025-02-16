@@ -309,8 +309,8 @@ public:
 
     /// @name App
     ///@{
-    Ref app(Ref callee, Ref arg);
-    Ref app(Ref callee, Defs args) { return app(callee, tuple(args)); }
+    template<bool Normalize = true> Ref app(Ref callee, Ref arg);
+    template<bool Normalize = true> Ref app(Ref callee, Defs args) { return app<Normalize>(callee, tuple(args)); }
     Ref raw_app(const Axiom* axiom, u8 curry, u8 trip, Ref type, Ref callee, Ref arg);
     Ref raw_app(Ref type, Ref callee, Ref arg);
     Ref raw_app(Ref type, Ref callee, Defs args) { return raw_app(type, callee, tuple(args)); }
@@ -489,19 +489,23 @@ public:
     /// @name Cope with implicit Arguments
     ///@{
     /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
-    Ref implicit_app(Ref callee, Ref arg);
-    Ref implicit_app(Ref callee, Defs args) { return implicit_app(callee, tuple(args)); }
-    Ref implicit_app(Ref callee, nat_t arg) { return implicit_app(callee, lit_nat(arg)); }
-    template<class E>
+    template<bool Normalize = true> Ref implicit_app(Ref callee, Ref arg);
+    template<bool Normalize = true> Ref implicit_app(Ref callee, Defs args) {
+        return implicit_app<Normalize>(callee, tuple(args));
+    }
+    template<bool Normalize = true> Ref implicit_app(Ref callee, nat_t arg) {
+        return implicit_app<Normalize>(callee, lit_nat(arg));
+    }
+    template<bool Normalize = true, class E>
     Ref implicit_app(Ref callee, E arg) requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
     {
-        return implicit_app(callee, lit_nat((nat_t)arg));
+        return implicit_app<Normalize>(callee, lit_nat((nat_t)arg));
     }
 
     /// Complete curried call of annexes obeying implicits.
     // clang-format off
-    template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(annex(id),   std::forward<Args>(args)...); }
-    template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(annex<Id>(), std::forward<Args>(args)...); }
+    template<class Id, bool Normalize = true, class... Args> const Def* call(Id id, Args&&... args) { return call_<Normalize>(annex(id),   std::forward<Args>(args)...); }
+    template<class Id, bool Normalize = true, class... Args> const Def* call(       Args&&... args) { return call_<Normalize>(annex<Id>(), std::forward<Args>(args)...); }
     // clang-format on
     ///@}
 
@@ -540,10 +544,12 @@ private:
     /// @name call_
     /// Helpers to unwind World::call with variadic templates.
     ///@{
-    template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) {
-        return call_(implicit_app(callee, arg), std::forward<Args>(args)...);
+    template<bool Normalize = true, class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) {
+        return call_<Normalize>(implicit_app(callee, arg), std::forward<Args>(args)...);
     }
-    template<class T> const Def* call_(Ref callee, T arg) { return implicit_app(callee, arg); }
+    template<bool Normalize = true, class T> const Def* call_(Ref callee, T arg) {
+        return implicit_app<Normalize>(callee, arg);
+    }
     ///@}
 
     /// @name Put into Sea of Nodes

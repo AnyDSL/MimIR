@@ -11,7 +11,7 @@ plugin regex;
 plugin direct;
 
 let Top = ⊤:Nat;
-let re = %regex.conj 2 (%regex.quant.optional %regex.cls.w, %regex.cls.s);
+let re = %regex.conj (%regex.quant.optional %regex.cls.w, %regex.cls.s);
 
 con extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), exit : Cn [%mem.M, I32]] =
     (exit, match_argument) # (%core.icmp.ug (argc, 1I32)) (mem, 0I32)

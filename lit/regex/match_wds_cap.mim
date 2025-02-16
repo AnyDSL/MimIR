@@ -10,7 +10,7 @@ plugin regex;
 plugin direct;
 
 let Top = ⊤:Nat;
-let re  = %regex.conj 2 (%regex.cls.W, %regex.conj 2 (%regex.cls.D, %regex.cls.S));
+let re  = %regex.conj (%regex.cls.W, %regex.conj (%regex.cls.D, %regex.cls.S));
 
 con extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), exit : Cn [%mem.M, I32]] =
     (exit, match_argument) # (%core.icmp.ug (argc, 1I32)) (mem, 0I32)

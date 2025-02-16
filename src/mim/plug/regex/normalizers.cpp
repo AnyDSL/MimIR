@@ -67,7 +67,7 @@ template<class ConjOrDisj> Ref make_binary_tree(Ref type, Defs args) {
     assert(!args.empty());
     auto& world = args.front()->world();
     return std::accumulate(args.begin() + 1, args.end(), args.front(), [&type, &world](const Def* lhs, const Def* rhs) {
-        return world.raw_app(type, world.call<ConjOrDisj>(world.lit_nat(2)), {lhs, rhs});
+        return world.call<ConjOrDisj, false>(Defs{lhs, rhs});
     });
 }
 
@@ -192,13 +192,9 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
         erase(new_args, to_remove);
         world.DLOG("final ranges {, }", new_args);
 
-        const Def* retval = new_args.back();
-        if (new_args.size() > 2)
-            retval = make_binary_tree<disj>(type, new_args);
-        else if (new_args.size() > 1)
-            retval = world.raw_app(type, world.call<disj>(world.lit_nat(2)), new_args);
-        world.DLOG("disj app: {}", retval);
-        return retval;
+        if (new_args.size() > 2) return make_binary_tree<disj>(type, new_args);
+        if (new_args.size() > 1) return world.call<disj, false>(new_args);
+        return new_args.back();
     }
     return arg;
 }

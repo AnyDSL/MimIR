@@ -158,8 +158,8 @@ TEST(Automaton, Regex2NFA) {
     World& w = driver.world();
     ast::load_plugins(w, {"compile", "mem", "core", "math", "regex"});
 
-    auto pattern = w.call<regex::conj>(
-        2, w.tuple({w.call<regex::lit>(w.lit_i8('a')), w.call<regex::lit>(w.lit_i8('b'))})); // (a & b)
+    auto pattern
+        = w.call<regex::conj>(Defs{w.call<regex::lit>(w.lit_i8('a')), w.call<regex::lit>(w.lit_i8('b'))}); // (a & b)
     pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
@@ -171,9 +171,9 @@ TEST(Automaton, Regex2NFAAorBplusA) {
     ast::load_plugins(w, {"compile", "mem", "core", "math", "regex"});
 
     auto pattern = w.call<regex::conj>(
-        2, w.tuple({w.call(regex::quant::plus, w.call<regex::disj>(2, w.tuple({w.call<regex::lit>(w.lit_i8('a')),
-                                                                               w.call<regex::lit>(w.lit_i8('b'))}))),
-                    w.call<regex::lit>(w.lit_i8('a'))})); // (a & b)
+        Defs{w.call(regex::quant::plus,
+                    w.call<regex::disj>(Defs{w.call<regex::lit>(w.lit_i8('a')), w.call<regex::lit>(w.lit_i8('b'))})),
+             w.call<regex::lit>(w.lit_i8('a'))}); // (a & b)
     pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
@@ -189,11 +189,11 @@ TEST(Automaton, Regex2NFA1or5or9) {
     auto ast = ast::AST(w);
     ast::load_plugins(w, {"compile", "mem", "core", "math", "regex"});
 
-    // %regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49I8›, %regex.range ‹2; 53I8›), %regex.range ‹2;
+    // %regex.disj 2 (%regex.disj (%regex.range ‹2; 49I8›, %regex.range ‹2; 53I8›), %regex.range ‹2;
     // 57I8›)
-    auto pattern = w.call<regex::disj>(2, w.tuple({w.call<regex::disj>(2, w.tuple({w.call<regex::lit>(w.lit_i8('1')),
-                                                                                   w.call<regex::lit>(w.lit_i8('5'))})),
-                                                   w.call<regex::lit>(w.lit_i8('9'))}));
+    auto pattern = w.call<regex::disj>(
+        Defs{w.call<regex::disj>(Defs{w.call<regex::lit>(w.lit_i8('1')), w.call<regex::lit>(w.lit_i8('5'))}),
+             w.call<regex::lit>(w.lit_i8('9'))});
     pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
@@ -208,12 +208,11 @@ TEST(Automaton, Regex2NFANot1or5or9) {
     World& w = driver.world();
     ast::load_plugins(w, {"compile", "mem", "core", "math", "regex"});
 
-    // %regex.not_ (%regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49I8›, %regex.range ‹2; 53I8›),
+    // %regex.not_ (%regex.disj (%regex.disj (%regex.range ‹2; 49I8›, %regex.range ‹2; 53I8›),
     // %regex.range ‹2; 57I8›))
     auto pattern = w.call<regex::not_>(w.call<regex::disj>(
-        2, w.tuple(
-               {w.call<regex::disj>(2, w.tuple({w.call<regex::lit>(w.lit_i8('1')), w.call<regex::lit>(w.lit_i8('5'))})),
-                w.call<regex::lit>(w.lit_i8('9'))})));
+        Defs{w.call<regex::disj>(Defs{w.call<regex::lit>(w.lit_i8('1')), w.call<regex::lit>(w.lit_i8('5'))}),
+             w.call<regex::lit>(w.lit_i8('9'))}));
     pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
@@ -228,9 +227,9 @@ TEST(Automaton, Regex2NFANotwds) {
     World& w = driver.world();
     ast::load_plugins(w, {"compile", "mem", "core", "math", "regex"});
 
-    // %regex.not_ (%regex.conj 3 (%regex.cls.w, %regex.cls.d, %regex.cls.s))
+    // %regex.not_ (%regex.conj (%regex.cls.w, %regex.cls.d, %regex.cls.s))
     auto pattern = w.call<regex::not_>(
-        w.call<regex::conj>(3, w.tuple({w.annex(regex::cls::w), w.annex(regex::cls::d), w.annex(regex::cls::s)})));
+        w.call<regex::conj>(Defs{w.annex(regex::cls::w), w.annex(regex::cls::d), w.annex(regex::cls::s)}));
     pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
