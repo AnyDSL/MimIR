@@ -2,7 +2,7 @@ var classmim_1_1Checker =
 [
     [ "Mode", "classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daa", [
       [ "Check", "classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa80fdeecdc4bd0801ed72c1a2f1c55da7", null ],
-      [ "Opt", "classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa901996727f85a6382840f615f14884ec", null ]
+      [ "Test", "classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa5569c000160b7a4bfbb24af91c3789b3", null ]
     ] ],
     [ "Checker", "classmim_1_1Checker.html#a21c175b65314ea7dd534dd913e347da1", null ],
     [ "alpha", "classmim_1_1Checker.html#aab37815526dc3a0ea557a81364f50bf4", null ],

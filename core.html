@@ -459,7 +459,7 @@ Mode</h2>
 %core.abs</h2>
 <p>Absolute value of an int</p>
 <dl class="section warning"><dt>Warning</dt><dd>Computing the absolute value of an Integer with the lowest possible value leads to <em>undefined behavior</em>, which is why this axiom expects a <code>%mem.M</code></dd></dl>
-<div class="fragment"><div class="line">axm %core.abs: {s:Nat} [%mem.M, Idx s] → [%mem.M, Idx s], normalize_abs;</div>
+<div class="fragment"><div class="line">axm %core.abs: {s: Nat} [%mem.M, Idx s] → [%mem.M, Idx s], normalize_abs;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md128"></a>
 Conversions</h1>
 <h2><a class="anchor" id="autotoc_md129"></a>
@@ -479,7 +479,7 @@ Other Operations</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md133"></a>
 %core.pe</h2>
 <p>Steers the partial evaluator.</p>
-<div class="fragment"><div class="line">axm %core.pe(hlt, run): [T: *] [T] → T, normalize_pe;</div>
+<div class="fragment"><div class="line">axm %core.pe(hlt, run): {T: *} [T] → T, normalize_pe;</div>
 <div class="line">axm %core.pe(known): {T: *} [T] → Bool, normalize_pe;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md134"></a>
 %core.zip</h2>

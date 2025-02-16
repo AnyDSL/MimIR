@@ -208,7 +208,7 @@ Manipulate</h1>
 <h2><a class="anchor" id="autotoc_md214"></a>
 %refly.refine</h2>
 <p>Sets the <code>i</code>th operand of the reified Code <code>e</code> to <code>x</code>. </p><div class="fragment"><div class="line">// TODO type infere - not working right now</div>
-<div class="line">axm %refly.refine: [E: *, X: *][e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
+<div class="line">axm %refly.refine: {E X: *} [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md215"></a>
 Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md216"></a>
