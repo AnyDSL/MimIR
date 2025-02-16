@@ -85,9 +85,7 @@ private:
     [[nodiscard]] Ref assignable_(Ref type, Ref value);
 
     World& world_;
-    using Vars = MutMap<Def*>;
-    Vars vars_;
-    MutMap<Ref> done_;
+    MutMap<const Def*> binders_;
 };
 
 } // namespace mim
