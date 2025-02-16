@@ -142,7 +142,7 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
 template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
-    if (mode == Opt && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
+    if (mode == Test && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
     // vars are equal if they appeared under the same binder
@@ -231,7 +231,7 @@ Ref Checker::is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
     for (size_t i = 1, e = defs.size(); i != e; ++i)
-        if (!alpha<Opt>(first, defs[i])) return nullptr;
+        if (!alpha<Test>(first, defs[i])) return nullptr;
     return first;
 }
 
@@ -305,7 +305,7 @@ Ref Pi::check() {
 
 #ifndef DOXYGEN
 template bool Checker::alpha_<Checker::Check>(Ref, Ref);
-template bool Checker::alpha_<Checker::Opt>(Ref, Ref);
+template bool Checker::alpha_<Checker::Test>(Ref, Ref);
 #endif
 
 } // namespace mim
