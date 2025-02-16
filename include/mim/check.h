@@ -57,9 +57,9 @@ public:
         /// In Mode::Check, type inference is happening and Infer%s will be resolved, if possible.
         /// Also, two *free* but *different* Var%s **are** considered α-equivalent.
         Check,
-        /// In Mode::Opt, no type inference is happening and Infer%s will not be touched.
+        /// In Mode::Test, no type inference is happening and Infer%s will not be touched.
         /// Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
-        Opt,
+        Test,
     };
 
     template<Mode mode> static bool alpha(Ref d1, Ref d2) { return Checker(d1->world()).alpha_<mode>(d1, d2); }
@@ -68,7 +68,7 @@ public:
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
     [[nodiscard]] static Ref assignable(Ref type, Ref value) { return Checker(type->world()).assignable_(type, value); }
 
-    /// Yields `defs.front()`, if all @p defs are Check::alpha-equivalent (`infer = false`) and `nullptr` otherwise.
+    /// Yields `defs.front()`, if all @p defs are Check::alpha-equivalent (`Mode::Test`) and `nullptr` otherwise.
     static Ref is_uniform(Defs defs);
 
 private:
@@ -85,9 +85,7 @@ private:
     [[nodiscard]] Ref assignable_(Ref type, Ref value);
 
     World& world_;
-    using Vars = MutMap<Def*>;
-    Vars vars_;
-    MutMap<Ref> done_;
+    MutMap<const Def*> binders_;
 };
 
 } // namespace mim

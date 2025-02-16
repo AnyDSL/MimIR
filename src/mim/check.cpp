@@ -124,10 +124,10 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
     if (mut1) {
-        if (auto [i, ins] = done_.emplace(mut1, d2); !ins) return i->second == d2;
+        if (auto [i, ins] = binders_.emplace(mut1, d2); !ins) return i->second == d2;
     }
     if (mut2) {
-        if (auto [i, ins] = done_.emplace(mut2, d1); !ins) return i->second == d1;
+        if (auto [i, ins] = binders_.emplace(mut2, d1); !ins) return i->second == d1;
     }
 
     // normalize:
@@ -142,12 +142,8 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
 template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
-    if (mode == Opt && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
+    if (mode == Test && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
-
-    // vars are equal if they appeared under the same binder
-    if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());
-    if (auto mut2 = d2->isa_mut()) assert_emplace(vars_, mut2, d1->isa_mut());
 
     if (auto ts = d1->isa<Tuple, Sigma>()) {
         size_t a = ts->num_ops();
@@ -172,8 +168,8 @@ template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
 
     if (auto var1 = d1->isa<Var>()) {
         auto var2 = d2->as<Var>();
-        if (auto i = vars_.find(var1->mut()); i != vars_.end()) return i->second == var2->mut();
-        if (auto i = vars_.find(var2->mut()); i != vars_.end()) return fail<mode>(); // var2 is bound
+        if (auto i = binders_.find(var1->mut()); i != binders_.end()) return i->second == var2->mut();
+        if (auto i = binders_.find(var2->mut()); i != binders_.end()) return fail<mode>(); // var2 is bound
         // both var1 and var2 are free: OK, when they are the same or in Check mode
         return var1 == var2 || mode == Check;
     }
@@ -231,7 +227,7 @@ Ref Checker::is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
     for (size_t i = 1, e = defs.size(); i != e; ++i)
-        if (!alpha<Opt>(first, defs[i])) return nullptr;
+        if (!alpha<Test>(first, defs[i])) return nullptr;
     return first;
 }
 
@@ -305,7 +301,7 @@ Ref Pi::check() {
 
 #ifndef DOXYGEN
 template bool Checker::alpha_<Checker::Check>(Ref, Ref);
-template bool Checker::alpha_<Checker::Opt>(Ref, Ref);
+template bool Checker::alpha_<Checker::Test>(Ref, Ref);
 #endif
 
 } // namespace mim

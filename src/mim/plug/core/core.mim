@@ -218,7 +218,7 @@ axm %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): {s: Nat} [Idx s,Idx s] �
 ///
 /// @warning Computing the absolute value of an Integer with the lowest possible value leads to *undefined behavior*, which is why this axiom expects a `%%mem.M`
 ///
-axm %core.abs: {s:Nat} [%mem.M, Idx s] → [%mem.M, Idx s], normalize_abs;
+axm %core.abs: {s: Nat} [%mem.M, Idx s] → [%mem.M, Idx s], normalize_abs;
 ///
 /// ## Conversions
 ///
@@ -247,7 +247,7 @@ axm %core.trait(size, align): * → Nat, normalize_trait;
 ///
 /// Steers the partial evaluator.
 ///
-axm %core.pe(hlt, run): [T: *] [T] → T, normalize_pe;
+axm %core.pe(hlt, run): {T: *} [T] → T, normalize_pe;
 axm %core.pe(known): {T: *} [T] → Bool, normalize_pe;
 ///
 /// ### %%core.zip

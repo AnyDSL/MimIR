@@ -217,8 +217,8 @@ TEST(Check, alpha) {
     auto check = [](Ref l1, Ref l2, bool infer_res, bool non_infer_res) {
         EXPECT_EQ(Checker::alpha<Checker::Check>(l1, l2), infer_res);
         EXPECT_EQ(Checker::alpha<Checker::Check>(l2, l1), infer_res);
-        EXPECT_EQ(Checker::alpha<Checker::Opt>(l1, l2), non_infer_res);
-        EXPECT_EQ(Checker::alpha<Checker::Opt>(l2, l1), non_infer_res);
+        EXPECT_EQ(Checker::alpha<Checker::Test>(l1, l2), non_infer_res);
+        EXPECT_EQ(Checker::alpha<Checker::Test>(l2, l1), non_infer_res);
     };
 
     check(lxx, lxx, true, true);
