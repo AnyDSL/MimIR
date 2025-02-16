@@ -198,17 +198,17 @@ RE</h2>
 <p>Char &amp; String </p><div class="fragment"><div class="line">let Char = I8;</div>
 <div class="line">lam Str(n: Nat): * = %mem.Ptr0 «n; Char»;</div>
 </div><!-- fragment --><p> A regular expression matcher. </p><div class="fragment"><div class="line">lam Res (n: Nat): * = [%mem.M, Bool, Idx n];</div>
-<div class="line">let RE = {n: Nat} [%mem.M, Str n, Idx n] → Res n;</div>
+<div class="line">let RE = {n: Nat} → [%mem.M, Str n, Idx n] → Res n;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md220"></a>
 Meta</h1>
 <h2><a class="anchor" id="autotoc_md221"></a>
 %regex.conj</h2>
 <p>A sequence of RE's, e.g. <code>\d\d\d</code> matching 3 digits: <code>%regex.conj (%regex.cls.d, %regex.cls.d, %regex.cls.d)</code></p>
-<div class="fragment"><div class="line">axm %regex.conj: [n: Nat] «n; RE» → RE, normalize_conj, 2;</div>
+<div class="fragment"><div class="line">axm %regex.conj: {n: Nat} → «n; RE» → RE, normalize_conj, 2;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md222"></a>
 %regex.disj</h2>
 <p>Match any of the sub expressions: <code>[0123456789]</code></p>
-<div class="fragment"><div class="line">axm %regex.disj: [n: Nat] «n; RE» → RE, normalize_disj, 2;</div>
+<div class="fragment"><div class="line">axm %regex.disj: {n: Nat} → «n; RE» → RE, normalize_disj, 2;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md223"></a>
 Values</h1>
 <h2><a class="anchor" id="autotoc_md224"></a>
@@ -243,9 +243,9 @@ Values</h1>
 </table>
 <div class="fragment"><div class="line">let %regex.cls.d = %regex.range (&#39;0&#39;, &#39;9&#39;);</div>
 <div class="line">let %regex.cls.D = %regex.not_ %regex.cls.d;</div>
-<div class="line">let %regex.cls.w = %regex.disj 4 (%regex.range (&#39;0&#39;, &#39;9&#39;), %regex.range (&#39;a&#39;, &#39;z&#39;), %regex.range (&#39;A&#39;, &#39;Z&#39;), %regex.lit &#39;_&#39;);</div>
+<div class="line">let %regex.cls.w = %regex.disj (%regex.range (&#39;0&#39;, &#39;9&#39;), %regex.range (&#39;a&#39;, &#39;z&#39;), %regex.range (&#39;A&#39;, &#39;Z&#39;), %regex.lit &#39;_&#39;);</div>
 <div class="line">let %regex.cls.W = %regex.not_ %regex.cls.w;</div>
-<div class="line">let %regex.cls.s = %regex.disj 3 (%regex.range (&#39;\t&#39;, &#39;\n&#39;), %regex.lit &#39;\r&#39;, %regex.lit &#39; &#39;);</div>
+<div class="line">let %regex.cls.s = %regex.disj (%regex.range (&#39;\t&#39;, &#39;\n&#39;), %regex.lit &#39;\r&#39;, %regex.lit &#39; &#39;);</div>
 <div class="line">let %regex.cls.S = %regex.not_ %regex.cls.s;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md228"></a>
 %regex.any</h2>
