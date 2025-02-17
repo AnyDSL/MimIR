@@ -451,8 +451,8 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
     // p -> (p, ..., p)
     // p -> {b, ..., b}     b -> {b, ..., b}
     // p -> [b, ..., b]     b -> [b, ..., b]
-    if ((style & Style_Bit) == Paren_Style && ahead().isa(Tag::D_paren_l)) return parse_tuple_ptrn(style);
-    if (style & Implicit && ahead().isa(Tag::D_brace_l)) return parse_tuple_ptrn(style);
+    if (is_paren_style(style) && ahead().isa(Tag::D_paren_l)) return parse_tuple_ptrn(style);
+    if (is_implicit(style) && ahead().isa(Tag::D_brace_l)) return parse_tuple_ptrn(style);
     if (ahead().isa(Tag::D_brckt_l)) return parse_tuple_ptrn(Brckt_Style);
 
     if (ahead(0).isa(Tag::M_id)) {
@@ -462,7 +462,7 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
             return ptr<IdPtrn>(track, dbg, std::move(type));
-        } else if ((style & Style_Bit) == Paren_Style) {
+        } else if (is_paren_style(style)) {
             // p ->  s
             // p -> `s
             auto dbg = eat(Tag::M_id).dbg();
@@ -472,7 +472,7 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
             auto type = parse_expr(ctxt, prec);
             return ptr<IdPtrn>(track, type->loc().anew_begin(), std::move(type));
         }
-    } else if ((style & Style_Bit) == Brckt_Style) {
+    } else if (is_brket_style(style)) {
         // b -> e   where e != id
         auto type = parse_expr(ctxt, prec);
         auto loc  = type->loc().anew_begin();
@@ -521,7 +521,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(int style) {
         } else {
             ptrn = parse_ptrn(style & Style_Bit, "element of a tuple pattern");
 
-            if ((style & Style_Bit) == Brckt_Style) {
+            if (is_brket_style(style)) {
                 // [..., [Nat, Nat] -> Nat, ...] ==> [..., _: [Nat, Nat] -> Nat, ...]
                 if (ahead().isa(Tag::T_arrow)) {
                     auto loc  = ptrn->loc();
