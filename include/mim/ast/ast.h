@@ -473,9 +473,9 @@ private:
 };
 
 /// One of:
-/// * `    dom_0 ... dom_n-1 -> codom`
-/// * `Cn dom_0 ... dom_n-1`
-/// * `Fn dom_0 ... dom_n-1 -> codom`
+/// * `  {ptrn} → codom`
+/// * `Cn prn`
+/// * `Fn prn → codom`
 class PiExpr : public Expr {
 public:
     class Dom : public Node {
@@ -508,19 +508,15 @@ public:
         friend class PiExpr;
     };
 
-    PiExpr(Loc loc, Tok::Tag tag, Ptrs<Dom>&& doms, Ptr<Expr>&& codom)
+    PiExpr(Loc loc, Tok::Tag tag, Ptr<Dom>&& dom, Ptr<Expr>&& codom)
         : Expr(loc)
         , tag_(tag)
-        , doms_(std::move(doms))
-        , codom_(std::move(codom)) {
-        assert(num_doms() != 0);
-    }
+        , dom_(std::move(dom))
+        , codom_(std::move(codom)) {}
 
 private:
     Tok::Tag tag() const { return tag_; }
-    const Ptrs<Dom>& doms() const { return doms_; }
-    const Dom* dom(size_t i) const { return doms_[i].get(); }
-    size_t num_doms() const { return doms_.size(); }
+    const Dom* dom() const { return dom_.get(); }
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
@@ -532,7 +528,7 @@ private:
     Ref emit_(Emitter&) const override;
 
     Tok::Tag tag_;
-    mutable Ptrs<Dom> doms_;
+    Ptr<Dom> dom_;
     Ptr<Expr> codom_;
 };
 

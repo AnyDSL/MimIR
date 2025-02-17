@@ -36,12 +36,12 @@ axm %matrix.Mat: [n: Nat, S: «n; Nat», T: *] → *;
 /// #### Normalization
 /// * resolve shape calls at construction by replacing them with the size argument
 ///
-axm %matrix.shape: [n: Nat, S: «n; Nat», T: *] as nST [%matrix.Mat nST, i: Idx n] → Nat, normalize_shape;
+axm %matrix.shape: [n: Nat, S: «n; Nat», T: *] as nST → [%matrix.Mat nST, i: Idx n] → Nat, normalize_shape;
 ///
 /// ### %%matrix.const
 ///
 /// a constant matrix
-axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST [%mem.M, T] → [%mem.M, %matrix.Mat nST];
+axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, T] → [%mem.M, %matrix.Mat nST];
 ///
 /// ### %%matrix.read
 ///
@@ -54,7 +54,7 @@ axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST [%mem.M, T] → [%mem
 /// * read(insert)
 /// * read(const)
 ///
-axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M, T], normalize_read;
+axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M, T], normalize_read;
 ///
 /// ### %%matrix.insert
 ///
@@ -67,7 +67,7 @@ axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST [%mem.M, %matrix.Mat nST,
 /// * with other inserts
 /// * with initialization
 ///
-axm %matrix.insert: [n: Nat, S: «n; Nat», T: *] as nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M, %matrix.Mat nST], normalize_insert;
+axm %matrix.insert: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M, %matrix.Mat nST], normalize_insert;
 ///
 /// ### %%matrix.init
 ///
@@ -78,16 +78,16 @@ axm %matrix.init: [n: Nat, S: «n; Nat», T: *, %mem.M] → [%mem.M, %matrix.Mat
 ///
 // TODO: define alias: * fst, snd, split * zip = zipWith id
 axm %matrix.prod: [m: Nat, k: Nat, l: Nat, [p: Nat, e:Nat]]
-                  [%mem.M, %matrix.Mat (2, (m, k), %math.F (p, e)), %matrix.Mat (2, (k, l), %math.F (p, e))] →
-                  [%mem.M, %matrix.Mat (2, (m, l), %math.F (p, e))], normalize_prod;
+                → [%mem.M, %matrix.Mat (2, (m, k), %math.F (p, e)), %matrix.Mat (2, (k, l), %math.F (p, e))]
+                → [%mem.M, %matrix.Mat (2, (m, l), %math.F (p, e))], normalize_prod;
 
 axm %matrix.transpose: [[k:Nat, l:Nat], T: *]
-                       [%mem.M, %matrix.Mat (2, (k, l), T)] →
-                       [%mem.M, %matrix.Mat (2, (l, k), T)], normalize_transpose;
+                     → [%mem.M, %matrix.Mat (2, (k, l), T)]
+                     → [%mem.M, %matrix.Mat (2, (l, k), T)], normalize_transpose;
 
 axm %matrix.sum: [n: Nat, S: «n; Nat», [p:Nat, e:Nat]]
-                 [%mem.M, %matrix.Mat (n, S, %math.F (p, e))] →
-                 [%mem.M, %math.F (p, e)];
+               → [%mem.M, %matrix.Mat (n, S, %math.F (p, e))]
+               → [%mem.M, %math.F (p, e)];
 ///
 // TODO: handle reduction case: n=0, S=[] => not empty but scalar
 /// Our notation is inspired by einsum (with some generalizations):
@@ -127,7 +127,8 @@ axm %matrix.map_reduce:
         NI: «m; Nat»,               // input dimensions
         TI: «m; *»,                  // input types
         SI: «i:m; «NI#i; Nat»»      // input shapes
-    ][
+    ]
+  → [
         mem:    %mem.M,              // memory
         zero:   T,                   // initial value
         // TODO: propagate change: no addition but instead take acc as argument (like mlir.linarith.generic)

@@ -224,22 +224,16 @@ void PiExpr::Dom::emit_type(Emitter& e) const {
 }
 
 Ref PiExpr::emit_decl(Emitter& e, Ref type) const {
-    const auto& first   = doms().front();
-    return first->decl_ = e.world().mut_pi(type, first->implicit())->set(loc());
+    return dom()->decl_ = e.world().mut_pi(type, dom()->implicit())->set(loc());
 }
 
 void PiExpr::emit_body(Emitter& e, Ref) const { emit(e); }
 
 Ref PiExpr::emit_(Emitter& e) const {
-    for (const auto& dom : doms()) dom->emit_type(e);
-
+    dom()->emit_type(e);
     auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
-    for (const auto& dom : doms() | std::ranges::views::reverse) {
-        dom->pi_->set_codom(cod);
-        cod = dom->pi_;
-    }
-
-    return doms().front()->pi_;
+    dom()->pi_->set_codom(cod);
+    return dom()->pi_;
 }
 
 Ref LamExpr::emit_decl(Emitter& e, Ref) const { return lam()->emit_decl(e), lam()->def(); }

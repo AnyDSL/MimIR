@@ -25,7 +25,7 @@ axm %clos.longjmp: Cn [%mem.M, %clos.BufPtr, I32];
 ///     * `esc`: lambda that escapes its parent scope
 ///     * `bot`: no special use
 ///
-axm %clos.attr(returning, freeBB, fstclassBB, esc, bottom): {T: *} [T] → T, normalize_clos;
+axm %clos.attr(returning, freeBB, fstclassBB, esc, bottom): {T: *} → T → T, normalize_clos;
 ///
 /// ## Passes and Phases
 ///

@@ -116,7 +116,7 @@ std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& PiExpr::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{} {}", tag(), R(tab, doms()));
+    print(os, "{} {}", tag(), S(tab, dom()));
     if (codom()) print(os, " -> {}", S(tab, codom()));
     return os;
 }

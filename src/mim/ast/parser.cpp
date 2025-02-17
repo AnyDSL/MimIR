@@ -89,11 +89,6 @@
               D_brace_l:  \
     case Tag::D_brckt_l:  \
     case Tag::D_paren_l
-
-#define C_PTRN_P          \
-              M_id:       \
-    case Tag::D_brckt_l:  \
-    case Tag::D_paren_l
 // clang-format on
 
 using namespace std::string_literals;
@@ -394,43 +389,34 @@ Ptr<Expr> Parser::parse_type_expr() {
 }
 
 Ptr<Expr> Parser::parse_pi_expr(Ptr<Ptrn>&& ptrn) {
-    auto track     = tracker();
-    auto tag       = ahead().tag();
-    auto entity    = "dependent function type"s;
-    bool has_first = ptrn.get();
+    auto track  = tracker();
+    auto tag    = ahead().tag();
+    auto entity = "dependent function type"s;
 
     if (accept(Tag::K_Cn))
         entity = "continuation type";
     else if (accept(Tag::K_Fn))
         entity = "returning continuation type";
 
-    Ptrs<PiExpr::Dom> doms;
-    if (has_first) doms.emplace_back(ptr<PiExpr::Dom>(ptrn->loc(), std::move(ptrn)));
-
-    if (!has_first || !ahead().isa(Tag::T_arrow)) {
-        while (true) {
-            auto track = tracker();
-            auto prec  = tag == Tag::K_Cn ? Expr::Prec::Bot : Expr::Prec::Pi;
-            auto ptrn  = parse_ptrn(Brckt_Style | Implicit, "domain of a "s + entity, prec);
-            doms.emplace_back(ptr<PiExpr::Dom>(track, std::move(ptrn)));
-
-            switch (ahead().tag()) {
-                case Tag::C_CURRIED_B: continue;
-                default: break;
-            }
-            break;
-        }
+    Ptr<PiExpr::Dom> dom;
+    if (ptrn) {
+        dom = ptr<PiExpr::Dom>(ptrn->loc(), std::move(ptrn));
+    } else {
+        auto track = tracker();
+        auto prec  = tag == Tag::K_Cn ? Expr::Prec::Bot : Expr::Prec::Pi;
+        auto ptrn  = parse_ptrn(Brckt_Style | Implicit, "domain of a "s + entity, prec);
+        dom        = ptr<PiExpr::Dom>(track, std::move(ptrn));
     }
 
     auto codom = tag != Tag::K_Cn
                    ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Expr::Prec::Arrow))
                    : nullptr;
 
-    if (tag == Tag::K_Fn) doms.back()->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(prev_));
+    if (tag == Tag::K_Fn) dom->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(prev_));
 
     // TODO loc
     auto loc = ptrn ? ptrn->loc() + track.loc() : track.loc();
-    return ptr<PiExpr>(loc, tag, std::move(doms), std::move(codom));
+    return ptr<PiExpr>(loc, tag, std::move(dom), std::move(codom));
 }
 
 Ptr<Expr> Parser::parse_lam_expr() { return ptr<LamExpr>(parse_lam_decl()); }

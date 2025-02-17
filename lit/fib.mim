@@ -5,7 +5,7 @@
 
 plugin core;
 
-con seq {A: *} (n: Nat) (body: Cn [Cn A][A]) (exit: Cn A) (acc: A)@tt =
+con seq {A: *} (n: Nat) (body: [Cn A] → Cn A) (exit: Cn A) (acc: A)@tt =
     head(0, acc)
     where
         con head (i: Nat, acc: A)@%core.pe.known n =
