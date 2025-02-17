@@ -55,7 +55,7 @@ namespace ast {
 constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
 #undef CODE
 
-#define MIM_TOK(m)                  \
+#define MIM_TOK(m)                     \
     m(EoF, "<end of file>"    )        \
     /* literals */                     \
     m(L_s, "<signed integer literal>") \

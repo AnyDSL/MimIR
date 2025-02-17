@@ -240,7 +240,7 @@ private:
     Ptr<Expr> type_;
 };
 
-/// `dbg_0 ... dbg_n-2 id` where `id` = `dbg_n-1: type`
+/// If you have `x1 x2 x3 x4: T` it consists of 3 GrpPtrn%s and 1 IdPtrn while each GrpPtrn references the last IdPtrn.
 class GrpPtrn : public Ptrn {
 public:
     GrpPtrn(Dbg dbg, const IdPtrn* id)
