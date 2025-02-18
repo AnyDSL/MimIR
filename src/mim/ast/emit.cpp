@@ -201,7 +201,7 @@ Ref ArrowExpr::emit_(Emitter& e) const {
 }
 
 void PiExpr::Dom::emit_type(Emitter& e) const {
-    pi_        = decl_ ? decl_ : e.world().mut_pi(e.world().type_infer_univ(), implicit());
+    pi_        = decl_ ? decl_ : e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
     auto dom_t = ptrn()->emit_type(e);
 
     if (ret()) {
@@ -224,7 +224,7 @@ void PiExpr::Dom::emit_type(Emitter& e) const {
 }
 
 Ref PiExpr::emit_decl(Emitter& e, Ref type) const {
-    return dom()->decl_ = e.world().mut_pi(type, dom()->implicit())->set(loc());
+    return dom()->decl_ = e.world().mut_pi(type, dom()->is_implicit())->set(loc());
 }
 
 void PiExpr::emit_body(Emitter& e, Ref) const { emit(e); }
@@ -232,8 +232,7 @@ void PiExpr::emit_body(Emitter& e, Ref) const { emit(e); }
 Ref PiExpr::emit_(Emitter& e) const {
     dom()->emit_type(e);
     auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
-    dom()->pi_->set_codom(cod);
-    return dom()->pi_;
+    return dom()->pi_->set_codom(cod);
 }
 
 Ref LamExpr::emit_decl(Emitter& e, Ref) const { return lam()->emit_decl(e), lam()->def(); }

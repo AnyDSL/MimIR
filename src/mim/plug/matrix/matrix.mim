@@ -144,9 +144,9 @@ axm %matrix.map_reduce:
 ///
 /// Follow the principle `ij <- ik, kj` (`out[i, j] = sum_k in1[i, k] * in2[k, j]`) by using mulplication as combination function and addition as reduction function.
 fun extern internal_mapRed_matrix_prod(m k l: Nat, pe: «2; Nat»)
-                                        (mem: %mem.M, M: %matrix.Mat (2, (m, k), %math.F pe),
-                                                       N: %matrix.Mat (2, (k, l), %math.F pe))@tt
-                                      : [     %mem.M,     %matrix.Mat (2, (m, l), %math.F pe)] =
+                                      (mem: %mem.M, M: %matrix.Mat (2, (m, k), %math.F pe),
+                                                    N: %matrix.Mat (2, (k, l), %math.F pe))@tt
+                                    : [     %mem.M,    %matrix.Mat (2, (m, l), %math.F pe)] =
     let R = %math.F pe;
     let zero_real = %math.conv.f2f pe 0.0:%math.F64;
     return (
@@ -175,8 +175,8 @@ fun extern internal_mapRed_matrix_prod(m k l: Nat, pe: «2; Nat»)
 // TODO: check code for 1-matrix edge case
 // TODO: would this automatically be handled by read(transpose) ?
 fun extern internal_mapRed_matrix_transpose((k l: Nat), T: *)
-                                             (mem: %mem.M, M: %matrix.Mat (2, (k, l), T))@tt
-                                           : [     %mem.M,    %matrix.Mat (2, (l, k), T)] =
+                                           (mem: %mem.M, M: %matrix.Mat (2, (k, l), T))@tt
+                                         : [     %mem.M,    %matrix.Mat (2, (l, k), T)] =
     let zero = ⊥:T; // TODO: use generalized zero
     return (
         %matrix.map_reduce
@@ -200,8 +200,8 @@ fun extern internal_mapRed_matrix_transpose((k l: Nat), T: *)
 /// Sums up all elements of a matrix and returns a scalar.
 //  TODO: test 0d matrix (edge cases in code)
 fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
-                                       (mem: %mem.M, M: %matrix.Mat (n, S, %math.F pe))@tt
-                                     : [%mem.M, %math.F pe] =
+                                     (mem: %mem.M, M: %matrix.Mat (n, S, %math.F pe))@tt
+                                   : [%mem.M, %math.F pe] =
     let R = %math.F pe;
     // TODO: use generalized zero
     let zero_64 = 0.0:(%math.F (52,11));
