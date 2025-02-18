@@ -28,9 +28,8 @@ let RE = {n: Nat} → [%mem.M, Str n, Idx n] → Res n;
 ///
 /// ### %%regex.conj
 ///
-/// A sequence of RE's, e.g. `\d\d\d` matching 3 digits:
-/// `%%regex.conj (%%regex.cls.d, %%regex.cls.d, %%regex.cls.d)`
-///
+/// A sequence of RE's. <br>
+/// E.g.: `\d\d\d` matches 3 digits: `%%regex.conj (%%regex.cls.d, %%regex.cls.d, %%regex.cls.d)`
 axm %regex.conj: {n: Nat} → «n; RE» → RE, normalize_conj, 2;
 ///
 /// ### %%regex.disj

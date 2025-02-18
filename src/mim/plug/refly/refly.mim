@@ -53,7 +53,6 @@ axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;
 /// ### %%refly.refine
 ///
 /// Sets the `i`th operand of the reified Code `e` to `x`.
-// TODO type infere - not working right now
 axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;
 ///
 /// ## Passes and Phases
