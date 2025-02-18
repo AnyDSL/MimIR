@@ -50,7 +50,6 @@ In addition the following keywords are _terminals_:
 
 | Terminal  | Comment                                                  |
 | --------- | -------------------------------------------------------- |
-| `.module` | starts a module                                          |
 | `import`  | imports another Mim file                                 |
 | `plugin`  | like `import` and additionally loads the compiler plugin |
 | `axm`     | axiom                                                    |
@@ -236,12 +235,12 @@ This will bind
 Here is another example:
 
 ```rust
-{T: *, a: Nat} as Ts [%mem.M, %mem.Ptr Ts] → [%mem.M, T]
+{T: *, a: Nat} as Ts → [%mem.M, %mem.Ptr Ts] → [%mem.M, T]
 ```
 
 #### Rebind
 
-A `let` and `ret` expression allows you to rebind the same name to a different value:
+A `let` and `ret` expression allows you to rebind the same name to a different value.
 This is particularly useful, when dealing with memory:
 
 ```rust
@@ -372,9 +371,9 @@ ret res = f Nat $ (23, 42); use(res)
 Finally, the following function types are all equivalent and denote the type of `f` above.
 
 ```rust
-[T:*] →    [[T, T], T → ⊥] → ⊥
-[T:*] → Cn [[T, T], Cn T]
-[T:*] → Fn  [T, T] → T
+[T: *] →    [[T, T], T → ⊥] → ⊥
+[T: *] → Cn [[T, T], Cn T]
+[T: *] → Fn  [T, T] → T
 ```
 
 ## Scoping
