@@ -256,7 +256,7 @@ Mode</h2>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md119"></a>
 %core.idx</h2>
 <p>Creates a literal of type <code>Idx s</code> from <code>l</code> while obeying mode <code>m</code>.</p>
-<div class="fragment"><div class="line">axm %core.idx: [s: Nat] [m: Nat] [l: Nat] → Idx s, normalize_idx;</div>
+<div class="fragment"><div class="line">axm %core.idx: [s: Nat] → [m: Nat] → [l: Nat] → Idx s, normalize_idx;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md120"></a>
 %core.bit1</h2>
 <p>This <em>unary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Unary_operations">4 possible operations</a> as summarized in the following table:</p>
@@ -272,7 +272,7 @@ Mode</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">t   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
-<div class="fragment"><div class="line">axm %core.bit1(f, neg, id, t): {s: Nat} [m: Nat] [Idx s] → Idx s, normalize_bit1;</div>
+<div class="fragment"><div class="line">axm %core.bit1(f, neg, id, t): {s: Nat} → [m: Nat] → Idx s → Idx s, normalize_bit1;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md121"></a>
 %core.bit2</h2>
 <p>This <em>binary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators">16 possible operations</a> as summarized in the following table:</p>
@@ -314,18 +314,18 @@ Mode</h2>
 </table>
 <div class="fragment"><div class="line">axm %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,</div>
 <div class="line">                and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):</div>
-<div class="line">    {s: Nat} [m: Nat] «2; Idx s» → Idx s , normalize_bit2;</div>
+<div class="line">    {s: Nat} → [m: Nat] → «2; Idx s» → Idx s , normalize_bit2;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md122"></a>
 %core.shr</h2>
 <p>Shift right:</p><ul>
 <li><a href="https://en.wikipedia.org/wiki/Arithmetic_shift"><code>a</code>rithmetic shift right</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Logical_shift"><code>l</code>ogical shift right</a></li>
 </ul>
-<div class="fragment"><div class="line">axm %core.shr(a, l): {s: Nat} «2; Idx s» → Idx s, normalize_shr;</div>
+<div class="fragment"><div class="line">axm %core.shr(a, l): {s: Nat} → «2; Idx s» → Idx s, normalize_shr;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md123"></a>
 %core.wrap</h2>
 <p>Integer operations that may overflow. You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a <a class="el" href="namespacemim_1_1plug_1_1core.html#ae3a4dc564294d2e5513168c153462138">mim::plug::core::Mode</a> as <code>Nat</code>.</p>
-<div class="fragment"><div class="line">axm %core.wrap(add, sub, mul, shl): {s: Nat} [m: Nat] «2; Idx s» → Idx s, normalize_wrap;</div>
+<div class="fragment"><div class="line">axm %core.wrap(add, sub, mul, shl): {s: Nat} → [m: Nat] → «2; Idx s» → Idx s, normalize_wrap;</div>
 <div class="line"> </div>
 <div class="line">lam %core.minus {s: Nat} (m: Nat) (a: Idx s): Idx s = %core.wrap.sub m (0:(Idx s), a);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md124"></a>
@@ -333,7 +333,7 @@ Mode</h2>
 <p>Signed and unsigned Integer division/remainder.</p>
 <dl class="section warning"><dt>Warning</dt><dd>Division by zero is <em>undefined behavior</em> and a visible side effect. For this reason, these axioms expect a <code>%mem.M</code>.</dd></dl>
 <div class="fragment"><div class="line">axm %core.div(sdiv, udiv, srem, urem):</div>
-<div class="line">    {s: Nat} [%mem.M, «2; Idx s»] → [%mem.M, Idx s], normalize_div;</div>
+<div class="line">    {s: Nat} → [%mem.M, «2; Idx s»] → [%mem.M, Idx s], normalize_div;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md125"></a>
 %core.icmp</h2>
 <p>Integer comparison is made of 5 disjoint relations:</p><ul>
@@ -447,29 +447,29 @@ Mode</h2>
 <div class="line">               XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,</div>
 <div class="line">               XYgle,      XYglE,       XYgLe,      XYgLE,</div>
 <div class="line">               XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
-<div class="line">    {s: Nat} «2; Idx s» → Bool , normalize_icmp;</div>
+<div class="line">    {s: Nat} → «2; Idx s» → Bool , normalize_icmp;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md126"></a>
 %core.extrema</h2>
 <p>Minimum and Maximum of two Integers</p><ul>
 <li>un<code>s</code>igned or <code>S</code>igned</li>
 <li><code>m</code>inimum or <code>M</code>aximum</li>
 </ul>
-<div class="fragment"><div class="line">axm %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): {s: Nat} [Idx s,Idx s] → Idx s, normalize_extrema;</div>
+<div class="fragment"><div class="line">axm %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): {s: Nat} → «2; Idx s» → Idx s, normalize_extrema;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md127"></a>
 %core.abs</h2>
 <p>Absolute value of an int</p>
 <dl class="section warning"><dt>Warning</dt><dd>Computing the absolute value of an Integer with the lowest possible value leads to <em>undefined behavior</em>, which is why this axiom expects a <code>%mem.M</code></dd></dl>
-<div class="fragment"><div class="line">axm %core.abs: {s: Nat} [%mem.M, Idx s] → [%mem.M, Idx s], normalize_abs;</div>
+<div class="fragment"><div class="line">axm %core.abs: {s: Nat} → [%mem.M, Idx s] → [%mem.M, Idx s], normalize_abs;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md128"></a>
 Conversions</h1>
 <h2><a class="anchor" id="autotoc_md129"></a>
 %core.conv</h2>
 <p>Conversion between index types - both signed and unsigned - of different sizes.</p>
-<div class="fragment"><div class="line">axm %core.conv(s, u): {ss: Nat} [ds: Nat] [Idx ss] → Idx ds, normalize_conv;</div>
+<div class="fragment"><div class="line">axm %core.conv(s, u): {ss: Nat} → [ds: Nat] → Idx ss → Idx ds, normalize_conv;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md130"></a>
 %core.bitcast</h2>
 <p>Bitcast to reinterpret a value as another type. Can be used for pointer / integer conversions as well as integer / nat conversions.</p>
-<div class="fragment"><div class="line">axm %core.bitcast: {S: *} [D: *] [S] → D, normalize_bitcast;</div>
+<div class="fragment"><div class="line">axm %core.bitcast: {S: *} → [D: *] → S → D, normalize_bitcast;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md131"></a>
 Other Operations</h1>
 <h2><a class="anchor" id="autotoc_md132"></a>
@@ -479,8 +479,8 @@ Other Operations</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md133"></a>
 %core.pe</h2>
 <p>Steers the partial evaluator.</p>
-<div class="fragment"><div class="line">axm %core.pe(hlt, run): {T: *} [T] → T, normalize_pe;</div>
-<div class="line">axm %core.pe(known): {T: *} [T] → Bool, normalize_pe;</div>
+<div class="fragment"><div class="line">axm %core.pe(hlt, run): {T: *} → T → T, normalize_pe;</div>
+<div class="line">axm %core.pe(known): {T: *} → T → Bool, normalize_pe;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md134"></a>
 %core.zip</h2>
 <p><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>
@@ -496,8 +496,9 @@ Other Operations</h1>
 </ul>
 </dd></dl>
 <div class="fragment"><div class="line">axm %core.zip: [r: Nat, s: «r; Nat»]</div>
-<div class="line">               [n_i: Nat, Is: «n_i; *», n_o: Nat, Os: «n_o; *», f: «i: n_i; Is#i» → «o: n_o; Os#o»]</div>
-<div class="line">               [is: «i: n_i; «s; Is#i»»] → «o: n_o; «s; Os#o»», normalize_zip;</div>
+<div class="line">             → [n_i: Nat, Is: «n_i; *», n_o: Nat, Os: «n_o; *», f: «i: n_i; Is#i» → «o: n_o; Os#o»]</div>
+<div class="line">             → «i: n_i; «s; Is#i»»</div>
+<div class="line">             → «o: n_o; «s; Os#o»», normalize_zip;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

@@ -181,15 +181,15 @@ Types</h1>
 Reify/Reflect</h1>
 <h2><a class="anchor" id="autotoc_md208"></a>
 %refly.reify</h2>
-<p>Yields the internal MimIR representation of a Mim expression as <code>%refly.Code</code>. </p><div class="fragment"><div class="line">axm %refly.reify: {T: *} [T] → [%refly.Code T], normalize_reify;</div>
+<p>Yields the internal MimIR representation of a Mim expression as <code>%refly.Code</code>. </p><div class="fragment"><div class="line">axm %refly.reify: {T: *} → T → [%refly.Code T], normalize_reify;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md209"></a>
 %refly.reflect</h2>
-<p>Converts a <code>%refly.Code</code> back to a Mim expression. </p><div class="fragment"><div class="line">axm %refly.reflect: {T: *} [%refly.Code T] → T, normalize_reflect;</div>
+<p>Converts a <code>%refly.Code</code> back to a Mim expression. </p><div class="fragment"><div class="line">axm %refly.reflect: {T: *} → [%refly.Code T] → T, normalize_reflect;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md210"></a>
 Inspect</h1>
 <h2><a class="anchor" id="autotoc_md211"></a>
 %refly.gid</h2>
-<p>Retuns the internal <a class="el" href="classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870">mim::Def::gid</a> of the argument. </p><div class="fragment"><div class="line">axm %refly.gid: {T: *} [T] → Nat, normalize_gid;</div>
+<p>Retuns the internal <a class="el" href="classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870">mim::Def::gid</a> of the argument. </p><div class="fragment"><div class="line">axm %refly.gid: {T: *} → T → Nat, normalize_gid;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md212"></a>
 %refly.dbg</h2>
 <p>Debugs a given expression.</p><ul>
@@ -202,13 +202,13 @@ Inspect</h1>
 <div class="line">let %refly.verbose = 3;</div>
 <div class="line">let %refly.debug   = 4;</div>
 <div class="line"> </div>
-<div class="line">axm %refly.dbg(tmp, perm): {T: *} [Nat, T] → T, normalize_dbg;</div>
+<div class="line">axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md213"></a>
 Manipulate</h1>
 <h2><a class="anchor" id="autotoc_md214"></a>
 %refly.refine</h2>
 <p>Sets the <code>i</code>th operand of the reified Code <code>e</code> to <code>x</code>. </p><div class="fragment"><div class="line">// TODO type infere - not working right now</div>
-<div class="line">axm %refly.refine: {E X: *} [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
+<div class="line">axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md215"></a>
 Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md216"></a>

@@ -137,8 +137,8 @@ Inheritance diagram for mim::ast::PiExpr::Dom:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a50d0bf610f36787bcd43773f1f062cca" id="r_a50d0bf610f36787bcd43773f1f062cca"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50d0bf610f36787bcd43773f1f062cca">Dom</a> (Loc <a class="el" href="classmim_1_1ast_1_1Node.html#abfb47e24f20d0d09e954f6c380f21981">loc</a>, <a class="el" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr</a>&lt; <a class="el" href="classmim_1_1ast_1_1Ptrn.html">Ptrn</a> &gt; &amp;&amp;<a class="el" href="#aec673cc9479c4806baf491b96fbb9057">ptrn</a>)</td></tr>
 <tr class="separator:a50d0bf610f36787bcd43773f1f062cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ad6772c2951fa66d923179b27927109" id="r_a7ad6772c2951fa66d923179b27927109"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ad6772c2951fa66d923179b27927109">implicit</a> () const</td></tr>
-<tr class="separator:a7ad6772c2951fa66d923179b27927109"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7a612c49a8f24ec6625d933f12e3c57" id="r_ae7a612c49a8f24ec6625d933f12e3c57"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7a612c49a8f24ec6625d933f12e3c57">is_implicit</a> () const</td></tr>
+<tr class="separator:ae7a612c49a8f24ec6625d933f12e3c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec673cc9479c4806baf491b96fbb9057" id="r_aec673cc9479c4806baf491b96fbb9057"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1ast_1_1Ptrn.html">Ptrn</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec673cc9479c4806baf491b96fbb9057">ptrn</a> () const</td></tr>
 <tr class="separator:aec673cc9479c4806baf491b96fbb9057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4a688f123cf35bbf0e3bca4cb12d323" id="r_ad4a688f123cf35bbf0e3bca4cb12d323"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1ast_1_1IdPtrn.html">IdPtrn</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4a688f123cf35bbf0e3bca4cb12d323">ret</a> () const</td></tr>
@@ -308,14 +308,14 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="emit_8cpp_source.html#l00203">203</a> of file <a class="el" href="emit_8cpp_source.html">emit.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ast_8h_source.html#l00502">decl_</a>, <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>, <a class="el" href="classmim_1_1ast_1_1Ptrn.html#a6698eb054888d4cfa142c33d2f68fe16">mim::ast::Ptrn::emit_type()</a>, <a class="el" href="classmim_1_1ast_1_1Ptrn.html#a221d8f8d3b7f6ed2894f91667cdb4ee4">mim::ast::Ptrn::emit_value()</a>, <a class="el" href="ast_8h_source.html#l00487">implicit()</a>, <a class="el" href="ast_8h_source.html#l00121">mim::ast::Node::loc()</a>, <a class="el" href="ast_8h_source.html#l00501">pi_</a>, <a class="el" href="ast_8h_source.html#l00488">ptrn()</a>, <a class="el" href="ast_8h_source.html#l00489">ret()</a>, <a class="el" href="lam_8h_source.html#l00079">mim::Pi::set_dom()</a>, and <a class="el" href="def_8h_source.html#l00395">mim::Def::var()</a>.</p>
+<p class="reference">References <a class="el" href="ast_8h_source.html#l00502">decl_</a>, <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>, <a class="el" href="classmim_1_1ast_1_1Ptrn.html#a6698eb054888d4cfa142c33d2f68fe16">mim::ast::Ptrn::emit_type()</a>, <a class="el" href="classmim_1_1ast_1_1Ptrn.html#a221d8f8d3b7f6ed2894f91667cdb4ee4">mim::ast::Ptrn::emit_value()</a>, <a class="el" href="ast_8h_source.html#l00487">is_implicit()</a>, <a class="el" href="ast_8h_source.html#l00121">mim::ast::Node::loc()</a>, <a class="el" href="ast_8h_source.html#l00501">pi_</a>, <a class="el" href="ast_8h_source.html#l00488">ptrn()</a>, <a class="el" href="ast_8h_source.html#l00489">ret()</a>, <a class="el" href="lam_8h_source.html#l00079">mim::Pi::set_dom()</a>, and <a class="el" href="def_8h_source.html#l00395">mim::Def::var()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00469">mim::ast::CDecl::emit()</a>, <a class="el" href="emit_8cpp_source.html#l00233">mim::ast::PiExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00435">mim::ast::LamDecl::emit_decl()</a>, and <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00462">mim::ast::CDecl::emit()</a>, <a class="el" href="emit_8cpp_source.html#l00232">mim::ast::PiExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00428">mim::ast::LamDecl::emit_decl()</a>, and <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>.</p>
 
 </div>
 </div>
-<a id="a7ad6772c2951fa66d923179b27927109" name="a7ad6772c2951fa66d923179b27927109"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ad6772c2951fa66d923179b27927109">&#9670;&#160;</a></span>implicit()</h2>
+<a id="ae7a612c49a8f24ec6625d933f12e3c57" name="ae7a612c49a8f24ec6625d933f12e3c57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7a612c49a8f24ec6625d933f12e3c57">&#9670;&#160;</a></span>is_implicit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -324,7 +324,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool mim::ast::PiExpr::Dom::implicit </td>
+          <td class="memname">bool mim::ast::PiExpr::Dom::is_implicit </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -368,7 +368,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00488">488</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="bind_8cpp_source.html#l00146">bind()</a>, <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>, <a class="el" href="ast_8h_source.html#l00872">mim::ast::LamDecl::Dom::implicit()</a>, and <a class="el" href="stream_8cpp_source.html#l00112">stream()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="bind_8cpp_source.html#l00146">bind()</a>, <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>, <a class="el" href="ast_8h_source.html#l00868">mim::ast::LamDecl::Dom::is_implicit()</a>, and <a class="el" href="stream_8cpp_source.html#l00112">stream()</a>.</p>
 
 </div>
 </div>
@@ -432,7 +432,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="stream_8cpp_source.html#l00112">112</a> of file <a class="el" href="stream_8cpp_source.html">stream.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ast_8h_source.html#l00487">implicit()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="ast_8h_source.html#l00488">ptrn()</a>, and <a class="el" href="ast_8h_source.html#l00489">ret()</a>.</p>
+<p class="reference">References <a class="el" href="ast_8h_source.html#l00487">is_implicit()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="ast_8h_source.html#l00488">ptrn()</a>, and <a class="el" href="ast_8h_source.html#l00489">ret()</a>.</p>
 
 </div>
 </div>
@@ -484,7 +484,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00502">502</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00226">mim::ast::PiExpr::emit_decl()</a>, and <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>.</p>
 
 </div>
 </div>
@@ -510,7 +510,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00501">501</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00233">mim::ast::PiExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00435">mim::ast::LamDecl::emit_decl()</a>, and <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00232">mim::ast::PiExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00428">mim::ast::LamDecl::emit_decl()</a>, and <a class="el" href="emit_8cpp_source.html#l00203">emit_type()</a>.</p>
 
 </div>
 </div>

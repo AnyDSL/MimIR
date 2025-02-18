@@ -146,8 +146,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1176d6f6f64281b96a02177112d56d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6806c46bee8ae53065c6e6cdea49029" id="r_af6806c46bee8ae53065c6e6cdea49029"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6806c46bee8ae53065c6e6cdea49029">is_brckt</a> () const</td></tr>
 <tr class="separator:af6806c46bee8ae53065c6e6cdea49029"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed156615b7f98cc8fd3a1b47f7dfc34a" id="r_aed156615b7f98cc8fd3a1b47f7dfc34a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed156615b7f98cc8fd3a1b47f7dfc34a">implicit</a> () const override</td></tr>
-<tr class="separator:aed156615b7f98cc8fd3a1b47f7dfc34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07459c614c70c28dbe498664cc326882" id="r_a07459c614c70c28dbe498664cc326882"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07459c614c70c28dbe498664cc326882">is_implicit</a> () const override</td></tr>
+<tr class="separator:a07459c614c70c28dbe498664cc326882"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa97fc0d065d8f1b6d4e13605277e2a0f" id="r_aa97fc0d065d8f1b6d4e13605277e2a0f"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa97fc0d065d8f1b6d4e13605277e2a0f">ptrns</a> () const</td></tr>
 <tr class="separator:aa97fc0d065d8f1b6d4e13605277e2a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a288df728e2c1cb2d0744d774c35863e1" id="r_a288df728e2c1cb2d0744d774c35863e1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1ast_1_1Ptrn.html">Ptrn</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a288df728e2c1cb2d0744d774c35863e1">ptrn</a> (size_t i) const</td></tr>
@@ -459,35 +459,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aed156615b7f98cc8fd3a1b47f7dfc34a" name="aed156615b7f98cc8fd3a1b47f7dfc34a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed156615b7f98cc8fd3a1b47f7dfc34a">&#9670;&#160;</a></span>implicit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool mim::ast::TuplePtrn::implicit </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classmim_1_1ast_1_1Ptrn.html#aaf20149e67e895bc0a55c81c94ea675c">mim::ast::Ptrn</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00298">298</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
-
-</div>
-</div>
 <a id="af6806c46bee8ae53065c6e6cdea49029" name="af6806c46bee8ae53065c6e6cdea49029"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af6806c46bee8ae53065c6e6cdea49029">&#9670;&#160;</a></span>is_brckt()</h2>
 
@@ -516,6 +487,35 @@ Additional Inherited Members</h2></td></tr>
 <p class="reference">References <a class="el" href="ast_8h_source.html#l00294">delim_l()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00167">mim::ast::Ptrn::to_expr()</a>.</p>
+
+</div>
+</div>
+<a id="a07459c614c70c28dbe498664cc326882" name="a07459c614c70c28dbe498664cc326882"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07459c614c70c28dbe498664cc326882">&#9670;&#160;</a></span>is_implicit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mim::ast::TuplePtrn::is_implicit </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classmim_1_1ast_1_1Ptrn.html#ad13bfb5836aa38cab0175173b15977ff">mim::ast::Ptrn</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00298">298</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 </div>
 </div>
