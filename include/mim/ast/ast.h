@@ -189,7 +189,7 @@ public:
     Ptrn(Loc loc)
         : Decl(loc) {}
 
-    virtual bool implicit() const { return false; }
+    virtual bool is_implicit() const { return false; }
 
     virtual void bind(Scopes&, bool rebind, bool quiet) const = 0;
     virtual Ref emit_value(Emitter&, Ref) const               = 0;
@@ -240,7 +240,7 @@ private:
     Ptr<Expr> type_;
 };
 
-/// `dbg_0 ... dbg_n-2 id` where `id` = `dbg_n-1: type`
+/// If you have `x1 x2 x3 x4: T` it consists of 3 GrpPtrn%s and 1 IdPtrn while each GrpPtrn references the last IdPtrn.
 class GrpPtrn : public Ptrn {
 public:
     GrpPtrn(Dbg dbg, const IdPtrn* id)
@@ -271,7 +271,7 @@ public:
 
     const Ptrn* ptrn() const { return ptrn_.get(); }
     Dbg dbg() const { return dbg_; }
-    bool implicit() const override { return ptrn()->implicit(); }
+    bool is_implicit() const override { return ptrn()->is_implicit(); }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
     Ref emit_value(Emitter&, Ref) const override;
@@ -295,7 +295,7 @@ public:
     Tok::Tag delim_r() const { return Tok::delim_l2r(delim_l()); }
     bool is_paren() const { return delim_l() == Tok::Tag::D_paren_l; }
     bool is_brckt() const { return delim_l() == Tok::Tag::D_brckt_l; }
-    bool implicit() const override { return delim_l_ == Tok::Tag::D_brace_l; }
+    bool is_implicit() const override { return delim_l_ == Tok::Tag::D_brace_l; }
 
     const auto& ptrns() const { return ptrns_; }
     const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
@@ -473,9 +473,9 @@ private:
 };
 
 /// One of:
-/// * `    dom_0 ... dom_n-1 -> codom`
-/// * `Cn dom_0 ... dom_n-1`
-/// * `Fn dom_0 ... dom_n-1 -> codom`
+/// * `  {ptrn} → codom`
+/// * `Cn prn`
+/// * `Fn prn → codom`
 class PiExpr : public Expr {
 public:
     class Dom : public Node {
@@ -484,7 +484,7 @@ public:
             : Node(loc)
             , ptrn_(std::move(ptrn)) {}
 
-        bool implicit() const { return ptrn_->implicit(); }
+        bool is_implicit() const { return ptrn_->is_implicit(); }
         const Ptrn* ptrn() const { return ptrn_.get(); }
         const IdPtrn* ret() const { return ret_.get(); }
 
@@ -508,19 +508,15 @@ public:
         friend class PiExpr;
     };
 
-    PiExpr(Loc loc, Tok::Tag tag, Ptrs<Dom>&& doms, Ptr<Expr>&& codom)
+    PiExpr(Loc loc, Tok::Tag tag, Ptr<Dom>&& dom, Ptr<Expr>&& codom)
         : Expr(loc)
         , tag_(tag)
-        , doms_(std::move(doms))
-        , codom_(std::move(codom)) {
-        assert(num_doms() != 0);
-    }
+        , dom_(std::move(dom))
+        , codom_(std::move(codom)) {}
 
 private:
     Tok::Tag tag() const { return tag_; }
-    const Ptrs<Dom>& doms() const { return doms_; }
-    const Dom* dom(size_t i) const { return doms_[i].get(); }
-    size_t num_doms() const { return doms_.size(); }
+    const Dom* dom() const { return dom_.get(); }
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
@@ -532,7 +528,7 @@ private:
     Ref emit_(Emitter&) const override;
 
     Tok::Tag tag_;
-    mutable Ptrs<Dom> doms_;
+    Ptr<Dom> dom_;
     Ptr<Expr> codom_;
 };
 
@@ -869,7 +865,7 @@ public:
             : PiExpr::Dom(loc, std::move(ptrn))
             , filter_(std::move(filter)) {}
 
-        bool implicit() const { return ptrn()->implicit(); }
+        bool is_implicit() const { return ptrn()->is_implicit(); }
         const Expr* filter() const { return filter_.get(); }
 
         void bind(Scopes& scopes, bool quiet = false) const override;

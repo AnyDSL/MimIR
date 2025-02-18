@@ -110,13 +110,13 @@ std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{}{}", implicit() ? "." : "", S(tab, ptrn()));
+    print(os, "{}{}", is_implicit() ? "." : "", S(tab, ptrn()));
     if (ret()) print(os, " -> {}", S(tab, ret()->type()));
     return os;
 }
 
 std::ostream& PiExpr::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{} {}", tag(), R(tab, doms()));
+    print(os, "{} {}", tag(), S(tab, dom()));
     if (codom()) print(os, " -> {}", S(tab, codom()));
     return os;
 }
@@ -187,7 +187,7 @@ std::ostream& RecDecl::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& LamDecl::Dom::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{}{}", implicit() ? "." : "", S(tab, ptrn()));
+    print(os, "{}{}", is_implicit() ? "." : "", S(tab, ptrn()));
     if (filter()) print(os, "@({})", S(tab, filter()));
     if (ret()) print(os, ": {}", S(tab, ret()->type()));
     return os;

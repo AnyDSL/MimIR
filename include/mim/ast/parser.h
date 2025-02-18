@@ -87,7 +87,8 @@ private:
     Ptr<Expr> parse_extremum_expr();
     Ptr<Expr> parse_type_expr();
     Ptr<Expr> parse_ret_expr();
-    Ptr<Expr> parse_pi_expr(Ptr<Ptrn>&& = nullptr);
+    Ptr<Expr> parse_pi_expr();
+    Ptr<Expr> parse_pi_expr(Ptr<Ptrn>&&);
     Ptr<Expr> parse_lam_expr();
     Ptr<Expr> parse_sigma_expr();
     Ptr<Expr> parse_tuple_expr();
@@ -104,7 +105,9 @@ private:
 
     /// @name parse ptrns
     ///@{
-    /// Depending on @p style, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
+    static bool is_paren_style(int style) { return (style & Style_Bit) == Paren_Style; }
+    static bool is_brket_style(int style) { return (style & Style_Bit) == Brckt_Style; }
+    static bool is_implicit(int style) { return (style & Implicit); }
     Ptr<Ptrn> parse_ptrn(int style, std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
     Ptr<Ptrn> parse_ptrn_(int style, std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
     Ptr<TuplePtrn> parse_tuple_ptrn(int style);

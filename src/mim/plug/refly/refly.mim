@@ -19,19 +19,19 @@ axm %refly.Code: * → *;
 /// ### %%refly.reify
 ///
 /// Yields the internal MimIR representation of a Mim expression as `%%refly.Code`.
-axm %refly.reify: {T: *} [T] → [%refly.Code T], normalize_reify;
+axm %refly.reify: {T: *} → T → [%refly.Code T], normalize_reify;
 ///
 /// ### %%refly.reflect
 ///
 /// Converts a `%%refly.Code` back to a Mim expression.
-axm %refly.reflect: {T: *} [%refly.Code T] → T, normalize_reflect;
+axm %refly.reflect: {T: *} → [%refly.Code T] → T, normalize_reflect;
 ///
 /// ## Inspect
 ///
 /// ### %%refly.gid
 ///
 /// Retuns the internal mim::Def::gid of the argument.
-axm %refly.gid: {T: *} [T] → Nat, normalize_gid;
+axm %refly.gid: {T: *} → T → Nat, normalize_gid;
 ///
 /// ### %%refly.dbg
 ///
@@ -46,7 +46,7 @@ let %refly.info    = 2;
 let %refly.verbose = 3;
 let %refly.debug   = 4;
 
-axm %refly.dbg(tmp, perm): {T: *} [Nat, T] → T, normalize_dbg;
+axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;
 ///
 /// ## Manipulate
 ///
@@ -54,7 +54,7 @@ axm %refly.dbg(tmp, perm): {T: *} [Nat, T] → T, normalize_dbg;
 ///
 /// Sets the `i`th operand of the reified Code `e` to `x`.
 // TODO type infere - not working right now
-axm %refly.refine: {E X: *} [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;
+axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;
 ///
 /// ## Passes and Phases
 ///

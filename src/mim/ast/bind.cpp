@@ -150,7 +150,7 @@ void PiExpr::Dom::bind(Scopes& s, bool quiet) const {
 
 void PiExpr::bind(Scopes& s) const {
     s.push();
-    for (const auto& dom : doms()) dom->bind(s);
+    dom()->bind(s);
     if (codom()) {
         if (tag() == Tag::K_Cn) s.ast().error(codom()->loc(), "a continuation shall not have a codomain");
         codom()->bind(s);

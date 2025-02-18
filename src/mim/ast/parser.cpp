@@ -89,11 +89,6 @@
               D_brace_l:  \
     case Tag::D_brckt_l:  \
     case Tag::D_paren_l
-
-#define C_PTRN_P          \
-              M_id:       \
-    case Tag::D_brckt_l:  \
-    case Tag::D_paren_l
 // clang-format on
 
 using namespace std::string_literals;
@@ -154,12 +149,12 @@ Ptr<Module> Parser::import(std::istream& is, Loc loc, const fs::path* path, std:
         return {};
     }
 
-    auto state = std::tuple(prev_, ahead_, lexer_);
+    auto state = std::tuple(curr_, ahead_, lexer_);
     auto lexer = Lexer(ast(), is, path, md);
     lexer_     = &lexer;
     init(path);
     auto mod                        = parse_module();
-    std::tie(prev_, ahead_, lexer_) = state;
+    std::tie(curr_, ahead_, lexer_) = state;
     return mod;
 }
 
@@ -186,21 +181,21 @@ Ptr<Import> Parser::parse_import_or_plugin() {
 Dbg Parser::parse_id(std::string_view ctxt) {
     if (auto id = accept(Tag::M_id)) return id.dbg();
     syntax_err("identifier", ctxt);
-    return {prev_, driver().sym("<error>")};
+    return {curr_, driver().sym("<error>")};
 }
 
 Dbg Parser::parse_name(std::string_view ctxt) {
     if (auto tok = accept(Tag::M_anx)) return tok.dbg();
     if (auto tok = accept(Tag::M_id)) return tok.dbg();
     syntax_err("identifier or annex name", ctxt);
-    return Dbg(prev_, ast().sym("<error>"));
+    return Dbg(curr_, ast().sym("<error>"));
 }
 
 Ptr<Expr> Parser::parse_type_ascr(std::string_view ctxt) {
     if (accept(Tag::T_colon)) return parse_expr(ctxt);
     if (ctxt.empty()) return nullptr;
     syntax_err("':'", ctxt);
-    return ptr<ErrorExpr>(prev_);
+    return ptr<ErrorExpr>(curr_);
 }
 
 /*
@@ -221,10 +216,10 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                 if (curr_prec >= Expr::Prec::Extract) return lhs;
                 lex();
                 if (auto tok = accept(Tag::M_id))
-                    lhs = ptr<ExtractExpr>(track.loc(), std::move(lhs), tok.dbg());
+                    lhs = ptr<ExtractExpr>(track, std::move(lhs), tok.dbg());
                 else {
                     auto rhs = parse_expr("right-hand side of an extract", Expr::Prec::Extract);
-                    lhs      = ptr<ExtractExpr>(track.loc(), std::move(lhs), std::move(rhs));
+                    lhs      = ptr<ExtractExpr>(track, std::move(lhs), std::move(rhs));
                 }
                 continue;
             }
@@ -232,14 +227,14 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                 if (curr_prec > Expr::Prec::Arrow) return lhs; // ">" - Arrow is rassoc
                 lex();
                 auto rhs = parse_expr("right-hand side of a function type", Expr::Prec::Arrow);
-                lhs      = ptr<ArrowExpr>(track.loc(), std::move(lhs), std::move(rhs));
+                lhs      = ptr<ArrowExpr>(track, std::move(lhs), std::move(rhs));
                 continue;
             }
             case Tag::T_at: {
                 if (curr_prec >= Expr::Prec::App) return lhs;
                 lex();
                 auto rhs = parse_expr("explicit argument to an application", Expr::Prec::App);
-                lhs      = ptr<AppExpr>(track.loc(), true, std::move(lhs), std::move(rhs));
+                lhs      = ptr<AppExpr>(track, true, std::move(lhs), std::move(rhs));
                 continue;
             }
             case Tag::C_EXPR: {
@@ -254,7 +249,7 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                     default: break;
                 }
                 auto rhs = parse_expr("argument to an application", Expr::Prec::App);
-                lhs      = ptr<AppExpr>(track.loc(), false, std::move(lhs), std::move(rhs));
+                lhs      = ptr<AppExpr>(track, false, std::move(lhs), std::move(rhs));
                 continue;
             }
             case Tag::K_where: {
@@ -285,7 +280,7 @@ Ptr<Expr> Parser::parse_insert_expr() {
     expect(Tag::T_comma, "comma after insert index");
     auto value = parse_expr("insert value");
     expect(Tag::D_paren_r, "closing paren for insert arguments");
-    return ptr<InsertExpr>(track.loc(), std::move(tuple), std::move(index), std::move(value));
+    return ptr<InsertExpr>(track, std::move(tuple), std::move(index), std::move(value));
 }
 
 Ptr<Expr> Parser::parse_uniq_expr() {
@@ -318,7 +313,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
             syntax_err("primary expression", ctxt);
     }
     // clang-format on
-    return ptr<ErrorExpr>(prev_);
+    return ptr<ErrorExpr>(curr_);
 }
 
 template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
@@ -393,44 +388,36 @@ Ptr<Expr> Parser::parse_type_expr() {
     return ptr<TypeExpr>(track, std::move(level));
 }
 
-Ptr<Expr> Parser::parse_pi_expr(Ptr<Ptrn>&& ptrn) {
-    auto track     = tracker();
-    auto tag       = ahead().tag();
-    auto entity    = "dependent function type"s;
-    bool has_first = ptrn.get();
+Ptr<Expr> Parser::parse_pi_expr() {
+    auto track  = tracker();
+    auto tag    = ahead().tag();
+    auto entity = "dependent function type"s;
 
     if (accept(Tag::K_Cn))
         entity = "continuation type";
     else if (accept(Tag::K_Fn))
         entity = "returning continuation type";
 
-    Ptrs<PiExpr::Dom> doms;
-    if (has_first) doms.emplace_back(ptr<PiExpr::Dom>(ptrn->loc(), std::move(ptrn)));
-
-    if (!has_first || !ahead().isa(Tag::T_arrow)) {
-        while (true) {
-            auto track = tracker();
-            auto prec  = tag == Tag::K_Cn ? Expr::Prec::Bot : Expr::Prec::Pi;
-            auto ptrn  = parse_ptrn(Brckt_Style | Implicit, "domain of a "s + entity, prec);
-            doms.emplace_back(ptr<PiExpr::Dom>(track, std::move(ptrn)));
-
-            switch (ahead().tag()) {
-                case Tag::C_CURRIED_B: continue;
-                default: break;
-            }
-            break;
-        }
-    }
+    auto domt = tracker();
+    auto prec = tag == Tag::K_Cn ? Expr::Prec::Bot : Expr::Prec::Pi;
+    auto ptrn = parse_ptrn(Brckt_Style | Implicit, "domain of a "s + entity, prec);
+    auto dom  = ptr<PiExpr::Dom>(domt, std::move(ptrn));
 
     auto codom = tag != Tag::K_Cn
                    ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Expr::Prec::Arrow))
                    : nullptr;
 
-    if (tag == Tag::K_Fn) doms.back()->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(prev_));
+    if (tag == Tag::K_Fn) dom->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(curr_));
+    return ptr<PiExpr>(track, tag, std::move(dom), std::move(codom));
+}
 
-    // TODO loc
-    auto loc = ptrn ? ptrn->loc() + track.loc() : track.loc();
-    return ptr<PiExpr>(loc, tag, std::move(doms), std::move(codom));
+Ptr<Expr> Parser::parse_pi_expr(Ptr<Ptrn>&& ptrn) {
+    auto track  = tracker(ptrn->loc());
+    auto entity = "dependent function type"s;
+    auto dom    = ptr<PiExpr::Dom>(ptrn->loc(), std::move(ptrn));
+    expect(Tag::T_arrow, entity);
+    auto codom = parse_expr("codomain of a "s + entity, Expr::Prec::Arrow);
+    return ptr<PiExpr>(track, Tag::Nil, std::move(dom), std::move(codom));
 }
 
 Ptr<Expr> Parser::parse_lam_expr() { return ptr<LamExpr>(parse_lam_decl()); }
@@ -465,8 +452,8 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
     // p -> (p, ..., p)
     // p -> {b, ..., b}     b -> {b, ..., b}
     // p -> [b, ..., b]     b -> [b, ..., b]
-    if ((style & Style_Bit) == Paren_Style && ahead().isa(Tag::D_paren_l)) return parse_tuple_ptrn(style);
-    if (style & Implicit && ahead().isa(Tag::D_brace_l)) return parse_tuple_ptrn(style);
+    if (is_paren_style(style) && ahead().isa(Tag::D_paren_l)) return parse_tuple_ptrn(style);
+    if (is_implicit(style) && ahead().isa(Tag::D_brace_l)) return parse_tuple_ptrn(style);
     if (ahead().isa(Tag::D_brckt_l)) return parse_tuple_ptrn(Brckt_Style);
 
     if (ahead(0).isa(Tag::M_id)) {
@@ -476,7 +463,7 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
             return ptr<IdPtrn>(track, dbg, std::move(type));
-        } else if ((style & Style_Bit) == Paren_Style) {
+        } else if (is_paren_style(style)) {
             // p ->  s
             // p -> `s
             auto dbg = eat(Tag::M_id).dbg();
@@ -486,7 +473,7 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
             auto type = parse_expr(ctxt, prec);
             return ptr<IdPtrn>(track, type->loc().anew_begin(), std::move(type));
         }
-    } else if ((style & Style_Bit) == Brckt_Style) {
+    } else if (is_brket_style(style)) {
         // b -> e   where e != id
         auto type = parse_expr(ctxt, prec);
         auto loc  = type->loc().anew_begin();
@@ -494,7 +481,7 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
-        return ptr<ErrorPtrn>(prev_);
+        return ptr<ErrorPtrn>(curr_);
     }
 
     return nullptr;
@@ -535,7 +522,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(int style) {
         } else {
             ptrn = parse_ptrn(style & Style_Bit, "element of a tuple pattern");
 
-            if ((style & Style_Bit) == Brckt_Style) {
+            if (is_brket_style(style)) {
                 // [..., [Nat, Nat] -> Nat, ...] ==> [..., _: [Nat, Nat] -> Nat, ...]
                 if (ahead().isa(Tag::T_arrow)) {
                     auto loc  = ptrn->loc();
@@ -593,7 +580,7 @@ Ptr<ValDecl> Parser::parse_axiom_decl() {
     if (auto name = expect(Tag::M_anx, "annex name of an axiom"))
         dbg = name.dbg();
     else
-        dbg = Dbg(prev_, ast().sym("<error annex name>"));
+        dbg = Dbg(curr_, ast().sym("<error annex name>"));
 
     std::deque<Ptrs<AxiomDecl::Alias>> subs;
     if (ahead().isa(Tag::D_paren_l)) {
@@ -656,7 +643,7 @@ Ptr<RecDecl> Parser::parse_rec_decl(bool first) {
     auto track = tracker();
     eat(first ? Tag::K_rec : Tag::K_and);
     auto dbg  = parse_name("recursive declaration");
-    auto type = accept(Tag::T_colon) ? parse_expr("type of a recursive declaration") : ptr<InferExpr>(prev_);
+    auto type = accept(Tag::T_colon) ? parse_expr("type of a recursive declaration") : ptr<InferExpr>(curr_);
     expect(Tag::T_assign, "recursive declaration");
     auto body = parse_expr("body of a recursive declaration");
     auto next = ahead().isa(Tag::K_and) ? parse_and_decl() : nullptr;
@@ -700,7 +687,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
 
     auto codom = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Expr::Prec::Arrow) : nullptr;
     if (tag == Tag::K_fn || tag == Tag::K_fun)
-        doms.back()->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(prev_));
+        doms.back()->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(curr_));
 
     expect(Tag::T_assign, "body of a "s + entity);
     auto body = parse_expr("body of a "s + entity);
