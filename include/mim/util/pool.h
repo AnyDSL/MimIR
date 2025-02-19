@@ -64,6 +64,23 @@ public:
     constexpr const T& front() const { return (*this)[0]; }
     constexpr const T* elems() const { return data_ ? data_->elems : nullptr; }
     constexpr bool contains(const T& elem) const { return binary_find(begin(), end(), elem, GIDLt<T>()) != end(); }
+
+    /// Is @f$this \cup other \neq \emptyset@f$?
+    [[nodiscard]] bool intersects(PooledSet<T> other) {
+        if (*this == other) return true;
+        if (!*this || !other) return false;
+
+        for (auto ai = this->begin(), ae = this->end(), bi = other.begin(), be = other.end(); ai != ae && bi != be;) {
+            if (*ai == *bi) return true;
+
+            if ((*ai)->gid() < (*bi)->gid())
+                ++ai;
+            else
+                ++bi;
+        }
+
+        return false;
+    }
     ///@}
 
     /// @name Comparisons
@@ -171,23 +188,6 @@ public:
         auto [data, state] = allocate(size);
         std::copy(i + 1, set.end(), std::copy(set.begin(), i, data->elems)); // copy over, skip i
         return unify(data, state);
-    }
-
-    /// Is @f$a \cup b \neq \emptyset@f$?
-    [[nodiscard]] bool has_intersection(PooledSet<T> a, PooledSet<T> b) {
-        if (a == b) return true;
-        if (!a || !b) return false;
-
-        for (auto ai = a.begin(), ae = a.end(), bi = b.begin(), be = b.end(); ai != ae && bi != be;) {
-            if (*ai == *bi) return true;
-
-            if ((*ai)->gid() < (*bi)->gid())
-                ++ai;
-            else
-                ++bi;
-        }
-
-        return false;
     }
     ///@}
 

@@ -46,7 +46,7 @@ public:
     }
 
     Ref rewrite_mut(Def* mut) override {
-        if (world().vars().has_intersection(mut->free_vars(), vars_)) {
+        if (vars_.intersects(mut->free_vars())) {
             if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
             return Rewriter::rewrite_mut(mut);
         }
