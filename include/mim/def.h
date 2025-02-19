@@ -604,15 +604,15 @@ private:
     union LocalOrFreeVars {
         LocalOrFreeVars() {}
 
-        Vars local; // Mutable only.
-        Vars free;  // Immutable only.
+        Vars local; // Immutable only.
+        Vars free;  // Mutable only.
     } vars_;
 
     union LocalOrConsumerMuts {
         LocalOrConsumerMuts() {}
 
-        Muts local;        // Mutable only.
-        Muts fv_consumers; // Immutable only.
+        Muts local;        // Immutable only.
+        Muts fv_consumers; // Mutable only.
     } muts_;
 
     const Def* type_;
