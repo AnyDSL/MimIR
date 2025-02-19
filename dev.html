@@ -326,7 +326,7 @@ Upcast</h3>
 <div class="line">    <span class="comment">// asserts, if def is not a Sigma</span></div>
 <div class="line">    <span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">as_imm</a>&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmim_1_1Def_html_ac62b72371d95ea3e8774d11336ed640b"><div class="ttname"><a href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">mim::Def::as_imm</a></div><div class="ttdeci">const T * as_imm() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00436">def.h:436</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_ac62b72371d95ea3e8774d11336ed640b"><div class="ttname"><a href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">mim::Def::as_imm</a></div><div class="ttdeci">const T * as_imm() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00440">def.h:440</a></div></div>
 <div class="ttc" id="aclassmim_1_1Ref_html"><div class="ttname"><a href="classmim_1_1Ref.html">mim::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00086">def.h:86</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sigma_html"><div class="ttname"><a href="classmim_1_1Sigma.html">mim::Sigma</a></div><div class="ttdoc">A dependent tuple type.</div><div class="ttdef"><b>Definition</b> <a href="tuple_8h_source.html#l00009">tuple.h:9</a></div></div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md20"></a>
@@ -344,7 +344,7 @@ Upcast for Immutables</h3>
 <div class="line">    <span class="comment">// sigma of type &quot;const Sigma*&quot; and *must* be an immutable Sigma - otherwise, asserts</span></div>
 <div class="line">    <span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">as_imm</a>&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmim_1_1Def_html_ae95966891b117e5f8bf7f4bca7b95c64"><div class="ttname"><a href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64">mim::Def::isa_imm</a></div><div class="ttdeci">const T * isa_imm() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00435">def.h:435</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_ae95966891b117e5f8bf7f4bca7b95c64"><div class="ttname"><a href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64">mim::Def::isa_imm</a></div><div class="ttdeci">const T * isa_imm() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00439">def.h:439</a></div></div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md21"></a>
 Upcast for Mutables</h3>
 <p><a class="el" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">Def::isa_mut</a>/<a class="el" href="classmim_1_1Def.html#a18c97ca601e090eed9bcbc9369c2c792">Def::as_mut</a> allows for an <em>upcast</em> and <b>only</b> matches <em>mutables</em>. By doing so, it removes the <code>const</code> qualifier and gives you access to the <b>non</b>-<code>const</code> methods that only make sense for <em>mutables</em>:</p>
@@ -365,7 +365,7 @@ Upcast for Mutables</h3>
 <div class="line">    <span class="comment">// Otherwise, an assert will fire.</span></div>
 <div class="line">    <span class="keyword">auto</span> lam = def-&gt;as&lt;<a class="code hl_class" href="classmim_1_1Lam.html">Lam</a>&gt;();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmim_1_1Def_html_a53a70702795d9c4bafe6de0d4f4a66f1"><div class="ttname"><a href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">mim::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00441">def.h:441</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a53a70702795d9c4bafe6de0d4f4a66f1"><div class="ttname"><a href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">mim::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00445">def.h:445</a></div></div>
 <div class="ttc" id="aclassmim_1_1Lam_html"><div class="ttname"><a href="classmim_1_1Lam.html">mim::Lam</a></div><div class="ttdoc">A function.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00110">lam.h:110</a></div></div>
 </div><!-- fragment --><p>Checking via <code>Def::isa</code>/<code>Def::as</code> a <code>Def*</code> has the same effect as using <a class="el" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">Def::isa_mut</a>/<a class="el" href="classmim_1_1Def.html#a18c97ca601e090eed9bcbc9369c2c792">Def::isa_mut</a> since the scrutinee must be already a <em>mutable</em> due to the lack of the <code>const</code> qualifier:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) { <span class="comment">// note the lack of &quot;const&quot; here</span></div>
@@ -585,7 +585,7 @@ Iterating over the Program</h1>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a39b398b0e5b70f5021d8b7d708f17477">extended_ops</a>())</div>
 <div class="line">        visit(done, op);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmim_1_1Def_html_a39b398b0e5b70f5021d8b7d708f17477"><div class="ttname"><a href="classmim_1_1Def.html#a39b398b0e5b70f5021d8b7d708f17477">mim::Def::extended_ops</a></div><div class="ttdeci">Defs extended_ops() const</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00437">def.cpp:437</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a39b398b0e5b70f5021d8b7d708f17477"><div class="ttname"><a href="classmim_1_1Def.html#a39b398b0e5b70f5021d8b7d708f17477">mim::Def::extended_ops</a></div><div class="ttdeci">Defs extended_ops() const</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00436">def.cpp:436</a></div></div>
 <div class="ttc" id="anamespacemim_html_aa55cde5ad8246840d0a046cc728f987d"><div class="ttname"><a href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">mim::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00059">def.h:59</a></div></div>
 </div><!-- fragment --><p>However, you will most likely want to use the <a class="el" href="passes.html#md_docs_2passes">pass</a> or the phase infrastructure. </p>
 </div></div><!-- contents -->
