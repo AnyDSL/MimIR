@@ -328,7 +328,6 @@ Vars Def::free_vars() const {
 }
 
 Vars Def::free_vars() {
-    // if (!isa_mut()) return const_cast<const Def*>(this)->free_vars();
     if (!is_set()) return {};
 
     if (!valid_) {
