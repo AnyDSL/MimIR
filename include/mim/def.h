@@ -405,14 +405,18 @@ public:
     ///@}
 
     /// @name Free Vars and Muts
-    /// * local_muts() / local_vars() are Var%s/mutables reachable by following *immutable* extended_ops().
     /// * local_muts() / local_vars() are cached and hash-consed.
-    /// * free_vars() compute a global solution, i.e., by transitively following *mutables* as well.
     /// * free_vars() are computed on demand and cached.
     ///   They will be transitively invalidated by following fv_consumers(), if a mutable is mutated.
     ///@{
+
+    /// Mutables reachable by following *immutable* extended_ops().
+    /// @note `mut->local_muts()` is by definition the set `{ mut }`.
     Muts local_muts() const;
+    /// Var%s reachable by following *immutable* extended_ops().
+    /// @note `var->local_vars()` is by definition the set `{ var }`.
     Vars local_vars() const { return mut_ ? Vars() : vars_.local; }
+    /// Compute a global solution, i.e., by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();
     bool is_open() const;   ///< Has free_vars()?
@@ -604,15 +608,15 @@ private:
     union LocalOrFreeVars {
         LocalOrFreeVars() {}
 
-        Vars local; // Mutable only.
-        Vars free;  // Immutable only.
+        Vars local; // Immutable only.
+        Vars free;  // Mutable only.
     } vars_;
 
     union LocalOrConsumerMuts {
         LocalOrConsumerMuts() {}
 
-        Muts local;        // Mutable only.
-        Muts fv_consumers; // Immutable only.
+        Muts local;        // Immutable only.
+        Muts fv_consumers; // Mutable only.
     } muts_;
 
     const Def* type_;
