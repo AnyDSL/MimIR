@@ -330,7 +330,7 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
         }
 
         auto expr = parse_expr(arr ? "shape of an array" : "shape of a pack");
-        auto ptrn = IdPtrn::mk_id(ast(), dbg, std::move(expr));
+        auto ptrn = IdPtrn::make_id(ast(), dbg, std::move(expr));
         shapes.emplace_back(std::move(ptrn), std::move(expr));
     } while (accept(Tag::T_comma));
 
@@ -518,7 +518,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(int style) {
                 lhs      = ptr<AppExpr>(track, false, std::move(lhs), std::move(rhs));
             }
             auto expr = parse_infix_expr(track, std::move(lhs), Expr::Prec::App);
-            ptrn      = IdPtrn::mk_type(ast(), std::move(expr));
+            ptrn      = IdPtrn::make_type(ast(), std::move(expr));
         } else {
             ptrn = parse_ptrn(style & Style_Bit, "element of a tuple pattern");
 

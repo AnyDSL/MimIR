@@ -25,19 +25,13 @@ public:
     Pi* make_explicit() { return flags_ = (flags_t) false, this; }
     ///@}
 
-    /// @name dom
+    /// @name dom & codom
     /// @anchor pi_dom
     /// @see @ref proj
     ///@{
     Ref dom() const { return op(0); }
-    MIM_PROJ(dom, const)
-    ///@}
-
-    /// @name codom
-    /// @anchor pi_codom
-    /// @see @ref proj
-    ///@{
     Ref codom() const { return op(1); }
+    MIM_PROJ(dom, const)
     MIM_PROJ(codom, const)
     ///@}
 
@@ -122,19 +116,13 @@ public:
     const Pi* type() const { return Def::type()->as<Pi>(); }
     ///@}
 
-    /// @name dom
+    /// @name dom & codom
     /// @anchor lam_dom
     /// @see @ref proj
     ///@{
     Ref dom() const { return type()->dom(); }
-    MIM_PROJ(dom, const)
-    ///@}
-
-    /// @name codom
-    /// @anchor lam_codom
-    /// @see @ref proj
-    ///@{
     Ref codom() const { return type()->codom(); }
+    MIM_PROJ(dom, const)
     MIM_PROJ(codom, const)
     ///@}
 

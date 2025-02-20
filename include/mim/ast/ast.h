@@ -221,11 +221,11 @@ public:
     Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
 
-    static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
+    static Ptr<IdPtrn> make_type(AST& ast, Ptr<Expr>&& type) {
         auto loc = type->loc();
         return ast.ptr<IdPtrn>(loc, Dbg(loc, ast.sym_anon()), std::move(type));
     }
-    static Ptr<IdPtrn> mk_id(AST& ast, Dbg dbg, Ptr<Expr>&& type) {
+    static Ptr<IdPtrn> make_id(AST& ast, Dbg dbg, Ptr<Expr>&& type) {
         auto loc = (type && dbg) ? dbg.loc() + type->loc() : type ? type->loc() : dbg.loc();
         return ast.ptr<IdPtrn>(loc, dbg, std::move(type));
     }

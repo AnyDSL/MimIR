@@ -399,6 +399,7 @@ bool Def::is_open() const {
     if (!local_vars().empty() || !local_muts().empty()) return true;
     return !free_vars().empty();
 }
+
 /*
  * Def - misc
  */

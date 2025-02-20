@@ -337,9 +337,7 @@ mim::Def::tproj, mim::Def::tprojs, mim::Lam::tvars, etc. work accordingly.
 - @ref proj "Def::proj"
 - @ref var "Def::var"
 - @ref pi_dom "Pi::dom"
-- @ref pi_codom "Pi::codom"
 - @ref lam_dom "Lam::dom"
-- @ref lam_codom "Lam::codom"
 - @ref app_arg "App::arg"
 
 ### Shape
