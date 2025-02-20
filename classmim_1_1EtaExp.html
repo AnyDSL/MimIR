@@ -210,7 +210,7 @@ Private Member Functions</h2></td></tr>
 <div class="line"><span class="stringliteral">Callee     Non_Callee_1 &lt;-- Pos: Either multiple callees, **or** exactly one non-callee are okay.</span></div>
 <div class="line"><span class="stringliteral">      \   /</span></div>
 <div class="line"><span class="stringliteral">       Bot              &lt;-- Never seen.</span></div>
-<div class="ttc" id="aclassmim_1_1Lam_html"><div class="ttname"><a href="classmim_1_1Lam.html">mim::Lam</a></div><div class="ttdoc">A function.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00110">lam.h:110</a></div></div>
+<div class="ttc" id="aclassmim_1_1Lam_html"><div class="ttname"><a href="classmim_1_1Lam.html">mim::Lam</a></div><div class="ttdoc">A function.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00104">lam.h:104</a></div></div>
 </div><!-- fragment --><ul>
 <li>EtaExp::expand_ trackes if a <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a> is the top element.</li>
 <li>If it's not within EtaExp::expand_, it's either <code>Pos</code> or <code>Bot</code>. But there is no need to differentiate this any further.</li>
@@ -400,7 +400,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="eta__exp_8cpp_source.html#l00060">60</a> of file <a class="el" href="eta__exp_8cpp_source.html">eta_exp.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="eta__exp_8h_source.html#l00040">Callee</a>, <a class="el" href="def_8cpp_source.html#l00305">mim::Def::is_set()</a>, <a class="el" href="lam_8h_source.html#l00255">mim::isa_callee()</a>, <a class="el" href="def_8h_source.html#l00445">mim::Def::isa_mut()</a>, <a class="el" href="eta__exp_8h_source.html#l00022">new2old()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="eta__exp_8h_source.html#l00040">Non_Callee_1</a>, <a class="el" href="def_8h_source.html#l00273">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00272">mim::Def::op()</a>, <a class="el" href="eta__exp_8h_source.html#l00045">pos()</a>, <a class="el" href="eta__exp_8h_source.html#l00041">pos2str()</a>, <a class="el" href="pass_8h_source.html#l00273">mim::FPPass&lt; EtaExp, Lam &gt;::undo_visit()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="eta__exp_8h_source.html#l00040">Callee</a>, <a class="el" href="def_8cpp_source.html#l00305">mim::Def::is_set()</a>, <a class="el" href="lam_8h_source.html#l00243">mim::isa_callee()</a>, <a class="el" href="def_8h_source.html#l00445">mim::Def::isa_mut()</a>, <a class="el" href="eta__exp_8h_source.html#l00022">new2old()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="eta__exp_8h_source.html#l00040">Non_Callee_1</a>, <a class="el" href="def_8h_source.html#l00273">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00272">mim::Def::op()</a>, <a class="el" href="eta__exp_8h_source.html#l00045">pos()</a>, <a class="el" href="eta__exp_8h_source.html#l00041">pos2str()</a>, <a class="el" href="pass_8h_source.html#l00273">mim::FPPass&lt; EtaExp, Lam &gt;::undo_visit()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>
@@ -576,7 +576,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00021">21</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00075">mim::Pass::proxy()</a>, and <a class="el" href="lam_8h_source.html#l00122">mim::Lam::type()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00075">mim::Pass::proxy()</a>, and <a class="el" href="lam_8h_source.html#l00116">mim::Lam::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="eta__exp_8cpp_source.html#l00053">analyze()</a>, and <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>.</p>
 
@@ -609,7 +609,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="eta__exp_8cpp_source.html#l00020">20</a> of file <a class="el" href="eta__exp_8cpp_source.html">eta_exp.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00305">mim::Def::is_set()</a>, <a class="el" href="lam_8h_source.html#l00255">mim::isa_callee()</a>, <a class="el" href="def_8h_source.html#l00445">mim::Def::isa_mut()</a>, <a class="el" href="util_8h_source.html#l00093">mim::lookup()</a>, <a class="el" href="def_8h_source.html#l00273">mim::Def::num_ops()</a>, <a class="el" href="eta__exp_8h_source.html#l00044">old2new()</a>, <a class="el" href="def_8h_source.html#l00272">mim::Def::op()</a>, <a class="el" href="def_8h_source.html#l00271">mim::Def::ops()</a>, <a class="el" href="def_8h_source.html#l00507">mim::Def::rebuild()</a>, and <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00305">mim::Def::is_set()</a>, <a class="el" href="lam_8h_source.html#l00243">mim::isa_callee()</a>, <a class="el" href="def_8h_source.html#l00445">mim::Def::isa_mut()</a>, <a class="el" href="util_8h_source.html#l00093">mim::lookup()</a>, <a class="el" href="def_8h_source.html#l00273">mim::Def::num_ops()</a>, <a class="el" href="eta__exp_8h_source.html#l00044">old2new()</a>, <a class="el" href="def_8h_source.html#l00272">mim::Def::op()</a>, <a class="el" href="def_8h_source.html#l00271">mim::Def::ops()</a>, <a class="el" href="def_8h_source.html#l00507">mim::Def::rebuild()</a>, and <a class="el" href="def_8h_source.html#l00251">mim::Def::type()</a>.</p>
 
 </div>
 </div>
