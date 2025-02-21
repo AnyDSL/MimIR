@@ -2,6 +2,7 @@
 #include <cstring>
 
 #include <fstream>
+#include <string>
 
 #include <lyra/lyra.hpp>
 #include <rang.hpp>

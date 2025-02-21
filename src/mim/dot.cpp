@@ -37,7 +37,7 @@ public:
         tab_.println(os_, "node [shape=box,style=filled];");
     }
 
-    void epilogue() { (tab_--).println(os_, "}}"); }
+    void epilogue() { (--tab_).println(os_, "}}"); }
 
     void run(const Def* root, uint32_t max) {
         prologue();

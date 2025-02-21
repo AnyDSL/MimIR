@@ -3,6 +3,8 @@
 #include <mim/analyses/scope.h>
 #include <mim/pass/pass.h>
 
+#include "mim/util/util.h"
+
 #include "mim/plug/clos/clos.h"
 
 namespace mim {
@@ -27,6 +29,7 @@ public:
     Lam* scope(Lam* lam);
 
     bool from_outer_scope(Lam* lam) {
+        // return curr_mut()->free_vars().intersects(lam->free_vars()); }
         // return scope_.free_defs().contains(lam);
         return scope(lam) && scope(lam) != scope(curr_mut());
     }
