@@ -1,9 +1,10 @@
 #pragma once
 
-#include "mim/analyses/scope.h"
 #include "mim/def.h"
-#include "mim/pass/pass.h"
 #include "mim/rewrite.h"
+
+#include "mim/analyses/scope.h"
+#include "mim/pass/pass.h"
 
 namespace mim {
 
@@ -40,7 +41,9 @@ public:
 
 protected:
     virtual void start() = 0; ///< Actual entry.
+    void set_name(std::string name) { name_ = name; }
 
+private:
     World& world_;
     std::string name_;
     bool dirty_;
@@ -87,7 +90,7 @@ public:
         : Phase(world, {}, false)
         , man_(world) {
         man_.template add<P>(std::forward<Args>(args)...);
-        name_ = std::string(man_.passes().back()->name()) + ".pass_phase";
+        set_name(std::string(man_.passes().back()->name()) + ".pass_phase");
     }
 
     void start() override { man_.run(); }
@@ -148,8 +151,8 @@ private:
 /// @deprecated Use ClosedMutPhase instead.
 class ScopePhase : public Phase {
 public:
-    ScopePhase(World& world, std::string_view name, bool elide_empty)
-        : Phase(world, name, false)
+    ScopePhase(World& world, std::string_view name, bool dirty, bool elide_empty)
+        : Phase(world, name, dirty)
         , elide_empty_(elide_empty) {}
 
     void start() override;
@@ -169,8 +172,8 @@ private:
 /// If you a are only interested in specific mutables, you can pass this to @p M.
 template<class M = Def> class ClosedMutPhase : public Phase {
 public:
-    ClosedMutPhase(World& world, std::string_view name, bool elide_empty)
-        : Phase(world, name, false)
+    ClosedMutPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
+        : Phase(world, name, dirty)
         , elide_empty_(elide_empty) {}
 
     void start() override {
@@ -193,6 +196,13 @@ protected:
 private:
     bool elide_empty_;
     M* curr_mut_;
+};
+
+/// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
+template<class M = Def> class NestPhase : public Phase {
+public:
+    NestPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
+        : ClosedMutPhase<M>(world, name, dirty, elide_empty) {}
 };
 
 } // namespace mim

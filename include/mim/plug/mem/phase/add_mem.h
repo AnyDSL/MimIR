@@ -11,9 +11,7 @@ namespace mim::plug::mem {
 class AddMem : public ScopePhase {
 public:
     AddMem(World& world)
-        : ScopePhase(world, "add_mem", true) {
-        dirty_ = true;
-    }
+        : ScopePhase(world, "add_mem", true, true) {}
 
     void visit(const Scope&) override;
 

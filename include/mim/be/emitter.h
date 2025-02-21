@@ -1,8 +1,9 @@
 #pragma once
 
+#include "mim/world.h"
+
 #include "mim/analyses/schedule.h"
 #include "mim/phase/phase.h"
-#include "mim/world.h"
 
 namespace mim {
 
@@ -23,7 +24,7 @@ public:
 
 protected:
     Emitter(World& world, std::string_view name, std::ostream& ostream)
-        : ScopePhase(world, name, false)
+        : ScopePhase(world, name, false, false)
         , ostream_(ostream) {}
 
     std::ostream& ostream() const { return ostream_; }
