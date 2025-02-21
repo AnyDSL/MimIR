@@ -23,7 +23,7 @@ std::ostream& operator<<(std::ostream& os, const CFNode* n) { return os << n->mu
 
 //------------------------------------------------------------------------------
 
-CFA::CFA(const Scope& scope)
+CFG::CFG(const Scope& scope)
     : scope_(scope)
     , entry_(node(scope.entry())) {
     std::queue<Def*> cfg_queue;
@@ -61,21 +61,23 @@ CFA::CFA(const Scope& scope)
     }
 
     verify();
+
+    rpo_       = std::make_unique<Map<const CFNode*>>(*this);
+    auto index = post_order_visit(entry(), size());
+    assert_unused(index == 0);
 }
 
-const CFNode* CFA::node(Def* mut) {
+const CFNode* CFG::node(Def* mut) {
     auto&& n = nodes_[mut];
     if (n == nullptr) n = new CFNode(mut);
     return n;
 }
 
-CFA::~CFA() {
+CFG::~CFG() {
     for (const auto& p : nodes_) delete p.second;
 }
 
-const CFG& CFA::cfg() const { return lazy_init(this, cfg_); }
-
-void CFA::verify() {
+void CFG::verify() {
     bool error = false;
     for (const auto& p : nodes()) {
         auto in = p.second;
@@ -93,13 +95,6 @@ void CFA::verify() {
 
 //------------------------------------------------------------------------------
 
-CFG::CFG(const CFA& cfa)
-    : cfa_(cfa)
-    , rpo_(*this) {
-    auto index = post_order_visit(entry(), size());
-    assert_unused(index == 0);
-}
-
 size_t CFG::post_order_visit(const CFNode* n, size_t i) {
     auto& n_index = n->index_;
     n_index       = size_t(-2);
@@ -107,8 +102,8 @@ size_t CFG::post_order_visit(const CFNode* n, size_t i) {
     for (auto succ : n->succs())
         if (index(succ) == size_t(-1)) i = post_order_visit(succ, i);
 
-    n_index = i - 1;
-    rpo_[n] = n;
+    n_index    = i - 1;
+    (*rpo_)[n] = n;
     return n_index;
 }
 

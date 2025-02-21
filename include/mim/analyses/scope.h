@@ -42,7 +42,6 @@ public:
 
     /// @name simple CFA to construct a CFG
     ///@{
-    const CFA& cfa() const;
     const CFG& cfg() const;
     ///@}
 
@@ -62,7 +61,7 @@ private:
     mutable DefSet free_defs_;
     mutable VarSet free_vars_;
     mutable MutSet free_muts_;
-    mutable std::unique_ptr<const CFA> cfa_;
+    mutable std::unique_ptr<const CFG> cfg_;
 };
 
 /// Builds a nesting tree of all *immutables*/binders.

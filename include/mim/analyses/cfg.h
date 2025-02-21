@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "mim/analyses/scope.h"
 #include "mim/util/indexmap.h"
 #include "mim/util/indexset.h"
@@ -19,7 +21,7 @@ using CFNodes = GIDSet<const CFNode*>;
 ///@}
 
 /// A Control-Flow Node.
-/// Managed by CFA.
+/// Managed by CFG.
 class CFNode {
 public:
     CFNode(Def* mut)
@@ -45,47 +47,8 @@ private:
     mutable CFNodes preds_;
     mutable CFNodes succs_;
 
-    friend class CFA;
     friend class CFG;
-};
-
-/// @name std::ostream operator
-///@{
-std::ostream& operator<<(std::ostream&, const CFNode*);
-///@}
-
-//------------------------------------------------------------------------------
-
-/// Control Flow Analysis.
-class CFA {
-public:
-    CFA(const CFA&)     = delete;
-    CFA& operator=(CFA) = delete;
-
-    explicit CFA(const Scope& scope);
-    ~CFA();
-
-    const Scope& scope() const { return scope_; }
-    World& world() const { return scope().world(); }
-    size_t size() const { return nodes().size(); }
-    const MutMap<const CFNode*>& nodes() const { return nodes_; }
-    const CFG& cfg() const;
-    const CFNode* operator[](Def* mut) const {
-        auto i = nodes_.find(mut);
-        return i == nodes_.end() ? nullptr : i->second;
-    }
-
-private:
-    void verify();
-    const CFNode* entry() const { return entry_; }
-    const CFNode* node(Def*);
-
-    const Scope& scope_;
-    MutMap<const CFNode*> nodes_;
-    const CFNode* entry_;
-    mutable std::unique_ptr<const CFG> cfg_;
-
-    friend class CFG;
+    friend std::ostream& operator<<(std::ostream&, const CFNode*);
 };
 
 //------------------------------------------------------------------------------
@@ -104,18 +67,24 @@ public:
     CFG(const CFG&)     = delete;
     CFG& operator=(CFG) = delete;
 
-    explicit CFG(const CFA&);
+    explicit CFG(const Scope&);
+    ~CFG();
 
-    const CFA& cfa() const { return cfa_; }
-    size_t size() const { return cfa().size(); }
-    const CFNode* entry() const { return cfa().entry(); }
-    auto reverse_post_order() const { return rpo_.array().view(); }
-    auto post_order() const { return std::views::reverse(rpo_.array()); }
+    World& world() const { return scope().world(); }
+    const Scope& scope() const { return scope_; }
+    const auto& nodes() const { return nodes_; }
+    size_t size() const { return nodes_.size(); }
+    const CFNode* entry() const { return entry_; }
+    auto reverse_post_order() const { return rpo_->array().view(); }
+    auto post_order() const { return std::views::reverse(rpo_->array()); }
     /// Maps from reverse post-order index to CFNode.
-    const CFNode* reverse_post_order(size_t i) const { return rpo_.array()[i]; }
+    const CFNode* reverse_post_order(size_t i) const { return rpo_->array()[i]; }
     /// Maps from post-order index to CFNode.
-    const CFNode* post_order(size_t i) const { return rpo_.array()[size() - 1 - i]; }
-    const CFNode* operator[](Def* mut) const { return cfa()[mut]; } ///< Maps from @p mut to CFNode.
+    const CFNode* post_order(size_t i) const { return rpo_->array()[size() - 1 - i]; }
+    const CFNode* operator[](Def* mut) const {
+        auto i = nodes_.find(mut);
+        return i == nodes_.end() ? nullptr : i->second;
+    }
     const DomTree& domtree() const;
     const LoopTree& looptree() const;
     const DomFrontier& domfrontier() const;
@@ -123,10 +92,14 @@ public:
     static size_t index(const CFNode* n) { return n->index_; }
 
 private:
+    const CFNode* node(Def*);
     size_t post_order_visit(const CFNode* n, size_t i);
+    void verify();
 
-    const CFA& cfa_;
-    Map<const CFNode*> rpo_;
+    const Scope& scope_;
+    MutMap<const CFNode*> nodes_;
+    const CFNode* entry_;
+    std::unique_ptr<Map<const CFNode*>> rpo_;
     mutable std::unique_ptr<const DomTree> domtree_;
     mutable std::unique_ptr<const LoopTree> looptree_;
     mutable std::unique_ptr<const DomFrontier> domfrontier_;

@@ -78,8 +78,7 @@ void Scope::calc_free() const {
         for (auto op : queue.pop()->extended_ops()) enqueue(op);
 }
 
-const CFA& Scope::cfa() const { return lazy_init(this, cfa_); }
-const CFG& Scope::cfg() const { return cfa().cfg(); }
+const CFG& Scope::cfg() const { return lazy_init(this, cfg_); }
 
 bool Scope::is_free(Def* mut, const Def* def) {
     if (auto v = mut->var()) {
