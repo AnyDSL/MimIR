@@ -1,20 +1,16 @@
 #pragma once
 
-#include <vector>
-
 #include "mim/analyses/scope.h"
 #include "mim/util/indexmap.h"
 #include "mim/util/indexset.h"
-#include "mim/util/print.h"
-#include "mim/util/span.h"
 
 namespace mim {
 
 class CFNode;
 // clang-format off
-template<bool> class LoopTree;
-template<bool> class DomTreeBase;
-template<bool> class DomFrontierBase;
+class LoopTree;
+class DomTree;
+class DomFrontier;
 // clang-format on
 
 /// @name Control Flow
@@ -38,8 +34,7 @@ private:
     const CFNodes& succs() const { return succs_; }
     void link(const CFNode* other) const;
 
-    mutable size_t f_index_ = -1; ///< RPO index in a **forward** CFG.
-    mutable size_t b_index_ = -1; ///< RPO index in a **backwards** CFG.
+    mutable size_t index_ = -1; ///< RPO index in a CFG.
 
     Def* mut_;
     size_t gid_;
@@ -48,7 +43,7 @@ private:
     mutable CFNodes succs_;
 
     friend class CFA;
-    template<bool> friend class CFG;
+    friend class CFG;
 };
 
 /// @name std::ostream operator
@@ -71,15 +66,13 @@ public:
     World& world() const { return scope().world(); }
     size_t size() const { return nodes().size(); }
     const MutMap<const CFNode*>& nodes() const { return nodes_; }
-    const F_CFG& f_cfg() const;
-    const B_CFG& b_cfg() const;
+    const CFG& cfg() const;
     const CFNode* operator[](Def* mut) const {
         auto i = nodes_.find(mut);
         return i == nodes_.end() ? nullptr : i->second;
     }
 
 private:
-    void link_to_exit();
     void verify();
     const CFNodes& preds(Def* mut) const {
         auto cn = nodes_.find(mut)->second;
@@ -99,10 +92,9 @@ private:
     MutMap<const CFNode*> nodes_;
     const CFNode* entry_;
     const CFNode* exit_;
-    mutable std::unique_ptr<const F_CFG> f_cfg_;
-    mutable std::unique_ptr<const B_CFG> b_cfg_;
+    mutable std::unique_ptr<const CFG> cfg_;
 
-    template<bool> friend class CFG;
+    friend class CFG;
 };
 
 //------------------------------------------------------------------------------
@@ -113,10 +105,10 @@ private:
 /// * `true` means a conventional CFG.
 /// * `false* means that all edges in this CFG are reversed.
 /// Thus, a [dominance analysis](DomTreeBase), for example, becomes a post-dominance analysis.
-template<bool forward> class CFG {
+class CFG {
 public:
-    template<class Value> using Map = IndexMap<CFG<forward>, const CFNode*, Value>;
-    using Set                       = IndexSet<CFG<forward>, const CFNode*>;
+    template<class Value> using Map = IndexMap<CFG, const CFNode*, Value>;
+    using Set                       = IndexSet<CFG, const CFNode*>;
 
     CFG(const CFG&)     = delete;
     CFG& operator=(CFG) = delete;
@@ -133,8 +125,7 @@ public:
     size_t num_succs(const CFNode* n) const { return succs(n).size(); }
     size_t num_preds(Def* mut) const { return num_preds(cfa()[mut]); }
     size_t num_succs(Def* mut) const { return num_succs(cfa()[mut]); }
-    const CFNode* entry() const { return forward ? cfa().entry() : cfa().exit(); }
-    const CFNode* exit() const { return forward ? cfa().exit() : cfa().entry(); }
+    const CFNode* entry() const { return cfa().entry(); }
 
     auto reverse_post_order() const { return rpo_.array().view(); }
     auto post_order() const { return std::views::reverse(rpo_.array()); }
@@ -143,20 +134,20 @@ public:
     /// Maps from post-order index to CFNode.
     const CFNode* post_order(size_t i) const { return rpo_.array()[size() - 1 - i]; }
     const CFNode* operator[](Def* mut) const { return cfa()[mut]; } ///< Maps from @p mut to CFNode.
-    const DomTreeBase<forward>& domtree() const;
-    const LoopTree<forward>& looptree() const;
-    const DomFrontierBase<forward>& domfrontier() const;
+    const DomTree& domtree() const;
+    const LoopTree& looptree() const;
+    const DomFrontier& domfrontier() const;
 
-    static size_t index(const CFNode* n) { return forward ? n->f_index_ : n->b_index_; }
+    static size_t index(const CFNode* n) { return n->index_; }
 
 private:
     size_t post_order_visit(const CFNode* n, size_t i);
 
     const CFA& cfa_;
     Map<const CFNode*> rpo_;
-    mutable std::unique_ptr<const DomTreeBase<forward>> domtree_;
-    mutable std::unique_ptr<const LoopTree<forward>> looptree_;
-    mutable std::unique_ptr<const DomFrontierBase<forward>> domfrontier_;
+    mutable std::unique_ptr<const DomTree> domtree_;
+    mutable std::unique_ptr<const LoopTree> looptree_;
+    mutable std::unique_ptr<const DomFrontier> domfrontier_;
 };
 
 //------------------------------------------------------------------------------

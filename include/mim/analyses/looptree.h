@@ -1,19 +1,17 @@
 #pragma once
 
-#include <vector>
-
 #include <fe/cast.h>
 
 #include "mim/analyses/cfg.h"
 
 namespace mim {
 
-template<bool> class LoopTreeBuilder;
+class LoopTreeBuilder;
 
 /// Calculates a loop nesting forest rooted at LoopTree::root_.
 /// The implementation uses Steensgard's algorithm.
 /// Check out G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999, for more information.
-template<bool forward> class LoopTree {
+class LoopTree {
 public:
     class Head;
 
@@ -54,7 +52,7 @@ public:
         Vector<std::unique_ptr<Base>> children_;
 
         friend class Base;
-        friend class LoopTreeBuilder<forward>;
+        friend class LoopTreeBuilder;
     };
 
     /// A Leaf only holds a single CFNode and does not have any children.
@@ -74,30 +72,30 @@ public:
     private:
         size_t index_;
 
-        friend class LoopTreeBuilder<forward>;
+        friend class LoopTreeBuilder;
     };
 
     LoopTree(const LoopTree&)     = delete;
     LoopTree& operator=(LoopTree) = delete;
 
-    explicit LoopTree(const CFG<forward>& cfg);
-    const CFG<forward>& cfg() const { return cfg_; }
+    explicit LoopTree(const CFG& cfg);
+    const CFG& cfg() const { return cfg_; }
     const Head* root() const { return root_.get(); }
     const Leaf* operator[](const CFNode* n) const { return find(leaves_, n); }
 
 private:
     static void get_nodes(Vector<const Base*>& nodes, const Base* node) {
         nodes.push_back(node);
-        if (auto head = node->template isa<Head>())
+        if (auto head = node->isa<Head>())
             for (const auto& child : head->children()) get_nodes(nodes, child.get());
     }
 
-    const CFG<forward>& cfg_;
-    typename CFG<forward>::template Map<Leaf*> leaves_;
+    const CFG& cfg_;
+    CFG::Map<Leaf*> leaves_;
     std::unique_ptr<Head> root_;
 
-    template<bool f> friend std::ostream& operator<<(std::ostream&, const typename LoopTree<f>::Base*);
-    friend class LoopTreeBuilder<forward>;
+    friend std::ostream& operator<<(std::ostream&, const LoopTree::Base*);
+    friend class LoopTreeBuilder;
 };
 
 } // namespace mim

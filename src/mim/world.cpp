@@ -56,7 +56,6 @@ World::World(Driver* driver, const State& state)
     data_.lit_bool[0] = lit_idx(2, 0_u64);
     data_.lit_bool[1] = lit_idx(2, 1_u64);
     data_.lit_nat_max = lit_nat(nat_t(-1));
-    data_.exit        = mut_lam(cn(type_bot()))->set(sym("exit"));
 }
 
 World::World(Driver* driver)

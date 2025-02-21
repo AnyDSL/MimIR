@@ -13,7 +13,7 @@ namespace mim {
 
 Scheduler::Scheduler(const Scope& s)
     : scope_(&s)
-    , cfg_(&scope().f_cfg())
+    , cfg_(&scope().cfg())
     , domtree_(&cfg().domtree()) {
     std::queue<const Def*> queue;
     DefSet done;
@@ -112,7 +112,7 @@ Def* Scheduler::smart(const Def* def) {
 Scheduler::Schedule Scheduler::schedule(const Scope& scope) {
     // until we have sth better simply use the RPO of the CFG
     Schedule result;
-    for (auto n : scope.f_cfg().reverse_post_order()) result.emplace_back(n->mut());
+    for (auto n : scope.cfg().reverse_post_order()) result.emplace_back(n->mut());
 
     return result;
 }

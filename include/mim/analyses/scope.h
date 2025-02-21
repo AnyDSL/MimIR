@@ -9,18 +9,11 @@
 namespace mim {
 
 class CFA;
-template<bool> class CFG;
-
-/// @name Control Flow
-///@{
-using F_CFG = CFG<true>;
-using B_CFG = CFG<false>;
-///@}
+class CFG;
 
 /// A @p Scope represents a region of @p Def%s that are live from the view of an @p entry's @p Var.
 /// Transitively, all user's of the @p entry's @p Var are pooled into this @p Scope (see @p defs()).
-/// Both @p entry() and @p exit() are @em NOT part of the @p Scope itself.
-/// The @p exit() is just a virtual dummy to have a unique exit dual to @p entry().
+/// Both @p entry() is @em NOT part of the @p Scope itself.
 class Scope {
 public:
     Scope(const Scope&)     = delete;
@@ -33,7 +26,6 @@ public:
     ///@{
     World& world() const { return world_; }
     Def* entry() const { return entry_; }
-    Def* exit() const { return exit_; }
     Sym sym() const { return entry_->sym(); }
     ///@}
 
@@ -51,8 +43,7 @@ public:
     /// @name simple CFA to construct a CFG
     ///@{
     const CFA& cfa() const;
-    const F_CFG& f_cfg() const;
-    const B_CFG& b_cfg() const;
+    const CFG& cfg() const;
     ///@}
 
     /// Does @p mut's Var occurr free in @p def?
@@ -65,7 +56,6 @@ private:
 
     World& world_;
     Def* entry_             = nullptr;
-    Def* exit_              = nullptr;
     mutable bool has_bound_ = false;
     mutable bool has_free_  = false;
     mutable DefSet bound_;

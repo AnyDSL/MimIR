@@ -4,8 +4,7 @@
 
 namespace mim {
 
-template<bool> class DomTreeBase;
-using DomTree = DomTreeBase<true>;
+class DomTree;
 
 class Scheduler {
 public:
@@ -24,7 +23,7 @@ public:
     /// @name Getters
     ///@{
     const Scope& scope() const { return *scope_; }
-    const F_CFG& cfg() const { return *cfg_; }
+    const CFG& cfg() const { return *cfg_; }
     const CFNode* cfg(Def* mut) const { return cfg()[mut]; }
     const DomTree& domtree() const { return *domtree_; }
     const Uses& uses(const Def* def) const {
@@ -61,7 +60,7 @@ public:
 
 private:
     const Scope* scope_     = nullptr;
-    const F_CFG* cfg_       = nullptr;
+    const CFG* cfg_         = nullptr;
     const DomTree* domtree_ = nullptr;
     DefMap<Def*> early_;
     DefMap<Def*> late_;

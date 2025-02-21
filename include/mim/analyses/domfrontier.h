@@ -9,21 +9,21 @@ namespace mim {
 /// regular dominance frontiers or post-dominance frontiers (i.e. control dependence).
 /// This template parameter is associated with @p CFG's @c forward parameter.
 /// See Cooper et al, 2001. A Simple, Fast Dominance Algorithm: http://www.cs.rice.edu/~keith/EMBED/dom.pdf
-template<bool forward> class DomFrontierBase {
+class DomFrontier {
 public:
-    DomFrontierBase(const DomFrontierBase&)     = delete;
-    DomFrontierBase& operator=(DomFrontierBase) = delete;
+    DomFrontier(const DomFrontier&)     = delete;
+    DomFrontier& operator=(DomFrontier) = delete;
 
-    explicit DomFrontierBase(const CFG<forward>& cfg)
+    explicit DomFrontier(const CFG& cfg)
         : cfg_(cfg)
         , preds_(cfg)
         , succs_(cfg) {
         create();
     }
 
-    const CFG<forward>& cfg() const { return cfg_; }
-    const std::vector<const CFNode*>& preds(const CFNode* n) const { return preds_[n]; }
-    const std::vector<const CFNode*>& succs(const CFNode* n) const { return succs_[n]; }
+    const CFG& cfg() const { return cfg_; }
+    const auto& preds(const CFNode* n) const { return preds_[n]; }
+    const auto& succs(const CFNode* n) const { return succs_[n]; }
 
 private:
     void create();
@@ -32,15 +32,9 @@ private:
         preds_[dst].push_back(src);
     }
 
-    const CFG<forward>& cfg_;
-    typename CFG<forward>::template Map<std::vector<const CFNode*>> preds_;
-    typename CFG<forward>::template Map<std::vector<const CFNode*>> succs_;
+    const CFG& cfg_;
+    typename CFG::Map<Vector<const CFNode*>> preds_;
+    typename CFG::Map<Vector<const CFNode*>> succs_;
 };
-
-/// @name Control Flow
-///@{
-using DomFrontiers = DomFrontierBase<true>;
-using ControlDeps  = DomFrontierBase<false>;
-///@}
 
 } // namespace mim

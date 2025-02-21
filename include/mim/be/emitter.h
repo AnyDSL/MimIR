@@ -72,7 +72,7 @@ protected:
         swap(scheduler_, new_scheduler);
 
         for (auto mut : muts) {
-            if (auto lam = mut->isa<Lam>(); lam && lam != scope.exit()) {
+            if (auto lam = mut->isa<Lam>()) {
                 assert(lam == root() || Lam::isa_basicblock(lam));
                 child().emit_epilogue(lam);
             }

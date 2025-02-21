@@ -293,7 +293,6 @@ void Emitter::finalize() {
     Scope scope(root());
     for (auto mut : Scheduler::schedule(scope)) {
         if (auto lam = mut->isa_mut<Lam>()) {
-            if (lam == scope.exit()) continue;
             assert(lam2bb_.contains(lam));
             auto& bb = lam2bb_[lam];
             print(func_impls_, "{}:\n", lam->unique_name());

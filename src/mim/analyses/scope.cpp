@@ -11,8 +11,7 @@ namespace mim {
 
 Scope::Scope(Def* entry)
     : world_(entry->world())
-    , entry_(entry)
-    , exit_(world().exit()) {
+    , entry_(entry) {
     run();
 }
 
@@ -26,7 +25,7 @@ void Scope::run() {
 
         while (!queue.empty()) {
             for (auto use : queue.pop()->uses())
-                if (use != entry_ && use != exit_) queue.push(use);
+                if (use != entry_) queue.push(use);
         }
     }
 }
@@ -80,8 +79,7 @@ void Scope::calc_free() const {
 }
 
 const CFA& Scope::cfa() const { return lazy_init(this, cfa_); }
-const F_CFG& Scope::f_cfg() const { return cfa().f_cfg(); }
-const B_CFG& Scope::b_cfg() const { return cfa().b_cfg(); }
+const CFG& Scope::cfg() const { return cfa().cfg(); }
 
 bool Scope::is_free(Def* mut, const Def* def) {
     if (auto v = mut->var()) {
