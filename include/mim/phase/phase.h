@@ -182,7 +182,7 @@ public:
 
         while (!queue.empty()) {
             auto mut = queue.pop();
-            if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(curr_mut_ = m);
+            if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(root_ = m);
 
             for (auto op : mut->extended_ops())
                 for (auto mut : op->local_muts()) queue.push(mut);
@@ -191,18 +191,31 @@ public:
 
 protected:
     virtual void visit(M*) = 0;
-    M* curr_mut() const { return curr_mut_; }
+    M* root() const { return root_; }
 
 private:
     bool elide_empty_;
-    M* curr_mut_;
+    M* root_;
 };
 
 /// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
-template<class M = Def> class NestPhase : public Phase {
+template<class M = Def> class NestPhase : public ClosedMutPhase<M> {
 public:
     NestPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
         : ClosedMutPhase<M>(world, name, dirty, elide_empty) {}
+
+    const Nest& nest() const { return *nest_; }
+    virtual void visit(const Nest&) = 0;
+
+protected:
+    void visit(M* mut) override {
+        Nest nest(mut);
+        nest_ = &nest;
+        visit(nest);
+    }
+
+private:
+    const Nest* nest_;
 };
 
 } // namespace mim

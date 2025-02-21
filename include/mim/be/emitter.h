@@ -7,7 +7,7 @@
 
 namespace mim {
 
-template<class Value, class Type, class BB, class Child> class Emitter : public ScopePhase {
+template<class Value, class Type, class BB, class Child> class Emitter : public NestPhase<Lam> {
 private:
     constexpr const Child& child() const { return *static_cast<const Child*>(this); }
     constexpr Child& child() { return *static_cast<Child*>(this); }
@@ -24,7 +24,7 @@ public:
 
 protected:
     Emitter(World& world, std::string_view name, std::ostream& ostream)
-        : ScopePhase(world, name, false, false)
+        : NestPhase(world, name, false, false)
         , ostream_(ostream) {}
 
     std::ostream& ostream() const { return ostream_; }
@@ -47,14 +47,16 @@ protected:
         return locals_[def] = val;
     }
 
-    void visit(const Scope& scope) override {
-        if (entry_ = scope.entry()->isa_mut<Lam>(); !entry_) return;
+    // TOOO needed?
+    using NestPhase<Lam>::visit;
 
-        if (!entry_->is_set()) {
-            child().emit_imported(entry_);
+    void visit(const Nest& nest) {
+        if (!root()->is_set()) {
+            child().emit_imported(root());
             return;
         }
 
+        Scope scope(root());
         auto muts = Scheduler::schedule(scope); // TODO make sure to not compute twice
 
         // make sure that we don't need to rehash later on
@@ -62,22 +64,21 @@ protected:
             if (auto lam = mut->isa<Lam>()) lam2bb_.emplace(lam, BB());
         auto old_size = lam2bb_.size();
 
-        entry_ = scope.entry()->as_mut<Lam>();
-        assert(entry_->ret_var());
+        assert(root()->ret_var());
 
-        auto fct = child().prepare(scope);
+        auto fct = child().prepare();
 
         Scheduler new_scheduler(scope);
         swap(scheduler_, new_scheduler);
 
         for (auto mut : muts) {
             if (auto lam = mut->isa<Lam>(); lam && lam != scope.exit()) {
-                assert(lam == entry_ || Lam::isa_basicblock(lam));
+                assert(lam == root() || Lam::isa_basicblock(lam));
                 child().emit_epilogue(lam);
             }
         }
 
-        child().finalize(scope);
+        child().finalize(nest);
         locals_.clear();
         assert_unused(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
@@ -88,7 +89,6 @@ protected:
     DefMap<Value> globals_;
     DefMap<Type> types_;
     LamMap<BB> lam2bb_;
-    Lam* entry_ = nullptr;
 };
 
 } // namespace mim
