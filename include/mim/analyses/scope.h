@@ -8,9 +8,6 @@
 
 namespace mim {
 
-class CFA;
-class CFG;
-
 /// A @p Scope represents a region of @p Def%s that are live from the view of an @p entry's @p Var.
 /// Transitively, all user's of the @p entry's @p Var are pooled into this @p Scope (see @p defs()).
 /// Both @p entry() is @em NOT part of the @p Scope itself.
@@ -40,11 +37,6 @@ public:
     // clang-format on
     ///@}
 
-    /// @name simple CFA to construct a CFG
-    ///@{
-    const CFG& cfg() const;
-    ///@}
-
     /// Does @p mut's Var occurr free in @p def?
     static bool is_free(Def* mut, const Def* def);
 
@@ -61,7 +53,6 @@ private:
     mutable DefSet free_defs_;
     mutable VarSet free_vars_;
     mutable MutSet free_muts_;
-    mutable std::unique_ptr<const CFG> cfg_;
 };
 
 /// Builds a nesting tree of all *immutables*/binders.

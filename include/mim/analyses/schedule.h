@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "mim/analyses/cfg.h"
 
 namespace mim {
@@ -44,7 +46,7 @@ public:
     /// Order of Mutables within a Scope.
     ///@{
     using Schedule = std::vector<Def*>;
-    static Schedule schedule(const Scope&);
+    static Schedule schedule(const CFG&);
     ///@}
 
     friend void swap(Scheduler& s1, Scheduler& s2) noexcept {
@@ -59,8 +61,8 @@ public:
     }
 
 private:
-    const Scope* scope_     = nullptr;
-    const CFG* cfg_         = nullptr;
+    const Scope* scope_ = nullptr;
+    std::unique_ptr<const CFG> cfg_;
     const DomTree* domtree_ = nullptr;
     DefMap<Def*> early_;
     DefMap<Def*> late_;

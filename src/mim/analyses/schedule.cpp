@@ -1,5 +1,6 @@
 #include "mim/analyses/schedule.h"
 
+#include <memory>
 #include <queue>
 
 #include "mim/world.h"
@@ -13,7 +14,7 @@ namespace mim {
 
 Scheduler::Scheduler(const Scope& s)
     : scope_(&s)
-    , cfg_(&scope().cfg())
+    , cfg_(std::make_unique<CFG>(scope()))
     , domtree_(&cfg().domtree()) {
     std::queue<const Def*> queue;
     DefSet done;
@@ -109,10 +110,10 @@ Def* Scheduler::smart(const Def* def) {
     return smart_[def] = s->mut();
 }
 
-Scheduler::Schedule Scheduler::schedule(const Scope& scope) {
+Scheduler::Schedule Scheduler::schedule(const CFG& cfg) {
     // until we have sth better simply use the RPO of the CFG
     Schedule result;
-    for (auto n : scope.cfg().reverse_post_order()) result.emplace_back(n->mut());
+    for (auto n : cfg.reverse_post_order()) result.emplace_back(n->mut());
 
     return result;
 }

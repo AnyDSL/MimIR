@@ -57,7 +57,8 @@ protected:
         }
 
         Scope scope(root());
-        auto muts = Scheduler::schedule(scope); // TODO make sure to not compute twice
+        CFG cfg(scope);
+        auto muts = Scheduler::schedule(cfg); // TODO make sure to not compute twice
 
         // make sure that we don't need to rehash later on
         for (auto mut : muts)
