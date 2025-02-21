@@ -122,7 +122,7 @@ public:
     std::string emit_bb(BB&, const Def*);
     std::string prepare();
     void prepare(Lam*, std::string_view);
-    void finalize(const Nest&);
+    void finalize();
 
     template<class... Args> void declare(const char* s, Args&&... args) {
         std::ostringstream decl;
@@ -279,7 +279,7 @@ std::string Emitter::prepare() {
     return root()->unique_name();
 }
 
-void Emitter::finalize(const Nest& nest) {
+void Emitter::finalize() {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
             print(bb.head().emplace_back(), "{} = phi {} ", id(phi), convert(phi->type()));

@@ -78,7 +78,7 @@ protected:
             }
         }
 
-        child().finalize(nest);
+        child().finalize();
         locals_.clear();
         assert_unused(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
