@@ -68,7 +68,7 @@ private:
 
     bool is_leaf(const CFNode* n, size_t num) {
         if (num == 1) {
-            for (const auto& succ : cfg().succs(n))
+            for (const auto& succ : n->succs())
                 if (!is_head(succ) && n == succ) return false;
             return true;
         }
@@ -124,20 +124,20 @@ void LoopTreeBuilder::recurse(Head* parent, View<const CFNode*> heads, int depth
         if (auto new_parent = node->template isa<Head>()) recurse(new_parent, new_parent->cf_nodes(), depth + 1);
 }
 
-int LoopTreeBuilder::walk_scc(const CFNode* cur, Head* parent, int depth, int scc_counter) {
-    scc_counter = visit(cur, scc_counter);
+int LoopTreeBuilder::walk_scc(const CFNode* curr, Head* parent, int depth, int scc_counter) {
+    scc_counter = visit(curr, scc_counter);
 
-    for (const auto& succ : cfg().succs(cur)) {
+    for (const auto& succ : curr->succs()) {
         if (is_head(succ)) continue; // this is a backedge
         if (!set_.contains(succ)) {
-            scc_counter  = walk_scc(succ, parent, depth, scc_counter);
-            lowlink(cur) = std::min(lowlink(cur), lowlink(succ));
+            scc_counter   = walk_scc(succ, parent, depth, scc_counter);
+            lowlink(curr) = std::min(lowlink(curr), lowlink(succ));
         } else if (on_stack(succ))
-            lowlink(cur) = std::min(lowlink(cur), lowlink(succ));
+            lowlink(curr) = std::min(lowlink(curr), lowlink(succ));
     }
 
     // root of SCC
-    if (lowlink(cur) == dfs(cur)) {
+    if (lowlink(curr) == dfs(curr)) {
         std::vector<const CFNode*> heads;
 
         // mark all cf_nodes in current SCC (all cf_nodes from back to cur on the stack) as 'InSCC'
@@ -145,7 +145,7 @@ int LoopTreeBuilder::walk_scc(const CFNode* cur, Head* parent, int depth, int sc
         do {
             states_[stack_[b]] |= InSCC;
             ++num;
-        } while (stack_[b--] != cur);
+        } while (stack_[b--] != curr);
 
         // for all cf_nodes in current SCC
         for (size_t i = ++b; i != e; ++i) {
@@ -154,7 +154,7 @@ int LoopTreeBuilder::walk_scc(const CFNode* cur, Head* parent, int depth, int sc
             if (cfg().entry() == n)
                 heads.emplace_back(n); // entries are axiomatically heads
             else {
-                for (const auto& pred : cfg().preds(n)) {
+                for (const auto& pred : n->preds()) {
                     // all backedges are also inducing heads
                     // but do not yet mark them globally as head -- we are still running through the SCC
                     if (!in_scc(pred)) {
@@ -165,7 +165,7 @@ int LoopTreeBuilder::walk_scc(const CFNode* cur, Head* parent, int depth, int sc
             }
         }
 
-        if (is_leaf(cur, num)) {
+        if (is_leaf(curr, num)) {
             assert(heads.size() == 1);
             looptree_.leaves_[heads.front()] = new Leaf(index_++, parent, depth, heads);
         } else

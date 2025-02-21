@@ -8,7 +8,7 @@ void DomTree::create() {
 
     // all idoms different from entry are set to their first found dominating pred
     for (auto n : cfg().reverse_post_order().subspan(1)) {
-        for (auto pred : cfg().preds(n)) {
+        for (auto pred : n->preds()) {
             if (cfg().index(pred) < cfg().index(n)) {
                 idoms_[n] = pred;
                 goto outer_loop;
@@ -23,7 +23,7 @@ outer_loop:;
 
         for (auto n : cfg().reverse_post_order().subspan(1)) {
             const CFNode* new_idom = nullptr;
-            for (auto pred : cfg().preds(n)) new_idom = new_idom ? least_common_ancestor(new_idom, pred) : pred;
+            for (auto pred : n->preds()) new_idom = new_idom ? least_common_ancestor(new_idom, pred) : pred;
 
             assert(new_idom);
             if (idom(n) != new_idom) {

@@ -27,11 +27,14 @@ public:
         , gid_(gid_counter_++) {}
 
     uint64_t gid() const { return gid_; }
+    size_t index() const { return index_; }
     Def* mut() const { return mut_; }
-
-private:
     const CFNodes& preds() const { return preds_; }
     const CFNodes& succs() const { return succs_; }
+    size_t num_preds() const { return preds().size(); }
+    size_t num_succs() const { return succs().size(); }
+
+private:
     void link(const CFNode* other) const;
 
     mutable size_t index_ = -1; ///< RPO index in a CFG.
@@ -74,24 +77,12 @@ public:
 
 private:
     void verify();
-    const CFNodes& preds(Def* mut) const {
-        auto cn = nodes_.find(mut)->second;
-        assert(cn);
-        return cn->preds();
-    }
-    const CFNodes& succs(Def* mut) const {
-        auto cn = nodes_.find(mut)->second;
-        assert(cn);
-        return cn->succs();
-    }
     const CFNode* entry() const { return entry_; }
-    const CFNode* exit() const { return exit_; }
     const CFNode* node(Def*);
 
     const Scope& scope_;
     MutMap<const CFNode*> nodes_;
     const CFNode* entry_;
-    const CFNode* exit_;
     mutable std::unique_ptr<const CFG> cfg_;
 
     friend class CFG;
@@ -117,16 +108,7 @@ public:
 
     const CFA& cfa() const { return cfa_; }
     size_t size() const { return cfa().size(); }
-    const CFNodes& preds(const CFNode* n) const;
-    const CFNodes& succs(const CFNode* n) const;
-    const CFNodes& preds(Def* mut) const { return preds(cfa()[mut]); }
-    const CFNodes& succs(Def* mut) const { return succs(cfa()[mut]); }
-    size_t num_preds(const CFNode* n) const { return preds(n).size(); }
-    size_t num_succs(const CFNode* n) const { return succs(n).size(); }
-    size_t num_preds(Def* mut) const { return num_preds(cfa()[mut]); }
-    size_t num_succs(Def* mut) const { return num_succs(cfa()[mut]); }
     const CFNode* entry() const { return cfa().entry(); }
-
     auto reverse_post_order() const { return rpo_.array().view(); }
     auto post_order() const { return std::views::reverse(rpo_.array()); }
     /// Maps from reverse post-order index to CFNode.

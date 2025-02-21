@@ -104,7 +104,7 @@ size_t CFG::post_order_visit(const CFNode* n, size_t i) {
     auto& n_index = n->index_;
     n_index       = size_t(-2);
 
-    for (auto succ : succs(n))
+    for (auto succ : n->succs())
         if (index(succ) == size_t(-1)) i = post_order_visit(succ, i);
 
     n_index = i - 1;
@@ -113,8 +113,6 @@ size_t CFG::post_order_visit(const CFNode* n, size_t i) {
 }
 
 // clang-format off
-const CFNodes& CFG::preds(const CFNode* n) const { assert(n != nullptr); return n->preds(); }
-const CFNodes& CFG::succs(const CFNode* n) const { assert(n != nullptr); return n->succs(); }
 const DomTree& CFG::domtree() const { return lazy_init(this, domtree_); }
 const LoopTree& CFG::looptree() const { return lazy_init(this, looptree_); }
 const DomFrontier& CFG::domfrontier() const { return lazy_init(this, domfrontier_); }
