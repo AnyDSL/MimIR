@@ -14,7 +14,7 @@ private:
 
     /// Internal wrapper for Emitter::emit that schedules @p def and invokes `child().emit_bb`.
     Value emit_(const Def* def) {
-        auto place = scheduler_.smart(def);
+        auto place = scheduler_.smart(curr_lam_, def);
         auto& bb   = lam2bb_[place->as_mut<Lam>()];
         return child().emit_bb(bb, def);
     }
@@ -70,6 +70,7 @@ protected:
 
         for (auto mut : muts) {
             if (auto lam = mut->isa<Lam>()) {
+                curr_lam_ = lam;
                 assert(lam == root() || Lam::isa_basicblock(lam));
                 child().emit_epilogue(lam);
             }
@@ -80,6 +81,7 @@ protected:
         assert_unused(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
 
+    Lam* curr_lam_ = nullptr;
     std::ostream& ostream_;
     Scheduler scheduler_;
     DefMap<Value> locals_;

@@ -70,7 +70,7 @@ Def* Scheduler::early(const Def* def) {
     return early_[def] = result;
 }
 
-Def* Scheduler::late(const Def* def) {
+Def* Scheduler::late(Def* curr_mut, const Def* def) {
     if (auto i = late_.find(def); i != late_.end()) return i->second;
     if (def->dep_const() || !nest().contains(def)) return late_[def] = nest().root()->mut();
 
@@ -81,19 +81,21 @@ Def* Scheduler::late(const Def* def) {
         result = var->mut();
     } else {
         for (auto use : uses(def)) {
-            auto mut = late(use);
+            auto mut = late(curr_mut, use);
             result   = result ? domtree().least_common_ancestor(cfg(result), cfg(mut))->mut() : mut;
         }
     }
 
+    if (!result) result = curr_mut;
+
     return late_[def] = result;
 }
 
-Def* Scheduler::smart(const Def* def) {
+Def* Scheduler::smart(Def* curr_mut, const Def* def) {
     if (auto i = smart_.find(def); i != smart_.end()) return i->second;
 
     auto e = cfg(early(def));
-    auto l = cfg(late(def));
+    auto l = cfg(late(curr_mut, def));
     auto s = l;
 
     int depth = cfg().looptree()[l]->depth();

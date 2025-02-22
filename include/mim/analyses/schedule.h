@@ -31,17 +31,16 @@ public:
     const CFNode* cfg(Def* mut) const { return cfg()[mut]; }
     const DomTree& domtree() const { return *domtree_; }
     const Uses& uses(const Def* def) const {
-        auto i = def2uses_.find(def);
-        assert(i != def2uses_.end());
-        return i->second;
+        if (auto i = def2uses_.find(def); i != def2uses_.end()) return i->second;
+        return empty_;
     }
     ///@}
 
     /// @name Compute Schedules
     ///@{
     Def* early(const Def*);
-    Def* late(const Def*);
-    Def* smart(const Def*);
+    Def* late(Def* curr, const Def*);
+    Def* smart(Def* curr, const Def*);
     ///@}
 
     /// @name Schedule Mutabales
@@ -66,6 +65,7 @@ private:
     const Nest* nest_ = nullptr;
     std::unique_ptr<const CFG> cfg_;
     const DomTree* domtree_ = nullptr;
+    Uses empty_;
     DefMap<Def*> early_;
     DefMap<Def*> late_;
     DefMap<Def*> smart_;
