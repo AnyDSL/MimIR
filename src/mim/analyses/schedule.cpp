@@ -61,7 +61,7 @@ Def* Scheduler::early(const Def* def) {
 
     auto result = root();
     for (auto op : def->extended_ops()) {
-        if (!op->isa_mut() && !nest().contains(op)) {
+        if (!op->isa_mut() && nest().contains(op)) {
             auto mut = early(op);
             if (domtree().depth(cfg(mut)) > domtree().depth(cfg(result))) result = mut;
         }
