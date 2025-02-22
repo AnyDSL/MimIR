@@ -13,7 +13,7 @@ public:
     /// @name Construction
     ///@{
     Scheduler() = default;
-    explicit Scheduler(const Scope&);
+    explicit Scheduler(const Nest&);
     Scheduler(const Scheduler&) = delete;
     Scheduler(Scheduler&& other) noexcept
         : Scheduler() {
@@ -24,7 +24,9 @@ public:
 
     /// @name Getters
     ///@{
-    const Scope& scope() const { return *scope_; }
+    World& world() { return nest().world(); }
+    const Nest& nest() const { return *nest_; }
+    Def* root() const { return nest_->root()->mut(); }
     const CFG& cfg() const { return *cfg_; }
     const CFNode* cfg(Def* mut) const { return cfg()[mut]; }
     const DomTree& domtree() const { return *domtree_; }
@@ -51,7 +53,7 @@ public:
 
     friend void swap(Scheduler& s1, Scheduler& s2) noexcept {
         using std::swap;
-        swap(s1.scope_, s2.scope_);
+        swap(s1.nest_, s2.nest_);
         swap(s1.cfg_, s2.cfg_);
         swap(s1.domtree_, s2.domtree_);
         swap(s1.early_, s2.early_);
@@ -61,7 +63,7 @@ public:
     }
 
 private:
-    const Scope* scope_ = nullptr;
+    const Nest* nest_ = nullptr;
     std::unique_ptr<const CFG> cfg_;
     const DomTree* domtree_ = nullptr;
     DefMap<Def*> early_;

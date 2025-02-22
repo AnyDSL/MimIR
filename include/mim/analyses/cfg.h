@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "mim/analyses/scope.h"
+#include "mim/analyses/nest.h"
 #include "mim/util/indexmap.h"
 #include "mim/util/indexset.h"
 
@@ -67,11 +67,11 @@ public:
     CFG(const CFG&)     = delete;
     CFG& operator=(CFG) = delete;
 
-    explicit CFG(const Scope&);
+    explicit CFG(const Nest&);
     ~CFG();
 
-    World& world() const { return scope().world(); }
-    const Scope& scope() const { return scope_; }
+    World& world() const { return nest().world(); }
+    const Nest& nest() const { return nest_; }
     const auto& nodes() const { return nodes_; }
     size_t size() const { return nodes_.size(); }
     const CFNode* entry() const { return entry_; }
@@ -96,7 +96,7 @@ private:
     size_t post_order_visit(const CFNode* n, size_t i);
     void verify();
 
-    const Scope& scope_;
+    const Nest& nest_;
     MutMap<const CFNode*> nodes_;
     const CFNode* entry_;
     std::unique_ptr<Map<const CFNode*>> rpo_;

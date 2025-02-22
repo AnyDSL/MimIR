@@ -290,8 +290,7 @@ void Emitter::finalize() {
         }
     }
 
-    Scope scope(root());
-    CFG cfg(scope);
+    CFG cfg(nest());
     for (auto mut : Scheduler::schedule(cfg)) {
         if (auto lam = mut->isa_mut<Lam>()) {
             assert(lam2bb_.contains(lam));

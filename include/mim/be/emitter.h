@@ -47,17 +47,13 @@ protected:
         return locals_[def] = val;
     }
 
-    // TOOO needed?
-    using NestPhase<Lam>::visit;
-
-    void visit(const Nest& nest) {
+    void visit(const Nest& nest) override {
         if (!root()->is_set()) {
             child().emit_imported(root());
             return;
         }
 
-        Scope scope(root());
-        CFG cfg(scope);
+        CFG cfg(nest);
         auto muts = Scheduler::schedule(cfg); // TODO make sure to not compute twice
 
         // make sure that we don't need to rehash later on
@@ -69,7 +65,7 @@ protected:
 
         auto fct = child().prepare();
 
-        Scheduler new_scheduler(scope);
+        Scheduler new_scheduler(nest);
         swap(scheduler_, new_scheduler);
 
         for (auto mut : muts) {

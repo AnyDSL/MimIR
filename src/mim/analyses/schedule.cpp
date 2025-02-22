@@ -12,22 +12,29 @@
 
 namespace mim {
 
-Scheduler::Scheduler(const Scope& s)
-    : scope_(&s)
-    , cfg_(std::make_unique<CFG>(scope()))
+Scheduler::Scheduler(const Nest& n)
+    : nest_(&n)
+    , cfg_(std::make_unique<CFG>(nest()))
     , domtree_(&cfg().domtree()) {
     std::queue<const Def*> queue;
     DefSet done;
+    n.dump_vars();
 
     auto enqueue = [&](const Def* def, size_t i, const Def* op) {
-        if (scope().bound(op)) {
+        if (nest().contains(op)) {
             assert_emplace(def2uses_[op], def, i);
             if (auto [_, ins] = done.emplace(op); ins) queue.push(op);
         }
     };
 
     for (auto n : cfg().reverse_post_order()) {
+        n->mut()->dump();
+        n->mut()->vars(); // HACK
         queue.push(n->mut());
+        if (auto lam = n->mut()->isa<Lam>(); lam && lam->is_set()) {
+            if (auto app = lam->body()->isa<App>()) app->args(); // HACK
+        }
+
         assert_emplace(done, n->mut());
     }
 
@@ -49,10 +56,10 @@ Scheduler::Scheduler(const Scope& s)
 
 Def* Scheduler::early(const Def* def) {
     if (auto i = early_.find(def); i != early_.end()) return i->second;
-    if (def->dep_const() || !scope().bound(def)) return early_[def] = scope().entry();
+    if (def->dep_const() || !nest().contains(def)) return early_[def] = root();
     if (auto var = def->isa<Var>()) return early_[def] = var->mut();
 
-    auto result = scope().entry();
+    auto result = root();
     for (auto op : def->extended_ops()) {
         if (!op->isa_mut() && def2uses_.find(op) != def2uses_.end()) {
             auto mut = early(op);
@@ -65,7 +72,7 @@ Def* Scheduler::early(const Def* def) {
 
 Def* Scheduler::late(const Def* def) {
     if (auto i = late_.find(def); i != late_.end()) return i->second;
-    if (def->dep_const() || !scope().bound(def)) return early_[def] = scope().entry();
+    if (def->dep_const() || !nest().contains(def)) return early_[def] = root();
 
     Def* result = nullptr;
     if (auto mut = def->isa_mut()) {
@@ -96,7 +103,7 @@ Def* Scheduler::smart(const Def* def) {
         i = idom;
 
         if (i == nullptr) {
-            scope_->world().WLOG("this should never occur - don't know where to put {}", def);
+            world().WLOG("this should never occur - don't know where to put {}", def);
             s = l;
             break;
         }

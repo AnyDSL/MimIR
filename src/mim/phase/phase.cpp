@@ -1,5 +1,7 @@
 #include "mim/phase/phase.h"
 
+#include "mim/analyses/scope.h"
+
 namespace mim {
 
 void Phase::run() {

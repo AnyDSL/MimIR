@@ -3,10 +3,13 @@
 #include "mim/def.h"
 #include "mim/rewrite.h"
 
-#include "mim/analyses/scope.h"
+#include "mim/analyses/nest.h"
 #include "mim/pass/pass.h"
 
 namespace mim {
+
+class Nest;
+class Scope;
 
 class World;
 
@@ -207,14 +210,13 @@ public:
     const Nest& nest() const { return *nest_; }
     virtual void visit(const Nest&) = 0;
 
-protected:
-    void visit(M* mut) override {
+private:
+    void visit(M* mut) override final {
         Nest nest(mut);
         nest_ = &nest;
         visit(nest);
     }
 
-private:
     const Nest* nest_;
 };
 

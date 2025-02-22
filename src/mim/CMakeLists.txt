@@ -18,6 +18,7 @@ target_sources(libmim
         analyses/domfrontier.cpp
         analyses/domtree.cpp
         analyses/looptree.cpp
+        analyses/nest.cpp
         analyses/schedule.cpp
         analyses/scope.cpp
         ast/ast.cpp

@@ -157,7 +157,7 @@ public:
         std::copy(begin, end, db);
         std::sort(db, de, GIDLt<T>());
         auto di          = std::unique(db, de);
-        auto actual_size = std::distance(db, di + 1);
+        auto actual_size = std::distance(db, di);
         data->size       = actual_size; // correct size
         return unify(data, state, size - actual_size);
     }

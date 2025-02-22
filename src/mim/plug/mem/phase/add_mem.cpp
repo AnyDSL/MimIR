@@ -1,8 +1,7 @@
 #include "mim/plug/mem/phase/add_mem.h"
 
-#include <memory>
-
 #include <mim/analyses/schedule.h>
+#include <mim/analyses/scope.h>
 
 #include "mim/plug/mem/mem.h"
 
@@ -66,7 +65,8 @@ const Def* rewrite_apped_mut_lam_in_tuple(const Def* def,
 void AddMem::visit(const Scope& scope) {
     if (auto entry = scope.entry()->isa_mut<Lam>()) {
         scope.free_muts(); // cache this.
-        sched_ = Scheduler{scope};
+        Nest nest(scope.entry());
+        sched_ = Scheduler{nest};
         add_mem_to_lams(entry, entry);
     }
 }
@@ -146,7 +146,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         if (!lam->is_set()) return lam;
         world().DLOG("rewrite lam {}", lam);
 
-        bool is_bound = sched_.scope().bound(lam) || lam == curr_lam;
+        bool is_bound = sched_.nest().contains(lam) || lam == curr_lam;
 
         if (new_lam == lam) // if not stubbed yet
             if (auto new_pi = rewrite_pi(pi); new_pi != pi) new_lam = lam->stub(new_pi);

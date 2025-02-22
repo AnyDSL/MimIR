@@ -23,9 +23,9 @@ std::ostream& operator<<(std::ostream& os, const CFNode* n) { return os << n->mu
 
 //------------------------------------------------------------------------------
 
-CFG::CFG(const Scope& scope)
-    : scope_(scope)
-    , entry_(node(scope.entry())) {
+CFG::CFG(const Nest& nest)
+    : nest_(nest)
+    , entry_(node(nest.root()->mut())) {
     std::queue<Def*> cfg_queue;
     MutSet cfg_done;
 
@@ -33,7 +33,7 @@ CFG::CFG(const Scope& scope)
         if (mut->is_set() && cfg_done.emplace(mut).second) cfg_queue.push(mut);
     };
 
-    cfg_enqueue(scope.entry());
+    cfg_enqueue(nest.root()->mut());
 
     while (!cfg_queue.empty()) {
         auto src = pop(cfg_queue);
@@ -43,7 +43,7 @@ CFG::CFG(const Scope& scope)
         auto enqueue = [&](const Def* def) {
             if (def->isa<Var>()) return;
             // TODO maybe optimize a little bit by using the order
-            if (scope.bound(def) && done.emplace(def).second) {
+            if (nest.contains(def) && done.emplace(def).second) {
                 if (auto dst = def->isa_mut()) {
                     cfg_enqueue(dst);
                     node(src)->link(node(dst));
