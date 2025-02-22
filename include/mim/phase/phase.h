@@ -211,7 +211,7 @@ public:
     virtual void visit(const Nest&) = 0;
 
 private:
-    void visit(M* mut) override final {
+    void visit(M* mut) final {
         Nest nest(mut);
         nest_ = &nest;
         visit(nest);
