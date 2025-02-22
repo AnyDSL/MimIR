@@ -64,7 +64,7 @@ Def* Scheduler::early(const Def* def) {
 
 Def* Scheduler::late(const Def* def) {
     if (auto i = late_.find(def); i != late_.end()) return i->second;
-    if (def->dep_const() || !scope().bound(def)) return early_[def] = scope().entry();
+    if (def->dep_const() || !scope().bound(def)) return late_[def] = scope().entry();
 
     Def* result = nullptr;
     if (auto mut = def->isa_mut()) {
