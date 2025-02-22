@@ -178,7 +178,7 @@ $(function(){initNavTree('schedule_8cpp_source.html',''); initResizable(true); }
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">auto</span> result = scope().entry();</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a39b398b0e5b70f5021d8b7d708f17477">extended_ops</a>()) {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">if</span> (!op-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">isa_mut</a>() &amp;&amp; def2uses_.find(op) != def2uses_.end()) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">if</span> (!op-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">isa_mut</a>() &amp;&amp; scope().bound(op)) {</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keyword">auto</span> mut = early(op);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            <span class="keywordflow">if</span> (domtree().depth(cfg(mut)) &gt; domtree().depth(cfg(result))) result = mut;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        }</div>
