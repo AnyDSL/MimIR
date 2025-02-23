@@ -62,13 +62,9 @@ const Def* rewrite_apped_mut_lam_in_tuple(const Def* def,
 } // namespace
 
 // Entry point of the phase.
-void AddMem::visit(const Scope& scope) {
-    if (auto entry = scope.entry()->isa_mut<Lam>()) {
-        scope.free_muts(); // cache this.
-        Nest nest(scope.entry());
-        sched_ = Scheduler{nest};
-        add_mem_to_lams(entry, entry);
-    }
+void AddMem::visit(const Nest& nest) {
+    sched_ = Scheduler{nest};
+    add_mem_to_lams(root(), root());
 }
 
 const Def* AddMem::mem_for_lam(Lam* lam) const {

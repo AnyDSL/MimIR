@@ -5,7 +5,6 @@
 #include "mim/analyses/scope.h"
 
 #include "mim/plug/mem/autogen.h"
-#include "mim/plug/mem/mem.h"
 
 using namespace std::literals;
 
