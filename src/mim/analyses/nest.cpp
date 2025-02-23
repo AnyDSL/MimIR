@@ -41,6 +41,16 @@ Nest::Node* Nest::find_parent(Def* mut, Node* begin) {
     return nullptr;
 }
 
+bool Nest::is_recursive() const {
+    for (const auto& [mut, _] : nodes()) {
+        for (auto op : mut->extended_ops()) {
+            for (auto mut : op->local_muts())
+                if (mut == root()->mut()) return true;
+        }
+    }
+    return false;
+}
+
 Vars Nest::vars() const {
     if (!vars_) {
         auto vec = Vector<const Var*>();
