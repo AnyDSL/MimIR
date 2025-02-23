@@ -536,7 +536,6 @@ private:
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
-    void finalize();
     bool equal(const Def* other) const;
 
     uint32_t mark_ = 0;

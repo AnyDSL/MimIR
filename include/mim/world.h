@@ -577,7 +577,6 @@ private:
 #ifdef MIM_ENABLE_CHECKS
         if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
-        def->finalize();
         return def;
     }
 

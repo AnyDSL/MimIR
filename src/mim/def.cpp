@@ -29,7 +29,13 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     , valid_(false)
     , num_ops_(ops.size())
     , type_(type) {
-    std::ranges::copy(ops, ops_ptr());
+    if (type) dep_ |= type->dep();
+    for (size_t i = 0, e = ops.size(); i != e; ++i) {
+        auto op      = ops[i];
+        ops_ptr()[i] = op;
+        dep_ |= op->dep();
+    }
+
     gid_ = world().next_gid();
 
     if (auto var = isa<Var>()) {
@@ -233,11 +239,6 @@ Ref Def::refine(size_t i, Ref new_op) const {
 /*
  * Def - set
  */
-
-void Def::finalize() {
-    for (auto op : partial_ops()) // TODO
-        if (op) dep_ |= op->dep();
-}
 
 // clang-format off
 Def* Def::  set(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i)   set(i, ops[i]); return this; }
