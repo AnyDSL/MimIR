@@ -1,5 +1,6 @@
 #include "mim/plug/clos/pass/clos_conv_prep.h"
 
+#include <mim/analyses/nest.h>
 #include <mim/pass/eta_exp.h>
 
 #include "mim/plug/clos/clos.h"
@@ -39,10 +40,9 @@ void ClosConvPrep::enter() {
     if (Pi::isa_returning(curr_mut())) {
         lam2fscope_[curr_mut()] = curr_mut();
         world().DLOG("scope {} -> {}", curr_mut(), curr_mut());
-        scope_ = std::make_unique<Scope>(curr_mut());
-        for (auto def : scope_->bound()) {
-            assert(def);
-            if (auto bb_lam = Lam::isa_mut_basicblock(def)) {
+        auto nest = Nest(curr_mut());
+        for (const auto& [mut, _] : nest.nodes()) {
+            if (auto bb_lam = Lam::isa_mut_basicblock(mut)) {
                 world().DLOG("scope {} -> {}", bb_lam, curr_mut());
                 lam2fscope_[bb_lam] = curr_mut();
             }

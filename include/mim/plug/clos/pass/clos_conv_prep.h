@@ -1,9 +1,6 @@
 #pragma once
 
-#include <mim/analyses/scope.h>
 #include <mim/pass/pass.h>
-
-#include "mim/util/util.h"
 
 #include "mim/plug/clos/clos.h"
 
@@ -54,7 +51,6 @@ private:
     DefMap<Lam*> old2wrapper_;
     DefSet wrapper_;
     Lam2Lam lam2fscope_;
-    std::unique_ptr<Scope> scope_;
     bool ignore_ = false;
 };
 
