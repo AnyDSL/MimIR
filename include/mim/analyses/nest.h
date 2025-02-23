@@ -51,7 +51,6 @@ public:
     World& world() const { return world_; }
     const Node* root() const { return root_; }
     Vars vars() const; ///< All Var%s occuring in this Nest - computed lazily.
-    void dump_vars() const;
     bool contains(const Def* def) const { return vars().intersects(def->free_vars()); }
     bool is_recursive() const;
     ///@}

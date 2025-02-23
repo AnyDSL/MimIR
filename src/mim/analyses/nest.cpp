@@ -63,12 +63,4 @@ Vars Nest::vars() const {
     return vars_;
 }
 
-void Nest::dump_vars() const {
-    for (auto sep = ""; auto var : vars()) {
-        std::cout << sep << var->gid();
-        sep = ", ";
-    }
-    std::cout << std::endl;
-}
-
 } // namespace mim

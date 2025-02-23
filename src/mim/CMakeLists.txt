@@ -20,7 +20,6 @@ target_sources(libmim
         analyses/looptree.cpp
         analyses/nest.cpp
         analyses/schedule.cpp
-        analyses/scope.cpp
         ast/ast.cpp
         ast/bind.cpp
         ast/emit.cpp

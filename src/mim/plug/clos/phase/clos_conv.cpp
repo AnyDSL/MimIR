@@ -2,8 +2,6 @@
 
 #include "mim/check.h"
 
-#include "mim/analyses/scope.h"
-
 #include "mim/plug/mem/autogen.h"
 
 using namespace std::literals;
@@ -24,6 +22,28 @@ bool is_memop_res(const Def* fd) {
 }
 
 } // namespace
+
+DefSet free_defs(const Nest& nest) {
+    DefSet bound;
+    DefSet free;
+    std::queue<const Def*> queue;
+    queue.emplace(nest.root()->mut());
+
+    while (!queue.empty()) {
+        auto def = pop(queue);
+        for (auto op : def->extended_ops()) {
+            if (op->dep_const()) {
+                // do nothing
+            } else if (nest.contains(op)) {
+                if (auto [_, ins] = bound.emplace(op); ins) queue.emplace(op);
+            } else {
+                free.emplace(op);
+            }
+        }
+    }
+
+    return free;
+}
 
 /*
  * Free variable analysis
@@ -62,9 +82,9 @@ std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* mut, NodeQueue& w
     w.DLOG("FVA: create node: {}", mut);
     p->second      = std::make_unique<Node>(Node{mut, {}, {}, {}, 0});
     auto node      = p->second.get();
-    auto scope     = Scope(mut);
+    auto nest      = Nest(mut);
     bool init_node = false;
-    for (auto v : scope.free_defs()) split_fd(node, v, init_node, worklist);
+    for (auto v : free_defs(nest)) split_fd(node, v, init_node, worklist);
     if (!init_node) {
         worklist.push(node);
         w.DLOG("FVA: init {}", mut);

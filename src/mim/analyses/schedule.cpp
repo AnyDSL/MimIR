@@ -8,7 +8,6 @@
 #include "mim/analyses/cfg.h"
 #include "mim/analyses/domtree.h"
 #include "mim/analyses/looptree.h"
-#include "mim/analyses/scope.h"
 
 namespace mim {
 
@@ -18,7 +17,6 @@ Scheduler::Scheduler(const Nest& n)
     , domtree_(&cfg().domtree()) {
     std::queue<const Def*> queue;
     DefSet done;
-    n.dump_vars();
 
     auto enqueue = [&](const Def* def, size_t i, const Def* op) {
         if (nest().contains(op)) {

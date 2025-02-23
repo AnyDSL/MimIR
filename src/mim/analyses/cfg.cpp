@@ -5,7 +5,6 @@
 #include "mim/analyses/domfrontier.h"
 #include "mim/analyses/domtree.h"
 #include "mim/analyses/looptree.h"
-#include "mim/analyses/scope.h"
 #include "mim/util/util.h"
 
 namespace mim {
