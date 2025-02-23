@@ -8,6 +8,43 @@ namespace mim {
 
 class DomTree;
 
+/// References a user.
+/// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
+class Use {
+public:
+    static constexpr size_t Type = -1_s;
+
+    Use() {}
+    Use(const Def* def, size_t index)
+        : def_(def)
+        , index_(index) {}
+
+    size_t index() const { return index_; }
+    const Def* def() const { return def_; }
+    operator const Def*() const { return def_; }
+    const Def* operator->() const { return def_; }
+    bool operator==(Use other) const { return this->def_ == other.def_ && this->index_ == other.index_; }
+
+private:
+    const Def* def_;
+    size_t index_;
+};
+
+struct UseHash {
+    inline size_t operator()(Use use) const {
+        if constexpr (sizeof(size_t) == 8)
+            return hash((u64(use.index())) << 32_u64 | u64(use->gid()));
+        else
+            return hash_combine(hash_begin(u16(use.index())), use->gid());
+    }
+};
+
+struct UseEq {
+    bool operator()(Use u1, Use u2) const { return u1 == u2; }
+};
+
+using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
+
 class Scheduler {
 public:
     /// @name Construction

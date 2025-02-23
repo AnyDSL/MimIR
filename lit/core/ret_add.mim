@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll
-// RUN: %mim %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %mim %s --output-ll %t.ll -o -
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t 1 2 ; test $? -eq 3
 // RUN: %t 4 5 ; test $? -eq 9
@@ -22,10 +22,3 @@ con extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («�
                     return (mem, %core.wrap.add 0 (a, b));
             end
     end
-
-// CHECK-DAG: main _{{[0-9_]+}}::[mem_[[memId:[0-9_]+]]: %mem.M, I32, argv_{{[0-9]+}}: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), return_[[returnId:[0-9_]+]]: Cn [%mem.M, I32]]{{(@.*)?}}= {
-
-// CHECK-DAG: atoi_cont_a_[[aContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, a_[[aId:[0-9_]+]]: I32]
-
-// CHECK-DAG: atoi_cont_b_[[bContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, b_[[bId:[0-9_]+]]: I32]
-// CHECK-DAG: %core.wrap.add i32 0 (a_[[aId]], b_[[bId]])

@@ -26,13 +26,7 @@ Scheduler::Scheduler(const Nest& n)
     };
 
     for (auto n : cfg().reverse_post_order()) {
-        n->mut()->dump();
-        n->mut()->vars(); // HACK
         queue.push(n->mut());
-        if (auto lam = n->mut()->isa<Lam>(); lam && lam->is_set()) {
-            if (auto app = lam->body()->isa<App>()) app->args(); // HACK
-        }
-
         assert_emplace(done, n->mut());
     }
 

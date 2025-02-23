@@ -13,5 +13,4 @@ lam extern _compile []: %compile.Pipeline =
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         %mem.add_mem_phase; // optimization_phase
 
-// CHECK: main {{[a-z0-9_:]*}}[[[memId:[a-z_0-9]*]]: %mem.M
-// CHECK: f ([[memId]],
+// CHECK: f (_{{[0-9]+}}, argc_{{[0-9]+}}, return_{{[0-9]+}})

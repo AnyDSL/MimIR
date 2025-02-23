@@ -106,38 +106,6 @@ using NormalizeFn = Ref (*)(Ref, Ref, Ref);
 
 //------------------------------------------------------------------------------
 
-/// References a user.
-/// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
-class Use {
-public:
-    static constexpr size_t Type = -1_s;
-
-    Use() {}
-    Use(const Def* def, size_t index)
-        : def_(def)
-        , index_(index) {}
-
-    size_t index() const { return index_; }
-    const Def* def() const { return def_; }
-    operator const Def*() const { return def_; }
-    const Def* operator->() const { return def_; }
-    bool operator==(Use other) const { return this->def_ == other.def_ && this->index_ == other.index_; }
-
-private:
-    const Def* def_;
-    size_t index_;
-};
-
-struct UseHash {
-    inline size_t operator()(Use) const;
-};
-
-struct UseEq {
-    bool operator()(Use u1, Use u2) const { return u1 == u2; }
-};
-
-using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
-
 // TODO remove or fix this
 enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
@@ -315,12 +283,6 @@ public:
     Defs partial_ops() const { return Defs(ops_ptr() - 1, num_ops_ + 1); }
     Ref partial_op(size_t i) const { return partial_ops()[i]; }
     size_t num_partial_ops() const { return partial_ops().size(); }
-    ///@}
-
-    /// @name uses
-    ///@{
-    const Uses& uses() const { return uses_; }
-    size_t num_uses() const { return uses().size(); }
     ///@}
 
     /// @name dep
@@ -603,7 +565,6 @@ private:
     u32 gid_;
     u32 num_ops_;
     size_t hash_;
-    mutable Uses uses_;
 
     union LocalOrFreeVars {
         LocalOrFreeVars() {}
@@ -896,12 +857,5 @@ private:
 
     friend class World;
 };
-
-size_t UseHash::operator()(Use use) const {
-    if constexpr (sizeof(size_t) == 8)
-        return hash((u64(use.index())) << 32_u64 | u64(use->gid()));
-    else
-        return hash_combine(hash_begin(u16(use.index())), use->gid());
-}
 
 } // namespace mim

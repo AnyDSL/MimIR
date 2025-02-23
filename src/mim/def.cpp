@@ -73,7 +73,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     vars_.free         = Vars();
     muts_.fv_consumers = Muts();
     std::fill_n(ops_ptr(), num_ops, nullptr);
-    if (!type->dep_const()) type->uses_.emplace(this, Use::Type);
 }
 
 Nat::Nat(World& world)
@@ -236,16 +235,8 @@ Ref Def::refine(size_t i, Ref new_op) const {
  */
 
 void Def::finalize() {
-    for (size_t i = Use::Type; auto op : partial_ops()) {
-        if (op) {
-            dep_ |= op->dep();
-            if (!op->dep_const()) {
-                const auto& p = op->uses_.emplace(this, i);
-                assert_unused(p.second);
-            }
-        }
-        ++i;
-    }
+    for (auto op : partial_ops()) // TODO
+        if (op) dep_ |= op->dep();
 }
 
 // clang-format off
@@ -260,19 +251,10 @@ Def* Def::set(size_t i, Ref def) {
 #ifndef NDEBUG
     curr_op_ = (curr_op_ + 1) % num_ops();
 #endif
-    ops_ptr()[i]  = def;
-    const auto& p = def->uses_.emplace(this, i);
-    assert_unused(p.second);
+    ops_ptr()[i] = def;
 
     if (i == num_ops() - 1) { // set last, op so check kind
-        if (auto t = check(); t != type()) {
-            if (!type_->dep_const()) {
-                assert(type_->uses_.contains(Use(this, Use::Type)));
-                type_->uses_.erase(Use(this, Use::Type));
-            }
-            type_ = t;
-            t->uses_.emplace(this, Use::Type);
-        }
+        if (auto t = check(); t != type()) type_ = t;
     }
 
     return this;
@@ -296,8 +278,6 @@ Def* Def::unset() {
 
 Def* Def::unset(size_t i) {
     invalidate();
-    assert(ops_ptr()[i] && ops_ptr()[i]->uses_.contains(Use(this, i)));
-    ops_ptr()[i]->uses_.erase(Use(this, i));
     ops_ptr()[i] = nullptr;
     return this;
 }
@@ -512,8 +492,6 @@ nat_t Def::num_tprojs() const {
 }
 
 Ref Def::proj(nat_t a, nat_t i) const {
-    static constexpr int Search_In_Uses_Threshold = 8;
-
     World& w = world();
 
     if (auto arr = isa<Arr>()) {
@@ -531,16 +509,7 @@ Ref Def::proj(nat_t a, nat_t i) const {
     }
 
     if (isa<Tuple>() || isa<Sigma>()) return op(i);
-
-    if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
-        for (auto u : uses()) {
-            if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
-                if (auto index = Lit::isa(ex->index()); index && *index == i) return ex;
-            }
-        }
-
-        if (w.is_frozen()) return nullptr;
-    }
+    if (w.is_frozen()) return nullptr;
 
     return w.extract(this, a, i);
 }
