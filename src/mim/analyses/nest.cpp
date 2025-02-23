@@ -63,4 +63,12 @@ Vars Nest::vars() const {
     return vars_;
 }
 
+const Nest::Node* Nest::lca(const Node* n, const Node* m) {
+    while (n != m) {
+        while (n->depth() < m->depth()) m = m->parent();
+        while (m->depth() < n->depth()) n = n->parent();
+    }
+    return n;
+}
+
 } // namespace mim

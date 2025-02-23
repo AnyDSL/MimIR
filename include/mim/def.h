@@ -381,9 +381,9 @@ public:
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();
-    bool is_open() const;   ///< Has free_vars()?
-    bool is_closed() const; ///< Has no free_vars()?
-    Muts users() { return muts_.users; }
+    Muts users() { return muts_.users; } ///< Set of mutables where this mutable is locally referenced.
+    bool is_open() const;                ///< Has free_vars()?
+    bool is_closed() const;              ///< Has no free_vars()?
     ///@}
 
     /// @name external

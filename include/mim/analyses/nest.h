@@ -11,16 +11,18 @@ public:
     public:
         Node(Def* mut, Node* parent)
             : mut_(mut)
-            , parent_(parent) {
+            , parent_(parent)
+            , depth_(parent ? parent->depth() + 1 : 0) {
             if (parent) parent->children_.emplace(mut, this);
         }
 
         /// @name Getters
         ///@{
-        bool is_root() const { return parent_ == nullptr; }
         Def* mut() const { return mut_; }
+        bool is_root() const { return parent_ == nullptr; }
         Node* parent() { return parent_; }
         const Node* parent() const { return parent_; }
+        size_t depth() const { return depth_; }
         ///@}
 
         /// @name Children
@@ -38,6 +40,7 @@ public:
 
         Def* mut_;
         Node* parent_;
+        size_t depth_;
         MutMap<const Node*> children_;
         Vars vars_;
 
@@ -65,6 +68,8 @@ public:
     }
     const Node* operator[](Def* mut) const { return node(mut); }
     ///@}
+
+    static const Node* lca(const Node* n, const Node* m); ///< least common ancestor or @p n and @p m.
 
     /// @name dot
     ///@{

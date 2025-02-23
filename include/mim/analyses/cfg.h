@@ -9,11 +9,9 @@
 namespace mim {
 
 class CFNode;
-// clang-format off
 class LoopTree;
 class DomTree;
 class DomFrontier;
-// clang-format on
 
 /// @name Control Flow
 ///@{
