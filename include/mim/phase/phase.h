@@ -9,8 +9,6 @@
 namespace mim {
 
 class Nest;
-class Scope;
-
 class World;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
@@ -145,28 +143,6 @@ public:
 
 private:
     std::deque<std::unique_ptr<Phase>> phases_;
-};
-
-/// Transitively visits all *reachable* Scope%s in World that do not have free variables.
-/// We call these Scope%s *top-level* Scope%s.
-/// Select with `elide_empty` whether you want to visit trivial Scope%s of *muts* without body.
-/// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
-/// @deprecated Use ClosedMutPhase instead.
-class ScopePhase : public Phase {
-public:
-    ScopePhase(World& world, std::string_view name, bool dirty, bool elide_empty)
-        : Phase(world, name, dirty)
-        , elide_empty_(elide_empty) {}
-
-    void start() override;
-    virtual void visit(const Scope&) = 0;
-
-protected:
-    const Scope& scope() const { return *scope_; }
-
-private:
-    bool elide_empty_;
-    const Scope* scope_ = nullptr;
 };
 
 /// Transitively visits all *reachable* closed mutables (Def::is_closed()) in World.
