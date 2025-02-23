@@ -369,7 +369,7 @@ public:
     /// @name Free Vars and Muts
     /// * local_muts() / local_vars() are cached and hash-consed.
     /// * free_vars() are computed on demand and cached.
-    ///   They will be transitively invalidated by following fv_consumers(), if a mutable is mutated.
+    ///   They will be transitively invalidated by following users, if a mutable is mutated.
     ///@{
 
     /// Mutables reachable by following *immutable* extended_ops().
@@ -383,7 +383,7 @@ public:
     Vars free_vars();
     bool is_open() const;   ///< Has free_vars()?
     bool is_closed() const; ///< Has no free_vars()?
-    Muts fv_consumers() { return muts_.fv_consumers; }
+    Muts users() { return muts_.users; }
     ///@}
 
     /// @name external
@@ -575,8 +575,8 @@ private:
     union LocalOrConsumerMuts {
         LocalOrConsumerMuts() {}
 
-        Muts local;        // Immutable only.
-        Muts fv_consumers; // Mutable only.
+        Muts local; // Immutable only.
+        Muts users; // Mutable only.
     } muts_;
 
     const Def* type_;

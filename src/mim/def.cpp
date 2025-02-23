@@ -73,11 +73,11 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
-    gid_               = world().next_gid();
-    hash_              = mim::hash(gid());
-    var_               = nullptr;
-    vars_.free         = Vars();
-    muts_.fv_consumers = Muts();
+    gid_        = world().next_gid();
+    hash_       = mim::hash(gid());
+    var_        = nullptr;
+    vars_.free  = Vars();
+    muts_.users = Muts();
     std::fill_n(ops_ptr(), num_ops, nullptr);
 }
 
@@ -338,8 +338,8 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
 
     for (auto op : extended_ops()) {
         for (auto local_mut : op->local_muts()) {
-            local_mut->muts_.fv_consumers = world().muts().insert(local_mut->muts_.fv_consumers, this);
-            fvs                           = world().vars().merge(fvs, local_mut->free_vars(todo, run));
+            local_mut->muts_.users = world().muts().insert(local_mut->muts_.users, this);
+            fvs                    = world().vars().merge(fvs, local_mut->free_vars(todo, run));
         }
     }
 
@@ -362,9 +362,9 @@ void Def::validate() {
 void Def::invalidate() {
     if (valid_) {
         valid_ = false;
-        for (auto mut : fv_consumers()) mut->invalidate();
+        for (auto mut : users()) mut->invalidate();
         vars_.free.clear();
-        muts_.fv_consumers.clear();
+        muts_.users.clear();
     }
 }
 
