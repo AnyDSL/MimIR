@@ -153,6 +153,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a361f116b80b8b8fd1eac9a22e34564b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">type</div></td></tr>
 <tr class="memitem:a2107c877c5255ee3c29bc204e87e9176" id="r_a2107c877c5255ee3c29bc204e87e9176"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2107c877c5255ee3c29bc204e87e9176">type</a> () const</td></tr>
+<tr class="memdesc:a2107c877c5255ee3c29bc204e87e9176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <b>raw</b> type of this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>, i.e. maybe <code>nullptr</code>.  <br /></td></tr>
 <tr class="separator:a2107c877c5255ee3c29bc204e87e9176"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a415a05bda88edc1da873598f3307ccaf" id="r_a415a05bda88edc1da873598f3307ccaf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a415a05bda88edc1da873598f3307ccaf">unfold_type</a> () const</td></tr>
 <tr class="memdesc:a415a05bda88edc1da873598f3307ccaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the type of this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> and builds a new <code><a class="el" href="classmim_1_1Type.html">Type</a> (<a class="el" href="classmim_1_1UInc.html">UInc</a> n)</code> if necessary.  <br /></td></tr>
@@ -213,7 +214,7 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">deps</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>All <em>dependencies</em> of a <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> and includes:</p>
 <ul>
-<li><a class="el" href="#a2107c877c5255ee3c29bc204e87e9176">Def::type()</a> (if not <code>nullptr</code>) and</li>
+<li><a class="el" href="#a2107c877c5255ee3c29bc204e87e9176" title="Yields the raw type of this Def, i.e. maybe nullptr.">Def::type()</a> (if not <code>nullptr</code>) and</li>
 <li>the other <a class="el" href="#a813fa6bd71a2212e2ca05352c23e173f">Def::ops()</a> (only included, if <a class="el" href="#a075f30462bdc7ae0e435c8e15cb48fff" title="Yields true if empty or the last op is set.">Def::is_set()</a>) in this order. </li>
 </ul>
 </div></td></tr>
@@ -228,8 +229,8 @@ Public Member Functions</h2></td></tr>
 <p>This works up to the next <em>mutable</em>. For example, consider the <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> <code>tup</code>: <code>(&lt;infer&gt;, lam (x: <a class="el" href="classmim_1_1Nat.html">Nat</a>) = y)</code>: </p><div class="fragment"><div class="line"><span class="keywordtype">bool</span> has_infer = tup-&gt;has_dep(<a class="code hl_enumvalue" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">Dep::Infer</a>); <span class="comment">// true;</span></div>
 <div class="line"><span class="keywordtype">bool</span> has_mut   = tup-&gt;has_dep(<a class="code hl_enumvalue" href="namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7">Dep::Mut</a>);   <span class="comment">// true;</span></div>
 <div class="line"><span class="keywordtype">bool</span> <a class="code hl_function" href="#af82f20111e9f1cbdbf910d30341bd4ee">has_var</a>   = tup-&gt;<a class="code hl_function" href="#ab6114c2f33845b89df6c4e551ea438bb">has_dep</a>(<a class="code hl_enumvalue" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77">Dep::Var</a>);   <span class="comment">// false - y is contained in another mutable;</span></div>
-<div class="ttc" id="aclassmim_1_1Def_html_ab6114c2f33845b89df6c4e551ea438bb"><div class="ttname"><a href="#ab6114c2f33845b89df6c4e551ea438bb">mim::Def::has_dep</a></div><div class="ttdeci">bool has_dep() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00310">def.h:310</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_af82f20111e9f1cbdbf910d30341bd4ee"><div class="ttname"><a href="#af82f20111e9f1cbdbf910d30341bd4ee">mim::Def::has_var</a></div><div class="ttdeci">const Var * has_var()</div><div class="ttdoc">Only returns not nullptr, if Var of this mutable has ever been created.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00381">def.h:381</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_ab6114c2f33845b89df6c4e551ea438bb"><div class="ttname"><a href="#ab6114c2f33845b89df6c4e551ea438bb">mim::Def::has_dep</a></div><div class="ttdeci">bool has_dep() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00311">def.h:311</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_af82f20111e9f1cbdbf910d30341bd4ee"><div class="ttname"><a href="#af82f20111e9f1cbdbf910d30341bd4ee">mim::Def::has_var</a></div><div class="ttdeci">const Var * has_var()</div><div class="ttdoc">Only returns not nullptr, if Var of this mutable has ever been created.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00383">def.h:383</a></div></div>
 <div class="ttc" id="anamespacemim_html_a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79"><div class="ttname"><a href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Dep::Infer</a></div><div class="ttdeci">@ Infer</div></div>
 <div class="ttc" id="anamespacemim_html_a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77"><div class="ttname"><a href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77">mim::Dep::Var</a></div><div class="ttdeci">@ Var</div></div>
 <div class="ttc" id="anamespacemim_html_a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7"><div class="ttname"><a href="namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7">mim::Dep::Mut</a></div><div class="ttdeci">@ Mut</div></div>
@@ -254,10 +255,11 @@ Public Member Functions</h2></td></tr>
 <div class="line"><span class="comment">// same as above but applies Lit::as&lt;nat_t&gt;(def) to each element</span></div>
 <div class="line"><a class="code hl_function" href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">Vector&lt;const Lit*&gt;</a> lits1     = def-&gt;projs(   [](<span class="keyword">auto</span> def) { <span class="keywordflow">return</span> <a class="code hl_function" href="classmim_1_1Lit.html#afdf74f55a0aedbf37ae7b46da556fda2">Lit::as</a>(def); });</div>
 <div class="line"><a class="code hl_function" href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">Vector&lt;const Lit*&gt;</a> lits2     = def-&gt;projs(n, [](<span class="keyword">auto</span> def) { <span class="keywordflow">return</span> <a class="code hl_function" href="classmim_1_1Lit.html#afdf74f55a0aedbf37ae7b46da556fda2">Lit::as</a>(def); });</div>
-<div class="ttc" id="aclassmim_1_1Lit_html_afdf74f55a0aedbf37ae7b46da556fda2"><div class="ttname"><a href="classmim_1_1Lit.html#afdf74f55a0aedbf37ae7b46da556fda2">mim::Lit::as</a></div><div class="ttdeci">static T as(Ref def)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00746">def.h:746</a></div></div>
+<div class="ttc" id="aclassmim_1_1Lit_html_afdf74f55a0aedbf37ae7b46da556fda2"><div class="ttname"><a href="classmim_1_1Lit.html#afdf74f55a0aedbf37ae7b46da556fda2">mim::Lit::as</a></div><div class="ttdeci">static T as(Ref def)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00748">def.h:748</a></div></div>
 <div class="ttc" id="anamespacemim_html_afca0bb4c47e185182e4fc7ad6bcec3a1"><div class="ttname"><a href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">mim::Vector</a></div><div class="ttdeci">Vector(I, I, A=A()) -&gt; Vector&lt; typename std::iterator_traits&lt; I &gt;::value_type, Default_Inlined_Size&lt; typename std::iterator_traits&lt; I &gt;::value_type &gt;, A &gt;</div></div>
 </div><!-- fragment --> </div></td></tr>
 <tr class="memitem:ad531ece40a890922a7deb83e3d8de8ea" id="r_ad531ece40a890922a7deb83e3d8de8ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad531ece40a890922a7deb83e3d8de8ea">num_projs</a> () const</td></tr>
+<tr class="memdesc:ad531ece40a890922a7deb83e3d8de8ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <a class="el" href="#a2a11678fe06e85f99174197c674124e0">Def::as_lit_arity()</a>, if it is in fact a <a class="el" href="classmim_1_1Lit.html">Lit</a>, or <code>1</code> otherwise.  <br /></td></tr>
 <tr class="separator:ad531ece40a890922a7deb83e3d8de8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26e88f05b40da602dbc2d3cfc02e4799" id="r_a26e88f05b40da602dbc2d3cfc02e4799"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a26e88f05b40da602dbc2d3cfc02e4799">num_tprojs</a> () const</td></tr>
 <tr class="memdesc:a26e88f05b40da602dbc2d3cfc02e4799"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but yields 1, if <a class="el" href="namespacemim.html#a39f92287adf5cb956f0696a740ba3fe7">Flags::scalarize_threshold</a> is exceeded.  <br /></td></tr>
@@ -266,7 +268,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae3b655c3037933585ee084c6c516ef1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="classmim_1_1World.html#ac981395e5f40922514eaf9c85290e36d">World::extract</a> while assuming an arity of <code>a</code>, but also works on <a class="el" href="classmim_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s and <a class="el" href="classmim_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays.  <br /></td></tr>
 <tr class="separator:ae3b655c3037933585ee084c6c516ef1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95e85da9b6b4d3d049c4998929ae21e6" id="r_a95e85da9b6b4d3d049c4998929ae21e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95e85da9b6b4d3d049c4998929ae21e6">proj</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) const</td></tr>
-<tr class="memdesc:a95e85da9b6b4d3d049c4998929ae21e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but takes <a class="el" href="#ad531ece40a890922a7deb83e3d8de8ea">Def::num_projs</a> as arity.  <br /></td></tr>
+<tr class="memdesc:a95e85da9b6b4d3d049c4998929ae21e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but takes <a class="el" href="#ad531ece40a890922a7deb83e3d8de8ea" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity.  <br /></td></tr>
 <tr class="separator:a95e85da9b6b4d3d049c4998929ae21e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a6a039702e9fe16326351f6590f64da" id="r_a3a6a039702e9fe16326351f6590f64da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a6a039702e9fe16326351f6590f64da">tproj</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) const</td></tr>
 <tr class="memdesc:a3a6a039702e9fe16326351f6590f64da"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but takes <a class="el" href="#a26e88f05b40da602dbc2d3cfc02e4799" title="As above but yields 1, if Flags::scalarize_threshold is exceeded.">Def::num_tprojs</a>.  <br /></td></tr>
@@ -483,7 +485,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad66cc84f37ffd79d3d34ba3b923fec3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">dot</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Dumps DOT to <code>os</code> while obeying maximum recursion depth of <code>max</code>.</p>
-<p>If <code>types</code> is <code>true</code>, <a class="el" href="#a2107c877c5255ee3c29bc204e87e9176">Def::type()</a> dependencies will be followed as well. </p>
+<p>If <code>types</code> is <code>true</code>, <a class="el" href="#a2107c877c5255ee3c29bc204e87e9176" title="Yields the raw type of this Def, i.e. maybe nullptr.">Def::type()</a> dependencies will be followed as well. </p>
 </div></td></tr>
 <tr class="memitem:a1575fa76069a619e90ca2a8eef2bcbbe" id="r_a1575fa76069a619e90ca2a8eef2bcbbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1575fa76069a619e90ca2a8eef2bcbbe">dot</a> (std::ostream &amp;os, uint32_t max=0xFFFFFF, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> types=false) const</td></tr>
 <tr class="separator:a1575fa76069a619e90ca2a8eef2bcbbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -602,10 +604,10 @@ Friends</h2></td></tr>
 <div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00212">def.h:212</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_a075f30462bdc7ae0e435c8e15cb48fff"><div class="ttname"><a href="#a075f30462bdc7ae0e435c8e15cb48fff">mim::Def::is_set</a></div><div class="ttdeci">bool is_set() const</div><div class="ttdoc">Yields true if empty or the last op is set.</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00286">def.cpp:286</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_a0c26bf0d36a848670690490374d5b35a"><div class="ttname"><a href="#a0c26bf0d36a848670690490374d5b35a">mim::Def::deps</a></div><div class="ttdeci">Defs deps() const</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00418">def.cpp:418</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_a185220afdec05ad7d92cc9e5e08258b2"><div class="ttname"><a href="#a185220afdec05ad7d92cc9e5e08258b2">mim::Def::num_ops</a></div><div class="ttdeci">size_t num_ops() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00262">def.h:262</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_a2107c877c5255ee3c29bc204e87e9176"><div class="ttname"><a href="#a2107c877c5255ee3c29bc204e87e9176">mim::Def::type</a></div><div class="ttdeci">Ref type() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00240">def.h:240</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_a513dc7dba8016a0ae985992c4f844339"><div class="ttname"><a href="#a513dc7dba8016a0ae985992c4f844339">mim::Def::op</a></div><div class="ttdeci">Ref op(size_t i) const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00261">def.h:261</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_a813fa6bd71a2212e2ca05352c23e173f"><div class="ttname"><a href="#a813fa6bd71a2212e2ca05352c23e173f">mim::Def::ops</a></div><div class="ttdeci">auto ops() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00260">def.h:260</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a185220afdec05ad7d92cc9e5e08258b2"><div class="ttname"><a href="#a185220afdec05ad7d92cc9e5e08258b2">mim::Def::num_ops</a></div><div class="ttdeci">size_t num_ops() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00263">def.h:263</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a2107c877c5255ee3c29bc204e87e9176"><div class="ttname"><a href="#a2107c877c5255ee3c29bc204e87e9176">mim::Def::type</a></div><div class="ttdeci">Ref type() const</div><div class="ttdoc">Yields the raw type of this Def, i.e. maybe nullptr.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00241">def.h:241</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a513dc7dba8016a0ae985992c4f844339"><div class="ttname"><a href="#a513dc7dba8016a0ae985992c4f844339">mim::Def::op</a></div><div class="ttdeci">Ref op(size_t i) const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00262">def.h:262</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a813fa6bd71a2212e2ca05352c23e173f"><div class="ttname"><a href="#a813fa6bd71a2212e2ca05352c23e173f">mim::Def::ops</a></div><div class="ttdeci">auto ops() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00261">def.h:261</a></div></div>
 </div><!-- fragment --> <dl class="section attention"><dt>Attention</dt><dd>This means that any subclass of <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> <b>must not</b> introduce additional members. </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="dev.html#mut">Immutables vs. Mutables</a> </dd></dl>
 
@@ -657,7 +659,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00018">18</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00418">deps()</a>, <a class="el" href="def_8h_source.html#l00572">flags_</a>, <a class="el" href="def_8h_source.html#l00231">gid()</a>, <a class="el" href="hash_8h_source.html#l00032">mim::hash()</a>, <a class="el" href="hash_8h_source.html#l00071">mim::hash_begin()</a>, <a class="el" href="hash_8h_source.html#l00058">mim::hash_combine()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, <a class="el" href="def_8h_source.html#l00400">local_vars()</a>, <a class="el" href="world_8h_source.html#l00515">mim::World::muts()</a>, <a class="el" href="def_8h_source.html#l00233">node()</a>, <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, <a class="el" href="def_8h_source.html#l00261">op()</a>, <a class="el" href="def_8h_source.html#l00260">ops()</a>, <a class="el" href="def_8h_source.html#l00240">type()</a>, <a class="el" href="def_8h_source.html#l00040">mim::Node::Univ</a>, <a class="el" href="def_8cpp_source.html#l00431">var()</a>, <a class="el" href="world_8h_source.html#l00514">mim::World::vars()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00418">deps()</a>, <a class="el" href="def_8h_source.html#l00574">flags_</a>, <a class="el" href="def_8h_source.html#l00231">gid()</a>, <a class="el" href="hash_8h_source.html#l00032">mim::hash()</a>, <a class="el" href="hash_8h_source.html#l00071">mim::hash_begin()</a>, <a class="el" href="hash_8h_source.html#l00058">mim::hash_combine()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, <a class="el" href="def_8h_source.html#l00402">local_vars()</a>, <a class="el" href="world_8h_source.html#l00516">mim::World::muts()</a>, <a class="el" href="def_8h_source.html#l00233">node()</a>, <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, <a class="el" href="def_8h_source.html#l00262">op()</a>, <a class="el" href="def_8h_source.html#l00261">ops()</a>, <a class="el" href="def_8h_source.html#l00241">type()</a>, <a class="el" href="def_8h_source.html#l00040">mim::Node::Univ</a>, <a class="el" href="def_8cpp_source.html#l00431">var()</a>, <a class="el" href="world_8h_source.html#l00515">mim::World::vars()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 </div>
 </div>
@@ -745,7 +747,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00068">68</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00231">gid()</a>, <a class="el" href="hash_8h_source.html#l00032">mim::hash()</a>, <a class="el" href="world_8h_source.html#l00090">mim::World::next_gid()</a>, <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00231">gid()</a>, <a class="el" href="hash_8h_source.html#l00032">mim::hash()</a>, <a class="el" href="world_8h_source.html#l00090">mim::World::next_gid()</a>, <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 </div>
 </div>
@@ -792,7 +794,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00458">458</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00386">mim::World::lit_nat()</a>, <a class="el" href="world_8h_source.html#l00388">mim::World::lit_nat_1()</a>, <a class="el" href="def_8h_source.html#l00240">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00386">mim::World::lit_nat()</a>, <a class="el" href="world_8h_source.html#l00388">mim::World::lit_nat_1()</a>, <a class="el" href="def_8h_source.html#l00241">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00158">mim::plug::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="tuple_8cpp_source.html#l00048">mim::tuple2str()</a>, and <a class="el" href="tuple_8cpp_source.html#l00080">mim::unflatten()</a>.</p>
 
@@ -823,9 +825,9 @@ template&lt;class T  = Def&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00422">422</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00424">424</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00435">as_mut()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00437">as_mut()</a>.</p>
 
 </div>
 </div>
@@ -852,11 +854,11 @@ template&lt;class T  = Def&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00251">251</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00252">252</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00465">isa_lit_arity()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00074">mim::plug::regex::normalize_conj()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00166">mim::plug::regex::normalize_disj()</a>, and <a class="el" href="def_8h_source.html#l00343">projs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00074">mim::plug::regex::normalize_conj()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00166">mim::plug::regex::normalize_disj()</a>, and <a class="el" href="def_8h_source.html#l00345">projs()</a>.</p>
 
 </div>
 </div>
@@ -887,9 +889,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Asserts that <code>this</code> is a <em>mutable</em>, casts <code>const</code>ness away and performs a <code>static_cast</code> to <code>T</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00435">435</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00437">437</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00020">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00053">mim::EtaExp::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00139">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="def_8h_source.html#l00422">as_imm()</a>, <a class="el" href="clos_8cpp_source.html#l00121">mim::plug::clos::clos_type()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="emit_8cpp_source.html#l00088">mim::ast::TuplePtrn::emit_body()</a>, <a class="el" href="def_8h_source.html#l00638">mim::Var::mut()</a>, and <a class="el" href="phase_8cpp_source.html#l00026">mim::Cleanup::start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00020">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00053">mim::EtaExp::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00139">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="def_8h_source.html#l00424">as_imm()</a>, <a class="el" href="clos_8cpp_source.html#l00121">mim::plug::clos::clos_type()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="emit_8cpp_source.html#l00088">mim::ast::TuplePtrn::emit_body()</a>, <a class="el" href="def_8h_source.html#l00640">mim::Var::mut()</a>, and <a class="el" href="phase_8cpp_source.html#l00026">mim::Cleanup::start()</a>.</p>
 
 </div>
 </div>
@@ -918,9 +920,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Reimplemented in <a class="el" href="classmim_1_1Arr.html#a2ffd20d96babae209907976c7950aaf3">mim::Arr</a>, <a class="el" href="classmim_1_1Pi.html#aeceb245fac375a7367171dc0584228d0">mim::Pi</a>, and <a class="el" href="classmim_1_1Sigma.html#a7f0ad9c72f85948d47a483859736e6e7">mim::Sigma</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00512">512</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00514">514</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00240">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00241">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00248">set()</a>.</p>
 
@@ -955,7 +957,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Reimplemented in <a class="el" href="classmim_1_1Arr.html#a634307ebf27f767b15f5961decb48400">mim::Arr</a>, <a class="el" href="classmim_1_1Lam.html#a119b159f9f17d4752882abcdab1984c9">mim::Lam</a>, <a class="el" href="classmim_1_1Pi.html#aa395ad921b63cac1dd46ac7594b22440">mim::Pi</a>, and <a class="el" href="classmim_1_1Sigma.html#ac2fe3168c48fd45842b8ff9a7f2452a2">mim::Sigma</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00511">511</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00513">513</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -982,11 +984,11 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00446">446</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00448">448</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00489">rebuild()</a>, <a class="el" href="tuple_8h_source.html#l00093">mim::Arr::stub()</a>, <a class="el" href="def_8h_source.html#l00485">stub()</a>, <a class="el" href="def_8h_source.html#l00867">mim::Global::stub()</a>, <a class="el" href="check_8h_source.html#l00031">mim::Infer::stub()</a>, <a class="el" href="lam_8h_source.html#l00175">mim::Lam::stub()</a>, <a class="el" href="tuple_8h_source.html#l00140">mim::Pack::stub()</a>, <a class="el" href="lam_8h_source.html#l00089">mim::Pi::stub()</a>, <a class="el" href="tuple_8h_source.html#l00029">mim::Sigma::stub()</a>, <a class="el" href="lattice_8h_source.html#l00041">mim::TBound&lt; Up &gt;::stub()</a>, and <a class="el" href="lattice_8h_source.html#l00164">mim::TExt&lt; Up &gt;::stub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00491">rebuild()</a>, <a class="el" href="tuple_8h_source.html#l00093">mim::Arr::stub()</a>, <a class="el" href="def_8h_source.html#l00487">stub()</a>, <a class="el" href="def_8h_source.html#l00870">mim::Global::stub()</a>, <a class="el" href="check_8h_source.html#l00031">mim::Infer::stub()</a>, <a class="el" href="lam_8h_source.html#l00176">mim::Lam::stub()</a>, <a class="el" href="tuple_8h_source.html#l00140">mim::Pack::stub()</a>, <a class="el" href="lam_8h_source.html#l00090">mim::Pi::stub()</a>, <a class="el" href="tuple_8h_source.html#l00029">mim::Sigma::stub()</a>, <a class="el" href="lattice_8h_source.html#l00041">mim::TBound&lt; Up &gt;::stub()</a>, and <a class="el" href="lattice_8h_source.html#l00164">mim::TExt&lt; Up &gt;::stub()</a>.</p>
 
 </div>
 </div>
@@ -1007,7 +1009,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00425">425</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>, <a class="el" href="def_8h_source.html#l00448">sym()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>, <a class="el" href="def_8h_source.html#l00450">sym()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 </div>
 </div>
@@ -1028,7 +1030,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00426">426</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>, <a class="el" href="def_8h_source.html#l00448">sym()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>, <a class="el" href="def_8h_source.html#l00450">sym()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 </div>
 </div>
@@ -1055,7 +1057,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00296">296</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00297">297</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00418">deps()</a>.</p>
 
@@ -1078,9 +1080,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00418">418</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00286">is_set()</a>, and <a class="el" href="def_8h_source.html#l00240">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00286">is_set()</a>, and <a class="el" href="def_8h_source.html#l00241">type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8h_source.html#l00296">dep()</a>, <a class="el" href="schedule_8cpp_source.html#l00049">mim::Scheduler::early()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00026">mim::plug::clos::free_defs()</a>, <a class="el" href="def_8cpp_source.html#l00168">is_immutabilizable()</a>, <a class="el" href="nest_8cpp_source.html#l00066">mim::Nest::is_recursive()</a>, <a class="el" href="def_8h_source.html#l00297">num_deps()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, and <a class="el" href="phase_8h_source.html#l00158">mim::ClosedMutPhase&lt; M &gt;::start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8h_source.html#l00297">dep()</a>, <a class="el" href="schedule_8cpp_source.html#l00049">mim::Scheduler::early()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00026">mim::plug::clos::free_defs()</a>, <a class="el" href="def_8cpp_source.html#l00168">is_immutabilizable()</a>, <a class="el" href="nest_8cpp_source.html#l00066">mim::Nest::is_recursive()</a>, <a class="el" href="def_8h_source.html#l00298">num_deps()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, and <a class="el" href="phase_8h_source.html#l00158">mim::ClosedMutPhase&lt; M &gt;::start()</a>.</p>
 
 </div>
 </div>
@@ -1148,7 +1150,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00532">532</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00534">534</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="dot_8cpp_source.html#l00124">dot()</a>.</p>
 
@@ -1180,7 +1182,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="dot_8cpp_source.html#l00124">124</a> of file <a class="el" href="dot_8cpp_source.html">dot.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dot_8cpp_source.html#l00126">dot()</a>, and <a class="el" href="def_8h_source.html#l00532">dot()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dot_8cpp_source.html#l00126">dot()</a>, and <a class="el" href="def_8h_source.html#l00534">dot()</a>.</p>
 
 </div>
 </div>
@@ -1247,9 +1249,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00230">230</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00572">flags_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00574">flags_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00055">mim::Axiom::base()</a>, <a class="el" href="lam_8h_source.html#l00023">mim::Pi::is_implicit()</a>, <a class="el" href="def_8h_source.html#l00862">mim::Global::is_mutable()</a>, <a class="el" href="def_8h_source.html#l00687">mim::UInc::offset()</a>, <a class="el" href="optimize_8cpp_source.html#l00010">mim::optimize()</a>, <a class="el" href="def_8h_source.html#l00825">mim::Proxy::pass()</a>, <a class="el" href="axiom_8h_source.html#l00052">mim::Axiom::plugin()</a>, <a class="el" href="axiom_8h_source.html#l00054">mim::Axiom::sub()</a>, <a class="el" href="axiom_8h_source.html#l00053">mim::Axiom::tag()</a>, and <a class="el" href="def_8h_source.html#l00826">mim::Proxy::tag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00055">mim::Axiom::base()</a>, <a class="el" href="lam_8h_source.html#l00023">mim::Pi::is_implicit()</a>, <a class="el" href="def_8h_source.html#l00865">mim::Global::is_mutable()</a>, <a class="el" href="def_8h_source.html#l00689">mim::UInc::offset()</a>, <a class="el" href="optimize_8cpp_source.html#l00010">mim::optimize()</a>, <a class="el" href="def_8h_source.html#l00828">mim::Proxy::pass()</a>, <a class="el" href="axiom_8h_source.html#l00052">mim::Axiom::plugin()</a>, <a class="el" href="axiom_8h_source.html#l00054">mim::Axiom::sub()</a>, <a class="el" href="axiom_8h_source.html#l00053">mim::Axiom::tag()</a>, and <a class="el" href="def_8h_source.html#l00829">mim::Proxy::tag()</a>.</p>
 
 </div>
 </div>
@@ -1293,7 +1295,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00303">303</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00427">isa_mut()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, <a class="el" href="def_8h_source.html#l00400">local_vars()</a>, <a class="el" href="def_8h_source.html#l00377">vars()</a>, <a class="el" href="world_8h_source.html#l00514">mim::World::vars()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00429">isa_mut()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, <a class="el" href="def_8h_source.html#l00402">local_vars()</a>, <a class="el" href="def_8h_source.html#l00379">vars()</a>, <a class="el" href="world_8h_source.html#l00515">mim::World::vars()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00066">mim::Nest::contains()</a>, <a class="el" href="def_8cpp_source.html#l00311">free_vars()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00034">mim::plug::clos::ClosConvPrep::from_outer_scope()</a>, <a class="el" href="def_8cpp_source.html#l00371">is_closed()</a>, <a class="el" href="def_8cpp_source.html#l00168">is_immutabilizable()</a>, <a class="el" href="def_8cpp_source.html#l00379">is_open()</a>, and <a class="el" href="rewrite_8h_source.html#l00048">mim::VarRewriter::rewrite_mut()</a>.</p>
 
@@ -1353,9 +1355,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Neither a <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7">Dep::Mut</a> nor a <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77">Dep::Var</a>; can often be used as shortcut as an optimization. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00314">314</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00315">315</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00310">has_dep()</a>, <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7">mim::Mut</a>, and <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77">mim::Var</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00311">has_dep()</a>, <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7">mim::Mut</a>, and <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77">mim::Var</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="schedule_8cpp_source.html#l00049">mim::Scheduler::early()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00026">mim::plug::clos::free_defs()</a>, <a class="el" href="schedule_8cpp_source.html#l00065">mim::Scheduler::late()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00699">mim::plug::core::normalize_pe()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>.</p>
 
@@ -1384,9 +1386,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00310">310</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00311">311</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00314">has_const_dep()</a>, and <a class="el" href="check_8cpp_source.html#l00023">zonk()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00315">has_const_dep()</a>, and <a class="el" href="check_8cpp_source.html#l00023">zonk()</a>.</p>
 
 </div>
 </div>
@@ -1413,11 +1415,11 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00311">311</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00312">312</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00311">has_dep()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00312">has_dep()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00311">has_dep()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00312">has_dep()</a>.</p>
 
 </div>
 </div>
@@ -1444,7 +1446,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00312">312</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00313">313</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1473,9 +1475,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Only returns not <code>nullptr</code>, if <a class="el" href="classmim_1_1Var.html">Var</a> of this mutable has ever been created. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00381">381</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00383">383</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00383">has_var()</a>, <a class="el" href="def_8cpp_source.html#l00168">is_immutabilizable()</a>, <a class="el" href="direct_8h_source.html#l00015">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00228">reduce()</a>, <a class="el" href="rewrite_8h_source.html#l00048">mim::VarRewriter::rewrite_mut()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00385">has_var()</a>, <a class="el" href="def_8cpp_source.html#l00168">is_immutabilizable()</a>, <a class="el" href="direct_8h_source.html#l00015">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00228">reduce()</a>, <a class="el" href="rewrite_8h_source.html#l00048">mim::VarRewriter::rewrite_mut()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
 
 </div>
 </div>
@@ -1504,9 +1506,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>As above if <code>this</code> is a <em>mutable</em>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00383">383</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00385">385</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00381">has_var()</a>, and <a class="el" href="def_8h_source.html#l00427">isa_mut()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00383">has_var()</a>, and <a class="el" href="def_8h_source.html#l00429">isa_mut()</a>.</p>
 
 </div>
 </div>
@@ -1565,7 +1567,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Reimplemented in <a class="el" href="classmim_1_1Arr.html#a1600ba73ed22faa81eccba0c30d4f98f">mim::Arr</a>, <a class="el" href="classmim_1_1Pack.html#ac3a8766121d65c6a8074777e9dc29ceb">mim::Pack</a>, <a class="el" href="classmim_1_1Pi.html#ac37c343301b301ee856b8a275579a2bf">mim::Pi</a>, and <a class="el" href="classmim_1_1Sigma.html#a089a8486dc18299fe74623c5e020bd6c">mim::Sigma</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00497">497</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00499">499</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1588,7 +1590,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00371">371</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool_8h_source.html#l00064">mim::PooledSet&lt; T &gt;::empty()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8h_source.html#l00411">is_external()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, and <a class="el" href="def_8h_source.html#l00400">local_vars()</a>.</p>
+<p class="reference">References <a class="el" href="pool_8h_source.html#l00064">mim::PooledSet&lt; T &gt;::empty()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8h_source.html#l00413">is_external()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, and <a class="el" href="def_8h_source.html#l00402">local_vars()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00169">mim::World::make_external()</a>, and <a class="el" href="world_8cpp_source.html#l00564">mim::World::verify()</a>.</p>
 
@@ -1617,9 +1619,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00411">411</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00413">413</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00371">is_closed()</a>, <a class="el" href="lam_8h_source.html#l00246">mim::isa_workable()</a>, <a class="el" href="world_8h_source.html#l00169">mim::World::make_external()</a>, and <a class="el" href="world_8h_source.html#l00175">mim::World::make_internal()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00371">is_closed()</a>, <a class="el" href="lam_8h_source.html#l00247">mim::isa_workable()</a>, <a class="el" href="world_8h_source.html#l00169">mim::World::make_external()</a>, and <a class="el" href="world_8h_source.html#l00175">mim::World::make_internal()</a>.</p>
 
 </div>
 </div>
@@ -1640,7 +1642,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00168">168</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool_8h_source.html#l00069">mim::PooledSet&lt; T &gt;::contains()</a>, <a class="el" href="def_8cpp_source.html#l00418">deps()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8h_source.html#l00381">has_var()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, and <a class="el" href="def_8h_source.html#l00261">op()</a>.</p>
+<p class="reference">References <a class="el" href="pool_8h_source.html#l00069">mim::PooledSet&lt; T &gt;::contains()</a>, <a class="el" href="def_8cpp_source.html#l00418">deps()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8h_source.html#l00383">has_var()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, and <a class="el" href="def_8h_source.html#l00262">op()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00185">mim::Arr::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00195">mim::Pack::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00175">mim::Pi::immutabilize()</a>, and <a class="el" href="def_8cpp_source.html#l00180">mim::Sigma::immutabilize()</a>.</p>
 
@@ -1665,7 +1667,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00379">379</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pool_8h_source.html#l00064">mim::PooledSet&lt; T &gt;::empty()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, and <a class="el" href="def_8h_source.html#l00400">local_vars()</a>.</p>
+<p class="reference">References <a class="el" href="pool_8h_source.html#l00064">mim::PooledSet&lt; T &gt;::empty()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, and <a class="el" href="def_8h_source.html#l00402">local_vars()</a>.</p>
 
 </div>
 </div>
@@ -1688,9 +1690,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00286">286</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, <a class="el" href="def_8h_source.html#l00261">op()</a>, and <a class="el" href="def_8h_source.html#l00260">ops()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, <a class="el" href="def_8h_source.html#l00262">op()</a>, and <a class="el" href="def_8h_source.html#l00261">ops()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00418">deps()</a>, <a class="el" href="def_8cpp_source.html#l00311">free_vars()</a>, <a class="el" href="lam_8h_source.html#l00246">mim::isa_workable()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00032">mim::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00418">deps()</a>, <a class="el" href="def_8cpp_source.html#l00311">free_vars()</a>, <a class="el" href="lam_8h_source.html#l00247">mim::isa_workable()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00032">mim::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
 
 </div>
 </div>
@@ -1713,7 +1715,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00447">447</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00741">mim::Lit::isa()</a>, and <a class="el" href="def_8h_source.html#l00240">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00743">mim::Lit::isa()</a>, and <a class="el" href="def_8h_source.html#l00241">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00066">mim::flatten()</a>.</p>
 
@@ -1744,11 +1746,11 @@ template&lt;class T  = Def&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00421">421</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00423">423</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00427">isa_mut()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00429">isa_mut()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="tuple_8cpp_source.html#l00093">mim::merge_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00098">mim::merge_tuple()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00612">mim::plug::core::normalize_trait()</a>, and <a class="el" href="def_8h_source.html#l00489">rebuild()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="tuple_8cpp_source.html#l00093">mim::merge_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00098">mim::merge_tuple()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00612">mim::plug::core::normalize_trait()</a>, and <a class="el" href="def_8h_source.html#l00491">rebuild()</a>.</p>
 
 </div>
 </div>
@@ -1777,9 +1779,9 @@ template&lt;class T  = Def, class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00423">423</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00425">425</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00427">isa_mut()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00429">isa_mut()</a>.</p>
 
 </div>
 </div>
@@ -1800,9 +1802,9 @@ template&lt;class T  = Def, class R &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00465">465</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00741">mim::Lit::isa()</a>, <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, and <a class="el" href="def_8h_source.html#l00240">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00743">mim::Lit::isa()</a>, <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, and <a class="el" href="def_8h_source.html#l00241">type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00251">as_lit_arity()</a>, <a class="el" href="tuple_8cpp_source.html#l00055">mim::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="def_8h_source.html#l00333">num_projs()</a>, <a class="el" href="def_8cpp_source.html#l00490">num_tprojs()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00252">as_lit_arity()</a>, <a class="el" href="tuple_8cpp_source.html#l00055">mim::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="def_8h_source.html#l00335">num_projs()</a>, <a class="el" href="def_8cpp_source.html#l00490">num_tprojs()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
 
 </div>
 </div>
@@ -1833,9 +1835,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>If <code>this</code> is *mut*able, it will cast <code>const</code>ness away and perform a <code>dynamic_cast</code> to <code>T</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00427">427</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00429">429</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00030">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="eta__red_8cpp_source.html#l00037">mim::EtaRed::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00159">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00307">mim::plug::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="schedule_8cpp_source.html#l00049">mim::Scheduler::early()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="lattice_8cpp_source.html#l00007">mim::Bound::find()</a>, <a class="el" href="check_8cpp_source.html#l00031">mim::Infer::find()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8h_source.html#l00383">has_var()</a>, <a class="el" href="clos_8cpp_source.html#l00111">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="def_8h_source.html#l00421">isa_imm()</a>, <a class="el" href="def_8h_source.html#l00423">isa_imm()</a>, <a class="el" href="schedule_8cpp_source.html#l00065">mim::Scheduler::late()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, <a class="el" href="def_8cpp_source.html#l00209">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00228">reduce()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="lower__for_8cpp_source.html#l00032">mim::plug::affine::LowerFor::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">mim::Rewriter::rewrite()</a>, <a class="el" href="scalarize_8cpp_source.html#l00056">mim::Scalarize::rewrite()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">mim::Scheduler::Scheduler()</a>, <a class="el" href="world_8cpp_source.html#l00244">mim::World::tuple()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00030">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="eta__red_8cpp_source.html#l00037">mim::EtaRed::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00159">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00307">mim::plug::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="schedule_8cpp_source.html#l00049">mim::Scheduler::early()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="lattice_8cpp_source.html#l00007">mim::Bound::find()</a>, <a class="el" href="check_8cpp_source.html#l00031">mim::Infer::find()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8h_source.html#l00385">has_var()</a>, <a class="el" href="clos_8cpp_source.html#l00111">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="def_8h_source.html#l00423">isa_imm()</a>, <a class="el" href="def_8h_source.html#l00425">isa_imm()</a>, <a class="el" href="schedule_8cpp_source.html#l00065">mim::Scheduler::late()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, <a class="el" href="def_8cpp_source.html#l00209">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00228">reduce()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="lower__for_8cpp_source.html#l00032">mim::plug::affine::LowerFor::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">mim::Rewriter::rewrite()</a>, <a class="el" href="scalarize_8cpp_source.html#l00056">mim::Scalarize::rewrite()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">mim::Scheduler::Scheduler()</a>, <a class="el" href="world_8cpp_source.html#l00244">mim::World::tuple()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
 
 </div>
 </div>
@@ -1862,9 +1864,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00447">447</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>, and <a class="el" href="dbg_8h_source.html#l00146">mim::Dbg::loc()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>, and <a class="el" href="dbg_8h_source.html#l00146">mim::Dbg::loc()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="check_8cpp_source.html#l00240">mim::Arr::check()</a>, <a class="el" href="check_8cpp_source.html#l00272">mim::Lam::check()</a>, <a class="el" href="check_8cpp_source.html#l00295">mim::Pi::check()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00448">mim::World::lit()</a>, <a class="el" href="world_8cpp_source.html#l00093">mim::World::type()</a>, and <a class="el" href="world_8cpp_source.html#l00100">mim::World::uinc()</a>.</p>
 
@@ -1890,7 +1892,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00298">298</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00427">isa_mut()</a>, <a class="el" href="world_8h_source.html#l00515">mim::World::muts()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00429">isa_mut()</a>, <a class="el" href="world_8h_source.html#l00516">mim::World::muts()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8cpp_source.html#l00371">is_closed()</a>, <a class="el" href="def_8cpp_source.html#l00168">is_immutabilizable()</a>, <a class="el" href="def_8cpp_source.html#l00379">is_open()</a>, <a class="el" href="nest_8cpp_source.html#l00066">mim::Nest::is_recursive()</a>, <a class="el" href="rewrite_8h_source.html#l00043">mim::VarRewriter::rewrite_imm()</a>, and <a class="el" href="phase_8h_source.html#l00158">mim::ClosedMutPhase&lt; M &gt;::start()</a>.</p>
 
@@ -1922,7 +1924,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 <p><a class="el" href="classmim_1_1Var.html">Var</a>s reachable by following <em>immutable</em> <a class="el" href="#a0c26bf0d36a848670690490374d5b35a">deps()</a>. </p>
 <dl class="section note"><dt>Note</dt><dd><code>var-&gt;<a class="el" href="#a3f5a341398bd97b516f9fd7d1d170e5b" title="Vars reachable by following immutable deps().">local_vars()</a></code> is by definition the set <code>{ var }</code>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00400">400</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00402">402</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="def_8cpp_source.html#l00371">is_closed()</a>, <a class="el" href="def_8cpp_source.html#l00379">is_open()</a>, and <a class="el" href="rewrite_8h_source.html#l00043">mim::VarRewriter::rewrite_imm()</a>.</p>
 
@@ -1947,7 +1949,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="reference">References <a class="el" href="world_8h_source.html#l00169">mim::World::make_external()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00414">transfer_external()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00416">transfer_external()</a>.</p>
 
 </div>
 </div>
@@ -1970,7 +1972,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="reference">References <a class="el" href="world_8h_source.html#l00175">mim::World::make_internal()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="internal__cleanup_8cpp_source.html#l00009">mim::plug::compile::InternalCleanup::enter()</a>, <a class="el" href="optimize_8cpp_source.html#l00010">mim::optimize()</a>, and <a class="el" href="def_8h_source.html#l00414">transfer_external()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="internal__cleanup_8cpp_source.html#l00009">mim::plug::compile::InternalCleanup::enter()</a>, <a class="el" href="optimize_8cpp_source.html#l00010">mim::optimize()</a>, and <a class="el" href="def_8h_source.html#l00416">transfer_external()</a>.</p>
 
 </div>
 </div>
@@ -2049,7 +2051,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00297">297</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00298">298</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00418">deps()</a>.</p>
 
@@ -2078,7 +2080,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00262">262</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00263">263</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00159">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="core_8cpp_source.html#l00019">mim::plug::core::convert()</a>, <a class="el" href="def_8cpp_source.html#l00068">Def()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="world_8cpp_source.html#l00464">mim::World::ext()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="def_8cpp_source.html#l00286">is_set()</a>, <a class="el" href="clos_8cpp_source.html#l00111">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="def_8cpp_source.html#l00465">isa_lit_arity()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00017">mim::plug::mem::normalize_load()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00245">reset()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00019">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00032">mim::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, <a class="el" href="def_8cpp_source.html#l00244">set()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, and <a class="el" href="def_8cpp_source.html#l00264">unset()</a>.</p>
 
@@ -2106,13 +2108,14 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
   </tr>
 </table>
 </div><div class="memdoc">
+
 <p>Yields <a class="el" href="#a2a11678fe06e85f99174197c674124e0">Def::as_lit_arity()</a>, if it is in fact a <a class="el" href="classmim_1_1Lit.html">Lit</a>, or <code>1</code> otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00333">333</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00335">335</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00465">isa_lit_arity()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00123">mim::plug::clos::clos_insert_env()</a>, <a class="el" href="clos_8h_source.html#l00133">mim::plug::clos::clos_remove_env()</a>, <a class="el" href="mem_8h_source.html#l00025">mim::plug::mem::mem_def()</a>, <a class="el" href="def_8h_source.html#l00338">proj()</a>, <a class="el" href="def_8h_source.html#l00343">projs()</a>, and <a class="el" href="mem_8h_source.html#l00041">mim::plug::mem::replace_mem()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00123">mim::plug::clos::clos_insert_env()</a>, <a class="el" href="clos_8h_source.html#l00133">mim::plug::clos::clos_remove_env()</a>, <a class="el" href="mem_8h_source.html#l00025">mim::plug::mem::mem_def()</a>, <a class="el" href="def_8h_source.html#l00340">proj()</a>, <a class="el" href="def_8h_source.html#l00345">projs()</a>, and <a class="el" href="mem_8h_source.html#l00041">mim::plug::mem::replace_mem()</a>.</p>
 
 </div>
 </div>
@@ -2137,7 +2140,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="reference">References <a class="el" href="world_8cpp_source.html#l00073">mim::World::flags()</a>, <a class="el" href="def_8cpp_source.html#l00465">isa_lit_arity()</a>, <a class="el" href="flags_8h_source.html#l00013">mim::Flags::scalarize_threshold</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00339">tproj()</a>, and <a class="el" href="def_8h_source.html#l00355">tprojs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00341">tproj()</a>, and <a class="el" href="def_8h_source.html#l00357">tprojs()</a>.</p>
 
 </div>
 </div>
@@ -2164,7 +2167,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2191,9 +2194,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00311">mim::ll::Emitter::emit_epilogue()</a>, and <a class="el" href="lam_8h_source.html#l00148">mim::Lam::ret_var()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00311">mim::ll::Emitter::emit_epilogue()</a>, and <a class="el" href="lam_8h_source.html#l00149">mim::Lam::ret_var()</a>.</p>
 
 </div>
 </div>
@@ -2220,11 +2223,11 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00261">261</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00262">262</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00260">ops()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00261">ops()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00020">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00053">mim::EtaExp::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00139">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00159">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="lam_8h_source.html#l00222">mim::App::arg()</a>, <a class="el" href="tuple_8h_source.html#l00078">mim::Arr::body()</a>, <a class="el" href="lam_8h_source.html#l00115">mim::Lam::body()</a>, <a class="el" href="tuple_8h_source.html#l00124">mim::Pack::body()</a>, <a class="el" href="lam_8h_source.html#l00213">mim::App::callee()</a>, <a class="el" href="lattice_8h_source.html#l00139">mim::Test::clash()</a>, <a class="el" href="clos_8cpp_source.html#l00127">mim::plug::clos::clos_type_to_pi()</a>, <a class="el" href="lam_8h_source.html#l00033">mim::Pi::codom()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="lam_8h_source.html#l00032">mim::Pi::dom()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="lam_8h_source.html#l00114">mim::Lam::filter()</a>, <a class="el" href="check_8cpp_source.html#l00031">mim::Infer::find()</a>, <a class="el" href="lattice_8h_source.html#l00022">mim::Bound::get()</a>, <a class="el" href="tuple_8h_source.html#l00165">mim::Extract::index()</a>, <a class="el" href="tuple_8h_source.html#l00191">mim::Insert::index()</a>, <a class="el" href="lattice_8h_source.html#l00196">mim::Uniq::inhabitant()</a>, <a class="el" href="def_8h_source.html#l00850">mim::Global::init()</a>, <a class="el" href="def_8cpp_source.html#l00168">is_immutabilizable()</a>, <a class="el" href="def_8cpp_source.html#l00286">is_set()</a>, <a class="el" href="clos_8cpp_source.html#l00111">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="def_8h_source.html#l00708">mim::Type::level()</a>, <a class="el" href="lattice_8h_source.html#l00138">mim::Test::match()</a>, <a class="el" href="def_8h_source.html#l00638">mim::Var::mut()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00017">mim::plug::mem::normalize_load()</a>, <a class="el" href="check_8h_source.html#l00020">mim::Infer::op()</a>, <a class="el" href="def_8h_source.html#l00686">mim::UInc::op()</a>, <a class="el" href="lattice_8h_source.html#l00137">mim::Test::probe()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00228">reduce()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00019">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00032">mim::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, <a class="el" href="tuple_8h_source.html#l00077">mim::Arr::shape()</a>, <a class="el" href="tuple_8h_source.html#l00164">mim::Extract::tuple()</a>, <a class="el" href="tuple_8h_source.html#l00190">mim::Insert::tuple()</a>, <a class="el" href="def_8cpp_source.html#l00264">unset()</a>, <a class="el" href="tuple_8h_source.html#l00192">mim::Insert::value()</a>, <a class="el" href="lattice_8h_source.html#l00102">mim::Pick::value()</a>, <a class="el" href="lattice_8h_source.html#l00136">mim::Test::value()</a>, and <a class="el" href="lattice_8h_source.html#l00080">mim::Vel::value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00020">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00053">mim::EtaExp::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00139">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00159">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="lam_8h_source.html#l00223">mim::App::arg()</a>, <a class="el" href="tuple_8h_source.html#l00078">mim::Arr::body()</a>, <a class="el" href="lam_8h_source.html#l00116">mim::Lam::body()</a>, <a class="el" href="tuple_8h_source.html#l00124">mim::Pack::body()</a>, <a class="el" href="lam_8h_source.html#l00214">mim::App::callee()</a>, <a class="el" href="lattice_8h_source.html#l00139">mim::Test::clash()</a>, <a class="el" href="clos_8cpp_source.html#l00127">mim::plug::clos::clos_type_to_pi()</a>, <a class="el" href="lam_8h_source.html#l00033">mim::Pi::codom()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="lam_8h_source.html#l00032">mim::Pi::dom()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="lam_8h_source.html#l00115">mim::Lam::filter()</a>, <a class="el" href="check_8cpp_source.html#l00031">mim::Infer::find()</a>, <a class="el" href="lattice_8h_source.html#l00022">mim::Bound::get()</a>, <a class="el" href="tuple_8h_source.html#l00165">mim::Extract::index()</a>, <a class="el" href="tuple_8h_source.html#l00191">mim::Insert::index()</a>, <a class="el" href="lattice_8h_source.html#l00196">mim::Uniq::inhabitant()</a>, <a class="el" href="def_8h_source.html#l00853">mim::Global::init()</a>, <a class="el" href="def_8cpp_source.html#l00168">is_immutabilizable()</a>, <a class="el" href="def_8cpp_source.html#l00286">is_set()</a>, <a class="el" href="clos_8cpp_source.html#l00111">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="def_8h_source.html#l00710">mim::Type::level()</a>, <a class="el" href="lattice_8h_source.html#l00138">mim::Test::match()</a>, <a class="el" href="def_8h_source.html#l00640">mim::Var::mut()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00017">mim::plug::mem::normalize_load()</a>, <a class="el" href="check_8h_source.html#l00020">mim::Infer::op()</a>, <a class="el" href="def_8h_source.html#l00688">mim::UInc::op()</a>, <a class="el" href="lattice_8h_source.html#l00137">mim::Test::probe()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00228">reduce()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00019">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00032">mim::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, <a class="el" href="tuple_8h_source.html#l00077">mim::Arr::shape()</a>, <a class="el" href="tuple_8h_source.html#l00164">mim::Extract::tuple()</a>, <a class="el" href="tuple_8h_source.html#l00190">mim::Insert::tuple()</a>, <a class="el" href="def_8cpp_source.html#l00264">unset()</a>, <a class="el" href="tuple_8h_source.html#l00192">mim::Insert::value()</a>, <a class="el" href="lattice_8h_source.html#l00102">mim::Pick::value()</a>, <a class="el" href="lattice_8h_source.html#l00136">mim::Test::value()</a>, and <a class="el" href="lattice_8h_source.html#l00080">mim::Vel::value()</a>.</p>
 
 </div>
 </div>
@@ -2253,9 +2256,9 @@ template&lt;size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00260">260</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00261">261</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00030">mim::BetaRed::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="world_8cpp_source.html#l00391">mim::World::arr()</a>, <a class="el" href="cfg_8cpp_source.html#l00025">mim::CFG::CFG()</a>, <a class="el" href="check_8cpp_source.html#l00255">mim::Sigma::check()</a>, <a class="el" href="core_8cpp_source.html#l00019">mim::plug::core::convert()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="lattice_8cpp_source.html#l00007">mim::Bound::find()</a>, <a class="el" href="def_8cpp_source.html#l00180">mim::Sigma::immutabilize()</a>, <a class="el" href="check_8cpp_source.html#l00247">mim::Sigma::infer()</a>, <a class="el" href="def_8cpp_source.html#l00286">is_set()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00612">mim::plug::core::normalize_trait()</a>, <a class="el" href="def_8h_source.html#l00261">op()</a>, <a class="el" href="world_8cpp_source.html#l00418">mim::World::pack()</a>, <a class="el" href="def_8h_source.html#l00493">rebuild()</a>, <a class="el" href="def_8h_source.html#l00489">rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00209">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00233">refine()</a>, <a class="el" href="def_8cpp_source.html#l00245">reset()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="def_8cpp_source.html#l00244">set()</a>, <a class="el" href="lam_8h_source.html#l00171">mim::Lam::set()</a>, <a class="el" href="tuple_8h_source.html#l00022">mim::Sigma::set()</a>, <a class="el" href="mem_8h_source.html#l00072">mim::plug::mem::strip_mem()</a>, and <a class="el" href="mem_8h_source.html#l00054">mim::plug::mem::strip_mem_ty()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00030">mim::BetaRed::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="world_8cpp_source.html#l00391">mim::World::arr()</a>, <a class="el" href="cfg_8cpp_source.html#l00025">mim::CFG::CFG()</a>, <a class="el" href="check_8cpp_source.html#l00255">mim::Sigma::check()</a>, <a class="el" href="core_8cpp_source.html#l00019">mim::plug::core::convert()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="lattice_8cpp_source.html#l00007">mim::Bound::find()</a>, <a class="el" href="def_8cpp_source.html#l00180">mim::Sigma::immutabilize()</a>, <a class="el" href="check_8cpp_source.html#l00247">mim::Sigma::infer()</a>, <a class="el" href="def_8cpp_source.html#l00286">is_set()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00612">mim::plug::core::normalize_trait()</a>, <a class="el" href="def_8h_source.html#l00262">op()</a>, <a class="el" href="world_8cpp_source.html#l00418">mim::World::pack()</a>, <a class="el" href="def_8h_source.html#l00495">rebuild()</a>, <a class="el" href="def_8h_source.html#l00491">rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00209">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00233">refine()</a>, <a class="el" href="def_8cpp_source.html#l00245">reset()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="def_8cpp_source.html#l00244">set()</a>, <a class="el" href="lam_8h_source.html#l00172">mim::Lam::set()</a>, <a class="el" href="tuple_8h_source.html#l00022">mim::Sigma::set()</a>, <a class="el" href="mem_8h_source.html#l00072">mim::plug::mem::strip_mem()</a>, and <a class="el" href="mem_8h_source.html#l00054">mim::plug::mem::strip_mem_ty()</a>.</p>
 
 </div>
 </div>
@@ -2282,9 +2285,9 @@ template&lt;size_t N = std::dynamic_extent&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00495">495</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00427">isa_mut()</a>, <a class="el" href="def_8h_source.html#l00261">op()</a>, <a class="el" href="def_8h_source.html#l00240">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00429">isa_mut()</a>, <a class="el" href="def_8h_source.html#l00262">op()</a>, <a class="el" href="def_8h_source.html#l00241">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00130">mim::plug::clos::clos_remove_env()</a>, <a class="el" href="ll_8cpp_source.html#l00452">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="emit_8cpp_source.html#l00064">mim::ast::TuplePtrn::emit_value()</a>, <a class="el" href="tuple_8cpp_source.html#l00055">mim::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="def_8h_source.html#l00343">projs()</a>, <a class="el" href="def_8h_source.html#l00357">projs()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="def_8h_source.html#l00339">tproj()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00130">mim::plug::clos::clos_remove_env()</a>, <a class="el" href="ll_8cpp_source.html#l00452">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="emit_8cpp_source.html#l00064">mim::ast::TuplePtrn::emit_value()</a>, <a class="el" href="tuple_8cpp_source.html#l00055">mim::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="def_8h_source.html#l00345">projs()</a>, <a class="el" href="def_8h_source.html#l00359">projs()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="def_8h_source.html#l00341">tproj()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
 
 </div>
 </div>
@@ -2311,13 +2314,13 @@ template&lt;size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>As above but takes <a class="el" href="#ad531ece40a890922a7deb83e3d8de8ea">Def::num_projs</a> as arity. </p>
+<p>As above but takes <a class="el" href="#ad531ece40a890922a7deb83e3d8de8ea" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00338">338</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00340">340</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00333">num_projs()</a>, and <a class="el" href="def_8h_source.html#l00338">proj()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00335">num_projs()</a>, and <a class="el" href="def_8h_source.html#l00340">proj()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00338">proj()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00340">proj()</a>.</p>
 
 </div>
 </div>
@@ -2346,11 +2349,11 @@ template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00361">361</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00363">363</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00361">projs()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00363">projs()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00361">projs()</a>, <a class="el" href="def_8h_source.html#l00343">projs()</a>, <a class="el" href="def_8h_source.html#l00367">projs()</a>, and <a class="el" href="def_8h_source.html#l00355">tprojs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00363">projs()</a>, <a class="el" href="def_8h_source.html#l00345">projs()</a>, <a class="el" href="def_8h_source.html#l00369">projs()</a>, and <a class="el" href="def_8h_source.html#l00357">tprojs()</a>.</p>
 
 </div>
 </div>
@@ -2382,9 +2385,9 @@ template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe
 <p>Splits this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="#ae3b655c3037933585ee084c6c516ef1e" title="Similar to World::extract while assuming an arity of a, but also works on Sigmas and Arrays.">Def::proj</a>ections into an Array (if <code>A == std::dynamic_extent</code>) or <code>std::array</code> (otherwise). </p>
 <p>Applies <code>f</code> to each element. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00343">343</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00345">345</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00251">as_lit_arity()</a>, <a class="el" href="def_8h_source.html#l00333">num_projs()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, and <a class="el" href="def_8h_source.html#l00361">projs()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00252">as_lit_arity()</a>, <a class="el" href="def_8h_source.html#l00335">num_projs()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, and <a class="el" href="def_8h_source.html#l00363">projs()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00123">mim::plug::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="ll_8cpp_source.html#l00452">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00120">mim::plug::clos::Clos2SJLJ::enter()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00050">mim::plug::regex::flatten_in_arg()</a>, <a class="el" href="mem_8h_source.html#l00025">mim::plug::mem::mem_def()</a>, <a class="el" href="compile_8cpp_source.html#l00036">mim_get_plugin()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00298">mim::plug::core::normalize_abs()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00028">mim::plug::autodiff::normalize_add()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00235">mim::plug::math::normalize_arith()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00331">mim::plug::core::normalize_bit2()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00357">mim::plug::math::normalize_cmp()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00044">mim::plug::compile::normalize_combine_pass_list()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00039">mim::plug::refly::normalize_dbg()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00513">mim::plug::core::normalize_div()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00290">mim::plug::core::normalize_extrema()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00299">mim::plug::math::normalize_extrema()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00274">mim::plug::core::normalize_icmp()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00007">mim::plug::mem::normalize_lea()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00017">mim::plug::mem::normalize_load()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00214">mim::plug::core::normalize_nat()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00246">mim::plug::core::normalize_ncmp()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00326">mim::plug::math::normalize_pow()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00202">mim::plug::regex::normalize_range()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00019">mim::plug::matrix::normalize_read()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00049">mim::plug::refly::normalize_refine()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00049">mim::plug::matrix::normalize_shape()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00423">mim::plug::core::normalize_shr()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00033">mim::plug::mem::normalize_store()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00081">mim::plug::autodiff::normalize_sum()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00453">mim::plug::core::normalize_wrap()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00658">mim::plug::core::normalize_zip()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00059">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="mem_8h_source.html#l00072">mim::plug::mem::strip_mem()</a>, <a class="el" href="tuple_8cpp_source.html#l00048">mim::tuple2str()</a>, and <a class="el" href="tuple_8cpp_source.html#l00080">mim::unflatten()</a>.</p>
 
@@ -2413,9 +2416,9 @@ template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00367">367</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00369">369</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00361">projs()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00363">projs()</a>.</p>
 
 </div>
 </div>
@@ -2448,7 +2451,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00357">357</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00359">359</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, and <a class="el" href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">mim::Vector()</a>.</p>
 
@@ -2481,11 +2484,11 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00493">493</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00495">495</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00260">ops()</a>, <a class="el" href="def_8h_source.html#l00493">rebuild()</a>, <a class="el" href="def_8h_source.html#l00240">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00261">ops()</a>, <a class="el" href="def_8h_source.html#l00495">rebuild()</a>, <a class="el" href="def_8h_source.html#l00241">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00493">rebuild()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00495">rebuild()</a>.</p>
 
 </div>
 </div>
@@ -2523,9 +2526,9 @@ template&lt;class F &gt; </div>
 
 <p><a class="el" href="#ae305c6b58ec30137b0b6513099d832b0" title="Def::rebuilds this Def while using new_op as substitute for its i&#39;th Def::op.">Def::rebuild</a>s this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> while using <code>new_op</code> as substitute for its <code>i'th</code> <a class="el" href="#a513dc7dba8016a0ae985992c4f844339">Def::op</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00489">489</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00491">491</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00446">dbg()</a>, <a class="el" href="def_8h_source.html#l00421">isa_imm()</a>, <a class="el" href="def_8h_source.html#l00260">ops()</a>, <a class="el" href="#ac5249000d734bba39fd8771ac9b54d8a">rebuild_()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, and <a class="el" href="def_8h_source.html#l00240">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00448">dbg()</a>, <a class="el" href="def_8h_source.html#l00423">isa_imm()</a>, <a class="el" href="def_8h_source.html#l00261">ops()</a>, <a class="el" href="#ac5249000d734bba39fd8771ac9b54d8a">rebuild_()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, and <a class="el" href="def_8h_source.html#l00241">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00233">refine()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>.</p>
 
@@ -2565,7 +2568,7 @@ template&lt;class F &gt; </div>
 
 <p>Implemented in <a class="el" href="classmim_1_1Ac.html#a8b37ff4c1e5a2b942e85c113f57b307d">mim::Ac</a>, <a class="el" href="classmim_1_1App.html#a5740543117d528b48479a102057b1072">mim::App</a>, <a class="el" href="classmim_1_1Arr.html#a2def8b0a7a7c2bfa487239ad8e7dfc68">mim::Arr</a>, <a class="el" href="classmim_1_1Axiom.html#ad8a6daef666079d8a525097603daa1a4">mim::Axiom</a>, <a class="el" href="classmim_1_1Extract.html#aa5a2ddb65aa6b33ed2d7f74d5e3330cb">mim::Extract</a>, <a class="el" href="classmim_1_1Global.html#a6bd1e3d8cd55a3eb5cd9e335325b022c">mim::Global</a>, <a class="el" href="classmim_1_1Idx.html#aeeafbe08658b437457bda6c4c3b22539">mim::Idx</a>, <a class="el" href="classmim_1_1Infer.html#af47a3129a7b43ccaa5f38360b05c139e">mim::Infer</a>, <a class="el" href="classmim_1_1Insert.html#ad532d883e6c8eac95e80348ae48fbde9">mim::Insert</a>, <a class="el" href="classmim_1_1Lam.html#aedeca35b5574931077593cd2059f03b4">mim::Lam</a>, <a class="el" href="classmim_1_1Lit.html#a120db601a92b12aa0eb4f41b4cd0d452">mim::Lit</a>, <a class="el" href="classmim_1_1Nat.html#a48f2ba0daf82fdfdb0457b331eefda79">mim::Nat</a>, <a class="el" href="classmim_1_1Pack.html#aae532c198cf63123c3ab6d02eac49d00">mim::Pack</a>, <a class="el" href="classmim_1_1Pi.html#a8480da2e76515371e1e719043c5eb8bc">mim::Pi</a>, <a class="el" href="classmim_1_1Pick.html#a32341d0181a56197339e24267969bd9f">mim::Pick</a>, <a class="el" href="classmim_1_1Proxy.html#a1ca5549161f116616c24f05a5077ab7e">mim::Proxy</a>, <a class="el" href="classmim_1_1Sigma.html#a198244a407160f0b1729c63695b39c8c">mim::Sigma</a>, <a class="el" href="classmim_1_1TBound.html#a40b7e910abef34e3cd6817d2b71f471e">mim::TBound&lt; Up &gt;</a>, <a class="el" href="classmim_1_1Test.html#abec8b871783f77c85f6598da6f665bec">mim::Test</a>, <a class="el" href="classmim_1_1TExt.html#a36178ceab13d4a0e377dd57e11474bd1">mim::TExt&lt; Up &gt;</a>, <a class="el" href="classmim_1_1Tuple.html#adbac2f8a3d6e58982d9b093dc81f77c0">mim::Tuple</a>, <a class="el" href="classmim_1_1Type.html#ab9ee9d2961b5e7b99dd81ff71bcac235">mim::Type</a>, <a class="el" href="classmim_1_1UInc.html#ad0b0bcf04699e1e4ce74cd05494fad89">mim::UInc</a>, <a class="el" href="classmim_1_1UMax.html#ad624ef4acc6f40821a709ec644d482d7">mim::UMax</a>, <a class="el" href="classmim_1_1Uniq.html#ad6c6ec20d95fb20cdd9347440e7846ee">mim::Uniq</a>, <a class="el" href="classmim_1_1Univ.html#ae33396c5f9dc16d50b16f10c2b549f94">mim::Univ</a>, <a class="el" href="classmim_1_1Var.html#a866b35085cbf168379eafa7a264585a8">mim::Var</a>, and <a class="el" href="classmim_1_1Vel.html#a854119b5a138739db91fd734e37b23ce">mim::Vel</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00489">rebuild()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00491">rebuild()</a>.</p>
 
 </div>
 </div>
@@ -2586,7 +2589,7 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00214">214</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00381">has_var()</a>, <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, <a class="el" href="def_8h_source.html#l00261">op()</a>, <a class="el" href="def_8h_source.html#l00260">ops()</a>, <a class="el" href="def_8cpp_source.html#l00431">var()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00383">has_var()</a>, <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, <a class="el" href="def_8h_source.html#l00262">op()</a>, <a class="el" href="def_8h_source.html#l00261">ops()</a>, <a class="el" href="def_8cpp_source.html#l00431">var()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 </div>
 </div>
@@ -2609,9 +2612,9 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00209">209</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00427">isa_mut()</a>, and <a class="el" href="def_8h_source.html#l00260">ops()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00429">isa_mut()</a>, and <a class="el" href="def_8h_source.html#l00261">ops()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="compile_8h_source.html#l00009">mim::plug::compile::handle_optimization_part()</a>, <a class="el" href="tuple_8h_source.html#l00092">mim::Arr::reduce()</a>, <a class="el" href="tuple_8h_source.html#l00139">mim::Pack::reduce()</a>, and <a class="el" href="lam_8h_source.html#l00088">mim::Pi::reduce()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="compile_8h_source.html#l00009">mim::plug::compile::handle_optimization_part()</a>, <a class="el" href="tuple_8h_source.html#l00092">mim::Arr::reduce()</a>, <a class="el" href="tuple_8h_source.html#l00139">mim::Pack::reduce()</a>, and <a class="el" href="lam_8h_source.html#l00089">mim::Pi::reduce()</a>.</p>
 
 </div>
 </div>
@@ -2638,7 +2641,7 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00228">228</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00381">has_var()</a>, <a class="el" href="def_8h_source.html#l00427">isa_mut()</a>, and <a class="el" href="def_8h_source.html#l00261">op()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00383">has_var()</a>, <a class="el" href="def_8h_source.html#l00429">isa_mut()</a>, and <a class="el" href="def_8h_source.html#l00262">op()</a>.</p>
 
 </div>
 </div>
@@ -2663,7 +2666,7 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00233">233</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00260">ops()</a>, <a class="el" href="def_8h_source.html#l00489">rebuild()</a>, and <a class="el" href="def_8h_source.html#l00240">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00261">ops()</a>, <a class="el" href="def_8h_source.html#l00491">rebuild()</a>, and <a class="el" href="def_8h_source.html#l00241">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00139">mim::plug::clos::clos_sub_env()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00111">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>.</p>
 
@@ -2688,7 +2691,7 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00245">245</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, <a class="el" href="def_8h_source.html#l00260">ops()</a>, and <a class="el" href="def_8h_source.html#l00283">reset()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, <a class="el" href="def_8h_source.html#l00261">ops()</a>, and <a class="el" href="def_8h_source.html#l00284">reset()</a>.</p>
 
 </div>
 </div>
@@ -2721,7 +2724,7 @@ template&lt;class F &gt; </div>
 
 <p>Successively reset from left to right. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00283">283</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00284">284</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00248">set()</a>, and <a class="el" href="def_8cpp_source.html#l00264">unset()</a>.</p>
 
@@ -2754,11 +2757,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00467">467</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00469">469</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00467">set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00469">set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00467">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00469">set()</a>.</p>
 
 </div>
 </div>
@@ -2787,11 +2790,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00466">466</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00468">468</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00466">set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00468">set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00466">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00468">set()</a>.</p>
 
 </div>
 </div>
@@ -2814,7 +2817,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00244">244</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, <a class="el" href="def_8h_source.html#l00260">ops()</a>, and <a class="el" href="def_8cpp_source.html#l00248">set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, <a class="el" href="def_8h_source.html#l00261">ops()</a>, and <a class="el" href="def_8cpp_source.html#l00248">set()</a>.</p>
 
 </div>
 </div>
@@ -2843,9 +2846,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00457">457</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00459">459</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00146">mim::Dbg::loc()</a>, and <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00146">mim::Dbg::loc()</a>, and <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>.</p>
 
 </div>
 </div>
@@ -2874,9 +2877,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00458">458</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00146">mim::Dbg::loc()</a>, and <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00146">mim::Dbg::loc()</a>, and <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>.</p>
 
 </div>
 </div>
@@ -2909,11 +2912,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00465">465</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00467">467</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00465">set()</a>, and <a class="el" href="def_8h_source.html#l00448">sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00467">set()</a>, and <a class="el" href="def_8h_source.html#l00450">sym()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00465">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00467">set()</a>.</p>
 
 </div>
 </div>
@@ -2946,11 +2949,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00464">464</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00466">466</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00464">set()</a>, and <a class="el" href="def_8h_source.html#l00448">sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00466">set()</a>, and <a class="el" href="def_8h_source.html#l00450">sym()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00464">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00466">set()</a>.</p>
 
 </div>
 </div>
@@ -2983,11 +2986,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00463">463</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00465">465</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00463">set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00465">set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00463">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00465">set()</a>.</p>
 
 </div>
 </div>
@@ -3020,11 +3023,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00462">462</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00464">464</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00462">set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00464">set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00462">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00464">set()</a>.</p>
 
 </div>
 </div>
@@ -3051,9 +3054,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00248">248</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00512">check()</a>, <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, <a class="el" href="def_8h_source.html#l00261">op()</a>, and <a class="el" href="def_8h_source.html#l00240">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00514">check()</a>, <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, <a class="el" href="def_8h_source.html#l00262">op()</a>, and <a class="el" href="def_8h_source.html#l00241">type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00086">mim::plug::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00123">mim::plug::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="emit_8cpp_source.html#l00062">mim::ast::AliasPtrn::emit_value()</a>, <a class="el" href="emit_8cpp_source.html#l00060">mim::ast::GrpPtrn::emit_value()</a>, <a class="el" href="emit_8cpp_source.html#l00055">mim::ast::IdPtrn::emit_value()</a>, <a class="el" href="def_8h_source.html#l00489">rebuild()</a>, <a class="el" href="def_8h_source.html#l00283">reset()</a>, <a class="el" href="lam__spec_8cpp_source.html#l00009">mim::LamSpec::rewrite()</a>, <a class="el" href="lower__for_8cpp_source.html#l00032">mim::plug::affine::LowerFor::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00111">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>, <a class="el" href="def_8cpp_source.html#l00244">set()</a>, <a class="el" href="def_8h_source.html#l00851">mim::Global::set()</a>, <a class="el" href="check_8h_source.html#l00021">mim::Infer::set()</a>, <a class="el" href="lam_8h_source.html#l00171">mim::Lam::set()</a>, <a class="el" href="tuple_8h_source.html#l00132">mim::Pack::set()</a>, <a class="el" href="tuple_8h_source.html#l00022">mim::Sigma::set()</a>, <a class="el" href="tuple_8h_source.html#l00021">mim::Sigma::set()</a>, <a class="el" href="tuple_8h_source.html#l00086">mim::Arr::set_body()</a>, <a class="el" href="lam_8h_source.html#l00163">mim::Lam::set_body()</a>, <a class="el" href="lam_8h_source.html#l00075">mim::Pi::set_codom()</a>, <a class="el" href="lam_8cpp_source.html#l00022">mim::Pi::set_dom()</a>, <a class="el" href="lam_8h_source.html#l00073">mim::Pi::set_dom()</a>, <a class="el" href="lam_8cpp_source.html#l00028">mim::Lam::set_filter()</a>, <a class="el" href="tuple_8h_source.html#l00085">mim::Arr::set_shape()</a>, <a class="el" href="tuple_8h_source.html#l00093">mim::Arr::stub()</a>, and <a class="el" href="def_8h_source.html#l00485">stub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00086">mim::plug::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00123">mim::plug::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="emit_8cpp_source.html#l00062">mim::ast::AliasPtrn::emit_value()</a>, <a class="el" href="emit_8cpp_source.html#l00060">mim::ast::GrpPtrn::emit_value()</a>, <a class="el" href="emit_8cpp_source.html#l00055">mim::ast::IdPtrn::emit_value()</a>, <a class="el" href="def_8h_source.html#l00491">rebuild()</a>, <a class="el" href="def_8h_source.html#l00284">reset()</a>, <a class="el" href="lam__spec_8cpp_source.html#l00009">mim::LamSpec::rewrite()</a>, <a class="el" href="lower__for_8cpp_source.html#l00032">mim::plug::affine::LowerFor::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00111">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>, <a class="el" href="def_8cpp_source.html#l00244">set()</a>, <a class="el" href="def_8h_source.html#l00854">mim::Global::set()</a>, <a class="el" href="check_8h_source.html#l00021">mim::Infer::set()</a>, <a class="el" href="lam_8h_source.html#l00172">mim::Lam::set()</a>, <a class="el" href="tuple_8h_source.html#l00132">mim::Pack::set()</a>, <a class="el" href="tuple_8h_source.html#l00022">mim::Sigma::set()</a>, <a class="el" href="tuple_8h_source.html#l00021">mim::Sigma::set()</a>, <a class="el" href="tuple_8h_source.html#l00086">mim::Arr::set_body()</a>, <a class="el" href="lam_8h_source.html#l00164">mim::Lam::set_body()</a>, <a class="el" href="lam_8h_source.html#l00076">mim::Pi::set_codom()</a>, <a class="el" href="lam_8cpp_source.html#l00022">mim::Pi::set_dom()</a>, <a class="el" href="lam_8h_source.html#l00074">mim::Pi::set_dom()</a>, <a class="el" href="lam_8cpp_source.html#l00028">mim::Lam::set_filter()</a>, <a class="el" href="tuple_8h_source.html#l00085">mim::Arr::set_shape()</a>, <a class="el" href="tuple_8h_source.html#l00093">mim::Arr::stub()</a>, and <a class="el" href="def_8h_source.html#l00487">stub()</a>.</p>
 
 </div>
 </div>
@@ -3082,11 +3085,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00461">461</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00463">463</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00461">set()</a>, and <a class="el" href="def_8h_source.html#l00448">sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00463">set()</a>, and <a class="el" href="def_8h_source.html#l00450">sym()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00461">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00463">set()</a>.</p>
 
 </div>
 </div>
@@ -3115,11 +3118,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00460">460</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00462">462</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00460">set()</a>, and <a class="el" href="def_8h_source.html#l00448">sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00462">set()</a>, and <a class="el" href="def_8h_source.html#l00450">sym()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00460">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00462">set()</a>.</p>
 
 </div>
 </div>
@@ -3148,9 +3151,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00459">459</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00461">461</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>, and <a class="el" href="dbg_8h_source.html#l00145">mim::Dbg::sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>, and <a class="el" href="dbg_8h_source.html#l00145">mim::Dbg::sym()</a>.</p>
 
 </div>
 </div>
@@ -3179,9 +3182,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00458">458</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00460">460</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>, and <a class="el" href="dbg_8h_source.html#l00145">mim::Dbg::sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>, <a class="el" href="dbg_8h_source.html#l00153">mim::Dbg::set()</a>, and <a class="el" href="dbg_8h_source.html#l00145">mim::Dbg::sym()</a>.</p>
 
 </div>
 </div>
@@ -3231,11 +3234,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00486">486</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00488">488</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00486">stub()</a>, <a class="el" href="def_8h_source.html#l00240">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00488">stub()</a>, <a class="el" href="def_8h_source.html#l00241">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00486">stub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00488">stub()</a>.</p>
 
 </div>
 </div>
@@ -3266,9 +3269,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00485">485</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00487">487</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00446">dbg()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, <a class="el" href="def_8h_source.html#l00547">stub_()</a>, and <a class="el" href="def_8h_source.html#l00240">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00448">dbg()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, <a class="el" href="def_8h_source.html#l00549">stub_()</a>, and <a class="el" href="def_8h_source.html#l00241">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="lam__spec_8cpp_source.html#l00009">mim::LamSpec::rewrite()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00032">mim::Rewriter::rewrite_mut()</a>.</p>
 
@@ -3303,9 +3306,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p>Reimplemented in <a class="el" href="classmim_1_1Arr.html#a733865ea0d7996fa39c8fc8a756878fa">mim::Arr</a>, <a class="el" href="classmim_1_1Global.html#a8f551be8c40938d76b306d77e6cb1454">mim::Global</a>, <a class="el" href="classmim_1_1Infer.html#a17b6f9b1e5f189b368d5d59e8fd4a873">mim::Infer</a>, <a class="el" href="classmim_1_1Lam.html#a52d19ff0ff5399212b499ccb9a309f6c">mim::Lam</a>, <a class="el" href="classmim_1_1Pack.html#a3ace092b65113dacc7df3b93956198b7">mim::Pack</a>, <a class="el" href="classmim_1_1Pi.html#a94f0f9739f3a1e2e80d06b20dbf01c22">mim::Pi</a>, <a class="el" href="classmim_1_1Sigma.html#aafa19530f511f54b6dfa7e59597aba02">mim::Sigma</a>, <a class="el" href="classmim_1_1TBound.html#a4bed1971f96c8925a211b741a8c1a6f5">mim::TBound&lt; Up &gt;</a>, and <a class="el" href="classmim_1_1TExt.html#ad3fdc9a27ae5980bfe3ef165f56cad36">mim::TExt&lt; Up &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00547">547</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00549">549</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00485">stub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00487">stub()</a>.</p>
 
 </div>
 </div>
@@ -3332,11 +3335,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00448">448</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00450">450</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">dbg_</a>, and <a class="el" href="dbg_8h_source.html#l00145">mim::Dbg::sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00567">dbg_</a>, and <a class="el" href="dbg_8h_source.html#l00145">mim::Dbg::sym()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="def_8cpp_source.html#l00425">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00426">debug_suffix()</a>, <a class="el" href="internal__cleanup_8cpp_source.html#l00009">mim::plug::compile::InternalCleanup::enter()</a>, <a class="el" href="world_8h_source.html#l00169">mim::World::make_external()</a>, <a class="el" href="world_8h_source.html#l00175">mim::World::make_internal()</a>, <a class="el" href="opt_8cpp_source.html#l00015">mim_get_plugin()</a>, <a class="el" href="def_8h_source.html#l00465">set()</a>, <a class="el" href="def_8h_source.html#l00464">set()</a>, <a class="el" href="def_8h_source.html#l00461">set()</a>, <a class="el" href="def_8h_source.html#l00460">set()</a>, and <a class="el" href="def_8cpp_source.html#l00488">unique_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="def_8cpp_source.html#l00425">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00426">debug_suffix()</a>, <a class="el" href="internal__cleanup_8cpp_source.html#l00009">mim::plug::compile::InternalCleanup::enter()</a>, <a class="el" href="world_8h_source.html#l00169">mim::World::make_external()</a>, <a class="el" href="world_8h_source.html#l00175">mim::World::make_internal()</a>, <a class="el" href="opt_8cpp_source.html#l00015">mim_get_plugin()</a>, <a class="el" href="def_8h_source.html#l00467">set()</a>, <a class="el" href="def_8h_source.html#l00466">set()</a>, <a class="el" href="def_8h_source.html#l00463">set()</a>, <a class="el" href="def_8h_source.html#l00462">set()</a>, and <a class="el" href="def_8cpp_source.html#l00488">unique_name()</a>.</p>
 
 </div>
 </div>
@@ -3452,7 +3455,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p>As above but takes <a class="el" href="#a26e88f05b40da602dbc2d3cfc02e4799" title="As above but yields 1, if Flags::scalarize_threshold is exceeded.">Def::num_tprojs</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00339">339</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00341">341</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00490">num_tprojs()</a>, and <a class="el" href="def_8cpp_source.html#l00495">proj()</a>.</p>
 
@@ -3481,11 +3484,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00364">364</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00366">366</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00364">tprojs()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00366">tprojs()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00364">tprojs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00366">tprojs()</a>.</p>
 
 </div>
 </div>
@@ -3514,9 +3517,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00355">355</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00357">357</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00490">num_tprojs()</a>, and <a class="el" href="def_8h_source.html#l00361">projs()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00490">num_tprojs()</a>, and <a class="el" href="def_8h_source.html#l00363">projs()</a>.</p>
 
 </div>
 </div>
@@ -3543,7 +3546,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00414">414</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00416">416</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00485">make_external()</a>, and <a class="el" href="def_8cpp_source.html#l00486">make_internal()</a>.</p>
 
@@ -3572,7 +3575,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3599,7 +3602,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3628,7 +3631,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3654,11 +3657,13 @@ template&lt;class F &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Yields the <b>raw</b> type of this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>, i.e. maybe <code>nullptr</code>. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a415a05bda88edc1da873598f3307ccaf" title="Yields the type of this Def and builds a new Type (UInc n) if necessary.">Def::unfold_type</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00240">240</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p>Yields the <b>raw</b> type of this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>, i.e. maybe <code>nullptr</code>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a415a05bda88edc1da873598f3307ccaf" title="Yields the type of this Def and builds a new Type (UInc n) if necessary.">Def::unfold_type</a>. </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00458">arity()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00307">mim::plug::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00086">mim::plug::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00158">mim::plug::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00123">mim::plug::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="lam_8h_source.html#l00215">mim::App::callee_type()</a>, <a class="el" href="check_8cpp_source.html#l00240">mim::Arr::check()</a>, <a class="el" href="def_8h_source.html#l00512">check()</a>, <a class="el" href="check_8cpp_source.html#l00272">mim::Lam::check()</a>, <a class="el" href="check_8cpp_source.html#l00295">mim::Pi::check()</a>, <a class="el" href="check_8cpp_source.html#l00255">mim::Sigma::check()</a>, <a class="el" href="clos_8cpp_source.html#l00078">mim::plug::clos::clos_pack()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00026">mim::plug::matrix::counting_for()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8cpp_source.html#l00418">deps()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="ll_8cpp_source.html#l00452">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="clos_8h_source.html#l00023">mim::plug::clos::ClosLit::env_type()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00036">mim::plug::clos::ClosConvPrep::eta_wrap()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="lattice_8cpp_source.html#l00007">mim::Bound::find()</a>, <a class="el" href="tuple_8cpp_source.html#l00066">mim::flatten()</a>, <a class="el" href="clos_8h_source.html#l00026">mim::plug::clos::ClosLit::fnc_type()</a>, <a class="el" href="lattice_8h_source.html#l00022">mim::Bound::get()</a>, <a class="el" href="compile_8h_source.html#l00009">mim::plug::compile::handle_optimization_part()</a>, <a class="el" href="world_8cpp_source.html#l00164">mim::World::implicit_app()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="def_8cpp_source.html#l00447">is_term()</a>, <a class="el" href="tuple_8cpp_source.html#l00046">mim::is_unit()</a>, <a class="el" href="def_8cpp_source.html#l00465">isa_lit_arity()</a>, <a class="el" href="mem_8h_source.html#l00025">mim::plug::mem::mem_def()</a>, <a class="el" href="tuple_8cpp_source.html#l00098">mim::merge_tuple()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00590">mim::plug::core::normalize_bitcast()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00551">mim::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00369">mim::plug::math::normalize_conv()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00423">mim::plug::core::normalize_shr()</a>, <a class="el" href="core_8h_source.html#l00041">mim::plug::core::op()</a>, <a class="el" href="direct_8h_source.html#l00015">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="mem_8h_source.html#l00111">mim::plug::mem::op_lea()</a>, <a class="el" href="mem_8h_source.html#l00118">mim::plug::mem::op_lea_unsafe()</a>, <a class="el" href="matrix_8h_source.html#l00019">mim::plug::matrix::op_read()</a>, <a class="el" href="optimize_8cpp_source.html#l00010">mim::optimize()</a>, <a class="el" href="world_8cpp_source.html#l00418">mim::World::pack()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, <a class="el" href="def_8h_source.html#l00493">rebuild()</a>, <a class="el" href="def_8h_source.html#l00489">rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00233">refine()</a>, <a class="el" href="mem_8h_source.html#l00041">mim::plug::mem::replace_mem()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00042">mim::plug::matrix::LowerMatrixHighLevelMapRed::rewrite_()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00111">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00059">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00032">mim::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">mim::Scheduler::Scheduler()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, <a class="el" href="tuple_8cpp_source.html#l00040">mim::Pack::shape()</a>, <a class="el" href="mem_8h_source.html#l00072">mim::plug::mem::strip_mem()</a>, <a class="el" href="tuple_8h_source.html#l00093">mim::Arr::stub()</a>, <a class="el" href="def_8h_source.html#l00486">stub()</a>, <a class="el" href="def_8h_source.html#l00485">stub()</a>, <a class="el" href="check_8h_source.html#l00031">mim::Infer::stub()</a>, <a class="el" href="tuple_8h_source.html#l00140">mim::Pack::stub()</a>, <a class="el" href="lam_8h_source.html#l00089">mim::Pi::stub()</a>, <a class="el" href="tuple_8h_source.html#l00029">mim::Sigma::stub()</a>, <a class="el" href="lattice_8h_source.html#l00041">mim::TBound&lt; Up &gt;::stub()</a>, <a class="el" href="lattice_8h_source.html#l00164">mim::TExt&lt; Up &gt;::stub()</a>, <a class="el" href="world_8cpp_source.html#l00514">mim::World::test()</a>, <a class="el" href="world_8cpp_source.html#l00244">mim::World::tuple()</a>, <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>, <a class="el" href="def_8cpp_source.html#l00546">mim::Global::type()</a>, <a class="el" href="lam_8h_source.html#l00116">mim::Lam::type()</a>, <a class="el" href="clos_8h_source.html#l00017">mim::plug::clos::ClosLit::type()</a>, <a class="el" href="world_8cpp_source.html#l00093">mim::World::type()</a>, <a class="el" href="world_8cpp_source.html#l00100">mim::World::uinc()</a>, <a class="el" href="world_8cpp_source.html#l00528">mim::World::uniq()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00241">241</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00458">arity()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00307">mim::plug::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00086">mim::plug::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00158">mim::plug::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00123">mim::plug::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="lam_8h_source.html#l00216">mim::App::callee_type()</a>, <a class="el" href="check_8cpp_source.html#l00240">mim::Arr::check()</a>, <a class="el" href="def_8h_source.html#l00514">check()</a>, <a class="el" href="check_8cpp_source.html#l00272">mim::Lam::check()</a>, <a class="el" href="check_8cpp_source.html#l00295">mim::Pi::check()</a>, <a class="el" href="check_8cpp_source.html#l00255">mim::Sigma::check()</a>, <a class="el" href="clos_8cpp_source.html#l00078">mim::plug::clos::clos_pack()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00026">mim::plug::matrix::counting_for()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8cpp_source.html#l00418">deps()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="ll_8cpp_source.html#l00452">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="clos_8h_source.html#l00023">mim::plug::clos::ClosLit::env_type()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00036">mim::plug::clos::ClosConvPrep::eta_wrap()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="lattice_8cpp_source.html#l00007">mim::Bound::find()</a>, <a class="el" href="tuple_8cpp_source.html#l00066">mim::flatten()</a>, <a class="el" href="clos_8h_source.html#l00026">mim::plug::clos::ClosLit::fnc_type()</a>, <a class="el" href="lattice_8h_source.html#l00022">mim::Bound::get()</a>, <a class="el" href="compile_8h_source.html#l00009">mim::plug::compile::handle_optimization_part()</a>, <a class="el" href="world_8cpp_source.html#l00164">mim::World::implicit_app()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="def_8cpp_source.html#l00447">is_term()</a>, <a class="el" href="tuple_8cpp_source.html#l00046">mim::is_unit()</a>, <a class="el" href="def_8cpp_source.html#l00465">isa_lit_arity()</a>, <a class="el" href="mem_8h_source.html#l00025">mim::plug::mem::mem_def()</a>, <a class="el" href="tuple_8cpp_source.html#l00098">mim::merge_tuple()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00590">mim::plug::core::normalize_bitcast()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00551">mim::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00369">mim::plug::math::normalize_conv()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00423">mim::plug::core::normalize_shr()</a>, <a class="el" href="core_8h_source.html#l00041">mim::plug::core::op()</a>, <a class="el" href="direct_8h_source.html#l00015">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="mem_8h_source.html#l00111">mim::plug::mem::op_lea()</a>, <a class="el" href="mem_8h_source.html#l00118">mim::plug::mem::op_lea_unsafe()</a>, <a class="el" href="matrix_8h_source.html#l00019">mim::plug::matrix::op_read()</a>, <a class="el" href="optimize_8cpp_source.html#l00010">mim::optimize()</a>, <a class="el" href="world_8cpp_source.html#l00418">mim::World::pack()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, <a class="el" href="def_8h_source.html#l00495">rebuild()</a>, <a class="el" href="def_8h_source.html#l00491">rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00233">refine()</a>, <a class="el" href="mem_8h_source.html#l00041">mim::plug::mem::replace_mem()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00020">mim::EtaExp::rewrite()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00042">mim::plug::matrix::LowerMatrixHighLevelMapRed::rewrite_()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00111">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00059">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00032">mim::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">mim::Scheduler::Scheduler()</a>, <a class="el" href="def_8cpp_source.html#l00248">set()</a>, <a class="el" href="tuple_8cpp_source.html#l00040">mim::Pack::shape()</a>, <a class="el" href="mem_8h_source.html#l00072">mim::plug::mem::strip_mem()</a>, <a class="el" href="tuple_8h_source.html#l00093">mim::Arr::stub()</a>, <a class="el" href="def_8h_source.html#l00488">stub()</a>, <a class="el" href="def_8h_source.html#l00487">stub()</a>, <a class="el" href="check_8h_source.html#l00031">mim::Infer::stub()</a>, <a class="el" href="tuple_8h_source.html#l00140">mim::Pack::stub()</a>, <a class="el" href="lam_8h_source.html#l00090">mim::Pi::stub()</a>, <a class="el" href="tuple_8h_source.html#l00029">mim::Sigma::stub()</a>, <a class="el" href="lattice_8h_source.html#l00041">mim::TBound&lt; Up &gt;::stub()</a>, <a class="el" href="lattice_8h_source.html#l00164">mim::TExt&lt; Up &gt;::stub()</a>, <a class="el" href="world_8cpp_source.html#l00514">mim::World::test()</a>, <a class="el" href="world_8cpp_source.html#l00244">mim::World::tuple()</a>, <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>, <a class="el" href="def_8cpp_source.html#l00546">mim::Global::type()</a>, <a class="el" href="lam_8h_source.html#l00117">mim::Lam::type()</a>, <a class="el" href="clos_8h_source.html#l00017">mim::plug::clos::ClosLit::type()</a>, <a class="el" href="world_8cpp_source.html#l00093">mim::World::type()</a>, <a class="el" href="world_8cpp_source.html#l00100">mim::World::uinc()</a>, <a class="el" href="world_8cpp_source.html#l00528">mim::World::uniq()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 </div>
 </div>
@@ -3706,7 +3711,7 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00488">488</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00231">gid()</a>, and <a class="el" href="def_8h_source.html#l00448">sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00231">gid()</a>, and <a class="el" href="def_8h_source.html#l00450">sym()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00266">mim::ll::Emitter::prepare()</a>.</p>
 
@@ -3731,9 +3736,9 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00264">264</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00262">num_ops()</a>, <a class="el" href="def_8h_source.html#l00261">op()</a>, and <a class="el" href="def_8cpp_source.html#l00264">unset()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00263">num_ops()</a>, <a class="el" href="def_8h_source.html#l00262">op()</a>, and <a class="el" href="def_8cpp_source.html#l00264">unset()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00283">reset()</a>, <a class="el" href="tuple_8h_source.html#l00087">mim::Arr::unset()</a>, <a class="el" href="def_8cpp_source.html#l00264">unset()</a>, <a class="el" href="check_8h_source.html#l00023">mim::Infer::unset()</a>, <a class="el" href="lam_8h_source.html#l00172">mim::Lam::unset()</a>, <a class="el" href="tuple_8h_source.html#l00134">mim::Pack::unset()</a>, <a class="el" href="lam_8h_source.html#l00076">mim::Pi::unset()</a>, and <a class="el" href="tuple_8h_source.html#l00023">mim::Sigma::unset()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00284">reset()</a>, <a class="el" href="tuple_8h_source.html#l00087">mim::Arr::unset()</a>, <a class="el" href="def_8cpp_source.html#l00264">unset()</a>, <a class="el" href="check_8h_source.html#l00023">mim::Infer::unset()</a>, <a class="el" href="lam_8h_source.html#l00173">mim::Lam::unset()</a>, <a class="el" href="tuple_8h_source.html#l00134">mim::Pack::unset()</a>, <a class="el" href="lam_8h_source.html#l00077">mim::Pi::unset()</a>, and <a class="el" href="tuple_8h_source.html#l00023">mim::Sigma::unset()</a>.</p>
 
 </div>
 </div>
@@ -3762,7 +3767,7 @@ template&lt;class F &gt; </div>
 
 <p>Set of mutables where this mutable is locally referenced. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00404">404</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00406">406</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3787,7 +3792,7 @@ template&lt;class F &gt; </div>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="lam_8h_source.html#l00148">mim::Lam::ret_var()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="lam_8h_source.html#l00149">mim::Lam::ret_var()</a>, and <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>.</p>
 
 </div>
 </div>
@@ -3818,7 +3823,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="emit_8cpp_source.html#l00088">mim::ast::TuplePtrn::emit_body()</a>, <a class="el" href="emit_8cpp_source.html#l00203">mim::ast::PiExpr::Dom::emit_type()</a>, <a class="el" href="clos_8cpp_source.html#l00062">mim::plug::clos::ClosLit::env_var()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00036">mim::plug::clos::ClosConvPrep::eta_wrap()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="clos_8cpp_source.html#l00111">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="mem_8h_source.html#l00038">mim::plug::mem::mem_var()</a>, and <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
 
@@ -3847,7 +3852,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3876,7 +3881,7 @@ template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>.</p>
 
@@ -3907,7 +3912,7 @@ template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="clos2sjlj_8cpp_source.html#l00120">mim::plug::clos::Clos2SJLJ::enter()</a>, <a class="el" href="ret__wrap_8cpp_source.html#l00005">mim::RetWrap::enter()</a>, <a class="el" href="ll_8cpp_source.html#l00266">mim::ll::Emitter::prepare()</a>, and <a class="el" href="lower__for_8cpp_source.html#l00032">mim::plug::affine::LowerFor::rewrite()</a>.</p>
 
@@ -3936,7 +3941,7 @@ template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3969,7 +3974,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00377">377</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00379">379</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3990,9 +3995,9 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00392">392</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00240">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00241">type()</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8h_source.html#l00065">mim::Checker::alpha()</a>, <a class="el" href="lam_8cpp_source.html#l00030">mim::Lam::app()</a>, <a class="el" href="lam_8cpp_source.html#l00029">mim::Lam::app()</a>, <a class="el" href="clos_8h_source.html#l00072">mim::plug::clos::apply_closure()</a>, <a class="el" href="def_8cpp_source.html#l00458">arity()</a>, <a class="el" href="check_8h_source.html#l00069">mim::Checker::assignable()</a>, <a class="el" href="autodiff_8cpp_source.html#l00113">mim::plug::autodiff::autodiff_type_fun()</a>, <a class="el" href="autodiff_8cpp_source.html#l00090">mim::plug::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="lam_8cpp_source.html#l00032">mim::Lam::branch()</a>, <a class="el" href="check_8cpp_source.html#l00272">mim::Lam::check()</a>, <a class="el" href="check_8cpp_source.html#l00255">mim::Sigma::check()</a>, <a class="el" href="clos_8cpp_source.html#l00100">mim::plug::clos::clos_apply()</a>, <a class="el" href="clos_8h_source.html#l00123">mim::plug::clos::clos_insert_env()</a>, <a class="el" href="clos_8cpp_source.html#l00078">mim::plug::clos::clos_pack()</a>, <a class="el" href="clos_8h_source.html#l00133">mim::plug::clos::clos_remove_env()</a>, <a class="el" href="clos_8cpp_source.html#l00121">mim::plug::clos::clos_type()</a>, <a class="el" href="clos_8cpp_source.html#l00127">mim::plug::clos::clos_type_to_pi()</a>, <a class="el" href="core_8cpp_source.html#l00019">mim::plug::core::convert()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00026">mim::plug::matrix::counting_for()</a>, <a class="el" href="def_8cpp_source.html#l00425">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00426">debug_suffix()</a>, <a class="el" href="def_8cpp_source.html#l00068">Def()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="tuple_8cpp_source.html#l00066">mim::flatten()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="autodiff_8cpp_source.html#l00032">mim::plug::autodiff::id_pullback()</a>, <a class="el" href="def_8cpp_source.html#l00185">mim::Arr::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00195">mim::Pack::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00175">mim::Pi::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00180">mim::Sigma::immutabilize()</a>, <a class="el" href="check_8cpp_source.html#l00288">mim::Pi::infer()</a>, <a class="el" href="tuple_8cpp_source.html#l00046">mim::is_unit()</a>, <a class="el" href="clos_8cpp_source.html#l00111">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, <a class="el" href="def_8cpp_source.html#l00485">make_external()</a>, <a class="el" href="def_8cpp_source.html#l00486">make_internal()</a>, <a class="el" href="tuple_8cpp_source.html#l00093">mim::merge_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00098">mim::merge_tuple()</a>, <a class="el" href="mem_8h_source.html#l00019">mim::plug::mem::mut_con()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00298">mim::plug::core::normalize_abs()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00415">mim::plug::math::normalize_abs()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00028">mim::plug::autodiff::normalize_add()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00235">mim::plug::math::normalize_arith()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00308">mim::plug::core::normalize_bit1()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00331">mim::plug::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00590">mim::plug::core::normalize_bitcast()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00357">mim::plug::math::normalize_cmp()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00044">mim::plug::compile::normalize_combine_pass_list()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00029">mim::plug::compile::normalize_combined_phase()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00074">mim::plug::regex::normalize_conj()</a>, <a class="el" href="demo_2normalizers_8cpp_source.html#l00007">mim::plug::demo::normalize_const()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00551">mim::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00369">mim::plug::math::normalize_conv()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00166">mim::plug::regex::normalize_disj()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00513">mim::plug::core::normalize_div()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00345">mim::plug::math::normalize_er()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00339">mim::plug::math::normalize_exp()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00290">mim::plug::core::normalize_extrema()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00299">mim::plug::math::normalize_extrema()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00351">mim::plug::math::normalize_gamma()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00059">mim::plug::refly::normalize_gid()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00274">mim::plug::core::normalize_icmp()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00410">mim::plug::core::normalize_idx()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00017">mim::plug::mem::normalize_load()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00214">mim::plug::core::normalize_nat()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00246">mim::plug::core::normalize_ncmp()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00007">mim::plug::compile::normalize_pass_phase()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00699">mim::plug::core::normalize_pe()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00326">mim::plug::math::normalize_pow()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00024">mim::plug::regex::normalize_quant()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00202">mim::plug::regex::normalize_range()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00019">mim::plug::matrix::normalize_read()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00421">mim::plug::math::normalize_round()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00333">mim::plug::math::normalize_rt()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00049">mim::plug::matrix::normalize_shape()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00423">mim::plug::core::normalize_shr()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00040">mim::plug::compile::normalize_single_pass_phase()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00081">mim::plug::autodiff::normalize_sum()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00612">mim::plug::core::normalize_trait()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00320">mim::plug::math::normalize_tri()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00453">mim::plug::core::normalize_wrap()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00658">mim::plug::core::normalize_zip()</a>, <a class="el" href="def_8cpp_source.html#l00490">num_tprojs()</a>, <a class="el" href="core_8h_source.html#l00041">mim::plug::core::op()</a>, <a class="el" href="core_8h_source.html#l00033">mim::plug::core::op()</a>, <a class="el" href="mem_8h_source.html#l00136">mim::plug::mem::op_alloc()</a>, <a class="el" href="direct_8h_source.html#l00015">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="mem_8h_source.html#l00111">mim::plug::mem::op_lea()</a>, <a class="el" href="mem_8h_source.html#l00118">mim::plug::mem::op_lea_unsafe()</a>, <a class="el" href="mem_8h_source.html#l00123">mim::plug::mem::op_lea_unsafe()</a>, <a class="el" href="mem_8h_source.html#l00152">mim::plug::mem::op_malloc()</a>, <a class="el" href="mem_8h_source.html#l00161">mim::plug::mem::op_mslot()</a>, <a class="el" href="matrix_8h_source.html#l00019">mim::plug::matrix::op_read()</a>, <a class="el" href="mem_8h_source.html#l00144">mim::plug::mem::op_slot()</a>, <a class="el" href="autodiff_8cpp_source.html#l00169">mim::plug::autodiff::op_sum()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, <a class="el" href="autodiff_8cpp_source.html#l00062">mim::plug::autodiff::pullback_type()</a>, <a class="el" href="def_8h_source.html#l00493">rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, <a class="el" href="lam_8cpp_source.html#l00022">mim::Pi::set_dom()</a>, <a class="el" href="lam_8cpp_source.html#l00028">mim::Lam::set_filter()</a>, <a class="el" href="tuple_8cpp_source.html#l00040">mim::Pack::shape()</a>, <a class="el" href="mem_8h_source.html#l00072">mim::plug::mem::strip_mem()</a>, <a class="el" href="mem_8h_source.html#l00054">mim::plug::mem::strip_mem_ty()</a>, <a class="el" href="tuple_8h_source.html#l00093">mim::Arr::stub()</a>, <a class="el" href="def_8h_source.html#l00486">stub()</a>, <a class="el" href="def_8h_source.html#l00867">mim::Global::stub()</a>, <a class="el" href="check_8h_source.html#l00031">mim::Infer::stub()</a>, <a class="el" href="lam_8h_source.html#l00175">mim::Lam::stub()</a>, <a class="el" href="tuple_8h_source.html#l00140">mim::Pack::stub()</a>, <a class="el" href="lam_8h_source.html#l00089">mim::Pi::stub()</a>, <a class="el" href="tuple_8h_source.html#l00029">mim::Sigma::stub()</a>, <a class="el" href="lattice_8h_source.html#l00041">mim::TBound&lt; Up &gt;::stub()</a>, <a class="el" href="lattice_8h_source.html#l00164">mim::TExt&lt; Up &gt;::stub()</a>, <a class="el" href="def_8cpp_source.html#l00388">sym()</a>, <a class="el" href="def_8cpp_source.html#l00390">sym()</a>, <a class="el" href="def_8cpp_source.html#l00389">sym()</a>, <a class="el" href="lam_8cpp_source.html#l00036">mim::Lam::test()</a>, <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>, <a class="el" href="def_8cpp_source.html#l00398">unfold_type()</a>, <a class="el" href="def_8cpp_source.html#l00431">var()</a>, <a class="el" href="def_8cpp_source.html#l00392">world()</a>, <a class="el" href="autodiff_8cpp_source.html#l00140">mim::plug::autodiff::zero_def()</a>, <a class="el" href="autodiff_8cpp_source.html#l00044">mim::plug::autodiff::zero_pullback()</a>, and <a class="el" href="check_8cpp_source.html#l00023">zonk()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8h_source.html#l00065">mim::Checker::alpha()</a>, <a class="el" href="lam_8cpp_source.html#l00030">mim::Lam::app()</a>, <a class="el" href="lam_8cpp_source.html#l00029">mim::Lam::app()</a>, <a class="el" href="clos_8h_source.html#l00072">mim::plug::clos::apply_closure()</a>, <a class="el" href="def_8cpp_source.html#l00458">arity()</a>, <a class="el" href="check_8h_source.html#l00069">mim::Checker::assignable()</a>, <a class="el" href="autodiff_8cpp_source.html#l00113">mim::plug::autodiff::autodiff_type_fun()</a>, <a class="el" href="autodiff_8cpp_source.html#l00090">mim::plug::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="lam_8cpp_source.html#l00032">mim::Lam::branch()</a>, <a class="el" href="check_8cpp_source.html#l00272">mim::Lam::check()</a>, <a class="el" href="check_8cpp_source.html#l00255">mim::Sigma::check()</a>, <a class="el" href="clos_8cpp_source.html#l00100">mim::plug::clos::clos_apply()</a>, <a class="el" href="clos_8h_source.html#l00123">mim::plug::clos::clos_insert_env()</a>, <a class="el" href="clos_8cpp_source.html#l00078">mim::plug::clos::clos_pack()</a>, <a class="el" href="clos_8h_source.html#l00133">mim::plug::clos::clos_remove_env()</a>, <a class="el" href="clos_8cpp_source.html#l00121">mim::plug::clos::clos_type()</a>, <a class="el" href="clos_8cpp_source.html#l00127">mim::plug::clos::clos_type_to_pi()</a>, <a class="el" href="core_8cpp_source.html#l00019">mim::plug::core::convert()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00026">mim::plug::matrix::counting_for()</a>, <a class="el" href="def_8cpp_source.html#l00425">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00426">debug_suffix()</a>, <a class="el" href="def_8cpp_source.html#l00068">Def()</a>, <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="tuple_8cpp_source.html#l00066">mim::flatten()</a>, <a class="el" href="def_8cpp_source.html#l00303">free_vars()</a>, <a class="el" href="autodiff_8cpp_source.html#l00032">mim::plug::autodiff::id_pullback()</a>, <a class="el" href="def_8cpp_source.html#l00185">mim::Arr::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00195">mim::Pack::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00175">mim::Pi::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00180">mim::Sigma::immutabilize()</a>, <a class="el" href="check_8cpp_source.html#l00288">mim::Pi::infer()</a>, <a class="el" href="tuple_8cpp_source.html#l00046">mim::is_unit()</a>, <a class="el" href="clos_8cpp_source.html#l00111">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="def_8cpp_source.html#l00298">local_muts()</a>, <a class="el" href="def_8cpp_source.html#l00485">make_external()</a>, <a class="el" href="def_8cpp_source.html#l00486">make_internal()</a>, <a class="el" href="tuple_8cpp_source.html#l00093">mim::merge_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00098">mim::merge_tuple()</a>, <a class="el" href="mem_8h_source.html#l00019">mim::plug::mem::mut_con()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00298">mim::plug::core::normalize_abs()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00415">mim::plug::math::normalize_abs()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00028">mim::plug::autodiff::normalize_add()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00235">mim::plug::math::normalize_arith()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00308">mim::plug::core::normalize_bit1()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00331">mim::plug::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00590">mim::plug::core::normalize_bitcast()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00357">mim::plug::math::normalize_cmp()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00044">mim::plug::compile::normalize_combine_pass_list()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00029">mim::plug::compile::normalize_combined_phase()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00074">mim::plug::regex::normalize_conj()</a>, <a class="el" href="demo_2normalizers_8cpp_source.html#l00007">mim::plug::demo::normalize_const()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00551">mim::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00369">mim::plug::math::normalize_conv()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00166">mim::plug::regex::normalize_disj()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00513">mim::plug::core::normalize_div()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00345">mim::plug::math::normalize_er()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00339">mim::plug::math::normalize_exp()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00290">mim::plug::core::normalize_extrema()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00299">mim::plug::math::normalize_extrema()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00351">mim::plug::math::normalize_gamma()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00059">mim::plug::refly::normalize_gid()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00274">mim::plug::core::normalize_icmp()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00410">mim::plug::core::normalize_idx()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00017">mim::plug::mem::normalize_load()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00214">mim::plug::core::normalize_nat()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00246">mim::plug::core::normalize_ncmp()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00007">mim::plug::compile::normalize_pass_phase()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00699">mim::plug::core::normalize_pe()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00326">mim::plug::math::normalize_pow()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00024">mim::plug::regex::normalize_quant()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00202">mim::plug::regex::normalize_range()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00019">mim::plug::matrix::normalize_read()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00421">mim::plug::math::normalize_round()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00333">mim::plug::math::normalize_rt()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00049">mim::plug::matrix::normalize_shape()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00423">mim::plug::core::normalize_shr()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00040">mim::plug::compile::normalize_single_pass_phase()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00081">mim::plug::autodiff::normalize_sum()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00612">mim::plug::core::normalize_trait()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00320">mim::plug::math::normalize_tri()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00453">mim::plug::core::normalize_wrap()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00658">mim::plug::core::normalize_zip()</a>, <a class="el" href="def_8cpp_source.html#l00490">num_tprojs()</a>, <a class="el" href="core_8h_source.html#l00041">mim::plug::core::op()</a>, <a class="el" href="core_8h_source.html#l00033">mim::plug::core::op()</a>, <a class="el" href="mem_8h_source.html#l00136">mim::plug::mem::op_alloc()</a>, <a class="el" href="direct_8h_source.html#l00015">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="mem_8h_source.html#l00111">mim::plug::mem::op_lea()</a>, <a class="el" href="mem_8h_source.html#l00118">mim::plug::mem::op_lea_unsafe()</a>, <a class="el" href="mem_8h_source.html#l00123">mim::plug::mem::op_lea_unsafe()</a>, <a class="el" href="mem_8h_source.html#l00152">mim::plug::mem::op_malloc()</a>, <a class="el" href="mem_8h_source.html#l00161">mim::plug::mem::op_mslot()</a>, <a class="el" href="matrix_8h_source.html#l00019">mim::plug::matrix::op_read()</a>, <a class="el" href="mem_8h_source.html#l00144">mim::plug::mem::op_slot()</a>, <a class="el" href="autodiff_8cpp_source.html#l00169">mim::plug::autodiff::op_sum()</a>, <a class="el" href="def_8cpp_source.html#l00495">proj()</a>, <a class="el" href="autodiff_8cpp_source.html#l00062">mim::plug::autodiff::pullback_type()</a>, <a class="el" href="def_8h_source.html#l00495">rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00214">reduce()</a>, <a class="el" href="pass_8cpp_source.html#l00041">mim::PassMan::run()</a>, <a class="el" href="lam_8cpp_source.html#l00022">mim::Pi::set_dom()</a>, <a class="el" href="lam_8cpp_source.html#l00028">mim::Lam::set_filter()</a>, <a class="el" href="tuple_8cpp_source.html#l00040">mim::Pack::shape()</a>, <a class="el" href="mem_8h_source.html#l00072">mim::plug::mem::strip_mem()</a>, <a class="el" href="mem_8h_source.html#l00054">mim::plug::mem::strip_mem_ty()</a>, <a class="el" href="tuple_8h_source.html#l00093">mim::Arr::stub()</a>, <a class="el" href="def_8h_source.html#l00488">stub()</a>, <a class="el" href="def_8h_source.html#l00870">mim::Global::stub()</a>, <a class="el" href="check_8h_source.html#l00031">mim::Infer::stub()</a>, <a class="el" href="lam_8h_source.html#l00176">mim::Lam::stub()</a>, <a class="el" href="tuple_8h_source.html#l00140">mim::Pack::stub()</a>, <a class="el" href="lam_8h_source.html#l00090">mim::Pi::stub()</a>, <a class="el" href="tuple_8h_source.html#l00029">mim::Sigma::stub()</a>, <a class="el" href="lattice_8h_source.html#l00041">mim::TBound&lt; Up &gt;::stub()</a>, <a class="el" href="lattice_8h_source.html#l00164">mim::TExt&lt; Up &gt;::stub()</a>, <a class="el" href="def_8cpp_source.html#l00388">sym()</a>, <a class="el" href="def_8cpp_source.html#l00390">sym()</a>, <a class="el" href="def_8cpp_source.html#l00389">sym()</a>, <a class="el" href="lam_8cpp_source.html#l00036">mim::Lam::test()</a>, <a class="el" href="check_8cpp_source.html#l00047">mim::Infer::tuplefy()</a>, <a class="el" href="def_8cpp_source.html#l00398">unfold_type()</a>, <a class="el" href="def_8cpp_source.html#l00431">var()</a>, <a class="el" href="def_8cpp_source.html#l00392">world()</a>, <a class="el" href="autodiff_8cpp_source.html#l00140">mim::plug::autodiff::zero_def()</a>, <a class="el" href="autodiff_8cpp_source.html#l00044">mim::plug::autodiff::zero_pullback()</a>, and <a class="el" href="check_8cpp_source.html#l00023">zonk()</a>.</p>
 
 </div>
 </div>
@@ -4055,7 +4060,7 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00023">23</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00310">has_dep()</a>, <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00311">has_dep()</a>, <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79">mim::Infer</a>, and <a class="el" href="def_8cpp_source.html#l00392">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00169">mim::World::app()</a>.</p>
 
@@ -4145,7 +4150,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00602">602</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00604">604</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -4184,9 +4189,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00573">573</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00575">575</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00229">mim::App::curry()</a>, and <a class="el" href="axiom_8h_source.html#l00037">mim::Axiom::curry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00230">mim::App::curry()</a>, and <a class="el" href="axiom_8h_source.html#l00037">mim::Axiom::curry()</a>.</p>
 
 </div>
 </div>
@@ -4210,9 +4215,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00565">565</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00567">567</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00446">dbg()</a>, <a class="el" href="def_8cpp_source.html#l00425">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00426">debug_suffix()</a>, <a class="el" href="def_8h_source.html#l00447">loc()</a>, <a class="el" href="def_8h_source.html#l00457">set()</a>, <a class="el" href="def_8h_source.html#l00456">set()</a>, <a class="el" href="def_8h_source.html#l00459">set()</a>, <a class="el" href="def_8h_source.html#l00458">set()</a>, and <a class="el" href="def_8h_source.html#l00448">sym()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00448">dbg()</a>, <a class="el" href="def_8cpp_source.html#l00425">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00426">debug_suffix()</a>, <a class="el" href="def_8h_source.html#l00449">loc()</a>, <a class="el" href="def_8h_source.html#l00459">set()</a>, <a class="el" href="def_8h_source.html#l00458">set()</a>, <a class="el" href="def_8h_source.html#l00461">set()</a>, <a class="el" href="def_8h_source.html#l00460">set()</a>, and <a class="el" href="def_8h_source.html#l00450">sym()</a>.</p>
 
 </div>
 </div>
@@ -4236,9 +4241,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00572">572</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00574">574</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8h_source.html#l00230">flags()</a>, <a class="el" href="def_8h_source.html#l00729">mim::Lit::get()</a>, <a class="el" href="lam_8h_source.html#l00025">mim::Pi::make_explicit()</a>, and <a class="el" href="lam_8h_source.html#l00024">mim::Pi::make_implicit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00018">Def()</a>, <a class="el" href="def_8h_source.html#l00230">flags()</a>, <a class="el" href="def_8h_source.html#l00731">mim::Lit::get()</a>, <a class="el" href="lam_8h_source.html#l00025">mim::Pi::make_explicit()</a>, and <a class="el" href="lam_8h_source.html#l00024">mim::Pi::make_implicit()</a>.</p>
 
 </div>
 </div>
@@ -4262,9 +4267,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00574">574</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00576">576</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00230">mim::App::trip()</a>, and <a class="el" href="axiom_8h_source.html#l00038">mim::Axiom::trip()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00231">mim::App::trip()</a>, and <a class="el" href="axiom_8h_source.html#l00038">mim::Axiom::trip()</a>.</p>
 
 </div>
 </div>

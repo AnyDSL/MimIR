@@ -153,6 +153,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a361f116b80b8b8fd1eac9a22e34564b0 inherit pub_methods_classmim_1_1Def" id="r_a361f116b80b8b8fd1eac9a22e34564b0"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a361f116b80b8b8fd1eac9a22e34564b0">node_name</a> () const</td></tr>
 <tr class="separator:a361f116b80b8b8fd1eac9a22e34564b0 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2107c877c5255ee3c29bc204e87e9176 inherit pub_methods_classmim_1_1Def" id="r_a2107c877c5255ee3c29bc204e87e9176"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a2107c877c5255ee3c29bc204e87e9176">type</a> () const</td></tr>
+<tr class="memdesc:a2107c877c5255ee3c29bc204e87e9176 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <b>raw</b> type of this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>, i.e. maybe <code>nullptr</code>.  <br /></td></tr>
 <tr class="separator:a2107c877c5255ee3c29bc204e87e9176 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a415a05bda88edc1da873598f3307ccaf inherit pub_methods_classmim_1_1Def" id="r_a415a05bda88edc1da873598f3307ccaf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a415a05bda88edc1da873598f3307ccaf">unfold_type</a> () const</td></tr>
 <tr class="memdesc:a415a05bda88edc1da873598f3307ccaf inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the type of this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> and builds a new <code><a class="el" href="classmim_1_1Type.html">Type</a> (<a class="el" href="classmim_1_1UInc.html">UInc</a> n)</code> if necessary.  <br /></td></tr>
@@ -207,6 +208,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a64b81b4bc8fd5b18cfe4899c78d8638d inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Neither a <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7">Dep::Mut</a> nor a <a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77">Dep::Var</a>; can often be used as shortcut as an optimization.  <br /></td></tr>
 <tr class="separator:a64b81b4bc8fd5b18cfe4899c78d8638d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad531ece40a890922a7deb83e3d8de8ea inherit pub_methods_classmim_1_1Def" id="r_ad531ece40a890922a7deb83e3d8de8ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad531ece40a890922a7deb83e3d8de8ea">num_projs</a> () const</td></tr>
+<tr class="memdesc:ad531ece40a890922a7deb83e3d8de8ea inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <a class="el" href="classmim_1_1Def.html#a2a11678fe06e85f99174197c674124e0">Def::as_lit_arity()</a>, if it is in fact a <a class="el" href="classmim_1_1Lit.html">Lit</a>, or <code>1</code> otherwise.  <br /></td></tr>
 <tr class="separator:ad531ece40a890922a7deb83e3d8de8ea inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26e88f05b40da602dbc2d3cfc02e4799 inherit pub_methods_classmim_1_1Def" id="r_a26e88f05b40da602dbc2d3cfc02e4799"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a26e88f05b40da602dbc2d3cfc02e4799">num_tprojs</a> () const</td></tr>
 <tr class="memdesc:a26e88f05b40da602dbc2d3cfc02e4799 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but yields 1, if <a class="el" href="namespacemim.html#a39f92287adf5cb956f0696a740ba3fe7">Flags::scalarize_threshold</a> is exceeded.  <br /></td></tr>
@@ -215,7 +217,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae3b655c3037933585ee084c6c516ef1e inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="classmim_1_1World.html#ac981395e5f40922514eaf9c85290e36d">World::extract</a> while assuming an arity of <code>a</code>, but also works on <a class="el" href="classmim_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s and <a class="el" href="classmim_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays.  <br /></td></tr>
 <tr class="separator:ae3b655c3037933585ee084c6c516ef1e inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95e85da9b6b4d3d049c4998929ae21e6 inherit pub_methods_classmim_1_1Def" id="r_a95e85da9b6b4d3d049c4998929ae21e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a95e85da9b6b4d3d049c4998929ae21e6">proj</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) const</td></tr>
-<tr class="memdesc:a95e85da9b6b4d3d049c4998929ae21e6 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but takes <a class="el" href="classmim_1_1Def.html#ad531ece40a890922a7deb83e3d8de8ea">Def::num_projs</a> as arity.  <br /></td></tr>
+<tr class="memdesc:a95e85da9b6b4d3d049c4998929ae21e6 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but takes <a class="el" href="classmim_1_1Def.html#ad531ece40a890922a7deb83e3d8de8ea" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity.  <br /></td></tr>
 <tr class="separator:a95e85da9b6b4d3d049c4998929ae21e6 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a6a039702e9fe16326351f6590f64da inherit pub_methods_classmim_1_1Def" id="r_a3a6a039702e9fe16326351f6590f64da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a3a6a039702e9fe16326351f6590f64da">tproj</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) const</td></tr>
 <tr class="memdesc:a3a6a039702e9fe16326351f6590f64da inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but takes <a class="el" href="classmim_1_1Def.html#a26e88f05b40da602dbc2d3cfc02e4799" title="As above but yields 1, if Flags::scalarize_threshold is exceeded.">Def::num_tprojs</a>.  <br /></td></tr>
@@ -511,7 +513,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00719">719</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00721">721</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="afdf74f55a0aedbf37ae7b46da556fda2" name="afdf74f55a0aedbf37ae7b46da556fda2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afdf74f55a0aedbf37ae7b46da556fda2">&#9670;&#160;</a></span>as()</h2>
@@ -538,9 +540,9 @@ template&lt;class T  = nat_t&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00746">746</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00748">748</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00729">get()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00731">get()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ll_8cpp_source.html#l00452">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="tuple_8cpp_source.html#l00048">mim::tuple2str()</a>, and <a class="el" href="tuple_8cpp_source.html#l00080">mim::unflatten()</a>.</p>
 
@@ -571,11 +573,11 @@ template&lt;class T  = flags_t&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00729">729</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00731">731</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8h_source.html#l00026">mim::bitcast()</a>, and <a class="el" href="def_8h_source.html#l00572">mim::Def::flags_</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00026">mim::bitcast()</a>, and <a class="el" href="def_8h_source.html#l00574">mim::Def::flags_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00746">as()</a>, <a class="el" href="compile_8cpp_source.html#l00036">mim_get_plugin()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00202">mim::plug::regex::normalize_range()</a>, and <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00748">as()</a>, <a class="el" href="compile_8cpp_source.html#l00036">mim_get_plugin()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00202">mim::plug::regex::normalize_range()</a>, and <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
 
 </div>
 </div>
@@ -605,7 +607,7 @@ template&lt;class T  = nat_t&gt; </div>
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="dev.html#cast_lit">Matching Literals</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00741">741</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00743">743</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00391">mim::World::arr()</a>, <a class="el" href="core_8cpp_source.html#l00019">mim::plug::core::convert()</a>, <a class="el" href="ll_8cpp_source.html#l00452">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00285">mim::World::extract()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00068">mim::plug::matrix::get_max_index()</a>, <a class="el" href="def_8cpp_source.html#l00185">mim::Arr::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00195">mim::Pack::immutabilize()</a>, <a class="el" href="world_8cpp_source.html#l00347">mim::World::insert()</a>, <a class="el" href="def_8cpp_source.html#l00447">mim::Def::is_term()</a>, <a class="el" href="def_8cpp_source.html#l00530">mim::Idx::isa_lit()</a>, <a class="el" href="def_8cpp_source.html#l00465">mim::Def::isa_lit_arity()</a>, <a class="el" href="world_8cpp_source.html#l00448">mim::World::lit()</a>, <a class="el" href="math_8h_source.html#l00064">mim::plug::math::match_f()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00235">mim::plug::math::normalize_arith()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00308">mim::plug::core::normalize_bit1()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00331">mim::plug::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00590">mim::plug::core::normalize_bitcast()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00551">mim::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00369">mim::plug::math::normalize_conv()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00513">mim::plug::core::normalize_div()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00299">mim::plug::math::normalize_extrema()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00410">mim::plug::core::normalize_idx()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00007">mim::plug::mem::normalize_lea()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00214">mim::plug::core::normalize_nat()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00246">mim::plug::core::normalize_ncmp()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00049">mim::plug::refly::normalize_refine()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00423">mim::plug::core::normalize_shr()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00612">mim::plug::core::normalize_trait()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00453">mim::plug::core::normalize_wrap()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00658">mim::plug::core::normalize_zip()</a>, <a class="el" href="world_8cpp_source.html#l00418">mim::World::pack()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00042">mim::plug::matrix::LowerMatrixHighLevelMapRed::rewrite_()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>, <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>, <a class="el" href="def_8cpp_source.html#l00536">mim::Idx::size2bitwidth()</a>, <a class="el" href="world_8cpp_source.html#l00244">mim::World::tuple()</a>, <a class="el" href="world_8cpp_source.html#l00100">mim::World::uinc()</a>, <a class="el" href="world_8cpp_source.html#l00109">mim::World::umax()</a>, and <a class="el" href="world_8cpp_source.html#l00155">mim::World::var()</a>.</p>
 
@@ -670,7 +672,7 @@ template&lt;class T  = nat_t&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00754">754</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00756">756</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -695,7 +697,7 @@ template&lt;class T  = nat_t&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00749">749</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00751">751</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
