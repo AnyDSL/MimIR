@@ -27,6 +27,7 @@ public:
         }
         bool is_root() const { return parent_ == nullptr; }
         size_t depth() const { return depth_; }
+        std::string name() const { return mut() ? mut()->unique_name() : std::string("<virtual>"); }
         ///@}
 
         /// @name Children
@@ -90,6 +91,7 @@ private:
     void populate();
     Node* make_node(Def*, Node* parent = nullptr);
     Node* find_parent(Def*, Node*);
+    void dependencies();
 
     World& world_;
     absl::flat_hash_map<Def*, std::unique_ptr<Node>> nodes_;

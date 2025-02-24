@@ -174,8 +174,10 @@ void Nest::dot(std::ostream& os) const {
 }
 
 void Nest::Node::dot(Tab tab, std::ostream& os) const {
-    for (const auto& [child, _] : children()) tab.println(os, "{} -> {}", mut()->unique_name(), child->unique_name());
-    for (const auto& [_, child] : children()) child->dot(tab, os);
+    for (const auto& [_, child] : children()) {
+        tab.println(os, "{} -> {}", name(), child->name());
+        child->dot(tab, os);
+    }
 }
 
 } // namespace mim

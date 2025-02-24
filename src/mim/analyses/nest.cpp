@@ -77,7 +77,7 @@ Vars Nest::vars() const {
     if (!vars_) {
         auto vec = Vector<const Var*>();
         vec.reserve(num_nodes());
-        for (const auto& [mut, _] : nodes_) {
+        for (const auto& [mut, _] : nodes()) {
             if (mut) {
                 if (auto var = mut->has_var()) vec.emplace_back(var);
             }
@@ -86,6 +86,10 @@ Vars Nest::vars() const {
     }
 
     return vars_;
+}
+
+void Nest::dependencies() {
+    // for (auto [mut, main.cpp
 }
 
 const Nest::Node* Nest::lca(const Node* n, const Node* m) {
