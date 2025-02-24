@@ -65,7 +65,8 @@ var searchData=
   ['use_62',['Use',['../classmim_1_1Use.html',1,'mim::Use'],['../classmim_1_1Use.html#ad1bfa5ee84aa2b6d63b9d8b8767fb7e5',1,'mim::Use::Use()'],['../classmim_1_1Use.html#a5a79f76e19dec42cc52438ae4c77b954',1,'mim::Use::Use(const Def *def, size_t index)']]],
   ['useeq_63',['UseEq',['../structmim_1_1UseEq.html',1,'mim']]],
   ['usehash_64',['UseHash',['../structmim_1_1UseHash.html',1,'mim']]],
-  ['uses_65',['Uses',['../namespacemim.html#aa5a838964832f04e880e1aa8c5789343',1,'mim']]],
-  ['uses_66',['uses',['../classmim_1_1Scheduler.html#a81893f9b1c9c94ba0404306ec20648ee',1,'mim::Scheduler::uses()'],['../classmim_1_1Def.html#a11e13f2bd63c039bf93ddfc6f3b6fe1e',1,'mim::Def::uses()']]],
-  ['util_2eh_67',['util.h',['../util_8h.html',1,'']]]
+  ['users_65',['users',['../classmim_1_1Def.html#aec0c90f905b8d981b9e3580ba89f7d63',1,'mim::Def']]],
+  ['uses_66',['Uses',['../namespacemim.html#aa5a838964832f04e880e1aa8c5789343',1,'mim']]],
+  ['uses_67',['uses',['../classmim_1_1Scheduler.html#a81893f9b1c9c94ba0404306ec20648ee',1,'mim::Scheduler']]],
+  ['util_2eh_68',['util.h',['../util_8h.html',1,'']]]
 ];

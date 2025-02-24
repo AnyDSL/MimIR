@@ -7,6 +7,6 @@ var phase_8h =
     [ "mim::PassPhase< P >", "classmim_1_1PassPhase.html", "classmim_1_1PassPhase" ],
     [ "mim::PassManPhase", "classmim_1_1PassManPhase.html", "classmim_1_1PassManPhase" ],
     [ "mim::Pipeline", "classmim_1_1Pipeline.html", "classmim_1_1Pipeline" ],
-    [ "mim::ScopePhase", "classmim_1_1ScopePhase.html", "classmim_1_1ScopePhase" ],
-    [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", "classmim_1_1ClosedMutPhase" ]
+    [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", "classmim_1_1ClosedMutPhase" ],
+    [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", "classmim_1_1NestPhase" ]
 ];

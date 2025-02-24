@@ -123,10 +123,10 @@ $(function(){initNavTree('phase_8h.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">phase.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="scope_8h_source.html">mim/analyses/scope.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="def_8h_source.html">mim/def.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="pass_8h_source.html">mim/pass/pass.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="def_8h_source.html">mim/def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="rewrite_8h_source.html">mim/rewrite.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="nest_8h_source.html">mim/analyses/nest.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="pass_8h_source.html">mim/pass/pass.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for phase.h:</div>
 <div class="dyncontent">
@@ -163,11 +163,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Pipeline.html">mim::Pipeline</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Organizes several <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s as a pipeline.  <a href="classmim_1_1Pipeline.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ScopePhase.html">mim::ScopePhase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em> <a class="el" href="classmim_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> that do not have free variables.  <a href="classmim_1_1ScopePhase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ClosedMutPhase.html">mim::ClosedMutPhase&lt; M &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedMutPhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1NestPhase.html">mim::NestPhase&lt; M &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable closed mutables (Def::is_closed()) in World.">ClosedMutPhase</a> but computes a <a class="el" href="classmim_1_1Nest.html" title="Builds a nesting tree of all immutables‍/binders.">Nest</a> for each <a class="el" href="classmim_1_1NestPhase.html#a101203cdf21e91486513e9cd7e4b0396">NestPhase::visit</a>.  <a href="classmim_1_1NestPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: mim::CFG&lt; bool &gt; Class Template Reference</title>
+<title>MimIR: mim::CFG Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -122,7 +122,7 @@ $(function(){initNavTree('classmim_1_1CFG.html',''); initResizable(true); });
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classmim_1_1CFG-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">mim::CFG&lt; bool &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">mim::CFG Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -130,141 +130,116 @@ $(function(){initNavTree('classmim_1_1CFG.html',''); initResizable(true); });
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="cfg_8h_source.html">mim/analyses/cfg.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for mim::CFG&lt; bool &gt;:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classmim_1_1CFG__inherit__graph.svg" width="180" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a56b5f011add221b9450918e47f654969" id="r_a56b5f011add221b9450918e47f654969"><td class="memTemplParams" colspan="2">template&lt;class Value &gt; </td></tr>
-<tr class="memitem:a56b5f011add221b9450918e47f654969"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a56b5f011add221b9450918e47f654969">Map</a> = <a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt;<a class="el" href="classmim_1_1CFG.html">CFG</a>&lt;forward&gt;, const <a class="el" href="classmim_1_1CFNode.html">CFNode</a>*, Value&gt;</td></tr>
-<tr class="separator:a56b5f011add221b9450918e47f654969"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54e68f8f552d40a4a3449cab49ac7a83" id="r_a54e68f8f552d40a4a3449cab49ac7a83"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54e68f8f552d40a4a3449cab49ac7a83">Set</a> = <a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt;<a class="el" href="classmim_1_1CFG.html">CFG</a>&lt;forward&gt;, const <a class="el" href="classmim_1_1CFNode.html">CFNode</a>*&gt;</td></tr>
-<tr class="separator:a54e68f8f552d40a4a3449cab49ac7a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b44a855caedd3c89db67421fbf58034" id="r_a7b44a855caedd3c89db67421fbf58034"><td class="memTemplParams" colspan="2">template&lt;class Value &gt; </td></tr>
+<tr class="memitem:a7b44a855caedd3c89db67421fbf58034"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7b44a855caedd3c89db67421fbf58034">Map</a> = <a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt;<a class="el" href="classmim_1_1CFG.html">CFG</a>, const <a class="el" href="classmim_1_1CFNode.html">CFNode</a>*, Value&gt;</td></tr>
+<tr class="separator:a7b44a855caedd3c89db67421fbf58034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab714ad9124549ffaa08944fbffd82699" id="r_ab714ad9124549ffaa08944fbffd82699"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab714ad9124549ffaa08944fbffd82699">Set</a> = <a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt;<a class="el" href="classmim_1_1CFG.html">CFG</a>, const <a class="el" href="classmim_1_1CFNode.html">CFNode</a>*&gt;</td></tr>
+<tr class="separator:ab714ad9124549ffaa08944fbffd82699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa85317a32d0e65cf0cee320ec4da55e1" id="r_aa85317a32d0e65cf0cee320ec4da55e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa85317a32d0e65cf0cee320ec4da55e1">CFG</a> (const <a class="el" href="classmim_1_1CFG.html">CFG</a> &amp;)=delete</td></tr>
-<tr class="separator:aa85317a32d0e65cf0cee320ec4da55e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fece42a5c486c639750d415446a662a" id="r_a0fece42a5c486c639750d415446a662a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1CFG.html">CFG</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fece42a5c486c639750d415446a662a">operator=</a> (<a class="el" href="classmim_1_1CFG.html">CFG</a>)=delete</td></tr>
-<tr class="separator:a0fece42a5c486c639750d415446a662a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4df116447550d35662a037277f3817f" id="r_ab4df116447550d35662a037277f3817f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4df116447550d35662a037277f3817f">CFG</a> (const <a class="el" href="classmim_1_1CFA.html">CFA</a> &amp;)</td></tr>
-<tr class="separator:ab4df116447550d35662a037277f3817f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf16dc020696ece2e50f9a8660fe685e" id="r_abf16dc020696ece2e50f9a8660fe685e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFA.html">CFA</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf16dc020696ece2e50f9a8660fe685e">cfa</a> () const</td></tr>
-<tr class="separator:abf16dc020696ece2e50f9a8660fe685e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b776529be0a84318d446bc9153d2fae" id="r_a7b776529be0a84318d446bc9153d2fae"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b776529be0a84318d446bc9153d2fae">size</a> () const</td></tr>
-<tr class="separator:a7b776529be0a84318d446bc9153d2fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa97c66fce4de8aa1bf6f543d76c79ba7" id="r_aa97c66fce4de8aa1bf6f543d76c79ba7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacemim.html#ab1dc40f716cde04ad3504bf56f94f56d">CFNodes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa97c66fce4de8aa1bf6f543d76c79ba7">preds</a> (const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *n) const</td></tr>
-<tr class="separator:aa97c66fce4de8aa1bf6f543d76c79ba7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb8d7a3ba962eac74bf19deb77d65332" id="r_afb8d7a3ba962eac74bf19deb77d65332"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacemim.html#ab1dc40f716cde04ad3504bf56f94f56d">CFNodes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb8d7a3ba962eac74bf19deb77d65332">succs</a> (const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *n) const</td></tr>
-<tr class="separator:afb8d7a3ba962eac74bf19deb77d65332"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1278f1977075e37ef40e419230209895" id="r_a1278f1977075e37ef40e419230209895"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacemim.html#ab1dc40f716cde04ad3504bf56f94f56d">CFNodes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1278f1977075e37ef40e419230209895">preds</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *mut) const</td></tr>
-<tr class="separator:a1278f1977075e37ef40e419230209895"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f7ccf001b35a54b1b32eece337150f9" id="r_a2f7ccf001b35a54b1b32eece337150f9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacemim.html#ab1dc40f716cde04ad3504bf56f94f56d">CFNodes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f7ccf001b35a54b1b32eece337150f9">succs</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *mut) const</td></tr>
-<tr class="separator:a2f7ccf001b35a54b1b32eece337150f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8181c7aa924caf9a529ce7e6471666b1" id="r_a8181c7aa924caf9a529ce7e6471666b1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8181c7aa924caf9a529ce7e6471666b1">num_preds</a> (const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *n) const</td></tr>
-<tr class="separator:a8181c7aa924caf9a529ce7e6471666b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a1423b6cdfbdad96d78703b96436aef" id="r_a3a1423b6cdfbdad96d78703b96436aef"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a1423b6cdfbdad96d78703b96436aef">num_succs</a> (const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *n) const</td></tr>
-<tr class="separator:a3a1423b6cdfbdad96d78703b96436aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af33d291d5e75422756cf61df517b9b7c" id="r_af33d291d5e75422756cf61df517b9b7c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af33d291d5e75422756cf61df517b9b7c">num_preds</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *mut) const</td></tr>
-<tr class="separator:af33d291d5e75422756cf61df517b9b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a437b256c8964eb9ccbf359321649ad57" id="r_a437b256c8964eb9ccbf359321649ad57"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a437b256c8964eb9ccbf359321649ad57">num_succs</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *mut) const</td></tr>
-<tr class="separator:a437b256c8964eb9ccbf359321649ad57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affb9b48760f9fea19a7f6854fc3c68b4" id="r_affb9b48760f9fea19a7f6854fc3c68b4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affb9b48760f9fea19a7f6854fc3c68b4">entry</a> () const</td></tr>
-<tr class="separator:affb9b48760f9fea19a7f6854fc3c68b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab683d3401f26416a96372445ccb1243b" id="r_ab683d3401f26416a96372445ccb1243b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab683d3401f26416a96372445ccb1243b">exit</a> () const</td></tr>
-<tr class="separator:ab683d3401f26416a96372445ccb1243b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11542e44ab3869c460682cb747328311" id="r_a11542e44ab3869c460682cb747328311"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11542e44ab3869c460682cb747328311">reverse_post_order</a> () const</td></tr>
-<tr class="separator:a11542e44ab3869c460682cb747328311"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4eaa9484af0292ffee5adde0b0c99375" id="r_a4eaa9484af0292ffee5adde0b0c99375"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4eaa9484af0292ffee5adde0b0c99375">post_order</a> () const</td></tr>
-<tr class="separator:a4eaa9484af0292ffee5adde0b0c99375"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9608d28ee701ce66ebb40b60114d0d6" id="r_aa9608d28ee701ce66ebb40b60114d0d6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9608d28ee701ce66ebb40b60114d0d6">reverse_post_order</a> (size_t i) const</td></tr>
-<tr class="memdesc:aa9608d28ee701ce66ebb40b60114d0d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps from reverse post-order index to <a class="el" href="classmim_1_1CFNode.html" title="A Control-Flow Node.">CFNode</a>.  <br /></td></tr>
-<tr class="separator:aa9608d28ee701ce66ebb40b60114d0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b9cd0cbc10e8bfc0c060de4eae332ea" id="r_a0b9cd0cbc10e8bfc0c060de4eae332ea"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b9cd0cbc10e8bfc0c060de4eae332ea">post_order</a> (size_t i) const</td></tr>
-<tr class="memdesc:a0b9cd0cbc10e8bfc0c060de4eae332ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps from post-order index to <a class="el" href="classmim_1_1CFNode.html" title="A Control-Flow Node.">CFNode</a>.  <br /></td></tr>
-<tr class="separator:a0b9cd0cbc10e8bfc0c060de4eae332ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb95c21e9fe7c1b8369d670dab6c6a57" id="r_aeb95c21e9fe7c1b8369d670dab6c6a57"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb95c21e9fe7c1b8369d670dab6c6a57">operator[]</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *mut) const</td></tr>
-<tr class="memdesc:aeb95c21e9fe7c1b8369d670dab6c6a57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps from <code>mut</code> to <a class="el" href="classmim_1_1CFNode.html" title="A Control-Flow Node.">CFNode</a>.  <br /></td></tr>
-<tr class="separator:aeb95c21e9fe7c1b8369d670dab6c6a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a416b2c3020108b2ce561483b7cc88536" id="r_a416b2c3020108b2ce561483b7cc88536"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1DomTreeBase.html">DomTreeBase</a>&lt; forward &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a416b2c3020108b2ce561483b7cc88536">domtree</a> () const</td></tr>
-<tr class="separator:a416b2c3020108b2ce561483b7cc88536"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16618d08767f89765a377d2307332a67" id="r_a16618d08767f89765a377d2307332a67"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1LoopTree.html">LoopTree</a>&lt; forward &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16618d08767f89765a377d2307332a67">looptree</a> () const</td></tr>
-<tr class="separator:a16618d08767f89765a377d2307332a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30b398e4e01781e7cbde176d5cb5daea" id="r_a30b398e4e01781e7cbde176d5cb5daea"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1DomFrontierBase.html">DomFrontierBase</a>&lt; forward &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30b398e4e01781e7cbde176d5cb5daea">domfrontier</a> () const</td></tr>
-<tr class="separator:a30b398e4e01781e7cbde176d5cb5daea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa7c49e96195e1a3ec25892e031be673" id="r_afa7c49e96195e1a3ec25892e031be673"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa7c49e96195e1a3ec25892e031be673">CFG</a> (const <a class="el" href="classmim_1_1CFG.html">CFG</a> &amp;)=delete</td></tr>
+<tr class="separator:afa7c49e96195e1a3ec25892e031be673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0ceacf93b055d6107516596d4c1a206" id="r_ae0ceacf93b055d6107516596d4c1a206"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1CFG.html">CFG</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0ceacf93b055d6107516596d4c1a206">operator=</a> (<a class="el" href="classmim_1_1CFG.html">CFG</a>)=delete</td></tr>
+<tr class="separator:ae0ceacf93b055d6107516596d4c1a206"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57e47e12ca154494d5302ee211e5bdb4" id="r_a57e47e12ca154494d5302ee211e5bdb4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57e47e12ca154494d5302ee211e5bdb4">CFG</a> (const <a class="el" href="classmim_1_1Nest.html">Nest</a> &amp;)</td></tr>
+<tr class="separator:a57e47e12ca154494d5302ee211e5bdb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b2b64cabb58770477e7c0a32d3b815f" id="r_a6b2b64cabb58770477e7c0a32d3b815f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b2b64cabb58770477e7c0a32d3b815f">~CFG</a> ()</td></tr>
+<tr class="separator:a6b2b64cabb58770477e7c0a32d3b815f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b06f8712cb23233b5ad5cd852fa4958" id="r_a6b06f8712cb23233b5ad5cd852fa4958"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b06f8712cb23233b5ad5cd852fa4958">world</a> () const</td></tr>
+<tr class="separator:a6b06f8712cb23233b5ad5cd852fa4958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a653274bca97b6f0b13d6e5828543fb9b" id="r_a653274bca97b6f0b13d6e5828543fb9b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Nest.html">Nest</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a653274bca97b6f0b13d6e5828543fb9b">nest</a> () const</td></tr>
+<tr class="separator:a653274bca97b6f0b13d6e5828543fb9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6ab53932bbbe40844e34e89c64f2cb0" id="r_ae6ab53932bbbe40844e34e89c64f2cb0"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6ab53932bbbe40844e34e89c64f2cb0">nodes</a> () const</td></tr>
+<tr class="separator:ae6ab53932bbbe40844e34e89c64f2cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab250c9bfa996dab700d7510e5147596c" id="r_ab250c9bfa996dab700d7510e5147596c"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab250c9bfa996dab700d7510e5147596c">size</a> () const</td></tr>
+<tr class="separator:ab250c9bfa996dab700d7510e5147596c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7ea56f239977b11123bf8edbce4f70e" id="r_aa7ea56f239977b11123bf8edbce4f70e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7ea56f239977b11123bf8edbce4f70e">entry</a> () const</td></tr>
+<tr class="separator:aa7ea56f239977b11123bf8edbce4f70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9246a7195aad8dd2782e25920e105bfa" id="r_a9246a7195aad8dd2782e25920e105bfa"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9246a7195aad8dd2782e25920e105bfa">reverse_post_order</a> () const</td></tr>
+<tr class="separator:a9246a7195aad8dd2782e25920e105bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abece82ad0ca70352833ce69b27f1b9fd" id="r_abece82ad0ca70352833ce69b27f1b9fd"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abece82ad0ca70352833ce69b27f1b9fd">post_order</a> () const</td></tr>
+<tr class="separator:abece82ad0ca70352833ce69b27f1b9fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a55978e719f085f8c6c04f24978e25f" id="r_a2a55978e719f085f8c6c04f24978e25f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2a55978e719f085f8c6c04f24978e25f">reverse_post_order</a> (size_t i) const</td></tr>
+<tr class="memdesc:a2a55978e719f085f8c6c04f24978e25f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps from reverse post-order index to <a class="el" href="classmim_1_1CFNode.html" title="A Control-Flow Node.">CFNode</a>.  <br /></td></tr>
+<tr class="separator:a2a55978e719f085f8c6c04f24978e25f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fb7544fbe7e3ea4fb901ca13097bb14" id="r_a6fb7544fbe7e3ea4fb901ca13097bb14"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fb7544fbe7e3ea4fb901ca13097bb14">post_order</a> (size_t i) const</td></tr>
+<tr class="memdesc:a6fb7544fbe7e3ea4fb901ca13097bb14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps from post-order index to <a class="el" href="classmim_1_1CFNode.html" title="A Control-Flow Node.">CFNode</a>.  <br /></td></tr>
+<tr class="separator:a6fb7544fbe7e3ea4fb901ca13097bb14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e8e5659e4818efbe70e418560ccefd6" id="r_a7e8e5659e4818efbe70e418560ccefd6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e8e5659e4818efbe70e418560ccefd6">operator[]</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *mut) const</td></tr>
+<tr class="separator:a7e8e5659e4818efbe70e418560ccefd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ed7041c8aacfe2488319892b8e38f21" id="r_a4ed7041c8aacfe2488319892b8e38f21"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1DomTree.html">DomTree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ed7041c8aacfe2488319892b8e38f21">domtree</a> () const</td></tr>
+<tr class="separator:a4ed7041c8aacfe2488319892b8e38f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29c235c999e18b72fb0483c7602ab775" id="r_a29c235c999e18b72fb0483c7602ab775"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1LoopTree.html">LoopTree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29c235c999e18b72fb0483c7602ab775">looptree</a> () const</td></tr>
+<tr class="separator:a29c235c999e18b72fb0483c7602ab775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a380d5b25b7f6dce5b3ad9955d0ea3384" id="r_a380d5b25b7f6dce5b3ad9955d0ea3384"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1DomFrontier.html">DomFrontier</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a380d5b25b7f6dce5b3ad9955d0ea3384">domfrontier</a> () const</td></tr>
+<tr class="separator:a380d5b25b7f6dce5b3ad9955d0ea3384"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab4b6e2919f6c642587ae63ccc07495c3" id="r_ab4b6e2919f6c642587ae63ccc07495c3"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b6e2919f6c642587ae63ccc07495c3">index</a> (const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *n)</td></tr>
-<tr class="separator:ab4b6e2919f6c642587ae63ccc07495c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aead5b2ffd67fde2eee784f0d013d5e9f" id="r_aead5b2ffd67fde2eee784f0d013d5e9f"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aead5b2ffd67fde2eee784f0d013d5e9f">index</a> (const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *n)</td></tr>
+<tr class="separator:aead5b2ffd67fde2eee784f0d013d5e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;bool&gt;<br />
-class mim::CFG&lt; bool &gt;</div><p>A Control-Flow Graph. </p>
-<p>A small wrapper for the information obtained by a <a class="el" href="classmim_1_1CFA.html" title="Control Flow Analysis.">CFA</a>. The template parameter <code>forward</code> determines the direction of the edges:</p><ul>
+<div class="textblock"><p>A Control-Flow Graph. </p>
+<p>A small wrapper for the information obtained by a CFA. The template parameter <code>forward</code> determines the direction of the edges:</p><ul>
 <li><code>true</code> means a conventional <a class="el" href="classmim_1_1CFG.html" title="A Control-Flow Graph.">CFG</a>.</li>
-<li>`false* means that all edges in this <a class="el" href="classmim_1_1CFG.html" title="A Control-Flow Graph.">CFG</a> are reversed. Thus, a [dominance analysis](<a class="el" href="classmim_1_1DomTreeBase.html" title="A Dominance Tree.">DomTreeBase</a>), for example, becomes a post-dominance analysis. </li>
+<li>`false* means that all edges in this <a class="el" href="classmim_1_1CFG.html" title="A Control-Flow Graph.">CFG</a> are reversed. Thus, a [dominance analysis](DomTreeBase), for example, becomes a post-dominance analysis. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00008">8</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00060">60</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a56b5f011add221b9450918e47f654969" name="a56b5f011add221b9450918e47f654969"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56b5f011add221b9450918e47f654969">&#9670;&#160;</a></span>Map</h2>
+<a id="a7b44a855caedd3c89db67421fbf58034" name="a7b44a855caedd3c89db67421fbf58034"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b44a855caedd3c89db67421fbf58034">&#9670;&#160;</a></span>Map</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <div class="memtemplate">
 template&lt;class Value &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::Map = <a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt;<a class="el" href="classmim_1_1CFG.html">CFG</a>&lt;forward&gt;, const <a class="el" href="classmim_1_1CFNode.html">CFNode</a>*, Value&gt;</td>
+          <td class="memname">using <a class="el" href="#a7b44a855caedd3c89db67421fbf58034">mim::CFG::Map</a> = <a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt;<a class="el" href="classmim_1_1CFG.html">CFG</a>, const <a class="el" href="classmim_1_1CFNode.html">CFNode</a>*, Value&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00118">118</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00062">62</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
 </div>
 </div>
-<a id="a54e68f8f552d40a4a3449cab49ac7a83" name="a54e68f8f552d40a4a3449cab49ac7a83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54e68f8f552d40a4a3449cab49ac7a83">&#9670;&#160;</a></span>Set</h2>
+<a id="ab714ad9124549ffaa08944fbffd82699" name="ab714ad9124549ffaa08944fbffd82699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab714ad9124549ffaa08944fbffd82699">&#9670;&#160;</a></span>Set</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::Set = <a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt;<a class="el" href="classmim_1_1CFG.html">CFG</a>&lt;forward&gt;, const <a class="el" href="classmim_1_1CFNode.html">CFNode</a>*&gt;</td>
+          <td class="memname">using <a class="el" href="#ab714ad9124549ffaa08944fbffd82699">mim::CFG::Set</a> = <a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt;<a class="el" href="classmim_1_1CFG.html">CFG</a>, const <a class="el" href="classmim_1_1CFNode.html">CFNode</a>*&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00119">119</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00063">63</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa85317a32d0e65cf0cee320ec4da55e1" name="aa85317a32d0e65cf0cee320ec4da55e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa85317a32d0e65cf0cee320ec4da55e1">&#9670;&#160;</a></span>CFG() <span class="overload">[1/2]</span></h2>
+<a id="afa7c49e96195e1a3ec25892e031be673" name="afa7c49e96195e1a3ec25892e031be673"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa7c49e96195e1a3ec25892e031be673">&#9670;&#160;</a></span>CFG() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::CFG </td>
+          <td class="memname">mim::CFG::CFG </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1CFG.html">CFG</a>&lt; bool &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1CFG.html">CFG</a> &amp;</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -277,21 +252,19 @@ template&lt;bool &gt; </div>
 
 </div>
 </div>
-<a id="ab4df116447550d35662a037277f3817f" name="ab4df116447550d35662a037277f3817f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4df116447550d35662a037277f3817f">&#9670;&#160;</a></span>CFG() <span class="overload">[2/2]</span></h2>
+<a id="a57e47e12ca154494d5302ee211e5bdb4" name="a57e47e12ca154494d5302ee211e5bdb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57e47e12ca154494d5302ee211e5bdb4">&#9670;&#160;</a></span>CFG() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool forward&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; forward &gt;::CFG </td>
+          <td class="memname">mim::CFG::CFG </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1CFA.html">CFA</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>cfa</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Nest.html">Nest</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>nest</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -302,54 +275,40 @@ template&lt;bool forward&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00155">155</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00025">25</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00136">mim::CFG&lt; bool &gt;::entry()</a>, <a class="el" href="cfg_8h_source.html#l00150">mim::CFG&lt; bool &gt;::index()</a>, and <a class="el" href="cfg_8h_source.html#l00127">mim::CFG&lt; bool &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00062">mim::Nest::contains()</a>, <a class="el" href="cfg_8h_source.html#l00075">entry()</a>, <a class="el" href="cfg_8h_source.html#l00090">index()</a>, <a class="el" href="nest_8h_source.html#l00021">mim::Nest::Node::mut()</a>, <a class="el" href="cfg_8h_source.html#l00072">nest()</a>, <a class="el" href="def_8h_source.html#l00239">mim::Def::ops()</a>, <a class="el" href="util_8h_source.html#l00078">mim::pop()</a>, <a class="el" href="nest_8h_source.html#l00060">mim::Nest::root()</a>, and <a class="el" href="cfg_8h_source.html#l00074">size()</a>.</p>
+
+</div>
+</div>
+<a id="a6b2b64cabb58770477e7c0a32d3b815f" name="a6b2b64cabb58770477e7c0a32d3b815f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b2b64cabb58770477e7c0a32d3b815f">&#9670;&#160;</a></span>~CFG()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">mim::CFG::~CFG </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00075">75</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="abf16dc020696ece2e50f9a8660fe685e" name="abf16dc020696ece2e50f9a8660fe685e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf16dc020696ece2e50f9a8660fe685e">&#9670;&#160;</a></span>cfa()</h2>
+<a id="a380d5b25b7f6dce5b3ad9955d0ea3384" name="a380d5b25b7f6dce5b3ad9955d0ea3384"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a380d5b25b7f6dce5b3ad9955d0ea3384">&#9670;&#160;</a></span>domfrontier()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1CFA.html">CFA</a> &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::cfa </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00126">126</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8h_source.html#l00136">mim::CFG&lt; bool &gt;::entry()</a>, <a class="el" href="cfg_8h_source.html#l00137">mim::CFG&lt; bool &gt;::exit()</a>, <a class="el" href="cfg_8h_source.html#l00134">mim::CFG&lt; bool &gt;::num_preds()</a>, <a class="el" href="cfg_8h_source.html#l00135">mim::CFG&lt; bool &gt;::num_succs()</a>, <a class="el" href="cfg_8h_source.html#l00145">mim::CFG&lt; bool &gt;::operator[]()</a>, <a class="el" href="cfg_8h_source.html#l00130">mim::CFG&lt; bool &gt;::preds()</a>, <a class="el" href="cfg_8h_source.html#l00127">mim::CFG&lt; bool &gt;::size()</a>, and <a class="el" href="cfg_8h_source.html#l00131">mim::CFG&lt; bool &gt;::succs()</a>.</p>
-
-</div>
-</div>
-<a id="a30b398e4e01781e7cbde176d5cb5daea" name="a30b398e4e01781e7cbde176d5cb5daea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30b398e4e01781e7cbde176d5cb5daea">&#9670;&#160;</a></span>domfrontier()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool forward&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1DomFrontierBase.html">DomFrontierBase</a>&lt; forward &gt; &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; forward &gt;::domfrontier </td>
+          <td class="memname">const <a class="el" href="classmim_1_1DomFrontier.html">DomFrontier</a> &amp; mim::CFG::domfrontier </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -357,22 +316,20 @@ template&lt;bool forward&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00179">179</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00112">112</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="util_8h_source.html#l00021">mim::lazy_init()</a>.</p>
 
 </div>
 </div>
-<a id="a416b2c3020108b2ce561483b7cc88536" name="a416b2c3020108b2ce561483b7cc88536"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a416b2c3020108b2ce561483b7cc88536">&#9670;&#160;</a></span>domtree()</h2>
+<a id="a4ed7041c8aacfe2488319892b8e38f21" name="a4ed7041c8aacfe2488319892b8e38f21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ed7041c8aacfe2488319892b8e38f21">&#9670;&#160;</a></span>domtree()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool forward&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1DomTreeBase.html">DomTreeBase</a>&lt; forward &gt; &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; forward &gt;::domtree </td>
+          <td class="memname">const <a class="el" href="classmim_1_1DomTree.html">DomTree</a> &amp; mim::CFG::domtree </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -380,25 +337,23 @@ template&lt;bool forward&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00177">177</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00110">110</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="util_8h_source.html#l00021">mim::lazy_init()</a>.</p>
 
 </div>
 </div>
-<a id="affb9b48760f9fea19a7f6854fc3c68b4" name="affb9b48760f9fea19a7f6854fc3c68b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affb9b48760f9fea19a7f6854fc3c68b4">&#9670;&#160;</a></span>entry()</h2>
+<a id="aa7ea56f239977b11123bf8edbce4f70e" name="aa7ea56f239977b11123bf8edbce4f70e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7ea56f239977b11123bf8edbce4f70e">&#9670;&#160;</a></span>entry()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::entry </td>
+          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * mim::CFG::entry </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -411,58 +366,23 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00136">136</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00075">75</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00126">mim::CFG&lt; bool &gt;::cfa()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00155">mim::CFG&lt; bool &gt;::CFG()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00025">CFG()</a>.</p>
 
 </div>
 </div>
-<a id="ab683d3401f26416a96372445ccb1243b" name="ab683d3401f26416a96372445ccb1243b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab683d3401f26416a96372445ccb1243b">&#9670;&#160;</a></span>exit()</h2>
+<a id="aead5b2ffd67fde2eee784f0d013d5e9f" name="aead5b2ffd67fde2eee784f0d013d5e9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aead5b2ffd67fde2eee784f0d013d5e9f">&#9670;&#160;</a></span>index()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::exit </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00137">137</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
-
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00126">mim::CFG&lt; bool &gt;::cfa()</a>.</p>
-
-</div>
-</div>
-<a id="ab4b6e2919f6c642587ae63ccc07495c3" name="ab4b6e2919f6c642587ae63ccc07495c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4b6e2919f6c642587ae63ccc07495c3">&#9670;&#160;</a></span>index()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static size_t <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::index </td>
+          <td class="memname">static size_t mim::CFG::index </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *</td>          <td class="paramname"><span class="paramname"><em>n</em></span></td><td>)</td>
           <td></td>
@@ -475,22 +395,20 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00150">150</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00090">90</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00155">mim::CFG&lt; bool &gt;::CFG()</a>, and <a class="el" href="domtree_8h_source.html#l00026">mim::DomTreeBase&lt; bool &gt;::index()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00025">CFG()</a>, and <a class="el" href="domtree_8h_source.html#l00026">mim::DomTree::index()</a>.</p>
 
 </div>
 </div>
-<a id="a16618d08767f89765a377d2307332a67" name="a16618d08767f89765a377d2307332a67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16618d08767f89765a377d2307332a67">&#9670;&#160;</a></span>looptree()</h2>
+<a id="a29c235c999e18b72fb0483c7602ab775" name="a29c235c999e18b72fb0483c7602ab775"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29c235c999e18b72fb0483c7602ab775">&#9670;&#160;</a></span>looptree()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool forward&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1LoopTree.html">LoopTree</a>&lt; forward &gt; &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; forward &gt;::looptree </td>
+          <td class="memname">const <a class="el" href="classmim_1_1LoopTree.html">LoopTree</a> &amp; mim::CFG::looptree </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -498,27 +416,25 @@ template&lt;bool forward&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00178">178</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00111">111</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="util_8h_source.html#l00021">mim::lazy_init()</a>.</p>
 
 </div>
 </div>
-<a id="a8181c7aa924caf9a529ce7e6471666b1" name="a8181c7aa924caf9a529ce7e6471666b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8181c7aa924caf9a529ce7e6471666b1">&#9670;&#160;</a></span>num_preds() <span class="overload">[1/2]</span></h2>
+<a id="a653274bca97b6f0b13d6e5828543fb9b" name="a653274bca97b6f0b13d6e5828543fb9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a653274bca97b6f0b13d6e5828543fb9b">&#9670;&#160;</a></span>nest()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::num_preds </td>
+          <td class="memname">const <a class="el" href="classmim_1_1Nest.html">Nest</a> &amp; mim::CFG::nest </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *</td>          <td class="paramname"><span class="paramname"><em>n</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -529,27 +445,25 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00132">132</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00072">72</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
-<p class="reference">References <a class="el" href="cfg_8cpp_source.html#l00175">mim::CFG&lt; bool &gt;::preds()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00025">CFG()</a>, and <a class="el" href="cfg_8h_source.html#l00071">world()</a>.</p>
 
 </div>
 </div>
-<a id="af33d291d5e75422756cf61df517b9b7c" name="af33d291d5e75422756cf61df517b9b7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af33d291d5e75422756cf61df517b9b7c">&#9670;&#160;</a></span>num_preds() <span class="overload">[2/2]</span></h2>
+<a id="ae6ab53932bbbe40844e34e89c64f2cb0" name="ae6ab53932bbbe40844e34e89c64f2cb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6ab53932bbbe40844e34e89c64f2cb0">&#9670;&#160;</a></span>nodes()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::num_preds </td>
+          <td class="memname">const auto &amp; mim::CFG::nodes </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>mut</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -560,93 +474,23 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00134">134</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
-
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00126">mim::CFG&lt; bool &gt;::cfa()</a>, and <a class="el" href="cfg_8h_source.html#l00134">mim::CFG&lt; bool &gt;::num_preds()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8h_source.html#l00134">mim::CFG&lt; bool &gt;::num_preds()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00073">73</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
 </div>
 </div>
-<a id="a3a1423b6cdfbdad96d78703b96436aef" name="a3a1423b6cdfbdad96d78703b96436aef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a1423b6cdfbdad96d78703b96436aef">&#9670;&#160;</a></span>num_succs() <span class="overload">[1/2]</span></h2>
+<a id="ae0ceacf93b055d6107516596d4c1a206" name="ae0ceacf93b055d6107516596d4c1a206"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0ceacf93b055d6107516596d4c1a206">&#9670;&#160;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::num_succs </td>
+          <td class="memname"><a class="el" href="classmim_1_1CFG.html">CFG</a> &amp; mim::CFG::operator= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *</td>          <td class="paramname"><span class="paramname"><em>n</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00133">133</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
-
-<p class="reference">References <a class="el" href="cfg_8cpp_source.html#l00176">mim::CFG&lt; bool &gt;::succs()</a>.</p>
-
-</div>
-</div>
-<a id="a437b256c8964eb9ccbf359321649ad57" name="a437b256c8964eb9ccbf359321649ad57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a437b256c8964eb9ccbf359321649ad57">&#9670;&#160;</a></span>num_succs() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::num_succs </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>mut</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00135">135</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
-
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00126">mim::CFG&lt; bool &gt;::cfa()</a>, and <a class="el" href="cfg_8h_source.html#l00135">mim::CFG&lt; bool &gt;::num_succs()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8h_source.html#l00135">mim::CFG&lt; bool &gt;::num_succs()</a>.</p>
-
-</div>
-</div>
-<a id="a0fece42a5c486c639750d415446a662a" name="a0fece42a5c486c639750d415446a662a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fece42a5c486c639750d415446a662a">&#9670;&#160;</a></span>operator=()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmim_1_1CFG.html">CFG</a> &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1CFG.html">CFG</a>&lt; bool &gt;</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1CFG.html">CFG</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -659,19 +503,17 @@ template&lt;bool &gt; </div>
 
 </div>
 </div>
-<a id="aeb95c21e9fe7c1b8369d670dab6c6a57" name="aeb95c21e9fe7c1b8369d670dab6c6a57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb95c21e9fe7c1b8369d670dab6c6a57">&#9670;&#160;</a></span>operator[]()</h2>
+<a id="a7e8e5659e4818efbe70e418560ccefd6" name="a7e8e5659e4818efbe70e418560ccefd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e8e5659e4818efbe70e418560ccefd6">&#9670;&#160;</a></span>operator[]()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::operator[] </td>
+          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * mim::CFG::operator[] </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>mut</em></span></td><td>)</td>
           <td> const</td>
@@ -684,27 +526,21 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Maps from <code>mut</code> to <a class="el" href="classmim_1_1CFNode.html" title="A Control-Flow Node.">CFNode</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00145">145</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
-
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00126">mim::CFG&lt; bool &gt;::cfa()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00082">82</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
 </div>
 </div>
-<a id="a4eaa9484af0292ffee5adde0b0c99375" name="a4eaa9484af0292ffee5adde0b0c99375"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4eaa9484af0292ffee5adde0b0c99375">&#9670;&#160;</a></span>post_order() <span class="overload">[1/2]</span></h2>
+<a id="abece82ad0ca70352833ce69b27f1b9fd" name="abece82ad0ca70352833ce69b27f1b9fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abece82ad0ca70352833ce69b27f1b9fd">&#9670;&#160;</a></span>post_order() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::post_order </td>
+          <td class="memname">auto mim::CFG::post_order </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -717,23 +553,21 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00140">140</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00077">77</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
 </div>
 </div>
-<a id="a0b9cd0cbc10e8bfc0c060de4eae332ea" name="a0b9cd0cbc10e8bfc0c060de4eae332ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b9cd0cbc10e8bfc0c060de4eae332ea">&#9670;&#160;</a></span>post_order() <span class="overload">[2/2]</span></h2>
+<a id="a6fb7544fbe7e3ea4fb901ca13097bb14" name="a6fb7544fbe7e3ea4fb901ca13097bb14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fb7544fbe7e3ea4fb901ca13097bb14">&#9670;&#160;</a></span>post_order() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::post_order </td>
+          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * mim::CFG::post_order </td>
           <td>(</td>
           <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em></span></td><td>)</td>
           <td> const</td>
@@ -748,81 +582,23 @@ template&lt;bool &gt; </div>
 
 <p>Maps from post-order index to <a class="el" href="classmim_1_1CFNode.html" title="A Control-Flow Node.">CFNode</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00144">144</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00081">81</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00127">mim::CFG&lt; bool &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="cfg_8h_source.html#l00074">size()</a>.</p>
 
 </div>
 </div>
-<a id="aa97c66fce4de8aa1bf6f543d76c79ba7" name="aa97c66fce4de8aa1bf6f543d76c79ba7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa97c66fce4de8aa1bf6f543d76c79ba7">&#9670;&#160;</a></span>preds() <span class="overload">[1/2]</span></h2>
+<a id="a9246a7195aad8dd2782e25920e105bfa" name="a9246a7195aad8dd2782e25920e105bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9246a7195aad8dd2782e25920e105bfa">&#9670;&#160;</a></span>reverse_post_order() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool forward&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="namespacemim.html#ab1dc40f716cde04ad3504bf56f94f56d">CFNodes</a> &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; forward &gt;::preds </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *</td>          <td class="paramname"><span class="paramname"><em>n</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00175">175</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8h_source.html#l00132">mim::CFG&lt; bool &gt;::num_preds()</a>.</p>
-
-</div>
-</div>
-<a id="a1278f1977075e37ef40e419230209895" name="a1278f1977075e37ef40e419230209895"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1278f1977075e37ef40e419230209895">&#9670;&#160;</a></span>preds() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacemim.html#ab1dc40f716cde04ad3504bf56f94f56d">CFNodes</a> &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::preds </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>mut</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00130">130</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
-
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00126">mim::CFG&lt; bool &gt;::cfa()</a>, and <a class="el" href="cfg_8h_source.html#l00130">mim::CFG&lt; bool &gt;::preds()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8h_source.html#l00130">mim::CFG&lt; bool &gt;::preds()</a>.</p>
-
-</div>
-</div>
-<a id="a11542e44ab3869c460682cb747328311" name="a11542e44ab3869c460682cb747328311"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11542e44ab3869c460682cb747328311">&#9670;&#160;</a></span>reverse_post_order() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::reverse_post_order </td>
+          <td class="memname">auto mim::CFG::reverse_post_order </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -835,25 +611,23 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00139">139</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00076">76</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="schedule_8cpp_source.html#l00112">mim::Scheduler::schedule()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="schedule_8cpp_source.html#l00114">mim::Scheduler::schedule()</a>.</p>
 
 </div>
 </div>
-<a id="aa9608d28ee701ce66ebb40b60114d0d6" name="aa9608d28ee701ce66ebb40b60114d0d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9608d28ee701ce66ebb40b60114d0d6">&#9670;&#160;</a></span>reverse_post_order() <span class="overload">[2/2]</span></h2>
+<a id="a2a55978e719f085f8c6c04f24978e25f" name="a2a55978e719f085f8c6c04f24978e25f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a55978e719f085f8c6c04f24978e25f">&#9670;&#160;</a></span>reverse_post_order() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::reverse_post_order </td>
+          <td class="memname">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> * mim::CFG::reverse_post_order </td>
           <td>(</td>
           <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em></span></td><td>)</td>
           <td> const</td>
@@ -868,23 +642,21 @@ template&lt;bool &gt; </div>
 
 <p>Maps from reverse post-order index to <a class="el" href="classmim_1_1CFNode.html" title="A Control-Flow Node.">CFNode</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00142">142</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00079">79</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
 </div>
 </div>
-<a id="a7b776529be0a84318d446bc9153d2fae" name="a7b776529be0a84318d446bc9153d2fae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b776529be0a84318d446bc9153d2fae">&#9670;&#160;</a></span>size()</h2>
+<a id="ab250c9bfa996dab700d7510e5147596c" name="ab250c9bfa996dab700d7510e5147596c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab250c9bfa996dab700d7510e5147596c">&#9670;&#160;</a></span>size()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">size_t <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::size </td>
+          <td class="memname">size_t mim::CFG::size </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -897,52 +669,25 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00127">127</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00074">74</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00126">mim::CFG&lt; bool &gt;::cfa()</a>, and <a class="el" href="cfg_8h_source.html#l00072">mim::CFA::size()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00155">mim::CFG&lt; bool &gt;::CFG()</a>, <a class="el" href="looptree_8cpp_source.html#l00037">mim::LoopTreeBuilder&lt; forward &gt;::LoopTreeBuilder()</a>, and <a class="el" href="cfg_8h_source.html#l00144">mim::CFG&lt; bool &gt;::post_order()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00025">CFG()</a>, <a class="el" href="looptree_8cpp_source.html#l00034">mim::LoopTreeBuilder::LoopTreeBuilder()</a>, and <a class="el" href="cfg_8h_source.html#l00081">post_order()</a>.</p>
 
 </div>
 </div>
-<a id="afb8d7a3ba962eac74bf19deb77d65332" name="afb8d7a3ba962eac74bf19deb77d65332"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb8d7a3ba962eac74bf19deb77d65332">&#9670;&#160;</a></span>succs() <span class="overload">[1/2]</span></h2>
+<a id="a6b06f8712cb23233b5ad5cd852fa4958" name="a6b06f8712cb23233b5ad5cd852fa4958"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b06f8712cb23233b5ad5cd852fa4958">&#9670;&#160;</a></span>world()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;bool forward&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="namespacemim.html#ab1dc40f716cde04ad3504bf56f94f56d">CFNodes</a> &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; forward &gt;::succs </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1CFNode.html">CFNode</a> *</td>          <td class="paramname"><span class="paramname"><em>n</em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cfg_8cpp_source.html#l00176">176</a> of file <a class="el" href="cfg_8cpp_source.html">cfg.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8h_source.html#l00133">mim::CFG&lt; bool &gt;::num_succs()</a>.</p>
-
-</div>
-</div>
-<a id="a2f7ccf001b35a54b1b32eece337150f9" name="a2f7ccf001b35a54b1b32eece337150f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f7ccf001b35a54b1b32eece337150f9">&#9670;&#160;</a></span>succs() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacemim.html#ab1dc40f716cde04ad3504bf56f94f56d">CFNodes</a> &amp; <a class="el" href="classmim_1_1CFG.html">mim::CFG</a>&lt; bool &gt;::succs </td>
+          <td class="memname"><a class="el" href="classmim_1_1World.html">World</a> &amp; mim::CFG::world </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>mut</em></span></td><td>)</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -953,17 +698,14 @@ template&lt;bool &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00131">131</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="cfg_8h_source.html#l00071">71</a> of file <a class="el" href="cfg_8h_source.html">cfg.h</a>.</p>
 
-<p class="reference">References <a class="el" href="cfg_8h_source.html#l00126">mim::CFG&lt; bool &gt;::cfa()</a>, and <a class="el" href="cfg_8h_source.html#l00131">mim::CFG&lt; bool &gt;::succs()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="cfg_8h_source.html#l00131">mim::CFG&lt; bool &gt;::succs()</a>.</p>
+<p class="reference">References <a class="el" href="cfg_8h_source.html#l00072">nest()</a>, and <a class="el" href="nest_8h_source.html#l00059">mim::Nest::world()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/mim/analyses/<a class="el" href="cfg_8h_source.html">cfg.h</a></li>
-<li>include/mim/analyses/<a class="el" href="scope_8h_source.html">scope.h</a></li>
 <li>src/mim/analyses/<a class="el" href="cfg_8cpp_source.html">cfg.cpp</a></li>
 </ul>
 </div><!-- contents -->

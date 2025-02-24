@@ -1,12 +1,23 @@
 <map id="mim::ll::Emitter" name="mim::ll::Emitter">
-<area shape="rect" id="Node000001" title=" " alt="" coords="19,376,143,401"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1Emitter.html" title=" " alt="" coords="5,272,156,327"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,340,83,376,78,376,78,340"/>
-<area shape="rect" id="Node000003" href="$classmim_1_1ScopePhase.html" title="Transitively visits all reachable Scopes in World that do not have free variables." alt="" coords="6,80,145,105"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="79,119,83,272,77,272,73,119"/>
-<area shape="rect" id="Node000005" href="$classmim_1_1Emitter.html" title=" " alt="" coords="97,155,259,195"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="103,112,155,153,152,157,99,116"/>
-<area shape="rect" id="Node000004" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="26,5,125,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="78,45,78,80,73,80,73,45"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="156,207,104,273,99,270,152,204"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="89,641,213,667"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1Emitter.html" title=" " alt="" coords="75,537,226,592"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,606,153,641,148,641,148,606"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1NestPhase.html" title=" " alt="" coords="52,345,239,371"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="149,384,153,537,147,537,143,384"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1Emitter.html" title=" " alt="" coords="167,420,329,460"/>
+<area shape="poly" id="edge12_Node000009_Node000003" title=" " alt="" coords="173,377,225,418,222,422,169,381"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="5,168,173,208"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="103,220,144,344,139,346,97,222"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="159,5,257,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="150,38,118,56,93,81,85,102,82,125,87,167,81,168,77,125,79,101,88,79,115,51,147,33"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable closed mutables (Def::is_closed()) in World." alt="" coords="103,80,313,105"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="211,45,211,80,205,80,205,45"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="197,168,365,208"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="269,33,302,51,328,79,334,103,329,127,316,150,302,169,297,166,312,147,324,125,329,103,323,81,298,56,267,38"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="184,116,115,170,112,166,181,112"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="228,115,269,166,264,169,223,118"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1NestPhase.html" title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit." alt="" coords="179,257,349,283"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="238,293,163,347,160,343,235,289"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="277,222,269,258,264,257,272,221"/>
+<area shape="poly" id="edge11_Node000002_Node000009" title=" " alt="" coords="226,473,174,539,169,535,222,469"/>
 </map>

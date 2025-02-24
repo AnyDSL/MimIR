@@ -1,9 +1,9 @@
 var classmim_1_1LoopTree_1_1Head =
 [
-    [ "child", "classmim_1_1LoopTree_1_1Head.html#a8955c8483ed8c0788e9ba139d3b12a0c", null ],
-    [ "children", "classmim_1_1LoopTree_1_1Head.html#a9f5c7a55c8e5f4ff3f23a54cbdf69a0f", null ],
-    [ "is_root", "classmim_1_1LoopTree_1_1Head.html#a8c1ee38c3aff66c21983f1eb1f1bef18", null ],
-    [ "num_children", "classmim_1_1LoopTree_1_1Head.html#af61182bb0edbfac2805a91573ee4e893", null ],
+    [ "child", "classmim_1_1LoopTree_1_1Head.html#aa885cbd2d04f87303e6840c1927ba72d", null ],
+    [ "children", "classmim_1_1LoopTree_1_1Head.html#ae9206b1dfcf48bd217fa64ded4fbcf76", null ],
+    [ "is_root", "classmim_1_1LoopTree_1_1Head.html#a33352dee7f8bb455dd1efbd6f0ac2bd3", null ],
+    [ "num_children", "classmim_1_1LoopTree_1_1Head.html#ad7000c3233a8346f3d4dbf76d3923375", null ],
     [ "Base", "classmim_1_1LoopTree_1_1Head.html#a90aa5b342fe070a58857a221d500488c", null ],
-    [ "LoopTreeBuilder< forward >", "classmim_1_1LoopTree_1_1Head.html#a0b97215e639132eee69a71502a6a728a", null ]
+    [ "LoopTreeBuilder", "classmim_1_1LoopTree_1_1Head.html#a7f264a120e0e33e8b5d6422f53392e95", null ]
 ];

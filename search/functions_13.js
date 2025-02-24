@@ -13,5 +13,6 @@ var searchData=
   ['univ_10',['univ',['../classmim_1_1World.html#a5355ae94cd13f800273330d30f38ad8d',1,'mim::World']]],
   ['unset_11',['unset',['../classmim_1_1Infer.html#a9cb038d695aac60c1e4f10000c2807cb',1,'mim::Infer::unset()'],['../classmim_1_1Def.html#ae5dedfaf24a0f270bdb0fe58ed62cdc3',1,'mim::Def::unset()'],['../classmim_1_1Pi.html#a33ce4a2b9f089af0ca6a99385ebed77d',1,'mim::Pi::unset()'],['../classmim_1_1Lam.html#a072eca45c3daaf3e26a30cef5c17f589',1,'mim::Lam::unset()'],['../classmim_1_1Sigma.html#a03817306a72b907aff0d8904e3c5bd1b',1,'mim::Sigma::unset()'],['../classmim_1_1Arr.html#a3787acf95dd4e98481931ea48732ab49',1,'mim::Arr::unset()'],['../classmim_1_1Pack.html#a6c24b7c8a0cbc99df4809ed0ad0fc84d',1,'mim::Pack::unset()']]],
   ['use_12',['Use',['../classmim_1_1Use.html#ad1bfa5ee84aa2b6d63b9d8b8767fb7e5',1,'mim::Use::Use()'],['../classmim_1_1Use.html#a5a79f76e19dec42cc52438ae4c77b954',1,'mim::Use::Use(const Def *def, size_t index)']]],
-  ['uses_13',['uses',['../classmim_1_1Scheduler.html#a81893f9b1c9c94ba0404306ec20648ee',1,'mim::Scheduler::uses()'],['../classmim_1_1Def.html#a11e13f2bd63c039bf93ddfc6f3b6fe1e',1,'mim::Def::uses()']]]
+  ['users_13',['users',['../classmim_1_1Def.html#aec0c90f905b8d981b9e3580ba89f7d63',1,'mim::Def']]],
+  ['uses_14',['uses',['../classmim_1_1Scheduler.html#a81893f9b1c9c94ba0404306ec20648ee',1,'mim::Scheduler']]]
 ];

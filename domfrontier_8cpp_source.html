@@ -126,25 +126,25 @@ $(function(){initNavTree('domfrontier_8cpp_source.html',''); initResizable(true)
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim.html">mim</a> {</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> forward&gt; <span class="keywordtype">void</span> DomFrontierBase&lt;forward&gt;::create() {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; domtree = cfg().domtree();</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : cfg().reverse_post_order().subspan(1)) {</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; preds = cfg().preds(n);</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        <span class="keywordflow">if</span> (preds.size() &gt; 1) {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keywordtype">void</span> DomFrontier::create() {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; domtree = <a class="code hl_function" href="classmim_1_1DomFrontier.html#a25ff3e65d165a5a551b87ab482e8631c">cfg</a>().<a class="code hl_function" href="classmim_1_1CFG.html#a4ed7041c8aacfe2488319892b8e38f21">domtree</a>();</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : <a class="code hl_function" href="classmim_1_1DomFrontier.html#a25ff3e65d165a5a551b87ab482e8631c">cfg</a>().reverse_post_order().subspan(1)) {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        <span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_function" href="classmim_1_1DomFrontier.html#a20c2ad9380f40b81198794d71728df3f">preds</a> = n-&gt;preds();</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1DomFrontier.html#a20c2ad9380f40b81198794d71728df3f">preds</a>.size() &gt; 1) {</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>            <span class="keyword">auto</span> idom = domtree.idom(n);</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> pred : preds)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> pred : <a class="code hl_function" href="classmim_1_1DomFrontier.html#a20c2ad9380f40b81198794d71728df3f">preds</a>)</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = pred; i != idom; i = domtree.idom(i)) link(i, n);</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        }</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    }</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>}</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">template</span> <span class="keyword">class </span>DomFrontierBase&lt;true&gt;;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">template</span> <span class="keyword">class </span>DomFrontierBase&lt;false&gt;;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>} <span class="comment">// namespace mim</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>} <span class="comment">// namespace mim</span></div>
+<div class="ttc" id="aclassmim_1_1CFG_html_a4ed7041c8aacfe2488319892b8e38f21"><div class="ttname"><a href="classmim_1_1CFG.html#a4ed7041c8aacfe2488319892b8e38f21">mim::CFG::domtree</a></div><div class="ttdeci">const DomTree &amp; domtree() const</div><div class="ttdef"><b>Definition</b> <a href="cfg_8cpp_source.html#l00110">cfg.cpp:110</a></div></div>
+<div class="ttc" id="aclassmim_1_1DomFrontier_html_a20c2ad9380f40b81198794d71728df3f"><div class="ttname"><a href="classmim_1_1DomFrontier.html#a20c2ad9380f40b81198794d71728df3f">mim::DomFrontier::preds</a></div><div class="ttdeci">const auto &amp; preds(const CFNode *n) const</div><div class="ttdef"><b>Definition</b> <a href="domfrontier_8h_source.html#l00025">domfrontier.h:25</a></div></div>
+<div class="ttc" id="aclassmim_1_1DomFrontier_html_a25ff3e65d165a5a551b87ab482e8631c"><div class="ttname"><a href="classmim_1_1DomFrontier.html#a25ff3e65d165a5a551b87ab482e8631c">mim::DomFrontier::cfg</a></div><div class="ttdeci">const CFG &amp; cfg() const</div><div class="ttdef"><b>Definition</b> <a href="domfrontier_8h_source.html#l00024">domfrontier.h:24</a></div></div>
 <div class="ttc" id="adomfrontier_8h_html"><div class="ttname"><a href="domfrontier_8h.html">domfrontier.h</a></div></div>
 <div class="ttc" id="adomtree_8h_html"><div class="ttname"><a href="domtree_8h.html">domtree.h</a></div></div>
-<div class="ttc" id="anamespacemim_html"><div class="ttname"><a href="namespacemim.html">mim</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
+<div class="ttc" id="anamespacemim_html"><div class="ttname"><a href="namespacemim.html">mim</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00009">cfg.h:9</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

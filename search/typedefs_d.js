@@ -6,7 +6,7 @@ var searchData=
   ['s8_3',['s8',['../namespacemim.html#ac4e6752bd834d28cb851c128dfa5b8c7',1,'mim']]],
   ['schedule_4',['Schedule',['../classmim_1_1Scheduler.html#ae3dc2a36de43cd2159816394b72e9d8f',1,'mim::Scheduler']]],
   ['scope_5',['Scope',['../classmim_1_1ast_1_1Scopes.html#ab64af275afa2f1825fde3b0fc264f6bd',1,'mim::ast::Scopes']]],
-  ['set_6',['Set',['../classmim_1_1CFG.html#a54e68f8f552d40a4a3449cab49ac7a83',1,'mim::CFG']]],
+  ['set_6',['Set',['../classmim_1_1CFG.html#ab714ad9124549ffaa08944fbffd82699',1,'mim::CFG']]],
   ['sub_5ft_7',['sub_t',['../namespacemim.html#a190fd94a575b212f38ae8be611f1c367',1,'mim']]],
   ['super_8',['Super',['../classmim_1_1FPPass.html#a2fc64cc8188503235ee1f63f9cf455f6',1,'mim::FPPass::Super'],['../classmim_1_1ll_1_1Emitter.html#ad5dad6431ffc8fb3d803e7c43fcf0722',1,'mim::ll::Emitter::Super']]]
 ];

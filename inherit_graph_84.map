@@ -1,3 +1,43 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structmim_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin." alt="" coords="5,5,105,31"/>
+<area shape="rect" id="Node000000" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="13,337,112,363"/>
+<area shape="rect" id="Node000001" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="201,85,369,125"/>
+<area shape="poly" id="edge182_Node000000_Node000001" title=" " alt="" coords="67,323,78,282,98,231,127,179,145,155,166,135,200,116,202,120,170,139,149,159,131,182,103,233,83,283,72,325"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="201,149,369,189"/>
+<area shape="poly" id="edge188_Node000000_Node000007" title=" " alt="" coords="73,323,108,261,135,227,166,198,200,182,202,186,170,203,138,231,113,264,77,326"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping afterward..." alt="" coords="229,213,342,239"/>
+<area shape="poly" id="edge190_Node000000_Node000009" title=" " alt="" coords="80,324,117,285,141,264,167,248,197,236,228,228,229,234,198,241,169,252,144,269,121,288,84,328"/>
+<area shape="rect" id="Node000010" href="$classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable closed mutables (Def::is_closed()) in World." alt="" coords="180,263,391,288"/>
+<area shape="poly" id="edge191_Node000000_Node000010" title=" " alt="" coords="97,328,167,297,208,286,209,291,169,302,99,333"/>
+<area shape="rect" id="Node000011" href="$classmim_1_1PassManPhase.html" title="Wraps a PassMan pipeline as a Phase." alt="" coords="207,312,363,337"/>
+<area shape="poly" id="edge192_Node000000_Node000011" title=" " alt="" coords="126,340,207,331,208,336,126,346"/>
+<area shape="rect" id="Node000012" href="$classmim_1_1PassPhase.html" title="Wraps a Pass as a Phase." alt="" coords="202,361,369,387"/>
+<area shape="poly" id="edge193_Node000000_Node000012" title=" " alt="" coords="126,354,202,362,201,368,125,359"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1Pipeline.html" title="Organizes several Phases as a pipeline." alt="" coords="229,411,341,436"/>
+<area shape="poly" id="edge194_Node000000_Node000013" title=" " alt="" coords="101,366,169,395,230,411,228,416,167,401,99,371"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1RWPhase.html" title="Visits the current Phase::world and constructs a new RWPhase::world along the way." alt="" coords="225,559,346,584"/>
+<area shape="poly" id="edge195_Node000000_Node000014" title=" " alt="" coords="73,375,85,414,104,460,132,506,150,526,170,544,196,558,225,566,224,571,194,563,166,548,146,530,128,509,100,462,80,416,68,377"/>
+<area shape="rect" id="Node000019" href="$classmim_1_1plug_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion." alt="" coords="190,460,381,485"/>
+<area shape="poly" id="edge198_Node000000_Node000019" title=" " alt="" coords="84,372,121,410,144,429,169,445,201,457,199,462,167,450,141,433,117,414,80,375"/>
+<area shape="rect" id="Node000020" href="$classmim_1_1plug_1_1clos_1_1LowerTypedClos.html" title="This pass lowers typed closures to untyped closures." alt="" coords="168,509,403,535"/>
+<area shape="poly" id="edge199_Node000000_Node000020" title=" " alt="" coords="77,374,112,436,138,468,169,494,194,507,192,512,167,499,134,471,108,439,72,377"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1NestPhase.html" title=" " alt="" coords="451,92,637,117"/>
+<area shape="poly" id="edge183_Node000001_Node000002" title=" " alt="" coords="383,102,450,102,450,107,383,107"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1Emitter.html" title=" " alt="" coords="708,5,859,60"/>
+<area shape="poly" id="edge184_Node000002_Node000003" title=" " alt="" coords="599,85,707,53,708,58,601,91"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1Emitter.html" title=" " alt="" coords="702,85,865,125"/>
+<area shape="poly" id="edge186_Node000002_Node000005" title=" " alt="" coords="651,102,702,102,702,107,651,107"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1plug_1_1mem_1_1AddMem.html" title="This phase adds mems to all lambdas and continuations." alt="" coords="685,149,881,175"/>
+<area shape="poly" id="edge187_Node000002_Node000006" title=" " alt="" coords="612,118,730,147,729,152,611,123"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1ll_1_1Emitter.html" title=" " alt="" coords="929,20,1053,45"/>
+<area shape="poly" id="edge185_Node000003_Node000004" title=" " alt="" coords="872,30,929,30,929,35,872,35"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1NestPhase.html" title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit." alt="" coords="459,156,629,181"/>
+<area shape="poly" id="edge189_Node000007_Node000008" title=" " alt="" coords="383,166,458,166,458,171,383,171"/>
+<area shape="rect" id="Node000015" href="$classmim_1_1FPPhase.html" title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand." alt="" coords="487,531,601,556"/>
+<area shape="poly" id="edge196_Node000014_Node000015" title=" " alt="" coords="359,561,486,547,487,552,360,566"/>
+<area shape="rect" id="Node000016" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer..." alt="" coords="462,581,626,621"/>
+<area shape="poly" id="edge197_Node000014_Node000016" title=" " alt="" coords="360,577,462,589,461,594,359,582"/>
+<area shape="rect" id="Node000017" href="$classmim_1_1Rewriter.html" title="Recurseivly rewrites part of a program into the provided World." alt="" coords="5,583,120,608"/>
+<area shape="poly" id="edge200_Node000017_Node000014" title=" " alt="" coords="133,585,224,575,225,580,134,590"/>
+<area shape="rect" id="Node000018" href="$classmim_1_1VarRewriter.html" title=" " alt="" coords="217,608,353,633"/>
+<area shape="poly" id="edge201_Node000017_Node000018" title=" " alt="" coords="134,601,217,610,217,616,133,606"/>
 </map>

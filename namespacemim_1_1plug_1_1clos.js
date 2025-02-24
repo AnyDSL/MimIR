@@ -41,6 +41,7 @@ var namespacemim_1_1plug_1_1clos =
     [ "clos_type_to_pi", "namespacemim_1_1plug_1_1clos.html#a4be1357f117e1e7321e8f7ec5922e4ed", null ],
     [ "clos_unpack", "namespacemim_1_1plug_1_1clos.html#a4906299b90b5160c31e9f540289c2339", null ],
     [ "ctype", "namespacemim_1_1plug_1_1clos.html#aa1ca4c1eedf6e6a6a9cee279c59aa817", null ],
+    [ "free_defs", "namespacemim_1_1plug_1_1clos.html#a5485374ab8e8586644bc7537515df475", null ],
     [ "isa_clos_lit", "namespacemim_1_1plug_1_1clos.html#a0de1a3e5c37647df2de7fcf665f0866d", null ],
     [ "isa_clos_type", "namespacemim_1_1plug_1_1clos.html#a7f5b372773493e5d64a148402d8c6370", null ],
     [ "normalize_clos", "namespacemim_1_1plug_1_1clos.html#a7a02c6fe7dd6e0bd61776a789e91c54b", null ],

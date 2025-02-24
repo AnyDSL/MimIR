@@ -15,9 +15,7 @@ var hierarchy =
     ] ],
     [ "mim::ll::BB", "structmim_1_1ll_1_1BB.html", null ],
     [ "mim::BitSet", "classmim_1_1BitSet.html", null ],
-    [ "mim::CFA", "classmim_1_1CFA.html", null ],
-    [ "mim::CFG< bool >", "classmim_1_1CFG.html", null ],
-    [ "mim::CFG< forward >", "classmim_1_1CFG.html", null ],
+    [ "mim::CFG", "classmim_1_1CFG.html", null ],
     [ "mim::CFNode", "classmim_1_1CFNode.html", null ],
     [ "mim::Checker", "classmim_1_1Checker.html", null ],
     [ "mim::plug::clos::ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", null ],
@@ -25,11 +23,9 @@ var hierarchy =
     [ "mim::Dbg", "structmim_1_1Dbg.html", null ],
     [ "mim::DefDefEq", "structmim_1_1DefDefEq.html", null ],
     [ "mim::DefDefHash", "structmim_1_1DefDefHash.html", null ],
-    [ "mim::DepNode", "classmim_1_1DepNode.html", null ],
-    [ "mim::DepTree", "classmim_1_1DepTree.html", null ],
     [ "automaton::DFANode", "classautomaton_1_1DFANode.html", null ],
-    [ "mim::DomFrontierBase< forward >", "classmim_1_1DomFrontierBase.html", null ],
-    [ "mim::DomTreeBase< bool >", "classmim_1_1DomTreeBase.html", null ],
+    [ "mim::DomFrontier", "classmim_1_1DomFrontier.html", null ],
+    [ "mim::DomTree", "classmim_1_1DomTree.html", null ],
     [ "mim::Elem< R, F >", "structmim_1_1Elem.html", null ],
     [ "mim::ast::Emitter", "classmim_1_1ast_1_1Emitter.html", null ],
     [ "mim::PooledSet< T >::Data::Equal", "structmim_1_1PooledSet_1_1Data_1_1Equal.html", null ],
@@ -47,12 +43,18 @@ var hierarchy =
     [ "mim::GIDLt< T >", "structmim_1_1GIDLt.html", null ],
     [ "mim::IndexMap< Indexer, Key, Value >", "classmim_1_1IndexMap.html", null ],
     [ "mim::IndexMap< const mim::CFNode * >", "classmim_1_1IndexMap.html", null ],
+    [ "mim::IndexMap< int >", "classmim_1_1IndexMap.html", null ],
+    [ "mim::IndexMap< mim::LoopTree::Leaf * >", "classmim_1_1IndexMap.html", null ],
+    [ "mim::IndexMap< mim::Vector< const mim::CFNode * > >", "classmim_1_1IndexMap.html", null ],
+    [ "mim::IndexMap< Number >", "classmim_1_1IndexMap.html", null ],
+    [ "mim::IndexMap< uint8_t >", "classmim_1_1IndexMap.html", null ],
     [ "mim::IndexSet< Indexer, Key >", "classmim_1_1IndexSet.html", null ],
+    [ "mim::IndexSet< CFG, const CFNode * >", "classmim_1_1IndexSet.html", null ],
     [ "mim::plug::mem::SSAConstr::Info", "classmim_1_1plug_1_1mem_1_1SSAConstr.html#structmim_1_1plug_1_1mem_1_1SSAConstr_1_1Info", null ],
     [ "absl::InlinedVector", null, [
+      [ "mim::Vector< const mim::CFNode * >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< Value >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< uint64_t >", "classmim_1_1Vector.html", null ],
-      [ "mim::Vector< const mim::CFNode * >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< const Def * >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< void * >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< T, N, A >", "classmim_1_1Vector.html", null ]
@@ -67,12 +69,14 @@ var hierarchy =
       [ "mim::ast::Lexer", "classmim_1_1ast_1_1Lexer.html", null ]
     ] ],
     [ "mim::Log", "classmim_1_1Log.html", null ],
-    [ "mim::LoopTree< forward >", "classmim_1_1LoopTree.html", null ],
-    [ "mim::LoopTreeBuilder< forward >", "classmim_1_1LoopTreeBuilder.html", null ],
+    [ "mim::LoopTree", "classmim_1_1LoopTree.html", null ],
+    [ "mim::LoopTreeBuilder", "classmim_1_1LoopTreeBuilder.html", null ],
     [ "mim::Axiom::Match< T >", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Match", null ],
     [ "mim::Match< Id, D >", "classmim_1_1Match.html", null ],
     [ "mim::Error::Msg", "structmim_1_1Error_1_1Msg.html", null ],
+    [ "mim::Nest", "classmim_1_1Nest.html", null ],
     [ "automaton::NFANode", "classautomaton_1_1NFANode.html", null ],
+    [ "mim::Nest::Node", "classmim_1_1Nest_1_1Node.html", null ],
     [ "fe::Parser", null, [
       [ "mim::ast::Parser", "classmim_1_1ast_1_1Parser.html", null ]
     ] ],
@@ -185,6 +189,18 @@ var hierarchy =
     ] ],
     [ "mim::PassMan", "classmim_1_1PassMan.html", null ],
     [ "mim::Phase", "classmim_1_1Phase.html", [
+      [ "mim::ClosedMutPhase< Lam >", "classmim_1_1ClosedMutPhase.html", [
+        [ "mim::NestPhase< Lam >", "classmim_1_1NestPhase.html", [
+          [ "mim::Emitter< std::string, std::string, BB, Emitter >", "classmim_1_1Emitter.html", [
+            [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ]
+          ] ],
+          [ "mim::Emitter< Value, Type, BB, Child >", "classmim_1_1Emitter.html", null ],
+          [ "mim::plug::mem::AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", null ]
+        ] ]
+      ] ],
+      [ "mim::ClosedMutPhase< Def >", "classmim_1_1ClosedMutPhase.html", [
+        [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", null ]
+      ] ],
       [ "mim::Cleanup", "classmim_1_1Cleanup.html", null ],
       [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", null ],
       [ "mim::PassManPhase", "classmim_1_1PassManPhase.html", null ],
@@ -193,13 +209,6 @@ var hierarchy =
       [ "mim::RWPhase", "classmim_1_1RWPhase.html", [
         [ "mim::FPPhase", "classmim_1_1FPPhase.html", null ],
         [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
-      ] ],
-      [ "mim::ScopePhase", "classmim_1_1ScopePhase.html", [
-        [ "mim::Emitter< std::string, std::string, BB, Emitter >", "classmim_1_1Emitter.html", [
-          [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ]
-        ] ],
-        [ "mim::Emitter< Value, Type, BB, Child >", "classmim_1_1Emitter.html", null ],
-        [ "mim::plug::mem::AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", null ]
       ] ],
       [ "mim::plug::clos::ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", null ],
       [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ]
@@ -258,9 +267,9 @@ var hierarchy =
         [ "mim::Var", "classmim_1_1Var.html", null ],
         [ "mim::Vel", "classmim_1_1Vel.html", null ]
       ] ],
-      [ "mim::LoopTree< forward >::Base", "classmim_1_1LoopTree_1_1Base.html", [
-        [ "mim::LoopTree< forward >::Head", "classmim_1_1LoopTree_1_1Head.html", null ],
-        [ "mim::LoopTree< forward >::Leaf", "classmim_1_1LoopTree_1_1Leaf.html", null ]
+      [ "mim::LoopTree::Base", "classmim_1_1LoopTree_1_1Base.html", [
+        [ "mim::LoopTree::Head", "classmim_1_1LoopTree_1_1Head.html", null ],
+        [ "mim::LoopTree::Leaf", "classmim_1_1LoopTree_1_1Leaf.html", null ]
       ] ],
       [ "mim::ast::Node", "classmim_1_1ast_1_1Node.html", [
         [ "mim::ast::Decl", "classmim_1_1ast_1_1Decl.html", [
@@ -311,7 +320,6 @@ var hierarchy =
     ] ],
     [ "mim::ast::S", "structmim_1_1ast_1_1S.html", null ],
     [ "mim::Scheduler", "classmim_1_1Scheduler.html", null ],
-    [ "mim::Scope", "classmim_1_1Scope.html", null ],
     [ "mim::World::ScopedLoc", "structmim_1_1World_1_1ScopedLoc.html", null ],
     [ "mim::ast::Scopes", "classmim_1_1ast_1_1Scopes.html", null ],
     [ "mim::Setters< P, D >", "classmim_1_1Setters.html", null ],
@@ -431,6 +439,8 @@ var hierarchy =
     [ "mim::detail::w2u_< 64 >", null, null ],
     [ "mim::detail::w2u_< 8 >", null, null ],
     [ "mim::World", "classmim_1_1World.html", null ],
+    [ "bool", "namespace_3globalScope_4.html#classbool", null ],
+    [ "const int &", "namespace_3globalScope_4.html#classconst_01int_01_6", null ],
     [ "DefMap< mim::std::string >", "namespace_3globalScope_4.html#classDefMap_3_01mim_1_1std_1_1string_01_4", null ],
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],

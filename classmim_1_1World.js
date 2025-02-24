@@ -44,7 +44,6 @@ var classmim_1_1World =
     [ "dummy", "classmim_1_1World.html#ac3705a3bf370512a5134425d1e46137c", null ],
     [ "dump", "classmim_1_1World.html#a6948f411fa7465945b028dc5d8b2831e", null ],
     [ "dump", "classmim_1_1World.html#ae302b97de79c9c2516e265df6fa5104f", null ],
-    [ "exit", "classmim_1_1World.html#a452cd221df58a1b56b5c4b0ce0791735", null ],
     [ "ext", "classmim_1_1World.html#a318500ec2e4b4aa37a823e02232a74be", null ],
     [ "external", "classmim_1_1World.html#aaac7d4050e707ed01cc7761b3205bb53", null ],
     [ "externals", "classmim_1_1World.html#a6dbca27595ea4c068f7583eaf6a0b3ef", null ],
