@@ -2504,6 +2504,7 @@ INCLUDE_FILE_PATTERNS  =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 PREDEFINED             = MIM_ENABLE_CHECKS \
+                         MIM_EXPORT \
                          DOXYGEN
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
@@ -2522,22 +2523,10 @@ EXPAND_AS_DEFINED      = CODE \
                          MIM_8_16_32_64 \
                          MIM_16_32_64 \
                          MIM_PROJ \
-                         MIM_TAG \
                          MIM_NODE \
                          MIM_KEY \
-                         MIM_LIT \
-                         MIM_TOK \
-                         MIM_BIT \
-                         MIM_WRAP \
-                         MIM_SHR \
-                         MIM_DIV \
-                         MIM_R_OP \
-                         MIM_I_CMP \
-                         MIM_R_CMP \
-                         MIM_CONV \
-                         MIM_TRAIT \
-                         MIM_ACC \
-                         MIM_PE
+                         MIM_SUBST \
+                         MIM_TOK
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES then Doxygen's preprocessor will
 # remove all references to function-like macros that are alone on a line, have

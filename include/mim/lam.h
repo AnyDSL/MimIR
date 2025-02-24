@@ -110,17 +110,19 @@ private:
         : Def(Node, pi, 2, 0) {}
 
 public:
-    /// @name ops & type
+    using Filter = std::variant<bool, Ref>;
+
+    /// @name ops
     ///@{
     Ref filter() const { return op(0); }
     Ref body() const { return op(1); }
-    const Pi* type() const { return Def::type()->as<Pi>(); }
     ///@}
 
-    /// @name dom & codom
+    /// @name type
     /// @anchor lam_dom
     /// @see @ref proj
     ///@{
+    const Pi* type() const { return Def::type()->as<Pi>(); }
     Ref dom() const { return type()->dom(); }
     Ref codom() const { return type()->codom(); }
     MIM_PROJ(dom, const)
@@ -158,7 +160,6 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Lam>::set;
-    using Filter = std::variant<bool, Ref>;
     Lam* set(Filter filter, Ref body) { return set_filter(filter)->set_body(body); }
     Lam* set_filter(Filter);                                         ///< Set filter first.
     Lam* set_body(Ref body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.

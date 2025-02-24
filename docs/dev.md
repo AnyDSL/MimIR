@@ -17,8 +17,8 @@ Then, we load the plugins [compile](@ref compile) and [core](@ref core), which i
 A plugin consists of a shared object (`.so`/`.dll`) and a `.mim` file.
 The shared object contains [Passes](@ref mim::Pass), [normalizers](@ref mim::Axiom::normalizer), and so on.
 The `.mim` file contains the [axiom](@ref mim::Axiom) declarations and links the normalizers with the [axioms](@ref mim::Axiom).
-For this reason, we need to allocate the mim::fe::Parser to parse the `.mim` file; mim::fe::Parser::plugin will also load the shared object.
-The [driver](@ref mim::Driver) keeps track of all plugins.
+For this reason, we need to allocate the mim::ast::Parser to parse the `.mim` file; mim::ast::Parser::plugin will also load the shared object.
+The mim::Driver keeps track of all plugins.
 
 Next, we create actual code.
 [Def](@ref mim::Def) is the base class for **all** nodes/expressions in MimIR.
@@ -28,13 +28,13 @@ The [World](@ref mim::World) provides factory methods to create all kind of diff
 Here, we create the `main` function.
 In direct style, its type looks like this:
 
-```
+```mim
 [%mem.M, I32, %mem.Ptr (I32, 0)] -> [%mem.M, I32]]
 ```
 
 Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style) this type looks like this:
 
-```
+```mim
 Cn [%mem.M, I32, %mem.Ptr (I32, 0), Cn [%mem.M, I32]]
 ```
 
@@ -42,7 +42,7 @@ The `%%mem.M` type is a type that keeps track of side effects that may occur.
 Since, `main` introduces [Var](@ref mim::Var)iables we must create a **mutable** [Lam](@ref mim::Lam)bda (see @ref mut).
 The only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
 
-```
+```mim
 ret (mem, argc)
 ```
 
@@ -56,15 +56,15 @@ Finally, we [execute](@ref mim::sys::system) the generated program with `./hello
 
 There are two different kind of [Defs](@ref mim::Def) in MimIR: _mutables_ and _immutables_:
 
-| **Immutable**                                                        | **Mutable**                                                         |
-| -------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| _must be_ `const`                                                    | _may be_ **non**-`const`                                            |
-| ops form [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) | ops may be cyclic                                                   |
-| no recursion                                                         | may be recursive                                                    |
-| no [Var](@ref mim::Var)                                              | has [Var](@ref mim::Var); get with [Def::var](@ref mim::Def::var)   |
-| build ops first, then the actual node                                | build the actual node first, then [set](@ref mim::Def::set) the ops |
-| [Hash consed](https://en.wikipedia.org/wiki/Hash_consing)            | each new instance is fresh                                          |
-| [Def::rebuild](@ref mim::Def::rebuild)                               | [Def::stub](@ref mim::Def::stub)                                    |
+| **Immutable**                                                        | **Mutable**                                                               |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| _must be_ `const`                                                    | _may be_ **non**-`const`                                                  |
+| ops form [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) | ops may be cyclic                                                         |
+| no recursion                                                         | may be recursive                                                          |
+| no [Var](@ref mim::Var)                                              | may have [Var](@ref mim::Var); get with mim::Def::var / mim::Def::has_var |
+| build ops first, then the actual node                                | build the actual node first, then [set](@ref mim::Def::set) the ops       |
+| [Hash consed](https://en.wikipedia.org/wiki/Hash_consing)            | each new instance is fresh                                                |
+| [Def::rebuild](@ref mim::Def::rebuild)                               | [Def::stub](@ref mim::Def::stub)                                          |
 
 ## Matching IR
 
@@ -98,7 +98,7 @@ void foo(Ref def) {
 
 #### Upcast for Immutables
 
-[Def::isa_imm](@ref mim::Def::isa_imm)/[Def::as_imm](@ref mim::Def::as_imm) allows for an *upcast* and **only** matches _immutables_:
+mim::Def::isa_imm / mim::Def::as_imm allows for an _upcast_ and **only** matches _immutables_:
 
 ```cpp
 void foo(Ref def) {
@@ -117,7 +117,7 @@ void foo(Ref def) {
 
 #### Upcast for Mutables
 
-[Def::isa_mut](@ref mim::Def::isa_mut)/[Def::as_mut](@ref mim::Def::as_mut) allows for an *upcast* and **only** matches _mutables_.
+mim::Def::isa_mut / mim::Def::as_mut allows for an _upcast_ and **only** matches _mutables_.
 By doing so, it removes the `const` qualifier and gives you access to the **non**-`const` methods that only make sense for _mutables_:
 
 ```cpp
@@ -140,7 +140,7 @@ void foo(Ref def) {
 }
 ```
 
-Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using [Def::isa_mut](@ref mim::Def::isa_mut)/[Def::isa_mut](@ref mim::Def::as_mut) since the scrutinee must be already a *mutable* due to the lack of the `const` qualifier:
+Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using mim::Def::isa_mut / mim::Def::as_mut since the scrutinee must be already a _mutable_ due to the lack of the `const` qualifier:
 
 ```cpp
 void foo(Def* def) { // note the lack of "const" here
@@ -346,16 +346,16 @@ TODO
 
 ### Summary
 
-| Expression            | Class                    | [artiy](@ref mim::Def::arity) | [isa_lit_artiy](@ref mim::Def::isa_lit_arity) | [as_lit_artiy](@ref mim::Def::as_lit_arity) | [num_projs](@ref mim::Def::num_projs) | [num_tprojs](@ref mim::Def::num_tprojs) |
-| --------------------- | ------------------------ | ----------------------------- | --------------------------------------------- | ------------------------------------------- | ------------------------------------- | --------------------------------------- |
-| `(0, 1, 2)`           | [Tuple](@ref mim::Tuple) | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `‹3; 0›`              | [Pack](@ref mim::Pack)   | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `‹n; 0›`              | [Pack](@ref mim::Pack)   | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
+| Expression         | Class                    | [artiy](@ref mim::Def::arity) | [isa_lit_artiy](@ref mim::Def::isa_lit_arity) | [as_lit_artiy](@ref mim::Def::as_lit_arity) | [num_projs](@ref mim::Def::num_projs) | [num_tprojs](@ref mim::Def::num_tprojs) |
+| ------------------ | ------------------------ | ----------------------------- | --------------------------------------------- | ------------------------------------------- | ------------------------------------- | --------------------------------------- |
+| `(0, 1, 2)`        | [Tuple](@ref mim::Tuple) | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
+| `‹3; 0›`           | [Pack](@ref mim::Pack)   | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
+| `‹n; 0›`           | [Pack](@ref mim::Pack)   | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
 | `[Nat, Bool, Nat]` | [Sigma](@ref mim::Sigma) | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `«3; Nat»`           | [Arr](@ref mim::Arr)     | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `«n; Nat»`           | [Arr](@ref mim::Arr)     | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
-| `x: [Nat, Bool]`    | [Var](@ref mim::Var)     | `2`                           | `2`                                           | `2`                                         | `2`                                   | `2`                                     |
-| `‹32; 0›`             | [Pack](@ref mim::Pack)   | `32`                          | `32`                                          | `32`                                        | `32`                                  | `1`                                     |
+| `«3; Nat»`         | [Arr](@ref mim::Arr)     | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
+| `«n; Nat»`         | [Arr](@ref mim::Arr)     | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
+| `x: [Nat, Bool]`   | [Var](@ref mim::Var)     | `2`                           | `2`                                           | `2`                                         | `2`                                   | `2`                                     |
+| `‹32; 0›`          | [Pack](@ref mim::Pack)   | `32`                          | `32`                                          | `32`                                        | `32`                                  | `1`                                     |
 
 The last line assumes mim::Flags::scalarize_threshold = 32.
 
