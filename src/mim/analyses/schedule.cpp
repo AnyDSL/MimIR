@@ -11,23 +11,23 @@
 
 namespace mim {
 
-Scheduler::Scheduler(const Nest& n)
-    : nest_(&n)
-    , cfg_(std::make_unique<CFG>(nest()))
+Scheduler::Scheduler(const Nest& nest)
+    : nest_(&nest)
+    , cfg_(std::make_unique<CFG>(nest))
     , domtree_(&cfg().domtree()) {
     std::queue<const Def*> queue;
     DefSet done;
 
     auto enqueue = [&](const Def* def, size_t i, const Def* op) {
-        if (nest().contains(op)) {
+        if (nest.contains(op)) {
             assert_emplace(def2uses_[op], def, i);
             if (auto [_, ins] = done.emplace(op); ins) queue.push(op);
         }
     };
 
-    for (auto n : cfg().reverse_post_order()) {
-        queue.push(n->mut());
-        assert_emplace(done, n->mut());
+    for (const auto& [mut, _] : nest.nodes()) {
+        queue.push(mut);
+        assert_emplace(done, mut);
     }
 
     while (!queue.empty()) {
