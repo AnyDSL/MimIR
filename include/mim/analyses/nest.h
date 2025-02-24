@@ -20,7 +20,7 @@ public:
         ///@{
         Node* parent() { return parent_; }
         const Node* parent() const { return parent_; }
-        /// @warning May be `nullptr`, if it's a virtual root copmrising several Node%s.
+        /// @warning May be `nullptr`, if it's a virtual root comprising several Node%s.
         Def* mut() const {
             assert(mut_ || is_root());
             return mut_;
@@ -62,7 +62,7 @@ public:
     ///@{
     World& world() const { return world_; }
     const Node* root() const { return root_; }
-    Vars vars() const; ///< All Var%s occuring in this Nest - computed lazily.
+    Vars vars() const; ///< All Var%s occurring in this Nest - computed lazily.
     bool contains(const Def* def) const { return vars().intersects(def->free_vars()); }
     bool is_recursive() const;
     ///@}

@@ -89,7 +89,7 @@ public:
     u32 curr_gid() const { return state_.pod.curr_gid; }
     u32 next_gid() { return ++state_.pod.curr_gid; }
 
-    /// Retrive compile Flags.
+    /// Retrieve compile Flags.
     Flags& flags();
     ///@}
 
@@ -240,7 +240,7 @@ public:
     const Axiom* axiom(Ref type, plugin_t p, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, p, t, s); }
 
     /// Builds a fresh Axiom with descending Axiom::sub.
-    /// This is useful during testing to come up with some entitiy of a specific type.
+    /// This is useful during testing to come up with some entity of a specific type.
     /// It uses the plugin Axiom::Global_Plugin and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
     const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type) {
