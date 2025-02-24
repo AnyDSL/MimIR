@@ -236,6 +236,7 @@ public:
 
     /// @name type
     ///@{
+
     /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
     Ref type() const { return type_; }
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
@@ -329,6 +330,7 @@ public:
     /// Vector<const Lit*> lits2     = def->projs(n, [](auto def) { return Lit::as(def); });
     /// ```
     ///@{
+
     /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const { return isa_lit_arity().value_or(1); }
     nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalarize_threshold is exceeded.
@@ -780,6 +782,7 @@ public:
 
     /// @name isa
     ///@{
+
     /// Checks if @p def is a `Idx s` and returns `s` or `nullptr` otherwise.
     static Ref isa(Ref def);
     static Ref as(Ref def) {

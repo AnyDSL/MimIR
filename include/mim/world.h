@@ -487,6 +487,7 @@ public:
 
     /// @name Cope with implicit Arguments
     ///@{
+
     /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
     template<bool Normalize = true> Ref implicit_app(Ref callee, Ref arg);
     template<bool Normalize = true> Ref implicit_app(Ref callee, Defs args) {
@@ -531,6 +532,7 @@ public:
     /// @name dot
     /// Dumps DOT to @p os.
     ///@{
+
     /// @param os Output stream
     /// @param annexes If `true`, include all annexes - even if unused.
     /// @param types Follow type dependencies?
