@@ -1,11 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html#ab3b88ff538b898bc0d2cd8b5f213034e":[5,0,1,2,5,0,0],
-"classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html":[3,0,1,4,8,1],
-"classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html":[5,0,1,2,5,1],
-"classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html#a6e4a1f96cc5db93627a1b6d72f6dd0f5":[3,0,1,4,8,1,0],
-"classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html#a6e4a1f96cc5db93627a1b6d72f6dd0f5":[5,0,1,2,5,1,0],
-"classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html#ab3f7d65166f47618c810556fb48d66ba":[3,0,1,4,8,1,1],
 "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html#ab3f7d65166f47618c810556fb48d66ba":[5,0,1,2,5,1,1],
 "classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html":[3,0,1,4,8,2],
 "classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html":[5,0,1,2,5,2],
@@ -249,5 +243,11 @@ var NAVTREEINDEX15 =
 "compile_2autogen_8h.html#af76efd65225b17e5bbae91d45faf64c8":[6,0,0,1,0,0,3,0,5],
 "compile_2autogen_8h.html#af9c3ab84a67c6c302637c35dbabe59db":[6,0,0,1,0,0,3,0,18],
 "compile_2autogen_8h_source.html":[6,0,0,1,0,0,3,0],
-"compile_2normalizers_8cpp.html":[6,0,3,1,5,3,2]
+"compile_2normalizers_8cpp.html":[6,0,3,1,5,3,2],
+"compile_2normalizers_8cpp.html#a1ca6b15d9436fa7ebbe782b5f5be71a9":[6,0,3,1,5,3,2,1],
+"compile_2normalizers_8cpp.html#a1d5bd2261a23044bbd96bf8e8f862555":[6,0,3,1,5,3,2,2],
+"compile_2normalizers_8cpp.html#ab946e150fd4e31cc2dda9fe94bc75cf5":[6,0,3,1,5,3,2,3],
+"compile_2normalizers_8cpp.html#ac81c2df771fd2b104f08b14a71b2a02e":[6,0,3,1,5,3,2,0],
+"compile_2normalizers_8cpp_source.html":[6,0,3,1,5,3,2],
+"compile_8cpp.html":[6,0,3,1,5,3,1]
 };

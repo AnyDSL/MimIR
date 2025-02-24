@@ -1,11 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"namespaceautomaton.html#a6c227f457f5f8920b592bc255fc9582e":[3,0,0,16],
-"namespaceautomaton.html#a7ca24e1facadd447f3e80389505c35ec":[3,0,0,15],
-"namespaceautomaton.html#a8e2baf2bef29fed4ef52471c06d0d421":[3,0,0,11],
-"namespaceautomaton.html#aa7f4b5c4276e92cf0d3d5a53ea55d921":[3,0,0,7],
-"namespaceautomaton.html#ab8673e0658e5b031357bc29c86647de1":[3,0,0,17],
-"namespaceautomaton.html#aef07ecf43eaae4c4c5c5f371e56d7f79":[3,0,0,9],
 "namespaceautomaton.html#af757d6912087c59481f0292bd2260535":[3,0,0,6],
 "namespaceautomaton.html#afa6a570db4fdd2ae8e3f1f5e4b654ec6":[3,0,0,12],
 "namespacemembers.html":[3,1,0],
@@ -249,5 +243,11 @@ var NAVTREEINDEX20 =
 "namespacemim.html#afdac200da4be48df165deb24615fc940":[3,0,1,270],
 "namespacemim.html#afe12e59f7ee4253d3b71cd8c0db61d06":[3,0,1,156],
 "namespacemim.html#aff8d8623bee4fa802d053b352bc3518e":[3,0,1,150],
-"namespacemim.html#structmim_1_1FNV1":[6,0,2,1,6,3,0]
+"namespacemim.html#structmim_1_1FNV1":[6,0,2,1,6,3,0],
+"namespacemim.html#structmim_1_1Flags":[6,0,2,1,11,0],
+"namespacemim_1_1Node.html":[3,0,1,3],
+"namespacemim_1_1Node.html#a5ec46e9d29f58ac19594859972dd7764":[3,0,1,3,0],
+"namespacemim_1_1ast.html":[3,0,1,0],
+"namespacemim_1_1ast.html#a09214c0845d7829eb157e8700b238366":[3,0,1,0,48],
+"namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b":[3,0,1,0,50]
 };
