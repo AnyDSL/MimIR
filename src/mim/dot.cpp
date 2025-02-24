@@ -175,7 +175,7 @@ void Nest::dot(std::ostream& os) const {
 
 void Nest::Node::dot(Tab tab, std::ostream& os) const {
     for (const auto& [_, child] : children()) {
-        tab.println(os, "{} -> {}", name(), child->name());
+        tab.println(os, "\"{}\" -> \"{}\"", name(), child->name());
         child->dot(tab, os);
     }
 }

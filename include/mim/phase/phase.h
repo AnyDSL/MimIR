@@ -177,6 +177,22 @@ private:
     M* root_;
 };
 
+template<class M = Def> class ClosedCollector : public ClosedMutPhase<M> {
+public:
+    ClosedCollector(World& world)
+        : ClosedMutPhase<M>(world, "collector", false, false) {}
+
+    virtual void visit(M* mut) { muts.emplace_back(mut); }
+
+    Vector<M*> muts;
+};
+
+template<class M = Def> Vector<M*> closed_muts(World& world) {
+    ClosedCollector<M> collector(world);
+    collector.run();
+    return collector.muts;
+}
+
 /// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
 template<class M = Def> class NestPhase : public ClosedMutPhase<M> {
 public:
