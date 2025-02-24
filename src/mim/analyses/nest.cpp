@@ -89,9 +89,11 @@ Vars Nest::vars() const {
 }
 
 const Nest::Node* Nest::lca(const Node* n, const Node* m) {
+    while (n->depth() < m->depth()) m = m->parent();
+    while (m->depth() < n->depth()) n = n->parent();
     while (n != m) {
-        while (n->depth() < m->depth()) m = m->parent();
-        while (m->depth() < n->depth()) n = n->parent();
+        n = n->parent();
+        m = m->parent();
     }
     return n;
 }

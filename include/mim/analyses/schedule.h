@@ -76,7 +76,7 @@ public:
     /// @name Compute Schedules
     ///@{
     const Nest::Node* early(const Def*);
-    Def* late(Def* curr, const Def*);
+    const Nest::Node* late(Def* curr, const Def*);
     Def* smart(Def* curr, const Def*);
     ///@}
 
@@ -103,8 +103,7 @@ private:
     std::unique_ptr<const CFG> cfg_;
     const DomTree* domtree_ = nullptr;
     Uses empty_;
-    DefMap<const Nest::Node*> early_;
-    DefMap<Def*> late_;
+    DefMap<const Nest::Node*> early_, late_;
     DefMap<Def*> smart_;
     DefMap<Uses> def2uses_;
 };

@@ -62,23 +62,23 @@ const Nest::Node* Scheduler::early(const Def* def) {
     return early_[def] = result;
 }
 
-Def* Scheduler::late(Def* curr_mut, const Def* def) {
+const Nest::Node* Scheduler::late(Def* curr_mut, const Def* def) {
     if (auto i = late_.find(def); i != late_.end()) return i->second;
-    if (def->has_const_dep() || !nest().contains(def)) return late_[def] = nest().root()->mut();
+    if (def->has_const_dep() || !nest().contains(def)) return late_[def] = nest().root();
 
-    Def* result = nullptr;
+    const Nest::Node* result = nullptr;
     if (auto mut = def->isa_mut()) {
-        result = mut;
+        result = nest()[mut];
     } else if (auto var = def->isa<Var>()) {
-        result = var->mut();
+        result = nest()[var->mut()];
     } else {
         for (auto use : uses(def)) {
             auto mut = late(curr_mut, use);
-            result   = result ? domtree().least_common_ancestor(cfg(result), cfg(mut))->mut() : mut;
+            result   = result ? Nest::lca(result, mut) : mut;
         }
     }
 
-    if (!result) result = curr_mut;
+    if (!result) result = nest()[curr_mut];
 
     return late_[def] = result;
 }
@@ -87,7 +87,7 @@ Def* Scheduler::smart(Def* curr_mut, const Def* def) {
     if (auto i = smart_.find(def); i != smart_.end()) return i->second;
 
     auto e = cfg(early(def)->mut());
-    auto l = cfg(late(curr_mut, def));
+    auto l = cfg(late(curr_mut, def)->mut());
     auto s = l;
 
     int depth = cfg().looptree()[l]->depth();
