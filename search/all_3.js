@@ -90,7 +90,7 @@ var searchData=
   ['dfa_87',['DFA',['../classautomaton_1_1DFA.html',1,'automaton::DFA'],['../classautomaton_1_1DFA.html#ac93a51665758426fa9fd076430b60e6a',1,'automaton::DFA::DFA()=default'],['../classautomaton_1_1DFA.html#af156bb68080e09f0e0210401b7ce2d07',1,'automaton::DFA::DFA(const DFA &amp;)=delete']]],
   ['dfa_2ecpp_88',['dfa.cpp',['../dfa_8cpp.html',1,'']]],
   ['dfa_2eh_89',['dfa.h',['../dfa_8h.html',1,'']]],
-  ['dfa2matcher_90',['dfa2matcher',['../dfa2matcher_8h.html#af26466d46dd9acd311c0be0706a17533',1,'dfa2matcher(mim::World &amp;, const automaton::DFA &amp;, mim::Ref):&#160;dfa2matcher.cpp'],['../dfa2matcher_8cpp.html#a39507cdaa298481617eeda783bf1ad36',1,'dfa2matcher(World &amp;w, const DFA &amp;dfa, Ref n):&#160;dfa2matcher.cpp']]],
+  ['dfa2matcher_90',['dfa2matcher',['../dfa2matcher_8h.html#a12e559313416acacdf56dd4763c881c8',1,'dfa2matcher(mim::World &amp;, const automaton::DFA &amp;, mim::Ref):&#160;dfa2matcher.cpp'],['../dfa2matcher_8cpp.html#a39507cdaa298481617eeda783bf1ad36',1,'dfa2matcher(World &amp;w, const DFA &amp;dfa, Ref n):&#160;dfa2matcher.cpp']]],
   ['dfa2matcher_2ecpp_91',['dfa2matcher.cpp',['../dfa2matcher_8cpp.html',1,'']]],
   ['dfa2matcher_2eh_92',['dfa2matcher.h',['../dfa2matcher_8h.html',1,'']]],
   ['dfamap_93',['DFAMap',['../namespaceautomaton.html#af757d6912087c59481f0292bd2260535',1,'automaton']]],

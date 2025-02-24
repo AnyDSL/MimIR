@@ -159,7 +159,7 @@ $(function(){initNavTree('lower__regex_8cpp_source.html',''); initResizable(true
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            <a class="code hl_function" href="classmim_1_1Pass.html#a057c5c5dfff49f8e3b17ad1c3d838ce6">world</a>().DLOG(<span class="stringliteral">&quot;dfa: {}&quot;</span>, *dfa);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keyword">auto</span> min_dfa = <a class="code hl_function" href="namespaceautomaton.html#a0a07cb42cd7cc111f81d4f73f00c1bdd">automaton::minimize_dfa</a>(*dfa);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            new_app      = wrap_in_cps2ds(<a class="code hl_function" href="dfa2matcher_8h.html#af26466d46dd9acd311c0be0706a17533">dfa2matcher</a>(<a class="code hl_function" href="classmim_1_1Pass.html#a057c5c5dfff49f8e3b17ad1c3d838ce6">world</a>(), *min_dfa, n));</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            new_app      = wrap_in_cps2ds(<a class="code hl_function" href="dfa2matcher_8h.html#a12e559313416acacdf56dd4763c881c8">dfa2matcher</a>(<a class="code hl_function" href="classmim_1_1Pass.html#a057c5c5dfff49f8e3b17ad1c3d838ce6">world</a>(), *min_dfa, n));</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        }</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
@@ -168,7 +168,7 @@ $(function(){initNavTree('lower__regex_8cpp_source.html',''); initResizable(true
 </div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace mim::plug::regex</span></div>
-<div class="ttc" id="aclassmim_1_1App_html"><div class="ttname"><a href="classmim_1_1App.html">mim::App</a></div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00200">lam.h:200</a></div></div>
+<div class="ttc" id="aclassmim_1_1App_html"><div class="ttname"><a href="classmim_1_1App.html">mim::App</a></div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00201">lam.h:201</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00212">def.h:212</a></div></div>
 <div class="ttc" id="aclassmim_1_1Pass_html_a057c5c5dfff49f8e3b17ad1c3d838ce6"><div class="ttname"><a href="classmim_1_1Pass.html#a057c5c5dfff49f8e3b17ad1c3d838ce6">mim::Pass::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00296">pass.h:296</a></div></div>
 <div class="ttc" id="aclassmim_1_1Ref_html"><div class="ttname"><a href="classmim_1_1Ref.html">mim::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00086">def.h:86</a></div></div>
@@ -176,7 +176,7 @@ $(function(){initNavTree('lower__regex_8cpp_source.html',''); initResizable(true
 <div class="ttc" id="acore_8h_html"><div class="ttname"><a href="core_8h.html">core.h</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="adfa2matcher_8h_html"><div class="ttname"><a href="dfa2matcher_8h.html">dfa2matcher.h</a></div></div>
-<div class="ttc" id="adfa2matcher_8h_html_af26466d46dd9acd311c0be0706a17533"><div class="ttname"><a href="dfa2matcher_8h.html#af26466d46dd9acd311c0be0706a17533">dfa2matcher</a></div><div class="ttdeci">MIM_EXPORT const mim::Def * dfa2matcher(mim::World &amp;, const automaton::DFA &amp;, mim::Ref)</div><div class="ttdoc">You can dl::get this function.</div><div class="ttdef"><b>Definition</b> <a href="dfa2matcher_8cpp_source.html#l00095">dfa2matcher.cpp:95</a></div></div>
+<div class="ttc" id="adfa2matcher_8h_html_a12e559313416acacdf56dd4763c881c8"><div class="ttname"><a href="dfa2matcher_8h.html#a12e559313416acacdf56dd4763c881c8">dfa2matcher</a></div><div class="ttdeci">const mim::Def * dfa2matcher(mim::World &amp;, const automaton::DFA &amp;, mim::Ref)</div><div class="ttdoc">You can dl::get this function.</div><div class="ttdef"><b>Definition</b> <a href="dfa2matcher_8cpp_source.html#l00095">dfa2matcher.cpp:95</a></div></div>
 <div class="ttc" id="adfa_8h_html"><div class="ttname"><a href="dfa_8h.html">dfa.h</a></div></div>
 <div class="ttc" id="adfamin_8h_html"><div class="ttname"><a href="dfamin_8h.html">dfamin.h</a></div></div>
 <div class="ttc" id="adirect_8h_html"><div class="ttname"><a href="direct_8h.html">direct.h</a></div></div>

@@ -248,7 +248,7 @@ var namespacemim =
     [ "merge", "namespacemim.html#a562477b56bb061504f3fd725c11d75c6", null ],
     [ "merge_sigma", "namespacemim.html#aa23b39903b5dd55acf1d99ebfe6826dc", null ],
     [ "merge_tuple", "namespacemim.html#a48cd09b84d990045bc807209b0376dfb", null ],
-    [ "mim_get_plugin", "namespacemim.html#aa5ae243543d9aaffbca2a57581a9b8af", null ],
+    [ "mim_get_plugin", "namespacemim.html#a77f34c28f8418e4828b4684cbc025e52", null ],
     [ "murmur3", "namespacemim.html#a41d2b518e1d57f537577c3925d915015", null ],
     [ "operator\"\"_f16", "namespacemim.html#a4bf566d30acb02a88282abc247652798", null ],
     [ "operator\"\"_f32", "namespacemim.html#a61b2fdd37c28d1e89083abc4067c904c", null ],

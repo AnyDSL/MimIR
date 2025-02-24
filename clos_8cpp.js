@@ -10,5 +10,5 @@ var clos_8cpp =
     [ "ctype", "clos_8cpp.html#aa1ca4c1eedf6e6a6a9cee279c59aa817", null ],
     [ "isa_clos_lit", "clos_8cpp.html#a0de1a3e5c37647df2de7fcf665f0866d", null ],
     [ "isa_clos_type", "clos_8cpp.html#a7f5b372773493e5d64a148402d8c6370", null ],
-    [ "mim_get_plugin", "clos_8cpp.html#acb4b5b42ef7860dc3769900f4ac3d779", null ]
+    [ "mim_get_plugin", "clos_8cpp.html#a35bb34350e93d508e52544f4abd50e59", null ]
 ];
