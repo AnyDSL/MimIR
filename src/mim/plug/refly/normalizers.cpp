@@ -31,7 +31,7 @@ void debug_print(Ref lvl, Ref def) {
     world.log().log(level, def->loc(), "node: {}", def->node_name());
     world.log().log(level, def->loc(), "ops : {}", def->num_ops());
     world.log().log(level, def->loc(), "proj: {}", def->num_projs());
-    world.log().log(level, def->loc(), "eops: {}", def->num_extended_ops());
+    world.log().log(level, def->loc(), "eops: {}", def->num_deps());
 }
 
 } // namespace

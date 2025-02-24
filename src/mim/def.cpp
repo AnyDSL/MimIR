@@ -29,11 +29,11 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     , valid_(false)
     , num_ops_(ops.size())
     , type_(type) {
-    if (type) dep_ |= type->dep();
+    if (type) dep_ |= type->dep_;
     for (size_t i = 0, e = ops.size(); i != e; ++i) {
         auto op      = ops[i];
         ops_ptr()[i] = op;
-        dep_ |= op->dep();
+        dep_ |= op->dep_;
     }
 
     gid_ = world().next_gid();
@@ -45,7 +45,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
         vars_.local = Vars();
         muts_.local = Muts();
 
-        for (auto op : extended_ops()) {
+        for (auto op : deps()) {
             vars_.local = world().vars().merge(vars_.local, op->local_vars());
             muts_.local = world().muts().merge(muts_.local, op->local_muts());
         }
@@ -167,7 +167,7 @@ template TExt<true >*   TExt<true >  ::stub_(World&, Ref);
 // TODO also check for mutual recursion?
 bool Def::is_immutabilizable() {
     auto v = has_var();
-    for (auto op : extended_ops())
+    for (auto op : deps())
         if ((v && op->free_vars().contains(v)) || op->local_muts().contains(this)) return false;
     return true;
 }
@@ -334,9 +334,9 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     auto fvs0 = vars_.free;
     auto fvs  = fvs0;
 
-    for (auto op : extended_ops()) fvs = world().vars().merge(fvs, op->local_vars());
+    for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
-    for (auto op : extended_ops()) {
+    for (auto op : deps()) {
         for (auto local_mut : op->local_muts()) {
             local_mut->muts_.users = world().muts().insert(local_mut->muts_.users, this);
             fvs                    = world().vars().merge(fvs, local_mut->free_vars(todo, run));
@@ -353,7 +353,7 @@ void Def::validate() {
     valid_ = true;
     mark_  = 0;
 
-    for (auto op : extended_ops()) {
+    for (auto op : deps()) {
         for (auto local_mut : op->local_muts())
             if (!local_mut->valid_) local_mut->validate();
     }
@@ -415,7 +415,7 @@ std::string_view Def::node_name() const {
     }
 }
 
-Defs Def::extended_ops() const {
+Defs Def::deps() const {
     if (isa<Type>() || isa<Univ>()) return Defs();
     assert(type());
     return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);

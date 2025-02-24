@@ -701,7 +701,7 @@ template<pe id> Ref normalize_pe(Ref type, Ref, Ref arg) {
 
     if constexpr (id == pe::known) {
         if (match(pe::hlt, arg)) return world.lit_ff();
-        if (arg->dep_const()) return world.lit_tt();
+        if (arg->has_const_dep()) return world.lit_tt();
     }
 
     return {};

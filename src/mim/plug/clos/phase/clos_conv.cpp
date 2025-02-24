@@ -11,7 +11,7 @@ namespace mim::plug::clos {
 namespace {
 
 bool is_toplevel(const Def* fd) {
-    return fd->dep_const() || fd->isa_mut<Global>() || fd->isa<Axiom>() || !fd->is_term();
+    return fd->has_const_dep() || fd->isa_mut<Global>() || fd->isa<Axiom>() || !fd->is_term();
 }
 
 bool is_memop_res(const Def* fd) {
@@ -31,8 +31,8 @@ DefSet free_defs(const Nest& nest) {
 
     while (!queue.empty()) {
         auto def = pop(queue);
-        for (auto op : def->extended_ops()) {
-            if (op->dep_const()) {
+        for (auto op : def->deps()) {
+            if (op->has_const_dep()) {
                 // do nothing
             } else if (nest.contains(op)) {
                 if (auto [_, ins] = bound.emplace(op); ins) queue.emplace(op);
@@ -63,7 +63,7 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
             pnode->succs.push_back(node);
             init_node |= inserted;
         }
-    } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
+    } else if (fd->has_dep(Dep::Var) && !fd->isa<Tuple>()) {
         // Note: Var's can still have Def::Top, if their type is a mut!
         // So the first case is *not* redundant
         node->add_fvs(fd);

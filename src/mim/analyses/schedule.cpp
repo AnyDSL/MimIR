@@ -48,11 +48,11 @@ Scheduler::Scheduler(const Nest& n)
 
 Def* Scheduler::early(const Def* def) {
     if (auto i = early_.find(def); i != early_.end()) return i->second;
-    if (def->dep_const() || !nest().contains(def)) return early_[def] = root();
+    if (def->has_const_dep() || !nest().contains(def)) return early_[def] = root();
     if (auto var = def->isa<Var>()) return early_[def] = var->mut();
 
     auto result = root();
-    for (auto op : def->extended_ops()) {
+    for (auto op : def->deps()) {
         if (!op->isa_mut() && nest().contains(op)) {
             auto mut = early(op);
             if (domtree().depth(cfg(mut)) > domtree().depth(cfg(result))) result = mut;
@@ -64,7 +64,7 @@ Def* Scheduler::early(const Def* def) {
 
 Def* Scheduler::late(Def* curr_mut, const Def* def) {
     if (auto i = late_.find(def); i != late_.end()) return i->second;
-    if (def->dep_const() || !nest().contains(def)) return late_[def] = nest().root()->mut();
+    if (def->has_const_dep() || !nest().contains(def)) return late_[def] = nest().root()->mut();
 
     Def* result = nullptr;
     if (auto mut = def->isa_mut()) {

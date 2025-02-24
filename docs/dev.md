@@ -363,11 +363,11 @@ The last line assumes mim::Flags::scalarize_threshold = 32.
 
 There are several ways of doing this.
 It depends on what exactly you want to achieve and how much structure you need during the traversal.
-The simplest way is to kick off with [World::externals](@ref mim::World::externals) and recursively run over [Def::extended_ops](@ref mim::Def::extended_ops) like this:
+The simplest way is to kick off with [World::externals](@ref mim::World::externals) and recursively run over [Def::deps](@ref mim::Def::deps) like this:
 
 ```cpp
     DefSet done;
-    for (const auto& [_, mut] : worldexternals())
+    for (const auto& [_, mut] : world.externals())
         visit(done, mut);
 
     void visit(DefSet& done, const Def* def) {
@@ -375,8 +375,7 @@ The simplest way is to kick off with [World::externals](@ref mim::World::externa
 
         do_sth(def);
 
-        for (auto op : def->extended_ops())
-            visit(done, op);
+        for (auto op : def->deps()) visit(done, op);
     }
 
 ```

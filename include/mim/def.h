@@ -177,13 +177,31 @@ public:
 };
 
 /// Base class for all Def%s.
-/// The data layout (see World::alloc and Def::partial_ops) looks like this:
+///
+/// These are the most important subclasses:
+/// | Type Formation    | Term Introduction | Term Elimination  |
+/// | ----------------- | ----------------- | ----------------- |
+/// | Pi                | Lam               | App               |
+/// | Sigma / Arr       | Tuple / Pack      | Extract           |
+/// |                   | Insert            | Insert            |
+/// | Uniq              | Wrap              | Unwrap            |
+/// | Join              | Vel               | Test              |
+/// | Meet              | Ac                | Pick              |
+/// | Nat               | Lit               |                   |
+/// | Idx               | Lit               |                   |
+/// In addition there is:
+/// * Var: A variable. Currently the following Def%s may be binders:
+///     * Pi, Lam, Sigma, Arr, Pack
+/// * Axiom: To introduce new entities.
+/// * Proxy: Used for intermediate values during optimizations.
+/// * Infer: Hole in the presentation filled by type inference (always mutable as the holes are filled in later).
+/// * Type, Univ, UMax, UInc: To keep track of type levels.
+///
+/// The data layout (see World::alloc and Def::deps) looks like this:
 /// ```
 /// Def| type | op(0) ... op(num_ops-1) |
 ///           |-----------ops-----------|
-///    |----------partial_ops-----------|
-///
-///              extended_ops
+///                  deps
 ///    |--------------------------------| if type() != nullptr &&  is_set()
 ///           |-------------------------| if type() == nullptr &&  is_set()
 ///    |------|                           if type() != nullptr && !is_set()
@@ -197,10 +215,13 @@ private:
     Def(const Def&)            = delete;
 
 protected:
+    /// @name C'tors and D'tors
+    ///@{
     Def(World*, node_t, const Def* type, Defs ops, flags_t flags); ///< Constructor for an *immutable* Def.
     Def(node_t n, const Def* type, Defs ops, flags_t flags);       ///< As above but World retrieved from @p type.
     Def(node_t, const Def* type, size_t num_ops, flags_t flags);   ///< Constructor for a *mutable* Def.
     virtual ~Def() = default;
+    ///@}
 
 public:
     /// @name Getters
@@ -266,32 +287,31 @@ public:
     bool is_set() const; ///< Yields `true` if empty or the last op is set.
     ///@}
 
-    /// @name extended_ops
-    /// Includes Def::type() (if not `nullptr`) and then the other Def::ops() in this order.
-    /// Def::ops() is only included, if Def::is_set.
+    /// @name deps
+    /// All *dependencies* of a Def and includes:
+    /// * Def::type() (if not `nullptr`) and
+    /// * the other Def::ops() (only included, if Def::is_set()) in this order.
     ///@{
-    Defs extended_ops() const;
-    Ref extended_op(size_t i) const { return extended_ops()[i]; }
-    size_t num_extended_ops() const { return extended_ops().size(); }
+    Defs deps() const;
+    Ref dep(size_t i) const { return deps()[i]; }
+    size_t num_deps() const { return deps().size(); }
     ///@}
 
-    /// @name partial_ops
-    /// Includes Def::type() and then the other Def::ops() in this order.
-    /// Also works with partially set Def%s and doesn't assert.
-    /// Unset operands are `nullptr`.
+    /// @name has_dep
+    /// Checks whether one Def::deps() contains specific elements defined in Dep.
+    /// This works up to the next *mutable*.
+    /// For example, consider the Tuple `tup`: `(<infer>, lam (x: Nat) = y)`:
+    /// ```
+    /// bool has_infer = tup->has_dep(Dep::Infer); // true;
+    /// bool has_mut   = tup->has_dep(Dep::Mut);   // true;
+    /// bool has_var   = tup->has_dep(Dep::Var);   // false - y is contained in another mutable;
+    /// ```
     ///@{
-    Defs partial_ops() const { return Defs(ops_ptr() - 1, num_ops_ + 1); }
-    Ref partial_op(size_t i) const { return partial_ops()[i]; }
-    size_t num_partial_ops() const { return partial_ops().size(); }
-    ///@}
-
-    /// @name dep
-    ///@{
-    /// @see Dep.
-    unsigned dep() const { return dep_; }
+    bool has_dep() const { return dep_ != 0; }
     bool has_dep(Dep d) const { return has_dep(unsigned(d)); }
-    bool has_dep(unsigned u) const { return dep() & u; }
-    bool dep_const() const { return !has_dep(Dep::Mut | Dep::Var); }
+    bool has_dep(unsigned u) const { return dep_ & u; }
+    /// Neither a Dep::Mut nor a Dep::Var; can often be used as shortcut as an optimization.
+    bool has_const_dep() const { return !has_dep(Dep::Mut | Dep::Var); }
     ///@}
 
     /// @name proj
@@ -302,11 +322,11 @@ public:
     /// std::array<u64, 2>        xy = def->projs<2>([](auto def) { return Lit::as(def); });
     /// auto [a, b]                  = def->projs<2>();
     /// auto [x, y]                  = def->projs<2>([](auto def) { return Lit::as(def); });
-    /// Array<const Def*> projs1     = def->projs(); // "projs1" has def->num_projs() many elements
-    /// Array<const Def*> projs2     = def->projs(n);// "projs2" has n elements - asserts if incorrect
+    /// Vector<const Def*> projs1    = def->projs(); // "projs1" has def->num_projs() many elements
+    /// Vector<const Def*> projs2    = def->projs(n);// "projs2" has n elements - asserts if incorrect
     /// // same as above but applies Lit::as<nat_t>(def) to each element
-    /// Array<const Lit*> lits1      = def->projs(   [](auto def) { return Lit::as(def); });
-    /// Array<const Lit*> lits2      = def->projs(n, [](auto def) { return Lit::as(def); });
+    /// Vector<const Lit*> lits1     = def->projs(   [](auto def) { return Lit::as(def); });
+    /// Vector<const Lit*> lits2     = def->projs(n, [](auto def) { return Lit::as(def); });
     /// ```
     ///@{
     /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
@@ -372,10 +392,10 @@ public:
     ///   They will be transitively invalidated by following users, if a mutable is mutated.
     ///@{
 
-    /// Mutables reachable by following *immutable* extended_ops().
+    /// Mutables reachable by following *immutable* deps().
     /// @note `mut->local_muts()` is by definition the set `{ mut }`.
     Muts local_muts() const;
-    /// Var%s reachable by following *immutable* extended_ops().
+    /// Var%s reachable by following *immutable* deps().
     /// @note `var->local_vars()` is by definition the set `{ var }`.
     Vars local_vars() const { return mut_ ? Vars() : vars_.local; }
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
@@ -512,8 +532,6 @@ public:
     void dot(const std::string& file, uint32_t max = 0xFFFFFF, bool types = false) const {
         return dot(file.c_str(), max, types);
     }
-
-    friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
 protected:
@@ -583,6 +601,7 @@ private:
 
     friend class World;
     friend void swap(World&, World&) noexcept;
+    friend std::ostream& operator<<(std::ostream&, const Def*);
 };
 
 /// @name DefDef

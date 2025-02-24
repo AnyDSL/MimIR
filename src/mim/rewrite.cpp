@@ -18,7 +18,7 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
     if (auto extract = old_def->isa<Extract>()) {
         if (auto index = Lit::isa(rewrite(extract->index()))) {
             if (auto tuple = extract->tuple()->isa<Tuple>()) return rewrite(tuple->op(*index));
-            if (auto pack = extract->tuple()->isa_imm<Pack>(); pack && pack->shape()->dep_const())
+            if (auto pack = extract->tuple()->isa_imm<Pack>(); pack && pack->shape()->has_const_dep())
                 return rewrite(pack->body());
         }
     }

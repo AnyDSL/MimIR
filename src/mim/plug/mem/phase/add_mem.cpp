@@ -200,7 +200,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     }
 
     // call-site of a continuation
-    if (auto app = def->isa<App>(); app && (app->callee()->dep() & Dep::Var)) {
+    if (auto app = def->isa<App>(); app && (app->callee()->has_dep(Dep::Var))) {
         return mem_rewritten_[def]
              = app->rebuild(app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())});
     }

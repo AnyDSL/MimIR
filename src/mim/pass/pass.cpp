@@ -72,7 +72,7 @@ void PassMan::run() {
         world().VLOG("=== analyze ===");
         proxy_    = false;
         auto undo = No_Undo;
-        for (auto op : curr_mut_->extended_ops()) undo = std::min(undo, analyze(op));
+        for (auto op : curr_mut_->deps()) undo = std::min(undo, analyze(op));
 
         if (undo == No_Undo) {
             assert(!proxy_ && "proxies must not occur anymore after leaving a mut with No_Undo");
@@ -91,7 +91,7 @@ void PassMan::run() {
 }
 
 Ref PassMan::rewrite(Ref old_def) {
-    if (!old_def->dep()) return old_def;
+    if (!old_def->has_dep()) return old_def;
 
     if (auto mut = old_def->isa_mut()) {
         curr_state().mut2visit.emplace(mut, curr_undo());
@@ -132,7 +132,7 @@ Ref PassMan::rewrite(Ref old_def) {
 undo_t PassMan::analyze(Ref def) {
     undo_t undo = No_Undo;
 
-    if (!def->dep() || analyzed(def)) {
+    if (!def->has_dep() || analyzed(def)) {
         // do nothing
     } else if (auto mut = def->isa_mut()) {
         if (mut->is_set()) curr_state().stack.push(mut);
@@ -142,7 +142,7 @@ undo_t PassMan::analyze(Ref def) {
     } else {
         auto var = def->isa<Var>();
         if (!var)
-            for (auto op : def->extended_ops()) undo = std::min(undo, analyze(op));
+            for (auto op : def->deps()) undo = std::min(undo, analyze(op));
 
         for (auto&& pass : passes_)
             if (pass->inspect()) undo = std::min(undo, var ? pass->analyze(var) : pass->analyze(def));

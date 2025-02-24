@@ -54,7 +54,7 @@ struct Inline {
     const Def* operator->() const { return def_; }
     const Def* operator*() const { return def_; }
     explicit operator bool() const {
-        if (def_->dep_const()) return true;
+        if (def_->has_const_dep()) return true;
 
         if (auto mut = def_->isa_mut()) {
             if (isa_decl(mut)) return false;
@@ -403,10 +403,7 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 
     if (!defs.emplace(def).second) return;
 
-    for (auto op : def->partial_ops()) {
-        if (!op) continue;
-        recurse(op);
-    }
+    for (auto op : def->deps()) recurse(op);
 
     if (!first && !Inline(def)) dump_let(def);
 }

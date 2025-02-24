@@ -35,7 +35,7 @@ void Nest::populate() {
     while (!queue.empty()) {
         auto curr = pop(queue);
         auto node = nodes_.find(curr)->second.get();
-        for (auto op : curr->extended_ops()) {
+        for (auto op : curr->deps()) {
             for (auto mut : op->local_muts()) {
                 if (!mut2node(mut)) {
                     if (find_parent(mut, node)) queue.push(mut);
@@ -65,7 +65,7 @@ Nest::Node* Nest::find_parent(Def* mut, Node* begin) {
 
 bool Nest::is_recursive() const {
     for (const auto& [mut, _] : nodes()) {
-        for (auto op : mut->extended_ops()) {
+        for (auto op : mut->deps()) {
             for (auto mut : op->local_muts())
                 if (mut == root()->mut()) return true;
         }
