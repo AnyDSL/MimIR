@@ -26,7 +26,7 @@ var searchData=
   ['reshape_23',['Reshape',['../classmim_1_1plug_1_1mem_1_1Reshape.html#a983b4e6c680ac62a19076aa215ff5931',1,'mim::plug::mem::Reshape']]],
   ['ret_24',['ret',['../classmim_1_1ast_1_1PiExpr_1_1Dom.html#ad4a688f123cf35bbf0e3bca4cb12d323',1,'mim::ast::PiExpr::Dom']]],
   ['ret_5fdom_25',['ret_dom',['../classmim_1_1Pi.html#af62442085ed91d34661719d6c56e1a0b',1,'mim::Pi::ret_dom()'],['../classmim_1_1Lam.html#ad2c4b8cee97f69bd7a54c1f50cba330a',1,'mim::Lam::ret_dom()']]],
-  ['ret_5fpi_26',['ret_pi',['../classmim_1_1Pi.html#acd4fdefeae1d290e810df77afcd96849',1,'mim::Pi::ret_pi(Ref d)'],['../classmim_1_1Pi.html#ad2d868402614a7596ca067c9a6d21776',1,'mim::Pi::ret_pi() const'],['../classmim_1_1Lam.html#a5933504e71248b855ed8652a4837846f',1,'mim::Lam::ret_pi() const']]],
+  ['ret_5fpi_26',['ret_pi',['../classmim_1_1Pi.html#ad2d868402614a7596ca067c9a6d21776',1,'mim::Pi::ret_pi()'],['../classmim_1_1Lam.html#a5933504e71248b855ed8652a4837846f',1,'mim::Lam::ret_pi() const']]],
   ['ret_5fvar_27',['ret_var',['../classmim_1_1Lam.html#afb804e72a45e9b1f87a74c7062bc3556',1,'mim::Lam::ret_var()'],['../classmim_1_1plug_1_1clos_1_1ClosLit.html#ad168d13b5e21a340e2d29d49b66906e0',1,'mim::plug::clos::ClosLit::ret_var()']]],
   ['retexpr_28',['RetExpr',['../classmim_1_1ast_1_1RetExpr.html#a7d0277e53f3ad7e3696e434326a7568b',1,'mim::ast::RetExpr']]],
   ['retwrap_29',['RetWrap',['../classmim_1_1RetWrap.html#ac4fefa48024951042a1e2409a199c906',1,'mim::RetWrap']]],

@@ -153,6 +153,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae510eb63b0ba5a052fc005819d0c6177"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18739a1ec47aa7fef50ee97520868d02" id="r_a18739a1ec47aa7fef50ee97520868d02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18739a1ec47aa7fef50ee97520868d02">codom</a> () const</td></tr>
 <tr class="separator:a18739a1ec47aa7fef50ee97520868d02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Return Continuation</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="return_continuation"></a></p>
+</div></td></tr>
+<tr class="memitem:ad2d868402614a7596ca067c9a6d21776" id="r_ad2d868402614a7596ca067c9a6d21776"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2d868402614a7596ca067c9a6d21776">ret_pi</a> () const</td></tr>
+<tr class="memdesc:ad2d868402614a7596ca067c9a6d21776"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the last <a class="el" href="#ae510eb63b0ba5a052fc005819d0c6177">Pi::dom</a>, if <a class="el" href="#acc97d9e8b7e1574378e347d72f370c72" title="Is this a continuation (Pi::isa_cn) that is not Pi::isa_returning?">Pi::isa_basicblock</a>.  <br /></td></tr>
+<tr class="separator:ad2d868402614a7596ca067c9a6d21776"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af62442085ed91d34661719d6c56e1a0b" id="r_af62442085ed91d34661719d6c56e1a0b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af62442085ed91d34661719d6c56e1a0b">ret_dom</a> () const</td></tr>
+<tr class="memdesc:af62442085ed91d34661719d6c56e1a0b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#ae510eb63b0ba5a052fc005819d0c6177">Pi::dom</a>ain of <a class="el" href="#ad2d868402614a7596ca067c9a6d21776" title="Yields the last Pi::dom, if Pi::isa_basicblock.">Pi::ret_pi</a>.  <br /></td></tr>
+<tr class="separator:af62442085ed91d34661719d6c56e1a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Setters</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><dl class="section see"><dt>See also</dt><dd><a class="el" href="classmim_1_1Def.html#set_ops">Setting Ops</a> </dd></dl>
 </div></td></tr>
@@ -472,13 +481,13 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Continuations</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="continuations"></a>Checks certain properties of this <a class="el" href="classmim_1_1Pi.html" title="A dependent function type.">Pi</a> regarding continuations. </p>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="continuations"></a>Checks certain properties of <code>d</code> regarding continuations. </p>
 </div></td></tr>
 <tr class="memitem:aca0c3274bcbe87b3d38aad98c36f0315" id="r_aca0c3274bcbe87b3d38aad98c36f0315"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aca0c3274bcbe87b3d38aad98c36f0315">isa_cn</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> d)</td></tr>
 <tr class="memdesc:aca0c3274bcbe87b3d38aad98c36f0315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this a continuation - i.e. is the <a class="el" href="#a18739a1ec47aa7fef50ee97520868d02">Pi::codom</a> <a class="el" href="namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4">mim::Bot</a>tom?  <br /></td></tr>
 <tr class="separator:aca0c3274bcbe87b3d38aad98c36f0315"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a3e018247707de705c9f6c1066e9994" id="r_a0a3e018247707de705c9f6c1066e9994"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a3e018247707de705c9f6c1066e9994">isa_returning</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> d)</td></tr>
-<tr class="memdesc:a0a3e018247707de705c9f6c1066e9994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this a continuation (<a class="el" href="#aca0c3274bcbe87b3d38aad98c36f0315" title="Is this a continuation - i.e. is the Pi::codom mim::Bottom?">Pi::isa_cn</a>) which has a <a class="el" href="#acd4fdefeae1d290e810df77afcd96849" title="Yields the Pi::ret_pi() of d, if it is in fact a Pi.">Pi::ret_pi</a>?  <br /></td></tr>
+<tr class="memdesc:a0a3e018247707de705c9f6c1066e9994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this a continuation (<a class="el" href="#aca0c3274bcbe87b3d38aad98c36f0315" title="Is this a continuation - i.e. is the Pi::codom mim::Bottom?">Pi::isa_cn</a>) which has a <a class="el" href="#ad2d868402614a7596ca067c9a6d21776" title="Yields the last Pi::dom, if Pi::isa_basicblock.">Pi::ret_pi</a>?  <br /></td></tr>
 <tr class="separator:a0a3e018247707de705c9f6c1066e9994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc97d9e8b7e1574378e347d72f370c72" id="r_acc97d9e8b7e1574378e347d72f370c72"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc97d9e8b7e1574378e347d72f370c72">isa_basicblock</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> d)</td></tr>
 <tr class="memdesc:acc97d9e8b7e1574378e347d72f370c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is this a continuation (<a class="el" href="#aca0c3274bcbe87b3d38aad98c36f0315" title="Is this a continuation - i.e. is the Pi::codom mim::Bottom?">Pi::isa_cn</a>) that is <b>not</b> <a class="el" href="#a0a3e018247707de705c9f6c1066e9994" title="Is this a continuation (Pi::isa_cn) which has a Pi::ret_pi?">Pi::isa_returning</a>?  <br /></td></tr>
@@ -486,6 +495,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a22140647b65369544568a22648f92bef" id="r_a22140647b65369544568a22648f92bef"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classmim_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a22140647b65369544568a22648f92bef">isa_implicit</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> d)</td></tr>
 <tr class="memdesc:a22140647b65369544568a22648f92bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <code>d</code> an <a class="el" href="#a738b2812944b20746191182bf4e58474">Pi::is_implicit</a> (mutable) <a class="el" href="classmim_1_1Pi.html" title="A dependent function type.">Pi</a>?  <br /></td></tr>
 <tr class="separator:a22140647b65369544568a22648f92bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09985d563cc03d6faea5b20bf639faa8" id="r_a09985d563cc03d6faea5b20bf639faa8"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09985d563cc03d6faea5b20bf639faa8">has_ret_pi</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> d)</td></tr>
+<tr class="memdesc:a09985d563cc03d6faea5b20bf639faa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <a class="el" href="#ad2d868402614a7596ca067c9a6d21776" title="Yields the last Pi::dom, if Pi::isa_basicblock.">Pi::ret_pi()</a> of <code>d</code>, if it is in fact a <a class="el" href="classmim_1_1Pi.html" title="A dependent function type.">Pi</a>.  <br /></td></tr>
+<tr class="separator:a09985d563cc03d6faea5b20bf639faa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -530,19 +542,6 @@ Private Member Functions</h2></td></tr>
 Friends</h2></td></tr>
 <tr class="memitem:a7b4bcdf992c21ae83363f25df05b1d25" id="r_a7b4bcdf992c21ae83363f25df05b1d25"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b4bcdf992c21ae83363f25df05b1d25">World</a></td></tr>
 <tr class="separator:a7b4bcdf992c21ae83363f25df05b1d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">Return Continuation</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="return_continuation"></a></p>
-</td></tr>
-<tr class="memitem:ad2d868402614a7596ca067c9a6d21776" id="r_ad2d868402614a7596ca067c9a6d21776"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2d868402614a7596ca067c9a6d21776">ret_pi</a> () const</td></tr>
-<tr class="memdesc:ad2d868402614a7596ca067c9a6d21776"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the last <a class="el" href="#ae510eb63b0ba5a052fc005819d0c6177">Pi::dom</a>, if it <a class="el" href="#acc97d9e8b7e1574378e347d72f370c72" title="Is this a continuation (Pi::isa_cn) that is not Pi::isa_returning?">Pi::isa_basicblock</a>.  <br /></td></tr>
-<tr class="separator:ad2d868402614a7596ca067c9a6d21776"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af62442085ed91d34661719d6c56e1a0b" id="r_af62442085ed91d34661719d6c56e1a0b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af62442085ed91d34661719d6c56e1a0b">ret_dom</a> () const</td></tr>
-<tr class="memdesc:af62442085ed91d34661719d6c56e1a0b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#ae510eb63b0ba5a052fc005819d0c6177">Pi::dom</a>ain of <a class="el" href="#acd4fdefeae1d290e810df77afcd96849" title="Yields the Pi::ret_pi() of d, if it is in fact a Pi.">Pi::ret_pi</a>.  <br /></td></tr>
-<tr class="separator:af62442085ed91d34661719d6c56e1a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd4fdefeae1d290e810df77afcd96849" id="r_acd4fdefeae1d290e810df77afcd96849"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd4fdefeae1d290e810df77afcd96849">ret_pi</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> d)</td></tr>
-<tr class="memdesc:acd4fdefeae1d290e810df77afcd96849"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <a class="el" href="#acd4fdefeae1d290e810df77afcd96849" title="Yields the Pi::ret_pi() of d, if it is in fact a Pi.">Pi::ret_pi()</a> of <code>d</code>, if it is in fact a <a class="el" href="classmim_1_1Pi.html" title="A dependent function type.">Pi</a>.  <br /></td></tr>
-<tr class="separator:acd4fdefeae1d290e810df77afcd96849"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Type Checking</h2></td></tr>
 <tr class="memitem:aa395ad921b63cac1dd46ac7594b22440" id="r_aa395ad921b63cac1dd46ac7594b22440"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa395ad921b63cac1dd46ac7594b22440">check</a> (size_t, <a class="el" href="classmim_1_1Ref.html">Ref</a>) override</td></tr>
@@ -790,6 +789,39 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a09985d563cc03d6faea5b20bf639faa8" name="a09985d563cc03d6faea5b20bf639faa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09985d563cc03d6faea5b20bf639faa8">&#9670;&#160;</a></span>has_ret_pi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const <a class="el" href="classmim_1_1Pi.html">Pi</a> * mim::Pi::has_ret_pi </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>d</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Yields the <a class="el" href="#ad2d868402614a7596ca067c9a6d21776" title="Yields the last Pi::dom, if Pi::isa_basicblock.">Pi::ret_pi()</a> of <code>d</code>, if it is in fact a <a class="el" href="classmim_1_1Pi.html" title="A dependent function type.">Pi</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00056">56</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+
+<p class="reference">References <a class="el" href="lam_8cpp_source.html#l00013">ret_pi()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00253">mim::ast::RetExpr::emit_()</a>.</p>
+
+</div>
+</div>
 <a id="ac37c343301b301ee856b8a275579a2bf" name="ac37c343301b301ee856b8a275579a2bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac37c343301b301ee856b8a275579a2bf">&#9670;&#160;</a></span>immutabilize()</h2>
 
@@ -886,7 +918,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00230">mim::Def::flags()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00050">isa_implicit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00051">isa_implicit()</a>.</p>
 
 </div>
 </div>
@@ -981,7 +1013,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Is <code>d</code> an <a class="el" href="#a738b2812944b20746191182bf4e58474">Pi::is_implicit</a> (mutable) <a class="el" href="classmim_1_1Pi.html" title="A dependent function type.">Pi</a>? </p>
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00050">50</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00051">51</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 <p class="reference">References <a class="el" href="lam_8h_source.html#l00023">is_implicit()</a>.</p>
 
@@ -1012,7 +1044,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Is this a continuation (<a class="el" href="#aca0c3274bcbe87b3d38aad98c36f0315" title="Is this a continuation - i.e. is the Pi::codom mim::Bottom?">Pi::isa_cn</a>) which has a <a class="el" href="#acd4fdefeae1d290e810df77afcd96849" title="Yields the Pi::ret_pi() of d, if it is in fact a Pi.">Pi::ret_pi</a>? </p>
+<p>Is this a continuation (<a class="el" href="#aca0c3274bcbe87b3d38aad98c36f0315" title="Is this a continuation - i.e. is the Pi::codom mim::Bottom?">Pi::isa_cn</a>) which has a <a class="el" href="#ad2d868402614a7596ca067c9a6d21776" title="Yields the last Pi::dom, if Pi::isa_basicblock.">Pi::ret_pi</a>? </p>
 
 <p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00046">46</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
@@ -1172,7 +1204,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="#ae510eb63b0ba5a052fc005819d0c6177">Pi::dom</a>ain of <a class="el" href="#acd4fdefeae1d290e810df77afcd96849" title="Yields the Pi::ret_pi() of d, if it is in fact a Pi.">Pi::ret_pi</a>. </p>
+<p><a class="el" href="#ae510eb63b0ba5a052fc005819d0c6177">Pi::dom</a>ain of <a class="el" href="#ad2d868402614a7596ca067c9a6d21776" title="Yields the last Pi::dom, if Pi::isa_basicblock.">Pi::ret_pi</a>. </p>
 
 <p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00066">66</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
@@ -1183,7 +1215,7 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <a id="ad2d868402614a7596ca067c9a6d21776" name="ad2d868402614a7596ca067c9a6d21776"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2d868402614a7596ca067c9a6d21776">&#9670;&#160;</a></span>ret_pi() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2d868402614a7596ca067c9a6d21776">&#9670;&#160;</a></span>ret_pi()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1197,46 +1229,13 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Yields the last <a class="el" href="#ae510eb63b0ba5a052fc005819d0c6177">Pi::dom</a>, if it <a class="el" href="#acc97d9e8b7e1574378e347d72f370c72" title="Is this a continuation (Pi::isa_cn) that is not Pi::isa_returning?">Pi::isa_basicblock</a>. </p>
+<p>Yields the last <a class="el" href="#ae510eb63b0ba5a052fc005819d0c6177">Pi::dom</a>, if <a class="el" href="#acc97d9e8b7e1574378e347d72f370c72" title="Is this a continuation (Pi::isa_cn) that is not Pi::isa_returning?">Pi::isa_basicblock</a>. </p>
 
 <p class="definition">Definition at line <a class="el" href="lam_8cpp_source.html#l00013">13</a> of file <a class="el" href="lam_8cpp_source.html">lam.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="lam_8h_source.html#l00032">dom()</a>, and <a class="el" href="lam_8h_source.html#l00048">isa_basicblock()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00253">mim::ast::RetExpr::emit_()</a>, <a class="el" href="lam_8h_source.html#l00048">isa_basicblock()</a>, <a class="el" href="lam_8h_source.html#l00046">isa_returning()</a>, and <a class="el" href="lam_8h_source.html#l00066">ret_dom()</a>.</p>
-
-</div>
-</div>
-<a id="acd4fdefeae1d290e810df77afcd96849" name="acd4fdefeae1d290e810df77afcd96849"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd4fdefeae1d290e810df77afcd96849">&#9670;&#160;</a></span>ret_pi() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static const <a class="el" href="classmim_1_1Pi.html">Pi</a> * mim::Pi::ret_pi </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>d</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Yields the <a class="el" href="#acd4fdefeae1d290e810df77afcd96849" title="Yields the Pi::ret_pi() of d, if it is in fact a Pi.">Pi::ret_pi()</a> of <code>d</code>, if it is in fact a <a class="el" href="classmim_1_1Pi.html" title="A dependent function type.">Pi</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00062">62</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
-
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00062">ret_pi()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00252">mim::ll::Emitter::emit_imported()</a>, <a class="el" href="lam_8h_source.html#l00146">mim::Lam::ret_pi()</a>, <a class="el" href="lam_8h_source.html#l00062">ret_pi()</a>, and <a class="el" href="lam_8h_source.html#l00149">mim::Lam::ret_var()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00252">mim::ll::Emitter::emit_imported()</a>, <a class="el" href="lam_8h_source.html#l00056">has_ret_pi()</a>, <a class="el" href="lam_8h_source.html#l00048">isa_basicblock()</a>, <a class="el" href="lam_8h_source.html#l00046">isa_returning()</a>, <a class="el" href="lam_8h_source.html#l00066">ret_dom()</a>, <a class="el" href="lam_8h_source.html#l00146">mim::Lam::ret_pi()</a>, and <a class="el" href="lam_8h_source.html#l00149">mim::Lam::ret_var()</a>.</p>
 
 </div>
 </div>

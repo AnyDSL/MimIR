@@ -88,7 +88,7 @@ var searchData=
   ['reshape_5fpass_85',['reshape_pass',['../namespacemim_1_1plug_1_1mem.html#ae1bcb9cb9ed8bb8acf213d544629b15b',1,'mim::plug::mem']]],
   ['ret_86',['ret',['../classmim_1_1ast_1_1PiExpr_1_1Dom.html#ad4a688f123cf35bbf0e3bca4cb12d323',1,'mim::ast::PiExpr::Dom']]],
   ['ret_5fdom_87',['ret_dom',['../classmim_1_1Pi.html#af62442085ed91d34661719d6c56e1a0b',1,'mim::Pi::ret_dom()'],['../classmim_1_1Lam.html#ad2c4b8cee97f69bd7a54c1f50cba330a',1,'mim::Lam::ret_dom()']]],
-  ['ret_5fpi_88',['ret_pi',['../classmim_1_1Pi.html#acd4fdefeae1d290e810df77afcd96849',1,'mim::Pi::ret_pi(Ref d)'],['../classmim_1_1Pi.html#ad2d868402614a7596ca067c9a6d21776',1,'mim::Pi::ret_pi() const'],['../classmim_1_1Lam.html#a5933504e71248b855ed8652a4837846f',1,'mim::Lam::ret_pi() const']]],
+  ['ret_5fpi_88',['ret_pi',['../classmim_1_1Pi.html#ad2d868402614a7596ca067c9a6d21776',1,'mim::Pi::ret_pi()'],['../classmim_1_1Lam.html#a5933504e71248b855ed8652a4837846f',1,'mim::Lam::ret_pi() const']]],
   ['ret_5fvar_89',['ret_var',['../classmim_1_1Lam.html#afb804e72a45e9b1f87a74c7062bc3556',1,'mim::Lam::ret_var()'],['../classmim_1_1plug_1_1clos_1_1ClosLit.html#ad168d13b5e21a340e2d29d49b66906e0',1,'mim::plug::clos::ClosLit::ret_var()']]],
   ['ret_5fwrap_2ecpp_90',['ret_wrap.cpp',['../ret__wrap_8cpp.html',1,'']]],
   ['ret_5fwrap_2eh_91',['ret_wrap.h',['../ret__wrap_8h.html',1,'']]],
