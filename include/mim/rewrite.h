@@ -42,7 +42,8 @@ public:
 
     Ref rewrite_imm(Ref imm) override {
         if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
-        return Rewriter::rewrite_imm(imm);
+        if (imm->has_dep(Dep::Infer) || vars_.intersects(imm->free_vars())) return Rewriter::rewrite_imm(imm);
+        return imm;
     }
 
     Ref rewrite_mut(Def* mut) override {
