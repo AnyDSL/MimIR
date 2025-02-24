@@ -252,7 +252,7 @@ Ref AppExpr::emit_(Emitter& e) const {
 
 Ref RetExpr::emit_(Emitter& e) const {
     auto c = callee()->emit(e);
-    if (auto cn = Pi::ret_pi(c->type())) {
+    if (auto cn = Pi::has_ret_pi(c->type())) {
         auto con  = e.world().mut_lam(cn);
         auto pair = e.world().tuple({arg()->emit(e), con});
         auto app  = e.world().app(c, pair)->set(c->loc() + arg()->loc());

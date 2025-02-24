@@ -37,7 +37,7 @@ public:
 
     /// @name Continuations
     /// @anchor continuations
-    /// Checks certain properties of this Pi regarding continuations.
+    /// Checks certain properties of @p d regarding continuations.
     ///@{
     // clang-format off
     /// Is this a continuation - i.e. is the Pi::codom mim::Bot%tom?
@@ -46,21 +46,21 @@ public:
     static const Pi* isa_returning(Ref d)  { return isa_cn(d) &&  d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
     /// Is this a continuation (Pi::isa_cn) that is **not** Pi::isa_returning?
     static const Pi* isa_basicblock(Ref d) { return isa_cn(d) && !d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
+    // clang-format on
     /// Is @p d an Pi::is_implicit (mutable) Pi?
     static Pi* isa_implicit(Ref d) {
         if (auto pi = d->isa_mut<Pi>(); pi && pi->is_implicit()) return pi;
         return nullptr;
     }
-    // clang-format on
+    /// Yields the Pi::ret_pi() of @p d, if it is in fact a Pi.
+    static const Pi* has_ret_pi(Ref d) { return d->isa<Pi>() ? d->as<Pi>()->ret_pi() : nullptr; }
     ///@}
 
     /// @name Return Continuation
     /// @anchor return_continuation
     ///@{
 
-    /// Yields the Pi::ret_pi() of @p d, if it is in fact a Pi.
-    static const Pi* ret_pi(Ref d) { return d->isa<Pi>() ? d->as<Pi>()->ret_pi() : nullptr; }
-    /// Yields the last Pi::dom, if it Pi::isa_basicblock.
+    /// Yields the last Pi::dom, if Pi::isa_basicblock.
     const Pi* ret_pi() const;
     /// Pi::dom%ain of Pi::ret_pi.
     Ref ret_dom() const { return ret_pi()->dom(); }
