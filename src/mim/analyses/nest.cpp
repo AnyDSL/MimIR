@@ -37,7 +37,7 @@ void Nest::populate() {
         auto node = nodes_.find(curr)->second.get();
         for (auto op : curr->extended_ops()) {
             for (auto mut : op->local_muts()) {
-                if (!(*this)[mut]) {
+                if (!mut2node(mut)) {
                     if (find_parent(mut, node)) queue.push(mut);
                 }
             }

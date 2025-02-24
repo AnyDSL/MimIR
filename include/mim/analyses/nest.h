@@ -18,13 +18,14 @@ public:
 
         /// @name Getters
         ///@{
+        Node* parent() { return parent_; }
+        const Node* parent() const { return parent_; }
+        /// @warning May be `nullptr`, if it's a virtual root copmrising several Node%s.
         Def* mut() const {
             assert(mut_ || is_root());
             return mut_;
         }
         bool is_root() const { return parent_ == nullptr; }
-        Node* parent() { return parent_; }
-        const Node* parent() const { return parent_; }
         size_t depth() const { return depth_; }
         ///@}
 
@@ -50,9 +51,12 @@ public:
         friend class Nest;
     };
 
+    /// @name Constructors
+    ///@{
     Nest(Def* root);
     Nest(View<Def*> muts); ///< Constructs a virtual root with @p muts as children.
     Nest(World&);          ///< Virtual root with all World::externals as children.
+    ///@}
 
     /// @name Getters
     ///@{
@@ -71,10 +75,10 @@ public:
         if (auto i = nodes_.find(mut); i != nodes_.end()) return i->second.get();
         return nullptr;
     }
-    const Node* operator[](Def* mut) const { return mut2node(mut); }
+    const Node* operator[](Def* mut) const { return mut2node(mut); } ///< Same as above.
     ///@}
 
-    static const Node* lca(const Node* n, const Node* m); ///< least common ancestor or @p n and @p m.
+    static const Node* lca(const Node* n, const Node* m); ///< Least common ancestor of @p n and @p m.
 
     /// @name dot
     ///@{
