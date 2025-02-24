@@ -1,14 +1,12 @@
 #pragma once
 
-#include <functional>
 #include <queue>
 #include <vector>
 
-#include "mim/analyses/scope.h"
 #include "mim/phase/phase.h"
 
 #include "mim/plug/clos/clos.h"
-#include "mim/plug/mem/autogen.h"
+#include "mim/plug/mem/mem.h"
 
 namespace mim::plug::clos {
 

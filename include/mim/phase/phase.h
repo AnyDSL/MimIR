@@ -1,12 +1,14 @@
 #pragma once
 
-#include "mim/analyses/scope.h"
 #include "mim/def.h"
-#include "mim/pass/pass.h"
 #include "mim/rewrite.h"
+
+#include "mim/analyses/nest.h"
+#include "mim/pass/pass.h"
 
 namespace mim {
 
+class Nest;
 class World;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
@@ -40,7 +42,9 @@ public:
 
 protected:
     virtual void start() = 0; ///< Actual entry.
+    void set_name(std::string name) { name_ = name; }
 
+private:
     World& world_;
     std::string name_;
     bool dirty_;
@@ -87,7 +91,7 @@ public:
         : Phase(world, {}, false)
         , man_(world) {
         man_.template add<P>(std::forward<Args>(args)...);
-        name_ = std::string(man_.passes().back()->name()) + ".pass_phase";
+        set_name(std::string(man_.passes().back()->name()) + ".pass_phase");
     }
 
     void start() override { man_.run(); }
@@ -141,36 +145,14 @@ private:
     std::deque<std::unique_ptr<Phase>> phases_;
 };
 
-/// Transitively visits all *reachable* Scope%s in World that do not have free variables.
-/// We call these Scope%s *top-level* Scope%s.
-/// Select with `elide_empty` whether you want to visit trivial Scope%s of *muts* without body.
-/// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
-/// @deprecated Use ClosedMutPhase instead.
-class ScopePhase : public Phase {
-public:
-    ScopePhase(World& world, std::string_view name, bool elide_empty)
-        : Phase(world, name, false)
-        , elide_empty_(elide_empty) {}
-
-    void start() override;
-    virtual void visit(const Scope&) = 0;
-
-protected:
-    const Scope& scope() const { return *scope_; }
-
-private:
-    bool elide_empty_;
-    const Scope* scope_ = nullptr;
-};
-
 /// Transitively visits all *reachable* closed mutables (Def::is_closed()) in World.
 /// Select with `elide_empty` whether you want to visit trivial *muts* without body.
 /// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
 /// If you a are only interested in specific mutables, you can pass this to @p M.
 template<class M = Def> class ClosedMutPhase : public Phase {
 public:
-    ClosedMutPhase(World& world, std::string_view name, bool elide_empty)
-        : Phase(world, name, false)
+    ClosedMutPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
+        : Phase(world, name, dirty)
         , elide_empty_(elide_empty) {}
 
     void start() override {
@@ -179,7 +161,7 @@ public:
 
         while (!queue.empty()) {
             auto mut = queue.pop();
-            if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(curr_mut_ = m);
+            if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(root_ = m);
 
             for (auto op : mut->extended_ops())
                 for (auto mut : op->local_muts()) queue.push(mut);
@@ -188,11 +170,30 @@ public:
 
 protected:
     virtual void visit(M*) = 0;
-    M* curr_mut() const { return curr_mut_; }
+    M* root() const { return root_; }
 
 private:
     bool elide_empty_;
-    M* curr_mut_;
+    M* root_;
+};
+
+/// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
+template<class M = Def> class NestPhase : public ClosedMutPhase<M> {
+public:
+    NestPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
+        : ClosedMutPhase<M>(world, name, dirty, elide_empty) {}
+
+    const Nest& nest() const { return *nest_; }
+    virtual void visit(const Nest&) = 0;
+
+private:
+    void visit(M* mut) final {
+        Nest nest(mut);
+        nest_ = &nest;
+        visit(nest);
+    }
+
+    const Nest* nest_;
 };
 
 } // namespace mim

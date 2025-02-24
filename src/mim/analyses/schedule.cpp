@@ -1,5 +1,6 @@
 #include "mim/analyses/schedule.h"
 
+#include <memory>
 #include <queue>
 
 #include "mim/world.h"
@@ -7,19 +8,18 @@
 #include "mim/analyses/cfg.h"
 #include "mim/analyses/domtree.h"
 #include "mim/analyses/looptree.h"
-#include "mim/analyses/scope.h"
 
 namespace mim {
 
-Scheduler::Scheduler(const Scope& s)
-    : scope_(&s)
-    , cfg_(&scope().f_cfg())
+Scheduler::Scheduler(const Nest& n)
+    : nest_(&n)
+    , cfg_(std::make_unique<CFG>(nest()))
     , domtree_(&cfg().domtree()) {
     std::queue<const Def*> queue;
     DefSet done;
 
     auto enqueue = [&](const Def* def, size_t i, const Def* op) {
-        if (scope().bound(op)) {
+        if (nest().contains(op)) {
             assert_emplace(def2uses_[op], def, i);
             if (auto [_, ins] = done.emplace(op); ins) queue.push(op);
         }
@@ -48,12 +48,12 @@ Scheduler::Scheduler(const Scope& s)
 
 Def* Scheduler::early(const Def* def) {
     if (auto i = early_.find(def); i != early_.end()) return i->second;
-    if (def->dep_const() || !scope().bound(def)) return early_[def] = scope().entry();
+    if (def->dep_const() || !nest().contains(def)) return early_[def] = root();
     if (auto var = def->isa<Var>()) return early_[def] = var->mut();
 
-    auto result = scope().entry();
+    auto result = root();
     for (auto op : def->extended_ops()) {
-        if (!op->isa_mut() && scope().bound(op)) {
+        if (!op->isa_mut() && nest().contains(op)) {
             auto mut = early(op);
             if (domtree().depth(cfg(mut)) > domtree().depth(cfg(result))) result = mut;
         }
@@ -62,9 +62,9 @@ Def* Scheduler::early(const Def* def) {
     return early_[def] = result;
 }
 
-Def* Scheduler::late(const Def* def) {
+Def* Scheduler::late(Def* curr_mut, const Def* def) {
     if (auto i = late_.find(def); i != late_.end()) return i->second;
-    if (def->dep_const() || !scope().bound(def)) return late_[def] = scope().entry();
+    if (def->dep_const() || !nest().contains(def)) return late_[def] = nest().root()->mut();
 
     Def* result = nullptr;
     if (auto mut = def->isa_mut()) {
@@ -73,19 +73,21 @@ Def* Scheduler::late(const Def* def) {
         result = var->mut();
     } else {
         for (auto use : uses(def)) {
-            auto mut = late(use);
+            auto mut = late(curr_mut, use);
             result   = result ? domtree().least_common_ancestor(cfg(result), cfg(mut))->mut() : mut;
         }
     }
 
+    if (!result) result = curr_mut;
+
     return late_[def] = result;
 }
 
-Def* Scheduler::smart(const Def* def) {
+Def* Scheduler::smart(Def* curr_mut, const Def* def) {
     if (auto i = smart_.find(def); i != smart_.end()) return i->second;
 
     auto e = cfg(early(def));
-    auto l = cfg(late(def));
+    auto l = cfg(late(curr_mut, def));
     auto s = l;
 
     int depth = cfg().looptree()[l]->depth();
@@ -95,7 +97,7 @@ Def* Scheduler::smart(const Def* def) {
         i = idom;
 
         if (i == nullptr) {
-            scope_->world().WLOG("this should never occur - don't know where to put {}", def);
+            world().WLOG("this should never occur - don't know where to put {}", def);
             s = l;
             break;
         }
@@ -109,10 +111,10 @@ Def* Scheduler::smart(const Def* def) {
     return smart_[def] = s->mut();
 }
 
-Scheduler::Schedule Scheduler::schedule(const Scope& scope) {
+Scheduler::Schedule Scheduler::schedule(const CFG& cfg) {
     // until we have sth better simply use the RPO of the CFG
     Schedule result;
-    for (auto n : scope.f_cfg().reverse_post_order()) result.emplace_back(n->mut());
+    for (auto n : cfg.reverse_post_order()) result.emplace_back(n->mut());
 
     return result;
 }

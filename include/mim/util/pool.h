@@ -1,5 +1,8 @@
 #pragma once
 
+#include <algorithm>
+#include <iterator>
+
 #include <absl/container/flat_hash_set.h>
 #include <fe/arena.h>
 
@@ -143,6 +146,20 @@ public:
         auto [data, state] = allocate(1);
         data->elems[0]     = elem;
         return unify(data, state);
+    }
+
+    /// Create a PooledSet wih all elements in the given range.
+    template<class I> [[nodiscard]] PooledSet<T> create(I begin, I end) {
+        auto size          = std::distance(begin, end); // max space needed - may be less; see actual_size below
+        auto [data, state] = allocate(size);
+        auto db = data->elems, de = data->elems + size;
+
+        std::copy(begin, end, db);
+        std::sort(db, de, GIDLt<T>());
+        auto di          = std::unique(db, de);
+        auto actual_size = std::distance(db, di);
+        data->size       = actual_size; // correct size
+        return unify(data, state, size - actual_size);
     }
 
     /// Yields @f$a \cup b@f$.

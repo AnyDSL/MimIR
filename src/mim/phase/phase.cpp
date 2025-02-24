@@ -40,20 +40,4 @@ void Pipeline::start() {
     for (auto& phase : phases()) phase->run();
 }
 
-void ScopePhase::start() {
-    unique_queue<MutSet> muts;
-    for (const auto& [name, mut] : world().externals()) muts.push(mut);
-
-    while (!muts.empty()) {
-        auto mut = muts.pop();
-        if (elide_empty_ && !mut->is_set()) continue;
-
-        Scope scope(mut);
-        scope_ = &scope;
-        visit(scope);
-
-        for (auto mut : scope.free_muts()) muts.push(mut);
-    }
-}
-
 } // namespace mim

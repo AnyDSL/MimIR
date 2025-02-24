@@ -1,6 +1,5 @@
 #pragma once
 
-#include <mim/analyses/scope.h>
 #include <mim/pass/pass.h>
 
 #include "mim/plug/clos/clos.h"
@@ -27,11 +26,12 @@ public:
     Lam* scope(Lam* lam);
 
     bool from_outer_scope(Lam* lam) {
+        // return curr_mut()->free_vars().intersects(lam->free_vars()); }
         // return scope_.free_defs().contains(lam);
         return scope(lam) && scope(lam) != scope(curr_mut());
     }
 
-    bool from_outer_scope(Ref lam) { return scope_->free_defs().contains(lam); }
+    bool from_outer_scope(Ref lam) { return curr_mut()->free_vars().intersects(lam->free_vars()); }
 
     Ref eta_wrap(Ref def, attr a) {
         auto& w                = world();
@@ -51,7 +51,6 @@ private:
     DefMap<Lam*> old2wrapper_;
     DefSet wrapper_;
     Lam2Lam lam2fscope_;
-    std::unique_ptr<Scope> scope_;
     bool ignore_ = false;
 };
 

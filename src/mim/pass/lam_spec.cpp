@@ -1,9 +1,6 @@
 #include "mim/pass/lam_spec.h"
 
-#include "mim/analyses/scope.h"
-#include "mim/pass/beta_red.h"
-#include "mim/pass/eta_exp.h"
-#include "mim/util/util.h"
+#include "mim/analyses/nest.h"
 
 // TODO This is supposed to recreate what lower2cff did, but we should really consider another strategy and nuke this.
 
@@ -17,8 +14,8 @@ Ref LamSpec::rewrite(Ref def) {
 
     // Skip recursion to avoid infinite inlining if not "aggressive_lam_spec".
     // This is a hack - but we want to get rid off this Pass anyway.
-    Scope scope(old_lam);
-    if (!world().flags().aggressive_lam_spec && scope.free_defs().contains(old_lam)) return def;
+    Nest nest(old_lam);
+    if (!world().flags().aggressive_lam_spec && nest.is_recursive()) return def;
 
     DefVec new_doms, new_vars, new_args;
     auto skip     = old_lam->ret_var() && old_lam->is_closed();

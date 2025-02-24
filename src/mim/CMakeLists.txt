@@ -14,12 +14,11 @@ target_sources(libmim
         tuple.cpp
         world.cpp
         analyses/cfg.cpp
-        analyses/deptree.cpp
         analyses/domfrontier.cpp
         analyses/domtree.cpp
         analyses/looptree.cpp
+        analyses/nest.cpp
         analyses/schedule.cpp
-        analyses/scope.cpp
         ast/ast.cpp
         ast/bind.cpp
         ast/emit.cpp

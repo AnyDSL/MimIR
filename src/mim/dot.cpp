@@ -5,6 +5,7 @@
 #include "mim/def.h"
 #include "mim/world.h"
 
+#include "mim/analyses/nest.h"
 #include "mim/util/print.h"
 
 // Do not zonk here!
@@ -37,7 +38,7 @@ public:
         tab_.println(os_, "node [shape=box,style=filled];");
     }
 
-    void epilogue() { (tab_--).println(os_, "}}"); }
+    void epilogue() { (--tab_).println(os_, "}}"); }
 
     void run(const Def* root, uint32_t max) {
         prologue();
@@ -105,7 +106,7 @@ public:
         print(os_, "<b>free_vars:</b> {{{, }}}{}", def->free_vars(), NL);
         print(os_, "<b>local_vars:</b> {{{, }}}{}", def->local_vars(), NL);
         print(os_, "<b>local_muts:</b> {{{, }}}{}", def->local_muts(), NL);
-        if (auto mut = def->isa_mut()) print(os_, "<b>fv_consumers:</b> {{{, }}}{}", mut->fv_consumers(), NL);
+        if (auto mut = def->isa_mut()) print(os_, "<b>users:</b> {{{, }}}{}", mut->users(), NL);
         print(os_, "<b>loc:</b> {}", loc);
         return print(os_, "\"");
     }
@@ -147,6 +148,34 @@ void World::dot(std::ostream& os, bool anx, bool types) const {
     if (anx)
         for (auto [_, annex] : annexes()) dot.recurse(annex, uint32_t(-1));
     dot.epilogue();
+}
+
+/*
+ * Nest
+ */
+
+void Nest::dot(const char* file) const {
+    if (!file) {
+        dot(std::cout);
+    } else {
+        auto of = std::ofstream(file);
+        dot(of);
+    }
+}
+
+void Nest::dot(std::ostream& os) const {
+    Tab tab;
+    (tab++).println(os, "digraph {{");
+    tab.println(os, "ordering=out;");
+    tab.println(os, "splines=false;");
+    tab.println(os, "node [shape=box,style=filled];");
+    root()->dot(tab, os);
+    (--tab).println(os, "}}");
+}
+
+void Nest::Node::dot(Tab tab, std::ostream& os) const {
+    for (const auto& [child, _] : children()) tab.println(os, "{} -> {}", mut()->unique_name(), child->unique_name());
+    for (const auto& [_, child] : children()) child->dot(tab, os);
 }
 
 } // namespace mim

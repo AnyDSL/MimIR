@@ -4,10 +4,10 @@
 
 namespace mim {
 
-template<bool forward> void DomFrontierBase<forward>::create() {
+void DomFrontier::create() {
     const auto& domtree = cfg().domtree();
     for (auto n : cfg().reverse_post_order().subspan(1)) {
-        const auto& preds = cfg().preds(n);
+        const auto& preds = n->preds();
         if (preds.size() > 1) {
             auto idom = domtree.idom(n);
             for (auto pred : preds)
@@ -15,8 +15,5 @@ template<bool forward> void DomFrontierBase<forward>::create() {
         }
     }
 }
-
-template class DomFrontierBase<true>;
-template class DomFrontierBase<false>;
 
 } // namespace mim

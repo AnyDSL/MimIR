@@ -4,7 +4,7 @@
 
 #include "mim/driver.h"
 
-#include "mim/analyses/deptree.h"
+#include "mim/analyses/nest.h"
 #include "mim/ast/tok.h"
 #include "mim/util/util.h"
 
@@ -271,24 +271,24 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
  */
 
 /// This thing operates in two modes:
-/// 1. The output of decls is driven by the DepTree.
+/// 1. The output of decls is driven by the Nest.
 /// 2. Alternatively, decls are output as soon as they appear somewhere during recurse%ing.
 ///     Then, they are pushed to Dumper::muts.
 class Dumper {
 public:
-    Dumper(std::ostream& os, const DepTree* dep = nullptr)
+    Dumper(std::ostream& os, const Nest* nest = nullptr)
         : os(os)
-        , dep(dep) {}
+        , nest(nest) {}
 
     void dump(Def*);
     void dump(Lam*);
     void dump_let(const Def*);
     void dump_ptrn(const Def*, const Def*);
-    void recurse(const DepNode*);
+    void recurse(const Nest::Node*);
     void recurse(const Def*, bool first = false);
 
     std::ostream& os;
-    const DepTree* dep;
+    const Nest* nest;
     Tab tab;
     unique_queue<MutSet> muts;
     DefSet defs;
@@ -339,7 +339,7 @@ void Dumper::dump(Def* mut) {
     }
     tab.println(os, " = {{");
     ++tab;
-    if (dep) recurse(dep->mut2node(mut));
+    if (nest) recurse(nest->mut2node(mut));
     recurse(mut);
     tab.print(os, "{, }\n", mut->ops());
     --tab;
@@ -357,7 +357,7 @@ void Dumper::dump(Lam* lam) {
 
     ++tab;
     if (lam->is_set()) {
-        if (dep) recurse(dep->mut2node(lam));
+        if (nest) recurse(nest->mut2node(lam));
         recurse(lam->filter());
         recurse(lam->body(), true);
         if (lam->body()->isa_mut())
@@ -390,14 +390,14 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
     }
 }
 
-void Dumper::recurse(const DepNode* node) {
-    for (auto child : node->children())
-        if (auto mut = isa_decl(child->mut())) dump(mut);
+void Dumper::recurse(const Nest::Node* node) {
+    for (const auto& [child, _] : node->children())
+        if (auto mut = isa_decl(child)) dump(mut);
 }
 
 void Dumper::recurse(const Def* def, bool first /*= false*/) {
     if (auto mut = isa_decl(def)) {
-        if (!dep) muts.push(mut);
+        if (!nest) muts.push(mut);
         return;
     }
 
@@ -475,12 +475,12 @@ void World::dump(std::ostream& os) {
         for (const auto& [_, mut] : externals()) dumper.muts.push(mut);
         while (!dumper.muts.empty()) dumper.dump(dumper.muts.pop());
     } else {
-        auto dep    = DepTree(*this);
-        auto dumper = Dumper(os, &dep);
+        auto nest   = Nest(*this);
+        auto dumper = Dumper(os, &nest);
 
         for (auto [_, name] : driver().imports())
             print(os, ".{} {};\n", driver().is_loaded(name) ? "mim/plugin" : "import", name);
-        dumper.recurse(dep.root());
+        dumper.recurse(nest.root());
     }
 
     assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());

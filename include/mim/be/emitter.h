@@ -1,19 +1,20 @@
 #pragma once
 
+#include "mim/world.h"
+
 #include "mim/analyses/schedule.h"
 #include "mim/phase/phase.h"
-#include "mim/world.h"
 
 namespace mim {
 
-template<class Value, class Type, class BB, class Child> class Emitter : public ScopePhase {
+template<class Value, class Type, class BB, class Child> class Emitter : public NestPhase<Lam> {
 private:
     constexpr const Child& child() const { return *static_cast<const Child*>(this); }
     constexpr Child& child() { return *static_cast<Child*>(this); }
 
     /// Internal wrapper for Emitter::emit that schedules @p def and invokes `child().emit_bb`.
     Value emit_(const Def* def) {
-        auto place = scheduler_.smart(def);
+        auto place = scheduler_.smart(curr_lam_, def);
         auto& bb   = lam2bb_[place->as_mut<Lam>()];
         return child().emit_bb(bb, def);
     }
@@ -23,7 +24,7 @@ public:
 
 protected:
     Emitter(World& world, std::string_view name, std::ostream& ostream)
-        : ScopePhase(world, name, false)
+        : NestPhase(world, name, false, false)
         , ostream_(ostream) {}
 
     std::ostream& ostream() const { return ostream_; }
@@ -46,48 +47,47 @@ protected:
         return locals_[def] = val;
     }
 
-    void visit(const Scope& scope) override {
-        if (entry_ = scope.entry()->isa_mut<Lam>(); !entry_) return;
-
-        if (!entry_->is_set()) {
-            child().emit_imported(entry_);
+    void visit(const Nest& nest) override {
+        if (!root()->is_set()) {
+            child().emit_imported(root());
             return;
         }
 
-        auto muts = Scheduler::schedule(scope); // TODO make sure to not compute twice
+        CFG cfg(nest);
+        auto muts = Scheduler::schedule(cfg); // TODO make sure to not compute twice
 
         // make sure that we don't need to rehash later on
         for (auto mut : muts)
             if (auto lam = mut->isa<Lam>()) lam2bb_.emplace(lam, BB());
         auto old_size = lam2bb_.size();
 
-        entry_ = scope.entry()->as_mut<Lam>();
-        assert(entry_->ret_var());
+        assert(root()->ret_var());
 
-        auto fct = child().prepare(scope);
+        auto fct = child().prepare();
 
-        Scheduler new_scheduler(scope);
+        Scheduler new_scheduler(nest);
         swap(scheduler_, new_scheduler);
 
         for (auto mut : muts) {
-            if (auto lam = mut->isa<Lam>(); lam && lam != scope.exit()) {
-                assert(lam == entry_ || Lam::isa_basicblock(lam));
+            if (auto lam = mut->isa<Lam>()) {
+                curr_lam_ = lam;
+                assert(lam == root() || Lam::isa_basicblock(lam));
                 child().emit_epilogue(lam);
             }
         }
 
-        child().finalize(scope);
+        child().finalize();
         locals_.clear();
         assert_unused(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
 
+    Lam* curr_lam_ = nullptr;
     std::ostream& ostream_;
     Scheduler scheduler_;
     DefMap<Value> locals_;
     DefMap<Value> globals_;
     DefMap<Type> types_;
     LamMap<BB> lam2bb_;
-    Lam* entry_ = nullptr;
 };
 
 } // namespace mim

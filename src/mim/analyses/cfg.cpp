@@ -5,7 +5,6 @@
 #include "mim/analyses/domfrontier.h"
 #include "mim/analyses/domtree.h"
 #include "mim/analyses/looptree.h"
-#include "mim/analyses/scope.h"
 #include "mim/util/util.h"
 
 namespace mim {
@@ -23,10 +22,9 @@ std::ostream& operator<<(std::ostream& os, const CFNode* n) { return os << n->mu
 
 //------------------------------------------------------------------------------
 
-CFA::CFA(const Scope& scope)
-    : scope_(scope)
-    , entry_(node(scope.entry()))
-    , exit_(node(scope.exit())) {
+CFG::CFG(const Nest& nest)
+    : nest_(nest)
+    , entry_(node(nest.root()->mut())) {
     std::queue<Def*> cfg_queue;
     MutSet cfg_done;
 
@@ -34,7 +32,7 @@ CFA::CFA(const Scope& scope)
         if (mut->is_set() && cfg_done.emplace(mut).second) cfg_queue.push(mut);
     };
 
-    cfg_enqueue(scope.entry());
+    cfg_enqueue(nest.root()->mut());
 
     while (!cfg_queue.empty()) {
         auto src = pop(cfg_queue);
@@ -44,7 +42,7 @@ CFA::CFA(const Scope& scope)
         auto enqueue = [&](const Def* def) {
             if (def->isa<Var>()) return;
             // TODO maybe optimize a little bit by using the order
-            if (scope.bound(def) && done.emplace(def).second) {
+            if (nest.contains(def) && done.emplace(def).second) {
                 if (auto dst = def->isa_mut()) {
                     cfg_enqueue(dst);
                     node(src)->link(node(dst));
@@ -61,79 +59,24 @@ CFA::CFA(const Scope& scope)
         }
     }
 
-    link_to_exit();
     verify();
+
+    rpo_       = std::make_unique<Map<const CFNode*>>(*this);
+    auto index = post_order_visit(entry(), size());
+    assert_unused(index == 0);
 }
 
-const CFNode* CFA::node(Def* mut) {
+const CFNode* CFG::node(Def* mut) {
     auto&& n = nodes_[mut];
     if (n == nullptr) n = new CFNode(mut);
     return n;
 }
 
-CFA::~CFA() {
+CFG::~CFG() {
     for (const auto& p : nodes_) delete p.second;
 }
 
-const F_CFG& CFA::f_cfg() const { return lazy_init(this, f_cfg_); }
-const B_CFG& CFA::b_cfg() const { return lazy_init(this, b_cfg_); }
-
-void CFA::link_to_exit() {
-    using CFNodeSet = mim::GIDSet<const CFNode*>;
-
-    CFNodeSet reachable;
-    std::queue<const CFNode*> queue;
-
-    // first, link all nodes without succs to exit
-    for (auto p : nodes()) {
-        auto n = p.second;
-        if (n != exit() && n->succs().empty()) n->link(exit());
-    }
-
-    auto backwards_reachable = [&](const CFNode* n) {
-        auto enqueue = [&](const CFNode* n) {
-            if (reachable.emplace(n).second) queue.push(n);
-        };
-
-        enqueue(n);
-
-        while (!queue.empty())
-            for (auto pred : pop(queue)->preds()) enqueue(pred);
-    };
-
-    std::stack<const CFNode*> stack;
-    CFNodeSet on_stack;
-
-    auto push = [&](const CFNode* n) {
-        if (on_stack.emplace(n).second) {
-            stack.push(n);
-            return true;
-        }
-
-        return false;
-    };
-
-    backwards_reachable(exit());
-    push(entry());
-
-    while (!stack.empty()) {
-        auto n = stack.top();
-
-        bool todo = false;
-        for (auto succ : n->succs()) todo |= push(succ);
-
-        if (!todo) {
-            if (!reachable.contains(n)) {
-                n->link(exit());
-                backwards_reachable(n);
-            }
-
-            stack.pop();
-        }
-    }
-}
-
-void CFA::verify() {
+void CFG::verify() {
     bool error = false;
     for (const auto& p : nodes()) {
         auto in = p.second;
@@ -151,36 +94,23 @@ void CFA::verify() {
 
 //------------------------------------------------------------------------------
 
-template<bool forward>
-CFG<forward>::CFG(const CFA& cfa)
-    : cfa_(cfa)
-    , rpo_(*this) {
-    auto index = post_order_visit(entry(), size());
-    assert_unused(index == 0);
-}
-
-template<bool forward> size_t CFG<forward>::post_order_visit(const CFNode* n, size_t i) {
-    auto& n_index = forward ? n->f_index_ : n->b_index_;
+size_t CFG::post_order_visit(const CFNode* n, size_t i) {
+    auto& n_index = n->index_;
     n_index       = size_t(-2);
 
-    for (auto succ : succs(n))
+    for (auto succ : n->succs())
         if (index(succ) == size_t(-1)) i = post_order_visit(succ, i);
 
-    n_index = i - 1;
-    rpo_[n] = n;
+    n_index    = i - 1;
+    (*rpo_)[n] = n;
     return n_index;
 }
 
 // clang-format off
-template<bool forward> const CFNodes& CFG<forward>::preds(const CFNode* n) const { assert(n != nullptr); return forward ? n->preds() : n->succs(); }
-template<bool forward> const CFNodes& CFG<forward>::succs(const CFNode* n) const { assert(n != nullptr); return forward ? n->succs() : n->preds(); }
-template<bool forward> const DomTreeBase<forward>& CFG<forward>::domtree() const { return lazy_init(this, domtree_); }
-template<bool forward> const LoopTree<forward>& CFG<forward>::looptree() const { return lazy_init(this, looptree_); }
-template<bool forward> const DomFrontierBase<forward>& CFG<forward>::domfrontier() const { return lazy_init(this, domfrontier_); }
+const DomTree& CFG::domtree() const { return lazy_init(this, domtree_); }
+const LoopTree& CFG::looptree() const { return lazy_init(this, looptree_); }
+const DomFrontier& CFG::domfrontier() const { return lazy_init(this, domfrontier_); }
 // clang-format on
-
-template class CFG<true>;
-template class CFG<false>;
 
 //------------------------------------------------------------------------------
 

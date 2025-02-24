@@ -1,7 +1,5 @@
 #include "mim/plug/mem/phase/add_mem.h"
 
-#include <memory>
-
 #include <mim/analyses/schedule.h>
 
 #include "mim/plug/mem/mem.h"
@@ -63,12 +61,9 @@ const Def* rewrite_apped_mut_lam_in_tuple(const Def* def,
 } // namespace
 
 // Entry point of the phase.
-void AddMem::visit(const Scope& scope) {
-    if (auto entry = scope.entry()->isa_mut<Lam>()) {
-        scope.free_muts(); // cache this.
-        sched_ = Scheduler{scope};
-        add_mem_to_lams(entry, entry);
-    }
+void AddMem::visit(const Nest& nest) {
+    sched_ = Scheduler{nest};
+    add_mem_to_lams(root(), root());
 }
 
 const Def* AddMem::mem_for_lam(Lam* lam) const {
@@ -110,7 +105,7 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
 }
 
 const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
-    auto place = static_cast<Lam*>(sched_.smart(def));
+    auto place = static_cast<Lam*>(sched_.smart(curr_lam, def));
 
     // world().DLOG("rewriting {} : {} in {}", def, def->type(), place);
 
@@ -146,7 +141,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         if (!lam->is_set()) return lam;
         world().DLOG("rewrite lam {}", lam);
 
-        bool is_bound = sched_.scope().bound(lam) || lam == curr_lam;
+        bool is_bound = sched_.nest().contains(lam) || lam == curr_lam;
 
         if (new_lam == lam) // if not stubbed yet
             if (auto new_pi = rewrite_pi(pi); new_pi != pi) new_lam = lam->stub(new_pi);

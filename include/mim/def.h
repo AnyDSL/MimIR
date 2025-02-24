@@ -106,38 +106,6 @@ using NormalizeFn = Ref (*)(Ref, Ref, Ref);
 
 //------------------------------------------------------------------------------
 
-/// References a user.
-/// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
-class Use {
-public:
-    static constexpr size_t Type = -1_s;
-
-    Use() {}
-    Use(const Def* def, size_t index)
-        : def_(def)
-        , index_(index) {}
-
-    size_t index() const { return index_; }
-    const Def* def() const { return def_; }
-    operator const Def*() const { return def_; }
-    const Def* operator->() const { return def_; }
-    bool operator==(Use other) const { return this->def_ == other.def_ && this->index_ == other.index_; }
-
-private:
-    const Def* def_;
-    size_t index_;
-};
-
-struct UseHash {
-    inline size_t operator()(Use) const;
-};
-
-struct UseEq {
-    bool operator()(Use u1, Use u2) const { return u1 == u2; }
-};
-
-using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
-
 // TODO remove or fix this
 enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
@@ -317,12 +285,6 @@ public:
     size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
 
-    /// @name uses
-    ///@{
-    const Uses& uses() const { return uses_; }
-    size_t num_uses() const { return uses().size(); }
-    ///@}
-
     /// @name dep
     ///@{
     /// @see Dep.
@@ -407,7 +369,7 @@ public:
     /// @name Free Vars and Muts
     /// * local_muts() / local_vars() are cached and hash-consed.
     /// * free_vars() are computed on demand and cached.
-    ///   They will be transitively invalidated by following fv_consumers(), if a mutable is mutated.
+    ///   They will be transitively invalidated by following users, if a mutable is mutated.
     ///@{
 
     /// Mutables reachable by following *immutable* extended_ops().
@@ -419,9 +381,9 @@ public:
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();
-    bool is_open() const;   ///< Has free_vars()?
-    bool is_closed() const; ///< Has no free_vars()?
-    Muts fv_consumers() { return muts_.fv_consumers; }
+    Muts users() { return muts_.users; } ///< Set of mutables where this mutable is locally referenced.
+    bool is_open() const;                ///< Has free_vars()?
+    bool is_closed() const;              ///< Has no free_vars()?
     ///@}
 
     /// @name external
@@ -574,7 +536,6 @@ private:
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
-    void finalize();
     bool equal(const Def* other) const;
 
     uint32_t mark_ = 0;
@@ -603,7 +564,6 @@ private:
     u32 gid_;
     u32 num_ops_;
     size_t hash_;
-    mutable Uses uses_;
 
     union LocalOrFreeVars {
         LocalOrFreeVars() {}
@@ -615,8 +575,8 @@ private:
     union LocalOrConsumerMuts {
         LocalOrConsumerMuts() {}
 
-        Muts local;        // Immutable only.
-        Muts fv_consumers; // Mutable only.
+        Muts local; // Immutable only.
+        Muts users; // Mutable only.
     } muts_;
 
     const Def* type_;
@@ -896,12 +856,5 @@ private:
 
     friend class World;
 };
-
-size_t UseHash::operator()(Use use) const {
-    if constexpr (sizeof(size_t) == 8)
-        return hash((u64(use.index())) << 32_u64 | u64(use->gid()));
-    else
-        return hash_combine(hash_begin(u16(use.index())), use->gid());
-}
 
 } // namespace mim

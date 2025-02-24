@@ -304,7 +304,6 @@ public:
     Lam* mut_fun(Ref  dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
     Lam* mut_fun(Defs dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
     // clang-format on
-    Lam* exit() { return data_.exit; } ///< Used as a dummy exit node within Scope.
     ///@}
 
     /// @name App
@@ -578,7 +577,6 @@ private:
 #ifdef MIM_ENABLE_CHECKS
         if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
-        def->finalize();
         return def;
     }
 
@@ -678,7 +676,6 @@ private:
         const Lit* lit_nat_max;
         const Lit* lit_0_1;
         std::array<const Lit*, 2> lit_bool;
-        Lam* exit;
     } data_;
 
     friend void swap(World& w1, World& w2) noexcept {

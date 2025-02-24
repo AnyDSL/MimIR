@@ -3,7 +3,6 @@
 #include <mim/config.h>
 #include <mim/rewrite.h>
 
-#include <mim/analyses/scope.h>
 #include <mim/pass/pass.h>
 #include <mim/pass/pipelinebuilder.h>
 

@@ -8,14 +8,12 @@ namespace mim::plug::mem {
 /// This phase adds mems to all lambdas and continuations.
 /// It's primarily to be used as preparation for other phases
 /// that rely on all continuations having a mem.
-class AddMem : public ScopePhase {
+class AddMem : public NestPhase<Lam> {
 public:
     AddMem(World& world)
-        : ScopePhase(world, "add_mem", true) {
-        dirty_ = true;
-    }
+        : NestPhase(world, "add_mem", true, true) {}
 
-    void visit(const Scope&) override;
+    void visit(const Nest&) override;
 
 private:
     const Def* add_mem_to_lams(Lam*, const Def*);

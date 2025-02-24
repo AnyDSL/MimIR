@@ -1,18 +1,14 @@
 #include "mim/plug/core/be/ll.h"
 
-#include <cstdint>
-
 #include <deque>
 #include <fstream>
 #include <iomanip>
-#include <limits>
 #include <ranges>
 
 #include <mim/plug/clos/clos.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
 
-#include "mim/analyses/cfg.h"
 #include "mim/be/emitter.h"
 #include "mim/util/print.h"
 #include "mim/util/sys.h"
@@ -124,9 +120,9 @@ public:
     void emit_imported(Lam*);
     void emit_epilogue(Lam*);
     std::string emit_bb(BB&, const Def*);
-    std::string prepare(const Scope&);
+    std::string prepare();
     void prepare(Lam*, std::string_view);
-    void finalize(const Scope&);
+    void finalize();
 
     template<class... Args> void declare(const char* s, Args&&... args) {
         std::ostringstream decl;
@@ -267,12 +263,10 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, ")\n");
 }
 
-std::string Emitter::prepare(const Scope& scope) {
-    auto lam = scope.entry()->as_mut<Lam>();
+std::string Emitter::prepare() {
+    print(func_impls_, "define {} {}(", convert_ret_pi(root()->type()->ret_pi()), id(root()));
 
-    print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
-
-    auto vars = lam->vars();
+    auto vars = root()->vars();
     for (auto sep = ""; auto var : vars.view().rsubspan(1)) {
         if (match<mem::M>(var->type())) continue;
         auto name    = id(var);
@@ -282,10 +276,10 @@ std::string Emitter::prepare(const Scope& scope) {
     }
 
     print(func_impls_, ") {{\n");
-    return lam->unique_name();
+    return root()->unique_name();
 }
 
-void Emitter::finalize(const Scope& scope) {
+void Emitter::finalize() {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
             print(bb.head().emplace_back(), "{} = phi {} ", id(phi), convert(phi->type()));
@@ -296,9 +290,9 @@ void Emitter::finalize(const Scope& scope) {
         }
     }
 
-    for (auto mut : Scheduler::schedule(scope)) {
+    CFG cfg(nest());
+    for (auto mut : Scheduler::schedule(cfg)) {
         if (auto lam = mut->isa_mut<Lam>()) {
-            if (lam == scope.exit()) continue;
             assert(lam2bb_.contains(lam));
             auto& bb = lam2bb_[lam];
             print(func_impls_, "{}:\n", lam->unique_name());
@@ -318,7 +312,7 @@ void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
 
-    if (app->callee() == entry_->ret_var()) { // return
+    if (app->callee() == root()->ret_var()) { // return
         std::vector<std::string> values;
         std::vector<const Def*> types;
 
@@ -590,7 +584,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_elem     = convert(extract->type());
         auto [v_i, t_i] = emit_gep_index(index);
 
-        print(lam2bb_[entry_].body().emplace_front(),
+        print(lam2bb_[root()].body().emplace_front(),
               "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, t_tup);
         print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
         print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name, t_tup,
@@ -608,7 +602,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             auto t_elem     = convert(insert->value()->type());
             auto [v_i, t_i] = emit_gep_index(insert->index());
-            print(lam2bb_[entry_].body().emplace_front(),
+            print(lam2bb_[root()].body().emplace_front(),
                   "{}.alloca = alloca {} ; copy to alloca to emulate insert with store + gep + load", name, t_tup);
             print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
             print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name,
