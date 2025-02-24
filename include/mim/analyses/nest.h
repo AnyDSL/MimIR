@@ -18,7 +18,10 @@ public:
 
         /// @name Getters
         ///@{
-        Def* mut() const { return mut_; }
+        Def* mut() const {
+            assert(mut_ || is_root());
+            return mut_;
+        }
         bool is_root() const { return parent_ == nullptr; }
         Node* parent() { return parent_; }
         const Node* parent() const { return parent_; }
@@ -48,6 +51,8 @@ public:
     };
 
     Nest(Def* root);
+    Nest(View<Def*> muts); ///< Constructs a virtual root with @p muts as children.
+    Nest(World&);          ///< Virtual root with all World::externals as children.
 
     /// @name Getters
     ///@{
@@ -62,11 +67,11 @@ public:
     ///@{
     const auto& nodes() const { return nodes_; }
     size_t num_nodes() const { return nodes_.size(); }
-    const Node* node(Def* mut) const {
+    const Node* mut2node(Def* mut) const {
         if (auto i = nodes_.find(mut); i != nodes_.end()) return i->second.get();
         return nullptr;
     }
-    const Node* operator[](Def* mut) const { return node(mut); }
+    const Node* operator[](Def* mut) const { return mut2node(mut); }
     ///@}
 
     static const Node* lca(const Node* n, const Node* m); ///< least common ancestor or @p n and @p m.
@@ -78,11 +83,12 @@ public:
     ///@}
 
 private:
+    void populate();
     Node* make_node(Def*, Node* parent = nullptr);
     Node* find_parent(Def*, Node*);
 
     World& world_;
-    MutMap<std::unique_ptr<Node>> nodes_;
+    absl::flat_hash_map<Def*, std::unique_ptr<Node>> nodes_;
     Node* root_;
     mutable Vars vars_;
 };

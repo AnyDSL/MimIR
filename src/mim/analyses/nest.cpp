@@ -7,8 +7,30 @@ namespace mim {
 Nest::Nest(Def* r)
     : world_(r->world())
     , root_(make_node(r)) {
+    populate();
+}
+
+Nest::Nest(View<Def*> muts)
+    : world_(muts.front()->world())
+    , root_(make_node(nullptr)) {
+    for (auto mut : muts) make_node(mut, root_);
+    populate();
+}
+
+Nest::Nest(World& world)
+    : world_(world)
+    , root_(make_node(nullptr)) {
+    for (auto [_, mut] : world.externals()) make_node(mut, root_);
+    populate();
+}
+
+void Nest::populate() {
     std::queue<Def*> queue;
-    queue.push(r);
+
+    if (auto mut = root()->mut())
+        queue.push(mut);
+    else
+        for (auto [mut, _] : root()->children()) queue.push(mut);
 
     while (!queue.empty()) {
         auto curr = pop(queue);
@@ -32,7 +54,7 @@ Nest::Node* Nest::make_node(Def* mut, Node* parent) {
 
 /// Tries to place @p mut as high as possible.
 Nest::Node* Nest::find_parent(Def* mut, Node* begin) {
-    for (Node* node = begin; node; node = node->parent()) {
+    for (Node* node = begin; node && node->mut(); node = node->parent()) {
         if (auto var = node->mut()->has_var()) {
             if (mut->free_vars().contains(var)) return make_node(mut, node);
         }
@@ -55,8 +77,11 @@ Vars Nest::vars() const {
     if (!vars_) {
         auto vec = Vector<const Var*>();
         vec.reserve(num_nodes());
-        for (const auto& [mut, _] : nodes_)
-            if (auto var = mut->has_var()) vec.emplace_back(var);
+        for (const auto& [mut, _] : nodes_) {
+            if (mut) {
+                if (auto var = mut->has_var()) vec.emplace_back(var);
+            }
+        }
         vars_ = world().vars().create(vec.begin(), vec.end());
     }
 
