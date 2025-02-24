@@ -6,15 +6,13 @@
 #include "mim/world.h"
 
 #include "mim/analyses/cfg.h"
-#include "mim/analyses/domtree.h"
 #include "mim/analyses/looptree.h"
 
 namespace mim {
 
 Scheduler::Scheduler(const Nest& nest)
     : nest_(&nest)
-    , cfg_(std::make_unique<CFG>(nest))
-    , domtree_(&cfg().domtree()) {
+    , cfg_(std::make_unique<CFG>(nest)) {
     std::queue<const Def*> queue;
     DefSet done;
 
@@ -83,18 +81,16 @@ const Nest::Node* Scheduler::late(Def* curr_mut, const Def* def) {
     return late_[def] = result;
 }
 
-Def* Scheduler::smart(Def* curr_mut, const Def* def) {
+const Nest::Node* Scheduler::smart(Def* curr_mut, const Def* def) {
     if (auto i = smart_.find(def); i != smart_.end()) return i->second;
 
-    auto e = cfg(early(def)->mut());
-    auto l = cfg(late(curr_mut, def)->mut());
+    auto e = early(def);
+    auto l = late(curr_mut, def);
     auto s = l;
 
-    int depth = cfg().looptree()[l]->depth();
+    int depth = cfg().looptree()[cfg(l->mut())]->depth();
     for (auto i = l; i != e;) {
-        auto idom = domtree().idom(i);
-        assert(i != idom);
-        i = idom;
+        i = i->parent();
 
         if (i == nullptr) {
             world().WLOG("this should never occur - don't know where to put {}", def);
@@ -102,13 +98,13 @@ Def* Scheduler::smart(Def* curr_mut, const Def* def) {
             break;
         }
 
-        if (int cur_depth = cfg().looptree()[i]->depth(); cur_depth < depth) {
+        if (int cur_depth = cfg().looptree()[cfg(i->mut())]->depth(); cur_depth < depth) {
             s     = i;
             depth = cur_depth;
         }
     }
 
-    return smart_[def] = s->mut();
+    return smart_[def] = s;
 }
 
 Scheduler::Schedule Scheduler::schedule(const CFG& cfg) {

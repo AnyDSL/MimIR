@@ -2,8 +2,6 @@
 
 #include "mim/world.h"
 
-#include "mim/analyses/domfrontier.h"
-#include "mim/analyses/domtree.h"
 #include "mim/analyses/looptree.h"
 #include "mim/util/util.h"
 
@@ -106,11 +104,7 @@ size_t CFG::post_order_visit(const CFNode* n, size_t i) {
     return n_index;
 }
 
-// clang-format off
-const DomTree& CFG::domtree() const { return lazy_init(this, domtree_); }
 const LoopTree& CFG::looptree() const { return lazy_init(this, looptree_); }
-const DomFrontier& CFG::domfrontier() const { return lazy_init(this, domfrontier_); }
-// clang-format on
 
 //------------------------------------------------------------------------------
 

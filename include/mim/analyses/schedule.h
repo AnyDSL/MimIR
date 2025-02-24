@@ -6,8 +6,6 @@
 
 namespace mim {
 
-class DomTree;
-
 /// References a user.
 /// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
 class Use {
@@ -66,7 +64,6 @@ public:
     Def* root() const { return nest_->root()->mut(); }
     const CFG& cfg() const { return *cfg_; }
     const CFNode* cfg(Def* mut) const { return cfg()[mut]; }
-    const DomTree& domtree() const { return *domtree_; }
     const Uses& uses(const Def* def) const {
         if (auto i = def2uses_.find(def); i != def2uses_.end()) return i->second;
         return empty_;
@@ -77,7 +74,7 @@ public:
     ///@{
     const Nest::Node* early(const Def*);
     const Nest::Node* late(Def* curr, const Def*);
-    Def* smart(Def* curr, const Def*);
+    const Nest::Node* smart(Def* curr, const Def*);
     ///@}
 
     /// @name Schedule Mutabales
@@ -91,7 +88,6 @@ public:
         using std::swap;
         swap(s1.nest_, s2.nest_);
         swap(s1.cfg_, s2.cfg_);
-        swap(s1.domtree_, s2.domtree_);
         swap(s1.early_, s2.early_);
         swap(s1.late_, s2.late_);
         swap(s1.smart_, s2.smart_);
@@ -101,10 +97,8 @@ public:
 private:
     const Nest* nest_ = nullptr;
     std::unique_ptr<const CFG> cfg_;
-    const DomTree* domtree_ = nullptr;
     Uses empty_;
-    DefMap<const Nest::Node*> early_, late_;
-    DefMap<Def*> smart_;
+    DefMap<const Nest::Node*> early_, late_, smart_;
     DefMap<Uses> def2uses_;
 };
 

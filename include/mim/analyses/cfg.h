@@ -10,8 +10,6 @@ namespace mim {
 
 class CFNode;
 class LoopTree;
-class DomTree;
-class DomFrontier;
 
 /// @name Control Flow
 ///@{
@@ -52,11 +50,6 @@ private:
 //------------------------------------------------------------------------------
 
 /// A Control-Flow Graph.
-/// A small wrapper for the information obtained by a CFA.
-/// The template parameter @p forward determines the direction of the edges:
-/// * `true` means a conventional CFG.
-/// * `false* means that all edges in this CFG are reversed.
-/// Thus, a [dominance analysis](DomTreeBase), for example, becomes a post-dominance analysis.
 class CFG {
 public:
     template<class Value> using Map = IndexMap<CFG, const CFNode*, Value>;
@@ -83,9 +76,7 @@ public:
         auto i = nodes_.find(mut);
         return i == nodes_.end() ? nullptr : i->second;
     }
-    const DomTree& domtree() const;
     const LoopTree& looptree() const;
-    const DomFrontier& domfrontier() const;
 
     static size_t index(const CFNode* n) { return n->index_; }
 
@@ -98,9 +89,7 @@ private:
     MutMap<const CFNode*> nodes_;
     const CFNode* entry_;
     std::unique_ptr<Map<const CFNode*>> rpo_;
-    mutable std::unique_ptr<const DomTree> domtree_;
     mutable std::unique_ptr<const LoopTree> looptree_;
-    mutable std::unique_ptr<const DomFrontier> domfrontier_;
 };
 
 //------------------------------------------------------------------------------

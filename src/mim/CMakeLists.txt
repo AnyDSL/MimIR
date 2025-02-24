@@ -14,8 +14,6 @@ target_sources(libmim
         tuple.cpp
         world.cpp
         analyses/cfg.cpp
-        analyses/domfrontier.cpp
-        analyses/domtree.cpp
         analyses/looptree.cpp
         analyses/nest.cpp
         analyses/schedule.cpp

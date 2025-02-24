@@ -15,7 +15,7 @@ private:
     /// Internal wrapper for Emitter::emit that schedules @p def and invokes `child().emit_bb`.
     Value emit_(const Def* def) {
         auto place = scheduler_.smart(curr_lam_, def);
-        auto& bb   = lam2bb_[place->as_mut<Lam>()];
+        auto& bb   = lam2bb_[place->mut()->as<Lam>()];
         return child().emit_bb(bb, def);
     }
 
