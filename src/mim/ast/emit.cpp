@@ -191,7 +191,7 @@ Ref ArrowExpr::emit_decl(Emitter& e, Ref type) const { return decl_ = e.world().
 
 void ArrowExpr::emit_body(Emitter& e, Ref) const {
     decl_->set_dom(dom()->emit(e));
-    decl_->set_codom(codom()->emit(e));
+    decl_->set_codom(codom()->emit(e)); // TODO try to immutabilize
 }
 
 Ref ArrowExpr::emit_(Emitter& e) const {
@@ -232,7 +232,7 @@ void PiExpr::emit_body(Emitter& e, Ref) const { emit(e); }
 Ref PiExpr::emit_(Emitter& e) const {
     dom()->emit_type(e);
     auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
-    return dom()->pi_->set_codom(cod);
+    return dom()->set_codom(cod);
 }
 
 Ref LamExpr::emit_decl(Emitter& e, Ref) const { return lam()->emit_decl(e), lam()->def(); }
@@ -412,7 +412,7 @@ void RecDecl::emit_body(Emitter& e) const {
 }
 
 Lam* LamDecl::Dom::emit_value(Emitter& e) const {
-    lam_     = e.world().mut_lam(pi_);
+    lam_     = e.world().mut_lam(const_pi_);
     auto var = lam_->var();
 
     if (ret()) {
@@ -434,10 +434,8 @@ void LamDecl::emit_decl(Emitter& e) const {
         for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
         auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_infer_type();
 
-        for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse) {
-            dom->pi_->set_codom(cod);
-            cod = dom->pi_;
-        }
+        for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse)
+            cod = dom->set_codom(cod);
 
         auto cur    = dom(i);
         auto lam    = cur->emit_value(e);
