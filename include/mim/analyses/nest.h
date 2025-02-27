@@ -51,7 +51,7 @@ public:
         ///@}
 
     private:
-        void depends(const Node* node) const {
+        void link(const Node* node) const {
             this->depends_.emplace(node);
             node->controls_.emplace(this);
         }

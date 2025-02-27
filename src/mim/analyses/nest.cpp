@@ -39,6 +39,21 @@ void Nest::populate() {
         auto curr_node = nodes_.find(curr_mut)->second.get();
         for (auto op : curr_mut->deps()) {
             for (auto local_mut : op->local_muts()) {
+                const Node* local_node = nullptr;
+                if (auto n = mut2node(local_mut))
+                    local_node = n;
+                else if ((local_node = find_parent(local_mut, curr_node)))
+                    queue.push(local_mut);
+                else
+                    continue;
+
+                for (const Node* n = curr_node; n && n->mut(); n = n->parent()) {
+                    if (n->parent() == local_node->parent()) {
+                        n->link(local_node);
+                        break;
+                    }
+                }
+#if 0
                 auto local_node = mut2node(local_mut);
                 for (auto n = curr_node; n && n->mut(); n = n->parent()) {
                     if (!local_node) {
@@ -61,6 +76,7 @@ void Nest::populate() {
                         break;
                     }
                 }
+#endif
             }
         }
     }
