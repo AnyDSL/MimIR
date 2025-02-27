@@ -77,7 +77,6 @@ public:
         Node* parent_;
         size_t depth_;
         MutMap<const Node*> children_;
-        Vars vars_;
         mutable absl::flat_hash_set<const Node*> depends_;
         mutable absl::flat_hash_set<const Node*> controls_;
         mutable Vector<std::variant<const Node*, Vector<const Node*>>> topo_;
@@ -96,7 +95,7 @@ public:
     ///@{
     World& world() const { return world_; }
     const Node* root() const { return root_; }
-    Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
+    Vars vars() const; ///< All Var%s occurring in this Nest.
     bool contains(const Def* def) const { return vars().intersects(def->free_vars()); }
     bool is_recursive() const;
     ///@}

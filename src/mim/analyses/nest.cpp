@@ -39,8 +39,6 @@ void Nest::populate() {
         auto curr_node = nodes_.find(curr_mut)->second.get();
         for (auto op : curr_mut->deps()) {
             for (auto local_mut : op->local_muts()) {
-                if (!contains(local_mut)) continue;
-
                 auto local_node = mut2node(local_mut);
                 for (auto n = curr_node; n && n->mut(); n = n->parent()) {
                     if (!local_node) {
@@ -74,9 +72,6 @@ Nest::Node* Nest::make_node(Def* mut, Node* parent) {
     auto node = std::make_unique<Node>(mut, parent);
     auto res  = node.get();
     nodes_.emplace(mut, std::move(node));
-    if (mut) {
-        if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
-    }
     return res;
 }
 
@@ -89,6 +84,21 @@ Nest::Node* Nest::find_parent(Def* mut, Node* begin) {
     }
 
     return nullptr;
+}
+
+Vars Nest::vars() const {
+    if (!vars_) {
+        auto vec = Vector<const Var*>();
+        vec.reserve(num_nodes());
+        for (const auto& [mut, _] : nodes_) {
+            if (mut) {
+                if (auto var = mut->has_var()) vec.emplace_back(var);
+            }
+        }
+        vars_ = world().vars().create(vec.begin(), vec.end());
+    }
+
+    return vars_;
 }
 
 bool Nest::is_recursive() const {
