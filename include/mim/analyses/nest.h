@@ -51,7 +51,7 @@ public:
         ///@}
 
     private:
-        void link(const Node* node) const {
+        void depends(const Node* node) const {
             this->depends_.emplace(node);
             node->controls_.emplace(this);
         }
@@ -96,7 +96,7 @@ public:
     ///@{
     World& world() const { return world_; }
     const Node* root() const { return root_; }
-    Vars vars() const; ///< All Var%s occurring in this Nest - computed lazily.
+    Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
     bool contains(const Def* def) const { return vars().intersects(def->free_vars()); }
     bool is_recursive() const;
     ///@}
@@ -127,8 +127,8 @@ private:
 
     World& world_;
     absl::flat_hash_map<Def*, std::unique_ptr<Node>> nodes_;
-    Node* root_;
     mutable Vars vars_;
+    Node* root_;
 };
 
 } // namespace mim

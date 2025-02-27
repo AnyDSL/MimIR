@@ -38,18 +38,20 @@ void Nest::populate() {
         auto curr      = pop(queue);
         auto curr_node = nodes_.find(curr)->second.get();
         for (auto op : curr->deps()) {
-            for (auto mut : op->local_muts()) {
-                const Node* mut_node = nullptr;
-                if (auto n = mut2node(mut))
-                    mut_node = n;
-                else if ((mut_node = find_parent(mut, curr_node)))
-                    queue.push(mut);
+            for (auto local_mut : op->local_muts()) {
+                if (!contains(local_mut)) continue;
+
+                const Node* local_node = nullptr;
+                if (auto n = mut2node(local_mut))
+                    local_node = n;
+                else if ((local_node = find_parent(local_mut, curr_node)))
+                    queue.push(local_mut);
                 else
                     continue;
 
                 for (const Node* n = curr_node; n && n->mut(); n = n->parent()) {
-                    if (n->parent() == mut_node->parent()) {
-                        n->link(mut_node);
+                    if (n->parent() == local_node->parent()) {
+                        n->depends(local_node);
                         break;
                     }
                 }
@@ -64,6 +66,9 @@ Nest::Node* Nest::make_node(Def* mut, Node* parent) {
     auto node = std::make_unique<Node>(mut, parent);
     auto res  = node.get();
     nodes_.emplace(mut, std::move(node));
+    if (mut) {
+        if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
+    }
     return res;
 }
 
@@ -86,21 +91,6 @@ bool Nest::is_recursive() const {
         }
     }
     return false;
-}
-
-Vars Nest::vars() const {
-    if (!vars_) {
-        auto vec = Vector<const Var*>();
-        vec.reserve(num_nodes());
-        for (const auto& [mut, _] : nodes()) {
-            if (mut) {
-                if (auto var = mut->has_var()) vec.emplace_back(var);
-            }
-        }
-        vars_ = world().vars().create(vec.begin(), vec.end());
-    }
-
-    return vars_;
 }
 
 const Nest::Node* Nest::lca(const Node* n, const Node* m) {
@@ -135,11 +125,11 @@ int Nest::Node::dfs(int i, const Node* parent, Stack& stack) const {
         const Node* node;
         int num = 0;
         do {
-            node = pop(stack);
-            ++num;
+            node                 = pop(stack);
             node->impl_.on_stack = false;
             node->impl_.low      = this->impl_.idx;
             scc.emplace_back(node);
+            ++num;
         } while (node != this);
 
         if (num == 1 && !this->depends().contains(this)) {
@@ -151,25 +141,6 @@ int Nest::Node::dfs(int i, const Node* parent, Stack& stack) const {
     }
 
     return i;
-    //
-    // stack.emplace(this);
-    // this->impl_.on_stack = true;
-    // this->impl_.idx = this->impl_.low = i++;
-    //
-    // for (auto next : depends()) {
-    //     if (next->impl_.idx == Unvisited) i = next->dfs(i, stack);
-    //     if (next->impl_.on_stack) this->impl_.low = std::min(this->impl_.low, next->impl_.low);
-    // }
-    //
-    // if (this->impl_.idx == this->impl_.low) {
-    //     for (auto node = pop(stack);; node = pop(stack)) {
-    //         node->impl_.on_stack = false;
-    //         node->impl_.low      = this->impl_.idx;
-    //         if (node == this) break;
-    //     }
-    // }
-    //
-    // return i;
 }
 
 } // namespace mim
