@@ -44,10 +44,10 @@ void Nest::populate() {
                 const Node* local_node = nullptr;
                 if (auto n = mut2node(local_mut))
                     local_node = n;
-                else if ((local_node = find_parent(local_mut, curr_node)))
+                else {
+                    local_node = find_parent(local_mut, curr_node);
                     queue.push(local_mut);
-                else
-                    continue;
+                }
 
                 for (const Node* n = curr_node; n && n->mut(); n = n->parent()) {
                     if (n->parent() == local_node->parent()) {
@@ -55,30 +55,6 @@ void Nest::populate() {
                         break;
                     }
                 }
-#if 0
-                auto local_node = mut2node(local_mut);
-                for (auto n = curr_node; n && n->mut(); n = n->parent()) {
-                    if (!local_node) {
-                        if (auto var = n->mut()->has_var()) {
-                            if (local_mut->free_vars().contains(var)) {
-                                local_node = make_node(local_mut, n);
-                                queue.push(local_mut);
-                            } else {
-                                continue;
-                            }
-                        } else {
-                            continue;
-                        }
-                    } else {
-                        continue;
-                    }
-
-                    if (n->parent() == local_node->parent()) {
-                        n->depends(local_node);
-                        break;
-                    }
-                }
-#endif
             }
         }
     }
