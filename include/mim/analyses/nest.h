@@ -2,6 +2,8 @@
 
 #include "mim/def.h"
 
+#include "absl/container/flat_hash_set.h"
+
 namespace mim {
 
 /// Builds a nesting tree of all *immutables*/binders.
@@ -40,14 +42,45 @@ public:
         }
         ///@}
 
+        /// @name depends/controls
+        ///@{
+        const auto& depends() const { return depends_; }
+        const auto& controls() const { return controls_; }
+        size_t num_depends() const { return depends().size(); }
+        const auto& topo() const { return topo_; }
+        ///@}
+
     private:
+        void link(const Node* node) const {
+            this->depends_.emplace(node);
+            node->controls_.emplace(this);
+        }
         void dot(Tab, std::ostream&) const;
+
+        /// @name Find SCCs
+        ///@{
+        using Stack = std::stack<const Node*>;
+        void tarjan() const;
+        int dfs(int, const Node*, Stack&) const;
+        ///@}
+
+        struct {
+            unsigned idx      : 30 = 0;
+            unsigned on_stack : 1  = false;
+            unsigned visited  : 1  = false;
+            unsigned low      : 30 = 0;
+            unsigned closed   : 1  = false;
+            unsigned rec      : 1  = true;
+        } mutable impl_;
 
         Def* mut_;
         Node* parent_;
         size_t depth_;
         MutMap<const Node*> children_;
         Vars vars_;
+        mutable absl::flat_hash_set<const Node*> depends_;
+        mutable absl::flat_hash_set<const Node*> controls_;
+        mutable Vector<std::variant<const Node*, Vector<const Node*>>> topo_;
 
         friend class Nest;
     };
@@ -91,7 +124,6 @@ private:
     void populate();
     Node* make_node(Def*, Node* parent = nullptr);
     Node* find_parent(Def*, Node*);
-    void dependencies();
 
     World& world_;
     absl::flat_hash_map<Def*, std::unique_ptr<Node>> nodes_;

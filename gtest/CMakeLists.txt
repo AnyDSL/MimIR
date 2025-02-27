@@ -3,6 +3,7 @@ target_sources(mim-gtest
     PRIVATE
         helpers.cpp
         lexer.cpp
+        graph.cpp
         test.cpp
         restricted_dep_types.cpp
         helpers.h

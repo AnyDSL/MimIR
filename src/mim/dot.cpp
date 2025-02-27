@@ -167,15 +167,31 @@ void Nest::dot(std::ostream& os) const {
     Tab tab;
     (tab++).println(os, "digraph {{");
     tab.println(os, "ordering=out;");
-    tab.println(os, "splines=false;");
     tab.println(os, "node [shape=box,style=filled];");
     root()->dot(tab, os);
     (--tab).println(os, "}}");
 }
 
 void Nest::Node::dot(Tab tab, std::ostream& os) const {
+    std::string s;
+    for (const auto& n : topo_) {
+        if (auto scc = std::get_if<Vector<const Node*>>(&n)) {
+            s += '[';
+            for (auto n : *scc) s += n->name() + ' ';
+            s += ']';
+        } else {
+            auto o = std::get<const Node*>(n);
+            s += o->name() + ' ';
+        }
+    }
+
+    for (auto dep : depends())
+        tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", this->name(), dep->name());
+
+    tab.println(os, "\"{}\" [label=\"{}- {} - {}\",tooltip=\"{}\"]", name(), name(), (unsigned)impl_.idx,
+                (unsigned)impl_.low, s);
     for (const auto& [_, child] : children()) {
-        tab.println(os, "\"{}\" -> \"{}\"", name(), child->name());
+        tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);
     }
 }

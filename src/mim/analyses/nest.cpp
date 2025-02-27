@@ -35,16 +35,29 @@ void Nest::populate() {
         for (auto [mut, _] : root()->children()) queue.push(mut);
 
     while (!queue.empty()) {
-        auto curr = pop(queue);
-        auto node = nodes_.find(curr)->second.get();
+        auto curr      = pop(queue);
+        auto curr_node = nodes_.find(curr)->second.get();
         for (auto op : curr->deps()) {
             for (auto mut : op->local_muts()) {
-                if (!mut2node(mut)) {
-                    if (find_parent(mut, node)) queue.push(mut);
+                const Node* mut_node = nullptr;
+                if (auto n = mut2node(mut))
+                    mut_node = n;
+                else if ((mut_node = find_parent(mut, curr_node)))
+                    queue.push(mut);
+                else
+                    continue;
+
+                for (const Node* n = curr_node; n && n->mut(); n = n->parent()) {
+                    if (n->parent() == mut_node->parent()) {
+                        n->link(mut_node);
+                        break;
+                    }
                 }
             }
         }
     }
+
+    for (const auto& [_, node] : nodes_) node->tarjan();
 }
 
 Nest::Node* Nest::make_node(Def* mut, Node* parent) {
@@ -90,10 +103,6 @@ Vars Nest::vars() const {
     return vars_;
 }
 
-void Nest::dependencies() {
-    // for (auto [mut, main.cpp
-}
-
 const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     while (n->depth() < m->depth()) m = m->parent();
     while (m->depth() < n->depth()) n = n->parent();
@@ -102,6 +111,65 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
         m = m->parent();
     }
     return n;
+}
+
+void Nest::Node::tarjan() const {
+    Stack stack;
+    for (int i = 0; const auto& [_, node] : children())
+        if (!node->impl_.visited) i = node->dfs(i, this, stack);
+}
+
+int Nest::Node::dfs(int i, const Node* parent, Stack& stack) const {
+    this->impl_.idx = this->impl_.low = i++;
+    this->impl_.visited               = true;
+    this->impl_.on_stack              = true;
+    stack.emplace(this);
+
+    for (auto dep : this->depends()) {
+        if (!dep->impl_.visited) i = dep->dfs(i, parent, stack);
+        if (dep->impl_.on_stack) this->impl_.low = std::min(this->impl_.low, dep->impl_.low);
+    }
+
+    if (this->impl_.idx == this->impl_.low) {
+        Vector<const Node*> scc;
+        const Node* node;
+        int num = 0;
+        do {
+            node = pop(stack);
+            ++num;
+            node->impl_.on_stack = false;
+            node->impl_.low      = this->impl_.idx;
+            scc.emplace_back(node);
+        } while (node != this);
+
+        if (num == 1 && !this->depends().contains(this)) {
+            this->impl_.rec = false;
+            parent_->topo_.emplace_back(this);
+        } else {
+            parent_->topo_.emplace_back(scc);
+        }
+    }
+
+    return i;
+    //
+    // stack.emplace(this);
+    // this->impl_.on_stack = true;
+    // this->impl_.idx = this->impl_.low = i++;
+    //
+    // for (auto next : depends()) {
+    //     if (next->impl_.idx == Unvisited) i = next->dfs(i, stack);
+    //     if (next->impl_.on_stack) this->impl_.low = std::min(this->impl_.low, next->impl_.low);
+    // }
+    //
+    // if (this->impl_.idx == this->impl_.low) {
+    //     for (auto node = pop(stack);; node = pop(stack)) {
+    //         node->impl_.on_stack = false;
+    //         node->impl_.low      = this->impl_.idx;
+    //         if (node == this) break;
+    //     }
+    // }
+    //
+    // return i;
 }
 
 } // namespace mim
