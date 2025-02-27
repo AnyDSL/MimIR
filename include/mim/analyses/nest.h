@@ -95,7 +95,7 @@ public:
     ///@{
     World& world() const { return world_; }
     const Node* root() const { return root_; }
-    Vars vars() const; ///< All Var%s occurring in this Nest.
+    Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
     bool contains(const Def* def) const { return vars().intersects(def->free_vars()); }
     bool is_recursive() const;
     ///@}
