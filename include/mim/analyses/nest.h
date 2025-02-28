@@ -71,6 +71,7 @@ public:
             unsigned low      : 30 = 0;
             unsigned closed   : 1  = false;
             unsigned rec      : 1  = true;
+            Node* curr_child       = nullptr;
         } mutable impl_;
 
         Def* mut_;
@@ -123,6 +124,7 @@ public:
 
 private:
     void populate();
+    void deps(Node*);
     Node* make_node(Def*, Node* parent = nullptr);
     Node* find_parent(Def*, Node*);
 

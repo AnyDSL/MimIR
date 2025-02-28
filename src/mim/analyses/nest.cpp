@@ -27,7 +27,7 @@ Nest::Nest(World& world)
 }
 
 void Nest::populate() {
-    std::stack<Node*> stack;
+    std::queue<Node*> stack;
 
     if (root()->mut())
         stack.push(root());
@@ -46,6 +46,7 @@ void Nest::populate() {
                 else {
                     local_node = find_parent(local_mut, curr_node);
                     stack.push(local_node);
+                    curr_node->impl_.curr_child = local_node;
                 }
 
                 for (auto n = curr_node; n && n->mut(); n = n->parent()) {
@@ -58,6 +59,7 @@ void Nest::populate() {
         }
     }
 
+    deps(root());
     for (const auto& [_, node] : nodes_) node->tarjan();
 }
 
@@ -80,6 +82,26 @@ Nest::Node* Nest::find_parent(Def* mut, Node* begin) {
     }
 
     return nullptr;
+}
+
+void Nest::deps(Node* curr) {
+    if (curr->mut()) {
+        for (auto op : curr->mut()->deps()) {
+            for (auto local_mut : op->local_muts()) {
+                if (auto local_node = mut2node(local_mut)) {
+                    auto curr_child = local_node->parent()->impl_.curr_child;
+                    assert(local_node->parent()->children().contains(curr_child->mut()));
+                    if (curr->depth() >= local_node->depth()) curr_child->link(local_node);
+                }
+            }
+        }
+    }
+
+    for (auto [_, child] : curr->children()) {
+        curr->impl_.curr_child = child;
+        deps(child);
+        curr->impl_.curr_child = nullptr;
+    }
 }
 
 bool Nest::is_recursive() const {
