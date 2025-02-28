@@ -40,22 +40,16 @@ void Nest::populate() {
             for (auto local_mut : op->local_muts()) {
                 if (!local_mut->free_vars().intersects(vars_)) continue;
 
-                const Node* local_node = nullptr;
-                if (auto n = mut2node(local_mut))
-                    local_node = n;
-                else {
-                    local_node = find_parent(local_mut, curr_node);
-                    stack.push(local_node);
-                }
-
-#if 0
-                for (auto n = curr_node; n && n->mut(); n = n->parent()) {
-                    if (n->parent() == local_node->parent()) {
-                        n->link(local_node);
-                        break;
+                if (!mut2node(local_mut)) {
+                    for (auto node = curr_node; node && node->mut(); node = node->parent()) {
+                        if (auto var = node->mut()->has_var()) {
+                            if (local_mut->free_vars().contains(var)) {
+                                stack.push(make_node(local_mut, node));
+                                break;
+                            }
+                        }
                     }
                 }
-#endif
             }
         }
     }
@@ -72,17 +66,6 @@ Nest::Node* Nest::make_node(Def* mut, const Node* parent) {
         if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
     }
     return res;
-}
-
-/// Tries to place @p mut as high as possible.
-Nest::Node* Nest::find_parent(Def* mut, const Node* begin) {
-    for (auto node = begin; node && node->mut(); node = node->parent()) {
-        if (auto var = node->mut()->has_var()) {
-            if (mut->free_vars().contains(var)) return make_node(mut, node);
-        }
-    }
-
-    return nullptr;
 }
 
 void Nest::deps(const Node* curr) {

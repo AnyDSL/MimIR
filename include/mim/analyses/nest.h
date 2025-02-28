@@ -124,7 +124,6 @@ private:
     void populate();
     void deps(const Node*);
     Node* make_node(Def*, const Node* parent = nullptr);
-    Node* find_parent(Def*, const Node*);
 
     World& world_;
     absl::flat_hash_map<Def*, std::unique_ptr<const Node>> nodes_;
