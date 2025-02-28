@@ -51,7 +51,7 @@ public:
         ///@}
 
     private:
-        void link(const Node* node) const {
+        void link(Node* node) {
             this->depends_.emplace(node);
             node->controls_.emplace(this);
         }
@@ -59,9 +59,9 @@ public:
 
         /// @name Find SCCs
         ///@{
-        using Stack = std::stack<const Node*>;
-        void tarjan() const;
-        int dfs(int, const Node*, Stack&) const;
+        using Stack = std::stack<Node*>;
+        void tarjan();
+        int dfs(int, Node*, Stack&);
         ///@}
 
         struct {
@@ -76,10 +76,10 @@ public:
         Def* mut_;
         Node* parent_;
         size_t depth_;
-        MutMap<const Node*> children_;
-        mutable absl::flat_hash_set<const Node*> depends_;
-        mutable absl::flat_hash_set<const Node*> controls_;
-        mutable Vector<std::variant<const Node*, Vector<const Node*>>> topo_;
+        mutable MutMap<Node*> children_;
+        mutable absl::flat_hash_set<Node*> depends_;
+        mutable absl::flat_hash_set<Node*> controls_;
+        mutable Vector<std::variant<Node*, Vector<Node*>>> topo_;
 
         friend class Nest;
     };
@@ -94,6 +94,7 @@ public:
     /// @name Getters
     ///@{
     World& world() const { return world_; }
+    Node* root() { return root_; }
     const Node* root() const { return root_; }
     Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
     bool contains(const Def* def) const { return vars().intersects(def->free_vars()); }
@@ -104,7 +105,8 @@ public:
     ///@{
     const auto& nodes() const { return nodes_; }
     size_t num_nodes() const { return nodes_.size(); }
-    const Node* mut2node(Def* mut) const {
+    const Node* mut2node(Def* mut) const { return const_cast<Nest*>(this)->mut2node(mut); }
+    Node* mut2node(Def* mut) {
         if (auto i = nodes_.find(mut); i != nodes_.end()) return i->second.get();
         return nullptr;
     }
@@ -126,7 +128,7 @@ private:
 
     World& world_;
     absl::flat_hash_map<Def*, std::unique_ptr<Node>> nodes_;
-    mutable Vars vars_;
+    Vars vars_;
     Node* root_;
 };
 

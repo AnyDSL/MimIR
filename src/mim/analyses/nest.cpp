@@ -27,29 +27,28 @@ Nest::Nest(World& world)
 }
 
 void Nest::populate() {
-    std::queue<Def*> queue;
+    std::stack<Node*> stack;
 
-    if (auto mut = root()->mut())
-        queue.push(mut);
+    if (root()->mut())
+        stack.push(root());
     else
-        for (auto [mut, _] : root()->children()) queue.push(mut);
+        for (auto [_, child] : root()->children()) stack.push(child);
 
-    while (!queue.empty()) {
-        auto curr_mut  = pop(queue);
-        auto curr_node = nodes_.find(curr_mut)->second.get();
-        for (auto op : curr_mut->deps()) {
+    while (!stack.empty()) {
+        auto curr_node = pop(stack);
+        for (auto op : curr_node->mut()->deps()) {
             for (auto local_mut : op->local_muts()) {
                 if (!local_mut->free_vars().intersects(vars_)) continue;
 
-                const Node* local_node = nullptr;
+                Node* local_node = nullptr;
                 if (auto n = mut2node(local_mut))
                     local_node = n;
                 else {
                     local_node = find_parent(local_mut, curr_node);
-                    queue.push(local_mut);
+                    stack.push(local_node);
                 }
 
-                for (const Node* n = curr_node; n && n->mut(); n = n->parent()) {
+                for (auto n = curr_node; n && n->mut(); n = n->parent()) {
                     if (n->parent() == local_node->parent()) {
                         n->link(local_node);
                         break;
@@ -74,7 +73,7 @@ Nest::Node* Nest::make_node(Def* mut, Node* parent) {
 
 /// Tries to place @p mut as high as possible.
 Nest::Node* Nest::find_parent(Def* mut, Node* begin) {
-    for (Node* node = begin; node && node->mut(); node = node->parent()) {
+    for (auto node = begin; node && node->mut(); node = node->parent()) {
         if (auto var = node->mut()->has_var()) {
             if (mut->free_vars().contains(var)) return make_node(mut, node);
         }
@@ -103,13 +102,13 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     return n;
 }
 
-void Nest::Node::tarjan() const {
+void Nest::Node::tarjan() {
     Stack stack;
     for (int i = 0; const auto& [_, node] : children())
         if (!node->impl_.visited) i = node->dfs(i, this, stack);
 }
 
-int Nest::Node::dfs(int i, const Node* parent, Stack& stack) const {
+int Nest::Node::dfs(int i, Node* parent, Stack& stack) {
     this->impl_.idx = this->impl_.low = i++;
     this->impl_.visited               = true;
     this->impl_.on_stack              = true;
@@ -121,8 +120,8 @@ int Nest::Node::dfs(int i, const Node* parent, Stack& stack) const {
     }
 
     if (this->impl_.idx == this->impl_.low) {
-        Vector<const Node*> scc;
-        const Node* node;
+        Vector<Node*> scc;
+        Node* node;
         int num = 0;
         do {
             node                 = pop(stack);

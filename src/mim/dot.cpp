@@ -175,12 +175,12 @@ void Nest::dot(std::ostream& os) const {
 void Nest::Node::dot(Tab tab, std::ostream& os) const {
     std::string s;
     for (const auto& n : topo_) {
-        if (auto scc = std::get_if<Vector<const Node*>>(&n)) {
+        if (auto scc = std::get_if<Vector<Node*>>(&n)) {
             s += '[';
             for (auto n : *scc) s += n->name() + ' ';
             s += ']';
         } else {
-            auto o = std::get<const Node*>(n);
+            auto o = std::get<Node*>(n);
             s += o->name() + ' ';
         }
     }
