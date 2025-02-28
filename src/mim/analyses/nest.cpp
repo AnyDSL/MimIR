@@ -27,7 +27,7 @@ Nest::Nest(World& world)
 }
 
 void Nest::populate() {
-    std::queue<Node*> stack;
+    std::queue<const Node*> stack;
 
     if (root()->mut())
         stack.push(root());
@@ -40,21 +40,22 @@ void Nest::populate() {
             for (auto local_mut : op->local_muts()) {
                 if (!local_mut->free_vars().intersects(vars_)) continue;
 
-                Node* local_node = nullptr;
+                const Node* local_node = nullptr;
                 if (auto n = mut2node(local_mut))
                     local_node = n;
                 else {
                     local_node = find_parent(local_mut, curr_node);
                     stack.push(local_node);
-                    curr_node->impl_.curr_child = local_node;
                 }
 
+#if 0
                 for (auto n = curr_node; n && n->mut(); n = n->parent()) {
                     if (n->parent() == local_node->parent()) {
                         n->link(local_node);
                         break;
                     }
                 }
+#endif
             }
         }
     }
@@ -63,7 +64,7 @@ void Nest::populate() {
     for (const auto& [_, node] : nodes_) node->tarjan();
 }
 
-Nest::Node* Nest::make_node(Def* mut, Node* parent) {
+Nest::Node* Nest::make_node(Def* mut, const Node* parent) {
     auto node = std::make_unique<Node>(mut, parent);
     auto res  = node.get();
     nodes_.emplace(mut, std::move(node));
@@ -74,7 +75,7 @@ Nest::Node* Nest::make_node(Def* mut, Node* parent) {
 }
 
 /// Tries to place @p mut as high as possible.
-Nest::Node* Nest::find_parent(Def* mut, Node* begin) {
+Nest::Node* Nest::find_parent(Def* mut, const Node* begin) {
     for (auto node = begin; node && node->mut(); node = node->parent()) {
         if (auto var = node->mut()->has_var()) {
             if (mut->free_vars().contains(var)) return make_node(mut, node);
@@ -84,14 +85,19 @@ Nest::Node* Nest::find_parent(Def* mut, Node* begin) {
     return nullptr;
 }
 
-void Nest::deps(Node* curr) {
+void Nest::deps(const Node* curr) {
     if (curr->mut()) {
         for (auto op : curr->mut()->deps()) {
             for (auto local_mut : op->local_muts()) {
                 if (auto local_node = mut2node(local_mut)) {
-                    auto curr_child = local_node->parent()->impl_.curr_child;
-                    assert(local_node->parent()->children().contains(curr_child->mut()));
-                    if (curr->depth() >= local_node->depth()) curr_child->link(local_node);
+                    if (local_node == curr)
+                        local_node->link(local_node);
+                    else if (auto parent = local_node->parent()) {
+                        if (auto curr_child = parent->impl_.curr_child) {
+                            assert(parent->children().contains(curr_child->mut()));
+                            curr_child->link(local_node);
+                        }
+                    }
                 }
             }
         }
@@ -124,13 +130,13 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     return n;
 }
 
-void Nest::Node::tarjan() {
+void Nest::Node::tarjan() const {
     Stack stack;
     for (int i = 0; const auto& [_, node] : children())
         if (!node->impl_.visited) i = node->dfs(i, this, stack);
 }
 
-int Nest::Node::dfs(int i, Node* parent, Stack& stack) {
+int Nest::Node::dfs(int i, const Node* parent, Stack& stack) const {
     this->impl_.idx = this->impl_.low = i++;
     this->impl_.visited               = true;
     this->impl_.on_stack              = true;
@@ -142,8 +148,8 @@ int Nest::Node::dfs(int i, Node* parent, Stack& stack) {
     }
 
     if (this->impl_.idx == this->impl_.low) {
-        Vector<Node*> scc;
-        Node* node;
+        Vector<const Node*> scc;
+        const Node* node;
         int num = 0;
         do {
             node                 = pop(stack);

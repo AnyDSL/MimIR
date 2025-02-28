@@ -11,7 +11,7 @@ class Nest {
 public:
     class Node {
     public:
-        Node(Def* mut, Node* parent)
+        Node(Def* mut, const Node* parent)
             : mut_(mut)
             , parent_(parent)
             , depth_(parent ? parent->depth() + 1 : 0) {
@@ -20,7 +20,6 @@ public:
 
         /// @name Getters
         ///@{
-        Node* parent() { return parent_; }
         const Node* parent() const { return parent_; }
         /// @warning May be `nullptr`, if it's a virtual root comprising several Node%s.
         Def* mut() const {
@@ -51,17 +50,17 @@ public:
         ///@}
 
     private:
-        void link(Node* node) {
+        void link(const Node* node) const {
             this->depends_.emplace(node);
             node->controls_.emplace(this);
         }
         void dot(Tab, std::ostream&) const;
 
+        using Stack = std::stack<const Node*>;
         /// @name Find SCCs
         ///@{
-        using Stack = std::stack<Node*>;
-        void tarjan();
-        int dfs(int, Node*, Stack&);
+        void tarjan() const;
+        int dfs(int, const Node*, Stack&) const;
         ///@}
 
         struct {
@@ -71,16 +70,16 @@ public:
             unsigned low      : 30 = 0;
             unsigned closed   : 1  = false;
             unsigned rec      : 1  = true;
-            Node* curr_child       = nullptr;
+            const Node* curr_child = nullptr;
         } mutable impl_;
 
         Def* mut_;
-        Node* parent_;
+        const Node* parent_;
         size_t depth_;
-        mutable MutMap<Node*> children_;
-        mutable absl::flat_hash_set<Node*> depends_;
-        mutable absl::flat_hash_set<Node*> controls_;
-        mutable Vector<std::variant<Node*, Vector<Node*>>> topo_;
+        mutable MutMap<const Node*> children_;
+        mutable absl::flat_hash_set<const Node*> depends_;
+        mutable absl::flat_hash_set<const Node*> controls_;
+        mutable Vector<std::variant<const Node*, Vector<const Node*>>> topo_;
 
         friend class Nest;
     };
@@ -106,8 +105,7 @@ public:
     ///@{
     const auto& nodes() const { return nodes_; }
     size_t num_nodes() const { return nodes_.size(); }
-    const Node* mut2node(Def* mut) const { return const_cast<Nest*>(this)->mut2node(mut); }
-    Node* mut2node(Def* mut) {
+    const Node* mut2node(Def* mut) const {
         if (auto i = nodes_.find(mut); i != nodes_.end()) return i->second.get();
         return nullptr;
     }
@@ -124,12 +122,12 @@ public:
 
 private:
     void populate();
-    void deps(Node*);
-    Node* make_node(Def*, Node* parent = nullptr);
-    Node* find_parent(Def*, Node*);
+    void deps(const Node*);
+    Node* make_node(Def*, const Node* parent = nullptr);
+    Node* find_parent(Def*, const Node*);
 
     World& world_;
-    absl::flat_hash_map<Def*, std::unique_ptr<Node>> nodes_;
+    absl::flat_hash_map<Def*, std::unique_ptr<const Node>> nodes_;
     Vars vars_;
     Node* root_;
 };
