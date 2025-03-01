@@ -1,9 +1,9 @@
 #pragma once
 
 #include "mim/def.h"
+#include "mim/nest.h"
 #include "mim/rewrite.h"
 
-#include "mim/analyses/nest.h"
 #include "mim/pass/pass.h"
 
 namespace mim {

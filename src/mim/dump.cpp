@@ -3,8 +3,8 @@
 #include <fe/assert.h>
 
 #include "mim/driver.h"
+#include "mim/nest.h"
 
-#include "mim/analyses/nest.h"
 #include "mim/ast/tok.h"
 #include "mim/util/util.h"
 

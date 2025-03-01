@@ -1,8 +1,8 @@
 #pragma once
 
+#include "mim/schedule.h"
 #include "mim/world.h"
 
-#include "mim/analyses/schedule.h"
 #include "mim/phase/phase.h"
 
 namespace mim {
@@ -53,8 +53,8 @@ protected:
             return;
         }
 
-        CFG cfg(nest);
-        auto muts = Scheduler::schedule(cfg); // TODO make sure to not compute twice
+        auto muts = Scheduler::schedule(nest); // TODO make sure to not compute twice
+        for (auto mut : muts) outln("{}", mut);
 
         // make sure that we don't need to rehash later on
         for (auto mut : muts)

@@ -1,18 +1,14 @@
-#include "mim/analyses/schedule.h"
+#include "mim/schedule.h"
 
-#include <memory>
 #include <queue>
+#include <ranges>
 
 #include "mim/world.h"
-
-#include "mim/analyses/cfg.h"
-#include "mim/analyses/looptree.h"
 
 namespace mim {
 
 Scheduler::Scheduler(const Nest& nest)
-    : nest_(&nest)
-    , cfg_(std::make_unique<CFG>(nest)) {
+    : nest_(&nest) {
     std::queue<const Def*> queue;
     DefSet done;
 
@@ -88,7 +84,7 @@ const Nest::Node* Scheduler::smart(Def* curr_mut, const Def* def) {
     auto l = late(curr_mut, def);
     auto s = l;
 
-    int depth = cfg().looptree()[cfg(l->mut())]->depth();
+    int depth = l->loop_depth();
     for (auto i = l; i != e;) {
         i = i->parent();
 
@@ -98,21 +94,32 @@ const Nest::Node* Scheduler::smart(Def* curr_mut, const Def* def) {
             break;
         }
 
-        if (int cur_depth = cfg().looptree()[cfg(i->mut())]->depth(); cur_depth < depth) {
+        if (int curr_depth = i->loop_depth(); curr_depth < depth) {
             s     = i;
-            depth = cur_depth;
+            depth = curr_depth;
         }
     }
 
     return smart_[def] = s;
 }
 
-Scheduler::Schedule Scheduler::schedule(const CFG& cfg) {
-    // until we have sth better simply use the RPO of the CFG
-    Schedule result;
-    for (auto n : cfg.reverse_post_order()) result.emplace_back(n->mut());
+static void post_order(const Nest& nest, const Nest::Node* node, Scheduler::Schedule& res, MutSet& done) {
+    if (!node->mut()->isa<Lam>()) return;
+    if (auto [_, ins] = done.emplace(node->mut()); !ins) return;
+    for (auto op : node->mut()->ops()) {
+        for (auto mut : op->local_muts())
+            if (auto next = nest.mut2node(mut)) post_order(nest, next, res, done);
+    }
+    res.emplace_back(node->mut());
+}
 
-    return result;
+// untill we have sth better ...
+Scheduler::Schedule Scheduler::schedule(const Nest& nest) {
+    Schedule schedule;
+    MutSet done;
+    post_order(nest, nest.root(), schedule, done);
+    std::ranges::reverse(schedule); // post-order → reverse post-order
+    return schedule;
 }
 
 } // namespace mim

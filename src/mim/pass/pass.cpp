@@ -3,8 +3,6 @@
 #include "mim/phase/phase.h"
 #include "mim/util/util.h"
 
-#include "absl/container/fixed_array.h"
-
 namespace mim {
 
 Pass::Pass(PassMan& man, std::string_view name)

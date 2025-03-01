@@ -1,6 +1,6 @@
 #include "mim/pass/lam_spec.h"
 
-#include "mim/analyses/nest.h"
+#include "mim/nest.h"
 
 // TODO This is supposed to recreate what lower2cff did, but we should really consider another strategy and nuke this.
 

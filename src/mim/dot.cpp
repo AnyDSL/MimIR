@@ -3,9 +3,9 @@
 #include <sstream>
 
 #include "mim/def.h"
+#include "mim/nest.h"
 #include "mim/world.h"
 
-#include "mim/analyses/nest.h"
 #include "mim/util/print.h"
 
 // Do not zonk here!

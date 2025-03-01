@@ -1,8 +1,6 @@
 #pragma once
 
-#include <memory>
-
-#include "mim/analyses/cfg.h"
+#include "mim/nest.h"
 
 namespace mim {
 
@@ -62,8 +60,6 @@ public:
     World& world() { return nest().world(); }
     const Nest& nest() const { return *nest_; }
     Def* root() const { return nest_->root()->mut(); }
-    const CFG& cfg() const { return *cfg_; }
-    const CFNode* cfg(Def* mut) const { return cfg()[mut]; }
     const Uses& uses(const Def* def) const {
         if (auto i = def2uses_.find(def); i != def2uses_.end()) return i->second;
         return empty_;
@@ -80,14 +76,13 @@ public:
     /// @name Schedule Mutabales
     /// Order of Mutables within a Scope.
     ///@{
-    using Schedule = std::vector<Def*>;
-    static Schedule schedule(const CFG&);
+    using Schedule = Vector<Def*>;
+    static Schedule schedule(const Nest&);
     ///@}
 
     friend void swap(Scheduler& s1, Scheduler& s2) noexcept {
         using std::swap;
         swap(s1.nest_, s2.nest_);
-        swap(s1.cfg_, s2.cfg_);
         swap(s1.early_, s2.early_);
         swap(s1.late_, s2.late_);
         swap(s1.smart_, s2.smart_);
@@ -96,7 +91,6 @@ public:
 
 private:
     const Nest* nest_ = nullptr;
-    std::unique_ptr<const CFG> cfg_;
     Uses empty_;
     DefMap<const Nest::Node*> early_, late_, smart_;
     DefMap<Uses> def2uses_;

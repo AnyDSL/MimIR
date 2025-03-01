@@ -1,6 +1,6 @@
 #include "mim/plug/mem/phase/add_mem.h"
 
-#include <mim/analyses/schedule.h>
+#include <mim/schedule.h>
 
 #include "mim/plug/mem/mem.h"
 
