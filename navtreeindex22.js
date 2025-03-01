@@ -1,5 +1,6 @@
 var NAVTREEINDEX22 =
 {
+"namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91ab28354b543375bfa94dabaeda722927f":[3,0,1,4,7,21,0],
 "namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91af08d9f9dd085b62425e34097fc724a5f":[3,0,1,4,7,21,9],
 "namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91afabcaa97871555b68aa095335975e613":[3,0,1,4,7,21,12],
 "namespacemim_1_1plug_1_1math.html#a7ecab434327a2457a41b469843cd46f8":[3,0,1,4,7,39],
@@ -248,6 +249,5 @@ var NAVTREEINDEX22 =
 "namespacestd.html#a6aa6d0b720bc0eed0c69a3c8b6c75bb8":[6,0,2,1,5,9,2,0],
 "namespacestd.html#ac66b922e36422ccb6917ecff3d3389f4":[3,0,2,2],
 "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4":[6,0,2,1,5,9,2],
-"nest_8cpp.html":[6,0,3,1,14],
-"nest_8cpp_source.html":[6,0,3,1,14]
+"nest_8cpp.html":[6,0,3,1,14]
 };

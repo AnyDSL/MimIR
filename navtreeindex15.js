@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"clos_2autogen_8h_source.html":[6,0,0,1,0,0,2,0],
+"clos_2normalizers_8cpp.html":[6,0,3,1,4,2,3],
 "clos_2normalizers_8cpp.html#a7a02c6fe7dd6e0bd61776a789e91c54b":[6,0,3,1,4,2,3,0],
 "clos_2normalizers_8cpp_source.html":[6,0,3,1,4,2,3],
 "clos_8cpp.html":[6,0,3,1,4,2,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "core_2autogen_8h.html#a71990bc58e6ff4b5bcaf17be1af7d673a8c1f9e6057ac0b482162e016b3513da3":[6,0,0,1,0,0,4,0,8,9],
 "core_2autogen_8h.html#a71990bc58e6ff4b5bcaf17be1af7d673a8fa14cdd754f91cc6554c9e71929cce7":[6,0,0,1,0,0,4,0,8,1],
 "core_2autogen_8h.html#a71990bc58e6ff4b5bcaf17be1af7d673a961398139c7ae3a810df1098163d1062":[6,0,0,1,0,0,4,0,8,4],
-"core_2autogen_8h.html#a71990bc58e6ff4b5bcaf17be1af7d673a96fba3ee0d996e39a23c8328c93a67d0":[6,0,0,1,0,0,4,0,8,32],
-"core_2autogen_8h.html#a71990bc58e6ff4b5bcaf17be1af7d673aa6ee9e715fd30e1b8e95843be4b2a9c8":[6,0,0,1,0,0,4,0,8,42],
-"core_2autogen_8h.html#a71990bc58e6ff4b5bcaf17be1af7d673aaa7c2f8b74458aeae4e388c376197581":[6,0,0,1,0,0,4,0,8,15]
+"core_2autogen_8h.html#a71990bc58e6ff4b5bcaf17be1af7d673a96fba3ee0d996e39a23c8328c93a67d0":[6,0,0,1,0,0,4,0,8,32]
 };

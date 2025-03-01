@@ -235,7 +235,6 @@ var namespacemim =
     [ "isa_apped_mut_lam", "namespacemim.html#abef175122fd2792919ead7ba36c42f4b", null ],
     [ "isa_callee", "namespacemim.html#a14de61541836e7ff776796f1925ad556", null ],
     [ "isa_workable", "namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4", null ],
-    [ "lazy_init", "namespacemim.html#a693141bb53117c22a4fb12b99463a980", null ],
     [ "lookup", "namespacemim.html#a2b0eba3a59bd19880f571afb77e4d611", null ],
     [ "match", "namespacemim.html#aa78891671269af00946a6dce124364cd", null ],
     [ "match", "namespacemim.html#a3d33d6e168b2bc9cc4d57a24b354f451", null ],

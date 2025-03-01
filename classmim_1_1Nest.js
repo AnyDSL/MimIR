@@ -7,6 +7,7 @@ var classmim_1_1Nest =
     [ "contains", "classmim_1_1Nest.html#afb377e96731d77053f870df87d2f8181", null ],
     [ "dot", "classmim_1_1Nest.html#a96196cd341593fd85f653b8b02e60417", null ],
     [ "dot", "classmim_1_1Nest.html#a3e6c25284427f529112afae69b1c8b48", null ],
+    [ "dot", "classmim_1_1Nest.html#aacdd8a9cfdd7cc82de507ed36ed88484", null ],
     [ "is_recursive", "classmim_1_1Nest.html#a49652caf6c6f54036e31936e80161753", null ],
     [ "lca", "classmim_1_1Nest.html#aa971059ff841ddd3a4de9c30a8a10401", null ],
     [ "mut2node", "classmim_1_1Nest.html#abeda129cd07aedbe1ca88fad7f2483c2", null ],

@@ -1,7 +1,6 @@
 var classmim_1_1Nest_1_1Node =
 [
     [ "SCC", "classmim_1_1Nest_1_1Node.html#acbe7fe8d7710b145f48364b5c0ce7c72", null ],
-    [ "Node", "classmim_1_1Nest_1_1Node.html#adfc742326ce1843340c0872d9a437b65", null ],
     [ "child", "classmim_1_1Nest_1_1Node.html#a3b393f4a0c9e81a38055c821e56fd3c1", null ],
     [ "children", "classmim_1_1Nest_1_1Node.html#ae4a527e5160780c719d3baf1adb591f7", null ],
     [ "controls", "classmim_1_1Nest_1_1Node.html#ab205ec7875e9476519220343b7168030", null ],
@@ -14,6 +13,7 @@ var classmim_1_1Nest_1_1Node =
     [ "loop_depth", "classmim_1_1Nest_1_1Node.html#aeba233c5d375cdc2f9e8c07708c09bbc", null ],
     [ "mut", "classmim_1_1Nest_1_1Node.html#a73f5b9658f4d8830f9dda6717377aadf", null ],
     [ "name", "classmim_1_1Nest_1_1Node.html#a025d0c2e4c0c53d47930f363c0e5f61d", null ],
+    [ "nest", "classmim_1_1Nest_1_1Node.html#ae1c9f7727e8b614745014e839656825c", null ],
     [ "num_children", "classmim_1_1Nest_1_1Node.html#a55dfe9106d35582e0f681b8b72df0ed7", null ],
     [ "num_depends", "classmim_1_1Nest_1_1Node.html#a0529b738364d895b38ef62e93a9a11f4", null ],
     [ "parent", "classmim_1_1Nest_1_1Node.html#ac9b1473e086555e945e0dae19ff38637", null ],

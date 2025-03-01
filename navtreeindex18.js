@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"lower__typed__clos_8h.html":[6,0,2,1,4,2,1,1],
+"lower__typed__clos_8h_source.html":[6,0,2,1,4,2,1,1],
 "lower__typed__clos__prep_8cpp.html":[6,0,3,1,4,2,0,3],
 "lower__typed__clos__prep_8cpp_source.html":[6,0,3,1,4,2,0,3],
 "lower__typed__clos__prep_8h.html":[6,0,2,1,4,2,0,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "matrix_2normalizers_8cpp.html#a71291eadb9c16ba82490e0ae69c3f3aa":[6,0,3,1,4,8,2,3],
 "matrix_2normalizers_8cpp.html#a7eee1db8129dd1f00d4745a69713bd36":[6,0,3,1,4,8,2,1],
 "matrix_2normalizers_8cpp.html#ab3dde8b812f5e14656689aa5a2d89880":[6,0,3,1,4,8,2,0],
-"matrix_2normalizers_8cpp.html#ab6894dc19ac17f542f24655c78b2dfcb":[6,0,3,1,4,8,2,2],
-"matrix_2normalizers_8cpp.html#ade752d7745bd1517a43baab41bc20729":[6,0,3,1,4,8,2,4],
-"matrix_2normalizers_8cpp_source.html":[6,0,3,1,4,8,2]
+"matrix_2normalizers_8cpp.html#ab6894dc19ac17f542f24655c78b2dfcb":[6,0,3,1,4,8,2,2]
 };

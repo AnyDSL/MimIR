@@ -14,7 +14,6 @@ var util_8h =
     [ "bitcast", "util_8h.html#a1aae5adc4db386bfd618fdc8303ceb0c", null ],
     [ "find_and_replace", "util_8h.html#a8d4798ff41a16cf4a8020359f7679969", null ],
     [ "get_sign", "util_8h.html#aead08c2a07775ee15b699d35fc31e34a", null ],
-    [ "lazy_init", "util_8h.html#a693141bb53117c22a4fb12b99463a980", null ],
     [ "lookup", "util_8h.html#a2b0eba3a59bd19880f571afb77e4d611", null ],
     [ "pad", "util_8h.html#a650811c0d49d453841b016dfa775c461", null ],
     [ "pop", "util_8h.html#a759d95522e9e24e3e6030b51e02489a2", null ],
