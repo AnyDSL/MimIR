@@ -18,10 +18,6 @@ namespace mim {
 /// @name Utility Functions
 ///@{
 
-template<class This, class T> inline T& lazy_init(const This* self, std::unique_ptr<T>& ptr) {
-    return *(ptr ? ptr : ptr = std::make_unique<T>(*self));
-}
-
 /// A bitcast from @p src of type @p S to @p D.
 template<class D, class S> inline D bitcast(const S& src) {
     D dst;

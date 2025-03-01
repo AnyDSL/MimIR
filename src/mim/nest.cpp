@@ -55,13 +55,10 @@ void Nest::populate() {
             }
         }
     }
-
-    deps(root());
-    find_SCCs(root());
 }
 
 Nest::Node* Nest::make_node(Def* mut, const Node* parent) {
-    auto node = std::make_unique<Node>(mut, parent);
+    auto node = std::unique_ptr<Node>(new Node(*this, mut, parent)); // can't use make_unique - c'tor is private
     auto res  = node.get();
     nodes_.emplace(mut, std::move(node));
     if (mut) {
@@ -70,7 +67,17 @@ Nest::Node* Nest::make_node(Def* mut, const Node* parent) {
     return res;
 }
 
-void Nest::deps(const Node* curr) {
+const Nest::Node* Nest::lca(const Node* n, const Node* m) {
+    while (n->level() < m->level()) m = m->parent();
+    while (m->level() < n->level()) n = n->parent();
+    while (n != m) {
+        n = n->parent();
+        m = m->parent();
+    }
+    return n;
+}
+
+void Nest::deps(const Node* curr) const {
     if (curr->mut()) {
         for (auto op : curr->mut()->deps()) {
             for (auto local_mut : op->local_muts()) {
@@ -103,29 +110,19 @@ void Nest::find_SCCs(const Node* curr) const {
     }
 }
 
-const Nest::Node* Nest::lca(const Node* n, const Node* m) {
-    while (n->level() < m->level()) m = m->parent();
-    while (m->level() < n->level()) n = n->parent();
-    while (n != m) {
-        n = n->parent();
-        m = m->parent();
-    }
-    return n;
-}
-
 void Nest::Node::find_SCCs() const {
     Stack stack;
     for (int i = 0; const auto& [_, node] : children())
-        if (node->idx_ == Unvisited) i = node->dfs(i, this, stack);
+        if (node->idx_ == Unvisited) i = node->tarjan(i, this, stack);
 }
 
-uint32_t Nest::Node::dfs(uint32_t i, const Node* parent, Stack& stack) const {
+uint32_t Nest::Node::tarjan(uint32_t i, const Node* parent, Stack& stack) const {
     this->idx_ = this->low_ = i++;
     this->on_stack_         = true;
     stack.emplace(this);
 
     for (auto dep : this->depends()) {
-        if (dep->idx_ == Unvisited) i = dep->dfs(i, parent, stack);
+        if (dep->idx_ == Unvisited) i = dep->tarjan(i, parent, stack);
         if (dep->on_stack_) this->low_ = std::min(this->low_, dep->low_);
     }
 

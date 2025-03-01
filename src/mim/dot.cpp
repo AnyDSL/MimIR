@@ -189,8 +189,7 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
         tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", this->name(), dep->name());
 
     auto rec = is_mutually_recursive() ? "rec*" : (is_directly_recursive() ? "rec" : "");
-    tab.println(os, "\"{}\" [label=\"{} {} - {} - {} - {}\",tooltip=\"{}\"]", name(), rec, name(), idx_, low_,
-                loop_depth(), s);
+    tab.println(os, "\"{}\" [label=\"{} {} {}\",tooltip=\"{}\"]", name(), rec, name(), loop_depth(), s);
     for (const auto& [_, child] : children()) {
         tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);

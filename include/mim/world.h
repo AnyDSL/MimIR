@@ -530,9 +530,10 @@ public:
     ///@}
 
     /// @name dot
-    /// Dumps DOT to @p os.
+    /// GraphViz output.
     ///@{
 
+    /// Dumps DOT to @p os.
     /// @param os Output stream
     /// @param annexes If `true`, include all annexes - even if unused.
     /// @param types Follow type dependencies?
