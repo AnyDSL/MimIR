@@ -558,11 +558,6 @@ private:
     }
     bool equal(const Def* other) const;
 
-    uint32_t mark_ = 0;
-#ifndef NDEBUG
-    size_t curr_op_ = 0;
-#endif
-
 protected:
     mutable Dbg dbg_;
     union {
@@ -572,8 +567,8 @@ protected:
         mutable World* world_;
     };
     flags_t flags_;
-    u8 curry_;
-    u8 trip_;
+    u8 curry_ = 0;
+    u8 trip_  = 0;
 
 private:
     uint8_t node_;
@@ -581,6 +576,11 @@ private:
     bool external_ : 1;
     unsigned dep_  : 5;
     bool valid_    : 1;
+    uint32_t mark_ = 0;
+#ifndef NDEBUG
+    size_t curr_op_ = 0;
+#endif
+
     u32 gid_;
     u32 num_ops_;
     size_t hash_;
@@ -605,6 +605,8 @@ private:
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
 };
+
+static_assert(sizeof(void*) != 8 || sizeof(Def) == 13 * 8, "make sure to not accidently increase sizeof(Def)");
 
 /// @name DefDef
 ///@{

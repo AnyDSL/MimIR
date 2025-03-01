@@ -55,7 +55,6 @@ Vector(I, I, A = A()) -> Vector<typename std::iterator_traits<I>::value_type,
 ///@}
 
 /// @name erase
-// TODO needed
 ///@{
 template<class T, size_t N, class A, class U>
 constexpr typename Vector<T, N, A>::size_type erase(Vector<T, N, A>& c, const U& value) {
