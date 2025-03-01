@@ -116,17 +116,16 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
 void Nest::Node::find_SCCs() const {
     Stack stack;
     for (int i = 0; const auto& [_, node] : children())
-        if (!node->visited_) i = node->dfs(i, this, stack);
+        if (node->idx_ == Unvisited) i = node->dfs(i, this, stack);
 }
 
 uint32_t Nest::Node::dfs(uint32_t i, const Node* parent, Stack& stack) const {
     this->idx_ = this->low_ = i++;
-    this->visited_          = true;
     this->on_stack_         = true;
     stack.emplace(this);
 
     for (auto dep : this->depends()) {
-        if (!dep->visited_) i = dep->dfs(i, parent, stack);
+        if (dep->idx_ == Unvisited) i = dep->dfs(i, parent, stack);
         if (dep->on_stack_) this->low_ = std::min(this->low_, dep->low_);
     }
 

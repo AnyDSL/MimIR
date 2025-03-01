@@ -43,6 +43,8 @@ public:
         ///@}
 
         /// @name depends/controls
+        /// A child `n` depends() on `m`, if a subtree of `n` uses `m`.
+        /// The relation *control* yields the reverse: `m` controls `n`.
         ///@{
         const auto& depends() const { return depends_; }
         const auto& controls() const { return controls_; }
@@ -51,7 +53,7 @@ public:
 
         using SCC = absl::flat_hash_set<const Node*>;
         /// @name SCCs
-        /// [SCCs](https://en.wikipedia.org/wiki/Strongly_connected_component) for all sibling dependencies.
+        /// [SCCs](https://en.wikipedia.org/wiki/Strongly_connected_component) for all children dependencies.
         /// @note The Nest::root() cannot be is_mutually_recursive() by definition.
         /// If you have a set of mutually recursive Def%s, make sure to include them all in this Nest by using a virtual
         /// root.
@@ -82,7 +84,8 @@ public:
 
         Def* mut_;
         const Node* parent_;
-        size_t level_;
+        uint32_t level_;
+        mutable uint32_t loop_depth_ = 0;
         mutable MutMap<const Node*> children_;
         mutable absl::flat_hash_set<const Node*> depends_;
         mutable absl::flat_hash_set<const Node*> controls_;
@@ -91,13 +94,12 @@ public:
 
         /// @name implementaiton details
         ///@{
-        mutable uint32_t idx_          = 0;
-        mutable uint32_t low_          = 0;
-        mutable uint32_t loop_depth_   = 0;
-        mutable bool on_stack_         = false;
-        mutable bool visited_          = false;
-        mutable bool recursive_        = false;
-        mutable const Node* curr_child = nullptr;
+        static constexpr uint32_t Unvisited = uint32_t(-1);
+        mutable uint32_t idx_               = Unvisited;
+        mutable uint32_t low_               = 0;
+        mutable bool on_stack_              = false;
+        mutable bool recursive_             = false;
+        mutable const Node* curr_child      = nullptr;
         ///@}
 
         friend class Nest;
