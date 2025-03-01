@@ -4,6 +4,8 @@
 
 #include "mim/phase/phase.h"
 
+#include "fe/assert.h"
+
 namespace mim {
 
 Nest::Nest(Def* r)
@@ -101,16 +103,6 @@ void Nest::find_SCCs(const Node* curr) const {
     }
 }
 
-bool Nest::is_recursive() const {
-    for (const auto& [mut, _] : nodes()) {
-        for (auto op : mut->deps()) {
-            for (auto mut : op->local_muts())
-                if (mut == root()->mut()) return true;
-        }
-    }
-    return false;
-}
-
 const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     while (n->level() < m->level()) m = m->parent();
     while (m->level() < n->level()) n = n->parent();
@@ -139,23 +131,23 @@ uint32_t Nest::Node::dfs(uint32_t i, const Node* parent, Stack& stack) const {
     }
 
     if (this->idx_ == this->low_) {
-        Vector<const Node*> scc;
+        parent_->topo_.emplace_front(std::make_unique<SCC>());
+        SCC* scc = parent_->topo_.front().get();
         const Node* node;
         int num = 0;
         do {
-            node            = pop(stack);
-            node->on_stack_ = false;
-            node->low_      = this->idx_;
-            scc.emplace_back(node);
+            node             = pop(stack);
+            node->on_stack_  = false;
+            node->recursive_ = true;
+            node->low_       = this->idx_;
             ++num;
+
+            scc->emplace(node);
+            auto [_, ins] = parent_->SCCs_.emplace(node, scc);
+            assert_unused(ins);
         } while (node != this);
 
-        if (num == 1 && !this->depends().contains(this)) {
-            this->recursive_ = false;
-            parent_->topo_.emplace_back(this);
-        } else {
-            parent_->topo_.emplace_back(scc);
-        }
+        if (num == 1 && !this->depends().contains(this)) this->recursive_ = false;
     }
 
     return i;

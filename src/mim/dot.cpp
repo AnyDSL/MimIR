@@ -8,6 +8,8 @@
 
 #include "mim/util/print.h"
 
+using namespace std::string_literals;
+
 // Do not zonk here!
 // We want to see all Refs in the DOT graph.
 
@@ -174,21 +176,21 @@ void Nest::dot(std::ostream& os) const {
 
 void Nest::Node::dot(Tab tab, std::ostream& os) const {
     std::string s;
-    for (const auto& n : topo_) {
-        if (auto scc = std::get_if<Vector<const Node*>>(&n)) {
-            s += '[';
-            for (auto n : *scc) s += n->name() + ' ';
-            s += ']';
-        } else {
-            auto o = std::get<const Node*>(n);
-            s += o->name() + ' ';
+    for (const auto& scc : topo_) {
+        s += '[';
+        for (auto sep = ""s; auto n : *scc) {
+            s += sep + n->name();
+            sep = ", ";
         }
+        s += "] ";
     }
 
     for (auto dep : depends())
         tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", this->name(), dep->name());
 
-    tab.println(os, "\"{}\" [label=\"{} - {} - {} - {}\",tooltip=\"{}\"]", name(), name(), idx_, low_, loop_depth(), s);
+    auto rec = is_mutually_recursive() ? "rec*" : (is_directly_recursive() ? "rec" : "");
+    tab.println(os, "\"{}\" [label=\"{} {} - {} - {} - {}\",tooltip=\"{}\"]", name(), rec, name(), idx_, low_,
+                loop_depth(), s);
     for (const auto& [_, child] : children()) {
         tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);

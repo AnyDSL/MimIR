@@ -1,7 +1,6 @@
 #include "mim/schedule.h"
 
 #include <queue>
-#include <ranges>
 
 #include "mim/world.h"
 
@@ -89,7 +88,7 @@ const Nest::Node* Scheduler::smart(Def* curr_mut, const Def* def) {
         i = i->parent();
 
         if (i == nullptr) {
-            world().WLOG("this should never occur - don't know where to put {}", def);
+            world().ELOG("this should never occur - don't know where to put {}", def);
             s = l;
             break;
         }

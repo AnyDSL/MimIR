@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "mim/def.h"
 
 namespace mim {
@@ -18,6 +20,7 @@ public:
 
         /// @name Getters
         ///@{
+        std::string name() const { return mut() ? mut()->unique_name() : std::string("<virtual>"); }
         const Node* parent() const { return parent_; }
         /// @warning May be `nullptr`, if it's a virtual root comprising several Node%s.
         Def* mut() const {
@@ -26,9 +29,7 @@ public:
         }
         uint32_t level() const { return level_; }
         uint32_t loop_depth() const { return loop_depth_; }
-        std::string name() const { return mut() ? mut()->unique_name() : std::string("<virtual>"); }
         bool is_root() const { return parent_ == nullptr; }
-        bool is_recursive() const { return recursive_; }
         ///@}
 
         /// @name Children
@@ -46,17 +47,33 @@ public:
         const auto& depends() const { return depends_; }
         const auto& controls() const { return controls_; }
         size_t num_depends() const { return depends().size(); }
-        const auto& topo() const { return topo_; }
+        ///@}
+
+        using SCC = absl::flat_hash_set<const Node*>;
+        /// @name SCCs
+        /// [SCCs](https://en.wikipedia.org/wiki/Strongly_connected_component) for all sibling dependencies.
+        /// @note The Nest::root() cannot be is_mutually_recursive() by definition.
+        /// If you have a set of mutually recursive Def%s, make sure to include them all in this Nest by using a virtual
+        /// root.
+        ///@{
+        const auto& SCCs() { return SCCs_; }
+        const auto& topo() const { return topo_; } ///< Topological sorting of all SCCs.
+        bool is_recursive() const { return recursive_; }
+        bool is_mutually_recursive() const { return is_recursive() && parent() && parent()->SCCs_[this]->size() > 1; }
+        bool is_directly_recursive() const {
+            return is_recursive() && (!parent() || parent()->SCCs_[this]->size() == 1);
+        }
         ///@}
 
     private:
+        using Stack = std::stack<const Node*>;
+
         void link(const Node* node) const {
             this->depends_.emplace(node);
             node->controls_.emplace(this);
         }
         void dot(Tab, std::ostream&) const;
 
-        using Stack = std::stack<const Node*>;
         /// @name Find SCCs
         ///@{
         void find_SCCs() const;
@@ -69,7 +86,8 @@ public:
         mutable MutMap<const Node*> children_;
         mutable absl::flat_hash_set<const Node*> depends_;
         mutable absl::flat_hash_set<const Node*> controls_;
-        mutable Vector<std::variant<const Node*, Vector<const Node*>>> topo_;
+        mutable std::deque<std::unique_ptr<SCC>> topo_;
+        mutable absl::node_hash_map<const Node*, const SCC*> SCCs_;
 
         /// @name implementaiton details
         ///@{
@@ -78,7 +96,7 @@ public:
         mutable uint32_t loop_depth_   = 0;
         mutable bool on_stack_         = false;
         mutable bool visited_          = false;
-        mutable bool recursive_        = true;
+        mutable bool recursive_        = false;
         mutable const Node* curr_child = nullptr;
         ///@}
 
@@ -88,8 +106,8 @@ public:
     /// @name Constructors
     ///@{
     Nest(Def* root);
-    Nest(View<Def*> muts); ///< Constructs a virtual root with @p muts as children.
-    Nest(World&);          ///< Virtual root with all World::externals as children.
+    Nest(View<Def*> muts); ///< Constructs a *virtual root* with @p muts as children.
+    Nest(World&);          ///< *Virtual root* with all World::externals as children.
     ///@}
 
     /// @name Getters
@@ -99,7 +117,7 @@ public:
     const Node* root() const { return root_; }
     Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
     bool contains(const Def* def) const { return vars().intersects(def->free_vars()); }
-    bool is_recursive() const;
+    bool is_recursive() const { return root()->is_recursive(); }
     ///@}
 
     /// @name Nodes
