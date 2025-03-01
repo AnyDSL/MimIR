@@ -9,6 +9,5 @@ var classmim_1_1ll_1_1Emitter =
     [ "finalize", "classmim_1_1ll_1_1Emitter.html#a366e1798c273b916f429f7dd33c1a0e6", null ],
     [ "is_valid", "classmim_1_1ll_1_1Emitter.html#ad43b49a65f405d25e5e1a6124c2aedb9", null ],
     [ "prepare", "classmim_1_1ll_1_1Emitter.html#a3125973a7f9b998d59ab1753d43ce786", null ],
-    [ "prepare", "classmim_1_1ll_1_1Emitter.html#a53e192aabc9e61460a3013f988907313", null ],
     [ "start", "classmim_1_1ll_1_1Emitter.html#a5aea82862b4a3573857ac4080a01e789", null ]
 ];

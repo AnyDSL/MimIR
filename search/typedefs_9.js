@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['map_0',['Map',['../classmim_1_1CFG.html#a7b44a855caedd3c89db67421fbf58034',1,'mim::CFG']]],
-  ['meet_1',['Meet',['../namespacemim.html#afa92c943c6a47605e4969d5bd5e9b802',1,'mim']]],
-  ['mut2mut_2',['Mut2Mut',['../namespacemim.html#a9fd6d037a8eb540c32dbe840e32c90e9',1,'mim']]],
-  ['mutmap_3',['MutMap',['../namespacemim.html#afccd5f832a8d98e22ada5860ea24afd2',1,'mim']]],
-  ['muts_4',['Muts',['../namespacemim.html#a5e9a8c388e8451e32ecc710911d05546',1,'mim']]],
-  ['mutset_5',['MutSet',['../namespacemim.html#a9cef35a428a391739d168b05bad8dfb2',1,'mim']]]
+  ['nat_5ft_0',['nat_t',['../namespacemim.html#a02aae51c2293663cb7352f21c7fbe490',1,'mim']]],
+  ['node_5ft_1',['node_t',['../namespacemim.html#a459cb02e53212327ccb3957614a485ca',1,'mim']]],
+  ['normalizefn_2',['NormalizeFn',['../namespacemim.html#af6003e65d44ce9c37f66e0aa74a53118',1,'mim']]],
+  ['normalizers_3',['Normalizers',['../namespacemim.html#ab875464e5f495601abff7287573e1405',1,'mim']]]
 ];

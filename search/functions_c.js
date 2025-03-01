@@ -35,7 +35,7 @@ var searchData=
   ['msg_32',['msg',['../classmim_1_1Error.html#acc26c949be7a0a3f1c2b92541eb98089',1,'mim::Error']]],
   ['msgs_33',['msgs',['../classmim_1_1Error.html#a717742335e466f95d4e01880e4120182',1,'mim::Error']]],
   ['murmur3_34',['murmur3',['../namespacemim.html#a41d2b518e1d57f537577c3925d915015',1,'mim']]],
-  ['mut_35',['mut',['../classmim_1_1CFNode.html#a4cb2ef0157a2c8de020eefee44d4550b',1,'mim::CFNode::mut()'],['../classmim_1_1Nest_1_1Node.html#a73f5b9658f4d8830f9dda6717377aadf',1,'mim::Nest::Node::mut()'],['../classmim_1_1Var.html#aa8d07cb130fdf324995f4402f0c5cfc7',1,'mim::Var::mut()']]],
+  ['mut_35',['mut',['../classmim_1_1Var.html#aa8d07cb130fdf324995f4402f0c5cfc7',1,'mim::Var::mut()'],['../classmim_1_1Nest_1_1Node.html#a73f5b9658f4d8830f9dda6717377aadf',1,'mim::Nest::Node::mut()']]],
   ['mut2node_36',['mut2node',['../classmim_1_1Nest.html#abeda129cd07aedbe1ca88fad7f2483c2',1,'mim::Nest']]],
   ['mut_5farr_37',['mut_arr',['../classmim_1_1World.html#a6aa68b5cba3ad99a61a348c6634da987',1,'mim::World::mut_arr(Ref type)'],['../classmim_1_1World.html#ade2c4cd0464f3b54829c93fd1ff65e16',1,'mim::World::mut_arr()']]],
   ['mut_5fbound_38',['mut_bound',['../classmim_1_1World.html#aae9c1e23c5308806dcb26522f5f62bf9',1,'mim::World::mut_bound(Ref type, size_t size)'],['../classmim_1_1World.html#ad91adc1e80841416967bac6729bac664',1,'mim::World::mut_bound(size_t size)']]],

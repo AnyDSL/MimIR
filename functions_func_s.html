@@ -122,7 +122,8 @@ $(function(){initNavTree('functions_func_s.html',''); initResizable(true); });
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>S()&#160;:&#160;<a class="el" href="structmim_1_1ast_1_1S.html#a31dac57a908f6f45bfdedb995d04ef05">mim::ast::S</a></li>
 <li>Scalarize()&#160;:&#160;<a class="el" href="classmim_1_1Scalarize.html#ad4b6d5ae0aba5ee510fdbe1b9ea13324">mim::Scalarize</a></li>
-<li>schedule()&#160;:&#160;<a class="el" href="classmim_1_1Scheduler.html#acda51585ec0560a3c46c759c9d3ddff9">mim::Scheduler</a></li>
+<li>SCCs()&#160;:&#160;<a class="el" href="classmim_1_1Nest_1_1Node.html#a187c295f32e602fcc4573db9741a55c6">mim::Nest::Node</a></li>
+<li>schedule()&#160;:&#160;<a class="el" href="classmim_1_1Scheduler.html#a880651081ca75a55266ff3018354827b">mim::Scheduler</a></li>
 <li>Scheduler()&#160;:&#160;<a class="el" href="classmim_1_1Scheduler.html#ae3d6947e30fb089dc9f4e9ac87c97dd8">mim::Scheduler</a></li>
 <li>scope()&#160;:&#160;<a class="el" href="classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a1858d81c742e4bbbbf00d7a06614e53a">mim::plug::clos::ClosConvPrep</a></li>
 <li>ScopedLoc()&#160;:&#160;<a class="el" href="structmim_1_1World_1_1ScopedLoc.html#ae1131f521caaa76d5c82f10b32cd0f7e">mim::World::ScopedLoc</a></li>
@@ -132,7 +133,7 @@ $(function(){initNavTree('functions_func_s.html',''); initResizable(true); });
 <li>set()&#160;:&#160;<a class="el" href="classmim_1_1BitSet.html#a2d3a30153043696cdabe5b8c2a944899">mim::BitSet</a>, <a class="el" href="structmim_1_1Dbg.html#a724aad265dcfb866924f4401169c6a66">mim::Dbg</a>, <a class="el" href="classmim_1_1Def.html#a4985297140678ba5ec40b4a9c2780474">mim::Def</a>, <a class="el" href="classmim_1_1Global.html#af295e1c0b877c33dc74ab326b71bf6d9">mim::Global</a>, <a class="el" href="classmim_1_1IndexSet.html#a84c431aab92b354f7ee1a173d3910a8f">mim::IndexSet&lt; Indexer, Key &gt;</a>, <a class="el" href="classmim_1_1Infer.html#ae4228a1ed0081f6822a95acac53c8183">mim::Infer</a>, <a class="el" href="classmim_1_1Lam.html#a402f4a5e85da5cc5cb9915940e2492eb">mim::Lam</a>, <a class="el" href="classmim_1_1Log.html#a981c33b8d1500c0c4c595701d0bfd044">mim::Log</a>, <a class="el" href="classmim_1_1Pack.html#ac458886b6d9988c234d83fa8e308f4b3">mim::Pack</a>, <a class="el" href="classmim_1_1Pi.html#a7de9fe3c2bbf1b3a56628ccd71edcaec">mim::Pi</a>, <a class="el" href="classmim_1_1Setters.html#a31901e26af5aaaac2103dad294d922cf">mim::Setters&lt; P, D &gt;</a>, <a class="el" href="classmim_1_1Sigma.html#af303ed83c517d378142e368dccc6f9f1">mim::Sigma</a>, <a class="el" href="classmim_1_1World.html#a927a5919dd9570c51e181079144bfc67">mim::World</a></li>
 <li>set_accepting()&#160;:&#160;<a class="el" href="classautomaton_1_1DFANode.html#adddbd183443a03d29874a393aaafcb6e">automaton::DFANode</a>, <a class="el" href="classautomaton_1_1NFANode.html#acacc08679a96f6f8bab818276e478f45">automaton::NFANode</a></li>
 <li>set_body()&#160;:&#160;<a class="el" href="classmim_1_1Arr.html#ac0131483e310b40afab8f480a3d5497e">mim::Arr</a>, <a class="el" href="classmim_1_1Lam.html#abc4cde332062ff87e3cfcdb6ff659ca4">mim::Lam</a></li>
-<li>set_codom()&#160;:&#160;<a class="el" href="classmim_1_1Pi.html#a448fcf5d7d9357dd69ebfd2a036d1362">mim::Pi</a></li>
+<li>set_codom()&#160;:&#160;<a class="el" href="classmim_1_1ast_1_1PiExpr_1_1Dom.html#a700ff46bb23351368b066b0361c8c8c4">mim::ast::PiExpr::Dom</a>, <a class="el" href="classmim_1_1Pi.html#a448fcf5d7d9357dd69ebfd2a036d1362">mim::Pi</a></li>
 <li>set_dom()&#160;:&#160;<a class="el" href="classmim_1_1Pi.html#af4a6f3a60ee8c6b59e0577236bfbe791">mim::Pi</a></li>
 <li>set_erroring()&#160;:&#160;<a class="el" href="classautomaton_1_1DFANode.html#a0c010dda51e1778c1e4a437dd789b909">automaton::DFANode</a>, <a class="el" href="classautomaton_1_1NFANode.html#a7285fda6be62e7969d7d8496341f77db">automaton::NFANode</a></li>
 <li>set_filter()&#160;:&#160;<a class="el" href="classmim_1_1Lam.html#a4084f5bf694c3e4cb985eca3e213c189">mim::Lam</a></li>
@@ -143,9 +144,9 @@ $(function(){initNavTree('functions_func_s.html',''); initResizable(true); });
 <li>shape()&#160;:&#160;<a class="el" href="classmim_1_1Arr.html#a475557809ea2609e0351997e4561306f">mim::Arr</a>, <a class="el" href="classmim_1_1ast_1_1ArrOrPackExpr.html#af0e44fc42afae9133c6ee855448b456a">mim::ast::ArrOrPackExpr&lt; arr &gt;</a>, <a class="el" href="classmim_1_1Pack.html#a90ea8bc613ee1d6c1adc901b2a630973">mim::Pack</a></li>
 <li>sigma()&#160;:&#160;<a class="el" href="classmim_1_1World.html#adbe4c015e9ddd79a28228b2c95df9e04">mim::World</a></li>
 <li>SigmaExpr()&#160;:&#160;<a class="el" href="classmim_1_1ast_1_1SigmaExpr.html#ac3bff2a4e5141d5a6ed8e36ebc00d3c3">mim::ast::SigmaExpr</a></li>
-<li>size()&#160;:&#160;<a class="el" href="classmim_1_1CFG.html#ab250c9bfa996dab700d7510e5147596c">mim::CFG</a>, <a class="el" href="classmim_1_1PooledSet.html#a28f7a2d21acb38e8f521d39c6901ceca">mim::PooledSet&lt; T &gt;</a></li>
+<li>size()&#160;:&#160;<a class="el" href="classmim_1_1PooledSet.html#a28f7a2d21acb38e8f521d39c6901ceca">mim::PooledSet&lt; T &gt;</a></li>
 <li>size2bitwidth()&#160;:&#160;<a class="el" href="classmim_1_1Idx.html#a445658b6d8a1922d7fc9fb33235417ff">mim::Idx</a></li>
-<li>smart()&#160;:&#160;<a class="el" href="classmim_1_1Scheduler.html#aa7e278eb6ede4e7b97f0a8c281ebfbcd">mim::Scheduler</a></li>
+<li>smart()&#160;:&#160;<a class="el" href="classmim_1_1Scheduler.html#a12a699ef67babd6c87b732194b1036e1">mim::Scheduler</a></li>
 <li>Span()&#160;:&#160;<a class="el" href="classmim_1_1Span.html#ac0bc881c34794ee0de1fd4d0d4563439">mim::Span&lt; T, N &gt;</a></li>
 <li>span()&#160;:&#160;<a class="el" href="classmim_1_1Vector.html#ae02435e96e6039588602ded8f7881ca7">mim::Vector&lt; T, N, A &gt;</a></li>
 <li>split()&#160;:&#160;<a class="el" href="structmim_1_1Annex.html#a2396ad51f7f065120a421a1fbd529d8f">mim::Annex</a></li>
@@ -161,7 +162,6 @@ $(function(){initNavTree('functions_func_s.html',''); initResizable(true); });
 <li>sub()&#160;:&#160;<a class="el" href="classmim_1_1ast_1_1AxiomDecl.html#ae26b6f81907522dfd16f2ee7a1b7b4ed">mim::ast::AxiomDecl</a>, <a class="el" href="classmim_1_1Axiom.html#a53d9c0c305d7ea8e5c4043acfd78a4f6">mim::Axiom</a>, <a class="el" href="classmim_1_1Match.html#a653fd936b7a9664ad59ec91a3630a007">mim::Match&lt; Id, D &gt;</a></li>
 <li>subs()&#160;:&#160;<a class="el" href="classmim_1_1ast_1_1AxiomDecl.html#a001cf82f029e169c20159e353c122417">mim::ast::AxiomDecl</a></li>
 <li>subspan()&#160;:&#160;<a class="el" href="classmim_1_1Span.html#a65eba8c83ffccb00a36528712cd41d67">mim::Span&lt; T, N &gt;</a></li>
-<li>succs()&#160;:&#160;<a class="el" href="classmim_1_1CFNode.html#ad54db83d4d0bdb6d57fbe07edbde1b1b">mim::CFNode</a>, <a class="el" href="classmim_1_1DomFrontier.html#a91ed38d73a5155a23fc5e13940f145f5">mim::DomFrontier</a></li>
 <li>swap()&#160;:&#160;<a class="el" href="classmim_1_1BitSet.html#a046bda62c88726d84b2d7d92554c4db5">mim::BitSet</a></li>
 <li>sym()&#160;:&#160;<a class="el" href="classmim_1_1ast_1_1AST.html#aabc7c822c356b3cc17ce638289966b13">mim::ast::AST</a>, <a class="el" href="classmim_1_1ast_1_1Tok.html#a1614f4001b6ff119534d0d434a80f608">mim::ast::Tok</a>, <a class="el" href="structmim_1_1Dbg.html#a1f6805e001bec9cd88aa3297a108cd80">mim::Dbg</a>, <a class="el" href="classmim_1_1Def.html#acd076ce85473d3ea5dee55259338951c">mim::Def</a>, <a class="el" href="classmim_1_1World.html#aa4df2feb5a0d1c856ca94a05445c1e99">mim::World</a></li>
 <li>sym_anon()&#160;:&#160;<a class="el" href="classmim_1_1ast_1_1AST.html#a8899c2750a526004e0bbcae3f327a01c">mim::ast::AST</a></li>

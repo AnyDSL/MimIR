@@ -13,6 +13,7 @@ var classmim_1_1Nest =
     [ "nodes", "classmim_1_1Nest.html#a772b78dd7044b9515f5589d4666ad89c", null ],
     [ "num_nodes", "classmim_1_1Nest.html#af828cf9cfe46633b75d601263f019bc4", null ],
     [ "operator[]", "classmim_1_1Nest.html#a5aa4df61ed488a9b7bcda3021274b9a2", null ],
+    [ "root", "classmim_1_1Nest.html#acf008e3f37d60c94afd55b652c0f93d1", null ],
     [ "root", "classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3", null ],
     [ "vars", "classmim_1_1Nest.html#ad6f576feb5d9dc696df45a0d3120c666", null ],
     [ "world", "classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e", null ]

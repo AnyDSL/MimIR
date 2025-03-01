@@ -10,7 +10,7 @@ var searchData=
   ['get_5fstart_7',['get_start',['../classautomaton_1_1AutomatonBase.html#a5ee7463fbfa2f071ea1deb56490ba8d5',1,'automaton::AutomatonBase']]],
   ['get_5ftransition_8',['get_transition',['../classautomaton_1_1DFANode.html#ac39d84714ae15c34eada796af0e8fe4e',1,'automaton::DFANode']]],
   ['get_5ftransitions_9',['get_transitions',['../classautomaton_1_1NFANode.html#aeb92436243d93c1aad1bc3ac4c4b1adf',1,'automaton::NFANode']]],
-  ['gid_10',['gid',['../classmim_1_1CFNode.html#a8a82d0b0214338ec4cc6be049c550a34',1,'mim::CFNode::gid()'],['../classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870',1,'mim::Def::gid()']]],
+  ['gid_10',['gid',['../classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870',1,'mim::Def']]],
   ['gid2def_11',['gid2def',['../classmim_1_1World.html#a1dd8c434960e38a6d6e0252198082c01',1,'mim::World']]],
   ['global_12',['global',['../classmim_1_1World.html#a284906d8427188bdc67636ef9e256d83',1,'mim::World']]],
   ['grpptrn_13',['GrpPtrn',['../classmim_1_1ast_1_1GrpPtrn.html#a0890118244cf9fb95d69800c82766ec6',1,'mim::ast::GrpPtrn']]]

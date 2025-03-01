@@ -134,7 +134,7 @@ $(function(){initNavTree('cli.html',''); initResizable(true); });
 <h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  mim [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-mim &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalarize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
+<div class="line">  mim [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-mim &lt;file&gt;] [--output-nest &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalarize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -155,6 +155,7 @@ Usage</h1>
 <div class="line">  --output-ll &lt;file&gt;      Compiles the Mim program to LLVM.</div>
 <div class="line">  --output-md &lt;file&gt;      Emits the input formatted as Markdown.</div>
 <div class="line">  -o, --output-mim &lt;file&gt; Emits the Mim program again.</div>
+<div class="line">  --output-nest &lt;file&gt;    Emits program nesting tree as Dot.</div>
 <div class="line">  -a, --ascii             Use ASCII alternatives in output instead of UTF-8.</div>
 <div class="line">  --bootstrap             Puts mim into &quot;bootstrap mode&quot;. This means a &#39;plugin&#39; directive has the same effect as an &#39;import&#39; and will not load a library. In addition, no standard plugins will be loaded.</div>
 <div class="line">  --dot-follow-types      Follow type dependencies in DOT output.</div>

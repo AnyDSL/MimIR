@@ -1,22 +1,6 @@
 var searchData=
 [
-  ['lam_0',['Lam',['../classmim_1_1Lam.html',1,'mim']]],
-  ['lamdecl_1',['LamDecl',['../classmim_1_1ast_1_1LamDecl.html',1,'mim::ast']]],
-  ['lamexpr_2',['LamExpr',['../classmim_1_1ast_1_1LamExpr.html',1,'mim::ast']]],
-  ['lamspec_3',['LamSpec',['../classmim_1_1LamSpec.html',1,'mim']]],
-  ['leaf_4',['Leaf',['../classmim_1_1LoopTree_1_1Leaf.html',1,'mim::LoopTree']]],
-  ['letdecl_5',['LetDecl',['../classmim_1_1ast_1_1LetDecl.html',1,'mim::ast']]],
-  ['lexer_6',['Lexer',['../classmim_1_1ast_1_1Lexer.html',1,'mim::ast']]],
-  ['lit_7',['Lit',['../classmim_1_1Lit.html',1,'mim']]],
-  ['litexpr_8',['LitExpr',['../classmim_1_1ast_1_1LitExpr.html',1,'mim::ast']]],
-  ['log_9',['Log',['../classmim_1_1Log.html',1,'mim']]],
-  ['looptree_10',['LoopTree',['../classmim_1_1LoopTree.html',1,'mim']]],
-  ['looptreebuilder_11',['LoopTreeBuilder',['../classmim_1_1LoopTreeBuilder.html',1,'mim']]],
-  ['lowerfor_12',['LowerFor',['../classmim_1_1plug_1_1affine_1_1LowerFor.html',1,'mim::plug::affine']]],
-  ['lowermatrixhighlevelmapred_13',['LowerMatrixHighLevelMapRed',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html',1,'mim::plug::matrix']]],
-  ['lowermatrixlowlevel_14',['LowerMatrixLowLevel',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html',1,'mim::plug::matrix']]],
-  ['lowermatrixmediumlevel_15',['LowerMatrixMediumLevel',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html',1,'mim::plug::matrix']]],
-  ['lowerregex_16',['LowerRegex',['../classmim_1_1plug_1_1regex_1_1LowerRegex.html',1,'mim::plug::regex']]],
-  ['lowertypedclos_17',['LowerTypedClos',['../classmim_1_1plug_1_1clos_1_1LowerTypedClos.html',1,'mim::plug::clos']]],
-  ['lowertypedclosprep_18',['LowerTypedClosPrep',['../classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html',1,'mim::plug::clos']]]
+  ['match_0',['Match',['../classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Match',1,'mim::Axiom::Match&lt; T &gt;'],['../classmim_1_1Match.html',1,'mim::Match&lt; Id, D &gt;']]],
+  ['module_1',['Module',['../classmim_1_1ast_1_1Module.html',1,'mim::ast']]],
+  ['msg_2',['Msg',['../structmim_1_1Error_1_1Msg.html',1,'mim::Error']]]
 ];

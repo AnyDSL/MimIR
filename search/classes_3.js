@@ -12,9 +12,7 @@ var searchData=
   ['dfa_9',['DFA',['../classautomaton_1_1DFA.html',1,'automaton']]],
   ['dfanode_10',['DFANode',['../classautomaton_1_1DFANode.html',1,'automaton']]],
   ['dom_11',['Dom',['../classmim_1_1ast_1_1LamDecl_1_1Dom.html',1,'mim::ast::LamDecl::Dom'],['../classmim_1_1ast_1_1PiExpr_1_1Dom.html',1,'mim::ast::PiExpr::Dom']]],
-  ['domfrontier_12',['DomFrontier',['../classmim_1_1DomFrontier.html',1,'mim']]],
-  ['domtree_13',['DomTree',['../classmim_1_1DomTree.html',1,'mim']]],
-  ['driver_14',['Driver',['../classmim_1_1Driver.html',1,'mim']]],
-  ['ds2cps_15',['DS2CPS',['../classmim_1_1plug_1_1direct_1_1DS2CPS.html',1,'mim::plug::direct']]],
-  ['dummydecl_16',['DummyDecl',['../classmim_1_1ast_1_1DummyDecl.html',1,'mim::ast']]]
+  ['driver_12',['Driver',['../classmim_1_1Driver.html',1,'mim']]],
+  ['ds2cps_13',['DS2CPS',['../classmim_1_1plug_1_1direct_1_1DS2CPS.html',1,'mim::plug::direct']]],
+  ['dummydecl_14',['DummyDecl',['../classmim_1_1ast_1_1DummyDecl.html',1,'mim::ast']]]
 ];

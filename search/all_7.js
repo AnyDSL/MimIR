@@ -13,10 +13,9 @@ var searchData=
   ['hash_2eh_10',['hash.h',['../hash_8h.html',1,'']]],
   ['hash_5fbegin_11',['hash_begin',['../namespacemim.html#ad8c5de48df76227ddf9d84d440430ddf',1,'mim::hash_begin()'],['../namespacemim.html#ab670f459eab07d9f94e38da218cef4c9',1,'mim::hash_begin(T val)']]],
   ['hash_5fcombine_12',['hash_combine',['../namespacemim.html#a88d0a0276b33ec2e6ee0211d0fa3ae1a',1,'mim']]],
-  ['head_13',['Head',['../classmim_1_1LoopTree_1_1Head.html',1,'mim::LoopTree::Head'],['../classmim_1_1LoopTreeBuilder.html#ad4a4129d6f852fe49093362f434eab80',1,'mim::LoopTreeBuilder::Head']]],
-  ['head_14',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB']]],
-  ['high_20level_20matrix_20operations_15',['High-level matrix operations',['../matrix.html#autotoc_md175',1,'']]],
-  ['highlighting_16',['Syntax Highlighting',['../coding.html#autotoc_md13',1,'']]],
-  ['hlt_17',['hlt',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a4f4000d921968b9665f52e88333007da',1,'mim::plug::core']]],
-  ['hooks_18',['Other Hooks',['../passes.html#autotoc_md62',1,'']]]
+  ['head_13',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB']]],
+  ['high_20level_20matrix_20operations_14',['High-level matrix operations',['../matrix.html#autotoc_md175',1,'']]],
+  ['highlighting_15',['Syntax Highlighting',['../coding.html#autotoc_md13',1,'']]],
+  ['hlt_16',['hlt',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a4f4000d921968b9665f52e88333007da',1,'mim::plug::core']]],
+  ['hooks_17',['Other Hooks',['../passes.html#autotoc_md62',1,'']]]
 ];
