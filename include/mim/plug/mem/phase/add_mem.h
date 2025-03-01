@@ -1,6 +1,7 @@
 #pragma once
 
-#include <mim/analyses/schedule.h>
+#include <mim/schedule.h>
+
 #include <mim/phase/phase.h>
 
 namespace mim::plug::mem {

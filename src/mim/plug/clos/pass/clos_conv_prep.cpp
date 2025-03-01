@@ -1,6 +1,7 @@
 #include "mim/plug/clos/pass/clos_conv_prep.h"
 
-#include <mim/analyses/nest.h>
+#include <mim/nest.h>
+
 #include <mim/pass/eta_exp.h>
 
 #include "mim/plug/clos/clos.h"

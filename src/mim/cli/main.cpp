@@ -19,7 +19,7 @@ using namespace mim;
 using namespace std::literals;
 
 int main(int argc, char** argv) {
-    enum Backends { AST, D, Dot, H, LL, Md, Mim, Num_Backends };
+    enum Backends { AST, D, Dot, H, LL, Md, Mim, Nest, Num_Backends };
 
     try {
         static const auto version = "mim command-line utility version " MIM_VER "\n";
@@ -47,18 +47,19 @@ int main(int argc, char** argv) {
             | lyra::help(show_help)
             | lyra::opt(show_version                       )["-v"]["--version"              ]("Display version info and exit.")
             | lyra::opt(list_search_paths                  )["-l"]["--list-search-paths"    ]("List search paths in order and exit.")
-            | lyra::opt(clang,       "clang"               )["-c"]["--clang"                ]("Path to clang executable (default: '" MIM_WHICH " clang').")
-            | lyra::opt(plugins,     "plugin"              )["-p"]["--plugin"               ]("Dynamically load plugin.")
-            | lyra::opt(search_paths,"path"                )["-P"]["--plugin-path"          ]("Path to search for plugins.")
+            | lyra::opt(clang,        "clang"              )["-c"]["--clang"                ]("Path to clang executable (default: '" MIM_WHICH " clang').")
+            | lyra::opt(plugins,      "plugin"             )["-p"]["--plugin"               ]("Dynamically load plugin.")
+            | lyra::opt(search_paths, "path"               )["-P"]["--plugin-path"          ]("Path to search for plugins.")
             | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
-            | lyra::opt(opt,         "level"               )["-O"]["--optimize"             ]("Optimization level (default: 2).")
-            | lyra::opt(output[AST], "file"                )      ["--output-ast"           ]("Directly emits AST represntation of input.")
-            | lyra::opt(output[D  ], "file"                )      ["--output-d"             ]("Emits dependency file containing a rule suitable for 'make' describing the dependencies of the source file (requires --output-h).")
-            | lyra::opt(output[Dot], "file"                )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
-            | lyra::opt(output[H  ], "file"                )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
-            | lyra::opt(output[LL ], "file"                )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
-            | lyra::opt(output[Md ], "file"                )      ["--output-md"            ]("Emits the input formatted as Markdown.")
-            | lyra::opt(output[Mim], "file"                )["-o"]["--output-mim"           ]("Emits the Mim program again.")
+            | lyra::opt(opt,          "level"              )["-O"]["--optimize"             ]("Optimization level (default: 2).")
+            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST represntation of input.")
+            | lyra::opt(output[D  ],  "file"               )      ["--output-d"             ]("Emits dependency file containing a rule suitable for 'make' describing the dependencies of the source file (requires --output-h).")
+            | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
+            | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
+            | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
+            | lyra::opt(output[Md ],  "file"               )      ["--output-md"            ]("Emits the input formatted as Markdown.")
+            | lyra::opt(output[Mim],  "file"               )["-o"]["--output-mim"           ]("Emits the Mim program again.")
+            | lyra::opt(output[Nest], "file"               )      ["--output-nest"          ]("Emits program nesting tree as Dot.")
             | lyra::opt(flags.ascii                        )["-a"]["--ascii"                ]("Use ASCII alternatives in output instead of UTF-8.")
             | lyra::opt(flags.bootstrap                    )      ["--bootstrap"            ]("Puts mim into \"bootstrap mode\". This means a 'plugin' directive has the same effect as an 'import' and will not load a library. In addition, no standard plugins will be loaded.")
             | lyra::opt(dot_follow_types                   )      ["--dot-follow-types"     ]("Follow type dependencies in DOT output.")
@@ -187,6 +188,7 @@ int main(int argc, char** argv) {
 
             if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
             if (auto s = os[Mim]) world.dump(*s);
+            if (auto s = os[Nest]) mim::Nest(world).dot(*s);
 
             if (auto s = os[LL]) {
                 if (auto backend = driver.backend("ll"))

@@ -3,10 +3,12 @@
 #include <sstream>
 
 #include "mim/def.h"
+#include "mim/nest.h"
 #include "mim/world.h"
 
-#include "mim/analyses/nest.h"
 #include "mim/util/print.h"
+
+using namespace std::string_literals;
 
 // Do not zonk here!
 // We want to see all Refs in the DOT graph.
@@ -167,15 +169,32 @@ void Nest::dot(std::ostream& os) const {
     Tab tab;
     (tab++).println(os, "digraph {{");
     tab.println(os, "ordering=out;");
-    tab.println(os, "splines=false;");
     tab.println(os, "node [shape=box,style=filled];");
     root()->dot(tab, os);
     (--tab).println(os, "}}");
 }
 
 void Nest::Node::dot(Tab tab, std::ostream& os) const {
-    for (const auto& [child, _] : children()) tab.println(os, "{} -> {}", mut()->unique_name(), child->unique_name());
-    for (const auto& [_, child] : children()) child->dot(tab, os);
+    std::string s;
+    for (const auto& scc : topo_) {
+        s += '[';
+        for (auto sep = ""s; auto n : *scc) {
+            s += sep + n->name();
+            sep = ", ";
+        }
+        s += "] ";
+    }
+
+    for (auto dep : depends())
+        tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", this->name(), dep->name());
+
+    auto rec = is_mutually_recursive() ? "rec*" : (is_directly_recursive() ? "rec" : "");
+    tab.println(os, "\"{}\" [label=\"{} {} - {} - {} - {}\",tooltip=\"{}\"]", name(), rec, name(), idx_, low_,
+                loop_depth(), s);
+    for (const auto& [_, child] : children()) {
+        tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
+        child->dot(tab, os);
+    }
 }
 
 } // namespace mim

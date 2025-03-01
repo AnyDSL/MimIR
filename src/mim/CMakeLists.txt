@@ -4,21 +4,17 @@ target_sources(libmim
         axiom.cpp
         check.cpp
         def.cpp
-        plugin.cpp
-        dump.cpp
         dot.cpp
         driver.cpp
+        dump.cpp
         lam.cpp
         lattice.cpp
+        nest.cpp
+        plugin.cpp
         rewrite.cpp
+        schedule.cpp
         tuple.cpp
         world.cpp
-        analyses/cfg.cpp
-        analyses/domfrontier.cpp
-        analyses/domtree.cpp
-        analyses/looptree.cpp
-        analyses/nest.cpp
-        analyses/schedule.cpp
         ast/ast.cpp
         ast/bind.cpp
         ast/emit.cpp

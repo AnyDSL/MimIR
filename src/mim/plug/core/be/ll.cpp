@@ -121,7 +121,6 @@ public:
     void emit_epilogue(Lam*);
     std::string emit_bb(BB&, const Def*);
     std::string prepare();
-    void prepare(Lam*, std::string_view);
     void finalize();
 
     template<class... Args> void declare(const char* s, Args&&... args) {
@@ -290,8 +289,7 @@ void Emitter::finalize() {
         }
     }
 
-    CFG cfg(nest());
-    for (auto mut : Scheduler::schedule(cfg)) {
+    for (auto mut : Scheduler::schedule(nest())) {
         if (auto lam = mut->isa_mut<Lam>()) {
             assert(lam2bb_.contains(lam));
             auto& bb = lam2bb_[lam];
@@ -309,6 +307,7 @@ void Emitter::finalize() {
 }
 
 void Emitter::emit_epilogue(Lam* lam) {
+    outln("emit_epilogue: {}", lam);
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
 

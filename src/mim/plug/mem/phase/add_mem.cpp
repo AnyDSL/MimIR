@@ -1,6 +1,6 @@
 #include "mim/plug/mem/phase/add_mem.h"
 
-#include <mim/analyses/schedule.h>
+#include <mim/schedule.h>
 
 #include "mim/plug/mem/mem.h"
 
@@ -105,7 +105,7 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
 }
 
 const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
-    auto place = static_cast<Lam*>(sched_.smart(curr_lam, def));
+    auto place = static_cast<Lam*>(sched_.smart(curr_lam, def)->mut());
 
     // world().DLOG("rewriting {} : {} in {}", def, def->type(), place);
 
