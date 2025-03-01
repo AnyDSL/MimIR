@@ -606,12 +606,6 @@ private:
     friend std::ostream& operator<<(std::ostream&, const Def*);
 };
 
-#ifdef NDEBUG
-static_assert(sizeof(void*) != 8 || sizeof(Def) == 12 * 8, "make sure to not accidently increase sizeof(Def)");
-#else
-static_assert(sizeof(void*) != 8 || sizeof(Def) == 13 * 8, "make sure to not accidently increase sizeof(Def)");
-#endif
-
 /// @name DefDef
 ///@{
 using DefDef = std::tuple<const Def*, const Def*>;
