@@ -55,7 +55,7 @@ void Nest::populate() {
     }
 
     deps(root());
-    for (const auto& [_, node] : nodes_) node->tarjan();
+    find_SCCs(root());
 }
 
 Nest::Node* Nest::make_node(Def* mut, const Node* parent) {
@@ -76,7 +76,7 @@ void Nest::deps(const Node* curr) {
                     if (local_node == curr)
                         local_node->link(local_node);
                     else if (auto parent = local_node->parent()) {
-                        if (auto curr_child = parent->impl_.curr_child) {
+                        if (auto curr_child = parent->curr_child) {
                             assert(parent->children().contains(curr_child->mut()));
                             curr_child->link(local_node);
                         }
@@ -87,9 +87,17 @@ void Nest::deps(const Node* curr) {
     }
 
     for (auto [_, child] : curr->children()) {
-        curr->impl_.curr_child = child;
+        curr->curr_child = child;
         deps(child);
-        curr->impl_.curr_child = nullptr;
+        curr->curr_child = nullptr;
+    }
+}
+
+void Nest::find_SCCs(const Node* curr) const {
+    curr->find_SCCs();
+    for (auto [_, child] : curr->children()) {
+        child->loop_depth_ = child->is_recursive() ? curr->loop_depth() + 1 : curr->loop_depth();
+        find_SCCs(child);
     }
 }
 
@@ -104,8 +112,8 @@ bool Nest::is_recursive() const {
 }
 
 const Nest::Node* Nest::lca(const Node* n, const Node* m) {
-    while (n->depth() < m->depth()) m = m->parent();
-    while (m->depth() < n->depth()) n = n->parent();
+    while (n->level() < m->level()) m = m->parent();
+    while (m->level() < n->level()) n = n->parent();
     while (n != m) {
         n = n->parent();
         m = m->parent();
@@ -113,37 +121,37 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     return n;
 }
 
-void Nest::Node::tarjan() const {
+void Nest::Node::find_SCCs() const {
     Stack stack;
     for (int i = 0; const auto& [_, node] : children())
-        if (!node->impl_.visited) i = node->dfs(i, this, stack);
+        if (!node->visited_) i = node->dfs(i, this, stack);
 }
 
-int Nest::Node::dfs(int i, const Node* parent, Stack& stack) const {
-    this->impl_.idx = this->impl_.low = i++;
-    this->impl_.visited               = true;
-    this->impl_.on_stack              = true;
+uint32_t Nest::Node::dfs(uint32_t i, const Node* parent, Stack& stack) const {
+    this->idx_ = this->low_ = i++;
+    this->visited_          = true;
+    this->on_stack_         = true;
     stack.emplace(this);
 
     for (auto dep : this->depends()) {
-        if (!dep->impl_.visited) i = dep->dfs(i, parent, stack);
-        if (dep->impl_.on_stack) this->impl_.low = std::min(this->impl_.low, dep->impl_.low);
+        if (!dep->visited_) i = dep->dfs(i, parent, stack);
+        if (dep->on_stack_) this->low_ = std::min(this->low_, dep->low_);
     }
 
-    if (this->impl_.idx == this->impl_.low) {
+    if (this->idx_ == this->low_) {
         Vector<const Node*> scc;
         const Node* node;
         int num = 0;
         do {
-            node                 = pop(stack);
-            node->impl_.on_stack = false;
-            node->impl_.low      = this->impl_.idx;
+            node            = pop(stack);
+            node->on_stack_ = false;
+            node->low_      = this->idx_;
             scc.emplace_back(node);
             ++num;
         } while (node != this);
 
         if (num == 1 && !this->depends().contains(this)) {
-            this->impl_.rec = false;
+            this->recursive_ = false;
             parent_->topo_.emplace_back(this);
         } else {
             parent_->topo_.emplace_back(scc);

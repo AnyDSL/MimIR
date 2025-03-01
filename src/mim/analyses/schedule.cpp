@@ -53,7 +53,7 @@ const Nest::Node* Scheduler::early(const Def* def) {
     for (auto op : def->deps()) {
         if (!op->isa_mut() && nest().contains(op)) {
             auto node = early(op);
-            if (node->depth() > result->depth()) result = node;
+            if (node->level() > result->level()) result = node;
         }
     }
 

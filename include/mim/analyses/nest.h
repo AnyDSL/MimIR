@@ -1,5 +1,7 @@
 #pragma once
 
+#include <regex.h>
+
 #include "mim/def.h"
 
 #include "absl/container/flat_hash_set.h"
@@ -14,7 +16,7 @@ public:
         Node(Def* mut, const Node* parent)
             : mut_(mut)
             , parent_(parent)
-            , depth_(parent ? parent->depth() + 1 : 0) {
+            , level_(parent ? parent->level() + 1 : 0) {
             if (parent) parent->children_.emplace(mut, this);
         }
 
@@ -26,9 +28,11 @@ public:
             assert(mut_ || is_root());
             return mut_;
         }
-        bool is_root() const { return parent_ == nullptr; }
-        size_t depth() const { return depth_; }
+        uint32_t level() const { return level_; }
+        uint32_t loop_depth() const { return loop_depth_; }
         std::string name() const { return mut() ? mut()->unique_name() : std::string("<virtual>"); }
+        bool is_root() const { return parent_ == nullptr; }
+        bool is_recursive() const { return recursive_; }
         ///@}
 
         /// @name Children
@@ -59,27 +63,28 @@ public:
         using Stack = std::stack<const Node*>;
         /// @name Find SCCs
         ///@{
-        void tarjan() const;
-        int dfs(int, const Node*, Stack&) const;
+        void find_SCCs() const;
+        uint32_t dfs(uint32_t, const Node*, Stack&) const;
         ///@}
-
-        struct {
-            unsigned idx      : 30 = 0;
-            unsigned on_stack : 1  = false;
-            unsigned visited  : 1  = false;
-            unsigned low      : 30 = 0;
-            unsigned closed   : 1  = false;
-            unsigned rec      : 1  = true;
-            const Node* curr_child = nullptr;
-        } mutable impl_;
 
         Def* mut_;
         const Node* parent_;
-        size_t depth_;
+        size_t level_;
         mutable MutMap<const Node*> children_;
         mutable absl::flat_hash_set<const Node*> depends_;
         mutable absl::flat_hash_set<const Node*> controls_;
         mutable Vector<std::variant<const Node*, Vector<const Node*>>> topo_;
+
+        /// @name implementaiton details
+        ///@{
+        mutable uint32_t idx_          = 0;
+        mutable uint32_t low_          = 0;
+        mutable uint32_t loop_depth_   = 0;
+        mutable bool on_stack_         = false;
+        mutable bool visited_          = false;
+        mutable bool recursive_        = true;
+        mutable const Node* curr_child = nullptr;
+        ///@}
 
         friend class Nest;
     };
@@ -122,13 +127,15 @@ public:
 
 private:
     void populate();
-    void deps(const Node*);
     Node* make_node(Def*, const Node* parent = nullptr);
+    void deps(const Node*);
+    void find_SCCs(const Node*) const;
 
     World& world_;
     absl::flat_hash_map<Def*, std::unique_ptr<const Node>> nodes_;
     Vars vars_;
     Node* root_;
+    bool deps_ = false;
 };
 
 } // namespace mim

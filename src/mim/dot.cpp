@@ -188,8 +188,7 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
     for (auto dep : depends())
         tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", this->name(), dep->name());
 
-    tab.println(os, "\"{}\" [label=\"{}- {} - {}\",tooltip=\"{}\"]", name(), name(), (unsigned)impl_.idx,
-                (unsigned)impl_.low, s);
+    tab.println(os, "\"{}\" [label=\"{} - {} - {} - {}\",tooltip=\"{}\"]", name(), name(), idx_, low_, loop_depth(), s);
     for (const auto& [_, child] : children()) {
         tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);
