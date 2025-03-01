@@ -29,11 +29,11 @@ option(MIM_BUILD_EXAMPLES   "If ON, build examples." OFF)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}; shared libs: ${BUILD_SHARED_LIBS}")
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    option(MIM_ENABLE_CHECKS "Enable expensive checks" ON)
-else()
-    option(MIM_ENABLE_CHECKS "Enable expensive checks" OFF)
-endif()
+cmake_dependent_option(
+    MIM_ENABLE_CHECKS
+    "Enable expensive checks (only applicable in Debug mode)" ON
+    "CMAKE_BUILD_TYPE STREQUAL Debug" OFF
+)
 
 if(WIN32)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
