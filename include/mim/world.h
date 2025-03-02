@@ -403,8 +403,8 @@ public:
         return lit_idx(Idx::bitwidth2size(sizeof(I) * 8), val);
     }
 
-    /// Constructs a Lit @p of type Idx of size $2^width$.
-    /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
+    /// Constructs a Lit @p of type Idx of size 2^width.
+    /// `val = 64` will be automatically converted to size `0` - the encoding for 2^64.
     const Lit* lit_int(nat_t width, u64 val) { return lit_idx(Idx::bitwidth2size(width), val); }
     const Lit* lit_i1 (bool val) { return lit_int( 1, u64(val)); }
     const Lit* lit_i2 (u8   val) { return lit_int( 2, u64(val)); }
@@ -417,7 +417,7 @@ public:
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
-    /// @note `mod == 0` is the special case for $2^64$ and no modulo will be performed on @p val.
+    /// @note `mod == 0` is the special case for 2^64 and no modulo will be performed on @p val.
     const Lit* lit_idx_mod(nat_t mod, u64 val) { return lit_idx(mod, mod == 0 ? val : (val % mod)); }
 
     const Lit* lit_bool(bool val) { return data_.lit_bool[size_t(val)]; }
@@ -470,8 +470,8 @@ public:
     /// @note `size = 0` means `2^64`.
     Ref type_idx(nat_t size) { return type_idx(lit_nat(size)); }
 
-    /// Constructs a type Idx of size $2^width$.
-    /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
+    /// Constructs a type Idx of size 2^width.
+    /// `width = 64` will be automatically converted to size `0` - the encoding for 2^64.
     Ref type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
     // clang-format off
     Ref type_bool() { return data_.type_bool; }
