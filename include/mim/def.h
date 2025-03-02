@@ -394,13 +394,13 @@ public:
     ///   They will be transitively invalidated by following users, if a mutable is mutated.
     ///@{
 
-    /// Mutables reachable by following *immutable* deps().
-    /// @note `mut->local_muts()` is by definition the set `{ mut }`.
+    /// Mutables reachable by following *immutable* deps(); `mut->local_muts()` is by definition the set `{ mut }`.
     Muts local_muts() const;
-    Muts local_muts_();
+    /// All local_muts() of this mutable's deps().
+    Muts mut_local_muts();
     /// Var%s reachable by following *immutable* deps().
     /// @note `var->local_vars()` is by definition the set `{ var }`.
-    Vars local_vars() const { return mut_ ? Vars() : vars_.local; }
+    Vars local_vars() const { return mut_ ? Vars() : vars_; }
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();
@@ -581,17 +581,10 @@ private:
 #ifndef NDEBUG
     size_t curr_op_ = 0;
 #endif
-
     u32 gid_;
     u32 num_ops_;
     size_t hash_;
-
-    union LocalOrFreeVars {
-        LocalOrFreeVars() {}
-
-        Vars local; // Immutable only.
-        Vars free;  // Mutable only.
-    } vars_;
+    Vars vars_; // Mutable: local vars; Immutable: free vars.
 
     union LocalOrConsumerMuts {
         LocalOrConsumerMuts() {}

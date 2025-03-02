@@ -38,7 +38,7 @@ void Nest::populate() {
 
     while (!stack.empty()) {
         auto curr_node = pop(stack);
-        for (auto local_mut : curr_node->mut()->local_muts_()) {
+        for (auto local_mut : curr_node->mut()->mut_local_muts()) {
             if (!local_mut->free_vars().intersects(vars_)) continue;
 
             if (!mut2node(local_mut)) {
@@ -77,7 +77,7 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
 
 void Nest::deps(const Node* curr) const {
     if (curr->mut()) {
-        for (auto local_mut : curr->mut()->local_muts_()) {
+        for (auto local_mut : curr->mut()->mut_local_muts()) {
             if (auto local_node = mut2node(local_mut)) {
                 if (local_node == curr)
                     local_node->link(local_node);

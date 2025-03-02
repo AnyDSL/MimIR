@@ -39,14 +39,14 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     gid_ = world().next_gid();
 
     if (auto var = isa<Var>()) {
-        vars_.local = world().vars().create(var);
+        vars_       = world().vars().create(var);
         muts_.local = Muts();
     } else {
-        vars_.local = Vars();
+        vars_       = Vars();
         muts_.local = Muts();
 
         for (auto op : deps()) {
-            vars_.local = world().vars().merge(vars_.local, op->local_vars());
+            vars_       = world().vars().merge(vars_, op->local_vars());
             muts_.local = world().muts().merge(muts_.local, op->local_muts());
         }
     }
@@ -76,7 +76,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     gid_        = world().next_gid();
     hash_       = mim::hash(gid());
     var_        = nullptr;
-    vars_.free  = Vars();
     muts_.users = Muts();
     std::fill_n(ops_ptr(), num_ops, nullptr);
 }
@@ -300,7 +299,7 @@ Muts Def::local_muts() const {
     return muts_.local;
 }
 
-Muts Def::local_muts_() {
+Muts Def::mut_local_muts() {
     Muts muts;
     for (auto op : deps()) muts = world().muts().merge(muts, op->local_muts());
     return muts;
@@ -318,7 +317,7 @@ Vars Def::free_vars() {
     if (!is_set()) return {};
 
     if (!valid_) {
-        // fixed-point interation to recompute vars_.free
+        // fixed-point interation to recompute free vars
         uint32_t run = 1;
         for (bool todo = true; todo;) {
             todo = false;
@@ -327,22 +326,22 @@ Vars Def::free_vars() {
         validate();
     }
 
-    return vars_.free;
+    return vars_;
 }
 
 Vars Def::free_vars(bool& todo, uint32_t run) {
-    // Recursively recompute vars_.free. If
+    // Recursively recompute free vars. If
     // * valid_ == true: no recomputation is necessary
     // * mark_ == run: We are running in cycles within the *current* iteration of our fixed-point loop
-    if (valid_ || mark_ == run) return vars_.free;
+    if (valid_ || mark_ == run) return vars_;
     mark_ = run;
 
-    auto fvs0 = vars_.free;
+    auto fvs0 = vars_;
     auto fvs  = fvs0;
 
     for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
-    for (auto local_mut : local_muts_()) {
+    for (auto local_mut : mut_local_muts()) {
         local_mut->muts_.users = world().muts().insert(local_mut->muts_.users, this);
         fvs                    = world().vars().merge(fvs, local_mut->free_vars(todo, run));
     }
@@ -350,7 +349,7 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
 
     todo |= fvs0 != fvs;
-    return vars_.free = fvs;
+    return vars_ = fvs;
 }
 
 void Def::validate() {
@@ -367,7 +366,7 @@ void Def::invalidate() {
     if (valid_) {
         valid_ = false;
         for (auto mut : users()) mut->invalidate();
-        vars_.free.clear();
+        vars_.clear();
         muts_.users.clear();
     }
 }
