@@ -39,7 +39,7 @@ public:
         /// @name depends/controls
         /// These are the dependencies across children():
         /// * A child `n` depends() on `m`, if a subtree of `n` uses `m`.
-        /// * A child `m` controls() `n`, if a subtree of `n` uses `m`.
+        /// * Conversly: `m` controls() `n`.
         ///@{
         const auto& depends() const { return deps().depends_; }
         const auto& controls() const { return deps().controls_; }
@@ -94,14 +94,12 @@ public:
         mutable std::deque<std::unique_ptr<SCC>> topo_;
         mutable absl::node_hash_map<const Node*, const SCC*> SCCs_;
 
-        /// @name implementaiton details
-        ///@{
+        // implementaiton details
         static constexpr uint32_t Unvisited = uint32_t(-1);
         mutable uint32_t idx_               = Unvisited;
         mutable uint32_t low_  : 31         = 0;
         mutable bool on_stack_ : 1          = false;
         mutable const Node* curr_child      = nullptr;
-        ///@}
 
         friend class Nest;
     };
