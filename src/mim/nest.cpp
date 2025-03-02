@@ -38,17 +38,15 @@ void Nest::populate() {
 
     while (!stack.empty()) {
         auto curr_node = pop(stack);
-        for (auto op : curr_node->mut()->deps()) {
-            for (auto local_mut : op->local_muts()) {
-                if (!local_mut->free_vars().intersects(vars_)) continue;
+        for (auto local_mut : curr_node->mut()->local_muts_()) {
+            if (!local_mut->free_vars().intersects(vars_)) continue;
 
-                if (!mut2node(local_mut)) {
-                    for (auto node = curr_node; node && node->mut(); node = node->parent()) {
-                        if (auto var = node->mut()->has_var()) {
-                            if (local_mut->free_vars().contains(var)) {
-                                stack.push(make_node(local_mut, node));
-                                break;
-                            }
+            if (!mut2node(local_mut)) {
+                for (auto node = curr_node; node && node->mut(); node = node->parent()) {
+                    if (auto var = node->mut()->has_var()) {
+                        if (local_mut->free_vars().contains(var)) {
+                            stack.push(make_node(local_mut, node));
+                            break;
                         }
                     }
                 }
@@ -79,16 +77,14 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
 
 void Nest::deps(const Node* curr) const {
     if (curr->mut()) {
-        for (auto op : curr->mut()->deps()) {
-            for (auto local_mut : op->local_muts()) {
-                if (auto local_node = mut2node(local_mut)) {
-                    if (local_node == curr)
-                        local_node->link(local_node);
-                    else if (auto parent = local_node->parent()) {
-                        if (auto curr_child = parent->curr_child) {
-                            assert(parent->children().contains(curr_child->mut()));
-                            curr_child->link(local_node);
-                        }
+        for (auto local_mut : curr->mut()->local_muts_()) {
+            if (auto local_node = mut2node(local_mut)) {
+                if (local_node == curr)
+                    local_node->link(local_node);
+                else if (auto parent = local_node->parent()) {
+                    if (auto curr_child = parent->curr_child) {
+                        assert(parent->children().contains(curr_child->mut()));
+                        curr_child->link(local_node);
                     }
                 }
             }

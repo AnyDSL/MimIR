@@ -397,6 +397,7 @@ public:
     /// Mutables reachable by following *immutable* deps().
     /// @note `mut->local_muts()` is by definition the set `{ mut }`.
     Muts local_muts() const;
+    Muts local_muts_();
     /// Var%s reachable by following *immutable* deps().
     /// @note `var->local_vars()` is by definition the set `{ var }`.
     Vars local_vars() const { return mut_ ? Vars() : vars_.local; }

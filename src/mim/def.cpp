@@ -300,6 +300,12 @@ Muts Def::local_muts() const {
     return muts_.local;
 }
 
+Muts Def::local_muts_() {
+    Muts muts;
+    for (auto op : deps()) muts = world().muts().merge(muts, op->local_muts());
+    return muts;
+}
+
 Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
@@ -336,11 +342,9 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
 
     for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
-    for (auto op : deps()) {
-        for (auto local_mut : op->local_muts()) {
-            local_mut->muts_.users = world().muts().insert(local_mut->muts_.users, this);
-            fvs                    = world().vars().merge(fvs, local_mut->free_vars(todo, run));
-        }
+    for (auto local_mut : local_muts_()) {
+        local_mut->muts_.users = world().muts().insert(local_mut->muts_.users, this);
+        fvs                    = world().vars().merge(fvs, local_mut->free_vars(todo, run));
     }
 
     if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
