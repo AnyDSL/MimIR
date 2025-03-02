@@ -69,7 +69,7 @@ public:
     constexpr bool contains(const T& elem) const { return binary_find(begin(), end(), elem, GIDLt<T>()) != end(); }
 
     /// Is @f$this \cup other \neq \emptyset@f$?
-    [[nodiscard]] bool intersects(PooledSet<T> other) {
+    [[nodiscard]] bool has_intersection(PooledSet<T> other) {
         if (*this == other) return true;
         if (!*this || !other) return false;
 
@@ -186,6 +186,28 @@ public:
         while (bi != be) copy_if_unique_and_inc(di, bi);
 
         auto actual_size = std::distance(data->elems, di + 1);
+        data->size       = actual_size; // correct size
+        return unify(data, state, size - actual_size);
+    }
+
+    /// Yields @f$a \cap b@f$.
+    [[nodiscard]] PooledSet<T> intersect(PooledSet<T> a, PooledSet<T> b) {
+        if (a == b) return a;
+        if (!a || !b) return {};
+
+        auto size          = std::min(a.size(), b.size()); // max space needed - may be less; see actual_size below
+        auto [data, state] = allocate(size);
+
+        auto di = data->elems;
+        for (auto ai = a.begin(), ae = a.end(), bi = b.begin(), be = b.end(); ai != ae && bi != be;)
+            if ((*ai)->gid() == (*bi)->gid())
+                *di++ = ++ai, *bi++;
+            else if ((*ai)->gid() < (*bi)->gid())
+                ++ai;
+            else
+                ++bi;
+
+        auto actual_size = std::distance(data->elems, di);
         data->size       = actual_size; // correct size
         return unify(data, state, size - actual_size);
     }

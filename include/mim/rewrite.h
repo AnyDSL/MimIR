@@ -42,12 +42,12 @@ public:
 
     Ref rewrite_imm(Ref imm) override {
         if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
-        if (imm->has_dep(Dep::Infer) || vars_.intersects(imm->free_vars())) return Rewriter::rewrite_imm(imm);
+        if (imm->has_dep(Dep::Infer) || vars_.has_intersection(imm->free_vars())) return Rewriter::rewrite_imm(imm);
         return imm;
     }
 
     Ref rewrite_mut(Def* mut) override {
-        if (vars_.intersects(mut->free_vars())) {
+        if (vars_.has_intersection(mut->free_vars())) {
             if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
             return Rewriter::rewrite_mut(mut);
         }

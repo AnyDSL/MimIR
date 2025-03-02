@@ -31,7 +31,7 @@ public:
         return scope(lam) && scope(lam) != scope(curr_mut());
     }
 
-    bool from_outer_scope(Ref lam) { return curr_mut()->free_vars().intersects(lam->free_vars()); }
+    bool from_outer_scope(Ref lam) { return curr_mut()->free_vars().has_intersection(lam->free_vars()); }
 
     Ref eta_wrap(Ref def, attr a) {
         auto& w                = world();

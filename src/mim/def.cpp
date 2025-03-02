@@ -163,11 +163,13 @@ template TExt<true >*   TExt<true >  ::stub_(World&, Ref);
  * immutabilize
  */
 
-// TODO also check for mutual recursion?
 bool Def::is_immutabilizable() {
-    auto v = has_var();
-    for (auto op : deps())
-        if ((v && op->free_vars().contains(v)) || op->local_muts().contains(this)) return false;
+    if (is_recursive()) return false;
+
+    if (auto v = has_var()) {
+        for (auto op : deps())
+            if (op->free_vars().contains(v)) return false;
+    }
     return true;
 }
 

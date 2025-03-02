@@ -29,26 +29,38 @@ Nest::Nest(World& world)
 }
 
 void Nest::populate() {
-    std::queue<const Node*> stack;
+    std::queue<const Node*> queue;
 
     if (root()->mut())
-        stack.push(root());
+        queue.push(root());
     else
-        for (auto [_, child] : root()->children()) stack.push(child);
+        for (auto [_, child] : root()->children()) queue.push(child);
 
-    while (!stack.empty()) {
-        auto curr_node = pop(stack);
+    while (!queue.empty()) {
+        auto curr_node = pop(queue);
         for (auto local_mut : curr_node->mut()->mut_local_muts()) {
-            if (!local_mut->free_vars().intersects(vars_)) continue;
+            if (!local_mut->free_vars().has_intersection(vars_)) continue;
 
             if (!mut2node(local_mut)) {
-                for (auto node = curr_node; node && node->mut(); node = node->parent()) {
-                    if (auto var = node->mut()->has_var()) {
-                        if (local_mut->free_vars().contains(var)) {
-                            stack.push(make_node(local_mut, node));
-                            break;
+                if (curr_node->level() < local_mut->free_vars().size()) {
+                    for (auto node = curr_node;; node = node->parent()) {
+                        if (auto var = node->mut()->has_var()) {
+                            if (local_mut->free_vars().contains(var)) {
+                                queue.push(make_node(local_mut, node));
+                                break;
+                            }
                         }
                     }
+                } else {
+                    uint32_t max       = 0;
+                    const Node* parent = root();
+                    for (auto var : local_mut->free_vars()) {
+                        if (auto node = mut2node(var->mut()); node && node->level() > max) {
+                            max    = node->level();
+                            parent = node;
+                        }
+                    }
+                    queue.push(make_node(local_mut, parent));
                 }
             }
         }

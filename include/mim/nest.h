@@ -117,7 +117,7 @@ public:
     Node* root() { return root_; }
     const Node* root() const { return root_; }
     Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
-    bool contains(const Def* def) const { return vars().intersects(def->free_vars()); }
+    bool contains(const Def* def) const { return vars().has_intersection(def->free_vars()); }
     bool is_recursive() const { return sccs().root()->is_recursive(); }
     ///@}
 
