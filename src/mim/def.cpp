@@ -164,7 +164,7 @@ template TExt<true >*   TExt<true >  ::stub_(World&, Ref);
  */
 
 bool Def::is_immutabilizable() {
-    if (is_recursive()) return false;
+    if (mut_local_muts().contains(this)) return false;
 
     if (auto v = has_var()) {
         for (auto op : deps())

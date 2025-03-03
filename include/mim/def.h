@@ -390,8 +390,8 @@ public:
 
     /// @name Free Vars and Muts
     /// * local_muts() / local_vars() are cached and hash-consed.
-    /// * free_vars() are computed on demand and cached.
-    ///   They will be transitively invalidated by following users, if a mutable is mutated.
+    /// * free_vars() are computed on demand and cached in mutables.
+    ///   They will be transitively invalidated by following users(), if a mutable is mutated.
     ///@{
 
     /// Mutables reachable by following *immutable* deps(); `mut->local_muts()` is by definition the set `{ mut }`.
@@ -407,9 +407,6 @@ public:
     Muts users() { return muts_.users; } ///< Set of mutables where this mutable is locally referenced.
     bool is_open() const;                ///< Has free_vars()?
     bool is_closed() const;              ///< Has no free_vars()?
-    /// Detects simple but **not** mutual recursion.
-    /// @see Nest::Node::is_mutually_recursive()
-    bool is_recursive() { return mut_local_muts().contains(this); }
     ///@}
 
     /// @name external
