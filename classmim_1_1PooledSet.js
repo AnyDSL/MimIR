@@ -14,7 +14,7 @@ var classmim_1_1PooledSet =
     [ "empty", "classmim_1_1PooledSet.html#ab87cdf231f02c77a9790f95f775023e8", null ],
     [ "end", "classmim_1_1PooledSet.html#a2866f22d5c1d7f0f0c8ee35f8dea4a0f", null ],
     [ "front", "classmim_1_1PooledSet.html#ae84cbb3edd1341550b9493dede96a104", null ],
-    [ "intersects", "classmim_1_1PooledSet.html#af95be6eb2414246af6c5e32a67d394b6", null ],
+    [ "has_intersection", "classmim_1_1PooledSet.html#aaa21b033b776f47eb5df1a20ddfe8c78", null ],
     [ "operator bool", "classmim_1_1PooledSet.html#a5cebd8f35c0290f2a3c8c99e105e4392", null ],
     [ "operator!=", "classmim_1_1PooledSet.html#a13a0327f0ec8af5e1f507df7b2091ae4", null ],
     [ "operator=", "classmim_1_1PooledSet.html#a484bf9b52544574d9bc7ad7d0ed6b1ed", null ],

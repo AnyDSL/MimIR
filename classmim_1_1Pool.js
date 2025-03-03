@@ -7,6 +7,7 @@ var classmim_1_1Pool =
     [ "create", "classmim_1_1Pool.html#a7fb08af1afd8fd0046eb9ddb48ddedb5", null ],
     [ "erase", "classmim_1_1Pool.html#a4296aac5967eca7d243d53c6654c4efb", null ],
     [ "insert", "classmim_1_1Pool.html#abdd1d887074f3d9701f9d3be9af74fbf", null ],
+    [ "intersect", "classmim_1_1Pool.html#a48981741e0367e729193438b4fc4d0d5", null ],
     [ "merge", "classmim_1_1Pool.html#a3f55fda13c547487aa4bc32afc898493", null ],
     [ "operator=", "classmim_1_1Pool.html#acf6425387639161fac12308bf8f4480b", null ],
     [ "swap", "classmim_1_1Pool.html#a76d8e439fe299d28f1a07752eb176e77", null ]

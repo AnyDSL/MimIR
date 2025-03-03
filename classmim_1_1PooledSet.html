@@ -158,9 +158,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac0333192c3f33a39a44451ba62887be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79e7aedc35a7c200cd031618940db54f" id="r_a79e7aedc35a7c200cd031618940db54f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79e7aedc35a7c200cd031618940db54f">contains</a> (const T &amp;elem) const</td></tr>
 <tr class="separator:a79e7aedc35a7c200cd031618940db54f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af95be6eb2414246af6c5e32a67d394b6" id="r_af95be6eb2414246af6c5e32a67d394b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af95be6eb2414246af6c5e32a67d394b6">intersects</a> (<a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt; other)</td></tr>
-<tr class="memdesc:af95be6eb2414246af6c5e32a67d394b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <picture><source srcset="form_0_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$this \cup other \neq \emptyset$" src="form_0.png" width="89" height="13"/></picture>?  <br /></td></tr>
-<tr class="separator:af95be6eb2414246af6c5e32a67d394b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa21b033b776f47eb5df1a20ddfe8c78" id="r_aaa21b033b776f47eb5df1a20ddfe8c78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa21b033b776f47eb5df1a20ddfe8c78">has_intersection</a> (<a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt; other)</td></tr>
+<tr class="memdesc:aaa21b033b776f47eb5df1a20ddfe8c78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <picture><source srcset="form_0_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$this \cup other \neq \emptyset$" src="form_0.png" width="89" height="13"/></picture>?  <br /></td></tr>
+<tr class="separator:aaa21b033b776f47eb5df1a20ddfe8c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Comparisons</div></td></tr>
 <tr class="memitem:a137743d3dc1aecccaa52c021b64ceddc" id="r_a137743d3dc1aecccaa52c021b64ceddc"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a137743d3dc1aecccaa52c021b64ceddc">operator==</a> (<a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt; other) const noexcept</td></tr>
 <tr class="separator:a137743d3dc1aecccaa52c021b64ceddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,7 +292,7 @@ template&lt;class T &gt; </div>
 
 <p class="reference">References <a class="el" href="pool_8h_source.html#l00068">mim::PooledSet&lt; T &gt;::elems()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00069">mim::PooledSet&lt; T &gt;::contains()</a>, <a class="el" href="pool_8h_source.html#l00197">mim::Pool&lt; T &gt;::erase()</a>, <a class="el" href="pool_8h_source.html#l00072">mim::PooledSet&lt; T &gt;::intersects()</a>, <a class="el" href="pool_8h_source.html#l00166">mim::Pool&lt; T &gt;::merge()</a>, and <a class="el" href="pool_8h_source.html#l00102">mim::PooledSet&lt; T &gt;::rend()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00069">mim::PooledSet&lt; T &gt;::contains()</a>, <a class="el" href="pool_8h_source.html#l00219">mim::Pool&lt; T &gt;::erase()</a>, <a class="el" href="pool_8h_source.html#l00072">mim::PooledSet&lt; T &gt;::has_intersection()</a>, <a class="el" href="pool_8h_source.html#l00194">mim::Pool&lt; T &gt;::intersect()</a>, <a class="el" href="pool_8h_source.html#l00166">mim::Pool&lt; T &gt;::merge()</a>, and <a class="el" href="pool_8h_source.html#l00102">mim::PooledSet&lt; T &gt;::rend()</a>.</p>
 
 </div>
 </div>
@@ -416,7 +416,7 @@ template&lt;class T &gt; </div>
 
 <p class="reference">References <a class="el" href="pool_8h_source.html#l00097">mim::PooledSet&lt; T &gt;::begin()</a>, <a class="el" href="util_8h_source.html#l00054">mim::binary_find()</a>, and <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00168">mim::Def::is_immutabilizable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00166">mim::Def::is_immutabilizable()</a>, and <a class="el" href="def_8h_source.html#l00412">mim::Def::is_recursive()</a>.</p>
 
 </div>
 </div>
@@ -542,7 +542,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00064">64</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00371">mim::Def::is_closed()</a>, <a class="el" href="def_8cpp_source.html#l00379">mim::Def::is_open()</a>, <a class="el" href="rewrite_8h_source.html#l00043">mim::VarRewriter::rewrite_imm()</a>, and <a class="el" href="pool_8h_source.html#l00065">mim::PooledSet&lt; T &gt;::size()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00376">mim::Def::is_closed()</a>, <a class="el" href="def_8cpp_source.html#l00384">mim::Def::is_open()</a>, <a class="el" href="rewrite_8h_source.html#l00043">mim::VarRewriter::rewrite_imm()</a>, and <a class="el" href="pool_8h_source.html#l00065">mim::PooledSet&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -575,7 +575,7 @@ template&lt;class T &gt; </div>
 
 <p class="reference">References <a class="el" href="pool_8h_source.html#l00068">mim::PooledSet&lt; T &gt;::elems()</a>, and <a class="el" href="pool_8h_source.html#l00065">mim::PooledSet&lt; T &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00100">mim::PooledSet&lt; T &gt;::cend()</a>, <a class="el" href="pool_8h_source.html#l00069">mim::PooledSet&lt; T &gt;::contains()</a>, <a class="el" href="pool_8h_source.html#l00197">mim::Pool&lt; T &gt;::erase()</a>, <a class="el" href="pool_8h_source.html#l00072">mim::PooledSet&lt; T &gt;::intersects()</a>, <a class="el" href="pool_8h_source.html#l00166">mim::Pool&lt; T &gt;::merge()</a>, and <a class="el" href="pool_8h_source.html#l00101">mim::PooledSet&lt; T &gt;::rbegin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00100">mim::PooledSet&lt; T &gt;::cend()</a>, <a class="el" href="pool_8h_source.html#l00069">mim::PooledSet&lt; T &gt;::contains()</a>, <a class="el" href="pool_8h_source.html#l00219">mim::Pool&lt; T &gt;::erase()</a>, <a class="el" href="pool_8h_source.html#l00072">mim::PooledSet&lt; T &gt;::has_intersection()</a>, <a class="el" href="pool_8h_source.html#l00194">mim::Pool&lt; T &gt;::intersect()</a>, <a class="el" href="pool_8h_source.html#l00166">mim::Pool&lt; T &gt;::merge()</a>, and <a class="el" href="pool_8h_source.html#l00101">mim::PooledSet&lt; T &gt;::rbegin()</a>.</p>
 
 </div>
 </div>
@@ -608,8 +608,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="af95be6eb2414246af6c5e32a67d394b6" name="af95be6eb2414246af6c5e32a67d394b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af95be6eb2414246af6c5e32a67d394b6">&#9670;&#160;</a></span>intersects()</h2>
+<a id="aaa21b033b776f47eb5df1a20ddfe8c78" name="aaa21b033b776f47eb5df1a20ddfe8c78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa21b033b776f47eb5df1a20ddfe8c78">&#9670;&#160;</a></span>has_intersection()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -620,7 +620,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> <a class="el" href="classmim_1_1PooledSet.html">mim::PooledSet</a>&lt; T &gt;::intersects </td>
+          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> <a class="el" href="classmim_1_1PooledSet.html">mim::PooledSet</a>&lt; T &gt;::has_intersection </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
           <td></td>
@@ -639,7 +639,7 @@ template&lt;class T &gt; </div>
 
 <p class="reference">References <a class="el" href="pool_8h_source.html#l00097">mim::PooledSet&lt; T &gt;::begin()</a>, and <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00122">mim::Nest::contains()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00034">mim::plug::clos::ClosConvPrep::from_outer_scope()</a>, <a class="el" href="rewrite_8h_source.html#l00043">mim::VarRewriter::rewrite_imm()</a>, and <a class="el" href="rewrite_8h_source.html#l00049">mim::VarRewriter::rewrite_mut()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00120">mim::Nest::contains()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00034">mim::plug::clos::ClosConvPrep::from_outer_scope()</a>, <a class="el" href="rewrite_8h_source.html#l00043">mim::VarRewriter::rewrite_imm()</a>, and <a class="el" href="rewrite_8h_source.html#l00049">mim::VarRewriter::rewrite_mut()</a>.</p>
 
 </div>
 </div>
@@ -885,7 +885,7 @@ template&lt;class T &gt; </div>
 
 <p class="reference">References <a class="el" href="pool_8h_source.html#l00064">mim::PooledSet&lt; T &gt;::empty()</a>, and <a class="el" href="pool_8h_source.html#l00029">mim::PooledSet&lt; T &gt;::Data::size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>, <a class="el" href="pool_8h_source.html#l00197">mim::Pool&lt; T &gt;::erase()</a>, and <a class="el" href="pool_8h_source.html#l00166">mim::Pool&lt; T &gt;::merge()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>, <a class="el" href="pool_8h_source.html#l00219">mim::Pool&lt; T &gt;::erase()</a>, <a class="el" href="pool_8h_source.html#l00194">mim::Pool&lt; T &gt;::intersect()</a>, and <a class="el" href="pool_8h_source.html#l00166">mim::Pool&lt; T &gt;::merge()</a>.</p>
 
 </div>
 </div>

@@ -47,9 +47,10 @@ var searchData=
   ['mut_5finfer_5funiv_44',['mut_infer_univ',['../classmim_1_1World.html#a52ee8dad7b577241e5f63725b7501729',1,'mim::World']]],
   ['mut_5fjoin_45',['mut_join',['../classmim_1_1World.html#a6687879fbd6977d1c53c02f715736101',1,'mim::World::mut_join(Ref type, size_t size)'],['../classmim_1_1World.html#ab27f0dd4881570487ac76d2fed38f293',1,'mim::World::mut_join(size_t size)']]],
   ['mut_5flam_46',['mut_lam',['../classmim_1_1World.html#afa7919f0e7f69f2451aedd9da912c857',1,'mim::World::mut_lam(const Pi *pi)'],['../classmim_1_1World.html#a1123b07fdca38d4fbcf7dd1e260e6411',1,'mim::World::mut_lam(Ref dom, Ref codom)'],['../classmim_1_1World.html#a08b2563ad345be2bc4c40cf7d9c7a380',1,'mim::World::mut_lam(Defs dom, Ref codom)'],['../classmim_1_1World.html#a7fb5bb4f67263a1749a06f71c56f1575',1,'mim::World::mut_lam(Ref dom, Defs codom)'],['../classmim_1_1World.html#ab7ecddb780da3a0b13e16085094e1f17',1,'mim::World::mut_lam(Defs dom, Defs codom)']]],
-  ['mut_5fmeet_47',['mut_meet',['../classmim_1_1World.html#a06c6f9437c9e5243fce787719dd091f8',1,'mim::World::mut_meet(Ref type, size_t size)'],['../classmim_1_1World.html#ae2faa859021a494559e8eea9ea1f596c',1,'mim::World::mut_meet(size_t size)']]],
-  ['mut_5fpack_48',['mut_pack',['../classmim_1_1World.html#af28df48f9c4e44ab2fabf923240bc959',1,'mim::World']]],
-  ['mut_5fpi_49',['mut_pi',['../classmim_1_1World.html#a6110b45d39f0d04b4e3414fec36da7df',1,'mim::World']]],
-  ['mut_5fsigma_50',['mut_sigma',['../classmim_1_1World.html#a77b092c3be279e6c3037625756786a33',1,'mim::World::mut_sigma(Ref type, size_t size)'],['../classmim_1_1World.html#ab98632ddaa3d773e7626b46d673eeb2b',1,'mim::World::mut_sigma(size_t size)']]],
-  ['muts_51',['muts',['../classmim_1_1World.html#a1ab828141bfcd0c0bdc3608ac24ec358',1,'mim::World::muts()'],['../classmim_1_1World.html#a52b5c22ff4c01fdfa5b1c18412f38a6f',1,'mim::World::muts() const']]]
+  ['mut_5flocal_5fmuts_47',['mut_local_muts',['../classmim_1_1Def.html#a30f8b76edaf16e78a83a632d10b3d8c9',1,'mim::Def']]],
+  ['mut_5fmeet_48',['mut_meet',['../classmim_1_1World.html#a06c6f9437c9e5243fce787719dd091f8',1,'mim::World::mut_meet(Ref type, size_t size)'],['../classmim_1_1World.html#ae2faa859021a494559e8eea9ea1f596c',1,'mim::World::mut_meet(size_t size)']]],
+  ['mut_5fpack_49',['mut_pack',['../classmim_1_1World.html#af28df48f9c4e44ab2fabf923240bc959',1,'mim::World']]],
+  ['mut_5fpi_50',['mut_pi',['../classmim_1_1World.html#a6110b45d39f0d04b4e3414fec36da7df',1,'mim::World']]],
+  ['mut_5fsigma_51',['mut_sigma',['../classmim_1_1World.html#a77b092c3be279e6c3037625756786a33',1,'mim::World::mut_sigma(Ref type, size_t size)'],['../classmim_1_1World.html#ab98632ddaa3d773e7626b46d673eeb2b',1,'mim::World::mut_sigma(size_t size)']]],
+  ['muts_52',['muts',['../classmim_1_1World.html#a1ab828141bfcd0c0bdc3608ac24ec358',1,'mim::World::muts()'],['../classmim_1_1World.html#a52b5c22ff4c01fdfa5b1c18412f38a6f',1,'mim::World::muts() const']]]
 ];
