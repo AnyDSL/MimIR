@@ -84,7 +84,7 @@ var searchData=
   ['is_5fparen_81',['is_paren',['../classmim_1_1ast_1_1TuplePtrn.html#a1176d6f6f64281b96a02177112d56d0e',1,'mim::ast::TuplePtrn']]],
   ['is_5fpi_82',['is_pi',['../structmim_1_1ast_1_1AnnexInfo.html#a14797b5e478a9c9da3de0e03dcc51b18',1,'mim::ast::AnnexInfo']]],
   ['is_5frassoc_83',['is_rassoc',['../classmim_1_1ast_1_1Expr.html#ae7a940ad5a4e5d59c555dd2baa550fc8',1,'mim::ast::Expr']]],
-  ['is_5frecursive_84',['is_recursive',['../classmim_1_1Def.html#a0a9fad1a27703ab38021426bdcefc28b',1,'mim::Def::is_recursive()'],['../classmim_1_1Nest_1_1Node.html#aa81c36ca3e5a1b8aa646c841bea42351',1,'mim::Nest::Node::is_recursive()'],['../classmim_1_1Nest.html#a49652caf6c6f54036e31936e80161753',1,'mim::Nest::is_recursive()']]],
+  ['is_5frecursive_84',['is_recursive',['../classmim_1_1Nest_1_1Node.html#aa81c36ca3e5a1b8aa646c841bea42351',1,'mim::Nest::Node::is_recursive()'],['../classmim_1_1Nest.html#a49652caf6c6f54036e31936e80161753',1,'mim::Nest::is_recursive()']]],
   ['is_5freturning_85',['is_returning',['../classmim_1_1plug_1_1clos_1_1ClosLit.html#a6df1bc401956576a3a401553a904222a',1,'mim::plug::clos::ClosLit']]],
   ['is_5froot_86',['is_root',['../classmim_1_1Nest_1_1Node.html#abf7a4a88a37c86159baa8e283705b84a',1,'mim::Nest::Node']]],
   ['is_5fset_87',['is_set',['../classmim_1_1Def.html#a075f30462bdc7ae0e435c8e15cb48fff',1,'mim::Def']]],

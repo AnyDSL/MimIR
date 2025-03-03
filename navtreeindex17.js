@@ -1,7 +1,5 @@
 var NAVTREEINDEX17 =
 {
-"dir_b7ea1f47cb1e497a75eef19caac95392.html":[6,0,2,0],
-"dir_b94543b43292d94334aee5f8fc74aa82.html":[6,0,2,1,3],
 "dir_bed7118e4bacc0bd560da06fb11567a5.html":[6,0,3,1,5],
 "dir_c2fd2bc99e78cd4bb71a7393f220a330.html":[6,0,2,1,4,3,0],
 "dir_c81a4445134ea055746248e54998b75a.html":[6,0,2,1,4,9,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX17 =
 "lower__matrix__mediumlevel_8cpp.html#a3103cefbc68045874edbe2be8d1fccb4":[6,0,3,1,4,8,0,2,0],
 "lower__matrix__mediumlevel_8cpp_source.html":[6,0,3,1,4,8,0,2],
 "lower__matrix__mediumlevel_8h.html":[6,0,2,1,4,8,0,2],
-"lower__matrix__mediumlevel_8h_source.html":[6,0,2,1,4,8,0,2]
+"lower__matrix__mediumlevel_8h_source.html":[6,0,2,1,4,8,0,2],
+"lower__regex_8cpp.html":[6,0,3,1,4,12,0,0],
+"lower__regex_8cpp_source.html":[6,0,3,1,4,12,0,0]
 };
