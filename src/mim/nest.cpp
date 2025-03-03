@@ -39,29 +39,27 @@ void Nest::populate() {
     while (!queue.empty()) {
         auto curr_node = pop(queue);
         for (auto local_mut : curr_node->mut()->mut_local_muts()) {
-            if (!local_mut->free_vars().has_intersection(vars_)) continue;
+            if (mut2node(local_mut) || !local_mut->free_vars().has_intersection(vars_)) continue;
 
-            if (!mut2node(local_mut)) {
-                if (curr_node->level() < local_mut->free_vars().size()) {
-                    for (auto node = curr_node;; node = node->parent()) {
-                        if (auto var = node->mut()->has_var()) {
-                            if (local_mut->free_vars().contains(var)) {
-                                queue.push(make_node(local_mut, node));
-                                break;
-                            }
+            if (curr_node->level() < local_mut->free_vars().size()) {
+                for (auto node = curr_node;; node = node->parent()) {
+                    if (auto var = node->mut()->has_var()) {
+                        if (local_mut->free_vars().contains(var)) {
+                            queue.push(make_node(local_mut, node));
+                            break;
                         }
                     }
-                } else {
-                    uint32_t max       = 0;
-                    const Node* parent = root();
-                    for (auto var : local_mut->free_vars()) {
-                        if (auto node = mut2node(var->mut()); node && node->level() > max) {
-                            max    = node->level();
-                            parent = node;
-                        }
-                    }
-                    queue.push(make_node(local_mut, parent));
                 }
+            } else {
+                uint32_t max       = 0;
+                const Node* parent = root();
+                for (auto var : local_mut->free_vars()) {
+                    if (auto node = mut2node(var->mut()); node && node->level() > max) {
+                        max    = node->level();
+                        parent = node;
+                    }
+                }
+                queue.push(make_node(local_mut, parent));
             }
         }
     }
