@@ -307,7 +307,6 @@ void Emitter::finalize() {
 }
 
 void Emitter::emit_epilogue(Lam* lam) {
-    outln("emit_epilogue: {}", lam);
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
 
