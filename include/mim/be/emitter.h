@@ -54,7 +54,6 @@ protected:
         }
 
         auto muts = Scheduler::schedule(nest); // TODO make sure to not compute twice
-        for (auto mut : muts) outln("{}", mut);
 
         // make sure that we don't need to rehash later on
         for (auto mut : muts)
