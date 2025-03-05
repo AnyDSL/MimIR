@@ -192,6 +192,7 @@ public:
     }
 
     /// Yields @f$a \cap b@f$.
+    /// @todo Not yet tested.
     [[nodiscard]] PooledSet<T> intersect(PooledSet<T> a, PooledSet<T> b) {
         if (a == b) return a;
         if (!a || !b) return {};

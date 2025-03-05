@@ -1,5 +1,7 @@
 #pragma once
 
+#include <compare>
+
 #include <fstream>
 #include <new>
 
@@ -13,27 +15,27 @@
 
 namespace mim {
 
-class Trie {
+template<class T> class Trie {
 public:
     class Node {
     public:
-        Node(Node* parent, u32 gid)
-            : gid_(gid)
+        Node(Node* parent, const T* elem)
+            : elem_(elem)
             , parent_(parent)
             , size_(parent ? parent->size_ + 1 : 0) {}
 
         void dot(std::ostream& os) {
             for (auto [elem, child] : children_) {
-                println(os, "n{}_{} -> n{}_{}", gid_, this, child->gid_, child);
+                println(os, "n{}_{} -> n{}_{}", elem_ ? elem_->gid() : u32(0xffff), this, child->elem_->gid(), child);
                 child->dot(os);
             }
         }
 
     private:
-        u32 gid_;
+        const T* elem_;
         Node* parent_;
         size_t size_;
-        absl::flat_hash_map<u32, Node*> children_;
+        GIDMap<const T*, Node*> children_;
 
         friend class Trie;
     };
@@ -52,26 +54,43 @@ public:
 
         /// @name Getters
         ///@{
-        constexpr u32 gid() const noexcept { return node_->gid_; }
         constexpr Set parent() const noexcept { return node_->parent_; }
         constexpr bool is_root() const noexcept { return parent() == nullptr; }
         constexpr bool empty() const noexcept { return is_root(); }
         constexpr size_t size() const noexcept { return node_->size_; }
         ///@}
 
-        /// @name Operators
+        /// @name Comparisons
+        ///@{
+        constexpr bool operator==(Set other) const noexcept { return this->node_ == other.node_; }
+        constexpr bool operator!=(Set other) const noexcept { return this->node_ != other.node_; }
+        constexpr auto operator<=>(Set other) const noexcept {
+            if (this->is_root() && other.is_root()) return std::strong_ordering::equal;
+            if (this->is_root()) return std::strong_ordering::less;
+            if (other.is_root()) return std::strong_ordering::greater;
+            return (*this)->gid() <=> other->gid();
+        }
+        constexpr auto operator<=>(const T* other) const noexcept {
+            if (this->is_root()) return std::strong_ordering::less;
+            return (*this)->gid() <=> other->gid();
+        }
+        ///@}
+
+        /// @name Conversions
         ///@{
         constexpr explicit operator bool() const noexcept { return !empty(); } ///< Is not empty?
-        constexpr u32 operator*() const noexcept { return gid(); }
-        // constexpr const u32* operator->() const noexcept { return &node_->gid_; }
+        constexpr const T* operator*() const noexcept { return node_->elem_; }
+        constexpr const T* operator->() const noexcept { return node_->elem_; }
+        ///@}
+
+        /// @name Increment
+        ///@{
         constexpr Set operator++(int) noexcept {
             auto res = *this;
             node_    = node_->parent_;
             return res;
         }
         constexpr Set& operator++() noexcept { return node_ = node_->parent_, *this; }
-        constexpr bool operator==(Set other) const noexcept { return this->node_ == other.node_; }
-        constexpr bool operator!=(Set other) const noexcept { return this->node_ != other.node_; }
         ///@}
 
     private:
@@ -113,7 +132,7 @@ public:
     ///@{
 
     /// Create a Set wih a *single* @p elem%ent: @f$\{elem\}@f$.
-    [[nodiscard]] Set create(u32 elem) { return create(root_, elem); }
+    [[nodiscard]] Set create(const T* elem) { return create(root_, elem); }
 
     /// Create a PooledSet wih all elements in the given range.
     template<class I> [[nodiscard]] Set create(I, I) {
@@ -122,16 +141,16 @@ public:
     }
 
     /// Yields @f$a \cup \{elem\}@f$.
-    constexpr Set insert(Set i, u32 elem) noexcept {
-        if (elem == *i) return i;
-        if (elem > *i) return create(i.node_, elem);
+    constexpr Set insert(Set i, const T* elem) noexcept {
+        if (*i == elem) return i;
+        if (i < elem) return create(i.node_, elem);
         return create(insert(i.parent(), elem), *i);
     }
 
     /// Yields @f$i \setminus elem@f$.
-    [[nodiscard]] Set erase(Set i, u32 elem) {
-        if (elem == *i) return i.parent();
-        if (elem > *i) return i;
+    [[nodiscard]] Set erase(Set i, const T* elem) {
+        if (*i == elem) return i.parent();
+        if (i < elem) return i;
         return create(erase(i.parent(), elem), *i);
     }
 
@@ -140,7 +159,7 @@ public:
         if (a == b || !b) return a;
         if (!a) return b;
 
-        auto gt = *a > *b;
+        auto gt = a > b;
         return create(gt ? merge(a.parent(), b) : merge(a, b.parent()), gt ? *a : *b);
     }
 
@@ -153,25 +172,33 @@ public:
         println(os, "}}");
     }
 
+    friend void swap(Trie& t1, Trie& t2) noexcept {
+        using std::swap;
+        swap(t1.arena_, t2.arena_);
+        swap(t1.root_, t2.root_);
+    }
+
 private:
-    Node* create(Set parent, u32 gid) {
-        auto [i, ins] = parent.node_->children_.emplace(gid, nullptr);
-        if (ins) i->second = make_node(parent.node_, gid);
+    Node* create(Set parent, const T* elem) {
+        auto [i, ins] = parent.node_->children_.emplace(elem, nullptr);
+        if (ins) i->second = make_node(parent.node_, elem);
         return i->second;
     }
 
-    Node* make_node(Node* parent, u32 gid) {
+    Node* make_node(Node* parent, const T* elem) {
         auto buff = arena_.allocate(sizeof(Node));
-        auto node = new (buff) Node(parent, gid);
+        auto node = new (buff) Node(parent, elem);
         return node;
     }
 
+#if 0
     std::pair<Set, bool> find(Set i, u32 elem) {
         auto j = i;
         for (; *j >= elem; ++j)
             if (*j == elem) return {j, true};
         return {j, false};
     }
+#endif
 
     fe::Arena arena_;
     Node* root_;
