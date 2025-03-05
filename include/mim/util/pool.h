@@ -138,8 +138,6 @@ public:
     }
     ///@}
 
-    constexpr size_t size() const noexcept { return size_; }
-
     /// @name Set Operations
     /// @note These operations do **not** modify the input set(s); they create a **new** PooledSet.
     ///@{
@@ -236,7 +234,6 @@ public:
         using std::swap;
         swap(p1.arena_, p2.arena_);
         swap(p1.pool_, p2.pool_);
-        swap(p1.size_, p2.size_);
     }
 
 private:
@@ -251,7 +248,6 @@ private:
     PooledSet<T> unify(Data* data, fe::Arena::State state, size_t excess = 0) {
         auto [i, ins] = pool_.emplace(data);
         if (ins) {
-            ++size_;
             arena_.deallocate(excess * SizeOf<T>); // release excess memory
             return PooledSet<T>(data);
         }
@@ -267,7 +263,6 @@ private:
 
     fe::Arena arena_;
     absl::flat_hash_set<const Data*, absl::Hash<const Data*>, typename Data::Equal> pool_;
-    size_t size_ = 0;
 };
 
 } // namespace mim

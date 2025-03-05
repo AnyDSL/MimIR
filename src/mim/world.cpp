@@ -62,7 +62,6 @@ World::World(Driver* driver)
     : World(driver, State()) {}
 
 World::~World() {
-    outln("muts: {}, vars: {}", muts().size(), vars().size());
     for (auto def : move_.defs) def->~Def();
 }
 
