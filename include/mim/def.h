@@ -404,9 +404,9 @@ public:
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();
-    Muts users() { return muts_.users; } ///< Set of mutables where this mutable is locally referenced.
-    bool is_open() const;                ///< Has free_vars()?
-    bool is_closed() const;              ///< Has no free_vars()?
+    Muts users() { return muts_; } ///< Set of mutables where this mutable is locally referenced.
+    bool is_open() const;          ///< Has free_vars()?
+    bool is_closed() const;        ///< Has no free_vars()?
     ///@}
 
     /// @name external
@@ -585,13 +585,7 @@ private:
     u32 num_ops_;
     size_t hash_;
     Vars vars_; // Mutable: local vars; Immutable: free vars.
-
-    union LocalOrConsumerMuts {
-        LocalOrConsumerMuts() {}
-
-        Muts local; // Immutable only.
-        Muts users; // Mutable only.
-    } muts_;
+    Muts muts_; // Mutable: local muts; Immutable: users.
 
     const Def* type_;
 

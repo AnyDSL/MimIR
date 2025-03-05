@@ -60,7 +60,7 @@ public:
 
     /// @name Getters
     ///@{
-    constexpr explicit operator bool() const noexcept { return data_; } ///< Is not empty?
+    constexpr explicit operator bool() const noexcept { return data_ != nullptr; } ///< Is not empty?
     constexpr bool empty() const noexcept { return data_ == nullptr; }
     constexpr size_t size() const noexcept { return empty() ? 0 : data_->size; }
     constexpr const T& operator[](size_t i) const { return data_->elems[i]; }
@@ -138,8 +138,10 @@ public:
     }
     ///@}
 
+    constexpr size_t size() const noexcept { return size_; }
+
     /// @name Set Operations
-    /// @note All operations do **not** modify the input set(s); they create a **new** PooledSet.
+    /// @note These operations do **not** modify the input set(s); they create a **new** PooledSet.
     ///@{
     /// Create a PooledSet wih a *single* @p elem%ent: @f$\{elem\}@f$.
     [[nodiscard]] PooledSet<T> create(T elem) {
@@ -200,7 +202,7 @@ public:
 
         auto di = data->elems;
         for (auto ai = a.begin(), ae = a.end(), bi = b.begin(), be = b.end(); ai != ae && bi != be;)
-            if ((*ai)->gid() == (*bi)->gid())
+            if (*ai == *bi)
                 *di++ = ++ai, *bi++;
             else if ((*ai)->gid() < (*bi)->gid())
                 ++ai;
@@ -215,17 +217,17 @@ public:
     /// Yields @f$a \cup \{elem\}@f$.
     [[nodiscard]] PooledSet<T> insert(PooledSet<T> a, const T& elem) { return merge(a, create(elem)); }
 
-    /// Yields @f$a \setminus b@f$.
-    [[nodiscard]] PooledSet<T> erase(PooledSet<T> set, const T& elem) {
-        if (!set) return set;
-        auto i = binary_find(set.begin(), set.end(), elem, GIDLt<T>());
-        if (i == set.end()) return set;
+    /// Yields @f$a \setminus elem@f$.
+    [[nodiscard]] PooledSet<T> erase(PooledSet<T> a, const T& elem) {
+        if (!a) return a;
+        auto i = binary_find(a.begin(), a.end(), elem, GIDLt<T>());
+        if (i == a.end()) return a;
 
-        auto size = set.size() - 1;
+        auto size = a.size() - 1;
         if (size == 0) return PooledSet<T>(); // empty Set is not hashed
 
         auto [data, state] = allocate(size);
-        std::copy(i + 1, set.end(), std::copy(set.begin(), i, data->elems)); // copy over, skip i
+        std::copy(i + 1, a.end(), std::copy(a.begin(), i, data->elems)); // copy over, skip i
         return unify(data, state);
     }
     ///@}
@@ -234,20 +236,22 @@ public:
         using std::swap;
         swap(p1.arena_, p2.arena_);
         swap(p1.pool_, p2.pool_);
+        swap(p1.size_, p2.size_);
     }
 
 private:
     std::pair<Data*, fe::Arena::State> allocate(size_t size) {
         auto bytes = sizeof(Data) + size * SizeOf<T>;
         auto state = arena_.state();
-        auto buf   = arena_.allocate(bytes);
-        auto data  = new (buf) Data(size);
+        auto buff  = arena_.allocate(bytes);
+        auto data  = new (buff) Data(size);
         return {data, state};
     }
 
     PooledSet<T> unify(Data* data, fe::Arena::State state, size_t excess = 0) {
         auto [i, ins] = pool_.emplace(data);
         if (ins) {
+            ++size_;
             arena_.deallocate(excess * SizeOf<T>); // release excess memory
             return PooledSet<T>(data);
         }
@@ -257,12 +261,13 @@ private:
     }
 
     void copy_if_unique_and_inc(T*& i, const T*& ai) {
-        if ((*i)->gid() != (*ai)->gid()) *++i = *ai;
+        if (*i != *ai) *++i = *ai;
         ++ai;
     }
 
     fe::Arena arena_;
     absl::flat_hash_set<const Data*, absl::Hash<const Data*>, typename Data::Equal> pool_;
+    size_t size_ = 0;
 };
 
 } // namespace mim
