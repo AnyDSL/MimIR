@@ -25,7 +25,7 @@ var searchData=
   ['shift_5fenv_22',['shift_env',['../namespacemim_1_1plug_1_1clos.html#a58068280841e33b8d421a04ffc180265',1,'mim::plug::clos']]],
   ['sigma_23',['sigma',['../classmim_1_1World.html#adbe4c015e9ddd79a28228b2c95df9e04',1,'mim::World::sigma(Defs ops)'],['../classmim_1_1World.html#ad33564f05ba959e62ed53b811f6296d0',1,'mim::World::sigma()']]],
   ['sigmaexpr_24',['SigmaExpr',['../classmim_1_1ast_1_1SigmaExpr.html#ac3bff2a4e5141d5a6ed8e36ebc00d3c3',1,'mim::ast::SigmaExpr']]],
-  ['size_25',['size',['../classmim_1_1PooledSet.html#a28f7a2d21acb38e8f521d39c6901ceca',1,'mim::PooledSet']]],
+  ['size_25',['size',['../classmim_1_1PooledSet.html#a28f7a2d21acb38e8f521d39c6901ceca',1,'mim::PooledSet::size()'],['../classmim_1_1Pool.html#a0a248b90f03a397e1ba7f1119dbb3a1a',1,'mim::Pool::size()']]],
   ['size2bitwidth_26',['size2bitwidth',['../classmim_1_1Idx.html#a445658b6d8a1922d7fc9fb33235417ff',1,'mim::Idx::size2bitwidth(nat_t n)'],['../classmim_1_1Idx.html#aa37d0c09cbd9db45770cabb52b1b2dcc',1,'mim::Idx::size2bitwidth(Ref size)']]],
   ['skip_5fenv_27',['skip_env',['../namespacemim_1_1plug_1_1clos.html#aa48ad3e4ecbbb87cea1f4034ffe29fc2',1,'mim::plug::clos']]],
   ['smart_28',['smart',['../classmim_1_1Scheduler.html#a12a699ef67babd6c87b732194b1036e1',1,'mim::Scheduler']]],

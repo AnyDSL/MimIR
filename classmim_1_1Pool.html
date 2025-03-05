@@ -118,6 +118,7 @@ $(function(){initNavTree('classmim_1_1Pool.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classmim_1_1Pool-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mim::Pool&lt; T &gt; Class Template Reference</div></div>
@@ -136,6 +137,8 @@ Inheritance diagram for mim::Pool&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a0a248b90f03a397e1ba7f1119dbb3a1a" id="r_a0a248b90f03a397e1ba7f1119dbb3a1a"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a248b90f03a397e1ba7f1119dbb3a1a">size</a> () const noexcept</td></tr>
+<tr class="separator:a0a248b90f03a397e1ba7f1119dbb3a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Construction &amp; Destruction</div></td></tr>
 <tr class="memitem:acf6425387639161fac12308bf8f4480b" id="r_acf6425387639161fac12308bf8f4480b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Pool.html">Pool</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf6425387639161fac12308bf8f4480b">operator=</a> (const <a class="el" href="classmim_1_1Pool.html">Pool</a> &amp;)=delete</td></tr>
 <tr class="separator:acf6425387639161fac12308bf8f4480b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,7 +149,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a358473edcbeb2e27a9d531ac88693d44" id="r_a358473edcbeb2e27a9d531ac88693d44"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a358473edcbeb2e27a9d531ac88693d44">Pool</a> (<a class="el" href="classmim_1_1Pool.html">Pool</a> &amp;&amp;other)</td></tr>
 <tr class="separator:a358473edcbeb2e27a9d531ac88693d44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Set Operations</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><dl class="section note"><dt>Note</dt><dd>All operations do <b>not</b> modify the input set(s); they create a <b>new</b> <a class="el" href="classmim_1_1PooledSet.html" title="Ordered set maintained in a consecutive buffer and unified in Pool.">PooledSet</a>. </dd></dl>
+<tr><td colspan="2"><div class="groupText"><dl class="section note"><dt>Note</dt><dd>These operations do <b>not</b> modify the input set(s); they create a <b>new</b> <a class="el" href="classmim_1_1PooledSet.html" title="Ordered set maintained in a consecutive buffer and unified in Pool.">PooledSet</a>. </dd></dl>
 </div></td></tr>
 <tr class="memitem:a7fb08af1afd8fd0046eb9ddb48ddedb5" id="r_a7fb08af1afd8fd0046eb9ddb48ddedb5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fb08af1afd8fd0046eb9ddb48ddedb5">create</a> (T elem)</td></tr>
 <tr class="separator:a7fb08af1afd8fd0046eb9ddb48ddedb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,9 +166,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abdd1d887074f3d9701f9d3be9af74fbf" id="r_abdd1d887074f3d9701f9d3be9af74fbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abdd1d887074f3d9701f9d3be9af74fbf">insert</a> (<a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt; a, const T &amp;elem)</td></tr>
 <tr class="memdesc:abdd1d887074f3d9701f9d3be9af74fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <picture><source srcset="form_4_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a \cup \{elem\}$" src="form_4.png" width="59" height="14"/></picture>.  <br /></td></tr>
 <tr class="separator:abdd1d887074f3d9701f9d3be9af74fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4296aac5967eca7d243d53c6654c4efb" id="r_a4296aac5967eca7d243d53c6654c4efb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4296aac5967eca7d243d53c6654c4efb">erase</a> (<a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt; set, const T &amp;elem)</td></tr>
-<tr class="memdesc:a4296aac5967eca7d243d53c6654c4efb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <picture><source srcset="form_5_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a \setminus b$" src="form_5.png" width="24" height="14"/></picture>.  <br /></td></tr>
-<tr class="separator:a4296aac5967eca7d243d53c6654c4efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab142320573e21eb62105c32592b9d11" id="r_aab142320573e21eb62105c32592b9d11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab142320573e21eb62105c32592b9d11">erase</a> (<a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt; a, const T &amp;elem)</td></tr>
+<tr class="memdesc:aab142320573e21eb62105c32592b9d11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <picture><source srcset="form_5_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a \setminus elem$" src="form_5.png" width="45" height="14"/></picture>.  <br /></td></tr>
+<tr class="separator:aab142320573e21eb62105c32592b9d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -259,7 +262,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00135">135</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pool_8h_source.html#l00233">mim::Pool&lt; T &gt;::swap</a>.</p>
+<p class="reference">References <a class="el" href="pool_8h_source.html#l00235">mim::Pool&lt; T &gt;::swap</a>.</p>
 
 </div>
 </div>
@@ -297,7 +300,9 @@ template&lt;class I &gt; </div>
 
 <p>Create a <a class="el" href="classmim_1_1PooledSet.html" title="Ordered set maintained in a consecutive buffer and unified in Pool.">PooledSet</a> wih all elements in the given range. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00152">152</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00154">154</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+
+<p class="reference">References <a class="el" href="pool_8h_source.html#l00141">mim::Pool&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -327,14 +332,14 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p>Create a <a class="el" href="classmim_1_1PooledSet.html" title="Ordered set maintained in a consecutive buffer and unified in Pool.">PooledSet</a> wih a <em>single</em> <code>element</code>: <picture><source srcset="form_1_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\{elem\}$" src="form_1.png" width="39" height="14"/></picture>. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00145">145</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00147">147</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00216">mim::Pool&lt; T &gt;::insert()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00218">mim::Pool&lt; T &gt;::insert()</a>.</p>
 
 </div>
 </div>
-<a id="a4296aac5967eca7d243d53c6654c4efb" name="a4296aac5967eca7d243d53c6654c4efb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4296aac5967eca7d243d53c6654c4efb">&#9670;&#160;</a></span>erase()</h2>
+<a id="aab142320573e21eb62105c32592b9d11" name="aab142320573e21eb62105c32592b9d11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab142320573e21eb62105c32592b9d11">&#9670;&#160;</a></span>erase()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -347,7 +352,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt; <a class="el" href="classmim_1_1Pool.html">mim::Pool</a>&lt; T &gt;::erase </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>set</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classmim_1_1PooledSet.html">PooledSet</a>&lt; T &gt;</td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -362,11 +367,11 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Yields <picture><source srcset="form_5_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a \setminus b$" src="form_5.png" width="24" height="14"/></picture>. </p>
+<p>Yields <picture><source srcset="form_5_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a \setminus elem$" src="form_5.png" width="45" height="14"/></picture>. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00219">219</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00221">221</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pool_8h_source.html#l00097">mim::PooledSet&lt; T &gt;::begin()</a>, <a class="el" href="util_8h_source.html#l00054">mim::binary_find()</a>, <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>, and <a class="el" href="pool_8h_source.html#l00065">mim::PooledSet&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00054">mim::binary_find()</a>, and <a class="el" href="pool_8h_source.html#l00141">mim::Pool&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -401,9 +406,9 @@ template&lt;class T &gt; </div>
 
 <p>Yields <picture><source srcset="form_4_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a \cup \{elem\}$" src="form_4.png" width="59" height="14"/></picture>. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00216">216</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00218">218</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pool_8h_source.html#l00145">mim::Pool&lt; T &gt;::create()</a>, and <a class="el" href="pool_8h_source.html#l00166">mim::Pool&lt; T &gt;::merge()</a>.</p>
+<p class="reference">References <a class="el" href="pool_8h_source.html#l00147">mim::Pool&lt; T &gt;::create()</a>, and <a class="el" href="pool_8h_source.html#l00168">mim::Pool&lt; T &gt;::merge()</a>.</p>
 
 </div>
 </div>
@@ -438,9 +443,9 @@ template&lt;class T &gt; </div>
 
 <p>Yields <picture><source srcset="form_3_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a \cap b$" src="form_3.png" width="26" height="10"/></picture>. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00194">194</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00196">196</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pool_8h_source.html#l00097">mim::PooledSet&lt; T &gt;::begin()</a>, <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>, and <a class="el" href="pool_8h_source.html#l00065">mim::PooledSet&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="pool_8h_source.html#l00097">mim::PooledSet&lt; T &gt;::begin()</a>, <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>, <a class="el" href="pool_8h_source.html#l00141">mim::Pool&lt; T &gt;::size()</a>, and <a class="el" href="pool_8h_source.html#l00065">mim::PooledSet&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -475,11 +480,11 @@ template&lt;class T &gt; </div>
 
 <p>Yields <picture><source srcset="form_2_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a \cup b$" src="form_2.png" width="26" height="10"/></picture>. </p>
 
-<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00166">166</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00168">168</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pool_8h_source.html#l00097">mim::PooledSet&lt; T &gt;::begin()</a>, <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>, and <a class="el" href="pool_8h_source.html#l00065">mim::PooledSet&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="pool_8h_source.html#l00097">mim::PooledSet&lt; T &gt;::begin()</a>, <a class="el" href="pool_8h_source.html#l00098">mim::PooledSet&lt; T &gt;::end()</a>, <a class="el" href="pool_8h_source.html#l00141">mim::Pool&lt; T &gt;::size()</a>, and <a class="el" href="pool_8h_source.html#l00065">mim::PooledSet&lt; T &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00216">mim::Pool&lt; T &gt;::insert()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00218">mim::Pool&lt; T &gt;::insert()</a>.</p>
 
 </div>
 </div>
@@ -507,6 +512,37 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0a248b90f03a397e1ba7f1119dbb3a1a" name="a0a248b90f03a397e1ba7f1119dbb3a1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a248b90f03a397e1ba7f1119dbb3a1a">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="classmim_1_1Pool.html">mim::Pool</a>&lt; T &gt;::size </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00141">141</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00154">mim::Pool&lt; T &gt;::create()</a>, <a class="el" href="pool_8h_source.html#l00221">mim::Pool&lt; T &gt;::erase()</a>, <a class="el" href="pool_8h_source.html#l00196">mim::Pool&lt; T &gt;::intersect()</a>, and <a class="el" href="pool_8h_source.html#l00168">mim::Pool&lt; T &gt;::merge()</a>.</p>
 
 </div>
 </div>
@@ -540,7 +576,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00233">233</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pool_8h_source.html#l00235">235</a> of file <a class="el" href="pool_8h_source.html">pool.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="pool_8h_source.html#l00135">mim::Pool&lt; T &gt;::Pool()</a>.</p>
 

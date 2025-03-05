@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"matrix_2normalizers_8cpp.html#a18768ad17afeae39f8dd43f15e59e702":[6,0,3,1,4,8,2,5],
+"matrix_2normalizers_8cpp.html#a1f6b7d60e186505f12c821145b7f8fa7":[6,0,3,1,4,8,2,6],
 "matrix_2normalizers_8cpp.html#a71291eadb9c16ba82490e0ae69c3f3aa":[6,0,3,1,4,8,2,3],
 "matrix_2normalizers_8cpp.html#a7eee1db8129dd1f00d4745a69713bd36":[6,0,3,1,4,8,2,1],
 "matrix_2normalizers_8cpp.html#ab3dde8b812f5e14656689aa5a2d89880":[6,0,3,1,4,8,2,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "namespacemim.html#a8c95db47da2d9514da3e16e015062bf2":[3,0,1,142],
 "namespacemim.html#a8d37dada179be276702eb8680efbc370":[3,0,1,121],
 "namespacemim.html#a8d4798ff41a16cf4a8020359f7679969":[3,0,1,176],
-"namespacemim.html#a92529c353d14b56a3c8470bdad2d770a":[3,0,1,156],
-"namespacemim.html#a93fb24279848e874bb5aa72083a1df19":[3,0,1,232],
-"namespacemim.html#a954705724c554502b59e701b64a0e95d":[3,0,1,242]
+"namespacemim.html#a92529c353d14b56a3c8470bdad2d770a":[3,0,1,156]
 };

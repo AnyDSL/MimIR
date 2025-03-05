@@ -35,7 +35,7 @@ var searchData=
   ['equal_32',['Equal',['../structmim_1_1PooledSet_1_1Data_1_1Equal.html',1,'mim::PooledSet::Data']]],
   ['equals_5fany_33',['equals_any',['../namespacemim_1_1plug_1_1regex.html#afe291bf091de248e352dada9e3653c04',1,'mim::plug::regex::equals_any(const Def *cls0, const Def *cls1)'],['../namespacemim_1_1plug_1_1regex.html#aa8cfe9b14b05191510c403314b69f2f7',1,'mim::plug::regex::equals_any(const Def *lhs, const Def *rhs)'],['../namespacemim_1_1plug_1_1regex.html#a27ecf9ea39cecd2d5eedd5a90b4d36a4',1,'mim::plug::regex::equals_any(Defs lhs, Defs rhs)']]],
   ['er_34',['er',['../math.html#autotoc_md153',1,'%math.er'],['../namespacemim_1_1plug_1_1math.html#acad4db7382e2aa7eb1580c177148e4bb',1,'mim::plug::math::er']]],
-  ['erase_35',['erase',['../classmim_1_1IndexSet.html#ac12df394ab6ee05142a76e085c2b80f7',1,'mim::IndexSet::erase()'],['../classmim_1_1Pool.html#a4296aac5967eca7d243d53c6654c4efb',1,'mim::Pool::erase()'],['../namespacemim.html#a570c39f37bbc788928a66903c34cba8b',1,'mim::erase(Vector&lt; T, N, A &gt; &amp;c, const U &amp;value)']]],
+  ['erase_35',['erase',['../classmim_1_1IndexSet.html#ac12df394ab6ee05142a76e085c2b80f7',1,'mim::IndexSet::erase()'],['../classmim_1_1Pool.html#aab142320573e21eb62105c32592b9d11',1,'mim::Pool::erase()'],['../namespacemim.html#a570c39f37bbc788928a66903c34cba8b',1,'mim::erase(Vector&lt; T, N, A &gt; &amp;c, const U &amp;value)']]],
   ['erase_5fif_36',['erase_if',['../namespacemim.html#a5d920a331ef2e94946140376ab811cd2',1,'mim']]],
   ['err_37',['Err',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01cab47f6a6092c5d7e4bffec12dff309c3b',1,'mim::ast::Expr']]],
   ['errf_38',['errf',['../namespacemim.html#a6f391dd09ef5770be5c92b9b3ebf8513',1,'mim']]],
