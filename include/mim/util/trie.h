@@ -3,15 +3,11 @@
 #include <compare>
 
 #include <fstream>
-#include <new>
 
 #include <fe/arena.h>
 
 #include "mim/util/print.h"
 #include "mim/util/util.h"
-
-#include "absl/container/flat_hash_map.h"
-#include "fe/assert.h"
 
 namespace mim {
 
