@@ -10,6 +10,5 @@ var classmim_1_1Pool =
     [ "intersect", "classmim_1_1Pool.html#a48981741e0367e729193438b4fc4d0d5", null ],
     [ "merge", "classmim_1_1Pool.html#a3f55fda13c547487aa4bc32afc898493", null ],
     [ "operator=", "classmim_1_1Pool.html#acf6425387639161fac12308bf8f4480b", null ],
-    [ "size", "classmim_1_1Pool.html#a0a248b90f03a397e1ba7f1119dbb3a1a", null ],
     [ "swap", "classmim_1_1Pool.html#a76d8e439fe299d28f1a07752eb176e77", null ]
 ];

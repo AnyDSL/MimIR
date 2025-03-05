@@ -87,7 +87,7 @@ var searchData=
   ['sin_84',['sin',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a7d27e4a7ca7533a3bef4fad10a0c19c7',1,'mim::plug::math']]],
   ['single_5fpass_5fphase_85',['single_pass_phase',['../namespacemim_1_1plug_1_1compile.html#a847ce6ecda2bb689fa0ba4755e2716d7',1,'mim::plug::compile']]],
   ['sinh_86',['sinh',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72aa7cd83fe6a92873f5118a3dd9edeff2d',1,'mim::plug::math']]],
-  ['size_87',['size',['../structmim_1_1PooledSet_1_1Data.html#aebcea8fb91f4e4144ac792c5f14ec5fc',1,'mim::PooledSet::Data::size'],['../classmim_1_1PooledSet.html#a28f7a2d21acb38e8f521d39c6901ceca',1,'mim::PooledSet::size()'],['../classmim_1_1Pool.html#a0a248b90f03a397e1ba7f1119dbb3a1a',1,'mim::Pool::size()'],['../namespacemim_1_1plug_1_1core.html#a699face68306eeb01636f32010cc2d9daf7bd60b75b29d79b660a2859395c1a24',1,'mim::plug::core::size']]],
+  ['size_87',['size',['../structmim_1_1PooledSet_1_1Data.html#aebcea8fb91f4e4144ac792c5f14ec5fc',1,'mim::PooledSet::Data::size'],['../classmim_1_1PooledSet.html#a28f7a2d21acb38e8f521d39c6901ceca',1,'mim::PooledSet::size()'],['../namespacemim_1_1plug_1_1core.html#a699face68306eeb01636f32010cc2d9daf7bd60b75b29d79b660a2859395c1a24',1,'mim::plug::core::size']]],
   ['size2bitwidth_88',['size2bitwidth',['../classmim_1_1Idx.html#a445658b6d8a1922d7fc9fb33235417ff',1,'mim::Idx::size2bitwidth(nat_t n)'],['../classmim_1_1Idx.html#aa37d0c09cbd9db45770cabb52b1b2dcc',1,'mim::Idx::size2bitwidth(Ref size)']]],
   ['sizeof_89',['SizeOf',['../namespacemim.html#aaba222a564424e947a3de06a06825039',1,'mim']]],
   ['skip_5fenv_90',['skip_env',['../namespacemim_1_1plug_1_1clos.html#aa48ad3e4ecbbb87cea1f4034ffe29fc2',1,'mim::plug::clos']]],
