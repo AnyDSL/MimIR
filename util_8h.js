@@ -10,7 +10,7 @@ var util_8h =
     [ "GIDNodeSet", "util_8h.html#a9a3b2e07bc8c17c548554a37b140c835", null ],
     [ "GIDSet", "util_8h.html#a669e082739788e7a9b2d3c37a2cc0f42", null ],
     [ "assert_emplace", "util_8h.html#a217db174daa31eb9e4001c60c099a96f", null ],
-    [ "binary_find", "util_8h.html#af8f14fc44c4e5081a47de6951bfd29db", null ],
+    [ "binary_find", "util_8h.html#a490bc82fced6d1222ca1e66d50e573a6", null ],
     [ "bitcast", "util_8h.html#a1aae5adc4db386bfd618fdc8303ceb0c", null ],
     [ "find_and_replace", "util_8h.html#a8d4798ff41a16cf4a8020359f7679969", null ],
     [ "get_sign", "util_8h.html#aead08c2a07775ee15b699d35fc31e34a", null ],

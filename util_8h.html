@@ -123,7 +123,8 @@ $(function(){initNavTree('util_8h.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">util.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;optional&gt;</code><br />
+<div class="textblock"><code>#include &lt;iterator&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;queue&gt;</code><br />
 <code>#include &lt;stack&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
@@ -193,9 +194,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a650811c0d49d453841b016dfa775c461" id="r_a650811c0d49d453841b016dfa775c461"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ad8bae182cdb06699fc07a348105f193c">u64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a650811c0d49d453841b016dfa775c461">mim::pad</a> (<a class="el" href="namespacemim.html#ad8bae182cdb06699fc07a348105f193c">u64</a> offset, <a class="el" href="namespacemim.html#ad8bae182cdb06699fc07a348105f193c">u64</a> align)</td></tr>
 <tr class="separator:a650811c0d49d453841b016dfa775c461"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Algorithms</div></td></tr>
-<tr class="memitem:af8f14fc44c4e5081a47de6951bfd29db" id="r_af8f14fc44c4e5081a47de6951bfd29db"><td class="memTemplParams" colspan="2">template&lt;class I , class T , class Cmp &gt; </td></tr>
-<tr class="memitem:af8f14fc44c4e5081a47de6951bfd29db"><td class="memTemplItemLeft" align="right" valign="top">I&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#af8f14fc44c4e5081a47de6951bfd29db">mim::binary_find</a> (I begin, I end, T val, Cmp cmp)</td></tr>
-<tr class="separator:af8f14fc44c4e5081a47de6951bfd29db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a490bc82fced6d1222ca1e66d50e573a6" id="r_a490bc82fced6d1222ca1e66d50e573a6"><td class="memTemplParams" colspan="2">template&lt;class I , class T , class L &gt; </td></tr>
+<tr class="memitem:a490bc82fced6d1222ca1e66d50e573a6"><td class="memTemplItemLeft" align="right" valign="top">I&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a490bc82fced6d1222ca1e66d50e573a6">mim::binary_find</a> (I begin, I end, T val, L lt)</td></tr>
+<tr class="separator:a490bc82fced6d1222ca1e66d50e573a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa3494e65f05e62afeb1a0fd07f41e94" id="r_afa3494e65f05e62afeb1a0fd07f41e94"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#afa3494e65f05e62afeb1a0fd07f41e94">mim::subview</a> (std::string_view s, size_t i, size_t n=std::string_view::npos)</td></tr>
 <tr class="memdesc:afa3494e65f05e62afeb1a0fd07f41e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <code>std::string::substr</code>, but works on <code>std::string_view</code> instead.  <br /></td></tr>
 <tr class="separator:afa3494e65f05e62afeb1a0fd07f41e94"><td class="memSeparator" colspan="2">&#160;</td></tr>

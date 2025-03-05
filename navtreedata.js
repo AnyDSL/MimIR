@@ -108,7 +108,7 @@ var NAVTREEINDEX =
 "dir_bed7118e4bacc0bd560da06fb11567a5.html",
 "lower__regex_8h.html",
 "matrix_2normalizers_8cpp.html#a71291eadb9c16ba82490e0ae69c3f3aa",
-"namespacemim.html#a99191b3b8e60954210a7b1cee5432bbe",
+"namespacemim.html#a954705724c554502b59e701b64a0e95d",
 "namespacemim_1_1plug_1_1core.html#a12a963046afc5c121f244b761faad6e9ae1851600007553e51484056678cdb3d1",
 "namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91a748044e1daee345447d03f12edd6d7a3",
 "namespacestd.html#a6aa6d0b720bc0eed0c69a3c8b6c75bb8",
