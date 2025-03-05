@@ -60,7 +60,7 @@ public:
 
     /// @name Getters
     ///@{
-    constexpr explicit operator bool() const noexcept { return data_; } ///< Is not empty?
+    constexpr explicit operator bool() const noexcept { return data_ != nullptr; } ///< Is not empty?
     constexpr bool empty() const noexcept { return data_ == nullptr; }
     constexpr size_t size() const noexcept { return empty() ? 0 : data_->size; }
     constexpr const T& operator[](size_t i) const { return data_->elems[i]; }
@@ -126,7 +126,7 @@ template<class T> class Pool {
     using Data = typename PooledSet<T>::Data;
 
 public:
-    /// @name Construction & Destruction
+    /// @name Construction
     ///@{
     Pool& operator=(const Pool&) = delete;
 
@@ -141,6 +141,7 @@ public:
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** PooledSet.
     ///@{
+
     /// Create a PooledSet wih a *single* @p elem%ent: @f$\{elem\}@f$.
     [[nodiscard]] PooledSet<T> create(T elem) {
         auto [data, state] = allocate(1);
@@ -212,10 +213,10 @@ public:
         return unify(data, state, size - actual_size);
     }
 
-    /// Yields @f$a \cup \{elem\}@f$.
-    [[nodiscard]] PooledSet<T> insert(PooledSet<T> a, const T& elem) { return merge(a, create(elem)); }
+    /// Yields @f$set \cup \{elem\}@f$.
+    [[nodiscard]] PooledSet<T> insert(PooledSet<T> set, const T& elem) { return merge(set, create(elem)); }
 
-    /// Yields @f$a \setminus b@f$.
+    /// Yields @f$set \setminus elem@f$.
     [[nodiscard]] PooledSet<T> erase(PooledSet<T> set, const T& elem) {
         if (!set) return set;
         auto i = binary_find(set.begin(), set.end(), elem, GIDLt<T>());
@@ -240,8 +241,8 @@ private:
     std::pair<Data*, fe::Arena::State> allocate(size_t size) {
         auto bytes = sizeof(Data) + size * SizeOf<T>;
         auto state = arena_.state();
-        auto buf   = arena_.allocate(bytes);
-        auto data  = new (buf) Data(size);
+        auto buff  = arena_.allocate(bytes);
+        auto data  = new (buff) Data(size);
         return {data, state};
     }
 
