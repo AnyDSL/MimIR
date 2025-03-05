@@ -69,7 +69,8 @@ using DefVec                    = Vector<const Def*>;
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = Trie<Def*>::Set;
+using Muts                      = PooledSet<Def*>;
+// using Muts                      = Trie<Def*>::Set;
 ///@}
 
 /// @name Var

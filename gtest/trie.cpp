@@ -15,7 +15,7 @@ TEST(Trie, Trie) {
     auto l30 = w.lit_nat(30);
     auto l40 = w.lit_nat(40);
 
-    mim::Trie<const mim::Def> trie;
+    mim::Trie<const mim::Def*> trie;
     auto s1     = trie.create(l10);
     auto s14    = trie.insert(s1, l40);
     auto s13    = trie.insert(s1, l30);
@@ -26,7 +26,7 @@ TEST(Trie, Trie) {
     auto s_234  = trie.erase(s_1234, l10);
     auto asdf   = trie.merge(trie.insert(trie.create(l01), l17), s134);
 
-    for (auto e : trie.range(asdf)) std::cout << e << std::endl;
+    for (auto e : s_1234) std::cout << e << std::endl;
 
     trie.dot();
 

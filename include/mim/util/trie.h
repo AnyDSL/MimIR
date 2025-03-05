@@ -63,30 +63,40 @@ public:
 
         /// @name Getters
         ///@{
+        constexpr bool empty() const noexcept { return node_ == nullptr || node_->parent_ == nullptr; }
         constexpr Set parent() const noexcept { return node_->parent_; }
         constexpr bool is_root() const noexcept { return parent() == nullptr; }
-        constexpr bool empty() const noexcept { return is_root(); }
         constexpr size_t size() const noexcept { return node_->size_; }
         constexpr bool contains(const T& elem) const noexcept {
-            for (auto i = *this; !is_root(); i++)
+            for (auto i = *this; !empty(); i++)
                 if (i == elem) return true;
             return false;
         }
         ///@}
 
+        /// @name Iterators
+        ///@{
+        constexpr Set begin() const noexcept { return node_; }
+        constexpr Set end() const noexcept { return {}; }
+        constexpr Set cbegin() const noexcept { return begin(); }
+        constexpr Set cend() const noexcept { return end(); }
+        ///@}
+
         /// @name Comparisons
         ///@{
-        constexpr bool operator==(Set other) const noexcept { return this->node_ == other.node_; }
-        constexpr bool operator!=(Set other) const noexcept { return this->node_ != other.node_; }
+        // clang-format off
+        constexpr bool operator==(Set other) const noexcept { return  (this->empty() && other.empty()) || this->node_ == other.node_; }
+        constexpr bool operator!=(Set other) const noexcept { return !(this->empty() && other.empty()) && this->node_ != other.node_; }
+        // clang-format on
         constexpr auto operator<=>(Set other) const noexcept {
-            if (this->is_root() && other.is_root()) return std::strong_ordering::equal;
-            if (this->is_root()) return std::strong_ordering::less;
-            if (other.is_root()) return std::strong_ordering::greater;
-            return (*this)->gid() <=> other->gid();
+            if (this->empty() && other.empty()) return std::strong_ordering::equal;
+            if (this->empty()) return std::strong_ordering::less;
+            if (other.empty()) return std::strong_ordering::greater;
+            return (**this)->gid() <=> (*other)->gid();
         }
         constexpr auto operator<=>(const T& other) const noexcept {
-            if (this->is_root()) return std::strong_ordering::less;
-            return (*this)->gid() <=> other->gid();
+            if (this->empty()) return std::strong_ordering::less;
+            return (**this)->gid() <=> other->gid();
         }
         ///@}
 
@@ -113,36 +123,13 @@ public:
         friend class Trie;
     };
 
-    class Range {
-    public:
-        constexpr Range(const Trie& trie, Set begin) noexcept
-            : trie_(trie)
-            , begin_(begin) {}
-
-        constexpr const Trie& trie() const noexcept { return trie_; }
-
-        /// @name Iterators
-        ///@{
-        constexpr Set begin() const noexcept { return begin_; }
-        constexpr Set end() const noexcept { return trie().root_; }
-        constexpr Set cbegin() const noexcept { return begin(); }
-        constexpr Set cend() const noexcept { return end(); }
-        ///@}
-
-    private:
-        const Trie& trie_;
-        Set begin_;
-    };
-
     static_assert(std::forward_iterator<Set>);
-    static_assert(std::ranges::range<Range>);
+    static_assert(std::ranges::range<Set>);
 
     Trie()
         : root_(make_node(nullptr, 0)) {}
 
     constexpr const Node* root() const noexcept { return root_; }
-
-    Range range(Set i) { return {*this, i.node_}; }
 
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** Set.

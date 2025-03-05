@@ -28,7 +28,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
                                           : Dep::None))
     , valid_(false)
     , num_ops_(ops.size())
-    , muts_(world().muts())
+    // , muts_(world().muts())
     , type_(type) {
     if (type) dep_ |= type->dep_;
     for (size_t i = 0, e = ops.size(); i != e; ++i) {
@@ -69,7 +69,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , external_(false)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
-    , muts_(world().muts())
+    // , muts_(world().muts())
     , type_(type) {
     gid_  = world().next_gid();
     hash_ = mim::hash(gid());
@@ -366,7 +366,7 @@ void Def::invalidate() {
         valid_ = false;
         for (auto mut : users()) mut->invalidate();
         vars_.clear();
-        muts_ = world().muts().create();
+        muts_.clear();
     }
 }
 
