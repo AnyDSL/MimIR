@@ -15,7 +15,7 @@ template<class T> class Trie {
 public:
     class Node {
     public:
-        Node(Node* parent, const T* elem)
+        Node(Node* parent, T elem)
             : elem_(elem)
             , parent_(parent)
             , size_(parent ? parent->size_ + 1 : 0) {}
@@ -28,10 +28,10 @@ public:
         }
 
     private:
-        const T* elem_;
+        T elem_;
         Node* parent_;
         size_t size_;
-        GIDMap<const T*, Node*> children_;
+        GIDMap<T, Node*> children_;
 
         friend class Trie;
     };
@@ -40,12 +40,25 @@ public:
     /// `set++` will remove the last element from the set by moving the internal Node pointer one parent up.
     class Set {
     public:
-        /// @name Constructors
+        /// @name Iterator Properties
         ///@{
+        using iterator_category = std::forward_iterator_tag;
+        using difference_type   = std::ptrdiff_t;
+        using value_type        = T;
+        using pointer           = T*;
+        using reference         = T&;
+        ///@}
+
+        /// @name Construction
+        ///@{
+        constexpr Set() noexcept           = default;
         constexpr Set(const Set&) noexcept = default;
         constexpr Set(Set&&) noexcept      = default;
         constexpr Set(Node* node) noexcept
             : node_(node) {}
+        constexpr Set(const Trie& trie) noexcept
+            : node_(trie.root_) {}
+        constexpr Set& operator=(const Set&) noexcept = default;
         ///@}
 
         /// @name Getters
@@ -54,6 +67,11 @@ public:
         constexpr bool is_root() const noexcept { return parent() == nullptr; }
         constexpr bool empty() const noexcept { return is_root(); }
         constexpr size_t size() const noexcept { return node_->size_; }
+        constexpr bool contains(const T& elem) const noexcept {
+            for (auto i = *this; !is_root(); i++)
+                if (i == elem) return true;
+            return false;
+        }
         ///@}
 
         /// @name Comparisons
@@ -66,7 +84,7 @@ public:
             if (other.is_root()) return std::strong_ordering::greater;
             return (*this)->gid() <=> other->gid();
         }
-        constexpr auto operator<=>(const T* other) const noexcept {
+        constexpr auto operator<=>(const T& other) const noexcept {
             if (this->is_root()) return std::strong_ordering::less;
             return (*this)->gid() <=> other->gid();
         }
@@ -75,8 +93,8 @@ public:
         /// @name Conversions
         ///@{
         constexpr explicit operator bool() const noexcept { return !empty(); } ///< Is not empty?
-        constexpr const T* operator*() const noexcept { return node_->elem_; }
-        constexpr const T* operator->() const noexcept { return node_->elem_; }
+        constexpr reference operator*() const noexcept { return node_->elem_; }
+        constexpr pointer operator->() const noexcept { return node_->elem_; }
         ///@}
 
         /// @name Increment
@@ -90,7 +108,7 @@ public:
         ///@}
 
     private:
-        Node* node_;
+        Node* node_ = nullptr;
 
         friend class Trie;
     };
@@ -116,6 +134,9 @@ public:
         Set begin_;
     };
 
+    static_assert(std::forward_iterator<Set>);
+    static_assert(std::ranges::range<Range>);
+
     Trie()
         : root_(make_node(nullptr, 0)) {}
 
@@ -126,9 +147,10 @@ public:
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** Set.
     ///@{
+    [[nodiscard]] Set create() { return root_; }
 
     /// Create a Set wih a *single* @p elem%ent: @f$\{elem\}@f$.
-    [[nodiscard]] Set create(const T* elem) { return create(root_, elem); }
+    [[nodiscard]] Set create(const T& elem) { return create(root_, elem); }
 
     /// Create a PooledSet wih all elements in the given range.
     template<class I> [[nodiscard]] Set create(I, I) {
@@ -137,14 +159,14 @@ public:
     }
 
     /// Yields @f$a \cup \{elem\}@f$.
-    constexpr Set insert(Set i, const T* elem) noexcept {
+    constexpr Set insert(Set i, const T& elem) noexcept {
         if (*i == elem) return i;
         if (i < elem) return create(i.node_, elem);
         return create(insert(i.parent(), elem), *i);
     }
 
     /// Yields @f$i \setminus elem@f$.
-    [[nodiscard]] Set erase(Set i, const T* elem) {
+    [[nodiscard]] Set erase(Set i, const T& elem) {
         if (*i == elem) return i.parent();
         if (i < elem) return i;
         return create(erase(i.parent(), elem), *i);
@@ -175,13 +197,13 @@ public:
     }
 
 private:
-    Node* create(Set parent, const T* elem) {
+    Node* create(Set parent, const T& elem) {
         auto [i, ins] = parent.node_->children_.emplace(elem, nullptr);
         if (ins) i->second = make_node(parent.node_, elem);
         return i->second;
     }
 
-    Node* make_node(Node* parent, const T* elem) {
+    Node* make_node(Node* parent, const T& elem) {
         auto buff = arena_.allocate(sizeof(Node));
         auto node = new (buff) Node(parent, elem);
         return node;

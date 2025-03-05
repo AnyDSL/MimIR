@@ -11,6 +11,7 @@
 #include "mim/util/dbg.h"
 #include "mim/util/hash.h"
 #include "mim/util/pool.h"
+#include "mim/util/trie.h"
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
@@ -68,7 +69,7 @@ using DefVec                    = Vector<const Def*>;
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = PooledSet<Def*>;
+using Muts                      = Trie<Def*>::Set;
 ///@}
 
 /// @name Var
@@ -404,9 +405,9 @@ public:
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();
-    Muts users() { return muts_.users; } ///< Set of mutables where this mutable is locally referenced.
-    bool is_open() const;                ///< Has free_vars()?
-    bool is_closed() const;              ///< Has no free_vars()?
+    Muts users() { return muts_; } ///< Set of mutables where this mutable is locally referenced.
+    bool is_open() const;          ///< Has free_vars()?
+    bool is_closed() const;        ///< Has no free_vars()?
     ///@}
 
     /// @name external
@@ -585,13 +586,7 @@ private:
     u32 num_ops_;
     size_t hash_;
     Vars vars_; // Mutable: local vars; Immutable: free vars.
-
-    union LocalOrConsumerMuts {
-        LocalOrConsumerMuts() {}
-
-        Muts local; // Immutable only.
-        Muts users; // Mutable only.
-    } muts_;
+    Muts muts_; // Immutable: local_muts; Mutable: users;
 
     const Def* type_;
 

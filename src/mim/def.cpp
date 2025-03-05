@@ -28,6 +28,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
                                           : Dep::None))
     , valid_(false)
     , num_ops_(ops.size())
+    , muts_(world().muts())
     , type_(type) {
     if (type) dep_ |= type->dep_;
     for (size_t i = 0, e = ops.size(); i != e; ++i) {
@@ -39,15 +40,11 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     gid_ = world().next_gid();
 
     if (auto var = isa<Var>()) {
-        vars_       = world().vars().create(var);
-        muts_.local = Muts();
+        vars_ = world().vars().create(var);
     } else {
-        vars_       = Vars();
-        muts_.local = Muts();
-
         for (auto op : deps()) {
-            vars_       = world().vars().merge(vars_, op->local_vars());
-            muts_.local = world().muts().merge(muts_.local, op->local_muts());
+            vars_ = world().vars().merge(vars_, op->local_vars());
+            muts_ = world().muts().merge(muts_, op->local_muts());
         }
     }
 
@@ -72,11 +69,11 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , external_(false)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
+    , muts_(world().muts())
     , type_(type) {
-    gid_        = world().next_gid();
-    hash_       = mim::hash(gid());
-    var_        = nullptr;
-    muts_.users = Muts();
+    gid_  = world().next_gid();
+    hash_ = mim::hash(gid());
+    var_  = nullptr;
     std::fill_n(ops_ptr(), num_ops, nullptr);
 }
 
@@ -298,7 +295,7 @@ bool Def::is_set() const {
 
 Muts Def::local_muts() const {
     if (auto mut = isa_mut()) return world().muts().create(mut);
-    return muts_.local;
+    return muts_;
 }
 
 Muts Def::mut_local_muts() {
@@ -344,8 +341,8 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
     for (auto local_mut : mut_local_muts()) {
-        local_mut->muts_.users = world().muts().insert(local_mut->muts_.users, this);
-        fvs                    = world().vars().merge(fvs, local_mut->free_vars(todo, run));
+        local_mut->muts_ = world().muts().insert(local_mut->muts_, this);
+        fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, run));
     }
 
     if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
@@ -369,7 +366,7 @@ void Def::invalidate() {
         valid_ = false;
         for (auto mut : users()) mut->invalidate();
         vars_.clear();
-        muts_.users.clear();
+        muts_ = world().muts().create();
     }
 }
 
