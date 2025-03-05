@@ -134,6 +134,8 @@ public:
         : root_(make_node(nullptr, 0)) {}
 
     constexpr const Node* root() const noexcept { return root_; }
+    /// Total Node%s in this Trie - including root().
+    constexpr size_t size() const noexcept { return size_; }
 
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** Set.
@@ -175,8 +177,18 @@ public:
         return create(gt ? merge(a.parent(), b) : merge(a, b.parent()), gt ? *a : *b);
     }
 
-    void dot() {
-        auto os = std::ofstream("out.dot");
+    void dot() { dot("trie.dot"); }
+
+    size_t max_depth() { return max_depth(root_, 0); }
+
+    size_t max_depth(const Node* n, size_t depth) {
+        size_t res = depth;
+        for (auto [_, child] : n->children_) res = std::max(res, max_depth(child, depth + 1));
+        return res;
+    }
+
+    void dot(std::string s) {
+        auto os = std::ofstream(s);
         println(os, "digraph {{");
         println(os, "ordering=out;");
         println(os, "node [shape=box,style=filled];");
@@ -198,6 +210,7 @@ private:
     }
 
     Node* make_node(Node* parent, const T& elem) {
+        ++size_;
         auto buff = arena_.allocate(sizeof(Node));
         auto node = new (buff) Node(parent, elem);
         return node;
@@ -213,6 +226,7 @@ private:
 #endif
 
     fe::Arena arena_;
+    size_t size_ = 0;
     Node* root_;
 
     friend class Range;
