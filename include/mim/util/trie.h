@@ -8,6 +8,7 @@
 
 #include "mim/util/print.h"
 #include "mim/util/util.h"
+#include "mim/util/vector.h"
 
 namespace mim {
 
@@ -68,7 +69,7 @@ public:
         constexpr bool is_root() const noexcept { return parent() == nullptr; }
         constexpr size_t size() const noexcept { return node_->size_; }
         constexpr bool contains(const T& elem) const noexcept {
-            for (auto i = *this; !empty(); i++)
+            for (auto i = *this; !i.empty(); ++i)
                 if (i == elem) return true;
             return false;
         }
@@ -87,6 +88,8 @@ public:
         // clang-format off
         constexpr bool operator==(Set other) const noexcept { return  (this->empty() && other.empty()) || this->node_ == other.node_; }
         constexpr bool operator!=(Set other) const noexcept { return !(this->empty() && other.empty()) && this->node_ != other.node_; }
+        constexpr bool operator==(const T& other) const noexcept { return !this->empty() && this->node_->elem_ == other; }
+        constexpr bool operator!=(const T& other) const noexcept { return  this->empty() || this->node_->elem_ != other; }
         // clang-format on
         constexpr auto operator<=>(Set other) const noexcept {
             if (this->empty() && other.empty()) return std::strong_ordering::equal;
@@ -108,6 +111,7 @@ public:
         ///@}
 
         /// @name Increment
+        /// @note These operations only change the *view* of this Set at the Trie; the Trie itself is **not** modified.
         ///@{
         constexpr Set operator++(int) noexcept {
             auto res = *this;
@@ -140,9 +144,12 @@ public:
     [[nodiscard]] Set create(const T& elem) { return create(root_, elem); }
 
     /// Create a PooledSet wih all elements in the given range.
-    template<class I> [[nodiscard]] Set create(I, I) {
-        // TODO
-        return nullptr;
+    template<class I> [[nodiscard]] Set create(I begin, I end) {
+        Vector<const T> vec(begin, end);
+        std::ranges::sort(begin, end);
+        Set i = root();
+        for (const auto& elem : vec) i = insert(elem);
+        return i;
     }
 
     /// Yields @f$a \cup \{elem\}@f$.
