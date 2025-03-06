@@ -150,7 +150,9 @@ public:
 
     /// Create a PooledSet wih all elements in the given range.
     template<class I> [[nodiscard]] PooledSet<T> create(I begin, I end) {
-        auto size          = std::distance(begin, end); // max space needed - may be less; see actual_size below
+        auto size = std::distance(begin, end); // max space needed - may be less; see actual_size below
+        if (size == 0) return {};
+
         auto [data, state] = allocate(size);
         auto db = data->elems, de = data->elems + size;
 
@@ -246,6 +248,11 @@ private:
     }
 
     PooledSet<T> unify(Data* data, fe::Arena::State state, size_t excess = 0) {
+        if (data->size == 0) {
+            arena_.deallocate(state);
+            return {};
+        }
+
         auto [i, ins] = pool_.emplace(data);
         if (ins) {
             arena_.deallocate(excess * SizeOf<T>); // release excess memory
