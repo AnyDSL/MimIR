@@ -40,7 +40,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
 
     if (auto var = isa<Var>()) {
         vars_ = world().vars().create(var);
-    } else {
+    } else if (!has_const_dep()) {
         for (auto op : deps()) {
             vars_ = world().vars().merge(vars_, op->local_vars());
             muts_ = world().muts().merge(muts_, op->local_muts());
@@ -339,7 +339,7 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
     for (auto local_mut : mut_local_muts()) {
-        local_mut->muts_ = world().muts().insert(local_mut->muts_, this);
+        local_mut->muts_ = world().muts().insert(local_mut->muts_, this); // register "this" as user of local_mut
         fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, run));
     }
 

@@ -39,7 +39,7 @@ void Nest::populate() {
     while (!queue.empty()) {
         auto curr_node = pop(queue);
         for (auto local_mut : curr_node->mut()->mut_local_muts()) {
-            if (mut2node(local_mut) || !local_mut->free_vars().has_intersection(vars_)) continue;
+            if (mut2node(local_mut) || !contains(local_mut)) continue;
 
             if (curr_node->level() < local_mut->free_vars().size()) {
                 for (auto node = curr_node;; node = node->parent()) {
