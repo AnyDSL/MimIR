@@ -589,7 +589,7 @@ private:
     Muts muts_; // Immutable: local_muts; Mutable: users;
 
 public:
-    u32 lid_ = 0;
+    mutable u32 lid_ = 0;
     u32 lid() const { return lid_; }
 
     const Def* type_;
