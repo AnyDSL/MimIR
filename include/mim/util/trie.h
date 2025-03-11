@@ -244,15 +244,6 @@ private:
         return node;
     }
 
-#if 0
-    std::pair<Set, bool> find(Set i, u32 elem) {
-        auto j = i;
-        for (; *j >= elem; ++j)
-            if (*j == elem) return {j, true};
-        return {j, false};
-    }
-#endif
-
     fe::Arena arena_;
     size_t size_ = 0;
     Node* root_;
