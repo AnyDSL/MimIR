@@ -242,7 +242,7 @@ private:
     std::pair<Data*, fe::Arena::State> allocate(size_t size) {
         auto bytes = sizeof(Data) + size * SizeOf<T>;
         auto state = arena_.state();
-        auto buff  = arena_.allocate(bytes);
+        auto buff  = arena_.allocate(bytes, alignof(Data));
         auto data  = new (buff) Data(size);
         return {data, state};
     }

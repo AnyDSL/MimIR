@@ -239,7 +239,7 @@ private:
 
     Node* make_node(Node* parent, const T& elem) {
         ++size_;
-        auto buff = arena_.allocate(sizeof(Node));
+        auto buff = arena_.allocate<Node>(1);
         auto node = new (buff) Node(parent, elem);
         return node;
     }
