@@ -199,6 +199,7 @@ public:
     friend void swap(Trie& t1, Trie& t2) noexcept {
         using std::swap;
         swap(t1.arena_, t2.arena_);
+        swap(t1.size_, t2.size_);
         swap(t1.root_, t2.root_);
     }
 
