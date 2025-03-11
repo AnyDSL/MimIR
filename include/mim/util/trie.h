@@ -10,6 +10,8 @@
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
+#include "absl/container/flat_hash_map.h"
+
 namespace mim {
 
 template<class T> class Trie {
@@ -23,7 +25,7 @@ public:
 
         void dot(std::ostream& os) {
             for (auto [elem, child] : children_) {
-                println(os, "n{}_{} -> n{}_{}", elem_ ? elem_->gid() : u32(0xffff), this, child->elem_->gid(), child);
+                println(os, "n{}_{} -> n{}_{}", elem_ ? elem_->lid() : u32(0xffff), this, child->elem_->lid(), child);
                 child->dot(os);
             }
         }
@@ -32,7 +34,16 @@ public:
         T elem_;
         Node* parent_;
         size_t size_;
-        GIDMap<T, Node*> children_;
+
+        struct LIDEq {
+            constexpr bool operator()(const T& a, const T& b) const noexcept { return a->lid_ == b->lid_; }
+        };
+
+        struct LIDHash {
+            constexpr size_t operator()(const T& a) const noexcept { return hash(a->lid_); }
+        };
+
+        absl::flat_hash_map<T, Node*, LIDHash, LIDEq> children_;
 
         friend class Trie;
     };
@@ -95,11 +106,11 @@ public:
             if (this->empty() && other.empty()) return std::strong_ordering::equal;
             if (this->empty()) return std::strong_ordering::less;
             if (other.empty()) return std::strong_ordering::greater;
-            return (**this)->gid() <=> (*other)->gid();
+            return (**this)->lid() <=> (*other)->lid();
         }
         constexpr auto operator<=>(const T& other) const noexcept {
             if (this->empty()) return std::strong_ordering::less;
-            return (**this)->gid() <=> other->gid();
+            return (**this)->lid() <=> other->lid();
         }
         ///@}
 
@@ -143,7 +154,10 @@ public:
     [[nodiscard]] Set create() { return root_; }
 
     /// Create a Set wih a *single* @p elem%ent: @f$\{elem\}@f$.
-    [[nodiscard]] Set create(const T& elem) { return create(root_, elem); }
+    [[nodiscard]] Set create(const T& elem) {
+        if (elem->lid_ == 0) elem->lid_ = counter_++;
+        return create(root_, elem);
+    }
 
     /// Create a PooledSet wih all elements in the given range.
     template<class I> [[nodiscard]] Set create(I begin, I end) {
@@ -157,12 +171,21 @@ public:
     /// Yields @f$a \cup \{elem\}@f$.
     constexpr Set insert(Set i, const T& elem) noexcept {
         if (*i == elem) return i;
+        if (i.is_root()) {
+            if (elem->lid_ == 0) elem->lid_ = counter_++;
+            return create(i.node_, elem);
+        }
+        if (elem->lid_ == 0) {
+            elem->lid_ = counter_++;
+            return create(i.node_, elem);
+        }
         if (i < elem) return create(i.node_, elem);
         return create(insert(i.parent(), elem), *i);
     }
 
     /// Yields @f$i \setminus elem@f$.
     [[nodiscard]] Set erase(Set i, const T& elem) {
+        if (elem->lid_ == 0) return i;
         if (*i == elem) return i.parent();
         if (i < elem) return i;
         return create(erase(i.parent(), elem), *i);
@@ -198,13 +221,17 @@ public:
 
     friend void swap(Trie& t1, Trie& t2) noexcept {
         using std::swap;
-        swap(t1.arena_, t2.arena_);
-        swap(t1.size_, t2.size_);
-        swap(t1.root_, t2.root_);
+        // clang-format off
+        swap(t1.arena_,   t2.arena_);
+        swap(t1.size_,    t2.size_);
+        swap(t1.root_,    t2.root_);
+        swap(t1.counter_, t2.counter_);
+        // clang-format on
     }
 
 private:
     Node* create(Set parent, const T& elem) {
+        assert(elem->lid_ != 0);
         auto [i, ins] = parent.node_->children_.emplace(elem, nullptr);
         if (ins) i->second = make_node(parent.node_, elem);
         return i->second;
@@ -229,6 +256,7 @@ private:
     fe::Arena arena_;
     size_t size_ = 0;
     Node* root_;
+    u32 counter_ = 1;
 
     friend class Range;
 };

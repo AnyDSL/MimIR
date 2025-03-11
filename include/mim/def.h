@@ -588,6 +588,10 @@ private:
     Vars vars_; // Mutable: local vars; Immutable: free vars.
     Muts muts_; // Immutable: local_muts; Mutable: users;
 
+public:
+    mutable u32 lid_ = 0;
+    u32 lid() const { return lid_; }
+
     const Def* type_;
 
     friend class World;
