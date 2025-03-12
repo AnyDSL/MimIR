@@ -139,7 +139,7 @@ public:
     ///@}
 
     /// @name Set Operations
-    /// @note All operations do **not** modify the input set(s); they create a **new** PooledSet.
+    /// @note These operations do **not** modify the input set(s); they create a **new** PooledSet.
     ///@{
 
     /// Create a PooledSet wih a *single* @p elem%ent: @f$\{elem\}@f$.
@@ -151,7 +151,9 @@ public:
 
     /// Create a PooledSet wih all elements in the given range.
     template<class I> [[nodiscard]] PooledSet<T> create(I begin, I end) {
-        auto size          = std::distance(begin, end); // max space needed - may be less; see actual_size below
+        auto size = std::distance(begin, end); // max space needed - may be less; see actual_size below
+        if (size == 0) return {};
+
         auto [data, state] = allocate(size);
         auto db = data->elems, de = data->elems + size;
 
@@ -202,7 +204,7 @@ public:
 
         auto di = data->elems;
         for (auto ai = a.begin(), ae = a.end(), bi = b.begin(), be = b.end(); ai != ae && bi != be;)
-            if ((*ai)->gid() == (*bi)->gid())
+            if (*ai == *bi)
                 *di++ = ++ai, *bi++;
             else if ((*ai)->gid() < (*bi)->gid())
                 ++ai;
@@ -248,6 +250,11 @@ private:
     }
 
     PooledSet<T> unify(Data* data, fe::Arena::State state, size_t excess = 0) {
+        if (data->size == 0) {
+            arena_.deallocate(state);
+            return {};
+        }
+
         auto [i, ins] = pool_.emplace(data);
         if (ins) {
             arena_.deallocate(excess * SizeOf<T>); // release excess memory
@@ -259,7 +266,7 @@ private:
     }
 
     void copy_if_unique_and_inc(T*& i, const T*& ai) {
-        if ((*i)->gid() != (*ai)->gid()) *++i = *ai;
+        if (*i != *ai) *++i = *ai;
         ++ai;
     }
 

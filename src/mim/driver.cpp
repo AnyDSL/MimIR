@@ -43,11 +43,11 @@ Driver::Driver()
 }
 
 const fs::path* Driver::add_import(fs::path path, Sym sym) {
-    for (const auto& [p, _] : imports_)
+    for (auto p : import_paths())
         if (fs::equivalent(p, path)) return nullptr;
 
-    imports_.emplace_back(std::pair(std::move(path), sym));
-    return &imports_.back().first;
+    import_path2sym_.emplace_back(std::pair(std::move(path), sym));
+    return &import_path2sym_.back().first;
 }
 
 void Driver::load(Sym name) {

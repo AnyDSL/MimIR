@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iterator>
 #include <optional>
 #include <queue>
 #include <stack>
@@ -51,9 +52,14 @@ inline u64 pad(u64 offset, u64 align) {
 
 /// @name Algorithms
 ///@{
-template<class I, class T, class Cmp> I binary_find(I begin, I end, T val, Cmp cmp) {
-    auto i = std::lower_bound(begin, end, val, cmp);
-    return (i != end && !(cmp(val, *i))) ? i : end;
+template<class I, class T, class L> I binary_find(I begin, I end, T val, L lt) {
+    static_assert(std::random_access_iterator<I>);
+    I i;
+    if (std::distance(begin, end) < 16)
+        for (i = begin; i != end && lt(*i, val); ++i) {}
+    else
+        i = std::lower_bound(begin, end, val, lt);
+    return (i != end && !lt(val, *i)) ? i : end;
 }
 
 /// Like `std::string::substr`, but works on `std::string_view` instead.

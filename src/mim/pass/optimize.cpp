@@ -19,8 +19,7 @@ void optimize(World& world) {
     }
 
     // make all functions `[] -> Pipeline` internal
-    auto externals = world.externals(); // copy
-    for (auto [_, def] : externals) {
+    for (auto def : world.copy_externals()) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             if (lam->codom()->sym().view() == "%compile.Pipeline") {
                 if (!compilation) compilation = lam;

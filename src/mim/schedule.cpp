@@ -18,7 +18,7 @@ Scheduler::Scheduler(const Nest& nest)
         }
     };
 
-    for (const auto& [mut, _] : nest.nodes()) {
+    for (auto mut : nest.muts()) {
         queue.push(mut);
         assert_emplace(done, mut);
     }

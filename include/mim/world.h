@@ -59,18 +59,17 @@ public:
         }
     };
 
-    /// @name C'tor and D'tor
+    /// @name Construction & Destruction
     ///@{
     World& operator=(World) = delete;
 
-    /// Inherits the @p state into the new World.
     explicit World(Driver*);
     World(Driver*, const State&);
     World(World&& other) noexcept
         : World(&other.driver(), other.state()) {
         swap(*this, other);
     }
-    World inherit() { return World(&driver(), state()); }
+    World inherit() { return World(&driver(), state()); } ///< Inherits the @p state into the new World.
     ~World();
     ///@}
 
@@ -162,29 +161,15 @@ public:
 #endif
     ///@}
 
-    /// @name Manage Nodes
+    /// @name Annexes
     ///@{
-    const auto& annexes() const { return move_.annexes; }
-    const auto& externals() const { return move_.externals; }
-    void make_external(Def* def) {
-        assert(!def->is_external());
-        assert(def->is_closed());
-        def->external_ = true;
-        assert_emplace(move_.externals, def->sym(), def);
-    }
-    void make_internal(Def* def) {
-        assert(def->is_external());
-        def->external_ = false;
-        auto num       = move_.externals.erase(def->sym());
-        assert_unused(num == 1);
-    }
-
-    Def* external(Sym name) { return mim::lookup(move_.externals, name); } ///< Lookup by @p name.
+    const auto& flags2annex() const { return move_.flags2annex; }
+    auto annexes() const { return move_.flags2annex | std::views::values; }
 
     /// Lookup annex by Axiom::id.
     template<class Id> const Def* annex(Id id) {
         auto flags = static_cast<flags_t>(id);
-        if (auto i = move_.annexes.find(flags); i != move_.annexes.end()) return i->second;
+        if (auto i = move_.flags2annex.find(flags); i != move_.flags2annex.end()) return i->second;
         error("Axiom with ID '{x}' not found; demangled plugin name is '{}'", flags, Annex::demangle(driver(), flags));
     }
 
@@ -196,6 +181,27 @@ public:
     const Def* register_annex(flags_t f, const Def*);
     const Def* register_annex(plugin_t p, tag_t t, sub_t s, const Def* def) {
         return register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), def);
+    }
+    ///@}
+
+    /// @name Externals
+    ///@{
+    const auto& sym2external() const { return move_.sym2external; }
+    Def* external(Sym name) { return mim::lookup(move_.sym2external, name); } ///< Lookup by @p name.
+    auto externals() const { return move_.sym2external | std::views::values; }
+    Vector<Def*> copy_externals() const { return {externals().begin(), externals().end()}; }
+
+    void make_external(Def* def) {
+        assert(!def->is_external());
+        assert(def->is_closed());
+        def->external_ = true;
+        assert_emplace(move_.sym2external, def->sym(), def);
+    }
+    void make_internal(Def* def) {
+        assert(def->is_external());
+        def->external_ = false;
+        auto num       = move_.sym2external.erase(def->sym());
+        assert_unused(num == 1);
     }
     ///@}
 
@@ -635,8 +641,8 @@ private:
     };
 
     struct Move {
-        absl::btree_map<flags_t, const Def*> annexes;
-        absl::btree_map<Sym, Def*> externals;
+        absl::btree_map<flags_t, const Def*> flags2annex;
+        absl::btree_map<Sym, Def*> sym2external;
         fe::Arena arena;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         Pool<const Var*> vars;
@@ -646,13 +652,13 @@ private:
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;
             // clang-format off
-            swap(m1.annexes,    m2.annexes);
-            swap(m1.externals,  m2.externals);
-            swap(m1.arena,      m2.arena);
-            swap(m1.defs,       m2.defs);
-            swap(m1.vars,       m2.vars);
-            swap(m1.muts,       m2.muts);
-            swap(m1.cache,      m2.cache);
+            swap(m1.flags2annex,  m2.flags2annex);
+            swap(m1.sym2external, m2.sym2external);
+            swap(m1.arena,        m2.arena);
+            swap(m1.defs,         m2.defs);
+            swap(m1.vars,         m2.vars);
+            swap(m1.muts,         m2.muts);
+            swap(m1.cache,        m2.cache);
             // clang-format on
         }
     } move_;

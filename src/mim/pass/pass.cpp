@@ -48,8 +48,7 @@ void PassMan::run() {
 
     for (auto&& pass : passes_) pass->prepare();
 
-    auto externals = world().externals();
-    for (const auto& [_, mut] : externals) {
+    for (auto mut : world().copy_externals()) {
         analyzed(mut);
         if (mut->is_set()) curr_state().stack.push(mut);
     }
