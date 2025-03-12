@@ -21,7 +21,8 @@ public:
         Node(Node* parent, T elem)
             : elem_(elem)
             , parent_(parent)
-            , size_(parent ? parent->size_ + 1 : 0) {}
+            , size_(parent ? parent->size_ + 1 : 0)
+            , min_(parent ? (parent->elem_ ? parent->min_ : elem->lid()) : size_t(-1)) {}
 
         void dot(std::ostream& os) {
             for (auto [elem, child] : children_) {
@@ -34,6 +35,7 @@ public:
         T elem_;
         Node* parent_;
         size_t size_;
+        size_t min_;
 
         struct LIDEq {
             constexpr bool operator()(const T& a, const T& b) const noexcept { return a->lid_ == b->lid_; }
@@ -79,7 +81,9 @@ public:
         constexpr Set parent() const noexcept { return node_->parent_; }
         constexpr bool is_root() const noexcept { return parent() == nullptr; }
         constexpr size_t size() const noexcept { return node_->size_; }
+        constexpr size_t min() const noexcept { return node_->min_; }
         constexpr bool contains(const T& elem) const noexcept {
+            if (this->empty() || elem->lid() < this->min() || elem->lid() > (**this)->lid()) return false;
             for (auto i = *this; !i.empty(); ++i)
                 if (i == elem) return true;
             return false;
