@@ -157,7 +157,7 @@ public:
 
     void start() override {
         unique_queue<MutSet> queue;
-        for (const auto& [_, mut] : world().externals()) queue.push(mut);
+        for (auto mut : world().externals()) queue.push(mut);
 
         while (!queue.empty()) {
             auto mut = queue.pop();

@@ -18,8 +18,7 @@ void LowerTypedClos::start() {
     // TODO put into c'tor - doesn't work right now, because world becomes invalid
     dummy_ret_ = world().bot(world().cn(world().annex<mem::M>()));
 
-    auto externals = std::vector(world().externals().begin(), world().externals().end());
-    for (auto [_, n] : externals) rewrite(n);
+    for (auto mut : world().copy_externals()) rewrite(mut);
     while (!worklist_.empty()) {
         auto [lvm, lcm, lam] = worklist_.front();
         worklist_.pop();

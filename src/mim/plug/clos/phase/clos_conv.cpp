@@ -124,9 +124,8 @@ DefSet& FreeDefAna::run(Lam* lam) {
  */
 
 void ClosConv::start() {
-    auto externals = Vector(world().externals().begin(), world().externals().end());
-    auto subst     = Def2Def();
-    for (auto [_, ext_def] : externals) rewrite(ext_def, subst);
+    auto subst = Def2Def();
+    for (auto mut : world().copy_externals()) rewrite(mut, subst);
     while (!worklist_.empty()) {
         auto def = worklist_.front();
         subst    = Def2Def();

@@ -367,7 +367,7 @@ The simplest way is to kick off with [World::externals](@ref mim::World::externa
 
 ```cpp
     DefSet done;
-    for (const auto& [_, mut] : world.externals())
+    for (auto mut : world.externals())
         visit(done, mut);
 
     void visit(DefSet& done, const Def* def) {

@@ -391,7 +391,7 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
 }
 
 void Dumper::recurse(const Nest::Node* node) {
-    for (const auto& [child, _] : node->children())
+    for (auto child : node->child_muts())
         if (auto mut = isa_decl(child)) dump(mut);
 }
 
@@ -469,13 +469,13 @@ void World::dump(std::ostream& os) {
 
     if (flags().dump_recursive) {
         auto dumper = Dumper(os);
-        for (const auto& [_, mut] : externals()) dumper.muts.push(mut);
+        for (auto mut : externals()) dumper.muts.push(mut);
         while (!dumper.muts.empty()) dumper.dump(dumper.muts.pop());
     } else {
         auto nest   = Nest(*this);
         auto dumper = Dumper(os, &nest);
 
-        for (auto [_, name] : driver().imports())
+        for (auto name : driver().import_syms())
             print(os, ".{} {};\n", driver().is_loaded(name) ? "mim/plugin" : "import", name);
         dumper.recurse(nest.root());
     }

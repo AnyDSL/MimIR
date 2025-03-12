@@ -160,8 +160,8 @@ int main(int argc, char** argv) {
             if (auto dep = os[D]) {
                 if (auto autogen_h = output[H]; !autogen_h.empty()) {
                     *dep << autogen_h << ": ";
-                    assert(!driver.imports().empty());
-                    for (auto sep = ""; const auto& [path, _] : driver.imports() | std::views::drop(1)) {
+                    assert(!driver.import_syms().empty());
+                    for (auto sep = ""; auto path : driver.import_paths() | std::views::drop(1)) {
                         *dep << sep << sys::escape(path);
                         sep = " \\\n ";
                     }

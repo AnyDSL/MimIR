@@ -42,7 +42,7 @@ void ClosConvPrep::enter() {
         lam2fscope_[curr_mut()] = curr_mut();
         world().DLOG("scope {} -> {}", curr_mut(), curr_mut());
         auto nest = Nest(curr_mut());
-        for (const auto& [mut, _] : nest.nodes()) {
+        for (auto mut : nest.muts()) {
             if (auto bb_lam = Lam::isa_mut_basicblock(mut)) {
                 world().DLOG("scope {} -> {}", bb_lam, curr_mut());
                 lam2fscope_[bb_lam] = curr_mut();
