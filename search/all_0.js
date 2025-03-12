@@ -77,7 +77,7 @@ var searchData=
   ['and_5f_74',['and_',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205aa195f8c413b580691c2daa246c1b16ce',1,'mim::plug::core']]],
   ['annex_75',['Annex',['../structmim_1_1Annex.html',1,'mim::Annex'],['../structmim_1_1Annex.html#a2e4d439767921ebb103a8256fc2f8524',1,'mim::Annex::Annex()'],['../langref.html#autotoc_md55',1,'Annex']]],
   ['annex_76',['annex',['../classmim_1_1World.html#a62e56daadad31f6488663f08db547f64',1,'mim::World::annex(Id id)'],['../classmim_1_1World.html#afc51b09155c87f9d722e45c49daac526',1,'mim::World::annex()']]],
-  ['annexes_77',['annexes',['../classmim_1_1World.html#a45f551564f814bf8e6532a1ad40e27a5',1,'mim::World']]],
+  ['annexes_77',['annexes',['../classmim_1_1World.html#ae8850b8e8f58014a9fb7205ddd7ffb47',1,'mim::World']]],
   ['annexinfo_78',['AnnexInfo',['../structmim_1_1ast_1_1AnnexInfo.html',1,'mim::ast::AnnexInfo'],['../structmim_1_1ast_1_1AnnexInfo.html#afd79c49a0b74188c56bfbeb60b706b3f',1,'mim::ast::AnnexInfo::AnnexInfo()']]],
   ['annexinfo_2eid_79',['AnnexInfo.id',['../namespacemim_1_1ast.html#structmim_1_1ast_1_1AnnexInfo_8id',1,'mim::ast']]],
   ['annexinfo_2esym_80',['AnnexInfo.sym',['../namespacemim_1_1ast.html#structmim_1_1ast_1_1AnnexInfo_8sym',1,'mim::ast']]],

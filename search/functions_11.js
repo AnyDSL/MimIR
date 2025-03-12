@@ -50,8 +50,9 @@ var searchData=
   ['subview_47',['subview',['../namespacemim.html#afa3494e65f05e62afeb1a0fd07f41e94',1,'mim']]],
   ['swap_48',['swap',['../classmim_1_1BitSet.html#a046bda62c88726d84b2d7d92554c4db5',1,'mim::BitSet']]],
   ['sym_49',['sym',['../classmim_1_1ast_1_1AST.html#aabc7c822c356b3cc17ce638289966b13',1,'mim::ast::AST::sym(const char *s)'],['../classmim_1_1ast_1_1AST.html#a607ada8eb3fe062648edbd483b0f2ff6',1,'mim::ast::AST::sym(std::string_view s)'],['../classmim_1_1ast_1_1AST.html#af37a2dfcc38d784f2e8b47039e9e108a',1,'mim::ast::AST::sym(const std::string &amp;s)'],['../classmim_1_1ast_1_1Tok.html#a1614f4001b6ff119534d0d434a80f608',1,'mim::ast::Tok::sym()'],['../classmim_1_1Def.html#acd076ce85473d3ea5dee55259338951c',1,'mim::Def::sym() const'],['../classmim_1_1Def.html#a21afe5afd0b258ded3981bed4d78364c',1,'mim::Def::sym(const char *) const'],['../classmim_1_1Def.html#afe3ec0b409009159678e603ebea3489b',1,'mim::Def::sym(std::string_view) const'],['../classmim_1_1Def.html#aabd288124bdb49880e02a1e053b87737',1,'mim::Def::sym(std::string) const'],['../structmim_1_1Dbg.html#a1f6805e001bec9cd88aa3297a108cd80',1,'mim::Dbg::sym()'],['../classmim_1_1World.html#aa4df2feb5a0d1c856ca94a05445c1e99',1,'mim::World::sym(std::string_view)'],['../classmim_1_1World.html#aaf0847343a45223101b3550faed8bb1b',1,'mim::World::sym(const char *)'],['../classmim_1_1World.html#a079bca4777830870f5d7d70af2d82ff6',1,'mim::World::sym(const std::string &amp;)']]],
-  ['sym_5fanon_50',['sym_anon',['../classmim_1_1ast_1_1AST.html#a8899c2750a526004e0bbcae3f327a01c',1,'mim::ast::AST']]],
-  ['sym_5ferror_51',['sym_error',['../classmim_1_1ast_1_1AST.html#addcecc401fa2340d35035a6c8bf23f1e',1,'mim::ast::AST']]],
-  ['sym_5freturn_52',['sym_return',['../classmim_1_1ast_1_1AST.html#a85ddb7b560da4ba40d7923a8dc6ccd2d',1,'mim::ast::AST']]],
-  ['system_53',['system',['../namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396',1,'mim::sys']]]
+  ['sym2external_50',['sym2external',['../classmim_1_1World.html#a39fb7279463bd3fbae7675bad3b25019',1,'mim::World']]],
+  ['sym_5fanon_51',['sym_anon',['../classmim_1_1ast_1_1AST.html#a8899c2750a526004e0bbcae3f327a01c',1,'mim::ast::AST']]],
+  ['sym_5ferror_52',['sym_error',['../classmim_1_1ast_1_1AST.html#addcecc401fa2340d35035a6c8bf23f1e',1,'mim::ast::AST']]],
+  ['sym_5freturn_53',['sym_return',['../classmim_1_1ast_1_1AST.html#a85ddb7b560da4ba40d7923a8dc6ccd2d',1,'mim::ast::AST']]],
+  ['system_54',['system',['../namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396',1,'mim::sys']]]
 ];

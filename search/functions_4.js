@@ -43,7 +43,7 @@ var searchData=
   ['ext_40',['Ext',['../classmim_1_1Ext.html#a919d9a8e0a02bc3da5bead5347726b0d',1,'mim::Ext']]],
   ['ext_41',['ext',['../classmim_1_1World.html#a318500ec2e4b4aa37a823e02232a74be',1,'mim::World']]],
   ['external_42',['external',['../classmim_1_1World.html#aaac7d4050e707ed01cc7761b3205bb53',1,'mim::World']]],
-  ['externals_43',['externals',['../classmim_1_1World.html#a6dbca27595ea4c068f7583eaf6a0b3ef',1,'mim::World']]],
+  ['externals_43',['externals',['../classmim_1_1World.html#a9f1dafe6dd69d4a63ad6f883c9194872',1,'mim::World']]],
   ['extract_44',['extract',['../classmim_1_1World.html#ac981395e5f40922514eaf9c85290e36d',1,'mim::World::extract(Ref d, Ref i)'],['../classmim_1_1World.html#ad8a79de5cb08910392e0aa3bd8bf82af',1,'mim::World::extract(Ref d, u64 a, u64 i)'],['../classmim_1_1World.html#a41acb6568fe283b5535720c953dde303',1,'mim::World::extract(Ref d, u64 i)']]],
   ['extract_5funsafe_45',['extract_unsafe',['../namespacemim_1_1plug_1_1core.html#acd718cbe943e713f61611d464a6e7d20',1,'mim::plug::core::extract_unsafe(Ref d, Ref i)'],['../namespacemim_1_1plug_1_1core.html#acc361668a0aa18c699bdc54bad7c9732',1,'mim::plug::core::extract_unsafe(Ref d, u64 i)']]],
   ['extractexpr_46',['ExtractExpr',['../classmim_1_1ast_1_1ExtractExpr.html#a8b4792d1d7071453f835c6251ddfb904',1,'mim::ast::ExtractExpr::ExtractExpr(Loc loc, Ptr&lt; Expr &gt; &amp;&amp;tuple, Ptr&lt; Expr &gt; &amp;&amp;index)'],['../classmim_1_1ast_1_1ExtractExpr.html#ad55cefaaeab4a6243dd121991381df00',1,'mim::ast::ExtractExpr::ExtractExpr(Loc loc, Ptr&lt; Expr &gt; &amp;&amp;tuple, Dbg index)']]]

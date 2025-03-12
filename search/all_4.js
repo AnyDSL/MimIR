@@ -69,7 +69,7 @@ var searchData=
   ['ext_66',['ext',['../classmim_1_1World.html#a318500ec2e4b4aa37a823e02232a74be',1,'mim::World']]],
   ['extension_67',['extension',['../namespacemim_1_1dl.html#ae6d2732db28431965eb93b89c2dbfc72',1,'mim::dl']]],
   ['external_68',['external',['../classmim_1_1World.html#aaac7d4050e707ed01cc7761b3205bb53',1,'mim::World']]],
-  ['externals_69',['externals',['../classmim_1_1World.html#a6dbca27595ea4c068f7583eaf6a0b3ef',1,'mim::World']]],
+  ['externals_69',['externals',['../classmim_1_1World.html#a9f1dafe6dd69d4a63ad6f883c9194872',1,'mim::World']]],
   ['extract_70',['Extract',['../classmim_1_1Extract.html',1,'mim::Extract'],['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca97478353818fc5590dc34b57b81a4b23',1,'mim::ast::Expr::Extract'],['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a83842abbb5d3ce93f56e3b362bd1b24a',1,'mim::Node::Extract']]],
   ['extract_71',['extract',['../classmim_1_1World.html#ac981395e5f40922514eaf9c85290e36d',1,'mim::World::extract(Ref d, Ref i)'],['../classmim_1_1World.html#ad8a79de5cb08910392e0aa3bd8bf82af',1,'mim::World::extract(Ref d, u64 a, u64 i)'],['../classmim_1_1World.html#a41acb6568fe283b5535720c953dde303',1,'mim::World::extract(Ref d, u64 i)']]],
   ['extract_5funsafe_72',['extract_unsafe',['../namespacemim_1_1plug_1_1core.html#acd718cbe943e713f61611d464a6e7d20',1,'mim::plug::core::extract_unsafe(Ref d, Ref i)'],['../namespacemim_1_1plug_1_1core.html#acc361668a0aa18c699bdc54bad7c9732',1,'mim::plug::core::extract_unsafe(Ref d, u64 i)']]],
