@@ -789,93 +789,92 @@ $(function(){initNavTree('world_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    <span class="keyword">template</span>&lt;<span class="keyword">class </span>T, <span class="keyword">class</span>... Args&gt; T* allocate(<span class="keywordtype">size_t</span> num_ops, Args&amp;&amp;... args) {</div>
 <div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>        <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(Def) == <span class="keyword">sizeof</span>(T),</div>
 <div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>                      <span class="stringliteral">&quot;you are not allowed to introduce any additional data in subclasses of Def&quot;</span>);</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        Lock lock;</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        move_.arena.align(<span class="keyword">alignof</span>(T));</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>        <span class="keywordtype">size_t</span> num_bytes = <span class="keyword">sizeof</span>(Def) + <span class="keyword">sizeof</span>(uintptr_t) * num_ops;</div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>        <span class="keyword">auto</span> ptr         = move_.arena.allocate(num_bytes);</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>        <span class="keyword">auto</span> res         = <span class="keyword">new</span> (ptr) T(std::forward&lt;Args&amp;&amp;&gt;(args)...);</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>        assert(res-&gt;num_ops() == num_ops);</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>        <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    }<span class="comment"></span></div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span><span class="comment">    ///@}</span></div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span><span class="comment"></span> </div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>    Driver* driver_;</div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>    State state_;</div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span> </div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>    <span class="keyword">struct </span>SeaHash {</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>        <span class="keywordtype">size_t</span> operator()(<span class="keyword">const</span> Def* def)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> def-&gt;hash(); }</div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    };</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span> </div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    <span class="keyword">struct </span>SeaEq {</div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>        <span class="keywordtype">bool</span> operator()(<span class="keyword">const</span> Def* d1, <span class="keyword">const</span> Def* d2)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> d1-&gt;equal(d2); }</div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>    };</div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span> </div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>    <span class="keyword">struct </span>Move {</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>        absl::btree_map&lt;flags_t, const Def*&gt; annexes;</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>        absl::btree_map&lt;Sym, Def*&gt; externals;</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>        fe::Arena arena;</div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>        absl::flat_hash_set&lt;const Def*, SeaHash, SeaEq&gt; defs;</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>        Pool&lt;const Var*&gt; vars;</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>        Pool&lt;Def*&gt; muts;</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>        <a class="code hl_typedef" href="namespacemim.html#a147444565d00e8b50021d235fcb42e2d">DefDefMap&lt;DefVec&gt;</a> cache;</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span> </div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>        <span class="keyword">friend</span> <span class="keywordtype">void</span> swap(Move&amp; m1, Move&amp; m2) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>            <span class="keyword">using </span>std::swap;</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>            <span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>            swap(m1.annexes,    m2.annexes);</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>            swap(m1.externals,  m2.externals);</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>            swap(m1.arena,      m2.arena);</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>            swap(m1.defs,       m2.defs);</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>            swap(m1.vars,       m2.vars);</div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>            swap(m1.muts,       m2.muts);</div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>            swap(m1.cache,      m2.cache);</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>            <span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>        }</div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>    } move_;</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span> </div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>    <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946">Univ</a>* <a class="code hl_function" href="classmim_1_1World.html#a5355ae94cd13f800273330d30f38ad8d">univ</a>;</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508">Type</a>* type_0;</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508">Type</a>* type_1;</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>        <span class="keyword">const</span> <a class="code hl_typedef" href="namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4">Bot</a>* <a class="code hl_function" href="classmim_1_1World.html#afa76917d7f3cc9cce2aa40f92f86e2c1">type_bot</a>;</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>        <span class="keyword">const</span> <a class="code hl_typedef" href="namespacemim.html#a8c95db47da2d9514da3e16e015062bf2">Top</a>* <a class="code hl_function" href="classmim_1_1World.html#acd88519efc6cd42ff30f60f084f4a331">type_top</a>;</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>        <span class="keyword">const</span> Def* <a class="code hl_function" href="classmim_1_1World.html#a546e853d62692afa6dcd79a33942c9ec">type_bool</a>;</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>        <span class="keyword">const</span> <a class="code hl_typedef" href="namespacemim.html#a8c95db47da2d9514da3e16e015062bf2">Top</a>* <a class="code hl_function" href="classmim_1_1World.html#ad7b029c861f0e9fd8e995319db232b5c">top_nat</a>;</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a294b0d68190499941e814549f2540d2e">Sigma</a>* <a class="code hl_function" href="classmim_1_1World.html#ad33564f05ba959e62ed53b811f6296d0">sigma</a>;</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a5387d3f0c264fe8467036fa04ddb62b4">Tuple</a>* <a class="code hl_function" href="classmim_1_1World.html#abc39bbd21ae5797d53b9e82c494e2be9">tuple</a>;</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a6a606482217fdadf11c97309d2348dc8">Nat</a>* <a class="code hl_function" href="classmim_1_1World.html#a76a2bc4914920ee550be62ace9403d9f">type_nat</a>;</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3aaddfc9ec8fbd1279c3bdffae3d0f2514">Idx</a>* <a class="code hl_function" href="classmim_1_1World.html#a5e817825405c6dd82156c5da6ce60bb9">type_idx</a>;</div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>        <span class="keyword">const</span> Def* table_id;</div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>        <span class="keyword">const</span> Def* table_not;</div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#a621ad5961def1d0659b279ba88300971">lit_univ_0</a>;</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#a6af880f9d61f7fa014e338df3c27413c">lit_univ_1</a>;</div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#aa2f56d19ef0b4e8af25de2a9d3cea227">lit_nat_0</a>;</div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#af0d191aa5a89c61dc8714e1ef171c2ed">lit_nat_1</a>;</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#aa7baa53edfdfb7cd40542291e5deadd9">lit_nat_max</a>;</div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#a563168de0ce1557414c45121d4e9c948">lit_0_1</a>;</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>        std::array&lt;const Lit*, 2&gt; <a class="code hl_function" href="classmim_1_1World.html#ae1bd442c707312f78156eae967229c1d">lit_bool</a>;</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>    } data_;</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span> </div>
-<div class="foldopen" id="foldopen00684" data-start="{" data-end="};">
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno"><a class="line" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">  684</a></span>    <span class="keyword">friend</span> <span class="keywordtype">void</span> <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(<a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; w1, <a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; w2) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>        <span class="keyword">using </span>std::swap;</div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>        <span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>        <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(w1.state_, w2.state_);</div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>        <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(w1.data_,  w2.data_ );</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>        <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(w1.move_,  w2.move_ );</div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>        <span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span> </div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>        <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(w1.data_.univ-&gt;world_, w2.data_.univ-&gt;world_);</div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>        assert(&amp;w1.univ()-&gt;world() == &amp;w1);</div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>        assert(&amp;w2.univ()-&gt;world() == &amp;w2);</div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>    }</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        <span class="keyword">auto</span> lock      = Lock();</div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        <span class="keyword">auto</span> num_bytes = <span class="keyword">sizeof</span>(Def) + <span class="keyword">sizeof</span>(uintptr_t) * num_ops;</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>        <span class="keyword">auto</span> ptr       = move_.arena.allocate(num_bytes, <span class="keyword">alignof</span>(T));</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>        <span class="keyword">auto</span> res       = <span class="keyword">new</span> (ptr) T(std::forward&lt;Args&amp;&amp;&gt;(args)...);</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>        assert(res-&gt;num_ops() == num_ops);</div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>        <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    }<span class="comment"></span></div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span><span class="comment">    ///@}</span></div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span><span class="comment"></span> </div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>    Driver* driver_;</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>    State state_;</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>    <span class="keyword">struct </span>SeaHash {</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>        <span class="keywordtype">size_t</span> operator()(<span class="keyword">const</span> Def* def)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> def-&gt;hash(); }</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>    };</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span> </div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    <span class="keyword">struct </span>SeaEq {</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>        <span class="keywordtype">bool</span> operator()(<span class="keyword">const</span> Def* d1, <span class="keyword">const</span> Def* d2)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> d1-&gt;equal(d2); }</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>    };</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> </div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>    <span class="keyword">struct </span>Move {</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>        absl::btree_map&lt;flags_t, const Def*&gt; annexes;</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>        absl::btree_map&lt;Sym, Def*&gt; externals;</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>        fe::Arena arena;</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>        absl::flat_hash_set&lt;const Def*, SeaHash, SeaEq&gt; defs;</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>        Pool&lt;const Var*&gt; vars;</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>        Pool&lt;Def*&gt; muts;</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>        <a class="code hl_typedef" href="namespacemim.html#a147444565d00e8b50021d235fcb42e2d">DefDefMap&lt;DefVec&gt;</a> cache;</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> </div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>        <span class="keyword">friend</span> <span class="keywordtype">void</span> swap(Move&amp; m1, Move&amp; m2) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>            <span class="keyword">using </span>std::swap;</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>            <span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>            swap(m1.annexes,    m2.annexes);</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>            swap(m1.externals,  m2.externals);</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>            swap(m1.arena,      m2.arena);</div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>            swap(m1.defs,       m2.defs);</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>            swap(m1.vars,       m2.vars);</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>            swap(m1.muts,       m2.muts);</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>            swap(m1.cache,      m2.cache);</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>            <span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>        }</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>    } move_;</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span> </div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>    <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946">Univ</a>* <a class="code hl_function" href="classmim_1_1World.html#a5355ae94cd13f800273330d30f38ad8d">univ</a>;</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508">Type</a>* type_0;</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508">Type</a>* type_1;</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        <span class="keyword">const</span> <a class="code hl_typedef" href="namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4">Bot</a>* <a class="code hl_function" href="classmim_1_1World.html#afa76917d7f3cc9cce2aa40f92f86e2c1">type_bot</a>;</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>        <span class="keyword">const</span> <a class="code hl_typedef" href="namespacemim.html#a8c95db47da2d9514da3e16e015062bf2">Top</a>* <a class="code hl_function" href="classmim_1_1World.html#acd88519efc6cd42ff30f60f084f4a331">type_top</a>;</div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>        <span class="keyword">const</span> Def* <a class="code hl_function" href="classmim_1_1World.html#a546e853d62692afa6dcd79a33942c9ec">type_bool</a>;</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>        <span class="keyword">const</span> <a class="code hl_typedef" href="namespacemim.html#a8c95db47da2d9514da3e16e015062bf2">Top</a>* <a class="code hl_function" href="classmim_1_1World.html#ad7b029c861f0e9fd8e995319db232b5c">top_nat</a>;</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a294b0d68190499941e814549f2540d2e">Sigma</a>* <a class="code hl_function" href="classmim_1_1World.html#ad33564f05ba959e62ed53b811f6296d0">sigma</a>;</div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a5387d3f0c264fe8467036fa04ddb62b4">Tuple</a>* <a class="code hl_function" href="classmim_1_1World.html#abc39bbd21ae5797d53b9e82c494e2be9">tuple</a>;</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a6a606482217fdadf11c97309d2348dc8">Nat</a>* <a class="code hl_function" href="classmim_1_1World.html#a76a2bc4914920ee550be62ace9403d9f">type_nat</a>;</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3aaddfc9ec8fbd1279c3bdffae3d0f2514">Idx</a>* <a class="code hl_function" href="classmim_1_1World.html#a5e817825405c6dd82156c5da6ce60bb9">type_idx</a>;</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>        <span class="keyword">const</span> Def* table_id;</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>        <span class="keyword">const</span> Def* table_not;</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#a621ad5961def1d0659b279ba88300971">lit_univ_0</a>;</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#a6af880f9d61f7fa014e338df3c27413c">lit_univ_1</a>;</div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#aa2f56d19ef0b4e8af25de2a9d3cea227">lit_nat_0</a>;</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#af0d191aa5a89c61dc8714e1ef171c2ed">lit_nat_1</a>;</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#aa7baa53edfdfb7cd40542291e5deadd9">lit_nat_max</a>;</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>        <span class="keyword">const</span> <a class="code hl_enumvalue" href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131">Lit</a>* <a class="code hl_function" href="classmim_1_1World.html#a563168de0ce1557414c45121d4e9c948">lit_0_1</a>;</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>        std::array&lt;const Lit*, 2&gt; <a class="code hl_function" href="classmim_1_1World.html#ae1bd442c707312f78156eae967229c1d">lit_bool</a>;</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>    } data_;</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span> </div>
+<div class="foldopen" id="foldopen00683" data-start="{" data-end="};">
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno"><a class="line" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">  683</a></span>    <span class="keyword">friend</span> <span class="keywordtype">void</span> <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(<a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; w1, <a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; w2) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>        <span class="keyword">using </span>std::swap;</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>        <span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>        <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(w1.state_, w2.state_);</div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>        <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(w1.data_,  w2.data_ );</div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>        <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(w1.move_,  w2.move_ );</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>        <span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>        <a class="code hl_friend" href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">swap</a>(w1.data_.univ-&gt;world_, w2.data_.univ-&gt;world_);</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>        assert(&amp;w1.univ()-&gt;world() == &amp;w1);</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>        assert(&amp;w2.univ()-&gt;world() == &amp;w2);</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>    }</div>
 </div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span> </div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno"><a class="line" href="classmim_1_1World.html#a63d04061603ffac655aea35e2caf9ff6">  697</a></span>    <span class="keyword">friend</span> <a class="code hl_class" href="classmim_1_1Vector.html">DefVec</a> <a class="code hl_function" href="classmim_1_1Def.html#a5879fdfb63bafc5c7505e9e69ff56c60">Def::reduce</a>(<a class="code hl_class" href="classmim_1_1Ref.html">Ref</a>);</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>};</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span> </div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno"><a class="line" href="classmim_1_1World.html#a63d04061603ffac655aea35e2caf9ff6">  696</a></span>    <span class="keyword">friend</span> <a class="code hl_class" href="classmim_1_1Vector.html">DefVec</a> <a class="code hl_function" href="classmim_1_1Def.html#a5879fdfb63bafc5c7505e9e69ff56c60">Def::reduce</a>(<a class="code hl_class" href="classmim_1_1Ref.html">Ref</a>);</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>};</div>
 </div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span> </div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>} <span class="comment">// namespace mim</span></div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span> </div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>} <span class="comment">// namespace mim</span></div>
 <div class="ttc" id="aaxiom_8h_html"><div class="ttname"><a href="axiom_8h.html">axiom.h</a></div></div>
 <div class="ttc" id="acheck_8h_html"><div class="ttname"><a href="check_8h.html">check.h</a></div></div>
 <div class="ttc" id="aclassmim_1_1Arr_html"><div class="ttname"><a href="classmim_1_1Arr.html">mim::Arr</a></div><div class="ttdoc">A (possibly paramterized) Array.</div><div class="ttdef"><b>Definition</b> <a href="tuple_8h_source.html#l00067">tuple.h:67</a></div></div>
@@ -917,7 +916,7 @@ $(function(){initNavTree('world_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="aclassmim_1_1World_html_a0efd9d34965cd245c2a1efa7059fda13"><div class="ttname"><a href="classmim_1_1World.html#a0efd9d34965cd245c2a1efa7059fda13">mim::World::cn</a></div><div class="ttdeci">const Pi * cn()</div><div class="ttdef"><b>Definition</b> <a href="#l00267">world.h:267</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html_a10adf2ade1ce2cd3fdfe82945a9c1c55"><div class="ttname"><a href="classmim_1_1World.html#a10adf2ade1ce2cd3fdfe82945a9c1c55">mim::World::type_i64</a></div><div class="ttdeci">Ref type_i64()</div><div class="ttdef"><b>Definition</b> <a href="#l00484">world.h:484</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html_a1123b07fdca38d4fbcf7dd1e260e6411"><div class="ttname"><a href="classmim_1_1World.html#a1123b07fdca38d4fbcf7dd1e260e6411">mim::World::mut_lam</a></div><div class="ttdeci">Lam * mut_lam(Ref dom, Ref codom)</div><div class="ttdef"><b>Definition</b> <a href="#l00298">world.h:298</a></div></div>
-<div class="ttc" id="aclassmim_1_1World_html_a135815fb4bc60759449fe056c54a7eaa"><div class="ttname"><a href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">mim::World::swap</a></div><div class="ttdeci">friend void swap(World &amp;w1, World &amp;w2) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00684">world.h:684</a></div></div>
+<div class="ttc" id="aclassmim_1_1World_html_a135815fb4bc60759449fe056c54a7eaa"><div class="ttname"><a href="classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa">mim::World::swap</a></div><div class="ttdeci">friend void swap(World &amp;w1, World &amp;w2) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00683">world.h:683</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html_a13a3400d0f10c396c30f110d640b0981"><div class="ttname"><a href="classmim_1_1World.html#a13a3400d0f10c396c30f110d640b0981">mim::World::uniq</a></div><div class="ttdeci">Ref uniq(Ref inhabitant)</div><div class="ttdef"><b>Definition</b> <a href="world_8cpp_source.html#l00528">world.cpp:528</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html_a149baa30fdd62e6f747280a7ee5a24f1"><div class="ttname"><a href="classmim_1_1World.html#a149baa30fdd62e6f747280a7ee5a24f1">mim::World::mut_infer_type</a></div><div class="ttdeci">Infer * mut_infer_type()</div><div class="ttdef"><b>Definition</b> <a href="#l00224">world.h:224</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html_a14edb22cb3306755521eef9cd3dcc214"><div class="ttname"><a href="classmim_1_1World.html#a14edb22cb3306755521eef9cd3dcc214">mim::World::lam</a></div><div class="ttdeci">const Lam * lam(Ref dom, Defs codom, Lam::Filter f, Ref body)</div><div class="ttdef"><b>Definition</b> <a href="#l00290">world.h:290</a></div></div>
