@@ -171,8 +171,8 @@ $(function(){initNavTree('driver_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> p : <a class="code hl_function" href="classmim_1_1Driver.html#a758accb44573b040d909f921497e4d34">import_paths</a>())</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">if</span> (fs::equivalent(p, path)) <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    imports_path2sym_.emplace_back(std::pair(std::move(path), sym));</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> &amp;imports_path2sym_.back().first;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    import_path2sym_.emplace_back(std::pair(std::move(path), sym));</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> &amp;import_path2sym_.back().first;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>}</div>
 </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
