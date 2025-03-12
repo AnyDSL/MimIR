@@ -44,9 +44,9 @@ public:
     /// 1. The `fs::path` used during import,
     /// 2. The name as Sym%bol used in the `import` directive or in Parser::import.
     ///@{
-    const auto& imports_path2sym() { return imports_path2sym_; }
-    auto import_paths() { return imports_path2sym_ | std::views::keys; }
-    auto import_syms() { return imports_path2sym_ | std::views::values; }
+    const auto& import_path2sym() { return import_path2sym_; }
+    auto import_paths() { return import_path2sym_ | std::views::keys; }
+    auto import_syms() { return import_path2sym_ | std::views::values; }
     /// Yields a `fs::path*` if not already added that you can use in Loc%ation; returns `nullptr` otherwise.
     const fs::path* add_import(fs::path, Sym);
     ///@}
@@ -89,7 +89,7 @@ private:
     Backends backends_;
     Passes passes_;
     Normalizers normalizers_;
-    std::deque<std::pair<fs::path, Sym>> imports_path2sym_;
+    std::deque<std::pair<fs::path, Sym>> import_path2sym_;
 };
 
 #define GET_FUN_PTR(plugin, f) get_fun_ptr<decltype(f)>(plugin, #f)
