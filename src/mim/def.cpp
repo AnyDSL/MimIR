@@ -67,6 +67,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , mut_(true)
     , external_(false)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
+    , valid_(false)
     , num_ops_(num_ops)
     , type_(type) {
     gid_  = world().next_gid();

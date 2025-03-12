@@ -77,8 +77,7 @@ Sym World::sym(std::string_view s) { return driver().sym(s); }
 Sym World::sym(const std::string& s) { return driver().sym(s); }
 
 const Def* World::register_annex(flags_t f, const Def* def) {
-    // TODO enable again
-    /*DLOG("register: 0x{f} -> {}", f, def);*/
+    DLOG("register: 0x{x} -> {}", f, def);
     auto plugin = Annex::demangle(driver(), f);
     if (driver().is_loaded(plugin)) {
         assert_emplace(move_.annexes, f, def);

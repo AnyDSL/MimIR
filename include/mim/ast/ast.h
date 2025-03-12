@@ -766,7 +766,7 @@ private:
     Ptr<Ptrn> ptrn_;
     Ptr<Expr> value_;
     mutable AnnexInfo* annex_ = nullptr;
-    mutable sub_t sub_;
+    mutable sub_t sub_        = 0;
 };
 
 /// `axm ptrn: type = value;`
@@ -853,7 +853,7 @@ private:
     Ptr<Expr> body_;
     Ptr<RecDecl> next_;
     mutable AnnexInfo* annex_ = nullptr;
-    mutable sub_t sub_;
+    mutable sub_t sub_        = 0;
 };
 
 /// One of:
@@ -920,7 +920,7 @@ private:
     Ptrs<Dom> doms_;
     Ptr<Expr> codom_;
     mutable AnnexInfo* annex_ = nullptr;
-    mutable sub_t sub_;
+    mutable sub_t sub_        = 0;
 };
 
 /// `cfun dbg dom -> codom`
