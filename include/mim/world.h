@@ -59,18 +59,17 @@ public:
         }
     };
 
-    /// @name C'tor and D'tor
+    /// @name Construction & Destruction
     ///@{
     World& operator=(World) = delete;
 
-    /// Inherits the @p state into the new World.
     explicit World(Driver*);
     World(Driver*, const State&);
     World(World&& other) noexcept
         : World(&other.driver(), other.state()) {
         swap(*this, other);
     }
-    World inherit() { return World(&driver(), state()); }
+    World inherit() { return World(&driver(), state()); } ///< Inherits the @p state into the new World.
     ~World();
     ///@}
 
@@ -162,28 +161,10 @@ public:
 #endif
     ///@}
 
-    /// @name Annexes & Externals
+    /// @name Annexes
     ///@{
     const auto& flags2annex() const { return move_.flags2annex; }
     auto annexes() const { return move_.flags2annex | std::views::values; }
-
-    const auto& sym2external() const { return move_.sym2external; }
-    Def* external(Sym name) { return mim::lookup(move_.sym2external, name); } ///< Lookup by @p name.
-    auto externals() const { return move_.sym2external | std::views::values; }
-    Vector<Def*> copy_externals() const { return {externals().begin(), externals().end()}; }
-
-    void make_external(Def* def) {
-        assert(!def->is_external());
-        assert(def->is_closed());
-        def->external_ = true;
-        assert_emplace(move_.sym2external, def->sym(), def);
-    }
-    void make_internal(Def* def) {
-        assert(def->is_external());
-        def->external_ = false;
-        auto num       = move_.sym2external.erase(def->sym());
-        assert_unused(num == 1);
-    }
 
     /// Lookup annex by Axiom::id.
     template<class Id> const Def* annex(Id id) {
@@ -200,6 +181,27 @@ public:
     const Def* register_annex(flags_t f, const Def*);
     const Def* register_annex(plugin_t p, tag_t t, sub_t s, const Def* def) {
         return register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), def);
+    }
+    ///@}
+
+    /// @name Externals
+    ///@{
+    const auto& sym2external() const { return move_.sym2external; }
+    Def* external(Sym name) { return mim::lookup(move_.sym2external, name); } ///< Lookup by @p name.
+    auto externals() const { return move_.sym2external | std::views::values; }
+    Vector<Def*> copy_externals() const { return {externals().begin(), externals().end()}; }
+
+    void make_external(Def* def) {
+        assert(!def->is_external());
+        assert(def->is_closed());
+        def->external_ = true;
+        assert_emplace(move_.sym2external, def->sym(), def);
+    }
+    void make_internal(Def* def) {
+        assert(def->is_external());
+        def->external_ = false;
+        auto num       = move_.sym2external.erase(def->sym());
+        assert_unused(num == 1);
     }
     ///@}
 
