@@ -614,11 +614,10 @@ private:
     template<class T, class... Args> T* allocate(size_t num_ops, Args&&... args) {
         static_assert(sizeof(Def) == sizeof(T),
                       "you are not allowed to introduce any additional data in subclasses of Def");
-        Lock lock;
-        move_.arena.align(alignof(T));
-        size_t num_bytes = sizeof(Def) + sizeof(uintptr_t) * num_ops;
-        auto ptr         = move_.arena.allocate(num_bytes);
-        auto res         = new (ptr) T(std::forward<Args&&>(args)...);
+        auto lock      = Lock();
+        auto num_bytes = sizeof(Def) + sizeof(uintptr_t) * num_ops;
+        auto ptr       = move_.arena.allocate(num_bytes, alignof(T));
+        auto res       = new (ptr) T(std::forward<Args&&>(args)...);
         assert(res->num_ops() == num_ops);
         return res;
     }

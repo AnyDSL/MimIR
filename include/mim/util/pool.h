@@ -141,6 +141,7 @@ public:
     /// @name Set Operations
     /// @note These operations do **not** modify the input set(s); they create a **new** PooledSet.
     ///@{
+
     /// Create a PooledSet wih a *single* @p elem%ent: @f$\{elem\}@f$.
     [[nodiscard]] PooledSet<T> create(T elem) {
         auto [data, state] = allocate(1);
@@ -242,7 +243,7 @@ private:
     std::pair<Data*, fe::Arena::State> allocate(size_t size) {
         auto bytes = sizeof(Data) + size * SizeOf<T>;
         auto state = arena_.state();
-        auto buff  = arena_.allocate(bytes);
+        auto buff  = arena_.allocate(bytes, alignof(Data));
         auto data  = new (buff) Data(size);
         return {data, state};
     }
