@@ -1039,7 +1039,7 @@ $(function(){initNavTree('ast_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Ptrn&gt;</a> ptrn_;</div>
 <div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Expr&gt;</a> value_;</div>
 <div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>    <span class="keyword">mutable</span> <a class="code hl_struct" href="structmim_1_1ast_1_1AnnexInfo.html">AnnexInfo</a>* annex_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>    <span class="keyword">mutable</span> <a class="code hl_typedef" href="namespacemim.html#a190fd94a575b212f38ae8be611f1c367">sub_t</a> sub_;</div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>    <span class="keyword">mutable</span> <a class="code hl_typedef" href="namespacemim.html#a190fd94a575b212f38ae8be611f1c367">sub_t</a> sub_        = 0;</div>
 <div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>};</div>
 </div>
 <div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span><span class="comment"></span> </div>
@@ -1138,7 +1138,7 @@ $(function(){initNavTree('ast_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Expr&gt;</a> body_;</div>
 <div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;RecDecl&gt;</a> next_;</div>
 <div class="line"><a id="l00855" name="l00855"></a><span class="lineno">  855</span>    <span class="keyword">mutable</span> <a class="code hl_struct" href="structmim_1_1ast_1_1AnnexInfo.html">AnnexInfo</a>* annex_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    <span class="keyword">mutable</span> <a class="code hl_typedef" href="namespacemim.html#a190fd94a575b212f38ae8be611f1c367">sub_t</a> sub_;</div>
+<div class="line"><a id="l00856" name="l00856"></a><span class="lineno">  856</span>    <span class="keyword">mutable</span> <a class="code hl_typedef" href="namespacemim.html#a190fd94a575b212f38ae8be611f1c367">sub_t</a> sub_        = 0;</div>
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>};</div>
 </div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span><span class="comment"></span> </div>
@@ -1213,7 +1213,7 @@ $(function(){initNavTree('ast_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed">Ptrs&lt;Dom&gt;</a> doms_;</div>
 <div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Expr&gt;</a> codom_;</div>
 <div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>    <span class="keyword">mutable</span> <a class="code hl_struct" href="structmim_1_1ast_1_1AnnexInfo.html">AnnexInfo</a>* annex_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>    <span class="keyword">mutable</span> <a class="code hl_typedef" href="namespacemim.html#a190fd94a575b212f38ae8be611f1c367">sub_t</a> sub_;</div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>    <span class="keyword">mutable</span> <a class="code hl_typedef" href="namespacemim.html#a190fd94a575b212f38ae8be611f1c367">sub_t</a> sub_        = 0;</div>
 <div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>};</div>
 </div>
 <div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span><span class="comment"></span> </div>
@@ -1339,7 +1339,7 @@ $(function(){initNavTree('ast_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="aclassmim_1_1Lam_html"><div class="ttname"><a href="classmim_1_1Lam.html">mim::Lam</a></div><div class="ttdoc">A function.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00105">lam.h:105</a></div></div>
 <div class="ttc" id="aclassmim_1_1Pi_html"><div class="ttname"><a href="classmim_1_1Pi.html">mim::Pi</a></div><div class="ttdoc">A dependent function type.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00011">lam.h:11</a></div></div>
 <div class="ttc" id="aclassmim_1_1Pi_html_a448fcf5d7d9357dd69ebfd2a036d1362"><div class="ttname"><a href="classmim_1_1Pi.html#a448fcf5d7d9357dd69ebfd2a036d1362">mim::Pi::set_codom</a></div><div class="ttdeci">Pi * set_codom(Ref codom)</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00076">lam.h:76</a></div></div>
-<div class="ttc" id="aclassmim_1_1Pi_html_ac37c343301b301ee856b8a275579a2bf"><div class="ttname"><a href="classmim_1_1Pi.html#ac37c343301b301ee856b8a275579a2bf">mim::Pi::immutabilize</a></div><div class="ttdeci">const Pi * immutabilize() override</div><div class="ttdoc">Tries to make an immutable from a mutable.</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00171">def.cpp:171</a></div></div>
+<div class="ttc" id="aclassmim_1_1Pi_html_ac37c343301b301ee856b8a275579a2bf"><div class="ttname"><a href="classmim_1_1Pi.html#ac37c343301b301ee856b8a275579a2bf">mim::Pi::immutabilize</a></div><div class="ttdeci">const Pi * immutabilize() override</div><div class="ttdoc">Tries to make an immutable from a mutable.</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00172">def.cpp:172</a></div></div>
 <div class="ttc" id="aclassmim_1_1Ref_html"><div class="ttname"><a href="classmim_1_1Ref.html">mim::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00086">def.h:86</a></div></div>
 <div class="ttc" id="aclassmim_1_1Span_html"><div class="ttname"><a href="classmim_1_1Span.html">mim::Span</a></div><div class="ttdoc">This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:</div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00028">span.h:28</a></div></div>
 <div class="ttc" id="aclassmim_1_1Tab_html"><div class="ttname"><a href="classmim_1_1Tab.html">mim::Tab</a></div><div class="ttdoc">Keeps track of indentation level.</div><div class="ttdef"><b>Definition</b> <a href="print_8h_source.html#l00195">print.h:195</a></div></div>
