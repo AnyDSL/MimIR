@@ -10,8 +10,6 @@
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
-#include "absl/container/flat_hash_map.h"
-
 namespace mim {
 
 template<class D> class Trie {
@@ -36,16 +34,7 @@ public:
         Node* parent_;
         size_t size_;
         size_t min_;
-
-        struct tidEq {
-            constexpr bool operator()(const D* a, const D* b) const noexcept { return a->tid() == b->tid(); }
-        };
-
-        struct tidHash {
-            constexpr size_t operator()(const D* a) const noexcept { return hash(a->tid()); }
-        };
-
-        absl::flat_hash_map<D*, Node*, tidHash, tidEq> children_;
+        GIDMap<D*, Node*> children_;
 
         friend class Trie;
     };
