@@ -126,7 +126,7 @@ template<class T> class Pool {
     using Data = typename PooledSet<T>::Data;
 
 public:
-    /// @name Construction & Destruction
+    /// @name Construction
     ///@{
     Pool& operator=(const Pool&) = delete;
 
@@ -194,6 +194,7 @@ public:
     }
 
     /// Yields @f$a \cap b@f$.
+    /// @todo Not yet tested.
     [[nodiscard]] PooledSet<T> intersect(PooledSet<T> a, PooledSet<T> b) {
         if (a == b) return a;
         if (!a || !b) return {};
@@ -215,20 +216,20 @@ public:
         return unify(data, state, size - actual_size);
     }
 
-    /// Yields @f$a \cup \{elem\}@f$.
-    [[nodiscard]] PooledSet<T> insert(PooledSet<T> a, const T& elem) { return merge(a, create(elem)); }
+    /// Yields @f$set \cup \{elem\}@f$.
+    [[nodiscard]] PooledSet<T> insert(PooledSet<T> set, const T& elem) { return merge(set, create(elem)); }
 
-    /// Yields @f$a \setminus elem@f$.
-    [[nodiscard]] PooledSet<T> erase(PooledSet<T> a, const T& elem) {
-        if (!a) return a;
-        auto i = binary_find(a.begin(), a.end(), elem, GIDLt<T>());
-        if (i == a.end()) return a;
+    /// Yields @f$set \setminus elem@f$.
+    [[nodiscard]] PooledSet<T> erase(PooledSet<T> set, const T& elem) {
+        if (!set) return set;
+        auto i = binary_find(set.begin(), set.end(), elem, GIDLt<T>());
+        if (i == set.end()) return set;
 
-        auto size = a.size() - 1;
+        auto size = set.size() - 1;
         if (size == 0) return PooledSet<T>(); // empty Set is not hashed
 
         auto [data, state] = allocate(size);
-        std::copy(i + 1, a.end(), std::copy(a.begin(), i, data->elems)); // copy over, skip i
+        std::copy(i + 1, set.end(), std::copy(set.begin(), i, data->elems)); // copy over, skip i
         return unify(data, state);
     }
     ///@}

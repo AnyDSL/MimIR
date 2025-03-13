@@ -1,5 +1,7 @@
 #include "mim/world.h"
 
+#include <string>
+
 #include "mim/check.h"
 #include "mim/def.h"
 #include "mim/driver.h"
@@ -62,6 +64,11 @@ World::World(Driver* driver)
     : World(driver, State()) {}
 
 World::~World() {
+    static int i = 0;
+    auto name    = "muts" + std::to_string(i++) + "_" + std::to_string(move_.muts.size()) + "_"
+              + std::to_string(move_.muts.max_depth());
+    move_.muts.dot(name);
+
     for (auto def : move_.defs) def->~Def();
 }
 
