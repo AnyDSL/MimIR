@@ -646,7 +646,7 @@ private:
         fe::Arena arena;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         Pool<const Var*> vars;
-        Trie<Def*> muts;
+        Trie<Def> muts;
         DefDefMap<DefVec> cache;
 
         friend void swap(Move& m1, Move& m2) noexcept {

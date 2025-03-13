@@ -15,7 +15,7 @@ TEST(Trie, Trie) {
     auto l30 = w.lit_nat(30);
     auto l40 = w.lit_nat(40);
 
-    mim::Trie<const mim::Def*> trie;
+    mim::Trie<const mim::Def> trie;
     auto s1     = trie.create(l10);
     auto s14    = trie.insert(s1, l40);
     auto s13    = trie.insert(s1, l30);

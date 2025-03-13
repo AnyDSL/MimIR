@@ -69,7 +69,7 @@ using DefVec                    = Vector<const Def*>;
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = Trie<Def*>::Set;
+using Muts                      = Trie<Def>::Set;
 ///@}
 
 /// @name Var
@@ -229,7 +229,8 @@ public:
     ///@{
     World& world() const;
     flags_t flags() const { return flags_; }
-    u32 gid() const { return gid_; }
+    u32 gid() const { return gid_; } ///< Global id.
+    u32 tid() const { return tid_; } ///< Trie id - only used in Trie.
     size_t hash() const { return hash_; }
     node_t node() const { return node_; }
     std::string_view node_name() const;
@@ -587,16 +588,13 @@ private:
     size_t hash_;
     Vars vars_; // Mutable: local vars; Immutable: free vars.
     Muts muts_; // Immutable: local_muts; Mutable: users;
-
-public:
-    mutable u32 lid_ = 0;
-    u32 lid() const { return lid_; }
-
+    mutable u32 tid_ = 0;
     const Def* type_;
 
     friend class World;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
+    template<class T> friend void Trie<T>::set(const T*, u32);
 };
 
 /// @name DefDef

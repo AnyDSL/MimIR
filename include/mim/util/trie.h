@@ -14,53 +14,53 @@
 
 namespace mim {
 
-template<class T> class Trie {
+template<class D> class Trie {
 public:
     class Node {
     public:
-        Node(Node* parent, T elem)
-            : elem_(elem)
+        Node(Node* parent, D* def)
+            : def_(def)
             , parent_(parent)
             , size_(parent ? parent->size_ + 1 : 0)
-            , min_(parent ? (parent->elem_ ? parent->min_ : elem->lid()) : size_t(-1)) {}
+            , min_(parent ? (parent->def_ ? parent->min_ : def->tid()) : size_t(-1)) {}
 
         void dot(std::ostream& os) {
-            for (auto [elem, child] : children_) {
-                println(os, "n{}_{} -> n{}_{}", elem_ ? elem_->lid() : u32(0xffff), this, child->elem_->lid(), child);
+            for (auto [def, child] : children_) {
+                println(os, "n{}_{} -> n{}_{}", def_ ? def_->tid() : u32(0xffff), this, child->def_->tid(), child);
                 child->dot(os);
             }
         }
 
     private:
-        T elem_;
+        D* def_;
         Node* parent_;
         size_t size_;
         size_t min_;
 
-        struct LIDEq {
-            constexpr bool operator()(const T& a, const T& b) const noexcept { return a->lid_ == b->lid_; }
+        struct tidEq {
+            constexpr bool operator()(const D* a, const D* b) const noexcept { return a->tid() == b->tid(); }
         };
 
-        struct LIDHash {
-            constexpr size_t operator()(const T& a) const noexcept { return hash(a->lid_); }
+        struct tidHash {
+            constexpr size_t operator()(const D* a) const noexcept { return hash(a->tid()); }
         };
 
-        absl::flat_hash_map<T, Node*, LIDHash, LIDEq> children_;
+        absl::flat_hash_map<D*, Node*, tidHash, tidEq> children_;
 
         friend class Trie;
     };
 
     /// Also serves as iterator.
-    /// `set++` will remove the last element from the set by moving the internal Node pointer one parent up.
+    /// `set++` will remove the last defent from the set by moving the internal Node pointer one parent up.
     class Set {
     public:
         /// @name Iterator Properties
         ///@{
         using iterator_category = std::forward_iterator_tag;
         using difference_type   = std::ptrdiff_t;
-        using value_type        = T;
-        using pointer           = T*;
-        using reference         = T&;
+        using value_type        = D*;
+        using pointer           = D**;
+        using reference         = D*&;
         ///@}
 
         /// @name Construction
@@ -82,10 +82,10 @@ public:
         constexpr bool is_root() const noexcept { return parent() == nullptr; }
         constexpr size_t size() const noexcept { return node_->size_; }
         constexpr size_t min() const noexcept { return node_->min_; }
-        constexpr bool contains(const T& elem) const noexcept {
-            if (this->empty() || elem->lid() < this->min() || elem->lid() > (**this)->lid()) return false;
+        constexpr bool contains(const D* def) const noexcept {
+            if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) return false;
             for (auto i = *this; !i.empty(); ++i)
-                if (i == elem) return true;
+                if (i == def) return true;
             return false;
         }
         ///@}
@@ -103,26 +103,26 @@ public:
         // clang-format off
         constexpr bool operator==(Set other) const noexcept { return  (this->empty() && other.empty()) || this->node_ == other.node_; }
         constexpr bool operator!=(Set other) const noexcept { return !(this->empty() && other.empty()) && this->node_ != other.node_; }
-        constexpr bool operator==(const T& other) const noexcept { return !this->empty() && this->node_->elem_ == other; }
-        constexpr bool operator!=(const T& other) const noexcept { return  this->empty() || this->node_->elem_ != other; }
+        constexpr bool operator==(const D* other) const noexcept { return !this->empty() && this->node_->def_ == other; }
+        constexpr bool operator!=(const D* other) const noexcept { return  this->empty() || this->node_->def_ != other; }
         // clang-format on
         constexpr auto operator<=>(Set other) const noexcept {
             if (this->empty() && other.empty()) return std::strong_ordering::equal;
             if (this->empty()) return std::strong_ordering::less;
             if (other.empty()) return std::strong_ordering::greater;
-            return (**this)->lid() <=> (*other)->lid();
+            return (**this)->tid() <=> (*other)->tid();
         }
-        constexpr auto operator<=>(const T& other) const noexcept {
+        constexpr auto operator<=>(const D* other) const noexcept {
             if (this->empty()) return std::strong_ordering::less;
-            return (**this)->lid() <=> other->lid();
+            return (**this)->tid() <=> other->tid();
         }
         ///@}
 
         /// @name Conversions
         ///@{
         constexpr explicit operator bool() const noexcept { return !empty(); } ///< Is not empty?
-        constexpr reference operator*() const noexcept { return node_->elem_; }
-        constexpr pointer operator->() const noexcept { return node_->elem_; }
+        constexpr reference operator*() const noexcept { return node_->def_; }
+        constexpr pointer operator->() const noexcept { return node_->def_; }
         ///@}
 
         /// @name Increment
@@ -157,42 +157,42 @@ public:
     ///@{
     [[nodiscard]] Set create() { return root_; }
 
-    /// Create a Set wih a *single* @p elem%ent: @f$\{elem\}@f$.
-    [[nodiscard]] Set create(const T& elem) {
-        if (elem->lid_ == 0) elem->lid_ = counter_++;
-        return create(root_, elem);
+    /// Create a Set wih a *single* @p def%ent: @f$\{def\}@f$.
+    [[nodiscard]] Set create(D* def) {
+        if (def->tid() == 0) set(def, counter_++);
+        return create(root_, def);
     }
 
-    /// Create a PooledSet wih all elements in the given range.
+    /// Create a PooledSet wih all defents in the given range.
     template<class I> [[nodiscard]] Set create(I begin, I end) {
-        Vector<const T> vec(begin, end);
+        Vector<D*> vec(begin, end);
         std::ranges::sort(begin, end);
         Set i = root();
-        for (const auto& elem : vec) i = insert(elem);
+        for (const auto& def : vec) i = insert(def);
         return i;
     }
 
-    /// Yields @f$a \cup \{elem\}@f$.
-    constexpr Set insert(Set i, const T& elem) noexcept {
-        if (*i == elem) return i;
+    /// Yields @f$a \cup \{def\}@f$.
+    constexpr Set insert(Set i, D* def) noexcept {
+        if (*i == def) return i;
         if (i.is_root()) {
-            if (elem->lid_ == 0) elem->lid_ = counter_++;
-            return create(i.node_, elem);
+            if (def->tid() == 0) set(def, counter_++);
+            return create(i.node_, def);
         }
-        if (elem->lid_ == 0) {
-            elem->lid_ = counter_++;
-            return create(i.node_, elem);
+        if (def->tid() == 0) {
+            set(def, counter_++);
+            return create(i.node_, def);
         }
-        if (i < elem) return create(i.node_, elem);
-        return create(insert(i.parent(), elem), *i);
+        if (i < def) return create(i.node_, def);
+        return create(insert(i.parent(), def), *i);
     }
 
-    /// Yields @f$i \setminus elem@f$.
-    [[nodiscard]] Set erase(Set i, const T& elem) {
-        if (elem->lid_ == 0) return i;
-        if (*i == elem) return i.parent();
-        if (i < elem) return i;
-        return create(erase(i.parent(), elem), *i);
+    /// Yields @f$i \setminus def@f$.
+    [[nodiscard]] Set erase(Set i, const D* def) {
+        if (def->tid() == 0) return i;
+        if (*i == def) return i.parent();
+        if (i < def) return i;
+        return create(erase(i.parent(), def), *i);
     }
 
     /// Yields @f$a \cup b@f$.
@@ -233,18 +233,20 @@ public:
         // clang-format on
     }
 
+    static void set(const D* def, u32 tid) { def->tid_ = tid; }
+
 private:
-    Node* create(Set parent, const T& elem) {
-        assert(elem->lid_ != 0);
-        auto [i, ins] = parent.node_->children_.emplace(elem, nullptr);
-        if (ins) i->second = make_node(parent.node_, elem);
+    Node* create(Set parent, D* def) {
+        assert(def->tid() != 0);
+        auto [i, ins] = parent.node_->children_.emplace(def, nullptr);
+        if (ins) i->second = make_node(parent.node_, def);
         return i->second;
     }
 
-    Node* make_node(Node* parent, const T& elem) {
+    Node* make_node(Node* parent, D* def) {
         ++size_;
         auto buff = arena_.allocate<Node>(1);
-        auto node = new (buff) Node(parent, elem);
+        auto node = new (buff) Node(parent, def);
         return node;
     }
 
@@ -252,8 +254,6 @@ private:
     size_t size_ = 0;
     Node* root_;
     u32 counter_ = 1;
-
-    friend class Range;
 };
 
 } // namespace mim
