@@ -36,8 +36,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
         dep_ |= op->dep_;
     }
 
-    gid_  = world().next_gid();
-    muts_ = world().muts().create();
+    gid_ = world().next_gid();
     if (auto var = isa<Var>()) {
         vars_ = world().vars().create(var);
     } else if (!has_const_dep()) {
@@ -70,7 +69,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , valid_(false)
     , num_ops_(num_ops)
     , type_(type) {
-    muts_ = world().muts().create();
     gid_  = world().next_gid();
     hash_ = mim::hash(gid());
     var_  = nullptr;
@@ -338,6 +336,8 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     auto fvs0 = vars_;
     auto fvs  = fvs0;
 
+    Vector<int> vec;
+
     for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
     for (auto local_mut : mut_local_muts()) {
@@ -366,7 +366,7 @@ void Def::invalidate() {
         valid_ = false;
         for (auto mut : users()) mut->invalidate();
         vars_.clear();
-        muts_ = world().muts().create();
+        muts_.clear();
     }
 }
 

@@ -59,16 +59,13 @@ public:
         constexpr Set(Set&&) noexcept      = default;
         constexpr Set(Node* node) noexcept
             : node_(node) {}
-        constexpr Set(const Trie& trie) noexcept
-            : node_(trie.root_) {}
         constexpr Set& operator=(const Set&) noexcept = default;
         ///@}
 
         /// @name Getters
         ///@{
-        constexpr bool empty() const noexcept { return node_ == nullptr || node_->parent_ == nullptr; }
+        constexpr bool empty() const noexcept { return node_ == nullptr; }
         constexpr Set parent() const noexcept { return node_->parent_; }
-        constexpr bool is_root() const noexcept { return parent() == nullptr; }
         constexpr size_t size() const noexcept { return node_->size_; }
         constexpr size_t min() const noexcept { return node_->min_; }
         constexpr bool contains(const D* def) const noexcept {
@@ -77,6 +74,11 @@ public:
                 if (i == def) return true;
             return false;
         }
+        ///@}
+
+        /// @name Setters
+        ///@{
+        constexpr void clear() noexcept { node_ = nullptr; }
         ///@}
 
         /// @name Iterators
@@ -134,40 +136,38 @@ public:
     static_assert(std::forward_iterator<Set>);
     static_assert(std::ranges::range<Set>);
 
-    Trie()
-        : root_(make_node(nullptr, 0)) {}
+    Trie() = default;
 
-    constexpr const Node* root() const noexcept { return root_; }
     /// Total Node%s in this Trie - including root().
     constexpr size_t size() const noexcept { return size_; }
 
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** Set.
     ///@{
-    [[nodiscard]] Set create() { return root_; }
 
     /// Create a Set wih a *single* @p def%ent: @f$\{def\}@f$.
     [[nodiscard]] Set create(D* def) {
         if (def->tid() == 0) set(def, counter_++);
-        return create(root_, def);
+        auto [i, ins] = roots_.emplace(def, nullptr);
+        if (ins) i->second = make_node(nullptr, def);
+        return i->second;
     }
 
-    /// Create a PooledSet wih all defents in the given range.
+    /// Create a PooledSet wih all elements in the given range.
     template<class I> [[nodiscard]] Set create(I begin, I end) {
+        if (begin == end) return {};
+
         Vector<D*> vec(begin, end);
         std::ranges::sort(begin, end);
-        Set i = root();
-        for (const auto& def : vec) i = insert(def);
+        Set i = create(*begin);
+        for (const auto& def : vec.span().subspan(1)) i = insert(def);
         return i;
     }
 
     /// Yields @f$a \cup \{def\}@f$.
     constexpr Set insert(Set i, D* def) noexcept {
+        if (!i) return create(def);
         if (*i == def) return i;
-        if (i.is_root()) {
-            if (def->tid() == 0) set(def, counter_++);
-            return create(i.node_, def);
-        }
         if (def->tid() == 0) {
             set(def, counter_++);
             return create(i.node_, def);
@@ -178,8 +178,9 @@ public:
 
     /// Yields @f$i \setminus def@f$.
     [[nodiscard]] Set erase(Set i, const D* def) {
-        if (def->tid() == 0) return i;
+        if (!i) return {};
         if (*i == def) return i.parent();
+        if (def->tid() == 0) return i;
         if (i < def) return i;
         return create(erase(i.parent(), def), *i);
     }
@@ -195,7 +196,11 @@ public:
 
     void dot() { dot("trie.dot"); }
 
-    size_t max_depth() { return max_depth(root_, 0); }
+    size_t max_depth() {
+        size_t res = 0;
+        for (auto [_, child] : roots_) res = std::max(res, max_depth(child, 1));
+        return res;
+    }
 
     size_t max_depth(const Node* n, size_t depth) {
         size_t res = depth;
@@ -208,7 +213,7 @@ public:
         println(os, "digraph {{");
         println(os, "ordering=out;");
         println(os, "node [shape=box,style=filled];");
-        root_->dot(os);
+        for (auto [_, root] : roots_) root->dot(os);
         println(os, "}}");
     }
 
@@ -217,7 +222,7 @@ public:
         // clang-format off
         swap(t1.arena_,   t2.arena_);
         swap(t1.size_,    t2.size_);
-        swap(t1.root_,    t2.root_);
+        swap(t1.roots_,   t2.roots_);
         swap(t1.counter_, t2.counter_);
         // clang-format on
     }
@@ -225,10 +230,12 @@ public:
     static void set(const D* def, u32 tid) { def->tid_ = tid; }
 
 private:
-    Node* create(Set parent, D* def) {
+    Node* create(Set s, D* def) { return create(s.node_, def); }
+    Node* create(Node* parent, D* def) {
         assert(def->tid() != 0);
-        auto [i, ins] = parent.node_->children_.emplace(def, nullptr);
-        if (ins) i->second = make_node(parent.node_, def);
+        auto& children = parent ? parent->children_ : roots_;
+        auto [i, ins]  = children.emplace(def, nullptr);
+        if (ins) i->second = make_node(parent, def);
         return i->second;
     }
 
@@ -241,7 +248,7 @@ private:
 
     fe::Arena arena_;
     size_t size_ = 0;
-    Node* root_;
+    GIDMap<D*, Node*> roots_;
     u32 counter_ = 1;
 };
 
