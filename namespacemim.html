@@ -173,6 +173,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes unreachable and dead code by rebuilding the whole <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> into a new one and <code>swap</code>ping afterwards.  <a href="classmim_1_1Cleanup.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ClosedCollector.html">ClosedCollector</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively collects all <em>closed</em> mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed</a>) in a <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedCollector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ClosedMutPhase.html">ClosedMutPhase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedMutPhase.html#details">More...</a><br /></td></tr>
@@ -575,9 +576,6 @@ Functions</h2></td></tr>
 <tr class="separator:a5f09589bc08bb2f715056df72aae8b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60ee93398f76269a406c841b2bb2c306" id="r_a60ee93398f76269a406c841b2bb2c306"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60ee93398f76269a406c841b2bb2c306">optimize</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;)</td></tr>
 <tr class="separator:a60ee93398f76269a406c841b2bb2c306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af05abfd0c36d8aa612fc1c874e67d682" id="r_af05abfd0c36d8aa612fc1c874e67d682"><td class="memTemplParams" colspan="2">template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>  = Def&gt; </td></tr>
-<tr class="memitem:af05abfd0c36d8aa612fc1c874e67d682"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a> * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af05abfd0c36d8aa612fc1c874e67d682">closed_muts</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;world)</td></tr>
-<tr class="separator:af05abfd0c36d8aa612fc1c874e67d682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1af555bf4ff47052d73aa640f244a0a3" id="r_a1af555bf4ff47052d73aa640f244a0a3"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1af555bf4ff47052d73aa640f244a0a3">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classmim_1_1Ref.html">Ref</a> ref)</td></tr>
 <tr class="separator:a1af555bf4ff47052d73aa640f244a0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba1dd89e9049fc3fd5f807e098d95cd9" id="r_aba1dd89e9049fc3fd5f807e098d95cd9"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba1dd89e9049fc3fd5f807e098d95cd9">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
@@ -2119,31 +2117,6 @@ template&lt;class D , class S &gt; </div>
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00023">23</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00450">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="def_8h_source.html#l00719">mim::Lit::get()</a>, and <a class="el" href="math_8h_source.html#l00089">mim::plug::math::lit_f()</a>.</p>
-
-</div>
-</div>
-<a id="af05abfd0c36d8aa612fc1c874e67d682" name="af05abfd0c36d8aa612fc1c874e67d682"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af05abfd0c36d8aa612fc1c874e67d682">&#9670;&#160;</a></span>closed_muts()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>  = Def&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a> * &gt; mim::closed_muts </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1World.html">World</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>world</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00189">189</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
-
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00186">mim::ClosedCollector&lt; M &gt;::muts</a>, and <a class="el" href="phase_8cpp_source.html#l00005">mim::Phase::run()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nest_8cpp_source.html#l00024">mim::Nest::Nest()</a>.</p>
 
 </div>
 </div>

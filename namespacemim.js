@@ -191,7 +191,6 @@ var namespacemim =
     [ "assert_emplace", "namespacemim.html#a217db174daa31eb9e4001c60c099a96f", null ],
     [ "binary_find", "namespacemim.html#a490bc82fced6d1222ca1e66d50e573a6", null ],
     [ "bitcast", "namespacemim.html#a1aae5adc4db386bfd618fdc8303ceb0c", null ],
-    [ "closed_muts", "namespacemim.html#af05abfd0c36d8aa612fc1c874e67d682", null ],
     [ "collect_args", "namespacemim.html#a5163ef3cba748ccf0cd6668726d5db6e", null ],
     [ "commute", "namespacemim.html#a5f09589bc08bb2f715056df72aae8b9a", null ],
     [ "compose_cn", "namespacemim.html#ac71cd9e1954cfc2b93222c3ff74ab1c0", null ],

@@ -119,8 +119,7 @@ $(function(){initNavTree('phase_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">phase.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -168,6 +167,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedMutPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ClosedCollector.html">mim::ClosedCollector&lt; M &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively collects all <em>closed</em> mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed</a>) in a <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedCollector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1NestPhase.html">mim::NestPhase&lt; M &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable closed mutables (Def::is_closed()) in World.">ClosedMutPhase</a> but computes a <a class="el" href="classmim_1_1Nest.html" title="Builds a nesting tree of all immutables‍/binders.">Nest</a> for each <a class="el" href="classmim_1_1NestPhase.html#a101203cdf21e91486513e9cd7e4b0396">NestPhase::visit</a>.  <a href="classmim_1_1NestPhase.html#details">More...</a><br /></td></tr>
@@ -177,12 +177,6 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html">mim</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:af05abfd0c36d8aa612fc1c874e67d682" id="r_af05abfd0c36d8aa612fc1c874e67d682"><td class="memTemplParams" colspan="2">template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>  = Def&gt; </td></tr>
-<tr class="memitem:af05abfd0c36d8aa612fc1c874e67d682"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a> * &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#af05abfd0c36d8aa612fc1c874e67d682">mim::closed_muts</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;world)</td></tr>
-<tr class="separator:af05abfd0c36d8aa612fc1c874e67d682"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -9,6 +9,5 @@ var phase_8h =
     [ "mim::Pipeline", "classmim_1_1Pipeline.html", "classmim_1_1Pipeline" ],
     [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", "classmim_1_1ClosedMutPhase" ],
     [ "mim::ClosedCollector< M >", "classmim_1_1ClosedCollector.html", "classmim_1_1ClosedCollector" ],
-    [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", "classmim_1_1NestPhase" ],
-    [ "closed_muts", "phase_8h.html#af05abfd0c36d8aa612fc1c874e67d682", null ]
+    [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", "classmim_1_1NestPhase" ]
 ];
