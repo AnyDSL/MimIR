@@ -24,7 +24,7 @@ Nest::Nest(View<Def*> muts)
 Nest::Nest(World& world)
     : world_(world)
     , root_(make_node(nullptr)) {
-    for (auto mut : closed_muts(world)) make_node(mut, root_);
+    for (auto mut : ClosedCollector<>::collect(world)) make_node(mut, root_);
     populate();
 }
 

@@ -176,6 +176,7 @@ private:
     M* root_;
 };
 
+/// Transitively collects all *closed* mutables (Def::is_closed) in a World.
 template<class M = Def> class ClosedCollector : public ClosedMutPhase<M> {
 public:
     ClosedCollector(World& world)
@@ -183,14 +184,15 @@ public:
 
     virtual void visit(M* mut) { muts.emplace_back(mut); }
 
+    /// Wrapper to directly receive all *closed* mutables as Vector.
+    static Vector<M*> collect(World& world) {
+        ClosedCollector<M> collector(world);
+        collector.run();
+        return std::move(collector.muts);
+    }
+
     Vector<M*> muts;
 };
-
-template<class M = Def> Vector<M*> closed_muts(World& world) {
-    ClosedCollector<M> collector(world);
-    collector.run();
-    return collector.muts;
-}
 
 /// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
 template<class M = Def> class NestPhase : public ClosedMutPhase<M> {
