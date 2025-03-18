@@ -20,11 +20,12 @@ public:
             : def_(def)
             , parent_(parent)
             , size_(parent ? parent->size_ + 1 : 0)
-            , min_(parent ? (parent->def_ ? parent->min_ : def->tid()) : size_t(-1)) {}
+            , min_(parent ? parent->min_ : def->tid()) {}
 
         void dot(std::ostream& os) {
-            for (auto [def, child] : children_) {
-                println(os, "n{}_{} -> n{}_{}", def_ ? def_->tid() : u32(0xffff), this, child->def_->tid(), child);
+            for (const auto& [def, child] : children_) {
+                println(os, "n{}_{} -> n{}_{}", def_ ? def_->tid() : u32(0xffff), this, child->def_->tid(),
+                        child.get());
                 child->dot(os);
             }
         }
@@ -34,7 +35,7 @@ public:
         Node* parent_;
         size_t size_;
         size_t min_;
-        GIDMap<D*, Node*> children_;
+        GIDMap<D*, fe::Arena::Ptr<Node>> children_;
 
         friend class Trie;
     };
@@ -190,13 +191,13 @@ public:
 
     size_t max_depth() {
         size_t res = 0;
-        for (auto [_, child] : roots_) res = std::max(res, max_depth(child, 1));
+        for (const auto& [_, child] : roots_) res = std::max(res, max_depth(child.get(), 1));
         return res;
     }
 
     size_t max_depth(const Node* n, size_t depth) {
         size_t res = depth;
-        for (auto [_, child] : n->children_) res = std::max(res, max_depth(child, depth + 1));
+        for (const auto& [_, child] : n->children_) res = std::max(res, max_depth(child.get(), depth + 1));
         return res;
     }
 
@@ -205,7 +206,7 @@ public:
         println(os, "digraph {{");
         println(os, "ordering=out;");
         println(os, "node [shape=box,style=filled];");
-        for (auto [_, root] : roots_) root->dot(os);
+        for (const auto& [_, root] : roots_) root->dot(os);
         println(os, "}}");
     }
 
@@ -214,8 +215,8 @@ public:
         // clang-format off
         swap(t1.arena_,   t2.arena_);
         swap(t1.size_,    t2.size_);
-        swap(t1.roots_,   t2.roots_);
         swap(t1.counter_, t2.counter_);
+        swap(t1.roots_,   t2.roots_);
         // clang-format on
     }
 
@@ -224,24 +225,22 @@ public:
 private:
     Node* create(Set parent, D* def) {
         if (def->tid() == 0) set(def, counter_++);
-        assert(def->tid() != 0);
+
         auto& children = parent ? parent.node_->children_ : roots_;
         auto [i, ins]  = children.emplace(def, nullptr);
-        if (ins) i->second = make_node(parent.node_, def);
-        return i->second;
+        if (ins) i->second = make_node(parent ? parent.node_ : nullptr, def);
+        return i->second.get();
     }
 
-    Node* make_node(Node* parent, D* def) {
+    fe::Arena::Ptr<Node> make_node(Node* parent, D* def) {
         ++size_;
-        auto buff = arena_.allocate<Node>(1);
-        auto node = new (buff) Node(parent, def);
-        return node;
+        return arena_.mk<Node>(parent, def);
     }
 
     fe::Arena arena_;
     size_t size_ = 0;
-    GIDMap<D*, Node*> roots_;
     u32 counter_ = 1;
+    GIDMap<D*, fe::Arena::Ptr<Node>> roots_;
 };
 
 } // namespace mim
