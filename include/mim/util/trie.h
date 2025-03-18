@@ -92,8 +92,8 @@ public:
         /// @name Comparisons
         ///@{
         // clang-format off
-        constexpr bool operator==(Set other) const noexcept { return  (this->empty() && other.empty()) || this->node_ == other.node_; }
-        constexpr bool operator!=(Set other) const noexcept { return !(this->empty() && other.empty()) && this->node_ != other.node_; }
+        constexpr bool operator==(Set other) const noexcept { return this->node_ == other.node_; }
+        constexpr bool operator!=(Set other) const noexcept { return this->node_ != other.node_; }
         constexpr bool operator==(const D* other) const noexcept { return !this->empty() && this->node_->def_ == other; }
         constexpr bool operator!=(const D* other) const noexcept { return  this->empty() || this->node_->def_ != other; }
         // clang-format on
@@ -146,21 +146,16 @@ public:
     ///@{
 
     /// Create a Set wih a *single* @p def%ent: @f$\{def\}@f$.
-    [[nodiscard]] Set create(D* def) {
-        if (def->tid() == 0) set(def, counter_++);
-        auto [i, ins] = roots_.emplace(def, nullptr);
-        if (ins) i->second = make_node(nullptr, def);
-        return i->second;
-    }
+    [[nodiscard]] Set create(D* def) { return create(nullptr, def); }
 
     /// Create a PooledSet wih all elements in the given range.
     template<class I> [[nodiscard]] Set create(I begin, I end) {
         if (begin == end) return {};
 
-        Vector<D*> vec(begin, end);
+        auto vec = Vector<D*>(begin, end);
         std::ranges::sort(begin, end);
         Set i = create(*begin);
-        for (const auto& def : vec.span().subspan(1)) i = insert(def);
+        for (auto def : vec.span().subspan(1)) i = insert(def);
         return i;
     }
 
@@ -168,11 +163,8 @@ public:
     constexpr Set insert(Set i, D* def) noexcept {
         if (!i) return create(def);
         if (*i == def) return i;
-        if (def->tid() == 0) {
-            set(def, counter_++);
-            return create(i.node_, def);
-        }
-        if (i < def) return create(i.node_, def);
+        if (def->tid() == 0) return create(i, def);
+        if (i < def) return create(i, def);
         return create(insert(i.parent(), def), *i);
     }
 
@@ -230,12 +222,12 @@ public:
     static void set(const D* def, u32 tid) { def->tid_ = tid; }
 
 private:
-    Node* create(Set s, D* def) { return create(s.node_, def); }
-    Node* create(Node* parent, D* def) {
+    Node* create(Set parent, D* def) {
+        if (def->tid() == 0) set(def, counter_++);
         assert(def->tid() != 0);
-        auto& children = parent ? parent->children_ : roots_;
+        auto& children = parent ? parent.node_->children_ : roots_;
         auto [i, ins]  = children.emplace(def, nullptr);
-        if (ins) i->second = make_node(parent, def);
+        if (ins) i->second = make_node(parent.node_, def);
         return i->second;
     }
 
