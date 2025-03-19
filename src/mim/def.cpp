@@ -11,6 +11,26 @@ using namespace std::literals;
 
 namespace mim {
 
+void dot1(World& w) { w.vars().dot(); }
+
+void dump1(Vars v) {
+    std::cout << '{';
+    for (auto sep = ""; auto x : v) {
+        std::cout << sep << x->gid() << '/' << x->tid();
+        sep = ", ";
+    }
+    std::cout << '}' << std::endl;
+}
+
+void dump2(Wars v) {
+    std::cout << '{';
+    for (auto sep = ""; auto x : v) {
+        std::cout << sep << x->gid() << '/' << x->tid();
+        sep = ", ";
+    }
+    std::cout << '}' << std::endl;
+}
+
 /*
  * constructors
  */
@@ -37,13 +57,17 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     }
 
     gid_  = world().next_gid();
+    vars_ = world().vars().create();
     muts_ = world().muts().create();
     if (auto var = isa<Var>()) {
         vars_ = world().vars().create(var);
+        wars_ = world().wars().create(var);
     } else if (!has_const_dep()) {
         for (auto op : deps()) {
-            vars_ = world().vars().merge(vars_, op->local_vars());
-            muts_ = world().muts().merge(muts_, op->local_muts());
+            auto [v, w] = op->local_vars_();
+            vars_       = world().vars().merge(vars_, v);
+            wars_       = world().wars().merge(wars_, w);
+            muts_       = world().muts().merge(muts_, op->local_muts());
         }
     }
 
@@ -70,6 +94,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , valid_(false)
     , num_ops_(num_ops)
     , type_(type) {
+    vars_ = world().vars().create();
     muts_ = world().muts().create();
     gid_  = world().next_gid();
     hash_ = mim::hash(gid());
@@ -304,51 +329,98 @@ Muts Def::mut_local_muts() {
     return muts;
 }
 
-Vars Def::free_vars() const {
-    if (auto mut = isa_mut()) return mut->free_vars();
-
-    auto vars = local_vars();
-    for (auto mut : local_muts()) vars = world().vars().merge(vars, mut->free_vars());
-    return vars;
-}
-
-Vars Def::free_vars() {
-    if (!is_set()) return {};
+std::pair<Vars, Wars> Def::free_vars_() {
+    if (!is_set()) return std::pair(Vars(), Wars());
 
     if (!valid_) {
         // fixed-point interation to recompute free vars
         uint32_t run = 1;
         for (bool todo = true; todo;) {
-            todo = false;
-            free_vars(todo, ++run);
+            todo        = false;
+            auto [v, w] = free_vars(todo, ++run);
+            vcheck(v, w);
         }
         validate();
     }
 
-    return vars_;
+    vcheck(vars_, wars_);
+    return {vars_, wars_};
 }
 
-Vars Def::free_vars(bool& todo, uint32_t run) {
+std::pair<Vars, Wars> Def::local_vars_() const {
+    auto vars = mut_ ? world().vars().create() : vars_;
+    auto wars = mut_ ? Wars() : wars_;
+    vcheck(vars, wars);
+    return {vars, wars};
+}
+
+std::pair<Vars, Wars> Def::free_vars_() const {
+    if (auto mut = isa_mut()) {
+        auto [v, w] = mut->free_vars_();
+        vcheck(v, w);
+        return {v, w};
+    }
+
+    auto [vars, wars] = local_vars_();
+    for (auto mut : local_muts()) {
+        auto [fv, fw] = mut->free_vars_();
+        vars          = world().vars().merge(vars, fv);
+        wars          = world().wars().merge(wars, fw);
+        vcheck(vars, wars);
+    }
+
+    return {vars, wars};
+}
+
+std::pair<Vars, Wars> Def::free_vars(bool& todo, uint32_t run) {
     // Recursively recompute free vars. If
     // * valid_ == true: no recomputation is necessary
     // * mark_ == run: We are running in cycles within the *current* iteration of our fixed-point loop
-    if (valid_ || mark_ == run) return vars_;
+    if (valid_ || mark_ == run) {
+        vcheck(vars_, wars_);
+        return {vars_, wars_};
+    }
     mark_ = run;
 
     auto fvs0 = vars_;
     auto fvs  = fvs0;
 
-    for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
+    auto fws0 = wars_;
+    auto fws  = fws0;
+
+    for (auto op : deps()) {
+        auto [v, w] = op->local_vars_();
+        vcheck(v, w);
+        auto ov = fvs;
+        auto ow = fws;
+        // dump1(ov);
+        // dump2(ow);
+        fvs = world().vars().merge(fvs, v);
+        fws = world().wars().merge(fws, w);
+        // dump1(fvs);
+        // dump2(fws);
+        vcheck(fvs, fws);
+    }
 
     for (auto local_mut : mut_local_muts()) {
         local_mut->muts_ = world().muts().insert(local_mut->muts_, this); // register "this" as user of local_mut
-        fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, run));
+        auto [mv1, mv2]  = local_mut->free_vars(todo, run);
+        fvs              = world().vars().merge(fvs, mv1);
+        fws              = world().wars().merge(fws, mv2);
+        vcheck(fvs, fws);
     }
 
-    if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
+    if (auto var = has_var()) {
+        fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
+        fws = world().wars().erase(fws, var); // FV(λx.e) = FV(e) \ {x}
+        vcheck(fvs, fws);
+    }
 
+    assert((fvs0 == fvs) == (fws0 == fws));
     todo |= fvs0 != fvs;
-    return vars_ = fvs;
+    vars_ = fvs;
+    wars_ = fws;
+    return {vars_, wars_};
 }
 
 void Def::validate() {
@@ -365,7 +437,8 @@ void Def::invalidate() {
     if (valid_) {
         valid_ = false;
         for (auto mut : users()) mut->invalidate();
-        vars_.clear();
+        vars_ = world().vars().create();
+        wars_.clear();
         muts_ = world().muts().create();
     }
 }

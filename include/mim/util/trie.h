@@ -70,26 +70,30 @@ public:
         constexpr bool empty() const noexcept { return node_ == nullptr || node_->parent_ == nullptr; }
         constexpr Set parent() const noexcept { return node_->parent_; }
         constexpr bool is_root() const noexcept { return parent() == nullptr; }
-        constexpr size_t size() const noexcept { return node_->size_; }
+        constexpr size_t size() const noexcept { return node_ ? node_->size_ : 0; }
         constexpr size_t min() const noexcept { return node_->min_; }
         ///@}
 
         /// @name Check Membership
         ///@{
-        constexpr bool contains(const D* def) const noexcept {
-            if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) return false;
+        bool contains(const D* def) const noexcept {
+            if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) goto no;
             for (auto i = *this; !i.empty(); ++i)
-                if (i == def) return true;
+                if (i == def) goto yes;
+
+no:
+            for (auto x : *this)
+                if (x == def) assert(false);
             return false;
+yes:
+            for (auto x : *this)
+                if (x == def) return true;
+            assert(false);
+            return true;
         }
 
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
-            std::cout << "has_intersection" << std::endl;
-            dump();
-            other.dump();
-
             if (this->empty() || other.empty()) goto no;
-            if (**this == *other) goto yes;
 
             for (auto ai = this->begin(), bi = other.begin(); ai && bi;) {
                 if (*ai == *bi) goto yes;
@@ -101,11 +105,13 @@ public:
             }
 
 no:
-            std::cout << "no" << std::endl;
+            for (auto x : *this) assert(!other.contains(x));
             return false;
 
 yes:
-            std::cout << "yes" << std::endl;
+            for (auto x : *this)
+                if (other.contains(x)) return true;
+            assert(false);
             return true;
         }
         ///@}
@@ -196,33 +202,62 @@ yes:
     /// Create a PooledSet wih all defents in the given range.
     template<class I> [[nodiscard]] Set create(I begin, I end) {
         Vector<D*> vec(begin, end);
-        std::ranges::sort(begin, end);
+        // std::ranges::sort(begin, end);
         Set i = root();
         for (const auto& def : vec) i = insert(def);
+
+        for (auto x : vec) assert(i.contains(x));
         return i;
     }
 
     /// Yields @f$a \cup \{def\}@f$.
     constexpr Set insert(Set i, D* def) noexcept {
+        if (i.empty()) {
+            if (def->tid() == 0) set(def, counter_++);
+            return create(root_.get(), def);
+        }
         if (*i == def) return i;
         if (i.is_root()) {
             if (def->tid() == 0) set(def, counter_++);
-            return create(i.node_, def);
+            Set res = create(i.node_, def);
+            assert(res.contains(def));
+            return res;
         }
         if (def->tid() == 0) {
             set(def, counter_++);
-            return create(i.node_, def);
+            Set res = create(i.node_, def);
+            assert(res.contains(def));
+            return res;
         }
-        if (i < def) return create(i.node_, def);
-        return create(insert(i.parent(), def), *i);
+        if (i < def) {
+            Set res = create(i.node_, def);
+            assert(res.contains(def));
+            return res;
+        }
+        Set res = create(insert(i.parent(), def), *i);
+        assert(res.contains(def));
+        return res;
     }
 
     /// Yields @f$i \setminus def@f$.
     [[nodiscard]] Set erase(Set i, const D* def) {
-        if (def->tid() == 0) return i;
-        if (*i == def) return i.parent();
-        if (i < def) return i;
-        return create(erase(i.parent(), def), *i);
+        if (def->tid() == 0) {
+            assert(!i.contains(def));
+            return i;
+        }
+        if (*i == def) {
+            Set res = i.parent();
+            assert(!res.contains(def));
+            return res;
+        }
+        if (i < def) {
+            Set res = i;
+            assert(!res.contains(def));
+            return res;
+        }
+        Set res = create(erase(i.parent(), def), *i);
+        assert(!res.contains(def));
+        return res;
     }
 
     /// Yields @f$a \cup b@f$.
@@ -230,8 +265,17 @@ yes:
         if (a == b || !b) return a;
         if (!a) return b;
 
-        auto gt = a > b;
-        return create(gt ? merge(a.parent(), b) : merge(a, b.parent()), gt ? *a : *b);
+        Set res;
+        if ((*a)->tid() == (*b)->tid())
+            res = create(merge(a.parent(), b.parent()), *a);
+        else if ((*a)->tid() < (*b)->tid())
+            res = create(merge(a, b.parent()), *b);
+        else
+            res = create(merge(a.parent(), b), *a);
+
+        for (auto x : a) assert(res.contains(x));
+        for (auto x : b) assert(res.contains(x));
+        return res;
     }
 
     void dot() { dot("trie.dot"); }
