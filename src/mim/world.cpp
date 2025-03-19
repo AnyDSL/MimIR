@@ -65,10 +65,8 @@ World::World(Driver* driver)
 
 World::~World() {
     static int i = 0;
-    auto name    = "muts" + std::to_string(i++) + "_" + std::to_string(move_.muts.size()) + "_"
-              + std::to_string(move_.muts.max_depth());
+    auto name    = "muts" + std::to_string(i++) + ".dot" + std::to_string(move_.muts.max_depth());
     move_.muts.dot(name);
-
     for (auto def : move_.defs) def->~Def();
 }
 

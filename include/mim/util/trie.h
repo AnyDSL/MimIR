@@ -169,8 +169,6 @@ public:
         : root_(make_node(nullptr, 0)) {}
 
     constexpr const Node* root() const noexcept { return root_; }
-    /// Total Node%s in this Trie - including root().
-    constexpr size_t size() const noexcept { return size_; }
 
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** Set.
@@ -178,10 +176,7 @@ public:
     [[nodiscard]] Set create() { return root_.get(); }
 
     /// Create a Set wih a *single* @p def%ent: @f$\{def\}@f$.
-    [[nodiscard]] Set create(D* def) {
-        if (def->tid() == 0) set(def, counter_++);
-        return create(root_.get(), def);
-    }
+    [[nodiscard]] Set create(D* def) { return create(root_.get(), def); }
 
     /// Create a PooledSet wih all defents in the given range.
     template<class I> [[nodiscard]] Set create(I begin, I end) {
@@ -192,21 +187,12 @@ public:
 
     /// Yields @f$a \cup \{def\}@f$.
     constexpr Set insert(Set i, D* def) noexcept {
-        if (i.empty()) {
-            if (def->tid() == 0) set(def, counter_++);
-            return create(root_.get(), def);
-        }
+        if (i.empty()) return create(root_.get(), def);
         if (*i == def) return i;
-        if (i.is_root()) {
-            if (def->tid() == 0) set(def, counter_++);
-            return create(i.node_, def);
-        }
-        if (def->tid() == 0) {
-            set(def, counter_++);
-            return create(i.node_, def);
-        }
-        if (i < def) return create(i.node_, def);
-        return create(insert(i.parent(), def), *i);
+        if (i.is_root()) return create(i.node_, def);
+        if (def->tid() == 0) return create(i.node_, def);
+        if (i < def) return create_has_tid(i.node_, def);
+        return create_has_tid(insert(i.parent(), def), *i);
     }
 
     /// Yields @f$i \setminus def@f$.
@@ -214,7 +200,7 @@ public:
         if (def->tid() == 0) return i;
         if (*i == def) return i.parent();
         if (i < def) return i;
-        return create(erase(i.parent(), def), *i);
+        return create_has_tid(erase(i.parent(), def), *i);
     }
 
     /// Yields @f$a \cup b@f$.
@@ -256,7 +242,6 @@ public:
         using std::swap;
         // clang-format off
         swap(t1.arena_,   t2.arena_);
-        swap(t1.size_,    t2.size_);
         swap(t1.root_,    t2.root_);
         swap(t1.counter_, t2.counter_);
         // clang-format on
@@ -266,19 +251,20 @@ public:
 
 private:
     Node* create(Set parent, D* def) {
+        if (def->tid() == 0) set(def, counter_++);
+        return create_has_tid(parent, def);
+    }
+
+    Node* create_has_tid(Set parent, D* def) {
         assert(def->tid() != 0);
         auto [i, ins] = parent.node_->children_.emplace(def, nullptr);
         if (ins) i->second = make_node(parent.node_, def);
         return i->second.get();
     }
 
-    fe::Arena::Ptr<Node> make_node(Node* parent, D* def) {
-        ++size_;
-        return arena_.mk<Node>(parent, def);
-    }
+    fe::Arena::Ptr<Node> make_node(Node* parent, D* def) { return arena_.mk<Node>(parent, def); }
 
     fe::Arena arena_;
-    size_t size_ = 0;
     u32 counter_ = 1;
     fe::Arena::Ptr<Node> root_;
 };
