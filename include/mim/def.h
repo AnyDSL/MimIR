@@ -79,14 +79,7 @@ template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
 using Vars                      = Trie<const Var>::Set;
-using Wars                      = PooledSet<const Var*>;
 ///@}
-
-inline void vcheck(Vars v1, Wars v2) {
-    assert(v1.size() == v2.size());
-    for (auto x : v2) assert(v1.contains(x));
-    for (auto x : v1) assert(v2.contains(x));
-}
 
 //------------------------------------------------------------------------------
 
@@ -405,18 +398,17 @@ public:
 
     /// Mutables reachable by following *immutable* deps(); `mut->local_muts()` is by definition the set `{ mut }`.
     Muts local_muts() const;
-    /// All local_muts() of this mutable's deps().
-    Muts mut_local_muts();
+
     /// Var%s reachable by following *immutable* deps().
     /// @note `var->local_vars()` is by definition the set `{ var }`.
-    Vars local_vars() const { return local_vars_().first; }
-    std::pair<Vars, Wars> local_vars_() const;
+    Vars local_vars() const;
+
+    /// All local_muts() of this mutable's deps().
+    Muts mut_local_muts();
 
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
-    std::pair<Vars, Wars> free_vars_() const;
-    std::pair<Vars, Wars> free_vars_();
-    Vars free_vars() const { return free_vars_().first; }
-    Vars free_vars() { return free_vars_().first; }
+    Vars free_vars() const;
+    Vars free_vars();
     Muts users() { return muts_; } ///< Set of mutables where this mutable is locally referenced.
     bool is_open() const;          ///< Has free_vars()?
     bool is_closed() const;        ///< Has no free_vars()?
@@ -563,7 +555,7 @@ private:
     virtual Def* stub_(World&, Ref) { fe::unreachable(); }
     virtual Ref rebuild_(World& w, Ref type, Defs ops) const = 0;
 
-    std::pair<Vars, Wars> free_vars(bool&, uint32_t run);
+    Vars free_vars(bool&, uint32_t run);
     void validate();
     void invalidate();
     Def* unset(size_t i);
@@ -598,7 +590,6 @@ private:
     u32 num_ops_;
     size_t hash_;
     Vars vars_; // Mutable: local vars; Immutable: free vars.
-    Wars wars_; // Mutable: local vars; Immutable: free vars.
     Muts muts_; // Immutable: local_muts; Mutable: users;
     mutable u32 tid_ = 0;
     const Def* type_;

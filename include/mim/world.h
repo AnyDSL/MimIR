@@ -518,7 +518,6 @@ public:
     /// @name Vars & Muts
     /// Manges sets of Vars and Muts.
     ///@{
-    [[nodiscard]] auto& wars() { return move_.wars; }
     [[nodiscard]] auto& vars() { return move_.vars; }
     [[nodiscard]] auto& muts() { return move_.muts; }
     [[nodiscard]] const auto& vars() const { return move_.vars; }
@@ -646,7 +645,6 @@ private:
         absl::btree_map<Sym, Def*> sym2external;
         fe::Arena arena;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
-        Pool<const Var*> wars;
         Trie<const Var> vars;
         Trie<Def> muts;
         DefDefMap<DefVec> cache;
@@ -659,7 +657,6 @@ private:
             swap(m1.arena,        m2.arena);
             swap(m1.defs,         m2.defs);
             swap(m1.vars,         m2.vars);
-            swap(m1.wars,         m2.wars);
             swap(m1.muts,         m2.muts);
             swap(m1.cache,        m2.cache);
             // clang-format on
