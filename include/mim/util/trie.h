@@ -77,26 +77,18 @@ public:
         /// @name Check Membership
         ///@{
         bool contains(const D* def) const noexcept {
-            if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) goto no;
+            if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) return false;
             for (auto i = *this; !i.empty(); ++i)
-                if (i == def) goto yes;
+                if (i == def) return true;
 
-no:
-            for (auto x : *this)
-                if (x == def) assert(false);
             return false;
-yes:
-            for (auto x : *this)
-                if (x == def) return true;
-            assert(false);
-            return true;
         }
 
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
-            if (this->empty() || other.empty()) goto no;
+            if (this->empty() || other.empty()) return false;
 
             for (auto ai = this->begin(), bi = other.begin(); ai && bi;) {
-                if (*ai == *bi) goto yes;
+                if (*ai == *bi) return true;
 
                 if ((*ai)->tid() > (*bi)->tid())
                     ++ai;
@@ -104,15 +96,7 @@ yes:
                     ++bi;
             }
 
-no:
-            for (auto x : *this) assert(!other.contains(x));
             return false;
-
-yes:
-            for (auto x : *this)
-                if (other.contains(x)) return true;
-            assert(false);
-            return true;
         }
         ///@}
 
@@ -201,12 +185,8 @@ yes:
 
     /// Create a PooledSet wih all defents in the given range.
     template<class I> [[nodiscard]] Set create(I begin, I end) {
-        Vector<D*> vec(begin, end);
-        // std::ranges::sort(begin, end);
         Set i = root();
-        for (const auto& def : vec) i = insert(def);
-
-        for (auto x : vec) assert(i.contains(x));
+        for (const auto& def : std::ranges::subrange(begin, end)) i = insert(def);
         return i;
     }
 
@@ -219,45 +199,22 @@ yes:
         if (*i == def) return i;
         if (i.is_root()) {
             if (def->tid() == 0) set(def, counter_++);
-            Set res = create(i.node_, def);
-            assert(res.contains(def));
-            return res;
+            return create(i.node_, def);
         }
         if (def->tid() == 0) {
             set(def, counter_++);
-            Set res = create(i.node_, def);
-            assert(res.contains(def));
-            return res;
+            return create(i.node_, def);
         }
-        if (i < def) {
-            Set res = create(i.node_, def);
-            assert(res.contains(def));
-            return res;
-        }
-        Set res = create(insert(i.parent(), def), *i);
-        assert(res.contains(def));
-        return res;
+        if (i < def) return create(i.node_, def);
+        return create(insert(i.parent(), def), *i);
     }
 
     /// Yields @f$i \setminus def@f$.
     [[nodiscard]] Set erase(Set i, const D* def) {
-        if (def->tid() == 0) {
-            assert(!i.contains(def));
-            return i;
-        }
-        if (*i == def) {
-            Set res = i.parent();
-            assert(!res.contains(def));
-            return res;
-        }
-        if (i < def) {
-            Set res = i;
-            assert(!res.contains(def));
-            return res;
-        }
-        Set res = create(erase(i.parent(), def), *i);
-        assert(!res.contains(def));
-        return res;
+        if (def->tid() == 0) return i;
+        if (*i == def) return i.parent();
+        if (i < def) return i;
+        return create(erase(i.parent(), def), *i);
     }
 
     /// Yields @f$a \cup b@f$.
@@ -273,8 +230,6 @@ yes:
         else
             res = create(merge(a.parent(), b), *a);
 
-        for (auto x : a) assert(res.contains(x));
-        for (auto x : b) assert(res.contains(x));
         return res;
     }
 
