@@ -78,16 +78,14 @@ public:
         ///@{
         bool contains(const D* def) const noexcept {
             if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) return false;
-            for (auto i = *this; !i.empty(); ++i)
+            for (auto i = *this; i; ++i)
                 if (i == def) return true;
 
             return false;
         }
 
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
-            if (this->empty() || other.empty()) return false;
-
-            for (auto ai = this->begin(), bi = other.begin(); ai && bi;) {
+            for (auto ai = *this, bi = other; ai && bi;) {
                 if (*ai == *bi) return true;
 
                 if ((*ai)->tid() > (*bi)->tid())
@@ -100,6 +98,7 @@ public:
         }
         ///@}
 
+#if 0
         void dump() const {
             std::cout << '{';
             for (auto sep = ""; auto i : *this) {
@@ -108,15 +107,7 @@ public:
             }
             std::cout << '}' << std::endl;
         }
-
-        ///@}
-        /// @name Iterators
-        ///@{
-        constexpr Set begin() const noexcept { return node_; }
-        constexpr Set end() const noexcept { return {}; }
-        constexpr Set cbegin() const noexcept { return begin(); }
-        constexpr Set cend() const noexcept { return end(); }
-        ///@}
+#endif
 
         /// @name Comparisons
         ///@{
@@ -162,13 +153,26 @@ public:
         friend class Trie;
     };
 
+    class Range {
+    public:
+        Range(Set begin, Set end)
+            : begin_(begin)
+            , end_(end) {}
+
+        Set begin() const { return begin_; }
+        Set end() const { return end_; }
+
+    private:
+        Set begin_, end_;
+    };
+
     static_assert(std::forward_iterator<Set>);
-    static_assert(std::ranges::range<Set>);
+    static_assert(std::ranges::range<Range>);
 
     Trie()
         : root_(make_node(nullptr, 0)) {}
 
-    constexpr const Node* root() const noexcept { return root_; }
+    constexpr const Set root() const noexcept { return root_.get(); }
 
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** Set.
@@ -189,7 +193,6 @@ public:
     constexpr Set insert(Set i, D* def) noexcept {
         if (i.empty()) return create(root_.get(), def);
         if (*i == def) return i;
-        if (i.is_root()) return create(i.node_, def);
         if (def->tid() == 0) return create(i.node_, def);
         if (i < def) return create_has_tid(i.node_, def);
         return create_has_tid(insert(i.parent(), def), *i);
@@ -208,15 +211,9 @@ public:
         if (a == b || !b) return a;
         if (!a) return b;
 
-        Set res;
-        if ((*a)->tid() == (*b)->tid())
-            res = create(merge(a.parent(), b.parent()), *a);
-        else if ((*a)->tid() < (*b)->tid())
-            res = create(merge(a, b.parent()), *b);
-        else
-            res = create(merge(a.parent(), b), *a);
-
-        return res;
+        auto aa = (*a)->tid() < (*b)->tid() ? a : a.parent();
+        auto bb = (*a)->tid() > (*b)->tid() ? b : b.parent();
+        return create(merge(aa, bb), (*a)->tid() < (*b)->tid() ? *b : *a);
     }
 
     void dot() { dot("trie.dot"); }
@@ -228,6 +225,8 @@ public:
         for (const auto& [_, child] : n->children_) res = std::max(res, max_depth(child.get(), depth + 1));
         return res;
     }
+
+    constexpr Range range(Set set) const noexcept { return {set, root()}; }
 
     void dot(std::string s) {
         auto os = std::ofstream(s);

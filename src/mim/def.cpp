@@ -301,7 +301,7 @@ Muts Def::local_muts() const {
 }
 
 Muts Def::mut_local_muts() {
-    Muts muts;
+    auto muts = world().muts().create();
     for (auto op : deps()) muts = world().muts().merge(muts, op->local_muts());
     return muts;
 }
@@ -309,7 +309,7 @@ Muts Def::mut_local_muts() {
 Vars Def::local_vars() const { return mut_ ? world().vars().create() : vars_; }
 
 Vars Def::free_vars() {
-    if (!is_set()) return Vars();
+    if (!is_set()) return world().vars().create();
 
     if (!valid_) {
         // fixed-point interation to recompute free vars
@@ -318,7 +318,9 @@ Vars Def::free_vars() {
             todo = false;
             free_vars(todo, ++run);
         }
+        auto xx = vars_;
         validate();
+        assert(xx == vars_);
     }
 
     return vars_;
@@ -328,7 +330,7 @@ Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
     auto fvs = local_vars();
-    for (auto mut : local_muts()) fvs = world().vars().merge(fvs, mut->free_vars());
+    for (auto mut : world().muts().range(local_muts())) fvs = world().vars().merge(fvs, mut->free_vars());
 
     return fvs;
 }
@@ -346,7 +348,7 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
 
     for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
-    for (auto local_mut : mut_local_muts()) {
+    for (auto local_mut : world().muts().range(mut_local_muts())) {
         local_mut->muts_ = world().muts().insert(local_mut->muts_, this); // register "this" as user of local_mut
         fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, run));
     }
@@ -362,7 +364,7 @@ void Def::validate() {
     mark_  = 0;
 
     for (auto op : deps()) {
-        for (auto local_mut : op->local_muts())
+        for (auto local_mut : world().muts().range(op->local_muts()))
             if (!local_mut->valid_) local_mut->validate();
     }
 }
@@ -370,7 +372,7 @@ void Def::validate() {
 void Def::invalidate() {
     if (valid_) {
         valid_ = false;
-        for (auto mut : users()) mut->invalidate();
+        for (auto mut : world().muts().range(users())) mut->invalidate();
         vars_ = world().vars().create();
         muts_ = world().muts().create();
     }
@@ -400,7 +402,7 @@ Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 World& Def::world() const {
     if (isa<Univ>()) return *world_;
     if (auto type = isa<Type>()) return type->level()->world();
-    return type()->world(); // TODO unroll
+    return type().def()->world(); // TODO unroll
 }
 
 Ref Def::unfold_type() const {

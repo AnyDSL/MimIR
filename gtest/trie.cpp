@@ -26,7 +26,7 @@ TEST(Trie, Trie) {
     auto s_234  = trie.erase(s_1234, l10);
     auto asdf   = trie.merge(trie.insert(trie.create(l01), l17), s134);
 
-    for (auto e : s_1234) std::cout << e << std::endl;
+    for (auto e : trie.range(s_1234)) std::cout << e << std::endl;
 
     trie.dot();
 
