@@ -23,8 +23,9 @@ public:
             , min_(parent ? (parent->def_ ? parent->min_ : def->tid()) : size_t(-1)) {}
 
         void dot(std::ostream& os) {
-            for (auto [def, child] : children_) {
-                println(os, "n{}_{} -> n{}_{}", def_ ? def_->tid() : u32(0xffff), this, child->def_->tid(), child);
+            for (const auto& [def, child] : children_) {
+                println(os, "n{}_{} -> n{}_{}", def_ ? def_->tid() : u32(0xffff), this, child->def_->tid(),
+                        child.get());
                 child->dot(os);
             }
         }
@@ -34,7 +35,7 @@ public:
         Node* parent_;
         size_t size_;
         size_t min_;
-        GIDMap<D*, Node*> children_;
+        GIDMap<D*, fe::Arena::Ptr<Node>> children_;
 
         friend class Trie;
     };
@@ -60,7 +61,7 @@ public:
         constexpr Set(Node* node) noexcept
             : node_(node) {}
         constexpr Set(const Trie& trie) noexcept
-            : node_(trie.root_) {}
+            : node_(trie.root_.get()) {}
         constexpr Set& operator=(const Set&) noexcept = default;
         ///@}
 
@@ -71,14 +72,54 @@ public:
         constexpr bool is_root() const noexcept { return parent() == nullptr; }
         constexpr size_t size() const noexcept { return node_->size_; }
         constexpr size_t min() const noexcept { return node_->min_; }
+        ///@}
+
+        /// @name Check Membership
+        ///@{
         constexpr bool contains(const D* def) const noexcept {
             if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) return false;
             for (auto i = *this; !i.empty(); ++i)
                 if (i == def) return true;
             return false;
         }
+
+        [[nodiscard]] bool has_intersection(Set other) const noexcept {
+            std::cout << "has_intersection" << std::endl;
+            dump();
+            other.dump();
+
+            if (this->empty() || other.empty()) goto no;
+            if (**this == *other) goto yes;
+
+            for (auto ai = this->begin(), bi = other.begin(); ai && bi;) {
+                if (*ai == *bi) goto yes;
+
+                if ((*ai)->tid() > (*bi)->tid())
+                    ++ai;
+                else
+                    ++bi;
+            }
+
+no:
+            std::cout << "no" << std::endl;
+            return false;
+
+yes:
+            std::cout << "yes" << std::endl;
+            return true;
+        }
         ///@}
 
+        void dump() const {
+            std::cout << '{';
+            for (auto sep = ""; auto i : *this) {
+                std::cout << sep << i->tid();
+                sep = ", ";
+            }
+            std::cout << '}' << std::endl;
+        }
+
+        ///@}
         /// @name Iterators
         ///@{
         constexpr Set begin() const noexcept { return node_; }
@@ -144,12 +185,12 @@ public:
     /// @name Set Operations
     /// @note All operations do **not** modify the input set(s); they create a **new** Set.
     ///@{
-    [[nodiscard]] Set create() { return root_; }
+    [[nodiscard]] Set create() { return root_.get(); }
 
     /// Create a Set wih a *single* @p def%ent: @f$\{def\}@f$.
     [[nodiscard]] Set create(D* def) {
         if (def->tid() == 0) set(def, counter_++);
-        return create(root_, def);
+        return create(root_.get(), def);
     }
 
     /// Create a PooledSet wih all defents in the given range.
@@ -195,11 +236,11 @@ public:
 
     void dot() { dot("trie.dot"); }
 
-    size_t max_depth() { return max_depth(root_, 0); }
+    size_t max_depth() { return max_depth(root_.get(), 0); }
 
     size_t max_depth(const Node* n, size_t depth) {
         size_t res = depth;
-        for (auto [_, child] : n->children_) res = std::max(res, max_depth(child, depth + 1));
+        for (const auto& [_, child] : n->children_) res = std::max(res, max_depth(child.get(), depth + 1));
         return res;
     }
 
@@ -229,20 +270,18 @@ private:
         assert(def->tid() != 0);
         auto [i, ins] = parent.node_->children_.emplace(def, nullptr);
         if (ins) i->second = make_node(parent.node_, def);
-        return i->second;
+        return i->second.get();
     }
 
-    Node* make_node(Node* parent, D* def) {
+    fe::Arena::Ptr<Node> make_node(Node* parent, D* def) {
         ++size_;
-        auto buff = arena_.allocate<Node>(1);
-        auto node = new (buff) Node(parent, def);
-        return node;
+        return arena_.mk<Node>(parent, def);
     }
 
     fe::Arena arena_;
     size_t size_ = 0;
-    Node* root_;
     u32 counter_ = 1;
+    fe::Arena::Ptr<Node> root_;
 };
 
 } // namespace mim

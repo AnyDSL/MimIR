@@ -66,10 +66,12 @@ public:
     constexpr const T& operator[](size_t i) const { return data_->elems[i]; }
     constexpr const T& front() const { return (*this)[0]; }
     constexpr const T* elems() const { return data_ ? data_->elems : nullptr; }
-    constexpr bool contains(const T& elem) const { return binary_find(begin(), end(), elem, GIDLt<T>()) != end(); }
+    [[nodiscard]] constexpr bool contains(const T& elem) const {
+        return binary_find(begin(), end(), elem, GIDLt<T>()) != end();
+    }
 
     /// Is @f$this \cup other \neq \emptyset@f$?
-    [[nodiscard]] bool has_intersection(PooledSet<T> other) {
+    [[nodiscard]] constexpr bool has_intersection(PooledSet<T> other) const noexcept {
         if (*this == other) return true;
         if (!*this || !other) return false;
 

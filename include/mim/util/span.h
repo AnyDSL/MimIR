@@ -49,13 +49,15 @@ public:
     ///@}
 
     /// @name subspan
-    /// Wrappers for `std::span::subspan` that return a `mim::Span`.
+    /// Wrappers for [`std::span::subspan`](https://en.cppreference.com/w/cpp/container/span/subspan) that return a
+    /// `mim::Span`. Example: If `span` points to `0, 1, 2, 3, 4, 5, 6, 7, 8, 9`, then
+    /// * `span<2, 5>()` and `span(2, 5)` will point to `2, 3, 4, 5, 6`.
+    /// * `span<2>()` and `span(2)` will point to `2, 3, 4, 5, 6, 7, 8, 9`.
     ///@{
     constexpr Span<T, std::dynamic_extent> subspan(size_t i, size_t n = std::dynamic_extent) const {
         return Base::subspan(i, n);
     }
 
-    /// E.g.: If `span` points to `0, 1, 2, 3, 4, 5, 6, 7, 8, 9`, then the result will point to `2, 3, 4, 5, 6`.
     template<size_t i, size_t n = std::dynamic_extent>
     constexpr Span<T, n != std::dynamic_extent ? n : (N != std::dynamic_extent ? N - i : std::dynamic_extent)>
     subspan() const {
