@@ -11,6 +11,9 @@ using namespace std::literals;
 
 namespace mim {
 
+template void Vars::dump() const;
+template void Muts::dump() const;
+
 /*
  * constructors
  */
@@ -318,9 +321,6 @@ Vars Def::free_vars() {
             todo = false;
             free_vars(todo, ++run);
         }
-        auto xx = vars_;
-        validate();
-        assert(xx == vars_);
     }
 
     return vars_;
@@ -375,6 +375,8 @@ void Def::invalidate() {
         for (auto mut : world().muts().range(users())) mut->invalidate();
         vars_ = world().vars().create();
         muts_ = world().muts().create();
+        assert(vars_.is_root());
+        assert(muts_.is_root());
     }
 }
 

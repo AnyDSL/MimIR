@@ -67,9 +67,9 @@ public:
 
         /// @name Getters
         ///@{
-        constexpr bool empty() const noexcept { return node_ == nullptr || node_->parent_ == nullptr; }
+        constexpr bool empty() const noexcept { return node_->def_ == nullptr; }
+        constexpr bool is_root() const noexcept { return empty(); }
         constexpr Set parent() const noexcept { return node_->parent_; }
-        constexpr bool is_root() const noexcept { return parent() == nullptr; }
         constexpr size_t size() const noexcept { return node_ ? node_->size_ : 0; }
         constexpr size_t min() const noexcept { return node_->min_; }
         ///@}
@@ -98,35 +98,24 @@ public:
         }
         ///@}
 
-#if 0
         void dump() const {
             std::cout << '{';
-            for (auto sep = ""; auto i : *this) {
-                std::cout << sep << i->tid();
+            auto sep = "";
+            for (auto i = *this; i; ++i) {
+                std::cout << sep << (*i)->tid();
                 sep = ", ";
             }
             std::cout << '}' << std::endl;
         }
-#endif
 
         /// @name Comparisons
         ///@{
         // clang-format off
-        constexpr bool operator==(Set other) const noexcept { return  (this->empty() && other.empty()) || this->node_ == other.node_; }
-        constexpr bool operator!=(Set other) const noexcept { return !(this->empty() && other.empty()) && this->node_ != other.node_; }
+        constexpr bool operator==(Set other) const noexcept { return this->node_ == other.node_; }
+        constexpr bool operator!=(Set other) const noexcept { return this->node_ != other.node_; }
         constexpr bool operator==(const D* other) const noexcept { return !this->empty() && this->node_->def_ == other; }
         constexpr bool operator!=(const D* other) const noexcept { return  this->empty() || this->node_->def_ != other; }
         // clang-format on
-        constexpr auto operator<=>(Set other) const noexcept {
-            if (this->empty() && other.empty()) return std::strong_ordering::equal;
-            if (this->empty()) return std::strong_ordering::less;
-            if (other.empty()) return std::strong_ordering::greater;
-            return (**this)->tid() <=> (*other)->tid();
-        }
-        constexpr auto operator<=>(const D* other) const noexcept {
-            if (this->empty()) return std::strong_ordering::less;
-            return (**this)->tid() <=> other->tid();
-        }
         ///@}
 
         /// @name Conversions
@@ -194,15 +183,15 @@ public:
         if (i.empty()) return create(root_.get(), def);
         if (*i == def) return i;
         if (def->tid() == 0) return create(i.node_, def);
-        if (i < def) return create_has_tid(i.node_, def);
+        if ((*i)->tid() < def->tid()) return create_has_tid(i.node_, def);
         return create_has_tid(insert(i.parent(), def), *i);
     }
 
     /// Yields @f$i \setminus def@f$.
     [[nodiscard]] Set erase(Set i, const D* def) {
-        if (def->tid() == 0) return i;
+        if (def->tid() == 0 || i.is_root()) return i;
         if (*i == def) return i.parent();
-        if (i < def) return i;
+        if ((*i)->tid() < def->tid()) return i;
         return create_has_tid(erase(i.parent(), def), *i);
     }
 
