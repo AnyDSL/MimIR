@@ -108,7 +108,7 @@ public:
             std::cout << '}' << std::endl;
         }
 
-        /// @name Comparisons
+        /// @name Iterators
         ///@{
         Set begin() const { return is_root() ? Set() : *this; }
         Set end() const { return {}; }
@@ -169,11 +169,14 @@ public:
     /// Create a Set wih a *single* @p def%ent: @f$\{def\}@f$.
     [[nodiscard]] Set create(D* def) { return create(root_.get(), def); }
 
-    /// Create a PooledSet wih all defents in the given range.
-    template<class I> [[nodiscard]] Set create(I begin, I end) {
-        Set i = root();
-        for (const auto& def : std::ranges::subrange(begin, end)) i = insert(def);
-        return i;
+    /// Create a Set wih all elements in @p vec.
+    template<class I> [[nodiscard]] Set create(Vector<D*> v) {
+        // Sort in ascneding tids but 0 goes last.
+        std::ranges::sort(v, [](auto i, auto j) { return i->tid() != 0 && (j->tid() == 0 || i->tid() < j->tid()); });
+
+        Set res = root();
+        for (auto i = v.begin(), e = std::unique(v.begin(), v.end()); i != e; ++i) res = insert(*i);
+        return res;
     }
 
     /// Yields @f$a \cup \{def\}@f$.
