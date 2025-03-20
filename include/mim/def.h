@@ -597,7 +597,7 @@ private:
     friend class World;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
-    template<class T> friend void Trie<T>::set(const T*, u32);
+    template<class D> friend D* Trie<D>::set_tid(D*) noexcept;
 };
 
 /// @name DefDef

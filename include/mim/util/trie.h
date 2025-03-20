@@ -41,16 +41,6 @@ public:
     };
 
     /// Points to a Set within the Trie.
-    /// There are two ways to iterate over a Set.
-    /// Outside users will most likely need method 1 while the implementation often reilies on method 2:
-    /// 1. This will **elide** the *empty root node* Trie::root():
-    ///    ```
-    ///    for (auto elem : set) do_sth(elem)
-    ///    ```
-    /// 2. This **will** visit the *empty root node* Trie::root():
-    ///    ```
-    ///    for (auto i = set; i; i = i.parent()) do_sth(*i)
-    ///    ```
     class Set {
     public:
         /// @name Iterator Properties
@@ -81,12 +71,14 @@ public:
         constexpr Set parent() const noexcept { return node_->parent_; }
         constexpr size_t size() const noexcept { return node_ ? node_->size_ : 0; }
         constexpr size_t min() const noexcept { return node_->min_; }
+        constexpr size_t max() const noexcept { return node_->def_->tid(); }
+        constexpr size_t within(D* def) const noexcept { return min() <= def->tid() && def->tid() <= max(); }
         ///@}
 
         /// @name Check Membership
         ///@{
-        bool contains(const D* def) const noexcept {
-            if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) return false;
+        bool contains(D* def) const noexcept {
+            if (empty() || !within(def)) return false;
             for (auto i = *this; i; i = i.parent())
                 if (i == def) return true;
 
@@ -96,6 +88,7 @@ public:
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
             for (auto ai = *this, bi = other; ai && bi;) {
                 if (*ai == *bi) return true;
+                if (ai.min() > other.max() || ai.max() < bi.min()) return false;
 
                 if ((*ai)->tid() > (*bi)->tid())
                     ai = ai.parent();
@@ -118,9 +111,37 @@ public:
         }
 
         /// @name Iterators
+        /// There are two ways to iterate over a Set.
+        /// Outside users will most likely need method 1 while the implementation often relies on method 2:
+        /// 1. This will **exclude** the *empty root node* Trie::root():
+        ///    ```
+        ///    for (auto elem : set) do_sth(elem)
+        ///    ```
+        ///    All iterator-related functionality (begin(), end(), operator++(), operator++(int)) works with this
+        ///    iteration scheme.
+        /// 2. This will **include** the *empty root node* Trie::root():
+        ///    ```
+        ///    for (auto i = set; i; i = i.parent()) do_sth(*i)
+        ///    ```
         ///@{
         Set begin() const { return is_root() ? Set() : *this; }
         Set end() const { return {}; }
+        ///@}
+
+        /// @name Increment
+        /// @note These operations only change the *view* of this Set at the Trie; the Trie itself is **not** modified.
+        ///@{
+        constexpr Set& operator++() noexcept {
+            node_ = node_->parent_;
+            if (is_root()) node_ = nullptr;
+            return *this;
+        }
+
+        constexpr Set operator++(int) noexcept {
+            auto res = *this;
+            this->operator++();
+            return res;
+        }
         ///@}
 
         /// @name Comparisons
@@ -138,22 +159,6 @@ public:
         constexpr explicit operator bool() const noexcept { return !empty(); } ///< Is not empty?
         constexpr reference operator*() const noexcept { return node_->def_; }
         constexpr pointer operator->() const noexcept { return node_->def_; }
-        ///@}
-
-        /// @name Increment
-        /// @note These operations only change the *view* of this Set at the Trie; the Trie itself is **not** modified.
-        ///@{
-        constexpr Set& operator++() noexcept {
-            node_ = node_->parent_;
-            if (is_root()) node_ = nullptr;
-            return *this;
-        }
-
-        constexpr Set operator++(int) noexcept {
-            auto res = *this;
-            this->operator++();
-            return res;
-        }
         ///@}
 
     private:
@@ -175,12 +180,12 @@ public:
     ///@{
     [[nodiscard]] Set create() { return root_.get(); }
 
-    /// Create a Set wih a *single* @p def%ent: @f$\{def\}@f$.
-    [[nodiscard]] Set create(D* def) { return create(root_.get(), def); }
+    /// Create a Set with a *single* @p def%ent: @f$\{def\}@f$.
+    [[nodiscard]] Set create(D* def) { return mount(root_.get(), def->tid() == 0 ? set_tid(def) : def); }
 
-    /// Create a Set wih all elements in @p vec.
+    /// Create a Set with all elements in @p vec.
     template<class I> [[nodiscard]] Set create(Vector<D*> v) {
-        // Sort in ascneding tids but 0 goes last.
+        // Sort in ascending tids but 0 goes last.
         std::ranges::sort(v, [](auto i, auto j) { return i->tid() != 0 && (j->tid() == 0 || i->tid() < j->tid()); });
 
         Set res = root();
@@ -190,19 +195,18 @@ public:
 
     /// Yields @f$a \cup \{def\}@f$.
     constexpr Set insert(Set i, D* def) noexcept {
-        if (i.empty()) return create(root_.get(), def);
+        if (def->tid() == 0) return mount(i.node_, set_tid(def));
+        if (!i) return mount(root_.get(), def);
         if (*i == def) return i;
-        if (def->tid() == 0) return create(i.node_, def);
-        if ((*i)->tid() < def->tid()) return create_has_tid(i.node_, def);
-        return create_has_tid(insert(i.parent(), def), *i);
+        if ((*i)->tid() < def->tid()) return mount(i.node_, def);
+        return mount(insert(i.parent(), def), *i);
     }
 
     /// Yields @f$i \setminus def@f$.
     [[nodiscard]] Set erase(Set i, const D* def) {
-        if (def->tid() == 0 || i.is_root()) return i;
+        if (!i || def->tid() == 0 || !i.within(def)) return i;
         if (*i == def) return i.parent();
-        if ((*i)->tid() < def->tid()) return i;
-        return create_has_tid(erase(i.parent(), def), *i);
+        return mount(erase(i.parent(), def), *i);
     }
 
     /// Yields @f$a \cup b@f$.
@@ -212,7 +216,7 @@ public:
 
         auto aa = (*a)->tid() < (*b)->tid() ? a : a.parent();
         auto bb = (*a)->tid() > (*b)->tid() ? b : b.parent();
-        return create(merge(aa, bb), (*a)->tid() < (*b)->tid() ? *b : *a);
+        return mount(merge(aa, bb), (*a)->tid() < (*b)->tid() ? *b : *a);
     }
 
     void dot() { dot("trie.dot"); }
@@ -243,15 +247,14 @@ public:
         // clang-format on
     }
 
-    static void set(const D* def, u32 tid) { def->tid_ = tid; }
-
-private:
-    Node* create(Set parent, D* def) {
-        if (def->tid() == 0) set(def, counter_++);
-        return create_has_tid(parent, def);
+    D* set_tid(D* def) noexcept {
+        assert(def->tid() == 0);
+        def->tid_ = counter_++;
+        return def;
     }
 
-    Node* create_has_tid(Set parent, D* def) {
+private:
+    Node* mount(Set parent, D* def) {
         assert(def->tid() != 0);
         auto [i, ins] = parent.node_->children_.emplace(def, nullptr);
         if (ins) i->second = make_node(parent.node_, def);
