@@ -40,8 +40,17 @@ public:
         friend class Trie;
     };
 
-    /// Also serves as iterator.
-    /// `set++` will remove the last defent from the set by moving the internal Node pointer one parent up.
+    /// Points to a Set within the Trie.
+    /// There are two ways to iterate over a Set.
+    /// Outside users will most likely need method 1 while the implementation often reilies on method 2:
+    /// 1. This will **elide** the *empty root node* Trie::root():
+    ///    ```
+    ///    for (auto elem : set) do_sth(elem)
+    ///    ```
+    /// 2. This **will** visit the *empty root node* Trie::root():
+    ///    ```
+    ///    for (auto i = set; i; i = i.parent()) do_sth(*i)
+    ///    ```
     class Set {
     public:
         /// @name Iterator Properties
