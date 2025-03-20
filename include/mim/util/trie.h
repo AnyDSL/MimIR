@@ -78,7 +78,7 @@ public:
         ///@{
         bool contains(const D* def) const noexcept {
             if (this->empty() || def->tid() < this->min() || def->tid() > (**this)->tid()) return false;
-            for (auto i = *this; i; ++i)
+            for (auto i = *this; i; i = i.parent())
                 if (i == def) return true;
 
             return false;
@@ -89,9 +89,9 @@ public:
                 if (*ai == *bi) return true;
 
                 if ((*ai)->tid() > (*bi)->tid())
-                    ++ai;
+                    ai = ai.parent();
                 else
-                    ++bi;
+                    bi = bi.parent();
             }
 
             return false;
@@ -101,12 +101,18 @@ public:
         void dump() const {
             std::cout << '{';
             auto sep = "";
-            for (auto i = *this; i; ++i) {
+            for (auto i = *this; i; i = i.parent()) {
                 std::cout << sep << (*i)->tid();
                 sep = ", ";
             }
             std::cout << '}' << std::endl;
         }
+
+        /// @name Comparisons
+        ///@{
+        Set begin() const { return is_root() ? Set() : *this; }
+        Set end() const { return {}; }
+        ///@}
 
         /// @name Comparisons
         ///@{
@@ -128,12 +134,17 @@ public:
         /// @name Increment
         /// @note These operations only change the *view* of this Set at the Trie; the Trie itself is **not** modified.
         ///@{
+        constexpr Set& operator++() noexcept {
+            node_ = node_->parent_;
+            if (is_root()) node_ = nullptr;
+            return *this;
+        }
+
         constexpr Set operator++(int) noexcept {
             auto res = *this;
-            node_    = node_->parent_;
+            this->operator++();
             return res;
         }
-        constexpr Set& operator++() noexcept { return node_ = node_->parent_, *this; }
         ///@}
 
     private:
@@ -142,21 +153,8 @@ public:
         friend class Trie;
     };
 
-    class Range {
-    public:
-        Range(Set begin, Set end)
-            : begin_(begin)
-            , end_(end) {}
-
-        Set begin() const { return begin_; }
-        Set end() const { return end_; }
-
-    private:
-        Set begin_, end_;
-    };
-
     static_assert(std::forward_iterator<Set>);
-    static_assert(std::ranges::range<Range>);
+    static_assert(std::ranges::range<Set>);
 
     Trie()
         : root_(make_node(nullptr, 0)) {}
@@ -214,8 +212,6 @@ public:
         for (const auto& [_, child] : n->children_) res = std::max(res, max_depth(child.get(), depth + 1));
         return res;
     }
-
-    constexpr Range range(Set set) const noexcept { return {set, root()}; }
 
     void dot(std::string s) {
         auto os = std::ofstream(s);

@@ -330,7 +330,7 @@ Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
     auto fvs = local_vars();
-    for (auto mut : world().muts().range(local_muts())) fvs = world().vars().merge(fvs, mut->free_vars());
+    for (auto mut : local_muts()) fvs = world().vars().merge(fvs, mut->free_vars());
 
     return fvs;
 }
@@ -348,7 +348,7 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
 
     for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
-    for (auto local_mut : world().muts().range(mut_local_muts())) {
+    for (auto local_mut : mut_local_muts()) {
         local_mut->muts_ = world().muts().insert(local_mut->muts_, this); // register "this" as user of local_mut
         fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, run));
     }
@@ -364,7 +364,7 @@ void Def::validate() {
     mark_  = 0;
 
     for (auto op : deps()) {
-        for (auto local_mut : world().muts().range(op->local_muts()))
+        for (auto local_mut : op->local_muts())
             if (!local_mut->valid_) local_mut->validate();
     }
 }
@@ -372,7 +372,7 @@ void Def::validate() {
 void Def::invalidate() {
     if (valid_) {
         valid_ = false;
-        for (auto mut : world().muts().range(users())) mut->invalidate();
+        for (auto mut : users()) mut->invalidate();
         vars_ = world().vars().create();
         muts_ = world().muts().create();
         assert(vars_.is_root());
