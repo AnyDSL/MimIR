@@ -1,5 +1,7 @@
 #include "mim/world.h"
 
+#include <string>
+
 #include "mim/check.h"
 #include "mim/def.h"
 #include "mim/driver.h"
@@ -62,6 +64,11 @@ World::World(Driver* driver)
     : World(driver, State()) {}
 
 World::~World() {
+#if 0
+    static int i = 0;
+    auto name    = "muts" + std::to_string(i++) + ".dot" + std::to_string(move_.muts.max_depth());
+    move_.muts.dot(name);
+#endif
     for (auto def : move_.defs) def->~Def();
 }
 
@@ -172,7 +179,7 @@ template<bool Normalize> Ref World::app(Ref callee, Ref arg) {
             arg = new_arg;
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
             if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
-                VarRewriter rw(lam->var(), arg);
+                auto rw = VarRewriter(lam->has_var(), arg);
                 if (rw.rewrite(lam->filter()) == lit_tt()) {
                     DLOG("partial evaluate: {} ({})", lam, arg);
                     return rw.rewrite(lam->body());
@@ -325,7 +332,7 @@ Ref World::extract(Ref d, Ref index) {
 
         if (auto sigma = type->isa<Sigma>()) {
             if (auto mut_sigma = sigma->isa_mut<Sigma>()) {
-                auto t = VarRewriter(mut_sigma->var(), d).rewrite(sigma->op(*i));
+                auto t = VarRewriter(mut_sigma->has_var(), d).rewrite(sigma->op(*i));
                 return unify<Extract>(2, t, d, index);
             }
 

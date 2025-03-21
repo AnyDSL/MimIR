@@ -30,14 +30,10 @@ private:
 
 class VarRewriter : public Rewriter {
 public:
-    VarRewriter(Ref var, Ref arg)
-        : Rewriter(var->world()) {
-        if (var) {
-            if (auto v = var->isa<Var>()) {
-                map(var, arg);
-                vars_ = world().vars().create(v);
-            }
-        }
+    VarRewriter(const Var* var, Ref arg)
+        : Rewriter(arg->world())
+        , vars_(var ? world().vars().create(var) : world().vars().create()) {
+        if (var) map(var, arg);
     }
 
     Ref rewrite_imm(Ref imm) override {
