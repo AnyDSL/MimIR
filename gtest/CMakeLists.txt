@@ -5,7 +5,6 @@ target_sources(mim-gtest
         lexer.cpp
         test.cpp
         restricted_dep_types.cpp
-        trie.cpp
         helpers.h
 )
 target_link_libraries(mim-gtest
