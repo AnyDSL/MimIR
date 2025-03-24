@@ -31,11 +31,163 @@ public:
         }
 
     private:
+        ///@name Splay Tree
+        ///@{
+        // clang-format off
+        D* splay_p() { return aux_.p && (aux_.p->aux_.l == this || aux_.p->aux_.r == this) ? aux_.p : nullptr; }
+        D* path_p()  { return aux_.p && (aux_.p->aux_.l != this && aux_.p->aux_.r != this) ? aux_.p : nullptr; }
+        // clang-format on
+        D* splay_l() { return aux_.l; }
+        D* splay_r() { return aux_.r; }
+        D*& child(size_t i) { return i == 0 ? aux_.l : aux_.r; }
+
+        /// [Splays](https://hackmd.io/@CharlieChuang/By-UlEPFS#Operation1) `this` to the root of its splay tree.
+        void splay() const {
+            while (auto p = splay_p()) {
+                if (auto pp = p->splay_parent()) {
+                    if (p->aux_.l == this && pp->aux_.l == p) { // zig-zig
+                        pp->ror();
+                        p->ror();
+                    } else if (p->aux_.r == this && pp->aux_.r == p) { // zag-zag
+                        pp->rol();
+                        p->rol();
+                    } else if (p->aux_.l == this && pp->aux_.r == p) { // zig-zag
+                        p->ror();
+                        pp->rol();
+                    } else { // zag-zig
+                        assert(p->aux_.r == this && pp->aux_.l == p);
+                        p->rol();
+                        pp->ror();
+                    }
+                } else if (p->aux_.l == this) { // zig
+                    p->ror();
+                } else { // zag
+                    assert(p->aux_.r == this);
+                    p->rol();
+                }
+            }
+        }
+
+        /// Helpfer for Splay-Tree: rotate left/right:
+        /// ```
+        ///  | Left                  | Right                  |
+        ///  |-----------------------|------------------------|
+        ///  |   p              p    |       p          p     |
+        ///  |   |              |    |       |          |     |
+        ///  |   x              c    |       x          c     |
+        ///  |  / \     ->     / \   |      / \   ->   / \    |
+        ///  | a   c          x   d  |     c   a      d   x   |
+        ///  |    / \        / \     |    / \            / \  |
+        ///  |   b   d      a   b    |   d   b          b   a |
+        ///  ```
+        template<size_t l> void rot() const {
+            constexpr size_t r = (l + 1) % 2;
+
+            auto x = this;
+            auto p = x->aux_.p;
+            auto c = x->child(r);
+            // auto b = c ? c->child(l) : nullptr;
+            auto b = c->child(l);
+
+            if (b) b->aux_.p = x;
+
+            if (p) {
+                if (p->child(l) == x) {
+                    p->child(l) = c;
+                } else if (p->child(r) == x) {
+                    p->child(r) = c;
+                } else {
+                    /* only path parent */;
+                }
+            }
+
+            x->aux_.p   = c;
+            x->child(r) = b;
+
+            // if (c) {
+            c->aux_.p   = p;
+            c->child(l) = x;
+            //}
+
+            // x->aggregate();
+            // c->aggregate();
+        }
+
+        void rol() const { return rot<0>(); }
+        void ror() const { return rot<1>(); }
+        ///@}
+
+        /// @name Link-Cut-Tree
+        /// This is a simplified version of a Link-Cut-Tree without the Cut operation.
+        ///@{
+
+        /// Registers the edge `this -> child` in the *aux* tree.
+        /// @warning It's the responsibility of the user to link it in the *rep* tree accordingly.
+        void link(D* child) const {
+            this->expose();
+            child->expose();
+            if (!child->aux_.r) {
+                this->aux_.p  = child;
+                child->aux_.r = this;
+            }
+            // this->aggregate();
+        }
+
+        /// Make a preferred path from `this` to root while putting `this` at the root of the *aux* tree.
+        /// @returns the last valid LinkCutTree::path_parent.
+        D* expose() const {
+            D* prev = nullptr;
+            for (auto curr = this; curr; prev = curr, curr = curr->aux_.p) {
+                curr->splay();
+                assert(!prev || prev->aux_.p == curr);
+                curr->aux_.l = prev;
+                curr->aggregate();
+            }
+            splay();
+            return prev;
+        }
+
+        /// Find root of `this` in *rep* tree.
+        D* find_root() const {
+            expose();
+            auto curr = this;
+            while (auto r = curr->aux_.r) curr = r;
+            curr->splay();
+            return curr;
+        }
+
+        /// Least Common Ancestor of `this` and @p other in the *rep* tree.
+        /// @returns `nullptr`, if @p a and @p b are in different trees.
+        D* lca(D* other) const {
+            // if (this == other) return other;
+            // if (this->find_root() != other->find_root()) return nullptr;
+            this->expose();
+            return other->expose();
+        }
+
+        /// Is `this` a descendant of `other` in the *rep* tree?
+        /// Also `true`, if `this == other`.
+        bool is_descendant_of(D* other) const {
+            if (this == other) return true;
+            this->expose();
+            other->splay();
+            auto curr = this;
+            while (auto p = curr->splay_parent()) curr = p;
+            return curr == other;
+        }
+        ///@}
+
         D* def_;
         Node* parent_;
         size_t size_;
         size_t min_;
         GIDMap<D*, fe::Arena::Ptr<Node>> children_;
+
+        struct {
+            mutable const D* p = nullptr; ///< parent or path-parent
+            mutable const D* l = nullptr; ///< left/deeper/down/leaf-direction
+            mutable const D* r = nullptr; ///< right/shallower/up/root-direction
+        } aux_;
 
         friend class Trie;
     };
