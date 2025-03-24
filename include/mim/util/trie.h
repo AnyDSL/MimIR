@@ -20,31 +20,40 @@ public:
             : def_(def)
             , parent_(parent)
             , size_(parent ? parent->size_ + 1 : 0)
-            , min_(parent ? (parent->def_ ? parent->min_ : def->tid()) : size_t(-1)) {}
+            , min_(parent ? (parent->def_ ? parent->min_ : def->tid()) : size_t(-1)) {
+            if (parent)
+                parent->link(this);
+            else {
+                aux_.min = 0;
+                aux_.max = u32(-1);
+            }
+        }
 
-        void dot(std::ostream& os) {
+        void dot(std::ostream& os) const {
             for (const auto& [def, child] : children_) {
-                println(os, "n{}_{} -> n{}_{}", def_ ? def_->tid() : u32(0xffff), this, child->def_->tid(),
-                        child.get());
+                println(os, "n{} -> n{}", child->def_->tid(), def_ ? def_->tid() : u32(0xffff));
                 child->dot(os);
             }
         }
 
     private:
+        constexpr bool empty() const noexcept { return def_ == nullptr; }
+        constexpr bool is_root() const noexcept { return empty(); }
+
         ///@name Splay Tree
         ///@{
         // clang-format off
-        D* splay_p() { return aux_.p && (aux_.p->aux_.l == this || aux_.p->aux_.r == this) ? aux_.p : nullptr; }
-        D* path_p()  { return aux_.p && (aux_.p->aux_.l != this && aux_.p->aux_.r != this) ? aux_.p : nullptr; }
+        constexpr const Node* splay_p() const noexcept { return aux_.p && (aux_.p->aux_.l == this || aux_.p->aux_.r == this) ? aux_.p : nullptr; }
+        constexpr const Node* path_p()  const noexcept { return aux_.p && (aux_.p->aux_.l != this && aux_.p->aux_.r != this) ? aux_.p : nullptr; }
         // clang-format on
-        D* splay_l() { return aux_.l; }
-        D* splay_r() { return aux_.r; }
-        D*& child(size_t i) { return i == 0 ? aux_.l : aux_.r; }
+        constexpr const Node* splay_l() const noexcept { return aux_.l; }
+        constexpr const Node* splay_r() const noexcept { return aux_.r; }
+        constexpr const Node*& child(size_t i) const noexcept { return i == 0 ? aux_.l : aux_.r; }
 
         /// [Splays](https://hackmd.io/@CharlieChuang/By-UlEPFS#Operation1) `this` to the root of its splay tree.
-        void splay() const {
+        constexpr void splay() const noexcept {
             while (auto p = splay_p()) {
-                if (auto pp = p->splay_parent()) {
+                if (auto pp = p->splay_p()) {
                     if (p->aux_.l == this && pp->aux_.l == p) { // zig-zig
                         pp->ror();
                         p->ror();
@@ -80,7 +89,7 @@ public:
         ///  |    / \        / \     |    / \            / \  |
         ///  |   b   d      a   b    |   d   b          b   a |
         ///  ```
-        template<size_t l> void rot() const {
+        template<size_t l> constexpr void rot() const noexcept {
             constexpr size_t r = (l + 1) % 2;
 
             auto x = this;
@@ -113,8 +122,22 @@ public:
             // c->aggregate();
         }
 
-        void rol() const { return rot<0>(); }
-        void ror() const { return rot<1>(); }
+        constexpr void rol() const noexcept { return rot<0>(); }
+        constexpr void ror() const noexcept { return rot<1>(); }
+
+        constexpr void aggregate() const noexcept {
+            if (!is_root()) {
+                aux_.min = aux_.max = def_->tid();
+                if (auto l = aux_.l) {
+                    aux_.min = std::min(aux_.min, l->aux_.min);
+                    aux_.max = std::max(aux_.max, l->aux_.max);
+                }
+                if (auto r = aux_.r) {
+                    aux_.min = std::min(aux_.min, r->aux_.min);
+                    aux_.max = std::max(aux_.max, r->aux_.max);
+                }
+            }
+        }
         ///@}
 
         /// @name Link-Cut-Tree
@@ -123,7 +146,7 @@ public:
 
         /// Registers the edge `this -> child` in the *aux* tree.
         /// @warning It's the responsibility of the user to link it in the *rep* tree accordingly.
-        void link(D* child) const {
+        constexpr void link(Node* child) const noexcept {
             this->expose();
             child->expose();
             if (!child->aux_.r) {
@@ -134,9 +157,9 @@ public:
         }
 
         /// Make a preferred path from `this` to root while putting `this` at the root of the *aux* tree.
-        /// @returns the last valid LinkCutTree::path_parent.
-        D* expose() const {
-            D* prev = nullptr;
+        /// @returns the last valid path_p%arent().
+        constexpr const Node* expose() const noexcept {
+            const Node* prev = nullptr;
             for (auto curr = this; curr; prev = curr, curr = curr->aux_.p) {
                 curr->splay();
                 assert(!prev || prev->aux_.p == curr);
@@ -148,7 +171,7 @@ public:
         }
 
         /// Find root of `this` in *rep* tree.
-        D* find_root() const {
+        constexpr const Node* find_root() const noexcept {
             expose();
             auto curr = this;
             while (auto r = curr->aux_.r) curr = r;
@@ -158,7 +181,7 @@ public:
 
         /// Least Common Ancestor of `this` and @p other in the *rep* tree.
         /// @returns `nullptr`, if @p a and @p b are in different trees.
-        D* lca(D* other) const {
+        constexpr const Node* lca(Node* other) const noexcept {
             // if (this == other) return other;
             // if (this->find_root() != other->find_root()) return nullptr;
             this->expose();
@@ -167,12 +190,12 @@ public:
 
         /// Is `this` a descendant of `other` in the *rep* tree?
         /// Also `true`, if `this == other`.
-        bool is_descendant_of(D* other) const {
+        constexpr bool is_descendant_of(Node* other) const noexcept {
             if (this == other) return true;
             this->expose();
             other->splay();
             auto curr = this;
-            while (auto p = curr->splay_parent()) curr = p;
+            while (auto p = curr->splay_p()) curr = p;
             return curr == other;
         }
         ///@}
@@ -184,10 +207,12 @@ public:
         GIDMap<D*, fe::Arena::Ptr<Node>> children_;
 
         struct {
-            mutable const D* p = nullptr; ///< parent or path-parent
-            mutable const D* l = nullptr; ///< left/deeper/down/leaf-direction
-            mutable const D* r = nullptr; ///< right/shallower/up/root-direction
-        } aux_;
+            const Node* p = nullptr; ///< parent or path-parent
+            const Node* l = nullptr; ///< left/deeper/down/leaf-direction
+            const Node* r = nullptr; ///< right/shallower/up/root-direction
+            u32 min       = u32(-1);
+            u32 max       = 0;
+        } mutable aux_;
 
         friend class Trie;
     };
@@ -231,13 +256,23 @@ public:
         ///@{
         bool contains(D* def) const noexcept {
             if (empty() || !within(def)) return false;
-            for (auto i = *this; i; i = i.parent())
-                if (i == def) return true;
+
+            auto tid        = def->tid();
+            const Node* cur = this->node_;
+            cur->expose();
+            if (tid < node_->aux_.min || tid > node_->aux_.max) return false; // Quick rejection
+
+            while (cur) {
+                if (cur->def_ == def) return true;
+                cur = (!cur->def_ || tid > cur->def_->tid()) ? cur->aux_.l : cur->aux_.r;
+            }
 
             return false;
         }
 
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
+            if (!this->node_->lca(other.node_)->is_root()) return true;
+
             for (auto ai = *this, bi = other; ai && bi;) {
                 if (*ai == *bi) return true;
                 if (ai.min() > other.max() || ai.max() < bi.min()) return false;
@@ -365,13 +400,15 @@ public:
     [[nodiscard]] Set merge(Set a, Set b) {
         if (a == b || !b) return a;
         if (!a) return b;
+        if (a.node_->is_descendant_of(b.node_)) return a;
+        if (b.node_->is_descendant_of(a.node_)) return b;
 
         auto aa = (*a)->tid() < (*b)->tid() ? a : a.parent();
         auto bb = (*a)->tid() > (*b)->tid() ? b : b.parent();
         return mount(merge(aa, bb), (*a)->tid() < (*b)->tid() ? *b : *a);
     }
 
-    void dot() { dot("trie.dot"); }
+    void dot() const { dot("trie.dot"); }
 
     size_t max_depth() { return max_depth(root_.get(), 0); }
 
@@ -381,7 +418,7 @@ public:
         return res;
     }
 
-    void dot(std::string s) {
+    void dot(std::string s) const {
         auto os = std::ofstream(s);
         println(os, "digraph {{");
         println(os, "ordering=out;");

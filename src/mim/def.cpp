@@ -11,8 +11,10 @@ using namespace std::literals;
 
 namespace mim {
 
-template void Vars::dump() const;
 template void Muts::dump() const;
+template void Vars::dump() const;
+template void Trie<Def>::dot() const;
+template void Trie<const Var>::dot() const;
 
 /*
  * constructors
