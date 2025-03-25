@@ -55,9 +55,6 @@ private:
 
         ///@name Aux Tree (Splay Tree)
         ///@{
-        constexpr const Node* splay_l() const noexcept { return aux_.down; }
-        constexpr const Node* splay_r() const noexcept { return aux_.up; }
-        constexpr const Node*& child(size_t i) const noexcept { return i == 0 ? aux_.down : aux_.up; }
 
         /// [Splays](https://hackmd.io/@CharlieChuang/By-UlEPFS#Operation1) `this` to the root of its splay tree.
         constexpr void splay() const noexcept {
@@ -98,21 +95,23 @@ private:
         ///  |    / \        / \     |    / \            / \  |
         ///  |   b   d      a   b    |   d   b          b   a |
         ///  ```
-        template<size_t l> constexpr void rot() const noexcept {
+        template<size_t l> constexpr void rotate() const noexcept {
             constexpr size_t r = (l + 1) % 2;
+            constexpr auto child
+                = [](const Node* n, size_t i) -> const Node*& { return i == 0 ? n->aux_.down : n->aux_.up; };
 
             auto x = this;
             auto p = x->aux_.parent;
-            auto c = x->child(r);
-            auto b = c->child(l);
+            auto c = child(x, r);
+            auto b = child(c, l);
 
             if (b) b->aux_.parent = x;
 
             if (p) {
-                if (p->child(l) == x) {
-                    p->child(l) = c;
-                } else if (p->child(r) == x) {
-                    p->child(r) = c;
+                if (child(p, l) == x) {
+                    child(p, l) = c;
+                } else if (child(p, r) == x) {
+                    child(p, r) = c;
                 } else {
                     /* only path parent */;
                 }
@@ -120,12 +119,12 @@ private:
 
             x->aux_.parent = c;
             c->aux_.parent = p;
-            x->child(r)    = b;
-            c->child(l)    = x;
+            child(x, r)    = b;
+            child(c, l)    = x;
         }
 
-        constexpr void rol() const noexcept { return rot<0>(); }
-        constexpr void ror() const noexcept { return rot<1>(); }
+        constexpr void rol() const noexcept { return rotate<0>(); }
+        constexpr void ror() const noexcept { return rotate<1>(); }
 
         constexpr void aggregate() const noexcept {
             if (!is_root()) {
@@ -283,16 +282,6 @@ public:
         }
         ///@}
 
-        void dump() const {
-            std::cout << '{';
-            auto sep = "";
-            for (auto i = *this; i; i = i.parent()) {
-                std::cout << sep << (*i)->tid();
-                sep = ", ";
-            }
-            std::cout << '}' << std::endl;
-        }
-
         /// @name Iterators
         /// There are two ways to iterate over a Set.
         /// Outside users will most likely need method 1 while the implementation often relies on method 2:
@@ -344,6 +333,16 @@ public:
         constexpr pointer operator->() const noexcept { return node_->def_; }
         ///@}
 
+        void dump() const {
+            std::cout << '{';
+            auto sep = "";
+            for (auto i = *this; i; i = i.parent()) {
+                std::cout << sep << (*i)->tid();
+                sep = ", ";
+            }
+            std::cout << '}' << std::endl;
+        }
+
     private:
         Node* node_ = nullptr;
 
@@ -377,7 +376,7 @@ public:
     }
 
     /// Yields @f$a \cup \{def\}@f$.
-    constexpr Set insert(Set i, D* def) noexcept {
+    [[nodiscard]] constexpr Set insert(Set i, D* def) noexcept {
         if (def->tid() == 0) return mount(i.node_, set_tid(def));
         if (!i) return mount(root_.get(), def);
         if (*i == def) return i;
@@ -404,15 +403,10 @@ public:
         return mount(merge(aa, bb), (*a)->tid() < (*b)->tid() ? *b : *a);
     }
 
+    /// @name dot
+    /// GraphViz output.
+    ///@{
     void dot() const { dot("trie.dot"); }
-
-    size_t max_depth() { return max_depth(root_.get(), 0); }
-
-    size_t max_depth(const Node* n, size_t depth) {
-        size_t res = depth;
-        for (const auto& [_, child] : n->children_) res = std::max(res, max_depth(child.get(), depth + 1));
-        return res;
-    }
 
     void dot(std::string s) const {
         auto os = std::ofstream(s);
@@ -422,6 +416,9 @@ public:
         root_->dot(os);
         println(os, "}}");
     }
+    ///@}
+
+    constexpr size_t max_depth() const noexcept { return max_depth(root_.get(), 0); }
 
     friend void swap(Trie& t1, Trie& t2) noexcept {
         using std::swap;
@@ -439,6 +436,9 @@ public:
     }
 
 private:
+    fe::Arena::Ptr<Node> make_node() { return arena_.mk<Node>(); }
+    fe::Arena::Ptr<Node> make_node(Node* parent, D* def) { return arena_.mk<Node>(parent, def); }
+
     Node* mount(Set parent, D* def) {
         assert(def->tid() != 0);
         auto [i, ins] = parent.node_->children_.emplace(def, nullptr);
@@ -446,8 +446,11 @@ private:
         return i->second.get();
     }
 
-    fe::Arena::Ptr<Node> make_node() { return arena_.mk<Node>(); }
-    fe::Arena::Ptr<Node> make_node(Node* parent, D* def) { return arena_.mk<Node>(parent, def); }
+    size_t max_depth(const Node* n, size_t depth) const noexcept {
+        size_t res = depth;
+        for (const auto& [_, child] : n->children_) res = std::max(res, max_depth(child.get(), depth + 1));
+        return res;
+    }
 
     fe::Arena arena_;
     u32 counter_ = 1;
