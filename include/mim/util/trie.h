@@ -1,7 +1,5 @@
 #pragma once
 
-#include <compare>
-
 #include <fstream>
 
 #include <fe/arena.h>
@@ -13,20 +11,24 @@
 namespace mim {
 
 template<class D> class Trie {
-public:
+private:
     class Node {
     public:
+        Node()
+            : def_(nullptr)
+            , parent_(nullptr)
+            , size_(0)
+            , min_(size_t(-1)) {
+            aux_.min = 0;
+            aux_.max = u32(-1);
+        }
+
         Node(Node* parent, D* def)
             : def_(def)
             , parent_(parent)
-            , size_(parent ? parent->size_ + 1 : 0)
-            , min_(parent ? (parent->def_ ? parent->min_ : def->tid()) : size_t(-1)) {
-            if (parent)
-                parent->link(this);
-            else {
-                aux_.min = 0;
-                aux_.max = u32(-1);
-            }
+            , size_(parent->size_ + 1)
+            , min_(parent->def_ ? parent->min_ : def->tid()) {
+            parent->link_to_child(this);
         }
 
         void dot(std::ostream& os) const {
@@ -37,41 +39,48 @@ public:
         }
 
     private:
+        ///@name Getters
+        ///@{
         constexpr bool empty() const noexcept { return def_ == nullptr; }
         constexpr bool is_root() const noexcept { return empty(); }
+        ///@}
 
-        ///@name Splay Tree
+        ///@name parent
         ///@{
         // clang-format off
-        constexpr const Node* splay_p() const noexcept { return aux_.p && (aux_.p->aux_.l == this || aux_.p->aux_.r == this) ? aux_.p : nullptr; }
-        constexpr const Node* path_p()  const noexcept { return aux_.p && (aux_.p->aux_.l != this && aux_.p->aux_.r != this) ? aux_.p : nullptr; }
+        constexpr const Node*  aux_parent() const noexcept { return aux_.parent && (aux_.parent->aux_.down == this || aux_.parent->aux_.up == this) ? aux_.parent : nullptr; }
+        constexpr const Node* path_parent() const noexcept { return aux_.parent && (aux_.parent->aux_.down != this && aux_.parent->aux_.up != this) ? aux_.parent : nullptr; }
         // clang-format on
-        constexpr const Node* splay_l() const noexcept { return aux_.l; }
-        constexpr const Node* splay_r() const noexcept { return aux_.r; }
-        constexpr const Node*& child(size_t i) const noexcept { return i == 0 ? aux_.l : aux_.r; }
+        ///@}
+
+        ///@name Aux Tree (Splay Tree)
+        ///@{
+        constexpr const Node* splay_l() const noexcept { return aux_.down; }
+        constexpr const Node* splay_r() const noexcept { return aux_.up; }
+        constexpr const Node*& child(size_t i) const noexcept { return i == 0 ? aux_.down : aux_.up; }
 
         /// [Splays](https://hackmd.io/@CharlieChuang/By-UlEPFS#Operation1) `this` to the root of its splay tree.
         constexpr void splay() const noexcept {
-            while (auto p = splay_p()) {
-                if (auto pp = p->splay_p()) {
-                    if (p->aux_.l == this && pp->aux_.l == p) { // zig-zig
+            while (auto p = aux_parent()) {
+                if (auto pp = p->aux_parent()) {
+                    if (p->aux_.down == this && pp->aux_.down == p) { // zig-zig
                         pp->ror();
                         p->ror();
-                    } else if (p->aux_.r == this && pp->aux_.r == p) { // zag-zag
+                    } else if (p->aux_.up == this && pp->aux_.up == p) { // zag-zag
                         pp->rol();
                         p->rol();
-                    } else if (p->aux_.l == this && pp->aux_.r == p) { // zig-zag
+                    } else if (p->aux_.down == this && pp->aux_.up == p) { // zig-zag
                         p->ror();
                         pp->rol();
                     } else { // zag-zig
-                        assert(p->aux_.r == this && pp->aux_.l == p);
+                        assert(p->aux_.up == this && pp->aux_.down == p);
                         p->rol();
                         pp->ror();
                     }
-                } else if (p->aux_.l == this) { // zig
+                } else if (p->aux_.down == this) { // zig
                     p->ror();
                 } else { // zag
-                    assert(p->aux_.r == this);
+                    assert(p->aux_.up == this);
                     p->rol();
                 }
             }
@@ -93,12 +102,11 @@ public:
             constexpr size_t r = (l + 1) % 2;
 
             auto x = this;
-            auto p = x->aux_.p;
+            auto p = x->aux_.parent;
             auto c = x->child(r);
-            // auto b = c ? c->child(l) : nullptr;
             auto b = c->child(l);
 
-            if (b) b->aux_.p = x;
+            if (b) b->aux_.parent = x;
 
             if (p) {
                 if (p->child(l) == x) {
@@ -110,16 +118,10 @@ public:
                 }
             }
 
-            x->aux_.p   = c;
-            x->child(r) = b;
-
-            // if (c) {
-            c->aux_.p   = p;
-            c->child(l) = x;
-            //}
-
-            // x->aggregate();
-            // c->aggregate();
+            x->aux_.parent = c;
+            c->aux_.parent = p;
+            x->child(r)    = b;
+            c->child(l)    = x;
         }
 
         constexpr void rol() const noexcept { return rot<0>(); }
@@ -128,11 +130,11 @@ public:
         constexpr void aggregate() const noexcept {
             if (!is_root()) {
                 aux_.min = aux_.max = def_->tid();
-                if (auto l = aux_.l) {
+                if (auto l = aux_.down) {
                     aux_.min = std::min(aux_.min, l->aux_.min);
                     aux_.max = std::max(aux_.max, l->aux_.max);
                 }
-                if (auto r = aux_.r) {
+                if (auto r = aux_.up) {
                     aux_.min = std::min(aux_.min, r->aux_.min);
                     aux_.max = std::max(aux_.max, r->aux_.max);
                 }
@@ -145,25 +147,23 @@ public:
         ///@{
 
         /// Registers the edge `this -> child` in the *aux* tree.
-        /// @warning It's the responsibility of the user to link it in the *rep* tree accordingly.
-        constexpr void link(Node* child) const noexcept {
+        constexpr void link_to_child(Node* child) const noexcept {
             this->expose();
             child->expose();
-            if (!child->aux_.r) {
-                this->aux_.p  = child;
-                child->aux_.r = this;
+            if (!child->aux_.up) {
+                this->aux_.parent = child;
+                child->aux_.up    = this;
             }
-            // this->aggregate();
         }
 
         /// Make a preferred path from `this` to root while putting `this` at the root of the *aux* tree.
-        /// @returns the last valid path_p%arent().
+        /// @returns the last valid path_parent().
         constexpr const Node* expose() const noexcept {
             const Node* prev = nullptr;
-            for (auto curr = this; curr; prev = curr, curr = curr->aux_.p) {
+            for (auto curr = this; curr; prev = curr, curr = curr->aux_.parent) {
                 curr->splay();
-                assert(!prev || prev->aux_.p == curr);
-                curr->aux_.l = prev;
+                assert(!prev || prev->aux_.parent == curr);
+                curr->aux_.down = prev;
                 curr->aggregate();
             }
             splay();
@@ -174,19 +174,14 @@ public:
         constexpr const Node* find_root() const noexcept {
             expose();
             auto curr = this;
-            while (auto r = curr->aux_.r) curr = r;
+            while (auto r = curr->aux_.up) curr = r;
             curr->splay();
             return curr;
         }
 
         /// Least Common Ancestor of `this` and @p other in the *rep* tree.
         /// @returns `nullptr`, if @p a and @p b are in different trees.
-        constexpr const Node* lca(Node* other) const noexcept {
-            // if (this == other) return other;
-            // if (this->find_root() != other->find_root()) return nullptr;
-            this->expose();
-            return other->expose();
-        }
+        constexpr const Node* lca(Node* other) const noexcept { return this->expose(), other->expose(); }
 
         /// Is `this` a descendant of `other` in the *rep* tree?
         /// Also `true`, if `this == other`.
@@ -195,7 +190,7 @@ public:
             this->expose();
             other->splay();
             auto curr = this;
-            while (auto p = curr->splay_p()) curr = p;
+            while (auto p = curr->aux_parent()) curr = p;
             return curr == other;
         }
         ///@}
@@ -207,16 +202,17 @@ public:
         GIDMap<D*, fe::Arena::Ptr<Node>> children_;
 
         struct {
-            const Node* p = nullptr; ///< parent or path-parent
-            const Node* l = nullptr; ///< left/deeper/down/leaf-direction
-            const Node* r = nullptr; ///< right/shallower/up/root-direction
-            u32 min       = u32(-1);
-            u32 max       = 0;
+            const Node* parent = nullptr; ///< parent or path-parent
+            const Node* down   = nullptr; ///< left/deeper/down/leaf-direction
+            const Node* up     = nullptr; ///< right/shallower/up/root-direction
+            u32 min            = u32(-1);
+            u32 max            = 0;
         } mutable aux_;
 
         friend class Trie;
     };
 
+public:
     /// Points to a Set within the Trie.
     class Set {
     public:
@@ -264,7 +260,7 @@ public:
 
             while (cur) {
                 if (cur->def_ == def) return true;
-                cur = (!cur->def_ || tid > cur->def_->tid()) ? cur->aux_.l : cur->aux_.r;
+                cur = (!cur->def_ || tid > cur->def_->tid()) ? cur->aux_.down : cur->aux_.up;
             }
 
             return false;
@@ -358,7 +354,7 @@ public:
     static_assert(std::ranges::range<Set>);
 
     Trie()
-        : root_(make_node(nullptr, 0)) {}
+        : root_(make_node()) {}
 
     constexpr const Set root() const noexcept { return root_.get(); }
 
@@ -450,6 +446,7 @@ private:
         return i->second.get();
     }
 
+    fe::Arena::Ptr<Node> make_node() { return arena_.mk<Node>(); }
     fe::Arena::Ptr<Node> make_node(Node* parent, D* def) { return arena_.mk<Node>(parent, def); }
 
     fe::Arena arena_;
