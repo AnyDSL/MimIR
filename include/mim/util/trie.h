@@ -14,28 +14,43 @@ template<class D> class Trie {
 private:
     class Node {
     public:
-        Node()
+        Node(u32 id)
             : def_(nullptr)
             , parent_(nullptr)
             , size_(0)
-            , min_(size_t(-1)) {
-            aux_.min = 0;
-            aux_.max = u32(-1);
+            , min_(size_t(-1))
+            , id_(id) {
+            aux_.min = u32(-1);
+            aux_.max = 0;
         }
 
-        Node(Node* parent, D* def)
+        Node(Node* parent, D* def, u32 id)
             : def_(def)
             , parent_(parent)
             , size_(parent->size_ + 1)
-            , min_(parent->def_ ? parent->min_ : def->tid()) {
+            , min_(parent->def_ ? parent->min_ : def->tid())
+            , id_(id) {
             parent->link_to_child(this);
         }
 
         void dot(std::ostream& os) const {
-            for (const auto& [def, child] : children_) {
-                println(os, "n{} -> n{}", child->def_->tid(), def_ ? def_->tid() : u32(0xffff));
-                child->dot(os);
-            }
+            using namespace std::string_literals;
+
+            auto node2str = [](const Node* n) {
+                return "n_" + (n->def_ ? std::to_string(n->def_->tid()) : "root"s) + "_"s + std::to_string(n->id_);
+            };
+
+            println(os, "{} [tooltip=\"min: {}, max: {}\"];", node2str(this), aux_.min, aux_.max);
+
+            for (const auto& [def, child] : children_) println(os, "{} -> {}", node2str(this), node2str(child.get()));
+
+            for (const auto& [_, child] : children_) child->dot(os);
+
+            // clang-format off
+            if (auto pa = path_parent()) println(os, "{} -> {} [constraint=false,color=\"#0000ff\",style=dashed];", node2str(this), node2str(pa));
+            if (auto up = aux_.up      ) println(os, "{} -> {} [constraint=false,color=\"#ff0000\"];", node2str(this), node2str(up));
+            if (auto dn = aux_.down    ) println(os, "{} -> {} [constraint=false,color=\"#00ff00\"];", node2str(this), node2str(dn));
+            // clang-format on
         }
 
     private:
@@ -121,23 +136,35 @@ private:
             c->aux_.parent = p;
             child(x, r)    = b;
             child(c, l)    = x;
+
+            x->update();
+            c->update();
         }
 
         constexpr void rol() const noexcept { return rotate<0>(); }
         constexpr void ror() const noexcept { return rotate<1>(); }
 
-        constexpr void aggregate() const noexcept {
-            if (!is_root()) {
+        constexpr void update() const noexcept {
+            if (is_root()) {
+                aux_.min = u32(-1);
+                aux_.max = 0;
+            } else {
                 aux_.min = aux_.max = def_->tid();
-                if (auto l = aux_.down) {
-                    aux_.min = std::min(aux_.min, l->aux_.min);
-                    aux_.max = std::max(aux_.max, l->aux_.max);
-                }
-                if (auto r = aux_.up) {
-                    aux_.min = std::min(aux_.min, r->aux_.min);
-                    aux_.max = std::max(aux_.max, r->aux_.max);
-                }
             }
+
+            if (auto d = aux_.down) {
+                aux_.min = std::min(aux_.min, d->aux_.min);
+                aux_.max = std::max(aux_.max, d->aux_.max);
+            }
+            if (auto u = aux_.up) {
+                aux_.min = std::min(aux_.min, u->aux_.min);
+                aux_.max = std::max(aux_.max, u->aux_.max);
+            }
+        }
+
+        [[nodiscard]] constexpr std::pair<u32, u32> aggregate() const noexcept {
+            expose();
+            return {aux_.min, aux_.max};
         }
         ///@}
 
@@ -152,6 +179,7 @@ private:
             if (!child->aux_.up) {
                 this->aux_.parent = child;
                 child->aux_.up    = this;
+                child->update();
             }
         }
 
@@ -163,7 +191,7 @@ private:
                 curr->splay();
                 assert(!prev || prev->aux_.parent == curr);
                 curr->aux_.down = prev;
-                curr->aggregate();
+                curr->update();
             }
             splay();
             return prev;
@@ -199,6 +227,7 @@ private:
         size_t size_;
         size_t min_;
         GIDMap<D*, fe::Arena::Ptr<Node>> children_;
+        u32 id_;
 
         struct {
             const Node* parent = nullptr; ///< parent or path-parent
@@ -254,8 +283,7 @@ public:
 
             auto tid        = def->tid();
             const Node* cur = this->node_;
-            cur->expose();
-            if (tid < node_->aux_.min || tid > node_->aux_.max) return false; // Quick rejection
+            if (auto [min, max] = cur->aggregate(); tid < min || tid > max) return false;
 
             while (cur) {
                 if (cur->def_ == def) return true;
@@ -423,21 +451,22 @@ public:
     friend void swap(Trie& t1, Trie& t2) noexcept {
         using std::swap;
         // clang-format off
-        swap(t1.arena_,   t2.arena_);
-        swap(t1.root_,    t2.root_);
-        swap(t1.counter_, t2.counter_);
+        swap(t1.arena_,       t2.arena_);
+        swap(t1.root_,        t2.root_);
+        swap(t1.tid_counter_, t2.tid_counter_);
+        swap(t1.id_counter_,  t2.id_counter_);
         // clang-format on
     }
 
     D* set_tid(D* def) noexcept {
         assert(def->tid() == 0);
-        def->tid_ = counter_++;
+        def->tid_ = tid_counter_++;
         return def;
     }
 
 private:
-    fe::Arena::Ptr<Node> make_node() { return arena_.mk<Node>(); }
-    fe::Arena::Ptr<Node> make_node(Node* parent, D* def) { return arena_.mk<Node>(parent, def); }
+    fe::Arena::Ptr<Node> make_node() { return arena_.mk<Node>(id_counter_++); }
+    fe::Arena::Ptr<Node> make_node(Node* parent, D* def) { return arena_.mk<Node>(parent, def, id_counter_++); }
 
     Node* mount(Set parent, D* def) {
         assert(def->tid() != 0);
@@ -453,7 +482,8 @@ private:
     }
 
     fe::Arena arena_;
-    u32 counter_ = 1;
+    u32 tid_counter_ = 1;
+    u32 id_counter_  = 0;
     fe::Arena::Ptr<Node> root_;
 };
 
