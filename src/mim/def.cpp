@@ -311,6 +311,15 @@ Muts Def::mut_local_muts() {
     return muts;
 }
 
+Vars Def::free_vars() const {
+    if (auto mut = isa_mut()) return mut->free_vars();
+
+    auto fvs = local_vars();
+    for (auto mut : local_muts()) fvs = world().vars().merge(fvs, mut->free_vars());
+
+    return fvs;
+}
+
 Vars Def::local_vars() const { return mut_ ? world().vars().create() : vars_; }
 
 Vars Def::free_vars() {
@@ -327,15 +336,6 @@ Vars Def::free_vars() {
     }
 
     return vars_;
-}
-
-Vars Def::free_vars() const {
-    if (auto mut = isa_mut()) return mut->free_vars();
-
-    auto fvs = local_vars();
-    for (auto mut : local_muts()) fvs = world().vars().merge(fvs, mut->free_vars());
-
-    return fvs;
 }
 
 Vars Def::free_vars(bool& todo, uint32_t run) {
