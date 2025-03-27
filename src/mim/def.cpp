@@ -11,6 +11,11 @@ using namespace std::literals;
 
 namespace mim {
 
+template void Muts::dump() const;
+template void Vars::dump() const;
+template void Trie<Def>::dot() const;
+template void Trie<const Var>::dot() const;
+
 /*
  * constructors
  */
@@ -35,8 +40,9 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
         dep_ |= op->dep_;
     }
 
-    gid_ = world().next_gid();
-
+    gid_  = world().next_gid();
+    vars_ = world().vars().create();
+    muts_ = world().muts().create();
     if (auto var = isa<Var>()) {
         vars_ = world().vars().create(var);
     } else if (!has_const_dep()) {
@@ -68,6 +74,8 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
+    vars_ = world().vars().create();
+    muts_ = world().muts().create();
     gid_  = world().next_gid();
     hash_ = mim::hash(gid());
     var_  = nullptr;
@@ -296,7 +304,7 @@ Muts Def::local_muts() const {
 }
 
 Muts Def::mut_local_muts() {
-    Muts muts;
+    auto muts = world().muts().create();
     for (auto op : deps()) muts = world().muts().merge(muts, op->local_muts());
     return muts;
 }
@@ -304,13 +312,16 @@ Muts Def::mut_local_muts() {
 Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
-    auto vars = local_vars();
-    for (auto mut : local_muts()) vars = world().vars().merge(vars, mut->free_vars());
-    return vars;
+    auto fvs = local_vars();
+    for (auto mut : local_muts()) fvs = world().vars().merge(fvs, mut->free_vars());
+
+    return fvs;
 }
 
+Vars Def::local_vars() const { return mut_ ? world().vars().create() : vars_; }
+
 Vars Def::free_vars() {
-    if (!is_set()) return {};
+    if (!is_set()) return world().vars().create();
 
     if (mark_ == 0) {
         // fixed-point iteration to recompute free vars:
@@ -355,8 +366,10 @@ void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
         for (auto mut : users()) mut->invalidate();
-        vars_.clear();
-        muts_.clear();
+        vars_ = world().vars().create();
+        muts_ = world().muts().create();
+        assert(vars_.is_root());
+        assert(muts_.is_root());
     }
 }
 
@@ -384,7 +397,7 @@ Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 World& Def::world() const noexcept {
     if (isa<Univ>()) return *world_;
     if (auto type = isa<Type>()) return type->level()->world();
-    return type()->world(); // TODO unroll
+    return type().def()->world(); // TODO unroll
 }
 
 Ref Def::unfold_type() const {
