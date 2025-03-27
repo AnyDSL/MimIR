@@ -11,8 +11,10 @@
 namespace automaton {
 class NFANode {
 public:
-    NFANode() = default;
+    NFANode(int id)
+        : id_(id) {}
 
+    constexpr int id() const noexcept { return id_; }
     void add_transition(const NFANode* to, std::uint16_t c);
     std::vector<const NFANode*> get_transitions(std::uint16_t c) const;
 
@@ -45,6 +47,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const NFANode& node);
 
 private:
+    int id_;
     absl::flat_hash_map<std::uint16_t, std::vector<const NFANode*>> transitions_;
     bool accepting_ = false;
     bool erroring_  = false;

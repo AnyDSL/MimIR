@@ -21,7 +21,7 @@ public:
     AutomatonBase& operator=(const AutomatonBase&) = delete;
 
     NodeType* add_state() {
-        nodes_.emplace_back();
+        nodes_.emplace_back(id_++);
         return &nodes_.back();
     }
 
@@ -61,6 +61,7 @@ public:
 private:
     std::list<NodeType> nodes_;
     const NodeType* start_ = nullptr;
+    int id_                = 0;
 };
 
 template<class NodeType, class PrintCharF>

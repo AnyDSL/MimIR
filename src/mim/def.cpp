@@ -31,7 +31,6 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
                     : node == Node::Proxy ? Dep::Proxy
                     : node == Node::Var   ? Dep::Var
                                           : Dep::None))
-    , valid_(false)
     , num_ops_(ops.size())
     , type_(type) {
     if (type) dep_ |= type->dep_;
@@ -73,7 +72,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , mut_(true)
     , external_(false)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
-    , valid_(false)
     , num_ops_(num_ops)
     , type_(type) {
     vars_ = world().vars().create();
@@ -325,25 +323,27 @@ Vars Def::local_vars() const { return mut_ ? world().vars().create() : vars_; }
 Vars Def::free_vars() {
     if (!is_set()) return world().vars().create();
 
-    if (!valid_) {
-        // fixed-point interation to recompute free vars
-        uint32_t run = 1;
-        for (bool todo = true; todo;) {
+    if (mark_ == 0) {
+        // fixed-point iteration to recompute free vars:
+        // (run - 1) identifies the previous iteration; so make sure to offset run by 2 for the first iteration
+        world().next_run();
+        for (bool todo = true, cyclic = false; todo;) {
             todo = false;
-            free_vars(todo, ++run);
+            free_vars(todo, cyclic, world().next_run());
+            if (!cyclic) break; // triggers either immediately or never
         }
-        validate();
     }
 
     return vars_;
 }
 
-Vars Def::free_vars(bool& todo, uint32_t run) {
+Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
     // Recursively recompute free vars. If
-    // * valid_ == true: no recomputation is necessary
+    // * mark_ == 0: invalid - need to recompute
+    // * mark_ == run - 1: Previous iteration - need to recompute
     // * mark_ == run: We are running in cycles within the *current* iteration of our fixed-point loop
-    if (valid_ || mark_ == run) return vars_;
-
+    // * all other values for mark_: valid!
+    if (mark_ != 0 && mark_ != run - 1) return cyclic |= mark_ == run, vars_;
     mark_ = run;
 
     auto fvs0 = vars_;
@@ -353,7 +353,7 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
 
     for (auto local_mut : mut_local_muts()) {
         local_mut->muts_ = world().muts().insert(local_mut->muts_, this); // register "this" as user of local_mut
-        fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, run));
+        fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, cyclic, run));
     }
 
     if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
@@ -362,19 +362,9 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     return vars_ = fvs;
 }
 
-void Def::validate() {
-    valid_ = true;
-    mark_  = 0;
-
-    for (auto op : deps()) {
-        for (auto local_mut : op->local_muts())
-            if (!local_mut->valid_) local_mut->validate();
-    }
-}
-
 void Def::invalidate() {
-    if (valid_) {
-        valid_ = false;
+    if (mark_ != 0) {
+        mark_ = 0;
         for (auto mut : users()) mut->invalidate();
         vars_ = world().vars().create();
         muts_ = world().muts().create();
@@ -404,7 +394,7 @@ Sym Def::sym(const char* s) const { return world().sym(s); }
 Sym Def::sym(std::string_view s) const { return world().sym(s); }
 Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 
-World& Def::world() const {
+World& Def::world() const noexcept {
     if (isa<Univ>()) return *world_;
     if (auto type = isa<Type>()) return type->level()->world();
     return type().def()->world(); // TODO unroll

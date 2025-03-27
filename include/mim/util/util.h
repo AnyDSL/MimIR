@@ -164,15 +164,15 @@ private:
 };
 
 template<class T> struct GIDHash {
-    size_t operator()(T p) const { return hash(p->gid()); }
+    constexpr size_t operator()(T p) const noexcept { return hash(p->gid()); }
 };
 
 template<class T> struct GIDEq {
-    bool operator()(T a, T b) const { return a->gid() == b->gid(); }
+    constexpr bool operator()(T a, T b) const noexcept { return a->gid() == b->gid(); }
 };
 
 template<class T> struct GIDLt {
-    bool operator()(T a, T b) const { return a->gid() < b->gid(); }
+    constexpr bool operator()(T a, T b) const noexcept { return a->gid() < b->gid(); }
 };
 
 // clang-format off
