@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include <absl/container/flat_hash_map.h>
+#include <absl/container/btree_map.h>
 
 #include "automaton/automaton.h"
 
@@ -10,8 +10,14 @@ namespace automaton {
 
 class DFANode {
 public:
-    DFANode() = default;
+    struct Lt {
+        constexpr bool operator()(const DFANode* n, const DFANode* m) const noexcept { return n->id() < m->id(); }
+    };
 
+    DFANode(int id)
+        : id_(id) {}
+
+    constexpr int id() const noexcept { return id_; }
     void add_transition(const DFANode* to, std::uint16_t c);
     const DFANode* get_transition(std::uint16_t c) const;
 
@@ -42,6 +48,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const DFANode& node);
 
 private:
+    int id_;
     absl::flat_hash_map<std::uint16_t, const DFANode*> transitions_;
     bool accepting_ = false;
     bool erroring_  = false;
@@ -58,6 +65,6 @@ public:
     enum SpecialTransitons : std::uint16_t {};
 };
 
-template<class To> using DFAMap = absl::flat_hash_map<const DFANode*, To>;
+template<class To> using DFAMap = absl::btree_map<const DFANode*, To, DFANode::Lt>;
 
 } // namespace automaton
