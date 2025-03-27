@@ -361,6 +361,16 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
     return vars_ = fvs;
 }
 
+void Def::validate() {
+    valid_ = true;
+    mark_  = 0;
+
+    for (auto op : deps()) {
+        for (auto local_mut : op->local_muts())
+            if (!local_mut->valid_) local_mut->validate();
+    }
+}
+
 void Def::invalidate() {
     if (valid_) {
         valid_ = false;

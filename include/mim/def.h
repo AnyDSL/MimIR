@@ -556,6 +556,7 @@ private:
     virtual Ref rebuild_(World& w, Ref type, Defs ops) const = 0;
 
     Vars free_vars(bool&, uint32_t run);
+    void validate();
     void invalidate();
     Def* unset(size_t i);
     const Def** ops_ptr() const {
