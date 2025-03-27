@@ -138,20 +138,20 @@ template<> struct fe::is_bit_enum<mim::Dep> : std::true_type {};
 namespace mim {
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
-#define MIM_PROJ(NAME, CONST)                                                                                 \
-    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                 \
-    nat_t num_t##NAME##s() CONST { return ((const Def*)NAME())->num_tprojs(); }                               \
-    Ref NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); }                             \
-    Ref NAME(nat_t i) CONST { return ((const Def*)NAME())->proj(i); }                                         \
-    Ref t##NAME(nat_t i) CONST { return ((const Def*)NAME())->tproj(i); }                                     \
-    template<nat_t A = std::dynamic_extent, class F> auto NAME##s(F f) CONST {                                \
-        return ((const Def*)NAME())->projs<A, F>(f);                                                          \
-    }                                                                                                         \
-    template<class F> auto t##NAME##s(F f) CONST { return ((const Def*)NAME())->tprojs<F>(f); }               \
-    template<nat_t A = std::dynamic_extent> auto NAME##s() CONST { return ((const Def*)NAME())->projs<A>(); } \
-    auto t##NAME##s() CONST { return ((const Def*)NAME())->tprojs(); }                                        \
-    template<class F> auto NAME##s(nat_t a, F f) CONST { return ((const Def*)NAME())->projs<F>(a, f); }       \
-    auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
+#define MIM_PROJ(NAME, CONST)                                                                                          \
+    nat_t num_##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_projs(); }                                 \
+    nat_t num_t##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_tprojs(); }                               \
+    Ref NAME(nat_t a, nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(a, i); }                             \
+    Ref NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(i); }                                         \
+    Ref t##NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->tproj(i); }                                     \
+    template<nat_t A = std::dynamic_extent, class F> auto NAME##s(F f) CONST noexcept {                                \
+        return ((const Def*)NAME())->projs<A, F>(f);                                                                   \
+    }                                                                                                                  \
+    template<class F> auto t##NAME##s(F f) CONST noexcept { return ((const Def*)NAME())->tprojs<F>(f); }               \
+    template<nat_t A = std::dynamic_extent> auto NAME##s() CONST noexcept { return ((const Def*)NAME())->projs<A>(); } \
+    auto t##NAME##s() CONST noexcept { return ((const Def*)NAME())->tprojs(); }                                        \
+    template<class F> auto NAME##s(nat_t a, F f) CONST noexcept { return ((const Def*)NAME())->projs<F>(a, f); }       \
+    auto NAME##s(nat_t a) CONST noexcept { return ((const Def*)NAME())->projs(a); }
 
 /// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
 template<class P, class D = Def> class Setters { // D is only needed to make the resolution `D::template set` lazy
@@ -226,11 +226,11 @@ protected:
 public:
     /// @name Getters
     ///@{
-    World& world() const;
-    flags_t flags() const { return flags_; }
-    u32 gid() const { return gid_; }
-    size_t hash() const { return hash_; }
-    node_t node() const { return node_; }
+    World& world() const noexcept;
+    constexpr flags_t flags() const noexcept { return flags_; }
+    constexpr u32 gid() const noexcept { return gid_; }
+    constexpr size_t hash() const noexcept { return hash_; }
+    constexpr node_t node() const noexcept { return node_; }
     std::string_view node_name() const;
     ///@}
 
@@ -238,7 +238,7 @@ public:
     ///@{
 
     /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
-    Ref type() const { return type_; }
+    Ref type() const noexcept { return type_; }
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     Ref unfold_type() const;
     /// Yields `true` if `this:T` and `T:(Type 0)`.
@@ -258,9 +258,11 @@ public:
 
     /// @name ops
     ///@{
-    template<size_t N = std::dynamic_extent> auto ops() const { return View<const Def*, N>(ops_ptr(), num_ops_); }
-    Ref op(size_t i) const { return ops()[i]; }
-    size_t num_ops() const { return num_ops_; }
+    template<size_t N = std::dynamic_extent> constexpr auto ops() const noexcept {
+        return View<const Def*, N>(ops_ptr(), num_ops_);
+    }
+    Ref op(size_t i) const noexcept { return ops()[i]; }
+    constexpr size_t num_ops() const noexcept { return num_ops_; }
     ///@}
 
     /// @name Setting Ops (Mutables Only)
@@ -550,8 +552,7 @@ private:
     virtual Def* stub_(World&, Ref) { fe::unreachable(); }
     virtual Ref rebuild_(World& w, Ref type, Defs ops) const = 0;
 
-    Vars free_vars(bool&, uint32_t run);
-    void validate();
+    Vars free_vars(bool&, bool&, uint32_t run);
     void invalidate();
     Def* unset(size_t i);
     const Def** ops_ptr() const {
@@ -575,8 +576,7 @@ private:
     uint8_t node_;
     bool mut_      : 1;
     bool external_ : 1;
-    unsigned dep_  : 5;
-    bool valid_    : 1;
+    unsigned dep_  : 6;
     uint32_t mark_ = 0;
 #ifndef NDEBUG
     size_t curr_op_ = 0;

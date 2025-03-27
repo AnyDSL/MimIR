@@ -87,6 +87,7 @@ public:
     /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.pod.curr_gid; }
     u32 next_gid() { return ++state_.pod.curr_gid; }
+    u32 next_run() { return ++data_.curr_run; }
 
     /// Retrieve compile Flags.
     Flags& flags();
@@ -684,6 +685,7 @@ private:
         const Lit* lit_nat_max;
         const Lit* lit_0_1;
         std::array<const Lit*, 2> lit_bool;
+        u32 curr_run = 0;
     } data_;
 
     friend void swap(World& w1, World& w2) noexcept {
