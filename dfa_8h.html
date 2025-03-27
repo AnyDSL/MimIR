@@ -125,12 +125,12 @@ $(function(){initNavTree('dfa_8h.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;cstdint&gt;</code><br />
-<code>#include &lt;absl/container/flat_hash_map.h&gt;</code><br />
+<code>#include &lt;absl/container/btree_map.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="automaton_8h_source.html">automaton/automaton.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dfa.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="dfa_8h__incl.svg" width="100%" height="503"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="dfa_8h__incl.svg" width="100%" height="514"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -144,6 +144,8 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classautomaton_1_1DFANode.html">automaton::DFANode</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structautomaton_1_1DFANode_1_1Lt.html">automaton::DFANode::Lt</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classautomaton_1_1DFA.html">automaton::DFA</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -154,9 +156,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:af757d6912087c59481f0292bd2260535" id="r_af757d6912087c59481f0292bd2260535"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
-<tr class="memitem:af757d6912087c59481f0292bd2260535"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceautomaton.html#af757d6912087c59481f0292bd2260535">automaton::DFAMap</a> = absl::flat_hash_map&lt;const <a class="el" href="classautomaton_1_1DFANode.html">DFANode</a>*, To&gt;</td></tr>
-<tr class="separator:af757d6912087c59481f0292bd2260535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada83a1afb11a83442f8fff527c4df2b9" id="r_ada83a1afb11a83442f8fff527c4df2b9"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
+<tr class="memitem:ada83a1afb11a83442f8fff527c4df2b9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceautomaton.html#ada83a1afb11a83442f8fff527c4df2b9">automaton::DFAMap</a> = absl::btree_map&lt;const <a class="el" href="classautomaton_1_1DFANode.html">DFANode</a>*, To, <a class="el" href="structautomaton_1_1DFANode_1_1Lt.html">DFANode::Lt</a>&gt;</td></tr>
+<tr class="separator:ada83a1afb11a83442f8fff527c4df2b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

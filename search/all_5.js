@@ -26,7 +26,7 @@ var searchData=
   ['fixed_20point_20pass_23',['Fixed-Point Pass',['../passes.html#autotoc_md58',1,'']]],
   ['fixed_5fpoint_24',['fixed_point',['../classmim_1_1Pass.html#aaa4d94d4f8d7fe1b6f7e854ba2251f59',1,'mim::Pass::fixed_point()'],['../classmim_1_1PassMan.html#af877dfdffb3aba71cee64635965146d5',1,'mim::PassMan::fixed_point()'],['../classmim_1_1FPPass.html#a81399219639d659e6886d2af363aeadd',1,'mim::FPPass::fixed_point()']]],
   ['flags_25',['Flags',['../namespacemim.html#structmim_1_1Flags',1,'mim']]],
-  ['flags_26',['flags',['../classmim_1_1Def.html#ad3752dae0a6f3c35a51f6ac2d2f92b7e',1,'mim::Def::flags()'],['../classmim_1_1Driver.html#ab9bfcad7e7aa1cbbd7a8678dd5864e3c',1,'mim::Driver::flags()'],['../classmim_1_1Log.html#a82ecbd5ec62978304a8f3eda60981d9b',1,'mim::Log::flags()'],['../classmim_1_1World.html#a84dc41b987937f59141de186c5a2975e',1,'mim::World::flags()']]],
+  ['flags_26',['flags',['../classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f',1,'mim::Def::flags()'],['../classmim_1_1Driver.html#ab9bfcad7e7aa1cbbd7a8678dd5864e3c',1,'mim::Driver::flags()'],['../classmim_1_1Log.html#a82ecbd5ec62978304a8f3eda60981d9b',1,'mim::Log::flags()'],['../classmim_1_1World.html#a84dc41b987937f59141de186c5a2975e',1,'mim::World::flags()']]],
   ['flags_2eh_27',['flags.h',['../flags_8h.html',1,'']]],
   ['flags2annex_28',['flags2annex',['../classmim_1_1World.html#a0999a089d0dfb334251dbbde31fc2ae6',1,'mim::World']]],
   ['flags2base_29',['flags2base',['../structmim_1_1Annex.html#a7e4c5026ba9018b623c5aef0be91be8a',1,'mim::Annex']]],

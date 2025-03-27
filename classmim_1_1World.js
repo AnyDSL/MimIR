@@ -144,6 +144,7 @@ var classmim_1_1World =
     [ "muts", "classmim_1_1World.html#a52b5c22ff4c01fdfa5b1c18412f38a6f", null ],
     [ "name", "classmim_1_1World.html#a64e913f4ed33daa7e3a6192cd714e4e7", null ],
     [ "next_gid", "classmim_1_1World.html#a89d20b63f0497a0be16a946ef05134ca", null ],
+    [ "next_run", "classmim_1_1World.html#a134d0723f41a4dc94a40e4c6ccaed459", null ],
     [ "operator=", "classmim_1_1World.html#a21bfc6baec6d1df0d7e74330d5eab4cc", null ],
     [ "pack", "classmim_1_1World.html#a4be9b28c8190a6c13e10223b1ad788f1", null ],
     [ "pack", "classmim_1_1World.html#ab7864e4ae7ca563d1eb4ecae54cb7bed", null ],

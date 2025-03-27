@@ -55,6 +55,7 @@ var hierarchy =
       [ "mim::ast::Lexer", "classmim_1_1ast_1_1Lexer.html", null ]
     ] ],
     [ "mim::Log", "classmim_1_1Log.html", null ],
+    [ "automaton::DFANode::Lt", "structautomaton_1_1DFANode_1_1Lt.html", null ],
     [ "mim::Axiom::Match< T >", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Match", null ],
     [ "mim::Match< Id, D >", "classmim_1_1Match.html", null ],
     [ "mim::Error::Msg", "structmim_1_1Error_1_1Msg.html", null ],
@@ -423,6 +424,7 @@ var hierarchy =
     [ "bool", "namespace_3globalScope_4.html#classbool", null ],
     [ "DefMap< mim::std::string >", "namespace_3globalScope_4.html#classDefMap_3_01mim_1_1std_1_1string_01_4", null ],
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
+    [ "int", "namespace_3globalScope_4.html#classint", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],
     [ "list< DFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01DFANode_01_4", null ],
     [ "list< NFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01NFANode_01_4", null ]

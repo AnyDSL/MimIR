@@ -6,7 +6,7 @@ var namespaceautomaton =
     [ "NFA", "classautomaton_1_1NFA.html", "classautomaton_1_1NFA" ],
     [ "NFANode", "classautomaton_1_1NFANode.html", "classautomaton_1_1NFANode" ],
     [ "RangeCompare", "structautomaton_1_1RangeCompare.html", "structautomaton_1_1RangeCompare" ],
-    [ "DFAMap", "namespaceautomaton.html#af757d6912087c59481f0292bd2260535", null ],
+    [ "DFAMap", "namespaceautomaton.html#ada83a1afb11a83442f8fff527c4df2b9", null ],
     [ "Range", "namespaceautomaton.html#aa7f4b5c4276e92cf0d3d5a53ea55d921", null ],
     [ "epsilonClosure", "namespaceautomaton.html#a44729a4a914f38a140035c5bfa122b56", null ],
     [ "epsilonClosure", "namespaceautomaton.html#aef07ecf43eaae4c4c5c5f371e56d7f79", null ],

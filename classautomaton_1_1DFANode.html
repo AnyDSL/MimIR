@@ -118,6 +118,7 @@ $(function(){initNavTree('classautomaton_1_1DFANode.html',''); initResizable(tru
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classautomaton_1_1DFANode-members.html">List of all members</a>  </div>
@@ -127,10 +128,17 @@ $(function(){initNavTree('classautomaton_1_1DFANode.html',''); initResizable(tru
 
 <p><code>#include &lt;<a class="el" href="dfa_8h_source.html">automaton/dfa.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structautomaton_1_1DFANode_1_1Lt.html">Lt</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3794719e3ec64fc03d2d8ac54df1ce8c" id="r_a3794719e3ec64fc03d2d8ac54df1ce8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3794719e3ec64fc03d2d8ac54df1ce8c">DFANode</a> ()=default</td></tr>
-<tr class="separator:a3794719e3ec64fc03d2d8ac54df1ce8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92167a1ac6cae89eba1fabe128bdfb9b" id="r_a92167a1ac6cae89eba1fabe128bdfb9b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92167a1ac6cae89eba1fabe128bdfb9b">DFANode</a> (<a class="el" href="namespace_3globalScope_4.html#classint">int</a> <a class="el" href="#ad5d7a0ee16216a5d4a8babd1b44d69c6">id</a>)</td></tr>
+<tr class="separator:a92167a1ac6cae89eba1fabe128bdfb9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5d7a0ee16216a5d4a8babd1b44d69c6" id="r_ad5d7a0ee16216a5d4a8babd1b44d69c6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classint">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5d7a0ee16216a5d4a8babd1b44d69c6">id</a> () const noexcept</td></tr>
+<tr class="separator:ad5d7a0ee16216a5d4a8babd1b44d69c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad30517772d222d6c24407f5c5ccb5294" id="r_ad30517772d222d6c24407f5c5ccb5294"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad30517772d222d6c24407f5c5ccb5294">add_transition</a> (const <a class="el" href="classautomaton_1_1DFANode.html">DFANode</a> *to, std::uint16_t c)</td></tr>
 <tr class="separator:ad30517772d222d6c24407f5c5ccb5294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac39d84714ae15c34eada796af0e8fe4e" id="r_ac39d84714ae15c34eada796af0e8fe4e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classautomaton_1_1DFANode.html">DFANode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac39d84714ae15c34eada796af0e8fe4e">get_transition</a> (std::uint16_t c) const</td></tr>
@@ -159,8 +167,8 @@ Friends</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00011">11</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a3794719e3ec64fc03d2d8ac54df1ce8c" name="a3794719e3ec64fc03d2d8ac54df1ce8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3794719e3ec64fc03d2d8ac54df1ce8c">&#9670;&#160;</a></span>DFANode()</h2>
+<a id="a92167a1ac6cae89eba1fabe128bdfb9b" name="a92167a1ac6cae89eba1fabe128bdfb9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92167a1ac6cae89eba1fabe128bdfb9b">&#9670;&#160;</a></span>DFANode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,16 +179,18 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">automaton::DFANode::DFANode </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classint">int</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00017">17</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -233,7 +243,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00025">25</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00031">31</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -266,7 +276,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00019">19</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00025">25</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -286,6 +296,33 @@ template&lt;class F &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="dfa_8cpp_source.html#l00011">11</a> of file <a class="el" href="dfa_8cpp_source.html">dfa.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ad5d7a0ee16216a5d4a8babd1b44d69c6" name="ad5d7a0ee16216a5d4a8babd1b44d69c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5d7a0ee16216a5d4a8babd1b44d69c6">&#9670;&#160;</a></span>id()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classint">int</a> automaton::DFANode::id </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00020">20</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -312,7 +349,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00030">30</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00036">36</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -339,7 +376,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00036">36</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00042">42</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -366,7 +403,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00031">31</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00037">37</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -393,7 +430,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00037">37</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00043">43</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>

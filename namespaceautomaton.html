@@ -142,9 +142,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:af757d6912087c59481f0292bd2260535" id="r_af757d6912087c59481f0292bd2260535"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
-<tr class="memitem:af757d6912087c59481f0292bd2260535"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af757d6912087c59481f0292bd2260535">DFAMap</a> = absl::flat_hash_map&lt;const <a class="el" href="classautomaton_1_1DFANode.html">DFANode</a>*, To&gt;</td></tr>
-<tr class="separator:af757d6912087c59481f0292bd2260535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada83a1afb11a83442f8fff527c4df2b9" id="r_ada83a1afb11a83442f8fff527c4df2b9"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
+<tr class="memitem:ada83a1afb11a83442f8fff527c4df2b9"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ada83a1afb11a83442f8fff527c4df2b9">DFAMap</a> = absl::btree_map&lt;const <a class="el" href="classautomaton_1_1DFANode.html">DFANode</a>*, To, <a class="el" href="structautomaton_1_1DFANode_1_1Lt.html">DFANode::Lt</a>&gt;</td></tr>
+<tr class="separator:ada83a1afb11a83442f8fff527c4df2b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7f4b5c4276e92cf0d3d5a53ea55d921" id="r_aa7f4b5c4276e92cf0d3d5a53ea55d921"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7f4b5c4276e92cf0d3d5a53ea55d921">Range</a> = std::pair&lt;std::uint64_t, std::uint64_t&gt;</td></tr>
 <tr class="separator:aa7f4b5c4276e92cf0d3d5a53ea55d921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -175,8 +175,8 @@ Functions</h2></td></tr>
 <tr class="separator:a44729a4a914f38a140035c5bfa122b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="af757d6912087c59481f0292bd2260535" name="af757d6912087c59481f0292bd2260535"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af757d6912087c59481f0292bd2260535">&#9670;&#160;</a></span>DFAMap</h2>
+<a id="ada83a1afb11a83442f8fff527c4df2b9" name="ada83a1afb11a83442f8fff527c4df2b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada83a1afb11a83442f8fff527c4df2b9">&#9670;&#160;</a></span>DFAMap</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -184,12 +184,12 @@ Functions</h2></td></tr>
 template&lt;class To &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="#af757d6912087c59481f0292bd2260535">automaton::DFAMap</a> = absl::flat_hash_map&lt;const <a class="el" href="classautomaton_1_1DFANode.html">DFANode</a>*, To&gt;</td>
+          <td class="memname">using <a class="el" href="#ada83a1afb11a83442f8fff527c4df2b9">automaton::DFAMap</a> = absl::btree_map&lt;const <a class="el" href="classautomaton_1_1DFANode.html">DFANode</a>*, To, <a class="el" href="structautomaton_1_1DFANode_1_1Lt.html">DFANode::Lt</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00061">61</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00068">68</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -248,7 +248,7 @@ template&lt;class To &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="nfa2dfa_8cpp_source.html#l00011">11</a> of file <a class="el" href="nfa2dfa_8cpp_source.html">nfa2dfa.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="nfa_8h_source.html#l00062">automaton::NFA::EPSILON</a>.</p>
+<p class="reference">References <a class="el" href="nfa_8h_source.html#l00065">automaton::NFA::EPSILON</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nfa2dfa_8cpp_source.html#l00028">epsilonClosure()</a>, and <a class="el" href="nfa2dfa_8cpp_source.html#l00033">nfa2dfa()</a>.</p>
 
@@ -333,7 +333,7 @@ template&lt;class Vec , class LogF &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="range__helper_8h_source.html#l00016">16</a> of file <a class="el" href="range__helper_8h_source.html">range_helper.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="range__helper_8h_source.html#l00052">merge_ranges()</a>, <a class="el" href="range__helper_8h_source.html#l00026">merge_ranges()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00121">mim::plug::regex::merge_ranges()</a>, and <a class="el" href="automaton_8h_source.html#l00067">print_node()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="range__helper_8h_source.html#l00052">merge_ranges()</a>, <a class="el" href="range__helper_8h_source.html#l00026">merge_ranges()</a>, <a class="el" href="regex_2normalizers_8cpp_source.html#l00121">mim::plug::regex::merge_ranges()</a>, and <a class="el" href="automaton_8h_source.html#l00068">print_node()</a>.</p>
 
 </div>
 </div>
@@ -377,7 +377,7 @@ template&lt;class Vec , class LogF &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="nfa2dfa_8cpp_source.html#l00033">33</a> of file <a class="el" href="nfa2dfa_8cpp_source.html">nfa2dfa.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="nfa_8h_source.html#l00062">automaton::NFA::EPSILON</a>, <a class="el" href="nfa2dfa_8cpp_source.html#l00011">epsilonClosure()</a>, and <a class="el" href="automaton_8h_source.html#l00030">automaton::AutomatonBase&lt; NodeType &gt;::get_start()</a>.</p>
+<p class="reference">References <a class="el" href="nfa_8h_source.html#l00065">automaton::NFA::EPSILON</a>, <a class="el" href="nfa2dfa_8cpp_source.html#l00011">epsilonClosure()</a>, and <a class="el" href="automaton_8h_source.html#l00030">automaton::AutomatonBase&lt; NodeType &gt;::get_start()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="lower__regex_8cpp_source.html#l00024">mim::plug::regex::LowerRegex::rewrite()</a>.</p>
 
@@ -455,7 +455,7 @@ template&lt;class NodeType , class PrintCharF &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="automaton_8h_source.html#l00067">67</a> of file <a class="el" href="automaton_8h_source.html">automaton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="automaton_8h_source.html#l00068">68</a> of file <a class="el" href="automaton_8h_source.html">automaton.h</a>.</p>
 
 <p class="reference">References <a class="el" href="range__helper_8h_source.html#l00016">merge_ranges()</a>.</p>
 

@@ -1,5 +1,11 @@
 var NAVTREEINDEX13 =
 {
+"classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a54736d35195c3aa2a7159d1cdbe3f872":[5,0,1,0,41,0,54],
+"classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a591638235693a00f9ae369606644a290":[3,0,1,0,41,0,11],
+"classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a591638235693a00f9ae369606644a290":[5,0,1,0,41,0,11],
+"classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a5be9fecd8fb8ece5f3217942ae9f6c4a":[3,0,1,0,41,0,60],
+"classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a5be9fecd8fb8ece5f3217942ae9f6c4a":[5,0,1,0,41,0,60],
+"classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a5cde09f8e1c778aeb1790bb89e72982b":[3,0,1,0,41,0,63],
 "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a5cde09f8e1c778aeb1790bb89e72982b":[5,0,1,0,41,0,63],
 "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a644cd57745626e1e7bfaa30032c1bcf4":[3,0,1,0,41,0,7],
 "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a644cd57745626e1e7bfaa30032c1bcf4":[5,0,1,0,41,0,7],
@@ -243,11 +249,5 @@ var NAVTREEINDEX13 =
 "classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html":[5,0,1,2,1,2],
 "classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#a36265162deb510801c77372c2556b470":[3,0,1,4,1,2,0],
 "classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#a36265162deb510801c77372c2556b470":[5,0,1,2,1,2,0],
-"classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#ab2f11ba1002b88bf1dd7c99992da9661":[3,0,1,4,1,2,1],
-"classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#ab2f11ba1002b88bf1dd7c99992da9661":[5,0,1,2,1,2,1],
-"classmim_1_1plug_1_1clos_1_1BranchClosElim.html":[3,0,1,4,2,0],
-"classmim_1_1plug_1_1clos_1_1BranchClosElim.html":[5,0,1,2,2,0],
-"classmim_1_1plug_1_1clos_1_1BranchClosElim.html#a9d9adde407b3f7071e03c26f2695023a":[3,0,1,4,2,0,0],
-"classmim_1_1plug_1_1clos_1_1BranchClosElim.html#a9d9adde407b3f7071e03c26f2695023a":[5,0,1,2,2,0,0],
-"classmim_1_1plug_1_1clos_1_1BranchClosElim.html#ad75fdd5ebe351bd011e4f8dcef9593dc":[3,0,1,4,2,0,1]
+"classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#ab2f11ba1002b88bf1dd7c99992da9661":[3,0,1,4,1,2,1]
 };

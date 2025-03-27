@@ -1,5 +1,11 @@
 var NAVTREEINDEX22 =
 {
+"namespacemim_1_1plug_1_1math.html#a57a9fbfdbd3e0df3260236539c3c3598a4bc92a7aeb9478e6bf3f989025232b22":[3,0,1,4,7,29,0],
+"namespacemim_1_1plug_1_1math.html#a57a9fbfdbd3e0df3260236539c3c3598ad0d7fdb6977b26929fb68c6083c0b439":[3,0,1,4,7,29,1],
+"namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686":[3,0,1,4,7,4],
+"namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a34ec78fcc91ffb1e54cd85e4a0924332":[3,0,1,4,7,4,0],
+"namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a353942263d1bedfbe06b7bfa78226253":[3,0,1,4,7,4,2],
+"namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a38696558dc98494c08d951c052900a2a":[3,0,1,4,7,4,3],
 "namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a5cadb523cb6909f92350f70f124adfb8":[3,0,1,4,7,4,4],
 "namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a8a68dc3e925eacf92633be230722a140":[3,0,1,4,7,4,1],
 "namespacemim_1_1plug_1_1math.html#a5d6cdf27ec872f6dd29304de319a0ce8":[3,0,1,4,7,53],
@@ -243,11 +249,5 @@ var NAVTREEINDEX22 =
 "namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55":[3,0,1,4,12,9],
 "namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55a8ff953dd97c4405234a04291dee39e0b":[3,0,1,4,12,9,1],
 "namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55ad57c24f3fe52d16e7169b912dd647f0d":[3,0,1,4,12,9,0],
-"namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55ad7d18cfb3a0d8293e2f5d94ea30e04d2":[3,0,1,4,12,9,2],
-"namespacemim_1_1plug_1_1regex.html#adf4bcd5b08eae13d0277edf10663cd92":[3,0,1,4,12,19],
-"namespacemim_1_1plug_1_1regex.html#ae3d818edbd962f7741c9ac0d96515c2d":[3,0,1,4,12,16],
-"namespacemim_1_1plug_1_1regex.html#ae5b509ae2785246a5099b89e294ac2fe":[3,0,1,4,12,11],
-"namespacemim_1_1plug_1_1regex.html#ae924b24ab066d5881fbab893c32addab":[3,0,1,4,12,22],
-"namespacemim_1_1plug_1_1regex.html#aeded541d9600938bd2b0f7949ebfe7d9":[3,0,1,4,12,6],
-"namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938":[3,0,1,4,12,3]
+"namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55ad7d18cfb3a0d8293e2f5d94ea30e04d2":[3,0,1,4,12,9,2]
 };

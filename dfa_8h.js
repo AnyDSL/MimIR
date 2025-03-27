@@ -1,6 +1,7 @@
 var dfa_8h =
 [
     [ "automaton::DFANode", "classautomaton_1_1DFANode.html", "classautomaton_1_1DFANode" ],
+    [ "automaton::DFANode::Lt", "structautomaton_1_1DFANode_1_1Lt.html", "structautomaton_1_1DFANode_1_1Lt" ],
     [ "automaton::DFA", "classautomaton_1_1DFA.html", "classautomaton_1_1DFA" ],
-    [ "DFAMap", "dfa_8h.html#af757d6912087c59481f0292bd2260535", null ]
+    [ "DFAMap", "dfa_8h.html#ada83a1afb11a83442f8fff527c4df2b9", null ]
 ];
