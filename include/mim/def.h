@@ -229,7 +229,7 @@ public:
     ///@{
     World& world() const noexcept;
     constexpr flags_t flags() const noexcept { return flags_; }
-    constexpr u32 gid() const noexcept { return gid_; }
+    constexpr u32 gid() const noexcept { return gid_; } ///< Global id - *unique* number for this Def.
     constexpr u32 tid() const noexcept { return tid_; } ///< Trie id - only used in Trie.
     constexpr size_t hash() const noexcept { return hash_; }
     constexpr node_t node() const noexcept { return node_; }
