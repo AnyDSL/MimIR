@@ -323,6 +323,7 @@ Vars Def::free_vars() {
             todo = false;
             free_vars(todo, ++run);
         }
+        validate();
     }
 
     return vars_;
