@@ -14,7 +14,7 @@ template<class D> class Trie {
 private:
     class Node {
     public:
-        Node(u32 id)
+        constexpr Node(u32 id) noexcept
             : def_(nullptr)
             , parent_(nullptr)
             , size_(0)
@@ -24,7 +24,7 @@ private:
             aux_.max = 0;
         }
 
-        Node(Node* parent, D* def, u32 id)
+        constexpr Node(Node* parent, D* def, u32 id) noexcept
             : def_(def)
             , parent_(parent)
             , size_(parent->size_ + 1)
@@ -380,8 +380,18 @@ public:
     static_assert(std::forward_iterator<Set>);
     static_assert(std::ranges::range<Set>);
 
-    Trie()
+    /// @name Construction
+    ///@{
+    Trie& operator=(const Trie&) = delete;
+
+    constexpr Trie(const Trie&) noexcept = delete;
+    constexpr Trie() noexcept
         : root_(make_node()) {}
+    constexpr Trie(Trie&& other) noexcept
+        : Trie() {
+        swap(*this, other);
+    }
+    ///@}
 
     constexpr const Set root() const noexcept { return root_.get(); }
 
@@ -446,8 +456,6 @@ public:
     }
     ///@}
 
-    constexpr size_t max_depth() const noexcept { return max_depth(root_.get(), 0); }
-
     friend void swap(Trie& t1, Trie& t2) noexcept {
         using std::swap;
         // clang-format off
@@ -473,12 +481,6 @@ private:
         auto [i, ins] = parent.node_->children_.emplace(def, nullptr);
         if (ins) i->second = make_node(parent.node_, def);
         return i->second.get();
-    }
-
-    size_t max_depth(const Node* n, size_t depth) const noexcept {
-        size_t res = depth;
-        for (const auto& [_, child] : n->children_) res = std::max(res, max_depth(child.get(), depth + 1));
-        return res;
     }
 
     fe::Arena arena_;

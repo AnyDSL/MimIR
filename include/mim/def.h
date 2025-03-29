@@ -10,8 +10,7 @@
 
 #include "mim/util/dbg.h"
 #include "mim/util/hash.h"
-#include "mim/util/pool.h"
-#include "mim/util/trie.h"
+#include "mim/util/sets.h"
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
@@ -69,7 +68,7 @@ using DefVec                    = Vector<const Def*>;
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = Trie<Def>::Set;
+using Muts                      = Sets<Def>::Set;
 ///@}
 
 /// @name Var
@@ -78,7 +77,7 @@ using Muts                      = Trie<Def>::Set;
 template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
-using Vars                      = Trie<const Var>::Set;
+using Vars                      = Sets<const Var>::Set;
 ///@}
 
 //------------------------------------------------------------------------------
@@ -578,11 +577,11 @@ protected:
     u8 trip_  = 0;
 
 private:
-    uint8_t node_;
+    u8 node_;
     bool mut_      : 1;
     bool external_ : 1;
     unsigned dep_  : 6;
-    uint32_t mark_ = 0;
+    u32 mark_ = 0;
 #ifndef NDEBUG
     size_t curr_op_ = 0;
 #endif
@@ -597,8 +596,8 @@ private:
     friend class World;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
-    friend Def* Trie<Def>::set_tid(Def*) noexcept;
-    friend const Var* Trie<const Var>::set_tid(const Var*) noexcept;
+    friend Def* Sets<Def>::set_tid(Def*) noexcept;
+    friend const Var* Sets<const Var>::set_tid(const Var*) noexcept;
 };
 
 /// @name DefDef

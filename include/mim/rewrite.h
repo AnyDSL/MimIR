@@ -32,7 +32,7 @@ class VarRewriter : public Rewriter {
 public:
     VarRewriter(const Var* var, Ref arg)
         : Rewriter(arg->world())
-        , vars_(var ? world().vars().create(var) : world().vars().create()) {
+        , vars_(var ? Vars(var) : Vars()) {
         if (var) map(var, arg);
     }
 

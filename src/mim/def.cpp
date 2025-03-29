@@ -13,8 +13,6 @@ namespace mim {
 
 template void Muts::dump() const;
 template void Vars::dump() const;
-template void Trie<Def>::dot() const;
-template void Trie<const Var>::dot() const;
 
 /*
  * constructors
@@ -40,15 +38,15 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
         dep_ |= op->dep_;
     }
 
-    gid_  = world().next_gid();
-    vars_ = world().vars().create();
-    muts_ = world().muts().create();
+    gid_ = world().next_gid();
     if (auto var = isa<Var>()) {
-        vars_ = world().vars().create(var);
+        vars_ = Vars(var);
     } else if (!has_const_dep()) {
         for (auto op : deps()) {
             vars_ = world().vars().merge(vars_, op->local_vars());
             muts_ = world().muts().merge(muts_, op->local_muts());
+            vars_.dump();
+            muts_.dump();
         }
     }
 
@@ -74,8 +72,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
-    vars_ = world().vars().create();
-    muts_ = world().muts().create();
     gid_  = world().next_gid();
     hash_ = mim::hash(gid());
     var_  = nullptr;
@@ -299,12 +295,12 @@ bool Def::is_set() const {
  */
 
 Muts Def::local_muts() const {
-    if (auto mut = isa_mut()) return world().muts().create(mut);
+    if (auto mut = isa_mut()) return Muts(mut);
     return muts_;
 }
 
 Muts Def::mut_local_muts() {
-    auto muts = world().muts().create();
+    auto muts = Muts();
     for (auto op : deps()) muts = world().muts().merge(muts, op->local_muts());
     return muts;
 }
@@ -318,10 +314,10 @@ Vars Def::free_vars() const {
     return fvs;
 }
 
-Vars Def::local_vars() const { return mut_ ? world().vars().create() : vars_; }
+Vars Def::local_vars() const { return mut_ ? Vars() : vars_; }
 
 Vars Def::free_vars() {
-    if (!is_set()) return world().vars().create();
+    if (!is_set()) return {};
 
     if (mark_ == 0) {
         // fixed-point iteration to recompute free vars:
@@ -356,7 +352,13 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
         fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, cyclic, run));
     }
 
-    if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
+    if (auto var = has_var()) {
+        std::cout << "erase: " << var->gid() << std::endl;
+        fvs.dump();
+        fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
+        fvs.dump();
+        std::cout << "---" << std::endl;
+    }
 
     todo |= fvs0 != fvs;
     return vars_ = fvs;
@@ -366,10 +368,8 @@ void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
         for (auto mut : users()) mut->invalidate();
-        vars_ = world().vars().create();
-        muts_ = world().muts().create();
-        assert(vars_.is_root());
-        assert(muts_.is_root());
+        vars_ = Vars();
+        muts_ = Muts();
     }
 }
 

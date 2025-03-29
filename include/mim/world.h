@@ -646,8 +646,8 @@ private:
         absl::btree_map<Sym, Def*> sym2external;
         fe::Arena arena;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
-        Trie<const Var> vars;
-        Trie<Def> muts;
+        Sets<Def> muts;
+        Sets<const Var> vars;
         DefDefMap<DefVec> cache;
 
         friend void swap(Move& m1, Move& m2) noexcept {

@@ -10,14 +10,12 @@ namespace mim {
 
 Nest::Nest(Def* r)
     : world_(r->world())
-    , vars_(world().vars().create())
     , root_(make_node(r)) {
     populate();
 }
 
 Nest::Nest(View<Def*> muts)
     : world_(muts.front()->world())
-    , vars_(world().vars().create())
     , root_(make_node(nullptr)) {
     for (auto mut : muts) make_node(mut, root_);
     populate();
@@ -25,7 +23,6 @@ Nest::Nest(View<Def*> muts)
 
 Nest::Nest(World& world)
     : world_(world)
-    , vars_(world.vars().create())
     , root_(make_node(nullptr)) {
     for (auto mut : ClosedCollector<>::collect(world)) make_node(mut, root_);
     populate();
