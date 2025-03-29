@@ -275,7 +275,7 @@ TEST(FV, free_vars) {
     auto x   = lx->var()->set("x")->as<Var>();
     auto y   = ly->var()->set("y")->as<Var>();
     lx->set(false, w.tuple({x, y}));
-    EXPECT_EQ(lx->free_vars(), w.vars().create(y));
+    EXPECT_EQ(lx->free_vars(), Vars(y));
 }
 
 TEST(ADT, Span) {

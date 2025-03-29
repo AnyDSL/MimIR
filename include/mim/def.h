@@ -10,7 +10,7 @@
 
 #include "mim/util/dbg.h"
 #include "mim/util/hash.h"
-#include "mim/util/pool.h"
+#include "mim/util/sets.h"
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
@@ -68,7 +68,7 @@ using DefVec                    = Vector<const Def*>;
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = PooledSet<Def*>;
+using Muts                      = Sets<Def>::Set;
 ///@}
 
 /// @name Var
@@ -77,7 +77,7 @@ using Muts                      = PooledSet<Def*>;
 template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
-using Vars                      = PooledSet<const Var*>;
+using Vars                      = Sets<const Var>::Set;
 ///@}
 
 //------------------------------------------------------------------------------
@@ -228,7 +228,8 @@ public:
     ///@{
     World& world() const noexcept;
     constexpr flags_t flags() const noexcept { return flags_; }
-    constexpr u32 gid() const noexcept { return gid_; }
+    constexpr u32 gid() const noexcept { return gid_; } ///< Global id - *unique* number for this Def.
+    constexpr u32 tid() const noexcept { return tid_; } ///< Trie id - only used in Trie.
     constexpr size_t hash() const noexcept { return hash_; }
     constexpr node_t node() const noexcept { return node_; }
     std::string_view node_name() const;
@@ -398,11 +399,14 @@ public:
 
     /// Mutables reachable by following *immutable* deps(); `mut->local_muts()` is by definition the set `{ mut }`.
     Muts local_muts() const;
-    /// All local_muts() of this mutable's deps().
-    Muts mut_local_muts();
+
     /// Var%s reachable by following *immutable* deps().
     /// @note `var->local_vars()` is by definition the set `{ var }`.
-    Vars local_vars() const { return mut_ ? Vars() : vars_; }
+    Vars local_vars() const;
+
+    /// All local_muts() of this mutable's deps().
+    Muts mut_local_muts();
+
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();
@@ -573,11 +577,11 @@ protected:
     u8 trip_  = 0;
 
 private:
-    uint8_t node_;
+    u8 node_;
     bool mut_      : 1;
     bool external_ : 1;
     unsigned dep_  : 6;
-    uint32_t mark_ = 0;
+    u32 mark_ = 0;
 #ifndef NDEBUG
     size_t curr_op_ = 0;
 #endif
@@ -585,13 +589,15 @@ private:
     u32 num_ops_;
     size_t hash_;
     Vars vars_; // Mutable: local vars; Immutable: free vars.
-    Muts muts_; // Mutable: local muts; Immutable: users.
-
+    Muts muts_; // Immutable: local_muts; Mutable: users;
+    mutable u32 tid_ = 0;
     const Def* type_;
 
     friend class World;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
+    friend Def* Sets<Def>::set_tid(Def*) noexcept;
+    friend const Var* Sets<const Var>::set_tid(const Var*) noexcept;
 };
 
 /// @name DefDef
