@@ -45,8 +45,6 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
         for (auto op : deps()) {
             vars_ = world().vars().merge(vars_, op->local_vars());
             muts_ = world().muts().merge(muts_, op->local_muts());
-            vars_.dump();
-            muts_.dump();
         }
     }
 
@@ -352,13 +350,7 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
         fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, cyclic, run));
     }
 
-    if (auto var = has_var()) {
-        std::cout << "erase: " << var->gid() << std::endl;
-        fvs.dump();
-        fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
-        fvs.dump();
-        std::cout << "---" << std::endl;
-    }
+    if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
 
     todo |= fvs0 != fvs;
     return vars_ = fvs;

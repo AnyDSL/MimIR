@@ -259,15 +259,10 @@ public:
         }
     };
 
-    enum Tag : uintptr_t {
-        Empty  = 0,
-        Single = 1,
-        Array  = 2,
-        Trie   = 3,
-    };
-
     class Set {
     public:
+        enum class Tag : uintptr_t { Null, Uniq, Data, Node };
+
         class iterator {
         public:
             /// @name Iterator Properties
@@ -283,26 +278,25 @@ public:
             ///@{
             constexpr iterator() noexcept = default;
             constexpr iterator(D* d) noexcept
-                : tag_(Tag::Single)
+                : tag_(Tag::Uniq)
                 , def_(d) {}
             constexpr iterator(D* const* elems) noexcept
-                : tag_(Tag::Array)
+                : tag_(Tag::Data)
                 , elems_(elems) {}
             constexpr iterator(Node* node) noexcept
-                : tag_(Tag::Trie)
+                : tag_(Tag::Node)
                 , node_(node) {}
             ///@}
 
             /// @name Increment
-            /// @note These operations only change the *view* of this Set at the Trie; the Trie itself is **not**
-            /// modified.
+            /// @note These operations only change the *view* of this Set; the Set itself is **not** modified.
             ///@{
             constexpr iterator& operator++() noexcept {
                 // clang-format off
                 switch (tag_) {
-                    case Tag::Single: return clear();
-                    case Tag::Array:  return ++elems_, *this;
-                    case Tag::Trie: {
+                    case Tag::Uniq: return clear();
+                    case Tag::Data:  return ++elems_, *this;
+                    case Tag::Node: {
                         node_      = node_->parent;
                         if (node_->is_root()) clear();
                         return *this;
@@ -331,16 +325,16 @@ public:
             ///@{
             constexpr reference operator*() const noexcept {
                 switch (tag_) {
-                    case Tag::Single: return def_;
-                    case Tag::Array: return *elems_;
-                    case Tag::Trie: return node_->def;
+                    case Tag::Uniq: return def_;
+                    case Tag::Data: return *elems_;
+                    case Tag::Node: return node_->def;
                     default: fe::unreachable();
                 }
             }
             constexpr pointer operator->() const noexcept { return this->operator*(); }
             ///@}
 
-            iterator& clear() { return tag_ = Tag::Empty, ptr_ = 0, *this; }
+            iterator& clear() { return tag_ = Tag::Null, ptr_ = 0, *this; }
 
         private:
             Tag tag_;
@@ -356,13 +350,13 @@ public:
         ///@{
         constexpr Set(const Set&) noexcept = default;
         constexpr Set(Set&&) noexcept      = default;
-        constexpr Set() noexcept           = default; ///< Empty set
-        constexpr Set(D* d) noexcept                  ///< Singleton set.
-            : ptr_(uintptr_t(d) | uintptr_t(Tag::Single)) {}
-        constexpr Set(const Data* data) noexcept ///< Array Set.
-            : ptr_(uintptr_t(data) | uintptr_t(Tag::Array)) {}
-        constexpr Set(Node* node) noexcept ///< Trie set.
-            : ptr_(uintptr_t(node) | uintptr_t(Tag::Trie)) {}
+        constexpr Set() noexcept           = default; ///< Null set
+        constexpr Set(D* d) noexcept                  ///< Uniq set.
+            : ptr_(uintptr_t(d) | uintptr_t(Tag::Uniq)) {}
+        constexpr Set(const Data* data) noexcept ///< Data Set.
+            : ptr_(uintptr_t(data) | uintptr_t(Tag::Data)) {}
+        constexpr Set(Node* node) noexcept ///< Node set.
+            : ptr_(uintptr_t(node) | uintptr_t(Tag::Node)) {}
 
         constexpr Set& operator=(const Set&) noexcept = default;
         ///@}
@@ -370,19 +364,24 @@ public:
         /// @name Getters
         ///@{
         constexpr Tag tag() const noexcept { return Tag(ptr_ & uintptr_t(0b11)); }
-        template<class T = uintptr_t> constexpr T* ptr() const noexcept {
+        template<class T> constexpr T* ptr() const noexcept {
             return reinterpret_cast<T*>(ptr_ & (uintptr_t(-1) << uintptr_t(2)));
         }
         constexpr bool empty() const noexcept { return ptr_ == 0; } ///< Not empty.
+        // clang-format off
+        constexpr D*    isa_uniq() const noexcept { return tag() == Tag::Uniq ? ptr<D   >() : nullptr; }
+        constexpr Data* isa_data() const noexcept { return tag() == Tag::Data ? ptr<Data>() : nullptr; }
+        constexpr Node* isa_node() const noexcept { return tag() == Tag::Node ? ptr<Node>() : nullptr; }
+        // clang-format on
         constexpr explicit operator bool() const noexcept { return ptr_ != 0; }
 
         constexpr size_t size() const noexcept {
             // clang-format off
             switch (tag()) {
-                case Tag::Empty:  return 0;
-                case Tag::Single: return 1;
-                case Tag::Array:  return ptr<Data>()->size;
-                case Tag::Trie:   return ptr<Node>()->size_;
+                case Tag::Null: return 0;
+                case Tag::Uniq: return 1;
+                case Tag::Data: return ptr<Data>()->size;
+                case Tag::Node: return ptr<Node>()->size_;
                 default: fe::unreachable();
             }
             // clang-format on
@@ -393,39 +392,37 @@ public:
         /// @name Check Membership
         ///@{
         bool contains(D* d) const noexcept {
-            switch (tag()) {
-                case Tag::Empty: return false;
-                case Tag::Single: return ptr<D>() == d;
+            if (auto u = isa_uniq()) return d == u;
 
-                case Tag::Array:
-                    for (auto e : *ptr<Data>())
-                        if (d == e) return true;
-                    return false;
-
-                case Tag::Trie: {
-                    auto cur = ptr<Node>();
-                    if (!cur->within(d)) return false;
-
-                    auto tid = d->tid();
-                    if (auto [min, max] = cur->aggregate(); tid < min || tid > max) return false;
-
-                    while (cur) {
-                        if (cur->def == d) return true;
-                        cur = (!cur->def || tid > cur->def->tid()) ? cur->aux.down : cur->aux.up;
-                    }
-
-                    return false;
-                }
-                default: fe::unreachable();
+            if (auto data = isa_data()) {
+                for (auto e : *data)
+                    if (d == e) return true;
+                return false;
             }
+
+            if (auto n = isa_node()) {
+                if (!n->within(d)) return false;
+
+                auto tid = d->tid();
+                if (auto [min, max] = n->aggregate(); tid < min || tid > max) return false;
+
+                while (n) {
+                    if (n->def == d) return true;
+                    n = (!n->def || tid > n->def->tid()) ? n->aux.down : n->aux.up;
+                }
+
+                return false;
+            }
+
+            return false;
         }
 
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
             if (this->empty() || other.empty()) return false;
-            if (this->tag() == Tag::Single) return other.contains(this->template ptr<D>());
-            if (other.tag() == Tag::Single) return this->contains(other.template ptr<D>());
+            if (auto u = this->isa_uniq()) return other.contains(u);
+            if (auto u = other.isa_uniq()) return this->contains(u);
 
-            if (other.tag() == Tag::Array && other.tag() == Tag::Array) {
+            if (this->tag() == Tag::Data && other.tag() == Tag::Data) {
                 auto d1 = this->template ptr<Data>();
                 auto d2 = other.template ptr<Data>();
                 if (d1 == d2) return true;
@@ -442,7 +439,7 @@ public:
                 return false;
             }
 
-            if (this->tag() == Tag::Trie && other.tag() == Tag::Trie) {
+            if (this->tag() == Tag::Node && other.tag() == Tag::Node) {
                 auto n = this->ptr<Node>();
                 auto m = other.ptr<Node>();
 
@@ -462,10 +459,10 @@ public:
                 return false;
             }
 
-            assert((this->tag() == Tag::Trie && other.tag() == Tag::Array)
-                   || (this->tag() == Tag::Array && other.tag() == Tag::Trie));
+            assert((this->tag() == Tag::Node && other.tag() == Tag::Data)
+                   || (this->tag() == Tag::Data && other.tag() == Tag::Node));
 
-            auto data = this->tag() == Tag::Array ? this->template ptr<Data>() : other.template ptr<Data>();
+            auto data = this->tag() == Tag::Data ? this->template ptr<Data>() : other.template ptr<Data>();
             for (auto e : *data)
                 if (contains(e)) return true;
             return false;
@@ -475,25 +472,15 @@ public:
         /// @name Iterators
         ///@{
         constexpr iterator begin() const noexcept {
-            // clang-format off
-            switch (tag()) {
-                case Tag::Empty:  return iterator();
-                case Tag::Single: return iterator(ptr<D>());
-                case Tag::Array:  return iterator(ptr<Data>()->begin());
-                case Tag::Trie:   return iterator(ptr<Node>());
-                default: fe::unreachable();
-            }
-            // clang-format on
+            if (auto u = isa_uniq()) return {u};
+            if (auto d = isa_data()) return {d->begin()};
+            if (auto n = isa_node()) return {n};
+            return iterator();
         }
 
         constexpr iterator end() const noexcept {
-            switch (tag()) {
-                case Tag::Empty:
-                case Tag::Single:
-                case Tag::Trie: return iterator();
-                case Tag::Array: return iterator(ptr<Data>()->end());
-                default: fe::unreachable();
-            }
+            if (auto data = isa_data()) return iterator(data->end());
+            return {};
         }
         ///@}
 
@@ -524,7 +511,8 @@ public:
     ///@{
     Sets& operator=(const Sets&) = delete;
 
-    constexpr Sets() noexcept            = default;
+    constexpr Sets() noexcept
+        : root_(make_node()) {}
     constexpr Sets(const Sets&) noexcept = delete;
     constexpr Sets(Sets&& other) noexcept
         : Sets() {
@@ -563,32 +551,26 @@ public:
 
     /// Yields @f$set \cup \{d\}@f$.
     [[nodiscard]] Set insert(Set set, D* d) {
-        switch (set.tag()) {
-            case Tag::Empty: return {d};
+        if (auto u = set.isa_uniq()) {
+            if (d == u) return {d};
 
-            case Tag::Single: {
-                auto e = set.template ptr<D>();
-                if (d == e) return {d};
-
-                auto [data, state] = allocate(2);
-                if (d->gid() < e->gid())
-                    data->elems[0] = d, data->elems[1] = e;
-                else
-                    data->elems[0] = e, data->elems[1] = d;
-                return unify(data, state);
-            }
-
-            case Tag::Array: { // TODO more subcases
-                auto data = set.template ptr<const Data>();
-                auto v    = Vector<D*>(data->begin(), data->end());
-                v.emplace_back(d);
-                return create(v);
-            }
-
-            case Tag::Trie: return insert(set.template ptr<Node>(), d);
-
-            default: fe::unreachable();
+            auto [data, state] = allocate(2);
+            if (d->gid() < u->gid())
+                data->elems[0] = d, data->elems[1] = u;
+            else
+                data->elems[0] = u, data->elems[1] = d;
+            return unify(data, state);
         }
+
+        if (auto data = set.isa_data()) { // TODO more subcases
+            auto v = Vector<D*>(data->begin(), data->end());
+            v.emplace_back(d);
+            return create(v);
+        }
+
+        if (auto node = set.isa_node()) return insert(node, d);
+
+        return {d};
     }
 
     /// Yields @f$a \cup b@f$.
@@ -596,63 +578,59 @@ public:
         if (a.empty() || a == b) return b;
         if (b.empty()) return a;
 
-        if (a.tag() == Tag::Single) return insert(b, a.template ptr<D>());
-        if (b.tag() == Tag::Single) return insert(a, b.template ptr<D>());
+        if (auto u = a.isa_uniq()) return insert(b, u);
+        if (auto u = b.isa_uniq()) return insert(a, u);
 
-        if (a.tag() == Tag::Trie && b.tag() == Tag::Trie) return merge(a.template ptr<Node>(), b.template ptr<Node>());
+        if (auto n = a.isa_node())
+            if (auto m = b.isa_node()) return merge(n, m);
 
-        if (a.tag() == Tag::Array && b.tag() == Tag::Array) {
-            auto v  = Vector<D*>();
-            auto da = a.template ptr<Data>();
-            auto db = b.template ptr<Data>();
-            v.reserve(da->size + db->size);
+        if (auto da = a.isa_data()) {
+            if (auto db = b.isa_data()) {
+                auto v = Vector<D*>();
+                v.reserve(da->size + db->size);
 
-            for (auto i : *da) v.emplace_back(i);
-            for (auto i : *db) v.emplace_back(i);
+                for (auto i : *da) v.emplace_back(i);
+                for (auto i : *db) v.emplace_back(i);
 
-            return create(v);
+                return create(v);
+            }
         }
 
-        assert((a.tag() == Tag::Trie && b.tag() == Tag::Array) || (a.tag() == Tag::Array && b.tag() == Tag::Trie));
+        // clang-format off
+        assert((a.tag() == Set::Tag::Node && b.tag() == Set::Tag::Data)
+            || (a.tag() == Set::Tag::Data && b.tag() == Set::Tag::Node));
+        // clang-format on
+        auto data = a.tag() == Set::Tag::Data ? a.template ptr<Data>() : b.template ptr<Data>();
         auto res  = root();
-        auto data = a.tag() == Tag::Array ? a.template ptr<Data>() : b.template ptr<Data>();
         for (auto d : *data) res = insert(res, d);
         return res;
     }
 
     /// Yields @f$set \setminus def@f$.
     [[nodiscard]] Set erase(Set set, D* d) {
-        if (set.empty()) return {};
+        if (auto u = set.isa_uniq()) return d == u ? Set() : set;
 
-        if (set.tag() == Tag::Single) {
-            auto e = set.template ptr<D>();
-            return d == e ? set : Set();
-        }
+        if (auto data = set.isa_data()) {
+            size_t i = 0, size = data->size;
+            for (; i != size; ++i)
+                if (data->elems[i] == d) break;
 
-        if (set.tag() == Tag::Array) {
-            size_t x  = size_t(-1);
-            auto data = set.template ptr<Data>();
-            for (size_t i = 0, e = data->size; i != e; ++i) {
-                if (data->elems[i] == d) {
-                    x = i;
-                    break;
-                }
-            }
+            if (i == size) return set;
 
-            if (x == size_t(-1)) return set;
-
-            auto size = data->size - 1;
+            --size;
             if (size == 0) return {};
-            if (size == 1) return {x == 0 ? data->elems[1] : data->elems[0]};
+            if (size == 1) return {i == 0 ? data->elems[1] : data->elems[0]};
 
             auto [new_data, state] = allocate(size);
-            std::copy(data->begin() + x + 1, data->end(),
-                      std::copy(data->begin(), data->begin() + x, new_data->elems)); // copy over, skip i
+            auto db                = data->begin();
+            std::copy(db + i + 1, data->end(), std::copy(db, db + i, new_data->elems)); // copy over, skip i
+
             return unify(new_data, state);
         }
 
-        assert(set.tag() == Tag::Trie);
-        return erase(set.template ptr<Node>(), d);
+        if (auto node = set.isa_node()) return erase(set.template ptr<Node>(), d);
+
+        return {};
     }
     ///@}
 
