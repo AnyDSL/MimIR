@@ -87,6 +87,22 @@ const Def* World::register_annex(flags_t f, const Def* def) {
     }
     return nullptr;
 }
+
+void World::make_external(Def* def) {
+    assert(!def->is_external());
+    if (!def->is_closed()) def->free_vars().dump();
+    assert(def->is_closed());
+    def->external_ = true;
+    assert_emplace(move_.sym2external, def->sym(), def);
+}
+
+void World::make_internal(Def* def) {
+    assert(def->is_external());
+    def->external_ = false;
+    auto num       = move_.sym2external.erase(def->sym());
+    assert_unused(num == 1);
+}
+
 /*
  * factory methods
  */

@@ -2,7 +2,7 @@
 
 #include "mim/world.h"
 
-// Don't use fancy C++-lambdas; it's way to annoying stepping through them in a debugger.
+// Don't use fancy C++-lambdas; it's way too annoying stepping through them in a debugger.
 
 namespace mim {
 

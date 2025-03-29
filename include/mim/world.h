@@ -191,19 +191,8 @@ public:
     Def* external(Sym name) { return mim::lookup(move_.sym2external, name); } ///< Lookup by @p name.
     auto externals() const { return move_.sym2external | std::views::values; }
     Vector<Def*> copy_externals() const { return {externals().begin(), externals().end()}; }
-
-    void make_external(Def* def) {
-        assert(!def->is_external());
-        assert(def->is_closed());
-        def->external_ = true;
-        assert_emplace(move_.sym2external, def->sym(), def);
-    }
-    void make_internal(Def* def) {
-        assert(def->is_external());
-        def->external_ = false;
-        auto num       = move_.sym2external.erase(def->sym());
-        assert_unused(num == 1);
-    }
+    void make_external(Def*);
+    void make_internal(Def*);
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Infer

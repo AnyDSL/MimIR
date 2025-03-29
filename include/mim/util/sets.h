@@ -7,7 +7,7 @@
 
 namespace mim {
 
-template<class D, size_t N = 8> class Sets {
+template<class D, size_t N = 3> class Sets {
 private:
     /// Trie Node.
     class Node {
@@ -15,9 +15,9 @@ private:
         constexpr Node(u32 id) noexcept
             : def(nullptr)
             , parent(nullptr)
-            , size_(0)
-            , min_(size_t(-1))
-            , id_(id) {
+            , size(0)
+            , min(size_t(-1))
+            , id(id) {
             aux.min = u32(-1);
             aux.max = 0;
         }
@@ -25,9 +25,9 @@ private:
         constexpr Node(Node* parent, D* def, u32 id) noexcept
             : def(def)
             , parent(parent)
-            , size_(parent->size_ + 1)
-            , min_(parent->def ? parent->min_ : def->tid())
-            , id_(id) {
+            , size(parent->size + 1)
+            , min(parent->def ? parent->min : def->tid())
+            , id(id) {
             parent->link_to_child(this);
         }
 
@@ -35,14 +35,14 @@ private:
             using namespace std::string_literals;
 
             auto node2str = [](const Node* n) {
-                return "n_" + (n->def ? std::to_string(n->def->tid()) : "root"s) + "_"s + std::to_string(n->id_);
+                return "n_" + (n->def ? std::to_string(n->def->tid()) : "root"s) + "_"s + std::to_string(n->id);
             };
 
             println(os, "{} [tooltip=\"min: {}, max: {}\"];", node2str(this), aux.min, aux.max);
 
-            for (const auto& [def, child] : children_) println(os, "{} -> {}", node2str(this), node2str(child.get()));
+            for (const auto& [def, child] : children) println(os, "{} -> {}", node2str(this), node2str(child.get()));
 
-            for (const auto& [_, child] : children_) child->dot(os);
+            for (const auto& [_, child] : children) child->dot(os);
 
             // clang-format off
             if (auto pa = path_parent()) println(os, "{} -> {} [constraint=false,color=\"#0000ff\",style=dashed];", node2str(this), node2str(pa));
@@ -53,8 +53,7 @@ private:
 
         ///@name Getters
         ///@{
-        constexpr bool empty() const noexcept { return def == nullptr; }
-        constexpr bool is_root() const noexcept { return empty(); }
+        constexpr bool is_root() const noexcept { return def == 0; }
         ///@}
 
         ///@name parent
@@ -210,16 +209,15 @@ private:
         ///@}
 
         // TODO remove?
-        constexpr size_t min() const noexcept { return min_; }
         constexpr size_t max() const noexcept { return def->tid(); }
-        constexpr size_t within(D* d) const noexcept { return min() <= d->tid() && d->tid() <= max(); }
+        constexpr size_t within(D* d) const noexcept { return min <= d->tid() && d->tid() <= max(); }
 
-        D* def;
-        Node* parent;
-        size_t size_;
-        size_t min_;
-        GIDMap<D*, fe::Arena::Ptr<Node>> children_;
-        u32 id_;
+        D* const def;
+        Node* const parent;
+        const size_t size;
+        const size_t min;
+        u32 const id;
+        GIDMap<D*, fe::Arena::Ptr<Node>> children;
 
         struct {
             Node* parent = nullptr; ///< parent or path-parent
@@ -367,7 +365,10 @@ public:
         template<class T> constexpr T* ptr() const noexcept {
             return reinterpret_cast<T*>(ptr_ & (uintptr_t(-1) << uintptr_t(2)));
         }
-        constexpr bool empty() const noexcept { return ptr_ == 0; } ///< Not empty.
+        constexpr bool empty() const noexcept {
+            assert(tag() != Tag::Node || !ptr<Node>()->is_root());
+            return ptr_ == 0;
+        } ///< Not empty.
         // clang-format off
         constexpr D*    isa_uniq() const noexcept { return tag() == Tag::Uniq ? ptr<D   >() : nullptr; }
         constexpr Data* isa_data() const noexcept { return tag() == Tag::Data ? ptr<Data>() : nullptr; }
@@ -381,7 +382,7 @@ public:
                 case Tag::Null: return 0;
                 case Tag::Uniq: return 1;
                 case Tag::Data: return ptr<Data>()->size;
-                case Tag::Node: return ptr<Node>()->size_;
+                case Tag::Node: return ptr<Node>()->size;
                 default: fe::unreachable();
             }
             // clang-format on
@@ -401,14 +402,15 @@ public:
             }
 
             if (auto n = isa_node()) {
-                if (!n->within(d)) return false;
+                // if (!n->within(d)) return false;
 
-                auto tid = d->tid();
-                if (auto [min, max] = n->aggregate(); tid < min || tid > max) return false;
+                // auto tid = d->tid();
+                // if (auto [min, max] = n->aggregate(); tid < min || tid > max) return false;
 
-                while (n) {
+                while (!n->is_root()) {
                     if (n->def == d) return true;
-                    n = (!n->def || tid > n->def->tid()) ? n->aux.down : n->aux.up;
+                    // n = (!n->def || tid > n->def->tid()) ? n->aux.down : n->aux.up;
+                    n = n->parent;
                 }
 
                 return false;
@@ -422,9 +424,8 @@ public:
             if (auto u = this->isa_uniq()) return other.contains(u);
             if (auto u = other.isa_uniq()) return this->contains(u);
 
-            if (this->tag() == Tag::Data && other.tag() == Tag::Data) {
-                auto d1 = this->template ptr<Data>();
-                auto d2 = other.template ptr<Data>();
+            auto d1 = this->isa_data(), d2 = other.isa_data();
+            if (d1 && d2) {
                 if (d1 == d2) return true;
 
                 for (auto ai = d1->begin(), ae = d1->end(), bi = d2->begin(), be = d2->end(); ai != ae && bi != be;) {
@@ -439,16 +440,12 @@ public:
                 return false;
             }
 
-            if (this->tag() == Tag::Node && other.tag() == Tag::Node) {
-                auto n = this->ptr<Node>();
-                auto m = other.ptr<Node>();
-
-                if (!n->lca(m)->is_root()) return true;
+            if (auto n = this->isa_node(), m = other.isa_node(); n && m) {
+                // if (!n->lca(m)->is_root()) return true;
 
                 while (!n->is_root() && !m->is_root()) {
                     if (n->def == m->def) return true;
-                    if (n->min() > other.template ptr<Node>()->max() || n->max() < m->min())
-                        return false; // TODO double-check
+                    // if (n->min > m->max() || n->max() < m->min) return false; // TODO double-check
 
                     if (n->def->tid() > m->def->tid())
                         n = n->parent;
@@ -459,11 +456,7 @@ public:
                 return false;
             }
 
-            assert((this->tag() == Tag::Node && other.tag() == Tag::Data)
-                   || (this->tag() == Tag::Data && other.tag() == Tag::Node));
-
-            auto data = this->tag() == Tag::Data ? this->template ptr<Data>() : other.template ptr<Data>();
-            for (auto e : *data)
+            for (auto e : *(d1 ? d1 : d2))
                 if (contains(e)) return true;
             return false;
         }
@@ -474,8 +467,8 @@ public:
         constexpr iterator begin() const noexcept {
             if (auto u = isa_uniq()) return {u};
             if (auto d = isa_data()) return {d->begin()};
-            if (auto n = isa_node()) return {n};
-            return iterator();
+            if (auto n = isa_node(); n && !n->is_root()) return {n};
+            return {};
         }
 
         constexpr iterator end() const noexcept {
@@ -549,9 +542,9 @@ public:
         return res;
     }
 
-    /// Yields @f$set \cup \{d\}@f$.
-    [[nodiscard]] Set insert(Set set, D* d) {
-        if (auto u = set.isa_uniq()) {
+    /// Yields @f$s \cup d@f$.
+    [[nodiscard]] Set insert(Set s, D* d) {
+        if (auto u = s.isa_uniq()) {
             if (d == u) return {d};
 
             auto [data, state] = allocate(2);
@@ -562,60 +555,55 @@ public:
             return unify(data, state);
         }
 
-        if (auto data = set.isa_data()) { // TODO more subcases
+        if (auto data = s.isa_data()) { // TODO more subcases
             auto v = Vector<D*>(data->begin(), data->end());
             v.emplace_back(d);
             return create(v);
         }
 
-        if (auto node = set.isa_node()) return insert(node, d);
+        if (auto n = s.isa_node()) return insert(n, d);
 
         return {d};
     }
 
-    /// Yields @f$a \cup b@f$.
-    [[nodiscard]] Set merge(Set a, Set b) {
-        if (a.empty() || a == b) return b;
-        if (b.empty()) return a;
+    /// Yields @f$s_1 \cup s_2@f$.
+    [[nodiscard]] Set merge(Set s1, Set s2) {
+        if (s1.empty() || s1 == s2) return s2;
+        if (s2.empty()) return s1;
 
-        if (auto u = a.isa_uniq()) return insert(b, u);
-        if (auto u = b.isa_uniq()) return insert(a, u);
+        if (auto u = s1.isa_uniq()) return insert(s2, u);
+        if (auto u = s2.isa_uniq()) return insert(s1, u);
 
-        if (auto n = a.isa_node())
-            if (auto m = b.isa_node()) return merge(n, m);
+        auto n1 = s1.isa_node(), n2 = s2.isa_node();
+        if (n1 && n2) return merge(n1, n2);
 
-        if (auto da = a.isa_data()) {
-            if (auto db = b.isa_data()) {
-                auto v = Vector<D*>();
-                v.reserve(da->size + db->size);
+        auto d1 = s1.isa_data(), d2 = s2.isa_data();
+        if (d1 && d2) {
+            auto v = Vector<D*>();
+            v.reserve(d1->size + d2->size);
 
-                for (auto i : *da) v.emplace_back(i);
-                for (auto i : *db) v.emplace_back(i);
+            for (auto d : *d1) v.emplace_back(d);
+            for (auto d : *d2) v.emplace_back(d);
 
-                return create(v);
-            }
+            return create(v);
         }
 
-        // clang-format off
-        assert((a.tag() == Set::Tag::Node && b.tag() == Set::Tag::Data)
-            || (a.tag() == Set::Tag::Data && b.tag() == Set::Tag::Node));
-        // clang-format on
-        auto data = a.tag() == Set::Tag::Data ? a.template ptr<Data>() : b.template ptr<Data>();
-        auto res  = root();
+        auto data = d1 ? d1 : d2;
+        auto res  = n1 ? n1 : n2;
         for (auto d : *data) res = insert(res, d);
         return res;
     }
 
-    /// Yields @f$set \setminus def@f$.
-    [[nodiscard]] Set erase(Set set, D* d) {
-        if (auto u = set.isa_uniq()) return d == u ? Set() : set;
+    /// Yields @f$s \setminus d@f$.
+    [[nodiscard]] Set erase(Set s, D* d) {
+        if (auto u = s.isa_uniq()) return d == u ? Set() : s;
 
-        if (auto data = set.isa_data()) {
+        if (auto data = s.isa_data()) {
             size_t i = 0, size = data->size;
             for (; i != size; ++i)
                 if (data->elems[i] == d) break;
 
-            if (i == size) return set;
+            if (i == size) return s;
 
             --size;
             if (size == 0) return {};
@@ -628,7 +616,15 @@ public:
             return unify(new_data, state);
         }
 
-        if (auto node = set.isa_node()) return erase(set.template ptr<Node>(), d);
+        if (auto n = s.isa_node()) {
+            auto res = erase(n, d);
+            if (res->size > N) return res;
+
+            auto v = Vector<D*>();
+            v.reserve(res->size);
+            for (auto i = res; !i->is_root(); i = i->parent) v.emplace_back(i->def);
+            return create(v);
+        }
 
         return {};
     }
@@ -691,7 +687,7 @@ private:
 
     Node* mount(Node* parent, D* def) {
         assert(def->tid() != 0);
-        auto [i, ins] = parent->children_.emplace(def, nullptr);
+        auto [i, ins] = parent->children.emplace(def, nullptr);
         if (ins) i->second = make_node(parent, def);
         return i->second.get();
     }
