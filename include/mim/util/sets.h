@@ -45,9 +45,9 @@ private:
             for (const auto& [_, child] : children) child->dot(os);
 
             // clang-format off
-            if (auto pa = path_parent()) println(os, "{} -> {} [constraint=false,color=\"#0000ff\",style=dashed];", node2str(this), node2str(pa));
-            if (auto up = aux.up      ) println(os, "{} -> {} [constraint=false,color=\"#ff0000\"];", node2str(this), node2str(up));
-            if (auto dn = aux.down    ) println(os, "{} -> {} [constraint=false,color=\"#00ff00\"];", node2str(this), node2str(dn));
+            if (auto par = path_parent()) println(os, "{} -> {} [constraint=false,color=\"#0000ff\",style=dashed];", node2str(this), node2str(par));
+            if (auto top = aux.top      ) println(os, "{} -> {} [constraint=false,color=\"#ff0000\"];", node2str(this), node2str(top));
+            if (auto bot = aux.bot      ) println(os, "{} -> {} [constraint=false,color=\"#00ff00\"];", node2str(this), node2str(bot));
             // clang-format on
         }
 
@@ -59,8 +59,8 @@ private:
         ///@name parent
         ///@{
         // clang-format off
-        constexpr Node*  aux_parent() noexcept { return aux.parent && (aux.parent->aux.down == this || aux.parent->aux.up == this) ? aux.parent : nullptr; }
-        constexpr Node* path_parent() noexcept { return aux.parent && (aux.parent->aux.down != this && aux.parent->aux.up != this) ? aux.parent : nullptr; }
+        constexpr Node*  aux_parent() noexcept { return aux.parent && (aux.parent->aux.bot == this || aux.parent->aux.top == this) ? aux.parent : nullptr; }
+        constexpr Node* path_parent() noexcept { return aux.parent && (aux.parent->aux.bot != this && aux.parent->aux.top != this) ? aux.parent : nullptr; }
         // clang-format on
         ///@}
 
@@ -71,24 +71,24 @@ private:
         constexpr void splay() noexcept {
             while (auto p = aux_parent()) {
                 if (auto pp = p->aux_parent()) {
-                    if (p->aux.down == this && pp->aux.down == p) { // zig-zig
+                    if (p->aux.bot == this && pp->aux.bot == p) { // zig-zig
                         pp->ror();
                         p->ror();
-                    } else if (p->aux.up == this && pp->aux.up == p) { // zag-zag
+                    } else if (p->aux.top == this && pp->aux.top == p) { // zag-zag
                         pp->rol();
                         p->rol();
-                    } else if (p->aux.down == this && pp->aux.up == p) { // zig-zag
+                    } else if (p->aux.bot == this && pp->aux.top == p) { // zig-zag
                         p->ror();
                         pp->rol();
                     } else { // zag-zig
-                        assert(p->aux.up == this && pp->aux.down == p);
+                        assert(p->aux.top == this && pp->aux.bot == p);
                         p->rol();
                         pp->ror();
                     }
-                } else if (p->aux.down == this) { // zig
+                } else if (p->aux.bot == this) { // zig
                     p->ror();
                 } else { // zag
-                    assert(p->aux.up == this);
+                    assert(p->aux.top == this);
                     p->rol();
                 }
             }
@@ -108,7 +108,7 @@ private:
         ///  ```
         template<size_t l> constexpr void rotate() noexcept {
             constexpr size_t r   = (l + 1) % 2;
-            constexpr auto child = [](Node* n, size_t i) -> Node*& { return i == 0 ? n->aux.down : n->aux.up; };
+            constexpr auto child = [](Node* n, size_t i) -> Node*& { return i == 0 ? n->aux.bot : n->aux.top; };
 
             auto x = this;
             auto p = x->aux.parent;
@@ -147,11 +147,11 @@ private:
                 aux.min = aux.max = def->tid();
             }
 
-            if (auto d = aux.down) {
+            if (auto d = aux.bot) {
                 aux.min = std::min(aux.min, d->aux.min);
                 aux.max = std::max(aux.max, d->aux.max);
             }
-            if (auto u = aux.up) {
+            if (auto u = aux.top) {
                 aux.min = std::min(aux.min, u->aux.min);
                 aux.max = std::max(aux.max, u->aux.max);
             }
@@ -171,9 +171,9 @@ private:
         constexpr void link_to_child(Node* child) noexcept {
             this->expose();
             child->expose();
-            if (!child->aux.up) {
+            if (!child->aux.top) {
                 this->aux.parent = child;
-                child->aux.up    = this;
+                child->aux.top   = this;
                 child->update();
             }
         }
@@ -185,7 +185,7 @@ private:
             for (auto curr = this; curr; prev = curr, curr = curr->aux.parent) {
                 curr->splay();
                 assert(!prev || prev->aux.parent == curr);
-                curr->aux.down = prev;
+                curr->aux.bot = prev;
                 curr->update();
             }
             splay();
@@ -221,8 +221,8 @@ private:
 
         struct {
             Node* parent = nullptr; ///< parent or path-parent
-            Node* down   = nullptr; ///< left/deeper/down/leaf-direction
-            Node* up     = nullptr; ///< right/shallower/up/root-direction
+            Node* bot    = nullptr; ///< left/deeper/bottom/leaf-direction
+            Node* top    = nullptr; ///< right/shallower/top/root-direction
             u32 min      = u32(-1);
             u32 max      = 0;
         } mutable aux;
@@ -409,7 +409,7 @@ public:
 
                 while (!n->is_root()) {
                     if (n->def == d) return true;
-                    // n = (!n->def || tid > n->def->tid()) ? n->aux.down : n->aux.up;
+                    // n = (!n->def || tid > n->def->tid()) ? n->aux.bot : n->aux.top;
                     n = n->parent;
                 }
 
