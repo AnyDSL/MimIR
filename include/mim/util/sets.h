@@ -54,6 +54,22 @@ private:
         ///@name Getters
         ///@{
         constexpr bool is_root() const noexcept { return def == 0; }
+
+        [[nodiscard]] bool contains(D* d) const noexcept {
+            auto n = this;
+            // if (!n->within(d)) return false;
+
+            // auto tid = d->tid();
+            // if (auto [min, max] = n->aggregate(); tid < min || tid > max) return false;
+
+            while (!n->is_root()) {
+                if (n->def == d) return true;
+                // n = (!n->def || tid > n->def->tid()) ? n->aux.bot : n->aux.top;
+                n = n->parent;
+            }
+
+            return false;
+        }
         ///@}
 
         ///@name parent
@@ -228,7 +244,6 @@ private:
         } mutable aux;
     };
 
-public:
     struct Data {
         constexpr Data() noexcept = default;
         constexpr Data(size_t size) noexcept
@@ -257,6 +272,7 @@ public:
         }
     };
 
+public:
     class Set {
     public:
         enum class Tag : uintptr_t { Null, Uniq, Data, Node };
@@ -293,7 +309,7 @@ public:
                 // clang-format off
                 switch (tag_) {
                     case Tag::Uniq: return clear();
-                    case Tag::Data:  return ++elems_, *this;
+                    case Tag::Data: return ++elems_, *this;
                     case Tag::Node: {
                         node_      = node_->parent;
                         if (node_->is_root()) clear();
@@ -365,10 +381,10 @@ public:
         template<class T> constexpr T* ptr() const noexcept {
             return reinterpret_cast<T*>(ptr_ & (uintptr_t(-1) << uintptr_t(2)));
         }
-        constexpr bool empty() const noexcept {
+        constexpr bool empty() const noexcept { ///< Not empty.
             assert(tag() != Tag::Node || !ptr<Node>()->is_root());
             return ptr_ == 0;
-        } ///< Not empty.
+        }
         // clang-format off
         constexpr D*    isa_uniq() const noexcept { return tag() == Tag::Uniq ? ptr<D   >() : nullptr; }
         constexpr Data* isa_data() const noexcept { return tag() == Tag::Data ? ptr<Data>() : nullptr; }
@@ -401,20 +417,7 @@ public:
                 return false;
             }
 
-            if (auto n = isa_node()) {
-                // if (!n->within(d)) return false;
-
-                // auto tid = d->tid();
-                // if (auto [min, max] = n->aggregate(); tid < min || tid > max) return false;
-
-                while (!n->is_root()) {
-                    if (n->def == d) return true;
-                    // n = (!n->def || tid > n->def->tid()) ? n->aux.bot : n->aux.top;
-                    n = n->parent;
-                }
-
-                return false;
-            }
+            if (auto n = isa_node()) return n->contains(d);
 
             return false;
         }
@@ -425,6 +428,8 @@ public:
             if (auto u = other.isa_uniq()) return this->contains(u);
 
             auto d1 = this->isa_data(), d2 = other.isa_data();
+            auto n1 = this->isa_node(), n2 = other.isa_node();
+
             if (d1 && d2) {
                 if (d1 == d2) return true;
 
@@ -440,24 +445,25 @@ public:
                 return false;
             }
 
-            if (auto n = this->isa_node(), m = other.isa_node(); n && m) {
-                // if (!n->lca(m)->is_root()) return true;
+            if (n1 && n2) {
+                // if (!n1->lca(n2)->is_root()) return true;
 
-                while (!n->is_root() && !m->is_root()) {
-                    if (n->def == m->def) return true;
-                    // if (n->min > m->max() || n->max() < m->min) return false; // TODO double-check
+                while (!n1->is_root() && !n2->is_root()) {
+                    if (n1->def == n2->def) return true;
+                    // if (n1->min > n2->max() || n1->max() < n2->min) return false; // TODO double-check
 
-                    if (n->def->tid() > m->def->tid())
-                        n = n->parent;
+                    if (n1->def->tid() > n2->def->tid())
+                        n1 = n1->parent;
                     else
-                        m = m->parent;
+                        n2 = n2->parent;
                 }
 
                 return false;
             }
 
             for (auto e : *(d1 ? d1 : d2))
-                if (contains(e)) return true;
+                if ((n1 ? n1 : n2)->contains(e)) return true;
+
             return false;
         }
         ///@}
@@ -519,26 +525,26 @@ public:
 
     /// Create a Set wih all elements in @p v.
     [[nodiscard]] Set create(Vector<D*> v) {
-        auto db = v.begin();
-        auto de = v.end();
-        std::sort(db, de, [](D* d1, D* d2) { return d1->gid() < d2->gid(); });
-        auto di   = std::unique(db, de);
-        auto size = std::distance(db, di);
+        auto vb = v.begin();
+        auto ve = v.end();
+        std::sort(vb, ve, [](D* d1, D* d2) { return d1->gid() < d2->gid(); });
+        auto vi   = std::unique(vb, ve);
+        auto size = std::distance(vb, vi);
 
         if (size == 0) return {};
-        if (size == 1) return {*db};
+        if (size == 1) return {*vb};
 
         if (size_t(size) <= N) {
             auto [data, state] = allocate(size);
-            std::copy(db, di, data->elems);
+            std::copy(vb, vi, data->elems);
             return unify(data, state);
         }
 
         // Sort in ascending tids but 0 goes last.
-        std::sort(db, de, [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
+        std::sort(vb, ve, [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
 
         auto res = root();
-        for (auto i = db, e = di; i != e; ++i) res = insert(res, *i);
+        for (auto i = vb, e = vi; i != e; ++i) res = insert(res, *i);
         return res;
     }
 
@@ -574,11 +580,11 @@ public:
         if (auto u = s1.isa_uniq()) return insert(s2, u);
         if (auto u = s2.isa_uniq()) return insert(s1, u);
 
-        auto n1 = s1.isa_node(), n2 = s2.isa_node();
-        if (n1 && n2) return merge(n1, n2);
-
         auto d1 = s1.isa_data(), d2 = s2.isa_data();
+        auto n1 = s1.isa_node(), n2 = s2.isa_node();
+
         if (d1 && d2) {
+            // TODO optimize
             auto v = Vector<D*>();
             v.reserve(d1->size + d2->size);
 
@@ -588,10 +594,11 @@ public:
             return create(v);
         }
 
-        auto data = d1 ? d1 : d2;
-        auto res  = n1 ? n1 : n2;
-        for (auto d : *data) res = insert(res, d);
-        return res;
+        if (n1 && n2) return merge(n1, n2);
+
+        auto n = n1 ? n1 : n2;
+        for (auto d : *(d1 ? d1 : d2)) n = insert(n, d);
+        return n;
     }
 
     /// Yields @f$s \setminus d@f$.
