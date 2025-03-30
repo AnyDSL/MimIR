@@ -55,17 +55,23 @@ private:
         ///@{
         constexpr bool is_root() const noexcept { return def == 0; }
 
-        [[nodiscard]] bool contains(D* d) const noexcept {
+        [[nodiscard]] bool contains(D* d) noexcept {
             auto n = this;
             // if (!n->within(d)) return false;
 
             // auto tid = d->tid();
             // if (auto [min, max] = n->aggregate(); tid < min || tid > max) return false;
+            n->aggregate(); // TODO
 
-            while (!n->is_root()) {
+            // while (!n->is_root()) {
+            //     if (n->def == d) return true;
+            //     n = (!n->def || tid > n->def->tid()) ? n->aux.bot : n->aux.top;
+            // }
+
+            while (n) {
                 if (n->def == d) return true;
-                // n = (!n->def || tid > n->def->tid()) ? n->aux.bot : n->aux.top;
                 n = n->parent;
+                // n = (!n->def || tid > n->def->tid()) ? n->aux.bot : n->aux.top;
             }
 
             return false;
@@ -173,7 +179,7 @@ private:
             }
         }
 
-        [[nodiscard]] constexpr std::pair<u32, u32> aggregate() noexcept {
+        /*[[nodiscard]]*/ constexpr std::pair<u32, u32> aggregate() noexcept {
             expose();
             return {aux.min, aux.max};
         }
@@ -445,7 +451,7 @@ public:
             }
 
             if (n1 && n2) {
-                // if (!n1->lca(n2)->is_root()) return true;
+                if (!n1->lca(n2)->is_root()) return true;
 
                 while (!n1->is_root() && !n2->is_root()) {
                     if (n1->def == n2->def) return true;
@@ -528,23 +534,23 @@ public:
         auto vb = v.begin();
         auto ve = v.end();
         std::sort(vb, ve, [](D* d1, D* d2) { return d1->gid() < d2->gid(); });
-        auto vi   = std::unique(vb, ve);
-        auto size = std::distance(vb, vi);
+        auto vu   = std::unique(vb, ve);
+        auto size = std::distance(vb, vu);
 
         if (size == 0) return {};
         if (size == 1) return {*vb};
 
         if (size_t(size) <= N) {
             auto [data, state] = allocate(size);
-            std::copy(vb, vi, data->elems);
+            std::copy(vb, vu, data->elems);
             return unify(data, state);
         }
 
         // Sort in ascending tids but 0 goes last.
-        std::sort(vb, vi, [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
+        std::sort(vb, vu, [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
 
         auto res = root();
-        for (auto i = vb, e = vi; i != e; ++i) res = insert(res, *i);
+        for (auto i = vb; i != vu; ++i) res = insert(res, *i);
         return res;
     }
 
@@ -561,10 +567,10 @@ public:
             return unify(data, state);
         }
 
-        if (auto data = s.isa_data()) { // TODO more subcases
+        if (auto data = s.isa_data()) {
             auto v = Vector<D*>(data->begin(), data->end());
             v.emplace_back(d);
-            return create(v);
+            return create(std::move(v));
         }
 
         if (auto n = s.isa_node()) return insert(n, d);
@@ -584,14 +590,13 @@ public:
         auto n1 = s1.isa_node(), n2 = s2.isa_node();
 
         if (d1 && d2) {
-            // TODO optimize
             auto v = Vector<D*>();
             v.reserve(d1->size + d2->size);
 
             for (auto d : *d1) v.emplace_back(d);
             for (auto d : *d2) v.emplace_back(d);
 
-            return create(v);
+            return create(std::move(v));
         }
 
         if (n1 && n2) return merge(n1, n2);
@@ -610,9 +615,7 @@ public:
             for (; i != size; ++i)
                 if (data->elems[i] == d) break;
 
-            if (i == size) return s;
-
-            --size;
+            if (i == size--) return s;
             if (size == 0) return {};
             if (size == 1) return {i == 0 ? data->elems[1] : data->elems[0]};
 
@@ -630,7 +633,7 @@ public:
             auto v = Vector<D*>();
             v.reserve(res->size);
             for (auto i = res; !i->is_root(); i = i->parent) v.emplace_back(i->def);
-            return create(v);
+            return create(std::move(v));
         }
 
         return {};
