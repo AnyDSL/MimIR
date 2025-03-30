@@ -7,7 +7,7 @@
 
 namespace mim {
 
-template<class D, size_t N = 3> class Sets {
+template<class D, size_t N = 8> class Sets {
 private:
     /// Trie Node.
     class Node {
@@ -56,22 +56,18 @@ private:
         constexpr bool is_root() const noexcept { return def == 0; }
 
         [[nodiscard]] bool contains(D* d) noexcept {
-            auto n = this;
-            // if (!n->within(d)) return false;
+            // clang-format off
+            if (d->tid() == this->min || d->tid() == this->def->tid()) return true;
+            if (d->tid() <  this->min || d->tid() >  this->def->tid()) return false;
+            // clang-format on
 
-            // auto tid = d->tid();
-            // if (auto [min, max] = n->aggregate(); tid < min || tid > max) return false;
-            n->aggregate(); // TODO
-
-            // while (!n->is_root()) {
-            //     if (n->def == d) return true;
-            //     n = (!n->def || tid > n->def->tid()) ? n->aux.bot : n->aux.top;
-            // }
-
-            while (n) {
+            expose();
+            for (auto n = this; n;) {
                 if (n->def == d) return true;
-                n = n->parent;
-                // n = (!n->def || tid > n->def->tid()) ? n->aux.bot : n->aux.top;
+                if (n->is_root())
+                    n = n->aux.bot;
+                else
+                    n = d->tid() > n->def->tid() ? n->aux.bot : n->aux.top;
             }
 
             return false;
@@ -153,36 +149,10 @@ private:
             c->aux.parent = p;
             child(x, r)   = b;
             child(c, l)   = x;
-
-            x->update();
-            c->update();
         }
 
         constexpr void rol() noexcept { return rotate<0>(); }
         constexpr void ror() noexcept { return rotate<1>(); }
-
-        constexpr void update() noexcept {
-            if (is_root()) {
-                aux.min = u32(-1);
-                aux.max = 0;
-            } else {
-                aux.min = aux.max = def->tid();
-            }
-
-            if (auto d = aux.bot) {
-                aux.min = std::min(aux.min, d->aux.min);
-                aux.max = std::max(aux.max, d->aux.max);
-            }
-            if (auto u = aux.top) {
-                aux.min = std::min(aux.min, u->aux.min);
-                aux.max = std::max(aux.max, u->aux.max);
-            }
-        }
-
-        /*[[nodiscard]]*/ constexpr std::pair<u32, u32> aggregate() noexcept {
-            expose();
-            return {aux.min, aux.max};
-        }
         ///@}
 
         /// @name Link-Cut-Tree
@@ -196,7 +166,6 @@ private:
             if (!child->aux.top) {
                 this->aux.parent = child;
                 child->aux.top   = this;
-                child->update();
             }
         }
 
@@ -208,13 +177,12 @@ private:
                 curr->splay();
                 assert(!prev || prev->aux.parent == curr);
                 curr->aux.bot = prev;
-                curr->update();
             }
             splay();
             return prev;
         }
 
-        /// Least Common Ancestor of `this` and @p other in the *rep* tree.
+        /// Least Common Ancestor of `this` and @p other in the *rep* tree; leaves @p other expose%d.
         /// @returns `nullptr`, if @p a and @p b are in different trees.
         constexpr Node* lca(Node* other) noexcept { return this->expose(), other->expose(); }
 
@@ -229,10 +197,6 @@ private:
             return curr == other;
         }
         ///@}
-
-        // TODO remove?
-        constexpr size_t max() const noexcept { return def->tid(); }
-        constexpr size_t within(D* d) const noexcept { return min <= d->tid() && d->tid() <= max(); }
 
         D* const def;
         Node* const parent;
@@ -452,15 +416,18 @@ public:
 
             if (n1 && n2) {
                 if (!n1->lca(n2)->is_root()) return true;
+                if (n1->min > n2->def->tid() || n1->def->tid() < n2->min) return false;
 
                 while (!n1->is_root() && !n2->is_root()) {
                     if (n1->def == n2->def) return true;
-                    // if (n1->min > n2->max() || n1->max() < n2->min) return false; // TODO double-check
 
-                    if (n1->def->tid() > n2->def->tid())
+                    if (n1->def->tid() > n2->def->tid()) {
                         n1 = n1->parent;
-                    else
+                        if (n1->def->tid() < n2->min) return false;
+                    } else {
                         n2 = n2->parent;
+                        if (n1->min > n2->def->tid()) return false;
+                    }
                 }
 
                 return false;
@@ -573,7 +540,10 @@ public:
             return create(std::move(v));
         }
 
-        if (auto n = s.isa_node()) return insert(n, d);
+        if (auto n = s.isa_node()) {
+            if (n->contains(d)) return n;
+            return insert(n, d);
+        }
 
         return {d};
     }
@@ -599,7 +569,11 @@ public:
             return create(std::move(v));
         }
 
-        if (n1 && n2) return merge(n1, n2);
+        if (n1 && n2) {
+            if (n1->is_descendant_of(n2)) return n1;
+            if (n2->is_descendant_of(n1)) return n2;
+            return merge(n1, n2);
+        }
 
         auto n = n1 ? n1 : n2;
         for (auto d : *(d1 ? d1 : d2)) n = insert(n, d);
@@ -627,6 +601,9 @@ public:
         }
 
         if (auto n = s.isa_node()) {
+            if (d->tid() == 0 || d->tid() < n->min) return n;
+            if (!n->contains(d)) return n;
+
             auto res = erase(n, d);
             if (res->size > N) return res;
 
@@ -643,7 +620,7 @@ public:
     friend void swap(Sets& s1, Sets& s2) noexcept {
         using std::swap;
         // clang-format off
-        swap(s1.array_arena_, s2.array_arena_);
+        swap(s1.data_arena_, s2.data_arena_);
         swap(s1. node_arena_, s2. node_arena_);
         swap(s1.pool_,        s2.pool_);
         swap(s1.root_,        s2.root_);
@@ -667,8 +644,8 @@ private:
     std::pair<Data*, fe::Arena::State> allocate(size_t size) {
         assert(0 < size && size <= N);
         auto bytes = sizeof(Data) + size * SizeOf<D>;
-        auto state = array_arena_.state();
-        auto buff  = array_arena_.allocate(bytes, alignof(Data));
+        auto state = data_arena_.state();
+        auto buff  = data_arena_.allocate(bytes, alignof(Data));
         auto data  = new (buff) Data(size);
         return {data, state};
     }
@@ -677,11 +654,11 @@ private:
         assert(data->size != 0);
         auto [i, ins] = pool_.emplace(data);
         if (ins) {
-            array_arena_.deallocate(excess * SizeOf<D>); // release excess memory
+            data_arena_.deallocate(excess * SizeOf<D>); // release excess memory
             return Set(data);
         }
 
-        array_arena_.deallocate(state);
+        data_arena_.deallocate(state);
         return Set(*i);
     }
 
@@ -710,22 +687,21 @@ private:
     }
 
     [[nodiscard]] constexpr Node* merge(Node* n, Node* m) {
-        if (n->is_descendant_of(m)) return n;
-        if (m->is_descendant_of(n)) return m;
-
+        if (n->is_root()) return m;
+        if (m->is_root()) return n;
         auto nn = n->def->tid() < m->def->tid() ? n : n->parent;
         auto mm = n->def->tid() > m->def->tid() ? m : m->parent;
         return mount(merge(nn, mm), n->def->tid() < m->def->tid() ? m->def : n->def);
     }
 
     [[nodiscard]] Node* erase(Node* n, D* d) {
-        if (d->tid() == 0 || !n->within(d)) return {n};
+        if (d->tid() > n->def->tid()) return n;
         if (n->def == d) return n->parent;
         return mount(erase(n->parent, d), n->def);
     }
 
     fe::Arena node_arena_;
-    fe::Arena array_arena_;
+    fe::Arena data_arena_;
     absl::flat_hash_set<const Data*, absl::Hash<const Data*>, typename Data::Equal> pool_;
     fe::Arena::Ptr<Node> root_;
     u32 tid_counter_ = 1;
