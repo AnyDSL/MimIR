@@ -403,7 +403,6 @@ public:
             }
             // clang-format on
         }
-
         ///@}
 
         /// @name Check Membership
@@ -461,8 +460,9 @@ public:
                 return false;
             }
 
+            auto n = n1 ? n1 : n2;
             for (auto e : *(d1 ? d1 : d2))
-                if ((n1 ? n1 : n2)->contains(e)) return true;
+                if (n->contains(e)) return true;
 
             return false;
         }
@@ -541,7 +541,7 @@ public:
         }
 
         // Sort in ascending tids but 0 goes last.
-        std::sort(vb, ve, [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
+        std::sort(vb, vi, [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
 
         auto res = root();
         for (auto i = vb, e = vi; i != e; ++i) res = insert(res, *i);
