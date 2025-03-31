@@ -25,9 +25,9 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
 
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
     auto size     = old_def->num_ops();
-    auto new_ops  = arena_.allocate<const Def*>(size);
-    for (size_t i = 0; i != size; ++i) new_ops[i] = rewrite(old_def->op(i));
-    return old_def->rebuild(world(), new_type, Defs(new_ops, size));
+    auto new_ops  = DefVec(size);
+    for (size_t i = 0; i != size; ++i) new_ops[i] = (rewrite(old_def->op(i)));
+    return old_def->rebuild(world(), new_type, new_ops);
 }
 
 Ref Rewriter::rewrite_mut(Def* old_mut) {

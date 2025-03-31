@@ -260,13 +260,13 @@ public:
             constexpr iterator() noexcept = default;
             constexpr iterator(D* d) noexcept
                 : tag_(Tag::Uniq)
-                , def_(d) {}
+                , ptr_(std::bit_cast<uintptr_t>(d)) {}
             constexpr iterator(D* const* elems) noexcept
                 : tag_(Tag::Data)
-                , elems_(elems) {}
+                , ptr_(std::bit_cast<uintptr_t>(elems)) {}
             constexpr iterator(Node* node) noexcept
                 : tag_(Tag::Node)
-                , node_(node) {}
+                , ptr_(std::bit_cast<uintptr_t>(node)) {}
             ///@}
 
             /// @name Increment
@@ -276,10 +276,14 @@ public:
                 // clang-format off
                 switch (tag_) {
                     case Tag::Uniq: return clear();
-                    case Tag::Data: return ++elems_, *this;
+                    case Tag::Data: return ptr_ = std::bit_cast<uintptr_t>(std::bit_cast<D* const*>(ptr_) + 1), *this;
                     case Tag::Node: {
-                        node_      = node_->parent;
-                        if (node_->is_root()) clear();
+                        auto node = std::bit_cast<Node*>(ptr_);
+                        node      = node->parent;
+                        if (node->is_root())
+                            clear();
+                        else
+                            ptr_ = std::bit_cast<uintptr_t>(node);
                         return *this;
                     }
                     default: fe::unreachable();
@@ -306,9 +310,9 @@ public:
             ///@{
             constexpr reference operator*() const noexcept {
                 switch (tag_) {
-                    case Tag::Uniq: return def_;
-                    case Tag::Data: return *elems_;
-                    case Tag::Node: return node_->def;
+                    case Tag::Uniq: return *std::bit_cast<D* const*>(&ptr_);
+                    case Tag::Data: return *std::bit_cast<D* const*>(ptr_);
+                    case Tag::Node: return std::bit_cast<Node*>(ptr_)->def;
                     default: fe::unreachable();
                 }
             }
@@ -319,12 +323,7 @@ public:
 
         private:
             Tag tag_;
-            union {
-                D* def_;
-                D* const* elems_;
-                Node* node_;
-                uintptr_t ptr_;
-            };
+            uintptr_t ptr_;
         };
 
         /// @name Construction
@@ -346,7 +345,7 @@ public:
         ///@{
         constexpr Tag tag() const noexcept { return Tag(ptr_ & uintptr_t(0b11)); }
         template<class T> constexpr T* ptr() const noexcept {
-            return reinterpret_cast<T*>(ptr_ & (uintptr_t(-1) << uintptr_t(2)));
+            return std::bit_cast<T*>(ptr_ & (uintptr_t(-2) << uintptr_t(2)));
         }
         constexpr bool empty() const noexcept { ///< Not empty.
             assert(tag() != Tag::Node || !ptr<Node>()->is_root());
