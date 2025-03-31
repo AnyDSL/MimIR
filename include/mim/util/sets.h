@@ -53,18 +53,18 @@ private:
         constexpr bool is_root() const noexcept { return def == 0; }
 
         [[nodiscard]] bool contains(D* d) noexcept {
+            auto tid = d->tid();
             // clang-format off
-            if (d->tid() == this->min || d->tid() == this->def->tid()) return true;
-            if (d->tid() <  this->min || d->tid() >  this->def->tid()) return false;
+            if (tid == this->min || tid == this->def->tid()) return true;
+            if (tid <  this->min || tid >  this->def->tid()) return false;
             // clang-format on
 
             expose();
-            for (auto n = this; n;) {
-                if (n->def == d) return true;
-                if (n->is_root())
-                    n = n->aux.bot;
-                else
-                    n = d->tid() > n->def->tid() ? n->aux.bot : n->aux.top;
+            for (auto n = this; n; n = n->is_root() ? n->aux.bot : (tid < n->def->tid() ? n->aux.top : n->aux.bot)) {
+                if (n->def == d) {
+                    n->splay(); // heuristic: bring to root to have hits at the top
+                    return true;
+                }
             }
 
             return false;
@@ -414,8 +414,8 @@ public:
                 if (!n1->lca(n2)->is_root()) return true;
                 if (n1->min > n2->def->tid() || n1->def->tid() < n2->min) return false;
 
-                // if one set is way smaller, iterate over this one and check with contains the other one
-                if (auto n1_lt = n1->size <= n2->size >> 3; n1_lt || n1->size <= n2->size >> 3) {
+                // if one set is way smaller, iterate over this one and check with `contains` the other one
+                if (auto n1_lt = n1->size <= n2->size >> 2; n1_lt || n1->size <= n2->size >> 2) {
                     auto m = n1_lt ? n2 : n1;
                     for (auto n = n1_lt ? n1 : n2; !n->is_root(); n = n->parent)
                         if (m->contains(n->def)) return true;
@@ -423,7 +423,11 @@ public:
                 }
 
                 while (!n1->is_root() && !n2->is_root()) {
-                    if (n1->def == n2->def) return true;
+                    if (n1->def == n2->def) {
+                        n1->splay();
+                        n2->splay();
+                        return true;
+                    }
 
                     if (n1->def->tid() > n2->def->tid()) {
                         n1 = n1->parent;
