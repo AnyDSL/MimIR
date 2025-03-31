@@ -86,6 +86,7 @@ private:
 
     World& world_;
     MutMap<const Def*> binders_;
+    fe::Arena arena_;
 };
 
 } // namespace mim

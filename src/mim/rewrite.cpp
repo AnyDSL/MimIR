@@ -2,7 +2,7 @@
 
 #include "mim/world.h"
 
-// Don't use fancy C++-lambdas; it's way to annoying stepping through them in a debugger.
+// Don't use fancy C++-lambdas; it's way too annoying stepping through them in a debugger.
 
 namespace mim {
 
@@ -24,8 +24,9 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
     }
 
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
-    auto new_ops  = DefVec(old_def->num_ops());
-    for (size_t i = 0, e = new_ops.size(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
+    auto size     = old_def->num_ops();
+    auto new_ops  = DefVec(size);
+    for (size_t i = 0; i != size; ++i) new_ops[i] = (rewrite(old_def->op(i)));
     return old_def->rebuild(world(), new_type, new_ops);
 }
 

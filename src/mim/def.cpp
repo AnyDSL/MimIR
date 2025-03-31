@@ -11,6 +11,9 @@ using namespace std::literals;
 
 namespace mim {
 
+template void Muts::dump() const;
+template void Vars::dump() const;
+
 /*
  * constructors
  */
@@ -36,9 +39,8 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     }
 
     gid_ = world().next_gid();
-
     if (auto var = isa<Var>()) {
-        vars_ = world().vars().create(var);
+        vars_ = Vars(var);
     } else if (!has_const_dep()) {
         for (auto op : deps()) {
             vars_ = world().vars().merge(vars_, op->local_vars());
@@ -291,12 +293,12 @@ bool Def::is_set() const {
  */
 
 Muts Def::local_muts() const {
-    if (auto mut = isa_mut()) return world().muts().create(mut);
+    if (auto mut = isa_mut()) return Muts(mut);
     return muts_;
 }
 
 Muts Def::mut_local_muts() {
-    Muts muts;
+    auto muts = Muts();
     for (auto op : deps()) muts = world().muts().merge(muts, op->local_muts());
     return muts;
 }
@@ -304,10 +306,13 @@ Muts Def::mut_local_muts() {
 Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
-    auto vars = local_vars();
-    for (auto mut : local_muts()) vars = world().vars().merge(vars, mut->free_vars());
-    return vars;
+    auto fvs = local_vars();
+    for (auto mut : local_muts()) fvs = world().vars().merge(fvs, mut->free_vars());
+
+    return fvs;
 }
+
+Vars Def::local_vars() const { return mut_ ? Vars() : vars_; }
 
 Vars Def::free_vars() {
     if (!is_set()) return {};
@@ -355,8 +360,8 @@ void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
         for (auto mut : users()) mut->invalidate();
-        vars_.clear();
-        muts_.clear();
+        vars_ = Vars();
+        muts_ = Muts();
     }
 }
 
@@ -384,7 +389,7 @@ Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 World& Def::world() const noexcept {
     if (isa<Univ>()) return *world_;
     if (auto type = isa<Type>()) return type->level()->world();
-    return type()->world(); // TODO unroll
+    return type().def()->world(); // TODO unroll
 }
 
 Ref Def::unfold_type() const {
