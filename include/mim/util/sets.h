@@ -227,6 +227,8 @@ private:
 
         /// @name Iterators
         ///@{
+        constexpr D** begin() noexcept { return elems; }
+        constexpr D** end() noexcept { return elems + size; }
         constexpr D* const* begin() const noexcept { return elems; }
         constexpr D* const* end() const noexcept { return elems + size; }
         ///@}
@@ -512,7 +514,7 @@ public:
 
         if (size_t(size) <= N) {
             auto [data, state] = allocate(size);
-            std::copy(vb, vu, data->elems);
+            std::copy(vb, vu, data->begin());
             return unify(data, state);
         }
 
@@ -544,7 +546,7 @@ public:
 
                 // copy over and insert new element d
                 bool ins = false;
-                for (auto si = src->elems, di = dst->elems, se = src->end(); si != se || !ins; ++di) {
+                for (auto si = src->begin(), di = dst->begin(), se = src->end(); si != se || !ins; ++di) {
                     if (si != se && d == *si) { // already here
                         data_arena_.deallocate(state);
                         return s;
@@ -561,8 +563,8 @@ public:
                 auto [dst, state] = allocate(size + 1);
 
                 // copy over
-                auto di = dst->elems;
-                for (auto si = src->elems, se = src->end(); si != se; ++si, ++di) {
+                auto di = dst->begin();
+                for (auto si = src->begin(), se = src->end(); si != se; ++si, ++di) {
                     if (d == *si) { // already here
                         data_arena_.deallocate(state);
                         return s;
@@ -573,7 +575,7 @@ public:
                 *di = d; // put new element at last into dst->elems
 
                 // sort in ascending tids but 0 goes last
-                std::sort(dst->elems, di,
+                std::sort(dst->begin(), di,
                           [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
 
                 auto res = root();
