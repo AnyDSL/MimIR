@@ -415,7 +415,7 @@ public:
                 if (n1->min > n2->def->tid() || n1->def->tid() < n2->min) return false;
 
                 // if one set is way smaller, iterate over this one and check with `contains` the other one
-                if (auto n1_lt = n1->size <= n2->size >> 2; n1_lt || n1->size <= n2->size >> 2) {
+                if (auto n1_lt = n1->size <= n2->size >> 3; n1_lt || n1->size <= n2->size >> 3) {
                     auto m = n1_lt ? n2 : n1;
                     for (auto n = n1_lt ? n1 : n2; !n->is_root(); n = n->parent)
                         if (m->contains(n->def)) return true;
