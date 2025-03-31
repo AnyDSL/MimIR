@@ -2,6 +2,8 @@
 
 #include "mim/world.h"
 
+#include "fe/arena.h"
+
 namespace mim {
 
 /// Recurseivly rewrites part of a program **into** the provided World.
@@ -25,6 +27,7 @@ public:
 
 private:
     World& world_;
+    fe::Arena arena_;
     Def2Def old2new_;
 };
 
