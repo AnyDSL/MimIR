@@ -545,7 +545,7 @@ public:
                 // copy over and insert new element d
                 bool ins = false;
                 for (auto si = src->elems, di = dst->elems, se = src->end(); si != se || !ins; ++di) {
-                    if (d == *si) { // already here
+                    if (si != se && d == *si) { // already here
                         data_arena_.deallocate(state);
                         return s;
                     }
