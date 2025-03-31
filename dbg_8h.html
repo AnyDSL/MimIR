@@ -171,7 +171,7 @@ Functions</h2></td></tr>
 <li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as separator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
 <div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, v);</div>
 </div><!-- fragment --></li>
-<li>If you have a <code>std::ranges::range</code> that needs to be formatted in a more complicated way, bundle it with an <a class="el" href="structmim_1_1Elem.html">Elem</a>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
+<li>If you have a <code>std::ranges::range</code> that needs to be formatted in a more complicated way, bundle it with an <a class="el" href="structmim_1_1Elem.html" title="Use with print to output complicated std::ranges::ranges.">Elem</a>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
 <div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
 <div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span> elem) { <a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
 </div><!-- fragment --></li>

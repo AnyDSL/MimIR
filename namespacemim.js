@@ -78,8 +78,6 @@ var namespacemim =
     [ "Pipeline", "classmim_1_1Pipeline.html", "classmim_1_1Pipeline" ],
     [ "PipelineBuilder", "classmim_1_1PipelineBuilder.html", "classmim_1_1PipelineBuilder" ],
     [ "Plugin", "structmim_1_1Plugin.html", "structmim_1_1Plugin" ],
-    [ "Pool", "classmim_1_1Pool.html", "classmim_1_1Pool" ],
-    [ "PooledSet", "classmim_1_1PooledSet.html", "classmim_1_1PooledSet" ],
     [ "Proxy", "classmim_1_1Proxy.html", "classmim_1_1Proxy" ],
     [ "Ref", "classmim_1_1Ref.html", "classmim_1_1Ref" ],
     [ "Res", "classmim_1_1Res.html", "classmim_1_1Res" ],
@@ -89,6 +87,7 @@ var namespacemim =
     [ "RWPhase", "classmim_1_1RWPhase.html", "classmim_1_1RWPhase" ],
     [ "Scalarize", "classmim_1_1Scalarize.html", "classmim_1_1Scalarize" ],
     [ "Scheduler", "classmim_1_1Scheduler.html", "classmim_1_1Scheduler" ],
+    [ "Sets", "classmim_1_1Sets.html", "classmim_1_1Sets" ],
     [ "Setters", "classmim_1_1Setters.html", "classmim_1_1Setters" ],
     [ "Sigma", "classmim_1_1Sigma.html", "classmim_1_1Sigma" ],
     [ "Span", "classmim_1_1Span.html", "classmim_1_1Span" ],
@@ -142,7 +141,7 @@ var namespacemim =
     [ "Meet", "namespacemim.html#afa92c943c6a47605e4969d5bd5e9b802", null ],
     [ "Mut2Mut", "namespacemim.html#a9fd6d037a8eb540c32dbe840e32c90e9", null ],
     [ "MutMap", "namespacemim.html#afccd5f832a8d98e22ada5860ea24afd2", null ],
-    [ "Muts", "namespacemim.html#a5e9a8c388e8451e32ecc710911d05546", null ],
+    [ "Muts", "namespacemim.html#a808d4cab01734432fc4218de6dae0ef2", null ],
     [ "MutSet", "namespacemim.html#a9cef35a428a391739d168b05bad8dfb2", null ],
     [ "nat_t", "namespacemim.html#a02aae51c2293663cb7352f21c7fbe490", null ],
     [ "node_t", "namespacemim.html#a459cb02e53212327ccb3957614a485ca", null ],
@@ -166,7 +165,7 @@ var namespacemim =
     [ "Uses", "namespacemim.html#aa5a838964832f04e880e1aa8c5789343", null ],
     [ "Var2Var", "namespacemim.html#afe12e59f7ee4253d3b71cd8c0db61d06", null ],
     [ "VarMap", "namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab", null ],
-    [ "Vars", "namespacemim.html#ac0eea4260d6f0e43fe7f6c7877c0d2ba", null ],
+    [ "Vars", "namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f", null ],
     [ "VarSet", "namespacemim.html#a69dc278a82313ca3dc770a868a1e57d1", null ],
     [ "View", "namespacemim.html#a4d6e32c8985b06c92d46bf1c5fa7491a", null ],
     [ "w2f", "namespacemim.html#a2812faa6603be36aef320b6b3fb90767", null ],
@@ -292,6 +291,5 @@ var namespacemim =
     [ "visit", "namespacemim.html#a01df1c711f47326f6d3b9efc933ccd26", null ],
     [ "visit_first", "namespacemim.html#afdac200da4be48df165deb24615fc940", null ],
     [ "Default_Inlined_Size", "namespacemim.html#a39efaf0b2304223993b837cc3e0bd605", null ],
-    [ "No_Undo", "namespacemim.html#ae97e9f99aa1fed4c2dbc1a807a8e689e", null ],
-    [ "SizeOf", "namespacemim.html#aaba222a564424e947a3de06a06825039", null ]
+    [ "No_Undo", "namespacemim.html#ae97e9f99aa1fed4c2dbc1a807a8e689e", null ]
 ];

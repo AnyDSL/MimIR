@@ -73,7 +73,7 @@ var searchData=
   ['freezer_70',['Freezer',['../structmim_1_1World_1_1Freezer.html',1,'mim::World::Freezer'],['../structmim_1_1World_1_1Freezer.html#a818ef9b85c0577003a841560821c188e',1,'mim::World::Freezer::Freezer()']]],
   ['fresh_71',['fresh',['../structmim_1_1ast_1_1AnnexInfo.html#a48446c60c76575b7b3e6e7bb5cc54162',1,'mim::ast::AnnexInfo']]],
   ['from_5fouter_5fscope_72',['from_outer_scope',['../classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#ac63427ddebefb4857ec67e7379d2cfee',1,'mim::plug::clos::ClosConvPrep::from_outer_scope(Lam *lam)'],['../classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#ab6b4441f2f8ee2863a39315928663800',1,'mim::plug::clos::ClosConvPrep::from_outer_scope(Ref lam)']]],
-  ['front_73',['front',['../classmim_1_1PooledSet.html#ae84cbb3edd1341550b9493dede96a104',1,'mim::PooledSet::front()'],['../classmim_1_1unique__queue.html#a706602cdaf314aa94a65a6f0404913c0',1,'mim::unique_queue::front()']]],
+  ['front_73',['front',['../classmim_1_1unique__queue.html#a706602cdaf314aa94a65a6f0404913c0',1,'mim::unique_queue']]],
   ['frozen_74',['frozen',['../structmim_1_1World_1_1State.html#a3fbd87f24478b2e87fb87e19e6206a13',1,'mim::World::State::POD']]],
   ['fst_75',['fst',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205a3bd77778e6ff1c054e94a0cab12706c2',1,'mim::plug::core']]],
   ['fstclassbb_76',['fstclassBB',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8cae948e5de0a4b5744fd5517f9453e380e',1,'mim::plug::clos']]],

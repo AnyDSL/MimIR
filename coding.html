@@ -273,7 +273,7 @@ Dumping</h2>
 <div class="fragment"><div class="line">(gdb) call world.flags().dump_gid = 1</div>
 <div class="line">(gdb) call world.flags().dump_recursive = 1</div>
 <div class="line">(gdb) call world().log().max_level_ = 4</div>
-</div><!-- fragment --><p>Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4">mim::Def::gid</a> via <a class="el" href="classmim_1_1World.html#a1dd8c434960e38a6d6e0252198082c01" title="Lookup Def by gid.">mim::World::gid2def</a>:</p>
+</div><!-- fragment --><p>Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> via <a class="el" href="classmim_1_1World.html#a1dd8c434960e38a6d6e0252198082c01" title="Lookup Def by gid.">mim::World::gid2def</a>:</p>
 <div class="fragment"><div class="line">(gdb) p world.gid2def(123);</div>
 <div class="line">$1 = ...</div>
 <div class="line">(gdb) $1-&gt;dump();</div>
@@ -336,7 +336,7 @@ Display DOT</h2>
 <div class="line">xdotw &amp;def-&gt;world() 1 1</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
 Conditional Breakpoints</h2>
-<p>Often, you will want to inspect a certain <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">mim::Def</a> at a particular point within the program. You can use <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">conditional breakpoints</a> for this. For example, the following GDB command will break, if the <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4">mim::Def::gid</a> of variable <code>def</code> is <code>42</code> in source code location <code>foo.cpp:23</code>:</p>
+<p>Often, you will want to inspect a certain <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">mim::Def</a> at a particular point within the program. You can use <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">conditional breakpoints</a> for this. For example, the following GDB command will break, if the <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> of variable <code>def</code> is <code>42</code> in source code location <code>foo.cpp:23</code>:</p>
 <div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 42</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md8"></a>
 Catching Throw</h2>

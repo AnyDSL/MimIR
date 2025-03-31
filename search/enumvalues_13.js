@@ -29,7 +29,7 @@ var searchData=
   ['umax_26',['umax',['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2a82c1089b8c973b65be6d620f765ed1f5',1,'mim::plug::core']]],
   ['umin_27',['umin',['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2a017163727bc806385f1453c130b4fce3',1,'mim::plug::core']]],
   ['une_28',['une',['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a92df19e29c9d45d888ed5f68bad1c3b5',1,'mim::plug::math']]],
-  ['uniq_29',['Uniq',['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3aaaa12d04de03c97dd14233d77c8049b7',1,'mim::Node']]],
+  ['uniq_29',['Uniq',['../classmim_1_1Sets_1_1Set.html#a4419609a2309463f0784d9751aa37c49aa52035083e0f187cb1b19b131b4ecdd5',1,'mim::Sets::Set::Uniq'],['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3aaaa12d04de03c97dd14233d77c8049b7',1,'mim::Node::Uniq']]],
   ['univ_30',['Univ',['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a4699ecf408aa30f29e1ab66f34735bd3',1,'mim::Node::Univ'],['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946',1,'mim::Univ']]],
   ['unsafe_31',['unsafe',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91a64c823fad1d87e0df1ef3cdeb8ac684f',1,'mim::plug::math']]],
   ['urem_32',['urem',['../namespacemim_1_1plug_1_1core.html#a12a963046afc5c121f244b761faad6e9ae1851600007553e51484056678cdb3d1',1,'mim::plug::core']]],

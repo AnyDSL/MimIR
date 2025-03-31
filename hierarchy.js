@@ -17,14 +17,13 @@ var hierarchy =
     [ "mim::BitSet", "classmim_1_1BitSet.html", null ],
     [ "mim::Checker", "classmim_1_1Checker.html", null ],
     [ "mim::plug::clos::ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", null ],
-    [ "mim::PooledSet< T >::Data", "structmim_1_1PooledSet_1_1Data.html", null ],
     [ "mim::Dbg", "structmim_1_1Dbg.html", null ],
     [ "mim::DefDefEq", "structmim_1_1DefDefEq.html", null ],
     [ "mim::DefDefHash", "structmim_1_1DefDefHash.html", null ],
     [ "automaton::DFANode", "classautomaton_1_1DFANode.html", null ],
     [ "mim::Elem< R, F >", "structmim_1_1Elem.html", null ],
     [ "mim::ast::Emitter", "classmim_1_1ast_1_1Emitter.html", null ],
-    [ "mim::PooledSet< T >::Data::Equal", "structmim_1_1PooledSet_1_1Data_1_1Equal.html", null ],
+    [ "mim::Sets< D, N >::Data::Equal", "structmim_1_1Sets_1_1Data_1_1Equal.html", null ],
     [ "std::exception", null, [
       [ "mim::Error", "classmim_1_1Error.html", null ]
     ] ],
@@ -51,6 +50,7 @@ var hierarchy =
     [ "std::integral_constant", null, [
       [ "std::tuple_size< mim::Span< T, N > >", "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
+    [ "mim::Sets< D, N >::Set::iterator", "classmim_1_1Sets_1_1Set_1_1iterator.html", null ],
     [ "fe::Lexer", null, [
       [ "mim::ast::Lexer", "classmim_1_1ast_1_1Lexer.html", null ]
     ] ],
@@ -62,6 +62,7 @@ var hierarchy =
     [ "mim::Nest", "classmim_1_1Nest.html", null ],
     [ "automaton::NFANode", "classautomaton_1_1NFANode.html", null ],
     [ "mim::Nest::Node", "classmim_1_1Nest_1_1Node.html", null ],
+    [ "mim::Sets< D, N >::Node.aux", "classmim_1_1Sets.html#structmim_1_1Sets_1_1Node_8aux", null ],
     [ "fe::Parser", null, [
       [ "mim::ast::Parser", "classmim_1_1ast_1_1Parser.html", null ]
     ] ],
@@ -202,12 +203,6 @@ var hierarchy =
     [ "mim::PipelineBuilder", "classmim_1_1PipelineBuilder.html", null ],
     [ "mim::Plugin", "structmim_1_1Plugin.html", null ],
     [ "mim::World::State::POD", "structmim_1_1World_1_1State.html#structmim_1_1World_1_1State_1_1POD", null ],
-    [ "mim::Pool< T >", "classmim_1_1Pool.html", null ],
-    [ "mim::Pool< const mim::Var * >", "classmim_1_1Pool.html", null ],
-    [ "mim::Pool< mim::Def * >", "classmim_1_1Pool.html", null ],
-    [ "mim::PooledSet< T >", "classmim_1_1PooledSet.html", null ],
-    [ "mim::PooledSet< const Var * >", "classmim_1_1PooledSet.html", null ],
-    [ "mim::PooledSet< Def * >", "classmim_1_1PooledSet.html", null ],
     [ "mim::ast::R< T >", "structmim_1_1ast_1_1R.html", null ],
     [ "automaton::RangeCompare", "structautomaton_1_1RangeCompare.html", null ],
     [ "mim::Ref", "classmim_1_1Ref.html", null ],
@@ -304,6 +299,12 @@ var hierarchy =
     [ "mim::Scheduler", "classmim_1_1Scheduler.html", null ],
     [ "mim::World::ScopedLoc", "structmim_1_1World_1_1ScopedLoc.html", null ],
     [ "mim::ast::Scopes", "classmim_1_1ast_1_1Scopes.html", null ],
+    [ "mim::Sets< D, N >::Set", "classmim_1_1Sets_1_1Set.html", null ],
+    [ "mim::Sets< D, N >", "classmim_1_1Sets.html", null ],
+    [ "mim::Sets< const mim::Var >", "classmim_1_1Sets.html", null ],
+    [ "mim::Sets< const Var >", "classmim_1_1Sets.html", null ],
+    [ "mim::Sets< Def >", "classmim_1_1Sets.html", null ],
+    [ "mim::Sets< mim::Def >", "classmim_1_1Sets.html", null ],
     [ "mim::Setters< P, D >", "classmim_1_1Setters.html", null ],
     [ "mim::Setters< Ac >", "classmim_1_1Setters.html", [
       [ "mim::Ac", "classmim_1_1Ac.html", null ]

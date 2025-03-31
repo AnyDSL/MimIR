@@ -30,6 +30,6 @@ var searchData=
   ['freeze_27',['freeze',['../classmim_1_1World.html#af2630c208c9ef6f6fd9f27bcf825eafa',1,'mim::World']]],
   ['freezer_28',['Freezer',['../structmim_1_1World_1_1Freezer.html#a818ef9b85c0577003a841560821c188e',1,'mim::World::Freezer']]],
   ['from_5fouter_5fscope_29',['from_outer_scope',['../classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#ac63427ddebefb4857ec67e7379d2cfee',1,'mim::plug::clos::ClosConvPrep::from_outer_scope(Lam *lam)'],['../classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#ab6b4441f2f8ee2863a39315928663800',1,'mim::plug::clos::ClosConvPrep::from_outer_scope(Ref lam)']]],
-  ['front_30',['front',['../classmim_1_1PooledSet.html#ae84cbb3edd1341550b9493dede96a104',1,'mim::PooledSet::front()'],['../classmim_1_1unique__queue.html#a706602cdaf314aa94a65a6f0404913c0',1,'mim::unique_queue::front()']]],
+  ['front_30',['front',['../classmim_1_1unique__queue.html#a706602cdaf314aa94a65a6f0404913c0',1,'mim::unique_queue']]],
   ['fun_31',['fun',['../classmim_1_1World.html#a052a6f3868315205c5140e75857e31a3',1,'mim::World::fun(Ref dom, Ref codom, Lam::Filter f, Ref body)'],['../classmim_1_1World.html#a3927d58f78f222788d175fa96d0776af',1,'mim::World::fun(Defs dom, Ref codom, Lam::Filter f, Ref body)'],['../classmim_1_1World.html#ab57b7c1c05af56db4624bab626f191b5',1,'mim::World::fun(Ref dom, Defs codom, Lam::Filter f, Ref body)'],['../classmim_1_1World.html#a5c0e9e094c8caeed0578ad5d6c38c65a',1,'mim::World::fun(Defs dom, Defs codom, Lam::Filter f, Ref body)']]]
 ];
