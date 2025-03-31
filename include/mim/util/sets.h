@@ -7,7 +7,7 @@
 
 namespace mim {
 
-template<class D, size_t N = 8> class Sets {
+template<class D, size_t N = 16> class Sets {
 private:
     /// Trie Node.
     class Node {
@@ -17,10 +17,7 @@ private:
             , parent(nullptr)
             , size(0)
             , min(size_t(-1))
-            , id(id) {
-            aux.min = u32(-1);
-            aux.max = 0;
-        }
+            , id(id) {}
 
         constexpr Node(Node* parent, D* def, u32 id) noexcept
             : def(def)
@@ -209,8 +206,6 @@ private:
             Node* parent = nullptr; ///< parent or path-parent
             Node* bot    = nullptr; ///< left/deeper/bottom/leaf-direction
             Node* top    = nullptr; ///< right/shallower/top/root-direction
-            u32 min      = u32(-1);
-            u32 max      = 0;
         } mutable aux;
     };
 
@@ -418,6 +413,14 @@ public:
                 if (!n1->lca(n2)->is_root()) return true;
                 if (n1->min > n2->def->tid() || n1->def->tid() < n2->min) return false;
 
+                // if one set is way smaller, iterate over this one and check with contains the other one
+                if (auto n1_lt = n1->size <= n2->size >> 3; n1_lt || n1->size <= n2->size >> 3) {
+                    auto m = n1_lt ? n2 : n1;
+                    for (auto n = n1_lt ? n1 : n2; !n->is_root(); n = n->parent)
+                        if (m->contains(n->def)) return true;
+                    return false;
+                }
+
                 while (!n1->is_root() && !n2->is_root()) {
                     if (n1->def == n2->def) return true;
 
@@ -513,7 +516,7 @@ public:
             return unify(data, state);
         }
 
-        // Sort in ascending tids but 0 goes last.
+        // sort in ascending tids but 0 goes last
         std::sort(vb, vu, [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
 
         auto res = root();
@@ -534,10 +537,49 @@ public:
             return unify(data, state);
         }
 
-        if (auto data = s.isa_data()) {
-            auto v = Vector<D*>(data->begin(), data->end());
-            v.emplace_back(d);
-            return create(std::move(v));
+        if (auto src = s.isa_data()) {
+            auto size = src->size;
+            if (size + 1 <= N) {
+                auto [dst, state] = allocate(size + 1);
+
+                // copy over and insert new element d
+                bool ins = false;
+                for (auto si = src->elems, di = dst->elems, se = src->end(); si != se || !ins; ++di) {
+                    if (d == *si) { // already here
+                        data_arena_.deallocate(state);
+                        return s;
+                    }
+
+                    if (!ins && (si == se || d->gid() < (*si)->gid()))
+                        *di = d, ins = true;
+                    else
+                        *di = *si++;
+                }
+
+                return unify(dst, state);
+            } else { // we need to switch from Data to Node
+                auto [dst, state] = allocate(size + 1);
+
+                // copy over
+                auto di = dst->elems;
+                for (auto si = src->elems, se = src->end(); si != se; ++si, ++di) {
+                    if (d == *si) { // already here
+                        data_arena_.deallocate(state);
+                        return s;
+                    }
+
+                    *di = *si;
+                }
+                *di = d; // put new element at last into dst->elems
+
+                // sort in ascending tids but 0 goes last
+                std::sort(dst->elems, di,
+                          [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
+
+                auto res = root();
+                for (auto i = dst->begin(), e = dst->end(); i != e; ++i) res = insert(res, *i);
+                return res;
+            }
         }
 
         if (auto n = s.isa_node()) {
@@ -593,6 +635,7 @@ public:
             if (size == 0) return {};
             if (size == 1) return {i == 0 ? data->elems[1] : data->elems[0]};
 
+            assert(size <= N);
             auto [new_data, state] = allocate(size);
             auto db                = data->begin();
             std::copy(db + i + 1, data->end(), std::copy(db, db + i, new_data->elems)); // copy over, skip i
@@ -642,7 +685,6 @@ private:
 
     // array helpers
     std::pair<Data*, fe::Arena::State> allocate(size_t size) {
-        assert(0 < size && size <= N);
         auto bytes = sizeof(Data) + size * SizeOf<D>;
         auto state = data_arena_.state();
         auto buff  = data_arena_.allocate(bytes, alignof(Data));
@@ -660,11 +702,6 @@ private:
 
         data_arena_.deallocate(state);
         return Set(*i);
-    }
-
-    constexpr static void copy_if_unique_and_inc(D**& i, D* const*& ai) noexcept {
-        if (*i != *ai) *++i = *ai;
-        ++ai;
     }
 
     // Trie helpers
