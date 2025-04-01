@@ -15,8 +15,8 @@ namespace mim {
  * constructors
  */
 
-Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
-    : world_(w)
+Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
+    : world_(world)
     , flags_(flags)
     , node_(unsigned(node))
     , mut_(false)
@@ -35,9 +35,10 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
         dep_ |= op->dep_;
     }
 
-    auto& muts = world().muts();
-    auto& vars = world().vars();
-    gid_       = world().next_gid();
+    auto& w    = world ? *world : this->world();
+    auto& muts = w.muts();
+    auto& vars = w.vars();
+    gid_       = w.next_gid();
     if (auto var = isa<Var>()) {
         vars_ = Vars(var);
     } else if (!has_const_dep()) {
@@ -306,8 +307,9 @@ Muts Def::mut_local_muts() {
 Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
-    auto fvs = local_vars();
-    for (auto mut : local_muts()) fvs = world().vars().merge(fvs, mut->free_vars());
+    auto& vars = world().vars();
+    auto fvs   = local_vars();
+    for (auto mut : local_muts()) fvs = vars.merge(fvs, mut->free_vars());
 
     return fvs;
 }
@@ -320,10 +322,11 @@ Vars Def::free_vars() {
     if (mark_ == 0) {
         // fixed-point iteration to recompute free vars:
         // (run - 1) identifies the previous iteration; so make sure to offset run by 2 for the first iteration
-        world().next_run();
+        auto& w = world();
+        w.next_run();
         for (bool todo = true, cyclic = false; todo;) {
             todo = false;
-            free_vars(todo, cyclic, world().next_run());
+            free_vars(todo, cyclic, w.next_run());
             if (!cyclic) break; // triggers either immediately or never
         }
     }
@@ -342,17 +345,18 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
 
     auto fvs0  = vars_;
     auto fvs   = fvs0;
-    auto& muts = world().muts();
-    auto& vars = world().vars();
+    auto& w    = world();
+    auto& muts = w.muts();
+    auto& vars = w.vars();
 
-    for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
+    for (auto op : deps()) fvs = vars.merge(fvs, op->local_vars());
 
     for (auto local_mut : mut_local_muts()) {
         local_mut->muts_ = muts.insert(local_mut->muts_, this); // register "this" as user of local_mut
         fvs              = vars.merge(fvs, local_mut->free_vars(todo, cyclic, run));
     }
 
-    if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
+    if (auto var = has_var()) fvs = vars.erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
 
     todo |= fvs0 != fvs;
     return vars_ = fvs;
@@ -389,14 +393,16 @@ Sym Def::sym(std::string_view s) const { return world().sym(s); }
 Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 
 World& Def::world() const noexcept {
-    if (isa<Univ>()) return *world_;
-    if (auto type = isa<Type>()) return *type->level().def()->type().def()->as<Univ>()->world_;
-    return type().def()->world();
+    for (auto def = this;; def = def->type()) {
+        if (def->isa<Univ>()) return *def->world_;
+        if (auto type = def->isa<Type>()) return *type->level().def()->type().def()->as<Univ>()->world_;
+    }
 }
 
 Ref Def::unfold_type() const {
     if (!type_) {
-        if (auto t = isa<Type>()) return world().type(world().uinc(t->level()));
+        auto& w = world();
+        if (auto t = isa<Type>()) return w.type(w.uinc(t->level()));
         assert(isa<Univ>());
         return nullptr;
     }

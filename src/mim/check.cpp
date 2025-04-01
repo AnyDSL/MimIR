@@ -46,21 +46,22 @@ const Def* Infer::find(const Def* def) {
 
 Ref Infer::tuplefy() {
     if (auto a = type()->isa_lit_arity(); a && !is_set()) {
+        auto& w     = world();
         auto n      = *a;
         auto infers = DefVec(n);
         if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
             auto var  = sigma->has_var();
             auto rw   = VarRewriter(var, this);
-            infers[0] = world().mut_infer(sigma->op(0));
+            infers[0] = w.mut_infer(sigma->op(0));
             for (size_t i = 1; i != n; ++i) {
                 rw.map(sigma->var(n, i - 1), infers[i - 1]);
-                infers[i] = world().mut_infer(rw.rewrite(sigma->op(i)));
+                infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
             }
         } else {
-            for (size_t i = 0; i != n; ++i) infers[i] = world().mut_infer(type()->proj(n, i));
+            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type()->proj(n, i));
         }
 
-        auto tuple = world().tuple(infers);
+        auto tuple = w.tuple(infers);
         set(tuple);
         return tuple;
     }
@@ -183,6 +184,7 @@ Ref Checker::assignable_(Ref type, Ref val) {
     auto val_ty = Ref::refer(val->type());
     if (type == val_ty) return val;
 
+    auto& w = world();
     if (auto sigma = type->isa<Sigma>()) {
         if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
 
@@ -196,7 +198,7 @@ Ref Checker::assignable_(Ref type, Ref val) {
             else
                 return fail();
         }
-        return world().tuple(new_ops);
+        return w.tuple(new_ops);
     } else if (auto arr = type->isa<Arr>()) {
         if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
 
@@ -210,10 +212,10 @@ Ref Checker::assignable_(Ref type, Ref val) {
                 else
                     return fail();
             }
-            return world().tuple(new_ops);
+            return w.tuple(new_ops);
         }
     } else if (auto vel = val->isa<Vel>()) {
-        if (auto new_val = assignable_(type, vel->value())) return world().vel(type, new_val);
+        if (auto new_val = assignable_(type, vel->value())) return w.vel(type, new_val);
         return fail();
     } else if (auto uniq = val->type()->isa<Uniq>()) {
         if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
