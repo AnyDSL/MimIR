@@ -545,7 +545,7 @@ public:
         return res;
     }
 
-    /// Yields @f$s \cup d@f$.
+    /// Yields @f$s \cup \{d\}@f$.
     [[nodiscard]] Set insert(Set s, D* d) {
         if (auto u = s.isa_uniq()) {
             if (d == u) return {d};

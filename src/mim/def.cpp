@@ -35,13 +35,15 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
         dep_ |= op->dep_;
     }
 
-    gid_ = world().next_gid();
+    auto& muts = world().muts();
+    auto& vars = world().vars();
+    gid_       = world().next_gid();
     if (auto var = isa<Var>()) {
         vars_ = Vars(var);
     } else if (!has_const_dep()) {
         for (auto op : deps()) {
-            vars_ = world().vars().merge(vars_, op->local_vars());
-            muts_ = world().muts().merge(muts_, op->local_muts());
+            vars_ = vars.merge(vars_, op->local_vars());
+            muts_ = muts.merge(muts_, op->local_muts());
         }
     }
 
@@ -295,9 +297,10 @@ Muts Def::local_muts() const {
 }
 
 Muts Def::mut_local_muts() {
-    auto muts = Muts();
-    for (auto op : deps()) muts = world().muts().merge(muts, op->local_muts());
-    return muts;
+    auto& muts = world().muts();
+    auto res   = Muts();
+    for (auto op : deps()) res = muts.merge(res, op->local_muts());
+    return res;
 }
 
 Vars Def::free_vars() const {
@@ -337,14 +340,16 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
     if (mark_ != 0 && mark_ != run - 1) return cyclic |= mark_ == run, vars_;
     mark_ = run;
 
-    auto fvs0 = vars_;
-    auto fvs  = fvs0;
+    auto fvs0  = vars_;
+    auto fvs   = fvs0;
+    auto& muts = world().muts();
+    auto& vars = world().vars();
 
     for (auto op : deps()) fvs = world().vars().merge(fvs, op->local_vars());
 
     for (auto local_mut : mut_local_muts()) {
-        local_mut->muts_ = world().muts().insert(local_mut->muts_, this); // register "this" as user of local_mut
-        fvs              = world().vars().merge(fvs, local_mut->free_vars(todo, cyclic, run));
+        local_mut->muts_ = muts.insert(local_mut->muts_, this); // register "this" as user of local_mut
+        fvs              = vars.merge(fvs, local_mut->free_vars(todo, cyclic, run));
     }
 
     if (auto var = has_var()) fvs = world().vars().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
@@ -385,8 +390,8 @@ Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 
 World& Def::world() const noexcept {
     if (isa<Univ>()) return *world_;
-    if (auto type = isa<Type>()) return type->level()->world();
-    return type().def()->world(); // TODO unroll
+    if (auto type = isa<Type>()) return *type->level().def()->type().def()->as<Univ>()->world_;
+    return type().def()->world();
 }
 
 Ref Def::unfold_type() const {
