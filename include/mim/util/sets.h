@@ -206,7 +206,7 @@ private:
             Node* parent = nullptr; ///< parent or path-parent
             Node* bot    = nullptr; ///< left/deeper/bottom/leaf-direction
             Node* top    = nullptr; ///< right/shallower/top/root-direction
-        } mutable aux;
+        } aux;
     };
 
     struct Data {
@@ -241,10 +241,27 @@ private:
 
 public:
     class Set {
-    public:
+    private:
         enum class Tag : uintptr_t { Null, Uniq, Data, Node };
 
+        constexpr Set(const Data* data) noexcept
+            : ptr_(uintptr_t(data) | uintptr_t(Tag::Data)) {} ///< Data Set.
+        constexpr Set(Node* node) noexcept
+            : ptr_(uintptr_t(node) | uintptr_t(Tag::Node)) {} ///< Node set.
+
+    public:
         class iterator {
+        private:
+            constexpr iterator(D* d) noexcept
+                : tag_(Tag::Uniq)
+                , ptr_(std::bit_cast<uintptr_t>(d)) {}
+            constexpr iterator(D* const* elems) noexcept
+                : tag_(Tag::Data)
+                , ptr_(std::bit_cast<uintptr_t>(elems)) {}
+            constexpr iterator(Node* node) noexcept
+                : tag_(Tag::Node)
+                , ptr_(std::bit_cast<uintptr_t>(node)) {}
+
         public:
             /// @name Iterator Properties
             ///@{
@@ -258,15 +275,6 @@ public:
             /// @name Construction
             ///@{
             constexpr iterator() noexcept = default;
-            constexpr iterator(D* d) noexcept
-                : tag_(Tag::Uniq)
-                , ptr_(std::bit_cast<uintptr_t>(d)) {}
-            constexpr iterator(D* const* elems) noexcept
-                : tag_(Tag::Data)
-                , ptr_(std::bit_cast<uintptr_t>(elems)) {}
-            constexpr iterator(Node* node) noexcept
-                : tag_(Tag::Node)
-                , ptr_(std::bit_cast<uintptr_t>(node)) {}
             ///@}
 
             /// @name Increment
@@ -316,6 +324,7 @@ public:
                     default: fe::unreachable();
                 }
             }
+
             constexpr pointer operator->() const noexcept { return this->operator*(); }
             ///@}
 
@@ -324,6 +333,8 @@ public:
         private:
             Tag tag_;
             uintptr_t ptr_;
+
+            friend class Set;
         };
 
         /// @name Construction
@@ -331,48 +342,34 @@ public:
         constexpr Set(const Set&) noexcept = default;
         constexpr Set(Set&&) noexcept      = default;
         constexpr Set() noexcept           = default; ///< Null set
-        constexpr Set(D* d) noexcept                  ///< Uniq set.
-            : ptr_(uintptr_t(d) | uintptr_t(Tag::Uniq)) {}
-        constexpr Set(const Data* data) noexcept ///< Data Set.
-            : ptr_(uintptr_t(data) | uintptr_t(Tag::Data)) {}
-        constexpr Set(Node* node) noexcept ///< Node set.
-            : ptr_(uintptr_t(node) | uintptr_t(Tag::Node)) {}
+        constexpr Set(D* d) noexcept
+            : ptr_(uintptr_t(d) | uintptr_t(Tag::Uniq)) {} ///< Uniq set.
 
         constexpr Set& operator=(const Set&) noexcept = default;
         ///@}
 
         /// @name Getters
         ///@{
-        constexpr Tag tag() const noexcept { return Tag(ptr_ & uintptr_t(0b11)); }
-        template<class T> constexpr T* ptr() const noexcept {
-            return std::bit_cast<T*>(ptr_ & (uintptr_t(-2) << uintptr_t(2)));
+        constexpr size_t size() const noexcept {
+            if (isa_uniq()) return 1;
+            if (auto d = isa_data()) return d->size;
+            if (auto n = isa_node()) return n->size;
+            return 0; // empty
         }
-        constexpr bool empty() const noexcept { ///< Not empty.
+
+        /// Is empty?
+        constexpr bool empty() const noexcept {
             assert(tag() != Tag::Node || !ptr<Node>()->is_root());
             return ptr_ == 0;
         }
-        // clang-format off
-        constexpr D*    isa_uniq() const noexcept { return tag() == Tag::Uniq ? ptr<D   >() : nullptr; }
-        constexpr Data* isa_data() const noexcept { return tag() == Tag::Data ? ptr<Data>() : nullptr; }
-        constexpr Node* isa_node() const noexcept { return tag() == Tag::Node ? ptr<Node>() : nullptr; }
-        // clang-format on
-        constexpr explicit operator bool() const noexcept { return ptr_ != 0; }
 
-        constexpr size_t size() const noexcept {
-            // clang-format off
-            switch (tag()) {
-                case Tag::Null: return 0;
-                case Tag::Uniq: return 1;
-                case Tag::Data: return ptr<Data>()->size;
-                case Tag::Node: return ptr<Node>()->size;
-                default: fe::unreachable();
-            }
-            // clang-format on
-        }
+        constexpr explicit operator bool() const noexcept { return ptr_ != 0; } ///< Not empty?
         ///@}
 
         /// @name Check Membership
         ///@{
+
+        /// Is @f$d \in this@f$?.
         bool contains(D* d) const noexcept {
             if (auto u = isa_uniq()) return d == u;
 
@@ -387,6 +384,7 @@ public:
             return false;
         }
 
+        /// Is @f$this \cap other \neq \emptyset@f$?.
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
             if (this->empty() || other.empty()) return false;
             if (auto u = this->isa_uniq()) return other.contains(u);
@@ -470,18 +468,36 @@ public:
         constexpr bool operator!=(Set other) const noexcept { return this->ptr_ != other.ptr_; }
         ///@}
 
-        void dump() const {
-            std::cout << size() << " - {";
+        /// @name Output
+        ///@{
+        std::ostream& stream(std::ostream& os) const {
+            os << size() << " - {";
             auto sep = "";
             for (auto d : *this) {
-                std::cout << sep << d->gid() << '/' << d->tid();
+                os << sep << d->gid() << '/' << d->tid();
                 sep = ", ";
             }
-            std::cout << '}' << std::endl;
+            return os << '}' << std::endl;
         }
 
+        void dump() const { stream(std::cout) << std::endl; }
+        ///@}
+
     private:
+        constexpr Tag tag() const noexcept { return Tag(ptr_ & uintptr_t(0b11)); }
+        template<class T> constexpr T* ptr() const noexcept {
+            return std::bit_cast<T*>(ptr_ & (uintptr_t(-2) << uintptr_t(2)));
+        }
+        // clang-format off
+        constexpr D*    isa_uniq() const noexcept { return tag() == Tag::Uniq ? ptr<D   >() : nullptr; }
+        constexpr Data* isa_data() const noexcept { return tag() == Tag::Data ? ptr<Data>() : nullptr; }
+        constexpr Node* isa_node() const noexcept { return tag() == Tag::Node ? ptr<Node>() : nullptr; }
+        // clang-format on
+
         uintptr_t ptr_ = 0;
+
+        friend class Sets;
+        friend std::ostream& operator<<(std::ostream& os, Set set) { return set.stream(os); }
     };
 
     static_assert(std::forward_iterator<typename Set::iterator>);
@@ -627,7 +643,7 @@ public:
         return n;
     }
 
-    /// Yields @f$s \setminus d@f$.
+    /// Yields @f$s \setminus \{d\}@f$.
     [[nodiscard]] Set erase(Set s, D* d) {
         if (auto u = s.isa_uniq()) return d == u ? Set() : s;
 
@@ -668,8 +684,8 @@ public:
     friend void swap(Sets& s1, Sets& s2) noexcept {
         using std::swap;
         // clang-format off
-        swap(s1.data_arena_, s2.data_arena_);
-        swap(s1. node_arena_, s2. node_arena_);
+        swap(s1.data_arena_,  s2.data_arena_);
+        swap(s1.node_arena_,  s2.node_arena_);
         swap(s1.pool_,        s2.pool_);
         swap(s1.root_,        s2.root_);
         swap(s1.tid_counter_, s2.tid_counter_);
@@ -677,13 +693,13 @@ public:
         // clang-format on
     }
 
+private:
     D* set_tid(D* def) noexcept {
         assert(def->tid() == 0);
         def->tid_ = tid_counter_++;
         return def;
     }
 
-private:
     // get rid of clang warnings
     template<class T>
     inline static constexpr size_t SizeOf = sizeof(std::conditional_t<std::is_pointer_v<T>, uintptr_t, T>);
@@ -714,7 +730,7 @@ private:
     fe::Arena::Ptr<Node> make_node() { return node_arena_.mk<Node>(id_counter_++); }
     fe::Arena::Ptr<Node> make_node(Node* parent, D* def) { return node_arena_.mk<Node>(parent, def, id_counter_++); }
 
-    Node* mount(Node* parent, D* def) {
+    [[nodiscard]] Node* mount(Node* parent, D* def) {
         assert(def->tid() != 0);
         auto [i, ins] = parent->children.emplace(def, nullptr);
         if (ins) i->second = make_node(parent, def);

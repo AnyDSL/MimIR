@@ -593,11 +593,10 @@ private:
     mutable u32 tid_ = 0;
     const Def* type_;
 
+    template<class D, size_t N> friend class Sets;
     friend class World;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
-    friend Def* Sets<Def>::set_tid(Def*) noexcept;
-    friend const Var* Sets<const Var>::set_tid(const Var*) noexcept;
 };
 
 /// @name DefDef
