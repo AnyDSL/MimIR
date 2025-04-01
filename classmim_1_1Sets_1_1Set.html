@@ -119,8 +119,7 @@ $(function(){initNavTree('classmim_1_1Sets_1_1Set.html',''); initResizable(true)
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classmim_1_1Sets_1_1Set-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mim::Sets&lt; D, N &gt;::Set Class Reference</div></div>
 </div><!--header-->
@@ -133,24 +132,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Sets_1_1Set_1_1iterator.html">iterator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a4419609a2309463f0784d9751aa37c49" id="r_a4419609a2309463f0784d9751aa37c49"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4419609a2309463f0784d9751aa37c49">Tag</a> : uintptr_t { <br />
-&#160;&#160;<a class="el" href="#a4419609a2309463f0784d9751aa37c49abbb93ef26e3c101ff11cdd21cab08a94">Null</a>
-, <br />
-&#160;&#160;<a class="el" href="#a4419609a2309463f0784d9751aa37c49aa52035083e0f187cb1b19b131b4ecdd5">Uniq</a>
-, <br />
-&#160;&#160;<a class="el" href="#a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee">Data</a>
-, <br />
-&#160;&#160;<a class="el" href="#a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f">Node</a>
-<br />
- }</td></tr>
-<tr class="separator:a4419609a2309463f0784d9751aa37c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4d84c4bb95b6f1c47d4be1cd1c663093" id="r_a4d84c4bb95b6f1c47d4be1cd1c663093"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d84c4bb95b6f1c47d4be1cd1c663093">dump</a> () const</td></tr>
-<tr class="separator:a4d84c4bb95b6f1c47d4be1cd1c663093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Construction</div></td></tr>
 <tr class="memitem:a3d3af9311a384d33cfb8089a16747b86" id="r_a3d3af9311a384d33cfb8089a16747b86"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d3af9311a384d33cfb8089a16747b86">Set</a> (const <a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a> &amp;) noexcept=default</td></tr>
 <tr class="separator:a3d3af9311a384d33cfb8089a16747b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,38 +143,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a38c114ec2bd059a4929ffbf69def7712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Null set.  <br /></td></tr>
 <tr class="separator:a38c114ec2bd059a4929ffbf69def7712"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2174b58a10e475a0dd971601b9590706" id="r_a2174b58a10e475a0dd971601b9590706"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2174b58a10e475a0dd971601b9590706">Set</a> (D *d) noexcept</td></tr>
-<tr class="memdesc:a2174b58a10e475a0dd971601b9590706"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; <a class="el" href="classmim_1_1Uniq.html" title="A singleton wraps a type into a higher order type.">Uniq</a> set.  <br /></td></tr>
+<tr class="memdesc:a2174b58a10e475a0dd971601b9590706"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Uniq.html" title="A singleton wraps a type into a higher order type.">Uniq</a> set.  <br /></td></tr>
 <tr class="separator:a2174b58a10e475a0dd971601b9590706"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47148c44f0ab15b0239499505216e979" id="r_a47148c44f0ab15b0239499505216e979"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47148c44f0ab15b0239499505216e979">Set</a> (const <a class="el" href="#a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee">Data</a> *data) noexcept</td></tr>
-<tr class="memdesc:a47148c44f0ab15b0239499505216e979"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; Data <a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a>.  <br /></td></tr>
-<tr class="separator:a47148c44f0ab15b0239499505216e979"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a435d9bdbb6930a6fd30f4a192b6282a1" id="r_a435d9bdbb6930a6fd30f4a192b6282a1"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a435d9bdbb6930a6fd30f4a192b6282a1">Set</a> (<a class="el" href="#a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f">Node</a> *node) noexcept</td></tr>
-<tr class="memdesc:a435d9bdbb6930a6fd30f4a192b6282a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">&lt; <a class="el" href="namespacemim_1_1Node.html">Node</a> set.  <br /></td></tr>
-<tr class="separator:a435d9bdbb6930a6fd30f4a192b6282a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcc7a08835ce22f6f08a25f3b1e6dbe9" id="r_adcc7a08835ce22f6f08a25f3b1e6dbe9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcc7a08835ce22f6f08a25f3b1e6dbe9">operator=</a> (const <a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a> &amp;) noexcept=default</td></tr>
 <tr class="separator:adcc7a08835ce22f6f08a25f3b1e6dbe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Getters</div></td></tr>
-<tr class="memitem:a3751d4efaaeaa29dc234fd64e0cc7fa9" id="r_a3751d4efaaeaa29dc234fd64e0cc7fa9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="#a4419609a2309463f0784d9751aa37c49">Tag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3751d4efaaeaa29dc234fd64e0cc7fa9">tag</a> () const noexcept</td></tr>
-<tr class="separator:a3751d4efaaeaa29dc234fd64e0cc7fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a815d709ec70d9c86d3079f0b1b6932ee" id="r_a815d709ec70d9c86d3079f0b1b6932ee"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a815d709ec70d9c86d3079f0b1b6932ee"><td class="memTemplItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a815d709ec70d9c86d3079f0b1b6932ee">ptr</a> () const noexcept</td></tr>
-<tr class="separator:a815d709ec70d9c86d3079f0b1b6932ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a148fc2bfaa7862640b7ff197605e4d06" id="r_a148fc2bfaa7862640b7ff197605e4d06"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a148fc2bfaa7862640b7ff197605e4d06">empty</a> () const noexcept</td></tr>
-<tr class="separator:a148fc2bfaa7862640b7ff197605e4d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17a73d5a6712c2c5a0a7c1eb5a911bf4" id="r_a17a73d5a6712c2c5a0a7c1eb5a911bf4"><td class="memItemLeft" align="right" valign="top">constexpr D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17a73d5a6712c2c5a0a7c1eb5a911bf4">isa_uniq</a> () const noexcept</td></tr>
-<tr class="separator:a17a73d5a6712c2c5a0a7c1eb5a911bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e86c6e2eda5153260763a2c35931cb6" id="r_a4e86c6e2eda5153260763a2c35931cb6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="#a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee">Data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e86c6e2eda5153260763a2c35931cb6">isa_data</a> () const noexcept</td></tr>
-<tr class="separator:a4e86c6e2eda5153260763a2c35931cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd62f4154d4b5cdc4630cd1470ac1aab" id="r_abd62f4154d4b5cdc4630cd1470ac1aab"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="#a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd62f4154d4b5cdc4630cd1470ac1aab">isa_node</a> () const noexcept</td></tr>
-<tr class="separator:abd62f4154d4b5cdc4630cd1470ac1aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada21eec2a92b8a7ddb8fe180ef0b184a" id="r_ada21eec2a92b8a7ddb8fe180ef0b184a"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada21eec2a92b8a7ddb8fe180ef0b184a">operator bool</a> () const noexcept</td></tr>
-<tr class="separator:ada21eec2a92b8a7ddb8fe180ef0b184a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81c90b3ef8cd75899233202f36b9ef46" id="r_a81c90b3ef8cd75899233202f36b9ef46"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81c90b3ef8cd75899233202f36b9ef46">size</a> () const noexcept</td></tr>
 <tr class="separator:a81c90b3ef8cd75899233202f36b9ef46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148fc2bfaa7862640b7ff197605e4d06" id="r_a148fc2bfaa7862640b7ff197605e4d06"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a148fc2bfaa7862640b7ff197605e4d06">empty</a> () const noexcept</td></tr>
+<tr class="memdesc:a148fc2bfaa7862640b7ff197605e4d06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is empty?  <br /></td></tr>
+<tr class="separator:a148fc2bfaa7862640b7ff197605e4d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada21eec2a92b8a7ddb8fe180ef0b184a" id="r_ada21eec2a92b8a7ddb8fe180ef0b184a"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada21eec2a92b8a7ddb8fe180ef0b184a">operator bool</a> () const noexcept</td></tr>
+<tr class="memdesc:ada21eec2a92b8a7ddb8fe180ef0b184a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not empty?  <br /></td></tr>
+<tr class="separator:ada21eec2a92b8a7ddb8fe180ef0b184a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Check Membership</div></td></tr>
 <tr class="memitem:ab73606c047967eaf90a6ed50f35fe4de" id="r_ab73606c047967eaf90a6ed50f35fe4de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab73606c047967eaf90a6ed50f35fe4de">contains</a> (D *d) const noexcept</td></tr>
+<tr class="memdesc:ab73606c047967eaf90a6ed50f35fe4de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <picture><source srcset="form_3_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$d \in this$" src="form_3.png" width="44" height="11"/></picture>?.  <br /></td></tr>
 <tr class="separator:ab73606c047967eaf90a6ed50f35fe4de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02042c1f2200401840312ae0d52e907d" id="r_a02042c1f2200401840312ae0d52e907d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02042c1f2200401840312ae0d52e907d">has_intersection</a> (<a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a> other) const noexcept</td></tr>
+<tr class="memdesc:a02042c1f2200401840312ae0d52e907d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <picture><source srcset="form_4_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$this \cap other \neq \emptyset$" src="form_4.png" width="89" height="13"/></picture>?.  <br /></td></tr>
 <tr class="separator:a02042c1f2200401840312ae0d52e907d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Iterators</div></td></tr>
 <tr class="memitem:a60caa2b410ba32ac48f32b5b01ff8ba9" id="r_a60caa2b410ba32ac48f32b5b01ff8ba9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Sets_1_1Set_1_1iterator.html">iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60caa2b410ba32ac48f32b5b01ff8ba9">begin</a> () const noexcept</td></tr>
@@ -203,47 +173,26 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a28e8a5d097fb852654a0b5833cb3baf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb96c9f6a977695381d33e7d90ab5713" id="r_afb96c9f6a977695381d33e7d90ab5713"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb96c9f6a977695381d33e7d90ab5713">operator!=</a> (<a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a> other) const noexcept</td></tr>
 <tr class="separator:afb96c9f6a977695381d33e7d90ab5713"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Output</div></td></tr>
+<tr class="memitem:ab5050f9d78712e186fb61c5bd9cba566" id="r_ab5050f9d78712e186fb61c5bd9cba566"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5050f9d78712e186fb61c5bd9cba566">stream</a> (std::ostream &amp;os) const</td></tr>
+<tr class="separator:ab5050f9d78712e186fb61c5bd9cba566"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62810f65cc26fa1beeb775e9b48d0a56" id="r_a62810f65cc26fa1beeb775e9b48d0a56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62810f65cc26fa1beeb775e9b48d0a56">dump</a> () const</td></tr>
+<tr class="separator:a62810f65cc26fa1beeb775e9b48d0a56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a44b7043c7f81eb283871cca62f9bec53" id="r_a44b7043c7f81eb283871cca62f9bec53"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44b7043c7f81eb283871cca62f9bec53">Sets</a></td></tr>
+<tr class="separator:a44b7043c7f81eb283871cca62f9bec53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4204271e04c2513462a472a3e160aaf" id="r_aa4204271e04c2513462a472a3e160aaf"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4204271e04c2513462a472a3e160aaf">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a> set)</td></tr>
+<tr class="separator:aa4204271e04c2513462a472a3e160aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class D, size_t N = 16&gt;<br />
 class mim::Sets&lt; D, N &gt;::Set</div>
 <p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00243">243</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a4419609a2309463f0784d9751aa37c49" name="a4419609a2309463f0784d9751aa37c49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4419609a2309463f0784d9751aa37c49">&#9670;&#160;</a></span>Tag</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class D , size_t N = 16&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="#a4419609a2309463f0784d9751aa37c49">mim::Sets::Set::Tag</a> : uintptr_t</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4419609a2309463f0784d9751aa37c49abbb93ef26e3c101ff11cdd21cab08a94" name="a4419609a2309463f0784d9751aa37c49abbb93ef26e3c101ff11cdd21cab08a94"></a>Null&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4419609a2309463f0784d9751aa37c49aa52035083e0f187cb1b19b131b4ecdd5" name="a4419609a2309463f0784d9751aa37c49aa52035083e0f187cb1b19b131b4ecdd5"></a>Uniq&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee" name="a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee"></a>Data&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f" name="a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f"></a>Node&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00245">245</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3d3af9311a384d33cfb8089a16747b86" name="a3d3af9311a384d33cfb8089a16747b86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d3af9311a384d33cfb8089a16747b86">&#9670;&#160;</a></span>Set() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d3af9311a384d33cfb8089a16747b86">&#9670;&#160;</a></span>Set() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,7 +219,7 @@ template&lt;class D , size_t N = 16&gt; </div>
 </div>
 </div>
 <a id="aedb1b7a07bb2ac90836be8ca70b7830b" name="aedb1b7a07bb2ac90836be8ca70b7830b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedb1b7a07bb2ac90836be8ca70b7830b">&#9670;&#160;</a></span>Set() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aedb1b7a07bb2ac90836be8ca70b7830b">&#9670;&#160;</a></span>Set() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,7 +246,7 @@ template&lt;class D , size_t N = 16&gt; </div>
 </div>
 </div>
 <a id="a38c114ec2bd059a4929ffbf69def7712" name="a38c114ec2bd059a4929ffbf69def7712"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38c114ec2bd059a4929ffbf69def7712">&#9670;&#160;</a></span>Set() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a38c114ec2bd059a4929ffbf69def7712">&#9670;&#160;</a></span>Set() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -326,7 +275,7 @@ template&lt;class D , size_t N = 16&gt; </div>
 </div>
 </div>
 <a id="a2174b58a10e475a0dd971601b9590706" name="a2174b58a10e475a0dd971601b9590706"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2174b58a10e475a0dd971601b9590706">&#9670;&#160;</a></span>Set() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2174b58a10e475a0dd971601b9590706">&#9670;&#160;</a></span>Set() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -350,71 +299,9 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>&lt; <a class="el" href="classmim_1_1Uniq.html" title="A singleton wraps a type into a higher order type.">Uniq</a> set. </p>
+<p><a class="el" href="classmim_1_1Uniq.html" title="A singleton wraps a type into a higher order type.">Uniq</a> set. </p>
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00334">334</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-</div>
-</div>
-<a id="a47148c44f0ab15b0239499505216e979" name="a47148c44f0ab15b0239499505216e979"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47148c44f0ab15b0239499505216e979">&#9670;&#160;</a></span>Set() <span class="overload">[5/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class D , size_t N = 16&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::Set </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="#a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee">Data</a> *</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>&lt; Data <a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00336">336</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-</div>
-</div>
-<a id="a435d9bdbb6930a6fd30f4a192b6282a1" name="a435d9bdbb6930a6fd30f4a192b6282a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a435d9bdbb6930a6fd30f4a192b6282a1">&#9670;&#160;</a></span>Set() <span class="overload">[6/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class D , size_t N = 16&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::Set </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f">Node</a> *</td>          <td class="paramname"><span class="paramname"><em>node</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>&lt; <a class="el" href="namespacemim_1_1Node.html">Node</a> set. </p>
-
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00338">338</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00345">345</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
 </div>
 </div>
@@ -444,9 +331,7 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00454">454</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-<p class="reference">References <a class="el" href="sets_8h_source.html#l00356">mim::Sets&lt; D, N &gt;::Set::isa_data()</a>, <a class="el" href="sets_8h_source.html#l00357">mim::Sets&lt; D, N &gt;::Set::isa_node()</a>, and <a class="el" href="sets_8h_source.html#l00355">mim::Sets&lt; D, N &gt;::Set::isa_uniq()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00452">452</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
 </div>
 </div>
@@ -475,16 +360,16 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00376">376</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p>Is <picture><source srcset="form_3_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$d \in this$" src="form_3.png" width="44" height="11"/></picture>?. </p>
 
-<p class="reference">References <a class="el" href="sets_8h_source.html#l00356">mim::Sets&lt; D, N &gt;::Set::isa_data()</a>, <a class="el" href="sets_8h_source.html#l00357">mim::Sets&lt; D, N &gt;::Set::isa_node()</a>, and <a class="el" href="sets_8h_source.html#l00355">mim::Sets&lt; D, N &gt;::Set::isa_uniq()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00373">373</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00390">mim::Sets&lt; D, N &gt;::Set::has_intersection()</a>, and <a class="el" href="def_8cpp_source.html#l00162">mim::Def::is_immutabilizable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00388">mim::Sets&lt; D, N &gt;::Set::has_intersection()</a>, and <a class="el" href="def_8cpp_source.html#l00159">mim::Def::is_immutabilizable()</a>.</p>
 
 </div>
 </div>
-<a id="a4d84c4bb95b6f1c47d4be1cd1c663093" name="a4d84c4bb95b6f1c47d4be1cd1c663093"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d84c4bb95b6f1c47d4be1cd1c663093">&#9670;&#160;</a></span>dump()</h2>
+<a id="a62810f65cc26fa1beeb775e9b48d0a56" name="a62810f65cc26fa1beeb775e9b48d0a56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62810f65cc26fa1beeb775e9b48d0a56">&#9670;&#160;</a></span>dump()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -495,7 +380,7 @@ template&lt;class D , size_t N = 16&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">template void mim::Vars::dump </td>
+          <td class="memname">void <a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::dump </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -508,9 +393,9 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00473">473</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00483">483</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
-<p class="reference">References <a class="el" href="sets_8h_source.html#l00361">mim::Sets&lt; D, N &gt;::Set::size()</a>.</p>
+<p class="reference">References <a class="el" href="sets_8h_source.html#l00473">mim::Sets&lt; D, N &gt;::Set::stream()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00091">mim::World::make_external()</a>.</p>
 
@@ -540,13 +425,12 @@ template&lt;class D , size_t N = 16&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>&lt; Not empty.</p>
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00350">350</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p>Is empty? </p>
 
-<p class="reference">References <a class="el" href="#a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f">mim::Sets&lt; D, N &gt;::Set::Node</a>, <a class="el" href="sets_8h_source.html#l00347">mim::Sets&lt; D, N &gt;::Set::ptr()</a>, and <a class="el" href="sets_8h_source.html#l00346">mim::Sets&lt; D, N &gt;::Set::tag()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00361">361</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00390">mim::Sets&lt; D, N &gt;::Set::has_intersection()</a>, <a class="el" href="def_8cpp_source.html#l00368">mim::Def::is_closed()</a>, <a class="el" href="def_8cpp_source.html#l00376">mim::Def::is_open()</a>, <a class="el" href="sets_8h_source.html#l00599">mim::Sets&lt; D, N &gt;::merge()</a>, and <a class="el" href="rewrite_8h_source.html#l00039">mim::VarRewriter::rewrite_imm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00388">mim::Sets&lt; D, N &gt;::Set::has_intersection()</a>, <a class="el" href="def_8cpp_source.html#l00365">mim::Def::is_closed()</a>, <a class="el" href="def_8cpp_source.html#l00373">mim::Def::is_open()</a>, <a class="el" href="sets_8h_source.html#l00615">mim::Sets&lt; D, N &gt;::merge()</a>, and <a class="el" href="rewrite_8h_source.html#l00039">mim::VarRewriter::rewrite_imm()</a>.</p>
 
 </div>
 </div>
@@ -575,9 +459,7 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00461">461</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-<p class="reference">References <a class="el" href="sets_8h_source.html#l00356">mim::Sets&lt; D, N &gt;::Set::isa_data()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00459">459</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
 </div>
 </div>
@@ -606,110 +488,13 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00390">390</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p>Is <picture><source srcset="form_4_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$this \cap other \neq \emptyset$" src="form_4.png" width="89" height="13"/></picture>?. </p>
 
-<p class="reference">References <a class="el" href="sets_8h_source.html#l00376">mim::Sets&lt; D, N &gt;::Set::contains()</a>, <a class="el" href="sets_8h_source.html#l00350">mim::Sets&lt; D, N &gt;::Set::empty()</a>, <a class="el" href="sets_8h_source.html#l00356">mim::Sets&lt; D, N &gt;::Set::isa_data()</a>, <a class="el" href="sets_8h_source.html#l00357">mim::Sets&lt; D, N &gt;::Set::isa_node()</a>, and <a class="el" href="sets_8h_source.html#l00355">mim::Sets&lt; D, N &gt;::Set::isa_uniq()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00388">388</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+
+<p class="reference">References <a class="el" href="sets_8h_source.html#l00373">mim::Sets&lt; D, N &gt;::Set::contains()</a>, and <a class="el" href="sets_8h_source.html#l00361">mim::Sets&lt; D, N &gt;::Set::empty()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00131">mim::Nest::contains()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00034">mim::plug::clos::ClosConvPrep::from_outer_scope()</a>, <a class="el" href="rewrite_8h_source.html#l00039">mim::VarRewriter::rewrite_imm()</a>, and <a class="el" href="rewrite_8h_source.html#l00045">mim::VarRewriter::rewrite_mut()</a>.</p>
-
-</div>
-</div>
-<a id="a4e86c6e2eda5153260763a2c35931cb6" name="a4e86c6e2eda5153260763a2c35931cb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e86c6e2eda5153260763a2c35931cb6">&#9670;&#160;</a></span>isa_data()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class D , size_t N = 16&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee">Data</a> * <a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::isa_data </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00356">356</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-<p class="reference">References <a class="el" href="#a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee">mim::Sets&lt; D, N &gt;::Set::Data</a>, <a class="el" href="sets_8h_source.html#l00347">mim::Sets&lt; D, N &gt;::Set::ptr()</a>, and <a class="el" href="sets_8h_source.html#l00346">mim::Sets&lt; D, N &gt;::Set::tag()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00454">mim::Sets&lt; D, N &gt;::Set::begin()</a>, <a class="el" href="sets_8h_source.html#l00376">mim::Sets&lt; D, N &gt;::Set::contains()</a>, <a class="el" href="sets_8h_source.html#l00461">mim::Sets&lt; D, N &gt;::Set::end()</a>, <a class="el" href="sets_8h_source.html#l00390">mim::Sets&lt; D, N &gt;::Set::has_intersection()</a>, and <a class="el" href="sets_8h_source.html#l00599">mim::Sets&lt; D, N &gt;::merge()</a>.</p>
-
-</div>
-</div>
-<a id="abd62f4154d4b5cdc4630cd1470ac1aab" name="abd62f4154d4b5cdc4630cd1470ac1aab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd62f4154d4b5cdc4630cd1470ac1aab">&#9670;&#160;</a></span>isa_node()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class D , size_t N = 16&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f">Node</a> * <a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::isa_node </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00357">357</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-<p class="reference">References <a class="el" href="#a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f">mim::Sets&lt; D, N &gt;::Set::Node</a>, <a class="el" href="sets_8h_source.html#l00347">mim::Sets&lt; D, N &gt;::Set::ptr()</a>, and <a class="el" href="sets_8h_source.html#l00346">mim::Sets&lt; D, N &gt;::Set::tag()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00454">mim::Sets&lt; D, N &gt;::Set::begin()</a>, <a class="el" href="sets_8h_source.html#l00376">mim::Sets&lt; D, N &gt;::Set::contains()</a>, <a class="el" href="sets_8h_source.html#l00390">mim::Sets&lt; D, N &gt;::Set::has_intersection()</a>, and <a class="el" href="sets_8h_source.html#l00599">mim::Sets&lt; D, N &gt;::merge()</a>.</p>
-
-</div>
-</div>
-<a id="a17a73d5a6712c2c5a0a7c1eb5a911bf4" name="a17a73d5a6712c2c5a0a7c1eb5a911bf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17a73d5a6712c2c5a0a7c1eb5a911bf4">&#9670;&#160;</a></span>isa_uniq()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class D , size_t N = 16&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">D * <a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::isa_uniq </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00355">355</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-<p class="reference">References <a class="el" href="sets_8h_source.html#l00347">mim::Sets&lt; D, N &gt;::Set::ptr()</a>, <a class="el" href="sets_8h_source.html#l00346">mim::Sets&lt; D, N &gt;::Set::tag()</a>, and <a class="el" href="#a4419609a2309463f0784d9751aa37c49aa52035083e0f187cb1b19b131b4ecdd5">mim::Sets&lt; D, N &gt;::Set::Uniq</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00454">mim::Sets&lt; D, N &gt;::Set::begin()</a>, <a class="el" href="sets_8h_source.html#l00376">mim::Sets&lt; D, N &gt;::Set::contains()</a>, <a class="el" href="sets_8h_source.html#l00390">mim::Sets&lt; D, N &gt;::Set::has_intersection()</a>, and <a class="el" href="sets_8h_source.html#l00599">mim::Sets&lt; D, N &gt;::merge()</a>.</p>
 
 </div>
 </div>
@@ -738,7 +523,9 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00359">359</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p>Not empty? </p>
+
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00366">366</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
 </div>
 </div>
@@ -767,7 +554,7 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00470">470</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00468">468</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
 </div>
 </div>
@@ -823,40 +610,7 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00469">469</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-</div>
-</div>
-<a id="a815d709ec70d9c86d3079f0b1b6932ee" name="a815d709ec70d9c86d3079f0b1b6932ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a815d709ec70d9c86d3079f0b1b6932ee">&#9670;&#160;</a></span>ptr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class D , size_t N = 16&gt; </div>
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T * <a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::ptr </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00347">347</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00350">mim::Sets&lt; D, N &gt;::Set::empty()</a>, <a class="el" href="sets_8h_source.html#l00356">mim::Sets&lt; D, N &gt;::Set::isa_data()</a>, <a class="el" href="sets_8h_source.html#l00357">mim::Sets&lt; D, N &gt;::Set::isa_node()</a>, <a class="el" href="sets_8h_source.html#l00355">mim::Sets&lt; D, N &gt;::Set::isa_uniq()</a>, and <a class="el" href="sets_8h_source.html#l00361">mim::Sets&lt; D, N &gt;::Set::size()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00467">467</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
 </div>
 </div>
@@ -885,16 +639,14 @@ template&lt;class D , size_t N = 16&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00361">361</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00353">353</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
-<p class="reference">References <a class="el" href="#a4419609a2309463f0784d9751aa37c49af6068daa29dbb05a7ead1e3b5a48bbee">mim::Sets&lt; D, N &gt;::Set::Data</a>, <a class="el" href="#a4419609a2309463f0784d9751aa37c49a6c3a6944a808a7c0bbb6788dbec54a9f">mim::Sets&lt; D, N &gt;::Set::Node</a>, <a class="el" href="#a4419609a2309463f0784d9751aa37c49abbb93ef26e3c101ff11cdd21cab08a94">mim::Sets&lt; D, N &gt;::Set::Null</a>, <a class="el" href="sets_8h_source.html#l00347">mim::Sets&lt; D, N &gt;::Set::ptr()</a>, <a class="el" href="sets_8h_source.html#l00346">mim::Sets&lt; D, N &gt;::Set::tag()</a>, and <a class="el" href="#a4419609a2309463f0784d9751aa37c49aa52035083e0f187cb1b19b131b4ecdd5">mim::Sets&lt; D, N &gt;::Set::Uniq</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00473">mim::Sets&lt; D, N &gt;::Set::dump()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00473">mim::Sets&lt; D, N &gt;::Set::stream()</a>.</p>
 
 </div>
 </div>
-<a id="a3751d4efaaeaa29dc234fd64e0cc7fa9" name="a3751d4efaaeaa29dc234fd64e0cc7fa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3751d4efaaeaa29dc234fd64e0cc7fa9">&#9670;&#160;</a></span>tag()</h2>
+<a id="ab5050f9d78712e186fb61c5bd9cba566" name="ab5050f9d78712e186fb61c5bd9cba566"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5050f9d78712e186fb61c5bd9cba566">&#9670;&#160;</a></span>stream()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -905,28 +657,89 @@ template&lt;class D , size_t N = 16&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="#a4419609a2309463f0784d9751aa37c49">Tag</a> <a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::tag </td>
+          <td class="memname">std::ostream &amp; <a class="el" href="classmim_1_1Sets.html">mim::Sets</a>&lt; D, N &gt;::Set::stream </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>os</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00346">346</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00473">473</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00350">mim::Sets&lt; D, N &gt;::Set::empty()</a>, <a class="el" href="sets_8h_source.html#l00356">mim::Sets&lt; D, N &gt;::Set::isa_data()</a>, <a class="el" href="sets_8h_source.html#l00357">mim::Sets&lt; D, N &gt;::Set::isa_node()</a>, <a class="el" href="sets_8h_source.html#l00355">mim::Sets&lt; D, N &gt;::Set::isa_uniq()</a>, and <a class="el" href="sets_8h_source.html#l00361">mim::Sets&lt; D, N &gt;::Set::size()</a>.</p>
+<p class="reference">References <a class="el" href="sets_8h_source.html#l00353">mim::Sets&lt; D, N &gt;::Set::size()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00483">mim::Sets&lt; D, N &gt;::Set::dump()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="aa4204271e04c2513462a472a3e160aaf" name="aa4204271e04c2513462a472a3e160aaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4204271e04c2513462a472a3e160aaf">&#9670;&#160;</a></span>operator&lt;&lt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class D , size_t N = 16&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>os</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Sets_1_1Set.html">Set</a></td>          <td class="paramname"><span class="paramname"><em>set</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00500">500</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+
+</div>
+</div>
+<a id="a44b7043c7f81eb283871cca62f9bec53" name="a44b7043c7f81eb283871cca62f9bec53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44b7043c7f81eb283871cca62f9bec53">&#9670;&#160;</a></span>Sets</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class D , size_t N = 16&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classmim_1_1Sets.html">Sets</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sets_8h_source.html#l00499">499</a> of file <a class="el" href="sets_8h_source.html">sets.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/mim/util/<a class="el" href="sets_8h_source.html">sets.h</a></li>
-<li>src/mim/<a class="el" href="def_8cpp_source.html">def.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

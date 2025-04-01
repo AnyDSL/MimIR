@@ -14,6 +14,5 @@ var classmim_1_1Sets =
     [ "insert", "classmim_1_1Sets.html#ac0606b37495ac60424e9191a0fa6b217", null ],
     [ "merge", "classmim_1_1Sets.html#a3715f24419e8a8e20c8a3ba5086b9583", null ],
     [ "operator=", "classmim_1_1Sets.html#a929a6bd2812512ac0b08b9f003e09cff", null ],
-    [ "set_tid", "classmim_1_1Sets.html#ab55c06c38c507f9ece60ed900d4a549d", null ],
     [ "swap", "classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9", null ]
 ];

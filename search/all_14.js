@@ -42,7 +42,7 @@ var searchData=
   ['unflatten_39',['unflatten',['../namespacemim.html#a5286883e5db58656fc16b1217f5dd282',1,'mim::unflatten(Ref def, Ref type)'],['../namespacemim.html#a721f36ac2176c315f892b4d3de361302',1,'mim::unflatten(Defs ops, Ref type, bool flatten_muts=true)']]],
   ['unfold_5ftype_40',['unfold_type',['../classmim_1_1Def.html#a415a05bda88edc1da873598f3307ccaf',1,'mim::Def']]],
   ['unfolding_20functions_41',['Unfolding functions',['../matrix.html#autotoc_md176',1,'']]],
-  ['uniq_42',['Uniq',['../classmim_1_1Uniq.html',1,'mim::Uniq'],['../classmim_1_1Sets_1_1Set.html#a4419609a2309463f0784d9751aa37c49aa52035083e0f187cb1b19b131b4ecdd5',1,'mim::Sets::Set::Uniq'],['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3aaaa12d04de03c97dd14233d77c8049b7',1,'mim::Node::Uniq']]],
+  ['uniq_42',['Uniq',['../classmim_1_1Uniq.html',1,'mim::Uniq'],['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3aaaa12d04de03c97dd14233d77c8049b7',1,'mim::Node::Uniq']]],
   ['uniq_43',['uniq',['../classmim_1_1World.html#a13a3400d0f10c396c30f110d640b0981',1,'mim::World']]],
   ['uniqexpr_44',['UniqExpr',['../classmim_1_1ast_1_1UniqExpr.html',1,'mim::ast::UniqExpr'],['../classmim_1_1ast_1_1UniqExpr.html#ac592fc70aaf2a4cae817449e103ce2be',1,'mim::ast::UniqExpr::UniqExpr()']]],
   ['unique_5fname_45',['unique_name',['../classmim_1_1Def.html#ae61aa184493aa3f3bf685758d27f982a',1,'mim::Def']]],
