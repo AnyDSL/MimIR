@@ -157,6 +157,7 @@ public:
     /// lam1->app(true, f, arg);
     /// lam2->app(my_filter_def, f, arg);
     /// ```
+    /// @note The filter belongs to the *Lam%bda* and **not** the body.
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Lam>::set;

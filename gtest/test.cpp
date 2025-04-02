@@ -278,6 +278,79 @@ TEST(FV, free_vars) {
     EXPECT_EQ(lx->free_vars(), Vars(y));
 }
 
+TEST(FV, fixed_point) {
+    Driver driver;
+    World& w  = driver.world();
+    auto Nat  = w.type_nat();
+    auto Bool = w.type_bool();
+
+    // con a(cond) = b ();
+    // con b() = branch (cond, t, f);
+    // con t() = n vt;
+    // con f() = n vf;
+    auto a  = w.mut_con(Bool)->set("a");
+    auto b  = w.mut_con(Defs{})->set("b");
+    auto f  = w.mut_con(Defs{})->set("f");
+    auto t  = w.mut_con(Defs{})->set("t");
+    auto n  = w.mut_con(Nat)->set("n");
+    auto kt = w.mut_con(Nat)->set("kt");
+    auto kf = w.mut_con(Nat)->set("kf");
+
+    auto cond = (a->var()->set("cond"), a->has_var());
+    auto vt   = (kt->var()->set("vt"), kt->has_var());
+    auto vf   = (kf->var()->set("vf"), kf->has_var());
+
+    a->app(false, b, Defs{});
+    b->branch(false, cond, t, f);
+    t->app(false, n, vt);
+    f->app(false, n, vf);
+
+    auto fva = a->free_vars();
+    auto fvb = b->free_vars();
+    auto fvt = t->free_vars();
+    auto fvf = f->free_vars();
+
+    auto vt_vf      = w.vars().create({vt, vf});
+    auto cond_vt    = w.vars().create({vt, cond});
+    auto cond_vt_vf = w.vars().insert(vt_vf, cond);
+
+    EXPECT_EQ(fva, vt_vf);
+    EXPECT_EQ(fvb, cond_vt_vf);
+    EXPECT_EQ(fvt, Vars(vt));
+    EXPECT_EQ(fvf, Vars(vf));
+
+    auto mark = a->mark();
+    EXPECT_EQ(mark, b->mark());
+    EXPECT_EQ(mark, f->mark());
+    EXPECT_EQ(mark, t->mark());
+    EXPECT_EQ(mark, n->mark());
+
+    // invalidate f by killing its FVs: con f(y) = n 23;
+    f->unset()->app(false, n, w.lit_nat(23));
+
+    EXPECT_EQ(0, a->mark());
+    EXPECT_EQ(0, b->mark());
+    EXPECT_EQ(0, f->mark());
+    EXPECT_EQ(mark, t->mark());
+    EXPECT_EQ(mark, n->mark());
+
+    fva = a->free_vars();
+    fvb = b->free_vars();
+    fvt = t->free_vars();
+    fvf = f->free_vars();
+
+    EXPECT_EQ(fva, Vars(vt));
+    EXPECT_EQ(fvb, cond_vt);
+    EXPECT_EQ(fvt, Vars(vt));
+    EXPECT_EQ(fvf, Vars());
+
+    EXPECT_EQ(mark + 2, a->mark());
+    EXPECT_EQ(mark + 2, b->mark());
+    EXPECT_EQ(mark + 2, f->mark());
+    EXPECT_EQ(mark, t->mark());
+    EXPECT_EQ(mark, n->mark());
+}
+
 TEST(ADT, Span) {
     {
         int a[3]        = {0, 1, 2};

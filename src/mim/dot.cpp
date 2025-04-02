@@ -105,9 +105,10 @@ public:
         print(os_, "<b>name:</b> {}{}", def->sym(), NL);
         print(os_, "<b>gid:</b> {}{}", def->gid(), NL);
         print(os_, "<b>flags:</b> 0x{x}{}", def->flags(), NL);
-        print(os_, "<b>free_vars:</b> {{{, }}}{}", def->free_vars(), NL);
-        print(os_, "<b>local_vars:</b> {{{, }}}{}", def->local_vars(), NL);
-        print(os_, "<b>local_muts:</b> {{{, }}}{}", def->local_muts(), NL);
+        print(os_, "<b>mark:</b> 0x{x}{}", def->mark(), NL);
+        print(os_, "<b>local_muts:</b> {, }{}", def->local_muts(), NL);
+        print(os_, "<b>local_vars:</b> {, }{}", def->local_vars(), NL);
+        print(os_, "<b>free_vars:</b> {, }{}", def->free_vars(), NL);
         if (auto mut = def->isa_mut()) print(os_, "<b>users:</b> {{{, }}}{}", mut->users(), NL);
         print(os_, "<b>loc:</b> {}", loc);
         return print(os_, "\"");

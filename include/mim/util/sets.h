@@ -495,13 +495,13 @@ public:
         /// @name Output
         ///@{
         std::ostream& stream(std::ostream& os) const {
-            os << size() << " - {";
+            os << '{';
             auto sep = "";
             for (auto d : *this) {
                 os << sep << d->gid() << '/' << d->tid();
                 sep = ", ";
             }
-            return os << '}' << std::endl;
+            return os << '}';
         }
 
         void dump() const { stream(std::cout) << std::endl; }

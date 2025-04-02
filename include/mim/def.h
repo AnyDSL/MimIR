@@ -228,8 +228,9 @@ public:
     ///@{
     World& world() const noexcept;
     constexpr flags_t flags() const noexcept { return flags_; }
-    constexpr u32 gid() const noexcept { return gid_; } ///< Global id - *unique* number for this Def.
-    constexpr u32 tid() const noexcept { return tid_; } ///< Trie id - only used in Trie.
+    constexpr u32 gid() const noexcept { return gid_; }   ///< Global id - *unique* number for this Def.
+    constexpr u32 tid() const noexcept { return tid_; }   ///< Trie id - only used in Trie.
+    constexpr u32 mark() const noexcept { return mark_; } ///< Used internally but free_vars().
     constexpr size_t hash() const noexcept { return hash_; }
     constexpr node_t node() const noexcept { return node_; }
     std::string_view node_name() const;
@@ -238,7 +239,8 @@ public:
     /// @name type
     ///@{
 
-    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
+    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`.
+    /// @see Def::unfold_type.
     Ref type() const noexcept { return type_; }
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     Ref unfold_type() const;

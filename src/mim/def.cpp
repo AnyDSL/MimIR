@@ -338,6 +338,7 @@ Vars Def::free_vars() {
 }
 
 Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
+    static int num = 0;
     // Recursively recompute free vars. If
     // * mark_ == 0: invalid - need to recompute
     // * mark_ == run - 1: Previous iteration - need to recompute
@@ -345,6 +346,8 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
     // * all other values for mark_: valid!
     if (mark_ != 0 && mark_ != run - 1) return cyclic |= mark_ == run, vars_;
     mark_ = run;
+    ++num;
+    // std::cout << num << std::endl;
 
     auto fvs0  = vars_;
     auto fvs   = fvs0;
@@ -368,8 +371,10 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
 void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
-        for (auto mut : users()) mut->invalidate();
-        vars_ = Vars();
+        if (vars_) { // only necessary, if we the cached free vars are non-empty
+            for (auto mut : users()) mut->invalidate();
+            vars_ = Vars();
+        }
         muts_ = Muts();
     }
 }
