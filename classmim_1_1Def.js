@@ -47,6 +47,7 @@ var classmim_1_1Def =
     [ "local_vars", "classmim_1_1Def.html#a3f5a341398bd97b516f9fd7d1d170e5b", null ],
     [ "make_external", "classmim_1_1Def.html#a40fa93a786143fbf727f567b3c875101", null ],
     [ "make_internal", "classmim_1_1Def.html#a160dfda8f93104382a612ea54a7113a8", null ],
+    [ "mark", "classmim_1_1Def.html#a592578e8733989b79ab6649485eae42b", null ],
     [ "mut_local_muts", "classmim_1_1Def.html#a30f8b76edaf16e78a83a632d10b3d8c9", null ],
     [ "node", "classmim_1_1Def.html#ac099e72afa7ad3f78b3c4a8df98b8fd7", null ],
     [ "node_name", "classmim_1_1Def.html#a361f116b80b8b8fd1eac9a22e34564b0", null ],
