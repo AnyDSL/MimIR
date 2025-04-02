@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
@@ -28,17 +30,16 @@ private:
             parent->link_to_child(this);
         }
 
-        void dot(std::ostream& os) const {
+        void dot(std::ostream& os) {
             using namespace std::string_literals;
 
             auto node2str = [](const Node* n) {
-                return "n_" + (n->def ? std::to_string(n->def->tid()) : "root"s) + "_"s + std::to_string(n->id);
+                return "n_"s + (n->def ? std::to_string(n->def->tid()) : "root"s) + "_"s + std::to_string(n->id);
             };
 
-            println(os, "{} [tooltip=\"min: {}, max: {}\"];", node2str(this), aux.min, aux.max);
+            println(os, "{} [tooltip=\"gid: {}, min: {}\"];", node2str(this), def ? def->gid() : 0, min);
 
             for (const auto& [def, child] : children) println(os, "{} -> {}", node2str(this), node2str(child.get()));
-
             for (const auto& [_, child] : children) child->dot(os);
 
             // clang-format off
@@ -60,7 +61,7 @@ private:
             // clang-format on
 
             expose();
-            for (auto n = this; n; n = n->is_root() ? n->aux.bot : (tid < n->def->tid() ? n->aux.top : n->aux.bot)) {
+            for (auto n = this; n; n = (n->is_root() || n->def->tid() < tid) ? n->aux.bot : n->aux.top) {
                 if (n->def == d) {
                     n->splay(); // heuristic: bring to root to have hits at the top
                     return true;
@@ -68,6 +69,36 @@ private:
             }
 
             return false;
+        }
+
+        /// Find @p d or the element just greater than @p d.
+        /// @warn Assumes that `expose()` has already been invoked.
+        constexpr Node* find(D* d) noexcept {
+            auto tid  = d->tid();
+            auto prev = this;
+            for (auto n = this; n;) {
+                if (n->def == d) return n;
+
+                if (!n->is_root() || tid < n->def->tid()) {
+                    prev = n;
+                    n    = n->aux.top;
+                } else
+                    n = n->aux.bot;
+            }
+
+            auto prev2 = this;
+            for (auto n = this; !n->is_root(); n = n->parent) {
+                assert(n->def != d);
+                if (tid < n->def->tid()) {
+                    prev2 = n;
+                    n     = n->parent;
+                } else {
+                    break;
+                }
+            }
+
+            assert(prev == prev2);
+            return prev;
         }
         ///@}
 
@@ -409,30 +440,23 @@ public:
             }
 
             if (n1 && n2) {
-                if (!n1->lca(n2)->is_root()) return true;
                 if (n1->min > n2->def->tid() || n1->def->tid() < n2->min) return false;
+                if (n1->def == n2->def) return true;
 
-                // if one set is way smaller, iterate over this one and check with `contains` the other one
-                if (auto n1_lt = n1->size <= n2->size >> 3; n1_lt || n1->size <= n2->size >> 3) {
-                    auto m = n1_lt ? n2 : n1;
-                    for (auto n = n1_lt ? n1 : n2; !n->is_root(); n = n->parent)
-                        if (m->contains(n->def)) return true;
-                    return false;
-                }
+                // We can only have one exposed path: n2. So, swap if n1 is larger!
+                if (n1->size > n2->size) std::swap(n1, n2);
+                if (!n1->lca(n2)->is_root()) return true; // lca exposes n2!
 
                 while (!n1->is_root() && !n2->is_root()) {
-                    if (n1->def == n2->def) {
-                        n1->splay();
-                        n2->splay();
-                        return true;
-                    }
-
                     if (n1->def->tid() > n2->def->tid()) {
                         n1 = n1->parent;
-                        if (n1->def->tid() < n2->min) return false;
+                        if (n1->def == n2->def) return true;
                     } else {
+                        if (n2 = n2->find(n1->def); n2->def == n2->def) {
+                            n2->splay();
+                            return true;
+                        }
                         n2 = n2->parent;
-                        if (n1->min > n2->def->tid()) return false;
                     }
                 }
 
@@ -680,6 +704,20 @@ public:
         return {};
     }
     ///@}
+
+    /// @name DOT output
+    void dot() {
+        auto of = std::ofstream("trie.dot");
+        dot(of);
+    }
+
+    void dot(std::ostream& os) const {
+        os << "digraph {{" << std::endl;
+        os << "ordering=out;" << std::endl;
+        os << "node [shape=box,style=filled];" << std::endl;
+        root()->dot(os);
+        os << "}}" << std::endl;
+    }
 
     friend void swap(Sets& s1, Sets& s2) noexcept {
         using std::swap;

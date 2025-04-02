@@ -11,6 +11,9 @@ using namespace std::literals;
 
 namespace mim {
 
+template void Sets<const Var>::dot();
+template void Sets<Def>::dot();
+
 /*
  * constructors
  */
