@@ -1,5 +1,9 @@
 var NAVTREEINDEX23 =
 {
+"namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65afa816edb83e95bf0c8da580bdfd491ef":[3,0,1,4,11,2,0],
+"namespacemim_1_1plug_1_1refly.html#ac24c63c923883ed7d3fd7cf83a5ba6e0":[3,0,1,4,11,1],
+"namespacemim_1_1plug_1_1refly.html#acdf0aa3a0beb8ab1cff0ce3017ac4973":[3,0,1,4,11,3],
+"namespacemim_1_1plug_1_1refly.html#ad1fe9de8058ad62b6ec122a4ce93c8b0":[3,0,1,4,11,16],
 "namespacemim_1_1plug_1_1refly.html#adb7a95dc4452056bbd12a22f40d875e7":[3,0,1,4,11,11],
 "namespacemim_1_1plug_1_1refly.html#aee2261b0b7331b07efb5c1cea91421ae":[3,0,1,4,11,8],
 "namespacemim_1_1plug_1_1refly.html#aef69fe712603cff1f76cf43576ea1e55":[3,0,1,4,11,18],
@@ -245,9 +249,5 @@ var NAVTREEINDEX23 =
 "regex_2normalizers_8cpp.html#aa8cfe9b14b05191510c403314b69f2f7":[6,0,3,1,4,12,2,4],
 "regex_2normalizers_8cpp.html#aa981562625bd419f24847cf93d825254":[6,0,3,1,4,12,2,15],
 "regex_2normalizers_8cpp.html#ab06e1bb5c1584b89ee5c965d9b8203c1":[6,0,3,1,4,12,2,14],
-"regex_2normalizers_8cpp.html#adf4bcd5b08eae13d0277edf10663cd92":[6,0,3,1,4,12,2,10],
-"regex_2normalizers_8cpp.html#ae3d818edbd962f7741c9ac0d96515c2d":[6,0,3,1,4,12,2,7],
-"regex_2normalizers_8cpp.html#ae5b509ae2785246a5099b89e294ac2fe":[6,0,3,1,4,12,2,2],
-"regex_2normalizers_8cpp.html#ae924b24ab066d5881fbab893c32addab":[6,0,3,1,4,12,2,13],
-"regex_2normalizers_8cpp.html#afe291bf091de248e352dada9e3653c04":[6,0,3,1,4,12,2,3]
+"regex_2normalizers_8cpp.html#adf4bcd5b08eae13d0277edf10663cd92":[6,0,3,1,4,12,2,10]
 };

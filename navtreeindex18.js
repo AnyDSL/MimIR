@@ -1,5 +1,9 @@
 var NAVTREEINDEX18 =
 {
+"lam__spec_8cpp_source.html":[6,0,3,1,2,3],
+"lam__spec_8h.html":[6,0,2,1,2,3],
+"lam__spec_8h_source.html":[6,0,2,1,2,3],
+"langref.html":[1,1],
 "lattice_8cpp.html":[6,0,3,1,13],
 "lattice_8cpp_source.html":[6,0,3,1,13],
 "lattice_8h.html":[6,0,2,1,12],
@@ -245,9 +249,5 @@ var NAVTREEINDEX18 =
 "math_8cpp_source.html":[6,0,3,1,4,7,0],
 "math_8h.html":[6,0,2,1,4,7,0],
 "math_8h.html#a0ac6940e5fc2baa2a025f12066c91db2":[6,0,2,1,4,7,0,7],
-"math_8h.html#a0d7fad3cb7deaa858ef89618af5741e9":[6,0,2,1,4,7,0,9],
-"math_8h.html#a1794e4909a2ecb334c836a3dd927ac68":[6,0,2,1,4,7,0,8],
-"math_8h.html#a1bf9f164e985cb56deedf827f7fb2c3f":[6,0,2,1,4,7,0,4],
-"math_8h.html#a2d08547c4fc3b6bcf3d8779269813b50":[6,0,2,1,4,7,0,5],
-"math_8h.html#a46c491e9f0e6ec5826947a86337eb261":[6,0,2,1,4,7,0,0]
+"math_8h.html#a0d7fad3cb7deaa858ef89618af5741e9":[6,0,2,1,4,7,0,9]
 };
