@@ -1,6 +1,6 @@
 // RUN: rm -f %t.ll %t.mim
-// RUN: %mim -o - %s > %t.mim && %mim %t.mim --output-ll %t.ll -o - | FileCheck %s
-// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %mim -o - %s > %t.mim && %mim %t.mim --output-ll %t.ll -o - | %FileCheck %s
+// RUN: %clang %t.ll -o %t -Wno-override-module
 // RUN: %t ; test $? -eq 1
 // RUN: %t 1 2 3 ; test $? -eq 4
 // RUN: %t a b c d e f ; test $? -eq 7

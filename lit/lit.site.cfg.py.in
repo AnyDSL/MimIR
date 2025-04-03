@@ -7,6 +7,9 @@ if sys.platform == "win32":
     config.mim = r'@CMAKE_BINARY_DIR@/bin/mim.exe'
 else:
     config.mim = r'@LIT_VALGRIND_COMMANDLINE@@CMAKE_BINARY_DIR@/bin/mim'
+config.clang = r'@CLANG_EXECUTABLE@'
+config.clang_pp = r'@CLANG_PP_EXECUTABLE@'
+config.filecheck = r'@LLVM_FILECHECK_EXECUTABLE@'
 
 lit_config.load_config(
         config, os.path.join(config.my_src_root, "lit/lit.cfg.py"))
