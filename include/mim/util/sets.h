@@ -86,18 +86,6 @@ private:
                     n = n->aux.bot;
             }
 
-            auto prev2 = this;
-            for (auto n = this; !n->is_root(); n = n->parent) {
-                assert(n->def != d);
-                if (tid < n->def->tid()) {
-                    prev2 = n;
-                    n     = n->parent;
-                } else {
-                    break;
-                }
-            }
-
-            assert(prev == prev2);
             return prev;
         }
         ///@}
@@ -452,8 +440,8 @@ public:
                         n1 = n1->parent;
                         if (n1->def == n2->def) return true;
                     } else {
-                        if (n2 = n2->find(n1->def); n2->def == n2->def) {
-                            n2->splay();
+                        if (n2 = n2->find(n1->def); n1->def == n2->def) {
+                            n2->splay(); // heuristic: bring node causing intersection to top
                             return true;
                         }
                         n2 = n2->parent;
