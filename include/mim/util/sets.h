@@ -2,6 +2,7 @@
 
 #include <fstream>
 
+#include "mim/util/link_cut_tree.h"
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
@@ -11,19 +12,32 @@ namespace mim {
 
 template<class D, size_t N = 16> class Sets {
 private:
+    class Node;
+
+    struct Lt {
+        constexpr bool operator()(Node*, D*) const noexcept;
+    };
+
+    struct Eq {
+        constexpr bool operator()(Node*, D*) const noexcept;
+    };
+
     /// Trie Node.
-    class Node {
+    class Node : public lct::Node<Node, D*, Lt, Eq> {
+    private:
+        using LCT = lct::Node<Node, D*, Lt, Eq>;
+
     public:
         constexpr Node(u32 id) noexcept
-            : def(nullptr)
-            , parent(nullptr)
+            : parent(nullptr)
+            , def(nullptr)
             , size(0)
             , min(size_t(-1))
             , id(id) {}
 
         constexpr Node(Node* parent, D* def, u32 id) noexcept
-            : def(def)
-            , parent(parent)
+            : parent(parent)
+            , def(def)
             , size(parent->size + 1)
             , min(parent->def ? parent->min : def->tid())
             , id(id) {
@@ -42,11 +56,13 @@ private:
             for (const auto& [def, child] : children) println(os, "{} -> {}", node2str(this), node2str(child.get()));
             for (const auto& [_, child] : children) child->dot(os);
 
+#if 0
             // clang-format off
-            if (auto par = path_parent()) println(os, "{} -> {} [constraint=false,color=\"#0000ff\",style=dashed];", node2str(this), node2str(par));
+            if (auto par = LCT::path_parent()) println(os, "{} -> {} [constraint=false,color=\"#0000ff\",style=dashed];", node2str(this), node2str(par));
             if (auto top = aux.top      ) println(os, "{} -> {} [constraint=false,color=\"#ff0000\"];", node2str(this), node2str(top));
             if (auto bot = aux.bot      ) println(os, "{} -> {} [constraint=false,color=\"#00ff00\"];", node2str(this), node2str(bot));
             // clang-format on
+#endif
         }
 
         ///@name Getters
@@ -60,172 +76,18 @@ private:
             if (tid <  this->min || tid >  this->def->tid()) return false;
             // clang-format on
 
-            expose();
-            for (auto n = this; n; n = (n->is_root() || n->def->tid() < tid) ? n->aux.bot : n->aux.top) {
-                if (n->def == d) {
-                    n->splay(); // heuristic: bring to root to have hits at the top
-                    return true;
-                }
-            }
-
-            return false;
+            return LCT::contains(d);
         }
 
-        /// Find @p d or the element just greater than @p d.
-        /// @warn Assumes that `expose()` has already been invoked.
-        constexpr Node* find(D* d) noexcept {
-            auto tid  = d->tid();
-            auto prev = this;
-            for (auto n = this; n;) {
-                if (n->def == d) return n;
-
-                if (!n->is_root() || tid < n->def->tid()) {
-                    prev = n;
-                    n    = n->aux.top;
-                } else
-                    n = n->aux.bot;
-            }
-
-            return prev;
-        }
+        using LCT::find;
         ///@}
 
-        ///@name parent
-        ///@{
-        // clang-format off
-        constexpr Node*  aux_parent() noexcept { return aux.parent && (aux.parent->aux.bot == this || aux.parent->aux.top == this) ? aux.parent : nullptr; }
-        constexpr Node* path_parent() noexcept { return aux.parent && (aux.parent->aux.bot != this && aux.parent->aux.top != this) ? aux.parent : nullptr; }
-        // clang-format on
-        ///@}
-
-        ///@name Aux Tree (Splay Tree)
-        ///@{
-
-        /// [Splays](https://hackmd.io/@CharlieChuang/By-UlEPFS#Operation1) `this` to the root of its splay tree.
-        constexpr void splay() noexcept {
-            while (auto p = aux_parent()) {
-                if (auto pp = p->aux_parent()) {
-                    if (p->aux.bot == this && pp->aux.bot == p) { // zig-zig
-                        pp->ror();
-                        p->ror();
-                    } else if (p->aux.top == this && pp->aux.top == p) { // zag-zag
-                        pp->rol();
-                        p->rol();
-                    } else if (p->aux.bot == this && pp->aux.top == p) { // zig-zag
-                        p->ror();
-                        pp->rol();
-                    } else { // zag-zig
-                        assert(p->aux.top == this && pp->aux.bot == p);
-                        p->rol();
-                        pp->ror();
-                    }
-                } else if (p->aux.bot == this) { // zig
-                    p->ror();
-                } else { // zag
-                    assert(p->aux.top == this);
-                    p->rol();
-                }
-            }
-        }
-
-        /// Helpfer for Splay-Tree: rotate left/right:
-        /// ```
-        ///  | Left                  | Right                  |
-        ///  |-----------------------|------------------------|
-        ///  |   p              p    |       p          p     |
-        ///  |   |              |    |       |          |     |
-        ///  |   x              c    |       x          c     |
-        ///  |  / \     ->     / \   |      / \   ->   / \    |
-        ///  | a   c          x   d  |     c   a      d   x   |
-        ///  |    / \        / \     |    / \            / \  |
-        ///  |   b   d      a   b    |   d   b          b   a |
-        ///  ```
-        template<size_t l> constexpr void rotate() noexcept {
-            constexpr size_t r   = (l + 1) % 2;
-            constexpr auto child = [](Node* n, size_t i) -> Node*& { return i == 0 ? n->aux.bot : n->aux.top; };
-
-            auto x = this;
-            auto p = x->aux.parent;
-            auto c = child(x, r);
-            auto b = child(c, l);
-
-            if (b) b->aux.parent = x;
-
-            if (p) {
-                if (child(p, l) == x) {
-                    child(p, l) = c;
-                } else if (child(p, r) == x) {
-                    child(p, r) = c;
-                } else {
-                    /* only path parent */;
-                }
-            }
-
-            x->aux.parent = c;
-            c->aux.parent = p;
-            child(x, r)   = b;
-            child(c, l)   = x;
-        }
-
-        constexpr void rol() noexcept { return rotate<0>(); }
-        constexpr void ror() noexcept { return rotate<1>(); }
-        ///@}
-
-        /// @name Link-Cut-Tree
-        /// This is a simplified version of a Link-Cut-Tree without the Cut operation.
-        ///@{
-
-        /// Registers the edge `this -> child` in the *aux* tree.
-        constexpr void link_to_child(Node* child) noexcept {
-            this->expose();
-            child->expose();
-            if (!child->aux.top) {
-                this->aux.parent = child;
-                child->aux.top   = this;
-            }
-        }
-
-        /// Make a preferred path from `this` to root while putting `this` at the root of the *aux* tree.
-        /// @returns the last valid path_parent().
-        constexpr Node* expose() noexcept {
-            Node* prev = nullptr;
-            for (auto curr = this; curr; prev = curr, curr = curr->aux.parent) {
-                curr->splay();
-                assert(!prev || prev->aux.parent == curr);
-                curr->aux.bot = prev;
-            }
-            splay();
-            return prev;
-        }
-
-        /// Least Common Ancestor of `this` and @p other in the *rep* tree; leaves @p other expose%d.
-        /// @returns `nullptr`, if @p a and @p b are in different trees.
-        constexpr Node* lca(Node* other) noexcept { return this->expose(), other->expose(); }
-
-        /// Is `this` a descendant of `other` in the *rep* tree?
-        /// Also `true`, if `this == other`.
-        constexpr bool is_descendant_of(Node* other) noexcept {
-            if (this == other) return true;
-            this->expose();
-            other->splay();
-            auto curr = this;
-            while (auto p = curr->aux_parent()) curr = p;
-            return curr == other;
-        }
-        ///@}
-
-        D* const def;
         Node* const parent;
+        D* const def;
         const size_t size;
         const size_t min;
         u32 const id;
         GIDMap<D*, fe::Arena::Ptr<Node>> children;
-
-        struct {
-            Node* parent = nullptr; ///< parent or path-parent
-            Node* bot    = nullptr; ///< left/deeper/bottom/leaf-direction
-            Node* top    = nullptr; ///< right/shallower/top/root-direction
-        } aux;
     };
 
     struct Data {
@@ -791,5 +653,13 @@ private:
     u32 tid_counter_ = 1;
     u32 id_counter_  = 0;
 };
+
+template<class D, size_t N> constexpr bool Sets<D, N>::Lt::operator()(Node* n, D* d) const noexcept {
+    return n->is_root() || n->def->tid() < d->tid();
+}
+
+template<class D, size_t N> constexpr bool Sets<D, N>::Eq::operator()(Node* n, D* d) const noexcept {
+    return n->def == d;
+}
 
 } // namespace mim
