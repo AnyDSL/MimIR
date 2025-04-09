@@ -4,6 +4,16 @@
 
 namespace mim::lct {
 
+/// This is an **intrusive** [Link-Cut-Tree](https://en.wikipedia.org/wiki/Link/cut_tree).
+/// Intrusive means that you have to inherit from this class via
+/// [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) like this:
+/// ```
+/// class Node : public lct::Node<Node, MyKey> {
+///     constexpr bool lt(const MyKey& key) const noexcept { /*...*/ }
+///     constexpr bool eq(const MyKey& key) const noexcept { /*...*/ }
+///     // ...
+/// };
+/// ```
 template<class P, class K> class Node {
 private:
     P* self() { return static_cast<P*>(this); }
@@ -26,7 +36,7 @@ public:
         return false;
     }
 
-    /// Find @p d or the element just greater than @p d.
+    /// Find @p k or the element just greater than @p k.
     /// @warning Assumes that `expose()` has already been invoked.
     constexpr P* find(const K& k) noexcept {
         auto prev = this;
@@ -53,7 +63,7 @@ public:
     // clang-format on
     ///@}
 
-    ///@name Aux Tree (Splay Tree)
+    ///@name Splay Tree
     ///@{
 
     /// [Splays](https://hackmd.io/@CharlieChuang/By-UlEPFS#Operation1) `this` to the root of its splay tree.
@@ -127,7 +137,6 @@ public:
     ///@}
 
     /// @name Link-Cut-Tree
-    /// This is a simplified version of a Link-Cut-Tree without the Cut operation.
     ///@{
 
     /// Registers the edge `this -> child` in the *aux* tree.
@@ -153,11 +162,11 @@ public:
         return prev->self();
     }
 
-    /// Least Common Ancestor of `this` and @p other in the *rep* tree; leaves @p other expose%d.
+    /// Least Common Ancestor of `this` and @p other in the *aux* tree; leaves @p other expose%d.
     /// @returns `nullptr`, if @p a and @p b are in different trees.
     constexpr P* lca(Node* other) noexcept { return this->expose(), other->expose(); }
 
-    /// Is `this` a descendant of `other` in the *rep* tree?
+    /// Is `this` a descendant of `other` in the *aux* tree?
     /// Also `true`, if `this == other`.
     constexpr bool is_descendant_of(Node* other) noexcept {
         if (this == other) return true;
