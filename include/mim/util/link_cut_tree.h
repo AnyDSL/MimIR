@@ -4,7 +4,7 @@
 
 namespace mim::lct {
 
-template<class P, class K, class Lt, class Eq> class Node {
+template<class P, class K> class Node {
 private:
     P* self() { return static_cast<P*>(this); }
     const P* self() const { return static_cast<const P*>(this); }
@@ -16,8 +16,8 @@ public:
     ///@{
     [[nodiscard]] bool contains(const K& k) noexcept {
         expose();
-        for (auto n = this; n; n = lt(n->self(), k) ? n->bot : n->top) {
-            if (eq(n->self(), k)) {
+        for (auto n = this; n; n = n->self()->lt(k) ? n->bot : n->top) {
+            if (n->self()->eq(k)) {
                 n->splay();
                 return true;
             }
@@ -31,9 +31,9 @@ public:
     constexpr P* find(const K& k) noexcept {
         auto prev = this;
         for (auto n = this; n;) {
-            if (eq(n->self(), k)) return n->self();
+            if (n->self()->eq(k)) return n->self();
 
-            if (lt(n->self(), k)) {
+            if (n->self()->lt(k)) {
                 n = n->bot;
             } else {
                 prev = n;
@@ -131,7 +131,7 @@ public:
     ///@{
 
     /// Registers the edge `this -> child` in the *aux* tree.
-    constexpr void link_to_child(Node* child) noexcept {
+    constexpr void link(Node* child) noexcept {
         this->expose();
         child->expose();
         if (!child->top) {
@@ -169,8 +169,6 @@ public:
     }
     ///@}
 
-    Lt lt;
-    Eq eq;
     Node* parent = nullptr; ///< parent or path-parent
     Node* bot    = nullptr; ///< left/deeper/bottom/leaf-direction
     Node* top    = nullptr; ///< right/shallower/top/root-direction

@@ -12,20 +12,10 @@ namespace mim {
 
 template<class D, size_t N = 16> class Sets {
 private:
-    class Node;
-
-    struct Lt {
-        constexpr bool operator()(Node*, D*) const noexcept;
-    };
-
-    struct Eq {
-        constexpr bool operator()(Node*, D*) const noexcept;
-    };
-
     /// Trie Node.
-    class Node : public lct::Node<Node, D*, Lt, Eq> {
+    class Node : public lct::Node<Node, D*> {
     private:
-        using LCT = lct::Node<Node, D*, Lt, Eq>;
+        using LCT = lct::Node<Node, D*>;
 
     public:
         constexpr Node(u32 id) noexcept
@@ -41,8 +31,11 @@ private:
             , size(parent->size + 1)
             , min(parent->def ? parent->min : def->tid())
             , id(id) {
-            parent->link_to_child(this);
+            parent->link(this);
         }
+
+        constexpr bool lt(D* d) const noexcept { return this->is_root() || this->def->tid() < d->tid(); }
+        constexpr bool eq(D* d) const noexcept { return this->def == d; }
 
         void dot(std::ostream& os) {
             using namespace std::string_literals;
@@ -653,13 +646,5 @@ private:
     u32 tid_counter_ = 1;
     u32 id_counter_  = 0;
 };
-
-template<class D, size_t N> constexpr bool Sets<D, N>::Lt::operator()(Node* n, D* d) const noexcept {
-    return n->is_root() || n->def->tid() < d->tid();
-}
-
-template<class D, size_t N> constexpr bool Sets<D, N>::Eq::operator()(Node* n, D* d) const noexcept {
-    return n->def == d;
-}
 
 } // namespace mim
