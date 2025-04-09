@@ -27,7 +27,7 @@ public:
     }
 
     /// Find @p d or the element just greater than @p d.
-    /// @warn Assumes that `expose()` has already been invoked.
+    /// @warning Assumes that `expose()` has already been invoked.
     constexpr P* find(const K& k) noexcept {
         auto prev = this;
         for (auto n = this; n;) {
