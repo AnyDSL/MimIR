@@ -10,7 +10,7 @@ namespace mim {
 /// Builds a nesting tree of all *immutables*/binders.
 class Nest {
 public:
-    class Node {
+    class Node : private lct::Node<Node, int> {
     public:
         /// @name Getters
         ///@{
