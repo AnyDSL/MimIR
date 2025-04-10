@@ -9,24 +9,33 @@ namespace mim {
 
 namespace {
 
+static bool needs_zonk(const Def* def) {
+    if (def->has_dep(Dep::Infer)) {
+        for (auto mut : def->local_muts())
+            if (auto infer = mut->isa<Infer>(); infer && infer->is_set()) return true;
+    }
+
+    return false;
+}
+
 class Zonker : public Rewriter {
 public:
     Zonker(World& world)
         : Rewriter(world) {}
 
-    const Def* rewrite(const Def* old) override { return (old->has_dep(Dep::Infer)) ? Rewriter::rewrite(old) : old; }
-
-    const Def* rewrite_mut(Def* mut) override {
-        if (auto infer = mut->isa<Infer>())
-            if (auto op = infer->op()) return rewrite(op);
-        return mut;
+    const Def* rewrite(const Def* def) override {
+        def = Infer::find(def);
+        return needs_zonk(def) ? Rewriter::rewrite(def) : def;
     }
 };
 
 } // namespace
 
 // TODO check local_muts for Infers w/ op
-const Def* Def::zonk() const { return has_dep(Dep::Infer) ? Zonker(world()).rewrite(this) : this; }
+const Def* Def::zonk() const {
+    auto def = Infer::find(this);
+    return needs_zonk(def) ? Zonker(world()).rewrite(def) : def;
+}
 
 /*
  * Infer
@@ -46,7 +55,6 @@ const Def* Infer::find(const Def* def) {
         infer->reset(res);
     }
 
-    assert((!res->isa<Infer>() || res != res->op(0)) && "an Infer shouldn't point to itself");
     return res;
 }
 
