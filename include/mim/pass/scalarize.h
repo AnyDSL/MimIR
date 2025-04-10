@@ -23,11 +23,11 @@ public:
         : RWPass(man, "scalarize")
         , eta_exp_(eta_exp) {}
 
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 
 private:
     bool should_expand(Lam* lam);
-    Lam* make_scalar(Ref def);
+    Lam* make_scalar(const Def* def);
 
     EtaExp* eta_exp_;
     Lam2Lam tup2sca_;

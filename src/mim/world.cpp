@@ -13,10 +13,11 @@
 namespace mim {
 
 namespace {
-bool is_shape(Ref s) {
+bool is_shape(const Def* s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
-    if (auto sig = s->isa_imm<Sigma>()) return std::ranges::all_of(sig->ops(), [](Ref op) { return op->isa<Nat>(); });
+    if (auto sig = s->isa_imm<Sigma>())
+        return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
 
     return false;
 }
@@ -107,14 +108,14 @@ void World::make_internal(Def* def) {
  * factory methods
  */
 
-const Type* World::type(Ref level) {
+const Type* World::type(const Def* level) {
     if (!level->type()->isa<Univ>())
         error(level->loc(), "argument `{}` to `Type` must be of type `Univ` but is of type `{}`", level, level->type());
 
     return unify<Type>(1, level)->as<Type>();
 }
 
-Ref World::uinc(Ref op, level_t offset) {
+const Def* World::uinc(const Def* op, level_t offset) {
     if (!op->type()->isa<Univ>())
         error(op->loc(), "operand '{}' of a universe increment must be of type `Univ` but is of type `{}`", op,
               op->type());
@@ -123,7 +124,7 @@ Ref World::uinc(Ref op, level_t offset) {
     return unify<UInc>(1, op, offset);
 }
 
-template<Sort sort> Ref World::umax(Defs ops_) {
+template<Sort sort> const Def* World::umax(Defs ops_) {
     // consume nested umax
     DefVec ops;
     for (auto op : ops_)
@@ -134,7 +135,7 @@ template<Sort sort> Ref World::umax(Defs ops_) {
 
     level_t lvl = 0;
     for (auto& op : ops) {
-        Ref r = op;
+        const Def* r = op;
         if (sort == Sort::Term) r = r->unfold_type();
         if (sort <= Sort::Type) r = r->unfold_type();
         if (sort <= Sort::Kind) {
@@ -169,7 +170,7 @@ template<Sort sort> Ref World::umax(Defs ops_) {
 
 // TODO more thorough & consistent checks for singleton types
 
-Ref World::var(Ref type, Def* mut) {
+const Def* World::var(const Def* type, Def* mut) {
     if (auto s = Idx::isa(type)) {
         if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
     }
@@ -178,16 +179,17 @@ Ref World::var(Ref type, Def* mut) {
     return mut->var_ = unify<Var>(1, type, mut);
 }
 
-template<bool Normalize> Ref World::implicit_app(Ref callee, Ref arg) {
+template<bool Normalize> const Def* World::implicit_app(const Def* callee, const Def* arg) {
     while (auto pi = Pi::isa_implicit(callee->type())) callee = app(callee, mut_infer(pi->dom()));
     return app<Normalize>(callee, arg);
 }
 
-template<bool Normalize> Ref World::app(Ref callee, Ref arg) {
+template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg) {
     callee = callee->zonk();
+    arg    = arg->zonk();
     if (auto pi = callee->type()->isa<Pi>()) {
         if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
-            arg = new_arg;
+            arg = new_arg->zonk();
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
             if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
                 auto rw = VarRewriter(lam->has_var(), arg);
@@ -197,7 +199,8 @@ template<bool Normalize> Ref World::app(Ref callee, Ref arg) {
                 }
             }
 
-            auto type                 = pi->reduce(arg);
+            auto type                 = pi->reduce(arg)->zonk();
+            callee                    = callee->zonk();
             auto [axiom, curry, trip] = Axiom::get(callee);
             if (axiom) {
                 curry = curry == 0 ? trip : curry;
@@ -224,7 +227,7 @@ template<bool Normalize> Ref World::app(Ref callee, Ref arg) {
         .error(callee->loc(), "'{}' <--- callee type", callee->type());
 }
 
-Ref World::raw_app(Ref type, Ref callee, Ref arg) {
+const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg) {
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
         curry = curry == 0 ? trip : curry;
@@ -234,11 +237,11 @@ Ref World::raw_app(Ref type, Ref callee, Ref arg) {
     return raw_app(axiom, curry, trip, type, callee, arg);
 }
 
-Ref World::raw_app(const Axiom* axiom, u8 curry, u8 trip, Ref type, Ref callee, Ref arg) {
+const Def* World::raw_app(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg) {
     return unify<App>(2, axiom, curry, trip, type, callee, arg);
 }
 
-Ref World::sigma(Defs ops) {
+const Def* World::sigma(Defs ops) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
@@ -246,7 +249,7 @@ Ref World::sigma(Defs ops) {
     return unify<Sigma>(ops.size(), Sigma::infer(*this, ops), ops);
 }
 
-Ref World::tuple(Defs ops) {
+const Def* World::tuple(Defs ops) {
     if (ops.size() == 1) return ops[0];
 
     auto sigma = infer_sigma(*this, ops);
@@ -258,7 +261,7 @@ Ref World::tuple(Defs ops) {
     return new_t;
 }
 
-Ref World::tuple(Ref type, Defs ops) {
+const Def* World::tuple(const Def* type, Defs ops) {
     // TODO type-check type vs inferred type
 
     auto n = ops.size();
@@ -293,13 +296,13 @@ Ref World::tuple(Ref type, Defs ops) {
     return unify<Tuple>(ops.size(), type, ops);
 }
 
-Ref World::tuple(Sym sym) {
+const Def* World::tuple(Sym sym) {
     DefVec defs;
     std::ranges::transform(sym, std::back_inserter(defs), [this](auto c) { return lit_i8(c); });
     return tuple(defs);
 }
 
-Ref World::extract(Ref d, Ref index) {
+const Def* World::extract(const Def* d, const Def* index) {
     if (index->isa<Tuple>()) {
         auto n   = index->num_ops();
         auto idx = DefVec(n, [&](size_t i) { return index->op(i); });
@@ -310,8 +313,8 @@ Ref World::extract(Ref d, Ref index) {
         return tuple(ops);
     }
 
-    Ref size = Idx::isa(index->type());
-    Ref type = d->unfold_type()->zonk();
+    const Def* size = Idx::isa(index->type());
+    const Def* type = d->unfold_type()->zonk();
 
     if (auto l = Lit::isa(size); l && *l == 1) {
         if (auto l = Lit::isa(index); !l || *l != 0) WLOG("unknown Idx of size 1: {}", index);
@@ -361,7 +364,7 @@ Ref World::extract(Ref d, Ref index) {
     return unify<Extract>(2, elem_t, d, index);
 }
 
-Ref World::insert(Ref d, Ref index, Ref val) {
+const Def* World::insert(const Def* d, const Def* index, const Def* val) {
     auto type = d->unfold_type();
     auto size = Idx::isa(index->type());
     auto lidx = Lit::isa(index);
@@ -405,7 +408,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
 }
 
 // TODO merge this code with pack
-Ref World::arr(Ref shape, Ref body) {
+const Def* World::arr(const Def* shape, const Def* body) {
     if (!is_shape(shape->type())) error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = Lit::isa(shape)) {
@@ -432,7 +435,7 @@ Ref World::arr(Ref shape, Ref body) {
     return unify<Arr>(2, body->unfold_type(), shape, body);
 }
 
-Ref World::pack(Ref shape, Ref body) {
+const Def* World::pack(const Def* shape, const Def* body) {
     if (!is_shape(shape->type())) error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = Lit::isa(shape)) {
@@ -452,17 +455,17 @@ Ref World::pack(Ref shape, Ref body) {
     return unify<Pack>(1, type, body);
 }
 
-Ref World::arr(Defs shape, Ref body) {
+const Def* World::arr(Defs shape, const Def* body) {
     if (shape.empty()) return body;
     return arr(shape.rsubspan(1), arr(shape.back(), body));
 }
 
-Ref World::pack(Defs shape, Ref body) {
+const Def* World::pack(Defs shape, const Def* body) {
     if (shape.empty()) return body;
     return pack(shape.rsubspan(1), pack(shape.back(), body));
 }
 
-const Lit* World::lit(Ref type, u64 val) {
+const Lit* World::lit(const Def* type, u64 val) {
     if (auto size = Idx::isa(type)) {
         if (auto s = Lit::isa(size)) {
             if (*s != 0 && val >= *s) error(type->loc(), "index '{}' does not fit within arity '{}'", size, val);
@@ -478,23 +481,23 @@ const Lit* World::lit(Ref type, u64 val) {
  * set
  */
 
-template<bool Up> Ref World::ext(Ref type) {
+template<bool Up> const Def* World::ext(const Def* type) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefVec(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
     return unify<TExt<Up>>(0, type);
 }
 
-template<bool Up> Ref World::bound(Defs ops) {
+template<bool Up> const Def* World::bound(Defs ops) {
     auto kind = umax<Sort::Type>(ops);
 
     // has ext<Up> value?
-    if (std::ranges::any_of(ops, [&](Ref op) { return Up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+    if (std::ranges::any_of(ops, [&](const Def* op) { return Up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
         return ext<Up>(kind);
 
     // ignore: ext<!Up>
     DefVec cpy(ops.begin(), ops.end());
-    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](Ref op) { return !op->isa<Ext>(); });
+    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !op->isa<Ext>(); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
@@ -509,7 +512,7 @@ template<bool Up> Ref World::bound(Defs ops) {
     return unify<TBound<Up>>(cpy.size(), kind, cpy);
 }
 
-Ref World::ac(Ref type, Defs ops) {
+const Def* World::ac(const Def* type, Defs ops) {
     if (type->isa<Meet>()) {
         auto types = DefVec(ops.size(), [&](size_t i) { return ops[i]->type(); });
         return unify<Ac>(ops.size(), meet(types), ops);
@@ -519,16 +522,16 @@ Ref World::ac(Ref type, Defs ops) {
     return ops[0];
 }
 
-Ref World::ac(Defs ops) { return ac(umax<Sort::Term>(ops), ops); }
+const Def* World::ac(Defs ops) { return ac(umax<Sort::Term>(ops), ops); }
 
-Ref World::vel(Ref type, Ref value) {
+const Def* World::vel(const Def* type, const Def* value) {
     if (type->isa<Join>()) return unify<Vel>(1, type, value);
     return value;
 }
 
-Ref World::pick(Ref type, Ref value) { return unify<Pick>(1, type, value); }
+const Def* World::pick(const Def* type, const Def* value) { return unify<Pick>(1, type, value); }
 
-Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
+const Def* World::test(const Def* value, const Def* probe, const Def* match, const Def* clash) {
     auto m_pi = match->type()->isa<Pi>();
     auto c_pi = clash->type()->isa<Pi>();
 
@@ -542,7 +545,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);
 }
 
-Ref World::uniq(Ref inhabitant) { return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant); }
+const Def* World::uniq(const Def* inhabitant) { return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant); }
 
 Sym World::append_suffix(Sym symbol, std::string suffix) {
     auto name = symbol.str();
@@ -572,7 +575,7 @@ Sym World::append_suffix(Sym symbol, std::string suffix) {
 
 void World::breakpoint(u32 gid) { state_.breakpoints.emplace(gid); }
 
-Ref World::gid2def(u32 gid) {
+const Def* World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });
     if (i == move_.defs.end()) return nullptr;
     return *i;
@@ -587,18 +590,18 @@ World& World::verify() {
 #endif
 
 #ifndef DOXYGEN
-template Ref World::umax<Sort::Term>(Defs);
-template Ref World::umax<Sort::Type>(Defs);
-template Ref World::umax<Sort::Kind>(Defs);
-template Ref World::umax<Sort::Univ>(Defs);
-template Ref World::ext<true>(Ref);
-template Ref World::ext<false>(Ref);
-template Ref World::bound<true>(Defs);
-template Ref World::bound<false>(Defs);
-template Ref World::app<true>(Ref, Ref);
-template Ref World::app<false>(Ref, Ref);
-template Ref World::implicit_app<true>(Ref, Ref);
-template Ref World::implicit_app<false>(Ref, Ref);
+template const Def* World::umax<Sort::Term>(Defs);
+template const Def* World::umax<Sort::Type>(Defs);
+template const Def* World::umax<Sort::Kind>(Defs);
+template const Def* World::umax<Sort::Univ>(Defs);
+template const Def* World::ext<true>(const Def*);
+template const Def* World::ext<false>(const Def*);
+template const Def* World::bound<true>(Defs);
+template const Def* World::bound<false>(Defs);
+template const Def* World::app<true>(const Def*, const Def*);
+template const Def* World::app<false>(const Def*, const Def*);
+template const Def* World::implicit_app<true>(const Def*, const Def*);
+template const Def* World::implicit_app<false>(const Def*, const Def*);
 #endif
 
 } // namespace mim

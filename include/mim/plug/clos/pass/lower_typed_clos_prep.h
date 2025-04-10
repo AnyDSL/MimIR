@@ -13,14 +13,14 @@ public:
         : FPPass<LowerTypedClosPrep, Lam>(man, "lower_typed_clos_prep") {}
 
 private:
-    Ref rewrite(Ref) override;
-    undo_t analyze(Ref) override;
+    const Def* rewrite(const Def*) override;
+    undo_t analyze(const Def*) override;
 
-    bool is_esc(Ref def) {
+    bool is_esc(const Def* def) {
         if (auto [_, lam] = ca_isa_var<Lam>(def); lam && !lam->is_set()) return true;
         return esc_.contains(def);
     }
-    undo_t set_esc(Ref);
+    undo_t set_esc(const Def*);
 
     DefSet esc_;
 };

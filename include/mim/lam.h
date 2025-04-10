@@ -29,8 +29,8 @@ public:
     /// @anchor pi_dom
     /// @see @ref proj
     ///@{
-    Ref dom() const { return op(0); }
-    Ref codom() const { return op(1); }
+    const Def* dom() const { return op(0); }
+    const Def* codom() const { return op(1); }
     MIM_PROJ(dom, const)
     MIM_PROJ(codom, const)
     ///@}
@@ -41,19 +41,19 @@ public:
     ///@{
     // clang-format off
     /// Is this a continuation - i.e. is the Pi::codom mim::Bot%tom?
-    static const Pi* isa_cn(Ref d) { return d->isa<Pi>() && d->as<Pi>()->codom()->node() == Node::Bot ? d->as<Pi>() : nullptr; }
+    static const Pi* isa_cn(const Def* d) { return d->isa<Pi>() && d->as<Pi>()->codom()->node() == Node::Bot ? d->as<Pi>() : nullptr; }
     /// Is this a continuation (Pi::isa_cn) which has a Pi::ret_pi?
-    static const Pi* isa_returning(Ref d)  { return isa_cn(d) &&  d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
+    static const Pi* isa_returning(const Def* d)  { return isa_cn(d) &&  d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
     /// Is this a continuation (Pi::isa_cn) that is **not** Pi::isa_returning?
-    static const Pi* isa_basicblock(Ref d) { return isa_cn(d) && !d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
+    static const Pi* isa_basicblock(const Def* d) { return isa_cn(d) && !d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
     // clang-format on
     /// Is @p d an Pi::is_implicit (mutable) Pi?
-    static Pi* isa_implicit(Ref d) {
+    static Pi* isa_implicit(const Def* d) {
         if (auto pi = d->isa_mut<Pi>(); pi && pi->is_implicit()) return pi;
         return nullptr;
     }
     /// Yields the Pi::ret_pi() of @p d, if it is in fact a Pi.
-    static const Pi* has_ret_pi(Ref d) { return d->isa<Pi>() ? d->as<Pi>()->ret_pi() : nullptr; }
+    static const Pi* has_ret_pi(const Def* d) { return d->isa<Pi>() ? d->as<Pi>()->ret_pi() : nullptr; }
     ///@}
 
     /// @name Return Continuation
@@ -63,39 +63,39 @@ public:
     /// Yields the last Pi::dom, if Pi::isa_basicblock.
     const Pi* ret_pi() const;
     /// Pi::dom%ain of Pi::ret_pi.
-    Ref ret_dom() const { return ret_pi()->dom(); }
+    const Def* ret_dom() const { return ret_pi()->dom(); }
     ///@}
 
     /// @name Setters
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Pi>::set;
-    Pi* set(Ref dom, Ref codom) { return set_dom(dom)->set_codom(codom); }
-    Pi* set_dom(Ref dom) { return Def::set(0, dom)->as<Pi>(); }
+    Pi* set(const Def* dom, const Def* codom) { return set_dom(dom)->set_codom(codom); }
+    Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
-    Pi* set_codom(Ref codom) { return Def::set(1, codom)->as<Pi>(); }
+    Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
     Pi* unset() { return Def::unset()->as<Pi>(); }
     ///@}
 
     /// @name Type Checking
     ///@{
-    Ref check(size_t, Ref) override;
-    Ref check() override;
-    static Ref infer(Ref dom, Ref codom);
+    const Def* check(size_t, const Def*) override;
+    const Def* check() override;
+    static const Def* infer(const Def* dom, const Def* codom);
     ///@}
 
     /// @name Rebuild
     ///@{
-    Ref reduce(Ref arg) const { return Def::reduce(1, arg); }
-    Pi* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    const Def* reduce(const Def* arg) const { return Def::reduce(1, arg); }
+    Pi* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Pi* immutabilize() override;
     ///@}
 
     static constexpr auto Node = Node::Pi;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    Pi* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Pi* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -110,12 +110,12 @@ private:
         : Def(Node, pi, 2, 0) {}
 
 public:
-    using Filter = std::variant<bool, Ref>;
+    using Filter = std::variant<bool, const Def*>;
 
     /// @name ops
     ///@{
-    Ref filter() const { return op(0); }
-    Ref body() const { return op(1); }
+    const Def* filter() const { return op(0); }
+    const Def* body() const { return op(1); }
     ///@}
 
     /// @name type
@@ -123,8 +123,8 @@ public:
     /// @see @ref proj
     ///@{
     const Pi* type() const { return Def::type()->as<Pi>(); }
-    Ref dom() const { return type()->dom(); }
-    Ref codom() const { return type()->codom(); }
+    const Def* dom() const { return type()->dom(); }
+    const Def* codom() const { return type()->codom(); }
     MIM_PROJ(dom, const)
     MIM_PROJ(codom, const)
     ///@}
@@ -133,12 +133,12 @@ public:
     /// @see @ref continuations "Pi: Continuations"
     ///@{
     // clang-format off
-    static const Lam* isa_cn(Ref d) { return Pi::isa_cn(d->type()) ? d->isa<Lam>() : nullptr; }
-    static const Lam* isa_basicblock(Ref d) { return Pi::isa_basicblock(d->type()) ? d->isa<Lam>() : nullptr; }
-    static const Lam* isa_returning(Ref d)  { return Pi::isa_returning (d->type()) ? d->isa<Lam>() : nullptr; }
-    static Lam* isa_mut_cn(Ref d) { return isa_cn(d) ? d->isa_mut<Lam>() : nullptr; }                ///< Only for mutables.
-    static Lam* isa_mut_basicblock(Ref d) { return isa_basicblock(d) ? d->isa_mut<Lam>(): nullptr; } ///< Only for mutables.
-    static Lam* isa_mut_returning(Ref d)  { return isa_returning (d) ? d->isa_mut<Lam>(): nullptr; } ///< Only for mutables.
+    static const Lam* isa_cn(const Def* d) { return Pi::isa_cn(d->type()) ? d->isa<Lam>() : nullptr; }
+    static const Lam* isa_basicblock(const Def* d) { return Pi::isa_basicblock(d->type()) ? d->isa<Lam>() : nullptr; }
+    static const Lam* isa_returning(const Def* d)  { return Pi::isa_returning (d->type()) ? d->isa<Lam>() : nullptr; }
+    static Lam* isa_mut_cn(const Def* d) { return isa_cn(d) ? d->isa_mut<Lam>() : nullptr; }                ///< Only for mutables.
+    static Lam* isa_mut_basicblock(const Def* d) { return isa_basicblock(d) ? d->isa_mut<Lam>(): nullptr; } ///< Only for mutables.
+    static Lam* isa_mut_returning(const Def* d)  { return isa_returning (d) ? d->isa_mut<Lam>(): nullptr; } ///< Only for mutables.
     // clang-format on
     ///@}
 
@@ -146,9 +146,9 @@ public:
     /// @see @ref return_continuation "Pi: Return Continuation"
     ///@{
     const Pi* ret_pi() const { return type()->ret_pi(); }
-    Ref ret_dom() const { return ret_pi()->dom(); }
+    const Def* ret_dom() const { return ret_pi()->dom(); }
     /// Yields the Lam::var of the Lam::ret_pi.
-    Ref ret_var() { return type()->ret_pi() ? var(num_vars() - 1) : nullptr; }
+    const Def* ret_var() { return type()->ret_pi() ? var(num_vars() - 1) : nullptr; }
     ///@}
 
     /// @name Setters
@@ -161,32 +161,32 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Lam>::set;
-    Lam* set(Filter filter, Ref body) { return set_filter(filter)->set_body(body); }
-    Lam* set_filter(Filter);                                         ///< Set filter first.
-    Lam* set_body(Ref body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.
+    Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
+    Lam* set_filter(Filter);                                                ///< Set filter first.
+    Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.
     /// Set body to an App of @p callee and @p arg.
-    Lam* app(Filter filter, Ref callee, Ref arg);
+    Lam* app(Filter filter, const Def* callee, const Def* arg);
     /// Set body to an App of @p callee and @p args.
-    Lam* app(Filter filter, Ref callee, Defs args);
+    Lam* app(Filter filter, const Def* callee, Defs args);
     /// Set body to an App of `(f, t)#cond mem` or `(f, t)#cond ()` if @p mem is `nullptr`.
-    Lam* branch(Filter filter, Ref cond, Ref t, Ref f, Ref mem = nullptr);
-    Lam* test(Filter filter, Ref val, Ref idx, Ref match, Ref clash, Ref mem);
+    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem = nullptr);
+    Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
 
-    Lam* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    Lam* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     /// @name Type Checking
     ///@{
-    Ref check(size_t, Ref) override;
+    const Def* check(size_t, const Def*) override;
     ///@}
 
     static constexpr auto Node = Node::Lam;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    Lam* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Lam* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -213,7 +213,7 @@ public:
 
     /// @name callee
     ///@{
-    Ref callee() const { return op(0); }
+    const Def* callee() const { return op(0); }
     const App* decurry() const { return callee()->as<App>(); } ///< Returns App::callee again as App.
     const Pi* callee_type() const { return callee()->type()->as<Pi>(); }
     ///@}
@@ -222,7 +222,7 @@ public:
     /// @anchor app_arg
     /// @see @ref proj
     ///@{
-    Ref arg() const { return op(1); }
+    const Def* arg() const { return op(1); }
     MIM_PROJ(arg, const)
     ///@}
 
@@ -236,14 +236,14 @@ public:
     static constexpr auto Node = Node::App;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
 
 /// @name Helpers to work with Functions
 ///@{
-inline const App* isa_callee(Ref def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
+inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
 
 /// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
 inline Lam* isa_workable(Lam* lam) {
@@ -251,13 +251,13 @@ inline Lam* isa_workable(Lam* lam) {
     return lam;
 }
 
-inline std::pair<const App*, Lam*> isa_apped_mut_lam(Ref def) {
+inline std::pair<const App*, Lam*> isa_apped_mut_lam(const Def* def) {
     if (auto app = def->isa<App>()) return {app, app->callee()->isa_mut<Lam>()};
     return {nullptr, nullptr};
 }
 
 /// Yields curried App%s in a flat `std::deque<const App*>`.
-std::deque<const App*> decurry(Ref);
+std::deque<const App*> decurry(const Def*);
 
 /// The high level view is:
 /// ```
@@ -275,10 +275,10 @@ std::deque<const App*> decurry(Ref);
 /// h': Cn B
 /// h'= λ b = f (b, ret_h)
 /// ```
-Ref compose_cn(Ref f, Ref g);
+const Def* compose_cn(const Def* f, const Def* g);
 
 /// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
-std::pair<Ref, DefVec> collect_args(Ref def);
+std::pair<const Def*, DefVec> collect_args(const Def* def);
 ///@}
 
 } // namespace mim

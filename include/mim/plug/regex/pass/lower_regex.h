@@ -9,7 +9,7 @@ public:
     LowerRegex(PassMan& man)
         : RWPass(man, "lower_regex") {}
 
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 };
 
 } // namespace mim::plug::regex

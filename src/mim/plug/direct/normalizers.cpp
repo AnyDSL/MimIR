@@ -5,7 +5,7 @@
 namespace mim::plug::direct {
 
 /// `cps2ds` is directly converted to `op_cps2ds_dep f` in its normalizer.
-Ref normalize_cps2ds(Ref, Ref, Ref fun) { return op_cps2ds_dep(fun); }
+const Def* normalize_cps2ds(const Def*, const Def*, const Def* fun) { return op_cps2ds_dep(fun); }
 
 MIM_direct_NORMALIZER_IMPL
 

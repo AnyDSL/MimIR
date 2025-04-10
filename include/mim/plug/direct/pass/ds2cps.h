@@ -23,12 +23,12 @@ public:
     DS2CPS(PassMan& man)
         : RWPass(man, "ds2cps") {}
 
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 
 private:
     Def2Def rewritten_;
 
-    Ref rewrite_lam(Lam* lam);
+    const Def* rewrite_lam(Lam* lam);
 };
 
 } // namespace mim::plug::direct

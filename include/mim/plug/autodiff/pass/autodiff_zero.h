@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
+
 #include <mim/pass/pass.h>
 
 namespace mim::plug::autodiff {
@@ -11,7 +12,7 @@ public:
     AutoDiffZero(PassMan& man)
         : RWPass(man, "autodiff_zero") {}
 
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 };
 
 } // namespace mim::plug::autodiff

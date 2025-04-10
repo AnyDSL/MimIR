@@ -12,7 +12,7 @@ namespace mim::plug::direct {
 /// let f: [t: T] → U = %direct.cps2ds_dep (T, lm (t': T): * = [t → t']U) k;
 /// ```
 ///@{
-inline Ref op_cps2ds_dep(Ref k) {
+inline const Def* op_cps2ds_dep(const Def* k) {
     auto& w   = k->world();
     auto K    = Pi::isa_cn(k->type());
     auto T    = K->dom(2, 0);

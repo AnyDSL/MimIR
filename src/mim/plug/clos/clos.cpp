@@ -28,11 +28,12 @@ extern "C" MIM_EXPORT Plugin mim_get_plugin() {
                 register_phase<clos::clos_conv_phase, clos::ClosConv>(passes);
                 register_phase<clos::lower_typed_clos_phase, clos::LowerTypedClos>(passes);
                 // TODO:; remove after ho_codegen merge
-                passes[flags_t(Annex::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder, Ref app) {
-                    auto bb      = app->as<App>()->arg();
-                    auto bb_only = bb->as<Lit>()->get<u64>();
-                    builder.add_pass<EtaRed>(app, bb_only);
-                };
+                passes[flags_t(Annex::Base<clos::eta_red_bool_pass>)]
+                    = [&](World&, PipelineBuilder& builder, const Def* app) {
+                          auto bb      = app->as<App>()->arg();
+                          auto bb_only = bb->as<Lit>()->get<u64>();
+                          builder.add_pass<EtaRed>(app, bb_only);
+                      };
             },
             nullptr};
 }
@@ -43,12 +44,12 @@ namespace mim::plug::clos {
  * ClosLit
  */
 
-Ref ClosLit::env() {
+const Def* ClosLit::env() {
     assert(def_);
     return std::get<2_u64>(clos_unpack(def_));
 }
 
-Ref ClosLit::fnc() {
+const Def* ClosLit::fnc() {
     assert(def_);
     return std::get<1_u64>(clos_unpack(def_));
 }
@@ -59,9 +60,9 @@ Lam* ClosLit::fnc_as_lam() {
     return f->isa_mut<Lam>();
 }
 
-Ref ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
+const Def* ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
 
-ClosLit isa_clos_lit(Ref def, bool lambda_or_branch) {
+ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_clos_type(def->type())) {
         auto a   = attr::bottom;
@@ -75,7 +76,7 @@ ClosLit isa_clos_lit(Ref def, bool lambda_or_branch) {
     return ClosLit(nullptr, attr::bottom);
 }
 
-Ref clos_pack(Ref env, Ref lam, Ref ct) {
+const Def* clos_pack(const Def* env, const Def* lam, const Def* ct) {
     assert(env && lam);
     assert(!ct || isa_clos_type(ct));
     auto& w = env->world();
@@ -85,7 +86,7 @@ Ref clos_pack(Ref env, Ref lam, Ref ct) {
     return w.tuple(ct, {env->type(), lam, env})->isa<Tuple>();
 }
 
-std::tuple<Ref, Ref, Ref> clos_unpack(Ref c) {
+std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c) {
     assert(c && isa_clos_type(c->type()));
     // auto& w       = c->world();
     // auto env_type = c->proj(0_u64);
@@ -97,7 +98,7 @@ std::tuple<Ref, Ref, Ref> clos_unpack(Ref c) {
     return {ty, pi, env};
 }
 
-Ref clos_apply(Ref closure, Ref args) {
+const Def* clos_apply(const Def* closure, const Def* args) {
     auto& w           = closure->world();
     auto [_, fn, env] = clos_unpack(closure);
     auto pi           = fn->type()->as<Pi>();
@@ -108,7 +109,7 @@ Ref clos_apply(Ref closure, Ref args) {
  * closure types
  */
 
-const Sigma* isa_clos_type(Ref def) {
+const Sigma* isa_clos_type(const Def* def) {
     auto& w  = def->world();
     auto sig = def->isa_mut<Sigma>();
     if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.type()) return nullptr;
@@ -124,7 +125,7 @@ Sigma* clos_type(const Pi* pi) {
     return ctype(w, doms, nullptr)->as_mut<Sigma>();
 }
 
-const Pi* clos_type_to_pi(Ref ct, Ref new_env_type) {
+const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
     assert(isa_clos_type(ct));
     auto& w      = ct->world();
     auto pi      = ct->op(1_u64)->as<Pi>();
@@ -136,13 +137,13 @@ const Pi* clos_type_to_pi(Ref ct, Ref new_env_type) {
  * closure environments
  */
 
-Ref clos_insert_env(size_t i, Ref env, std::function<Ref(size_t)> f) {
+const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def*(size_t)> f) {
     return (i == Clos_Env_Param) ? env : f(shift_env(i));
 }
 
-Ref clos_remove_env(size_t i, std::function<Ref(size_t)> f) { return f(skip_env(i)); }
+const Def* clos_remove_env(size_t i, std::function<const Def*(size_t)> f) { return f(skip_env(i)); }
 
-Ref ctype(World& w, Defs doms, Ref env_type) {
+const Def* ctype(World& w, Defs doms, const Def* env_type) {
     if (!env_type) {
         auto sigma = w.mut_sigma(w.type(), 3_u64)->set("Clos");
         sigma->set(0_u64, w.type());

@@ -11,7 +11,7 @@
 
 namespace mim::plug::autodiff {
 
-Ref AutoDiffZeroCleanup::rewrite(Ref def) {
+const Def* AutoDiffZeroCleanup::rewrite(const Def* def) {
     // Ideally this code segment is never reached.
     // (all zeros are resolved before)
     if (auto zero_app = match<zero>(def); zero_app) {

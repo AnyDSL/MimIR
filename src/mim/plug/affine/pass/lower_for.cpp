@@ -11,7 +11,7 @@ namespace mim::plug::affine {
 
 namespace {
 
-const Def* merge_s(World& w, Ref elem, Ref sigma, Ref mem) {
+const Def* merge_s(World& w, const Def* elem, const Def* sigma, const Def* mem) {
     if (mem) {
         auto elems = sigma->projs();
         return merge_sigma(elem, elems);
@@ -19,7 +19,7 @@ const Def* merge_s(World& w, Ref elem, Ref sigma, Ref mem) {
     return w.sigma({elem, sigma});
 }
 
-const Def* merge_t(World& w, Ref elem, Ref tuple, Ref mem) {
+const Def* merge_t(World& w, const Def* elem, const Def* tuple, const Def* mem) {
     if (mem) {
         auto elems = tuple->projs();
         return merge_tuple(elem, elems);
@@ -29,7 +29,7 @@ const Def* merge_t(World& w, Ref elem, Ref tuple, Ref mem) {
 
 } // namespace
 
-Ref LowerFor::rewrite(Ref def) {
+const Def* LowerFor::rewrite(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
     if (auto for_ax = match<affine::For>(def)) {

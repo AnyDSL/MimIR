@@ -87,7 +87,7 @@ void PassMan::run() {
     Phase::run<Cleanup>(world());
 }
 
-Ref PassMan::rewrite(Ref old_def) {
+const Def* PassMan::rewrite(const Def* old_def) {
     if (!old_def->has_dep()) return old_def;
 
     if (auto mut = old_def->isa_mut()) {
@@ -126,7 +126,7 @@ Ref PassMan::rewrite(Ref old_def) {
     return map(old_def, new_def);
 }
 
-undo_t PassMan::analyze(Ref def) {
+undo_t PassMan::analyze(const Def* def) {
     undo_t undo = No_Undo;
 
     if (!def->has_dep() || analyzed(def)) {

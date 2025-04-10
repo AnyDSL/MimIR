@@ -16,14 +16,14 @@ using namespace std::string_literals;
 
 namespace mim::plug::matrix {
 
-Ref LowerMatrixMediumLevel::rewrite(Ref def) {
+const Def* LowerMatrixMediumLevel::rewrite(const Def* def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
     auto new_def   = rewrite_(def);
     rewritten[def] = new_def;
     return rewritten[def];
 }
 
-std::pair<Lam*, Ref> counting_for(Ref bound, DefVec acc, Ref exit, const char* name = "for_body") {
+std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def* exit, const char* name = "for_body") {
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
     auto body
@@ -35,7 +35,7 @@ std::pair<Lam*, Ref> counting_for(Ref bound, DefVec acc, Ref exit, const char* n
 // TODO: compare with other impala version (why is one easier than the other?)
 // TODO: replace sum_ptr by using sum as accumulator
 // TODO: extract inner loop into function (for read normalizer)
-Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
+const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
     if (auto map_reduce_ax = match<matrix::map_reduce>(def); map_reduce_ax) {
         // meta arguments:
         // * n = out-count, (nat)
@@ -81,15 +81,15 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         // return matrix
         // ```
 
-        absl::flat_hash_map<u64, Ref> dims;         // idx ↦ nat (size bound = dimension)
-        absl::flat_hash_map<u64, Ref> raw_iterator; // idx ↦ I32
-        absl::flat_hash_map<u64, Ref> iterator;     // idx ↦ %Idx (S/NI#i)
-        Vector<u64> out_indices;                    // output indices 0..n-1
-        Vector<u64> in_indices;                     // input indices ≥ n
+        absl::flat_hash_map<u64, const Def*> dims;         // idx ↦ nat (size bound = dimension)
+        absl::flat_hash_map<u64, const Def*> raw_iterator; // idx ↦ I32
+        absl::flat_hash_map<u64, const Def*> iterator;     // idx ↦ %Idx (S/NI#i)
+        Vector<u64> out_indices;                           // output indices 0..n-1
+        Vector<u64> in_indices;                            // input indices ≥ n
 
-        Vector<Ref> output_dims;   // i<n ↦ nat (dimension S#i)
-        Vector<DefVec> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
-        Vector<u64> n_input;       // i<m ↦ nat (number of dimensions of SI#i)
+        Vector<const Def*> output_dims; // i<n ↦ nat (dimension S#i)
+        Vector<DefVec> input_dims;      // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
+        Vector<u64> n_input;            // i<m ↦ nat (number of dimensions of SI#i)
 
         auto n_lit = n->isa<Lit>();
         auto m_lit = m->isa<Lit>();

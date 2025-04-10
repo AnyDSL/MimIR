@@ -15,8 +15,8 @@ public:
 private:
     /// @name PassMan hooks
     ///@{
-    Ref rewrite(Ref) override;
-    undo_t analyze(Ref) override;
+    const Def* rewrite(const Def*) override;
+    undo_t analyze(const Def*) override;
     ///@}
 
     EtaRed* eta_red_;

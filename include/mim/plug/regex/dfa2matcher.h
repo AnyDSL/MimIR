@@ -5,4 +5,4 @@
 #include "mim/plug/regex/regex.h"
 
 /// You can dl::get this function.
-extern "C" MIM_EXPORT const mim::Def* dfa2matcher(mim::World&, const automaton::DFA&, mim::Ref);
+extern "C" MIM_EXPORT const mim::Def* dfa2matcher(mim::World&, const automaton::DFA&, const mim::Def*);

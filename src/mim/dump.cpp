@@ -414,8 +414,6 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
  * Def
  */
 
-std::ostream& operator<<(std::ostream& os, Ref ref) { return os << *ref; }
-
 /// This will stream @p def as an operand.
 /// This is usually `id(def)` unless it can be displayed Inline.
 std::ostream& operator<<(std::ostream& os, const Def* def) {

@@ -74,7 +74,7 @@ Res fold(u64 a) {
 }
 
 template<class Id>
-Ref fold(World& world, Ref type, const Def* a) {
+const Def* fold(World& world, const Def* type, const Def* a) {
     if (a->isa<Bot>()) return world.bot(type);
     auto la = a->isa<Lit>();
 
@@ -136,7 +136,7 @@ Res fold(u64 a, u64 b) {
 }
 // clang-format on
 
-template<class Id, Id id> Ref fold(World& world, Ref type, const Def* a) {
+template<class Id, Id id> const Def* fold(World& world, const Def* type, const Def* a) {
     if (a->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -157,7 +157,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def* a) {
 }
 
 // Note that @p a and @p b are passed by reference as fold also commutes if possible.
-template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
+template<class Id, Id id> const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b) {
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -191,7 +191,8 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
 /// (3)      a    op (lz op w) ->  lz op (a op w)
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
-template<class Id> Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
+template<class Id>
+const Def* reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b) {
     if (!is_associative(id)) return nullptr;
 
     auto xy     = match<Id>(id, a);
@@ -215,7 +216,7 @@ template<class Id> Ref reassociate(Id id, World& world, [[maybe_unused]] const A
     if (lx && !check_mode(xy->decurry())) return nullptr;
     if (lz && !check_mode(zw->decurry())) return nullptr;
 
-    auto make_op = [&](Ref a, Ref b) { return world.call(id, mode, Defs{a, b}); };
+    auto make_op = [&](const Def* a, const Def* b) { return world.call(id, mode, Defs{a, b}); };
 
     if (la && lz) return make_op(make_op(a, z), w);             // (1)
     if (lx && lz) return make_op(make_op(x, z), make_op(y, w)); // (2)
@@ -232,7 +233,7 @@ template<class Id, Id id, nat_t sw, nat_t dw> Res fold(u64 a) {
 
 } // namespace
 
-template<arith id> Ref normalize_arith(Ref type, Ref c, Ref arg) {
+template<arith id> const Def* normalize_arith(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -296,7 +297,7 @@ template<arith id> Ref normalize_arith(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
+template<extrema id> const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -317,44 +318,44 @@ template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, c, {a, b});
 }
 
-template<tri id> Ref normalize_tri(Ref type, Ref, Ref arg) {
+template<tri id> const Def* normalize_tri(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<tri, id>(world, type, arg)) return lit;
     return {};
 }
 
-Ref normalize_pow(Ref type, Ref, Ref arg) {
+const Def* normalize_pow(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     if (auto lit = fold<pow, /*dummy*/ pow(0)>(world, type, a, b)) return lit;
     return {};
 }
 
-template<rt id> Ref normalize_rt(Ref type, Ref, Ref arg) {
+template<rt id> const Def* normalize_rt(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<rt, id>(world, type, arg)) return lit;
     return {};
 }
 
-template<exp id> Ref normalize_exp(Ref type, Ref, Ref arg) {
+template<exp id> const Def* normalize_exp(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<exp, id>(world, type, arg)) return lit;
     return {};
 }
 
-template<er id> Ref normalize_er(Ref type, Ref, Ref arg) {
+template<er id> const Def* normalize_er(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<er, id>(world, type, arg)) return lit;
     return {};
 }
 
-template<gamma id> Ref normalize_gamma(Ref type, Ref, Ref arg) {
+template<gamma id> const Def* normalize_gamma(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<gamma, id>(world, type, arg)) return lit;
     return {};
 }
 
-template<cmp id> Ref normalize_cmp(Ref type, Ref c, Ref arg) {
+template<cmp id> const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -366,7 +367,7 @@ template<cmp id> Ref normalize_cmp(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<conv id> Ref normalize_conv(Ref dst_t, Ref, Ref x) {
+template<conv id> const Def* normalize_conv(const Def* dst_t, const Def*, const Def* x) {
     auto& world = dst_t->world();
     auto s_t    = x->type()->as<App>();
     auto d_t    = dst_t->as<App>();
@@ -412,13 +413,13 @@ template<conv id> Ref normalize_conv(Ref dst_t, Ref, Ref x) {
     return {};
 }
 
-Ref normalize_abs(Ref type, Ref, Ref arg) {
+const Def* normalize_abs(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<abs>(world, type, arg)) return lit;
     return {};
 }
 
-template<round id> Ref normalize_round(Ref type, Ref, Ref arg) {
+template<round id> const Def* normalize_round(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<round, id>(world, type, arg)) return lit;
     return {};

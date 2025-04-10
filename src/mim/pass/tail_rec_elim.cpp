@@ -5,7 +5,7 @@
 
 namespace mim {
 
-Ref TailRecElim::rewrite(Ref def) {
+const Def* TailRecElim::rewrite(const Def* def) {
     if (auto [app, old] = isa_apped_mut_lam(def); old) {
         if (auto i = old2rec_loop_.find(old); i != old2rec_loop_.end()) {
             auto [rec, loop] = i->second;
@@ -20,7 +20,7 @@ Ref TailRecElim::rewrite(Ref def) {
     return def;
 }
 
-undo_t TailRecElim::analyze(Ref def) {
+undo_t TailRecElim::analyze(const Def* def) {
     if (auto [app, old] = isa_apped_mut_lam(def); old) {
         if (auto ret_var = old->ret_var(); ret_var && app->args().back() == ret_var) {
             if (auto [i, ins] = old2rec_loop_.emplace(old, std::pair<Lam*, Lam*>(nullptr, nullptr)); ins) {

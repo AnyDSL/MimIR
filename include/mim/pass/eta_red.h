@@ -23,7 +23,7 @@ public:
 
 private:
     const bool callee_only_;
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
     undo_t analyze(const Var*) override;
 
     LamSet irreducible_;

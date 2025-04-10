@@ -20,13 +20,14 @@ struct Regex2NfaConverter {
         for (auto i = lb; i <= ub; ++i) from->add_transition(to, i);
     }
 
-    void add_range_transitions(automaton::NFANode* from, automaton::NFANode* to, Ref lit0, Ref lit1) {
+    void add_range_transitions(automaton::NFANode* from, automaton::NFANode* to, const Def* lit0, const Def* lit1) {
         auto lb = lit0->as<Lit>()->get();
         auto ub = lit1->as<Lit>()->get();
         add_range_transitions(from, to, lb, ub);
     }
 
-    void convert(Ref regex, automaton::NFANode* start, automaton::NFANode* end, automaton::NFANode* error = nullptr) {
+    void
+    convert(const Def* regex, automaton::NFANode* start, automaton::NFANode* end, automaton::NFANode* error = nullptr) {
         if (auto conj = mim::match<regex::conj>(regex)) {
             auto middle = nfa_->add_state();
             convert(conj->arg(0), start, middle, error);
@@ -70,7 +71,7 @@ struct Regex2NfaConverter {
         }
     }
 
-    void convert(Ref regex) {
+    void convert(const Def* regex) {
         auto start = nfa_->add_state();
         nfa_->set_start(start);
         auto end = nfa_->add_state();
@@ -86,7 +87,7 @@ private:
 
 } // namespace
 
-std::unique_ptr<automaton::NFA> regex2nfa(Ref regex) {
+std::unique_ptr<automaton::NFA> regex2nfa(const Def* regex) {
     Regex2NfaConverter converter;
     converter.convert(regex);
     return converter.nfa();
@@ -94,4 +95,4 @@ std::unique_ptr<automaton::NFA> regex2nfa(Ref regex) {
 
 } // namespace mim::plug::regex
 
-extern "C" automaton::NFA* regex2nfa(Ref regex) { return mim::plug::regex::regex2nfa(regex).release(); }
+extern "C" automaton::NFA* regex2nfa(const Def* regex) { return mim::plug::regex::regex2nfa(regex).release(); }

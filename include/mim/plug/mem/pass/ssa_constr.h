@@ -31,17 +31,17 @@ private:
     /// @name PassMan hooks
     ///@{
     void enter() override;
-    Ref rewrite(const Proxy*) override;
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Proxy*) override;
+    const Def* rewrite(const Def*) override;
     undo_t analyze(const Proxy*) override;
-    undo_t analyze(Ref) override;
+    undo_t analyze(const Def*) override;
     ///@}
 
     /// @name SSA construction helpers - see paper
     ///@{
-    Ref get_val(Lam*, const Proxy*);
-    Ref set_val(Lam*, const Proxy*, Ref);
-    Ref mem2phi(const App*, Lam*);
+    const Def* get_val(Lam*, const Proxy*);
+    const Def* set_val(Lam*, const Proxy*, const Def*);
+    const Def* mem2phi(const App*, Lam*);
     ///@}
 
     EtaExp* eta_exp_;

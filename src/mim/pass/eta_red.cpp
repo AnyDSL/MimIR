@@ -3,7 +3,7 @@
 namespace mim {
 
 namespace {
-bool is_var(Ref def) {
+bool is_var(const Def* def) {
     if (def->isa<Var>()) return true;
     if (auto extract = def->isa<Extract>()) return extract->tuple()->isa<Var>();
     return false;
@@ -18,7 +18,7 @@ const App* eta_rule(Lam* lam) {
 }
 } // namespace
 
-Ref EtaRed::rewrite(Ref def) {
+const Def* EtaRed::rewrite(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         // TODO (ClosureConv): Factor this out
         if (auto lam = def->op(i)->isa_mut<Lam>(); (!callee_only_ || isa_callee(def, i)) && lam && lam->is_set()) {

@@ -18,8 +18,14 @@ public:
     /// @name op
     ///@{
     const Def* op() const { return Def::op(0); }
-    Infer* set(const Def* op) { return Def::set(0, op)->as<Infer>(); }
-    Infer* reset(const Def* op) { return Def::reset(0, op)->as<Infer>(); }
+    Infer* set(const Def* op) {
+        assert(op != this);
+        return Def::set(0, op)->as<Infer>();
+    }
+    Infer* reset(const Def* op) {
+        assert(op != this);
+        return Def::reset(0, op)->as<Infer>();
+    }
     Infer* unset() { return Def::unset()->as<Infer>(); }
     ///@}
 
@@ -28,10 +34,10 @@ public:
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
     static const Def* find(const Def*);
 
-    Infer* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    Infer* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `this` if unsuccessful.
-    Ref tuplefy();
+    const Def* tuplefy();
 
     static constexpr auto Node = Node::Infer;
 
@@ -39,8 +45,8 @@ private:
     flags_t rank() const { return flags(); }
     flags_t& rank() { return flags_; }
 
-    Ref rebuild_(World&, Ref, Defs) const override;
-    Infer* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Infer* stub_(World&, const Def*) override;
 
     friend class World;
     friend class Checker;
@@ -62,27 +68,31 @@ public:
         Test,
     };
 
-    template<Mode mode> static bool alpha(Ref d1, Ref d2) { return Checker(d1->world()).alpha_<mode>(d1, d2); }
+    template<Mode mode> static bool alpha(const Def* d1, const Def* d2) {
+        return Checker(d1->world()).alpha_<mode>(d1, d2);
+    }
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    [[nodiscard]] static Ref assignable(Ref type, Ref value) { return Checker(type->world()).assignable_(type, value); }
+    [[nodiscard]] static const Def* assignable(const Def* type, const Def* value) {
+        return Checker(type->world()).assignable_(type, value);
+    }
 
     /// Yields `defs.front()`, if all @p defs are Check::alpha-equivalent (`Mode::Test`) and `nullptr` otherwise.
-    static Ref is_uniform(Defs defs);
+    static const Def* is_uniform(Defs defs);
 
 private:
 #ifdef MIM_ENABLE_CHECKS
     template<Mode> bool fail();
-    Ref fail();
+    const Def* fail();
 #else
     template<Mode> bool fail() { return false; }
-    Ref fail() { return {}; }
+    const Def* fail() { return {}; }
 #endif
 
-    template<Mode> bool alpha_(Ref d1, Ref d2);
-    template<Mode> bool alpha_internal(Ref, Ref);
-    [[nodiscard]] Ref assignable_(Ref type, Ref value);
+    template<Mode> bool alpha_(const Def* d1, const Def* d2);
+    template<Mode> bool alpha_internal(const Def*, const Def*);
+    [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
 
     World& world_;
     MutMap<const Def*> binders_;

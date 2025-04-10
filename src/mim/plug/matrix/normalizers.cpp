@@ -16,7 +16,7 @@ namespace mim::plug::matrix {
 /// - read(transpose m, (i,j)) -> read(m, (j,i)) (TODO: check for map_reduce)
 /// - read(product m1 m2, (i,j)) -> ... (TODO: check with map_reduce)
 /// - read (map_reduce f) idx = loop f idx (TODO: implement => use inner loop from lowering phase)
-Ref normalize_read(Ref type, Ref, Ref arg) {
+const Def* normalize_read(const Def* type, const Def*, const Def* arg) {
     auto& world            = type->world();
     auto [mem, mat, index] = arg->projs<3>();
 
@@ -38,7 +38,7 @@ Ref normalize_read(Ref type, Ref, Ref arg) {
 
 /// Normalizer for write operations
 /// TODO: implement
-Ref normalize_insert(Ref, Ref, Ref) { return {}; }
+const Def* normalize_insert(const Def*, const Def*, const Def*) { return {}; }
 
 /// Normalizer for transpose operations
 /// - transpose (constMat v) -> cosntMat v (TODO: implement)
@@ -46,7 +46,7 @@ Ref normalize_insert(Ref, Ref, Ref) { return {}; }
 /// - transpose (tranpose m) -> m (TODO: implement)
 
 /// - shape (\@mat n (k1,k2,...,kn) i) -> (k1,k2,...,kn)\#i (TODO: implement)
-Ref normalize_shape(Ref type, Ref callee, Ref arg) {
+const Def* normalize_shape(const Def* type, const Def* callee, const Def* arg) {
     auto& world                   = type->world();
     auto [mat, index]             = arg->projs<2>();
     auto [dims, sizes, body_type] = match<Mat, false>(mat->type())->args<3>();
@@ -86,9 +86,9 @@ u64 get_max_index(u64 init, Defs inputs) {
 /// - TODO: map_reduce (..., ((idx,map_reduce([out, ]...), ...))) -> unify idx, out (out is implicit), name vars apart
 ///   requires: same reduction, distributive reduction
 /// we assume distributivity of the reduction function
-Ref normalize_map_reduce(Ref, Ref, Ref) { return {}; }
-Ref normalize_prod(Ref, Ref, Ref) { return {}; }
-Ref normalize_transpose(Ref, Ref, Ref) { return {}; }
+const Def* normalize_map_reduce(const Def*, const Def*, const Def*) { return {}; }
+const Def* normalize_prod(const Def*, const Def*, const Def*) { return {}; }
+const Def* normalize_transpose(const Def*, const Def*, const Def*) { return {}; }
 
 MIM_matrix_NORMALIZER_IMPL
 

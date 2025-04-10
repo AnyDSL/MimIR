@@ -21,7 +21,7 @@ using Ranges = mim::Vector<Range>;
 
 namespace mim::plug::regex {
 
-template<quant id> Ref normalize_quant(Ref type, Ref callee, Ref arg) {
+template<quant id> const Def* normalize_quant(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
 
     // quantifiers are idempotent
@@ -47,7 +47,7 @@ template<quant id> Ref normalize_quant(Ref type, Ref callee, Ref arg) {
     return {};
 }
 
-template<class ConjOrDisj> void flatten_in_arg(Ref arg, DefVec& new_args) {
+template<class ConjOrDisj> void flatten_in_arg(const Def* arg, DefVec& new_args) {
     for (const auto* proj : arg->projs()) {
         // flatten conjs in conjs / disj in disjs
         if (auto seq_app = mim::match<ConjOrDisj>(proj))
@@ -57,29 +57,29 @@ template<class ConjOrDisj> void flatten_in_arg(Ref arg, DefVec& new_args) {
     }
 }
 
-template<class ConjOrDisj> DefVec flatten_in_arg(Ref arg) {
+template<class ConjOrDisj> DefVec flatten_in_arg(const Def* arg) {
     DefVec new_args;
     flatten_in_arg<ConjOrDisj>(arg, new_args);
     return new_args;
 }
 
-template<class ConjOrDisj> Ref make_binary_tree(Ref type, Defs args) {
+template<class ConjOrDisj> const Def* make_binary_tree(Defs args) {
     assert(!args.empty());
     auto& world = args.front()->world();
-    return std::accumulate(args.begin() + 1, args.end(), args.front(), [&type, &world](const Def* lhs, const Def* rhs) {
+    return std::accumulate(args.begin() + 1, args.end(), args.front(), [&world](const Def* lhs, const Def* rhs) {
         return world.call<ConjOrDisj, false>(Defs{lhs, rhs});
     });
 }
 
-Ref normalize_conj(Ref type, Ref callee, Ref arg) {
+const Def* normalize_conj(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     world.DLOG("conj {}:{} ({})", type, callee, arg);
     if (arg->as_lit_arity() > 2) {
         auto flat_args = flatten_in_arg<conj>(arg);
-        return make_binary_tree<conj>(type, flat_args);
+        return make_binary_tree<conj>(flat_args);
     }
 
-    return arg->as_lit_arity() == 1 ? arg : Ref();
+    return arg->as_lit_arity() == 1 ? arg : nullptr;
 }
 
 bool compare_re(const Def* lhs, const Def* rhs) {
@@ -115,7 +115,7 @@ auto get_range(const Def* rng) -> Range {
 
 struct app_range {
     World& w;
-    Ref operator()(Range rng) { return w.call<range>(Defs{w.lit_i8(rng.first), w.lit_i8(rng.second)}); }
+    const Def* operator()(Range rng) { return w.call<range>(Defs{w.lit_i8(rng.first), w.lit_i8(rng.second)}); }
 };
 
 void merge_ranges(DefVec& args) {
@@ -163,7 +163,7 @@ bool equals_any(Defs lhs, Defs rhs) {
     return std::ranges::includes(lhs_ranges, rhs_ranges) || std::ranges::includes(rhs_ranges, lhs_ranges);
 }
 
-Ref normalize_disj(Ref type, Ref, Ref arg) {
+const Def* normalize_disj(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (arg->as_lit_arity() > 1) {
         auto contains_any = [](auto args) {
@@ -192,14 +192,14 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
         erase(new_args, to_remove);
         world.DLOG("final ranges {, }", new_args);
 
-        if (new_args.size() > 2) return make_binary_tree<disj>(type, new_args);
+        if (new_args.size() > 2) return make_binary_tree<disj>(new_args);
         if (new_args.size() > 1) return world.call<disj, false>(new_args);
         return new_args.back();
     }
     return arg;
 }
 
-Ref normalize_range(Ref type, Ref callee, Ref arg) {
+const Def* normalize_range(const Def* type, const Def* callee, const Def* arg) {
     auto& world     = type->world();
     auto [lhs, rhs] = arg->projs<2>();
 
@@ -209,7 +209,7 @@ Ref normalize_range(Ref type, Ref callee, Ref arg) {
     return {};
 }
 
-Ref normalize_not(Ref, Ref, Ref) { return {}; }
+const Def* normalize_not(const Def*, const Def*, const Def*) { return {}; }
 
 MIM_regex_NORMALIZER_IMPL
 

@@ -4,7 +4,7 @@
 
 namespace mim {
 
-/// References a user.
+/// const Def*erences a user.
 /// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
 class Use {
 public:

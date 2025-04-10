@@ -21,7 +21,7 @@ bool Scalarize::should_expand(Lam* lam) {
     return false;
 }
 
-Lam* Scalarize::make_scalar(Ref def) {
+Lam* Scalarize::make_scalar(const Def* def) {
     auto tup_lam = def->isa_mut<Lam>();
     assert(tup_lam);
     if (auto i = tup2sca_.find(tup_lam); i != tup2sca_.end()) return i->second;
@@ -53,17 +53,17 @@ Lam* Scalarize::make_scalar(Ref def) {
     return sca_lam;
 }
 
-Ref Scalarize::rewrite(Ref def) {
+const Def* Scalarize::rewrite(const Def* def) {
     auto& w = world();
     if (auto app = def->isa<App>()) {
-        Ref sca_callee = app->callee();
+        const Def* sca_callee = app->callee();
 
         if (auto tup_lam = sca_callee->isa_mut<Lam>(); should_expand(tup_lam)) {
             sca_callee = make_scalar(tup_lam);
 
         } else if (auto proj = sca_callee->isa<Extract>()) {
             auto tuple = proj->tuple()->isa<Tuple>();
-            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(), [&](Ref op) {
+            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(), [&](const Def* op) {
                     return should_expand(op->isa_mut<Lam>());
                 })) {
                 auto new_tuple = w.tuple(DefVec(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));

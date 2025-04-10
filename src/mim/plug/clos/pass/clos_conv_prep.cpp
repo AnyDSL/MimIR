@@ -10,22 +10,22 @@ namespace mim::plug::clos {
 
 namespace {
 // FIXME: these guys do not work if another pass rewrites curr_mut()'s body
-bool isa_cnt(const App* body, Ref def, size_t i) {
+bool isa_cnt(const App* body, const Def* def, size_t i) {
     return Pi::isa_returning(body->callee_type()) && body->arg() == def && i == def->num_ops() - 1;
 }
 
-Ref isa_br(const App* body, Ref def) {
+const Def* isa_br(const App* body, const Def* def) {
     if (!Pi::isa_cn(body->callee_type())) return nullptr;
     auto proj = body->callee()->isa<Extract>();
     return (proj && proj->tuple() == def && proj->tuple()->isa<Tuple>()) ? proj->tuple() : nullptr;
 }
 
-bool isa_callee_br(const App* body, Ref def, size_t i) {
+bool isa_callee_br(const App* body, const Def* def, size_t i) {
     if (!Pi::isa_cn(body->callee_type())) return false;
     return isa_callee(def, i) || isa_br(body, def);
 }
 
-Lam* isa_retvar(Ref def) {
+Lam* isa_retvar(const Def* def) {
     if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && var == lam->ret_var()) return lam;
     return nullptr;
 }
@@ -64,8 +64,8 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
     for (auto i = 0u; i < arg->num_projs(); i++) {
         auto op = arg->proj(i);
 
-        auto refine = [&](Ref new_op) {
-            Ref args;
+        auto refine = [&](const Def* new_op) {
+            const Def* args;
             if (arg == op)
                 args = new_op;
             else
@@ -131,7 +131,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
     return app;
 }
 
-Ref ClosConvPrep::rewrite(Ref def) {
+const Def* ClosConvPrep::rewrite(const Def* def) {
     if (ignore_ || match<attr>(def)) return def;
 
     if (auto app = def->isa<App>()) {

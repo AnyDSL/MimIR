@@ -13,7 +13,7 @@ public:
         : RWPass(man, "branch_clos_elim")
         , branch2dropped_() {}
 
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 
 private:
     DefMap<Lam*> branch2dropped_;

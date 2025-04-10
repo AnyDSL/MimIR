@@ -26,21 +26,21 @@ public:
     /// @name Rebuild
     ///@{
     const Def* immutabilize() override;
-    Sigma* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    Sigma* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     ///@}
 
     /// @name Type Checking
     ///@{
-    Ref check(size_t, Ref) override;
-    Ref check() override;
-    static Ref infer(World&, Defs);
+    const Def* check(size_t, const Def*) override;
+    const Def* check() override;
+    static const Def* infer(World&, Defs);
     ///@}
 
     static constexpr auto Node = Node::Sigma;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    Sigma* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Sigma* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -56,7 +56,7 @@ private:
     Tuple(const Def* type, Defs args)
         : Def(Node, type, args, 0) {}
 
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -74,37 +74,37 @@ private:
 public:
     /// @name ops
     ///@{
-    Ref shape() const { return op(0); }
-    Ref body() const { return op(1); }
+    const Def* shape() const { return op(0); }
+    const Def* body() const { return op(1); }
     ///@}
 
     /// @name Setters
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Arr>::set;
-    Arr* set_shape(Ref shape) { return Def::set(0, shape)->as<Arr>(); }
-    Arr* set_body(Ref body) { return Def::set(1, body)->as<Arr>(); }
+    Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
+    Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     Arr* unset() { return Def::unset()->as<Arr>(); }
     ///@}
 
     /// @name Rebuild
     ///@{
-    Ref reduce(Ref arg) const { return Def::reduce(1, arg); }
-    Arr* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    const Def* reduce(const Def* arg) const { return Def::reduce(1, arg); }
+    Arr* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
     ///@}
 
     /// @name Type Checking
     ///@{
-    Ref check(size_t, Ref) override;
-    Ref check() override;
+    const Def* check(size_t, const Def*) override;
+    const Def* check() override;
     ///@}
 
     static constexpr auto Node = Node::Arr;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    Arr* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Arr* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -121,31 +121,31 @@ private:
 public:
     /// @name ops
     ///@{
-    Ref body() const { return op(0); }
-    Ref shape() const;
+    const Def* body() const { return op(0); }
+    const Def* shape() const;
     ///@}
 
     /// @name Setters
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Pack>::set;
-    Pack* set(Ref body) { return Def::set(0, body)->as<Pack>(); }
-    Pack* reset(Ref body) { return unset()->set(body); }
+    Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
+    Pack* reset(const Def* body) { return unset()->set(body); }
     Pack* unset() { return Def::unset()->as<Pack>(); }
     ///@}
 
     /// @name Rebuild
     ///@{
-    Ref reduce(Ref arg) const { return Def::reduce(0, arg); }
-    Pack* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    const Def* reduce(const Def* arg) const { return Def::reduce(0, arg); }
+    Pack* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
     ///@}
 
     static constexpr auto Node = Node::Pack;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    Pack* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Pack* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -161,14 +161,14 @@ public:
 
     /// @name ops
     ///@{
-    Ref tuple() const { return op(0); }
-    Ref index() const { return op(1); }
+    const Def* tuple() const { return op(0); }
+    const Def* index() const { return op(1); }
     ///@}
 
     static constexpr auto Node = Node::Extract;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -187,40 +187,40 @@ public:
 
     /// @name ops
     ///@{
-    Ref tuple() const { return op(0); }
-    Ref index() const { return op(1); }
-    Ref value() const { return op(2); }
+    const Def* tuple() const { return op(0); }
+    const Def* index() const { return op(1); }
+    const Def* value() const { return op(2); }
     ///@}
 
     static constexpr auto Node = Node::Insert;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
 
 /// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs
 ///@{
-bool is_unit(Ref);
-std::string tuple2str(Ref);
+bool is_unit(const Def*);
+std::string tuple2str(const Def*);
 
 /// Flattens a sigma/array/pack/tuple.
-Ref flatten(Ref def);
+const Def* flatten(const Def* def);
 /// Same as unflatten, but uses the operands of a flattened Pack / Tuple directly.
-size_t flatten(DefVec& ops, Ref def, bool flatten_sigmas = true);
+size_t flatten(DefVec& ops, const Def* def, bool flatten_sigmas = true);
 
 /// Applies the reverse transformation on a Pack / Tuple, given the original type.
-Ref unflatten(Ref def, Ref type);
+const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened Pack / Tuple directly.
-Ref unflatten(Defs ops, Ref type, bool flatten_muts = true);
+const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
 
 DefVec merge(Defs, Defs);
-DefVec merge(Ref def, Defs defs);
-Ref merge_sigma(Ref def, Defs defs);
-Ref merge_tuple(Ref def, Defs defs);
+DefVec merge(const Def* def, Defs defs);
+const Def* merge_sigma(const Def* def, Defs defs);
+const Def* merge_tuple(const Def* def, Defs defs);
 
-Ref tuple_of_types(Ref t);
+const Def* tuple_of_types(const Def* t);
 ///@}
 
 } // namespace mim

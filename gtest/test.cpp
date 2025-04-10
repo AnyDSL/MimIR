@@ -103,7 +103,7 @@ TEST(trait, idx) {
     EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0000_n))), 8);
 }
 
-Ref normalize_test_curry(Ref type, Ref callee, Ref arg) {
+const Def* normalize_test_curry(const Def* type, const Def* callee, const Def* arg) {
     auto& w = arg->world();
     return w.raw_app(type, callee, w.lit_nat(42));
 }
@@ -214,7 +214,7 @@ TEST(Check, alpha) {
     // λ_.1
     auto l_1 = w.lam(pi, false, w.lit_nat_1());
 
-    auto check = [](Ref l1, Ref l2, bool infer_res, bool non_infer_res) {
+    auto check = [](const Def* l1, const Def* l2, bool infer_res, bool non_infer_res) {
         EXPECT_EQ(Checker::alpha<Checker::Check>(l1, l2), infer_res);
         EXPECT_EQ(Checker::alpha<Checker::Check>(l2, l1), infer_res);
         EXPECT_EQ(Checker::alpha<Checker::Test>(l1, l2), non_infer_res);

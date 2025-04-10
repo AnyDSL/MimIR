@@ -16,13 +16,13 @@ namespace mim::plug::mem {
 inline Lam* mut_con(World& w) { return w.mut_con(w.annex<M>()); } ///< Yields `con[%mem.M]`.
 
 /// Yields `con[%mem.M, dom]`.
-inline Lam* mut_con(Ref dom) {
+inline Lam* mut_con(const Def* dom) {
     World& w = dom->world();
     return w.mut_con({w.annex<M>(), dom});
 }
 
 /// Returns the (first) element of type mem::M from the given tuple.
-inline Ref mem_def(Ref def) {
+inline const Def* mem_def(const Def* def) {
     if (match<mem::M>(def->type())) return def;
     if (def->type()->isa<Arr>()) return {}; // don't look into possibly gigantic arrays
 
@@ -35,10 +35,10 @@ inline Ref mem_def(Ref def) {
 }
 
 /// Returns the memory argument of a function if it has one.
-inline Ref mem_var(Lam* lam) { return mem_def(lam->var()); }
+inline const Def* mem_var(Lam* lam) { return mem_def(lam->var()); }
 
 /// Swaps the memory occurrences in the given def with the given memory.
-inline Ref replace_mem(Ref mem, Ref arg) {
+inline const Def* replace_mem(const Def* mem, const Def* arg) {
     // TODO: maybe use rebuild instead?
     if (arg->num_projs() > 1) {
         auto& w = mem->world();
@@ -51,7 +51,7 @@ inline Ref replace_mem(Ref mem, Ref arg) {
 }
 
 /// Removes recusively all occurences of mem from a type (sigma).
-inline Ref strip_mem_ty(Ref def) {
+inline const Def* strip_mem_ty(const Def* def) {
     auto& world = def->world();
 
     if (auto sigma = def->isa<Sigma>()) {
@@ -69,7 +69,7 @@ inline Ref strip_mem_ty(Ref def) {
 
 /// Recursively removes all occurrences of mem from a tuple.
 /// Returns an empty tuple if applied with mem alone.
-inline Ref strip_mem(Ref def) {
+inline const Def* strip_mem(const Def* def) {
     auto& world = def->world();
 
     if (auto tuple = def->isa<Tuple>()) {
@@ -108,24 +108,24 @@ enum class AddrSpace : nat_t {
 
 /// @name %%mem.lea
 ///@{
-inline Ref op_lea(Ref ptr, Ref index) {
+inline const Def* op_lea(const Def* ptr, const Def* index) {
     World& w                   = ptr->world();
     auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
     auto Ts                    = tuple_of_types(pointee);
     return w.app(w.app(w.annex<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index});
 }
 
-inline Ref op_lea_unsafe(Ref ptr, Ref i) {
+inline const Def* op_lea_unsafe(const Def* ptr, const Def* i) {
     World& w = ptr->world();
     return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
 }
 
-inline Ref op_lea_unsafe(Ref ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world().lit_i64(i)); }
+inline const Def* op_lea_unsafe(const Def* ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world().lit_i64(i)); }
 ///@}
 
 /// @name %%mem.remem
 ///@{
-inline Ref op_remem(Ref mem) {
+inline const Def* op_remem(const Def* mem) {
     World& w = mem->world();
     return w.app(w.annex<remem>(), mem);
 }
@@ -133,7 +133,7 @@ inline Ref op_remem(Ref mem) {
 
 /// @name %%mem.alloc
 ///@{
-inline Ref op_alloc(Ref type, Ref mem) {
+inline const Def* op_alloc(const Def* type, const Def* mem) {
     World& w = type->world();
     return w.app(w.app(w.annex<alloc>(), {type, w.lit_nat_0()}), mem);
 }
@@ -141,7 +141,7 @@ inline Ref op_alloc(Ref type, Ref mem) {
 
 /// @name %%mem.slot
 ///@{
-inline Ref op_slot(Ref type, Ref mem) {
+inline const Def* op_slot(const Def* type, const Def* mem) {
     World& w = type->world();
     return w.app(w.app(w.annex<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())});
 }
@@ -149,7 +149,7 @@ inline Ref op_slot(Ref type, Ref mem) {
 
 /// @name %%mem.malloc
 ///@{
-inline Ref op_malloc(Ref type, Ref mem) {
+inline const Def* op_malloc(const Def* type, const Def* mem) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
     return w.app(w.app(w.annex<malloc>(), {type, w.lit_nat_0()}), {mem, size});
@@ -158,7 +158,7 @@ inline Ref op_malloc(Ref type, Ref mem) {
 
 /// @name %%mem.mslot
 ///@{
-inline Ref op_mslot(Ref type, Ref mem, Ref id) {
+inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
     return w.app(w.app(w.annex<mslot>(), {type, w.lit_nat_0()}), {mem, size, id});

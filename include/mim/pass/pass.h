@@ -37,9 +37,9 @@ public:
     /// Rewrites an *immutable* @p def within PassMan::curr_mut.
     /// @returns the replacement.
     ///@{
-    virtual Ref rewrite(Ref def) { return def; }
-    virtual Ref rewrite(const Var* var) { return var; }
-    virtual Ref rewrite(const Proxy* proxy) { return proxy; }
+    virtual const Def* rewrite(const Def* def) { return def; }
+    virtual const Def* rewrite(const Var* var) { return var; }
+    virtual const Def* rewrite(const Proxy* proxy) { return proxy; }
     ///@}
 
     /// @name Analyze Hook for the PassMan
@@ -47,7 +47,7 @@ public:
     /// Will only be invoked if Pass::fixed_point() yields `true` - which will be the case for FPPass%es.
     /// @returns mim::No_Undo or the state to roll back to.
     ///@{
-    virtual undo_t analyze(Ref) { return No_Undo; }
+    virtual undo_t analyze(const Def*) { return No_Undo; }
     virtual undo_t analyze(const Var*) { return No_Undo; }
     virtual undo_t analyze(const Proxy*) { return No_Undo; }
     ///@}
@@ -72,14 +72,14 @@ public:
 
     /// @name proxy
     ///@{
-    const Proxy* proxy(Ref type, Defs ops, u32 tag = 0) { return world().proxy(type, ops, index(), tag); }
+    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) { return world().proxy(type, ops, index(), tag); }
     /// Check whether given @p def is a Proxy whose Proxy::pass matches this Pass's @p IPass::index.
-    const Proxy* isa_proxy(Ref def, u32 tag = 0) {
+    const Proxy* isa_proxy(const Def* def, u32 tag = 0) {
         if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->pass() == index() && proxy->tag() == tag)
             return proxy;
         return nullptr;
     }
-    const Proxy* as_proxy(Ref def, u32 tag = 0) {
+    const Proxy* as_proxy(const Def* def, u32 tag = 0) {
         auto proxy = def->as<Proxy>();
         assert_unused(proxy->pass() == index() && proxy->tag() == tag);
         return proxy;
@@ -177,15 +177,15 @@ private:
 
     /// @name rewriting
     ///@{
-    Ref rewrite(Ref);
+    const Def* rewrite(const Def*);
 
-    Ref map(Ref old_def, Ref new_def) {
+    const Def* map(const Def* old_def, const Def* new_def) {
         curr_state().old2new[old_def] = new_def;
         curr_state().old2new.emplace(new_def, new_def);
         return new_def;
     }
 
-    std::optional<Ref> lookup(Ref old_def) {
+    std::optional<const Def*> lookup(const Def* old_def) {
         for (auto& state : states_ | std::ranges::views::reverse)
             if (auto i = state.old2new.find(old_def); i != state.old2new.end()) return i->second;
         return {};
@@ -194,8 +194,8 @@ private:
 
     /// @name analyze
     ///@{
-    undo_t analyze(Ref);
-    bool analyzed(Ref def) {
+    undo_t analyze(const Def*);
+    bool analyzed(const Def* def) {
         for (auto& state : states_ | std::ranges::views::reverse)
             if (state.analyzed.contains(def)) return true;
         curr_state().analyzed.emplace(def);

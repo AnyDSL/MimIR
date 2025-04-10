@@ -103,9 +103,9 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
 
         if (auto norm = annex.normalizer) {
             if (auto& subs = annex.subs; !subs.empty()) {
-                tab.print(h, "template<{}>\nRef {}(Ref, Ref, Ref);\n\n", sym.tag, norm);
+                tab.print(h, "template<{}>\nconst Def* {}(const Def*, const Def*, const Def*);\n\n", sym.tag, norm);
             } else {
-                tab.print(h, "Ref {}(Ref, Ref, Ref);\n", norm);
+                tab.print(h, "const Def* {}(const Def*, const Def*, const Def*);\n", norm);
             }
         }
         tab.print(h, "///@}}\n\n");

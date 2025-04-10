@@ -6,14 +6,14 @@
 
 namespace mim {
 
-Ref Rewriter::rewrite(Ref old_def) {
+const Def* Rewriter::rewrite(const Def* old_def) {
     if (old_def->isa<Univ>()) return world().univ();
     if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
     if (auto old_mut = old_def->isa_mut()) return rewrite_mut(old_mut);
     return map(old_def, rewrite_imm(old_def));
 }
 
-Ref Rewriter::rewrite_imm(Ref old_def) {
+const Def* Rewriter::rewrite_imm(const Def* old_def) {
     // Extracts are used as conditional branches: make sure that we don't rewrite unreachable stuff.
     if (auto extract = old_def->isa<Extract>()) {
         if (auto index = Lit::isa(rewrite(extract->index()))) {
@@ -30,7 +30,7 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
     return old_def->rebuild(world(), new_type, new_ops);
 }
 
-Ref Rewriter::rewrite_mut(Def* old_mut) {
+const Def* Rewriter::rewrite_mut(Def* old_mut) {
     auto new_type = rewrite(old_mut->type());
     auto new_mut  = old_mut->stub(world(), new_type);
     map(old_mut, new_mut);

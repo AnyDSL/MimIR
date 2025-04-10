@@ -9,7 +9,7 @@ public:
     Alloc2Malloc(PassMan& man)
         : RWPass(man, "alloc2malloc") {}
 
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 };
 
 } // namespace mim::plug::mem

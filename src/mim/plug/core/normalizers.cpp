@@ -83,7 +83,8 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
 // clang-format on
 
 // Note that @p a and @p b are passed by reference as fold also commutes if possible.
-template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
+template<class Id, Id id>
+const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b, const Def* mode = {}) {
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -128,7 +129,7 @@ template<class Id, nat_t w> Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_u
     ();
 }
 
-template<class Id> Ref fold(World& world, Ref type, const Def*& a) {
+template<class Id> const Def* fold(World& world, const Def* type, const Def*& a) {
     if (a->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -162,7 +163,8 @@ template<class Id> Ref fold(World& world, Ref type, const Def*& a) {
 /// (3)      a    op (lz op w) ->  lz op (a op w)
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
-template<class Id> Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
+template<class Id>
+const Def* reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b) {
     if (!is_associative(id)) return nullptr;
 
     auto xy     = match<Id>(id, a);
@@ -174,7 +176,7 @@ template<class Id> Ref reassociate(Id id, World& world, [[maybe_unused]] const A
     auto lz     = Lit::isa(z);
 
     // if we reassociate, we have to forget about nsw/nuw
-    auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
+    auto make_op = [&world, id](const Def* a, const Def* b) { return world.call(id, Mode::none, Defs{a, b}); };
 
     if (la && lz) return make_op(make_op(a, z), w);             // (1)
     if (lx && lz) return make_op(make_op(x, z), make_op(y, w)); // (2)
@@ -183,7 +185,7 @@ template<class Id> Ref reassociate(Id id, World& world, [[maybe_unused]] const A
     return nullptr;
 }
 
-template<class Id> Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
+template<class Id> const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b) {
     static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
     static constexpr size_t num_bits = std::bit_width(Annex::Num<Id> - 1_u64);
 
@@ -211,7 +213,7 @@ template<class Id> Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, 
 
 } // namespace
 
-template<nat id> Ref normalize_nat(Ref type, Ref callee, Ref arg) {
+template<nat id> const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     if (is_commutative(id)) commute(a, b);
@@ -243,7 +245,7 @@ template<nat id> Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<ncmp id> Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
+template<ncmp id> const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
 
     if (id == ncmp::t) return world.lit_tt();
@@ -271,7 +273,7 @@ template<ncmp id> Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<icmp id> Ref normalize_icmp(Ref type, Ref c, Ref arg) {
+template<icmp id> const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -287,7 +289,7 @@ template<icmp id> Ref normalize_icmp(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
+template<extrema id> const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -295,17 +297,17 @@ template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-Ref normalize_abs(Ref type, Ref, Ref arg) {
+const Def* normalize_abs(const Def* type, const Def*, const Def* arg) {
     auto& world           = type->world();
     auto [mem, a]         = arg->projs<2>();
     auto [_, actual_type] = type->projs<2>();
-    auto make_res         = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
+    auto make_res         = [&, mem = mem](const Def* res) { return world.tuple({mem, res}); };
 
     if (auto result = fold<abs>(world, actual_type, a)) return make_res(result);
     return {};
 }
 
-template<bit1 id> Ref normalize_bit1(Ref type, Ref c, Ref a) {
+template<bit1 id> const Def* normalize_bit1(const Def* type, const Def* c, const Def* a) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto s      = callee->decurry()->arg();
@@ -328,7 +330,7 @@ template<bit1 id> Ref normalize_bit1(Ref type, Ref c, Ref a) {
     return {};
 }
 
-template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
+template<bit2 id> const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -373,7 +375,7 @@ template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     }
 
     // TODO rewrite using bit2
-    auto unary = [&](bool x, bool y, Ref a) -> Ref {
+    auto unary = [&](bool x, bool y, const Def* a) -> const Def* {
         if (!x && !y) return world.lit(type, 0);
         if ( x &&  y) return ls ? world.lit(type, *ls-1_u64) : nullptr;
         if (!x &&  y) return a;
@@ -407,7 +409,7 @@ template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-Ref normalize_idx(Ref type, Ref c, Ref arg) {
+const Def* normalize_idx(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     if (auto i = Lit::isa(arg)) {
@@ -420,7 +422,7 @@ Ref normalize_idx(Ref type, Ref c, Ref arg) {
     return {};
 }
 
-template<shr id> Ref normalize_shr(Ref type, Ref c, Ref arg) {
+template<shr id> const Def* normalize_shr(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -450,7 +452,7 @@ template<shr id> Ref normalize_shr(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
+template<wrap id> const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -510,12 +512,12 @@ template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<div id> Ref normalize_div(Ref full_type, Ref, Ref arg) {
+template<div id> const Def* normalize_div(const Def* full_type, const Def*, const Def* arg) {
     auto& world    = full_type->world();
     auto [mem, ab] = arg->projs<2>();
     auto [a, b]    = ab->projs<2>();
     auto [_, type] = full_type->projs<2>(); // peel off actual type
-    auto make_res  = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
+    auto make_res  = [&, mem = mem](const Def* res) { return world.tuple({mem, res}); };
 
     if (auto result = fold<div, id>(world, type, a, b)) return make_res(result);
 
@@ -548,7 +550,7 @@ template<div id> Ref normalize_div(Ref full_type, Ref, Ref arg) {
     return {};
 }
 
-template<conv id> Ref normalize_conv(Ref dst_t, Ref, Ref x) {
+template<conv id> const Def* normalize_conv(const Def* dst_t, const Def*, const Def* x) {
     auto& world = dst_t->world();
     auto s_t    = x->type()->as<App>();
     auto d_t    = dst_t->as<App>();
@@ -587,7 +589,7 @@ template<conv id> Ref normalize_conv(Ref dst_t, Ref, Ref x) {
     return {};
 }
 
-Ref normalize_bitcast(Ref dst_t, Ref, Ref src) {
+const Def* normalize_bitcast(const Def* dst_t, const Def*, const Def* src) {
     auto& world = dst_t->world();
     auto src_t  = src->type();
 
@@ -595,7 +597,7 @@ Ref normalize_bitcast(Ref dst_t, Ref, Ref src) {
     if (src_t == dst_t) return src;
 
     if (auto other = match<bitcast>(src))
-        return other->arg()->type() == dst_t ? *other->arg() : world.call<bitcast>(dst_t, other->arg());
+        return other->arg()->type() == dst_t ? other->arg() : world.call<bitcast>(dst_t, other->arg());
 
     if (auto l = Lit::isa(src)) {
         if (dst_t->isa<Nat>()) return world.lit(dst_t, *l);
@@ -609,7 +611,7 @@ Ref normalize_bitcast(Ref dst_t, Ref, Ref src) {
 // TODO in contrast to C, we might want to give singleton types like 'Idx 1' or '[]' a size of 0 and simply nuke each
 // and every occurance of these types in a later phase
 // TODO Pi and others
-template<trait id> Ref normalize_trait(Ref, Ref, Ref type) {
+template<trait id> const Def* normalize_trait(const Def*, const Def*, const Def* type) {
     auto& world = type->world();
     if (auto ptr = match<mem::Ptr>(type)) {
         return world.lit_nat(8);
@@ -655,7 +657,7 @@ template<trait id> Ref normalize_trait(Ref, Ref, Ref type) {
     return {};
 }
 
-Ref normalize_zip(Ref type, Ref c, Ref arg) {
+const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
     auto& w                    = type->world();
     auto callee                = c->as<App>();
     auto is_os                 = callee->arg();
@@ -674,7 +676,7 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
     if (auto l_in = Lit::isa(n_i)) {
         auto args = arg->projs(*l_in);
 
-        if (lr && std::ranges::all_of(args, [](Ref arg) { return arg->isa<Tuple, Pack>(); })) {
+        if (lr && std::ranges::all_of(args, [](const Def* arg) { return arg->isa<Tuple, Pack>(); })) {
             auto shapes = s->projs(*lr);
             auto s_n    = Lit::isa(shapes.front());
 
@@ -696,7 +698,7 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
     return {};
 }
 
-template<pe id> Ref normalize_pe(Ref type, Ref, Ref arg) {
+template<pe id> const Def* normalize_pe(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
 
     if constexpr (id == pe::known) {

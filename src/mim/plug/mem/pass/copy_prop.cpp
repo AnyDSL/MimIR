@@ -7,7 +7,7 @@
 
 namespace mim::plug::mem {
 
-Ref CopyProp::rewrite(Ref def) {
+const Def* CopyProp::rewrite(const Def* def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
     if (!isa_workable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;
 
@@ -69,7 +69,7 @@ Ref CopyProp::rewrite(Ref def) {
         if (eta_exp_) eta_exp_->new2old(prop_lam, var_lam);
 
         size_t j      = 0;
-        auto new_vars = DefVec(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
+        auto new_vars = DefVec(n, [&, prop_lam = prop_lam](size_t i) -> const Def* {
             switch (lattice[i]) {
                 case Lattice::Dead: return proxy(var_lam->var(n, i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
                 case Lattice::Prop: return args[i];
