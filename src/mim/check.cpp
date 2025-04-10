@@ -41,8 +41,6 @@ const Def* Def::zonk() const {
  * Infer
  */
 
-const Def* Infer::refer(const Def* def) { return def ? find(def) : nullptr; }
-
 const Def* Infer::find(const Def* def) {
     // find root
     auto res = def;
@@ -99,8 +97,8 @@ const Def* Checker::fail() {
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
-    d1 = Infer::refer(d1);
-    d2 = Infer::refer(d2);
+    d1 = d1 ? Infer::find(d1) : nullptr;
+    d2 = d2 ? Infer::find(d2) : nullptr;
 
     if (!d1 && !d2) return true;
     if (!d1 || !d2) return fail<mode>();
@@ -195,7 +193,7 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
 }
 
 const Def* Checker::assignable_(const Def* type, const Def* val) {
-    auto val_ty = Infer::refer(val->type());
+    auto val_ty = Infer::find(val->type());
     if (type == val_ty) return val;
 
     auto& w = world();
