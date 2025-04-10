@@ -186,9 +186,10 @@ template<bool Normalize> const Def* World::implicit_app(const Def* callee, const
 
 template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg) {
     callee = callee->zonk();
+    arg    = arg->zonk();
     if (auto pi = callee->type()->isa<Pi>()) {
         if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
-            arg = new_arg;
+            arg = new_arg->zonk();
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
             if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
                 auto rw = VarRewriter(lam->has_var(), arg);
@@ -198,7 +199,8 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                 }
             }
 
-            auto type                 = pi->reduce(arg);
+            auto type                 = pi->reduce(arg)->zonk();
+            callee                    = callee->zonk();
             auto [axiom, curry, trip] = Axiom::get(callee);
             if (axiom) {
                 curry = curry == 0 ? trip : curry;

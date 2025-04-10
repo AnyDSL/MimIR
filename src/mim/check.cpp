@@ -25,7 +25,7 @@ public:
 
 } // namespace
 
-// TODO check local_muts for zonks w/ op
+// TODO check local_muts for Infers w/ op
 const Def* Def::zonk() const { return has_dep(Dep::Infer) ? Zonker(world()).rewrite(this) : this; }
 
 /*
