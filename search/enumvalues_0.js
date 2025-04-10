@@ -33,5 +33,5 @@ var searchData=
   ['asinh_30',['asinh',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72af6cb8e42056ca445246834d78d0a1810',1,'mim::plug::math']]],
   ['atan_31',['atan',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a6d86bcdc87773d8bb8527c65ed349b97',1,'mim::plug::math']]],
   ['atanh_32',['atanh',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a03d734a4901930676367606890a5db51',1,'mim::plug::math']]],
-  ['axiom_33',['Axiom',['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a9bf635203c544be1617dfce9b59cb86a',1,'mim::Node::Axiom'],['../namespacemim.html#a249738da6a953390b70691dd3fe7132ba2c5d94dd609855f43c21c46744afec3d',1,'mim::Axiom']]]
+  ['axiom_33',['Axiom',['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a9bf635203c544be1617dfce9b59cb86a',1,'mim::Node']]]
 ];

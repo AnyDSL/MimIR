@@ -173,11 +173,10 @@ var namespacemim =
     [ "w2u", "namespacemim.html#ad0b148caad3b040f944f32bc4fa9a966", null ],
     [ "Dep", "namespacemim.html#a249738da6a953390b70691dd3fe7132b", [
       [ "None", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba6adf97f83acf6453d4a6a4b1070f3754", null ],
-      [ "Axiom", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba2c5d94dd609855f43c21c46744afec3d", null ],
-      [ "Infer", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79", null ],
       [ "Mut", "namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7", null ],
-      [ "Proxy", "namespacemim.html#a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f", null ],
-      [ "Var", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77", null ]
+      [ "Var", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77", null ],
+      [ "Infer", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79", null ],
+      [ "Proxy", "namespacemim.html#a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f", null ]
     ] ],
     [ "Sort", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5", [
       [ "Term", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f", null ],

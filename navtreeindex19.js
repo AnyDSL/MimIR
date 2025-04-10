@@ -1,6 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"math_8cpp.html#a35bb34350e93d508e52544f4abd50e59":[6,0,3,1,4,7,0,0],
 "math_8cpp_source.html":[6,0,3,1,4,7,0],
 "math_8h.html":[6,0,2,1,4,7,0],
 "math_8h.html#a0ac6940e5fc2baa2a025f12066c91db2":[6,0,2,1,4,7,0,7],
@@ -227,11 +226,10 @@ var NAVTREEINDEX19 =
 "namespacemim.html#a1bf9f164e985cb56deedf827f7fb2c3f":[3,0,1,199],
 "namespacemim.html#a217db174daa31eb9e4001c60c099a96f":[3,0,1,159],
 "namespacemim.html#a249738da6a953390b70691dd3fe7132b":[3,0,1,157],
-"namespacemim.html#a249738da6a953390b70691dd3fe7132ba2c5d94dd609855f43c21c46744afec3d":[3,0,1,157,1],
-"namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79":[3,0,1,157,2],
-"namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77":[3,0,1,157,5],
+"namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79":[3,0,1,157,3],
+"namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77":[3,0,1,157,2],
 "namespacemim.html#a249738da6a953390b70691dd3fe7132ba6adf97f83acf6453d4a6a4b1070f3754":[3,0,1,157,0],
-"namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7":[3,0,1,157,3],
+"namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7":[3,0,1,157,1],
 "namespacemim.html#a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f":[3,0,1,157,4],
 "namespacemim.html#a26a0e9df92d9733ba607a78d19edbbe9":[3,0,1,122],
 "namespacemim.html#a2812faa6603be36aef320b6b3fb90767":[3,0,1,154],
@@ -249,5 +247,7 @@ var NAVTREEINDEX19 =
 "namespacemim.html#a436317095cabc13d12a3971c4aa32f03":[3,0,1,220],
 "namespacemim.html#a43c8683ea43b0bd8c38bb973d5f91d63":[3,0,1,113],
 "namespacemim.html#a458de6495f8b0a7ca2a0320496bd6fd7":[3,0,1,210],
-"namespacemim.html#a459cb02e53212327ccb3957614a485ca":[3,0,1,130]
+"namespacemim.html#a459cb02e53212327ccb3957614a485ca":[3,0,1,130],
+"namespacemim.html#a482a4a4a0e8f85c8c3c19f3ea130c314":[3,0,1,135],
+"namespacemim.html#a490bc82fced6d1222ca1e66d50e573a6":[3,0,1,160]
 };

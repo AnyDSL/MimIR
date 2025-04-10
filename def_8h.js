@@ -37,11 +37,10 @@ var def_8h =
     [ "VarSet", "def_8h.html#a69dc278a82313ca3dc770a868a1e57d1", null ],
     [ "Dep", "def_8h.html#a249738da6a953390b70691dd3fe7132b", [
       [ "None", "def_8h.html#a249738da6a953390b70691dd3fe7132ba6adf97f83acf6453d4a6a4b1070f3754", null ],
-      [ "Axiom", "def_8h.html#a249738da6a953390b70691dd3fe7132ba2c5d94dd609855f43c21c46744afec3d", null ],
-      [ "Infer", "def_8h.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79", null ],
       [ "Mut", "def_8h.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7", null ],
-      [ "Proxy", "def_8h.html#a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f", null ],
-      [ "Var", "def_8h.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77", null ]
+      [ "Var", "def_8h.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77", null ],
+      [ "Infer", "def_8h.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79", null ],
+      [ "Proxy", "def_8h.html#a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f", null ]
     ] ],
     [ "Sort", "def_8h.html#af93a16b3d599965fae4c0b94d51d2ac5", [
       [ "Term", "def_8h.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f", null ],
