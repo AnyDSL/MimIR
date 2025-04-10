@@ -1,7 +1,7 @@
 var searchData=
 [
   ['padding_0',['padding',['../classmim_1_1BitSet.html#abf89cda56a6eb098ea09c20c83f14978',1,'mim::BitSet']]],
-  ['parent_1',['parent',['../classmim_1_1Sets.html#ad0e45878043844ffc41aac437e86b602',1,'mim::Sets::Node.aux']]],
+  ['parent_1',['parent',['../classmim_1_1lct_1_1Node.html#abf5b870123a02874621655b08e29792b',1,'mim::lct::Node']]],
   ['parts_2',['parts',['../structmim_1_1ll_1_1BB.html#ab0d9a7d9310de2cae91c8c414a3539c6',1,'mim::ll::BB']]],
   ['phis_3',['phis',['../structmim_1_1ll_1_1BB.html#a3c27de69a28e3bc1e83ee0892c474bd3',1,'mim::ll::BB']]],
   ['pi_4',['pi',['../structmim_1_1ast_1_1AnnexInfo.html#a8334f827f8957fef113185e77a297295',1,'mim::ast::AnnexInfo']]],

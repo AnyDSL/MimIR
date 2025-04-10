@@ -1,10 +1,5 @@
 var classmim_1_1Sets =
 [
-    [ "Node.aux", "classmim_1_1Sets.html#structmim_1_1Sets_1_1Node_8aux", [
-      [ "bot", "classmim_1_1Sets.html#afabcaa97871555b68aa095335975e613", null ],
-      [ "parent", "classmim_1_1Sets.html#ad0e45878043844ffc41aac437e86b602", null ],
-      [ "top", "classmim_1_1Sets.html#ab28354b543375bfa94dabaeda722927f", null ]
-    ] ],
     [ "Set", "classmim_1_1Sets_1_1Set.html", "classmim_1_1Sets_1_1Set" ],
     [ "Sets", "classmim_1_1Sets.html#a942c8bd55319ced3fdae4b4e07857a75", null ],
     [ "Sets", "classmim_1_1Sets.html#a6d3aef988f4b17ffdc5413b3a4a6368f", null ],

@@ -58,6 +58,9 @@ var annotated_dup =
         [ "UniqExpr", "classmim_1_1ast_1_1UniqExpr.html", "classmim_1_1ast_1_1UniqExpr" ],
         [ "ValDecl", "classmim_1_1ast_1_1ValDecl.html", "classmim_1_1ast_1_1ValDecl" ]
       ] ],
+      [ "lct", "namespacemim_1_1lct.html", [
+        [ "Node", "classmim_1_1lct_1_1Node.html", "classmim_1_1lct_1_1Node" ]
+      ] ],
       [ "ll", "namespacemim_1_1ll.html", [
         [ "BB", "structmim_1_1ll_1_1BB.html", "structmim_1_1ll_1_1BB" ],
         [ "Emitter", "classmim_1_1ll_1_1Emitter.html", "classmim_1_1ll_1_1Emitter" ]

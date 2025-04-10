@@ -61,8 +61,11 @@ var hierarchy =
     [ "mim::Error::Msg", "structmim_1_1Error_1_1Msg.html", null ],
     [ "mim::Nest", "classmim_1_1Nest.html", null ],
     [ "automaton::NFANode", "classautomaton_1_1NFANode.html", null ],
-    [ "mim::Nest::Node", "classmim_1_1Nest_1_1Node.html", null ],
-    [ "mim::Sets< D, N >::Node.aux", "classmim_1_1Sets.html#structmim_1_1Sets_1_1Node_8aux", null ],
+    [ "mim::lct::Node< P, K >", "classmim_1_1lct_1_1Node.html", null ],
+    [ "mim::lct::Node< Node, D * >", "classmim_1_1lct_1_1Node.html", null ],
+    [ "mim::lct::Node< Node, int >", "classmim_1_1lct_1_1Node.html", [
+      [ "mim::Nest::Node", "classmim_1_1Nest_1_1Node.html", null ]
+    ] ],
     [ "fe::Parser", null, [
       [ "mim::ast::Parser", "classmim_1_1ast_1_1Parser.html", null ]
     ] ],

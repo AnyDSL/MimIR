@@ -7,6 +7,7 @@ var namespacemim =
       [ "open", "namespacemim_1_1dl.html#aac8c9df11f9075d0bec60f2541ae47e6", null ],
       [ "extension", "namespacemim_1_1dl.html#ae6d2732db28431965eb93b89c2dbfc72", null ]
     ] ],
+    [ "lct", "namespacemim_1_1lct.html", "namespacemim_1_1lct" ],
     [ "ll", "namespacemim_1_1ll.html", "namespacemim_1_1ll" ],
     [ "Node", "namespacemim_1_1Node.html", [
       [ "Num_Nodes", "namespacemim_1_1Node.html#a5ec46e9d29f58ac19594859972dd7764", null ]
