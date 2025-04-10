@@ -26,7 +26,7 @@ const Def* Rewriter::rewrite_imm(const Def* old_def) {
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
     auto size     = old_def->num_ops();
     auto new_ops  = DefVec(size);
-    for (size_t i = 0; i != size; ++i) new_ops[i] = (rewrite(old_def->op(i)));
+    for (size_t i = 0; i != size; ++i) new_ops[i] = rewrite(old_def->op(i));
     return old_def->rebuild(world(), new_type, new_ops);
 }
 
