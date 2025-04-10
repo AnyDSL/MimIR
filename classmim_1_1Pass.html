@@ -156,18 +156,18 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Rewrites an <em>immutable</em> <code>def</code> within <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a>.</p>
 <dl class="section return"><dt>Returns</dt><dd>the replacement. </dd></dl>
 </div></td></tr>
-<tr class="memitem:a1e2538db511c704eda02dd76f4bce8e6" id="r_a1e2538db511c704eda02dd76f4bce8e6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e2538db511c704eda02dd76f4bce8e6">rewrite</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> def)</td></tr>
-<tr class="separator:a1e2538db511c704eda02dd76f4bce8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd4316b092d175f662687acfddaad9aa" id="r_acd4316b092d175f662687acfddaad9aa"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd4316b092d175f662687acfddaad9aa">rewrite</a> (const <a class="el" href="classmim_1_1Var.html">Var</a> *var)</td></tr>
-<tr class="separator:acd4316b092d175f662687acfddaad9aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18fe8974e6fb821dba5d458d80ab5a49" id="r_a18fe8974e6fb821dba5d458d80ab5a49"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18fe8974e6fb821dba5d458d80ab5a49">rewrite</a> (const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *<a class="el" href="#affb5f235a3e041172a48a6ce9d1c5578">proxy</a>)</td></tr>
-<tr class="separator:a18fe8974e6fb821dba5d458d80ab5a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac54f62d3cb72b9ed5aab224122b84450" id="r_ac54f62d3cb72b9ed5aab224122b84450"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac54f62d3cb72b9ed5aab224122b84450">rewrite</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:ac54f62d3cb72b9ed5aab224122b84450"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36776e4983fc43ab11fc027c2542cd0c" id="r_a36776e4983fc43ab11fc027c2542cd0c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a36776e4983fc43ab11fc027c2542cd0c">rewrite</a> (const <a class="el" href="classmim_1_1Var.html">Var</a> *var)</td></tr>
+<tr class="separator:a36776e4983fc43ab11fc027c2542cd0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fc19f1e3541627a9ce41378d14b0ee1" id="r_a4fc19f1e3541627a9ce41378d14b0ee1"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fc19f1e3541627a9ce41378d14b0ee1">rewrite</a> (const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *<a class="el" href="#a0a31235cd0315bb4fbc13c7e26928af7">proxy</a>)</td></tr>
+<tr class="separator:a4fc19f1e3541627a9ce41378d14b0ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Analyze Hook for the PassMan</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>Invoked after the <a class="el" href="classmim_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> has finished <a class="el" href="#a1e2538db511c704eda02dd76f4bce8e6">Pass::rewrite</a>ing <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a> to analyze the <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>.</p>
+<tr><td colspan="2"><div class="groupText"><p>Invoked after the <a class="el" href="classmim_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> has finished <a class="el" href="#ac54f62d3cb72b9ed5aab224122b84450">Pass::rewrite</a>ing <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a> to analyze the <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>.</p>
 <p>Will only be invoked if <a class="el" href="#aaa4d94d4f8d7fe1b6f7e854ba2251f59">Pass::fixed_point()</a> yields <code>true</code> - which will be the case for <a class="el" href="classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed-point.">FPPass</a>es. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="namespacemim.html#ae97e9f99aa1fed4c2dbc1a807a8e689e">mim::No_Undo</a> or the state to roll back to. </dd></dl>
 </div></td></tr>
-<tr class="memitem:aa9b8ab784ac9082078bd2ab10f0b8c1e" id="r_aa9b8ab784ac9082078bd2ab10f0b8c1e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacemim.html#abfb343322c95d8c70952e41e6d9728bc">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9b8ab784ac9082078bd2ab10f0b8c1e">analyze</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a>)</td></tr>
-<tr class="separator:aa9b8ab784ac9082078bd2ab10f0b8c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a803886d9af511e72c0699f0968ab5b38" id="r_a803886d9af511e72c0699f0968ab5b38"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacemim.html#abfb343322c95d8c70952e41e6d9728bc">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a803886d9af511e72c0699f0968ab5b38">analyze</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
+<tr class="separator:a803886d9af511e72c0699f0968ab5b38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50337cf4f398345ac155d86973043d90" id="r_a50337cf4f398345ac155d86973043d90"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacemim.html#abfb343322c95d8c70952e41e6d9728bc">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a50337cf4f398345ac155d86973043d90">analyze</a> (const <a class="el" href="classmim_1_1Var.html">Var</a> *)</td></tr>
 <tr class="separator:a50337cf4f398345ac155d86973043d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a4ded23822ce9fd5cb8aa3e3aa3a1ef" id="r_a0a4ded23822ce9fd5cb8aa3e3aa3a1ef"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacemim.html#abfb343322c95d8c70952e41e6d9728bc">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a4ded23822ce9fd5cb8aa3e3aa3a1ef">analyze</a> (const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *)</td></tr>
@@ -179,19 +179,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abcbc16b450856dc2aad2be7152bb3d4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should the <a class="el" href="classmim_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> even consider this pass?  <br /></td></tr>
 <tr class="separator:abcbc16b450856dc2aad2be7152bb3d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a042a62b4077a40083e0a28452361015a" id="r_a042a62b4077a40083e0a28452361015a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a042a62b4077a40083e0a28452361015a">enter</a> ()</td></tr>
-<tr class="memdesc:a042a62b4077a40083e0a28452361015a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just before <a class="el" href="#a1e2538db511c704eda02dd76f4bce8e6">Pass::rewrite</a>ing <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a>'s body.  <br /></td></tr>
+<tr class="memdesc:a042a62b4077a40083e0a28452361015a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just before <a class="el" href="#ac54f62d3cb72b9ed5aab224122b84450">Pass::rewrite</a>ing <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a>'s body.  <br /></td></tr>
 <tr class="separator:a042a62b4077a40083e0a28452361015a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87c5574acbd09037bb38ad7391d1e8a5" id="r_a87c5574acbd09037bb38ad7391d1e8a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87c5574acbd09037bb38ad7391d1e8a5">prepare</a> ()</td></tr>
 <tr class="memdesc:a87c5574acbd09037bb38ad7391d1e8a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked <b>once</b> before entering the main rewrite loop.  <br /></td></tr>
 <tr class="separator:a87c5574acbd09037bb38ad7391d1e8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">proxy</div></td></tr>
-<tr class="memitem:affb5f235a3e041172a48a6ce9d1c5578" id="r_affb5f235a3e041172a48a6ce9d1c5578"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affb5f235a3e041172a48a6ce9d1c5578">proxy</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> type, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> ops, <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> tag=0)</td></tr>
-<tr class="separator:affb5f235a3e041172a48a6ce9d1c5578"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4074a5ad3925829e46232dce4b524d43" id="r_a4074a5ad3925829e46232dce4b524d43"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4074a5ad3925829e46232dce4b524d43">isa_proxy</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> def, <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> tag=0)</td></tr>
-<tr class="memdesc:a4074a5ad3925829e46232dce4b524d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether given <code>def</code> is a <a class="el" href="classmim_1_1Proxy.html">Proxy</a> whose <a class="el" href="classmim_1_1Proxy.html#ab7504f91d4628b8ca22154be2e558dd0" title="IPass::index within PassMan.">Proxy::pass</a> matches this <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>'s <code>IPass::index</code>.  <br /></td></tr>
-<tr class="separator:a4074a5ad3925829e46232dce4b524d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51aa9ef4da112ed6164d3461f4cb87ca" id="r_a51aa9ef4da112ed6164d3461f4cb87ca"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51aa9ef4da112ed6164d3461f4cb87ca">as_proxy</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> def, <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> tag=0)</td></tr>
-<tr class="separator:a51aa9ef4da112ed6164d3461f4cb87ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a31235cd0315bb4fbc13c7e26928af7" id="r_a0a31235cd0315bb4fbc13c7e26928af7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a31235cd0315bb4fbc13c7e26928af7">proxy</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> ops, <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> tag=0)</td></tr>
+<tr class="separator:a0a31235cd0315bb4fbc13c7e26928af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecf198ac657f8ef581878741e2282aef" id="r_aecf198ac657f8ef581878741e2282aef"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aecf198ac657f8ef581878741e2282aef">isa_proxy</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def, <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> tag=0)</td></tr>
+<tr class="memdesc:aecf198ac657f8ef581878741e2282aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether given <code>def</code> is a <a class="el" href="classmim_1_1Proxy.html">Proxy</a> whose <a class="el" href="classmim_1_1Proxy.html#ab7504f91d4628b8ca22154be2e558dd0" title="IPass::index within PassMan.">Proxy::pass</a> matches this <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>'s <code>IPass::index</code>.  <br /></td></tr>
+<tr class="separator:aecf198ac657f8ef581878741e2282aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb2cab796a768d6ea1fb6c32def4a2df" id="r_afb2cab796a768d6ea1fb6c32def4a2df"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb2cab796a768d6ea1fb6c32def4a2df">as_proxy</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def, <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> tag=0)</td></tr>
+<tr class="separator:afb2cab796a768d6ea1fb6c32def4a2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -301,8 +301,39 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a803886d9af511e72c0699f0968ab5b38" name="a803886d9af511e72c0699f0968ab5b38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a803886d9af511e72c0699f0968ab5b38">&#9670;&#160;</a></span>analyze() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="namespacemim.html#abfb343322c95d8c70952e41e6d9728bc">undo_t</a> mim::Pass::analyze </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classmim_1_1BetaRed.html#ad45cda79e51a76a990819a49ff623f66">mim::BetaRed</a>, <a class="el" href="classmim_1_1EtaExp.html#a44948ae00d2904685b5ce725d384b1c9">mim::EtaExp</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html#af36c1c6b3dc58bb12f5f39a05c622851">mim::plug::clos::LowerTypedClosPrep</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1SSAConstr.html#aa0e1a692580c7c3e3acebec0955d4240">mim::plug::mem::SSAConstr</a>, and <a class="el" href="classmim_1_1TailRecElim.html#a3a39a0ffb686e21c13982d91efd4c937">mim::TailRecElim</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00050">50</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>.</p>
+
+</div>
+</div>
 <a id="a0a4ded23822ce9fd5cb8aa3e3aa3a1ef" name="a0a4ded23822ce9fd5cb8aa3e3aa3a1ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a4ded23822ce9fd5cb8aa3e3aa3a1ef">&#9670;&#160;</a></span>analyze() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a4ded23822ce9fd5cb8aa3e3aa3a1ef">&#9670;&#160;</a></span>analyze() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -333,7 +364,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a50337cf4f398345ac155d86973043d90" name="a50337cf4f398345ac155d86973043d90"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50337cf4f398345ac155d86973043d90">&#9670;&#160;</a></span>analyze() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a50337cf4f398345ac155d86973043d90">&#9670;&#160;</a></span>analyze() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -363,39 +394,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="aa9b8ab784ac9082078bd2ab10f0b8c1e" name="aa9b8ab784ac9082078bd2ab10f0b8c1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9b8ab784ac9082078bd2ab10f0b8c1e">&#9670;&#160;</a></span>analyze() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="namespacemim.html#abfb343322c95d8c70952e41e6d9728bc">undo_t</a> mim::Pass::analyze </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented in <a class="el" href="classmim_1_1BetaRed.html#aacd254deac2c2ebb656f4d21dcb42c5c">mim::BetaRed</a>, <a class="el" href="classmim_1_1EtaExp.html#a5aa595ca9a9852d9a5a29914a3c6985f">mim::EtaExp</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html#acfa2a9e24a801f5fd1cb6bf0681abc15">mim::plug::clos::LowerTypedClosPrep</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1SSAConstr.html#aefd72f5d4fc5e2f854a874c6df68ff66">mim::plug::mem::SSAConstr</a>, and <a class="el" href="classmim_1_1TailRecElim.html#acd0048b84a0db59c8f3e49d99f8c209c">mim::TailRecElim</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00050">50</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
-
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>.</p>
-
-</div>
-</div>
-<a id="a51aa9ef4da112ed6164d3461f4cb87ca" name="a51aa9ef4da112ed6164d3461f4cb87ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51aa9ef4da112ed6164d3461f4cb87ca">&#9670;&#160;</a></span>as_proxy()</h2>
+<a id="afb2cab796a768d6ea1fb6c32def4a2df" name="afb2cab796a768d6ea1fb6c32def4a2df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb2cab796a768d6ea1fb6c32def4a2df">&#9670;&#160;</a></span>as_proxy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -406,7 +406,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> * mim::Pass::as_proxy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>def</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -423,7 +423,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00082">82</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="def_8h_source.html#l00823">mim::Proxy::pass()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="def_8h_source.html#l00824">mim::Proxy::tag()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="def_8h_source.html#l00803">mim::Proxy::pass()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="def_8h_source.html#l00804">mim::Proxy::tag()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ssa__constr_8cpp_source.html#l00019">mim::plug::mem::SSAConstr::rewrite()</a>.</p>
 
@@ -514,7 +514,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Invoked just before <a class="el" href="#a1e2538db511c704eda02dd76f4bce8e6">Pass::rewrite</a>ing <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a>'s body. </p>
+<p>Invoked just before <a class="el" href="#ac54f62d3cb72b9ed5aab224122b84450">Pass::rewrite</a>ing <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a>'s body. </p>
 <dl class="section note"><dt>Note</dt><dd>This is invoked when seeing the <em>inside</em> of a mutable the first time. This is often too late, as you usually want to do something when you see a mutable the first time from the <em>outside</em>. This means that this <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a> has already been encountered elsewhere. Otherwise, we wouldn't have seen <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a> to begin with (unless it is <a class="el" href="classmim_1_1Def.html#a6fc1ebb1ac4c1458a432b1cbaffbf9af">Def::is_external</a>). </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html#ae512e21b886c518c96d07976a486dbbb">mim::plug::clos::Clos2SJLJ</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a0ac8ea3017a419fccc77416400a69a0a">mim::plug::clos::ClosConvPrep</a>, <a class="el" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#a02dc819ec7f706b2ddfa13e7974a01c8">mim::plug::compile::DebugPrint</a>, <a class="el" href="classmim_1_1plug_1_1compile_1_1InternalCleanup.html#abae386243b736d32669038f55b120313">mim::plug::compile::InternalCleanup</a>, <a class="el" href="classmim_1_1plug_1_1direct_1_1CPS2DS.html#a41f8312e5340643c95041160750ce47a">mim::plug::direct::CPS2DS</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1Reshape.html#a919d201d34498312d4071867861bf9ec">mim::plug::mem::Reshape</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1SSAConstr.html#af66b72fb502fcd5690515cc885aa8efe">mim::plug::mem::SSAConstr</a>, and <a class="el" href="classmim_1_1RetWrap.html#a2890cf2dc88bb2c4ad9cd02ea1c4d9cc">mim::RetWrap</a>.</p>
@@ -610,8 +610,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a4074a5ad3925829e46232dce4b524d43" name="a4074a5ad3925829e46232dce4b524d43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4074a5ad3925829e46232dce4b524d43">&#9670;&#160;</a></span>isa_proxy()</h2>
+<a id="aecf198ac657f8ef581878741e2282aef" name="aecf198ac657f8ef581878741e2282aef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecf198ac657f8ef581878741e2282aef">&#9670;&#160;</a></span>isa_proxy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -622,7 +622,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> * mim::Pass::isa_proxy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>def</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -641,7 +641,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00077">77</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="def_8h_source.html#l00823">mim::Proxy::pass()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="def_8h_source.html#l00824">mim::Proxy::tag()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="def_8h_source.html#l00803">mim::Proxy::pass()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="def_8h_source.html#l00804">mim::Proxy::tag()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>.</p>
 
@@ -761,8 +761,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="affb5f235a3e041172a48a6ce9d1c5578" name="affb5f235a3e041172a48a6ce9d1c5578"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affb5f235a3e041172a48a6ce9d1c5578">&#9670;&#160;</a></span>proxy()</h2>
+<a id="a0a31235cd0315bb4fbc13c7e26928af7" name="a0a31235cd0315bb4fbc13c7e26928af7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a31235cd0315bb4fbc13c7e26928af7">&#9670;&#160;</a></span>proxy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -773,7 +773,7 @@ Friends</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> * mim::Pass::proxy </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -797,12 +797,12 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="world_8h_source.html#l00214">mim::World::proxy()</a>, and <a class="el" href="pass_8h_source.html#l00296">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00020">mim::BetaRed::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00139">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="pass_8h_source.html#l00082">as_proxy()</a>, <a class="el" href="pass_8h_source.html#l00077">isa_proxy()</a>, <a class="el" href="eta__exp_8h_source.html#l00021">mim::EtaExp::proxy()</a>, <a class="el" href="beta__red_8cpp_source.html#l00007">mim::BetaRed::rewrite()</a>, <a class="el" href="pass_8h_source.html#l00042">rewrite()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00010">mim::plug::mem::CopyProp::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00019">mim::plug::mem::SSAConstr::rewrite()</a>, and <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00020">mim::BetaRed::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00139">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="pass_8h_source.html#l00082">as_proxy()</a>, <a class="el" href="pass_8h_source.html#l00077">isa_proxy()</a>, <a class="el" href="eta__exp_8h_source.html#l00021">mim::EtaExp::proxy()</a>, <a class="el" href="beta__red_8cpp_source.html#l00007">mim::BetaRed::rewrite()</a>, <a class="el" href="pass_8h_source.html#l00042">rewrite()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00010">mim::plug::mem::CopyProp::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, and <a class="el" href="ssa__constr_8cpp_source.html#l00019">mim::plug::mem::SSAConstr::rewrite()</a>.</p>
 
 </div>
 </div>
-<a id="a18fe8974e6fb821dba5d458d80ab5a49" name="a18fe8974e6fb821dba5d458d80ab5a49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a18fe8974e6fb821dba5d458d80ab5a49">&#9670;&#160;</a></span>rewrite() <span class="overload">[1/3]</span></h2>
+<a id="ac54f62d3cb72b9ed5aab224122b84450" name="ac54f62d3cb72b9ed5aab224122b84450"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac54f62d3cb72b9ed5aab224122b84450">&#9670;&#160;</a></span>rewrite() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -811,7 +811,36 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classmim_1_1Ref.html">Ref</a> mim::Pass::rewrite </td>
+          <td class="memname">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Pass::rewrite </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classmim_1_1BetaRed.html#a1d7d8ea865ebbea4567ce950f0d5ce7b">mim::BetaRed</a>, <a class="el" href="classmim_1_1EtaExp.html#a569129c678d578315e1a516b2633b2bc">mim::EtaExp</a>, <a class="el" href="classmim_1_1EtaRed.html#a845ddede33d77c552dc1185a197c6021">mim::EtaRed</a>, <a class="el" href="classmim_1_1LamSpec.html#aa94675b29af484568c829207cd38b576">mim::LamSpec</a>, <a class="el" href="classmim_1_1plug_1_1affine_1_1LowerFor.html#a010f0f6e01d667838e2900185da46739">mim::plug::affine::LowerFor</a>, <a class="el" href="classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html#af9b0fae8164bc7c94e20df738255d778">mim::plug::autodiff::AutoDiffEval</a>, <a class="el" href="classmim_1_1plug_1_1autodiff_1_1AutoDiffZero.html#a4f98f3f530380a8cdd7bfde9839bf03b">mim::plug::autodiff::AutoDiffZero</a>, <a class="el" href="classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#a5762aa26cf51b0d16c877b08ed654884">mim::plug::autodiff::AutoDiffZeroCleanup</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1BranchClosElim.html#ad32074c185fc02b0b3920cd3a5984923">mim::plug::clos::BranchClosElim</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html#a1c8aa0cc90581f545b2638646f546215">mim::plug::clos::Clos2SJLJ</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a0a0ca3f68df546c35f7f039629fbe058">mim::plug::clos::ClosConvPrep</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html#a91c61e13551a356491b7a6292aa34f74">mim::plug::clos::LowerTypedClosPrep</a>, <a class="el" href="classmim_1_1plug_1_1direct_1_1DS2CPS.html#a96b96dbfc6421d8c42f0ba85212449a6">mim::plug::direct::DS2CPS</a>, <a class="el" href="classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html#a314c5e92d7b0fc31d89aaea6118c9f1f">mim::plug::matrix::LowerMatrixHighLevelMapRed</a>, <a class="el" href="classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html#acf9a65ed786f23e01944c3e47d42fd5a">mim::plug::matrix::LowerMatrixMediumLevel</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html#a797e9a6280ed6508a6e6eda249aef122">mim::plug::mem::Alloc2Malloc</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1CopyProp.html#a3995c577ebd661acaff861436adc550c">mim::plug::mem::CopyProp</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1RememElim.html#a0221e54cc5ef2b717d1e998005231cc5">mim::plug::mem::RememElim</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1SSAConstr.html#aa674ca31983d8b4cae30a24011328c84">mim::plug::mem::SSAConstr</a>, <a class="el" href="classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html#ab2c7d889851ce6cc6fba4c4389a2843e">mim::plug::refly::RemoveDbgPerm</a>, <a class="el" href="classmim_1_1plug_1_1regex_1_1LowerRegex.html#abe97a8e7d63a911ee990fb5945415f8a">mim::plug::regex::LowerRegex</a>, <a class="el" href="classmim_1_1Scalarize.html#ae7be4b2c012a1ddf49dc5a214faff691">mim::Scalarize</a>, and <a class="el" href="classmim_1_1TailRecElim.html#ad6c879dbf17b24c7afebde9371243d4d">mim::TailRecElim</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00040">40</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+
+</div>
+</div>
+<a id="a4fc19f1e3541627a9ce41378d14b0ee1" name="a4fc19f1e3541627a9ce41378d14b0ee1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fc19f1e3541627a9ce41378d14b0ee1">&#9670;&#160;</a></span>rewrite() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Pass::rewrite </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *</td>          <td class="paramname"><span class="paramname"><em>proxy</em></span></td><td>)</td>
           <td></td>
@@ -824,7 +853,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classmim_1_1plug_1_1mem_1_1SSAConstr.html#aa9acf1d27f5c79d7959aea6ed95644fe">mim::plug::mem::SSAConstr</a>.</p>
+<p>Reimplemented in <a class="el" href="classmim_1_1plug_1_1mem_1_1SSAConstr.html#ab4e8f017c63ba2b57ce34e3865a0e9b4">mim::plug::mem::SSAConstr</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00042">42</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
@@ -832,8 +861,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="acd4316b092d175f662687acfddaad9aa" name="acd4316b092d175f662687acfddaad9aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd4316b092d175f662687acfddaad9aa">&#9670;&#160;</a></span>rewrite() <span class="overload">[2/3]</span></h2>
+<a id="a36776e4983fc43ab11fc027c2542cd0c" name="a36776e4983fc43ab11fc027c2542cd0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36776e4983fc43ab11fc027c2542cd0c">&#9670;&#160;</a></span>rewrite() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -842,7 +871,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classmim_1_1Ref.html">Ref</a> mim::Pass::rewrite </td>
+          <td class="memname">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Pass::rewrite </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classmim_1_1Var.html">Var</a> *</td>          <td class="paramname"><span class="paramname"><em>var</em></span></td><td>)</td>
           <td></td>
@@ -856,35 +885,6 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00041">41</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
-
-</div>
-</div>
-<a id="a1e2538db511c704eda02dd76f4bce8e6" name="a1e2538db511c704eda02dd76f4bce8e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e2538db511c704eda02dd76f4bce8e6">&#9670;&#160;</a></span>rewrite() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="classmim_1_1Ref.html">Ref</a> mim::Pass::rewrite </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented in <a class="el" href="classmim_1_1BetaRed.html#af6b2309a7af716ebd3c3475ed5b72b41">mim::BetaRed</a>, <a class="el" href="classmim_1_1EtaExp.html#a06e3ff8a2f7ebb59d71a390c2e44e310">mim::EtaExp</a>, <a class="el" href="classmim_1_1EtaRed.html#a457a5fea1ab1f2832708f5a236670f24">mim::EtaRed</a>, <a class="el" href="classmim_1_1LamSpec.html#ab5df5bc0d0b4716032f4a55ab932363b">mim::LamSpec</a>, <a class="el" href="classmim_1_1plug_1_1affine_1_1LowerFor.html#aba61f6f2ff99ff81247a71f7dc5a51f1">mim::plug::affine::LowerFor</a>, <a class="el" href="classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html#a9ec4feda61eaf5bf03c0cf0f54b7c4f5">mim::plug::autodiff::AutoDiffEval</a>, <a class="el" href="classmim_1_1plug_1_1autodiff_1_1AutoDiffZero.html#a8beb9b16ddb94c012cf1bdb856f1c2f5">mim::plug::autodiff::AutoDiffZero</a>, <a class="el" href="classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#ab2f11ba1002b88bf1dd7c99992da9661">mim::plug::autodiff::AutoDiffZeroCleanup</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1BranchClosElim.html#ad75fdd5ebe351bd011e4f8dcef9593dc">mim::plug::clos::BranchClosElim</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html#a5b4494c2ec72634a56075a176e34bdf6">mim::plug::clos::Clos2SJLJ</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#ab40b0eabbc9d15f401ff89578e68e234">mim::plug::clos::ClosConvPrep</a>, <a class="el" href="classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html#ada790d9ee614712a156de46fcc214b2c">mim::plug::clos::LowerTypedClosPrep</a>, <a class="el" href="classmim_1_1plug_1_1direct_1_1DS2CPS.html#a297537030e0c4f30333e88a40389b4eb">mim::plug::direct::DS2CPS</a>, <a class="el" href="classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html#a6def3aaf2bee25b70d33829aaa4bc8db">mim::plug::matrix::LowerMatrixHighLevelMapRed</a>, <a class="el" href="classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html#a2788dbbbae40d7e3cec5f61d48d6239b">mim::plug::matrix::LowerMatrixMediumLevel</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html#a129c60bf84a20907cc24ce734226a2b0">mim::plug::mem::Alloc2Malloc</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1CopyProp.html#a1d33a23cfe7671eb85143995386fbab4">mim::plug::mem::CopyProp</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1RememElim.html#a6554e936bbf6e279c817d6b19d63cf55">mim::plug::mem::RememElim</a>, <a class="el" href="classmim_1_1plug_1_1mem_1_1SSAConstr.html#a7d84347673c5444ce83c6a4597aee804">mim::plug::mem::SSAConstr</a>, <a class="el" href="classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html#aa0e2f243ea55d3a9cad1ab628a0b28c4">mim::plug::refly::RemoveDbgPerm</a>, <a class="el" href="classmim_1_1plug_1_1regex_1_1LowerRegex.html#a32787e0f71f6bfb6a03211601960198e">mim::plug::regex::LowerRegex</a>, <a class="el" href="classmim_1_1Scalarize.html#a2d4edd9efeb20cb61975b447ca71522c">mim::Scalarize</a>, and <a class="el" href="classmim_1_1TailRecElim.html#a57f36695b65559e30382b8dea0322d1e">mim::TailRecElim</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00040">40</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -915,7 +915,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00030">man()</a>, and <a class="el" href="pass_8h_source.html#l00114">mim::PassMan::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00020">mim::BetaRed::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00030">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00053">mim::EtaExp::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="eta__red_8cpp_source.html#l00037">mim::EtaRed::analyze()</a>, <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00077">mim::plug::clos::LowerTypedClosPrep::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00139">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00159">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="tail__rec__elim_8cpp_source.html#l00023">mim::TailRecElim::analyze()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00307">mim::plug::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00086">mim::plug::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00158">mim::plug::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00123">mim::plug::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00120">mim::plug::clos::Clos2SJLJ::enter()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00040">mim::plug::clos::ClosConvPrep::enter()</a>, <a class="el" href="debug__print_8cpp_source.html#l00009">mim::plug::compile::DebugPrint::enter()</a>, <a class="el" href="internal__cleanup_8cpp_source.html#l00009">mim::plug::compile::InternalCleanup::enter()</a>, <a class="el" href="ret__wrap_8cpp_source.html#l00005">mim::RetWrap::enter()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00036">mim::plug::clos::ClosConvPrep::eta_wrap()</a>, <a class="el" href="debug__dump_8h_source.html#l00014">DebugDump::prepare()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, <a class="el" href="beta__red_8cpp_source.html#l00007">mim::BetaRed::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="lam__spec_8cpp_source.html#l00009">mim::LamSpec::rewrite()</a>, <a class="el" href="lower__for_8cpp_source.html#l00032">mim::plug::affine::LowerFor::rewrite()</a>, <a class="el" href="autodiff__eval_8cpp_source.html#l00027">mim::plug::autodiff::AutoDiffEval::rewrite()</a>, <a class="el" href="autodiff__zero_8cpp_source.html#l00014">mim::plug::autodiff::AutoDiffZero::rewrite()</a>, <a class="el" href="autodiff__zero__cleanup_8cpp_source.html#l00014">mim::plug::autodiff::AutoDiffZeroCleanup::rewrite()</a>, <a class="el" href="branch__clos__elim_8cpp_source.html#l00027">mim::plug::clos::BranchClosElim::rewrite()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00167">mim::plug::clos::Clos2SJLJ::rewrite()</a>, <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00066">mim::plug::clos::LowerTypedClosPrep::rewrite()</a>, <a class="el" href="ds2cps_8cpp_source.html#l00011">mim::plug::direct::DS2CPS::rewrite()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00010">mim::plug::mem::CopyProp::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00019">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="remove__perm_8cpp_source.html#l00007">mim::plug::refly::RemoveDbgPerm::rewrite()</a>, <a class="el" href="lower__regex_8cpp_source.html#l00024">mim::plug::regex::LowerRegex::rewrite()</a>, <a class="el" href="tail__rec__elim_8cpp_source.html#l00008">mim::TailRecElim::rewrite()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00042">mim::plug::matrix::LowerMatrixHighLevelMapRed::rewrite_()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00058">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00112">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00030">mim::BetaRed::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00020">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00060">mim::EtaExp::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00053">mim::EtaExp::analyze()</a>, <a class="el" href="eta__red_8cpp_source.html#l00037">mim::EtaRed::analyze()</a>, <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00077">mim::plug::clos::LowerTypedClosPrep::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00093">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00159">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00139">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="tail__rec__elim_8cpp_source.html#l00023">mim::TailRecElim::analyze()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00307">mim::plug::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00086">mim::plug::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00158">mim::plug::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00123">mim::plug::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00120">mim::plug::clos::Clos2SJLJ::enter()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00040">mim::plug::clos::ClosConvPrep::enter()</a>, <a class="el" href="debug__print_8cpp_source.html#l00009">mim::plug::compile::DebugPrint::enter()</a>, <a class="el" href="internal__cleanup_8cpp_source.html#l00009">mim::plug::compile::InternalCleanup::enter()</a>, <a class="el" href="ret__wrap_8cpp_source.html#l00005">mim::RetWrap::enter()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00036">mim::plug::clos::ClosConvPrep::eta_wrap()</a>, <a class="el" href="debug__dump_8h_source.html#l00014">DebugDump::prepare()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, <a class="el" href="beta__red_8cpp_source.html#l00007">mim::BetaRed::rewrite()</a>, <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>, <a class="el" href="lam__spec_8cpp_source.html#l00009">mim::LamSpec::rewrite()</a>, <a class="el" href="lower__for_8cpp_source.html#l00032">mim::plug::affine::LowerFor::rewrite()</a>, <a class="el" href="autodiff__eval_8cpp_source.html#l00027">mim::plug::autodiff::AutoDiffEval::rewrite()</a>, <a class="el" href="autodiff__zero_8cpp_source.html#l00014">mim::plug::autodiff::AutoDiffZero::rewrite()</a>, <a class="el" href="autodiff__zero__cleanup_8cpp_source.html#l00014">mim::plug::autodiff::AutoDiffZeroCleanup::rewrite()</a>, <a class="el" href="branch__clos__elim_8cpp_source.html#l00027">mim::plug::clos::BranchClosElim::rewrite()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00167">mim::plug::clos::Clos2SJLJ::rewrite()</a>, <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00066">mim::plug::clos::LowerTypedClosPrep::rewrite()</a>, <a class="el" href="ds2cps_8cpp_source.html#l00011">mim::plug::direct::DS2CPS::rewrite()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00010">mim::plug::mem::CopyProp::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00030">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00019">mim::plug::mem::SSAConstr::rewrite()</a>, <a class="el" href="remove__perm_8cpp_source.html#l00007">mim::plug::refly::RemoveDbgPerm::rewrite()</a>, <a class="el" href="lower__regex_8cpp_source.html#l00024">mim::plug::regex::LowerRegex::rewrite()</a>, <a class="el" href="tail__rec__elim_8cpp_source.html#l00008">mim::TailRecElim::rewrite()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00042">mim::plug::matrix::LowerMatrixHighLevelMapRed::rewrite_()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00058">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00112">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>.</p>
 
 </div>
 </div>

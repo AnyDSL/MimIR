@@ -1,6 +1,6 @@
 var math_8h =
 [
-    [ "VMode", "math_8h.html#a46c491e9f0e6ec5826947a86337eb261", null ],
+    [ "VMode", "math_8h.html#a940e481c253b52c293f203e453d8057a", null ],
     [ "Mode", "math_8h.html#a7d11839c924639829f2a269bc0b7db91", [
       [ "top", "math_8h.html#a7d11839c924639829f2a269bc0b7db91ab28354b543375bfa94dabaeda722927f", null ],
       [ "none", "math_8h.html#a7d11839c924639829f2a269bc0b7db91a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
@@ -20,15 +20,15 @@ var math_8h =
     [ "is_commutative", "math_8h.html#a645c73e7dc74e25de2bc1c7b4236a40a", null ],
     [ "is_commutative", "math_8h.html#a1bf9f164e985cb56deedf827f7fb2c3f", null ],
     [ "is_commutative", "math_8h.html#a2d08547c4fc3b6bcf3d8779269813b50", null ],
-    [ "isa_f", "math_8h.html#abcd8e56668fa3ec1521c895ad7f32002", null ],
+    [ "isa_f", "math_8h.html#a9f9256bc3c1cc75b278560fd4c2f3c0a", null ],
     [ "lit_f", "math_8h.html#a0ac6940e5fc2baa2a025f12066c91db2", null ],
     [ "lit_f", "math_8h.html#a1794e4909a2ecb334c836a3dd927ac68", null ],
-    [ "match_f", "math_8h.html#a0d7fad3cb7deaa858ef89618af5741e9", null ],
-    [ "match_f16", "math_8h.html#a4a7e7539332921ecf7e2ac61a1f59015", null ],
-    [ "match_f32", "math_8h.html#a64a1df9dc38b08b82d96173724ba59b2", null ],
-    [ "match_f64", "math_8h.html#a7ecab434327a2457a41b469843cd46f8", null ],
-    [ "mode", "math_8h.html#ac60557397062603bd2c29c723ff7f387", null ],
-    [ "op_rminus", "math_8h.html#a5d6cdf27ec872f6dd29304de319a0ce8", null ],
-    [ "type_f", "math_8h.html#a93eb5e63d6c52c1e4d1f2bc347c6c291", null ],
-    [ "type_f", "math_8h.html#a87a04cb10e8d871e13864e7c69e1fcc1", null ]
+    [ "match_f", "math_8h.html#a6997da1ee16a8a8176042a524ae02dae", null ],
+    [ "match_f16", "math_8h.html#a9f21132c6f33d36e69565752fff39793", null ],
+    [ "match_f32", "math_8h.html#affa2e23bf7486738df24d3d3f1ce79da", null ],
+    [ "match_f64", "math_8h.html#aee88662a06816ef08a92b69f9166ed84", null ],
+    [ "mode", "math_8h.html#a88d9bfdf9fbcd82d0a00f06088221ec6", null ],
+    [ "op_rminus", "math_8h.html#aaa35cfb305025a1cdac738b548baac43", null ],
+    [ "type_f", "math_8h.html#a3363d5189fd3c7b94f11d227c3dc5e03", null ],
+    [ "type_f", "math_8h.html#aa4960fe0b7013ecd6c2a2bd437246212", null ]
 ];

@@ -1,9 +1,9 @@
 var autodiff_2normalizers_8cpp =
 [
-    [ "normalize_AD", "autodiff_2normalizers_8cpp.html#a87e1022371ead81b74af42734e389664", null ],
-    [ "normalize_ad", "autodiff_2normalizers_8cpp.html#a8cec390982caf0e8cc42681d80317f91", null ],
-    [ "normalize_add", "autodiff_2normalizers_8cpp.html#aaaefbbe6ba4f0959f72ce6cf94812e5c", null ],
-    [ "normalize_sum", "autodiff_2normalizers_8cpp.html#a683d64363779664b85d87c025d3a8376", null ],
-    [ "normalize_Tangent", "autodiff_2normalizers_8cpp.html#a107cefe0a4877df09eabea8d3c8953cc", null ],
-    [ "normalize_zero", "autodiff_2normalizers_8cpp.html#a1c3d172bdf58b047b64c69b4b7d91e62", null ]
+    [ "normalize_AD", "autodiff_2normalizers_8cpp.html#a62c42124ec5ea23d4f34edf5780caa6c", null ],
+    [ "normalize_ad", "autodiff_2normalizers_8cpp.html#a6514ec29aa7b54b50764711fa08c0183", null ],
+    [ "normalize_add", "autodiff_2normalizers_8cpp.html#a5336dc359684924721224f8ef84d3f6a", null ],
+    [ "normalize_sum", "autodiff_2normalizers_8cpp.html#aa3d70ec4dbce55be9c92fd122f5d99ae", null ],
+    [ "normalize_Tangent", "autodiff_2normalizers_8cpp.html#a1dc31296e5402ebb6e3816ed82393538", null ],
+    [ "normalize_zero", "autodiff_2normalizers_8cpp.html#ab295e085cfcd4ba9cf9ed821621d02ef", null ]
 ];

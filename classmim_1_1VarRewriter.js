@@ -1,6 +1,6 @@
 var classmim_1_1VarRewriter =
 [
-    [ "VarRewriter", "classmim_1_1VarRewriter.html#a3c1fce8b90324e8e6aebf6715c606834", null ],
-    [ "rewrite_imm", "classmim_1_1VarRewriter.html#a7d1c463561ea3fd8fa2256b00d287006", null ],
-    [ "rewrite_mut", "classmim_1_1VarRewriter.html#aecac366d03eb946f2d37833dc32c17f0", null ]
+    [ "VarRewriter", "classmim_1_1VarRewriter.html#aef6de1378cb65a40e441dfad4fa983f2", null ],
+    [ "rewrite_imm", "classmim_1_1VarRewriter.html#ad3a456452175f21505da8275d2bf0e19", null ],
+    [ "rewrite_mut", "classmim_1_1VarRewriter.html#aa06373cc5f37e58b7bdc66064357a749", null ]
 ];

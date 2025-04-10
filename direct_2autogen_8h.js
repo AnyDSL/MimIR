@@ -5,7 +5,7 @@ var direct_2autogen_8h =
     [ "cps2ds_dep", "direct_2autogen_8h.html#ae16ba35b7bcfa757a84a6e0ba0ca7e00", null ],
     [ "cps2ds_pass", "direct_2autogen_8h.html#a051ff263e9673bd32b0c15a836ddccf2", null ],
     [ "ds2cps_pass", "direct_2autogen_8h.html#aab6cf7598d2f6204964ca729585048dc", null ],
-    [ "normalize_cps2ds", "direct_2autogen_8h.html#ae3ba5c287636092979b67e746e00e3c2", null ],
+    [ "normalize_cps2ds", "direct_2autogen_8h.html#a8aceb70ec50fe372c59ddade3e43d65d", null ],
     [ "register_normalizers", "direct_2autogen_8h.html#a06f176b4147beb00ababa04690da8255", null ],
     [ "Plugin_Id", "direct_2autogen_8h.html#aba7c9ebfcb60169ec9b999fe23bf38fd", null ]
 ];

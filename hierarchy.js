@@ -208,7 +208,6 @@ var hierarchy =
     [ "mim::World::State::POD", "structmim_1_1World_1_1State.html#structmim_1_1World_1_1State_1_1POD", null ],
     [ "mim::ast::R< T >", "structmim_1_1ast_1_1R.html", null ],
     [ "automaton::RangeCompare", "structautomaton_1_1RangeCompare.html", null ],
-    [ "mim::Ref", "classmim_1_1Ref.html", null ],
     [ "mim::BitSet::reference", "classmim_1_1BitSet_1_1reference.html", null ],
     [ "mim::IndexSet< Indexer, Key >::reference", "classmim_1_1IndexSet_1_1reference.html", null ],
     [ "mim::Res", "classmim_1_1Res.html", null ],

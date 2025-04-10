@@ -16,11 +16,11 @@ var refly_2autogen_8h =
     [ "remove_dbg_perm_pass", "refly_2autogen_8h.html#a9b324d47a3885cb1be1194e91bd047d9", null ],
     [ "verbose", "refly_2autogen_8h.html#adb7a95dc4452056bbd12a22f40d875e7", null ],
     [ "warn", "refly_2autogen_8h.html#a7b28d3c30005b51a4045c19a3beee279", null ],
-    [ "normalize_dbg", "refly_2autogen_8h.html#a00ed10fa2717880e3fccc7a7374c8d0b", null ],
-    [ "normalize_gid", "refly_2autogen_8h.html#a08f99b52cf527c6cf744ce21a3637236", null ],
-    [ "normalize_refine", "refly_2autogen_8h.html#aab7520a0b9210dfbc00009a324652b54", null ],
-    [ "normalize_reflect", "refly_2autogen_8h.html#ad1fe9de8058ad62b6ec122a4ce93c8b0", null ],
-    [ "normalize_reify", "refly_2autogen_8h.html#af4d4a0312fd3c89cdd518ce85a1b73cd", null ],
+    [ "normalize_dbg", "refly_2autogen_8h.html#a350a79c30bf6c48389a654dfaae9dcca", null ],
+    [ "normalize_gid", "refly_2autogen_8h.html#a97e1eae14a36a579e362b10503e5833f", null ],
+    [ "normalize_refine", "refly_2autogen_8h.html#a851b62ba477ae33ec042386e0061423d", null ],
+    [ "normalize_reflect", "refly_2autogen_8h.html#ade1981ed2304c796bdde12f0bf85f837", null ],
+    [ "normalize_reify", "refly_2autogen_8h.html#a0b47eae97de21cec7ec74eda953bb795", null ],
     [ "register_normalizers", "refly_2autogen_8h.html#aef69fe712603cff1f76cf43576ea1e55", null ],
     [ "Plugin_Id", "refly_2autogen_8h.html#a9baeafefe6ccb99821f97f9035d52c62", null ]
 ];

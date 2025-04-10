@@ -273,7 +273,7 @@ Dumping</h2>
 <div class="fragment"><div class="line">(gdb) call world.flags().dump_gid = 1</div>
 <div class="line">(gdb) call world.flags().dump_recursive = 1</div>
 <div class="line">(gdb) call world().log().max_level_ = 4</div>
-</div><!-- fragment --><p>Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> via <a class="el" href="classmim_1_1World.html#a1dd8c434960e38a6d6e0252198082c01" title="Lookup Def by gid.">mim::World::gid2def</a>:</p>
+</div><!-- fragment --><p>Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> via <a class="el" href="classmim_1_1World.html#a8166ab5122fb1a299072eac68286b3a8" title="Lookup Def by gid.">mim::World::gid2def</a>:</p>
 <div class="fragment"><div class="line">(gdb) p world.gid2def(123);</div>
 <div class="line">$1 = ...</div>
 <div class="line">(gdb) $1-&gt;dump();</div>

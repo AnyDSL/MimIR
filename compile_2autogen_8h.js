@@ -37,10 +37,10 @@ var compile_2autogen_8h =
     [ "scalarize_pass", "compile_2autogen_8h.html#a961935589c51b84c285852b051fbbf37", null ],
     [ "single_pass_phase", "compile_2autogen_8h.html#a847ce6ecda2bb689fa0ba4755e2716d7", null ],
     [ "tail_rec_elim_pass", "compile_2autogen_8h.html#aa116af339362d94ddef4135c1e9e67c7", null ],
-    [ "normalize_combine_pass_list", "compile_2autogen_8h.html#ac81c2df771fd2b104f08b14a71b2a02e", null ],
-    [ "normalize_combined_phase", "compile_2autogen_8h.html#a1ca6b15d9436fa7ebbe782b5f5be71a9", null ],
-    [ "normalize_pass_phase", "compile_2autogen_8h.html#a1d5bd2261a23044bbd96bf8e8f862555", null ],
-    [ "normalize_single_pass_phase", "compile_2autogen_8h.html#ab946e150fd4e31cc2dda9fe94bc75cf5", null ],
+    [ "normalize_combine_pass_list", "compile_2autogen_8h.html#a65a7808c6e86fd1f65b2eae68045147e", null ],
+    [ "normalize_combined_phase", "compile_2autogen_8h.html#a3cc42292a9b8fd5cb64b185ab2104f7c", null ],
+    [ "normalize_pass_phase", "compile_2autogen_8h.html#ac784679bd6ddeab0fd9ab1dd84f3ecb9", null ],
+    [ "normalize_single_pass_phase", "compile_2autogen_8h.html#a1ade9770a5afa72f14d7948b4999199c", null ],
     [ "register_normalizers", "compile_2autogen_8h.html#a538868adc12502b1140af4b6f2f0efa2", null ],
     [ "Plugin_Id", "compile_2autogen_8h.html#aef3b98337630972b708d60ed42298eda", null ]
 ];

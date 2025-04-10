@@ -1,6 +1,6 @@
 var core_8h =
 [
-    [ "VMode", "core_8h.html#ad9cfd5d3a9f90f2620715faf34b5067f", null ],
+    [ "VMode", "core_8h.html#a3528f63dbef237c0150d660d51249822", null ],
     [ "Mode", "core_8h.html#ae3a4dc564294d2e5513168c153462138", [
       [ "none", "core_8h.html#ae3a4dc564294d2e5513168c153462138a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
       [ "nsw", "core_8h.html#ae3a4dc564294d2e5513168c153462138ac3768fe04ce22117d45f8d401c628de3", null ],
@@ -9,10 +9,10 @@ var core_8h =
     ] ],
     [ "convert", "core_8h.html#aa245e9d008c0ad08a145c4b06162ebe6", null ],
     [ "convert", "core_8h.html#a12f61a2fced37e3d62c253da4c825c46", null ],
-    [ "extract_unsafe", "core_8h.html#acd718cbe943e713f61611d464a6e7d20", null ],
-    [ "extract_unsafe", "core_8h.html#acc361668a0aa18c699bdc54bad7c9732", null ],
-    [ "insert_unsafe", "core_8h.html#ac0955e4ea7e94b0446410a5c3d29d177", null ],
-    [ "insert_unsafe", "core_8h.html#a1f661b00f5d5b29a0fb6b885113c2ab9", null ],
+    [ "extract_unsafe", "core_8h.html#a04b2bc63f2900e9c6e2d745d3f3419d4", null ],
+    [ "extract_unsafe", "core_8h.html#a9a65a10d9e296d08c1a4f393d4c17881", null ],
+    [ "insert_unsafe", "core_8h.html#ac4e599118974e6a467f3cb081a2e16a0", null ],
+    [ "insert_unsafe", "core_8h.html#a46c49f3a8526d8e82eca419b2aa993d5", null ],
     [ "is_associative", "core_8h.html#a18ea687fca3cafcb3ae2e8afacdb6a43", null ],
     [ "is_associative", "core_8h.html#a789eca4a75e2540e6d34f59994f69704", null ],
     [ "is_associative", "core_8h.html#ae4993d8ec478d9b21be0d34df1047d50", null ],
@@ -24,7 +24,7 @@ var core_8h =
     [ "is_commutative", "core_8h.html#a1189caa65b6a3177f4f13793dcd0fa26", null ],
     [ "is_commutative", "core_8h.html#a0bdcde6a7d8c95ba967b0d003a60aa6b", null ],
     [ "make_truth_table", "core_8h.html#abf6738221b4980fae94b16a36169399d", null ],
-    [ "mode", "core_8h.html#a5440e2aa14bee6543bb6ec2359357f0c", null ],
-    [ "op", "core_8h.html#ac928fdd9fbbefe6de62a61754100492c", null ],
-    [ "op", "core_8h.html#a9920219bf92c430e5b3ae913e9097d8e", null ]
+    [ "mode", "core_8h.html#a3d0f9954758bcfbac8df807f8ca8e1dd", null ],
+    [ "op", "core_8h.html#a5c14a5971107e0e3158eaf0c29bef4ca", null ],
+    [ "op", "core_8h.html#a927f40ea1451c951c7e434c881f2f6ee", null ]
 ];

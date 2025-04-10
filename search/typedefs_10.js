@@ -6,5 +6,5 @@ var searchData=
   ['vars_3',['Vars',['../namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f',1,'mim']]],
   ['varset_4',['VarSet',['../namespacemim.html#a69dc278a82313ca3dc770a868a1e57d1',1,'mim']]],
   ['view_5',['View',['../namespacemim.html#a4d6e32c8985b06c92d46bf1c5fa7491a',1,'mim']]],
-  ['vmode_6',['VMode',['../namespacemim_1_1plug_1_1core.html#ad9cfd5d3a9f90f2620715faf34b5067f',1,'mim::plug::core::VMode'],['../namespacemim_1_1plug_1_1math.html#a46c491e9f0e6ec5826947a86337eb261',1,'mim::plug::math::VMode']]]
+  ['vmode_6',['VMode',['../namespacemim_1_1plug_1_1core.html#a3528f63dbef237c0150d660d51249822',1,'mim::plug::core::VMode'],['../namespacemim_1_1plug_1_1math.html#a940e481c253b52c293f203e453d8057a',1,'mim::plug::math::VMode']]]
 ];

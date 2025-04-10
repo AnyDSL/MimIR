@@ -6,10 +6,10 @@ var lam_8h =
     [ "Lam2Lam", "lam_8h.html#a8d37dada179be276702eb8680efbc370", null ],
     [ "LamMap", "lam_8h.html#a9b9b3ca7beeb379f7bb5dd8999a77034", null ],
     [ "LamSet", "lam_8h.html#a26a0e9df92d9733ba607a78d19edbbe9", null ],
-    [ "collect_args", "lam_8h.html#a5163ef3cba748ccf0cd6668726d5db6e", null ],
-    [ "compose_cn", "lam_8h.html#ac71cd9e1954cfc2b93222c3ff74ab1c0", null ],
-    [ "decurry", "lam_8h.html#a49462b4bb26697b7debb92615bef1f05", null ],
-    [ "isa_apped_mut_lam", "lam_8h.html#abef175122fd2792919ead7ba36c42f4b", null ],
-    [ "isa_callee", "lam_8h.html#a14de61541836e7ff776796f1925ad556", null ],
+    [ "collect_args", "lam_8h.html#a1a9c49cf26963e97393735d2a4b2eb26", null ],
+    [ "compose_cn", "lam_8h.html#aab8bd049eb0b9bf7561a602f62ce7ebd", null ],
+    [ "decurry", "lam_8h.html#a9efd9244dd974dd7a5ad80a98c9a2297", null ],
+    [ "isa_apped_mut_lam", "lam_8h.html#a3036ca68b9ff9ebd00b9b35c7ad1a9a0", null ],
+    [ "isa_callee", "lam_8h.html#aa6e918f49777aea04b1993cded8aa1f7", null ],
     [ "isa_workable", "lam_8h.html#a9e739ae65746f6a876447f9cdd48bfb4", null ]
 ];

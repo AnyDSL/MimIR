@@ -21,11 +21,11 @@ var regex_2autogen_8h =
       [ "plus", "regex_2autogen_8h.html#abd57dc57f7b22176767063e1fe2e2c55ad7d18cfb3a0d8293e2f5d94ea30e04d2", null ]
     ] ],
     [ "range", "regex_2autogen_8h.html#a64e05eb3efae975d47944dc127eede75", null ],
-    [ "normalize_conj", "regex_2autogen_8h.html#ae924b24ab066d5881fbab893c32addab", null ],
-    [ "normalize_disj", "regex_2autogen_8h.html#ab06e1bb5c1584b89ee5c965d9b8203c1", null ],
-    [ "normalize_not", "regex_2autogen_8h.html#aa981562625bd419f24847cf93d825254", null ],
-    [ "normalize_quant", "regex_2autogen_8h.html#a78fdc4f5fc7746d1c261c15fa7fe7e64", null ],
-    [ "normalize_range", "regex_2autogen_8h.html#a38930258dbc957555d66a485e735db74", null ],
+    [ "normalize_conj", "regex_2autogen_8h.html#a69e15eff07c15faf117e019314f4ab43", null ],
+    [ "normalize_disj", "regex_2autogen_8h.html#aba32ced244f11e75065ef038ce1a6d88", null ],
+    [ "normalize_not", "regex_2autogen_8h.html#ade9931e9b2f114bf296d7336f124e85b", null ],
+    [ "normalize_quant", "regex_2autogen_8h.html#aceec5ccd650757e2d47331a58afeaed1", null ],
+    [ "normalize_range", "regex_2autogen_8h.html#a82ed8ada05887f87eca2042aee3d1b1a", null ],
     [ "register_normalizers", "regex_2autogen_8h.html#a9828979c810badaf1e7d2f40d6e19943", null ],
     [ "Plugin_Id", "regex_2autogen_8h.html#a820085ea00f02004ffc5a08691db4748", null ]
 ];

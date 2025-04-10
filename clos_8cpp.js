@@ -1,14 +1,14 @@
 var clos_8cpp =
 [
-    [ "clos_apply", "clos_8cpp.html#a4fd94ca5022036af34a4dc7676cf7e63", null ],
-    [ "clos_insert_env", "clos_8cpp.html#aba403a3576422bd4fb4323f49e53fec7", null ],
-    [ "clos_pack", "clos_8cpp.html#aadf112c86306f7a904b7634d2092e9e3", null ],
-    [ "clos_remove_env", "clos_8cpp.html#a73d48e50e2524cb4acb8c4e86c9c1e85", null ],
+    [ "clos_apply", "clos_8cpp.html#ac8edb2eb6faca8f7fef791659bf332ac", null ],
+    [ "clos_insert_env", "clos_8cpp.html#a5e10b46dbff30fe88eaef944787b00ce", null ],
+    [ "clos_pack", "clos_8cpp.html#ac1ebc28bb550c21607c7980b5a65ce1e", null ],
+    [ "clos_remove_env", "clos_8cpp.html#a5cd5fb35f5be450afd320abdfb237cf6", null ],
     [ "clos_type", "clos_8cpp.html#a445010ea2e9ae83528351bbdd60b3daa", null ],
-    [ "clos_type_to_pi", "clos_8cpp.html#a4be1357f117e1e7321e8f7ec5922e4ed", null ],
-    [ "clos_unpack", "clos_8cpp.html#a4906299b90b5160c31e9f540289c2339", null ],
-    [ "ctype", "clos_8cpp.html#aa1ca4c1eedf6e6a6a9cee279c59aa817", null ],
-    [ "isa_clos_lit", "clos_8cpp.html#a0de1a3e5c37647df2de7fcf665f0866d", null ],
-    [ "isa_clos_type", "clos_8cpp.html#a7f5b372773493e5d64a148402d8c6370", null ],
+    [ "clos_type_to_pi", "clos_8cpp.html#a908c7bfdc816d89e4a7ebb16c1d7ee03", null ],
+    [ "clos_unpack", "clos_8cpp.html#a9e0c77c2d7c17c5092792342a7fe9497", null ],
+    [ "ctype", "clos_8cpp.html#a7820bb02f38dcb275393c75227c85114", null ],
+    [ "isa_clos_lit", "clos_8cpp.html#a08e2dd10f68834ee59b63662b9a63c06", null ],
+    [ "isa_clos_type", "clos_8cpp.html#ae10a86ed5dc2d90d8365cec5ca883d19", null ],
     [ "mim_get_plugin", "clos_8cpp.html#a35bb34350e93d508e52544f4abd50e59", null ]
 ];

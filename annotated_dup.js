@@ -172,7 +172,6 @@ var annotated_dup =
       [ "PipelineBuilder", "classmim_1_1PipelineBuilder.html", "classmim_1_1PipelineBuilder" ],
       [ "Plugin", "structmim_1_1Plugin.html", "structmim_1_1Plugin" ],
       [ "Proxy", "classmim_1_1Proxy.html", "classmim_1_1Proxy" ],
-      [ "Ref", "classmim_1_1Ref.html", "classmim_1_1Ref" ],
       [ "Res", "classmim_1_1Res.html", "classmim_1_1Res" ],
       [ "RetWrap", "classmim_1_1RetWrap.html", "classmim_1_1RetWrap" ],
       [ "Rewriter", "classmim_1_1Rewriter.html", "classmim_1_1Rewriter" ],

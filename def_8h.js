@@ -1,6 +1,5 @@
 var def_8h =
 [
-    [ "mim::Ref", "classmim_1_1Ref.html", "classmim_1_1Ref" ],
     [ "mim::Setters< P, D >", "classmim_1_1Setters.html", "classmim_1_1Setters" ],
     [ "mim::Def", "classmim_1_1Def.html", "classmim_1_1Def" ],
     [ "mim::DefDefHash", "structmim_1_1DefDefHash.html", "structmim_1_1DefDefHash" ],
@@ -31,7 +30,7 @@ var def_8h =
     [ "MutMap", "def_8h.html#afccd5f832a8d98e22ada5860ea24afd2", null ],
     [ "Muts", "def_8h.html#a808d4cab01734432fc4218de6dae0ef2", null ],
     [ "MutSet", "def_8h.html#a9cef35a428a391739d168b05bad8dfb2", null ],
-    [ "NormalizeFn", "def_8h.html#af6003e65d44ce9c37f66e0aa74a53118", null ],
+    [ "NormalizeFn", "def_8h.html#ab992e926dce870b1e086b34589849a92", null ],
     [ "Var2Var", "def_8h.html#afe12e59f7ee4253d3b71cd8c0db61d06", null ],
     [ "VarMap", "def_8h.html#a71e90dca4edd9dfdf7b1199a44faf1ab", null ],
     [ "Vars", "def_8h.html#ac1bc6fc8487a4e7490dcee047b176f7f", null ],

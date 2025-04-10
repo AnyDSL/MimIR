@@ -11,12 +11,12 @@ var autodiff_2autogen_8h =
     [ "sum", "autodiff_2autogen_8h.html#a27536fa48373a84728e55704e659a420", null ],
     [ "Tangent", "autodiff_2autogen_8h.html#a731a934813e6197c347e831cb312acda", null ],
     [ "zero", "autodiff_2autogen_8h.html#a1e3297839dced2ccc616d130b6404148", null ],
-    [ "normalize_AD", "autodiff_2autogen_8h.html#a87e1022371ead81b74af42734e389664", null ],
-    [ "normalize_ad", "autodiff_2autogen_8h.html#a8cec390982caf0e8cc42681d80317f91", null ],
-    [ "normalize_add", "autodiff_2autogen_8h.html#aaaefbbe6ba4f0959f72ce6cf94812e5c", null ],
-    [ "normalize_sum", "autodiff_2autogen_8h.html#a683d64363779664b85d87c025d3a8376", null ],
-    [ "normalize_Tangent", "autodiff_2autogen_8h.html#a107cefe0a4877df09eabea8d3c8953cc", null ],
-    [ "normalize_zero", "autodiff_2autogen_8h.html#a1c3d172bdf58b047b64c69b4b7d91e62", null ],
+    [ "normalize_AD", "autodiff_2autogen_8h.html#a62c42124ec5ea23d4f34edf5780caa6c", null ],
+    [ "normalize_ad", "autodiff_2autogen_8h.html#a6514ec29aa7b54b50764711fa08c0183", null ],
+    [ "normalize_add", "autodiff_2autogen_8h.html#a5336dc359684924721224f8ef84d3f6a", null ],
+    [ "normalize_sum", "autodiff_2autogen_8h.html#aa3d70ec4dbce55be9c92fd122f5d99ae", null ],
+    [ "normalize_Tangent", "autodiff_2autogen_8h.html#a1dc31296e5402ebb6e3816ed82393538", null ],
+    [ "normalize_zero", "autodiff_2autogen_8h.html#ab295e085cfcd4ba9cf9ed821621d02ef", null ],
     [ "register_normalizers", "autodiff_2autogen_8h.html#ae559e1df7e384d843cb9e1951c7d1d90", null ],
     [ "Plugin_Id", "autodiff_2autogen_8h.html#a5d96c7438cbfe2c1aaed98783dbd3635", null ]
 ];
