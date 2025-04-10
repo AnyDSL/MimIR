@@ -72,7 +72,7 @@ const char* llvm_suffix(const Def* type) {
 
 // [%mem.M, T] => T
 // TODO there may be more instances where we have to deal with this trickery
-Ref isa_mem_sigma_2(Ref type) {
+const Def* isa_mem_sigma_2(const Def* type) {
     if (auto sigma = type->isa<Sigma>())
         if (sigma->num_ops() == 2 && match<mem::M>(sigma->op(0))) return sigma->op(1);
     return {};

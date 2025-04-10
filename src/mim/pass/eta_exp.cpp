@@ -17,8 +17,8 @@ Lam* EtaExp::new2old(Lam* new_lam) {
     return new_lam;
 }
 
-Ref EtaExp::rewrite(Ref def) {
-    if (std::ranges::none_of(def->ops(), [](Ref def) { return def->isa<Lam>(); })) return def;
+const Def* EtaExp::rewrite(const Def* def) {
+    if (std::ranges::none_of(def->ops(), [](const Def* def) { return def->isa<Lam>(); })) return def;
     if (auto n = lookup(old2new(), def)) return n;
 
     auto [i, ins] = def2new_ops_.emplace(def, DefVec{});
@@ -57,7 +57,7 @@ undo_t EtaExp::analyze(const Proxy* proxy) {
     return No_Undo;
 }
 
-undo_t EtaExp::analyze(Ref def) {
+undo_t EtaExp::analyze(const Def* def) {
     auto undo = No_Undo;
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto lam = def->op(i)->isa_mut<Lam>(); lam && lam->is_set()) {

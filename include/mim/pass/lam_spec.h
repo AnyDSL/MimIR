@@ -12,7 +12,7 @@ public:
 private:
     /// @name PassMan hooks
     ///@{
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
     ///@}
 
     Def2Def old2new_;

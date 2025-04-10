@@ -153,8 +153,8 @@ public:
 #ifdef MIM_ENABLE_CHECKS
     const auto& breakpoints() { return state_.breakpoints; }
 
-    Ref gid2def(u32 gid);     ///< Lookup Def by @p gid.
-    void breakpoint(u32 gid); ///< Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
+    const Def* gid2def(u32 gid); ///< Lookup Def by @p gid.
+    void breakpoint(u32 gid);    ///< Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
 
     World& verify(); ///< Verifies that all externals() and annexes() are Def::is_closed(), if `MIM_ENABLE_CHECKS`.
 #else
@@ -198,9 +198,9 @@ public:
     /// @name Univ, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ; }
-    Ref uinc(Ref op, level_t offset = 1);
-    template<Sort = Sort::Univ> Ref umax(Defs);
-    const Type* type(Ref level);
+    const Def* uinc(const Def* op, level_t offset = 1);
+    template<Sort = Sort::Univ> const Def* umax(Defs);
+    const Type* type(const Def* level);
     const Type* type_infer_univ() { return type(mut_infer_univ()); }
     template<level_t level = 0> const Type* type() {
         if constexpr (level == 0)
@@ -210,12 +210,12 @@ public:
         else
             return type(lit_univ(level));
     }
-    Ref var(Ref type, Def* mut);
-    const Proxy* proxy(Ref type, Defs ops, u32 index, u32 tag) {
+    const Def* var(const Def* type, Def* mut);
+    const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag) {
         return unify<Proxy>(ops.size(), type, ops, index, tag);
     }
 
-    Infer* mut_infer(Ref type) { return insert<Infer>(1, type); }
+    Infer* mut_infer(const Def* type) { return insert<Infer>(1, type); }
     Infer* mut_infer_univ() { return mut_infer(univ()); }
     Infer* mut_infer_type() { return mut_infer(type_infer_univ()); }
 
@@ -230,29 +230,29 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type, plugin_t p, tag_t t, sub_t s) {
+    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, const Def* type, plugin_t p, tag_t t, sub_t s) {
         return unify<Axiom>(0, n, curry, trip, type, p, t, s);
     }
-    const Axiom* axiom(Ref type, plugin_t p, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, p, t, s); }
+    const Axiom* axiom(const Def* type, plugin_t p, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, p, t, s); }
 
     /// Builds a fresh Axiom with descending Axiom::sub.
     /// This is useful during testing to come up with some entity of a specific type.
     /// It uses the plugin Axiom::Global_Plugin and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type) {
+    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, const Def* type) {
         return axiom(n, curry, trip, type, Annex::Global_Plugin, 0, state_.pod.curr_sub++);
     }
-    const Axiom* axiom(Ref type) { return axiom(nullptr, 0, 0, type); } ///< See above.
+    const Axiom* axiom(const Def* type) { return axiom(nullptr, 0, 0, type); } ///< See above.
     ///@}
 
     /// @name Pi
     ///@{
     // clang-format off
-    const Pi* pi(Ref  dom, Ref  codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
-    const Pi* pi(Defs dom, Ref  codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
-    const Pi* pi(Ref  dom, Defs codom, bool implicit = false) { return pi(dom, sigma(codom), implicit); }
+    const Pi* pi(const Def*  dom, const Def*  codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
+    const Pi* pi(Defs dom, const Def*  codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
+    const Pi* pi(const Def*  dom, Defs codom, bool implicit = false) { return pi(dom, sigma(codom), implicit); }
     const Pi* pi(Defs dom, Defs codom, bool implicit = false) { return pi(sigma(dom), sigma(codom), implicit); }
-    Pi* mut_pi(Ref type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
+    Pi* mut_pi(const Def* type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
     // clang-format on
     ///@}
 
@@ -261,94 +261,96 @@ public:
     ///@{
     // clang-format off
     const Pi* cn(                                           ) { return cn(sigma(   ),                   false); }
-    const Pi* cn(Ref  dom,             bool implicit = false) { return pi(      dom ,    type_bot(), implicit); }
+    const Pi* cn(const Def*  dom,             bool implicit = false) { return pi(      dom ,    type_bot(), implicit); }
     const Pi* cn(Defs dom,             bool implicit = false) { return cn(sigma(dom),                implicit); }
-    const Pi* fn(Ref  dom, Ref  codom, bool implicit = false) { return cn({     dom ,    cn(codom)}, implicit); }
-    const Pi* fn(Defs dom, Ref  codom, bool implicit = false) { return fn(sigma(dom),       codom,   implicit); }
-    const Pi* fn(Ref  dom, Defs codom, bool implicit = false) { return fn(      dom , sigma(codom),  implicit); }
+    const Pi* fn(const Def*  dom, const Def*  codom, bool implicit = false) { return cn({     dom ,    cn(codom)}, implicit); }
+    const Pi* fn(Defs dom, const Def*  codom, bool implicit = false) { return fn(sigma(dom),       codom,   implicit); }
+    const Pi* fn(const Def*  dom, Defs codom, bool implicit = false) { return fn(      dom , sigma(codom),  implicit); }
     const Pi* fn(Defs dom, Defs codom, bool implicit = false) { return fn(sigma(dom), sigma(codom),  implicit); }
     // clang-format on
     ///@}
 
     /// @name Lam
     ///@{
-    Ref filter(Lam::Filter filter) {
+    const Def* filter(Lam::Filter filter) {
         if (auto b = std::get_if<bool>(&filter)) return lit_bool(*b);
-        return std::get<Ref>(filter);
+        return std::get<const Def*>(filter);
     }
-    const Lam* lam(const Pi* pi, Lam::Filter f, Ref body) { return unify<Lam>(2, pi, filter(f), body); }
+    const Lam* lam(const Pi* pi, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi, filter(f), body); }
     Lam* mut_lam(const Pi* pi) { return insert<Lam>(2, pi); }
     // clang-format off
-    const Lam* con(Ref  dom,             Lam::Filter f, Ref body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
-    const Lam* con(Defs dom,             Lam::Filter f, Ref body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
-    const Lam* lam(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* fun(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    Lam* mut_con(Ref  dom            ) { return insert<Lam>(2, cn(dom       )); }
+    const Lam* con(const Def*  dom,             Lam::Filter f, const Def* body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
+    const Lam* con(Defs dom,             Lam::Filter f, const Def* body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
+    const Lam* lam(const Def*  dom, const Def*  codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Defs dom, const Def*  codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(const Def*  dom, Defs codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Defs dom, Defs codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* fun(const Def*  dom, const Def*  codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Defs dom, const Def*  codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(const Def*  dom, Defs codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Defs dom, Defs codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    Lam* mut_con(const Def*  dom            ) { return insert<Lam>(2, cn(dom       )); }
     Lam* mut_con(Defs dom            ) { return insert<Lam>(2, cn(dom       )); }
-    Lam* mut_lam(Ref  dom, Ref  codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam* mut_lam(Defs dom, Ref  codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam* mut_lam(Ref  dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam* mut_lam(const Def*  dom, const Def*  codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam* mut_lam(Defs dom, const Def*  codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam* mut_lam(const Def*  dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
     Lam* mut_lam(Defs dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam* mut_fun(Ref  dom, Ref  codom) { return insert<Lam>(2, fn(dom, codom)); }
-    Lam* mut_fun(Defs dom, Ref  codom) { return insert<Lam>(2, fn(dom, codom)); }
-    Lam* mut_fun(Ref  dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(const Def*  dom, const Def*  codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(Defs dom, const Def*  codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(const Def*  dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
     Lam* mut_fun(Defs dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
     // clang-format on
     ///@}
 
     /// @name App
     ///@{
-    template<bool Normalize = true> Ref app(Ref callee, Ref arg);
-    template<bool Normalize = true> Ref app(Ref callee, Defs args) { return app<Normalize>(callee, tuple(args)); }
-    Ref raw_app(const Axiom* axiom, u8 curry, u8 trip, Ref type, Ref callee, Ref arg);
-    Ref raw_app(Ref type, Ref callee, Ref arg);
-    Ref raw_app(Ref type, Ref callee, Defs args) { return raw_app(type, callee, tuple(args)); }
+    template<bool Normalize = true> const Def* app(const Def* callee, const Def* arg);
+    template<bool Normalize = true> const Def* app(const Def* callee, Defs args) {
+        return app<Normalize>(callee, tuple(args));
+    }
+    const Def* raw_app(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg);
+    const Def* raw_app(const Def* type, const Def* callee, const Def* arg);
+    const Def* raw_app(const Def* type, const Def* callee, Defs args) { return raw_app(type, callee, tuple(args)); }
     ///@}
 
     /// @name Sigma
     ///@{
-    Sigma* mut_sigma(Ref type, size_t size) { return insert<Sigma>(size, type, size); }
+    Sigma* mut_sigma(const Def* type, size_t size) { return insert<Sigma>(size, type, size); }
     /// A *mut*able Sigma of type @p level.
     template<level_t level = 0> Sigma* mut_sigma(size_t size) { return mut_sigma(type<level>(), size); }
-    Ref sigma(Defs ops);
+    const Def* sigma(Defs ops);
     const Sigma* sigma() { return data_.sigma; } ///< The unit type within Type 0.
     ///@}
 
     /// @name Arr
     ///@{
-    Arr* mut_arr(Ref type) { return insert<Arr>(2, type); }
+    Arr* mut_arr(const Def* type) { return insert<Arr>(2, type); }
     template<level_t level = 0> Arr* mut_arr() { return mut_arr(type<level>()); }
-    Ref arr(Ref shape, Ref body);
-    Ref arr(Defs shape, Ref body);
-    Ref arr(u64 n, Ref body) { return arr(lit_nat(n), body); }
-    Ref arr(View<u64> shape, Ref body) {
+    const Def* arr(const Def* shape, const Def* body);
+    const Def* arr(Defs shape, const Def* body);
+    const Def* arr(u64 n, const Def* body) { return arr(lit_nat(n), body); }
+    const Def* arr(View<u64> shape, const Def* body) {
         return arr(DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
     }
-    Ref arr_unsafe(Ref body) { return arr(top_nat(), body); }
+    const Def* arr_unsafe(const Def* body) { return arr(top_nat(), body); }
     ///@}
 
     /// @name Tuple
     ///@{
-    Ref tuple(Defs ops);
+    const Def* tuple(Defs ops);
     /// Ascribes @p type to this tuple - needed for dependently typed and mutable Sigma%s.
-    Ref tuple(Ref type, Defs ops);
+    const Def* tuple(const Def* type, Defs ops);
     const Tuple* tuple() { return data_.tuple; } ///< the unit value of type `[]`
-    Ref tuple(Sym sym);                          ///< Converts @p sym to a tuple of type '«n; I8»'.
+    const Def* tuple(Sym sym);                   ///< Converts @p sym to a tuple of type '«n; I8»'.
     ///@}
 
     /// @name Pack
     ///@{
-    Pack* mut_pack(Ref type) { return insert<Pack>(1, type); }
-    Ref pack(Ref arity, Ref body);
-    Ref pack(Defs shape, Ref body);
-    Ref pack(u64 n, Ref body) { return pack(lit_nat(n), body); }
-    Ref pack(View<u64> shape, Ref body) {
+    Pack* mut_pack(const Def* type) { return insert<Pack>(1, type); }
+    const Def* pack(const Def* arity, const Def* body);
+    const Def* pack(Defs shape, const Def* body);
+    const Def* pack(u64 n, const Def* body) { return pack(lit_nat(n), body); }
+    const Def* pack(View<u64> shape, const Def* body) {
         return pack(DefVec(shape.size(), [&](auto i) { return lit_nat(shape[i]); }), body);
     }
     ///@}
@@ -356,26 +358,26 @@ public:
     /// @name Extract
     /// @see core::extract_unsafe
     ///@{
-    Ref extract(Ref d, Ref i);
-    Ref extract(Ref d, u64 a, u64 i) { return extract(d, lit_idx(a, i)); }
-    Ref extract(Ref d, u64 i) { return extract(d, d->as_lit_arity(), i); }
+    const Def* extract(const Def* d, const Def* i);
+    const Def* extract(const Def* d, u64 a, u64 i) { return extract(d, lit_idx(a, i)); }
+    const Def* extract(const Def* d, u64 i) { return extract(d, d->as_lit_arity(), i); }
 
     /// Builds `(f, t)#cond`.
     /// @note Expects @p cond as first, @p t as second, and @p f as third argument.
-    Ref select(Ref cond, Ref t, Ref f) { return extract(tuple({f, t}), cond); }
+    const Def* select(const Def* cond, const Def* t, const Def* f) { return extract(tuple({f, t}), cond); }
     ///@}
 
     /// @name Insert
     /// @see core::insert_unsafe
     ///@{
-    Ref insert(Ref d, Ref i, Ref val);
-    Ref insert(Ref d, u64 a, u64 i, Ref val) { return insert(d, lit_idx(a, i), val); }
-    Ref insert(Ref d, u64 i, Ref val) { return insert(d, d->as_lit_arity(), i, val); }
+    const Def* insert(const Def* d, const Def* i, const Def* val);
+    const Def* insert(const Def* d, u64 a, u64 i, const Def* val) { return insert(d, lit_idx(a, i), val); }
+    const Def* insert(const Def* d, u64 i, const Def* val) { return insert(d, d->as_lit_arity(), i, val); }
     ///@}
 
     /// @name Lit
     ///@{
-    const Lit* lit(Ref type, u64 val);
+    const Lit* lit(const Def* type, u64 val);
     const Lit* lit_univ(u64 level) { return lit(univ(), level); }
     const Lit* lit_univ_0() { return data_.lit_univ_0; }
     const Lit* lit_univ_1() { return data_.lit_univ_1; }
@@ -425,35 +427,35 @@ public:
     /// @name Lattice
     ///@{
     template<bool Up>
-    Ref ext(Ref type);
-    Ref bot(Ref type) { return ext<false>(type); }
-    Ref top(Ref type) { return ext<true>(type); }
-    Ref type_bot() { return data_.type_bot; }
-    Ref type_top() { return data_.type_top; }
-    Ref top_nat() { return data_.top_nat; }
-    template<bool Up> TBound<Up>* mut_bound(Ref type, size_t size) { return insert<TBound<Up>>(size, type, size); }
+    const Def* ext(const Def* type);
+    const Def* bot(const Def* type) { return ext<false>(type); }
+    const Def* top(const Def* type) { return ext<true>(type); }
+    const Def* type_bot() { return data_.type_bot; }
+    const Def* type_top() { return data_.type_top; }
+    const Def* top_nat() { return data_.top_nat; }
+    template<bool Up> TBound<Up>* mut_bound(const Def* type, size_t size) { return insert<TBound<Up>>(size, type, size); }
     /// A *mut*able Bound of Type @p l%evel.
     template<bool Up, level_t l = 0> TBound<Up>* mut_bound(size_t size) { return mut_bound<Up>(type<l>(), size); }
-    template<bool Up> Ref bound(Defs ops);
-    Join* mut_join(Ref type, size_t size) { return mut_bound<true>(type, size); }
-    Meet* mut_meet(Ref type, size_t size) { return mut_bound<false>(type, size); }
+    template<bool Up> const Def* bound(Defs ops);
+    Join* mut_join(const Def* type, size_t size) { return mut_bound<true>(type, size); }
+    Meet* mut_meet(const Def* type, size_t size) { return mut_bound<false>(type, size); }
     template<level_t l = 0> Join* mut_join(size_t size) { return mut_join(type<l>(), size); }
     template<level_t l = 0> Meet* mut_meet(size_t size) { return mut_meet(type<l>(), size); }
-    Ref join(Defs ops) { return bound<true>(ops); }
-    Ref meet(Defs ops) { return bound<false>(ops); }
-    Ref ac(Ref type, Defs ops);
+    const Def* join(Defs ops) { return bound<true>(ops); }
+    const Def* meet(Defs ops) { return bound<false>(ops); }
+    const Def* ac(const Def* type, Defs ops);
     /// Infers the type using an *immutable* Meet.
-    Ref ac(Defs ops);
-    Ref vel(Ref type, Ref value);
-    Ref pick(Ref type, Ref value);
-    Ref test(Ref value, Ref probe, Ref match, Ref clash);
-    Ref uniq(Ref inhabitant);
+    const Def* ac(Defs ops);
+    const Def* vel(const Def* type, const Def* value);
+    const Def* pick(const Def* type, const Def* value);
+    const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash);
+    const Def* uniq(const Def* inhabitant);
     ///@}
 
     /// @name Globals
     /// @deprecated Will be removed.
     ///@{
-    Global* global(Ref type, bool is_mutable = true) { return insert<Global>(1, type, is_mutable); }
+    Global* global(const Def* type, bool is_mutable = true) { return insert<Global>(1, type, is_mutable); }
     ///@}
     // clang-format on
 
@@ -462,22 +464,22 @@ public:
     const Nat* type_nat() { return data_.type_nat; }
     const Idx* type_idx() { return data_.type_idx; }
     /// @note `size = 0` means `2^64`.
-    Ref type_idx(Ref size) { return app(type_idx(), size); }
+    const Def* type_idx(const Def* size) { return app(type_idx(), size); }
     /// @note `size = 0` means `2^64`.
-    Ref type_idx(nat_t size) { return type_idx(lit_nat(size)); }
+    const Def* type_idx(nat_t size) { return type_idx(lit_nat(size)); }
 
     /// Constructs a type Idx of size 2^width.
     /// `width = 64` will be automatically converted to size `0` - the encoding for 2^64.
-    Ref type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
+    const Def* type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
     // clang-format off
-    Ref type_bool() { return data_.type_bool; }
-    Ref type_i1()   { return data_.type_bool; }
-    Ref type_i2()   { return type_int( 2);    };
-    Ref type_i4()   { return type_int( 4);    };
-    Ref type_i8()   { return type_int( 8);    };
-    Ref type_i16()  { return type_int(16);    };
-    Ref type_i32()  { return type_int(32);    };
-    Ref type_i64()  { return type_int(64);    };
+    const Def* type_bool() { return data_.type_bool; }
+    const Def* type_i1()   { return data_.type_bool; }
+    const Def* type_i2()   { return type_int( 2);    };
+    const Def* type_i4()   { return type_int( 4);    };
+    const Def* type_i8()   { return type_int( 8);    };
+    const Def* type_i16()  { return type_int(16);    };
+    const Def* type_i32()  { return type_int(32);    };
+    const Def* type_i64()  { return type_int(64);    };
     // clang-format on
     ///@}
 
@@ -485,15 +487,16 @@ public:
     ///@{
 
     /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
-    template<bool Normalize = true> Ref implicit_app(Ref callee, Ref arg);
-    template<bool Normalize = true> Ref implicit_app(Ref callee, Defs args) {
+    template<bool Normalize = true> const Def* implicit_app(const Def* callee, const Def* arg);
+    template<bool Normalize = true> const Def* implicit_app(const Def* callee, Defs args) {
         return implicit_app<Normalize>(callee, tuple(args));
     }
-    template<bool Normalize = true> Ref implicit_app(Ref callee, nat_t arg) {
+    template<bool Normalize = true> const Def* implicit_app(const Def* callee, nat_t arg) {
         return implicit_app<Normalize>(callee, lit_nat(arg));
     }
     template<bool Normalize = true, class E>
-    Ref implicit_app(Ref callee, E arg) requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
+    const Def* implicit_app(const Def* callee, E arg)
+        requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
     {
         return implicit_app<Normalize>(callee, lit_nat((nat_t)arg));
     }
@@ -542,10 +545,10 @@ private:
     /// @name call_
     /// Helpers to unwind World::call with variadic templates.
     ///@{
-    template<bool Normalize = true, class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) {
+    template<bool Normalize = true, class T, class... Args> const Def* call_(const Def* callee, T arg, Args&&... args) {
         return call_<Normalize>(implicit_app(callee, arg), std::forward<Args>(args)...);
     }
-    template<bool Normalize = true, class T> const Def* call_(Ref callee, T arg) {
+    template<bool Normalize = true, class T> const Def* call_(const Def* callee, T arg) {
         return implicit_app<Normalize>(callee, arg);
     }
     ///@}
@@ -690,7 +693,7 @@ private:
         assert(&w2.univ()->world() == &w2);
     }
 
-    friend DefVec Def::reduce(Ref);
+    friend DefVec Def::reduce(const Def*);
 };
 
 } // namespace mim

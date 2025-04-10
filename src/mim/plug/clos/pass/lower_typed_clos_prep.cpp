@@ -6,7 +6,7 @@ namespace mim::plug::clos {
 
 namespace {
 
-bool interesting_type(Ref type, DefSet& visited) {
+bool interesting_type(const Def* type, DefSet& visited) {
     if (type->isa_mut()) visited.insert(type);
     if (isa_clos_type(type)) return true;
     if (auto sigma = type->isa<Sigma>())
@@ -16,12 +16,12 @@ bool interesting_type(Ref type, DefSet& visited) {
     return false;
 }
 
-bool interesting_type(Ref def) {
+bool interesting_type(const Def* def) {
     auto visited = DefSet();
     return interesting_type(def->type(), visited);
 }
 
-void split(DefSet& out, Ref def, bool as_callee) {
+void split(DefSet& out, const Def* def, bool as_callee) {
     if (auto lam = def->isa<Lam>()) {
         out.insert(lam);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam) {
@@ -41,7 +41,7 @@ void split(DefSet& out, Ref def, bool as_callee) {
     }
 }
 
-DefSet split(Ref def, bool keep_others) {
+DefSet split(const Def* def, bool keep_others) {
     DefSet out;
     split(out, def, keep_others);
     return out;
@@ -49,7 +49,7 @@ DefSet split(Ref def, bool keep_others) {
 
 } // namespace
 
-undo_t LowerTypedClosPrep::set_esc(Ref def) {
+undo_t LowerTypedClosPrep::set_esc(const Def* def) {
     auto undo = No_Undo;
     for (auto d : split(def, false)) {
         if (is_esc(d)) continue;
@@ -63,7 +63,7 @@ undo_t LowerTypedClosPrep::set_esc(Ref def) {
     return undo;
 }
 
-Ref LowerTypedClosPrep::rewrite(Ref def) {
+const Def* LowerTypedClosPrep::rewrite(const Def* def) {
     if (auto closure = isa_clos_lit(def, false)) {
         auto fnc = closure.fnc();
         if (!match<attr>(fnc)) {
@@ -74,7 +74,7 @@ Ref LowerTypedClosPrep::rewrite(Ref def) {
     return def;
 }
 
-undo_t LowerTypedClosPrep::analyze(Ref def) {
+undo_t LowerTypedClosPrep::analyze(const Def* def) {
     auto& w = world();
     if (auto c = isa_clos_lit(def, false)) {
         w.DLOG("closure ({}, {})", c.env(), c.fnc());
@@ -88,7 +88,7 @@ undo_t LowerTypedClosPrep::analyze(Ref def) {
         auto callees = split(app->callee(), true);
         for (auto i = 0_u64; i < app->num_args(); i++) {
             if (!interesting_type(app->arg(i))) continue;
-            if (std::any_of(callees.begin(), callees.end(), [&](Ref callee) {
+            if (std::any_of(callees.begin(), callees.end(), [&](const Def* callee) {
                     if (auto lam = callee->isa_mut<Lam>()) return is_esc(lam->var(i));
                     return true;
                 }))

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
+
 #include <mim/pass/pass.h>
 #include <mim/phase/phase.h>
 
@@ -18,7 +19,7 @@ public:
     LowerMatrixLowLevel(World& world)
         : RWPhase(world, "lower_matrix_lowlevel") {}
 
-    Ref rewrite_imm(Ref) override;
+    const Def* rewrite_imm(const Def*) override;
 
 private:
     Def2Def rewritten;

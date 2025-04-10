@@ -11,7 +11,7 @@ static_assert(sizeof(void*) <= sizeof(u64), "pointer doesn't fit into Lit");
 namespace {
 
 // The trick is that we simply "box" the pointer of @p def inside a Lit of type `%refly.Code`.
-Ref do_reify(const Def* def) {
+const Def* do_reify(const Def* def) {
     auto& world = def->world();
     return world.lit(world.call<Code>(def->type()), reinterpret_cast<u64>(def));
 }
@@ -19,7 +19,7 @@ Ref do_reify(const Def* def) {
 // And here we are doing the reverse to retrieve the original pointer again.
 const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
 
-void debug_print(Ref lvl, Ref def) {
+void debug_print(const Def* lvl, const Def* def) {
     auto& world = def->world();
     auto level  = Log::Level::Debug;
     if (auto l = Lit::isa(lvl))
@@ -36,17 +36,17 @@ void debug_print(Ref lvl, Ref def) {
 
 } // namespace
 
-template<dbg id> Ref normalize_dbg(Ref, Ref, Ref arg) {
+template<dbg id> const Def* normalize_dbg(const Def*, const Def*, const Def* arg) {
     auto [lvl, x] = arg->projs<2>();
     debug_print(lvl, x);
-    return id == dbg::perm ? Ref() : Ref(x);
+    return id == dbg::perm ? nullptr : x;
 }
 
-Ref normalize_reify(Ref, Ref, Ref arg) { return do_reify(arg); }
+const Def* normalize_reify(const Def*, const Def*, const Def* arg) { return do_reify(arg); }
 
-Ref normalize_reflect(Ref, Ref, Ref arg) { return do_reflect(arg); }
+const Def* normalize_reflect(const Def*, const Def*, const Def* arg) { return do_reflect(arg); }
 
-Ref normalize_refine(Ref, Ref, Ref arg) {
+const Def* normalize_refine(const Def*, const Def*, const Def* arg) {
     auto [code, i, x] = arg->projs<3>();
     if (auto l = Lit::isa(i)) {
         auto def = do_reflect(code);
@@ -56,7 +56,7 @@ Ref normalize_refine(Ref, Ref, Ref arg) {
     return {};
 }
 
-Ref normalize_gid(Ref, Ref, Ref arg) { return arg->world().lit_nat(arg->gid()); }
+const Def* normalize_gid(const Def*, const Def*, const Def* arg) { return arg->world().lit_nat(arg->gid()); }
 
 MIM_refly_NORMALIZER_IMPL
 

@@ -63,7 +63,7 @@ public:
     static constexpr auto Node = Node::Axiom;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -109,7 +109,7 @@ private:
 /// @name match/force
 ///@{
 /// @see @ref cast_axiom
-template<class Id, bool DynCast = true> auto match(Ref def) {
+template<class Id, bool DynCast = true> auto match(const Def* def) {
     using D                = typename Axiom::Match<Id>::type;
     auto [axiom, curry, _] = Axiom::get(def);
     bool cond              = axiom && curry == 0 && axiom->base() == Annex::Base<Id>;
@@ -119,7 +119,7 @@ template<class Id, bool DynCast = true> auto match(Ref def) {
     return Match<Id, D>(axiom, def->as<D>());
 }
 
-template<class Id, bool DynCast = true> auto match(Id id, Ref def) {
+template<class Id, bool DynCast = true> auto match(Id id, const Def* def) {
     using D                = typename Axiom::Match<Id>::type;
     auto [axiom, curry, _] = Axiom::get(def);
     bool cond              = axiom && curry == 0 && axiom->flags() == (flags_t)id;
@@ -130,8 +130,8 @@ template<class Id, bool DynCast = true> auto match(Id id, Ref def) {
 }
 
 // clang-format off
-template<class Id> auto force(       Ref def) { return match<Id, false>(    def); }
-template<class Id> auto force(Id id, Ref def) { return match<Id, false>(id, def); }
+template<class Id> auto force(       const Def* def) { return match<Id, false>(    def); }
+template<class Id> auto force(Id id, const Def* def) { return match<Id, false>(id, def); }
 ///@}
 
 /// @name is_commutative/is_associative

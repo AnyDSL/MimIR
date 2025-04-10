@@ -14,7 +14,7 @@ namespace mim::plug::matrix {
 
 namespace {
 
-std::optional<Ref> internal_function_of_axiom(const Axiom* axiom, Ref meta_args, Ref args) {
+std::optional<const Def*> internal_function_of_axiom(const Axiom* axiom, const Def* meta_args, const Def* args) {
     auto& world = axiom->world();
     auto name   = axiom->sym().str();
     find_and_replace(name, ".", "_");
@@ -32,14 +32,14 @@ std::optional<Ref> internal_function_of_axiom(const Axiom* axiom, Ref meta_args,
 
 } // namespace
 
-Ref LowerMatrixHighLevelMapRed::rewrite(Ref def) {
+const Def* LowerMatrixHighLevelMapRed::rewrite(const Def* def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
     auto new_def   = rewrite_(def);
     rewritten[def] = new_def;
     return rewritten[def];
 }
 
-Ref LowerMatrixHighLevelMapRed::rewrite_(Ref def) {
+const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
     if (auto mat_ax = match<matrix::prod>(def)) {
         auto [mem, M, N]  = mat_ax->args<3>();
         auto [m, k, l, w] = mat_ax->decurry()->args<4>();

@@ -8,7 +8,7 @@
 
 namespace mim::plug::direct {
 
-Ref DS2CPS::rewrite(Ref def) {
+const Def* DS2CPS::rewrite(const Def* def) {
     if (auto app = def->isa<App>()) {
         if (auto lam = app->callee()->isa_mut<Lam>()) {
             world().DLOG("encountered lam app");
@@ -25,7 +25,7 @@ Ref DS2CPS::rewrite(Ref def) {
 
 /// This function generates the cps function `f_cps : cn [a:A, cn B]` for a ds function `f: [a : A] -> B`.
 /// The translation is associated in the `rewritten_` map.
-Ref DS2CPS::rewrite_lam(Lam* lam) {
+const Def* DS2CPS::rewrite_lam(Lam* lam) {
     if (auto i = rewritten_.find(lam); i != rewritten_.end()) return i->second;
 
     // only look at lambdas (ds not cps)

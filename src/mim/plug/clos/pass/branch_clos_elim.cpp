@@ -6,7 +6,7 @@ namespace mim::plug::clos {
 
 namespace {
 
-std::tuple<std::vector<ClosLit>, Ref> isa_branch(Ref callee) {
+std::tuple<std::vector<ClosLit>, const Def*> isa_branch(const Def* callee) {
     if (auto closure_proj = callee->isa<Extract>()) {
         auto inner_proj = closure_proj->tuple()->isa<Extract>();
         if (inner_proj && inner_proj->tuple()->isa<Tuple>() && isa_clos_type(inner_proj->type())) {
@@ -24,7 +24,7 @@ std::tuple<std::vector<ClosLit>, Ref> isa_branch(Ref callee) {
 
 } // namespace
 
-Ref BranchClosElim::rewrite(Ref def) {
+const Def* BranchClosElim::rewrite(const Def* def) {
     auto& w  = world();
     auto app = def->isa<App>();
     if (!app || !Pi::isa_cn(app->callee_type())) return def;

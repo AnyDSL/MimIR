@@ -18,10 +18,10 @@
 namespace mim::plug::regex {
 
 namespace {
-Ref wrap_in_cps2ds(Ref callee) { return direct::op_cps2ds_dep(callee); }
+const Def* wrap_in_cps2ds(const Def* callee) { return direct::op_cps2ds_dep(callee); }
 } // namespace
 
-Ref LowerRegex::rewrite(Ref def) {
+const Def* LowerRegex::rewrite(const Def* def) {
     const Def* new_app = def;
 
     if (auto app = def->isa<App>()) {

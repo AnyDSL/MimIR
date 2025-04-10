@@ -4,7 +4,7 @@
 
 namespace mim::plug::mem {
 
-Ref RememElim::rewrite(Ref def) {
+const Def* RememElim::rewrite(const Def* def) {
     if (auto remem = match<mem::remem>(def)) return remem->arg();
     return def;
 }

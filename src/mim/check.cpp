@@ -14,19 +14,25 @@ public:
     Zonker(World& world)
         : Rewriter(world) {}
 
-    Ref rewrite(Ref old_def) override { return (old_def->has_dep(Dep::Infer)) ? Rewriter::rewrite(old_def) : old_def; }
-    Ref rewrite_mut(Def* mut) override { return mut; }
+    const Def* rewrite(const Def* old) override { return (old->has_dep(Dep::Infer)) ? Rewriter::rewrite(old) : old; }
+
+    const Def* rewrite_mut(Def* mut) override {
+        if (auto infer = mut->isa<Infer>())
+            if (auto op = infer->op()) return rewrite(op);
+        return mut;
+    }
 };
 
 } // namespace
 
-const Def* Def::zonk() const { return has_dep(Dep::Infer) ? *Zonker(world()).rewrite(this) : this; }
+// TODO check local_muts for zonks w/ op
+const Def* Def::zonk() const { return has_dep(Dep::Infer) ? Zonker(world()).rewrite(this) : this; }
 
 /*
  * Infer
  */
 
-const Def* Ref::refer(const Def* def) { return def ? Infer::find(def) : nullptr; }
+const Def* Infer::refer(const Def* def) { return def ? find(def) : nullptr; }
 
 const Def* Infer::find(const Def* def) {
     // find root
@@ -44,7 +50,7 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
-Ref Infer::tuplefy() {
+const Def* Infer::tuplefy() {
     if (auto a = type()->isa_lit_arity(); a && !is_set()) {
         auto& w     = world();
         auto n      = *a;
@@ -78,15 +84,15 @@ template<Checker::Mode mode> bool Checker::fail() {
     return false;
 }
 
-Ref Checker::fail() {
+const Def* Checker::fail() {
     if (world().flags().break_on_alpha) fe::breakpoint();
     return {};
 }
 #endif
 
-template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
-    auto d1 = *r1; // find
-    auto d2 = *r2; // find
+template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
+    d1 = Infer::refer(d1);
+    d2 = Infer::refer(d2);
 
     if (!d1 && !d2) return true;
     if (!d1 || !d2) return fail<mode>();
@@ -140,7 +146,7 @@ template<Checker::Mode mode> bool Checker::alpha_(Ref r1, Ref r2) {
     return alpha_internal<mode>(d1, d2);
 }
 
-template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
+template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
     if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
     if (mode == Test && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
@@ -180,8 +186,8 @@ template<Checker::Mode mode> bool Checker::alpha_internal(Ref d1, Ref d2) {
     return true;
 }
 
-Ref Checker::assignable_(Ref type, Ref val) {
-    auto val_ty = Ref::refer(val->type());
+const Def* Checker::assignable_(const Def* type, const Def* val) {
+    auto val_ty = Infer::refer(val->type());
     if (type == val_ty) return val;
 
     auto& w = world();
@@ -225,7 +231,7 @@ Ref Checker::assignable_(Ref type, Ref val) {
     return alpha_<Check>(type, val_ty) ? val : fail();
 }
 
-Ref Checker::is_uniform(Defs defs) {
+const Def* Checker::is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
     for (size_t i = 1, e = defs.size(); i != e; ++i)
@@ -237,26 +243,26 @@ Ref Checker::is_uniform(Defs defs) {
  * infer & check
  */
 
-Ref Arr::check(size_t, Ref def) { return def; } // TODO
+const Def* Arr::check(size_t, const Def* def) { return def; } // TODO
 
-Ref Arr::check() {
+const Def* Arr::check() {
     auto t = body()->unfold_type();
     if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
     return t;
 }
 
-Ref Sigma::infer(World& w, Defs ops) {
+const Def* Sigma::infer(World& w, Defs ops) {
     if (ops.size() == 0) return w.type<1>();
     auto kinds = DefVec(ops.size(), [ops](size_t i) { return ops[i]->unfold_type(); });
     return w.umax<Sort::Kind>(kinds);
 }
 
-Ref Sigma::check(size_t, Ref def) { return def; } // TODO
+const Def* Sigma::check(size_t, const Def* def) { return def; } // TODO
 
-Ref Sigma::check() {
+const Def* Sigma::check() {
     auto t = infer(world(), ops());
-    if (*t != *type()) {
+    if (t != type()) {
         // TODO HACK
         if (Checker::alpha<Checker::Check>(t, type()))
             return t;
@@ -271,7 +277,7 @@ Ref Sigma::check() {
     return t;
 }
 
-Ref Lam::check(size_t i, Ref def) {
+const Def* Lam::check(size_t i, const Def* def) {
     if (i == 0) {
         if (auto filter = Checker::assignable(world().type_bool(), def)) return filter;
         throw Error().error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type 'Bool'",
@@ -287,14 +293,14 @@ Ref Lam::check(size_t i, Ref def) {
     fe::unreachable();
 }
 
-Ref Pi::infer(Ref dom, Ref codom) {
+const Def* Pi::infer(const Def* dom, const Def* codom) {
     auto& w = dom->world();
     return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
 }
 
-Ref Pi::check(size_t, Ref def) { return def; }
+const Def* Pi::check(size_t, const Def* def) { return def; }
 
-Ref Pi::check() {
+const Def* Pi::check() {
     auto t = infer(dom(), codom());
     if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
@@ -302,8 +308,8 @@ Ref Pi::check() {
 }
 
 #ifndef DOXYGEN
-template bool Checker::alpha_<Checker::Check>(Ref, Ref);
-template bool Checker::alpha_<Checker::Test>(Ref, Ref);
+template bool Checker::alpha_<Checker::Check>(const Def*, const Def*);
+template bool Checker::alpha_<Checker::Test>(const Def*, const Def*);
 #endif
 
 } // namespace mim

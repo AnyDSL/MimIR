@@ -48,9 +48,9 @@ public:
 private:
     /// @name PassMan hooks
     ///@{
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
     undo_t analyze(const Proxy*) override;
-    undo_t analyze(Ref) override;
+    undo_t analyze(const Def*) override;
     ///@}
     Lam* eta_exp(Lam*); ///< Helper that peforms the actual η-expansion.
 

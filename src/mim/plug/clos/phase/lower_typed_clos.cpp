@@ -8,7 +8,7 @@ namespace mim::plug::clos {
 
 namespace {
 const Def* insert_ret(const Def* def, const Def* ret) {
-    auto new_ops = DefVec(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : *def->proj(i); });
+    auto new_ops = DefVec(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
     auto& w      = def->world();
     return def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
 }
@@ -69,7 +69,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         env = w.call<core::bitcast>(lam->dom(Clos_Env_Param), env)->set("unboxed_env");
     }
     auto new_args = w.tuple(DefVec(lam->num_doms(), [&](auto i) {
-        return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : *new_lam->var(i);
+        return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : new_lam->var(i);
     }));
     assert(new_args->num_projs() == lam->num_doms());
     assert(lam->num_doms() <= new_lam->num_doms());

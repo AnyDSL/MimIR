@@ -4,7 +4,7 @@
 namespace mim::plug::autodiff {
 
 /// Additionally to the derivation, the pullback is registered and the maps are initialized.
-Ref AutoDiffEval::derive_(Ref def) {
+const Def* AutoDiffEval::derive_(const Def* def) {
     auto lam = def->as_mut<Lam>(); // TODO check if mutable
     world().DLOG("Derive lambda: {}", def);
     auto deriv_ty = autodiff_type_fun_pi(lam->type());
@@ -18,7 +18,7 @@ Ref AutoDiffEval::derive_(Ref def) {
 
     auto [arg_ty, ret_pi] = lam->type()->doms<2>();
     auto deriv_all_args   = deriv->var();
-    Ref deriv_arg         = deriv->var(0_s)->set("arg");
+    const Def* deriv_arg  = deriv->var(0_s)->set("arg");
 
     // We generate the shadow pullbacks dynamically to save work and avoid code duplication.
     // Only the toplevel pullback for arguments and return continuation is special cased.

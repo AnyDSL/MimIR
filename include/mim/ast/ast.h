@@ -149,13 +149,13 @@ public:
     static constexpr bool is_rassoc(Prec p) { return p == Prec::Arrow; }
     ///@}
 
-    Ref emit(Emitter&) const;
+    const Def* emit(Emitter&) const;
     virtual void bind(Scopes&) const = 0;
-    virtual Ref emit_decl(Emitter&, Ref /*type*/) const { fe::unreachable(); }
-    virtual void emit_body(Emitter&, Ref /*decl*/) const { fe::unreachable(); }
+    virtual const Def* emit_decl(Emitter&, const Def* /*type*/) const { fe::unreachable(); }
+    virtual void emit_body(Emitter&, const Def* /*decl*/) const { fe::unreachable(); }
 
 private:
-    virtual Ref emit_(Emitter&) const = 0;
+    virtual const Def* emit_(Emitter&) const = 0;
 };
 
 class Decl : public Node {
@@ -164,10 +164,10 @@ protected:
         : Node(loc) {}
 
 public:
-    Ref def() const { return def_; }
+    const Def* def() const { return def_; }
 
 protected:
-    mutable Ref def_ = nullptr;
+    mutable const Def* def_ = nullptr;
 };
 
 class ValDecl : public Decl {
@@ -192,8 +192,8 @@ public:
     virtual bool is_implicit() const { return false; }
 
     virtual void bind(Scopes&, bool rebind, bool quiet) const = 0;
-    virtual Ref emit_value(Emitter&, Ref) const               = 0;
-    virtual Ref emit_type(Emitter&) const                     = 0;
+    virtual const Def* emit_value(Emitter&, const Def*) const = 0;
+    virtual const Def* emit_type(Emitter&) const              = 0;
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
@@ -205,8 +205,8 @@ public:
         : Ptrn(loc) {}
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
-    Ref emit_value(Emitter&, Ref) const override;
-    Ref emit_type(Emitter&) const override;
+    const Def* emit_value(Emitter&, const Def*) const override;
+    const Def* emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 };
 
@@ -231,8 +231,8 @@ public:
     }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
-    Ref emit_value(Emitter&, Ref) const override;
-    Ref emit_type(Emitter&) const override;
+    const Def* emit_value(Emitter&, const Def*) const override;
+    const Def* emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -252,8 +252,8 @@ public:
     const IdPtrn* id() const { return id_; }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
-    Ref emit_value(Emitter&, Ref) const override;
-    Ref emit_type(Emitter&) const override;
+    const Def* emit_value(Emitter&, const Def*) const override;
+    const Def* emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -274,8 +274,8 @@ public:
     bool is_implicit() const override { return ptrn()->is_implicit(); }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
-    Ref emit_value(Emitter&, Ref) const override;
-    Ref emit_type(Emitter&) const override;
+    const Def* emit_value(Emitter&, const Def*) const override;
+    const Def* emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -302,10 +302,10 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, bool rebind, bool quiet) const override;
-    Ref emit_value(Emitter&, Ref) const override;
-    Ref emit_type(Emitter&) const override;
-    Ref emit_decl(Emitter&, Ref type) const;
-    Ref emit_body(Emitter&, Ref decl) const;
+    const Def* emit_value(Emitter&, const Def*) const override;
+    const Def* emit_type(Emitter&) const override;
+    const Def* emit_decl(Emitter&, const Def* type) const;
+    const Def* emit_body(Emitter&, const Def* decl) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -326,7 +326,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 };
 
 class InferExpr : public Expr {
@@ -338,7 +338,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 };
 
 /// `sym`
@@ -355,7 +355,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Dbg dbg_;
     mutable const Decl* decl_ = nullptr;
@@ -376,7 +376,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Tok::Tag tag_;
 };
@@ -397,7 +397,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Tok tok_;
     Ptr<Expr> type_;
@@ -420,7 +420,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptrs<ValDecl> decls_;
     Ptr<Expr> expr_;
@@ -440,7 +440,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<Expr> level_;
 };
@@ -460,12 +460,12 @@ private:
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
-    Ref emit_decl(Emitter&, Ref type) const override;
-    void emit_body(Emitter&, Ref decl) const override;
+    const Def* emit_decl(Emitter&, const Def* type) const override;
+    void emit_body(Emitter&, const Def* decl) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<Expr> dom_;
     Ptr<Expr> codom_;
@@ -498,7 +498,7 @@ public:
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     protected:
-        const Pi* set_codom(Ref codom) const {
+        const Pi* set_codom(const Def* codom) const {
             if (auto imm = pi_->set_codom(codom)->immutabilize()) return const_pi_ = imm;
             return const_pi_ = pi_;
         }
@@ -526,12 +526,12 @@ private:
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
-    Ref emit_decl(Emitter&, Ref type) const override;
-    void emit_body(Emitter&, Ref decl) const override;
+    const Def* emit_decl(Emitter&, const Def* type) const override;
+    void emit_body(Emitter&, const Def* decl) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Tok::Tag tag_;
     Ptr<Dom> dom_;
@@ -546,12 +546,12 @@ public:
     const LamDecl* lam() const { return lam_.get(); }
 
     void bind(Scopes&) const override;
-    Ref emit_decl(Emitter&, Ref type) const override;
-    void emit_body(Emitter&, Ref decl) const override;
+    const Def* emit_decl(Emitter&, const Def* type) const override;
+    void emit_body(Emitter&, const Def* decl) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<LamDecl> lam_;
 };
@@ -573,7 +573,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     bool is_explicit_;
     Ptr<Expr> callee_;
@@ -599,7 +599,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<Ptrn> ptrn_;
     Ptr<Expr> callee_;
@@ -618,12 +618,12 @@ public:
     const TuplePtrn* ptrn() const { return ptrn_.get(); }
 
     void bind(Scopes&) const override;
-    Ref emit_decl(Emitter&, Ref type) const override;
-    void emit_body(Emitter&, Ref decl) const override;
+    const Def* emit_decl(Emitter&, const Def* type) const override;
+    void emit_body(Emitter&, const Def* decl) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<TuplePtrn> ptrn_;
 
@@ -645,7 +645,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptrs<Expr> elems_;
 };
@@ -665,7 +665,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<IdPtrn> shape_;
     Ptr<Expr> body_;
@@ -694,7 +694,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<Expr> tuple_;
     std::variant<Ptr<Expr>, Dbg> index_;
@@ -718,7 +718,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<Expr> tuple_;
     Ptr<Expr> index_;
@@ -738,7 +738,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_(Emitter&) const override;
+    const Def* emit_(Emitter&) const override;
 
     Ptr<Expr> inhabitant_;
 };
@@ -819,7 +819,7 @@ private:
     Dbg normalizer_;
     Tok curry_, trip_;
     mutable AnnexInfo* annex_ = nullptr;
-    mutable Ref mim_type_;
+    mutable const Def* mim_type_;
 };
 
 /// `.rec dbg: type = body`

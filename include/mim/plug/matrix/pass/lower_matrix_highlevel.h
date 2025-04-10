@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
+
 #include <mim/pass/pass.h>
 
 namespace mim::plug::matrix {
@@ -17,8 +18,8 @@ public:
 
     /// custom rewrite function
     /// memoized version of rewrite_
-    Ref rewrite(Ref) override;
-    Ref rewrite_(Ref);
+    const Def* rewrite(const Def*) override;
+    const Def* rewrite_(const Def*);
 
 private:
     Def2Def rewritten;

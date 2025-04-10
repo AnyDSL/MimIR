@@ -19,7 +19,7 @@ public:
         , lam2fscope_() {}
 
     void enter() override;
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
     const App* rewrite_arg(const App* app);
     const App* rewrite_callee(const App* app);
 
@@ -31,9 +31,9 @@ public:
         return scope(lam) && scope(lam) != scope(curr_mut());
     }
 
-    bool from_outer_scope(Ref lam) { return curr_mut()->free_vars().has_intersection(lam->free_vars()); }
+    bool from_outer_scope(const Def* lam) { return curr_mut()->free_vars().has_intersection(lam->free_vars()); }
 
-    Ref eta_wrap(Ref def, attr a) {
+    const Def* eta_wrap(const Def* def, attr a) {
         auto& w                = world();
         auto [entry, inserted] = old2wrapper_.emplace(def, nullptr);
         auto& wrapper          = entry->second;

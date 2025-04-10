@@ -82,27 +82,7 @@ using Vars                      = Sets<const Var>::Set;
 
 //------------------------------------------------------------------------------
 
-/// Helper class to retrieve Infer::arg if present.
-class Ref {
-public:
-    Ref() = default;
-    Ref(const Def* def)
-        : def_(def) {}
-
-    const Def* operator*() const { return refer(def_); }
-    const Def* operator->() const { return refer(def_); }
-    operator const Def*() const { return refer(def_); }
-    explicit operator bool() const { return def_; }
-    static const Def* refer(const Def* def); ///< Same as Infer::find but does nothing if @p def is `nullptr`.
-    const Def* def() const { return def_; }  ///< Retrieve wrapped Def without Infer::refer%ing.
-
-    friend std::ostream& operator<<(std::ostream&, Ref);
-
-private:
-    const Def* def_ = nullptr;
-};
-
-using NormalizeFn = Ref (*)(Ref, Ref, Ref);
+using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*);
 
 //------------------------------------------------------------------------------
 
@@ -141,9 +121,9 @@ namespace mim {
 #define MIM_PROJ(NAME, CONST)                                                                                          \
     nat_t num_##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_projs(); }                                 \
     nat_t num_t##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_tprojs(); }                               \
-    Ref NAME(nat_t a, nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(a, i); }                             \
-    Ref NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(i); }                                         \
-    Ref t##NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->tproj(i); }                                     \
+    const Def* NAME(nat_t a, nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(a, i); }                      \
+    const Def* NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(i); }                                  \
+    const Def* t##NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->tproj(i); }                              \
     template<nat_t A = std::dynamic_extent, class F> auto NAME##s(F f) CONST noexcept {                                \
         return ((const Def*)NAME())->projs<A, F>(f);                                                                   \
     }                                                                                                                  \
@@ -241,16 +221,16 @@ public:
 
     /// Yields the **raw** type of this Def, i.e. maybe `nullptr`.
     /// @see Def::unfold_type.
-    Ref type() const noexcept { return type_; }
+    const Def* type() const noexcept { return type_; }
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
-    Ref unfold_type() const;
+    const Def* unfold_type() const;
     /// Yields `true` if `this:T` and `T:(Type 0)`.
     bool is_term() const;
     ///@}
 
     /// @name arity
     ///@{
-    Ref arity() const;
+    const Def* arity() const;
     std::optional<nat_t> isa_lit_arity() const;
     nat_t as_lit_arity() const {
         auto a = isa_lit_arity();
@@ -264,7 +244,7 @@ public:
     template<size_t N = std::dynamic_extent> constexpr auto ops() const noexcept {
         return View<const Def*, N>(ops_ptr(), num_ops_);
     }
-    Ref op(size_t i) const noexcept { return ops()[i]; }
+    const Def* op(size_t i) const noexcept { return ops()[i]; }
     constexpr size_t num_ops() const noexcept { return num_ops_; }
     ///@}
 
@@ -285,10 +265,10 @@ public:
     /// MimIR assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
     ///@{
-    Def* set(size_t i, Ref);                                        ///< Successively   set from left to right.
-    Def* reset(size_t i, Ref def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
-    Def* set(Defs ops);                                             ///< Def::set @p ops all at once.
-    Def* reset(Defs ops);                                           ///< Def::reset @p ops all at once.
+    Def* set(size_t i, const Def*);                                        ///< Successively   set from left to right.
+    Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
+    Def* set(Defs ops);                                                    ///< Def::set @p ops all at once.
+    Def* reset(Defs ops);                                                  ///< Def::reset @p ops all at once.
     Def* unset();        ///< Unsets all Def::ops; works even, if not set at all or partially.
     bool is_set() const; ///< Yields `true` if empty or the last op is set.
     ///@}
@@ -299,7 +279,7 @@ public:
     /// * the other Def::ops() (only included, if Def::is_set()) in this order.
     ///@{
     Defs deps() const;
-    Ref dep(size_t i) const { return deps()[i]; }
+    const Def* dep(size_t i) const { return deps()[i]; }
     size_t num_deps() const { return deps().size(); }
     ///@}
 
@@ -341,9 +321,9 @@ public:
     nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalarize_threshold is exceeded.
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
-    Ref proj(nat_t a, nat_t i) const;
-    Ref proj(nat_t i) const { return proj(num_projs(), i); }   ///< As above but takes Def::num_projs as arity.
-    Ref tproj(nat_t i) const { return proj(num_tprojs(), i); } ///< As above but takes Def::num_tprojs.
+    const Def* proj(nat_t a, nat_t i) const;
+    const Def* proj(nat_t i) const { return proj(num_projs(), i); }   ///< As above but takes Def::num_projs as arity.
+    const Def* tproj(nat_t i) const { return proj(num_tprojs(), i); } ///< As above but takes Def::num_tprojs.
 
     /// Splits this Def via Def::proj%ections into an Array (if `A == std::dynamic_extent`) or `std::array` (otherwise).
     /// Applies @p f to each element.
@@ -366,13 +346,13 @@ public:
         return Vector<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
     template<nat_t A = std::dynamic_extent> auto projs() const {
-        return projs<A>([](Ref def) { return *def; });
+        return projs<A>([](const Def* def) { return def; });
     }
     auto tprojs() const {
-        return tprojs([](Ref def) { return *def; });
+        return tprojs([](const Def* def) { return def; });
     }
     auto projs(nat_t a) const {
-        return projs(a, [](Ref def) { return *def; });
+        return projs(a, [](const Def* def) { return def; });
     }
     ///@}
 
@@ -383,7 +363,7 @@ public:
     ///@{
     MIM_PROJ(var, )
     /// Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
-    Ref var();
+    const Def* var();
     /// Only returns not `nullptr`, if Var of this mutable has ever been created.
     const Var* has_var() { return var_; }
     /// As above if `this` is a *mutable*.
@@ -493,34 +473,34 @@ public:
 
     /// @name Rebuild
     ///@{
-    Def* stub(World& w, Ref type) { return stub_(w, type)->set(dbg()); }
-    Def* stub(Ref type) { return stub(world(), type); }
+    Def* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); }
+    Def* stub(const Def* type) { return stub(world(), type); }
 
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
-    Ref rebuild(World& w, Ref type, Defs ops) const {
+    const Def* rebuild(World& w, const Def* type, Defs ops) const {
         assert(isa_imm());
         return rebuild_(w, type, ops)->set(dbg());
     }
-    Ref rebuild(Ref type, Defs ops) const { return rebuild(world(), type, ops); }
+    const Def* rebuild(const Def* type, Defs ops) const { return rebuild(world(), type, ops); }
 
     /// Tries to make an immutable from a mutable.
     /// This usually works if the mutable isn't recursive and its var isn't used.
     virtual const Def* immutabilize() { return nullptr; }
     bool is_immutabilizable();
 
-    Ref refine(size_t i, Ref new_op) const;
+    const Def* refine(size_t i, const Def* new_op) const;
 
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
-    DefVec reduce(Ref arg) const;
-    DefVec reduce(Ref arg);
+    DefVec reduce(const Def* arg) const;
+    DefVec reduce(const Def* arg);
     /// As above but only rewrites `this->op(i)`.
-    Ref reduce(size_t i, Ref arg) const;
+    const Def* reduce(size_t i, const Def* arg) const;
     ///@}
 
     /// @name Type Checking
     ///@{
-    virtual Ref check(size_t, Ref def) { return def; }
-    virtual Ref check() { return type(); }
+    virtual const Def* check(size_t, const Def* def) { return def; }
+    virtual const Def* check() { return type(); }
     const Def* zonk() const;
     ///@}
 
@@ -555,8 +535,8 @@ protected:
     ///@}
 
 private:
-    virtual Def* stub_(World&, Ref) { fe::unreachable(); }
-    virtual Ref rebuild_(World& w, Ref type, Defs ops) const = 0;
+    virtual Def* stub_(World&, const Def*) { fe::unreachable(); }
+    virtual const Def* rebuild_(World& w, const Def* type, Defs ops) const = 0;
 
     Vars free_vars(bool&, bool&, uint32_t run);
     void invalidate();
@@ -638,7 +618,7 @@ public:
     static constexpr auto Node = Node::Var;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -652,7 +632,7 @@ private:
     Univ(World& world)
         : Def(&world, Node, nullptr, Defs{}, 0) {}
 
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -665,7 +645,7 @@ public:
 private:
     UMax(World&, Defs ops);
 
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -680,14 +660,14 @@ public:
 
     /// @name ops
     ///@{
-    Ref op() const { return Def::op(0); }
+    const Def* op() const { return Def::op(0); }
     level_t offset() const { return flags(); }
     ///@}
 
     static constexpr auto Node = Node::UInc;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -702,13 +682,13 @@ public:
 
     /// @name ops
     ///@{
-    Ref level() const { return op(0); }
+    const Def* level() const { return op(0); }
     ///@}
 
     static constexpr auto Node = Node::Type;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -735,18 +715,18 @@ public:
     /// @name Casts
     ///@{
     /// @see @ref cast_lit
-    template<class T = nat_t> static std::optional<T> isa(Ref def) {
+    template<class T = nat_t> static std::optional<T> isa(const Def* def) {
         if (!def) return {};
         if (auto lit = def->isa<Lit>()) return lit->get<T>();
         return {};
     }
-    template<class T = nat_t> static T as(Ref def) { return def->as<Lit>()->get<T>(); }
+    template<class T = nat_t> static T as(const Def* def) { return def->as<Lit>()->get<T>(); }
     ///@}
 
     static constexpr auto Node = Node::Lit;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -759,7 +739,7 @@ public:
 private:
     Nat(World& world);
 
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -779,14 +759,14 @@ public:
     ///@{
 
     /// Checks if @p def is a `Idx s` and returns `s` or `nullptr` otherwise.
-    static Ref isa(Ref def);
-    static Ref as(Ref def) {
+    static const Def* isa(const Def* def);
+    static const Def* as(const Def* def) {
         auto res = isa(def);
         assert(res);
         return res;
     }
-    static std::optional<nat_t> isa_lit(Ref def);
-    static nat_t as_lit(Ref def) {
+    static std::optional<nat_t> isa_lit(const Def* def);
+    static nat_t as_lit(const Def* def) {
         auto res = isa_lit(def);
         assert(res.has_value());
         return *res;
@@ -799,13 +779,13 @@ public:
     static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }
     static constexpr nat_t size2bitwidth(nat_t n) { return n == 0 ? 64 : std::bit_width(n - 1_n); }
     // clang-format on
-    static std::optional<nat_t> size2bitwidth(Ref size);
+    static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 
     static constexpr auto Node = Node::Idx;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -827,7 +807,7 @@ public:
     static constexpr auto Node = Node::Proxy;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -845,14 +825,14 @@ public:
 
     /// @name ops
     ///@{
-    Ref init() const { return op(0); }
-    void set(Ref init) { Def::set(0, init); }
+    const Def* init() const { return op(0); }
+    void set(const Def* init) { Def::set(0, init); }
     ///@}
 
     /// @name type
     ///@{
     const App* type() const;
-    Ref alloced_type() const;
+    const Def* alloced_type() const;
     ///@}
 
     /// @name Getters
@@ -862,14 +842,14 @@ public:
 
     /// @name Rebuild
     ///@{
-    Global* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    Global* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     ///@}
 
     static constexpr auto Node = Node::Global;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    Global* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Global* stub_(World&, const Def*) override;
 
     friend class World;
 };

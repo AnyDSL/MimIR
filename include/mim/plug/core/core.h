@@ -17,12 +17,12 @@ enum class Mode : nat_t {
     nusw = nuw | nsw,
 };
 
-/// Give Mode as mim::plug::math::Mode, mim::nat_t or Ref.
-using VMode = std::variant<Mode, nat_t, Ref>;
+/// Give Mode as mim::plug::math::Mode, mim::nat_t or const Def*.
+using VMode = std::variant<Mode, nat_t, const Def*>;
 
-/// mim::plug::core::VMode -> Ref.
-inline Ref mode(World& w, VMode m) {
-    if (auto def = std::get_if<Ref>(&m)) return *def;
+/// mim::plug::core::VMode -> const Def*.
+inline const Def* mode(World& w, VMode m) {
+    if (auto def = std::get_if<const Def*>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
     return w.lit_nat((nat_t)std::get<Mode>(m));
 }
@@ -30,7 +30,7 @@ inline Ref mode(World& w, VMode m) {
 
 /// @name %%core.trait
 ///@{
-inline Ref op(trait o, Ref type) {
+inline const Def* op(trait o, const Def* type) {
     World& w = type->world();
     return w.app(w.annex(o), type);
 }
@@ -38,7 +38,7 @@ inline Ref op(trait o, Ref type) {
 
 /// @name %%core.pe
 ///@{
-inline Ref op(pe o, Ref def) {
+inline const Def* op(pe o, const Def* def) {
     World& w = def->world();
     return w.app(w.app(w.annex(o), def->type()), def);
 }
@@ -57,11 +57,11 @@ constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
 
 /// @name extract_unsafe
 ///@{
-inline Ref extract_unsafe(Ref d, Ref i) {
+inline const Def* extract_unsafe(const Def* d, const Def* i) {
     World& w = d->world();
     return w.extract(d, w.call(conv::u, d->unfold_type()->arity(), i));
 }
-inline Ref extract_unsafe(Ref d, u64 i) {
+inline const Def* extract_unsafe(const Def* d, u64 i) {
     World& w = d->world();
     return extract_unsafe(d, w.lit_idx(0_u64, i));
 }
@@ -69,11 +69,11 @@ inline Ref extract_unsafe(Ref d, u64 i) {
 
 /// @name insert_unsafe
 ///@{
-inline Ref insert_unsafe(Ref d, Ref i, Ref val) {
+inline const Def* insert_unsafe(const Def* d, const Def* i, const Def* val) {
     World& w = d->world();
     return w.insert(d, w.call(conv::u, d->unfold_type()->arity(), i), val);
 }
-inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
+inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val) {
     World& w = d->world();
     return insert_unsafe(d, w.lit_idx(0_u64, i), val);
 }

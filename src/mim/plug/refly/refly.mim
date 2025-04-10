@@ -2,7 +2,7 @@
 ///
 /// @see mim::plug::refly
 ///
-/// The refly plugin allows to [reify](https://en.wikipedia.org/wiki/Reification_(computer_science)) and [reflect](https://en.wikipedia.org/wiki/Reflective_programming) MimIR's own representation.
+/// The refly plugin allows to [reify](https://en.wikipedia.org/wiki/Reification_(computer_science)) and [reflect](https://en.wikipedia.org/wiki/const Def*lective_programming) MimIR's own representation.
 ///
 /// [TOC]
 ///
@@ -14,7 +14,7 @@ import compile;
 ///
 axm %refly.Code: * → *;
 ///
-/// ## Reify/Reflect
+/// ## Reify/const Def*lect
 ///
 /// ### %%refly.reify
 ///

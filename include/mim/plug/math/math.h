@@ -39,12 +39,12 @@ enum class Mode : nat_t {
 };
 // clang-format on
 
-/// Give Mode as mim::plug::math::Mode, mim::nat_t or Ref.
-using VMode = std::variant<Mode, nat_t, Ref>;
+/// Give Mode as mim::plug::math::Mode, mim::nat_t or const Def*.
+using VMode = std::variant<Mode, nat_t, const Def*>;
 
-/// mim::plug::math::VMode -> Ref.
-inline Ref mode(World& w, VMode m) {
-    if (auto def = std::get_if<Ref>(&m)) return *def;
+/// mim::plug::math::VMode -> const Def*.
+inline const Def* mode(World& w, VMode m) {
+    if (auto def = std::get_if<const Def*>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
     return w.lit_nat((nat_t)std::get<Mode>(m));
 }
@@ -52,16 +52,16 @@ inline Ref mode(World& w, VMode m) {
 
 /// @name %%math.F
 ///@{
-inline Ref type_f(Ref pe) {
+inline const Def* type_f(const Def* pe) {
     World& w = pe->world();
     return w.app(w.annex<F>(), pe);
 }
-inline Ref type_f(World& w, nat_t p, nat_t e) {
+inline const Def* type_f(World& w, nat_t p, nat_t e) {
     auto lp = w.lit_nat(p);
     auto le = w.lit_nat(e);
     return type_f(w.tuple({lp, le}));
 }
-template<nat_t P, nat_t E> inline auto match_f(Ref def) {
+template<nat_t P, nat_t E> inline auto match_f(const Def* def) {
     if (auto f_ty = match<F>(def)) {
         auto [p, e] = f_ty->arg()->projs<2>([](auto op) { return Lit::isa(op); });
         if (p && e && *p == P && *e == E) return f_ty;
@@ -69,11 +69,11 @@ template<nat_t P, nat_t E> inline auto match_f(Ref def) {
     return Match<F, App>();
 }
 
-inline auto match_f16(Ref def) { return match_f<10, 5>(def); }
-inline auto match_f32(Ref def) { return match_f<23, 8>(def); }
-inline auto match_f64(Ref def) { return match_f<52, 11>(def); }
+inline auto match_f16(const Def* def) { return match_f<10, 5>(def); }
+inline auto match_f32(const Def* def) { return match_f<23, 8>(def); }
+inline auto match_f64(const Def* def) { return match_f<52, 11>(def); }
 
-inline std::optional<nat_t> isa_f(Ref def) {
+inline std::optional<nat_t> isa_f(const Def* def) {
     if (auto f_ty = match<F>(def)) {
         if (auto [p, e] = f_ty->arg()->projs<2>([](auto op) { return Lit::isa(op); }); p && e) {
             if (*p == 10 && e == 5) return 16;
@@ -108,7 +108,7 @@ inline const Lit* lit_f(World& w, nat_t width, mim::f64 val) {
 
 /// @name %%math.arith
 ///@{
-inline Ref op_rminus(VMode m, Ref a) {
+inline const Def* op_rminus(VMode m, const Def* a) {
     World& w = a->world();
     auto s   = isa_f(a->type());
     return w.call(arith::sub, mode(w, m), Defs{lit_f(w, *s, -0.0), a});

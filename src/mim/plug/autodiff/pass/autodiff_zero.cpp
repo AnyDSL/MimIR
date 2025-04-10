@@ -11,7 +11,7 @@
 
 namespace mim::plug::autodiff {
 
-Ref AutoDiffZero::rewrite(Ref def) {
+const Def* AutoDiffZero::rewrite(const Def* def) {
     if (auto zero_app = match<zero>(def); zero_app) {
         // callee = zero
         // arg = type T

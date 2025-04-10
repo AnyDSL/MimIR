@@ -4,7 +4,7 @@
 
 namespace mim {
 
-Ref BetaRed::rewrite(Ref def) {
+const Def* BetaRed::rewrite(const Def* def) {
     if (auto [app, lam] = isa_apped_mut_lam(def); isa_workable(lam) && !keep_.contains(lam)) {
         if (auto [_, ins] = data().emplace(lam); ins) {
             world().DLOG("beta-reduction {}", lam);
@@ -27,7 +27,7 @@ undo_t BetaRed::analyze(const Proxy* proxy) {
     return No_Undo;
 }
 
-undo_t BetaRed::analyze(Ref def) {
+undo_t BetaRed::analyze(const Def* def) {
     auto undo = No_Undo;
     for (auto op : def->ops()) {
         if (auto lam = isa_workable(op->isa_mut<Lam>()); lam && keep_.emplace(lam).second) {

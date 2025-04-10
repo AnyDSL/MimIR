@@ -6,7 +6,7 @@
 
 namespace mim {
 
-Ref LamSpec::rewrite(Ref def) {
+const Def* LamSpec::rewrite(const Def* def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
 
     auto [app, old_lam] = isa_apped_mut_lam(def);

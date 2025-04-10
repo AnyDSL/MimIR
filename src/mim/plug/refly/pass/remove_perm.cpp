@@ -4,7 +4,7 @@
 
 namespace mim::plug::refly {
 
-Ref RemoveDbgPerm::rewrite(Ref def) {
+const Def* RemoveDbgPerm::rewrite(const Def* def) {
     if (auto dbg_perm = match(dbg::perm, def)) {
         auto [lvl, x] = dbg_perm->args<2>();
         world().DLOG("dbg_perm: {}", x);

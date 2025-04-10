@@ -69,8 +69,6 @@ There are two different kind of [Defs](@ref mim::Def) in MimIR: _mutables_ and _
 ## Matching IR
 
 MimIR provides different means to scrutinize [Defs](@ref mim::Def).
-Usually, you will encounter a [Def](@ref mim::Def) as [Ref](@ref mim::Ref) which is just a wrapper for a `const Def*`.
-Its purpose is to resolve "holes" (called _[Infer](@ref mim::Infer)s_ in MimIR) that may pop up due to type inference.
 Matching built-ins, i.e. all subclasses of [Def](@ref mim::Def), works differently than matching [Axiom](@ref mim::Axiom)s.
 
 ### Upcast for Built-ins {#cast_builtin}

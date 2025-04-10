@@ -91,69 +91,69 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
-Ref Infer  ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Global ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Idx    ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
-Ref Nat    ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
-Ref Univ   ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
-Ref Ac     ::rebuild_(World& w, Ref t, Defs o) const { return w.ac(t, o); }
-Ref App    ::rebuild_(World& w, Ref  , Defs o) const { return w.app(o[0], o[1]); }
-Ref Arr    ::rebuild_(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1]); }
-Ref Extract::rebuild_(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1]); }
-Ref Insert ::rebuild_(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
-Ref Lam    ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
-Ref Lit    ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
-Ref Pack   ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
-Ref Pi     ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
-Ref Pick   ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
-Ref Proxy  ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
-Ref Sigma  ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
-Ref Uniq   ::rebuild_(World& w, Ref  , Defs o) const { return w.uniq(o[0]); }
-Ref Type   ::rebuild_(World& w, Ref  , Defs o) const { return w.type(o[0]); }
-Ref Test   ::rebuild_(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
-Ref Tuple  ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
-Ref UInc   ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
-Ref UMax   ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
-Ref Var    ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut()); }
-Ref Vel    ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0])->set(dbg()); }
+const Def* Infer  ::rebuild_(World&,   const Def*,   Defs  ) const { fe::unreachable(); }
+const Def* Global ::rebuild_(World&,   const Def*,   Defs  ) const { fe::unreachable(); }
+const Def* Idx    ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_idx(); }
+const Def* Nat    ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_nat(); }
+const Def* Univ   ::rebuild_(World& w, const Def*  , Defs  ) const { return w.univ(); }
+const Def* Ac     ::rebuild_(World& w, const Def* t, Defs o) const { return w.ac(t, o); }
+const Def* App    ::rebuild_(World& w, const Def*  , Defs o) const { return w.app(o[0], o[1]); }
+const Def* Arr    ::rebuild_(World& w, const Def*  , Defs o) const { return w.arr(o[0], o[1]); }
+const Def* Extract::rebuild_(World& w, const Def*  , Defs o) const { return w.extract(o[0], o[1]); }
+const Def* Insert ::rebuild_(World& w, const Def*  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
+const Def* Lam    ::rebuild_(World& w, const Def* t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
+const Def* Lit    ::rebuild_(World& w, const Def* t, Defs  ) const { return w.lit(t, get()); }
+const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
+const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
+const Def* Pick   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pick(t, o[0]); }
+const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
+const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
+const Def* Uniq   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uniq(o[0]); }
+const Def* Type   ::rebuild_(World& w, const Def*  , Defs o) const { return w.type(o[0]); }
+const Def* Test   ::rebuild_(World& w, const Def*  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
+const Def* Tuple  ::rebuild_(World& w, const Def* t, Defs o) const { return w.tuple(t, o); }
+const Def* UInc   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uinc(o[0], offset()); }
+const Def* UMax   ::rebuild_(World& w, const Def*  , Defs o) const { return w.umax(o); }
+const Def* Var    ::rebuild_(World& w, const Def* t, Defs o) const { return w.var(t, o[0]->as_mut()); }
+const Def* Vel    ::rebuild_(World& w, const Def* t, Defs o) const { return w.vel(t, o[0])->set(dbg()); }
 
-Ref Axiom    ::rebuild_(World& w, Ref t, Defs ) const {
+const Def* Axiom    ::rebuild_(World& w, const Def* t, Defs ) const {
     if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
     assert(Checker::alpha<Checker::Check>(t, type()));
     return this;
 }
 
-template<bool up> Ref TExt  <up>::rebuild_(World& w, Ref t, Defs  ) const { return w.ext  <up>(t)->set(dbg()); }
-template<bool up> Ref TBound<up>::rebuild_(World& w, Ref  , Defs o) const { return w.bound<up>(o)->set(dbg()); }
+template<bool up> const Def* TExt  <up>::rebuild_(World& w, const Def* t, Defs  ) const { return w.ext  <up>(t)->set(dbg()); }
+template<bool up> const Def* TBound<up>::rebuild_(World& w, const Def*  , Defs o) const { return w.bound<up>(o)->set(dbg()); }
 
 /*
  * stub
  */
 
-Arr*    Arr   ::stub_(World& w, Ref t) { return w.mut_arr  (t); }
-Global* Global::stub_(World& w, Ref t) { return w.global   (t, is_mutable()); }
-Infer*  Infer ::stub_(World& w, Ref t) { return w.mut_infer(t); }
-Lam*    Lam   ::stub_(World& w, Ref t) { return w.mut_lam  (t->as<Pi>()); }
-Pack*   Pack  ::stub_(World& w, Ref t) { return w.mut_pack (t); }
-Pi*     Pi    ::stub_(World& w, Ref t) { return w.mut_pi   (t, is_implicit()); }
-Sigma*  Sigma ::stub_(World& w, Ref t) { return w.mut_sigma(t, num_ops()); }
+Arr*    Arr   ::stub_(World& w, const Def* t) { return w.mut_arr  (t); }
+Global* Global::stub_(World& w, const Def* t) { return w.global   (t, is_mutable()); }
+Infer*  Infer ::stub_(World& w, const Def* t) { return w.mut_infer(t); }
+Lam*    Lam   ::stub_(World& w, const Def* t) { return w.mut_lam  (t->as<Pi>()); }
+Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
+Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }
+Sigma*  Sigma ::stub_(World& w, const Def* t) { return w.mut_sigma(t, num_ops()); }
 
-template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
-template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , Ref  ) { fe::unreachable(); }
+template<bool up> TBound<up>* TBound<up>::stub_(World& w, const Def* t) { return w.mut_bound<up>(t, num_ops()); }
+template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , const Def*  ) { fe::unreachable(); }
 
 /*
  * instantiate templates
  */
 
 #ifndef DOXYGEN
-template Ref            TExt<false>  ::rebuild_(World&, Ref, Defs) const;
-template Ref            TExt<true >  ::rebuild_(World&, Ref, Defs) const;
-template Ref            TBound<false>::rebuild_(World&, Ref, Defs) const;
-template Ref            TBound<true >::rebuild_(World&, Ref, Defs) const;
-template TBound<false>* TBound<false>::stub_(World&, Ref);
-template TBound<true >* TBound<true >::stub_(World&, Ref);
-template TExt<false>*   TExt<false>  ::stub_(World&, Ref);
-template TExt<true >*   TExt<true >  ::stub_(World&, Ref);
+template const Def*            TExt<false>  ::rebuild_(World&, const Def*, Defs) const;
+template const Def*            TExt<true >  ::rebuild_(World&, const Def*, Defs) const;
+template const Def*            TBound<false>::rebuild_(World&, const Def*, Defs) const;
+template const Def*            TBound<true >::rebuild_(World&, const Def*, Defs) const;
+template TBound<false>* TBound<false>::stub_(World&, const Def*);
+template TBound<true >* TBound<true >::stub_(World&, const Def*);
+template TExt<false>*   TExt<false>  ::stub_(World&, const Def*);
+template TExt<true >*   TExt<true >  ::stub_(World&, const Def*);
 #endif
 
 // clang-format on
@@ -178,7 +178,7 @@ const Pi* Pi::immutabilize() {
 }
 
 const Def* Sigma::immutabilize() {
-    if (is_immutabilizable()) return static_cast<const Sigma*>(*world().sigma(ops()));
+    if (is_immutabilizable()) return static_cast<const Sigma*>(world().sigma(ops()));
     return nullptr;
 }
 
@@ -206,12 +206,12 @@ const Def* Pack::immutabilize() {
  * reduce
  */
 
-DefVec Def::reduce(Ref arg) const {
+DefVec Def::reduce(const Def* arg) const {
     if (auto mut = isa_mut()) return mut->reduce(arg);
     return DefVec(ops().begin(), ops().end());
 }
 
-DefVec Def::reduce(Ref arg) {
+DefVec Def::reduce(const Def* arg) {
     if (auto var = has_var()) {
         auto& cache = world().move_.cache;
         if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
@@ -225,12 +225,12 @@ DefVec Def::reduce(Ref arg) {
     return DefVec(ops().begin(), ops().end());
 }
 
-Ref Def::reduce(size_t i, Ref arg) const {
+const Def* Def::reduce(size_t i, const Def* arg) const {
     if (auto mut = isa_mut(); mut && has_var()) return mut->reduce(arg)[i];
     return op(i);
 }
 
-Ref Def::refine(size_t i, Ref new_op) const {
+const Def* Def::refine(size_t i, const Def* new_op) const {
     DefVec new_ops(ops().begin(), ops().end());
     new_ops[i] = new_op;
     return rebuild(type(), new_ops);
@@ -245,7 +245,7 @@ Def* Def::  set(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, 
 Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
 // clang-format on
 
-Def* Def::set(size_t i, Ref def) {
+Def* Def::set(size_t i, const Def* def) {
     invalidate();
     def = check(i, def);
     assert(def && !op(i) && curr_op_ == i);
@@ -403,11 +403,11 @@ Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 World& Def::world() const noexcept {
     for (auto def = this;; def = def->type()) {
         if (def->isa<Univ>()) return *def->world_;
-        if (auto type = def->isa<Type>()) return *type->level().def()->type().def()->as<Univ>()->world_;
+        if (auto type = def->isa<Type>()) return *type->level()->type()->as<Univ>()->world_;
     }
 }
 
-Ref Def::unfold_type() const {
+const Def* Def::unfold_type() const {
     if (!type_) {
         auto& w = world();
         if (auto t = isa<Type>()) return w.type(w.uinc(t->level()));
@@ -441,7 +441,7 @@ const Def* Def::debug_suffix(std::string suffix) const { return dbg_.set(world()
 
 // clang-format off
 
-Ref Def::var() {
+const Def* Def::var() {
     if (var_) return var_;
     auto& w = world();
 
@@ -468,7 +468,7 @@ bool Def::is_term() const {
     return false;
 }
 
-Ref Def::arity() const {
+const Def* Def::arity() const {
     if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
     if (auto arr    = isa<Arr  >()) return arr->shape();
     if (auto t = type())            return t->arity();
@@ -505,7 +505,7 @@ nat_t Def::num_tprojs() const {
     return 1;
 }
 
-Ref Def::proj(nat_t a, nat_t i) const {
+const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
 
     if (auto arr = isa<Arr>()) {
@@ -532,7 +532,7 @@ Ref Def::proj(nat_t a, nat_t i) const {
  * Idx
  */
 
-Ref Idx::isa(Ref def) {
+const Def* Idx::isa(const Def* def) {
     if (auto app = def->isa<App>()) {
         if (app->callee()->isa<Idx>()) return app->arg();
     }
@@ -540,13 +540,13 @@ Ref Idx::isa(Ref def) {
     return nullptr;
 }
 
-std::optional<nat_t> Idx::isa_lit(Ref def) {
+std::optional<nat_t> Idx::isa_lit(const Def* def) {
     if (auto size = Idx::isa(def))
         if (auto l = Lit::isa(size)) return l;
     return {};
 }
 
-std::optional<nat_t> Idx::size2bitwidth(Ref size) {
+std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
     if (size->isa<Top>()) return 64;
     if (auto s = Lit::isa(size)) return size2bitwidth(*s);
     return {};
@@ -557,6 +557,6 @@ std::optional<nat_t> Idx::size2bitwidth(Ref size) {
  */
 
 const App* Global::type() const { return Def::type()->as<App>(); }
-Ref Global::alloced_type() const { return type()->arg(0); }
+const Def* Global::alloced_type() const { return type()->arg(0); }
 
 } // namespace mim

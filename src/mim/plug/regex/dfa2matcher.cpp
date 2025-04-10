@@ -63,7 +63,7 @@ DFAMap<Ranges> transitions_to_ranges(World& w, const DFANode* state) {
     return state2ranges;
 }
 
-Ref match_range(Ref c, nat_t lo, nat_t hi) {
+const Def* match_range(const Def* c, nat_t lo, nat_t hi) {
     World& w = c->world();
     if (lo == 0 && hi == 255) return w.lit_tt();
 
@@ -73,9 +73,9 @@ Ref match_range(Ref c, nat_t lo, nat_t hi) {
     return w.call(core::bit2::and_, w.lit_nat(2), w.tuple({below_hi, above_lo}));
 }
 
-DFAMap<Ref> create_check_match_transitions_from(Ref c, const DFANode* state) {
+DFAMap<const Def*> create_check_match_transitions_from(const Def* c, const DFANode* state) {
     World& w = c->world();
-    DFAMap<Ref> state2check;
+    DFAMap<const Def*> state2check;
 
     auto state2ranges = transitions_to_ranges(w, state);
 
@@ -92,7 +92,7 @@ DFAMap<Ref> create_check_match_transitions_from(Ref c, const DFANode* state) {
 
 } // namespace
 
-extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
+extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, const Def* n) {
     w.DLOG("dfa to match: {}", dfa);
 
     auto states = dfa.get_reachable_states();

@@ -4,7 +4,7 @@
 
 namespace mim::plug::mem {
 
-Ref normalize_lea(Ref, Ref, Ref arg) {
+const Def* normalize_lea(const Def*, const Def*, const Def* arg) {
     auto [ptr, index]          = arg->projs<2>();
     auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
 
@@ -14,7 +14,7 @@ Ref normalize_lea(Ref, Ref, Ref arg) {
     return {};
 }
 
-Ref normalize_load(Ref type, Ref, Ref arg) {
+const Def* normalize_load(const Def* type, const Def*, const Def* arg) {
     auto& world                = type->world();
     auto [mem, ptr]            = arg->projs<2>();
     auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
@@ -28,15 +28,15 @@ Ref normalize_load(Ref type, Ref, Ref arg) {
     return {};
 }
 
-Ref normalize_remem(Ref, Ref, Ref) { return {}; }
+const Def* normalize_remem(const Def*, const Def*, const Def*) { return {}; }
 
-Ref normalize_store(Ref, Ref, Ref arg) {
+const Def* normalize_store(const Def*, const Def*, const Def* arg) {
     auto [mem, ptr, val] = arg->projs<3>();
 
     if (ptr->isa<Bot>() || val->isa<Bot>()) return mem;
     if (auto pack = val->isa<Pack>(); pack && pack->body()->isa<Bot>()) return mem;
     if (auto tuple = val->isa<Tuple>()) {
-        if (std::ranges::all_of(tuple->ops(), [](Ref op) { return op->isa<Bot>(); })) return mem;
+        if (std::ranges::all_of(tuple->ops(), [](const Def* op) { return op->isa<Bot>(); })) return mem;
     }
 
     return {};

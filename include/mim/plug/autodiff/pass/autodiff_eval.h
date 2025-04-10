@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
+
 #include <mim/pass/pass.h>
 
 namespace mim::plug::autodiff {
@@ -13,13 +14,13 @@ public:
         : RWPass(man, "autodiff_eval") {}
 
     /// Detect autodiff calls.
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 
     /// Acts on toplevel autodiff on closed terms:
     /// * Replaces lambdas, operators with the appropriate derivatives.
     /// * Creates new lambda, calls associate variables, init maps, calls augment.
-    Ref derive(Ref);
-    Ref derive_(Ref);
+    const Def* derive(const Def*);
+    const Def* derive_(const Def*);
 
     /// Applies to (open) expressions in a functional context.
     /// Returns the rewritten expressions and augments the partial and modular pullbacks.
@@ -27,16 +28,16 @@ public:
     /// Otherwise, only pullbacks are added.
     /// To do so, some calls (e.g. axioms) are replaced by their derivatives.
     /// This transformation can be seen as an augmentation with a dual computation that generates the derivatives.
-    Ref augment(Ref, Lam*, Lam*);
-    Ref augment_(Ref, Lam*, Lam*);
+    const Def* augment(const Def*, Lam*, Lam*);
+    const Def* augment_(const Def*, Lam*, Lam*);
     /// helper functions for augment
-    Ref augment_var(const Var*, Lam*, Lam*);
-    Ref augment_lam(Lam*, Lam*, Lam*);
-    Ref augment_extract(const Extract*, Lam*, Lam*);
-    Ref augment_app(const App*, Lam*, Lam*);
-    Ref augment_lit(const Lit*, Lam*, Lam*);
-    Ref augment_tuple(const Tuple*, Lam*, Lam*);
-    Ref augment_pack(const Pack* pack, Lam* f, Lam* f_diff);
+    const Def* augment_var(const Var*, Lam*, Lam*);
+    const Def* augment_lam(Lam*, Lam*, Lam*);
+    const Def* augment_extract(const Extract*, Lam*, Lam*);
+    const Def* augment_app(const App*, Lam*, Lam*);
+    const Def* augment_lit(const Lit*, Lam*, Lam*);
+    const Def* augment_tuple(const Tuple*, Lam*, Lam*);
+    const Def* augment_pack(const Pack* pack, Lam* f, Lam* f_diff);
 
 private:
     /// Transforms closed terms (lambda, operator) to derived expressions.

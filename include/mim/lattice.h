@@ -19,7 +19,7 @@ public:
     /// @name Get Element by Type
     ///@{
     size_t find(const Def* type) const;
-    Ref get(const Def* type) const { return op(find(type)); }
+    const Def* get(const Def* type) const { return op(find(type)); }
     ///@}
 };
 
@@ -38,13 +38,13 @@ private:
 public:
     using Setters<TBound<Up>>::set;
 
-    TBound* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    TBound* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     static constexpr auto Node = Up ? Node::Join : Node::Meet;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    TBound* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    TBound* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -60,7 +60,7 @@ private:
     Ac(const Def* type, Defs defs)
         : Def(Node, type, defs, 0) {}
 
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -77,13 +77,13 @@ public:
 
     /// @name ops
     ///@{
-    Ref value() const { return op(0); }
+    const Def* value() const { return op(0); }
     ///@}
 
     static constexpr auto Node = Node::Vel;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -99,13 +99,13 @@ public:
 
     /// @name ops
     ///@{
-    Ref value() const { return op(0); }
+    const Def* value() const { return op(0); }
     ///@}
 
     static constexpr auto Node = Node::Pick;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -133,14 +133,14 @@ public:
 
     /// @name ops
     ///@{
-    Ref value() const { return op(0); }
-    Ref probe() const { return op(1); }
-    Ref match() const { return op(2); }
-    Ref clash() const { return op(3); }
+    const Def* value() const { return op(0); }
+    const Def* probe() const { return op(1); }
+    const Def* match() const { return op(2); }
+    const Def* clash() const { return op(3); }
     ///@}
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };
@@ -161,13 +161,13 @@ private:
 public:
     using Setters<TExt<Up>>::set;
 
-    TExt* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+    TExt* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     static constexpr auto Node = Up ? Node::Top : Node::Bot;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    TExt* stub_(World&, Ref) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    TExt* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -193,13 +193,13 @@ public:
 
     /// @name ops
     ///@{
-    Ref inhabitant() const { return op(0); }
+    const Def* inhabitant() const { return op(0); }
     ///@}
 
     static constexpr auto Node = Node::Uniq;
 
 private:
-    Ref rebuild_(World&, Ref, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
 
     friend class World;
 };

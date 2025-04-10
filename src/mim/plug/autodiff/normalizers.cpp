@@ -8,24 +8,24 @@ namespace mim::plug::autodiff {
 
 /// Currently this normalizer does nothin.
 /// TODO: Maybe we want to handle trivial lookup replacements here.
-Ref normalize_ad(Ref, Ref, Ref) { return {}; }
+const Def* normalize_ad(const Def*, const Def*, const Def*) { return {}; }
 
-Ref normalize_AD(Ref, Ref, Ref arg) {
+const Def* normalize_AD(const Def*, const Def*, const Def* arg) {
     auto ad_ty = autodiff_type_fun(arg);
     if (ad_ty) return ad_ty;
     return {};
 }
 
-Ref normalize_Tangent(Ref, Ref, Ref arg) { return tangent_type_fun(arg); }
+const Def* normalize_Tangent(const Def*, const Def*, const Def* arg) { return tangent_type_fun(arg); }
 
 /// Currently this normalizer does nothing.
 /// We usually want to keep zeros as long as possible to avoid unnecessary allocations.
 /// A high-level addition with zero can be shortened directly.
-Ref normalize_zero(Ref, Ref, Ref) { return {}; }
+const Def* normalize_zero(const Def*, const Def*, const Def*) { return {}; }
 
 /// Currently resolved the full addition.
 /// There is no benefit in keeping additions around longer than necessary.
-Ref normalize_add(Ref type, Ref callee, Ref arg) {
+const Def* normalize_add(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
 
     // TODO: add tuple -> tuple of adds
@@ -78,7 +78,7 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
     return {};
 }
 
-Ref normalize_sum(Ref type, Ref callee, Ref arg) {
+const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
 
     auto [count, T] = callee->as<App>()->args<2>();

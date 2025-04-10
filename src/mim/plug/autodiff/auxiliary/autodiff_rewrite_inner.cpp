@@ -12,20 +12,20 @@ using namespace std::literals;
 
 namespace mim::plug::autodiff {
 
-Ref AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam*) {
+const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam*) {
     auto pb               = zero_pullback(lit->type(), f->dom(2, 0));
     partial_pullback[lit] = pb;
     return lit;
 }
 
-Ref AutoDiffEval::augment_var(const Var* var, Lam*, Lam*) {
+const Def* AutoDiffEval::augment_var(const Var* var, Lam*, Lam*) {
     assert(augmented.count(var));
     auto aug_var = augmented[var];
     assert(partial_pullback.count(aug_var));
     return var;
 }
 
-Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
+const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     // TODO: we need partial pullbacks for tuples (higher-order / ret-cont application)
     // also for higher-order args, ret_cont (at another point)
     // the pullback is not important but formally required by tuple rule
@@ -83,14 +83,14 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     return aug_lam;
 }
 
-Ref AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
+const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
     auto tuple = ext->tuple();
     auto index = ext->index();
 
     auto aug_tuple = augment(tuple, f, f_diff);
     auto aug_index = augment(index, f, f_diff);
 
-    Ref pb;
+    const Def* pb;
     world().DLOG("tuple was: {} : {}", tuple, tuple->type());
     world().DLOG("aug tuple: {} : {}", aug_tuple, aug_tuple->type());
     if (shadow_pullback.count(aug_tuple)) {
@@ -120,12 +120,12 @@ Ref AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
     return aug_ext;
 }
 
-Ref AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
+const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     // TODO: should use ops instead?
-    auto aug_ops = tup->projs([&](Ref op) -> const Def* { return augment(op, f, f_diff); });
+    auto aug_ops = tup->projs([&](const Def* op) -> const Def* { return augment(op, f, f_diff); });
     auto aug_tup = world().tuple(aug_ops);
 
-    auto pbs = DefVec(Defs(aug_ops), [&](Ref op) { return partial_pullback[op]; });
+    auto pbs = DefVec(Defs(aug_ops), [&](const Def* op) { return partial_pullback[op]; });
     world().DLOG("tuple pbs {,}", pbs);
     // shadow pb = tuple of pbs
     auto shadow_pb           = world().tuple(pbs);
@@ -155,7 +155,7 @@ Ref AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     return aug_tup;
 }
 
-Ref AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
+const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     auto shape = pack->arity(); // TODO: arity vs shape
     auto body  = pack->body();
 
@@ -197,7 +197,7 @@ Ref AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     return aug_pack;
 }
 
-Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
+const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     auto callee = app->callee();
     auto arg    = app->arg();
 
@@ -304,7 +304,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 }
 
 /// Rewrites the given definition in a lambda environment.
-Ref AutoDiffEval::augment_(Ref def, Lam* f, Lam* f_diff) {
+const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     // We use macros above to avoid recomputation.
     // TODO: Alternative:
     // Use class instances to rewrite inside a function and save such values (f, f_diff, f->dom(2, 0)).

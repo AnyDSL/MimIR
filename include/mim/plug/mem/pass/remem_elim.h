@@ -9,7 +9,7 @@ public:
     RememElim(PassMan& man)
         : RWPass(man, "remem_elim") {}
 
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 };
 
 } // namespace mim::plug::mem

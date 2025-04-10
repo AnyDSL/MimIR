@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
+
 #include <mim/pass/pass.h>
 
 namespace mim::plug::refly {
@@ -11,7 +12,7 @@ public:
     RemoveDbgPerm(PassMan& man)
         : RWPass(man, "remove_dbg_perm") {}
 
-    Ref rewrite(Ref) override;
+    const Def* rewrite(const Def*) override;
 };
 
 } // namespace mim::plug::refly

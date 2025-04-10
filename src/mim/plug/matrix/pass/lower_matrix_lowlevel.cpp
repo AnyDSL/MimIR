@@ -21,7 +21,7 @@ namespace mim::plug::matrix {
 
 namespace {
 
-Ref op_lea_tuple(Ref arr, Ref tuple) {
+const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
     auto& world = arr->world();
     world.DLOG("op_lea_tuple arr {} : {}", arr, arr->type());
     auto n       = tuple->num_projs();
@@ -30,7 +30,7 @@ Ref op_lea_tuple(Ref arr, Ref tuple) {
     return element;
 }
 
-Ref op_pack_tuple(u64 n, Ref tuple, Ref val) {
+const Def* op_pack_tuple(u64 n, const Def* tuple, const Def* val) {
     auto& world = val->world();
     // TODO: find out why num_projs is wrong
     auto element = val;
@@ -43,7 +43,7 @@ Ref op_pack_tuple(u64 n, Ref tuple, Ref val) {
     return element;
 }
 
-Ref arr_ty_of_matrix_ty(Ref S, Ref T) {
+const Def* arr_ty_of_matrix_ty(const Def* S, const Def* T) {
     auto& world = S->world();
     auto n      = S->num_projs();
     auto arr_ty = T;
@@ -56,7 +56,7 @@ Ref arr_ty_of_matrix_ty(Ref S, Ref T) {
 
 } // namespace
 
-Ref LowerMatrixLowLevel::rewrite_imm(Ref def) {
+const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
     assert(!match<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
     assert(!match<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
     assert(!match<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
