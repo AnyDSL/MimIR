@@ -102,11 +102,10 @@ using fe::operator!=;
 ///@{
 enum class Dep : unsigned {
     None  = 0,
-    Axiom = 1 << 0,
-    Infer = 1 << 1,
-    Mut   = 1 << 2,
+    Mut   = 1 << 0,
+    Var   = 1 << 1,
+    Infer = 1 << 2,
     Proxy = 1 << 3,
-    Var   = 1 << 4,
 };
 ///@}
 
