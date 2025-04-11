@@ -295,8 +295,6 @@ public:
     bool has_dep() const { return dep_ != 0; }
     bool has_dep(Dep d) const { return has_dep(unsigned(d)); }
     bool has_dep(unsigned u) const { return dep_ & u; }
-    /// Neither a Dep::Mut nor a Dep::Var; can often be used as shortcut as an optimization.
-    bool has_const_dep() const { return !has_dep(Dep::Mut | Dep::Var); }
     ///@}
 
     /// @name proj

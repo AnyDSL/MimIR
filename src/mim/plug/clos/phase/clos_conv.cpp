@@ -10,10 +10,6 @@ namespace mim::plug::clos {
 
 namespace {
 
-bool is_toplevel(const Def* fd) {
-    return fd->has_const_dep() || fd->isa_mut<Global>() || fd->isa<Axiom>() || !fd->is_term();
-}
-
 bool is_memop_res(const Def* fd) {
     auto proj = fd->isa<Extract>();
     if (!proj) return false;
@@ -32,7 +28,7 @@ DefSet free_defs(const Nest& nest) {
     while (!queue.empty()) {
         auto def = pop(queue);
         for (auto op : def->deps()) {
-            if (op->has_const_dep()) {
+            if (op->is_closed()) {
                 // do nothing
             } else if (nest.contains(op)) {
                 if (auto [_, ins] = bound.emplace(op); ins) queue.emplace(op);
@@ -51,7 +47,7 @@ DefSet free_defs(const Nest& nest) {
 
 void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
     assert(!match<mem::M>(fd) && "mem tokens must not be free");
-    if (is_toplevel(fd)) return;
+    if (fd->is_closed()) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
         if (var != lam->ret_var()) node->add_fvs(fd);
     } else if (auto q = match(attr::freeBB, fd)) {

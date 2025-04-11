@@ -54,12 +54,12 @@ struct Inline {
     const Def* operator->() const { return def_; }
     const Def* operator*() const { return def_; }
     explicit operator bool() const {
-        if (def_->has_const_dep()) return true;
-
         if (auto mut = def_->isa_mut()) {
             if (isa_decl(mut)) return false;
             return true;
         }
+
+        if (def_->is_closed()) return true;
 
         if (auto app = def_->isa<App>()) {
             if (app->type()->isa<Pi>()) return true; // curried apps are printed inline

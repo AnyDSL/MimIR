@@ -701,9 +701,9 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
 template<pe id> const Def* normalize_pe(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
 
-    if constexpr (id == pe::known) {
+    if constexpr (id == pe::is_closed) {
         if (match(pe::hlt, arg)) return world.lit_ff();
-        if (arg->has_const_dep()) return world.lit_tt();
+        if (arg->is_closed()) return world.lit_tt();
     }
 
     return {};

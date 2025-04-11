@@ -247,8 +247,8 @@ axm %core.trait(size, align): * → Nat, normalize_trait;
 ///
 /// Steers the partial evaluator.
 ///
-axm %core.pe(hlt, run): {T: *} → T → T, normalize_pe;
-axm %core.pe(known): {T: *} → T → Bool, normalize_pe;
+axm %core.pe(hlt, run):  {T: *} → T → T, normalize_pe;
+axm %core.pe(is_closed): {T: *} → T → Bool, normalize_pe;
 ///
 /// ### %%core.zip
 ///

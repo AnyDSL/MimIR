@@ -43,7 +43,7 @@ Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
     gid_       = w.next_gid();
     if (auto var = isa<Var>()) {
         vars_ = Vars(var);
-    } else if (!has_const_dep()) {
+    } else { // TODO optimize
         for (auto op : deps()) {
             vars_ = vars.merge(vars_, op->local_vars());
             muts_ = muts.merge(muts_, op->local_muts());
