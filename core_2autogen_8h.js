@@ -130,7 +130,7 @@ var core_2autogen_8h =
     [ "pe", "core_2autogen_8h.html#a9b11d4401cc2514de71bd80baa644977", [
       [ "hlt", "core_2autogen_8h.html#a9b11d4401cc2514de71bd80baa644977a4f4000d921968b9665f52e88333007da", null ],
       [ "run", "core_2autogen_8h.html#a9b11d4401cc2514de71bd80baa644977aa53108f7543b75adbb34afc035d4cdf6", null ],
-      [ "known", "core_2autogen_8h.html#a9b11d4401cc2514de71bd80baa644977ac90ae688b2a3b1fd0751fd743eb385cd", null ]
+      [ "is_closed", "core_2autogen_8h.html#a9b11d4401cc2514de71bd80baa644977a8da26ba680a4bc49270f115861546f0e", null ]
     ] ],
     [ "shr", "core_2autogen_8h.html#aa277dfbcc34fa69c6e62d136815f3e43", [
       [ "a", "core_2autogen_8h.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661", null ],

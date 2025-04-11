@@ -42,6 +42,5 @@ var searchData=
   ['keep_39',['keep',['../classmim_1_1BetaRed.html#a8030304881c60088fcf7f4b1561f3190',1,'mim::BetaRed']]],
   ['keywords_40',['Keywords',['../langref.html#autotoc_md36',1,'']]],
   ['kind_41',['Kind',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad626102cfc2416a570fc0dc582a9b771',1,'mim']]],
-  ['kinds_20builtin_20types_42',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md43',1,'']]],
-  ['known_43',['known',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977ac90ae688b2a3b1fd0751fd743eb385cd',1,'mim::plug::core']]]
+  ['kinds_20builtin_20types_42',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md43',1,'']]]
 ];

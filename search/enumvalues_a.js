@@ -39,6 +39,5 @@ var searchData=
   ['k_5ftype_36',['K_Type',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a99c9443b98ae3d0847fdcd64f6600e25',1,'mim::ast::Tok']]],
   ['k_5funiv_37',['K_Univ',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a49b3d477647d73a29f5821aad9819448',1,'mim::ast::Tok']]],
   ['k_5fwhere_38',['K_where',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a591638235693a00f9ae369606644a290',1,'mim::ast::Tok']]],
-  ['kind_39',['Kind',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad626102cfc2416a570fc0dc582a9b771',1,'mim']]],
-  ['known_40',['known',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977ac90ae688b2a3b1fd0751fd743eb385cd',1,'mim::plug::core']]]
+  ['kind_39',['Kind',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad626102cfc2416a570fc0dc582a9b771',1,'mim']]]
 ];

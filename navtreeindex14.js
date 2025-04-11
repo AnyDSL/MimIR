@@ -1,7 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html":[5,0,1,3,1,0],
-"classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html#a1cf5960e5f51278993a5011b0dd6c18b":[3,0,1,5,1,0,8],
 "classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html#a1cf5960e5f51278993a5011b0dd6c18b":[5,0,1,3,1,0,8],
 "classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html#a1df1b2a55dc9206db3e478a5d1da1bc1":[3,0,1,5,1,0,7],
 "classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html#a1df1b2a55dc9206db3e478a5d1da1bc1":[5,0,1,3,1,0,7],
@@ -249,5 +247,7 @@ var NAVTREEINDEX14 =
 "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html#ab2c7d889851ce6cc6fba4c4389a2843e":[3,0,1,5,11,0,1],
 "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html#ab2c7d889851ce6cc6fba4c4389a2843e":[5,0,1,3,7,0,1],
 "classmim_1_1plug_1_1regex_1_1LowerRegex.html":[3,0,1,5,12,1],
-"classmim_1_1plug_1_1regex_1_1LowerRegex.html":[5,0,1,3,8,1]
+"classmim_1_1plug_1_1regex_1_1LowerRegex.html":[5,0,1,3,8,1],
+"classmim_1_1plug_1_1regex_1_1LowerRegex.html#a24cbebe0a3cc2dac900d4e094580e3c9":[3,0,1,5,12,1,0],
+"classmim_1_1plug_1_1regex_1_1LowerRegex.html#a24cbebe0a3cc2dac900d4e094580e3c9":[5,0,1,3,8,1,0]
 };

@@ -24,7 +24,6 @@ var classmim_1_1Def =
     [ "free_vars", "classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9", null ],
     [ "free_vars", "classmim_1_1Def.html#aed49f75ef33a07d498daffbcc3d2d838", null ],
     [ "gid", "classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4", null ],
-    [ "has_const_dep", "classmim_1_1Def.html#a64b81b4bc8fd5b18cfe4899c78d8638d", null ],
     [ "has_dep", "classmim_1_1Def.html#ab6114c2f33845b89df6c4e551ea438bb", null ],
     [ "has_dep", "classmim_1_1Def.html#a24e57816b839ef9209073cff35710c22", null ],
     [ "has_dep", "classmim_1_1Def.html#a2aedb3937891f8e9575ede65c32b13c2", null ],

@@ -3,10 +3,10 @@ var hash_8h =
     [ "mim::FNV1< size_t >", "namespacemim.html#structmim_1_1FNV1", null ],
     [ "mim::FNV1< 4 >", "structmim_1_1FNV1_3_014_01_4.html", "structmim_1_1FNV1_3_014_01_4" ],
     [ "mim::FNV1< 8 >", "structmim_1_1FNV1_3_018_01_4.html", "structmim_1_1FNV1_3_018_01_4" ],
-    [ "hash", "hash_8h.html#ab35412654c5272e29bcb324891cde06c", null ],
-    [ "hash_begin", "hash_8h.html#ad8c5de48df76227ddf9d84d440430ddf", null ],
-    [ "hash_begin", "hash_8h.html#ab670f459eab07d9f94e38da218cef4c9", null ],
-    [ "hash_combine", "hash_8h.html#a88d0a0276b33ec2e6ee0211d0fa3ae1a", null ],
-    [ "murmur3", "hash_8h.html#a41d2b518e1d57f537577c3925d915015", null ],
-    [ "splitmix64", "hash_8h.html#a0bdb14c793d3bca13a21d6ee0a8c2999", null ]
+    [ "hash", "hash_8h.html#abe915a72a4c1481bb851622d9df4d8bd", null ],
+    [ "hash_begin", "hash_8h.html#ab2a169d2e23178f0163bc05c774d2ac2", null ],
+    [ "hash_begin", "hash_8h.html#ac30b5cde9bbd181fac8b2cb7bf27fc62", null ],
+    [ "hash_combine", "hash_8h.html#a4d4c9094e2f043e1eca201f173cf96da", null ],
+    [ "murmur3", "hash_8h.html#acc8c144dd090446d1c2fc0ae2ca908a9", null ],
+    [ "splitmix64", "hash_8h.html#a818035940bd9a579f69cb89e3cd097b4", null ]
 ];

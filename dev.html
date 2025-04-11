@@ -376,7 +376,7 @@ Upcast for Mutables</h3>
 <div class="line">    <span class="keyword">auto</span> sigma = def-&gt;as&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00191">def.h:191</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_a53a70702795d9c4bafe6de0d4f4a66f1"><div class="ttname"><a href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">mim::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00417">def.h:417</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a53a70702795d9c4bafe6de0d4f4a66f1"><div class="ttname"><a href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">mim::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00415">def.h:415</a></div></div>
 </div><!-- fragment --><h3><a class="anchor" id="cast_lit"></a>
 Matching Literals</h3>
 <p>Often, you want to match a <a class="el" href="classmim_1_1Lit.html">Lit</a>eral and grab its content. You can use <a class="el" href="classmim_1_1Lit.html#a429b15b3da51e9b60ffab09a744896b7">Lit::isa</a>/<a class="el" href="classmim_1_1Lit.html#a95a167621043b56d131ebe4481b5d523">Lit::as</a> for this:</p>
@@ -579,7 +579,7 @@ Iterating over the Program</h1>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a0c26bf0d36a848670690490374d5b35a">deps</a>()) visit(done, op);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmim_1_1Def_html_a0c26bf0d36a848670690490374d5b35a"><div class="ttname"><a href="classmim_1_1Def.html#a0c26bf0d36a848670690490374d5b35a">mim::Def::deps</a></div><div class="ttdeci">Defs deps() const</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00430">def.cpp:430</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a0c26bf0d36a848670690490374d5b35a"><div class="ttname"><a href="classmim_1_1Def.html#a0c26bf0d36a848670690490374d5b35a">mim::Def::deps</a></div><div class="ttdeci">Defs deps() const</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00437">def.cpp:437</a></div></div>
 <div class="ttc" id="anamespacemim_html_aa55cde5ad8246840d0a046cc728f987d"><div class="ttname"><a href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">mim::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00059">def.h:59</a></div></div>
 </div><!-- fragment --><p>However, you will most likely want to use the <a class="el" href="passes.html#md_docs_2passes">pass</a> or the phase infrastructure. </p>
 </div></div><!-- contents -->

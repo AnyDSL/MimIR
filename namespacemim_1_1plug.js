@@ -141,7 +141,7 @@ var namespacemim_1_1plug =
       [ "pe", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977", [
         [ "hlt", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a4f4000d921968b9665f52e88333007da", null ],
         [ "run", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977aa53108f7543b75adbb34afc035d4cdf6", null ],
-        [ "known", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977ac90ae688b2a3b1fd0751fd743eb385cd", null ]
+        [ "is_closed", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a8da26ba680a4bc49270f115861546f0e", null ]
       ] ],
       [ "shr", "namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43", [
         [ "a", "namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661", null ],
