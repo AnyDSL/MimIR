@@ -34,6 +34,7 @@ Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
         gid_  = world->next_gid();
         hash_ = mim::hash_begin(u8(node));
     } else if (auto var = isa<Var>()) {
+        assert(flags_ == 0); // if we ever need flags here, we need to hash that
         gid_  = type->world().next_gid();
         vars_ = Vars(var);
         dep_ |= type->dep_;
@@ -43,27 +44,34 @@ Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
         hash_        = hash_combine(hash_, type->gid());
         hash_        = hash_combine(hash_, op->gid());
     } else {
-        auto& w    = world ? *world : type ? type->world() : ops[0]->world();
-        auto& vars = w.vars();
-        auto& muts = w.muts();
-        gid_       = w.next_gid();
-        hash_      = hash_begin(u8(node));
-        hash_      = hash_combine(hash_, flags_);
+        Sets<const Var>* vars;
+        Sets<Def>* muts;
+        hash_ = hash_begin(u8(node));
+        hash_ = hash_combine(hash_, flags_);
+
         if (type) {
+            world = &type->world();
+            vars  = &world->vars();
+            muts  = &world->muts();
             dep_ |= type->dep_;
-            vars_ = vars.merge(vars_, type->local_vars());
-            muts_ = muts.merge(muts_, type->local_muts());
+            vars_ = vars->merge(vars_, type->local_vars());
+            muts_ = muts->merge(muts_, type->local_muts());
             hash_ = hash_combine(hash_, type->gid());
+        } else {
+            world = &ops[0]->world();
+            vars  = &world->vars();
+            muts  = &world->muts();
         }
 
+        gid_     = world->next_gid();
         auto ptr = ops_ptr();
         for (size_t i = 0, e = ops.size(); i != e; ++i) {
             auto op = ops[i];
             ptr[i]  = op;
             dep_ |= op->dep_;
-            vars_ = vars.merge(vars_, op->local_vars());
-            muts_ = muts.merge(muts_, op->local_muts());
-            hash_ = hash_combine(hash_, u32(op->gid()));
+            vars_ = vars->merge(vars_, op->local_vars());
+            muts_ = muts->merge(muts_, op->local_muts());
+            hash_ = hash_combine(hash_, op->gid());
         }
     }
 }
