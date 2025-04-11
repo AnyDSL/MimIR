@@ -11,7 +11,7 @@ namespace mim {
 /// See [Wikipedia](https://en.wikipedia.org/wiki/MurmurHash).
 ///@{
 /// Use for a single value to hash.
-inline uint32_t murmur3(uint32_t h) {
+inline constexpr uint32_t murmur3(uint32_t h) noexcept {
     h ^= h >> UINT32_C(16);
     h *= UINT32_C(0x85ebca6b);
     h ^= h >> UINT32_C(13);
@@ -20,7 +20,7 @@ inline uint32_t murmur3(uint32_t h) {
     return h;
 }
 
-inline uint64_t splitmix64(uint64_t h) {
+inline constexpr uint64_t splitmix64(uint64_t h) noexcept {
     h ^= h >> UINT64_C(30);
     h *= UINT64_C(0xbf58476d1ce4e5b9);
     h ^= h >> UINT64_C(27);
@@ -29,7 +29,7 @@ inline uint64_t splitmix64(uint64_t h) {
     return h;
 }
 
-inline size_t hash(size_t h) {
+inline constexpr size_t hash(size_t h) noexcept {
     if constexpr (sizeof(size_t) == 4)
         return murmur3(h);
     else if constexpr (sizeof(size_t) == 8)
@@ -55,7 +55,7 @@ template<> struct FNV1<8> {
     static const uint64_t prime  = UINT64_C(1099511628211);
 };
 
-template<class T> size_t hash_combine(size_t seed, T v) {
+template<class T> constexpr size_t hash_combine(size_t seed, T v) noexcept {
     static_assert(std::is_signed<T>::value || std::is_unsigned<T>::value, "please provide your own hash function");
 
     size_t val = v;
@@ -68,9 +68,9 @@ template<class T> size_t hash_combine(size_t seed, T v) {
     return seed;
 }
 
-inline size_t hash_begin() { return FNV1<sizeof(size_t)>::offset; }
+inline consteval size_t hash_begin() noexcept { return FNV1<sizeof(size_t)>::offset; }
 
-template<class T> size_t hash_begin(T val) { return hash_combine(hash_begin(), val); }
+template<class T> constexpr size_t hash_begin(T val) noexcept { return hash_combine(hash_begin(), val); }
 ///@}
 
 } // namespace mim
