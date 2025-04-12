@@ -1,6 +1,20 @@
 var searchData=
 [
-  ['match_0',['Match',['../classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Match',1,'mim::Axiom::Match&lt; T &gt;'],['../classmim_1_1Match.html',1,'mim::Match&lt; Id, D &gt;']]],
-  ['module_1',['Module',['../classmim_1_1ast_1_1Module.html',1,'mim::ast']]],
-  ['msg_2',['Msg',['../structmim_1_1Error_1_1Msg.html',1,'mim::Error']]]
+  ['lam_0',['Lam',['../classmim_1_1Lam.html',1,'mim']]],
+  ['lamdecl_1',['LamDecl',['../classmim_1_1ast_1_1LamDecl.html',1,'mim::ast']]],
+  ['lamexpr_2',['LamExpr',['../classmim_1_1ast_1_1LamExpr.html',1,'mim::ast']]],
+  ['lamspec_3',['LamSpec',['../classmim_1_1LamSpec.html',1,'mim']]],
+  ['letdecl_4',['LetDecl',['../classmim_1_1ast_1_1LetDecl.html',1,'mim::ast']]],
+  ['lexer_5',['Lexer',['../classmim_1_1ast_1_1Lexer.html',1,'mim::ast']]],
+  ['lit_6',['Lit',['../classmim_1_1Lit.html',1,'mim']]],
+  ['litexpr_7',['LitExpr',['../classmim_1_1ast_1_1LitExpr.html',1,'mim::ast']]],
+  ['log_8',['Log',['../classmim_1_1Log.html',1,'mim']]],
+  ['lowerfor_9',['LowerFor',['../classmim_1_1plug_1_1affine_1_1LowerFor.html',1,'mim::plug::affine']]],
+  ['lowermatrixhighlevelmapred_10',['LowerMatrixHighLevelMapRed',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html',1,'mim::plug::matrix']]],
+  ['lowermatrixlowlevel_11',['LowerMatrixLowLevel',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html',1,'mim::plug::matrix']]],
+  ['lowermatrixmediumlevel_12',['LowerMatrixMediumLevel',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html',1,'mim::plug::matrix']]],
+  ['lowerregex_13',['LowerRegex',['../classmim_1_1plug_1_1regex_1_1LowerRegex.html',1,'mim::plug::regex']]],
+  ['lowertypedclos_14',['LowerTypedClos',['../classmim_1_1plug_1_1clos_1_1LowerTypedClos.html',1,'mim::plug::clos']]],
+  ['lowertypedclosprep_15',['LowerTypedClosPrep',['../classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html',1,'mim::plug::clos']]],
+  ['lt_16',['Lt',['../structautomaton_1_1DFANode_1_1Lt.html',1,'automaton::DFANode']]]
 ];

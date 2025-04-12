@@ -20,10 +20,10 @@
 <area shape="poly" id="edge20_Node000001_Node000016" title=" " alt="" coords="290,749,327,698,345,666,360,633,368,596,372,547,374,431,376,372,381,317,391,271,409,238,424,225,442,218,444,223,427,230,413,241,396,273,386,318,381,372,379,431,377,547,374,596,365,635,350,669,332,701,295,752"/>
 <area shape="rect" id="Node000018" href="$classmim_1_1Global.html" title=" " alt="" coords="445,252,547,277"/>
 <area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="290,749,327,698,345,666,360,633,373,582,376,535,366,451,362,411,365,371,379,330,409,287,425,274,444,267,445,272,427,279,413,290,384,332,370,372,368,411,371,450,381,535,379,583,365,635,350,669,331,701,294,752"/>
-<area shape="rect" id="Node000020" href="$classmim_1_1Idx.html" title="A built&#45;in constant of type Nat &#45;&gt; *." alt="" coords="456,301,536,327"/>
-<area shape="poly" id="edge22_Node000001_Node000020" title=" " alt="" coords="290,749,327,698,345,666,360,633,372,589,375,549,369,477,366,443,370,408,383,373,409,336,430,321,455,314,457,319,433,326,413,340,388,375,375,409,372,443,374,476,381,549,377,590,365,635,350,669,331,701,294,752"/>
-<area shape="rect" id="Node000022" href="$classmim_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on." alt="" coords="451,351,541,376"/>
-<area shape="poly" id="edge23_Node000001_Node000022" title=" " alt="" coords="290,749,326,698,360,633,371,597,374,563,371,503,371,474,375,445,386,416,409,385,428,372,450,364,451,369,430,376,413,389,391,419,380,447,376,474,377,503,380,563,376,598,365,635,331,700,294,752"/>
+<area shape="rect" id="Node000020" href="$classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on." alt="" coords="451,301,541,327"/>
+<area shape="poly" id="edge22_Node000001_Node000020" title=" " alt="" coords="290,749,327,698,345,666,360,633,372,589,375,549,369,477,366,443,370,408,383,373,409,336,428,322,449,315,451,320,430,327,413,340,388,375,375,409,372,443,374,476,381,549,377,590,365,635,350,669,331,701,294,752"/>
+<area shape="rect" id="Node000022" href="$classmim_1_1Idx.html" title="A built&#45;in constant of type Nat &#45;&gt; *." alt="" coords="456,351,536,376"/>
+<area shape="poly" id="edge23_Node000001_Node000022" title=" " alt="" coords="290,749,326,698,360,633,371,597,374,563,371,503,371,474,375,445,386,416,409,385,430,371,455,363,456,368,433,375,413,389,391,419,380,447,376,474,377,503,380,563,376,598,365,635,331,700,294,752"/>
 <area shape="rect" id="Node000024" href="$classmim_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple." alt="" coords="447,400,545,425"/>
 <area shape="poly" id="edge24_Node000001_Node000024" title=" " alt="" coords="289,749,325,697,360,633,370,604,374,577,374,529,375,506,379,482,390,459,409,435,426,422,446,415,448,420,429,427,413,439,394,462,384,484,380,506,379,529,379,578,375,605,365,635,330,700,294,752"/>
 <area shape="rect" id="Node000026" href="$classmim_1_1Lam.html" title="A function." alt="" coords="452,449,540,475"/>
@@ -114,9 +114,9 @@
 <area shape="poly" id="edge63_Node000076_Node000081" title=" " alt="" coords="567,2106,662,2085,663,2091,568,2112"/>
 <area shape="rect" id="Node000082" href="$classmim_1_1ast_1_1ExtractExpr.html" title="tuple#index" alt="" coords="640,2112,803,2137"/>
 <area shape="poly" id="edge64_Node000076_Node000082" title=" " alt="" coords="568,2122,640,2122,640,2127,568,2127"/>
-<area shape="rect" id="Node000083" href="$classmim_1_1ast_1_1IdExpr.html" title="sym" alt="" coords="657,2161,786,2187"/>
+<area shape="rect" id="Node000083" href="$classmim_1_1ast_1_1HoleExpr.html" title=" " alt="" coords="648,2161,795,2187"/>
 <area shape="poly" id="edge65_Node000076_Node000083" title=" " alt="" coords="568,2138,663,2159,662,2164,567,2143"/>
-<area shape="rect" id="Node000084" href="$classmim_1_1ast_1_1InferExpr.html" title=" " alt="" coords="648,2211,795,2236"/>
+<area shape="rect" id="Node000084" href="$classmim_1_1ast_1_1IdExpr.html" title="sym" alt="" coords="657,2211,786,2236"/>
 <area shape="poly" id="edge66_Node000076_Node000084" title=" " alt="" coords="529,2142,576,2169,630,2196,667,2208,666,2213,628,2200,574,2174,527,2147"/>
 <area shape="rect" id="Node000085" href="$classmim_1_1ast_1_1InsertExpr.html" title="ins(tuple, index, value)" alt="" coords="644,2260,799,2285"/>
 <area shape="poly" id="edge67_Node000076_Node000085" title=" " alt="" coords="518,2146,566,2196,597,2223,631,2245,660,2257,658,2262,628,2250,594,2227,562,2200,514,2150"/>
@@ -152,10 +152,10 @@
 <area shape="poly" id="edge85_Node000017_Node000016" title=" " alt="" coords="376,213,442,213,442,218,376,218"/>
 <area shape="rect" id="Node000019" href="$classmim_1_1Setters.html" title=" " alt="" coords="182,252,361,277"/>
 <area shape="poly" id="edge86_Node000019_Node000018" title=" " alt="" coords="374,262,444,262,444,267,374,267"/>
-<area shape="rect" id="Node000021" href="$classmim_1_1Setters.html" title=" " alt="" coords="193,301,349,327"/>
-<area shape="poly" id="edge87_Node000021_Node000020" title=" " alt="" coords="363,311,456,311,456,317,363,317"/>
-<area shape="rect" id="Node000023" href="$classmim_1_1Setters.html" title=" " alt="" coords="188,351,355,376"/>
-<area shape="poly" id="edge88_Node000023_Node000022" title=" " alt="" coords="368,361,450,361,450,366,368,366"/>
+<area shape="rect" id="Node000021" href="$classmim_1_1Setters.html" title=" " alt="" coords="188,301,355,327"/>
+<area shape="poly" id="edge87_Node000021_Node000020" title=" " alt="" coords="368,311,450,311,450,317,368,317"/>
+<area shape="rect" id="Node000023" href="$classmim_1_1Setters.html" title=" " alt="" coords="193,351,349,376"/>
+<area shape="poly" id="edge88_Node000023_Node000022" title=" " alt="" coords="363,361,456,361,456,366,363,366"/>
 <area shape="rect" id="Node000025" href="$classmim_1_1Setters.html" title=" " alt="" coords="185,400,358,425"/>
 <area shape="poly" id="edge89_Node000025_Node000024" title=" " alt="" coords="372,410,447,410,447,415,372,415"/>
 <area shape="rect" id="Node000027" href="$classmim_1_1Setters.html" title=" " alt="" coords="189,449,353,475"/>

@@ -55,10 +55,10 @@ var namespacemim =
     [ "GIDHash", "structmim_1_1GIDHash.html", "structmim_1_1GIDHash" ],
     [ "GIDLt", "structmim_1_1GIDLt.html", "structmim_1_1GIDLt" ],
     [ "Global", "classmim_1_1Global.html", "classmim_1_1Global" ],
+    [ "Hole", "classmim_1_1Hole.html", "classmim_1_1Hole" ],
     [ "Idx", "classmim_1_1Idx.html", "classmim_1_1Idx" ],
     [ "IndexMap", "classmim_1_1IndexMap.html", "classmim_1_1IndexMap" ],
     [ "IndexSet", "classmim_1_1IndexSet.html", "classmim_1_1IndexSet" ],
-    [ "Infer", "classmim_1_1Infer.html", "classmim_1_1Infer" ],
     [ "Insert", "classmim_1_1Insert.html", "classmim_1_1Insert" ],
     [ "Lam", "classmim_1_1Lam.html", "classmim_1_1Lam" ],
     [ "LamSpec", "classmim_1_1LamSpec.html", "classmim_1_1LamSpec" ],
@@ -175,8 +175,15 @@ var namespacemim =
       [ "None", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba6adf97f83acf6453d4a6a4b1070f3754", null ],
       [ "Mut", "namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7", null ],
       [ "Var", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77", null ],
-      [ "Infer", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79", null ],
+      [ "Hole", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba6368a5bde7853b2f6c660f010adbb988", null ],
       [ "Proxy", "namespacemim.html#a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f", null ]
+    ] ],
+    [ "Judge", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293", [
+      [ "Form", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293ad359c6df99b25183d81f7d728b71de0e", null ],
+      [ "Intro", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a1cad35d4b3b9f624f82dbf237daaf188", null ],
+      [ "Elim", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293ae46a61588776648a5513d415ba6de279", null ],
+      [ "Meta", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293ab6755d218d5f4e1cef9cce9cc39aeda9", null ],
+      [ "Hole", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988", null ]
     ] ],
     [ "Sort", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5", [
       [ "Term", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f", null ],

@@ -93,7 +93,7 @@ var searchData=
   ['tuple_5fof_5ftypes_90',['tuple_of_types',['../namespacemim.html#a8edd5d2569579fbdac7077d606a2e2b5',1,'mim']]],
   ['tuple_5fsize_3c_20mim_3a_3aspan_3c_20t_2c_20n_20_3e_20_3e_91',['tuple_size&lt; mim::Span&lt; T, N &gt; &gt;',['../structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html',1,'std']]],
   ['tupleexpr_92',['TupleExpr',['../classmim_1_1ast_1_1TupleExpr.html',1,'mim::ast::TupleExpr'],['../classmim_1_1ast_1_1TupleExpr.html#a61a6a227cca36e8009a9ea7a5e98aed5',1,'mim::ast::TupleExpr::TupleExpr()']]],
-  ['tuplefy_93',['tuplefy',['../classmim_1_1Infer.html#adf0d836e5eb8b3b588e90ae977160544',1,'mim::Infer']]],
+  ['tuplefy_93',['tuplefy',['../classmim_1_1Hole.html#a4a68f8d6bac6ac4e7ae1ae94b061ddf3',1,'mim::Hole']]],
   ['tupleptrn_94',['TuplePtrn',['../classmim_1_1ast_1_1TuplePtrn.html',1,'mim::ast::TuplePtrn'],['../classmim_1_1ast_1_1TuplePtrn.html#ad3a44ead35967850158cb1224293fe38',1,'mim::ast::TuplePtrn::TuplePtrn()']]],
   ['tuples_95',['Tuples',['../langref.html#autotoc_md46',1,'']]],
   ['tvar_96',['tvar',['../classmim_1_1Def.html#a41594be2f5849f844f1321ca6ddfe544',1,'mim::Def']]],

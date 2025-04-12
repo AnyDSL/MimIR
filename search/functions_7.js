@@ -8,5 +8,6 @@ var searchData=
   ['hash_5',['hash',['../classmim_1_1Def.html#a7a2188433df55928789a717ab00afc53',1,'mim::Def::hash()'],['../namespacemim.html#abe915a72a4c1481bb851622d9df4d8bd',1,'mim::hash(size_t h) noexcept']]],
   ['hash_5fbegin_6',['hash_begin',['../namespacemim.html#ab2a169d2e23178f0163bc05c774d2ac2',1,'mim::hash_begin() noexcept'],['../namespacemim.html#ac30b5cde9bbd181fac8b2cb7bf27fc62',1,'mim::hash_begin(T val) noexcept']]],
   ['hash_5fcombine_7',['hash_combine',['../namespacemim.html#a4d4c9094e2f043e1eca201f173cf96da',1,'mim']]],
-  ['head_8',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB']]]
+  ['head_8',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB']]],
+  ['holeexpr_9',['HoleExpr',['../classmim_1_1ast_1_1HoleExpr.html#af222f6ce623acf0004bf17ca86d59048',1,'mim::ast::HoleExpr']]]
 ];

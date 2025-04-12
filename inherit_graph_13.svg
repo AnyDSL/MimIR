@@ -200,9 +200,9 @@
 <!-- Node20 -->
 <g id="Node000020" class="node">
 <title>Node20</title>
-<g id="a_Node000020"><a xlink:href="classmim_1_1Idx.html" target="_top" xlink:title="A built&#45;in constant of type Nat &#45;&gt; *.">
-<polygon fill="white" stroke="#666666" points="398,-1747 338,-1747 338,-1728 398,-1728 398,-1747"/>
-<text text-anchor="middle" x="368" y="-1735" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Idx</text>
+<g id="a_Node000020"><a xlink:href="classmim_1_1Hole.html" target="_top" xlink:title="This node is a hole in the IR that is inferred by its context later on.">
+<polygon fill="white" stroke="#666666" points="402,-1747 334,-1747 334,-1728 402,-1728 402,-1747"/>
+<text text-anchor="middle" x="368" y="-1735" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Hole</text>
 </a>
 </g>
 </g>
@@ -210,7 +210,7 @@
 <g id="edge22_Node000001_Node000020" class="edge">
 <title>Node1&#45;&gt;Node20</title>
 <g id="a_edge22_Node000001_Node000020"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M215.03,-1410.03C230.71,-1429.93 255.16,-1464.01 268,-1497.5 303.78,-1590.83 237.59,-1644.79 304,-1719.5 312.54,-1729.11 325.82,-1733.74 337.98,-1735.92"/>
+<path fill="none" stroke="#63b8ff" d="M215.03,-1410.03C230.71,-1429.93 255.16,-1464.01 268,-1497.5 303.78,-1590.83 237.59,-1644.79 304,-1719.5 311.56,-1728 322.82,-1732.61 333.75,-1735.07"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="217.7,-1407.77 208.71,-1402.17 212.25,-1412.16 217.7,-1407.77"/>
 </a>
 </g>
@@ -218,9 +218,9 @@
 <!-- Node22 -->
 <g id="Node000022" class="node">
 <title>Node22</title>
-<g id="a_Node000022"><a xlink:href="classmim_1_1Infer.html" target="_top" xlink:title="This node is a hole in the IR that is inferred by its context later on.">
-<polygon fill="white" stroke="#666666" points="402,-1710 334,-1710 334,-1691 402,-1691 402,-1710"/>
-<text text-anchor="middle" x="368" y="-1698" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Infer</text>
+<g id="a_Node000022"><a xlink:href="classmim_1_1Idx.html" target="_top" xlink:title="A built&#45;in constant of type Nat &#45;&gt; *.">
+<polygon fill="white" stroke="#666666" points="398,-1710 338,-1710 338,-1691 398,-1691 398,-1710"/>
+<text text-anchor="middle" x="368" y="-1698" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Idx</text>
 </a>
 </g>
 </g>
@@ -228,7 +228,7 @@
 <g id="edge23_Node000001_Node000022" class="edge">
 <title>Node1&#45;&gt;Node22</title>
 <g id="a_edge23_Node000001_Node000022"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M214.83,-1410.11C230.34,-1430.08 254.64,-1464.21 268,-1497.5 299.21,-1575.23 247.37,-1620.78 304,-1682.5 311.69,-1690.88 322.98,-1695.46 333.9,-1697.93"/>
+<path fill="none" stroke="#63b8ff" d="M214.83,-1410.11C230.34,-1430.08 254.64,-1464.21 268,-1497.5 299.21,-1575.23 247.37,-1620.78 304,-1682.5 312.61,-1691.89 325.75,-1696.51 337.8,-1698.73"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="217.54,-1407.89 208.59,-1402.22 212.05,-1412.23 217.54,-1407.89"/>
 </a>
 </g>
@@ -1048,9 +1048,9 @@
 <!-- Node83 -->
 <g id="Node000083" class="node">
 <title>Node83</title>
-<g id="a_Node000083"><a xlink:href="classmim_1_1ast_1_1IdExpr.html" target="_top" xlink:title="sym">
-<polygon fill="white" stroke="#666666" points="585.5,-352 488.5,-352 488.5,-333 585.5,-333 585.5,-352"/>
-<text text-anchor="middle" x="537" y="-340" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ast::IdExpr</text>
+<g id="a_Node000083"><a xlink:href="classmim_1_1ast_1_1HoleExpr.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="592,-352 482,-352 482,-333 592,-333 592,-352"/>
+<text text-anchor="middle" x="537" y="-340" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ast::HoleExpr</text>
 </a>
 </g>
 </g>
@@ -1066,9 +1066,9 @@
 <!-- Node84 -->
 <g id="Node000084" class="node">
 <title>Node84</title>
-<g id="a_Node000084"><a xlink:href="classmim_1_1ast_1_1InferExpr.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="592,-315 482,-315 482,-296 592,-296 592,-315"/>
-<text text-anchor="middle" x="537" y="-303" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ast::InferExpr</text>
+<g id="a_Node000084"><a xlink:href="classmim_1_1ast_1_1IdExpr.html" target="_top" xlink:title="sym">
+<polygon fill="white" stroke="#666666" points="585.5,-315 488.5,-315 488.5,-296 585.5,-296 585.5,-315"/>
+<text text-anchor="middle" x="537" y="-303" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ast::IdExpr</text>
 </a>
 </g>
 </g>
@@ -1391,8 +1391,8 @@
 <g id="Node000021" class="node">
 <title>Node21</title>
 <g id="a_Node000021"><a xlink:href="classmim_1_1Setters.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="258,-1747 141,-1747 141,-1728 258,-1728 258,-1747"/>
-<text text-anchor="middle" x="199.5" y="-1735" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Setters&lt; Idx &gt;</text>
+<polygon fill="white" stroke="#666666" points="262,-1747 137,-1747 137,-1728 262,-1728 262,-1747"/>
+<text text-anchor="middle" x="199.5" y="-1735" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Setters&lt; Hole &gt;</text>
 </a>
 </g>
 </g>
@@ -1400,8 +1400,8 @@
 <g id="edge87_Node000021_Node000020" class="edge">
 <title>Node21&#45;&gt;Node20</title>
 <g id="a_edge87_Node000021_Node000020"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M268.5,-1737.5C292.69,-1737.5 318.65,-1737.5 337.85,-1737.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="268.27,-1734 258.27,-1737.5 268.27,-1741 268.27,-1734"/>
+<path fill="none" stroke="#63b8ff" d="M272.11,-1737.5C293.54,-1737.5 316.02,-1737.5 333.72,-1737.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="272.03,-1734 262.03,-1737.5 272.03,-1741 272.03,-1734"/>
 </a>
 </g>
 </g>
@@ -1409,8 +1409,8 @@
 <g id="Node000023" class="node">
 <title>Node23</title>
 <g id="a_Node000023"><a xlink:href="classmim_1_1Setters.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="262,-1710 137,-1710 137,-1691 262,-1691 262,-1710"/>
-<text text-anchor="middle" x="199.5" y="-1698" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Setters&lt; Infer &gt;</text>
+<polygon fill="white" stroke="#666666" points="258,-1710 141,-1710 141,-1691 258,-1691 258,-1710"/>
+<text text-anchor="middle" x="199.5" y="-1698" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Setters&lt; Idx &gt;</text>
 </a>
 </g>
 </g>
@@ -1418,8 +1418,8 @@
 <g id="edge88_Node000023_Node000022" class="edge">
 <title>Node23&#45;&gt;Node22</title>
 <g id="a_edge88_Node000023_Node000022"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M272.11,-1700.5C293.54,-1700.5 316.02,-1700.5 333.72,-1700.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="272.03,-1697 262.03,-1700.5 272.03,-1704 272.03,-1697"/>
+<path fill="none" stroke="#63b8ff" d="M268.5,-1700.5C292.69,-1700.5 318.65,-1700.5 337.85,-1700.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="268.27,-1697 258.27,-1700.5 268.27,-1704 268.27,-1697"/>
 </a>
 </g>
 </g>

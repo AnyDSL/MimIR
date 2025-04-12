@@ -1,4 +1,24 @@
 var searchData=
 [
-  ['quant_0',['quant',['../namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55',1,'mim::plug::regex']]]
+  ['pass_0',['Pass',['../namespacemim_1_1plug_1_1compile.html#adcce0ed42ddefa3bed2a2804a3e36a36',1,'mim::plug::compile']]],
+  ['pass_5flist_1',['pass_list',['../namespacemim_1_1plug_1_1compile.html#acf1934a130e787322009f1b142af6734',1,'mim::plug::compile']]],
+  ['pass_5fphase_2',['pass_phase',['../namespacemim_1_1plug_1_1compile.html#a77101ab5351093371081f3f726b5176c',1,'mim::plug::compile']]],
+  ['passes_5fto_5fphase_3',['passes_to_phase',['../namespacemim_1_1plug_1_1compile.html#a59f28bf6164c88df601c027da7a2d3f7',1,'mim::plug::compile']]],
+  ['passlist_4',['PassList',['../namespacemim_1_1plug_1_1compile.html#ad83a85274e9614deff427d7cfdfcfa39',1,'mim::plug::compile']]],
+  ['pe_5',['pe',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977',1,'mim::plug::core']]],
+  ['phase_6',['Phase',['../namespacemim_1_1plug_1_1compile.html#a9d05b57ff0206aae953c57cbe0ac6b92',1,'mim::plug::compile']]],
+  ['phase_5flist_7',['phase_list',['../namespacemim_1_1plug_1_1compile.html#a1b6af4bf840fb72f2bbd6fcce767e8cc',1,'mim::plug::compile']]],
+  ['phases_5fto_5fphase_8',['phases_to_phase',['../namespacemim_1_1plug_1_1compile.html#a9a7de07a9562215d2d8e80ff90dca075',1,'mim::plug::compile']]],
+  ['pipe_9',['pipe',['../namespacemim_1_1plug_1_1compile.html#a4a1e9d156f1cdbc814c37a5396d2793b',1,'mim::plug::compile']]],
+  ['pipeline_10',['Pipeline',['../namespacemim_1_1plug_1_1compile.html#a503c163370d42ec5dbb207a4ede762ba',1,'mim::plug::compile']]],
+  ['plugin_11',['Plugin',['../namespacemim_1_1plug_1_1compile.html#ad8e908548e791ed666166a6e98dac487',1,'mim::plug::compile']]],
+  ['plugin_5fselect_12',['plugin_select',['../namespacemim_1_1plug_1_1compile.html#a8234dedd9c0cf467db256b27a11f7116',1,'mim::plug::compile']]],
+  ['pos_13',['Pos',['../classmim_1_1EtaExp.html#a5a75570e634c37f72097c1110ca23665',1,'mim::EtaExp']]],
+  ['pow_14',['pow',['../namespacemim_1_1plug_1_1math.html#a638f19e14b30d84e0a57f808645bc3d7',1,'mim::plug::math']]],
+  ['prec_15',['Prec',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01c',1,'mim::ast::Expr']]],
+  ['prod_16',['prod',['../namespacemim_1_1plug_1_1matrix.html#a83d01fd34deff3e8ddae753c596038fc',1,'mim::plug::matrix']]],
+  ['ptr_17',['Ptr',['../namespacemim_1_1plug_1_1mem.html#afbf5b5fae36f11d5031d0b7672eabf06',1,'mim::plug::mem']]],
+  ['ptr0_18',['Ptr0',['../namespacemim_1_1plug_1_1mem.html#ace46b7b29a70a8a286dd0a1fc74855f3',1,'mim::plug::mem']]],
+  ['pxr24_19',['PXR24',['../namespacemim_1_1plug_1_1math.html#a68aa07d235ebaf61bd329c3875dbeb6b',1,'mim::plug::math']]],
+  ['pxr24_20',['pxr24',['../namespacemim_1_1plug_1_1math.html#a72867d157ec5d20203fa25e0af951d32',1,'mim::plug::math']]]
 ];

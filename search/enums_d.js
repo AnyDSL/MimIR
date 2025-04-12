@@ -1,22 +1,4 @@
 var searchData=
 [
-  ['range_0',['range',['../namespacemim_1_1plug_1_1regex.html#a64e05eb3efae975d47944dc127eede75',1,'mim::plug::regex']]],
-  ['read_1',['read',['../namespacemim_1_1plug_1_1matrix.html#ad88476eb54b27ecc6ea9b6656c378f01',1,'mim::plug::matrix']]],
-  ['refine_2',['refine',['../namespacemim_1_1plug_1_1refly.html#a6f3aaae5967d2117b76b540b8cd92065',1,'mim::plug::refly']]],
-  ['reflect_3',['reflect',['../namespacemim_1_1plug_1_1refly.html#aee2261b0b7331b07efb5c1cea91421ae',1,'mim::plug::refly']]],
-  ['refly_5fplugin_4',['refly_plugin',['../namespacemim_1_1plug_1_1compile.html#aacd77e3de783b46e8fb72d48a8d24aff',1,'mim::plug::compile']]],
-  ['regex_5fplugin_5',['regex_plugin',['../namespacemim_1_1plug_1_1compile.html#a9235d13a89008fb8415670a801e16c65',1,'mim::plug::compile']]],
-  ['reify_6',['reify',['../namespacemim_1_1plug_1_1refly.html#a7d9a82248335e8645a9d39bb906f230b',1,'mim::plug::refly']]],
-  ['remem_7',['remem',['../namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502',1,'mim::plug::mem']]],
-  ['remem_5felim_5fpass_8',['remem_elim_pass',['../namespacemim_1_1plug_1_1mem.html#a3b3bba4f272dc05b457fb2b39968d94a',1,'mim::plug::mem']]],
-  ['remove_5fdbg_5fperm_5fpass_9',['remove_dbg_perm_pass',['../namespacemim_1_1plug_1_1refly.html#a9b324d47a3885cb1be1194e91bd047d9',1,'mim::plug::refly']]],
-  ['reshape_5farg_10',['reshape_arg',['../namespacemim_1_1plug_1_1mem.html#aeb9697d7f21a6353fec209d17af59b1b',1,'mim::plug::mem']]],
-  ['reshape_5fflat_11',['reshape_flat',['../namespacemim_1_1plug_1_1mem.html#af1ce190e137cdb2ed5ad67076a0c4b24',1,'mim::plug::mem']]],
-  ['reshape_5fmode_12',['reshape_mode',['../namespacemim_1_1plug_1_1mem.html#a710a923b412df8100cf79e67ba3f6601',1,'mim::plug::mem']]],
-  ['reshape_5fpass_13',['reshape_pass',['../namespacemim_1_1plug_1_1mem.html#ae1bcb9cb9ed8bb8acf213d544629b15b',1,'mim::plug::mem']]],
-  ['ret_5fwrap_5fpass_14',['ret_wrap_pass',['../namespacemim_1_1plug_1_1compile.html#aeea954817fa22f9e9d045999b093eca9',1,'mim::plug::compile']]],
-  ['rm_15',['rm',['../namespacemim_1_1plug_1_1mem.html#aac534cf616b0e6da24722443d8fa3aea',1,'mim::plug::mem']]],
-  ['round_16',['round',['../namespacemim_1_1plug_1_1math.html#aaf7502aae7bb9f2d1d1a1b56cc65f87a',1,'mim::plug::math']]],
-  ['rrt_17',['rrt',['../namespacemim_1_1plug_1_1math.html#a33b0046022fadb834f2a7afd00da34a0',1,'mim::plug::math']]],
-  ['rt_18',['rt',['../namespacemim_1_1plug_1_1math.html#a57a9fbfdbd3e0df3260236539c3c3598',1,'mim::plug::math']]]
+  ['quant_0',['quant',['../namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55',1,'mim::plug::regex']]]
 ];

@@ -14,8 +14,8 @@ var def_8h =
     [ "mim::Idx", "classmim_1_1Idx.html", "classmim_1_1Idx" ],
     [ "mim::Proxy", "classmim_1_1Proxy.html", "classmim_1_1Proxy" ],
     [ "mim::Global", "classmim_1_1Global.html", "classmim_1_1Global" ],
-    [ "CODE", "def_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb", null ],
-    [ "CODE", "def_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb", null ],
+    [ "CODE", "def_8h.html#a6adc9cd160778f527f2ed8fb931ff4ee", null ],
+    [ "CODE", "def_8h.html#a6adc9cd160778f527f2ed8fb931ff4ee", null ],
     [ "MIM_NODE", "def_8h.html#ae7b11a3eb455bf4f67f20e1d364be209", null ],
     [ "MIM_PROJ", "def_8h.html#af607f4cede9847484ec49abf7d351932", null ],
     [ "Def2Def", "def_8h.html#a06961d2806f7fb3afe05273fb4c112ab", null ],
@@ -39,8 +39,15 @@ var def_8h =
       [ "None", "def_8h.html#a249738da6a953390b70691dd3fe7132ba6adf97f83acf6453d4a6a4b1070f3754", null ],
       [ "Mut", "def_8h.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7", null ],
       [ "Var", "def_8h.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77", null ],
-      [ "Infer", "def_8h.html#a249738da6a953390b70691dd3fe7132ba442b0d534b230e2f2c9b562974652f79", null ],
+      [ "Hole", "def_8h.html#a249738da6a953390b70691dd3fe7132ba6368a5bde7853b2f6c660f010adbb988", null ],
       [ "Proxy", "def_8h.html#a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f", null ]
+    ] ],
+    [ "Judge", "def_8h.html#adccbc1a0a55e33b72bc7e987075c2293", [
+      [ "Form", "def_8h.html#adccbc1a0a55e33b72bc7e987075c2293ad359c6df99b25183d81f7d728b71de0e", null ],
+      [ "Intro", "def_8h.html#adccbc1a0a55e33b72bc7e987075c2293a1cad35d4b3b9f624f82dbf237daaf188", null ],
+      [ "Elim", "def_8h.html#adccbc1a0a55e33b72bc7e987075c2293ae46a61588776648a5513d415ba6de279", null ],
+      [ "Meta", "def_8h.html#adccbc1a0a55e33b72bc7e987075c2293ab6755d218d5f4e1cef9cce9cc39aeda9", null ],
+      [ "Hole", "def_8h.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988", null ]
     ] ],
     [ "Sort", "def_8h.html#af93a16b3d599965fae4c0b94d51d2ac5", [
       [ "Term", "def_8h.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f", null ],

@@ -82,7 +82,7 @@ var searchData=
   ['note_79',['note',['../classmim_1_1ast_1_1AST.html#a93295daed6715e4c97d791d0cf4a022f',1,'mim::ast::AST::note()'],['../classmim_1_1Error.html#a88c9fc1630230a1b850a231857bd8ac9',1,'mim::Error::note()']]],
   ['num_5fchildren_80',['num_children',['../classmim_1_1Nest_1_1Node.html#a55dfe9106d35582e0f681b8b72df0ed7',1,'mim::Nest::Node']]],
   ['num_5fdepends_81',['num_depends',['../classmim_1_1Nest_1_1Node.html#a0529b738364d895b38ef62e93a9a11f4',1,'mim::Nest::Node']]],
-  ['num_5fdeps_82',['num_deps',['../classmim_1_1Def.html#afb1680ff053ce4b745deb3865c9882c3',1,'mim::Def']]],
+  ['num_5fdeps_82',['num_deps',['../classmim_1_1Def.html#a086b8caf2ce9bdfc870871854f021d90',1,'mim::Def']]],
   ['num_5fdoms_83',['num_doms',['../classmim_1_1ast_1_1LamDecl.html#a881316eb2679ff3f4fca2cd5d7590ea4',1,'mim::ast::LamDecl']]],
   ['num_5felems_84',['num_elems',['../classmim_1_1ast_1_1TupleExpr.html#afbd3c5db2c84ce969ea1c731b46daa46',1,'mim::ast::TupleExpr']]],
   ['num_5ferrors_85',['num_errors',['../classmim_1_1Error.html#a913d3dc7033cf6495be643e5174ae061',1,'mim::Error']]],

@@ -135,8 +135,8 @@
 <g id="Node000014" class="node">
 <title>Node14</title>
 <g id="a_Node000014"><a xlink:href="classmim_1_1Setters.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="384,-832.04 267,-832.04 267,-813.04 384,-813.04 384,-832.04"/>
-<text text-anchor="middle" x="325.5" y="-820.04" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Setters&lt; Idx &gt;</text>
+<polygon fill="white" stroke="#666666" points="388,-832.04 263,-832.04 263,-813.04 388,-813.04 388,-832.04"/>
+<text text-anchor="middle" x="325.5" y="-820.04" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Setters&lt; Hole &gt;</text>
 </a>
 </g>
 </g>
@@ -144,18 +144,18 @@
 <g id="edge13_Node000001_Node000014" class="edge">
 <title>Node1&#45;&gt;Node14</title>
 <g id="a_edge13_Node000001_Node000014"><a xlink:title=" ">
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M61.64,-564.34C61.94,-612.15 69.89,-734.34 140,-794.54 158.62,-810.52 219.82,-817.39 266.68,-820.34"/>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M61.64,-564.34C61.94,-612.15 69.89,-734.34 140,-794.54 158.13,-810.1 216.62,-817.02 262.94,-820.1"/>
 <polygon fill="orange" stroke="orange" points="65.14,-564.13 61.69,-554.11 58.14,-564.09 65.14,-564.13"/>
 </a>
 </g>
-<text text-anchor="middle" x="189.5" y="-820.54" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Idx &gt;</text>
+<text text-anchor="middle" x="189.5" y="-820.54" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Hole &gt;</text>
 </g>
 <!-- Node16 -->
 <g id="Node000016" class="node">
 <title>Node16</title>
 <g id="a_Node000016"><a xlink:href="classmim_1_1Setters.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="388,-795.04 263,-795.04 263,-776.04 388,-776.04 388,-795.04"/>
-<text text-anchor="middle" x="325.5" y="-783.04" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Setters&lt; Infer &gt;</text>
+<polygon fill="white" stroke="#666666" points="384,-795.04 267,-795.04 267,-776.04 384,-776.04 384,-795.04"/>
+<text text-anchor="middle" x="325.5" y="-783.04" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Setters&lt; Idx &gt;</text>
 </a>
 </g>
 </g>
@@ -163,11 +163,11 @@
 <g id="edge15_Node000001_Node000016" class="edge">
 <title>Node1&#45;&gt;Node16</title>
 <g id="a_edge15_Node000001_Node000016"><a xlink:title=" ">
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M62.86,-564.28C65.88,-606.97 79.39,-708 140,-757.54 158.44,-772.6 216.54,-779.6 262.67,-782.83"/>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M62.86,-564.28C65.88,-606.97 79.39,-708 140,-757.54 159,-773.07 220.13,-780.02 266.87,-783.11"/>
 <polygon fill="orange" stroke="orange" points="66.35,-563.87 62.27,-554.09 59.36,-564.28 66.35,-563.87"/>
 </a>
 </g>
-<text text-anchor="middle" x="189.5" y="-782.54" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Infer &gt;</text>
+<text text-anchor="middle" x="189.5" y="-782.54" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Idx &gt;</text>
 </g>
 <!-- Node18 -->
 <g id="Node000018" class="node">
@@ -662,9 +662,9 @@
 <!-- Node15 -->
 <g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_Node000015"><a xlink:href="classmim_1_1Idx.html" target="_top" xlink:title="A built&#45;in constant of type Nat &#45;&gt; *.">
-<polygon fill="white" stroke="#666666" points="520,-832.04 460,-832.04 460,-813.04 520,-813.04 520,-832.04"/>
-<text text-anchor="middle" x="490" y="-820.04" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Idx</text>
+<g id="a_Node000015"><a xlink:href="classmim_1_1Hole.html" target="_top" xlink:title="This node is a hole in the IR that is inferred by its context later on.">
+<polygon fill="white" stroke="#666666" points="524,-832.04 456,-832.04 456,-813.04 524,-813.04 524,-832.04"/>
+<text text-anchor="middle" x="490" y="-820.04" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Hole</text>
 </a>
 </g>
 </g>
@@ -672,17 +672,17 @@
 <g id="edge14_Node000014_Node000015" class="edge">
 <title>Node14&#45;&gt;Node15</title>
 <g id="a_edge14_Node000014_Node000015"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M394.27,-822.54C417.12,-822.54 441.43,-822.54 459.7,-822.54"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="394.25,-819.04 384.25,-822.54 394.25,-826.04 394.25,-819.04"/>
+<path fill="none" stroke="#63b8ff" d="M398.47,-822.54C418.51,-822.54 439.31,-822.54 455.92,-822.54"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="398.4,-819.04 388.4,-822.54 398.4,-826.04 398.4,-819.04"/>
 </a>
 </g>
 </g>
 <!-- Node17 -->
 <g id="Node000017" class="node">
 <title>Node17</title>
-<g id="a_Node000017"><a xlink:href="classmim_1_1Infer.html" target="_top" xlink:title="This node is a hole in the IR that is inferred by its context later on.">
-<polygon fill="white" stroke="#666666" points="524,-795.04 456,-795.04 456,-776.04 524,-776.04 524,-795.04"/>
-<text text-anchor="middle" x="490" y="-783.04" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Infer</text>
+<g id="a_Node000017"><a xlink:href="classmim_1_1Idx.html" target="_top" xlink:title="A built&#45;in constant of type Nat &#45;&gt; *.">
+<polygon fill="white" stroke="#666666" points="520,-795.04 460,-795.04 460,-776.04 520,-776.04 520,-795.04"/>
+<text text-anchor="middle" x="490" y="-783.04" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Idx</text>
 </a>
 </g>
 </g>
@@ -690,8 +690,8 @@
 <g id="edge16_Node000016_Node000017" class="edge">
 <title>Node16&#45;&gt;Node17</title>
 <g id="a_edge16_Node000016_Node000017"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M398.47,-785.54C418.51,-785.54 439.31,-785.54 455.92,-785.54"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="398.4,-782.04 388.4,-785.54 398.4,-789.04 398.4,-782.04"/>
+<path fill="none" stroke="#63b8ff" d="M394.27,-785.54C417.12,-785.54 441.43,-785.54 459.7,-785.54"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="394.25,-782.04 384.25,-785.54 394.25,-789.04 394.25,-782.04"/>
 </a>
 </g>
 </g>

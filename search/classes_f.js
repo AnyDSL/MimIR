@@ -1,13 +1,16 @@
 var searchData=
 [
-  ['uinc_0',['UInc',['../classmim_1_1UInc.html',1,'mim']]],
-  ['umax_1',['UMax',['../classmim_1_1UMax.html',1,'mim']]],
-  ['uniq_2',['Uniq',['../classmim_1_1Uniq.html',1,'mim']]],
-  ['uniqexpr_3',['UniqExpr',['../classmim_1_1ast_1_1UniqExpr.html',1,'mim::ast']]],
-  ['unique_5fqueue_4',['unique_queue',['../classmim_1_1unique__queue.html',1,'mim']]],
-  ['unique_5fstack_5',['unique_stack',['../classmim_1_1unique__stack.html',1,'mim']]],
-  ['univ_6',['Univ',['../classmim_1_1Univ.html',1,'mim']]],
-  ['use_7',['Use',['../classmim_1_1Use.html',1,'mim']]],
-  ['useeq_8',['UseEq',['../structmim_1_1UseEq.html',1,'mim']]],
-  ['usehash_9',['UseHash',['../structmim_1_1UseHash.html',1,'mim']]]
+  ['tab_0',['Tab',['../classmim_1_1Tab.html',1,'mim']]],
+  ['tailrecelim_1',['TailRecElim',['../classmim_1_1TailRecElim.html',1,'mim']]],
+  ['tbound_2',['TBound',['../classmim_1_1TBound.html',1,'mim']]],
+  ['test_3',['Test',['../classmim_1_1Test.html',1,'mim']]],
+  ['text_4',['TExt',['../classmim_1_1TExt.html',1,'mim']]],
+  ['tok_5',['Tok',['../classmim_1_1ast_1_1Tok.html',1,'mim::ast']]],
+  ['tuple_6',['Tuple',['../classmim_1_1Tuple.html',1,'mim']]],
+  ['tuple_5felement_3c_20i_2c_20mim_3a_3aspan_3c_20t_2c_20n_20_3e_20_3e_7',['tuple_element&lt; I, mim::Span&lt; T, N &gt; &gt;',['../namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4',1,'std']]],
+  ['tuple_5fsize_3c_20mim_3a_3aspan_3c_20t_2c_20n_20_3e_20_3e_8',['tuple_size&lt; mim::Span&lt; T, N &gt; &gt;',['../structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html',1,'std']]],
+  ['tupleexpr_9',['TupleExpr',['../classmim_1_1ast_1_1TupleExpr.html',1,'mim::ast']]],
+  ['tupleptrn_10',['TuplePtrn',['../classmim_1_1ast_1_1TuplePtrn.html',1,'mim::ast']]],
+  ['type_11',['Type',['../classmim_1_1Type.html',1,'mim']]],
+  ['typeexpr_12',['TypeExpr',['../classmim_1_1ast_1_1TypeExpr.html',1,'mim::ast']]]
 ];

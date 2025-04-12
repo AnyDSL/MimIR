@@ -229,8 +229,8 @@ var hierarchy =
         ] ],
         [ "mim::Extract", "classmim_1_1Extract.html", null ],
         [ "mim::Global", "classmim_1_1Global.html", null ],
+        [ "mim::Hole", "classmim_1_1Hole.html", null ],
         [ "mim::Idx", "classmim_1_1Idx.html", null ],
-        [ "mim::Infer", "classmim_1_1Infer.html", null ],
         [ "mim::Insert", "classmim_1_1Insert.html", null ],
         [ "mim::Lam", "classmim_1_1Lam.html", null ],
         [ "mim::Lit", "classmim_1_1Lit.html", null ],
@@ -277,8 +277,8 @@ var hierarchy =
           [ "mim::ast::DeclExpr", "classmim_1_1ast_1_1DeclExpr.html", null ],
           [ "mim::ast::ErrorExpr", "classmim_1_1ast_1_1ErrorExpr.html", null ],
           [ "mim::ast::ExtractExpr", "classmim_1_1ast_1_1ExtractExpr.html", null ],
+          [ "mim::ast::HoleExpr", "classmim_1_1ast_1_1HoleExpr.html", null ],
           [ "mim::ast::IdExpr", "classmim_1_1ast_1_1IdExpr.html", null ],
-          [ "mim::ast::InferExpr", "classmim_1_1ast_1_1InferExpr.html", null ],
           [ "mim::ast::InsertExpr", "classmim_1_1ast_1_1InsertExpr.html", null ],
           [ "mim::ast::LamExpr", "classmim_1_1ast_1_1LamExpr.html", null ],
           [ "mim::ast::LitExpr", "classmim_1_1ast_1_1LitExpr.html", null ],
@@ -326,11 +326,11 @@ var hierarchy =
     [ "mim::Setters< Global >", "classmim_1_1Setters.html", [
       [ "mim::Global", "classmim_1_1Global.html", null ]
     ] ],
+    [ "mim::Setters< Hole >", "classmim_1_1Setters.html", [
+      [ "mim::Hole", "classmim_1_1Hole.html", null ]
+    ] ],
     [ "mim::Setters< Idx >", "classmim_1_1Setters.html", [
       [ "mim::Idx", "classmim_1_1Idx.html", null ]
-    ] ],
-    [ "mim::Setters< Infer >", "classmim_1_1Setters.html", [
-      [ "mim::Infer", "classmim_1_1Infer.html", null ]
     ] ],
     [ "mim::Setters< Insert >", "classmim_1_1Setters.html", [
       [ "mim::Insert", "classmim_1_1Insert.html", null ]
