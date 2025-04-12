@@ -314,9 +314,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def" id="r_a3f5a341398bd97b516f9fd7d1d170e5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f">Vars</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a3f5a341398bd97b516f9fd7d1d170e5b">local_vars</a> () const</td></tr>
 <tr class="memdesc:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Var.html">Var</a>s reachable by following <em>immutable</em> <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps()</a>.  <br /></td></tr>
 <tr class="separator:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30f8b76edaf16e78a83a632d10b3d8c9 inherit pub_methods_classmim_1_1Def" id="r_a30f8b76edaf16e78a83a632d10b3d8c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a808d4cab01734432fc4218de6dae0ef2">Muts</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a30f8b76edaf16e78a83a632d10b3d8c9">mut_local_muts</a> ()</td></tr>
-<tr class="memdesc:a30f8b76edaf16e78a83a632d10b3d8c9 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">All <a class="el" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212" title="Mutables reachable by following immutable deps(); mut-&gt;local_muts() is by definition the set { mut }...">local_muts()</a> of this mutable's <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps()</a>.  <br /></td></tr>
-<tr class="separator:a30f8b76edaf16e78a83a632d10b3d8c9 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed49f75ef33a07d498daffbcc3d2d838 inherit pub_methods_classmim_1_1Def" id="r_aed49f75ef33a07d498daffbcc3d2d838"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f">Vars</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aed49f75ef33a07d498daffbcc3d2d838">free_vars</a> () const</td></tr>
 <tr class="memdesc:aed49f75ef33a07d498daffbcc3d2d838 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a global solution, i.e., by transitively following <em>mutables</em> as well.  <br /></td></tr>
 <tr class="separator:aed49f75ef33a07d498daffbcc3d2d838 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -570,7 +567,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00265">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00158">mim::plug::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="def_8cpp_source.html#l00211">immutabilize()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00033">mim::plug::mem::normalize_store()</a>, <a class="el" href="tuple_8h_source.html#l00133">reset()</a>, and <a class="el" href="tuple_8h_source.html#l00132">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00158">mim::plug::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="def_8cpp_source.html#l00213">immutabilize()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00033">mim::plug::mem::normalize_store()</a>, <a class="el" href="tuple_8h_source.html#l00133">reset()</a>, and <a class="el" href="tuple_8h_source.html#l00132">set()</a>.</p>
 
 </div>
 </div>
@@ -602,9 +599,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Def.html#a8080a9a8bd58ffad7a1759c4e2efc952">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00211">211</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00213">213</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8h_source.html#l00124">body()</a>, <a class="el" href="def_8cpp_source.html#l00181">mim::Def::is_immutabilizable()</a>, <a class="el" href="def_8h_source.html#l00734">mim::Lit::isa()</a>, <a class="el" href="tuple_8h_source.html#l00139">reduce()</a>, <a class="el" href="tuple_8cpp_source.html#l00040">shape()</a>, and <a class="el" href="def_8cpp_source.html#l00416">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8h_source.html#l00124">body()</a>, <a class="el" href="def_8cpp_source.html#l00181">mim::Def::is_immutabilizable()</a>, <a class="el" href="def_8h_source.html#l00731">mim::Lit::isa()</a>, <a class="el" href="tuple_8h_source.html#l00139">reduce()</a>, <a class="el" href="tuple_8cpp_source.html#l00040">shape()</a>, and <a class="el" href="def_8cpp_source.html#l00413">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -673,9 +670,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00139">139</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00225">mim::Def::reduce()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00227">mim::Def::reduce()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00211">immutabilize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00213">immutabilize()</a>.</p>
 
 </div>
 </div>
@@ -733,7 +730,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00132">132</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8h_source.html#l00124">body()</a>, and <a class="el" href="def_8cpp_source.html#l00264">mim::Def::set()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8h_source.html#l00124">body()</a>, and <a class="el" href="def_8cpp_source.html#l00266">mim::Def::set()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00158">mim::plug::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="tuple_8h_source.html#l00133">reset()</a>, and <a class="el" href="tuple_8h_source.html#l00140">stub()</a>.</p>
 
@@ -756,9 +753,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00040">40</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00385">mim::World::lit_nat_0()</a>, <a class="el" href="world_8h_source.html#l00386">mim::World::lit_nat_1()</a>, <a class="el" href="def_8h_source.html#l00231">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00416">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00385">mim::World::lit_nat_0()</a>, <a class="el" href="world_8h_source.html#l00386">mim::World::lit_nat_1()</a>, <a class="el" href="def_8h_source.html#l00231">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00413">mim::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00211">immutabilize()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00213">immutabilize()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00016">mim::Rewriter::rewrite_imm()</a>.</p>
 
 </div>
 </div>
@@ -787,7 +784,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00140">140</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00453">mim::Def::dbg()</a>, <a class="el" href="tuple_8h_source.html#l00132">set()</a>, <a class="el" href="def_8cpp_source.html#l00153">stub_()</a>, <a class="el" href="def_8h_source.html#l00231">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00416">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00450">mim::Def::dbg()</a>, <a class="el" href="tuple_8h_source.html#l00132">set()</a>, <a class="el" href="def_8cpp_source.html#l00153">stub_()</a>, <a class="el" href="def_8h_source.html#l00231">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00413">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -853,7 +850,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00134">134</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00280">mim::Def::unset()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00282">mim::Def::unset()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tuple_8h_source.html#l00133">reset()</a>.</p>
 
