@@ -232,12 +232,12 @@ public:
     /// What kind of Judge%ment represents this Def?
     ///@{
     u32 judge() const noexcept;
-    /// clang-format off
-    bool is_form() const noexcept { return judge() & Judge::Form; }
+    // clang-format off
+    bool is_form()  const noexcept { return judge() & Judge::Form;  }
     bool is_intro() const noexcept { return judge() & Judge::Intro; }
-    bool is_elim() const noexcept { return judge() & Judge::Elim; }
-    bool is_meta() const noexcept { return judge() & Judge::Meta; }
-    /// clang-format on
+    bool is_elim()  const noexcept { return judge() & Judge::Elim;  }
+    bool is_meta()  const noexcept { return judge() & Judge::Meta;  }
+    // clang-format on
     ///@}
 
     /// @name arity
