@@ -317,36 +317,39 @@ Upcast for Built-ins</h2>
 <h3><a class="anchor" id="autotoc_md19"></a>
 Upcast</h3>
 <p><code>Def::isa</code>/<code>Def::as</code> allows for an <em>upcast</em> that matches both <em>mutables</em> and <em>immutables</em>:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;()) {</div>
 <div class="line">        <span class="comment">// sigma is of type &quot;const Sigma*&quot; and could be a mutable or an immutable</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// sigma of type &quot;const Sigma*&quot; and could be an immutable or a mutable</span></div>
 <div class="line">    <span class="comment">// asserts, if def is not a Sigma</span></div>
-<div class="line">    <span class="keyword">auto</span> sigma = def-&gt;as_imm&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;();</div>
+<div class="line">    <span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">as_imm</a>&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
+<div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00182">def.h:182</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_ac62b72371d95ea3e8774d11336ed640b"><div class="ttname"><a href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">mim::Def::as_imm</a></div><div class="ttdeci">const T * as_imm() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00401">def.h:401</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sigma_html"><div class="ttname"><a href="classmim_1_1Sigma.html">mim::Sigma</a></div><div class="ttdoc">A dependent tuple type.</div><div class="ttdef"><b>Definition</b> <a href="tuple_8h_source.html#l00009">tuple.h:9</a></div></div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md20"></a>
 Upcast for Immutables</h3>
 <p><a class="el" href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64">mim::Def::isa_imm</a> / <a class="el" href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">mim::Def::as_imm</a> allows for an <em>upcast</em> and <b>only</b> matches <em>immutables</em>:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> imm = def-&gt;isa_imm()) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> imm = def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64">isa_imm</a>()) {</div>
 <div class="line">        <span class="comment">// imm of type &quot;const Def*&quot; and is an immutable</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa_imm&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;()) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64">isa_imm</a>&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;()) {</div>
 <div class="line">        <span class="comment">// sigma is of type &quot;const Sigma*&quot; and is an immutable Sigma</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// sigma of type &quot;const Sigma*&quot; and *must* be an immutable Sigma - otherwise, asserts</span></div>
-<div class="line">    <span class="keyword">auto</span> sigma = def-&gt;as_imm&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;();</div>
+<div class="line">    <span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">as_imm</a>&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
+<div class="ttc" id="aclassmim_1_1Def_html_ae95966891b117e5f8bf7f4bca7b95c64"><div class="ttname"><a href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64">mim::Def::isa_imm</a></div><div class="ttdeci">const T * isa_imm() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00400">def.h:400</a></div></div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md21"></a>
 Upcast for Mutables</h3>
 <p><a class="el" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1" title="If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.">mim::Def::isa_mut</a> / <a class="el" href="classmim_1_1Def.html#a18c97ca601e090eed9bcbc9369c2c792" title="Asserts that this is a mutable, casts constness away and performs a static_cast to T.">mim::Def::as_mut</a> allows for an <em>upcast</em> and <b>only</b> matches <em>mutables</em>. By doing so, it removes the <code>const</code> qualifier and gives you access to the <b>non</b>-<code>const</code> methods that only make sense for <em>mutables</em>:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> mut = def-&gt;isa_mut()) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> mut = def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">isa_mut</a>()) {</div>
 <div class="line">        <span class="comment">// mut of type &quot;Def*&quot; - &quot;const&quot; has been removed!</span></div>
 <div class="line">        <span class="comment">// This gives you access to the non-const methods:</span></div>
 <div class="line">        <span class="keyword">auto</span> var = mut-&gt;var();</div>
@@ -354,7 +357,7 @@ Upcast for Mutables</h3>
 <div class="line">        <span class="comment">// ...</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;isa_mut&lt;<a class="code hl_class" href="classmim_1_1Lam.html">Lam</a>&gt;()) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">isa_mut</a>&lt;<a class="code hl_class" href="classmim_1_1Lam.html">Lam</a>&gt;()) {</div>
 <div class="line">        <span class="comment">// lam of type &quot;Lam*&quot; - &quot;const&quot; has been removed!</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
@@ -362,6 +365,7 @@ Upcast for Mutables</h3>
 <div class="line">    <span class="comment">// Otherwise, an assert will fire.</span></div>
 <div class="line">    <span class="keyword">auto</span> lam = def-&gt;as&lt;<a class="code hl_class" href="classmim_1_1Lam.html">Lam</a>&gt;();</div>
 <div class="line">}</div>
+<div class="ttc" id="aclassmim_1_1Def_html_a53a70702795d9c4bafe6de0d4f4a66f1"><div class="ttname"><a href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">mim::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00406">def.h:406</a></div></div>
 <div class="ttc" id="aclassmim_1_1Lam_html"><div class="ttname"><a href="classmim_1_1Lam.html">mim::Lam</a></div><div class="ttdoc">A function.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00105">lam.h:105</a></div></div>
 </div><!-- fragment --><p>Checking via <code>Def::isa</code>/<code>Def::as</code> a <code>Def*</code> has the same effect as using <a class="el" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1" title="If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.">mim::Def::isa_mut</a> / <a class="el" href="classmim_1_1Def.html#a18c97ca601e090eed9bcbc9369c2c792" title="Asserts that this is a mutable, casts constness away and performs a static_cast to T.">mim::Def::as_mut</a> since the scrutinee must be already a <em>mutable</em> due to the lack of the <code>const</code> qualifier:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) { <span class="comment">// note the lack of &quot;const&quot; here</span></div>
@@ -375,12 +379,10 @@ Upcast for Mutables</h3>
 <div class="line">    <span class="comment">// sigma of type &quot;Sigma*&quot; and is a mutable - otherwise, asserts</span></div>
 <div class="line">    <span class="keyword">auto</span> sigma = def-&gt;as&lt;<a class="code hl_class" href="classmim_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00191">def.h:191</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_a53a70702795d9c4bafe6de0d4f4a66f1"><div class="ttname"><a href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">mim::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00415">def.h:415</a></div></div>
 </div><!-- fragment --><h3><a class="anchor" id="cast_lit"></a>
 Matching Literals</h3>
 <p>Often, you want to match a <a class="el" href="classmim_1_1Lit.html">Lit</a>eral and grab its content. You can use <a class="el" href="classmim_1_1Lit.html#a429b15b3da51e9b60ffab09a744896b7">Lit::isa</a>/<a class="el" href="classmim_1_1Lit.html#a95a167621043b56d131ebe4481b5d523">Lit::as</a> for this:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lit = Lit::isa(def)) {</div>
 <div class="line">        <span class="comment">// lit is of type &quot;std::optional&lt;u64&gt;&quot;</span></div>
 <div class="line">        <span class="comment">// It&#39;s your responsibility that the grabbed value makes sense as u64.</span></div>
@@ -421,8 +423,8 @@ Summary</h3>
 </table>
 <h3><a class="anchor" id="autotoc_md23"></a>
 Further Casts</h3>
-<p>There are also some additional checks available that usually come as <code>static</code> methods and either return a pointer or <code>Ref</code> to the checked entity or <code>nullptr</code>. Here are some examples:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<p>There are also some additional checks available that usually come as <code>static</code> methods and either return a pointer to the checked entity or <code>nullptr</code>. Here are some examples:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> size = Idx::isa(def)) {</div>
 <div class="line">        <span class="comment">// def = Idx size</span></div>
 <div class="line">    }</div>
@@ -458,7 +460,7 @@ Matching Axioms</h2>
 <h3><a class="anchor" id="autotoc_md24"></a>
 w/o Subtags</h3>
 <p>In order to match an <a class="el" href="classmim_1_1Axiom.html">Axiom</a> <b>without</b> any subtags like <code>%mem.load</code>, do this:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> load = match&lt;mem::load&gt;(def)) {</div>
 <div class="line">        <span class="keyword">auto</span> [<a class="code hl_namespace" href="namespacemim_1_1plug_1_1mem.html">mem</a>, ptr]            = load-&gt;args&lt;2&gt;();</div>
 <div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = load-&gt;decurry()-&gt;args&lt;2&gt;();</div>
@@ -470,7 +472,7 @@ w/o Subtags</h3>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md25"></a>
 w/ Subtags</h3>
 <p>In order to match an <a class="el" href="classmim_1_1Axiom.html">Axiom</a> <b>with</b> subtags like <code>%core.wrap</code>, do this:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> wrap = match&lt;core::wrap&gt;(def)) {</div>
 <div class="line">        <span class="keyword">auto</span> [a, b] = wrap-&gt;args&lt;2&gt;();</div>
 <div class="line">        <span class="keyword">auto</span> mode   = wrap-&gt;decurry()-&gt;arg();</div>
