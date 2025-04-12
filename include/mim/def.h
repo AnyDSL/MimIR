@@ -200,7 +200,7 @@ public:
     constexpr flags_t flags() const noexcept { return flags_; }
     constexpr u32 gid() const noexcept { return gid_; }   ///< Global id - *unique* number for this Def.
     constexpr u32 tid() const noexcept { return tid_; }   ///< Trie id - only used in Trie.
-    constexpr u32 mark() const noexcept { return mark_; } ///< Used internally but free_vars().
+    constexpr u32 mark() const noexcept { return mark_; } ///< Used internally by free_vars().
     constexpr size_t hash() const noexcept { return hash_; }
     constexpr node_t node() const noexcept { return node_; }
     std::string_view node_name() const;
