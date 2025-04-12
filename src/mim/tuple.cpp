@@ -67,7 +67,7 @@ const Def* flatten(const Def* def) {
     if (!should_flatten(def)) return def;
     DefVec ops;
     flatten(ops, def);
-    return def->is_term() ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
+    return def->is_intro() ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
 }
 
 const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {

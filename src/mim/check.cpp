@@ -10,9 +10,9 @@ namespace mim {
 namespace {
 
 static bool needs_zonk(const Def* def) {
-    if (def->has_dep(Dep::Infer)) {
+    if (def->has_dep(Dep::Hole)) {
         for (auto mut : def->local_muts())
-            if (auto infer = mut->isa<Infer>(); infer && infer->is_set()) return true;
+            if (auto infer = mut->isa<Hole>(); infer && infer->is_set()) return true;
     }
 
     return false;
@@ -24,39 +24,38 @@ public:
         : Rewriter(world) {}
 
     const Def* rewrite(const Def* def) override {
-        def = Infer::find(def);
+        def = Hole::find(def);
         return needs_zonk(def) ? Rewriter::rewrite(def) : def;
     }
 };
 
 } // namespace
 
-// TODO check local_muts for Infers w/ op
 const Def* Def::zonk() const {
-    auto def = Infer::find(this);
+    auto def = Hole::find(this);
     return needs_zonk(def) ? Zonker(world()).rewrite(def) : def;
 }
 
 /*
- * Infer
+ * Hole
  */
 
-const Def* Infer::find(const Def* def) {
+const Def* Hole::find(const Def* def) {
     // find root
     auto res = def;
-    for (auto infer = res->isa_mut<Infer>(); infer && infer->op(); infer = res->isa_mut<Infer>()) res = infer->op();
+    for (auto hole = res->isa_mut<Hole>(); hole && hole->op(); hole = res->isa_mut<Hole>()) res = hole->op();
     // TODO don't re-update last infer
 
-    // path compression: set all Infers along the chain to res
-    for (auto infer = def->isa_mut<Infer>(); infer && infer->op(); infer = def->isa_mut<Infer>()) {
-        def = infer->op();
-        infer->reset(res);
+    // path compression: set all Holes along the chain to res
+    for (auto hole = def->isa_mut<Hole>(); hole && hole->op(); hole = def->isa_mut<Hole>()) {
+        def = hole->op();
+        hole->reset(res);
     }
 
     return res;
 }
 
-const Def* Infer::tuplefy() {
+const Def* Hole::tuplefy() {
     if (auto a = type()->isa_lit_arity(); a && !is_set()) {
         auto& w     = world();
         auto n      = *a;
@@ -64,13 +63,13 @@ const Def* Infer::tuplefy() {
         if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
             auto var  = sigma->has_var();
             auto rw   = VarRewriter(var, this);
-            infers[0] = w.mut_infer(sigma->op(0));
+            infers[0] = w.mut_hole(sigma->op(0));
             for (size_t i = 1; i != n; ++i) {
                 rw.map(sigma->var(n, i - 1), infers[i - 1]);
-                infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
+                infers[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
             }
         } else {
-            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type()->proj(n, i));
+            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_hole(type()->proj(n, i));
         }
 
         auto tuple = w.tuple(infers);
@@ -97,8 +96,8 @@ const Def* Checker::fail() {
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
-    d1 = d1 ? Infer::find(d1) : nullptr;
-    d2 = d2 ? Infer::find(d2) : nullptr;
+    d1 = d1 ? Hole::find(d1) : nullptr;
+    d2 = d2 ? Hole::find(d2) : nullptr;
 
     if (!d1 && !d2) return true;
     if (!d1 || !d2) return fail<mode>();
@@ -108,8 +107,8 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
     // Example: λx.x - λz.x
     if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
 
-    auto i1 = d1->isa_mut<Infer>();
-    auto i2 = d2->isa_mut<Infer>();
+    auto i1 = d1->isa_mut<Hole>();
+    auto i2 = d2->isa_mut<Hole>();
 
     if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return fail<mode>();
 
@@ -155,7 +154,7 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
 template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
     if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
-    if (mode == Test && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
+    if (mode == Test && (d1->isa_mut<Hole>() || d2->isa_mut<Hole>())) return fail<mode>();
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
     if (auto ts = d1->isa<Tuple, Sigma>()) {
@@ -170,10 +169,10 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
                 if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
             return true;
         }
-    } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer) && !d2->isa<UMax>()) {
+    } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Hole) && !d2->isa<UMax>()) {
         // .umax(a, ?) == x  =>  .umax(a, x)
         for (auto op : umax->ops())
-            if (auto inf = op->isa_mut<Infer>(); inf && !inf->is_set()) inf->set(d2);
+            if (auto inf = op->isa_mut<Hole>(); inf && !inf->is_set()) inf->set(d2);
         d1 = umax->rebuild(umax->type(), umax->ops());
     }
 
@@ -193,7 +192,7 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
 }
 
 const Def* Checker::assignable_(const Def* type, const Def* val) {
-    auto val_ty = Infer::find(val->type());
+    auto val_ty = Hole::find(val->type());
     if (type == val_ty) return val;
 
     auto& w = world();

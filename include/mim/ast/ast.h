@@ -329,9 +329,9 @@ private:
     const Def* emit_(Emitter&) const override;
 };
 
-class InferExpr : public Expr {
+class HoleExpr : public Expr {
 public:
-    InferExpr(Loc loc)
+    HoleExpr(Loc loc)
         : Expr(loc) {}
 
     void bind(Scopes&) const override;

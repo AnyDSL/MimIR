@@ -25,7 +25,7 @@
     <DisplayString Condition="node_==22">{{node = Nat}}</DisplayString>
     <DisplayString Condition="node_==23">{{node = Idx}}</DisplayString>
     <DisplayString Condition="node_==24">{{node = Var}}</DisplayString>
-    <DisplayString Condition="node_==25">{{node = Infer}}</DisplayString>
+    <DisplayString Condition="node_==25">{{node = Hole}}</DisplayString>
     <DisplayString Condition="node_==26">{{node = Global}}</DisplayString>
     <DisplayString Condition="node_==27">{{node = Singleton}}</DisplayString>
     <DisplayString Condition="node_==20&amp;&amp;(flags_ &amp; 0xffffffffffff0000) == 0xffffffffffff0000 &amp;&amp; (flags_ &amp; 0xFF00)==0">{{ax = Mem}}</DisplayString>

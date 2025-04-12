@@ -15,32 +15,32 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define MIM_NODE(m)                                                           \
-    m(Type, type)       m(Univ, univ)   m(UMax, umax)       m(UInc, uinc)     \
-    m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
-    m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
-    m(Arr, arr)         m(Pack, pack)                                         \
-    m(Join, join)       m(Vel, vel)     m(Test, test)       m(Top, top)       \
-    m(Meet, meet)       m(Ac,  ac )     m(Pick, pick)       m(Bot, bot)       \
-    m(Proxy, proxy)                                                           \
-    m(Axiom, axiom)                                                           \
-    m(Lit, lit)                                                               \
-    m(Nat, nat)         m(Idx, idx)                                           \
-    m(Var, var)                                                               \
-    m(Infer, infer)                                                           \
-    m(Global, global)                                                         \
-    m(Uniq,   Uniq)
+#define MIM_NODE(m)                                                                                                                             \
+    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc, Judge::Meta)                    \
+    m(Pi,     pi,     Judge::Form) m(Lam,   lam,   Judge::Intro) m(App,     app,     Judge::Elim)                                               \
+    m(Sigma,  sigma,  Judge::Form) m(Tuple, tuple, Judge::Intro) m(Extract, extract, Judge::Elim) m(Insert, insert, Judge::Intro | Judge::Elim) \
+    m(Arr,    arr,    Judge::Form) m(Pack,  pack,  Judge::Intro)                                                                                \
+    m(Join,   join,   Judge::Form) m(Vel,   vel,   Judge::Intro) m(Test, test,       Judge::Elim) m(Top,    top,    Judge::Intro)               \
+    m(Meet,   meet,   Judge::Form) m(Ac,    ac,    Judge::Intro) m(Pick, pick,       Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
+    m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
+    m(Nat,    nat,    Judge::Form)                                                                                                              \
+    m(Idx,    idx,    Judge::Intro) m(Lit,  lit,  Judge::Intro)                                                                                 \
+    m(Axiom,  axiom,  Judge::Intro)                                                                                                             \
+    m(Var,    var,    Judge::Intro)                                                                                                             \
+    m(Global, global, Judge::Intro)                                                                                                             \
+    m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
+    m(Hole,   hole,   Judge::Hole)
 // clang-format on
 
 namespace mim {
 
 namespace Node {
 
-#define CODE(node, name) node,
+#define CODE(node, name, _) node,
 enum : node_t { MIM_NODE(CODE) };
 #undef CODE
 
-#define CODE(node, name) +size_t(1)
+#define CODE(node, name, _) +size_t(1)
 constexpr auto Num_Nodes = size_t(0) MIM_NODE(CODE);
 #undef CODE
 
@@ -96,13 +96,24 @@ enum class Dep : unsigned {
     None  = 0,
     Mut   = 1 << 0,
     Var   = 1 << 1,
-    Infer = 1 << 2,
+    Hole  = 1 << 2,
     Proxy = 1 << 3,
 };
 
+/// [Judgement](https://ncatlab.org/nlab/show/judgment).
+enum class Judge : u32 {
+    Form = 1 << 0,  ///< [Type Formation](https://ncatlab.org/nlab/show/type+formation) like `T -> T`.
+    Intro = 1 << 1, ///< [Term Introduction](https://ncatlab.org/nlab/show/natural+deduction) like `λ(x: Nat): Nat = x`.
+    Elim = 1 << 2,  ///< [Term Elimination](https://ncatlab.org/nlab/show/term+elimination) like `f a`.
+    Meta = 1 << 3,  ///< Meta rules for Univ%erse and Type levels.
+    Hole = 1 << 4,  ///< Special rule for Hole.
+};
+
 } // namespace mim
+
 #ifndef DOXYGEN
 template<> struct fe::is_bit_enum<mim::Dep> : std::true_type {};
+template<> struct fe::is_bit_enum<mim::Judge> : std::true_type {};
 #endif
 
 namespace mim {
@@ -164,7 +175,7 @@ public:
 ///     * Pi, Lam, Sigma, Arr, Pack
 /// * Axiom: To introduce new entities.
 /// * Proxy: Used for intermediate values during optimizations.
-/// * Infer: Hole in the presentation filled by type inference (always mutable as the holes are filled in later).
+/// * Hole: Hole in the presentation filled by type inference (always mutable as the holes are filled in later).
 /// * Type, Univ, UMax, UInc: To keep track of type levels.
 ///
 /// The data layout (see World::alloc and Def::deps) looks like this:
@@ -214,8 +225,19 @@ public:
     const Def* type() const noexcept { return type_; }
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     const Def* unfold_type() const;
-    /// Yields `true` if `this:T` and `T:(Type 0)`.
     bool is_term() const;
+    ///@}
+
+    /// @name Judgement
+    /// What kind of Judge%ment represents this Def?
+    ///@{
+    u32 judge() const noexcept;
+    /// clang-format off
+    bool is_form() const noexcept { return judge() & Judge::Form; }
+    bool is_intro() const noexcept { return judge() & Judge::Intro; }
+    bool is_elim() const noexcept { return judge() & Judge::Elim; }
+    bool is_meta() const noexcept { return judge() & Judge::Meta; }
+    /// clang-format on
     ///@}
 
     /// @name arity
@@ -268,19 +290,19 @@ public:
     /// * Def::type() (if not `nullptr`) and
     /// * the other Def::ops() (only included, if Def::is_set()) in this order.
     ///@{
-    Defs deps() const;
-    const Def* dep(size_t i) const { return deps()[i]; }
-    size_t num_deps() const { return deps().size(); }
+    Defs deps() const noexcept;
+    const Def* dep(size_t i) const noexcept { return deps()[i]; }
+    size_t num_deps() const noexcept { return deps().size(); }
     ///@}
 
     /// @name has_dep
     /// Checks whether one Def::deps() contains specific elements defined in Dep.
     /// This works up to the next *mutable*.
-    /// For example, consider the Tuple `tup`: `(<infer>, lam (x: Nat) = y)`:
+    /// For example, consider the Tuple `tup`: `(?, lam (x: Nat) = y)`:
     /// ```
-    /// bool has_infer = tup->has_dep(Dep::Infer); // true;
-    /// bool has_mut   = tup->has_dep(Dep::Mut);   // true;
-    /// bool has_var   = tup->has_dep(Dep::Var);   // false - y is contained in another mutable;
+    /// bool has_hole = tup->has_dep(Dep::Hole); // true;
+    /// bool has_mut   = tup->has_dep(Dep::Mut); // true;
+    /// bool has_var   = tup->has_dep(Dep::Var); // false - y is contained in another mutable;
     /// ```
     ///@{
     bool has_dep() const { return dep_ != 0; }

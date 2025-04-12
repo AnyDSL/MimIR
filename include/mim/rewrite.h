@@ -38,7 +38,7 @@ public:
 
     const Def* rewrite_imm(const Def* imm) override {
         if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
-        if (imm->has_dep(Dep::Infer) || vars_.has_intersection(imm->free_vars())) return Rewriter::rewrite_imm(imm);
+        if (imm->has_dep(Dep::Hole) || vars_.has_intersection(imm->free_vars())) return Rewriter::rewrite_imm(imm);
         return imm;
     }
 

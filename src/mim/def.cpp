@@ -7,6 +7,8 @@
 
 #include "mim/util/hash.h"
 
+#include "fe/assert.h"
+
 using namespace std::literals;
 
 namespace mim {
@@ -24,7 +26,7 @@ Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
     , node_(unsigned(node))
     , mut_(false)
     , external_(false)
-    , dep_(node == Node::Infer   ? unsigned(Dep::Infer)
+    , dep_(node == Node::Hole    ? unsigned(Dep::Hole)
            : node == Node::Proxy ? unsigned(Dep::Proxy)
            : node == Node::Var   ? (Dep::Var | Dep::Mut)
                                  : 0)
@@ -84,7 +86,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , node_(node)
     , mut_(true)
     , external_(false)
-    , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
+    , dep_(Dep::Mut | (node == Node::Hole ? Dep::Hole : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
     gid_  = world().next_gid();
@@ -105,7 +107,7 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
-const Def* Infer  ::rebuild_(World&,   const Def*,   Defs  ) const { fe::unreachable(); }
+const Def* Hole   ::rebuild_(World&,   const Def*,   Defs  ) const { fe::unreachable(); }
 const Def* Global ::rebuild_(World&,   const Def*,   Defs  ) const { fe::unreachable(); }
 const Def* Idx    ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_idx(); }
 const Def* Nat    ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_nat(); }
@@ -146,7 +148,7 @@ template<bool up> const Def* TBound<up>::rebuild_(World& w, const Def*  , Defs o
 
 Arr*    Arr   ::stub_(World& w, const Def* t) { return w.mut_arr  (t); }
 Global* Global::stub_(World& w, const Def* t) { return w.global   (t, is_mutable()); }
-Infer*  Infer ::stub_(World& w, const Def* t) { return w.mut_infer(t); }
+Hole*   Hole  ::stub_(World& w, const Def* t) { return w.mut_hole(t); }
 Lam*    Lam   ::stub_(World& w, const Def* t) { return w.mut_lam  (t->as<Pi>()); }
 Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
 Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }
@@ -431,18 +433,39 @@ const Def* Def::unfold_type() const {
 
 std::string_view Def::node_name() const {
     switch (node()) {
-#define CODE(op, abbr) \
-    case Node::op: return #abbr;
+#define CODE(name, _, __) \
+    case Node::name: return #name;
         MIM_NODE(CODE)
 #undef CODE
         default: fe::unreachable();
     }
 }
 
-Defs Def::deps() const {
+Defs Def::deps() const noexcept {
     if (isa<Type>() || isa<Univ>()) return Defs();
     assert(type());
     return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);
+}
+
+u32 Def::judge() const noexcept {
+    switch (node()) {
+#define CODE(n, _, j) \
+    case Node::n: return u32(j);
+        MIM_NODE(CODE)
+#undef CODE
+        default: fe::unreachable();
+    }
+}
+
+bool Def::is_term() const {
+    if (auto t = type()) {
+        if (auto u = t->type()) {
+            if (auto type = u->isa<Type>()) {
+                if (auto level = Lit::isa(type->level())) return *level == 0;
+            }
+        }
+    }
+    return false;
 }
 
 #ifndef NDEBUG
@@ -463,20 +486,9 @@ const Def* Def::var() {
     if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
     if (isa<Bound >()) return w.var(this, this);
-    if (isa<Infer >()) return nullptr;
+    if (isa<Hole  >()) return nullptr;
     if (isa<Global>()) return nullptr;
     fe::unreachable();
-}
-
-bool Def::is_term() const {
-    if (auto t = type()) {
-        if (auto u = t->type()) {
-            if (auto type = u->isa<Type>()) {
-                if (auto level = Lit::isa(type->level())) return *level == 0;
-            }
-        }
-    }
-    return false;
 }
 
 const Def* Def::arity() const {
