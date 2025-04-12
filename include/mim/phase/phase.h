@@ -163,7 +163,8 @@ public:
             auto mut = queue.pop();
             if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(root_ = m);
 
-            for (auto local_mut : mut->mut_local_muts()) queue.push(local_mut);
+            for (auto op : mut->deps())
+                for (auto mut : op->local_muts()) queue.push(mut);
         }
     }
 

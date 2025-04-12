@@ -402,9 +402,6 @@ public:
     /// @note `var->local_vars()` is by definition the set `{ var }`.
     Vars local_vars() const;
 
-    /// All local_muts() of this mutable's deps().
-    Muts mut_local_muts();
-
     /// Compute a global solution, i.e., by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();

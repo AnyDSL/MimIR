@@ -38,28 +38,30 @@ void Nest::populate() {
 
     while (!queue.empty()) {
         auto curr_node = pop(queue);
-        for (auto local_mut : curr_node->mut()->mut_local_muts()) {
-            if (mut2node(local_mut) || !contains(local_mut)) continue;
+        for (auto op : curr_node->mut()->deps()) {
+            for (auto local_mut : op->local_muts()) {
+                if (mut2node(local_mut) || !contains(local_mut)) continue;
 
-            if (curr_node->level() < local_mut->free_vars().size()) {
-                for (auto node = curr_node;; node = node->parent_) {
-                    if (auto var = node->mut()->has_var()) {
-                        if (local_mut->free_vars().contains(var)) {
-                            queue.push(make_node(local_mut, node));
-                            break;
+                if (curr_node->level() < local_mut->free_vars().size()) {
+                    for (auto node = curr_node;; node = node->parent_) {
+                        if (auto var = node->mut()->has_var()) {
+                            if (local_mut->free_vars().contains(var)) {
+                                queue.push(make_node(local_mut, node));
+                                break;
+                            }
                         }
                     }
-                }
-            } else {
-                uint32_t max = 0;
-                auto parent  = root_;
-                for (auto var : local_mut->free_vars()) {
-                    if (auto node = mut2node_nonconst(var->mut()); node && node->level() > max) {
-                        max    = node->level();
-                        parent = node;
+                } else {
+                    uint32_t max = 0;
+                    auto parent  = root_;
+                    for (auto var : local_mut->free_vars()) {
+                        if (auto node = mut2node_nonconst(var->mut()); node && node->level() > max) {
+                            max    = node->level();
+                            parent = node;
+                        }
                     }
+                    queue.push(make_node(local_mut, parent));
                 }
-                queue.push(make_node(local_mut, parent));
             }
         }
     }
@@ -87,14 +89,16 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
 
 void Nest::deps(Node* curr) const {
     if (curr->mut()) {
-        for (auto local_mut : curr->mut()->mut_local_muts()) {
-            if (auto local_node = mut2node_nonconst(local_mut)) {
-                if (local_node == curr)
-                    local_node->link(local_node);
-                else if (auto parent = local_node->parent()) {
-                    if (auto curr_child = parent->curr_child) {
-                        assert(parent->child_mut2node_.contains(curr_child->mut()));
-                        curr_child->link(local_node);
+        for (auto op : curr->mut()->deps()) {
+            for (auto local_mut : op->local_muts()) {
+                if (auto local_node = mut2node_nonconst(local_mut)) {
+                    if (local_node == curr)
+                        local_node->link(local_node);
+                    else if (auto parent = local_node->parent()) {
+                        if (auto curr_child = parent->curr_child) {
+                            assert(parent->child_mut2node_.contains(curr_child->mut()));
+                            curr_child->link(local_node);
+                        }
                     }
                 }
             }

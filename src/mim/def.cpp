@@ -179,11 +179,13 @@ template TExt<true >*   TExt<true >  ::stub_(World&, const Def*);
  */
 
 bool Def::is_immutabilizable() {
-    if (mut_local_muts().contains(this)) return false;
-
     if (auto v = has_var()) {
         for (auto op : deps())
             if (op->free_vars().contains(v)) return false;
+    }
+    for (auto op : deps()) {
+        for (auto mut : op->local_muts())
+            if (mut == this) return false; // recursion
     }
     return true;
 }
@@ -316,13 +318,6 @@ Muts Def::local_muts() const {
     return muts_;
 }
 
-Muts Def::mut_local_muts() {
-    auto& muts = world().muts();
-    auto res   = Muts();
-    for (auto op : deps()) res = muts.merge(res, op->local_muts());
-    return res;
-}
-
 Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
@@ -368,11 +363,13 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
     auto& muts = w.muts();
     auto& vars = w.vars();
 
-    for (auto op : deps()) fvs = vars.merge(fvs, op->local_vars());
+    for (auto op : deps()) {
+        fvs = vars.merge(fvs, op->local_vars());
 
-    for (auto local_mut : mut_local_muts()) {
-        local_mut->muts_ = muts.insert(local_mut->muts_, this); // register "this" as user of local_mut
-        fvs              = vars.merge(fvs, local_mut->free_vars(todo, cyclic, run));
+        for (auto mut : op->local_muts()) {
+            mut->muts_ = muts.insert(mut->muts_, this); // register "this" as user of local_mut
+            fvs        = vars.merge(fvs, mut->free_vars(todo, cyclic, run));
+        }
     }
 
     if (auto var = has_var()) fvs = vars.erase(fvs, var); // FV(λx.e) = FV(e) \ {x}

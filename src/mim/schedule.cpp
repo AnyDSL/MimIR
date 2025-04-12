@@ -105,8 +105,12 @@ const Nest::Node* Scheduler::smart(Def* curr_mut, const Def* def) {
 static void post_order(const Nest& nest, const Nest::Node* node, Scheduler::Schedule& res, MutSet& done) {
     if (!node->mut()->isa<Lam>()) return;
     if (auto [_, ins] = done.emplace(node->mut()); !ins) return;
-    for (auto mut : node->mut()->mut_local_muts())
-        if (auto next = nest.mut2node(mut)) post_order(nest, next, res, done);
+
+    for (auto op : node->mut()->deps()) {
+        for (auto mut : op->local_muts())
+            if (auto next = nest.mut2node(mut)) post_order(nest, next, res, done);
+    }
+
     res.emplace_back(node->mut());
 }
 
