@@ -107,23 +107,23 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
     // Example: λx.x - λz.x
     if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
 
-    auto i1 = d1->isa_mut<Hole>();
-    auto i2 = d2->isa_mut<Hole>();
+    auto h1 = d1->isa_mut<Hole>();
+    auto h2 = d2->isa_mut<Hole>();
 
-    if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return fail<mode>();
+    if ((!h1 && !d1->is_set()) || (!h2 && !d2->is_set())) return fail<mode>();
 
     if (mode == Check) {
-        if (i1 && i2) {
+        if (h1 && h2) {
             // union by rank
-            if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
-            i2->set(i1);                                    // make i1 new root
-            if (i1->rank() == i2->rank()) ++i1->rank();
+            if (h1->rank() < h2->rank()) std::swap(h1, h2); // make sure h1 is heavier or equal
+            h2->set(h1);                                    // make h1 new root
+            if (h1->rank() == h2->rank()) ++h1->rank();
             return true;
-        } else if (i1) {
-            i1->set(d2);
+        } else if (h1) {
+            h1->set(d2);
             return true;
-        } else if (i2) {
-            i2->set(d1);
+        } else if (h2) {
+            h2->set(d1);
             return true;
         }
     }
