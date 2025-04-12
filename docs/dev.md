@@ -83,7 +83,7 @@ Methods beginning with
 `Def::isa`/`Def::as` allows for an _upcast_ that matches both _mutables_ and _immutables_:
 
 ```cpp
-void foo(Ref def) {
+void foo(const Def* def) {
     if (auto sigma = def->isa<Sigma>()) {
         // sigma is of type "const Sigma*" and could be a mutable or an immutable
     }
@@ -99,7 +99,7 @@ void foo(Ref def) {
 mim::Def::isa_imm / mim::Def::as_imm allows for an _upcast_ and **only** matches _immutables_:
 
 ```cpp
-void foo(Ref def) {
+void foo(const Def* def) {
     if (auto imm = def->isa_imm()) {
         // imm of type "const Def*" and is an immutable
     }
@@ -119,7 +119,7 @@ mim::Def::isa_mut / mim::Def::as_mut allows for an _upcast_ and **only** matches
 By doing so, it removes the `const` qualifier and gives you access to the **non**-`const` methods that only make sense for _mutables_:
 
 ```cpp
-void foo(Ref def) {
+void foo(const Def* def) {
     if (auto mut = def->isa_mut()) {
         // mut of type "Def*" - "const" has been removed!
         // This gives you access to the non-const methods:
@@ -160,7 +160,7 @@ Often, you want to match a [Lit](@ref mim::Lit)eral and grab its content.
 You can use [Lit::isa](@ref mim::Lit::isa)/[Lit::as](@ref mim::Lit::as) for this:
 
 ```cpp
-void foo(Ref def) {
+void foo(const Def* def) {
     if (auto lit = Lit::isa(def)) {
         // lit is of type "std::optional<u64>"
         // It's your responsibility that the grabbed value makes sense as u64.
@@ -190,11 +190,11 @@ The following table summarizes all important casts:
 
 #### Further Casts
 
-There are also some additional checks available that usually come as `static` methods and either return a pointer or `Ref` to the checked entity or `nullptr`.
+There are also some additional checks available that usually come as `static` methods and either return a pointer to the checked entity or `nullptr`.
 Here are some examples:
 
 ```cpp
-void foo(Ref def) {
+void foo(const Def* def) {
     if (auto size = Idx::isa(def)) {
         // def = Idx size
     }
@@ -251,7 +251,7 @@ If you want to design an [Axiom](@ref mim::Axiom) that returns a function, you c
 In order to match an [Axiom](@ref mim::Axiom) **without** any subtags like `%%mem.load`, do this:
 
 ```cpp
-void foo(Ref def) {
+void foo(const Def* def) {
     if (auto load = match<mem::load>(def)) {
         auto [mem, ptr]            = load->args<2>();
         auto [pointee, addr_space] = load->decurry()->args<2>();
@@ -267,7 +267,7 @@ void foo(Ref def) {
 In order to match an [Axiom](@ref mim::Axiom) **with** subtags like `%%core.wrap`, do this:
 
 ```cpp
-void foo(Ref def) {
+void foo(const Def* def) {
     if (auto wrap = match<core::wrap>(def)) {
         auto [a, b] = wrap->args<2>();
         auto mode   = wrap->decurry()->arg();

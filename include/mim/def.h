@@ -80,16 +80,10 @@ using Var2Var                   = VarMap<const Var*>;
 using Vars                      = Sets<const Var>::Set;
 ///@}
 
-//------------------------------------------------------------------------------
-
 using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*);
-
-//------------------------------------------------------------------------------
 
 // TODO remove or fix this
 enum class Sort { Term, Type, Kind, Space, Univ, Level };
-
-//------------------------------------------------------------------------------
 
 using fe::operator&;
 using fe::operator|;
@@ -98,8 +92,6 @@ using fe::operator<=>;
 using fe::operator==;
 using fe::operator!=;
 
-/// @name Dep
-///@{
 enum class Dep : unsigned {
     None  = 0,
     Mut   = 1 << 0,
@@ -107,7 +99,6 @@ enum class Dep : unsigned {
     Infer = 1 << 2,
     Proxy = 1 << 3,
 };
-///@}
 
 } // namespace mim
 #ifndef DOXYGEN
