@@ -407,7 +407,7 @@ Ptr<Expr> Parser::parse_pi_expr() {
                    ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Expr::Prec::Arrow))
                    : nullptr;
 
-    if (tag == Tag::K_Fn) dom->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(curr_));
+    if (tag == Tag::K_Fn) dom->add_ret(ast(), codom ? std::move(codom) : ptr<HoleExpr>(curr_));
     return ptr<PiExpr>(track, tag, std::move(dom), std::move(codom));
 }
 
@@ -643,7 +643,7 @@ Ptr<RecDecl> Parser::parse_rec_decl(bool first) {
     auto track = tracker();
     eat(first ? Tag::K_rec : Tag::K_and);
     auto dbg  = parse_name("recursive declaration");
-    auto type = accept(Tag::T_colon) ? parse_expr("type of a recursive declaration") : ptr<InferExpr>(curr_);
+    auto type = accept(Tag::T_colon) ? parse_expr("type of a recursive declaration") : ptr<HoleExpr>(curr_);
     expect(Tag::T_assign, "recursive declaration");
     auto body = parse_expr("body of a recursive declaration");
     auto next = ahead().isa(Tag::K_and) ? parse_and_decl() : nullptr;
@@ -687,7 +687,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
 
     auto codom = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Expr::Prec::Arrow) : nullptr;
     if (tag == Tag::K_fn || tag == Tag::K_fun)
-        doms.back()->add_ret(ast(), codom ? std::move(codom) : ptr<InferExpr>(curr_));
+        doms.back()->add_ret(ast(), codom ? std::move(codom) : ptr<HoleExpr>(curr_));
 
     expect(Tag::T_assign, "body of a "s + entity);
     auto body = parse_expr("body of a "s + entity);

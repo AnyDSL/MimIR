@@ -302,10 +302,10 @@ void Dumper::dump(Def* mut) {
 
     auto mut_prefix = [&](const Def* def) {
         if (def->isa<Sigma>()) return "Sigma";
-        if (def->isa<Arr>()) return ".Arr";
-        if (def->isa<Pack>()) return ".pack";
-        if (def->isa<Pi>()) return ".Pi";
-        if (def->isa<Infer>()) return ".Infer";
+        if (def->isa<Arr>()) return "Arr";
+        if (def->isa<Pack>()) return "pack";
+        if (def->isa<Pi>()) return "Pi";
+        if (def->isa<Hole>()) return "Hole";
         fe::unreachable();
     };
 
@@ -314,7 +314,7 @@ void Dumper::dump(Def* mut) {
         if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
         if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
         if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
-        if (auto infer = def->isa<Infer>()) return infer->is_set() ? print(os, ", {}", infer->op()) : print(os, ", ??");
+        if (auto hole = def->isa<Hole>()) return hole->is_set() ? print(os, ", {}", hole->op()) : print(os, ", ??");
         fe::unreachable();
     };
 

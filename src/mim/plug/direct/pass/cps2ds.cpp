@@ -154,8 +154,8 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     auto new_ops = DefVec(def->ops(), [&](const Def* op) { return rewrite_body(op); });
     world().DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
 
-    if (def->isa<Infer>()) {
-        world().WLOG("infer node {} : {} [{}]", def, def->type(), def->node_name());
+    if (def->isa<Hole>()) {
+        world().WLOG("Hole {} : {} [{}]", def, def->type(), def->node_name());
         return def;
     }
 

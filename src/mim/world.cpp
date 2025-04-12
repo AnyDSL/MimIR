@@ -179,7 +179,7 @@ const Def* World::var(const Def* type, Def* mut) {
 }
 
 template<bool Normalize> const Def* World::implicit_app(const Def* callee, const Def* arg) {
-    while (auto pi = Pi::isa_implicit(callee->type())) callee = app(callee, mut_infer(pi->dom()));
+    while (auto pi = Pi::isa_implicit(callee->type())) callee = app(callee, mut_hole(pi->dom()));
     return app<Normalize>(callee, arg);
 }
 
@@ -335,7 +335,7 @@ const Def* World::extract(const Def* d, const Def* index) {
     }
 
     if (auto i = Lit::isa(index)) {
-        if (auto infer = d->isa_mut<Infer>()) d = infer->tuplefy();
+        if (auto hole = d->isa_mut<Hole>()) d = hole->tuplefy();
         if (auto tuple = d->isa<Tuple>()) return tuple->op(*i);
 
         // extract(insert(x, j, val), i) -> extract(x, i) where i != j (guaranteed by rule above)

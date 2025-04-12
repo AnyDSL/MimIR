@@ -116,7 +116,7 @@ void TuplePtrn::bind(Scopes& s, bool rebind, bool quiet) const {
 void IdExpr     ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
 void TypeExpr   ::bind(Scopes& s) const { level()->bind(s); }
 void ErrorExpr  ::bind(Scopes&) const {}
-void InferExpr  ::bind(Scopes&) const {}
+void HoleExpr   ::bind(Scopes&) const {}
 void PrimaryExpr::bind(Scopes&) const {}
 // clang-format on
 
@@ -271,7 +271,7 @@ void RecDecl::bind(Scopes& s) const {
 
 void RecDecl::bind_decl(Scopes& s) const {
     if (auto t = type()) t->bind(s);
-    if (!type()->isa<InferExpr>() && body()->isa<LamExpr>())
+    if (!type()->isa<HoleExpr>() && body()->isa<LamExpr>())
         s.ast().warn(type()->loc(), "type of recursive declaration ignored for function expression");
 
     if (!body()->isa<LamExpr>() && !body()->isa<PiExpr>() && !body()->isa<ArrowExpr>() && !body()->isa<SigmaExpr>())

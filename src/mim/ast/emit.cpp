@@ -78,7 +78,7 @@ const Def* ErrorPtrn::emit_type(Emitter&) const { fe::unreachable(); }
 
 const Def* IdPtrn::emit_type(Emitter& e) const {
     auto _ = e.world().push(loc());
-    return type() ? type()->emit(e) : e.world().mut_infer_type();
+    return type() ? type()->emit(e) : e.world().mut_hole_type();
 }
 
 const Def* AliasPtrn::emit_type(Emitter& e) const { return ptrn()->emit_type(e); }
@@ -126,7 +126,7 @@ const Def* Expr::emit(Emitter& e) const {
 }
 
 const Def* ErrorExpr::emit_(Emitter&) const { fe::unreachable(); }
-const Def* InferExpr::emit_(Emitter& e) const { return e.world().mut_infer_type(); }
+const Def* HoleExpr::emit_(Emitter& e) const { return e.world().mut_hole_type(); }
 
 const Def* IdExpr::emit_(Emitter&) const {
     assert(decl());
@@ -436,7 +436,7 @@ void LamDecl::emit_decl(Emitter& e) const {
     // Iterate over all doms: Build a Lam for cur dom, by first building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
-        auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_infer_type();
+        auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_hole_type();
 
         for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse)
             cod = dom->set_codom(cod);

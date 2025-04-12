@@ -21,7 +21,7 @@ std::array<const Def*, 3> split(const Def* def) {
             new_ops[j++] = op;
     }
     assert(mem && env);
-    auto remaining = def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
+    auto remaining = def->is_intro() ? w.tuple(new_ops) : w.sigma(new_ops);
     if (new_ops.size() == 1 && remaining != new_ops[0]) {
         // FIXME: For some reason this is not constant folded away??
         remaining = new_ops[0];

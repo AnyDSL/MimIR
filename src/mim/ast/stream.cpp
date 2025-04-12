@@ -73,7 +73,7 @@ std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
 
 std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", dbg()); }
 std::ostream& ErrorExpr::stream(Tab&, std::ostream& os) const { return os << "<error expression>"; }
-std::ostream& InferExpr::stream(Tab&, std::ostream& os) const { return os << "<infer>"; }
+std::ostream& HoleExpr::stream(Tab&, std::ostream& os) const { return os << "?"; }
 std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", tag()); }
 
 std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
@@ -182,7 +182,7 @@ std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
 
 std::ostream& RecDecl::stream(Tab& tab, std::ostream& os) const {
     print(os, ".rec {}", dbg());
-    if (!type()->isa<InferExpr>()) print(os, ": {}", S(tab, type()));
+    if (!type()->isa<HoleExpr>()) print(os, ": {}", S(tab, type()));
     return print(os, " = {};", S(tab, body()));
 }
 

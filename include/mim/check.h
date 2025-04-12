@@ -6,47 +6,47 @@ namespace mim {
 
 /// This node is a hole in the IR that is inferred by its context later on.
 /// It is modelled as a *mut*able Def.
-/// If inference was successful, it's Infer::op will be set to the inferred Def.
-class Infer : public Def, public Setters<Infer> {
+/// If inference was successful, it's Hole::op will be set to the inferred Def.
+class Hole : public Def, public Setters<Hole> {
 private:
-    Infer(const Def* type)
+    Hole(const Def* type)
         : Def(Node, type, 1, 0) {}
 
 public:
-    using Setters<Infer>::set;
+    using Setters<Hole>::set;
 
     /// @name op
     ///@{
     const Def* op() const { return Def::op(0); }
-    Infer* set(const Def* op) {
+    Hole* set(const Def* op) {
         assert(op != this);
-        return Def::set(0, op)->as<Infer>();
+        return Def::set(0, op)->as<Hole>();
     }
-    Infer* reset(const Def* op) {
+    Hole* reset(const Def* op) {
         assert(op != this);
-        return Def::reset(0, op)->as<Infer>();
+        return Def::reset(0, op)->as<Hole>();
     }
-    Infer* unset() { return Def::unset()->as<Infer>(); }
+    Hole* unset() { return Def::unset()->as<Hole>(); }
     ///@}
 
-    /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
+    /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
     /// Def::flags is used to keep track of rank for
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
     static const Def* find(const Def*);
 
-    Infer* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+    Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `this` if unsuccessful.
     const Def* tuplefy();
 
-    static constexpr auto Node = Node::Infer;
+    static constexpr auto Node = Node::Hole;
 
 private:
     flags_t rank() const { return flags(); }
     flags_t& rank() { return flags_; }
 
     const Def* rebuild_(World&, const Def*, Defs) const override;
-    Infer* stub_(World&, const Def*) override;
+    Hole* stub_(World&, const Def*) override;
 
     friend class World;
     friend class Checker;
@@ -60,10 +60,10 @@ public:
     World& world() { return world_; }
 
     enum Mode {
-        /// In Mode::Check, type inference is happening and Infer%s will be resolved, if possible.
+        /// In Mode::Check, type inference is happening and Hole%s will be resolved, if possible.
         /// Also, two *free* but *different* Var%s **are** considered α-equivalent.
         Check,
-        /// In Mode::Test, no type inference is happening and Infer%s will not be touched.
+        /// In Mode::Test, no type inference is happening and Hole%s will not be touched.
         /// Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
         Test,
     };

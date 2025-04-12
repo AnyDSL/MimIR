@@ -195,13 +195,13 @@ public:
     void make_internal(Def*);
     ///@}
 
-    /// @name Univ, Type, Var, Proxy, Infer
+    /// @name Univ, Type, Var, Proxy, Hole
     ///@{
     const Univ* univ() { return data_.univ; }
     const Def* uinc(const Def* op, level_t offset = 1);
     template<Sort = Sort::Univ> const Def* umax(Defs);
     const Type* type(const Def* level);
-    const Type* type_infer_univ() { return type(mut_infer_univ()); }
+    const Type* type_infer_univ() { return type(mut_hole_univ()); }
     template<level_t level = 0> const Type* type() {
         if constexpr (level == 0)
             return data_.type_0;
@@ -215,14 +215,14 @@ public:
         return unify<Proxy>(ops.size(), type, ops, index, tag);
     }
 
-    Infer* mut_infer(const Def* type) { return insert<Infer>(1, type); }
-    Infer* mut_infer_univ() { return mut_infer(univ()); }
-    Infer* mut_infer_type() { return mut_infer(type_infer_univ()); }
+    Hole* mut_hole(const Def* type) { return insert<Hole>(1, type); }
+    Hole* mut_hole_univ() { return mut_hole(univ()); }
+    Hole* mut_hole_type() { return mut_hole(type_infer_univ()); }
 
     /// Either a value `?:?:Type ?` or a type `?:Type ?:Type ?`.
-    Infer* mut_infer_entity() {
+    Hole* mut_hole_infer_entity() {
         auto t   = type_infer_univ();
-        auto res = mut_infer(mut_infer(t));
+        auto res = mut_hole(mut_hole(t));
         assert(this == &res->world());
         return res;
     }
@@ -486,7 +486,7 @@ public:
     /// @name Cope with implicit Arguments
     ///@{
 
-    /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
+    /// Places Hole%s as demanded by Pi::is_implicit() and then apps @p arg.
     template<bool Normalize = true> const Def* implicit_app(const Def* callee, const Def* arg);
     template<bool Normalize = true> const Def* implicit_app(const Def* callee, Defs args) {
         return implicit_app<Normalize>(callee, tuple(args));
