@@ -82,15 +82,18 @@ using Vars                      = Sets<const Var>::Set;
 
 using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*);
 
-// TODO remove or fix this
-enum class Sort { Term, Type, Kind, Space, Univ, Level };
-
 using fe::operator&;
 using fe::operator|;
 using fe::operator^;
 using fe::operator<=>;
 using fe::operator==;
 using fe::operator!=;
+
+/// @name Enums that classify certain aspects of Defs
+///@{
+
+// TODO remove or fix this
+enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
 enum class Dep : unsigned {
     None  = 0,
@@ -102,12 +105,15 @@ enum class Dep : unsigned {
 
 /// [Judgement](https://ncatlab.org/nlab/show/judgment).
 enum class Judge : u32 {
-    Form = 1 << 0,  ///< [Type Formation](https://ncatlab.org/nlab/show/type+formation) like `T -> T`.
+    // clang-format off
+    Form  = 1 << 0, ///< [Type Formation](https://ncatlab.org/nlab/show/type+formation) like `T -> T`.
     Intro = 1 << 1, ///< [Term Introduction](https://ncatlab.org/nlab/show/natural+deduction) like `λ(x: Nat): Nat = x`.
-    Elim = 1 << 2,  ///< [Term Elimination](https://ncatlab.org/nlab/show/term+elimination) like `f a`.
-    Meta = 1 << 3,  ///< Meta rules for Univ%erse and Type levels.
-    Hole = 1 << 4,  ///< Special rule for Hole.
+    Elim  = 1 << 2, ///< [Term Elimination](https://ncatlab.org/nlab/show/term+elimination) like `f a`.
+    Meta  = 1 << 3, ///< Meta rules for Univ%erse and Type levels.
+    Hole  = 1 << 4, ///< Special rule for Hole.
+    // clang-format on
 };
+///@}
 
 } // namespace mim
 
