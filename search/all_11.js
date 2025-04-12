@@ -2,7 +2,7 @@ var searchData=
 [
   ['r_0',['R',['../structmim_1_1ast_1_1R.html',1,'mim::ast::R&lt; T &gt;'],['../structmim_1_1ast_1_1R.html#a6282a5f73cdf10901b719fc32327e1dc',1,'mim::ast::R::R()']]],
   ['r_1',['r',['../namespacemim_1_1plug_1_1math.html#aaf7502aae7bb9f2d1d1a1b56cc65f87aa4b43b0aee35624cd95b910189b3dc231',1,'mim::plug::math']]],
-  ['range_2',['Range',['../namespaceautomaton.html#aa7f4b5c4276e92cf0d3d5a53ea55d921',1,'automaton::Range'],['../dfa2matcher_8cpp.html#ac9f0ef3c7347814ee0f7c6dbaa5efea2',1,'Range:&#160;dfa2matcher.cpp']]],
+  ['range_2',['Range',['../namespaceautomaton.html#aa7f4b5c4276e92cf0d3d5a53ea55d921',1,'automaton::Range'],['../dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017',1,'Range:&#160;dfa2matcher.cpp']]],
   ['range_3',['range',['../regex.html#autotoc_md224',1,'%regex.range'],['../structmim_1_1Elem.html#a58b7a2f6a3629ec7ba23e410a9ece7f9',1,'mim::Elem::range'],['../structmim_1_1ast_1_1R.html#a154b1fdb020d2b86282ac6340b53f41a',1,'mim::ast::R::range'],['../namespacemim_1_1plug_1_1regex.html#a64e05eb3efae975d47944dc127eede75',1,'mim::plug::regex::range']]],
   ['range_5fhelper_2eh_4',['range_helper.h',['../range__helper_8h.html',1,'']]],
   ['rangecompare_5',['RangeCompare',['../structautomaton_1_1RangeCompare.html',1,'automaton']]],
@@ -137,12 +137,13 @@ var searchData=
   ['rwpass_3c_20lowerregex_2c_20lam_20_3e_134',['RWPass&lt; LowerRegex, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
   ['rwpass_3c_20lowertypedclosprep_2c_20lam_20_3e_135',['RWPass&lt; LowerTypedClosPrep, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
   ['rwpass_3c_20p_2c_20def_20_3e_136',['RWPass&lt; P, Def &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20rememelim_2c_20lam_20_3e_137',['RWPass&lt; RememElim, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20removedbgperm_2c_20lam_20_3e_138',['RWPass&lt; RemoveDbgPerm, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20reshape_2c_20lam_20_3e_139',['RWPass&lt; Reshape, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20retwrap_2c_20lam_20_3e_140',['RWPass&lt; RetWrap, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20scalarize_2c_20lam_20_3e_141',['RWPass&lt; Scalarize, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20ssaconstr_2c_20lam_20_3e_142',['RWPass&lt; SSAConstr, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20tailrecelim_2c_20lam_20_3e_143',['RWPass&lt; TailRecElim, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwphase_144',['RWPhase',['../classmim_1_1RWPhase.html',1,'mim::RWPhase'],['../classmim_1_1RWPhase.html#a53282903ce1e17e8b53c7b7baf224134',1,'mim::RWPhase::RWPhase()']]]
+  ['rwpass_3c_20p_2c_20m_20_3e_137',['RWPass&lt; P, M &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20rememelim_2c_20lam_20_3e_138',['RWPass&lt; RememElim, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20removedbgperm_2c_20lam_20_3e_139',['RWPass&lt; RemoveDbgPerm, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20reshape_2c_20lam_20_3e_140',['RWPass&lt; Reshape, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20retwrap_2c_20lam_20_3e_141',['RWPass&lt; RetWrap, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20scalarize_2c_20lam_20_3e_142',['RWPass&lt; Scalarize, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20ssaconstr_2c_20lam_20_3e_143',['RWPass&lt; SSAConstr, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20tailrecelim_2c_20lam_20_3e_144',['RWPass&lt; TailRecElim, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwphase_145',['RWPhase',['../classmim_1_1RWPhase.html',1,'mim::RWPhase'],['../classmim_1_1RWPhase.html#a53282903ce1e17e8b53c7b7baf224134',1,'mim::RWPhase::RWPhase()']]]
 ];

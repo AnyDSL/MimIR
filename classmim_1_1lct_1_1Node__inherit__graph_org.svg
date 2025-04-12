@@ -12,8 +12,8 @@
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title="This is an intrusive Link&#45;Cut&#45;Tree.">
-<polygon fill="#999999" stroke="#666666" points="228,-152 98,-152 98,-133 228,-133 228,-152"/>
-<text text-anchor="middle" x="163" y="-140" font-family="Helvetica,sans-Serif" font-size="10.00">mim::lct::Node&lt; P, K &gt;</text>
+<polygon fill="#999999" stroke="#666666" points="189,-152 59,-152 59,-133 189,-133 189,-152"/>
+<text text-anchor="middle" x="124" y="-140" font-family="Helvetica,sans-Serif" font-size="10.00">mim::lct::Node&lt; P, K &gt;</text>
 </a>
 </g>
 </g>
@@ -23,7 +23,7 @@
 <g id="a_Node000002"><a xlink:href="classmim_1_1lct_1_1Node.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="128,-86 0,-86 0,-56 128,-56 128,-86"/>
 <text text-anchor="start" x="8" y="-74" font-family="Helvetica,sans-Serif" font-size="10.00">mim::lct::Node&lt; Node,</text>
-<text text-anchor="middle" x="64" y="-63" font-family="Helvetica,sans-Serif" font-size="10.00"> int &gt;</text>
+<text text-anchor="middle" x="64" y="-63" font-family="Helvetica,sans-Serif" font-size="10.00"> D * &gt;</text>
 </a>
 </g>
 </g>
@@ -31,47 +31,47 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M131.98,-128.72C123.88,-124.81 115.36,-120.16 108,-115 96.28,-106.78 84.77,-95.39 76.47,-86.39"/>
-<polygon fill="orange" stroke="orange" points="130.66,-131.97 141.21,-132.96 133.59,-125.6 130.66,-131.97"/>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M102.52,-126.69C98.11,-123.14 93.69,-119.16 90,-115 82.24,-106.26 75.48,-94.89 70.8,-86.03"/>
+<polygon fill="orange" stroke="orange" points="100.7,-129.7 110.79,-132.93 104.91,-124.11 100.7,-129.7"/>
 </a>
 </g>
-<text text-anchor="middle" x="143" y="-107" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Node, int &gt;</text>
-</g>
-<!-- Node4 -->
-<g id="Node000004" class="node">
-<title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classmim_1_1lct_1_1Node.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="274,-86 146,-86 146,-56 274,-56 274,-86"/>
-<text text-anchor="start" x="154" y="-74" font-family="Helvetica,sans-Serif" font-size="10.00">mim::lct::Node&lt; Node,</text>
-<text text-anchor="middle" x="210" y="-63" font-family="Helvetica,sans-Serif" font-size="10.00"> D * &gt;</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node4 -->
-<g id="edge3_Node000001_Node000004" class="edge">
-<title>Node1&#45;&gt;Node4</title>
-<g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M174.51,-124.49C182.47,-112.71 192.94,-97.23 200.44,-86.14"/>
-<polygon fill="orange" stroke="orange" points="171.47,-122.73 168.76,-132.98 177.26,-126.65 171.47,-122.73"/>
-</a>
-</g>
-<text text-anchor="middle" x="223.5" y="-107" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Node, D * &gt;</text>
+<text text-anchor="middle" x="126.5" y="-107" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Node, D * &gt;</text>
 </g>
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classmim_1_1Nest_1_1Node.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="113.5,-19 14.5,-19 14.5,0 113.5,0 113.5,-19"/>
-<text text-anchor="middle" x="64" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Nest::Node</text>
+<g id="a_Node000003"><a xlink:href="classmim_1_1lct_1_1Node.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="274,-86 146,-86 146,-56 274,-56 274,-86"/>
+<text text-anchor="start" x="154" y="-74" font-family="Helvetica,sans-Serif" font-size="10.00">mim::lct::Node&lt; Node,</text>
+<text text-anchor="middle" x="210" y="-63" font-family="Helvetica,sans-Serif" font-size="10.00"> int &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node3 -->
-<g id="edge2_Node000002_Node000003" class="edge">
-<title>Node2&#45;&gt;Node3</title>
-<g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#8b1a1a" d="M64,-45.79C64,-36.36 64,-26.15 64,-19.16"/>
-<polygon fill="#8b1a1a" stroke="#8b1a1a" points="60.5,-45.9 64,-55.9 67.5,-45.9 60.5,-45.9"/>
+<!-- Node1&#45;&gt;Node3 -->
+<g id="edge2_Node000001_Node000003" class="edge">
+<title>Node1&#45;&gt;Node3</title>
+<g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M146.12,-127.28C151.74,-123.45 157.69,-119.2 163,-115 174.45,-105.95 186.59,-94.8 195.66,-86.12"/>
+<polygon fill="orange" stroke="orange" points="144.08,-124.43 137.7,-132.89 147.96,-130.26 144.08,-124.43"/>
+</a>
+</g>
+<text text-anchor="middle" x="210" y="-107" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Node, int &gt;</text>
+</g>
+<!-- Node4 -->
+<g id="Node000004" class="node">
+<title>Node4</title>
+<g id="a_Node000004"><a xlink:href="classmim_1_1Nest_1_1Node.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="259.5,-19 160.5,-19 160.5,0 259.5,0 259.5,-19"/>
+<text text-anchor="middle" x="210" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Nest::Node</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node4 -->
+<g id="edge3_Node000003_Node000004" class="edge">
+<title>Node3&#45;&gt;Node4</title>
+<g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
+<path fill="none" stroke="#8b1a1a" d="M210,-45.79C210,-36.36 210,-26.15 210,-19.16"/>
+<polygon fill="#8b1a1a" stroke="#8b1a1a" points="206.5,-45.9 210,-55.9 213.5,-45.9 206.5,-45.9"/>
 </a>
 </g>
 </g>

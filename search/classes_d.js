@@ -35,12 +35,13 @@ var searchData=
   ['rwpass_3c_20lowerregex_2c_20lam_20_3e_32',['RWPass&lt; LowerRegex, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
   ['rwpass_3c_20lowertypedclosprep_2c_20lam_20_3e_33',['RWPass&lt; LowerTypedClosPrep, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
   ['rwpass_3c_20p_2c_20def_20_3e_34',['RWPass&lt; P, Def &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20rememelim_2c_20lam_20_3e_35',['RWPass&lt; RememElim, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20removedbgperm_2c_20lam_20_3e_36',['RWPass&lt; RemoveDbgPerm, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20reshape_2c_20lam_20_3e_37',['RWPass&lt; Reshape, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20retwrap_2c_20lam_20_3e_38',['RWPass&lt; RetWrap, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20scalarize_2c_20lam_20_3e_39',['RWPass&lt; Scalarize, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20ssaconstr_2c_20lam_20_3e_40',['RWPass&lt; SSAConstr, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwpass_3c_20tailrecelim_2c_20lam_20_3e_41',['RWPass&lt; TailRecElim, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
-  ['rwphase_42',['RWPhase',['../classmim_1_1RWPhase.html',1,'mim']]]
+  ['rwpass_3c_20p_2c_20m_20_3e_35',['RWPass&lt; P, M &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20rememelim_2c_20lam_20_3e_36',['RWPass&lt; RememElim, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20removedbgperm_2c_20lam_20_3e_37',['RWPass&lt; RemoveDbgPerm, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20reshape_2c_20lam_20_3e_38',['RWPass&lt; Reshape, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20retwrap_2c_20lam_20_3e_39',['RWPass&lt; RetWrap, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20scalarize_2c_20lam_20_3e_40',['RWPass&lt; Scalarize, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20ssaconstr_2c_20lam_20_3e_41',['RWPass&lt; SSAConstr, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwpass_3c_20tailrecelim_2c_20lam_20_3e_42',['RWPass&lt; TailRecElim, Lam &gt;',['../classmim_1_1RWPass.html',1,'mim']]],
+  ['rwphase_43',['RWPhase',['../classmim_1_1RWPhase.html',1,'mim']]]
 ];

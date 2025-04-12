@@ -50,13 +50,13 @@ var ast_8h =
       [ "tag", "namespacemim_1_1ast.html#ae4d23e841d8e8804190027bce3180fa5", null ],
       [ "trip", "namespacemim_1_1ast.html#a7da7993d1249cb28b4e0c3e8524d15d2", null ]
     ] ],
-    [ "ArrExpr", "ast_8h.html#aa478301b5a142a59ebcfcb0cffa9c30b", null ],
-    [ "Dbgs", "ast_8h.html#a09214c0845d7829eb157e8700b238366", null ],
-    [ "PackExpr", "ast_8h.html#a6c0b4af3423f8df5ee7360f897e3c500", null ],
-    [ "Ptr", "ast_8h.html#a1aaebd33278034584fdc66d510f4302b", null ],
-    [ "Ptrs", "ast_8h.html#ac169bb8395ee9296baedc7c8cf4a5eed", null ],
-    [ "load_plugins", "ast_8h.html#a5fe7be09bffcd1f540353919cc95ee07", null ],
-    [ "load_plugins", "ast_8h.html#abae341d79d49646bf8f2c7177be146d0", null ],
-    [ "load_plugins", "ast_8h.html#af661ed47b30377f25191a96dd6e8b683", null ],
-    [ "load_plugins", "ast_8h.html#a96ed66bd50a2f73331220a2a9c2856b5", null ]
+    [ "mim::ast::ArrExpr", "namespacemim_1_1ast.html#aa478301b5a142a59ebcfcb0cffa9c30b", null ],
+    [ "mim::ast::Dbgs", "namespacemim_1_1ast.html#a09214c0845d7829eb157e8700b238366", null ],
+    [ "mim::ast::PackExpr", "namespacemim_1_1ast.html#a6c0b4af3423f8df5ee7360f897e3c500", null ],
+    [ "mim::ast::Ptr", "namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b", null ],
+    [ "mim::ast::Ptrs", "namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed", null ],
+    [ "mim::ast::load_plugins", "namespacemim_1_1ast.html#a5fe7be09bffcd1f540353919cc95ee07", null ],
+    [ "mim::ast::load_plugins", "namespacemim_1_1ast.html#abae341d79d49646bf8f2c7177be146d0", null ],
+    [ "mim::ast::load_plugins", "namespacemim_1_1ast.html#af661ed47b30377f25191a96dd6e8b683", null ],
+    [ "mim::ast::load_plugins", "namespacemim_1_1ast.html#a96ed66bd50a2f73331220a2a9c2856b5", null ]
 ];

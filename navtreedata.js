@@ -89,32 +89,29 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "add__mem_8cpp.html",
-"classmim_1_1App.html#a7b4bcdf992c21ae83363f25df05b1d25",
-"classmim_1_1Def.html#a24e57816b839ef9209073cff35710c22",
-"classmim_1_1Driver.html#a758accb44573b040d909f921497e4d34",
-"classmim_1_1Hole.html#a98459479ea4757ea3d91916fc3c7dde8",
-"classmim_1_1Match.html#a7d99ae15b1b90103f9868a1c10016dd5",
-"classmim_1_1Pi.html#a16a7f5159e847beff1b30014f71a2043",
-"classmim_1_1Sets_1_1Set.html#aedb1b7a07bb2ac90836be8ca70b7830b",
-"classmim_1_1Use.html#a5a79f76e19dec42cc52438ae4c77b954",
-"classmim_1_1World.html#a76a2bc4914920ee550be62ace9403d9f",
-"classmim_1_1ast_1_1AST.html#a6b9ce37fadefc4e22c611481193b2db4",
-"classmim_1_1ast_1_1ExtractExpr.html#a8b4792d1d7071453f835c6251ddfb904",
-"classmim_1_1ast_1_1Parser.html#ab9ce11c7d4ea36a9f8f55e10aefebf4c",
-"classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a4aa27e923156d5664fbee502e9e43058",
-"classmim_1_1ll_1_1Emitter.html#af3d0b65f073435071f723f699e8f05ca",
-"classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html",
-"core_2autogen_8h.html#a4fd1e12f25215e48e67478a04191985ead4f917633649a3c47c7ab917fa990146",
-"dfa_8cpp.html#a7ca24e1facadd447f3e80389505c35ec",
-"lam_8cpp.html",
-"math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c",
-"namespacemim.html#a2d08547c4fc3b6bcf3d8779269813b50",
-"namespacemim_1_1plug_1_1clos.html#a8946822aea593f6036e981f1d5ad4824",
-"namespacemim_1_1plug_1_1math.html",
-"namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4",
-"regex_2autogen_8h.html#ade9931e9b2f114bf296d7336f124e85b",
-"structmim_1_1World_1_1State.html#ae8b660ef148e3b7b5c237744a4b2f228"
+"classmim_1_1Axiom.html#ab29c0d874eea90336ce70378ec7d2006",
+"classmim_1_1Def.html#a5d7e27c33828e4829363b3932fed229a",
+"classmim_1_1Error.html#a78dabe943bab1b92fa61cb11976b52c0",
+"classmim_1_1IndexSet.html#a051af14f0e39319efe52f325728a3dcb",
+"classmim_1_1NestPhase.html#a101203cdf21e91486513e9cd7e4b0396",
+"classmim_1_1Pick.html#ae1899f3d8134f48d2b45160249c8cf2f",
+"classmim_1_1Sigma.html#a03817306a72b907aff0d8904e3c5bd1b",
+"classmim_1_1World.html#a00810334dfda0d9cd38b5c55a9f60e30",
+"classmim_1_1World.html#a9bd6d16e46909817c454c545ecd86496",
+"classmim_1_1ast_1_1ArrOrPackExpr.html#aa5401144df56cd63506419d7ecfb0dda",
+"classmim_1_1ast_1_1IdPtrn.html#ac42da49ebbef65a1567a9592debea706",
+"classmim_1_1ast_1_1PrimaryExpr.html#aec9bd95b309823a1a050a436840e16ca",
+"classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5abc3b81567a2120d32858af82e3a5fcea",
+"classmim_1_1plug_1_1clos_1_1ClosConv.html#a0a93743953b3d9c7e9d0d849951abc57",
+"clos__conv_8cpp_source.html",
+"functions_eval.html",
+"namespacemim.html#a1a9c49cf26963e97393735d2a4b2eb26",
+"namespacemim_1_1plug_1_1clos.html#a08e2dd10f68834ee59b63662b9a63c06",
+"namespacemim_1_1plug_1_1core.html#af3951905fa04ce273d627414f52a1414",
+"namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502",
+"structmim_1_1Annex.html#a3448571d44e72d9078aa9ea5e8e7c0c6",
+"tuple_8cpp.html"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';

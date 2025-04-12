@@ -6,5 +6,5 @@ var tok_8h =
     [ "MIM_KEY", "tok_8h.html#abc9428554ffe51f249e7561d0ccd0a21", null ],
     [ "MIM_SUBST", "tok_8h.html#a6db46bc72a5da9001ba48cbe37741e8d", null ],
     [ "MIM_TOK", "tok_8h.html#a7665c181db88f5409c94c8234cdd7f0c", null ],
-    [ "Num_Keys", "tok_8h.html#ab4b52dbb4d1c2d76a66fbdd47af52ea9", null ]
+    [ "mim::ast::Num_Keys", "namespacemim_1_1ast.html#ab4b52dbb4d1c2d76a66fbdd47af52ea9", null ]
 ];
