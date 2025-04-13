@@ -2,12 +2,12 @@
 
 #include <algorithm>
 
+#include <fe/assert.h>
+
 #include "mim/rewrite.h"
 #include "mim/world.h"
 
 #include "mim/util/hash.h"
-
-#include "fe/assert.h"
 
 using namespace std::literals;
 

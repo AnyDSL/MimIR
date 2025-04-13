@@ -4,8 +4,6 @@
 
 #include "mim/phase/phase.h"
 
-#include "fe/assert.h"
-
 namespace mim {
 
 Nest::Nest(Def* r)
