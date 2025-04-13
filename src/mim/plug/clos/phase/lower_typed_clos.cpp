@@ -85,6 +85,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         case Node::Type:
         case Node::Univ:
         case Node::Nat: return def;
+        default: break;
     }
 
     auto& w = world();

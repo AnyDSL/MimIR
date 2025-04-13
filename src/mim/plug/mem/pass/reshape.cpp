@@ -86,6 +86,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         case Node::Nat:
         case Node::Axiom:
         case Node::Global: return def;
+        default: break;
     }
 
     // This is dead code for debugging purposes.
