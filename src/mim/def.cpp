@@ -272,7 +272,7 @@ Def* Def::set(size_t i, const Def* def) {
 #endif
     ops_ptr()[i] = def;
 
-    if (i == num_ops() - 1) { // set last, op so check kind
+    if (i == num_ops() - 1) { // set last op, so check kind
         if (auto t = check(); t != type()) type_ = t;
     }
 

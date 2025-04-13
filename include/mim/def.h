@@ -223,17 +223,6 @@ public:
     std::string_view node_name() const;
     ///@}
 
-    /// @name type
-    ///@{
-
-    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`.
-    /// @see Def::unfold_type.
-    const Def* type() const noexcept { return type_; }
-    /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
-    const Def* unfold_type() const;
-    bool is_term() const;
-    ///@}
-
     /// @name Judgement
     /// What kind of Judge%ment represents this Def?
     ///@{
@@ -244,6 +233,17 @@ public:
     bool is_elim()  const noexcept { return judge() & Judge::Elim;  }
     bool is_meta()  const noexcept { return judge() & Judge::Meta;  }
     // clang-format on
+    ///@}
+
+    /// @name type
+    ///@{
+
+    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`.
+    /// @see Def::unfold_type.
+    const Def* type() const noexcept { return type_; }
+    /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
+    const Def* unfold_type() const;
+    bool is_term() const;
     ///@}
 
     /// @name arity

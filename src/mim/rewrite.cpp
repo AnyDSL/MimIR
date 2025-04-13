@@ -1,5 +1,7 @@
 #include "mim/rewrite.h"
 
+#include <absl/container/fixed_array.h>
+
 #include "mim/world.h"
 
 // Don't use fancy C++-lambdas; it's way too annoying stepping through them in a debugger.
@@ -25,7 +27,7 @@ const Def* Rewriter::rewrite_imm(const Def* old_def) {
 
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
     auto size     = old_def->num_ops();
-    auto new_ops  = DefVec(size);
+    auto new_ops  = absl::FixedArray<const Def*>(size);
     for (size_t i = 0; i != size; ++i) new_ops[i] = rewrite(old_def->op(i));
     return old_def->rebuild(world(), new_type, new_ops);
 }

@@ -3,6 +3,7 @@
 #include "mim/rewrite.h"
 #include "mim/world.h"
 
+#include "absl/container/fixed_array.h"
 #include "fe/assert.h"
 
 namespace mim {
@@ -59,7 +60,7 @@ const Def* Hole::tuplefy() {
     if (auto a = type()->isa_lit_arity(); a && !is_set()) {
         auto& w     = world();
         auto n      = *a;
-        auto infers = DefVec(n);
+        auto infers = absl::FixedArray<const Def*>(n);
         if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
             auto var  = sigma->has_var();
             auto rw   = VarRewriter(var, this);
@@ -201,7 +202,7 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
 
         size_t a     = sigma->num_ops();
         auto red     = sigma->reduce(val);
-        auto new_ops = DefVec(red.size());
+        auto new_ops = absl::FixedArray<const Def*>(red.size());
         for (size_t i = 0; i != a; ++i) {
             auto new_val = assignable_(red[i], val->proj(a, i));
             if (new_val)
@@ -215,7 +216,7 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
 
         // TODO ack sclarize threshold
         if (auto a = Lit::isa(arr->arity())) {
-            auto new_ops = DefVec(*a);
+            auto new_ops = absl::FixedArray<const Def*>(*a);
             for (size_t i = 0; i != *a; ++i) {
                 auto new_val = assignable_(arr->proj(*a, i), val->proj(*a, i));
                 if (new_val)
@@ -257,10 +258,16 @@ const Def* Arr::check() {
     return t;
 }
 
+const Def* Tuple::infer(World& world, Defs ops) {
+    auto elems = absl::FixedArray<const Def*>(ops.size());
+    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
+    return world.sigma(elems);
+}
+
 const Def* Sigma::infer(World& w, Defs ops) {
-    if (ops.size() == 0) return w.type<1>();
-    auto kinds = DefVec(ops.size(), [ops](size_t i) { return ops[i]->unfold_type(); });
-    return w.umax<Sort::Kind>(kinds);
+    auto elems = absl::FixedArray<const Def*>(ops.size());
+    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->unfold_type();
+    return w.umax<Sort::Kind>(elems);
 }
 
 const Def* Sigma::check(size_t, const Def* def) { return def; } // TODO
@@ -282,6 +289,20 @@ const Def* Sigma::check() {
     return t;
 }
 
+const Def* Pi::infer(const Def* dom, const Def* codom) {
+    auto& w = dom->world();
+    return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
+}
+
+const Def* Pi::check(size_t, const Def* def) { return def; }
+
+const Def* Pi::check() {
+    auto t = infer(dom(), codom());
+    if (!Checker::alpha<Checker::Check>(t, type()))
+        error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
+    return t;
+}
+
 const Def* Lam::check(size_t i, const Def* def) {
     if (i == 0) {
         if (auto filter = Checker::assignable(world().type_bool(), def)) return filter;
@@ -296,20 +317,6 @@ const Def* Lam::check(size_t i, const Def* def) {
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
     fe::unreachable();
-}
-
-const Def* Pi::infer(const Def* dom, const Def* codom) {
-    auto& w = dom->world();
-    return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
-}
-
-const Def* Pi::check(size_t, const Def* def) { return def; }
-
-const Def* Pi::check() {
-    auto t = infer(dom(), codom());
-    if (!Checker::alpha<Checker::Check>(t, type()))
-        error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
-    return t;
 }
 
 #ifndef DOXYGEN

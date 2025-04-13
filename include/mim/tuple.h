@@ -50,6 +50,7 @@ private:
 class Tuple : public Def, public Setters<Tuple> {
 public:
     using Setters<Tuple>::set;
+    static const Def* infer(World&, Defs);
     static constexpr auto Node = Node::Tuple;
 
 private:

@@ -22,11 +22,6 @@ bool is_shape(const Def* s) {
     return false;
 }
 
-const Def* infer_sigma(World& world, Defs ops) {
-    DefVec elems(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
-    return world.sigma(elems);
-}
 } // namespace
 
 /*
@@ -249,9 +244,11 @@ const Def* World::sigma(Defs ops) {
 }
 
 const Def* World::tuple(Defs ops) {
-    if (ops.size() == 1) return ops[0];
+    auto n = ops.size();
+    if (n == 0) return tuple();
+    if (n == 1) return ops[0];
 
-    auto sigma = infer_sigma(*this, ops);
+    auto sigma = Tuple::infer(*this, ops);
     auto t     = tuple(sigma, ops);
     auto new_t = Checker::assignable(sigma, t);
     if (!new_t)
