@@ -34,18 +34,6 @@
 
 namespace mim {
 
-namespace Node {
-
-#define CODE(node, name, _) node,
-enum : node_t { MIM_NODE(CODE) };
-#undef CODE
-
-#define CODE(node, name, _) +size_t(1)
-constexpr auto Num_Nodes = size_t(0) MIM_NODE(CODE);
-#undef CODE
-
-} // namespace Node
-
 class App;
 class Axiom;
 class Var;
@@ -89,12 +77,23 @@ using fe::operator<=>;
 using fe::operator==;
 using fe::operator!=;
 
-/// @name Enums that classify certain aspects of Defs
+/// @name Enums that classify certain aspects of Def%s.
 ///@{
 
-// TODO remove or fix this
+enum class Node : node_t {
+#define CODE(node, name, _) node,
+    MIM_NODE(CODE)
+#undef CODE
+};
+
+#define CODE(node, name, _) +size_t(1)
+static constexpr size_t Num_Nodes = size_t(0) MIM_NODE(CODE);
+#undef CODE
+
+/// TODO remove or fix this
 enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
+/// Tracks a dependency to certain Def%s transitively through the Def::deps() up to but excliding *mutables*.
 enum class Dep : unsigned {
     None  = 0,
     Mut   = 1 << 0,
@@ -204,9 +203,9 @@ private:
 protected:
     /// @name C'tors and D'tors
     ///@{
-    Def(World*, node_t, const Def* type, Defs ops, flags_t flags); ///< Constructor for an *immutable* Def.
-    Def(node_t n, const Def* type, Defs ops, flags_t flags);       ///< As above but World retrieved from @p type.
-    Def(node_t, const Def* type, size_t num_ops, flags_t flags);   ///< Constructor for a *mutable* Def.
+    Def(World*, Node, const Def* type, Defs ops, flags_t flags); ///< Constructor for an *immutable* Def.
+    Def(Node, const Def* type, Defs ops, flags_t flags);         ///< As above but World retrieved from @p type.
+    Def(Node, const Def* type, size_t num_ops, flags_t flags);   ///< Constructor for a *mutable* Def.
     virtual ~Def() = default;
     ///@}
 
@@ -219,7 +218,7 @@ public:
     constexpr u32 tid() const noexcept { return tid_; }   ///< Trie id - only used in Trie.
     constexpr u32 mark() const noexcept { return mark_; } ///< Used internally by free_vars().
     constexpr size_t hash() const noexcept { return hash_; }
-    constexpr node_t node() const noexcept { return node_; }
+    constexpr Node node() const noexcept { return node_; }
     std::string_view node_name() const;
     ///@}
 
@@ -238,7 +237,7 @@ public:
     /// @name type
     ///@{
 
-    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`.
+    /// Yields the "raw" type of this Def (maybe `nullptr`).
     /// @see Def::unfold_type.
     const Def* type() const noexcept { return type_; }
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
@@ -402,7 +401,7 @@ public:
     /// @note `var->local_vars()` is by definition the set `{ var }`.
     Vars local_vars() const;
 
-    /// Compute a global solution, i.e., by transitively following *mutables* as well.
+    /// Compute a global solution by transitively following *mutables* as well.
     Vars free_vars() const;
     Vars free_vars();
     Muts users() { return muts_; } ///< Set of mutables where this mutable is locally referenced.
@@ -572,7 +571,7 @@ protected:
     u8 trip_  = 0;
 
 private:
-    u8 node_;
+    Node node_;
     bool mut_      : 1;
     bool external_ : 1;
     unsigned dep_  : 6;
@@ -628,7 +627,7 @@ public:
     Def* mut() const { return op(0)->as_mut(); }
     ///@}
 
-    static constexpr auto Node = Node::Var;
+    static constexpr auto Node = mim::Node::Var;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -639,7 +638,7 @@ private:
 class Univ : public Def, public Setters<Univ> {
 public:
     using Setters<Univ>::set;
-    static constexpr auto Node = Node::Univ;
+    static constexpr auto Node = mim::Node::Univ;
 
 private:
     Univ(World& world)
@@ -653,7 +652,7 @@ private:
 class UMax : public Def, public Setters<UMax> {
 public:
     using Setters<UMax>::set;
-    static constexpr auto Node = Node::UMax;
+    static constexpr auto Node = mim::Node::UMax;
 
 private:
     UMax(World&, Defs ops);
@@ -677,7 +676,7 @@ public:
     level_t offset() const { return flags(); }
     ///@}
 
-    static constexpr auto Node = Node::UInc;
+    static constexpr auto Node = mim::Node::UInc;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -698,7 +697,7 @@ public:
     const Def* level() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = Node::Type;
+    static constexpr auto Node = mim::Node::Type;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -736,7 +735,7 @@ public:
     template<class T = nat_t> static T as(const Def* def) { return def->as<Lit>()->get<T>(); }
     ///@}
 
-    static constexpr auto Node = Node::Lit;
+    static constexpr auto Node = mim::Node::Lit;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -747,7 +746,7 @@ private:
 class Nat : public Def, public Setters<Nat> {
 public:
     using Setters<Nat>::set;
-    static constexpr auto Node = Node::Nat;
+    static constexpr auto Node = mim::Node::Nat;
 
 private:
     Nat(World& world);
@@ -795,7 +794,7 @@ public:
     static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 
-    static constexpr auto Node = Node::Idx;
+    static constexpr auto Node = mim::Node::Idx;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -817,7 +816,7 @@ public:
     u32 tag() const { return u32(flags()); }
     ///@}
 
-    static constexpr auto Node = Node::Proxy;
+    static constexpr auto Node = mim::Node::Proxy;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -858,7 +857,7 @@ public:
     Global* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     ///@}
 
-    static constexpr auto Node = Node::Global;
+    static constexpr auto Node = mim::Node::Global;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;

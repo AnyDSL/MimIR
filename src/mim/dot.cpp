@@ -91,7 +91,7 @@ public:
     }
 
     std::ostream& color(const Def* def) {
-        return print(os_, "fillcolor=\"{} 0.5 0.75\"", def->node() / (float)Node::Num_Nodes);
+        return print(os_, "fillcolor=\"{} 0.5 0.75\"", float(def->node()) / float(Num_Nodes));
     }
 
     std::ostream& tooltip(const Def* def) {

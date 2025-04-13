@@ -36,7 +36,7 @@ public:
     static const Def* infer(World&, Defs);
     ///@}
 
-    static constexpr auto Node = Node::Sigma;
+    static constexpr auto Node = mim::Node::Sigma;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -51,7 +51,7 @@ class Tuple : public Def, public Setters<Tuple> {
 public:
     using Setters<Tuple>::set;
     static const Def* infer(World&, Defs);
-    static constexpr auto Node = Node::Tuple;
+    static constexpr auto Node = mim::Node::Tuple;
 
 private:
     Tuple(const Def* type, Defs args)
@@ -101,7 +101,7 @@ public:
     const Def* check() override;
     ///@}
 
-    static constexpr auto Node = Node::Arr;
+    static constexpr auto Node = mim::Node::Arr;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -142,7 +142,7 @@ public:
     const Def* immutabilize() override;
     ///@}
 
-    static constexpr auto Node = Node::Pack;
+    static constexpr auto Node = mim::Node::Pack;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -166,7 +166,7 @@ public:
     const Def* index() const { return op(1); }
     ///@}
 
-    static constexpr auto Node = Node::Extract;
+    static constexpr auto Node = mim::Node::Extract;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -193,7 +193,7 @@ public:
     const Def* value() const { return op(2); }
     ///@}
 
-    static constexpr auto Node = Node::Insert;
+    static constexpr auto Node = mim::Node::Insert;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;

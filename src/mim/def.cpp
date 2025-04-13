@@ -20,10 +20,10 @@ template void Sets<Def>::dot();
  * constructors
  */
 
-Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
+Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
     : world_(world)
     , flags_(flags)
-    , node_(unsigned(node))
+    , node_(node)
     , mut_(false)
     , external_(false)
     , dep_(node == Node::Hole    ? unsigned(Dep::Hole)
@@ -34,7 +34,7 @@ Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
     , type_(type) {
     if (node == Node::Univ) {
         gid_  = world->next_gid();
-        hash_ = mim::hash_begin(u8(node));
+        hash_ = mim::hash_begin(node_t(Node::Univ));
     } else if (auto var = isa<Var>()) {
         assert(flags_ == 0); // if we ever need flags here, we need to hash that
         gid_  = type->world().next_gid();
@@ -42,7 +42,7 @@ Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
         dep_ |= type->dep_;
         auto op      = ops[0];
         ops_ptr()[0] = op;
-        hash_        = hash_begin(u8(node));
+        hash_        = hash_begin(node_t(Node::Var));
         hash_        = hash_combine(hash_, type->gid());
         hash_        = hash_combine(hash_, op->gid());
     } else {
@@ -78,10 +78,10 @@ Def::Def(World* world, node_t node, const Def* type, Defs ops, flags_t flags)
     }
 }
 
-Def::Def(node_t n, const Def* type, Defs ops, flags_t flags)
+Def::Def(Node n, const Def* type, Defs ops, flags_t flags)
     : Def(nullptr, n, type, ops, flags) {}
 
-Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
+Def::Def(Node node, const Def* type, size_t num_ops, flags_t flags)
     : flags_(flags)
     , node_(node)
     , mut_(true)

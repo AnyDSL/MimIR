@@ -10,9 +10,9 @@ class Sigma;
 /// Common base for TBound.
 class Bound : public Def {
 protected:
-    Bound(node_t node, const Def* type, Defs ops)
+    Bound(Node node, const Def* type, Defs ops)
         : Def(node, type, ops, 0) {} ///< Constructor for an *immutable* Bound.
-    Bound(node_t node, const Def* type, size_t size)
+    Bound(Node node, const Def* type, size_t size)
         : Def(node, type, size, 0) {} ///< Constructor for a *mutable* Bound.
 
 public:
@@ -40,7 +40,7 @@ public:
 
     TBound* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
-    static constexpr auto Node = Up ? Node::Join : Node::Meet;
+    static constexpr auto Node = Up ? mim::Node::Join : mim::Node::Meet;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -54,7 +54,7 @@ private:
 class Ac : public Def, public Setters<Ac> {
 public:
     using Setters<Ac>::set;
-    static constexpr auto Node = Node::Ac;
+    static constexpr auto Node = mim::Node::Ac;
 
 private:
     Ac(const Def* type, Defs defs)
@@ -80,7 +80,7 @@ public:
     const Def* value() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = Node::Vel;
+    static constexpr auto Node = mim::Node::Vel;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -102,7 +102,7 @@ public:
     const Def* value() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = Node::Pick;
+    static constexpr auto Node = mim::Node::Pick;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -129,7 +129,7 @@ private:
 
 public:
     using Setters<Test>::set;
-    static constexpr auto Node = Node::Test;
+    static constexpr auto Node = mim::Node::Test;
 
     /// @name ops
     ///@{
@@ -148,7 +148,7 @@ private:
 /// Common base for TExt%remum.
 class Ext : public Def {
 protected:
-    Ext(node_t node, const Def* type)
+    Ext(Node node, const Def* type)
         : Def(node, type, Defs{}, 0) {}
 };
 
@@ -163,7 +163,7 @@ public:
 
     TExt* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
-    static constexpr auto Node = Up ? Node::Top : Node::Bot;
+    static constexpr auto Node = Up ? mim::Node::Top : mim::Node::Bot;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -196,7 +196,7 @@ public:
     const Def* inhabitant() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = Node::Uniq;
+    static constexpr auto Node = mim::Node::Uniq;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;

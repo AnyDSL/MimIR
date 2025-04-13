@@ -60,7 +60,7 @@ public:
         using type = App;
     };
 
-    static constexpr auto Node = Node::Axiom;
+    static constexpr auto Node = mim::Node::Axiom;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;

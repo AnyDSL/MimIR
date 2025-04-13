@@ -91,7 +91,7 @@ public:
     const Pi* immutabilize() override;
     ///@}
 
-    static constexpr auto Node = Node::Pi;
+    static constexpr auto Node = mim::Node::Pi;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -182,7 +182,7 @@ public:
     const Def* check(size_t, const Def*) override;
     ///@}
 
-    static constexpr auto Node = Node::Lam;
+    static constexpr auto Node = mim::Node::Lam;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -233,7 +233,7 @@ public:
     u8 trip() const { return trip_; }
     ///@}
 
-    static constexpr auto Node = Node::App;
+    static constexpr auto Node = mim::Node::App;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;

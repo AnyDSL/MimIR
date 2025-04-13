@@ -39,7 +39,7 @@ public:
     /// @returns the new Tuple, or `this` if unsuccessful.
     const Def* tuplefy();
 
-    static constexpr auto Node = Node::Hole;
+    static constexpr auto Node = mim::Node::Hole;
 
 private:
     flags_t rank() const { return flags(); }
