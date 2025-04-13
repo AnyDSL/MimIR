@@ -36,7 +36,7 @@ var searchData=
   ['indexset_33',['IndexSet',['../classmim_1_1IndexSet.html',1,'mim::IndexSet&lt; Indexer, Key &gt;'],['../classmim_1_1IndexSet_1_1reference.html#add469a0063023e5ade22035cbaf464fe',1,'mim::IndexSet::reference::IndexSet()'],['../classmim_1_1IndexSet.html#a8183f9eed23e50d62f42827fd45a9c1c',1,'mim::IndexSet::IndexSet(const Indexer &amp;indexer)'],['../classmim_1_1IndexSet.html#a94a69a6b3f7bb0be1da86cab2cb64d6d',1,'mim::IndexSet::IndexSet(const IndexSet &amp;other)'],['../classmim_1_1IndexSet.html#a92466e10e3631ea3d38a5bb78e8e94d0',1,'mim::IndexSet::IndexSet(IndexSet &amp;&amp;other) noexcept']]],
   ['indexset_2eh_34',['indexset.h',['../indexset_8h.html',1,'']]],
   ['indices_35',['Working with Indices',['../dev.html#autotoc_md27',1,'']]],
-  ['infer_36',['infer',['../classmim_1_1Pi.html#a6b98478d2a0d45b6b74d0a9c675582a5',1,'mim::Pi::infer()'],['../classmim_1_1Sigma.html#ac101a5c579a2520fc1d87e6a6ad0b4fd',1,'mim::Sigma::infer()']]],
+  ['infer_36',['infer',['../classmim_1_1Pi.html#a6b98478d2a0d45b6b74d0a9c675582a5',1,'mim::Pi::infer()'],['../classmim_1_1Sigma.html#ac101a5c579a2520fc1d87e6a6ad0b4fd',1,'mim::Sigma::infer()'],['../classmim_1_1Tuple.html#a993d208f8af128a5a9a947a53ca38566',1,'mim::Tuple::infer()']]],
   ['infer_5fcurry_5fand_5ftrip_37',['infer_curry_and_trip',['../classmim_1_1Axiom.html#a9daf7501e2ca7336525b76f5277fc823',1,'mim::Axiom']]],
   ['info_38',['Info',['../classmim_1_1plug_1_1mem_1_1SSAConstr.html#structmim_1_1plug_1_1mem_1_1SSAConstr_1_1Info',1,'mim::plug::mem::SSAConstr::Info'],['../classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590a4059b0251f66a18cb56f544728796875',1,'mim::Log::Info']]],
   ['info_39',['info',['../namespacemim_1_1plug_1_1refly.html#aa892e670a3611c79d730ddfe61bea1b8',1,'mim::plug::refly']]],
