@@ -1,10 +1,10 @@
 #include "mim/check.h"
 
+#include <absl/container/fixed_array.h>
+#include <fe/assert.h>
+
 #include "mim/rewrite.h"
 #include "mim/world.h"
-
-#include "absl/container/fixed_array.h"
-#include "fe/assert.h"
 
 namespace mim {
 
