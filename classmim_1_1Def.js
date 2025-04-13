@@ -1,8 +1,8 @@
 var classmim_1_1Def =
 [
-    [ "Def", "classmim_1_1Def.html#a7c43f4e27757b8732aec73682cf11082", null ],
-    [ "Def", "classmim_1_1Def.html#ad7698fbea88175da33d51180ac67b811", null ],
-    [ "Def", "classmim_1_1Def.html#af35f27ee9b1939508ba3c7ec573c54bf", null ],
+    [ "Def", "classmim_1_1Def.html#ae59703ead7befb26e835d4d9793e2786", null ],
+    [ "Def", "classmim_1_1Def.html#a7d17c70789416483a8f248e2c7e9a5e3", null ],
+    [ "Def", "classmim_1_1Def.html#a73acaf4ded5bcd2d42491fe01140f880", null ],
     [ "~Def", "classmim_1_1Def.html#a28c96a2a0852a5559694dd2cd439edd5", null ],
     [ "arity", "classmim_1_1Def.html#ae51857d275509b1b70aa8f696cee3a0a", null ],
     [ "as_imm", "classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b", null ],
@@ -52,7 +52,7 @@ var classmim_1_1Def =
     [ "make_external", "classmim_1_1Def.html#a40fa93a786143fbf727f567b3c875101", null ],
     [ "make_internal", "classmim_1_1Def.html#a160dfda8f93104382a612ea54a7113a8", null ],
     [ "mark", "classmim_1_1Def.html#a592578e8733989b79ab6649485eae42b", null ],
-    [ "node", "classmim_1_1Def.html#ac099e72afa7ad3f78b3c4a8df98b8fd7", null ],
+    [ "node", "classmim_1_1Def.html#a107ccfac1058aee369926112bb593d35", null ],
     [ "node_name", "classmim_1_1Def.html#a361f116b80b8b8fd1eac9a22e34564b0", null ],
     [ "num_deps", "classmim_1_1Def.html#a086b8caf2ce9bdfc870871854f021d90", null ],
     [ "num_ops", "classmim_1_1Def.html#afc9a0f45e4d093d11aa4633b8b38c879", null ],

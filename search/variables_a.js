@@ -7,5 +7,5 @@ var searchData=
   ['normalizer_4',['normalizer',['../structmim_1_1ast_1_1AnnexInfo.html#a7f272ae0295326d1015bb7e7220e5bd0',1,'mim::ast::AnnexInfo']]],
   ['num_5',['Num',['../structmim_1_1Annex.html#aac0126d5e408071ae28567cb65bf256f',1,'mim::Annex']]],
   ['num_5fkeys_6',['Num_Keys',['../namespacemim_1_1ast.html#ab4b52dbb4d1c2d76a66fbdd47af52ea9',1,'mim::ast']]],
-  ['num_5fnodes_7',['Num_Nodes',['../namespacemim_1_1Node.html#a5ec46e9d29f58ac19594859972dd7764',1,'mim::Node']]]
+  ['num_5fnodes_7',['Num_Nodes',['../namespacemim.html#ab5f8c3cd104922822656e5d29311f0dd',1,'mim']]]
 ];

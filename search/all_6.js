@@ -33,7 +33,7 @@ var searchData=
   ['gle_30',['gLe',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eabdeec3c370a9d97fb295c2db7c0c7698',1,'mim::plug::core']]],
   ['gle_31',['glE',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea88a95e934a9b0832f07799852a8d0fd1',1,'mim::plug::core']]],
   ['gle_32',['gle',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea6044f05aa3ccdbb9313c6a26b30036b6',1,'mim::plug::core']]],
-  ['global_33',['Global',['../classmim_1_1Global.html',1,'mim::Global'],['../namespacemim_1_1Node.html#ac7dc26961ed709d645808591f3b6c00cacd3063ddd5ecabe7630573e099f46718',1,'mim::Node::Global'],['../namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9a4cc6684df7b4a92b1dec6fce3264fac8',1,'mim::plug::mem::Global']]],
+  ['global_33',['Global',['../classmim_1_1Global.html',1,'mim::Global'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da4cc6684df7b4a92b1dec6fce3264fac8',1,'mim::Global'],['../namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9a4cc6684df7b4a92b1dec6fce3264fac8',1,'mim::plug::mem::Global']]],
   ['global_34',['global',['../classmim_1_1World.html#aa7073d8ba047bdfc41a83b34a90920ba',1,'mim::World']]],
   ['global_5fplugin_35',['Global_Plugin',['../structmim_1_1Annex.html#a3448571d44e72d9078aa9ea5e8e7c0c6',1,'mim::Annex']]],
   ['globals_5f_36',['globals_',['../classmim_1_1Emitter.html#a7d0b553a4044743805c79a473b7deb9c',1,'mim::Emitter']]],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['a_0',['a',['../namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661',1,'mim::plug::core::a'],['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a0cc175b9c0f1b6a831c399e269772661',1,'mim::plug::math::a']]],
-  ['ac_1',['Ac',['../namespacemim_1_1Node.html#ac7dc26961ed709d645808591f3b6c00ca8cf6e14ce3ccbbdf5279c1f56c6a4ede',1,'mim::Node']]],
+  ['ac_1',['Ac',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da8819a837186918b90b59cc316f36b1e1',1,'mim']]],
   ['acos_2',['acos',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72acbdb2632628e9ed7d677a713d9817b0d',1,'mim::plug::math']]],
   ['acosh_3',['acosh',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a23ee62ee4587c09fa7b7ffe53122dc92',1,'mim::plug::math']]],
   ['add_4',['add',['../namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566a34ec78fcc91ffb1e54cd85e4a0924332',1,'mim::plug::core::add'],['../namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa34ec78fcc91ffb1e54cd85e4a0924332',1,'mim::plug::core::add'],['../namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a34ec78fcc91ffb1e54cd85e4a0924332',1,'mim::plug::math::add']]],
@@ -24,14 +24,14 @@ var searchData=
   ['ahff_21',['ahff',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a0c1ffd62a2440a2f2575fa39f7dc6d64',1,'mim::plug::math']]],
   ['align_22',['align',['../namespacemim_1_1plug_1_1core.html#a699face68306eeb01636f32010cc2d9daf792d1afb0399dce47533bead9d71a8a',1,'mim::plug::core']]],
   ['and_5f_23',['and_',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205aa195f8c413b580691c2daa246c1b16ce',1,'mim::plug::core']]],
-  ['app_24',['App',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941',1,'mim::ast::Expr::App'],['../namespacemim_1_1Node.html#ac7dc26961ed709d645808591f3b6c00ca21e6b3a57bb50987258a20cd9d51d2ab',1,'mim::Node::App']]],
+  ['app_24',['App',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941',1,'mim::ast::Expr::App'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daac863f346e618f9a959b5c95d5d28941',1,'mim::App']]],
   ['arcp_25',['arcp',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91a1e53eb7993b8fa102e59ad895d7acc68',1,'mim::plug::math']]],
   ['arg_26',['Arg',['../classmim_1_1plug_1_1mem_1_1Reshape.html#a617258263a341812a1f828bfeb4751ceaefdbc31d724b7994da6b2c479782f865',1,'mim::plug::mem::Reshape']]],
-  ['arr_27',['Arr',['../namespacemim_1_1Node.html#ac7dc26961ed709d645808591f3b6c00ca5b2baf6362f28d07a2984b4d28992983',1,'mim::Node']]],
+  ['arr_27',['Arr',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da3e09ae791896ec3e7e65b3fe363f0fc3',1,'mim']]],
   ['arrow_28',['Arrow',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e',1,'mim::ast::Expr']]],
   ['asin_29',['asin',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a62130e1b1e81120c6344cc4e661f9e4b',1,'mim::plug::math']]],
   ['asinh_30',['asinh',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72af6cb8e42056ca445246834d78d0a1810',1,'mim::plug::math']]],
   ['atan_31',['atan',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a6d86bcdc87773d8bb8527c65ed349b97',1,'mim::plug::math']]],
   ['atanh_32',['atanh',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a03d734a4901930676367606890a5db51',1,'mim::plug::math']]],
-  ['axiom_33',['Axiom',['../namespacemim_1_1Node.html#ac7dc26961ed709d645808591f3b6c00ca9bf635203c544be1617dfce9b59cb86a',1,'mim::Node']]]
+  ['axiom_33',['Axiom',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da2c5d94dd609855f43c21c46744afec3d',1,'mim']]]
 ];

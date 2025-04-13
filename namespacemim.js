@@ -9,9 +9,6 @@ var namespacemim =
     ] ],
     [ "lct", "namespacemim_1_1lct.html", "namespacemim_1_1lct" ],
     [ "ll", "namespacemim_1_1ll.html", "namespacemim_1_1ll" ],
-    [ "Node", "namespacemim_1_1Node.html", [
-      [ "Num_Nodes", "namespacemim_1_1Node.html#a5ec46e9d29f58ac19594859972dd7764", null ]
-    ] ],
     [ "plug", "namespacemim_1_1plug.html", "namespacemim_1_1plug" ],
     [ "sys", "namespacemim_1_1sys.html", [
       [ "escape", "namespacemim_1_1sys.html#a93800ed312b2d2504d2027bd089acb2d", null ],
@@ -185,6 +182,39 @@ var namespacemim =
       [ "Meta", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293ab6755d218d5f4e1cef9cce9cc39aeda9", null ],
       [ "Hole", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988", null ]
     ] ],
+    [ "Node", "namespacemim.html#afb12dbffaaa27bca46f171517d96256d", [
+      [ "CODE", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf75458333a22f574140680447a32e95f", null ],
+      [ "Type", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa1fa27779242b4902f7ae3bdd5c6d508", null ],
+      [ "Univ", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da143bb06341e537e7143fb33624517946", null ],
+      [ "UMax", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dafaa1f94cd925672925f691e7f5727a6b", null ],
+      [ "UInc", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4b5b9f2b0314b47da7fc970d3d676d26", null ],
+      [ "Pi", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da127125672f1e85d1e676d4394d24e066", null ],
+      [ "Lam", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da36b73508d151b2fc641e0c0265d3d360", null ],
+      [ "App", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daac863f346e618f9a959b5c95d5d28941", null ],
+      [ "Sigma", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da827faff1bdcfe446237c4d6289abce66", null ],
+      [ "Tuple", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daafcbeb58fca053cad573bd9efda1dc5b", null ],
+      [ "Extract", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da97478353818fc5590dc34b57b81a4b23", null ],
+      [ "Insert", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa458be0f08b7e4ff3c0f633c100176c0", null ],
+      [ "Arr", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3e09ae791896ec3e7e65b3fe363f0fc3", null ],
+      [ "Pack", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4492081ca02b059f9e8af4ddaf0f7292", null ],
+      [ "Join", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa286d9991c6a547ae25a5f5216164b8f", null ],
+      [ "Vel", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daec930ca2dec8aa0b05a106add08d538e", null ],
+      [ "Test", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da0cbc6611f5540bd0809a388dc95a615b", null ],
+      [ "Top", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa4ffdcf0dc1f31b9acaf295d75b51d00", null ],
+      [ "Meet", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da49e3af09495ea1fbcbde7629c1b4d47b", null ],
+      [ "Ac", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da8819a837186918b90b59cc316f36b1e1", null ],
+      [ "Pick", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da57107163072f788ccde704eedc055bbd", null ],
+      [ "Bot", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da1448e86d90e0feb307c2894c24e87767", null ],
+      [ "Uniq", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa52035083e0f187cb1b19b131b4ecdd5", null ],
+      [ "Nat", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da07f2a27c6e5ee8afd08991e64dd5c136", null ],
+      [ "Idx", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939", null ],
+      [ "Lit", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dae5e556ecf935270736f5e46e73db06e4", null ],
+      [ "Axiom", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da2c5d94dd609855f43c21c46744afec3d", null ],
+      [ "Var", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77", null ],
+      [ "Global", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4cc6684df7b4a92b1dec6fce3264fac8", null ],
+      [ "Proxy", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf56ec2ab97d604832d90f6394e3f341f", null ],
+      [ "Hole", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da6368a5bde7853b2f6c660f010adbb988", null ]
+    ] ],
     [ "Sort", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5", [
       [ "Term", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f", null ],
       [ "Type", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508", null ],
@@ -296,5 +326,6 @@ var namespacemim =
     [ "visit", "namespacemim.html#a01df1c711f47326f6d3b9efc933ccd26", null ],
     [ "visit_first", "namespacemim.html#afdac200da4be48df165deb24615fc940", null ],
     [ "Default_Inlined_Size", "namespacemim.html#a39efaf0b2304223993b837cc3e0bd605", null ],
-    [ "No_Undo", "namespacemim.html#ae97e9f99aa1fed4c2dbc1a807a8e689e", null ]
+    [ "No_Undo", "namespacemim.html#ae97e9f99aa1fed4c2dbc1a807a8e689e", null ],
+    [ "Num_Nodes", "namespacemim.html#ab5f8c3cd104922822656e5d29311f0dd", null ]
 ];

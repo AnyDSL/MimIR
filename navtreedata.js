@@ -55,8 +55,7 @@ var NAVTREE =
         [ "Functions", "namespacemembers_func.html", "namespacemembers_func" ],
         [ "Variables", "namespacemembers_vars.html", null ],
         [ "Typedefs", "namespacemembers_type.html", null ],
-        [ "Enumerations", "namespacemembers_enum.html", null ],
-        [ "Enumerator", "namespacemembers_eval.html", null ]
+        [ "Enumerations", "namespacemembers_enum.html", null ]
       ] ]
     ] ],
     [ "Concepts", "concepts.html", "concepts" ],
@@ -90,7 +89,7 @@ var NAVTREEINDEX =
 [
 "add__mem_8cpp.html",
 "classmim_1_1Axiom.html#ab29c0d874eea90336ce70378ec7d2006",
-"classmim_1_1Def.html#a6039d3f834a30baca2e8bf279231ea3a",
+"classmim_1_1Def.html#a5d7e27c33828e4829363b3932fed229a",
 "classmim_1_1Error.html#a796d05ed57b5f2f7755d7e1b53afd805",
 "classmim_1_1IndexSet.html#a26e8fae5ce2b64673dd1e0e16c382c9d",
 "classmim_1_1NestPhase.html#a522f99e02ecca1b57c3ef45f11e00a93",
@@ -105,12 +104,12 @@ var NAVTREEINDEX =
 "classmim_1_1plug_1_1clos_1_1ClosConv.html#a0a93743953b3d9c7e9d0d849951abc57",
 "clos__conv_8cpp_source.html",
 "functions_eval.html",
-"namespacemim.html#a1a9c49cf26963e97393735d2a4b2eb26",
-"namespacemim_1_1plug_1_1clos.html#a08e2dd10f68834ee59b63662b9a63c06",
-"namespacemim_1_1plug_1_1core.html#af3951905fa04ce273d627414f52a1414",
-"namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502",
-"structmim_1_1Annex.html#a3448571d44e72d9078aa9ea5e8e7c0c6",
-"tuple_8cpp.html"
+"namespacemim.html#a1aae5adc4db386bfd618fdc8303ceb0c",
+"namespacemim_1_1plug_1_1affine.html#af1190a7f31e1b22f490b8a0b61c24525",
+"namespacemim_1_1plug_1_1core.html#a75e69f99817e9657fd72561f0b40c3c3",
+"namespacemim_1_1plug_1_1matrix.html#af6839dbbb5d2ef291479523aafd649d4",
+"schedule_8cpp_source.html",
+"structmim_1_1ll_1_1BB.html#ae88ceb10a0eb55d421860443be3141be"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

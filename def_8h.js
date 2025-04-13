@@ -49,6 +49,39 @@ var def_8h =
       [ "mim::Judge::Meta", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293ab6755d218d5f4e1cef9cce9cc39aeda9", null ],
       [ "mim::Judge::Hole", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988", null ]
     ] ],
+    [ "mim::Node", "namespacemim.html#afb12dbffaaa27bca46f171517d96256d", [
+      [ "mim::Node::CODE", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf75458333a22f574140680447a32e95f", null ],
+      [ "mim::Node::Type", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa1fa27779242b4902f7ae3bdd5c6d508", null ],
+      [ "mim::Node::Univ", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da143bb06341e537e7143fb33624517946", null ],
+      [ "mim::Node::UMax", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dafaa1f94cd925672925f691e7f5727a6b", null ],
+      [ "mim::Node::UInc", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4b5b9f2b0314b47da7fc970d3d676d26", null ],
+      [ "mim::Node::Pi", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da127125672f1e85d1e676d4394d24e066", null ],
+      [ "mim::Node::Lam", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da36b73508d151b2fc641e0c0265d3d360", null ],
+      [ "mim::Node::App", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daac863f346e618f9a959b5c95d5d28941", null ],
+      [ "mim::Node::Sigma", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da827faff1bdcfe446237c4d6289abce66", null ],
+      [ "mim::Node::Tuple", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daafcbeb58fca053cad573bd9efda1dc5b", null ],
+      [ "mim::Node::Extract", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da97478353818fc5590dc34b57b81a4b23", null ],
+      [ "mim::Node::Insert", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa458be0f08b7e4ff3c0f633c100176c0", null ],
+      [ "mim::Node::Arr", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3e09ae791896ec3e7e65b3fe363f0fc3", null ],
+      [ "mim::Node::Pack", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4492081ca02b059f9e8af4ddaf0f7292", null ],
+      [ "mim::Node::Join", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa286d9991c6a547ae25a5f5216164b8f", null ],
+      [ "mim::Node::Vel", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daec930ca2dec8aa0b05a106add08d538e", null ],
+      [ "mim::Node::Test", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da0cbc6611f5540bd0809a388dc95a615b", null ],
+      [ "mim::Node::Top", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa4ffdcf0dc1f31b9acaf295d75b51d00", null ],
+      [ "mim::Node::Meet", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da49e3af09495ea1fbcbde7629c1b4d47b", null ],
+      [ "mim::Node::Ac", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da8819a837186918b90b59cc316f36b1e1", null ],
+      [ "mim::Node::Pick", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da57107163072f788ccde704eedc055bbd", null ],
+      [ "mim::Node::Bot", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da1448e86d90e0feb307c2894c24e87767", null ],
+      [ "mim::Node::Uniq", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa52035083e0f187cb1b19b131b4ecdd5", null ],
+      [ "mim::Node::Nat", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da07f2a27c6e5ee8afd08991e64dd5c136", null ],
+      [ "mim::Node::Idx", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939", null ],
+      [ "mim::Node::Lit", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dae5e556ecf935270736f5e46e73db06e4", null ],
+      [ "mim::Node::Axiom", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da2c5d94dd609855f43c21c46744afec3d", null ],
+      [ "mim::Node::Var", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77", null ],
+      [ "mim::Node::Global", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4cc6684df7b4a92b1dec6fce3264fac8", null ],
+      [ "mim::Node::Proxy", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf56ec2ab97d604832d90f6394e3f341f", null ],
+      [ "mim::Node::Hole", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da6368a5bde7853b2f6c660f010adbb988", null ]
+    ] ],
     [ "mim::Sort", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5", [
       [ "mim::Sort::Term", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f", null ],
       [ "mim::Sort::Type", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508", null ],
@@ -57,5 +90,5 @@ var def_8h =
       [ "mim::Sort::Univ", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946", null ],
       [ "mim::Sort::Level", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa0db49ba470c1c9ae2128c3470339153", null ]
     ] ],
-    [ "mim::Node::Num_Nodes", "namespacemim_1_1Node.html#a5ec46e9d29f58ac19594859972dd7764", null ]
+    [ "mim::Num_Nodes", "namespacemim.html#ab5f8c3cd104922822656e5d29311f0dd", null ]
 ];

@@ -86,7 +86,7 @@ var searchData=
   ['shl_83',['shl',['../namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efabc192716b0e1d5c96a67961dd0d3f9da',1,'mim::plug::core']]],
   ['shr_84',['shr',['../core.html#autotoc_md122',1,'%core.shr'],['../namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43',1,'mim::plug::core::shr']]],
   ['side_20effects_85',['Side Effects',['../mem.html#autotoc_md186',1,'Operations w/ Side Effects'],['../mem.html#autotoc_md195',1,'Operations w/o Side Effects']]],
-  ['sigma_86',['Sigma',['../classmim_1_1Sigma.html',1,'mim::Sigma'],['../namespacemim_1_1Node.html#ac7dc26961ed709d645808591f3b6c00ca294b0d68190499941e814549f2540d2e',1,'mim::Node::Sigma']]],
+  ['sigma_86',['Sigma',['../classmim_1_1Sigma.html',1,'mim::Sigma'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da827faff1bdcfe446237c4d6289abce66',1,'mim::Sigma']]],
   ['sigma_87',['sigma',['../classmim_1_1World.html#a3996a1f09477ab9cffdcdff8d0674856',1,'mim::World::sigma(Defs ops)'],['../classmim_1_1World.html#ad33564f05ba959e62ed53b811f6296d0',1,'mim::World::sigma()']]],
   ['sigma2sym2idx_88',['sigma2sym2idx',['../classmim_1_1ast_1_1Emitter.html#a4015272fb258b5d1ec47dfda8bb7726b',1,'mim::ast::Emitter']]],
   ['sigmaexpr_89',['SigmaExpr',['../classmim_1_1ast_1_1SigmaExpr.html',1,'mim::ast::SigmaExpr'],['../classmim_1_1ast_1_1SigmaExpr.html#ac3bff2a4e5141d5a6ed8e36ebc00d3c3',1,'mim::ast::SigmaExpr::SigmaExpr()']]],

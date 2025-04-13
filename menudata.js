@@ -130,8 +130,7 @@ var menudata={children:[
 {text:"t",url:"namespacemembers_enum.html#index_t"},
 {text:"v",url:"namespacemembers_enum.html#index_v"},
 {text:"w",url:"namespacemembers_enum.html#index_w"},
-{text:"z",url:"namespacemembers_enum.html#index_z"}]},
-{text:"Enumerator",url:"namespacemembers_eval.html"}]}]},
+{text:"z",url:"namespacemembers_enum.html#index_z"}]}]}]},
 {text:"Concepts",url:"concepts.html"},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},

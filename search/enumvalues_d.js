@@ -1,7 +1,7 @@
 var searchData=
 [
   ['nand_0',['nand',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205ac657344463ff1b32bf1ad9bbdb3ef20b',1,'mim::plug::core']]],
-  ['nat_1',['Nat',['../namespacemim_1_1Node.html#ac7dc26961ed709d645808591f3b6c00ca6a606482217fdadf11c97309d2348dc8',1,'mim::Node']]],
+  ['nat_1',['Nat',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da07f2a27c6e5ee8afd08991e64dd5c136',1,'mim']]],
   ['nciff_2',['nciff',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205aeffa8ffb6de709887fb7ed786629cbfa',1,'mim::plug::core']]],
   ['ne_3',['ne',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ead4f917633649a3c47c7ab917fa990146',1,'mim::plug::core::ne'],['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673ad4f917633649a3c47c7ab917fa990146',1,'mim::plug::core::ne'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3ad4f917633649a3c47c7ab917fa990146',1,'mim::plug::math::ne']]],
   ['neg_4',['neg',['../namespacemim_1_1plug_1_1core.html#a7a60a2da3c1482d92696ed97b26f1b4caf24c2c15b9d03797c6874986a8d19516',1,'mim::plug::core']]],

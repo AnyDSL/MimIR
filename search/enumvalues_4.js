@@ -10,5 +10,5 @@ var searchData=
   ['exp_7',['exp',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dab0ab0254bd58eb87eaee3172ba49fefb',1,'mim::plug::math']]],
   ['exp10_8',['exp10',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dad30f3020a7f0e5899fb8e1ee6afedb4d',1,'mim::plug::math']]],
   ['exp2_9',['exp2',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dae578203a9e0b19048f8868e46958c2ed',1,'mim::plug::math']]],
-  ['extract_10',['Extract',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca97478353818fc5590dc34b57b81a4b23',1,'mim::ast::Expr::Extract'],['../namespacemim_1_1Node.html#ac7dc26961ed709d645808591f3b6c00ca83842abbb5d3ce93f56e3b362bd1b24a',1,'mim::Node::Extract']]]
+  ['extract_10',['Extract',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca97478353818fc5590dc34b57b81a4b23',1,'mim::ast::Expr::Extract'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da97478353818fc5590dc34b57b81a4b23',1,'mim::Extract']]]
 ];
