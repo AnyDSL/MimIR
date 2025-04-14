@@ -627,8 +627,8 @@ private:
     }
 
     [[nodiscard]] constexpr Node* merge(Node* n, Node* m) {
+        if (n == m || m->is_root()) return n;
         if (n->is_root()) return m;
-        if (m->is_root()) return n;
         auto nn = n->def->tid() < m->def->tid() ? n : n->parent;
         auto mm = n->def->tid() > m->def->tid() ? m : m->parent;
         return mount(merge(nn, mm), n->def->tid() < m->def->tid() ? m->def : n->def);
