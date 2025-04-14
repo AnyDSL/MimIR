@@ -26,12 +26,8 @@ public:
     ///@{
     [[nodiscard]] bool contains(const K& k) noexcept {
         expose();
-        for (auto n = this; n; n = n->self()->lt(k) ? n->bot : n->top) {
-            if (n->self()->eq(k)) {
-                n->splay();
-                return true;
-            }
-        }
+        for (auto n = this; n; n = n->self()->lt(k) ? n->bot : n->top)
+            if (n->self()->eq(k)) return n->splay(), true;
 
         return false;
     }
@@ -41,7 +37,7 @@ public:
     constexpr P* find(const K& k) noexcept {
         auto prev = this;
         for (auto n = this; n;) {
-            if (n->self()->eq(k)) return n->self();
+            if (n->self()->eq(k)) return n->splay(), n->self();
 
             if (n->self()->lt(k)) {
                 n = n->bot;

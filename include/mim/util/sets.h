@@ -295,10 +295,7 @@ public:
                         n1 = n1->parent;
                         if (n1->def == n2->def) return true;
                     } else {
-                        if (n2 = n2->find(n1->def); n1->def == n2->def) {
-                            n2->splay(); // heuristic: bring node causing intersection to top
-                            return true;
-                        }
+                        if (n2 = n2->find(n1->def); n1->def == n2->def) return true;
                         n2 = n2->parent;
                     }
                 }
