@@ -285,15 +285,12 @@ public:
             if (n1 && n2) {
                 if (n1->min > n2->def->tid() || n1->def->tid() < n2->min) return false;
                 if (n1->def == n2->def) return true;
-
-                // We can only have one exposed path: n2. So, swap if n1 is larger!
-                if (n1->size > n2->size) std::swap(n1, n2);
-                if (!n1->lca(n2)->is_root()) return true; // lca exposes n2!
+                if (!n1->lca(n2)->is_root()) return true;
 
                 while (!n1->is_root() && !n2->is_root()) {
                     if (n1->def->tid() > n2->def->tid()) {
+                        if (n1 = n1->find(n2->def); n2->def == n1->def) return true;
                         n1 = n1->parent;
-                        if (n1->def == n2->def) return true;
                     } else {
                         if (n2 = n2->find(n1->def); n1->def == n2->def) return true;
                         n2 = n2->parent;

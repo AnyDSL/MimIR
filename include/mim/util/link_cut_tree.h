@@ -33,8 +33,8 @@ public:
     }
 
     /// Find @p k or the element just greater than @p k.
-    /// @warning Assumes that `expose()` has already been invoked.
     constexpr P* find(const K& k) noexcept {
+        expose();
         auto prev = this;
         for (auto n = this; n;) {
             if (n->self()->eq(k)) return n->splay(), n->self();
