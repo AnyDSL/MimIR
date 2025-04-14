@@ -261,12 +261,15 @@ public:
         /// Is @f$this \cap other \neq \emptyset@f$?.
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
             if (this->empty() || other.empty()) return false;
-            if (auto u = this->isa_uniq()) return other.contains(u);
-            if (auto u = other.isa_uniq()) return this->contains(u);
 
-            auto d1 = this->isa_data(), d2 = other.isa_data();
-            auto n1 = this->isa_node(), n2 = other.isa_node();
+            auto u1 = this->isa_uniq();
+            auto u2 = other.isa_uniq();
+            if (u1 && u2) return u1 == u2;
+            if (u1) return other.contains(u1);
+            if (u2) return this->contains(u2);
 
+            auto d1 = this->isa_data();
+            auto d2 = other.isa_data();
             if (d1 && d2) {
                 if (d1 == d2) return true;
 
@@ -282,6 +285,8 @@ public:
                 return false;
             }
 
+            auto n1 = this->isa_node();
+            auto n2 = other.isa_node();
             if (n1 && n2) {
                 if (n1->min > n2->def->tid() || n1->def->tid() < n2->min) return false;
                 if (n1->def == n2->def) return true;
@@ -480,9 +485,8 @@ public:
         if (auto u = s1.isa_uniq()) return insert(s2, u);
         if (auto u = s2.isa_uniq()) return insert(s1, u);
 
-        auto d1 = s1.isa_data(), d2 = s2.isa_data();
-        auto n1 = s1.isa_node(), n2 = s2.isa_node();
-
+        auto d1 = s1.isa_data();
+        auto d2 = s2.isa_data();
         if (d1 && d2) {
             auto v = Vector<D*>();
             v.reserve(d1->size + d2->size);
@@ -493,6 +497,8 @@ public:
             return create(std::move(v));
         }
 
+        auto n1 = s1.isa_node();
+        auto n2 = s2.isa_node();
         if (n1 && n2) {
             if (n1->is_descendant_of(n2)) return n1;
             if (n2->is_descendant_of(n1)) return n2;
