@@ -666,157 +666,158 @@ $(function(){initNavTree('sets_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>        }</div>
 <div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span> </div>
 <div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>        <span class="keyword">auto</span> n = n1 ? n1 : n2;</div>
-<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> d : *(d1 ? d1 : d2)) n = <a class="code hl_function" href="classmim_1_1Sets.html#ac0606b37495ac60424e9191a0fa6b217">insert</a>(n, d);</div>
-<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>        <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>    }</div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> d : *(d1 ? d1 : d2))</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>            <span class="keywordflow">if</span> (!n-&gt;contains(d)) n = <a class="code hl_function" href="classmim_1_1Sets.html#ac0606b37495ac60424e9191a0fa6b217">insert</a>(n, d);</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>        <span class="keywordflow">return</span> n;</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>    }</div>
 </div>
-<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span><span class="comment"></span> </div>
-<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span><span class="comment">    /// Yields @f$s \setminus \{d\}@f$.</span></div>
-<div class="foldopen" id="foldopen00514" data-start="{" data-end="}">
-<div class="line"><a id="l00514" name="l00514"></a><span class="lineno"><a class="line" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">  514</a></span>    [[nodiscard]] Set <a class="code hl_function" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">erase</a>(Set s, D* d) {</div>
-<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> u = s.isa_uniq()) <span class="keywordflow">return</span> d == u ? Set() : s;</div>
-<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span> </div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> data = s.isa_data()) {</div>
-<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>            <span class="keywordtype">size_t</span> i = 0, <a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a> = data-&gt;size;</div>
-<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>            <span class="keywordflow">for</span> (; i != <a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a>; ++i)</div>
-<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>                <span class="keywordflow">if</span> (data-&gt;elems[i] == d) <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span> </div>
-<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>            <span class="keywordflow">if</span> (i == <a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a>--) <span class="keywordflow">return</span> s;</div>
-<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>            <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a> == 0) <span class="keywordflow">return</span> {};</div>
-<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>            <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a> == 1) <span class="keywordflow">return</span> {i == 0 ? data-&gt;elems[1] : data-&gt;elems[0]};</div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span> </div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>            assert(<a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a> &lt;= N);</div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>            <span class="keyword">auto</span> [new_data, state] = allocate(<a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a>);</div>
-<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>            <span class="keyword">auto</span> db                = data-&gt;begin();</div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>            std::copy(db + i + 1, data-&gt;end(), std::copy(db, db + i, new_data-&gt;elems)); <span class="comment">// copy over, skip i</span></div>
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span> </div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>            <span class="keywordflow">return</span> unify(new_data, state);</div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>        }</div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span> </div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> n = s.isa_node()) {</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>            <span class="keywordflow">if</span> (d-&gt;tid() == 0 || d-&gt;tid() &lt; n-&gt;min) <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>            <span class="keywordflow">if</span> (!n-&gt;contains(d)) <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span> </div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>            <span class="keyword">auto</span> res = <a class="code hl_function" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">erase</a>(n, d);</div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>            <span class="keywordflow">if</span> (res-&gt;size &gt; N) <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span> </div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>            <span class="keyword">auto</span> v = <a class="code hl_function" href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">Vector&lt;D*&gt;</a>();</div>
-<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>            v.reserve(res-&gt;size);</div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = res; !i-&gt;is_root(); i = i-&gt;parent) v.emplace_back(i-&gt;def);</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>            <span class="keywordflow">return</span> <a class="code hl_function" href="classmim_1_1Sets.html#ad6d2206fb706506210e1f4cbb4909ee6">create</a>(std::move(v));</div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>        }</div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span> </div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>        <span class="keywordflow">return</span> {};</div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>    }<span class="comment"></span></div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span><span class="comment"></span> </div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span><span class="comment">    /// Yields @f$s \setminus \{d\}@f$.</span></div>
+<div class="foldopen" id="foldopen00515" data-start="{" data-end="}">
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno"><a class="line" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">  515</a></span>    [[nodiscard]] Set <a class="code hl_function" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">erase</a>(Set s, D* d) {</div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> u = s.isa_uniq()) <span class="keywordflow">return</span> d == u ? Set() : s;</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span> </div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> data = s.isa_data()) {</div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>            <span class="keywordtype">size_t</span> i = 0, <a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a> = data-&gt;size;</div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>            <span class="keywordflow">for</span> (; i != <a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a>; ++i)</div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>                <span class="keywordflow">if</span> (data-&gt;elems[i] == d) <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span> </div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>            <span class="keywordflow">if</span> (i == <a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a>--) <span class="keywordflow">return</span> s;</div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>            <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a> == 0) <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>            <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a> == 1) <span class="keywordflow">return</span> {i == 0 ? data-&gt;elems[1] : data-&gt;elems[0]};</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span> </div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>            assert(<a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a> &lt;= N);</div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>            <span class="keyword">auto</span> [new_data, state] = allocate(<a class="code hl_function" href="classmim_1_1Sets_1_1Set.html#a81c90b3ef8cd75899233202f36b9ef46">size</a>);</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>            <span class="keyword">auto</span> db                = data-&gt;begin();</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>            std::copy(db + i + 1, data-&gt;end(), std::copy(db, db + i, new_data-&gt;elems)); <span class="comment">// copy over, skip i</span></div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span> </div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>            <span class="keywordflow">return</span> unify(new_data, state);</div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>        }</div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span> </div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> n = s.isa_node()) {</div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>            <span class="keywordflow">if</span> (d-&gt;tid() == 0 || d-&gt;tid() &lt; n-&gt;min) <span class="keywordflow">return</span> n;</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>            <span class="keywordflow">if</span> (!n-&gt;contains(d)) <span class="keywordflow">return</span> n;</div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span> </div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>            <span class="keyword">auto</span> res = <a class="code hl_function" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">erase</a>(n, d);</div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>            <span class="keywordflow">if</span> (res-&gt;size &gt; N) <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span> </div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>            <span class="keyword">auto</span> v = <a class="code hl_function" href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">Vector&lt;D*&gt;</a>();</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>            v.reserve(res-&gt;size);</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = res; !i-&gt;is_root(); i = i-&gt;parent) v.emplace_back(i-&gt;def);</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>            <span class="keywordflow">return</span> <a class="code hl_function" href="classmim_1_1Sets.html#ad6d2206fb706506210e1f4cbb4909ee6">create</a>(std::move(v));</div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>        }</div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span> </div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>        <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>    }<span class="comment"></span></div>
 </div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span><span class="comment">    ///@}</span></div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span><span class="comment"></span> </div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span><span class="comment">    /// @name DOT output</span></div>
-<div class="foldopen" id="foldopen00552" data-start="{" data-end="}">
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno"><a class="line" href="classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c">  552</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c">dot</a>() {</div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>        <span class="keyword">auto</span> of = std::ofstream(<span class="stringliteral">&quot;trie.dot&quot;</span>);</div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>        <a class="code hl_function" href="classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c">dot</a>(of);</div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>    }</div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span><span class="comment">    ///@}</span></div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span><span class="comment"></span> </div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span><span class="comment">    /// @name DOT output</span></div>
+<div class="foldopen" id="foldopen00553" data-start="{" data-end="}">
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno"><a class="line" href="classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c">  553</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c">dot</a>() {</div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>        <span class="keyword">auto</span> of = std::ofstream(<span class="stringliteral">&quot;trie.dot&quot;</span>);</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>        <a class="code hl_function" href="classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c">dot</a>(of);</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>    }</div>
 </div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span> </div>
-<div class="foldopen" id="foldopen00557" data-start="{" data-end="}">
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno"><a class="line" href="classmim_1_1Sets.html#a258ff3e0630af409d343a3d936ef43e9">  557</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1Sets.html#a258ff3e0630af409d343a3d936ef43e9">dot</a>(std::ostream&amp; os)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>        os &lt;&lt; <span class="stringliteral">&quot;digraph {{&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>        os &lt;&lt; <span class="stringliteral">&quot;ordering=out;&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>        os &lt;&lt; <span class="stringliteral">&quot;node [shape=box,style=filled];&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>        root()-&gt;dot(os);</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>        os &lt;&lt; <span class="stringliteral">&quot;}}&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    }</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span> </div>
+<div class="foldopen" id="foldopen00558" data-start="{" data-end="}">
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno"><a class="line" href="classmim_1_1Sets.html#a258ff3e0630af409d343a3d936ef43e9">  558</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1Sets.html#a258ff3e0630af409d343a3d936ef43e9">dot</a>(std::ostream&amp; os)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>        os &lt;&lt; <span class="stringliteral">&quot;digraph {{&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>        os &lt;&lt; <span class="stringliteral">&quot;ordering=out;&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>        os &lt;&lt; <span class="stringliteral">&quot;node [shape=box,style=filled];&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>        root()-&gt;dot(os);</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>        os &lt;&lt; <span class="stringliteral">&quot;}}&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>    }</div>
 </div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span> </div>
-<div class="foldopen" id="foldopen00565" data-start="{" data-end="}">
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno"><a class="line" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">  565</a></span>    <span class="keyword">friend</span> <span class="keywordtype">void</span> <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(<a class="code hl_function" href="classmim_1_1Sets.html#a942c8bd55319ced3fdae4b4e07857a75">Sets</a>&amp; s1, <a class="code hl_function" href="classmim_1_1Sets.html#a942c8bd55319ced3fdae4b4e07857a75">Sets</a>&amp; s2) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>        <span class="keyword">using </span>std::swap;</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>        <span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.data_arena_,  s2.data_arena_);</div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.node_arena_,  s2.node_arena_);</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.pool_,        s2.pool_);</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.root_,        s2.root_);</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.tid_counter_, s2.tid_counter_);</div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.id_counter_ , s2.id_counter_ );</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>        <span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>    }</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span> </div>
+<div class="foldopen" id="foldopen00566" data-start="{" data-end="}">
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno"><a class="line" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">  566</a></span>    <span class="keyword">friend</span> <span class="keywordtype">void</span> <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(<a class="code hl_function" href="classmim_1_1Sets.html#a942c8bd55319ced3fdae4b4e07857a75">Sets</a>&amp; s1, <a class="code hl_function" href="classmim_1_1Sets.html#a942c8bd55319ced3fdae4b4e07857a75">Sets</a>&amp; s2) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>        <span class="keyword">using </span>std::swap;</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>        <span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.data_arena_,  s2.data_arena_);</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.node_arena_,  s2.node_arena_);</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.pool_,        s2.pool_);</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.root_,        s2.root_);</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.tid_counter_, s2.tid_counter_);</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>        <a class="code hl_friend" href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">swap</a>(s1.id_counter_ , s2.id_counter_ );</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>        <span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>    }</div>
 </div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span> </div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>    D* set_tid(D* def) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>        assert(def-&gt;tid() == 0);</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>        def-&gt;tid_ = tid_counter_++;</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>        <span class="keywordflow">return</span> def;</div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>    }</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span> </div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    <span class="comment">// get rid of clang warnings</span></div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> SizeOf = <span class="keyword">sizeof</span>(std::conditional_t&lt;std::is_pointer_v&lt;T&gt;, uintptr_t, T&gt;);</div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span> </div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>    <span class="comment">// array helpers</span></div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    std::pair&lt;Data*, fe::Arena::State&gt; allocate(<span class="keywordtype">size_t</span> size) {</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>        <span class="keyword">auto</span> bytes = <span class="keyword">sizeof</span>(Data) + size * SizeOf&lt;D&gt;;</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>        <span class="keyword">auto</span> state = data_arena_.state();</div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>        <span class="keyword">auto</span> buff  = data_arena_.allocate(bytes, <span class="keyword">alignof</span>(Data));</div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>        <span class="keyword">auto</span> data  = <span class="keyword">new</span> (buff) Data(size);</div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>        <span class="keywordflow">return</span> {data, state};</div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>    }</div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span> </div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>    <a class="code hl_class" href="classmim_1_1Sets_1_1Set.html">Set</a> unify(Data* data, fe::Arena::State state, <span class="keywordtype">size_t</span> excess = 0) {</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>        assert(data-&gt;size != 0);</div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>        <span class="keyword">auto</span> [i, ins] = pool_.emplace(data);</div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>        <span class="keywordflow">if</span> (ins) {</div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>            data_arena_.deallocate(excess * SizeOf&lt;D&gt;); <span class="comment">// release excess memory</span></div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>            <span class="keywordflow">return</span> <a class="code hl_class" href="classmim_1_1Sets_1_1Set.html">Set</a>(data);</div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>        }</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span> </div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>        data_arena_.deallocate(state);</div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classmim_1_1Sets_1_1Set.html">Set</a>(*i);</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    }</div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span> </div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>    <span class="comment">// Trie helpers</span></div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>    <span class="keyword">constexpr</span> Node* root() const noexcept { <span class="keywordflow">return</span> root_.get(); }</div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    fe::Arena::Ptr&lt;Node&gt; make_node() { <span class="keywordflow">return</span> node_arena_.mk&lt;Node&gt;(id_counter_++); }</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    fe::Arena::Ptr&lt;Node&gt; make_node(Node* parent, D* def) { <span class="keywordflow">return</span> node_arena_.mk&lt;Node&gt;(parent, def, id_counter_++); }</div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span> </div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    [[nodiscard]] Node* mount(Node* parent, D* def) {</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>        assert(def-&gt;tid() != 0);</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>        <span class="keyword">auto</span> [i, ins] = parent-&gt;children.emplace(def, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        <span class="keywordflow">if</span> (ins) i-&gt;second = make_node(parent, def);</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        <span class="keywordflow">return</span> i-&gt;second.get();</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>    }</div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span> </div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    [[nodiscard]] <span class="keyword">constexpr</span> Node* <a class="code hl_function" href="classmim_1_1Sets.html#ac0606b37495ac60424e9191a0fa6b217">insert</a>(Node* n, D* d) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>        <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>-&gt;tid() == 0) <span class="keywordflow">return</span> mount(n, set_tid(d));</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>        <span class="keywordflow">if</span> (n-&gt;def == d) <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>        <span class="keywordflow">if</span> (n-&gt;is_root() || n-&gt;def-&gt;tid() &lt; <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>-&gt;tid()) <span class="keywordflow">return</span> mount(n, d);</div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>        <span class="keywordflow">return</span> mount(<a class="code hl_function" href="classmim_1_1Sets.html#ac0606b37495ac60424e9191a0fa6b217">insert</a>(n-&gt;parent, d), n-&gt;def);</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>    }</div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span> </div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>    [[nodiscard]] <span class="keyword">constexpr</span> Node* <a class="code hl_function" href="classmim_1_1Sets.html#a3715f24419e8a8e20c8a3ba5086b9583">merge</a>(Node* n, Node* m) {</div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>        <span class="keywordflow">if</span> (n-&gt;is_root()) <span class="keywordflow">return</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>;</div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;is_root()) <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>        <span class="keyword">auto</span> nn = n-&gt;def-&gt;tid() &lt; <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;def-&gt;tid() ? n : n-&gt;parent;</div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>        <span class="keyword">auto</span> mm = n-&gt;def-&gt;tid() &gt; <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;def-&gt;tid() ? <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a> : <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;parent;</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>        <span class="keywordflow">return</span> mount(<a class="code hl_function" href="classmim_1_1Sets.html#a3715f24419e8a8e20c8a3ba5086b9583">merge</a>(nn, mm), n-&gt;def-&gt;tid() &lt; <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;def-&gt;tid() ? <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;def : n-&gt;def);</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    }</div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span> </div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>    [[nodiscard]] Node* <a class="code hl_function" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">erase</a>(Node* n, D* d) {</div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>        <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>-&gt;tid() &gt; n-&gt;def-&gt;tid()) <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>        <span class="keywordflow">if</span> (n-&gt;def == d) <span class="keywordflow">return</span> n-&gt;parent;</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>        <span class="keywordflow">return</span> mount(<a class="code hl_function" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">erase</a>(n-&gt;parent, d), n-&gt;def);</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>    }</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span> </div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>    fe::Arena node_arena_;</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    fe::Arena data_arena_;</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    absl::flat_hash_set&lt;const Data*, absl::Hash&lt;const Data*&gt;, <span class="keyword">typename</span> <a class="code hl_struct" href="structmim_1_1Sets_1_1Data_1_1Equal.html">Data::Equal</a>&gt; pool_;</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>    fe::Arena::Ptr&lt;Node&gt; root_;</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>    <a class="code hl_typedef" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> tid_counter_ = 1;</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>    <a class="code hl_typedef" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> id_counter_  = 0;</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>};</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span> </div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>} <span class="comment">// namespace mim</span></div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span> </div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    D* set_tid(D* def) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>        assert(def-&gt;tid() == 0);</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>        def-&gt;tid_ = tid_counter_++;</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>        <span class="keywordflow">return</span> def;</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    }</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span> </div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    <span class="comment">// get rid of clang warnings</span></div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> SizeOf = <span class="keyword">sizeof</span>(std::conditional_t&lt;std::is_pointer_v&lt;T&gt;, uintptr_t, T&gt;);</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span> </div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    <span class="comment">// array helpers</span></div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>    std::pair&lt;Data*, fe::Arena::State&gt; allocate(<span class="keywordtype">size_t</span> size) {</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>        <span class="keyword">auto</span> bytes = <span class="keyword">sizeof</span>(Data) + size * SizeOf&lt;D&gt;;</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>        <span class="keyword">auto</span> state = data_arena_.state();</div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>        <span class="keyword">auto</span> buff  = data_arena_.allocate(bytes, <span class="keyword">alignof</span>(Data));</div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>        <span class="keyword">auto</span> data  = <span class="keyword">new</span> (buff) Data(size);</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>        <span class="keywordflow">return</span> {data, state};</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>    }</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span> </div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    <a class="code hl_class" href="classmim_1_1Sets_1_1Set.html">Set</a> unify(Data* data, fe::Arena::State state, <span class="keywordtype">size_t</span> excess = 0) {</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>        assert(data-&gt;size != 0);</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>        <span class="keyword">auto</span> [i, ins] = pool_.emplace(data);</div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>        <span class="keywordflow">if</span> (ins) {</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>            data_arena_.deallocate(excess * SizeOf&lt;D&gt;); <span class="comment">// release excess memory</span></div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>            <span class="keywordflow">return</span> <a class="code hl_class" href="classmim_1_1Sets_1_1Set.html">Set</a>(data);</div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>        }</div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span> </div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>        data_arena_.deallocate(state);</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>        <span class="keywordflow">return</span> <a class="code hl_class" href="classmim_1_1Sets_1_1Set.html">Set</a>(*i);</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>    }</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span> </div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>    <span class="comment">// Trie helpers</span></div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    <span class="keyword">constexpr</span> Node* root() const noexcept { <span class="keywordflow">return</span> root_.get(); }</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    fe::Arena::Ptr&lt;Node&gt; make_node() { <span class="keywordflow">return</span> node_arena_.mk&lt;Node&gt;(id_counter_++); }</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>    fe::Arena::Ptr&lt;Node&gt; make_node(Node* parent, D* def) { <span class="keywordflow">return</span> node_arena_.mk&lt;Node&gt;(parent, def, id_counter_++); }</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span> </div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>    [[nodiscard]] Node* mount(Node* parent, D* def) {</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>        assert(def-&gt;tid() != 0);</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        <span class="keyword">auto</span> [i, ins] = parent-&gt;children.emplace(def, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        <span class="keywordflow">if</span> (ins) i-&gt;second = make_node(parent, def);</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>        <span class="keywordflow">return</span> i-&gt;second.get();</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>    }</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span> </div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>    [[nodiscard]] <span class="keyword">constexpr</span> Node* <a class="code hl_function" href="classmim_1_1Sets.html#ac0606b37495ac60424e9191a0fa6b217">insert</a>(Node* n, D* d) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>        <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>-&gt;tid() == 0) <span class="keywordflow">return</span> mount(n, set_tid(d));</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>        <span class="keywordflow">if</span> (n-&gt;def == d) <span class="keywordflow">return</span> n;</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>        <span class="keywordflow">if</span> (n-&gt;is_root() || n-&gt;def-&gt;tid() &lt; <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>-&gt;tid()) <span class="keywordflow">return</span> mount(n, d);</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>        <span class="keywordflow">return</span> mount(<a class="code hl_function" href="classmim_1_1Sets.html#ac0606b37495ac60424e9191a0fa6b217">insert</a>(n-&gt;parent, d), n-&gt;def);</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>    }</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>    [[nodiscard]] <span class="keyword">constexpr</span> Node* <a class="code hl_function" href="classmim_1_1Sets.html#a3715f24419e8a8e20c8a3ba5086b9583">merge</a>(Node* n, Node* m) {</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>        <span class="keywordflow">if</span> (n-&gt;is_root()) <span class="keywordflow">return</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>;</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>        <span class="keywordflow">if</span> (<a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;is_root()) <span class="keywordflow">return</span> n;</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>        <span class="keyword">auto</span> nn = n-&gt;def-&gt;tid() &lt; <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;def-&gt;tid() ? n : n-&gt;parent;</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>        <span class="keyword">auto</span> mm = n-&gt;def-&gt;tid() &gt; <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;def-&gt;tid() ? <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a> : <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;parent;</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>        <span class="keywordflow">return</span> mount(<a class="code hl_function" href="classmim_1_1Sets.html#a3715f24419e8a8e20c8a3ba5086b9583">merge</a>(nn, mm), n-&gt;def-&gt;tid() &lt; <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;def-&gt;tid() ? <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">m</a>-&gt;def : n-&gt;def);</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>    }</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> </div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>    [[nodiscard]] Node* <a class="code hl_function" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">erase</a>(Node* n, D* d) {</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>        <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">d</a>-&gt;tid() &gt; n-&gt;def-&gt;tid()) <span class="keywordflow">return</span> n;</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>        <span class="keywordflow">if</span> (n-&gt;def == d) <span class="keywordflow">return</span> n-&gt;parent;</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>        <span class="keywordflow">return</span> mount(<a class="code hl_function" href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">erase</a>(n-&gt;parent, d), n-&gt;def);</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>    }</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span> </div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    fe::Arena node_arena_;</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    fe::Arena data_arena_;</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>    absl::flat_hash_set&lt;const Data*, absl::Hash&lt;const Data*&gt;, <span class="keyword">typename</span> <a class="code hl_struct" href="structmim_1_1Sets_1_1Data_1_1Equal.html">Data::Equal</a>&gt; pool_;</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>    fe::Arena::Ptr&lt;Node&gt; root_;</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>    <a class="code hl_typedef" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> tid_counter_ = 1;</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>    <a class="code hl_typedef" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> id_counter_  = 0;</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>};</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>} <span class="comment">// namespace mim</span></div>
 </div>
 </div>
 </div>
@@ -852,15 +853,15 @@ $(function(){initNavTree('sets_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="aclassmim_1_1Sets_1_1Set_html_aedb1b7a07bb2ac90836be8ca70b7830b"><div class="ttname"><a href="classmim_1_1Sets_1_1Set.html#aedb1b7a07bb2ac90836be8ca70b7830b">mim::Sets::Set::Set</a></div><div class="ttdeci">constexpr Set(Set &amp;&amp;) noexcept=default</div></div>
 <div class="ttc" id="aclassmim_1_1Sets_1_1Set_html_afb96c9f6a977695381d33e7d90ab5713"><div class="ttname"><a href="classmim_1_1Sets_1_1Set.html#afb96c9f6a977695381d33e7d90ab5713">mim::Sets::Set::operator!=</a></div><div class="ttdeci">constexpr bool operator!=(Set other) const noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00335">sets.h:335</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sets_1_1Set_html_afcdf1ffcba6f3aa514c7a4502170caea"><div class="ttname"><a href="classmim_1_1Sets_1_1Set.html#afcdf1ffcba6f3aa514c7a4502170caea">mim::Sets::Set::end</a></div><div class="ttdeci">constexpr iterator end() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00326">sets.h:326</a></div></div>
-<div class="ttc" id="aclassmim_1_1Sets_html_a0663d20e103d888b7b61f8a54d1fe8e9"><div class="ttname"><a href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">mim::Sets::swap</a></div><div class="ttdeci">friend void swap(Sets &amp;s1, Sets &amp;s2) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00565">sets.h:565</a></div></div>
-<div class="ttc" id="aclassmim_1_1Sets_html_a0b45cb5566879539a8b7a11a9f48af0c"><div class="ttname"><a href="classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c">mim::Sets::dot</a></div><div class="ttdeci">void dot()</div><div class="ttdef"><b>Definition</b> <a href="#l00552">sets.h:552</a></div></div>
-<div class="ttc" id="aclassmim_1_1Sets_html_a258ff3e0630af409d343a3d936ef43e9"><div class="ttname"><a href="classmim_1_1Sets.html#a258ff3e0630af409d343a3d936ef43e9">mim::Sets::dot</a></div><div class="ttdeci">void dot(std::ostream &amp;os) const</div><div class="ttdef"><b>Definition</b> <a href="#l00557">sets.h:557</a></div></div>
+<div class="ttc" id="aclassmim_1_1Sets_html_a0663d20e103d888b7b61f8a54d1fe8e9"><div class="ttname"><a href="classmim_1_1Sets.html#a0663d20e103d888b7b61f8a54d1fe8e9">mim::Sets::swap</a></div><div class="ttdeci">friend void swap(Sets &amp;s1, Sets &amp;s2) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00566">sets.h:566</a></div></div>
+<div class="ttc" id="aclassmim_1_1Sets_html_a0b45cb5566879539a8b7a11a9f48af0c"><div class="ttname"><a href="classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c">mim::Sets::dot</a></div><div class="ttdeci">void dot()</div><div class="ttdef"><b>Definition</b> <a href="#l00553">sets.h:553</a></div></div>
+<div class="ttc" id="aclassmim_1_1Sets_html_a258ff3e0630af409d343a3d936ef43e9"><div class="ttname"><a href="classmim_1_1Sets.html#a258ff3e0630af409d343a3d936ef43e9">mim::Sets::dot</a></div><div class="ttdeci">void dot(std::ostream &amp;os) const</div><div class="ttdef"><b>Definition</b> <a href="#l00558">sets.h:558</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sets_html_a3715f24419e8a8e20c8a3ba5086b9583"><div class="ttname"><a href="classmim_1_1Sets.html#a3715f24419e8a8e20c8a3ba5086b9583">mim::Sets::merge</a></div><div class="ttdeci">Set merge(Set s1, Set s2)</div><div class="ttdoc">Yields .</div><div class="ttdef"><b>Definition</b> <a href="#l00482">sets.h:482</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sets_html_a6d3aef988f4b17ffdc5413b3a4a6368f"><div class="ttname"><a href="classmim_1_1Sets.html#a6d3aef988f4b17ffdc5413b3a4a6368f">mim::Sets::Sets</a></div><div class="ttdeci">constexpr Sets(const Sets &amp;) noexcept=delete</div></div>
 <div class="ttc" id="aclassmim_1_1Sets_html_a929a6bd2812512ac0b08b9f003e09cff"><div class="ttname"><a href="classmim_1_1Sets.html#a929a6bd2812512ac0b08b9f003e09cff">mim::Sets::operator=</a></div><div class="ttdeci">Sets &amp; operator=(const Sets &amp;)=delete</div></div>
 <div class="ttc" id="aclassmim_1_1Sets_html_a942c8bd55319ced3fdae4b4e07857a75"><div class="ttname"><a href="classmim_1_1Sets.html#a942c8bd55319ced3fdae4b4e07857a75">mim::Sets::Sets</a></div><div class="ttdeci">constexpr Sets() noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00377">sets.h:377</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sets_html_a947880def017f3dc6051fcc1d22a495f"><div class="ttname"><a href="classmim_1_1Sets.html#a947880def017f3dc6051fcc1d22a495f">mim::Sets::Sets</a></div><div class="ttdeci">constexpr Sets(Sets &amp;&amp;other) noexcept</div><div class="ttdef"><b>Definition</b> <a href="#l00380">sets.h:380</a></div></div>
-<div class="ttc" id="aclassmim_1_1Sets_html_a96d9c4d1ec31fe3af14be484e36b2025"><div class="ttname"><a href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">mim::Sets::erase</a></div><div class="ttdeci">Set erase(Set s, D *d)</div><div class="ttdoc">Yields .</div><div class="ttdef"><b>Definition</b> <a href="#l00514">sets.h:514</a></div></div>
+<div class="ttc" id="aclassmim_1_1Sets_html_a96d9c4d1ec31fe3af14be484e36b2025"><div class="ttname"><a href="classmim_1_1Sets.html#a96d9c4d1ec31fe3af14be484e36b2025">mim::Sets::erase</a></div><div class="ttdeci">Set erase(Set s, D *d)</div><div class="ttdoc">Yields .</div><div class="ttdef"><b>Definition</b> <a href="#l00515">sets.h:515</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sets_html_ac0606b37495ac60424e9191a0fa6b217"><div class="ttname"><a href="classmim_1_1Sets.html#ac0606b37495ac60424e9191a0fa6b217">mim::Sets::insert</a></div><div class="ttdeci">Set insert(Set s, D *d)</div><div class="ttdoc">Yields .</div><div class="ttdef"><b>Definition</b> <a href="#l00416">sets.h:416</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sets_html_ad6d2206fb706506210e1f4cbb4909ee6"><div class="ttname"><a href="classmim_1_1Sets.html#ad6d2206fb706506210e1f4cbb4909ee6">mim::Sets::create</a></div><div class="ttdeci">Set create(Vector&lt; D * &gt; v)</div><div class="ttdoc">Create a Set wih all elements in v.</div><div class="ttdef"><b>Definition</b> <a href="#l00391">sets.h:391</a></div></div>
 <div class="ttc" id="aclassmim_1_1Vector_html"><div class="ttname"><a href="classmim_1_1Vector.html">mim::Vector</a></div><div class="ttdoc">This is a thin wrapper for absl::InlinedVector&lt;T, N, / A&gt; which in turn is a drop-in replacement for ...</div><div class="ttdef"><b>Definition</b> <a href="vector_8h_source.html#l00016">vector.h:16</a></div></div>
