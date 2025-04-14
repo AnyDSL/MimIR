@@ -506,7 +506,8 @@ public:
         }
 
         auto n = n1 ? n1 : n2;
-        for (auto d : *(d1 ? d1 : d2)) n = insert(n, d);
+        for (auto d : *(d1 ? d1 : d2))
+            if (!n->contains(d)) n = insert(n, d);
         return n;
     }
 
