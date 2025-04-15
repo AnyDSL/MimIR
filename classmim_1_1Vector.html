@@ -125,7 +125,7 @@ $(function(){initNavTree('classmim_1_1Vector.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>This is a thin wrapper for <a href="https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h"><code>absl::InlinedVector&lt;T, N, A&gt;</code></a> which in turn is a drop-in replacement for <a href="https://en.cppreference.com/w/cpp/container/vector"><code>std::vector&lt;T, / A&gt;</code></a>.  
+<p>This is a thin wrapper for <a href="https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h"><code>absl::InlinedVector&lt;T, N, A&gt;</code></a> which is a drop-in replacement for <a href="https://en.cppreference.com/w/cpp/container/vector"><code>std::vector&lt;T, A&gt;</code></a>.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="vector_8h_source.html">mim/util/vector.h</a>&gt;</code></p>
@@ -166,10 +166,10 @@ Friends</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T, size_t N = Default_Inlined_Size&lt;T&gt;, class A = std::allocator&lt;T&gt;&gt;<br />
-class mim::Vector&lt; T, N, A &gt;</div><p>This is a thin wrapper for <a href="https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h"><code>absl::InlinedVector&lt;T, N, A&gt;</code></a> which in turn is a drop-in replacement for <a href="https://en.cppreference.com/w/cpp/container/vector"><code>std::vector&lt;T, / A&gt;</code></a>. </p>
+class mim::Vector&lt; T, N, A &gt;</div><p>This is a thin wrapper for <a href="https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h"><code>absl::InlinedVector&lt;T, N, A&gt;</code></a> which is a drop-in replacement for <a href="https://en.cppreference.com/w/cpp/container/vector"><code>std::vector&lt;T, A&gt;</code></a>. </p>
 <p>In addition, there are generator-like/lambda-based constructors and conversions to <a class="el" href="classmim_1_1Span.html" title="This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:">Span</a> available. </p>
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00018">18</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00017">17</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a5879501d9b9a1020849004da0e144e97" name="a5879501d9b9a1020849004da0e144e97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5879501d9b9a1020849004da0e144e97">&#9670;&#160;</a></span>Base</h2>
@@ -185,7 +185,7 @@ template&lt;class T, size_t N = Default_Inlined_Size&lt;T&gt;, class A = std::al
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00020">20</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00019">19</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -222,7 +222,7 @@ requires (std::is_invocable_r_v&lt;T, F, size_t&gt;)</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00026">26</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00025">25</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -258,7 +258,7 @@ requires (std::is_invocable_r_v&lt;T, F, decltype(*std::ranges::begin(range))&gt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00034">34</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00033">33</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -288,7 +288,7 @@ template&lt;class T, size_t N = Default_Inlined_Size&lt;T&gt;, class A = std::al
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00048">48</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00047">47</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -317,9 +317,9 @@ template&lt;class T, size_t N = Default_Inlined_Size&lt;T&gt;, class A = std::al
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00047">47</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00046">46</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="vector_8h_source.html#l00049">mim::Vector&lt; const Def * &gt;::view()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="vector_8h_source.html#l00048">mim::Vector&lt; const Def * &gt;::view()</a>.</p>
 
 </div>
 </div>
@@ -348,7 +348,7 @@ template&lt;class T, size_t N = Default_Inlined_Size&lt;T&gt;, class A = std::al
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00049">49</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00048">48</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -382,7 +382,7 @@ template&lt;class T, size_t N = Default_Inlined_Size&lt;T&gt;, class A = std::al
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00052">52</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00051">51</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
