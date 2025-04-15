@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['d_0',['D',['../namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938af623e75af30e62bbd73d6df5b50bb7b5',1,'mim::plug::regex']]],
+  ['d_0',['D',['../classmim_1_1Span.html#ae7622c7c7406b6b5789ad85decd05916',1,'mim::Span::D'],['../namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938af623e75af30e62bbd73d6df5b50bb7b5',1,'mim::plug::regex::D']]],
   ['d_1',['d',['../namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad',1,'mim::plug::regex']]],
   ['d_5fangle_5fl_2',['D_angle_l',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a9d7c25a7ee8d79c920901fb0b4bae0b6',1,'mim::ast::Tok']]],
   ['d_5fangle_5fr_3',['D_angle_r',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aecbf83ec5b71cc1fabb68b9b29602913',1,'mim::ast::Tok']]],

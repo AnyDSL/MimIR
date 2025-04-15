@@ -119,6 +119,7 @@ $(function(){initNavTree('classmim_1_1Span.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classmim_1_1Span-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mim::Span&lt; T, N &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -142,41 +143,46 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructors</div></td></tr>
-<tr class="memitem:a15e9711a22a1523d44ada4d9e66aa260" id="r_a15e9711a22a1523d44ada4d9e66aa260"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15e9711a22a1523d44ada4d9e66aa260">explicit</a> (N !=std::dynamic_extent) const expr <a class="el" href="classmim_1_1Span.html">Span</a>(std</td></tr>
-<tr class="separator:a15e9711a22a1523d44ada4d9e66aa260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2e38927cbfabd6ba879e8b8dde10635" id="r_aa2e38927cbfabd6ba879e8b8dde10635"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2e38927cbfabd6ba879e8b8dde10635">explicit</a> (N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>) const expr <a class="el" href="classmim_1_1Span.html">Span</a>(std</td></tr>
+<tr class="separator:aa2e38927cbfabd6ba879e8b8dde10635"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0bc881c34794ee0de1fd4d0d4563439" id="r_ac0bc881c34794ee0de1fd4d0d4563439"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0bc881c34794ee0de1fd4d0d4563439">Span</a> (std::span&lt; T, N &gt; span) noexcept</td></tr>
 <tr class="separator:ac0bc881c34794ee0de1fd4d0d4563439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac55d562947ab227142b80bbcc3f5d155" id="r_ac55d562947ab227142b80bbcc3f5d155"><td class="memTemplParams" colspan="2">template&lt;Vectorlike Vec&gt; <br />
+<tr class="memitem:a3eac2d83fde887a220a395734424a60f" id="r_a3eac2d83fde887a220a395734424a60f"><td class="memTemplParams" colspan="2">template&lt;Vectorlike Vec&gt; <br />
 requires (std::is_same_v&lt;typename Vec::value_type, T&gt;)</td></tr>
-<tr class="memitem:ac55d562947ab227142b80bbcc3f5d155"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac55d562947ab227142b80bbcc3f5d155">explicit</a> (N !=std::dynamic_extent) const expr <a class="el" href="classmim_1_1Span.html">Span</a>(Vec &amp;vec)</td></tr>
-<tr class="separator:ac55d562947ab227142b80bbcc3f5d155"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad21bf7fcf2ef77d532df7575949bd18d" id="r_ad21bf7fcf2ef77d532df7575949bd18d"><td class="memTemplParams" colspan="2">template&lt;Vectorlike Vec&gt; <br />
+<tr class="memitem:a3eac2d83fde887a220a395734424a60f"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3eac2d83fde887a220a395734424a60f">explicit</a> (N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>) const expr <a class="el" href="classmim_1_1Span.html">Span</a>(Vec &amp;vec) noexcept(noexcept(vec.data()) &amp;&amp;noexcept(vec.size()))</td></tr>
+<tr class="separator:a3eac2d83fde887a220a395734424a60f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5340607712a2465bb4fc306470bed6b3" id="r_a5340607712a2465bb4fc306470bed6b3"><td class="memTemplParams" colspan="2">template&lt;Vectorlike Vec&gt; <br />
 requires (std::is_same_v&lt;std::add_const_t&lt;typename Vec::value_type&gt;, std::add_const_t&lt;T&gt;&gt;)</td></tr>
-<tr class="memitem:ad21bf7fcf2ef77d532df7575949bd18d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ad21bf7fcf2ef77d532df7575949bd18d">explicit</a> (N !=std::dynamic_extent) const expr <a class="el" href="classmim_1_1Span.html">Span</a>(const Vec &amp;vec)</td></tr>
-<tr class="separator:ad21bf7fcf2ef77d532df7575949bd18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb1a112213c929757f33fff2a0efcff3" id="r_abb1a112213c929757f33fff2a0efcff3"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb1a112213c929757f33fff2a0efcff3">Span</a> (typename Base::pointer p)</td></tr>
-<tr class="separator:abb1a112213c929757f33fff2a0efcff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5340607712a2465bb4fc306470bed6b3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5340607712a2465bb4fc306470bed6b3">explicit</a> (N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>) const expr <a class="el" href="classmim_1_1Span.html">Span</a>(const Vec &amp;vec) noexcept(noexcept(vec.data()) &amp;&amp;noexcept(vec.size()))</td></tr>
+<tr class="separator:a5340607712a2465bb4fc306470bed6b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54257db503b22a75e8455b0f19e95fdf" id="r_a54257db503b22a75e8455b0f19e95fdf"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54257db503b22a75e8455b0f19e95fdf">Span</a> (typename Base::pointer p) noexcept</td></tr>
+<tr class="separator:a54257db503b22a75e8455b0f19e95fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">subspan</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>Wrappers for <a href="https://en.cppreference.com/w/cpp/container/span/subspan"><code>std::span::subspan</code></a> that return a <code><a class="el" href="classmim_1_1Span.html" title="This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:">mim::Span</a></code>.</p>
+<tr><td colspan="2"><div class="groupText"><p>Wrappers for <code>std::span::subspan</code> that return a <code><a class="el" href="classmim_1_1Span.html" title="This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:">mim::Span</a></code>.</p>
 <p>Example: If <code>span</code> points to <code>0, 1, 2, 3, 4, 5, 6, 7, 8, 9</code>, then</p><ul>
-<li><code>span&lt;2, 5&gt;()</code> and <code>span(2, 5)</code> will point to <code>2, 3, 4, 5, 6</code>.</li>
-<li><code>span&lt;2&gt;()</code> and <code>span(2)</code> will point to <code>2, 3, 4, 5, 6, 7, 8, 9</code>. </li>
+<li><code>span.subspan&lt;2, 5&gt;()</code> and <code>span.subspan(2, 5)</code> will point to <code>2, 3, 4, 5, 6</code>.</li>
+<li><code>span.subspan&lt;2&gt;()</code> and <code>span.subspan(2)</code> will point to <code>2, 3, 4, 5, 6, 7, 8, 9</code>. </li>
 </ul>
 </div></td></tr>
-<tr class="memitem:a65eba8c83ffccb00a36528712cd41d67" id="r_a65eba8c83ffccb00a36528712cd41d67"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65eba8c83ffccb00a36528712cd41d67">subspan</a> (size_t i, size_t n=std::dynamic_extent) const</td></tr>
-<tr class="separator:a65eba8c83ffccb00a36528712cd41d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a271c0872c751e4bb075700a1d0477d4d" id="r_a271c0872c751e4bb075700a1d0477d4d"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a271c0872c751e4bb075700a1d0477d4d"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a271c0872c751e4bb075700a1d0477d4d">subspan</a> () const</td></tr>
-<tr class="separator:a271c0872c751e4bb075700a1d0477d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1061ecc23e5b0b01638e8bc04ae25877" id="r_a1061ecc23e5b0b01638e8bc04ae25877"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, <a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1061ecc23e5b0b01638e8bc04ae25877">subspan</a> (size_t i, size_t n=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>) const noexcept</td></tr>
+<tr class="separator:a1061ecc23e5b0b01638e8bc04ae25877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a596fbf8c6b7eb7fb0d8af55bba442e51" id="r_a596fbf8c6b7eb7fb0d8af55bba442e51"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = D&gt; </td></tr>
+<tr class="memitem:a596fbf8c6b7eb7fb0d8af55bba442e51"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? n :(N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? N - i :<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a596fbf8c6b7eb7fb0d8af55bba442e51">subspan</a> () const noexcept</td></tr>
+<tr class="separator:a596fbf8c6b7eb7fb0d8af55bba442e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">rsubspan</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>Similar to <a class="el" href="#a65eba8c83ffccb00a36528712cd41d67">Span::subspan</a> but in <em>reverse</em>: </p>
+<tr><td colspan="2"><div class="groupText"><p>Similar to <a class="el" href="#a1061ecc23e5b0b01638e8bc04ae25877">Span::subspan</a> but in <em>reverse</em>: </p>
 </div></td></tr>
-<tr class="memitem:a0acd2c9692fae5577a67185de3567d6c" id="r_a0acd2c9692fae5577a67185de3567d6c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0acd2c9692fae5577a67185de3567d6c">rsubspan</a> (size_t i, size_t n=std::dynamic_extent) const</td></tr>
-<tr class="separator:a0acd2c9692fae5577a67185de3567d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eb4fe2a3927c7ae6b71b2643911d6b5" id="r_a5eb4fe2a3927c7ae6b71b2643911d6b5"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a5eb4fe2a3927c7ae6b71b2643911d6b5"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5eb4fe2a3927c7ae6b71b2643911d6b5">rsubspan</a> () const</td></tr>
-<tr class="memdesc:a5eb4fe2a3927c7ae6b71b2643911d6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>span.rsubspan(3, 5)</code> removes the last 3 elements and while picking 5 elements onwards from there.  <br /></td></tr>
-<tr class="separator:a5eb4fe2a3927c7ae6b71b2643911d6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95ad9bdf9ac1eb16588ad4c96fef3791" id="r_a95ad9bdf9ac1eb16588ad4c96fef3791"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, <a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95ad9bdf9ac1eb16588ad4c96fef3791">rsubspan</a> (size_t i, size_t n=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>) const noexcept</td></tr>
+<tr class="separator:a95ad9bdf9ac1eb16588ad4c96fef3791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca1a6c80020a977de13fb1ce3573c160" id="r_aca1a6c80020a977de13fb1ce3573c160"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = D&gt; </td></tr>
+<tr class="memitem:aca1a6c80020a977de13fb1ce3573c160"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? n :(N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? N - i :<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aca1a6c80020a977de13fb1ce3573c160">rsubspan</a> () const noexcept</td></tr>
+<tr class="memdesc:aca1a6c80020a977de13fb1ce3573c160"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>span.rsubspan(3, 5)</code> removes the last 3 elements and picks 5 elements starting before those.  <br /></td></tr>
+<tr class="separator:aca1a6c80020a977de13fb1ce3573c160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:ae7622c7c7406b6b5789ad85decd05916" id="r_ae7622c7c7406b6b5789ad85decd05916"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> = std::dynamic_extent</td></tr>
+<tr class="separator:ae7622c7c7406b6b5789ad85decd05916"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T, size_t N = std::dynamic_extent&gt;<br />
@@ -190,7 +196,7 @@ class mim::Span&lt; T, N &gt;</div><p>This is a thin wrapper for <a href="https:
 <div class="line">    b = 23;</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmim_1_1Span_html_ac0bc881c34794ee0de1fd4d0d4563439"><div class="ttname"><a href="#ac0bc881c34794ee0de1fd4d0d4563439">mim::Span::Span</a></div><div class="ttdeci">constexpr Span(std::span&lt; T, N &gt; span) noexcept</div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00037">span.h:37</a></div></div>
+<div class="ttc" id="aclassmim_1_1Span_html_ac0bc881c34794ee0de1fd4d0d4563439"><div class="ttname"><a href="#ac0bc881c34794ee0de1fd4d0d4563439">mim::Span::Span</a></div><div class="ttdeci">constexpr Span(std::span&lt; T, N &gt; span) noexcept</div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00038">span.h:38</a></div></div>
 </div><!-- fragment --> </li>
 </ul>
 
@@ -240,14 +246,14 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00037">37</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00038">38</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00078">mim::Span&lt; const T, N &gt;::rsubspan()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00075">mim::Span&lt; const T, N &gt;::rsubspan()</a>.</p>
 
 </div>
 </div>
-<a id="abb1a112213c929757f33fff2a0efcff3" name="abb1a112213c929757f33fff2a0efcff3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb1a112213c929757f33fff2a0efcff3">&#9670;&#160;</a></span>Span() <span class="overload">[2/2]</span></h2>
+<a id="a54257db503b22a75e8455b0f19e95fdf" name="a54257db503b22a75e8455b0f19e95fdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54257db503b22a75e8455b0f19e95fdf">&#9670;&#160;</a></span>Span() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -266,18 +272,18 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00045">45</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00046">46</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad21bf7fcf2ef77d532df7575949bd18d" name="ad21bf7fcf2ef77d532df7575949bd18d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad21bf7fcf2ef77d532df7575949bd18d">&#9670;&#160;</a></span>explicit() <span class="overload">[1/3]</span></h2>
+<a id="a5340607712a2465bb4fc306470bed6b3" name="a5340607712a2465bb4fc306470bed6b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5340607712a2465bb4fc306470bed6b3">&#9670;&#160;</a></span>explicit() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -293,23 +299,23 @@ requires (std::is_same_v&lt;std::add_const_t&lt;typename Vec::value_type&gt;, st
         <tr>
           <td class="memname"><a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::explicit </td>
           <td>(</td>
-          <td class="paramtype">N !</td>          <td class="paramname"><span class="paramname"><em></em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::dynamic_extent</span></td><td>)</td>
+          <td class="paramtype">N !</td>          <td class="paramname"><span class="paramname"><em></em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a></span></td><td>)</td>
           <td> const &amp;</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00043">43</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00044">44</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
-<a id="a15e9711a22a1523d44ada4d9e66aa260" name="a15e9711a22a1523d44ada4d9e66aa260"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15e9711a22a1523d44ada4d9e66aa260">&#9670;&#160;</a></span>explicit() <span class="overload">[2/3]</span></h2>
+<a id="aa2e38927cbfabd6ba879e8b8dde10635" name="aa2e38927cbfabd6ba879e8b8dde10635"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e38927cbfabd6ba879e8b8dde10635">&#9670;&#160;</a></span>explicit() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,7 +328,7 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::explicit </td>
           <td>(</td>
-          <td class="paramtype">N !</td>          <td class="paramname"><span class="paramname"><em></em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::dynamic_extent</span></td><td>)</td>
+          <td class="paramtype">N !</td>          <td class="paramname"><span class="paramname"><em></em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -333,12 +339,12 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00035">35</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00036">36</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
-<a id="ac55d562947ab227142b80bbcc3f5d155" name="ac55d562947ab227142b80bbcc3f5d155"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac55d562947ab227142b80bbcc3f5d155">&#9670;&#160;</a></span>explicit() <span class="overload">[3/3]</span></h2>
+<a id="a3eac2d83fde887a220a395734424a60f" name="a3eac2d83fde887a220a395734424a60f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3eac2d83fde887a220a395734424a60f">&#9670;&#160;</a></span>explicit() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,36 +360,36 @@ requires (std::is_same_v&lt;typename Vec::value_type, T&gt;)</div>
         <tr>
           <td class="memname"><a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::explicit </td>
           <td>(</td>
-          <td class="paramtype">N !</td>          <td class="paramname"><span class="paramname"><em></em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::dynamic_extent</span></td><td>)</td>
+          <td class="paramtype">N !</td>          <td class="paramname"><span class="paramname"><em></em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a></span></td><td>)</td>
           <td> const &amp;</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00040">40</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00041">41</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
-<a id="a5eb4fe2a3927c7ae6b71b2643911d6b5" name="a5eb4fe2a3927c7ae6b71b2643911d6b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5eb4fe2a3927c7ae6b71b2643911d6b5">&#9670;&#160;</a></span>rsubspan() <span class="overload">[1/2]</span></h2>
+<a id="aca1a6c80020a977de13fb1ce3573c160" name="aca1a6c80020a977de13fb1ce3573c160"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1a6c80020a977de13fb1ce3573c160">&#9670;&#160;</a></span>rsubspan() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
 <div class="memtemplate">
-template&lt;size_t i, size_t n = std::dynamic_extent&gt; </div>
+template&lt;size_t i, size_t n = D&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::rsubspan </td>
+          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? n :(N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? N - i :<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>)&gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::rsubspan </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -391,19 +397,19 @@ template&lt;size_t i, size_t n = std::dynamic_extent&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p><code>span.rsubspan(3, 5)</code> removes the last 3 elements and while picking 5 elements onwards from there. </p>
+<p><code>span.rsubspan(3, 5)</code> removes the last 3 elements and picks 5 elements starting before those. </p>
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00078">78</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00075">75</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
-<a id="a0acd2c9692fae5577a67185de3567d6c" name="a0acd2c9692fae5577a67185de3567d6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0acd2c9692fae5577a67185de3567d6c">&#9670;&#160;</a></span>rsubspan() <span class="overload">[2/2]</span></h2>
+<a id="a95ad9bdf9ac1eb16588ad4c96fef3791" name="a95ad9bdf9ac1eb16588ad4c96fef3791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95ad9bdf9ac1eb16588ad4c96fef3791">&#9670;&#160;</a></span>rsubspan() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -414,42 +420,42 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::rsubspan </td>
+          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, <a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> &gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::rsubspan </td>
           <td>(</td>
           <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::dynamic_extent</span>&#160;) const</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a></span>&#160;) const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00071">71</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00069">69</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
-<a id="a271c0872c751e4bb075700a1d0477d4d" name="a271c0872c751e4bb075700a1d0477d4d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a271c0872c751e4bb075700a1d0477d4d">&#9670;&#160;</a></span>subspan() <span class="overload">[1/2]</span></h2>
+<a id="a596fbf8c6b7eb7fb0d8af55bba442e51" name="a596fbf8c6b7eb7fb0d8af55bba442e51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a596fbf8c6b7eb7fb0d8af55bba442e51">&#9670;&#160;</a></span>subspan() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
 <div class="memtemplate">
-template&lt;size_t i, size_t n = std::dynamic_extent&gt; </div>
+template&lt;size_t i, size_t n = D&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::subspan </td>
+          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? n :(N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? N - i :<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>)&gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::subspan </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -457,19 +463,19 @@ template&lt;size_t i, size_t n = std::dynamic_extent&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00063">63</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00061">61</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00071">mim::Span&lt; const T, N &gt;::rsubspan()</a>, and <a class="el" href="span_8h_source.html#l00063">mim::Span&lt; const T, N &gt;::subspan()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00069">mim::Span&lt; const T, N &gt;::rsubspan()</a>, and <a class="el" href="span_8h_source.html#l00061">mim::Span&lt; const T, N &gt;::subspan()</a>.</p>
 
 </div>
 </div>
-<a id="a65eba8c83ffccb00a36528712cd41d67" name="a65eba8c83ffccb00a36528712cd41d67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65eba8c83ffccb00a36528712cd41d67">&#9670;&#160;</a></span>subspan() <span class="overload">[2/2]</span></h2>
+<a id="a1061ecc23e5b0b01638e8bc04ae25877" name="a1061ecc23e5b0b01638e8bc04ae25877"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1061ecc23e5b0b01638e8bc04ae25877">&#9670;&#160;</a></span>subspan() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -480,24 +486,51 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::subspan </td>
+          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, <a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> &gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::subspan </td>
           <td>(</td>
           <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span><span class="paramdefsep"> = </span><span class="paramdefval">std::dynamic_extent</span>&#160;) const</td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a></span>&#160;) const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00057">57</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00058">58</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae7622c7c7406b6b5789ad85decd05916" name="ae7622c7c7406b6b5789ad85decd05916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7622c7c7406b6b5789ad85decd05916">&#9670;&#160;</a></span>D</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::D = std::dynamic_extent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00031">31</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>

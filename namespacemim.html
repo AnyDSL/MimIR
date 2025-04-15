@@ -372,7 +372,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1VarRewriter.html">VarRewriter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Vector.html">Vector</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a thin wrapper for <a href="https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h"><code>absl::InlinedVector&lt;T, N, / A&gt;</code></a> which in turn is a drop-in replacement for <a href="https://en.cppreference.com/w/cpp/container/vector"><code>std::vector&lt;T, A&gt;</code></a>.  <a href="classmim_1_1Vector.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a thin wrapper for <a href="https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h"><code>absl::InlinedVector&lt;T, N, A&gt;</code></a> which in turn is a drop-in replacement for <a href="https://en.cppreference.com/w/cpp/container/vector"><code>std::vector&lt;T, / A&gt;</code></a>.  <a href="classmim_1_1Vector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Vel.html">Vel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="#a56993a288f2c09ca7ec203a365dce3ad">Join</a> <b>value</b>.  <a href="classmim_1_1Vel.html#details">More...</a><br /></td></tr>
@@ -535,6 +535,10 @@ Functions</h2></td></tr>
 <tr class="separator:a5f09589bc08bb2f715056df72aae8b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60ee93398f76269a406c841b2bb2c306" id="r_a60ee93398f76269a406c841b2bb2c306"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60ee93398f76269a406c841b2bb2c306">optimize</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;)</td></tr>
 <tr class="separator:a60ee93398f76269a406c841b2bb2c306"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a948cf1e41b7cda00d22f8ef6953d9be6" id="r_a948cf1e41b7cda00d22f8ef6953d9be6"><td class="memTemplParams" colspan="2">template&lt;size_t I, class T, size_t N&gt; <br />
+requires (N != std::dynamic_extent)</td></tr>
+<tr class="memitem:a948cf1e41b7cda00d22f8ef6953d9be6"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a948cf1e41b7cda00d22f8ef6953d9be6">get</a> (<a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, N &gt; span) noexcept</td></tr>
+<tr class="separator:a948cf1e41b7cda00d22f8ef6953d9be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba1dd89e9049fc3fd5f807e098d95cd9" id="r_aba1dd89e9049fc3fd5f807e098d95cd9"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba1dd89e9049fc3fd5f807e098d95cd9">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="memdesc:aba1dd89e9049fc3fd5f807e098d95cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This will stream <code class="param">def</code> as an operand.  <br /></td></tr>
 <tr class="separator:aba1dd89e9049fc3fd5f807e098d95cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -837,17 +841,18 @@ Functions</h2></td></tr>
 <tr class="memdesc:a217db174daa31eb9e4001c60c099a96f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes <code>emplace</code> on <code class="param">container</code>, asserts that insertion actually happened, and returns the iterator.  <br /></td></tr>
 <tr class="separator:a217db174daa31eb9e4001c60c099a96f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">erase</div></td></tr>
-<tr class="memitem:a570c39f37bbc788928a66903c34cba8b" id="r_a570c39f37bbc788928a66903c34cba8b"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N, class A, class U&gt; </td></tr>
-<tr class="memitem:a570c39f37bbc788928a66903c34cba8b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a570c39f37bbc788928a66903c34cba8b">erase</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, const U &amp;value)</td></tr>
-<tr class="separator:a570c39f37bbc788928a66903c34cba8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d920a331ef2e94946140376ab811cd2" id="r_a5d920a331ef2e94946140376ab811cd2"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N, class A, class Pred&gt; </td></tr>
-<tr class="memitem:a5d920a331ef2e94946140376ab811cd2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5d920a331ef2e94946140376ab811cd2">erase_if</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, Pred pred)</td></tr>
-<tr class="separator:a5d920a331ef2e94946140376ab811cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbff49ce5bff270e09db6d916fa58c3a" id="r_abbff49ce5bff270e09db6d916fa58c3a"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N, class A, class U&gt; </td></tr>
+<tr class="memitem:abbff49ce5bff270e09db6d916fa58c3a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abbff49ce5bff270e09db6d916fa58c3a">erase</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, const U &amp;value) noexcept</td></tr>
+<tr class="separator:abbff49ce5bff270e09db6d916fa58c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3226816eeebc2105ed68aac1c8f8a932" id="r_a3226816eeebc2105ed68aac1c8f8a932"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N, class A, class Pred&gt; </td></tr>
+<tr class="memitem:a3226816eeebc2105ed68aac1c8f8a932"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3226816eeebc2105ed68aac1c8f8a932">erase_if</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, Pred pred) noexcept</td></tr>
+<tr class="separator:a3226816eeebc2105ed68aac1c8f8a932"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a39efaf0b2304223993b837cc3e0bd605" id="r_a39efaf0b2304223993b837cc3e0bd605"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a39efaf0b2304223993b837cc3e0bd605"><td class="memTemplItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a39efaf0b2304223993b837cc3e0bd605">Default_Inlined_Size</a> = std::max((size_t)1, 4 * sizeof(size_t) / sizeof(T))</td></tr>
+<tr class="memdesc:a39efaf0b2304223993b837cc3e0bd605"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Use.html" title="const Def*erences a user.">Use</a> up to 4 words (i.e., 4 * sizeof(size_t)) of inlined storage, rounded up.  <br /></td></tr>
 <tr class="separator:a39efaf0b2304223993b837cc3e0bd605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Enums that classify certain aspects of Defs.</h2></td></tr>
@@ -1970,7 +1975,7 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00091">91</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00088">88</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
@@ -2413,8 +2418,8 @@ template&lt;class D, class S&gt; </div>
 
 </div>
 </div>
-<a id="a570c39f37bbc788928a66903c34cba8b" name="a570c39f37bbc788928a66903c34cba8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a570c39f37bbc788928a66903c34cba8b">&#9670;&#160;</a></span>erase()</h2>
+<a id="abbff49ce5bff270e09db6d916fa58c3a" name="abbff49ce5bff270e09db6d916fa58c3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbff49ce5bff270e09db6d916fa58c3a">&#9670;&#160;</a></span>erase()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2437,19 +2442,19 @@ template&lt;class T, size_t N, class A, class U&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00060">60</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00068">68</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="regex_2normalizers_8cpp_source.html#l00166">mim::plug::regex::normalize_disj()</a>.</p>
 
 </div>
 </div>
-<a id="a5d920a331ef2e94946140376ab811cd2" name="a5d920a331ef2e94946140376ab811cd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d920a331ef2e94946140376ab811cd2">&#9670;&#160;</a></span>erase_if()</h2>
+<a id="a3226816eeebc2105ed68aac1c8f8a932" name="a3226816eeebc2105ed68aac1c8f8a932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3226816eeebc2105ed68aac1c8f8a932">&#9670;&#160;</a></span>erase_if()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2472,12 +2477,12 @@ template&lt;class T, size_t N, class A, class Pred&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00068">68</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00076">76</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
@@ -2852,6 +2857,38 @@ template&lt;class Id&gt; </div>
 <p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="axiom_8h_source.html#l00112">match()</a>.</p>
+
+</div>
+</div>
+<a id="a948cf1e41b7cda00d22f8ef6953d9be6" name="a948cf1e41b7cda00d22f8ef6953d9be6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a948cf1e41b7cda00d22f8ef6953d9be6">&#9670;&#160;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t I, class T, size_t N&gt; <br />
+requires (N != std::dynamic_extent)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) mim::get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, N &gt;</td>          <td class="paramname"><span class="paramname"><em>span</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00102">102</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00313">mim::ast::ExtractExpr::emit_()</a>, <a class="el" href="clos_8cpp_source.html#l00021">mim_get_plugin()</a>, <a class="el" href="def_8cpp_source.html#l00121">mim::Lit::rebuild_()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>, and <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00059">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>.</p>
 
 </div>
 </div>
@@ -4762,8 +4799,6 @@ template&lt;class I, class E&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="vector_8h_source.html#l00039">mim::Vector&lt; const Def * &gt;::span()</a>, <a class="el" href="vector_8h_source.html#l00040">mim::Vector&lt; const Def * &gt;::span()</a>, and <a class="el" href="vector_8h_source.html#l00041">mim::Vector&lt; const Def * &gt;::view()</a>.</p>
-
 </div>
 </div>
 <a id="a43464cc40a4901bf694a773c7bae4da7" name="a43464cc40a4901bf694a773c7bae4da7"></a>
@@ -5040,7 +5075,7 @@ template&lt;class I, class A = std::allocator&lt;typename std::iterator_traits&l
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="vector_8h_source.html#l00009">Default_Inlined_Size</a>.</p>
+<p class="reference">References <a class="el" href="vector_8h_source.html#l00010">Default_Inlined_Size</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00515">mim::Sets&lt; Def &gt;::Set&lt; Def &gt;::erase()</a>, <a class="el" href="sets_8h_source.html#l00481">mim::Sets&lt; Def &gt;::Set&lt; Def &gt;::merge()</a>, and <a class="el" href="def_8h_source.html#l00359">mim::Def::projs()</a>.</p>
 
@@ -5125,7 +5160,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00009">9</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p><a class="el" href="classmim_1_1Use.html" title="const Def*erences a user.">Use</a> up to 4 words (i.e., 4 * sizeof(size_t)) of inlined storage, rounded up. </p>
+
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00010">10</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="#afca0bb4c47e185182e4fc7ad6bcec3a1">Vector()</a>.</p>
 

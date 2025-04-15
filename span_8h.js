@@ -7,7 +7,7 @@ var span_8h =
     ] ],
     [ "mim::Vectorlike", "conceptmim_1_1Vectorlike.html", null ],
     [ "mim::View", "namespacemim.html#a4d6e32c8985b06c92d46bf1c5fa7491a", null ],
-    [ "std::get", "namespacestd.html#ac66b922e36422ccb6917ecff3d3389f4", null ],
+    [ "mim::get", "namespacemim.html#a948cf1e41b7cda00d22f8ef6953d9be6", null ],
     [ "mim::Span", "namespacemim.html#a6b2c52180e5a69768789369c192b19ef", null ],
     [ "mim::Span", "namespacemim.html#a38afccb4d40096ccf7481ea6b3d16927", null ],
     [ "mim::Span", "namespacemim.html#a17d68e673f456cd93e25634e1354c150", null ],

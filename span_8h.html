@@ -121,7 +121,8 @@ $(function(){initNavTree('span_8h.html',''); initResizable(true); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#concepts">Concepts</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">span.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -170,6 +171,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a948cf1e41b7cda00d22f8ef6953d9be6" id="r_a948cf1e41b7cda00d22f8ef6953d9be6"><td class="memTemplParams" colspan="2">template&lt;size_t I, class T, size_t N&gt; <br />
+requires (N != std::dynamic_extent)</td></tr>
+<tr class="memitem:a948cf1e41b7cda00d22f8ef6953d9be6"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a948cf1e41b7cda00d22f8ef6953d9be6">mim::get</a> (<a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, N &gt; span) noexcept</td></tr>
+<tr class="separator:a948cf1e41b7cda00d22f8ef6953d9be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Deduction Guides</div></td></tr>
 <tr class="memitem:a17d68e673f456cd93e25634e1354c150" id="r_a17d68e673f456cd93e25634e1354c150"><td class="memTemplParams" colspan="2">template&lt;class I, class E&gt; </td></tr>
 <tr class="memitem:a17d68e673f456cd93e25634e1354c150"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a17d68e673f456cd93e25634e1354c150">mim::Span</a> (I, E) -&gt; Span&lt; std::remove_reference_t&lt; std::iter_reference_t&lt; I &gt; &gt; &gt;</td></tr>
@@ -192,10 +197,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a38afccb4d40096ccf7481ea6b3d16927" id="r_a38afccb4d40096ccf7481ea6b3d16927"><td class="memTemplParams" colspan="2">template&lt;Vectorlike Vec&gt; </td></tr>
 <tr class="memitem:a38afccb4d40096ccf7481ea6b3d16927"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a38afccb4d40096ccf7481ea6b3d16927">mim::Span</a> (const Vec &amp;) -&gt; Span&lt; const typename Vec::value_type, std::dynamic_extent &gt;</td></tr>
 <tr class="separator:a38afccb4d40096ccf7481ea6b3d16927"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Structured Binding Support for Span</div></td></tr>
-<tr class="memitem:ac66b922e36422ccb6917ecff3d3389f4" id="r_ac66b922e36422ccb6917ecff3d3389f4"><td class="memTemplParams" colspan="2">template&lt;size_t I, class T, size_t N&gt; </td></tr>
-<tr class="memitem:ac66b922e36422ccb6917ecff3d3389f4"><td class="memTemplItemLeft" align="right" valign="top">constexpr decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestd.html#ac66b922e36422ccb6917ecff3d3389f4">std::get</a> (<a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt; span)</td></tr>
-<tr class="separator:ac66b922e36422ccb6917ecff3d3389f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4" id="structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4"></a>
@@ -210,8 +211,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <div class="textblock"><div class="compoundTemplParams">template&lt;size_t I, class T, size_t N&gt;<br />
+requires (N != std::dynamic_extent)<br />
 struct std::tuple_element&lt; I, mim::Span&lt; T, N &gt; &gt;</div>
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00111">111</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00116">116</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">

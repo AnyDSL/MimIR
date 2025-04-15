@@ -142,7 +142,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Vector.html">mim::Vector&lt; T, N, A &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a thin wrapper for <a href="https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h"><code>absl::InlinedVector&lt;T, N, / A&gt;</code></a> which in turn is a drop-in replacement for <a href="https://en.cppreference.com/w/cpp/container/vector"><code>std::vector&lt;T, A&gt;</code></a>.  <a href="classmim_1_1Vector.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a thin wrapper for <a href="https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h"><code>absl::InlinedVector&lt;T, N, A&gt;</code></a> which in turn is a drop-in replacement for <a href="https://en.cppreference.com/w/cpp/container/vector"><code>std::vector&lt;T, / A&gt;</code></a>.  <a href="classmim_1_1Vector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -157,17 +157,18 @@ Functions</h2></td></tr>
 <tr class="memitem:afca0bb4c47e185182e4fc7ad6bcec3a1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">mim::Vector</a> (I, I, A=A()) -&gt; Vector&lt; typename std::iterator_traits&lt; I &gt;::value_type, <a class="el" href="namespacemim.html#a39efaf0b2304223993b837cc3e0bd605">Default_Inlined_Size</a>&lt; typename std::iterator_traits&lt; I &gt;::value_type &gt;, A &gt;</td></tr>
 <tr class="separator:afca0bb4c47e185182e4fc7ad6bcec3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">erase</div></td></tr>
-<tr class="memitem:a570c39f37bbc788928a66903c34cba8b" id="r_a570c39f37bbc788928a66903c34cba8b"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N, class A, class U&gt; </td></tr>
-<tr class="memitem:a570c39f37bbc788928a66903c34cba8b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a570c39f37bbc788928a66903c34cba8b">mim::erase</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, const U &amp;value)</td></tr>
-<tr class="separator:a570c39f37bbc788928a66903c34cba8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d920a331ef2e94946140376ab811cd2" id="r_a5d920a331ef2e94946140376ab811cd2"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N, class A, class Pred&gt; </td></tr>
-<tr class="memitem:a5d920a331ef2e94946140376ab811cd2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a5d920a331ef2e94946140376ab811cd2">mim::erase_if</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, Pred pred)</td></tr>
-<tr class="separator:a5d920a331ef2e94946140376ab811cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbff49ce5bff270e09db6d916fa58c3a" id="r_abbff49ce5bff270e09db6d916fa58c3a"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N, class A, class U&gt; </td></tr>
+<tr class="memitem:abbff49ce5bff270e09db6d916fa58c3a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#abbff49ce5bff270e09db6d916fa58c3a">mim::erase</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, const U &amp;value) noexcept</td></tr>
+<tr class="separator:abbff49ce5bff270e09db6d916fa58c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3226816eeebc2105ed68aac1c8f8a932" id="r_a3226816eeebc2105ed68aac1c8f8a932"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N, class A, class Pred&gt; </td></tr>
+<tr class="memitem:a3226816eeebc2105ed68aac1c8f8a932"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a3226816eeebc2105ed68aac1c8f8a932">mim::erase_if</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, Pred pred) noexcept</td></tr>
+<tr class="separator:a3226816eeebc2105ed68aac1c8f8a932"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a39efaf0b2304223993b837cc3e0bd605" id="r_a39efaf0b2304223993b837cc3e0bd605"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a39efaf0b2304223993b837cc3e0bd605"><td class="memTemplItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a39efaf0b2304223993b837cc3e0bd605">mim::Default_Inlined_Size</a> = std::max((size_t)1, 4 * sizeof(size_t) / sizeof(T))</td></tr>
+<tr class="memdesc:a39efaf0b2304223993b837cc3e0bd605"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Use.html" title="const Def*erences a user.">Use</a> up to 4 words (i.e., 4 * sizeof(size_t)) of inlined storage, rounded up.  <br /></td></tr>
 <tr class="separator:a39efaf0b2304223993b837cc3e0bd605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

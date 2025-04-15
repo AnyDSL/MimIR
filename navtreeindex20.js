@@ -1,5 +1,8 @@
 var NAVTREEINDEX20 =
 {
+"namespacemim_1_1plug_1_1matrix.html#aed39265d1e8f9976a8736695ee834126":[3,0,1,4,8,24],
+"namespacemim_1_1plug_1_1matrix.html#af206cc10642f27ab0e14c586d512f3d6":[3,0,1,4,8,9],
+"namespacemim_1_1plug_1_1matrix.html#af3d33c72062b1db8a1b997ec650a8f3d":[3,0,1,4,8,4],
 "namespacemim_1_1plug_1_1matrix.html#af6839dbbb5d2ef291479523aafd649d4":[3,0,1,4,8,11],
 "namespacemim_1_1plug_1_1mem.html":[3,0,1,4,9],
 "namespacemim_1_1plug_1_1mem.html#a029144aa6e194281070cc4406fe2268e":[3,0,1,4,9,15],
@@ -127,7 +130,6 @@ var NAVTREEINDEX20 =
 "namespaces.html":[3,0],
 "namespacestd.html":[3,0,2],
 "namespacestd.html#a6aa6d0b720bc0eed0c69a3c8b6c75bb8":[6,0,2,1,5,10,2,0],
-"namespacestd.html#ac66b922e36422ccb6917ecff3d3389f4":[3,0,2,2],
 "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4":[6,0,2,1,5,10,2],
 "nest_8cpp.html":[6,0,3,1,14],
 "nest_8cpp_source.html":[6,0,3,1,14],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "rewrite_8h_source.html":[6,0,2,1,16],
 "scalarize_8cpp.html":[6,0,3,1,2,9],
 "scalarize_8cpp_source.html":[6,0,3,1,2,9],
-"scalarize_8h.html":[6,0,2,1,2,8],
-"scalarize_8h_source.html":[6,0,2,1,2,8],
-"schedule_8cpp.html":[6,0,3,1,17]
+"scalarize_8h.html":[6,0,2,1,2,8]
 };
