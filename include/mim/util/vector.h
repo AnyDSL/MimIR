@@ -23,13 +23,19 @@ public:
     ///@{
     using Base::Base;
     template<class F>
-    constexpr explicit Vector(size_t size, F&& f) requires(std::is_invocable_r_v<T, F, size_t>)
+    constexpr explicit Vector(size_t size, F&& f) noexcept(std::is_nothrow_invocable_r_v<T, F, size_t>
+                                                           && std::is_nothrow_assignable_v<T&, T>)
+        requires(std::is_invocable_r_v<T, F, size_t>)
         : Base(size) {
         for (size_t i = 0; i != size; ++i) (*this)[i] = std::invoke(f, i);
     }
+
     template<std::ranges::forward_range R, class F>
-    constexpr explicit Vector(const R& range, F&& f) noexcept
-        requires(std::is_invocable_r_v<T, F, decltype(*std::ranges::begin(range))>)
+    constexpr explicit Vector(R&& range,
+                              F&& f) noexcept(std::is_nothrow_invocable_r_v<T, F, decltype(*std::ranges::begin(range))>
+                                              && std::is_nothrow_assignable_v<T&, T>)
+        requires(std::is_invocable_r_v<T, F, decltype(*std::ranges::begin(range))>
+                 && !std::is_same_v<std::decay_t<R>, Vector>)
         : Base(std::ranges::distance(range)) {
         auto ri = std::ranges::begin(range);
         for (auto& elem : *this) elem = std::invoke(f, *ri++);
