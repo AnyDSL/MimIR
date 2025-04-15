@@ -27,40 +27,38 @@ concept Vectorlike = requires(Vec vec) {
 /// ```
 template<class T, size_t N = std::dynamic_extent> class Span : public std::span<T, N> {
 public:
-    using Base = std::span<T, N>;
+    using Base              = std::span<T, N>;
+    constexpr static auto D = std::dynamic_extent;
 
     /// @name Constructors
     ///@{
     using Base::Base;
-    explicit(N != std::dynamic_extent) constexpr Span(std::initializer_list<T> init) noexcept
-        : Base(const_cast<T*>(std::begin(init)), std::ranges::distance(init)) {}
+    explicit(N != D) constexpr Span(std::initializer_list<T> init) noexcept
+        : Base(std::begin(init), std::ranges::distance(init)) {}
     constexpr Span(std::span<T, N> span) noexcept
         : Base(span) {}
     template<Vectorlike Vec> requires(std::is_same_v<typename Vec::value_type, T>)
-    explicit(N != std::dynamic_extent) constexpr Span(Vec& vec)
-        : Base(const_cast<T*>(vec.data()), vec.size()) {}
+    explicit(N != D) constexpr Span(Vec& vec) noexcept(noexcept(vec.data()) && noexcept(vec.size()))
+        : Base(vec.data(), vec.size()) {}
     template<Vectorlike Vec> requires(std::is_same_v<std::add_const_t<typename Vec::value_type>, std::add_const_t<T>>)
-    explicit(N != std::dynamic_extent) constexpr Span(const Vec& vec)
+    explicit(N != D) constexpr Span(const Vec& vec) noexcept(noexcept(vec.data()) && noexcept(vec.size()))
         : Base(const_cast<T*>(vec.data()), vec.size()) {}
-    constexpr explicit Span(typename Base::pointer p)
+    constexpr explicit Span(typename Base::pointer p) noexcept
         : Base(p, N) {
-        static_assert(N != std::dynamic_extent);
+        static_assert(N != D);
     }
     ///@}
 
     /// @name subspan
-    /// Wrappers for [`std::span::subspan`](https://en.cppreference.com/w/cpp/container/span/subspan) that return a
+    /// Wrappers for `std::span::subspan` that return a
     /// `mim::Span`. Example: If `span` points to `0, 1, 2, 3, 4, 5, 6, 7, 8, 9`, then
-    /// * `span<2, 5>()` and `span(2, 5)` will point to `2, 3, 4, 5, 6`.
-    /// * `span<2>()` and `span(2)` will point to `2, 3, 4, 5, 6, 7, 8, 9`.
+    /// * `span.subspan<2, 5>()` and `span.subspan(2, 5)` will point to `2, 3, 4, 5, 6`.
+    /// * `span.subspan<2>()` and `span.subspan(2)` will point to `2, 3, 4, 5, 6, 7, 8, 9`.
     ///@{
-    constexpr Span<T, std::dynamic_extent> subspan(size_t i, size_t n = std::dynamic_extent) const {
-        return Base::subspan(i, n);
-    }
+    [[nodiscard]] constexpr Span<T, D> subspan(size_t i, size_t n = D) const noexcept { return Base::subspan(i, n); }
 
-    template<size_t i, size_t n = std::dynamic_extent>
-    constexpr Span<T, n != std::dynamic_extent ? n : (N != std::dynamic_extent ? N - i : std::dynamic_extent)>
-    subspan() const {
+    template<size_t i, size_t n = D>
+    [[nodiscard]] constexpr Span<T, n != D ? n : (N != D ? N - i : D)> subspan() const noexcept {
         return Base::template subspan<i, n>();
     }
     ///@}
@@ -68,20 +66,19 @@ public:
     /// @name rsubspan
     /// Similar to Span::subspan but in *reverse*:
     ///@{
-    constexpr Span<T, std::dynamic_extent> rsubspan(size_t i, size_t n = std::dynamic_extent) const {
-        return n != std::dynamic_extent ? subspan(Base::size() - i - n, n) : subspan(0, Base::size() - i);
+    [[nodiscard]] constexpr Span<T, D> rsubspan(size_t i, size_t n = D) const noexcept {
+        return n != D ? subspan(Base::size() - i - n, n) : subspan(0, Base::size() - i);
     }
 
-    /// `span.rsubspan(3, 5)` removes the last 3 elements and while picking 5 elements onwards from there.
-    template<size_t i, size_t n = std::dynamic_extent>
-    constexpr Span<T, n != std::dynamic_extent ? n : (N != std::dynamic_extent ? N - i : std::dynamic_extent)>
-    rsubspan() const {
-        if constexpr (n != std::dynamic_extent)
+    /// `span.rsubspan(3, 5)` removes the last 3 elements and picks 5 elements starting before those.
+    template<size_t i, size_t n = D>
+    [[nodiscard]] constexpr Span<T, n != D ? n : (N != D ? N - i : D)> rsubspan() const noexcept {
+        if constexpr (n != D)
             return Span<T, n>(Base::data() + Base::size() - i - n);
-        else if constexpr (N != std::dynamic_extent)
+        else if constexpr (N != D)
             return Span<T, N - i>(Base::data());
         else
-            return Span<T, std::dynamic_extent>(Base::data(), Base::size() - i);
+            return Span<T, D>(Base::data(), Base::size() - i);
     }
     ///@}
 };
@@ -101,17 +98,23 @@ template<Vectorlike Vec> Span(Vec&) -> Span<typename Vec::value_type, std::dynam
 template<Vectorlike Vec> Span(const Vec&) -> Span<const typename Vec::value_type, std::dynamic_extent>;
 ///@}
 
+template<size_t I, class T, size_t N> requires(N != std::dynamic_extent)
+constexpr decltype(auto) get(Span<T, N> span) noexcept {
+    static_assert(I < N, "index I out of bound N");
+    return span[I];
+}
+
 } // namespace mim
 
 namespace std {
 /// @name Structured Binding Support for Span
 ///@{
-template<class T, size_t N> struct tuple_size<mim::Span<T, N>> : std::integral_constant<size_t, N> {};
+template<class T, size_t N> requires(N != std::dynamic_extent)
+struct tuple_size<mim::Span<T, N>> : std::integral_constant<size_t, N> {};
 
-template<size_t I, class T, size_t N> struct tuple_element<I, mim::Span<T, N>> {
+template<size_t I, class T, size_t N> requires(N != std::dynamic_extent)
+struct tuple_element<I, mim::Span<T, N>> {
     using type = typename mim::Span<T, N>::reference;
 };
-
-template<size_t I, class T, size_t N> constexpr decltype(auto) get(mim::Span<T, N> span) { return (span[I]); }
 ///@}
 } // namespace std
