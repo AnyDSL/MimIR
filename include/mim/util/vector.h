@@ -6,12 +6,14 @@
 
 namespace mim {
 
+/// Use up to 4 words (i.e., 4 * sizeof(size_t)) of inlined storage, rounded up.
 template<class T> static constexpr size_t Default_Inlined_Size = std::max((size_t)1, 4 * sizeof(size_t) / sizeof(T));
 
-/// This is a thin wrapper for [`absl::InlinedVector<T, N,
-/// A>`](https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h) which in turn is a drop-in
-/// replacement for [`std::vector<T, A>`](https://en.cppreference.com/w/cpp/container/vector). In addition, there are
-/// generator-like/lambda-based constructors and conversions to Span available.
+/// This is a thin wrapper for
+/// [`absl::InlinedVector<T, N, A>`](https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h)
+/// which in turn is a drop-in replacement for [`std::vector<T,
+/// A>`](https://en.cppreference.com/w/cpp/container/vector). In addition, there are generator-like/lambda-based
+/// constructors and conversions to Span available.
 template<class T, size_t N = Default_Inlined_Size<T>, class A = std::allocator<T>>
 class Vector : public absl::InlinedVector<T, N, A> {
 public:
@@ -26,7 +28,7 @@ public:
         for (size_t i = 0; i != size; ++i) (*this)[i] = std::invoke(f, i);
     }
     template<std::ranges::forward_range R, class F>
-    constexpr explicit Vector(const R& range, F&& f)
+    constexpr explicit Vector(const R& range, F&& f) noexcept
         requires(std::is_invocable_r_v<T, F, decltype(*std::ranges::begin(range))>)
         : Base(std::ranges::distance(range)) {
         auto ri = std::ranges::begin(range);
@@ -36,9 +38,9 @@ public:
 
     /// @name Span
     ///@{
-    Span<T> span() { return Span(Base::data(), Base::size()); }
-    Span<const T> span() const { return Span(Base::data(), Base::size()); }
-    Span<const T> view() const { return Span(Base::data(), Base::size()); }
+    constexpr auto span() noexcept { return Span{Base::data(), Base::size()}; }
+    constexpr auto span() const noexcept { return Span{Base::data(), Base::size()}; }
+    constexpr auto view() const noexcept { return span(); }
     ///@}
 
     friend void swap(Vector& v1, Vector& v2) noexcept(noexcept(v1.swap(v2))) { v1.swap(v2); }
@@ -57,7 +59,7 @@ Vector(I, I, A = A()) -> Vector<typename std::iterator_traits<I>::value_type,
 /// @name erase
 ///@{
 template<class T, size_t N, class A, class U>
-constexpr typename Vector<T, N, A>::size_type erase(Vector<T, N, A>& c, const U& value) {
+typename Vector<T, N, A>::size_type erase(Vector<T, N, A>& c, const U& value) noexcept {
     auto it = std::remove(c.begin(), c.end(), value);
     auto r  = c.end() - it;
     c.erase(it, c.end());
@@ -65,7 +67,7 @@ constexpr typename Vector<T, N, A>::size_type erase(Vector<T, N, A>& c, const U&
 }
 
 template<class T, size_t N, class A, class Pred>
-constexpr typename Vector<T, N, A>::size_type erase_if(Vector<T, N, A>& c, Pred pred) {
+typename Vector<T, N, A>::size_type erase_if(Vector<T, N, A>& c, Pred pred) noexcept {
     auto it = std::remove_if(c.begin(), c.end(), pred);
     auto r  = c.end() - it;
     c.erase(it, c.end());
