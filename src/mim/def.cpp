@@ -162,10 +162,10 @@ template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , const Def*  ) { fe::un
  */
 
 #ifndef DOXYGEN
-template const Def*            TExt<false>  ::rebuild_(World&, const Def*, Defs) const;
-template const Def*            TExt<true >  ::rebuild_(World&, const Def*, Defs) const;
-template const Def*            TBound<false>::rebuild_(World&, const Def*, Defs) const;
-template const Def*            TBound<true >::rebuild_(World&, const Def*, Defs) const;
+template const Def* TExt<false>  ::rebuild_(World&, const Def*, Defs) const;
+template const Def* TExt<true >  ::rebuild_(World&, const Def*, Defs) const;
+template const Def* TBound<false>::rebuild_(World&, const Def*, Defs) const;
+template const Def* TBound<true >::rebuild_(World&, const Def*, Defs) const;
 template TBound<false>* TBound<false>::stub_(World&, const Def*);
 template TBound<true >* TBound<true >::stub_(World&, const Def*);
 template TExt<false>*   TExt<false>  ::stub_(World&, const Def*);
