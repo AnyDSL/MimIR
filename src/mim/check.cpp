@@ -97,8 +97,8 @@ const Def* Checker::fail() {
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
-    d1 = d1 ? Hole::find(d1) : nullptr;
-    d2 = d2 ? Hole::find(d2) : nullptr;
+    d1 = Hole::find(d1);
+    d2 = Hole::find(d2);
 
     if (!d1 && !d2) return true;
     if (!d1 || !d2) return fail<mode>();
@@ -153,7 +153,7 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
 }
 
 template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
-    if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
+    if (d1->type() && d2->type() && !alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
     if (mode == Test && (d1->isa_mut<Hole>() || d2->isa_mut<Hole>())) return fail<mode>();
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
