@@ -310,9 +310,9 @@ TEST(FV, fixed_point) {
     auto fvt = t->free_vars();
     auto fvf = f->free_vars();
 
-    auto vt_vf      = w.vars().create({vt, vf});
-    auto cond_vt    = w.vars().create({vt, cond});
-    auto cond_vt_vf = w.vars().insert(vt_vf, cond);
+    auto vt_vf      = Vars({vt, vf});
+    auto cond_vt    = Vars({vt, cond});
+    auto cond_vt_vf = vt_vf.insert(cond);
 
     EXPECT_EQ(fva, vt_vf);
     EXPECT_EQ(fvb, cond_vt_vf);

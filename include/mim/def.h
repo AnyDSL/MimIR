@@ -5,6 +5,7 @@
 #include <fe/assert.h>
 #include <fe/cast.h>
 #include <fe/enum.h>
+#include <immer/lock/no_lock_policy.hpp>
 #include <immer/set.hpp>
 #include <immer/set_transient.hpp>
 
@@ -51,13 +52,15 @@ using Defs                      = View<const Def*>;
 using DefVec                    = Vector<const Def*>;
 ///@}
 
+using policy = immer::memory_policy<immer::default_heap_policy, immer::unsafe_refcount_policy, immer::no_lock_policy>;
+
 /// @name Def (Mutable)
 /// GIDSet / GIDMap keyed by Def::gid of `Def*`.
 ///@{
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
-// using Muts                      = Sets<Def>::Set;
+using Muts                      = immer::set<Def*, GIDHash<Def*>, GIDEq<Def*>, policy>;
 ///@}
 
 /// @name Var
@@ -66,24 +69,8 @@ using Mut2Mut                   = MutMap<Def*>;
 template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
+using Vars                      = immer::set<const Var*, GIDHash<const Var*>, GIDEq<const Var*>, policy>;
 ///@}
-
-// struct Allocator {
-//     static fe::Arena* arena;
-//     static void* allocate(std::size_t s) { return arena->allocate(s); }
-//     static void deallocate(void*) noexcept {}
-// };
-//
-// using policy = immer::memory_policy<immer::heap_policy<Allocator>,
-//                                     immer::no_refcount_policy,
-//                                     immer::no_lock_policy,
-//                                     immer::gc_transience_policy,
-//                                     true>;
-
-// clang-format off
-using Muts = immer::set<      Def*, GIDHash<      Def*>, GIDEq<      Def*>>;
-using Vars = immer::set<const Var*, GIDHash<const Var*>, GIDEq<const Var*>>;
-// clang-format on
 
 using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*);
 
