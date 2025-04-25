@@ -508,15 +508,6 @@ public:
     // clang-format on
     ///@}
 
-    /// @name Vars & Muts
-    /// Manges sets of Vars and Muts.
-    ///@{
-    [[nodiscard]] auto& vars() { return move_.vars; }
-    [[nodiscard]] auto& muts() { return move_.muts; }
-    [[nodiscard]] const auto& vars() const { return move_.vars; }
-    [[nodiscard]] const auto& muts() const { return move_.muts; }
-    ///@}
-
     /// @name dump/log
     ///@{
     Log& log();
@@ -636,11 +627,9 @@ private:
     struct Move {
         absl::btree_map<flags_t, const Def*> flags2annex;
         absl::btree_map<Sym, Def*> sym2external;
-        fe::Arena arena;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
-        Sets<Def> muts;
-        Sets<const Var> vars;
         DefDefMap<DefVec> cache;
+        fe::Arena arena;
 
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;
@@ -649,8 +638,6 @@ private:
             swap(m1.sym2external, m2.sym2external);
             swap(m1.arena,        m2.arena);
             swap(m1.defs,         m2.defs);
-            swap(m1.vars,         m2.vars);
-            swap(m1.muts,         m2.muts);
             swap(m1.cache,        m2.cache);
             // clang-format on
         }

@@ -100,7 +100,8 @@ install(
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 install(
-    FILES "${PROJECT_SOURCE_DIR}/external/half/include/half.hpp"
+    FILES
+        "${PROJECT_SOURCE_DIR}/external/half/include/half.hpp"
     DESTINATION include
 )
 install(

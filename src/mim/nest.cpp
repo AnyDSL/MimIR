@@ -43,7 +43,7 @@ void Nest::populate() {
                 if (curr_node->level() < local_mut->free_vars().size()) {
                     for (auto node = curr_node;; node = node->parent_) {
                         if (auto var = node->mut()->has_var()) {
-                            if (local_mut->free_vars().contains(var)) {
+                            if (local_mut->free_vars().find(var)) {
                                 queue.push(make_node(local_mut, node));
                                 break;
                             }
@@ -70,7 +70,7 @@ Nest::Node* Nest::make_node(Def* mut, Node* parent) {
     auto res  = node.get();
     mut2node_.emplace(mut, std::move(node));
     if (mut) {
-        if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
+        if (auto var = mut->has_var()) vars_ = vars_.insert(var);
     }
     return res;
 }

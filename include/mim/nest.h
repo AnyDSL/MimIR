@@ -5,6 +5,8 @@
 
 #include "mim/def.h"
 
+#include "mim/util/link_cut_tree.h"
+
 namespace mim {
 
 /// Builds a nesting tree of all *immutables*/binders.
@@ -128,7 +130,7 @@ public:
     World& world() const { return world_; }
     const Node* root() const { return root_; }
     Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
-    bool contains(const Def* def) const { return vars().has_intersection(def->free_vars()); }
+    bool contains(const Def* def) const { return has_intersection(vars(), def->free_vars()); }
     bool is_recursive() const { return sccs().root()->is_recursive(); }
     ///@}
 

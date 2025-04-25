@@ -1,5 +1,6 @@
 #pragma once
 
+#include "mim/def.h"
 #include "mim/world.h"
 
 namespace mim {
@@ -32,19 +33,19 @@ class VarRewriter : public Rewriter {
 public:
     VarRewriter(const Var* var, const Def* arg)
         : Rewriter(arg->world())
-        , vars_(var ? Vars(var) : Vars()) {
+        , vars_(var ? Vars({var}) : Vars()) {
         if (var) map(var, arg);
     }
 
     const Def* rewrite_imm(const Def* imm) override {
         if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
-        if (imm->has_dep(Dep::Hole) || vars_.has_intersection(imm->free_vars())) return Rewriter::rewrite_imm(imm);
+        if (imm->has_dep(Dep::Hole) || has_intersection(vars_, imm->free_vars())) return Rewriter::rewrite_imm(imm);
         return imm;
     }
 
     const Def* rewrite_mut(Def* mut) override {
-        if (vars_.has_intersection(mut->free_vars())) {
-            if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
+        if (has_intersection(vars_, mut->free_vars())) {
+            if (auto var = mut->has_var()) vars_ = vars_.insert(var);
             return Rewriter::rewrite_mut(mut);
         }
         return map(mut, mut);

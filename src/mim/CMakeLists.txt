@@ -60,6 +60,7 @@ configure_file(
 target_include_directories(libmim
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/half/include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/immer>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for config.h
         $<INSTALL_INTERFACE:include>

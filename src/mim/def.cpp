@@ -13,9 +13,6 @@ using namespace std::literals;
 
 namespace mim {
 
-template void Sets<const Var>::dot();
-template void Sets<Def>::dot();
-
 /*
  * constructors
  */
@@ -38,7 +35,7 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
     } else if (auto var = isa<Var>()) {
         assert(flags_ == 0); // if we ever need flags here, we need to hash that
         gid_  = type->world().next_gid();
-        vars_ = Vars(var);
+        vars_ = Vars({var});
         dep_ |= type->dep_;
         auto op      = ops[0];
         ops_ptr()[0] = op;
@@ -46,23 +43,19 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         hash_        = hash_combine(hash_, type->gid());
         hash_        = hash_combine(hash_, op->gid());
     } else {
-        Sets<const Var>* vars;
-        Sets<Def>* muts;
-        hash_ = hash_begin(u8(node));
-        hash_ = hash_combine(hash_, flags_);
+        auto tvars = Vars::transient_type();
+        auto tmuts = Muts::transient_type();
+        hash_      = hash_begin(u8(node));
+        hash_      = hash_combine(hash_, flags_);
 
         if (type) {
             world = &type->world();
-            vars  = &world->vars();
-            muts  = &world->muts();
             dep_ |= type->dep_;
-            vars_ = vars->merge(vars_, type->local_vars());
-            muts_ = muts->merge(muts_, type->local_muts());
+            for (auto var : type->local_vars()) tvars.insert(var);
+            for (auto mut : type->local_muts()) tmuts.insert(mut);
             hash_ = hash_combine(hash_, type->gid());
         } else {
             world = &ops[0]->world();
-            vars  = &world->vars();
-            muts  = &world->muts();
         }
 
         gid_     = world->next_gid();
@@ -71,10 +64,13 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
             auto op = ops[i];
             ptr[i]  = op;
             dep_ |= op->dep_;
-            vars_ = vars->merge(vars_, op->local_vars());
-            muts_ = muts->merge(muts_, op->local_muts());
+            for (auto var : op->local_vars()) tvars.insert(var);
+            for (auto mut : op->local_muts()) tmuts.insert(mut);
             hash_ = hash_combine(hash_, op->gid());
         }
+
+        vars_ = tvars.persistent();
+        muts_ = tmuts.persistent();
     }
 }
 
@@ -181,7 +177,7 @@ template TExt<true >*   TExt<true >  ::stub_(World&, const Def*);
 bool Def::is_immutabilizable() {
     if (auto v = has_var()) {
         for (auto op : deps())
-            if (op->free_vars().contains(v)) return false;
+            if (op->free_vars().find(v)) return false;
     }
     for (auto op : deps()) {
         for (auto mut : op->local_muts())
@@ -314,18 +310,18 @@ bool Def::is_set() const {
  */
 
 Muts Def::local_muts() const {
-    if (auto mut = isa_mut()) return Muts(mut);
+    if (auto mut = isa_mut()) return Muts({mut});
     return muts_;
 }
 
 Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
-    auto& vars = world().vars();
-    auto fvs   = local_vars();
-    for (auto mut : local_muts()) fvs = vars.merge(fvs, mut->free_vars());
+    auto fvs = local_vars().transient();
+    for (auto mut : local_muts())
+        for (auto var : mut->free_vars()) fvs.insert(var);
 
-    return fvs;
+    return fvs.persistent();
 }
 
 Vars Def::local_vars() const { return mut_ ? Vars() : vars_; }
@@ -357,31 +353,29 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
     if (mark_ != 0 && mark_ != run - 1) return cyclic |= mark_ == run, vars_;
     mark_ = run;
 
-    auto fvs0  = vars_;
-    auto fvs   = fvs0;
-    auto& w    = world();
-    auto& muts = w.muts();
-    auto& vars = w.vars();
+    auto fvs0 = vars_;
+    auto fvs  = fvs0.transient();
 
     for (auto op : deps()) {
-        fvs = vars.merge(fvs, op->local_vars());
+        for (auto var : op->local_vars()) fvs.insert(var);
 
         for (auto mut : op->local_muts()) {
-            mut->muts_ = muts.insert(mut->muts_, this); // register "this" as user of local_mut
-            fvs        = vars.merge(fvs, mut->free_vars(todo, cyclic, run));
+            mut->muts_ = mut->muts_.insert(this); // register "this" as user of local_mut
+            for (auto var : mut->free_vars(todo, cyclic, run)) fvs.insert(var);
         }
     }
 
-    if (auto var = has_var()) fvs = vars.erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
+    if (auto var = has_var()) fvs.erase(var); // FV(λx.e) = FV(e) \ {x}
 
-    todo |= fvs0 != fvs;
-    return vars_ = fvs;
+    auto p = fvs.persistent();
+    todo |= fvs0 != p;
+    return vars_ = p;
 }
 
 void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
-        if (vars_) { // only necessary, if the cached free vars are non-empty
+        if (!vars_.empty()) { // only necessary, if the cached free vars are non-empty
             for (auto mut : users()) mut->invalidate();
             vars_ = Vars();
         }

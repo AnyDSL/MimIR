@@ -5,12 +5,13 @@
 #include <fe/assert.h>
 #include <fe/cast.h>
 #include <fe/enum.h>
+#include <immer/set.hpp>
+#include <immer/set_transient.hpp>
 
 #include "mim/config.h"
 
 #include "mim/util/dbg.h"
 #include "mim/util/hash.h"
-#include "mim/util/sets.h"
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
@@ -56,7 +57,7 @@ using DefVec                    = Vector<const Def*>;
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = Sets<Def>::Set;
+// using Muts                      = Sets<Def>::Set;
 ///@}
 
 /// @name Var
@@ -65,8 +66,24 @@ using Muts                      = Sets<Def>::Set;
 template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
-using Vars                      = Sets<const Var>::Set;
 ///@}
+
+// struct Allocator {
+//     static fe::Arena* arena;
+//     static void* allocate(std::size_t s) { return arena->allocate(s); }
+//     static void deallocate(void*) noexcept {}
+// };
+//
+// using policy = immer::memory_policy<immer::heap_policy<Allocator>,
+//                                     immer::no_refcount_policy,
+//                                     immer::no_lock_policy,
+//                                     immer::gc_transience_policy,
+//                                     true>;
+
+// clang-format off
+using Muts = immer::set<      Def*, GIDHash<      Def*>, GIDEq<      Def*>>;
+using Vars = immer::set<const Var*, GIDHash<const Var*>, GIDEq<const Var*>>;
+// clang-format on
 
 using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*);
 
@@ -865,5 +882,16 @@ private:
 
     friend class World;
 };
+
+inline bool has_intersection(Vars a, Vars b) {
+    if (a.size() < b.size()) {
+        for (auto x : a)
+            if (b.find(x)) return true;
+    } else {
+        for (auto x : b)
+            if (a.find(x)) return true;
+    }
+    return false;
+}
 
 } // namespace mim

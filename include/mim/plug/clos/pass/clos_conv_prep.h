@@ -2,6 +2,8 @@
 
 #include <mim/pass/pass.h>
 
+#include "mim/def.h"
+
 #include "mim/plug/clos/clos.h"
 
 namespace mim {
@@ -31,7 +33,7 @@ public:
         return scope(lam) && scope(lam) != scope(curr_mut());
     }
 
-    bool from_outer_scope(const Def* lam) { return curr_mut()->free_vars().has_intersection(lam->free_vars()); }
+    bool from_outer_scope(const Def* lam) { return has_intersection(curr_mut()->free_vars(), lam->free_vars()); }
 
     const Def* eta_wrap(const Def* def, attr a) {
         auto& w                = world();

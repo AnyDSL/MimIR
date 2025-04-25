@@ -275,7 +275,7 @@ TEST(FV, free_vars) {
     auto x   = lx->var()->set("x")->as<Var>();
     auto y   = ly->var()->set("y")->as<Var>();
     lx->set(false, w.tuple({x, y}));
-    EXPECT_EQ(lx->free_vars(), Vars(y));
+    EXPECT_EQ(lx->free_vars(), Vars({y}));
 }
 
 TEST(FV, fixed_point) {
@@ -316,8 +316,8 @@ TEST(FV, fixed_point) {
 
     EXPECT_EQ(fva, vt_vf);
     EXPECT_EQ(fvb, cond_vt_vf);
-    EXPECT_EQ(fvt, Vars(vt));
-    EXPECT_EQ(fvf, Vars(vf));
+    EXPECT_EQ(fvt, Vars({vt}));
+    EXPECT_EQ(fvf, Vars({vf}));
 
     auto mark = a->mark();
     EXPECT_EQ(mark, b->mark());
@@ -339,9 +339,9 @@ TEST(FV, fixed_point) {
     fvt = t->free_vars();
     fvf = f->free_vars();
 
-    EXPECT_EQ(fva, Vars(vt));
+    EXPECT_EQ(fva, Vars({vt}));
     EXPECT_EQ(fvb, cond_vt);
-    EXPECT_EQ(fvt, Vars(vt));
+    EXPECT_EQ(fvt, Vars({vt}));
     EXPECT_EQ(fvf, Vars());
 
     EXPECT_EQ(mark + 2, a->mark());
