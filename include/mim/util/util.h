@@ -167,10 +167,6 @@ template<class T> struct GIDHash {
     constexpr size_t operator()(T p) const noexcept { return hash(p->gid()); }
 };
 
-template<class T> struct GIDEq {
-    constexpr bool operator()(T a, T b) const noexcept { return a->gid() == b->gid(); }
-};
-
 template<class T> struct GIDLt {
     constexpr bool operator()(T a, T b) const noexcept { return a->gid() < b->gid(); }
 };
@@ -178,10 +174,10 @@ template<class T> struct GIDLt {
 // clang-format off
 /// @name GID
 ///@{
-template<class K, class V> using GIDMap     = absl::flat_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
-template<class K>          using GIDSet     = absl::flat_hash_set<K,    GIDHash<K>, GIDEq<K>>;
-template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
-template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>, GIDEq<K>>;
+template<class K, class V> using GIDMap     = absl::flat_hash_map<K, V, GIDHash<K>>;
+template<class K>          using GIDSet     = absl::flat_hash_set<K,    GIDHash<K>>;
+template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<K>>;
+template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>>;
 ///@}
 
 } // namespace mim

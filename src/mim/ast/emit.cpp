@@ -22,7 +22,7 @@ public:
         }
     }
 
-    absl::node_hash_map<Sigma*, fe::SymMap<size_t>, GIDHash<const Def*>, GIDEq<const Def*>> sigma2sym2idx;
+    absl::node_hash_map<Sigma*, fe::SymMap<size_t>, GIDHash<const Def*>> sigma2sym2idx;
 
 private:
     AST& ast_;
