@@ -88,7 +88,7 @@ var searchData=
   ['side_20effects_85',['Side Effects',['../mem.html#autotoc_md186',1,'Operations w/ Side Effects'],['../mem.html#autotoc_md195',1,'Operations w/o Side Effects']]],
   ['sigma_86',['Sigma',['../classmim_1_1Sigma.html',1,'mim::Sigma'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da827faff1bdcfe446237c4d6289abce66',1,'mim::Sigma']]],
   ['sigma_87',['sigma',['../classmim_1_1World.html#a3996a1f09477ab9cffdcdff8d0674856',1,'mim::World::sigma(Defs ops)'],['../classmim_1_1World.html#ad33564f05ba959e62ed53b811f6296d0',1,'mim::World::sigma()']]],
-  ['sigma2sym2idx_88',['sigma2sym2idx',['../classmim_1_1ast_1_1Emitter.html#a4015272fb258b5d1ec47dfda8bb7726b',1,'mim::ast::Emitter']]],
+  ['sigma2sym2idx_88',['sigma2sym2idx',['../classmim_1_1ast_1_1Emitter.html#aa480a2d5ca25fb73a51ef734f569a708',1,'mim::ast::Emitter']]],
   ['sigmaexpr_89',['SigmaExpr',['../classmim_1_1ast_1_1SigmaExpr.html',1,'mim::ast::SigmaExpr'],['../classmim_1_1ast_1_1SigmaExpr.html#ac3bff2a4e5141d5a6ed8e36ebc00d3c3',1,'mim::ast::SigmaExpr::SigmaExpr()']]],
   ['sigmas_90',['Field Names of Sigmas',['../langref.html#autotoc_md56',1,'']]],
   ['sin_91',['sin',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a7d27e4a7ca7533a3bef4fad10a0c19c7',1,'mim::plug::math']]],

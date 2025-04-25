@@ -33,7 +33,6 @@ var hierarchy =
     [ "mim::FNV1< 8 >", "structmim_1_1FNV1_3_018_01_4.html", null ],
     [ "mim::plug::clos::FreeDefAna", "classmim_1_1plug_1_1clos_1_1FreeDefAna.html", null ],
     [ "mim::World::Freezer", "structmim_1_1World_1_1Freezer.html", null ],
-    [ "mim::GIDEq< T >", "structmim_1_1GIDEq.html", null ],
     [ "mim::GIDHash< T >", "structmim_1_1GIDHash.html", null ],
     [ "mim::GIDLt< T >", "structmim_1_1GIDLt.html", null ],
     [ "mim::IndexMap< Indexer, Key, Value >", "classmim_1_1IndexMap.html", null ],

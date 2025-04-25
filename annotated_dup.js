@@ -143,7 +143,6 @@ var annotated_dup =
       [ "FNV1< 8 >", "structmim_1_1FNV1_3_018_01_4.html", "structmim_1_1FNV1_3_018_01_4" ],
       [ "FPPass", "classmim_1_1FPPass.html", "classmim_1_1FPPass" ],
       [ "FPPhase", "classmim_1_1FPPhase.html", "classmim_1_1FPPhase" ],
-      [ "GIDEq", "structmim_1_1GIDEq.html", "structmim_1_1GIDEq" ],
       [ "GIDHash", "structmim_1_1GIDHash.html", "structmim_1_1GIDHash" ],
       [ "GIDLt", "structmim_1_1GIDLt.html", "structmim_1_1GIDLt" ],
       [ "Global", "classmim_1_1Global.html", "classmim_1_1Global" ],
