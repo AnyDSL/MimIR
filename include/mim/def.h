@@ -1,5 +1,4 @@
 #pragma once
-
 #include <optional>
 
 #include <fe/assert.h>
@@ -60,7 +59,7 @@ using policy = immer::memory_policy<immer::default_heap_policy, immer::unsafe_re
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = immer::set<Def*, GIDHash<Def*>, GIDEq<Def*>, policy>;
+using Muts                      = immer::set<Def*, GIDHash<Def*>, std::equal_to<Def*>, policy>;
 ///@}
 
 /// @name Var
@@ -69,7 +68,7 @@ using Muts                      = immer::set<Def*, GIDHash<Def*>, GIDEq<Def*>, p
 template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
-using Vars                      = immer::set<const Var*, GIDHash<const Var*>, GIDEq<const Var*>, policy>;
+using Vars                      = immer::set<const Var*, GIDHash<const Var*>, std::equal_to<const Var*>, policy>;
 ///@}
 
 using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*);
