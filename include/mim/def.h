@@ -305,9 +305,9 @@ public:
     /// This works up to the next *mutable*.
     /// For example, consider the Tuple `tup`: `(?, lam (x: Nat) = y)`:
     /// ```
-    /// bool has_hole = tup->has_dep(Dep::Hole); // true;
-    /// bool has_mut   = tup->has_dep(Dep::Mut); // true;
-    /// bool has_var   = tup->has_dep(Dep::Var); // false - y is contained in another mutable;
+    /// bool has_hole = tup->has_dep(Dep::Hole); // true
+    /// bool has_mut  = tup->has_dep(Dep::Mut);  // true
+    /// bool has_var  = tup->has_dep(Dep::Var);  // false - y is contained in another mutable
     /// ```
     ///@{
     bool has_dep() const { return dep_ != 0; }
