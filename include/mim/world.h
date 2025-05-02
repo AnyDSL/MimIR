@@ -248,11 +248,11 @@ public:
     /// @name Pi
     ///@{
     // clang-format off
-    const Pi* pi(const Def*  dom, const Def*  codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
-    const Pi* pi(Defs dom, const Def*  codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
-    const Pi* pi(const Def*  dom, Defs codom, bool implicit = false) { return pi(dom, sigma(codom), implicit); }
-    const Pi* pi(Defs dom, Defs codom, bool implicit = false) { return pi(sigma(dom), sigma(codom), implicit); }
-    Pi* mut_pi(const Def* type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
+    const Pi* pi(const Def* dom, const Def* codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
+    const Pi* pi(Defs       dom, const Def* codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
+    const Pi* pi(const Def* dom, Defs       codom, bool implicit = false) { return pi(dom, sigma(codom), implicit); }
+    const Pi* pi(Defs       dom, Defs       codom, bool implicit = false) { return pi(sigma(dom), sigma(codom), implicit); }
+    Pi*   mut_pi(const Def* type,                  bool implicit = false) { return insert<Pi>(2, type, implicit); }
     // clang-format on
     ///@}
 
@@ -260,13 +260,13 @@ public:
     /// Pi with codom mim::Bot%tom
     ///@{
     // clang-format off
-    const Pi* cn(                                           ) { return cn(sigma(   ),                   false); }
-    const Pi* cn(const Def*  dom,             bool implicit = false) { return pi(      dom ,    type_bot(), implicit); }
-    const Pi* cn(Defs dom,             bool implicit = false) { return cn(sigma(dom),                implicit); }
-    const Pi* fn(const Def*  dom, const Def*  codom, bool implicit = false) { return cn({     dom ,    cn(codom)}, implicit); }
-    const Pi* fn(Defs dom, const Def*  codom, bool implicit = false) { return fn(sigma(dom),       codom,   implicit); }
-    const Pi* fn(const Def*  dom, Defs codom, bool implicit = false) { return fn(      dom , sigma(codom),  implicit); }
-    const Pi* fn(Defs dom, Defs codom, bool implicit = false) { return fn(sigma(dom), sigma(codom),  implicit); }
+    const Pi* cn(                                                       ) { return cn(sigma(   ),                   false); }
+    const Pi* cn(const Def* dom,                   bool implicit = false) { return pi(      dom ,    type_bot(), implicit); }
+    const Pi* cn(Defs       dom,                   bool implicit = false) { return cn(sigma(dom),                implicit); }
+    const Pi* fn(const Def* dom, const Def* codom, bool implicit = false) { return cn({     dom ,    cn(codom)}, implicit); }
+    const Pi* fn(Defs       dom, const Def* codom, bool implicit = false) { return fn(sigma(dom),       codom,   implicit); }
+    const Pi* fn(const Def* dom, Defs       codom, bool implicit = false) { return fn(      dom , sigma(codom),  implicit); }
+    const Pi* fn(Defs       dom, Defs       codom, bool implicit = false) { return fn(sigma(dom), sigma(codom),  implicit); }
     // clang-format on
     ///@}
 
@@ -279,26 +279,26 @@ public:
     const Lam* lam(const Pi* pi, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi, filter(f), body); }
     Lam* mut_lam(const Pi* pi) { return insert<Lam>(2, pi); }
     // clang-format off
-    const Lam* con(const Def*  dom,             Lam::Filter f, const Def* body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
-    const Lam* con(Defs dom,             Lam::Filter f, const Def* body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
-    const Lam* lam(const Def*  dom, const Def*  codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(Defs dom, const Def*  codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(const Def*  dom, Defs codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(Defs dom, Defs codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* fun(const Def*  dom, const Def*  codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Defs dom, const Def*  codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(const Def*  dom, Defs codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Defs dom, Defs codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    Lam* mut_con(const Def*  dom            ) { return insert<Lam>(2, cn(dom       )); }
-    Lam* mut_con(Defs dom            ) { return insert<Lam>(2, cn(dom       )); }
-    Lam* mut_lam(const Def*  dom, const Def*  codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam* mut_lam(Defs dom, const Def*  codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam* mut_lam(const Def*  dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam* mut_lam(Defs dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam* mut_fun(const Def*  dom, const Def*  codom) { return insert<Lam>(2, fn(dom, codom)); }
-    Lam* mut_fun(Defs dom, const Def*  codom) { return insert<Lam>(2, fn(dom, codom)); }
-    Lam* mut_fun(const Def*  dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
-    Lam* mut_fun(Defs dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
+    const Lam* con(const Def* dom,                   Lam::Filter f, const Def* body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
+    const Lam* con(Defs       dom,                   Lam::Filter f, const Def* body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
+    const Lam* lam(const Def* dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Defs       dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(const Def* dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Defs       dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* fun(const Def* dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Defs       dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(const Def* dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Defs       dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    Lam*   mut_con(const Def* dom                  ) { return insert<Lam>(2, cn(dom       )); }
+    Lam*   mut_con(Defs       dom                  ) { return insert<Lam>(2, cn(dom       )); }
+    Lam*   mut_lam(const Def* dom, const Def* codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam*   mut_lam(Defs       dom, const Def* codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam*   mut_lam(const Def* dom, Defs       codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam*   mut_lam(Defs       dom, Defs       codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam*   mut_fun(const Def* dom, const Def* codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam*   mut_fun(Defs       dom, const Def* codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam*   mut_fun(const Def* dom, Defs       codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam*   mut_fun(Defs       dom, Defs       codom) { return insert<Lam>(2, fn(dom, codom)); }
     // clang-format on
     ///@}
 
@@ -421,19 +421,19 @@ public:
     const Lit* lit_bool(bool val) { return data_.lit_bool[size_t(val)]; }
     const Lit* lit_ff() { return data_.lit_bool[0]; }
     const Lit* lit_tt() { return data_.lit_bool[1]; }
-    // clang-format off
     ///@}
 
     /// @name Lattice
     ///@{
-    template<bool Up>
-    const Def* ext(const Def* type);
+    template<bool Up> const Def* ext(const Def* type);
     const Def* bot(const Def* type) { return ext<false>(type); }
     const Def* top(const Def* type) { return ext<true>(type); }
     const Def* type_bot() { return data_.type_bot; }
     const Def* type_top() { return data_.type_top; }
     const Def* top_nat() { return data_.top_nat; }
-    template<bool Up> TBound<Up>* mut_bound(const Def* type, size_t size) { return insert<TBound<Up>>(size, type, size); }
+    template<bool Up> TBound<Up>* mut_bound(const Def* type, size_t size) {
+        return insert<TBound<Up>>(size, type, size);
+    }
     /// A *mut*able Bound of Type @p l%evel.
     template<bool Up, level_t l = 0> TBound<Up>* mut_bound(size_t size) { return mut_bound<Up>(type<l>(), size); }
     template<bool Up> const Def* bound(Defs ops);
@@ -457,7 +457,6 @@ public:
     ///@{
     Global* global(const Def* type, bool is_mutable = true) { return insert<Global>(1, type, is_mutable); }
     ///@}
-    // clang-format on
 
     /// @name Types
     ///@{
