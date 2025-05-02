@@ -564,7 +564,6 @@ private:
         if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
         if (is_frozen()) {
-            --state_.pod.curr_gid;
             auto i = move_.defs.find(def);
             deallocate<T>(state, def);
             if (i != move_.defs.end()) return static_cast<const T*>(*i);
@@ -582,6 +581,7 @@ private:
     }
 
     template<class T> void deallocate(fe::Arena::State state, const T* ptr) {
+        --state_.pod.curr_gid;
         ptr->~T();
         move_.arena.deallocate(state);
     }
