@@ -739,24 +739,24 @@ $(function(){initNavTree('world_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1World.html#a84dc41b987937f59141de186c5a2975e">flags</a>().reeval_breakpoints &amp;&amp; <a class="code hl_function" href="classmim_1_1World.html#a8e95b756aab85d9cf0adc65cc40f7c4f">breakpoints</a>().contains(def-&gt;gid())) fe::breakpoint();</div>
 <div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1World.html#a9a622f90d947fca9e37ce9e8eff2ad89">is_frozen</a>()) {</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>            <span class="keyword">auto</span> i = move_.defs.find(def);</div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>            deallocate&lt;T&gt;(<a class="code hl_function" href="classmim_1_1World.html#ad4b90e8e3810a86af8aa46ace6b91f62">state</a>, def);</div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>            <span class="keywordflow">if</span> (i != move_.defs.end()) <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>T*<span class="keyword">&gt;</span>(*i);</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>            <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>        }</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span> </div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [i, ins] = move_.defs.emplace(def); !ins) {</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>            deallocate&lt;T&gt;(<a class="code hl_function" href="classmim_1_1World.html#ad4b90e8e3810a86af8aa46ace6b91f62">state</a>, def);</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>T*<span class="keyword">&gt;</span>(*i);</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>        }</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span><span class="preprocessor">#ifdef MIM_ENABLE_CHECKS</span></div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="classmim_1_1World.html#a84dc41b987937f59141de186c5a2975e">flags</a>().reeval_breakpoints &amp;&amp; <a class="code hl_function" href="classmim_1_1World.html#a8e95b756aab85d9cf0adc65cc40f7c4f">breakpoints</a>().contains(def-&gt;gid())) fe::breakpoint();</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>        <span class="keywordflow">return</span> def;</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>    }</div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span> </div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt; <span class="keywordtype">void</span> deallocate(fe::Arena::State <a class="code hl_function" href="classmim_1_1World.html#ad4b90e8e3810a86af8aa46ace6b91f62">state</a>, <span class="keyword">const</span> T* ptr) {</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>        --state_.pod.curr_gid;</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>            --state_.pod.curr_gid;</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>            <span class="keyword">auto</span> i = move_.defs.find(def);</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>            deallocate&lt;T&gt;(<a class="code hl_function" href="classmim_1_1World.html#ad4b90e8e3810a86af8aa46ace6b91f62">state</a>, def);</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>            <span class="keywordflow">if</span> (i != move_.defs.end()) <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>T*<span class="keyword">&gt;</span>(*i);</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>            <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>        }</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span> </div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [i, ins] = move_.defs.emplace(def); !ins) {</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>            deallocate&lt;T&gt;(<a class="code hl_function" href="classmim_1_1World.html#ad4b90e8e3810a86af8aa46ace6b91f62">state</a>, def);</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>            <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>T*<span class="keyword">&gt;</span>(*i);</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>        }</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span><span class="preprocessor">#ifdef MIM_ENABLE_CHECKS</span></div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>        <span class="keywordflow">if</span> (!<a class="code hl_function" href="classmim_1_1World.html#a84dc41b987937f59141de186c5a2975e">flags</a>().reeval_breakpoints &amp;&amp; <a class="code hl_function" href="classmim_1_1World.html#a8e95b756aab85d9cf0adc65cc40f7c4f">breakpoints</a>().contains(def-&gt;gid())) fe::breakpoint();</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>        <span class="keywordflow">return</span> def;</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>    }</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span> </div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt; <span class="keywordtype">void</span> deallocate(fe::Arena::State <a class="code hl_function" href="classmim_1_1World.html#ad4b90e8e3810a86af8aa46ace6b91f62">state</a>, <span class="keyword">const</span> T* ptr) {</div>
 <div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>        ptr-&gt;~T();</div>
 <div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>        move_.arena.deallocate(<a class="code hl_function" href="classmim_1_1World.html#ad4b90e8e3810a86af8aa46ace6b91f62">state</a>);</div>
 <div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>    }</div>
