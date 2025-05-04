@@ -27,6 +27,10 @@ public:
     ///@{
     const Def* immutabilize() override;
     Sigma* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+
+    /// @note Technically, it would make sense to have an offset of 1 as the first element can't be reduced (such as
+    /// `[n: Nat, F n]`). However, this would cause a lot of confusion and special code to cope with the first element,
+    /// so we just keep it here.
     constexpr size_t reduction_offset() const noexcept override { return 0; }
     ///@}
 
