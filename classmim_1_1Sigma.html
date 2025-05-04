@@ -154,7 +154,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a160f331a54a126c08862d5cb650814ee" id="r_a160f331a54a126c08862d5cb650814ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Sigma.html">Sigma</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a160f331a54a126c08862d5cb650814ee">stub</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>)</td></tr>
 <tr class="separator:a160f331a54a126c08862d5cb650814ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18c0c66d2bcbd34011b8f24c43332661" id="r_a18c0c66d2bcbd34011b8f24c43332661"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18c0c66d2bcbd34011b8f24c43332661">reduction_offset</a> () const noexcept override</td></tr>
-<tr class="memdesc:a18c0c66d2bcbd34011b8f24c43332661"><td class="mdescLeft">&#160;</td><td class="mdescRight">First <a class="el" href="classmim_1_1Def.html#a67a94030742a4217fe19bb739990f73e">Def::op</a> that needs to be dealt with during reduction; e.g.  <br /></td></tr>
 <tr class="separator:a18c0c66d2bcbd34011b8f24c43332661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmim_1_1Def"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classmim_1_1Def')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmim_1_1Def.html">mim::Def</a></td></tr>
 <tr class="memitem:a2d85181e61754391ee525fc255cac90e inherit pub_methods_classmim_1_1Def" id="r_a2d85181e61754391ee525fc255cac90e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a2d85181e61754391ee525fc255cac90e">world</a> () const noexcept</td></tr>
@@ -665,7 +664,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00267">267</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00094">mim::Kind</a>, <a class="el" href="def_8h_source.html#l00261">mim::Def::ops()</a>, and <a class="el" href="tuple_8h_source.html#l00046">World</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00094">mim::Kind</a>, <a class="el" href="def_8h_source.html#l00261">mim::Def::ops()</a>, and <a class="el" href="tuple_8h_source.html#l00050">World</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00275">check()</a>, and <a class="el" href="world_8cpp_source.html#l00238">mim::World::sigma()</a>.</p>
 
@@ -707,7 +706,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00126">126</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8h_source.html#l00046">World</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8h_source.html#l00050">World</a>.</p>
 
 </div>
 </div>
@@ -733,13 +732,11 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>First <a class="el" href="classmim_1_1Def.html#a67a94030742a4217fe19bb739990f73e">Def::op</a> that needs to be dealt with during reduction; e.g. </p>
-<p>for a <a class="el" href="classmim_1_1Pi.html" title="A dependent function type.">Pi</a> we don't reduce the <a class="el" href="classmim_1_1Pi.html#a7941d7dac71f378682c9303de3e45e27">Pi::dom</a>. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classmim_1_1World.html#a460043085cfb2df588c8d6f9796753f9" title="Yields the new body of [mut-&gt;var() -&gt; arg]mut.">World::reduce</a> </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Technically, it would make sense to have an offset of 1 as the first element can't be reduced (such as <code>[n: <a class="el" href="classmim_1_1Nat.html">Nat</a>, F n]</code>). However, this would cause a lot of confusion and special code to cope with the first element, so we just keep it here. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Def.html#acaa12ec7224539f112569689e186fc70">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00030">30</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00034">34</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
 </div>
 </div>
@@ -867,7 +864,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00155">155</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00265">mim::Def::num_ops()</a>, and <a class="el" href="tuple_8h_source.html#l00046">World</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00265">mim::Def::num_ops()</a>, and <a class="el" href="tuple_8h_source.html#l00050">World</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tuple_8h_source.html#l00029">stub()</a>.</p>
 
@@ -923,11 +920,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00046">46</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00050">50</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8h_source.html#l00046">World</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8h_source.html#l00050">World</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00267">infer()</a>, <a class="el" href="def_8cpp_source.html#l00126">rebuild_()</a>, <a class="el" href="def_8cpp_source.html#l00155">stub_()</a>, and <a class="el" href="tuple_8h_source.html#l00046">World</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00267">infer()</a>, <a class="el" href="def_8cpp_source.html#l00126">rebuild_()</a>, <a class="el" href="def_8cpp_source.html#l00155">stub_()</a>, and <a class="el" href="tuple_8h_source.html#l00050">World</a>.</p>
 
 </div>
 </div>
@@ -952,7 +949,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00040">40</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00044">44</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
 </div>
 </div>
