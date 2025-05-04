@@ -61,6 +61,11 @@ public:
     [[nodiscard]] constexpr Span<T, n != D ? n : (N != D ? N - i : D)> subspan() const noexcept {
         return Base::template subspan<i, n>();
     }
+
+    /// Get first `n` elements while keeping track of size statically - useful for structured binding!
+    template<size_t n> [[nodiscard]] constexpr Span<T, n> span() const noexcept {
+        return Base::template subspan<0, n>();
+    }
     ///@}
 
     /// @name rsubspan
