@@ -8,6 +8,7 @@ var classmim_1_1Span =
     [ "explicit", "classmim_1_1Span.html#a3eac2d83fde887a220a395734424a60f", null ],
     [ "rsubspan", "classmim_1_1Span.html#aca1a6c80020a977de13fb1ce3573c160", null ],
     [ "rsubspan", "classmim_1_1Span.html#a95ad9bdf9ac1eb16588ad4c96fef3791", null ],
+    [ "span", "classmim_1_1Span.html#a3ca43ee70f4f32877f05ac69bdafdb20", null ],
     [ "subspan", "classmim_1_1Span.html#a596fbf8c6b7eb7fb0d8af55bba442e51", null ],
     [ "subspan", "classmim_1_1Span.html#a1061ecc23e5b0b01638e8bc04ae25877", null ],
     [ "D", "classmim_1_1Span.html#ae7622c7c7406b6b5789ad85decd05916", null ]

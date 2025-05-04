@@ -145,7 +145,7 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Constructors</div></td></tr>
 <tr class="memitem:aa2e38927cbfabd6ba879e8b8dde10635" id="r_aa2e38927cbfabd6ba879e8b8dde10635"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2e38927cbfabd6ba879e8b8dde10635">explicit</a> (N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>) const expr <a class="el" href="classmim_1_1Span.html">Span</a>(std</td></tr>
 <tr class="separator:aa2e38927cbfabd6ba879e8b8dde10635"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0bc881c34794ee0de1fd4d0d4563439" id="r_ac0bc881c34794ee0de1fd4d0d4563439"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0bc881c34794ee0de1fd4d0d4563439">Span</a> (std::span&lt; T, N &gt; span) noexcept</td></tr>
+<tr class="memitem:ac0bc881c34794ee0de1fd4d0d4563439" id="r_ac0bc881c34794ee0de1fd4d0d4563439"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0bc881c34794ee0de1fd4d0d4563439">Span</a> (std::span&lt; T, N &gt; <a class="el" href="#a3ca43ee70f4f32877f05ac69bdafdb20">span</a>) noexcept</td></tr>
 <tr class="separator:ac0bc881c34794ee0de1fd4d0d4563439"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eac2d83fde887a220a395734424a60f" id="r_a3eac2d83fde887a220a395734424a60f"><td class="memTemplParams" colspan="2">template&lt;Vectorlike Vec&gt; <br />
 requires (std::is_same_v&lt;typename Vec::value_type, T&gt;)</td></tr>
@@ -169,6 +169,10 @@ requires (std::is_same_v&lt;std::add_const_t&lt;typename Vec::value_type&gt;, st
 <tr class="memitem:a596fbf8c6b7eb7fb0d8af55bba442e51" id="r_a596fbf8c6b7eb7fb0d8af55bba442e51"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = D&gt; </td></tr>
 <tr class="memitem:a596fbf8c6b7eb7fb0d8af55bba442e51"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? n :(N !=<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a> ? N - i :<a class="el" href="#ae7622c7c7406b6b5789ad85decd05916">D</a>)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a596fbf8c6b7eb7fb0d8af55bba442e51">subspan</a> () const noexcept</td></tr>
 <tr class="separator:a596fbf8c6b7eb7fb0d8af55bba442e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ca43ee70f4f32877f05ac69bdafdb20" id="r_a3ca43ee70f4f32877f05ac69bdafdb20"><td class="memTemplParams" colspan="2">template&lt;size_t n&gt; </td></tr>
+<tr class="memitem:a3ca43ee70f4f32877f05ac69bdafdb20"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a3ca43ee70f4f32877f05ac69bdafdb20">span</a> () const noexcept</td></tr>
+<tr class="memdesc:a3ca43ee70f4f32877f05ac69bdafdb20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get first <code>n</code> elements while keeping track of size statically - useful for structured binding!  <br /></td></tr>
+<tr class="separator:a3ca43ee70f4f32877f05ac69bdafdb20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">rsubspan</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>Similar to <a class="el" href="#a1061ecc23e5b0b01638e8bc04ae25877">Span::subspan</a> but in <em>reverse</em>: </p>
 </div></td></tr>
@@ -191,11 +195,12 @@ class mim::Span&lt; T, N &gt;</div><p>This is a thin wrapper for <a href="https:
 <li>Constructor with <code>std::initializer_list</code> (C++26 will get this ...)</li>
 <li>Constructor for any compatible <a class="el" href="conceptmim_1_1Vectorlike.html" title="Something which behaves like std::vector or std::array.">Vectorlike</a> argument</li>
 <li>rsubspan (reverse subspan)</li>
-<li>structured binding, if <code>N != std::dynamic_extent:</code> <div class="fragment"><div class="line"><span class="keywordtype">void</span> f(<a class="code hl_function" href="#ac0bc881c34794ee0de1fd4d0d4563439">Span&lt;int, 3&gt;</a> span) {</div>
-<div class="line">    <span class="keyword">auto</span>&amp; [a, b, c] = span;</div>
+<li>structured binding, if <code>N != std::dynamic_extent:</code> <div class="fragment"><div class="line"><span class="keywordtype">void</span> f(<a class="code hl_function" href="#ac0bc881c34794ee0de1fd4d0d4563439">Span&lt;int, 3&gt;</a> <a class="code hl_function" href="#a3ca43ee70f4f32877f05ac69bdafdb20">span</a>) {</div>
+<div class="line">    <span class="keyword">auto</span>&amp; [a, b, c] = <a class="code hl_function" href="#a3ca43ee70f4f32877f05ac69bdafdb20">span</a>;</div>
 <div class="line">    b = 23;</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
+<div class="ttc" id="aclassmim_1_1Span_html_a3ca43ee70f4f32877f05ac69bdafdb20"><div class="ttname"><a href="#a3ca43ee70f4f32877f05ac69bdafdb20">mim::Span::span</a></div><div class="ttdeci">constexpr Span&lt; T, n &gt; span() const noexcept</div><div class="ttdoc">Get first n elements while keeping track of size statically - useful for structured binding!</div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00066">span.h:66</a></div></div>
 <div class="ttc" id="aclassmim_1_1Span_html_ac0bc881c34794ee0de1fd4d0d4563439"><div class="ttname"><a href="#ac0bc881c34794ee0de1fd4d0d4563439">mim::Span::Span</a></div><div class="ttdeci">constexpr Span(std::span&lt; T, N &gt; span) noexcept</div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00038">span.h:38</a></div></div>
 </div><!-- fragment --> </li>
 </ul>
@@ -248,7 +253,7 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00038">38</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00075">mim::Span&lt; const T, N &gt;::rsubspan()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00080">mim::Span&lt; const T, N &gt;::rsubspan()</a>.</p>
 
 </div>
 </div>
@@ -404,7 +409,7 @@ template&lt;size_t i, size_t n = D&gt; </div>
 
 <p><code>span.rsubspan(3, 5)</code> removes the last 3 elements and picks 5 elements starting before those. </p>
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00075">75</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00080">80</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
@@ -437,7 +442,40 @@ template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00069">69</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00074">74</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+
+</div>
+</div>
+<a id="a3ca43ee70f4f32877f05ac69bdafdb20" name="a3ca43ee70f4f32877f05ac69bdafdb20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ca43ee70f4f32877f05ac69bdafdb20">&#9670;&#160;</a></span>span()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, size_t N = std::dynamic_extent&gt; </div>
+<div class="memtemplate">
+template&lt;size_t n&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n &gt; <a class="el" href="classmim_1_1Span.html">mim::Span</a>&lt; T, N &gt;::span </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get first <code>n</code> elements while keeping track of size statically - useful for structured binding! </p>
+
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00066">66</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
@@ -470,7 +508,7 @@ template&lt;size_t i, size_t n = D&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00061">61</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00069">mim::Span&lt; const T, N &gt;::rsubspan()</a>, and <a class="el" href="span_8h_source.html#l00061">mim::Span&lt; const T, N &gt;::subspan()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00074">mim::Span&lt; const T, N &gt;::rsubspan()</a>, <a class="el" href="span_8h_source.html#l00066">mim::Span&lt; const T, N &gt;::span()</a>, and <a class="el" href="span_8h_source.html#l00061">mim::Span&lt; const T, N &gt;::subspan()</a>.</p>
 
 </div>
 </div>
