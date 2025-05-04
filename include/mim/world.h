@@ -642,7 +642,9 @@ private:
         constexpr Reduct(size_t size) noexcept
             : size_(size) {}
 
-        constexpr Defs defs() const noexcept { return {defs_, size_}; }
+        template<size_t N = std::dynamic_extent> constexpr auto defs() const noexcept {
+            return View<const Def*, N>{defs_, size_};
+        }
 
     private:
         size_t size_;

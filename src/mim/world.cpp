@@ -190,7 +190,7 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                 if (auto var = lam->has_var()) {
                     if (auto i = move_.substs.find({lam, arg}); i != move_.substs.end()) {
                         // Is there a cached version?
-                        auto [filter, body] = i->second->defs().span<2>();
+                        auto [filter, body] = i->second->defs<2>();
                         if (filter == lit_tt()) return body;
                     } else {
                         // First check filter, If true, reduce body and cache reduct.
