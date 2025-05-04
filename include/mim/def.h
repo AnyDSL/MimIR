@@ -507,6 +507,7 @@ public:
     Defs reduce(const Def* arg);
 
     /// First Def::op that needs to be dealt with during reduction; e.g. for a Pi we don't reduce the Pi::dom.
+    /// @see World::reduce
     virtual constexpr size_t reduction_offset() const noexcept { return size_t(-1); }
     ///@}
 
