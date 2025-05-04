@@ -88,7 +88,7 @@ public:
     ///@{
     Pi* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Pi* immutabilize() override;
-    const Def* reduce(const Def* arg) const { return Def::reduce(arg)[0]; }
+    const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept override { return 1; }
     ///@}
 
@@ -179,6 +179,7 @@ public:
     /// @name Rebuild
     ///@{
     Lam* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+    const Def* reduce_body(const Def* arg) const { return reduce(arg).back(); }
     constexpr size_t reduction_offset() const noexcept override { return 0; }
     ///@}
 

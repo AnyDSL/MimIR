@@ -55,8 +55,8 @@ const Def* LowerFor::rewrite(const Def* def) {
 
         head_lam->branch(false, cmp, new_body, new_exit, mem);
         new_yield->app(false, head_lam, merge_t(world(), new_iter, new_yield->var(), mem));
-        new_body->set(false, body->reduce(world().tuple({iter, acc, new_yield})).back());
-        new_exit->set(false, exit->reduce(acc).back());
+        new_body->set(body->reduce(world().tuple({iter, acc, new_yield})));
+        new_exit->set(exit->reduce(acc));
 
         return rewritten_[def] = world().app(head_lam, merge_t(world(), begin, init, mem));
     }

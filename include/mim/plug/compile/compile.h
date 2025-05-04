@@ -3,13 +3,14 @@
 #include <mim/world.h>
 
 #include "mim/pass/pipelinebuilder.h"
+
 #include "mim/plug/compile/autogen.h"
 
 namespace mim::plug::compile {
 inline void handle_optimization_part(const Def* part, World& world, Passes& passes, PipelineBuilder& builder) {
     if (auto app = part->isa<App>()) {
         if (auto lam = app->callee()->isa<Lam>()) {
-            part = lam->reduce(app->arg())[1];
+            part = lam->reduce_body(app->arg());
             world.DLOG("reduce pass/phase lambda {} to {} : {}", lam, part, part->type());
         }
     }

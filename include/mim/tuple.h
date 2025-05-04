@@ -93,7 +93,7 @@ public:
     ///@{
     Arr* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
-    const Def* reduce(const Def* arg) const { return Def::reduce(arg)[0]; }
+    const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept override { return 1; }
     ///@}
 
@@ -141,7 +141,7 @@ public:
     ///@{
     Pack* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
-    const Def* reduce(const Def* arg) const { return Def::reduce(arg)[0]; }
+    const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept override { return 0; }
     ///@}
 
