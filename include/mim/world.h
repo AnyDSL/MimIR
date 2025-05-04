@@ -633,9 +633,9 @@ private:
         bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
     };
 
-    class Subst {
+    class Body {
     public:
-        constexpr Subst(size_t size) noexcept
+        constexpr Body(size_t size) noexcept
             : size_(size) {}
 
         constexpr Defs defs() const noexcept { return {defs_, size_}; }
@@ -657,7 +657,7 @@ private:
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         Sets<Def> muts;
         Sets<const Var> vars;
-        absl::flat_hash_map<std::pair<Def*, const Def*>, const Subst*> substs;
+        absl::flat_hash_map<std::pair<Def*, const Def*>, const Body*> substs;
 
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;

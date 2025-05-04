@@ -186,10 +186,10 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
             arg = new_arg->zonk();
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
             if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
-                auto rw = VarSubst(lam->has_var(), arg);
-                if (rw.subst(lam->filter()) == lit_tt()) {
+                auto sub = VarSubst(lam->has_var(), arg);
+                if (sub.subst(lam->filter()) == lit_tt()) {
                     DLOG("partial evaluate: {} ({})", lam, arg);
-                    return rw.subst(lam->body());
+                    return sub.subst(lam->body());
                 }
             }
 
@@ -341,8 +341,8 @@ const Def* World::extract(const Def* d, const Def* index) {
         }
 
         if (auto sigma = type->isa<Sigma>()) {
-            if (auto mut_sigma = sigma->isa_mut<Sigma>()) {
-                auto t = VarSubst(mut_sigma->has_var(), d).subst(sigma->op(*i));
+            if (auto var = sigma->has_var()) {
+                auto t = VarSubst(var, d).subst(sigma->op(*i));
                 return unify<Extract>(2, t, d, index);
             }
 
@@ -570,12 +570,12 @@ Defs World::reduce(Def* mut, const Def* arg) {
     if (auto var = mut->has_var()) {
         if (auto i = move_.substs.find({mut, arg}); i != move_.substs.end()) return i->second->defs();
 
-        auto buf   = move_.arena.substs.allocate(sizeof(Subst) + size * sizeof(const Def*), alignof(const Def*));
-        auto subst = new (buf) Subst(size);
-        auto rw    = VarSubst(var, arg);
-        for (size_t i = 0; i != size; ++i) subst->defs_[i] = rw.subst(mut->op(i + offset));
-        assert_emplace(move_.substs, std::pair{mut, arg}, subst);
-        return subst->defs();
+        auto buf  = move_.arena.substs.allocate(sizeof(Body) + size * sizeof(const Def*), alignof(const Def*));
+        auto body = new (buf) Body(size);
+        auto sub  = VarSubst(var, arg);
+        for (size_t i = 0; i != size; ++i) body->defs_[i] = sub.subst(mut->op(i + offset));
+        assert_emplace(move_.substs, std::pair{mut, arg}, body);
+        return body->defs();
     }
 
     return {mut->ops().begin() + offset, size};

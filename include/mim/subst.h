@@ -4,7 +4,7 @@
 
 namespace mim {
 
-/// Recurseivly rebuilds part of a program **into** the provided World.
+/// Recurseivly rebuilds part of a program **into** the provided World w.r.t. Subst::map.
 /// This World may be different than the World we started with.
 class Subst {
 public:

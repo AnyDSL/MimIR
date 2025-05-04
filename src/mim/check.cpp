@@ -63,11 +63,11 @@ const Def* Hole::tuplefy() {
         auto infers = absl::FixedArray<const Def*>(n);
         if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
             auto var  = sigma->has_var();
-            auto rw   = VarSubst(var, this);
+            auto sub  = VarSubst(var, this);
             infers[0] = w.mut_hole(sigma->op(0));
             for (size_t i = 1; i != n; ++i) {
-                rw.map(sigma->var(n, i - 1), infers[i - 1]);
-                infers[i] = w.mut_hole(rw.subst(sigma->op(i)));
+                sub.map(sigma->var(n, i - 1), infers[i - 1]);
+                infers[i] = w.mut_hole(sub.subst(sigma->op(i)));
             }
         } else {
             for (size_t i = 0; i != n; ++i) infers[i] = w.mut_hole(type()->proj(n, i));
