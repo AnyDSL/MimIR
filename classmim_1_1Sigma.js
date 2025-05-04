@@ -5,6 +5,7 @@ var classmim_1_1Sigma =
     [ "immutabilize", "classmim_1_1Sigma.html#a089a8486dc18299fe74623c5e020bd6c", null ],
     [ "infer", "classmim_1_1Sigma.html#ac101a5c579a2520fc1d87e6a6ad0b4fd", null ],
     [ "rebuild_", "classmim_1_1Sigma.html#a904eb24e04f778af8a9b18a6e7bf1daa", null ],
+    [ "reduction_offset", "classmim_1_1Sigma.html#a18c0c66d2bcbd34011b8f24c43332661", null ],
     [ "set", "classmim_1_1Sigma.html#a355c4dc6af38c2b3b33d1188dbf840ec", null ],
     [ "set", "classmim_1_1Sigma.html#af303ed83c517d378142e368dccc6f9f1", null ],
     [ "stub", "classmim_1_1Sigma.html#a160f331a54a126c08862d5cb650814ee", null ],

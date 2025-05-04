@@ -127,8 +127,6 @@ var annotated_dup =
       [ "ClosedMutPhase", "classmim_1_1ClosedMutPhase.html", "classmim_1_1ClosedMutPhase" ],
       [ "Dbg", "structmim_1_1Dbg.html", "structmim_1_1Dbg" ],
       [ "Def", "classmim_1_1Def.html", "classmim_1_1Def" ],
-      [ "DefDefEq", "structmim_1_1DefDefEq.html", "structmim_1_1DefDefEq" ],
-      [ "DefDefHash", "structmim_1_1DefDefHash.html", "structmim_1_1DefDefHash" ],
       [ "Driver", "classmim_1_1Driver.html", "classmim_1_1Driver" ],
       [ "Elem", "structmim_1_1Elem.html", "structmim_1_1Elem" ],
       [ "Emitter", "classmim_1_1Emitter.html", "classmim_1_1Emitter" ],

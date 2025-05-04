@@ -16,6 +16,7 @@ var classmim_1_1Lam =
     [ "isa_mut_returning", "classmim_1_1Lam.html#a637291bc1cf994803562402bb0d77909", null ],
     [ "isa_returning", "classmim_1_1Lam.html#a527fd77ec7597902c4cbe37e6c0ccf79", null ],
     [ "rebuild_", "classmim_1_1Lam.html#a768f8d4cb3cfc68bf43544560f8f5595", null ],
+    [ "reduction_offset", "classmim_1_1Lam.html#adc7f58ebf8878b065496c722082c4ec5", null ],
     [ "ret_dom", "classmim_1_1Lam.html#aae32dbc8d6d407b2aaaae6185349f454", null ],
     [ "ret_pi", "classmim_1_1Lam.html#a5933504e71248b855ed8652a4837846f", null ],
     [ "ret_var", "classmim_1_1Lam.html#ae59c284f28c0728fbe24007b19112f6a", null ],

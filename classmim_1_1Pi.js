@@ -18,6 +18,7 @@ var classmim_1_1Pi =
     [ "make_implicit", "classmim_1_1Pi.html#a59f8c3e0615ba731254c72173dc586cb", null ],
     [ "rebuild_", "classmim_1_1Pi.html#a91da9c71bed486187b7981efa1e4d220", null ],
     [ "reduce", "classmim_1_1Pi.html#ac137621b16cc10873c09847eac1832f9", null ],
+    [ "reduction_offset", "classmim_1_1Pi.html#a38fc3512fb3fc0de781a5e7cfc831268", null ],
     [ "ret_dom", "classmim_1_1Pi.html#a156b615bd68336c9be52f06574783de2", null ],
     [ "ret_pi", "classmim_1_1Pi.html#ad2d868402614a7596ca067c9a6d21776", null ],
     [ "set", "classmim_1_1Pi.html#aa6fdc576a66f0c92efd588ecad94fef5", null ],

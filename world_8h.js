@@ -10,5 +10,9 @@ var world_8h =
       [ "name", "structmim_1_1World_1_1State.html#a83f874916de86e36b3e8272523dae7b6", null ]
     ] ],
     [ "mim::World::ScopedLoc", "structmim_1_1World_1_1ScopedLoc.html", "structmim_1_1World_1_1ScopedLoc" ],
-    [ "mim::World::Freezer", "structmim_1_1World_1_1Freezer.html", "structmim_1_1World_1_1Freezer" ]
+    [ "mim::World::Freezer", "structmim_1_1World_1_1Freezer.html", "structmim_1_1World_1_1Freezer" ],
+    [ "mim::World::Move.arena", "classmim_1_1World.html#structmim_1_1World_1_1Move_8arena", [
+      [ "defs", "classmim_1_1World.html#acd8fc2597193b4c938e7ff50062936e3", null ],
+      [ "substs", "classmim_1_1World.html#a4b1bfdc913535dc888b1e9547cd85df2", null ]
+    ] ]
 ];

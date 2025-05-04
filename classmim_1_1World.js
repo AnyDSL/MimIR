@@ -1,6 +1,10 @@
 var classmim_1_1World =
 [
     [ "Freezer", "structmim_1_1World_1_1Freezer.html", "structmim_1_1World_1_1Freezer" ],
+    [ "Move.arena", "classmim_1_1World.html#structmim_1_1World_1_1Move_8arena", [
+      [ "defs", "classmim_1_1World.html#acd8fc2597193b4c938e7ff50062936e3", null ],
+      [ "substs", "classmim_1_1World.html#a4b1bfdc913535dc888b1e9547cd85df2", null ]
+    ] ],
     [ "ScopedLoc", "structmim_1_1World_1_1ScopedLoc.html", "structmim_1_1World_1_1ScopedLoc" ],
     [ "State", "structmim_1_1World_1_1State.html", "structmim_1_1World_1_1State" ],
     [ "World", "classmim_1_1World.html#a38f5d2c7823fe575808ed051db62b095", null ],
@@ -160,6 +164,7 @@ var classmim_1_1World =
     [ "raw_app", "classmim_1_1World.html#a0e372c552f437aaeedc9ce40d91b80ac", null ],
     [ "raw_app", "classmim_1_1World.html#abcd10262c0fd72a56ca0257ad088b51d", null ],
     [ "raw_app", "classmim_1_1World.html#aa9647c5c7e5972427b919fb8c9079449", null ],
+    [ "reduce", "classmim_1_1World.html#a460043085cfb2df588c8d6f9796753f9", null ],
     [ "register_annex", "classmim_1_1World.html#adaeed3797dfe3ac1ba62047a608f5f90", null ],
     [ "register_annex", "classmim_1_1World.html#a6cc63933812f5ad23533789cbd234066", null ],
     [ "select", "classmim_1_1World.html#ae336d8df53ea40e63899b84c41d91ab0", null ],
@@ -209,6 +214,5 @@ var classmim_1_1World =
     [ "verify", "classmim_1_1World.html#a5b9a9472a5b36bf076bdce94bcb0b672", null ],
     [ "write", "classmim_1_1World.html#a6c0a289376552934ff442e317dc95acd", null ],
     [ "write", "classmim_1_1World.html#aada6df5fabc3554f7dab128f1f6b3deb", null ],
-    [ "Def::reduce", "classmim_1_1World.html#a067a63e62f02f55dfb621e953b43895e", null ],
     [ "swap", "classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa", null ]
 ];

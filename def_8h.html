@@ -156,10 +156,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html">mim::Def</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for all <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>s.  <a href="classmim_1_1Def.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1DefDefHash.html">mim::DefDefHash</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1DefDefEq.html">mim::DefDefEq</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Var.html">mim::Var</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Univ.html">mim::Univ</a></td></tr>
@@ -237,14 +233,6 @@ Typedefs</h2></td></tr>
 <tr class="separator:afe12e59f7ee4253d3b71cd8c0db61d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1bc6fc8487a4e7490dcee047b176f7f" id="r_ac1bc6fc8487a4e7490dcee047b176f7f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f">mim::Vars</a> = <a class="el" href="classmim_1_1Sets.html">Sets</a>&lt;const <a class="el" href="classmim_1_1Var.html">Var</a>&gt;::Set</td></tr>
 <tr class="separator:ac1bc6fc8487a4e7490dcee047b176f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">DefDef</div></td></tr>
-<tr class="memitem:a5e2b9a49889ee3546fc4e7ad1b3a9170" id="r_a5e2b9a49889ee3546fc4e7ad1b3a9170"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#a5e2b9a49889ee3546fc4e7ad1b3a9170">mim::DefDef</a> = std::tuple&lt;const <a class="el" href="classmim_1_1Def.html">Def</a>*, const <a class="el" href="classmim_1_1Def.html">Def</a>*&gt;</td></tr>
-<tr class="separator:a5e2b9a49889ee3546fc4e7ad1b3a9170"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a147444565d00e8b50021d235fcb42e2d" id="r_a147444565d00e8b50021d235fcb42e2d"><td class="memTemplParams" colspan="2">template&lt;class To&gt; </td></tr>
-<tr class="memitem:a147444565d00e8b50021d235fcb42e2d"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a147444565d00e8b50021d235fcb42e2d">mim::DefDefMap</a> = absl::flat_hash_map&lt;<a class="el" href="namespacemim.html#a5e2b9a49889ee3546fc4e7ad1b3a9170">DefDef</a>, To, <a class="el" href="structmim_1_1DefDefHash.html">DefDefHash</a>, <a class="el" href="structmim_1_1DefDefEq.html">DefDefEq</a>&gt;</td></tr>
-<tr class="separator:a147444565d00e8b50021d235fcb42e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acccd146e22e5364f753eb3c37fce5876" id="r_acccd146e22e5364f753eb3c37fce5876"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#acccd146e22e5364f753eb3c37fce5876">mim::DefDefSet</a> = absl::flat_hash_set&lt;<a class="el" href="namespacemim.html#a5e2b9a49889ee3546fc4e7ad1b3a9170">DefDef</a>, <a class="el" href="structmim_1_1DefDefHash.html">DefDefHash</a>, <a class="el" href="structmim_1_1DefDefEq.html">DefDefEq</a>&gt;</td></tr>
-<tr class="separator:acccd146e22e5364f753eb3c37fce5876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Enums that classify certain aspects of Defs.</h2></td></tr>
 <tr class="memitem:a6adc9cd160778f527f2ed8fb931ff4ee" id="r_a6adc9cd160778f527f2ed8fb931ff4ee"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6adc9cd160778f527f2ed8fb931ff4ee">CODE</a>(node,  name,  _)</td></tr>
@@ -453,7 +441,7 @@ Typedefs</h2></td></tr>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00018">18</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00447">mim::Def::judge()</a>, and <a class="el" href="def_8cpp_source.html#l00431">mim::Def::node_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00430">mim::Def::judge()</a>, and <a class="el" href="def_8cpp_source.html#l00414">mim::Def::node_name()</a>.</p>
 
 </div>
 </div>

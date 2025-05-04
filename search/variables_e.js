@@ -5,5 +5,6 @@ var searchData=
   ['sigma2sym2idx_2',['sigma2sym2idx',['../classmim_1_1ast_1_1Emitter.html#aa480a2d5ca25fb73a51ef734f569a708',1,'mim::ast::Emitter']]],
   ['str_3',['str',['../structmim_1_1Error_1_1Msg.html#aaa0aa4ce4f863fa5b91c557d18d263ac',1,'mim::Error::Msg']]],
   ['subs_4',['subs',['../structmim_1_1ast_1_1AnnexInfo.html#a19900005d8eccaaccb42a2f81510ac37',1,'mim::ast::AnnexInfo']]],
-  ['sym_5',['sym',['../structmim_1_1ast_1_1AnnexInfo.html#a45a305128bb709bfbf50dcb5a8e7943c',1,'mim::ast::AnnexInfo']]]
+  ['substs_5',['substs',['../classmim_1_1World.html#a4b1bfdc913535dc888b1e9547cd85df2',1,'mim::World::Move.arena']]],
+  ['sym_6',['sym',['../structmim_1_1ast_1_1AnnexInfo.html#a45a305128bb709bfbf50dcb5a8e7943c',1,'mim::ast::AnnexInfo']]]
 ];

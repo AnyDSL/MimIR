@@ -2,8 +2,6 @@ var def_8h =
 [
     [ "mim::Setters< P, D >", "classmim_1_1Setters.html", "classmim_1_1Setters" ],
     [ "mim::Def", "classmim_1_1Def.html", "classmim_1_1Def" ],
-    [ "mim::DefDefHash", "structmim_1_1DefDefHash.html", "structmim_1_1DefDefHash" ],
-    [ "mim::DefDefEq", "structmim_1_1DefDefEq.html", "structmim_1_1DefDefEq" ],
     [ "mim::Var", "classmim_1_1Var.html", "classmim_1_1Var" ],
     [ "mim::Univ", "classmim_1_1Univ.html", "classmim_1_1Univ" ],
     [ "mim::UMax", "classmim_1_1UMax.html", "classmim_1_1UMax" ],
@@ -19,9 +17,6 @@ var def_8h =
     [ "MIM_NODE", "def_8h.html#ae7b11a3eb455bf4f67f20e1d364be209", null ],
     [ "MIM_PROJ", "def_8h.html#af607f4cede9847484ec49abf7d351932", null ],
     [ "mim::Def2Def", "namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab", null ],
-    [ "mim::DefDef", "namespacemim.html#a5e2b9a49889ee3546fc4e7ad1b3a9170", null ],
-    [ "mim::DefDefMap", "namespacemim.html#a147444565d00e8b50021d235fcb42e2d", null ],
-    [ "mim::DefDefSet", "namespacemim.html#acccd146e22e5364f753eb3c37fce5876", null ],
     [ "mim::DefMap", "namespacemim.html#a879f9e518002de13d65d757536033f0e", null ],
     [ "mim::Defs", "namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740", null ],
     [ "mim::DefSet", "namespacemim.html#aa55cde5ad8246840d0a046cc728f987d", null ],

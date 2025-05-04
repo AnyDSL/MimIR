@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['fe_3a_3alexer_3c_203_2c_20lexer_20_3e_0',['Lexer&lt; 3, Lexer &gt;',['../classmim_1_1ast_1_1Lexer.html#a4314bb33e1b8c9eb4d9fa0b79259cd29',1,'mim::ast::Lexer']]],
-  ['fppass_1',['FPPass',['../classmim_1_1PassMan.html#a48bcac37063f4509ea1db8c9411e3fa6',1,'mim::PassMan']]]
+  ['indexset_0',['IndexSet',['../classmim_1_1IndexSet_1_1reference.html#add469a0063023e5ade22035cbaf464fe',1,'mim::IndexSet::reference']]],
+  ['isa_5fclos_5flit_1',['isa_clos_lit',['../classmim_1_1plug_1_1clos_1_1ClosLit.html#aef73f27b67cfcb475627cfcb782c1b05',1,'mim::plug::clos::ClosLit']]]
 ];
