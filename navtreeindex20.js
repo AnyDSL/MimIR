@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"namespacemim_1_1plug_1_1matrix.html#a11b9674b35894ca4f3605791d4783b74":[3,0,1,4,8,3],
+"namespacemim_1_1plug_1_1matrix.html#a16779fcb9eddd2e937cd68822b511231":[3,0,1,4,8,28],
 "namespacemim_1_1plug_1_1matrix.html#a1a46381ed716136bd172a2ea0fd27614":[3,0,1,4,8,14],
 "namespacemim_1_1plug_1_1matrix.html#a25b7c31b65c2a91faeb93be61e409944":[3,0,1,4,8,20],
 "namespacemim_1_1plug_1_1matrix.html#a26667b55e4b1b958050cfe9ecbf327fd":[3,0,1,4,8,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "regex_8cpp_source.html":[6,0,3,1,4,12,3],
 "regex_8h.html":[6,0,2,1,4,12,2],
 "regex_8h_source.html":[6,0,2,1,4,12,2],
-"remem__elim_8h.html":[6,0,2,1,4,9,0,2],
-"remem__elim_8h_source.html":[6,0,2,1,4,9,0,2],
-"remove__perm_8cpp.html":[6,0,3,1,4,11,0,0]
+"remem__elim_8h.html":[6,0,2,1,4,9,0,2]
 };
