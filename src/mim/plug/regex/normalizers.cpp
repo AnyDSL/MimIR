@@ -85,17 +85,13 @@ const Def* normalize_conj(const Def* type, const Def* callee, const Def* arg) {
 bool compare_re(const Def* lhs, const Def* rhs) {
     auto lhs_range = mim::match<range>(lhs);
     auto rhs_range = mim::match<range>(rhs);
-    if (lhs_range) {
-        // sort ranges by increasing lower bound
-        if (rhs_range) return Lit::as(lhs_range->arg()->proj(0)) < Lit::as(rhs_range->arg()->proj(0));
-        // ranges to the end
-        return false;
-    } else if (rhs_range) {
-        // ranges to the end
-        return true;
-    }
-    // keep
-    return true;
+    // sort ranges by increasing lower bound
+    if (lhs_range && rhs_range) return Lit::as(lhs_range->arg()->proj(0)) < Lit::as(rhs_range->arg()->proj(0));
+    // ranges to the end
+    if (lhs_range) return false;
+    if (rhs_range) return true;
+
+    return lhs->gid() < rhs->gid(); // make irreflexive
 }
 
 void make_vector_unique(DefVec& args) {
