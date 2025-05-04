@@ -572,10 +572,9 @@ Defs World::reduce(Def* mut, const Def* arg) {
 
         auto buf   = move_.arena.substs.allocate(sizeof(Subst) + size * sizeof(const Def*), alignof(const Def*));
         auto subst = new (buf) Subst(size);
-        auto res   = subst->defs_;
         auto rw    = VarSubst(var, arg);
-        for (size_t i = offset, e = mut->num_ops(); i != e; ++i) *res++ = rw.subst(mut->op(i));
-        move_.substs[{mut, arg}] = subst;
+        for (size_t i = 0; i != size; ++i) subst->defs_[i] = rw.subst(mut->op(i + offset));
+        assert_emplace(move_.substs, std::pair{mut, arg}, subst);
         return subst->defs();
     }
 
