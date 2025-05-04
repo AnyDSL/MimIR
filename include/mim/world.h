@@ -514,6 +514,10 @@ public:
     [[nodiscard]] auto& muts() { return move_.muts; }
     [[nodiscard]] const auto& vars() const { return move_.vars; }
     [[nodiscard]] const auto& muts() const { return move_.muts; }
+
+    /// Yields the new body of `[mut->var() -> arg]mut`.
+    /// The new body may have fewer elements as `mut->num_ops()` addording to Def::reduction_offset.
+    /// E.g. a Pi has a Pi::reduction_offset of 1, and only Pi::dom will be reduced - *not* Pi::codom.
     Defs reduce(Def* mut, const Def* arg);
     ///@}
 

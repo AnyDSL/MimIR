@@ -502,7 +502,7 @@ public:
 
     const Def* refine(size_t i, const Def* new_op) const;
 
-    /// Reduce Def::ops by substituting `this` mutable's Var with @p arg.
+    /// @see World::reduce
     Defs reduce(const Def* arg) const;
     Defs reduce(const Def* arg);
 
