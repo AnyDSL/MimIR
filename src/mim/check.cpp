@@ -3,7 +3,7 @@
 #include <absl/container/fixed_array.h>
 #include <fe/assert.h>
 
-#include "mim/subst.h"
+#include "mim/rewrite.h"
 #include "mim/world.h"
 
 namespace mim {
@@ -19,14 +19,14 @@ static bool needs_zonk(const Def* def) {
     return false;
 }
 
-class Zonker : public Subst {
+class Zonker : public Rewriter {
 public:
     Zonker(World& world)
-        : Subst(world) {}
+        : Rewriter(world) {}
 
-    const Def* subst(const Def* def) override {
+    const Def* rewrite(const Def* def) override {
         def = Hole::find(def);
-        return needs_zonk(def) ? Subst::subst(def) : def;
+        return needs_zonk(def) ? Rewriter::rewrite(def) : def;
     }
 };
 
@@ -34,7 +34,7 @@ public:
 
 const Def* Def::zonk() const {
     auto def = Hole::find(this);
-    return needs_zonk(def) ? Zonker(world()).subst(def) : def;
+    return needs_zonk(def) ? Zonker(world()).rewrite(def) : def;
 }
 
 /*
@@ -63,11 +63,11 @@ const Def* Hole::tuplefy() {
         auto infers = absl::FixedArray<const Def*>(n);
         if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
             auto var  = sigma->has_var();
-            auto sub  = VarSubst(var, this);
+            auto rw   = VarRewriter(var, this);
             infers[0] = w.mut_hole(sigma->op(0));
             for (size_t i = 1; i != n; ++i) {
-                sub.map(sigma->var(n, i - 1), infers[i - 1]);
-                infers[i] = w.mut_hole(sub.subst(sigma->op(i)));
+                rw.map(sigma->var(n, i - 1), infers[i - 1]);
+                infers[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
             }
         } else {
             for (size_t i = 0; i != n; ++i) infers[i] = w.mut_hole(type()->proj(n, i));

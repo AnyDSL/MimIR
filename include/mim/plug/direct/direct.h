@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mim/subst.h>
+#include <mim/rewrite.h>
 
 #include "mim/plug/direct/autogen.h"
 
@@ -22,7 +22,7 @@ inline const Def* op_cps2ds_dep(const Def* k) {
 
     if (auto dom = K->dom()->isa_mut<Sigma>())
         if (auto var = dom->has_var())
-            body = VarSubst(var, l->var()).subst(U); // TODO typeof(dom->var()) != typeof(l->var())
+            body = VarRewriter(var, l->var()).rewrite(U); // TODO typeof(dom->var()) != typeof(l->var())
     l->set(true, body);
 
     return w.app(w.app(w.annex<direct::cps2ds_dep>(), {T, l}), k);

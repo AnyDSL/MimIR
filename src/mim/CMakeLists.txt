@@ -11,8 +11,8 @@ target_sources(libmim
         lattice.cpp
         nest.cpp
         plugin.cpp
+        rewrite.cpp
         schedule.cpp
-        subst.cpp
         tuple.cpp
         world.cpp
         ast/ast.cpp

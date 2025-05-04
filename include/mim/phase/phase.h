@@ -2,7 +2,7 @@
 
 #include "mim/def.h"
 #include "mim/nest.h"
-#include "mim/subst.h"
+#include "mim/rewrite.h"
 
 #include "mim/pass/pass.h"
 
@@ -53,11 +53,11 @@ private:
 /// Visits the current Phase::world and constructs a new RWPhase::world along the way.
 /// It recursively **rewrites** all World::externals().
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, and Rewriter::rewrite_mut.
-class RWPhase : public Phase, public Subst {
+class RWPhase : public Phase, public Rewriter {
 public:
     RWPhase(World& world, std::string_view name)
         : Phase(world, name, true)
-        , Subst(world) {}
+        , Rewriter(world) {}
 
     World& world() { return Phase::world(); }
     void start() override;

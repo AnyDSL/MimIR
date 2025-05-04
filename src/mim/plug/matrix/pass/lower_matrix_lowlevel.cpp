@@ -56,7 +56,7 @@ const Def* arr_ty_of_matrix_ty(const Def* S, const Def* T) {
 
 } // namespace
 
-const Def* LowerMatrixLowLevel::subst_imm(const Def* def) {
+const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
     assert(!match<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
     assert(!match<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
     assert(!match<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
@@ -66,8 +66,8 @@ const Def* LowerMatrixLowLevel::subst_imm(const Def* def) {
     // TODO: generalize arg rewrite
     if (auto mat_ax = match<matrix::Mat>(def)) {
         auto [_, S, T] = mat_ax->args<3>();
-        S              = subst(S);
-        T              = subst(T);
+        S              = rewrite(S);
+        T              = rewrite(T);
         auto arr_ty    = arr_ty_of_matrix_ty(S, T);
 
         auto addr_space = world().lit_nat_0();
@@ -78,9 +78,9 @@ const Def* LowerMatrixLowLevel::subst_imm(const Def* def) {
         world().DLOG("init {} : {}", def, def->type());
         auto [_, S, T, mem] = init_ax->args<4>();
         world().DLOG("  S T mem {} {} {}", S, T, mem);
-        S   = subst(S);
-        T   = subst(T);
-        mem = subst(mem);
+        S   = rewrite(S);
+        T   = rewrite(T);
+        mem = rewrite(mem);
         world().DLOG("  S T mem {} {} {}", S, T, mem);
         auto arr_ty          = arr_ty_of_matrix_ty(S, T);
         auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
@@ -93,9 +93,9 @@ const Def* LowerMatrixLowLevel::subst_imm(const Def* def) {
         world().DLOG("  mem: {} : {}", mem, mem->type());
         world().DLOG("  mat: {} : {}", mat, mat->type());
         world().DLOG("  idx: {} : {}", idx, idx->type());
-        mem = subst(mem);
-        mat = subst(mat);
-        idx = subst(idx);
+        mem = rewrite(mem);
+        mat = rewrite(mat);
+        idx = rewrite(idx);
         world().DLOG("rewritten read");
         world().DLOG("  mem: {} : {}", mem, mem->type());
         world().DLOG("  mat: {} : {}", mat, mat->type());
@@ -112,10 +112,10 @@ const Def* LowerMatrixLowLevel::subst_imm(const Def* def) {
         world().DLOG("  mat: {} : {}", mat, mat->type());
         world().DLOG("  idx: {} : {}", idx, idx->type());
         world().DLOG("  val: {} : {}", val, val->type());
-        mem = subst(mem);
-        mat = subst(mat);
-        idx = subst(idx);
-        val = subst(val);
+        mem = rewrite(mem);
+        mat = rewrite(mat);
+        idx = rewrite(idx);
+        val = rewrite(val);
         world().DLOG("rewritten insert");
         world().DLOG("  mem: {} : {}", mem, mem->type());
         world().DLOG("  mat: {} : {}", mat, mat->type());
@@ -127,11 +127,11 @@ const Def* LowerMatrixLowLevel::subst_imm(const Def* def) {
         return world().tuple({mem2, ptr_mat});
     } else if (auto const_ax = match<matrix::constMat>(def)) {
         auto [mem, val]      = const_ax->args<2>();
-        mem                  = subst(mem);
-        val                  = subst(val);
+        mem                  = rewrite(mem);
+        val                  = rewrite(val);
         auto [n_def, S, T]   = const_ax->callee()->as<App>()->args<3>();
-        S                    = subst(S);
-        T                    = subst(T);
+        S                    = rewrite(S);
+        T                    = rewrite(T);
         auto arr_ty          = arr_ty_of_matrix_ty(S, T);
         auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
 
@@ -147,7 +147,7 @@ const Def* LowerMatrixLowLevel::subst_imm(const Def* def) {
     // ignore unapplied axioms to avoid spurious type replacements
     if (def->isa<Axiom>()) return def;
 
-    return Subst::subst_imm(def); // continue recursive rewriting with everything else
+    return Rewriter::rewrite_imm(def); // continue recursive rewriting with everything else
 }
 
 } // namespace mim::plug::matrix
