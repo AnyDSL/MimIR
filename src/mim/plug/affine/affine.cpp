@@ -1,7 +1,6 @@
 #include "mim/plug/affine/affine.h"
 
 #include <mim/config.h>
-#include <mim/rewrite.h>
 
 #include <mim/pass/pass.h>
 #include <mim/pass/pipelinebuilder.h>

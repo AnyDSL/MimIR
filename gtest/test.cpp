@@ -5,7 +5,6 @@
 #include <gtest/gtest.h>
 
 #include <mim/driver.h>
-#include <mim/rewrite.h>
 
 #include <mim/ast/parser.h>
 

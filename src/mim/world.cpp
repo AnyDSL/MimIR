@@ -341,8 +341,8 @@ const Def* World::extract(const Def* d, const Def* index) {
         }
 
         if (auto sigma = type->isa<Sigma>()) {
-            if (auto mut_sigma = sigma->isa_mut<Sigma>()) {
-                auto t = VarRewriter(mut_sigma->has_var(), d).rewrite(sigma->op(*i));
+            if (auto var = sigma->has_var()) {
+                auto t = VarRewriter(var, d).rewrite(sigma->op(*i));
                 return unify<Extract>(2, t, d, index);
             }
 
@@ -561,6 +561,24 @@ Sym World::append_suffix(Sym symbol, std::string suffix) {
     }
 
     return sym(std::move(name));
+}
+
+Defs World::reduce(Def* mut, const Def* arg) {
+    auto offset = mut->reduction_offset();
+    auto size   = mut->num_ops() - offset;
+
+    if (auto var = mut->has_var()) {
+        if (auto i = move_.substs.find({mut, arg}); i != move_.substs.end()) return i->second->defs();
+
+        auto buf  = move_.arena.substs.allocate(sizeof(Body) + size * sizeof(const Def*), alignof(const Def*));
+        auto body = new (buf) Body(size);
+        auto rw   = VarRewriter(var, arg);
+        for (size_t i = 0; i != size; ++i) body->defs_[i] = rw.rewrite(mut->op(i + offset));
+        assert_emplace(move_.substs, std::pair{mut, arg}, body);
+        return body->defs();
+    }
+
+    return {mut->ops().begin() + offset, size};
 }
 
 /*

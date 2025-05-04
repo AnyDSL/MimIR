@@ -4,6 +4,8 @@
 
 #include <mim/lam.h>
 
+#include "mim/rewrite.h"
+
 #include "mim/plug/direct/direct.h"
 
 namespace mim::plug::direct {

@@ -2,9 +2,9 @@
 
 #include <algorithm>
 
+#include <absl/container/fixed_array.h>
 #include <fe/assert.h>
 
-#include "mim/rewrite.h"
 #include "mim/world.h"
 
 #include "mim/util/hash.h"
@@ -224,33 +224,16 @@ const Def* Pack::immutabilize() {
  * reduce
  */
 
-DefVec Def::reduce(const Def* arg) const {
-    if (auto mut = isa_mut()) return mut->reduce(arg);
-    return DefVec(ops().begin(), ops().end());
+Defs Def::reduce(const Def* arg) const {
+    if (auto mut = isa_mut()) return world().reduce(mut, arg);
+    return {ops().begin() + reduction_offset(), num_ops() - reduction_offset()};
 }
 
-DefVec Def::reduce(const Def* arg) {
-    if (auto var = has_var()) {
-        auto& cache = world().move_.cache;
-        if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
-
-        auto rw  = VarRewriter(var, arg);
-        auto res = DefVec(num_ops());
-        for (size_t i = 0, e = res.size(); i != e; ++i) res[i] = rw.rewrite(op(i));
-
-        return cache[{this, arg}] = res;
-    }
-    return DefVec(ops().begin(), ops().end());
-}
-
-const Def* Def::reduce(size_t i, const Def* arg) const {
-    if (auto mut = isa_mut(); mut && has_var()) return mut->reduce(arg)[i];
-    return op(i);
-}
+Defs Def::reduce(const Def* arg) { return world().reduce(this, arg); }
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
-    DefVec new_ops(ops().begin(), ops().end());
-    new_ops[i] = new_op;
+    auto new_ops = absl::FixedArray<const Def*>(num_ops());
+    for (size_t j = 0, e = num_ops(); j != e; ++j) new_ops[j] = i == j ? new_op : op(j);
     return rebuild(type(), new_ops);
 }
 

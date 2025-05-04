@@ -27,6 +27,7 @@ public:
     ///@{
     const Def* immutabilize() override;
     Sigma* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+    constexpr size_t reduction_offset() const noexcept override { return 0; }
     ///@}
 
     /// @name Type Checking
@@ -90,9 +91,10 @@ public:
 
     /// @name Rebuild
     ///@{
-    const Def* reduce(const Def* arg) const { return Def::reduce(1, arg); }
     Arr* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
+    const Def* reduce(const Def* arg) const { return Def::reduce(arg)[0]; }
+    constexpr size_t reduction_offset() const noexcept override { return 1; }
     ///@}
 
     /// @name Type Checking
@@ -137,9 +139,10 @@ public:
 
     /// @name Rebuild
     ///@{
-    const Def* reduce(const Def* arg) const { return Def::reduce(0, arg); }
     Pack* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() override;
+    const Def* reduce(const Def* arg) const { return Def::reduce(arg)[0]; }
+    constexpr size_t reduction_offset() const noexcept override { return 0; }
     ///@}
 
     static constexpr auto Node = mim::Node::Pack;

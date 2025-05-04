@@ -86,9 +86,10 @@ public:
 
     /// @name Rebuild
     ///@{
-    const Def* reduce(const Def* arg) const { return Def::reduce(1, arg); }
     Pi* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Pi* immutabilize() override;
+    const Def* reduce(const Def* arg) const { return Def::reduce(arg)[0]; }
+    constexpr size_t reduction_offset() const noexcept override { return 1; }
     ///@}
 
     static constexpr auto Node = mim::Node::Pi;
@@ -175,7 +176,11 @@ public:
     Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
 
+    /// @name Rebuild
+    ///@{
     Lam* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+    constexpr size_t reduction_offset() const noexcept override { return 0; }
+    ///@}
 
     /// @name Type Checking
     ///@{

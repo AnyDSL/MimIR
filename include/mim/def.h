@@ -502,11 +502,13 @@ public:
 
     const Def* refine(size_t i, const Def* new_op) const;
 
-    /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
-    DefVec reduce(const Def* arg) const;
-    DefVec reduce(const Def* arg);
-    /// As above but only rewrites `this->op(i)`.
-    const Def* reduce(size_t i, const Def* arg) const;
+    /// @see World::reduce
+    Defs reduce(const Def* arg) const;
+    Defs reduce(const Def* arg);
+
+    /// First Def::op that needs to be dealt with during reduction; e.g. for a Pi we don't reduce the Pi::dom.
+    /// @see World::reduce
+    virtual constexpr size_t reduction_offset() const noexcept { return size_t(-1); }
     ///@}
 
     /// @name Type Checking
@@ -592,27 +594,6 @@ private:
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
 };
-
-/// @name DefDef
-///@{
-using DefDef = std::tuple<const Def*, const Def*>;
-
-struct DefDefHash {
-    size_t operator()(DefDef pair) const {
-        if constexpr (sizeof(size_t) == 8)
-            return hash((u64(std::get<0>(pair)->gid()) << 32_u64) | u64(std::get<1>(pair)->gid()));
-        else
-            return hash_combine(hash_begin(std::get<0>(pair)->gid()), std::get<1>(pair)->gid());
-    }
-};
-
-struct DefDefEq {
-    bool operator()(DefDef p1, DefDef p2) const { return p1 == p2; }
-};
-
-template<class To> using DefDefMap = absl::flat_hash_map<DefDef, To, DefDefHash, DefDefEq>;
-using DefDefSet                    = absl::flat_hash_set<DefDef, DefDefHash, DefDefEq>;
-///@}
 
 class Var : public Def, public Setters<Var> {
 private:

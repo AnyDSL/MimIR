@@ -4,7 +4,7 @@
 
 namespace mim {
 
-/// Recurseivly rewrites part of a program **into** the provided World.
+/// Recurseivly rebuilds part of a program **into** the provided World w.r.t.\ Rewriter::map.
 /// This World may be different than the World we started with.
 class Rewriter {
 public:

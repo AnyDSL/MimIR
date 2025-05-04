@@ -1,7 +1,5 @@
 #include "mim/pass/beta_red.h"
 
-#include "mim/rewrite.h"
-
 namespace mim {
 
 const Def* BetaRed::rewrite(const Def* def) {
