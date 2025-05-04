@@ -46,7 +46,7 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     auto codom = ty->codom();
     auto sigma = world().mut_sigma(2);
     // replace ds dom var with cps sigma var (cps dom)
-    auto rw_codom = var ? VarRewriter(var, sigma->var(2, 0)).rewrite(codom) : codom;
+    auto rw_codom = var ? VarSubst(var, sigma->var(2, 0)).subst(codom) : codom;
     sigma->set(0, dom);
     sigma->set(1, world().cn(rw_codom));
 

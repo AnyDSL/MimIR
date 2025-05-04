@@ -5,7 +5,7 @@
 #include "mim/check.h"
 #include "mim/def.h"
 #include "mim/driver.h"
-#include "mim/rewrite.h"
+#include "mim/subst.h"
 #include "mim/tuple.h"
 
 #include "mim/util/util.h"
@@ -186,10 +186,10 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
             arg = new_arg->zonk();
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
             if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
-                auto rw = VarRewriter(lam->has_var(), arg);
-                if (rw.rewrite(lam->filter()) == lit_tt()) {
+                auto rw = VarSubst(lam->has_var(), arg);
+                if (rw.subst(lam->filter()) == lit_tt()) {
                     DLOG("partial evaluate: {} ({})", lam, arg);
-                    return rw.rewrite(lam->body());
+                    return rw.subst(lam->body());
                 }
             }
 
@@ -342,7 +342,7 @@ const Def* World::extract(const Def* d, const Def* index) {
 
         if (auto sigma = type->isa<Sigma>()) {
             if (auto mut_sigma = sigma->isa_mut<Sigma>()) {
-                auto t = VarRewriter(mut_sigma->has_var(), d).rewrite(sigma->op(*i));
+                auto t = VarSubst(mut_sigma->has_var(), d).subst(sigma->op(*i));
                 return unify<Extract>(2, t, d, index);
             }
 
@@ -573,8 +573,8 @@ Defs World::reduce(Def* mut, const Def* arg) {
         auto buf   = move_.arena.substs.allocate(sizeof(Subst) + size * sizeof(const Def*), alignof(const Def*));
         auto subst = new (buf) Subst(size);
         auto res   = subst->defs_;
-        auto rw    = VarRewriter(var, arg);
-        for (size_t i = offset, e = mut->num_ops(); i != e; ++i) *res++ = rw.rewrite(mut->op(i));
+        auto rw    = VarSubst(var, arg);
+        for (size_t i = offset, e = mut->num_ops(); i != e; ++i) *res++ = rw.subst(mut->op(i));
         move_.substs[{mut, arg}] = subst;
         return subst->defs();
     }

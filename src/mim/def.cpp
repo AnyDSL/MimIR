@@ -2,14 +2,12 @@
 
 #include <algorithm>
 
+#include <absl/container/fixed_array.h>
 #include <fe/assert.h>
 
-#include "mim/rewrite.h"
 #include "mim/world.h"
 
 #include "mim/util/hash.h"
-
-#include "absl/container/fixed_array.h"
 
 using namespace std::literals;
 
@@ -234,9 +232,8 @@ Defs Def::reduce(const Def* arg) const {
 Defs Def::reduce(const Def* arg) { return world().reduce(this, arg); }
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
-    // auto new_ops = absl::FixedArray<const Def*>(num_ops());
-    DefVec new_ops(ops().begin(), ops().end());
-    new_ops[i] = new_op;
+    auto new_ops = absl::FixedArray<const Def*>(num_ops());
+    for (size_t j = 0, e = num_ops(); j != e; ++j) new_ops[j] = i == j ? new_op : op(j);
     return rebuild(type(), new_ops);
 }
 

@@ -664,12 +664,12 @@ private:
             // clang-format off
             swap(m1.arena.defs,   m2.arena.defs);
             swap(m1.arena.substs, m2.arena.substs);
-            swap(m1.flags2annex,  m2.flags2annex);
-            swap(m1.sym2external, m2.sym2external);
             swap(m1.defs,         m2.defs);
+            swap(m1.substs,       m2.substs);
             swap(m1.vars,         m2.vars);
             swap(m1.muts,         m2.muts);
-            swap(m1.substs,       m2.substs);
+            swap(m1.flags2annex,  m2.flags2annex);
+            swap(m1.sym2external, m2.sym2external);
             // clang-format on
         }
     } move_;
