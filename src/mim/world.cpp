@@ -185,11 +185,31 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
         if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
             arg = new_arg->zonk();
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
+
             if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
-                auto rw = VarRewriter(lam->has_var(), arg);
-                if (rw.rewrite(lam->filter()) == lit_tt()) {
-                    DLOG("partial evaluate: {} ({})", lam, arg);
-                    return rw.rewrite(lam->body());
+                if (auto var = lam->has_var()) {
+                    if (auto i = move_.substs.find({lam, arg}); i != move_.substs.end()) {
+                        // Is there a cached version?
+                        auto [filter, body] = i->second->defs().span<2>();
+                        if (filter == lit_tt()) return body;
+                    } else {
+                        // First check filter, If true, reduce body and cache reduct.
+                        auto rw     = VarRewriter(var, arg);
+                        auto filter = rw.rewrite(lam->filter());
+                        if (filter == lit_tt()) {
+                            DLOG("partial evaluate: {} ({})", lam, arg);
+                            auto body        = rw.rewrite(lam->body());
+                            auto num_bytes   = sizeof(Reduct) + 2 * sizeof(const Def*);
+                            auto buf         = move_.arena.substs.allocate(num_bytes, alignof(const Def*));
+                            auto reduct      = new (buf) Reduct(2);
+                            reduct->defs_[0] = filter;
+                            reduct->defs_[1] = body;
+                            assert_emplace(move_.substs, std::pair{lam, arg}, reduct);
+                            return body;
+                        }
+                    }
+                } else if (lam->filter() == lit_tt()) {
+                    return lam->body();
                 }
             }
 
@@ -570,12 +590,12 @@ Defs World::reduce(Def* mut, const Def* arg) {
     if (auto var = mut->has_var()) {
         if (auto i = move_.substs.find({mut, arg}); i != move_.substs.end()) return i->second->defs();
 
-        auto buf  = move_.arena.substs.allocate(sizeof(Body) + size * sizeof(const Def*), alignof(const Def*));
-        auto body = new (buf) Body(size);
-        auto rw   = VarRewriter(var, arg);
-        for (size_t i = 0; i != size; ++i) body->defs_[i] = rw.rewrite(mut->op(i + offset));
-        assert_emplace(move_.substs, std::pair{mut, arg}, body);
-        return body->defs();
+        auto buf    = move_.arena.substs.allocate(sizeof(Reduct) + size * sizeof(const Def*), alignof(const Def*));
+        auto reduct = new (buf) Reduct(size);
+        auto rw     = VarRewriter(var, arg);
+        for (size_t i = 0; i != size; ++i) reduct->defs_[i] = rw.rewrite(mut->op(i + offset));
+        assert_emplace(move_.substs, std::pair{mut, arg}, reduct);
+        return reduct->defs();
     }
 
     return {mut->ops().begin() + offset, size};

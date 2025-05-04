@@ -637,9 +637,9 @@ private:
         bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
     };
 
-    class Body {
+    class Reduct {
     public:
-        constexpr Body(size_t size) noexcept
+        constexpr Reduct(size_t size) noexcept
             : size_(size) {}
 
         constexpr Defs defs() const noexcept { return {defs_, size_}; }
@@ -648,7 +648,7 @@ private:
         size_t size_;
         const Def* defs_[];
 
-        friend Defs World::reduce(Def*, const Def*);
+        friend class World;
     };
 
     struct Move {
@@ -661,7 +661,7 @@ private:
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         Sets<Def> muts;
         Sets<const Var> vars;
-        absl::flat_hash_map<std::pair<Def*, const Def*>, const Body*> substs;
+        absl::flat_hash_map<std::pair<Def*, const Def*>, const Reduct*> substs;
 
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;

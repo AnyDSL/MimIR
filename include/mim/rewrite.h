@@ -33,7 +33,8 @@ public:
     VarRewriter(const Var* var, const Def* arg)
         : Rewriter(arg->world())
         , vars_(var ? Vars(var) : Vars()) {
-        if (var) map(var, arg);
+        assert(var);
+        map(var, arg);
     }
 
     const Def* rewrite_imm(const Def* imm) override {
