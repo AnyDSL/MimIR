@@ -15,6 +15,8 @@ protected:
     Bound(Node node, const Def* type, size_t size)
         : Def(node, type, size, 0) {} ///< Constructor for a *mutable* Bound.
 
+    constexpr size_t reduction_offset() const noexcept override { return 0; }
+
 public:
     /// @name Get Element by Type
     ///@{

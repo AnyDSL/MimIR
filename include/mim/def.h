@@ -503,10 +503,11 @@ public:
     const Def* refine(size_t i, const Def* new_op) const;
 
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
-    DefVec reduce(const Def* arg) const;
-    DefVec reduce(const Def* arg);
-    /// As above but only rewrites `this->op(i)`.
-    const Def* reduce(size_t i, const Def* arg) const;
+    Defs reduce(const Def* arg) const;
+    Defs reduce(const Def* arg);
+
+    /// First Def::op that needs to be dealt with during reduction; e.g. for a Pi we don't reduce the Pi::dom.
+    virtual constexpr size_t reduction_offset() const noexcept { return size_t(-1); }
     ///@}
 
     /// @name Type Checking

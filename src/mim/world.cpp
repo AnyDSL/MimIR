@@ -563,6 +563,25 @@ Sym World::append_suffix(Sym symbol, std::string suffix) {
     return sym(std::move(name));
 }
 
+Defs World::reduce(Def* mut, const Def* arg) {
+    auto offset = mut->reduction_offset();
+    auto size   = mut->num_ops() - offset;
+
+    if (auto var = mut->has_var()) {
+        if (auto i = move_.substs.find({mut, arg}); i != move_.substs.end()) return i->second->defs();
+
+        auto buf   = move_.arena.substs.allocate(sizeof(Subst) + size * sizeof(const Def*), alignof(const Def*));
+        auto subst = new (buf) Subst(size);
+        auto res   = subst->defs_;
+        auto rw    = VarRewriter(var, arg);
+        for (size_t i = offset, e = mut->num_ops(); i != e; ++i) *res++ = rw.rewrite(mut->op(i));
+        move_.substs[{mut, arg}] = subst;
+        return subst->defs();
+    }
+
+    return {mut->ops().begin() + offset, size};
+}
+
 /*
  * debugging
  */

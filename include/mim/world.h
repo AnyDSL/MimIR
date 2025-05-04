@@ -514,6 +514,7 @@ public:
     [[nodiscard]] auto& muts() { return move_.muts; }
     [[nodiscard]] const auto& vars() const { return move_.vars; }
     [[nodiscard]] const auto& muts() const { return move_.muts; }
+    Defs reduce(Def* mut, const Def* arg);
     ///@}
 
     /// @name dump/log
@@ -555,7 +556,7 @@ private:
     /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
-        auto state = move_.arena.state();
+        auto state = move_.arena.defs.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = get_loc()) def->set(loc);
         assert(!def->isa_mut());
@@ -583,7 +584,7 @@ private:
     template<class T> void deallocate(fe::Arena::State state, const T* ptr) {
         --state_.pod.curr_gid;
         ptr->~T();
-        move_.arena.deallocate(state);
+        move_.arena.defs.deallocate(state);
     }
 
     template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
@@ -614,7 +615,7 @@ private:
                       "you are not allowed to introduce any additional data in subclasses of Def");
         auto lock      = Lock();
         auto num_bytes = sizeof(Def) + sizeof(uintptr_t) * num_ops;
-        auto ptr       = move_.arena.allocate(num_bytes, alignof(T));
+        auto ptr       = move_.arena.defs.allocate(num_bytes, alignof(T));
         auto res       = new (ptr) T(std::forward<Args&&>(args)...);
         assert(res->num_ops() == num_ops);
         return res;
@@ -632,25 +633,43 @@ private:
         bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
     };
 
+    class Subst {
+    public:
+        constexpr Subst(size_t size) noexcept
+            : size_(size) {}
+
+        constexpr Defs defs() const noexcept { return {defs_, size_}; }
+
+    private:
+        size_t size_;
+        const Def* defs_[];
+
+        friend Defs World::reduce(Def*, const Def*);
+    };
+
     struct Move {
+        struct {
+            fe::Arena defs, substs;
+        } arena;
+
         absl::btree_map<flags_t, const Def*> flags2annex;
         absl::btree_map<Sym, Def*> sym2external;
-        fe::Arena arena;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         Sets<Def> muts;
         Sets<const Var> vars;
-        DefDefMap<DefVec> cache;
+        absl::flat_hash_map<std::pair<Def*, const Def*>, const Subst*> substs;
 
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;
             // clang-format off
+            swap(m1.arena.defs,   m2.arena.defs);
+            swap(m1.arena.substs, m2.arena.substs);
             swap(m1.flags2annex,  m2.flags2annex);
             swap(m1.sym2external, m2.sym2external);
-            swap(m1.arena,        m2.arena);
             swap(m1.defs,         m2.defs);
             swap(m1.vars,         m2.vars);
             swap(m1.muts,         m2.muts);
-            swap(m1.cache,        m2.cache);
+            swap(m1.substs,       m2.substs);
             // clang-format on
         }
     } move_;
@@ -691,8 +710,6 @@ private:
         assert(&w1.univ()->world() == &w1);
         assert(&w2.univ()->world() == &w2);
     }
-
-    friend DefVec Def::reduce(const Def*);
 };
 
 } // namespace mim
