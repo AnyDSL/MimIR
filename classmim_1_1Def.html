@@ -607,7 +607,7 @@ Friends</h2></td></tr>
 </li>
 <li><a class="el" href="classmim_1_1Axiom.html">Axiom</a>: To introduce new entities.</li>
 <li><a class="el" href="classmim_1_1Proxy.html">Proxy</a>: Used for intermediate values during optimizations.</li>
-<li><a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a>: <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a> in the presentation filled by type inference (always mutable as the holes are filled in later).</li>
+<li><a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a>: A metavariable filled in by the type inference (always mutable as holes are filled in later).</li>
 <li><a class="el" href="classmim_1_1Type.html">Type</a>, <a class="el" href="classmim_1_1Univ.html">Univ</a>, <a class="el" href="classmim_1_1UMax.html">UMax</a>, <a class="el" href="classmim_1_1UInc.html">UInc</a>: To keep track of type levels.</li>
 </ul>
 <p>The data layout (see World::alloc and <a class="el" href="#a20e9e09e55fc9b46a6f74423f2c5d35d">Def::deps</a>) looks like this: </p><div class="fragment"><div class="line">Def| <a class="code hl_function" href="#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a> | <a class="code hl_function" href="#a67a94030742a4217fe19bb739990f73e">op</a>(0) ... <a class="code hl_function" href="#a67a94030742a4217fe19bb739990f73e">op</a>(<a class="code hl_function" href="#afc9a0f45e4d093d11aa4633b8b38c879">num_ops</a>-1) |</div>
