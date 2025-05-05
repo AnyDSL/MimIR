@@ -547,18 +547,39 @@ const Def* World::inj(const Def* type, const Def* value) {
 
 const Def* World::split(const Def* type, const Def* value) { return unify<Split>(1, type, value); }
 
-const Def* World::test(const Def* value, const Def* probe, const Def* match, const Def* clash) {
-    auto m_pi = match->type()->isa<Pi>();
-    auto c_pi = clash->type()->isa<Pi>();
+const Def* World::test(Defs ops_) {
+    if (ops_.size() == 1) return ops_.front();
 
-    // TODO proper error msg
-    assert(m_pi && c_pi);
-    auto a = m_pi->dom()->isa_lit_arity();
-    assert_unused(a && *a == 2);
-    assert(Checker::alpha<Checker::Check>(m_pi->dom(2, 0_s), c_pi->dom()));
+    auto ops   = DefVec(ops_.begin(), ops_.end());
+    auto value = ops.front();
+    auto arms  = ops.span().subspan(1);
+    auto join  = value->type()->isa<Join>();
 
-    auto codom = join({m_pi->codom(), c_pi->codom()});
-    return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);
+    if (!join) error(value->loc(), "scrutinee of a test expression must be of union type");
+
+    if (arms.size() != join->num_ops())
+        error(value->loc(), "test expression has {} arms but union type has {} cases", arms.size(), join->num_ops());
+
+    for (auto arm : arms)
+        if (!arm->type()->isa<Pi>())
+            error(arm->loc(), "arm of test expression does not have a function type but is of type '{}'", arm->type());
+
+    std::ranges::sort(arms, [](const Def* arm1, const Def* arm2) {
+        return arm1->type()->as<Pi>()->dom()->gid() < arm2->type()->as<Pi>()->dom()->gid();
+    });
+
+    const Def* type = nullptr;
+    for (size_t i = 0, e = arms.size(); i != e; ++i) {
+        auto arm = arms[i];
+        auto pi  = arm->type()->as<Pi>();
+        if (!Checker::alpha<Checker::Check>(pi->dom(), join->op(i)))
+            error(arm->loc(),
+                  "domain type '{}' of arm in a test expression does not match case type '{}' in union type", pi->dom(),
+                  join->op(i));
+        type = type ? this->join({type, pi->codom()}) : pi->codom();
+    }
+
+    return unify<Test>(ops.size(), type, ops);
 }
 
 const Def* World::uniq(const Def* inhabitant) { return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant); }

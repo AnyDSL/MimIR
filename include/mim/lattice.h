@@ -119,8 +119,8 @@ private:
 /// @remark This operation is usually known as `case` but named `Test` since `case` is a keyword in C++.
 class Test : public Def, public Setters<Test> {
 private:
-    Test(const Def* type, const Def* value, const Def* probe, const Def* match, const Def* clash)
-        : Def(Node, type, {value, probe, match, clash}, 0) {}
+    Test(const Def* type, Defs ops)
+        : Def(Node, type, ops, 0) {}
 
 public:
     using Setters<Test>::set;
@@ -129,9 +129,9 @@ public:
     /// @name ops
     ///@{
     const Def* value() const { return op(0); }
-    const Def* probe() const { return op(1); }
-    const Def* match() const { return op(2); }
-    const Def* clash() const { return op(3); }
+    template<size_t N = std::dynamic_extent> constexpr auto arms() const noexcept { return ops().subspan<1, N>(); }
+    const Def* arm(size_t i) const { return arms()[i]; }
+    size_t num_arms() const { return arms().size(); }
     ///@}
 
 private:

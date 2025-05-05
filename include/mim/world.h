@@ -440,7 +440,7 @@ public:
     const Def* merge(Defs ops);
     const Def* inj(const Def* type, const Def* value);
     const Def* split(const Def* type, const Def* value);
-    const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash);
+    const Def* test(Defs);
     const Def* uniq(const Def* inhabitant);
     ///@}
 

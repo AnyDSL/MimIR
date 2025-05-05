@@ -125,7 +125,7 @@ const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi
 const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
 const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
-const Def* Test   ::rebuild_(World& w, const Def*  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
+const Def* Test   ::rebuild_(World& w, const Def*  , Defs o) const { return w.test(o); }
 const Def* Tuple  ::rebuild_(World& w, const Def* t, Defs o) const { return w.tuple(t, o); }
 const Def* Type   ::rebuild_(World& w, const Def*  , Defs o) const { return w.type(o[0]); }
 const Def* UInc   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uinc(o[0], offset()); }
