@@ -28,7 +28,7 @@ const Def* SSAConstr::rewrite(const Proxy* proxy) {
 }
 
 const Def* SSAConstr::rewrite(const Def* def) {
-    if (auto slot = match<mem::slot>(def)) {
+    if (auto slot = test<mem::slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
         auto sloxy     = proxy(ptr->type(), {curr_mut(), id}, Sloxy)->set(slot->dbg());
@@ -38,10 +38,10 @@ const Def* SSAConstr::rewrite(const Def* def) {
             data(curr_mut()).writable.emplace(sloxy);
             return world().tuple({mem, sloxy});
         }
-    } else if (auto load = match<mem::load>(def)) {
+    } else if (auto load = test<mem::load>(def)) {
         auto [mem, ptr] = load->args<2>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) return world().tuple({mem, get_val(curr_mut(), sloxy)});
-    } else if (auto store = match<mem::store>(def)) {
+    } else if (auto store = test<mem::store>(def)) {
         auto [mem, ptr, val] = store->args<3>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_mut()).writable.contains(sloxy)) {

@@ -40,7 +40,7 @@ const Def* LowerMatrixHighLevelMapRed::rewrite(const Def* def) {
 }
 
 const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
-    if (auto mat_ax = match<matrix::prod>(def)) {
+    if (auto mat_ax = test<matrix::prod>(def)) {
         auto [mem, M, N]  = mat_ax->args<3>();
         auto [m, k, l, w] = mat_ax->decurry()->args<4>();
         auto w_lit        = Lit::isa(w);

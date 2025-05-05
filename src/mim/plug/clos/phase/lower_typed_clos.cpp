@@ -118,7 +118,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto c = isa_clos_lit(def)) {
         auto env      = rewrite(c.env());
-        auto mode     = (env->type()->isa<Idx>() || match<mem::Ptr>(env->type())) ? Unbox : Box;
+        auto mode     = (env->type()->isa<Idx>() || test<mem::Ptr>(env->type())) ? Unbox : Box;
         const Def* fn = make_stub(c.fnc_as_lam(), mode, true);
         if (env->type() == w.sigma()) {
             // Optimize empty env

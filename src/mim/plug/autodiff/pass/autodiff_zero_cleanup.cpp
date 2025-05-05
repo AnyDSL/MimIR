@@ -14,7 +14,7 @@ namespace mim::plug::autodiff {
 const Def* AutoDiffZeroCleanup::rewrite(const Def* def) {
     // Ideally this code segment is never reached.
     // (all zeros are resolved before)
-    if (auto zero_app = match<zero>(def); zero_app) {
+    if (auto zero_app = test<zero>(def); zero_app) {
         // callee = zero
         // arg = type T
         auto T = zero_app->arg();

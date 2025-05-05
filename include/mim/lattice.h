@@ -49,7 +49,7 @@ private:
 class Merge : public Def, public Setters<Merge> {
 public:
     using Setters<Merge>::set;
-    static constexpr auto Node = mim::Node::Ac;
+    static constexpr auto Node = mim::Node::Merge;
 
 private:
     Merge(const Def* type, Defs defs)
@@ -97,7 +97,7 @@ public:
     const Def* value() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Pick;
+    static constexpr auto Node = mim::Node::Split;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -105,26 +105,15 @@ private:
     friend class World;
 };
 
-/// Test whether Test::value currently holds **type** Test::probe:
-/// ```
-/// test value, probe, match, clash
-/// ```
-/// @note
-/// * Test::probe is a **type**!
-/// * This operation yields Test::match, if `tt`, and Test::clash otherwise.
-/// @invariant
-/// * Test::value must be of type Join.
-/// * Test::match must be of type `A -> B`.
-/// * Test::clash must be of type `[A, probe] -> C`.
-/// @remark This operation is usually known as `case` but named `Test` since `case` is a keyword in C++.
-class Test : public Def, public Setters<Test> {
+/// Scrutinize Match::value() and dispatch to Match::arms.
+class Match : public Def, public Setters<Match> {
 private:
-    Test(const Def* type, Defs ops)
+    Match(const Def* type, Defs ops)
         : Def(Node, type, ops, 0) {}
 
 public:
-    using Setters<Test>::set;
-    static constexpr auto Node = mim::Node::Test;
+    using Setters<Match>::set;
+    static constexpr auto Node = mim::Node::Match;
 
     /// @name ops
     ///@{

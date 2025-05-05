@@ -15,7 +15,7 @@ namespace mim::plug::mem {
 
 namespace {
 
-bool is_mem_ty(const Def* T) { return match<mem::M>(T); }
+bool is_mem_ty(const Def* T) { return test<mem::M>(T); }
 
 // TODO merge with should_flatten from tuple.*
 bool should_flatten(const Def* T) {

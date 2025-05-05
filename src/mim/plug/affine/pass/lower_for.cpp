@@ -32,7 +32,7 @@ const Def* merge_t(World& w, const Def* elem, const Def* tuple, const Def* mem) 
 const Def* LowerFor::rewrite(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
-    if (auto for_ax = match<affine::For>(def)) {
+    if (auto for_ax = test<affine::For>(def)) {
         world().DLOG("rewriting for axiom: {} within {}", for_ax, curr_mut());
         auto [begin, end, step, init, body, exit] = for_ax->args<6>();
 

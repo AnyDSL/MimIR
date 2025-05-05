@@ -96,7 +96,7 @@ void foo(const Def* def) {
 
 #### Upcast for Immutables
 
-mim::Def::isa_imm / mim::Def::as_imm allows for an _upcast_ and **only** matches _immutables_:
+mim::Def::isa*imm / mim::Def::as_imm allows for an \_upcast* and **only** matches _immutables_:
 
 ```cpp
 void foo(const Def* def) {
@@ -115,7 +115,7 @@ void foo(const Def* def) {
 
 #### Upcast for Mutables
 
-mim::Def::isa_mut / mim::Def::as_mut allows for an _upcast_ and **only** matches _mutables_.
+mim::Def::isa*mut / mim::Def::as_mut allows for an \_upcast* and **only** matches _mutables_.
 By doing so, it removes the `const` qualifier and gives you access to the **non**-`const` methods that only make sense for _mutables_:
 
 ```cpp
@@ -138,7 +138,7 @@ void foo(const Def* def) {
 }
 ```
 
-Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using mim::Def::isa_mut / mim::Def::as_mut since the scrutinee must be already a _mutable_ due to the lack of the `const` qualifier:
+Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using mim::Def::isa*mut / mim::Def::as_mut since the scrutinee must be already a \_mutable* due to the lack of the `const` qualifier:
 
 ```cpp
 void foo(Def* def) { // note the lack of "const" here
@@ -213,17 +213,17 @@ void foo(const Def* def) {
 
 You can match [Axiom](@ref mim::Axiom)s via
 
-- mim::match which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref mim::Match::Match) `nullptr` (see below), if the cast is not possible, or
-- mim::force which is again more like a `static_cast` and `assert`s via its mim::match sibling in the `Debug` build that the cast is correct.
+- mim::test which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref mim::Test::Test) `nullptr` (see below), if the cast is not possible, or
+- mim::force which is again more like a `static_cast` and `assert`s via its mim::test sibling in the `Debug` build that the cast is correct.
 
-This will yield a [Match](@ref mim::Match)`<Id, D>` which just wraps a `const D*`.
+This will yield a [Test](@ref mim::Test)`<Id, D>` which just wraps a `const D*`.
 `Id` is the `enum` of the corresponding `tag` of the [matched Axiom](@ref anatomy).
 Usually, `D` will be an [App](@ref mim::App) because most [Axiom](@ref mim::Axiom)s inhabit a [function type](@ref mim::Pi).
 Otherwise, it may wrap a [Def](@ref mim::Def) or other subclasses of it.
-For instance, [match](@ref mim::match)ing `%%mem.M` yields [Match](@ref mim::Match)`<`[mem::M](@ref mim::plug::mem::M), [Def](@ref mim::Def)`>`.
+For instance, [match](@ref mim::test)ing `%%mem.M` yields [Test](@ref mim::Test)`<`[mem::M](@ref mim::plug::mem::M), [Def](@ref mim::Def)`>`.
 
 By default, MimIR assumes that the magic of an [Axiom](@ref mim::Axiom) happens when applying the final argument to a curried [Axiom](@ref mim::Axiom).
-For example, [match](@ref mim::match)ing a `%%mem.load` will only trigger for the final [App](@ref mim::App) of the curried call
+For example, [match](@ref mim::test)ing a `%%mem.load` will only trigger for the final [App](@ref mim::App) of the curried call
 
 ```
 %mem.load (T, as) (mem, ptr)
@@ -236,7 +236,7 @@ while
 ```
 
 will **not** match.
-The wrapped [App](@ref mim::App) inside the [Match](@ref mim::Match) refers to the last [App](@ref mim::App) of the curried call.
+The wrapped [App](@ref mim::App) inside the [Test](@ref mim::Test) refers to the last [App](@ref mim::App) of the curried call.
 So in this example
 
 - mim::App::arg() is `(mem, ptr)` and
@@ -244,7 +244,7 @@ So in this example
 
   Use mim::App::decurry() to directly get the mim::App::callee() as mim::App.
 
-If you want to design an [Axiom](@ref mim::Axiom) that returns a function, you can [fine-adjust the trigger point](@ref normalization) of a mim::match / mim::force.
+If you want to design an [Axiom](@ref mim::Axiom) that returns a function, you can [fine-adjust the trigger point](@ref normalization) of a mim::test / mim::force.
 
 #### w/o Subtags
 
@@ -252,7 +252,7 @@ In order to match an [Axiom](@ref mim::Axiom) **without** any subtags like `%%me
 
 ```cpp
 void foo(const Def* def) {
-    if (auto load = match<mem::load>(def)) {
+    if (auto load = test<mem::load>(def)) {
         auto [mem, ptr]            = load->args<2>();
         auto [pointee, addr_space] = load->decurry()->args<2>();
     }
@@ -268,7 +268,7 @@ In order to match an [Axiom](@ref mim::Axiom) **with** subtags like `%%core.wrap
 
 ```cpp
 void foo(const Def* def) {
-    if (auto wrap = match<core::wrap>(def)) {
+    if (auto wrap = test<core::wrap>(def)) {
         auto [a, b] = wrap->args<2>();
         auto mode   = wrap->decurry()->arg();
         switch (wrap.id()) {
@@ -279,7 +279,7 @@ void foo(const Def* def) {
         }
     }
 
-    if (auto add = match(core::wrap::add, def)) {
+    if (auto add = test(core::wrap::add, def)) {
         auto [a, b] = add->args<2>();
         auto mode   = add->decurry()->arg();
     }
@@ -296,11 +296,11 @@ void foo(const Def* def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast` <br> `static_cast`                                | Returns                                                                                    | If `def` is a ...               |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------- |
-| `match<mem::load>(def)` <br> `force<mem::load>(def)`             | [Match](@ref mim::Match)`<`[mem::load](@ref mim::plug::mem.load), [App](@ref mim::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
-| `match<core::wrap>(def)` <br> `force<core::wrap>(def)`           | [Match](@ref mim::Match)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.??? s m (a, b)`    |
-| `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref mim::Match)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.add s m (a, b)`    |
+| `dynamic_cast` <br> `static_cast`                               | Returns                                                                                  | If `def` is a ...               |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------- |
+| `test<mem::load>(def)` <br> `force<mem::load>(def)`             | [Test](@ref mim::Test)`<`[mem::load](@ref mim::plug::mem.load), [App](@ref mim::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
+| `test<core::wrap>(def)` <br> `force<core::wrap>(def)`           | [Test](@ref mim::Test)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.??? s m (a, b)`    |
+| `test(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Test](@ref mim::Test)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.add s m (a, b)`    |
 
 ## Working with Indices
 
