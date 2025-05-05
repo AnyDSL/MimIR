@@ -1,9 +1,8 @@
-# find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-
 pybind11_add_module(pymim
     driver.cpp
     world.cpp
     py.cpp
 )
 
+set_target_properties(pymim PROPERTIES LIBRARY_OUTPUT_NAME mim)
 target_link_libraries(pymim PRIVATE libmim)
