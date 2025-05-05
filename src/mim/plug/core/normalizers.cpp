@@ -167,8 +167,8 @@ template<class Id>
 const Def* reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b) {
     if (!is_associative(id)) return nullptr;
 
-    auto xy     = isa<Id>(id, a);
-    auto zw     = isa<Id>(id, b);
+    auto xy     = Axm::isa<Id>(id, a);
+    auto zw     = Axm::isa<Id>(id, b);
     auto la     = a->isa<Lit>();
     auto [x, y] = xy ? xy->template args<2>() : std::array<const Def*, 2>{nullptr, nullptr};
     auto [z, w] = zw ? zw->template args<2>() : std::array<const Def*, 2>{nullptr, nullptr};
@@ -190,8 +190,8 @@ template<class Id> const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, 
     static constexpr size_t num_bits = std::bit_width(Annex::Num<Id> - 1_u64);
 
     auto& world = a->world();
-    auto a_cmp  = isa<Id>(a);
-    auto b_cmp  = isa<Id>(b);
+    auto a_cmp  = Axm::isa<Id>(a);
+    auto b_cmp  = Axm::isa<Id>(b);
 
     if (a_cmp && b_cmp && a_cmp->arg() == b_cmp->arg()) {
         // push sub bits of a_cmp and b_cmp through truth table
@@ -596,7 +596,7 @@ const Def* normalize_bitcast(const Def* dst_t, const Def*, const Def* src) {
     if (src->isa<Bot>()) return world.bot(dst_t);
     if (src_t == dst_t) return src;
 
-    if (auto other = isa<bitcast>(src))
+    if (auto other = Axm::isa<bitcast>(src))
         return other->arg()->type() == dst_t ? other->arg() : world.call<bitcast>(dst_t, other->arg());
 
     if (auto l = Lit::isa(src)) {
@@ -613,7 +613,7 @@ const Def* normalize_bitcast(const Def* dst_t, const Def*, const Def* src) {
 // TODO Pi and others
 template<trait id> const Def* normalize_trait(const Def*, const Def*, const Def* type) {
     auto& world = type->world();
-    if (auto ptr = isa<mem::Ptr>(type)) {
+    if (auto ptr = Axm::isa<mem::Ptr>(type)) {
         return world.lit_nat(8);
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
@@ -702,7 +702,7 @@ template<pe id> const Def* normalize_pe(const Def* type, const Def*, const Def* 
     auto& world = type->world();
 
     if constexpr (id == pe::is_closed) {
-        if (isa(pe::hlt, arg)) return world.lit_ff();
+        if (Axm::isa(pe::hlt, arg)) return world.lit_ff();
         if (arg->is_closed()) return world.lit_tt();
     }
 

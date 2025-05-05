@@ -1,4 +1,4 @@
-#include "mim/axiom.h"
+#include "mim/axm.h"
 #include "mim/world.h"
 
 #include "mim/plug/autodiff/autodiff.h"
@@ -37,11 +37,11 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg) {
 
     world.DLOG("add {} {} {}", T, a, b);
 
-    if (isa<zero>(a)) {
+    if (Axm::isa<zero>(a)) {
         world.DLOG("0+b");
         return b;
     }
-    if (isa<zero>(b)) {
+    if (Axm::isa<zero>(b)) {
         world.DLOG("0+a");
         return a;
     }

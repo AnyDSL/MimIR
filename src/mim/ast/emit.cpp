@@ -344,11 +344,11 @@ const Def* UniqExpr::emit_(Emitter& e) const { return e.world().uniq(inhabitant(
  * Decl
  */
 
-void AxiomDecl::emit(Emitter& e) const {
+void AxmDecl::emit(Emitter& e) const {
     mim_type_ = type()->emit(e);
     auto& id  = annex_->id;
 
-    std::tie(id.curry, id.trip) = Axiom::infer_curry_and_trip(mim_type_);
+    std::tie(id.curry, id.trip) = Axm::infer_curry_and_trip(mim_type_);
     if (curry_) {
         if (curry_.lit_u() > id.curry)
             error(curry_.loc(), "curry counter cannot be greater than {}", id.curry);
@@ -370,10 +370,10 @@ void AxiomDecl::emit(Emitter& e) const {
         error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is", dbg().sym());
 
     if (num_subs() == 0) {
-        auto norm  = e.driver().normalizer(id.plugin, id.tag, 0);
-        auto axiom = e.world().axiom(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, 0)->set(dbg());
-        def_       = axiom;
-        e.world().register_annex(id.plugin, id.tag, 0, axiom);
+        auto norm = e.driver().normalizer(id.plugin, id.tag, 0);
+        auto axm  = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, 0)->set(dbg());
+        def_      = axm;
+        e.world().register_annex(id.plugin, id.tag, 0, axm);
     } else {
         sub_t offset = annex_->subs.size();
         for (sub_t i = 0, n = num_subs(); i != n; ++i) {
@@ -381,11 +381,11 @@ void AxiomDecl::emit(Emitter& e) const {
             sub_t s       = i + offset;
             auto norm     = e.driver().normalizer(id.plugin, id.tag, s);
             auto name     = e.world().sym(dbg().sym().str() + "."s + sub(i).front()->dbg().sym().str());
-            auto axiom    = e.world().axiom(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, s)->set(name);
-            e.world().register_annex(id.plugin, id.tag, s, axiom);
+            auto axm      = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, s)->set(name);
+            e.world().register_annex(id.plugin, id.tag, s, axm);
 
             for (const auto& alias : sub(i)) {
-                alias->def_ = axiom;
+                alias->def_ = axm;
                 aliases.emplace_back(alias->dbg().sym());
             }
         }

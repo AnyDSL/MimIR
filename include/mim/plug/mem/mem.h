@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mim/axiom.h>
+#include <mim/axm.h>
 #include <mim/lam.h>
 #include <mim/world.h>
 
@@ -23,7 +23,7 @@ inline Lam* mut_con(const Def* dom) {
 
 /// Returns the (first) element of type mem::M from the given tuple.
 inline const Def* mem_def(const Def* def) {
-    if (isa<mem::M>(def->type())) return def;
+    if (Axm::isa<mem::M>(def->type())) return def;
     if (def->type()->isa<Arr>()) return {}; // don't look into possibly gigantic arrays
 
     if (def->num_projs() > 1) {
@@ -45,7 +45,7 @@ inline const Def* replace_mem(const Def* mem, const Def* arg) {
         return w.tuple(DefVec(arg->num_projs(), [&](auto i) { return replace_mem(mem, arg->proj(i)); }));
     }
 
-    if (isa<mem::M>(arg->type())) return mem;
+    if (Axm::isa<mem::M>(arg->type())) return mem;
 
     return arg;
 }
@@ -60,7 +60,7 @@ inline const Def* strip_mem_ty(const Def* def) {
             if (auto new_op = strip_mem_ty(op); new_op != world.sigma()) new_ops.push_back(new_op);
 
         return world.sigma(new_ops);
-    } else if (isa<mem::M>(def)) {
+    } else if (Axm::isa<mem::M>(def)) {
         return world.sigma();
     }
 
@@ -78,7 +78,7 @@ inline const Def* strip_mem(const Def* def) {
             if (auto new_op = strip_mem(op); new_op != world.tuple()) new_ops.push_back(new_op);
 
         return world.tuple(new_ops);
-    } else if (isa<mem::M>(def->type())) {
+    } else if (Axm::isa<mem::M>(def->type())) {
         return world.tuple();
     } else if (auto extract = def->isa<Extract>()) {
         // The case that this one element is a mem and should return () is handled above.
@@ -110,14 +110,14 @@ enum class AddrSpace : nat_t {
 ///@{
 inline const Def* op_lea(const Def* ptr, const Def* index) {
     World& w                   = ptr->world();
-    auto [pointee, addr_space] = as<Ptr>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = Axm::as<Ptr>(ptr->type())->args<2>();
     auto Ts                    = tuple_of_types(pointee);
     return w.app(w.app(w.annex<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index});
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, const Def* i) {
     World& w = ptr->world();
-    return op_lea(ptr, w.call(core::conv::u, as<Ptr>(ptr->type())->arg(0)->arity(), i));
+    return op_lea(ptr, w.call(core::conv::u, Axm::as<Ptr>(ptr->type())->arg(0)->arity(), i));
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world().lit_i64(i)); }

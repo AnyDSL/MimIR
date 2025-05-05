@@ -558,7 +558,7 @@ Ptrs<ValDecl> Parser::parse_decls() {
         // clang-format off
         switch (ahead().tag()) {
             case Tag::T_semicolon: lex(); break; // eat up stray semicolons
-            case Tag::K_axm:       decls.emplace_back(parse_axiom_decl());        break;
+            case Tag::K_axm:       decls.emplace_back(parse_axm_decl());        break;
             case Tag::K_ccon:
             case Tag::K_cfun:      decls.emplace_back(parse_c_decl());            break;
             case Tag::K_let:       decls.emplace_back(parse_let_decl());          break;
@@ -572,40 +572,39 @@ Ptrs<ValDecl> Parser::parse_decls() {
     }
 }
 
-Ptr<ValDecl> Parser::parse_axiom_decl() {
+Ptr<ValDecl> Parser::parse_axm_decl() {
     auto track = tracker();
     eat(Tag::K_axm);
     Dbg dbg, normalizer;
     Tok curry, trip;
-    if (auto name = expect(Tag::M_anx, "annex name of an axiom"))
+    if (auto name = expect(Tag::M_anx, "annex name of an axm"))
         dbg = name.dbg();
     else
         dbg = Dbg(curr_, ast().sym("<error annex name>"));
 
-    std::deque<Ptrs<AxiomDecl::Alias>> subs;
+    std::deque<Ptrs<AxmDecl::Alias>> subs;
     if (ahead().isa(Tag::D_paren_l)) {
-        parse_list("tag list of an axiom", Tag::D_paren_l, [&]() {
+        parse_list("tag list of an axm", Tag::D_paren_l, [&]() {
             auto& aliases = subs.emplace_back();
-            aliases.emplace_back(ptr<AxiomDecl::Alias>(parse_id("tag of an axiom")));
-            while (accept(Tag::T_assign))
-                aliases.emplace_back(ptr<AxiomDecl::Alias>(parse_id("alias of an axiom tag")));
+            aliases.emplace_back(ptr<AxmDecl::Alias>(parse_id("tag of an axm")));
+            while (accept(Tag::T_assign)) aliases.emplace_back(ptr<AxmDecl::Alias>(parse_id("alias of an axm tag")));
         });
     }
 
-    auto type = parse_type_ascr("type ascription of an axiom");
+    auto type = parse_type_ascr("type ascription of an axm");
 
     if (ahead(0).isa(Tag::T_comma) && ahead(1).isa(Tag::M_id)) {
         lex();
         normalizer = lex().dbg();
     }
     if (accept(Tag::T_comma)) {
-        if (auto c = expect(Tag::L_u, "curry counter for axiom")) curry = c;
+        if (auto c = expect(Tag::L_u, "curry counter for axm")) curry = c;
         if (accept(Tag::T_comma)) {
-            if (auto t = expect(Tag::L_u, "trip count for axiom")) trip = t;
+            if (auto t = expect(Tag::L_u, "trip count for axm")) trip = t;
         }
     }
 
-    return ptr<AxiomDecl>(track, dbg, std::move(subs), std::move(type), normalizer, curry, trip);
+    return ptr<AxmDecl>(track, dbg, std::move(subs), std::move(type), normalizer, curry, trip);
 }
 
 Ptr<ValDecl> Parser::parse_let_decl() {

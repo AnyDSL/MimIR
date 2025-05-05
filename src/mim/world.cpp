@@ -213,19 +213,19 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                 }
             }
 
-            auto type                 = pi->reduce(arg)->zonk();
-            callee                    = callee->zonk();
-            auto [axiom, curry, trip] = Axiom::get(callee);
-            if (axiom) {
+            auto type               = pi->reduce(arg)->zonk();
+            callee                  = callee->zonk();
+            auto [axm, curry, trip] = Axm::get(callee);
+            if (axm) {
                 curry = curry == 0 ? trip : curry;
-                curry = curry == Axiom::Trip_End ? curry : curry - 1;
+                curry = curry == Axm::Trip_End ? curry : curry - 1;
 
-                if (auto normalizer = axiom->normalizer(); Normalize && normalizer && curry == 0) {
+                if (auto normalizer = axm->normalizer(); Normalize && normalizer && curry == 0) {
                     if (auto norm = normalizer(type, callee, arg)) return norm;
                 }
             }
 
-            return raw_app(axiom, curry, trip, type, callee, arg);
+            return raw_app(axm, curry, trip, type, callee, arg);
         }
 
         throw Error()
@@ -242,17 +242,17 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
 }
 
 const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg) {
-    auto [axiom, curry, trip] = Axiom::get(callee);
-    if (axiom) {
+    auto [axm, curry, trip] = Axm::get(callee);
+    if (axm) {
         curry = curry == 0 ? trip : curry;
-        curry = curry == Axiom::Trip_End ? curry : curry - 1;
+        curry = curry == Axm::Trip_End ? curry : curry - 1;
     }
 
-    return raw_app(axiom, curry, trip, type, callee, arg);
+    return raw_app(axm, curry, trip, type, callee, arg);
 }
 
-const Def* World::raw_app(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg) {
-    return unify<App>(2, axiom, curry, trip, type, callee, arg);
+const Def* World::raw_app(const Axm* axm, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg) {
+    return unify<App>(2, axm, curry, trip, type, callee, arg);
 }
 
 const Def* World::sigma(Defs ops) {

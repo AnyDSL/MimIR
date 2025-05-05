@@ -26,7 +26,7 @@ public:
     /// Returns the rewritten expressions and augments the partial and modular pullbacks.
     /// The rewrite is identity on the term up to renaming of variables.
     /// Otherwise, only pullbacks are added.
-    /// To do so, some calls (e.g. axioms) are replaced by their derivatives.
+    /// To do so, some calls (e.g. axms) are replaced by their derivatives.
     /// This transformation can be seen as an augmentation with a dual computation that generates the derivatives.
     const Def* augment(const Def*, Lam*, Lam*);
     const Def* augment_(const Def*, Lam*, Lam*);

@@ -2,18 +2,13 @@
 
 #include <cassert>
 
-#include <iostream>
-
+#include <mim/axm.h>
+#include <mim/def.h>
 #include <mim/lam.h>
 
-#include "mim/axiom.h"
-#include "mim/def.h"
-
 #include "mim/plug/affine/affine.h"
-#include "mim/plug/core/autogen.h"
 #include "mim/plug/core/core.h"
 #include "mim/plug/direct/direct.h"
-#include "mim/plug/matrix/autogen.h"
 #include "mim/plug/matrix/matrix.h"
 #include "mim/plug/mem/mem.h"
 
@@ -57,14 +52,14 @@ const Def* arr_ty_of_matrix_ty(const Def* S, const Def* T) {
 } // namespace
 
 const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
-    assert(!isa<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
-    assert(!isa<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
-    assert(!isa<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
-    assert(!isa<matrix::transpose>(def) && "high level operations should have been lowered to for loops by now");
-    assert(!isa<matrix::sum>(def) && "high level operations should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::transpose>(def) && "high level operations should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::sum>(def) && "high level operations should have been lowered to for loops by now");
 
     // TODO: generalize arg rewrite
-    if (auto mat_ax = isa<matrix::Mat>(def)) {
+    if (auto mat_ax = Axm::isa<matrix::Mat>(def)) {
         auto [_, S, T] = mat_ax->args<3>();
         S              = rewrite(S);
         T              = rewrite(T);
@@ -74,7 +69,7 @@ const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
         auto ptr_ty     = world().call<mem::Ptr>(Defs{arr_ty, addr_space});
 
         return ptr_ty;
-    } else if (auto init_ax = isa<matrix::init>(def)) {
+    } else if (auto init_ax = Axm::isa<matrix::init>(def)) {
         world().DLOG("init {} : {}", def, def->type());
         auto [_, S, T, mem] = init_ax->args<4>();
         world().DLOG("  S T mem {} {} {}", S, T, mem);
@@ -87,7 +82,7 @@ const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
         auto res             = world().tuple({mem2, ptr_mat});
         world().DLOG("  res {} : {}", res, res->type());
         return res;
-    } else if (auto read_ax = isa<matrix::read>(def)) {
+    } else if (auto read_ax = Axm::isa<matrix::read>(def)) {
         auto [mem, mat, idx] = read_ax->args<3>();
         world().DLOG("read_ax: {}", read_ax);
         world().DLOG("  mem: {} : {}", mem, mem->type());
@@ -105,7 +100,7 @@ const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
         auto [mem2, val] = world().call<mem::load>(Defs{mem, element_ptr})->projs<2>();
         return world().tuple({mem2, val});
-    } else if (auto insert_ax = isa<matrix::insert>(def)) {
+    } else if (auto insert_ax = Axm::isa<matrix::insert>(def)) {
         auto [mem, mat, idx, val] = insert_ax->args<4>();
         world().DLOG("insert_ax: {}", insert_ax);
         world().DLOG("  mem: {} : {}", mem, mem->type());
@@ -125,7 +120,7 @@ const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
         auto mem2        = world().call<mem::store>(Defs{mem, element_ptr, val});
         return world().tuple({mem2, ptr_mat});
-    } else if (auto const_ax = isa<matrix::constMat>(def)) {
+    } else if (auto const_ax = Axm::isa<matrix::constMat>(def)) {
         auto [mem, val]      = const_ax->args<2>();
         mem                  = rewrite(mem);
         val                  = rewrite(val);
@@ -144,8 +139,8 @@ const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
         return world().tuple({mem3, ptr_mat});
     }
 
-    // ignore unapplied axioms to avoid spurious type replacements
-    if (def->isa<Axiom>()) return def;
+    // ignore unapplied axms to avoid spurious type replacements
+    if (def->isa<Axm>()) return def;
 
     return Rewriter::rewrite_imm(def); // continue recursive rewriting with everything else
 }

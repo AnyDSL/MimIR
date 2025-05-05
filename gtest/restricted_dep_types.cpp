@@ -32,15 +32,15 @@ TEST(RestrictedDependentTypes, join_singleton) {
         auto i32_t = w.type_i32();
         auto i64_t = w.type_i64();
 
-        auto R = w.axiom(w.type())->set("R");
-        auto W = w.axiom(w.type())->set("W");
+        auto R = w.axm(w.type())->set("R");
+        auto W = w.axm(w.type())->set("W");
 
         auto RW = w.join({w.uniq(R), w.uniq(W)})->set("RW");
         auto DT = w.join({w.uniq(i32_t), w.uniq(i64_t)})->set("DT");
 
         auto exp_pi = w.mut_pi(w.type<1>())->set_dom({DT, RW});
         exp_pi->set_codom(w.type());
-        auto Exp = w.axiom(exp_pi)->set("exp");
+        auto Exp = w.axm(exp_pi)->set("exp");
 
         test(w, R, W, Exp);
     };
@@ -227,8 +227,8 @@ TEST(RestrictedDependentTypes, ll) {
     auto main = w.mut_con({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})})->set("main");
     main->make_external();
 
-    auto R = w.axiom(w.type())->set("R");
-    auto W = w.axiom(w.type())->set("W");
+    auto R = w.axm(w.type())->set("R");
+    auto W = w.axm(w.type())->set("W");
 
     auto RW = w.join({w.uniq(R), w.uniq(W)})->set("RW");
 
@@ -236,7 +236,7 @@ TEST(RestrictedDependentTypes, ll) {
     auto exp_pi = w.mut_pi(w.type<1>())->set_dom({DT, RW});
     exp_pi->set_codom(w.type());
 
-    auto Exp = w.axiom(exp_pi)->set("exp");
+    auto Exp = w.axm(exp_pi)->set("exp");
 
     auto app_exp = w.app(Exp, {w.inj(DT, i32_t), w.inj(RW, R)});
 

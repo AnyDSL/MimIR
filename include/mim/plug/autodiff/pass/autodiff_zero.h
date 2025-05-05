@@ -6,7 +6,7 @@
 
 namespace mim::plug::autodiff {
 
-/// Replaces calls to the zero axioms with actual zeros.
+/// Replaces calls to the zero axms with actual zeros.
 class AutoDiffZero : public RWPass<AutoDiffZero, Lam> {
 public:
     AutoDiffZero(PassMan& man)

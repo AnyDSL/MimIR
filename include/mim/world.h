@@ -8,7 +8,7 @@
 #include <absl/container/btree_set.h>
 #include <fe/arena.h>
 
-#include "mim/axiom.h"
+#include "mim/axm.h"
 #include "mim/check.h"
 #include "mim/flags.h"
 #include "mim/lam.h"
@@ -167,16 +167,16 @@ public:
     const auto& flags2annex() const { return move_.flags2annex; }
     auto annexes() const { return move_.flags2annex | std::views::values; }
 
-    /// Lookup annex by Axiom::id.
+    /// Lookup annex by Axm::id.
     template<class Id> const Def* annex(Id id) {
         auto flags = static_cast<flags_t>(id);
         if (auto i = move_.flags2annex.find(flags); i != move_.flags2annex.end()) return i->second;
-        error("Axiom with ID '{x}' not found; demangled plugin name is '{}'", flags, Annex::demangle(driver(), flags));
+        error("Axm with ID '{x}' not found; demangled plugin name is '{}'", flags, Annex::demangle(driver(), flags));
     }
 
-    /// Get Axiom from a plugin.
-    /// Can be used to get an Axiom without sub-tags.
-    /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axiom.
+    /// Get Axm from a plugin.
+    /// Can be used to get an Axm without sub-tags.
+    /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axm.
     template<annex_without_subs id> const Def* annex() { return annex(Annex::Base<id>); }
 
     const Def* register_annex(flags_t f, const Def*);
@@ -228,21 +228,21 @@ public:
     }
     ///@}
 
-    /// @name Axiom
+    /// @name Axm
     ///@{
-    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, const Def* type, plugin_t p, tag_t t, sub_t s) {
-        return unify<Axiom>(0, n, curry, trip, type, p, t, s);
+    const Axm* axm(NormalizeFn n, u8 curry, u8 trip, const Def* type, plugin_t p, tag_t t, sub_t s) {
+        return unify<Axm>(0, n, curry, trip, type, p, t, s);
     }
-    const Axiom* axiom(const Def* type, plugin_t p, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, p, t, s); }
+    const Axm* axm(const Def* type, plugin_t p, tag_t t, sub_t s) { return axm(nullptr, 0, 0, type, p, t, s); }
 
-    /// Builds a fresh Axiom with descending Axiom::sub.
+    /// Builds a fresh Axm with descending Axm::sub.
     /// This is useful during testing to come up with some entity of a specific type.
-    /// It uses the plugin Axiom::Global_Plugin and starts with `0` for Axiom::sub and counts up from there.
-    /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, const Def* type) {
-        return axiom(n, curry, trip, type, Annex::Global_Plugin, 0, state_.pod.curr_sub++);
+    /// It uses the plugin Axm::Global_Plugin and starts with `0` for Axm::sub and counts up from there.
+    /// The Axm::tag is set to `0` and the Axm::normalizer to `nullptr`.
+    const Axm* axm(NormalizeFn n, u8 curry, u8 trip, const Def* type) {
+        return axm(n, curry, trip, type, Annex::Global_Plugin, 0, state_.pod.curr_sub++);
     }
-    const Axiom* axiom(const Def* type) { return axiom(nullptr, 0, 0, type); } ///< See above.
+    const Axm* axm(const Def* type) { return axm(nullptr, 0, 0, type); } ///< See above.
     ///@}
 
     /// @name Pi
@@ -308,7 +308,7 @@ public:
     template<bool Normalize = true> const Def* app(const Def* callee, Defs args) {
         return app<Normalize>(callee, tuple(args));
     }
-    const Def* raw_app(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg);
+    const Def* raw_app(const Axm* axm, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg);
     const Def* raw_app(const Def* type, const Def* callee, const Def* arg);
     const Def* raw_app(const Def* type, const Def* callee, Defs args) { return raw_app(type, callee, tuple(args)); }
     ///@}

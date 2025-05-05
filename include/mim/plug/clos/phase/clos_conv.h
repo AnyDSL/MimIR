@@ -43,7 +43,7 @@ private:
         unsigned pass_id; //
 
         auto add_fvs(const Def* def) {
-            assert(!isa<mem::M>(def->type()));
+            assert(!Axm::isa<mem::M>(def->type()));
             return fvs.emplace(def);
         }
     };
@@ -82,7 +82,7 @@ private:
 ///
 /// This pass relies on ClosConvPrep to introduce annotations for these cases.
 ///
-/// Note: Since direct-style Def%s are not rewritten, this can lead to problems with certain Axiom%s:
+/// Note: Since direct-style Def%s are not rewritten, this can lead to problems with certain Axm%s:
 /// `ax : (B : *, int -> B) -> (int -> B)` won't be converted, possible arguments may.
 /// Further, there is no machinery to handle free variables in a Lam%s type; this may lead to
 /// problems with polymorphic functions.

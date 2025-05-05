@@ -48,29 +48,29 @@ In addition you can use `⟨`, `⟩`, `⟪`, and `⟫` as an alternative for `�
 
 In addition the following keywords are _terminals_:
 
-| Terminal  | Comment                                                  |
-| --------- | -------------------------------------------------------- |
-| `import`  | imports another Mim file                                 |
-| `plugin`  | like `import` and additionally loads the compiler plugin |
-| `axm`     | axiom                                                    |
-| `let`     | let declaration                                          |
-| `con`     | [continuation](@ref mim::Lam) declaration                |
-| `fun`     | [function](@ref mim::Lam) declaration                    |
-| `lam`     | [lambda](@ref mim::Lam) declaration                      |
-| `ret`     | ret expression                                           |
-| `cn`      | [continuation](@ref mim::Lam) expression                 |
-| `fn`      | [function](@ref mim::Lam) expression                     |
-| `lm`      | [lambda](@ref mim::Lam) expression                       |
-| `Sigma`   | [Sigma](@ref mim::Sigma) declaration                     |
-| `extern`  | marks function as external                               |
-| `ins`     | mim::Insert expression                                   |
-| `insert`  | alias for `ins`                                          |
-| `Nat`     | mim::Nat                                                 |
-| `Idx`     | mim::Idx                                                 |
-| `Type`    | mim::Type                                                |
-| `Univ`    | mim::Univ                                                |
-| `ff`      | alias for `0₂`                                           |
-| `tt`      | alias for `1₂`                                           |
+| Terminal | Comment                                                  |
+| -------- | -------------------------------------------------------- |
+| `import` | imports another Mim file                                 |
+| `plugin` | like `import` and additionally loads the compiler plugin |
+| `axm`    | axiom                                                    |
+| `let`    | let declaration                                          |
+| `con`    | [continuation](@ref mim::Lam) declaration                |
+| `fun`    | [function](@ref mim::Lam) declaration                    |
+| `lam`    | [lambda](@ref mim::Lam) declaration                      |
+| `ret`    | ret expression                                           |
+| `cn`     | [continuation](@ref mim::Lam) expression                 |
+| `fn`     | [function](@ref mim::Lam) expression                     |
+| `lm`     | [lambda](@ref mim::Lam) expression                       |
+| `Sigma`  | [Sigma](@ref mim::Sigma) declaration                     |
+| `extern` | marks function as external                               |
+| `ins`    | mim::Insert expression                                   |
+| `insert` | alias for `ins`                                          |
+| `Nat`    | mim::Nat                                                 |
+| `Idx`    | mim::Idx                                                 |
+| `Type`   | mim::Type                                                |
+| `Univ`   | mim::Univ                                                |
+| `ff`     | alias for `0₂`                                           |
+| `tt`     | alias for `1₂`                                           |
 
 | Terminal  | Alias           | Terminal | Alias     |
 | --------- | --------------- | -------- | --------- |
@@ -176,7 +176,7 @@ The following tables comprise all production rules:
 | d   | `con` n p+ ( `=` e)? `;`                                                                                                                          | continuation declaration<sup>s</sup> | [Lam](@ref mim::Lam)               |
 | d   | `fun` n p+ (`:` e<sub>ret</sub>)? ( `=` e)? `;`                                                                                                   | function declaration<sup>s</sup>     | [Lam](@ref mim::Lam)               |
 | d   | `Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                            | sigma declaration                    | [Sigma](@ref mim::Sigma)           |
-| d   | `axm` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axiom)           |
+| d   | `axm` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axm)             |
 | n   | 𝖨 \| A                                                                                                                                            | identifier or annex name             | `fe::Sym`/[Annex](@ref mim::Annex) |
 | sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                          | subtag with aliases                  |                                    |
 
