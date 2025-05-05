@@ -4,4 +4,13 @@
 
 namespace py = pybind11;
 
-void init_world(py::module_& m) { py::class_<mim::World>(m, "World"); }
+namespace mim {
+
+void init_world(py::module_& m) {
+    // clang-format off
+    py::class_<mim::World>(m, "World")
+        .def("write", static_cast<void (World::*)()>(&mim::World::write));
+    // clang-format on
+}
+
+} // namespace mim

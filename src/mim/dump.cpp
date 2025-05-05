@@ -493,7 +493,7 @@ void World::write(const char* file) {
 }
 
 void World::write() {
-    auto file = name().str() + ".mim"s;
+    auto file = (name() ? name() : sym("_default")).str() + ".mim"s;
     write(file.c_str());
 }
 
