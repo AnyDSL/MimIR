@@ -36,13 +36,15 @@ public:
     NormalizeFn normalizer() const { return normalizer_; }
     u8 curry() const { return curry_; }
     u8 trip() const { return trip_; }
+    ///@}
+
+    /// @name Normalization - Helpers
+    ///@{
 
     /// Yields currying counter of @p def.
     /// @returns `{nullptr, 0, 0}` if no Axm is present.
     static std::tuple<const Axm*, u8, u8> get(const Def* def);
-
     static std::pair<u8, u8> infer_curry_and_trip(const Def* type);
-    static constexpr u8 Trip_End = u8(-1);
     ///@}
 
     /// @name Annex Name
@@ -55,8 +57,10 @@ public:
     flags_t base() const { return Annex::flags2base(flags()); }
     ///@}
 
+    /// @name IsA
+    ///@{
     /// Type of IsA::def_.
-    template<class T> struct Subclass {
+    template<class T> struct IsANode {
         using type = App;
     };
 
@@ -92,12 +96,13 @@ public:
         const Axm* axm_ = nullptr;
         const D* def_   = nullptr;
     };
+    ///@}
 
     /// @name isa/as
     ///@{
     /// @see @ref cast_axm
     template<class Id, bool DynCast = true> static auto isa(const Def* def) {
-        using D              = typename Axm::Subclass<Id>::type;
+        using D              = typename Axm::IsANode<Id>::type;
         auto [axm, curry, _] = Axm::get(def);
         bool cond            = axm && curry == 0 && axm->base() == Annex::Base<Id>;
 
@@ -107,7 +112,7 @@ public:
     }
 
     template<class Id, bool DynCast = true> static auto isa(Id id, const Def* def) {
-        using D              = typename Axm::Subclass<Id>::type;
+        using D              = typename Axm::IsANode<Id>::type;
         auto [axm, curry, _] = Axm::get(def);
         bool cond            = axm && curry == 0 && axm->flags() == (flags_t)id;
 
@@ -119,10 +124,11 @@ public:
     // clang-format off
     template<class Id> static auto as(       const Def* def) { return isa<Id, false>(    def); }
     template<class Id> static auto as(Id id, const Def* def) { return isa<Id, false>(id, def); }
-    ///@}
     // clang-format on
+    ///@}
 
-    static constexpr auto Node = mim::Node::Axm;
+    static constexpr u8 Trip_End = u8(-1);
+    static constexpr auto Node   = mim::Node::Axm;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
