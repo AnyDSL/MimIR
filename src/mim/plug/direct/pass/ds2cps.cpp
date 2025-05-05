@@ -56,7 +56,7 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     world().DLOG("rewritten codom: {}", rw_codom);
 
     auto cps_lam            = world().mut_con(sigma)->set(lam->sym().str() + "_cps");
-    auto [filter, cps_body] = lam->reduce(cps_lam->var(0_n)).span<2>();
+    auto [filter, cps_body] = lam->reduce<2>(cps_lam->var(0_n));
 
     // rewrite vars of new function
     // calls handled separately

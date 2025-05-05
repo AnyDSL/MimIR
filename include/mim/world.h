@@ -518,7 +518,7 @@ public:
     /// Yields the new body of `[mut->var() -> arg]mut`.
     /// The new body may have fewer elements as `mut->num_ops()` addording to Def::reduction_offset.
     /// E.g. a Pi has a Pi::reduction_offset of 1, and only Pi::dom will be reduced - *not* Pi::codom.
-    Defs reduce(Def* mut, const Def* arg);
+    Defs reduce(const Var* var, const Def* arg);
     ///@}
 
     /// @name dump/log
@@ -663,7 +663,7 @@ private:
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         Sets<Def> muts;
         Sets<const Var> vars;
-        absl::flat_hash_map<std::pair<Def*, const Def*>, const Reduct*> substs;
+        absl::flat_hash_map<std::pair<const Var*, const Def*>, const Reduct*> substs;
 
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;
