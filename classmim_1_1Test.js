@@ -1,8 +1,8 @@
 var classmim_1_1Test =
 [
-    [ "clash", "classmim_1_1Test.html#a3e2629585b792a934807c038ee77d32b", null ],
-    [ "match", "classmim_1_1Test.html#a6b3923b99a192074679441702412465a", null ],
-    [ "probe", "classmim_1_1Test.html#a5979cd42707f99ba51a0093524e0bba6", null ],
+    [ "arm", "classmim_1_1Test.html#ad3e55610df533c7c13a49f3c1f8d4f7d", null ],
+    [ "arms", "classmim_1_1Test.html#aef47354c609ec9f536e27dd6e1ff77ad", null ],
+    [ "num_arms", "classmim_1_1Test.html#a3ebac5e20570f0572b9546a853d4b55f", null ],
     [ "rebuild_", "classmim_1_1Test.html#a65aaae080c65a44ccdb67cdcc66a7e5b", null ],
     [ "value", "classmim_1_1Test.html#ab5821e533aca4aa31ef504522a912ecf", null ],
     [ "World", "classmim_1_1Test.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],

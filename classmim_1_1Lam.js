@@ -27,7 +27,6 @@ var classmim_1_1Lam =
     [ "set_filter", "classmim_1_1Lam.html#a4084f5bf694c3e4cb985eca3e213c189", null ],
     [ "stub", "classmim_1_1Lam.html#ac7e37840085e08005ebc7e81972927ee", null ],
     [ "stub_", "classmim_1_1Lam.html#a185d718312babc11ab868fa310acf259", null ],
-    [ "test", "classmim_1_1Lam.html#a76f3b611b8351b0ff57cf6700a0a0863", null ],
     [ "type", "classmim_1_1Lam.html#a6380ad84433a405f9e2a7695ecffa6b3", null ],
     [ "unset", "classmim_1_1Lam.html#a072eca45c3daaf3e26a30cef5c17f589", null ],
     [ "World", "classmim_1_1Lam.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],

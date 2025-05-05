@@ -7,7 +7,7 @@ var searchData=
   ['tail_4',['tail',['../structmim_1_1ll_1_1BB.html#a2441968b0dccbcbd1bf324a7e269c123',1,'mim::ll::BB::tail()'],['../structmim_1_1ll_1_1BB.html#a27df6dfccf29e54bd9e16b9c539c2566',1,'mim::ll::BB::tail(const char *s, Args &amp;&amp;... args)']]],
   ['tailrecelim_5',['TailRecElim',['../classmim_1_1TailRecElim.html#af8adb48c83eb8922a3edd53e24ff5cef',1,'mim::TailRecElim']]],
   ['tangent_5ftype_5ffun_6',['tangent_type_fun',['../namespacemim_1_1plug_1_1autodiff.html#a68aae344814c11b1359c6b945f109153',1,'mim::plug::autodiff']]],
-  ['test_7',['test',['../classmim_1_1Lam.html#a76f3b611b8351b0ff57cf6700a0a0863',1,'mim::Lam::test()'],['../classmim_1_1BitSet.html#aacfa708fdb46d96a1b4c1ad9f564ab54',1,'mim::BitSet::test()'],['../classmim_1_1World.html#af34d6ba2a2d2c58e175afe9084fcc96d',1,'mim::World::test()']]],
+  ['test_7',['test',['../classmim_1_1BitSet.html#aacfa708fdb46d96a1b4c1ad9f564ab54',1,'mim::BitSet::test()'],['../classmim_1_1World.html#a33a60a59ac594da97d8a027c7a354a88',1,'mim::World::test()']]],
   ['tid_8',['tid',['../classmim_1_1Def.html#a5ccb5dfb0bda883b53b5e193fc171a05',1,'mim::Def']]],
   ['to_5fexpr_9',['to_expr',['../classmim_1_1ast_1_1Ptrn.html#a7ba78a095f6a101698c5139bb4f99eae',1,'mim::ast::Ptrn']]],
   ['to_5fptrn_10',['to_ptrn',['../classmim_1_1ast_1_1Ptrn.html#a4a5bc8658f574e20f3b929af203149a8',1,'mim::ast::Ptrn']]],

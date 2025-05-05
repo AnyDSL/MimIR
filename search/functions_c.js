@@ -16,7 +16,7 @@ var searchData=
   ['mark_13',['mark',['../classmim_1_1Def.html#a592578e8733989b79ab6649485eae42b',1,'mim::Def']]],
   ['mark_5firreducible_14',['mark_irreducible',['../classmim_1_1EtaRed.html#a44237a21f938ee390fd9c25306eeeeaa',1,'mim::EtaRed']]],
   ['match_15',['Match',['../classmim_1_1Match.html#ace15f9a0bcdf8dc17412ca4b93d4b361',1,'mim::Match::Match()=default'],['../classmim_1_1Match.html#ac0cb39d5a58e423beb4c4bd131a07407',1,'mim::Match::Match(const Axiom *axiom, const D *def)']]],
-  ['match_16',['match',['../classmim_1_1Test.html#a6b3923b99a192074679441702412465a',1,'mim::Test::match()'],['../namespacemim.html#aaced9ad6007e9da97d0726890ca53bb0',1,'mim::match(const Def *def)'],['../namespacemim.html#a5a6db82fa2abe425d40b90046f1cad70',1,'mim::match(Id id, const Def *def)']]],
+  ['match_16',['match',['../namespacemim.html#aaced9ad6007e9da97d0726890ca53bb0',1,'mim::match(const Def *def)'],['../namespacemim.html#a5a6db82fa2abe425d40b90046f1cad70',1,'mim::match(Id id, const Def *def)']]],
   ['match_5ff_17',['match_f',['../namespacemim_1_1plug_1_1math.html#a6997da1ee16a8a8176042a524ae02dae',1,'mim::plug::math']]],
   ['match_5ff16_18',['match_f16',['../namespacemim_1_1plug_1_1math.html#a9f21132c6f33d36e69565752fff39793',1,'mim::plug::math']]],
   ['match_5ff32_19',['match_f32',['../namespacemim_1_1plug_1_1math.html#affa2e23bf7486738df24d3d3f1ce79da',1,'mim::plug::math']]],

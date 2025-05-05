@@ -1,7 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"clos_8h.html":[6,0,2,1,4,2,2],
-"clos_8h_source.html":[6,0,2,1,4,2,2],
 "clos__conv_8cpp.html":[6,0,3,1,4,2,1,0],
 "clos__conv_8cpp_source.html":[6,0,3,1,4,2,1,0],
 "clos__conv_8h.html":[6,0,2,1,4,2,1,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX15 =
 "functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
 "functions_b.html":[5,3,0,1],
-"functions_c.html":[5,3,0,2]
+"functions_c.html":[5,3,0,2],
+"functions_d.html":[5,3,0,3],
+"functions_e.html":[5,3,0,4]
 };

@@ -37,7 +37,7 @@ var searchData=
   ['term_34',['Term',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f',1,'mim']]],
   ['terminals_35',['Terminals',['../langref.html#autotoc_md37',1,'Other Terminals'],['../langref.html#autotoc_md35',1,'Primary Terminals'],['../langref.html#terminals',1,'Terminals']]],
   ['test_36',['Test',['../classmim_1_1Test.html',1,'mim::Test'],['../classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa5569c000160b7a4bfbb24af91c3789b3',1,'mim::Checker::Test'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da0cbc6611f5540bd0809a388dc95a615b',1,'mim::Test']]],
-  ['test_37',['test',['../classmim_1_1Lam.html#a76f3b611b8351b0ff57cf6700a0a0863',1,'mim::Lam::test()'],['../classmim_1_1BitSet.html#aacfa708fdb46d96a1b4c1ad9f564ab54',1,'mim::BitSet::test()'],['../classmim_1_1World.html#af34d6ba2a2d2c58e175afe9084fcc96d',1,'mim::World::test()']]],
+  ['test_37',['test',['../classmim_1_1BitSet.html#aacfa708fdb46d96a1b4c1ad9f564ab54',1,'mim::BitSet::test()'],['../classmim_1_1World.html#a33a60a59ac594da97d8a027c7a354a88',1,'mim::World::test()']]],
   ['tests_38',['Tests',['../coding.html#autotoc_md11',1,'lit Tests'],['../coding.html#tests',1,'Tests']]],
   ['text_39',['TExt',['../classmim_1_1TExt.html',1,'mim']]],
   ['text_3c_20false_20_3e_40',['TExt&lt; false &gt;',['../classmim_1_1TExt.html',1,'mim']]],

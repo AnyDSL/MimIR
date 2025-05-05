@@ -1,7 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html#ae512e21b886c518c96d07976a486dbbb":[5,0,1,3,2,1,1],
-"classmim_1_1plug_1_1clos_1_1ClosConv.html":[3,0,1,4,2,2],
 "classmim_1_1plug_1_1clos_1_1ClosConv.html":[5,0,1,3,2,2],
 "classmim_1_1plug_1_1clos_1_1ClosConv.html#a0a93743953b3d9c7e9d0d849951abc57":[3,0,1,4,2,2,1],
 "classmim_1_1plug_1_1clos_1_1ClosConv.html#a0a93743953b3d9c7e9d0d849951abc57":[5,0,1,3,2,2,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX14 =
 "clos_2normalizers_8cpp_source.html":[6,0,3,1,4,2,3],
 "clos_8cpp.html":[6,0,3,1,4,2,2],
 "clos_8cpp.html#a35bb34350e93d508e52544f4abd50e59":[6,0,3,1,4,2,2,10],
-"clos_8cpp_source.html":[6,0,3,1,4,2,2]
+"clos_8cpp_source.html":[6,0,3,1,4,2,2],
+"clos_8h.html":[6,0,2,1,4,2,2],
+"clos_8h_source.html":[6,0,2,1,4,2,2]
 };
