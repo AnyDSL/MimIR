@@ -36,7 +36,7 @@ std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def
 // TODO: replace sum_ptr by using sum as accumulator
 // TODO: extract inner loop into function (for read normalizer)
 const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
-    if (auto map_reduce_ax = test<matrix::map_reduce>(def); map_reduce_ax) {
+    if (auto map_reduce_ax = isa<matrix::map_reduce>(def); map_reduce_ax) {
         // meta arguments:
         // * n = out-count, (nat)
         // * S = out-dim, (n*nat)

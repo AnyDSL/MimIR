@@ -26,8 +26,8 @@ const Def* LowerRegex::rewrite(const Def* def) {
 
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
-        if (test<regex::conj>(callee) || test<regex::disj>(callee) || test<regex::not_>(callee)
-            || test<regex::range>(callee) || test<regex::any>(callee) || test<quant>(callee)) {
+        if (isa<regex::conj>(callee) || isa<regex::disj>(callee) || isa<regex::not_>(callee)
+            || isa<regex::range>(callee) || isa<regex::any>(callee) || isa<quant>(callee)) {
             const auto n = app->arg();
             auto nfa     = regex2nfa(callee);
             world().DLOG("nfa: {}", *nfa);

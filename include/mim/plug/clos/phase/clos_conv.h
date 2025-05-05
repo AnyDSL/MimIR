@@ -43,7 +43,7 @@ private:
         unsigned pass_id; //
 
         auto add_fvs(const Def* def) {
-            assert(!test<mem::M>(def->type()));
+            assert(!isa<mem::M>(def->type()));
             return fvs.emplace(def);
         }
     };

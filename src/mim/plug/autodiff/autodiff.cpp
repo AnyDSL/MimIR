@@ -132,7 +132,7 @@ const Def* autodiff_type_fun(const Def* ty) {
         return world.sigma(ops);
     }
     // mem
-    if (test<mem::M>(ty)) return ty;
+    if (isa<mem::M>(ty)) return ty;
     world.WLOG("no-diff type: {}", ty);
     return nullptr;
 }

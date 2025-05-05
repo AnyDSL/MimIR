@@ -18,7 +18,7 @@ public:
     /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
     /// For this reason, MimIR maintains a Def::curry_ counter that each App decrements.
     /// The Axiom::normalizer() will be triggered when Axiom::curry() becomes `0`.
-    /// These are also the spots that you can mim::test / mim::force / mim::Test.
+    /// These are also the spots that you can mim::test / mim::force / mim::IsA.
     /// After that, the counter will be set to Axiom::trip().
     /// E.g., let's say an Axiom has this type:
     /// ```
@@ -55,8 +55,8 @@ public:
     flags_t base() const { return Annex::flags2base(flags()); }
     ///@}
 
-    /// Type of Test::def_.
-    template<class T> struct Test {
+    /// Type of IsA::def_.
+    template<class T> struct IsA {
         using type = App;
     };
 
@@ -73,13 +73,13 @@ template<class Id> concept annex_with_subs    = Annex::Num<Id> != 0;
 template<class Id> concept annex_without_subs = Annex::Num<Id> == 0;
 // clang-format on
 
-template<class Id, class D> class Test {
+template<class Id, class D> class IsA {
     static_assert(Annex::Num<Id> != size_t(-1), "invalid number of sub tags");
     static_assert(Annex::Base<Id> != flags_t(-1), "invalid axiom base");
 
 public:
-    Test() = default;
-    Test(const Axiom* axiom, const D* def)
+    IsA() = default;
+    IsA(const Axiom* axiom, const D* def)
         : axiom_(axiom)
         , def_(def) {}
 
@@ -106,32 +106,32 @@ private:
     const D* def_       = nullptr;
 };
 
-/// @name test/force
+/// @name isa/as
 ///@{
 /// @see @ref cast_axiom
-template<class Id, bool DynCast = true> auto test(const Def* def) {
-    using D                = typename Axiom::Test<Id>::type;
+template<class Id, bool DynCast = true> auto isa(const Def* def) {
+    using D                = typename Axiom::IsA<Id>::type;
     auto [axiom, curry, _] = Axiom::get(def);
     bool cond              = axiom && curry == 0 && axiom->base() == Annex::Base<Id>;
 
-    if constexpr (DynCast) return cond ? Test<Id, D>(axiom, def->as<D>()) : Test<Id, D>();
+    if constexpr (DynCast) return cond ? IsA<Id, D>(axiom, def->as<D>()) : IsA<Id, D>();
     assert(cond && "assumed to be correct axiom");
-    return Test<Id, D>(axiom, def->as<D>());
+    return IsA<Id, D>(axiom, def->as<D>());
 }
 
-template<class Id, bool DynCast = true> auto test(Id id, const Def* def) {
-    using D                = typename Axiom::Test<Id>::type;
+template<class Id, bool DynCast = true> auto isa(Id id, const Def* def) {
+    using D                = typename Axiom::IsA<Id>::type;
     auto [axiom, curry, _] = Axiom::get(def);
     bool cond              = axiom && curry == 0 && axiom->flags() == (flags_t)id;
 
-    if constexpr (DynCast) return cond ? Test<Id, D>(axiom, def->as<D>()) : Test<Id, D>();
+    if constexpr (DynCast) return cond ? IsA<Id, D>(axiom, def->as<D>()) : IsA<Id, D>();
     assert(cond && "assumed to be correct axiom");
-    return Test<Id, D>(axiom, def->as<D>());
+    return IsA<Id, D>(axiom, def->as<D>());
 }
 
 // clang-format off
-template<class Id> auto force(       const Def* def) { return test<Id, false>(    def); }
-template<class Id> auto force(Id id, const Def* def) { return test<Id, false>(id, def); }
+template<class Id> auto as(       const Def* def) { return isa<Id, false>(    def); }
+template<class Id> auto as(Id id, const Def* def) { return isa<Id, false>(id, def); }
 ///@}
 
 /// @name is_commutative/is_associative
