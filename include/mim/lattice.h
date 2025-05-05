@@ -53,13 +53,13 @@ private:
 
 /// Constructs a [Meet](@ref mim::Meet) **value**.
 /// @remark [Ac](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *and*.
-class Ac : public Def, public Setters<Ac> {
+class Merge : public Def, public Setters<Merge> {
 public:
-    using Setters<Ac>::set;
+    using Setters<Merge>::set;
     static constexpr auto Node = mim::Node::Ac;
 
 private:
-    Ac(const Def* type, Defs defs)
+    Merge(const Def* type, Defs defs)
         : Def(Node, type, defs, 0) {}
 
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -68,21 +68,21 @@ private:
 };
 
 /// Constructs a [Join](@ref mim::Join) **value**.
-/// @remark [Vel](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *or*.
-class Vel : public Def, public Setters<Vel> {
+/// @remark [Inj](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *or*.
+class Inj : public Def, public Setters<Inj> {
 private:
-    Vel(const Def* type, const Def* value)
+    Inj(const Def* type, const Def* value)
         : Def(Node, type, {value}, 0) {}
 
 public:
-    using Setters<Vel>::set;
+    using Setters<Inj>::set;
 
     /// @name ops
     ///@{
     const Def* value() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Vel;
+    static constexpr auto Node = mim::Node::Inj;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -91,13 +91,13 @@ private:
 };
 
 /// Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type).
-class Pick : public Def, public Setters<Pick> {
+class Split : public Def, public Setters<Split> {
 private:
-    Pick(const Def* type, const Def* value)
+    Split(const Def* type, const Def* value)
         : Def(Node, type, {value}, 0) {}
 
 public:
-    using Setters<Pick>::set;
+    using Setters<Split>::set;
 
     /// @name ops
     ///@{
@@ -178,8 +178,8 @@ private:
 ///@{
 using Bot  = TExt<false>;
 using Top  = TExt<true>;
-using Meet = TBound<false>;
-using Join = TBound<true>;
+using Meet = TBound<false>; ///< AKA intersection.
+using Join = TBound<true>;  ///< AKA union.
 /// @}
 
 /// A singleton wraps a type into a higher order type.

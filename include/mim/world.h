@@ -443,11 +443,11 @@ public:
     template<level_t l = 0> Meet* mut_meet(size_t size) { return mut_meet(type<l>(), size); }
     const Def* join(Defs ops) { return bound<true>(ops); }
     const Def* meet(Defs ops) { return bound<false>(ops); }
-    const Def* ac(const Def* type, Defs ops);
+    const Def* merge(const Def* type, Defs ops);
     /// Infers the type using an *immutable* Meet.
-    const Def* ac(Defs ops);
-    const Def* vel(const Def* type, const Def* value);
-    const Def* pick(const Def* type, const Def* value);
+    const Def* merge(Defs ops);
+    const Def* inj(const Def* type, const Def* value);
+    const Def* split(const Def* type, const Def* value);
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash);
     const Def* uniq(const Def* inhabitant);
     ///@}

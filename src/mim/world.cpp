@@ -528,24 +528,24 @@ template<bool Up> const Def* World::bound(Defs ops) {
     return unify<TBound<Up>>(cpy.size(), kind, cpy);
 }
 
-const Def* World::ac(const Def* type, Defs ops) {
+const Def* World::merge(const Def* type, Defs ops) {
     if (type->isa<Meet>()) {
         auto types = DefVec(ops.size(), [&](size_t i) { return ops[i]->type(); });
-        return unify<Ac>(ops.size(), meet(types), ops);
+        return unify<Merge>(ops.size(), meet(types), ops);
     }
 
     assert(ops.size() == 1);
     return ops[0];
 }
 
-const Def* World::ac(Defs ops) { return ac(umax<Sort::Term>(ops), ops); }
+const Def* World::merge(Defs ops) { return merge(umax<Sort::Term>(ops), ops); }
 
-const Def* World::vel(const Def* type, const Def* value) {
-    if (type->isa<Join>()) return unify<Vel>(1, type, value);
+const Def* World::inj(const Def* type, const Def* value) {
+    if (type->isa<Join>()) return unify<Inj>(1, type, value);
     return value;
 }
 
-const Def* World::pick(const Def* type, const Def* value) { return unify<Pick>(1, type, value); }
+const Def* World::split(const Def* type, const Def* value) { return unify<Split>(1, type, value); }
 
 const Def* World::test(const Def* value, const Def* probe, const Def* match, const Def* clash) {
     auto m_pi = match->type()->isa<Pi>();
