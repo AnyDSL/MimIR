@@ -6,7 +6,7 @@ var dir_4c100286d577d9b034a54bf80a8d92ed =
     [ "phase", "dir_b94543b43292d94334aee5f8fc74aa82.html", "dir_b94543b43292d94334aee5f8fc74aa82" ],
     [ "plug", "dir_3b1e9a08cfbf85cfa8a1068ec81a2c37.html", "dir_3b1e9a08cfbf85cfa8a1068ec81a2c37" ],
     [ "util", "dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html", "dir_ff1b7b5329a4b5bde2c45ec2ac3be82c" ],
-    [ "axiom.h", "axiom_8h.html", "axiom_8h" ],
+    [ "axm.h", "axm_8h.html", "axm_8h" ],
     [ "check.h", "check_8h.html", "check_8h" ],
     [ "def.h", "def_8h.html", "def_8h" ],
     [ "driver.h", "driver_8h.html", "driver_8h" ],

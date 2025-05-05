@@ -1,5 +1,13 @@
 var NAVTREEINDEX15 =
 {
+"clos_2autogen_8h_source.html":[6,0,0,1,0,0,2,0],
+"clos_2normalizers_8cpp.html":[6,0,3,1,4,2,3],
+"clos_2normalizers_8cpp_source.html":[6,0,3,1,4,2,3],
+"clos_8cpp.html":[6,0,3,1,4,2,2],
+"clos_8cpp.html#a35bb34350e93d508e52544f4abd50e59":[6,0,3,1,4,2,2,10],
+"clos_8cpp_source.html":[6,0,3,1,4,2,2],
+"clos_8h.html":[6,0,2,1,4,2,2],
+"clos_8h_source.html":[6,0,2,1,4,2,2],
 "clos__conv_8cpp.html":[6,0,3,1,4,2,1,0],
 "clos__conv_8cpp_source.html":[6,0,3,1,4,2,1,0],
 "clos__conv_8h.html":[6,0,2,1,4,2,1,0],
@@ -22,11 +30,11 @@ var NAVTREEINDEX15 =
 "compile_8cpp_source.html":[6,0,3,1,4,3,1],
 "compile_8h.html":[6,0,2,1,4,3,1],
 "compile_8h_source.html":[6,0,2,1,4,3,1],
-"conceptmim_1_1Vectorlike.html":[3,0,1,96],
+"conceptmim_1_1Vectorlike.html":[3,0,1,95],
 "conceptmim_1_1Vectorlike.html":[4,0,2],
-"conceptmim_1_1annex__with__subs.html":[3,0,1,94],
+"conceptmim_1_1annex__with__subs.html":[3,0,1,93],
 "conceptmim_1_1annex__with__subs.html":[4,0,0],
-"conceptmim_1_1annex__without__subs.html":[3,0,1,95],
+"conceptmim_1_1annex__without__subs.html":[3,0,1,94],
 "conceptmim_1_1annex__without__subs.html":[4,0,1],
 "concepts.html":[4],
 "config_8h.html":[6,0,0,1,0,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX15 =
 "eta__red_8cpp_source.html":[6,0,3,1,2,2],
 "eta__red_8h.html":[6,0,2,1,2,2],
 "eta__red_8h_source.html":[6,0,2,1,2,2],
-"files.html":[6,0],
-"flags_8h.html":[6,0,2,1,10],
-"flags_8h_source.html":[6,0,2,1,10],
-"functions.html":[5,3,0],
-"functions.html":[5,3,0,0],
-"functions_b.html":[5,3,0,1],
-"functions_c.html":[5,3,0,2],
-"functions_d.html":[5,3,0,3],
-"functions_e.html":[5,3,0,4]
+"files.html":[6,0]
 };

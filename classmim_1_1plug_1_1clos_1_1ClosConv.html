@@ -174,7 +174,7 @@ Additional Inherited Members</h2></td></tr>
 <li><em>first-class continuations</em> get a "dummy" closure, they still have free variables.</li>
 </ul>
 <p>This pass relies on <a class="el" href="classmim_1_1plug_1_1clos_1_1ClosConvPrep.html">ClosConvPrep</a> to introduce annotations for these cases.</p>
-<p>Note: Since direct-style <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>s are not rewritten, this can lead to problems with certain <a class="el" href="classmim_1_1Axiom.html">Axiom</a>s: <code>ax : (B : *, int -&gt; B) -&gt; (int -&gt; B)</code> won't be converted, possible arguments may. Further, there is no machinery to handle free variables in a <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s type; this may lead to problems with polymorphic functions. </p>
+<p>Note: Since direct-style <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>s are not rewritten, this can lead to problems with certain <a class="el" href="classmim_1_1Axm.html">Axm</a>s: <code>ax : (B : *, int -&gt; B) -&gt; (int -&gt; B)</code> won't be converted, possible arguments may. Further, there is no machinery to handle free variables in a <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s type; this may lead to problems with polymorphic functions. </p>
 
 <p class="definition">Definition at line <a class="el" href="clos__conv_8h_source.html#l00089">89</a> of file <a class="el" href="clos__conv_8h_source.html">clos_conv.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>

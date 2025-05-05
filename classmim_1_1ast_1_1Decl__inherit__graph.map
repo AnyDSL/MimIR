@@ -1,6 +1,6 @@
 <map id="mim::ast::Decl" name="mim::ast::Decl">
 <area shape="rect" id="Node000001" title=" " alt="" coords="415,105,532,131"/>
-<area shape="rect" id="Node000004" href="$classmim_1_1ast_1_1AxiomDecl_1_1Alias.html" title=" " alt="" coords="585,15,744,55"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1ast_1_1AxmDecl_1_1Alias.html" title=" " alt="" coords="587,15,742,55"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="511,97,579,65,608,53,610,58,581,70,513,101"/>
 <area shape="rect" id="Node000005" href="$classmim_1_1ast_1_1DummyDecl.html" title=" " alt="" coords="580,80,749,105"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="545,106,579,101,580,107,546,111"/>
@@ -12,24 +12,24 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="381,115,414,115,414,121,381,121"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,105,196,131"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="210,115,244,115,244,121,210,121"/>
-<area shape="rect" id="Node000007" href="$classmim_1_1ast_1_1AliasPtrn.html" title="ptrn as id" alt="" coords="803,5,950,31"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="733,125,748,116,764,98,771,79,779,59,796,40,816,28,819,33,799,44,783,62,776,81,768,101,751,120,736,129"/>
-<area shape="rect" id="Node000008" href="$classmim_1_1ast_1_1ErrorPtrn.html" title=" " alt="" coords="804,55,949,80"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="728,123,748,116,796,90,831,78,832,83,798,95,750,120,730,128"/>
-<area shape="rect" id="Node000009" href="$classmim_1_1ast_1_1GrpPtrn.html" title="If you have x1 x2 x3 x4: T it consists of 3 GrpPtrns and 1 IdPtrn while each GrpPtrn references the l..." alt="" coords="808,104,945,129"/>
-<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="735,131,808,122,808,127,736,136"/>
-<area shape="rect" id="Node000010" href="$classmim_1_1ast_1_1IdPtrn.html" title="dbg: type" alt="" coords="813,153,940,179"/>
-<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="736,147,813,156,813,162,735,153"/>
-<area shape="rect" id="Node000011" href="$classmim_1_1ast_1_1TuplePtrn.html" title="(ptrn_0, ..., ptrn_n&#45;1), [ptrn_0, ..., ptrn_n&#45;1], or {ptrn_0, ..., ptrn_n&#45;1}" alt="" coords="803,203,951,228"/>
-<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="712,157,798,189,833,200,831,205,796,194,710,162"/>
-<area shape="rect" id="Node000013" href="$classmim_1_1ast_1_1AxiomDecl.html" title="axm ptrn: type = value;" alt="" coords="797,252,956,277"/>
-<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="732,296,821,275,822,280,734,301"/>
-<area shape="rect" id="Node000014" href="$classmim_1_1ast_1_1CDecl.html" title="cfun dbg dom &#45;&gt; codom" alt="" coords="813,301,940,327"/>
-<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="747,311,813,311,813,317,747,317"/>
-<area shape="rect" id="Node000015" href="$classmim_1_1ast_1_1LetDecl.html" title="let ptrn: type = value;" alt="" coords="808,351,945,376"/>
-<area shape="poly" id="edge14_Node000012_Node000015" title=" " alt="" coords="734,327,822,348,821,353,732,332"/>
-<area shape="rect" id="Node000016" href="$classmim_1_1ast_1_1RecDecl.html" title=".rec dbg: type = body" alt="" coords="806,400,947,425"/>
-<area shape="poly" id="edge15_Node000012_Node000016" title=" " alt="" coords="698,332,745,359,798,386,829,397,827,402,796,391,742,364,695,336"/>
-<area shape="rect" id="Node000017" href="$classmim_1_1ast_1_1LamDecl.html" title="One of:" alt="" coords="1004,400,1149,425"/>
-<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="961,410,1004,410,1004,415,961,415"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1ast_1_1AliasPtrn.html" title="ptrn as id" alt="" coords="798,5,945,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="733,125,748,116,764,98,771,79,779,60,796,40,816,28,818,33,799,44,783,62,776,81,768,101,751,120,736,129"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1ast_1_1ErrorPtrn.html" title=" " alt="" coords="799,55,944,80"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="728,123,748,116,796,90,829,78,831,83,798,95,750,120,730,128"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1ast_1_1GrpPtrn.html" title="If you have x1 x2 x3 x4: T it consists of 3 GrpPtrns and 1 IdPtrn while each GrpPtrn references the l..." alt="" coords="803,104,940,129"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="736,131,802,122,803,128,736,136"/>
+<area shape="rect" id="Node000010" href="$classmim_1_1ast_1_1IdPtrn.html" title="dbg: type" alt="" coords="808,153,935,179"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="736,148,808,156,807,161,735,153"/>
+<area shape="rect" id="Node000011" href="$classmim_1_1ast_1_1TuplePtrn.html" title="(ptrn_0, ..., ptrn_n&#45;1), [ptrn_0, ..., ptrn_n&#45;1], or {ptrn_0, ..., ptrn_n&#45;1}" alt="" coords="797,203,945,228"/>
+<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="712,157,798,189,831,200,829,205,796,194,710,162"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1ast_1_1AxmDecl.html" title="axm ptrn: type = value;" alt="" coords="798,252,945,277"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="731,296,817,275,818,280,732,301"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1ast_1_1CDecl.html" title="cfun dbg dom &#45;&gt; codom" alt="" coords="808,301,935,327"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="747,311,808,311,808,317,747,317"/>
+<area shape="rect" id="Node000015" href="$classmim_1_1ast_1_1LetDecl.html" title="let ptrn: type = value;" alt="" coords="803,351,940,376"/>
+<area shape="poly" id="edge14_Node000012_Node000015" title=" " alt="" coords="732,327,818,348,817,353,731,332"/>
+<area shape="rect" id="Node000016" href="$classmim_1_1ast_1_1RecDecl.html" title=".rec dbg: type = body" alt="" coords="801,400,942,425"/>
+<area shape="poly" id="edge15_Node000012_Node000016" title=" " alt="" coords="699,332,745,359,798,386,828,397,826,402,796,391,742,364,696,336"/>
+<area shape="rect" id="Node000017" href="$classmim_1_1ast_1_1LamDecl.html" title="One of:" alt="" coords="993,400,1139,425"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="956,410,993,410,993,415,956,415"/>
 </map>

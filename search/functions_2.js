@@ -52,5 +52,5 @@ var searchData=
   ['curr_5fgid_49',['curr_gid',['../classmim_1_1World.html#a42972b62b30faf83a3470c03a4883685',1,'mim::World']]],
   ['curr_5fmut_50',['curr_mut',['../classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e',1,'mim::PassMan::curr_mut()'],['../classmim_1_1RWPass.html#a8a816ea22672eaa6ee5524cc12e4f7e5',1,'mim::RWPass::curr_mut()']]],
   ['curr_5fundo_51',['curr_undo',['../classmim_1_1FPPass.html#a6eadcb331d94726f2e91a74d62f06eda',1,'mim::FPPass']]],
-  ['curry_52',['curry',['../classmim_1_1ast_1_1AxiomDecl.html#a31509537f4cffb8b3f724888592ff4aa',1,'mim::ast::AxiomDecl::curry()'],['../classmim_1_1Axiom.html#a4815eb9ca2039544ade0a08fbd0b7370',1,'mim::Axiom::curry()'],['../classmim_1_1App.html#a441e99ff855d60119f0f665ea3e3ed99',1,'mim::App::curry()']]]
+  ['curry_52',['curry',['../classmim_1_1ast_1_1AxmDecl.html#a745f13618ada33bad73d6f6cb5218650',1,'mim::ast::AxmDecl::curry()'],['../classmim_1_1Axm.html#aec7f0dbaadfa263bd4d845a36217deba',1,'mim::Axm::curry()'],['../classmim_1_1App.html#a441e99ff855d60119f0f665ea3e3ed99',1,'mim::App::curry()']]]
 ];

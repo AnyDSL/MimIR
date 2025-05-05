@@ -30,7 +30,7 @@ var searchData=
   ['match_5ff16_27',['match_f16',['../namespacemim_1_1plug_1_1math.html#a9f21132c6f33d36e69565752fff39793',1,'mim::plug::math']]],
   ['match_5ff32_28',['match_f32',['../namespacemim_1_1plug_1_1math.html#affa2e23bf7486738df24d3d3f1ce79da',1,'mim::plug::math']]],
   ['match_5ff64_29',['match_f64',['../namespacemim_1_1plug_1_1math.html#aee88662a06816ef08a92b69f9166ed84',1,'mim::plug::math']]],
-  ['matching_20axioms_30',['Matching Axioms',['../dev.html#cast_axiom',1,'']]],
+  ['matching_20axioms_30',['Matching Axioms',['../dev.html#cast_axm',1,'']]],
   ['matching_20ir_31',['Matching IR',['../dev.html#autotoc_md18',1,'']]],
   ['matching_20literals_32',['Matching Literals',['../dev.html#cast_lit',1,'']]],
   ['math_20abs_33',['%%math.abs',['../math.html#autotoc_md155',1,'']]],

@@ -1,5 +1,9 @@
 var NAVTREEINDEX20 =
 {
+"namespacemim_1_1plug_1_1matrix.html#aed39265d1e8f9976a8736695ee834126":[3,0,1,4,8,24],
+"namespacemim_1_1plug_1_1matrix.html#af206cc10642f27ab0e14c586d512f3d6":[3,0,1,4,8,9],
+"namespacemim_1_1plug_1_1matrix.html#af3d33c72062b1db8a1b997ec650a8f3d":[3,0,1,4,8,4],
+"namespacemim_1_1plug_1_1matrix.html#af6839dbbb5d2ef291479523aafd649d4":[3,0,1,4,8,11],
 "namespacemim_1_1plug_1_1mem.html":[3,0,1,4,9],
 "namespacemim_1_1plug_1_1mem.html#a029144aa6e194281070cc4406fe2268e":[3,0,1,4,9,15],
 "namespacemim_1_1plug_1_1mem.html#a04961411480726ed252bc02a62e51aa6":[3,0,1,4,9,48],
@@ -245,9 +249,5 @@ var NAVTREEINDEX20 =
 "rewrite_8h_source.html":[6,0,2,1,16],
 "scalarize_8cpp.html":[6,0,3,1,2,9],
 "scalarize_8cpp_source.html":[6,0,3,1,2,9],
-"scalarize_8h.html":[6,0,2,1,2,8],
-"scalarize_8h_source.html":[6,0,2,1,2,8],
-"schedule_8cpp.html":[6,0,3,1,17],
-"schedule_8cpp_source.html":[6,0,3,1,17],
-"schedule_8h.html":[6,0,2,1,17]
+"scalarize_8h.html":[6,0,2,1,2,8]
 };

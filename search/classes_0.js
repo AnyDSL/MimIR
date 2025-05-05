@@ -1,7 +1,7 @@
 var searchData=
 [
   ['addmem_0',['AddMem',['../classmim_1_1plug_1_1mem_1_1AddMem.html',1,'mim::plug::mem']]],
-  ['alias_1',['Alias',['../classmim_1_1ast_1_1AxiomDecl_1_1Alias.html',1,'mim::ast::AxiomDecl']]],
+  ['alias_1',['Alias',['../classmim_1_1ast_1_1AxmDecl_1_1Alias.html',1,'mim::ast::AxmDecl']]],
   ['aliasptrn_2',['AliasPtrn',['../classmim_1_1ast_1_1AliasPtrn.html',1,'mim::ast']]],
   ['alloc2malloc_3',['Alloc2Malloc',['../classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html',1,'mim::plug::mem']]],
   ['annex_4',['Annex',['../structmim_1_1Annex.html',1,'mim']]],
@@ -23,6 +23,6 @@ var searchData=
   ['automatonbase_20',['AutomatonBase',['../classautomaton_1_1AutomatonBase.html',1,'automaton']]],
   ['automatonbase_3c_20dfanode_20_3e_21',['AutomatonBase&lt; DFANode &gt;',['../classautomaton_1_1AutomatonBase.html',1,'automaton']]],
   ['automatonbase_3c_20nfanode_20_3e_22',['AutomatonBase&lt; NFANode &gt;',['../classautomaton_1_1AutomatonBase.html',1,'automaton']]],
-  ['axiom_23',['Axiom',['../classmim_1_1Axiom.html',1,'mim']]],
-  ['axiomdecl_24',['AxiomDecl',['../classmim_1_1ast_1_1AxiomDecl.html',1,'mim::ast']]]
+  ['axm_23',['Axm',['../classmim_1_1Axm.html',1,'mim']]],
+  ['axmdecl_24',['AxmDecl',['../classmim_1_1ast_1_1AxmDecl.html',1,'mim::ast']]]
 ];

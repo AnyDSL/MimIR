@@ -172,6 +172,6 @@ var searchData=
   ['curr_5fmut_169',['curr_mut',['../classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e',1,'mim::PassMan::curr_mut()'],['../classmim_1_1RWPass.html#a8a816ea22672eaa6ee5524cc12e4f7e5',1,'mim::RWPass::curr_mut()']]],
   ['curr_5fsub_170',['curr_sub',['../structmim_1_1World_1_1State.html#af54ab6a3209bb04cd7b736a8ac6bbde1',1,'mim::World::State::POD']]],
   ['curr_5fundo_171',['curr_undo',['../classmim_1_1FPPass.html#a6eadcb331d94726f2e91a74d62f06eda',1,'mim::FPPass']]],
-  ['curry_172',['curry',['../classmim_1_1ast_1_1AxiomDecl.html#a31509537f4cffb8b3f724888592ff4aa',1,'mim::ast::AxiomDecl::curry()'],['../classmim_1_1Axiom.html#a4815eb9ca2039544ade0a08fbd0b7370',1,'mim::Axiom::curry()'],['../classmim_1_1App.html#a441e99ff855d60119f0f665ea3e3ed99',1,'mim::App::curry()'],['../namespacemim_1_1ast.html#a6f374060aebf4d4f9a846337dd989c5a',1,'mim::ast::AnnexInfo.id::curry']]],
+  ['curry_172',['curry',['../classmim_1_1ast_1_1AxmDecl.html#a745f13618ada33bad73d6f6cb5218650',1,'mim::ast::AxmDecl::curry()'],['../classmim_1_1Axm.html#aec7f0dbaadfa263bd4d845a36217deba',1,'mim::Axm::curry()'],['../classmim_1_1App.html#a441e99ff855d60119f0f665ea3e3ed99',1,'mim::App::curry()'],['../namespacemim_1_1ast.html#a6f374060aebf4d4f9a846337dd989c5a',1,'mim::ast::AnnexInfo.id::curry']]],
   ['curry_5f_173',['curry_',['../classmim_1_1Def.html#a6039d3f834a30baca2e8bf279231ea3a',1,'mim::Def']]]
 ];

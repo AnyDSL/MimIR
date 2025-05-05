@@ -14,7 +14,7 @@ var searchData=
   ['setters_11',['Setters',['../classmim_1_1Setters.html',1,'mim']]],
   ['setters_3c_20app_20_3e_12',['Setters&lt; App &gt;',['../classmim_1_1Setters.html',1,'mim']]],
   ['setters_3c_20arr_20_3e_13',['Setters&lt; Arr &gt;',['../classmim_1_1Setters.html',1,'mim']]],
-  ['setters_3c_20axiom_20_3e_14',['Setters&lt; Axiom &gt;',['../classmim_1_1Setters.html',1,'mim']]],
+  ['setters_3c_20axm_20_3e_14',['Setters&lt; Axm &gt;',['../classmim_1_1Setters.html',1,'mim']]],
   ['setters_3c_20extract_20_3e_15',['Setters&lt; Extract &gt;',['../classmim_1_1Setters.html',1,'mim']]],
   ['setters_3c_20global_20_3e_16',['Setters&lt; Global &gt;',['../classmim_1_1Setters.html',1,'mim']]],
   ['setters_3c_20hole_20_3e_17',['Setters&lt; Hole &gt;',['../classmim_1_1Setters.html',1,'mim']]],

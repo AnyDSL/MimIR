@@ -22,6 +22,6 @@ var searchData=
   ['autodiff_5fzero_5fcleanup_2eh_19',['autodiff_zero_cleanup.h',['../autodiff__zero__cleanup_8h.html',1,'']]],
   ['autogen_2eh_20',['autogen.h',['../affine_2autogen_8h.html',1,'(Global Namespace)'],['../autodiff_2autogen_8h.html',1,'(Global Namespace)'],['../clos_2autogen_8h.html',1,'(Global Namespace)'],['../compile_2autogen_8h.html',1,'(Global Namespace)'],['../core_2autogen_8h.html',1,'(Global Namespace)'],['../demo_2autogen_8h.html',1,'(Global Namespace)'],['../direct_2autogen_8h.html',1,'(Global Namespace)'],['../math_2autogen_8h.html',1,'(Global Namespace)'],['../matrix_2autogen_8h.html',1,'(Global Namespace)'],['../mem_2autogen_8h.html',1,'(Global Namespace)'],['../opt_2autogen_8h.html',1,'(Global Namespace)'],['../refly_2autogen_8h.html',1,'(Global Namespace)'],['../regex_2autogen_8h.html',1,'(Global Namespace)']]],
   ['automaton_2eh_21',['automaton.h',['../automaton_8h.html',1,'']]],
-  ['axiom_2ecpp_22',['axiom.cpp',['../axiom_8cpp.html',1,'']]],
-  ['axiom_2eh_23',['axiom.h',['../axiom_8h.html',1,'']]]
+  ['axm_2ecpp_22',['axm.cpp',['../axm_8cpp.html',1,'']]],
+  ['axm_2eh_23',['axm.h',['../axm_8h.html',1,'']]]
 ];

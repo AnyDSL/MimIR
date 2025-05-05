@@ -49,8 +49,8 @@ var hierarchy =
     [ "std::integral_constant", null, [
       [ "std::tuple_size< mim::Span< T, N > >", "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
-    [ "mim::Axiom::IsA< T >", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1IsA", null ],
-    [ "mim::IsA< Id, D >", "classmim_1_1IsA.html", null ],
+    [ "mim::Axm::IsA< Id, D >", "classmim_1_1Axm_1_1IsA.html", null ],
+    [ "mim::Axm::IsANode< T >", "classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode", null ],
     [ "mim::Sets< D, N >::Set::iterator", "classmim_1_1Sets_1_1Set_1_1iterator.html", null ],
     [ "fe::Lexer", null, [
       [ "mim::ast::Lexer", "classmim_1_1ast_1_1Lexer.html", null ]
@@ -219,7 +219,7 @@ var hierarchy =
       [ "mim::Def", "classmim_1_1Def.html", [
         [ "mim::App", "classmim_1_1App.html", null ],
         [ "mim::Arr", "classmim_1_1Arr.html", null ],
-        [ "mim::Axiom", "classmim_1_1Axiom.html", null ],
+        [ "mim::Axm", "classmim_1_1Axm.html", null ],
         [ "mim::Bound", "classmim_1_1Bound.html", [
           [ "mim::TBound< false >", "classmim_1_1TBound.html", null ],
           [ "mim::TBound< true >", "classmim_1_1TBound.html", null ],
@@ -256,7 +256,7 @@ var hierarchy =
       ] ],
       [ "mim::ast::Node", "classmim_1_1ast_1_1Node.html", [
         [ "mim::ast::Decl", "classmim_1_1ast_1_1Decl.html", [
-          [ "mim::ast::AxiomDecl::Alias", "classmim_1_1ast_1_1AxiomDecl_1_1Alias.html", null ],
+          [ "mim::ast::AxmDecl::Alias", "classmim_1_1ast_1_1AxmDecl_1_1Alias.html", null ],
           [ "mim::ast::DummyDecl", "classmim_1_1ast_1_1DummyDecl.html", null ],
           [ "mim::ast::Ptrn", "classmim_1_1ast_1_1Ptrn.html", [
             [ "mim::ast::AliasPtrn", "classmim_1_1ast_1_1AliasPtrn.html", null ],
@@ -266,7 +266,7 @@ var hierarchy =
             [ "mim::ast::TuplePtrn", "classmim_1_1ast_1_1TuplePtrn.html", null ]
           ] ],
           [ "mim::ast::ValDecl", "classmim_1_1ast_1_1ValDecl.html", [
-            [ "mim::ast::AxiomDecl", "classmim_1_1ast_1_1AxiomDecl.html", null ],
+            [ "mim::ast::AxmDecl", "classmim_1_1ast_1_1AxmDecl.html", null ],
             [ "mim::ast::CDecl", "classmim_1_1ast_1_1CDecl.html", null ],
             [ "mim::ast::LetDecl", "classmim_1_1ast_1_1LetDecl.html", null ],
             [ "mim::ast::RecDecl", "classmim_1_1ast_1_1RecDecl.html", [
@@ -316,8 +316,8 @@ var hierarchy =
     [ "mim::Setters< Arr >", "classmim_1_1Setters.html", [
       [ "mim::Arr", "classmim_1_1Arr.html", null ]
     ] ],
-    [ "mim::Setters< Axiom >", "classmim_1_1Setters.html", [
-      [ "mim::Axiom", "classmim_1_1Axiom.html", null ]
+    [ "mim::Setters< Axm >", "classmim_1_1Setters.html", [
+      [ "mim::Axm", "classmim_1_1Axm.html", null ]
     ] ],
     [ "mim::Setters< Extract >", "classmim_1_1Setters.html", [
       [ "mim::Extract", "classmim_1_1Extract.html", null ]

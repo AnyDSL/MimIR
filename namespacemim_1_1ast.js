@@ -8,7 +8,7 @@ var namespacemim_1_1ast =
     [ "ArrOrPackExpr", "classmim_1_1ast_1_1ArrOrPackExpr.html", "classmim_1_1ast_1_1ArrOrPackExpr" ],
     [ "ArrowExpr", "classmim_1_1ast_1_1ArrowExpr.html", "classmim_1_1ast_1_1ArrowExpr" ],
     [ "AST", "classmim_1_1ast_1_1AST.html", "classmim_1_1ast_1_1AST" ],
-    [ "AxiomDecl", "classmim_1_1ast_1_1AxiomDecl.html", "classmim_1_1ast_1_1AxiomDecl" ],
+    [ "AxmDecl", "classmim_1_1ast_1_1AxmDecl.html", "classmim_1_1ast_1_1AxmDecl" ],
     [ "CDecl", "classmim_1_1ast_1_1CDecl.html", "classmim_1_1ast_1_1CDecl" ],
     [ "Decl", "classmim_1_1ast_1_1Decl.html", "classmim_1_1ast_1_1Decl" ],
     [ "DeclExpr", "classmim_1_1ast_1_1DeclExpr.html", "classmim_1_1ast_1_1DeclExpr" ],

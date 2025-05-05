@@ -6,7 +6,7 @@ var dir_3f6d0e947440f9d0b42426d30577ffdc =
     [ "phase", "dir_4ad15e0004aa2fc2424d5bded02c9369.html", "dir_4ad15e0004aa2fc2424d5bded02c9369" ],
     [ "plug", "dir_07110a8747d2517ee97007224f1d2994.html", "dir_07110a8747d2517ee97007224f1d2994" ],
     [ "util", "dir_bed7118e4bacc0bd560da06fb11567a5.html", "dir_bed7118e4bacc0bd560da06fb11567a5" ],
-    [ "axiom.cpp", "axiom_8cpp.html", null ],
+    [ "axm.cpp", "axm_8cpp.html", null ],
     [ "check.cpp", "check_8cpp.html", null ],
     [ "def.cpp", "def_8cpp.html", "def_8cpp" ],
     [ "dot.cpp", "dot_8cpp.html", null ],

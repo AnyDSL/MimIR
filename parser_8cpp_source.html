@@ -247,7 +247,7 @@ $(function(){initNavTree('parser_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">auto</span> track = tracker();</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed">Ptrs&lt;Import&gt;</a> imports;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keywordflow">if</span> (ahead().<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::K_import) || ahead().<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::K_plugin)) {</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keywordflow">if</span> (ahead().isa(Tag::K_import) || ahead().isa(Tag::K_plugin)) {</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> <span class="keyword">import</span> = parse_import_or_plugin()) imports.emplace_back(std::move(<span class="keyword">import</span>));</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="keywordflow">break</span>;</div>
@@ -472,7 +472,7 @@ $(function(){initNavTree('parser_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    <span class="keywordflow">do</span> {</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        Dbg dbg;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>        <span class="keywordflow">if</span> (ahead(0).<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::M_id) &amp;&amp; ahead(1).<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::T_colon)) {</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>        <span class="keywordflow">if</span> (ahead(0).isa(Tag::M_id) &amp;&amp; ahead(1).isa(Tag::T_colon)) {</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>            dbg = eat(Tag::M_id).dbg();</div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>            eat(Tag::T_colon);</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>        }</div>
@@ -600,12 +600,12 @@ $(function(){initNavTree('parser_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>    <span class="comment">// p -&gt; (p, ..., p)</span></div>
 <div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    <span class="comment">// p -&gt; {b, ..., b}     b -&gt; {b, ..., b}</span></div>
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    <span class="comment">// p -&gt; [b, ..., b]     b -&gt; [b, ..., b]</span></div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    <span class="keywordflow">if</span> (is_paren_style(style) &amp;&amp; ahead().<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::D_paren_l)) <span class="keywordflow">return</span> parse_tuple_ptrn(style);</div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>    <span class="keywordflow">if</span> (is_implicit(style) &amp;&amp; ahead().<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::D_brace_l)) <span class="keywordflow">return</span> parse_tuple_ptrn(style);</div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    <span class="keywordflow">if</span> (ahead().<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::D_brckt_l)) <span class="keywordflow">return</span> parse_tuple_ptrn(Brckt_Style);</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    <span class="keywordflow">if</span> (is_paren_style(style) &amp;&amp; ahead().isa(Tag::D_paren_l)) <span class="keywordflow">return</span> parse_tuple_ptrn(style);</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>    <span class="keywordflow">if</span> (is_implicit(style) &amp;&amp; ahead().isa(Tag::D_brace_l)) <span class="keywordflow">return</span> parse_tuple_ptrn(style);</div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>    <span class="keywordflow">if</span> (ahead().isa(Tag::D_brckt_l)) <span class="keywordflow">return</span> parse_tuple_ptrn(Brckt_Style);</div>
 <div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span> </div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>    <span class="keywordflow">if</span> (ahead(0).<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::M_id)) {</div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>        <span class="keywordflow">if</span> (ahead(1).<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::T_colon)) {</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>    <span class="keywordflow">if</span> (ahead(0).isa(Tag::M_id)) {</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>        <span class="keywordflow">if</span> (ahead(1).isa(Tag::T_colon)) {</div>
 <div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>            <span class="comment">// p -&gt;  s: e       b -&gt;  s: e</span></div>
 <div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>            <span class="keyword">auto</span> dbg = eat(Tag::M_id).dbg();</div>
 <div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>            eat(Tag::T_colon);</div>
@@ -644,7 +644,7 @@ $(function(){initNavTree('parser_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>        <span class="keyword">auto</span> track = tracker();</div>
 <div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>        <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Ptrn&gt;</a> ptrn;</div>
 <div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span> </div>
-<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>        <span class="keywordflow">if</span> (ahead(0).<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::M_id) &amp;&amp; ahead(1).<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::M_id)) {</div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>        <span class="keywordflow">if</span> (ahead(0).isa(Tag::M_id) &amp;&amp; ahead(1).isa(Tag::M_id)) {</div>
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>            <a class="code hl_typedef" href="namespacemim_1_1ast.html#a09214c0845d7829eb157e8700b238366">Dbgs</a> dbgs;</div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>            <span class="keywordflow">while</span> (<span class="keyword">auto</span> tok = accept(Tag::M_id)) dbgs.emplace_back(tok.dbg());</div>
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span> </div>
@@ -672,7 +672,7 @@ $(function(){initNavTree('parser_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span> </div>
 <div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>            <span class="keywordflow">if</span> (is_brket_style(style)) {</div>
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>                <span class="comment">// [..., [Nat, Nat] -&gt; Nat, ...] ==&gt; [..., _: [Nat, Nat] -&gt; Nat, ...]</span></div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>                <span class="keywordflow">if</span> (ahead().<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::T_arrow)) {</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>                <span class="keywordflow">if</span> (ahead().isa(Tag::T_arrow)) {</div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>                    <span class="keyword">auto</span> loc  = ptrn-&gt;loc();</div>
 <div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>                    <span class="keyword">auto</span> expr = parse_pi_expr(std::move(ptrn));</div>
 <div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>                    ptrn      = ptr&lt;IdPtrn&gt;(loc, Dbg(loc.anew_begin(), Sym()), std::move(expr));</div>
@@ -706,7 +706,7 @@ $(function(){initNavTree('parser_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>        <span class="comment">// clang-format off</span></div>
 <div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>        <span class="keywordflow">switch</span> (ahead().tag()) {</div>
 <div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>            <span class="keywordflow">case</span> Tag::T_semicolon: lex(); <span class="keywordflow">break</span>; <span class="comment">// eat up stray semicolons</span></div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>            <span class="keywordflow">case</span> Tag::K_axm:       decls.emplace_back(parse_axiom_decl());        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>            <span class="keywordflow">case</span> Tag::K_axm:       decls.emplace_back(parse_axm_decl());        <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>            <span class="keywordflow">case</span> Tag::K_ccon:</div>
 <div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>            <span class="keywordflow">case</span> Tag::K_cfun:      decls.emplace_back(parse_c_decl());            <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>            <span class="keywordflow">case</span> Tag::K_let:       decls.emplace_back(parse_let_decl());          <span class="keywordflow">break</span>;</div>
@@ -720,138 +720,137 @@ $(function(){initNavTree('parser_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>    }</div>
 <div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>}</div>
 <div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span> </div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;ValDecl&gt;</a> Parser::parse_axiom_decl() {</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;ValDecl&gt;</a> Parser::parse_axm_decl() {</div>
 <div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>    <span class="keyword">auto</span> track = tracker();</div>
 <div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>    eat(Tag::K_axm);</div>
 <div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>    Dbg dbg, normalizer;</div>
 <div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>    Tok curry, trip;</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> name = expect(Tag::M_anx, <span class="stringliteral">&quot;annex name of an axiom&quot;</span>))</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> name = expect(Tag::M_anx, <span class="stringliteral">&quot;annex name of an axm&quot;</span>))</div>
 <div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>        dbg = name.dbg();</div>
 <div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>    <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>        dbg = Dbg(curr_, <a class="code hl_function" href="classmim_1_1ast_1_1Parser.html#a7644de392100f7603c8e3ffa6d5764e9">ast</a>().sym(<span class="stringliteral">&quot;&lt;error annex name&gt;&quot;</span>));</div>
 <div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span> </div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    std::deque&lt;Ptrs&lt;AxiomDecl::Alias&gt;&gt; subs;</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    <span class="keywordflow">if</span> (ahead().<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::D_paren_l)) {</div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>        parse_list(<span class="stringliteral">&quot;tag list of an axiom&quot;</span>, Tag::D_paren_l, [&amp;]() {</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    std::deque&lt;Ptrs&lt;AxmDecl::Alias&gt;&gt; subs;</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    <span class="keywordflow">if</span> (ahead().isa(Tag::D_paren_l)) {</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>        parse_list(<span class="stringliteral">&quot;tag list of an axm&quot;</span>, Tag::D_paren_l, [&amp;]() {</div>
 <div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>            <span class="keyword">auto</span>&amp; aliases = subs.emplace_back();</div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>            aliases.emplace_back(ptr&lt;AxiomDecl::Alias&gt;(parse_id(<span class="stringliteral">&quot;tag of an axiom&quot;</span>)));</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>            <span class="keywordflow">while</span> (accept(Tag::T_assign))</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>                aliases.emplace_back(ptr&lt;AxiomDecl::Alias&gt;(parse_id(<span class="stringliteral">&quot;alias of an axiom tag&quot;</span>)));</div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>        });</div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>    }</div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span> </div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>    <span class="keyword">auto</span> type = parse_type_ascr(<span class="stringliteral">&quot;type ascription of an axiom&quot;</span>);</div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span> </div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>    <span class="keywordflow">if</span> (ahead(0).<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::T_comma) &amp;&amp; ahead(1).<a class="code hl_function" href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">isa</a>(Tag::M_id)) {</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>        lex();</div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>        normalizer = lex().dbg();</div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>    }</div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>    <span class="keywordflow">if</span> (accept(Tag::T_comma)) {</div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> c = expect(Tag::L_u, <span class="stringliteral">&quot;curry counter for axiom&quot;</span>)) curry = <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1math.html#aaf7502aae7bb9f2d1d1a1b56cc65f87aa4a8a08f09d37b73795649038408b5f33">c</a>;</div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>        <span class="keywordflow">if</span> (accept(Tag::T_comma)) {</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> t = expect(Tag::L_u, <span class="stringliteral">&quot;trip count for axiom&quot;</span>)) trip = <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">t</a>;</div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>        }</div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>    }</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span> </div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>    <span class="keywordflow">return</span> ptr&lt;AxiomDecl&gt;(track, dbg, std::move(subs), std::move(type), normalizer, curry, trip);</div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>}</div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span> </div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;ValDecl&gt;</a> Parser::parse_let_decl() {</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    <span class="keyword">auto</span> track = tracker();</div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>    eat(Tag::K_let);</div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span> </div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Ptrn&gt;</a> ptrn;</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> anx = accept(Tok::Tag::M_anx)) {</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        <span class="keyword">auto</span> type = parse_type_ascr();</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        ptrn      = ptr&lt;IdPtrn&gt;(track, anx.dbg(), std::move(type));</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>        ptrn = parse_ptrn(Paren_Style, <span class="stringliteral">&quot;binding pattern of a let declaration&quot;</span>, <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca1448e86d90e0feb307c2894c24e87767">Expr::Prec::Bot</a>);</div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    }</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span> </div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    expect(Tag::T_assign, <span class="stringliteral">&quot;let&quot;</span>);</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    <span class="keyword">auto</span> type  = parse_type_ascr();</div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>    <span class="keyword">auto</span> value = parse_expr(<span class="stringliteral">&quot;value of a let declaration&quot;</span>);</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>    <span class="keywordflow">return</span> ptr&lt;LetDecl&gt;(track, std::move(ptrn), std::move(value));</div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>}</div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;ValDecl&gt;</a> Parser::parse_c_decl() {</div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>    <span class="keyword">auto</span> track = tracker();</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>    <span class="keyword">auto</span> tag   = lex().tag();</div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    <span class="keyword">auto</span> <span class="keywordtype">id</span>    = expect(Tag::M_id, <span class="stringliteral">&quot;C function declaration&quot;</span>);</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    <span class="keyword">auto</span> dom   = parse_ptrn(Brckt_Style, <span class="stringliteral">&quot;domain of a C function&quot;</span>s, <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941">Expr::Prec::App</a>);</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Expr&gt;</a> codom;</div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>    <span class="keywordflow">if</span> (tag == Tag::K_cfun) {</div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>        expect(Tag::T_colon, <span class="stringliteral">&quot;codomain of a C function&quot;</span>);</div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>        codom = parse_expr(<span class="stringliteral">&quot;codomain of a C function&quot;</span>);</div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>    }</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>    <span class="keywordflow">return</span> ptr&lt;CDecl&gt;(track, tag, <span class="keywordtype">id</span>.dbg(), std::move(dom), std::move(codom));</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>}</div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span> </div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;RecDecl&gt;</a> Parser::parse_rec_decl(<span class="keywordtype">bool</span> first) {</div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    <span class="keyword">auto</span> track = tracker();</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    eat(first ? Tag::K_rec : Tag::K_and);</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>    <span class="keyword">auto</span> dbg  = parse_name(<span class="stringliteral">&quot;recursive declaration&quot;</span>);</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>    <span class="keyword">auto</span> type = accept(Tag::T_colon) ? parse_expr(<span class="stringliteral">&quot;type of a recursive declaration&quot;</span>) : ptr&lt;HoleExpr&gt;(curr_);</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>    expect(Tag::T_assign, <span class="stringliteral">&quot;recursive declaration&quot;</span>);</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>    <span class="keyword">auto</span> body = parse_expr(<span class="stringliteral">&quot;body of a recursive declaration&quot;</span>);</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>    <span class="keyword">auto</span> next = ahead().isa(Tag::K_and) ? parse_and_decl() : nullptr;</div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>    <span class="keywordflow">return</span> ptr&lt;RecDecl&gt;(track, dbg, std::move(type), std::move(body), std::move(next));</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>}</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;LamDecl&gt;</a> Parser::parse_lam_decl() {</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>    <span class="keyword">auto</span> track    = tracker();</div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>    <span class="keyword">auto</span> tag      = lex().tag();</div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>    <span class="keyword">auto</span> prec     = tag == Tag::K_cn || tag == Tag::K_con ? <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca1448e86d90e0feb307c2894c24e87767">Expr::Prec::Bot</a> : <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca127125672f1e85d1e676d4394d24e066">Expr::Prec::Pi</a>;</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>    <span class="keywordtype">bool</span> external = (bool)accept(Tag::K_extern);</div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span> </div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>    <span class="keywordtype">bool</span> decl;</div>
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>    std::string entity;</div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>    <span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>    <span class="keywordflow">switch</span> (tag) {</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        <span class="keywordflow">case</span> Tag::T_lm:  decl = <span class="keyword">false</span>; entity = <span class="stringliteral">&quot;function expression&quot;</span>;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        <span class="keywordflow">case</span> Tag::K_cn:  decl = <span class="keyword">false</span>; entity = <span class="stringliteral">&quot;continuation expression&quot;</span>;            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>        <span class="keywordflow">case</span> Tag::K_fn:  decl = <span class="keyword">false</span>; entity = <span class="stringliteral">&quot;returning continuation expression&quot;</span>;  <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>        <span class="keywordflow">case</span> Tag::K_lam: decl = true ; entity = <span class="stringliteral">&quot;function declaration&quot;</span>;               <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>        <span class="keywordflow">case</span> Tag::K_con: decl = true ; entity = <span class="stringliteral">&quot;continuation declaration&quot;</span>;           <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>        <span class="keywordflow">case</span> Tag::K_fun: decl = true ; entity = <span class="stringliteral">&quot;returning continuation declaration&quot;</span>; <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>        <span class="keywordflow">default</span>: fe::unreachable();</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>    }</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>    <span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span> </div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>    <span class="keyword">auto</span> dbg = decl ? parse_name(entity) : Dbg();</div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed">Ptrs&lt;LamDecl::Dom&gt;</a> doms;</div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>        <span class="keyword">auto</span> track  = tracker();</div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>        <span class="keyword">auto</span> ptrn   = parse_ptrn(Paren_Style | Implicit, <span class="stringliteral">&quot;domain pattern of a &quot;</span>s + entity, prec);</div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        <span class="keyword">auto</span> filter = accept(Tag::T_at) ? parse_expr(<span class="stringliteral">&quot;filter&quot;</span>) : nullptr;</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>        doms.emplace_back(ptr&lt;LamDecl::Dom&gt;(track, std::move(ptrn), std::move(filter)));</div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span> </div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>        <span class="keywordflow">switch</span> (ahead().tag()) {</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>            <span class="keywordflow">case</span> Tag::C_CURRIED_P: <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>            <span class="keywordflow">default</span>: <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>        }</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>        <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>    }</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span> </div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>    <span class="keyword">auto</span> codom = accept(Tag::T_colon) ? parse_expr(<span class="stringliteral">&quot;codomain of a &quot;</span>s + entity, <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e">Expr::Prec::Arrow</a>) : nullptr;</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>    <span class="keywordflow">if</span> (tag == Tag::K_fn || tag == Tag::K_fun)</div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>        doms.back()-&gt;add_ret(<a class="code hl_function" href="classmim_1_1ast_1_1Parser.html#a7644de392100f7603c8e3ffa6d5764e9">ast</a>(), codom ? std::move(codom) : ptr&lt;HoleExpr&gt;(curr_));</div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span> </div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>    expect(Tag::T_assign, <span class="stringliteral">&quot;body of a &quot;</span>s + entity);</div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>    <span class="keyword">auto</span> body = parse_expr(<span class="stringliteral">&quot;body of a &quot;</span>s + entity);</div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>    <span class="keyword">auto</span> next = ahead().isa(Tag::K_and) ? parse_and_decl() : nullptr;</div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span> </div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>    <span class="keywordflow">return</span> ptr&lt;LamDecl&gt;(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body), std::move(next));</div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>}</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span> </div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;RecDecl&gt;</a> Parser::parse_and_decl() {</div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>    <span class="keywordflow">switch</span> (ahead(1).tag()) {</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>        <span class="keywordflow">case</span> Tag::C_LAM: <span class="keywordflow">return</span> lex(), parse_lam_decl();</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>        <span class="keywordflow">default</span>: <span class="keywordflow">return</span> parse_rec_decl(<span class="keyword">false</span>);</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>    }</div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>}</div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span> </div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>} <span class="comment">// namespace mim::ast</span></div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>            aliases.emplace_back(ptr&lt;AxmDecl::Alias&gt;(parse_id(<span class="stringliteral">&quot;tag of an axm&quot;</span>)));</div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>            <span class="keywordflow">while</span> (accept(Tag::T_assign)) aliases.emplace_back(ptr&lt;AxmDecl::Alias&gt;(parse_id(<span class="stringliteral">&quot;alias of an axm tag&quot;</span>)));</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>        });</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>    }</div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span> </div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>    <span class="keyword">auto</span> type = parse_type_ascr(<span class="stringliteral">&quot;type ascription of an axm&quot;</span>);</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span> </div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>    <span class="keywordflow">if</span> (ahead(0).isa(Tag::T_comma) &amp;&amp; ahead(1).isa(Tag::M_id)) {</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>        lex();</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>        normalizer = lex().dbg();</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>    }</div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>    <span class="keywordflow">if</span> (accept(Tag::T_comma)) {</div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> c = expect(Tag::L_u, <span class="stringliteral">&quot;curry counter for axm&quot;</span>)) curry = <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1math.html#aaf7502aae7bb9f2d1d1a1b56cc65f87aa4a8a08f09d37b73795649038408b5f33">c</a>;</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>        <span class="keywordflow">if</span> (accept(Tag::T_comma)) {</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> t = expect(Tag::L_u, <span class="stringliteral">&quot;trip count for axm&quot;</span>)) trip = <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">t</a>;</div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>        }</div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>    }</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span> </div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    <span class="keywordflow">return</span> ptr&lt;AxmDecl&gt;(track, dbg, std::move(subs), std::move(type), normalizer, curry, trip);</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>}</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span> </div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;ValDecl&gt;</a> Parser::parse_let_decl() {</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    <span class="keyword">auto</span> track = tracker();</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    eat(Tag::K_let);</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span> </div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Ptrn&gt;</a> ptrn;</div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> anx = accept(Tok::Tag::M_anx)) {</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>        <span class="keyword">auto</span> type = parse_type_ascr();</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        ptrn      = ptr&lt;IdPtrn&gt;(track, anx.dbg(), std::move(type));</div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>        ptrn = parse_ptrn(Paren_Style, <span class="stringliteral">&quot;binding pattern of a let declaration&quot;</span>, <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca1448e86d90e0feb307c2894c24e87767">Expr::Prec::Bot</a>);</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>    }</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span> </div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>    expect(Tag::T_assign, <span class="stringliteral">&quot;let&quot;</span>);</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    <span class="keyword">auto</span> type  = parse_type_ascr();</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    <span class="keyword">auto</span> value = parse_expr(<span class="stringliteral">&quot;value of a let declaration&quot;</span>);</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>    <span class="keywordflow">return</span> ptr&lt;LetDecl&gt;(track, std::move(ptrn), std::move(value));</div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>}</div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span> </div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;ValDecl&gt;</a> Parser::parse_c_decl() {</div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>    <span class="keyword">auto</span> track = tracker();</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>    <span class="keyword">auto</span> tag   = lex().tag();</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>    <span class="keyword">auto</span> <span class="keywordtype">id</span>    = expect(Tag::M_id, <span class="stringliteral">&quot;C function declaration&quot;</span>);</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    <span class="keyword">auto</span> dom   = parse_ptrn(Brckt_Style, <span class="stringliteral">&quot;domain of a C function&quot;</span>s, <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941">Expr::Prec::App</a>);</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;Expr&gt;</a> codom;</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>    <span class="keywordflow">if</span> (tag == Tag::K_cfun) {</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>        expect(Tag::T_colon, <span class="stringliteral">&quot;codomain of a C function&quot;</span>);</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>        codom = parse_expr(<span class="stringliteral">&quot;codomain of a C function&quot;</span>);</div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>    }</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>    <span class="keywordflow">return</span> ptr&lt;CDecl&gt;(track, tag, <span class="keywordtype">id</span>.dbg(), std::move(dom), std::move(codom));</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>}</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span> </div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;RecDecl&gt;</a> Parser::parse_rec_decl(<span class="keywordtype">bool</span> first) {</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>    <span class="keyword">auto</span> track = tracker();</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    eat(first ? Tag::K_rec : Tag::K_and);</div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>    <span class="keyword">auto</span> dbg  = parse_name(<span class="stringliteral">&quot;recursive declaration&quot;</span>);</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>    <span class="keyword">auto</span> type = accept(Tag::T_colon) ? parse_expr(<span class="stringliteral">&quot;type of a recursive declaration&quot;</span>) : ptr&lt;HoleExpr&gt;(curr_);</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>    expect(Tag::T_assign, <span class="stringliteral">&quot;recursive declaration&quot;</span>);</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>    <span class="keyword">auto</span> body = parse_expr(<span class="stringliteral">&quot;body of a recursive declaration&quot;</span>);</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>    <span class="keyword">auto</span> next = ahead().isa(Tag::K_and) ? parse_and_decl() : nullptr;</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>    <span class="keywordflow">return</span> ptr&lt;RecDecl&gt;(track, dbg, std::move(type), std::move(body), std::move(next));</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>}</div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span> </div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;LamDecl&gt;</a> Parser::parse_lam_decl() {</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>    <span class="keyword">auto</span> track    = tracker();</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>    <span class="keyword">auto</span> tag      = lex().tag();</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>    <span class="keyword">auto</span> prec     = tag == Tag::K_cn || tag == Tag::K_con ? <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca1448e86d90e0feb307c2894c24e87767">Expr::Prec::Bot</a> : <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca127125672f1e85d1e676d4394d24e066">Expr::Prec::Pi</a>;</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>    <span class="keywordtype">bool</span> external = (bool)accept(Tag::K_extern);</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span> </div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>    <span class="keywordtype">bool</span> decl;</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>    std::string entity;</div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>    <span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>    <span class="keywordflow">switch</span> (tag) {</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>        <span class="keywordflow">case</span> Tag::T_lm:  decl = <span class="keyword">false</span>; entity = <span class="stringliteral">&quot;function expression&quot;</span>;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        <span class="keywordflow">case</span> Tag::K_cn:  decl = <span class="keyword">false</span>; entity = <span class="stringliteral">&quot;continuation expression&quot;</span>;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        <span class="keywordflow">case</span> Tag::K_fn:  decl = <span class="keyword">false</span>; entity = <span class="stringliteral">&quot;returning continuation expression&quot;</span>;  <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>        <span class="keywordflow">case</span> Tag::K_lam: decl = true ; entity = <span class="stringliteral">&quot;function declaration&quot;</span>;               <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>        <span class="keywordflow">case</span> Tag::K_con: decl = true ; entity = <span class="stringliteral">&quot;continuation declaration&quot;</span>;           <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>        <span class="keywordflow">case</span> Tag::K_fun: decl = true ; entity = <span class="stringliteral">&quot;returning continuation declaration&quot;</span>; <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>        <span class="keywordflow">default</span>: fe::unreachable();</div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>    }</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>    <span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span> </div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>    <span class="keyword">auto</span> dbg = decl ? parse_name(entity) : Dbg();</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>    <a class="code hl_typedef" href="namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed">Ptrs&lt;LamDecl::Dom&gt;</a> doms;</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>        <span class="keyword">auto</span> track  = tracker();</div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>        <span class="keyword">auto</span> ptrn   = parse_ptrn(Paren_Style | Implicit, <span class="stringliteral">&quot;domain pattern of a &quot;</span>s + entity, prec);</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>        <span class="keyword">auto</span> filter = accept(Tag::T_at) ? parse_expr(<span class="stringliteral">&quot;filter&quot;</span>) : nullptr;</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        doms.emplace_back(ptr&lt;LamDecl::Dom&gt;(track, std::move(ptrn), std::move(filter)));</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span> </div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>        <span class="keywordflow">switch</span> (ahead().tag()) {</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>            <span class="keywordflow">case</span> Tag::C_CURRIED_P: <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>            <span class="keywordflow">default</span>: <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>        }</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>        <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>    }</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span> </div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>    <span class="keyword">auto</span> codom = accept(Tag::T_colon) ? parse_expr(<span class="stringliteral">&quot;codomain of a &quot;</span>s + entity, <a class="code hl_enumvalue" href="classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e">Expr::Prec::Arrow</a>) : nullptr;</div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>    <span class="keywordflow">if</span> (tag == Tag::K_fn || tag == Tag::K_fun)</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>        doms.back()-&gt;add_ret(<a class="code hl_function" href="classmim_1_1ast_1_1Parser.html#a7644de392100f7603c8e3ffa6d5764e9">ast</a>(), codom ? std::move(codom) : ptr&lt;HoleExpr&gt;(curr_));</div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>    expect(Tag::T_assign, <span class="stringliteral">&quot;body of a &quot;</span>s + entity);</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>    <span class="keyword">auto</span> body = parse_expr(<span class="stringliteral">&quot;body of a &quot;</span>s + entity);</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>    <span class="keyword">auto</span> next = ahead().isa(Tag::K_and) ? parse_and_decl() : nullptr;</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span> </div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>    <span class="keywordflow">return</span> ptr&lt;LamDecl&gt;(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body), std::move(next));</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>}</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span> </div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span><a class="code hl_typedef" href="namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b">Ptr&lt;RecDecl&gt;</a> Parser::parse_and_decl() {</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>    <span class="keywordflow">switch</span> (ahead(1).tag()) {</div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>        <span class="keywordflow">case</span> Tag::C_LAM: <span class="keywordflow">return</span> lex(), parse_lam_decl();</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>        <span class="keywordflow">default</span>: <span class="keywordflow">return</span> parse_rec_decl(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>    }</div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>}</div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span> </div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>} <span class="comment">// namespace mim::ast</span></div>
 <div class="ttc" id="aclassmim_1_1Driver_html_a0be4fca042e007d5206f23ccdcc734b3"><div class="ttname"><a href="classmim_1_1Driver.html#a0be4fca042e007d5206f23ccdcc734b3">mim::Driver::load</a></div><div class="ttdeci">void load(Sym name)</div><div class="ttdef"><b>Definition</b> <a href="driver_8cpp_source.html#l00053">driver.cpp:53</a></div></div>
 <div class="ttc" id="aclassmim_1_1ast_1_1AST_html_a93295daed6715e4c97d791d0cf4a022f"><div class="ttname"><a href="classmim_1_1ast_1_1AST.html#a93295daed6715e4c97d791d0cf4a022f">mim::ast::AST::note</a></div><div class="ttdeci">Error &amp; note(Loc loc, const char *fmt, Args &amp;&amp;... args) const</div><div class="ttdef"><b>Definition</b> <a href="ast_8h_source.html#l00086">ast.h:86</a></div></div>
 <div class="ttc" id="aclassmim_1_1ast_1_1AST_html_a9384b51c42d15ee99414bd77c096f8f9"><div class="ttname"><a href="classmim_1_1ast_1_1AST.html#a9384b51c42d15ee99414bd77c096f8f9">mim::ast::AST::error</a></div><div class="ttdeci">Error &amp; error()</div><div class="ttdef"><b>Definition</b> <a href="ast_8h_source.html#l00063">ast.h:63</a></div></div>
@@ -883,7 +882,6 @@ $(function(){initNavTree('parser_8cpp_source.html',''); initResizable(true); });
 <div class="ttc" id="anamespacemim_1_1plug_1_1core_html_a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">mim::plug::core::ncmp::t</a></div><div class="ttdeci">@ t</div><div class="ttdef"><b>Definition</b> <a href="core_2autogen_8h_source.html#l00043">autogen.h:43</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1math_html_aaf7502aae7bb9f2d1d1a1b56cc65f87aa4a8a08f09d37b73795649038408b5f33"><div class="ttname"><a href="namespacemim_1_1plug_1_1math.html#aaf7502aae7bb9f2d1d1a1b56cc65f87aa4a8a08f09d37b73795649038408b5f33">mim::plug::math::round::c</a></div><div class="ttdeci">@ c</div><div class="ttdef"><b>Definition</b> <a href="math_2autogen_8h_source.html#l00279">autogen.h:279</a></div></div>
 <div class="ttc" id="anamespacemim_html_a948cf1e41b7cda00d22f8ef6953d9be6"><div class="ttname"><a href="namespacemim.html#a948cf1e41b7cda00d22f8ef6953d9be6">mim::get</a></div><div class="ttdeci">constexpr decltype(auto) get(Span&lt; T, N &gt; span) noexcept</div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00107">span.h:107</a></div></div>
-<div class="ttc" id="anamespacemim_html_af4fbe9b18f47acc00b486ec8f49cb18d"><div class="ttname"><a href="namespacemim.html#af4fbe9b18f47acc00b486ec8f49cb18d">mim::isa</a></div><div class="ttdeci">auto isa(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axiom_8h_source.html#l00112">axiom.h:112</a></div></div>
 <div class="ttc" id="aparser_8h_html"><div class="ttname"><a href="parser_8h.html">parser.h</a></div></div>
 <div class="ttc" id="astructmim_1_1Dbg_html"><div class="ttname"><a href="structmim_1_1Dbg.html">mim::Dbg</a></div><div class="ttdef"><b>Definition</b> <a href="dbg_8h_source.html#l00127">dbg.h:127</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

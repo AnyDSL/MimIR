@@ -71,7 +71,7 @@ var def_8h =
       [ "mim::Node::Nat", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da07f2a27c6e5ee8afd08991e64dd5c136", null ],
       [ "mim::Node::Idx", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939", null ],
       [ "mim::Node::Lit", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dae5e556ecf935270736f5e46e73db06e4", null ],
-      [ "mim::Node::Axiom", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da2c5d94dd609855f43c21c46744afec3d", null ],
+      [ "mim::Node::Axm", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da772a78ebe7cabb9591df042871a5a849", null ],
       [ "mim::Node::Var", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77", null ],
       [ "mim::Node::Global", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4cc6684df7b4a92b1dec6fce3264fac8", null ],
       [ "mim::Node::Proxy", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf56ec2ab97d604832d90f6394e3f341f", null ],
