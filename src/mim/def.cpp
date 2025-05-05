@@ -224,7 +224,7 @@ const Def* Pack::immutabilize() {
  * reduce
  */
 
-Defs Def::reduce(const Def* arg) const {
+Defs Def::reduce_(const Def* arg) const {
     if (auto var = has_var()) return world().reduce(var, arg);
     return {ops().begin() + reduction_offset(), num_ops() - reduction_offset()};
 }

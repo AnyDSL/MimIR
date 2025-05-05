@@ -503,7 +503,9 @@ public:
     const Def* refine(size_t i, const Def* new_op) const;
 
     /// @see World::reduce
-    Defs reduce(const Def* arg) const;
+    template<size_t N = std::dynamic_extent> constexpr auto reduce(const Def* arg) const noexcept {
+        return reduce_(arg).span<N>();
+    }
 
     /// First Def::op that needs to be dealt with during reduction; e.g. for a Pi we don't reduce the Pi::dom.
     /// @see World::reduce
@@ -548,6 +550,7 @@ protected:
     ///@}
 
 private:
+    Defs reduce_(const Def* arg) const;
     virtual Def* stub_(World&, const Def*) { fe::unreachable(); }
     virtual const Def* rebuild_(World& w, const Def* type, Defs ops) const = 0;
 
