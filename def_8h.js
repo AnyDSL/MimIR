@@ -60,7 +60,7 @@ var def_8h =
       [ "mim::Node::Arr", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3e09ae791896ec3e7e65b3fe363f0fc3", null ],
       [ "mim::Node::Pack", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4492081ca02b059f9e8af4ddaf0f7292", null ],
       [ "mim::Node::Join", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa286d9991c6a547ae25a5f5216164b8f", null ],
-      [ "mim::Node::Vel", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daec930ca2dec8aa0b05a106add08d538e", null ],
+      [ "mim::Node::Inj", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da62d8e3eff7a84b91e1fac08d56e1455b", null ],
       [ "mim::Node::Test", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da0cbc6611f5540bd0809a388dc95a615b", null ],
       [ "mim::Node::Top", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa4ffdcf0dc1f31b9acaf295d75b51d00", null ],
       [ "mim::Node::Meet", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da49e3af09495ea1fbcbde7629c1b4d47b", null ],

@@ -113,7 +113,6 @@ var annotated_dup =
           [ "LowerRegex", "classmim_1_1plug_1_1regex_1_1LowerRegex.html", "classmim_1_1plug_1_1regex_1_1LowerRegex" ]
         ] ]
       ] ],
-      [ "Ac", "classmim_1_1Ac.html", "classmim_1_1Ac" ],
       [ "Annex", "structmim_1_1Annex.html", "structmim_1_1Annex" ],
       [ "App", "classmim_1_1App.html", "classmim_1_1App" ],
       [ "Arr", "classmim_1_1Arr.html", "classmim_1_1Arr" ],
@@ -148,12 +147,14 @@ var annotated_dup =
       [ "Idx", "classmim_1_1Idx.html", "classmim_1_1Idx" ],
       [ "IndexMap", "classmim_1_1IndexMap.html", "classmim_1_1IndexMap" ],
       [ "IndexSet", "classmim_1_1IndexSet.html", "classmim_1_1IndexSet" ],
+      [ "Inj", "classmim_1_1Inj.html", "classmim_1_1Inj" ],
       [ "Insert", "classmim_1_1Insert.html", "classmim_1_1Insert" ],
       [ "Lam", "classmim_1_1Lam.html", "classmim_1_1Lam" ],
       [ "LamSpec", "classmim_1_1LamSpec.html", "classmim_1_1LamSpec" ],
       [ "Lit", "classmim_1_1Lit.html", "classmim_1_1Lit" ],
       [ "Log", "classmim_1_1Log.html", "classmim_1_1Log" ],
       [ "Match", "classmim_1_1Match.html", "classmim_1_1Match" ],
+      [ "Merge", "classmim_1_1Merge.html", "classmim_1_1Merge" ],
       [ "Nat", "classmim_1_1Nat.html", "classmim_1_1Nat" ],
       [ "Nest", "classmim_1_1Nest.html", "classmim_1_1Nest" ],
       [ "NestPhase", "classmim_1_1NestPhase.html", "classmim_1_1NestPhase" ],
@@ -164,7 +165,6 @@ var annotated_dup =
       [ "PassPhase", "classmim_1_1PassPhase.html", "classmim_1_1PassPhase" ],
       [ "Phase", "classmim_1_1Phase.html", "classmim_1_1Phase" ],
       [ "Pi", "classmim_1_1Pi.html", "classmim_1_1Pi" ],
-      [ "Pick", "classmim_1_1Pick.html", "classmim_1_1Pick" ],
       [ "Pipeline", "classmim_1_1Pipeline.html", "classmim_1_1Pipeline" ],
       [ "PipelineBuilder", "classmim_1_1PipelineBuilder.html", "classmim_1_1PipelineBuilder" ],
       [ "Plugin", "structmim_1_1Plugin.html", "structmim_1_1Plugin" ],
@@ -180,6 +180,7 @@ var annotated_dup =
       [ "Setters", "classmim_1_1Setters.html", "classmim_1_1Setters" ],
       [ "Sigma", "classmim_1_1Sigma.html", "classmim_1_1Sigma" ],
       [ "Span", "classmim_1_1Span.html", "classmim_1_1Span" ],
+      [ "Split", "classmim_1_1Split.html", "classmim_1_1Split" ],
       [ "Tab", "classmim_1_1Tab.html", "classmim_1_1Tab" ],
       [ "TailRecElim", "classmim_1_1TailRecElim.html", "classmim_1_1TailRecElim" ],
       [ "TBound", "classmim_1_1TBound.html", "classmim_1_1TBound" ],
@@ -199,7 +200,6 @@ var annotated_dup =
       [ "Var", "classmim_1_1Var.html", "classmim_1_1Var" ],
       [ "VarRewriter", "classmim_1_1VarRewriter.html", "classmim_1_1VarRewriter" ],
       [ "Vector", "classmim_1_1Vector.html", "classmim_1_1Vector" ],
-      [ "Vel", "classmim_1_1Vel.html", "classmim_1_1Vel" ],
       [ "World", "classmim_1_1World.html", "classmim_1_1World" ]
     ] ],
     [ "std", "namespacestd.html", [

@@ -217,7 +217,6 @@ var hierarchy =
     ] ],
     [ "fe::RuntimeCast", null, [
       [ "mim::Def", "classmim_1_1Def.html", [
-        [ "mim::Ac", "classmim_1_1Ac.html", null ],
         [ "mim::App", "classmim_1_1App.html", null ],
         [ "mim::Arr", "classmim_1_1Arr.html", null ],
         [ "mim::Axiom", "classmim_1_1Axiom.html", null ],
@@ -235,15 +234,17 @@ var hierarchy =
         [ "mim::Global", "classmim_1_1Global.html", null ],
         [ "mim::Hole", "classmim_1_1Hole.html", null ],
         [ "mim::Idx", "classmim_1_1Idx.html", null ],
+        [ "mim::Inj", "classmim_1_1Inj.html", null ],
         [ "mim::Insert", "classmim_1_1Insert.html", null ],
         [ "mim::Lam", "classmim_1_1Lam.html", null ],
         [ "mim::Lit", "classmim_1_1Lit.html", null ],
+        [ "mim::Merge", "classmim_1_1Merge.html", null ],
         [ "mim::Nat", "classmim_1_1Nat.html", null ],
         [ "mim::Pack", "classmim_1_1Pack.html", null ],
         [ "mim::Pi", "classmim_1_1Pi.html", null ],
-        [ "mim::Pick", "classmim_1_1Pick.html", null ],
         [ "mim::Proxy", "classmim_1_1Proxy.html", null ],
         [ "mim::Sigma", "classmim_1_1Sigma.html", null ],
+        [ "mim::Split", "classmim_1_1Split.html", null ],
         [ "mim::Test", "classmim_1_1Test.html", null ],
         [ "mim::Tuple", "classmim_1_1Tuple.html", null ],
         [ "mim::Type", "classmim_1_1Type.html", null ],
@@ -251,8 +252,7 @@ var hierarchy =
         [ "mim::UMax", "classmim_1_1UMax.html", null ],
         [ "mim::Uniq", "classmim_1_1Uniq.html", null ],
         [ "mim::Univ", "classmim_1_1Univ.html", null ],
-        [ "mim::Var", "classmim_1_1Var.html", null ],
-        [ "mim::Vel", "classmim_1_1Vel.html", null ]
+        [ "mim::Var", "classmim_1_1Var.html", null ]
       ] ],
       [ "mim::ast::Node", "classmim_1_1ast_1_1Node.html", [
         [ "mim::ast::Decl", "classmim_1_1ast_1_1Decl.html", [
@@ -310,9 +310,6 @@ var hierarchy =
     [ "mim::Sets< D, N >::Set", "classmim_1_1Sets_1_1Set.html", null ],
     [ "mim::Sets< D, N >", "classmim_1_1Sets.html", null ],
     [ "mim::Setters< P, D >", "classmim_1_1Setters.html", null ],
-    [ "mim::Setters< Ac >", "classmim_1_1Setters.html", [
-      [ "mim::Ac", "classmim_1_1Ac.html", null ]
-    ] ],
     [ "mim::Setters< App >", "classmim_1_1Setters.html", [
       [ "mim::App", "classmim_1_1App.html", null ]
     ] ],
@@ -334,6 +331,9 @@ var hierarchy =
     [ "mim::Setters< Idx >", "classmim_1_1Setters.html", [
       [ "mim::Idx", "classmim_1_1Idx.html", null ]
     ] ],
+    [ "mim::Setters< Inj >", "classmim_1_1Setters.html", [
+      [ "mim::Inj", "classmim_1_1Inj.html", null ]
+    ] ],
     [ "mim::Setters< Insert >", "classmim_1_1Setters.html", [
       [ "mim::Insert", "classmim_1_1Insert.html", null ]
     ] ],
@@ -342,6 +342,9 @@ var hierarchy =
     ] ],
     [ "mim::Setters< Lit >", "classmim_1_1Setters.html", [
       [ "mim::Lit", "classmim_1_1Lit.html", null ]
+    ] ],
+    [ "mim::Setters< Merge >", "classmim_1_1Setters.html", [
+      [ "mim::Merge", "classmim_1_1Merge.html", null ]
     ] ],
     [ "mim::Setters< Nat >", "classmim_1_1Setters.html", [
       [ "mim::Nat", "classmim_1_1Nat.html", null ]
@@ -352,14 +355,14 @@ var hierarchy =
     [ "mim::Setters< Pi >", "classmim_1_1Setters.html", [
       [ "mim::Pi", "classmim_1_1Pi.html", null ]
     ] ],
-    [ "mim::Setters< Pick >", "classmim_1_1Setters.html", [
-      [ "mim::Pick", "classmim_1_1Pick.html", null ]
-    ] ],
     [ "mim::Setters< Proxy >", "classmim_1_1Setters.html", [
       [ "mim::Proxy", "classmim_1_1Proxy.html", null ]
     ] ],
     [ "mim::Setters< Sigma >", "classmim_1_1Setters.html", [
       [ "mim::Sigma", "classmim_1_1Sigma.html", null ]
+    ] ],
+    [ "mim::Setters< Split >", "classmim_1_1Setters.html", [
+      [ "mim::Split", "classmim_1_1Split.html", null ]
     ] ],
     [ "mim::Setters< TBound< Up > >", "classmim_1_1Setters.html", [
       [ "mim::TBound< false >", "classmim_1_1TBound.html", null ],
@@ -394,9 +397,6 @@ var hierarchy =
     ] ],
     [ "mim::Setters< Var >", "classmim_1_1Setters.html", [
       [ "mim::Var", "classmim_1_1Var.html", null ]
-    ] ],
-    [ "mim::Setters< Vel >", "classmim_1_1Setters.html", [
-      [ "mim::Vel", "classmim_1_1Vel.html", null ]
     ] ],
     [ "std::span", null, [
       [ "mim::Span< const T, N >", "classmim_1_1Span.html", null ],
