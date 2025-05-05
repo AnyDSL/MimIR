@@ -225,11 +225,9 @@ const Def* Pack::immutabilize() {
  */
 
 Defs Def::reduce(const Def* arg) const {
-    if (auto mut = isa_mut()) return world().reduce(mut, arg);
+    if (auto var = has_var()) return world().reduce(var, arg);
     return {ops().begin() + reduction_offset(), num_ops() - reduction_offset()};
 }
-
-Defs Def::reduce(const Def* arg) { return world().reduce(this, arg); }
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
     auto new_ops = absl::FixedArray<const Def*>(num_ops());

@@ -188,7 +188,7 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
 
             if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
                 if (auto var = lam->has_var()) {
-                    if (auto i = move_.substs.find({lam, arg}); i != move_.substs.end()) {
+                    if (auto i = move_.substs.find({var, arg}); i != move_.substs.end()) {
                         // Is there a cached version?
                         auto [filter, body] = i->second->defs<2>();
                         if (filter == lit_tt()) return body;
@@ -204,7 +204,7 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                             auto reduct      = new (buf) Reduct(2);
                             reduct->defs_[0] = filter;
                             reduct->defs_[1] = body;
-                            assert_emplace(move_.substs, std::pair{lam, arg}, reduct);
+                            assert_emplace(move_.substs, std::pair{var, arg}, reduct);
                             return body;
                         }
                     }
@@ -583,22 +583,19 @@ Sym World::append_suffix(Sym symbol, std::string suffix) {
     return sym(std::move(name));
 }
 
-Defs World::reduce(Def* mut, const Def* arg) {
+Defs World::reduce(const Var* var, const Def* arg) {
+    auto mut    = var->mut();
     auto offset = mut->reduction_offset();
     auto size   = mut->num_ops() - offset;
 
-    if (auto var = mut->has_var()) {
-        if (auto i = move_.substs.find({mut, arg}); i != move_.substs.end()) return i->second->defs();
+    if (auto i = move_.substs.find({var, arg}); i != move_.substs.end()) return i->second->defs();
 
-        auto buf    = move_.arena.substs.allocate(sizeof(Reduct) + size * sizeof(const Def*), alignof(const Def*));
-        auto reduct = new (buf) Reduct(size);
-        auto rw     = VarRewriter(var, arg);
-        for (size_t i = 0; i != size; ++i) reduct->defs_[i] = rw.rewrite(mut->op(i + offset));
-        assert_emplace(move_.substs, std::pair{mut, arg}, reduct);
-        return reduct->defs();
-    }
-
-    return {mut->ops().begin() + offset, size};
+    auto buf    = move_.arena.substs.allocate(sizeof(Reduct) + size * sizeof(const Def*), alignof(const Def*));
+    auto reduct = new (buf) Reduct(size);
+    auto rw     = VarRewriter(var, arg);
+    for (size_t i = 0; i != size; ++i) reduct->defs_[i] = rw.rewrite(mut->op(i + offset));
+    assert_emplace(move_.substs, std::pair{var, arg}, reduct);
+    return reduct->defs();
 }
 
 /*
