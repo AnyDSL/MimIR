@@ -13,7 +13,7 @@ protected:
     /// Constructor for an *immutable* Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, bool implicit)
         : Def(Node, type, {dom, codom}, (flags_t)implicit) {}
-    /// Constructor for a *mut*able Pi.
+    /// Constructor for a *mutable* Pi.
     Pi(const Def* type, bool implicit)
         : Def(Node, type, 2, implicit ? 1 : 0) {}
 

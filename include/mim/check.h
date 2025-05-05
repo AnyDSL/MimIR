@@ -5,7 +5,7 @@
 namespace mim {
 
 /// This node is a hole in the IR that is inferred by its context later on.
-/// It is modelled as a *mut*able Def.
+/// It is modelled as a *mutable* Def.
 /// If inference was successful, it's Hole::op will be set to the inferred Def.
 class Hole : public Def, public Setters<Hole> {
 private:

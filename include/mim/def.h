@@ -425,7 +425,7 @@ public:
     template<class T = Def, class R> const T* isa_imm(R (T::*f)() const) const { return isa_mut<T, R, true>(f); }
     // clang-format on
 
-    /// If `this` is *mut*able, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
+    /// If `this` is *mutable*, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
     template<class T = Def, bool invert = false> T* isa_mut() const {
         if constexpr (std::is_same<T, Def>::value)
             return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;

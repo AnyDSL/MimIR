@@ -76,7 +76,7 @@ private:
     Arr(const Def* type, const Def* shape, const Def* body)
         : Def(Node, type, {shape, body}, 0) {} ///< Constructor for an *immutable* Arr.
     Arr(const Def* type)
-        : Def(Node, type, 2, 0) {} ///< Constructor for a *mut*able Arr.
+        : Def(Node, type, 2, 0) {} ///< Constructor for a *mutable* Arr.
 
 public:
     /// @name ops
@@ -124,7 +124,7 @@ private:
     Pack(const Def* type, const Def* body)
         : Def(Node, type, {body}, 0) {} ///< Constructor for an *immutable* Pack.
     Pack(const Def* type)
-        : Def(Node, type, 1, 0) {} ///< Constructor for a *mut*ablel Pack.
+        : Def(Node, type, 1, 0) {} ///< Constructor for a *mutable* Pack.
 
 public:
     /// @name ops
