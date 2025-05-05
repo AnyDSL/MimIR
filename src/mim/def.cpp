@@ -133,8 +133,8 @@ const Def* UMax   ::rebuild_(World& w, const Def*  , Defs o) const { return w.um
 const Def* Uniq   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uniq(o[0]); }
 const Def* Var    ::rebuild_(World& w, const Def* t, Defs o) const { return w.var(t, o[0]->as_mut()); }
 
-const Def* Axiom    ::rebuild_(World& w, const Def* t, Defs ) const {
-    if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
+const Def* Axm    ::rebuild_(World& w, const Def* t, Defs ) const {
+    if (&w != &world()) return w.axm(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
     assert(Checker::alpha<Checker::Check>(t, type()));
     return this;
 }

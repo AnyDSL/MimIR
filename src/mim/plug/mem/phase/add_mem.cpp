@@ -96,7 +96,7 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
 
     auto dom     = pi->dom();
     auto new_dom = DefVec(dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); });
-    if (pi->num_doms() == 0 || !isa<mem::M>(pi->dom(0_s))) {
+    if (pi->num_doms() == 0 || !Axm::isa<mem::M>(pi->dom(0_s))) {
         new_dom
             = DefVec(dom->num_projs() + 1, [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; });
     }
@@ -111,10 +111,10 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
 
     if (auto global = def->isa<Global>()) return global;
     if (auto mut_lam = def->isa_mut<Lam>(); mut_lam && !mut_lam->is_set()) return def;
-    if (auto ax = def->isa<Axiom>()) return ax;
+    if (auto ax = def->isa<Axm>()) return ax;
     if (auto it = mem_rewritten_.find(def); it != mem_rewritten_.end()) {
         auto tmp = it->second;
-        if (isa<mem::M>(def->type())) {
+        if (Axm::isa<mem::M>(def->type())) {
             world().DLOG("already known mem {} in {}", def, curr_lam);
             auto new_mem = mem_for_lam(curr_lam);
             world().DLOG("new mem {} in {}", new_mem, curr_lam);
@@ -125,7 +125,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             return tmp;
         }
     }
-    if (isa<mem::M>(def->type())) world().DLOG("new mem {} in {}", def, curr_lam);
+    if (Axm::isa<mem::M>(def->type())) world().DLOG("new mem {} in {}", def, curr_lam);
 
     auto rewrite_lam = [&](Lam* lam) -> const Def* {
         auto pi      = lam->type()->as<Pi>();
@@ -134,7 +134,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         if (auto it = mem_rewritten_.find(lam); it != mem_rewritten_.end()) {
             if (curr_lam == lam) // i.e. we've stubbed this, but now we rewrite it
                 new_lam = it->second->as_mut<Lam>();
-            else if (auto pi = it->second->type()->as<Pi>(); pi->num_doms() > 0 && isa<mem::M>(pi->dom(0_s)))
+            else if (auto pi = it->second->type()->as<Pi>(); pi->num_doms() > 0 && Axm::isa<mem::M>(pi->dom(0_s)))
                 return it->second;
         }
 
@@ -178,7 +178,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     if (auto pi = def->isa<Pi>()) return rewrite_pi(pi);
 
     auto rewrite_arg = [&](const Def* arg) -> const Def* {
-        size_t offset = (arg->type()->num_projs() > 0 && isa<mem::M>(arg->type()->proj(0))) ? 0 : 1;
+        size_t offset = (arg->type()->num_projs() > 0 && Axm::isa<mem::M>(arg->type()->proj(0))) ? 0 : 1;
         if (offset == 0) {
             // depth-first, follow the mems
             add_mem_to_lams(place, arg->proj(0));
@@ -205,14 +205,14 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
              = app->rebuild(app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())});
     }
 
-    // call-site of an axiom (assuming mems are only in the final app..)
-    // assume all "negative" curry depths are fully applied axioms, so we do not want to rewrite those here..
-    if (auto app = def->isa<App>(); app && app->axiom() && app->curry() ^ 0x8000) {
+    // call-site of an axm (assuming mems are only in the final app..)
+    // assume all "negative" curry depths are fully applied axms, so we do not want to rewrite those here..
+    if (auto app = def->isa<App>(); app && app->axm() && app->curry() ^ 0x8000) {
         auto arg = app->arg();
         DefVec new_args(arg->num_projs());
         for (int i = new_args.size() - 1; i >= 0; i--) {
             // replace memory operand with followed mem
-            if (isa<mem::M>(arg->proj(i)->type())) {
+            if (Axm::isa<mem::M>(arg->proj(i)->type())) {
                 // depth-first, follow the mems
                 add_mem_to_lams(place, arg->proj(i));
                 new_args[i] = add_mem_to_lams(place, mem_for_lam(place));
@@ -223,12 +223,12 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         auto rewritten = mem_rewritten_[def] = app->rebuild(app->type(), {add_mem_to_lams(place, app->callee()),
                                                                           world().tuple(new_args)->set(arg->dbg())})
                                                    ->set(app->dbg());
-        if (isa<mem::M>(rewritten->type())) {
-            world().DLOG("memory from axiom {} : {}", rewritten, rewritten->type());
+        if (Axm::isa<mem::M>(rewritten->type())) {
+            world().DLOG("memory from axm {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;
         }
-        if (rewritten->num_projs() > 0 && isa<mem::M>(rewritten->proj(0)->type())) {
-            world().DLOG("memory from axiom 2 {} : {}", rewritten, rewritten->type());
+        if (rewritten->num_projs() > 0 && Axm::isa<mem::M>(rewritten->proj(0)->type())) {
+            world().DLOG("memory from axm 2 {} : {}", rewritten, rewritten->type());
             mem_rewritten_[rewritten->proj(0)] = rewritten->proj(0);
             val2mem_[place]                    = rewritten->proj(0);
         }
@@ -242,11 +242,11 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         if (app->callee()->type()->as<Pi>()->num_doms() + 1 == new_callee->type()->as<Pi>()->num_doms())
             new_arg = rewrite_arg(app->arg());
         auto rewritten = mem_rewritten_[def] = app->rebuild(app->type(), {new_callee, new_arg})->set(app->dbg());
-        if (isa<mem::M>(rewritten->type())) {
+        if (Axm::isa<mem::M>(rewritten->type())) {
             world().DLOG("memory from other {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;
         }
-        if (rewritten->num_projs() > 0 && isa<mem::M>(rewritten->proj(0)->type())) {
+        if (rewritten->num_projs() > 0 && Axm::isa<mem::M>(rewritten->proj(0)->type())) {
             world().DLOG("memory from other 2 {} : {}", rewritten, rewritten->type());
             mem_rewritten_[rewritten->proj(0)] = rewritten->proj(0);
             val2mem_[place]                    = rewritten->proj(0);
@@ -255,7 +255,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     }
 
     auto new_ops = DefVec(def->ops(), [&](const Def* op) {
-        if (isa<mem::M>(op->type())) {
+        if (Axm::isa<mem::M>(op->type())) {
             // depth-first, follow the mems
             add_mem_to_lams(place, op);
             return add_mem_to_lams(place, mem_for_lam(place));
@@ -264,7 +264,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     });
 
     auto tmp = mem_rewritten_[def] = def->rebuild(rewrite_type(def->type()), new_ops)->set(def->dbg());
-    // if (isa<mem::M>(tmp->type())) {
+    // if (Axm::isa<mem::M>(tmp->type())) {
     //     world().DLOG("memory from other op 1 {} : {}", tmp, tmp->type());
     //     val2mem_[place] = tmp;
     // }

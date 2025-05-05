@@ -3,7 +3,7 @@
 namespace mim {
 
 const Def* RememElim::rewrite(const Def* def) {
-    if (auto remem = isa<Tag::Remem>(def)) return remem->arg();
+    if (auto remem = Axm::isa<Tag::Remem>(def)) return remem->arg();
     return def;
 }
 

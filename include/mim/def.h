@@ -9,7 +9,6 @@
 #include "mim/config.h"
 
 #include "mim/util/dbg.h"
-#include "mim/util/hash.h"
 #include "mim/util/sets.h"
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
@@ -25,7 +24,7 @@
     m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
     m(Nat,    nat,    Judge::Form)                                                                                                              \
     m(Idx,    idx,    Judge::Intro) m(Lit,  lit,  Judge::Intro)                                                                                 \
-    m(Axiom,  axiom,  Judge::Intro)                                                                                                             \
+    m(Axm,    axm,    Judge::Intro)                                                                                                             \
     m(Var,    var,    Judge::Intro)                                                                                                             \
     m(Global, global, Judge::Intro)                                                                                                             \
     m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
@@ -35,7 +34,7 @@
 namespace mim {
 
 class App;
-class Axiom;
+class Axm;
 class Var;
 class Def;
 class World;
@@ -178,7 +177,7 @@ public:
 /// In addition there is:
 /// * Var: A variable. Currently the following Def%s may be binders:
 ///     * Pi, Lam, Sigma, Arr, Pack
-/// * Axiom: To introduce new entities.
+/// * Axm: To introduce new entities.
 /// * Proxy: Used for intermediate values during optimizations.
 /// * Hole: A metavariable filled in by the type inference (always mutable as holes are filled in later).
 /// * Type, Univ, UMax, UInc: To keep track of type levels.
@@ -565,8 +564,8 @@ private:
 protected:
     mutable Dbg dbg_;
     union {
-        NormalizeFn normalizer_; ///< Axiom only: Axiom%s use this member to store their normalizer.
-        const Axiom* axiom_;     ///< App only: Curried App%s of Axiom%s use this member to propagate the Axiom.
+        NormalizeFn normalizer_; ///< Axm only: Axm%s use this member to store their normalizer.
+        const Axm* axm_;         ///< App only: Curried App%s of Axm%s use this member to propagate the Axm.
         const Var* var_;         ///< Mutable only: Var of a mutable.
         mutable World* world_;
     };

@@ -217,13 +217,13 @@ void UniqExpr::bind(Scopes& s) const { inhabitant()->bind(s); }
  * Decl
  */
 
-void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
-    auto sym = s.ast().sym(axiom->dbg().sym().str() + "."s + dbg().sym().str());
+void AxmDecl::Alias::bind(Scopes& s, const AxmDecl* axm) const {
+    auto sym = s.ast().sym(axm->dbg().sym().str() + "."s + dbg().sym().str());
     full_    = Dbg(dbg().loc(), sym);
     s.bind(full_, this);
 }
 
-void AxiomDecl::bind(Scopes& s) const {
+void AxmDecl::bind(Scopes& s) const {
     type()->bind(s);
     annex_ = s.ast().name2annex(dbg(), nullptr);
 
@@ -231,7 +231,7 @@ void AxiomDecl::bind(Scopes& s) const {
         annex_->normalizer = normalizer();
     else if (annex_->normalizer.sym() != normalizer().sym()) {
         auto l = normalizer().loc() ? normalizer().loc() : loc().anew_finis();
-        s.ast().error(l, "normalizer mismatch for axiom '{}'", dbg());
+        s.ast().error(l, "normalizer mismatch for axm '{}'", dbg());
         if (auto norm = annex_->normalizer)
             s.ast().note(norm.loc(), "previous normalizer '{}'", norm);
         else
@@ -242,9 +242,9 @@ void AxiomDecl::bind(Scopes& s) const {
         s.bind(dbg(), this);
     } else {
         if (auto old = s.find(dbg(), true)) {
-            if (auto old_ax = old->isa<AxiomDecl>()) {
+            if (auto old_ax = old->isa<AxmDecl>()) {
                 if (old_ax->num_subs() == 0) {
-                    s.ast().error(dbg().loc(), "redeclared sub-less axiom '{}' with subs", dbg());
+                    s.ast().error(dbg().loc(), "redeclared sub-less axm '{}' with subs", dbg());
                     s.ast().note(old_ax->dbg().loc(), "previous location here");
                 }
             }

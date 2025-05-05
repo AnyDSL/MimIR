@@ -25,7 +25,7 @@ const Def* AutoDiffEval::derive(const Def* def) {
 }
 
 const Def* AutoDiffEval::rewrite(const Def* def) {
-    if (auto ad_app = isa<ad>(def); ad_app) {
+    if (auto ad_app = Axm::isa<ad>(def); ad_app) {
         // callee = autodiff T
         // arg = function of type T
         //   (or operator)

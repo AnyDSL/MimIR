@@ -84,7 +84,7 @@ Tok Lexer::lex() {
 
         if (accept('%')) {
             if (lex_id()) return {loc_, Tag::M_anx, sym()};
-            ast().error(loc_, "invalid axiom name '{}'", str_);
+            ast().error(loc_, "invalid axm name '{}'", str_);
             continue;
         }
 

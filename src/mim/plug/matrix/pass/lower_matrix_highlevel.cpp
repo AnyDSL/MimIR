@@ -14,9 +14,9 @@ namespace mim::plug::matrix {
 
 namespace {
 
-std::optional<const Def*> internal_function_of_axiom(const Axiom* axiom, const Def* meta_args, const Def* args) {
-    auto& world = axiom->world();
-    auto name   = axiom->sym().str();
+std::optional<const Def*> internal_function_of_axm(const Axm* axm, const Def* meta_args, const Def* args) {
+    auto& world = axm->world();
+    auto name   = axm->sym().str();
     find_and_replace(name, ".", "_");
     find_and_replace(name, "%", "");
     name = INTERNAL_PREFIX + name;
@@ -40,7 +40,7 @@ const Def* LowerMatrixHighLevelMapRed::rewrite(const Def* def) {
 }
 
 const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
-    if (auto mat_ax = isa<matrix::prod>(def)) {
+    if (auto mat_ax = Axm::isa<matrix::prod>(def)) {
         auto [mem, M, N]  = mat_ax->args<3>();
         auto [m, k, l, w] = mat_ax->decurry()->args<4>();
         auto w_lit        = Lit::isa(w);
@@ -55,10 +55,10 @@ const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
 
     if (auto outer_app = def->isa<App>()) {
         if (auto inner_app = outer_app->callee()->isa<App>()) {
-            if (auto axiom = inner_app->callee()->isa<Axiom>()) {
-                if (auto internal_function = internal_function_of_axiom(axiom, inner_app->arg(), outer_app->arg())) {
-                    world().DLOG("lower matrix axiom {} in {} : {}", *axiom->sym(), def, def->type());
-                    world().DLOG("lower matrix axiom using: {} : {}", *internal_function, (*internal_function)->type());
+            if (auto axm = inner_app->callee()->isa<Axm>()) {
+                if (auto internal_function = internal_function_of_axm(axm, inner_app->arg(), outer_app->arg())) {
+                    world().DLOG("lower matrix axm {} in {} : {}", *axm->sym(), def, def->type());
+                    world().DLOG("lower matrix axm using: {} : {}", *internal_function, (*internal_function)->type());
                     return *internal_function;
                 }
             }

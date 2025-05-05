@@ -119,7 +119,7 @@ private:
     /// * ... empty: **Only** decls are parsed. @returns `nullptr`
     /// * ... **non**-empty: Decls are parsed, then an expression. @returns expression.
     Ptrs<ValDecl> parse_decls();
-    Ptr<ValDecl> parse_axiom_decl();
+    Ptr<ValDecl> parse_axm_decl();
     Ptr<ValDecl> parse_let_decl();
     Ptr<ValDecl> parse_c_decl();
     Ptr<LamDecl> parse_lam_decl();

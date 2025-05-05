@@ -165,7 +165,7 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     auto aug_pack = world().pack(aug_shape, aug_body);
 
     assert(partial_pullback[aug_body] && "pack pullback should exists");
-    // TODO: or use scale axiom
+    // TODO: or use scale axm
     auto body_pb              = partial_pullback[aug_body];
     auto pb_pack              = world().pack(aug_shape, body_pb);
     shadow_pullback[aug_pack] = pb_pack;
@@ -343,31 +343,31 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         auto body  = pack->body();
         world().DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
         return augment_pack(pack, f, f_diff);
-    } else if (auto ax = def->isa<Axiom>()) {
+    } else if (auto ax = def->isa<Axm>()) {
         //  TODO: move concrete handling to own function / file / directory (file per plugin)
-        world().DLOG("Augment axiom: {} : {}", ax, ax->type());
-        world().DLOG("axiom curry: {}", ax->curry());
-        world().DLOG("axiom flags: {}", ax->flags());
+        world().DLOG("Augment axm: {} : {}", ax, ax->type());
+        world().DLOG("axm curry: {}", ax->curry());
+        world().DLOG("axm flags: {}", ax->flags());
         auto diff_name = ax->sym().str();
         find_and_replace(diff_name, ".", "_");
         find_and_replace(diff_name, "%", "");
         diff_name = "internal_diff_" + diff_name;
-        world().DLOG("axiom name: {}", ax->sym());
-        world().DLOG("axiom function name: {}", diff_name);
+        world().DLOG("axm name: {}", ax->sym());
+        world().DLOG("axm function name: {}", diff_name);
 
         auto diff_fun = world().external(world().sym(diff_name));
         if (!diff_fun) {
             world().ELOG("derivation not found: {}", diff_name);
             auto expected_type = autodiff_type_fun(ax->type());
             world().ELOG("expected: {} : {}", diff_name, expected_type);
-            assert(false && "unhandled axiom");
+            assert(false && "unhandled axm");
         }
         // TODO: why does this cause a depth error?
         return diff_fun;
     }
 
-    // TODO: handle Pi for axiom app
-    // TODO: remaining (lambda, axiom)
+    // TODO: handle Pi for axm app
+    // TODO: remaining (lambda, axm)
 
     world().ELOG("did not expect to augment: {} : {}", def, def->type());
     world().ELOG("node: {}", def->node_name());

@@ -32,8 +32,8 @@ const Def* merge_t(World& w, const Def* elem, const Def* tuple, const Def* mem) 
 const Def* LowerFor::rewrite(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
-    if (auto for_ax = isa<affine::For>(def)) {
-        world().DLOG("rewriting for axiom: {} within {}", for_ax, curr_mut());
+    if (auto for_ax = Axm::isa<affine::For>(def)) {
+        world().DLOG("rewriting for axm: {} within {}", for_ax, curr_mut());
         auto [begin, end, step, init, body, exit] = for_ax->args<6>();
 
         auto body_lam = body->isa_mut<Lam>();

@@ -74,7 +74,7 @@ const char* llvm_suffix(const Def* type) {
 // TODO there may be more instances where we have to deal with this trickery
 const Def* isa_mem_sigma_2(const Def* type) {
     if (auto sigma = type->isa<Sigma>())
-        if (sigma->num_ops() == 2 && isa<mem::M>(sigma->op(0))) return sigma->op(1);
+        if (sigma->num_ops() == 2 && Axm::isa<mem::M>(sigma->op(0))) return sigma->op(1);
     return {};
 }
 } // namespace
@@ -162,7 +162,7 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
 std::string Emitter::convert(const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
-    assert(!isa<mem::M>(type));
+    assert(!Axm::isa<mem::M>(type));
     std::ostringstream s;
     std::string name;
 
@@ -177,7 +177,7 @@ std::string Emitter::convert(const Def* type) {
             case 64: return types_[type] = "double";
             default: fe::unreachable();
         }
-    } else if (auto ptr = isa<mem::Ptr>(type)) {
+    } else if (auto ptr = Axm::isa<mem::Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
         // TODO addr_space
         print(s, "{}*", convert(pointee));
@@ -195,7 +195,7 @@ std::string Emitter::convert(const Def* type) {
         else {
             auto doms = pi->doms();
             for (auto sep = ""; auto dom : doms.view().rsubspan(1)) {
-                if (isa<mem::M>(dom)) continue;
+                if (Axm::isa<mem::M>(dom)) continue;
                 s << sep << convert(dom);
                 sep = ", ";
             }
@@ -212,7 +212,7 @@ std::string Emitter::convert(const Def* type) {
 
         print(s, "{{");
         for (auto sep = ""; auto t : sigma->ops()) {
-            if (isa<mem::M>(t)) continue;
+            if (Axm::isa<mem::M>(t)) continue;
             s << sep << convert(t);
             sep = ", ";
         }
@@ -254,7 +254,7 @@ void Emitter::emit_imported(Lam* lam) {
 
     auto doms = lam->doms();
     for (auto sep = ""; auto dom : doms.view().rsubspan(1)) {
-        if (isa<mem::M>(dom)) continue;
+        if (Axm::isa<mem::M>(dom)) continue;
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
     }
@@ -267,7 +267,7 @@ std::string Emitter::prepare() {
 
     auto vars = root()->vars();
     for (auto sep = ""; auto var : vars.view().rsubspan(1)) {
-        if (isa<mem::M>(var->type())) continue;
+        if (Axm::isa<mem::M>(var->type())) continue;
         auto name    = id(var);
         locals_[var] = name;
         print(func_impls_, "{}{} {}", sep, convert(var->type()), name);
@@ -354,7 +354,7 @@ void Emitter::emit_epilogue(Lam* lam) {
                 // emits the arguments one by one (TODO: handle together like before)
                 if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
                     auto phi = callee->var(n, i);
-                    assert(!isa<mem::M>(phi->type()));
+                    assert(!Axm::isa<mem::M>(phi->type()));
                     lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                     locals_[phi] = id(phi);
                 }
@@ -379,13 +379,13 @@ void Emitter::emit_epilogue(Lam* lam) {
         for (size_t i = 0; i != n; ++i) {
             if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
                 auto phi = callee->var(n, i);
-                assert(!isa<mem::M>(phi->type()));
+                assert(!Axm::isa<mem::M>(phi->type()));
                 lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                 locals_[phi] = id(phi);
             }
         }
         return bb.tail("br label {}", id(callee));
-    } else if (auto longjmp = isa<clos::longjmp>(app)) {
+    } else if (auto longjmp = Axm::isa<clos::longjmp>(app)) {
         declare("void @longjmp(i8*, i32) noreturn");
 
         auto [mem, jbuf, tag] = app->args<3>();
@@ -415,7 +415,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         DefVec values(num_vars);
         DefVec types(num_vars);
         for (auto var : ret_lam->vars()) {
-            if (isa<mem::M>(var->type())) continue;
+            if (Axm::isa<mem::M>(var->type())) continue;
             values[n] = var;
             types[n]  = var->type();
             ++n;
@@ -430,14 +430,14 @@ void Emitter::emit_epilogue(Lam* lam) {
 
             for (size_t i = 0, e = ret_lam->num_vars(); i != e; ++i) {
                 auto phi = ret_lam->var(i);
-                if (isa<mem::M>(phi->type())) continue;
+                if (Axm::isa<mem::M>(phi->type())) continue;
 
                 auto namei = name;
                 if (e > 2) {
                     namei += '.' + std::to_string(i - 1);
                     bb.tail("{} = extractvalue {} {}, {}", namei, t_ret, name, i - 1);
                 }
-                assert(!isa<mem::M>(phi->type()));
+                assert(!Axm::isa<mem::M>(phi->type()));
                 lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
                 locals_[phi] = id(phi);
             }
@@ -494,7 +494,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
     if (def->isa<Var>()) {
         auto ts = def->type()->projs();
-        if (std::ranges::any_of(ts, [](auto t) { return isa<mem::M>(t); })) return {};
+        if (std::ranges::any_of(ts, [](auto t) { return Axm::isa<mem::M>(t); })) return {};
         return emit_tuple(def);
     }
 
@@ -540,7 +540,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (def->isa<Bot>()) {
         return "undef";
     } else if (auto top = def->isa<Top>()) {
-        if (isa<mem::M>(top->type())) return {};
+        if (Axm::isa<mem::M>(top->type())) return {};
         // bail out to error below
     } else if (auto tuple = def->isa<Tuple>()) {
         return emit_tuple(tuple);
@@ -569,13 +569,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
         // before emitting the index, as it might be a weird value for mem vars.
-        if (isa<mem::M>(extract->type())) return {};
+        if (Axm::isa<mem::M>(extract->type())) return {};
 
         auto t_tup = convert(tuple->type());
         if (auto li = Lit::isa(index)) {
             if (isa_mem_sigma_2(tuple->type())) return v_tup;
             // Adjust index, if mem is present.
-            auto v_i = isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
+            auto v_i = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
             return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
         }
 
@@ -589,7 +589,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
               t_tup, name, t_i, v_i);
         return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
     } else if (auto insert = def->isa<Insert>()) {
-        assert(!isa<mem::M>(insert->tuple()->proj(0)->type()));
+        assert(!Axm::isa<mem::M>(insert->tuple()->proj(0)->type()));
         auto t_tup = convert(insert->tuple()->type());
         auto t_val = convert(insert->value()->type());
         auto v_tup = emit(insert->tuple());
@@ -610,10 +610,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
     } else if (auto global = def->isa<Global>()) {
         auto v_init                = emit(global->init());
-        auto [pointee, addr_space] = as<mem::Ptr>(global->type())->args<2>();
+        auto [pointee, addr_space] = Axm::as<mem::Ptr>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), v_init);
         return globals_[global] = name;
-    } else if (auto nat = isa<core::nat>(def)) {
+    } else if (auto nat = Axm::isa<core::nat>(def)) {
         auto [a, b] = nat->args<2>([this](auto def) { return emit(def); });
 
         switch (nat.id()) {
@@ -623,7 +623,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} nsw nuw i64 {}, {}", op, a, b);
-    } else if (auto ncmp = isa<core::ncmp>(def)) {
+    } else if (auto ncmp = Axm::isa<core::ncmp>(def)) {
         auto [a, b] = ncmp->args<2>([this](auto def) { return emit(def); });
         op          = "icmp ";
 
@@ -640,18 +640,18 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} i64 {}, {}", op, a, b);
-    } else if (auto idx = isa<core::idx>(def)) {
+    } else if (auto idx = Axm::isa<core::idx>(def)) {
         auto x = emit(idx->arg());
         auto s = *Idx::size2bitwidth(Idx::isa(idx->type()));
         auto t = convert(idx->type());
         if (s < 64) return bb.assign(name, "trunc i64 {} to {}", x, t);
         return x;
-    } else if (auto bit1 = isa<core::bit1>(def)) {
+    } else if (auto bit1 = Axm::isa<core::bit1>(def)) {
         assert(bit1.id() == core::bit1::neg);
         auto x = emit(bit1->arg());
         auto t = convert(bit1->type());
         return bb.assign(name, "xor {} -1, {}", t, x);
-    } else if (auto bit2 = isa<core::bit2>(def)) {
+    } else if (auto bit2 = Axm::isa<core::bit2>(def)) {
         auto [a, b] = bit2->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(bit2->type());
 
@@ -670,7 +670,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             // clang-format on
             default: fe::unreachable();
         }
-    } else if (auto shr = isa<core::shr>(def)) {
+    } else if (auto shr = Axm::isa<core::shr>(def)) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(shr->type());
 
@@ -680,7 +680,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto wrap = isa<core::wrap>(def)) {
+    } else if (auto wrap = Axm::isa<core::wrap>(def)) {
         auto [a, b] = wrap->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(wrap->type());
         auto mode   = Lit::as(wrap->decurry()->arg());
@@ -696,7 +696,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (mode & core::Mode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto div = isa<core::div>(def)) {
+    } else if (auto div = Axm::isa<core::div>(def)) {
         auto [m, xy] = div->args<2>();
         auto [x, y]  = xy->projs<2>();
         auto t       = convert(x->type());
@@ -712,7 +712,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto icmp = isa<core::icmp>(def)) {
+    } else if (auto icmp = Axm::isa<core::icmp>(def)) {
         auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(icmp->arg(0)->type());
         op          = "icmp ";
@@ -734,7 +734,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto extr = isa<core::extrema>(def)) {
+    } else if (auto extr = Axm::isa<core::extrema>(def)) {
         auto [x, y]   = extr->args<2>();
         auto t        = convert(x->type());
         auto a        = emit(x);
@@ -749,14 +749,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         f += t;
         declare("{} @{}({}, {})", t, f, t, t);
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
-    } else if (auto abs = isa<core::abs>(def)) {
+    } else if (auto abs = Axm::isa<core::abs>(def)) {
         auto [m, x]   = abs->args<2>();
         auto t        = convert(x->type());
         auto a        = emit(x);
         std::string f = "llvm.abs." + t;
         declare("{} @{}({}, {})", t, f, t, "i1");
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, "i1", "1");
-    } else if (auto conv = isa<core::conv>(def)) {
+    } else if (auto conv = Axm::isa<core::conv>(def)) {
         auto v_src = emit(conv->arg());
         auto t_src = convert(conv->arg()->type());
         auto t_dst = convert(conv->type());
@@ -772,9 +772,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
-    } else if (auto bitcast = isa<core::bitcast>(def)) {
-        auto dst_type_ptr = isa<mem::Ptr>(bitcast->type());
-        auto src_type_ptr = isa<mem::Ptr>(bitcast->arg()->type());
+    } else if (auto bitcast = Axm::isa<core::bitcast>(def)) {
+        auto dst_type_ptr = Axm::isa<mem::Ptr>(bitcast->type());
+        auto src_type_ptr = Axm::isa<mem::Ptr>(bitcast->arg()->type());
         auto v_src        = emit(bitcast->arg());
         auto t_src        = convert(bitcast->arg()->type());
         auto t_dst        = convert(bitcast->type());
@@ -801,9 +801,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             op = (src_size < dst_size) ? "zext" : "trunc";
         }
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
-    } else if (auto lea = isa<mem::lea>(def)) {
+    } else if (auto lea = Axm::isa<mem::lea>(def)) {
         auto [ptr, i]  = lea->args<2>();
-        auto pointee   = as<mem::Ptr>(ptr->type())->arg(0);
+        auto pointee   = Axm::as<mem::Ptr>(ptr->type())->arg(0);
         auto v_ptr     = emit(ptr);
         auto t_pointee = convert(pointee);
         auto t_ptr     = convert(ptr->type());
@@ -815,47 +815,47 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto [v_i, t_i] = emit_gep_index(i);
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
-    } else if (auto malloc = isa<mem::malloc>(def)) {
+    } else if (auto malloc = Axm::isa<mem::malloc>(def)) {
         declare("i8* @malloc(i64)");
 
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
-        auto ptr_t = convert(as<mem::Ptr>(def->proj(1)->type()));
+        auto ptr_t = convert(Axm::as<mem::Ptr>(def->proj(1)->type()));
         bb.assign(name + "i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + "i8", ptr_t);
-    } else if (auto free = isa<mem::free>(def)) {
+    } else if (auto free = Axm::isa<mem::free>(def)) {
         declare("void @free(i8*)");
         emit_unsafe(free->arg(0));
         auto ptr   = emit(free->arg(1));
-        auto ptr_t = convert(as<mem::Ptr>(free->arg(1)->type()));
+        auto ptr_t = convert(Axm::as<mem::Ptr>(free->arg(1)->type()));
 
         bb.assign(name + "i8", "bitcast {} {} to i8*", ptr_t, ptr);
         bb.tail("call void @free(i8* {})", name + "i8");
         return {};
-    } else if (auto mslot = isa<mem::mslot>(def)) {
+    } else if (auto mslot = Axm::isa<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto v_size = emit(mslot->arg(1));
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
-    } else if (auto free = isa<mem::free>(def)) {
+    } else if (auto free = Axm::isa<mem::free>(def)) {
         declare("void @free(i8*)");
 
         emit_unsafe(free->arg(0));
         auto v_ptr = emit(free->arg(1));
-        auto t_ptr = convert(as<mem::Ptr>(free->arg(1)->type()));
+        auto t_ptr = convert(Axm::as<mem::Ptr>(free->arg(1)->type()));
 
         bb.assign(name + "i8", "bitcast {} {} to i8*", t_ptr, v_ptr);
         bb.tail("call void @free(i8* {})", name + "i8");
         return {};
-    } else if (auto load = isa<mem::load>(def)) {
+    } else if (auto load = Axm::isa<mem::load>(def)) {
         emit_unsafe(load->arg(0));
         auto v_ptr     = emit(load->arg(1));
         auto t_ptr     = convert(load->arg(1)->type());
-        auto t_pointee = convert(as<mem::Ptr>(load->arg(1)->type())->arg(0));
+        auto t_pointee = convert(Axm::as<mem::Ptr>(load->arg(1)->type())->arg(0));
         return bb.assign(name, "load {}, {} {}", t_pointee, t_ptr, v_ptr);
-    } else if (auto store = isa<mem::store>(def)) {
+    } else if (auto store = Axm::isa<mem::store>(def)) {
         emit_unsafe(store->arg(0));
         auto v_ptr = emit(store->arg(1));
         auto v_val = emit(store->arg(2));
@@ -863,21 +863,21 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_val = convert(store->arg(2)->type());
         print(bb.body().emplace_back(), "store {} {}, {} {}", t_val, v_val, t_ptr, v_ptr);
         return {};
-    } else if (auto q = isa<clos::alloc_jmpbuf>(def)) {
+    } else if (auto q = Axm::isa<clos::alloc_jmpbuf>(def)) {
         declare("i64 @jmpbuf_size()");
 
         emit_unsafe(q->arg());
         auto size = name + ".size";
         bb.assign(size, "call i64 @jmpbuf_size()");
         return bb.assign(name, "alloca i8, i64 {}", size);
-    } else if (auto setjmp = isa<clos::setjmp>(def)) {
+    } else if (auto setjmp = Axm::isa<clos::setjmp>(def)) {
         declare("i32 @_setjmp(i8*) returns_twice");
 
         auto [mem, jmpbuf] = setjmp->arg()->projs<2>();
         emit_unsafe(mem);
         auto v_jb = emit(jmpbuf);
         return bb.assign(name, "call i32 @_setjmp(i8* {})", v_jb);
-    } else if (auto arith = isa<math::arith>(def)) {
+    } else if (auto arith = Axm::isa<math::arith>(def)) {
         auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(arith->type());
         auto mode   = Lit::as(arith->decurry()->arg());
@@ -905,7 +905,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto tri = isa<math::tri>(def)) {
+    } else if (auto tri = Axm::isa<math::tri>(def)) {
         auto a = emit(tri->arg());
         auto t = convert(tri->type());
 
@@ -922,7 +922,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 case math::tri::sin: f += "sin"; break;
                 case math::tri::cos: f += "cos"; break;
                 case math::tri::tan: f += "tan"; break;
-                case math::tri::ahFF: error("this axiom is supposed to be unused");
+                case math::tri::ahFF: error("this axm is supposed to be unused");
                 default: fe::unreachable();
             }
 
@@ -932,7 +932,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
-    } else if (auto extrema = isa<math::extrema>(def)) {
+    } else if (auto extrema = Axm::isa<math::extrema>(def)) {
         auto [a, b]   = extrema->args<2>([this](auto def) { return emit(def); });
         auto t        = convert(extrema->type());
         std::string f = "llvm.";
@@ -946,14 +946,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         declare("{} @{}({}, {})", t, f, t, t);
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
-    } else if (auto pow = isa<math::pow>(def)) {
+    } else if (auto pow = Axm::isa<math::pow>(def)) {
         auto [a, b]   = pow->args<2>([this](auto def) { return emit(def); });
         auto t        = convert(pow->type());
         std::string f = "llvm.pow";
         f += llvm_suffix(pow->type());
         declare("{} @{}({}, {})", t, f, t, t);
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
-    } else if (auto rt = isa<math::rt>(def)) {
+    } else if (auto rt = Axm::isa<math::rt>(def)) {
         auto a = emit(rt->arg());
         auto t = convert(rt->type());
         std::string f;
@@ -963,7 +963,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             f = "cbrt"s += math_suffix(rt->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
-    } else if (auto exp = isa<math::exp>(def)) {
+    } else if (auto exp = Axm::isa<math::exp>(def)) {
         auto a        = emit(exp->arg());
         auto t        = convert(exp->type());
         std::string f = "llvm.";
@@ -973,21 +973,21 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // TODO doesn't work for exp10"
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
-    } else if (auto er = isa<math::er>(def)) {
+    } else if (auto er = Axm::isa<math::er>(def)) {
         auto a = emit(er->arg());
         auto t = convert(er->type());
         auto f = er.id() == math::er::f ? "erf"s : "erfc"s;
         f += math_suffix(er->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
-    } else if (auto gamma = isa<math::gamma>(def)) {
+    } else if (auto gamma = Axm::isa<math::gamma>(def)) {
         auto a        = emit(gamma->arg());
         auto t        = convert(gamma->type());
         std::string f = gamma.id() == math::gamma::t ? "tgamma" : "lgamma";
         f += math_suffix(gamma->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
-    } else if (auto cmp = isa<math::cmp>(def)) {
+    } else if (auto cmp = Axm::isa<math::cmp>(def)) {
         auto [a, b] = cmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(cmp->arg(0)->type());
         op          = "fcmp ";
@@ -1013,7 +1013,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto conv = isa<math::conv>(def)) {
+    } else if (auto conv = Axm::isa<math::conv>(def)) {
         auto v_src = emit(conv->arg());
         auto t_src = convert(conv->arg()->type());
         auto t_dst = convert(conv->type());
@@ -1030,14 +1030,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
-    } else if (auto abs = isa<math::abs>(def)) {
+    } else if (auto abs = Axm::isa<math::abs>(def)) {
         auto a        = emit(abs->arg());
         auto t        = convert(abs->type());
         std::string f = "llvm.fabs";
         f += llvm_suffix(abs->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
-    } else if (auto round = isa<math::round>(def)) {
+    } else if (auto round = Axm::isa<math::round>(def)) {
         auto a        = emit(round->arg());
         auto t        = convert(round->type());
         std::string f = "llvm.";

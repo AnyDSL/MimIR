@@ -38,9 +38,9 @@ extern "C" MIM_EXPORT Plugin mim_get_plugin() {
                       };
                 passes[flags_t(Annex::Base<mem::reshape_pass>)]
                     = [&](World&, PipelineBuilder& builder, const Def* app) {
-                          auto mode_ax = app->as<App>()->arg()->as<Axiom>();
-                          auto mode    = mode_ax->flags() == flags_t(Annex::Base<mem::reshape_arg>) ? mem::Reshape::Arg
-                                                                                                    : mem::Reshape::Flat;
+                          auto mode_axm = app->as<App>()->arg()->as<Axm>();
+                          auto mode = mode_axm->flags() == flags_t(Annex::Base<mem::reshape_arg>) ? mem::Reshape::Arg
+                                                                                                  : mem::Reshape::Flat;
                           builder.add_pass<mem::Reshape>(app, mode);
                       };
                 register_phase<mem::add_mem_phase, mem::AddMem>(passes);

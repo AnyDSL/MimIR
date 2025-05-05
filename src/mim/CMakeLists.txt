@@ -1,7 +1,7 @@
 add_library(libmim)
 target_sources(libmim
     PRIVATE
-        axiom.cpp
+        axm.cpp
         check.cpp
         def.cpp
         dot.cpp

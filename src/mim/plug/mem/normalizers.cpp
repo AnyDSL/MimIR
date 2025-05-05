@@ -6,7 +6,7 @@ namespace mim::plug::mem {
 
 const Def* normalize_lea(const Def*, const Def*, const Def* arg) {
     auto [ptr, index]          = arg->projs<2>();
-    auto [pointee, addr_space] = as<Ptr>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = Axm::as<Ptr>(ptr->type())->args<2>();
 
     if (auto a = Lit::isa(pointee->arity()); a && *a == 1) return ptr;
     // TODO
@@ -17,7 +17,7 @@ const Def* normalize_lea(const Def*, const Def*, const Def* arg) {
 const Def* normalize_load(const Def* type, const Def*, const Def* arg) {
     auto& world                = type->world();
     auto [mem, ptr]            = arg->projs<2>();
-    auto [pointee, addr_space] = as<Ptr>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = Axm::as<Ptr>(ptr->type())->args<2>();
 
     if (ptr->isa<Bot>()) return world.tuple({mem, world.bot(type->as<Sigma>()->op(1))});
 

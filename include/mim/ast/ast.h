@@ -770,7 +770,7 @@ private:
 };
 
 /// `axm ptrn: type = value;`
-class AxiomDecl : public ValDecl {
+class AxmDecl : public ValDecl {
 public:
     class Alias : public Decl {
     public:
@@ -780,17 +780,17 @@ public:
 
         Dbg dbg() const { return dbg_; }
 
-        void bind(Scopes&, const AxiomDecl*) const;
+        void bind(Scopes&, const AxmDecl*) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         Dbg dbg_;
         mutable Dbg full_;
 
-        friend class AxiomDecl;
+        friend class AxmDecl;
     };
 
-    AxiomDecl(Loc loc, Dbg dbg, std::deque<Ptrs<Alias>>&& subs, Ptr<Expr>&& type, Dbg normalizer, Tok curry, Tok trip)
+    AxmDecl(Loc loc, Dbg dbg, std::deque<Ptrs<Alias>>&& subs, Ptr<Expr>&& type, Dbg normalizer, Tok curry, Tok trip)
         : ValDecl(loc)
         , dbg_(dbg)
         , subs_(std::move(subs))
