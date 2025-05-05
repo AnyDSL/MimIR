@@ -4,5 +4,5 @@ var searchData=
   ['tag_1',['Tag',['../namespacemim_1_1ast.html#ac9fa7d53674c22f3b68cf03b08d905b3',1,'mim::ast']]],
   ['tag_5ft_2',['tag_t',['../namespacemim.html#aec640f0bb1ca994e0f2946fa2f00f288',1,'mim']]],
   ['top_3',['Top',['../namespacemim.html#a8c95db47da2d9514da3e16e015062bf2',1,'mim']]],
-  ['type_4',['type',['../classmim_1_1Axiom.html#a580a6b7f16f5616a5dcfe215cd6f8bbd',1,'mim::Axiom::Match::type'],['../namespacestd.html#a6aa6d0b720bc0eed0c69a3c8b6c75bb8',1,'std::tuple_element&lt; I, mim::Span&lt; T, N &gt; &gt;::type']]]
+  ['type_4',['type',['../classmim_1_1Axiom.html#a4b451bfc41ad76dd26eca18aa9e111f8',1,'mim::Axiom::Test::type'],['../namespacestd.html#a6aa6d0b720bc0eed0c69a3c8b6c75bb8',1,'std::tuple_element&lt; I, mim::Span&lt; T, N &gt; &gt;::type']]]
 ];

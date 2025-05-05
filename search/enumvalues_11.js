@@ -23,8 +23,9 @@ var searchData=
   ['smin_20',['smin',['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2a36c5912f6e22a8791f1e2b080fec1f7e',1,'mim::plug::core']]],
   ['snd_21',['snd',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205a87cab54248fb9116e9a0944967396ec6',1,'mim::plug::core']]],
   ['space_22',['Space',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad511f8439ecde36647437fbba67a4394',1,'mim']]],
-  ['sq_23',['sq',['../namespacemim_1_1plug_1_1math.html#a57a9fbfdbd3e0df3260236539c3c3598a4bc92a7aeb9478e6bf3f989025232b22',1,'mim::plug::math']]],
-  ['srem_24',['srem',['../namespacemim_1_1plug_1_1core.html#a12a963046afc5c121f244b761faad6e9a6dcaf449415765e1fc8503e76318736b',1,'mim::plug::core']]],
-  ['star_25',['star',['../namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55a8ff953dd97c4405234a04291dee39e0b',1,'mim::plug::regex']]],
-  ['sub_26',['sub',['../namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566a8a68dc3e925eacf92633be230722a140',1,'mim::plug::core::sub'],['../namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa8a68dc3e925eacf92633be230722a140',1,'mim::plug::core::sub'],['../namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a8a68dc3e925eacf92633be230722a140',1,'mim::plug::math::sub']]]
+  ['split_23',['Split',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da8a9e64d86ed12ad40de129bc7f4683b2',1,'mim']]],
+  ['sq_24',['sq',['../namespacemim_1_1plug_1_1math.html#a57a9fbfdbd3e0df3260236539c3c3598a4bc92a7aeb9478e6bf3f989025232b22',1,'mim::plug::math']]],
+  ['srem_25',['srem',['../namespacemim_1_1plug_1_1core.html#a12a963046afc5c121f244b761faad6e9a6dcaf449415765e1fc8503e76318736b',1,'mim::plug::core']]],
+  ['star_26',['star',['../namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55a8ff953dd97c4405234a04291dee39e0b',1,'mim::plug::regex']]],
+  ['sub_27',['sub',['../namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566a8a68dc3e925eacf92633be230722a140',1,'mim::plug::core::sub'],['../namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa8a68dc3e925eacf92633be230722a140',1,'mim::plug::core::sub'],['../namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a8a68dc3e925eacf92633be230722a140',1,'mim::plug::math::sub']]]
 ];

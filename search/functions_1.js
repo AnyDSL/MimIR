@@ -2,7 +2,7 @@ var searchData=
 [
   ['back_0',['back',['../classmim_1_1unique__queue.html#a4ad56a6cb4a647ef9922b34ecd5a9991',1,'mim::unique_queue']]],
   ['backend_1',['backend',['../classmim_1_1Driver.html#a41e5a945cac9fdfd37830a722b5bd2a4',1,'mim::Driver']]],
-  ['base_2',['base',['../classmim_1_1Axiom.html#a9b27be74953fb4bf31dd4d91c377e051',1,'mim::Axiom::base()'],['../classmim_1_1Match.html#acc0109bbe0a64e1857db713c6c5cd61b',1,'mim::Match::base()']]],
+  ['base_2',['base',['../classmim_1_1Axiom.html#a9b27be74953fb4bf31dd4d91c377e051',1,'mim::Axiom::base()'],['../classmim_1_1Test.html#acaeea7cfe9be8f6f825a2d19c84a2249',1,'mim::Test::base()']]],
   ['bb_3',['BB',['../structmim_1_1ll_1_1BB.html#a4a4d9b0d1e775d317b1e7b9cb0fa15f1',1,'mim::ll::BB::BB()=default'],['../structmim_1_1ll_1_1BB.html#a3d1557df2180ac4ebb037bcc0da01b56',1,'mim::ll::BB::BB(const BB &amp;)=delete'],['../structmim_1_1ll_1_1BB.html#a617d59a5fcdf3054999de3a9a2c55ffa',1,'mim::ll::BB::BB(BB &amp;&amp;other) noexcept=default']]],
   ['begin_4',['begin',['../classmim_1_1IndexMap.html#a6f61edc7c6bdd2aaaa687ffef3fb0f62',1,'mim::IndexMap::begin()'],['../classmim_1_1Sets_1_1Set.html#a60caa2b410ba32ac48f32b5b01ff8ba9',1,'mim::Sets::Set::begin()']]],
   ['begin_5fpass_5fphase_5',['begin_pass_phase',['../classmim_1_1PipelineBuilder.html#a2af1e4335c93d9bb560d3198ba44774e',1,'mim::PipelineBuilder']]],

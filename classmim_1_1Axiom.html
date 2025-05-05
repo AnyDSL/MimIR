@@ -136,9 +136,9 @@ Inheritance diagram for mim::Axiom:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:structmim_1_1Axiom_1_1Match" id="r_structmim_1_1Axiom_1_1Match"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#structmim_1_1Axiom_1_1Match">Match</a></td></tr>
-<tr class="memdesc:structmim_1_1Axiom_1_1Match"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Type.html">Type</a> of Match::def_.  <a href="#structmim_1_1Axiom_1_1Match">More...</a><br /></td></tr>
-<tr class="separator:structmim_1_1Axiom_1_1Match"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structmim_1_1Axiom_1_1Test" id="r_structmim_1_1Axiom_1_1Test"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#structmim_1_1Axiom_1_1Test">Test</a></td></tr>
+<tr class="memdesc:structmim_1_1Axiom_1_1Test"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Type.html">Type</a> of Test::def_.  <a href="#structmim_1_1Axiom_1_1Test">More...</a><br /></td></tr>
+<tr class="separator:structmim_1_1Axiom_1_1Test"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -483,7 +483,7 @@ Friends</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Normalization</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p><a class="anchor" id="normalization"></a> For a curried <a class="el" href="classmim_1_1App.html">App</a> of an <a class="el" href="classmim_1_1Axiom.html">Axiom</a>, you only want to trigger normalization at specific spots.</p>
-<p>For this reason, MimIR maintains a <a class="el" href="classmim_1_1Def.html#a6039d3f834a30baca2e8bf279231ea3a">Def::curry_</a> counter that each <a class="el" href="classmim_1_1App.html">App</a> decrements. The <a class="el" href="#a154cfa01bcece03ebfb2982cafaa2de4">Axiom::normalizer()</a> will be triggered when <a class="el" href="#a4815eb9ca2039544ade0a08fbd0b7370">Axiom::curry()</a> becomes <code>0</code>. These are also the spots that you can <a class="el" href="namespacemim.html#aaced9ad6007e9da97d0726890ca53bb0">mim::match</a> / <a class="el" href="namespacemim.html#aeb765d3556ca0f76dbaa5a61c0cb55c2">mim::force</a> / <a class="el" href="classmim_1_1Match.html">mim::Match</a>. After that, the counter will be set to <a class="el" href="#aa5ff2f541a9a64c36c2461e234ad2d00">Axiom::trip()</a>. E.g., let's say an <a class="el" href="classmim_1_1Axiom.html">Axiom</a> has this type: </p><div class="fragment"><div class="line">A -&gt; B -&gt; C -&gt; D -&gt; E</div>
+<p>For this reason, MimIR maintains a <a class="el" href="classmim_1_1Def.html#a6039d3f834a30baca2e8bf279231ea3a">Def::curry_</a> counter that each <a class="el" href="classmim_1_1App.html">App</a> decrements. The <a class="el" href="#a154cfa01bcece03ebfb2982cafaa2de4">Axiom::normalizer()</a> will be triggered when <a class="el" href="#a4815eb9ca2039544ade0a08fbd0b7370">Axiom::curry()</a> becomes <code>0</code>. These are also the spots that you can <a class="el" href="namespacemim.html#a327a171da2adc5a1fb8706f5859245c8">mim::test</a> / <a class="el" href="namespacemim.html#aeb765d3556ca0f76dbaa5a61c0cb55c2">mim::force</a> / <a class="el" href="classmim_1_1Test.html">mim::Test</a>. After that, the counter will be set to <a class="el" href="#aa5ff2f541a9a64c36c2461e234ad2d00">Axiom::trip()</a>. E.g., let's say an <a class="el" href="classmim_1_1Axiom.html">Axiom</a> has this type: </p><div class="fragment"><div class="line">A -&gt; B -&gt; C -&gt; D -&gt; E</div>
 <div class="line">          ^         |</div>
 <div class="line">          |         |</div>
 <div class="line">          +---------+</div>
@@ -553,25 +553,25 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00009">9</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 </div><hr/><h2 class="groupheader">Class Documentation</h2>
-<a name="structmim_1_1Axiom_1_1Match" id="structmim_1_1Axiom_1_1Match"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structmim_1_1Axiom_1_1Match">&#9670;&#160;</a></span>mim::Axiom::Match</h2>
+<a name="structmim_1_1Axiom_1_1Test" id="structmim_1_1Axiom_1_1Test"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmim_1_1Axiom_1_1Test">&#9670;&#160;</a></span>mim::Axiom::Test</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct mim::Axiom::Match</td>
+          <td class="memname">struct mim::Axiom::Test</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
-struct mim::Axiom::Match&lt; T &gt;</div><p><a class="el" href="classmim_1_1Type.html">Type</a> of Match::def_. </p>
+struct mim::Axiom::Test&lt; T &gt;</div><p><a class="el" href="classmim_1_1Type.html">Type</a> of Test::def_. </p>
 
 <p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00059">59</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
-<a id="a580a6b7f16f5616a5dcfe215cd6f8bbd" name="a580a6b7f16f5616a5dcfe215cd6f8bbd"></a>typedef <a class="el" href="classmim_1_1App.html">App</a></td>
+<a id="a4b451bfc41ad76dd26eca18aa9e111f8" name="a4b451bfc41ad76dd26eca18aa9e111f8"></a>typedef <a class="el" href="classmim_1_1App.html">App</a></td>
 <td class="fieldname">
 type <a class="el" href="classmim_1_1App.html">App</a></td>
 <td class="fielddoc">
@@ -671,7 +671,7 @@ type <a class="el" href="classmim_1_1App.html">App</a></td>
 
 <p class="reference">References <a class="el" href="axiom_8cpp_source.html#l00038">get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00181">mim::World::app()</a>, <a class="el" href="axiom_8cpp_source.html#l00038">get()</a>, <a class="el" href="axiom_8h_source.html#l00112">mim::match()</a>, <a class="el" href="axiom_8h_source.html#l00122">mim::match()</a>, and <a class="el" href="world_8cpp_source.html#l00244">mim::World::raw_app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00181">mim::World::app()</a>, <a class="el" href="axiom_8cpp_source.html#l00038">get()</a>, <a class="el" href="world_8cpp_source.html#l00244">mim::World::raw_app()</a>, <a class="el" href="axiom_8h_source.html#l00112">mim::test()</a>, and <a class="el" href="axiom_8h_source.html#l00122">mim::test()</a>.</p>
 
 </div>
 </div>
@@ -762,7 +762,7 @@ type <a class="el" href="classmim_1_1App.html">App</a></td>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00216">mim::Def::flags()</a>, and <a class="el" href="plugin_8h_source.html#l00099">mim::Annex::flags2plugin()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00097">mim::Match&lt; Id, D &gt;::plugin()</a>, and <a class="el" href="def_8cpp_source.html#l00136">rebuild_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00097">mim::Test&lt; Id, D &gt;::plugin()</a>, and <a class="el" href="def_8cpp_source.html#l00136">rebuild_()</a>.</p>
 
 </div>
 </div>
@@ -833,7 +833,7 @@ type <a class="el" href="classmim_1_1App.html">App</a></td>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00216">mim::Def::flags()</a>, and <a class="el" href="plugin_8h_source.html#l00105">mim::Annex::flags2sub()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00100">mim::Match&lt; Id, D &gt;::base()</a>, <a class="el" href="def_8cpp_source.html#l00136">rebuild_()</a>, and <a class="el" href="axiom_8h_source.html#l00099">mim::Match&lt; Id, D &gt;::sub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00100">mim::Test&lt; Id, D &gt;::base()</a>, <a class="el" href="def_8cpp_source.html#l00136">rebuild_()</a>, and <a class="el" href="axiom_8h_source.html#l00099">mim::Test&lt; Id, D &gt;::sub()</a>.</p>
 
 </div>
 </div>
@@ -864,7 +864,7 @@ type <a class="el" href="classmim_1_1App.html">App</a></td>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00216">mim::Def::flags()</a>, and <a class="el" href="plugin_8h_source.html#l00102">mim::Annex::flags2tag()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00136">rebuild_()</a>, and <a class="el" href="axiom_8h_source.html#l00098">mim::Match&lt; Id, D &gt;::tag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00136">rebuild_()</a>, and <a class="el" href="axiom_8h_source.html#l00098">mim::Test&lt; Id, D &gt;::tag()</a>.</p>
 
 </div>
 </div>

@@ -18,7 +18,7 @@ var searchData=
   ['tan_15',['tan',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a5b2d4484498235e80d61a233a7c04991',1,'mim::plug::math']]],
   ['tanh_16',['tanh',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a5c0dbba3a6ee4ac0eb26cfee75ccb8b4',1,'mim::plug::math']]],
   ['term_17',['Term',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f',1,'mim']]],
-  ['test_18',['Test',['../classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa5569c000160b7a4bfbb24af91c3789b3',1,'mim::Checker::Test'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da0cbc6611f5540bd0809a388dc95a615b',1,'mim::Test']]],
+  ['test_18',['Test',['../classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa5569c000160b7a4bfbb24af91c3789b3',1,'mim::Checker']]],
   ['texture_19',['Texture',['../namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9aa3e8ae43188ae76d38f414b2bdb0077b',1,'mim::plug::mem']]],
   ['tmp_20',['tmp',['../namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65afa816edb83e95bf0c8da580bdfd491ef',1,'mim::plug::refly']]],
   ['top_21',['Top',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa4ffdcf0dc1f31b9acaf295d75b51d00',1,'mim']]],

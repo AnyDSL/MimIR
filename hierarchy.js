@@ -55,8 +55,6 @@ var hierarchy =
     ] ],
     [ "mim::Log", "classmim_1_1Log.html", null ],
     [ "automaton::DFANode::Lt", "structautomaton_1_1DFANode_1_1Lt.html", null ],
-    [ "mim::Axiom::Match< T >", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Match", null ],
-    [ "mim::Match< Id, D >", "classmim_1_1Match.html", null ],
     [ "mim::World::Move.arena", "classmim_1_1World.html#structmim_1_1World_1_1Move_8arena", null ],
     [ "mim::Error::Msg", "structmim_1_1Error_1_1Msg.html", null ],
     [ "mim::Nest", "classmim_1_1Nest.html", null ],
@@ -238,6 +236,7 @@ var hierarchy =
         [ "mim::Insert", "classmim_1_1Insert.html", null ],
         [ "mim::Lam", "classmim_1_1Lam.html", null ],
         [ "mim::Lit", "classmim_1_1Lit.html", null ],
+        [ "mim::Match", "classmim_1_1Match.html", null ],
         [ "mim::Merge", "classmim_1_1Merge.html", null ],
         [ "mim::Nat", "classmim_1_1Nat.html", null ],
         [ "mim::Pack", "classmim_1_1Pack.html", null ],
@@ -245,7 +244,6 @@ var hierarchy =
         [ "mim::Proxy", "classmim_1_1Proxy.html", null ],
         [ "mim::Sigma", "classmim_1_1Sigma.html", null ],
         [ "mim::Split", "classmim_1_1Split.html", null ],
-        [ "mim::Test", "classmim_1_1Test.html", null ],
         [ "mim::Tuple", "classmim_1_1Tuple.html", null ],
         [ "mim::Type", "classmim_1_1Type.html", null ],
         [ "mim::UInc", "classmim_1_1UInc.html", null ],
@@ -343,6 +341,9 @@ var hierarchy =
     [ "mim::Setters< Lit >", "classmim_1_1Setters.html", [
       [ "mim::Lit", "classmim_1_1Lit.html", null ]
     ] ],
+    [ "mim::Setters< Match >", "classmim_1_1Setters.html", [
+      [ "mim::Match", "classmim_1_1Match.html", null ]
+    ] ],
     [ "mim::Setters< Merge >", "classmim_1_1Setters.html", [
       [ "mim::Merge", "classmim_1_1Merge.html", null ]
     ] ],
@@ -368,9 +369,6 @@ var hierarchy =
       [ "mim::TBound< false >", "classmim_1_1TBound.html", null ],
       [ "mim::TBound< true >", "classmim_1_1TBound.html", null ],
       [ "mim::TBound< Up >", "classmim_1_1TBound.html", null ]
-    ] ],
-    [ "mim::Setters< Test >", "classmim_1_1Setters.html", [
-      [ "mim::Test", "classmim_1_1Test.html", null ]
     ] ],
     [ "mim::Setters< TExt< Up > >", "classmim_1_1Setters.html", [
       [ "mim::TExt< false >", "classmim_1_1TExt.html", null ],
@@ -407,6 +405,8 @@ var hierarchy =
       [ "mim::Driver", "classmim_1_1Driver.html", null ]
     ] ],
     [ "mim::Tab", "classmim_1_1Tab.html", null ],
+    [ "mim::Axiom::Test< T >", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Test", null ],
+    [ "mim::Test< Id, D >", "classmim_1_1Test.html", null ],
     [ "mim::ast::Tok", "classmim_1_1ast_1_1Tok.html", null ],
     [ "std::tuple_element< I, mim::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4", null ],
     [ "mim::unique_queue< Set >", "classmim_1_1unique__queue.html", null ],

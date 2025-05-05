@@ -5,7 +5,7 @@ var lattice_8h =
     [ "mim::Merge", "classmim_1_1Merge.html", "classmim_1_1Merge" ],
     [ "mim::Inj", "classmim_1_1Inj.html", "classmim_1_1Inj" ],
     [ "mim::Split", "classmim_1_1Split.html", "classmim_1_1Split" ],
-    [ "mim::Test", "classmim_1_1Test.html", "classmim_1_1Test" ],
+    [ "mim::Match", "classmim_1_1Match.html", "classmim_1_1Match" ],
     [ "mim::Ext", "classmim_1_1Ext.html", "classmim_1_1Ext" ],
     [ "mim::TExt< Up >", "classmim_1_1TExt.html", "classmim_1_1TExt" ],
     [ "mim::Uniq", "classmim_1_1Uniq.html", "classmim_1_1Uniq" ],

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: mim::Match&lt; Id, D &gt; Class Template Reference</title>
+<title>MimIR: mim::Match Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -118,250 +118,556 @@ $(function(){initNavTree('classmim_1_1Match.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classmim_1_1Match-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">mim::Match&lt; Id, D &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">mim::Match Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="axiom_8h_source.html">mim/axiom.h</a>&gt;</code></p>
+<p>Scrutinize <a class="el" href="#a47aa21219e90cdd34c1be37a4bfe8b49">Match::value()</a> and dispatch to <a class="el" href="#adb497360682457521954de1ccdff45db">Match::arms</a>.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="lattice_8h_source.html">mim/lattice.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for mim::Match:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classmim_1_1Match__inherit__graph.svg" width="379" height="199"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ace15f9a0bcdf8dc17412ca4b93d4b361" id="r_ace15f9a0bcdf8dc17412ca4b93d4b361"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace15f9a0bcdf8dc17412ca4b93d4b361">Match</a> ()=default</td></tr>
-<tr class="separator:ace15f9a0bcdf8dc17412ca4b93d4b361"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0cb39d5a58e423beb4c4bd131a07407" id="r_ac0cb39d5a58e423beb4c4bd131a07407"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0cb39d5a58e423beb4c4bd131a07407">Match</a> (const <a class="el" href="classmim_1_1Axiom.html">Axiom</a> *<a class="el" href="#a1881d2683811fd5228916341eecdaeb3">axiom</a>, const D *def)</td></tr>
-<tr class="separator:ac0cb39d5a58e423beb4c4bd131a07407"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Getters</div></td></tr>
-<tr class="memitem:a1881d2683811fd5228916341eecdaeb3" id="r_a1881d2683811fd5228916341eecdaeb3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Axiom.html">Axiom</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1881d2683811fd5228916341eecdaeb3">axiom</a> () const</td></tr>
-<tr class="separator:a1881d2683811fd5228916341eecdaeb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0a72d94f6dbe1558d4e6a14cfefac05" id="r_ac0a72d94f6dbe1558d4e6a14cfefac05"><td class="memItemLeft" align="right" valign="top">const D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0a72d94f6dbe1558d4e6a14cfefac05">operator-&gt;</a> () const</td></tr>
-<tr class="separator:ac0a72d94f6dbe1558d4e6a14cfefac05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4458e3fcdf2f52875d2f932d3dd7301f" id="r_a4458e3fcdf2f52875d2f932d3dd7301f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4458e3fcdf2f52875d2f932d3dd7301f">operator const D *</a> () const</td></tr>
-<tr class="separator:a4458e3fcdf2f52875d2f932d3dd7301f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d99ae15b1b90103f9868a1c10016dd5" id="r_a7d99ae15b1b90103f9868a1c10016dd5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d99ae15b1b90103f9868a1c10016dd5">operator bool</a> ()</td></tr>
-<tr class="separator:a7d99ae15b1b90103f9868a1c10016dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Axiom Name</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><dl class="section see"><dt>See also</dt><dd>annex_name "Annex Name" </dd></dl>
-</div></td></tr>
-<tr class="memitem:ac9465e29650ceac18acd4c1423c8ac62" id="r_ac9465e29650ceac18acd4c1423c8ac62"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9465e29650ceac18acd4c1423c8ac62">plugin</a> () const</td></tr>
-<tr class="separator:ac9465e29650ceac18acd4c1423c8ac62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4042575ffe9ec8a9832c7924df5bca0" id="r_ab4042575ffe9ec8a9832c7924df5bca0"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4042575ffe9ec8a9832c7924df5bca0">tag</a> () const</td></tr>
-<tr class="separator:ab4042575ffe9ec8a9832c7924df5bca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a653fd936b7a9664ad59ec91a3630a007" id="r_a653fd936b7a9664ad59ec91a3630a007"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a653fd936b7a9664ad59ec91a3630a007">sub</a> () const</td></tr>
-<tr class="separator:a653fd936b7a9664ad59ec91a3630a007"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc0109bbe0a64e1857db713c6c5cd61b" id="r_acc0109bbe0a64e1857db713c6c5cd61b"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc0109bbe0a64e1857db713c6c5cd61b">base</a> () const</td></tr>
-<tr class="separator:acc0109bbe0a64e1857db713c6c5cd61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a994f5d235ba79c81558edec4d316e0bb" id="r_a994f5d235ba79c81558edec4d316e0bb"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a994f5d235ba79c81558edec4d316e0bb">id</a> () const</td></tr>
-<tr class="memdesc:a994f5d235ba79c81558edec4d316e0bb"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f">Axiom::flags</a> cast to <code class="param">Id</code>.  <br /></td></tr>
-<tr class="separator:a994f5d235ba79c81558edec4d316e0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">ops</div></td></tr>
+<tr class="memitem:a47aa21219e90cdd34c1be37a4bfe8b49" id="r_a47aa21219e90cdd34c1be37a4bfe8b49"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47aa21219e90cdd34c1be37a4bfe8b49">value</a> () const</td></tr>
+<tr class="separator:a47aa21219e90cdd34c1be37a4bfe8b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb497360682457521954de1ccdff45db" id="r_adb497360682457521954de1ccdff45db"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:adb497360682457521954de1ccdff45db"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#adb497360682457521954de1ccdff45db">arms</a> () const noexcept</td></tr>
+<tr class="separator:adb497360682457521954de1ccdff45db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4c29afb6b4f08aa1b875927ac75eec0" id="r_ad4c29afb6b4f08aa1b875927ac75eec0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4c29afb6b4f08aa1b875927ac75eec0">arm</a> (size_t i) const</td></tr>
+<tr class="separator:ad4c29afb6b4f08aa1b875927ac75eec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5caec35b0215ea47ba9ee9166c0ef662" id="r_a5caec35b0215ea47ba9ee9166c0ef662"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5caec35b0215ea47ba9ee9166c0ef662">num_arms</a> () const</td></tr>
+<tr class="separator:a5caec35b0215ea47ba9ee9166c0ef662"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classmim_1_1Def"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classmim_1_1Def')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmim_1_1Def.html">mim::Def</a></td></tr>
+<tr class="memitem:a2d85181e61754391ee525fc255cac90e inherit pub_methods_classmim_1_1Def" id="r_a2d85181e61754391ee525fc255cac90e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a2d85181e61754391ee525fc255cac90e">world</a> () const noexcept</td></tr>
+<tr class="separator:a2d85181e61754391ee525fc255cac90e inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41c6630a112450ceaa0398079203ee7f inherit pub_methods_classmim_1_1Def" id="r_a41c6630a112450ceaa0398079203ee7f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f">flags</a> () const noexcept</td></tr>
+<tr class="separator:a41c6630a112450ceaa0398079203ee7f inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3b896cb0e3c5a2351169ce5cb2183b4 inherit pub_methods_classmim_1_1Def" id="r_ae3b896cb0e3c5a2351169ce5cb2183b4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4">gid</a> () const noexcept</td></tr>
+<tr class="memdesc:ae3b896cb0e3c5a2351169ce5cb2183b4 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Global.html">Global</a> id - <em>unique</em> number for this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>.  <br /></td></tr>
+<tr class="separator:ae3b896cb0e3c5a2351169ce5cb2183b4 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ccb5dfb0bda883b53b5e193fc171a05 inherit pub_methods_classmim_1_1Def" id="r_a5ccb5dfb0bda883b53b5e193fc171a05"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a5ccb5dfb0bda883b53b5e193fc171a05">tid</a> () const noexcept</td></tr>
+<tr class="memdesc:a5ccb5dfb0bda883b53b5e193fc171a05 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trie id - only used in Trie.  <br /></td></tr>
+<tr class="separator:a5ccb5dfb0bda883b53b5e193fc171a05 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a592578e8733989b79ab6649485eae42b inherit pub_methods_classmim_1_1Def" id="r_a592578e8733989b79ab6649485eae42b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a592578e8733989b79ab6649485eae42b">mark</a> () const noexcept</td></tr>
+<tr class="memdesc:a592578e8733989b79ab6649485eae42b inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used internally by <a class="el" href="classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9">free_vars()</a>.  <br /></td></tr>
+<tr class="separator:a592578e8733989b79ab6649485eae42b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a2188433df55928789a717ab00afc53 inherit pub_methods_classmim_1_1Def" id="r_a7a2188433df55928789a717ab00afc53"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a7a2188433df55928789a717ab00afc53">hash</a> () const noexcept</td></tr>
+<tr class="separator:a7a2188433df55928789a717ab00afc53 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a107ccfac1058aee369926112bb593d35 inherit pub_methods_classmim_1_1Def" id="r_a107ccfac1058aee369926112bb593d35"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a107ccfac1058aee369926112bb593d35">node</a> () const noexcept</td></tr>
+<tr class="separator:a107ccfac1058aee369926112bb593d35 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a361f116b80b8b8fd1eac9a22e34564b0 inherit pub_methods_classmim_1_1Def" id="r_a361f116b80b8b8fd1eac9a22e34564b0"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a361f116b80b8b8fd1eac9a22e34564b0">node_name</a> () const</td></tr>
+<tr class="separator:a361f116b80b8b8fd1eac9a22e34564b0 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0bca023516d92ff7bc3ce422bdf4178 inherit pub_methods_classmim_1_1Def" id="r_af0bca023516d92ff7bc3ce422bdf4178"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#af0bca023516d92ff7bc3ce422bdf4178">judge</a> () const noexcept</td></tr>
+<tr class="separator:af0bca023516d92ff7bc3ce422bdf4178 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86fba98511a12c201e423aabee4fd84b inherit pub_methods_classmim_1_1Def" id="r_a86fba98511a12c201e423aabee4fd84b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a86fba98511a12c201e423aabee4fd84b">is_form</a> () const noexcept</td></tr>
+<tr class="separator:a86fba98511a12c201e423aabee4fd84b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d02c1dc261e9dae5f2eff1f35e5e39d inherit pub_methods_classmim_1_1Def" id="r_a3d02c1dc261e9dae5f2eff1f35e5e39d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a3d02c1dc261e9dae5f2eff1f35e5e39d">is_intro</a> () const noexcept</td></tr>
+<tr class="separator:a3d02c1dc261e9dae5f2eff1f35e5e39d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24edc8f00822c4b32e141cf5169970ab inherit pub_methods_classmim_1_1Def" id="r_a24edc8f00822c4b32e141cf5169970ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a24edc8f00822c4b32e141cf5169970ab">is_elim</a> () const noexcept</td></tr>
+<tr class="separator:a24edc8f00822c4b32e141cf5169970ab inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4d87dc008712929125e68fcaca8017e inherit pub_methods_classmim_1_1Def" id="r_ab4d87dc008712929125e68fcaca8017e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ab4d87dc008712929125e68fcaca8017e">is_meta</a> () const noexcept</td></tr>
+<tr class="separator:ab4d87dc008712929125e68fcaca8017e inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ab6cb5c35d630f631fd365cf7fa8f0c inherit pub_methods_classmim_1_1Def" id="r_a9ab6cb5c35d630f631fd365cf7fa8f0c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a> () const noexcept</td></tr>
+<tr class="memdesc:a9ab6cb5c35d630f631fd365cf7fa8f0c inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the "raw" type of this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> (maybe <code>nullptr</code>).  <br /></td></tr>
+<tr class="separator:a9ab6cb5c35d630f631fd365cf7fa8f0c inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a718d2d516d8014f4ce3011aad8009c96 inherit pub_methods_classmim_1_1Def" id="r_a718d2d516d8014f4ce3011aad8009c96"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a718d2d516d8014f4ce3011aad8009c96">unfold_type</a> () const</td></tr>
+<tr class="memdesc:a718d2d516d8014f4ce3011aad8009c96 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the type of this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> and builds a new <code><a class="el" href="classmim_1_1Type.html">Type</a> (<a class="el" href="classmim_1_1UInc.html">UInc</a> n)</code> if necessary.  <br /></td></tr>
+<tr class="separator:a718d2d516d8014f4ce3011aad8009c96 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a648a10d226521d9f30d10973296476b3 inherit pub_methods_classmim_1_1Def" id="r_a648a10d226521d9f30d10973296476b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a648a10d226521d9f30d10973296476b3">is_term</a> () const</td></tr>
+<tr class="separator:a648a10d226521d9f30d10973296476b3 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae51857d275509b1b70aa8f696cee3a0a inherit pub_methods_classmim_1_1Def" id="r_ae51857d275509b1b70aa8f696cee3a0a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae51857d275509b1b70aa8f696cee3a0a">arity</a> () const</td></tr>
+<tr class="separator:ae51857d275509b1b70aa8f696cee3a0a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad556c5c2c74abd4f5b739fcb8e5221ed inherit pub_methods_classmim_1_1Def" id="r_ad556c5c2c74abd4f5b739fcb8e5221ed"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad556c5c2c74abd4f5b739fcb8e5221ed">isa_lit_arity</a> () const</td></tr>
+<tr class="separator:ad556c5c2c74abd4f5b739fcb8e5221ed inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a11678fe06e85f99174197c674124e0 inherit pub_methods_classmim_1_1Def" id="r_a2a11678fe06e85f99174197c674124e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a2a11678fe06e85f99174197c674124e0">as_lit_arity</a> () const</td></tr>
+<tr class="separator:a2a11678fe06e85f99174197c674124e0 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e96d1f2d3715f3d059a7396366af7eb inherit pub_methods_classmim_1_1Def" id="r_a3e96d1f2d3715f3d059a7396366af7eb"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:a3e96d1f2d3715f3d059a7396366af7eb inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">ops</a> () const noexcept</td></tr>
+<tr class="separator:a3e96d1f2d3715f3d059a7396366af7eb inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67a94030742a4217fe19bb739990f73e inherit pub_methods_classmim_1_1Def" id="r_a67a94030742a4217fe19bb739990f73e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a67a94030742a4217fe19bb739990f73e">op</a> (size_t i) const noexcept</td></tr>
+<tr class="separator:a67a94030742a4217fe19bb739990f73e inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc9a0f45e4d093d11aa4633b8b38c879 inherit pub_methods_classmim_1_1Def" id="r_afc9a0f45e4d093d11aa4633b8b38c879"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#afc9a0f45e4d093d11aa4633b8b38c879">num_ops</a> () const noexcept</td></tr>
+<tr class="separator:afc9a0f45e4d093d11aa4633b8b38c879 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1164a26b23818879edfa4e6b9fe41d97 inherit pub_methods_classmim_1_1Def" id="r_a1164a26b23818879edfa4e6b9fe41d97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a1164a26b23818879edfa4e6b9fe41d97">set</a> (size_t i, const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
+<tr class="memdesc:a1164a26b23818879edfa4e6b9fe41d97 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Successively set from left to right.  <br /></td></tr>
+<tr class="separator:a1164a26b23818879edfa4e6b9fe41d97 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed20609b9347658940ef24a7b2c5938d inherit pub_methods_classmim_1_1Def" id="r_aed20609b9347658940ef24a7b2c5938d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aed20609b9347658940ef24a7b2c5938d">reset</a> (size_t i, const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="memdesc:aed20609b9347658940ef24a7b2c5938d inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Successively reset from left to right.  <br /></td></tr>
+<tr class="separator:aed20609b9347658940ef24a7b2c5938d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafc9c117a4cd70db3bc22959f9724c56 inherit pub_methods_classmim_1_1Def" id="r_aafc9c117a4cd70db3bc22959f9724c56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aafc9c117a4cd70db3bc22959f9724c56">set</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">ops</a>)</td></tr>
+<tr class="memdesc:aafc9c117a4cd70db3bc22959f9724c56 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Def.html#a1164a26b23818879edfa4e6b9fe41d97" title="Successively set from left to right.">Def::set</a> <code class="param">ops</code> all at once.  <br /></td></tr>
+<tr class="separator:aafc9c117a4cd70db3bc22959f9724c56 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24fda358f2a890cf41518f4fd3b348d1 inherit pub_methods_classmim_1_1Def" id="r_a24fda358f2a890cf41518f4fd3b348d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a24fda358f2a890cf41518f4fd3b348d1">reset</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">ops</a>)</td></tr>
+<tr class="memdesc:a24fda358f2a890cf41518f4fd3b348d1 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Def.html#aed20609b9347658940ef24a7b2c5938d" title="Successively reset from left to right.">Def::reset</a> <code class="param">ops</code> all at once.  <br /></td></tr>
+<tr class="separator:a24fda358f2a890cf41518f4fd3b348d1 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5dedfaf24a0f270bdb0fe58ed62cdc3 inherit pub_methods_classmim_1_1Def" id="r_ae5dedfaf24a0f270bdb0fe58ed62cdc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae5dedfaf24a0f270bdb0fe58ed62cdc3">unset</a> ()</td></tr>
+<tr class="memdesc:ae5dedfaf24a0f270bdb0fe58ed62cdc3 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unsets all <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">Def::ops</a>; works even, if not set at all or partially.  <br /></td></tr>
+<tr class="separator:ae5dedfaf24a0f270bdb0fe58ed62cdc3 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a075f30462bdc7ae0e435c8e15cb48fff inherit pub_methods_classmim_1_1Def" id="r_a075f30462bdc7ae0e435c8e15cb48fff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a075f30462bdc7ae0e435c8e15cb48fff">is_set</a> () const</td></tr>
+<tr class="memdesc:a075f30462bdc7ae0e435c8e15cb48fff inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <code>true</code> if empty or the last op is set.  <br /></td></tr>
+<tr class="separator:a075f30462bdc7ae0e435c8e15cb48fff inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20e9e09e55fc9b46a6f74423f2c5d35d inherit pub_methods_classmim_1_1Def" id="r_a20e9e09e55fc9b46a6f74423f2c5d35d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps</a> () const noexcept</td></tr>
+<tr class="separator:a20e9e09e55fc9b46a6f74423f2c5d35d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fe87cd9f1f625de3bd75be4ba46c3ce inherit pub_methods_classmim_1_1Def" id="r_a9fe87cd9f1f625de3bd75be4ba46c3ce"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a9fe87cd9f1f625de3bd75be4ba46c3ce">dep</a> (size_t i) const noexcept</td></tr>
+<tr class="separator:a9fe87cd9f1f625de3bd75be4ba46c3ce inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a086b8caf2ce9bdfc870871854f021d90 inherit pub_methods_classmim_1_1Def" id="r_a086b8caf2ce9bdfc870871854f021d90"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a086b8caf2ce9bdfc870871854f021d90">num_deps</a> () const noexcept</td></tr>
+<tr class="separator:a086b8caf2ce9bdfc870871854f021d90 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6114c2f33845b89df6c4e551ea438bb inherit pub_methods_classmim_1_1Def" id="r_ab6114c2f33845b89df6c4e551ea438bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ab6114c2f33845b89df6c4e551ea438bb">has_dep</a> () const</td></tr>
+<tr class="separator:ab6114c2f33845b89df6c4e551ea438bb inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24e57816b839ef9209073cff35710c22 inherit pub_methods_classmim_1_1Def" id="r_a24e57816b839ef9209073cff35710c22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a24e57816b839ef9209073cff35710c22">has_dep</a> (<a class="el" href="namespacemim.html#a249738da6a953390b70691dd3fe7132b">Dep</a> d) const</td></tr>
+<tr class="separator:a24e57816b839ef9209073cff35710c22 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aedb3937891f8e9575ede65c32b13c2 inherit pub_methods_classmim_1_1Def" id="r_a2aedb3937891f8e9575ede65c32b13c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a2aedb3937891f8e9575ede65c32b13c2">has_dep</a> (unsigned u) const</td></tr>
+<tr class="separator:a2aedb3937891f8e9575ede65c32b13c2 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad531ece40a890922a7deb83e3d8de8ea inherit pub_methods_classmim_1_1Def" id="r_ad531ece40a890922a7deb83e3d8de8ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad531ece40a890922a7deb83e3d8de8ea">num_projs</a> () const</td></tr>
+<tr class="memdesc:ad531ece40a890922a7deb83e3d8de8ea inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <a class="el" href="classmim_1_1Def.html#a2a11678fe06e85f99174197c674124e0">Def::as_lit_arity()</a>, if it is in fact a <a class="el" href="classmim_1_1Lit.html">Lit</a>, or <code>1</code> otherwise.  <br /></td></tr>
+<tr class="separator:ad531ece40a890922a7deb83e3d8de8ea inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e88f05b40da602dbc2d3cfc02e4799 inherit pub_methods_classmim_1_1Def" id="r_a26e88f05b40da602dbc2d3cfc02e4799"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a26e88f05b40da602dbc2d3cfc02e4799">num_tprojs</a> () const</td></tr>
+<tr class="memdesc:a26e88f05b40da602dbc2d3cfc02e4799 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but yields 1, if <a class="el" href="namespacemim.html#a39f92287adf5cb956f0696a740ba3fe7">Flags::scalarize_threshold</a> is exceeded.  <br /></td></tr>
+<tr class="separator:a26e88f05b40da602dbc2d3cfc02e4799 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f9f1712cb342d713c51aaf519d18592 inherit pub_methods_classmim_1_1Def" id="r_a0f9f1712cb342d713c51aaf519d18592"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a0f9f1712cb342d713c51aaf519d18592">proj</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> a, <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) const</td></tr>
+<tr class="memdesc:a0f9f1712cb342d713c51aaf519d18592 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="classmim_1_1World.html#a9799c99593056d7d6d47b1993de4ee33">World::extract</a> while assuming an arity of <code class="param">a</code>, but also works on <a class="el" href="classmim_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s and <a class="el" href="classmim_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays.  <br /></td></tr>
+<tr class="separator:a0f9f1712cb342d713c51aaf519d18592 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7369b1efd0e7e17974dda4f4f948eed1 inherit pub_methods_classmim_1_1Def" id="r_a7369b1efd0e7e17974dda4f4f948eed1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a7369b1efd0e7e17974dda4f4f948eed1">proj</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) const</td></tr>
+<tr class="memdesc:a7369b1efd0e7e17974dda4f4f948eed1 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but takes <a class="el" href="classmim_1_1Def.html#ad531ece40a890922a7deb83e3d8de8ea" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity.  <br /></td></tr>
+<tr class="separator:a7369b1efd0e7e17974dda4f4f948eed1 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6e7198e0e73e05007e24750b1286810 inherit pub_methods_classmim_1_1Def" id="r_af6e7198e0e73e05007e24750b1286810"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#af6e7198e0e73e05007e24750b1286810">tproj</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) const</td></tr>
+<tr class="memdesc:af6e7198e0e73e05007e24750b1286810 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but takes <a class="el" href="classmim_1_1Def.html#a26e88f05b40da602dbc2d3cfc02e4799" title="As above but yields 1, if Flags::scalarize_threshold is exceeded.">Def::num_tprojs</a>.  <br /></td></tr>
+<tr class="separator:af6e7198e0e73e05007e24750b1286810 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77a2d17816449bbdd98765161b433eec inherit pub_methods_classmim_1_1Def" id="r_a77a2d17816449bbdd98765161b433eec"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> A = std::dynamic_extent, class F&gt; </td></tr>
+<tr class="memitem:a77a2d17816449bbdd98765161b433eec inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a77a2d17816449bbdd98765161b433eec">projs</a> (F f) const</td></tr>
+<tr class="memdesc:a77a2d17816449bbdd98765161b433eec inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="classmim_1_1Def.html#a0f9f1712cb342d713c51aaf519d18592" title="Similar to World::extract while assuming an arity of a, but also works on Sigmas and Arrays.">Def::proj</a>ections into an Array (if <code>A == std::dynamic_extent</code>) or <code>std::array</code> (otherwise).  <br /></td></tr>
+<tr class="separator:a77a2d17816449bbdd98765161b433eec inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abeef2032ba9550fe86fab107d607a2fb inherit pub_methods_classmim_1_1Def" id="r_abeef2032ba9550fe86fab107d607a2fb"><td class="memTemplParams" colspan="2">template&lt;class F&gt; </td></tr>
+<tr class="memitem:abeef2032ba9550fe86fab107d607a2fb inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#abeef2032ba9550fe86fab107d607a2fb">tprojs</a> (F f) const</td></tr>
+<tr class="separator:abeef2032ba9550fe86fab107d607a2fb inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a4ff7026ecdb5fbe7d361f1882f49be inherit pub_methods_classmim_1_1Def" id="r_a3a4ff7026ecdb5fbe7d361f1882f49be"><td class="memTemplParams" colspan="2">template&lt;class F&gt; </td></tr>
+<tr class="memitem:a3a4ff7026ecdb5fbe7d361f1882f49be inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a3a4ff7026ecdb5fbe7d361f1882f49be">projs</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> a, F f) const</td></tr>
+<tr class="separator:a3a4ff7026ecdb5fbe7d361f1882f49be inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a229cd5ecfe0a9116449acbee70fedb5b inherit pub_methods_classmim_1_1Def" id="r_a229cd5ecfe0a9116449acbee70fedb5b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> A = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:a229cd5ecfe0a9116449acbee70fedb5b inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a229cd5ecfe0a9116449acbee70fedb5b">projs</a> () const</td></tr>
+<tr class="separator:a229cd5ecfe0a9116449acbee70fedb5b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61707daca7f8cb66c73603c09a034847 inherit pub_methods_classmim_1_1Def" id="r_a61707daca7f8cb66c73603c09a034847"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a61707daca7f8cb66c73603c09a034847">tprojs</a> () const</td></tr>
+<tr class="separator:a61707daca7f8cb66c73603c09a034847 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d7e27c33828e4829363b3932fed229a inherit pub_methods_classmim_1_1Def" id="r_a5d7e27c33828e4829363b3932fed229a"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a5d7e27c33828e4829363b3932fed229a">projs</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> a) const</td></tr>
+<tr class="separator:a5d7e27c33828e4829363b3932fed229a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84ee4f56868a620ccf508d9044212fad inherit pub_methods_classmim_1_1Def" id="r_a84ee4f56868a620ccf508d9044212fad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a84ee4f56868a620ccf508d9044212fad">num_vars</a> () noexcept</td></tr>
+<tr class="separator:a84ee4f56868a620ccf508d9044212fad inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dab3baf6f2253040e5a0f7dc3d954dd inherit pub_methods_classmim_1_1Def" id="r_a9dab3baf6f2253040e5a0f7dc3d954dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a9dab3baf6f2253040e5a0f7dc3d954dd">num_tvars</a> () noexcept</td></tr>
+<tr class="separator:a9dab3baf6f2253040e5a0f7dc3d954dd inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e757a3ae8e52ee5b9ebdaea32c6abd8 inherit pub_methods_classmim_1_1Def" id="r_a6e757a3ae8e52ee5b9ebdaea32c6abd8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a6e757a3ae8e52ee5b9ebdaea32c6abd8">var</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> a, <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) noexcept</td></tr>
+<tr class="separator:a6e757a3ae8e52ee5b9ebdaea32c6abd8 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa27dd2653d480c90cc944ff68f253264 inherit pub_methods_classmim_1_1Def" id="r_aa27dd2653d480c90cc944ff68f253264"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aa27dd2653d480c90cc944ff68f253264">var</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) noexcept</td></tr>
+<tr class="separator:aa27dd2653d480c90cc944ff68f253264 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41594be2f5849f844f1321ca6ddfe544 inherit pub_methods_classmim_1_1Def" id="r_a41594be2f5849f844f1321ca6ddfe544"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a41594be2f5849f844f1321ca6ddfe544">tvar</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> i) noexcept</td></tr>
+<tr class="separator:a41594be2f5849f844f1321ca6ddfe544 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa58ecb88f35612838a7d5162e4e98511 inherit pub_methods_classmim_1_1Def" id="r_aa58ecb88f35612838a7d5162e4e98511"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> A = std::dynamic_extent, class F&gt; </td></tr>
+<tr class="memitem:aa58ecb88f35612838a7d5162e4e98511 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aa58ecb88f35612838a7d5162e4e98511">vars</a> (F f) noexcept</td></tr>
+<tr class="separator:aa58ecb88f35612838a7d5162e4e98511 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac95a7f21e315be2ff334356a86a3b97f inherit pub_methods_classmim_1_1Def" id="r_ac95a7f21e315be2ff334356a86a3b97f"><td class="memTemplParams" colspan="2">template&lt;class F&gt; </td></tr>
+<tr class="memitem:ac95a7f21e315be2ff334356a86a3b97f inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ac95a7f21e315be2ff334356a86a3b97f">tvars</a> (F f) noexcept</td></tr>
+<tr class="separator:ac95a7f21e315be2ff334356a86a3b97f inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5828bc5e8172f12fa472e7e623937e67 inherit pub_methods_classmim_1_1Def" id="r_a5828bc5e8172f12fa472e7e623937e67"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> A = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:a5828bc5e8172f12fa472e7e623937e67 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a5828bc5e8172f12fa472e7e623937e67">vars</a> () noexcept</td></tr>
+<tr class="separator:a5828bc5e8172f12fa472e7e623937e67 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0186046c3c40a31c2b9719a9d3f6ae4f inherit pub_methods_classmim_1_1Def" id="r_a0186046c3c40a31c2b9719a9d3f6ae4f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a0186046c3c40a31c2b9719a9d3f6ae4f">tvars</a> () noexcept</td></tr>
+<tr class="separator:a0186046c3c40a31c2b9719a9d3f6ae4f inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ae9259f54c0daa3746a72735483797c inherit pub_methods_classmim_1_1Def" id="r_a2ae9259f54c0daa3746a72735483797c"><td class="memTemplParams" colspan="2">template&lt;class F&gt; </td></tr>
+<tr class="memitem:a2ae9259f54c0daa3746a72735483797c inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a2ae9259f54c0daa3746a72735483797c">vars</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> a, F f) noexcept</td></tr>
+<tr class="separator:a2ae9259f54c0daa3746a72735483797c inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78ada1c494388d830fcbc7cfa94e9a81 inherit pub_methods_classmim_1_1Def" id="r_a78ada1c494388d830fcbc7cfa94e9a81"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a78ada1c494388d830fcbc7cfa94e9a81">vars</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> a) noexcept</td></tr>
+<tr class="separator:a78ada1c494388d830fcbc7cfa94e9a81 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d3c5c425d581e1e6836790d1437d1d inherit pub_methods_classmim_1_1Def" id="r_ac0d3c5c425d581e1e6836790d1437d1d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ac0d3c5c425d581e1e6836790d1437d1d">var</a> ()</td></tr>
+<tr class="memdesc:ac0d3c5c425d581e1e6836790d1437d1d inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not necessarily a <a class="el" href="classmim_1_1Var.html">Var</a>: E.g., if the return type is <code>[]</code>, this will yield <code>()</code>.  <br /></td></tr>
+<tr class="separator:ac0d3c5c425d581e1e6836790d1437d1d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af82f20111e9f1cbdbf910d30341bd4ee inherit pub_methods_classmim_1_1Def" id="r_af82f20111e9f1cbdbf910d30341bd4ee"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#af82f20111e9f1cbdbf910d30341bd4ee">has_var</a> ()</td></tr>
+<tr class="memdesc:af82f20111e9f1cbdbf910d30341bd4ee inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only returns not <code>nullptr</code>, if <a class="el" href="classmim_1_1Var.html">Var</a> of this mutable has ever been created.  <br /></td></tr>
+<tr class="separator:af82f20111e9f1cbdbf910d30341bd4ee inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f12761a17e1e15e867178e2f383dc3 inherit pub_methods_classmim_1_1Def" id="r_a18f12761a17e1e15e867178e2f383dc3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a18f12761a17e1e15e867178e2f383dc3">has_var</a> () const</td></tr>
+<tr class="memdesc:a18f12761a17e1e15e867178e2f383dc3 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above if <code>this</code> is a <em>mutable</em>.  <br /></td></tr>
+<tr class="separator:a18f12761a17e1e15e867178e2f383dc3 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a6a0861bea1acfecbf8e2260774b212 inherit pub_methods_classmim_1_1Def" id="r_a8a6a0861bea1acfecbf8e2260774b212"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a808d4cab01734432fc4218de6dae0ef2">Muts</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a> () const</td></tr>
+<tr class="memdesc:a8a6a0861bea1acfecbf8e2260774b212 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutables reachable by following <em>immutable</em> <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps()</a>; <code>mut-&gt;<a class="el" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212" title="Mutables reachable by following immutable deps(); mut-&gt;local_muts() is by definition the set { mut }...">local_muts()</a></code> is by definition the set <code>{ mut }</code>.  <br /></td></tr>
+<tr class="separator:a8a6a0861bea1acfecbf8e2260774b212 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def" id="r_a3f5a341398bd97b516f9fd7d1d170e5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f">Vars</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a3f5a341398bd97b516f9fd7d1d170e5b">local_vars</a> () const</td></tr>
+<tr class="memdesc:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Var.html">Var</a>s reachable by following <em>immutable</em> <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps()</a>.  <br /></td></tr>
+<tr class="separator:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed49f75ef33a07d498daffbcc3d2d838 inherit pub_methods_classmim_1_1Def" id="r_aed49f75ef33a07d498daffbcc3d2d838"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f">Vars</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aed49f75ef33a07d498daffbcc3d2d838">free_vars</a> () const</td></tr>
+<tr class="memdesc:aed49f75ef33a07d498daffbcc3d2d838 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a global solution by transitively following <em>mutables</em> as well.  <br /></td></tr>
+<tr class="separator:aed49f75ef33a07d498daffbcc3d2d838 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55751862df2e7aab0d76521dd77fadb9 inherit pub_methods_classmim_1_1Def" id="r_a55751862df2e7aab0d76521dd77fadb9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f">Vars</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9">free_vars</a> ()</td></tr>
+<tr class="separator:a55751862df2e7aab0d76521dd77fadb9 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec0c90f905b8d981b9e3580ba89f7d63 inherit pub_methods_classmim_1_1Def" id="r_aec0c90f905b8d981b9e3580ba89f7d63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a808d4cab01734432fc4218de6dae0ef2">Muts</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aec0c90f905b8d981b9e3580ba89f7d63">users</a> ()</td></tr>
+<tr class="memdesc:aec0c90f905b8d981b9e3580ba89f7d63 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set of mutables where this mutable is locally referenced.  <br /></td></tr>
+<tr class="separator:aec0c90f905b8d981b9e3580ba89f7d63 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7944689314d207575d41902eae1eeddc inherit pub_methods_classmim_1_1Def" id="r_a7944689314d207575d41902eae1eeddc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a7944689314d207575d41902eae1eeddc">is_open</a> () const</td></tr>
+<tr class="memdesc:a7944689314d207575d41902eae1eeddc inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has <a class="el" href="classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9">free_vars()</a>?  <br /></td></tr>
+<tr class="separator:a7944689314d207575d41902eae1eeddc inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec7aa74467c589b28b16a9630eb96a69 inherit pub_methods_classmim_1_1Def" id="r_aec7aa74467c589b28b16a9630eb96a69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69">is_closed</a> () const</td></tr>
+<tr class="memdesc:aec7aa74467c589b28b16a9630eb96a69 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Has no <a class="el" href="classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9">free_vars()</a>?  <br /></td></tr>
+<tr class="separator:aec7aa74467c589b28b16a9630eb96a69 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fc1ebb1ac4c1458a432b1cbaffbf9af inherit pub_methods_classmim_1_1Def" id="r_a6fc1ebb1ac4c1458a432b1cbaffbf9af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a6fc1ebb1ac4c1458a432b1cbaffbf9af">is_external</a> () const</td></tr>
+<tr class="separator:a6fc1ebb1ac4c1458a432b1cbaffbf9af inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40fa93a786143fbf727f567b3c875101 inherit pub_methods_classmim_1_1Def" id="r_a40fa93a786143fbf727f567b3c875101"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a40fa93a786143fbf727f567b3c875101">make_external</a> ()</td></tr>
+<tr class="separator:a40fa93a786143fbf727f567b3c875101 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a160dfda8f93104382a612ea54a7113a8 inherit pub_methods_classmim_1_1Def" id="r_a160dfda8f93104382a612ea54a7113a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a160dfda8f93104382a612ea54a7113a8">make_internal</a> ()</td></tr>
+<tr class="separator:a160dfda8f93104382a612ea54a7113a8 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7112131d01128be7d9a1f53248d7ae2b inherit pub_methods_classmim_1_1Def" id="r_a7112131d01128be7d9a1f53248d7ae2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a7112131d01128be7d9a1f53248d7ae2b">transfer_external</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *to)</td></tr>
+<tr class="separator:a7112131d01128be7d9a1f53248d7ae2b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae95966891b117e5f8bf7f4bca7b95c64 inherit pub_methods_classmim_1_1Def" id="r_ae95966891b117e5f8bf7f4bca7b95c64"><td class="memTemplParams" colspan="2">template&lt;class T = Def&gt; </td></tr>
+<tr class="memitem:ae95966891b117e5f8bf7f4bca7b95c64 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64">isa_imm</a> () const</td></tr>
+<tr class="separator:ae95966891b117e5f8bf7f4bca7b95c64 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac62b72371d95ea3e8774d11336ed640b inherit pub_methods_classmim_1_1Def" id="r_ac62b72371d95ea3e8774d11336ed640b"><td class="memTemplParams" colspan="2">template&lt;class T = Def&gt; </td></tr>
+<tr class="memitem:ac62b72371d95ea3e8774d11336ed640b inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">as_imm</a> () const</td></tr>
+<tr class="separator:ac62b72371d95ea3e8774d11336ed640b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23e2aae13672eec35a473d9341bbaf34 inherit pub_methods_classmim_1_1Def" id="r_a23e2aae13672eec35a473d9341bbaf34"><td class="memTemplParams" colspan="2">template&lt;class T = Def, class R&gt; </td></tr>
+<tr class="memitem:a23e2aae13672eec35a473d9341bbaf34 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a23e2aae13672eec35a473d9341bbaf34">isa_imm</a> (R(T::*f)() const) const</td></tr>
+<tr class="separator:a23e2aae13672eec35a473d9341bbaf34 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53a70702795d9c4bafe6de0d4f4a66f1 inherit pub_methods_classmim_1_1Def" id="r_a53a70702795d9c4bafe6de0d4f4a66f1"><td class="memTemplParams" colspan="2">template&lt;class T = Def, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> invert = false&gt; </td></tr>
+<tr class="memitem:a53a70702795d9c4bafe6de0d4f4a66f1 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">isa_mut</a> () const</td></tr>
+<tr class="memdesc:a53a70702795d9c4bafe6de0d4f4a66f1 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>this</code> is *mut*able, it will cast <code>const</code>ness away and perform a <code>dynamic_cast</code> to <code class="param">T</code>.  <br /></td></tr>
+<tr class="separator:a53a70702795d9c4bafe6de0d4f4a66f1 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18c97ca601e090eed9bcbc9369c2c792 inherit pub_methods_classmim_1_1Def" id="r_a18c97ca601e090eed9bcbc9369c2c792"><td class="memTemplParams" colspan="2">template&lt;class T = Def, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> invert = false&gt; </td></tr>
+<tr class="memitem:a18c97ca601e090eed9bcbc9369c2c792 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a18c97ca601e090eed9bcbc9369c2c792">as_mut</a> () const</td></tr>
+<tr class="memdesc:a18c97ca601e090eed9bcbc9369c2c792 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asserts that <code>this</code> is a <em>mutable</em>, casts <code>const</code>ness away and performs a <code>static_cast</code> to <code class="param">T</code>.  <br /></td></tr>
+<tr class="separator:a18c97ca601e090eed9bcbc9369c2c792 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefa7b1a57b3a67d30070c9aa9d3b20b3 inherit pub_methods_classmim_1_1Def" id="r_aefa7b1a57b3a67d30070c9aa9d3b20b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmim_1_1Dbg.html">Dbg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aefa7b1a57b3a67d30070c9aa9d3b20b3">dbg</a> () const</td></tr>
+<tr class="separator:aefa7b1a57b3a67d30070c9aa9d3b20b3 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ababa287f8ec65ff8971c8b379a0afa2f inherit pub_methods_classmim_1_1Def" id="r_ababa287f8ec65ff8971c8b379a0afa2f"><td class="memItemLeft" align="right" valign="top">Loc&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ababa287f8ec65ff8971c8b379a0afa2f">loc</a> () const</td></tr>
+<tr class="separator:ababa287f8ec65ff8971c8b379a0afa2f inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd076ce85473d3ea5dee55259338951c inherit pub_methods_classmim_1_1Def" id="r_acd076ce85473d3ea5dee55259338951c"><td class="memItemLeft" align="right" valign="top">Sym&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#acd076ce85473d3ea5dee55259338951c">sym</a> () const</td></tr>
+<tr class="separator:acd076ce85473d3ea5dee55259338951c inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae61aa184493aa3f3bf685758d27f982a inherit pub_methods_classmim_1_1Def" id="r_ae61aa184493aa3f3bf685758d27f982a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae61aa184493aa3f3bf685758d27f982a">unique_name</a> () const</td></tr>
+<tr class="memdesc:ae61aa184493aa3f3bf685758d27f982a inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">name + "_" + <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">Def::gid</a>  <br /></td></tr>
+<tr class="separator:ae61aa184493aa3f3bf685758d27f982a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7c42733630f6e00208f2fa7001c758d inherit pub_methods_classmim_1_1Def" id="r_ab7c42733630f6e00208f2fa7001c758d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:ab7c42733630f6e00208f2fa7001c758d inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ab7c42733630f6e00208f2fa7001c758d">set</a> (Loc l) const</td></tr>
+<tr class="separator:ab7c42733630f6e00208f2fa7001c758d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99601f098c5644dce4fcff3c8e618f0b inherit pub_methods_classmim_1_1Def" id="r_a99601f098c5644dce4fcff3c8e618f0b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:a99601f098c5644dce4fcff3c8e618f0b inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a99601f098c5644dce4fcff3c8e618f0b">set</a> (Loc l)</td></tr>
+<tr class="separator:a99601f098c5644dce4fcff3c8e618f0b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92d4d76f7b9c499f53e24a22270aca24 inherit pub_methods_classmim_1_1Def" id="r_a92d4d76f7b9c499f53e24a22270aca24"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:a92d4d76f7b9c499f53e24a22270aca24 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a92d4d76f7b9c499f53e24a22270aca24">set</a> (Sym s) const</td></tr>
+<tr class="separator:a92d4d76f7b9c499f53e24a22270aca24 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8da97919ee2de3c257f40a346a122238 inherit pub_methods_classmim_1_1Def" id="r_a8da97919ee2de3c257f40a346a122238"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:a8da97919ee2de3c257f40a346a122238 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a8da97919ee2de3c257f40a346a122238">set</a> (Sym s)</td></tr>
+<tr class="separator:a8da97919ee2de3c257f40a346a122238 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f185c49c1cd074c97ad2c25c2cf8fa1 inherit pub_methods_classmim_1_1Def" id="r_a4f185c49c1cd074c97ad2c25c2cf8fa1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:a4f185c49c1cd074c97ad2c25c2cf8fa1 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a4f185c49c1cd074c97ad2c25c2cf8fa1">set</a> (std::string s) const</td></tr>
+<tr class="separator:a4f185c49c1cd074c97ad2c25c2cf8fa1 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab26e158e221ab092e315ddd503e9b772 inherit pub_methods_classmim_1_1Def" id="r_ab26e158e221ab092e315ddd503e9b772"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:ab26e158e221ab092e315ddd503e9b772 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ab26e158e221ab092e315ddd503e9b772">set</a> (std::string s)</td></tr>
+<tr class="separator:ab26e158e221ab092e315ddd503e9b772 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf8665f9d167fe5525520883453383b5 inherit pub_methods_classmim_1_1Def" id="r_aaf8665f9d167fe5525520883453383b5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:aaf8665f9d167fe5525520883453383b5 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aaf8665f9d167fe5525520883453383b5">set</a> (Loc l, Sym s) const</td></tr>
+<tr class="separator:aaf8665f9d167fe5525520883453383b5 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef098cae8cb744b59c6b2c186730c265 inherit pub_methods_classmim_1_1Def" id="r_aef098cae8cb744b59c6b2c186730c265"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:aef098cae8cb744b59c6b2c186730c265 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aef098cae8cb744b59c6b2c186730c265">set</a> (Loc l, Sym s)</td></tr>
+<tr class="separator:aef098cae8cb744b59c6b2c186730c265 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae94b2ac01c817fb31ee894910c53e942 inherit pub_methods_classmim_1_1Def" id="r_ae94b2ac01c817fb31ee894910c53e942"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:ae94b2ac01c817fb31ee894910c53e942 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae94b2ac01c817fb31ee894910c53e942">set</a> (Loc l, std::string s) const</td></tr>
+<tr class="separator:ae94b2ac01c817fb31ee894910c53e942 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4147df9c12f51612ad01ae6a41f1807 inherit pub_methods_classmim_1_1Def" id="r_ac4147df9c12f51612ad01ae6a41f1807"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:ac4147df9c12f51612ad01ae6a41f1807 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ac4147df9c12f51612ad01ae6a41f1807">set</a> (Loc l, std::string s)</td></tr>
+<tr class="separator:ac4147df9c12f51612ad01ae6a41f1807 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3988c53feac95e85df4ed173338ebf inherit pub_methods_classmim_1_1Def" id="r_a0f3988c53feac95e85df4ed173338ebf"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:a0f3988c53feac95e85df4ed173338ebf inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a0f3988c53feac95e85df4ed173338ebf">set</a> (<a class="el" href="structmim_1_1Dbg.html">Dbg</a> d) const</td></tr>
+<tr class="separator:a0f3988c53feac95e85df4ed173338ebf inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89dda0b6fcd5baeb530d3a61235c8651 inherit pub_methods_classmim_1_1Def" id="r_a89dda0b6fcd5baeb530d3a61235c8651"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Ow = false&gt; </td></tr>
+<tr class="memitem:a89dda0b6fcd5baeb530d3a61235c8651 inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a89dda0b6fcd5baeb530d3a61235c8651">set</a> (<a class="el" href="structmim_1_1Dbg.html">Dbg</a> d)</td></tr>
+<tr class="separator:a89dda0b6fcd5baeb530d3a61235c8651 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66978d46660dbc8222365432fae2568a inherit pub_methods_classmim_1_1Def" id="r_a66978d46660dbc8222365432fae2568a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a66978d46660dbc8222365432fae2568a">debug_prefix</a> (std::string) const</td></tr>
+<tr class="separator:a66978d46660dbc8222365432fae2568a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8daf14a811af7e64ffc033ea347862f0 inherit pub_methods_classmim_1_1Def" id="r_a8daf14a811af7e64ffc033ea347862f0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a8daf14a811af7e64ffc033ea347862f0">debug_suffix</a> (std::string) const</td></tr>
+<tr class="separator:a8daf14a811af7e64ffc033ea347862f0 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af09d5f11c586c2dd9c9c27597540837a inherit pub_methods_classmim_1_1Def" id="r_af09d5f11c586c2dd9c9c27597540837a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#af09d5f11c586c2dd9c9c27597540837a">stub</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;w, const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>)</td></tr>
+<tr class="separator:af09d5f11c586c2dd9c9c27597540837a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8957c35fbc9956f680523da86291353 inherit pub_methods_classmim_1_1Def" id="r_ac8957c35fbc9956f680523da86291353"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ac8957c35fbc9956f680523da86291353">stub</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>)</td></tr>
+<tr class="separator:ac8957c35fbc9956f680523da86291353 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa620bd9f4f38559ce1863300acc92ca2 inherit pub_methods_classmim_1_1Def" id="r_aa620bd9f4f38559ce1863300acc92ca2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aa620bd9f4f38559ce1863300acc92ca2">rebuild</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;w, const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">ops</a>) const</td></tr>
+<tr class="memdesc:aa620bd9f4f38559ce1863300acc92ca2 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Def.html#aa620bd9f4f38559ce1863300acc92ca2" title="Def::rebuilds this Def while using new_op as substitute for its i&#39;th Def::op.">Def::rebuild</a>s this <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a> while using <code class="param">new_op</code> as substitute for its <code class="param">i'th</code> <a class="el" href="classmim_1_1Def.html#a67a94030742a4217fe19bb739990f73e">Def::op</a>.  <br /></td></tr>
+<tr class="separator:aa620bd9f4f38559ce1863300acc92ca2 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecffbbad0a017ef94ca0e2b9f070f84f inherit pub_methods_classmim_1_1Def" id="r_aecffbbad0a017ef94ca0e2b9f070f84f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aecffbbad0a017ef94ca0e2b9f070f84f">rebuild</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">ops</a>) const</td></tr>
+<tr class="separator:aecffbbad0a017ef94ca0e2b9f070f84f inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8080a9a8bd58ffad7a1759c4e2efc952 inherit pub_methods_classmim_1_1Def" id="r_a8080a9a8bd58ffad7a1759c4e2efc952"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a8080a9a8bd58ffad7a1759c4e2efc952">immutabilize</a> ()</td></tr>
+<tr class="memdesc:a8080a9a8bd58ffad7a1759c4e2efc952 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to make an immutable from a mutable.  <br /></td></tr>
+<tr class="separator:a8080a9a8bd58ffad7a1759c4e2efc952 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c53a687bf33a26663eb3c11c06f53fc inherit pub_methods_classmim_1_1Def" id="r_a6c53a687bf33a26663eb3c11c06f53fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a6c53a687bf33a26663eb3c11c06f53fc">is_immutabilizable</a> ()</td></tr>
+<tr class="separator:a6c53a687bf33a26663eb3c11c06f53fc inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a306749207e1a4e552e5f5dcacb0bac73 inherit pub_methods_classmim_1_1Def" id="r_a306749207e1a4e552e5f5dcacb0bac73"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a306749207e1a4e552e5f5dcacb0bac73">refine</a> (size_t i, const <a class="el" href="classmim_1_1Def.html">Def</a> *new_op) const</td></tr>
+<tr class="separator:a306749207e1a4e552e5f5dcacb0bac73 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88bef10e28dff101110ad1dade9edca inherit pub_methods_classmim_1_1Def" id="r_ae88bef10e28dff101110ad1dade9edca"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ae88bef10e28dff101110ad1dade9edca inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae88bef10e28dff101110ad1dade9edca">reduce</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *arg) const noexcept</td></tr>
+<tr class="separator:ae88bef10e28dff101110ad1dade9edca inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaa12ec7224539f112569689e186fc70 inherit pub_methods_classmim_1_1Def" id="r_acaa12ec7224539f112569689e186fc70"><td class="memItemLeft" align="right" valign="top">virtual constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#acaa12ec7224539f112569689e186fc70">reduction_offset</a> () const noexcept</td></tr>
+<tr class="memdesc:acaa12ec7224539f112569689e186fc70 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">First <a class="el" href="classmim_1_1Def.html#a67a94030742a4217fe19bb739990f73e">Def::op</a> that needs to be dealt with during reduction; e.g.  <br /></td></tr>
+<tr class="separator:acaa12ec7224539f112569689e186fc70 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87bee4b176f9c7775c03e4c50ffd2ddb inherit pub_methods_classmim_1_1Def" id="r_a87bee4b176f9c7775c03e4c50ffd2ddb"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a87bee4b176f9c7775c03e4c50ffd2ddb">check</a> (size_t, const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:a87bee4b176f9c7775c03e4c50ffd2ddb inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ec320f7eb49e3c8c9d26f210f4ce71d inherit pub_methods_classmim_1_1Def" id="r_a2ec320f7eb49e3c8c9d26f210f4ce71d"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a2ec320f7eb49e3c8c9d26f210f4ce71d">check</a> ()</td></tr>
+<tr class="separator:a2ec320f7eb49e3c8c9d26f210f4ce71d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def" id="r_a29019dd6f96db3881b604f0b16cba29a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a">zonk</a> () const</td></tr>
+<tr class="separator:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19ea1717cc86d4f2f5751f2d57b3f487 inherit pub_methods_classmim_1_1Def" id="r_a19ea1717cc86d4f2f5751f2d57b3f487"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a19ea1717cc86d4f2f5751f2d57b3f487">dump</a> () const</td></tr>
+<tr class="separator:a19ea1717cc86d4f2f5751f2d57b3f487 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa042dd90667f6f3e6950166b478ec694 inherit pub_methods_classmim_1_1Def" id="r_aa042dd90667f6f3e6950166b478ec694"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aa042dd90667f6f3e6950166b478ec694">dump</a> (<a class="el" href="namespace_3globalScope_4.html#classint">int</a> max) const</td></tr>
+<tr class="separator:aa042dd90667f6f3e6950166b478ec694 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbd73d56c3fb9d78a28ca119ca2583fc inherit pub_methods_classmim_1_1Def" id="r_abbd73d56c3fb9d78a28ca119ca2583fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#abbd73d56c3fb9d78a28ca119ca2583fc">write</a> (<a class="el" href="namespace_3globalScope_4.html#classint">int</a> max) const</td></tr>
+<tr class="separator:abbd73d56c3fb9d78a28ca119ca2583fc inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36961f437b85d16c096ee7c43cc9fa33 inherit pub_methods_classmim_1_1Def" id="r_a36961f437b85d16c096ee7c43cc9fa33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a36961f437b85d16c096ee7c43cc9fa33">write</a> (<a class="el" href="namespace_3globalScope_4.html#classint">int</a> max, const char *file) const</td></tr>
+<tr class="separator:a36961f437b85d16c096ee7c43cc9fa33 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad66cc84f37ffd79d3d34ba3b923fec3a inherit pub_methods_classmim_1_1Def" id="r_ad66cc84f37ffd79d3d34ba3b923fec3a"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad66cc84f37ffd79d3d34ba3b923fec3a">stream</a> (std::ostream &amp;, <a class="el" href="namespace_3globalScope_4.html#classint">int</a> max) const</td></tr>
+<tr class="separator:ad66cc84f37ffd79d3d34ba3b923fec3a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1575fa76069a619e90ca2a8eef2bcbbe inherit pub_methods_classmim_1_1Def" id="r_a1575fa76069a619e90ca2a8eef2bcbbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a1575fa76069a619e90ca2a8eef2bcbbe">dot</a> (std::ostream &amp;os, uint32_t max=0xFFFFFF, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> types=false) const</td></tr>
+<tr class="separator:a1575fa76069a619e90ca2a8eef2bcbbe inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac92c3ff3b6a007b6bc29be2a6ce1ab45 inherit pub_methods_classmim_1_1Def" id="r_ac92c3ff3b6a007b6bc29be2a6ce1ab45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ac92c3ff3b6a007b6bc29be2a6ce1ab45">dot</a> (const char *file=nullptr, uint32_t max=0xFFFFFF, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> types=false) const</td></tr>
+<tr class="memdesc:ac92c3ff3b6a007b6bc29be2a6ce1ab45 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as above but write to <code class="param">file</code> or <code>std::cout</code> if <code class="param">file</code> is <code>nullptr</code>.  <br /></td></tr>
+<tr class="separator:ac92c3ff3b6a007b6bc29be2a6ce1ab45 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3564515e778285694ee455137ab41e9b inherit pub_methods_classmim_1_1Def" id="r_a3564515e778285694ee455137ab41e9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a3564515e778285694ee455137ab41e9b">dot</a> (const std::string &amp;file, uint32_t max=0xFFFFFF, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> types=false) const</td></tr>
+<tr class="separator:a3564515e778285694ee455137ab41e9b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classmim_1_1Setters"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classmim_1_1Setters')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmim_1_1Setters.html">mim::Setters&lt; Match &gt;</a></td></tr>
+<tr class="memitem:a31901e26af5aaaac2103dad294d922cf inherit pub_methods_classmim_1_1Setters" id="r_a31901e26af5aaaac2103dad294d922cf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a31901e26af5aaaac2103dad294d922cf">set</a> (Loc l) const</td></tr>
+<tr class="separator:a31901e26af5aaaac2103dad294d922cf inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3deffe17fd3969bcf0fdbbdf0aea76e8 inherit pub_methods_classmim_1_1Setters" id="r_a3deffe17fd3969bcf0fdbbdf0aea76e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a3deffe17fd3969bcf0fdbbdf0aea76e8">set</a> (Loc l)</td></tr>
+<tr class="separator:a3deffe17fd3969bcf0fdbbdf0aea76e8 inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a204e871ca1c0182355f3e596336bfa2f inherit pub_methods_classmim_1_1Setters" id="r_a204e871ca1c0182355f3e596336bfa2f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a204e871ca1c0182355f3e596336bfa2f">set</a> (Sym s) const</td></tr>
+<tr class="separator:a204e871ca1c0182355f3e596336bfa2f inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9454f1c76eceae008a368ad2d7fdf00b inherit pub_methods_classmim_1_1Setters" id="r_a9454f1c76eceae008a368ad2d7fdf00b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a9454f1c76eceae008a368ad2d7fdf00b">set</a> (Sym s)</td></tr>
+<tr class="separator:a9454f1c76eceae008a368ad2d7fdf00b inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa8ab17c709297fc4a1a42a5251277d0 inherit pub_methods_classmim_1_1Setters" id="r_afa8ab17c709297fc4a1a42a5251277d0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#afa8ab17c709297fc4a1a42a5251277d0">set</a> (std::string s) const</td></tr>
+<tr class="separator:afa8ab17c709297fc4a1a42a5251277d0 inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1be73092d590b866fe74006263a259b2 inherit pub_methods_classmim_1_1Setters" id="r_a1be73092d590b866fe74006263a259b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a1be73092d590b866fe74006263a259b2">set</a> (std::string s)</td></tr>
+<tr class="separator:a1be73092d590b866fe74006263a259b2 inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a3c0bed9314d6a55b11d268685badf1 inherit pub_methods_classmim_1_1Setters" id="r_a2a3c0bed9314d6a55b11d268685badf1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a2a3c0bed9314d6a55b11d268685badf1">set</a> (Loc l, Sym s) const</td></tr>
+<tr class="separator:a2a3c0bed9314d6a55b11d268685badf1 inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a071849e326cf3086cedc1b7113eb48cf inherit pub_methods_classmim_1_1Setters" id="r_a071849e326cf3086cedc1b7113eb48cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a071849e326cf3086cedc1b7113eb48cf">set</a> (Loc l, Sym s)</td></tr>
+<tr class="separator:a071849e326cf3086cedc1b7113eb48cf inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a771c7c1d1a5aa979a4833d5705d106eb inherit pub_methods_classmim_1_1Setters" id="r_a771c7c1d1a5aa979a4833d5705d106eb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a771c7c1d1a5aa979a4833d5705d106eb">set</a> (Loc l, std::string s) const</td></tr>
+<tr class="separator:a771c7c1d1a5aa979a4833d5705d106eb inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada0303a60a80d20598097ce98dcb769e inherit pub_methods_classmim_1_1Setters" id="r_ada0303a60a80d20598097ce98dcb769e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#ada0303a60a80d20598097ce98dcb769e">set</a> (Loc l, std::string s)</td></tr>
+<tr class="separator:ada0303a60a80d20598097ce98dcb769e inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a910ffb7ad5dde60193da2520c79f98 inherit pub_methods_classmim_1_1Setters" id="r_a4a910ffb7ad5dde60193da2520c79f98"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#a4a910ffb7ad5dde60193da2520c79f98">set</a> (<a class="el" href="structmim_1_1Dbg.html">Dbg</a> d) const</td></tr>
+<tr class="separator:a4a910ffb7ad5dde60193da2520c79f98 inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2097a04dd083deb6f7e7b1df6c01289 inherit pub_methods_classmim_1_1Setters" id="r_aa2097a04dd083deb6f7e7b1df6c01289"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Match.html">Match</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Setters.html#aa2097a04dd083deb6f7e7b1df6c01289">set</a> (<a class="el" href="structmim_1_1Dbg.html">Dbg</a> d)</td></tr>
+<tr class="separator:aa2097a04dd083deb6f7e7b1df6c01289 inherit pub_methods_classmim_1_1Setters"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:aa1f3f5451f596c3368c636f0018ee955" id="r_aa1f3f5451f596c3368c636f0018ee955"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1f3f5451f596c3368c636f0018ee955">Node</a> = <a class="el" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da6da89265a9a8b0b28eb4946bb2ec0c6d">mim::Node::Match</a></td></tr>
+<tr class="separator:aa1f3f5451f596c3368c636f0018ee955"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ad4e91a1d9f2020f6c5a922e54d4df644" id="r_ad4e91a1d9f2020f6c5a922e54d4df644"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4e91a1d9f2020f6c5a922e54d4df644">rebuild_</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, const <a class="el" href="classmim_1_1Def.html">Def</a> *, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>) const override</td></tr>
+<tr class="separator:ad4e91a1d9f2020f6c5a922e54d4df644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a7b4bcdf992c21ae83363f25df05b1d25" id="r_a7b4bcdf992c21ae83363f25df05b1d25"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b4bcdf992c21ae83363f25df05b1d25">World</a></td></tr>
+<tr class="separator:a7b4bcdf992c21ae83363f25df05b1d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_classmim_1_1Def"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classmim_1_1Def')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classmim_1_1Def.html">mim::Def</a></td></tr>
+<tr class="memitem:ae59703ead7befb26e835d4d9793e2786 inherit pro_methods_classmim_1_1Def" id="r_ae59703ead7befb26e835d4d9793e2786"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae59703ead7befb26e835d4d9793e2786">Def</a> (<a class="el" href="classmim_1_1World.html">World</a> *, <a class="el" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">ops</a>, <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="el" href="classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f">flags</a>)</td></tr>
+<tr class="memdesc:ae59703ead7befb26e835d4d9793e2786 inherit pro_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for an <em>immutable</em> <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>.  <br /></td></tr>
+<tr class="separator:ae59703ead7befb26e835d4d9793e2786 inherit pro_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d17c70789416483a8f248e2c7e9a5e3 inherit pro_methods_classmim_1_1Def" id="r_a7d17c70789416483a8f248e2c7e9a5e3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a7d17c70789416483a8f248e2c7e9a5e3">Def</a> (<a class="el" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">ops</a>, <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="el" href="classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f">flags</a>)</td></tr>
+<tr class="memdesc:a7d17c70789416483a8f248e2c7e9a5e3 inherit pro_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> retrieved from <code class="param">type</code>.  <br /></td></tr>
+<tr class="separator:a7d17c70789416483a8f248e2c7e9a5e3 inherit pro_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73acaf4ded5bcd2d42491fe01140f880 inherit pro_methods_classmim_1_1Def" id="r_a73acaf4ded5bcd2d42491fe01140f880"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a73acaf4ded5bcd2d42491fe01140f880">Def</a> (<a class="el" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>, size_t <a class="el" href="classmim_1_1Def.html#afc9a0f45e4d093d11aa4633b8b38c879">num_ops</a>, <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="el" href="classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f">flags</a>)</td></tr>
+<tr class="memdesc:a73acaf4ded5bcd2d42491fe01140f880 inherit pro_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a <em>mutable</em> <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>.  <br /></td></tr>
+<tr class="separator:a73acaf4ded5bcd2d42491fe01140f880 inherit pro_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28c96a2a0852a5559694dd2cd439edd5 inherit pro_methods_classmim_1_1Def" id="r_a28c96a2a0852a5559694dd2cd439edd5"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a28c96a2a0852a5559694dd2cd439edd5">~Def</a> ()=default</td></tr>
+<tr class="separator:a28c96a2a0852a5559694dd2cd439edd5 inherit pro_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21afe5afd0b258ded3981bed4d78364c inherit pro_methods_classmim_1_1Def" id="r_a21afe5afd0b258ded3981bed4d78364c"><td class="memItemLeft" align="right" valign="top">Sym&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a21afe5afd0b258ded3981bed4d78364c">sym</a> (const char *) const</td></tr>
+<tr class="separator:a21afe5afd0b258ded3981bed4d78364c inherit pro_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe3ec0b409009159678e603ebea3489b inherit pro_methods_classmim_1_1Def" id="r_afe3ec0b409009159678e603ebea3489b"><td class="memItemLeft" align="right" valign="top">Sym&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#afe3ec0b409009159678e603ebea3489b">sym</a> (std::string_view) const</td></tr>
+<tr class="separator:afe3ec0b409009159678e603ebea3489b inherit pro_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabd288124bdb49880e02a1e053b87737 inherit pro_methods_classmim_1_1Def" id="r_aabd288124bdb49880e02a1e053b87737"><td class="memItemLeft" align="right" valign="top">Sym&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aabd288124bdb49880e02a1e053b87737">sym</a> (std::string) const</td></tr>
+<tr class="separator:aabd288124bdb49880e02a1e053b87737 inherit pro_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classmim_1_1Def"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Def')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmim_1_1Def.html">mim::Def</a></td></tr>
+<tr class="memitem:a4c1e435f509cc12ed0f3eb05833db81c inherit pro_attribs_classmim_1_1Def" id="r_a4c1e435f509cc12ed0f3eb05833db81c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmim_1_1Dbg.html">Dbg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a4c1e435f509cc12ed0f3eb05833db81c">dbg_</a></td></tr>
+<tr class="separator:a4c1e435f509cc12ed0f3eb05833db81c inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c06a4bf9b270f0110c9173cfe03579e inherit pro_attribs_classmim_1_1Def" id="r_a8c06a4bf9b270f0110c9173cfe03579e"><td class="memItemLeft" >union {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator: inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7ef25c26fc758dcbc70e1b9d7dbeba8 inherit pro_attribs_classmim_1_1Def" id="r_ab7ef25c26fc758dcbc70e1b9d7dbeba8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ab992e926dce870b1e086b34589849a92">NormalizeFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ab7ef25c26fc758dcbc70e1b9d7dbeba8">normalizer_</a></td></tr>
+<tr class="memdesc:ab7ef25c26fc758dcbc70e1b9d7dbeba8 inherit pro_attribs_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Axiom.html">Axiom</a> only: <a class="el" href="classmim_1_1Axiom.html">Axiom</a>s use this member to store their normalizer.  <br /></td></tr>
+<tr class="separator:ab7ef25c26fc758dcbc70e1b9d7dbeba8 inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf6f716fe276ad9f0523db559ceb95e0 inherit pro_attribs_classmim_1_1Def" id="r_aaf6f716fe276ad9f0523db559ceb95e0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Axiom.html">Axiom</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aaf6f716fe276ad9f0523db559ceb95e0">axiom_</a></td></tr>
+<tr class="memdesc:aaf6f716fe276ad9f0523db559ceb95e0 inherit pro_attribs_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1App.html">App</a> only: Curried <a class="el" href="classmim_1_1App.html">App</a>s of <a class="el" href="classmim_1_1Axiom.html">Axiom</a>s use this member to propagate the <a class="el" href="classmim_1_1Axiom.html">Axiom</a>.  <br /></td></tr>
+<tr class="separator:aaf6f716fe276ad9f0523db559ceb95e0 inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8dda13ab372b84110880c5af5d1266d inherit pro_attribs_classmim_1_1Def" id="r_ad8dda13ab372b84110880c5af5d1266d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad8dda13ab372b84110880c5af5d1266d">var_</a></td></tr>
+<tr class="memdesc:ad8dda13ab372b84110880c5af5d1266d inherit pro_attribs_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable only: <a class="el" href="classmim_1_1Var.html">Var</a> of a mutable.  <br /></td></tr>
+<tr class="separator:ad8dda13ab372b84110880c5af5d1266d inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a610767dbe638769ffeb450ee0f3b30ef inherit pro_attribs_classmim_1_1Def" id="r_a610767dbe638769ffeb450ee0f3b30ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1World.html">World</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a610767dbe638769ffeb450ee0f3b30ef">world_</a></td></tr>
+<tr class="separator:a610767dbe638769ffeb450ee0f3b30ef inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c06a4bf9b270f0110c9173cfe03579e inherit pro_attribs_classmim_1_1Def" id="r_a8c06a4bf9b270f0110c9173cfe03579e"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a8c06a4bf9b270f0110c9173cfe03579e inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad97de2c17c3c86c04d2b0078ad386588 inherit pro_attribs_classmim_1_1Def" id="r_ad97de2c17c3c86c04d2b0078ad386588"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad97de2c17c3c86c04d2b0078ad386588">flags_</a></td></tr>
+<tr class="separator:ad97de2c17c3c86c04d2b0078ad386588 inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6039d3f834a30baca2e8bf279231ea3a inherit pro_attribs_classmim_1_1Def" id="r_a6039d3f834a30baca2e8bf279231ea3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#aef2afb7040e6345a0b89b209ae7560c7">u8</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a6039d3f834a30baca2e8bf279231ea3a">curry_</a> = 0</td></tr>
+<tr class="separator:a6039d3f834a30baca2e8bf279231ea3a inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24712467bea03b1120d3c69c1ad02916 inherit pro_attribs_classmim_1_1Def" id="r_a24712467bea03b1120d3c69c1ad02916"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#aef2afb7040e6345a0b89b209ae7560c7">u8</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a24712467bea03b1120d3c69c1ad02916">trip_</a> = 0</td></tr>
+<tr class="separator:a24712467bea03b1120d3c69c1ad02916 inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class Id, class D&gt;<br />
-class mim::Match&lt; Id, D &gt;</div>
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00076">76</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ace15f9a0bcdf8dc17412ca4b93d4b361" name="ace15f9a0bcdf8dc17412ca4b93d4b361"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace15f9a0bcdf8dc17412ca4b93d4b361">&#9670;&#160;</a></span>Match() <span class="overload">[1/2]</span></h2>
+<div class="textblock"><p>Scrutinize <a class="el" href="#a47aa21219e90cdd34c1be37a4bfe8b49">Match::value()</a> and dispatch to <a class="el" href="#adb497360682457521954de1ccdff45db">Match::arms</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00109">109</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad4c29afb6b4f08aa1b875927ac75eec0" name="ad4c29afb6b4f08aa1b875927ac75eec0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4c29afb6b4f08aa1b875927ac75eec0">&#9670;&#160;</a></span>arm()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::Match </td>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Match::arm </td>
           <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
+          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>i</em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel default">default</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00122">122</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+
+<p class="reference">References <a class="el" href="lattice_8h_source.html#l00121">arms()</a>.</p>
+
 </div>
 </div>
-<a id="ac0cb39d5a58e423beb4c4bd131a07407" name="ac0cb39d5a58e423beb4c4bd131a07407"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0cb39d5a58e423beb4c4bd131a07407">&#9670;&#160;</a></span>Match() <span class="overload">[2/2]</span></h2>
+<a id="adb497360682457521954de1ccdff45db" name="adb497360682457521954de1ccdff45db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb497360682457521954de1ccdff45db">&#9670;&#160;</a></span>arms()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
+template&lt;size_t N = std::dynamic_extent&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::Match </td>
+          <td class="memname">auto mim::Match::arms </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Axiom.html">Axiom</a> *</td>          <td class="paramname"><span class="paramname"><em>axiom</em></span>, </td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00121">121</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00261">mim::Def::ops()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="lattice_8h_source.html#l00122">arm()</a>, and <a class="el" href="lattice_8h_source.html#l00123">num_arms()</a>.</p>
+
+</div>
+</div>
+<a id="a5caec35b0215ea47ba9ee9166c0ef662" name="a5caec35b0215ea47ba9ee9166c0ef662"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5caec35b0215ea47ba9ee9166c0ef662">&#9670;&#160;</a></span>num_arms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t mim::Match::num_arms </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00123">123</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+
+<p class="reference">References <a class="el" href="lattice_8h_source.html#l00121">arms()</a>.</p>
+
+</div>
+</div>
+<a id="ad4e91a1d9f2020f6c5a922e54d4df644" name="ad4e91a1d9f2020f6c5a922e54d4df644"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4e91a1d9f2020f6c5a922e54d4df644">&#9670;&#160;</a></span>rebuild_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Match::rebuild_ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1World.html">World</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>w</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const D *</td>          <td class="paramname"><span class="paramname"><em>def</em></span>&#160;)</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00082">82</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">References <a class="el" href="axiom_8h_source.html#l00088">axiom()</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1881d2683811fd5228916341eecdaeb3" name="a1881d2683811fd5228916341eecdaeb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1881d2683811fd5228916341eecdaeb3">&#9670;&#160;</a></span>axiom()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1Axiom.html">Axiom</a> * <a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::axiom </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00088">88</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00100">base()</a>, <a class="el" href="axiom_8h_source.html#l00101">id()</a>, <a class="el" href="axiom_8h_source.html#l00082">Match()</a>, <a class="el" href="axiom_8h_source.html#l00097">plugin()</a>, <a class="el" href="axiom_8h_source.html#l00099">sub()</a>, and <a class="el" href="axiom_8h_source.html#l00098">tag()</a>.</p>
-
-</div>
-</div>
-<a id="acc0109bbe0a64e1857db713c6c5cd61b" name="acc0109bbe0a64e1857db713c6c5cd61b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc0109bbe0a64e1857db713c6c5cd61b">&#9670;&#160;</a></span>base()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::base </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd>exiom::base. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00100">100</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">References <a class="el" href="axiom_8h_source.html#l00088">axiom()</a>, and <a class="el" href="axiom_8h_source.html#l00054">mim::Axiom::sub()</a>.</p>
-
-</div>
-</div>
-<a id="a994f5d235ba79c81558edec4d316e0bb" name="a994f5d235ba79c81558edec4d316e0bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a994f5d235ba79c81558edec4d316e0bb">&#9670;&#160;</a></span>id()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::id </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><a class="el" href="classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f">Axiom::flags</a> cast to <code class="param">Id</code>. </p>
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00101">101</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">References <a class="el" href="axiom_8h_source.html#l00088">axiom()</a>.</p>
-
-</div>
-</div>
-<a id="a7d99ae15b1b90103f9868a1c10016dd5" name="a7d99ae15b1b90103f9868a1c10016dd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d99ae15b1b90103f9868a1c10016dd5">&#9670;&#160;</a></span>operator bool()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::operator <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>o</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel private">private</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00091">91</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p>Implements <a class="el" href="classmim_1_1Def.html#a6ccce4edfee895dcb8944ad14cf8c2d4">mim::Def</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00128">128</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="lattice_8h_source.html#l00129">World</a>.</p>
 
 </div>
 </div>
-<a id="a4458e3fcdf2f52875d2f932d3dd7301f" name="a4458e3fcdf2f52875d2f932d3dd7301f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4458e3fcdf2f52875d2f932d3dd7301f">&#9670;&#160;</a></span>operator const D *()</h2>
+<a id="a47aa21219e90cdd34c1be37a4bfe8b49" name="a47aa21219e90cdd34c1be37a4bfe8b49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47aa21219e90cdd34c1be37a4bfe8b49">&#9670;&#160;</a></span>value()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::operator const D * </td>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Match::value </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -374,137 +680,69 @@ template&lt;class Id, class D&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00090">90</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00120">120</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00264">mim::Def::op()</a>.</p>
 
 </div>
 </div>
-<a id="ac0a72d94f6dbe1558d4e6a14cfefac05" name="ac0a72d94f6dbe1558d4e6a14cfefac05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0a72d94f6dbe1558d4e6a14cfefac05">&#9670;&#160;</a></span>operator-&gt;()</h2>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a7b4bcdf992c21ae83363f25df05b1d25" name="a7b4bcdf992c21ae83363f25df05b1d25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b4bcdf992c21ae83363f25df05b1d25">&#9670;&#160;</a></span>World</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const D * <a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::operator-&gt; </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
+          <td class="memname">friend class <a class="el" href="classmim_1_1World.html">World</a></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel friend">friend</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00089">89</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00129">129</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+
+<p class="reference">References <a class="el" href="lattice_8h_source.html#l00129">World</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00128">rebuild_()</a>, and <a class="el" href="lattice_8h_source.html#l00129">World</a>.</p>
 
 </div>
 </div>
-<a id="ac9465e29650ceac18acd4c1423c8ac62" name="ac9465e29650ceac18acd4c1423c8ac62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9465e29650ceac18acd4c1423c8ac62">&#9670;&#160;</a></span>plugin()</h2>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa1f3f5451f596c3368c636f0018ee955" name="aa1f3f5451f596c3368c636f0018ee955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1f3f5451f596c3368c636f0018ee955">&#9670;&#160;</a></span>Node</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto <a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::plugin </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
+          <td class="memname">auto mim::Match::Node = <a class="el" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da6da89265a9a8b0b28eb4946bb2ec0c6d">mim::Node::Match</a></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classmim_1_1Axiom.html#aa047a1ef171a1220616d56a93de635f3">Axiom::plugin</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00097">97</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">References <a class="el" href="axiom_8h_source.html#l00088">axiom()</a>, and <a class="el" href="axiom_8h_source.html#l00052">mim::Axiom::plugin()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00116">116</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
 
 </div>
 </div>
-<a id="a653fd936b7a9664ad59ec91a3630a007" name="a653fd936b7a9664ad59ec91a3630a007"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a653fd936b7a9664ad59ec91a3630a007">&#9670;&#160;</a></span>sub()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::sub </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classmim_1_1Axiom.html#a53d9c0c305d7ea8e5c4043acfd78a4f6">Axiom::sub</a>. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00099">99</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">References <a class="el" href="axiom_8h_source.html#l00088">axiom()</a>, and <a class="el" href="axiom_8h_source.html#l00054">mim::Axiom::sub()</a>.</p>
-
-</div>
-</div>
-<a id="ab4042575ffe9ec8a9832c7924df5bca0" name="ab4042575ffe9ec8a9832c7924df5bca0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4042575ffe9ec8a9832c7924df5bca0">&#9670;&#160;</a></span>tag()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Id, class D&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto <a class="el" href="classmim_1_1Match.html">mim::Match</a>&lt; Id, D &gt;::tag </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classmim_1_1Axiom.html#a5926fcbc3534d71bab21e07f59595c8e">Axiom::tag</a>. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00098">98</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">References <a class="el" href="axiom_8h_source.html#l00088">axiom()</a>, and <a class="el" href="axiom_8h_source.html#l00053">mim::Axiom::tag()</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/mim/<a class="el" href="axiom_8h_source.html">axiom.h</a></li>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>include/mim/<a class="el" href="lattice_8h_source.html">lattice.h</a></li>
+<li>src/mim/<a class="el" href="def_8cpp_source.html">def.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

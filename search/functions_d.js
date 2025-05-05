@@ -80,7 +80,7 @@ var searchData=
   ['normalize_5fzip_77',['normalize_zip',['../namespacemim_1_1plug_1_1core.html#af3951905fa04ce273d627414f52a1414',1,'mim::plug::core']]],
   ['normalizer_78',['normalizer',['../classmim_1_1ast_1_1AxiomDecl.html#a97f7a338dd92c42596e9fd607ca00cde',1,'mim::ast::AxiomDecl::normalizer()'],['../classmim_1_1Axiom.html#a154cfa01bcece03ebfb2982cafaa2de4',1,'mim::Axiom::normalizer()'],['../classmim_1_1Driver.html#a9da4ca3384f62706a603bacad94e98e6',1,'mim::Driver::normalizer(flags_t flags) const'],['../classmim_1_1Driver.html#a66bee8d7f5f315deb200c65bf3ea0bff',1,'mim::Driver::normalizer(plugin_t d, tag_t t, sub_t s) const']]],
   ['note_79',['note',['../classmim_1_1ast_1_1AST.html#a93295daed6715e4c97d791d0cf4a022f',1,'mim::ast::AST::note()'],['../classmim_1_1Error.html#a88c9fc1630230a1b850a231857bd8ac9',1,'mim::Error::note()']]],
-  ['num_5farms_80',['num_arms',['../classmim_1_1Test.html#a3ebac5e20570f0572b9546a853d4b55f',1,'mim::Test']]],
+  ['num_5farms_80',['num_arms',['../classmim_1_1Match.html#a5caec35b0215ea47ba9ee9166c0ef662',1,'mim::Match']]],
   ['num_5fchildren_81',['num_children',['../classmim_1_1Nest_1_1Node.html#a55dfe9106d35582e0f681b8b72df0ed7',1,'mim::Nest::Node']]],
   ['num_5fdepends_82',['num_depends',['../classmim_1_1Nest_1_1Node.html#a0529b738364d895b38ef62e93a9a11f4',1,'mim::Nest::Node']]],
   ['num_5fdeps_83',['num_deps',['../classmim_1_1Def.html#a086b8caf2ce9bdfc870871854f021d90',1,'mim::Def']]],

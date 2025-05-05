@@ -5,7 +5,7 @@ var searchData=
   ['tbound_2',['TBound',['../classmim_1_1TBound.html',1,'mim']]],
   ['tbound_3c_20false_20_3e_3',['TBound&lt; false &gt;',['../classmim_1_1TBound.html',1,'mim']]],
   ['tbound_3c_20true_20_3e_4',['TBound&lt; true &gt;',['../classmim_1_1TBound.html',1,'mim']]],
-  ['test_5',['Test',['../classmim_1_1Test.html',1,'mim']]],
+  ['test_5',['Test',['../classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Test',1,'mim::Axiom::Test&lt; T &gt;'],['../classmim_1_1Test.html',1,'mim::Test&lt; Id, D &gt;']]],
   ['text_6',['TExt',['../classmim_1_1TExt.html',1,'mim']]],
   ['text_3c_20false_20_3e_7',['TExt&lt; false &gt;',['../classmim_1_1TExt.html',1,'mim']]],
   ['text_3c_20true_20_3e_8',['TExt&lt; true &gt;',['../classmim_1_1TExt.html',1,'mim']]],
