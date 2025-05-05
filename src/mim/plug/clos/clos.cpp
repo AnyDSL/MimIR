@@ -56,7 +56,7 @@ const Def* ClosLit::fnc() {
 
 Lam* ClosLit::fnc_as_lam() {
     auto f = fnc();
-    if (auto a = match<attr>(f)) f = a->arg();
+    if (auto a = Axm::isa<attr>(f)) f = a->arg();
     return f->isa_mut<Lam>();
 }
 
@@ -67,7 +67,7 @@ ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
     if (tpl && isa_clos_type(def->type())) {
         auto a   = attr::bottom;
         auto fnc = std::get<1_u64>(clos_unpack(tpl));
-        if (auto fa = match<attr>(fnc)) {
+        if (auto fa = Axm::isa<attr>(fnc)) {
             fnc = fa->arg();
             a   = fa.id();
         }

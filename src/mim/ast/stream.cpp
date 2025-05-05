@@ -157,9 +157,9 @@ std::ostream& UniqExpr::stream(Tab& tab, std::ostream& os) const { return print(
  * Decl
  */
 
-std::ostream& AxiomDecl::Alias::stream(Tab&, std::ostream& os) const { return os << dbg(); }
+std::ostream& AxmDecl::Alias::stream(Tab&, std::ostream& os) const { return os << dbg(); }
 
-std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
+std::ostream& AxmDecl::stream(Tab& tab, std::ostream& os) const {
     print(os, "axm {}", dbg());
     if (num_subs() != 0) {
         os << '(';

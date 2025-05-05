@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mim/axiom.h>
+#include <mim/axm.h>
 #include <mim/world.h>
 
 #include "mim/plug/core/autogen.h"

@@ -14,7 +14,7 @@ bool is_memop_res(const Def* fd) {
     auto proj = fd->isa<Extract>();
     if (!proj) return false;
     auto types = proj->tuple()->type()->ops();
-    return std::any_of(types.begin(), types.end(), [](auto d) { return match<mem::M>(d); });
+    return std::any_of(types.begin(), types.end(), [](auto d) { return Axm::isa<mem::M>(d); });
 }
 
 } // namespace
@@ -46,11 +46,11 @@ DefSet free_defs(const Nest& nest) {
  */
 
 void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
-    assert(!match<mem::M>(fd) && "mem tokens must not be free");
+    assert(!Axm::isa<mem::M>(fd) && "mem tokens must not be free");
     if (fd->is_closed()) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
         if (var != lam->ret_var()) node->add_fvs(fd);
-    } else if (auto q = match(attr::freeBB, fd)) {
+    } else if (auto q = Axm::isa(attr::freeBB, fd)) {
         node->add_fvs(q);
     } else if (auto pred = fd->isa_mut()) {
         if (pred != node->mut) {
@@ -191,7 +191,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto closure                  = clos_pack(env, new_lam, clos_ty);
         world().DLOG("RW: pack {} ~> {} : {}", lam, closure, clos_ty);
         return map(closure);
-    } else if (auto a = match<attr>(def)) {
+    } else if (auto a = Axm::isa<attr>(def)) {
         switch (a.id()) {
             case attr::returning:
                 if (auto ret_lam = a->arg()->isa_mut<Lam>()) {
@@ -248,7 +248,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto new_ops = DefVec(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
         if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
             return map(clos_apply(new_ops[0], new_ops[1]));
-        else if (def->isa<Axiom>())
+        else if (def->isa<Axm>())
             return def;
         else
             return map(def->rebuild(new_type, new_ops));

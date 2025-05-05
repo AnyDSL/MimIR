@@ -52,7 +52,7 @@ AnnexInfo* AST::name2annex(Dbg dbg, sub_t* sub_id) {
 void AST::bootstrap(Sym plugin, std::ostream& h) {
     Tab tab;
     tab.print(h, "#pragma once\n\n");
-    tab.print(h, "#include <mim/axiom.h>\n"
+    tab.print(h, "#include <mim/axm.h>\n"
                  "#include <mim/plugin.h>\n\n");
 
     tab.print(h, "/// @namespace mim::plug::{} @ref {} \n", plugin, plugin);
@@ -130,11 +130,11 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
     tab.print(h, "\n");
 
-    // emit helpers for non-function axiom
+    // emit helpers for non-function axm
     for (const auto& [tag, ax] : infos) {
         auto sym = ax.sym;
         if (ax.is_pi() || sym.plugin != plugin) continue; // from function or other plugin?
-        tab.print(h, "template<> struct Axiom::Match<plug::{}::{}> {{ using type = Axiom; }};\n", sym.plugin, sym.tag);
+        tab.print(h, "template<> struct Axm::IsANode<plug::{}::{}> {{ using type = Axm; }};\n", sym.plugin, sym.tag);
     }
 
     tab.print(h, "\n#endif\n");

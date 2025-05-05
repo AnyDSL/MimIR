@@ -64,7 +64,7 @@ struct Inline {
         if (auto app = def_->isa<App>()) {
             if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
             if (app->type()->isa<Type>()) return true;
-            if (app->callee()->isa<Axiom>()) return app->callee_type()->num_doms() <= 1;
+            if (app->callee()->isa<Axm>()) return app->callee_type()->num_doms() <= 1;
             return false;
         }
 
@@ -159,8 +159,8 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "{}:({})", x, ext->type());
     } else if (auto top = u->isa<Top>()) {
         return print(os, "{}:({})", ascii ? ".top" : "⊤", top->type());
-    } else if (auto axiom = u->isa<Axiom>()) {
-        const auto name = axiom->sym();
+    } else if (auto axm = u->isa<Axm>()) {
+        const auto name = axm->sym();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {

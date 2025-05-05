@@ -226,8 +226,8 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
             }
             return w.tuple(new_ops);
         }
-    } else if (auto vel = val->isa<Vel>()) {
-        if (auto new_val = assignable_(type, vel->value())) return w.vel(type, new_val);
+    } else if (auto inj = val->isa<Inj>()) {
+        if (auto new_val = assignable_(type, inj->value())) return w.inj(type, new_val);
         return fail();
     } else if (auto uniq = val->type()->isa<Uniq>()) {
         if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;

@@ -1,17 +1,17 @@
-#include "mim/axiom.h"
+#include "mim/axm.h"
 
 #include "mim/world.h"
 
 namespace mim {
 
-Axiom::Axiom(NormalizeFn normalizer, u8 curry, u8 trip, const Def* type, plugin_t plugin, tag_t tag, sub_t sub)
+Axm::Axm(NormalizeFn normalizer, u8 curry, u8 trip, const Def* type, plugin_t plugin, tag_t tag, sub_t sub)
     : Def(Node, type, Defs{}, plugin | (flags_t(tag) << 8_u64) | flags_t(sub)) {
     normalizer_ = normalizer;
     curry_      = curry;
     trip_       = trip;
 }
 
-std::pair<u8, u8> Axiom::infer_curry_and_trip(const Def* type) {
+std::pair<u8, u8> Axm::infer_curry_and_trip(const Def* type) {
     u8 curry = 0;
     u8 trip  = 0;
     MutSet done;
@@ -35,9 +35,9 @@ std::pair<u8, u8> Axiom::infer_curry_and_trip(const Def* type) {
     return {curry, trip};
 }
 
-std::tuple<const Axiom*, u8, u8> Axiom::get(const Def* def) {
-    if (auto axiom = def->isa<Axiom>()) return {axiom, axiom->curry(), axiom->trip()};
-    if (auto app = def->isa<App>()) return {app->axiom(), app->curry(), app->trip()};
+std::tuple<const Axm*, u8, u8> Axm::get(const Def* def) {
+    if (auto axm = def->isa<Axm>()) return {axm, axm->curry(), axm->trip()};
+    if (auto app = def->isa<App>()) return {app->axm(), app->curry(), app->trip()};
     return {nullptr, 0, 0};
 }
 

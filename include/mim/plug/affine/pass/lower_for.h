@@ -6,7 +6,7 @@
 
 namespace mim::plug::affine {
 
-/// Lowers the for axiom to actual control flow in CPS.
+/// Lowers the for axm to actual control flow in CPS.
 /// It basically mimics this implementation:
 /// ```
 /// con %affine.For_impl

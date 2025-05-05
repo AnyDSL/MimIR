@@ -11,9 +11,7 @@ class Sigma;
 class Bound : public Def {
 protected:
     Bound(Node node, const Def* type, Defs ops)
-        : Def(node, type, ops, 0) {} ///< Constructor for an *immutable* Bound.
-    Bound(Node node, const Def* type, size_t size)
-        : Def(node, type, size, 0) {} ///< Constructor for a *mutable* Bound.
+        : Def(node, type, ops, 0) {}
 
     constexpr size_t reduction_offset() const noexcept override { return 0; }
 
@@ -33,33 +31,28 @@ public:
 template<bool Up> class TBound : public Bound, public Setters<TBound<Up>> {
 private:
     TBound(const Def* type, Defs ops)
-        : Bound(Node, type, ops) {} ///< Constructor for an *immutable* Bound.
-    TBound(const Def* type, size_t size)
-        : Bound(Node, type, size) {} ///< Constructor for a *mutable* Bound.
+        : Bound(Node, type, ops) {}
 
 public:
     using Setters<TBound<Up>>::set;
-
-    TBound* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     static constexpr auto Node = Up ? mim::Node::Join : mim::Node::Meet;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
-    TBound* stub_(World&, const Def*) override;
 
     friend class World;
 };
 
 /// Constructs a [Meet](@ref mim::Meet) **value**.
 /// @remark [Ac](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *and*.
-class Ac : public Def, public Setters<Ac> {
+class Merge : public Def, public Setters<Merge> {
 public:
-    using Setters<Ac>::set;
-    static constexpr auto Node = mim::Node::Ac;
+    using Setters<Merge>::set;
+    static constexpr auto Node = mim::Node::Merge;
 
 private:
-    Ac(const Def* type, Defs defs)
+    Merge(const Def* type, Defs defs)
         : Def(Node, type, defs, 0) {}
 
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -68,21 +61,21 @@ private:
 };
 
 /// Constructs a [Join](@ref mim::Join) **value**.
-/// @remark [Vel](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *or*.
-class Vel : public Def, public Setters<Vel> {
+/// @remark [Inj](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *or*.
+class Inj : public Def, public Setters<Inj> {
 private:
-    Vel(const Def* type, const Def* value)
+    Inj(const Def* type, const Def* value)
         : Def(Node, type, {value}, 0) {}
 
 public:
-    using Setters<Vel>::set;
+    using Setters<Inj>::set;
 
     /// @name ops
     ///@{
     const Def* value() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Vel;
+    static constexpr auto Node = mim::Node::Inj;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -91,20 +84,20 @@ private:
 };
 
 /// Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type).
-class Pick : public Def, public Setters<Pick> {
+class Split : public Def, public Setters<Split> {
 private:
-    Pick(const Def* type, const Def* value)
+    Split(const Def* type, const Def* value)
         : Def(Node, type, {value}, 0) {}
 
 public:
-    using Setters<Pick>::set;
+    using Setters<Split>::set;
 
     /// @name ops
     ///@{
     const Def* value() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Pick;
+    static constexpr auto Node = mim::Node::Split;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -112,33 +105,22 @@ private:
     friend class World;
 };
 
-/// Test whether Test::value currently holds **type** Test::probe:
-/// ```
-/// test value, probe, match, clash
-/// ```
-/// @note
-/// * Test::probe is a **type**!
-/// * This operation yields Test::match, if `tt`, and Test::clash otherwise.
-/// @invariant
-/// * Test::value must be of type Join.
-/// * Test::match must be of type `A -> B`.
-/// * Test::clash must be of type `[A, probe] -> C`.
-/// @remark This operation is usually known as `case` but named `Test` since `case` is a keyword in C++.
-class Test : public Def, public Setters<Test> {
+/// Scrutinize Match::value() and dispatch to Match::arms.
+class Match : public Def, public Setters<Match> {
 private:
-    Test(const Def* type, const Def* value, const Def* probe, const Def* match, const Def* clash)
-        : Def(Node, type, {value, probe, match, clash}, 0) {}
+    Match(const Def* type, Defs ops)
+        : Def(Node, type, ops, 0) {}
 
 public:
-    using Setters<Test>::set;
-    static constexpr auto Node = mim::Node::Test;
+    using Setters<Match>::set;
+    static constexpr auto Node = mim::Node::Match;
 
     /// @name ops
     ///@{
     const Def* value() const { return op(0); }
-    const Def* probe() const { return op(1); }
-    const Def* match() const { return op(2); }
-    const Def* clash() const { return op(3); }
+    template<size_t N = std::dynamic_extent> constexpr auto arms() const noexcept { return ops().subspan<1, N>(); }
+    const Def* arm(size_t i) const { return arms()[i]; }
+    size_t num_arms() const { return arms().size(); }
     ///@}
 
 private:
@@ -163,13 +145,10 @@ private:
 public:
     using Setters<TExt<Up>>::set;
 
-    TExt* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
-
     static constexpr auto Node = Up ? mim::Node::Top : mim::Node::Bot;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
-    TExt* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -178,8 +157,8 @@ private:
 ///@{
 using Bot  = TExt<false>;
 using Top  = TExt<true>;
-using Meet = TBound<false>;
-using Join = TBound<true>;
+using Meet = TBound<false>; ///< AKA intersection.
+using Join = TBound<true>;  ///< AKA union.
 /// @}
 
 /// A singleton wraps a type into a higher order type.

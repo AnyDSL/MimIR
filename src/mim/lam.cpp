@@ -33,10 +33,6 @@ Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, con
     return app(filter, world().select(cond, t, f), mem ? mem : world().tuple());
 }
 
-Lam* Lam::test(Filter filter, const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem) {
-    return app(filter, world().test(value, index, match, clash), mem);
-}
-
 /*
  * Helpers
  */

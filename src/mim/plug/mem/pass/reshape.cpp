@@ -15,7 +15,7 @@ namespace mim::plug::mem {
 
 namespace {
 
-bool is_mem_ty(const Def* T) { return match<mem::M>(T); }
+bool is_mem_ty(const Def* T) { return Axm::isa<mem::M>(T); }
 
 // TODO merge with should_flatten from tuple.*
 bool should_flatten(const Def* T) {
@@ -76,7 +76,7 @@ const Def* Reshape::rewrite_def(const Def* def) {
 }
 
 const Def* Reshape::rewrite_def_(const Def* def) {
-    // We ignore types, Globals, and Axioms.
+    // We ignore types, Globals, and Axms.
     switch (def->node()) {
         // TODO: check if bot: Cn[[A,B],Cn[Ret]] is handled correctly
         // case Node::Bot:
@@ -84,7 +84,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         case Node::Type:
         case Node::Univ:
         case Node::Nat:
-        case Node::Axiom:
+        case Node::Axm:
         case Node::Global: return def;
         default: break;
     }

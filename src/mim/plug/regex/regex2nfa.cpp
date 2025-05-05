@@ -28,29 +28,29 @@ struct Regex2NfaConverter {
 
     void
     convert(const Def* regex, automaton::NFANode* start, automaton::NFANode* end, automaton::NFANode* error = nullptr) {
-        if (auto conj = mim::match<regex::conj>(regex)) {
+        if (auto conj = Axm::isa<regex::conj>(regex)) {
             auto middle = nfa_->add_state();
             convert(conj->arg(0), start, middle, error);
             convert(conj->arg(1), middle, end, error);
-        } else if (auto any = mim::match<regex::any>(regex)) {
+        } else if (auto any = Axm::isa<regex::any>(regex)) {
             add_range_transitions(start, end, 0, 255);
-        } else if (auto range = mim::match<regex::range>(regex)) {
+        } else if (auto range = Axm::isa<regex::range>(regex)) {
             add_range_transitions(start, end, range->arg(0), range->arg(1));
             if (error) add_range_transitions(start, error, 0, 255);
-        } else if (auto not_ = mim::match<regex::not_>(regex)) {
+        } else if (auto not_ = Axm::isa<regex::not_>(regex)) {
             auto first = nfa_->add_state();
             auto error = nfa_->add_state();
             error->set_erroring(true);
 
             convert(not_->arg(), first, error, end);
             start->add_transition(first, automaton::NFA::SpecialTransitons::EPSILON);
-        } else if (auto disj = mim::match<regex::disj>(regex)) {
+        } else if (auto disj = Axm::isa<regex::disj>(regex)) {
             convert(disj->arg(0), start, end, error);
             convert(disj->arg(1), start, end, error);
-        } else if (auto opt = mim::match(quant::optional, regex)) {
+        } else if (auto opt = Axm::isa(quant::optional, regex)) {
             start->add_transition(end, automaton::NFA::SpecialTransitons::EPSILON);
             convert(opt->arg(), start, end);
-        } else if (auto star = mim::match(quant::star, regex)) {
+        } else if (auto star = Axm::isa(quant::star, regex)) {
             auto m1 = nfa_->add_state();
             auto m2 = nfa_->add_state();
             start->add_transition(m1, automaton::NFA::SpecialTransitons::EPSILON);
@@ -58,7 +58,7 @@ struct Regex2NfaConverter {
             m2->add_transition(m1, automaton::NFA::SpecialTransitons::EPSILON);
             m2->add_transition(end, automaton::NFA::SpecialTransitons::EPSILON);
             convert(star->arg(), m1, m2);
-        } else if (auto plus = mim::match(quant::plus, regex)) {
+        } else if (auto plus = Axm::isa(quant::plus, regex)) {
             auto m0 = nfa_->add_state();
             auto m1 = nfa_->add_state();
             auto m2 = nfa_->add_state();
