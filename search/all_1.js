@@ -33,7 +33,7 @@ var searchData=
   ['bot_30',['Bot',['../classmim_1_1EtaRed.html#a3326314112409c514cb209a8a12bbaaea791d8c13ae693cb944d1b0c9234be291',1,'mim::EtaRed::Bot'],['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca1448e86d90e0feb307c2894c24e87767',1,'mim::ast::Expr::Bot'],['../namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4',1,'mim::Bot'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da1448e86d90e0feb307c2894c24e87767',1,'mim::Bot']]],
   ['bot_31',['bot',['../classmim_1_1lct_1_1Node.html#a446eb5096f3644b5e45e5ce850c72d0e',1,'mim::lct::Node::bot'],['../classmim_1_1World.html#a5c3d27af1c63894979d0a14975d02a53',1,'mim::World::bot()'],['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91afabcaa97871555b68aa095335975e613',1,'mim::plug::math::bot']]],
   ['bottom_32',['bottom',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8ca71f262d796bed1ab30e8a2d5a8ddee6f',1,'mim::plug::clos']]],
-  ['bound_33',['Bound',['../classmim_1_1Bound.html',1,'mim::Bound'],['../classmim_1_1Bound.html#a3a7c0ab15b55aae9d2694498e6dc3dc2',1,'mim::Bound::Bound(Node node, const Def *type, Defs ops)'],['../classmim_1_1Bound.html#a6158112e3fe885af112c2a80a43e22e9',1,'mim::Bound::Bound(Node node, const Def *type, size_t size)']]],
+  ['bound_33',['Bound',['../classmim_1_1Bound.html',1,'mim::Bound'],['../classmim_1_1Bound.html#a3a7c0ab15b55aae9d2694498e6dc3dc2',1,'mim::Bound::Bound()']]],
   ['bound_34',['bound',['../classmim_1_1World.html#aab1e5167972818efdf9c13b16046842e',1,'mim::World']]],
   ['branch_35',['branch',['../classmim_1_1Lam.html#a12f902f5c2c56acec3cbac5d081dd286',1,'mim::Lam']]],
   ['branch_5fclos_5felim_2ecpp_36',['branch_clos_elim.cpp',['../branch__clos__elim_8cpp.html',1,'']]],
