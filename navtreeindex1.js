@@ -1,7 +1,7 @@
 var NAVTREEINDEX1 =
 {
-"classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Test":[5,0,1,7,0],
-"classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Test":[6,0,2,1,6,1],
+"classmim_1_1Axiom.html#structmim_1_1Axiom_1_1IsA":[5,0,1,7,0],
+"classmim_1_1Axiom.html#structmim_1_1Axiom_1_1IsA":[6,0,2,1,6,1],
 "classmim_1_1BetaRed.html":[3,0,1,10],
 "classmim_1_1BetaRed.html":[5,0,1,8],
 "classmim_1_1BetaRed.html#a1d7d8ea865ebbea4567ce950f0d5ce7b":[3,0,1,10,5],

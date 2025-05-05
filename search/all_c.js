@@ -174,7 +174,7 @@ var searchData=
   ['mut_5fpack_171',['mut_pack',['../classmim_1_1World.html#a9918b4797f61044b34b61b82f4a01e2b',1,'mim::World']]],
   ['mut_5fpi_172',['mut_pi',['../classmim_1_1World.html#a62054f4dbd855e2352dfb17aed10274b',1,'mim::World']]],
   ['mut_5fsigma_173',['mut_sigma',['../classmim_1_1World.html#ae54352dda91fcfd8412ce37e0a3ba624',1,'mim::World::mut_sigma(const Def *type, size_t size)'],['../classmim_1_1World.html#ab98632ddaa3d773e7626b46d673eeb2b',1,'mim::World::mut_sigma(size_t size)']]],
-  ['mutables_174',['Mutables',['../passes.html#autotoc_md65',1,'Creating Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables'],['../dev.html#autotoc_md21',1,'Upcast for Mutables']]],
+  ['mutables_174',['Mutables',['../passes.html#autotoc_md65',1,'Creating Mutables'],['../dev.html#autotoc_md21',1,'Downcast for Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables']]],
   ['mutmap_175',['MutMap',['../namespacemim.html#afccd5f832a8d98e22ada5860ea24afd2',1,'mim']]],
   ['muts_176',['Muts',['../namespacemim.html#a808d4cab01734432fc4218de6dae0ef2',1,'mim']]],
   ['muts_177',['muts',['../classmim_1_1ClosedCollector.html#a2cd0e6091e9fe2cc2dbf1572e7bbfa48',1,'mim::ClosedCollector::muts'],['../classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b',1,'mim::Nest::muts()'],['../classmim_1_1World.html#a1ab828141bfcd0c0bdc3608ac24ec358',1,'mim::World::muts()'],['../classmim_1_1World.html#a52b5c22ff4c01fdfa5b1c18412f38a6f',1,'mim::World::muts() const']]],

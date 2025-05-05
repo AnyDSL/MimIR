@@ -1,7 +1,7 @@
 var classmim_1_1Axiom =
 [
-    [ "Test", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Test", [
-      [ "type", "classmim_1_1Axiom.html#a4b451bfc41ad76dd26eca18aa9e111f8", null ]
+    [ "IsA", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1IsA", [
+      [ "type", "classmim_1_1Axiom.html#ad23eaf1755eaccd16829b6b012369be9", null ]
     ] ],
     [ "base", "classmim_1_1Axiom.html#a9b27be74953fb4bf31dd4d91c377e051", null ],
     [ "curry", "classmim_1_1Axiom.html#a4815eb9ca2039544ade0a08fbd0b7370", null ],

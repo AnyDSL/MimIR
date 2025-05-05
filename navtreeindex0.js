@@ -224,9 +224,6 @@ var NAVTREEINDEX0 =
 "classmim_1_1Axiom.html#a154cfa01bcece03ebfb2982cafaa2de4":[5,0,1,7,5],
 "classmim_1_1Axiom.html#a4815eb9ca2039544ade0a08fbd0b7370":[3,0,1,9,2],
 "classmim_1_1Axiom.html#a4815eb9ca2039544ade0a08fbd0b7370":[5,0,1,7,2],
-"classmim_1_1Axiom.html#a4b451bfc41ad76dd26eca18aa9e111f8":[3,0,1,9,0,0],
-"classmim_1_1Axiom.html#a4b451bfc41ad76dd26eca18aa9e111f8":[5,0,1,7,0,0],
-"classmim_1_1Axiom.html#a4b451bfc41ad76dd26eca18aa9e111f8":[6,0,2,1,6,1,0],
 "classmim_1_1Axiom.html#a53d9c0c305d7ea8e5c4043acfd78a4f6":[3,0,1,9,8],
 "classmim_1_1Axiom.html#a53d9c0c305d7ea8e5c4043acfd78a4f6":[5,0,1,7,8],
 "classmim_1_1Axiom.html#a5926fcbc3534d71bab21e07f59595c8e":[3,0,1,9,9],
@@ -245,9 +242,12 @@ var NAVTREEINDEX0 =
 "classmim_1_1Axiom.html#aa5ff2f541a9a64c36c2461e234ad2d00":[5,0,1,7,10],
 "classmim_1_1Axiom.html#ab29c0d874eea90336ce70378ec7d2006":[3,0,1,9,3],
 "classmim_1_1Axiom.html#ab29c0d874eea90336ce70378ec7d2006":[5,0,1,7,3],
+"classmim_1_1Axiom.html#ad23eaf1755eaccd16829b6b012369be9":[3,0,1,9,0,0],
+"classmim_1_1Axiom.html#ad23eaf1755eaccd16829b6b012369be9":[5,0,1,7,0,0],
+"classmim_1_1Axiom.html#ad23eaf1755eaccd16829b6b012369be9":[6,0,2,1,6,1,0],
 "classmim_1_1Axiom.html#af4038a4b1852e7fd1f66130de3e682b1":[3,0,1,9,12],
 "classmim_1_1Axiom.html#af4038a4b1852e7fd1f66130de3e682b1":[5,0,1,7,12],
 "classmim_1_1Axiom.html#af589cd85aa4827e1f95f77292bdaa7a0":[3,0,1,9,13],
 "classmim_1_1Axiom.html#af589cd85aa4827e1f95f77292bdaa7a0":[5,0,1,7,13],
-"classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Test":[3,0,1,9,0]
+"classmim_1_1Axiom.html#structmim_1_1Axiom_1_1IsA":[3,0,1,9,0]
 };

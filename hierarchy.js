@@ -49,6 +49,8 @@ var hierarchy =
     [ "std::integral_constant", null, [
       [ "std::tuple_size< mim::Span< T, N > >", "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
+    [ "mim::Axiom::IsA< T >", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1IsA", null ],
+    [ "mim::IsA< Id, D >", "classmim_1_1IsA.html", null ],
     [ "mim::Sets< D, N >::Set::iterator", "classmim_1_1Sets_1_1Set_1_1iterator.html", null ],
     [ "fe::Lexer", null, [
       [ "mim::ast::Lexer", "classmim_1_1ast_1_1Lexer.html", null ]
@@ -405,8 +407,6 @@ var hierarchy =
       [ "mim::Driver", "classmim_1_1Driver.html", null ]
     ] ],
     [ "mim::Tab", "classmim_1_1Tab.html", null ],
-    [ "mim::Axiom::Test< T >", "classmim_1_1Axiom.html#structmim_1_1Axiom_1_1Test", null ],
-    [ "mim::Test< Id, D >", "classmim_1_1Test.html", null ],
     [ "mim::ast::Tok", "classmim_1_1ast_1_1Tok.html", null ],
     [ "std::tuple_element< I, mim::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4", null ],
     [ "mim::unique_queue< Set >", "classmim_1_1unique__queue.html", null ],
