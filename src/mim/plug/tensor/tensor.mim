@@ -1,0 +1,50 @@
+/// # The tensor Plugin {#tensor}
+///
+/// @see mim::plug::tensor
+///
+/// [TOC]
+///
+/// A minimal tensor plugin
+///
+/// ## Operations
+///
+/// ### %%tensor.const_idx
+///
+/// The 42 constant, evaluated using a normalizer
+/// axm %tensor.const_idx: [n: Nat] → Idx n, normalize_const;
+let Ring = [
+    T: *,
+   _0: T,
+   _1: T,
+   add: [T, T] → T,
+   mul: [T, T] → T,
+];
+/// let nat_ring = (Nat, 0, 1, %core.nat.add, %core.nat.mul);
+
+axm %tensor.prod_2d: [m: Nat, k: Nat, l: Nat, R:Ring]
+                → [«m, k; R#T», «k, l; R#T»]
+                → [«m, l; R#T»], normalize_prod;
+
+axm %tensor.element_wise: [r: Nat, s: «r; Nat», ni: Nat, Is: «ni; *», T: *] →
+    [app: «i: ni; Is#i» → T] → [is: «i: ni; «s; Is#i» »] → «s; T»;
+
+axm %tensor.transpose: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», permutation: «r;Idx r»] → « <j: r; s#(permutation#j)>; T»;
+
+axm %tensor.slice: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», output_shape: «r; Nat», start_indices: « i:r; Idx (s#i) », steps: « i:r; Nat »] → « output_shape; T»;
+
+axm %tensor.reshape: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», output_shape: «r; Nat»] → « output_shape; T»;
+
+//out_r = n_b + (r_lhs - n_c - n_b) + (r_rhs - n_c - n_b)
+axm %tensor.dot_general:  [r_lhs: Nat, r_rhs: Nat, n_c: Nat, n_b: Nat, R: Ring] →
+                          [s_lhs: «r_lhs; Nat», s_rhs: «r_rhs; Nat», c_lhs: «n_c; Nat», c_rhs: «n_c; Nat», b_lhs: «n_b; Nat», b_rhs: «n_b; Nat»] → 
+                          [lhs: «s_lhs; R#T», rhs: «s_rhs; R#T»] →
+                          [out_r: Nat, out_s: «out_r; Nat»] →
+                          «out_s; R#T»;
+
+/// ni tensors each of shape s and type Is#i
+/// in arg is
+/// i: ni is a notation for i : (Idx ni)
+axm %tensor.reduce: [r: Nat, s: «r; Nat», ni: Nat, Is: «ni; *»] →
+        [f: «2; «i: ni; Is#i» » → «i: ni; Is#i»] →
+        [is: «i: ni; «s; Is#i» », init: «i: ni; Is#i», dims: «r; Bool»]
+        → «i: ni; « <j: r; (s#j, 1)#(dims#j)>; Is#i» »;
