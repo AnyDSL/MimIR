@@ -82,7 +82,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
             return refine(w.call(attr::freeBB, op));
         }
         if (isa_cnt(app, arg, i)) {
-            if (test<attr>(attr::returning, op) || isa_retvar(op)) {
+            if (isa<attr>(attr::returning, op) || isa_retvar(op)) {
                 return app;
             } else if (auto contlam = op->isa_mut<Lam>()) {
                 return refine(w.call(attr::returning, contlam));
@@ -132,7 +132,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
 }
 
 const Def* ClosConvPrep::rewrite(const Def* def) {
-    if (ignore_ || test<attr>(def)) return def;
+    if (ignore_ || isa<attr>(def)) return def;
 
     if (auto app = def->isa<App>()) {
         app = rewrite_arg(app);

@@ -134,7 +134,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     for (const auto& [tag, ax] : infos) {
         auto sym = ax.sym;
         if (ax.is_pi() || sym.plugin != plugin) continue; // from function or other plugin?
-        tab.print(h, "template<> struct Axiom::Test<plug::{}::{}> {{ using type = Axiom; }};\n", sym.plugin, sym.tag);
+        tab.print(h, "template<> struct Axiom::IsA<plug::{}::{}> {{ using type = Axiom; }};\n", sym.plugin, sym.tag);
     }
 
     tab.print(h, "\n#endif\n");

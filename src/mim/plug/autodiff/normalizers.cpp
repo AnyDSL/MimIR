@@ -37,11 +37,11 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg) {
 
     world.DLOG("add {} {} {}", T, a, b);
 
-    if (test<zero>(a)) {
+    if (isa<zero>(a)) {
         world.DLOG("0+b");
         return b;
     }
-    if (test<zero>(b)) {
+    if (isa<zero>(b)) {
         world.DLOG("0+a");
         return a;
     }

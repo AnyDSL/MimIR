@@ -213,17 +213,17 @@ void foo(const Def* def) {
 
 You can match [Axiom](@ref mim::Axiom)s via
 
-- mim::test which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref mim::Test::Test) `nullptr` (see below), if the cast is not possible, or
-- mim::force which is again more like a `static_cast` and `assert`s via its mim::test sibling in the `Debug` build that the cast is correct.
+- mim::isa which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref mim::IsA::IsA) `nullptr` (see below), if the cast is not possible, or
+- mim::as which is again more like a `static_cast` and `assert`s via its mim::isa sibling in the `Debug` build that the cast is correct.
 
-This will yield a [Test](@ref mim::Test)`<Id, D>` which just wraps a `const D*`.
+This will yield a [Test](@ref mim::IsA)`<Id, D>` which just wraps a `const D*`.
 `Id` is the `enum` of the corresponding `tag` of the [matched Axiom](@ref anatomy).
 Usually, `D` will be an [App](@ref mim::App) because most [Axiom](@ref mim::Axiom)s inhabit a [function type](@ref mim::Pi).
 Otherwise, it may wrap a [Def](@ref mim::Def) or other subclasses of it.
-For instance, [match](@ref mim::test)ing `%%mem.M` yields [Test](@ref mim::Test)`<`[mem::M](@ref mim::plug::mem::M), [Def](@ref mim::Def)`>`.
+For instance, [matching](@ref mim::isa) `%%mem.M` yields [Test](@ref mim::IsA)`<`[mem::M](@ref mim::plug::mem::M), [Def](@ref mim::Def)`>`.
 
 By default, MimIR assumes that the magic of an [Axiom](@ref mim::Axiom) happens when applying the final argument to a curried [Axiom](@ref mim::Axiom).
-For example, [match](@ref mim::test)ing a `%%mem.load` will only trigger for the final [App](@ref mim::App) of the curried call
+For example, [matching](@ref mim::isa) a `%%mem.load` will only trigger for the final [App](@ref mim::App) of the curried call
 
 ```
 %mem.load (T, as) (mem, ptr)
@@ -236,7 +236,7 @@ while
 ```
 
 will **not** match.
-The wrapped [App](@ref mim::App) inside the [Test](@ref mim::Test) refers to the last [App](@ref mim::App) of the curried call.
+The wrapped [App](@ref mim::App) inside the [Test](@ref mim::IsA) refers to the last [App](@ref mim::App) of the curried call.
 So in this example
 
 - mim::App::arg() is `(mem, ptr)` and
@@ -244,7 +244,7 @@ So in this example
 
   Use mim::App::decurry() to directly get the mim::App::callee() as mim::App.
 
-If you want to design an [Axiom](@ref mim::Axiom) that returns a function, you can [fine-adjust the trigger point](@ref normalization) of a mim::test / mim::force.
+If you want to design an [Axiom](@ref mim::Axiom) that returns a function, you can [fine-adjust the trigger point](@ref normalization) of a mim::isa / mim::as.
 
 #### w/o Subtags
 
@@ -252,13 +252,13 @@ In order to match an [Axiom](@ref mim::Axiom) **without** any subtags like `%%me
 
 ```cpp
 void foo(const Def* def) {
-    if (auto load = test<mem::load>(def)) {
+    if (auto load = isa<mem::load>(def)) {
         auto [mem, ptr]            = load->args<2>();
         auto [pointee, addr_space] = load->decurry()->args<2>();
     }
 
     // def must match as a mem::load - otherwise, asserts
-    auto load = force<mem::load>(def);
+    auto load = as<mem::load>(def);
 }
 ```
 
@@ -268,7 +268,7 @@ In order to match an [Axiom](@ref mim::Axiom) **with** subtags like `%%core.wrap
 
 ```cpp
 void foo(const Def* def) {
-    if (auto wrap = test<core::wrap>(def)) {
+    if (auto wrap = isa<core::wrap>(def)) {
         auto [a, b] = wrap->args<2>();
         auto mode   = wrap->decurry()->arg();
         switch (wrap.id()) {
@@ -279,16 +279,16 @@ void foo(const Def* def) {
         }
     }
 
-    if (auto add = test(core::wrap::add, def)) {
+    if (auto add = isa(core::wrap::add, def)) {
         auto [a, b] = add->args<2>();
         auto mode   = add->decurry()->arg();
     }
 
     // def must match as a core::wrap - otherwise, asserts
-    auto wrap = force<core::wrap>(def);
+    auto wrap = as<core::wrap>(def);
 
     // def must match as a core::wrap::add - otherwise, asserts
-    auto add = force(core::wrap::add, def);
+    auto add = as(core::wrap::add, def);
 }
 ```
 
@@ -296,11 +296,11 @@ void foo(const Def* def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast` <br> `static_cast`                               | Returns                                                                                  | If `def` is a ...               |
-| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------- |
-| `test<mem::load>(def)` <br> `force<mem::load>(def)`             | [Test](@ref mim::Test)`<`[mem::load](@ref mim::plug::mem.load), [App](@ref mim::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
-| `test<core::wrap>(def)` <br> `force<core::wrap>(def)`           | [Test](@ref mim::Test)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.??? s m (a, b)`    |
-| `test(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Test](@ref mim::Test)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.add s m (a, b)`    |
+| `dynamic_cast` <br> `static_cast`                           | Returns                                                                                 | If `def` is a ...               |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------- |
+| `isa<mem::load>(def)` <br> `as<mem::load>(def)`             | [Test](@ref mim::IsA)`<`[mem::load](@ref mim::plug::mem.load), [App](@ref mim::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
+| `isa<core::wrap>(def)` <br> `as<core::wrap>(def)`           | [Test](@ref mim::IsA)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.??? s m (a, b)`    |
+| `isa(core::wrap::add, def)` <br> `as(core::wrap::add, def)` | [Test](@ref mim::IsA)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.add s m (a, b)`    |
 
 ## Working with Indices
 
