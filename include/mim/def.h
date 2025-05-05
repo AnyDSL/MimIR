@@ -180,7 +180,7 @@ public:
 ///     * Pi, Lam, Sigma, Arr, Pack
 /// * Axiom: To introduce new entities.
 /// * Proxy: Used for intermediate values during optimizations.
-/// * Hole: Hole in the presentation filled by type inference (always mutable as the holes are filled in later).
+/// * Hole: A metavariable filled in by the type inference (always mutable as holes are filled in later).
 /// * Type, Univ, UMax, UInc: To keep track of type levels.
 ///
 /// The data layout (see World::alloc and Def::deps) looks like this:
