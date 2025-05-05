@@ -1,7 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"regex_8h_source.html":[6,0,2,1,4,12,2],
-"remem__elim_8h.html":[6,0,2,1,4,9,0,2],
 "remem__elim_8h_source.html":[6,0,2,1,4,9,0,2],
 "remove__perm_8cpp.html":[6,0,3,1,4,11,0,0],
 "remove__perm_8cpp_source.html":[6,0,3,1,4,11,0,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX21 =
 "structmim_1_1ll_1_1BB.html#a3c27de69a28e3bc1e83ee0892c474bd3":[5,0,1,2,0,11],
 "structmim_1_1ll_1_1BB.html#a3d1557df2180ac4ebb037bcc0da01b56":[3,0,1,3,0,1],
 "structmim_1_1ll_1_1BB.html#a3d1557df2180ac4ebb037bcc0da01b56":[5,0,1,2,0,1],
-"structmim_1_1ll_1_1BB.html#a4a4d9b0d1e775d317b1e7b9cb0fa15f1":[3,0,1,3,0,0]
+"structmim_1_1ll_1_1BB.html#a4a4d9b0d1e775d317b1e7b9cb0fa15f1":[3,0,1,3,0,0],
+"structmim_1_1ll_1_1BB.html#a4a4d9b0d1e775d317b1e7b9cb0fa15f1":[5,0,1,2,0,0],
+"structmim_1_1ll_1_1BB.html#a4a5e701a69d4bf34d9ce2be127d143fe":[3,0,1,3,0,4]
 };
