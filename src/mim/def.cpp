@@ -154,9 +154,6 @@ Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
 Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }
 Sigma*  Sigma ::stub_(World& w, const Def* t) { return w.mut_sigma(t, num_ops()); }
 
-template<bool up> TBound<up>* TBound<up>::stub_(World& w, const Def* t) { return w.mut_bound<up>(t, num_ops()); }
-template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , const Def*  ) { fe::unreachable(); }
-
 /*
  * instantiate templates
  */
@@ -166,10 +163,6 @@ template const Def* TExt<false>  ::rebuild_(World&, const Def*, Defs) const;
 template const Def* TExt<true >  ::rebuild_(World&, const Def*, Defs) const;
 template const Def* TBound<false>::rebuild_(World&, const Def*, Defs) const;
 template const Def* TBound<true >::rebuild_(World&, const Def*, Defs) const;
-template TBound<false>* TBound<false>::stub_(World&, const Def*);
-template TBound<true >* TBound<true >::stub_(World&, const Def*);
-template TExt<false>*   TExt<false>  ::stub_(World&, const Def*);
-template TExt<true >*   TExt<true >  ::stub_(World&, const Def*);
 #endif
 
 // clang-format on

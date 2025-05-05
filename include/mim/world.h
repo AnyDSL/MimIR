@@ -431,16 +431,8 @@ public:
     const Def* type_bot() { return data_.type_bot; }
     const Def* type_top() { return data_.type_top; }
     const Def* top_nat() { return data_.top_nat; }
-    template<bool Up> TBound<Up>* mut_bound(const Def* type, size_t size) {
-        return insert<TBound<Up>>(size, type, size);
-    }
     /// A *mut*able Bound of Type @p l%evel.
-    template<bool Up, level_t l = 0> TBound<Up>* mut_bound(size_t size) { return mut_bound<Up>(type<l>(), size); }
     template<bool Up> const Def* bound(Defs ops);
-    Join* mut_join(const Def* type, size_t size) { return mut_bound<true>(type, size); }
-    Meet* mut_meet(const Def* type, size_t size) { return mut_bound<false>(type, size); }
-    template<level_t l = 0> Join* mut_join(size_t size) { return mut_join(type<l>(), size); }
-    template<level_t l = 0> Meet* mut_meet(size_t size) { return mut_meet(type<l>(), size); }
     const Def* join(Defs ops) { return bound<true>(ops); }
     const Def* meet(Defs ops) { return bound<false>(ops); }
     const Def* merge(const Def* type, Defs ops);

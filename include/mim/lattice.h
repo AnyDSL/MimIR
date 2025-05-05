@@ -11,9 +11,7 @@ class Sigma;
 class Bound : public Def {
 protected:
     Bound(Node node, const Def* type, Defs ops)
-        : Def(node, type, ops, 0) {} ///< Constructor for an *immutable* Bound.
-    Bound(Node node, const Def* type, size_t size)
-        : Def(node, type, size, 0) {} ///< Constructor for a *mutable* Bound.
+        : Def(node, type, ops, 0) {}
 
     constexpr size_t reduction_offset() const noexcept override { return 0; }
 
@@ -33,20 +31,15 @@ public:
 template<bool Up> class TBound : public Bound, public Setters<TBound<Up>> {
 private:
     TBound(const Def* type, Defs ops)
-        : Bound(Node, type, ops) {} ///< Constructor for an *immutable* Bound.
-    TBound(const Def* type, size_t size)
-        : Bound(Node, type, size) {} ///< Constructor for a *mutable* Bound.
+        : Bound(Node, type, ops) {}
 
 public:
     using Setters<TBound<Up>>::set;
-
-    TBound* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     static constexpr auto Node = Up ? mim::Node::Join : mim::Node::Meet;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
-    TBound* stub_(World&, const Def*) override;
 
     friend class World;
 };
@@ -163,13 +156,10 @@ private:
 public:
     using Setters<TExt<Up>>::set;
 
-    TExt* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
-
     static constexpr auto Node = Up ? mim::Node::Top : mim::Node::Bot;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
-    TExt* stub_(World&, const Def*) override;
 
     friend class World;
 };
