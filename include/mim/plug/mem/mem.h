@@ -23,7 +23,7 @@ inline Lam* mut_con(const Def* dom) {
 
 /// Returns the (first) element of type mem::M from the given tuple.
 inline const Def* mem_def(const Def* def) {
-    if (match<mem::M>(def->type())) return def;
+    if (test<mem::M>(def->type())) return def;
     if (def->type()->isa<Arr>()) return {}; // don't look into possibly gigantic arrays
 
     if (def->num_projs() > 1) {
@@ -45,7 +45,7 @@ inline const Def* replace_mem(const Def* mem, const Def* arg) {
         return w.tuple(DefVec(arg->num_projs(), [&](auto i) { return replace_mem(mem, arg->proj(i)); }));
     }
 
-    if (match<mem::M>(arg->type())) return mem;
+    if (test<mem::M>(arg->type())) return mem;
 
     return arg;
 }
@@ -60,7 +60,7 @@ inline const Def* strip_mem_ty(const Def* def) {
             if (auto new_op = strip_mem_ty(op); new_op != world.sigma()) new_ops.push_back(new_op);
 
         return world.sigma(new_ops);
-    } else if (match<mem::M>(def)) {
+    } else if (test<mem::M>(def)) {
         return world.sigma();
     }
 
@@ -78,7 +78,7 @@ inline const Def* strip_mem(const Def* def) {
             if (auto new_op = strip_mem(op); new_op != world.tuple()) new_ops.push_back(new_op);
 
         return world.tuple(new_ops);
-    } else if (match<mem::M>(def->type())) {
+    } else if (test<mem::M>(def->type())) {
         return world.tuple();
     } else if (auto extract = def->isa<Extract>()) {
         // The case that this one element is a mem and should return () is handled above.

@@ -20,8 +20,8 @@
     m(Pi,     pi,     Judge::Form) m(Lam,   lam,   Judge::Intro) m(App,     app,     Judge::Elim)                                               \
     m(Sigma,  sigma,  Judge::Form) m(Tuple, tuple, Judge::Intro) m(Extract, extract, Judge::Elim) m(Insert, insert, Judge::Intro | Judge::Elim) \
     m(Arr,    arr,    Judge::Form) m(Pack,  pack,  Judge::Intro)                                                                                \
-    m(Join,   join,   Judge::Form) m(Inj,   inj,   Judge::Intro) m(Test, test,       Judge::Elim) m(Top,    top,    Judge::Intro)               \
-    m(Meet,   meet,   Judge::Form) m(Ac,    ac,    Judge::Intro) m(Pick, pick,       Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
+    m(Join,   join,   Judge::Form) m(Inj,   inj,   Judge::Intro) m(Match,   match,   Judge::Elim) m(Top,    top,    Judge::Intro)               \
+    m(Meet,   meet,   Judge::Form) m(Merge, merge, Judge::Intro) m(Split,   split,   Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
     m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
     m(Nat,    nat,    Judge::Form)                                                                                                              \
     m(Idx,    idx,    Judge::Intro) m(Lit,  lit,  Judge::Intro)                                                                                 \
@@ -171,7 +171,7 @@ public:
 /// | Sigma / Arr       | Tuple / Pack      | Extract           |
 /// |                   | Insert            | Insert            |
 /// | Uniq              | Wrap              | Unwrap            |
-/// | Join              | Inj               | Test              |
+/// | Join              | Inj               | Match             |
 /// | Meet              | Merge             | Split             |
 /// | Nat               | Lit               |                   |
 /// | Idx               | Lit               |                   |

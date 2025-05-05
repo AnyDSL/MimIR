@@ -5,7 +5,7 @@
 namespace mim::plug::mem {
 
 const Def* RememElim::rewrite(const Def* def) {
-    if (auto remem = match<mem::remem>(def)) return remem->arg();
+    if (auto remem = test<mem::remem>(def)) return remem->arg();
     return def;
 }
 

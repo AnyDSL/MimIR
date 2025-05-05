@@ -523,7 +523,7 @@ template<bool Up> const Def* World::bound(Defs ops) {
     if (cpy.size() == 0) return ext<!Up>(kind);
     if (cpy.size() == 1) return cpy[0];
 
-    // TODO simplify mixed terms with joins and meets
+    // TODO simplify mixed terms with joins and meets?
 
     return unify<TBound<Up>>(cpy.size(), kind, cpy);
 }
@@ -547,7 +547,7 @@ const Def* World::inj(const Def* type, const Def* value) {
 
 const Def* World::split(const Def* type, const Def* value) { return unify<Split>(1, type, value); }
 
-const Def* World::test(Defs ops_) {
+const Def* World::match(Defs ops_) {
     if (ops_.size() == 1) return ops_.front();
 
     auto ops   = DefVec(ops_.begin(), ops_.end());
@@ -579,7 +579,7 @@ const Def* World::test(Defs ops_) {
         type = type ? this->join({type, pi->codom()}) : pi->codom();
     }
 
-    return unify<Test>(ops.size(), type, ops);
+    return unify<Match>(ops.size(), type, ops);
 }
 
 const Def* World::uniq(const Def* inhabitant) { return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant); }

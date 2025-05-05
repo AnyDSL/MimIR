@@ -50,7 +50,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         auto new_callee = rewrite_body(callee);
         auto new_arg    = rewrite_body(arg);
 
-        if (auto cps2ds = match<direct::cps2ds_dep>(new_callee)) {
+        if (auto cps2ds = test<direct::cps2ds_dep>(new_callee)) {
             world().DLOG("rewrite callee {} : {}", callee, callee->type());
             world().DLOG("rewrite arg  {} : {}", arg, arg->type());
             // TODO: rewrite function?
