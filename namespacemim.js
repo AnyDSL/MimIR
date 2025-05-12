@@ -177,6 +177,12 @@ var namespacemim =
     ] ],
     [ "Node", "namespacemim.html#afb12dbffaaa27bca46f171517d96256d", [
       [ "CODE", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf75458333a22f574140680447a32e95f", null ],
+      [ "Lit", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dae5e556ecf935270736f5e46e73db06e4", null ],
+      [ "Axm", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da772a78ebe7cabb9591df042871a5a849", null ],
+      [ "Var", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77", null ],
+      [ "Global", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4cc6684df7b4a92b1dec6fce3264fac8", null ],
+      [ "Proxy", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf56ec2ab97d604832d90f6394e3f341f", null ],
+      [ "Hole", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da6368a5bde7853b2f6c660f010adbb988", null ],
       [ "Type", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa1fa27779242b4902f7ae3bdd5c6d508", null ],
       [ "Univ", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da143bb06341e537e7143fb33624517946", null ],
       [ "UMax", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dafaa1f94cd925672925f691e7f5727a6b", null ],
@@ -200,13 +206,7 @@ var namespacemim =
       [ "Bot", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da1448e86d90e0feb307c2894c24e87767", null ],
       [ "Uniq", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daa52035083e0f187cb1b19b131b4ecdd5", null ],
       [ "Nat", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da07f2a27c6e5ee8afd08991e64dd5c136", null ],
-      [ "Idx", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939", null ],
-      [ "Lit", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dae5e556ecf935270736f5e46e73db06e4", null ],
-      [ "Axm", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da772a78ebe7cabb9591df042871a5a849", null ],
-      [ "Var", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77", null ],
-      [ "Global", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da4cc6684df7b4a92b1dec6fce3264fac8", null ],
-      [ "Proxy", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf56ec2ab97d604832d90f6394e3f341f", null ],
-      [ "Hole", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da6368a5bde7853b2f6c660f010adbb988", null ]
+      [ "Idx", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939", null ]
     ] ],
     [ "Sort", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5", [
       [ "Term", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f", null ],
@@ -220,7 +220,8 @@ var namespacemim =
     [ "binary_find", "namespacemim.html#a490bc82fced6d1222ca1e66d50e573a6", null ],
     [ "bitcast", "namespacemim.html#a1aae5adc4db386bfd618fdc8303ceb0c", null ],
     [ "collect_args", "namespacemim.html#a1a9c49cf26963e97393735d2a4b2eb26", null ],
-    [ "commute", "namespacemim.html#a5f09589bc08bb2f715056df72aae8b9a", null ],
+    [ "commute", "namespacemim.html#a307ec82f001174b56a7c48db7f9aba9f", null ],
+    [ "commute_", "namespacemim.html#ad44acc026174077a9917c302274ce996", null ],
     [ "compose_cn", "namespacemim.html#aab8bd049eb0b9bf7561a602f62ce7ebd", null ],
     [ "decurry", "namespacemim.html#a9efd9244dd974dd7a5ad80a98c9a2297", null ],
     [ "erase", "namespacemim.html#abbff49ce5bff270e09db6d916fa58c3a", null ],

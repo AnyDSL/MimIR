@@ -15,6 +15,7 @@ var dir_3f6d0e947440f9d0b42426d30577ffdc =
     [ "lam.cpp", "lam_8cpp.html", "lam_8cpp" ],
     [ "lattice.cpp", "lattice_8cpp.html", null ],
     [ "nest.cpp", "nest_8cpp.html", null ],
+    [ "normalize.cpp", "normalize_8cpp.html", "normalize_8cpp" ],
     [ "plugin.cpp", "plugin_8cpp.html", null ],
     [ "rewrite.cpp", "rewrite_8cpp.html", null ],
     [ "schedule.cpp", "schedule_8cpp.html", "schedule_8cpp" ],

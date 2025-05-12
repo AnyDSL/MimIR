@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"namespacemim_1_1plug_1_1matrix.html#ae3f0ab7b8527477c358984c01ddbd94c":[3,0,1,4,8,8],
 "namespacemim_1_1plug_1_1matrix.html#aed39265d1e8f9976a8736695ee834126":[3,0,1,4,8,24],
 "namespacemim_1_1plug_1_1matrix.html#af206cc10642f27ab0e14c586d512f3d6":[3,0,1,4,8,9],
 "namespacemim_1_1plug_1_1matrix.html#af3d33c72062b1db8a1b997ec650a8f3d":[3,0,1,4,8,4],
@@ -153,6 +154,8 @@ var NAVTREEINDEX20 =
 "nfa_8cpp_source.html":[6,0,3,0,2],
 "nfa_8h.html":[6,0,2,0,3],
 "nfa_8h_source.html":[6,0,2,0,3],
+"normalize_8cpp.html":[6,0,3,1,15],
+"normalize_8cpp_source.html":[6,0,3,1,15],
 "normalize_8h.html":[6,0,2,1,14],
 "normalize_8h_source.html":[6,0,2,1,14],
 "opt.html":[2,10],
@@ -199,8 +202,8 @@ var NAVTREEINDEX20 =
 "pipelinebuilder_8h_source.html":[6,0,2,1,2,6],
 "plug_2mem_2pass_2remem__elim_8cpp.html":[6,0,3,1,4,9,0,2],
 "plug_2mem_2pass_2remem__elim_8cpp_source.html":[6,0,3,1,4,9,0,2],
-"plugin_8cpp.html":[6,0,3,1,15],
-"plugin_8cpp_source.html":[6,0,3,1,15],
+"plugin_8cpp.html":[6,0,3,1,16],
+"plugin_8cpp_source.html":[6,0,3,1,16],
 "plugin_8h.html":[6,0,2,1,15],
 "plugin_8h_source.html":[6,0,2,1,15],
 "print_8cpp.html":[6,0,3,1,5,4],
@@ -246,8 +249,5 @@ var NAVTREEINDEX20 =
 "remove__perm_8h.html":[6,0,2,1,4,11,0,1],
 "remove__perm_8h_source.html":[6,0,2,1,4,11,0,1],
 "reshape_8cpp.html":[6,0,3,1,4,9,0,3],
-"reshape_8cpp_source.html":[6,0,3,1,4,9,0,3],
-"reshape_8h.html":[6,0,2,1,4,9,0,3],
-"reshape_8h_source.html":[6,0,2,1,4,9,0,3],
-"ret__wrap_8cpp.html":[6,0,3,1,2,8]
+"reshape_8cpp_source.html":[6,0,3,1,4,9,0,3]
 };
