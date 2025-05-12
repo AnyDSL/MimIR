@@ -21,9 +21,9 @@ private:
     std::optional<u64> data_;
 };
 
+[[nodiscard]] int commute_(const Def* a, const Def* b);
+
 /// Swap Lit to left - or smaller Def::gid, if no lit present.
-inline void commute(const Def*& a, const Def*& b) {
-    if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
-}
+[[nodiscard]] inline bool commute(const Def* a, const Def* b) { return commute_(a, b) > 0; }
 
 } // namespace mim

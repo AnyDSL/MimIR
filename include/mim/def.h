@@ -15,7 +15,13 @@
 
 // clang-format off
 #define MIM_NODE(m)                                                                                                                             \
-    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc, Judge::Meta)                    \
+    m(Lit,    lit,    Judge::Intro) /* keep as first */                                                                                         \
+    m(Axm,    axm,    Judge::Intro)                                                                                                             \
+    m(Var,    var,    Judge::Intro)                                                                                                             \
+    m(Global, global, Judge::Intro)                                                                                                             \
+    m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
+    m(Hole,   hole,   Judge::Hole)                                                                                                              \
+    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc,     Judge::Meta)                \
     m(Pi,     pi,     Judge::Form) m(Lam,   lam,   Judge::Intro) m(App,     app,     Judge::Elim)                                               \
     m(Sigma,  sigma,  Judge::Form) m(Tuple, tuple, Judge::Intro) m(Extract, extract, Judge::Elim) m(Insert, insert, Judge::Intro | Judge::Elim) \
     m(Arr,    arr,    Judge::Form) m(Pack,  pack,  Judge::Intro)                                                                                \
@@ -23,12 +29,7 @@
     m(Meet,   meet,   Judge::Form) m(Merge, merge, Judge::Intro) m(Split,   split,   Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
     m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
     m(Nat,    nat,    Judge::Form)                                                                                                              \
-    m(Idx,    idx,    Judge::Intro) m(Lit,  lit,  Judge::Intro)                                                                                 \
-    m(Axm,    axm,    Judge::Intro)                                                                                                             \
-    m(Var,    var,    Judge::Intro)                                                                                                             \
-    m(Global, global, Judge::Intro)                                                                                                             \
-    m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
-    m(Hole,   hole,   Judge::Hole)
+    m(Idx,    idx,    Judge::Intro)
 // clang-format on
 
 namespace mim {
