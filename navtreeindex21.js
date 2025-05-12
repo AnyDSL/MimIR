@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"scalarize_8cpp_source.html":[6,0,3,1,2,9],
+"scalarize_8h.html":[6,0,2,1,2,8],
 "scalarize_8h_source.html":[6,0,2,1,2,8],
 "schedule_8cpp.html":[6,0,3,1,17],
 "schedule_8cpp_source.html":[6,0,3,1,17],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "structmim_1_1plug_1_1regex_1_1app__range.html":[5,0,1,3,8,0],
 "structmim_1_1plug_1_1regex_1_1app__range.html#a2761d4060fc6d48c0bb624d69ad06286":[3,0,1,4,12,0,1],
 "structmim_1_1plug_1_1regex_1_1app__range.html#a2761d4060fc6d48c0bb624d69ad06286":[5,0,1,3,8,0,1],
-"structmim_1_1plug_1_1regex_1_1app__range.html#af1ab5901ab3afd9af20865f5eda6034b":[3,0,1,4,12,0,0],
-"structmim_1_1plug_1_1regex_1_1app__range.html#af1ab5901ab3afd9af20865f5eda6034b":[5,0,1,3,8,0,0],
-"structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html":[3,0,2,1]
+"structmim_1_1plug_1_1regex_1_1app__range.html#af1ab5901ab3afd9af20865f5eda6034b":[3,0,1,4,12,0,0]
 };

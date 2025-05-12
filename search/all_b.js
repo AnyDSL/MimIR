@@ -56,7 +56,7 @@ var searchData=
   ['link_5fcut_5ftree_2eh_53',['link_cut_tree.h',['../link__cut__tree_8h.html',1,'']]],
   ['list_54',['List',['../deprecated.html',1,'Deprecated List'],['../todo.html',1,'Todo List']]],
   ['lit_55',['Lit',['../classmim_1_1Lit.html',1,'mim::Lit'],['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01cae5e556ecf935270736f5e46e73db06e4',1,'mim::ast::Expr::Lit'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256dae5e556ecf935270736f5e46e73db06e4',1,'mim::Lit']]],
-  ['lit_56',['lit',['../regex.html#autotoc_md225',1,'%regex.lit'],['../classmim_1_1World.html#a0fc41c2548fa7f8efabaef0a3e7f7854',1,'mim::World::lit()'],['../namespacemim_1_1plug_1_1regex.html#aeded541d9600938bd2b0f7949ebfe7d9',1,'mim::plug::regex::lit']]],
+  ['lit_56',['lit',['../regex.html#autotoc_md227',1,'%regex.lit'],['../classmim_1_1World.html#a0fc41c2548fa7f8efabaef0a3e7f7854',1,'mim::World::lit()'],['../namespacemim_1_1plug_1_1regex.html#aeded541d9600938bd2b0f7949ebfe7d9',1,'mim::plug::regex::lit']]],
   ['lit_20tests_57',['lit Tests',['../coding.html#autotoc_md11',1,'']]],
   ['lit_5f0_5f1_58',['lit_0_1',['../classmim_1_1World.html#a563168de0ce1557414c45121d4e9c948',1,'mim::World']]],
   ['lit_5fbool_59',['lit_bool',['../classmim_1_1World.html#ae1bd442c707312f78156eae967229c1d',1,'mim::World']]],

@@ -148,21 +148,27 @@ $(function(){initNavTree('refly.html',''); initResizable(true); });
       <li class="level2">
         <a href="#autotoc_md212">%refly.dbg</a>
       </li>
-    </ul>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md213">Manipulate</a>
-    <ul>
       <li class="level2">
-        <a href="#autotoc_md214">%refly.refine</a>
+        <a href="#autotoc_md213">refly.assert</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md215">Passes and Phases</a>
+    <a href="#autotoc_md214">Manipulate</a>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md215">Manipulate</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md216">Passes</a>
+        <a href="#autotoc_md216">%refly.refine</a>
+      </li>
+    </ul>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md217">Passes and Phases</a>
+    <ul>
+      <li class="level2">
+        <a href="#autotoc_md218">Passes</a>
       </li>
     </ul>
   </li>
@@ -203,14 +209,19 @@ Inspect</h1>
 <div class="line">let %refly.debug   = 4;</div>
 <div class="line"> </div>
 <div class="line">axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md213"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md213"></a>
+refly.assert</h2>
+<div class="fragment"><div class="line">axm %refly.assert: {T: *} → [T, T] → T, normalize_assert;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md214"></a>
 Manipulate</h1>
-<h2><a class="anchor" id="autotoc_md214"></a>
+<h1><a class="anchor" id="autotoc_md215"></a>
+Manipulate</h1>
+<h2><a class="anchor" id="autotoc_md216"></a>
 %refly.refine</h2>
 <p>Sets the <code>i</code>th operand of the reified Code <code>e</code> to <code>x</code>. </p><div class="fragment"><div class="line">axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md215"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md217"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md216"></a>
+<h2><a class="anchor" id="autotoc_md218"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %refly.remove_dbg_perm_pass: %compile.Pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

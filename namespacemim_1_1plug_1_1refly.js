@@ -1,6 +1,7 @@
 var namespacemim_1_1plug_1_1refly =
 [
     [ "RemoveDbgPerm", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm" ],
+    [ "assert", "namespacemim_1_1plug_1_1refly.html#af210d67198e961c9f906deda056dd717", null ],
     [ "Code", "namespacemim_1_1plug_1_1refly.html#ac24c63c923883ed7d3fd7cf83a5ba6e0", null ],
     [ "dbg", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65", [
       [ "tmp", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65afa816edb83e95bf0c8da580bdfd491ef", null ],
@@ -16,6 +17,7 @@ var namespacemim_1_1plug_1_1refly =
     [ "remove_dbg_perm_pass", "namespacemim_1_1plug_1_1refly.html#a9b324d47a3885cb1be1194e91bd047d9", null ],
     [ "verbose", "namespacemim_1_1plug_1_1refly.html#adb7a95dc4452056bbd12a22f40d875e7", null ],
     [ "warn", "namespacemim_1_1plug_1_1refly.html#a7b28d3c30005b51a4045c19a3beee279", null ],
+    [ "normalize_assert", "namespacemim_1_1plug_1_1refly.html#a684cd23dfc1dc38ca20f008362c5e144", null ],
     [ "normalize_dbg", "namespacemim_1_1plug_1_1refly.html#a350a79c30bf6c48389a654dfaae9dcca", null ],
     [ "normalize_gid", "namespacemim_1_1plug_1_1refly.html#a97e1eae14a36a579e362b10503e5833f", null ],
     [ "normalize_refine", "namespacemim_1_1plug_1_1refly.html#a851b62ba477ae33ec042386e0061423d", null ],

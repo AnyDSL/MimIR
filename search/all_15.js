@@ -5,7 +5,7 @@ var searchData=
   ['valid_20programs_2',['Construct Valid Programs',['../passes.html#autotoc_md64',1,'']]],
   ['value_3',['value',['../classmim_1_1ast_1_1InsertExpr.html#ae0d5028a0228ac176021f183a5fd421a',1,'mim::ast::InsertExpr::value()'],['../classmim_1_1ast_1_1LetDecl.html#a543879a7c861b0c63938b39489875d3c',1,'mim::ast::LetDecl::value()'],['../classmim_1_1Inj.html#a167ba717f47e477c876a09252e6e19f3',1,'mim::Inj::value()'],['../classmim_1_1Split.html#adae931abd45a4499dec6634669729c71',1,'mim::Split::value()'],['../classmim_1_1Match.html#a47aa21219e90cdd34c1be37a4bfe8b49',1,'mim::Match::value()'],['../classmim_1_1Insert.html#aec9aab1fd16899f697bc7882d0b6ed06',1,'mim::Insert::value()']]],
   ['value_5ftype_4',['value_type',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a7f35b127254884aae02bbfe8d646e3e6',1,'mim::Sets::Set::iterator']]],
-  ['values_5',['Values',['../regex.html#autotoc_md223',1,'']]],
+  ['values_5',['Values',['../regex.html#autotoc_md225',1,'']]],
   ['var_6',['Var',['../classmim_1_1Var.html',1,'mim::Var'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77',1,'mim::Var'],['../namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77',1,'mim::Var']]],
   ['var_7',['var',['../classmim_1_1Def.html#a6e757a3ae8e52ee5b9ebdaea32c6abd8',1,'mim::Def::var(nat_t a, nat_t i) noexcept'],['../classmim_1_1Def.html#aa27dd2653d480c90cc944ff68f253264',1,'mim::Def::var(nat_t i) noexcept'],['../classmim_1_1Def.html#ac0d3c5c425d581e1e6836790d1437d1d',1,'mim::Def::var()'],['../classmim_1_1World.html#a918decd7bcf528bb9cb8aca1fadce0b5',1,'mim::World::var()']]],
   ['var2var_8',['Var2Var',['../namespacemim.html#afe12e59f7ee4253d3b71cd8c0db61d06',1,'mim']]],
