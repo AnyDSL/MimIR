@@ -26,8 +26,6 @@ namespace mim {
 
     if (auto var1 = a->isa<Var>()) {
         auto var2 = b->as<Var>();
-        if (var1->mut()->free_vars().contains(var2)) return -1;
-        if (var2->mut()->free_vars().contains(var1)) return +1;
         world.WLOG("resorting to unstable gid-based compare for commute check");
         return var1->gid() < var2->gid() ? -1 : +1;
     }
