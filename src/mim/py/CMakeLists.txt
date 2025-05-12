@@ -3,6 +3,7 @@ pybind11_add_module(pymim
     world.cpp
     sym.cpp
     py.cpp
+    ast.cpp
 )
 
 set_target_properties(pymim PROPERTIES LIBRARY_OUTPUT_NAME mim)

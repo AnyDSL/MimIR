@@ -8,6 +8,10 @@ void init_driver(py::module_&);
 void init_sym(py::module_&);
 } // namespace mim
 
+namespace ast{
+    void init_ast(py::module_&);
+}
+
 namespace fe{
 void init_sym(py::module_&);
 void init_sym_pool(py::module_&);
@@ -17,4 +21,5 @@ PYBIND11_MODULE(mim, m) {
     mim::init_world(m);
     fe::init_sym(m);
     fe::init_sym_pool(m);
+    ast::init_ast(m);
 }
