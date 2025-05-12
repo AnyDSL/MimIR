@@ -48,6 +48,11 @@ let %refly.debug   = 4;
 
 axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;
 ///
+/// ### %refly.assert
+///
+axm %refly.assert: {T: *} → [T, T] → T, normalize_assert;
+///
+/// ## Manipulate
 /// ## Manipulate
 ///
 /// ### %%refly.refine

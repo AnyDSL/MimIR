@@ -58,6 +58,12 @@ const Def* normalize_refine(const Def*, const Def*, const Def* arg) {
 
 const Def* normalize_gid(const Def*, const Def*, const Def* arg) { return arg->world().lit_nat(arg->gid()); }
 
+const Def* normalize_assert(const Def*, const Def*, const Def* arg) {
+    auto [a, b] = arg->projs<2>();
+    if (!Checker::alpha<Checker::Test>(a, b)) mim::error(arg->loc(), "'{}' and '{}' not alpha-equivalent", a, b);
+    return a;
+}
+
 MIM_refly_NORMALIZER_IMPL
 
 } // namespace mim::plug::refly
