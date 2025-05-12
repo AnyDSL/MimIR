@@ -765,7 +765,7 @@ $(function(){initNavTree('sets_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>    }</div>
 <div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span> </div>
 <div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    <a class="code hl_class" href="classmim_1_1Sets_1_1Set.html">Set</a> unify(Data* data, fe::Arena::State state, <span class="keywordtype">size_t</span> excess = 0) {</div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>        <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1refly.html#af210d67198e961c9f906deda056dd717">assert</a>(data-&gt;size != 0);</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>        assert(data-&gt;size != 0);</div>
 <div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>        <span class="keyword">auto</span> [i, ins] = pool_.emplace(data);</div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>        <span class="keywordflow">if</span> (ins) {</div>
 <div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>            data_arena_.deallocate(excess * SizeOf&lt;D&gt;); <span class="comment">// release excess memory</span></div>
@@ -782,7 +782,7 @@ $(function(){initNavTree('sets_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>    fe::Arena::Ptr&lt;Node&gt; make_node(Node* parent, D* def) { <span class="keywordflow">return</span> node_arena_.mk&lt;Node&gt;(parent, def, id_counter_++); }</div>
 <div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span> </div>
 <div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>    [[nodiscard]] Node* mount(Node* parent, D* def) {</div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>        <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1refly.html#af210d67198e961c9f906deda056dd717">assert</a>(def-&gt;tid() != 0);</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>        assert(def-&gt;tid() != 0);</div>
 <div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        <span class="keyword">auto</span> [i, ins] = parent-&gt;children.emplace(def, <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        <span class="keywordflow">if</span> (ins) i-&gt;second = make_node(parent, def);</div>
 <div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>        <span class="keywordflow">return</span> i-&gt;second.get();</div>
@@ -876,7 +876,6 @@ $(function(){initNavTree('sets_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="alink__cut__tree_8h_html"><div class="ttname"><a href="link__cut__tree_8h.html">link_cut_tree.h</a></div></div>
 <div class="ttc" id="anamespace_3globalScope_4_html_classbool"><div class="ttname"><a href="namespace_3globalScope_4.html#classbool">bool</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1mem_html_aceb75532ec0c80e460e99014bf1d3a5a"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a">mim::plug::mem::m</a></div><div class="ttdeci">m</div><div class="ttdef"><b>Definition</b> <a href="mem_2autogen_8h_source.html#l00102">autogen.h:102</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1refly_html_af210d67198e961c9f906deda056dd717"><div class="ttname"><a href="namespacemim_1_1plug_1_1refly.html#af210d67198e961c9f906deda056dd717">mim::plug::refly::assert</a></div><div class="ttdeci">assert</div><div class="ttdef"><b>Definition</b> <a href="refly_2autogen_8h_source.html#l00092">autogen.h:92</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1regex_html_af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad"><div class="ttname"><a href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad">mim::plug::regex::cls::d</a></div><div class="ttdeci">@ d</div><div class="ttdef"><b>Definition</b> <a href="regex_2autogen_8h_source.html#l00054">autogen.h:54</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1regex_html_af786f27f8eebb04e7543f565e8763938af623e75af30e62bbd73d6df5b50bb7b5"><div class="ttname"><a href="namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938af623e75af30e62bbd73d6df5b50bb7b5">mim::plug::regex::cls::D</a></div><div class="ttdeci">@ D</div><div class="ttdef"><b>Definition</b> <a href="regex_2autogen_8h_source.html#l00055">autogen.h:55</a></div></div>
 <div class="ttc" id="anamespacemim_html"><div class="ttname"><a href="namespacemim.html">mim</a></div><div class="ttdef"><b>Definition</b> <a href="ast_8h_source.html#l00014">ast.h:14</a></div></div>

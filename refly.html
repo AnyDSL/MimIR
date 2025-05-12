@@ -211,7 +211,26 @@ Inspect</h1>
 <div class="line">axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md213"></a>
 refly.assert</h2>
-<div class="fragment"><div class="line">axm %refly.assert: {T: *} → [T, T] → T, normalize_assert;</div>
+<p>Nat comparison is made of 3 disjoint relations:</p><ul>
+<li><code>G</code>reater</li>
+<li><code>L</code>ess</li>
+<li><code>E</code>qual</li>
+</ul>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Subtag   </th><th class="markdownTableHeadNone">Alias   </th><th class="markdownTableHeadNone">A   </th><th class="markdownTableHeadNone">E   </th><th class="markdownTableHeadNone">Meaning    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>ae</code>   </td><td class="markdownTableBodyNone"><code>f</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">assert strucutrual equivalent    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>aE</code>   </td><td class="markdownTableBodyNone"><code>e</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">assert <em>not</em> structurual equivalent    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>Ae</code>   </td><td class="markdownTableBodyNone"><code>l</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">assert alpha equivalent    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>AE</code>   </td><td class="markdownTableBodyNone"><code>le</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">assert <em>not</em> alpha equivalent   </td></tr>
+</table>
+<div class="fragment"><div class="line">axm %refly.equiv(ae = struc_ne, aE = struc_eq,</div>
+<div class="line">                 Ae = alpha_ne, AE = alpha_eq):</div>
+<div class="line">    {T: *} → [T, T] → T, normalize_equiv;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md214"></a>
 Manipulate</h1>
 <h1><a class="anchor" id="autotoc_md215"></a>

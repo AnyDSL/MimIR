@@ -18,7 +18,6 @@ var searchData=
   ['amdfp24_15',['amdfp24',['../namespacemim_1_1plug_1_1math.html#a07302efd65b6f40937aad847fef4f24b',1,'mim::plug::math']]],
   ['any_16',['any',['../namespacemim_1_1plug_1_1regex.html#a9e88c3311ac4201abeacb94102dcee49',1,'mim::plug::regex']]],
   ['arith_17',['arith',['../namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686',1,'mim::plug::math']]],
-  ['assert_18',['assert',['../namespacemim_1_1plug_1_1refly.html#af210d67198e961c9f906deda056dd717',1,'mim::plug::refly']]],
-  ['attr_19',['attr',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8c',1,'mim::plug::clos']]],
-  ['autodiff_5fplugin_20',['autodiff_plugin',['../namespacemim_1_1plug_1_1compile.html#a0bef76c5ba99aa5f925939a825eda351',1,'mim::plug::compile']]]
+  ['attr_18',['attr',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8c',1,'mim::plug::clos']]],
+  ['autodiff_5fplugin_19',['autodiff_plugin',['../namespacemim_1_1plug_1_1compile.html#a0bef76c5ba99aa5f925939a825eda351',1,'mim::plug::compile']]]
 ];
