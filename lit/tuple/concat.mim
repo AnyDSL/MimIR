@@ -1,0 +1,19 @@
+// RUN: %mim %s
+plugin tuple;
+plugin refly;
+
+lam f (a: [Nat, Bool], b: [Bool, Nat, Nat]): [Nat, Bool, Bool, Nat, Nat] =
+    %tuple.concat @(2, 3) (a, b);
+
+lam g (a: [Nat, Bool], b: [Bool, Nat, Nat]): [Nat, Bool, [Bool, Nat, Nat]] =
+    %tuple.append @2 @((Nat, Bool), [Bool, Nat, Nat]) (a, b);
+
+lam h (a: [Nat, Bool], b: [Bool, Nat, Nat]): [[Nat, Bool], Bool, Nat, Nat] =
+    %tuple.prepend @3 @([Nat, Bool], (Bool, Nat, Nat)) (a, b);
+
+let x = (1, tt);
+let y = (ff, 23, 42);
+let z = %tuple.concat @(2, 3) (x, y);
+
+let _ = %refly.equiv.struc_eq ((1, tt, ff, 23, 42), z);
+let _ = %refly.equiv.struc_eq ((1, tt, ff, 23, 42), z);

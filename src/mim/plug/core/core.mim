@@ -269,3 +269,8 @@ axm %core.zip: [r: Nat, s: «r; Nat»]
              → [n_i: Nat, Is: «n_i; *», n_o: Nat, Os: «n_o; *», f: «i: n_i; Is#i» → «o: n_o; Os#o»]
              → «i: n_i; «s; Is#i»»
              → «o: n_o; «s; Os#o»», normalize_zip;
+///
+/// ## %%core.select
+///
+/// More readable shorthand to create a select/if:
+lam %core.select {T: *} (cond: Bool, t: T, f: T): T = (f, t)#cond;

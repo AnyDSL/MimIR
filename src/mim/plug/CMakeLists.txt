@@ -12,6 +12,7 @@ set(MIM_PLUGINS
     opt
     refly
     regex
+    tuple
 )
 
 list(TRANSFORM MIM_PLUGINS PREPEND "mim_internal_" OUTPUT_VARIABLE MIM_INTERNAL_PLUGINS)
