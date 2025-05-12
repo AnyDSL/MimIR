@@ -50,7 +50,21 @@ axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;
 ///
 /// ### %refly.assert
 ///
-axm %refly.assert: {T: *} → [T, T] → T, normalize_assert;
+/// Nat comparison is made of 3 disjoint relations:
+///     * `G`reater
+///     * `L`ess
+///     * `E`qual
+///
+/// | Subtag | Alias | A | E | Meaning                              |
+/// |--------|-------|---|---|--------------------------------------|
+/// | `ae`   | `f`   | o | o | assert strucutrual equivalent        |
+/// | `aE`   | `e`   | o | x | assert *not* structurual equivalent  |
+/// | `Ae`   | `l`   | x | o | assert alpha equivalent              |
+/// | `AE`   | `le`  | x | x | assert *not* alpha equivalent        |
+///
+axm %refly.equiv(ae = struc_ne, aE = struc_eq,
+                 Ae = alpha_ne, AE = alpha_eq):
+    {T: *} → [T, T] → T, normalize_equiv;
 ///
 /// ## Manipulate
 /// ## Manipulate
