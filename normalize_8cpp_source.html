@@ -149,19 +149,17 @@ $(function(){initNavTree('normalize_8cpp_source.html',''); initResizable(true); 
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> var1 = a-&gt;isa&lt;<a class="code hl_class" href="classmim_1_1Var.html">Var</a>&gt;()) {</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keyword">auto</span> var2 = b-&gt;as&lt;<a class="code hl_class" href="classmim_1_1Var.html">Var</a>&gt;();</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="keywordflow">if</span> (var1-&gt;mut()-&gt;free_vars().contains(var2)) <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keywordflow">if</span> (var2-&gt;mut()-&gt;free_vars().contains(var1)) <span class="keywordflow">return</span> +1;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        world.WLOG(<span class="stringliteral">&quot;resorting to unstable gid-based compare for commute check&quot;</span>);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="keywordflow">return</span> var1-&gt;<a class="code hl_function" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4">gid</a>() &lt; var2-&gt;gid() ? -1 : +1;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0, e = a-&gt;num_ops(); i != e; ++i)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordflow">if</span> (<span class="keywordtype">int</span> cmp = <a class="code hl_function" href="namespacemim.html#ad44acc026174077a9917c302274ce996">commute_</a>(a-&gt;op(i), b-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a67a94030742a4217fe19bb739990f73e">op</a>(i)); cmp != 0) <span class="keywordflow">return</span> cmp;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    assert(<span class="keyword">false</span>);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        world.WLOG(<span class="stringliteral">&quot;resorting to unstable gid-based compare for commute check&quot;</span>);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keywordflow">return</span> var1-&gt;<a class="code hl_function" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4">gid</a>() &lt; var2-&gt;gid() ? -1 : +1;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0, e = a-&gt;num_ops(); i != e; ++i)</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keywordflow">if</span> (<span class="keywordtype">int</span> cmp = <a class="code hl_function" href="namespacemim.html#ad44acc026174077a9917c302274ce996">commute_</a>(a-&gt;op(i), b-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a67a94030742a4217fe19bb739990f73e">op</a>(i)); cmp != 0) <span class="keywordflow">return</span> cmp;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    assert(<span class="keyword">false</span>);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
 </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>} <span class="comment">// namespace mim</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>} <span class="comment">// namespace mim</span></div>
 <div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00198">def.h:198</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_a107ccfac1058aee369926112bb593d35"><div class="ttname"><a href="classmim_1_1Def.html#a107ccfac1058aee369926112bb593d35">mim::Def::node</a></div><div class="ttdeci">constexpr Node node() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00221">def.h:221</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_a41c6630a112450ceaa0398079203ee7f"><div class="ttname"><a href="classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f">mim::Def::flags</a></div><div class="ttdeci">constexpr flags_t flags() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00216">def.h:216</a></div></div>
