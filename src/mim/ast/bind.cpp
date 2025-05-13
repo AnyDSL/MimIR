@@ -143,6 +143,23 @@ void ArrowExpr::bind(Scopes& s) const {
     codom()->bind(s);
 }
 
+void UnionExpr::bind(Scopes& s) const {
+    t1()->bind(s);
+    t2()->bind(s);
+}
+
+void InjExpr::bind(Scopes& s) const {
+    x()->bind(s);
+    type()->bind(s);
+}
+
+void MatchExpr::bind(Scopes& s) const {
+    matched()->bind(s);
+    for (const auto& var: vars()) var->bind(s);
+    for (const auto& typ: types()) typ->bind(s);
+    for (const auto& res: results()) res->bind(s);
+}
+
 void PiExpr::Dom::bind(Scopes& s, bool quiet) const {
     ptrn()->bind(s, false, quiet);
     if (ret()) ret()->bind(s, false, quiet);

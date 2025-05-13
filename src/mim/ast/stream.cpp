@@ -109,6 +109,24 @@ std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} -> {}", S(tab, dom()), S(tab, codom()));
 }
 
+std::ostream& UnionExpr::stream(Tab& tab, std::ostream& os) const {
+    return print(os,"{} ∪ {}",S(tab, t1()), S(tab, t2()));
+}
+
+std::ostream& InjExpr::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "{} inj {}",S(tab,x()), S(tab, type()));
+}
+
+std::ostream& MatchExpr::stream(Tab& tab, std::ostream& os) const {
+    os << "match ";
+    print(os, "{} {{\n",S(tab,matched()));
+    for (size_t i = 0; i < types().size(); i++) {
+        print(os,"{} : {} => {},\n",S(tab,var(i)),S(tab,type(i)),S(tab, result(i)));
+    }
+    os << "}";
+    return os;
+}
+
 std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {
     print(os, "{}{}", is_implicit() ? "." : "", S(tab, ptrn()));
     if (ret()) print(os, " -> {}", S(tab, ret()->type()));

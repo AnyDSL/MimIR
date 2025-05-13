@@ -1,3 +1,4 @@
+#include "mim/def.h"
 #include "mim/ast/ast.h"
 
 using namespace std::literals;
@@ -202,6 +203,49 @@ const Def* ArrowExpr::emit_(Emitter& e) const {
     auto d = dom()->emit(e);
     auto c = codom()->emit(e);
     return e.world().pi(d, c);
+}
+
+const Def* UnionExpr::emit_(Emitter& e) const {
+    auto d = t1()->emit(e);
+    auto c = t2()->emit(e);
+    const Def* type12[] = {c,d};
+    Defs t12= View<const Def*, 2>{type12,2};
+    return e.world().join(t12);
+}
+
+// void UnionExpr::emit_body(Emitter& e, const Def*) const {
+//     return;
+// }
+
+// void UnionExpr::emit_decl(Emitter& e, const Def * type) {
+
+// }
+
+const Def* InjExpr::emit_(Emitter& e) const {
+    auto a = x()->emit(e);
+    auto b = type()->emit(e);
+    return e.world().inj(b,a);
+}
+
+// void InjExpr::emit_body(Emitter& e, const Def*) const {
+//     return;
+// }
+
+const Def* MatchExpr::emit_(Emitter& e) const {
+    auto x = matched()->emit(e);
+    DefVec res;
+    res.push_back(x);
+    // each match case is transformed to a pi
+    for (size_t i = 0; i < types().size();i++) {
+        // auto vare_ = var(i)->emit(e);
+        auto typee = type(i)->emit(e);
+        auto rese = result(i)->emit(e);
+        
+        auto match_case = e.world().pi(typee,rese);
+        res.push_back(match_case);
+    }
+    // then we put everything in a big def for building the match
+    return e.world().match(res);
 }
 
 void PiExpr::Dom::emit_type(Emitter& e) const {

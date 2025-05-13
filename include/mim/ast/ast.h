@@ -141,7 +141,9 @@ public:
         Where,
         Arrow,
         Pi,
+        Inj,
         App,
+        Union,
         Extract,
         Lit,
     };
@@ -443,6 +445,91 @@ private:
     const Def* emit_(Emitter&) const override;
 
     Ptr<Expr> level_;
+};
+
+// union
+
+/// t1 union t2
+class UnionExpr : public Expr {
+public:
+    UnionExpr(Loc loc, Ptr<Expr>&& t1, Ptr<Expr>&& t2)
+        : Expr(loc)
+        , t1_(std::move(t1))
+        , t2_(std::move(t2)) {}
+
+private:
+    const Expr* t1() const { return t1_.get(); }
+    const Expr* t2() const { return t2_.get(); }
+
+    void bind(Scopes&) const override;
+    // TODO: proper implementation of emit_body and emit_decl (?)
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptr<Expr> t1_;
+    Ptr<Expr> t2_;
+
+};
+
+// injection
+
+/// x inj t1 ∪ t2
+class InjExpr : public Expr {
+public:
+    InjExpr(Loc loc, Ptr<Expr>&& x, Ptr<Expr>&& type)
+        : Expr(loc)
+        , x_(std::move(x))
+        , type_(std::move(type)) {}
+
+private:
+    const Expr* x() const { return x_.get(); }
+    const Expr* type() const { return type_.get(); }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptr<Expr> x_;
+    Ptr<Expr> type_;
+};
+
+
+// matching for destruction of sum types
+
+// n-ary match
+class MatchExpr : public Expr {
+public:
+    MatchExpr(Loc loc, Ptr<Expr>&& matched, Ptrs<Expr>&& types, Ptrs<IdExpr>&& vars, Ptrs<Expr>&& results)
+        : Expr(loc)
+        , matched_(std::move(matched))
+        , types_(std::move(types))
+        , vars_(std::move(vars))
+        , results_(std::move(results)) {}
+
+private:
+    const Expr* matched() const {return matched_.get(); }
+
+    const auto& types() const { return types_; }
+    const Expr* type(size_t i) const {return types_[i].get(); }
+    const auto& vars() const {return vars_; }
+    const IdExpr* var(size_t i) const {return vars_[i].get(); }
+    const auto& results() const {return results_;}
+    const Expr* result(size_t i) const {return results_[i].get();}
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+    Ptr<Expr> matched_;
+    Ptrs<Expr> types_;
+    Ptrs<IdExpr> vars_;
+    Ptrs<Expr> results_;
 };
 
 // lam

@@ -50,6 +50,8 @@ namespace ast {
     m(K_I16,    "I16"   )             \
     m(K_I32,    "I32"   )             \
     m(K_I64,    "I64"   )             \
+    m(K_match,  "match" )             \
+    m(K_inj,    "inj"   )             \
 
 #define CODE(t, str) + size_t(1)
 constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
@@ -83,6 +85,7 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     /* further tokens */               \
     m(T_arrow,      "→")               \
     m(T_assign,     "=")               \
+    m(T_match_arrow,"=>")              \
     m(T_at,         "@")               \
     m(T_bot,        "⊥")               \
     m(T_top,        "⊤")               \
@@ -95,6 +98,7 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(T_lm,         "λ")               \
     m(T_semicolon,  ";")               \
     m(T_star,       "*")               \
+    m(T_union,      "∪")               \
 
 #define MIM_SUBST(m)                  \
     m("lm",     T_lm   )              \

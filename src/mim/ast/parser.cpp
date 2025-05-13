@@ -5,6 +5,7 @@
 #include <ranges>
 
 #include "mim/driver.h"
+#include "mim/ast/ast.h"
 
 // clang-format off
 #define C_PRIMARY     \
@@ -230,6 +231,19 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                 lhs      = ptr<ArrowExpr>(track, std::move(lhs), std::move(rhs));
                 continue;
             }
+            case Tag::T_union: {
+                if (curr_prec > Expr::Prec::Union) return lhs;
+                lex();
+                auto rhs = parse_expr("right-hand side of a union type", Expr::Prec::Union);
+                lhs = ptr<UnionExpr>(track,std::move(lhs),std::move(rhs));
+                continue;
+            }
+            case Tag::K_inj: {
+                if (curr_prec > Expr::Prec::Inj) return lhs;
+                lex();
+                auto rhs = parse_expr("type a value is injected in",Expr::Prec::Inj);
+                lhs = ptr<InjExpr>(track,std::move(lhs),std::move(rhs));
+            }
             case Tag::T_at: {
                 if (curr_prec >= Expr::Prec::App) return lhs;
                 lex();
@@ -387,6 +401,8 @@ Ptr<Expr> Parser::parse_type_expr() {
     auto level = parse_expr("type level", Expr::Prec::App);
     return ptr<TypeExpr>(track, std::move(level));
 }
+
+
 
 Ptr<Expr> Parser::parse_pi_expr() {
     auto track  = tracker();
