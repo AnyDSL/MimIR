@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mim/axiom.h>
+#include <mim/axm.h>
 #include <mim/world.h>
 
 #include "mim/plug/math/autogen.h"
@@ -62,11 +62,11 @@ inline const Def* type_f(World& w, nat_t p, nat_t e) {
     return type_f(w.tuple({lp, le}));
 }
 template<nat_t P, nat_t E> inline auto match_f(const Def* def) {
-    if (auto f_ty = match<F>(def)) {
+    if (auto f_ty = Axm::isa<F>(def)) {
         auto [p, e] = f_ty->arg()->projs<2>([](auto op) { return Lit::isa(op); });
         if (p && e && *p == P && *e == E) return f_ty;
     }
-    return Match<F, App>();
+    return Axm::IsA<F, App>();
 }
 
 inline auto match_f16(const Def* def) { return match_f<10, 5>(def); }
@@ -74,7 +74,7 @@ inline auto match_f32(const Def* def) { return match_f<23, 8>(def); }
 inline auto match_f64(const Def* def) { return match_f<52, 11>(def); }
 
 inline std::optional<nat_t> isa_f(const Def* def) {
-    if (auto f_ty = match<F>(def)) {
+    if (auto f_ty = Axm::isa<F>(def)) {
         if (auto [p, e] = f_ty->arg()->projs<2>([](auto op) { return Lit::isa(op); }); p && e) {
             if (*p == 10 && e == 5) return 16;
             if (*p == 23 && e == 8) return 32;

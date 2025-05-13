@@ -18,7 +18,7 @@ inline const Def* zero_int(World& w, const Def* n, const Def* S, const Def* mem,
 
 inline const Def* op_read(const Def* mem, const Def* matrix, const Def* idx) {
     auto& world = matrix->world();
-    auto mat_ty = match<Mat>(matrix->type());
+    auto mat_ty = Axm::isa<Mat>(matrix->type());
     if (!mat_ty) return matrix;
     assert(mat_ty);
     world.DLOG("matrix read: {}[{}]", matrix, idx);

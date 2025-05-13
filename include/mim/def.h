@@ -9,33 +9,33 @@
 #include "mim/config.h"
 
 #include "mim/util/dbg.h"
-#include "mim/util/hash.h"
 #include "mim/util/sets.h"
 #include "mim/util/util.h"
 #include "mim/util/vector.h"
 
 // clang-format off
 #define MIM_NODE(m)                                                                                                                             \
-    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc, Judge::Meta)                    \
-    m(Pi,     pi,     Judge::Form) m(Lam,   lam,   Judge::Intro) m(App,     app,     Judge::Elim)                                               \
-    m(Sigma,  sigma,  Judge::Form) m(Tuple, tuple, Judge::Intro) m(Extract, extract, Judge::Elim) m(Insert, insert, Judge::Intro | Judge::Elim) \
-    m(Arr,    arr,    Judge::Form) m(Pack,  pack,  Judge::Intro)                                                                                \
-    m(Join,   join,   Judge::Form) m(Vel,   vel,   Judge::Intro) m(Test, test,       Judge::Elim) m(Top,    top,    Judge::Intro)               \
-    m(Meet,   meet,   Judge::Form) m(Ac,    ac,    Judge::Intro) m(Pick, pick,       Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
-    m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
-    m(Nat,    nat,    Judge::Form)                                                                                                              \
-    m(Idx,    idx,    Judge::Intro) m(Lit,  lit,  Judge::Intro)                                                                                 \
-    m(Axiom,  axiom,  Judge::Intro)                                                                                                             \
+    m(Lit,    lit,    Judge::Intro) /* keep as first */                                                                                         \
+    m(Axm,    axm,    Judge::Intro)                                                                                                             \
     m(Var,    var,    Judge::Intro)                                                                                                             \
     m(Global, global, Judge::Intro)                                                                                                             \
     m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
-    m(Hole,   hole,   Judge::Hole)
+    m(Hole,   hole,   Judge::Hole)                                                                                                              \
+    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc,     Judge::Meta)                \
+    m(Pi,     pi,     Judge::Form) m(Lam,   lam,   Judge::Intro) m(App,     app,     Judge::Elim)                                               \
+    m(Sigma,  sigma,  Judge::Form) m(Tuple, tuple, Judge::Intro) m(Extract, extract, Judge::Elim) m(Insert, insert, Judge::Intro | Judge::Elim) \
+    m(Arr,    arr,    Judge::Form) m(Pack,  pack,  Judge::Intro)                                                                                \
+    m(Join,   join,   Judge::Form) m(Inj,   inj,   Judge::Intro) m(Match,   match,   Judge::Elim) m(Top,    top,    Judge::Intro)               \
+    m(Meet,   meet,   Judge::Form) m(Merge, merge, Judge::Intro) m(Split,   split,   Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
+    m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
+    m(Nat,    nat,    Judge::Form)                                                                                                              \
+    m(Idx,    idx,    Judge::Intro)
 // clang-format on
 
 namespace mim {
 
 class App;
-class Axiom;
+class Axm;
 class Var;
 class Def;
 class World;
@@ -171,16 +171,16 @@ public:
 /// | Sigma / Arr       | Tuple / Pack      | Extract           |
 /// |                   | Insert            | Insert            |
 /// | Uniq              | Wrap              | Unwrap            |
-/// | Join              | Vel               | Test              |
-/// | Meet              | Ac                | Pick              |
+/// | Join              | Inj               | Match             |
+/// | Meet              | Merge             | Split             |
 /// | Nat               | Lit               |                   |
 /// | Idx               | Lit               |                   |
 /// In addition there is:
 /// * Var: A variable. Currently the following Def%s may be binders:
 ///     * Pi, Lam, Sigma, Arr, Pack
-/// * Axiom: To introduce new entities.
+/// * Axm: To introduce new entities.
 /// * Proxy: Used for intermediate values during optimizations.
-/// * Hole: Hole in the presentation filled by type inference (always mutable as the holes are filled in later).
+/// * Hole: A metavariable filled in by the type inference (always mutable as holes are filled in later).
 /// * Type, Univ, UMax, UInc: To keep track of type levels.
 ///
 /// The data layout (see World::alloc and Def::deps) looks like this:
@@ -426,7 +426,7 @@ public:
     template<class T = Def, class R> const T* isa_imm(R (T::*f)() const) const { return isa_mut<T, R, true>(f); }
     // clang-format on
 
-    /// If `this` is *mut*able, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
+    /// If `this` is *mutable*, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
     template<class T = Def, bool invert = false> T* isa_mut() const {
         if constexpr (std::is_same<T, Def>::value)
             return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;
@@ -565,8 +565,8 @@ private:
 protected:
     mutable Dbg dbg_;
     union {
-        NormalizeFn normalizer_; ///< Axiom only: Axiom%s use this member to store their normalizer.
-        const Axiom* axiom_;     ///< App only: Curried App%s of Axiom%s use this member to propagate the Axiom.
+        NormalizeFn normalizer_; ///< Axm only: Axm%s use this member to store their normalizer.
+        const Axm* axm_;         ///< App only: Curried App%s of Axm%s use this member to propagate the Axm.
         const Var* var_;         ///< Mutable only: Var of a mutable.
         mutable World* world_;
     };

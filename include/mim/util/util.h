@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iterator>
-#include <optional>
 #include <queue>
 #include <stack>
 #include <type_traits>
@@ -12,6 +10,7 @@
 #include <absl/container/node_hash_set.h>
 #include <fe/assert.h>
 
+#include "mim/util/hash.h"
 #include "mim/util/types.h"
 
 namespace mim {

@@ -118,7 +118,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto c = isa_clos_lit(def)) {
         auto env      = rewrite(c.env());
-        auto mode     = (env->type()->isa<Idx>() || match<mem::Ptr>(env->type())) ? Unbox : Box;
+        auto mode     = (env->type()->isa<Idx>() || Axm::isa<mem::Ptr>(env->type())) ? Unbox : Box;
         const Def* fn = make_stub(c.fnc_as_lam(), mode, true);
         if (env->type() == w.sigma()) {
             // Optimize empty env
@@ -145,7 +145,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         if (!def->isa_mut<Global>() && Checker::alpha<Checker::Check>(mut, new_mut)) return map(mut, mut);
         if (auto imm = new_mut->immutabilize()) return map(mut, imm);
         return new_mut;
-    } else if (def->isa<Axiom>()) {
+    } else if (def->isa<Axm>()) {
         return def;
     } else {
         auto new_ops = DefVec(def->num_ops(), [&](auto i) { return rewrite(def->op(i)); });

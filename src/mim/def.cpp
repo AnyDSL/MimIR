@@ -112,29 +112,29 @@ const Def* Global ::rebuild_(World&,   const Def*,   Defs  ) const { fe::unreach
 const Def* Idx    ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_idx(); }
 const Def* Nat    ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_nat(); }
 const Def* Univ   ::rebuild_(World& w, const Def*  , Defs  ) const { return w.univ(); }
-const Def* Ac     ::rebuild_(World& w, const Def* t, Defs o) const { return w.ac(t, o); }
 const Def* App    ::rebuild_(World& w, const Def*  , Defs o) const { return w.app(o[0], o[1]); }
 const Def* Arr    ::rebuild_(World& w, const Def*  , Defs o) const { return w.arr(o[0], o[1]); }
 const Def* Extract::rebuild_(World& w, const Def*  , Defs o) const { return w.extract(o[0], o[1]); }
+const Def* Inj    ::rebuild_(World& w, const Def* t, Defs o) const { return w.inj(t, o[0])->set(dbg()); }
 const Def* Insert ::rebuild_(World& w, const Def*  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
 const Def* Lam    ::rebuild_(World& w, const Def* t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
 const Def* Lit    ::rebuild_(World& w, const Def* t, Defs  ) const { return w.lit(t, get()); }
+const Def* Merge  ::rebuild_(World& w, const Def* t, Defs o) const { return w.merge(t, o); }
 const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
 const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
-const Def* Pick   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pick(t, o[0]); }
 const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
-const Def* Uniq   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uniq(o[0]); }
-const Def* Type   ::rebuild_(World& w, const Def*  , Defs o) const { return w.type(o[0]); }
-const Def* Test   ::rebuild_(World& w, const Def*  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
+const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
+const Def* Match  ::rebuild_(World& w, const Def*  , Defs o) const { return w.match(o); }
 const Def* Tuple  ::rebuild_(World& w, const Def* t, Defs o) const { return w.tuple(t, o); }
+const Def* Type   ::rebuild_(World& w, const Def*  , Defs o) const { return w.type(o[0]); }
 const Def* UInc   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uinc(o[0], offset()); }
 const Def* UMax   ::rebuild_(World& w, const Def*  , Defs o) const { return w.umax(o); }
+const Def* Uniq   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uniq(o[0]); }
 const Def* Var    ::rebuild_(World& w, const Def* t, Defs o) const { return w.var(t, o[0]->as_mut()); }
-const Def* Vel    ::rebuild_(World& w, const Def* t, Defs o) const { return w.vel(t, o[0])->set(dbg()); }
 
-const Def* Axiom    ::rebuild_(World& w, const Def* t, Defs ) const {
-    if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
+const Def* Axm    ::rebuild_(World& w, const Def* t, Defs ) const {
+    if (&w != &world()) return w.axm(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
     assert(Checker::alpha<Checker::Check>(t, type()));
     return this;
 }
@@ -154,9 +154,6 @@ Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
 Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }
 Sigma*  Sigma ::stub_(World& w, const Def* t) { return w.mut_sigma(t, num_ops()); }
 
-template<bool up> TBound<up>* TBound<up>::stub_(World& w, const Def* t) { return w.mut_bound<up>(t, num_ops()); }
-template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , const Def*  ) { fe::unreachable(); }
-
 /*
  * instantiate templates
  */
@@ -166,10 +163,6 @@ template const Def* TExt<false>  ::rebuild_(World&, const Def*, Defs) const;
 template const Def* TExt<true >  ::rebuild_(World&, const Def*, Defs) const;
 template const Def* TBound<false>::rebuild_(World&, const Def*, Defs) const;
 template const Def* TBound<true >::rebuild_(World&, const Def*, Defs) const;
-template TBound<false>* TBound<false>::stub_(World&, const Def*);
-template TBound<true >* TBound<true >::stub_(World&, const Def*);
-template TExt<false>*   TExt<false>  ::stub_(World&, const Def*);
-template TExt<true >*   TExt<true >  ::stub_(World&, const Def*);
 #endif
 
 // clang-format on

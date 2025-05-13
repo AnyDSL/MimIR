@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "mim/axiom.h"
+#include "mim/axm.h"
 #include "mim/world.h"
 
 #include "mim/plug/matrix/matrix.h"
@@ -26,7 +26,7 @@ const Def* normalize_read(const Def* type, const Def*, const Def* arg) {
         world.DLOG("  extract: {}\n", mex);
         auto ccall = mex->tuple();
         world.DLOG("  ex_mat: {}\n", ccall);
-        if (auto mcm = match<constMat>(ccall)) {
+        if (auto mcm = Axm::isa<constMat>(ccall)) {
             world.DLOG("  const mat: {}\n", mcm);
             auto [cmem, v] = mcm->arg()->projs<2>();
             return world.tuple({mem, v});
@@ -49,7 +49,7 @@ const Def* normalize_insert(const Def*, const Def*, const Def*) { return {}; }
 const Def* normalize_shape(const Def* type, const Def* callee, const Def* arg) {
     auto& world                   = type->world();
     auto [mat, index]             = arg->projs<2>();
-    auto [dims, sizes, body_type] = match<Mat, false>(mat->type())->args<3>();
+    auto [dims, sizes, body_type] = Axm::isa<Mat, false>(mat->type())->args<3>();
     (void)callee;
 
     return world.extract(sizes, index);

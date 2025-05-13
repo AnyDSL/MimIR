@@ -13,7 +13,7 @@ protected:
     /// Constructor for an *immutable* Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, bool implicit)
         : Def(Node, type, {dom, codom}, (flags_t)implicit) {}
-    /// Constructor for a *mut*able Pi.
+    /// Constructor for a *mutable* Pi.
     Pi(const Def* type, bool implicit)
         : Def(Node, type, 2, implicit ? 1 : 0) {}
 
@@ -171,7 +171,6 @@ public:
     Lam* app(Filter filter, const Def* callee, Defs args);
     /// Set body to an App of `(f, t)#cond mem` or `(f, t)#cond ()` if @p mem is `nullptr`.
     Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem = nullptr);
-    Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
@@ -207,9 +206,9 @@ using Lam2Lam                   = LamMap<Lam*>;
 
 class App : public Def, public Setters<App> {
 private:
-    App(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg)
+    App(const Axm* axm, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg)
         : Def(Node, type, {callee, arg}, 0) {
-        axiom_ = axiom;
+        axm_   = axm;
         curry_ = curry;
         trip_  = trip;
     }
@@ -232,9 +231,9 @@ public:
     MIM_PROJ(arg, const)
     ///@}
 
-    /// @name Get axiom, current curry counter and trip count
+    /// @name Get axm, current curry counter and trip count
     ///@{
-    const Axiom* axiom() const { return axiom_; }
+    const Axm* axm() const { return axm_; }
     u8 curry() const { return curry_; }
     u8 trip() const { return trip_; }
     ///@}
@@ -283,7 +282,7 @@ std::deque<const App*> decurry(const Def*);
 /// ```
 const Def* compose_cn(const Def* f, const Def* g);
 
-/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
+/// Helper function to cope with the fact that normalizers take all arguments and not only its axm arguments.
 std::pair<const Def*, DefVec> collect_args(const Def* def);
 ///@}
 

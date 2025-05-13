@@ -176,7 +176,7 @@ template<class Id, Id id> const Def* fold(World& world, const Def* type, const D
         }
     }
 
-    if (is_commutative(id)) commute(a, b);
+    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
     return nullptr;
 }
 
@@ -195,8 +195,8 @@ template<class Id>
 const Def* reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b) {
     if (!is_associative(id)) return nullptr;
 
-    auto xy     = match<Id>(id, a);
-    auto zw     = match<Id>(id, b);
+    auto xy     = Axm::isa<Id>(id, a);
+    auto zw     = Axm::isa<Id>(id, b);
     auto la     = a->isa<Lit>();
     auto [x, y] = xy ? xy->template args<2>() : std::array<const Def*, 2>{nullptr, nullptr};
     auto [z, w] = zw ? zw->template args<2>() : std::array<const Def*, 2>{nullptr, nullptr};

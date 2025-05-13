@@ -19,11 +19,11 @@ TEST(Zip, fold) {
     auto ast    = ast::AST(w);
     auto parser = ast::Parser(ast);
 
-    std::istringstream iss("plugin core;"
+    std::istringstream iss("plugin tuple;"
                            "let a = ((0I32, 1I32,  2I32), ( 3I32,  4I32,  5I32));"
                            "let b = ((6I32, 7I32,  8I32), ( 9I32, 10I32, 11I32));"
                            "let c = ((6I32, 8I32, 10I32), (12I32, 14I32, 16I32));"
-                           "let r = %core.zip (2, (2, 3)) (2, (I32, I32), 1, I32, %core.wrap.add 0) (a, b);");
+                           "let r = %tuple.zip (2, (2, 3)) (2, (I32, I32), 1, I32, %core.wrap.add 0) (a, b);");
     parser.import(iss);
     // auto c = parser.scopes().find({Loc(), driver.sym("c")});
     // auto r = parser.scopes().find({Loc(), driver.sym("r")});
@@ -54,7 +54,7 @@ TEST(World, dependent_extract) {
     auto sig = w.mut_sigma(w.type<1>(), 2); // sig = [T: *, T]
     sig->set(0, w.type<0>());
     sig->set(1, sig->var(0_u64));
-    auto a = w.axiom(sig);
+    auto a = w.axm(sig);
     ASSERT_EQ(a->proj(2, 1)->type(), a->proj(2, 0_u64)); // type_of(a#1_2) == a#0_1
 }
 
@@ -107,7 +107,7 @@ const Def* normalize_test_curry(const Def* type, const Def* callee, const Def* a
     return w.raw_app(type, callee, w.lit_nat(42));
 }
 
-TEST(Axiom, curry) {
+TEST(Axm, curry) {
     Driver driver;
     World& w = driver.world();
 
@@ -123,11 +123,11 @@ TEST(Axiom, curry) {
         rec->set_codom(w.pi(nat, w.pi(nat, rec)));
         auto pi = w.pi(nat, w.pi(nat, rec));
 
-        auto [curry, trip] = Axiom::infer_curry_and_trip(pi);
+        auto [curry, trip] = Axm::infer_curry_and_trip(pi);
         EXPECT_EQ(curry, 5);
         EXPECT_EQ(trip, 3);
 
-        auto ax = w.axiom(normalize_test_curry, curry, trip, pi)->set("test_5_3");
+        auto ax = w.axm(normalize_test_curry, curry, trip, pi)->set("test_5_3");
         auto a1 = w.app(w.app(w.app(w.app(w.app(ax, n[0]), n[1]), n[2]), n[3]), n[4]);
         auto a2 = w.app(w.app(w.app(a1, n[5]), n[6]), n[7]);
         auto a3 = w.app(w.app(w.app(a2, n[8]), n[9]), n[10]);
@@ -144,11 +144,11 @@ TEST(Axiom, curry) {
         auto rec = w.mut_pi(w.type())->set_dom(nat);
         rec->set_codom(rec);
 
-        auto [curry, trip] = Axiom::infer_curry_and_trip(rec);
+        auto [curry, trip] = Axm::infer_curry_and_trip(rec);
         EXPECT_EQ(curry, 1);
         EXPECT_EQ(trip, 1);
 
-        auto ax = w.axiom(normalize_test_curry, curry, trip, rec)->set("test_1_1");
+        auto ax = w.axm(normalize_test_curry, curry, trip, rec)->set("test_1_1");
         auto a1 = w.app(ax, n[0]);
         auto a2 = w.app(a1, n[1]);
         auto a3 = w.app(a2, n[2]);
@@ -163,16 +163,16 @@ TEST(Axiom, curry) {
     }
     {
         auto pi            = w.pi(nat, w.pi(nat, w.pi(nat, w.pi(nat, nat))));
-        auto [curry, trip] = Axiom::infer_curry_and_trip(pi);
+        auto [curry, trip] = Axm::infer_curry_and_trip(pi);
         EXPECT_EQ(curry, 4);
         EXPECT_EQ(trip, 0);
 
-        auto ax = w.axiom(normalize_test_curry, 3, 0, pi)->set("test_3_0");
+        auto ax = w.axm(normalize_test_curry, 3, 0, pi)->set("test_3_0");
         auto a1 = w.app(w.app(w.app(ax, n[0]), n[1]), n[2]);
         auto a2 = w.app(a1, n[3]);
 
         EXPECT_EQ(a1->as<App>()->curry(), 0);
-        EXPECT_EQ(a2->as<App>()->curry(), Axiom::Trip_End);
+        EXPECT_EQ(a2->as<App>()->curry(), Axm::Trip_End);
 
         std::ostringstream os;
         a2->stream(os, 0);

@@ -182,7 +182,8 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
     callee = callee->zonk();
     arg    = arg->zonk();
     if (auto pi = callee->type()->isa<Pi>()) {
-        if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
+        auto dom = pi->dom()->zonk(); // TODO this is more a hotfix; callee->zonk() above should deal with this
+        if (auto new_arg = Checker::assignable(dom, arg)) {
             arg = new_arg->zonk();
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
 
@@ -213,19 +214,19 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                 }
             }
 
-            auto type                 = pi->reduce(arg)->zonk();
-            callee                    = callee->zonk();
-            auto [axiom, curry, trip] = Axiom::get(callee);
-            if (axiom) {
+            auto type               = pi->reduce(arg)->zonk();
+            callee                  = callee->zonk();
+            auto [axm, curry, trip] = Axm::get(callee);
+            if (axm) {
                 curry = curry == 0 ? trip : curry;
-                curry = curry == Axiom::Trip_End ? curry : curry - 1;
+                curry = curry == Axm::Trip_End ? curry : curry - 1;
 
-                if (auto normalizer = axiom->normalizer(); Normalize && normalizer && curry == 0) {
+                if (auto normalizer = axm->normalizer(); Normalize && normalizer && curry == 0) {
                     if (auto norm = normalizer(type, callee, arg)) return norm;
                 }
             }
 
-            return raw_app(axiom, curry, trip, type, callee, arg);
+            return raw_app(axm, curry, trip, type, callee, arg);
         }
 
         throw Error()
@@ -242,17 +243,17 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
 }
 
 const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg) {
-    auto [axiom, curry, trip] = Axiom::get(callee);
-    if (axiom) {
+    auto [axm, curry, trip] = Axm::get(callee);
+    if (axm) {
         curry = curry == 0 ? trip : curry;
-        curry = curry == Axiom::Trip_End ? curry : curry - 1;
+        curry = curry == Axm::Trip_End ? curry : curry - 1;
     }
 
-    return raw_app(axiom, curry, trip, type, callee, arg);
+    return raw_app(axm, curry, trip, type, callee, arg);
 }
 
-const Def* World::raw_app(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg) {
-    return unify<App>(2, axiom, curry, trip, type, callee, arg);
+const Def* World::raw_app(const Axm* axm, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg) {
+    return unify<App>(2, axm, curry, trip, type, callee, arg);
 }
 
 const Def* World::sigma(Defs ops) {
@@ -523,42 +524,63 @@ template<bool Up> const Def* World::bound(Defs ops) {
     if (cpy.size() == 0) return ext<!Up>(kind);
     if (cpy.size() == 1) return cpy[0];
 
-    // TODO simplify mixed terms with joins and meets
+    // TODO simplify mixed terms with joins and meets?
 
     return unify<TBound<Up>>(cpy.size(), kind, cpy);
 }
 
-const Def* World::ac(const Def* type, Defs ops) {
+const Def* World::merge(const Def* type, Defs ops) {
     if (type->isa<Meet>()) {
         auto types = DefVec(ops.size(), [&](size_t i) { return ops[i]->type(); });
-        return unify<Ac>(ops.size(), meet(types), ops);
+        return unify<Merge>(ops.size(), meet(types), ops);
     }
 
     assert(ops.size() == 1);
     return ops[0];
 }
 
-const Def* World::ac(Defs ops) { return ac(umax<Sort::Term>(ops), ops); }
+const Def* World::merge(Defs ops) { return merge(umax<Sort::Term>(ops), ops); }
 
-const Def* World::vel(const Def* type, const Def* value) {
-    if (type->isa<Join>()) return unify<Vel>(1, type, value);
+const Def* World::inj(const Def* type, const Def* value) {
+    if (type->isa<Join>()) return unify<Inj>(1, type, value);
     return value;
 }
 
-const Def* World::pick(const Def* type, const Def* value) { return unify<Pick>(1, type, value); }
+const Def* World::split(const Def* type, const Def* value) { return unify<Split>(1, type, value); }
 
-const Def* World::test(const Def* value, const Def* probe, const Def* match, const Def* clash) {
-    auto m_pi = match->type()->isa<Pi>();
-    auto c_pi = clash->type()->isa<Pi>();
+const Def* World::match(Defs ops_) {
+    if (ops_.size() == 1) return ops_.front();
 
-    // TODO proper error msg
-    assert(m_pi && c_pi);
-    auto a = m_pi->dom()->isa_lit_arity();
-    assert_unused(a && *a == 2);
-    assert(Checker::alpha<Checker::Check>(m_pi->dom(2, 0_s), c_pi->dom()));
+    auto ops   = DefVec(ops_.begin(), ops_.end());
+    auto value = ops.front();
+    auto arms  = ops.span().subspan(1);
+    auto join  = value->type()->isa<Join>();
 
-    auto codom = join({m_pi->codom(), c_pi->codom()});
-    return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);
+    if (!join) error(value->loc(), "scrutinee of a test expression must be of union type");
+
+    if (arms.size() != join->num_ops())
+        error(value->loc(), "test expression has {} arms but union type has {} cases", arms.size(), join->num_ops());
+
+    for (auto arm : arms)
+        if (!arm->type()->isa<Pi>())
+            error(arm->loc(), "arm of test expression does not have a function type but is of type '{}'", arm->type());
+
+    std::ranges::sort(arms, [](const Def* arm1, const Def* arm2) {
+        return arm1->type()->as<Pi>()->dom()->gid() < arm2->type()->as<Pi>()->dom()->gid();
+    });
+
+    const Def* type = nullptr;
+    for (size_t i = 0, e = arms.size(); i != e; ++i) {
+        auto arm = arms[i];
+        auto pi  = arm->type()->as<Pi>();
+        if (!Checker::alpha<Checker::Check>(pi->dom(), join->op(i)))
+            error(arm->loc(),
+                  "domain type '{}' of arm in a test expression does not match case type '{}' in union type", pi->dom(),
+                  join->op(i));
+        type = type ? this->join({type, pi->codom()}) : pi->codom();
+    }
+
+    return unify<Match>(ops.size(), type, ops);
 }
 
 const Def* World::uniq(const Def* inhabitant) { return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant); }

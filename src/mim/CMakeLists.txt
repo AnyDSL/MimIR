@@ -1,7 +1,7 @@
 add_library(libmim)
 target_sources(libmim
     PRIVATE
-        axiom.cpp
+        axm.cpp
         check.cpp
         def.cpp
         dot.cpp
@@ -10,6 +10,7 @@ target_sources(libmim
         lam.cpp
         lattice.cpp
         nest.cpp
+        normalize.cpp
         plugin.cpp
         rewrite.cpp
         schedule.cpp

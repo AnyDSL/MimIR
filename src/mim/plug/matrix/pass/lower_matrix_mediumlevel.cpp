@@ -36,7 +36,7 @@ std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def
 // TODO: replace sum_ptr by using sum as accumulator
 // TODO: extract inner loop into function (for read normalizer)
 const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
-    if (auto map_reduce_ax = match<matrix::map_reduce>(def); map_reduce_ax) {
+    if (auto map_reduce_ax = Axm::isa<matrix::map_reduce>(def); map_reduce_ax) {
         // meta arguments:
         // * n = out-count, (nat)
         // * S = out-dim, (n*nat)
@@ -181,7 +181,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         std::sort(out_indices.begin(), out_indices.end());
         std::sort(in_indices.begin(), in_indices.end());
 
-        // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axiom call
+        // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axm call
 
         auto mem_type = world().annex<mem::M>();
         auto fun      = world().mut_fun(mem_type, map_reduce_ax->type())->set("mapRed");

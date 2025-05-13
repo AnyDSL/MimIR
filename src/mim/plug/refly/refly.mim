@@ -28,6 +28,11 @@ axm %refly.reflect: {T: *} → [%refly.Code T] → T, normalize_reflect;
 ///
 /// ## Inspect
 ///
+/// ### %%refly.type
+///
+/// Retuns type of an expression.
+axm %refly.type: {T: *} → T → *, normalize_type;
+///
 /// ### %%refly.gid
 ///
 /// Retuns the internal mim::Def::gid of the argument.
@@ -48,6 +53,25 @@ let %refly.debug   = 4;
 
 axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;
 ///
+/// ### %refly.assert
+///
+/// Nat comparison is made of 3 disjoint relations:
+///     * `G`reater
+///     * `L`ess
+///     * `E`qual
+///
+/// | Subtag | Alias | A | E | Meaning                              |
+/// |--------|-------|---|---|--------------------------------------|
+/// | `ae`   | `f`   | o | o | assert strucutrual equivalent        |
+/// | `aE`   | `e`   | o | x | assert *not* structurual equivalent  |
+/// | `Ae`   | `l`   | x | o | assert alpha equivalent              |
+/// | `AE`   | `le`  | x | x | assert *not* alpha equivalent        |
+///
+axm %refly.equiv(ae = struc_ne, aE = struc_eq,
+                 Ae = alpha_ne, AE = alpha_eq):
+    {T: *} → [T, T] → T, normalize_equiv;
+///
+/// ## Manipulate
 /// ## Manipulate
 ///
 /// ### %%refly.refine

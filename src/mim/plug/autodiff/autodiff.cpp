@@ -114,7 +114,7 @@ const Def* autodiff_type_fun(const Def* ty) {
     auto& world = ty->world();
     // TODO: handle DS (operators)
     if (auto pi = ty->isa<Pi>()) return autodiff_type_fun_pi(pi);
-    // Also handles autodiff call from axiom declaration => abstract => leave it.
+    // Also handles autodiff call from axm declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
     if (Idx::isa(ty)) return ty;
     if (ty == world.type_nat()) return ty;
@@ -132,7 +132,7 @@ const Def* autodiff_type_fun(const Def* ty) {
         return world.sigma(ops);
     }
     // mem
-    if (match<mem::M>(ty)) return ty;
+    if (Axm::isa<mem::M>(ty)) return ty;
     world.WLOG("no-diff type: {}", ty);
     return nullptr;
 }

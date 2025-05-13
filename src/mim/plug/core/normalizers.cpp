@@ -114,7 +114,7 @@ const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b, con
         }
     }
 
-    if (::mim::is_commutative(id)) commute(a, b);
+    if (::mim::is_commutative(id) && commute(a, b)) std::swap(a, b);
     return nullptr;
 }
 
@@ -167,8 +167,8 @@ template<class Id>
 const Def* reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b) {
     if (!is_associative(id)) return nullptr;
 
-    auto xy     = match<Id>(id, a);
-    auto zw     = match<Id>(id, b);
+    auto xy     = Axm::isa<Id>(id, a);
+    auto zw     = Axm::isa<Id>(id, b);
     auto la     = a->isa<Lit>();
     auto [x, y] = xy ? xy->template args<2>() : std::array<const Def*, 2>{nullptr, nullptr};
     auto [z, w] = zw ? zw->template args<2>() : std::array<const Def*, 2>{nullptr, nullptr};
@@ -190,8 +190,8 @@ template<class Id> const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, 
     static constexpr size_t num_bits = std::bit_width(Annex::Num<Id> - 1_u64);
 
     auto& world = a->world();
-    auto a_cmp  = match<Id>(a);
-    auto b_cmp  = match<Id>(b);
+    auto a_cmp  = Axm::isa<Id>(a);
+    auto b_cmp  = Axm::isa<Id>(b);
 
     if (a_cmp && b_cmp && a_cmp->arg() == b_cmp->arg()) {
         // push sub bits of a_cmp and b_cmp through truth table
@@ -216,7 +216,7 @@ template<class Id> const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, 
 template<nat id> const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
-    if (is_commutative(id)) commute(a, b);
+    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
     auto la = Lit::isa(a);
     auto lb = Lit::isa(b);
 
@@ -252,7 +252,7 @@ template<ncmp id> const Def* normalize_ncmp(const Def* type, const Def* callee, 
     if (id == ncmp::f) return world.lit_ff();
 
     auto [a, b] = arg->projs<2>();
-    if (is_commutative(id)) commute(a, b);
+    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
 
     if (auto la = Lit::isa(a)) {
         if (auto lb = Lit::isa(b)) {
@@ -338,7 +338,7 @@ template<bit2 id> const Def* normalize_bit2(const Def* type, const Def* c, const
     auto ls     = Lit::isa(s);
     // TODO cope with wrap around
 
-    if (is_commutative(id)) commute(a, b);
+    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
 
     auto tab = make_truth_table(id);
     if (auto res = merge_cmps<icmp>(tab, a, b)) return res;
@@ -596,7 +596,7 @@ const Def* normalize_bitcast(const Def* dst_t, const Def*, const Def* src) {
     if (src->isa<Bot>()) return world.bot(dst_t);
     if (src_t == dst_t) return src;
 
-    if (auto other = match<bitcast>(src))
+    if (auto other = Axm::isa<bitcast>(src))
         return other->arg()->type() == dst_t ? other->arg() : world.call<bitcast>(dst_t, other->arg());
 
     if (auto l = Lit::isa(src)) {
@@ -613,7 +613,7 @@ const Def* normalize_bitcast(const Def* dst_t, const Def*, const Def* src) {
 // TODO Pi and others
 template<trait id> const Def* normalize_trait(const Def*, const Def*, const Def* type) {
     auto& world = type->world();
-    if (auto ptr = match<mem::Ptr>(type)) {
+    if (auto ptr = Axm::isa<mem::Ptr>(type)) {
         return world.lit_nat(8);
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
@@ -657,52 +657,11 @@ template<trait id> const Def* normalize_trait(const Def*, const Def*, const Def*
     return {};
 }
 
-const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
-    auto& w                    = type->world();
-    auto callee                = c->as<App>();
-    auto is_os                 = callee->arg();
-    auto [n_i, Is, n_o, Os, f] = is_os->projs<5>();
-    auto [r, s]                = callee->decurry()->args<2>();
-    auto lr                    = Lit::isa(r);
-    auto ls                    = Lit::isa(s);
-
-    // TODO commute
-    // TODO reassociate
-    // TODO more than one Os
-    // TODO select which Is/Os to zip
-
-    if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg);
-
-    if (auto l_in = Lit::isa(n_i)) {
-        auto args = arg->projs(*l_in);
-
-        if (lr && std::ranges::all_of(args, [](const Def* arg) { return arg->isa<Tuple, Pack>(); })) {
-            auto shapes = s->projs(*lr);
-            auto s_n    = Lit::isa(shapes.front());
-
-            if (s_n) {
-                auto elems = DefVec(*s_n, [&, f = f](size_t s_i) {
-                    auto inner_args = DefVec(args.size(), [&](size_t i) { return args[i]->proj(*s_n, s_i); });
-                    if (*lr == 1) {
-                        return w.app(f, inner_args);
-                    } else {
-                        auto app_zip = w.app(w.annex<zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.view().subspan(1))});
-                        return w.app(w.app(app_zip, is_os), inner_args);
-                    }
-                });
-                return w.tuple(elems);
-            }
-        }
-    }
-
-    return {};
-}
-
 template<pe id> const Def* normalize_pe(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
 
     if constexpr (id == pe::is_closed) {
-        if (match(pe::hlt, arg)) return world.lit_ff();
+        if (Axm::isa(pe::hlt, arg)) return world.lit_ff();
         if (arg->is_closed()) return world.lit_tt();
     }
 

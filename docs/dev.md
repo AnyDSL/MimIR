@@ -15,8 +15,8 @@ Here, the log is set up to output to `std::cerr` with mim::Log::Level::Debug (se
 
 Then, we load the plugins [compile](@ref compile) and [core](@ref core), which in turn will load the plugin [mem](@ref mem).
 A plugin consists of a shared object (`.so`/`.dll`) and a `.mim` file.
-The shared object contains [Passes](@ref mim::Pass), [normalizers](@ref mim::Axiom::normalizer), and so on.
-The `.mim` file contains the [axiom](@ref mim::Axiom) declarations and links the normalizers with the [axioms](@ref mim::Axiom).
+The shared object contains [Passes](@ref mim::Pass), [normalizers](@ref mim::Axm::normalizer), and so on.
+The `.mim` file contains the [axiom](@ref mim::Axm) declarations and links the normalizers with the [axioms](@ref mim::Axm).
 For this reason, we need to allocate the mim::ast::Parser to parse the `.mim` file; mim::ast::Parser::plugin will also load the shared object.
 The mim::Driver keeps track of all plugins.
 
@@ -69,18 +69,18 @@ There are two different kind of [Defs](@ref mim::Def) in MimIR: _mutables_ and _
 ## Matching IR
 
 MimIR provides different means to scrutinize [Defs](@ref mim::Def).
-Matching built-ins, i.e. all subclasses of [Def](@ref mim::Def), works differently than matching [Axiom](@ref mim::Axiom)s.
+Matching built-ins, i.e. all subclasses of [Def](@ref mim::Def), works slightly differently than matching [Axioms](@ref mim::Axm).
 
-### Upcast for Built-ins {#cast_builtin}
+### Downcast for Built-ins {#cast_builtin}
 
 Methods beginning with
 
 - `isa` work like a `dynamic_cast` with a runtime check and return `nullptr` if the cast is not possible, while
 - those beginning with `as` are more like a `static_cast` and `assert` via its `isa` sibling in the `Debug` build that the cast is correct.
 
-#### Upcast
+#### Downcast
 
-`Def::isa`/`Def::as` allows for an _upcast_ that matches both _mutables_ and _immutables_:
+`Def::isa`/`Def::as` allows for an _downcast_ that matches both _mutables_ and _immutables_:
 
 ```cpp
 void foo(const Def* def) {
@@ -94,9 +94,9 @@ void foo(const Def* def) {
 }
 ```
 
-#### Upcast for Immutables
+#### Downcast for Immutables
 
-mim::Def::isa_imm / mim::Def::as_imm allows for an _upcast_ and **only** matches _immutables_:
+mim::Def::isa_imm / mim::Def::as_imm allows for an *downcast* and **only** matches _immutables_:
 
 ```cpp
 void foo(const Def* def) {
@@ -113,9 +113,9 @@ void foo(const Def* def) {
 }
 ```
 
-#### Upcast for Mutables
+#### Downcast for Mutables
 
-mim::Def::isa_mut / mim::Def::as_mut allows for an _upcast_ and **only** matches _mutables_.
+mim::Def::isa_mut / mim::Def::as_mut allows for an *downcast* and **only** matches _mutables_.
 By doing so, it removes the `const` qualifier and gives you access to the **non**-`const` methods that only make sense for _mutables_:
 
 ```cpp
@@ -138,7 +138,7 @@ void foo(const Def* def) {
 }
 ```
 
-Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using mim::Def::isa_mut / mim::Def::as_mut since the scrutinee must be already a _mutable_ due to the lack of the `const` qualifier:
+Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using mim::Def::isa_mut / mim::Def::as_mut since the scrutinee must be already a *mutable* due to the lack of the `const` qualifier:
 
 ```cpp
 void foo(Def* def) { // note the lack of "const" here
@@ -209,21 +209,21 @@ void foo(const Def* def) {
 }
 ```
 
-### Matching Axioms {#cast_axiom}
+### Matching Axioms {#cast_axm}
 
-You can match [Axiom](@ref mim::Axiom)s via
+You can match [Axioms](@ref mim::Axm) via
 
-- mim::match which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref mim::Match::Match) `nullptr` (see below), if the cast is not possible, or
-- mim::force which is again more like a `static_cast` and `assert`s via its mim::match sibling in the `Debug` build that the cast is correct.
+- mim::Axm::isa which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref mim::Axm::IsA::IsA) `nullptr` (see below), if the cast is not possible, or
+- mim::Axm::as which is again more like a `static_cast` and `assert`s via its mim::Axm::isa sibling in the `Debug` build that the cast is correct.
 
-This will yield a [Match](@ref mim::Match)`<Id, D>` which just wraps a `const D*`.
+This will yield a mim::Axm::IsA`<Id, D>` which just wraps a `const D*`.
 `Id` is the `enum` of the corresponding `tag` of the [matched Axiom](@ref anatomy).
-Usually, `D` will be an [App](@ref mim::App) because most [Axiom](@ref mim::Axiom)s inhabit a [function type](@ref mim::Pi).
+Usually, `D` will be an [App](@ref mim::App) because most [Axioms](@ref mim::Axm) inhabit a [function type](@ref mim::Pi).
 Otherwise, it may wrap a [Def](@ref mim::Def) or other subclasses of it.
-For instance, [match](@ref mim::match)ing `%%mem.M` yields [Match](@ref mim::Match)`<`[mem::M](@ref mim::plug::mem::M), [Def](@ref mim::Def)`>`.
+For instance, [matching](@ref mim::Axm::isa) `%%mem.M` yields mim::Axm::IsA`<`[mem::M](@ref mim::plug::mem::M), [Def](@ref mim::Def)`>`.
 
-By default, MimIR assumes that the magic of an [Axiom](@ref mim::Axiom) happens when applying the final argument to a curried [Axiom](@ref mim::Axiom).
-For example, [match](@ref mim::match)ing a `%%mem.load` will only trigger for the final [App](@ref mim::App) of the curried call
+By default, MimIR assumes that the magic of an [Axiom](@ref mim::Axm) happens when applying the final argument to a curried [Axiom](@ref mim::Axm).
+For example, [matching](@ref mim::Axm::isa) a `%%mem.load` will only trigger for the final [App](@ref mim::App) of the curried call
 
 ```
 %mem.load (T, as) (mem, ptr)
@@ -236,39 +236,40 @@ while
 ```
 
 will **not** match.
-The wrapped [App](@ref mim::App) inside the [Match](@ref mim::Match) refers to the last [App](@ref mim::App) of the curried call.
+The wrapped mim::App inside the mim::Axm::IsA refers to the last mim::App of the curried call.
 So in this example
 
 - mim::App::arg() is `(mem, ptr)` and
 - mim::App::callee() is `%%mem.load (T, as)`.
 
   Use mim::App::decurry() to directly get the mim::App::callee() as mim::App.
+  See below for an example.
 
-If you want to design an [Axiom](@ref mim::Axiom) that returns a function, you can [fine-adjust the trigger point](@ref normalization) of a mim::match / mim::force.
+If you want to design an [Axiom](@ref mim::Axm) that returns a function, you can [fine-adjust the trigger point](@ref normalization) of a mim::Axm::isa / mim::Axm::as.
 
 #### w/o Subtags
 
-In order to match an [Axiom](@ref mim::Axiom) **without** any subtags like `%%mem.load`, do this:
+In order to match an [Axiom](@ref mim::Axm) **without** any subtags like `%%mem.load`, do this:
 
 ```cpp
 void foo(const Def* def) {
-    if (auto load = match<mem::load>(def)) {
+    if (auto load = Axm::isa<mem::load>(def)) {
         auto [mem, ptr]            = load->args<2>();
         auto [pointee, addr_space] = load->decurry()->args<2>();
     }
 
     // def must match as a mem::load - otherwise, asserts
-    auto load = force<mem::load>(def);
+    auto load = Axm::as<mem::load>(def);
 }
 ```
 
 #### w/ Subtags
 
-In order to match an [Axiom](@ref mim::Axiom) **with** subtags like `%%core.wrap`, do this:
+In order to match an [Axiom](@ref mim::Axm) **with** subtags like `%%core.wrap`, do this:
 
 ```cpp
 void foo(const Def* def) {
-    if (auto wrap = match<core::wrap>(def)) {
+    if (auto wrap = Axm::isa<core::wrap>(def)) {
         auto [a, b] = wrap->args<2>();
         auto mode   = wrap->decurry()->arg();
         switch (wrap.id()) {
@@ -279,16 +280,16 @@ void foo(const Def* def) {
         }
     }
 
-    if (auto add = match(core::wrap::add, def)) {
+    if (auto add = Axm::isa(core::wrap::add, def)) {
         auto [a, b] = add->args<2>();
         auto mode   = add->decurry()->arg();
     }
 
     // def must match as a core::wrap - otherwise, asserts
-    auto wrap = force<core::wrap>(def);
+    auto wrap = Axm::as<core::wrap>(def);
 
     // def must match as a core::wrap::add - otherwise, asserts
-    auto add = force(core::wrap::add, def);
+    auto add = Axm::as(core::wrap::add, def);
 }
 ```
 
@@ -296,11 +297,11 @@ void foo(const Def* def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast` <br> `static_cast`                                | Returns                                                                                    | If `def` is a ...               |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ------------------------------- |
-| `match<mem::load>(def)` <br> `force<mem::load>(def)`             | [Match](@ref mim::Match)`<`[mem::load](@ref mim::plug::mem.load), [App](@ref mim::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
-| `match<core::wrap>(def)` <br> `force<core::wrap>(def)`           | [Match](@ref mim::Match)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.??? s m (a, b)`    |
-| `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref mim::Match)`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.add s m (a, b)`    |
+| `dynamic_cast` <br> `static_cast`                           | Returns                                                                                 | If `def` is a ...               |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------- |
+| `isa<mem::load>(def)` <br> `as<mem::load>(def)`             | mim::Axm::IsA`<`[mem::load](@ref mim::plug::mem.load), [App](@ref mim::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
+| `isa<core::wrap>(def)` <br> `as<core::wrap>(def)`           | mim::Axm::IsA`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.??? s m (a, b)`    |
+| `isa(core::wrap::add, def)` <br> `as(core::wrap::add, def)` | mim::Axm::IsA`<`[core::wrap](@ref mim::plug::mem.load), [App](@ref mim::App)`>` | `%%core.wrap.add s m (a, b)`    |
 
 ## Working with Indices
 

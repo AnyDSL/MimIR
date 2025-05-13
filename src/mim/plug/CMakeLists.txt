@@ -13,6 +13,7 @@ set(MIM_PLUGINS
     refly
     regex
     tensor
+    tuple
 )
 
 list(TRANSFORM MIM_PLUGINS PREPEND "mim_internal_" OUTPUT_VARIABLE MIM_INTERNAL_PLUGINS)

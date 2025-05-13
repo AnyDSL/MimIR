@@ -12,7 +12,7 @@
 namespace mim::plug::autodiff {
 
 const Def* AutoDiffZero::rewrite(const Def* def) {
-    if (auto zero_app = match<zero>(def); zero_app) {
+    if (auto zero_app = Axm::isa<zero>(def); zero_app) {
         // callee = zero
         // arg = type T
         auto T = zero_app->arg();
