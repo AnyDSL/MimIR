@@ -5,19 +5,15 @@
 
 namespace mim::plug::tuple {
 
-const Def* normalize_concat(const Def* type, const Def*, const Def* arg) {
+const Def* normalize_concat(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
+    auto [n, m] = callee->as<App>()->decurry()->args<2>([](auto def) { return Lit::isa(def); });
 
-    auto ta = a->isa<Tuple>();
-    auto tb = b->isa<Tuple>();
-    // auto pa = a->isa<Pack>();
-    // auto pb = b->isa<Pack>();
-
-    if (ta && tb) {
+    if (n && m) {
         auto defs = DefVec();
-        for (size_t i = 0, e = ta->num_ops(); i != e; ++i) defs.emplace_back(ta->op(i));
-        for (size_t i = 0, e = tb->num_ops(); i != e; ++i) defs.emplace_back(tb->op(i));
+        for (size_t i = 0, e = *n; i != e; ++i) defs.emplace_back(a->proj(e, i));
+        for (size_t i = 0, e = *m; i != e; ++i) defs.emplace_back(b->proj(e, i));
         return world.tuple(defs);
     }
 

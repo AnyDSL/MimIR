@@ -2,14 +2,18 @@
 plugin tuple;
 plugin refly;
 
-lam f (a: [Nat, Bool], b: [Bool, Nat, Nat]): [Nat, Bool, Bool, Nat, Nat] =
-    %tuple.concat @(2, 3) (a, b);
+lam f1 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [ Nat, Bool ,  Bool, Nat, Nat ] = %tuple.concat @(2, 3) (a, b);
+lam f2 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [ Nat, Bool , [Bool, Nat, Nat]] = %tuple.append  @2 @((Nat, Bool), [Bool, Nat, Nat]) (a, b);
+lam f3 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [[Nat, Bool],  Bool, Nat, Nat ] = %tuple.prepend @3 @([Nat, Bool], (Bool, Nat, Nat)) (a, b);
 
-lam g (a: [Nat, Bool], b: [Bool, Nat, Nat]): [Nat, Bool, [Bool, Nat, Nat]] =
-    %tuple.append @2 @((Nat, Bool), [Bool, Nat, Nat]) (a, b);
+lam g1 (a: «2; Nat», b: [Bool, Nat, Nat]): [Nat, Nat,  Bool, Nat, Nat ] = %tuple.concat @(2, 3) (a, b);
+lam g2 (a: «2; Nat», b: [Bool, Nat, Nat]): [Nat, Nat, [Bool, Nat, Nat]] = %tuple.append  @2 @(‹2; Nat›, [Bool, Nat, Nat]) (a, b);
+lam g3 (a: «2; Nat», b: [Bool, Nat, Nat]): [«2; Nat» , Bool, Nat, Nat ] = %tuple.prepend @3 @(«2; Nat», (Bool, Nat, Nat)) (a, b);
 
-lam h (a: [Nat, Bool], b: [Bool, Nat, Nat]): [[Nat, Bool], Bool, Nat, Nat] =
-    %tuple.prepend @3 @([Nat, Bool], (Bool, Nat, Nat)) (a, b);
+lam h1 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , Nat, Nat, Nat] = %tuple.concat @(2, 3) (a, b);
+lam h2 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , «3; Nat»     ] = %tuple.append  @2 @((Nat, Bool), «3; Nat») (a, b);
+lam h3 (a: [Nat, Bool], b: «3; Nat»): [[Nat, Bool], Nat, Nat, Nat] = %tuple.prepend @3 @([Nat, Bool], ‹3; Nat›) (a, b);
+
 
 let x = (1, tt);
 let y = (ff, 23, 42);
