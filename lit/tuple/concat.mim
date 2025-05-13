@@ -14,7 +14,6 @@ lam h1 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , Nat, Nat, Nat] = %tuple.co
 lam h2 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , «3; Nat»     ] = %tuple.append  @2 @((Nat, Bool), «3; Nat») (a, b);
 lam h3 (a: [Nat, Bool], b: «3; Nat»): [[Nat, Bool], Nat, Nat, Nat] = %tuple.prepend @3 @([Nat, Bool], ‹3; Nat›) (a, b);
 
-
 let x = (1, tt);
 let y = (ff, 23, 42);
 let z = %tuple.concat @(2, 3) (x, y);

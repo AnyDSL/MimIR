@@ -8,11 +8,13 @@
 ///
 plugin core;
 ///
-/// A minimal tuple plugin
+/// Utilitly functions for tuples.
 ///
 /// ## Operations
 ///
 /// ### %%tuple.concat
+///
+/// Concatenation of an `n`-tuple and an `m`-tuple to an `n + m`-tuple.
 ///
 axm %tuple.concat:  {n m: Nat}
                   → {Ts: «n; *», Us: «m; *»}
@@ -22,12 +24,15 @@ axm %tuple.concat:  {n m: Nat}
                         %core.select (%core.ncmp.l (nat_i, n),
                                       Ts#(%core.bitcast (Idx n) i),
                                       Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, n))))
-                    », normalize_concat;
+                    » // «i: n + m; select(i < n , Ts#i, Us#(i - n))»
+                  , normalize_concat;
 
 lam %tuple.append   {n: Nat}
                     {Ts: «n; *», U: *}
                     (a: «i: n; Ts#i», b: U)
-                  : «i: %core.nat.add (n, 1); %core.select (%core.ncmp.l (%core.bitcast Nat i, n), Ts#(%core.bitcast (Idx n) i), U)»
+                  : «i: %core.nat.add (n, 1);
+                        %core.select (%core.ncmp.l (%core.bitcast Nat i, n), Ts#(%core.bitcast (Idx n) i), U)
+                    » // «i: n + 1; select(i < n , Ts#i, U»
                   = %tuple.concat @(n, 1) (a, b);
 
 lam %tuple.prepend  {m: Nat}
@@ -36,5 +41,24 @@ lam %tuple.prepend  {m: Nat}
                   : «i: %core.nat.add (1, m);
                         let nat_i = %core.bitcast Nat i;
                         %core.select (%core.ncmp.l (nat_i, 1), T, Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, 1))))
-                    »
+                    » // «i: 1 + m; select(i < 1 , T, Us#(i - 1))»
                   = %tuple.concat @(1, m) (a, b);
+///
+/// ### %%tuple.zip
+///
+/// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.
+///
+/// What is more, the signature will likely change in the future:
+/// * `r`: rank of the tensors to zip
+/// * `s`: shape of the tensors to zip
+/// * `n_i`: number if inputs
+/// * `n_o`: number if outputs
+/// * `Is`: tuple with `n_i` many elements that describe the element types of the inputs
+/// * `Os`: tuple with `n_o` many elements that describe the element types of the outputs
+/// * `f`: zipping function that expects an `n_i`-tuple whose elements correspond to `Is` and yields an `n_o`-tuple whose element types correspond to `Os`
+/// * `is`: the actual input tensors
+///
+axm %tuple.zip: [r: Nat, s: «r; Nat»]
+              → [n_i: Nat, Is: «n_i; *», n_o: Nat, Os: «n_o; *», f: «i: n_i; Is#i» → «o: n_o; Os#o»]
+              → «i: n_i; «s; Is#i»»
+              → «o: n_o; «s; Os#o»», normalize_zip;

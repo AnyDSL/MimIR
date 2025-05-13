@@ -250,26 +250,6 @@ axm %core.trait(size, align): * → Nat, normalize_trait;
 axm %core.pe(hlt, run):  {T: *} → T → T, normalize_pe;
 axm %core.pe(is_closed): {T: *} → T → Bool, normalize_pe;
 ///
-/// ### %%core.zip
-///
-/// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.
-///
-/// @warning For now, not a better place for this and will be moved elsewhere.
-/// What is more, the signature will likely change in the future:
-/// * `r`: rank of the tensors to zip
-/// * `s`: shape of the tensors to zip
-/// * `n_i`: number if inputs
-/// * `n_o`: number if outputs
-/// * `Is`: tuple with `n_i` many elements that describe the element types of the inputs
-/// * `Os`: tuple with `n_o` many elements that describe the element types of the outputs
-/// * `f`: zipping function that expects an `n_i`-tuple whose elements correspond to `Is` and yields an `n_o`-tuple whose element types correspond to `Os`
-/// * `is`: the actual input tensors
-///
-axm %core.zip: [r: Nat, s: «r; Nat»]
-             → [n_i: Nat, Is: «n_i; *», n_o: Nat, Os: «n_o; *», f: «i: n_i; Is#i» → «o: n_o; Os#o»]
-             → «i: n_i; «s; Is#i»»
-             → «o: n_o; «s; Os#o»», normalize_zip;
-///
 /// ## %%core.select
 ///
 /// More readable shorthand to create a select/if:
