@@ -28,26 +28,35 @@ let Ring = [
 ///
 /// let nat_ring = (Nat, 0, 1, %core.nat.add, %core.nat.mul);
 ///
-axm %tensor.prod_2d: [m: Nat, k: Nat, l: Nat, R:Ring]
-                → [«m, k; R#T», «k, l; R#T»]
-                → [«m, l; R#T»], normalize_prod;
-///
 /// ### %%tensor.element_wise
 ///
-axm %tensor.element_wise: [r: Nat, s: «r; Nat», ni: Nat, Is: «ni; *», T: *] →
-    [app: «i: ni; Is#i» → T] → [is: «i: ni; «s; Is#i» »] → «s; T»;
+axm %tensor.element_wise: {T: *}
+                        → {r: Nat, s: «r; Nat»}
+                        → {ni: Nat, Is: «ni; *»}
+                        → [app: «i: ni; Is#i» → T]
+                        → [is: «i: ni; «s; Is#i» »]
+                        → «s; T»;
 ///
 /// ### %%tensor.transpose
 ///
-axm %tensor.transpose: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», permutation: «r;Idx r»] → « <j: r; s#(permutation#j)>; T»;
+axm %tensor.transpose:  {T: *}
+                      → {r: Nat, s: «r; Nat»}
+                      → [input: «s;T», permutation: «r;Idx r»]
+                      → « <j: r; s#(permutation#j)>; T»;
 ///
 /// ### %%tensor.slice
 ///
-axm %tensor.slice: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», output_shape: «r; Nat», start_indices: « i:r; Idx (s#i) », steps: « i:r; Nat »] → « output_shape; T»;
+axm %tensor.slice:  {T: *}
+                  → {r: Nat, s: «r; Nat»}
+                  → [input: «s;T», output_shape: «r; Nat», start_indices: « i:r; Idx (s#i) », steps: « i:r; Nat »]
+                  → « output_shape; T»;
 ///
 /// ### %%tensor.reshape
 ///
-axm %tensor.reshape: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», output_shape: «r; Nat»] → « output_shape; T»;
+axm %tensor.reshape:  {T: *}
+                    → {r: Nat, s: «r; Nat»}
+                    → [input: «s;T», output_shape: «r; Nat»]
+                    → « output_shape; T»;
 ///
 /// ### %%tensor.dot_general
 ///
@@ -61,18 +70,25 @@ axm %tensor.dot_general:  [R: Ring]
                         → {r1 r2: Nat}
                         → {nc nb: Nat}
                         → {s1: «r1; Nat», s2: «r2; Nat»}
-                        → {c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»}
+                        → [c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»]
                         → [«s1; R#T», «s2; R#T»]
                         → let bs = ‹i: nb; eq (s1#(b1#i), s2#(b2#i))›;
                           let nb_r1 = %core.nat.add (nb, r1);
-                          «%tuple.concat @(nb_r1, r2) @(‹nb_r1; Nat›, ‹r2; Nat›) (%tuple.concat @(nb, r1) @(‹nb; Nat›, ‹r1; Nat›) (bs, s1), s2); R#T»;
+                          «%tuple.concat @(nb_r1, r2) @(‹nb_r1; Nat›, ‹r2; Nat›) (%tuple.concat @(nb, r1) @(‹nb; Nat›, ‹r1; Nat›) (bs, s1), s2); R#T», normalize_prod;
+///
+/// ### %%tensor.prod_2d
+///
+/// lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
+///                 : «m, l; R#T»
+///                 = %tensor.dot_general R @(2, 2) @(1, 0) ([0], [1], [], []) (t1, t2);
 ///
 /// ### %%tensor.reduce
 ///
 /// `ni` tensors each of shape `s` and type `Is#i` in arg is
 /// * i: ni is a notation for i : (Idx ni)
 ///
-axm %tensor.reduce: [r: Nat, s: «r; Nat», ni: Nat, Is: «ni; *»] →
-        [f: «2; «i: ni; Is#i» » → «i: ni; Is#i»] →
-        [is: «i: ni; «s; Is#i» », init: «i: ni; Is#i», dims: «r; Bool»]
-        → «i: ni; « <j: r; (s#j, 1)#(dims#j)>; Is#i» »;
+axm %tensor.reduce: {r: Nat, s: «r; Nat»}
+                  → {ni: Nat, Is: «ni; *»}
+                  → [f: «2; «i: ni; Is#i» » → «i: ni; Is#i»]
+                  → [is: «i: ni; «s; Is#i» », init: «i: ni; Is#i», dims: «r; Bool»]
+                  → «i: ni; « <j: r; (s#j, 1)#(dims#j)>; Is#i» »;
