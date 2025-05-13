@@ -132,6 +132,7 @@ var core_2autogen_8h =
       [ "mim::plug::core::pe::run", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977aa53108f7543b75adbb34afc035d4cdf6", null ],
       [ "mim::plug::core::pe::is_closed", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a8da26ba680a4bc49270f115861546f0e", null ]
     ] ],
+    [ "mim::plug::core::select", "namespacemim_1_1plug_1_1core.html#aa90620d89f43753fb2f7907167019bf6", null ],
     [ "mim::plug::core::shr", "namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43", [
       [ "mim::plug::core::shr::a", "namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661", null ],
       [ "mim::plug::core::shr::l", "namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a2db95e8e1a9267b7a1188556b2013b33", null ]
@@ -146,7 +147,6 @@ var core_2autogen_8h =
       [ "mim::plug::core::wrap::mul", "namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa353942263d1bedfbe06b7bfa78226253", null ],
       [ "mim::plug::core::wrap::shl", "namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efabc192716b0e1d5c96a67961dd0d3f9da", null ]
     ] ],
-    [ "mim::plug::core::zip", "namespacemim_1_1plug_1_1core.html#a6a363c5df0d00c1e427b99081d03b4a9", null ],
     [ "mim::plug::core::normalize_abs", "namespacemim_1_1plug_1_1core.html#a93d18c05e754c8b3cb2469ebf571698c", null ],
     [ "mim::plug::core::normalize_bit1", "namespacemim_1_1plug_1_1core.html#a50a122d64b700aa0aeb9554ac1239416", null ],
     [ "mim::plug::core::normalize_bit2", "namespacemim_1_1plug_1_1core.html#a5781804ba7f77e602e4f1239bf877a5b", null ],
@@ -162,7 +162,6 @@ var core_2autogen_8h =
     [ "mim::plug::core::normalize_shr", "namespacemim_1_1plug_1_1core.html#af9d9013ee2de9117cc3576555e8df6c5", null ],
     [ "mim::plug::core::normalize_trait", "namespacemim_1_1plug_1_1core.html#a75e69f99817e9657fd72561f0b40c3c3", null ],
     [ "mim::plug::core::normalize_wrap", "namespacemim_1_1plug_1_1core.html#a67845d51427dee2eba8a9b9c6399d7b7", null ],
-    [ "mim::plug::core::normalize_zip", "namespacemim_1_1plug_1_1core.html#af3951905fa04ce273d627414f52a1414", null ],
     [ "mim::plug::core::register_normalizers", "namespacemim_1_1plug_1_1core.html#a9a3103f39984e3487e3466d00107eacf", null ],
     [ "mim::plug::core::Plugin_Id", "namespacemim_1_1plug_1_1core.html#a313da9372a97c5d81ab124e98108345e", null ]
 ];

@@ -17,7 +17,8 @@ var searchData=
   ['amdfp24_14',['AMDFP24',['../namespacemim_1_1plug_1_1math.html#a077df15a1553e043b52846fafeaf6b55',1,'mim::plug::math']]],
   ['amdfp24_15',['amdfp24',['../namespacemim_1_1plug_1_1math.html#a07302efd65b6f40937aad847fef4f24b',1,'mim::plug::math']]],
   ['any_16',['any',['../namespacemim_1_1plug_1_1regex.html#a9e88c3311ac4201abeacb94102dcee49',1,'mim::plug::regex']]],
-  ['arith_17',['arith',['../namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686',1,'mim::plug::math']]],
-  ['attr_18',['attr',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8c',1,'mim::plug::clos']]],
-  ['autodiff_5fplugin_19',['autodiff_plugin',['../namespacemim_1_1plug_1_1compile.html#a0bef76c5ba99aa5f925939a825eda351',1,'mim::plug::compile']]]
+  ['append_17',['append',['../namespacemim_1_1plug_1_1tuple.html#aedc9c99286296674c67cba716067592d',1,'mim::plug::tuple']]],
+  ['arith_18',['arith',['../namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686',1,'mim::plug::math']]],
+  ['attr_19',['attr',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8c',1,'mim::plug::clos']]],
+  ['autodiff_5fplugin_20',['autodiff_plugin',['../namespacemim_1_1plug_1_1compile.html#a0bef76c5ba99aa5f925939a825eda351',1,'mim::plug::compile']]]
 ];

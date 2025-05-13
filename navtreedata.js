@@ -46,7 +46,8 @@ var NAVTREE =
       [ "mem", "mem.html", null ],
       [ "opt", "opt.html", null ],
       [ "refly", "refly.html", null ],
-      [ "regex", "regex.html", null ]
+      [ "regex", "regex.html", null ],
+      [ "tuple", "tuple.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -103,13 +104,13 @@ var NAVTREEINDEX =
 "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aa2228465e8e618283c7c6beca8b3a4e6",
 "classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html",
 "clos_2autogen_8h_source.html",
-"flags_8h.html",
-"namespacemim.html#a0fa4d8ae744818bd552b43dc4c5fa947",
-"namespacemim_1_1plug_1_1affine.html#a6ff8673e1d2565961963aec89b59c068",
-"namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673af66234c5f1c1d4daede0a2189df4bb65",
-"namespacemim_1_1plug_1_1matrix.html#ae3f0ab7b8527477c358984c01ddbd94c",
-"reshape_8h.html",
-"structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1"
+"eta__red_8h.html",
+"namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab",
+"namespacemim_1_1ll.html#a8853938d8898dc6f8759f6cfe4e7ff95",
+"namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673ae358efa489f58062f10dd7316b65649e",
+"namespacemim_1_1plug_1_1matrix.html#ab58fe9e0929f29b8a2dd0068260629e4",
+"regex_2autogen_8h.html#ab01b9e34d981be56592820d8949b47d5",
+"structmim_1_1ll_1_1BB.html#a2441968b0dccbcbd1bf324a7e269c123"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

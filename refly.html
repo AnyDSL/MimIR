@@ -143,32 +143,35 @@ $(function(){initNavTree('refly.html',''); initResizable(true); });
     <a href="#autotoc_md210">Inspect</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md211">%refly.gid</a>
+        <a href="#autotoc_md211">%refly.type</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md212">%refly.dbg</a>
+        <a href="#autotoc_md212">%refly.gid</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md213">refly.assert</a>
+        <a href="#autotoc_md213">%refly.dbg</a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md214">refly.assert</a>
       </li>
     </ul>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md214">Manipulate</a>
   </li>
   <li class="level1">
     <a href="#autotoc_md215">Manipulate</a>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md216">Manipulate</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md216">%refly.refine</a>
+        <a href="#autotoc_md217">%refly.refine</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md217">Passes and Phases</a>
+    <a href="#autotoc_md218">Passes and Phases</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md218">Passes</a>
+        <a href="#autotoc_md219">Passes</a>
       </li>
     </ul>
   </li>
@@ -194,9 +197,12 @@ Reify/const Def*lect</h1>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md210"></a>
 Inspect</h1>
 <h2><a class="anchor" id="autotoc_md211"></a>
+%refly.type</h2>
+<p>Retuns type of an expression. </p><div class="fragment"><div class="line">axm %refly.type: {T: *} → T → *, normalize_type;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md212"></a>
 %refly.gid</h2>
 <p>Retuns the internal <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> of the argument. </p><div class="fragment"><div class="line">axm %refly.gid: {T: *} → T → Nat, normalize_gid;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md212"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md213"></a>
 %refly.dbg</h2>
 <p>Debugs a given expression.</p><ul>
 <li><code>tmp</code>: Prints debug information of a given expression at construction time and vanishes afterwards.</li>
@@ -209,7 +215,7 @@ Inspect</h1>
 <div class="line">let %refly.debug   = 4;</div>
 <div class="line"> </div>
 <div class="line">axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md213"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md214"></a>
 refly.assert</h2>
 <p>Nat comparison is made of 3 disjoint relations:</p><ul>
 <li><code>G</code>reater</li>
@@ -231,16 +237,16 @@ refly.assert</h2>
 <div class="fragment"><div class="line">axm %refly.equiv(ae = struc_ne, aE = struc_eq,</div>
 <div class="line">                 Ae = alpha_ne, AE = alpha_eq):</div>
 <div class="line">    {T: *} → [T, T] → T, normalize_equiv;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md214"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md215"></a>
 Manipulate</h1>
-<h1><a class="anchor" id="autotoc_md215"></a>
+<h1><a class="anchor" id="autotoc_md216"></a>
 Manipulate</h1>
-<h2><a class="anchor" id="autotoc_md216"></a>
+<h2><a class="anchor" id="autotoc_md217"></a>
 %refly.refine</h2>
 <p>Sets the <code>i</code>th operand of the reified Code <code>e</code> to <code>x</code>. </p><div class="fragment"><div class="line">axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md217"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md218"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md218"></a>
+<h2><a class="anchor" id="autotoc_md219"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %refly.remove_dbg_perm_pass: %compile.Pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

@@ -191,10 +191,10 @@ $(function(){initNavTree('core.html',''); initResizable(true); });
       <li class="level2">
         <a href="#autotoc_md133">%core.pe</a>
       </li>
-      <li class="level2">
-        <a href="#autotoc_md134">%core.zip</a>
-      </li>
     </ul>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md134">%core.select</a>
   </li>
 </ul>
 </div>
@@ -481,24 +481,9 @@ Other Operations</h1>
 <p>Steers the partial evaluator.</p>
 <div class="fragment"><div class="line">axm %core.pe(hlt, run):  {T: *} → T → T, normalize_pe;</div>
 <div class="line">axm %core.pe(is_closed): {T: *} → T → Bool, normalize_pe;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md134"></a>
-%core.zip</h2>
-<p><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>
-<dl class="section warning"><dt>Warning</dt><dd>For now, not a better place for this and will be moved elsewhere. What is more, the signature will likely change in the future:<ul>
-<li><code>r</code>: rank of the tensors to zip</li>
-<li><code>s</code>: shape of the tensors to zip</li>
-<li><code>n_i</code>: number if inputs</li>
-<li><code>n_o</code>: number if outputs</li>
-<li><code>Is</code>: tuple with <code>n_i</code> many elements that describe the element types of the inputs</li>
-<li><code>Os</code>: tuple with <code>n_o</code> many elements that describe the element types of the outputs</li>
-<li><code>f</code>: zipping function that expects an <code>n_i</code>-tuple whose elements correspond to <code>Is</code> and yields an <code>n_o</code>-tuple whose element types correspond to <code>Os</code></li>
-<li><code>is</code>: the actual input tensors</li>
-</ul>
-</dd></dl>
-<div class="fragment"><div class="line">axm %core.zip: [r: Nat, s: «r; Nat»]</div>
-<div class="line">             → [n_i: Nat, Is: «n_i; *», n_o: Nat, Os: «n_o; *», f: «i: n_i; Is#i» → «o: n_o; Os#o»]</div>
-<div class="line">             → «i: n_i; «s; Is#i»»</div>
-<div class="line">             → «o: n_o; «s; Os#o»», normalize_zip;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md134"></a>
+%core.select</h1>
+<p>More readable shorthand to create a select/if: </p><div class="fragment"><div class="line">lam %core.select {T: *} (cond: Bool, t: T, f: T): T = (f, t)#cond;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

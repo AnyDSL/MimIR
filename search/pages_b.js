@@ -13,5 +13,7 @@ var searchData=
   ['the_20opt_20plugin_10',['The opt Plugin',['../opt.html',1,'']]],
   ['the_20refly_20plugin_11',['The refly Plugin',['../refly.html',1,'']]],
   ['the_20regex_20plugin_12',['The regex Plugin',['../regex.html',1,'']]],
-  ['todo_20list_13',['Todo List',['../todo.html',1,'']]]
+  ['the_20tuple_20plugin_13',['The tuple Plugin',['../tuple.html',1,'']]],
+  ['todo_20list_14',['Todo List',['../todo.html',1,'']]],
+  ['tuple_20plugin_15',['The tuple Plugin',['../tuple.html',1,'']]]
 ];

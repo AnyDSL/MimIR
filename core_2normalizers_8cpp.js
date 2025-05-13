@@ -17,6 +17,5 @@ var core_2normalizers_8cpp =
     [ "mim::plug::core::normalize_pe", "namespacemim_1_1plug_1_1core.html#a1c1bc54436049519a58d20e2c92d0945", null ],
     [ "mim::plug::core::normalize_shr", "namespacemim_1_1plug_1_1core.html#af9d9013ee2de9117cc3576555e8df6c5", null ],
     [ "mim::plug::core::normalize_trait", "namespacemim_1_1plug_1_1core.html#a75e69f99817e9657fd72561f0b40c3c3", null ],
-    [ "mim::plug::core::normalize_wrap", "namespacemim_1_1plug_1_1core.html#a67845d51427dee2eba8a9b9c6399d7b7", null ],
-    [ "mim::plug::core::normalize_zip", "namespacemim_1_1plug_1_1core.html#af3951905fa04ce273d627414f52a1414", null ]
+    [ "mim::plug::core::normalize_wrap", "namespacemim_1_1plug_1_1core.html#a67845d51427dee2eba8a9b9c6399d7b7", null ]
 ];

@@ -19,5 +19,6 @@ var searchData=
   ['mim_3a_3aplug_3a_3aopt_16',['opt',['../namespacemim_1_1plug_1_1opt.html',1,'mim::plug']]],
   ['mim_3a_3aplug_3a_3arefly_17',['refly',['../namespacemim_1_1plug_1_1refly.html',1,'mim::plug']]],
   ['mim_3a_3aplug_3a_3aregex_18',['regex',['../namespacemim_1_1plug_1_1regex.html',1,'mim::plug']]],
-  ['mim_3a_3asys_19',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
+  ['mim_3a_3aplug_3a_3atuple_19',['tuple',['../namespacemim_1_1plug_1_1tuple.html',1,'mim::plug']]],
+  ['mim_3a_3asys_20',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
 ];

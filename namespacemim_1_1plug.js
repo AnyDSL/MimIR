@@ -143,6 +143,7 @@ var namespacemim_1_1plug =
         [ "run", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977aa53108f7543b75adbb34afc035d4cdf6", null ],
         [ "is_closed", "namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a8da26ba680a4bc49270f115861546f0e", null ]
       ] ],
+      [ "select", "namespacemim_1_1plug_1_1core.html#aa90620d89f43753fb2f7907167019bf6", null ],
       [ "shr", "namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43", [
         [ "a", "namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661", null ],
         [ "l", "namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a2db95e8e1a9267b7a1188556b2013b33", null ]
@@ -157,7 +158,6 @@ var namespacemim_1_1plug =
         [ "mul", "namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa353942263d1bedfbe06b7bfa78226253", null ],
         [ "shl", "namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efabc192716b0e1d5c96a67961dd0d3f9da", null ]
       ] ],
-      [ "zip", "namespacemim_1_1plug_1_1core.html#a6a363c5df0d00c1e427b99081d03b4a9", null ],
       [ "convert", "namespacemim_1_1plug_1_1core.html#aa245e9d008c0ad08a145c4b06162ebe6", null ],
       [ "convert", "namespacemim_1_1plug_1_1core.html#a12f61a2fced37e3d62c253da4c825c46", null ],
       [ "extract_unsafe", "namespacemim_1_1plug_1_1core.html#a04b2bc63f2900e9c6e2d745d3f3419d4", null ],
@@ -181,7 +181,6 @@ var namespacemim_1_1plug =
       [ "normalize_shr", "namespacemim_1_1plug_1_1core.html#af9d9013ee2de9117cc3576555e8df6c5", null ],
       [ "normalize_trait", "namespacemim_1_1plug_1_1core.html#a75e69f99817e9657fd72561f0b40c3c3", null ],
       [ "normalize_wrap", "namespacemim_1_1plug_1_1core.html#a67845d51427dee2eba8a9b9c6399d7b7", null ],
-      [ "normalize_zip", "namespacemim_1_1plug_1_1core.html#af3951905fa04ce273d627414f52a1414", null ],
       [ "op", "namespacemim_1_1plug_1_1core.html#a5c14a5971107e0e3158eaf0c29bef4ca", null ],
       [ "op", "namespacemim_1_1plug_1_1core.html#a927f40ea1451c951c7e434c881f2f6ee", null ],
       [ "register_normalizers", "namespacemim_1_1plug_1_1core.html#a9a3103f39984e3487e3466d00107eacf", null ],
@@ -390,5 +389,15 @@ var namespacemim_1_1plug =
       [ "Plugin_Id", "namespacemim_1_1plug_1_1opt.html#a0987aaf63a0209e71b7fcea95c848951", null ]
     ] ],
     [ "refly", "namespacemim_1_1plug_1_1refly.html", "namespacemim_1_1plug_1_1refly" ],
-    [ "regex", "namespacemim_1_1plug_1_1regex.html", "namespacemim_1_1plug_1_1regex" ]
+    [ "regex", "namespacemim_1_1plug_1_1regex.html", "namespacemim_1_1plug_1_1regex" ],
+    [ "tuple", "namespacemim_1_1plug_1_1tuple.html", [
+      [ "append", "namespacemim_1_1plug_1_1tuple.html#aedc9c99286296674c67cba716067592d", null ],
+      [ "concat", "namespacemim_1_1plug_1_1tuple.html#a6c58c4d6f5e52f258b1d7b07464d8b41", null ],
+      [ "prepend", "namespacemim_1_1plug_1_1tuple.html#ac27303d7e38479898972453b4e58f1f2", null ],
+      [ "zip", "namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2", null ],
+      [ "normalize_concat", "namespacemim_1_1plug_1_1tuple.html#a7de68ef33b3785dd40ea4b4d1117d296", null ],
+      [ "normalize_zip", "namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448", null ],
+      [ "register_normalizers", "namespacemim_1_1plug_1_1tuple.html#a4a5ac0ade39e76f6e910b0b5af8284bd", null ],
+      [ "Plugin_Id", "namespacemim_1_1plug_1_1tuple.html#a12e1d6408db489bf216da5d9ec52aaae", null ]
+    ] ]
 ];

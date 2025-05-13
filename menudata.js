@@ -43,7 +43,8 @@ var menudata={children:[
 {text:"mem",url:"mem.html"},
 {text:"opt",url:"opt.html"},
 {text:"refly",url:"refly.html"},
-{text:"regex",url:"regex.html"}]},
+{text:"regex",url:"regex.html"},
+{text:"tuple",url:"tuple.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[

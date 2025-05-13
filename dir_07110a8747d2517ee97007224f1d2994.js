@@ -12,5 +12,6 @@ var dir_07110a8747d2517ee97007224f1d2994 =
     [ "mem", "dir_a8769299ba688646b3b09d59765dd001.html", "dir_a8769299ba688646b3b09d59765dd001" ],
     [ "opt", "dir_1e3b85cb6be17649bb71980e307b762c.html", "dir_1e3b85cb6be17649bb71980e307b762c" ],
     [ "refly", "dir_cb29f0ea63268024683aa0675b8349ca.html", "dir_cb29f0ea63268024683aa0675b8349ca" ],
-    [ "regex", "dir_3714300ab4ba91f07d5df1384f99e344.html", "dir_3714300ab4ba91f07d5df1384f99e344" ]
+    [ "regex", "dir_3714300ab4ba91f07d5df1384f99e344.html", "dir_3714300ab4ba91f07d5df1384f99e344" ],
+    [ "tuple", "dir_61b124ea77151aa02ae903233f2cd709.html", "dir_61b124ea77151aa02ae903233f2cd709" ]
 ];

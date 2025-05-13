@@ -5,5 +5,6 @@ var searchData=
   ['tangent_2',['Tangent',['../namespacemim_1_1plug_1_1autodiff.html#a731a934813e6197c347e831cb312acda',1,'mim::plug::autodiff']]],
   ['trait_3',['trait',['../namespacemim_1_1plug_1_1core.html#a699face68306eeb01636f32010cc2d9d',1,'mim::plug::core']]],
   ['transpose_4',['transpose',['../namespacemim_1_1plug_1_1matrix.html#a5b14c9f2cfc5a0f1d95a3657b2ec5be3',1,'mim::plug::matrix']]],
-  ['tri_5',['tri',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72',1,'mim::plug::math']]]
+  ['tri_5',['tri',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72',1,'mim::plug::math']]],
+  ['type_6',['type',['../namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4',1,'mim::plug::refly']]]
 ];

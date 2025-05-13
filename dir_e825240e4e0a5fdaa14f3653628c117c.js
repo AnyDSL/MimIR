@@ -12,5 +12,6 @@ var dir_e825240e4e0a5fdaa14f3653628c117c =
     [ "mem", "dir_2b8155c79fe456239a885e12a4388c9f.html", "dir_2b8155c79fe456239a885e12a4388c9f" ],
     [ "opt", "dir_e884a516ff4eb84233003344b2ceffc3.html", "dir_e884a516ff4eb84233003344b2ceffc3" ],
     [ "refly", "dir_1175bb71810950b57807dd164b9077fe.html", "dir_1175bb71810950b57807dd164b9077fe" ],
-    [ "regex", "dir_61c4194356812aff253f2db658fec3ab.html", "dir_61c4194356812aff253f2db658fec3ab" ]
+    [ "regex", "dir_61c4194356812aff253f2db658fec3ab.html", "dir_61c4194356812aff253f2db658fec3ab" ],
+    [ "tuple", "dir_86240e6f676ebfac5b0481016dc73e04.html", "dir_86240e6f676ebfac5b0481016dc73e04" ]
 ];

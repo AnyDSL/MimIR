@@ -4,6 +4,6 @@ var searchData=
   ['zero_5fdef_1',['zero_def',['../namespacemim_1_1plug_1_1autodiff.html#a5fbb31cd7dee586d07837fc5c55eed78',1,'mim::plug::autodiff']]],
   ['zero_5fint_2',['zero_int',['../namespacemim_1_1plug_1_1matrix.html#a750e0b32ccf200ae772efbbdc9687e30',1,'mim::plug::matrix']]],
   ['zero_5fpullback_3',['zero_pullback',['../namespacemim_1_1plug_1_1autodiff.html#a7d78f8fc3e4b05738330a02f7f8502e9',1,'mim::plug::autodiff']]],
-  ['zip_4',['zip',['../core.html#autotoc_md134',1,'%core.zip'],['../namespacemim_1_1plug_1_1core.html#a6a363c5df0d00c1e427b99081d03b4a9',1,'mim::plug::core::zip']]],
+  ['zip_4',['zip',['../tuple.html#autotoc_md239',1,'%tuple.zip'],['../namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2',1,'mim::plug::tuple::zip']]],
   ['zonk_5',['zonk',['../classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a',1,'mim::Def']]]
 ];
