@@ -4,46 +4,74 @@
 ///
 /// [TOC]
 ///
-/// A minimal tensor plugin
+/// ## Dependencies
+///
+plugin tuple;
+///
+/// A tensor plugin
+///
+/// ## Types
+///
+/// Represents an [algebraic Ring](https://en.wikipedia.org/wiki/Ring_(mathematics)).
+///
+let Ring = [
+    T: *,
+    _0: T,
+    _1: T,
+    add: [T, T] → T,
+    mul: [T, T] → T,
+];
 ///
 /// ## Operations
 ///
-/// ### %%tensor.const_idx
+/// ### %%tensor.prod_2d
 ///
-/// The 42 constant, evaluated using a normalizer
-/// axm %tensor.const_idx: [n: Nat] → Idx n, normalize_const;
-let Ring = [
-    T: *,
-   _0: T,
-   _1: T,
-   add: [T, T] → T,
-   mul: [T, T] → T,
-];
 /// let nat_ring = (Nat, 0, 1, %core.nat.add, %core.nat.mul);
-
+///
 axm %tensor.prod_2d: [m: Nat, k: Nat, l: Nat, R:Ring]
                 → [«m, k; R#T», «k, l; R#T»]
                 → [«m, l; R#T»], normalize_prod;
-
+///
+/// ### %%tensor.element_wise
+///
 axm %tensor.element_wise: [r: Nat, s: «r; Nat», ni: Nat, Is: «ni; *», T: *] →
     [app: «i: ni; Is#i» → T] → [is: «i: ni; «s; Is#i» »] → «s; T»;
-
+///
+/// ### %%tensor.transpose
+///
 axm %tensor.transpose: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», permutation: «r;Idx r»] → « <j: r; s#(permutation#j)>; T»;
-
+///
+/// ### %%tensor.slice
+///
 axm %tensor.slice: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», output_shape: «r; Nat», start_indices: « i:r; Idx (s#i) », steps: « i:r; Nat »] → « output_shape; T»;
-
+///
+/// ### %%tensor.reshape
+///
 axm %tensor.reshape: [r: Nat, T: *] → [s: «r; Nat», input: «s;T», output_shape: «r; Nat»] → « output_shape; T»;
-
-//out_r = n_b + (r_lhs - n_c - n_b) + (r_rhs - n_c - n_b)
-axm %tensor.dot_general:  [r_lhs: Nat, r_rhs: Nat, n_c: Nat, n_b: Nat, R: Ring] →
-                          [s_lhs: «r_lhs; Nat», s_rhs: «r_rhs; Nat», c_lhs: «n_c; Nat», c_rhs: «n_c; Nat», b_lhs: «n_b; Nat», b_rhs: «n_b; Nat»] → 
-                          [lhs: «s_lhs; R#T», rhs: «s_rhs; R#T»] →
-                          [out_r: Nat, out_s: «out_r; Nat»] →
-                          «out_s; R#T»;
-
-/// ni tensors each of shape s and type Is#i
-/// in arg is
-/// i: ni is a notation for i : (Idx ni)
+///
+/// ### %%tensor.dot_general
+///
+/// [Generalized dot product](https://discord.com/channels/960975142459179068/1359503855729250455/1369607913966014594):
+/// * `out_r = nb + (r1 - nc - nb) + (r2 - nc - nb)`
+///
+/// Helper: returns `n` if `n == m` or `⊥:Nat` aka error otherwise.
+lam eq (n m: Nat): Nat = %core.select (%core.ncmp.e (n, m), n, ⊥:Nat);
+///
+axm %tensor.dot_general:  [R: Ring]
+                        → {r1 r2: Nat}
+                        → {nc nb: Nat}
+                        → {s1: «r1; Nat», s2: «r2; Nat»}
+                        → {c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»}
+                        → [«s1; R#T», «s2; R#T»]
+                        → let bs = ‹i: nb; eq (s1#(b1#i), s2#(b2#i))›;
+                          let nb_r1 = %core.nat.add (nb, r1);
+                          «%tuple.concat @(nb_r1, r2) @(‹nb_r1; Nat›, ‹r2; Nat›) (%tuple.concat @(nb, r1) @(‹nb; Nat›, ‹r1; Nat›) (bs, s1), s2); R#T»;
+///
+/// ### %%tensor.reduce
+///
+/// `ni` tensors each of shape `s` and type `Is#i` in arg is
+/// * i: ni is a notation for i : (Idx ni)
+///
 axm %tensor.reduce: [r: Nat, s: «r; Nat», ni: Nat, Is: «ni; *»] →
         [f: «2; «i: ni; Is#i» » → «i: ni; Is#i»] →
         [is: «i: ni; «s; Is#i» », init: «i: ni; Is#i», dims: «r; Bool»]
