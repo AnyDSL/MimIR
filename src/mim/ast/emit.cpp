@@ -323,7 +323,7 @@ const Def* ExtractExpr::emit_(Emitter& e) const {
         }
 
         if (decl()) return e.world().extract(tup, decl()->def());
-        error(dbg->loc(), "cannot resolve index '{}' for extraction", dbg);
+        error(dbg->loc(), "cannot resolve index '{}' for extraction", *dbg);
     }
 
     auto expr = std::get<Ptr<Expr>>(index()).get();

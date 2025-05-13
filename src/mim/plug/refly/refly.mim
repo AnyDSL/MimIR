@@ -28,6 +28,11 @@ axm %refly.reflect: {T: *} → [%refly.Code T] → T, normalize_reflect;
 ///
 /// ## Inspect
 ///
+/// ### %%refly.type
+///
+/// Retuns type of an expression.
+axm %refly.type: {T: *} → T → *, normalize_type;
+///
 /// ### %%refly.gid
 ///
 /// Retuns the internal mim::Def::gid of the argument.

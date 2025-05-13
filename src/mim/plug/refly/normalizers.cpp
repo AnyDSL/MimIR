@@ -56,6 +56,7 @@ const Def* normalize_refine(const Def*, const Def*, const Def* arg) {
     return {};
 }
 
+const Def* normalize_type(const Def*, const Def*, const Def* arg) { return arg->type(); }
 const Def* normalize_gid(const Def*, const Def*, const Def* arg) { return arg->world().lit_nat(arg->gid()); }
 
 template<equiv id> const Def* normalize_equiv(const Def*, const Def*, const Def* arg) {
