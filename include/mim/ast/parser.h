@@ -94,7 +94,7 @@ private:
     Ptr<Expr> parse_tuple_expr();
     Ptr<Expr> parse_insert_expr();
     Ptr<Expr> parse_uniq_expr();
-    Ptr<Expr> parse_match();
+    Ptr<Expr> parse_match_expr();
     ///@}
 
     enum PtrnStyle {

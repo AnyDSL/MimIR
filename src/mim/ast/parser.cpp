@@ -243,6 +243,7 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                 lex();
                 auto rhs = parse_expr("type a value is injected in",Expr::Prec::Inj);
                 lhs = ptr<InjExpr>(track,std::move(lhs),std::move(rhs));
+                continue;
             }
             case Tag::T_at: {
                 if (curr_prec >= Expr::Prec::App) return lhs;
@@ -305,6 +306,30 @@ Ptr<Expr> Parser::parse_uniq_expr() {
     return ptr<UniqExpr>(track, std::move(inhabitant));
 }
 
+Ptr<Expr> Parser::parse_match_expr() {
+    auto track = tracker();
+    expect(Tag::K_match, "opening match for union destruction");
+    auto matched = parse_expr("destroyed union element");
+
+    Ptrs<IdExpr> ids;
+    Ptrs<Expr> types;
+    Ptrs<Expr> results;
+    //auto delim_l = ahead().tag();
+    parse_list("match branches",Tag::D_brace_l,[&]() {
+        auto id_h = parse_id("var in branch");
+        accept(Tag::T_colon);
+        auto type_h = parse_expr("type of branch");
+        accept(Tag::T_match_arrow);
+        auto res_h = parse_expr("result of branch");
+        accept(Tag::T_match_arrow);
+
+        ids.emplace_back(ptr<IdExpr>(id_h));
+        types.emplace_back(std::move(type_h));
+        results.emplace_back(std::move(res_h));
+    });
+    return ptr<MatchExpr>(track, std::move(matched), std::move(types), std::move(ids), std::move(results));
+}
+
 Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
@@ -322,6 +347,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_brckt_l: return parse_sigma_expr();
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
+        case Tag::K_match:   return parse_match_expr();
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);

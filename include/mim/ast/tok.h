@@ -84,8 +84,8 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(D_quote_r,    "»")               \
     /* further tokens */               \
     m(T_arrow,      "→")               \
-    m(T_assign,     "=")               \
     m(T_match_arrow,"=>")              \
+    m(T_assign,     "=")               \
     m(T_at,         "@")               \
     m(T_bot,        "⊥")               \
     m(T_top,        "⊤")               \
