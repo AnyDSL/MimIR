@@ -155,7 +155,7 @@ void InjExpr::bind(Scopes& s) const {
 
 void MatchExpr::bind(Scopes& s) const {
     matched()->bind(s);
-    for (const auto& var: vars()) var->bind(s);
+    //for (const auto& var: vars()) var->bind(s);
     for (const auto& typ: types()) typ->bind(s);
     for (const auto& res: results()) res->bind(s);
 }

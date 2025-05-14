@@ -310,7 +310,7 @@ Ptr<Expr> Parser::parse_match_expr() {
     auto track = tracker();
     expect(Tag::K_match, "opening match for union destruction");
     auto matched = parse_expr("destroyed union element");
-
+    accept(Tag::K_with);
     Ptrs<IdExpr> ids;
     Ptrs<Expr> types;
     Ptrs<Expr> results;

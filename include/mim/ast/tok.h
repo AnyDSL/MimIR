@@ -51,6 +51,7 @@ namespace ast {
     m(K_I32,    "I32"   )             \
     m(K_I64,    "I64"   )             \
     m(K_match,  "match" )             \
+    m(K_with,   "with"  )             \
     m(K_inj,    "inj"   )             \
 
 #define CODE(t, str) + size_t(1)

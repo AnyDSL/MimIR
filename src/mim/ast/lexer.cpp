@@ -68,7 +68,9 @@ Tok Lexer::lex() {
         // further tokens
         if (accept(U'→')) return tok(Tag::T_arrow);
         if (accept( '@')) return tok(Tag::T_at);
-        if (accept( '=')) return tok(Tag::T_assign);
+        if (accept( '=')) {
+            if (accept('>')) return tok(Tag::T_match_arrow);
+            return tok(Tag::T_assign);}
         if (accept(U'⊥')) return tok(Tag::T_bot);
         if (accept(U'⊤')) return tok(Tag::T_top);
         if (accept(U'□')) return tok(Tag::T_box);
