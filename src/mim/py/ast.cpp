@@ -13,9 +13,6 @@ void init_ast(py::module_& m) {
         .def(py::init<>())
         //.def(py::init<AST&>())
         .def(py::init<mim::World&>());
-        // .def(py::init<>(), static_cast<AST (mim::ast::*)()>(&mim::ast::AST()))
-        // .def(py::init<>(), static_cast<AST (mim::ast::*)(mim::World&)>(&mim::ast::AST()))
-        // .def(py::init<>(), static_cast<AST (mim::ast::*)(mim::ast::AST&)>(&mim::ast::AST()));
 }
 
 } // namespace mim
