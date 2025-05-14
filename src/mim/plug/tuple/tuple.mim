@@ -2,13 +2,13 @@
 ///
 /// @see mim::plug::tuple
 ///
+/// Utilitly functions for tuples.
+///
 /// [TOC]
 ///
 /// ## Dependencies
 ///
 plugin core;
-///
-/// Utilitly functions for tuples.
 ///
 /// ## Operations
 ///
@@ -32,7 +32,7 @@ lam %tuple.append   {n: Nat}
                     (a: «i: n; Ts#i», b: U)
                   : «i: %core.nat.add (n, 1);
                         %core.select (%core.ncmp.l (%core.bitcast Nat i, n), Ts#(%core.bitcast (Idx n) i), U)
-                    » // «i: n + 1; select(i < n , Ts#i, U»
+                    » // «i: n + 1; select(i < n , Ts#i, U)»
                   = %tuple.concat @(n, 1) (a, b);
 
 lam %tuple.prepend  {m: Nat}
