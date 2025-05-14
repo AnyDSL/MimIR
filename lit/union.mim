@@ -3,9 +3,12 @@
 lam combine (t1 t2: *) : * = 
  t1 ∪ t2;
 
+lam inject (t1 t2: *) (x:t1) : t1 ∪ t2 = 
+    x inj t1 ∪ t2;
+
 lam f (t1 t2: *) (x:t1) : Nat = 
-    (match x inj t1 ∪ t2 {
+    (match (x inj (t1 ∪ t2)) {
         a: t1 => 1,
-        b: t2 => 2, 
+        b: t2 => 2
    });
 

@@ -321,7 +321,6 @@ Ptr<Expr> Parser::parse_match_expr() {
         auto type_h = parse_expr("type of branch");
         accept(Tag::T_match_arrow);
         auto res_h = parse_expr("result of branch");
-        accept(Tag::T_match_arrow);
 
         ids.emplace_back(ptr<IdExpr>(id_h));
         types.emplace_back(std::move(type_h));
