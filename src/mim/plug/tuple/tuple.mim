@@ -44,6 +44,19 @@ lam %tuple.prepend  {m: Nat}
                     » // «i: 1 + m; select(i < 1 , T, Us#(i - 1))»
                   = %tuple.concat @(1, m) (a, b);
 ///
+/// ### %%tuple.contains
+///
+/// Checks whether the given value is a member of the tuple.
+///
+axm %tuple.mem: {n: Nat} → {T: *, Us: «n; *»} → [T, «i: n; Us#i»] → Bool, normalize_mem;
+///
+/// ### %%tuple.diff
+///
+/// Removes elements
+///
+//axm %tuple.diff: {n m: Nat} → {Ts: «n; *»} → [«i: n; Ts#i», «n; Bool»] → «%core.nat.sub (n, m); T», normalize_diff;
+///
+///
 /// ### %%tuple.zip
 ///
 /// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.

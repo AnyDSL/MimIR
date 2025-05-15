@@ -13,7 +13,7 @@ namespace {
 static bool needs_zonk(const Def* def) {
     if (def->has_dep(Dep::Hole)) {
         for (auto mut : def->local_muts())
-            if (auto infer = mut->isa<Hole>(); infer && infer->is_set()) return true;
+            if (auto hole = mut->isa<Hole>(); hole && hole->is_set()) return true;
     }
 
     return false;
@@ -45,7 +45,7 @@ const Def* Hole::find(const Def* def) {
     // find root
     auto res = def;
     for (auto hole = res->isa_mut<Hole>(); hole && hole->op(); hole = res->isa_mut<Hole>()) res = hole->op();
-    // TODO don't re-update last infer
+    // TODO don't re-update last hole
 
     // path compression: set all Holes along the chain to res
     for (auto hole = def->isa_mut<Hole>(); hole && hole->op(); hole = def->isa_mut<Hole>()) {
@@ -58,22 +58,22 @@ const Def* Hole::find(const Def* def) {
 
 const Def* Hole::tuplefy() {
     if (auto a = type()->isa_lit_arity(); a && !is_set()) {
-        auto& w     = world();
-        auto n      = *a;
-        auto infers = absl::FixedArray<const Def*>(n);
+        auto& w    = world();
+        auto n     = *a;
+        auto holes = absl::FixedArray<const Def*>(n);
         if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
-            auto var  = sigma->has_var();
-            auto rw   = VarRewriter(var, this);
-            infers[0] = w.mut_hole(sigma->op(0));
+            auto var = sigma->has_var();
+            auto rw  = VarRewriter(var, this);
+            holes[0] = w.mut_hole(sigma->op(0));
             for (size_t i = 1; i != n; ++i) {
-                rw.map(sigma->var(n, i - 1), infers[i - 1]);
-                infers[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
+                rw.map(sigma->var(n, i - 1), holes[i - 1]);
+                holes[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
             }
         } else {
-            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_hole(type()->proj(n, i));
+            for (size_t i = 0; i != n; ++i) holes[i] = w.mut_hole(type()->proj(n, i));
         }
 
-        auto tuple = w.tuple(infers);
+        auto tuple = w.tuple(holes);
         set(tuple);
         return tuple;
     }
