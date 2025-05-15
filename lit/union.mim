@@ -6,7 +6,10 @@ lam combine (t1 t2: *) : * =
 lam inject (t1 t2: *) (x:t1) : t1 ∪ t2 = 
     x inj t1 ∪ t2;
 
-lam f (t1 t2: *) (x:t1) : Nat = 
+lam minject (t1 t2 t3: *) (x: t3) : t1 ∪ t2 ∪ t3 = 
+    x inj t1 ∪ t2 ∪ t3;
+
+lam f (t1 t2: *) (x:t1) (y: t2): Nat  = 
     match x inj t1 ∪ t2 with {
         a: t1 => 1,
         b: t2 => 2

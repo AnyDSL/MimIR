@@ -1,5 +1,6 @@
 #include "mim/def.h"
 #include "mim/ast/ast.h"
+#include "mim/util/span.h"
 
 using namespace std::literals;
 
@@ -237,12 +238,15 @@ const Def* MatchExpr::emit_(Emitter& e) const {
     res.push_back(x);
     // each match case is transformed to a pi
     for (size_t i = 0; i < types().size();i++) {
-        // auto vare_ = var(i)->emit(e);
-        auto typee = type(i)->emit(e);
-        auto rese = result(i)->emit(e);
-        
-        auto match_case = e.world().pi(typee,rese);
-        res.push_back(match_case);
+        auto dom = type(i)->emit(e);
+        auto body = result(i)->emit(e);
+        auto codom = body->type();
+        //auto vare = var(i)->emit(e);
+
+        auto lam = e.world().mut_lam(dom,codom);
+        lam->set(true,body);
+        //lam->var()
+        res.push_back(lam);
     }
     // then we put everything in a big def for building the match
     return e.world().match(res);
