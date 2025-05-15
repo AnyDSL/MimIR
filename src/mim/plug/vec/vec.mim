@@ -1,0 +1,14 @@
+/// # The vec Plugin {#vec}
+///
+/// @see mim::plug::vec
+///
+/// Utilitly functions for arrays to behave them like vectors in other languages.
+///
+/// [TOC]
+///
+/// ## Operations
+///
+/// ### %%vec.foldl & %%vec.foldr
+///
+axm %vec.fold(l): {A E: *, n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;
+axm %vec.fold(r): {A E: *, n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;

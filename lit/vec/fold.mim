@@ -1,0 +1,8 @@
+// RUN: %mim %s
+plugin vec;
+plugin refly;
+
+let res1 = %vec.fold.l %core.nat.add (0, (1, 2, 3, 4, 5));
+let res2 = %vec.fold.r %core.nat.add ((1, 2, 3, 4, 5), 0);
+let _ = %refly.equiv.struc_eq (res1, 15);
+let _ = %refly.equiv.struc_eq (res2, 15);
