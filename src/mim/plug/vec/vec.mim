@@ -6,9 +6,30 @@
 ///
 /// [TOC]
 ///
-/// ## Operations
+/// ## Dependencies
 ///
-/// ### %%vec.foldl & %%vec.foldr
+plugin core;
 ///
-axm %vec.fold(l): {A E: *, n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;
-axm %vec.fold(r): {A E: *, n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;
+/// ## Iterators
+///
+/// ### %%vec.fold
+///
+axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;
+axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;
+///
+/// ## Scanning
+///
+/// ### %%vec.scan
+///
+/// Does the given predicate hold for all elements/at least one element?
+///
+axm %vec.scan(for_all, exists): {E: *} → {n: Nat} → [p: E → Bool] → «n; E» → Bool, normalize_scan;
+///
+/// ## Modifiers
+///
+/// ### %%vec.diff
+///
+/// Removes elements from vector.
+///
+//lam unique {n m: Nat} (is: «n; Idx m»): «n; Idx m»
+axm %vec.diff: {T: *} → {n m: Nat} → [«n; T», «m; Idx n»] → «%core.nat.sub (n, m); T», normalize_diff;

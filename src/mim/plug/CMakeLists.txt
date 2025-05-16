@@ -10,6 +10,7 @@ set(MIM_PLUGINS
     matrix
     mem
     opt
+    ord
     refly
     regex
     tuple

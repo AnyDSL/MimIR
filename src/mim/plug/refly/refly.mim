@@ -2,7 +2,7 @@
 ///
 /// @see mim::plug::refly
 ///
-/// The refly plugin allows to [reify](https://en.wikipedia.org/wiki/Reification_(computer_science)) and [reflect](https://en.wikipedia.org/wiki/const Def*lective_programming) MimIR's own representation.
+/// The refly plugin allows to [reify](https://en.wikipedia.org/wiki/Reification_(computer_science)) and [reflect](https://en.wikipedia.org/wiki/Reflective_programming) MimIR's own representation.
 ///
 /// [TOC]
 ///
@@ -14,16 +14,18 @@ import compile;
 ///
 axm %refly.Code: * → *;
 ///
-/// ## Reify/const Def*lect
+/// ## Reify/Reflect
 ///
 /// ### %%refly.reify
 ///
 /// Yields the internal MimIR representation of a Mim expression as `%%refly.Code`.
+///
 axm %refly.reify: {T: *} → T → [%refly.Code T], normalize_reify;
 ///
 /// ### %%refly.reflect
 ///
 /// Converts a `%%refly.Code` back to a Mim expression.
+///
 axm %refly.reflect: {T: *} → [%refly.Code T] → T, normalize_reflect;
 ///
 /// ## Inspect
@@ -31,11 +33,13 @@ axm %refly.reflect: {T: *} → [%refly.Code T] → T, normalize_reflect;
 /// ### %%refly.type
 ///
 /// Retuns type of an expression.
+///
 axm %refly.type: {T: *} → T → *, normalize_type;
 ///
 /// ### %%refly.gid
 ///
 /// Retuns the internal mim::Def::gid of the argument.
+///
 axm %refly.gid: {T: *} → T → Nat, normalize_gid;
 ///
 /// ### %%refly.dbg
@@ -53,7 +57,7 @@ let %refly.debug   = 4;
 
 axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;
 ///
-/// ### %refly.assert
+/// ### %%refly.assert
 ///
 /// Nat comparison is made of 3 disjoint relations:
 ///     * `G`reater
@@ -72,11 +76,11 @@ axm %refly.equiv(ae = struc_ne, aE = struc_eq,
     {T: *} → [T, T] → T, normalize_equiv;
 ///
 /// ## Manipulate
-/// ## Manipulate
 ///
 /// ### %%refly.refine
 ///
 /// Sets the `i`th operand of the reified Code `e` to `x`.
+///
 axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;
 ///
 /// ## Passes and Phases

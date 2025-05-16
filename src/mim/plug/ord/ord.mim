@@ -1,0 +1,73 @@
+/// # The ord Plugin {#ord}
+///
+/// @see mim::plug::ord
+///
+/// Ordered Set and Map.
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+plugin core;
+///
+/// ## Types
+///
+axm %ord.Set: [K  : *] → [[K, K] → Bool] → *;
+axm %ord.Map: [K V: *] → [[K, K] → Bool] → *;
+///
+/// ## Constructurs
+///
+/// ### %ord.init
+///
+/// Create set/map from a list of values/key-value-pairs.
+///
+axm %ord.init(set): {K  : *}       → [lt: [K, K] → Bool] → {n: Nat} → [«n;  K    »] → %ord.Set K  lt, normalize_init;
+axm %ord.init(map): {K V: *} as KV → [lt: [K, K] → Bool] → {n: Nat} → [«n; [K, V]»] → %ord.Map KV lt, normalize_init;
+///
+/// ### %ord.create
+///
+/// Create empty set/map.
+///
+lam %ord.create_set (K  : *)       (lt: [K, K] → Bool): %ord.Set K  lt = %ord.init.set @K  lt @0 ();
+lam %ord.create_map (K V: *) as KV (lt: [K, K] → Bool): %ord.Map KV lt = %ord.init.map @KV lt @0 ();
+///
+/// ## Capacity
+///
+/// ### %ord.size
+///
+/// Get number of elements in container.
+///
+axm %ord.size(set): {K  : *}       → {lt: [K, K] → Bool} → [%ord.Set K  lt] → Nat, normalize_size;
+axm %ord.size(map): {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt] → Nat, normalize_size;
+///
+/// ### %ord.is_empty
+///
+/// Is container empty?
+///
+lam %ord.is_empty_set {K  : *}       {lt: [K, K] → Bool} (set: %ord.Set K  lt) = %core.ncmp.e (%ord.size.set set, 0);
+lam %ord.is_empty_map {K V: *} as KV {lt: [K, K] → Bool} (map: %ord.Map KV lt) = %core.ncmp.e (%ord.size.map map, 0);
+///
+/// ## Lookup
+///
+/// ### %%ord.get
+///
+/// Get value from key in map.
+/// @todo Use Option as return type once we have proper union types.
+///
+axm %ord.get: {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt, K] → V, normalize_get;
+///
+/// ## %%ord.mem
+///
+/// Is the given key member of the container?
+///
+axm %ord.mem(set): {K  : *}       → {lt: [K, K] → Bool} → [K, %ord.Set K  lt] → Bool, normalize_mem;
+axm %ord.mem(map): {K V: *} as KV → {lt: [K, K] → Bool} → [K, %ord.Map KV lt] → Bool, normalize_mem;
+///
+/// ## Modifiers
+///
+/// ### %%ord.insert
+///
+/// Insert key / key-value-pair into container.
+///
+axm %ord.insert(set): {K  : *}       → {lt: [K, K] → Bool} → [%ord.Set K  lt,  K   ]  → %ord.Set K  lt, normalize_insert;
+axm %ord.insert(map): {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt, [K, V]] → %ord.Map KV lt, normalize_insert;
