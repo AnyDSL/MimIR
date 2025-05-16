@@ -1,3 +1,5 @@
+#include <mim/plug/core/core.h>
+
 #include "mim/world.h"
 
 #include "mim/plug/vec/vec.h"
@@ -27,6 +29,13 @@ template<scan id> const Def* normalize_scan(const Def*, const Def* c, const Def*
     auto& w     = c->world();
     auto callee = c->as<App>();
     auto p      = callee->arg();
+
+    if (auto tuple = vec->isa<Tuple>()) {
+        const Def* acc = w.lit_bool(id != scan::exists);
+        for (auto op : tuple->ops())
+            acc = w.call(id == scan::exists ? core::bit2::or_ : core::bit2::and_, 0_n, Defs{acc, w.app(p, op)});
+        return acc;
+    }
 
     return nullptr;
 }
