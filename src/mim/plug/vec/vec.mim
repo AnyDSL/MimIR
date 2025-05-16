@@ -1,0 +1,43 @@
+/// # The vec Plugin {#vec}
+///
+/// @see mim::plug::vec
+///
+/// Utilitly functions for arrays to behave them like vectors in other languages.
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+plugin core;
+///
+/// ## Iterators
+///
+/// ### %%vec.fold
+///
+axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;
+axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;
+///
+/// ## Scanning
+///
+/// ### %%vec.scan
+///
+/// Does the given predicate hold for all elements/at least one element?
+///
+axm %vec.scan(for_all, exists): {E: *} → {n: Nat} → [p: E → Bool] → «n; E» → Bool, normalize_scan;
+///
+/// ### %%vec.unique
+///
+/// Checks whether all elements in the given vector are distinct from each other (using structural equivalence).
+///
+axm %vec.is_unique: {T: *} → {n: Nat} → «n; T» → Bool, normalize_is_unique;
+///
+/// ## Modifiers
+///
+/// ### %%vec.diff
+///
+/// Removes elements from vector.
+///
+axm %vec.diff: {T: *}
+             → {n m: Nat}
+             → [«n; T», is: «m; Idx n»]
+             → «%core.select (%vec.is_unique is, %core.nat.sub (n, m), ⊥:Nat); T», normalize_diff;

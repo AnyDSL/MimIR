@@ -1,0 +1,14 @@
+// RUN: %mim %s
+plugin core;
+plugin ord;
+plugin refly;
+
+let s = %ord.init.set %core.ncmp.l (1, 3, 6, 9);
+let m = %ord.init.map %core.ncmp.l ((1, tt), (3, ff), (6, tt), (9, ff));
+let _  = %refly.equiv.struc_eq (4, %ord.size.set s);
+let _  = %refly.equiv.struc_eq (4, %ord.size.map m);
+let _  = %refly.equiv.struc_eq (ff, %ord.get (m, 3));
+let _  = %refly.equiv.struc_eq (tt, %ord.mem.set (3, s));
+let _  = %refly.equiv.struc_eq (tt, %ord.mem.map (3, m));
+let _  = %refly.equiv.struc_eq (ff, %ord.mem.set (4, s));
+let _  = %refly.equiv.struc_eq (ff, %ord.mem.map (4, m));

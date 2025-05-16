@@ -17,6 +17,14 @@ lam h3 (a: [Nat, Bool], b: «3; Nat»): [[Nat, Bool], Nat, Nat, Nat] = %tuple.pr
 let x = (1, tt);
 let y = (ff, 23, 42);
 let z = %tuple.concat @(2, 3) (x, y);
+let tup = (1, tt, ff, 23, 42);
 
-let _ = %refly.equiv.struc_eq ((1, tt, ff, 23, 42), z);
-let _ = %refly.equiv.struc_eq ((1, tt, ff, 23, 42), z);
+let _ = %refly.equiv.struc_eq (tup, z);
+let _ = %refly.equiv.struc_eq (tt, %tuple.mem @5 (23, tup));
+let _ = %refly.equiv.struc_eq (ff, %tuple.mem @5 (24, tup));
+
+lam foo (x: Nat): [] =
+    let tup = (tt, x);
+    let _ = %refly.equiv.struc_ne (tt, %tuple.mem @2 (23, tup));
+    let _ = %refly.equiv.struc_ne (ff, %tuple.mem @2 (24, tup));
+    ()
