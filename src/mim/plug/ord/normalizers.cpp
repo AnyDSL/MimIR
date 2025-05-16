@@ -2,6 +2,8 @@
 
 #include "mim/plug/ord/ord.h"
 
+#include "fe/assert.h"
+
 namespace mim::plug::ord {
 
 template<init id> const Def* normalize_init(const Def* type, const Def* callee, const Def* arg) {
@@ -14,8 +16,7 @@ template<size> const Def* normalize_size(const Def*, const Def*, const Def* arg)
     return nullptr;
 }
 
-const Def* normalize_get(const Def* type, const Def* callee, const Def* arg) {
-    auto& world = type->world();
+const Def* normalize_get(const Def*, const Def*, const Def* arg) {
     auto [c, k] = arg->projs<2>();
 
     if (auto init = Axm::isa<ord::init>(c)) {
@@ -24,30 +25,34 @@ const Def* normalize_get(const Def* type, const Def* callee, const Def* arg) {
                 if (kv->proj(2, 0) == k) return kv->proj(2, 1);
         }
     }
-    return world.raw_app(type, callee, arg);
+
+    return nullptr;
 }
 
-template<mem> const Def* normalize_mem(const Def* type, const Def* callee, const Def* arg) {
-    auto& world = type->world();
-    auto [c, k] = arg->projs<2>();
+template<mem id> const Def* normalize_mem(const Def*, const Def*, const Def* arg) {
+    auto& w     = arg->world();
+    auto [k, c] = arg->projs<2>();
+
     if (auto init = Axm::isa<ord::init>(c)) {
         if (auto tuple = init->arg()->isa<Tuple>()) {
-            bool all_keys_lit = true;
             for (auto kv : tuple->ops()) {
-                auto key = kv->proj(2, 0);
-                if (key == k) return world.lit_tt();
-                if (!key->isa<Lit>()) key->dump();
-                all_keys_lit &= (bool)key->isa<Lit>();
+                auto key = id == mem::map ? kv->proj(2, 0) : kv;
+                if (key == k) return w.lit_tt();
             }
-            if (all_keys_lit) return world.lit_ff();
+            return tuple->is_closed() ? w.lit_ff() : nullptr;
         }
+
+        if (auto pack = init->arg()->isa_imm<Pack>()) w.WLOG("packs not yet implemented: {}", pack);
     }
-    return world.raw_app(type, callee, arg);
+
+    return nullptr;
 }
 
-template<insert id> const Def* normalize_insert(const Def* type, const Def* callee, const Def* arg) {
+template<insert id> const Def* normalize_insert(const Def*, const Def*, const Def*) {
+    return nullptr;
+#if 0
     auto& world    = type->world();
-    auto [c, k, v] = arg->projs<3>();
+    auto [c, kv] = arg->projs<2>();
 
     if (auto init = Axm::isa<ord::init>(c)) {
         if (auto tuple = init->arg()->isa<Tuple>()) {
@@ -57,6 +62,7 @@ template<insert id> const Def* normalize_insert(const Def* type, const Def* call
                 DefVec new_ops;
                 bool updated = false;
                 for (size_t i = 0, e = *l; i != e; ++i) {
+                    auto key = id == mem::map ? kv->proj(2, 0) : kv;
                     auto kv = tuple->proj(e, i);
                     if (kv->proj(2, 0) == k) {
                         updated = true;
@@ -69,9 +75,12 @@ template<insert id> const Def* normalize_insert(const Def* type, const Def* call
                 return world.call(id, KV, new_ops.size(), Defs(new_ops));
             }
         }
+
+        if (auto pack = init->arg()->isa_imm<Pack>()) w.WLOG("packs not yet implemented: {}", pack);
     }
 
     return world.raw_app(type, callee, arg);
+#endif
 }
 
 MIM_ord_NORMALIZER_IMPL

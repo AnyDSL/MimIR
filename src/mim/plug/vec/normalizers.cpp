@@ -22,6 +22,8 @@ template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def*
         return acc;
     }
 
+    if (auto pack = vec->isa_imm<Pack>()) w.WLOG("packs not yet implemented: {}", pack);
+
     return nullptr;
 }
 
@@ -37,10 +39,57 @@ template<scan id> const Def* normalize_scan(const Def*, const Def* c, const Def*
         return acc;
     }
 
+    if (auto pack = vec->isa_imm<Pack>()) w.WLOG("packs not yet implemented: {}", pack);
+
     return nullptr;
 }
 
-const Def* normalize_diff(const Def*, const Def* c, const Def* vec) { return nullptr; }
+const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
+    auto& w = vec->world();
+
+    if (auto tuple = vec->isa<Tuple>()) {
+        auto seen = DefSet();
+        for (auto op : tuple->ops()) {
+            auto [_, ins] = seen.emplace(op);
+            if (!ins) return w.lit_ff();
+        }
+        return tuple->is_closed() ? w.lit_tt() : nullptr;
+    }
+
+    if (auto pack = vec->isa_imm<Pack>()) {
+        if (auto l = Lit::isa(pack->shape())) return w.lit_ff();
+    }
+
+    return nullptr;
+}
+
+const Def* normalize_diff(const Def* type, const Def* c, const Def* arg) {
+    if (type->as<Arr>()->shape()->isa<Bot>()) return nullptr; // ack error
+
+    auto& w        = type->world();
+    auto callee    = c->as<App>();
+    auto [n, m]    = callee->args<2>([](auto def) { return Lit::isa(def); });
+    auto [vec, is] = arg->projs<2>();
+
+    if (!n || !m) return nullptr;
+    if (n == 1 && m == 1) return w.tuple();
+
+    if (auto tup_vec = vec->isa<Tuple>()) {
+        if (auto tup_is = is->isa<Tuple>(); tup_is && tup_is->is_closed()) {
+            auto defs = DefVec();
+            auto set  = absl::btree_set<nat_t>();
+            for (auto opi : tup_is->ops()) set.emplace(Lit::as(opi));
+
+            for (size_t i = 0, e = tup_vec->num_ops(); i != e; ++i)
+                if (!set.contains(i)) defs.emplace_back(tup_vec->op(i));
+            return w.tuple(defs);
+        }
+    }
+
+    if (auto tup_pack = vec->isa_imm<Pack>()) return w.pack(*n - *m, tup_pack->body());
+
+    return nullptr;
+}
 
 MIM_vec_NORMALIZER_IMPL
 
