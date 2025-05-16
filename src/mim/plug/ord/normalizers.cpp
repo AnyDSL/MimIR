@@ -27,7 +27,7 @@ const Def* normalize_get(const Def* type, const Def* callee, const Def* arg) {
     return world.raw_app(type, callee, arg);
 }
 
-const Def* normalize_mem(const Def* type, const Def* callee, const Def* arg) {
+template<mem> const Def* normalize_mem(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     auto [c, k] = arg->projs<2>();
     if (auto init = Axm::isa<ord::init>(c)) {
