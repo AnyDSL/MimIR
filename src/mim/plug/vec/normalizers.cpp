@@ -23,6 +23,16 @@ template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def*
     return nullptr;
 }
 
+template<scan id> const Def* normalize_scan(const Def*, const Def* c, const Def* vec) {
+    auto& w     = c->world();
+    auto callee = c->as<App>();
+    auto p      = callee->arg();
+
+    return nullptr;
+}
+
+const Def* normalize_diff(const Def*, const Def* c, const Def* vec) { return nullptr; }
+
 MIM_vec_NORMALIZER_IMPL
 
 } // namespace mim::plug::vec
