@@ -81,6 +81,15 @@ axm %tensor.dot_general:  [R: Ring]
 /// lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
 ///                 : «m, l; R#T»
 ///                 = %tensor.dot_general R @(2, 2) @(1, 0) ([0], [1], [], []) (t1, t2);
+/// 
+///
+/// ### %%tensor.broadcast_in_dim
+///
+axm %tensor.broadcast_in_dim: {T: *}
+                            → {r_in r_out: Nat, s_in: «r_in; Nat», s_out: «r_out; Nat»}
+                            → [«s_in; T», «r; Idx r»]
+                            → «s_out; T»
+
 ///
 /// ### %%tensor.reduce
 ///
