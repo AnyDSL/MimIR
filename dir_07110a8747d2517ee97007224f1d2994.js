@@ -11,7 +11,9 @@ var dir_07110a8747d2517ee97007224f1d2994 =
     [ "matrix", "dir_0d2e58c046f0227e8ac65e69b8fa5974.html", "dir_0d2e58c046f0227e8ac65e69b8fa5974" ],
     [ "mem", "dir_a8769299ba688646b3b09d59765dd001.html", "dir_a8769299ba688646b3b09d59765dd001" ],
     [ "opt", "dir_1e3b85cb6be17649bb71980e307b762c.html", "dir_1e3b85cb6be17649bb71980e307b762c" ],
+    [ "ord", "dir_a7eab0f7808399d4e3d37f7a2e690b1f.html", "dir_a7eab0f7808399d4e3d37f7a2e690b1f" ],
     [ "refly", "dir_cb29f0ea63268024683aa0675b8349ca.html", "dir_cb29f0ea63268024683aa0675b8349ca" ],
     [ "regex", "dir_3714300ab4ba91f07d5df1384f99e344.html", "dir_3714300ab4ba91f07d5df1384f99e344" ],
-    [ "tuple", "dir_61b124ea77151aa02ae903233f2cd709.html", "dir_61b124ea77151aa02ae903233f2cd709" ]
+    [ "tuple", "dir_61b124ea77151aa02ae903233f2cd709.html", "dir_61b124ea77151aa02ae903233f2cd709" ],
+    [ "vec", "dir_adc17d0fe10eeb20b8e4733d7f98f55b.html", "dir_adc17d0fe10eeb20b8e4733d7f98f55b" ]
 ];

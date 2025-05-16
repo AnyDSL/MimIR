@@ -388,16 +388,68 @@ var namespacemim_1_1plug =
     [ "opt", "namespacemim_1_1plug_1_1opt.html", [
       [ "Plugin_Id", "namespacemim_1_1plug_1_1opt.html#a0987aaf63a0209e71b7fcea95c848951", null ]
     ] ],
+    [ "ord", "namespacemim_1_1plug_1_1ord.html", [
+      [ "create_map", "namespacemim_1_1plug_1_1ord.html#a1df1214b2f201f8285ba3757b18290d4", null ],
+      [ "create_set", "namespacemim_1_1plug_1_1ord.html#a1f9447414a2d8bd3d9b5e7098786740c", null ],
+      [ "get", "namespacemim_1_1plug_1_1ord.html#aba44102109a1561a91c6182d20785923", null ],
+      [ "init", "namespacemim_1_1plug_1_1ord.html#af994f9a15f3bed1a74847bf1bc0160d3", [
+        [ "set", "namespacemim_1_1plug_1_1ord.html#af994f9a15f3bed1a74847bf1bc0160d3acdaeeeba9b4a4c5ebf042c0215a7bb0e", null ],
+        [ "map", "namespacemim_1_1plug_1_1ord.html#af994f9a15f3bed1a74847bf1bc0160d3a1d78dc8ed51214e518b5114fe24490ae", null ]
+      ] ],
+      [ "insert", "namespacemim_1_1plug_1_1ord.html#ac5fab58f9ff10ed939f498f4418d5a8f", [
+        [ "set", "namespacemim_1_1plug_1_1ord.html#ac5fab58f9ff10ed939f498f4418d5a8facdaeeeba9b4a4c5ebf042c0215a7bb0e", null ],
+        [ "map", "namespacemim_1_1plug_1_1ord.html#ac5fab58f9ff10ed939f498f4418d5a8fa1d78dc8ed51214e518b5114fe24490ae", null ]
+      ] ],
+      [ "is_empty_map", "namespacemim_1_1plug_1_1ord.html#a3139291210faabba5130f06c7513a57f", null ],
+      [ "is_empty_set", "namespacemim_1_1plug_1_1ord.html#adf40c77e7d3537a42c2423fb1b4e33c5", null ],
+      [ "Map", "namespacemim_1_1plug_1_1ord.html#abc7482320010e15a67481e999f1e8e37", null ],
+      [ "mem", "namespacemim_1_1plug_1_1ord.html#ab6d9235ab0c3c0b802a43229b1531732", [
+        [ "set", "namespacemim_1_1plug_1_1ord.html#ab6d9235ab0c3c0b802a43229b1531732acdaeeeba9b4a4c5ebf042c0215a7bb0e", null ],
+        [ "map", "namespacemim_1_1plug_1_1ord.html#ab6d9235ab0c3c0b802a43229b1531732a1d78dc8ed51214e518b5114fe24490ae", null ]
+      ] ],
+      [ "Set", "namespacemim_1_1plug_1_1ord.html#a50e2f0713c3d362f4e5ec542ae95dda4", null ],
+      [ "size", "namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38", [
+        [ "set", "namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38acdaeeeba9b4a4c5ebf042c0215a7bb0e", null ],
+        [ "map", "namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38a1d78dc8ed51214e518b5114fe24490ae", null ]
+      ] ],
+      [ "normalize_get", "namespacemim_1_1plug_1_1ord.html#aca23be19d49b0a5baa10f74760b2e4ef", null ],
+      [ "normalize_init", "namespacemim_1_1plug_1_1ord.html#acfdfd946d58d1ec4b8773d1e87204a17", null ],
+      [ "normalize_insert", "namespacemim_1_1plug_1_1ord.html#a0804d375201e08be1ad389eff4b0670a", null ],
+      [ "normalize_mem", "namespacemim_1_1plug_1_1ord.html#ab6a305cd817dd4ed7f458425d0df7d65", null ],
+      [ "normalize_size", "namespacemim_1_1plug_1_1ord.html#a43293b1d5a0e603e953bfbed048d5a99", null ],
+      [ "register_normalizers", "namespacemim_1_1plug_1_1ord.html#a24f01b06e141f8ed2ac155dbdd36fdd9", null ],
+      [ "Plugin_Id", "namespacemim_1_1plug_1_1ord.html#a755ae6a7f2ee39cdcf28d325d8bbfd39", null ]
+    ] ],
     [ "refly", "namespacemim_1_1plug_1_1refly.html", "namespacemim_1_1plug_1_1refly" ],
     [ "regex", "namespacemim_1_1plug_1_1regex.html", "namespacemim_1_1plug_1_1regex" ],
     [ "tuple", "namespacemim_1_1plug_1_1tuple.html", [
       [ "append", "namespacemim_1_1plug_1_1tuple.html#aedc9c99286296674c67cba716067592d", null ],
       [ "concat", "namespacemim_1_1plug_1_1tuple.html#a6c58c4d6f5e52f258b1d7b07464d8b41", null ],
+      [ "mem", "namespacemim_1_1plug_1_1tuple.html#aae168cd2c7683088985c083deafc40a0", null ],
       [ "prepend", "namespacemim_1_1plug_1_1tuple.html#ac27303d7e38479898972453b4e58f1f2", null ],
       [ "zip", "namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2", null ],
       [ "normalize_concat", "namespacemim_1_1plug_1_1tuple.html#a7de68ef33b3785dd40ea4b4d1117d296", null ],
+      [ "normalize_mem", "namespacemim_1_1plug_1_1tuple.html#af0d4d888181afb2cae11dc124dc4d569", null ],
       [ "normalize_zip", "namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448", null ],
       [ "register_normalizers", "namespacemim_1_1plug_1_1tuple.html#a4a5ac0ade39e76f6e910b0b5af8284bd", null ],
       [ "Plugin_Id", "namespacemim_1_1plug_1_1tuple.html#a12e1d6408db489bf216da5d9ec52aaae", null ]
+    ] ],
+    [ "vec", "namespacemim_1_1plug_1_1vec.html", [
+      [ "diff", "namespacemim_1_1plug_1_1vec.html#a5c01986cca7021fdf3002667cb8f347e", null ],
+      [ "fold", "namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dc", [
+        [ "l", "namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dca2db95e8e1a9267b7a1188556b2013b33", null ],
+        [ "r", "namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dca4b43b0aee35624cd95b910189b3dc231", null ]
+      ] ],
+      [ "is_unique", "namespacemim_1_1plug_1_1vec.html#a091d66d323366df2a44ace85c3e624a8", null ],
+      [ "scan", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03", [
+        [ "for_all", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03a0a6701462dd440321b2b782395bfcb68", null ],
+        [ "exists", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03ae087923eb5dd1310f5f25ddd5ae5b580", null ]
+      ] ],
+      [ "normalize_diff", "namespacemim_1_1plug_1_1vec.html#abbc9a471c743f28e6bd53866ad31be1b", null ],
+      [ "normalize_fold", "namespacemim_1_1plug_1_1vec.html#ad0011878a139b10d25a61654e5186877", null ],
+      [ "normalize_is_unique", "namespacemim_1_1plug_1_1vec.html#aa5bac705cb383e5ba770e7dc841f183c", null ],
+      [ "normalize_scan", "namespacemim_1_1plug_1_1vec.html#a009bb0ca6ee61eaae893c94c8e145e13", null ],
+      [ "register_normalizers", "namespacemim_1_1plug_1_1vec.html#a0f5ea338a78435939ef48ab0e1111e1b", null ],
+      [ "Plugin_Id", "namespacemim_1_1plug_1_1vec.html#ad3b6bd69dddb4ad52e620122c43f9965", null ]
     ] ]
 ];

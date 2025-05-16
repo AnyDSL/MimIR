@@ -204,8 +204,8 @@ $(function(){initNavTree('indexmap_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">///@{</span></div>
 <div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespacemim.html#ae4d6eb0ad34c66ebefba58cf2f73f615">   67</a></span><span class="keyword">template</span>&lt;<span class="keyword">class</span> Indexer, <span class="keyword">class</span> Key, <span class="keyword">class</span> Value&gt; <span class="keyword">inline</span> Value* <a class="code hl_function" href="namespacemim.html#ae4d6eb0ad34c66ebefba58cf2f73f615">find</a>(<a class="code hl_class" href="classmim_1_1IndexMap.html">IndexMap&lt;Indexer, Key, Value*&gt;</a>&amp; map, Key key) {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">auto</span> i = map.<a class="code hl_function" href="classmim_1_1IndexMap.html#a50a342a9704a3b20643d1a152deade1e">indexer</a>().index(key);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> i != size_t(-1) ? map.<a class="code hl_function" href="classmim_1_1IndexMap.html#ac38fc5e657bf21abd0d14aaae87e0167">array</a>()[i] : <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">auto</span> i = map.indexer().index(key);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> i != size_t(-1) ? map.array()[i] : <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
 </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>

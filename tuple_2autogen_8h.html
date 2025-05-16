@@ -180,6 +180,12 @@ Variables</h2></td></tr>
 <tr class="memitem:a7de68ef33b3785dd40ea4b4d1117d296" id="r_a7de68ef33b3785dd40ea4b4d1117d296"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1tuple.html#a7de68ef33b3785dd40ea4b4d1117d296">mim::plug::tuple::normalize_concat</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *callee, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
 <tr class="separator:a7de68ef33b3785dd40ea4b4d1117d296"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">%tuple.mem</h2></td></tr>
+<tr class="memitem:aae168cd2c7683088985c083deafc40a0" id="r_aae168cd2c7683088985c083deafc40a0"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1tuple.html#aae168cd2c7683088985c083deafc40a0">mim::plug::tuple::mem</a> : flags_t </td></tr>
+<tr class="separator:aae168cd2c7683088985c083deafc40a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0d4d888181afb2cae11dc124dc4d569" id="r_af0d4d888181afb2cae11dc124dc4d569"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1tuple.html#af0d4d888181afb2cae11dc124dc4d569">mim::plug::tuple::normalize_mem</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="separator:af0d4d888181afb2cae11dc124dc4d569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%tuple.zip</h2></td></tr>
 <tr class="memitem:a135279856795948a173cceb114cb7dc2" id="r_a135279856795948a173cceb114cb7dc2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2">mim::plug::tuple::zip</a> : flags_t </td></tr>
 <tr class="separator:a135279856795948a173cceb114cb7dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,10 +206,11 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">void</span> register_normalizers(Normalizers&amp; normalizers) {\</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;concat&gt;)] = &amp;normalize_concat; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;mem&gt;)] = &amp;normalize_mem; \</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;zip&gt;)] = &amp;normalize_zip; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tuple_2autogen_8h_source.html#l00044">44</a> of file <a class="el" href="tuple_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_2autogen_8h_source.html#l00052">52</a> of file <a class="el" href="tuple_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

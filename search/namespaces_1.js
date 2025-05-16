@@ -17,8 +17,10 @@ var searchData=
   ['mim_3a_3aplug_3a_3amatrix_14',['matrix',['../namespacemim_1_1plug_1_1matrix.html',1,'mim::plug']]],
   ['mim_3a_3aplug_3a_3amem_15',['mem',['../namespacemim_1_1plug_1_1mem.html',1,'mim::plug']]],
   ['mim_3a_3aplug_3a_3aopt_16',['opt',['../namespacemim_1_1plug_1_1opt.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3arefly_17',['refly',['../namespacemim_1_1plug_1_1refly.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3aregex_18',['regex',['../namespacemim_1_1plug_1_1regex.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3atuple_19',['tuple',['../namespacemim_1_1plug_1_1tuple.html',1,'mim::plug']]],
-  ['mim_3a_3asys_20',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
+  ['mim_3a_3aplug_3a_3aord_17',['ord',['../namespacemim_1_1plug_1_1ord.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3arefly_18',['refly',['../namespacemim_1_1plug_1_1refly.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3aregex_19',['regex',['../namespacemim_1_1plug_1_1regex.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3atuple_20',['tuple',['../namespacemim_1_1plug_1_1tuple.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3avec_21',['vec',['../namespacemim_1_1plug_1_1vec.html',1,'mim::plug']]],
+  ['mim_3a_3asys_22',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
 ];
