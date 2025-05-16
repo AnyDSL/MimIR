@@ -87,8 +87,8 @@ axm %tensor.dot_general:  [R: Ring]
 ///
 axm %tensor.broadcast_in_dim: {T: *}
                             → {r_in r_out: Nat, s_in: «r_in; Nat», s_out: «r_out; Nat»}
-                            → [«s_in; T», «r; Idx r»]
-                            → «s_out; T»
+                            → [«s_in; T», «r_in; Idx r_in»]
+                            → «s_out; T»;
 
 ///
 /// ### %%tensor.reduce
