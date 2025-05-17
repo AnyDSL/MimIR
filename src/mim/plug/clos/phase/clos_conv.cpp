@@ -160,7 +160,7 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
 
     auto filter = rewrite(new_fn->filter(), subst);
     auto body   = rewrite(new_fn->body(), subst);
-    new_fn->reset({filter, body});
+    new_fn->unset()->set({filter, body});
 }
 
 const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {

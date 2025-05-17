@@ -269,25 +269,22 @@ public:
     /// @anchor set_ops
     /// You can set and change the Def::ops of a mutable after construction.
     /// However, you have to obey the following rules:
-    /// 1. If Def::is_set() is ...
-    ///     1. ... `false`, [set](@ref Def::set) the [operands](@ref Def::ops) from
+    /// If Def::is_set() is ...
+    ///     * `false`, [set](@ref Def::set) the [operands](@ref Def::ops) from
     ///         * left (`i == 0`) to
     ///         * right (`i == num_ops() - 1`).
-    ///     2. ... `true`, [reset](@ref Def::reset) the operands from left to right as in 1a.
-    /// 2. In addition, you can invoke Def::unset() at *any time* to start over with 1a:
-    /// ```
-    /// mut->unset()->set({a, b, c}); // This will always work, but should be your last resort.
-    /// ```
+    ///     * `true`, Def::unset() the operands first and then start over:
+    ///       ```
+    ///       mut->unset()->set({a, b, c});
+    ///       ```
     ///
     /// MimIR assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
     ///@{
-    Def* set(size_t i, const Def*);                                        ///< Successively   set from left to right.
-    Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
-    Def* set(Defs ops);                                                    ///< Def::set @p ops all at once.
-    Def* reset(Defs ops);                                                  ///< Def::reset @p ops all at once.
-    Def* unset();        ///< Unsets all Def::ops; works even, if not set at all or partially.
-    bool is_set() const; ///< Yields `true` if empty or the last op is set.
+    Def* set(size_t i, const Def*); ///< Successively   set from left to right.
+    Def* set(Defs ops);             ///< Def::set @p ops all at once.
+    Def* unset();                   ///< Unsets all Def::ops; works even, if not set at all or partially.
+    bool is_set() const;            ///< Yields `true` if empty or the last op is set.
     ///@}
 
     /// @name deps

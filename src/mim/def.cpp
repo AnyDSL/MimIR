@@ -232,10 +232,11 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
  * Def - set
  */
 
-// clang-format off
-Def* Def::  set(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i)   set(i, ops[i]); return this; }
-Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
-// clang-format on
+Def* Def::set(Defs ops) {
+    assert(ops.size() == num_ops());
+    for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
+    return this;
+}
 
 Def* Def::set(size_t i, const Def* def) {
     invalidate();

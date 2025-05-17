@@ -22,10 +22,6 @@ public:
         assert(op != this);
         return Def::set(0, op)->as<Hole>();
     }
-    Hole* reset(const Def* op) {
-        assert(op != this);
-        return Def::reset(0, op)->as<Hole>();
-    }
     Hole* unset() { return Def::unset()->as<Hole>(); }
     ///@}
 

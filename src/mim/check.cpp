@@ -50,7 +50,7 @@ const Def* Hole::find(const Def* def) {
     // path compression: set all Holes along the chain to res
     for (auto hole = def->isa_mut<Hole>(); hole && hole->op(); hole = def->isa_mut<Hole>()) {
         def = hole->op();
-        hole->reset(res);
+        hole->unset()->set(res);
     }
 
     return res;
