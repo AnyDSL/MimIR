@@ -14,8 +14,28 @@ plugin core;
 ///
 /// ### %%vec.fold
 ///
-axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;
-axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;
+/// [Fold aka Reduction](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) of the vector with `f`:
+/// * `%%vec.fold.l f (init, (e1, ..., en))` is `f (... (f (f (init, e1), e2)) ..., en)`.
+/// * `%%vec.fold.r f ((e1, ..., en), init)` is `f (e1, f (e2, ... (f (en, init) ...)))`.
+///
+axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [init: A, «n; E»] → A, normalize_fold;
+axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», init: A] → A, normalize_fold;
+///
+/// ### %%vec.map
+///
+/// `%%vec.map f (a1, ..., an)` applies function `f` to `a1`, ..., `an`, and builds the vector `(f a1, ..., f an)` with the results returned by `f`.
+///
+axm %vec.map: {T U: *} → {n: Nat} → [f: T → U] → «n; T» → «n; U», normalize_map;
+///
+/// ### %%vec.map2
+///
+/// `%%vec.map2 f (a1, ..., an) (b1, ..., bn)` is `(f (a1, b1), ..., f (an, bn))`.
+///
+axm %vec.map2: {T U V: *} → {n: Nat} → [f: [T, U] → V] → [«n; T», «n; U»] → «n; V», normalize_map2;
+///
+/// ### %%vec.map
+///
+axm %vec.mapn: {ni nv: Nat} → {Ts: «ni; *», U: *} → [f: «i: ni; Ts#i» → U] → «i: ni; «nv; Ts#i»» → «nv; U», normalize_mapn;
 ///
 /// ## Scanning
 ///

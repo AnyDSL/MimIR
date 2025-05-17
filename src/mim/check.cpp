@@ -298,10 +298,8 @@ const Def* Pi::check(size_t, const Def* def) { return def; }
 
 const Def* Pi::check() {
     auto t = infer(dom(), codom());
-    if (!Checker::alpha<Checker::Check>(t, type())) {
-        outln("{}", gid());
+    if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
-    }
     return t;
 }
 

@@ -27,6 +27,45 @@ template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def*
     return nullptr;
 }
 
+const Def* normalize_map(const Def*, const Def* c, const Def* vec) {
+    auto& w     = c->world();
+    auto callee = c->as<App>();
+    auto f      = callee->arg();
+
+    if (auto tuple = vec->isa<Tuple>()) {
+        size_t n  = tuple->num_ops();
+        auto defs = absl::FixedArray<const Def*>(n);
+        for (size_t i = 0; i != n; ++i) defs[i] = w.app(f, tuple->op(i));
+        return w.tuple(defs);
+    }
+
+    if (auto pack = vec->isa_imm<Pack>()) return w.pack(pack->shape(), w.app(f, pack->body()));
+
+    return nullptr;
+}
+
+const Def* normalize_map2(const Def*, const Def* c, const Def* arg) {
+    auto& w       = c->world();
+    auto callee   = c->as<App>();
+    auto f        = callee->arg();
+    auto [v1, v2] = arg->projs<2>();
+
+    if (auto tuple = v1->isa<Tuple>()) {
+        size_t n = tuple->num_ops();
+        if (v2->isa<Tuple, Pack>()) {
+            auto defs = absl::FixedArray<const Def*>(n);
+            for (size_t i = 0; i != n; ++i) defs[i] = w.app(f, {tuple->op(i), v2->proj(n, i)});
+            return w.tuple(defs);
+        }
+    }
+
+    // if (auto pack = vec->isa_imm<Pack>()) return w.pack(pack->shape(), w.app(f, pack->body()));
+
+    return nullptr;
+}
+
+const Def* normalize_mapn(const Def*, const Def*, const Def*) { return nullptr; }
+
 template<scan id> const Def* normalize_scan(const Def*, const Def* c, const Def* vec) {
     auto& w     = c->world();
     auto callee = c->as<App>();
