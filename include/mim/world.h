@@ -183,6 +183,13 @@ public:
     const Def* register_annex(plugin_t p, tag_t t, sub_t s, const Def* def) {
         return register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), def);
     }
+    const Def* sym2annex(Sym sym) {
+        for (auto [_, def] : flags2annex()) {
+            if (def->sym() == sym) return def;
+        }
+        return nullptr;
+    }
+
     ///@}
 
     /// @name Externals
