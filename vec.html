@@ -164,6 +164,16 @@ Dependencies</h1>
 Iterators</h1>
 <h2><a class="anchor" id="autotoc_md255"></a>
 %vec.fold</h2>
+<p><a href="https://en.wikipedia.org/wiki/Fold_(higher-order_function)">Fold aka Reduction</a> of the vector with <code>f</code>:</p><ul>
+<li><code>%vec.fold.l f (init, (e1, ..., en))</code> is <code>f (... (f (f (init, e1), e2)) ..., en)</code>.</li>
+<li><code>%vec.fold.r f ((e1, ..., en), init)</code> is <code>f (e1, f (e2, ... (f (en, init) ...)))</code>.</li>
+</ul>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><code>%vec.fold.l</code>   </th><th class="markdownTableHeadNone"><code>%vec.fold.r</code>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Left-fold-transformation.png" alt="Left Fold" class="inline"/>   </td><td class="markdownTableBodyNone"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Right-fold-transformation.png" alt="Right Fold" class="inline"/>   </td></tr>
+</table>
 <div class="fragment"><div class="line">axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;</div>
 <div class="line">axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md256"></a>
