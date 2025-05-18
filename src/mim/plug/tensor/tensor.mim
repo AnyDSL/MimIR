@@ -60,7 +60,7 @@ axm %tensor.reshape:  {T: *}
 ///
 /// ### %%tensor.dot_general
 ///
-/// [Generalized dot product](https://discord.com/channels/960975142459179068/1359503855729250455/1369607913966014594):
+/// [Generalized dot product](https://github.com/openxla/stablehlo/blob/main/docs/spec.md#dot_general):
 /// * `out_r = nb + (r1 - nc - nb) + (r2 - nc - nb)`
 ///
 /// Helper: returns `n` if `n == m` or `⊥:Nat` aka error otherwise.
@@ -81,7 +81,7 @@ axm %tensor.dot_general:  [R: Ring]
 /// lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
 ///                 : «m, l; R#T»
 ///                 = %tensor.dot_general R @(2, 2) @(1, 0) ([0], [1], [], []) (t1, t2);
-/// 
+///
 ///
 /// ### %%tensor.broadcast_in_dim
 ///
