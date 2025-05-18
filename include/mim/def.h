@@ -281,7 +281,7 @@ public:
     /// MimIR assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
     ///@{
-    Def* set(size_t i, const Def*); ///< Successively   set from left to right.
+    Def* set(size_t i, const Def*); ///< Successively set from left to right.
     Def* set(Defs ops);             ///< Def::set @p ops all at once.
     Def* unset();                   ///< Unsets all Def::ops; works even, if not set at all or partially.
     bool is_set() const;            ///< Yields `true` if empty or the last op is set.

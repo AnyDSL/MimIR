@@ -244,7 +244,7 @@ Def* Def::set(size_t i, const Def* def) {
     ops_ptr()[i] = def;
 
     if (i + 1 == num_ops()) { // set last op, so check kind
-        if (auto t = check(); t != type()) type_ = t;
+        if (auto t = check()->zonk(); t != type()) type_ = t;
     }
 
     return this;

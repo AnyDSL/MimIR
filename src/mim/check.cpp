@@ -156,8 +156,8 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
             auto defs = DefVec(mut->ops().begin(), mut->ops().end());
             mut->unset();
             for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
+            // mut->type() will be automatically zonked after last op has been set
         }
-        // TODO set type
 
         size_t other = (i + 1) % 2;
         if (auto imm = mut->immutabilize())
