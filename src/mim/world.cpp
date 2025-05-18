@@ -182,8 +182,7 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
     callee = callee->zonk();
     arg    = arg->zonk();
     if (auto pi = callee->type()->isa<Pi>()) {
-        auto dom = pi->dom()->zonk(); // TODO this is more a hotfix; callee->zonk() above should deal with this
-        if (auto new_arg = Checker::assignable(dom, arg)) {
+        if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
             arg = new_arg->zonk();
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
 

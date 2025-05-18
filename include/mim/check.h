@@ -22,16 +22,18 @@ public:
         assert(op != this);
         return Def::set(0, op)->as<Hole>();
     }
-    Hole* unset() { return Def::unset()->as<Hole>(); }
     ///@}
 
-    /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
-    static const Def* find(const Def*);
-
     Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `this` if unsuccessful.
     const Def* tuplefy(nat_t);
+
+    const Def* check() override { return op()->type(); }
+
+    /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
+    static const Def* find(const Def*);
 
     static constexpr auto Node = mim::Node::Hole;
 

@@ -270,9 +270,7 @@ public:
     /// You can set and change the Def::ops of a mutable after construction.
     /// However, you have to obey the following rules:
     /// If Def::is_set() is ...
-    ///     * `false`, [set](@ref Def::set) the [operands](@ref Def::ops) from
-    ///         * left (`i == 0`) to
-    ///         * right (`i == num_ops() - 1`).
+    ///     * `false`, [set](@ref Def::set) the [operands](@ref Def::ops) from left to right.
     ///     * `true`, Def::unset() the operands first and then start over:
     ///       ```
     ///       mut->unset()->set({a, b, c});
@@ -511,8 +509,20 @@ public:
 
     /// @name Type Checking
     ///@{
-    virtual const Def* check(size_t, const Def* def) { return def; }
+
+    /// Checks whether the `i`th operand can be set to `def`.
+    /// The method returns a possibly updated version of `def` (e.g. where Hole%s have been resolved).
+    /// This is the actual `def` that will be set as the `i`th operand.
+    virtual const Def* check([[maybe_unused]] size_t i, const Def* def) { return def; }
+
+    /// After all Def::ops have ben Def::set, this method will be invoked to check the type of this mutable.
+    /// The method returns a possibly updated version of its type (e.g. where Hole%s have been resolved).
+    /// If different from Def::type, it will update its Def::type to a Def::zonk%ed version of that.
     virtual const Def* check() { return type(); }
+
+    /// If Hole%s have been filled, reconstruct the program without them.
+    /// Only gues up to but excluding other mutables.
+    /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
     ///@}
 
