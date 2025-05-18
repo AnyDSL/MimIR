@@ -42,19 +42,19 @@ const Def* Def::zonk() const {
  */
 
 const Def* Hole::find(const Def* def) {
-    auto hole = def->isa_mut<Hole>();
-    if (!hole) return def; // early exit if def isn't a Hole
+    auto hole1 = def->isa_mut<Hole>();
+    if (!hole1 || !hole1->op()) return def; // early exit if def isn't a Hole or unset;
 
     // find root
     auto res = def;
-    while (hole && hole->op()) res = hole->op(), hole = res->isa_mut<Hole>();
+    for (auto hole = hole1; hole && hole->op(); res = hole->op(), hole = res->isa_mut<Hole>()) {}
 
     // path compression
-    hole = def->isa_mut<Hole>();
-    while (hole && hole->op()) {
+    for (auto hole = hole1;;) {
         auto next = hole->op();
-        if (next != res) // avoid redundant update
-            hole->unset()->set(res);
+        if (next == res) break;
+
+        hole->unset()->set(res);
         hole = next->isa_mut<Hole>();
     }
 
