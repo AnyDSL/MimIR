@@ -29,6 +29,8 @@ axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», ini
 ///
 /// `%%vec.map f (a1, ..., an)` applies function `f` to `a1`, ..., `an`, and builds the vector `(f a1, ..., f an)` with the results returned by `f`.
 ///
+/// ![map](https://upload.wikimedia.org/wikipedia/commons/0/06/Mapping-steps-loillibe-new.gif)
+///
 axm %vec.map: {T U: *} → {n: Nat} → [f: T → U] → «n; T» → «n; U», normalize_map;
 ///
 /// ### %%vec.map2
