@@ -240,10 +240,7 @@ Def* Def::set(Defs ops) {
 
 Def* Def::set(size_t i, const Def* def) {
     def = check(i, def);
-    assert(def && !op(i) && curr_op_ == i);
-#ifndef NDEBUG
-    ++curr_op_;
-#endif
+    assert(def && !op(i) && curr_op_++ == i);
     ops_ptr()[i] = def;
 
     if (i + 1 == num_ops()) { // set last op, so check kind
