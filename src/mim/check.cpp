@@ -42,42 +42,45 @@ const Def* Def::zonk() const {
  */
 
 const Def* Hole::find(const Def* def) {
+    auto hole1 = def->isa_mut<Hole>();
+    if (!hole1 || !hole1->op()) return def; // early exit if def isn't a Hole or unset;
+
     // find root
     auto res = def;
-    for (auto hole = res->isa_mut<Hole>(); hole && hole->op(); hole = res->isa_mut<Hole>()) res = hole->op();
-    // TODO don't re-update last hole
+    for (auto hole = hole1; hole && hole->op(); res = hole->op(), hole = res->isa_mut<Hole>()) {}
 
-    // path compression: set all Holes along the chain to res
-    for (auto hole = def->isa_mut<Hole>(); hole && hole->op(); hole = def->isa_mut<Hole>()) {
-        def = hole->op();
-        hole->reset(res);
+    // path compression
+    for (auto hole = hole1;;) {
+        auto next = hole->op();
+        if (next == res) break;
+
+        hole->unset()->set(res);
+        hole = next->isa_mut<Hole>();
     }
 
     return res;
 }
 
-const Def* Hole::tuplefy() {
-    if (auto a = type()->isa_lit_arity(); a && !is_set()) {
-        auto& w    = world();
-        auto n     = *a;
-        auto holes = absl::FixedArray<const Def*>(n);
-        if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
-            auto var = sigma->has_var();
-            auto rw  = VarRewriter(var, this);
-            holes[0] = w.mut_hole(sigma->op(0));
-            for (size_t i = 1; i != n; ++i) {
-                rw.map(sigma->var(n, i - 1), holes[i - 1]);
-                holes[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
-            }
-        } else {
-            for (size_t i = 0; i != n; ++i) holes[i] = w.mut_hole(type()->proj(n, i));
-        }
+const Def* Hole::tuplefy(nat_t n) {
+    if (is_set()) return this;
 
-        auto tuple = w.tuple(holes);
-        set(tuple);
-        return tuple;
+    auto& w    = world();
+    auto holes = absl::FixedArray<const Def*>(n);
+    if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
+        auto var = sigma->has_var();
+        auto rw  = VarRewriter(var, this);
+        holes[0] = w.mut_hole(sigma->op(0));
+        for (size_t i = 1; i != n; ++i) {
+            rw.map(sigma->var(n, i - 1), holes[i - 1]);
+            holes[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
+        }
+    } else {
+        for (size_t i = 0; i != n; ++i) holes[i] = w.mut_hole(type()->proj(n, i));
     }
-    return this;
+
+    auto tuple = w.tuple(holes);
+    set(tuple);
+    return tuple;
 }
 
 /*
@@ -96,9 +99,9 @@ const Def* Checker::fail() {
 }
 #endif
 
-template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
-    d1 = Hole::find(d1);
-    d2 = Hole::find(d2);
+template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
+    auto ds        = std::array<const Def*, 2>{Hole::find(d1_), Hole::find(d2_)};
+    auto& [d1, d2] = ds;
 
     if (!d1 && !d2) return true;
     if (!d1 || !d2) return fail<mode>();
@@ -114,40 +117,45 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
     if ((!h1 && !d1->is_set()) || (!h2 && !d2->is_set())) return fail<mode>();
 
     if (mode == Check) {
-        if (h1 && h2) {
-            // union by rank
-            if (h1->rank() < h2->rank()) std::swap(h1, h2); // make sure h1 is heavier or equal
-            h2->set(h1);                                    // make h1 new root
-            if (h1->rank() == h2->rank()) ++h1->rank();
-            return true;
-        } else if (h1) {
-            h1->set(d2);
-            return true;
-        } else if (h2) {
-            h2->set(d1);
-            return true;
-        }
+        if (h1)
+            return h1->set(d2), true;
+        else if (h2)
+            return h2->set(d1), true;
     }
 
-    auto mut1 = d1->isa_mut();
-    auto mut2 = d2->isa_mut();
+    auto muts          = std::array<Def*, 2>{d1->isa_mut(), d2->isa_mut()};
+    auto& [mut1, mut2] = muts;
+
     if (mut1 && mut2 && mut1 == mut2) return true;
+
     // Globals are HACKs and require additionaly HACKs:
     // Unless they are pointer equal (above) always consider them unequal.
     if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
-    if (mut1) {
-        if (auto [i, ins] = binders_.emplace(mut1, d2); !ins) return i->second == d2;
-    }
-    if (mut2) {
-        if (auto [i, ins] = binders_.emplace(mut2, d1); !ins) return i->second == d1;
-    }
+    for (size_t i = 0; i != 2; ++i) {
+        auto& mut = muts[i];
+        if (!mut || !mut->is_set()) continue;
 
-    // normalize:
-    if ((d1->isa<Lit>() && !d2->isa<Lit>())             // Lit to right
-        || (!d1->isa<UMax>() && d2->isa<UMax>())        // UMax to left
-        || (!d1->isa<Extract>() && d2->isa<Extract>())) // Extract to left
-        std::swap(d1, d2);
+        bool zonk = false;
+        for (auto def : mut->deps())
+            if (needs_zonk(def)) {
+                zonk = true;
+                break;
+            }
+
+        if (zonk) {
+            auto defs = DefVec(mut->ops().begin(), mut->ops().end());
+            mut->unset();
+            for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
+            // mut->type() will be automatically zonked after last op has been set
+        }
+
+        size_t other = (i + 1) % 2;
+        if (auto imm = mut->immutabilize())
+            mut = nullptr, ds[i] = imm;
+        else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
+            return i->second == ds[other];
+    }
 
     return alpha_internal<mode>(d1, d2);
 }

@@ -2,29 +2,29 @@
 plugin tuple;
 plugin refly;
 
-lam f1 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [ Nat, Bool ,  Bool, Nat, Nat ] = %tuple.concat  @(2, 3) (a, b);
-lam f2 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [ Nat, Bool , [Bool, Nat, Nat]] = %tuple.append  @2      (a, b);
-lam f3 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [[Nat, Bool],  Bool, Nat, Nat ] = %tuple.prepend @3      (a, b);
+lam f1 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [ Nat, Bool ,  Bool, Nat, Nat ] = %tuple.concat  (a, b);
+lam f2 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [ Nat, Bool , [Bool, Nat, Nat]] = %tuple.append  (a, b);
+lam f3 (a: [Nat, Bool], b: [Bool, Nat, Nat]): [[Nat, Bool],  Bool, Nat, Nat ] = %tuple.prepend (a, b);
 
-lam g1 (a: «2; Nat», b: [Bool, Nat, Nat]): [Nat, Nat,  Bool, Nat, Nat ] = %tuple.concat  @(2, 3) (a, b);
-lam g2 (a: «2; Nat», b: [Bool, Nat, Nat]): [Nat, Nat, [Bool, Nat, Nat]] = %tuple.append  @2      (a, b);
-lam g3 (a: «2; Nat», b: [Bool, Nat, Nat]): [«2; Nat» , Bool, Nat, Nat ] = %tuple.prepend @3      (a, b);
+lam g1 (a: «2; Nat», b: [Bool, Nat, Nat]): [Nat, Nat,  Bool, Nat, Nat ] = %tuple.concat  (a, b);
+lam g2 (a: «2; Nat», b: [Bool, Nat, Nat]): [Nat, Nat, [Bool, Nat, Nat]] = %tuple.append  (a, b);
+lam g3 (a: «2; Nat», b: [Bool, Nat, Nat]): [«2; Nat» , Bool, Nat, Nat ] = %tuple.prepend (a, b);
 
-lam h1 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , Nat, Nat, Nat] = %tuple.concat  @(2, 3) (a, b);
-lam h2 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , «3; Nat»     ] = %tuple.append  @2      (a, b);
-lam h3 (a: [Nat, Bool], b: «3; Nat»): [[Nat, Bool], Nat, Nat, Nat] = %tuple.prepend @3      (a, b);
+lam h1 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , Nat, Nat, Nat] = %tuple.concat  (a, b);
+lam h2 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , «3; Nat»     ] = %tuple.append  (a, b);
+lam h3 (a: [Nat, Bool], b: «3; Nat»): [[Nat, Bool], Nat, Nat, Nat] = %tuple.prepend (a, b);
 
 let x = (1, tt);
 let y = (ff, 23, 42);
-let z = %tuple.concat @(2, 3) (x, y);
+let z = %tuple.concat (x, y);
 let tup = (1, tt, ff, 23, 42);
 
 let _ = %refly.equiv.struc_eq (tup, z);
-let _ = %refly.equiv.struc_eq (tt, %tuple.mem @5 (23, tup));
-let _ = %refly.equiv.struc_eq (ff, %tuple.mem @5 (24, tup));
+let _ = %refly.equiv.struc_eq (tt, %tuple.mem (23, tup));
+let _ = %refly.equiv.struc_eq (ff, %tuple.mem (24, tup));
 
 lam foo (x: Nat): [] =
     let tup = (tt, x);
-    let _ = %refly.equiv.struc_ne (tt, %tuple.mem @2 (23, tup));
-    let _ = %refly.equiv.struc_ne (ff, %tuple.mem @2 (24, tup));
+    let _ = %refly.equiv.struc_ne (tt, %tuple.mem (23, tup));
+    let _ = %refly.equiv.struc_ne (ff, %tuple.mem (24, tup));
     ()
