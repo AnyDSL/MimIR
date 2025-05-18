@@ -56,10 +56,13 @@ const Def* Hole::find(const Def* def) {
     return res;
 }
 
-const Def* Hole::tuplefy() {
-    if (auto a = type()->isa_lit_arity(); a && !is_set()) {
+const Def* Hole::tuplefy(nat_t n) {
+    if (is_set()) return this;
+
+    auto a = type()->isa_lit_arity();
+    if (a || n) {
         auto& w    = world();
-        auto n     = *a;
+        n          = n ? n : *a;
         auto holes = absl::FixedArray<const Def*>(n);
         if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
             auto var = sigma->has_var();
@@ -131,6 +134,34 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
 
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
+
+    for (auto mut : {mut1, mut2}) {
+        if (mut && mut->is_set()) {
+            bool zonk = false;
+            for (auto def : mut->deps())
+                if (needs_zonk(def)) {
+                    zonk = true;
+                    break;
+                }
+
+            if (zonk) {
+                auto defs = DefVec(mut->ops().begin(), mut->ops().end());
+                mut->unset();
+                for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
+            }
+
+            if (auto imm = mut->immutabilize()) {
+                if (mut == mut1) {
+                    mut1 = nullptr;
+                    d1   = imm;
+                } else {
+                    mut2 = nullptr;
+                    d2   = imm;
+                }
+            }
+        }
+    }
+
     if (mut1 && mut2 && mut1 == mut2) return true;
     // Globals are HACKs and require additionaly HACKs:
     // Unless they are pointer equal (above) always consider them unequal.

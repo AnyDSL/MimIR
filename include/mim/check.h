@@ -33,7 +33,7 @@ public:
     Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `this` if unsuccessful.
-    const Def* tuplefy();
+    const Def* tuplefy(nat_t);
 
     static constexpr auto Node = mim::Node::Hole;
 
