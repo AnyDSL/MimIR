@@ -232,22 +232,19 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
  * Def - set
  */
 
-// clang-format off
-Def* Def::  set(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i)   set(i, ops[i]); return this; }
-Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
-// clang-format on
+Def* Def::set(Defs ops) {
+    assert(ops.size() == num_ops());
+    for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
+    return this;
+}
 
 Def* Def::set(size_t i, const Def* def) {
-    invalidate();
     def = check(i, def);
-    assert(def && !op(i) && curr_op_ == i);
-#ifndef NDEBUG
-    curr_op_ = (curr_op_ + 1) % num_ops();
-#endif
+    assert(def && !op(i) && curr_op_++ == i);
     ops_ptr()[i] = def;
 
-    if (i == num_ops() - 1) {                         // set last op, so check kind
-        if (auto t = check(); t != type()) type_ = t; // TODO zonk?
+    if (i + 1 == num_ops()) { // set last op, so check kind
+        if (auto t = check()->zonk(); t != type()) type_ = t;
     }
 
     return this;
@@ -258,20 +255,7 @@ Def* Def::unset() {
 #ifndef NDEBUG
     curr_op_ = 0;
 #endif
-    for (size_t i = 0, e = num_ops(); i != e; ++i) {
-        if (op(i))
-            unset(i);
-        else {
-            assert(std::all_of(ops_ptr() + i + 1, ops_ptr() + num_ops(), [](auto op) { return !op; }));
-            break;
-        }
-    }
-    return this;
-}
-
-Def* Def::unset(size_t i) {
-    invalidate();
-    ops_ptr()[i] = nullptr;
+    std::ranges::fill(ops_ptr(), ops_ptr() + num_ops(), nullptr);
     return this;
 }
 
