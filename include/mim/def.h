@@ -553,7 +553,6 @@ private:
 
     Vars free_vars(bool&, bool&, uint32_t run);
     void invalidate();
-    Def* unset(size_t i);
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
