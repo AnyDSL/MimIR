@@ -24,6 +24,7 @@ public:
     }
     ///@}
 
+    Hole* unset() { return Def::unset()->as<Hole>(); }
     Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     /// If unset, explode to Tuple.
