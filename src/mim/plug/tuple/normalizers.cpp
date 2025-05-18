@@ -20,9 +20,9 @@ const Def* normalize_concat(const Def* type, const Def* callee, const Def* arg) 
     return nullptr;
 }
 
-const Def* normalize_mem(const Def* type, const Def*, const Def* arg) {
+const Def* normalize_contains(const Def* type, const Def*, const Def* arg) {
     auto& w      = type->world();
-    auto [x, xs] = arg->projs<2>();
+    auto [xs, x] = arg->projs<2>();
 
     if (auto mut_pack = xs->isa_mut<Pack>()) {
         if (auto imm = mut_pack->immutabilize())

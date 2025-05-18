@@ -29,14 +29,14 @@ const Def* normalize_get(const Def*, const Def*, const Def* arg) {
     return nullptr;
 }
 
-template<mem id> const Def* normalize_mem(const Def*, const Def*, const Def* arg) {
+template<contains id> const Def* normalize_contains(const Def*, const Def*, const Def* arg) {
     auto& w     = arg->world();
-    auto [k, c] = arg->projs<2>();
+    auto [c, k] = arg->projs<2>();
 
     if (auto init = Axm::isa<ord::init>(c)) {
         if (auto tuple = init->arg()->isa<Tuple>()) {
             for (auto kv : tuple->ops()) {
-                auto key = id == mem::map ? kv->proj(2, 0) : kv;
+                auto key = id == contains::map ? kv->proj(2, 0) : kv;
                 if (key == k) return w.lit_tt();
             }
             return tuple->is_closed() ? w.lit_ff() : nullptr;

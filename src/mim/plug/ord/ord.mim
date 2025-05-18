@@ -57,12 +57,12 @@ lam %ord.is_empty_map {K V: *} {lt: [K, K] → Bool} (map: %ord.Map (K, V) lt): 
 ///
 axm %ord.get: {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt, K] → V, normalize_get;
 ///
-/// ### %%ord.mem
+/// ### %%ord.contains
 ///
-/// Is the given key member of the container?
+/// Does the container conain the given key?
 ///
-axm %ord.mem(set): {K  : *} → {lt: [K, K] → Bool} → [K, %ord.Set  K     lt] → Bool, normalize_mem;
-axm %ord.mem(map): {K V: *} → {lt: [K, K] → Bool} → [K, %ord.Map (K, V) lt] → Bool, normalize_mem;
+axm %ord.contains(set): {K  : *} → {lt: [K, K] → Bool} → [%ord.Set  K     lt, K] → Bool, normalize_contains;
+axm %ord.contains(map): {K V: *} → {lt: [K, K] → Bool} → [%ord.Map (K, V) lt, K] → Bool, normalize_contains;
 ///
 /// ## Modifiers
 ///

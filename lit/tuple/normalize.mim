@@ -20,11 +20,11 @@ let z = %tuple.concat (x, y);
 let tup = (1, tt, ff, 23, 42);
 
 let _ = %refly.equiv.struc_eq (tup, z);
-let _ = %refly.equiv.struc_eq (tt, %tuple.mem (23, tup));
-let _ = %refly.equiv.struc_eq (ff, %tuple.mem (24, tup));
+let _ = %refly.equiv.struc_eq (tt, %tuple.contains (tup, 23));
+let _ = %refly.equiv.struc_eq (ff, %tuple.contains (tup, 24));
 
 lam foo (x: Nat): [] =
     let tup = (tt, x);
-    let _ = %refly.equiv.struc_ne (tt, %tuple.mem (23, tup));
-    let _ = %refly.equiv.struc_ne (ff, %tuple.mem (24, tup));
+    let _ = %refly.equiv.struc_ne (tt, %tuple.contains (tup, 23));
+    let _ = %refly.equiv.struc_ne (ff, %tuple.contains (tup, 24));
     ()
