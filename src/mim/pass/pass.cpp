@@ -1,9 +1,9 @@
 #include "mim/pass/pass.h"
 
+#include <absl/container/fixed_array.h>
+
 #include "mim/phase/phase.h"
 #include "mim/util/util.h"
-
-#include "absl/container/fixed_array.h"
 
 namespace mim {
 
