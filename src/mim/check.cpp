@@ -117,19 +117,10 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
     if ((!h1 && !d1->is_set()) || (!h2 && !d2->is_set())) return fail<mode>();
 
     if (mode == Check) {
-        if (h1 && h2) {
-            // union by rank
-            if (h1->rank() < h2->rank()) std::swap(h1, h2); // make sure h1 is heavier or equal
-            h2->set(h1);                                    // make h1 new root
-            if (h1->rank() == h2->rank()) ++h1->rank();
-            return true;
-        } else if (h1) {
-            h1->set(d2);
-            return true;
-        } else if (h2) {
-            h2->set(d1);
-            return true;
-        }
+        if (h1)
+            return h1->set(d2), true;
+        else if (h2)
+            return h2->set(d1), true;
     }
 
     auto muts          = std::array<Def*, 2>{d1->isa_mut(), d2->isa_mut()};

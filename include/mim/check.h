@@ -26,8 +26,6 @@ public:
     ///@}
 
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
-    /// Def::flags is used to keep track of rank for
-    /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
     static const Def* find(const Def*);
 
     Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
@@ -38,9 +36,6 @@ public:
     static constexpr auto Node = mim::Node::Hole;
 
 private:
-    flags_t rank() const { return flags(); }
-    flags_t& rank() { return flags_; }
-
     const Def* rebuild_(World&, const Def*, Defs) const override;
     Hole* stub_(World&, const Def*) override;
 
