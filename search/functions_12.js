@@ -26,7 +26,7 @@ var searchData=
   ['tuple2str_23',['tuple2str',['../namespacemim.html#a491928b70e9d5a3cc4bb053cd49bf49e',1,'mim']]],
   ['tuple_5fof_5ftypes_24',['tuple_of_types',['../namespacemim.html#a8edd5d2569579fbdac7077d606a2e2b5',1,'mim']]],
   ['tupleexpr_25',['TupleExpr',['../classmim_1_1ast_1_1TupleExpr.html#a61a6a227cca36e8009a9ea7a5e98aed5',1,'mim::ast::TupleExpr']]],
-  ['tuplefy_26',['tuplefy',['../classmim_1_1Hole.html#a4a68f8d6bac6ac4e7ae1ae94b061ddf3',1,'mim::Hole']]],
+  ['tuplefy_26',['tuplefy',['../classmim_1_1Hole.html#a4473e6f1b7fa0bd52823b5e88a5eb6bc',1,'mim::Hole']]],
   ['tupleptrn_27',['TuplePtrn',['../classmim_1_1ast_1_1TuplePtrn.html#ad3a44ead35967850158cb1224293fe38',1,'mim::ast::TuplePtrn']]],
   ['tvar_28',['tvar',['../classmim_1_1Def.html#a41594be2f5849f844f1321ca6ddfe544',1,'mim::Def']]],
   ['tvars_29',['tvars',['../classmim_1_1Def.html#ac95a7f21e315be2ff334356a86a3b97f',1,'mim::Def::tvars(F f) noexcept'],['../classmim_1_1Def.html#a0186046c3c40a31c2b9719a9d3f6ae4f',1,'mim::Def::tvars() noexcept']]],

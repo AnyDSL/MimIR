@@ -20,7 +20,7 @@ var searchData=
   ['removedbgperm_17',['RemoveDbgPerm',['../classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html#a5bb2236e2a207b9b50425da6c283111e',1,'mim::plug::refly::RemoveDbgPerm']]],
   ['replace_5fmem_18',['replace_mem',['../namespacemim_1_1plug_1_1mem.html#a3e7007270573de1c1267584247f11d60',1,'mim::plug::mem']]],
   ['res_19',['Res',['../classmim_1_1Res.html#a63fd621027f5f650a25210718c352071',1,'mim::Res::Res()'],['../classmim_1_1Res.html#ac65bdfb121f32fc983236d1bb7c2297f',1,'mim::Res::Res(T val)']]],
-  ['reset_20',['reset',['../classmim_1_1Hole.html#a17ac0e757527c97fa1648be82dda186c',1,'mim::Hole::reset()'],['../classmim_1_1Def.html#aed20609b9347658940ef24a7b2c5938d',1,'mim::Def::reset(size_t i, const Def *def)'],['../classmim_1_1Def.html#a24fda358f2a890cf41518f4fd3b348d1',1,'mim::Def::reset(Defs ops)'],['../classmim_1_1Pack.html#a337efe7580c2f507ea9a7b897a250b94',1,'mim::Pack::reset()']]],
+  ['reset_20',['reset',['../classmim_1_1Pack.html#a337efe7580c2f507ea9a7b897a250b94',1,'mim::Pack']]],
   ['reshape_21',['Reshape',['../classmim_1_1plug_1_1mem_1_1Reshape.html#a983b4e6c680ac62a19076aa215ff5931',1,'mim::plug::mem::Reshape']]],
   ['ret_22',['ret',['../classmim_1_1ast_1_1PiExpr_1_1Dom.html#ad4a688f123cf35bbf0e3bca4cb12d323',1,'mim::ast::PiExpr::Dom']]],
   ['ret_5fdom_23',['ret_dom',['../classmim_1_1Pi.html#a156b615bd68336c9be52f06574783de2',1,'mim::Pi::ret_dom()'],['../classmim_1_1Lam.html#aae32dbc8d6d407b2aaaae6185349f454',1,'mim::Lam::ret_dom()']]],

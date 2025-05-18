@@ -1,11 +1,5 @@
 var NAVTREEINDEX15 =
 {
-"clos_2autogen_8h_source.html":[6,0,0,1,0,0,2,0],
-"clos_2normalizers_8cpp.html":[6,0,3,1,4,2,3],
-"clos_2normalizers_8cpp_source.html":[6,0,3,1,4,2,3],
-"clos_8cpp.html":[6,0,3,1,4,2,2],
-"clos_8cpp.html#a35bb34350e93d508e52544f4abd50e59":[6,0,3,1,4,2,2,10],
-"clos_8cpp_source.html":[6,0,3,1,4,2,2],
 "clos_8h.html":[6,0,2,1,4,2,2],
 "clos_8h_source.html":[6,0,2,1,4,2,2],
 "clos__conv_8cpp.html":[6,0,3,1,4,2,1,0],
@@ -249,5 +243,11 @@ var NAVTREEINDEX15 =
 "emit_8cpp.html":[6,0,3,1,0,2],
 "emit_8cpp_source.html":[6,0,3,1,0,2],
 "emitter_8h.html":[6,0,2,1,1,0],
-"emitter_8h_source.html":[6,0,2,1,1,0]
+"emitter_8h_source.html":[6,0,2,1,1,0],
+"eta__exp_8cpp.html":[6,0,3,1,2,1],
+"eta__exp_8cpp_source.html":[6,0,3,1,2,1],
+"eta__exp_8h.html":[6,0,2,1,2,1],
+"eta__exp_8h_source.html":[6,0,2,1,2,1],
+"eta__red_8cpp.html":[6,0,3,1,2,2],
+"eta__red_8cpp_source.html":[6,0,3,1,2,2]
 };
