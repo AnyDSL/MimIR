@@ -136,48 +136,28 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
     // Unless they are pointer equal (above) always consider them unequal.
     if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
-    for (auto mut : {mut1, mut2}) {
-        if (mut && mut->is_set()) {
-            bool zonk = false;
-            for (auto def : mut->deps())
-                if (needs_zonk(def)) {
-                    zonk = true;
-                    break;
-                }
+    for (auto& [mut, d, d_other] : {std::tie(mut1, d1, d2), std::tie(mut2, d2, d1)}) {
+        if (!mut || !mut->is_set()) continue;
 
-            if (zonk) {
-                auto defs = DefVec(mut->ops().begin(), mut->ops().end());
-                mut->unset();
-                for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
+        bool zonk = false;
+        for (auto def : mut->deps())
+            if (needs_zonk(def)) {
+                zonk = true;
+                break;
             }
-            // TODO set type
 
-            if (auto imm = mut->immutabilize()) {
-                if (mut == mut1) {
-                    mut1 = nullptr;
-                    d1   = imm;
-                } else {
-                    mut2 = nullptr;
-                    d2   = imm;
-                }
-            }
+        if (zonk) {
+            auto defs = DefVec(mut->ops().begin(), mut->ops().end());
+            mut->unset();
+            for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
         }
-    }
+        // TODO set type
 
-    if (mut1) {
-        if (auto [i, ins] = binders_.emplace(mut1, d2); !ins) return i->second == d2;
+        if (auto imm = mut->immutabilize())
+            mut = nullptr, d = imm;
+        else if (auto [i, ins] = binders_.emplace(mut, d_other); !ins)
+            return i->second == d_other;
     }
-    if (mut2) {
-        if (auto [i, ins] = binders_.emplace(mut2, d1); !ins) return i->second == d1;
-    }
-
-#if 0
-    // normalize:
-    if ((d1->isa<Lit>() && !d2->isa<Lit>())             // Lit to right
-        || (!d1->isa<UMax>() && d2->isa<UMax>())        // UMax to left
-        || (!d1->isa<Extract>() && d2->isa<Extract>())) // Extract to left
-        std::swap(d1, d2);
-#endif
 
     return alpha_internal<mode>(d1, d2);
 }
