@@ -59,28 +59,23 @@ const Def* Hole::find(const Def* def) {
 const Def* Hole::tuplefy(nat_t n) {
     if (is_set()) return this;
 
-    auto a = type()->isa_lit_arity();
-    if (a || n) {
-        auto& w    = world();
-        n          = n ? n : *a;
-        auto holes = absl::FixedArray<const Def*>(n);
-        if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
-            auto var = sigma->has_var();
-            auto rw  = VarRewriter(var, this);
-            holes[0] = w.mut_hole(sigma->op(0));
-            for (size_t i = 1; i != n; ++i) {
-                rw.map(sigma->var(n, i - 1), holes[i - 1]);
-                holes[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
-            }
-        } else {
-            for (size_t i = 0; i != n; ++i) holes[i] = w.mut_hole(type()->proj(n, i));
+    auto& w    = world();
+    auto holes = absl::FixedArray<const Def*>(n);
+    if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
+        auto var = sigma->has_var();
+        auto rw  = VarRewriter(var, this);
+        holes[0] = w.mut_hole(sigma->op(0));
+        for (size_t i = 1; i != n; ++i) {
+            rw.map(sigma->var(n, i - 1), holes[i - 1]);
+            holes[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
         }
-
-        auto tuple = w.tuple(holes);
-        set(tuple);
-        return tuple;
+    } else {
+        for (size_t i = 0; i != n; ++i) holes[i] = w.mut_hole(type()->proj(n, i));
     }
-    return this;
+
+    auto tuple = w.tuple(holes);
+    set(tuple);
+    return tuple;
 }
 
 /*
@@ -135,6 +130,12 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
 
+    if (mut1 && mut2 && mut1 == mut2) return true;
+
+    // Globals are HACKs and require additionaly HACKs:
+    // Unless they are pointer equal (above) always consider them unequal.
+    if (d1->isa<Global>() || d2->isa<Global>()) return false;
+
     for (auto mut : {mut1, mut2}) {
         if (mut && mut->is_set()) {
             bool zonk = false;
@@ -149,6 +150,7 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
                 mut->unset();
                 for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
             }
+            // TODO set type
 
             if (auto imm = mut->immutabilize()) {
                 if (mut == mut1) {
@@ -162,11 +164,6 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
         }
     }
 
-    if (mut1 && mut2 && mut1 == mut2) return true;
-    // Globals are HACKs and require additionaly HACKs:
-    // Unless they are pointer equal (above) always consider them unequal.
-    if (d1->isa<Global>() || d2->isa<Global>()) return false;
-
     if (mut1) {
         if (auto [i, ins] = binders_.emplace(mut1, d2); !ins) return i->second == d2;
     }
@@ -174,11 +171,13 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
         if (auto [i, ins] = binders_.emplace(mut2, d1); !ins) return i->second == d1;
     }
 
+#if 0
     // normalize:
     if ((d1->isa<Lit>() && !d2->isa<Lit>())             // Lit to right
         || (!d1->isa<UMax>() && d2->isa<UMax>())        // UMax to left
         || (!d1->isa<Extract>() && d2->isa<Extract>())) // Extract to left
         std::swap(d1, d2);
+#endif
 
     return alpha_internal<mode>(d1, d2);
 }
