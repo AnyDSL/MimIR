@@ -31,8 +31,6 @@ public:
     /// @returns the new Tuple, or `this` if unsuccessful.
     const Def* tuplefy(nat_t);
 
-    const Def* check() override { return op()->type(); }
-
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
     static const Def* find(const Def*);
 
