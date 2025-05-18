@@ -10,10 +10,12 @@ set(MIM_PLUGINS
     matrix
     mem
     opt
+    ord
     refly
     regex
     tensor
     tuple
+    vec
 )
 
 list(TRANSFORM MIM_PLUGINS PREPEND "mim_internal_" OUTPUT_VARIABLE MIM_INTERNAL_PLUGINS)

@@ -22,29 +22,21 @@ public:
         assert(op != this);
         return Def::set(0, op)->as<Hole>();
     }
-    Hole* reset(const Def* op) {
-        assert(op != this);
-        return Def::reset(0, op)->as<Hole>();
-    }
-    Hole* unset() { return Def::unset()->as<Hole>(); }
     ///@}
 
-    /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
-    /// Def::flags is used to keep track of rank for
-    /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
-    static const Def* find(const Def*);
-
+    Hole* unset() { return Def::unset()->as<Hole>(); }
     Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `this` if unsuccessful.
-    const Def* tuplefy();
+    const Def* tuplefy(nat_t);
+
+    /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
+    static const Def* find(const Def*);
 
     static constexpr auto Node = mim::Node::Hole;
 
 private:
-    flags_t rank() const { return flags(); }
-    flags_t& rank() { return flags_; }
-
     const Def* rebuild_(World&, const Def*, Defs) const override;
     Hole* stub_(World&, const Def*) override;
 

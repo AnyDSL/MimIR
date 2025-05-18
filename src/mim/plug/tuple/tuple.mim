@@ -2,13 +2,13 @@
 ///
 /// @see mim::plug::tuple
 ///
+/// Utilitly functions for tuples.
+///
 /// [TOC]
 ///
 /// ## Dependencies
 ///
 plugin core;
-///
-/// Utilitly functions for tuples.
 ///
 /// ## Operations
 ///
@@ -43,6 +43,12 @@ lam %tuple.prepend  {m: Nat}
                         %core.select (%core.ncmp.l (nat_i, 1), T, Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, 1))))
                     » // «i: 1 + m; select(i < 1 , T, Us#(i - 1))»
                   = %tuple.concat @(1, m) (a, b);
+///
+/// ### %%tuple.contains
+///
+/// Does the tuple conain the given element?
+///
+axm %tuple.contains: {n: Nat} → {Ts: «n; *», U: *} → [«i: n; Ts#i», U] → Bool, normalize_contains;
 ///
 /// ### %%tuple.zip
 ///
