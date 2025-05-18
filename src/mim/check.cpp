@@ -42,15 +42,20 @@ const Def* Def::zonk() const {
  */
 
 const Def* Hole::find(const Def* def) {
+    auto hole = def->isa_mut<Hole>();
+    if (!hole) return def; // early exit if def isn't a Hole
+
     // find root
     auto res = def;
-    for (auto hole = res->isa_mut<Hole>(); hole && hole->op(); hole = res->isa_mut<Hole>()) res = hole->op();
-    // TODO don't re-update last hole
+    while (hole && hole->op()) res = hole->op(), hole = res->isa_mut<Hole>();
 
-    // path compression: set all Holes along the chain to res
-    for (auto hole = def->isa_mut<Hole>(); hole && hole->op(); hole = def->isa_mut<Hole>()) {
-        def = hole->op();
-        hole->unset()->set(res);
+    // path compression
+    hole = def->isa_mut<Hole>();
+    while (hole && hole->op()) {
+        auto next = hole->op();
+        if (next != res) // avoid redundant update
+            hole->unset()->set(res);
+        hole = next->isa_mut<Hole>();
     }
 
     return res;
@@ -94,9 +99,9 @@ const Def* Checker::fail() {
 }
 #endif
 
-template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
-    d1 = Hole::find(d1);
-    d2 = Hole::find(d2);
+template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
+    auto ds        = std::array<const Def*, 2>{Hole::find(d1_), Hole::find(d2_)};
+    auto& [d1, d2] = ds;
 
     if (!d1 && !d2) return true;
     if (!d1 || !d2) return fail<mode>();
@@ -127,8 +132,8 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
         }
     }
 
-    auto mut1 = d1->isa_mut();
-    auto mut2 = d2->isa_mut();
+    auto muts          = std::array<Def*, 2>{d1->isa_mut(), d2->isa_mut()};
+    auto& [mut1, mut2] = muts;
 
     if (mut1 && mut2 && mut1 == mut2) return true;
 
@@ -136,7 +141,8 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
     // Unless they are pointer equal (above) always consider them unequal.
     if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
-    for (auto& [mut, d, d_other] : {std::tie(mut1, d1, d2), std::tie(mut2, d2, d1)}) {
+    for (size_t i = 0; i != 2; ++i) {
+        auto& mut = muts[i];
         if (!mut || !mut->is_set()) continue;
 
         bool zonk = false;
@@ -153,10 +159,11 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
         }
         // TODO set type
 
+        size_t other = (i + 1) % 2;
         if (auto imm = mut->immutabilize())
-            mut = nullptr, d = imm;
-        else if (auto [i, ins] = binders_.emplace(mut, d_other); !ins)
-            return i->second == d_other;
+            mut = nullptr, ds[i] = imm;
+        else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
+            return i->second == ds[other];
     }
 
     return alpha_internal<mode>(d1, d2);

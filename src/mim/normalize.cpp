@@ -1,5 +1,7 @@
 #include "mim/normalize.h"
 
+#include <fe/assert.h>
+
 #include "mim/world.h"
 
 namespace mim {
@@ -32,7 +34,8 @@ namespace mim {
 
     for (size_t i = 0, e = a->num_ops(); i != e; ++i)
         if (int cmp = commute_(a->op(i), b->op(i)); cmp != 0) return cmp;
-    assert(false);
+
+    fe::unreachable();
 }
 
 } // namespace mim
