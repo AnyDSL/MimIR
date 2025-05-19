@@ -64,7 +64,9 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
 }
 
 const Def* normalize_diff(const Def* type, const Def* c, const Def* arg) {
-    if (type->as<Arr>()->shape()->isa<Bot>()) return nullptr; // ack error
+    if (auto arr = type->isa<Arr>()) {
+        if (arr->shape()->isa<Bot>()) return nullptr; // ack error
+    }
 
     auto& w        = type->world();
     auto callee    = c->as<App>();
