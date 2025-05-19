@@ -65,7 +65,6 @@ axm %tensor.reshape:  {T: *}
 /// [Generalized dot product](https://github.com/openxla/stablehlo/blob/main/docs/spec.md#dot_general):
 /// * `out_r = nb + (r1 - nc - nb) + (r2 - nc - nb)`
 ///
-/// Helper: returns `n`, if `n == m` or `%%refly.err`, otherwise.
 axm %tensor.dot_general:  [R: Ring]
                         → {r1 r2: Nat}
                         → {nc nb: Nat}
