@@ -221,6 +221,7 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
         return w.tuple(new_ops);
     } else if (auto arr = type->isa<Arr>()) {
         if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
+        type = type->zonk(); // TODO hack
 
         // TODO ack sclarize threshold
         if (auto a = Lit::isa(arr->arity())) {
