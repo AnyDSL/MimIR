@@ -501,6 +501,7 @@ public:
     // clang-format off
     template<class Id, bool Normalize = true, class... Args> const Def* call(Id id, Args&&... args) { return call_<Normalize>(annex(id),   std::forward<Args>(args)...); }
     template<class Id, bool Normalize = true, class... Args> const Def* call(       Args&&... args) { return call_<Normalize>(annex<Id>(), std::forward<Args>(args)...); }
+    template<class Id, bool Normalize = true, class... Args> const Def* call(Sym sym,  Args&&... args) { return call_<Normalize>(sym2annex(sym), std::forward<Args>(args)...); }
     // clang-format on
     ///@}
 
