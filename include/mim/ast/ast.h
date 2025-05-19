@@ -452,14 +452,13 @@ private:
 /// t1 union t2
 class UnionExpr : public Expr {
 public:
-    UnionExpr(Loc loc, Ptr<Expr>&& t1, Ptr<Expr>&& t2)
+    UnionExpr(Loc loc, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs)
         : Expr(loc)
-        , t1_(std::move(t1))
-        , t2_(std::move(t2)) {}
+        , lhs_(std::move(lhs))
+        , rhs_(std::move(rhs)) {}
 
-private:
-    const Expr* t1() const { return t1_.get(); }
-    const Expr* t2() const { return t2_.get(); }
+    const Expr* lhs() const { return lhs_.get(); }
+    const Expr* rhs() const { return rhs_.get(); }
 
     void bind(Scopes&) const override;
     // TODO: proper implementation of emit_body and emit_decl (?)
@@ -468,64 +467,75 @@ private:
 private:
     const Def* emit_(Emitter&) const override;
 
-    Ptr<Expr> t1_;
-    Ptr<Expr> t2_;
-
+    Ptr<Expr> lhs_;
+    Ptr<Expr> rhs_;
 };
 
 // injection
 
-/// x inj t1 ∪ t2
+/// `value inj t1 ∪ t2`
 class InjExpr : public Expr {
 public:
-    InjExpr(Loc loc, Ptr<Expr>&& x, Ptr<Expr>&& type)
+    InjExpr(Loc loc, Ptr<Expr>&& value, Ptr<Expr>&& type)
         : Expr(loc)
-        , x_(std::move(x))
+        , value_(std::move(value))
         , type_(std::move(type)) {}
 
-private:
-    const Expr* x() const { return x_.get(); }
+    const Expr* value() const { return value_.get(); }
     const Expr* type() const { return type_.get(); }
 
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
-
 private:
     const Def* emit_(Emitter&) const override;
 
-    Ptr<Expr> x_;
+    Ptr<Expr> value_;
     Ptr<Expr> type_;
 };
-
 
 // matching for destruction of sum types
 
 // n-ary match
 class MatchExpr : public Expr {
 public:
-    MatchExpr(Loc loc, Ptr<Expr>&& matched, Ptrs<IdPtrn>&& vars, Ptrs<Expr>&& results)
+    class Arm : public Node {
+    public:
+        Arm(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& body)
+            : Node(loc)
+            , ptrn_(std::move(ptrn))
+            , body_(std::move(body)) {}
+
+        const Ptrn* ptrn() const { return ptrn_.get(); }
+        const Expr* body() const { return body_.get(); }
+
+        virtual void bind(Scopes&) const;
+        Lam* emit(Emitter&) const;
+        std::ostream& stream(Tab&, std::ostream&) const override;
+
+    private:
+        Ptr<Ptrn> ptrn_;
+        Ptr<Expr> body_;
+    };
+
+    MatchExpr(Loc loc, Ptr<Expr>&& scrutinee, Ptrs<Arm>&& arms)
         : Expr(loc)
-        , matched_(std::move(matched))
-        , vars_(std::move(vars))
-        , results_(std::move(results)) {}
+        , scrutinee_(std::move(scrutinee))
+        , arms_(std::move(arms)) {}
 
-private:
-    const Expr* matched() const {return matched_.get(); }
-
-    const auto& vars() const {return vars_; }
-    const IdPtrn* var(size_t i) const {return vars_[i].get(); }
-    const auto& results() const {return results_;}
-    const Expr* result(size_t i) const {return results_[i].get();}
+    const Expr* scrutinee() const { return scrutinee_.get(); }
+    const auto& arms() const { return arms_; }
+    const Arm* arm(size_t i) const { return arms_[i].get(); }
+    size_t num_arms() const { return arms_.size(); }
 
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     const Def* emit_(Emitter&) const override;
-    Ptr<Expr> matched_;
-    Ptrs<IdPtrn> vars_;
-    Ptrs<Expr> results_;
+
+    Ptr<Expr> scrutinee_;
+    Ptrs<Arm> arms_;
 };
 
 // lam
@@ -576,7 +586,7 @@ public:
             ret_     = ast.ptr<IdPtrn>(loc, Dbg(loc, ast.sym_return()), std::move(type));
         }
 
-        virtual void bind(Scopes& scopes, bool quiet = false) const;
+        virtual void bind(Scopes&, bool quiet = false) const;
         virtual void emit_type(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -957,7 +967,7 @@ public:
         bool is_implicit() const { return ptrn()->is_implicit(); }
         const Expr* filter() const { return filter_.get(); }
 
-        void bind(Scopes& scopes, bool quiet = false) const override;
+        void bind(Scopes&, bool quiet = false) const override;
         Lam* emit_value(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 

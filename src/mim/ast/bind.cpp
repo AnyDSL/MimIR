@@ -144,25 +144,25 @@ void ArrowExpr::bind(Scopes& s) const {
 }
 
 void UnionExpr::bind(Scopes& s) const {
-    t1()->bind(s);
-    t2()->bind(s);
+    lhs()->bind(s);
+    rhs()->bind(s);
 }
 
 void InjExpr::bind(Scopes& s) const {
-    x()->bind(s);
+    value()->bind(s);
     type()->bind(s);
 }
 
+void MatchExpr::Arm::bind(Scopes& s) const {
+    s.push();
+    ptrn()->bind(s, false, false);
+    body()->bind(s);
+    s.pop();
+}
+
 void MatchExpr::bind(Scopes& s) const {
-    matched()->bind(s);
-    //for (const auto& typ: types()) typ->bind(s);
-    for (size_t i = 0; i < vars().size();i++) {
-        s.push();
-        var(i)->type()->bind(s);
-        var(i)->bind(s, true, false);
-        result(i)->bind(s);
-        s.pop();
-    }
+    scrutinee()->bind(s);
+    for (const auto& arm : arms()) arm->bind(s);
 }
 
 void PiExpr::Dom::bind(Scopes& s, bool quiet) const {

@@ -110,21 +110,23 @@ std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& UnionExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os,"{} ∪ {}",S(tab, t1()), S(tab, t2()));
+    return print(os, "{} ∪ {}", S(tab, lhs()), S(tab, rhs()));
 }
 
 std::ostream& InjExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{} inj {}",S(tab,x()), S(tab, type()));
+    return print(os, "{} inj {}", S(tab, value()), S(tab, type()));
+}
+
+std::ostream& MatchExpr::Arm::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "{} => {}", S(tab, ptrn()), S(tab, body()));
 }
 
 std::ostream& MatchExpr::stream(Tab& tab, std::ostream& os) const {
-    os << "match ";
-    print(os, "{} {{\n",S(tab,matched()));
-    for (size_t i = 0; i < vars().size(); i++) {
-        print(os,"{} : {} => {},\n",S(tab,var(i)),S(tab,var(i)->type()),S(tab, result(i)));
-    }
-    os << "}";
-    return os;
+    tab.println(os, "match {} {{", S(tab, scrutinee()));
+    ++tab;
+    for (const auto& arm : arms()) tab.println(os, "{},", S(tab, arm.get()));
+    --tab;
+    return tab.println(os, "}}");
 }
 
 std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {

@@ -1,4 +1,5 @@
 #include "mim/def.h"
+
 #include "mim/ast/ast.h"
 #include "mim/util/span.h"
 
@@ -207,53 +208,30 @@ const Def* ArrowExpr::emit_(Emitter& e) const {
 }
 
 const Def* UnionExpr::emit_(Emitter& e) const {
-    auto d = t1()->emit(e);
-    auto c = t2()->emit(e);
-    const Def* type12[] = {c,d};
-    Defs t12= View<const Def*, 2>{type12,2};
-    return e.world().join(t12);
+    auto t1 = lhs()->emit(e);
+    auto t2 = rhs()->emit(e);
+    return e.world().join({t2, t1});
 }
-
-// void UnionExpr::emit_body(Emitter& e, const Def*) const {
-//     return;
-// }
-
-// void UnionExpr::emit_decl(Emitter& e, const Def * type) {
-
-// }
 
 const Def* InjExpr::emit_(Emitter& e) const {
-    auto a = x()->emit(e);
-    auto b = type()->emit(e);
-    return e.world().inj(b,a);
+    auto v = value()->emit(e);
+    auto t = type()->emit(e);
+    return e.world().inj(t, v);
 }
 
-// void InjExpr::emit_body(Emitter& e, const Def*) const {
-//     return;
-// }
+Lam* MatchExpr::Arm::emit(Emitter& e) const {
+    auto _     = e.world().push(loc());
+    auto dom_t = ptrn()->emit_type(e);
+    auto pi    = e.world().pi(dom_t, e.world().mut_hole_type());
+    auto lam   = e.world().mut_lam(pi);
+    ptrn()->emit_value(e, lam->var());
+    return lam->set(true, body()->emit(e));
+}
 
 const Def* MatchExpr::emit_(Emitter& e) const {
-    auto x = matched()->emit(e);
     DefVec res;
-    res.push_back(x);
-    // each match case is transformed to a function
-    for (size_t i = 0; i < vars().size();i++) {
-        auto pi = e.world().mut_pi(e.world().type_infer_univ());
-        auto _ = e.world().push(loc());
-        auto dom_t = var(i)->emit_type(e);
-        pi->set_dom(dom_t);
-        auto body = result(i)->emit(e);
-        auto codom = body->type(); // crashes here
-        pi->set_codom(codom);
-        auto lam = e.world().mut_lam(pi);
-        auto var_e = lam->var();
-        var(i)->emit_value(e,var_e);
-
-        lam->set(true,body);
-        
-        res.push_back(lam);
-    }
-    // then we put everything in a big def for building the match
+    res.emplace_back(scrutinee()->emit(e));
+    for (const auto& arm : arms()) res.emplace_back(arm->emit(e));
     return e.world().match(res);
 }
 

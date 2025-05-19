@@ -308,21 +308,17 @@ Ptr<Expr> Parser::parse_uniq_expr() {
 Ptr<Expr> Parser::parse_match_expr() {
     auto track = tracker();
     expect(Tag::K_match, "opening match for union destruction");
-    auto matched = parse_expr("destroyed union element");
+    auto scrutinee = parse_expr("destroyed union element");
     expect(Tag::K_with, "match");
-    Ptrs<IdPtrn> ids;
-    Ptrs<Expr> results;
+    Ptrs<MatchExpr::Arm> arms;
     parse_list("match branches", Tag::D_brace_l, [&]() {
-        auto dbg = eat(Tag::M_id).dbg();
-        expect(Tag::T_colon, "type of branch");
-        auto type_h = parse_expr("type of branch");
-        expect(Tag::T_fat_arrow, "result of branch");
-        auto res_h = parse_expr("result of branch");
-        auto idr   = ptr<IdPtrn>(track, dbg, std::move(type_h));
-        ids.emplace_back(std::move(idr));
-        results.emplace_back(std::move(res_h));
+        auto track = tracker();
+        auto ptrn  = parse_ptrn(Paren_Style, "right-hand side of a match-arm", Expr::Prec::Bot);
+        expect(Tag::T_fat_arrow, "arm of a match-expression");
+        auto body = parse_expr("arm of a match-expression");
+        arms.emplace_back(ptr<MatchExpr::Arm>(track, std::move(ptrn), std::move(body)));
     });
-    return ptr<MatchExpr>(track, std::move(matched), std::move(ids), std::move(results));
+    return ptr<MatchExpr>(track, std::move(scrutinee), std::move(arms));
 }
 
 Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {

@@ -105,7 +105,7 @@ private:
     friend class World;
 };
 
-/// Scrutinize Match::value() and dispatch to Match::arms.
+/// Scrutinize Match::scrutinee() and dispatch to Match::arms.
 class Match : public Def, public Setters<Match> {
 private:
     Match(const Def* type, Defs ops)
@@ -117,7 +117,7 @@ public:
 
     /// @name ops
     ///@{
-    const Def* value() const { return op(0); }
+    const Def* scrutinee() const { return op(0); }
     template<size_t N = std::dynamic_extent> constexpr auto arms() const noexcept { return ops().subspan<1, N>(); }
     const Def* arm(size_t i) const { return arms()[i]; }
     size_t num_arms() const { return arms().size(); }
