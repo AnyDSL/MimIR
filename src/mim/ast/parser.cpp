@@ -5,7 +5,6 @@
 #include <ranges>
 
 #include "mim/driver.h"
-#include "mim/ast/ast.h"
 
 // clang-format off
 #define C_PRIMARY     \
@@ -235,14 +234,14 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                 if (curr_prec > Expr::Prec::Union) return lhs;
                 lex();
                 auto rhs = parse_expr("right-hand side of a union type", Expr::Prec::Union);
-                lhs = ptr<UnionExpr>(track,std::move(lhs),std::move(rhs));
+                lhs      = ptr<UnionExpr>(track, std::move(lhs), std::move(rhs));
                 continue;
             }
             case Tag::K_inj: {
                 if (curr_prec > Expr::Prec::Inj) return lhs;
                 lex();
-                auto rhs = parse_expr("type a value is injected in",Expr::Prec::Inj);
-                lhs = ptr<InjExpr>(track,std::move(lhs),std::move(rhs));
+                auto rhs = parse_expr("type a value is injected in", Expr::Prec::Inj);
+                lhs      = ptr<InjExpr>(track, std::move(lhs), std::move(rhs));
                 continue;
             }
             case Tag::T_at: {
@@ -313,13 +312,13 @@ Ptr<Expr> Parser::parse_match_expr() {
     expect(Tag::K_with, "match");
     Ptrs<IdPtrn> ids;
     Ptrs<Expr> results;
-    parse_list("match branches",Tag::D_brace_l,[&]() {
+    parse_list("match branches", Tag::D_brace_l, [&]() {
         auto dbg = eat(Tag::M_id).dbg();
-        expect(Tag::T_colon,"type of branch");
+        expect(Tag::T_colon, "type of branch");
         auto type_h = parse_expr("type of branch");
-        expect(Tag::T_match_arrow,"result of branch");
+        expect(Tag::T_fat_arrow, "result of branch");
         auto res_h = parse_expr("result of branch");
-        auto idr = ptr<IdPtrn>(track,dbg,std::move(type_h));
+        auto idr   = ptr<IdPtrn>(track, dbg, std::move(type_h));
         ids.emplace_back(std::move(idr));
         results.emplace_back(std::move(res_h));
     });
@@ -423,8 +422,6 @@ Ptr<Expr> Parser::parse_type_expr() {
     auto level = parse_expr("type level", Expr::Prec::App);
     return ptr<TypeExpr>(track, std::move(level));
 }
-
-
 
 Ptr<Expr> Parser::parse_pi_expr() {
     auto track  = tracker();
