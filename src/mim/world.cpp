@@ -452,7 +452,8 @@ const Def* World::arr(const Def* shape, const Def* body) {
 }
 
 const Def* World::pack(const Def* shape, const Def* body) {
-    if (!is_shape(shape->type())) error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->type());
+    if (!is_shape(shape->unfold_type()))
+        error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->unfold_type());
 
     if (auto a = Lit::isa(shape)) {
         if (*a == 0) return tuple();
