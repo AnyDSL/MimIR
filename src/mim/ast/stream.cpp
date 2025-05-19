@@ -120,8 +120,8 @@ std::ostream& InjExpr::stream(Tab& tab, std::ostream& os) const {
 std::ostream& MatchExpr::stream(Tab& tab, std::ostream& os) const {
     os << "match ";
     print(os, "{} {{\n",S(tab,matched()));
-    for (size_t i = 0; i < types().size(); i++) {
-        print(os,"{} : {} => {},\n",S(tab,var(i)),S(tab,type(i)),S(tab, result(i)));
+    for (size_t i = 0; i < vars().size(); i++) {
+        print(os,"{} : {} => {},\n",S(tab,var(i)),S(tab,var(i)->type()),S(tab, result(i)));
     }
     os << "}";
     return os;

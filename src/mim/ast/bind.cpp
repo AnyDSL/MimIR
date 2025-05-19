@@ -155,9 +155,14 @@ void InjExpr::bind(Scopes& s) const {
 
 void MatchExpr::bind(Scopes& s) const {
     matched()->bind(s);
-    //for (const auto& var: vars()) var->bind(s);
-    for (const auto& typ: types()) typ->bind(s);
-    for (const auto& res: results()) res->bind(s);
+    //for (const auto& typ: types()) typ->bind(s);
+    for (size_t i = 0; i < vars().size();i++) {
+        s.push();
+        var(i)->type()->bind(s);
+        var(i)->bind(s, true, false);
+        result(i)->bind(s);
+        s.pop();
+    }
 }
 
 void PiExpr::Dom::bind(Scopes& s, bool quiet) const {

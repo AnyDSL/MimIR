@@ -504,20 +504,17 @@ private:
 // n-ary match
 class MatchExpr : public Expr {
 public:
-    MatchExpr(Loc loc, Ptr<Expr>&& matched, Ptrs<Expr>&& types, Ptrs<IdExpr>&& vars, Ptrs<Expr>&& results)
+    MatchExpr(Loc loc, Ptr<Expr>&& matched, Ptrs<IdPtrn>&& vars, Ptrs<Expr>&& results)
         : Expr(loc)
         , matched_(std::move(matched))
-        , types_(std::move(types))
         , vars_(std::move(vars))
         , results_(std::move(results)) {}
 
 private:
     const Expr* matched() const {return matched_.get(); }
 
-    const auto& types() const { return types_; }
-    const Expr* type(size_t i) const {return types_[i].get(); }
     const auto& vars() const {return vars_; }
-    const IdExpr* var(size_t i) const {return vars_[i].get(); }
+    const IdPtrn* var(size_t i) const {return vars_[i].get(); }
     const auto& results() const {return results_;}
     const Expr* result(size_t i) const {return results_[i].get();}
 
@@ -527,8 +524,7 @@ private:
 private:
     const Def* emit_(Emitter&) const override;
     Ptr<Expr> matched_;
-    Ptrs<Expr> types_;
-    Ptrs<IdExpr> vars_;
+    Ptrs<IdPtrn> vars_;
     Ptrs<Expr> results_;
 };
 

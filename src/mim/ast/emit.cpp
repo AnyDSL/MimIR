@@ -236,16 +236,21 @@ const Def* MatchExpr::emit_(Emitter& e) const {
     auto x = matched()->emit(e);
     DefVec res;
     res.push_back(x);
-    // each match case is transformed to a pi
-    for (size_t i = 0; i < types().size();i++) {
-        auto dom = type(i)->emit(e);
+    // each match case is transformed to a function
+    for (size_t i = 0; i < vars().size();i++) {
+        auto pi = e.world().mut_pi(e.world().type_infer_univ());
+        auto _ = e.world().push(loc());
+        auto dom_t = var(i)->emit_type(e);
+        pi->set_dom(dom_t);
         auto body = result(i)->emit(e);
-        auto codom = body->type();
-        //auto vare = var(i)->emit(e);
+        auto codom = body->type(); // crashes here
+        pi->set_codom(codom);
+        auto lam = e.world().mut_lam(pi);
+        auto var_e = lam->var();
+        var(i)->emit_value(e,var_e);
 
-        auto lam = e.world().mut_lam(dom,codom);
         lam->set(true,body);
-        //lam->var()
+        
         res.push_back(lam);
     }
     // then we put everything in a big def for building the match

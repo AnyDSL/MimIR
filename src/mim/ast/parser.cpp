@@ -310,23 +310,20 @@ Ptr<Expr> Parser::parse_match_expr() {
     auto track = tracker();
     expect(Tag::K_match, "opening match for union destruction");
     auto matched = parse_expr("destroyed union element");
-    accept(Tag::K_with);
-    Ptrs<IdExpr> ids;
-    Ptrs<Expr> types;
+    expect(Tag::K_with, "match");
+    Ptrs<IdPtrn> ids;
     Ptrs<Expr> results;
-    //auto delim_l = ahead().tag();
     parse_list("match branches",Tag::D_brace_l,[&]() {
-        auto id_h = parse_id("var in branch");
-        accept(Tag::T_colon);
+        auto dbg = eat(Tag::M_id).dbg();
+        expect(Tag::T_colon,"type of branch");
         auto type_h = parse_expr("type of branch");
-        accept(Tag::T_match_arrow);
+        expect(Tag::T_match_arrow,"result of branch");
         auto res_h = parse_expr("result of branch");
-
-        ids.emplace_back(ptr<IdExpr>(id_h));
-        types.emplace_back(std::move(type_h));
+        auto idr = ptr<IdPtrn>(track,dbg,std::move(type_h));
+        ids.emplace_back(std::move(idr));
         results.emplace_back(std::move(res_h));
     });
-    return ptr<MatchExpr>(track, std::move(matched), std::move(types), std::move(ids), std::move(results));
+    return ptr<MatchExpr>(track, std::move(matched), std::move(ids), std::move(results));
 }
 
 Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
