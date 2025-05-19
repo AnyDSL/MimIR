@@ -48,8 +48,21 @@ bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 std::string tuple2str(const Def* def) {
     if (def == nullptr) return {};
 
-    auto array = def->projs(Lit::as(def->arity()), [](auto op) { return Lit::as(op); });
-    return std::string(array.begin(), array.end());
+    auto& w  = def->world();
+    auto res = std::string();
+    if (auto n = Lit::isa(def->arity())) {
+        for (size_t i = 0; i != *n; ++i) {
+            auto elem = def->proj(*n, i);
+            if (elem->type() == w.type_i8()) {
+                if (auto l = Lit::isa<char>(elem)) {
+                    res.push_back(*l);
+                    continue;
+                }
+            }
+            return {};
+        }
+    }
+    return res;
 }
 
 size_t flatten(DefVec& ops, const Def* def, bool flatten_muts) {
