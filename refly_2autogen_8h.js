@@ -1,6 +1,7 @@
 var refly_2autogen_8h =
 [
     [ "MIM_refly_NORMALIZER_IMPL", "refly_2autogen_8h.html#a11dc8b1207b37282b6f36efbbd75dc15", null ],
+    [ "mim::plug::refly::check", "namespacemim_1_1plug_1_1refly.html#ad1ff0c022f81a11c0fad8b96314d2a9d", null ],
     [ "mim::plug::refly::Code", "namespacemim_1_1plug_1_1refly.html#ac24c63c923883ed7d3fd7cf83a5ba6e0", null ],
     [ "mim::plug::refly::dbg", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65", [
       [ "mim::plug::refly::dbg::tmp", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65afa816edb83e95bf0c8da580bdfd491ef", null ],
@@ -27,6 +28,7 @@ var refly_2autogen_8h =
     [ "mim::plug::refly::type", "namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4", null ],
     [ "mim::plug::refly::verbose", "namespacemim_1_1plug_1_1refly.html#adb7a95dc4452056bbd12a22f40d875e7", null ],
     [ "mim::plug::refly::warn", "namespacemim_1_1plug_1_1refly.html#a7b28d3c30005b51a4045c19a3beee279", null ],
+    [ "mim::plug::refly::normalize_check", "namespacemim_1_1plug_1_1refly.html#a7e5d18897771aa6e8853df713ecbb0d3", null ],
     [ "mim::plug::refly::normalize_dbg", "namespacemim_1_1plug_1_1refly.html#a350a79c30bf6c48389a654dfaae9dcca", null ],
     [ "mim::plug::refly::normalize_equiv", "namespacemim_1_1plug_1_1refly.html#a9332fc41c063054ce7501beeff95c030", null ],
     [ "mim::plug::refly::normalize_gid", "namespacemim_1_1plug_1_1refly.html#a97e1eae14a36a579e362b10503e5833f", null ],

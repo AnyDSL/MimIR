@@ -249,6 +249,12 @@ Variables</h2></td></tr>
 <tr class="memitem:a9332fc41c063054ce7501beeff95c030"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1refly.html#a9332fc41c063054ce7501beeff95c030">mim::plug::refly::normalize_equiv</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
 <tr class="separator:a9332fc41c063054ce7501beeff95c030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">%refly.check</h2></td></tr>
+<tr class="memitem:ad1ff0c022f81a11c0fad8b96314d2a9d" id="r_ad1ff0c022f81a11c0fad8b96314d2a9d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1refly.html#ad1ff0c022f81a11c0fad8b96314d2a9d">mim::plug::refly::check</a> : flags_t </td></tr>
+<tr class="separator:ad1ff0c022f81a11c0fad8b96314d2a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e5d18897771aa6e8853df713ecbb0d3" id="r_a7e5d18897771aa6e8853df713ecbb0d3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1refly.html#a7e5d18897771aa6e8853df713ecbb0d3">mim::plug::refly::normalize_check</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4">type</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="separator:a7e5d18897771aa6e8853df713ecbb0d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%refly.refine</h2></td></tr>
 <tr class="memitem:a6f3aaae5967d2117b76b540b8cd92065" id="r_a6f3aaae5967d2117b76b540b8cd92065"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1refly.html#a6f3aaae5967d2117b76b540b8cd92065">mim::plug::refly::refine</a> : flags_t </td></tr>
 <tr class="separator:a6f3aaae5967d2117b76b540b8cd92065"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,10 +284,11 @@ Variables</h2></td></tr>
 <div class="line">        normalizers[flags_t(equiv::aE)] = &amp;normalize_equiv&lt;equiv::aE&gt;; \</div>
 <div class="line">        normalizers[flags_t(equiv::Ae)] = &amp;normalize_equiv&lt;equiv::Ae&gt;; \</div>
 <div class="line">        normalizers[flags_t(equiv::AE)] = &amp;normalize_equiv&lt;equiv::AE&gt;; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;check&gt;)] = &amp;normalize_check; \</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;refine&gt;)] = &amp;normalize_refine; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="refly_2autogen_8h_source.html#l00133">133</a> of file <a class="el" href="refly_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="refly_2autogen_8h_source.html#l00141">141</a> of file <a class="el" href="refly_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

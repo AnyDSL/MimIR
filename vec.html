@@ -123,32 +123,35 @@ $(function(){initNavTree('vec.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md253">Dependencies</a>
+    <a href="#autotoc_md254">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md254">Iterators</a>
+    <a href="#autotoc_md255">Iterators</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md255">%vec.fold</a>
+        <a href="#autotoc_md256">%vec.fold</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md256">Scanning</a>
+    <a href="#autotoc_md257">Scanning</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md257">%vec.scan</a>
+        <a href="#autotoc_md258">%vec.scan</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md258">%vec.unique</a>
+        <a href="#autotoc_md259">%vec.len</a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md260">%vec.unique</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md259">Modifiers</a>
+    <a href="#autotoc_md261">Modifiers</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md260">%vec.diff</a>
+        <a href="#autotoc_md262">%vec.diff</a>
       </li>
     </ul>
   </li>
@@ -157,12 +160,13 @@ $(function(){initNavTree('vec.html',''); initResizable(true); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2vec"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1vec.html" title="The vec Plugin">mim::plug::vec</a></dd></dl>
 <p>Utilitly functions for arrays to behave them like vectors in other languages.</p>
-<h1><a class="anchor" id="autotoc_md253"></a>
+<h1><a class="anchor" id="autotoc_md254"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md254"></a>
+<div class="line">plugin refly;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md255"></a>
 Iterators</h1>
-<h2><a class="anchor" id="autotoc_md255"></a>
+<h2><a class="anchor" id="autotoc_md256"></a>
 %vec.fold</h2>
 <p><a href="https://en.wikipedia.org/wiki/Fold_(higher-order_function)">Fold aka Reduction</a> of the vector with <code>f</code>:</p><ul>
 <li><code>%vec.fold.l f (init, (e1, ..., en))</code> is <code>f (... (f (f (init, e1), e2)) ..., en)</code>.</li>
@@ -176,25 +180,29 @@ Iterators</h1>
 </table>
 <div class="fragment"><div class="line">axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;</div>
 <div class="line">axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md256"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md257"></a>
 Scanning</h1>
-<h2><a class="anchor" id="autotoc_md257"></a>
+<h2><a class="anchor" id="autotoc_md258"></a>
 %vec.scan</h2>
 <p>Does the given predicate hold for all elements/at least one element?</p>
 <div class="fragment"><div class="line">axm %vec.scan(for_all, exists): {E: *} → {n: Nat} → [p: E → Bool] → «n; E» → Bool, normalize_scan;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md258"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md259"></a>
+%vec.len</h2>
+<p>Get length of vector.</p>
+<div class="fragment"><div class="line">lam %vec.len {n: Nat} {T: *} [«n; T»]: Nat = n;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md260"></a>
 %vec.unique</h2>
 <p>Checks whether all elements in the given vector are distinct from each other (using structural equivalence).</p>
 <div class="fragment"><div class="line">axm %vec.is_unique: {T: *} → {n: Nat} → «n; T» → Bool, normalize_is_unique;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md259"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md261"></a>
 Modifiers</h1>
-<h2><a class="anchor" id="autotoc_md260"></a>
+<h2><a class="anchor" id="autotoc_md262"></a>
 %vec.diff</h2>
 <p>Removes elements from vector.</p>
 <div class="fragment"><div class="line">axm %vec.diff: {T: *}</div>
 <div class="line">             → {n m: Nat}</div>
 <div class="line">             → [«n; T», is: «m; Idx n»]</div>
-<div class="line">             → «%core.select (%vec.is_unique is, %core.nat.sub (n, m), ⊥:Nat); T», normalize_diff;</div>
+<div class="line">             → «%refly.check (%vec.is_unique is, %core.nat.sub (n, m), &quot;given indices are not distinct&quot;); T», normalize_diff;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

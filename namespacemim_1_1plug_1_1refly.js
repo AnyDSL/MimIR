@@ -1,6 +1,7 @@
 var namespacemim_1_1plug_1_1refly =
 [
     [ "RemoveDbgPerm", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm" ],
+    [ "check", "namespacemim_1_1plug_1_1refly.html#ad1ff0c022f81a11c0fad8b96314d2a9d", null ],
     [ "Code", "namespacemim_1_1plug_1_1refly.html#ac24c63c923883ed7d3fd7cf83a5ba6e0", null ],
     [ "dbg", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65", [
       [ "tmp", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65afa816edb83e95bf0c8da580bdfd491ef", null ],
@@ -27,6 +28,7 @@ var namespacemim_1_1plug_1_1refly =
     [ "type", "namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4", null ],
     [ "verbose", "namespacemim_1_1plug_1_1refly.html#adb7a95dc4452056bbd12a22f40d875e7", null ],
     [ "warn", "namespacemim_1_1plug_1_1refly.html#a7b28d3c30005b51a4045c19a3beee279", null ],
+    [ "normalize_check", "namespacemim_1_1plug_1_1refly.html#a7e5d18897771aa6e8853df713ecbb0d3", null ],
     [ "normalize_dbg", "namespacemim_1_1plug_1_1refly.html#a350a79c30bf6c48389a654dfaae9dcca", null ],
     [ "normalize_equiv", "namespacemim_1_1plug_1_1refly.html#a9332fc41c063054ce7501beeff95c030", null ],
     [ "normalize_gid", "namespacemim_1_1plug_1_1refly.html#a97e1eae14a36a579e362b10503e5833f", null ],

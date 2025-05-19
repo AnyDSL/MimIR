@@ -93,10 +93,10 @@ var searchData=
   ['trip_5fend_90',['Trip_End',['../classmim_1_1Axm.html#acc0ce530cead2cf2565961ac2c1b8ffd',1,'mim::Axm']]],
   ['tuple_91',['Tuple',['../classmim_1_1Tuple.html',1,'mim::Tuple'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daafcbeb58fca053cad573bd9efda1dc5b',1,'mim::Tuple']]],
   ['tuple_92',['tuple',['../classmim_1_1ast_1_1ExtractExpr.html#a94180a5a4bef991f8063aebbcc64f293',1,'mim::ast::ExtractExpr::tuple()'],['../classmim_1_1ast_1_1InsertExpr.html#aa64e19dbf92257e27f157e77d265c60d',1,'mim::ast::InsertExpr::tuple()'],['../classmim_1_1Extract.html#a5ef043e63b59c57e07ef3845aa01b1f5',1,'mim::Extract::tuple()'],['../classmim_1_1Insert.html#a69ecfd2583f09009424062277a187fdf',1,'mim::Insert::tuple()'],['../classmim_1_1World.html#a7b4e60ce92685a9b7d7d140ccaddd495',1,'mim::World::tuple(Defs ops)'],['../classmim_1_1World.html#a096ac88ca09b5d2d27e3f85ff8216393',1,'mim::World::tuple(const Def *type, Defs ops)'],['../classmim_1_1World.html#abc39bbd21ae5797d53b9e82c494e2be9',1,'mim::World::tuple()'],['../classmim_1_1World.html#a01c60d087f4aed4da66146e7fca25606',1,'mim::World::tuple(Sym sym)']]],
-  ['tuple_20concat_93',['%%tuple.concat',['../tuple.html#autotoc_md250',1,'']]],
-  ['tuple_20contains_94',['%%tuple.contains',['../tuple.html#autotoc_md251',1,'']]],
+  ['tuple_20concat_93',['%%tuple.concat',['../tuple.html#autotoc_md251',1,'']]],
+  ['tuple_20contains_94',['%%tuple.contains',['../tuple.html#autotoc_md252',1,'']]],
   ['tuple_20plugin_95',['The tuple Plugin',['../tuple.html',1,'']]],
-  ['tuple_20zip_96',['%%tuple.zip',['../tuple.html#autotoc_md252',1,'']]],
+  ['tuple_20zip_96',['%%tuple.zip',['../tuple.html#autotoc_md253',1,'']]],
   ['tuple_2ecpp_97',['tuple.cpp',['../plug_2tuple_2tuple_8cpp.html',1,'(Global Namespace)'],['../tuple_8cpp.html',1,'(Global Namespace)']]],
   ['tuple_2eh_98',['tuple.h',['../plug_2tuple_2tuple_8h.html',1,'(Global Namespace)'],['../tuple_8h.html',1,'(Global Namespace)']]],
   ['tuple_2emd_99',['tuple.md',['../tuple_8md.html',1,'']]],
@@ -128,7 +128,7 @@ var searchData=
   ['type_5fnat_125',['type_nat',['../classmim_1_1World.html#a76a2bc4914920ee550be62ace9403d9f',1,'mim::World']]],
   ['type_5ftop_126',['type_top',['../classmim_1_1World.html#ab80f3808083473823d0f46dbe958016b',1,'mim::World']]],
   ['typeexpr_127',['TypeExpr',['../classmim_1_1ast_1_1TypeExpr.html',1,'mim::ast::TypeExpr'],['../classmim_1_1ast_1_1TypeExpr.html#a3d05c88d48ca18ce64120369a067bc19',1,'mim::ast::TypeExpr::TypeExpr()']]],
-  ['types_128',['Types',['../langref.html#autotoc_md52',1,'Function Types'],['../langref.html#autotoc_md43',1,'Kinds &amp; Builtin Types'],['../langref.html#autotoc_md48',1,'Summary: Functions &amp; Types'],['../autodiff.html#autotoc_md78',1,'Types'],['../compile.html#autotoc_md96',1,'Types'],['../math.html#autotoc_md144',1,'Types'],['../matrix.html#autotoc_md164',1,'Types'],['../mem.html#autotoc_md184',1,'Types'],['../ord.html#autotoc_md206',1,'Types'],['../refly.html#autotoc_md219',1,'Types'],['../regex.html#autotoc_md233',1,'Types']]],
+  ['types_128',['Types',['../langref.html#autotoc_md52',1,'Function Types'],['../langref.html#autotoc_md43',1,'Kinds &amp; Builtin Types'],['../langref.html#autotoc_md48',1,'Summary: Functions &amp; Types'],['../autodiff.html#autotoc_md78',1,'Types'],['../compile.html#autotoc_md96',1,'Types'],['../math.html#autotoc_md144',1,'Types'],['../matrix.html#autotoc_md164',1,'Types'],['../mem.html#autotoc_md184',1,'Types'],['../ord.html#autotoc_md206',1,'Types'],['../refly.html#autotoc_md219',1,'Types'],['../regex.html#autotoc_md234',1,'Types']]],
   ['types_2eh_129',['types.h',['../types_8h.html',1,'']]],
   ['types_5f_130',['types_',['../classmim_1_1Emitter.html#a95c0ebfac75b42f41dd1bb134059c1f4',1,'mim::Emitter']]]
 ];

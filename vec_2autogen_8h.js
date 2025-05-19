@@ -7,6 +7,7 @@ var vec_2autogen_8h =
       [ "mim::plug::vec::fold::r", "namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dca4b43b0aee35624cd95b910189b3dc231", null ]
     ] ],
     [ "mim::plug::vec::is_unique", "namespacemim_1_1plug_1_1vec.html#a091d66d323366df2a44ace85c3e624a8", null ],
+    [ "mim::plug::vec::len", "namespacemim_1_1plug_1_1vec.html#a2e546b5e745df67e338368b87b3ab914", null ],
     [ "mim::plug::vec::scan", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03", [
       [ "mim::plug::vec::scan::for_all", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03a0a6701462dd440321b2b782395bfcb68", null ],
       [ "mim::plug::vec::scan::exists", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03ae087923eb5dd1310f5f25ddd5ae5b580", null ]
