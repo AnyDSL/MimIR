@@ -323,7 +323,7 @@ public:
     /// @name Sigma
     ///@{
     Sigma* mut_sigma(const Def* type, size_t size) { return insert<Sigma>(size, type, size); }
-    /// A *mut*able Sigma of type @p level.
+    /// A *mutable* Sigma of type @p level.
     template<level_t level = 0> Sigma* mut_sigma(size_t size) { return mut_sigma(type<level>(), size); }
     const Def* sigma(Defs ops);
     const Sigma* sigma() { return data_.sigma; } ///< The unit type within Type 0.
@@ -438,13 +438,11 @@ public:
     const Def* type_bot() { return data_.type_bot; }
     const Def* type_top() { return data_.type_top; }
     const Def* top_nat() { return data_.top_nat; }
-    /// A *mut*able Bound of Type @p l%evel.
     template<bool Up> const Def* bound(Defs ops);
     const Def* join(Defs ops) { return bound<true>(ops); }
     const Def* meet(Defs ops) { return bound<false>(ops); }
     const Def* merge(const Def* type, Defs ops);
-    /// Infers the type using an *immutable* Meet.
-    const Def* merge(Defs ops);
+    const Def* merge(Defs ops); ///< Infers the type using a Meet.
     const Def* inj(const Def* type, const Def* value);
     const Def* split(const Def* type, const Def* value);
     const Def* match(Defs);

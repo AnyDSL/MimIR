@@ -10,6 +10,7 @@ target_sources(libmim
         lam.cpp
         lattice.cpp
         nest.cpp
+        normalize.cpp
         plugin.cpp
         rewrite.cpp
         schedule.cpp

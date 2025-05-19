@@ -15,7 +15,8 @@ void RetWrap::enter() {
     assert(new_vars.back() == ret_var && "we assume that the last element is the ret_var");
     new_vars.back() = ret_cont;
     auto new_var    = world().tuple(curr_mut()->dom(), new_vars);
-    curr_mut()->reset(curr_mut()->reduce(new_var));
+    auto new_defs   = curr_mut()->reduce(new_var);
+    curr_mut()->unset()->set(new_defs);
 }
 
 } // namespace mim

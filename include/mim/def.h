@@ -15,7 +15,13 @@
 
 // clang-format off
 #define MIM_NODE(m)                                                                                                                             \
-    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc, Judge::Meta)                    \
+    m(Lit,    lit,    Judge::Intro) /* keep as first */                                                                                         \
+    m(Axm,    axm,    Judge::Intro)                                                                                                             \
+    m(Var,    var,    Judge::Intro)                                                                                                             \
+    m(Global, global, Judge::Intro)                                                                                                             \
+    m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
+    m(Hole,   hole,   Judge::Hole)                                                                                                              \
+    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc,     Judge::Meta)                \
     m(Pi,     pi,     Judge::Form) m(Lam,   lam,   Judge::Intro) m(App,     app,     Judge::Elim)                                               \
     m(Sigma,  sigma,  Judge::Form) m(Tuple, tuple, Judge::Intro) m(Extract, extract, Judge::Elim) m(Insert, insert, Judge::Intro | Judge::Elim) \
     m(Arr,    arr,    Judge::Form) m(Pack,  pack,  Judge::Intro)                                                                                \
@@ -23,12 +29,7 @@
     m(Meet,   meet,   Judge::Form) m(Merge, merge, Judge::Intro) m(Split,   split,   Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
     m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
     m(Nat,    nat,    Judge::Form)                                                                                                              \
-    m(Idx,    idx,    Judge::Intro) m(Lit,  lit,  Judge::Intro)                                                                                 \
-    m(Axm,    axm,    Judge::Intro)                                                                                                             \
-    m(Var,    var,    Judge::Intro)                                                                                                             \
-    m(Global, global, Judge::Intro)                                                                                                             \
-    m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
-    m(Hole,   hole,   Judge::Hole)
+    m(Idx,    idx,    Judge::Intro)
 // clang-format on
 
 namespace mim {
@@ -268,25 +269,20 @@ public:
     /// @anchor set_ops
     /// You can set and change the Def::ops of a mutable after construction.
     /// However, you have to obey the following rules:
-    /// 1. If Def::is_set() is ...
-    ///     1. ... `false`, [set](@ref Def::set) the [operands](@ref Def::ops) from
-    ///         * left (`i == 0`) to
-    ///         * right (`i == num_ops() - 1`).
-    ///     2. ... `true`, [reset](@ref Def::reset) the operands from left to right as in 1a.
-    /// 2. In addition, you can invoke Def::unset() at *any time* to start over with 1a:
-    /// ```
-    /// mut->unset()->set({a, b, c}); // This will always work, but should be your last resort.
-    /// ```
+    /// If Def::is_set() is ...
+    ///     * `false`, [set](@ref Def::set) the [operands](@ref Def::ops) from left to right.
+    ///     * `true`, Def::unset() the operands first and then start over:
+    ///       ```
+    ///       mut->unset()->set({a, b, c});
+    ///       ```
     ///
     /// MimIR assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
     ///@{
-    Def* set(size_t i, const Def*);                                        ///< Successively   set from left to right.
-    Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
-    Def* set(Defs ops);                                                    ///< Def::set @p ops all at once.
-    Def* reset(Defs ops);                                                  ///< Def::reset @p ops all at once.
-    Def* unset();        ///< Unsets all Def::ops; works even, if not set at all or partially.
-    bool is_set() const; ///< Yields `true` if empty or the last op is set.
+    Def* set(size_t i, const Def*); ///< Successively set from left to right.
+    Def* set(Defs ops);             ///< Def::set @p ops all at once.
+    Def* unset();                   ///< Unsets all Def::ops; works even, if not set at all or partially.
+    bool is_set() const;            ///< Yields `true` if empty or the last op is set.
     ///@}
 
     /// @name deps
@@ -425,7 +421,7 @@ public:
     template<class T = Def, class R> const T* isa_imm(R (T::*f)() const) const { return isa_mut<T, R, true>(f); }
     // clang-format on
 
-    /// If `this` is *mut*able, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
+    /// If `this` is *mutable*, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
     template<class T = Def, bool invert = false> T* isa_mut() const {
         if constexpr (std::is_same<T, Def>::value)
             return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;
@@ -513,8 +509,20 @@ public:
 
     /// @name Type Checking
     ///@{
-    virtual const Def* check(size_t, const Def* def) { return def; }
+
+    /// Checks whether the `i`th operand can be set to `def`.
+    /// The method returns a possibly updated version of `def` (e.g. where Hole%s have been resolved).
+    /// This is the actual `def` that will be set as the `i`th operand.
+    virtual const Def* check([[maybe_unused]] size_t i, const Def* def) { return def; }
+
+    /// After all Def::ops have ben Def::set, this method will be invoked to check the type of this mutable.
+    /// The method returns a possibly updated version of its type (e.g. where Hole%s have been resolved).
+    /// If different from Def::type, it will update its Def::type to a Def::zonk%ed version of that.
     virtual const Def* check() { return type(); }
+
+    /// If Hole%s have been filled, reconstruct the program without them.
+    /// Only gues up to but excluding other mutables.
+    /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
     ///@}
 
@@ -555,7 +563,6 @@ private:
 
     Vars free_vars(bool&, bool&, uint32_t run);
     void invalidate();
-    Def* unset(size_t i);
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }

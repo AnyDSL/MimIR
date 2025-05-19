@@ -352,7 +352,7 @@ const Def* World::extract(const Def* d, const Def* index) {
     }
 
     if (auto i = Lit::isa(index)) {
-        if (auto hole = d->isa_mut<Hole>()) d = hole->tuplefy();
+        if (auto hole = d->isa_mut<Hole>()) d = hole->tuplefy(Idx::as_lit(index->type()));
         if (auto tuple = d->isa<Tuple>()) return tuple->op(*i);
 
         // extract(insert(x, j, val), i) -> extract(x, i) where i != j (guaranteed by rule above)
