@@ -389,6 +389,10 @@ var namespacemim_1_1plug =
       [ "Plugin_Id", "namespacemim_1_1plug_1_1opt.html#a0987aaf63a0209e71b7fcea95c848951", null ]
     ] ],
     [ "ord", "namespacemim_1_1plug_1_1ord.html", [
+      [ "contains", "namespacemim_1_1plug_1_1ord.html#ab41bd48f8eb19704f4036734356f166d", [
+        [ "set", "namespacemim_1_1plug_1_1ord.html#ab41bd48f8eb19704f4036734356f166dacdaeeeba9b4a4c5ebf042c0215a7bb0e", null ],
+        [ "map", "namespacemim_1_1plug_1_1ord.html#ab41bd48f8eb19704f4036734356f166da1d78dc8ed51214e518b5114fe24490ae", null ]
+      ] ],
       [ "create_map", "namespacemim_1_1plug_1_1ord.html#a1df1214b2f201f8285ba3757b18290d4", null ],
       [ "create_set", "namespacemim_1_1plug_1_1ord.html#a1f9447414a2d8bd3d9b5e7098786740c", null ],
       [ "get", "namespacemim_1_1plug_1_1ord.html#aba44102109a1561a91c6182d20785923", null ],
@@ -403,19 +407,15 @@ var namespacemim_1_1plug =
       [ "is_empty_map", "namespacemim_1_1plug_1_1ord.html#a3139291210faabba5130f06c7513a57f", null ],
       [ "is_empty_set", "namespacemim_1_1plug_1_1ord.html#adf40c77e7d3537a42c2423fb1b4e33c5", null ],
       [ "Map", "namespacemim_1_1plug_1_1ord.html#abc7482320010e15a67481e999f1e8e37", null ],
-      [ "mem", "namespacemim_1_1plug_1_1ord.html#ab6d9235ab0c3c0b802a43229b1531732", [
-        [ "set", "namespacemim_1_1plug_1_1ord.html#ab6d9235ab0c3c0b802a43229b1531732acdaeeeba9b4a4c5ebf042c0215a7bb0e", null ],
-        [ "map", "namespacemim_1_1plug_1_1ord.html#ab6d9235ab0c3c0b802a43229b1531732a1d78dc8ed51214e518b5114fe24490ae", null ]
-      ] ],
       [ "Set", "namespacemim_1_1plug_1_1ord.html#a50e2f0713c3d362f4e5ec542ae95dda4", null ],
       [ "size", "namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38", [
         [ "set", "namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38acdaeeeba9b4a4c5ebf042c0215a7bb0e", null ],
         [ "map", "namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38a1d78dc8ed51214e518b5114fe24490ae", null ]
       ] ],
+      [ "normalize_contains", "namespacemim_1_1plug_1_1ord.html#a8bccaea168c844dbebc2f252cdf37a11", null ],
       [ "normalize_get", "namespacemim_1_1plug_1_1ord.html#aca23be19d49b0a5baa10f74760b2e4ef", null ],
       [ "normalize_init", "namespacemim_1_1plug_1_1ord.html#acfdfd946d58d1ec4b8773d1e87204a17", null ],
       [ "normalize_insert", "namespacemim_1_1plug_1_1ord.html#a0804d375201e08be1ad389eff4b0670a", null ],
-      [ "normalize_mem", "namespacemim_1_1plug_1_1ord.html#ab6a305cd817dd4ed7f458425d0df7d65", null ],
       [ "normalize_size", "namespacemim_1_1plug_1_1ord.html#a43293b1d5a0e603e953bfbed048d5a99", null ],
       [ "register_normalizers", "namespacemim_1_1plug_1_1ord.html#a24f01b06e141f8ed2ac155dbdd36fdd9", null ],
       [ "Plugin_Id", "namespacemim_1_1plug_1_1ord.html#a755ae6a7f2ee39cdcf28d325d8bbfd39", null ]
@@ -425,11 +425,11 @@ var namespacemim_1_1plug =
     [ "tuple", "namespacemim_1_1plug_1_1tuple.html", [
       [ "append", "namespacemim_1_1plug_1_1tuple.html#aedc9c99286296674c67cba716067592d", null ],
       [ "concat", "namespacemim_1_1plug_1_1tuple.html#a6c58c4d6f5e52f258b1d7b07464d8b41", null ],
-      [ "mem", "namespacemim_1_1plug_1_1tuple.html#aae168cd2c7683088985c083deafc40a0", null ],
+      [ "contains", "namespacemim_1_1plug_1_1tuple.html#a2c3b889c139b975a1735543c8ed40664", null ],
       [ "prepend", "namespacemim_1_1plug_1_1tuple.html#ac27303d7e38479898972453b4e58f1f2", null ],
       [ "zip", "namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2", null ],
       [ "normalize_concat", "namespacemim_1_1plug_1_1tuple.html#a7de68ef33b3785dd40ea4b4d1117d296", null ],
-      [ "normalize_mem", "namespacemim_1_1plug_1_1tuple.html#af0d4d888181afb2cae11dc124dc4d569", null ],
+      [ "normalize_contains", "namespacemim_1_1plug_1_1tuple.html#a9bcfd0ca8c95fef42ecb4ea084635916", null ],
       [ "normalize_zip", "namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448", null ],
       [ "register_normalizers", "namespacemim_1_1plug_1_1tuple.html#a4a5ac0ade39e76f6e910b0b5af8284bd", null ],
       [ "Plugin_Id", "namespacemim_1_1plug_1_1tuple.html#a12e1d6408db489bf216da5d9ec52aaae", null ]

@@ -132,7 +132,7 @@ $(function(){initNavTree('tuple.html',''); initResizable(true); });
         <a href="#autotoc_md250">%tuple.concat</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md251">%tuple.mem</a>
+        <a href="#autotoc_md251">%tuple.contains</a>
       </li>
       <li class="level2">
         <a href="#autotoc_md252">%tuple.zip</a>
@@ -180,9 +180,9 @@ Operations</h1>
 <div class="line">                    » // «i: 1 + m; select(i &lt; 1 , T, Us#(i - 1))»</div>
 <div class="line">                  = %tuple.concat @(1, m) (a, b);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md251"></a>
-%tuple.mem</h2>
-<p>Checks whether the given value is a member of the tuple.</p>
-<div class="fragment"><div class="line">axm %tuple.mem: {n: Nat} → {T: *, Us: «n; *»} → [T, «i: n; Us#i»] → Bool, normalize_mem;</div>
+%tuple.contains</h2>
+<p>Does the tuple conain the given element?</p>
+<div class="fragment"><div class="line">axm %tuple.contains: {n: Nat} → {Ts: «n; *», U: *} → [«i: n; Ts#i», U] → Bool, normalize_contains;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md252"></a>
 %tuple.zip</h2>
 <p><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>

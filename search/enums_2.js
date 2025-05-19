@@ -14,12 +14,13 @@ var searchData=
   ['conj_11',['conj',['../namespacemim_1_1plug_1_1regex.html#a503fd044ea11748600b636a1590a3945',1,'mim::plug::regex']]],
   ['const_5fidx_12',['const_idx',['../namespacemim_1_1plug_1_1demo.html#a190324d76d5d13cf2c933c82e381fb46',1,'mim::plug::demo']]],
   ['constmat_13',['constMat',['../namespacemim_1_1plug_1_1matrix.html#a11b9674b35894ca4f3605791d4783b74',1,'mim::plug::matrix']]],
-  ['conv_14',['conv',['../namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712a',1,'mim::plug::core::conv'],['../namespacemim_1_1plug_1_1math.html#a8ac3bb9e8191efc677affb69ca0b71eb',1,'mim::plug::math::conv']]],
-  ['copy_5fprop_5fpass_15',['copy_prop_pass',['../namespacemim_1_1plug_1_1mem.html#a526eb86f6219aa1645e12144c1a3a6e8',1,'mim::plug::mem']]],
-  ['core_5fplugin_16',['core_plugin',['../namespacemim_1_1plug_1_1compile.html#a5fcde97827492cc0450c4ea941ef7892',1,'mim::plug::compile']]],
-  ['cps2ds_17',['cps2ds',['../namespacemim_1_1plug_1_1direct.html#ab2a0fe9b03b60f04b11532493ed42cac',1,'mim::plug::direct']]],
-  ['cps2ds_5fdep_18',['cps2ds_dep',['../namespacemim_1_1plug_1_1direct.html#ae16ba35b7bcfa757a84a6e0ba0ca7e00',1,'mim::plug::direct']]],
-  ['cps2ds_5fpass_19',['cps2ds_pass',['../namespacemim_1_1plug_1_1direct.html#a051ff263e9673bd32b0c15a836ddccf2',1,'mim::plug::direct']]],
-  ['create_5fmap_20',['create_map',['../namespacemim_1_1plug_1_1ord.html#a1df1214b2f201f8285ba3757b18290d4',1,'mim::plug::ord']]],
-  ['create_5fset_21',['create_set',['../namespacemim_1_1plug_1_1ord.html#a1f9447414a2d8bd3d9b5e7098786740c',1,'mim::plug::ord']]]
+  ['contains_14',['contains',['../namespacemim_1_1plug_1_1ord.html#ab41bd48f8eb19704f4036734356f166d',1,'mim::plug::ord::contains'],['../namespacemim_1_1plug_1_1tuple.html#a2c3b889c139b975a1735543c8ed40664',1,'mim::plug::tuple::contains']]],
+  ['conv_15',['conv',['../namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712a',1,'mim::plug::core::conv'],['../namespacemim_1_1plug_1_1math.html#a8ac3bb9e8191efc677affb69ca0b71eb',1,'mim::plug::math::conv']]],
+  ['copy_5fprop_5fpass_16',['copy_prop_pass',['../namespacemim_1_1plug_1_1mem.html#a526eb86f6219aa1645e12144c1a3a6e8',1,'mim::plug::mem']]],
+  ['core_5fplugin_17',['core_plugin',['../namespacemim_1_1plug_1_1compile.html#a5fcde97827492cc0450c4ea941ef7892',1,'mim::plug::compile']]],
+  ['cps2ds_18',['cps2ds',['../namespacemim_1_1plug_1_1direct.html#ab2a0fe9b03b60f04b11532493ed42cac',1,'mim::plug::direct']]],
+  ['cps2ds_5fdep_19',['cps2ds_dep',['../namespacemim_1_1plug_1_1direct.html#ae16ba35b7bcfa757a84a6e0ba0ca7e00',1,'mim::plug::direct']]],
+  ['cps2ds_5fpass_20',['cps2ds_pass',['../namespacemim_1_1plug_1_1direct.html#a051ff263e9673bd32b0c15a836ddccf2',1,'mim::plug::direct']]],
+  ['create_5fmap_21',['create_map',['../namespacemim_1_1plug_1_1ord.html#a1df1214b2f201f8285ba3757b18290d4',1,'mim::plug::ord']]],
+  ['create_5fset_22',['create_set',['../namespacemim_1_1plug_1_1ord.html#a1f9447414a2d8bd3d9b5e7098786740c',1,'mim::plug::ord']]]
 ];

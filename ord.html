@@ -157,7 +157,7 @@ $(function(){initNavTree('ord.html',''); initResizable(true); });
         <a href="#autotoc_md214">%ord.get</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md215">%ord.mem</a>
+        <a href="#autotoc_md215">%ord.contains</a>
       </li>
     </ul>
   </li>
@@ -212,10 +212,10 @@ Lookup</h1>
 <p>Get value from key in map. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo</a></b></dt><dd>Use Option as return type once we have proper union types.</dd></dl>
 <div class="fragment"><div class="line">axm %ord.get: {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt, K] → V, normalize_get;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md215"></a>
-%ord.mem</h2>
-<p>Is the given key member of the container?</p>
-<div class="fragment"><div class="line">axm %ord.mem(set): {K  : *} → {lt: [K, K] → Bool} → [K, %ord.Set  K     lt] → Bool, normalize_mem;</div>
-<div class="line">axm %ord.mem(map): {K V: *} → {lt: [K, K] → Bool} → [K, %ord.Map (K, V) lt] → Bool, normalize_mem;</div>
+%ord.contains</h2>
+<p>Does the container conain the given key?</p>
+<div class="fragment"><div class="line">axm %ord.contains(set): {K  : *} → {lt: [K, K] → Bool} → [%ord.Set  K     lt, K] → Bool, normalize_contains;</div>
+<div class="line">axm %ord.contains(map): {K V: *} → {lt: [K, K] → Bool} → [%ord.Map (K, V) lt, K] → Bool, normalize_contains;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md216"></a>
 Modifiers</h1>
 <h2><a class="anchor" id="autotoc_md217"></a>

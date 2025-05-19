@@ -94,7 +94,7 @@ var searchData=
   ['tuple_91',['Tuple',['../classmim_1_1Tuple.html',1,'mim::Tuple'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daafcbeb58fca053cad573bd9efda1dc5b',1,'mim::Tuple']]],
   ['tuple_92',['tuple',['../classmim_1_1ast_1_1ExtractExpr.html#a94180a5a4bef991f8063aebbcc64f293',1,'mim::ast::ExtractExpr::tuple()'],['../classmim_1_1ast_1_1InsertExpr.html#aa64e19dbf92257e27f157e77d265c60d',1,'mim::ast::InsertExpr::tuple()'],['../classmim_1_1Extract.html#a5ef043e63b59c57e07ef3845aa01b1f5',1,'mim::Extract::tuple()'],['../classmim_1_1Insert.html#a69ecfd2583f09009424062277a187fdf',1,'mim::Insert::tuple()'],['../classmim_1_1World.html#a7b4e60ce92685a9b7d7d140ccaddd495',1,'mim::World::tuple(Defs ops)'],['../classmim_1_1World.html#a096ac88ca09b5d2d27e3f85ff8216393',1,'mim::World::tuple(const Def *type, Defs ops)'],['../classmim_1_1World.html#abc39bbd21ae5797d53b9e82c494e2be9',1,'mim::World::tuple()'],['../classmim_1_1World.html#a01c60d087f4aed4da66146e7fca25606',1,'mim::World::tuple(Sym sym)']]],
   ['tuple_20concat_93',['%%tuple.concat',['../tuple.html#autotoc_md250',1,'']]],
-  ['tuple_20mem_94',['%%tuple.mem',['../tuple.html#autotoc_md251',1,'']]],
+  ['tuple_20contains_94',['%%tuple.contains',['../tuple.html#autotoc_md251',1,'']]],
   ['tuple_20plugin_95',['The tuple Plugin',['../tuple.html',1,'']]],
   ['tuple_20zip_96',['%%tuple.zip',['../tuple.html#autotoc_md252',1,'']]],
   ['tuple_2ecpp_97',['tuple.cpp',['../plug_2tuple_2tuple_8cpp.html',1,'(Global Namespace)'],['../tuple_8cpp.html',1,'(Global Namespace)']]],
