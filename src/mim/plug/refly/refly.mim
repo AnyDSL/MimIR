@@ -75,6 +75,10 @@ axm %refly.equiv(ae = struc_ne, aE = struc_eq,
                  Ae = alpha_ne, AE = alpha_eq):
     {T: *} → [T, T] → T, normalize_equiv;
 ///
+/// ### %%refly.error
+///
+axm %refly.check: {T: *} → {n: Nat} → [Bool, T, «n; I8»] → T, normalize_check;
+///
 /// ## Manipulate
 ///
 /// ### %%refly.refine
