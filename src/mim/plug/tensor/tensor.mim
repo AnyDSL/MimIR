@@ -83,6 +83,7 @@ axm %tensor.dot_general:  [R: Ring]
                           let s_out    = %tuple.concat @(nb, %vec.len s12_res) @(‹nb; Nat›, ‹%vec.len s12_res; Nat›) (bs, s12_res);
                           «s_out; R#T», normalize_prod;
 ///
+//
 /// ### %%tensor.prod_2d
 ///
 /// lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
