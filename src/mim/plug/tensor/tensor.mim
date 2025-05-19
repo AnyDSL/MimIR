@@ -7,6 +7,7 @@
 /// ## Dependencies
 ///
 plugin tuple;
+plugin vec;
 ///
 /// A tensor plugin
 ///
@@ -66,6 +67,7 @@ axm %tensor.reshape:  {T: *}
 /// Helper: returns `n` if `n == m` or `⊥:Nat` aka error otherwise.
 lam eq (n m: Nat): Nat = %core.select (%core.ncmp.e (n, m), n, ⊥:Nat);
 ///
+lam len {n: Nat} {T: *} (a: «n; T») : Nat = n;
 axm %tensor.dot_general:  [R: Ring]
                         → {r1 r2: Nat}
                         → {nc nb: Nat}
@@ -73,8 +75,16 @@ axm %tensor.dot_general:  [R: Ring]
                         → [c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»]
                         → [«s1; R#T», «s2; R#T»]
                         → let bs = ‹i: nb; eq (s1#(b1#i), s2#(b2#i))›;
-                          let nb_r1 = %core.nat.add (nb, r1);
-                          «%tuple.concat @(nb_r1, r2) @(‹nb_r1; Nat›, ‹r2; Nat›) (%tuple.concat @(nb, r1) @(‹nb; Nat›, ‹r1; Nat›) (bs, s1), s2); R#T», normalize_prod;
+                          let n_bc = %core.nat.add (nb, nc);
+                          let bc_1 = %tuple.concat @(nb, nc) @(‹nb; Idx r1>, ‹nc; Idx r1›) (b1, c1);
+                          let s1_res = %vec.diff (s1, bc_1);
+                          let n_s1_res = len s1_res;
+                          let bc_2 = %tuple.concat @(nb, nc) @(‹nb; Idx r2›, ‹nc; Idx r2›)  (b2, c2);
+                          let s2_res = %vec.diff (s2, bc_2);
+                          let n_s2_res = len s2_res;
+                          let s12_res = %tuple.concat @(n_s1_res, n_s2_res) @(‹n_s1_res; Nat›, ‹n_s2_res; Nat›) (s1_res, s2_res);
+                          let s_out = %tuple.concat (bs, s12_res);
+                          «s_out; R#T», normalize_prod;
 ///
 /// ### %%tensor.prod_2d
 ///
