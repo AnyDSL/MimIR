@@ -1,5 +1,7 @@
 #include "mim/normalize.h"
 
+#include <fe/assert.h>
+
 #include "mim/world.h"
 
 namespace mim {
@@ -13,7 +15,7 @@ namespace mim {
 
     if (a->isa_mut() && b->isa_mut()) {
         world.WLOG("resorting to unstable gid-based compare for commute check");
-        return a->gid() < a->gid() ? -1 : +1;
+        return a->gid() < b->gid() ? -1 : +1;
     }
 
     assert(a->isa_imm() && b->isa_imm());
@@ -32,7 +34,8 @@ namespace mim {
 
     for (size_t i = 0, e = a->num_ops(); i != e; ++i)
         if (int cmp = commute_(a->op(i), b->op(i)); cmp != 0) return cmp;
-    assert(false);
+
+    fe::unreachable();
 }
 
 } // namespace mim

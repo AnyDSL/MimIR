@@ -182,8 +182,7 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
     callee = callee->zonk();
     arg    = arg->zonk();
     if (auto pi = callee->type()->isa<Pi>()) {
-        auto dom = pi->dom()->zonk(); // TODO this is more a hotfix; callee->zonk() above should deal with this
-        if (auto new_arg = Checker::assignable(dom, arg)) {
+        if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
             arg = new_arg->zonk();
             if (auto imm = callee->isa_imm<Lam>()) return imm->body();
 
@@ -353,7 +352,7 @@ const Def* World::extract(const Def* d, const Def* index) {
     }
 
     if (auto i = Lit::isa(index)) {
-        if (auto hole = d->isa_mut<Hole>()) d = hole->tuplefy();
+        if (auto hole = d->isa_mut<Hole>()) d = hole->tuplefy(Idx::as_lit(index->type()));
         if (auto tuple = d->isa<Tuple>()) return tuple->op(*i);
 
         // extract(insert(x, j, val), i) -> extract(x, i) where i != j (guaranteed by rule above)
@@ -453,7 +452,8 @@ const Def* World::arr(const Def* shape, const Def* body) {
 }
 
 const Def* World::pack(const Def* shape, const Def* body) {
-    if (!is_shape(shape->type())) error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->type());
+    if (!is_shape(shape->unfold_type()))
+        error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->unfold_type());
 
     if (auto a = Lit::isa(shape)) {
         if (*a == 0) return tuple();

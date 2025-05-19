@@ -44,6 +44,12 @@ lam %tuple.prepend  {m: Nat}
                     » // «i: 1 + m; select(i < 1 , T, Us#(i - 1))»
                   = %tuple.concat @(1, m) (a, b);
 ///
+/// ### %%tuple.contains
+///
+/// Does the tuple conain the given element?
+///
+axm %tuple.contains: {n: Nat} → {Ts: «n; *», U: *} → [«i: n; Ts#i», U] → Bool, normalize_contains;
+///
 /// ### %%tuple.zip
 ///
 /// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.

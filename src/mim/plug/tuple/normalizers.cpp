@@ -20,6 +20,32 @@ const Def* normalize_concat(const Def* type, const Def* callee, const Def* arg) 
     return nullptr;
 }
 
+const Def* normalize_contains(const Def* type, const Def*, const Def* arg) {
+    auto& w      = type->world();
+    auto [xs, x] = arg->projs<2>();
+
+    if (auto mut_pack = xs->isa_mut<Pack>()) {
+        if (auto imm = mut_pack->immutabilize())
+            xs = imm;
+        else
+            return nullptr;
+    }
+
+    if (auto tuple = xs->isa<Tuple>()) {
+        for (auto op : tuple->ops())
+            if (op == x) return w.lit_tt();
+
+        return tuple->is_closed() ? w.lit_ff() : nullptr;
+    }
+
+    if (auto pack = xs->isa<Pack>()) {
+        if (pack->body() == x) return w.lit_tt();
+        return pack->is_closed() ? w.lit_ff() : nullptr;
+    }
+
+    return nullptr;
+}
+
 const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
     auto& w                    = type->world();
     auto callee                = c->as<App>();

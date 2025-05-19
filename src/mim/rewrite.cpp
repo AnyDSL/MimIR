@@ -2,6 +2,7 @@
 
 #include <absl/container/fixed_array.h>
 
+#include "mim/check.h"
 #include "mim/world.h"
 
 // Don't use fancy C++-lambdas; it's way too annoying stepping through them in a debugger.
@@ -9,6 +10,7 @@
 namespace mim {
 
 const Def* Rewriter::rewrite(const Def* old_def) {
+    old_def = Hole::find(old_def);
     if (old_def->isa<Univ>()) return world().univ();
     if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
     if (auto old_mut = old_def->isa_mut()) return rewrite_mut(old_mut);

@@ -128,7 +128,8 @@ void Clos2SJLJ::enter() {
         auto [m2, rb] = mem::op_slot(void_ptr(), m1)->projs<2>();
         auto new_args = curr_mut()->vars();
         new_args[0]   = m2;
-        curr_mut()->reset(curr_mut()->reduce(w.tuple(new_args)));
+        auto new_defs = curr_mut()->reduce(w.tuple(new_args));
+        curr_mut()->unset()->set(new_defs);
 
         cur_jbuf_ = jb;
         cur_rbuf_ = rb;
@@ -161,7 +162,7 @@ void Clos2SJLJ::enter() {
     tag            = w.call(core::conv::s, branches.size(), tag);
     auto filter    = curr_mut()->filter();
     auto branch    = w.extract(w.tuple(branches), tag);
-    curr_mut()->reset({filter, clos_apply(branch, m1)});
+    curr_mut()->unset()->set({filter, clos_apply(branch, m1)});
 }
 
 const Def* Clos2SJLJ::rewrite(const Def* def) {
