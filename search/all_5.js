@@ -49,7 +49,7 @@ var searchData=
   ['fnv1_46',['FNV1',['../namespacemim.html#structmim_1_1FNV1',1,'mim']]],
   ['fnv1_3c_204_20_3e_47',['FNV1&lt; 4 &gt;',['../structmim_1_1FNV1_3_014_01_4.html',1,'mim']]],
   ['fnv1_3c_208_20_3e_48',['FNV1&lt; 8 &gt;',['../structmim_1_1FNV1_3_018_01_4.html',1,'mim']]],
-  ['fold_49',['fold',['../vec.html#autotoc_md256',1,'%vec.fold'],['../namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dc',1,'mim::plug::vec::fold']]],
+  ['fold_49',['fold',['../vec.html#autotoc_md257',1,'%vec.fold'],['../namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dc',1,'mim::plug::vec::fold']]],
   ['for_50',['For',['../affine.html#autotoc_md74',1,'%affine.For'],['../namespacemim_1_1plug_1_1affine.html#a6ff8673e1d2565961963aec89b59c068',1,'mim::plug::affine::For']]],
   ['for_20built_20ins_51',['Downcast for Built-ins',['../dev.html#cast_builtin',1,'']]],
   ['for_20immutables_52',['Downcast for Immutables',['../dev.html#autotoc_md20',1,'']]],

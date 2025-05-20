@@ -45,7 +45,7 @@ var searchData=
   ['uniq_42',['Uniq',['../classmim_1_1Uniq.html',1,'mim::Uniq'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa52035083e0f187cb1b19b131b4ecdd5',1,'mim::Uniq']]],
   ['uniq_43',['uniq',['../classmim_1_1World.html#ac30df88041d6a913722b73b888e01477',1,'mim::World']]],
   ['uniqexpr_44',['UniqExpr',['../classmim_1_1ast_1_1UniqExpr.html',1,'mim::ast::UniqExpr'],['../classmim_1_1ast_1_1UniqExpr.html#ac592fc70aaf2a4cae817449e103ce2be',1,'mim::ast::UniqExpr::UniqExpr()']]],
-  ['unique_45',['%%vec.unique',['../vec.html#autotoc_md260',1,'']]],
+  ['unique_45',['%%vec.unique',['../vec.html#autotoc_md261',1,'']]],
   ['unique_5fname_46',['unique_name',['../classmim_1_1Def.html#ae61aa184493aa3f3bf685758d27f982a',1,'mim::Def']]],
   ['unique_5fqueue_47',['unique_queue',['../classmim_1_1unique__queue.html',1,'mim::unique_queue&lt; Set &gt;'],['../classmim_1_1unique__queue.html#a30076792d01b0b1ce9739c1884ba38b0',1,'mim::unique_queue::unique_queue()=default'],['../classmim_1_1unique__queue.html#a5d058cc9034d541b1b3a13ca9535cc11',1,'mim::unique_queue::unique_queue(Set set)']]],
   ['unique_5fstack_48',['unique_stack',['../classmim_1_1unique__stack.html',1,'mim']]],

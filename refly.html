@@ -151,27 +151,32 @@ $(function(){initNavTree('refly.html',''); initResizable(true); });
       <li class="level2">
         <a href="#autotoc_md226">%refly.dbg</a>
       </li>
+    </ul>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md227">Testing</a>
+    <ul>
       <li class="level2">
-        <a href="#autotoc_md227">%refly.assert</a>
+        <a href="#autotoc_md228">%refly.equiv</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md228">%refly.error</a>
+        <a href="#autotoc_md229">%refly.error</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md229">Manipulate</a>
+    <a href="#autotoc_md230">Manipulate</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md230">%refly.refine</a>
+        <a href="#autotoc_md231">%refly.refine</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md231">Passes and Phases</a>
+    <a href="#autotoc_md232">Passes and Phases</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md232">Passes</a>
+        <a href="#autotoc_md233">Passes</a>
       </li>
     </ul>
   </li>
@@ -219,11 +224,12 @@ Inspect</h1>
 <div class="line">let %refly.debug   = 4;</div>
 <div class="line"> </div>
 <div class="line">axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md227"></a>
-%refly.assert</h2>
-<p>Nat comparison is made of 3 disjoint relations:</p><ul>
-<li><code>G</code>reater</li>
-<li><code>L</code>ess</li>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md227"></a>
+Testing</h1>
+<h2><a class="anchor" id="autotoc_md228"></a>
+%refly.equiv</h2>
+<p>Checks for structurual / alpha-equivalence. We are using two disjoint relations:</p><ul>
+<li><code>A</code>lpha</li>
 <li><code>E</code>qual</li>
 </ul>
 <table class="markdownTable">
@@ -232,27 +238,27 @@ Inspect</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>ae</code>   </td><td class="markdownTableBodyNone"><code>f</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">assert strucutrual equivalent    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>aE</code>   </td><td class="markdownTableBodyNone"><code>e</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">assert <em>not</em> structurual equivalent    </td></tr>
+<td class="markdownTableBodyNone"><code>aE</code>   </td><td class="markdownTableBodyNone"><code>e</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">assert <b>not</b> structurual equivalent    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>Ae</code>   </td><td class="markdownTableBodyNone"><code>l</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">assert alpha equivalent    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>AE</code>   </td><td class="markdownTableBodyNone"><code>le</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">assert <em>not</em> alpha equivalent   </td></tr>
+<td class="markdownTableBodyNone"><code>AE</code>   </td><td class="markdownTableBodyNone"><code>le</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">assert <b>not</b> alpha equivalent   </td></tr>
 </table>
 <div class="fragment"><div class="line">axm %refly.equiv(ae = struc_ne, aE = struc_eq,</div>
 <div class="line">                 Ae = alpha_ne, AE = alpha_eq):</div>
 <div class="line">    {T: *} → [T, T] → T, normalize_equiv;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md228"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md229"></a>
 %refly.error</h2>
 <div class="fragment"><div class="line">axm %refly.check: {T: *} → {n: Nat} → [Bool, T, «n; I8»] → T, normalize_check;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md229"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md230"></a>
 Manipulate</h1>
-<h2><a class="anchor" id="autotoc_md230"></a>
+<h2><a class="anchor" id="autotoc_md231"></a>
 %refly.refine</h2>
 <p>Sets the <code>i</code>th operand of the reified Code <code>e</code> to <code>x</code>.</p>
 <div class="fragment"><div class="line">axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md231"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md232"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md232"></a>
+<h2><a class="anchor" id="autotoc_md233"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %refly.remove_dbg_perm_pass: %compile.Pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
