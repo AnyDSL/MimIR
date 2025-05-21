@@ -72,6 +72,7 @@ axm %tensor.dot_general:  [R: Ring]
                         → [c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»]
                         → [«s1; R#T», «s2; R#T»]
                         → let bs       = ‹i: nb; %refly.check (%core.ncmp.e ((s1#(b1#i), s2#(b2#i))), s1#(b1#i), "batching dims don't match")›;
+                          let cs       = ‹i: nc; %refly.check (%core.ncmp.e ((s1#(c1#i), s2#(c2#i))), s1#(c1#i), "contracting dims don't match")›;
                           let n_bc     = %core.nat.add (nb, nc);
                           let bc_1     = %tuple.concat @(nb, nc) @(‹nb; Idx r1>, ‹nc; Idx r1›) (b1, c1);
                           let s1_res   = %vec.diff (s1, bc_1);
@@ -83,12 +84,11 @@ axm %tensor.dot_general:  [R: Ring]
                           let s_out    = %tuple.concat @(nb, %vec.len s12_res) @(‹nb; Nat›, ‹%vec.len s12_res; Nat›) (bs, s12_res);
                           «s_out; R#T», normalize_prod;
 ///
-//
 /// ### %%tensor.prod_2d
 ///
 /// lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
 ///                 : «m, l; R#T»
-///                 = %tensor.dot_general R @(2, 2) @(1, 0) ([0], [1], [], []) (t1, t2);
+///                 = %tensor.dot_general R @(2,2) @(1,0) @((m, k), (k, l)) ([0], [1], [], []) (t1, t2);
 ///
 ///
 /// ### %%tensor.broadcast_in_dim
