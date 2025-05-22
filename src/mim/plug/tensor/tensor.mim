@@ -32,12 +32,12 @@ let Ring = [
 ///
 /// ### %%tensor.element_wise
 ///
-axm %tensor.element_wise: {T: *}
-                        → {r: Nat, s: «r; Nat»}
-                        → {ni: Nat, Is: «ni; *»}
-                        → [app: «i: ni; Is#i» → T]
-                        → [is: «i: ni; «s; Is#i» »]
-                        → «s; T»;
+axm %tensor.map:  {T: *}
+                → {r: Nat, s: «r; Nat»}
+                → {ni: Nat, Is: «ni; *»}
+                → [app: «i: ni; Is#i» → T]
+                → [is: «i: ni; «s; Is#i» »]
+                → «s; T»;
 ///
 /// ### %%tensor.transpose
 ///
