@@ -12,9 +12,10 @@ world  = driver.world()
 py_world = mim.PyWorld(world)
 sym = mim.Sym()
 sympool = mim.SymPool()
-
-test_str = sympool.sym("testing")
+test_str = sympool.sym("core")
 ast = mim.AST(driver.world())
+parser = mim.Parser(ast)
+
 driver.log().set_stdout().set(mim.Level.Error)
 
 print(sym)

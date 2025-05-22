@@ -8,6 +8,7 @@ pybind11_add_module(pymim
     log.cpp
     flags.cpp
     lam.cpp
+    parser.cpp
     world_wrapper.cpp
     parser_wrapper.cpp
 )

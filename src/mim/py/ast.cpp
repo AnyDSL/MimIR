@@ -15,4 +15,4 @@ void init_ast(py::module_& m) {
         .def(py::init<mim::World&>());
 }
 
-} // namespace mim
+} // namespace mim::ast
