@@ -9,11 +9,14 @@ import mim  # Import from that list
 
 driver = mim.Driver()
 world  = driver.world()
+py_world = mim.PyWorld(world)
 sym = mim.Sym()
 sympool = mim.SymPool()
+
 test_str = sympool.sym("testing")
 ast = mim.AST(driver.world())
 driver.log().set_stdout().set(mim.Level.Error)
+
 print(sym)
 print(ast)
 print(test_str)
@@ -23,4 +26,4 @@ print(test_str.view())
 #print(f"is sym empty?: {sym.empty()}")
 assert(True, sym.empty())
 #print(driver)
-world.write()
+py_world.write()
