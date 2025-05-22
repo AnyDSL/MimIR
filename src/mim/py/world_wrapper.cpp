@@ -10,10 +10,11 @@ namespace mim{
             PyWorld(World* world){
                 wrld_ = world;
             }
-            void annex(Sym sym){
-                wrld_->sym2annex(sym);
-                return;
+
+            const Def* annex(Sym sym){
+                return wrld_->sym2annex(sym);
             }
+
             const Def* implicit_app(const Def* calle, Defs args){
                 return wrld_->implicit_app(calle, args);
             }
@@ -25,6 +26,10 @@ namespace mim{
             void write(){
                 wrld_->write();
                 return;
+            }
+        
+            Lam* mut_fun(const Def* dom, Defs codom){
+                return wrld_->mut_fun(dom, codom);
             }
     };
 }

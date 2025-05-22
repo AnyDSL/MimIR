@@ -12,10 +12,10 @@ void init_world_wrapper(py::module_& m) {
     // clang-format off
     py::class_<mim::PyWorld>(m, "PyWorld")
         .def(py::init<World*>())
-        .def("write", &mim::PyWorld::write)
+        .def("write", &mim::PyWorld::write, py::return_value_policy::reference)
         .def("annex", &mim::PyWorld::annex)
-        .def("implicit_app", &mim::PyWorld::implicit_app)
-        .def("type_i32", &mim::PyWorld::type_i32);
+        .def("implicit_app", &mim::PyWorld::implicit_app, py::return_value_policy::reference)
+        .def("type_i32", &mim::PyWorld::type_i32, py::return_value_policy::reference);
 
     // clang-format on
 }

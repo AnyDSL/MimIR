@@ -3,10 +3,13 @@
 namespace mim::ast{
     class PyParser{
         private:
-            Parser parser_;
+            Parser* parser_;
         public:
+            PyParser(Parser* prs){
+                parser_ = prs;
+            }
             void plugin(const std::string& plug){
-                parser_.plugin(plug);
+                parser_->plugin(plug);
                 return;
             }
 
