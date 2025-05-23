@@ -11,6 +11,7 @@ void init_flags(py::module_&);
 void init_log(py::module_&);
 void init_lam(py::module_&);
 void init_pi(py::module_&);
+void init_def(py::module_&);
 } // namespace mim
 
 namespace mim::ast{
@@ -38,4 +39,5 @@ PYBIND11_MODULE(mim, m) {
     mim::init_pi(m);
     mim::ast::init_parser(m);
     mim::ast::init_parser_wrapper(m);
+    //mim::init_def(m);
 }
