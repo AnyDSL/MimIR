@@ -498,7 +498,7 @@ public:
     const Def* refine(size_t i, const Def* new_op) const;
 
     /// @see World::reduce
-    template<size_t N = std::dynamic_extent> constexpr auto reduce(const Def* arg) const noexcept {
+    template<size_t N = std::dynamic_extent> constexpr auto reduce(const Def* arg) const {
         return reduce_(arg).span<N>();
     }
 
