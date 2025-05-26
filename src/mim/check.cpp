@@ -268,7 +268,7 @@ const Def* Arr::check() {
 
 const Def* Tuple::infer(World& world, Defs ops) {
     auto elems = absl::FixedArray<const Def*>(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
+    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->unfold_type();
     return world.sigma(elems);
 }
 
