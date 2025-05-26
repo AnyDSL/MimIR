@@ -1,0 +1,5 @@
+// RUN: (! %mim %s 2>&1) | FileCheck %s
+lam f(tup: [Nat, *], i: Idx 2): [] =
+    let _ = tup#i;
+    ()
+// CHECK: error: cannot resolve type of extraction
