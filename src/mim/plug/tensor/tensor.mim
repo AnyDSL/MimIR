@@ -87,13 +87,13 @@ axm %tensor.dot_general:  [R: Ring]
 /// ### %%tensor.prod_2d
 ///
 //lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
-             //: «m, l; R#T»
-             //= %tensor.dot_general R @(2,2) @(1,0) @((m, k), (k, l)) (0_2, 1_2, (), ()) (t1, t2);
+//           : «m, l; R#T»
+//           = %tensor.dot_general R @(2, 2) @(1, 0) @((m, k), (k, l)) (0_2, 1_2, (), ()) (t1, t2);
 ///
-/// axm %tensor.dot_2d_00: {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
-/// axm %tensor.dot_2d_01: {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
-/// axm %tensor.dot_2d_10: {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
-/// axm %tensor.dot_2d_11: {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
+axm %tensor.dot_2d_00: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
+axm %tensor.dot_2d_01: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
+axm %tensor.dot_2d_10: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
+axm %tensor.dot_2d_11: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
 ///
 /// ### %%tensor.broadcast_in_dim
 ///
@@ -123,15 +123,14 @@ axm %tensor.reduce: {r: Nat, s: «r; Nat»}
 /// * `init` : accumulator to start `f` with
 /// * `subs` : for each input, for each dimension, an index to compute the output in Einstein notation
 /// * `is` : the inputs
-/// 
+///
 /// Returns a tensor obtained by folding `f` following the indexes in `subs`
-/// 
+///
 axm %tensor.map_reduce: {nis: Nat}
                       → {To: *, Ro: Nat}
                       → [So: «Ro; Nat»]
                       → {Tis: «nis; *», Ris: «i: nis; Nat», Sis: «i:nis; «Ris#i; Nat»»}
-                      → [f: (To, «i: nis; Tis#i») → To, init: To]
+                      → [f: [To, «i: nis; Tis#i»] → To, init: To]
                       → [subs: «i: nis; « Ris#i; Nat»»]
                       → [is: «i: nis; «Sis#i; Tis#i» »]
                       → «So; To»;
-
