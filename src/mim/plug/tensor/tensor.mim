@@ -50,15 +50,15 @@ axm %tensor.transpose:  {T: *}
 ///
 axm %tensor.slice:  {T: *}
                   → {r: Nat, s: «r; Nat»}
-                  → [input: «s;T», output_shape: «r; Nat», start_indices: « i:r; Idx (s#i) », steps: « i:r; Nat »]
-                  → « output_shape; T»;
+                  → [input: «s;T», output_shape: «r; Nat», start_indices: «i :r; Idx (s#i)», steps: «i: r; Nat»]
+                  → «output_shape; T»;
 ///
 /// ### %%tensor.reshape
 ///
 axm %tensor.reshape:  {T: *}
                     → {r: Nat, s: «r; Nat»}
                     → [input: «s;T», output_shape: «r; Nat»]
-                    → « output_shape; T»;
+                    → «output_shape; T»;
 ///
 /// ### %%tensor.dot_general
 ///
@@ -71,8 +71,8 @@ axm %tensor.dot_general:  [R: Ring]
                         → {s1: «r1; Nat», s2: «r2; Nat»}
                         → [c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»]
                         → [«s1; R#T», «s2; R#T»]
-                        → let bs       = ‹i: nb; %refly.check (%core.ncmp.e ((s1#(b1#i), s2#(b2#i))), s1#(b1#i), "batching dims don't match")›;
-                          let cs       = ‹i: nc; %refly.check (%core.ncmp.e ((s1#(c1#i), s2#(c2#i))), s1#(c1#i), "contracting dims don't match")›;
+                        → let bs       = ‹i: nb; %refly.check (%core.ncmp.e (s1#(b1#i), s2#(b2#i)), s1#(b1#i), "batching dims don't match")›;
+                          let cs       = ‹i: nc; %refly.check (%core.ncmp.e (s1#(c1#i), s2#(c2#i)), s1#(c1#i), "contracting dims don't match")›;
                           let n_bc     = %core.nat.add (nb, nc);
                           let bc_1     = %tuple.concat @(nb, nc) @(‹nb; Idx r1>, ‹nc; Idx r1›) (b1, c1);
                           let s1_res   = %vec.diff (s1, bc_1);
@@ -86,9 +86,9 @@ axm %tensor.dot_general:  [R: Ring]
 ///
 /// ### %%tensor.prod_2d
 ///
-/// lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
-///                 : «m, l; R#T»
-///                 = %tensor.dot_general R @(2,2) @(1,0) @((m, k), (k, l)) ([0], [1], [], []) (t1, t2);
+//lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
+             //: «m, l; R#T»
+             //= %tensor.dot_general R @(2,2) @(1,0) @((m, k), (k, l)) (0_2, 1_2, (), ()) (t1, t2);
 ///
 /// axm %tensor.dot_2d_00: {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
 /// axm %tensor.dot_2d_01: {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;

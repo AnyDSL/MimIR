@@ -373,18 +373,8 @@ const Def* World::extract(const Def* d, const Def* index) {
     const Def* elem_t;
     if (auto arr = type->isa<Arr>())
         elem_t = arr->reduce(index);
-    else {
-        // TODO maybe it's better to return a union to get rid of the index
-        auto sigma = type->as<Sigma>();
-        if (std::ranges::all_of(sigma->ops(), [](const Def* def) { return def->isa<Type>(); })) {
-            error(index->loc(),
-                  "cannot resolve type of extraction with unknown index '{}' from tuple '{}' as the type computation "
-                  "would again be an extraction.",
-                  index, d);
-        }
-
-        elem_t = extract(tuple(sigma->ops()), index);
-    }
+    else
+        elem_t = join(type->as<Sigma>()->ops());
 
     assert(d);
     return unify<Extract>(2, elem_t, d, index);
@@ -442,6 +432,7 @@ const Def* World::arr(const Def* shape, const Def* body) {
         if (*a == 1) return body;
     }
 
+#if 0
     // «(a, b)#i; T» -> («a, T», <b, T»)#i
     if (auto ex = shape->isa<Extract>()) {
         if (auto tup = ex->tuple()->isa<Tuple>()) {
@@ -449,6 +440,7 @@ const Def* World::arr(const Def* shape, const Def* body) {
             return extract(tuple(arrs), ex->index());
         }
     }
+#endif
 
     // «(a, b, c); body» -> «a; «(b, c); body»»
     if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
