@@ -449,7 +449,7 @@ private:
 
 // union
 
-/// t1 union t2
+/// t1 ∪ t2
 class UnionExpr : public Expr {
 public:
     UnionExpr(Loc loc, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs)
@@ -461,7 +461,6 @@ public:
     const Expr* rhs() const { return rhs_.get(); }
 
     void bind(Scopes&) const override;
-    // TODO: proper implementation of emit_body and emit_decl (?)
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
