@@ -208,9 +208,9 @@ const Def* ArrowExpr::emit_(Emitter& e) const {
 }
 
 const Def* UnionExpr::emit_(Emitter& e) const {
-    auto t1 = lhs()->emit(e);
-    auto t2 = rhs()->emit(e);
-    return e.world().join({t2, t1});
+    DefVec etypes;
+    for (auto& t : types()) etypes.emplace_back(t->emit(e));
+    return e.world().join(etypes);
 }
 
 const Def* InjExpr::emit_(Emitter& e) const {

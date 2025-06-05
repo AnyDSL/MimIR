@@ -449,16 +449,14 @@ private:
 
 // union
 
-/// t1 ∪ t2
+/// `t1 ∪ t2`
 class UnionExpr : public Expr {
 public:
-    UnionExpr(Loc loc, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs)
+    UnionExpr(Loc loc, Ptrs<Expr>&& types)
         : Expr(loc)
-        , lhs_(std::move(lhs))
-        , rhs_(std::move(rhs)) {}
+        , types_(std::move(types)) {}
 
-    const Expr* lhs() const { return lhs_.get(); }
-    const Expr* rhs() const { return rhs_.get(); }
+    const auto& types() const { return types_; }
 
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
@@ -466,8 +464,7 @@ public:
 private:
     const Def* emit_(Emitter&) const override;
 
-    Ptr<Expr> lhs_;
-    Ptr<Expr> rhs_;
+    Ptrs<Expr> types_;
 };
 
 // injection

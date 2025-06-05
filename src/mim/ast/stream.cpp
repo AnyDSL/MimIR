@@ -109,9 +109,7 @@ std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} -> {}", S(tab, dom()), S(tab, codom()));
 }
 
-std::ostream& UnionExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{} ∪ {}", S(tab, lhs()), S(tab, rhs()));
-}
+std::ostream& UnionExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "({∪ })", R(tab, types())); }
 
 std::ostream& InjExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} inj {}", S(tab, value()), S(tab, type()));

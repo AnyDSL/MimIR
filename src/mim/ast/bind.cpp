@@ -144,8 +144,7 @@ void ArrowExpr::bind(Scopes& s) const {
 }
 
 void UnionExpr::bind(Scopes& s) const {
-    lhs()->bind(s);
-    rhs()->bind(s);
+    for (auto& type : types()) type->bind(s);
 }
 
 void InjExpr::bind(Scopes& s) const {
