@@ -231,12 +231,12 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                 continue;
             }
             case Tag::T_union: {
-                if (curr_prec > Expr::Prec::Union) return lhs;
+                if (curr_prec >= Expr::Prec::Union) return lhs;
                 lex();
                 Ptrs<Expr> types;
                 types.emplace_back(std::move(lhs));
                 do {
-                    auto t = parse_expr("right-hand side of a union type", Expr::Prec::Lit);
+                    auto t = parse_expr("right-hand side of a union type", Expr::Prec::Union);
                     types.emplace_back(std::move(t));
                 } while (accept(Tag::T_union));
                 lhs = ptr<UnionExpr>(track, std::move(types));
