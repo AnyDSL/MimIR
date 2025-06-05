@@ -561,15 +561,16 @@ const Def* World::split(const Def* type, const Def* value) { return unify<Split>
 const Def* World::match(Defs ops_) {
     if (ops_.size() == 1) return ops_.front();
 
-    auto ops   = DefVec(ops_.begin(), ops_.end());
-    auto value = ops.front();
-    auto arms  = ops.span().subspan(1);
-    auto join  = value->type()->isa<Join>();
+    auto ops       = DefVec(ops_.begin(), ops_.end());
+    auto scrutinee = ops.front();
+    auto arms      = ops.span().subspan(1);
+    auto join      = scrutinee->type()->isa<Join>();
 
-    if (!join) error(value->loc(), "scrutinee of a test expression must be of union type");
+    if (!join) error(scrutinee->loc(), "scrutinee of a test expression must be of union type");
 
     if (arms.size() != join->num_ops())
-        error(value->loc(), "test expression has {} arms but union type has {} cases", arms.size(), join->num_ops());
+        error(scrutinee->loc(), "test expression has {} arms but union type has {} cases", arms.size(),
+              join->num_ops());
 
     for (auto arm : arms)
         if (!arm->type()->isa<Pi>())

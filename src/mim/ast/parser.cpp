@@ -230,6 +230,25 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                 lhs      = ptr<ArrowExpr>(track, std::move(lhs), std::move(rhs));
                 continue;
             }
+            case Tag::T_union: {
+                if (curr_prec >= Expr::Prec::Union) return lhs;
+                lex();
+                Ptrs<Expr> types;
+                types.emplace_back(std::move(lhs));
+                do {
+                    auto t = parse_expr("right-hand side of a union type", Expr::Prec::Union);
+                    types.emplace_back(std::move(t));
+                } while (accept(Tag::T_union));
+                lhs = ptr<UnionExpr>(track, std::move(types));
+                continue;
+            }
+            case Tag::K_inj: {
+                if (curr_prec > Expr::Prec::Inj) return lhs;
+                lex();
+                auto rhs = parse_expr("type a value is injected in", Expr::Prec::Inj);
+                lhs      = ptr<InjExpr>(track, std::move(lhs), std::move(rhs));
+                continue;
+            }
             case Tag::T_at: {
                 if (curr_prec >= Expr::Prec::App) return lhs;
                 lex();
@@ -291,6 +310,22 @@ Ptr<Expr> Parser::parse_uniq_expr() {
     return ptr<UniqExpr>(track, std::move(inhabitant));
 }
 
+Ptr<Expr> Parser::parse_match_expr() {
+    auto track = tracker();
+    expect(Tag::K_match, "opening match for union destruction");
+    auto scrutinee = parse_expr("destroyed union element");
+    expect(Tag::K_with, "match");
+    Ptrs<MatchExpr::Arm> arms;
+    parse_list("match branches", Tag::D_brace_l, [&]() {
+        auto track = tracker();
+        auto ptrn  = parse_ptrn(Paren_Style, "right-hand side of a match-arm", Expr::Prec::Bot);
+        expect(Tag::T_fat_arrow, "arm of a match-expression");
+        auto body = parse_expr("arm of a match-expression");
+        arms.emplace_back(ptr<MatchExpr::Arm>(track, std::move(ptrn), std::move(body)));
+    });
+    return ptr<MatchExpr>(track, std::move(scrutinee), std::move(arms));
+}
+
 Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
@@ -308,6 +343,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_brckt_l: return parse_sigma_expr();
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
+        case Tag::K_match:   return parse_match_expr();
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);

@@ -15,9 +15,9 @@ let len     = 10;
 con extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), exit : Cn [%mem.M, I32]] =
     let (mem, string) = %mem.alloc (<<len; Char>>, 0) mem;
     let mem           = %mem.store (mem, string, "testasdf@\0");
-    match len ((mem, string), exiting)
+    match_regex len ((mem, string), exiting)
     where
-        fun match(len: Nat)(mem: %mem.M, str: %mem.Ptr0 <<len; Char>>): [%mem.M, Bool] =
+        fun match_regex(len: Nat)(mem: %mem.M, str: %mem.Ptr0 <<len; Char>>): [%mem.M, Bool] =
             let (mem, matched, pos) = pattern (mem, str, 0:(Idx len));
             let end_ = %core.idx len 0 (%core.nat.sub (len, 1));
             return (mem, %core.bit2.and_ 0 (%core.icmp.e (pos, end_), matched));
