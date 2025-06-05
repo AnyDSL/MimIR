@@ -20,3 +20,10 @@ lam f (t1 t2: *) (x:t1) (y: t2): t2  =
         a: t1 => y,
         b: t2 => b
    };
+
+lam minject2 (t1 t2 t3: *) (x: t3) : t3 =
+    match x inj t1 ∪ t2 ∪ t3 with {
+        a: t1 => x,
+        b: t2 => x,
+        c: t3 => c,
+    };
