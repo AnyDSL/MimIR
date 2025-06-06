@@ -34,6 +34,15 @@ axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] 
 ///
 axm %vec.scan(for_all, exists): {E: *} → {n: Nat} → [p: E → Bool] → «n; E» → Bool, normalize_scan;
 ///
+/// ### %%vec.get
+///
+/// Is the given element in the vector, and what is the index of its first/last occurence?
+///
+lam f_get_first {E: *} {n: Nat} [eq: [E, E] → Bool] [x: E] [[b: Bool, i: Idx n], y: E]: [Bool, Idx n] = ((b, i), ((tt, i), (ff, %core.wrap.add 0 (i, %core.idx n 0 1)))#(eq (x, y)))#b;
+lam f_get_last {E: *} {n: Nat} [eq: [E, E] → Bool] [x: E] [y: E, [b: Bool, i: Idx n]]: [Bool, Idx n] = f_get_first eq x ((b, i), y);
+lam %vec.get_first {E: *} {n: Nat} [eq: [E, E] → Bool] [v: «n; E», x: E]: [Bool, Idx n] = %vec.fold.l (f_get_first eq x) ((ff, %core.idx n 0 0), v);
+lam %vec.get_last {E: *} {n: Nat} [eq: [E, E] → Bool] [v: «n; E», x: E]: [Bool, Idx n] = %vec.fold.r (f_get_last eq x) (v, (ff, %core.idx n 0 0));
+///
 /// ### %%vec.len
 ///
 /// Get length of vector.
@@ -56,3 +65,17 @@ axm %vec.diff: {T: *}
              → {n m: Nat}
              → [«n; T», is: «m; Idx n»]
              → «%refly.check (%vec.is_unique is, %core.nat.sub (n, m), "given indices are not distinct"); T», normalize_diff;
+/// 
+/// ## Creating
+/// 
+/// ### %vec.map_range
+/// 
+/// Creates the array (f 0, f 1, ..., f (n-1))
+///
+axm %vec.map_range: {T: *} → [n: Nat] → [Idx n → T] → «n; T», normalize_map_range;
+/// 
+/// ### %vec.range
+/// 
+/// Creates the array (0_n, 1_n, ..., (n-1)_n)
+/// 
+lam %vec.range [n: Nat]: «n; Idx n» = %vec.map_range n (λ (i: Idx n): Idx n = i);
