@@ -344,6 +344,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
         case Tag::K_match:   return parse_match_expr();
+        case Tag::K_rule:    return parse_rule_expr();
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -683,6 +684,21 @@ Ptr<RecDecl> Parser::parse_rec_decl(bool first) {
     auto body = parse_expr("body of a recursive declaration");
     auto next = ahead().isa(Tag::K_and) ? parse_and_decl() : nullptr;
     return ptr<RecDecl>(track, dbg, std::move(type), std::move(body), std::move(next));
+}
+
+Ptr<Expr> Parser::parse_rule_expr() {
+    auto track = tracker();
+    eat(Tag::K_rule);
+    Ptrs<Ptrn> ptrns;
+    while (ahead().tag() != Tag::T_colon) ptrns.push_back(parse_ptrn(0, "meta variables in rewrite rule"));
+    expect(Tag::T_colon, "rewrite rule declaration");
+    auto lhs            = parse_expr("rewrite pattern");
+    bool is_equivalence = (bool)accept(Tag::T_equiv);
+    if (!is_equivalence) expect(Tag::T_fat_arrow, "rewrite rule declaration");
+    auto rhs = parse_expr("rewrite result");
+    auto condition
+        = ahead().isa(Tag::K_when) ? parse_expr("rewrite condition") : ptr<PrimaryExpr>(track, std::move(Tag::K_tt));
+    return ptr<RuleDecl>(track, std::move(ptrns), std::move(lhs), std::move(rhs), std::move(condition), is_equivalence);
 }
 
 Ptr<LamDecl> Parser::parse_lam_decl() {

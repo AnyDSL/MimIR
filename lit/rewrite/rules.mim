@@ -1,0 +1,11 @@
+// RUN: %mim %s
+
+plugin core;
+
+let rule1 = rule (x y: Nat):
+%core.nat.add x y => %core.nat.add y x;
+
+let swap_plus = rule (x: Nat, y: Nat): %core.nat.add x y => %core.nat.add y x;
+
+let y = 3;
+let swap_3 = rule (T: *) (x: T): x y => y x;

@@ -502,4 +502,9 @@ void CDecl::emit(Emitter& e) const {
     }
 }
 
+const Def* RuleDecl::emit_(Emitter& e) const {
+    return e.world().lit_ff();
+    // TODO: have a proper IR node
+}
+
 } // namespace mim::ast

@@ -1038,6 +1038,40 @@ private:
     Ptr<Expr> codom_;
 };
 
+/// rewrite rules
+/// rule x:T y:T = x+y => y+x;
+/// all meta variables have to be introduced
+
+class RuleDecl : public Expr {
+public:
+    RuleDecl(Loc loc, Ptrs<Ptrn>&& vars, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs, Ptr<Expr>&& condition, bool is_equivalence)
+        : Expr(loc)
+        , vars_(std::move(vars))
+        , lhs_(std::move(lhs))
+        , rhs_(std::move(rhs))
+        , condition_(std::move(condition))
+        , is_equivalence_(is_equivalence) {}
+
+    const auto& vars() const { return vars_; }
+    const Expr* lhs() const { return lhs_.get(); }
+    const Expr* rhs() const { return rhs_.get(); }
+    const Expr* condition() const { return condition_.get(); }
+    bool is_equivalence() const { return is_equivalence_; }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Dbg dbg_;
+    Ptrs<Ptrn> vars_;
+    Ptr<Expr> lhs_;
+    Ptr<Expr> rhs_;
+    Ptr<Expr> condition_;
+    bool is_equivalence_;
+};
+
 /*
  * Module
  */

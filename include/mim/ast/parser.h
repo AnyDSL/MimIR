@@ -95,6 +95,7 @@ private:
     Ptr<Expr> parse_insert_expr();
     Ptr<Expr> parse_uniq_expr();
     Ptr<Expr> parse_match_expr();
+    Ptr<Expr> parse_rule_expr();
     ///@}
 
     enum PtrnStyle {

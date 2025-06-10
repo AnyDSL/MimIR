@@ -50,7 +50,9 @@ namespace ast {
     m(K_plugin, "plugin")             \
     m(K_rec,    "rec"   )             \
     m(K_ret,    "ret"   )             \
+    m(K_rule,   "rule"  )             \
     m(K_tt,     "tt"    )             \
+    m(K_when,   "when"  )             \
     m(K_where,  "where" )             \
     m(K_with,   "with"  )             \
 
@@ -86,6 +88,7 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     /* further tokens */               \
     m(T_arrow,      "→")               \
     m(T_fat_arrow, "=>")               \
+    m(T_equiv,    "<=>")               \
     m(T_assign,     "=")               \
     m(T_at,         "@")               \
     m(T_bot,        "⊥")               \
