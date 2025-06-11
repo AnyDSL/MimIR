@@ -92,7 +92,7 @@ var searchData=
   ['normalize_5fzip_89',['normalize_zip',['../namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448',1,'mim::plug::tuple']]],
   ['normalizer_90',['normalizer',['../classmim_1_1ast_1_1AxmDecl.html#aa902b994cb0fdfb2b0d59d8dce6c236a',1,'mim::ast::AxmDecl::normalizer()'],['../classmim_1_1Axm.html#a86709d59d9d1dec24da36a52db1177f4',1,'mim::Axm::normalizer()'],['../classmim_1_1Driver.html#a9da4ca3384f62706a603bacad94e98e6',1,'mim::Driver::normalizer(flags_t flags) const'],['../classmim_1_1Driver.html#a66bee8d7f5f315deb200c65bf3ea0bff',1,'mim::Driver::normalizer(plugin_t d, tag_t t, sub_t s) const']]],
   ['note_91',['note',['../classmim_1_1ast_1_1AST.html#a93295daed6715e4c97d791d0cf4a022f',1,'mim::ast::AST::note()'],['../classmim_1_1Error.html#a88c9fc1630230a1b850a231857bd8ac9',1,'mim::Error::note()']]],
-  ['num_5farms_92',['num_arms',['../classmim_1_1Match.html#a5caec35b0215ea47ba9ee9166c0ef662',1,'mim::Match']]],
+  ['num_5farms_92',['num_arms',['../classmim_1_1ast_1_1MatchExpr.html#abd2eb4ea68d86896dd9c9bb43ff62099',1,'mim::ast::MatchExpr::num_arms()'],['../classmim_1_1Match.html#a5caec35b0215ea47ba9ee9166c0ef662',1,'mim::Match::num_arms()']]],
   ['num_5fchildren_93',['num_children',['../classmim_1_1Nest_1_1Node.html#a55dfe9106d35582e0f681b8b72df0ed7',1,'mim::Nest::Node']]],
   ['num_5fdepends_94',['num_depends',['../classmim_1_1Nest_1_1Node.html#a0529b738364d895b38ef62e93a9a11f4',1,'mim::Nest::Node']]],
   ['num_5fdeps_95',['num_deps',['../classmim_1_1Def.html#a086b8caf2ce9bdfc870871854f021d90',1,'mim::Def']]],

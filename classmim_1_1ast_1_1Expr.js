@@ -6,7 +6,9 @@ var classmim_1_1ast_1_1Expr =
       [ "Where", "classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01cab3c5b21d2cb47cc950fd4667edaf404c", null ],
       [ "Arrow", "classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e", null ],
       [ "Pi", "classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca127125672f1e85d1e676d4394d24e066", null ],
+      [ "Inj", "classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca62d8e3eff7a84b91e1fac08d56e1455b", null ],
       [ "App", "classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941", null ],
+      [ "Union", "classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caaef12e903e606a4895a16b393bfdec8c", null ],
       [ "Extract", "classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca97478353818fc5590dc34b57b81a4b23", null ],
       [ "Lit", "classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01cae5e556ecf935270736f5e46e73db06e4", null ]
     ] ],

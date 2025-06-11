@@ -29,12 +29,13 @@ var searchData=
   ['umax_26',['umax',['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2a82c1089b8c973b65be6d620f765ed1f5',1,'mim::plug::core']]],
   ['umin_27',['umin',['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2a017163727bc806385f1453c130b4fce3',1,'mim::plug::core']]],
   ['une_28',['une',['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a92df19e29c9d45d888ed5f68bad1c3b5',1,'mim::plug::math']]],
-  ['uniq_29',['Uniq',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa52035083e0f187cb1b19b131b4ecdd5',1,'mim']]],
-  ['univ_30',['Univ',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da143bb06341e537e7143fb33624517946',1,'mim::Univ'],['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946',1,'mim::Univ']]],
-  ['unsafe_31',['unsafe',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91a64c823fad1d87e0df1ef3cdeb8ac684f',1,'mim::plug::math']]],
-  ['urem_32',['urem',['../namespacemim_1_1plug_1_1core.html#a12a963046afc5c121f244b761faad6e9ae1851600007553e51484056678cdb3d1',1,'mim::plug::core']]],
-  ['us_33',['US',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707ea7516fd43adaa5e0b8a65a672c39845d2',1,'mim::plug::core']]],
-  ['us_34',['Us',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707ea85e8f233669adc62acf13417cb9649ca',1,'mim::plug::core']]],
-  ['us_35',['uS',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707eadb341325cb123eae94a69292a2914972',1,'mim::plug::core']]],
-  ['us_36',['us',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707ea0b3b97fa66886c5688ee4ae80ec0c3c2',1,'mim::plug::core']]]
+  ['union_29',['Union',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caaef12e903e606a4895a16b393bfdec8c',1,'mim::ast::Expr']]],
+  ['uniq_30',['Uniq',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa52035083e0f187cb1b19b131b4ecdd5',1,'mim']]],
+  ['univ_31',['Univ',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da143bb06341e537e7143fb33624517946',1,'mim::Univ'],['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946',1,'mim::Univ']]],
+  ['unsafe_32',['unsafe',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91a64c823fad1d87e0df1ef3cdeb8ac684f',1,'mim::plug::math']]],
+  ['urem_33',['urem',['../namespacemim_1_1plug_1_1core.html#a12a963046afc5c121f244b761faad6e9ae1851600007553e51484056678cdb3d1',1,'mim::plug::core']]],
+  ['us_34',['US',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707ea7516fd43adaa5e0b8a65a672c39845d2',1,'mim::plug::core']]],
+  ['us_35',['Us',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707ea85e8f233669adc62acf13417cb9649ca',1,'mim::plug::core']]],
+  ['us_36',['uS',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707eadb341325cb123eae94a69292a2914972',1,'mim::plug::core']]],
+  ['us_37',['us',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707ea0b3b97fa66886c5688ee4ae80ec0c3c2',1,'mim::plug::core']]]
 ];

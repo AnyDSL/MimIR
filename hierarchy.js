@@ -285,18 +285,22 @@ var hierarchy =
           [ "mim::ast::ExtractExpr", "classmim_1_1ast_1_1ExtractExpr.html", null ],
           [ "mim::ast::HoleExpr", "classmim_1_1ast_1_1HoleExpr.html", null ],
           [ "mim::ast::IdExpr", "classmim_1_1ast_1_1IdExpr.html", null ],
+          [ "mim::ast::InjExpr", "classmim_1_1ast_1_1InjExpr.html", null ],
           [ "mim::ast::InsertExpr", "classmim_1_1ast_1_1InsertExpr.html", null ],
           [ "mim::ast::LamExpr", "classmim_1_1ast_1_1LamExpr.html", null ],
           [ "mim::ast::LitExpr", "classmim_1_1ast_1_1LitExpr.html", null ],
+          [ "mim::ast::MatchExpr", "classmim_1_1ast_1_1MatchExpr.html", null ],
           [ "mim::ast::PiExpr", "classmim_1_1ast_1_1PiExpr.html", null ],
           [ "mim::ast::PrimaryExpr", "classmim_1_1ast_1_1PrimaryExpr.html", null ],
           [ "mim::ast::RetExpr", "classmim_1_1ast_1_1RetExpr.html", null ],
           [ "mim::ast::SigmaExpr", "classmim_1_1ast_1_1SigmaExpr.html", null ],
           [ "mim::ast::TupleExpr", "classmim_1_1ast_1_1TupleExpr.html", null ],
           [ "mim::ast::TypeExpr", "classmim_1_1ast_1_1TypeExpr.html", null ],
+          [ "mim::ast::UnionExpr", "classmim_1_1ast_1_1UnionExpr.html", null ],
           [ "mim::ast::UniqExpr", "classmim_1_1ast_1_1UniqExpr.html", null ]
         ] ],
         [ "mim::ast::Import", "classmim_1_1ast_1_1Import.html", null ],
+        [ "mim::ast::MatchExpr::Arm", "classmim_1_1ast_1_1MatchExpr_1_1Arm.html", null ],
         [ "mim::ast::Module", "classmim_1_1ast_1_1Module.html", null ],
         [ "mim::ast::PiExpr::Dom", "classmim_1_1ast_1_1PiExpr_1_1Dom.html", [
           [ "mim::ast::LamDecl::Dom", "classmim_1_1ast_1_1LamDecl_1_1Dom.html", null ]

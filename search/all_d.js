@@ -138,7 +138,7 @@ var searchData=
   ['nsz_135',['nsz',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91a83ad537246c68235c2ff05142fd9c91c',1,'mim::plug::math']]],
   ['nullptr_5fpass_136',['nullptr_pass',['../namespacemim_1_1plug_1_1compile.html#af9c3ab84a67c6c302637c35dbabe59db',1,'mim::plug::compile']]],
   ['num_137',['Num',['../structmim_1_1Annex.html#aac0126d5e408071ae28567cb65bf256f',1,'mim::Annex']]],
-  ['num_5farms_138',['num_arms',['../classmim_1_1Match.html#a5caec35b0215ea47ba9ee9166c0ef662',1,'mim::Match']]],
+  ['num_5farms_138',['num_arms',['../classmim_1_1ast_1_1MatchExpr.html#abd2eb4ea68d86896dd9c9bb43ff62099',1,'mim::ast::MatchExpr::num_arms()'],['../classmim_1_1Match.html#a5caec35b0215ea47ba9ee9166c0ef662',1,'mim::Match::num_arms()']]],
   ['num_5fchildren_139',['num_children',['../classmim_1_1Nest_1_1Node.html#a55dfe9106d35582e0f681b8b72df0ed7',1,'mim::Nest::Node']]],
   ['num_5fdepends_140',['num_depends',['../classmim_1_1Nest_1_1Node.html#a0529b738364d895b38ef62e93a9a11f4',1,'mim::Nest::Node']]],
   ['num_5fdeps_141',['num_deps',['../classmim_1_1Def.html#a086b8caf2ce9bdfc870871854f021d90',1,'mim::Def']]],
