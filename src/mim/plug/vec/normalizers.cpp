@@ -93,22 +93,6 @@ const Def* normalize_diff(const Def* type, const Def* c, const Def* arg) {
     return nullptr;
 }
 
-const Def* normalize_map_range(const Def*, const Def* c, const Def* arg) {
-    auto& w     = c->world();
-    auto callee = c->as<App>();
-    auto n_def = callee->arg();
-    auto n_opt      = Lit::isa(n_def);
-    if (!n_opt.has_value())
-        return nullptr;
-    auto n = n_opt.value();
-    auto defs   = DefVec();
-    for (unsigned long i = 0; i != n; i++) {
-        auto i_idx = w.lit_idx(n, i);
-        defs.emplace_back(w.app(arg, i_idx));
-    }
-    return w.tuple(defs);
-}
-
 MIM_vec_NORMALIZER_IMPL
 
 } // namespace mim::plug::vec
