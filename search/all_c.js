@@ -158,7 +158,7 @@ var searchData=
   ['misc_155',['Misc',['../mem.html#autotoc_md199',1,'']]],
   ['mode_156',['Mode',['../classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daa',1,'mim::Checker::Mode'],['../classmim_1_1plug_1_1mem_1_1Reshape.html#a617258263a341812a1f828bfeb4751ce',1,'mim::plug::mem::Reshape::Mode'],['../namespacemim_1_1plug_1_1core.html#ae3a4dc564294d2e5513168c153462138',1,'mim::plug::core::Mode'],['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91',1,'mim::plug::math::Mode'],['../core.html#autotoc_md118',1,'Mode']]],
   ['mode_157',['mode',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707e',1,'mim::plug::core::mode'],['../namespacemim_1_1plug_1_1core.html#a3d0f9954758bcfbac8df807f8ca8e1dd',1,'mim::plug::core::mode(World &amp;w, VMode m)'],['../namespacemim_1_1plug_1_1math.html#a88d9bfdf9fbcd82d0a00f06088221ec6',1,'mim::plug::math::mode()']]],
-  ['modifiers_158',['Modifiers',['../ord.html#autotoc_md216',1,'Modifiers'],['../vec.html#autotoc_md262',1,'Modifiers']]],
+  ['modifiers_158',['Modifiers',['../ord.html#autotoc_md216',1,'Modifiers'],['../vec.html#autotoc_md263',1,'Modifiers']]],
   ['module_159',['Module',['../classmim_1_1ast_1_1Module.html',1,'mim::ast::Module'],['../classmim_1_1ast_1_1Module.html#a0bef96b176c6048cc6d8f8cff8845284',1,'mim::ast::Module::Module()'],['../langref.html#module',1,'Module']]],
   ['module_160',['module',['../classmim_1_1ast_1_1Import.html#a71dfa10a74b031ecd786f416976b2c4b',1,'mim::ast::Import']]],
   ['move_2earena_161',['Move.arena',['../classmim_1_1World.html#structmim_1_1World_1_1Move_8arena',1,'mim::World']]],
