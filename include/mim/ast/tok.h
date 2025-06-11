@@ -11,45 +11,48 @@ namespace ast {
 
 // clang-format off
 #define MIM_KEY(m)                    \
-    m(K_module, "module")             \
-    m(K_import, "import")             \
-    m(K_plugin, "plugin")             \
-    m(K_and,    "and"   )             \
-    m(K_as,     "as"    )             \
-    m(K_axm,    "axm"   )             \
-    m(K_let,    "let"   )             \
-    m(K_rec,    "rec"   )             \
-    m(K_ret,    "ret"   )             \
-    m(K_where,  "where" )             \
-    m(K_end,    "end"   )             \
-    m(K_Nat,    "Nat"   )             \
-    m(K_Idx,    "Idx"   )             \
-    m(K_extern, "extern")             \
-    m(K_Type,   "Type"  )             \
-    m(K_Univ,   "Univ"  )             \
+    m(K_Bool,   "Bool"  )             \
     m(K_Cn,     "Cn"    )             \
     m(K_Fn,     "Fn"    )             \
-    m(K_con,    "con"   )             \
-    m(K_fun,    "fun"   )             \
-    m(K_lam,    "lam"   )             \
-    m(K_ccon,   "ccon"  )             \
-    m(K_cfun,   "cfun"  )             \
-    m(K_cn,     "cn"    )             \
-    m(K_fn,     "fn"    )             \
-    m(K_ff,     "ff"    )             \
-    m(K_tt,     "tt"    )             \
-    m(K_ins,    "ins"   )             \
-    m(K_i1,     "i1"    )             \
-    m(K_i8,     "i8"    )             \
-    m(K_i16,    "i16"   )             \
-    m(K_i32,    "i32"   )             \
-    m(K_i64,    "i64"   )             \
-    m(K_Bool,   "Bool"  )             \
     m(K_I1,     "I1"    )             \
-    m(K_I8,     "I8"    )             \
     m(K_I16,    "I16"   )             \
     m(K_I32,    "I32"   )             \
     m(K_I64,    "I64"   )             \
+    m(K_I8,     "I8"    )             \
+    m(K_Idx,    "Idx"   )             \
+    m(K_Nat,    "Nat"   )             \
+    m(K_Type,   "Type"  )             \
+    m(K_Univ,   "Univ"  )             \
+    m(K_and,    "and"   )             \
+    m(K_as,     "as"    )             \
+    m(K_axm,    "axm"   )             \
+    m(K_ccon,   "ccon"  )             \
+    m(K_cfun,   "cfun"  )             \
+    m(K_cn,     "cn"    )             \
+    m(K_con,    "con"   )             \
+    m(K_end,    "end"   )             \
+    m(K_extern, "extern")             \
+    m(K_ff,     "ff"    )             \
+    m(K_fn,     "fn"    )             \
+    m(K_fun,    "fun"   )             \
+    m(K_i1,     "i1"    )             \
+    m(K_i16,    "i16"   )             \
+    m(K_i32,    "i32"   )             \
+    m(K_i64,    "i64"   )             \
+    m(K_i8,     "i8"    )             \
+    m(K_import, "import")             \
+    m(K_inj,    "inj"   )             \
+    m(K_ins,    "ins"   )             \
+    m(K_lam,    "lam"   )             \
+    m(K_let,    "let"   )             \
+    m(K_match,  "match" )             \
+    m(K_module, "module")             \
+    m(K_plugin, "plugin")             \
+    m(K_rec,    "rec"   )             \
+    m(K_ret,    "ret"   )             \
+    m(K_tt,     "tt"    )             \
+    m(K_where,  "where" )             \
+    m(K_with,   "with"  )             \
 
 #define CODE(t, str) + size_t(1)
 constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
@@ -82,6 +85,7 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(D_quote_r,    "»")               \
     /* further tokens */               \
     m(T_arrow,      "→")               \
+    m(T_fat_arrow, "=>")               \
     m(T_assign,     "=")               \
     m(T_at,         "@")               \
     m(T_bot,        "⊥")               \
@@ -95,6 +99,7 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(T_lm,         "λ")               \
     m(T_semicolon,  ";")               \
     m(T_star,       "*")               \
+    m(T_union,      "∪")               \
 
 #define MIM_SUBST(m)                  \
     m("lm",     T_lm   )              \

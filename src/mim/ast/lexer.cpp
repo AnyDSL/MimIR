@@ -68,7 +68,10 @@ Tok Lexer::lex() {
         // further tokens
         if (accept(U'→')) return tok(Tag::T_arrow);
         if (accept( '@')) return tok(Tag::T_at);
-        if (accept( '=')) return tok(Tag::T_assign);
+        if (accept( '=')) {
+            if (accept('>')) return tok(Tag::T_fat_arrow);
+            return tok(Tag::T_assign);
+        }
         if (accept(U'⊥')) return tok(Tag::T_bot);
         if (accept(U'⊤')) return tok(Tag::T_top);
         if (accept(U'□')) return tok(Tag::T_box);
@@ -80,6 +83,7 @@ Tok Lexer::lex() {
         if (accept(U'★')) return tok(Tag::T_star);
         if (accept( '*')) return tok(Tag::T_star);
         if (accept( ':')) return tok(Tag::T_colon);
+        if (accept(U'∪')) return tok(Tag::T_union);
         // clang-format on
 
         if (accept('%')) {

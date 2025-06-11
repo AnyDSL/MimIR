@@ -141,7 +141,9 @@ public:
         Where,
         Arrow,
         Pi,
+        Inj,
         App,
+        Union,
         Extract,
         Lit,
     };
@@ -445,6 +447,93 @@ private:
     Ptr<Expr> level_;
 };
 
+// union
+
+/// `t1 ∪ t2`
+class UnionExpr : public Expr {
+public:
+    UnionExpr(Loc loc, Ptrs<Expr>&& types)
+        : Expr(loc)
+        , types_(std::move(types)) {}
+
+    const auto& types() const { return types_; }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptrs<Expr> types_;
+};
+
+// injection
+
+/// `value inj t1 ∪ t2`
+class InjExpr : public Expr {
+public:
+    InjExpr(Loc loc, Ptr<Expr>&& value, Ptr<Expr>&& type)
+        : Expr(loc)
+        , value_(std::move(value))
+        , type_(std::move(type)) {}
+
+    const Expr* value() const { return value_.get(); }
+    const Expr* type() const { return type_.get(); }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptr<Expr> value_;
+    Ptr<Expr> type_;
+};
+
+// matching for destruction of sum types
+
+// n-ary match
+class MatchExpr : public Expr {
+public:
+    class Arm : public Node {
+    public:
+        Arm(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& body)
+            : Node(loc)
+            , ptrn_(std::move(ptrn))
+            , body_(std::move(body)) {}
+
+        const Ptrn* ptrn() const { return ptrn_.get(); }
+        const Expr* body() const { return body_.get(); }
+
+        virtual void bind(Scopes&) const;
+        Lam* emit(Emitter&) const;
+        std::ostream& stream(Tab&, std::ostream&) const override;
+
+    private:
+        Ptr<Ptrn> ptrn_;
+        Ptr<Expr> body_;
+    };
+
+    MatchExpr(Loc loc, Ptr<Expr>&& scrutinee, Ptrs<Arm>&& arms)
+        : Expr(loc)
+        , scrutinee_(std::move(scrutinee))
+        , arms_(std::move(arms)) {}
+
+    const Expr* scrutinee() const { return scrutinee_.get(); }
+    const auto& arms() const { return arms_; }
+    const Arm* arm(size_t i) const { return arms_[i].get(); }
+    size_t num_arms() const { return arms_.size(); }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptr<Expr> scrutinee_;
+    Ptrs<Arm> arms_;
+};
+
 // lam
 
 /// `dom -> codom`
@@ -493,7 +582,7 @@ public:
             ret_     = ast.ptr<IdPtrn>(loc, Dbg(loc, ast.sym_return()), std::move(type));
         }
 
-        virtual void bind(Scopes& scopes, bool quiet = false) const;
+        virtual void bind(Scopes&, bool quiet = false) const;
         virtual void emit_type(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -874,7 +963,7 @@ public:
         bool is_implicit() const { return ptrn()->is_implicit(); }
         const Expr* filter() const { return filter_.get(); }
 
-        void bind(Scopes& scopes, bool quiet = false) const override;
+        void bind(Scopes&, bool quiet = false) const override;
         Lam* emit_value(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
