@@ -1,4 +1,7 @@
+#include "mim/def.h"
+
 #include "mim/ast/ast.h"
+#include "mim/util/span.h"
 
 using namespace std::literals;
 
@@ -202,6 +205,34 @@ const Def* ArrowExpr::emit_(Emitter& e) const {
     auto d = dom()->emit(e);
     auto c = codom()->emit(e);
     return e.world().pi(d, c);
+}
+
+const Def* UnionExpr::emit_(Emitter& e) const {
+    DefVec etypes;
+    for (auto& t : types()) etypes.emplace_back(t->emit(e));
+    return e.world().join(etypes);
+}
+
+const Def* InjExpr::emit_(Emitter& e) const {
+    auto v = value()->emit(e);
+    auto t = type()->emit(e);
+    return e.world().inj(t, v);
+}
+
+Lam* MatchExpr::Arm::emit(Emitter& e) const {
+    auto _     = e.world().push(loc());
+    auto dom_t = ptrn()->emit_type(e);
+    auto pi    = e.world().pi(dom_t, e.world().mut_hole_type());
+    auto lam   = e.world().mut_lam(pi);
+    ptrn()->emit_value(e, lam->var());
+    return lam->set(true, body()->emit(e));
+}
+
+const Def* MatchExpr::emit_(Emitter& e) const {
+    DefVec res;
+    res.emplace_back(scrutinee()->emit(e));
+    for (const auto& arm : arms()) res.emplace_back(arm->emit(e));
+    return e.world().match(res);
 }
 
 void PiExpr::Dom::emit_type(Emitter& e) const {

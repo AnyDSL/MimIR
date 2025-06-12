@@ -33,6 +33,7 @@ public:
 
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
     static const Def* find(const Def*);
+    static DefVec zonk(Defs);
 
     static constexpr auto Node = mim::Node::Hole;
 

@@ -103,6 +103,8 @@ void World::make_internal(Def* def) {
  */
 
 const Type* World::type(const Def* level) {
+    level = level->zonk();
+
     if (!level->type()->isa<Univ>())
         error(level->loc(), "argument `{}` to `Type` must be of type `Univ` but is of type `{}`", level, level->type());
 
@@ -110,6 +112,8 @@ const Type* World::type(const Def* level) {
 }
 
 const Def* World::uinc(const Def* op, level_t offset) {
+    op = op->zonk();
+
     if (!op->type()->isa<Univ>())
         error(op->loc(), "operand '{}' of a universe increment must be of type `Univ` but is of type `{}`", op,
               op->type());
@@ -121,11 +125,13 @@ const Def* World::uinc(const Def* op, level_t offset) {
 template<Sort sort> const Def* World::umax(Defs ops_) {
     // consume nested umax
     DefVec ops;
-    for (auto op : ops_)
+    for (auto op : ops_) {
+        op = op->zonk();
         if (auto um = op->isa<UMax>())
-            ops.insert(ops.end(), um->ops().begin(), um->ops().end());
+            for (auto umo : um->ops()) ops.emplace_back(umo->zonk());
         else
             ops.emplace_back(op);
+    }
 
     level_t lvl = 0;
     for (auto& op : ops) {
@@ -165,6 +171,8 @@ template<Sort sort> const Def* World::umax(Defs ops_) {
 // TODO more thorough & consistent checks for singleton types
 
 const Def* World::var(const Def* type, Def* mut) {
+    type = type->zonk();
+
     if (auto s = Idx::isa(type)) {
         if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
     }
@@ -181,6 +189,7 @@ template<bool Normalize> const Def* World::implicit_app(const Def* callee, const
 template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg) {
     callee = callee->zonk();
     arg    = arg->zonk();
+
     if (auto pi = callee->type()->isa<Pi>()) {
         if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
             arg = new_arg->zonk();
@@ -242,6 +251,10 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
 }
 
 const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg) {
+    type   = type->zonk();
+    callee = callee->zonk();
+    arg    = arg->zonk();
+
     auto [axm, curry, trip] = Axm::get(callee);
     if (axm) {
         curry = curry == 0 ? trip : curry;
@@ -258,18 +271,21 @@ const Def* World::raw_app(const Axm* axm, u8 curry, u8 trip, const Def* type, co
 const Def* World::sigma(Defs ops) {
     auto n = ops.size();
     if (n == 0) return sigma();
-    if (n == 1) return ops[0];
-    if (auto uni = Checker::is_uniform(ops)) return arr(n, uni);
-    return unify<Sigma>(ops.size(), Sigma::infer(*this, ops), ops);
+    if (n == 1) return ops[0]->zonk();
+
+    auto zops = Hole::zonk(ops);
+    if (auto uni = Checker::is_uniform(zops)) return arr(n, uni);
+    return unify<Sigma>(zops.size(), Sigma::infer(*this, zops), ops);
 }
 
 const Def* World::tuple(Defs ops) {
     auto n = ops.size();
     if (n == 0) return tuple();
-    if (n == 1) return ops[0];
+    if (n == 1) return ops[0]->zonk();
 
-    auto sigma = Tuple::infer(*this, ops);
-    auto t     = tuple(sigma, ops);
+    auto zops  = Hole::zonk(ops);
+    auto sigma = Tuple::infer(*this, zops);
+    auto t     = tuple(sigma, zops);
     auto new_t = Checker::assignable(sigma, t);
     if (!new_t)
         error(t->loc(), "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
@@ -277,8 +293,10 @@ const Def* World::tuple(Defs ops) {
     return new_t;
 }
 
-const Def* World::tuple(const Def* type, Defs ops) {
+const Def* World::tuple(const Def* type, Defs ops_) {
     // TODO type-check type vs inferred type
+    type     = type->zonk();
+    auto ops = Hole::zonk(ops_);
 
     auto n = ops.size();
     if (!type->isa_mut<Sigma>()) {
@@ -319,6 +337,9 @@ const Def* World::tuple(Sym sym) {
 }
 
 const Def* World::extract(const Def* d, const Def* index) {
+    d     = d->zonk();
+    index = index->zonk();
+
     if (index->isa<Tuple>()) {
         auto n   = index->num_ops();
         auto idx = DefVec(n, [&](size_t i) { return index->op(i); });
@@ -381,6 +402,10 @@ const Def* World::extract(const Def* d, const Def* index) {
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val) {
+    d     = d->zonk();
+    index = index->zonk();
+    val   = val->zonk();
+
     auto type = d->unfold_type();
     auto size = Idx::isa(index->type());
     auto lidx = Lit::isa(index);
@@ -425,6 +450,9 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
 
 // TODO merge this code with pack
 const Def* World::arr(const Def* shape, const Def* body) {
+    shape = shape->zonk();
+    body  = body->zonk();
+
     if (!is_shape(shape->type())) error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = Lit::isa(shape)) {
@@ -454,6 +482,9 @@ const Def* World::arr(const Def* shape, const Def* body) {
 }
 
 const Def* World::pack(const Def* shape, const Def* body) {
+    shape = shape->zonk();
+    body  = body->zonk();
+
     if (!is_shape(shape->unfold_type()))
         error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->unfold_type());
 
@@ -485,6 +516,8 @@ const Def* World::pack(Defs shape, const Def* body) {
 }
 
 const Lit* World::lit(const Def* type, u64 val) {
+    type = type->zonk();
+
     if (auto size = Idx::isa(type)) {
         if (auto s = Lit::isa(size)) {
             if (*s != 0 && val >= *s) error(type->loc(), "index '{}' does not fit within arity '{}'", size, val);
@@ -501,37 +534,41 @@ const Lit* World::lit(const Def* type, u64 val) {
  */
 
 template<bool Up> const Def* World::ext(const Def* type) {
+    type = type->zonk();
+
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefVec(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
     return unify<TExt<Up>>(0, type);
 }
 
-template<bool Up> const Def* World::bound(Defs ops) {
+template<bool Up> const Def* World::bound(Defs ops_) {
+    auto ops = DefVec();
+    for (size_t i = 0, e = ops_.size(); i != e; ++i) {
+        auto op = ops_[i]->zonk();
+        if (!op->isa<TExt<!Up>>()) ops.emplace_back(op); // ignore: ext<!Up>
+    }
+
     auto kind = umax<Sort::Type>(ops);
 
     // has ext<Up> value?
-    if (std::ranges::any_of(ops, [&](const Def* op) { return Up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
-        return ext<Up>(kind);
-
-    // ignore: ext<!Up>
-    DefVec cpy(ops.begin(), ops.end());
-    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !op->isa<Ext>(); });
+    if (std::ranges::any_of(ops, [&](const Def* op) -> bool { return op->isa<TExt<Up>>(); })) return ext<Up>(kind);
 
     // sort and remove duplicates
-    std::sort(cpy.begin(), end, GIDLt<const Def*>());
-    end = std::unique(cpy.begin(), end);
-    cpy.resize(std::distance(cpy.begin(), end));
+    std::ranges::sort(ops, GIDLt<const Def*>());
+    ops.resize(std::distance(ops.begin(), std::unique(ops.begin(), ops.end())));
 
-    if (cpy.size() == 0) return ext<!Up>(kind);
-    if (cpy.size() == 1) return cpy[0];
+    if (ops.size() == 0) return ext<!Up>(kind);
+    if (ops.size() == 1) return ops[0];
 
     // TODO simplify mixed terms with joins and meets?
-
-    return unify<TBound<Up>>(cpy.size(), kind, cpy);
+    return unify<TBound<Up>>(ops.size(), kind, ops);
 }
 
-const Def* World::merge(const Def* type, Defs ops) {
+const Def* World::merge(const Def* type, Defs ops_) {
+    type     = type->zonk();
+    auto ops = Hole::zonk(ops_);
+
     if (type->isa<Meet>()) {
         auto types = DefVec(ops.size(), [&](size_t i) { return ops[i]->type(); });
         return unify<Merge>(ops.size(), meet(types), ops);
@@ -541,27 +578,39 @@ const Def* World::merge(const Def* type, Defs ops) {
     return ops[0];
 }
 
-const Def* World::merge(Defs ops) { return merge(umax<Sort::Term>(ops), ops); }
+const Def* World::merge(Defs ops_) {
+    auto ops = Hole::zonk(ops_);
+    return merge(umax<Sort::Term>(ops), ops);
+}
 
 const Def* World::inj(const Def* type, const Def* value) {
+    type  = type->zonk();
+    value = value->zonk();
+
     if (type->isa<Join>()) return unify<Inj>(1, type, value);
     return value;
 }
 
-const Def* World::split(const Def* type, const Def* value) { return unify<Split>(1, type, value); }
+const Def* World::split(const Def* type, const Def* value) {
+    type  = type->zonk();
+    value = value->zonk();
+
+    return unify<Split>(1, type, value);
+}
 
 const Def* World::match(Defs ops_) {
-    if (ops_.size() == 1) return ops_.front();
+    auto ops = Hole::zonk(ops_);
+    if (ops.size() == 1) return ops.front();
 
-    auto ops   = DefVec(ops_.begin(), ops_.end());
-    auto value = ops.front();
-    auto arms  = ops.span().subspan(1);
-    auto join  = value->type()->isa<Join>();
+    auto scrutinee = ops.front();
+    auto arms      = ops.span().subspan(1);
+    auto join      = scrutinee->type()->isa<Join>();
 
-    if (!join) error(value->loc(), "scrutinee of a test expression must be of union type");
+    if (!join) error(scrutinee->loc(), "scrutinee of a test expression must be of union type");
 
     if (arms.size() != join->num_ops())
-        error(value->loc(), "test expression has {} arms but union type has {} cases", arms.size(), join->num_ops());
+        error(scrutinee->loc(), "test expression has {} arms but union type has {} cases", arms.size(),
+              join->num_ops());
 
     for (auto arm : arms)
         if (!arm->type()->isa<Pi>())
@@ -585,7 +634,10 @@ const Def* World::match(Defs ops_) {
     return unify<Match>(ops.size(), type, ops);
 }
 
-const Def* World::uniq(const Def* inhabitant) { return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant); }
+const Def* World::uniq(const Def* inhabitant) {
+    inhabitant = inhabitant->zonk();
+    return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant);
+}
 
 Sym World::append_suffix(Sym symbol, std::string suffix) {
     auto name = symbol.str();
