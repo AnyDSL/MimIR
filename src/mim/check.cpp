@@ -83,6 +83,10 @@ const Def* Hole::tuplefy(nat_t n) {
     return tuple;
 }
 
+DefVec Hole::zonk(Defs defs) {
+    return DefVec(defs.size(), [defs](size_t i) { return defs[i]->zonk(); });
+}
+
 /*
  * Check
  */
