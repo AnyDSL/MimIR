@@ -460,16 +460,6 @@ const Def* World::arr(const Def* shape, const Def* body) {
         if (*a == 1) return body;
     }
 
-#if 0
-    // «(a, b)#i; T» -> («a, T», <b, T»)#i
-    if (auto ex = shape->isa<Extract>()) {
-        if (auto tup = ex->tuple()->isa<Tuple>()) {
-            auto arrs = DefVec(tup->num_ops(), [&](size_t i) { return arr(tup->op(i), body); });
-            return extract(tuple(arrs), ex->index());
-        }
-    }
-#endif
-
     // «(a, b, c); body» -> «a; «(b, c); body»»
     if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
 

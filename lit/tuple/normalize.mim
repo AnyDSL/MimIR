@@ -29,5 +29,5 @@ lam foo (x: Nat): [] =
     let _ = %refly.equiv.struc_ne (ff, %tuple.contains (tup, 24));
     ();
 
-let _ = %tuple.concat @(3, 0) ((1, 2, ff), ());
-let _ = %tuple.concat @(0, 3) ((), (1, 2, ff));
+let _ = %tuple.concat ((1, 2, ff), ());
+let _ = %tuple.concat ((), (1, 2, ff));
