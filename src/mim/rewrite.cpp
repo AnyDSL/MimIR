@@ -36,7 +36,43 @@ const Def* Rewriter::rewrite_imm(const Def* old_def) {
 
 const Def* Rewriter::rewrite_mut(Def* old_mut) {
     auto new_type = rewrite(old_mut->type());
-    auto new_mut  = old_mut->stub(world(), new_type);
+
+    if (auto arr = old_mut->isa<Arr>()) {
+        if (auto l = Lit::isa(rewrite(arr->shape())); l && *l <= world().flags().scalarize_threshold) {
+            auto new_ops = absl::FixedArray<const Def*>(*l);
+            for (size_t i = 0, e = *l; i != e; ++i) {
+                if (auto var = arr->has_var()) {
+                    auto old2new = old2new_;
+                    map(var, world().lit_idx(e, i));
+                    new_ops[i] = rewrite(arr->body());
+                    old2new_   = std::move(old2new);
+                } else {
+                    new_ops[i] = arr->body();
+                }
+            }
+            return world().sigma(new_ops);
+        }
+    }
+
+    // HACK copy & past from above
+    if (auto pack = old_mut->isa<Pack>()) {
+        if (auto l = Lit::isa(rewrite(pack->shape())); l && *l <= world().flags().scalarize_threshold) {
+            auto new_ops = absl::FixedArray<const Def*>(*l);
+            for (size_t i = 0, e = *l; i != e; ++i) {
+                if (auto var = pack->has_var()) {
+                    auto old2new = old2new_;
+                    map(var, world().lit_idx(e, i));
+                    new_ops[i] = rewrite(pack->body());
+                    old2new_   = std::move(old2new);
+                } else {
+                    new_ops[i] = pack->body();
+                }
+            }
+            return world().tuple(new_ops);
+        }
+    }
+
+    auto new_mut = old_mut->stub(world(), new_type);
     map(old_mut, new_mut);
 
     if (old_mut->is_set()) {
