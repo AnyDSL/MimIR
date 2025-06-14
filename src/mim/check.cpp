@@ -161,27 +161,6 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
             return i->second == ds[other];
     }
 
-#if 0
-    auto check_arr = [this](Arr* mut_arr, const Arr* imm_arr) {
-        if (!alpha_<mode>(mut_arr->shape(), imm_arr->shape())) return fail<mode>();
-
-        auto mut_body = mut_arr->reduce(world().top(mut_arr->shape()));
-        if (!alpha_<mode>(mut_body, imm_arr->body())) return fail<mode>();
-
-        // mut_arr->unset()->set(imm_arr->shape(), mut_body);
-        return true;
-    };
-
-    if (mode == Mode::Check) {
-        if (auto mut_arr = d1->isa_mut<Arr>(); mut_arr && mut_arr->is_set()) {
-            if (auto imm_arr = d2->isa_imm<Arr>()) return check_arr(mut_arr, imm_arr);
-        }
-        if (auto mut_arr = d2->isa_mut<Arr>(); mut_arr && mut_arr->is_set()) {
-            if (auto imm_arr = d1->isa_imm<Arr>()) return check_arr(mut_arr, imm_arr);
-        }
-    }
-#endif
-
     return alpha_internal<mode>(d1, d2);
 }
 
@@ -208,10 +187,11 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
         auto check_arr = [this](Arr* mut_arr, const Arr* imm_arr) {
             if (!alpha_<mode>(mut_arr->shape(), imm_arr->shape())) return fail<mode>();
 
-            auto mut_body = mut_arr->reduce(world().top(world().type_idx(mut_arr->shape())));
+            auto mut_shape = mut_arr->shape()->zonk();
+            auto mut_body  = mut_arr->reduce(world().top(world().type_idx(mut_arr->shape())));
             if (!alpha_<mode>(mut_body, imm_arr->body())) return fail<mode>();
 
-            mut_arr->unset()->set(imm_arr->shape(), mut_body->zonk());
+            mut_arr->unset()->set(mut_shape, mut_body->zonk());
             return true;
         };
 

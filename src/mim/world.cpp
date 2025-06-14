@@ -13,9 +13,10 @@
 namespace mim {
 
 namespace {
+// TODO this is quite unstable as this does not go through the same zonking as Checker::alpha
 bool is_shape(const Def* s) {
     if (s->isa<Nat>()) return true;
-    if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
+    if (auto arr = s->isa<Arr>()) return arr->body()->zonk()->isa<Nat>(); // TODO do we need this zonk?
     if (auto sig = s->isa_imm<Sigma>())
         return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
 
