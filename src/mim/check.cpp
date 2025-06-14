@@ -104,7 +104,8 @@ const Def* Checker::fail() {
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
-    auto ds        = std::array<const Def*, 2>{Hole::find(d1_), Hole::find(d2_)};
+    // auto ds        = std::array<const Def*, 2>{Hole::find(d1_), Hole::find(d2_)};
+    auto ds        = std::array<const Def*, 2>{d1_->zonk(), d2_->zonk()};
     auto& [d1, d2] = ds;
 
     if (!d1 && !d2) return true;
@@ -244,7 +245,8 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
 }
 
 const Def* Checker::assignable_(const Def* type, const Def* val) {
-    auto val_ty = Hole::find(val->type());
+    // auto val_ty = Hole::find(val->type());
+    auto val_ty = val->type()->zonk();
     if (type == val_ty) return val;
 
     auto& w = world();
