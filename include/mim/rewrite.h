@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 #include "mim/world.h"
 
 namespace mim {
@@ -21,9 +23,15 @@ public:
     virtual const Def* rewrite(const Def*);
     virtual const Def* rewrite_imm(const Def*);
     virtual const Def* rewrite_mut(Def*);
+
+    virtual const Def* rewrite_arr(const Arr* arr) { return rewrite_arr_or_pack<true>(arr); }
+    virtual const Def* rewrite_pack(const Pack* pack) { return rewrite_arr_or_pack<false>(pack); }
+    virtual const Def* rewrite_extract(const Extract*);
     ///@}
 
 private:
+    template<bool arr> const Def* rewrite_arr_or_pack(std::conditional_t<arr, const Arr*, const Pack*>);
+
     World& world_;
     Def2Def old2new_;
 };
