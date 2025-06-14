@@ -33,7 +33,7 @@ lam %tuple.append   {n: Nat}
                   : «i: %core.nat.add (n, 1);
                         %core.select (%core.ncmp.l (%core.bitcast Nat i, n), Ts#(%core.bitcast (Idx n) i), U)
                     » // «i: n + 1; select(i < n , Ts#i, U)»
-                  = %tuple.cat @(n, 1) (a, b);
+                  = %tuple.cat (a, b);
 
 lam %tuple.prepend  {m: Nat}
                     {T: *, Us: «m; *»}
@@ -42,7 +42,7 @@ lam %tuple.prepend  {m: Nat}
                         let nat_i = %core.bitcast Nat i;
                         %core.select (%core.ncmp.l (nat_i, 1), T, Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, 1))))
                     » // «i: 1 + m; select(i < 1 , T, Us#(i - 1))»
-                  = %tuple.cat @(1, m) (a, b);
+                  = %tuple.cat (a, b);
 ///
 /// ### %%tuple.contains
 ///

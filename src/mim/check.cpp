@@ -136,6 +136,7 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
     // Unless they are pointer equal (above) always consider them unequal.
     if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
+    bool redo = false;
     for (size_t i = 0; i != 2; ++i) {
         auto& mut = muts[i];
         if (!mut || !mut->is_set()) continue;
@@ -156,12 +157,12 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
 
         size_t other = (i + 1) % 2;
         if (auto imm = mut->immutabilize())
-            mut = nullptr, ds[i] = imm;
+            mut = nullptr, ds[i] = imm, redo = true;
         else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
             return i->second == ds[other];
     }
 
-    return alpha_internal<mode>(d1, d2);
+    return redo ? alpha<mode>(d1, d2) : alpha_internal<mode>(d1, d2);
 }
 
 template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
@@ -169,6 +170,23 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
     if (mode == Test && (d1->isa_mut<Hole>() || d2->isa_mut<Hole>())) return fail<mode>();
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
+
+    auto check1 = [this](const Arr* arr, const Def* d) {
+        auto body = arr->reduce(world().lit_idx(1, 0))->zonk();
+        if (!alpha_<mode>(body, d)) return fail<mode>();
+        if (auto mut_arr = arr->isa_mut<Arr>()) mut_arr->unset()->set(world().lit_nat_1(), body->zonk());
+        return true;
+    };
+
+    if (mode == Mode::Check) {
+        if (auto arr = d1->isa<Arr>();
+            arr && arr->is_set() && arr->shape()->zonk() == world().lit_nat_1() && !d2->isa<Arr>())
+            return check1(arr, d2);
+
+        if (auto arr = d2->isa<Arr>();
+            arr && arr->is_set() && arr->shape()->zonk() == world().lit_nat_1() && !d1->isa<Arr>())
+            return check1(arr, d1);
+    }
 
     if (auto ts = d1->isa<Tuple, Sigma>()) {
         size_t a = ts->num_ops();
