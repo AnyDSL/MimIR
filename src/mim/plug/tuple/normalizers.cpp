@@ -5,7 +5,7 @@
 
 namespace mim::plug::tuple {
 
-const Def* normalize_concat(const Def* type, const Def* callee, const Def* arg) {
+const Def* normalize_cat(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     auto [n, m] = callee->as<App>()->decurry()->args<2>([](auto def) { return Lit::isa(def); });
