@@ -91,6 +91,7 @@ public:
     using Setters<Arr>::set;
     Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
+    Arr* set(const Def* shape, const Def* body) { return set_shape(shape)->set_body(body); }
     Arr* unset() { return Def::unset()->as<Arr>(); }
     ///@}
 

@@ -350,21 +350,23 @@ const Def* World::extract(const Def* d, const Def* index) {
         return tuple(ops);
     }
 
-    const Def* size = Idx::isa(index->type());
-    const Def* type = d->unfold_type()->zonk();
+    auto size = Idx::isa(index->type());
+    auto type = d->unfold_type()->zonk();
 
-    if (auto l = Lit::isa(size); l && *l == 1) {
-        if (auto l = Lit::isa(index); !l || *l != 0) WLOG("unknown Idx of size 1: {}", index);
-        if (auto sigma = type->isa_mut<Sigma>(); sigma && sigma->num_ops() == 1) {
-            // mut sigmas can be 1-tuples; TODO mutables Arr?
-        } else {
-            return d;
+    if (size) {
+        if (auto l = Lit::isa(size); l && *l == 1) {
+            if (auto l = Lit::isa(index); !l || *l != 0) WLOG("unknown Idx of size 1: {}", index);
+            if (auto sigma = type->isa_mut<Sigma>(); sigma && sigma->num_ops() == 1) {
+                // mut sigmas can be 1-tuples; TODO mutables Arr?
+            } else {
+                return d;
+            }
         }
     }
 
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
-    if (!Checker::alpha<Checker::Check>(type->arity(), size))
+    if (size && !Checker::alpha<Checker::Check>(type->arity(), size))
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
@@ -396,6 +398,14 @@ const Def* World::extract(const Def* d, const Def* index) {
         elem_t = arr->reduce(index);
     else
         elem_t = join(type->as<Sigma>()->ops());
+
+    if (index->isa<Top>()) {
+        if (auto hole = d->isa_mut<Hole>(); hole && !hole->is_set()) {
+            auto elem_hole = mut_hole(elem_t);
+            hole->set(pack(size, elem_hole));
+            return elem_hole;
+        }
+    }
 
     assert(d);
     return unify<Extract>(2, elem_t, d, index);
