@@ -185,12 +185,12 @@ Types</h1>
 Constructors</h1>
 <h2><a class="anchor" id="autotoc_md208"></a>
 %ord.init</h2>
-<p>Create set/map from a list of values/key-value-pairs.</p>
+<p>Create set / map from a list of values / key-value-pairs.</p>
 <div class="fragment"><div class="line">axm %ord.init(set): {K  : *} → [lt: [K, K] → Bool] → {n: Nat} → [«n;  K    »] → %ord.Set  K     lt, normalize_init;</div>
 <div class="line">axm %ord.init(map): {K V: *} → [lt: [K, K] → Bool] → {n: Nat} → [«n; [K, V]»] → %ord.Map (K, V) lt, normalize_init;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md209"></a>
 %ord.create</h2>
-<p>Create empty set/map.</p>
+<p>Create empty set / map.</p>
 <div class="fragment"><div class="line">lam %ord.create_set (K  : *)       (lt: [K, K] → Bool): %ord.Set K  lt = %ord.init.set @K  lt @0 ();</div>
 <div class="line">lam %ord.create_map (K V: *) as KV (lt: [K, K] → Bool): %ord.Map KV lt = %ord.init.map @KV lt @0 ();</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md210"></a>
@@ -220,7 +220,7 @@ Lookup</h1>
 Modifiers</h1>
 <h2><a class="anchor" id="autotoc_md217"></a>
 %ord.insert</h2>
-<p>Insert key/key-value-pair into container.</p>
+<p>Insert key / key-value-pair into container.</p>
 <div class="fragment"><div class="line">axm %ord.insert(set): {K  : *}       → {lt: [K, K] → Bool} → [%ord.Set K  lt,  K    ] → %ord.Set K  lt, normalize_insert;</div>
 <div class="line">axm %ord.insert(map): {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt, [K, V]] → %ord.Map KV lt, normalize_insert;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

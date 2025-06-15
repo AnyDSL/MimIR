@@ -23,7 +23,7 @@ var searchData=
   ['lamspec_20',['LamSpec',['../classmim_1_1LamSpec.html',1,'mim::LamSpec'],['../classmim_1_1LamSpec.html#afa779a30bb3834f5c8cfdfcca2acfedf',1,'mim::LamSpec::LamSpec()']]],
   ['langref_2emd_21',['langref.md',['../langref_8md.html',1,'']]],
   ['language_20reference_22',['Mim Language Reference',['../langref.html',1,'']]],
-  ['last_23',['last',['../namespacemim_1_1plug_1_1vec.html#afd082a7ad8cc8afabbcc2ebf09bc7ba4',1,'mim::plug::vec']]],
+  ['last_23',['last',['../vec.html#autotoc_md273',1,'%vec.first / %vec.last'],['../namespacemim_1_1plug_1_1vec.html#afd082a7ad8cc8afabbcc2ebf09bc7ba4',1,'mim::plug::vec::last']]],
   ['late_24',['late',['../classmim_1_1Scheduler.html#a7181e660c82f0a354ae42cae8d3008b0',1,'mim::Scheduler']]],
   ['lattice_25',['Lattice',['../classmim_1_1EtaRed.html#a3326314112409c514cb209a8a12bbaae',1,'mim::EtaRed']]],
   ['lattice_2ecpp_26',['lattice.cpp',['../lattice_8cpp.html',1,'']]],

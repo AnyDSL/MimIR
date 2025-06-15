@@ -140,13 +140,13 @@ $(function(){initNavTree('vec.html',''); initResizable(true); });
         <a href="#autotoc_md272">%vec.scan</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md273">%vec.get</a>
+        <a href="#autotoc_md273">%vec.first / %vec.last</a>
       </li>
       <li class="level2">
         <a href="#autotoc_md274">%vec.len</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md275">%vec.unique</a>
+        <a href="#autotoc_md275">%vec.is_unique</a>
       </li>
     </ul>
   </li>
@@ -190,7 +190,7 @@ Scanning</h1>
 <p>Does the given predicate hold for all elements/at least one element?</p>
 <div class="fragment"><div class="line">axm %vec.scan(for_all, exists): {E: *} → {n: Nat} → [p: E → Bool] → «n; E» → Bool, normalize_scan;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md273"></a>
-%vec.get</h2>
+%vec.first / %vec.last</h2>
 <p>Is the given element in the vector, and what is the index of its first/last occurence?</p>
 <div class="fragment"><div class="line">lam f_first    {E: *} {n: Nat} (eq: [E, E] → Bool) (x: E) ((b: Bool, i: Idx n), y: E): [Bool, Idx n] = (((ff, %core.wrap.add 0 (i, %core.idx n 0 1)), (tt, i))#(eq (x, y)), (b, i))#b;</div>
 <div class="line">lam f_last     {E: *} {n: Nat} (eq: [E, E] → Bool) (x: E) (y: E, [b: Bool, i: Idx n]): [Bool, Idx n] = f_first eq x ((b, i), y);</div>
@@ -201,7 +201,7 @@ Scanning</h1>
 <p>Get length of vector.</p>
 <div class="fragment"><div class="line">lam %vec.len {n: Nat} {T: *} [«n; T»]: Nat = n;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md275"></a>
-%vec.unique</h2>
+%vec.is_unique</h2>
 <p>Checks whether all elements in the given vector are distinct from each other (using structural equivalence).</p>
 <div class="fragment"><div class="line">axm %vec.is_unique: {T: *} → {n: Nat} → «n; T» → Bool, normalize_is_unique;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md276"></a>

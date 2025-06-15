@@ -129,7 +129,7 @@ $(function(){initNavTree('refly.html',''); initResizable(true); });
     <a href="#autotoc_md219">Types</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md220">Reify/Reflect</a>
+    <a href="#autotoc_md220">Reify / Reflect</a>
     <ul>
       <li class="level2">
         <a href="#autotoc_md221">%refly.reify</a>
@@ -160,7 +160,7 @@ $(function(){initNavTree('refly.html',''); initResizable(true); });
         <a href="#autotoc_md228">%refly.equiv</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md229">%refly.error</a>
+        <a href="#autotoc_md229">%refly.check</a>
       </li>
     </ul>
   </li>
@@ -192,7 +192,7 @@ Dependencies</h1>
 Types</h1>
 <div class="fragment"><div class="line">axm %refly.Code: * → *;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md220"></a>
-Reify/Reflect</h1>
+Reify / Reflect</h1>
 <h2><a class="anchor" id="autotoc_md221"></a>
 %refly.reify</h2>
 <p>Yields the internal MimIR representation of a Mim expression as <code>%refly.Code</code>.</p>
@@ -248,7 +248,8 @@ Testing</h1>
 <div class="line">                 Ae = alpha_ne, AE = alpha_eq):</div>
 <div class="line">    {T: *} → [T, T] → T, normalize_equiv;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md229"></a>
-%refly.error</h2>
+%refly.check</h2>
+<p>Checks the given condition and emits the error message, if false.</p>
 <div class="fragment"><div class="line">axm %refly.check: {T: *} → {n: Nat} → [Bool, T, «n; I8»] → T, normalize_check;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md230"></a>
 Manipulate</h1>
