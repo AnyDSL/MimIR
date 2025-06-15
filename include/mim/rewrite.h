@@ -30,7 +30,31 @@ public:
     ///@}
 
 private:
-    template<bool arr> const Def* rewrite_arr_or_pack(std::conditional_t<arr, const Arr*, const Pack*>);
+    template<bool arr> const Def* rewrite_arr_or_pack(std::conditional_t<arr, const Arr*, const Pack*> pa) {
+        auto new_shape = rewrite(pa->shape());
+
+        if (auto l = Lit::isa(new_shape); l && *l <= world().flags().scalarize_threshold) {
+            auto new_ops = absl::FixedArray<const Def*>(*l);
+            for (size_t i = 0, e = *l; i != e; ++i) {
+                if (auto var = pa->has_var()) {
+                    auto old2new = old2new_;
+                    map(var, world().lit_idx(e, i));
+                    new_ops[i] = rewrite(pa->body());
+                    old2new_   = std::move(old2new);
+                } else {
+                    new_ops[i] = rewrite(pa->body());
+                }
+            }
+            return arr ? world().sigma(new_ops) : world().tuple(new_ops);
+        }
+
+        if (!pa->has_var()) {
+            auto new_body = rewrite(pa->body());
+            return arr ? world().arr(new_shape, new_body) : world().pack(new_shape, new_body);
+        }
+
+        return rewrite_mut(pa->as_mut());
+    }
 
     World& world_;
     Def2Def old2new_;
