@@ -9,9 +9,8 @@ namespace py = pybind11;
 
 namespace mim {
 
-void init_def(py::module_& m) {
-    py::class_<mim::Def>(m, "Def")
-        .def(py::init<World*, Def*, Defs, u64>());
-}
+  void init_def(py::module_& m) {
+     py::class_<mim::Def, std::unique_ptr<mim::Def,py::nodelete>>(m, "Def");
+  }
 
 } // namespace mim

@@ -11,7 +11,8 @@ pybind11_add_module(pymim
     parser.cpp
     world_wrapper.cpp
     parser_wrapper.cpp
-#    def.cpp
+#    def_wrapper.cpp
+    def.cpp
 )
 
 set_target_properties(pymim PROPERTIES LIBRARY_OUTPUT_NAME mim)

@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/python3.13"
+                "/usr/include/python3.13",
+                "${workspaceFolder}/include"
             ],
             "defines": [],
             "compilerPath": "/usr/lib64/ccache/clang",

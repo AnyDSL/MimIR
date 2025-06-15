@@ -5,15 +5,8 @@ namespace py = pybind11;
 
 namespace fe {
 
-/*
-The current reference policies are placeholders, not everything should be returned as a reference
-if python still holds a reference to an object the cpp side has deleted it will lead to UB.
 
 
-Operator overloads should be implemented via the dunder methods of a python class, for convenience we might want to implement a few other dunder methods as well,
-such as __repr__.
-List of dunder methods: https://www.geeksforgeeks.org/dunder-magic-methods-python/
-*/
 
 void init_sym(py::module_& m) {
     py::class_<fe::Sym>(m, "Sym")
