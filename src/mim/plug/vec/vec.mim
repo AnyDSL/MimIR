@@ -34,7 +34,7 @@ axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] 
 ///
 axm %vec.scan(for_all, exists): {E: *} → {n: Nat} → [p: E → Bool] → «n; E» → Bool, normalize_scan;
 ///
-/// ### %%vec.get
+/// ### %%vec.first / %%vec.last
 ///
 /// Is the given element in the vector, and what is the index of its first/last occurence?
 ///
@@ -49,7 +49,7 @@ lam %vec.last  {E: *} {n: Nat} (eq: [E, E] → Bool) (v: «n; E», x: E):       
 ///
 lam %vec.len {n: Nat} {T: *} [«n; T»]: Nat = n;
 ///
-/// ### %%vec.unique
+/// ### %%vec.is_unique
 ///
 /// Checks whether all elements in the given vector are distinct from each other (using structural equivalence).
 ///
