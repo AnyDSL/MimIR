@@ -45,6 +45,7 @@ var menudata={children:[
 {text:"ord",url:"ord.html"},
 {text:"refly",url:"refly.html"},
 {text:"regex",url:"regex.html"},
+{text:"tensor",url:"tensor.html"},
 {text:"tuple",url:"tuple.html"},
 {text:"vec",url:"vec.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[

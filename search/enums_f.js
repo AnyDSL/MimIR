@@ -11,10 +11,11 @@ var searchData=
   ['single_5fpass_5fphase_8',['single_pass_phase',['../namespacemim_1_1plug_1_1compile.html#a847ce6ecda2bb689fa0ba4755e2716d7',1,'mim::plug::compile']]],
   ['size_9',['size',['../namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38',1,'mim::plug::ord']]],
   ['slf_10',['slf',['../namespacemim_1_1plug_1_1math.html#a4a71342608a0eb0a27c7763b0cb54693',1,'mim::plug::math']]],
-  ['slot_11',['slot',['../namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4',1,'mim::plug::mem']]],
-  ['sort_12',['Sort',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5',1,'mim']]],
-  ['specialtransitons_13',['SpecialTransitons',['../classautomaton_1_1DFA.html#a0e1eba2b8de869d374e647966c20b6d3',1,'automaton::DFA::SpecialTransitons'],['../classautomaton_1_1NFA.html#aa22a4b55ded13c4fc0b6fb4c4fd11d12',1,'automaton::NFA::SpecialTransitons']]],
-  ['ssa_5fpass_14',['ssa_pass',['../namespacemim_1_1plug_1_1mem.html#a619e2889942b9d13d55e24c6e2da35b5',1,'mim::plug::mem']]],
-  ['store_15',['store',['../namespacemim_1_1plug_1_1mem.html#a0accf352be5afdd02647f035fc72cb3c',1,'mim::plug::mem']]],
-  ['sum_16',['sum',['../namespacemim_1_1plug_1_1autodiff.html#a27536fa48373a84728e55704e659a420',1,'mim::plug::autodiff::sum'],['../namespacemim_1_1plug_1_1matrix.html#a6c2b2ed70d211b556dfd52f59e9d827b',1,'mim::plug::matrix::sum']]]
+  ['slice_11',['slice',['../namespacemim_1_1plug_1_1tensor.html#a9f32ad37dd66f405ca71286aa92bfe07',1,'mim::plug::tensor']]],
+  ['slot_12',['slot',['../namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4',1,'mim::plug::mem']]],
+  ['sort_13',['Sort',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5',1,'mim']]],
+  ['specialtransitons_14',['SpecialTransitons',['../classautomaton_1_1DFA.html#a0e1eba2b8de869d374e647966c20b6d3',1,'automaton::DFA::SpecialTransitons'],['../classautomaton_1_1NFA.html#aa22a4b55ded13c4fc0b6fb4c4fd11d12',1,'automaton::NFA::SpecialTransitons']]],
+  ['ssa_5fpass_15',['ssa_pass',['../namespacemim_1_1plug_1_1mem.html#a619e2889942b9d13d55e24c6e2da35b5',1,'mim::plug::mem']]],
+  ['store_16',['store',['../namespacemim_1_1plug_1_1mem.html#a0accf352be5afdd02647f035fc72cb3c',1,'mim::plug::mem']]],
+  ['sum_17',['sum',['../namespacemim_1_1plug_1_1autodiff.html#a27536fa48373a84728e55704e659a420',1,'mim::plug::autodiff::sum'],['../namespacemim_1_1plug_1_1matrix.html#a6c2b2ed70d211b556dfd52f59e9d827b',1,'mim::plug::matrix::sum']]]
 ];

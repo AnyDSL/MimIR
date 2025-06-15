@@ -14,6 +14,7 @@ var dir_e825240e4e0a5fdaa14f3653628c117c =
     [ "ord", "dir_90753c19bc24970aef3726e9eb21b81d.html", "dir_90753c19bc24970aef3726e9eb21b81d" ],
     [ "refly", "dir_1175bb71810950b57807dd164b9077fe.html", "dir_1175bb71810950b57807dd164b9077fe" ],
     [ "regex", "dir_61c4194356812aff253f2db658fec3ab.html", "dir_61c4194356812aff253f2db658fec3ab" ],
+    [ "tensor", "dir_97397ec052a2a1733f3654e210e76057.html", "dir_97397ec052a2a1733f3654e210e76057" ],
     [ "tuple", "dir_86240e6f676ebfac5b0481016dc73e04.html", "dir_86240e6f676ebfac5b0481016dc73e04" ],
     [ "vec", "dir_312e7af10e85e45f8a00569cac6c066c.html", "dir_312e7af10e85e45f8a00569cac6c066c" ]
 ];

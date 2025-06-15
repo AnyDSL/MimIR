@@ -7,6 +7,7 @@ var classmim_1_1Arr =
     [ "rebuild_", "classmim_1_1Arr.html#a3cd193e47c3df7ee60a7be20b9af4188", null ],
     [ "reduce", "classmim_1_1Arr.html#ae5fde74815d345f32ead09bcc161e199", null ],
     [ "reduction_offset", "classmim_1_1Arr.html#a9bac87fb5bcbf56a2b778e91498dcc90", null ],
+    [ "set", "classmim_1_1Arr.html#a5e41246feb6f03ff098bef94b4eccf8d", null ],
     [ "set_body", "classmim_1_1Arr.html#a5b106c12c37f54bfecd0af8ed0e35d30", null ],
     [ "set_shape", "classmim_1_1Arr.html#a769484eeb9c02325c49004e2d6e2cf1a", null ],
     [ "shape", "classmim_1_1Arr.html#a95cae3fbc58e89414ce0570f46099410", null ],

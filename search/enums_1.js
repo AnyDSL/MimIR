@@ -7,5 +7,6 @@ var searchData=
   ['bit2_4',['bit2',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205',1,'mim::plug::core']]],
   ['bitcast_5',['bitcast',['../namespacemim_1_1plug_1_1core.html#aed6032a690b0654e14fdf971993025f5',1,'mim::plug::core']]],
   ['branch_5fclos_5fpass_6',['branch_clos_pass',['../namespacemim_1_1plug_1_1clos.html#a8946822aea593f6036e981f1d5ad4824',1,'mim::plug::clos']]],
-  ['bufptr_7',['BufPtr',['../namespacemim_1_1plug_1_1clos.html#ac0109814535661c3ccd6d63370f8eec2',1,'mim::plug::clos']]]
+  ['broadcast_5fin_5fdim_7',['broadcast_in_dim',['../namespacemim_1_1plug_1_1tensor.html#a0281472aa2604344bb475423751dcd77',1,'mim::plug::tensor']]],
+  ['bufptr_8',['BufPtr',['../namespacemim_1_1plug_1_1clos.html#ac0109814535661c3ccd6d63370f8eec2',1,'mim::plug::clos']]]
 ];

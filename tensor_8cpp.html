@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: src/mim/util -&gt; include Relation</title>
+<title>MimIR: src/mim/plug/tensor/tensor.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,7 +91,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('dir_bed7118e4bacc0bd560da06fb11567a5.html',''); initResizable(true); });
+$(function(){initNavTree('tensor_8cpp.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -116,13 +116,59 @@ $(function(){initNavTree('dir_bed7118e4bacc0bd560da06fb11567a5.html',''); initRe
 </div>
 </div>
 
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">tensor.cpp File Reference</div></div>
+</div><!--header-->
 <div class="contents">
-<h3>util &rarr; include Relation</h3><table class="dirtab"><tr class="dirtab"><th class="dirtab">File in src/mim/util</th><th class="dirtab">Includes file in include</th></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="bitset_8cpp.html">bitset.cpp</a></td><td class="dirtab"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a>&#160;/&#160;<a class="el" href="dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html">util</a>&#160;/&#160;<a class="el" href="bitset_8h.html">bitset.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="dbg_8cpp.html">dbg.cpp</a></td><td class="dirtab"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a>&#160;/&#160;<a class="el" href="dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html">util</a>&#160;/&#160;<a class="el" href="dbg_8h.html">dbg.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="dl_8cpp.html">dl.cpp</a></td><td class="dirtab"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a>&#160;/&#160;<a class="el" href="dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html">util</a>&#160;/&#160;<a class="el" href="dl_8h.html">dl.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="dl_8cpp.html">dl.cpp</a></td><td class="dirtab"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a>&#160;/&#160;<a class="el" href="dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html">util</a>&#160;/&#160;<a class="el" href="print_8h.html">print.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="log_8cpp.html">log.cpp</a></td><td class="dirtab"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a>&#160;/&#160;<a class="el" href="dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html">util</a>&#160;/&#160;<a class="el" href="log_8h.html">log.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="print_8cpp.html">print.cpp</a></td><td class="dirtab"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a>&#160;/&#160;<a class="el" href="dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html">util</a>&#160;/&#160;<a class="el" href="print_8h.html">print.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="sys_8cpp.html">sys.cpp</a></td><td class="dirtab"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a>&#160;/&#160;<a class="el" href="dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html">util</a>&#160;/&#160;<a class="el" href="print_8h.html">print.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="sys_8cpp.html">sys.cpp</a></td><td class="dirtab"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a>&#160;/&#160;<a class="el" href="dir_ff1b7b5329a4b5bde2c45ec2ac3be82c.html">util</a>&#160;/&#160;<a class="el" href="sys_8h.html">sys.h</a></td></tr></table></div><!-- contents -->
+<div class="textblock"><code>#include &quot;<a class="el" href="tensor_8h_source.html">mim/plug/tensor/tensor.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="plugin_8h_source.html">mim/plugin.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="pass_8h_source.html">mim/pass/pass.h</a>&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for tensor.cpp:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tensor_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+</div>
+<p><a href="tensor_8cpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a35bb34350e93d508e52544f4abd50e59" id="r_a35bb34350e93d508e52544f4abd50e59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmim_1_1Plugin.html">Plugin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35bb34350e93d508e52544f4abd50e59">mim_get_plugin</a> ()</td></tr>
+<tr class="memdesc:a35bb34350e93d508e52544f4abd50e59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es in the different optimization <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s as well as normalizers for the Axioms.  <br /></td></tr>
+<tr class="separator:a35bb34350e93d508e52544f4abd50e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a35bb34350e93d508e52544f4abd50e59" name="a35bb34350e93d508e52544f4abd50e59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35bb34350e93d508e52544f4abd50e59">&#9670;&#160;</a></span>mim_get_plugin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structmim_1_1Plugin.html">Plugin</a> mim_get_plugin </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Registers <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es in the different optimization <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s as well as normalizers for the Axioms. </p>
+
+<p class="definition">Definition at line <a class="el" href="tensor_8cpp_source.html#l00010">10</a> of file <a class="el" href="tensor_8cpp_source.html">tensor.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="config_8h_source.html#l00016">MIM_EXPORT</a>, and <a class="el" href="namespacemim_1_1plug_1_1tensor.html#a99f9f77a6b5be9770487e1f643c975d3">mim::plug::tensor::register_normalizers()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3f6d0e947440f9d0b42426d30577ffdc.html">mim</a></li><li class="navelem"><a class="el" href="dir_bed7118e4bacc0bd560da06fb11567a5.html">util</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3f6d0e947440f9d0b42426d30577ffdc.html">mim</a></li><li class="navelem"><a class="el" href="dir_07110a8747d2517ee97007224f1d2994.html">plug</a></li><li class="navelem"><a class="el" href="dir_4cccb5e8622b702454f9770b66af4063.html">tensor</a></li><li class="navelem"><a class="el" href="tensor_8cpp.html">tensor.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

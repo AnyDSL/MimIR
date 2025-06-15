@@ -8,6 +8,7 @@ var classmim_1_1Hole =
     [ "stub_", "classmim_1_1Hole.html#a98459479ea4757ea3d91916fc3c7dde8", null ],
     [ "tuplefy", "classmim_1_1Hole.html#a4473e6f1b7fa0bd52823b5e88a5eb6bc", null ],
     [ "unset", "classmim_1_1Hole.html#a8d591b06cb894d13113e8514343faa8b", null ],
+    [ "zonk", "classmim_1_1Hole.html#a4081da6449d40a98e2a3d5ea30302450", null ],
     [ "Checker", "classmim_1_1Hole.html#a42e74b7760f36154466246901e25398f", null ],
     [ "World", "classmim_1_1Hole.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "Node", "classmim_1_1Hole.html#a56f1733069c1b5dbc77702109a5e6a4b", null ]

@@ -123,19 +123,19 @@ $(function(){initNavTree('tuple.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md250">Dependencies</a>
+    <a href="#autotoc_md263">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md251">Operations</a>
+    <a href="#autotoc_md264">Operations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md252">%tuple.concat</a>
+        <a href="#autotoc_md265">%tuple.cat</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md253">%tuple.contains</a>
+        <a href="#autotoc_md266">%tuple.contains</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md254">%tuple.zip</a>
+        <a href="#autotoc_md267">%tuple.zip</a>
       </li>
     </ul>
   </li>
@@ -144,24 +144,24 @@ $(function(){initNavTree('tuple.html',''); initResizable(true); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2tuple"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1tuple.html" title="The tuple Plugin">mim::plug::tuple</a></dd></dl>
 <p>Utilitly functions for tuples.</p>
-<h1><a class="anchor" id="autotoc_md250"></a>
+<h1><a class="anchor" id="autotoc_md263"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md251"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md264"></a>
 Operations</h1>
-<h2><a class="anchor" id="autotoc_md252"></a>
-%tuple.concat</h2>
+<h2><a class="anchor" id="autotoc_md265"></a>
+%tuple.cat</h2>
 <p>Concatenation of an <code>n</code>-tuple and an <code>m</code>-tuple to an <code>n + m</code>-tuple.</p>
-<div class="fragment"><div class="line">axm %tuple.concat:  {n m: Nat}</div>
-<div class="line">                  → {Ts: «n; *», Us: «m; *»}</div>
-<div class="line">                  → [«i: n; Ts#i», «i: m; Us#i»]</div>
-<div class="line">                  → «i: %core.nat.add (n, m);</div>
-<div class="line">                        let nat_i = %core.bitcast Nat i;</div>
-<div class="line">                        %core.select (%core.ncmp.l (nat_i, n),</div>
-<div class="line">                                      Ts#(%core.bitcast (Idx n) i),</div>
-<div class="line">                                      Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, n))))</div>
-<div class="line">                    » // «i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</div>
-<div class="line">                  , normalize_concat;</div>
+<div class="fragment"><div class="line">axm %tuple.cat: {n m: Nat}</div>
+<div class="line">                 → {Ts: «n; *», Us: «m; *»}</div>
+<div class="line">                 → [«i: n; Ts#i», «i: m; Us#i»]</div>
+<div class="line">                 → «i: %core.nat.add (n, m);</div>
+<div class="line">                       let nat_i = %core.bitcast Nat i;</div>
+<div class="line">                       %core.select (%core.ncmp.l (nat_i, n),</div>
+<div class="line">                                     Ts#(%core.bitcast (Idx n) i),</div>
+<div class="line">                                     Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, n))))</div>
+<div class="line">                   » // «i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</div>
+<div class="line">                 , normalize_cat;</div>
 <div class="line"> </div>
 <div class="line">lam %tuple.append   {n: Nat}</div>
 <div class="line">                    {Ts: «n; *», U: *}</div>
@@ -169,7 +169,7 @@ Operations</h1>
 <div class="line">                  : «i: %core.nat.add (n, 1);</div>
 <div class="line">                        %core.select (%core.ncmp.l (%core.bitcast Nat i, n), Ts#(%core.bitcast (Idx n) i), U)</div>
 <div class="line">                    » // «i: n + 1; select(i &lt; n , Ts#i, U)»</div>
-<div class="line">                  = %tuple.concat @(n, 1) (a, b);</div>
+<div class="line">                  = %tuple.cat (a, b);</div>
 <div class="line"> </div>
 <div class="line">lam %tuple.prepend  {m: Nat}</div>
 <div class="line">                    {T: *, Us: «m; *»}</div>
@@ -178,12 +178,12 @@ Operations</h1>
 <div class="line">                        let nat_i = %core.bitcast Nat i;</div>
 <div class="line">                        %core.select (%core.ncmp.l (nat_i, 1), T, Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, 1))))</div>
 <div class="line">                    » // «i: 1 + m; select(i &lt; 1 , T, Us#(i - 1))»</div>
-<div class="line">                  = %tuple.concat @(1, m) (a, b);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md253"></a>
+<div class="line">                  = %tuple.cat (a, b);</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md266"></a>
 %tuple.contains</h2>
 <p>Does the tuple conain the given element?</p>
 <div class="fragment"><div class="line">axm %tuple.contains: {n: Nat} → {Ts: «n; *», U: *} → [«i: n; Ts#i», U] → Bool, normalize_contains;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md254"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md267"></a>
 %tuple.zip</h2>
 <p><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>
 <p>What is more, the signature will likely change in the future:</p><ul>
