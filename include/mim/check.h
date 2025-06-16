@@ -36,7 +36,6 @@ public:
     const Def* tuplefy(nat_t);
 
     static const Def* isa(const Def*);
-    static DefVec zonk(Defs);
 
     static constexpr auto Node = mim::Node::Hole;
 

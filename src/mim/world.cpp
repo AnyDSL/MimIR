@@ -274,7 +274,7 @@ const Def* World::sigma(Defs ops) {
     if (n == 0) return sigma();
     if (n == 1) return ops[0]->zonk();
 
-    auto zops = Hole::zonk(ops);
+    auto zops = Def::zonk(ops);
     if (auto uni = Checker::is_uniform(zops)) return arr(n, uni);
     return unify<Sigma>(zops.size(), Sigma::infer(*this, zops), ops);
 }
@@ -284,7 +284,7 @@ const Def* World::tuple(Defs ops) {
     if (n == 0) return tuple();
     if (n == 1) return ops[0]->zonk();
 
-    auto zops  = Hole::zonk(ops);
+    auto zops  = Def::zonk(ops);
     auto sigma = Tuple::infer(*this, zops);
     auto t     = tuple(sigma, zops);
     auto new_t = Checker::assignable(sigma, t);
@@ -297,7 +297,7 @@ const Def* World::tuple(Defs ops) {
 const Def* World::tuple(const Def* type, Defs ops_) {
     // TODO type-check type vs inferred type
     type     = type->zonk();
-    auto ops = Hole::zonk(ops_);
+    auto ops = Def::zonk(ops_);
 
     auto n = ops.size();
     if (!type->isa_mut<Sigma>()) {
@@ -568,7 +568,7 @@ template<bool Up> const Def* World::bound(Defs ops_) {
 
 const Def* World::merge(const Def* type, Defs ops_) {
     type     = type->zonk();
-    auto ops = Hole::zonk(ops_);
+    auto ops = Def::zonk(ops_);
 
     if (type->isa<Meet>()) {
         auto types = DefVec(ops.size(), [&](size_t i) { return ops[i]->type(); });
@@ -580,7 +580,7 @@ const Def* World::merge(const Def* type, Defs ops_) {
 }
 
 const Def* World::merge(Defs ops_) {
-    auto ops = Hole::zonk(ops_);
+    auto ops = Def::zonk(ops_);
     return merge(umax<Sort::Term>(ops), ops);
 }
 
@@ -600,7 +600,7 @@ const Def* World::split(const Def* type, const Def* value) {
 }
 
 const Def* World::match(Defs ops_) {
-    auto ops = Hole::zonk(ops_);
+    auto ops = Def::zonk(ops_);
     if (ops.size() == 1) return ops.front();
 
     auto scrutinee = ops.front();

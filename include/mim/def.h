@@ -528,7 +528,12 @@ public:
     /// Only gues up to but excluding other mutables.
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
+
+    /// zonk%s all ops of this *mutable* and tries to immutabilize it; if it succeeds return it.
+    const Def* zonk_mut();
     ///@}
+
+    static DefVec zonk(Defs);
 
     /// @name dump
     ///@{

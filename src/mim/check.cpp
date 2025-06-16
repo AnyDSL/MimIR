@@ -38,6 +38,30 @@ public:
 
 const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world()).rewrite(this) : this; }
 
+const Def* Def::zonk_mut() {
+    bool zonk = false;
+    for (auto def : deps())
+        if (needs_zonk(def)) {
+            zonk = true;
+            break;
+        }
+
+    if (zonk) {
+        auto zonker  = Zonker(world());
+        auto old_ops = absl::FixedArray<const Def*>(ops().begin(), ops().end());
+        unset();
+        for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, zonker.rewrite(old_ops[i]));
+        // mut->type() will be automatically zonked after last op has been set
+    }
+
+    if (auto imm = immutabilize()) return imm;
+    return nullptr;
+}
+
+DefVec Def::zonk(Defs defs) {
+    return DefVec(defs.size(), [defs](size_t i) { return defs[i]->zonk(); });
+}
+
 /*
  * Hole
  */
@@ -58,7 +82,11 @@ std::pair<Hole*, const Def*> Hole::find() {
     auto root = def ? def : last;
 
     // path compression
-    for (auto h = this; h != last; h = h->op()->as_mut<Hole>()) h->unset()->set(root);
+    for (auto h = this; h != last;) {
+        auto next = h->op()->as_mut<Hole>();
+        h->unset()->set(root);
+        h = next;
+    }
 
     return {last, def};
 }
@@ -83,10 +111,6 @@ const Def* Hole::tuplefy(nat_t n) {
     auto tuple = w.tuple(holes);
     set(tuple);
     return tuple;
-}
-
-DefVec Hole::zonk(Defs defs) {
-    return DefVec(defs.size(), [defs](size_t i) { return defs[i]->zonk(); });
 }
 
 /*
@@ -142,23 +166,9 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
     for (size_t i = 0; i != 2; ++i) {
         auto& mut = muts[i];
         if (!mut || !mut->is_set()) continue;
-
-        bool zonk = false;
-        for (auto def : mut->deps())
-            if (needs_zonk(def)) {
-                zonk = true;
-                break;
-            }
-
-        if (zonk) {
-            auto defs = DefVec(mut->ops().begin(), mut->ops().end());
-            mut->unset();
-            for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
-            // mut->type() will be automatically zonked after last op has been set
-        }
-
         size_t other = (i + 1) % 2;
-        if (auto imm = mut->immutabilize())
+
+        if (auto imm = mut->zonk_mut())
             mut = nullptr, ds[i] = imm, redo = true;
         else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
             return i->second == ds[other];
