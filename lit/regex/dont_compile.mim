@@ -7,4 +7,4 @@ import compile;
 lam extern _compile(): %compile.Pipeline =
     %compile.pipe
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
-        (%compile.passes_to_phase 1 %compile.ret_wrap_pass);
+        (%compile.passes_to_phase %compile.ret_wrap_pass);

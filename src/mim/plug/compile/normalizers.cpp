@@ -20,9 +20,8 @@ const Def* normalize_pass_phase(const Def* type, const Def*, const Def* arg) {
 
     auto [f_ax, pass_list_defs] = collect_args(arg);
     assert(f_ax->flags() == flags_t(Annex::Base<pass_list>));
-    auto n = pass_list_defs.size();
 
-    return world.call<passes_to_phase>(n, pass_list_defs);
+    return world.call<passes_to_phase>(pass_list_defs);
 }
 
 /// `combined_phase (phase_list phase1 ... phasen)` -> `phases_to_phase n (phase1, ..., phasen)`
@@ -31,14 +30,13 @@ const Def* normalize_combined_phase(const Def* type, const Def*, const Def* arg)
 
     auto [ax, phase_list_defs] = collect_args(arg);
     assert(ax->flags() == flags_t(Annex::Base<phase_list>));
-    auto n = phase_list_defs.size();
 
-    return world.call<phases_to_phase>(n, phase_list_defs);
+    return world.call<phases_to_phase>(phase_list_defs);
 }
 
-/// `single_pass_phase pass` -> `passes_to_phase 1 pass`
+/// `single_pass_phase pass` -> `passes_to_phase pass`
 const Def* normalize_single_pass_phase(const Def* type, const Def*, const Def* arg) {
-    return type->world().call<passes_to_phase>(1, arg);
+    return type->world().call<passes_to_phase>(arg);
 }
 
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ...
