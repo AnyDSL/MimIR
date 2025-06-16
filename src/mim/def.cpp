@@ -148,7 +148,7 @@ template<bool up> const Def* TBound<up>::rebuild_(World& w, const Def*  , Defs o
 
 Arr*    Arr   ::stub_(World& w, const Def* t) { return w.mut_arr  (t); }
 Global* Global::stub_(World& w, const Def* t) { return w.global   (t, is_mutable()); }
-Hole*   Hole  ::stub_(World& w, const Def* t) { return w.mut_hole(t); }
+Hole*   Hole  ::stub_(World& w, const Def* t) { return w.mut_hole (t); }
 Lam*    Lam   ::stub_(World& w, const Def* t) { return w.mut_lam  (t->as<Pi>()); }
 Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
 Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }

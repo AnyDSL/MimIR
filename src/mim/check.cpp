@@ -25,40 +25,42 @@ public:
         : Rewriter(world) {}
 
     const Def* rewrite(const Def* def) override {
-        def = Hole::find(def);
+        if (auto hole = def->isa_mut<Hole>()) {
+            auto [last, op] = hole->find();
+            return op ? rewrite(op) : last;
+        }
+
         return needs_zonk(def) ? Rewriter::rewrite(def) : def;
     }
 };
 
 } // namespace
 
-const Def* Def::zonk() const {
-    auto def = Hole::find(this);
-    return needs_zonk(def) ? Zonker(world()).rewrite(def) : def;
-}
+const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world()).rewrite(this) : this; }
 
 /*
  * Hole
  */
 
-const Def* Hole::find(const Def* def) {
-    auto hole1 = def->isa_mut<Hole>();
-    if (!hole1 || !hole1->op()) return def; // early exit if def isn't a Hole or unset;
+std::pair<Hole*, const Def*> Hole::find() {
+    auto def  = Def::op(0);
+    auto last = this;
 
-    // find root
-    auto res = def;
-    for (auto hole = hole1; hole && hole->op(); res = hole->op(), hole = res->isa_mut<Hole>()) {}
-
-    // path compression
-    for (auto hole = hole1;;) {
-        auto next = hole->op();
-        if (next == res) break;
-
-        hole->unset()->set(res);
-        hole = next->isa_mut<Hole>();
+    for (; def;) {
+        if (auto h = def->isa_mut<Hole>()) {
+            def  = h->op();
+            last = h;
+        } else {
+            break;
+        }
     }
 
-    return res;
+    auto root = def ? def : last;
+
+    // path compression
+    for (auto h = this; h != last; h = h->op()->as_mut<Hole>()) h->unset()->set(root);
+
+    return {last, def};
 }
 
 const Def* Hole::tuplefy(nat_t n) {
@@ -104,7 +106,6 @@ const Def* Checker::fail() {
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
-    // auto ds        = std::array<const Def*, 2>{Hole::find(d1_), Hole::find(d2_)};
     auto ds        = std::array<const Def*, 2>{d1_->zonk(), d2_->zonk()};
     auto& [d1, d2] = ds;
 
@@ -245,7 +246,6 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
 }
 
 const Def* Checker::assignable_(const Def* type, const Def* val) {
-    // auto val_ty = Hole::find(val->type());
     auto val_ty = val->type()->zonk();
     if (type == val_ty) return val;
 
