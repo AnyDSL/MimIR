@@ -107,7 +107,7 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* shape() const final { return op(0); }
+    const Def* shape() const override { return op(0); }
     ///@}
 
     /// @name Setters
@@ -127,7 +127,7 @@ public:
     const Def* immutabilize() override;
     const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept override { return 1; }
-    const Def* prod(World&, Defs) const final;
+    const Def* prod(World&, Defs) const override;
     ///@}
 
     /// @name Type Checking
@@ -157,7 +157,7 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* shape() const final;
+    const Def* shape() const override;
     ///@}
 
     /// @name Setters
@@ -176,7 +176,7 @@ public:
     const Def* immutabilize() override;
     const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept override { return 0; }
-    const Def* prod(World&, Defs) const final;
+    const Def* prod(World&, Defs) const override;
     ///@}
 
     static constexpr auto Node = mim::Node::Pack;
