@@ -190,10 +190,10 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
             return check1(arr, d1);
     }
 
-    if (auto ts = d1->isa<Tuple, Sigma>()) {
-        size_t a = ts->num_ops();
+    if (auto prod = d1->isa<Prod>()) {
+        size_t a = prod->num_ops();
         for (size_t i = 0; i != a; ++i)
-            if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return fail<mode>();
+            if (!alpha_<mode>(prod->op(i), d2->proj(a, i))) return fail<mode>();
         return true;
     } else if (auto seq = d1->isa<Seq>()) {
         if (seq->node() != d2->node()) return fail<mode>();

@@ -4,14 +4,20 @@
 
 namespace mim {
 
+/// Base class for Sigma and Tuple.
+class Prod : public Def, public Setters<Prod> {
+protected:
+    using Def::Def;
+};
+
 /// A [dependent tuple type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A3_type).
-/// @see Tuple, Arr, Pack
-class Sigma : public Def, public Setters<Sigma> {
+/// @see Tuple, Arr, Pack, Prod
+class Sigma : public Prod, public Setters<Sigma> {
 private:
     Sigma(const Def* type, Defs ops)
-        : Def(Node, type, ops, 0) {} ///< Constructor for an *immutable* Sigma.
+        : Prod(Node, type, ops, 0) {} ///< Constructor for an *immutable* Sigma.
     Sigma(const Def* type, size_t size)
-        : Def(Node, type, size, 0) {} ///< Constructor for a *mutable* Sigma.
+        : Prod(Node, type, size, 0) {} ///< Constructor for a *mutable* Sigma.
 
 public:
     /// @name Setters
@@ -52,8 +58,8 @@ private:
 };
 
 /// Data constructor for a Sigma.
-/// @see Sigma, Arr, Pack
-class Tuple : public Def, public Setters<Tuple> {
+/// @see Sigma, Arr, Pack, Prod
+class Tuple : public Prod, public Setters<Tuple> {
 public:
     using Setters<Tuple>::set;
     static const Def* infer(World&, Defs);
@@ -61,7 +67,7 @@ public:
 
 private:
     Tuple(const Def* type, Defs args)
-        : Def(Node, type, args, 0) {}
+        : Prod(Node, type, args, 0) {}
 
     const Def* rebuild_(World&, const Def*, Defs) const override;
 

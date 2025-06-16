@@ -418,7 +418,6 @@ public:
     // clang-format off
     template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
     template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
-    template<class T = Def, class R> const T* isa_imm(R (T::*f)() const) const { return isa_mut<T, R, true>(f); }
     // clang-format on
 
     /// If `this` is *mutable*, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
