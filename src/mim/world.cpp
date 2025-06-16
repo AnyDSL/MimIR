@@ -520,7 +520,9 @@ const Lit* World::lit(const Def* type, u64 val) {
     type = type->zonk();
 
     if (auto size = Idx::isa(type)) {
-        if (auto s = Lit::isa(size)) {
+        if (size->isa<Top>()) {
+            // unsafe but fine
+        } else if (auto s = Lit::isa(size)) {
             if (*s != 0 && val >= *s) error(type->loc(), "index '{}' does not fit within arity '{}'", size, val);
         } else if (val != 0) { // 0 of any size is allowed
             error(type->loc(), "cannot create literal '{}' of 'Idx {}' as size is unknown", val, size);
