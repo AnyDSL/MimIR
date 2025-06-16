@@ -1,6 +1,6 @@
 #pragma once
 
-#include <type_traits>
+#include <ranges>
 
 #include "mim/world.h"
 
@@ -11,11 +11,28 @@ namespace mim {
 class Rewriter {
 public:
     Rewriter(World& world)
-        : world_(world) {}
+        : world_(world) {
+        push(); // create root map
+    }
 
     World& world() { return world_; }
-    /// Map @p old_def to @p new_def and returns @p new_def;
-    const Def* map(const Def* old_def, const Def* new_def) { return old2new_[old_def] = new_def; }
+
+    /// @name Stack of Maps
+    ///@{
+    void push() { old2news_.emplace_back(Def2Def{}); }
+    void pop() { old2news_.pop_back(); }
+
+    /// Map @p old_def to @p new_def and returns @p new_def.
+    /// @returns `new_def`
+    const Def* map(const Def* old_def, const Def* new_def) { return old2news_.back()[old_def] = new_def; }
+
+    /// Lookup `old_def` by searching in reverse through the stack of maps.
+    /// @returns `nullptr` if nothing was found.
+    const Def* lookup(const Def* old_def) {
+        for (const auto& old2new : old2news_ | std::views::reverse)
+            if (auto i = old2new.find(old_def); i != old2new.end()) return i->second;
+        return nullptr;
+    }
 
     /// @name rewrite
     /// Recursively rewrite old Def%s.
@@ -33,7 +50,7 @@ public:
 
 private:
     World& world_;
-    Def2Def old2new_;
+    std::deque<Def2Def> old2news_;
 };
 
 class VarRewriter : public Rewriter {

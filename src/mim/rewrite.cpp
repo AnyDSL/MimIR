@@ -11,7 +11,7 @@ namespace mim {
 
 const Def* Rewriter::rewrite(const Def* old_def) {
     if (old_def->isa<Univ>()) return world().univ();
-    if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
+    if (auto new_def = lookup(old_def)) return new_def;
 
     // clang-format off
     if (auto arr     = old_def->isa<Arr     >()) return rewrite_arr    (arr    );
@@ -57,10 +57,10 @@ const Def* Rewriter::rewrite_seq(const Seq* seq) {
         auto new_ops = absl::FixedArray<const Def*>(*l);
         for (size_t i = 0, e = *l; i != e; ++i) {
             if (auto var = seq->has_var()) {
-                auto old2new = old2new_;
+                push();
                 map(var, world().lit_idx(e, i));
                 new_ops[i] = rewrite(seq->body());
-                old2new_   = std::move(old2new);
+                pop();
             } else {
                 new_ops[i] = rewrite(seq->body());
             }
