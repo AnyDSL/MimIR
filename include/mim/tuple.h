@@ -31,28 +31,28 @@ public:
 
     /// @name Rebuild
     ///@{
-    const Def* immutabilize() override;
+    const Def* immutabilize() final;
     Sigma* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     /// @note Technically, it would make sense to have an offset of 1 as the first element can't be reduced.
     /// For example, in `[n: Nat, F n]` `n` only occurs free in the second element.
     /// However, this would cause a lot of confusion and special code to cope with the first element,
     /// So we just keep it.
-    constexpr size_t reduction_offset() const noexcept override { return 0; }
+    constexpr size_t reduction_offset() const noexcept final { return 0; }
     ///@}
 
     /// @name Type Checking
     ///@{
-    const Def* check(size_t, const Def*) override;
-    const Def* check() override;
+    const Def* check(size_t, const Def*) final;
+    const Def* check() final;
     static const Def* infer(World&, Defs);
     ///@}
 
     static constexpr auto Node = mim::Node::Sigma;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Sigma* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Sigma* stub_(World&, const Def*) final;
 
     friend class World;
 };
@@ -69,7 +69,7 @@ private:
     Tuple(const Def* type, Defs args)
         : Prod(Node, type, args, 0) {}
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -107,7 +107,7 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* shape() const override { return op(0); }
+    const Def* shape() const final { return op(0); }
     ///@}
 
     /// @name Setters
@@ -122,25 +122,25 @@ public:
 
     /// @name Rebuild
     ///@{
-    const Def* rebuild(World& w, const Def* shape, const Def* body) const override;
+    const Def* rebuild(World& w, const Def* shape, const Def* body) const final;
     Arr* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
-    const Def* immutabilize() override;
+    const Def* immutabilize() final;
     const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
-    constexpr size_t reduction_offset() const noexcept override { return 1; }
-    const Def* prod(World&, Defs) const override;
+    constexpr size_t reduction_offset() const noexcept final { return 1; }
+    const Def* prod(World&, Defs) const final;
     ///@}
 
     /// @name Type Checking
     ///@{
-    const Def* check(size_t, const Def*) override;
-    const Def* check() override;
+    const Def* check(size_t, const Def*) final;
+    const Def* check() final;
     ///@}
 
     static constexpr auto Node = mim::Node::Arr;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Arr* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Arr* stub_(World&, const Def*) final;
 
     friend class World;
 };
@@ -157,7 +157,7 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* shape() const override;
+    const Def* shape() const final;
     ///@}
 
     /// @name Setters
@@ -171,19 +171,19 @@ public:
 
     /// @name Rebuild
     ///@{
-    const Def* rebuild(World& w, const Def* shape, const Def* body) const override;
+    const Def* rebuild(World& w, const Def* shape, const Def* body) const final;
     Pack* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
-    const Def* immutabilize() override;
+    const Def* immutabilize() final;
     const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
-    constexpr size_t reduction_offset() const noexcept override { return 0; }
-    const Def* prod(World&, Defs) const override;
+    constexpr size_t reduction_offset() const noexcept final { return 0; }
+    const Def* prod(World&, Defs) const final;
     ///@}
 
     static constexpr auto Node = mim::Node::Pack;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Pack* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Pack* stub_(World&, const Def*) final;
 
     friend class World;
 };
@@ -206,7 +206,7 @@ public:
     static constexpr auto Node = mim::Node::Extract;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -233,7 +233,7 @@ public:
     static constexpr auto Node = mim::Node::Insert;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };

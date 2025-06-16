@@ -623,7 +623,7 @@ public:
     static constexpr auto Node = mim::Node::Var;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -637,7 +637,7 @@ private:
     Univ(World& world)
         : Def(&world, Node, nullptr, Defs{}, 0) {}
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -650,7 +650,7 @@ public:
 private:
     UMax(World&, Defs ops);
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -672,7 +672,7 @@ public:
     static constexpr auto Node = mim::Node::UInc;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -693,7 +693,7 @@ public:
     static constexpr auto Node = mim::Node::Type;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -731,7 +731,7 @@ public:
     static constexpr auto Node = mim::Node::Lit;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -744,7 +744,7 @@ public:
 private:
     Nat(World& world);
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -790,7 +790,7 @@ public:
     static constexpr auto Node = mim::Node::Idx;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -812,7 +812,7 @@ public:
     static constexpr auto Node = mim::Node::Proxy;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -853,8 +853,8 @@ public:
     static constexpr auto Node = mim::Node::Global;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Global* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Global* stub_(World&, const Def*) final;
 
     friend class World;
 };

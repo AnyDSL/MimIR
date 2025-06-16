@@ -62,13 +62,13 @@ public:
         map(var, arg);
     }
 
-    const Def* rewrite_imm(const Def* imm) override {
+    const Def* rewrite_imm(const Def* imm) final {
         if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
         if (imm->has_dep(Dep::Hole) || vars_.has_intersection(imm->free_vars())) return Rewriter::rewrite_imm(imm);
         return imm;
     }
 
-    const Def* rewrite_mut(Def* mut) override {
+    const Def* rewrite_mut(Def* mut) final {
         if (vars_.has_intersection(mut->free_vars())) {
             if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
             return Rewriter::rewrite_mut(mut);

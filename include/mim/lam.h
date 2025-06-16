@@ -79,24 +79,24 @@ public:
 
     /// @name Type Checking
     ///@{
-    const Def* check(size_t, const Def*) override;
-    const Def* check() override;
+    const Def* check(size_t, const Def*) final;
+    const Def* check() final;
     static const Def* infer(const Def* dom, const Def* codom);
     ///@}
 
     /// @name Rebuild
     ///@{
     Pi* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
-    const Pi* immutabilize() override;
+    const Pi* immutabilize() final;
     const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
-    constexpr size_t reduction_offset() const noexcept override { return 1; }
+    constexpr size_t reduction_offset() const noexcept final { return 1; }
     ///@}
 
     static constexpr auto Node = mim::Node::Pi;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Pi* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Pi* stub_(World&, const Def*) final;
 
     friend class World;
 };
@@ -179,19 +179,19 @@ public:
     ///@{
     Lam* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* reduce_body(const Def* arg) const { return reduce(arg).back(); }
-    constexpr size_t reduction_offset() const noexcept override { return 0; }
+    constexpr size_t reduction_offset() const noexcept final { return 0; }
     ///@}
 
     /// @name Type Checking
     ///@{
-    const Def* check(size_t, const Def*) override;
+    const Def* check(size_t, const Def*) final;
     ///@}
 
     static constexpr auto Node = mim::Node::Lam;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Lam* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Lam* stub_(World&, const Def*) final;
 
     friend class World;
 };
@@ -241,7 +241,7 @@ public:
     static constexpr auto Node = mim::Node::App;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };

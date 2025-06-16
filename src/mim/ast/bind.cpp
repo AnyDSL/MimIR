@@ -11,7 +11,7 @@ public:
     DummyDecl()
         : Decl(Loc()) {}
 
-    std::ostream& stream(Tab&, std::ostream& os) const override { return os << "<dummy>"; }
+    std::ostream& stream(Tab&, std::ostream& os) const final { return os << "<dummy>"; }
 };
 
 class Scopes {

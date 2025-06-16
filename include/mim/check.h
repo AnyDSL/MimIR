@@ -41,8 +41,8 @@ public:
     static constexpr auto Node = mim::Node::Hole;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Hole* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Hole* stub_(World&, const Def*) final;
 
     friend class World;
     friend class Checker;

@@ -131,7 +131,7 @@ public:
     static constexpr auto Node   = mim::Node::Axm;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
