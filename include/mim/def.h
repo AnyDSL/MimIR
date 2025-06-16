@@ -140,7 +140,12 @@ namespace mim {
     auto NAME##s(nat_t a) CONST noexcept { return ((const Def*)NAME())->projs(a); }
 
 /// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-template<class P, class D = Def> class Setters { // D is only needed to make the resolution `D::template set` lazy
+template<class P, class D = Def>
+class // D is only needed to make the resolution `D::template set` lazy
+#ifdef _MSC_VER
+    __declspec(empty_bases)
+#endif
+        Setters {
 private:
     P* super() { return static_cast<P*>(this); }
     const P* super() const { return static_cast<const P*>(this); }
