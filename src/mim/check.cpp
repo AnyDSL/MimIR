@@ -195,12 +195,12 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
         for (size_t i = 0; i != a; ++i)
             if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return fail<mode>();
         return true;
-    } else if (auto pa = d1->isa<Pack, Arr>()) {
-        if (pa->node() != d2->node()) return fail<mode>();
+    } else if (auto seq = d1->isa<Seq>()) {
+        if (seq->node() != d2->node()) return fail<mode>();
 
-        if (auto a = pa->isa_lit_arity()) {
+        if (auto a = seq->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
+                if (!alpha_<mode>(seq->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
             return true;
         }
 

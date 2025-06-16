@@ -45,58 +45,31 @@ const Def* Rewriter::rewrite_mut(Def* old_mut) {
     return new_mut;
 }
 
-const Def* Rewriter::rewrite_arr(const Arr* arr) {
-    if (!arr->is_set()) {
-        auto new_arr = world().mut_arr(rewrite(arr->type()))->set(arr->dbg());
-        return map(arr, new_arr);
+const Def* Rewriter::rewrite_seq(const Seq* seq) {
+    if (!seq->is_set()) {
+        auto new_seq = seq->as_mut<Seq>()->stub(world(), rewrite(seq->type()));
+        return map(seq, new_seq);
     }
 
-    auto new_shape = rewrite(arr->shape());
+    auto new_shape = rewrite(seq->shape());
 
     if (auto l = Lit::isa(new_shape); l && *l <= world().flags().scalarize_threshold) {
         auto new_ops = absl::FixedArray<const Def*>(*l);
         for (size_t i = 0, e = *l; i != e; ++i) {
-            if (auto var = arr->has_var()) {
+            if (auto var = seq->has_var()) {
                 auto old2new = old2new_;
                 map(var, world().lit_idx(e, i));
-                new_ops[i] = rewrite(arr->body());
+                new_ops[i] = rewrite(seq->body());
                 old2new_   = std::move(old2new);
             } else {
-                new_ops[i] = rewrite(arr->body());
+                new_ops[i] = rewrite(seq->body());
             }
         }
-        return map(arr, world().sigma(new_ops));
+        return map(seq, seq->prod(world(), new_ops));
     }
 
-    if (!arr->has_var()) return map(arr, world().arr(new_shape, rewrite(arr->body()))->set(arr->dbg()));
-    return rewrite_mut(arr->as_mut());
-}
-
-const Def* Rewriter::rewrite_pack(const Pack* pack) {
-    if (!pack->is_set()) {
-        auto new_pack = world().mut_arr(rewrite(pack->type()))->set(pack->dbg());
-        return map(pack, new_pack);
-    }
-
-    auto new_shape = rewrite(pack->shape());
-
-    if (auto l = Lit::isa(new_shape); l && *l <= world().flags().scalarize_threshold) {
-        auto new_ops = absl::FixedArray<const Def*>(*l);
-        for (size_t i = 0, e = *l; i != e; ++i) {
-            if (auto var = pack->has_var()) {
-                auto old2new = old2new_;
-                map(var, world().lit_idx(e, i));
-                new_ops[i] = rewrite(pack->body());
-                old2new_   = std::move(old2new);
-            } else {
-                new_ops[i] = rewrite(pack->body());
-            }
-        }
-        return world().tuple(new_ops);
-    }
-
-    if (!pack->has_var()) return map(pack, world().pack(new_shape, rewrite(pack->body()))->set(pack->dbg()));
-    return rewrite_mut(pack->as_mut());
+    if (!seq->has_var()) return map(seq, seq->rebuild(world(), new_shape, rewrite(seq->body())));
+    return rewrite_mut(seq->as_mut());
 }
 
 const Def* Rewriter::rewrite_extract(const Extract* ex) {
@@ -113,7 +86,8 @@ const Def* Rewriter::rewrite_extract(const Extract* ex) {
 
 const Def* Rewriter::rewrite_hole(Hole* hole) {
     auto [last, op] = hole->find();
-    return op ? rewrite(op) : rewrite_mut(last);
+    if (op) return rewrite(op);
+    return rewrite_mut(last);
 }
 
 } // namespace mim

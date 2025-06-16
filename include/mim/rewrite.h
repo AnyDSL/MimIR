@@ -24,8 +24,9 @@ public:
     virtual const Def* rewrite_imm(const Def*);
     virtual const Def* rewrite_mut(Def*);
 
-    virtual const Def* rewrite_arr(const Arr*);
-    virtual const Def* rewrite_pack(const Pack*);
+    virtual const Def* rewrite_arr(const Arr* arr) { return rewrite_seq(arr); }
+    virtual const Def* rewrite_pack(const Pack* pack) { return rewrite_seq(pack); }
+    virtual const Def* rewrite_seq(const Seq*);
     virtual const Def* rewrite_extract(const Extract*);
     virtual const Def* rewrite_hole(Hole*);
     ///@}
