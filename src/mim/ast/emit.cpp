@@ -309,18 +309,18 @@ const Def* TupleExpr::emit_(Emitter& e) const {
     return e.world().tuple(elems);
 }
 
-template<bool arr> const Def* ArrOrPackExpr<arr>::emit_(Emitter& e) const {
+const Def* SeqExpr::emit_(Emitter& e) const {
     auto s = shape()->emit_type(e);
     if (shape()->dbg().is_anon()) { // immutable
         auto b = body()->emit(e);
-        return arr ? e.world().arr(s, b) : e.world().pack(s, b);
+        return is_arr() ? e.world().arr(s, b) : e.world().pack(s, b);
     }
 
     auto t = e.world().type_infer_univ();
     auto a = e.world().mut_arr(t);
     a->set_shape(s);
 
-    if (arr) {
+    if (is_arr()) {
         auto var = a->var();
         shape()->emit_value(e, var);
         a->set_body(body()->emit(e));
@@ -337,9 +337,6 @@ template<bool arr> const Def* ArrOrPackExpr<arr>::emit_(Emitter& e) const {
         return p;
     }
 }
-
-template const Def* ArrOrPackExpr<true>::emit_(Emitter&) const;
-template const Def* ArrOrPackExpr<false>::emit_(Emitter&) const;
 
 const Def* ExtractExpr::emit_(Emitter& e) const {
     auto tup = tuple()->emit(e);

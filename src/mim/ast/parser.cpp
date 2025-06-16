@@ -339,8 +339,8 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
         case Tag::D_curly_l: return parse_uniq_expr();
-        case Tag::D_quote_l: return parse_arr_or_pack_expr<true>();
-        case Tag::D_angle_l: return parse_arr_or_pack_expr<false>();
+        case Tag::D_quote_l:
+        case Tag::D_angle_l: return parse_seq_expr();
         case Tag::D_brckt_l: return parse_sigma_expr();
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
@@ -353,9 +353,9 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
     return ptr<ErrorExpr>(curr_);
 }
 
-template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
-    auto track = tracker();
-    eat(arr ? Tag::D_quote_l : Tag::D_angle_l);
+Ptr<Expr> Parser::parse_seq_expr() {
+    auto track  = tracker();
+    bool is_arr = accept(Tag::D_quote_l) ? true : (eat(Tag::D_angle_l), false);
 
     std::deque<std::pair<Ptr<IdPtrn>, Ptr<Expr>>> shapes;
 
@@ -366,18 +366,18 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
             eat(Tag::T_colon);
         }
 
-        auto expr = parse_expr(arr ? "shape of an array" : "shape of a pack");
+        auto expr = parse_expr(is_arr ? "shape of an array" : "shape of a pack");
         auto ptrn = IdPtrn::make_id(ast(), dbg, std::move(expr));
         shapes.emplace_back(std::move(ptrn), std::move(expr));
     } while (accept(Tag::T_comma));
 
-    expect(Tag::T_semicolon, arr ? "array" : "pack");
-    auto body = parse_expr(arr ? "body of an array" : "body of a pack");
-    expect(arr ? Tag::D_quote_r : Tag::D_angle_r,
-           arr ? "closing delimiter of an array" : "closing delimiter of a pack");
+    expect(Tag::T_semicolon, is_arr ? "array" : "pack");
+    auto body = parse_expr(is_arr ? "body of an array" : "body of a pack");
+    expect(is_arr ? Tag::D_quote_r : Tag::D_angle_r,
+           is_arr ? "closing delimiter of an array" : "closing delimiter of a pack");
 
     for (auto& [ptrn, expr] : shapes | std::ranges::views::reverse)
-        body = ptr<ArrOrPackExpr<arr>>(track, std::move(ptrn), std::move(body));
+        body = ptr<SeqExpr>(track, is_arr, std::move(ptrn), std::move(body));
 
     return body;
 }

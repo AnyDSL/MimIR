@@ -153,12 +153,9 @@ std::ostream& RetExpr::stream(Tab& tab, std::ostream& os) const {
 std::ostream& SigmaExpr::stream(Tab& tab, std::ostream& os) const { return ptrn()->stream(tab, os); }
 std::ostream& TupleExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "({, })", R(tab, elems())); }
 
-template<bool arr> std::ostream& ArrOrPackExpr<arr>::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{}{}; {}{}", arr ? "«" : "‹", S(tab, shape()), S(tab, body()), arr ? "»" : "›");
+std::ostream& SeqExpr::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "{}{}; {}{}", is_arr() ? "«" : "‹", S(tab, shape()), S(tab, body()), is_arr() ? "»" : "›");
 }
-
-template std::ostream& ArrOrPackExpr<true>::stream(Tab&, std::ostream&) const;
-template std::ostream& ArrOrPackExpr<false>::stream(Tab&, std::ostream&) const;
 
 std::ostream& ExtractExpr::stream(Tab& tab, std::ostream& os) const {
     if (auto expr = std::get_if<Ptr<Expr>>(&index())) return print(os, "{}#{}", S(tab, tuple()), S(tab, expr->get()));
