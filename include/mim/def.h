@@ -288,6 +288,11 @@ public:
     Def* set(Defs ops);             ///< Def::set @p ops all at once.
     Def* unset();                   ///< Unsets all Def::ops; works even, if not set at all or partially.
     bool is_set() const;            ///< Yields `true` if empty or the last op is set.
+
+    /// Update type.
+    /// @warning Only make type-preserving updates such as removing Hole%s.
+    /// @warning Do this even before updating all other ops!.
+    Def* set_type(const Def*);
     ///@}
 
     /// @name deps

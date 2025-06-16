@@ -47,11 +47,12 @@ const Def* Def::zonk_mut() {
         }
 
     if (zonk) {
-        auto zonker  = Zonker(world());
-        auto old_ops = absl::FixedArray<const Def*>(ops().begin(), ops().end());
+        auto zonker   = Zonker(world());
+        auto old_type = type();
+        auto old_ops  = absl::FixedArray<const Def*>(ops().begin(), ops().end());
         unset();
+        set_type(zonker.rewrite(old_type));
         for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, zonker.rewrite(old_ops[i]));
-        // mut->type() will be automatically zonked after last op has been set
     }
 
     if (auto imm = immutabilize()) return imm;

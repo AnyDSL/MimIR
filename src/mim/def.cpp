@@ -250,6 +250,12 @@ Def* Def::set(size_t i, const Def* def) {
     return this;
 }
 
+Def* Def::set_type(const Def* type) {
+    assert(curr_op_ == 0);
+    type_ = type;
+    return this;
+}
+
 Def* Def::unset() {
     invalidate();
 #ifndef NDEBUG
