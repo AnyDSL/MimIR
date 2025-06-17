@@ -238,7 +238,7 @@ axm %matrix.lower_matrix_low_level:             %compile.Phase;
 /// ### Phases
 ///
 let matrix_lower_phase =
-    %compile.phases_to_phase (⊤:Nat)
+    %compile.phases_to_phase
     (
         (%compile.pass_phase
             (%compile.pass_list

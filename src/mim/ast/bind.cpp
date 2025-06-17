@@ -11,7 +11,7 @@ public:
     DummyDecl()
         : Decl(Loc()) {}
 
-    std::ostream& stream(Tab&, std::ostream& os) const override { return os << "<dummy>"; }
+    std::ostream& stream(Tab&, std::ostream& os) const final { return os << "<dummy>"; }
 };
 
 class Scopes {
@@ -206,15 +206,12 @@ void TupleExpr::bind(Scopes& s) const {
     for (const auto& elem : elems()) elem->bind(s);
 }
 
-template<bool arr> void ArrOrPackExpr<arr>::bind(Scopes& s) const {
+void SeqExpr::bind(Scopes& s) const {
     s.push();
     shape()->bind(s, false, false);
     body()->bind(s);
     s.pop();
 }
-
-template void ArrOrPackExpr<true>::bind(Scopes&) const;
-template void ArrOrPackExpr<false>::bind(Scopes&) const;
 
 void ExtractExpr::bind(Scopes& s) const {
     tuple()->bind(s);

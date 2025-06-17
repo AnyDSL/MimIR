@@ -18,6 +18,10 @@ public:
     /// @name op
     ///@{
     const Def* op() const { return Def::op(0); }
+
+    /// Transitively walks up Hole%s until the last one while path-compressing everything.
+    /// @returns the final Hole in the chain and final op() (if any).
+    std::pair<Hole*, const Def*> find();
     Hole* set(const Def* op) {
         assert(op != this);
         return Def::set(0, op)->as<Hole>();
@@ -31,14 +35,13 @@ public:
     /// @returns the new Tuple, or `this` if unsuccessful.
     const Def* tuplefy(nat_t);
 
-    /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Hole%s.
-    static const Def* find(const Def*);
+    static const Def* isa(const Def*);
 
     static constexpr auto Node = mim::Node::Hole;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Hole* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Hole* stub_(World&, const Def*) final;
 
     friend class World;
     friend class Checker;

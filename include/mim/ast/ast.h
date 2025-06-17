@@ -740,13 +740,15 @@ private:
 };
 
 /// `«dbg: shape; body»` or `‹dbg: shape; body›`
-template<bool arr> class ArrOrPackExpr : public Expr {
+class SeqExpr : public Expr {
 public:
-    ArrOrPackExpr(Loc loc, Ptr<IdPtrn>&& shape, Ptr<Expr>&& body)
+    SeqExpr(Loc loc, bool is_arr, Ptr<IdPtrn>&& shape, Ptr<Expr>&& body)
         : Expr(loc)
+        , is_arr_(is_arr)
         , shape_(std::move(shape))
         , body_(std::move(body)) {}
 
+    bool is_arr() const { return is_arr_; }
     const IdPtrn* shape() const { return shape_.get(); }
     const Expr* body() const { return body_.get(); }
 
@@ -756,12 +758,10 @@ public:
 private:
     const Def* emit_(Emitter&) const override;
 
+    bool is_arr_;
     Ptr<IdPtrn> shape_;
     Ptr<Expr> body_;
 };
-
-using ArrExpr  = ArrOrPackExpr<true>;
-using PackExpr = ArrOrPackExpr<false>;
 
 /// `tuple#index`
 class ExtractExpr : public Expr {
