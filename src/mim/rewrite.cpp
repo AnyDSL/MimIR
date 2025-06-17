@@ -10,14 +10,14 @@
 namespace mim {
 
 const Def* Rewriter::rewrite(const Def* old_def) {
-    old_def = Hole::find(old_def);
     if (old_def->isa<Univ>()) return world().univ();
-    if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
+    if (auto new_def = lookup(old_def)) return new_def;
 
     // clang-format off
-    if (auto arr     = old_def->isa<Arr    >()) return rewrite_arr    (arr   ) ;
-    if (auto pack    = old_def->isa<Pack   >()) return rewrite_pack   (pack   );
-    if (auto extract = old_def->isa<Extract>()) return rewrite_extract(extract);
+    if (auto arr     = old_def->isa<Arr     >()) return rewrite_arr    (arr    );
+    if (auto pack    = old_def->isa<Pack    >()) return rewrite_pack   (pack   );
+    if (auto extract = old_def->isa<Extract >()) return rewrite_extract(extract);
+    if (auto hole    = old_def->isa_mut<Hole>()) return rewrite_hole   (hole   );
     // clang-format on
 
     if (auto old_mut = old_def->isa_mut()) return rewrite_mut(old_mut);
@@ -45,16 +45,49 @@ const Def* Rewriter::rewrite_mut(Def* old_mut) {
     return new_mut;
 }
 
-const Def* Rewriter::rewrite_extract(const Extract* extract) {
-    auto new_index = rewrite(extract->index());
-    if (auto index = Lit::isa(new_index)) {
-        if (auto tuple = extract->tuple()->isa<Tuple>()) return rewrite(tuple->op(*index));
-        if (auto pack = extract->tuple()->isa_imm<Pack>(); pack && pack->shape()->is_closed())
-            return rewrite(pack->body());
+const Def* Rewriter::rewrite_seq(const Seq* seq) {
+    if (!seq->is_set()) {
+        auto new_seq = seq->as_mut<Seq>()->stub(world(), rewrite(seq->type()));
+        return map(seq, new_seq);
     }
 
-    auto new_tuple = rewrite(extract->tuple());
-    return world().extract(new_tuple, new_index)->set(extract->dbg());
+    auto new_shape = rewrite(seq->shape());
+
+    if (auto l = Lit::isa(new_shape); l && *l <= world().flags().scalarize_threshold) {
+        auto new_ops = absl::FixedArray<const Def*>(*l);
+        for (size_t i = 0, e = *l; i != e; ++i) {
+            if (auto var = seq->has_var()) {
+                push();
+                map(var, world().lit_idx(e, i));
+                new_ops[i] = rewrite(seq->body());
+                pop();
+            } else {
+                new_ops[i] = rewrite(seq->body());
+            }
+        }
+        return map(seq, seq->prod(world(), new_ops));
+    }
+
+    if (!seq->has_var()) return map(seq, seq->rebuild(world(), new_shape, rewrite(seq->body())));
+    return rewrite_mut(seq->as_mut());
+}
+
+const Def* Rewriter::rewrite_extract(const Extract* ex) {
+    auto new_index = rewrite(ex->index());
+    if (auto index = Lit::isa(new_index)) {
+        if (auto tuple = ex->tuple()->isa<Tuple>()) return map(ex, rewrite(tuple->op(*index)));
+        if (auto pack = ex->tuple()->isa_imm<Pack>(); pack && pack->shape()->is_closed())
+            return map(ex, rewrite(pack->body()));
+    }
+
+    auto new_tuple = rewrite(ex->tuple());
+    return map(ex, world().extract(new_tuple, new_index)->set(ex->dbg()));
+}
+
+const Def* Rewriter::rewrite_hole(Hole* hole) {
+    auto [last, op] = hole->find();
+    if (op) return rewrite(op);
+    return rewrite_mut(last);
 }
 
 } // namespace mim

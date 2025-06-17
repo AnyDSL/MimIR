@@ -148,7 +148,7 @@ template<bool up> const Def* TBound<up>::rebuild_(World& w, const Def*  , Defs o
 
 Arr*    Arr   ::stub_(World& w, const Def* t) { return w.mut_arr  (t); }
 Global* Global::stub_(World& w, const Def* t) { return w.global   (t, is_mutable()); }
-Hole*   Hole  ::stub_(World& w, const Def* t) { return w.mut_hole(t); }
+Hole*   Hole  ::stub_(World& w, const Def* t) { return w.mut_hole (t); }
 Lam*    Lam   ::stub_(World& w, const Def* t) { return w.mut_lam  (t->as<Pi>()); }
 Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
 Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }
@@ -247,6 +247,12 @@ Def* Def::set(size_t i, const Def* def) {
         if (auto t = check()->zonk(); t != type()) type_ = t;
     }
 
+    return this;
+}
+
+Def* Def::set_type(const Def* type) {
+    assert(curr_op_ == 0);
+    type_ = type;
     return this;
 }
 

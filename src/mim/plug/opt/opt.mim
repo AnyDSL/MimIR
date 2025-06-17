@@ -33,7 +33,7 @@ lam extern _default_compile []: %compile.Pipeline =
         (%compile.single_pass_phase (plugin_cond_pass (%compile.regex_plugin, %regex.lower_regex)))
         // optimize
         (%compile.pass_phase
-            (%compile.combine_pass_list (⊤:Nat)
+            (%compile.combine_pass_list
             (
                 optimization_pass_list,
                 %compile.pass_list
@@ -62,7 +62,7 @@ lam extern _default_compile []: %compile.Pipeline =
         (plugin_cond_phase (%compile.autodiff_plugin, ad_cleanup_phase))
         // CodeGenPrep
         (%compile.pass_phase
-            (%compile.combine_pass_list (⊤:Nat)
+            (%compile.combine_pass_list
             (
                 %compile.pass_list
                 %compile.ret_wrap_pass,

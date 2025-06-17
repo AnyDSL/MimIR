@@ -25,40 +25,71 @@ public:
         : Rewriter(world) {}
 
     const Def* rewrite(const Def* def) override {
-        def = Hole::find(def);
+        if (auto hole = def->isa_mut<Hole>()) {
+            auto [last, op] = hole->find();
+            return op ? rewrite(op) : last;
+        }
+
         return needs_zonk(def) ? Rewriter::rewrite(def) : def;
     }
 };
 
 } // namespace
 
-const Def* Def::zonk() const {
-    auto def = Hole::find(this);
-    return needs_zonk(def) ? Zonker(world()).rewrite(def) : def;
+const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world()).rewrite(this) : this; }
+
+const Def* Def::zonk_mut() {
+    bool zonk = false;
+    for (auto def : deps())
+        if (needs_zonk(def)) {
+            zonk = true;
+            break;
+        }
+
+    if (zonk) {
+        auto zonker   = Zonker(world());
+        auto old_type = type();
+        auto old_ops  = absl::FixedArray<const Def*>(ops().begin(), ops().end());
+        unset();
+        set_type(zonker.rewrite(old_type));
+        for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, zonker.rewrite(old_ops[i]));
+    }
+
+    if (auto imm = immutabilize()) return imm;
+    return nullptr;
+}
+
+DefVec Def::zonk(Defs defs) {
+    return DefVec(defs.size(), [defs](size_t i) { return defs[i]->zonk(); });
 }
 
 /*
  * Hole
  */
 
-const Def* Hole::find(const Def* def) {
-    auto hole1 = def->isa_mut<Hole>();
-    if (!hole1 || !hole1->op()) return def; // early exit if def isn't a Hole or unset;
+std::pair<Hole*, const Def*> Hole::find() {
+    auto def  = Def::op(0);
+    auto last = this;
 
-    // find root
-    auto res = def;
-    for (auto hole = hole1; hole && hole->op(); res = hole->op(), hole = res->isa_mut<Hole>()) {}
-
-    // path compression
-    for (auto hole = hole1;;) {
-        auto next = hole->op();
-        if (next == res) break;
-
-        hole->unset()->set(res);
-        hole = next->isa_mut<Hole>();
+    for (; def;) {
+        if (auto h = def->isa_mut<Hole>()) {
+            def  = h->op();
+            last = h;
+        } else {
+            break;
+        }
     }
 
-    return res;
+    auto root = def ? def : last;
+
+    // path compression
+    for (auto h = this; h != last;) {
+        auto next = h->op()->as_mut<Hole>();
+        h->unset()->set(root);
+        h = next;
+    }
+
+    return {last, def};
 }
 
 const Def* Hole::tuplefy(nat_t n) {
@@ -83,10 +114,6 @@ const Def* Hole::tuplefy(nat_t n) {
     return tuple;
 }
 
-DefVec Hole::zonk(Defs defs) {
-    return DefVec(defs.size(), [defs](size_t i) { return defs[i]->zonk(); });
-}
-
 /*
  * Check
  */
@@ -104,7 +131,6 @@ const Def* Checker::fail() {
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
-    // auto ds        = std::array<const Def*, 2>{Hole::find(d1_), Hole::find(d2_)};
     auto ds        = std::array<const Def*, 2>{d1_->zonk(), d2_->zonk()};
     auto& [d1, d2] = ds;
 
@@ -141,23 +167,9 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
     for (size_t i = 0; i != 2; ++i) {
         auto& mut = muts[i];
         if (!mut || !mut->is_set()) continue;
-
-        bool zonk = false;
-        for (auto def : mut->deps())
-            if (needs_zonk(def)) {
-                zonk = true;
-                break;
-            }
-
-        if (zonk) {
-            auto defs = DefVec(mut->ops().begin(), mut->ops().end());
-            mut->unset();
-            for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
-            // mut->type() will be automatically zonked after last op has been set
-        }
-
         size_t other = (i + 1) % 2;
-        if (auto imm = mut->immutabilize())
+
+        if (auto imm = mut->zonk_mut())
             mut = nullptr, ds[i] = imm, redo = true;
         else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
             return i->second == ds[other];
@@ -189,17 +201,17 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
             return check1(arr, d1);
     }
 
-    if (auto ts = d1->isa<Tuple, Sigma>()) {
-        size_t a = ts->num_ops();
+    if (auto prod = d1->isa<Prod>()) {
+        size_t a = prod->num_ops();
         for (size_t i = 0; i != a; ++i)
-            if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return fail<mode>();
+            if (!alpha_<mode>(prod->op(i), d2->proj(a, i))) return fail<mode>();
         return true;
-    } else if (auto pa = d1->isa<Pack, Arr>()) {
-        if (pa->node() != d2->node()) return fail<mode>();
+    } else if (auto seq = d1->isa<Seq>()) {
+        if (seq->node() != d2->node()) return fail<mode>();
 
-        if (auto a = pa->isa_lit_arity()) {
+        if (auto a = seq->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
+                if (!alpha_<mode>(seq->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
             return true;
         }
 
@@ -245,7 +257,6 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
 }
 
 const Def* Checker::assignable_(const Def* type, const Def* val) {
-    // auto val_ty = Hole::find(val->type());
     auto val_ty = val->type()->zonk();
     if (type == val_ty) return val;
 

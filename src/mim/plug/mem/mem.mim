@@ -128,4 +128,4 @@ let mem_opt_pass_list =
         (%mem.copy_prop_pass (beta_red, eta_exp, ff));
 
 let mem_opt_phase  = %compile.pass_phase mem_opt_pass_list;
-let mem_prep_phase = %compile.passes_to_phase (⊤:Nat) (%mem.remem_elim_pass, %mem.alloc2malloc_pass);
+let mem_prep_phase = %compile.passes_to_phase (%mem.remem_elim_pass, %mem.alloc2malloc_pass);

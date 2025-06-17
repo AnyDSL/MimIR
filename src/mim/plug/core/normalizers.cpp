@@ -422,6 +422,12 @@ const Def* normalize_idx(const Def* type, const Def* c, const Def* arg) {
     return {};
 }
 
+const Def* normalize_idx_unsafe(const Def* type, const Def* c, const Def* arg) {
+    auto& world = type->world();
+    if (auto i = Lit::isa(arg)) return world.lit_idx_unsafe(*i);
+    return {};
+}
+
 template<shr id> const Def* normalize_shr(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
@@ -491,7 +497,7 @@ template<wrap id> const Def* normalize_wrap(const Def* type, const Def* c, const
             }
         }
 
-        if (auto lm = Lit::isa(mode); lm && *lm == 0 && id == wrap::sub)
+        if (auto lm = Lit::isa(mode); lm && ls && *lm == 0 && id == wrap::sub)
             return world.call(wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
         else if (id == wrap::shl && ls && *lb > *ls)
             return world.bot(type);
