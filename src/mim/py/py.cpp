@@ -29,7 +29,7 @@ void init_sym_pool(py::module_&);
 PYBIND11_MODULE(mim, m) {
     mim::init_world(m);
     mim::init_driver(m);
-    //mim::init_world_wrapper(m);
+    mim::init_world_wrapper(m);
     fe::init_sym(m);
     fe::init_sym_pool(m);
     mim::ast::init_ast(m);
