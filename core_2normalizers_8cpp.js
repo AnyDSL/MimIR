@@ -12,6 +12,7 @@ var core_2normalizers_8cpp =
     [ "mim::plug::core::normalize_extrema", "namespacemim_1_1plug_1_1core.html#a3965efe43a42e535a3dde409b3f582ef", null ],
     [ "mim::plug::core::normalize_icmp", "namespacemim_1_1plug_1_1core.html#a4881a78f9df82cf012cb47de44377105", null ],
     [ "mim::plug::core::normalize_idx", "namespacemim_1_1plug_1_1core.html#ab5864aab9439e6c149631d6f62ce9f7b", null ],
+    [ "mim::plug::core::normalize_idx_unsafe", "namespacemim_1_1plug_1_1core.html#af41f824a4d6a699bbc5722ecd10d2fdd", null ],
     [ "mim::plug::core::normalize_nat", "namespacemim_1_1plug_1_1core.html#a02c742e75a36b8e924ddff10bcfa34e6", null ],
     [ "mim::plug::core::normalize_ncmp", "namespacemim_1_1plug_1_1core.html#ac5e6745c0724f9ad515f710379700abe", null ],
     [ "mim::plug::core::normalize_pe", "namespacemim_1_1plug_1_1core.html#a1c1bc54436049519a58d20e2c92d0945", null ],

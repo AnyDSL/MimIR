@@ -1,95 +1,89 @@
 <map id="mim::ast::Node" name="mim::ast::Node">
-<area shape="rect" id="Node000001" title=" " alt="" coords="245,967,368,992"/>
-<area shape="rect" id="Node000003" href="$classmim_1_1ast_1_1Decl.html" title=" " alt="" coords="455,153,572,179"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="312,953,506,178,511,179,317,954"/>
-<area shape="rect" id="Node000018" href="$classmim_1_1ast_1_1Expr.html" title=" " alt="" coords="455,892,572,917"/>
-<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="343,958,416,926,454,915,455,920,418,931,345,963"/>
-<area shape="rect" id="Node000042" href="$classmim_1_1ast_1_1Import.html" title=" " alt="" coords="448,941,579,967"/>
-<area shape="poly" id="edge43_Node000001_Node000042" title=" " alt="" coords="382,968,447,959,448,965,382,973"/>
-<area shape="rect" id="Node000043" href="$classmim_1_1ast_1_1MatchExpr_1_1Arm.html" title=" " alt="" coords="417,991,609,1016"/>
-<area shape="poly" id="edge44_Node000001_Node000043" title=" " alt="" coords="382,985,417,990,417,995,381,991"/>
-<area shape="rect" id="Node000044" href="$classmim_1_1ast_1_1Module.html" title=" " alt="" coords="445,1040,581,1065"/>
-<area shape="poly" id="edge45_Node000001_Node000044" title=" " alt="" coords="346,996,418,1026,456,1037,454,1042,416,1031,344,1001"/>
-<area shape="rect" id="Node000045" href="$classmim_1_1ast_1_1PiExpr_1_1Dom.html" title=" " alt="" coords="429,1287,597,1312"/>
-<area shape="poly" id="edge46_Node000001_Node000045" title=" " alt="" coords="326,1002,506,1285,502,1288,321,1005"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,967,196,992"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,977,245,977,245,982,210,982"/>
-<area shape="rect" id="Node000004" href="$classmim_1_1ast_1_1AxmDecl_1_1Alias.html" title=" " alt="" coords="673,39,828,79"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="548,144,658,89,688,77,690,82,660,94,550,149"/>
-<area shape="rect" id="Node000005" href="$classmim_1_1ast_1_1DummyDecl.html" title=" " alt="" coords="666,104,835,129"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="585,149,688,127,689,132,586,154"/>
-<area shape="rect" id="Node000006" href="$classmim_1_1ast_1_1Ptrn.html" title=" " alt="" coords="693,153,808,179"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="585,163,693,163,693,169,585,169"/>
-<area shape="rect" id="Node000012" href="$classmim_1_1ast_1_1ValDecl.html" title=" " alt="" coords="682,280,819,305"/>
-<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="552,183,727,278,725,282,549,188"/>
-<area shape="rect" id="Node000007" href="$classmim_1_1ast_1_1AliasPtrn.html" title="ptrn as id" alt="" coords="975,153,1121,179"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="822,163,975,163,975,169,822,169"/>
-<area shape="rect" id="Node000008" href="$classmim_1_1ast_1_1ErrorPtrn.html" title=" " alt="" coords="975,203,1121,228"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="822,175,976,201,975,206,821,180"/>
-<area shape="rect" id="Node000009" href="$classmim_1_1ast_1_1GrpPtrn.html" title="If you have x1 x2 x3 x4: T it consists of 3 GrpPtrns and 1 IdPtrn while each GrpPtrn references the l..." alt="" coords="979,5,1117,31"/>
-<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="819,151,841,139,850,128,853,117,856,104,865,91,887,71,907,59,956,39,990,28,992,33,958,45,909,64,890,75,869,94,861,106,858,118,854,130,844,143,822,156"/>
-<area shape="rect" id="Node000010" href="$classmim_1_1ast_1_1IdPtrn.html" title="dbg: type" alt="" coords="985,55,1111,80"/>
-<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="820,147,841,138,865,121,910,102,957,89,996,78,997,83,958,94,912,107,868,126,844,143,822,152"/>
-<area shape="rect" id="Node000011" href="$classmim_1_1ast_1_1TuplePtrn.html" title="(ptrn_0, ..., ptrn_n&#45;1), [ptrn_0, ..., ptrn_n&#45;1], or {ptrn_0, ..., ptrn_n&#45;1}" alt="" coords="974,104,1122,129"/>
-<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="821,152,973,126,974,132,822,157"/>
-<area shape="rect" id="Node000013" href="$classmim_1_1ast_1_1AxmDecl.html" title="axm ptrn: type = value;" alt="" coords="975,301,1121,327"/>
-<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="833,296,974,306,974,311,833,301"/>
-<area shape="rect" id="Node000014" href="$classmim_1_1ast_1_1CDecl.html" title="cfun dbg dom &#45;&gt; codom" alt="" coords="985,351,1111,376"/>
-<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="819,306,994,348,993,353,817,311"/>
-<area shape="rect" id="Node000015" href="$classmim_1_1ast_1_1LetDecl.html" title="let ptrn: type = value;" alt="" coords="979,400,1117,425"/>
-<area shape="poly" id="edge14_Node000012_Node000015" title=" " alt="" coords="831,308,844,314,857,326,868,339,911,365,958,385,996,397,994,402,956,390,909,370,865,343,853,330,841,319,829,313"/>
-<area shape="rect" id="Node000016" href="$classmim_1_1ast_1_1RecDecl.html" title=".rec dbg: type = body" alt="" coords="977,252,1119,277"/>
-<area shape="poly" id="edge15_Node000012_Node000016" title=" " alt="" coords="833,282,977,269,978,274,834,288"/>
-<area shape="rect" id="Node000017" href="$classmim_1_1ast_1_1LamDecl.html" title="One of:" alt="" coords="1188,252,1333,277"/>
-<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="1132,262,1188,262,1188,267,1132,267"/>
-<area shape="rect" id="Node000019" href="$classmim_1_1ast_1_1ArrOrPackExpr.html" title=" " alt="" coords="957,687,1139,727"/>
-<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="533,880,585,828,620,801,658,778,713,760,790,743,957,716,958,721,791,748,714,765,660,783,623,805,589,832,536,883"/>
-<area shape="rect" id="Node000020" href="$classmim_1_1ast_1_1ArrOrPackExpr.html" title=" " alt="" coords="957,602,1139,642"/>
-<area shape="poly" id="edge19_Node000018_Node000020" title=" " alt="" coords="516,878,529,820,554,746,573,708,596,672,624,639,657,613,697,593,740,581,785,575,830,574,915,583,987,599,985,605,914,588,829,579,785,580,741,586,699,598,660,618,628,643,600,675,578,710,559,748,534,821,521,879"/>
-<area shape="rect" id="Node000021" href="$classmim_1_1ast_1_1AppExpr.html" title="callee arg" alt="" coords="679,692,822,717"/>
-<area shape="poly" id="edge20_Node000018_Node000021" title=" " alt="" coords="523,878,540,845,564,807,595,768,632,734,654,722,678,713,680,718,656,727,635,739,599,771,568,810,545,848,528,881"/>
-<area shape="rect" id="Node000022" href="$classmim_1_1ast_1_1ArrOrPackExpr.html" title="«dbg: shape; body» or ‹dbg: shape; body›" alt="" coords="660,627,841,667"/>
-<area shape="poly" id="edge21_Node000018_Node000022" title=" " alt="" coords="522,878,541,835,570,781,609,725,657,677,676,665,679,670,660,681,613,729,575,784,546,837,527,880"/>
-<area shape="rect" id="Node000023" href="$classmim_1_1ast_1_1ArrowExpr.html" title="dom &#45;&gt; codom" alt="" coords="673,793,828,819"/>
-<area shape="poly" id="edge24_Node000018_Node000023" title=" " alt="" coords="546,883,598,855,658,828,693,816,694,821,660,832,600,859,549,887"/>
-<area shape="rect" id="Node000024" href="$classmim_1_1ast_1_1DeclExpr.html" title="decls e or e where decls if where is true." alt="" coords="677,843,824,868"/>
-<area shape="poly" id="edge25_Node000018_Node000024" title=" " alt="" coords="585,887,688,865,689,871,586,892"/>
-<area shape="rect" id="Node000025" href="$classmim_1_1ast_1_1ErrorExpr.html" title=" " alt="" coords="677,892,825,917"/>
-<area shape="poly" id="edge26_Node000018_Node000025" title=" " alt="" coords="586,902,677,902,677,907,586,907"/>
-<area shape="rect" id="Node000026" href="$classmim_1_1ast_1_1ExtractExpr.html" title="tuple#index" alt="" coords="669,941,832,967"/>
-<area shape="poly" id="edge27_Node000018_Node000026" title=" " alt="" coords="586,917,689,939,688,944,585,922"/>
-<area shape="rect" id="Node000027" href="$classmim_1_1ast_1_1HoleExpr.html" title=" " alt="" coords="677,991,824,1016"/>
-<area shape="poly" id="edge28_Node000018_Node000027" title=" " alt="" coords="586,916,611,926,627,939,636,952,645,965,660,977,685,988,683,993,657,982,641,969,632,956,623,943,608,931,584,920"/>
-<area shape="rect" id="Node000028" href="$classmim_1_1ast_1_1IdExpr.html" title="sym" alt="" coords="686,1040,815,1065"/>
-<area shape="poly" id="edge29_Node000018_Node000028" title=" " alt="" coords="587,913,611,927,623,939,630,952,637,978,643,1003,649,1015,660,1027,687,1041,685,1046,657,1031,645,1018,638,1005,631,979,625,954,619,942,608,931,584,918"/>
-<area shape="rect" id="Node000029" href="$classmim_1_1ast_1_1InjExpr.html" title="value inj t1 ∪ t2" alt="" coords="684,1089,817,1115"/>
-<area shape="poly" id="edge30_Node000018_Node000029" title=" " alt="" coords="587,912,611,927,620,940,627,958,637,1003,646,1047,653,1064,660,1076,685,1091,682,1095,657,1080,648,1067,641,1049,631,1004,622,959,615,942,607,931,584,916"/>
-<area shape="rect" id="Node000030" href="$classmim_1_1ast_1_1InsertExpr.html" title="ins(tuple, index, value)" alt="" coords="673,1139,828,1164"/>
-<area shape="poly" id="edge31_Node000018_Node000030" title=" " alt="" coords="587,911,611,927,622,944,629,968,637,1028,645,1087,651,1110,661,1126,676,1136,672,1141,657,1129,646,1112,639,1088,631,1028,623,969,617,946,607,931,584,916"/>
-<area shape="rect" id="Node000031" href="$classmim_1_1ast_1_1LamExpr.html" title="Wraps a LamDecl as Expr." alt="" coords="678,1188,823,1213"/>
-<area shape="poly" id="edge32_Node000018_Node000031" title=" " alt="" coords="586,911,611,927,623,948,631,978,637,1052,643,1126,650,1155,661,1175,679,1188,676,1192,657,1178,645,1157,638,1127,631,1053,625,979,618,950,607,930,583,915"/>
-<area shape="rect" id="Node000032" href="$classmim_1_1ast_1_1LitExpr.html" title="tok:type" alt="" coords="684,1237,817,1263"/>
-<area shape="poly" id="edge33_Node000018_Node000032" title=" " alt="" coords="587,910,611,927,620,947,626,982,637,1077,647,1172,654,1206,661,1224,685,1240,682,1245,657,1228,648,1208,642,1173,631,1078,621,982,614,948,607,930,584,915"/>
-<area shape="rect" id="Node000033" href="$classmim_1_1ast_1_1MatchExpr.html" title=" " alt="" coords="672,1287,829,1312"/>
-<area shape="poly" id="edge34_Node000018_Node000033" title=" " alt="" coords="586,910,611,927,620,950,627,991,637,1102,646,1213,653,1253,661,1274,674,1285,671,1289,657,1277,648,1254,641,1213,631,1102,622,991,615,951,607,930,583,915"/>
-<area shape="rect" id="Node000034" href="$classmim_1_1ast_1_1PiExpr.html" title="One of:" alt="" coords="686,1336,815,1361"/>
-<area shape="poly" id="edge35_Node000018_Node000034" title=" " alt="" coords="587,910,611,927,621,953,628,1000,637,1126,645,1253,652,1299,661,1323,672,1333,687,1340,685,1345,670,1337,656,1326,647,1300,640,1254,631,1127,623,1000,616,955,607,930,584,914"/>
-<area shape="rect" id="Node000035" href="$classmim_1_1ast_1_1PrimaryExpr.html" title="tag" alt="" coords="667,1385,835,1411"/>
-<area shape="poly" id="edge36_Node000018_Node000035" title=" " alt="" coords="587,910,611,927,622,956,629,1009,637,1151,645,1294,651,1345,661,1372,674,1383,670,1387,656,1376,646,1346,639,1294,631,1151,624,1009,617,958,607,930,584,914"/>
-<area shape="rect" id="Node000036" href="$classmim_1_1ast_1_1RetExpr.html" title="ret ptrn = callee $ arg; body" alt="" coords="681,1435,820,1460"/>
-<area shape="poly" id="edge37_Node000018_Node000036" title=" " alt="" coords="587,910,612,927,661,1422,683,1437,680,1441,656,1425,607,930,584,914"/>
-<area shape="rect" id="Node000037" href="$classmim_1_1ast_1_1SigmaExpr.html" title="Just wraps TuplePtrn as Expr." alt="" coords="671,329,830,355"/>
-<area shape="poly" id="edge38_Node000018_Node000037" title=" " alt="" coords="516,877,533,766,562,612,582,534,604,462,629,404,657,364,673,353,676,357,661,368,634,406,609,464,587,535,568,613,538,767,521,878"/>
-<area shape="rect" id="Node000038" href="$classmim_1_1ast_1_1TupleExpr.html" title="(elem_0, ..., elem_n&#45;1)" alt="" coords="675,379,826,404"/>
-<area shape="poly" id="edge39_Node000018_Node000038" title=" " alt="" coords="518,878,560,706,593,589,631,472,639,440,645,427,657,413,675,402,678,406,660,417,649,430,644,442,636,473,598,591,565,707,523,879"/>
-<area shape="rect" id="Node000039" href="$classmim_1_1ast_1_1TypeExpr.html" title="Type level" alt="" coords="677,428,824,453"/>
-<area shape="poly" id="edge40_Node000018_Node000039" title=" " alt="" coords="512,878,518,797,526,743,538,685,556,624,582,565,615,510,657,463,676,450,679,455,660,467,619,514,586,568,561,626,543,686,531,744,523,798,518,878"/>
-<area shape="rect" id="Node000040" href="$classmim_1_1ast_1_1UnionExpr.html" title="t1 ∪ t2" alt="" coords="673,477,828,503"/>
-<area shape="poly" id="edge41_Node000018_Node000040" title=" " alt="" coords="519,877,559,736,592,643,631,552,641,529,657,512,678,500,681,505,660,516,645,532,636,554,597,645,564,737,524,879"/>
-<area shape="rect" id="Node000041" href="$classmim_1_1ast_1_1UniqExpr.html" title="⦃ expr ⦄" alt="" coords="677,527,824,552"/>
-<area shape="poly" id="edge42_Node000018_Node000041" title=" " alt="" coords="513,878,521,815,540,732,555,688,575,645,600,605,632,569,652,555,676,545,678,550,655,560,635,573,604,608,580,648,560,690,545,734,526,816,519,879"/>
-<area shape="poly" id="edge22_Node000022_Node000019" title=" " alt="" coords="855,666,958,686,956,692,854,671"/>
-<area shape="poly" id="edge23_Node000022_Node000020" title=" " alt="" coords="855,636,957,627,957,632,855,641"/>
-<area shape="rect" id="Node000046" href="$classmim_1_1ast_1_1LamDecl_1_1Dom.html" title=" " alt="" coords="659,1484,843,1509"/>
-<area shape="poly" id="edge47_Node000045_Node000046" title=" " alt="" coords="528,1323,545,1356,568,1394,599,1432,635,1464,672,1482,670,1486,632,1468,595,1435,564,1397,540,1358,523,1326"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="244,893,367,919"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1ast_1_1Decl.html" title=" " alt="" coords="452,153,569,179"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="311,880,503,178,508,180,316,881"/>
+<area shape="rect" id="Node000018" href="$classmim_1_1ast_1_1Expr.html" title=" " alt="" coords="452,819,569,844"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="342,885,414,853,451,842,453,847,416,858,344,889"/>
+<area shape="rect" id="Node000040" href="$classmim_1_1ast_1_1Import.html" title=" " alt="" coords="445,868,576,893"/>
+<area shape="poly" id="edge39_Node000001_Node000040" title=" " alt="" coords="380,894,445,886,445,891,381,899"/>
+<area shape="rect" id="Node000041" href="$classmim_1_1ast_1_1MatchExpr_1_1Arm.html" title=" " alt="" coords="415,917,607,943"/>
+<area shape="poly" id="edge40_Node000001_Node000041" title=" " alt="" coords="381,912,415,916,414,921,380,917"/>
+<area shape="rect" id="Node000042" href="$classmim_1_1ast_1_1Module.html" title=" " alt="" coords="443,967,579,992"/>
+<area shape="poly" id="edge41_Node000001_Node000042" title=" " alt="" coords="344,922,416,953,453,964,452,969,414,958,342,927"/>
+<area shape="rect" id="Node000043" href="$classmim_1_1ast_1_1PiExpr_1_1Dom.html" title=" " alt="" coords="427,1188,595,1213"/>
+<area shape="poly" id="edge42_Node000001_Node000043" title=" " alt="" coords="326,929,503,1186,498,1189,321,932"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,893,196,919"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,903,244,903,244,909,210,909"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1ast_1_1AxmDecl_1_1Alias.html" title=" " alt="" coords="669,39,824,79"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="545,144,654,89,683,77,685,82,656,94,547,149"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1ast_1_1DummyDecl.html" title=" " alt="" coords="662,104,831,129"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="582,148,685,127,686,132,583,154"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1ast_1_1Ptrn.html" title=" " alt="" coords="689,153,804,179"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="583,163,689,163,689,169,583,169"/>
+<area shape="rect" id="Node000012" href="$classmim_1_1ast_1_1ValDecl.html" title=" " alt="" coords="678,276,815,301"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="550,183,722,274,720,278,547,188"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1ast_1_1AliasPtrn.html" title="ptrn as id" alt="" coords="887,5,1034,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="816,151,837,139,848,127,854,116,860,91,866,66,873,53,885,40,903,29,906,33,888,44,878,56,871,68,866,92,859,118,852,130,840,143,818,156"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1ast_1_1ErrorPtrn.html" title=" " alt="" coords="888,55,1033,80"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="816,149,837,138,852,127,861,115,870,102,885,89,909,78,911,83,888,94,874,106,865,118,856,130,840,143,818,153"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1ast_1_1GrpPtrn.html" title="If you have x1 x2 x3 x4: T it consists of 3 GrpPtrns and 1 IdPtrn while each GrpPtrn references the l..." alt="" coords="892,104,1029,129"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="815,148,904,127,905,132,816,153"/>
+<area shape="rect" id="Node000010" href="$classmim_1_1ast_1_1IdPtrn.html" title="dbg: type" alt="" coords="897,153,1024,179"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="818,163,897,163,897,169,818,169"/>
+<area shape="rect" id="Node000011" href="$classmim_1_1ast_1_1TuplePtrn.html" title="(ptrn_0, ..., ptrn_n&#45;1), [ptrn_0, ..., ptrn_n&#45;1], or {ptrn_0, ..., ptrn_n&#45;1}" alt="" coords="887,203,1035,228"/>
+<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="816,179,905,200,904,205,815,184"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1ast_1_1AxmDecl.html" title="axm ptrn: type = value;" alt="" coords="887,252,1034,277"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="829,277,887,270,887,276,829,282"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1ast_1_1CDecl.html" title="cfun dbg dom &#45;&gt; codom" alt="" coords="897,301,1024,327"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="830,296,898,304,897,309,829,301"/>
+<area shape="rect" id="Node000015" href="$classmim_1_1ast_1_1LetDecl.html" title="let ptrn: type = value;" alt="" coords="892,351,1029,376"/>
+<area shape="poly" id="edge14_Node000012_Node000015" title=" " alt="" coords="818,303,840,310,864,323,888,336,920,348,918,353,886,340,862,327,838,315,816,308"/>
+<area shape="rect" id="Node000016" href="$classmim_1_1ast_1_1RecDecl.html" title=".rec dbg: type = body" alt="" coords="890,400,1031,425"/>
+<area shape="poly" id="edge15_Node000012_Node000016" title=" " alt="" coords="829,304,840,311,858,329,865,349,873,367,888,385,910,398,907,402,885,389,868,370,861,351,853,332,837,315,827,308"/>
+<area shape="rect" id="Node000017" href="$classmim_1_1ast_1_1LamDecl.html" title="One of:" alt="" coords="1083,400,1228,425"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="1045,410,1083,410,1083,415,1045,415"/>
+<area shape="rect" id="Node000019" href="$classmim_1_1ast_1_1AppExpr.html" title="callee arg" alt="" coords="675,325,818,351"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="509,805,513,720,520,662,532,600,550,535,575,472,609,412,653,360,674,346,677,351,656,364,614,415,580,474,555,537,537,601,526,663,519,720,514,805"/>
+<area shape="rect" id="Node000020" href="$classmim_1_1ast_1_1ArrowExpr.html" title="dom &#45;&gt; codom" alt="" coords="669,375,824,400"/>
+<area shape="poly" id="edge19_Node000018_Node000020" title=" " alt="" coords="510,805,517,727,538,621,557,564,581,507,613,455,653,409,670,398,673,402,656,413,617,458,586,510,562,565,544,622,523,728,515,805"/>
+<area shape="rect" id="Node000021" href="$classmim_1_1ast_1_1DeclExpr.html" title="decls e or e where decls if where is true." alt="" coords="673,424,820,449"/>
+<area shape="poly" id="edge20_Node000018_Node000021" title=" " alt="" coords="511,805,521,736,545,642,563,592,587,544,616,498,653,459,672,446,675,451,656,463,621,502,591,546,568,595,550,644,527,737,517,806"/>
+<area shape="rect" id="Node000022" href="$classmim_1_1ast_1_1ErrorExpr.html" title=" " alt="" coords="673,473,821,499"/>
+<area shape="poly" id="edge21_Node000018_Node000022" title=" " alt="" coords="513,804,526,744,552,664,570,621,593,580,620,541,653,508,671,497,674,501,656,512,624,545,597,583,575,623,557,665,531,745,518,806"/>
+<area shape="rect" id="Node000023" href="$classmim_1_1ast_1_1ExtractExpr.html" title="tuple#index" alt="" coords="665,523,828,548"/>
+<area shape="poly" id="edge22_Node000018_Node000023" title=" " alt="" coords="516,804,531,752,559,685,598,616,624,585,653,557,672,546,675,550,656,561,628,588,603,619,563,687,536,754,521,806"/>
+<area shape="rect" id="Node000024" href="$classmim_1_1ast_1_1HoleExpr.html" title=" " alt="" coords="673,572,820,597"/>
+<area shape="poly" id="edge23_Node000018_Node000024" title=" " alt="" coords="519,805,537,761,566,708,604,653,627,628,653,606,674,595,677,600,656,611,631,632,608,656,570,710,542,764,524,807"/>
+<area shape="rect" id="Node000025" href="$classmim_1_1ast_1_1IdExpr.html" title="sym" alt="" coords="682,621,811,647"/>
+<area shape="poly" id="edge24_Node000018_Node000025" title=" " alt="" coords="523,805,544,771,574,731,610,690,653,656,681,643,683,648,656,660,614,694,578,734,549,774,528,808"/>
+<area shape="rect" id="Node000026" href="$classmim_1_1ast_1_1InjExpr.html" title="value inj t1 ∪ t2" alt="" coords="680,671,813,696"/>
+<area shape="poly" id="edge25_Node000018_Node000026" title=" " alt="" coords="530,806,583,755,617,728,653,705,681,694,683,699,656,710,620,732,586,759,534,810"/>
+<area shape="rect" id="Node000027" href="$classmim_1_1ast_1_1InsertExpr.html" title="ins(tuple, index, value)" alt="" coords="669,720,824,745"/>
+<area shape="poly" id="edge26_Node000018_Node000027" title=" " alt="" coords="543,809,594,781,654,754,688,743,690,748,656,759,597,786,546,814"/>
+<area shape="rect" id="Node000028" href="$classmim_1_1ast_1_1LamExpr.html" title="Wraps a LamDecl as Expr." alt="" coords="674,769,819,795"/>
+<area shape="poly" id="edge27_Node000018_Node000028" title=" " alt="" coords="582,814,685,792,686,797,583,819"/>
+<area shape="rect" id="Node000029" href="$classmim_1_1ast_1_1LitExpr.html" title="tok:type" alt="" coords="680,819,813,844"/>
+<area shape="poly" id="edge28_Node000018_Node000029" title=" " alt="" coords="583,829,680,829,680,834,583,834"/>
+<area shape="rect" id="Node000030" href="$classmim_1_1ast_1_1MatchExpr.html" title=" " alt="" coords="668,868,825,893"/>
+<area shape="poly" id="edge29_Node000018_Node000030" title=" " alt="" coords="583,844,686,865,685,871,582,849"/>
+<area shape="rect" id="Node000031" href="$classmim_1_1ast_1_1PiExpr.html" title="One of:" alt="" coords="682,917,811,943"/>
+<area shape="poly" id="edge30_Node000018_Node000031" title=" " alt="" coords="584,842,608,853,624,866,633,879,642,892,656,904,683,916,680,920,653,908,638,895,629,882,620,869,605,858,582,847"/>
+<area shape="rect" id="Node000032" href="$classmim_1_1ast_1_1PrimaryExpr.html" title="tag" alt="" coords="663,967,831,992"/>
+<area shape="poly" id="edge31_Node000018_Node000032" title=" " alt="" coords="584,839,608,853,620,866,627,879,633,905,639,930,645,942,656,953,675,964,672,969,653,957,641,945,634,932,628,906,622,881,616,869,605,857,581,844"/>
+<area shape="rect" id="Node000033" href="$classmim_1_1ast_1_1RetExpr.html" title="ret ptrn = callee $ arg; body" alt="" coords="677,1016,816,1041"/>
+<area shape="poly" id="edge32_Node000018_Node000033" title=" " alt="" coords="584,838,608,853,624,872,631,891,633,930,636,967,642,985,656,1003,678,1016,676,1021,653,1007,638,988,630,968,628,930,626,893,619,875,605,857,581,843"/>
+<area shape="rect" id="Node000034" href="$classmim_1_1ast_1_1SeqExpr.html" title="«dbg: shape; body» or ‹dbg: shape; body›" alt="" coords="676,1065,817,1091"/>
+<area shape="poly" id="edge33_Node000018_Node000034" title=" " alt="" coords="584,838,608,853,627,879,635,904,636,930,633,955,631,980,632,1004,639,1028,657,1052,677,1066,674,1070,653,1056,635,1031,627,1005,626,980,628,954,631,929,630,905,622,881,605,857,582,842"/>
+<area shape="rect" id="Node000035" href="$classmim_1_1ast_1_1SigmaExpr.html" title="Just wraps TuplePtrn as Expr." alt="" coords="667,1115,826,1140"/>
+<area shape="poly" id="edge34_Node000018_Node000035" title=" " alt="" coords="584,837,609,853,630,885,639,917,638,948,633,980,629,1011,628,1041,636,1071,657,1102,671,1112,668,1117,653,1105,631,1074,623,1042,623,1010,628,979,633,948,633,917,625,887,605,857,581,842"/>
+<area shape="rect" id="Node000036" href="$classmim_1_1ast_1_1TupleExpr.html" title="(elem_0, ..., elem_n&#45;1)" alt="" coords="671,1164,822,1189"/>
+<area shape="poly" id="edge35_Node000018_Node000036" title=" " alt="" coords="584,837,608,853,623,872,633,891,642,929,641,967,633,1004,626,1041,625,1078,633,1115,643,1133,657,1151,673,1163,670,1167,653,1155,638,1136,628,1116,619,1078,621,1041,628,1003,635,966,637,930,628,893,619,875,605,857,581,841"/>
+<area shape="rect" id="Node000037" href="$classmim_1_1ast_1_1TypeExpr.html" title="Type level" alt="" coords="673,1213,820,1239"/>
+<area shape="poly" id="edge36_Node000018_Node000037" title=" " alt="" coords="584,837,608,853,625,876,637,898,643,920,646,942,643,986,634,1029,624,1072,621,1115,630,1158,641,1179,657,1200,675,1214,672,1218,653,1204,636,1182,625,1159,616,1115,619,1071,628,1028,638,985,641,942,638,921,632,900,621,878,605,857,581,841"/>
+<area shape="rect" id="Node000038" href="$classmim_1_1ast_1_1UnionExpr.html" title="t1 ∪ t2" alt="" coords="669,1263,824,1288"/>
+<area shape="poly" id="edge37_Node000018_Node000038" title=" " alt="" coords="584,837,609,853,627,879,640,904,647,929,650,955,645,1004,634,1054,622,1103,617,1152,620,1176,626,1200,639,1225,657,1249,671,1261,668,1265,653,1253,634,1228,621,1202,614,1177,612,1152,617,1102,628,1052,640,1003,645,955,642,930,635,906,623,882,605,857,581,841"/>
+<area shape="rect" id="Node000039" href="$classmim_1_1ast_1_1UniqExpr.html" title="⦃ expr ⦄" alt="" coords="673,1312,820,1337"/>
+<area shape="poly" id="edge38_Node000018_Node000039" title=" " alt="" coords="584,837,609,853,630,882,643,910,651,939,654,967,648,1023,634,1078,620,1134,613,1189,616,1216,623,1243,636,1271,657,1299,675,1312,672,1317,653,1303,632,1274,618,1245,611,1217,608,1188,614,1133,628,1077,642,1022,648,967,646,940,638,912,625,885,605,857,581,841"/>
+<area shape="rect" id="Node000044" href="$classmim_1_1ast_1_1LamDecl_1_1Dom.html" title=" " alt="" coords="655,1361,839,1387"/>
+<area shape="poly" id="edge43_Node000043_Node000044" title=" " alt="" coords="530,1223,582,1286,617,1319,656,1348,681,1359,679,1364,653,1352,613,1323,578,1289,526,1226"/>
 </map>

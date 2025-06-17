@@ -163,7 +163,7 @@ Pipelines</h2>
 <div class="line">        (%compile.single_pass_phase (plugin_cond_pass (%compile.regex_plugin, %regex.lower_regex)))</div>
 <div class="line">        // optimize</div>
 <div class="line">        (%compile.pass_phase</div>
-<div class="line">            (%compile.combine_pass_list (⊤:Nat)</div>
+<div class="line">            (%compile.combine_pass_list</div>
 <div class="line">            (</div>
 <div class="line">                optimization_pass_list,</div>
 <div class="line">                %compile.pass_list</div>
@@ -192,7 +192,7 @@ Pipelines</h2>
 <div class="line">        (plugin_cond_phase (%compile.autodiff_plugin, ad_cleanup_phase))</div>
 <div class="line">        // CodeGenPrep</div>
 <div class="line">        (%compile.pass_phase</div>
-<div class="line">            (%compile.combine_pass_list (⊤:Nat)</div>
+<div class="line">            (%compile.combine_pass_list</div>
 <div class="line">            (</div>
 <div class="line">                %compile.pass_list</div>
 <div class="line">                %compile.ret_wrap_pass,</div>

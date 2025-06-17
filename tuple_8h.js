@@ -1,7 +1,9 @@
 var tuple_8h =
 [
+    [ "mim::Prod", "classmim_1_1Prod.html", "classmim_1_1Prod" ],
     [ "mim::Sigma", "classmim_1_1Sigma.html", "classmim_1_1Sigma" ],
     [ "mim::Tuple", "classmim_1_1Tuple.html", "classmim_1_1Tuple" ],
+    [ "mim::Seq", "classmim_1_1Seq.html", "classmim_1_1Seq" ],
     [ "mim::Arr", "classmim_1_1Arr.html", "classmim_1_1Arr" ],
     [ "mim::Pack", "classmim_1_1Pack.html", "classmim_1_1Pack" ],
     [ "mim::Extract", "classmim_1_1Extract.html", "classmim_1_1Extract" ],

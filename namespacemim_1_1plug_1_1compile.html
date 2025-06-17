@@ -263,7 +263,7 @@ Variables</h2></td></tr>
 <tr class="memitem:a847ce6ecda2bb689fa0ba4755e2716d7" id="r_a847ce6ecda2bb689fa0ba4755e2716d7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a847ce6ecda2bb689fa0ba4755e2716d7">single_pass_phase</a> : flags_t </td></tr>
 <tr class="separator:a847ce6ecda2bb689fa0ba4755e2716d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ade9770a5afa72f14d7948b4999199c" id="r_a1ade9770a5afa72f14d7948b4999199c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ade9770a5afa72f14d7948b4999199c">normalize_single_pass_phase</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
-<tr class="memdesc:a1ade9770a5afa72f14d7948b4999199c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="#a847ce6ecda2bb689fa0ba4755e2716d7">single_pass_phase</a> pass</code> -&gt; <code><a class="el" href="#a59f28bf6164c88df601c027da7a2d3f7">passes_to_phase</a> 1 pass</code>  <br /></td></tr>
+<tr class="memdesc:a1ade9770a5afa72f14d7948b4999199c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="#a847ce6ecda2bb689fa0ba4755e2716d7">single_pass_phase</a> pass</code> -&gt; <code><a class="el" href="#a59f28bf6164c88df601c027da7a2d3f7">passes_to_phase</a> pass</code>  <br /></td></tr>
 <tr class="separator:a1ade9770a5afa72f14d7948b4999199c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%compile.combined_phase</h2></td></tr>
@@ -1180,7 +1180,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="compile_8h_source.html#l00010">10</a> of file <a class="el" href="compile_8h_source.html">compile.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8cpp_source.html#l00082">mim::collect_args()</a>, and <a class="el" href="def_8h_source.html#l00242">mim::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8cpp_source.html#l00082">mim::collect_args()</a>, and <a class="el" href="def_8h_source.html#l00247">mim::Def::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00025">add_passes()</a>, <a class="el" href="compile_8cpp_source.html#l00021">add_phases()</a>, and <a class="el" href="opt_8cpp_source.html#l00015">mim_get_plugin()</a>.</p>
 
@@ -1212,9 +1212,9 @@ Variables</h2></td></tr>
 
 <p><code><a class="el" href="#af76efd65225b17e5bbae91d45faf64c8">combine_pass_list</a> K (<a class="el" href="#acf1934a130e787322009f1b142af6734">pass_list</a> pass11 ... pass1N) ... (<a class="el" href="#acf1934a130e787322009f1b142af6734">pass_list</a> passK1 ... passKM) = <a class="el" href="#acf1934a130e787322009f1b142af6734">pass_list</a> pass11 ... p1N ... / passK1 ... passKM</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00046">46</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00044">44</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, <a class="el" href="lam_8cpp_source.html#l00082">mim::collect_args()</a>, and <a class="el" href="def_8h_source.html#l00340">mim::Def::projs()</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, <a class="el" href="lam_8cpp_source.html#l00082">mim::collect_args()</a>, and <a class="el" href="def_8h_source.html#l00350">mim::Def::projs()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="compile_2normalizers_8cpp_source.html#l00007">normalize_pass_phase()</a>.</p>
 
@@ -1246,7 +1246,7 @@ Variables</h2></td></tr>
 
 <p><code><a class="el" href="#a6d01b3e592dcf881fbe508add96ad9f6">combined_phase</a> (<a class="el" href="#a1b6af4bf840fb72f2bbd6fcce767e8cc">phase_list</a> phase1 ... phasen)</code> -&gt; <code><a class="el" href="#a9a7de07a9562215d2d8e80ff90dca075">phases_to_phase</a> n (phase1, ..., phasen)</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00029">29</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00028">28</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, and <a class="el" href="lam_8cpp_source.html#l00082">mim::collect_args()</a>.</p>
 
@@ -1278,7 +1278,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00007">7</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, <a class="el" href="lam_8cpp_source.html#l00082">mim::collect_args()</a>, and <a class="el" href="compile_2normalizers_8cpp_source.html#l00046">normalize_combine_pass_list()</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, <a class="el" href="lam_8cpp_source.html#l00082">mim::collect_args()</a>, and <a class="el" href="compile_2normalizers_8cpp_source.html#l00044">normalize_combine_pass_list()</a>.</p>
 
 </div>
 </div>
@@ -1306,9 +1306,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><code><a class="el" href="#a847ce6ecda2bb689fa0ba4755e2716d7">single_pass_phase</a> pass</code> -&gt; <code><a class="el" href="#a59f28bf6164c88df601c027da7a2d3f7">passes_to_phase</a> 1 pass</code> </p>
+<p><code><a class="el" href="#a847ce6ecda2bb689fa0ba4755e2716d7">single_pass_phase</a> pass</code> -&gt; <code><a class="el" href="#a59f28bf6164c88df601c027da7a2d3f7">passes_to_phase</a> pass</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00040">40</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00038">38</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 </div>
 </div>

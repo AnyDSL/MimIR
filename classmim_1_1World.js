@@ -103,6 +103,7 @@ var classmim_1_1World =
     [ "lit_idx", "classmim_1_1World.html#a00810334dfda0d9cd38b5c55a9f60e30", null ],
     [ "lit_idx", "classmim_1_1World.html#a001a30623468317013224d73f7b3a9ef", null ],
     [ "lit_idx_mod", "classmim_1_1World.html#a5df328e0d219765eb3c0f871a68e4c6a", null ],
+    [ "lit_idx_unsafe", "classmim_1_1World.html#a9ace0dc7d92b2deca2559be6dadf81ed", null ],
     [ "lit_int", "classmim_1_1World.html#adfc7f6d60d8b347f10695ec4c95ebed6", null ],
     [ "lit_nat", "classmim_1_1World.html#ad4256db8f91cc94d168d161ddad8d030", null ],
     [ "lit_nat_0", "classmim_1_1World.html#aa2f56d19ef0b4e8af25de2a9d3cea227", null ],

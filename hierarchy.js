@@ -218,7 +218,6 @@ var hierarchy =
     [ "fe::RuntimeCast", null, [
       [ "mim::Def", "classmim_1_1Def.html", [
         [ "mim::App", "classmim_1_1App.html", null ],
-        [ "mim::Arr", "classmim_1_1Arr.html", null ],
         [ "mim::Axm", "classmim_1_1Axm.html", null ],
         [ "mim::Bound", "classmim_1_1Bound.html", [
           [ "mim::TBound< false >", "classmim_1_1TBound.html", null ],
@@ -241,12 +240,17 @@ var hierarchy =
         [ "mim::Match", "classmim_1_1Match.html", null ],
         [ "mim::Merge", "classmim_1_1Merge.html", null ],
         [ "mim::Nat", "classmim_1_1Nat.html", null ],
-        [ "mim::Pack", "classmim_1_1Pack.html", null ],
         [ "mim::Pi", "classmim_1_1Pi.html", null ],
+        [ "mim::Prod", "classmim_1_1Prod.html", [
+          [ "mim::Sigma", "classmim_1_1Sigma.html", null ],
+          [ "mim::Tuple", "classmim_1_1Tuple.html", null ]
+        ] ],
         [ "mim::Proxy", "classmim_1_1Proxy.html", null ],
-        [ "mim::Sigma", "classmim_1_1Sigma.html", null ],
+        [ "mim::Seq", "classmim_1_1Seq.html", [
+          [ "mim::Arr", "classmim_1_1Arr.html", null ],
+          [ "mim::Pack", "classmim_1_1Pack.html", null ]
+        ] ],
         [ "mim::Split", "classmim_1_1Split.html", null ],
-        [ "mim::Tuple", "classmim_1_1Tuple.html", null ],
         [ "mim::Type", "classmim_1_1Type.html", null ],
         [ "mim::UInc", "classmim_1_1UInc.html", null ],
         [ "mim::UMax", "classmim_1_1UMax.html", null ],
@@ -275,10 +279,7 @@ var hierarchy =
           ] ]
         ] ],
         [ "mim::ast::Expr", "classmim_1_1ast_1_1Expr.html", [
-          [ "mim::ast::ArrOrPackExpr< true >", "classmim_1_1ast_1_1ArrOrPackExpr.html", null ],
-          [ "mim::ast::ArrOrPackExpr< false >", "classmim_1_1ast_1_1ArrOrPackExpr.html", null ],
           [ "mim::ast::AppExpr", "classmim_1_1ast_1_1AppExpr.html", null ],
-          [ "mim::ast::ArrOrPackExpr< arr >", "classmim_1_1ast_1_1ArrOrPackExpr.html", null ],
           [ "mim::ast::ArrowExpr", "classmim_1_1ast_1_1ArrowExpr.html", null ],
           [ "mim::ast::DeclExpr", "classmim_1_1ast_1_1DeclExpr.html", null ],
           [ "mim::ast::ErrorExpr", "classmim_1_1ast_1_1ErrorExpr.html", null ],
@@ -293,6 +294,7 @@ var hierarchy =
           [ "mim::ast::PiExpr", "classmim_1_1ast_1_1PiExpr.html", null ],
           [ "mim::ast::PrimaryExpr", "classmim_1_1ast_1_1PrimaryExpr.html", null ],
           [ "mim::ast::RetExpr", "classmim_1_1ast_1_1RetExpr.html", null ],
+          [ "mim::ast::SeqExpr", "classmim_1_1ast_1_1SeqExpr.html", null ],
           [ "mim::ast::SigmaExpr", "classmim_1_1ast_1_1SigmaExpr.html", null ],
           [ "mim::ast::TupleExpr", "classmim_1_1ast_1_1TupleExpr.html", null ],
           [ "mim::ast::TypeExpr", "classmim_1_1ast_1_1TypeExpr.html", null ],
@@ -362,8 +364,14 @@ var hierarchy =
     [ "mim::Setters< Pi >", "classmim_1_1Setters.html", [
       [ "mim::Pi", "classmim_1_1Pi.html", null ]
     ] ],
+    [ "mim::Setters< Prod >", "classmim_1_1Setters.html", [
+      [ "mim::Prod", "classmim_1_1Prod.html", null ]
+    ] ],
     [ "mim::Setters< Proxy >", "classmim_1_1Setters.html", [
       [ "mim::Proxy", "classmim_1_1Proxy.html", null ]
+    ] ],
+    [ "mim::Setters< Seq >", "classmim_1_1Setters.html", [
+      [ "mim::Seq", "classmim_1_1Seq.html", null ]
     ] ],
     [ "mim::Setters< Sigma >", "classmim_1_1Setters.html", [
       [ "mim::Sigma", "classmim_1_1Sigma.html", null ]

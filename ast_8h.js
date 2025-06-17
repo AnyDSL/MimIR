@@ -31,7 +31,7 @@ var ast_8h =
     [ "mim::ast::RetExpr", "classmim_1_1ast_1_1RetExpr.html", "classmim_1_1ast_1_1RetExpr" ],
     [ "mim::ast::SigmaExpr", "classmim_1_1ast_1_1SigmaExpr.html", "classmim_1_1ast_1_1SigmaExpr" ],
     [ "mim::ast::TupleExpr", "classmim_1_1ast_1_1TupleExpr.html", "classmim_1_1ast_1_1TupleExpr" ],
-    [ "mim::ast::ArrOrPackExpr< arr >", "classmim_1_1ast_1_1ArrOrPackExpr.html", "classmim_1_1ast_1_1ArrOrPackExpr" ],
+    [ "mim::ast::SeqExpr", "classmim_1_1ast_1_1SeqExpr.html", "classmim_1_1ast_1_1SeqExpr" ],
     [ "mim::ast::ExtractExpr", "classmim_1_1ast_1_1ExtractExpr.html", "classmim_1_1ast_1_1ExtractExpr" ],
     [ "mim::ast::InsertExpr", "classmim_1_1ast_1_1InsertExpr.html", "classmim_1_1ast_1_1InsertExpr" ],
     [ "mim::ast::UniqExpr", "classmim_1_1ast_1_1UniqExpr.html", "classmim_1_1ast_1_1UniqExpr" ],
@@ -54,9 +54,7 @@ var ast_8h =
       [ "tag", "namespacemim_1_1ast.html#ae4d23e841d8e8804190027bce3180fa5", null ],
       [ "trip", "namespacemim_1_1ast.html#a7da7993d1249cb28b4e0c3e8524d15d2", null ]
     ] ],
-    [ "mim::ast::ArrExpr", "namespacemim_1_1ast.html#aa478301b5a142a59ebcfcb0cffa9c30b", null ],
     [ "mim::ast::Dbgs", "namespacemim_1_1ast.html#a09214c0845d7829eb157e8700b238366", null ],
-    [ "mim::ast::PackExpr", "namespacemim_1_1ast.html#a6c0b4af3423f8df5ee7360f897e3c500", null ],
     [ "mim::ast::Ptr", "namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b", null ],
     [ "mim::ast::Ptrs", "namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed", null ],
     [ "mim::ast::load_plugins", "namespacemim_1_1ast.html#a5fe7be09bffcd1f540353919cc95ee07", null ],

@@ -257,6 +257,8 @@ Mode</h2>
 %core.idx</h2>
 <p>Creates a literal of type <code>Idx s</code> from <code>l</code> while obeying mode <code>m</code>.</p>
 <div class="fragment"><div class="line">axm %core.idx: [s: Nat] → [m: Nat] → [l: Nat] → Idx s, normalize_idx;</div>
+</div><!-- fragment --><p>Creates a literal of type <code>Idx ⊤</code>.</p>
+<div class="fragment"><div class="line">axm %core.idx_unsafe: Nat → Idx ⊤:Nat, normalize_idx_unsafe;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md120"></a>
 %core.bit1</h2>
 <p>This <em>unary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Unary_operations">4 possible operations</a> as summarized in the following table:</p>

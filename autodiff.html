@@ -206,15 +206,15 @@ Passes</h2>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md85"></a>
 Phases</h2>
 <div class="fragment"><div class="line">let ad_cleanup_phase =</div>
-<div class="line">    %compile.phases_to_phase (⊤:Nat) (</div>
-<div class="line">        (%compile.passes_to_phase 1 %autodiff.ad_zero_cleanup_pass),</div>
-<div class="line">        (%compile.passes_to_phase 1 %autodiff.ad_ext_cleanup_pass)</div>
+<div class="line">    %compile.phases_to_phase (</div>
+<div class="line">        (%compile.passes_to_phase %autodiff.ad_zero_cleanup_pass),</div>
+<div class="line">        (%compile.passes_to_phase %autodiff.ad_ext_cleanup_pass)</div>
 <div class="line">    );</div>
 <div class="line">let ad_phase =</div>
-<div class="line">    %compile.phases_to_phase (⊤:Nat) (</div>
+<div class="line">    %compile.phases_to_phase (</div>
 <div class="line">        optimization_phase,</div>
-<div class="line">        (%compile.passes_to_phase 1 %autodiff.ad_eval_pass),</div>
-<div class="line">        (%compile.passes_to_phase 1 %autodiff.ad_zero_pass),</div>
+<div class="line">        (%compile.passes_to_phase %autodiff.ad_eval_pass),</div>
+<div class="line">        (%compile.passes_to_phase %autodiff.ad_zero_pass),</div>
 <div class="line">        ad_cleanup_phase</div>
 <div class="line">    );</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md86"></a>

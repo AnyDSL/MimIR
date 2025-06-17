@@ -279,7 +279,7 @@ Phases</h2>
 <div class="line">        (%mem.copy_prop_pass (beta_red, eta_exp, ff));</div>
 <div class="line"> </div>
 <div class="line">let mem_opt_phase  = %compile.pass_phase mem_opt_pass_list;</div>
-<div class="line">let mem_prep_phase = %compile.passes_to_phase (⊤:Nat) (%mem.remem_elim_pass, %mem.alloc2malloc_pass);</div>
+<div class="line">let mem_prep_phase = %compile.passes_to_phase (%mem.remem_elim_pass, %mem.alloc2malloc_pass);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

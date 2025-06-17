@@ -237,16 +237,16 @@ Passes and Phases</h1>
 <p>Given n passes, returns a phase that applies them in order.</p>
 <p>TODO: combine two pass_list </p><div class="fragment"><div class="line">axm %compile.pass_list: %compile.PassList;</div>
 </div><!-- fragment --><p> <code>pass_phase (pass_list pass1 ... passN) = passes_to_phase N (pass1, ..., passN)</code> </p><div class="fragment"><div class="line">axm %compile.pass_phase: %compile.PassList → %compile.Phase, normalize_pass_phase;</div>
-<div class="line">axm %compile.passes_to_phase: [n: Nat] → «n; %compile.Pass» → %compile.Phase;</div>
-</div><!-- fragment --><p> <code>combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM</code> </p><div class="fragment"><div class="line">axm %compile.combine_pass_list: [n: Nat] → «n; %compile.PassList» → %compile.PassList, normalize_combine_pass_list;</div>
-</div><!-- fragment --><p> <code>single_pass_phase pass = passes_to_phase 1 pass</code> </p><div class="fragment"><div class="line">// TODO: as let instead of axiom</div>
+<div class="line">axm %compile.passes_to_phase: {n: Nat} → «n; %compile.Pass» → %compile.Phase;</div>
+</div><!-- fragment --><p> <code>combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM</code> </p><div class="fragment"><div class="line">axm %compile.combine_pass_list: {n: Nat} → «n; %compile.PassList» → %compile.PassList, normalize_combine_pass_list;</div>
+</div><!-- fragment --><p> <code>single_pass_phase pass = passes_to_phase pass</code> </p><div class="fragment"><div class="line">// TODO: as let instead of axiom</div>
 <div class="line">axm %compile.single_pass_phase: %compile.Pass → %compile.Phase, normalize_single_pass_phase;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md108"></a>
 %compile.combined_phase</h2>
 <p>Given n phases, returns a phase that applies them in order.</p>
 <div class="fragment"><div class="line">axm %compile.phase_list: %compile.CombinedPhase;</div>
 </div><!-- fragment --><p> <code>combined_phase (phase_list phase1 ... phaseN) = phases_to_phase N (phase1, ..., phaseN)</code> </p><div class="fragment"><div class="line">axm %compile.combined_phase: %compile.CombinedPhase → %compile.Phase, normalize_combined_phase;</div>
-<div class="line">axm %compile.phases_to_phase: [n: Nat] → «n; %compile.Phase» → %compile.Phase;</div>
+<div class="line">axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Phase;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md109"></a>
 Passes</h2>
 <p>Basic passes that are defined in the core of Mim.</p>
@@ -291,12 +291,12 @@ Pipelines</h2>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md112"></a>
 Dependent Passes and Phases</h2>
 <div class="fragment"><div class="line">let empty_pass = %compile.nullptr_pass;</div>
-<div class="line">let empty_phase = %compile.passes_to_phase 0 ();</div>
+<div class="line">let empty_phase = %compile.passes_to_phase ();</div>
 <div class="line">axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;</div>
 <div class="line">let plugin_phase = %compile.plugin_select %compile.Phase;</div>
 <div class="line">let plugin_pass = %compile.plugin_select %compile.Pass;</div>
 <div class="line">lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase empty_phase;</div>
-<div class="line">lam plugin_cond_pass(plug: %compile.Plugin, pass: %compile.Pass): %compile.Pass = plugin_pass plug pass empty_pass;</div>
+<div class="line">lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  empty_pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
