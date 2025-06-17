@@ -29,7 +29,8 @@
     m(Meet,   meet,   Judge::Form) m(Merge, merge, Judge::Intro) m(Split,   split,   Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
     m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
     m(Nat,    nat,    Judge::Form)                                                                                                              \
-    m(Idx,    idx,    Judge::Intro)
+    m(Idx,    idx,    Judge::Intro)                                                                                                             \
+    m(RuleType, rule, Judge::Form) m(Rule, rule,   Judge::Intro)
 // clang-format on
 
 namespace mim {

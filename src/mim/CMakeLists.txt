@@ -13,6 +13,7 @@ target_sources(libmim
         normalize.cpp
         plugin.cpp
         rewrite.cpp
+        rule.cpp
         schedule.cpp
         tuple.cpp
         world.cpp

@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "mim/def.h"
 
 #include "mim/ast/ast.h"
@@ -503,8 +505,15 @@ void CDecl::emit(Emitter& e) const {
 }
 
 const Def* RuleDecl::emit_(Emitter& e) const {
-    return e.world().lit_ff();
-    // TODO: have a proper IR node
+    auto _ = e.world().push(loc());
+    std::vector<const Def*> meta_t;
+    for (auto& var : vars()) meta_t.push_back(var->emit_type(e));
+    auto r_t    = RuleType::infer(meta_t);
+    auto rule_t = e.world().mut_rule_type(r_t, vars().size());
+    for (size_t i = 0; i < meta_t.size(); i++) rule_t->set(i, meta_t[i]);
+    auto rule_ = e.world().mut_rule(rule_t);
+    for (size_t i = 0; i < vars().size(); i++) vars()[i]->emit_value(e, e.world().var(rule_t->op(i), rule_));
+    return rule_->set(lhs()->emit(e), rhs()->emit(e));
 }
 
 } // namespace mim::ast

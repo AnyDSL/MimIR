@@ -2,10 +2,14 @@
 
 plugin core;
 
+let zero_neutral = rule (x:Nat) : %core.nat.add (x, 0) => x;
 let rule1 = rule (x y: Nat):
-%core.nat.add x y => %core.nat.add y x;
+%core.nat.add (x, y) => %core.nat.add (y, x);
 
-let swap_plus = rule (x: Nat, y: Nat): %core.nat.add x y => %core.nat.add y x;
+let swap_plus = rule (x: Nat, y: Nat): %core.nat.add (x, y) => %core.nat.add (y, x);
 
-let y = 3;
-let swap_3 = rule (T: *) (x: T): x y => y x;
+let swap_plus2 = rule (x: Nat) (y: Nat): %core.nat.add (x, y) => %core.nat.add (y, x);
+
+let swap = rule (T: *) (f: T→T→T) (x: T) (y: T):  f x y => f y x;
+
+let swap_3 = rule (T: *) (f: T→T→T) (x y: T):  f x y => f y x;
