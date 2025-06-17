@@ -143,7 +143,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, const Def* n) {
             continue;
         }
 
-        auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.type_i8()), w.lit_nat(0)}), w.tuple({string, i}));
+        auto lea       = w.call<mem::lea>(Defs{string, i});
         auto [mem2, c] = w.call<mem::load>(w.tuple({mem, lea}))->projs<2>();
 
         auto is_end  = w.call(core::icmp::e, w.tuple({c, w.lit_i8(0)}));

@@ -18,15 +18,15 @@ fun extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («�
     let pb_arr        = %core.bitcast (%mem.Ptr («⊤:Nat; Cn [%mem.M, I32, Cn [%mem.M, I32]]», 0)) pb_ptr;
     let (mem, a_arr)  = %mem.alloc («4; I32», 0) (mem);
 
-    let lea = %mem.lea (arr_size, ‹arr_size; pb_type›, 0) (pb_arr, 0I32);
+    let lea = %mem.lea (pb_arr, %core.idx_unsafe 0);
     let mem = %mem.store (mem, lea, f);
-    let lea = %mem.lea (arr_size, ‹arr_size; pb_type›, 0) (pb_arr, 1I32);
+    let lea = %mem.lea (pb_arr, %core.idx_unsafe 1);
     let mem = %mem.store (mem, lea, g);
-    let lea = %mem.lea (arr_size, ‹arr_size; pb_type›, 0) (pb_arr, 2I32);
+    let lea = %mem.lea (pb_arr, %core.idx_unsafe 2);
     let mem = %mem.store (mem, lea, h);
-    let lea = %mem.lea (arr_size, ‹arr_size; I32›, 0) (a_arr, 0I32);
-    let mem = %mem.store (mem, lea, 10I32);
-    let lea = %mem.lea (arr_size, ‹arr_size; pb_type›, 0) (pb_arr, 2I32);
+    let lea = %mem.lea (a_arr, %core.idx_unsafe 0);
+    let mem = %mem.store (mem, lea, %core.idx_unsafe 10);
+    let lea = %mem.lea (pb_arr, %core.idx_unsafe 2);
     let (mem, func) = %mem.load (mem, lea);
     let (mem,  val) = %mem.load (mem, lea);
 

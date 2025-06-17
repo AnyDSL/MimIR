@@ -17,12 +17,12 @@ con extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I32, 0), 0), 
         con for_body [i: I32, [mem: %mem.M, acc_a: I32, acc_b: I32], continue: Cn [%mem.M, I32, I32]] =
             let a   = %core.wrap.add 0 (i, acc_a);
             let b   = %core.wrap.sub 0 (i, acc_b);
-            let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u arr_size i);
+            let lea = %mem.lea (ptr, %core.conv.u arr_size i);
             let mem = %mem.store (mem, lea, a);
             continue (mem, a, b);
 
         con for_exit [mem: %mem.M, I32, I32] =
-            let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u arr_size (%core.wrap.sub 0 (argc, 4I32)));
+            let lea = %mem.lea (ptr, %core.conv.u arr_size (%core.wrap.sub 0 (argc, 4I32)));
             let ld  = %mem.load (mem, lea);
             return ld;
     end;

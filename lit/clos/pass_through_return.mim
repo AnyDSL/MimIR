@@ -15,7 +15,7 @@ con extern main [mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:Nat; %mem.Ptr (�
 
     let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 100);
     let pb_arr = %core.bitcast (%mem.Ptr («⊤:Nat; pb_type», 0)) pb_ptr;
-    let lea_pb = %mem.lea (⊤:Nat, <⊤:Nat; pb_type>, 0) (pb_arr, 0I32);
+    let lea_pb = %mem.lea (pb_arr, 0I32);
     let store_pb = %mem.store (alloc_pb_mem, lea_pb, end_);
 
     con loop_head [mem: %mem.M, i : I32] =
