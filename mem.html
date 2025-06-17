@@ -238,7 +238,7 @@ Operations w/ Side Effects</h1>
 Operations w/o Side Effects</h1>
 <h2><a class="anchor" id="autotoc_md196"></a>
 %mem.lea</h2>
-<p>Load effective address. Performs address computation by offsetting the passed pointer with index <code>i</code>. </p><div class="fragment"><div class="line">axm %mem.lea: [n: Nat, Ts: «n; *», a: Nat] → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;</div>
+<p>Load effective address. Performs address computation by offsetting the passed pointer with index <code>i</code>. </p><div class="fragment"><div class="line">axm %mem.lea: {n: Nat, Ts: «n; *», a: Nat} → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md197"></a>
 %mem.create/destroy</h2>
 <p>Create side effect out of thin or pretend that the side effect does not exists. </p><dl class="section warning"><dt>Warning</dt><dd>Use with caution since you completely remove the %mem.M dependency.</dd></dl>
