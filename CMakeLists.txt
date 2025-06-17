@@ -65,6 +65,7 @@ set(ABSL_ENABLE_INSTALL ON)
 set(FE_ABSL ON)
 
 add_subdirectory(external/abseil-cpp)
+add_subdirectory(external/pybind11)
 add_subdirectory(external/fe)
 add_subdirectory(external/lyra)
 add_subdirectory(external/rang)
