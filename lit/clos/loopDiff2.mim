@@ -15,7 +15,7 @@ let size = 100000;
 
 con printArr [mem: %mem.M, arr : %mem.Ptr (<<size; I32>>, 0), return : Cn [%mem.M]] =
     con loop_body [mem: %mem.M, i : I32, continue : Cn %mem.M] =
-        let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (arr, i);
+        let lea = %mem.lea (arr, %core.bitcast (Idx arr_size) i);
         let (load_mem, val) = %mem.load (mem, lea);
         printInteger(load_mem, val, continue);
 
@@ -32,7 +32,7 @@ con printArr [mem: %mem.M, arr : %mem.Ptr (<<size; I32>>, 0), return : Cn [%mem.
 
 con init [mem: %mem.M, arr : %mem.Ptr (<<size; I32>>, 0), offset : I32, return : Cn [%mem.M]] =
     con loop_body [mem: %mem.M, i : I32, continue : Cn %mem.M] =
-        let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (arr, i);
+        let lea = %mem.lea (arr, %core.bitcast (Idx arr_size) i);
         let add = %core.wrap.add 0 (offset, i);
         let store_mem = %mem.store (mem, lea, add);
         continue(store_mem);
@@ -49,7 +49,7 @@ con init [mem: %mem.M, arr : %mem.Ptr (<<size; I32>>, 0), offset : I32, return :
 
 con const [mem: %mem.M, arr : %mem.Ptr (<<size; I32>>, 0), constValue : I32, return : Cn [%mem.M]] =
     con loop_body [mem: %mem.M, i : I32, continue : Cn %mem.M] =
-        let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (arr, i);
+        let lea = %mem.lea (arr, %core.bitcast (Idx arr_size) i);
         let store_mem = %mem.store (mem, lea, constValue);
         continue(store_mem);
 
@@ -78,9 +78,9 @@ con outer [mem: %mem.M, x : I32, return : Cn [%mem.M]] =
     let finish_mem = alloc_pb_mem;
 
     con loop_body [mem: %mem.M, i : I32, return : Cn %mem.M] =
-        let a_lea = %mem.lea (arr_size, <arr_size; I32>, 0) (a_arr, i);
-        let b_lea = %mem.lea (arr_size, <arr_size; I32>, 0) (b_arr, i);
-        let c_lea = %mem.lea (arr_size, <arr_size; I32>, 0) (c_arr, i);
+        let a_lea = %mem.lea (a_arr, %core.bitcast (Idx arr_size) i);
+        let b_lea = %mem.lea (b_arr, %core.bitcast (Idx arr_size) i);
+        let c_lea = %mem.lea (c_arr, %core.bitcast (Idx arr_size) i);
 
         let (a_load_mem, a_val) = %mem.load (mem, a_lea);
         let (b_load_mem, b_val) = %mem.load (a_load_mem, b_lea);
@@ -90,14 +90,14 @@ con outer [mem: %mem.M, x : I32, return : Cn [%mem.M]] =
         let c_store_mem = %mem.store (b_load_mem, c_lea, prod);
 
         con left_pb [mem: %mem.M, s : I32, return: Cn [%mem.M]] =
-            let ad_lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ad_arr, i);
+            let ad_lea = %mem.lea (ad_arr, %core.bitcast (Idx arr_size) i);
             let (load_mem, val) = %mem.load (mem, ad_lea);
             let new_val = %core.wrap.add 0 (val, s);
             let store_mem = %mem.store (load_mem, ad_lea, new_val);
             return store_mem;
 
         con right_pb [mem: %mem.M, s : I32, return: Cn [%mem.M]] =
-            let bd_lea = %mem.lea (arr_size, <arr_size; I32>, 0) (bd_arr, i);
+            let bd_lea = %mem.lea (bd_arr, %core.bitcast (Idx arr_size) i);
             let (load_mem, val) = %mem.load (mem, bd_lea);
             let new_val = %core.wrap.add 0 (val, s);
             let store_mem = %mem.store (load_mem, bd_lea, new_val);
@@ -112,7 +112,7 @@ con outer [mem: %mem.M, x : I32, return : Cn [%mem.M]] =
 
             left_pb( mem, sa_mul,  next);
 
-        let lea_pb = %mem.lea (⊤:Nat, <⊤:Nat; pb_type>, 0) (pb_arr, i);
+        let lea_pb = %mem.lea (pb_arr, %core.bitcast (Idx arr_size) i);
         let store_pb_mem = %mem.store (c_store_mem, lea_pb, mul_pb);
 
         return(store_pb_mem);
@@ -135,7 +135,7 @@ con outer [mem: %mem.M, x : I32, return : Cn [%mem.M]] =
             con yield [mem: %mem.M] = backward_loop_head( mem, %core.wrap.add 0 (i, 1I32 ) );
 
             con enter [mem: %mem.M] =
-                let lea_pb = %mem.lea (⊤:Nat, <⊤:Nat; pb_type>, 0) (pb_arr, i);
+                let lea_pb = %mem.lea (pb_arr, %core.bitcast (Idx arr_size) i);
                 let (backward_pass_mem, backward_pass) = %mem.load (mem, lea_pb);
                 backward_pass ( backward_pass_mem, 1I32, yield );
 

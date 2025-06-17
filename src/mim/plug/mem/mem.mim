@@ -78,7 +78,7 @@ axm %mem.mslot: [*, Nat] as Ta → [%mem.M, size: Nat, id: Nat] → [%mem.M, %me
 ///
 /// Load effective address.
 /// Performs address computation by offsetting the passed pointer with index `i`.
-axm %mem.lea: [n: Nat, Ts: «n; *», a: Nat] → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;
+axm %mem.lea: {n: Nat, Ts: «n; *», a: Nat} → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;
 ///
 /// ### %%mem.create/destroy
 ///
