@@ -64,6 +64,10 @@ let %core.mode.nusw = %core.mode.US;
 ///
 axm %core.idx: [s: Nat] → [m: Nat] → [l: Nat] → Idx s, normalize_idx;
 ///
+/// Creates a literal of type `Idx ⊤`.
+///
+axm %core.idx_unsafe: Nat → Idx ⊤:Nat, normalize_idx_unsafe;
+///
 /// ### %%core.bit1
 ///
 /// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:

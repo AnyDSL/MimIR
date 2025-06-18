@@ -7,6 +7,6 @@ let size = 100000000;
 
 fun extern main(mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0)): [%mem.M, I32] =
     let (alloc_mem, arr) = %mem.alloc («size; I32», 0) (mem);
-    let lea = %mem.lea (size, ‹size; I32›, 0) (arr, 0:(Idx size));
+    let lea = %mem.lea (arr, 0:(Idx size));
     let (load_mem, val) = %mem.load (alloc_mem, lea);
     return ( load_mem, 1I32 );

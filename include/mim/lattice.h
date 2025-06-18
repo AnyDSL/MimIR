@@ -13,7 +13,7 @@ protected:
     Bound(Node node, const Def* type, Defs ops)
         : Def(node, type, ops, 0) {}
 
-    constexpr size_t reduction_offset() const noexcept override { return 0; }
+    constexpr size_t reduction_offset() const noexcept final { return 0; }
 
 public:
     /// @name Get Element by Type
@@ -39,7 +39,7 @@ public:
     static constexpr auto Node = Up ? mim::Node::Join : mim::Node::Meet;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -55,7 +55,7 @@ private:
     Merge(const Def* type, Defs defs)
         : Def(Node, type, defs, 0) {}
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -78,7 +78,7 @@ public:
     static constexpr auto Node = mim::Node::Inj;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -100,7 +100,7 @@ public:
     static constexpr auto Node = mim::Node::Split;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -124,7 +124,7 @@ public:
     ///@}
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -148,7 +148,7 @@ public:
     static constexpr auto Node = Up ? mim::Node::Top : mim::Node::Bot;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -180,7 +180,7 @@ public:
     static constexpr auto Node = mim::Node::Uniq;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };

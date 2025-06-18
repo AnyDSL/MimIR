@@ -79,10 +79,10 @@ axm %compile.debug_phase: Nat → %compile.Phase;
 axm %compile.pass_list: %compile.PassList;
 /// `pass_phase (pass_list pass1 ... passN) = passes_to_phase N (pass1, ..., passN)`
 axm %compile.pass_phase: %compile.PassList → %compile.Phase, normalize_pass_phase;
-axm %compile.passes_to_phase: [n: Nat] → «n; %compile.Pass» → %compile.Phase;
+axm %compile.passes_to_phase: {n: Nat} → «n; %compile.Pass» → %compile.Phase;
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM`
-axm %compile.combine_pass_list: [n: Nat] → «n; %compile.PassList» → %compile.PassList, normalize_combine_pass_list;
-/// `single_pass_phase pass = passes_to_phase 1 pass`
+axm %compile.combine_pass_list: {n: Nat} → «n; %compile.PassList» → %compile.PassList, normalize_combine_pass_list;
+/// `single_pass_phase pass = passes_to_phase pass`
 // TODO: as let instead of axiom
 axm %compile.single_pass_phase: %compile.Pass → %compile.Phase, normalize_single_pass_phase;
 ///
@@ -93,7 +93,7 @@ axm %compile.single_pass_phase: %compile.Pass → %compile.Phase, normalize_sing
 axm %compile.phase_list: %compile.CombinedPhase;
 /// `combined_phase (phase_list phase1 ... phaseN) = phases_to_phase N (phase1, ..., phaseN)`
 axm %compile.combined_phase: %compile.CombinedPhase → %compile.Phase, normalize_combined_phase;
-axm %compile.phases_to_phase: [n: Nat] → «n; %compile.Phase» → %compile.Phase;
+axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Phase;
 ///
 /// ### Passes
 ///
@@ -147,9 +147,9 @@ lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
 /// ### Dependent Passes and Phases
 ///
 let empty_pass = %compile.nullptr_pass;
-let empty_phase = %compile.passes_to_phase 0 ();
+let empty_phase = %compile.passes_to_phase ();
 axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;
 let plugin_phase = %compile.plugin_select %compile.Phase;
 let plugin_pass = %compile.plugin_select %compile.Pass;
 lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase empty_phase;
-lam plugin_cond_pass(plug: %compile.Plugin, pass: %compile.Pass): %compile.Pass = plugin_pass plug pass empty_pass;
+lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  empty_pass;

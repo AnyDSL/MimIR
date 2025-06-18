@@ -81,7 +81,6 @@ private:
 
     /// @name parse primary exprs
     ///@{
-    template<bool> Ptr<Expr> parse_arr_or_pack_expr();
     Ptr<Expr> parse_decl_expr();
     Ptr<Expr> parse_lit_expr();
     Ptr<Expr> parse_extremum_expr();
@@ -90,6 +89,7 @@ private:
     Ptr<Expr> parse_pi_expr();
     Ptr<Expr> parse_pi_expr(Ptr<Ptrn>&&);
     Ptr<Expr> parse_lam_expr();
+    Ptr<Expr> parse_seq_expr();
     Ptr<Expr> parse_sigma_expr();
     Ptr<Expr> parse_tuple_expr();
     Ptr<Expr> parse_insert_expr();
