@@ -121,20 +121,20 @@ axm %tensor.reduce: {r: Nat, s: «r; Nat»}
 /// Returns a tensor obtained by folding `f` following the indexes in `subs`
 ///
 
-axm %tensor.get: {T: *} → {r: Nat, s: «r; Nat»} → [arr: «s; T», index: «r; Idx r»] → T;
+axm %tensor.get: {T: *, r: Nat, s: «r; Nat»} → [arr: «s; T», index: «i: r; Idx (s#i)»] → T, normalize_get;
 
-axm %tensor.set: {T: *} → {r: Nat, s: «r; Nat»} → [arr: «s; T», index: «r; Idx r», x: T] → «s; T»;
+axm %tensor.set: {T: *, r: Nat, s: «r; Nat»} → [arr: «s; T», index: «i: r; Idx (s#i)», x: T] → «s; T», normalize_set;
 
 axm %tensor.map_reduce: {nis: Nat}
                       → {To: *, Ro: Nat}
                       → [So: «Ro; Nat»]
                       → {Tis: «nis; *», Ris: «i: nis; Nat», Sis: «i:nis; «Ris#i; Nat»»}
-                      → [f: [To, «i: nis; Tis#i»] → To, init: To]
+                      → [f: Fn [To, «i: nis; Tis#i»] → [To], init: To]
                       → [subs: «i: nis; « Ris#i; Nat»»]
                       → [is: «i: nis; «Sis#i; Tis#i» »]
                       → «So; To», normalize_map_reduce;
 
-lam dot_general_fun [R: Ring] [x: R#T, [y: R#T, z: R#T]]: R#T = R#add (x, (R#mul (y, z))); 
+fun dot_general_fun [R: Ring] [x: R#T, [y: R#T, z: R#T]]: R#T = return (R#add (x, (R#mul (y, z)))); 
 
 lam dot_general_pick {n: Nat} {na nb nc: Nat} [a: «na; Idx n», b: «nb; Idx n», c: «nc; Idx n»] [m: Nat] [i: Idx n]: Nat =
   let (ab, ai) = %vec.first (%core.icmp.e @n) (a, i);
