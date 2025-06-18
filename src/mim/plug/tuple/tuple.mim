@@ -27,6 +27,11 @@ axm %tuple.cat: {n m: Nat}
                    » // «i: n + m; select(i < n , Ts#i, Us#(i - n))»
                  , normalize_cat;
 
+axm %tuple.cat_uniform:  {n m: Nat}
+                          → {T: *}
+                          → [«n; T», «m; T»]
+                          → «%core.nat.add (n, m); T», normalize_cat;
+
 lam %tuple.append   {n: Nat}
                     {Ts: «n; *», U: *}
                     (a: «i: n; Ts#i», b: U)

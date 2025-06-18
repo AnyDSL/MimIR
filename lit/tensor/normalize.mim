@@ -1,0 +1,7 @@
+// RUN: %mim %s
+plugin tensor;
+plugin refly;
+plugin core;
+
+let mr1 = %tensor.map_reduce @1 @(Nat, 1) 1 @(Nat, 1, 1) ((λ (n m: Nat): Nat = m), 0) 0 1;
+let _ = %refly.equiv.struc_eq (mr1, 0);
