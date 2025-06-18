@@ -19,7 +19,6 @@ plugin vec;
 let Ring = [
     T: *,
     _0: T,
-    _1: T,
     add: [T, T] → T,
     mul: [T, T] → T,
 ];
@@ -121,6 +120,11 @@ axm %tensor.reduce: {r: Nat, s: «r; Nat»}
 ///
 /// Returns a tensor obtained by folding `f` following the indexes in `subs`
 ///
+
+axm %tensor.get: {T: *} → {r: Nat, s: «r; Nat»} → [arr: «s; T», index: «r; Idx r»] → T;
+
+axm %tensor.set: {T: *} → {r: Nat, s: «r; Nat»} → [arr: «s; T», index: «r; Idx r», x: T] → «s; T»;
+
 axm %tensor.map_reduce: {nis: Nat}
                       → {To: *, Ro: Nat}
                       → [So: «Ro; Nat»]
@@ -173,5 +177,5 @@ lam %tensor.dot_general
       let ein_2    = ‹i: r2; dot_general_pick (a2, b2, c2) r_out i›;
       %tensor.map_reduce @2 s_out (f, R#_0) (ein_1, ein_2) (a, b);
 
-lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
+lam %tensor.prod_2d_lam [R: Ring] {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
         = %tensor.dot_general R @(2, 2) @(1, 0) @((m, k), (k, l)) (0_2, 1_2, (), ()) (t1, t2);

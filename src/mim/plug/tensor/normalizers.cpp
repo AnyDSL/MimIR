@@ -8,6 +8,7 @@
 #include "mim/plug/affine/affine.h"
 #include "mim/plug/core/core.h"
 #include "mim/plug/direct/direct.h"
+#include "mim/plug/tensor/autogen.h"
 #include "mim/plug/tensor/tensor.h"
 
 namespace mim::plug::tensor {
@@ -32,35 +33,51 @@ const Def* op_get(const Def* arr, const Def* index) {
     return arr;
 }
 
-const Def* op_set_rec(const Def* arr, const Def* x, std::vector<size_t> index) {
-    return x;
+const Def* op_set_rec(const Def* arr, std::vector<const Def*> index, const Def* x) {
     if (size(index) == 0) return x;
 
-    size_t idx = index.back();
-    index.pop_back();
+    if (auto idx = Lit::isa(index.back())) {
+        index.pop_back();
 
-    auto defs = DefVec();
+        auto defs = DefVec();
 
-    for (size_t i = 0; i < arr->num_ops(); i++)
-        if (i == idx)
-            defs.emplace_back(op_set_rec(arr->proj(i), x, index));
-        else
-            defs.emplace_back(arr->proj(i));
-    return arr->world().tuple(defs);
+        for (size_t i = 0; i < arr->num_ops(); i++)
+            if (i == idx)
+                defs.emplace_back(op_set_rec(arr->proj(i), index, x));
+            else
+                defs.emplace_back(arr->proj(i));
+        return arr->world().tuple(defs);
+    }
+    return nullptr;
 }
 
 const Def* op_set(const Def* arr, const Def* index, const Def* x) {
-    // auto &w = arr->world();
-    // w.DLOG("op_set, arr: {}, index: {}, x: {}", arr, index, x);
-    auto n = get_size(index);
-    std::vector<size_t> unfold_n;
-    for (size_t i = 0; i < n - 1; i++) {
-        auto idx = Lit::isa(index->proj(i));
-        unfold_n.push_back(*idx);
-    }
-    reverse(unfold_n.begin(), unfold_n.end());
 
-    return op_set_rec(arr, x, unfold_n);
+    auto &w = arr->world();
+
+    auto type = arr->unfold_type();
+
+    w.DLOG("type: {}", type);
+
+    auto f = w.app(w.annex<tensor::set>(), type);
+
+    f = w.app(f, {w.lit_nat_1(), w.lit_nat_1()});
+
+    f = w.app(f, {arr, index, x});
+
+    return f;
+    // auto& w = arr->world();
+    // w.DLOG("op_set, arr: {}, index: {}, x: {}", arr->projs(), index->proj(0), x);
+
+    // auto n = get_size(index);
+    // std::vector<const Def*> unfold_n;
+    // for (size_t i = 0; i < n - 1; i++) {
+    //     auto proj_ = index->proj(i);
+    //     unfold_n.push_back(proj_);
+    // }
+    // reverse(unfold_n.begin(), unfold_n.end());
+
+    // return op_set_rec(arr, unfold_n, x);
 }
 
 std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def* exit, const char* name = "for_body") {
@@ -93,10 +110,9 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* is) {
     nat_t out_dims = get_size(So);
 
     std::map<nat_t, const Def*> bounds, iters;
-
-    w.DLOG("So: {}, projs: {}, ops: {}\n",So , So->projs(), So->ops());
-    if (!(So->isa<Tuple>() || So->isa<Pack>() || So->isa<Lit>())) 
-        return nullptr;
+    w.DLOG("type: {}", type);
+    w.DLOG("So: {}, projs: {}, ops: {}\n", So, So->projs(), So->ops());
+    if (!(So->isa<Tuple>() || So->isa<Pack>() || So->isa<Lit>())) return nullptr;
 
     for (size_t i = 0; auto dim : So->projs()) bounds[i++] = dim;
 
@@ -143,23 +159,29 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* is) {
         auto [iter, next_acc, yield] = body->vars<3>();
         iters[idx]                   = w.call<core::bitcast>(w.type_idx(bound), iter);
         curr_acc                     = {next_acc->proj(0)};
-        curr_lam->set(true, head);
-        curr_lam = body;
+        curr_lam->set(true, head), curr_lam = body;
         next_con = yield;
     }
 
     auto set_fn = w.mut_lam(w.cn(To));
+    w.DLOG("set_fn {} : {}", set_fn, set_fn->type());
     Y           = curr_acc[0];
     auto y      = set_fn->var(0);
     auto y_acc  = init;
     DefVec out_idx(out_dims, [&](size_t i) {
         auto idx = out_idxs[i];
+        w.DLOG("i: {}, idx: {}, iter: {}", i, idx, iters[idx]);
         return iters[idx];
     });
     w.DLOG("out_idx: {}\n", out_idx);
     auto wt = w.tuple(out_idx);
     w.DLOG("wt: {}\n", wt);
-    // Y = op_set(Y, w.tuple(out_idx), y);
+    Y = op_set(Y, w.tuple(out_idx), y);
+    // Y = w.app(w.annex<tensor::set>(), {});
+    // if (auto Y_tmp = op_set(Y, w.tuple(out_idx), y))
+    //     Y = Y_tmp;
+    // else
+    //     return nullptr;
     set_fn->app(true, next_con, Y);
     curr_acc = {y_acc};
     next_con = set_fn;
@@ -171,8 +193,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* is) {
         auto [iter, next_acc, yield] = body->vars<3>();
         iters[idx]                   = w.call<core::bitcast>(w.type_idx(bounds[idx]), iter);
         curr_acc                     = {next_acc->proj(0)};
-        curr_lam->set(true, head);
-        curr_lam = body;
+        curr_lam->set(true, head), curr_lam = body;
         next_con = yield;
     }
 
@@ -183,9 +204,11 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* is) {
             auto idx = Lit::as(subs->proj(i)->proj(j));
             return iters[idx];
         });
-        // xs[i] = op_get(X, w.tuple(in_idx));
+        xs[i] = op_get(X, w.tuple(in_idx));
     }
     y_acc = curr_acc[0];
+    w.DLOG("currlam: {}, type: {}", curr_lam, curr_lam->type());
+
     curr_lam->app(true, f, {w.tuple({y_acc, w.tuple(xs)}), next_con});
     return w.app(direct::op_cps2ds_dep(map_red_fn), w.tuple());
 
