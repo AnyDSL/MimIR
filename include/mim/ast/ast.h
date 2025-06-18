@@ -1044,15 +1044,15 @@ private:
 
 class RuleDecl : public Expr {
 public:
-    RuleDecl(Loc loc, Ptrs<Ptrn>&& vars, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs, Ptr<Expr>&& condition, bool is_equivalence)
+    RuleDecl(Loc loc, Ptr<Ptrn>&& var, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs, Ptr<Expr>&& condition, bool is_equivalence)
         : Expr(loc)
-        , vars_(std::move(vars))
+        , var_(std::move(var))
         , lhs_(std::move(lhs))
         , rhs_(std::move(rhs))
         , condition_(std::move(condition))
         , is_equivalence_(is_equivalence) {}
 
-    const auto& vars() const { return vars_; }
+    const Ptrn* var() const { return var_.get(); }
     const Expr* lhs() const { return lhs_.get(); }
     const Expr* rhs() const { return rhs_.get(); }
     const Expr* condition() const { return condition_.get(); }
@@ -1065,7 +1065,7 @@ private:
     const Def* emit_(Emitter&) const override;
 
     Dbg dbg_;
-    Ptrs<Ptrn> vars_;
+    Ptr<Ptrn> var_;
     Ptr<Expr> lhs_;
     Ptr<Expr> rhs_;
     Ptr<Expr> condition_;

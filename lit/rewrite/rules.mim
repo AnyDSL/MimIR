@@ -8,8 +8,6 @@ let rule1 = rule (x y: Nat):
 
 let swap_plus = rule (x: Nat, y: Nat): %core.nat.add (x, y) => %core.nat.add (y, x);
 
-let swap_plus2 = rule (x: Nat) (y: Nat): %core.nat.add (x, y) => %core.nat.add (y, x);
+let swap = rule (T: *, f: T→T→T, x: T, y: T):  f x y => f y x;
 
-let swap = rule (T: *) (f: T→T→T) (x: T) (y: T):  f x y => f y x;
-
-let swap_3 = rule (T: *) (f: T→T→T) (x y: T):  f x y => f y x;
+let idet = rule (T : *, x : T) : x => x;

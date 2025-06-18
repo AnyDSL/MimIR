@@ -386,18 +386,13 @@ const Def* Lam::check(size_t i, const Def* def) {
 }
 
 const Def* RuleType::check() {
-    auto t = infer(meta_types());
+    auto t = infer(meta_type());
     if (!Checker::alpha<Checker::Check>(t, type()))
         error(type()->loc(), "declared sort '{}' of rule type does not match inferred one '{}'", type(), t);
     return t;
 }
 
-const Def* RuleType::infer(Defs meta_types) {
-    const Def* res = meta_types[0]->unfold_type();
-    auto& w        = meta_types[0]->world(); // <- TODO: hacky
-    for (auto meta_t : meta_types) res = w.umax<Sort::Kind>({res, meta_t->unfold_type()});
-    return res;
-}
+const Def* RuleType::infer(const Def* meta_type) { return meta_type->unfold_type(); }
 
 const Def* Rule::check() {
     return type();

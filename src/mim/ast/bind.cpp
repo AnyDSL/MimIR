@@ -352,7 +352,7 @@ void CDecl::bind(Scopes& s) const {
 
 void RuleDecl::bind(Scopes& s) const {
     s.push();
-    for (auto& var : vars()) var->bind(s, true, false);
+    var()->bind(s, true, false);
     lhs()->bind(s);
     rhs()->bind(s);
     s.pop();

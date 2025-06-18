@@ -8,13 +8,11 @@ namespace mim {
 /// currently opaque
 class RuleType : public Def, public Setters<RuleType> {
 protected:
-    RuleType(const Def* type, Defs meta_types)
-        : Def(Node, type, meta_types, 0) {}
-    RuleType(const Def* type, size_t size)
-        : Def(Node, type, size, 0) {} ///< Constructor for a *mutable* RuleType
+    RuleType(const Def* type, const Def* meta_type)
+        : Def(Node, type, {meta_type}, 0) {}
 
 public:
-    Defs meta_types() { return ops(); }
+    const Def* meta_type() const { return op(0); }
 
     /// @name Setters
     ///@{
@@ -24,12 +22,7 @@ public:
     RuleType* unset() { return Def::unset()->as<RuleType>(); }
     ///@}
 
-    ///@name Rebuild
-    ///@{
-    const RuleType* immutabilize() override;
-    ///@}
-
-    static const Def* infer(const Defs meta_type);
+    static const Def* infer(const Def* meta_type);
     const Def* check() override;
 
     static constexpr auto Node = mim::Node::RuleType;

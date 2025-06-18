@@ -237,7 +237,7 @@ std::ostream& RuleDecl::stream(Tab& tab, std::ostream& os) const {
         arrow = "<=>";
     else
         arrow = "=>";
-    return print(os, "rule { } : {} {} {} when {}", R(tab, vars()), S(tab, lhs()), arrow, S(tab, rhs()),
+    return print(os, "rule {} : {} {} {} when {}", S(tab, var()), S(tab, lhs()), arrow, S(tab, rhs()),
                  S(tab, condition()));
 }
 } // namespace mim::ast

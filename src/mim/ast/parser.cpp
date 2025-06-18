@@ -690,8 +690,7 @@ Ptr<RecDecl> Parser::parse_rec_decl(bool first) {
 Ptr<Expr> Parser::parse_rule_expr() {
     auto track = tracker();
     eat(Tag::K_rule);
-    Ptrs<Ptrn> ptrns;
-    while (ahead().tag() != Tag::T_colon) ptrns.push_back(parse_ptrn(0, "meta variables in rewrite rule"));
+    auto ptrn = parse_ptrn(0, "meta variables in rewrite rule");
     expect(Tag::T_colon, "rewrite rule declaration");
     auto lhs            = parse_expr("rewrite pattern");
     bool is_equivalence = (bool)accept(Tag::T_equiv);
@@ -699,7 +698,7 @@ Ptr<Expr> Parser::parse_rule_expr() {
     auto rhs = parse_expr("rewrite result");
     auto condition
         = ahead().isa(Tag::K_when) ? parse_expr("rewrite condition") : ptr<PrimaryExpr>(track, std::move(Tag::K_tt));
-    return ptr<RuleDecl>(track, std::move(ptrns), std::move(lhs), std::move(rhs), std::move(condition), is_equivalence);
+    return ptr<RuleDecl>(track, std::move(ptrn), std::move(lhs), std::move(rhs), std::move(condition), is_equivalence);
 }
 
 Ptr<LamDecl> Parser::parse_lam_decl() {

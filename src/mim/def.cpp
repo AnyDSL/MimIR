@@ -125,7 +125,7 @@ const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pa
 const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
 const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
 const Def* Rule   ::rebuild_(World& w, const Def* t, Defs o) const { return w.rule(t->as<RuleType>(), o[0], o[1]); }
-const Def* RuleType::rebuild_(World& w, const Def*, Defs o) const { return w.rule_type(o); }
+const Def* RuleType::rebuild_(World& w, const Def* t, Defs ) const { return w.rule_type(t); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
 const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
 const Def* Match  ::rebuild_(World& w, const Def*  , Defs o) const { return w.match(o); }
@@ -194,11 +194,6 @@ const Pi* Pi::immutabilize() {
 
 const Rule* Rule::immutabilize() {
     if (is_immutabilizable()) return world().rule(type(), lhs(), rhs());
-    return nullptr;
-}
-
-const RuleType* RuleType::immutabilize() {
-    if (is_immutabilizable()) return world().rule_type(meta_types());
     return nullptr;
 }
 
@@ -460,6 +455,7 @@ const Def* Def::var() {
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
     if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (auto rule = isa<Rule >()) return w.var(rule->type()->meta_type(), rule);
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Hole  >()) return nullptr;
     if (isa<Global>()) return nullptr;
