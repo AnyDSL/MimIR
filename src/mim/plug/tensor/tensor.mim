@@ -136,16 +136,16 @@ axm %tensor.map_reduce: {nis: Nat}
 
 fun dot_general_fun [R: Ring] [x: R#T, [y: R#T, z: R#T]]: R#T = return (R#add (x, (R#mul (y, z)))); 
 
-lam dot_general_pick {n: Nat} {na nb nc: Nat} [a: «na; Idx n», b: «nb; Idx n», c: «nc; Idx n»] [m: Nat] [i: Idx n]: Nat =
+lam dot_general_pick {n: Nat} {na nb nc: Nat} [a: «na; Idx n», b: «nb; Idx n», c: «nc; Idx n»] [off_1 off_2: Nat] [i: Idx n]: Nat =
   let (ab, ai) = %vec.first (%core.icmp.e @n) (a, i);
   let (bb, bi) = %vec.first (%core.icmp.e @n) (b, i);
   let (cb, ci) = %vec.first (%core.icmp.e @n) (c, i);
+  let ai_nat = %core.bitcast Nat ai;
+  let ai_out = %core.nat.add (off_1, ai_nat);
   let bi_nat = %core.bitcast Nat bi;
   let ci_nat = %core.bitcast Nat ci;
-  let ci_out = %core.nat.add (m, ci_nat);
-  let ai_nat = %core.bitcast Nat ai;
-  let ai_out = %core.nat.add (nb, ai_nat);
-  (bi_nat, (ci_out, ai_out)#cb)#bb;
+  let ci_out = %core.nat.add (off_2, ci_nat);
+  ((ai_out, ci_out)#cb, bi_nat)#bb;
 
 lam %tensor.dot_general
   [R: Ring] {r1 r2: Nat} {nc nb: Nat} {s1: «r1; Nat», s2: «r2; Nat»}
@@ -173,9 +173,10 @@ lam %tensor.dot_general
       let r_out    = %vec.len s_out;
       let a1       = %vec.diff (‹i: r1; i›, bc_1);
       let a2       = %vec.diff (‹i: r2; i›, bc_2);
-      let ein_1    = ‹i: r1; dot_general_pick (a1, b1, c1) r_out i›;
-      let ein_2    = ‹i: r2; dot_general_pick (a2, b2, c2) r_out i›;
+      let ein_1    = ‹i: r1; dot_general_pick (a1, b1, c1) (nb, r_out) i›;
+      let off_ein2 = %core.nat.add (nb, n_s1_res);
+      let ein_2    = ‹i: r2; dot_general_pick (a2, b2, c2) (off_ein2, r_out) i›;
       %tensor.map_reduce @2 s_out (f, R#_0) (ein_1, ein_2) (a, b);
 
 lam %tensor.prod_2d_lam [R: Ring] {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
-        = %tensor.dot_general R @(2, 2) @(1, 0) @((m, k), (k, l)) (0_2, 1_2, (), ()) (t1, t2);
+        = %tensor.dot_general R @(2, 2) @(1, 0) @((m, k), (k, l)) (1_2, 0_2, (), ()) (t1, t2);

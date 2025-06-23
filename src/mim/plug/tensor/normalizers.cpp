@@ -15,7 +15,8 @@ namespace mim::plug::tensor {
 
 const Def* op_get(const Def* T, const Def* r, const Def* s, const Def* arr, const Def* index) {
     auto& w = arr->world();
-    auto f  = w.app(w.annex<tensor::get>(), {T, r, s});
+    auto f  = w.annex<tensor::get>();
+    f       = w.app(f, {T, r, s});
     f       = w.app(f, {arr, index});
     return f;
 }
@@ -68,22 +69,25 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
 
     auto [arr, index, x] = arg->projs<3>();
     w.DLOG("normalize_set");
-    w.DLOG("arr = {} : {}", arr, arr->type());
-    w.DLOG("index = {} : {}", index, index->type());
-    w.DLOG("x = {} : {}", x, x->type());
+    w.DLOG("    arr = {} : {}", arr, arr->type());
+    w.DLOG("    index = {} : {}", index, index->type());
+    w.DLOG("    x = {} : {}", x, x->type());
 
     auto size = index->num_projs();
-    w.DLOG("size = {}", size);
+    w.DLOG("    size = {}", size);
     if (size == 1) {
         w.DLOG("index of size 1, extract");
         return w.insert(arr, index, x);
     }
 
     auto idx = index->proj(0);
-    w.DLOG("idx = {} : {}", idx, idx->type());
+    w.DLOG("    idx = {} : {}", idx, idx->type());
 
-    auto callee    = c->as<App>();
+    auto callee = c->as<App>();
     auto [T, r, s] = callee->args<3>();
+    w.DLOG("    T = {} : {}", T, T->type());
+    w.DLOG("    r = {} : {}", r, r->type());
+    w.DLOG("    s = {} : {}", s, s->type());
 
     auto r_lit = r->isa<Lit>();
     if (!r_lit) return nullptr;
@@ -101,12 +105,12 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
     return w.insert(arr, idx, new_arr);
 }
 
-std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def* exit, const char* name = "for_body") {
-    auto& world = bound->world();
-    auto acc_ty = world.tuple(acc)->type();
-    auto body
-        = world.mut_con({/* iter */ world.type_i32(), /* acc */ acc_ty, /* return */ world.cn(acc_ty)})->set(name);
-    auto for_loop = affine::op_for(world, world.lit_i32(0), bound, world.lit_i32(1), acc, body, exit);
+std::pair<Lam*, const Def*>
+counting_for(const Def* bound, const Def* acc, const Def* exit, const char* name = "for_body") {
+    auto& w       = bound->world();
+    auto acc_ty   = acc->type();
+    auto body     = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
+    auto for_loop = affine::op_for(w, w.lit_i32(0), bound, w.lit_i32(1), {acc}, body, exit);
     return {body, for_loop};
 }
 
@@ -273,11 +277,12 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
     // auto mem_type = w.annex<mem::M>();
     // auto fun      = w.mut_fun(mem_type, map_reduce_ax->type())->set("mapRed");
     auto fun = w.mut_fun(w.sigma(), type)->set("mapRed");
+    w.DLOG("fun {} : {}", fun, fun->type());
 
     // assert(0);
-    auto ds_fun = direct::op_cps2ds_dep(fun);
+    auto ds_fun = direct::op_cps2ds_dep(fun)->set("dsFun");
     w.DLOG("ds_fun {} : {}", ds_fun, ds_fun->type());
-    auto call = w.app(ds_fun, w.tuple());
+    auto call = w.app(ds_fun, w.tuple())->set("call");
     w.DLOG("call {} : {}", call, call->type());
 
     // flowchart:
@@ -310,13 +315,14 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
     // auto [mem2, init_mat] = w.app(w.annex<matrix::init>(), {n, S, T, current_mem})->projs<2>();
     // current_mem           = mem2;
     auto init_mat = w.bot(type);
+    w.DLOG("init_mat {} : {}", init_mat, init_mat->type());
 
     // The function on where to continue -- return after all output loops.
     auto cont        = fun->var(1);
     auto current_mut = fun;
 
     // Each of the outer loops contains the memory and matrix as accumulator (in an inner monad).
-    DefVec acc = {init_mat};
+    auto acc = init_mat;
 
     for (auto idx : out_indices) {
         auto for_name    = w.sym("forIn_" + std::to_string(idx));
@@ -328,8 +334,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         cont                        = yield;
         raw_iterator[idx]           = iter;
         iterator[idx]               = w.call<core::bitcast>(w.type_idx(dim_nat_def), iter);
-        auto new_mat                = new_acc->proj(0);
-        acc                         = {new_mat};
+        acc                         = new_acc;
         current_mut->set(true, for_call);
         current_mut = body;
     }
@@ -341,7 +346,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
     // First create the accumulator.
     auto element_acc = zero;
     element_acc->set("acc");
-    auto wb_matrix = acc[0];
+    auto wb_matrix = acc;
     assert(wb_matrix);
     w.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
 
@@ -368,7 +373,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
     write_back->app(true, cont, {written_matrix});
 
     // From here on the continuations take the element and memory.
-    acc  = {element_acc};
+    acc  = element_acc;
     cont = write_back;
 
     // TODO this is copy&paste code from above
@@ -382,8 +387,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         cont                        = yield;
         raw_iterator[idx]           = iter;
         iterator[idx]               = w.call<core::bitcast>(w.type_idx(dim_nat_def), iter);
-        auto new_element            = new_acc->proj(0);
-        acc                         = {new_element};
+        acc                         = new_acc;
         current_mut->set(true, for_call);
         current_mut = body;
     }
@@ -391,7 +395,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
     // For testing: id in innermost loop instead of read, fun:
     // current_mut->app(true, cont, acc);
 
-    element_acc = acc[0];
+    element_acc = acc;
 
     // Read element from input matrix.
     DefVec input_elements((size_t)m_nat);
@@ -400,6 +404,10 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         auto input_idx_tup = subs->proj(m_nat, i);
         auto input_matrix  = inputs->proj(m_nat, i);
         // auto [input_idx_tup, input_matrix] = input_i->projs<2>();
+
+        auto input_T = TI->proj(m_nat, i);
+        auto input_N = NI->proj(m_nat, i);
+        auto input_S = SI->proj(m_nat, i);
 
         w.DLOG("input matrix {} is {} : {}", i, input_matrix, input_matrix->type());
 
@@ -412,7 +420,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         });
         auto input_it_tuple  = w.tuple(input_iterators);
 
-        auto read_entry = op_get(T, n, S, input_matrix, input_it_tuple);
+        auto read_entry = op_get(input_T, input_N, input_S, input_matrix, input_it_tuple);
         w.DLOG("read_entry {} : {}", read_entry, read_entry->type());
         auto element_i = read_entry->proj(0);
         // current_mem               = new_mem;
