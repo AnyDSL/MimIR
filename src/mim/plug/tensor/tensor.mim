@@ -178,5 +178,5 @@ lam %tensor.dot_general
       let ein_2    = ‹i: r2; dot_general_pick (a2, b2, c2) (off_ein2, r_out) i›;
       %tensor.map_reduce @2 s_out (f, R#_0) (ein_1, ein_2) (a, b);
 
-lam %tensor.prod_2d_lam [R: Ring] {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
-        = %tensor.dot_general R @(2, 2) @(1, 0) @((m, k), (k, l)) (1_2, 0_2, (), ()) (t1, t2);
+/// lam %tensor.prod_2d_lam [R: Ring] {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
+///         = %tensor.dot_general R @(2, 2) @(1, 0) @((m, k), (k, l)) (1_2, 0_2, (), ()) (t1, t2);

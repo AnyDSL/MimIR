@@ -2,6 +2,8 @@
 plugin tensor;
 plugin refly;
 plugin core;
+plugin direct;
+plugin affine;
 
 let m0 = ((1, 2), (3, 4));
 let m1 = ((1, 2, 3), (4, 5, 6));
@@ -27,73 +29,86 @@ fun f1 (n m: Nat): Nat = return m;
 lam f(): Ring = (Nat, 0, %core.nat.add, %core.nat.mul);
 let R = f ();
 
-/// let r = 2;
-/// let nc = 1;
-/// let nb = 0;
-/// let s = (2, 2);
-/// let c1 = 1_2;
-/// let c2 = 0_2;
-/// let b = ();
+let r = 2;
+let nc = 1;
+let nb = 0;
+let s = (2, 2);
+let c1 = 1_2;
+let c2 = 0_2;
+let b = ();
 
-/// lam test (m k l: Nat) (t1: «m, k; Nat», t2: «k, l; Nat»): Nat =
+let m = 2;
+let k = 2;
+let l = 2;
+let t1 = m0;
+let t2 = m0;
 
-///     let s1 = (m, k);
-///     let s2 = (k, l);
+let s1 = (m, k);
+let s2 = (k, l);
 
-///     let bs = ‹i: nb; s1#(b#i)›;
-///     let _ = %refly.equiv.struc_eq (bs, ());
+let bs = ‹i: nb; s1#(b#i)›;
+let _ = %refly.equiv.struc_eq (bs, ());
 
-///     let bc_1     = %tuple.cat_uniform (b, c1);
-///     let _ = %refly.equiv.struc_eq (bc_1, 1_2);
+let bc_1     = %tuple.cat_uniform (b, c1);
+let _ = %refly.equiv.struc_eq (bc_1, 1_2);
 
-///     let s1_res   = %vec.diff (s1, bc_1);
-///     let _ = %refly.equiv.struc_eq (s1_res, m);
+let s1_res   = %vec.diff (s1, bc_1);
+let _ = %refly.equiv.struc_eq (s1_res, m);
 
-///     let n_s1_res = %vec.len s1_res;
-///     let _ = %refly.equiv.struc_eq (n_s1_res, 1);
+let n_s1_res = %vec.len s1_res;
+let _ = %refly.equiv.struc_eq (n_s1_res, 1);
 
-///     let bc_2     = %tuple.cat_uniform (b, c2);
-///     let _ = %refly.equiv.struc_eq (bc_2, 0_2);
+let bc_2     = %tuple.cat_uniform (b, c2);
+let _ = %refly.equiv.struc_eq (bc_2, 0_2);
 
-///     let s2_res   = %vec.diff (s2, bc_2);
-///     let _ = %refly.equiv.struc_eq (s2_res, l);
+let s2_res   = %vec.diff (s2, bc_2);
+let _ = %refly.equiv.struc_eq (s2_res, l);
 
-///     let n_s2_res = %vec.len s1_res;
-///     let _ = %refly.equiv.struc_eq (n_s2_res, 1);
+let n_s2_res = %vec.len s1_res;
+let _ = %refly.equiv.struc_eq (n_s2_res, 1);
 
-///     let s12_res  = %tuple.cat_uniform (s1_res, s2_res);
-///     let _ = %refly.equiv.struc_eq (s12_res, (m, l));
+let s12_res  = %tuple.cat_uniform (s1_res, s2_res);
+let _ = %refly.equiv.struc_eq (s12_res, (m, l));
 
-///     let s_out    = %tuple.cat_uniform (bs, s12_res);
-///     let _ = %refly.equiv.struc_eq (s_out, (m, l));
+let s_out    = %tuple.cat_uniform (bs, s12_res);
+let _ = %refly.equiv.struc_eq (s_out, (m, l));
 
-///     let f        = dot_general_fun R;
-///     let r_out    = %vec.len s_out;
+let f        = dot_general_fun R;
+let r_out    = %vec.len s_out;
 
-///     let a1       = %vec.diff (‹i: r; i›, bc_1);
-///     let a2       = %vec.diff (‹i: r; i›, bc_2);
-///     let _ = %refly.equiv.struc_eq (a1, 0_2);
-///     let _ = %refly.equiv.struc_eq (a2, 1_2);
+let a1       = %vec.diff (‹i: r; i›, bc_1);
+let a2       = %vec.diff (‹i: r; i›, bc_2);
+let _ = %refly.equiv.struc_eq (a1, 0_2);
+let _ = %refly.equiv.struc_eq (a2, 1_2);
 
-///     let ein_1    = ‹i: r; dot_general_pick (a1, b, c1) (0, r_out) i›;
-///     let ein_2    = ‹i: r; dot_general_pick (a2, b, c2) (1, r_out) i›;
+let ein_1    = ‹i: r; dot_general_pick (a1, b, c1) (0, r_out) i›;
+let ein_2    = ‹i: r; dot_general_pick (a2, b, c2) (1, r_out) i›;
 
-///     let (ab, ai) = %vec.first (%core.icmp.e @2) (a2, 1_2);
-///     let (bb, bi) = %vec.first (%core.icmp.e @2) (b, 1_2);
-///     let (cb, ci) = %vec.first (%core.icmp.e @2) (c2, 1_2);
-///     let bi_nat = %core.bitcast Nat bi;
-///     let ci_nat = %core.bitcast Nat ci;
-///     let ci_out = %core.nat.add (2, ci_nat);
-///     let ai_nat = %core.bitcast Nat ai;
-///     let ai_out = %core.nat.add (1, ai_nat);
-///     let _ = %refly.equiv.struc_eq (bb, ff);
-///     let _ = %refly.equiv.struc_eq (cb, ff);
-///     let _ = %refly.equiv.struc_eq (ci_out, 2);
+let (ab, ai) = %vec.first (%core.icmp.e @2) (a2, 1_2);
+let (bb, bi) = %vec.first (%core.icmp.e @2) (b, 1_2);
+let (cb, ci) = %vec.first (%core.icmp.e @2) (c2, 1_2);
+let bi_nat = %core.bitcast Nat bi;
+let ci_nat = %core.bitcast Nat ci;
+let ci_out = %core.nat.add (2, ci_nat);
+let ai_nat = %core.bitcast Nat ai;
+let ai_out = %core.nat.add (1, ai_nat);
+let _ = %refly.equiv.struc_eq (bb, ff);
+let _ = %refly.equiv.struc_eq (cb, ff);
+let _ = %refly.equiv.struc_eq (ci_out, 2);
 
-///     let _ = %refly.equiv.struc_eq (ein_2, (2, 1));
+let _ = %refly.equiv.struc_eq (ein_2, (2, 1));
 
-///     0;
+let dot = %tensor.map_reduce @2 @(Nat, 2) s_out @(‹2; Nat›, ‹2; 2›, ((m, k), (k, l))) (f, 0) (ein_1, ein_2) (t1, t2);
 
+fun extern main() = return dot;
+
+/// let dot_ = %tensor.dot_general R @(2, 2) @(1, 0) @((m, k), (k, l)) (1_2, 0_2, (), ()) (t1, t2);
+
+/// let _ = %refly.equiv.struc_eq (dot, ((1, 2), (2, 3)));
+
+/// let mp1 = test (2, 2, 2) (0_2, 0_2) (m0, m0);
+
+/// let _ = %refly.equiv.struc_eq (mp1, 7);
 
 /// let mp1 = %tensor.prod_2d_lam R m0 m0;
 
