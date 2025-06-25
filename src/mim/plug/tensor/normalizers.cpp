@@ -83,7 +83,7 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
     auto idx = index->proj(0);
     w.DLOG("    idx = {} : {}", idx, idx->type());
 
-    auto callee = c->as<App>();
+    auto callee    = c->as<App>();
     auto [T, r, s] = callee->args<3>();
     w.DLOG("    T = {} : {}", T, T->type());
     w.DLOG("    r = {} : {}", r, r->type());
@@ -107,9 +107,9 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
 
 std::pair<Lam*, const Def*>
 counting_for(const Def* bound, const Def* acc, const Def* exit, const char* name = "for_body") {
-    auto& w       = bound->world();
-    auto acc_ty   = acc->type();
-    auto body     = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
+    auto& w     = bound->world();
+    auto acc_ty = acc->type();
+    auto body   = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
     auto for_loop = affine::op_for(w, w.lit_i32(0), bound, w.lit_i32(1), {acc}, body, exit);
     return {body, for_loop};
 }
@@ -256,6 +256,9 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
                         assert(dim_lit->get<u64>() == prev_dim_lit->get<u64>() && "dimensions must be equal");
                     else
                         dims[idx_nat] = dim;
+                } else if (dim != prev_dim) {
+                    w.DLOG("dimensions {} and {} must be equal", dim, prev_dim);
+                    return nullptr;
                 }
             }
         }
@@ -328,6 +331,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         auto for_name    = w.sym("forIn_" + std::to_string(idx));
         auto dim_nat_def = dims[idx];
         auto dim         = w.call<core::bitcast>(w.type_i32(), dim_nat_def);
+        w.DLOG("out_cont {} : {}", cont, cont->type());
 
         auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
         auto [iter, new_acc, yield] = body->vars<3>();
@@ -381,6 +385,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         auto for_name    = w.sym("forIn_" + std::to_string(idx));
         auto dim_nat_def = dims[idx];
         auto dim         = w.call<core::bitcast>(w.type_i32(), dim_nat_def);
+        w.DLOG("in_cont {} : {}", cont, cont->type());
 
         auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
         auto [iter, new_acc, yield] = body->vars<3>();
