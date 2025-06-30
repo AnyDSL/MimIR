@@ -39,12 +39,13 @@ public:
     ///@{
     virtual const Def* rewrite(const Def*);
     virtual const Def* rewrite_imm(const Def*);
-    virtual const Def* rewrite_mut(Def*);
+    virtual const Def* rewrite_mut(Def*, bool immutablize);
 
     virtual const Def* rewrite_arr(const Arr* arr) { return rewrite_seq(arr); }
     virtual const Def* rewrite_pack(const Pack* pack) { return rewrite_seq(pack); }
     virtual const Def* rewrite_seq(const Seq*);
     virtual const Def* rewrite_extract(const Extract*);
+    virtual const Def* rewrite_var(const Var*);
     virtual const Def* rewrite_hole(Hole*);
     ///@}
 
@@ -68,10 +69,10 @@ public:
         return imm;
     }
 
-    const Def* rewrite_mut(Def* mut) final {
+    const Def* rewrite_mut(Def* mut, bool immutablize) final {
         if (vars_.has_intersection(mut->free_vars())) {
             if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
-            return Rewriter::rewrite_mut(mut);
+            return Rewriter::rewrite_mut(mut, immutablize);
         }
         return map(mut, mut);
     }
