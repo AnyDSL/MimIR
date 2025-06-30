@@ -5,5 +5,9 @@ plugin core;
 plugin direct;
 plugin affine;
 
-lam prod_2d_lam [R: Ring] {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
-        = %tensor.dot_general R (1_2, 0_2, (), ()) @((m, k), (k, l)) (t1, t2);
+let m0 = ((1, 2), (3, 4));
+
+lam r(): Ring = (Nat, 0, %core.nat.add, %core.nat.mul);
+let R = r ();
+
+let dot2d = %tensor.prod_2d_lam R (m0, m0);
