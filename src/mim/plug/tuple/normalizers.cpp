@@ -20,6 +20,10 @@ const Def* normalize_cat(const Def* type, const Def* callee, const Def* arg) {
     return nullptr;
 }
 
+const Def* normalize_cat_uniform(const Def* type, const Def* callee, const Def* arg) {
+    return normalize_cat(type, callee, arg);
+}
+
 const Def* normalize_contains(const Def* type, const Def*, const Def* arg) {
     auto& w      = type->world();
     auto [xs, x] = arg->projs<2>();
