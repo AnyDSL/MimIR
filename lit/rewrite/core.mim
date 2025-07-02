@@ -1,0 +1,12 @@
+// RUN: %mim %s
+
+plugin core;
+
+let zero_neutral = rule (x:Nat) : %core.nat.add (x, 0) => x;
+
+let zero_sub = rule (x:Nat) : %core.nat.sub (0,x) => 0;
+let zero_mul = rule (x:Nat) : %core.nat.mul (0, x) => 0;
+
+let one_mul = rule (x:Nat) : %core.nat.mul (1, x) => x;
+
+let sub_zero = rule (x: Nat) : %core.nat.sub (x, 0) => x;

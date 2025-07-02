@@ -10,4 +10,6 @@ let swap_plus = rule (x: Nat, y: Nat): %core.nat.add (x, y) => %core.nat.add (y,
 
 let swap = rule (T: *, f: T→T→T, x: T, y: T):  f x y => f y x;
 
-let idet = rule (T : *, x : T) : x => x;
+//let idet = rule (T : *, x : T) : x => x;
+
+// let fail = rule (T: *, x : T) : x => (x , x);
