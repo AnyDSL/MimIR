@@ -194,14 +194,14 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
     if (auto pi = callee->type()->isa<Pi>()) {
         if (auto new_arg = Checker::assignable(pi->dom(), arg)) {
             arg = new_arg->zonk();
-            if (auto imm = callee->isa_imm<Lam>()) return imm->body();
+            if (auto imm = callee->isa_imm<Lam>()) return apply_rules(imm->body());
 
             if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
                 if (auto var = lam->has_var()) {
                     if (auto i = move_.substs.find({var, arg}); i != move_.substs.end()) {
                         // Is there a cached version?
                         auto [filter, body] = i->second->defs<2>();
-                        if (filter == lit_tt()) return body;
+                        if (filter == lit_tt()) return apply_rules(body);
                     } else {
                         // First check filter, If true, reduce body and cache reduct.
                         auto rw     = VarRewriter(var, arg);
@@ -215,11 +215,11 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                             reduct->defs_[0] = filter;
                             reduct->defs_[1] = body;
                             assert_emplace(move_.substs, std::pair{var, arg}, reduct);
-                            return body;
+                            return apply_rules(body);
                         }
                     }
                 } else if (lam->filter() == lit_tt()) {
-                    return lam->body();
+                    return apply_rules(lam->body());
                 }
             }
 

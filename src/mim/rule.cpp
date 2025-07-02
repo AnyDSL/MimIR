@@ -63,7 +63,7 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2) const {
 const Def* Rule::replace(const Def* expr) const { return Rule::replace(lhs(), expr); }
 
 const Def* Rule::replace(const Def* exp1, const Def* exp2) const {
-    const Def* res = exp2;
+    const Def* res = rhs();
     if (auto v = exp1->isa<Var>()) {
         if (v->mut()->isa<Rule>()) {
             // base case, we bind the actual value to the meta var and replace it in rhs

@@ -192,10 +192,7 @@ const Pi* Pi::immutabilize() {
     return nullptr;
 }
 
-const Rule* Rule::immutabilize() {
-    if (is_immutabilizable()) return world().rule(type(), lhs(), rhs());
-    return nullptr;
-}
+const Rule* Rule::immutabilize() { return world().rule(type(), lhs(), rhs()); }
 
 const Def* Sigma::immutabilize() {
     if (is_immutabilizable()) return static_cast<const Sigma*>(world().sigma(ops()));
