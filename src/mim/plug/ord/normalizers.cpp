@@ -2,6 +2,8 @@
 
 #include "mim/plug/ord/ord.h"
 
+#include "fe/assert.h"
+
 namespace mim::plug::ord {
 
 template<init id> const Def* normalize_init(const Def* type, const Def* callee, const Def* arg) {
@@ -61,6 +63,7 @@ template<insert id> const Def* normalize_insert(const Def* type, const Def*, con
                 for (size_t i = 0, e = *l; i != e; ++i) {
                     auto key = id == ord::insert::map ? kv->proj(2, 0) : kv;
                     auto cur = tuple->proj(e, i);
+                    if (id == ord::insert::map) cur = cur->proj(2, 0);
                     if (key == cur) {
                         updated = true;
                         new_ops.emplace_back(kv);
