@@ -417,7 +417,7 @@ var namespacemim_1_1plug =
       [ "normalize_contains", "namespacemim_1_1plug_1_1ord.html#a8bccaea168c844dbebc2f252cdf37a11", null ],
       [ "normalize_get", "namespacemim_1_1plug_1_1ord.html#aca23be19d49b0a5baa10f74760b2e4ef", null ],
       [ "normalize_init", "namespacemim_1_1plug_1_1ord.html#acfdfd946d58d1ec4b8773d1e87204a17", null ],
-      [ "normalize_insert", "namespacemim_1_1plug_1_1ord.html#a0804d375201e08be1ad389eff4b0670a", null ],
+      [ "normalize_insert", "namespacemim_1_1plug_1_1ord.html#a0a0cd2de80b19c6442cca3a48c25c376", null ],
       [ "normalize_size", "namespacemim_1_1plug_1_1ord.html#a43293b1d5a0e603e953bfbed048d5a99", null ],
       [ "register_normalizers", "namespacemim_1_1plug_1_1ord.html#a24f01b06e141f8ed2ac155dbdd36fdd9", null ],
       [ "Plugin_Id", "namespacemim_1_1plug_1_1ord.html#a755ae6a7f2ee39cdcf28d325d8bbfd39", null ]
