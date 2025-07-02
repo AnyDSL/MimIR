@@ -229,13 +229,13 @@ template<nat id> const Def* normalize_nat(const Def* type, const Def* callee, co
             }
         }
 
-        if (*la == 0) {
-            switch (id) {
-                case nat::add: return b;
-                case nat::sub: return a; // 0 - b = 0
-                case nat::mul: return a; // 0 * b = 0
-            }
-        }
+        // if (*la == 0) {
+        //     switch (id) {
+        //         case nat::add: return b;
+        //         case nat::sub: return a; // 0 - b = 0
+        //         case nat::mul: return a; // 0 * b = 0
+        //     }
+        // }
 
         if (*la == 1 && id == nat::mul) return b; // 1 * b = b
     }
