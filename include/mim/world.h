@@ -551,6 +551,10 @@ public:
     void dot(const char* file = nullptr, bool annexes = false, bool types = false) const;
     ///@}
 
+    /// Try to apply all known rewrites to an expression
+    const Def* apply_rules(const Def* expr);
+    void register_rule(const Rule* rule);
+
 private:
     /// @name call_
     /// Helpers to unwind World::call with variadic templates.
@@ -722,6 +726,8 @@ private:
         assert(&w1.univ()->world() == &w1);
         assert(&w2.univ()->world() == &w2);
     }
+
+    absl::btree_set<const Rule*> known_rules_;
 };
 
 } // namespace mim

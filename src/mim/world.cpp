@@ -231,7 +231,7 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                 curry = curry == Axm::Trip_End ? curry : curry - 1;
 
                 if (auto normalizer = axm->normalizer(); Normalize && normalizer && curry == 0) {
-                    if (auto norm = normalizer(type, callee, arg)) return norm;
+                    if (auto norm = normalizer(type, callee, arg)) return apply_rules(norm);
                 }
             }
 
@@ -676,6 +676,15 @@ Defs World::reduce(const Var* var, const Def* arg) {
     assert_emplace(move_.substs, std::pair{var, arg}, reduct);
     return reduct->defs();
 }
+
+const Def* World::apply_rules(const Def* expr) {
+    if (known_rules_.empty()) return expr;
+    for (auto& rule : known_rules_)
+        if (rule != nullptr && rule->its_a_match(expr)) return rule->replace(expr);
+    return expr;
+}
+
+void World::register_rule(const Rule* rule) { known_rules_.insert(rule); }
 
 /*
  * debugging

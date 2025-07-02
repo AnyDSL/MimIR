@@ -44,7 +44,6 @@ private:
 
 public:
     /// @name lhs & rhs
-    /// @anchor
     /// @see @ref proj
     ///@{
     const RuleType* type() const { return Def::type()->as<RuleType>(); }
@@ -68,7 +67,6 @@ public:
     ///@{
     const Def* check(size_t, const Def*) override;
     const Def* check() override;
-    //    static const Def* infer(World&, const Def*, const Def*);
     ///@}
 
     /// @name Rebuild
@@ -77,6 +75,14 @@ public:
     const Rule* immutabilize() override;
     const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept override { return 1; }
+    ///@}
+
+    /// @name Apply
+    ///@{
+    bool its_a_match(const Def* expr) const;
+    bool its_a_match(const Def* lhs, const Def* rhs) const;
+    const Def* replace(const Def* expr) const;
+    const Def* replace(const Def* exp1, const Def* exp2) const;
     ///@}
 
     static constexpr auto Node = mim::Node::Rule;

@@ -504,7 +504,9 @@ const Def* RuleDecl::emit_(Emitter& e) const {
     auto meta_t = e.world().rule_type(var()->emit_type(e));
     auto rule_  = e.world().mut_rule(meta_t);
     var()->emit_value(e, rule_->var());
-    return rule_->set(lhs()->emit(e), rhs()->emit(e));
+    auto res = rule_->set(lhs()->emit(e), rhs()->emit(e));
+    e.world().register_rule(res);
+    return res;
 }
 
 } // namespace mim::ast

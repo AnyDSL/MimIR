@@ -395,12 +395,15 @@ const Def* RuleType::check() {
 const Def* RuleType::infer(const Def* meta_type) { return meta_type->unfold_type(); }
 
 const Def* Rule::check() {
+    auto t1 = lhs()->type();
+    auto t2 = rhs()->type();
+    if (!Checker::alpha<Checker::Check>(t1, t2))
+        error(type()->loc(), "type mismatch: '{}' for lhs, but '{}' for rhs", t1, t2);
     return type();
-    // TODO: do actual checks
 }
 
-const Def* Rule::check(size_t, const Def*) {
-    return type();
+const Def* Rule::check(size_t, const Def* def) {
+    return def;
     // TODO: do actual check + what are the parameters ?
 }
 
