@@ -1,11 +1,13 @@
 #include <mim/world.h>
 #include <fe/sym.h>
 #include <pybind11/pybind11.h>
+#include <mim/def.h>
+
 namespace py = pybind11;
 namespace mim{
     class PyWorld {
         private:
-            World* wrld_;
+            mim::World* wrld_;
         public:
             PyWorld(World* world){
                 wrld_ = world;
