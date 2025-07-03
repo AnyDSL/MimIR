@@ -17,9 +17,9 @@ template<size> const Def* normalize_size(const Def*, const Def*, const Def* arg)
 }
 
 const Def* normalize_get(const Def*, const Def*, const Def* arg) {
-    auto [c, k] = arg->projs<2>();
+    auto [map, k] = arg->projs<2>();
 
-    if (auto init = Axm::isa<ord::init>(c)) {
+    if (auto init = Axm::isa<ord::init>(map)) {
         if (auto tuple = init->arg()->isa<Tuple>()) {
             for (auto kv : tuple->ops())
                 if (kv->proj(2, 0) == k) return kv->proj(2, 1);
@@ -48,39 +48,42 @@ template<contains id> const Def* normalize_contains(const Def*, const Def*, cons
     return nullptr;
 }
 
-template<insert id> const Def* normalize_insert(const Def*, const Def*, const Def*) {
-    return nullptr;
-#if 0
-    auto& world    = type->world();
-    auto [c, kv] = arg->projs<2>();
+template<insert id> const Def* normalize_insert(const Def* type, const Def*, const Def* arg) {
+    auto& w       = type->world();
+    auto [ms, kv] = arg->projs<2>();
 
-    if (auto init = Axm::isa<ord::init>(c)) {
+    if (auto init = Axm::isa<ord::init>(ms)) {
         if (auto tuple = init->arg()->isa<Tuple>()) {
             auto n  = init->decurry()->arg();
-            auto KV = init->decurry()->decurry()->arg();
+            auto lt = init->decurry()->decurry()->arg();
+            auto KV = init->decurry()->decurry()->decurry()->arg();
             if (auto l = Lit::isa(n)) {
-                DefVec new_ops;
+                auto new_ops = DefVec();
                 bool updated = false;
                 for (size_t i = 0, e = *l; i != e; ++i) {
-                    auto key = id == mem::map ? kv->proj(2, 0) : kv;
-                    auto kv = tuple->proj(e, i);
-                    if (kv->proj(2, 0) == k) {
+                    auto key = id == ord::insert::map ? kv->proj(2, 0) : kv;
+                    auto cur = tuple->proj(e, i);
+                    if (id == ord::insert::map) cur = cur->proj(2, 0);
+                    if (key == cur) {
                         updated = true;
-                        new_ops.emplace_back(world.tuple({k, v}));
+                        new_ops.emplace_back(kv);
                     } else {
                         new_ops.emplace_back(tuple->proj(e, i));
                     }
                 }
-                if (!updated) new_ops.emplace_back(world.tuple({k, v}));
-                return world.call(id, KV, new_ops.size(), Defs(new_ops));
+                if (!updated) new_ops.emplace_back(kv);
+                // return w.call(id, lt, Defs(new_ops));
+                auto insert = id == ord::insert::map ? ord::init::map : ord::init::set;
+                auto new_n  = w.lit_nat(new_ops.size());
+                auto res    = w.app(w.app(w.app(w.app(w.annex(insert), KV), lt), new_n), new_ops);
+                return res;
             }
         }
 
         if (auto pack = init->arg()->isa_imm<Pack>()) w.WLOG("packs not yet implemented: {}", pack);
     }
 
-    return world.raw_app(type, callee, arg);
-#endif
+    return {};
 }
 
 MIM_ord_NORMALIZER_IMPL

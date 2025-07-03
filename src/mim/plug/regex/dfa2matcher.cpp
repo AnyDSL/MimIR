@@ -144,9 +144,9 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, const Def* n) {
         }
 
         auto lea       = w.call<mem::lea>(Defs{string, i});
-        auto [mem2, c] = w.call<mem::load>(w.tuple({mem, lea}))->projs<2>();
+        auto [mem2, c] = w.call<mem::load>(Defs{mem, lea})->projs<2>();
 
-        auto is_end  = w.call(core::icmp::e, w.tuple({c, w.lit_i8(0)}));
+        auto is_end  = w.call(core::icmp::e, Defs({c, w.lit_i8(0)}));
         auto not_end = mem::mut_con(w.type_idx(n));
         not_end->debug_prefix("not_end_" + state_to_name(state));
 
