@@ -554,6 +554,7 @@ public:
     /// Try to apply all known rewrites to an expression
     const Def* apply_rules(const Def* expr);
     void register_rule(const Rule* rule);
+    absl::btree_set<const Rule*> all_rules() const { return known_rules_; }
 
 private:
     /// @name call_
@@ -721,6 +722,7 @@ private:
         swap(w1.data_,  w2.data_ );
         swap(w1.move_,  w2.move_ );
         // clang-format on
+        swap(w1.known_rules_, w2.known_rules_);
 
         swap(w1.data_.univ->world_, w2.data_.univ->world_);
         assert(&w1.univ()->world() == &w1);
