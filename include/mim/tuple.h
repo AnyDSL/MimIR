@@ -4,14 +4,20 @@
 
 namespace mim {
 
+/// Base class for Sigma and Tuple.
+class Prod : public Def, public Setters<Prod> {
+protected:
+    using Def::Def;
+};
+
 /// A [dependent tuple type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A3_type).
-/// @see Tuple, Arr, Pack
-class Sigma : public Def, public Setters<Sigma> {
+/// @see Tuple, Arr, Pack, Prod
+class Sigma : public Prod, public Setters<Sigma> {
 private:
     Sigma(const Def* type, Defs ops)
-        : Def(Node, type, ops, 0) {} ///< Constructor for an *immutable* Sigma.
+        : Prod(Node, type, ops, 0) {} ///< Constructor for an *immutable* Sigma.
     Sigma(const Def* type, size_t size)
-        : Def(Node, type, size, 0) {} ///< Constructor for a *mutable* Sigma.
+        : Prod(Node, type, size, 0) {} ///< Constructor for a *mutable* Sigma.
 
 public:
     /// @name Setters
@@ -25,35 +31,35 @@ public:
 
     /// @name Rebuild
     ///@{
-    const Def* immutabilize() override;
+    const Def* immutabilize() final;
     Sigma* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     /// @note Technically, it would make sense to have an offset of 1 as the first element can't be reduced.
     /// For example, in `[n: Nat, F n]` `n` only occurs free in the second element.
     /// However, this would cause a lot of confusion and special code to cope with the first element,
     /// So we just keep it.
-    constexpr size_t reduction_offset() const noexcept override { return 0; }
+    constexpr size_t reduction_offset() const noexcept final { return 0; }
     ///@}
 
     /// @name Type Checking
     ///@{
-    const Def* check(size_t, const Def*) override;
-    const Def* check() override;
+    const Def* check(size_t, const Def*) final;
+    const Def* check() final;
     static const Def* infer(World&, Defs);
     ///@}
 
     static constexpr auto Node = mim::Node::Sigma;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Sigma* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Sigma* stub_(World&, const Def*) final;
 
     friend class World;
 };
 
 /// Data constructor for a Sigma.
-/// @see Sigma, Arr, Pack
-class Tuple : public Def, public Setters<Tuple> {
+/// @see Sigma, Arr, Pack, Prod
+class Tuple : public Prod, public Setters<Tuple> {
 public:
     using Setters<Tuple>::set;
     static const Def* infer(World&, Defs);
@@ -61,28 +67,47 @@ public:
 
 private:
     Tuple(const Def* type, Defs args)
-        : Def(Node, type, args, 0) {}
+        : Prod(Node, type, args, 0) {}
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
+};
+
+/// Base class for Arr and Pack.
+class Seq : public Def, public Setters<Seq> {
+protected:
+    using Def::Def;
+
+public:
+    /// @name ops
+    ///@{
+    virtual const Def* shape() const = 0;
+    const Def* body() const { return ops().back(); }
+    ///@}
+
+    /// @name Rebuild
+    ///@{
+    Seq* stub(World& w, const Def* type) { return Def::stub(w, type)->as<Seq>(); }
+    virtual const Def* rebuild(World&, const Def* shape, const Def* body) const = 0;
+    virtual const Def* prod(World& w, Defs) const = 0; ///< Creates either a Tuple or Sigma.
+    ///@}
 };
 
 /// A (possibly paramterized) Arr%ay.
 /// Arr%ays are usually homogenous but they can be *inhomogenous* as well: `«i: N; T#i»`
 /// @see Sigma, Tuple, Pack
-class Arr : public Def, public Setters<Arr> {
+class Arr : public Seq, public Setters<Arr> {
 private:
     Arr(const Def* type, const Def* shape, const Def* body)
-        : Def(Node, type, {shape, body}, 0) {} ///< Constructor for an *immutable* Arr.
+        : Seq(Node, type, {shape, body}, 0) {} ///< Constructor for an *immutable* Arr.
     Arr(const Def* type)
-        : Def(Node, type, 2, 0) {} ///< Constructor for a *mutable* Arr.
+        : Seq(Node, type, 2, 0) {} ///< Constructor for a *mutable* Arr.
 
 public:
     /// @name ops
     ///@{
-    const Def* shape() const { return op(0); }
-    const Def* body() const { return op(1); }
+    const Def* shape() const final { return op(0); }
     ///@}
 
     /// @name Setters
@@ -91,46 +116,48 @@ public:
     using Setters<Arr>::set;
     Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
+    Arr* set(const Def* shape, const Def* body) { return set_shape(shape)->set_body(body); }
     Arr* unset() { return Def::unset()->as<Arr>(); }
     ///@}
 
     /// @name Rebuild
     ///@{
+    const Def* rebuild(World& w, const Def* shape, const Def* body) const final;
     Arr* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
-    const Def* immutabilize() override;
+    const Def* immutabilize() final;
     const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
-    constexpr size_t reduction_offset() const noexcept override { return 1; }
+    constexpr size_t reduction_offset() const noexcept final { return 1; }
+    const Def* prod(World&, Defs) const final;
     ///@}
 
     /// @name Type Checking
     ///@{
-    const Def* check(size_t, const Def*) override;
-    const Def* check() override;
+    const Def* check(size_t, const Def*) final;
+    const Def* check() final;
     ///@}
 
     static constexpr auto Node = mim::Node::Arr;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Arr* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Arr* stub_(World&, const Def*) final;
 
     friend class World;
 };
 
 /// A (possibly paramterized) Tuple.
 /// @see Sigma, Tuple, Arr
-class Pack : public Def, public Setters<Pack> {
+class Pack : public Seq, public Setters<Pack> {
 private:
     Pack(const Def* type, const Def* body)
-        : Def(Node, type, {body}, 0) {} ///< Constructor for an *immutable* Pack.
+        : Seq(Node, type, {body}, 0) {} ///< Constructor for an *immutable* Pack.
     Pack(const Def* type)
-        : Def(Node, type, 1, 0) {} ///< Constructor for a *mutable* Pack.
+        : Seq(Node, type, 1, 0) {} ///< Constructor for a *mutable* Pack.
 
 public:
     /// @name ops
     ///@{
-    const Def* body() const { return op(0); }
-    const Def* shape() const;
+    const Def* shape() const final;
     ///@}
 
     /// @name Setters
@@ -144,17 +171,19 @@ public:
 
     /// @name Rebuild
     ///@{
+    const Def* rebuild(World& w, const Def* shape, const Def* body) const final;
     Pack* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
-    const Def* immutabilize() override;
+    const Def* immutabilize() final;
     const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
-    constexpr size_t reduction_offset() const noexcept override { return 0; }
+    constexpr size_t reduction_offset() const noexcept final { return 0; }
+    const Def* prod(World&, Defs) const final;
     ///@}
 
     static constexpr auto Node = mim::Node::Pack;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Pack* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Pack* stub_(World&, const Def*) final;
 
     friend class World;
 };
@@ -177,7 +206,7 @@ public:
     static constexpr auto Node = mim::Node::Extract;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -204,7 +233,7 @@ public:
     static constexpr auto Node = mim::Node::Insert;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };

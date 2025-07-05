@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 
 #include <mim/driver.h>
+#include <mim/rewrite.h>
 
 #include <mim/ast/parser.h>
 
@@ -427,5 +428,59 @@ TEST(ADT, Span) {
         check(d_0_6, 0, 6);
         check(d_0_2, 0, 2);
         check(d_3_7, 3, 7);
+    }
+}
+
+TEST(Rewrite, Hole) {
+    Driver driver;
+    World& w = driver.world();
+    auto nat = w.type_nat();
+    auto n23 = w.lit_nat(23);
+
+    auto mk_holes = [&w, nat]() {
+        auto hole1 = w.mut_hole(nat)->set("a");
+        auto hole2 = w.mut_hole(nat)->set("b");
+        auto hole3 = w.mut_hole(nat)->set("c");
+        return std::tuple(hole1, hole2, hole3);
+    };
+
+    {
+        auto [hole1, hole2, hole3] = mk_holes();
+        hole1->set(hole2->set(hole3->set(n23)));
+        auto rw  = Rewriter(w);
+        auto res = rw.rewrite(hole1);
+        ASSERT_EQ(res, n23);
+        ASSERT_EQ(hole1->op(), n23);
+        ASSERT_EQ(hole2->op(), n23);
+        ASSERT_EQ(hole3->op(), n23);
+    }
+
+    {
+        auto [hole1, hole2, hole3] = mk_holes();
+        hole1->set(hole2->set(hole3));
+        auto rw  = Rewriter(w);
+        auto res = rw.rewrite(hole1)->isa<Hole>();
+        ASSERT_EQ(hole1->op(), hole3);
+        ASSERT_EQ(hole2->op(), hole3);
+        ASSERT_TRUE(res);
+    }
+
+    {
+        auto [hole1, hole2, hole3] = mk_holes();
+        hole1->set(hole2->set(hole3->set(n23)));
+        auto res = hole1->zonk();
+        ASSERT_EQ(res, n23);
+        ASSERT_EQ(hole1->op(), n23);
+        ASSERT_EQ(hole2->op(), n23);
+        ASSERT_EQ(hole3->op(), n23);
+    }
+
+    {
+        auto [hole1, hole2, hole3] = mk_holes();
+        hole1->set(hole2->set(hole3));
+        auto res = hole1->zonk();
+        ASSERT_EQ(hole1->op(), hole3);
+        ASSERT_EQ(hole2->op(), hole3);
+        ASSERT_EQ(hole3, res);
     }
 }

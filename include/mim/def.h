@@ -140,7 +140,12 @@ namespace mim {
     auto NAME##s(nat_t a) CONST noexcept { return ((const Def*)NAME())->projs(a); }
 
 /// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-template<class P, class D = Def> class Setters { // D is only needed to make the resolution `D::template set` lazy
+template<class P, class D = Def>
+class // D is only needed to make the resolution `D::template set` lazy
+#ifdef _MSC_VER
+    __declspec(empty_bases)
+#endif
+        Setters {
 private:
     P* super() { return static_cast<P*>(this); }
     const P* super() const { return static_cast<const P*>(this); }
@@ -283,6 +288,11 @@ public:
     Def* set(Defs ops);             ///< Def::set @p ops all at once.
     Def* unset();                   ///< Unsets all Def::ops; works even, if not set at all or partially.
     bool is_set() const;            ///< Yields `true` if empty or the last op is set.
+
+    /// Update type.
+    /// @warning Only make type-preserving updates such as removing Hole%s.
+    /// Do this even before updating all other ops()!.
+    Def* set_type(const Def*);
     ///@}
 
     /// @name deps
@@ -418,7 +428,6 @@ public:
     // clang-format off
     template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
     template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
-    template<class T = Def, class R> const T* isa_imm(R (T::*f)() const) const { return isa_mut<T, R, true>(f); }
     // clang-format on
 
     /// If `this` is *mutable*, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
@@ -498,7 +507,7 @@ public:
     const Def* refine(size_t i, const Def* new_op) const;
 
     /// @see World::reduce
-    template<size_t N = std::dynamic_extent> constexpr auto reduce(const Def* arg) const noexcept {
+    template<size_t N = std::dynamic_extent> constexpr auto reduce(const Def* arg) const {
         return reduce_(arg).span<N>();
     }
 
@@ -524,7 +533,12 @@ public:
     /// Only gues up to but excluding other mutables.
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
+
+    /// zonk%s all ops of this *mutable* and tries to immutabilize it; if it succeeds return it.
+    const Def* zonk_mut();
     ///@}
+
+    static DefVec zonk(Defs);
 
     /// @name dump
     ///@{
@@ -619,7 +633,7 @@ public:
     static constexpr auto Node = mim::Node::Var;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -633,7 +647,7 @@ private:
     Univ(World& world)
         : Def(&world, Node, nullptr, Defs{}, 0) {}
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -646,7 +660,7 @@ public:
 private:
     UMax(World&, Defs ops);
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -668,7 +682,7 @@ public:
     static constexpr auto Node = mim::Node::UInc;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -689,7 +703,7 @@ public:
     static constexpr auto Node = mim::Node::Type;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -727,7 +741,7 @@ public:
     static constexpr auto Node = mim::Node::Lit;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -740,7 +754,7 @@ public:
 private:
     Nat(World& world);
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -786,7 +800,7 @@ public:
     static constexpr auto Node = mim::Node::Idx;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -808,7 +822,7 @@ public:
     static constexpr auto Node = mim::Node::Proxy;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -849,8 +863,8 @@ public:
     static constexpr auto Node = mim::Node::Global;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Global* stub_(World&, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
+    Global* stub_(World&, const Def*) final;
 
     friend class World;
 };

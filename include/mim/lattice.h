@@ -13,7 +13,7 @@ protected:
     Bound(Node node, const Def* type, Defs ops)
         : Def(node, type, ops, 0) {}
 
-    constexpr size_t reduction_offset() const noexcept override { return 0; }
+    constexpr size_t reduction_offset() const noexcept final { return 0; }
 
 public:
     /// @name Get Element by Type
@@ -39,7 +39,7 @@ public:
     static constexpr auto Node = Up ? mim::Node::Join : mim::Node::Meet;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -55,7 +55,7 @@ private:
     Merge(const Def* type, Defs defs)
         : Def(Node, type, defs, 0) {}
 
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -78,7 +78,7 @@ public:
     static constexpr auto Node = mim::Node::Inj;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -100,12 +100,12 @@ public:
     static constexpr auto Node = mim::Node::Split;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
 
-/// Scrutinize Match::value() and dispatch to Match::arms.
+/// Scrutinize Match::scrutinee() and dispatch to Match::arms.
 class Match : public Def, public Setters<Match> {
 private:
     Match(const Def* type, Defs ops)
@@ -117,14 +117,14 @@ public:
 
     /// @name ops
     ///@{
-    const Def* value() const { return op(0); }
+    const Def* scrutinee() const { return op(0); }
     template<size_t N = std::dynamic_extent> constexpr auto arms() const noexcept { return ops().subspan<1, N>(); }
     const Def* arm(size_t i) const { return arms()[i]; }
     size_t num_arms() const { return arms().size(); }
     ///@}
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -148,7 +148,7 @@ public:
     static constexpr auto Node = Up ? mim::Node::Top : mim::Node::Bot;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };
@@ -180,7 +180,7 @@ public:
     static constexpr auto Node = mim::Node::Uniq;
 
 private:
-    const Def* rebuild_(World&, const Def*, Defs) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
 };

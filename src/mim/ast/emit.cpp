@@ -1,4 +1,7 @@
+#include "mim/def.h"
+
 #include "mim/ast/ast.h"
+#include "mim/util/span.h"
 
 using namespace std::literals;
 
@@ -204,6 +207,34 @@ const Def* ArrowExpr::emit_(Emitter& e) const {
     return e.world().pi(d, c);
 }
 
+const Def* UnionExpr::emit_(Emitter& e) const {
+    DefVec etypes;
+    for (auto& t : types()) etypes.emplace_back(t->emit(e));
+    return e.world().join(etypes);
+}
+
+const Def* InjExpr::emit_(Emitter& e) const {
+    auto v = value()->emit(e);
+    auto t = type()->emit(e);
+    return e.world().inj(t, v);
+}
+
+Lam* MatchExpr::Arm::emit(Emitter& e) const {
+    auto _     = e.world().push(loc());
+    auto dom_t = ptrn()->emit_type(e);
+    auto pi    = e.world().pi(dom_t, e.world().mut_hole_type());
+    auto lam   = e.world().mut_lam(pi);
+    ptrn()->emit_value(e, lam->var());
+    return lam->set(true, body()->emit(e));
+}
+
+const Def* MatchExpr::emit_(Emitter& e) const {
+    DefVec res;
+    res.emplace_back(scrutinee()->emit(e));
+    for (const auto& arm : arms()) res.emplace_back(arm->emit(e));
+    return e.world().match(res);
+}
+
 void PiExpr::Dom::emit_type(Emitter& e) const {
     pi_        = decl_ ? decl_ : e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
     auto dom_t = ptrn()->emit_type(e);
@@ -278,18 +309,18 @@ const Def* TupleExpr::emit_(Emitter& e) const {
     return e.world().tuple(elems);
 }
 
-template<bool arr> const Def* ArrOrPackExpr<arr>::emit_(Emitter& e) const {
+const Def* SeqExpr::emit_(Emitter& e) const {
     auto s = shape()->emit_type(e);
     if (shape()->dbg().is_anon()) { // immutable
         auto b = body()->emit(e);
-        return arr ? e.world().arr(s, b) : e.world().pack(s, b);
+        return is_arr() ? e.world().arr(s, b) : e.world().pack(s, b);
     }
 
     auto t = e.world().type_infer_univ();
     auto a = e.world().mut_arr(t);
     a->set_shape(s);
 
-    if (arr) {
+    if (is_arr()) {
         auto var = a->var();
         shape()->emit_value(e, var);
         a->set_body(body()->emit(e));
@@ -306,9 +337,6 @@ template<bool arr> const Def* ArrOrPackExpr<arr>::emit_(Emitter& e) const {
         return p;
     }
 }
-
-template const Def* ArrOrPackExpr<true>::emit_(Emitter&) const;
-template const Def* ArrOrPackExpr<false>::emit_(Emitter&) const;
 
 const Def* ExtractExpr::emit_(Emitter& e) const {
     auto tup = tuple()->emit(e);

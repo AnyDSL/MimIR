@@ -109,6 +109,24 @@ std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} -> {}", S(tab, dom()), S(tab, codom()));
 }
 
+std::ostream& UnionExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "({∪ })", R(tab, types())); }
+
+std::ostream& InjExpr::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "{} inj {}", S(tab, value()), S(tab, type()));
+}
+
+std::ostream& MatchExpr::Arm::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "{} => {}", S(tab, ptrn()), S(tab, body()));
+}
+
+std::ostream& MatchExpr::stream(Tab& tab, std::ostream& os) const {
+    tab.println(os, "match {} {{", S(tab, scrutinee()));
+    ++tab;
+    for (const auto& arm : arms()) tab.println(os, "{},", S(tab, arm.get()));
+    --tab;
+    return tab.println(os, "}}");
+}
+
 std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {
     print(os, "{}{}", is_implicit() ? "." : "", S(tab, ptrn()));
     if (ret()) print(os, " -> {}", S(tab, ret()->type()));
@@ -135,12 +153,9 @@ std::ostream& RetExpr::stream(Tab& tab, std::ostream& os) const {
 std::ostream& SigmaExpr::stream(Tab& tab, std::ostream& os) const { return ptrn()->stream(tab, os); }
 std::ostream& TupleExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "({, })", R(tab, elems())); }
 
-template<bool arr> std::ostream& ArrOrPackExpr<arr>::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{}{}; {}{}", arr ? "«" : "‹", S(tab, shape()), S(tab, body()), arr ? "»" : "›");
+std::ostream& SeqExpr::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "{}{}; {}{}", is_arr() ? "«" : "‹", S(tab, shape()), S(tab, body()), is_arr() ? "»" : "›");
 }
-
-template std::ostream& ArrOrPackExpr<true>::stream(Tab&, std::ostream&) const;
-template std::ostream& ArrOrPackExpr<false>::stream(Tab&, std::ostream&) const;
 
 std::ostream& ExtractExpr::stream(Tab& tab, std::ostream& os) const {
     if (auto expr = std::get_if<Ptr<Expr>>(&index())) return print(os, "{}#{}", S(tab, tuple()), S(tab, expr->get()));

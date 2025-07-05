@@ -314,7 +314,7 @@ void Dumper::dump(Def* mut) {
         if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
         if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
         if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
-        if (auto hole = def->isa<Hole>()) return hole->is_set() ? print(os, ", {}", hole->op()) : print(os, ", ??");
+        if (auto hole = def->isa_mut<Hole>()) return hole->is_set() ? print(os, ", {}", hole->op()) : print(os, ", ??");
         fe::unreachable();
     };
 

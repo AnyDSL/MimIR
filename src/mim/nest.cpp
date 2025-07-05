@@ -79,6 +79,9 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     while (n->level() < m->level()) m = m->parent();
     while (m->level() < n->level()) n = n->parent();
     while (n != m) {
+        // TODO support longer dep chains and and the possibility to opt out from this
+        if (n->deps().depends_.contains(m)) return n;
+        if (m->deps().depends_.contains(n)) return m;
         n = n->parent();
         m = m->parent();
     }

@@ -25,40 +25,71 @@ public:
         : Rewriter(world) {}
 
     const Def* rewrite(const Def* def) override {
-        def = Hole::find(def);
+        if (auto hole = def->isa_mut<Hole>()) {
+            auto [last, op] = hole->find();
+            return op ? rewrite(op) : last;
+        }
+
         return needs_zonk(def) ? Rewriter::rewrite(def) : def;
     }
 };
 
 } // namespace
 
-const Def* Def::zonk() const {
-    auto def = Hole::find(this);
-    return needs_zonk(def) ? Zonker(world()).rewrite(def) : def;
+const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world()).rewrite(this) : this; }
+
+const Def* Def::zonk_mut() {
+    bool zonk = false;
+    for (auto def : deps())
+        if (needs_zonk(def)) {
+            zonk = true;
+            break;
+        }
+
+    if (zonk) {
+        auto zonker   = Zonker(world());
+        auto old_type = type();
+        auto old_ops  = absl::FixedArray<const Def*>(ops().begin(), ops().end());
+        unset();
+        set_type(zonker.rewrite(old_type));
+        for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, zonker.rewrite(old_ops[i]));
+    }
+
+    if (auto imm = immutabilize()) return imm;
+    return nullptr;
+}
+
+DefVec Def::zonk(Defs defs) {
+    return DefVec(defs.size(), [defs](size_t i) { return defs[i]->zonk(); });
 }
 
 /*
  * Hole
  */
 
-const Def* Hole::find(const Def* def) {
-    auto hole1 = def->isa_mut<Hole>();
-    if (!hole1 || !hole1->op()) return def; // early exit if def isn't a Hole or unset;
+std::pair<Hole*, const Def*> Hole::find() {
+    auto def  = Def::op(0);
+    auto last = this;
 
-    // find root
-    auto res = def;
-    for (auto hole = hole1; hole && hole->op(); res = hole->op(), hole = res->isa_mut<Hole>()) {}
-
-    // path compression
-    for (auto hole = hole1;;) {
-        auto next = hole->op();
-        if (next == res) break;
-
-        hole->unset()->set(res);
-        hole = next->isa_mut<Hole>();
+    for (; def;) {
+        if (auto h = def->isa_mut<Hole>()) {
+            def  = h->op();
+            last = h;
+        } else {
+            break;
+        }
     }
 
-    return res;
+    auto root = def ? def : last;
+
+    // path compression
+    for (auto h = this; h != last;) {
+        auto next = h->op()->as_mut<Hole>();
+        h->unset()->set(root);
+        h = next;
+    }
+
+    return {last, def};
 }
 
 const Def* Hole::tuplefy(nat_t n) {
@@ -100,7 +131,7 @@ const Def* Checker::fail() {
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
-    auto ds        = std::array<const Def*, 2>{Hole::find(d1_), Hole::find(d2_)};
+    auto ds        = std::array<const Def*, 2>{d1_->zonk(), d2_->zonk()};
     auto& [d1, d2] = ds;
 
     if (!d1 && !d2) return true;
@@ -132,32 +163,19 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
     // Unless they are pointer equal (above) always consider them unequal.
     if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
+    bool redo = false;
     for (size_t i = 0; i != 2; ++i) {
         auto& mut = muts[i];
         if (!mut || !mut->is_set()) continue;
-
-        bool zonk = false;
-        for (auto def : mut->deps())
-            if (needs_zonk(def)) {
-                zonk = true;
-                break;
-            }
-
-        if (zonk) {
-            auto defs = DefVec(mut->ops().begin(), mut->ops().end());
-            mut->unset();
-            for (size_t i = 0, e = mut->num_ops(); i != e; ++i) mut->set(i, defs[i]->zonk());
-            // mut->type() will be automatically zonked after last op has been set
-        }
-
         size_t other = (i + 1) % 2;
-        if (auto imm = mut->immutabilize())
-            mut = nullptr, ds[i] = imm;
+
+        if (auto imm = mut->zonk_mut())
+            mut = nullptr, ds[i] = imm, redo = true;
         else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
             return i->second == ds[other];
     }
 
-    return alpha_internal<mode>(d1, d2);
+    return redo ? alpha<mode>(d1, d2) : alpha_internal<mode>(d1, d2);
 }
 
 template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
@@ -166,17 +184,55 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
     if (mode == Test && (d1->isa_mut<Hole>() || d2->isa_mut<Hole>())) return fail<mode>();
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
-    if (auto ts = d1->isa<Tuple, Sigma>()) {
-        size_t a = ts->num_ops();
-        for (size_t i = 0; i != a; ++i)
-            if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return fail<mode>();
+    auto check1 = [this](const Arr* arr, const Def* d) {
+        auto body = arr->reduce(world().lit_idx(1, 0))->zonk();
+        if (!alpha_<mode>(body, d)) return fail<mode>();
+        if (auto mut_arr = arr->isa_mut<Arr>()) mut_arr->unset()->set(world().lit_nat_1(), body->zonk());
         return true;
-    } else if (auto pa = d1->isa<Pack, Arr>()) {
-        if (pa->node() == d2->node()) return alpha_<mode>(pa->ops().back(), d2->ops().back());
-        if (auto a = pa->isa_lit_arity()) {
+    };
+
+    if (mode == Mode::Check) {
+        if (auto arr = d1->isa<Arr>();
+            arr && arr->is_set() && arr->shape()->zonk() == world().lit_nat_1() && !d2->isa<Arr>())
+            return check1(arr, d2);
+
+        if (auto arr = d2->isa<Arr>();
+            arr && arr->is_set() && arr->shape()->zonk() == world().lit_nat_1() && !d1->isa<Arr>())
+            return check1(arr, d1);
+    }
+
+    if (auto prod = d1->isa<Prod>()) {
+        size_t a = prod->num_ops();
+        for (size_t i = 0; i != a; ++i)
+            if (!alpha_<mode>(prod->op(i), d2->proj(a, i))) return fail<mode>();
+        return true;
+    } else if (auto seq = d1->isa<Seq>()) {
+        if (seq->node() != d2->node()) return fail<mode>();
+
+        if (auto a = seq->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
+                if (!alpha_<mode>(seq->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
             return true;
+        }
+
+        auto check_arr = [this](Arr* mut_arr, const Arr* imm_arr) {
+            if (!alpha_<mode>(mut_arr->shape(), imm_arr->shape())) return fail<mode>();
+
+            auto mut_shape = mut_arr->shape()->zonk();
+            auto mut_body  = mut_arr->reduce(world().top(world().type_idx(mut_arr->shape())));
+            if (!alpha_<mode>(mut_body, imm_arr->body())) return fail<mode>();
+
+            mut_arr->unset()->set(mut_shape, mut_body->zonk());
+            return true;
+        };
+
+        if (mode == Mode::Check) {
+            if (auto mut_arr = d1->isa_mut<Arr>(); mut_arr && mut_arr->is_set()) {
+                if (auto imm_arr = d2->isa_imm<Arr>()) return check_arr(mut_arr, imm_arr);
+            }
+            if (auto mut_arr = d2->isa_mut<Arr>(); mut_arr && mut_arr->is_set()) {
+                if (auto imm_arr = d1->isa_imm<Arr>()) return check_arr(mut_arr, imm_arr);
+            }
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Hole) && !d2->isa<UMax>()) {
         // .umax(a, ?) == x  =>  .umax(a, x)
@@ -201,7 +257,7 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
 }
 
 const Def* Checker::assignable_(const Def* type, const Def* val) {
-    auto val_ty = Hole::find(val->type());
+    auto val_ty = val->type()->zonk();
     if (type == val_ty) return val;
 
     auto& w = world();
@@ -221,6 +277,7 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
         return w.tuple(new_ops);
     } else if (auto arr = type->isa<Arr>()) {
         if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
+        type = type->zonk(); // TODO hack
 
         // TODO ack sclarize threshold
         if (auto a = Lit::isa(arr->arity())) {
@@ -268,7 +325,7 @@ const Def* Arr::check() {
 
 const Def* Tuple::infer(World& world, Defs ops) {
     auto elems = absl::FixedArray<const Def*>(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
+    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->unfold_type();
     return world.sigma(elems);
 }
 

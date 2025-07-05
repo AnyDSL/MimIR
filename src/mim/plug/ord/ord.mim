@@ -20,14 +20,14 @@ axm %ord.Map: [K V: *] → [[K, K] → Bool] → *;
 ///
 /// ### %%ord.init
 ///
-/// Create set/map from a list of values/key-value-pairs.
+/// Create set / map from a list of values / key-value-pairs.
 ///
 axm %ord.init(set): {K  : *} → [lt: [K, K] → Bool] → {n: Nat} → [«n;  K    »] → %ord.Set  K     lt, normalize_init;
 axm %ord.init(map): {K V: *} → [lt: [K, K] → Bool] → {n: Nat} → [«n; [K, V]»] → %ord.Map (K, V) lt, normalize_init;
 ///
 /// ### %%ord.create
 ///
-/// Create empty set/map.
+/// Create empty set / map.
 ///
 lam %ord.create_set (K  : *)       (lt: [K, K] → Bool): %ord.Set K  lt = %ord.init.set @K  lt @0 ();
 lam %ord.create_map (K V: *) as KV (lt: [K, K] → Bool): %ord.Map KV lt = %ord.init.map @KV lt @0 ();
@@ -68,7 +68,7 @@ axm %ord.contains(map): {K V: *} → {lt: [K, K] → Bool} → [%ord.Map (K, V) 
 ///
 /// ### %%ord.insert
 ///
-/// Insert key/key-value-pair into container.
+/// Insert key / key-value-pair into container.
 ///
 axm %ord.insert(set): {K  : *}       → {lt: [K, K] → Bool} → [%ord.Set K  lt,  K    ] → %ord.Set K  lt, normalize_insert;
 axm %ord.insert(map): {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt, [K, V]] → %ord.Map KV lt, normalize_insert;

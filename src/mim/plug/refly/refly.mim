@@ -14,7 +14,7 @@ import compile;
 ///
 axm %refly.Code: * → *;
 ///
-/// ## Reify/Reflect
+/// ## Reify / Reflect
 ///
 /// ### %%refly.reify
 ///
@@ -57,23 +57,31 @@ let %refly.debug   = 4;
 
 axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;
 ///
-/// ### %%refly.assert
+/// ## Testing
 ///
-/// Nat comparison is made of 3 disjoint relations:
-///     * `G`reater
-///     * `L`ess
+/// ### %%refly.equiv
+///
+/// Checks for structurual / alpha-equivalence.
+/// We are using two disjoint relations:
+///     * `A`lpha
 ///     * `E`qual
 ///
-/// | Subtag | Alias | A | E | Meaning                              |
-/// |--------|-------|---|---|--------------------------------------|
-/// | `ae`   | `f`   | o | o | assert strucutrual equivalent        |
-/// | `aE`   | `e`   | o | x | assert *not* structurual equivalent  |
-/// | `Ae`   | `l`   | x | o | assert alpha equivalent              |
-/// | `AE`   | `le`  | x | x | assert *not* alpha equivalent        |
+/// | Subtag | Alias | A | E | Meaning                               |
+/// |--------|-------|---|---|---------------------------------------|
+/// | `ae`   | `f`   | o | o | assert strucutrual equivalent         |
+/// | `aE`   | `e`   | o | x | assert **not** structurual equivalent |
+/// | `Ae`   | `l`   | x | o | assert alpha equivalent               |
+/// | `AE`   | `le`  | x | x | assert **not** alpha equivalent       |
 ///
 axm %refly.equiv(ae = struc_ne, aE = struc_eq,
                  Ae = alpha_ne, AE = alpha_eq):
     {T: *} → [T, T] → T, normalize_equiv;
+///
+/// ### %%refly.check
+///
+/// Checks the given condition and emits the error message, if false.
+///
+axm %refly.check: {T: *} → {n: Nat} → [Bool, T, «n; I8»] → T, normalize_check;
 ///
 /// ## Manipulate
 ///

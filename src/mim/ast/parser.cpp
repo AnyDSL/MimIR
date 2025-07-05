@@ -159,7 +159,8 @@ Ptr<Module> Parser::import(std::istream& is, Loc loc, const fs::path* path, std:
 }
 
 Ptr<Module> Parser::plugin(Dbg dbg) {
-    if (!driver().flags().bootstrap && !driver().is_loaded(dbg.sym())) driver().load(dbg.sym());
+    // if (!driver().is_loaded(dbg.sym()) && (!driver().flags().bootstrap || driver().world().name() != dbg.sym()))
+    if (!driver().is_loaded(dbg.sym()) && !driver().flags().bootstrap) driver().load(dbg.sym());
     return import(dbg);
 }
 
@@ -230,6 +231,25 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Expr::Prec cu
                 lhs      = ptr<ArrowExpr>(track, std::move(lhs), std::move(rhs));
                 continue;
             }
+            case Tag::T_union: {
+                if (curr_prec >= Expr::Prec::Union) return lhs;
+                lex();
+                Ptrs<Expr> types;
+                types.emplace_back(std::move(lhs));
+                do {
+                    auto t = parse_expr("right-hand side of a union type", Expr::Prec::Union);
+                    types.emplace_back(std::move(t));
+                } while (accept(Tag::T_union));
+                lhs = ptr<UnionExpr>(track, std::move(types));
+                continue;
+            }
+            case Tag::K_inj: {
+                if (curr_prec > Expr::Prec::Inj) return lhs;
+                lex();
+                auto rhs = parse_expr("type a value is injected in", Expr::Prec::Inj);
+                lhs      = ptr<InjExpr>(track, std::move(lhs), std::move(rhs));
+                continue;
+            }
             case Tag::T_at: {
                 if (curr_prec >= Expr::Prec::App) return lhs;
                 lex();
@@ -291,6 +311,22 @@ Ptr<Expr> Parser::parse_uniq_expr() {
     return ptr<UniqExpr>(track, std::move(inhabitant));
 }
 
+Ptr<Expr> Parser::parse_match_expr() {
+    auto track = tracker();
+    expect(Tag::K_match, "opening match for union destruction");
+    auto scrutinee = parse_expr("destroyed union element");
+    expect(Tag::K_with, "match");
+    Ptrs<MatchExpr::Arm> arms;
+    parse_list("match branches", Tag::D_brace_l, [&]() {
+        auto track = tracker();
+        auto ptrn  = parse_ptrn(Paren_Style, "right-hand side of a match-arm", Expr::Prec::Bot);
+        expect(Tag::T_fat_arrow, "arm of a match-expression");
+        auto body = parse_expr("arm of a match-expression");
+        arms.emplace_back(ptr<MatchExpr::Arm>(track, std::move(ptrn), std::move(body)));
+    });
+    return ptr<MatchExpr>(track, std::move(scrutinee), std::move(arms));
+}
+
 Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
@@ -303,11 +339,12 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
         case Tag::D_curly_l: return parse_uniq_expr();
-        case Tag::D_quote_l: return parse_arr_or_pack_expr<true>();
-        case Tag::D_angle_l: return parse_arr_or_pack_expr<false>();
+        case Tag::D_quote_l:
+        case Tag::D_angle_l: return parse_seq_expr();
         case Tag::D_brckt_l: return parse_sigma_expr();
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
+        case Tag::K_match:   return parse_match_expr();
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -316,9 +353,9 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
     return ptr<ErrorExpr>(curr_);
 }
 
-template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
-    auto track = tracker();
-    eat(arr ? Tag::D_quote_l : Tag::D_angle_l);
+Ptr<Expr> Parser::parse_seq_expr() {
+    auto track  = tracker();
+    bool is_arr = accept(Tag::D_quote_l) ? true : (eat(Tag::D_angle_l), false);
 
     std::deque<std::pair<Ptr<IdPtrn>, Ptr<Expr>>> shapes;
 
@@ -329,18 +366,18 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
             eat(Tag::T_colon);
         }
 
-        auto expr = parse_expr(arr ? "shape of an array" : "shape of a pack");
+        auto expr = parse_expr(is_arr ? "shape of an array" : "shape of a pack");
         auto ptrn = IdPtrn::make_id(ast(), dbg, std::move(expr));
         shapes.emplace_back(std::move(ptrn), std::move(expr));
     } while (accept(Tag::T_comma));
 
-    expect(Tag::T_semicolon, arr ? "array" : "pack");
-    auto body = parse_expr(arr ? "body of an array" : "body of a pack");
-    expect(arr ? Tag::D_quote_r : Tag::D_angle_r,
-           arr ? "closing delimiter of an array" : "closing delimiter of a pack");
+    expect(Tag::T_semicolon, is_arr ? "array" : "pack");
+    auto body = parse_expr(is_arr ? "body of an array" : "body of a pack");
+    expect(is_arr ? Tag::D_quote_r : Tag::D_angle_r,
+           is_arr ? "closing delimiter of an array" : "closing delimiter of a pack");
 
     for (auto& [ptrn, expr] : shapes | std::ranges::views::reverse)
-        body = ptr<ArrOrPackExpr<arr>>(track, std::move(ptrn), std::move(body));
+        body = ptr<SeqExpr>(track, is_arr, std::move(ptrn), std::move(body));
 
     return body;
 }

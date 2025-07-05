@@ -11,7 +11,7 @@ public:
     DummyDecl()
         : Decl(Loc()) {}
 
-    std::ostream& stream(Tab&, std::ostream& os) const override { return os << "<dummy>"; }
+    std::ostream& stream(Tab&, std::ostream& os) const final { return os << "<dummy>"; }
 };
 
 class Scopes {
@@ -143,6 +143,27 @@ void ArrowExpr::bind(Scopes& s) const {
     codom()->bind(s);
 }
 
+void UnionExpr::bind(Scopes& s) const {
+    for (auto& type : types()) type->bind(s);
+}
+
+void InjExpr::bind(Scopes& s) const {
+    value()->bind(s);
+    type()->bind(s);
+}
+
+void MatchExpr::Arm::bind(Scopes& s) const {
+    s.push();
+    ptrn()->bind(s, false, false);
+    body()->bind(s);
+    s.pop();
+}
+
+void MatchExpr::bind(Scopes& s) const {
+    scrutinee()->bind(s);
+    for (const auto& arm : arms()) arm->bind(s);
+}
+
 void PiExpr::Dom::bind(Scopes& s, bool quiet) const {
     ptrn()->bind(s, false, quiet);
     if (ret()) ret()->bind(s, false, quiet);
@@ -185,15 +206,12 @@ void TupleExpr::bind(Scopes& s) const {
     for (const auto& elem : elems()) elem->bind(s);
 }
 
-template<bool arr> void ArrOrPackExpr<arr>::bind(Scopes& s) const {
+void SeqExpr::bind(Scopes& s) const {
     s.push();
     shape()->bind(s, false, false);
     body()->bind(s);
     s.pop();
 }
-
-template void ArrOrPackExpr<true>::bind(Scopes&) const;
-template void ArrOrPackExpr<false>::bind(Scopes&) const;
 
 void ExtractExpr::bind(Scopes& s) const {
     tuple()->bind(s);

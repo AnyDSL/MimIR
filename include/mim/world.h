@@ -402,6 +402,7 @@ public:
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
+    const Lit* lit_idx_unsafe(u64 val) { return lit(type_idx(top(type_nat())), val); }
 
     template<class I> const Lit* lit_idx(I val) {
         static_assert(std::is_integral<I>());

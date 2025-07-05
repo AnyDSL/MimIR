@@ -4,6 +4,8 @@
 
 #include "mim/plug/refly/refly.h"
 
+using namespace std::string_literals;
+
 namespace mim::plug::refly {
 
 static_assert(sizeof(void*) <= sizeof(u64), "pointer doesn't fit into Lit");
@@ -71,6 +73,20 @@ template<equiv id> const Def* normalize_equiv(const Def*, const Def*, const Def*
         if (res ^ eq) mim::error(arg->loc(), "'{}' and '{}' {}structural-equivalent", a, b, !res ? "not " : "");
     }
     return a;
+}
+
+const Def* normalize_check(const Def* type, const Def*, const Def* arg) {
+    auto& w               = type->world();
+    auto [cond, val, msg] = arg->projs<3>();
+
+    if (cond == w.lit_tt()) return val;
+    if (cond == w.lit_ff()) {
+        auto s = tuple2str(msg);
+        if (s.empty()) s = "unknown error"s;
+        w.ELOG(s.c_str());
+    }
+
+    return nullptr;
 }
 
 MIM_refly_NORMALIZER_IMPL

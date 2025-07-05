@@ -5,7 +5,7 @@
 
 namespace mim::plug::tuple {
 
-const Def* normalize_concat(const Def* type, const Def* callee, const Def* arg) {
+const Def* normalize_cat(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     auto [n, m] = callee->as<App>()->decurry()->args<2>([](auto def) { return Lit::isa(def); });
@@ -65,7 +65,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
     if (auto l_in = Lit::isa(n_i)) {
         auto args = arg->projs(*l_in);
 
-        if (lr && std::ranges::all_of(args, [](const Def* arg) { return arg->isa<Tuple, Pack>(); })) {
+        if (lr && std::ranges::all_of(args, [](const Def* arg) { return arg->isa<Prod>(); })) {
             auto shapes = s->projs(*lr);
             auto s_n    = Lit::isa(shapes.front());
 

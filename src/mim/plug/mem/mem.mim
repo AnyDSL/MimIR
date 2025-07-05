@@ -78,7 +78,7 @@ axm %mem.mslot: [*, Nat] as Ta → [%mem.M, size: Nat, id: Nat] → [%mem.M, %me
 ///
 /// Load effective address.
 /// Performs address computation by offsetting the passed pointer with index `i`.
-axm %mem.lea: [n: Nat, Ts: «n; *», a: Nat] → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;
+axm %mem.lea: {n: Nat, Ts: «n; *», a: Nat} → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;
 ///
 /// ### %%mem.create/destroy
 ///
@@ -128,4 +128,4 @@ let mem_opt_pass_list =
         (%mem.copy_prop_pass (beta_red, eta_exp, ff));
 
 let mem_opt_phase  = %compile.pass_phase mem_opt_pass_list;
-let mem_prep_phase = %compile.passes_to_phase (⊤:Nat) (%mem.remem_elim_pass, %mem.alloc2malloc_pass);
+let mem_prep_phase = %compile.passes_to_phase (%mem.remem_elim_pass, %mem.alloc2malloc_pass);
