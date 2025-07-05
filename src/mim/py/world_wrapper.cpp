@@ -9,19 +9,24 @@ namespace mim{
         private:
             mim::World* wrld_;
         public:
-            PyWorld(World* world){
+            PyWorld(mim::World* world){
                 wrld_ = world;
             }
 
-            const Def* annex(Sym sym){
+            const mim::Def* annex(Sym sym){
+                wrld_->DLOG("given sym: {}", sym);
+
+                auto ret =  wrld_->sym2annex(sym);
+
+                wrld_->DLOG("returned Def: {}", ret);
                 return wrld_->sym2annex(sym);
             }
 
-            const Def* implicit_app(const Def* calle, Defs args){
+            const mim::Def* implicit_app(const mim::Def* calle, mim::Defs args){
                 return wrld_->implicit_app(calle, args);
             }
 
-            const Def* type_i32(){
+            const mim::Def* type_i32(){
                 return wrld_->type_i32();
             }
 
@@ -30,7 +35,7 @@ namespace mim{
                 return;
             }
         
-            Lam* mut_fun(const Def* dom, Defs codom){
+            Lam* mut_fun(const mim::Def* dom, mim::Defs codom){
                 return wrld_->mut_fun(dom, codom);
             }
     };
