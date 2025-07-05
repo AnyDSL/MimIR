@@ -185,6 +185,7 @@ public:
     }
     const Def* sym2annex(Sym sym) {
         for (auto [_, def] : flags2annex()) {
+            outln("{}: {}", sym, def->sym());
             if (def->sym() == sym) return def;
         }
         return nullptr;
