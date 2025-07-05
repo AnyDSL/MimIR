@@ -1,42 +1,39 @@
-#include <mim/world.h>
 #include <fe/sym.h>
 #include <pybind11/pybind11.h>
+
 #include <mim/def.h>
+#include <mim/world.h>
 
 namespace py = pybind11;
-namespace mim{
-    class PyWorld {
-        private:
-            mim::World* wrld_;
-        public:
-            PyWorld(mim::World* world){
-                wrld_ = world;
-            }
+namespace mim {
 
-            const mim::Def* annex(Sym sym){
-                wrld_->DLOG("given sym: {}", sym);
+class PyWorld {
+public:
+    PyWorld(mim::World* world)
+        : world_(world) {}
 
-                auto ret =  wrld_->sym2annex(sym);
+    const mim::Def* annex(Sym sym) {
+        world_->DLOG("given sym: {}", sym);
 
-                wrld_->DLOG("returned Def: {}", ret);
-                return wrld_->sym2annex(sym);
-            }
+        auto ret = world_->sym2annex(sym);
 
-            const mim::Def* implicit_app(const mim::Def* calle, mim::Defs args){
-                return wrld_->implicit_app(calle, args);
-            }
+        world_->DLOG("returned Def: {}", ret);
+        return world_->sym2annex(sym);
+    }
 
-            const mim::Def* type_i32(){
-                return wrld_->type_i32();
-            }
+    const mim::Def* implicit_app(const mim::Def* calle, mim::Defs args) { return world_->implicit_app(calle, args); }
 
-            void write(){
-                wrld_->write();
-                return;
-            }
-        
-            Lam* mut_fun(const mim::Def* dom, mim::Defs codom){
-                return wrld_->mut_fun(dom, codom);
-            }
-    };
-}
+    const mim::Def* type_i32() { return world_->type_i32(); }
+
+    void write() {
+        world_->write();
+        return;
+    }
+
+    Lam* mut_fun(const mim::Def* dom, mim::Defs codom) { return world_->mut_fun(dom, codom); }
+
+private:
+    mim::World* world_;
+};
+
+} // namespace mim

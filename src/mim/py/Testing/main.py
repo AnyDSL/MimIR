@@ -12,6 +12,7 @@ import mim  # Import from that list
 driver = mim.Driver()
 driver.log().set_stdout().set(mim.Level.Debug)
 driver.add_search_path(Path("../../../../build/lib/mim/"))
+
 world  = driver.world()
 py_world = mim.PyWorld(world)
 sym = mim.Sym()
