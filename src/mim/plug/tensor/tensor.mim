@@ -38,13 +38,6 @@ axm %tensor.map:  {T: *}
                 → [is: «i: ni; «s; Is#i» »]
                 → «s; T»;
 ///
-/// ### %%tensor.transpose
-///
-axm %tensor.transpose:  {T: *}
-                      → {r: Nat, s: «r; Nat»}
-                      → [input: «s;T», permutation: «r;Idx r»]
-                      → « <j: r; s#(permutation#j)>; T»;
-///
 /// ### %%tensor.slice
 ///
 axm %tensor.slice:  {T: *}
@@ -88,14 +81,6 @@ axm %tensor.reshape:  {T: *}
 /// axm %tensor.dot_2d_01: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
 /// axm %tensor.dot_2d_10: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
 /// axm %tensor.dot_2d_11: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
-///
-/// ### %%tensor.broadcast_in_dim
-///
-axm %tensor.broadcast_in_dim: {T: *}
-                            → {r_in r_out: Nat, s_in: «r_in; Nat», s_out: «r_out; Nat»}
-                            → [«s_in; T», «r_in; Idx r_in»]
-                            → «s_out; T»;
-
 ///
 /// ### %%tensor.reduce
 ///
@@ -181,3 +166,30 @@ lam %tensor.dot_general
 
 /// lam %tensor.prod_2d_lam [R: Ring] {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
 ///         = %tensor.dot_general R (1_2, 0_2, (), ()) @((m, k), (k, l)) (t1, t2);
+///
+/// ### %%tensor.transpose
+///
+fun transpose_fun {T:*} [x: T, y: T]: T = return y;
+///
+lam %tensor.transpose {T: *, r: Nat, s: «r; Nat»}
+                      [input: «s;T», permutation: «r; Idx r»]
+                    :
+                    let out_permutation = ‹i: r; (%vec.first (%core.icmp.e @r) (permutation, i))#tt›;
+                    let out_s = ‹i: r; s#(out_permutation#i)›;
+                    « out_s; T» =
+                    let permutation_nat = <i: r; %core.bitcast Nat permutation#i>;
+                    let out_permutation = ‹i: r; (%vec.first (%core.icmp.e @r) (permutation, i))#tt›;
+                    let out_s = ‹i: r; s#(out_permutation#i)›;
+                    %tensor.map_reduce @1 @(T, r) out_s @(T, r, s) (transpose_fun @T, ⊥: T) permutation_nat input;
+///
+/// ### %%tensor.broadcast
+///
+axm %tensor.broadcast:  {T: *, r: Nat, s_in: «r; Nat»}
+                      → [s_out: «r; Nat», input: «s_in; T»]
+                      → «s_out; T», normalize_broadcast;
+///
+/// ### %%tensor.broadcast_in_dim
+///
+axm %tensor.broadcast_in_dim: {T: *, r_in r_out: Nat, s_in: «r_in; Nat»}
+                            → [s_out: «r_out; Nat», «s_in; T», «r_in; Idx r_out»]
+                            → «s_out; T», normalize_broadcast_in_dim;

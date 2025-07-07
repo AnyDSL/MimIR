@@ -57,9 +57,15 @@ const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
     auto new_s_vec = DefVec(r_nat, [&](size_t i) { return s->proj(i + 1); });
     auto new_s     = w.tuple(new_s_vec);
 
-    auto new_arr       = w.extract(arr, idx);
     auto new_index_vec = DefVec(r_nat, [&](size_t i) { return index->proj(i + 1); });
     auto new_index     = w.tuple(new_index_vec);
+
+    auto idx_n   = idx->type()->op(1);
+    auto idx_lit = idx_n->isa<Lit>();
+    if (!idx_lit) return nullptr;
+    if (idx_lit->get<u64>() == 1) return w.app(w.app(w.annex<tensor::get>(), {T, new_r, new_s}), {arr, new_index});
+
+    auto new_arr = w.extract(arr, idx);
 
     return w.app(w.app(w.annex<tensor::get>(), {T, new_r, new_s}), {new_arr, new_index});
 }
@@ -81,7 +87,7 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
     }
 
     auto idx = index->proj(0);
-    w.DLOG("    idx = {} : {}", idx, idx->type());
+    w.DLOG("    idx = {} : {} : {}", idx, idx->type(), idx->type()->op(1));
 
     auto callee    = c->as<App>();
     auto [T, r, s] = callee->args<3>();
@@ -102,14 +108,124 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
     auto new_index     = w.tuple(new_index_vec);
     auto new_arr       = w.app(w.app(w.annex<tensor::set>(), {T, new_r, new_s}), {target_arr, new_index, x});
 
+    auto idx_n   = idx->type()->op(1);
+    auto idx_lit = idx_n->isa<Lit>();
+    if (!idx_lit) return nullptr;
+    if (idx_lit->get<u64>() == 1) return new_arr;
+
     return w.insert(arr, idx, new_arr);
+}
+
+const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
+    auto& w = c->world();
+
+    auto [s_out, input] = arg->projs<2>();
+    auto callee         = c->as<App>();
+    auto [T, r, s_in]   = callee->args<3>();
+
+    auto r_lit = r->isa<Lit>();
+    if (!r_lit) return nullptr;
+    auto r_nat = r_lit->get<u64>() - 1;
+
+    if (r_nat == 0) {
+        if (s_in == s_out) return input;
+        auto s_in_lit = s_in->isa<Lit>();
+        if (!s_in_lit) return nullptr;
+        auto s_in_nat = s_in_lit->get<u64>();
+        if (s_in_nat != 1) return nullptr;
+        return w.pack(s_out, input);
+    }
+
+    auto s_in_0   = s_in->proj(0);
+    auto s_in_lit = s_in_0->isa<Lit>();
+    if (!s_in_lit) return nullptr;
+    auto s_in_nat = s_in_lit->get<u64>();
+
+    auto s_out_0   = s_out->proj(0);
+    auto s_out_lit = s_out_0->isa<Lit>();
+    if (!s_out_lit) return nullptr;
+    auto s_out_nat = s_out_lit->get<u64>();
+
+    auto new_r         = w.lit_nat(r_nat);
+    auto new_s_in_vec  = DefVec(r_nat, [&](size_t i) { return s_in->proj(i + 1); });
+    auto new_s_in      = w.tuple(new_s_in_vec);
+    auto new_s_out_vec = DefVec(r_nat, [&](size_t i) { return s_out->proj(i + 1); });
+    auto new_s_out     = w.tuple(new_s_out_vec);
+
+    auto bc = w.annex<tensor::broadcast>();
+    bc      = w.app(bc, {T, new_r, new_s_in});
+    if (s_in_0 == s_out_0) {
+        auto out_vec = DefVec(s_out_nat, [&](size_t i) { return w.app(bc, {new_s_out, input->proj(i)}); });
+        return w.tuple(out_vec);
+    }
+    if (s_in_nat == 1) {
+        auto out = w.app(bc, {new_s_out, input});
+        return w.pack(s_out_0, out);
+    }
+    return nullptr;
+}
+
+const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) {
+    auto& w = c->world();
+
+    auto [s_out, input, index]  = arg->projs<3>();
+    auto callee                 = c->as<App>();
+    auto [T, r_in, r_out, s_in] = callee->args<4>();
+
+    auto r_in_lit = r_in->isa<Lit>();
+    if (!r_in_lit) return nullptr;
+    auto r_in_nat  = r_in_lit->get<u64>();
+    auto r_out_lit = r_out->isa<Lit>();
+    if (!r_out_lit) return nullptr;
+    auto r_out_nat = r_out_lit->get<u64>();
+
+    auto s_tr_vec = DefVec(r_out_nat, [&](size_t i) {
+        if (i < r_in_nat) return s_in->proj(i);
+        return w.lit_nat_1()->as<Def>();
+    });
+    auto s_tr     = w.tuple(s_tr_vec);
+
+    std::set<u64> set_perm;
+    std::map<u64, u64> map_perm;
+    for (u64 i = 0; i < r_out_nat; ++i) set_perm.insert(i);
+    for (u64 i = 0; i < r_in_nat; ++i) {
+        auto idx     = index->proj(i);
+        auto idx_lit = Lit::isa(idx);
+        if (!idx_lit) return nullptr;
+        u64 idx_nat = *idx_lit;
+
+        map_perm[idx_nat] = i;
+
+        set_perm.erase(idx_nat);
+        // permutation_vec.push_back(idx);
+    }
+    u64 j = r_in_nat;
+    for (auto i = set_perm.begin(); i != set_perm.end(); i++) {
+        map_perm[*i] = j;
+        j++;
+    }
+    auto permutation_vec = DefVec(r_out_nat, [&](size_t i) { return w.lit_idx(r_out_nat, map_perm[i]); });
+    auto permutation     = w.tuple(permutation_vec);
+
+    auto tr = w.annex<tensor::transpose>();
+    tr      = w.app(tr, {T, r_out, s_tr});
+    tr      = w.app(tr, {input, permutation});
+
+    auto s_bc_vec = DefVec(r_out_nat, [&](size_t i) { return s_tr->proj(map_perm.at(i)); });
+    auto s_bc     = w.tuple(s_bc_vec);
+
+    auto bc = w.annex<tensor::broadcast>();
+    bc      = w.app(bc, {T, r_out, s_bc});
+    bc      = w.app(bc, {s_out, tr});
+
+    return bc;
 }
 
 std::pair<Lam*, const Def*>
 counting_for(const Def* bound, const Def* acc, const Def* exit, const char* name = "for_body") {
-    auto& w     = bound->world();
-    auto acc_ty = acc->type();
-    auto body   = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
+    auto& w       = bound->world();
+    auto acc_ty   = acc->type();
+    auto body     = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
     auto for_loop = affine::op_for(w, w.lit_i32(0), bound, w.lit_i32(1), {acc}, body, exit);
     return {body, for_loop};
 }
@@ -215,7 +331,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         auto SI_i = SI->proj(m_nat, i);
         DefVec input_dims_i;
         for (u64 j = 0; j < ni_nat; ++j) {
-            auto dim = SI_i->proj(ni_nat, j);
+            auto dim = SI_i->proj(j);
             w.DLOG("    dim {} {} = {}", i, j, dim);
             // dims[i * n_nat + j] = dim;
             input_dims_i.push_back(dim);
@@ -252,9 +368,13 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
                 w.DLOG("        prev dim {} = {}", idx_nat, prev_dim);
                 // override with more precise information
                 if (auto dim_lit = dim->isa<Lit>()) {
-                    if (auto prev_dim_lit = prev_dim->isa<Lit>())
-                        assert(dim_lit->get<u64>() == prev_dim_lit->get<u64>() && "dimensions must be equal");
-                    else
+                    if (auto prev_dim_lit = prev_dim->isa<Lit>()) {
+                        if (dim != prev_dim) {
+                            if (!dim_lit) return nullptr;
+                            if (!prev_dim_lit) return nullptr;
+                            assert(dim_lit->get<u64>() == prev_dim_lit->get<u64>() && "dimensions must be equal");
+                        }
+                    } else
                         dims[idx_nat] = dim;
                 } else if (dim != prev_dim) {
                     w.DLOG("dimensions {} and {} must be equal", dim, prev_dim);
@@ -413,6 +533,8 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         auto input_T = TI->proj(m_nat, i);
         auto input_N = NI->proj(m_nat, i);
         auto input_S = SI->proj(m_nat, i);
+
+        if (m_nat == 1) input_S = SI;
 
         w.DLOG("input matrix {} is {} : {}", i, input_matrix, input_matrix->type());
 

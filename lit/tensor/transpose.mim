@@ -1,0 +1,19 @@
+// RUN: %mim %s
+plugin tensor;
+plugin refly;
+plugin core;
+plugin direct;
+plugin affine;
+
+let m0 = ((1, 2), (3, 4));
+
+let g = %tensor.get @(Nat, 2, (1, 1)) (2, (0_1, 0_1));
+
+/// let m1 = %tensor.transpose @(Nat, 2, (2, 2)) (m0, (tt, ff));
+/// let m2 = %tensor.transpose @(Nat, 4, (1, 1, 2, 2)) (m0, (2_4, 1_4, 0_4, 3_4));
+/// let m21 = %tensor.transpose @(Nat, 4, (2, 2, 1, 1)) (m0, (0_4, 3_4, 1_4, 2_4));
+/// let m3 = %tensor.broadcast @(Nat, 4, (2, 1, 1, 2)) (‹4;2›, m2);
+/// let m4 = %tensor.broadcast_in_dim @(Nat, 2, 4, (2, 2)) (‹4;2›, m0, (0_4, 3_4));
+/// let _ = %refly.equiv.struc_eq (m2, m1);
+
+/// fun extern main() = return (m2);
