@@ -259,3 +259,12 @@ axm %core.pe(is_closed): {T: *} → T → Bool, normalize_pe;
 /// More readable shorthand to create a select/if:
 ///
 lam %core.select {T: *} (cond: Bool, t: T, f: T): T = (f, t)#cond;
+
+let zero_neutral = rule (x:Nat) : %core.nat.add (0,x) => x;
+
+let zero_sub = rule (x:Nat) : %core.nat.sub (0,x) => 0;
+let zero_mul = rule (x:Nat) : %core.nat.mul (0, x) => 0;
+
+let one_mul = rule (x:Nat) : %core.nat.mul (1, x) => x;
+
+let sub_zero = rule (x: Nat) : %core.nat.sub (x, 0) => x;

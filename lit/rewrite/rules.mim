@@ -3,12 +3,13 @@
 plugin core;
 
 let zero_neutral = rule (x:Nat) : %core.nat.add (x, 0) => x;
-let rule1 = rule (x y: Nat):
-%core.nat.add (x, y) => %core.nat.add (y, x);
+//let rule1 = rule (x y: Nat):
+//%core.nat.add (x, y) => %core.nat.add (y, x);
 
-let swap_plus = rule (x: Nat, y: Nat): %core.nat.add (x, y) => %core.nat.add (y, x);
+// let swap_plus = rule (x: Nat, y: Nat): %core.nat.add (x, y) => %core.nat.add (y, x);
+// ^- induces an infinite regression, kinda dumb anyway
 
-let swap = rule (T: *, f: T→T→T, x: T, y: T):  f x y => f y x;
+//let swap = rule (T: *, f: T→T→T, x: T, y: T):  f x y => f y x;
 
 //let idet = rule (T : *, x : T) : x => x;
 

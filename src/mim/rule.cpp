@@ -43,13 +43,20 @@ bool Rule::its_a_match(const Def* expr) const {
 
 bool Rule::its_a_match(const Def* exp1, const Def* exp2) const {
     if (is_in_rule(exp1)) return false;
+    if (exp1->type() != exp2->type()) return false;
     // we don't rewrite the rewrites
+
+    // we assume all vars in exp2 are pattern matching meta variables
+    // therefore they match everything (no equality pls)
+    if (exp2->isa<Var>()) {
+        if (exp2->as<Var>()->mut()->isa<Rule>()) return true;
+        return exp1 == exp2;
+        // we want to have 2 bound variables that are equal
+    }
     if (are_same_node(exp1, exp2)) {
         // should be ok if we do not have to infer the types
         // gotta assume that we have the same kind of node now
-        // we assume all vars in exp2 are pattern matching meta variables
-        // therefore they match everything (no equality pls)
-        if (exp2->isa<Var>()) return true;
+
         // else we need to check for a match in all branches (except if no dependencies, then check equality)
         if (exp2->num_ops() == 0) return exp2 == exp1;
         if (exp2->num_ops() != exp1->num_ops()) return false;

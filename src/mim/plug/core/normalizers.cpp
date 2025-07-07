@@ -237,10 +237,10 @@ template<nat id> const Def* normalize_nat(const Def* type, const Def* callee, co
         //     }
         // }
 
-        if (*la == 1 && id == nat::mul) return b; // 1 * b = b
+        // if (*la == 1 && id == nat::mul) return b; // 1 * b = b
     }
 
-    if (lb && *lb == 0 && id == nat::sub) return a; // a - 0 = a
+    // if (lb && *lb == 0 && id == nat::sub) return a; // a - 0 = a
 
     return world.raw_app(type, callee, {a, b});
 }
