@@ -29,6 +29,7 @@ const Def* op_set(const Def* T, const Def* r, const Def* s, const Def* arr, cons
 }
 
 const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
+    return {};
     auto& w = c->world();
 
     auto [arr, index] = arg->projs<2>();
@@ -107,9 +108,9 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
 
 std::pair<Lam*, const Def*>
 counting_for(const Def* bound, const Def* acc, const Def* exit, const char* name = "for_body") {
-    auto& w     = bound->world();
-    auto acc_ty = acc->type();
-    auto body   = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
+    auto& w       = bound->world();
+    auto acc_ty   = acc->type();
+    auto body     = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
     auto for_loop = affine::op_for(w, w.lit_i32(0), bound, w.lit_i32(1), {acc}, body, exit);
     return {body, for_loop};
 }

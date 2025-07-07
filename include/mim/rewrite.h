@@ -19,8 +19,8 @@ public:
 
     /// @name Stack of Maps
     ///@{
-    void push() { old2news_.emplace_back(Def2Def{}); }
-    void pop() { old2news_.pop_back(); }
+    virtual void push() { old2news_.emplace_back(Def2Def{}); }
+    virtual void pop() { old2news_.pop_back(); }
 
     /// Map @p old_def to @p new_def and returns @p new_def.
     /// @returns `new_def`
@@ -52,33 +52,52 @@ public:
 private:
     World& world_;
     std::deque<Def2Def> old2news_;
+    MutSet muts_;
 };
 
 class VarRewriter : public Rewriter {
 public:
     VarRewriter(const Var* var, const Def* arg)
-        : Rewriter(arg->world())
-        , vars_(var ? Vars(var) : Vars()) {
+        : Rewriter(arg->world()) {
         assert(var);
         map(var, arg);
+        vars_.emplace_back(var);
+        Rewriter::push();
+    }
+
+    void push() final {
+        vars_.emplace_back(Vars());
+        Rewriter::push();
+    }
+
+    void pop() final {
+        Rewriter::pop();
+        vars_.pop_back();
+    }
+
+    bool descend(const Def* old_def) {
+        for (auto& vars : vars_ | std::views::reverse) {
+            if (vars.has_intersection(old_def->free_vars())) {
+                if (auto var = old_def->has_var()) vars = world().vars().insert(vars, var);
+                return true;
+            }
+        }
+        return false;
     }
 
     const Def* rewrite_imm(const Def* imm) final {
         if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
-        if (imm->has_dep(Dep::Hole) || vars_.has_intersection(imm->free_vars())) return Rewriter::rewrite_imm(imm);
+        if (imm->has_dep(Dep::Hole) || descend(imm)) return Rewriter::rewrite_imm(imm);
         return imm;
     }
 
     const Def* rewrite_mut(Def* mut, bool immutablize) final {
-        if (vars_.has_intersection(mut->free_vars())) {
-            if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
-            return Rewriter::rewrite_mut(mut, immutablize);
-        }
+        if (descend(mut)) return Rewriter::rewrite_mut(mut, immutablize);
         return map(mut, mut);
     }
 
-private:
-    Vars vars_;
+public:
+    Vector<Vars> vars_;
 };
 
 } // namespace mim

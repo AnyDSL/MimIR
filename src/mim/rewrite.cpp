@@ -34,6 +34,8 @@ const Def* Rewriter::rewrite_imm(const Def* old_def) {
 }
 
 const Def* Rewriter::rewrite_mut(Def* old_mut, bool immutabilize) {
+    muts_.emplace(old_mut);
+
     auto new_type = rewrite(old_mut->type());
     auto new_mut  = old_mut->stub(world(), new_type);
     map(old_mut, new_mut);
@@ -88,6 +90,12 @@ const Def* Rewriter::rewrite_extract(const Extract* ex) {
 }
 
 const Def* Rewriter::rewrite_var(const Var* var) {
+    if (auto vw = dynamic_cast<VarRewriter*>(this)) {
+        if (!vw->descend(var)) return var;
+    }
+
+    if (!muts_.contains(var->mut())) world().ELOG("what is going on?");
+
     auto new_def = lookup(var->mut());
     if (!new_def) new_def = rewrite_mut(var->mut(), false);
     auto new_mut = new_def->as_mut();
