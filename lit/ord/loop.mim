@@ -11,7 +11,7 @@ let Map = %ord.Map Key I64;
 fun extern f(mem: %mem.M, x: I64): [%mem.M, I64] =
     // stack-alloc dictionary and init with: 0 -> 23, 1 -> x
     let (mem, ptr) = %mem.slot  (Map, 0) (mem, 0);
-    let  mem       = %mem.store (mem, ptr, %ord.init.map Key ((0I32, 23I64), (1I32, x)));
+    let  mem       = %mem.store (mem, ptr, %ord.init.map Key ((0I32, 23I64), (1I32, x))); // 0 → 23, 1 → x
     head mem where
         con head(mem: %mem.M) =
             ret (mem, cond) = dont_know $ (mem);
