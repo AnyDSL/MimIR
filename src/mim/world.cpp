@@ -287,11 +287,14 @@ const Def* World::tuple(Defs ops) {
     auto zops  = Def::zonk(ops);
     auto sigma = Tuple::infer(*this, zops);
     auto t     = tuple(sigma, zops);
+#if 0
     auto new_t = Checker::assignable(sigma, t);
     if (!new_t)
         error(t->loc(), "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
-
     return new_t;
+#endif
+
+    return t;
 }
 
 const Def* World::tuple(const Def* type, Defs ops_) {

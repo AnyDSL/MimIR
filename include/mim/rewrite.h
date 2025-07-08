@@ -38,65 +38,72 @@ public:
     /// Recursively rewrite old Def%s.
     ///@{
     virtual const Def* rewrite(const Def*);
+    virtual const Def* dispatch(const Def*);
+
     virtual const Def* rewrite_imm(const Def*);
-    virtual const Def* rewrite_mut(Def*, bool immutablize);
+    virtual const Def* rewrite_mut(Def*);
 
     virtual const Def* rewrite_arr(const Arr* arr) { return rewrite_seq(arr); }
     virtual const Def* rewrite_pack(const Pack* pack) { return rewrite_seq(pack); }
     virtual const Def* rewrite_seq(const Seq*);
     virtual const Def* rewrite_extract(const Extract*);
-    virtual const Def* rewrite_var(const Var*);
     virtual const Def* rewrite_hole(Hole*);
     ///@}
 
 private:
     World& world_;
     std::deque<Def2Def> old2news_;
-    MutSet muts_;
 };
 
 class VarRewriter : public Rewriter {
 public:
     VarRewriter(const Var* var, const Def* arg)
         : Rewriter(arg->world()) {
-        assert(var);
         map(var, arg);
-        vars_.emplace_back(var);
         Rewriter::push();
+        vars_.emplace_back(var);
     }
 
     void push() final {
-        vars_.emplace_back(Vars());
         Rewriter::push();
+        vars_.emplace_back(Vars());
     }
 
     void pop() final {
-        Rewriter::pop();
         vars_.pop_back();
+        Rewriter::pop();
+    }
+
+    const Def* rewrite(const Def* old_def) final {
+        if (old_def->isa<Univ>()) return world().univ();
+        if (auto new_def = lookup(old_def)) return new_def;
+        if (descend(old_def)) return Rewriter::dispatch(old_def);
+        // return map(mut, mut);
+        return old_def;
     }
 
     bool descend(const Def* old_def) {
-        for (auto& vars : vars_ | std::views::reverse) {
-            if (vars.has_intersection(old_def->free_vars())) {
-                if (auto var = old_def->has_var()) vars = world().vars().insert(vars, var);
-                return true;
-            }
+        if (auto imm = old_def->isa_imm()) {
+            if (imm->has_dep(Dep::Hole)) return true;
+            if (imm->local_vars().empty() && imm->local_muts().empty()) return false; // safe to skip
         }
+
+        for (const auto& vars : vars_ | std::views::reverse)
+            if (vars.has_intersection(old_def->free_vars())) return true;
+
         return false;
     }
 
-    const Def* rewrite_imm(const Def* imm) final {
-        if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
-        if (imm->has_dep(Dep::Hole) || descend(imm)) return Rewriter::rewrite_imm(imm);
-        return imm;
+    const Def* rewrite_mut(Def* mut) final {
+        if (auto var = mut->has_var()) {
+            auto& vars = vars_.back();
+            vars       = world().vars().insert(vars, var);
+        }
+
+        return Rewriter::rewrite_mut(mut);
     }
 
-    const Def* rewrite_mut(Def* mut, bool immutablize) final {
-        if (descend(mut)) return Rewriter::rewrite_mut(mut, immutablize);
-        return map(mut, mut);
-    }
-
-public:
+private:
     Vector<Vars> vars_;
 };
 
