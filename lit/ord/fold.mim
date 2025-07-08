@@ -1,7 +1,7 @@
 // RUN: %mim %s --output-ll - | FileCheck %s
 
 /*
- * a hypothetical C++-to-MimIR compiler would produce the below output from this C++ program:
+ * a hypothetical C++-to-MimIR compiler would produce the output below from this C++ program:
 uint64_t f(uint64_t x) {
     auto map = std::map<uint32_t, uint64_t>{{2, 42}, {123, 456}};
     map[0] = x;

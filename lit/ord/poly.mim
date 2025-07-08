@@ -10,9 +10,9 @@ let Key = (I32, %core.icmp.ul @i32);
 let Ord = [
     Map:      %ord.Key → * → *,
     init:     [K: %ord.Key] → {V: *} → {n: Nat} → [«n; [K#T, V]»] → Map K V,
-    get:      {K: %ord.Key} → {V: *} → [Map K V, K#T    ] → V,
+    get:      {K: %ord.Key} → {V: *} → [Map K V, K#T     ] → V,
     insert_:  {K: %ord.Key} → {V: *} → [Map K V, [K#T, V]] → Map K V,
-    contains: {K: %ord.Key} → {V: *} → [Map K V, K#T    ] → Bool,
+    contains: {K: %ord.Key} → {V: *} → [Map K V, K#T     ] → Bool,
 ];
 
 fun poly (ord: Ord) (mem: %mem.M, x: I64): [%mem.M, I64] =
