@@ -54,9 +54,9 @@ template<insert id> const Def* normalize_insert(const Def* type, const Def*, con
 
     if (auto init = Axm::isa<ord::init>(ms)) {
         if (auto tuple = init->arg()->isa<Tuple>()) {
-            auto n  = init->decurry()->arg();
-            auto lt = init->decurry()->decurry()->arg();
-            auto KV = init->decurry()->decurry()->decurry()->arg();
+            auto n = init->decurry()->arg();
+            auto V = init->decurry()->decurry()->arg();
+            auto K = id == ord::insert::map ? init->decurry()->decurry()->decurry()->arg() : V;
             if (auto l = Lit::isa(n)) {
                 auto new_ops = DefVec();
                 bool updated = false;
@@ -71,12 +71,16 @@ template<insert id> const Def* normalize_insert(const Def* type, const Def*, con
                         new_ops.emplace_back(tuple->proj(e, i));
                     }
                 }
+
                 if (!updated) new_ops.emplace_back(kv);
+
                 // return w.call(id, lt, Defs(new_ops));
                 auto insert = id == ord::insert::map ? ord::init::map : ord::init::set;
                 auto new_n  = w.lit_nat(new_ops.size());
-                auto res    = w.app(w.app(w.app(w.app(w.annex(insert), KV), lt), new_n), new_ops);
-                return res;
+                auto app    = w.app(w.annex(insert), K);
+                if (id == ord::insert::map) app = w.app(app, V);
+
+                return w.app(w.app(app, new_n), new_ops);
             }
         }
 

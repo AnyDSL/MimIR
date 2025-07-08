@@ -13,8 +13,10 @@ plugin core;
 ///
 /// ## Types
 ///
-axm %ord.Set: [K  : *] → [[K, K] → Bool] → *;
-axm %ord.Map: [K V: *] → [[K, K] → Bool] → *;
+let %ord.Key = [T: *, lt: [T, T] → Bool];
+
+axm %ord.Set: %ord.Key     → *;
+axm %ord.Map: %ord.Key → * → *;
 ///
 /// ## Constructors
 ///
@@ -22,15 +24,15 @@ axm %ord.Map: [K V: *] → [[K, K] → Bool] → *;
 ///
 /// Create set / map from a list of values / key-value-pairs.
 ///
-axm %ord.init(set): {K  : *} → [lt: [K, K] → Bool] → {n: Nat} → [«n;  K    »] → %ord.Set  K     lt, normalize_init;
-axm %ord.init(map): {K V: *} → [lt: [K, K] → Bool] → {n: Nat} → [«n; [K, V]»] → %ord.Map (K, V) lt, normalize_init;
+axm %ord.init(set): [K: %ord.Key] →           {n: Nat} → [«n;  K#T    »] → %ord.Set K  , normalize_init;
+axm %ord.init(map): [K: %ord.Key] →  {V: *} → {n: Nat} → [«n; [K#T, V]»] → %ord.Map K V, normalize_init;
 ///
 /// ### %%ord.create
 ///
 /// Create empty set / map.
 ///
-lam %ord.create_set (K  : *)       (lt: [K, K] → Bool): %ord.Set K  lt = %ord.init.set @K  lt @0 ();
-lam %ord.create_map (K V: *) as KV (lt: [K, K] → Bool): %ord.Map KV lt = %ord.init.map @KV lt @0 ();
+lam %ord.create_set [K: %ord.Key]        : %ord.Set K   = %ord.init.set K    @0 ();
+lam %ord.create_map [K: %ord.Key] (V: *) : %ord.Map K V = %ord.init.map K @V @0 ();
 ///
 /// ## Capacity
 ///
@@ -38,15 +40,15 @@ lam %ord.create_map (K V: *) as KV (lt: [K, K] → Bool): %ord.Map KV lt = %ord.
 ///
 /// Get number of elements in container.
 ///
-axm %ord.size(set): {K  : *} → {lt: [K, K] → Bool} → [%ord.Set  K     lt] → Nat, normalize_size;
-axm %ord.size(map): {K V: *} → {lt: [K, K] → Bool} → [%ord.Map (K, V) lt] → Nat, normalize_size;
+axm %ord.size(set): {K: %ord.Key} →          [%ord.Set K  ] → Nat, normalize_size;
+axm %ord.size(map): {K: %ord.Key} → {V: *} → [%ord.Map K V] → Nat, normalize_size;
 ///
 /// ### %%ord.is_empty
 ///
 /// Is container empty?
 ///
-lam %ord.is_empty_set {K  : *} {lt: [K, K] → Bool} (set: %ord.Set  K     lt): Bool = %core.ncmp.e (%ord.size.set set, 0);
-lam %ord.is_empty_map {K V: *} {lt: [K, K] → Bool} (map: %ord.Map (K, V) lt): Bool = %core.ncmp.e (%ord.size.map map, 0);
+lam %ord.is_empty_set {K: %ord.Key}        (set: %ord.Set K  ): Bool = %core.ncmp.e (%ord.size.set set, 0);
+lam %ord.is_empty_map {K: %ord.Key} {V: *} (map: %ord.Map K V): Bool = %core.ncmp.e (%ord.size.map map, 0);
 ///
 /// ## Lookup
 ///
@@ -55,14 +57,14 @@ lam %ord.is_empty_map {K V: *} {lt: [K, K] → Bool} (map: %ord.Map (K, V) lt): 
 /// Get value from key in map.
 /// @todo Use Option as return type once we have proper union types.
 ///
-axm %ord.get: {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt, K] → V, normalize_get;
+axm %ord.get: {K: %ord.Key} → {V: *} → [%ord.Map K V, K#T] → V, normalize_get;
 ///
 /// ### %%ord.contains
 ///
 /// Does the container conain the given key?
 ///
-axm %ord.contains(set): {K  : *} → {lt: [K, K] → Bool} → [%ord.Set  K     lt, K] → Bool, normalize_contains;
-axm %ord.contains(map): {K V: *} → {lt: [K, K] → Bool} → [%ord.Map (K, V) lt, K] → Bool, normalize_contains;
+axm %ord.contains(set): {K: %ord.Key} →          [%ord.Set K  , K#T] → Bool, normalize_contains;
+axm %ord.contains(map): {K: %ord.Key} → {V: *} → [%ord.Map K V, K#T] → Bool, normalize_contains;
 ///
 /// ## Modifiers
 ///
@@ -70,5 +72,5 @@ axm %ord.contains(map): {K V: *} → {lt: [K, K] → Bool} → [%ord.Map (K, V) 
 ///
 /// Insert key / key-value-pair into container.
 ///
-axm %ord.insert(set): {K  : *}       → {lt: [K, K] → Bool} → [%ord.Set K  lt,  K    ] → %ord.Set K  lt, normalize_insert;
-axm %ord.insert(map): {K V: *} as KV → {lt: [K, K] → Bool} → [%ord.Map KV lt, [K, V]] → %ord.Map KV lt, normalize_insert;
+axm %ord.insert(set): {K: %ord.Key} →          [%ord.Set K  ,  K#T    ] → %ord.Set K  , normalize_insert;
+axm %ord.insert(map): {K: %ord.Key} → {V: *} → [%ord.Map K V, [K#T, V]] → %ord.Map K V, normalize_insert;
