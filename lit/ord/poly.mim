@@ -21,7 +21,7 @@ fun poly (ord: Ord) (mem: %mem.M, x: I64): [%mem.M, I64] =
     let  mem       = %mem.store (mem, ptr, ord#init Key ((0I32, 23I64), (1I32, x)));
     head mem where
         con head(mem: %mem.M) =
-            ret (mem, cond) = dont_know $ (mem);
+            ret (mem, cond) = dont_know $ mem;
             (exit, body)#cond mem where
                 con body(mem: %mem.M) =
                     let (mem, map) = %mem.load (mem, ptr);
