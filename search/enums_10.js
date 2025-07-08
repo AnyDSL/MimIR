@@ -1,10 +1,21 @@
 var searchData=
 [
-  ['tag_0',['Tag',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5',1,'mim::ast::Tok::Tag'],['../classmim_1_1Error.html#a8ee893406f4bcec90b9184ed0acf0cc5',1,'mim::Error::Tag']]],
-  ['tail_5frec_5felim_5fpass_1',['tail_rec_elim_pass',['../namespacemim_1_1plug_1_1compile.html#aa116af339362d94ddef4135c1e9e67c7',1,'mim::plug::compile']]],
-  ['tangent_2',['Tangent',['../namespacemim_1_1plug_1_1autodiff.html#a731a934813e6197c347e831cb312acda',1,'mim::plug::autodiff']]],
-  ['trait_3',['trait',['../namespacemim_1_1plug_1_1core.html#a699face68306eeb01636f32010cc2d9d',1,'mim::plug::core']]],
-  ['transpose_4',['transpose',['../namespacemim_1_1plug_1_1matrix.html#a5b14c9f2cfc5a0f1d95a3657b2ec5be3',1,'mim::plug::matrix::transpose'],['../namespacemim_1_1plug_1_1tensor.html#aaa0644a4e639f6682b0e95d95eb32c47',1,'mim::plug::tensor::transpose']]],
-  ['tri_5',['tri',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72',1,'mim::plug::math']]],
-  ['type_6',['type',['../namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4',1,'mim::plug::refly']]]
+  ['scalarize_5fpass_0',['scalarize_pass',['../namespacemim_1_1plug_1_1compile.html#a961935589c51b84c285852b051fbbf37',1,'mim::plug::compile']]],
+  ['scan_1',['scan',['../namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03',1,'mim::plug::vec']]],
+  ['select_2',['select',['../namespacemim_1_1plug_1_1core.html#aa90620d89f43753fb2f7907167019bf6',1,'mim::plug::core']]],
+  ['set_3',['Set',['../namespacemim_1_1plug_1_1ord.html#a50e2f0713c3d362f4e5ec542ae95dda4',1,'mim::plug::ord']]],
+  ['setjmp_4',['setjmp',['../namespacemim_1_1plug_1_1clos.html#a5efb167297223d7d3a3e2f41539a6a84',1,'mim::plug::clos']]],
+  ['sgn_5',['sgn',['../namespacemim_1_1plug_1_1math.html#ad0d483b8c713d41e11fa417fd2c513df',1,'mim::plug::math']]],
+  ['shape_6',['shape',['../namespacemim_1_1plug_1_1matrix.html#a1a46381ed716136bd172a2ea0fd27614',1,'mim::plug::matrix']]],
+  ['shr_7',['shr',['../namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43',1,'mim::plug::core']]],
+  ['single_5fpass_5fphase_8',['single_pass_phase',['../namespacemim_1_1plug_1_1compile.html#a847ce6ecda2bb689fa0ba4755e2716d7',1,'mim::plug::compile']]],
+  ['size_9',['size',['../namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38',1,'mim::plug::ord']]],
+  ['slf_10',['slf',['../namespacemim_1_1plug_1_1math.html#a4a71342608a0eb0a27c7763b0cb54693',1,'mim::plug::math']]],
+  ['slice_11',['slice',['../namespacemim_1_1plug_1_1tensor.html#a9f32ad37dd66f405ca71286aa92bfe07',1,'mim::plug::tensor']]],
+  ['slot_12',['slot',['../namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4',1,'mim::plug::mem']]],
+  ['sort_13',['Sort',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5',1,'mim']]],
+  ['specialtransitons_14',['SpecialTransitons',['../classautomaton_1_1DFA.html#a0e1eba2b8de869d374e647966c20b6d3',1,'automaton::DFA::SpecialTransitons'],['../classautomaton_1_1NFA.html#aa22a4b55ded13c4fc0b6fb4c4fd11d12',1,'automaton::NFA::SpecialTransitons']]],
+  ['ssa_5fpass_15',['ssa_pass',['../namespacemim_1_1plug_1_1mem.html#a619e2889942b9d13d55e24c6e2da35b5',1,'mim::plug::mem']]],
+  ['store_16',['store',['../namespacemim_1_1plug_1_1mem.html#a0accf352be5afdd02647f035fc72cb3c',1,'mim::plug::mem']]],
+  ['sum_17',['sum',['../namespacemim_1_1plug_1_1autodiff.html#a27536fa48373a84728e55704e659a420',1,'mim::plug::autodiff::sum'],['../namespacemim_1_1plug_1_1matrix.html#a6c2b2ed70d211b556dfd52f59e9d827b',1,'mim::plug::matrix::sum']]]
 ];

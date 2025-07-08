@@ -408,6 +408,7 @@ var namespacemim_1_1plug =
       ] ],
       [ "is_empty_map", "namespacemim_1_1plug_1_1ord.html#a3139291210faabba5130f06c7513a57f", null ],
       [ "is_empty_set", "namespacemim_1_1plug_1_1ord.html#adf40c77e7d3537a42c2423fb1b4e33c5", null ],
+      [ "Key", "namespacemim_1_1plug_1_1ord.html#a87a29d8695533c2820227f29d2124532", null ],
       [ "Map", "namespacemim_1_1plug_1_1ord.html#abc7482320010e15a67481e999f1e8e37", null ],
       [ "Set", "namespacemim_1_1plug_1_1ord.html#a50e2f0713c3d362f4e5ec542ae95dda4", null ],
       [ "size", "namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38", [

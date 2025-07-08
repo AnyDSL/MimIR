@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: The ord Plugin</title>
+<title>MimIR: Namespace Members</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -91,7 +91,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('ord.html',''); initResizable(true); });
+$(function(){initNavTree('namespacemembers_enum_k.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -116,117 +116,13 @@ $(function(){initNavTree('ord.html',''); initResizable(true); });
 </div>
 </div>
 
-<div><div class="header">
-  <div class="headertitle"><div class="title">The ord Plugin</div></div>
-</div><!--header-->
 <div class="contents">
-<div class="toc"><h3>Table of Contents</h3>
-<ul>
-  <li class="level1">
-    <a href="#autotoc_md205">Dependencies</a>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md206">Types</a>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md207">Constructors</a>
-    <ul>
-      <li class="level2">
-        <a href="#autotoc_md208">%ord.init</a>
-      </li>
-      <li class="level2">
-        <a href="#autotoc_md209">%ord.create</a>
-      </li>
-    </ul>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md210">Capacity</a>
-    <ul>
-      <li class="level2">
-        <a href="#autotoc_md211">%ord.size</a>
-      </li>
-      <li class="level2">
-        <a href="#autotoc_md212">%ord.is_empty</a>
-      </li>
-    </ul>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md213">Lookup</a>
-    <ul>
-      <li class="level2">
-        <a href="#autotoc_md214">%ord.get</a>
-      </li>
-      <li class="level2">
-        <a href="#autotoc_md215">%ord.contains</a>
-      </li>
-    </ul>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md216">Modifiers</a>
-    <ul>
-      <li class="level2">
-        <a href="#autotoc_md217">%ord.insert</a>
-      </li>
-    </ul>
-  </li>
+<div class="textblock">Here is a list of all namespace enums with links to the namespace documentation for each enum:</div>
+
+<h3><a id="index_k" name="index_k"></a>- k -</h3><ul>
+<li>Key&#160;:&#160;<a class="el" href="namespacemim_1_1plug_1_1ord.html#a87a29d8695533c2820227f29d2124532">mim::plug::ord</a></li>
 </ul>
-</div>
-<div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2ord"></a></p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1ord.html" title="The ord Plugin">mim::plug::ord</a></dd></dl>
-<p>Ordered Set and Map. </p><dl class="section warning"><dt>Warning</dt><dd>This is still WIP!</dd></dl>
-<h1><a class="anchor" id="autotoc_md205"></a>
-Dependencies</h1>
-<div class="fragment"><div class="line">plugin core;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md206"></a>
-Types</h1>
-<div class="fragment"><div class="line">let %ord.Key = [T: *, lt: [T, T] → Bool];</div>
-<div class="line"> </div>
-<div class="line">axm %ord.Set: %ord.Key     → *;</div>
-<div class="line">axm %ord.Map: %ord.Key → * → *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md207"></a>
-Constructors</h1>
-<h2><a class="anchor" id="autotoc_md208"></a>
-%ord.init</h2>
-<p>Create set / map from a list of values / key-value-pairs.</p>
-<div class="fragment"><div class="line">axm %ord.init(set): [K: %ord.Key] →           {n: Nat} → [«n;  K#T    »] → %ord.Set K  , normalize_init;</div>
-<div class="line">axm %ord.init(map): [K: %ord.Key] →  {V: *} → {n: Nat} → [«n; [K#T, V]»] → %ord.Map K V, normalize_init;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md209"></a>
-%ord.create</h2>
-<p>Create empty set / map.</p>
-<div class="fragment"><div class="line">lam %ord.create_set [K: %ord.Key]        : %ord.Set K   = %ord.init.set K    @0 ();</div>
-<div class="line">lam %ord.create_map [K: %ord.Key] (V: *) : %ord.Map K V = %ord.init.map K @V @0 ();</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md210"></a>
-Capacity</h1>
-<h2><a class="anchor" id="autotoc_md211"></a>
-%ord.size</h2>
-<p>Get number of elements in container.</p>
-<div class="fragment"><div class="line">axm %ord.size(set): {K: %ord.Key} →          [%ord.Set K  ] → Nat, normalize_size;</div>
-<div class="line">axm %ord.size(map): {K: %ord.Key} → {V: *} → [%ord.Map K V] → Nat, normalize_size;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md212"></a>
-%ord.is_empty</h2>
-<p>Is container empty?</p>
-<div class="fragment"><div class="line">lam %ord.is_empty_set {K: %ord.Key}        (set: %ord.Set K  ): Bool = %core.ncmp.e (%ord.size.set set, 0);</div>
-<div class="line">lam %ord.is_empty_map {K: %ord.Key} {V: *} (map: %ord.Map K V): Bool = %core.ncmp.e (%ord.size.map map, 0);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md213"></a>
-Lookup</h1>
-<h2><a class="anchor" id="autotoc_md214"></a>
-%ord.get</h2>
-<p>Get value from key in map. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo</a></b></dt><dd>Use Option as return type once we have proper union types.</dd></dl>
-<div class="fragment"><div class="line">axm %ord.get: {K: %ord.Key} → {V: *} → [%ord.Map K V, K#T] → V, normalize_get;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md215"></a>
-%ord.contains</h2>
-<p>Does the container conain the given key?</p>
-<div class="fragment"><div class="line">axm %ord.contains(set): {K: %ord.Key} →          [%ord.Set K  , K#T] → Bool, normalize_contains;</div>
-<div class="line">axm %ord.contains(map): {K: %ord.Key} → {V: *} → [%ord.Map K V, K#T] → Bool, normalize_contains;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md216"></a>
-Modifiers</h1>
-<h2><a class="anchor" id="autotoc_md217"></a>
-%ord.insert</h2>
-<p>Insert key / key-value-pair into container.</p>
-<div class="fragment"><div class="line">axm %ord.insert(set): {K: %ord.Key} →          [%ord.Set K  ,  K#T    ] → %ord.Set K  , normalize_insert;</div>
-<div class="line">axm %ord.insert(map): {K: %ord.Key} → {V: *} → [%ord.Map K V, [K#T, V]] → %ord.Map K V, normalize_insert;</div>
-</div><!-- fragment --> </div></div><!-- contents -->
-</div><!-- PageDoc -->
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
