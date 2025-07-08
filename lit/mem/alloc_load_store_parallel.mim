@@ -1,0 +1,21 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll -o -
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t; test $? -eq 2
+// RUN: %t 1 2 3; test $? -eq 8
+// RUN: %t 1 2 3 4 5; test $? -eq 12
+
+plugin core;
+
+con extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), return: Cn [%mem.M, I32]) =
+    let (mem, ptr) = %mem.alloc (I32, 0) mem;
+    let (mem2, ptr2) = %mem.alloc (I32, 0) mem;
+    let mem        = %mem.store (mem, ptr, argc);
+    let mem2       = %mem.store (mem2, ptr2, argc);
+    let (mem, val) = %mem.load (mem, ptr);
+    let (mem2, val2) = %mem.load (mem2, ptr2);
+    let mem        = %mem.free (mem, ptr);
+    let mem2       = %mem.free (mem2, ptr2);
+    let mem = %mem.merge (mem, mem2);
+    let val = %core.wrap.add 0 (val, val2);
+    return (mem, val);

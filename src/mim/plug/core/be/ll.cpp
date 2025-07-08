@@ -863,6 +863,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_val = convert(store->arg(2)->type());
         print(bb.body().emplace_back(), "store {} {}, {} {}", t_val, v_val, t_ptr, v_ptr);
         return {};
+    } else if (auto merge = Axm::isa<mem::merge>(def)) {
+        for (auto arg : merge->args())
+            emit_unsafe(arg);
+        return {};
     } else if (auto q = Axm::isa<clos::alloc_jmpbuf>(def)) {
         declare("i64 @jmpbuf_size()");
 
