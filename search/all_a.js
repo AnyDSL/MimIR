@@ -43,7 +43,7 @@ var searchData=
   ['k_5fwhere_40',['K_where',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a591638235693a00f9ae369606644a290',1,'mim::ast::Tok']]],
   ['k_5fwith_41',['K_with',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a7522a1371cb8dd5a576463eee40d66e8',1,'mim::ast::Tok']]],
   ['keep_42',['keep',['../classmim_1_1BetaRed.html#a8030304881c60088fcf7f4b1561f3190',1,'mim::BetaRed']]],
-  ['key_43',['Key',['../namespacemim_1_1plug_1_1ord.html#a87a29d8695533c2820227f29d2124532',1,'mim::plug::ord']]],
+  ['key_43',['Key',['../ord.html#autotoc_md207',1,'%ord.Key'],['../namespacemim_1_1plug_1_1ord.html#a87a29d8695533c2820227f29d2124532',1,'mim::plug::ord::Key']]],
   ['keywords_44',['Keywords',['../langref.html#autotoc_md36',1,'']]],
   ['kind_45',['Kind',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad626102cfc2416a570fc0dc582a9b771',1,'mim']]],
   ['kinds_20builtin_20types_46',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md43',1,'']]]
