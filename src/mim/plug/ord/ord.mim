@@ -13,8 +13,18 @@ plugin core;
 ///
 /// ## Types
 ///
+/// ### %%ord.Key
+///
+/// This is existential type specifies a type and a less-than function.
+///
 let %ord.Key = [T: *, lt: [T, T] → Bool];
-
+///
+/// ### %%ord.Set / %%ord.Map
+///
+/// Type constructors for set / map.
+/// * First argument must be of type `%%ord.Key`.
+/// * `%%ord.Map` needs a second argument: the value type.
+///
 axm %ord.Set: %ord.Key     → *;
 axm %ord.Map: %ord.Key → * → *;
 ///
