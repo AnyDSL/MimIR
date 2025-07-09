@@ -282,7 +282,6 @@ const Def* LamExpr::emit_(Emitter& e) const {
 const Def* AppExpr::emit_(Emitter& e) const {
     auto c = callee()->emit(e);
     auto a = arg()->emit(e);
-    outln("{} - {}", c->gid(), a->gid());
     return is_explicit() ? e.world().app(c, a) : e.world().implicit_app(c, a);
 }
 

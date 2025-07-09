@@ -13,7 +13,7 @@ set(MIM_PLUGINS
     ord
     refly
     regex
-    # tensor
+    tensor
     tuple
     vec
 )
