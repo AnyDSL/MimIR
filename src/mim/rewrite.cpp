@@ -79,23 +79,8 @@ const Def* Rewriter::rewrite_extract(const Extract* ex) {
         if (auto pack = ex->tuple()->isa_imm<Pack>(); pack && pack->shape()->is_closed())
             return map(ex, rewrite(pack->body()));
     }
+
     auto new_tuple = rewrite(ex->tuple());
-
-    // tuple might now be no longer a tuple.
-    // handle the case where the index's size is a hole, set index to 0.
-    if (auto arity = new_tuple->isa_lit_arity(); arity && *arity == 1) {
-        if (new_index->isa<Lit>() && new_index->as<Lit>()->get<nat_t>() == 0) return map(ex, new_tuple);
-        if (auto hole = Idx::isa(new_index->type())->isa_mut<Hole>()) {
-            auto new_size = rewrite_hole(hole);
-            if (new_size->isa<Lit>() && new_size->as<Lit>()->get<nat_t>() == 1) {
-                world().DLOG("extracting from 1-tuple with hole sized index: {}#{}", new_tuple, new_index);
-                map(new_index, world().lit_0_1());
-                return map(ex, new_tuple);
-            }
-
-        }
-    }
-
     return map(ex, world().extract(new_tuple, new_index)->set(ex->dbg()));
 }
 
