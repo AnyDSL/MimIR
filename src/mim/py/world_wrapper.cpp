@@ -30,7 +30,7 @@ public:
         return;
     }
 
-    Lam* mut_fun(const mim::Def* dom, mim::Defs codom) { return world_->mut_fun(dom, codom); }
+    Lam* mut_fun(const mim::Def* dom, std::vector<mim::Def*> codom) { return world_->mut_fun(dom, codom); }
 
 private:
     mim::World* world_;

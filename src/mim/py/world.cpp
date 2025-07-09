@@ -4,6 +4,7 @@
 #include <mim/world.h>
 #include <fe/sym.h>
 #include <mim/def.h>
+#include <pybind11/stl.h>
 namespace py = pybind11;
 
 namespace mim {
@@ -15,7 +16,8 @@ void init_world_wrapper(py::module_& m) {
         .def("write", &mim::PyWorld::write)
         .def("annex", &mim::PyWorld::annex, py::return_value_policy::reference_internal)
         .def("implicit_app", &mim::PyWorld::implicit_app, py::return_value_policy::reference_internal)
-        .def("type_i32", &mim::PyWorld::type_i32, py::return_value_policy::reference_internal);
+        .def("type_i32", &mim::PyWorld::type_i32, py::return_value_policy::reference_internal)
+        .def("mut_fun", &mim::PyWorld::mut_fun, py::return_value_policy::reference_internal);
 
     // clang-format on
 }
