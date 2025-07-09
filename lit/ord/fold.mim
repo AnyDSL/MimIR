@@ -1,0 +1,25 @@
+// RUN: %mim %s --output-ll - | FileCheck %s
+
+/*
+ * a hypothetical C++-to-MimIR compiler would produce the output below from this C++ program:
+uint64_t f(uint64_t x) {
+    auto map = std::map<uint32_t, uint64_t>{{23, 42}, {123, 456}};
+    map[0] = x;
+    map[1] = 11;
+    return map[0];
+ */
+
+plugin mem;
+plugin ord;
+
+let Key = (I32, %core.icmp.ul @i32);
+
+fun extern f(mem: %mem.M, x: I64): [%mem.M, I64] =
+    let map = %ord.init.map Key ((23I32, 42I64), (123I32, 456I64)); // 23 → 42, 123 → 456
+    let map = %ord.insert.map (map, (0I32, x));                     // 0 → x
+    let map = %ord.insert.map (map, (1I32, 11I64));                 // 1 → 11
+    let val = %ord.get (map, 0I32);                                 // x
+    return (mem, val);                                              // return x
+
+// CHECK: define i64 @f(i64 [[X:%[[:alnum:]_]+]])
+// CHECK: phi i64 [ [[X]]
