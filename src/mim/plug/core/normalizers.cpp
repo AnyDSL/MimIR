@@ -469,33 +469,33 @@ template<wrap id> const Def* normalize_wrap(const Def* type, const Def* c, const
     if (auto result = fold<wrap, id>(world, type, a, b)) return result;
 
     // clang-format off
-    if (auto la = Lit::isa(a)) {
-        if (*la == 0) {
-            switch (id) {
-                case wrap::add: return b;    // 0  + b -> b
-                case wrap::sub: break;
-                case wrap::mul: return a;    // 0  * b -> 0
-                case wrap::shl: return a;    // 0 << b -> 0
-            }
-        } else if (*la == 1) {
-            switch (id) {
-                case wrap::add: break;
-                case wrap::sub: break;
-                case wrap::mul: return b;    // 1  * b -> b
-                case wrap::shl: break;
-            }
-        }
-    }
+    // if (auto la = Lit::isa(a)) {
+    //     if (*la == 0) {
+    //         switch (id) {
+    //             case wrap::add: return b;    // 0  + b -> b
+    //             case wrap::sub: break;
+    //             case wrap::mul: return a;    // 0  * b -> 0
+    //             case wrap::shl: return a;    // 0 << b -> 0
+    //         }
+    //     } else if (*la == 1) {
+    //         switch (id) {
+    //             case wrap::add: break;
+    //             case wrap::sub: break;
+    //             case wrap::mul: return b;    // 1  * b -> b
+    //             case wrap::shl: break;
+    //         }
+    //     }
+    // }
 
     if (auto lb = Lit::isa(b)) {
-        if (*lb == 0) {
-            switch (id) {
-                case wrap::sub: return a;    // a  - 0 -> a
-                case wrap::shl: return a;    // a >> 0 -> a
-                default: fe::unreachable();
-                // add, mul are commutative, the literal has been normalized to the left
-            }
-        }
+        // if (*lb == 0) {
+        //     switch (id) {
+        //         case wrap::sub: return a;    // a  - 0 -> a
+        //         case wrap::shl: return a;    // a >> 0 -> a
+        //         default: fe::unreachable();
+        //         // add, mul are commutative, the literal has been normalized to the left
+        //     }
+        // }
 
         if (auto lm = Lit::isa(mode); lm && ls && *lm == 0 && id == wrap::sub)
             return world.call(wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
@@ -503,14 +503,14 @@ template<wrap id> const Def* normalize_wrap(const Def* type, const Def* c, const
             return world.bot(type);
     }
 
-    if (a == b) {
-        switch (id) {
-            case wrap::add: return world.call(wrap::mul, mode, Defs{world.lit(type, 2), a}); // a + a -> 2 * a
-            case wrap::sub: return world.lit(type, 0);                                       // a - a -> 0
-            case wrap::mul: break;
-            case wrap::shl: break;
-        }
-    }
+    // if (a == b) {
+    //     switch (id) {
+    //         case wrap::add: return world.call(wrap::mul, mode, Defs{world.lit(type, 2), a}); // a + a -> 2 * a
+    //         case wrap::sub: return world.lit(type, 0);                                       // a - a -> 0
+    //         case wrap::mul: break;
+    //         case wrap::shl: break;
+    //     }
+    // }
     // clang-format on
 
     if (auto res = reassociate<wrap>(id, world, callee, a, b)) return res;

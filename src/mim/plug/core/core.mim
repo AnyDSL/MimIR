@@ -260,11 +260,28 @@ axm %core.pe(is_closed): {T: *} → T → Bool, normalize_pe;
 ///
 lam %core.select {T: *} (cond: Bool, t: T, f: T): T = (f, t)#cond;
 
-let zero_neutral = rule (x:Nat) : %core.nat.add (0,x) => x;
+/// ## Normalizers for %core.nat
 
-let zero_sub = rule (x:Nat) : %core.nat.sub (0,x) => 0;
-let zero_mul = rule (x:Nat) : %core.nat.mul (0, x) => 0;
+let n_zero_plus = rule (x:Nat) : %core.nat.add (0,x) => x;
+let n_zero_sub = rule (x:Nat) : %core.nat.sub (0,x) => 0;
+let n_zero_mul = rule (x:Nat) : %core.nat.mul (0, x) => 0;
 
-let one_mul = rule (x:Nat) : %core.nat.mul (1, x) => x;
+let n_one_mul = rule (x:Nat) : %core.nat.mul (1, x) => x;
 
-let sub_zero = rule (x: Nat) : %core.nat.sub (x, 0) => x;
+let n_sub_zero = rule (x: Nat) : %core.nat.sub (x, 0) => x;
+
+/// ## Normalizers for %core.wrap
+
+lam zw(s:Nat) = 0:(Idx s);
+
+let w_zero_plus = rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.add m (zw s, b) => b;
+let w_zero_mul = rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.mul m (zw s, b) => zw s;
+let w_zero_shl = rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.shl m (zw s, b) => 0:(Idx s);
+
+let w_one_mul = rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.add m (%core.idx s m 1, b) => b;
+
+let w_sub_zero = rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.sub m (a,zw s) => a;
+let w_shl_zero = rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.shl m (a,zw s) => a;
+
+let w_equal_plus = rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.add m (a,a) => %core.wrap.mul m (%core.idx s m 2,a);
+let w_equal_sub = rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.sub m (a,a) => 0:(Idx s);

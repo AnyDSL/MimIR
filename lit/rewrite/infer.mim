@@ -1,0 +1,10 @@
+// RUN: %mim %s
+
+plugin refly;
+plugin core;
+
+let why_not = rule (s: Nat, m: Nat) : %core.idx s m 4 => %core.idx s m 3;
+
+let victim = %core.idx i8 0 4;
+
+let _ = %refly.equiv.struc_eq (victim,3I8);
