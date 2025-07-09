@@ -81,6 +81,16 @@ axm %mem.mslot: [*, Nat] as Ta → [%mem.M, size: Nat, id: Nat] → [%mem.M, %me
 axm %mem.lea: {n: Nat, Ts: «n; *», a: Nat} → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;
 
 ///
+/// ## Operations Managing Side Effects
+///
+/// ### %%mem.split
+///
+/// Splits a `%%mem.M`-typed value into `n` independent `%%mem.M`-typed values.
+/// This is useful, to model independent side effect chains, where the ordering between the two chains is not important, but that converge at some point.
+/// Use `%%mem.merge` to merge the independent chains again.
+///
+axm %mem.split: [n: Nat] → %mem.M → <<n; %mem.M>>;
+///
 /// ### %%mem.merge
 ///
 /// Merges n `%%mem.M`-typed values.

@@ -867,6 +867,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         for (auto arg : merge->args())
             emit_unsafe(arg);
         return {};
+    } else if (auto split = Axm::isa<mem::split>(def)) {
+        emit_unsafe(split->arg(0));
+        return {};
     } else if (auto q = Axm::isa<clos::alloc_jmpbuf>(def)) {
         declare("i64 @jmpbuf_size()");
 

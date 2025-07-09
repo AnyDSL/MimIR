@@ -8,14 +8,16 @@
 plugin core;
 
 con extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), return: Cn [%mem.M, I32]) =
-    let (mem, ptr) = %mem.alloc (I32, 0) mem;
-    let (mem2, ptr2) = %mem.alloc (I32, 0) mem;
-    let mem        = %mem.store (mem, ptr, argc);
+    // Split the memory into two independent chains.
+    let (mem1, mem2) = %mem.split 2 mem;
+    let (mem1, ptr) = %mem.alloc (I32, 0) mem1;
+    let (mem2, ptr2) = %mem.alloc (I32, 0) mem2;
+    let mem1        = %mem.store (mem1, ptr, argc);
     let mem2       = %mem.store (mem2, ptr2, argc);
-    let (mem, val) = %mem.load (mem, ptr);
+    let (mem1, val) = %mem.load (mem1, ptr);
     let (mem2, val2) = %mem.load (mem2, ptr2);
-    let mem        = %mem.free (mem, ptr);
+    let mem1        = %mem.free (mem1, ptr);
     let mem2       = %mem.free (mem2, ptr2);
-    let mem = %mem.merge (mem, mem2);
+    let mem = %mem.merge (mem1, mem2);
     let val = %core.wrap.add 0 (val, val2);
     return (mem, val);

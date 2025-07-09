@@ -1,0 +1,26 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll -o -
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t; test $? -eq 3
+// RUN: %t 1 2 3; test $? -eq 6
+// RUN: %t 1 2 3 4 5; test $? -eq 7
+
+plugin core;
+
+con extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), return: Cn [%mem.M, I32]) =
+    let (mem1, mem2, mem3) = %mem.split 3 mem;
+    let (mem1, ptr) = %mem.alloc (I32, 0) mem1;
+    let (mem2, ptr2) = %mem.alloc (I32, 0) mem2;
+    let (mem3, ptr3) = %mem.alloc (I32, 0) mem3;
+    let mem1        = %mem.store (mem1, ptr, %core.wrap.add 0 (argc, 1:I32));
+    let mem2        = %mem.store (mem2, ptr2, %core.wrap.add 0 (argc, 2:I32));
+    let mem3        = %mem.store (mem3, ptr3, %core.wrap.add 0 (argc, 3:I32));
+
+    let mem = %mem.merge (mem1, mem2, mem3);
+    let (mem, rem) = %core.div.urem (mem, (argc, 3:I32));
+    let ptrX = (ptr, ptr2, ptr3)#(%core.conv.u 3 rem);
+    let (mem, val) = %mem.load (mem, ptrX);
+    let mem        = %mem.free (mem, ptr);
+    let mem        = %mem.free (mem, ptr2);
+    let mem        = %mem.free (mem, ptr3);
+    return (mem, val);
