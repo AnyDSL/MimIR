@@ -12,7 +12,7 @@ let arr_size = ⊤:Nat;
 
 con extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I32, 0), 0), return: Cn [%mem.M, I32]] =
     let (mem, ptr) = %mem.alloc (<<%core.bitcast Nat argc; I32>>, 0) (mem);
-    %affine.For (i32, 3, (%mem.M, I32, I32)) (0I32, argc, 1I32, (mem, 0I32, 0I32), for_body, for_exit)
+    %affine.For (0I32, argc, 1I32, (mem, 0I32, 0I32), for_body, for_exit)
     where
         con for_body [i: I32, [mem: %mem.M, acc_a: I32, acc_b: I32], continue: Cn [%mem.M, I32, I32]] =
             let a   = %core.wrap.add 0 (i, acc_a);
