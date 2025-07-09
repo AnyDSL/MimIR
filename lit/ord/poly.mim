@@ -21,6 +21,9 @@ uint64_t poly(uint64_t x) {
 int f(uint64_t x) { return poly<std::map>(x); }
 */
 
+plugin mem;
+plugin ord;
+
 cfun dont_know[mem: %mem.M]: [%mem.M, Bool];
 
 let Key = (I32, %core.icmp.ul @i32);
