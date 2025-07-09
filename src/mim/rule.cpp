@@ -38,18 +38,25 @@ bool is_in_rule(const Def* expr) {
 
 bool Rule::its_a_match(const Def* expr) const {
     if (is_in_rule(expr)) return false;
-    return Rule::its_a_match(expr, lhs());
+    std::map<const Def*, const Def*> seen;
+    return Rule::its_a_match(expr, lhs(), seen);
 }
 
-bool Rule::its_a_match(const Def* exp1, const Def* exp2) const {
+bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, const Def*> already_seen) const {
     if (is_in_rule(exp1)) return false;
-    if (exp1->type() != exp2->type()) return false;
+    // if (exp1->type() != exp2->type()) return false;
+    if (exp1->type() != nullptr && exp2->type() != nullptr)
+        if (!its_a_match(exp1->type(), exp2->type(), already_seen)) return false;
     // we don't rewrite the rewrites
 
     // we assume all vars in exp2 are pattern matching meta variables
     // therefore they match everything (no equality pls)
     if (exp2->isa<Var>()) {
-        if (exp2->as<Var>()->mut()->isa<Rule>()) return true;
+        if (already_seen.contains(exp2)) return exp1 == already_seen[exp2];
+        if (exp2->as<Var>()->mut()->isa<Rule>()) {
+            already_seen[exp2] = exp1;
+            return true;
+        }
         return exp1 == exp2;
         // we want to have 2 bound variables that are equal
     }
@@ -58,10 +65,12 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2) const {
         // gotta assume that we have the same kind of node now
 
         // else we need to check for a match in all branches (except if no dependencies, then check equality)
-        if (exp2->num_ops() == 0) return exp2 == exp1;
+        if (auto l1 = exp1->isa<Lit>(); auto l2 = exp2->isa<Lit>()) return l1->get() == l2->get();
+        if (auto a1 = exp1->isa<Axm>(); auto a2 = exp2->isa<Axm>()) return a1->flags() == a2->flags();
+        if (exp2->num_ops() == 0) return true;
         if (exp2->num_ops() != exp1->num_ops()) return false;
         for (size_t i = 0; i < exp2->num_ops(); i++)
-            if (!its_a_match(exp1->op(i), exp2->op(i))) return false;
+            if (!its_a_match(exp1->op(i), exp2->op(i), already_seen)) return false;
         return true;
     }
     return false;

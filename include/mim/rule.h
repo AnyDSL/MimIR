@@ -34,7 +34,6 @@ private:
 };
 
 /// A rewrite rule
-// TODO : variables ?????
 class Rule : public Def, public Setters<Rule> {
 private:
     Rule(const RuleType* type, const Def* lhs, const Def* rhs)
@@ -80,7 +79,7 @@ public:
     /// @name Apply
     ///@{
     bool its_a_match(const Def* expr) const;
-    bool its_a_match(const Def* lhs, const Def* rhs) const;
+    bool its_a_match(const Def* lhs, const Def* rhs, std::map<const Def*, const Def*> seen) const;
     const Def* replace(const Def* expr) const;
     const Def* replace(const Def* exp1, const Def* exp2) const;
     ///@}
