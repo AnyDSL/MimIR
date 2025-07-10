@@ -37,9 +37,10 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         hash_ = mim::hash_begin(node_t(Node::Univ));
     } else if (auto var = isa<Var>()) {
         assert(flags_ == 0); // if we ever need flags here, we need to hash that
-        gid_  = type->world().next_gid();
-        vars_ = Vars(var);
-        muts_ = type->local_muts();
+        auto& world = type->world();
+        gid_        = world.next_gid();
+        vars_       = world.vars().insert(type->local_vars(), var);
+        muts_       = type->local_muts();
         dep_ |= type->dep_;
         auto op      = ops[0];
         ops_ptr()[0] = op;
@@ -62,8 +63,8 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
 
         auto vars = &world->vars();
         auto muts = &world->muts();
-        gid_      = world->next_gid();
         auto ptr  = ops_ptr();
+        gid_      = world->next_gid();
 
         for (size_t i = 0, e = ops.size(); i != e; ++i) {
             auto op = ops[i];
