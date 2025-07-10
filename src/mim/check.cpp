@@ -50,9 +50,12 @@ const Def* Def::zonk_mut() {
             break;
         }
 
-    if (zonk) return Zonker(world(), this).rewrite(this);
-    if (auto imm = immutabilize()) return imm;
+    if (zonk) {
+        return Zonker(world(), this).rewrite(this);
+        // TODO make this point to the new ops
+    }
 
+    if (auto imm = immutabilize()) return imm;
     return nullptr;
 }
 
