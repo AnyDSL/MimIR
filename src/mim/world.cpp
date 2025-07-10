@@ -421,6 +421,9 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
     auto size = Idx::isa(index->type());
     auto lidx = Lit::isa(index);
 
+    if (!size)
+        error(d->loc(), "index '{}' must be of type 'Idx' but is of type '{}'", index, index->type());
+
     if (!Checker::alpha<Checker::Check>(type->arity(), size))
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
 
