@@ -158,21 +158,11 @@ valgrind --vgdb=yes --vgdb-error=0 mim-gtest
 
 and follow the instructions.
 
-### VS Code
-
-As a utility to make debugging MimIR itself less painful with certain debuggers, the `mim.natvis` file can be loaded for getting more expressive value inspection.
-In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
-
-```json
-"visualizerFile": "${workspaceFolder}/mim.natvis",
-"showDisplayString": true,
-```
-
 ## Tests {#tests}
 
 ### lit Tests
 
-Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) testsuite with:
+Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) test suite with:
 
 ```sh
 cmake --build build -t lit
@@ -192,6 +182,16 @@ cd lit
 ../scripts/probe.sh foo.mim
 ```
 
+### Trigger Breakpoints over Command Line
+
+You can directly instruct `mim` to trigger a breakpoint, if certain events happen:
+```sh
+mim test.mim -b 1234            # Trigger a breakpoint if node with gid 1234 is created.
+mim test.mim -w 1234            # Trigger a breakpoint if node with gid 1234 sets one of its operands.
+mim test.mim --break-on-alpha   # Trigger a breakpoint if a check for alpha-equivalence fails.
+```
+See [Command-Line Reference](@ref cli) for all flags.
+
 ### GoogleTest
 
 Run the [GoogleTest](https://google.github.io/googletest/) unit tests within the `build` folder with:
@@ -206,7 +206,7 @@ In addition, you can enable [Valgrind](https://valgrind.org/) with:
 ctest -T memcheck
 ```
 
-During debugging you probably only want to run a specifig test case.
+During debugging you probably only want to run a specific test case.
 You can [filter](https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests) the test cases like this:
 
 ```sh

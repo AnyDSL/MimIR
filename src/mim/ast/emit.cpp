@@ -1,11 +1,12 @@
 #include "mim/def.h"
 
 #include "mim/ast/ast.h"
-#include "mim/util/span.h"
 
 using namespace std::literals;
 
 namespace mim::ast {
+
+int Expr::counter = 0;
 
 using Tag = Tok::Tag;
 

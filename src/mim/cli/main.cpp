@@ -34,7 +34,8 @@ int main(int argc, char** argv) {
         std::string clang = sys::find_cmd("clang");
         std::vector<std::string> plugins, search_paths;
 #ifdef MIM_ENABLE_CHECKS
-        std::vector<size_t> breakpoints;
+        std::vector<uint32_t> breakpoints;
+        std::vector<uint32_t> watchpoints;
 #endif
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
@@ -69,7 +70,8 @@ int main(int argc, char** argv) {
             | lyra::opt(flags.aggressive_lam_spec          )      ["--aggr-lam-spec"        ]("Overrides LamSpec behavior to follow recursive calls.")
             | lyra::opt(flags.scalarize_threshold, "threshold")   ["--scalarize-threshold"  ]("MimIR will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.")
 #ifdef MIM_ENABLE_CHECKS
-            | lyra::opt(breakpoints,    "gid"              )["-b"]["--break"                ]("*Triggers breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
+            | lyra::opt(breakpoints,    "gid"              )["-b"]["--break"                ]("*Triggers breakpoint when creating a node whose global id is <gid>.")
+            | lyra::opt(watchpoints,    "gid"              )["-w"]["--watch"                ]("*Triggers breakpoint when setting a node whose global id is <gid>.")
             | lyra::opt(flags.reeval_breakpoints           )      ["--reeval-breakpoints"   ]("*Triggers breakpoint even upon unfying a node that has already been built.")
             | lyra::opt(flags.break_on_alpha               )      ["--break-on-alpha"       ]("*Triggers breakpoint as soon as two expressions turn out to be not alpha-equivalent.")
             | lyra::opt(flags.break_on_error               )      ["--break-on-error"       ]("*Triggers breakpoint on ELOG.")
@@ -107,6 +109,7 @@ int main(int argc, char** argv) {
         World& world = driver.world();
 #ifdef MIM_ENABLE_CHECKS
         for (auto b : breakpoints) world.breakpoint(b);
+        for (auto w : watchpoints) world.watchpoint(w);
 #endif
         driver.log().set(&std::cerr).set((Log::Level)verbose);
 

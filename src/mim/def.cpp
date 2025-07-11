@@ -36,7 +36,7 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         gid_  = world->next_gid();
         hash_ = mim::hash_begin(node_t(Node::Univ));
     } else if (auto var = isa<Var>()) {
-        assert(flags_ == 0); // if we ever need flags here, we need to hash that
+        assert(flags_ == 0 && "if we ever need flags here, we need to hash that");
         auto& world = type->world();
         gid_        = world.next_gid();
         vars_       = world.vars().insert(type->local_vars(), var);
@@ -238,6 +238,9 @@ Def* Def::set(Defs ops) {
 }
 
 Def* Def::set(size_t i, const Def* def) {
+#ifdef MIM_ENABLE_CHECKS
+    if (world().watchpoints().contains(gid())) fe::breakpoint();
+#endif
     def = check(i, def);
     assert(def && !op(i) && curr_op_++ == i);
     ops_ptr()[i] = def;

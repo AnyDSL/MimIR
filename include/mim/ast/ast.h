@@ -130,7 +130,8 @@ private:
 class Expr : public Node {
 protected:
     Expr(Loc loc)
-        : Node(loc) {}
+        : Node(loc)
+        , counter_(counter++) {}
 
 public:
     /// @name Precedence
@@ -147,6 +148,9 @@ public:
         Extract,
         Lit,
     };
+
+    int counter_;
+    static int counter;
 
     static constexpr bool is_rassoc(Prec p) { return p == Prec::Arrow; }
     ///@}
