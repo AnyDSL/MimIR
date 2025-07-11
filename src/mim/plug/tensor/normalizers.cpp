@@ -111,7 +111,7 @@ counting_for(const Def* bound, const Def* acc, const Def* exit, const char* name
     auto& w       = bound->world();
     auto acc_ty   = acc->type();
     auto body     = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
-    auto for_loop = affine::op_for(w, w.lit_i32(0), bound, w.lit_i32(1), {acc}, body, exit);
+    auto for_loop = w.call<affine::For>(Defs{w.lit_i32(0), bound, w.lit_i32(1), {acc}, body, exit});
     return {body, for_loop};
 }
 

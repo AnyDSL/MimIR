@@ -315,6 +315,8 @@ Vars Def::free_vars() {
 }
 
 Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
+    if (!is_set()) return {};
+
     // Recursively recompute free vars. If
     // * mark_ == 0: invalid - need to recompute
     // * mark_ == run - 1: Previous iteration - need to recompute
