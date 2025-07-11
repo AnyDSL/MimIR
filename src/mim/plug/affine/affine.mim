@@ -20,8 +20,8 @@ import mem;
 /// * a `yield` continuation to prematurely continue with the next iteration.
 ///
 /// After termination of the loop `exit` is invoked.
-axm %affine.For: {m: Nat, n: Nat, Ts: «n; *»}
-               → Cn [begin: Idx m, _end: Idx m, step: Idx m, init: «i: n; Ts#i»,
+axm %affine.For: {m n: Nat, Ts: «n; *»}
+               → Cn [begin _end step: Idx m, init: «i: n; Ts#i»,
                      body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],
                      exit: Cn «i: n; Ts#i»];
 ///
