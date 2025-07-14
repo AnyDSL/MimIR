@@ -1,4 +1,5 @@
 #include "mim/def.h"
+#include "mim/rewrite.h"
 
 #include "mim/ast/ast.h"
 
@@ -266,7 +267,7 @@ void PiExpr::emit_body(Emitter& e, const Def*) const { emit(e); }
 const Def* PiExpr::emit_(Emitter& e) const {
     dom()->emit_type(e);
     auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
-    return dom()->set_codom(cod);
+    return dom()->pi_->set_codom(cod);
 }
 
 const Def* LamExpr::emit_decl(Emitter& e, const Def*) const { return lam()->emit_decl(e), lam()->def(); }
@@ -443,7 +444,7 @@ void RecDecl::emit_body(Emitter& e) const {
 }
 
 Lam* LamDecl::Dom::emit_value(Emitter& e) const {
-    lam_     = e.world().mut_lam(const_pi_);
+    lam_     = e.world().mut_lam(pi_);
     auto var = lam_->var();
 
     if (ret()) {
@@ -463,10 +464,10 @@ void LamDecl::emit_decl(Emitter& e) const {
     // Iterate over all doms: Build a Lam for cur dom, by first building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
-        auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_hole_type();
 
+        auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_hole_type();
         for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse)
-            cod = dom->set_codom(cod);
+            cod = dom->pi_->set_codom(cod);
 
         auto cur    = dom(i);
         auto lam    = cur->emit_value(e);
@@ -483,7 +484,30 @@ void LamDecl::emit_decl(Emitter& e) const {
 }
 
 void LamDecl::emit_body(Emitter& e) const {
-    doms().back()->lam_->set_body(body()->emit(e));
+    auto b = body()->emit(e);
+
+#if 0
+    for (size_t i = 0, n = num_doms(); i != n; ++i) {
+        auto rw = VarRewriter(e.world());
+
+        for (const auto& dom : doms() | std::ranges::views::drop(i))
+            if (auto var = dom->lam_->has_var()) rw.add(var, dom->pi_->has_var());
+
+        if (auto hole = dom(i)->pi_->codom()->isa_mut<Hole>(); hole && !hole->is_set())
+            hole->set(rw.rewrite(b->type()));
+    }
+#endif
+
+    doms().back()->lam_->set_body(b);
+
+    for (const auto& dom : doms() | std::ranges::views::reverse) {
+        if (auto imm = dom->pi_->immutabilize()) {
+            auto f = dom->lam_->filter();
+            auto b = dom->lam_->body();
+            dom->lam_->unset()->set_type(imm)->as<Lam>()->set(f, b);
+        }
+    }
+
     if (is_external()) doms().front()->lam_->make_external();
     e.register_annex(annex_, sub_, def_);
 }
