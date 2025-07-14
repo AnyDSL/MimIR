@@ -57,10 +57,16 @@ private:
 
 class VarRewriter : public Rewriter {
 public:
+    VarRewriter(World& world)
+        : Rewriter(world) {}
+
     VarRewriter(const Var* var, const Def* arg)
         : Rewriter(arg->world()) {
+        add(var, arg);
+    }
+
+    void add(const Var* var, const Def* arg) {
         map(var, arg);
-        Rewriter::push();
         vars_.emplace_back(var);
     }
 

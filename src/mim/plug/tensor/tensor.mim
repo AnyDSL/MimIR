@@ -134,7 +134,7 @@ axm %tensor.map_reduce: {nis: Nat}
                       → [is: «i: nis; «Sis#i; Tis#i» »]
                       → «So; To», normalize_map_reduce;
 
-fun dot_general_fun [R: Ring] [x: R#T, [y: R#T, z: R#T]]: R#T = return (R#add (x, (R#mul (y, z))));
+fun dot_general_fun (R: Ring) (x: R#T, (y z: R#T)): R#T = return (R#add (x, (R#mul (y, z))));
 
 lam dot_general_pick {n: Nat} {na nb nc: Nat} [a: «na; Idx n», b: «nb; Idx n», c: «nc; Idx n»] [off_1 off_2: Nat] [i: Idx n]: Nat =
   let (ab, ai) = %vec.first (%core.icmp.e @n) (a, i);
@@ -179,5 +179,5 @@ lam %tensor.dot_general
       let ein_2    = ‹i: r2; dot_general_pick (a2, b2, c2) (off_ein2, r_out) i›;
       %tensor.map_reduce @2 s_out (f, R#_0) (ein_1, ein_2) (a, b);
 
-lam %tensor.prod_2d_lam [R: Ring] {m k l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
+lam %tensor.prod_2d_lam (R: Ring) {m k l: Nat} (t1: «m, k; R#T», t2: «k, l; R#T»)
         = %tensor.dot_general R (1_2, 0_2, (), ()) @((m, k), (k, l)) (t1, t2);

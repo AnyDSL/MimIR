@@ -130,8 +130,7 @@ private:
 class Expr : public Node {
 protected:
     Expr(Loc loc)
-        : Node(loc)
-        , counter_(counter++) {}
+        : Node(loc) {}
 
 public:
     /// @name Precedence
@@ -148,9 +147,6 @@ public:
         Extract,
         Lit,
     };
-
-    int counter_;
-    static int counter;
 
     static constexpr bool is_rassoc(Prec p) { return p == Prec::Arrow; }
     ///@}
@@ -592,7 +588,8 @@ public:
 
     protected:
         const Pi* set_codom(const Def* codom) const {
-            if (auto imm = pi_->set_codom(codom)->immutabilize()) return const_pi_ = imm;
+            pi_->set_codom(codom);
+            if (auto imm = pi_->immutabilize()) return const_pi_ = imm;
             return const_pi_ = pi_;
         }
 

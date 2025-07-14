@@ -6,8 +6,6 @@ using namespace std::literals;
 
 namespace mim::ast {
 
-int Expr::counter = 0;
-
 using Tag = Tok::Tag;
 
 class Emitter {
