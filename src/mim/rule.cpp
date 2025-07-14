@@ -38,8 +38,7 @@ bool is_in_rule(const Def* expr) {
 
 bool Rule::its_a_match(const Def* expr) const {
     if (is_in_rule(expr)) return false;
-    std::map<const Def*, const Def*> seen;
-    return Rule::its_a_match(expr, lhs(), seen);
+    return Rule::its_a_match(expr, lhs());
 }
 
 bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, const Def*> already_seen) const {
@@ -60,6 +59,18 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, co
         return exp1 == exp2;
         // we want to have 2 bound variables that are equal
     }
+    if (auto e2 = exp2->isa<Extract>()) {
+        if (auto v = e2->tuple()->isa<Var>()) {
+            // we have a var in a tuple
+            if (already_seen.contains(e2)) return exp1 == already_seen[e2];
+            if (v->mut()->isa<Rule>()) {
+                already_seen[e2] = exp1;
+                return true;
+            }
+            return exp1 == exp2;
+        }
+    }
+
     if (are_same_node(exp1, exp2)) {
         // should be ok if we do not have to infer the types
         // gotta assume that we have the same kind of node now
@@ -76,23 +87,48 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, co
     return false;
 }
 
-const Def* Rule::replace(const Def* expr) const { return Rule::replace(lhs(), expr); }
+const Def* Rule::replace(const Def* expr) const {
+    std::map<std::pair<const Def*, size_t>, const Def*> var2replace;
+    auto v = Rule::replace_(lhs(), expr, var2replace);
+    // the dic is now populated with everything
+    std::vector<std::pair<const Def*, size_t>> tuple_of_args;
+    for (auto v : var2replace) tuple_of_args.push_back(std::make_pair(v.second, v.first.second));
+    std::sort(tuple_of_args.begin(), tuple_of_args.end(),
+              [&](std::pair<const Def*, size_t> a, std::pair<const Def*, size_t> b) { return a.second < b.second; });
+    std::vector<const Def*> fin;
+    for (auto p : tuple_of_args) fin.push_back(p.first);
+    auto truc = world().tuple(fin);
 
-const Def* Rule::replace(const Def* exp1, const Def* exp2) const {
-    const Def* res = rhs();
+    return VarRewriter(v, truc).rewrite(rhs());
+}
+
+const Var* Rule::replace_(const Def* exp1,
+                          const Def* exp2,
+                          std::map<std::pair<const Def*, size_t>, const Def*>& var2replace) const {
+    const Var* var_of_var;
+    if (exp1 == exp2) return nullptr;
     if (auto v = exp1->isa<Var>()) {
         if (v->mut()->isa<Rule>()) {
             // base case, we bind the actual value to the meta var and replace it in rhs
-            auto rw = VarRewriter(v, exp2);
-            res     = rw.rewrite(rhs());
-            return res;
+            var2replace[std::make_pair(v, -1)] = exp2;
+            return v;
         }
     }
+    if (auto e = exp1->isa<Extract>()) {
+        if (auto v = e->tuple()->isa<Var>()) {
+            if (v->mut()->isa<Rule>()) {
+                var2replace[std::make_pair(e, e->index()->as<Lit>()->get())] = exp2;
+                return v;
+            }
+        }
+    }
+    replace_(exp1->type(), exp2->type(), var2replace);
     for (size_t i = 0; i < exp1->num_ops(); i++) {
         // recursively go find all meta vars in lhs
-        res = replace(exp1->op(i), exp2->op(i));
+        auto v = replace_(exp1->op(i), exp2->op(i), var2replace);
+        if (v) var_of_var = v;
     }
-    return res;
+    return var_of_var;
 }
 
 } // namespace mim
