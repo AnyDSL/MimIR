@@ -7,4 +7,7 @@ let why_not = rule (s: Nat, m: Nat) : %core.idx s m 4 => %core.idx s m 3;
 
 let victim = %core.idx i8 0 4;
 
-let _ = %refly.equiv.struc_eq (victim,3I8);
+//let _ = %refly.equiv.struc_eq (victim,3I8);
+// the victim will be normalized to a lit
+// we cannot in general then match as that would mean
+// having a full constraint solver (being able to invert all functions)

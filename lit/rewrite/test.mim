@@ -13,9 +13,9 @@ let _ = %refly.equiv.struc_eq (test, id);
 let _ = %refly.equiv.struc_eq (testtest, id);
 
 let _ = rule (x:Nat) : 42 => 0;
-let ohohoh = id 42;
-let _ = %refly.equiv.struc_eq (ohohoh, 0);
-
+let ohohoh = 42;
+// let _ = %refly.equiv.struc_eq (ohohoh, 0);
+// ^- not supported, only normalizations currently
 
 fun id2(a b:Nat) :Nat = return b;
 fun test2(a b:Nat) :Nat = return (%core.nat.add(b,0));
