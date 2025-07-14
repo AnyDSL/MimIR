@@ -437,22 +437,22 @@ template<shr id> const Def* normalize_shr(const Def* type, const Def* c, const D
 
     if (auto result = fold<shr, id>(world, type, a, b)) return result;
 
-    if (auto la = Lit::isa(a); la && *la == 0) {
-        switch (id) {
-            case shr::a: return a;
-            case shr::l: return a;
-        }
-    }
+    // if (auto la = Lit::isa(a); la && *la == 0) {
+    //     switch (id) {
+    //         case shr::a: return a;
+    //         case shr::l: return a;
+    //     }
+    // }
 
     if (auto lb = Lit::isa(b)) {
         if (ls && *lb > *ls) return world.bot(type);
 
-        if (*lb == 0) {
-            switch (id) {
-                case shr::a: return a;
-                case shr::l: return a;
-            }
-        }
+        // if (*lb == 0) {
+        //     switch (id) {
+        //         case shr::a: return a;
+        //         case shr::l: return a;
+        //     }
+        // }
     }
 
     return world.raw_app(type, callee, {a, b});
