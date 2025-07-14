@@ -14,6 +14,9 @@ lam h1 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , Nat, Nat, Nat] = %tuple.ca
 lam h2 (a: [Nat, Bool], b: «3; Nat»): [ Nat, Bool , «3; Nat»     ] = %tuple.append  (a, b);
 lam h3 (a: [Nat, Bool], b: «3; Nat»): [[Nat, Bool], Nat, Nat, Nat] = %tuple.prepend (a, b);
 
+lam t1 (n: Nat) (a: «n; Nat», b: []): «n; Nat» = %tuple.cat (a, b);
+lam t2 (n: Nat) (a: [], b: «n; Nat»): «n; Nat» = %tuple.cat (a, b);
+
 let x = (1, tt);
 let y = (ff, 23, 42);
 let z = %tuple.cat (x, y);

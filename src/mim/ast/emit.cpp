@@ -485,19 +485,6 @@ void LamDecl::emit_decl(Emitter& e) const {
 
 void LamDecl::emit_body(Emitter& e) const {
     auto b = body()->emit(e);
-
-#if 0
-    for (size_t i = 0, n = num_doms(); i != n; ++i) {
-        auto rw = VarRewriter(e.world());
-
-        for (const auto& dom : doms() | std::ranges::views::drop(i))
-            if (auto var = dom->lam_->has_var()) rw.add(var, dom->pi_->has_var());
-
-        if (auto hole = dom(i)->pi_->codom()->isa_mut<Hole>(); hole && !hole->is_set())
-            hole->set(rw.rewrite(b->type()));
-    }
-#endif
-
     doms().back()->lam_->set_body(b);
 
     for (const auto& dom : doms() | std::ranges::views::reverse) {
