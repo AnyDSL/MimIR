@@ -287,6 +287,8 @@ let w_shl_zero = rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.shl m (a,zw s) => 
 let w_equal_plus = rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.add m (a,a) => %core.wrap.mul m (%core.idx s m 2,a);
 let w_equal_sub = rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.sub m (a,a) => 0:(Idx s);
 
+let w_error_shl = rule (s:Nat, m: Nat, a:(Idx s), b:(Idx s)) : %core.wrap.shl m (a,b) => ⊥:(Idx s) when %core.icmp.ug (b, (%core.idx s 0 s));
+
 /// ## Normalizers for %core.shr
 
 let s_zero_ar = rule (s:Nat, b:(Idx s)) : %core.shr.a (0:(Idx s), b) => b;
@@ -294,6 +296,8 @@ let s_zero_log = rule (s:Nat, b:(Idx s)) : %core.shr.l (0:(Idx s), b) => b;
 
 let s_zeros_ar = rule(s:Nat, a:(Idx s)) : %core.shr.a (a,0:(Idx s)) => a;
 let s_zeros_log = rule (s:Nat, a:(Idx s)) : %core.shr.l (a, 0:(Idx s)) => a;
+
+let s_overflow_ar = rule(s:Nat, a:(Idx s), b:(Idx s)) : %core.shr.a (a,b) => ⊥:(Idx s) when %core.icmp.ug (b, (%core.idx s 0 s));
 
 /// ## Normalizers for %core.div
 

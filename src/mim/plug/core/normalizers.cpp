@@ -420,14 +420,8 @@ template<shr id> const Def* normalize_shr(const Def* type, const Def* c, const D
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto s      = Idx::isa(arg->type());
-    auto ls     = Lit::isa(s);
 
     if (auto result = fold<shr, id>(world, type, a, b)) return result;
-
-    if (auto lb = Lit::isa(b)) {
-        if (ls && *lb > *ls) return world.bot(type);
-    }
 
     return world.raw_app(type, callee, {a, b});
 }
@@ -446,8 +440,6 @@ template<wrap id> const Def* normalize_wrap(const Def* type, const Def* c, const
         if (auto lm = Lit::isa(mode); lm && ls && *lm == 0 && id == wrap::sub)
             return world.call(wrap::add, mode,
                               Defs{a, world.lit_idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
-        else if (id == wrap::shl && ls && *lb > *ls)
-            return world.bot(type);
     }
 
     if (auto res = reassociate<wrap>(id, world, callee, a, b)) return res;
