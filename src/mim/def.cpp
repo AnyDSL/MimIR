@@ -124,7 +124,7 @@ const Def* Merge  ::rebuild_(World& w, const Def* t, Defs o) const { return w.me
 const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
 const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
 const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
-const Def* Rule   ::rebuild_(World& w, const Def* t, Defs o) const { return w.rule(t->as<RuleType>(), o[0], o[1]); }
+const Def* Rule   ::rebuild_(World& w, const Def* t, Defs o) const { return w.rule(t->as<RuleType>(), o[0], o[1],o[2]); }
 const Def* RuleType::rebuild_(World& w, const Def* , Defs o) const { return w.rule_type(o[0]); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
 const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
@@ -192,7 +192,7 @@ const Pi* Pi::immutabilize() {
     return nullptr;
 }
 
-const Rule* Rule::immutabilize() { return world().rule(type(), lhs(), rhs()); }
+const Rule* Rule::immutabilize() { return world().rule(type(), lhs(), rhs(), condition()); }
 
 const Def* Sigma::immutabilize() {
     if (is_immutabilizable()) return static_cast<const Sigma*>(world().sigma(ops()));

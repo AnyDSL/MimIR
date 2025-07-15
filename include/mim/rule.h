@@ -36,10 +36,10 @@ private:
 /// A rewrite rule
 class Rule : public Def, public Setters<Rule> {
 private:
-    Rule(const RuleType* type, const Def* lhs, const Def* rhs)
-        : Def(Node, type, {lhs, rhs}, 0) {}
+    Rule(const RuleType* type, const Def* lhs, const Def* rhs, const Def* condition)
+        : Def(Node, type, {lhs, rhs, condition}, 0) {}
     Rule(const RuleType* type)
-        : Def(Node, type, 2, 0) {}
+        : Def(Node, type, 3, 0) {}
 
 public:
     /// @name lhs & rhs
@@ -48,8 +48,10 @@ public:
     const RuleType* type() const { return Def::type()->as<RuleType>(); }
     const Def* lhs() const { return op(0); }
     const Def* rhs() const { return op(1); }
+    const Def* condition() const { return op(2); }
     MIM_PROJ(lhs, const)
     MIM_PROJ(rhs, const)
+    MIM_PROJ(condition, const)
     ///@}
 
     /// @name Setters
@@ -57,8 +59,12 @@ public:
     ///@{
     using Setters<Rule>::set;
     Rule* set(const Def* lhs, const Def* rhs) { return set_lhs(lhs)->set_rhs(rhs); }
+    Rule* set(const Def* lhs, const Def* rhs, const Def* condition) {
+        return set_lhs(lhs)->set_rhs(rhs)->set_condition(condition);
+    }
     Rule* set_lhs(const Def* lhs) { return Def::set(0, lhs)->as<Rule>(); }
     Rule* set_rhs(const Def* rhs) { return Def::set(1, rhs)->as<Rule>(); }
+    Rule* set_condition(const Def* condition) { return Def::set(2, condition)->as<Rule>(); }
     Rule* unset() { return Def::unset()->as<Rule>(); }
     ///@}
 

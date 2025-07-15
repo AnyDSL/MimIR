@@ -97,9 +97,11 @@ const Def* Rule::replace(const Def* expr) const {
               [&](std::pair<const Def*, size_t> a, std::pair<const Def*, size_t> b) { return a.second < b.second; });
     std::vector<const Def*> fin;
     for (auto p : tuple_of_args) fin.push_back(p.first);
-    auto truc = world().tuple(fin);
-
-    return VarRewriter(v, truc).rewrite(rhs());
+    auto truc  = world().tuple(fin);
+    auto rw    = VarRewriter(v, truc);
+    auto condi = rw.rewrite(condition());
+    if (condi == world().lit_tt()) return rw.rewrite(rhs());
+    return expr;
 }
 
 const Var* Rule::replace_(const Def* exp1,

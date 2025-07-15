@@ -355,6 +355,7 @@ void RuleDecl::bind(Scopes& s) const {
     var()->bind(s, true, false);
     lhs()->bind(s);
     rhs()->bind(s);
+    condition()->bind(s);
     s.pop();
 }
 

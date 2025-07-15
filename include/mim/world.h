@@ -308,12 +308,12 @@ public:
     const RuleType* rule_type(const Def* meta_type) {
         return unify<RuleType>(1, RuleType::infer(meta_type), meta_type);
     }
-    Rule* mut_rule(const RuleType* type) { return insert<Rule>(2, type); }
-    const Rule* rule(const RuleType* type, const Def* lhs, const Def* rhs) {
-        return mut_rule(type)->set_lhs(lhs)->set_rhs(rhs);
+    Rule* mut_rule(const RuleType* type) { return insert<Rule>(3, type); }
+    const Rule* rule(const RuleType* type, const Def* lhs, const Def* rhs, const Def* condition) {
+        return mut_rule(type)->set(lhs, rhs, condition);
     }
-    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs) {
-        return rule(rule_type(meta_type), lhs, rhs);
+    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs, const Def* condition) {
+        return rule(rule_type(meta_type), lhs, rhs, condition);
     }
     ///@}
 

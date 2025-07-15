@@ -695,9 +695,9 @@ Ptr<Expr> Parser::parse_rule_expr() {
     auto lhs            = parse_expr("rewrite pattern");
     bool is_equivalence = (bool)accept(Tag::T_equiv);
     if (!is_equivalence) expect(Tag::T_fat_arrow, "rewrite rule declaration");
-    auto rhs = parse_expr("rewrite result");
-    auto condition
-        = ahead().isa(Tag::K_when) ? parse_expr("rewrite condition") : ptr<PrimaryExpr>(track, std::move(Tag::K_tt));
+    auto rhs       = parse_expr("rewrite result");
+    auto condition = ahead().isa(Tag::K_when) ? (eat(Tag::K_when), parse_expr("rewrite condition"))
+                                              : ptr<PrimaryExpr>(track, std::move(Tag::K_tt));
     return ptr<RuleDecl>(track, std::move(ptrn), std::move(lhs), std::move(rhs), std::move(condition), is_equivalence);
 }
 
