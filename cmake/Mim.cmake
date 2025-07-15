@@ -23,15 +23,20 @@ function(add_mim_plugin)
 
     file(READ "${PLUGIN_MIM}" plugin_file_contents)
 
+    # Strip block comments (/* ... */) — greedy, so repeat if needed
+    string(REGEX REPLACE "/\\*[^*]*\\*+([^/*][^*]*\\*+)*/" "" plugin_file_contents "${plugin_file_contents}")
+
     # Replace all newlines with semicolons to help with list processing
     string(REPLACE "\n" ";" plugin_lines "${plugin_file_contents}")
 
-    set(PLUGIN_SOFT_DEPS)
-    set(PLUGIN_HARD_DEPS)
+    set(PLUGIN_DEPS)
 
     # Loop over each line
     foreach(line IN LISTS plugin_lines)
         string(STRIP "${line}" line) # Strip leading/trailing whitespace
+
+        # Remove C++-style comments (from '//' to end of line)
+        string(REGEX REPLACE "//.*" "" line "${line}")
 
         # Match "import name;" using regex and extract the name
         string(REGEX MATCH "^import[ \t]+[a-zA-Z0-9_]+" match "${line}")
@@ -64,7 +69,7 @@ function(add_mim_plugin)
             --output-md ${PLUGIN_MD}
         MAIN_DEPENDENCY ${PLUGIN_MIM}
         DEPENDS ${MIM_TARGET_NAMESPACE}mim
-        COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'"
+        COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'; soft deps: ${PLUGIN_SOFT_DEPS}; hard deps: ${PLUGIN_HARD_DEPS}"
         VERBATIM
     )
     add_custom_command(
@@ -73,13 +78,12 @@ function(add_mim_plugin)
         DEPENDS ${PLUGIN_MIM}
         COMMENT "Copy '${PLUGIN_MIM}' to '${OUT_PLUGIN_MIM}'"
     )
+
     add_custom_target(mim_internal_${PLUGIN}
         DEPENDS
             ${AUTOGEN_H}
-            ${PLUGIN_D}
             ${PLUGIN_MD}
             ${OUT_PLUGIN_MIM}
-            ${PLUGIN_SOFT_DEPS}
     )
 
     list(APPEND MIM_PLUGIN_LIST "${PLUGIN}")
@@ -93,7 +97,11 @@ function(add_mim_plugin)
     # mim_plugin
     #
     add_library(mim_${PLUGIN} MODULE)
-    add_dependencies(mim_${PLUGIN} mim_internal_${PLUGIN} ${PLUGIN_HARD_DEPS})
+    add_dependencies(mim_${PLUGIN}
+        mim_internal_${PLUGIN}
+        ${PLUGIN_SOFT_DEPS}
+        ${PLUGIN_HARD_DEPS}
+    )
     target_sources(mim_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}

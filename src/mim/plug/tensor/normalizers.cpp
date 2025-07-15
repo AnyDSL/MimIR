@@ -29,40 +29,23 @@ const Def* op_set(const Def* T, const Def* r, const Def* s, const Def* arr, cons
 }
 
 const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
-    return {};
-    auto& w = c->world();
-
+    auto& w           = c->world();
+    auto callee       = c->as<App>();
+    auto [T, r, s]    = callee->args<3>();
     auto [arr, index] = arg->projs<2>();
-    w.DLOG("normalize_get");
-    w.DLOG("arr = {} : {}", arr, arr->type());
-    w.DLOG("index = {} : {}", index, index->type());
 
-    auto size = index->num_projs();
-    w.DLOG("size = {}", size);
-    if (size == 1) {
-        w.DLOG("index of size 1, extract");
-        return w.extract(arr, index);
+    if (auto r_lit = Lit::isa(r)) {
+        auto n = *r_lit;
+        if (n == 1) return w.extract(arr, index);
+
+        auto new_s     = w.tuple(DefVec(n - 1, [&](size_t i) { return s->proj(n, i + 1); }));
+        auto new_arr   = w.extract(arr, index->proj(n, 0));
+        auto new_index = w.tuple(DefVec(n - 1, [&](size_t i) { return index->proj(n, i + 1); }));
+
+        return w.call<tensor::get>(Defs{new_arr, new_index});
     }
 
-    auto idx = index->proj(0);
-    w.DLOG("idx = {} : {}", idx, idx->type());
-
-    auto callee    = c->as<App>();
-    auto [T, r, s] = callee->args<3>();
-
-    auto r_lit = r->isa<Lit>();
-    if (!r_lit) return nullptr;
-
-    auto r_nat     = r_lit->get<u64>() - 1;
-    auto new_r     = w.lit_nat(r_nat);
-    auto new_s_vec = DefVec(r_nat, [&](size_t i) { return s->proj(i + 1); });
-    auto new_s     = w.tuple(new_s_vec);
-
-    auto new_arr       = w.extract(arr, idx);
-    auto new_index_vec = DefVec(r_nat, [&](size_t i) { return index->proj(i + 1); });
-    auto new_index     = w.tuple(new_index_vec);
-
-    return w.app(w.app(w.annex<tensor::get>(), {T, new_r, new_s}), {new_arr, new_index});
+    return {};
 }
 
 const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
@@ -116,6 +99,7 @@ counting_for(const Def* bound, const Def* acc, const Def* exit, const char* name
 }
 
 const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs) {
+    return {};
     // meta arguments:
     // * n = out-count, (nat)
     // * S = out-dim, (n*nat)

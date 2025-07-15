@@ -159,8 +159,7 @@ Ptr<Module> Parser::import(std::istream& is, Loc loc, const fs::path* path, std:
 }
 
 Ptr<Module> Parser::plugin(Dbg dbg) {
-    // if (!driver().is_loaded(dbg.sym()) && (!driver().flags().bootstrap || driver().world().name() != dbg.sym()))
-    if (!driver().is_loaded(dbg.sym()) && !driver().flags().bootstrap) driver().load(dbg.sym());
+    if (!driver().is_loaded(dbg.sym())) driver().load(dbg.sym());
     return import(dbg);
 }
 
