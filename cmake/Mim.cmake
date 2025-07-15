@@ -38,21 +38,16 @@ function(add_mim_plugin)
         if(match)
             # Extract just the plugin name using the match group
             string(REGEX REPLACE "^import[ \t]+([a-zA-Z0-9_]+)" "\\1" plugin_name "${line}")
-            list(APPEND PLUGIN_SOFT_DEPS "${plugin_name}")
+            list(APPEND PLUGIN_SOFT_DEPS "mim_internal_${plugin_name}")
         endif()
 
         # as above
         string(REGEX MATCH "^plugin[ \t]+[a-zA-Z0-9_]+" match "${line}")
         if(match)
             string(REGEX REPLACE "^plugin[ \t]+([a-zA-Z0-9_]+)" "\\1" plugin_name "${line}")
-            list(APPEND PLUGIN_HARD_DEPS "${plugin_name}")
+            list(APPEND PLUGIN_HARD_DEPS "mim_${plugin_name}")
         endif()
     endforeach()
-
-    # Output the result for debug
-    message(STATUS "soft deps: ${PLUGIN_SOFT_DEPS}")
-    message(STATUS "hard deps: ${PLUGIN_HARD_DEPS}")
-
 
     file(
         MAKE_DIRECTORY
@@ -63,7 +58,6 @@ function(add_mim_plugin)
     add_custom_command(
         OUTPUT
             ${AUTOGEN_H}
-            ${PLUGIN_D}
             ${PLUGIN_MD}
         COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.." --bootstrap
             --output-h ${AUTOGEN_H}
@@ -85,6 +79,7 @@ function(add_mim_plugin)
             ${PLUGIN_D}
             ${PLUGIN_MD}
             ${OUT_PLUGIN_MIM}
+            ${PLUGIN_SOFT_DEPS}
     )
 
     list(APPEND MIM_PLUGIN_LIST "${PLUGIN}")
@@ -98,7 +93,7 @@ function(add_mim_plugin)
     # mim_plugin
     #
     add_library(mim_${PLUGIN} MODULE)
-    add_dependencies(mim_${PLUGIN} mim_internal_${PLUGIN})
+    add_dependencies(mim_${PLUGIN} mim_internal_${PLUGIN} ${PLUGIN_HARD_DEPS})
     target_sources(mim_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}
