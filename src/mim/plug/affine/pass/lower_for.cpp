@@ -27,6 +27,12 @@ const Def* merge_t(World& w, const Def* elem, const Def* tuple, const Def* mem) 
     return w.tuple({elem, tuple});
 }
 
+const Def* eta_expand(World& w, const Def* f) {
+    auto eta = w.mut_con(Pi::isa_cn(f->type())->dom());
+    eta->app(false, f, eta->var());
+    return eta;
+}
+
 } // namespace
 
 const Def* LowerFor::rewrite(const Def* def) {
@@ -38,7 +44,8 @@ const Def* LowerFor::rewrite(const Def* def) {
 
         auto body_lam = body->isa_mut<Lam>();
         auto exit_lam = exit->isa_mut<Lam>();
-        if (!body_lam || !exit_lam) return def;
+        if (!body_lam) body = eta_expand(world(), body);
+        if (!exit_lam) exit = eta_expand(world(), exit);
 
         auto mem       = mem::mem_def(init);
         auto head_lam  = world().mut_con(merge_s(world(), begin->type(), init->type(), mem))->set("head");

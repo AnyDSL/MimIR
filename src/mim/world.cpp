@@ -421,8 +421,7 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
     auto size = Idx::isa(index->type());
     auto lidx = Lit::isa(index);
 
-    if (!size)
-        error(d->loc(), "index '{}' must be of type 'Idx' but is of type '{}'", index, index->type());
+    if (!size) error(d->loc(), "index '{}' must be of type 'Idx' but is of type '{}'", index, index->type());
 
     if (!Checker::alpha<Checker::Check>(type->arity(), size))
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
@@ -687,6 +686,7 @@ Defs World::reduce(const Var* var, const Def* arg) {
 #ifdef MIM_ENABLE_CHECKS
 
 void World::breakpoint(u32 gid) { state_.breakpoints.emplace(gid); }
+void World::watchpoint(u32 gid) { state_.watchpoints.emplace(gid); }
 
 const Def* World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });
