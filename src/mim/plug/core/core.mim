@@ -273,6 +273,7 @@ let n_sub_zero = rule (x: Nat) : %core.nat.sub (x, 0) => x;
 /// ## Normalizers for %core.wrap
 
 lam zw(s:Nat) = 0:(Idx s);
+lam on(s:Nat, m:Nat) = %core.idx s m 1;
 
 let w_zero_plus = rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.add m (zw s, b) => b;
 let w_zero_mul = rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.mul m (zw s, b) => zw s;
@@ -293,3 +294,25 @@ let s_zero_log = rule (s:Nat, b:(Idx s)) : %core.shr.l (0:(Idx s), b) => b;
 
 let s_zeros_ar = rule(s:Nat, a:(Idx s)) : %core.shr.a (a,0:(Idx s)) => a;
 let s_zeros_log = rule (s:Nat, a:(Idx s)) : %core.shr.l (a, 0:(Idx s)) => a;
+
+/// ## Normalizers for %core.div
+
+let ds_zero_left = rule (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.sdiv (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
+let du_zero_left = rule (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.udiv (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
+let dur_zero_left = rule (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.urem (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
+let dsr_zero_left = rule (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.srem (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
+
+let ds_zero_error = rule (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.sdiv (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
+let du_zero_error = rule (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.udiv (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
+let dur_zero_error = rule (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.urem (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
+let dsr_zero_error = rule (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.srem (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
+
+let ds_one_right = rule (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.sdiv (mem,(a,on(s,m))) => (mem,a);
+let du_one_right = rule (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.udiv (mem,(a,on(s,m))) => (mem,a);
+let dur_one_right = rule (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.urem (mem,(a,on(s,m))) => (mem,0:(Idx s));
+let dsr_one_right = rule (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.srem (mem,(a,on(s,m))) => (mem,0:(Idx s));
+
+let ds_equal = rule (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.sdiv (mem, (a,a)) => (mem, on(s,0));
+let du_equal = rule (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.udiv (mem, (a,a)) => (mem, on(s,0));
+let dur_equal = rule (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.urem (mem, (a,a)) => (mem, 0:(Idx s));
+let dsr_equal = rule (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.srem (mem, (a,a)) => (mem, 0:(Idx s));
