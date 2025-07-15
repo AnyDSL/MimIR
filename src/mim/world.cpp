@@ -6,6 +6,7 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 #include "mim/rewrite.h"
+#include "mim/rule.h"
 #include "mim/tuple.h"
 
 #include "mim/util/util.h"
@@ -231,7 +232,7 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                 curry = curry == Axm::Trip_End ? curry : curry - 1;
 
                 if (auto normalizer = axm->normalizer(); Normalize && normalizer && curry == 0) {
-                    if (auto norm = normalizer(type, callee, arg)) return apply_rules(norm);
+                    if (auto norm = normalizer(type, callee, arg)) return apply_rules(axm, norm);
                 }
             }
 
@@ -677,14 +678,31 @@ Defs World::reduce(const Var* var, const Def* arg) {
     return reduct->defs();
 }
 
-const Def* World::apply_rules(const Def* expr) {
+// returns the top level axm of an expression if it exists
+const Axm* upper_axm(const Def* expr) {
+    const Def* res = expr;
+    while (auto ru = res->isa<App>()) res = ru->callee();
+    if (auto a = res->isa<Axm>()) return a;
+    return nullptr;
+}
+
+const Def* World::apply_rules(const Axm* axm, const Def* expr) {
     if (known_rules_.empty()) return expr;
-    for (auto& rule : known_rules_)
-        if (rule != nullptr && rule->its_a_match(expr)) return rule->replace(expr);
+    auto c = rules_of_axm_.equal_range(axm);
+    if (c.first == rules_of_axm_.end()) return expr;
+    for (auto rule = c.first; rule != c.second; rule++) {
+        auto r = rule->second;
+        if (r->its_a_match(expr)) return r->replace(expr);
+    }
     return expr;
 }
 
-void World::register_rule(const Rule* rule) { known_rules_.insert(rule); }
+void World::register_rule(const Rule* rule) {
+    // find upper axm; add the rule to its datastructure
+    // we still keep a global dict in case it fails
+    known_rules_.insert(rule);
+    if (auto axm = upper_axm(rule->lhs())) rules_of_axm_.emplace(axm, rule);
+}
 
 /*
  * debugging

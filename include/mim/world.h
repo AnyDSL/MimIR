@@ -552,7 +552,7 @@ public:
     ///@}
 
     /// Try to apply all known rewrites to an expression
-    const Def* apply_rules(const Def* expr);
+    const Def* apply_rules(const Axm*, const Def* expr);
     void register_rule(const Rule* rule);
     absl::btree_set<const Rule*> all_rules() const { return known_rules_; }
 
@@ -730,6 +730,7 @@ private:
     }
 
     absl::btree_set<const Rule*> known_rules_;
+    absl::btree_multimap<const Axm*, const Rule*> rules_of_axm_;
 };
 
 } // namespace mim
