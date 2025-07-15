@@ -19,13 +19,44 @@ function(add_mim_plugin)
     set(PLUGIN_MIM      ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.mim)
     set(OUT_PLUGIN_MIM  ${CMAKE_BINARY_DIR}/lib/mim/${PLUGIN}.mim)
     set(PLUGIN_MD       ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
-    set(PLUGIN_D        ${CMAKE_BINARY_DIR}/deps/${PLUGIN}.d)
     set(AUTOGEN_H       ${CMAKE_BINARY_DIR}/include/mim/plug/${PLUGIN}/autogen.h)
+
+    file(READ "${PLUGIN_MIM}" plugin_file_contents)
+
+    # Replace all newlines with semicolons to help with list processing
+    string(REPLACE "\n" ";" plugin_lines "${plugin_file_contents}")
+
+    set(PLUGIN_SOFT_DEPS)
+    set(PLUGIN_HARD_DEPS)
+
+    # Loop over each line
+    foreach(line IN LISTS plugin_lines)
+        string(STRIP "${line}" line) # Strip leading/trailing whitespace
+
+        # Match "import name;" using regex and extract the name
+        string(REGEX MATCH "^import[ \t]+[a-zA-Z0-9_]+" match "${line}")
+        if(match)
+            # Extract just the plugin name using the match group
+            string(REGEX REPLACE "^import[ \t]+([a-zA-Z0-9_]+)" "\\1" plugin_name "${line}")
+            list(APPEND PLUGIN_SOFT_DEPS "${plugin_name}")
+        endif()
+
+        # as above
+        string(REGEX MATCH "^plugin[ \t]+[a-zA-Z0-9_]+" match "${line}")
+        if(match)
+            string(REGEX REPLACE "^plugin[ \t]+([a-zA-Z0-9_]+)" "\\1" plugin_name "${line}")
+            list(APPEND PLUGIN_HARD_DEPS "${plugin_name}")
+        endif()
+    endforeach()
+
+    # Output the result for debug
+    message(STATUS "soft deps: ${PLUGIN_SOFT_DEPS}")
+    message(STATUS "hard deps: ${PLUGIN_HARD_DEPS}")
+
 
     file(
         MAKE_DIRECTORY
             ${CMAKE_BINARY_DIR}/docs/plug/
-            ${CMAKE_BINARY_DIR}/deps
             ${CMAKE_BINARY_DIR}/include/mim/plug/${PLUGIN}
     )
 
@@ -34,10 +65,8 @@ function(add_mim_plugin)
             ${AUTOGEN_H}
             ${PLUGIN_D}
             ${PLUGIN_MD}
-        DEPFILE ${PLUGIN_D}
         COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.." --bootstrap
             --output-h ${AUTOGEN_H}
-            --output-d ${PLUGIN_D}
             --output-md ${PLUGIN_MD}
         MAIN_DEPENDENCY ${PLUGIN_MIM}
         DEPENDS ${MIM_TARGET_NAMESPACE}mim

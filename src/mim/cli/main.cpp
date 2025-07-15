@@ -19,7 +19,7 @@ using namespace mim;
 using namespace std::literals;
 
 int main(int argc, char** argv) {
-    enum Backends { AST, D, Dot, H, LL, Md, Mim, Nest, Num_Backends };
+    enum Backends { AST, Dot, H, LL, Md, Mim, Nest, Num_Backends };
 
     try {
         static const auto version = "mim command-line utility version " MIM_VER "\n";
@@ -54,7 +54,6 @@ int main(int argc, char** argv) {
             | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,          "level"              )["-O"]["--optimize"             ]("Optimization level (default: 2).")
             | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST represntation of input.")
-            | lyra::opt(output[D  ],  "file"               )      ["--output-d"             ]("Emits dependency file containing a rule suitable for 'make' describing the dependencies of the source file (requires --output-h).")
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
             | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
             | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
@@ -158,20 +157,6 @@ int main(int argc, char** argv) {
             if (auto s = os[AST]) {
                 Tab tab;
                 mod->stream(tab, *s);
-            }
-
-            if (auto dep = os[D]) {
-                if (auto autogen_h = output[H]; !autogen_h.empty()) {
-                    *dep << autogen_h << ": ";
-                    assert(!driver.import_syms().empty());
-                    for (auto sep = ""; auto path : driver.import_paths() | std::views::drop(1)) {
-                        *dep << sep << sys::escape(path);
-                        sep = " \\\n ";
-                    }
-                } else {
-                    throw std::invalid_argument("error: --output-d requires --output-h");
-                }
-                *dep << std::endl;
             }
 
             if (flags.bootstrap) {
