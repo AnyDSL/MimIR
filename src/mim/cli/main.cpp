@@ -138,6 +138,11 @@ int main(int argc, char** argv) {
             auto parser = ast::Parser(ast);
             ast::Ptrs<ast::Import> imports;
 
+            if (!flags.bootstrap) {
+                plugins.insert(plugins.begin(), "compile"s);
+                if (opt >= 2) plugins.emplace_back("opt"s);
+            }
+
             for (const auto& plugin : plugins) {
                 auto mod = parser.plugin(plugin);
                 auto import
@@ -158,9 +163,6 @@ int main(int argc, char** argv) {
                 ast.bootstrap(plugin, *h);
                 return EXIT_SUCCESS;
             }
-
-            plugins.insert(plugins.begin(), "compile"s);
-            if (opt >= 2) plugins.emplace_back("opt"s);
 
             switch (opt) {
                 case 0: break;
