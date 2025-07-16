@@ -292,9 +292,12 @@ Pipelines</h2>
 Dependent Passes and Phases</h2>
 <div class="fragment"><div class="line">let empty_pass = %compile.nullptr_pass;</div>
 <div class="line">let empty_phase = %compile.passes_to_phase ();</div>
+<div class="line"> </div>
 <div class="line">axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;</div>
+<div class="line"> </div>
 <div class="line">let plugin_phase = %compile.plugin_select %compile.Phase;</div>
-<div class="line">let plugin_pass = %compile.plugin_select %compile.Pass;</div>
+<div class="line">let plugin_pass  = %compile.plugin_select %compile.Pass;</div>
+<div class="line"> </div>
 <div class="line">lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase empty_phase;</div>
 <div class="line">lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  empty_pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
