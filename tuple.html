@@ -163,6 +163,11 @@ Operations</h1>
 <div class="line">                   » // «i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</div>
 <div class="line">                 , normalize_cat;</div>
 <div class="line"> </div>
+<div class="line">axm %tuple.cat_uniform:  {n m: Nat}</div>
+<div class="line">                          → {T: *}</div>
+<div class="line">                          → [«n; T», «m; T»]</div>
+<div class="line">                          → «%core.nat.add (n, m); T», normalize_cat_uniform;</div>
+<div class="line"> </div>
 <div class="line">lam %tuple.append   {n: Nat}</div>
 <div class="line">                    {Ts: «n; *», U: *}</div>
 <div class="line">                    (a: «i: n; Ts#i», b: U)</div>

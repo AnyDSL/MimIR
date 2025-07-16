@@ -46,10 +46,11 @@ var searchData=
   ['breakpoint_43',['breakpoint',['../classmim_1_1World.html#ae2b230faf05210f655cbfd4806fd75fb',1,'mim::World']]],
   ['breakpoints_44',['Conditional Breakpoints',['../coding.html#autotoc_md7',1,'']]],
   ['breakpoints_45',['breakpoints',['../structmim_1_1World_1_1State.html#ae8b660ef148e3b7b5c237744a4b2f228',1,'mim::World::State::breakpoints'],['../classmim_1_1World.html#a8e95b756aab85d9cf0adc65cc40f7c4f',1,'mim::World::breakpoints()']]],
-  ['broadcast_5fin_5fdim_46',['broadcast_in_dim',['../tensor.html#autotoc_md262',1,'%tensor.broadcast_in_dim'],['../namespacemim_1_1plug_1_1tensor.html#a0281472aa2604344bb475423751dcd77',1,'mim::plug::tensor::broadcast_in_dim']]],
-  ['bufptr_47',['BufPtr',['../namespacemim_1_1plug_1_1clos.html#ac0109814535661c3ccd6d63370f8eec2',1,'mim::plug::clos']]],
-  ['build_20switches_48',['Build Switches',['../index.html#autotoc_md69',1,'']]],
-  ['building_49',['Building',['../index.html#autotoc_md67',1,'']]],
-  ['built_20ins_50',['Downcast for Built-ins',['../dev.html#cast_builtin',1,'']]],
-  ['builtin_20types_51',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md43',1,'']]]
+  ['breakpoints_20over_20command_20line_46',['Trigger Breakpoints over Command Line',['../coding.html#autotoc_md11',1,'']]],
+  ['broadcast_5fin_5fdim_47',['broadcast_in_dim',['../tensor.html#autotoc_md262',1,'%tensor.broadcast_in_dim'],['../namespacemim_1_1plug_1_1tensor.html#a0281472aa2604344bb475423751dcd77',1,'mim::plug::tensor::broadcast_in_dim']]],
+  ['bufptr_48',['BufPtr',['../namespacemim_1_1plug_1_1clos.html#ac0109814535661c3ccd6d63370f8eec2',1,'mim::plug::clos']]],
+  ['build_20switches_49',['Build Switches',['../index.html#autotoc_md69',1,'']]],
+  ['building_50',['Building',['../index.html#autotoc_md67',1,'']]],
+  ['built_20ins_51',['Downcast for Built-ins',['../dev.html#cast_builtin',1,'']]],
+  ['builtin_20types_52',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md43',1,'']]]
 ];

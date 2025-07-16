@@ -96,5 +96,6 @@ var searchData=
   ['other_20terminals_93',['Other Terminals',['../langref.html#autotoc_md37',1,'']]],
   ['outf_94',['outf',['../namespacemim.html#a93fb24279848e874bb5aa72083a1df19',1,'mim']]],
   ['outln_95',['outln',['../namespacemim.html#aa419224f30fc609b0b9cbe6aa4a67b8a',1,'mim']]],
-  ['over_20the_20program_96',['Iterating over the Program',['../dev.html#autotoc_md33',1,'']]]
+  ['over_20command_20line_96',['Trigger Breakpoints over Command Line',['../coding.html#autotoc_md11',1,'']]],
+  ['over_20the_20program_97',['Iterating over the Program',['../dev.html#autotoc_md33',1,'']]]
 ];

@@ -207,6 +207,8 @@ var classmim_1_1World =
     [ "vars", "classmim_1_1World.html#adecf8737cfcfe1ca0ff8e0e5716be960", null ],
     [ "vars", "classmim_1_1World.html#ad7d137044e643c05481b44e90a0dff02", null ],
     [ "verify", "classmim_1_1World.html#a5b9a9472a5b36bf076bdce94bcb0b672", null ],
+    [ "watchpoint", "classmim_1_1World.html#a26f0fb5ac4918e179c288f377757d8a9", null ],
+    [ "watchpoints", "classmim_1_1World.html#a3927508f5ffda384019188e6141e7f85", null ],
     [ "write", "classmim_1_1World.html#a6c0a289376552934ff442e317dc95acd", null ],
     [ "write", "classmim_1_1World.html#aada6df5fabc3554f7dab128f1f6b3deb", null ],
     [ "swap", "classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa", null ]

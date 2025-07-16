@@ -151,16 +151,16 @@ $(function(){initNavTree('coding.html',''); initResizable(true); });
       <li class="level2">
         <a href="#autotoc_md9">Valgrind &amp; GDB</a>
       </li>
-      <li class="level2">
-        <a href="#autotoc_md10">VS Code</a>
-      </li>
     </ul>
   </li>
   <li class="level1">
     <a href="#tests">Tests</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md11">lit Tests</a>
+        <a href="#autotoc_md10">lit Tests</a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md11">Trigger Breakpoints over Command Line</a>
       </li>
       <li class="level2">
         <a href="#autotoc_md12">GoogleTest</a>
@@ -347,14 +347,9 @@ Valgrind &amp; GDB</h2>
 <p>If you encounter memory related problems, you might want to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>. Launch the program like this</p>
 <div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 mim-gtest</div>
 </div><!-- fragment --><p>and follow the instructions.</p>
-<h2><a class="anchor" id="autotoc_md10"></a>
-VS Code</h2>
-<p>As a utility to make debugging MimIR itself less painful with certain debuggers, the <code>mim.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>:</p>
-<div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/mim.natvis&quot;,</div>
-<div class="line">&quot;showDisplayString&quot;: true,</div>
-</div><!-- fragment --><h1><a class="anchor" id="tests"></a>
+<h1><a class="anchor" id="tests"></a>
 Tests</h1>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 lit Tests</h2>
 <p>Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> testsuite with:</p>
 <div class="fragment"><div class="line">cmake --build build -t lit</div>
@@ -364,7 +359,13 @@ lit Tests</h2>
 </div><!-- fragment --><p>If your <em>build</em> directory, is in fact <code>build</code> you can use the <code>probe.sh</code> script:</p>
 <div class="fragment"><div class="line">cd lit</div>
 <div class="line">../scripts/probe.sh foo.mim</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
+Trigger Breakpoints over Command Line</h2>
+<p>You can directly instruct <code>mim</code> to trigger a breakpoint, if certain events happen: </p><div class="fragment"><div class="line">mim test.mim -b 1234            # Trigger a breakpoint if node with gid 1234 is created.</div>
+<div class="line">mim test.mim -w 1234            # Trigger a breakpoint if node with gid 1234 sets one of its operands.</div>
+<div class="line">mim test.mim --break-on-alpha   # Trigger a breakpoint if a check for alpha-equivalence fails.</div>
+</div><!-- fragment --><p> See <a class="el" href="cli.html">Command-Line Reference</a> for all flags.</p>
+<h2><a class="anchor" id="autotoc_md12"></a>
 GoogleTest</h2>
 <p>Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests within the <code>build</code> folder with:</p>
 <div class="fragment"><div class="line">ctest</div>

@@ -44,6 +44,7 @@ var hierarchy =
       [ "mim::Vector< Value >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< uint64_t >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< void * >", "classmim_1_1Vector.html", null ],
+      [ "mim::Vector< mim::Sets::Set >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< T, N, A >", "classmim_1_1Vector.html", null ]
     ] ],
     [ "std::integral_constant", null, [

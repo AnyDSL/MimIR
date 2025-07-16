@@ -134,7 +134,7 @@ $(function(){initNavTree('cli.html',''); initResizable(true); });
 <h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  mim [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-mim &lt;file&gt;] [--output-nest &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalarize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
+<div class="line">  mim [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-mim &lt;file&gt;] [--output-nest &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalarize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [-w|--watch &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -149,7 +149,6 @@ Usage</h1>
 <div class="line">  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.</div>
 <div class="line">  -O, --optimize &lt;level&gt;  Optimization level (default: 2). [default: 2]</div>
 <div class="line">  --output-ast &lt;file&gt;     Directly emits AST represntation of input.</div>
-<div class="line">  --output-d &lt;file&gt;       Emits dependency file containing a rule suitable for &#39;make&#39; describing the dependencies of the source file (requires --output-h).</div>
 <div class="line">  --output-dot &lt;file&gt;     Emits the Mim program as a MimIR graph using Graphviz&#39; DOT language.</div>
 <div class="line">  --output-h &lt;file&gt;       Emits a header file to be used to interface with a plugin in C++.</div>
 <div class="line">  --output-ll &lt;file&gt;      Compiles the Mim program to LLVM.</div>
@@ -165,7 +164,8 @@ Usage</h1>
 <div class="line">  --aggr-lam-spec         Overrides LamSpec behavior to follow recursive calls.</div>
 <div class="line">  --scalarize-threshold &lt;threshold&gt;</div>
 <div class="line">                          MimIR will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold. [default: 32]</div>
-<div class="line">  -b, --break &lt;gid&gt;       *Triggers breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
+<div class="line">  -b, --break &lt;gid&gt;       *Triggers breakpoint when creating a node whose global id is &lt;gid&gt;.</div>
+<div class="line">  -w, --watch &lt;gid&gt;       *Triggers breakpoint when setting a node whose global id is &lt;gid&gt;.</div>
 <div class="line">  --reeval-breakpoints    *Triggers breakpoint even upon unfying a node that has already been built.</div>
 <div class="line">  --break-on-alpha        *Triggers breakpoint as soon as two expressions turn out to be not alpha-equivalent.</div>
 <div class="line">  --break-on-error        *Triggers breakpoint on ELOG.</div>

@@ -38,7 +38,7 @@ var searchData=
   ['set_20ord_20map_35',['%%ord.Set / %%ord.Map',['../ord.html#autotoc_md208',1,'']]],
   ['set_5faccepting_36',['set_accepting',['../classautomaton_1_1DFANode.html#adddbd183443a03d29874a393aaafcb6e',1,'automaton::DFANode::set_accepting()'],['../classautomaton_1_1NFANode.html#acacc08679a96f6f8bab818276e478f45',1,'automaton::NFANode::set_accepting()']]],
   ['set_5fbody_37',['set_body',['../classmim_1_1Lam.html#abd1f06bcc2801488ca095f713fb2551c',1,'mim::Lam::set_body()'],['../classmim_1_1Arr.html#a5b106c12c37f54bfecd0af8ed0e35d30',1,'mim::Arr::set_body()']]],
-  ['set_5fcodom_38',['set_codom',['../classmim_1_1ast_1_1PiExpr_1_1Dom.html#a5ab1f2630f864e605c3ad8ce87f21607',1,'mim::ast::PiExpr::Dom::set_codom()'],['../classmim_1_1Pi.html#a4cef9485136e5a1b0f0d638e8523a4c7',1,'mim::Pi::set_codom(const Def *codom)']]],
+  ['set_5fcodom_38',['set_codom',['../classmim_1_1Pi.html#a4cef9485136e5a1b0f0d638e8523a4c7',1,'mim::Pi']]],
   ['set_5fdom_39',['set_dom',['../classmim_1_1Pi.html#af983745aa89993bf3c0efe8fb2c97380',1,'mim::Pi::set_dom(const Def *dom)'],['../classmim_1_1Pi.html#a2fa17a30aeb2c900b3876e3afc1ba8b7',1,'mim::Pi::set_dom(Defs doms)']]],
   ['set_5ferroring_40',['set_erroring',['../classautomaton_1_1DFANode.html#a0c010dda51e1778c1e4a437dd789b909',1,'automaton::DFANode::set_erroring()'],['../classautomaton_1_1NFANode.html#a7285fda6be62e7969d7d8496341f77db',1,'automaton::NFANode::set_erroring()']]],
   ['set_5ffilter_41',['set_filter',['../classmim_1_1Lam.html#a4084f5bf694c3e4cb985eca3e213c189',1,'mim::Lam']]],
