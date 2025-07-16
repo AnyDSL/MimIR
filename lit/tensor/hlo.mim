@@ -1,0 +1,24 @@
+// RUN: %mim %s
+plugin tensor;
+plugin refly;
+plugin core;
+plugin direct;
+plugin affine;
+plugin math;
+
+
+let f32 = %math.f32;
+let F32 = %math.F32;
+
+let R: Ring = (F32, 0: F32, %math.arith.add @f32 0, %math.arith.mul @f32 0);
+
+lam t_add {r: Nat, s: «r; Nat»} [is: [«s; F32», «s; F32»]] = %tensor.binary (%math.arith.add @f32 0) is;
+lam t_tanh {r: Nat, s: «r; Nat»} [i: «s; F32»] = %tensor.unary (%math.tri.tanh @f32 0) i;
+
+
+fun extern main [arg0: «784; «1024; F32»», arg1: «1024; F32», arg2: «1024; «1024; F32»», arg3: «1024; F32», arg4: «1024; «10; F32»», arg5: «10; F32», arg6: «128; «784; F32»», arg7: «128; «10; F32»»]: [«784; «1024; F32»», «1024; F32», «1024; «1024; F32»», «1024; F32», «1024; «10; F32»», «10; F32»] =
+    /// let _0 = %tensor.dot_general R (1_2, 0_2, (), ()) (arg6, arg0);
+    let _1 = t_add @(2, (784, 1024)) (arg0, arg0);
+    let _2 = t_tanh @(1, 1024) arg1;
+    let _3 = t_add @(1, 1024) (arg1, arg3);
+    return (_1, _2, arg2, _3, arg4, arg5);

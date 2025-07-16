@@ -32,9 +32,15 @@ const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
     auto& w = c->world();
 
     auto [arr, index] = arg->projs<2>();
+    auto callee       = c->as<App>();
+    auto [T, r, s]    = callee->args<3>();
+
     w.DLOG("normalize_get");
-    w.DLOG("arr = {} : {}", arr, arr->type());
-    w.DLOG("index = {} : {}", index, index->type());
+    w.DLOG("    arr = {} : {}", arr, arr->type());
+    w.DLOG("    index = {} : {}", index, index->type());
+    w.DLOG("    T = {} : {}", T, T->type());
+    w.DLOG("    r = {} : {}", r, r->type());
+    w.DLOG("    s = {} : {}", s, s->type());
 
     auto size = index->num_projs();
     w.DLOG("size = {}", size);
@@ -43,21 +49,19 @@ const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
         return w.extract(arr, index);
     }
 
-    auto idx = index->proj(0);
-    w.DLOG("idx = {} : {}", idx, idx->type());
-
-    auto callee    = c->as<App>();
-    auto [T, r, s] = callee->args<3>();
-
     auto r_lit = r->isa<Lit>();
     if (!r_lit) return nullptr;
+    auto r_nat     = r_lit->get<u64>();
+    auto new_r_nat = r_nat - 1;
 
-    auto r_nat     = r_lit->get<u64>() - 1;
-    auto new_r     = w.lit_nat(r_nat);
-    auto new_s_vec = DefVec(r_nat, [&](size_t i) { return s->proj(i + 1); });
+    auto idx = index->proj(r_nat, 0);
+    w.DLOG("idx = {} : {}", idx, idx->type());
+
+    auto new_r     = w.lit_nat(new_r_nat);
+    auto new_s_vec = DefVec(new_r_nat, [&](size_t i) { return s->proj(r_nat, i + 1); });
     auto new_s     = w.tuple(new_s_vec);
 
-    auto new_index_vec = DefVec(r_nat, [&](size_t i) { return index->proj(i + 1); });
+    auto new_index_vec = DefVec(new_r_nat, [&](size_t i) { return index->proj(r_nat, i + 1); });
     auto new_index     = w.tuple(new_index_vec);
 
     auto idx_n   = idx->type()->op(1);
@@ -82,12 +86,9 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
     auto size = index->num_projs();
     w.DLOG("    size = {}", size);
     if (size == 1) {
-        w.DLOG("index of size 1, extract");
+        w.DLOG("index of size 1, insert");
         return w.insert(arr, index, x);
     }
-
-    auto idx = index->proj(0);
-    w.DLOG("    idx = {} : {} : {}", idx, idx->type(), idx->type()->op(1));
 
     auto callee    = c->as<App>();
     auto [T, r, s] = callee->args<3>();
@@ -98,13 +99,17 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
     auto r_lit = r->isa<Lit>();
     if (!r_lit) return nullptr;
 
-    auto r_nat     = r_lit->get<u64>() - 1;
-    auto new_r     = w.lit_nat(r_nat);
-    auto new_s_vec = DefVec(r_nat, [&](size_t i) { return s->proj(i + 1); });
+    auto r_nat     = r_lit->get<u64>();
+    auto new_r_nat = r_nat - 1;
+
+    auto idx = index->proj(r_nat, 0);
+    w.DLOG("    idx = {} : {}", idx, idx->type());
+    auto new_r     = w.lit_nat(new_r_nat);
+    auto new_s_vec = DefVec(new_r_nat, [&](size_t i) { return s->proj(r_nat, i + 1); });
     auto new_s     = w.tuple(new_s_vec);
 
     auto target_arr    = w.extract(arr, idx);
-    auto new_index_vec = DefVec(r_nat, [&](size_t i) { return index->proj(i + 1); });
+    auto new_index_vec = DefVec(new_r_nat, [&](size_t i) { return index->proj(r_nat, i + 1); });
     auto new_index     = w.tuple(new_index_vec);
     auto new_arr       = w.app(w.app(w.annex<tensor::set>(), {T, new_r, new_s}), {target_arr, new_index, x});
 
@@ -122,34 +127,41 @@ const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
     auto [s_out, input] = arg->projs<2>();
     auto callee         = c->as<App>();
     auto [T, r, s_in]   = callee->args<3>();
+    w.DLOG("normalize_broadcast");
+    w.DLOG("    s_out = {} : {}", s_out, s_out->type());
+    w.DLOG("    input = {} : {}", input, input->type());
+    w.DLOG("    T = {} : {}", T, T->type());
+    w.DLOG("    r = {} : {}", r, r->type());
+    w.DLOG("    s_in = {} : {}", s_in, s_in->type());
 
     auto r_lit = r->isa<Lit>();
     if (!r_lit) return nullptr;
-    auto r_nat = r_lit->get<u64>() - 1;
+    auto r_nat     = r_lit->get<u64>();
+    auto new_r_nat = r_nat - 1;
 
-    if (r_nat == 0) {
+    if (new_r_nat == 0) {
         if (s_in == s_out) return input;
         auto s_in_lit = s_in->isa<Lit>();
         if (!s_in_lit) return nullptr;
         auto s_in_nat = s_in_lit->get<u64>();
-        if (s_in_nat != 1) return nullptr;
+        assert(s_in_nat == 1 && "input dimensions must be 1 or equal to the output dimension");
         return w.pack(s_out, input);
     }
 
-    auto s_in_0   = s_in->proj(0);
+    auto s_in_0   = s_in->proj(r_nat, 0);
     auto s_in_lit = s_in_0->isa<Lit>();
     if (!s_in_lit) return nullptr;
     auto s_in_nat = s_in_lit->get<u64>();
 
-    auto s_out_0   = s_out->proj(0);
+    auto s_out_0   = s_out->proj(r_nat, 0);
     auto s_out_lit = s_out_0->isa<Lit>();
     if (!s_out_lit) return nullptr;
     auto s_out_nat = s_out_lit->get<u64>();
 
-    auto new_r         = w.lit_nat(r_nat);
-    auto new_s_in_vec  = DefVec(r_nat, [&](size_t i) { return s_in->proj(i + 1); });
+    auto new_r         = w.lit_nat(new_r_nat);
+    auto new_s_in_vec  = DefVec(new_r_nat, [&](size_t i) { return s_in->proj(r_nat, i + 1); });
     auto new_s_in      = w.tuple(new_s_in_vec);
-    auto new_s_out_vec = DefVec(r_nat, [&](size_t i) { return s_out->proj(i + 1); });
+    auto new_s_out_vec = DefVec(new_r_nat, [&](size_t i) { return s_out->proj(r_nat, i + 1); });
     auto new_s_out     = w.tuple(new_s_out_vec);
 
     auto bc = w.annex<tensor::broadcast>();
@@ -158,6 +170,7 @@ const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
         auto out_vec = DefVec(s_out_nat, [&](size_t i) { return w.app(bc, {new_s_out, input->proj(i)}); });
         return w.tuple(out_vec);
     }
+    assert(s_in_nat == 1 && "input dimensions must be 1 or equal to the output dimension");
     if (s_in_nat == 1) {
         auto out = w.app(bc, {new_s_out, input});
         return w.pack(s_out_0, out);
@@ -171,6 +184,14 @@ const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) 
     auto [s_out, input, index]  = arg->projs<3>();
     auto callee                 = c->as<App>();
     auto [T, r_in, r_out, s_in] = callee->args<4>();
+    w.DLOG("normalize_broadcast_in_dim");
+    w.DLOG("    s_out = {} : {}", s_out, s_out->type());
+    w.DLOG("    input = {} : {}", input, input->type());
+    w.DLOG("    index = {} : {}", index, index->type());
+    w.DLOG("    T = {} : {}", T, T->type());
+    w.DLOG("    r_in = {} : {}", r_in, r_in->type());
+    w.DLOG("    r_out = {} : {}", r_out, r_out->type());
+    w.DLOG("    s_in = {} : {}", s_in, s_in->type());
 
     auto r_in_lit = r_in->isa<Lit>();
     if (!r_in_lit) return nullptr;
@@ -180,7 +201,7 @@ const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) 
     auto r_out_nat = r_out_lit->get<u64>();
 
     auto s_tr_vec = DefVec(r_out_nat, [&](size_t i) {
-        if (i < r_in_nat) return s_in->proj(i);
+        if (i < r_in_nat) return s_in->proj(r_in_nat, i);
         return w.lit_nat_1()->as<Def>();
     });
     auto s_tr     = w.tuple(s_tr_vec);
@@ -189,7 +210,7 @@ const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) 
     std::map<u64, u64> map_perm;
     for (u64 i = 0; i < r_out_nat; ++i) set_perm.insert(i);
     for (u64 i = 0; i < r_in_nat; ++i) {
-        auto idx     = index->proj(i);
+        auto idx     = index->proj(r_in_nat, i);
         auto idx_lit = Lit::isa(idx);
         if (!idx_lit) return nullptr;
         u64 idx_nat = *idx_lit;
@@ -197,7 +218,6 @@ const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) 
         map_perm[idx_nat] = i;
 
         set_perm.erase(idx_nat);
-        // permutation_vec.push_back(idx);
     }
     u64 j = r_in_nat;
     for (auto i = set_perm.begin(); i != set_perm.end(); i++) {
@@ -211,7 +231,7 @@ const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) 
     tr      = w.app(tr, {T, r_out, s_tr});
     tr      = w.app(tr, {input, permutation});
 
-    auto s_bc_vec = DefVec(r_out_nat, [&](size_t i) { return s_tr->proj(map_perm.at(i)); });
+    auto s_bc_vec = DefVec(r_out_nat, [&](size_t i) { return s_tr->proj(r_out_nat, map_perm.at(i)); });
     auto s_bc     = w.tuple(s_bc_vec);
 
     auto bc = w.annex<tensor::broadcast>();
@@ -331,7 +351,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
         auto SI_i = SI->proj(m_nat, i);
         DefVec input_dims_i;
         for (u64 j = 0; j < ni_nat; ++j) {
-            auto dim = SI_i->proj(j);
+            auto dim = SI_i->proj(ni_nat, j);
             w.DLOG("    dim {} {} = {}", i, j, dim);
             // dims[i * n_nat + j] = dim;
             input_dims_i.push_back(dim);

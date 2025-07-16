@@ -7,8 +7,7 @@ plugin affine;
 
 let m0 = ((1, 2), (3, 4));
 
-lam r(): Ring = (Nat, 0, %core.nat.add, %core.nat.mul);
-let R = r ();
+let R: Ring = (Nat, 0, %core.nat.add, %core.nat.mul);
 
 let f        = dot_general_fun R;
 
