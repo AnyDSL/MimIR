@@ -19,7 +19,7 @@ using namespace mim;
 using namespace std::literals;
 
 int main(int argc, char** argv) {
-    enum Backends { AST, D, Dot, H, LL, Md, Mim, Nest, Num_Backends };
+    enum Backends { AST, Dot, H, LL, Md, Mim, Nest, Num_Backends };
 
     try {
         static const auto version = "mim command-line utility version " MIM_VER "\n";
@@ -61,7 +61,6 @@ int main(int argc, char** argv) {
             | lyra::opt(output[Mim],  "file"               )["-o"]["--output-mim"           ]("Emits the Mim program again.")
             | lyra::opt(output[Nest], "file"               )      ["--output-nest"          ]("Emits program nesting tree as Dot.")
             | lyra::opt(flags.ascii                        )["-a"]["--ascii"                ]("Use ASCII alternatives in output instead of UTF-8.")
-            | lyra::opt(flags.bootstrap                    )      ["--bootstrap"            ]("Puts mim into \"bootstrap mode\". This means a 'plugin' directive has the same effect as an 'import' and will not load a library. In addition, no standard plugins will be loaded.")
             | lyra::opt(dot_follow_types                   )      ["--dot-follow-types"     ]("Follow type dependencies in DOT output.")
             | lyra::opt(dot_all_annexes                    )      ["--dot-all-annexes"      ]("Output all annexes - even if unused - in DOT output.")
             | lyra::opt(flags.dump_gid, "level"            )      ["--dump-gid"             ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
@@ -130,12 +129,6 @@ int main(int argc, char** argv) {
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
-        // we always need standard plugins, as long as we are not in bootstrap mode
-        if (!flags.bootstrap) {
-            plugins.insert(plugins.begin(), "compile"s);
-            if (opt >= 2) plugins.emplace_back("opt"s);
-        }
-
         try {
             auto path = fs::path(input);
             world.set(path.filename().replace_extension().string());
@@ -159,13 +152,14 @@ int main(int argc, char** argv) {
                 mod->stream(tab, *s);
             }
 
-            if (flags.bootstrap) {
-                if (auto h = os[H]) {
-                    auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
-                    ast.bootstrap(plugin, *h);
-                }
-                opt = std::min(opt, 1);
+            if (auto h = os[H]) {
+                auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
+                ast.bootstrap(plugin, *h);
+                return EXIT_SUCCESS;
             }
+
+            plugins.insert(plugins.begin(), "compile"s);
+            if (opt >= 2) plugins.emplace_back("opt"s);
 
             switch (opt) {
                 case 0: break;
