@@ -80,14 +80,14 @@ axm %tensor.reshape:  {T: *}
 ///
 /// ### %%tensor.prod_2d
 ///
-//lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
+//lam %tensor.prod_2d_lam {R: Ring} {m k l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
 //         : «m, l; R#T»
 //         = %tensor.dot_general R (0_2, 1_2, (), ()) (t1, t2);
 ///
-/// axm %tensor.dot_2d_00: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
-/// axm %tensor.dot_2d_01: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
-/// axm %tensor.dot_2d_10: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
-/// axm %tensor.dot_2d_11: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
+/// axm %tensor.dot_2d_00: {R: Ring} → {m k l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
+/// axm %tensor.dot_2d_01: {R: Ring} → {m k l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
+/// axm %tensor.dot_2d_10: {R: Ring} → {m k l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
+/// axm %tensor.dot_2d_11: {R: Ring} → {m k l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;
 ///
 /// ### %%tensor.broadcast_in_dim
 ///
@@ -134,9 +134,9 @@ axm %tensor.map_reduce: {nis: Nat}
                       → [is: «i: nis; «Sis#i; Tis#i» »]
                       → «So; To», normalize_map_reduce;
 
-fun dot_general_fun [R: Ring] [x: R#T, [y: R#T, z: R#T]]: R#T = return (R#add (x, (R#mul (y, z)))); 
+fun dot_general_fun [R: Ring] [x: R#T, [y: R#T, z: R#T]]: R#T = return (R#add (x, (R#mul (y, z))));
 
-lam dot_general_pick {n: Nat} {na nb nc: Nat} [a: «na; Idx n», b: «nb; Idx n», c: «nc; Idx n»] [off_1 off_2: Nat] [i: Idx n]: Nat =
+lam dot_general_pick {n: Nat} {na nb nc: Nat} (a: «na; Idx n», b: «nb; Idx n», c: «nc; Idx n») (off_1 off_2: Nat) (i: Idx n): Nat =
   let (ab, ai) = %vec.first (%core.icmp.e @n) (a, i);
   let (bb, bi) = %vec.first (%core.icmp.e @n) (b, i);
   let (cb, ci) = %vec.first (%core.icmp.e @n) (c, i);
@@ -148,9 +148,9 @@ lam dot_general_pick {n: Nat} {na nb nc: Nat} [a: «na; Idx n», b: «nb; Idx n�
   ((ai_out, ci_out)#cb, bi_nat)#bb;
 
 lam %tensor.dot_general
-  [R: Ring] {r1 r2: Nat} {nc nb: Nat}
-  [c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»]
-  {s1: «r1; Nat», s2: «r2; Nat»} [a: «s1; R#T», b: «s2; R#T»]
+  (R: Ring) {r1 r2: Nat} {nc nb: Nat}
+  (c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»)
+  {s1: «r1; Nat», s2: «r2; Nat»} (a: «s1; R#T», b: «s2; R#T»)
     : let bs       = ‹i: nb; s1#(b1#i)›;
       let bc_1     = %tuple.cat_uniform (b1, c1);
       let s1_res   = %vec.diff (s1, bc_1);
@@ -179,5 +179,5 @@ lam %tensor.dot_general
       let ein_2    = ‹i: r2; dot_general_pick (a2, b2, c2) (off_ein2, r_out) i›;
       %tensor.map_reduce @2 s_out (f, R#_0) (ein_1, ein_2) (a, b);
 
-lam %tensor.prod_2d_lam [R: Ring] {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]
+lam %tensor.prod_2d_lam (R: Ring) {m k l: Nat} (t1: «m, k; R#T», t2: «k, l; R#T»)
         = %tensor.dot_general R (1_2, 0_2, (), ()) @((m, k), (k, l)) (t1, t2);
