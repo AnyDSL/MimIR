@@ -237,60 +237,8 @@ template<arith id> const Def* normalize_arith(const Def* type, const Def* c, con
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto mode   = callee->arg();
-    auto lm     = Lit::isa(mode);
-    auto w      = isa_f(a->type());
 
     if (auto result = fold<arith, id>(world, type, a, b)) return result;
-
-    // clang-format off
-    // TODO check mode properly
-    if (lm && *lm == Mode::fast) {
-        if (auto la = a->isa<Lit>()) {
-            if (la == lit_f(world, *w, 0.0)) {
-                switch (id) {
-                    case arith::add: return b;  // 0 + b -> b
-                    case arith::sub: break;
-                    case arith::mul: return la; // 0 * b -> 0
-                    case arith::div: return la; // 0 / b -> 0
-                    case arith::rem: return la; // 0 % b -> 0
-                }
-            }
-
-            if (la == lit_f(world, *w, 1.0)) {
-                switch (id) {
-                    case arith::add: break;
-                    case arith::sub: break;
-                    case arith::mul: return b;  // 1 * b -> b
-                    case arith::div: break;
-                    case arith::rem: break;
-                }
-            }
-        }
-
-        if (auto lb = b->isa<Lit>()) {
-            if (lb == lit_f(world, *w, 0.0)) {
-                switch (id) {
-                    case arith::sub: return a;  // a - 0 -> a
-                    case arith::div: break;
-                    case arith::rem: break;
-                    default: fe::unreachable();
-                    // add, mul are commutative, the literal has been normalized to the left
-                }
-            }
-        }
-
-        if (a == b) {
-            switch (id) {
-                case arith::add: return world.call(arith::mul, mode, Defs{lit_f(world, *w, 2.0), a}); // a + a -> 2 * a
-                case arith::sub: return lit_f(world, *w, 0.0);                                        // a - a -> 0
-                case arith::mul: break;
-                case arith::div: return lit_f(world, *w, 1.0);                                        // a / a -> 1
-                case arith::rem: break;
-            }
-        }
-    }
-    // clang-format on
 
     if (auto res = reassociate<arith>(id, world, callee, a, b)) return res;
 
