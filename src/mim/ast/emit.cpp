@@ -390,31 +390,20 @@ void AxmDecl::emit(Emitter& e) const {
             id.trip = trip_.lit_u();
     }
 
-    auto pi = mim_type_->isa<Pi>();
-    if (!annex_->pi)
-        annex_->pi = pi;
-    else if (bool(pi) ^ bool(*annex_->pi))
-        error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is", dbg().sym());
-
     if (num_subs() == 0) {
         auto norm = e.driver().normalizer(id.plugin, id.tag, 0);
         auto axm  = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, 0)->set(dbg());
         def_      = axm;
         e.world().register_annex(id.plugin, id.tag, 0, axm);
     } else {
-        sub_t offset = annex_->subs.size();
         for (sub_t i = 0, n = num_subs(); i != n; ++i) {
-            auto& aliases = annex_->subs.emplace_back(std::deque<Sym>());
-            sub_t s       = i + offset;
-            auto norm     = e.driver().normalizer(id.plugin, id.tag, s);
-            auto name     = e.world().sym(dbg().sym().str() + "."s + sub(i).front()->dbg().sym().str());
-            auto axm      = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, s)->set(name);
+            sub_t s   = i + offset_;
+            auto norm = e.driver().normalizer(id.plugin, id.tag, s);
+            auto name = e.world().sym(dbg().sym().str() + "."s + sub(i).front()->dbg().sym().str());
+            auto axm  = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, s)->set(name);
             e.world().register_annex(id.plugin, id.tag, s, axm);
 
-            for (const auto& alias : sub(i)) {
-                alias->def_ = axm;
-                aliases.emplace_back(alias->dbg().sym());
-            }
+            for (const auto& alias : sub(i)) alias->def_ = axm;
         }
     }
 }

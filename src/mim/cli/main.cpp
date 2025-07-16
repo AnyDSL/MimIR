@@ -138,6 +138,25 @@ int main(int argc, char** argv) {
             auto parser = ast::Parser(ast);
             ast::Ptrs<ast::Import> imports;
 
+            auto mod = parser.import(driver.sym(input), os[Md]);
+            mod->add_implicit_imports(std::move(imports));
+
+            if (auto s = os[AST]) {
+                Tab tab;
+                mod->stream(tab, *s);
+            }
+
+            if (auto h = os[H]) {
+                mod->bind(ast);
+                ast.error().ack();
+                auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
+                // mod->emit(ast);
+                ast.bootstrap(plugin, *h);
+                return EXIT_SUCCESS;
+            }
+
+            mod->compile(ast);
+
             if (!flags.bootstrap) {
                 plugins.insert(plugins.begin(), "compile"s);
                 if (opt >= 2) plugins.emplace_back("opt"s);
@@ -148,20 +167,6 @@ int main(int argc, char** argv) {
                 auto import
                     = ast.ptr<ast::Import>(Loc(), ast::Tok::Tag::K_plugin, Dbg(driver.sym(plugin)), std::move(mod));
                 imports.emplace_back(std::move(import));
-            }
-            auto mod = parser.import(driver.sym(input), os[Md]);
-            mod->add_implicit_imports(std::move(imports));
-            mod->compile(ast);
-
-            if (auto s = os[AST]) {
-                Tab tab;
-                mod->stream(tab, *s);
-            }
-
-            if (auto h = os[H]) {
-                auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
-                ast.bootstrap(plugin, *h);
-                return EXIT_SUCCESS;
             }
 
             switch (opt) {
