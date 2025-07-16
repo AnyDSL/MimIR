@@ -29,8 +29,6 @@ struct AnnexInfo {
         assert(Annex::mangle(sym_plugin) == id_plugin);
     }
 
-    bool is_pi() const { return pi && *pi && bool((*pi)->isa<Pi>()); }
-
     struct {
         Sym plugin, tag;
     } sym;
@@ -41,7 +39,7 @@ struct AnnexInfo {
     } id;
     std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
     Dbg normalizer;
-    std::optional<const Pi*> pi;
+    std::optional<bool> pi;
     bool fresh = true;
 };
 
@@ -901,6 +899,7 @@ private:
     Ptr<Expr> type_;
     Dbg normalizer_;
     Tok curry_, trip_;
+    mutable sub_t offset_;
     mutable AnnexInfo* annex_ = nullptr;
     mutable const Def* mim_type_;
 };

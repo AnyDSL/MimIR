@@ -149,9 +149,9 @@ int main(int argc, char** argv) {
                     = ast.ptr<ast::Import>(Loc(), ast::Tok::Tag::K_plugin, Dbg(driver.sym(plugin)), std::move(mod));
                 imports.emplace_back(std::move(import));
             }
+
             auto mod = parser.import(driver.sym(input), os[Md]);
             mod->add_implicit_imports(std::move(imports));
-            mod->compile(ast);
 
             if (auto s = os[AST]) {
                 Tab tab;
@@ -159,10 +159,14 @@ int main(int argc, char** argv) {
             }
 
             if (auto h = os[H]) {
+                mod->bind(ast);
+                ast.error().ack();
                 auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
                 ast.bootstrap(plugin, *h);
                 return EXIT_SUCCESS;
             }
+
+            mod->compile(ast);
 
             switch (opt) {
                 case 0: break;
