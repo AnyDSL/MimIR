@@ -21,11 +21,10 @@ const Def* Rewriter::dispatch(const Def* old_def) {
     if (auto arr     = old_def->isa<Arr     >()) return rewrite_arr    (arr    );
     if (auto pack    = old_def->isa<Pack    >()) return rewrite_pack   (pack   );
     if (auto extract = old_def->isa<Extract >()) return rewrite_extract(extract);
-    if (auto var     = old_def->isa<Var     >()) return rewrite_var    (var    );
     if (auto hole    = old_def->isa_mut<Hole>()) return rewrite_hole   (hole   );
     // clang-format on
 
-    if (auto old_mut = old_def->isa_mut()) return rewrite_mut(old_mut, true);
+    if (auto old_mut = old_def->isa_mut()) return rewrite_mut(old_mut);
     return map(old_def, rewrite_imm(old_def));
 }
 
@@ -37,16 +36,14 @@ const Def* Rewriter::rewrite_imm(const Def* old_def) {
     return old_def->rebuild(world(), new_type, new_ops);
 }
 
-const Def* Rewriter::rewrite_mut(Def* old_mut, bool immutabilize) {
+const Def* Rewriter::rewrite_mut(Def* old_mut) {
     auto new_type = rewrite(old_mut->type());
     auto new_mut  = old_mut->stub(world(), new_type);
     map(old_mut, new_mut);
 
     if (old_mut->is_set()) {
         for (size_t i = 0, e = old_mut->num_ops(); i != e; ++i) new_mut->set(i, rewrite(old_mut->op(i)));
-        if (immutabilize) {
-            if (auto new_imm = new_mut->immutabilize()) return map(old_mut, new_imm);
-        }
+        if (auto new_imm = new_mut->immutabilize()) return map(old_mut, new_imm);
     }
 
     return new_mut;
@@ -76,7 +73,7 @@ const Def* Rewriter::rewrite_seq(const Seq* seq) {
     }
 
     if (!seq->has_var()) return map(seq, seq->rebuild(world(), new_shape, rewrite(seq->body())));
-    return rewrite_mut(seq->as_mut(), true);
+    return rewrite_mut(seq->as_mut());
 }
 
 const Def* Rewriter::rewrite_extract(const Extract* ex) {
@@ -89,18 +86,6 @@ const Def* Rewriter::rewrite_extract(const Extract* ex) {
 
     auto new_tuple = rewrite(ex->tuple());
     return map(ex, world().extract(new_tuple, new_index)->set(ex->dbg()));
-}
-
-const Def* Rewriter::rewrite_var(const Var* var) {
-    auto new_def = lookup(var->mut());
-    if (!new_def) new_def = rewrite_mut(var->mut(), false);
-    auto new_mut = new_def->as_mut();
-
-    if (new_mut != var->mut()) {
-        auto new_type = rewrite(var->type());
-        return map(var, world().var(new_type, new_mut)->set(var->dbg()));
-    }
-    return map(var, var);
 }
 
 const Def* Rewriter::rewrite_hole(Hole* hole) {

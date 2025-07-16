@@ -1,14 +1,11 @@
-#include <cstddef>
-
-#include <vector>
+#include <mim/plug/affine/affine.h>
+#include <mim/plug/core/core.h>
+#include <mim/plug/direct/direct.h>
+#include <mim/plug/tensor/autogen.h>
 
 #include "mim/def.h"
 #include "mim/world.h"
 
-#include "mim/plug/affine/affine.h"
-#include "mim/plug/core/core.h"
-#include "mim/plug/direct/direct.h"
-#include "mim/plug/tensor/autogen.h"
 #include "mim/plug/tensor/tensor.h"
 
 namespace mim::plug::tensor {
@@ -107,10 +104,10 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
 
 std::pair<Lam*, const Def*>
 counting_for(const Def* bound, const Def* acc, const Def* exit, const char* name = "for_body") {
-    auto& w     = bound->world();
-    auto acc_ty = acc->type();
-    auto body   = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
-    auto for_loop = affine::op_for(w, w.lit_i32(0), bound, w.lit_i32(1), {acc}, body, exit);
+    auto& w       = bound->world();
+    auto acc_ty   = acc->type();
+    auto body     = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
+    auto for_loop = w.call<affine::For>(Defs{w.lit_i32(0), bound, w.lit_i32(1), acc, body, exit});
     return {body, for_loop};
 }
 
