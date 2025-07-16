@@ -238,6 +238,10 @@ Def* Def::set(Defs ops) {
 }
 
 Def* Def::set(size_t i, const Def* def) {
+#ifdef MIM_ENABLE_CHECKS
+    if (world().watchpoints().contains(gid())) fe::breakpoint();
+#endif
+    invalidate();
     def = check(i, def);
     assert(def && !op(i) && curr_op_++ == i);
     ops_ptr()[i] = def;
@@ -250,6 +254,7 @@ Def* Def::set(size_t i, const Def* def) {
 }
 
 Def* Def::set_type(const Def* type) {
+    invalidate();
     assert(curr_op_ == 0);
     type_ = type;
     return this;
@@ -294,8 +299,6 @@ Vars Def::free_vars() const {
 Vars Def::local_vars() const { return mut_ ? Vars() : vars_; }
 
 Vars Def::free_vars() {
-    if (!is_set()) return {};
-
     if (mark_ == 0) {
         // fixed-point iteration to recompute free vars:
         // (run - 1) identifies the previous iteration; so make sure to offset run by 2 for the first iteration
@@ -312,6 +315,7 @@ Vars Def::free_vars() {
 }
 
 Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
+    assert(isa_mut());
     // Recursively recompute free vars. If
     // * mark_ == 0: invalid - need to recompute
     // * mark_ == run - 1: Previous iteration - need to recompute
@@ -344,10 +348,10 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
 void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
-        if (vars_) { // only necessary, if the cached free vars are non-empty
-            for (auto mut : users()) mut->invalidate();
-            vars_ = Vars();
-        }
+        // if (vars_) { // only necessary, if the cached free vars are non-empty
+        for (auto mut : users()) mut->invalidate();
+        vars_ = Vars();
+        // }
         muts_ = Muts();
     }
 }
