@@ -1,0 +1,15 @@
+// RUN: (! %mim %s 2>&1) | FileCheck %s
+
+axm %foo.T: [Nat → Nat] → *;
+axm %foo.t: [f : Nat → Nat] → %foo.T f;
+
+lam f(x: Nat): [] =
+    lam g(y: Nat): Nat = y;
+    lam h(z: Nat): Nat = x;
+
+    lam i(_: %foo.T g): [] = ();
+
+    let x = %foo.t h;
+    i x;
+
+// CHECK: error: cannot apply
