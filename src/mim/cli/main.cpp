@@ -138,6 +138,18 @@ int main(int argc, char** argv) {
             auto parser = ast::Parser(ast);
             ast::Ptrs<ast::Import> imports;
 
+            if (!flags.bootstrap) {
+                plugins.insert(plugins.begin(), "compile"s);
+                if (opt >= 2) plugins.emplace_back("opt"s);
+            }
+
+            for (const auto& plugin : plugins) {
+                auto mod = parser.plugin(plugin);
+                auto import
+                    = ast.ptr<ast::Import>(Loc(), ast::Tok::Tag::K_plugin, Dbg(driver.sym(plugin)), std::move(mod));
+                imports.emplace_back(std::move(import));
+            }
+
             auto mod = parser.import(driver.sym(input), os[Md]);
             mod->add_implicit_imports(std::move(imports));
 
@@ -150,24 +162,11 @@ int main(int argc, char** argv) {
                 mod->bind(ast);
                 ast.error().ack();
                 auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
-                // mod->emit(ast);
                 ast.bootstrap(plugin, *h);
                 return EXIT_SUCCESS;
             }
 
             mod->compile(ast);
-
-            if (!flags.bootstrap) {
-                plugins.insert(plugins.begin(), "compile"s);
-                if (opt >= 2) plugins.emplace_back("opt"s);
-            }
-
-            for (const auto& plugin : plugins) {
-                auto mod = parser.plugin(plugin);
-                auto import
-                    = ast.ptr<ast::Import>(Loc(), ast::Tok::Tag::K_plugin, Dbg(driver.sym(plugin)), std::move(mod));
-                imports.emplace_back(std::move(import));
-            }
 
             switch (opt) {
                 case 0: break;

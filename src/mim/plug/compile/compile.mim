@@ -146,10 +146,13 @@ lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
 ///
 /// ### Dependent Passes and Phases
 ///
-let empty_pass = %compile.nullptr_pass;
+let empty_pass  = %compile.nullptr_pass;
 let empty_phase = %compile.passes_to_phase ();
+
 axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;
+
 let plugin_phase = %compile.plugin_select %compile.Phase;
-let plugin_pass = %compile.plugin_select %compile.Pass;
+let plugin_pass  = %compile.plugin_select %compile.Pass;
+
 lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase empty_phase;
 lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  empty_pass;

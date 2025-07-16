@@ -133,7 +133,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     // emit helpers for non-function axm
     for (const auto& [tag, ax] : infos) {
         auto sym = ax.sym;
-        if (ax.pi || sym.plugin != plugin) continue; // from function or other plugin?
+        if ((ax.pi && *ax.pi) || sym.plugin != plugin) continue; // from function or other plugin?
         tab.print(h, "template<> struct Axm::IsANode<plug::{}::{}> {{ using type = Axm; }};\n", sym.plugin, sym.tag);
     }
 
