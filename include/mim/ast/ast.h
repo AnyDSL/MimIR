@@ -587,14 +587,8 @@ public:
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     protected:
-        const Pi* set_codom(const Def* codom) const {
-            if (auto imm = pi_->set_codom(codom)->immutabilize()) return const_pi_ = imm;
-            return const_pi_ = pi_;
-        }
-
-        mutable Pi* decl_           = nullptr;
-        mutable Pi* pi_             = nullptr;
-        mutable const Pi* const_pi_ = nullptr;
+        mutable Pi* decl_ = nullptr;
+        mutable Pi* pi_   = nullptr;
 
     private:
         Ptr<Ptrn> ptrn_;

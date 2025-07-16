@@ -81,7 +81,6 @@ In addition the following keywords are _terminals_:
 | `i32`     | `0x1'0000'0000` | `I32`    | `Idx i32` |
 | `i64`     | `0`             | `I64`    | `Idx i64` |
 
-All keywords start with a `.` to prevent name clashes with identifiers.
 
 #### Other Terminals
 

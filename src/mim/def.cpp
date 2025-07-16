@@ -37,8 +37,10 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         hash_ = mim::hash_begin(node_t(Node::Univ));
     } else if (auto var = isa<Var>()) {
         assert(flags_ == 0); // if we ever need flags here, we need to hash that
-        gid_  = type->world().next_gid();
-        vars_ = Vars(var);
+        auto& world = type->world();
+        gid_        = world.next_gid();
+        vars_       = world.vars().insert(type->local_vars(), var);
+        muts_       = type->local_muts();
         dep_ |= type->dep_;
         auto op      = ops[0];
         ops_ptr()[0] = op;
@@ -46,27 +48,24 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         hash_        = hash_combine(hash_, type->gid());
         hash_        = hash_combine(hash_, op->gid());
     } else {
-        Sets<const Var>* vars;
-        Sets<Def>* muts;
         hash_ = hash_begin(u8(node));
         hash_ = hash_combine(hash_, flags_);
 
         if (type) {
             world = &type->world();
-            vars  = &world->vars();
-            muts  = &world->muts();
             dep_ |= type->dep_;
-            vars_ = vars->merge(vars_, type->local_vars());
-            muts_ = muts->merge(muts_, type->local_muts());
+            vars_ = type->local_vars();
+            muts_ = type->local_muts();
             hash_ = hash_combine(hash_, type->gid());
         } else {
             world = &ops[0]->world();
-            vars  = &world->vars();
-            muts  = &world->muts();
         }
 
-        gid_     = world->next_gid();
-        auto ptr = ops_ptr();
+        auto vars = &world->vars();
+        auto muts = &world->muts();
+        auto ptr  = ops_ptr();
+        gid_      = world->next_gid();
+
         for (size_t i = 0, e = ops.size(); i != e; ++i) {
             auto op = ops[i];
             ptr[i]  = op;
@@ -239,6 +238,10 @@ Def* Def::set(Defs ops) {
 }
 
 Def* Def::set(size_t i, const Def* def) {
+#ifdef MIM_ENABLE_CHECKS
+    if (world().watchpoints().contains(gid())) fe::breakpoint();
+#endif
+    invalidate();
     def = check(i, def);
     assert(def && !op(i) && curr_op_++ == i);
     ops_ptr()[i] = def;
@@ -251,6 +254,7 @@ Def* Def::set(size_t i, const Def* def) {
 }
 
 Def* Def::set_type(const Def* type) {
+    invalidate();
     assert(curr_op_ == 0);
     type_ = type;
     return this;
@@ -295,8 +299,6 @@ Vars Def::free_vars() const {
 Vars Def::local_vars() const { return mut_ ? Vars() : vars_; }
 
 Vars Def::free_vars() {
-    if (!is_set()) return {};
-
     if (mark_ == 0) {
         // fixed-point iteration to recompute free vars:
         // (run - 1) identifies the previous iteration; so make sure to offset run by 2 for the first iteration
@@ -313,6 +315,7 @@ Vars Def::free_vars() {
 }
 
 Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
+    assert(isa_mut());
     // Recursively recompute free vars. If
     // * mark_ == 0: invalid - need to recompute
     // * mark_ == run - 1: Previous iteration - need to recompute
@@ -345,10 +348,10 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
 void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
-        if (vars_) { // only necessary, if the cached free vars are non-empty
-            for (auto mut : users()) mut->invalidate();
-            vars_ = Vars();
-        }
+        // if (vars_) { // only necessary, if the cached free vars are non-empty
+        for (auto mut : users()) mut->invalidate();
+        vars_ = Vars();
+        // }
         muts_ = Muts();
     }
 }

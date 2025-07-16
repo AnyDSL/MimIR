@@ -19,8 +19,8 @@ public:
 
     /// @name Stack of Maps
     ///@{
-    void push() { old2news_.emplace_back(Def2Def{}); }
-    void pop() { old2news_.pop_back(); }
+    virtual void push() { old2news_.emplace_back(Def2Def{}); }
+    virtual void pop() { old2news_.pop_back(); }
 
     /// Map @p old_def to @p new_def and returns @p new_def.
     /// @returns `new_def`
@@ -38,6 +38,8 @@ public:
     /// Recursively rewrite old Def%s.
     ///@{
     virtual const Def* rewrite(const Def*);
+    virtual const Def* dispatch(const Def*);
+
     virtual const Def* rewrite_imm(const Def*);
     virtual const Def* rewrite_mut(Def*, bool immutablize);
 
@@ -56,29 +58,60 @@ private:
 
 class VarRewriter : public Rewriter {
 public:
+    VarRewriter(World& world)
+        : Rewriter(world) {}
+
     VarRewriter(const Var* var, const Def* arg)
-        : Rewriter(arg->world())
-        , vars_(var ? Vars(var) : Vars()) {
-        assert(var);
+        : Rewriter(arg->world()) {
+        add(var, arg);
+    }
+
+    void add(const Var* var, const Def* arg) {
         map(var, arg);
+        vars_.emplace_back(var);
     }
 
-    const Def* rewrite_imm(const Def* imm) final {
-        if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
-        if (imm->has_dep(Dep::Hole) || vars_.has_intersection(imm->free_vars())) return Rewriter::rewrite_imm(imm);
-        return imm;
+    void push() final {
+        Rewriter::push();
+        vars_.emplace_back(Vars());
     }
 
-    const Def* rewrite_mut(Def* mut, bool immutablize) final {
-        if (vars_.has_intersection(mut->free_vars())) {
-            if (auto var = mut->has_var()) vars_ = world().vars().insert(vars_, var);
-            return Rewriter::rewrite_mut(mut, immutablize);
+    void pop() final {
+        vars_.pop_back();
+        Rewriter::pop();
+    }
+
+    const Def* rewrite(const Def* old_def) final {
+        if (old_def->isa<Univ>()) return world().univ();
+        if (auto new_def = lookup(old_def)) return new_def;
+        if (descend(old_def)) return Rewriter::dispatch(old_def);
+        // return map(mut, mut);
+        return old_def;
+    }
+
+    bool descend(const Def* old_def) {
+        if (auto imm = old_def->isa_imm()) {
+            if (imm->has_dep(Dep::Hole)) return true;
+            if (imm->local_vars().empty() && imm->local_muts().empty()) return false; // safe to skip
         }
-        return map(mut, mut);
+
+        for (const auto& vars : vars_ | std::views::reverse)
+            if (vars.has_intersection(old_def->free_vars())) return true;
+
+        return false;
+    }
+
+    const Def* rewrite_mut(Def* mut) final {
+        if (auto var = mut->has_var()) {
+            auto& vars = vars_.back();
+            vars       = world().vars().insert(vars, var);
+        }
+
+        return Rewriter::rewrite_mut(mut);
     }
 
 private:
-    Vars vars_;
+    Vector<Vars> vars_;
 };
 
 } // namespace mim
