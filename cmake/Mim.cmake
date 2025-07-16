@@ -38,19 +38,11 @@ function(add_mim_plugin)
         # Remove C++-style comments (from '//' to end of line)
         string(REGEX REPLACE "//.*" "" line "${line}")
 
-        # Match "import name;" using regex and extract the name
-        string(REGEX MATCH "^import[ \t]+[a-zA-Z0-9_]+" match "${line}")
-        if(match)
-            # Extract just the plugin name using the match group
-            string(REGEX REPLACE "^import[ \t]+([a-zA-Z0-9_]+)" "\\1" plugin_name "${line}")
-            list(APPEND PLUGIN_SOFT_DEPS "mim_internal_${plugin_name}")
-        endif()
-
         # as above
         string(REGEX MATCH "^plugin[ \t]+[a-zA-Z0-9_]+" match "${line}")
         if(match)
             string(REGEX REPLACE "^plugin[ \t]+([a-zA-Z0-9_]+)" "\\1" plugin_name "${line}")
-            list(APPEND PLUGIN_HARD_DEPS "mim_${plugin_name}")
+            list(APPEND PLUGIN_DEPS "mim_${plugin_name}")
         endif()
     endforeach()
 
@@ -64,12 +56,12 @@ function(add_mim_plugin)
         OUTPUT
             ${AUTOGEN_H}
             ${PLUGIN_MD}
-        COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.."
+        COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.." --bootstrap
             --output-h ${AUTOGEN_H}
             --output-md ${PLUGIN_MD}
         MAIN_DEPENDENCY ${PLUGIN_MIM}
         DEPENDS ${MIM_TARGET_NAMESPACE}mim
-        COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'"
+        COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'; dependencies: ${PLUGIN_DEPS}"
         VERBATIM
     )
     add_custom_command(
