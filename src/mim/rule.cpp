@@ -42,18 +42,14 @@ bool Rule::its_a_match(const Def* expr) const {
 }
 
 bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, const Def*> already_seen) const {
-    if (is_in_rule(exp1)) return false;
-    // if (exp1->type() != exp2->type()) return false;
-    if (exp1->type() != nullptr && exp2->type() != nullptr)
-        if (!its_a_match(exp1->type(), exp2->type(), already_seen)) return false;
-    // we don't rewrite the rewrites
-
     // we assume all vars in exp2 are pattern matching meta variables
-    // therefore they match everything (no equality pls)
+    // therefore they match everything
     if (exp2->isa<Var>()) {
         if (already_seen.contains(exp2)) return exp1 == already_seen[exp2];
         if (exp2->as<Var>()->mut()->isa<Rule>()) {
             already_seen[exp2] = exp1;
+            if (exp1->type() != nullptr && exp2->type() != nullptr)
+                if (!its_a_match(exp1->type(), exp2->type(), already_seen)) return false;
             return true;
         }
         return exp1 == exp2;
@@ -65,6 +61,8 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, co
             if (already_seen.contains(e2)) return exp1 == already_seen[e2];
             if (v->mut()->isa<Rule>()) {
                 already_seen[e2] = exp1;
+                if (exp1->type() != nullptr && exp2->type() != nullptr)
+                    if (!its_a_match(exp1->type(), exp2->type(), already_seen)) return false;
                 return true;
             }
             return exp1 == exp2;
@@ -74,6 +72,9 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, co
     if (are_same_node(exp1, exp2)) {
         // should be ok if we do not have to infer the types
         // gotta assume that we have the same kind of node now
+
+        if (exp1->type() != nullptr && exp2->type() != nullptr)
+            if (!its_a_match(exp1->type(), exp2->type(), already_seen)) return false;
 
         // else we need to check for a match in all branches (except if no dependencies, then check equality)
         if (auto l1 = exp1->isa<Lit>(); auto l2 = exp2->isa<Lit>()) return l1->get() == l2->get();
