@@ -95,7 +95,6 @@ private:
     Ptr<Expr> parse_insert_expr();
     Ptr<Expr> parse_uniq_expr();
     Ptr<Expr> parse_match_expr();
-    Ptr<Expr> parse_rule_expr();
     ///@}
 
     enum PtrnStyle {
@@ -124,6 +123,7 @@ private:
     Ptr<ValDecl> parse_axm_decl();
     Ptr<ValDecl> parse_let_decl();
     Ptr<ValDecl> parse_c_decl();
+    Ptr<ValDecl> parse_rule_expr();
     Ptr<LamDecl> parse_lam_decl();
     Ptr<RecDecl> parse_rec_decl(bool first);
     Ptr<RecDecl> parse_and_decl();

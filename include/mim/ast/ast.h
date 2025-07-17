@@ -1039,13 +1039,13 @@ private:
 };
 
 /// rewrite rules
-/// rule x:T y:T = x+y => y+x;
+/// rule (x:T, y:T) : x+y => y+x (when );
 /// all meta variables have to be introduced
 
-class RuleDecl : public Expr {
+class RuleDecl : public ValDecl {
 public:
     RuleDecl(Loc loc, Ptr<Ptrn>&& var, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs, Ptr<Expr>&& condition, bool is_equivalence)
-        : Expr(loc)
+        : ValDecl(loc)
         , var_(std::move(var))
         , lhs_(std::move(lhs))
         , rhs_(std::move(rhs))
@@ -1062,7 +1062,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    const Def* emit_(Emitter&) const override;
+    void emit(Emitter&) const override;
 
     Dbg dbg_;
     Ptr<Ptrn> var_;

@@ -2,15 +2,15 @@
 
 plugin math;
 
-let zero_plus = rule (mode: Nat, type: «2; Nat», b: %math.F type) : %math.arith.add(mode) (0: (%math.F type), b) => b;
-let zero_mul = rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (0: (%math.F type), b) => 0:(%math.F type);
-let zero_div = rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.div(mode) (0: (%math.F type), b) => 0:(%math.F type);
-let zero_rem = rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.rem(mode) (0: (%math.F type), b) => 0:(%math.F type);
+rule (mode: Nat, type: «2; Nat», b: %math.F type) : %math.arith.add(mode) (0: (%math.F type), b) => b;
+rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (0: (%math.F type), b) => 0:(%math.F type);
+rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.div(mode) (0: (%math.F type), b) => 0:(%math.F type);
+rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.rem(mode) (0: (%math.F type), b) => 0:(%math.F type);
 
-let one_mul = rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (1: (%math.F type), b) => b;
+rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (1: (%math.F type), b) => b;
 
-let zero_sub = rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.sub(mode) (b, 0: (%math.F type)) => 0:(%math.F type);
+rule (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.sub(mode) (b, 0: (%math.F type)) => 0:(%math.F type);
 
-let equal_add = rule (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.add(mode) (a, a) => %math.arith.mul(mode) (2: (%math.F type), a);
-let equal_sub = rule (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.sub(mode) (a, a) => 0:(%math.F type);
-let equal_div = rule (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.div(mode) (a, a) => 1:(%math.F type);
+rule (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.add(mode) (a, a) => %math.arith.mul(mode) (2: (%math.F type), a);
+rule (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.sub(mode) (a, a) => 0:(%math.F type);
+rule (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.div(mode) (a, a) => 1:(%math.F type);

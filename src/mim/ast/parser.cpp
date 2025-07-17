@@ -345,7 +345,6 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
         case Tag::K_match:   return parse_match_expr();
-        case Tag::K_rule:    return parse_rule_expr();
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -604,6 +603,7 @@ Ptrs<ValDecl> Parser::parse_decls() {
             case Tag::K_con:
             case Tag::K_fun:
             case Tag::K_lam:       decls.emplace_back(parse_lam_decl());          break;
+            case Tag::K_rule:      decls.emplace_back(parse_rule_expr());         break;
             default:               return decls;
         }
         // clang-format on
@@ -687,7 +687,7 @@ Ptr<RecDecl> Parser::parse_rec_decl(bool first) {
     return ptr<RecDecl>(track, dbg, std::move(type), std::move(body), std::move(next));
 }
 
-Ptr<Expr> Parser::parse_rule_expr() {
+Ptr<ValDecl> Parser::parse_rule_expr() {
     auto track = tracker();
     eat(Tag::K_rule);
     auto ptrn = parse_ptrn(0, "meta variables in rewrite rule");

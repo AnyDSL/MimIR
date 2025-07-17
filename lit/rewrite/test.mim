@@ -3,7 +3,7 @@
 plugin core;
 plugin refly;
 
-let zero_neutral = rule (x:Nat) : %core.nat.add (x, 0) => x;
+rule (x:Nat) : %core.nat.add (x, 0) => x;
 
 lam test (x:Nat) = %core.nat.add (x, 0);
 lam testtest (x:Nat) = %core.nat.add (%core.nat.add (x, 0), 0);
@@ -12,7 +12,7 @@ lam id (x:Nat) = x;
 let _ = %refly.equiv.struc_eq (test, id);
 let _ = %refly.equiv.struc_eq (testtest, id);
 
-let _ = rule (x:Nat) : 42 => 0;
+rule (x:Nat) : 42 => 0;
 let ohohoh = 42;
 // let _ = %refly.equiv.struc_eq (ohohoh, 0);
 // ^- not supported, only normalizations currently
