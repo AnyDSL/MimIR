@@ -12,8 +12,8 @@ let m0 = ((1, 2), (3, 4));
 /// let m1 = %tensor.transpose @(Nat, 2, (2, 2)) (m0, (tt, ff));
 /// let m2 = %tensor.transpose @(Nat, 4, (1, 1, 2, 2)) (m0, (2_4, 1_4, 0_4, 3_4));
 /// let m21 = %tensor.transpose @(Nat, 4, (2, 2, 1, 1)) (m0, (0_4, 3_4, 1_4, 2_4));
-let m3 = %tensor.broadcast @(Nat, 3, (2, 1, 2)) ((2, 50, 2), m0);
-let m4 = %tensor.broadcast_in_dim @(Nat, 3, 3, (2, 1, 2)) ((2, 50, 2), m0, (2_3, 1_3, 0_3));
+let m3 = %tensor.broadcast ((2, 1, 2), (2, 50, 2), m0);
+let m4 = %tensor.broadcast_in_dim ((2, 1, 2), (2, 50, 2), m0, (2_3, 1_3, 0_3));
 /// let _ = %refly.equiv.struc_eq (m3, (‹50; (1, 2)›, ‹50; (3, 4)›));
 
 fun extern main() = return (m3, m4);

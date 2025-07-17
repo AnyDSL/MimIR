@@ -121,9 +121,9 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
 const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
     auto& w = c->world();
 
-    auto [s_out, input] = arg->projs<2>();
+    auto [s_in, s_out, input] = arg->projs<3>();
     auto callee         = c->as<App>();
-    auto [T, r, s_in]   = callee->args<3>();
+    auto [T, r]   = callee->args<2>();
     w.DLOG("normalize_broadcast");
     w.DLOG("    s_out = {} : {}", s_out, s_out->type());
     w.DLOG("    input = {} : {}", input, input->type());
@@ -162,14 +162,14 @@ const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
     auto new_s_out     = w.tuple(new_s_out_vec);
 
     auto bc = w.annex<tensor::broadcast>();
-    bc      = w.app(bc, {T, new_r, new_s_in});
+    bc      = w.app(bc, {T, new_r});
     if (s_in_0 == s_out_0) {
-        auto out_vec = DefVec(s_out_nat, [&](size_t i) { return w.app(bc, {new_s_out, input->proj(i)}); });
+        auto out_vec = DefVec(s_out_nat, [&](size_t i) { return w.app(bc, {new_s_in, new_s_out, input->proj(i)}); });
         return w.tuple(out_vec);
     }
     assert(s_in_nat == 1 && "input dimensions must be 1 or equal to the output dimension");
     if (s_in_nat == 1) {
-        auto out = w.app(bc, {new_s_out, input});
+        auto out = w.app(bc, {new_s_in, new_s_out, input});
         return w.pack(s_out_0, out);
     }
     return nullptr;
@@ -178,9 +178,9 @@ const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
 const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) {
     auto& w = c->world();
 
-    auto [s_out, input, index]  = arg->projs<3>();
+    auto [s_in, s_out, input, index]  = arg->projs<4>();
     auto callee                 = c->as<App>();
-    auto [T, r_in, r_out, s_in] = callee->args<4>();
+    auto [T, r_in, r_out] = callee->args<3>();
     w.DLOG("normalize_broadcast_in_dim");
     w.DLOG("    s_out = {} : {}", s_out, s_out->type());
     w.DLOG("    input = {} : {}", input, input->type());
@@ -232,8 +232,8 @@ const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) 
     auto s_bc     = w.tuple(s_bc_vec);
 
     auto bc = w.annex<tensor::broadcast>();
-    bc      = w.app(bc, {T, r_out, s_bc});
-    bc      = w.app(bc, {s_out, tr});
+    bc      = w.app(bc, {T, r_out});
+    bc      = w.app(bc, {s_bc, s_out, tr});
 
     return bc;
 }
