@@ -3,7 +3,7 @@
 plugin refly;
 plugin core;
 
-rule (s: Nat, m: Nat) : %core.idx s m 4 => %core.idx s m 3;
+rule why_not (s: Nat, m: Nat) : %core.idx s m 4 => %core.idx s m 3;
 
 let victim = %core.idx i8 0 4;
 

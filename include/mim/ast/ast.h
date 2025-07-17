@@ -1037,8 +1037,15 @@ private:
 
 class RuleDecl : public ValDecl {
 public:
-    RuleDecl(Loc loc, Ptr<Ptrn>&& var, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs, Ptr<Expr>&& condition, bool is_equivalence)
+    RuleDecl(Loc loc,
+             Dbg dbg,
+             Ptr<Ptrn>&& var,
+             Ptr<Expr>&& lhs,
+             Ptr<Expr>&& rhs,
+             Ptr<Expr>&& condition,
+             bool is_equivalence)
         : ValDecl(loc)
+        , dbg_(std::move(dbg))
         , var_(std::move(var))
         , lhs_(std::move(lhs))
         , rhs_(std::move(rhs))

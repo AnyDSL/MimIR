@@ -2,7 +2,7 @@
 
 plugin core;
 
-rule (x:Nat) : %core.nat.add (x, 0) => x;
+rule zero_neutral (x:Nat) : %core.nat.add (x, 0) => x;
 //let rule1 = rule (x y: Nat):
 //%core.nat.add (x, y) => %core.nat.add (y, x);
 

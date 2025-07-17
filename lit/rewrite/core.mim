@@ -2,11 +2,11 @@
 
 plugin core;
 
- rule (x:Nat) : %core.nat.add (x, 0) => x;
+rule zero_neutral (x:Nat) : %core.nat.add (x, 0) => x;
 
-rule (x:Nat) : %core.nat.sub (0,x) => 0;
-rule (x:Nat) : %core.nat.mul (0, x) => 0;
+rule zero_sub (x:Nat) : %core.nat.sub (0,x) => 0;
+rule zero_mul (x:Nat) : %core.nat.mul (0, x) => 0;
 
- rule (x:Nat) : %core.nat.mul (1, x) => x;
+rule one_mul (x:Nat) : %core.nat.mul (1, x) => x;
 
-rule (x: Nat) : %core.nat.sub (x, 0) => x;
+rule sub_zero (x: Nat) : %core.nat.sub (x, 0) => x;

@@ -262,61 +262,61 @@ lam %core.select {T: *} (cond: Bool, t: T, f: T): T = (f, t)#cond;
 
 /// ## Normalizers for %core.nat
 
-rule (x:Nat) : %core.nat.add (0,x) => x;
- rule (x:Nat) : %core.nat.sub (0,x) => 0;
- rule (x:Nat) : %core.nat.mul (0, x) => 0;
+rule n_zero_plus (x:Nat) : %core.nat.add (0,x) => x;
+rule n_zero_sub (x:Nat) : %core.nat.sub (0,x) => 0;
+rule n_zero_mul (x:Nat) : %core.nat.mul (0, x) => 0;
 
- rule (x:Nat) : %core.nat.mul (1, x) => x;
+rule n_one_mul (x:Nat) : %core.nat.mul (1, x) => x;
 
- rule (x: Nat) : %core.nat.sub (x, 0) => x;
+rule n_sub_zero (x: Nat) : %core.nat.sub (x, 0) => x;
 
 /// ## Normalizers for %core.wrap
 
 lam zw(s:Nat) = 0:(Idx s);
 lam on(s:Nat, m:Nat) = %core.idx s m 1;
 
-rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.add m (zw s, b) => b;
-rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.mul m (zw s, b) => zw s;
- rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.shl m (zw s, b) => 0:(Idx s);
+rule w_zero_plus (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.add m (zw s, b) => b;
+rule w_zero_mul (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.mul m (zw s, b) => zw s;
+rule w_zero_shl (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.shl m (zw s, b) => 0:(Idx s);
 
- rule (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.mul m (%core.idx s m 1, b) => b;
+rule w_one_mul (s:Nat, m: Nat, b:(Idx s)) : %core.wrap.mul m (%core.idx s m 1, b) => b;
 
-rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.sub m (a,zw s) => a;
- rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.shl m (a,zw s) => a;
+rule w_sub_zero (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.sub m (a,zw s) => a;
+rule w_shl_zero (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.shl m (a,zw s) => a;
 
- rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.add m (a,a) => %core.wrap.mul m (%core.idx s m 2,a);
- rule (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.sub m (a,a) => 0:(Idx s);
+rule w_equal_plus (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.add m (a,a) => %core.wrap.mul m (%core.idx s m 2,a);
+rule w_equal_sub (s:Nat, m: Nat, a:(Idx s)) : %core.wrap.sub m (a,a) => 0:(Idx s);
 
-rule (s:Nat, m: Nat, a:(Idx s), b:(Idx s)) : %core.wrap.shl m (a,b) => ⊥:(Idx s) when %core.icmp.ug (b, (%core.idx s 0 s));
+rule w_error_shl (s:Nat, m: Nat, a:(Idx s), b:(Idx s)) : %core.wrap.shl m (a,b) when %core.icmp.ug (b, (%core.idx s 0 s)) => ⊥:(Idx s);
 
 /// ## Normalizers for %core.shr
 
-rule (s:Nat, b:(Idx s)) : %core.shr.a (0:(Idx s), b) => b;
- rule (s:Nat, b:(Idx s)) : %core.shr.l (0:(Idx s), b) => b;
+rule s_zero_ar (s:Nat, b:(Idx s)) : %core.shr.a (0:(Idx s), b) => b;
+rule s_zero_log (s:Nat, b:(Idx s)) : %core.shr.l (0:(Idx s), b) => b;
 
-rule(s:Nat, a:(Idx s)) : %core.shr.a (a,0:(Idx s)) => a;
-rule (s:Nat, a:(Idx s)) : %core.shr.l (a, 0:(Idx s)) => a;
+rule s_zeros_ar (s:Nat, a:(Idx s)) : %core.shr.a (a,0:(Idx s)) => a;
+rule s_zeros_log (s:Nat, a:(Idx s)) : %core.shr.l (a, 0:(Idx s)) => a;
 
-rule(s:Nat, a:(Idx s), b:(Idx s)) : %core.shr.a (a,b) => ⊥:(Idx s) when %core.icmp.ug (b, (%core.idx s 0 s));
+rule s_overflow_ar (s:Nat, a:(Idx s), b:(Idx s)) : %core.shr.a (a,b) when %core.icmp.ug (b, (%core.idx s 0 s)) => ⊥:(Idx s);
 
 /// ## Normalizers for %core.div
 
- rule (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.sdiv (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
-rule (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.udiv (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
- rule (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.urem (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
- rule (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.srem (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
+rule ds_zero_left (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.sdiv (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
+rule du_zero_left (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.udiv (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
+rule dur_zero_left (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.urem (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
+rule dsr_zero_left (s:Nat, m:%mem.M, b:(Idx s)) : %core.div.srem (m ,(0:(Idx s),b)) => (m, 0:(Idx s));
 
-rule (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.sdiv (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
- rule (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.udiv (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
- rule (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.urem (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
- rule (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.srem (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
+rule ds_zero_error (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.sdiv (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
+rule du_zero_error (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.udiv (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
+rule dur_zero_error (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.urem (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
+rule dsr_zero_error (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.srem (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
 
-rule (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.sdiv (mem,(a,on(s,m))) => (mem,a);
- rule (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.udiv (mem,(a,on(s,m))) => (mem,a);
-rule (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.urem (mem,(a,on(s,m))) => (mem,0:(Idx s));
-rule (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.srem (mem,(a,on(s,m))) => (mem,0:(Idx s));
+rule ds_one_right (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.sdiv (mem,(a,on(s,m))) => (mem,a);
+rule du_one_right (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.udiv (mem,(a,on(s,m))) => (mem,a);
+rule dur_one_right (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.urem (mem,(a,on(s,m))) => (mem,0:(Idx s));
+rule dsr_one_right (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.srem (mem,(a,on(s,m))) => (mem,0:(Idx s));
 
- rule (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.sdiv (mem, (a,a)) => (mem, on(s,0));
- rule (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.udiv (mem, (a,a)) => (mem, on(s,0));
- rule (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.urem (mem, (a,a)) => (mem, 0:(Idx s));
-rule (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.srem (mem, (a,a)) => (mem, 0:(Idx s));
+rule ds_equal (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.sdiv (mem, (a,a)) => (mem, on(s,0));
+rule du_equal (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.udiv (mem, (a,a)) => (mem, on(s,0));
+rule dur_equal (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.urem (mem, (a,a)) => (mem, 0:(Idx s));
+rule dsr_equal (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.srem (mem, (a,a)) => (mem, 0:(Idx s));
