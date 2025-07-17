@@ -694,7 +694,8 @@ const Def* World::apply_rules(const Axm* axm, const Def* expr) {
     if (c.first == rules_of_axm_.end()) return expr;
     for (auto rule = c.first; rule != c.second; rule++) {
         auto r = rule->second;
-        if (r->its_a_match(expr)) return r->replace(expr);
+        std::map<const Def*, const Def*> v2v;
+        if (r->its_a_match(expr, v2v)) return r->replace(expr, v2v);
     }
     return expr;
 }

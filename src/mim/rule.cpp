@@ -1,5 +1,7 @@
 #include "mim/rule.h"
 
+#include <utility>
+
 #include "mim/check.h"
 #include "mim/def.h"
 #include "mim/lam.h"
@@ -36,20 +38,21 @@ bool is_in_rule(const Def* expr) {
     return false;
 }
 
-bool Rule::its_a_match(const Def* expr) const {
+bool Rule::its_a_match(const Def* expr, std::map<const Def*, const Def*>& v2v) const {
     if (is_in_rule(expr)) return false;
-    return Rule::its_a_match(expr, lhs());
+    return Rule::its_a_match_(expr, lhs(), v2v);
 }
 
-bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, const Def*> already_seen) const {
+bool Rule::its_a_match_(const Def* exp1, const Def* exp2, std::map<const Def*, const Def*>& already_seen) const {
     // we assume all vars in exp2 are pattern matching meta variables
     // therefore they match everything
+    if (exp1 == exp2) return true;
     if (exp2->isa<Var>()) {
         if (already_seen.contains(exp2)) return exp1 == already_seen[exp2];
         if (exp2->as<Var>()->mut()->isa<Rule>()) {
             already_seen[exp2] = exp1;
             if (exp1->type() != nullptr && exp2->type() != nullptr)
-                if (!its_a_match(exp1->type(), exp2->type(), already_seen)) return false;
+                if (!its_a_match_(exp1->type(), exp2->type(), already_seen)) return false;
             return true;
         }
         return exp1 == exp2;
@@ -62,7 +65,7 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, co
             if (v->mut()->isa<Rule>()) {
                 already_seen[e2] = exp1;
                 if (exp1->type() != nullptr && exp2->type() != nullptr)
-                    if (!its_a_match(exp1->type(), exp2->type(), already_seen)) return false;
+                    if (!its_a_match_(exp1->type(), exp2->type(), already_seen)) return false;
                 return true;
             }
             return exp1 == exp2;
@@ -74,7 +77,7 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, co
         // gotta assume that we have the same kind of node now
 
         if (exp1->type() != nullptr && exp2->type() != nullptr)
-            if (!its_a_match(exp1->type(), exp2->type(), already_seen)) return false;
+            if (!its_a_match_(exp1->type(), exp2->type(), already_seen)) return false;
 
         // else we need to check for a match in all branches (except if no dependencies, then check equality)
         if (auto l1 = exp1->isa<Lit>(); auto l2 = exp2->isa<Lit>()) return l1->get() == l2->get();
@@ -82,56 +85,38 @@ bool Rule::its_a_match(const Def* exp1, const Def* exp2, std::map<const Def*, co
         if (exp2->num_ops() == 0) return true;
         if (exp2->num_ops() != exp1->num_ops()) return false;
         for (size_t i = 0; i < exp2->num_ops(); i++)
-            if (!its_a_match(exp1->op(i), exp2->op(i), already_seen)) return false;
+            if (!its_a_match_(exp1->op(i), exp2->op(i), already_seen)) return false;
         return true;
     }
     return false;
 }
 
-const Def* Rule::replace(const Def* expr) const {
-    std::map<std::pair<const Def*, size_t>, const Def*> var2replace;
-    auto v = Rule::replace_(lhs(), expr, var2replace);
+const Def* Rule::replace(const Def* expr, std::map<const Def*, const Def*>& v2v) const {
     // the dic is now populated with everything
     std::vector<std::pair<const Def*, size_t>> tuple_of_args;
-    for (auto v : var2replace) tuple_of_args.push_back(std::make_pair(v.second, v.first.second));
+    const Var* var_of_rule;
+    for (auto v : v2v) {
+        auto var = v.first;
+        auto val = v.second;
+        if (auto v = var->isa<Var>()) {
+            var_of_rule = v;
+            tuple_of_args.push_back(std::make_pair(val, -1));
+        }
+        if (auto e = var->isa<Extract>()) {
+            auto i      = e->index()->as<Lit>()->get();
+            var_of_rule = e->tuple()->isa<Var>();
+            tuple_of_args.push_back(std::make_pair(val, i));
+        }
+    }
     std::sort(tuple_of_args.begin(), tuple_of_args.end(),
               [&](std::pair<const Def*, size_t> a, std::pair<const Def*, size_t> b) { return a.second < b.second; });
     std::vector<const Def*> fin;
     for (auto p : tuple_of_args) fin.push_back(p.first);
     auto truc  = world().tuple(fin);
-    auto rw    = VarRewriter(v, truc);
+    auto rw    = VarRewriter(var_of_rule, truc);
     auto condi = rw.rewrite(condition());
     if (condi == world().lit_tt()) return rw.rewrite(rhs());
     return expr;
-}
-
-const Var* Rule::replace_(const Def* exp1,
-                          const Def* exp2,
-                          std::map<std::pair<const Def*, size_t>, const Def*>& var2replace) const {
-    const Var* var_of_var;
-    if (exp1 == exp2) return nullptr;
-    if (auto v = exp1->isa<Var>()) {
-        if (v->mut()->isa<Rule>()) {
-            // base case, we bind the actual value to the meta var and replace it in rhs
-            var2replace[std::make_pair(v, -1)] = exp2;
-            return v;
-        }
-    }
-    if (auto e = exp1->isa<Extract>()) {
-        if (auto v = e->tuple()->isa<Var>()) {
-            if (v->mut()->isa<Rule>()) {
-                var2replace[std::make_pair(e, e->index()->as<Lit>()->get())] = exp2;
-                return v;
-            }
-        }
-    }
-    replace_(exp1->type(), exp2->type(), var2replace);
-    for (size_t i = 0; i < exp1->num_ops(); i++) {
-        // recursively go find all meta vars in lhs
-        auto v = replace_(exp1->op(i), exp2->op(i), var2replace);
-        if (v) var_of_var = v;
-    }
-    return var_of_var;
 }
 
 } // namespace mim
