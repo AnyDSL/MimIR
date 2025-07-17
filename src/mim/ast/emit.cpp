@@ -1,7 +1,6 @@
 #include "mim/def.h"
 
 #include "mim/ast/ast.h"
-#include "mim/util/span.h"
 
 using namespace std::literals;
 
@@ -267,7 +266,7 @@ void PiExpr::emit_body(Emitter& e, const Def*) const { emit(e); }
 const Def* PiExpr::emit_(Emitter& e) const {
     dom()->emit_type(e);
     auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
-    return dom()->set_codom(cod);
+    return dom()->pi_->set_codom(cod);
 }
 
 const Def* LamExpr::emit_decl(Emitter& e, const Def*) const { return lam()->emit_decl(e), lam()->def(); }
@@ -391,31 +390,20 @@ void AxmDecl::emit(Emitter& e) const {
             id.trip = trip_.lit_u();
     }
 
-    auto pi = mim_type_->isa<Pi>();
-    if (!annex_->pi)
-        annex_->pi = pi;
-    else if (bool(pi) ^ bool(*annex_->pi))
-        error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is", dbg().sym());
-
     if (num_subs() == 0) {
         auto norm = e.driver().normalizer(id.plugin, id.tag, 0);
         auto axm  = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, 0)->set(dbg());
         def_      = axm;
         e.world().register_annex(id.plugin, id.tag, 0, axm);
     } else {
-        sub_t offset = annex_->subs.size();
         for (sub_t i = 0, n = num_subs(); i != n; ++i) {
-            auto& aliases = annex_->subs.emplace_back(std::deque<Sym>());
-            sub_t s       = i + offset;
-            auto norm     = e.driver().normalizer(id.plugin, id.tag, s);
-            auto name     = e.world().sym(dbg().sym().str() + "."s + sub(i).front()->dbg().sym().str());
-            auto axm      = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, s)->set(name);
+            sub_t s   = i + offset_;
+            auto norm = e.driver().normalizer(id.plugin, id.tag, s);
+            auto name = e.world().sym(dbg().sym().str() + "."s + sub(i).front()->dbg().sym().str());
+            auto axm  = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, s)->set(name);
             e.world().register_annex(id.plugin, id.tag, s, axm);
 
-            for (const auto& alias : sub(i)) {
-                alias->def_ = axm;
-                aliases.emplace_back(alias->dbg().sym());
-            }
+            for (const auto& alias : sub(i)) alias->def_ = axm;
         }
     }
 }
@@ -444,7 +432,7 @@ void RecDecl::emit_body(Emitter& e) const {
 }
 
 Lam* LamDecl::Dom::emit_value(Emitter& e) const {
-    lam_     = e.world().mut_lam(const_pi_);
+    lam_     = e.world().mut_lam(pi_);
     auto var = lam_->var();
 
     if (ret()) {
@@ -464,10 +452,10 @@ void LamDecl::emit_decl(Emitter& e) const {
     // Iterate over all doms: Build a Lam for cur dom, by first building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
-        auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_hole_type();
 
+        auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_hole_type();
         for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse)
-            cod = dom->set_codom(cod);
+            cod = dom->pi_->set_codom(cod);
 
         auto cur    = dom(i);
         auto lam    = cur->emit_value(e);
@@ -484,7 +472,17 @@ void LamDecl::emit_decl(Emitter& e) const {
 }
 
 void LamDecl::emit_body(Emitter& e) const {
-    doms().back()->lam_->set_body(body()->emit(e));
+    auto b = body()->emit(e);
+    doms().back()->lam_->set_body(b);
+
+    for (const auto& dom : doms() | std::ranges::views::reverse) {
+        if (auto imm = dom->pi_->immutabilize()) {
+            auto f = dom->lam_->filter();
+            auto b = dom->lam_->body();
+            dom->lam_->unset()->set_type(imm)->as<Lam>()->set(f, b);
+        }
+    }
+
     if (is_external()) doms().front()->lam_->make_external();
     e.register_annex(annex_, sub_, def_);
 }

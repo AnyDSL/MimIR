@@ -714,6 +714,7 @@ void World::register_rule(const Rule* rule) {
 #ifdef MIM_ENABLE_CHECKS
 
 void World::breakpoint(u32 gid) { state_.breakpoints.emplace(gid); }
+void World::watchpoint(u32 gid) { state_.watchpoints.emplace(gid); }
 
 const Def* World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });

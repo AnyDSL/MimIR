@@ -49,6 +49,7 @@ public:
 
 #ifdef MIM_ENABLE_CHECKS
         absl::flat_hash_set<uint32_t> breakpoints;
+        absl::flat_hash_set<uint32_t> watchpoints;
 #endif
         friend void swap(State& s1, State& s2) noexcept {
             using std::swap;
@@ -56,6 +57,7 @@ public:
             swap(s1.pod, s2.pod);
 #ifdef MIM_ENABLE_CHECKS
             swap(s1.breakpoints, s2.breakpoints);
+            swap(s1.watchpoints, s2.watchpoints);
 #endif
         }
     };
@@ -153,9 +155,11 @@ public:
     ///@{
 #ifdef MIM_ENABLE_CHECKS
     const auto& breakpoints() { return state_.breakpoints; }
+    const auto& watchpoints() { return state_.watchpoints; }
 
     const Def* gid2def(u32 gid); ///< Lookup Def by @p gid.
-    void breakpoint(u32 gid);    ///< Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
+    void breakpoint(u32 gid);    ///< Trigger breakpoint in your debugger when creating      a Def with this @p gid.
+    void watchpoint(u32 gid);    ///< Trigger breakpoint in your debugger when Def::set%ting a Def with this @p gid.
 
     World& verify(); ///< Verifies that all externals() and annexes() are Def::is_closed(), if `MIM_ENABLE_CHECKS`.
 #else
