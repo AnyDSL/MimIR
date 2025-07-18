@@ -727,6 +727,7 @@ private:
         swap(w1.move_,  w2.move_ );
         // clang-format on
         swap(w1.known_rules_, w2.known_rules_);
+        swap(w1.rules_of_axm_, w2.rules_of_axm_);
 
         swap(w1.data_.univ->world_, w2.data_.univ->world_);
         assert(&w1.univ()->world() == &w1);

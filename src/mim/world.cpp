@@ -690,7 +690,6 @@ const Axm* upper_axm(const Def* expr) {
 }
 
 const Def* World::apply_rules(const Axm* axm, const Def* expr) {
-    if (known_rules_.empty()) return expr;
     auto c = rules_of_axm_.equal_range(axm);
     if (c.first == rules_of_axm_.end()) return expr;
     for (auto rule = c.first; rule != c.second; rule++) {

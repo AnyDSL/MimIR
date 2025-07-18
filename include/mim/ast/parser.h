@@ -123,7 +123,7 @@ private:
     Ptr<ValDecl> parse_axm_decl();
     Ptr<ValDecl> parse_let_decl();
     Ptr<ValDecl> parse_c_decl();
-    Ptr<ValDecl> parse_rule_expr();
+    Ptr<ValDecl> parse_rule_decl();
     Ptr<LamDecl> parse_lam_decl();
     Ptr<RecDecl> parse_rec_decl(bool first);
     Ptr<RecDecl> parse_and_decl();

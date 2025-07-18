@@ -602,7 +602,8 @@ Ptrs<ValDecl> Parser::parse_decls() {
             case Tag::K_con:
             case Tag::K_fun:
             case Tag::K_lam:       decls.emplace_back(parse_lam_decl());          break;
-            case Tag::K_rule:      decls.emplace_back(parse_rule_expr());         break;
+            case Tag::K_norm:
+            case Tag::K_rule:      decls.emplace_back(parse_rule_decl());         break;
             default:               return decls;
         }
         // clang-format on
@@ -686,11 +687,11 @@ Ptr<RecDecl> Parser::parse_rec_decl(bool first) {
     return ptr<RecDecl>(track, dbg, std::move(type), std::move(body), std::move(next));
 }
 
-Ptr<ValDecl> Parser::parse_rule_expr() {
-    auto track = tracker();
-    eat(Tag::K_rule);
-    auto dbg  = parse_name("rewrite rule");
-    auto ptrn = parse_ptrn(0, "meta variables in rewrite rule");
+Ptr<ValDecl> Parser::parse_rule_decl() {
+    auto track   = tracker();
+    auto is_norm = lex().tag() == Tag::K_norm;
+    auto dbg     = parse_name("rewrite rule");
+    auto ptrn    = parse_ptrn(0, "meta variables in rewrite rule");
     expect(Tag::T_colon, "rewrite rule declaration");
     auto lhs            = parse_expr("rewrite pattern");
     auto condition      = ahead().isa(Tag::K_when) ? (eat(Tag::K_when), parse_expr("rewrite condition"))
@@ -699,7 +700,7 @@ Ptr<ValDecl> Parser::parse_rule_expr() {
     if (!is_equivalence) expect(Tag::T_fat_arrow, "rewrite rule declaration");
     auto rhs = parse_expr("rewrite result");
     return ptr<RuleDecl>(track, dbg, std::move(ptrn), std::move(lhs), std::move(rhs), std::move(condition),
-                         is_equivalence);
+                         is_equivalence, is_norm);
 }
 
 Ptr<LamDecl> Parser::parse_lam_decl() {
