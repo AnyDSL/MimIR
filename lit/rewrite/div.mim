@@ -1,0 +1,14 @@
+// RUN: %mim %s
+
+plugin refly;
+plugin core;
+
+lam div0 (mem: %mem.M, a:I16) : [%mem.M, I16] = %core.div.sdiv (mem, (0I16, a));
+lam const0 (mem: %mem.M, a:I16) : [%mem.M, I16] = (mem, 0I16);
+
+let _ = %refly.equiv.struc_eq (div0, const0);
+
+lam iden (mem: %mem.M, a:I16) : [%mem.M,I16] = %core.div.sdiv (mem, (a, 1I16));
+lam ident (mem: %mem.M, x:I16) : [%mem.M, I16] = (mem,x);
+
+let _ = %refly.equiv.struc_eq (iden, ident);
