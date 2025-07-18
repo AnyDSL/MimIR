@@ -234,6 +234,7 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                 if (auto normalizer = axm->normalizer(); Normalize && normalizer && curry == 0) {
                     if (auto norm = normalizer(type, callee, arg)) return apply_rules(axm, norm);
                 }
+                if (Normalize && curry == 0) return apply_rules(axm, raw_app(axm, curry, trip, type, callee, arg));
             }
 
             return raw_app(axm, curry, trip, type, callee, arg);
