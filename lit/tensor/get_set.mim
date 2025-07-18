@@ -1,0 +1,8 @@
+// RUN: %mim %s
+plugin tensor;
+plugin refly;
+plugin core;
+plugin direct;
+plugin affine;
+
+let g = %tensor.get @(Nat, 2, (1, 1)) (2, (0_1, 0_1));
