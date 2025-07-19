@@ -499,9 +499,9 @@ const Def* World::pack(const Def* shape, const Def* body) {
     // <(a, b, c); body> -> <a; «(b, c); body>>
     if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().subspan(1), body));
 
-    // <<n; x>; body> -> <x; <<n-1, x>; body>>
+    // «‹n; x›; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = Lit::isa(p->shape())) return pack(*s, pack(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->shape())) return pack(p->body(), pack(pack(*s - 1, p->body()), body));
     }
 
     auto type = arr(shape, body->type());
