@@ -42,8 +42,8 @@ std::tuple<const Var*, const Def*> tuple_of_dict(World& world, std::map<const De
     for (auto val_pos : tuple_of_args) fin[val_pos.second] = val_pos.first;
     if (var_of_rule) {
         for (size_t i = 0; i < tuple_size; i++)
-            if (fin[i] == nullptr) fin[i] = world.extract(var_of_rule, i);
-        return {var_of_rule, VarRewriter(var_of_rule, world.tuple(fin)).rewrite(world.tuple(fin))};
+            if (fin[i] == nullptr) fin[i] = world.mut_hole(world.mut_hole_type());
+        return {var_of_rule, world.tuple(fin)};
     }
     return {nullptr, nullptr};
 }
