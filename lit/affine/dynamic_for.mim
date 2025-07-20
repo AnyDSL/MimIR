@@ -25,7 +25,7 @@ con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr («⊤:Nat; %mem.Ptr 
             con atoi_cont_step [mem : %mem.M, step : I32] =
                 con for_exit [acc : [I32, I32]] = return (mem, acc#ff);
 
-                %affine.For (i32, 2, (I32, I32)) (start, stop, step, (0I32, 5I32), for_body, for_exit);
+                %affine.For (start, stop, step, (0I32, 5I32), for_body, for_exit);
             atoi (_19331#ff, _19331#tt, atoi_cont_step);
         atoi (_19247#ff, _19247#tt, atoi_cont_end);
 
