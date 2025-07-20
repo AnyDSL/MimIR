@@ -315,10 +315,10 @@ norm du_zero_error (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.udiv (m ,(a,0:(Idx s
 norm dur_zero_error (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.urem (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
 norm dsr_zero_error (s:Nat, m:%mem.M, a:(Idx s)) : %core.div.srem (m ,(a,0:(Idx s))) => (m, ⊥:(Idx s));
 
-norm ds_one_right (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.sdiv (mem,(a,on(s,m))) => (mem,a);
-norm du_one_right (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.udiv (mem,(a,on(s,m))) => (mem,a);
-norm dur_one_right (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.urem (mem,(a,on(s,m))) => (mem,0:(Idx s));
-norm dsr_one_right (s:Nat, mem:%mem.M, a:(Idx s), m:Nat) : %core.div.srem (mem,(a,on(s,m))) => (mem,0:(Idx s));
+norm ds_one_right (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.sdiv (mem,(a,on(s,0))) => (mem,a);
+norm du_one_right (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.udiv (mem,(a,on(s,0))) => (mem,a);
+norm dur_one_right (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.urem (mem,(a,on(s,0))) => (mem,0:(Idx s));
+norm dsr_one_right (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.srem (mem,(a,on(s,0))) => (mem,0:(Idx s));
 
 norm ds_equal (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.sdiv (mem, (a,a)) => (mem, on(s,0));
 norm du_equal (s:Nat, mem:%mem.M, a:(Idx s)) : %core.div.udiv (mem, (a,a)) => (mem, on(s,0));

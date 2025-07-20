@@ -10,10 +10,42 @@
 #include "mim/tuple.h"
 #include "mim/world.h"
 
+#include "mim/util/sets.h"
+
 namespace mim {
 
 template<class T> bool same(const Def* exp1, const Def* exp2) {
     return !(exp1->isa<T>() == nullptr || exp2->isa<T>() == nullptr);
+}
+
+std::tuple<const Var*, const Def*> tuple_of_dict(World& world, std::map<const Def*, const Def*>& v2v) {
+    if (v2v.empty()) return {nullptr, nullptr};
+    std::vector<std::pair<const Def*, size_t>> tuple_of_args;
+    const Var* var_of_rule;
+    size_t tuple_size = 1;
+    for (auto v : v2v) {
+        auto var = v.first;
+        auto val = v.second;
+        if (auto v = var->isa<Var>()) {
+            var_of_rule = v;
+            tuple_of_args.push_back(std::make_pair(val, 0));
+        }
+        if (auto e = var->isa<Extract>()) {
+            auto i      = e->index()->as<Lit>()->get();
+            var_of_rule = e->tuple()->isa<Var>();
+            tuple_size  = e->tuple()->arity()->as<Lit>()->get();
+            tuple_of_args.push_back(std::make_pair(val, i));
+        }
+    }
+
+    std::vector<const Def*> fin(tuple_size, nullptr);
+    for (auto val_pos : tuple_of_args) fin[val_pos.second] = val_pos.first;
+    if (var_of_rule) {
+        for (size_t i = 0; i < tuple_size; i++)
+            if (fin[i] == nullptr) fin[i] = world.extract(var_of_rule, i);
+        return {var_of_rule, VarRewriter(var_of_rule, world.tuple(fin)).rewrite(world.tuple(fin))};
+    }
+    return {nullptr, nullptr};
 }
 
 bool are_same_node(const Def* expr1, const Def* expr2) {
@@ -73,7 +105,6 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, std::map<const Def*, c
     }
 
     if (are_same_node(exp1, exp2)) {
-        // should be ok if we do not have to infer the types
         // gotta assume that we have the same kind of node now
 
         if (exp1->type() != nullptr && exp2->type() != nullptr)
@@ -88,33 +119,30 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, std::map<const Def*, c
             if (!its_a_match_(exp1->op(i), exp2->op(i), already_seen)) return false;
         return true;
     }
+
+    if (auto l1 = exp1->isa<Lit>()) {
+        // l1 can come from a normalized axm
+        // we check if there is an evaluation of exp2 s.t. it is normalized to l1
+        if (!its_a_match_(exp1->type(), exp2->type(), already_seen)) return false;
+        // we gathered all values we could for meta vars; we try to evaluate exp2 and see if it gives l1
+        auto [var, values] = tuple_of_dict(world(), already_seen);
+        // wtf happens if we could not gather all meta vars values ?
+        if (var) {
+            auto rw         = VarRewriter(var, values);
+            auto eval_right = rw.rewrite(exp2);
+            if (auto l2 = eval_right->isa<Lit>()) {
+                // we have obtained a value; we can compare
+                return l1->get() == l2->get();
+            }
+        }
+    }
     return false;
 }
 
 const Def* Rule::replace(const Def* expr, std::map<const Def*, const Def*>& v2v) const {
-    // the dic is now populated with everything
-    std::vector<std::pair<const Def*, size_t>> tuple_of_args;
-    const Var* var_of_rule;
-    for (auto v : v2v) {
-        auto var = v.first;
-        auto val = v.second;
-        if (auto v = var->isa<Var>()) {
-            var_of_rule = v;
-            tuple_of_args.push_back(std::make_pair(val, -1));
-        }
-        if (auto e = var->isa<Extract>()) {
-            auto i      = e->index()->as<Lit>()->get();
-            var_of_rule = e->tuple()->isa<Var>();
-            tuple_of_args.push_back(std::make_pair(val, i));
-        }
-    }
-    std::sort(tuple_of_args.begin(), tuple_of_args.end(),
-              [&](std::pair<const Def*, size_t> a, std::pair<const Def*, size_t> b) { return a.second < b.second; });
-    std::vector<const Def*> fin;
-    for (auto p : tuple_of_args) fin.push_back(p.first);
-    auto truc  = world().tuple(fin);
-    auto rw    = VarRewriter(var_of_rule, truc);
-    auto condi = rw.rewrite(condition());
+    auto [var_of_rule, truc] = tuple_of_dict(world(), v2v);
+    auto rw                  = VarRewriter(var_of_rule, truc);
+    auto condi               = rw.rewrite(condition());
     if (condi == world().lit_tt()) return rw.rewrite(rhs());
     return expr;
 }
