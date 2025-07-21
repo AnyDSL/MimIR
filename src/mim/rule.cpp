@@ -23,9 +23,7 @@ std::tuple<const Var*, const Def*> tuple_of_dict(World& world, Def2Def& v2v) {
     std::vector<std::pair<const Def*, size_t>> tuple_of_args;
     const Var* var_of_rule;
     size_t tuple_size = 1;
-    for (auto v : v2v) {
-        auto var = v.first;
-        auto val = v.second;
+    for (auto [var, val] : v2v) {
         if (auto v = var->isa<Var>()) {
             var_of_rule = v;
             tuple_of_args.push_back(std::make_pair(val, 0));
@@ -140,9 +138,9 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, Def2Def& already_seen)
 }
 
 const Def* Rule::replace(const Def* expr, Def2Def& v2v) const {
-    auto [var_of_rule, truc] = tuple_of_dict(world(), v2v);
-    auto rw                  = VarRewriter(var_of_rule, truc);
-    auto condi               = rw.rewrite(condition());
+    auto [var_of_rule, meta_values] = tuple_of_dict(world(), v2v);
+    auto rw                         = VarRewriter(var_of_rule, meta_values);
+    auto condi                      = rw.rewrite(condition());
     if (condi == world().lit_tt()) return rw.rewrite(rhs());
     return expr;
 }
