@@ -242,6 +242,14 @@ template<nat id> const Def* normalize_nat(const Def* type, const Def* callee, co
 
     if (lb && *lb == 0 && id == nat::sub) return a; // a - 0 = a
 
+    if (a == b) {
+        switch (id) {
+            case nat::add: return world.call(nat::mul, Defs{world.lit_nat(2), a});
+            case nat::sub: return world.lit_nat(0);
+            case nat::mul: break;
+        }
+    }
+
     return world.raw_app(type, callee, {a, b});
 }
 
