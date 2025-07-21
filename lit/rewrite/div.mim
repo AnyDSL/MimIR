@@ -12,3 +12,8 @@ lam iden (mem: %mem.M, a:I16) : [%mem.M,I16] = %core.div.sdiv (mem, (a, 1I16));
 lam ident (mem: %mem.M, x:I16) : [%mem.M, I16] = (mem,x);
 
 let _ = %refly.equiv.struc_eq (iden, ident);
+
+lam const1 (mem: %mem.M, x:I32) : [%mem.M, I32] = (mem, 1I32);
+lam equal (mem: %mem.M, x:I32) : [%mem.M, I32] = %core.div.udiv (mem, (x, x));
+
+let _ = %refly.equiv.struc_eq (const1, equal);

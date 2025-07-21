@@ -10,8 +10,6 @@
 #include "mim/tuple.h"
 #include "mim/world.h"
 
-#include "mim/util/sets.h"
-
 namespace mim {
 
 template<class T> bool same(const Def* exp1, const Def* exp2) {

@@ -1,16 +1,14 @@
 // RUN: %mim %s
 
 plugin math;
+plugin refly;
 
-rule zero_plus (mode: Nat, type: «2; Nat», b: %math.F type) : %math.arith.add(mode) (0: (%math.F type), b) => b;
-rule zero_mul (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (0: (%math.F type), b) => 0:(%math.F type);
-rule zero_div (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.div(mode) (0: (%math.F type), b) => 0:(%math.F type);
-rule zero_rem (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.rem(mode) (0: (%math.F type), b) => 0:(%math.F type);
+lam constant (x: %math.F64): %math.F64 = 0.:%math.F64;
+lam mul (x: %math.F64):%math.F64  = %math.arith.mul 0 (x, 0.:%math.F64);
 
-rule one_mul (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (1: (%math.F type), b) => b;
+let _ = %refly.equiv.struc_eq (constant,mul);
 
-rule zero_sub (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.sub(mode) (b, 0: (%math.F type)) => 0:(%math.F type);
+lam ident (x: %math.F32) : %math.F32 = x;
+lam mulone (x:%math.F32) : %math.F32 = %math.arith.mul 0 (1.0:%math.F32, x);
 
-rule equal_add (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.add(mode) (a, a) => %math.arith.mul(mode) (2: (%math.F type), a);
-rule equal_sub (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.sub(mode) (a, a) => 0:(%math.F type);
-rule equal_div (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.div(mode) (a, a) => 1:(%math.F type);
+let _ = %refly.equiv.struc_eq (ident, mulone);
