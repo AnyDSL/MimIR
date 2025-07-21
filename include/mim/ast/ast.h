@@ -1043,7 +1043,6 @@ public:
              Ptr<Expr>&& lhs,
              Ptr<Expr>&& rhs,
              Ptr<Expr>&& condition,
-             bool is_equivalence,
              bool is_normalizer)
         : ValDecl(loc)
         , dbg_(std::move(dbg))
@@ -1051,14 +1050,12 @@ public:
         , lhs_(std::move(lhs))
         , rhs_(std::move(rhs))
         , condition_(std::move(condition))
-        , is_equivalence_(is_equivalence)
         , is_normalizer_(is_normalizer) {}
 
     const Ptrn* var() const { return var_.get(); }
     const Expr* lhs() const { return lhs_.get(); }
     const Expr* rhs() const { return rhs_.get(); }
     const Expr* condition() const { return condition_.get(); }
-    bool is_equivalence() const { return is_equivalence_; }
     bool is_normalizer() const { return is_normalizer_; }
 
     void bind(Scopes&) const override;
@@ -1072,7 +1069,6 @@ private:
     Ptr<Expr> lhs_;
     Ptr<Expr> rhs_;
     Ptr<Expr> condition_;
-    bool is_equivalence_;
     bool is_normalizer_;
 };
 

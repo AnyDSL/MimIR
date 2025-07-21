@@ -59,7 +59,6 @@ Tok Lexer::lex() {
         if (accept(U'⟩')) return tok(Tag::D_angle_r);
         if (accept( '<')) {
             if (accept( '<')) return tok(Tag::D_quote_l);
-            if (accept('=') && accept('>')) return tok(Tag::T_equiv);
             return tok(Tag::D_angle_l);
         }
         if (accept( '>')) {

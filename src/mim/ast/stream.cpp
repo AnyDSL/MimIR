@@ -232,12 +232,6 @@ std::ostream& CDecl::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& RuleDecl::stream(Tab& tab, std::ostream& os) const {
-    std::string arrow;
-    if (is_equivalence())
-        arrow = "<=>";
-    else
-        arrow = "=>";
-    return print(os, "rule {} : {} {} {} when {}", S(tab, var()), S(tab, lhs()), arrow, S(tab, rhs()),
-                 S(tab, condition()));
+    return print(os, "rule {} : {} => {} when {}", S(tab, var()), S(tab, lhs()), S(tab, rhs()), S(tab, condition()));
 }
 } // namespace mim::ast

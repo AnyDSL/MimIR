@@ -693,14 +693,12 @@ Ptr<ValDecl> Parser::parse_rule_decl() {
     auto dbg     = parse_name("rewrite rule");
     auto ptrn    = parse_ptrn(0, "meta variables in rewrite rule");
     expect(Tag::T_colon, "rewrite rule declaration");
-    auto lhs            = parse_expr("rewrite pattern");
-    auto condition      = ahead().isa(Tag::K_when) ? (eat(Tag::K_when), parse_expr("rewrite condition"))
-                                                   : ptr<PrimaryExpr>(track, std::move(Tag::K_tt));
-    bool is_equivalence = (bool)accept(Tag::T_equiv);
-    if (!is_equivalence) expect(Tag::T_fat_arrow, "rewrite rule declaration");
+    auto lhs       = parse_expr("rewrite pattern");
+    auto condition = ahead().isa(Tag::K_when) ? (eat(Tag::K_when), parse_expr("rewrite condition"))
+                                              : ptr<PrimaryExpr>(track, std::move(Tag::K_tt));
+    expect(Tag::T_fat_arrow, "rewrite rule declaration");
     auto rhs = parse_expr("rewrite result");
-    return ptr<RuleDecl>(track, dbg, std::move(ptrn), std::move(lhs), std::move(rhs), std::move(condition),
-                         is_equivalence, is_norm);
+    return ptr<RuleDecl>(track, dbg, std::move(ptrn), std::move(lhs), std::move(rhs), std::move(condition), is_norm);
 }
 
 Ptr<LamDecl> Parser::parse_lam_decl() {
