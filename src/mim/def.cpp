@@ -359,7 +359,8 @@ void Def::invalidate() {
 bool Def::is_closed() const {
     if (local_vars().empty() && local_muts().empty()) return true;
 #ifdef MIM_ENABLE_CHECKS
-    assert(!is_external() || free_vars().empty());
+    assert(!is_external());
+    assert(free_vars().empty());
 #endif
     return free_vars().empty();
 }

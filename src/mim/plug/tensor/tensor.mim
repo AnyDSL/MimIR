@@ -70,6 +70,17 @@ axm %tensor.map_reduce: {nis: Nat}
                       → [is: «i: nis; «Sis#i; Tis#i» »]
                       → «So; To», normalize_map_reduce;
 
+lam %tensor.map_reduce_pure {nis: Nat}
+                            {To: *, Ro: Nat}
+                            [So: «Ro; Nat»]
+                            {Tis: «nis; *», Ris: «i: nis; Nat», Sis: «i:nis; «Ris#i; Nat»»}
+                            [f: [To, «i: nis; Tis#i»] → [To], init: To]
+                            [subs: «i: nis; « Ris#i; Nat»»]
+                            [is: «i: nis; «Sis#i; Tis#i» »]
+                            : «So; To»
+                            = fun f_ (x: To, y: «i: nis; Tis#i») = return (f (x, y));
+                              %tensor.map_reduce @nis @(To, Ro) So @(Tis, Ris, Sis) (f_, init) subs is;
+
 fun dot_general_fun [R: Ring] [x: R#T, [y: R#T, z: R#T]]: R#T = return (R#add (x, (R#mul (y, z))));
 
 lam dot_general_pick {n: Nat} {na nb nc: Nat} (a: «na; Idx n», b: «nb; Idx n», c: «nc; Idx n») (off_1 off_2: Nat) (i: Idx n): Nat =
@@ -98,6 +109,8 @@ lam %tensor.dot_shape {r1 r2: Nat} {nc nb: Nat}
       let s12_res  = %tuple.cat_uniform (s1_res, s2_res);
       let s_out    = %tuple.cat_uniform (bs, s12_res);
       type s_out =
+      let bs_check = ‹i: nb; %refly.check (%core.ncmp.e ((s1#(b1#i), s2#(b2#i))), s1#(b1#i), "batching dims don't match")›;
+      let cs_check = ‹i: nc; %refly.check (%core.ncmp.e ((s1#(c1#i), s2#(c2#i))), s1#(c1#i), "contracting dims don't match")›;
       let bs       = ‹i: nb; s1#(b1#i)›;
       let bc_1     = %tuple.cat_uniform (b1, c1);
       let s1_res   = %vec.diff (s1, bc_1);
@@ -108,7 +121,6 @@ lam %tensor.dot_shape {r1 r2: Nat} {nc nb: Nat}
       let s12_res  = %tuple.cat_uniform (s1_res, s2_res);
       let s_out    = %tuple.cat_uniform (bs, s12_res);
       s_out;
-  
 
 lam %tensor.dot_general
   [R: Ring] {r1 r2: Nat} {nc nb: Nat}
@@ -148,6 +160,8 @@ lam %tensor.transpose {T: *, r: Nat, s: «r; Nat»}
                     let out_s = ‹i: r; s#(shape_permutation#i)›;
                     %tensor.map_reduce @1 @(T, r) out_s @(T, r, s) (transpose_fun @T, ⊥: T) permutation_nat input;
 ///
+lam %tensor.transpose_2d {T: *} {s: «2; Nat»} [input: «s; T»]: «s#tt, s#ff; T» = %tensor.transpose @(T, 2, s) (input, (tt, ff));
+///
 /// ### %%tensor.broadcast
 ///
 axm %tensor.broadcast:  {T: *, r: Nat}
@@ -181,3 +195,8 @@ lam %tensor.unary {Ti To : *} [app: Ti → To] {r: Nat, s: «r; Nat»} [i: «s; 
 /// 
 lam %tensor.binary {Ti1 Ti2 To: *} [app: [Ti1, Ti2] → To] {r: Nat, s: «r; Nat»} [is: [«s; Ti1», «s; Ti2»]]: «s; To» =
   %tensor.map @(To, 2, (Ti1, Ti2)) app @(r, s) is;
+/// 
+/// ### %%tensor.select
+/// 
+lam %tensor.select {T: *} {r: Nat, s: «r; Nat»} [is: [«s; Bool», «s; T», «s; T»]]: «s; T» =
+  %tensor.map @(T, 3, (Bool, T, T)) (%core.select @T) @(r, s) is;
