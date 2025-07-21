@@ -84,8 +84,8 @@ public:
 
     /// @name Apply
     ///@{
-    bool its_a_match(const Def* expr, std::map<const Def*, const Def*>&) const;
-    const Def* replace(const Def* expr, std::map<const Def*, const Def*>&) const;
+    bool its_a_match(const Def* expr, Def2Def&) const;
+    const Def* replace(const Def* expr, Def2Def&) const;
     ///@}
 
     static constexpr auto Node = mim::Node::Rule;
@@ -93,7 +93,7 @@ public:
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
     Rule* stub_(World&, const Def*) override;
-    bool its_a_match_(const Def* lhs, const Def* rhs, std::map<const Def*, const Def*>& seen) const;
+    bool its_a_match_(const Def* lhs, const Def* rhs, Def2Def& seen) const;
     friend class World;
 };
 } // namespace mim

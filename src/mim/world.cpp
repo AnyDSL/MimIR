@@ -681,20 +681,12 @@ Defs World::reduce(const Var* var, const Def* arg) {
     return reduct->defs();
 }
 
-// returns the top level axm of an expression if it exists
-const Axm* upper_axm(const Def* expr) {
-    const Def* res = expr;
-    while (auto ru = res->isa<App>()) res = ru->callee();
-    if (auto a = res->isa<Axm>()) return a;
-    return nullptr;
-}
-
 const Def* World::apply_rules(const Axm* axm, const Def* expr) {
     auto c = rules_of_axm_.equal_range(axm);
     if (c.first == rules_of_axm_.end()) return expr;
     for (auto rule = c.first; rule != c.second; rule++) {
         auto r = rule->second;
-        std::map<const Def*, const Def*> v2v;
+        Def2Def v2v;
         if (r->its_a_match(expr, v2v)) return r->replace(expr, v2v);
     }
     return expr;
@@ -704,7 +696,8 @@ void World::register_rule(const Rule* rule) {
     // find upper axm; add the rule to its datastructure
     // we still keep a global dict in case it fails
     known_rules_.insert(rule);
-    if (auto axm = upper_axm(rule->lhs())) rules_of_axm_.emplace(axm, rule);
+    auto [axm, curry, _] = Axm::get(rule->lhs());
+    if (axm) rules_of_axm_.emplace(axm, rule);
 }
 
 /*

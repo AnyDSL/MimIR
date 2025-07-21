@@ -18,7 +18,7 @@ template<class T> bool same(const Def* exp1, const Def* exp2) {
     return !(exp1->isa<T>() == nullptr || exp2->isa<T>() == nullptr);
 }
 
-std::tuple<const Var*, const Def*> tuple_of_dict(World& world, std::map<const Def*, const Def*>& v2v) {
+std::tuple<const Var*, const Def*> tuple_of_dict(World& world, Def2Def& v2v) {
     if (v2v.empty()) return {nullptr, nullptr};
     std::vector<std::pair<const Def*, size_t>> tuple_of_args;
     const Var* var_of_rule;
@@ -70,12 +70,12 @@ bool is_in_rule(const Def* expr) {
     return false;
 }
 
-bool Rule::its_a_match(const Def* expr, std::map<const Def*, const Def*>& v2v) const {
+bool Rule::its_a_match(const Def* expr, Def2Def& v2v) const {
     if (is_in_rule(expr)) return false;
     return Rule::its_a_match_(expr, lhs(), v2v);
 }
 
-bool Rule::its_a_match_(const Def* exp1, const Def* exp2, std::map<const Def*, const Def*>& already_seen) const {
+bool Rule::its_a_match_(const Def* exp1, const Def* exp2, Def2Def& already_seen) const {
     // we assume all vars in exp2 are pattern matching meta variables
     // therefore they match everything
     if (exp1 == exp2) return true;
@@ -139,7 +139,7 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, std::map<const Def*, c
     return false;
 }
 
-const Def* Rule::replace(const Def* expr, std::map<const Def*, const Def*>& v2v) const {
+const Def* Rule::replace(const Def* expr, Def2Def& v2v) const {
     auto [var_of_rule, truc] = tuple_of_dict(world(), v2v);
     auto rw                  = VarRewriter(var_of_rule, truc);
     auto condi               = rw.rewrite(condition());
