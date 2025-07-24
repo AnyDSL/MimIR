@@ -101,16 +101,3 @@ let _ = %refly.equiv.struc_eq (ein_2, (2, 1));
 let dot = %tensor.map_reduce @2 @(Nat, 2) s_out @(‹2; Nat›, ‹2; 2›, ((m, k), (k, l))) (f, 0) (ein_1, ein_2) (t1, t2);
 
 fun extern main() = return dot;
-
-/// let dot_ = %tensor.dot_general R @(2, 2) @(1, 0) @((m, k), (k, l)) (1_2, 0_2, (), ()) (t1, t2);
-
-/// let _ = %refly.equiv.struc_eq (dot, ((1, 2), (2, 3)));
-
-/// let mp1 = test (2, 2, 2) (0_2, 0_2) (m0, m0);
-
-/// let _ = %refly.equiv.struc_eq (mp1, 7);
-
-/// let mp1 = %tensor.prod_2d_lam R m0 m0;
-
-/// let mr1 = %tensor.map_reduce @1 @(Nat, 1) 1 @(Nat, 1, 1) (f1, 0) 0 1;
-/// let _ = %refly.equiv.struc_eq (mr1, 0);
