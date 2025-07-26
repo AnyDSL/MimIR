@@ -1,7 +1,6 @@
 #include <mim/plug/affine/affine.h>
 #include <mim/plug/core/core.h>
 #include <mim/plug/direct/direct.h>
-#include <mim/plug/tensor/autogen.h>
 
 #include "mim/def.h"
 #include "mim/world.h"
@@ -9,21 +8,6 @@
 #include "mim/plug/tensor/tensor.h"
 
 namespace mim::plug::tensor {
-
-const Def* op_get(const Def* T, const Def* r, const Def* s, const Def* arr, const Def* index) {
-    auto& w = arr->world();
-    auto f  = w.annex<tensor::get>();
-    f       = w.app(f, {T, r, s});
-    f       = w.app(f, {arr, index});
-    return f;
-}
-
-const Def* op_set(const Def* T, const Def* r, const Def* s, const Def* arr, const Def* index, const Def* x) {
-    auto& w = arr->world();
-    auto f  = w.app(w.annex<tensor::set>(), {T, r, s});
-    f       = w.app(f, {arr, index, x});
-    return f;
-}
 
 const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
     auto& w = c->world();
@@ -122,8 +106,8 @@ const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
     auto& w = c->world();
 
     auto [s_in, s_out, input] = arg->projs<3>();
-    auto callee         = c->as<App>();
-    auto [T, r]   = callee->args<2>();
+    auto callee               = c->as<App>();
+    auto [T, r]               = callee->args<2>();
     w.DLOG("normalize_broadcast");
     w.DLOG("    s_out = {} : {}", s_out, s_out->type());
     w.DLOG("    input = {} : {}", input, input->type());
@@ -178,9 +162,9 @@ const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
 const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) {
     auto& w = c->world();
 
-    auto [s_in, s_out, input, index]  = arg->projs<4>();
-    auto callee                 = c->as<App>();
-    auto [T, r_in, r_out] = callee->args<3>();
+    auto [s_in, s_out, input, index] = arg->projs<4>();
+    auto callee                      = c->as<App>();
+    auto [T, r_in, r_out]            = callee->args<3>();
     w.DLOG("normalize_broadcast_in_dim");
     w.DLOG("    s_out = {} : {}", s_out, s_out->type());
     w.DLOG("    input = {} : {}", input, input->type());
@@ -542,7 +526,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
 
         auto read_entry = op_get(input_T, input_N, input_S, input_matrix, input_it_tuple);
         w.DLOG("read_entry {} : {}", read_entry, read_entry->type());
-        auto element_i = read_entry->proj(0);
+        auto element_i    = read_entry->proj(0);
         input_elements[i] = element_i;
     }
 

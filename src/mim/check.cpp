@@ -288,6 +288,8 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
                     new_ops[i] = new_val;
                 else
                     return fail();
+
+                if (type->zonk() == val_ty->zonk()) return val; // HACK
             }
             return w.tuple(new_ops);
         }

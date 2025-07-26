@@ -1,11 +1,10 @@
-// RUN: %mim %s
+// RUN: %mim %s -O0 -p direct -p affine
 plugin tensor;
 plugin refly;
 plugin core;
 plugin direct;
 plugin affine;
 plugin math;
-
 
 let f32 = %math.f32;
 let F32 = %math.F32;
@@ -31,7 +30,7 @@ fun extern main_hlo [arg0: «784; «1024; F32»», arg1: «1024; F32», arg2: «
     let v_2 = %tensor.broadcast ((1, 1024), (128, 1024), arg1);
     let v_3 = F32_add @(2, (128, 1024)) (v_0, v_2);
     let v_4 = F32_tanh @(2, (128, 1024)) v_3;
-    let v_cst = 1: F32; 
+    let v_cst = 1: F32;
     let v_5 = ‹128, 1024; v_cst›;
     let v_6 = F32_sub @(2, (128, 1024)) (v_5, v_4);
     let v_7 = %tensor.product_2d R (v_4, arg2);
