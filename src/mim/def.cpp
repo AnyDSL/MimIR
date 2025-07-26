@@ -495,6 +495,11 @@ nat_t Def::num_tprojs() const {
 const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
 
+    if (a == 1) {
+        if (!type()) return this;
+        if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
+    }
+
     if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
         return arr->reduce(w.lit_idx(a, i));
@@ -502,11 +507,6 @@ const Def* Def::proj(nat_t a, nat_t i) const {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
         return pack->reduce(w.lit_idx(a, i));
-    }
-
-    if (a == 1) {
-        if (!type()) return this;
-        if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
     }
 
     if (isa<Tuple>() || isa<Sigma>()) return op(i);
