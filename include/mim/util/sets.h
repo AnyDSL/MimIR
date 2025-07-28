@@ -260,19 +260,17 @@ public:
 
         /// Is @f$this \cap other \neq \emptyset@f$?.
         [[nodiscard]] bool has_intersection(Set other) const noexcept {
+            if (*this == other) return true;
             if (this->empty() || other.empty()) return false;
 
             auto u1 = this->isa_uniq();
             auto u2 = other.isa_uniq();
-            if (u1 && u2) return u1 == u2;
             if (u1) return other.contains(u1);
             if (u2) return this->contains(u2);
 
             auto d1 = this->isa_data();
             auto d2 = other.isa_data();
             if (d1 && d2) {
-                if (d1 == d2) return true;
-
                 for (auto ai = d1->begin(), ae = d1->end(), bi = d2->begin(), be = d2->end(); ai != ae && bi != be;) {
                     if (*ai == *bi) return true;
 
