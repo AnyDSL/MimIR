@@ -10,11 +10,12 @@ namespace mim {
     auto& world = a->world();
 
     if (a == b) return 0;
+
     if (a->isa_imm() && b->isa_mut()) return -1;
     if (a->isa_mut() && b->isa_imm()) return +1;
 
     // clang-format off
-    if (a->node()    != b->node()   ) return a->node()    < b->node()    ? -1 : +1;
+    if (a->node() != b->node()) return a->node()    < b->node()    ? -1 : +1;
     if (a->num_ops() != b->num_ops()) return a->num_ops() < b->num_ops() ? -1 : +1;
     if (a->flags()   != b->flags()  ) return a->flags()   < b->flags()   ? -1 : +1;
     // clang-format on
