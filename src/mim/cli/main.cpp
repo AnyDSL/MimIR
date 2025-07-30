@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
             | lyra::opt(flags.dump_recursive               )      ["--dump-recursive"       ]("Dumps Mim program with a simple recursive algorithm that is not readable again from Mim but is less fragile and also works for broken Mim programs.")
             | lyra::opt(flags.aggressive_lam_spec          )      ["--aggr-lam-spec"        ]("Overrides LamSpec behavior to follow recursive calls.")
             | lyra::opt(flags.scalarize_threshold, "threshold")   ["--scalarize-threshold"  ]("MimIR will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.")
+            | lyra::opt(flags.normalization_rules) ["--normalization-rules"] ("Apply normalization rules during normalization.")
 #ifdef MIM_ENABLE_CHECKS
             | lyra::opt(breakpoints,    "gid"              )["-b"]["--break"                ]("*Triggers breakpoint when creating a node whose global id is <gid>.")
             | lyra::opt(watchpoints,    "gid"              )["-w"]["--watch"                ]("*Triggers breakpoint when setting a node whose global id is <gid>.")

@@ -52,7 +52,7 @@ bool are_same_node(const Def* expr1, const Def* expr2) {
         || same<Bot>(expr1, expr2) || same<Uniq>(expr1, expr2) || same<Nat>(expr1, expr2) || same<Idx>(expr1, expr2);
 }
 
-bool is_in_rule(const Def* expr) {
+bool Rule::is_in_rule(const Def* expr) {
     // are we inside a rule ?
     for (auto var : expr->free_vars()) {
         if (var->mut()->isa<Rule>()) {

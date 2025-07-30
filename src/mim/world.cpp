@@ -231,10 +231,16 @@ template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg
                 curry = curry == 0 ? trip : curry;
                 curry = curry == Axm::Trip_End ? curry : curry - 1;
 
-                if (auto normalizer = axm->normalizer(); Normalize && normalizer && curry == 0) {
-                    if (auto norm = normalizer(type, callee, arg)) return apply_rules(axm, norm);
+                if (Normalize && curry == 0) {
+                    auto app_ = raw_app(axm, curry, trip, type, callee, arg);
+                    if (this->flags().normalization_rules) {
+                        auto result = apply_rules(axm, app_);
+
+                        if (result != app_) return result;
+                    }
+                    if (auto normalizer = axm->normalizer(); normalizer && !Rule::is_in_rule(app_))
+                        if (auto norm = normalizer(type, callee, arg)) return norm;
                 }
-                if (Normalize && curry == 0) return apply_rules(axm, raw_app(axm, curry, trip, type, callee, arg));
             }
 
             return raw_app(axm, curry, trip, type, callee, arg);

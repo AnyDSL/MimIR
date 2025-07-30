@@ -88,6 +88,8 @@ public:
     const Def* replace(const Def* expr, Def2Def&) const;
     ///@}
 
+    static bool is_in_rule(const Def*);
+
     static constexpr auto Node = mim::Node::Rule;
 
 private:
