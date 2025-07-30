@@ -10,8 +10,16 @@ lam id (a:Nat) : Nat = a;
 
 let _ = %refly.equiv.struc_eq (constant, zero );
 
+
+lam a (x:Nat) : Nat = %core.nat.add (x, %core.nat.mul(2,x));
+lam b (x:Nat) : Nat = %core.nat.mul (x, 3);
+
+let _ = %refly.equiv.struc_eq (a, b);
+
 lam big (x:Nat) : Nat = %core.nat.add (x, %core.nat.add (x, %core.nat.add (x,x)));
 lam fast (x:Nat) : Nat = %core.nat.mul (x, 4);
+
+let _ = %refly.equiv.struc_eq (big, fast);
 
 lam w_constant (a:I8) : I8 = %core.wrap.mul 0 (a, 0I8);
 lam w_zero (a:I8) : I8 = 0I8;

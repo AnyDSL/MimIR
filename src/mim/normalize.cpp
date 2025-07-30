@@ -10,11 +10,17 @@ namespace mim {
     auto& world = a->world();
 
     if (a == b) return 0;
+
+    if (auto ae = a->isa<Extract>())
+        if (ae->tuple()->isa<Var>()) return commute_(ae->tuple(), b);
+    if (auto be = b->isa<Extract>())
+        if (be->tuple()->isa<Var>()) return commute_(a, be->tuple());
+
     if (a->isa_imm() && b->isa_mut()) return -1;
     if (a->isa_mut() && b->isa_imm()) return +1;
 
     // clang-format off
-    if (a->node()    != b->node()   ) return a->node()    < b->node()    ? -1 : +1;
+    if (a->node() != b->node()) return a->node()    < b->node()    ? -1 : +1;
     if (a->num_ops() != b->num_ops()) return a->num_ops() < b->num_ops() ? -1 : +1;
     if (a->flags()   != b->flags()  ) return a->flags()   < b->flags()   ? -1 : +1;
     // clang-format on
@@ -38,7 +44,7 @@ namespace mim {
 
     if (int cmp = commute_(a->type(), b->type()); cmp != 0) return cmp;
 
-    fe::unreachable();
+    return 0;
 }
 
 } // namespace mim

@@ -22,10 +22,7 @@ std::tuple<const Var*, const Def*> tuple_of_dict(World& world, Def2Def& v2v) {
     const Var* var_of_rule;
     size_t tuple_size = 1;
     for (auto [var, val] : v2v) {
-        if (auto v = var->isa<Var>()) {
-            var_of_rule = v;
-            tuple_of_args.push_back(std::make_pair(val, 0));
-        }
+        if (auto v = var->isa<Var>()) return {v, val}; // we have found all values already
         if (auto e = var->isa<Extract>()) {
             auto i      = e->index()->as<Lit>()->get();
             var_of_rule = e->tuple()->isa<Var>();

@@ -273,7 +273,7 @@ norm n_sub_zero (x: Nat) : %core.nat.sub (x, 0) => x;
 norm n_sub_equal (x:Nat) : %core.nat.sub (x, x) => 0;
 
 norm n_2sum2prod (x:Nat) : %core.nat.add (x,x) => %core.nat.mul (x,2);
-norm n_sum2prod (x n:Nat) : %core.nat.add (x, %core.nat.mul (x,n))=> %core.nat.mul (x, %core.nat.add (n,1));
+norm n_sum2prod (x n:Nat) : %core.nat.add (x, %core.nat.mul (n,x))=> %core.nat.mul (x, %core.nat.add (n,1));
 /// ## Normalizers for %core.wrap
 
 lam zw(s:Nat) = 0:(Idx s);
