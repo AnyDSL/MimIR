@@ -66,6 +66,7 @@ int main(int argc, char** argv) {
             | lyra::opt(dot_all_annexes                    )      ["--dot-all-annexes"      ]("Output all annexes - even if unused - in DOT output.")
             | lyra::opt(flags.dump_gid, "level"            )      ["--dump-gid"             ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
             | lyra::opt(flags.dump_recursive               )      ["--dump-recursive"       ]("Dumps Mim program with a simple recursive algorithm that is not readable again from Mim but is less fragile and also works for broken Mim programs.")
+            | lyra::opt(flags.dump_emitter                 )      ["--dump-emitter"         ]("Dumps Mim program with an advanced scheduling algorithm that is much better for understanding which values belong to which lam.")
             | lyra::opt(flags.aggressive_lam_spec          )      ["--aggr-lam-spec"        ]("Overrides LamSpec behavior to follow recursive calls.")
             | lyra::opt(flags.scalarize_threshold, "threshold")   ["--scalarize-threshold"  ]("MimIR will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.")
 #ifdef MIM_ENABLE_CHECKS
@@ -176,14 +177,20 @@ int main(int argc, char** argv) {
             }
 
             if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
-            if (auto s = os[Mim]) world.dump(*s);
+            // if (auto s = os[Mim]) world.dump(*s);
             if (auto s = os[Nest]) mim::Nest(world).dot(*s);
 
             if (auto s = os[LL]) {
                 if (auto backend = driver.backend("ll"))
                     backend(world, *s);
                 else
-                    error("'ll' emitter not loaded; try loading 'mem' plugin");
+                    error("'ll' emitter not loaded; try loading 'core' plugin");
+            }
+            if (auto s = os[Mim]) {
+                if(auto backend = driver.backend("mim"))
+                    backend(world, *s);
+                else
+                    error("'mim' emitter not loaded; try loading 'core' plugin");
             }
         } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
             std::cerr << e;

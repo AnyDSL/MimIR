@@ -469,7 +469,9 @@ void World::dump(std::ostream& os) {
         auto dumper = Dumper(os);
         for (auto mut : externals()) dumper.muts.push(mut);
         while (!dumper.muts.empty()) dumper.dump(dumper.muts.pop());
-    } else {
+    } else if (flags().dump_emitter)
+        driver().backend("mim")(*this, os);
+    else {
         auto nest   = Nest(*this);
         auto dumper = Dumper(os, &nest);
 
