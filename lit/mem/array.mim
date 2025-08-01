@@ -11,7 +11,7 @@ let size = 128;
 let ArrayType = <<size; I32>>;
 
 con calculate_sum [arr: ArrayType, return: Cn I32] =
-    con body [i: I32, acc: I32, yield: Cn I32]@ff =
+    con body [i: I32, acc: I32, yield: Cn I32] =
         let i = %core.conv.u size i;
         let acc = %core.wrap.add 0 (acc, arr#i);
         yield acc;
@@ -21,12 +21,12 @@ con calculate_sum [arr: ArrayType, return: Cn I32] =
 con extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0), return: Cn [%mem.M, I32]] =
     con return_cont [result: I32] = return (mem, result);
     let arr = <size; 0:I32>;
-    let arr2 = ins (arr, 0:(Idx size), 1:I32);
-    let arr3 = ins (arr2, 1:(Idx size), 2:I32);
-    let arr4 = ins (arr3, 2:(Idx size), 3:I32);
-    let arr5 = ins (arr4, 3:(Idx size), 4:I32);
-    let arr6 = ins (arr5, 4:(Idx size), 5:I32);
+    let arr2 = ins (arr, 0:(Idx size), 2:I32);
+    //let arr3 = ins (arr2, 1:(Idx size), 2:I32);
+    //let arr4 = ins (arr3, 2:(Idx size), 3:I32);
+    //let arr5 = ins (arr4, 3:(Idx size), 4:I32);
+    //let arr6 = ins (arr5, 4:(Idx size), 5:I32);
 
-    calculate_sum(arr6, return_cont);
+    calculate_sum(arr2, return_cont);
 
 // CHECK: 15

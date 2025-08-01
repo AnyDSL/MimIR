@@ -11,10 +11,11 @@
 import core; // includes mem, compile (and avoids clashing re-import)
 /// supported plugins with passes
 import affine;
-import autodiff;
+//import autodiff;
+import buffrize;
 import clos;
 import direct;
-import matrix;
+// import matrix;
 import refly;
 import regex;
 ///
@@ -41,25 +42,36 @@ lam extern _default_compile []: %compile.Pipeline =
                 mem_opt_pass_list
             ))
         )
-        (plugin_cond_phase
-            (%compile.autodiff_plugin,
-                %compile.combined_phase
-                    (%compile.phase_list
-                        (%compile.single_pass_phase %autodiff.ad_eval_pass)
-                        // optimization_phase
-                        (%compile.single_pass_phase %autodiff.ad_zero_pass))))
+        //(plugin_cond_phase
+        //    (%compile.autodiff_plugin,
+        //        %compile.combined_phase
+        //            (%compile.phase_list
+        //                (%compile.single_pass_phase %autodiff.ad_eval_pass)
+        //                // optimization_phase
+        //                (%compile.single_pass_phase %autodiff.ad_zero_pass))))
+        (%mem.add_mem_phase)(%buffrize.buffrize_phase)
         (plugin_cond_phase (%compile.direct_plugin, direct_phases))
-        (plugin_cond_phase
-            (%compile.matrix_plugin,
-                %compile.combined_phase
-                    (%compile.phase_list
-                        matrix_lower_phase
-                        (plugin_cond_phase (%compile.direct_plugin, direct_phases))
-                        (plugin_cond_phase (%compile.affine_plugin, %compile.single_pass_phase %affine.lower_for_pass)))))
+
+        (%compile.pass_phase
+            (%compile.combine_pass_list
+            (
+                optimization_pass_list,
+                %compile.pass_list
+                (plugin_cond_pass (%compile.affine_plugin, %affine.lower_for_pass)),
+                mem_opt_pass_list
+            ))
+        )
+        //(plugin_cond_phase
+        //    (%compile.matrix_plugin,
+        //        %compile.combined_phase
+        //            (%compile.phase_list
+        //                matrix_lower_phase
+        //                (plugin_cond_phase (%compile.direct_plugin, direct_phases))
+        //                (plugin_cond_phase (%compile.affine_plugin, %compile.single_pass_phase %affine.lower_for_pass)))))
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (plugin_cond_phase (%compile.clos_plugin, clos_phases))
         (%compile.single_pass_phase %compile.lam_spec_pass)
-        (plugin_cond_phase (%compile.autodiff_plugin, ad_cleanup_phase))
+        // (plugin_cond_phase (%compile.autodiff_plugin, ad_cleanup_phase))
         // CodeGenPrep
         (%compile.pass_phase
             (%compile.combine_pass_list

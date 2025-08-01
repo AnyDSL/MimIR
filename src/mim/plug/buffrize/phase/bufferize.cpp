@@ -247,12 +247,13 @@ const Def* Bufferize::visit_extract(Lam* place, const Extract* extract) {
     if (auto it = rewritten_.find(tuple); it != rewritten_.end() && is_tuple_to_consider(tuple)) {
         // If we have already rewritten this tuple, use the rewritten version.
         auto [mem, ptr] = it->second->projs<2>();
+        mem = active_mem(place);
 
         ptr                   = world().call<mem::lea>(Defs{ptr, index});
         auto [new_mem, value] = world().call<mem::load>(Defs{mem, ptr})->projs<2>();
         rewritten_[tuple]     = world().tuple(Defs{mem, ptr});
 
-        add_mem(place, mem);
+        add_mem(place, new_mem);
         return rewritten_[extract] = value;
     }
     // If the tuple is not an array, we just return the original extract.
