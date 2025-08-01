@@ -5,13 +5,17 @@
 #include <mim/pass/pass.h>
 
 #include "mim/plug/core/be/ll.h"
+#include "mim/plug/core/be/mim.h"
 
 using namespace mim;
 using namespace mim::plug;
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
     return {"core", [](Normalizers& normalizers) { core::register_normalizers(normalizers); }, nullptr,
-            [](Backends& backends) { backends["ll"] = &ll::emit; }};
+            [](Backends& backends) {
+                backends["ll"]  = &ll::emit;
+                backends["mim"] = &mim_be::emit;
+            }};
 }
 
 namespace mim::plug::core {

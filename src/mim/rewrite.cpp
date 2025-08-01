@@ -13,6 +13,10 @@ const Def* Rewriter::rewrite(const Def* old_def) {
     if (old_def->isa<Univ>()) return world().univ();
     if (auto new_def = lookup(old_def)) return new_def;
 
+    return dispatch(old_def);
+}
+
+const Def* Rewriter::dispatch(const Def* old_def) {
     // clang-format off
     if (auto arr     = old_def->isa<Arr     >()) return rewrite_arr    (arr    );
     if (auto pack    = old_def->isa<Pack    >()) return rewrite_pack   (pack   );
@@ -79,30 +83,14 @@ const Def* Rewriter::rewrite_extract(const Extract* ex) {
         if (auto pack = ex->tuple()->isa_imm<Pack>(); pack && pack->shape()->is_closed())
             return map(ex, rewrite(pack->body()));
     }
+
     auto new_tuple = rewrite(ex->tuple());
-
-    // tuple might now be no longer a tuple.
-    // handle the case where the index's size is a hole, set index to 0.
-    if (auto arity = new_tuple->isa_lit_arity(); arity && *arity == 1) {
-        if (new_index->isa<Lit>() && new_index->as<Lit>()->get<nat_t>() == 0) return map(ex, new_tuple);
-        if (auto hole = Idx::isa(new_index->type())->isa_mut<Hole>()) {
-            auto new_size = rewrite_hole(hole);
-            if (new_size->isa<Lit>() && new_size->as<Lit>()->get<nat_t>() == 1) {
-                world().DLOG("extracting from 1-tuple with hole sized index: {}#{}", new_tuple, new_index);
-                map(new_index, world().lit_0_1());
-                return map(ex, new_tuple);
-            }
-
-        }
-    }
-
     return map(ex, world().extract(new_tuple, new_index)->set(ex->dbg()));
 }
 
 const Def* Rewriter::rewrite_hole(Hole* hole) {
     auto [last, op] = hole->find();
-    if (op) return rewrite(op);
-    return rewrite_mut(last);
+    return op ? rewrite(op) : rewrite_mut(last);
 }
 
 } // namespace mim

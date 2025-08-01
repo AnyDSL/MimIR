@@ -421,8 +421,7 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
     auto size = Idx::isa(index->type());
     auto lidx = Lit::isa(index);
 
-    if (!size)
-        error(d->loc(), "index '{}' must be of type 'Idx' but is of type '{}'", index, index->type());
+    if (!size) error(d->loc(), "index '{}' must be of type 'Idx' but is of type '{}'", index, index->type());
 
     if (!Checker::alpha<Checker::Check>(type->arity(), size))
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
@@ -477,9 +476,9 @@ const Def* World::arr(const Def* shape, const Def* body) {
     // «(a, b, c); body» -> «a; «(b, c); body»»
     if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
 
-    // «<n; x>; body» -> «x; «<n-1, x>; body»»
+    // «‹n; x›; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = Lit::isa(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->shape())) return arr(p->body(), arr(pack(*s - 1, p->body()), body));
     }
 
     return unify<Arr>(2, body->unfold_type(), shape, body);
@@ -500,9 +499,9 @@ const Def* World::pack(const Def* shape, const Def* body) {
     // <(a, b, c); body> -> <a; «(b, c); body>>
     if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().subspan(1), body));
 
-    // <<n; x>; body> -> <x; <<n-1, x>; body>>
+    // «‹n; x›; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = Lit::isa(p->shape())) return pack(*s, pack(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->shape())) return pack(p->body(), pack(pack(*s - 1, p->body()), body));
     }
 
     auto type = arr(shape, body->type());
@@ -687,6 +686,7 @@ Defs World::reduce(const Var* var, const Def* arg) {
 #ifdef MIM_ENABLE_CHECKS
 
 void World::breakpoint(u32 gid) { state_.breakpoints.emplace(gid); }
+void World::watchpoint(u32 gid) { state_.watchpoints.emplace(gid); }
 
 const Def* World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });
