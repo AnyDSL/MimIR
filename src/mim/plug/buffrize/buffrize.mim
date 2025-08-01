@@ -1,0 +1,39 @@
+/// # The buffrize Plugin {#buffrize}
+///
+/// @see mim::plug::buffrize
+///
+/// A buffrize plugin
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+import compile;
+import mem;
+import core;
+import affine;
+/// ## Operations
+///
+/// ## Built-in Functions
+///
+/// ### %%buffrize.copy_array
+///
+con %buffrize.copy_array {n: Nat, Ts: «n; *», a: Nat}
+    [src : %mem.Ptr («j: n; Ts#j», a), dst : %mem.Ptr («j: n; Ts#j», a)]
+    [mem : %mem.M, exit: Cn %mem.M] =
+    let size = %core.idx i64 0 n;
+    %affine.For(0:I64, size, 1:I64, mem, copy_array_body, exit) where
+            con copy_array_body [i:I64,mem: %mem.M, yield: Cn %mem.M] =
+                let src_lea = %mem.lea (src, %core.conv.u n i);
+                let dst_lea = %mem.lea (dst, %core.conv.u n i);
+                let (mem, tmp) = %mem.load (mem, src_lea);
+                let mem = %mem.store (mem, dst_lea, tmp);
+                yield (mem);
+    end;
+
+///
+/// ## Phases
+///
+/// ### %%buffrize.buffrize_phase
+///
+axm %buffrize.buffrize_phase: %compile.Phase;

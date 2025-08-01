@@ -1,0 +1,32 @@
+// RUN: rm -f %t.ll
+// RUN: %mim -o - --output-ll %t.ll %s
+// RUN: clang %S/../lib.c %t.ll -o %t -Wno-override-module
+// RUN: %t | FileCheck %s
+
+plugin core;
+plugin affine;
+plugin buffrize;
+
+let size = 128;
+let ArrayType = <<size; I32>>;
+
+con calculate_sum [arr: ArrayType, return: Cn I32] =
+    con body [i: I32, acc: I32, yield: Cn I32]@ff =
+        let i = %core.conv.u size i;
+        let acc = %core.wrap.add 0 (acc, arr#i);
+        yield acc;
+    let upper_bound = %core.idx i32 0 size;
+    %affine.For (0:I32, upper_bound, 1:I32, 0:I32, body, return);
+
+con extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0), return: Cn [%mem.M, I32]] =
+    con return_cont [result: I32] = return (mem, result);
+    let arr = <size; 0:I32>;
+    let arr2 = ins (arr, 0:(Idx size), 1:I32);
+    let arr3 = ins (arr2, 1:(Idx size), 2:I32);
+    let arr4 = ins (arr3, 2:(Idx size), 3:I32);
+    let arr5 = ins (arr4, 3:(Idx size), 4:I32);
+    let arr6 = ins (arr5, 4:(Idx size), 5:I32);
+
+    calculate_sum(arr6, return_cont);
+
+// CHECK: 15
