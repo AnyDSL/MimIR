@@ -455,21 +455,33 @@ const Def* Def::var() {
     fe::unreachable();
 }
 
+// clang-format on
+
 const Def* Def::arity() const {
-    if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
-    if (auto arr    = isa<Arr  >()) return arr->shape();
-    if (auto t = type())            return t->arity();
+    if (auto sigma = isa<Sigma>()) {
+        auto n = sigma->num_ops();
+        if (n != 1 || sigma->isa_mut()) return world().lit_nat(n);
+        return sigma->op(0)->arity();
+    }
+
+    if (auto arr = isa<Arr>()) return arr->shape();
+    if (auto t = type()) return t->arity();
+
     return world().lit_nat_1();
 }
 
 std::optional<nat_t> Def::isa_lit_arity() const {
-    if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
-    if (auto arr    = isa<Arr  >()) return Lit::isa(arr->shape());
-    if (auto t = type())            return t->isa_lit_arity();
+    if (auto sigma = isa<Sigma>()) {
+        auto n = sigma->num_ops();
+        if (n != 1 || sigma->isa_mut()) return n;
+        return sigma->op(0)->isa_lit_arity();
+    }
+
+    if (auto arr = isa<Arr>()) return Lit::isa(arr->shape());
+    if (auto t = type()) return t->isa_lit_arity();
+
     return 1;
 }
-
-// clang-format on
 
 bool Def::equal(const Def* other) const {
     if (isa<Univ>() || this->isa_mut() || other->isa_mut()) return this == other;

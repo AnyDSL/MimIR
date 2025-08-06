@@ -58,7 +58,7 @@ std::string tuple2str(const Def* def) {
 
     auto& w  = def->world();
     auto res = std::string();
-    if (auto n = Lit::isa(def->arity())) {
+    if (auto n = def->isa_lit_arity()) {
         for (size_t i = 0; i != *n; ++i) {
             auto elem = def->proj(*n, i);
             if (elem->type() == w.type_i8()) {
@@ -98,7 +98,7 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
     return def;
 }
 
-const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(Lit::as(def->arity())), type); }
+const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(def->as_lit_arity()), type); }
 
 DefVec merge(const Def* def, Defs defs) {
     return DefVec(defs.size() + 1, [&](size_t i) { return i == 0 ? def : defs[i - 1]; });

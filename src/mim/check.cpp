@@ -280,7 +280,7 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
         type = type->zonk(); // TODO hack
 
         // TODO ack sclarize threshold
-        if (auto a = Lit::isa(arr->arity())) {
+        if (auto a = arr->isa_lit_arity()) {
             auto new_ops = absl::FixedArray<const Def*>(*a);
             for (size_t i = 0; i != *a; ++i) {
                 auto new_val = assignable_(arr->proj(*a, i), val->proj(*a, i));
