@@ -209,11 +209,7 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
     } else if (auto seq = d1->isa<Seq>()) {
         if (seq->node() != d2->node()) return fail<mode>();
 
-        if (auto a = seq->isa_lit_arity()) {
-            for (size_t i = 0; i != *a; ++i)
-                if (!alpha_<mode>(seq->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
-            return true;
-        }
+        if (auto a = seq->isa_lit_arity()) return alpha_<mode>(seq->body(), d2->as<Seq>()->body());
 
         auto check_arr = [this](Arr* mut_arr, const Arr* imm_arr) {
             if (!alpha_<mode>(mut_arr->shape(), imm_arr->shape())) return fail<mode>();
@@ -277,7 +273,11 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
         return w.tuple(new_ops);
     } else if (auto arr = type->isa<Arr>()) {
         if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
-        type = type->zonk(); // TODO hack
+
+        if (auto val_a = val_ty->isa<Arr>()) {
+            if (alpha_<Check>(arr->body(), val_a->body())) return val;
+            // TODO optimize this case here to not run into the expensive loop below
+        }
 
         // TODO ack sclarize threshold
         if (auto a = arr->isa_lit_arity()) {
