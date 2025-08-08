@@ -533,6 +533,11 @@ public:
 
     /// zonk%s all ops of this *mutable* and tries to immutabilize it; if it succeeds return it.
     const Def* zonk_mut();
+
+    const Def* zonk_mut() const {
+        if (auto mut = isa_mut()) return mut->zonk_mut();
+        return zonk();
+    }
     ///@}
 
     static DefVec zonk(Defs);

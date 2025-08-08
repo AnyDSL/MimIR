@@ -171,6 +171,8 @@ template const Def* TBound<true >::rebuild_(World&, const Def*, Defs) const;
  */
 
 bool Def::is_immutabilizable() {
+    if (!is_set()) return false;
+
     if (auto v = has_var()) {
         for (auto op : deps())
             if (op->free_vars().contains(v)) return false;

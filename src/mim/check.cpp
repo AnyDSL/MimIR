@@ -43,6 +43,11 @@ private:
 const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world(), nullptr).rewrite(this) : this; }
 
 const Def* Def::zonk_mut() {
+    if (auto hole = isa<Hole>()) {
+        auto [last, op] = hole->find();
+        return op ? op->zonk() : last;
+    }
+
     bool zonk = false;
     for (auto def : deps())
         if (needs_zonk(def)) {
@@ -56,7 +61,7 @@ const Def* Def::zonk_mut() {
     }
 
     if (auto imm = immutabilize()) return imm;
-    return nullptr;
+    return this;
 }
 
 DefVec Def::zonk(Defs defs) {
@@ -172,9 +177,9 @@ bool Checker::check(const UMax* umax, const Def* def) {
     return true;
 }
 
-template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
-    auto ds        = std::array<const Def*, 2>{d1_->zonk(), d2_->zonk()};
-    auto& [d1, d2] = ds;
+template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
+    d1 = d1->zonk_mut();
+    d2 = d2->zonk_mut();
 
     // It is only safe to check for pointer equality if there are no Vars involved.
     // Otherwise, we have to look more thoroughly.
@@ -192,8 +197,8 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
 
     if (!d1->is_set() || !d2->is_set()) return fail<mode>();
 
-    auto muts          = std::array<Def*, 2>{d1->isa_mut(), d2->isa_mut()};
-    auto& [mut1, mut2] = muts;
+    auto mut1 = d1->isa_mut();
+    auto mut2 = d2->isa_mut();
 
     if (mut1 && mut2 && mut1 == mut2) return true;
 
@@ -201,19 +206,15 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
     // Unless they are pointer equal (above) always consider them unequal.
     if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
-    bool redo = false;
-    for (size_t i = 0; i != 2; ++i) {
-        if (auto& mut = muts[i]) {
-            size_t other = (i + 1) % 2;
-
-            if (auto zonked = mut->zonk_mut())
-                mut = nullptr, ds[i] = zonked, redo = true;
-            else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
-                return i->second == ds[other];
-        }
+    if (mut1) {
+        if (auto [i, ins] = binders_.emplace(mut1, d2); !ins) return i->second == d2;
     }
 
-    return redo ? alpha<mode>(d1, d2) : alpha_internal<mode>(d1, d2);
+    if (mut2) {
+        if (auto [i, ins] = binders_.emplace(mut2, d1); !ins) return i->second == d1;
+    }
+
+    return alpha_internal<mode>(d1, d2);
 }
 
 template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
