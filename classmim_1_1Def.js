@@ -122,6 +122,7 @@ var classmim_1_1Def =
     [ "zonk", "classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a", null ],
     [ "zonk", "classmim_1_1Def.html#a7e39baff3ebb42a2d902b6cd9d5ae9cb", null ],
     [ "zonk_mut", "classmim_1_1Def.html#a85739e704fbb649837b88d2a8dbfbadf", null ],
+    [ "zonk_mut", "classmim_1_1Def.html#a0925012c7594fc1d034415a529a5a154", null ],
     [ "operator<<", "classmim_1_1Def.html#a644a4940c0205e10517cf72f90576b0b", null ],
     [ "Sets", "classmim_1_1Def.html#ac45cf0c3de8d92e51166a72f725e86f2", null ],
     [ "swap", "classmim_1_1Def.html#ae16c8c2c19642966d124bec1c3f498fa", null ],
