@@ -123,13 +123,14 @@ var searchData=
   ['isa_5fmut_120',['isa_mut',['../classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1',1,'mim::Def']]],
   ['isa_5fmut_5fbasicblock_121',['isa_mut_basicblock',['../classmim_1_1Lam.html#a4868f1bfe7fb5cbc7d453c0f83009dbe',1,'mim::Lam']]],
   ['isa_5fmut_5fcn_122',['isa_mut_cn',['../classmim_1_1Lam.html#adab8c4822338fe32fb4a7711b7d479c0',1,'mim::Lam']]],
-  ['isa_5fmut_5freturning_123',['isa_mut_returning',['../classmim_1_1Lam.html#a637291bc1cf994803562402bb0d77909',1,'mim::Lam']]],
-  ['isa_5fproxy_124',['isa_proxy',['../classmim_1_1Pass.html#aecf198ac657f8ef581878741e2282aef',1,'mim::Pass']]],
-  ['isa_5freturning_125',['isa_returning',['../classmim_1_1Pi.html#afe493c2ca2eb3e7e1d484eceb5138356',1,'mim::Pi::isa_returning()'],['../classmim_1_1Lam.html#a527fd77ec7597902c4cbe37e6c0ccf79',1,'mim::Lam::isa_returning()']]],
-  ['isa_5fworkable_126',['isa_workable',['../namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4',1,'mim']]],
-  ['isanode_127',['IsANode',['../classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode',1,'mim::Axm']]],
-  ['iterating_20over_20the_20program_128',['Iterating over the Program',['../dev.html#autotoc_md33',1,'']]],
-  ['iterator_129',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html',1,'mim::Sets&lt; D, N &gt;::Set::iterator'],['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator::iterator() noexcept=default']]],
-  ['iterator_5fcategory_130',['iterator_category',['../classmim_1_1Sets_1_1Set_1_1iterator.html#ab299636e45522b09b7da7c97ecc78da2',1,'mim::Sets::Set::iterator']]],
-  ['iterators_131',['Iterators',['../vec.html#autotoc_md271',1,'']]]
+  ['isa_5fmut_5fimm_5fseq_123',['isa_mut_imm_seq',['../namespacemim.html#a227195889a021ddf002fd343771e6ac7',1,'mim']]],
+  ['isa_5fmut_5freturning_124',['isa_mut_returning',['../classmim_1_1Lam.html#a637291bc1cf994803562402bb0d77909',1,'mim::Lam']]],
+  ['isa_5fproxy_125',['isa_proxy',['../classmim_1_1Pass.html#aecf198ac657f8ef581878741e2282aef',1,'mim::Pass']]],
+  ['isa_5freturning_126',['isa_returning',['../classmim_1_1Pi.html#afe493c2ca2eb3e7e1d484eceb5138356',1,'mim::Pi::isa_returning()'],['../classmim_1_1Lam.html#a527fd77ec7597902c4cbe37e6c0ccf79',1,'mim::Lam::isa_returning()']]],
+  ['isa_5fworkable_127',['isa_workable',['../namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4',1,'mim']]],
+  ['isanode_128',['IsANode',['../classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode',1,'mim::Axm']]],
+  ['iterating_20over_20the_20program_129',['Iterating over the Program',['../dev.html#autotoc_md33',1,'']]],
+  ['iterator_130',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html',1,'mim::Sets&lt; D, N &gt;::Set::iterator'],['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator::iterator() noexcept=default']]],
+  ['iterator_5fcategory_131',['iterator_category',['../classmim_1_1Sets_1_1Set_1_1iterator.html#ab299636e45522b09b7da7c97ecc78da2',1,'mim::Sets::Set::iterator']]],
+  ['iterators_132',['Iterators',['../vec.html#autotoc_md271',1,'']]]
 ];

@@ -263,6 +263,7 @@ var namespacemim =
     [ "is_unit", "namespacemim.html#a2efd858db7ed2bd9c205337f6129daa8", null ],
     [ "isa_apped_mut_lam", "namespacemim.html#a3036ca68b9ff9ebd00b9b35c7ad1a9a0", null ],
     [ "isa_callee", "namespacemim.html#aa6e918f49777aea04b1993cded8aa1f7", null ],
+    [ "isa_mut_imm_seq", "namespacemim.html#a227195889a021ddf002fd343771e6ac7", null ],
     [ "isa_workable", "namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4", null ],
     [ "lookup", "namespacemim.html#a2b0eba3a59bd19880f571afb77e4d611", null ],
     [ "merge", "namespacemim.html#a7fa31151e8354486d4a510a57eaaa292", null ],

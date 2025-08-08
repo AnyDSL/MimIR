@@ -7,7 +7,7 @@ var dir_3f6d0e947440f9d0b42426d30577ffdc =
     [ "plug", "dir_07110a8747d2517ee97007224f1d2994.html", "dir_07110a8747d2517ee97007224f1d2994" ],
     [ "util", "dir_bed7118e4bacc0bd560da06fb11567a5.html", "dir_bed7118e4bacc0bd560da06fb11567a5" ],
     [ "axm.cpp", "axm_8cpp.html", null ],
-    [ "check.cpp", "check_8cpp.html", null ],
+    [ "check.cpp", "check_8cpp.html", "check_8cpp" ],
     [ "def.cpp", "def_8cpp.html", "def_8cpp" ],
     [ "dot.cpp", "dot_8cpp.html", null ],
     [ "driver.cpp", "driver_8cpp.html", null ],
