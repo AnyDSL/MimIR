@@ -77,13 +77,5 @@ var def_8h =
       [ "mim::Node::Nat", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da07f2a27c6e5ee8afd08991e64dd5c136", null ],
       [ "mim::Node::Idx", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939", null ]
     ] ],
-    [ "mim::Sort", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5", [
-      [ "mim::Sort::Term", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5acf5f3091e30dee6597885d8c0e0c357f", null ],
-      [ "mim::Sort::Type", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa1fa27779242b4902f7ae3bdd5c6d508", null ],
-      [ "mim::Sort::Kind", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad626102cfc2416a570fc0dc582a9b771", null ],
-      [ "mim::Sort::Space", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad511f8439ecde36647437fbba67a4394", null ],
-      [ "mim::Sort::Univ", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5a143bb06341e537e7143fb33624517946", null ],
-      [ "mim::Sort::Level", "namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa0db49ba470c1c9ae2128c3470339153", null ]
-    ] ],
     [ "mim::Num_Nodes", "namespacemim.html#ab5f8c3cd104922822656e5d29311f0dd", null ]
 ];

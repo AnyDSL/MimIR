@@ -42,5 +42,5 @@ var searchData=
   ['k_5funiv_39',['K_Univ',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a49b3d477647d73a29f5821aad9819448',1,'mim::ast::Tok']]],
   ['k_5fwhere_40',['K_where',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a591638235693a00f9ae369606644a290',1,'mim::ast::Tok']]],
   ['k_5fwith_41',['K_with',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a7522a1371cb8dd5a576463eee40d66e8',1,'mim::ast::Tok']]],
-  ['kind_42',['Kind',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5ad626102cfc2416a570fc0dc582a9b771',1,'mim']]]
+  ['kind_42',['Kind',['../classmim_1_1UMax.html#a098634bb335cad742136e612032ab42fafaa5ce425501a5673f4cd7f55c22f97d',1,'mim::UMax']]]
 ];

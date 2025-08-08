@@ -41,7 +41,7 @@ var searchData=
   ['lea_38',['lea',['../mem.html#autotoc_md196',1,'%mem.lea'],['../namespacemim_1_1plug_1_1mem.html#add102b8e1cf16c9e60dbcacb03c9f4eb',1,'mim::plug::mem::lea']]],
   ['len_39',['len',['../vec.html#autotoc_md276',1,'%vec.len'],['../namespacemim_1_1plug_1_1vec.html#a2e546b5e745df67e338368b87b3ab914',1,'mim::plug::vec::len']]],
   ['letdecl_40',['LetDecl',['../classmim_1_1ast_1_1LetDecl.html',1,'mim::ast::LetDecl'],['../classmim_1_1ast_1_1LetDecl.html#ac8872f1a83511a2852022ff50f9fcd35',1,'mim::ast::LetDecl::LetDecl()']]],
-  ['level_41',['Level',['../classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590',1,'mim::Log::Level'],['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa0db49ba470c1c9ae2128c3470339153',1,'mim::Level']]],
+  ['level_41',['Level',['../classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590',1,'mim::Log']]],
   ['level_42',['level',['../classmim_1_1ast_1_1TypeExpr.html#a39453cdf57c2c95c8ca7ce9df3fcada7',1,'mim::ast::TypeExpr::level()'],['../classmim_1_1Type.html#ad08cbde7c9801e27a6181ff0cf633fc8',1,'mim::Type::level()'],['../classmim_1_1Nest_1_1Node.html#a5ca8a41842e20f1ccf3a9ecb40630546',1,'mim::Nest::Node::level()'],['../classmim_1_1Log.html#a56d140e471c99a5737bf1b5f815de975',1,'mim::Log::level()']]],
   ['level_20matrix_20operations_43',['High-level matrix operations',['../matrix.html#autotoc_md175',1,'']]],
   ['level2acro_44',['level2acro',['../classmim_1_1Log.html#ad64accaa3d6ad90906278fb11da83a41',1,'mim::Log']]],
