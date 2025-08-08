@@ -91,13 +91,11 @@ public:
     ///@{
     using Setters<Seq>::set;
 
+    /// Common setter for Pack%s and Arr%ays.
+    /// @p shape will be ignored, if it's a Pack.
     Seq* set(const Def* shape, const Def* body) {
-        if (node() == Node::Arr) {
-            Def::set(0, shape);
-            Def::set(1, body);
-        } else {
-            Def::set(0, body);
-        }
+        if (node() == Node::Arr) Def::set(0, shape);
+        Def::set(num_ops() - 1, body);
         return this;
     }
 

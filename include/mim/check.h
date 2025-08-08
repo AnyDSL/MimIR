@@ -88,10 +88,10 @@ private:
     const Def* fail() { return {}; }
 #endif
 
-    template<Mode> bool alpha_(const Def* d1, const Def* d2);
-    template<Mode> bool alpha_internal(const Def*, const Def*);
-    template<Mode> bool check(const Prod*, const Def*);
-    bool check(Seq*, const Seq*);
+    template<Mode> [[nodiscard]] bool alpha_(const Def* d1, const Def* d2);
+    template<Mode> [[nodiscard]] bool alpha_internal(const Def*, const Def*);
+    template<Mode> [[nodiscard]] bool check(const Prod*, const Def*);
+    template<Mode> [[nodiscard]] bool check(const Seq*, const Def*);
     [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
 
     World& world_;

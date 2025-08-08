@@ -178,31 +178,39 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_
 }
 
 template<Checker::Mode mode> bool Checker::check(const Prod* prod, const Def* def) {
-    // only pair intro w/ inro and form w/ form
-    if (prod->judge() != def->judge()) return fail<mode>();
-
     size_t a = prod->num_ops();
     for (size_t i = 0; i != a; ++i)
         if (!alpha_<mode>(prod->op(i), def->proj(a, i))) return fail<mode>();
     return true;
 }
 
-bool Checker::check(Seq* mut_seq, const Seq* imm_seq) {
-    // Try to get rid of mut_seq's var: it may fly around in its body and vanish after reduction
-    // as holes might have been filled in the meantime.
-    auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->shape())));
-    if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
-
-    auto mut_shape = mut_seq->shape();
-    mut_seq->unset()->set(mut_shape, mut_body->zonk());
-    return true;
-}
-
-static std::pair<Seq*, const Seq*> isa_mut_imm_seq(const Def* d1, const Def* d2) {
-    if (auto mut_seq = d1->isa_mut<Seq>()) {
-        if (auto imm_seq = d2->isa_imm<Seq>()) return {mut_seq, imm_seq};
+template<Checker::Mode mode> bool Checker::check(const Seq* seq1, const Def* def) {
+    if constexpr (mode == Mode::Check) {
+        // alpha(«1; body», def) -> alpha(body, def);
+        if (seq1->shape() == world().lit_nat_1() && !def->isa<Seq>()) {
+            auto body = seq1->reduce(world().lit_idx(1, 0))->zonk(); // try to get rid of var inside of body
+            if (!alpha_<mode>(body, def)) return fail<mode>();
+            if (auto mut_seq = seq1->isa_mut<Seq>()) mut_seq->unset()->set(world().lit_nat_1(), body->zonk());
+            return true;
+        }
     }
-    return {nullptr, nullptr};
+
+    if (auto mut_seq = seq1->isa_mut<Seq>()) {
+        if (auto imm_seq = def->isa_imm<Seq>()) {
+            // Try to get rid of mut_seq's var: it may fly around in its body and vanish after reduction
+            // as holes might have been filled in the meantime.
+            auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->shape())));
+            if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
+
+            auto mut_shape = mut_seq->shape();
+            mut_seq->unset()->set(mut_shape, mut_body->zonk());
+            return true;
+        }
+    }
+
+    if (auto seq2 = def->isa<Seq>()) return alpha_<mode>(seq1->body(), seq2->body());
+
+    return fail<mode>();
 }
 
 template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
@@ -213,30 +221,14 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
     d1 = d1->zonk();
     d2 = d2->zonk();
 
-    auto check1 = [this](const Arr* arr, const Def* d) {
-        auto body = arr->reduce(world().lit_idx(1, 0))->zonk();
-        if (!alpha_<mode>(body, d)) return fail<mode>();
-        if (auto mut_arr = arr->isa_mut<Arr>()) mut_arr->unset()->set(world().lit_nat_1(), body->zonk());
-        return true;
-    };
-
-    if (mode == Mode::Check) {
-        if (auto arr = d1->isa<Arr>(); arr && arr->shape() == world().lit_nat_1() && !d2->isa<Arr>())
-            return check1(arr, d2);
-
-        if (auto arr = d2->isa<Arr>(); arr && arr->shape() == world().lit_nat_1() && !d1->isa<Arr>())
-            return check1(arr, d1);
-    }
-
+    // clang-format off
     if (auto prod = d1->isa<Prod>()) return check<mode>(prod, d2);
     if (auto prod = d2->isa<Prod>()) return check<mode>(prod, d1);
+    if (auto seq  = d1->isa<Seq >()) return check<mode>(seq , d2);
+    if (auto seq  = d2->isa<Seq >()) return check<mode>(seq , d1);
+    // clang-format on
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail<mode>();
-
-    if constexpr (mode == Mode::Check) {
-        if (auto [mut_seq, imm_seq] = isa_mut_imm_seq(d1, d2); mut_seq) return check(mut_seq, imm_seq);
-        if (auto [mut_seq, imm_seq] = isa_mut_imm_seq(d2, d1); mut_seq) return check(mut_seq, imm_seq);
-    }
 
     if (auto var1 = d1->isa<Var>()) {
         auto var2 = d2->as<Var>();
