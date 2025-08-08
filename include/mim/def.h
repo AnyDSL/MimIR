@@ -90,9 +90,6 @@ enum class Node : node_t {
 static constexpr size_t Num_Nodes = size_t(0) MIM_NODE(CODE);
 #undef CODE
 
-/// TODO remove or fix this
-enum class Sort { Term, Type, Kind, Space, Univ, Level };
-
 /// Tracks a dependency to certain Def%s transitively through the Def::deps() up to but excliding *mutables*.
 enum class Dep : unsigned {
     None  = 0,
@@ -656,6 +653,8 @@ class UMax : public Def, public Setters<UMax> {
 public:
     using Setters<UMax>::set;
     static constexpr auto Node = mim::Node::UMax;
+
+    enum Sort { Univ, Kind, Type, Term };
 
 private:
     UMax(World&, Defs ops);

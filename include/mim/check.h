@@ -92,6 +92,7 @@ private:
     template<Mode> [[nodiscard]] bool alpha_internal(const Def*, const Def*);
     template<Mode> [[nodiscard]] bool check(const Prod*, const Def*);
     template<Mode> [[nodiscard]] bool check(const Seq*, const Def*);
+    [[nodiscard]] bool check(const UMax*, const Def*);
     [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
 
     World& world_;

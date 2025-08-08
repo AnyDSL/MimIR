@@ -203,7 +203,7 @@ public:
     ///@{
     const Univ* univ() { return data_.univ; }
     const Def* uinc(const Def* op, level_t offset = 1);
-    template<Sort = Sort::Univ> const Def* umax(Defs);
+    template<int sort = UMax::Univ> const Def* umax(Defs);
     const Type* type(const Def* level);
     const Type* type_infer_univ() { return type(mut_hole_univ()); }
     template<level_t level = 0> const Type* type() {

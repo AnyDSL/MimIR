@@ -213,6 +213,12 @@ template<Checker::Mode mode> bool Checker::check(const Seq* seq1, const Def* def
     return fail<mode>();
 }
 
+bool Checker::check(const UMax* umax, const Def* def) {
+    for (auto op : umax->ops())
+        if (!alpha<Check>(op, def)) return fail<Check>();
+    return true;
+}
+
 template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
     if (d1->type() && d2->type() && !alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
@@ -227,6 +233,11 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
     if (auto seq  = d1->isa<Seq >()) return check<mode>(seq , d2);
     if (auto seq  = d2->isa<Seq >()) return check<mode>(seq , d1);
     // clang-format on
+
+    if constexpr (mode == Check) {
+        if (auto umax = d1->isa<UMax>(); umax && !d2->isa<UMax>()) return check(umax, d2);
+        if (auto umax = d2->isa<UMax>(); umax && !d1->isa<UMax>()) return check(umax, d1);
+    }
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail<mode>();
 
@@ -323,7 +334,7 @@ const Def* Tuple::infer(World& world, Defs ops) {
 const Def* Sigma::infer(World& w, Defs ops) {
     auto elems = absl::FixedArray<const Def*>(ops.size());
     for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->unfold_type();
-    return w.umax<Sort::Kind>(elems);
+    return w.umax<UMax::Kind>(elems);
 }
 
 const Def* Sigma::check(size_t, const Def* def) { return def; } // TODO
@@ -347,7 +358,7 @@ const Def* Sigma::check() {
 
 const Def* Pi::infer(const Def* dom, const Def* codom) {
     auto& w = dom->world();
-    return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
+    return w.umax<UMax::Kind>({dom->unfold_type(), codom->unfold_type()});
 }
 
 const Def* Pi::check(size_t, const Def* def) { return def; }
