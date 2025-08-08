@@ -4,6 +4,9 @@
 
 namespace mim {
 
+class Prod;
+class Seq;
+
 /// This node is a hole in the IR that is inferred by its context later on.
 /// It is modelled as a *mutable* Def.
 /// If inference was successful, it's Hole::op will be set to the inferred Def.
@@ -87,6 +90,8 @@ private:
 
     template<Mode> bool alpha_(const Def* d1, const Def* d2);
     template<Mode> bool alpha_internal(const Def*, const Def*);
+    template<Mode> bool check(const Prod*, const Def*);
+    bool check(Seq*, const Seq*);
     [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
 
     World& world_;

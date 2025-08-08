@@ -86,11 +86,30 @@ public:
     const Def* body() const { return ops().back(); }
     ///@}
 
+    /// @name Setters
+    /// @see @ref set_ops "Setting Ops"
+    ///@{
+    using Setters<Seq>::set;
+
+    Seq* set(const Def* shape, const Def* body) {
+        if (node() == Node::Arr) {
+            Def::set(0, shape);
+            Def::set(1, body);
+        } else {
+            Def::set(0, body);
+        }
+        return this;
+    }
+
+    Seq* unset() { return Def::unset()->as<Seq>(); }
+    ///@}
+
     /// @name Rebuild
     ///@{
     Seq* stub(World& w, const Def* type) { return Def::stub(w, type)->as<Seq>(); }
     virtual const Def* rebuild(World&, const Def* shape, const Def* body) const = 0;
-    virtual const Def* prod(World& w, Defs) const = 0; ///< Creates either a Tuple or Sigma.
+    virtual const Def* prod(World& w, Defs) const   = 0; ///< Creates either a Tuple or Sigma.
+    virtual const Def* reduce(const Def* arg) const = 0;
     ///@}
 };
 
@@ -125,7 +144,7 @@ public:
     const Def* rebuild(World& w, const Def* shape, const Def* body) const final;
     Arr* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() final;
-    const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
+    const Def* reduce(const Def* arg) const final { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept final { return 1; }
     const Def* prod(World&, Defs) const final;
     ///@}
@@ -174,7 +193,7 @@ public:
     const Def* rebuild(World& w, const Def* shape, const Def* body) const final;
     Pack* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() final;
-    const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
+    const Def* reduce(const Def* arg) const final { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept final { return 0; }
     const Def* prod(World&, Defs) const final;
     ///@}
