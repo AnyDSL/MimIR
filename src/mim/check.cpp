@@ -21,11 +21,11 @@ static bool needs_zonk(const Def* def) {
 
 class Zonker : public Rewriter {
 public:
-    Zonker(World& world, const Def* root)
+    Zonker(World& world, Def* root)
         : Rewriter(world)
         , root_(root) {}
 
-    const Def* rewrite(const Def* def) override {
+    const Def* rewrite(const Def* def) final {
         if (auto hole = def->isa_mut<Hole>()) {
             auto [last, op] = hole->find();
             return op ? rewrite(op) : last;
@@ -34,8 +34,24 @@ public:
         return def == root_ || needs_zonk(def) ? Rewriter::rewrite(def) : def;
     }
 
+    const Def* rewrite_mut(Def* root) final {
+        // Don't create a new stub, instead rewrire the ops of the old mutable root.
+        assert(root == root_);
+        map(root, root);
+
+        auto old_type = root->type();
+        auto old_ops  = absl::FixedArray<const Def*>(root->ops().begin(), root->ops().end());
+
+        root->unset()->set_type(rewrite(old_type));
+
+        for (size_t i = 0, e = root->num_ops(); i != e; ++i) root->set(i, rewrite(old_ops[i]));
+        if (auto new_imm = root->immutabilize()) return map(root, new_imm);
+
+        return root;
+    }
+
 private:
-    const Def* root_; // Always rewrite this one - coulde be a mutable!
+    Def* root_; // Always rewrite this one - coulde be a mutable!
 };
 
 } // namespace
@@ -43,6 +59,8 @@ private:
 const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world(), nullptr).rewrite(this) : this; }
 
 const Def* Def::zonk_mut() {
+    if (!is_set()) return this;
+
     if (auto hole = isa<Hole>()) {
         auto [last, op] = hole->find();
         return op ? op->zonk() : last;
@@ -55,10 +73,7 @@ const Def* Def::zonk_mut() {
             break;
         }
 
-    if (zonk) {
-        return Zonker(world(), this).rewrite(this);
-        // TODO make this point to the new ops
-    }
+    if (zonk) return Zonker(world(), this).rewrite(this);
 
     if (auto imm = immutabilize()) return imm;
     return this;
