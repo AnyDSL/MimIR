@@ -509,14 +509,14 @@ nat_t Def::num_tprojs() const {
 const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
 
-    if (auto seq = isa<Seq>()) {
-        if (seq->has_var()) return seq->reduce(world().lit_idx(a, i));
-        return seq->body();
-    }
-
     if (a == 1) {
         if (!type()) return this;
         if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
+    }
+
+    if (auto seq = isa<Seq>()) {
+        if (seq->has_var()) return seq->reduce(world().lit_idx(a, i));
+        return seq->body();
     }
 
     if (isa<Prod>()) return op(i);
