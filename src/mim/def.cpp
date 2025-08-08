@@ -171,6 +171,8 @@ template const Def* TBound<true >::rebuild_(World&, const Def*, Defs) const;
  */
 
 bool Def::is_immutabilizable() {
+    if (!is_set()) return false;
+
     if (auto v = has_var()) {
         for (auto op : deps())
             if (op->free_vars().contains(v)) return false;
@@ -507,21 +509,17 @@ nat_t Def::num_tprojs() const {
 const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
 
+    if (auto seq = isa<Seq>()) {
+        if (seq->has_var()) return seq->reduce(world().lit_idx(a, i));
+        return seq->body();
+    }
+
     if (a == 1) {
         if (!type()) return this;
         if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
     }
 
-    if (auto arr = isa<Arr>()) {
-        if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->reduce(w.lit_idx(a, i));
-    } else if (auto pack = isa<Pack>()) {
-        if (pack->arity()->isa<Top>()) return pack->body();
-        assert(!w.is_frozen() && "TODO");
-        return pack->reduce(w.lit_idx(a, i));
-    }
-
-    if (isa<Tuple>() || isa<Sigma>()) return op(i);
+    if (isa<Prod>()) return op(i);
     if (w.is_frozen()) return nullptr;
 
     return w.extract(this, a, i);
