@@ -95,6 +95,7 @@ private:
     [[nodiscard]] bool check(const UMax*, const Def*);
     [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
 
+    auto bind(Def* mut, const Def* d) { return mut ? binders_.emplace(mut, d) : std::pair(binders_.end(), true); }
     World& world_;
     MutMap<const Def*> binders_;
     fe::Arena arena_;

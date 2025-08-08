@@ -120,7 +120,7 @@ const Def* Hole::tuplefy(nat_t n) {
 }
 
 /*
- * Check
+ * Checker
  */
 
 #ifdef MIM_ENABLE_CHECKS
@@ -134,6 +134,82 @@ const Def* Checker::fail() {
     return {};
 }
 #endif
+
+template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
+    d1 = d1->zonk_mut();
+    d2 = d2->zonk_mut();
+
+    // It is only safe to check for pointer equality if there are no Vars involved.
+    // Otherwise, we have to look more thoroughly.
+    // Example: λx.x - λz.x
+    if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
+
+    auto h1 = d1->isa_mut<Hole>();
+    auto h2 = d2->isa_mut<Hole>();
+
+    if constexpr (mode == Check) {
+        if (h1) return h1->set(d2), true;
+        if (h2) return h2->set(d1), true;
+    } else if (h1 || h2) // mode == Test and h1 or h2 is an unresolved Hole
+        return fail<Test>();
+
+    if (!d1->is_set() || !d2->is_set()) return fail<mode>();
+
+    auto mut1 = d1->isa_mut();
+    auto mut2 = d2->isa_mut();
+
+    if (mut1 && mut2 && mut1 == mut2) return true;
+
+    // Globals are HACKs and require additionaly HACKs:
+    // Unless they are pointer equal (above) always consider them unequal.
+    if (d1->isa<Global>() || d2->isa<Global>()) return false;
+
+    if (auto [i, ins] = bind(mut1, d2); !ins) return i->second == d2;
+    if (auto [i, ins] = bind(mut2, d1); !ins) return i->second == d1;
+
+    return alpha_internal<mode>(d1, d2);
+}
+
+template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
+    if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
+
+    if (auto t1 = d1->type()) {
+        if (auto t2 = d2->type()) {
+            if (!alpha_<mode>(t1, t2)) return fail<mode>();
+        }
+    }
+
+    if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
+
+    d1 = d1->zonk();
+    d2 = d2->zonk();
+
+    // clang-format off
+    if (auto prod = d1->isa<Prod>()) return check<mode>(prod, d2);
+    if (auto prod = d2->isa<Prod>()) return check<mode>(prod, d1);
+    if (auto seq  = d1->isa<Seq >()) return check<mode>(seq , d2);
+    if (auto seq  = d2->isa<Seq >()) return check<mode>(seq , d1);
+    // clang-format on
+
+    if constexpr (mode == Check) {
+        if (auto umax = d1->isa<UMax>(); umax && !d2->isa<UMax>()) return check(umax, d2);
+        if (auto umax = d2->isa<UMax>(); umax && !d1->isa<UMax>()) return check(umax, d1);
+    }
+
+    if (d1->node() != d2->node() || d1->flags() != d2->flags()) return fail<mode>();
+
+    if (auto var1 = d1->isa<Var>()) {
+        auto var2 = d2->as<Var>();
+        if (auto i = binders_.find(var1->mut()); i != binders_.end()) return i->second == var2->mut();
+        if (auto i = binders_.find(var2->mut()); i != binders_.end()) return fail<mode>(); // var2 is bound
+        // both var1 and var2 are free: OK, when they are the same or in Check mode
+        return var1 == var2 || mode == Check;
+    }
+
+    for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
+        if (!alpha_<mode>(d1->op(i), d2->op(i))) return fail<mode>();
+    return true;
+}
 
 template<Checker::Mode mode> bool Checker::check(const Prod* prod, const Def* def) {
     size_t a = prod->num_ops();
@@ -174,81 +250,6 @@ template<Checker::Mode mode> bool Checker::check(const Seq* seq1, const Def* def
 bool Checker::check(const UMax* umax, const Def* def) {
     for (auto op : umax->ops())
         if (!alpha<Check>(op, def)) return fail<Check>();
-    return true;
-}
-
-template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
-    d1 = d1->zonk_mut();
-    d2 = d2->zonk_mut();
-
-    // It is only safe to check for pointer equality if there are no Vars involved.
-    // Otherwise, we have to look more thoroughly.
-    // Example: λx.x - λz.x
-    if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
-
-    auto h1 = d1->isa_mut<Hole>();
-    auto h2 = d2->isa_mut<Hole>();
-
-    if constexpr (mode == Check) {
-        if (h1) return h1->set(d2), true;
-        if (h2) return h2->set(d1), true;
-    } else if (h1 || h2) // mode == Test and h1 or h2 is an unresolved Hole
-        return fail<Test>();
-
-    if (!d1->is_set() || !d2->is_set()) return fail<mode>();
-
-    auto mut1 = d1->isa_mut();
-    auto mut2 = d2->isa_mut();
-
-    if (mut1 && mut2 && mut1 == mut2) return true;
-
-    // Globals are HACKs and require additionaly HACKs:
-    // Unless they are pointer equal (above) always consider them unequal.
-    if (d1->isa<Global>() || d2->isa<Global>()) return false;
-
-    if (mut1) {
-        if (auto [i, ins] = binders_.emplace(mut1, d2); !ins) return i->second == d2;
-    }
-
-    if (mut2) {
-        if (auto [i, ins] = binders_.emplace(mut2, d1); !ins) return i->second == d1;
-    }
-
-    return alpha_internal<mode>(d1, d2);
-}
-
-template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
-    if (d1->type() && d2->type() && !alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
-    if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
-    if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
-
-    d1 = d1->zonk();
-    d2 = d2->zonk();
-
-    // clang-format off
-    if (auto prod = d1->isa<Prod>()) return check<mode>(prod, d2);
-    if (auto prod = d2->isa<Prod>()) return check<mode>(prod, d1);
-    if (auto seq  = d1->isa<Seq >()) return check<mode>(seq , d2);
-    if (auto seq  = d2->isa<Seq >()) return check<mode>(seq , d1);
-    // clang-format on
-
-    if constexpr (mode == Check) {
-        if (auto umax = d1->isa<UMax>(); umax && !d2->isa<UMax>()) return check(umax, d2);
-        if (auto umax = d2->isa<UMax>(); umax && !d1->isa<UMax>()) return check(umax, d1);
-    }
-
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail<mode>();
-
-    if (auto var1 = d1->isa<Var>()) {
-        auto var2 = d2->as<Var>();
-        if (auto i = binders_.find(var1->mut()); i != binders_.end()) return i->second == var2->mut();
-        if (auto i = binders_.find(var2->mut()); i != binders_.end()) return fail<mode>(); // var2 is bound
-        // both var1 and var2 are free: OK, when they are the same or in Check mode
-        return var1 == var2 || mode == Check;
-    }
-
-    for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
-        if (!alpha_<mode>(d1->op(i), d2->op(i))) return fail<mode>();
     return true;
 }
 
