@@ -130,53 +130,6 @@ const Def* Checker::fail() {
 }
 #endif
 
-template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
-    auto ds        = std::array<const Def*, 2>{d1_->zonk(), d2_->zonk()};
-    auto& [d1, d2] = ds;
-
-    if (!d1 && !d2) return true;
-    if (!d1 || !d2) return fail<mode>();
-
-    // It is only safe to check for pointer equality if there are no Vars involved.
-    // Otherwise, we have to look more thoroughly.
-    // Example: λx.x - λz.x
-    if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
-
-    auto h1 = d1->isa_mut<Hole>();
-    auto h2 = d2->isa_mut<Hole>();
-
-    if constexpr (mode == Check) {
-        if (h1) return h1->set(d2), true;
-        if (h2) return h2->set(d1), true;
-    } else if (h1 || h2) // mode == Test and h1 or h2 is an unresolved Hole
-        return fail<Test>();
-
-    if (!d1->is_set() || !d2->is_set()) return fail<mode>();
-
-    auto muts          = std::array<Def*, 2>{d1->isa_mut(), d2->isa_mut()};
-    auto& [mut1, mut2] = muts;
-
-    if (mut1 && mut2 && mut1 == mut2) return true;
-
-    // Globals are HACKs and require additionaly HACKs:
-    // Unless they are pointer equal (above) always consider them unequal.
-    if (d1->isa<Global>() || d2->isa<Global>()) return false;
-
-    bool redo = false;
-    for (size_t i = 0; i != 2; ++i) {
-        if (auto& mut = muts[i]) {
-            size_t other = (i + 1) % 2;
-
-            if (auto zonked = mut->zonk_mut())
-                mut = nullptr, ds[i] = zonked, redo = true;
-            else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
-                return i->second == ds[other];
-        }
-    }
-
-    return redo ? alpha<mode>(d1, d2) : alpha_internal<mode>(d1, d2);
-}
-
 template<Checker::Mode mode> bool Checker::check(const Prod* prod, const Def* def) {
     size_t a = prod->num_ops();
     for (size_t i = 0; i != a; ++i)
@@ -217,6 +170,50 @@ bool Checker::check(const UMax* umax, const Def* def) {
     for (auto op : umax->ops())
         if (!alpha<Check>(op, def)) return fail<Check>();
     return true;
+}
+
+template<Checker::Mode mode> bool Checker::alpha_(const Def* d1_, const Def* d2_) {
+    auto ds        = std::array<const Def*, 2>{d1_->zonk(), d2_->zonk()};
+    auto& [d1, d2] = ds;
+
+    // It is only safe to check for pointer equality if there are no Vars involved.
+    // Otherwise, we have to look more thoroughly.
+    // Example: λx.x - λz.x
+    if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
+
+    auto h1 = d1->isa_mut<Hole>();
+    auto h2 = d2->isa_mut<Hole>();
+
+    if constexpr (mode == Check) {
+        if (h1) return h1->set(d2), true;
+        if (h2) return h2->set(d1), true;
+    } else if (h1 || h2) // mode == Test and h1 or h2 is an unresolved Hole
+        return fail<Test>();
+
+    if (!d1->is_set() || !d2->is_set()) return fail<mode>();
+
+    auto muts          = std::array<Def*, 2>{d1->isa_mut(), d2->isa_mut()};
+    auto& [mut1, mut2] = muts;
+
+    if (mut1 && mut2 && mut1 == mut2) return true;
+
+    // Globals are HACKs and require additionaly HACKs:
+    // Unless they are pointer equal (above) always consider them unequal.
+    if (d1->isa<Global>() || d2->isa<Global>()) return false;
+
+    bool redo = false;
+    for (size_t i = 0; i != 2; ++i) {
+        if (auto& mut = muts[i]) {
+            size_t other = (i + 1) % 2;
+
+            if (auto zonked = mut->zonk_mut())
+                mut = nullptr, ds[i] = zonked, redo = true;
+            else if (auto [i, ins] = binders_.emplace(mut, ds[other]); !ins)
+                return i->second == ds[other];
+        }
+    }
+
+    return redo ? alpha<mode>(d1, d2) : alpha_internal<mode>(d1, d2);
 }
 
 template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
