@@ -83,10 +83,9 @@ var searchData=
   ['isa_5fmut_80',['isa_mut',['../classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1',1,'mim::Def']]],
   ['isa_5fmut_5fbasicblock_81',['isa_mut_basicblock',['../classmim_1_1Lam.html#a4868f1bfe7fb5cbc7d453c0f83009dbe',1,'mim::Lam']]],
   ['isa_5fmut_5fcn_82',['isa_mut_cn',['../classmim_1_1Lam.html#adab8c4822338fe32fb4a7711b7d479c0',1,'mim::Lam']]],
-  ['isa_5fmut_5fimm_5fseq_83',['isa_mut_imm_seq',['../namespacemim.html#a227195889a021ddf002fd343771e6ac7',1,'mim']]],
-  ['isa_5fmut_5freturning_84',['isa_mut_returning',['../classmim_1_1Lam.html#a637291bc1cf994803562402bb0d77909',1,'mim::Lam']]],
-  ['isa_5fproxy_85',['isa_proxy',['../classmim_1_1Pass.html#aecf198ac657f8ef581878741e2282aef',1,'mim::Pass']]],
-  ['isa_5freturning_86',['isa_returning',['../classmim_1_1Pi.html#afe493c2ca2eb3e7e1d484eceb5138356',1,'mim::Pi::isa_returning()'],['../classmim_1_1Lam.html#a527fd77ec7597902c4cbe37e6c0ccf79',1,'mim::Lam::isa_returning()']]],
-  ['isa_5fworkable_87',['isa_workable',['../namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4',1,'mim']]],
-  ['iterator_88',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator']]]
+  ['isa_5fmut_5freturning_83',['isa_mut_returning',['../classmim_1_1Lam.html#a637291bc1cf994803562402bb0d77909',1,'mim::Lam']]],
+  ['isa_5fproxy_84',['isa_proxy',['../classmim_1_1Pass.html#aecf198ac657f8ef581878741e2282aef',1,'mim::Pass']]],
+  ['isa_5freturning_85',['isa_returning',['../classmim_1_1Pi.html#afe493c2ca2eb3e7e1d484eceb5138356',1,'mim::Pi::isa_returning()'],['../classmim_1_1Lam.html#a527fd77ec7597902c4cbe37e6c0ccf79',1,'mim::Lam::isa_returning()']]],
+  ['isa_5fworkable_86',['isa_workable',['../namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4',1,'mim']]],
+  ['iterator_87',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator']]]
 ];
