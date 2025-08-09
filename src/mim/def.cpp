@@ -304,26 +304,35 @@ Vars Def::free_vars() {
     if (mark_ == 0) {
         // fixed-point iteration to recompute free vars:
         // (run - 1) identifies the previous iteration; so make sure to offset run by 2 for the first iteration
-        auto& w = world();
+        auto& w     = world();
+        bool cyclic = false;
         w.next_run();
-        for (bool todo = true, cyclic = false; todo;) {
+        free_vars<true>(cyclic, w.next_run());
+
+        for (bool todo = cyclic; todo;) {
             todo = false;
-            free_vars(todo, cyclic, w.next_run());
-            if (!cyclic) break; // triggers either immediately or never
+            free_vars<false>(todo, w.next_run());
         }
     }
 
     return vars_;
 }
 
-Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
+template<bool init> Vars Def::free_vars(bool& todo, uint32_t run) {
+    // If init == true  -> todo flag detects cycle
+    // If init == false -> todo flag keeps track whether sth changed
+
     assert(isa_mut());
     // Recursively recompute free vars. If
     // * mark_ == 0: invalid - need to recompute
     // * mark_ == run - 1: Previous iteration - need to recompute
     // * mark_ == run: We are running in cycles within the *current* iteration of our fixed-point loop
     // * all other values for mark_: valid!
-    if (mark_ != 0 && mark_ != run - 1) return cyclic |= mark_ == run, vars_;
+    if (mark_ != 0 && mark_ != run - 1) {
+        if constexpr (init) todo |= mark_ == run;
+        return vars_;
+    }
+
     mark_ = run;
 
     auto fvs0  = vars_;
@@ -333,27 +342,27 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
     auto& vars = w.vars();
 
     for (auto op : deps()) {
-        fvs = vars.merge(fvs, op->local_vars());
+        if constexpr (init) fvs = vars.merge(fvs, op->local_vars());
 
         for (auto mut : op->local_muts()) {
-            mut->muts_ = muts.insert(mut->muts_, this); // register "this" as user of local_mut
-            fvs        = vars.merge(fvs, mut->free_vars(todo, cyclic, run));
+            if constexpr (init) mut->muts_ = muts.insert(mut->muts_, this); // register "this" as user of local_mut
+            fvs = vars.merge(fvs, mut->free_vars<init>(todo, run));
         }
     }
 
     if (auto var = has_var()) fvs = vars.erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
 
-    todo |= fvs0 != fvs;
+    if constexpr (!init) todo |= fvs0 != fvs;
+
     return vars_ = fvs;
 }
 
 void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
-        // if (vars_) { // only necessary, if the cached free vars are non-empty
+        // TODO optimize if vars empty?
         for (auto mut : users()) mut->invalidate();
         vars_ = Vars();
-        // }
         muts_ = Muts();
     }
 }
