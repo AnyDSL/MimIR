@@ -48,6 +48,7 @@ axm %compile.direct_plugin:   %compile.Plugin;
 axm %compile.refly_plugin:    %compile.Plugin;
 axm %compile.regex_plugin:    %compile.Plugin;
 axm %compile.matrix_plugin:   %compile.Plugin;
+axm %compile.tensor_plugin:   %compile.Plugin;
 ///
 /// ### %%opt.is_loaded
 ///
@@ -146,7 +147,7 @@ lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
 ///
 /// ### Dependent Passes and Phases
 ///
-let empty_pass = %compile.nullptr_pass;
+let empty_pass  = %compile.nullptr_pass;
 let empty_phase = %compile.passes_to_phase ();
 
 axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;
