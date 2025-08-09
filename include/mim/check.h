@@ -67,12 +67,14 @@ public:
     };
 
     template<Mode mode> static bool alpha(const Def* d1, const Def* d2) {
+        if (d1 == d2) return true;
         return Checker(d1->world()).alpha_<mode>(d1, d2);
     }
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
     [[nodiscard]] static const Def* assignable(const Def* type, const Def* value) {
+        if (type == value->type()) return value;
         return Checker(type->world()).assignable_(type, value);
     }
 
@@ -89,12 +91,12 @@ private:
 #endif
 
     template<Mode> [[nodiscard]] bool alpha_(const Def* d1, const Def* d2);
-    template<Mode> [[nodiscard]] bool alpha_internal(const Def*, const Def*);
     template<Mode> [[nodiscard]] bool check(const Prod*, const Def*);
     template<Mode> [[nodiscard]] bool check(const Seq*, const Def*);
     [[nodiscard]] bool check(const UMax*, const Def*);
     [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
 
+    auto bind(Def* mut, const Def* d) { return mut ? binders_.emplace(mut, d) : std::pair(binders_.end(), true); }
     World& world_;
     MutMap<const Def*> binders_;
     fe::Arena arena_;

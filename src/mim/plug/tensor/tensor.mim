@@ -66,11 +66,11 @@ axm %tensor.map_reduce: {nis: Nat}
 ///
 lam %tensor.map_reduce_pure {nis: Nat}
                             {To: *, Ro: Nat}
-                            [So: «Ro; Nat»]
+                            (So: «Ro; Nat»)
                             {Tis: «nis; *», Ris: «i: nis; Nat», Sis: «i:nis; «Ris#i; Nat»»}
-                            [f: [To, «i: nis; Tis#i»] → [To], init: To]
-                            [subs: «i: nis; « Ris#i; Nat»»]
-                            [is: «i: nis; «Sis#i; Tis#i» »]
+                            (f: [To, «i: nis; Tis#i»] → [To], init: To)
+                            (subs: «i: nis; « Ris#i; Nat»»)
+                            (is: «i: nis; «Sis#i; Tis#i» »)
                             : «So; To»
                             = fun f_ (x: To, y: «i: nis; Tis#i») = return (f (x, y));
                               %tensor.map_reduce @nis @(To, Ro) So @(Tis, Ris, Sis) (f_, init) subs is;
@@ -87,7 +87,7 @@ lam %tensor.map_reduce_pure {nis: Nat}
 /// Returns the generalised dot product of `a` and `b`.
 /// https://openxla.org/stablehlo/spec#dot_general
 ///
-lam type {T: *} [x: T]: * = T;
+lam type {T: *} (x: T): * = T;
 fun dot_general_fun [R: Ring] [x: R#T, [y: R#T, z: R#T]]: R#T = return (R#add (x, (R#mul (y, z))));
 lam dot_general_pick {n: Nat} {na nb nc: Nat} (a: «na; Idx n», b: «nb; Idx n», c: «nc; Idx n») (off_1 off_2: Nat) (i: Idx n): Nat =
   let (ab, ai) = %vec.first (%core.icmp.e @n) (a, i);
@@ -100,8 +100,8 @@ lam dot_general_pick {n: Nat} {na nb nc: Nat} (a: «na; Idx n», b: «nb; Idx n�
   let ci_out = %core.nat.add (off_2, ci_nat);
   ((ai_out, ci_out)#cb, bi_nat)#bb;
 lam dot_general_shape {r1 r2: Nat} {nc nb: Nat}
-  [c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»]
-  [s1: «r1; Nat», s2: «r2; Nat»]:
+  (c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»)
+  (s1: «r1; Nat», s2: «r2; Nat»):
       let bs       = ‹i: nb; s1#(b1#i)›;
       let bc_1     = %tuple.cat_uniform (b1, c1);
       let s1_res   = %vec.diff (s1, bc_1);
@@ -125,9 +125,9 @@ lam dot_general_shape {r1 r2: Nat} {nc nb: Nat}
       let s_out    = %tuple.cat_uniform (bs, s12_res);
       s_out;
 lam %tensor.dot_product
-  [R: Ring] {r1 r2: Nat} {nc nb: Nat}
-  [c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»]
-  {s1: «r1; Nat», s2: «r2; Nat»} [a: «s1; R#T», b: «s2; R#T»]
+  (R: Ring) {r1 r2: Nat} {nc nb: Nat}
+  (c1: «nc; Idx r1», c2: «nc; Idx r2», b1: «nb; Idx r1», b2: «nb; Idx r2»)
+  {s1: «r1; Nat», s2: «r2; Nat»} (a: «s1; R#T», b: «s2; R#T»)
     : let s_out = dot_general_shape (c1, c2, b1, b2) (s1, s2);
       «s_out; R#T»
     = let s_out    = dot_general_shape (c1, c2, b1, b2) (s1, s2);
@@ -157,20 +157,20 @@ lam %tensor.product_2d (R: Ring) {m k l: Nat} (t1: «m, k; R#T», t2: «k, l; R#
 ///
 fun transpose_fun {T:*} [x: T, y: T]: T = return y;
 lam %tensor.transpose {T: *, r: Nat, s: «r; Nat»}
-                      [input: «s;T», permutation: «r; Idx r»]
+                      (input: «s;T», permutation: «r; Idx r»)
                     : let shape_permutation = ‹i: r; (%vec.first (%core.icmp.e @r) (permutation, i))#tt›;
                       let out_s = ‹i: r; s#(shape_permutation#i)›;
                       «out_s; T»
-                    = let permutation_nat = <i: r; %core.bitcast Nat permutation#i>;
+                    = let permutation_nat   = <i: r; %core.bitcast Nat permutation#i>;
                       let shape_permutation = ‹i: r; (%vec.first (%core.icmp.e @r) (permutation, i))#tt›;
-                      let out_s = ‹i: r; s#(shape_permutation#i)›;
+                      let out_s             = ‹i: r; s#(shape_permutation#i)›;
                       %tensor.map_reduce @1 @(T, r) out_s @(T, r, s) (transpose_fun @T, ⊥: T) permutation_nat input;
 ///
 /// ### %%tensor.transpose_2d
 ///
 /// Permutes the dimensions of a 2-dimensional tensor.
 ///
-lam %tensor.transpose_2d {T: *} {s: «2; Nat»} [input: «s; T»]: «s#tt, s#ff; T» = %tensor.transpose @(T, 2, s) (input, (tt, ff));
+lam %tensor.transpose_2d {T: *} {s: «2; Nat»} (input: «s; T»): «s#tt, s#ff; T» = %tensor.transpose @(T, 2, s) (input, (tt, ff));
 ///
 /// ### %%tensor.broadcast
 ///
@@ -197,9 +197,9 @@ axm %tensor.broadcast_in_dim: {T: *, r_in r_out: Nat}
 /// Maps a function over a collection of tensors.
 ///
 lam %tensor.map {T: *, ni: Nat, Is: «ni; *»}
-                [app: «i: ni; Is#i» → T]
+                (app: «i: ni; Is#i» → T)
                 {r: Nat, s: «r; Nat»}
-                [is: «i: ni; «s; Is#i» »]
+                (is: «i: ni; «s; Is#i» »)
                 : «s; T» =
   fun app_mr [x: T, y: «i: ni; Is#i»] = return (app y);
   %tensor.map_reduce @ni @(T, r) s @(Is, ‹ni; r›, ‹ni; s›) (app_mr, ⊥: T) ‹ni; ‹i:r; %core.bitcast Nat i›› is;
@@ -208,21 +208,21 @@ lam %tensor.map {T: *, ni: Nat, Is: «ni; *»}
 ///
 /// Maps a unary function over a tensor.
 ///
-lam %tensor.unary {Ti To : *} [app: Ti → To] {r: Nat, s: «r; Nat»} [i: «s; Ti»]: «s; To» =
+lam %tensor.unary {Ti To : *} [app: Ti → To] {r: Nat, s: «r; Nat»} (i: «s; Ti»): «s; To» =
   %tensor.map @(To, 1, Ti) app @(r, s) i;
 ///
 /// ### %%tensor.binary
 ///
 /// Maps a binary function over a pair of tensors.
 ///
-lam %tensor.binary {Ti1 Ti2 To: *} [app: [Ti1, Ti2] → To] {r: Nat, s: «r; Nat»} [is: [«s; Ti1», «s; Ti2»]]: «s; To» =
+lam %tensor.binary {Ti1 Ti2 To: *} (app: [Ti1, Ti2] → To) {r: Nat, s: «r; Nat»} (is: [«s; Ti1», «s; Ti2»]): «s; To» =
   %tensor.map @(To, 2, (Ti1, Ti2)) app @(r, s) is;
 ///
 /// ### %%tensor.select
 ///
 /// Maps %core.select over tensors.
 ///
-lam %tensor.select {T: *} {r: Nat, s: «r; Nat»} [is: [«s; Bool», «s; T», «s; T»]]: «s; T» =
+lam %tensor.select {T: *} {r: Nat, s: «r; Nat»} (is: [«s; Bool», «s; T», «s; T»]): «s; T» =
   %tensor.map @(T, 3, (Bool, T, T)) (%core.select @T) @(r, s) is;
 ///
 /// ## Phases
