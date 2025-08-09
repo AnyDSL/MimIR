@@ -67,12 +67,14 @@ public:
     };
 
     template<Mode mode> static bool alpha(const Def* d1, const Def* d2) {
+        if (d1 == d2) return true;
         return Checker(d1->world()).alpha_<mode>(d1, d2);
     }
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
     [[nodiscard]] static const Def* assignable(const Def* type, const Def* value) {
+        if (type == value->type()) return value;
         return Checker(type->world()).assignable_(type, value);
     }
 
