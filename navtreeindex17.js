@@ -1,7 +1,5 @@
 var NAVTREEINDEX17 =
 {
-"lam__spec_8cpp_source.html":[6,0,3,1,2,3],
-"lam__spec_8h.html":[6,0,2,1,2,3],
 "lam__spec_8h_source.html":[6,0,2,1,2,3],
 "langref.html":[1,1],
 "lattice_8cpp.html":[6,0,3,1,13],
@@ -249,5 +247,7 @@ var NAVTREEINDEX17 =
 "namespacemim.html#a69dc278a82313ca3dc770a868a1e57d1":[3,0,1,146],
 "namespacemim.html#a6b2c52180e5a69768789369c192b19ef":[3,0,1,239],
 "namespacemim.html#a6b2eebef519ceb586fdd7b047a34aa56":[3,0,1,167],
-"namespacemim.html#a6e05089762ab1bde20507ee3d7b37242":[3,0,1,98]
+"namespacemim.html#a6e05089762ab1bde20507ee3d7b37242":[3,0,1,98],
+"namespacemim.html#a6f391dd09ef5770be5c92b9b3ebf8513":[3,0,1,164],
+"namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab":[3,0,1,144]
 };

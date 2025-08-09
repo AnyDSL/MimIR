@@ -440,10 +440,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def" id="r_a29019dd6f96db3881b604f0b16cba29a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a">zonk</a> () const</td></tr>
 <tr class="memdesc:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a>s have been filled, reconstruct the program without them.  <br /></td></tr>
 <tr class="separator:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85739e704fbb649837b88d2a8dbfbadf inherit pub_methods_classmim_1_1Def" id="r_a85739e704fbb649837b88d2a8dbfbadf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a85739e704fbb649837b88d2a8dbfbadf">zonk_mut</a> ()</td></tr>
-<tr class="memdesc:a85739e704fbb649837b88d2a8dbfbadf inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">zonks all ops of this <em>mutable</em> and tries to immutabilize it; if it succeeds return it.  <br /></td></tr>
-<tr class="separator:a85739e704fbb649837b88d2a8dbfbadf inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0925012c7594fc1d034415a529a5a154 inherit pub_methods_classmim_1_1Def" id="r_a0925012c7594fc1d034415a529a5a154"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a0925012c7594fc1d034415a529a5a154">zonk_mut</a> () const</td></tr>
+<tr class="memdesc:a0925012c7594fc1d034415a529a5a154 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If *mutable, zonks all ops and tries to immutabilize it; otherwise just zonk.  <br /></td></tr>
 <tr class="separator:a0925012c7594fc1d034415a529a5a154 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19ea1717cc86d4f2f5751f2d57b3f487 inherit pub_methods_classmim_1_1Def" id="r_a19ea1717cc86d4f2f5751f2d57b3f487"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a19ea1717cc86d4f2f5751f2d57b3f487">dump</a> () const</td></tr>
 <tr class="separator:a19ea1717cc86d4f2f5751f2d57b3f487 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -533,8 +531,9 @@ Friends</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classmim_1_1Def"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_classmim_1_1Def')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classmim_1_1Def.html">mim::Def</a></td></tr>
-<tr class="memitem:a7e39baff3ebb42a2d902b6cd9d5ae9cb inherit pub_static_methods_classmim_1_1Def" id="r_a7e39baff3ebb42a2d902b6cd9d5ae9cb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a7e39baff3ebb42a2d902b6cd9d5ae9cb">zonk</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
-<tr class="separator:a7e39baff3ebb42a2d902b6cd9d5ae9cb inherit pub_static_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad05a164140ecb2c8ce14e3faf9bf38ac inherit pub_static_methods_classmim_1_1Def" id="r_ad05a164140ecb2c8ce14e3faf9bf38ac"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad05a164140ecb2c8ce14e3faf9bf38ac">zonk</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> defs)</td></tr>
+<tr class="memdesc:ad05a164140ecb2c8ce14e3faf9bf38ac inherit pub_static_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">zonks all <code class="param">defs</code> and retuns a new <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>.  <br /></td></tr>
+<tr class="separator:ad05a164140ecb2c8ce14e3faf9bf38ac inherit pub_static_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classmim_1_1Seq"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classmim_1_1Seq')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classmim_1_1Seq.html">mim::Seq</a></td></tr>
 <tr class="memitem:ae59703ead7befb26e835d4d9793e2786 inherit pro_methods_classmim_1_1Seq" id="r_ae59703ead7befb26e835d4d9793e2786"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Seq.html#ae59703ead7befb26e835d4d9793e2786">Def</a> (<a class="el" href="classmim_1_1World.html">World</a> *, <a class="el" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">ops</a>, <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="el" href="classmim_1_1Def.html#a41c6630a112450ceaa0398079203ee7f">flags</a>)</td></tr>
 <tr class="memdesc:ae59703ead7befb26e835d4d9793e2786 inherit pro_methods_classmim_1_1Seq"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for an <em>immutable</em> <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>.  <br /></td></tr>
@@ -622,7 +621,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Def.html#a2ec320f7eb49e3c8c9d26f210f4ce71d">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00335">335</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00321">321</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="check_8h_source.html#l00069">mim::Checker::alpha()</a>, <a class="el" href="tuple_8h_source.html#l00086">mim::Seq::body()</a>, <a class="el" href="def_8cpp_source.html#l00023">mim::Seq::Def()</a>, <a class="el" href="dbg_8h_source.html#l00122">mim::error()</a>, <a class="el" href="def_8h_source.html#l00451">mim::Def::loc()</a>, <a class="el" href="def_8h_source.html#l00244">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00389">mim::Def::unfold_type()</a>.</p>
 
@@ -660,7 +659,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Def.html#a17535d230ca604f1b7f153cca756e3b4">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00333">333</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00319">319</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00023">mim::Seq::Def()</a>.</p>
 
@@ -696,7 +695,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00197">197</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8h_source.html#l00086">mim::Seq::body()</a>, <a class="el" href="def_8cpp_source.html#l00023">mim::Seq::Def()</a>, <a class="el" href="def_8cpp_source.html#l00173">mim::Def::is_immutabilizable()</a>, <a class="el" href="def_8h_source.html#l00737">mim::Lit::isa()</a>, <a class="el" href="tuple_8h_source.html#l00145">reduce()</a>, <a class="el" href="tuple_8h_source.html#l00127">shape()</a>, and <a class="el" href="def_8cpp_source.html#l00382">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8h_source.html#l00086">mim::Seq::body()</a>, <a class="el" href="def_8cpp_source.html#l00023">mim::Seq::Def()</a>, <a class="el" href="def_8cpp_source.html#l00173">mim::Def::is_immutabilizable()</a>, <a class="el" href="def_8h_source.html#l00733">mim::Lit::isa()</a>, <a class="el" href="tuple_8h_source.html#l00145">reduce()</a>, <a class="el" href="tuple_8h_source.html#l00127">shape()</a>, and <a class="el" href="def_8cpp_source.html#l00382">mim::Def::world()</a>.</p>
 
 </div>
 </div>

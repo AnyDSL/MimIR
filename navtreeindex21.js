@@ -1,7 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"namespacemim_1_1plug_1_1ord.html#a755ae6a7f2ee39cdcf28d325d8bbfd39":[3,0,1,4,11,18],
-"namespacemim_1_1plug_1_1ord.html#a87a29d8695533c2820227f29d2124532":[3,0,1,4,11,8],
 "namespacemim_1_1plug_1_1ord.html#a8bccaea168c844dbebc2f252cdf37a11":[3,0,1,4,11,12],
 "namespacemim_1_1plug_1_1ord.html#ab41bd48f8eb19704f4036734356f166d":[3,0,1,4,11,0],
 "namespacemim_1_1plug_1_1ord.html#ab41bd48f8eb19704f4036734356f166da1d78dc8ed51214e518b5114fe24490ae":[3,0,1,4,11,0,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX21 =
 "refly_8h.html":[6,0,2,1,4,12,1],
 "refly_8h_source.html":[6,0,2,1,4,12,1],
 "regex.html":[2,13],
-"regex2nfa_8cpp.html":[6,0,3,1,4,13,4]
+"regex2nfa_8cpp.html":[6,0,3,1,4,13,4],
+"regex2nfa_8cpp.html#acd43bd34821ccd06650fd895a0fa2918":[6,0,3,1,4,13,4,1],
+"regex2nfa_8cpp_source.html":[6,0,3,1,4,13,4]
 };

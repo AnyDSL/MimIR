@@ -469,10 +469,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def" id="r_a29019dd6f96db3881b604f0b16cba29a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a">zonk</a> () const</td></tr>
 <tr class="memdesc:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a>s have been filled, reconstruct the program without them.  <br /></td></tr>
 <tr class="separator:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85739e704fbb649837b88d2a8dbfbadf inherit pub_methods_classmim_1_1Def" id="r_a85739e704fbb649837b88d2a8dbfbadf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a85739e704fbb649837b88d2a8dbfbadf">zonk_mut</a> ()</td></tr>
-<tr class="memdesc:a85739e704fbb649837b88d2a8dbfbadf inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">zonks all ops of this <em>mutable</em> and tries to immutabilize it; if it succeeds return it.  <br /></td></tr>
-<tr class="separator:a85739e704fbb649837b88d2a8dbfbadf inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0925012c7594fc1d034415a529a5a154 inherit pub_methods_classmim_1_1Def" id="r_a0925012c7594fc1d034415a529a5a154"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a0925012c7594fc1d034415a529a5a154">zonk_mut</a> () const</td></tr>
+<tr class="memdesc:a0925012c7594fc1d034415a529a5a154 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If *mutable, zonks all ops and tries to immutabilize it; otherwise just zonk.  <br /></td></tr>
 <tr class="separator:a0925012c7594fc1d034415a529a5a154 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19ea1717cc86d4f2f5751f2d57b3f487 inherit pub_methods_classmim_1_1Def" id="r_a19ea1717cc86d4f2f5751f2d57b3f487"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a19ea1717cc86d4f2f5751f2d57b3f487">dump</a> () const</td></tr>
 <tr class="separator:a19ea1717cc86d4f2f5751f2d57b3f487 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -538,8 +536,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a637291bc1cf994803562402bb0d77909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only for mutables.  <br /></td></tr>
 <tr class="separator:a637291bc1cf994803562402bb0d77909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classmim_1_1Def"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_classmim_1_1Def')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classmim_1_1Def.html">mim::Def</a></td></tr>
-<tr class="memitem:a7e39baff3ebb42a2d902b6cd9d5ae9cb inherit pub_static_methods_classmim_1_1Def" id="r_a7e39baff3ebb42a2d902b6cd9d5ae9cb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a7e39baff3ebb42a2d902b6cd9d5ae9cb">zonk</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
-<tr class="separator:a7e39baff3ebb42a2d902b6cd9d5ae9cb inherit pub_static_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad05a164140ecb2c8ce14e3faf9bf38ac inherit pub_static_methods_classmim_1_1Def" id="r_ad05a164140ecb2c8ce14e3faf9bf38ac"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad05a164140ecb2c8ce14e3faf9bf38ac">zonk</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> defs)</td></tr>
+<tr class="memdesc:ad05a164140ecb2c8ce14e3faf9bf38ac inherit pub_static_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">zonks all <code class="param">defs</code> and retuns a new <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>.  <br /></td></tr>
+<tr class="separator:ad05a164140ecb2c8ce14e3faf9bf38ac inherit pub_static_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -719,7 +718,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00266">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="check_8cpp_source.html#l00387">check()</a>, <a class="el" href="ll_8cpp_source.html#l00309">mim::ll::Emitter::emit_epilogue()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00120">mim::plug::clos::Clos2SJLJ::enter()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00040">mim::plug::clos::ClosConvPrep::enter()</a>, <a class="el" href="lam_8h_source.html#l00165">set()</a>, and <a class="el" href="lam_8h_source.html#l00167">set_body()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="check_8cpp_source.html#l00373">check()</a>, <a class="el" href="ll_8cpp_source.html#l00309">mim::ll::Emitter::emit_epilogue()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00120">mim::plug::clos::Clos2SJLJ::enter()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00040">mim::plug::clos::ClosConvPrep::enter()</a>, <a class="el" href="lam_8h_source.html#l00165">set()</a>, and <a class="el" href="lam_8h_source.html#l00167">set_body()</a>.</p>
 
 </div>
 </div>
@@ -797,7 +796,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Def.html#a17535d230ca604f1b7f153cca756e3b4">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00387">387</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00373">373</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="check_8h_source.html#l00075">mim::Checker::assignable()</a>, <a class="el" href="lam_8h_source.html#l00119">body()</a>, <a class="el" href="lam_8h_source.html#l00128">codom()</a>, <a class="el" href="dbg_8h_source.html#l00071">mim::Error::error()</a>, <a class="el" href="lam_8h_source.html#l00118">filter()</a>, <a class="el" href="def_8h_source.html#l00451">mim::Def::loc()</a>, <a class="el" href="dbg_8h_source.html#l00073">mim::Error::note()</a>, <a class="el" href="def_8h_source.html#l00244">mim::Def::type()</a>, <a class="el" href="lam_8h_source.html#l00126">type()</a>, and <a class="el" href="def_8cpp_source.html#l00382">mim::Def::world()</a>.</p>
 
@@ -830,7 +829,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="lam_8h_source.html#l00033">mim::Pi::codom()</a>, and <a class="el" href="lam_8h_source.html#l00126">type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00387">check()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00373">check()</a>.</p>
 
 </div>
 </div>
@@ -890,7 +889,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00266">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lam_8cpp_source.html#l00030">app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="lam_8cpp_source.html#l00032">branch()</a>, <a class="el" href="check_8cpp_source.html#l00387">check()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00120">mim::plug::clos::Clos2SJLJ::enter()</a>, <a class="el" href="lam_8h_source.html#l00165">set()</a>, and <a class="el" href="lam_8cpp_source.html#l00028">set_filter()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lam_8cpp_source.html#l00030">app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="lam_8cpp_source.html#l00032">branch()</a>, <a class="el" href="check_8cpp_source.html#l00373">check()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00120">mim::plug::clos::Clos2SJLJ::enter()</a>, <a class="el" href="lam_8h_source.html#l00165">set()</a>, and <a class="el" href="lam_8cpp_source.html#l00028">set_filter()</a>.</p>
 
 </div>
 </div>
@@ -1489,7 +1488,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00244">mim::Def::type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="check_8cpp_source.html#l00387">check()</a>, <a class="el" href="lam_8h_source.html#l00128">codom()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="lam_8h_source.html#l00127">dom()</a>, <a class="el" href="ll_8cpp_source.html#l00251">mim::ll::Emitter::emit_imported()</a>, <a class="el" href="eta__exp_8h_source.html#l00021">mim::EtaExp::proxy()</a>, <a class="el" href="lam_8h_source.html#l00149">ret_pi()</a>, <a class="el" href="lam_8h_source.html#l00152">ret_var()</a>, and <a class="el" href="lam_8h_source.html#l00180">stub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00028">mim::plug::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="check_8cpp_source.html#l00373">check()</a>, <a class="el" href="lam_8h_source.html#l00128">codom()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">mim::plug::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="lam_8h_source.html#l00127">dom()</a>, <a class="el" href="ll_8cpp_source.html#l00251">mim::ll::Emitter::emit_imported()</a>, <a class="el" href="eta__exp_8h_source.html#l00021">mim::EtaExp::proxy()</a>, <a class="el" href="lam_8h_source.html#l00149">ret_pi()</a>, <a class="el" href="lam_8h_source.html#l00152">ret_var()</a>, and <a class="el" href="lam_8h_source.html#l00180">stub()</a>.</p>
 
 </div>
 </div>
