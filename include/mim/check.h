@@ -52,7 +52,7 @@ private:
 
 class Checker {
 public:
-    Checker(World& world)
+    explicit Checker(World& world)
         : world_(world) {}
 
     World& world() { return world_; }
@@ -90,11 +90,13 @@ private:
     const Def* fail() { return {}; }
 #endif
 
+    [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
     template<Mode> [[nodiscard]] bool alpha_(const Def* d1, const Def* d2);
     template<Mode> [[nodiscard]] bool check(const Prod*, const Def*);
     template<Mode> [[nodiscard]] bool check(const Seq*, const Def*);
+    [[nodiscard]] bool check1(const Seq*, const Def*);
+    [[nodiscard]] bool check(Seq*, const Seq*);
     [[nodiscard]] bool check(const UMax*, const Def*);
-    [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
 
     auto bind(Def* mut, const Def* d) { return mut ? binders_.emplace(mut, d) : std::pair(binders_.end(), true); }
     World& world_;

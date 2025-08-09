@@ -154,6 +154,41 @@ const Def* Checker::fail() {
 }
 #endif
 
+const Def* Checker::is_uniform(Defs defs) {
+    if (defs.empty()) return nullptr;
+    auto first = defs.front();
+    for (size_t i = 1, e = defs.size(); i != e; ++i)
+        if (!alpha<Test>(first, defs[i])) return nullptr;
+    return first;
+}
+
+const Def* Checker::assignable_(const Def* type, const Def* val) {
+    auto val_ty = val->type()->zonk();
+    if (type == val_ty) return val;
+
+    auto& w = world();
+    if (auto sigma = type->isa<Sigma>()) {
+        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
+
+        size_t a     = sigma->num_ops();
+        auto red     = sigma->reduce(val);
+        auto new_ops = absl::FixedArray<const Def*>(red.size());
+        for (size_t i = 0; i != a; ++i) {
+            auto new_val = assignable_(red[i], val->proj(a, i));
+            if (new_val)
+                new_ops[i] = new_val;
+            else
+                return fail();
+        }
+        return w.tuple(new_ops);
+    } else if (auto uniq = val->type()->isa<Uniq>()) {
+        if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
+        return fail();
+    }
+
+    return alpha_<Check>(type, val_ty) ? val : fail();
+}
+
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
     for (bool todo = true; todo;) {
         // below we check type and arity which may in turn open up more opportunities for zonking
@@ -208,17 +243,25 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
         }
     }
 
-    // clang-format off
-    if (auto prod = d1->isa<Prod>()) return check<mode>(prod, d2);
-    if (auto prod = d2->isa<Prod>()) return check<mode>(prod, d1);
-    if (auto seq  = d1->isa<Seq >()) return check<mode>(seq , d2);
-    if (auto seq  = d2->isa<Seq >()) return check<mode>(seq , d1);
-    // clang-format on
+    auto seq1 = d1->isa<Seq>();
+    auto seq2 = d2->isa<Seq>();
 
-    if constexpr (mode == Check) {
+    if constexpr (mode == Mode::Check) {
         if (auto umax = d1->isa<UMax>(); umax && !d2->isa<UMax>()) return check(umax, d2);
         if (auto umax = d2->isa<UMax>(); umax && !d1->isa<UMax>()) return check(umax, d1);
+
+        if (seq1 && seq1->shape() == world().lit_nat_1() && !seq2) return check1(seq1, d2);
+        if (seq2 && seq2->shape() == world().lit_nat_1() && !seq1) return check1(seq2, d1);
+
+        if (seq1 && seq2) {
+            if (auto mut_seq = seq1->isa_mut<Seq>(); mut_seq && seq2->isa_imm()) return check(mut_seq, seq2);
+            if (auto mut_seq = seq2->isa_mut<Seq>(); mut_seq && seq1->isa_imm()) return check(mut_seq, seq1);
+        }
     }
+
+    if (auto prod = d1->isa<Prod>()) return check<mode>(prod, d2);
+    if (auto prod = d2->isa<Prod>()) return check<mode>(prod, d1);
+    if (seq1 && seq2) return alpha_<mode>(seq1->body(), seq2->body());
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags()) return fail<mode>();
 
@@ -242,74 +285,29 @@ template<Checker::Mode mode> bool Checker::check(const Prod* prod, const Def* de
     return true;
 }
 
-template<Checker::Mode mode> bool Checker::check(const Seq* seq1, const Def* def) {
-    if constexpr (mode == Mode::Check) {
-        // alpha(«1; body», def) -> alpha(body, def);
-        if (seq1->shape() == world().lit_nat_1() && !def->isa<Seq>()) {
-            auto body = seq1->reduce(world().lit_idx(1, 0)); // try to get rid of var inside of body
-            if (!alpha_<mode>(body, def)) return fail<mode>();
-            if (auto mut_seq = seq1->isa_mut<Seq>()) mut_seq->unset()->set(world().lit_nat_1(), body->zonk());
-            return true;
-        }
-    }
+// alpha(«1; body», def) -> alpha(body, def);
+bool Checker::check1(const Seq* seq, const Def* def) {
+    auto body = seq->reduce(world().lit_idx_1_0()); // try to get rid of var inside of body
+    if (!alpha_<Check>(body, def)) return fail<Check>();
+    if (auto mut_seq = seq->isa_mut<Seq>()) mut_seq->unset()->set(world().lit_nat_1(), body->zonk());
+    return true;
+}
 
-    if (auto mut_seq = seq1->isa_mut<Seq>()) {
-        if (auto imm_seq = def->isa_imm<Seq>()) {
-            // Try to get rid of mut_seq's var: it may fly around in its body and vanish after reduction
-            // as holes might have been filled in the meantime.
-            auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->shape())));
-            if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
+// Try to get rid of mut_seq's var: it may occur in its body and vanish after reduction
+// as holes might have been filled in the meantime.
+bool Checker::check(Seq* mut_seq, const Seq* imm_seq) {
+    auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->shape())));
+    if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
 
-            auto mut_shape = mut_seq->shape();
-            mut_seq->unset()->set(mut_shape, mut_body->zonk());
-            return true;
-        }
-    }
-
-    if (auto seq2 = def->isa<Seq>()) return alpha_<mode>(seq1->body(), seq2->body());
-
-    return fail<mode>();
+    auto mut_shape = mut_seq->shape();
+    mut_seq->unset()->set(mut_shape, mut_body->zonk());
+    return true;
 }
 
 bool Checker::check(const UMax* umax, const Def* def) {
     for (auto op : umax->ops())
         if (!alpha<Check>(op, def)) return fail<Check>();
     return true;
-}
-
-const Def* Checker::assignable_(const Def* type, const Def* val) {
-    auto val_ty = val->type()->zonk();
-    if (type == val_ty) return val;
-
-    auto& w = world();
-    if (auto sigma = type->isa<Sigma>()) {
-        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
-
-        size_t a     = sigma->num_ops();
-        auto red     = sigma->reduce(val);
-        auto new_ops = absl::FixedArray<const Def*>(red.size());
-        for (size_t i = 0; i != a; ++i) {
-            auto new_val = assignable_(red[i], val->proj(a, i));
-            if (new_val)
-                new_ops[i] = new_val;
-            else
-                return fail();
-        }
-        return w.tuple(new_ops);
-    } else if (auto uniq = val->type()->isa<Uniq>()) {
-        if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
-        return fail();
-    }
-
-    return alpha_<Check>(type, val_ty) ? val : fail();
-}
-
-const Def* Checker::is_uniform(Defs defs) {
-    if (defs.empty()) return nullptr;
-    auto first = defs.front();
-    for (size_t i = 1, e = defs.size(); i != e; ++i)
-        if (!alpha<Test>(first, defs[i])) return nullptr;
-    return first;
 }
 
 /*
