@@ -10,6 +10,7 @@ class Seq;
 /// This node is a hole in the IR that is inferred by its context later on.
 /// It is modelled as a *mutable* Def.
 /// If inference was successful, it's Hole::op will be set to the inferred Def.
+/// @note Hole%s are not type-checked as they are used during type-checking - causing a chicken-and-egg problem.
 class Hole : public Def, public Setters<Hole> {
 private:
     Hole(const Def* type)
