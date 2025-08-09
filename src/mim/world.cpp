@@ -50,7 +50,7 @@ World::World(Driver* driver, const State& state)
     data_.top_nat     = insert<Top>(0, type_nat());
     data_.lit_nat_0   = lit_nat(0);
     data_.lit_nat_1   = lit_nat(1);
-    data_.lit_0_1     = lit_idx(1, 0);
+    data_.lit_idx_1_0 = lit_idx(1, 0);
     data_.type_bool   = type_idx(2);
     data_.lit_bool[0] = lit_idx(2, 0_u64);
     data_.lit_bool[1] = lit_idx(2, 1_u64);
@@ -176,7 +176,7 @@ const Def* World::var(const Def* type, Def* mut) {
     type = type->zonk();
 
     if (auto s = Idx::isa(type)) {
-        if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
+        if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
     }
 
     if (auto var = mut->var_) return var;

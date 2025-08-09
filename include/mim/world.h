@@ -389,7 +389,7 @@ public:
     const Lit* lit_nat_0() { return data_.lit_nat_0; }
     const Lit* lit_nat_1() { return data_.lit_nat_1; }
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
-    const Lit* lit_0_1() { return data_.lit_0_1; }
+    const Lit* lit_idx_1_0() { return data_.lit_idx_1_0; }
     // clang-format off
     const Lit* lit_i1()  { return lit_nat(Idx::bitwidth2size( 1)); };
     const Lit* lit_i8()  { return lit_nat(Idx::bitwidth2size( 8)); };
@@ -694,7 +694,7 @@ private:
         const Lit* lit_nat_0;
         const Lit* lit_nat_1;
         const Lit* lit_nat_max;
-        const Lit* lit_0_1;
+        const Lit* lit_idx_1_0;
         std::array<const Lit*, 2> lit_bool;
         u32 curr_run = 0;
     } data_;
