@@ -51,32 +51,36 @@ public:
     }
 
 private:
-    Def* root_; // Always rewrite this one - coulde be a mutable!
+    Def* root_; // Always rewrite this one!
 };
 
 } // namespace
 
 const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world(), nullptr).rewrite(this) : this; }
 
-const Def* Def::zonk_mut() {
+const Def* Def::zonk_mut() const {
     if (!is_set()) return this;
 
-    if (auto hole = isa<Hole>()) {
-        auto [last, op] = hole->find();
-        return op ? op->zonk() : last;
-    }
-
-    bool zonk = false;
-    for (auto def : deps())
-        if (needs_zonk(def)) {
-            zonk = true;
-            break;
+    if (auto mut = isa_mut()) {
+        if (auto hole = mut->isa<Hole>()) {
+            auto [last, op] = hole->find();
+            return op ? op->zonk() : last;
         }
 
-    if (zonk) return Zonker(world(), this).rewrite(this);
+        bool zonk = false;
+        for (auto def : deps())
+            if (needs_zonk(def)) {
+                zonk = true;
+                break;
+            }
 
-    if (auto imm = immutabilize()) return imm;
-    return this;
+        if (zonk) return Zonker(world(), mut).rewrite(mut);
+
+        if (auto imm = mut->immutabilize()) return imm;
+        return this;
+    }
+
+    return zonk();
 }
 
 DefVec Def::zonk(Defs defs) {
@@ -196,8 +200,8 @@ template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const D
 
     if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
-    d1 = d1->zonk();
-    d2 = d2->zonk();
+    d1 = d1->zonk_mut();
+    d2 = d2->zonk_mut();
 
     // clang-format off
     if (auto prod = d1->isa<Prod>()) return check<mode>(prod, d2);
@@ -237,7 +241,7 @@ template<Checker::Mode mode> bool Checker::check(const Seq* seq1, const Def* def
     if constexpr (mode == Mode::Check) {
         // alpha(«1; body», def) -> alpha(body, def);
         if (seq1->shape() == world().lit_nat_1() && !def->isa<Seq>()) {
-            auto body = seq1->reduce(world().lit_idx(1, 0))->zonk(); // try to get rid of var inside of body
+            auto body = seq1->reduce(world().lit_idx(1, 0)); // try to get rid of var inside of body
             if (!alpha_<mode>(body, def)) return fail<mode>();
             if (auto mut_seq = seq1->isa_mut<Seq>()) mut_seq->unset()->set(world().lit_nat_1(), body->zonk());
             return true;

@@ -531,16 +531,12 @@ public:
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
 
-    /// zonk%s all ops of this *mutable* and tries to immutabilize it; if it succeeds return it.
-    const Def* zonk_mut();
-
-    const Def* zonk_mut() const {
-        if (auto mut = isa_mut()) return mut->zonk_mut();
-        return zonk();
-    }
+    /// If *mutable, zonk%s all ops and tries to immutabilize it; otherwise just zonk.
+    const Def* zonk_mut() const;
     ///@}
 
-    static DefVec zonk(Defs);
+    /// zonk%s all @p defs and retuns a new DefVec.
+    static DefVec zonk(Defs defs);
 
     /// @name dump
     ///@{
