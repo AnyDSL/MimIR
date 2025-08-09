@@ -89,7 +89,6 @@ private:
 #endif
 
     template<Mode> [[nodiscard]] bool alpha_(const Def* d1, const Def* d2);
-    template<Mode> [[nodiscard]] bool alpha_internal(const Def*, const Def*);
     template<Mode> [[nodiscard]] bool check(const Prod*, const Def*);
     template<Mode> [[nodiscard]] bool check(const Seq*, const Def*);
     [[nodiscard]] bool check(const UMax*, const Def*);

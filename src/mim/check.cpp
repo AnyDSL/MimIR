@@ -155,53 +155,58 @@ const Def* Checker::fail() {
 #endif
 
 template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
-    d1 = d1->zonk_mut();
-    d2 = d2->zonk_mut();
+    for (bool todo = true; todo;) {
+        // below we check type and arity which may in turn open up more opportunities for zonking
+        todo = false;
+        d1   = d1->zonk_mut();
+        d2   = d2->zonk_mut();
 
-    // It is only safe to check for pointer equality if there are no Vars involved.
-    // Otherwise, we have to look more thoroughly.
-    // Example: λx.x - λz.x
-    if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
+        // It is only safe to check for pointer equality if there are no Vars involved.
+        // Otherwise, we have to look more thoroughly.
+        // Example: λx.x - λz.x
+        if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
 
-    auto h1 = d1->isa_mut<Hole>();
-    auto h2 = d2->isa_mut<Hole>();
+        auto h1 = d1->isa_mut<Hole>();
+        auto h2 = d2->isa_mut<Hole>();
 
-    if constexpr (mode == Check) {
-        if (h1) return h1->set(d2), true;
-        if (h2) return h2->set(d1), true;
-    } else if (h1 || h2) // mode == Test and h1 or h2 is an unresolved Hole
-        return fail<Test>();
+        if constexpr (mode == Check) {
+            if (h1) return h1->set(d2), true;
+            if (h2) return h2->set(d1), true;
+        } else if (h1 || h2) // mode == Test and h1 or h2 is an unresolved Hole
+            return fail<Test>();
 
-    if (!d1->is_set() || !d2->is_set()) return fail<mode>();
+        if (!d1->is_set() || !d2->is_set()) return fail<mode>();
 
-    auto mut1 = d1->isa_mut();
-    auto mut2 = d2->isa_mut();
+        auto mut1 = d1->isa_mut();
+        auto mut2 = d2->isa_mut();
 
-    if (mut1 && mut2 && mut1 == mut2) return true;
+        if (mut1 && mut2 && mut1 == mut2) return true;
 
-    // Globals are HACKs and require additionaly HACKs:
-    // Unless they are pointer equal (above) always consider them unequal.
-    if (d1->isa<Global>() || d2->isa<Global>()) return false;
+        // Globals are HACKs and require additionaly HACKs:
+        // Unless they are pointer equal (above) always consider them unequal.
+        if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
-    if (auto [i, ins] = bind(mut1, d2); !ins) return i->second == d2;
-    if (auto [i, ins] = bind(mut2, d1); !ins) return i->second == d1;
+        if (auto [i, ins] = bind(mut1, d2); !ins) return i->second == d2;
+        if (auto [i, ins] = bind(mut2, d1); !ins) return i->second == d1;
 
-    return alpha_internal<mode>(d1, d2);
-}
+        if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
 
-template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
-    if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
+        if (auto t1 = d1->type()) {
+            if (auto t2 = d2->type()) {
+                if (!alpha_<mode>(t1, t2)) return fail<mode>();
+            }
+        }
 
-    if (auto t1 = d1->type()) {
-        if (auto t2 = d2->type()) {
-            if (!alpha_<mode>(t1, t2)) return fail<mode>();
+        if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
+
+        auto new_d1 = d1->zonk_mut();
+        auto new_d2 = d2->zonk_mut();
+        if (new_d1 != d1 || new_d2 != d2) {
+            todo = true;
+            d1   = new_d1;
+            d2   = new_d2;
         }
     }
-
-    if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
-
-    d1 = d1->zonk_mut();
-    d2 = d2->zonk_mut();
 
     // clang-format off
     if (auto prod = d1->isa<Prod>()) return check<mode>(prod, d2);
@@ -291,29 +296,6 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
                 return fail();
         }
         return w.tuple(new_ops);
-    } else if (auto arr = type->isa<Arr>()) {
-        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
-
-        if (auto val_a = val_ty->isa<Arr>()) {
-            if (alpha_<Check>(arr->body(), val_a->body())) return val;
-            // TODO optimize this case here to not run into the expensive loop below
-        }
-
-        // TODO ack sclarize threshold
-        if (auto a = arr->isa_lit_arity()) {
-            auto new_ops = absl::FixedArray<const Def*>(*a);
-            for (size_t i = 0; i != *a; ++i) {
-                auto new_val = assignable_(arr->proj(*a, i), val->proj(*a, i));
-                if (new_val)
-                    new_ops[i] = new_val;
-                else
-                    return fail();
-            }
-            return w.tuple(new_ops);
-        }
-    } else if (auto inj = val->isa<Inj>()) {
-        if (auto new_val = assignable_(type, inj->value())) return w.inj(type, new_val);
-        return fail();
     } else if (auto uniq = val->type()->isa<Uniq>()) {
         if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
         return fail();
