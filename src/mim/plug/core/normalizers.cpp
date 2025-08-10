@@ -114,11 +114,12 @@ const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b, con
         }
     }
 
-    if (::mim::is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (::mim::is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
     return nullptr;
 }
 
-template<class Id, nat_t w> Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
+template<class Id, nat_t w>
+Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
     using ST = w2s<w>;
     auto s   = mim::bitcast<ST>(a);
 
@@ -129,7 +130,8 @@ template<class Id, nat_t w> Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_u
     ();
 }
 
-template<class Id> const Def* fold(World& world, const Def* type, const Def*& a) {
+template<class Id>
+const Def* fold(World& world, const Def* type, const Def*& a) {
     if (a->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -185,7 +187,8 @@ const Def* reassociate(Id id, World& world, [[maybe_unused]] const App* ab, cons
     return nullptr;
 }
 
-template<class Id> const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b) {
+template<class Id>
+const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b) {
     static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
     static constexpr size_t num_bits = std::bit_width(Annex::Num<Id> - 1_u64);
 
@@ -213,10 +216,11 @@ template<class Id> const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, 
 
 } // namespace
 
-template<nat id> const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
+template<nat id>
+const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
-    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
     auto la = Lit::isa(a);
     auto lb = Lit::isa(b);
 
@@ -233,14 +237,15 @@ template<nat id> const Def* normalize_nat(const Def* type, const Def* callee, co
     return world.raw_app(type, callee, {a, b});
 }
 
-template<ncmp id> const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg) {
+template<ncmp id>
+const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
 
     if (id == ncmp::t) return world.lit_tt();
     if (id == ncmp::f) return world.lit_ff();
 
     auto [a, b] = arg->projs<2>();
-    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
 
     if (auto la = Lit::isa(a)) {
         if (auto lb = Lit::isa(b)) {
@@ -261,7 +266,8 @@ template<ncmp id> const Def* normalize_ncmp(const Def* type, const Def* callee, 
     return world.raw_app(type, callee, {a, b});
 }
 
-template<icmp id> const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg) {
+template<icmp id>
+const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -277,7 +283,8 @@ template<icmp id> const Def* normalize_icmp(const Def* type, const Def* c, const
     return world.raw_app(type, callee, {a, b});
 }
 
-template<extrema id> const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg) {
+template<extrema id>
+const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -295,7 +302,8 @@ const Def* normalize_abs(const Def* type, const Def*, const Def* arg) {
     return {};
 }
 
-template<bit1 id> const Def* normalize_bit1(const Def* type, const Def* c, const Def* a) {
+template<bit1 id>
+const Def* normalize_bit1(const Def* type, const Def* c, const Def* a) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto s      = callee->decurry()->arg();
@@ -318,7 +326,8 @@ template<bit1 id> const Def* normalize_bit1(const Def* type, const Def* c, const
     return {};
 }
 
-template<bit2 id> const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg) {
+template<bit2 id>
+const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -326,7 +335,7 @@ template<bit2 id> const Def* normalize_bit2(const Def* type, const Def* c, const
     auto ls     = Lit::isa(s);
     // TODO cope with wrap around
 
-    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
 
     auto tab = make_truth_table(id);
     if (auto res = merge_cmps<icmp>(tab, a, b)) return res;
@@ -416,7 +425,8 @@ const Def* normalize_idx_unsafe(const Def*, const Def*, const Def* arg) {
     return {};
 }
 
-template<shr id> const Def* normalize_shr(const Def* type, const Def* c, const Def* arg) {
+template<shr id>
+const Def* normalize_shr(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -426,7 +436,8 @@ template<shr id> const Def* normalize_shr(const Def* type, const Def* c, const D
     return world.raw_app(type, callee, {a, b});
 }
 
-template<wrap id> const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg) {
+template<wrap id>
+const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -447,7 +458,8 @@ template<wrap id> const Def* normalize_wrap(const Def* type, const Def* c, const
     return world.raw_app(type, callee, {a, b});
 }
 
-template<div id> const Def* normalize_div(const Def* full_type, const Def*, const Def* arg) {
+template<div id>
+const Def* normalize_div(const Def* full_type, const Def*, const Def* arg) {
     auto& world    = full_type->world();
     auto [mem, ab] = arg->projs<2>();
     auto [a, b]    = ab->projs<2>();
@@ -459,7 +471,8 @@ template<div id> const Def* normalize_div(const Def* full_type, const Def*, cons
     return {};
 }
 
-template<conv id> const Def* normalize_conv(const Def* dst_t, const Def*, const Def* x) {
+template<conv id>
+const Def* normalize_conv(const Def* dst_t, const Def*, const Def* x) {
     auto& world = dst_t->world();
     auto s_t    = x->type()->as<App>();
     auto d_t    = dst_t->as<App>();
@@ -520,7 +533,8 @@ const Def* normalize_bitcast(const Def* dst_t, const Def*, const Def* src) {
 // TODO in contrast to C, we might want to give singleton types like 'Idx 1' or '[]' a size of 0 and simply nuke each
 // and every occurance of these types in a later phase
 // TODO Pi and others
-template<trait id> const Def* normalize_trait(const Def*, const Def*, const Def* type) {
+template<trait id>
+const Def* normalize_trait(const Def*, const Def*, const Def* type) {
     auto& world = type->world();
     if (auto ptr = Axm::isa<mem::Ptr>(type)) {
         return world.lit_nat(8);
@@ -566,7 +580,8 @@ template<trait id> const Def* normalize_trait(const Def*, const Def*, const Def*
     return {};
 }
 
-template<pe id> const Def* normalize_pe(const Def* type, const Def*, const Def* arg) {
+template<pe id>
+const Def* normalize_pe(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
 
     if constexpr (id == pe::is_closed) {
