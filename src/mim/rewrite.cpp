@@ -71,10 +71,10 @@ const Def* Rewriter::rewrite_seq(const Seq* seq) {
                 new_ops[i] = rewrite(seq->body());
             }
         }
-        return map(seq, seq->prod(world(), new_ops));
+        return map(seq, world().prod(seq->is_intro(), new_ops));
     }
 
-    if (!seq->has_var()) return map(seq, seq->rebuild(world(), new_arity, rewrite(seq->body())));
+    if (!seq->has_var()) return map(seq, world().seq(seq->is_intro(), new_arity, rewrite(seq->body())));
     return rewrite_mut(seq->as_mut());
 }
 

@@ -341,38 +341,34 @@ public:
     /// @name Arr
     ///@{
     // clang-format off
-    template<class T>
-    const Def* unit() {
-        if constexpr (std::is_same_v<T, Tuple> || std::is_same_v<T, Pack>)
-            return tuple();
-        else
-            return sigma();
-    }
+    const Def* unit(bool term) { return term ? (const Def*)tuple() : sigma(); }
 
-    template<class T> T* mut_seq(const Def* type) { return insert<T>(T::Num_Ops, type); }
-    template<class T> const Def* seq(const Def* arity, const Def* body);
-    template<class T> const Def* seq(Defs shape, const Def* body);
-    template<class T> const Def* seq(u64 n, const Def* body) { return seq<T>(lit_nat(n), body); }
-    template<class T> const Def* seq(View<u64> shape, const Def* body) { return seq<T>(DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body); }
-    template<class T> const Def* seq_unsafe(const Def* body) { return seq<T>(top_nat(), body); }
+    Seq* mut_seq(bool term, const Def* type) { return term ? (Seq*)insert<Pack>(1, type) : insert<Arr>(2, type); }
+    const Def* seq(bool term, const Def* arity, const Def* body);
+    const Def* seq(bool term, Defs shape, const Def* body);
+    const Def* seq(bool term, u64 n, const Def* body) { return seq(term, lit_nat(n), body); }
+    const Def* seq(bool term, View<u64> shape, const Def* body) { return seq(term, DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body); }
+    const Def* seq_unsafe(bool term, const Def* body) { return seq(term, top_nat(), body); }
 
     template<level_t level = 0>
     Arr* mut_arr() {
         return mut_arr(type<level>());
     }
 
-    Arr * mut_arr (const Def* type) { return mut_seq<Arr >(type); }
-    Pack* mut_pack(const Def* type) { return mut_seq<Pack>(type); }
-    const Def* arr (const Def* arity, const Def* body) { return seq<Arr >(arity, body); }
-    const Def* pack(const Def* arity, const Def* body) { return seq<Pack>(arity, body); }
-    const Def* arr (Defs       shape, const Def* body) { return seq<Arr >(shape, body); }
-    const Def* pack(Defs       shape, const Def* body) { return seq<Pack>(shape, body); }
-    const Def* arr (u64            n, const Def* body) { return seq<Arr >(    n, body); }
-    const Def* pack(u64            n, const Def* body) { return seq<Pack>(    n, body); }
-    const Def* arr (View<u64>  shape, const Def* body) { return seq<Arr >(shape, body); }
-    const Def* pack(View<u64>  shape, const Def* body) { return seq<Pack>(shape, body); }
-    const Def*  arr_unsafe(           const Def* body) { return seq_unsafe<Arr >(body); }
-    const Def* pack_unsafe(           const Def* body) { return seq_unsafe<Pack>(body); }
+    Arr * mut_arr (const Def* type) { return mut_seq(false, type)->as<Arr >(); }
+    Pack* mut_pack(const Def* type) { return mut_seq(true , type)->as<Pack>(); }
+    const Def* arr (const Def* arity, const Def* body) { return seq(false, arity, body); }
+    const Def* pack(const Def* arity, const Def* body) { return seq(true , arity, body); }
+    const Def* arr (Defs       shape, const Def* body) { return seq(false, shape, body); }
+    const Def* pack(Defs       shape, const Def* body) { return seq(true , shape, body); }
+    const Def* arr (u64            n, const Def* body) { return seq(false,     n, body); }
+    const Def* pack(u64            n, const Def* body) { return seq(true ,     n, body); }
+    const Def* arr (View<u64>  shape, const Def* body) { return seq(false, shape, body); }
+    const Def* pack(View<u64>  shape, const Def* body) { return seq(true , shape, body); }
+    const Def*  arr_unsafe(           const Def* body) { return seq_unsafe(false, body); }
+    const Def* pack_unsafe(           const Def* body) { return seq_unsafe(true , body); }
+
+    const Def* prod(bool term, Defs ops) { return term ? tuple(ops) : sigma(ops); }
     // clang-format on
     ///@}
 

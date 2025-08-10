@@ -468,8 +468,7 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
     return unify<Insert>(3, d, index, val);
 }
 
-template<class T>
-const Def* World::seq(const Def* arity, const Def* body) {
+const Def* World::seq(bool term, const Def* arity, const Def* body) {
     arity = arity->zonk();
     body  = body->zonk();
 
@@ -477,30 +476,30 @@ const Def* World::seq(const Def* arity, const Def* body) {
         error(arity->loc(), "expected arity but got `{}` of type `{}`", arity, arity->type());
 
     if (auto a = Lit::isa(arity)) {
-        if (*a == 0) return unit<T>();
+        if (*a == 0) return unit(term);
         if (*a == 1) return body;
     }
 
     // «(a, b, c); body» -> «a; «(b, c); body»»
-    if (auto tuple = arity->isa<Tuple>()) return seq<T>(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
+    if (auto tuple = arity->isa<Tuple>())
+        return seq(term, tuple->ops().front(), seq(term, tuple->ops().subspan(1), body));
 
     // «‹n; x›; body» -> «x; «<n-1, x>; body»»
     if (auto p = arity->isa<Pack>()) {
-        if (auto s = Lit::isa(p->arity())) return seq<T>(p->body(), arr(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->arity())) return seq(term, p->body(), seq(term, pack(*s - 1, p->body()), body));
     }
 
-    if constexpr (std::is_same_v<T, Arr>) {
-        return unify<T>(2, body->unfold_type(), arity, body);
-    } else {
+    if (term) {
         auto type = arr(arity, body->type());
         return unify<Pack>(1, type, body);
+    } else {
+        return unify<Arr>(2, body->unfold_type(), arity, body);
     }
 }
 
-template<class T>
-const Def* World::seq(Defs shape, const Def* body) {
+const Def* World::seq(bool term, Defs shape, const Def* body) {
     if (shape.empty()) return body;
-    return seq<T>(shape.rsubspan(1), arr(shape.back(), body));
+    return seq(term, shape.rsubspan(1), arr(shape.back(), body));
 }
 
 const Lit* World::lit(const Def* type, u64 val) {

@@ -8,14 +8,6 @@
 
 namespace mim {
 
-// clang-format off
-const Def* Arr ::rebuild(World& w, const Def* arity, const Def* body) const { return w.arr (arity, body)->set(dbg()); }
-const Def* Pack::rebuild(World& w, const Def* arity, const Def* body) const { return w.pack(arity, body)->set(dbg()); }
-
-const Def* Arr ::prod(World& w, Defs ops) const { return w.sigma(ops)->set(dbg()); }
-const Def* Pack::prod(World& w, Defs ops) const { return w.tuple(ops)->set(dbg()); }
-// clang-format on
-
 namespace {
 bool should_flatten(const Def* def) {
     auto type = (def->is_term() ? def->type() : def);
