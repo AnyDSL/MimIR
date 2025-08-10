@@ -15,7 +15,7 @@
 
 // clang-format off
 #define MIM_NODE(m)                                                                                             \
-    m(Lit,    Judge::Intro) /* keep this first - used by cummute*/                                              \
+    m(Lit,    Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/          \
     m(Axm,    Judge::Intro)                                                                                     \
     m(Var,    Judge::Intro)                                                                                     \
     m(Global, Judge::Intro)                                                                                     \
@@ -547,6 +547,18 @@ public:
     std::ostream& stream(std::ostream&, int max) const;
     ///@}
 
+    /// @name Syntactic Comparison
+    ///
+    enum class Cmp {
+        L, ///< Less
+        G, ///< Greater
+        E, ///< Equal
+        U, ///< Unknown
+    };
+    [[nodiscard]] static Cmp cmp(const Def* a, const Def* b);
+    [[nodiscard]] static bool less(const Def* a, const Def* b);
+    [[nodiscard]] static bool greater(const Def* a, const Def* b);
+
     /// @name dot
     /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
     /// If @p types is `true`, Def::type() dependencies will be followed as well.
@@ -579,6 +591,8 @@ private:
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
     bool equal(const Def* other) const;
+
+    template<Cmp> [[nodiscard]] static bool cmp_(const Def* a, const Def* b);
 
 protected:
     mutable Dbg dbg_;

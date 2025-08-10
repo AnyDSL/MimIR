@@ -283,6 +283,23 @@ bool Def::is_set() const {
  * free_vars
  */
 
+// clang-format off
+const Def* Def::var() {
+    if (var_) return var_;
+    auto& w = world();
+
+    if (w.is_frozen()) return nullptr;
+    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
+    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
+    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (isa<Bound >()) return w.var(this, this);
+    if (isa<Hole  >()) return nullptr;
+    if (isa<Global>()) return nullptr;
+    fe::unreachable();
+}
+
 Muts Def::local_muts() const {
     if (auto mut = isa_mut()) return Muts(mut);
     return muts_;
@@ -448,23 +465,47 @@ const Def* Def::debug_prefix(std::string prefix) const { return dbg_.set(world()
 const Def* Def::debug_suffix(std::string suffix) const { return dbg_.set(world().sym(sym().str() + suffix)), this; }
 #endif
 
-// clang-format off
+/*
+ * cmp
+ */
 
-const Def* Def::var() {
-    if (var_) return var_;
-    auto& w = world();
+Def::Cmp Def::cmp(const Def* a, const Def* b) {
+    if (a == b) return Cmp::E;
 
-    if (w.is_frozen()) return nullptr;
-    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
-    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
-    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
-    if (isa<Bound >()) return w.var(this, this);
-    if (isa<Hole  >()) return nullptr;
-    if (isa<Global>()) return nullptr;
-    fe::unreachable();
+    if (a->isa_imm() && b->isa_mut()) return Cmp::L;
+    if (a->isa_mut() && b->isa_imm()) return Cmp::G;
+
+    // clang-format off
+    if (a->node()    != b->node()   ) return a->node()    < b->node()    ? Cmp::L : Cmp::G;
+    if (a->num_ops() != b->num_ops()) return a->num_ops() < b->num_ops() ? Cmp::L : Cmp::G;
+    if (a->flags()   != b->flags()  ) return a->flags()   < b->flags()   ? Cmp::L : Cmp::G;
+    // clang-format on
+
+    if (a->isa_mut() && b->isa_mut()) return Cmp::U;
+    assert(a->isa_imm() && b->isa_imm());
+
+    if (a->isa<Var>()) return Cmp::U;
+
+    // heuristic: iterate backwards as index (often a Lit) comes last and will faster find a solution
+    for (size_t i = a->num_ops(); i-- != 0;)
+        if (auto res = cmp(a->op(i), b->op(i)); res >= Cmp::E) return res;
+
+    return cmp(a->type(), b->type());
 }
+
+template<Def::Cmp c> bool Def::cmp_(const Def* a, const Def* b) {
+    auto res = cmp(a, b);
+    if (res == Cmp::U) {
+        a->world().WLOG("resorting to unstable gid-based compare for commute check");
+        return c == Cmp::L ? a->gid() < b->gid() : a->gid() > b->gid();
+    }
+    return res == c;
+}
+
+// clang-format off
+bool Def::less   (const Def* a, const Def* b) { return cmp_<Cmp::L>(a, b); }
+bool Def::greater(const Def* a, const Def* b) { return cmp_<Cmp::G>(a, b); }
+// clang-format on
 
 // clang-format on
 
