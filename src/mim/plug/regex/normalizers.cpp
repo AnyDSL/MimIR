@@ -74,12 +74,16 @@ template<class ConjOrDisj> const Def* make_binary_tree(Defs args) {
 const Def* normalize_conj(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     world.DLOG("conj {}:{} ({})", type, callee, arg);
-    if (arg->as_lit_arity() > 2) {
-        auto flat_args = flatten_in_arg<conj>(arg);
-        return make_binary_tree<conj>(flat_args);
+
+    if (auto a = arg->isa_lit_arity()) {
+        switch (*a) {
+            case 0: return world.lit_tt();
+            case 1: return arg;
+            default: return make_binary_tree<conj>(flatten_in_arg<conj>(arg));
+        }
     }
 
-    return arg->as_lit_arity() == 1 ? arg : nullptr;
+    return {};
 }
 
 bool compare_re(const Def* lhs, const Def* rhs) {

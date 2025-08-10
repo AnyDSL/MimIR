@@ -176,7 +176,7 @@ template<class Id, Id id> const Def* fold(World& world, const Def* type, const D
         }
     }
 
-    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
     return nullptr;
 }
 

@@ -19,6 +19,7 @@
 #include "mim/util/log.h"
 
 namespace mim {
+
 class Driver;
 
 /// The World represents the whole program and manages creation of MimIR nodes (Def%s).
@@ -172,7 +173,8 @@ public:
     auto annexes() const { return move_.flags2annex | std::views::values; }
 
     /// Lookup annex by Axm::id.
-    template<class Id> const Def* annex(Id id) {
+    template<class Id>
+    const Def* annex(Id id) {
         auto flags = static_cast<flags_t>(id);
         if (auto i = move_.flags2annex.find(flags); i != move_.flags2annex.end()) return i->second;
         error("Axm with ID '{x}' not found; demangled plugin name is '{}'", flags, Annex::demangle(driver(), flags));
@@ -181,7 +183,10 @@ public:
     /// Get Axm from a plugin.
     /// Can be used to get an Axm without sub-tags.
     /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axm.
-    template<annex_without_subs id> const Def* annex() { return annex(Annex::Base<id>); }
+    template<annex_without_subs id>
+    const Def* annex() {
+        return annex(Annex::Base<id>);
+    }
 
     const Def* register_annex(flags_t f, const Def*);
     const Def* register_annex(plugin_t p, tag_t t, sub_t s, const Def* def) {
@@ -211,10 +216,12 @@ public:
     ///@{
     const Univ* univ() { return data_.univ; }
     const Def* uinc(const Def* op, level_t offset = 1);
-    template<Sort = Sort::Univ> const Def* umax(Defs);
+    template<int sort = UMax::Univ>
+    const Def* umax(Defs);
     const Type* type(const Def* level);
     const Type* type_infer_univ() { return type(mut_hole_univ()); }
-    template<level_t level = 0> const Type* type() {
+    template<level_t level = 0>
+    const Type* type() {
         if constexpr (level == 0)
             return data_.type_0;
         else if constexpr (level == 1)
@@ -316,8 +323,10 @@ public:
 
     /// @name App
     ///@{
-    template<bool Normalize = true> const Def* app(const Def* callee, const Def* arg);
-    template<bool Normalize = true> const Def* app(const Def* callee, Defs args) {
+    template<bool Normalize = true>
+    const Def* app(const Def* callee, const Def* arg);
+    template<bool Normalize = true>
+    const Def* app(const Def* callee, Defs args) {
         return app<Normalize>(callee, tuple(args));
     }
     const Def* raw_app(const Axm* axm, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg);
@@ -329,7 +338,10 @@ public:
     ///@{
     Sigma* mut_sigma(const Def* type, size_t size) { return insert<Sigma>(size, type, size); }
     /// A *mutable* Sigma of type @p level.
-    template<level_t level = 0> Sigma* mut_sigma(size_t size) { return mut_sigma(type<level>(), size); }
+    template<level_t level = 0>
+    Sigma* mut_sigma(size_t size) {
+        return mut_sigma(type<level>(), size);
+    }
     const Def* sigma(Defs ops);
     const Sigma* sigma() { return data_.sigma; } ///< The unit type within Type 0.
     ///@}
@@ -337,7 +349,10 @@ public:
     /// @name Arr
     ///@{
     Arr* mut_arr(const Def* type) { return insert<Arr>(2, type); }
-    template<level_t level = 0> Arr* mut_arr() { return mut_arr(type<level>()); }
+    template<level_t level = 0>
+    Arr* mut_arr() {
+        return mut_arr(type<level>());
+    }
     const Def* arr(const Def* shape, const Def* body);
     const Def* arr(Defs shape, const Def* body);
     const Def* arr(u64 n, const Def* body) { return arr(lit_nat(n), body); }
@@ -397,7 +412,7 @@ public:
     const Lit* lit_nat_0() { return data_.lit_nat_0; }
     const Lit* lit_nat_1() { return data_.lit_nat_1; }
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
-    const Lit* lit_0_1() { return data_.lit_0_1; }
+    const Lit* lit_idx_1_0() { return data_.lit_idx_1_0; }
     // clang-format off
     const Lit* lit_i1()  { return lit_nat(Idx::bitwidth2size( 1)); };
     const Lit* lit_i8()  { return lit_nat(Idx::bitwidth2size( 8)); };
@@ -438,13 +453,15 @@ public:
 
     /// @name Lattice
     ///@{
-    template<bool Up> const Def* ext(const Def* type);
+    template<bool Up>
+    const Def* ext(const Def* type);
     const Def* bot(const Def* type) { return ext<false>(type); }
     const Def* top(const Def* type) { return ext<true>(type); }
     const Def* type_bot() { return data_.type_bot; }
     const Def* type_top() { return data_.type_top; }
     const Def* top_nat() { return data_.top_nat; }
-    template<bool Up> const Def* bound(Defs ops);
+    template<bool Up>
+    const Def* bound(Defs ops);
     const Def* join(Defs ops) { return bound<true>(ops); }
     const Def* meet(Defs ops) { return bound<false>(ops); }
     const Def* merge(const Def* type, Defs ops);
@@ -489,11 +506,14 @@ public:
     ///@{
 
     /// Places Hole%s as demanded by Pi::is_implicit() and then apps @p arg.
-    template<bool Normalize = true> const Def* implicit_app(const Def* callee, const Def* arg);
-    template<bool Normalize = true> const Def* implicit_app(const Def* callee, Defs args) {
+    template<bool Normalize = true>
+    const Def* implicit_app(const Def* callee, const Def* arg);
+    template<bool Normalize = true>
+    const Def* implicit_app(const Def* callee, Defs args) {
         return implicit_app<Normalize>(callee, tuple(args));
     }
-    template<bool Normalize = true> const Def* implicit_app(const Def* callee, nat_t arg) {
+    template<bool Normalize = true>
+    const Def* implicit_app(const Def* callee, nat_t arg) {
         return implicit_app<Normalize>(callee, lit_nat(arg));
     }
     template<bool Normalize = true, class E>
@@ -520,7 +540,7 @@ public:
     [[nodiscard]] const auto& muts() const { return move_.muts; }
 
     /// Yields the new body of `[mut->var() -> arg]mut`.
-    /// The new body may have fewer elements as `mut->num_ops()` addording to Def::reduction_offset.
+    /// The new body may have fewer elements as `mut->num_ops()` according to Def::reduction_offset.
     /// E.g. a Pi has a Pi::reduction_offset of 1, and only Pi::dom will be reduced - *not* Pi::codom.
     Defs reduce(const Var* var, const Def* arg);
     ///@}
@@ -553,17 +573,20 @@ private:
     /// @name call_
     /// Helpers to unwind World::call with variadic templates.
     ///@{
-    template<bool Normalize = true, class T, class... Args> const Def* call_(const Def* callee, T arg, Args&&... args) {
+    template<bool Normalize = true, class T, class... Args>
+    const Def* call_(const Def* callee, T arg, Args&&... args) {
         return call_<Normalize>(implicit_app(callee, arg), std::forward<Args>(args)...);
     }
-    template<bool Normalize = true, class T> const Def* call_(const Def* callee, T arg) {
+    template<bool Normalize = true, class T>
+    const Def* call_(const Def* callee, T arg) {
         return implicit_app<Normalize>(callee, arg);
     }
     ///@}
 
     /// @name Put into Sea of Nodes
     ///@{
-    template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
+    template<class T, class... Args>
+    const T* unify(size_t num_ops, Args&&... args) {
         auto state = move_.arena.defs.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = get_loc()) def->set(loc);
@@ -589,13 +612,15 @@ private:
         return def;
     }
 
-    template<class T> void deallocate(fe::Arena::State state, const T* ptr) {
+    template<class T>
+    void deallocate(fe::Arena::State state, const T* ptr) {
         --state_.pod.curr_gid;
         ptr->~T();
         move_.arena.defs.deallocate(state);
     }
 
-    template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
+    template<class T, class... Args>
+    T* insert(size_t num_ops, Args&&... args) {
         auto def = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = get_loc()) def->set(loc);
 #ifdef MIM_ENABLE_CHECKS
@@ -618,7 +643,8 @@ private:
     };
 #endif
 
-    template<class T, class... Args> T* allocate(size_t num_ops, Args&&... args) {
+    template<class T, class... Args>
+    T* allocate(size_t num_ops, Args&&... args) {
         static_assert(sizeof(Def) == sizeof(T),
                       "you are not allowed to introduce any additional data in subclasses of Def");
         auto lock      = Lock();
@@ -646,7 +672,8 @@ private:
         constexpr Reduct(size_t size) noexcept
             : size_(size) {}
 
-        template<size_t N = std::dynamic_extent> constexpr auto defs() const noexcept {
+        template<size_t N = std::dynamic_extent>
+        constexpr auto defs() const noexcept {
             return View<const Def*, N>{defs_, size_};
         }
 
@@ -703,7 +730,7 @@ private:
         const Lit* lit_nat_0;
         const Lit* lit_nat_1;
         const Lit* lit_nat_max;
-        const Lit* lit_0_1;
+        const Lit* lit_idx_1_0;
         std::array<const Lit*, 2> lit_bool;
         u32 curr_run = 0;
     } data_;
