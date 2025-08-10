@@ -225,7 +225,8 @@ Defs Def::reduce_(const Def* arg) const {
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
     auto new_ops = absl::FixedArray<const Def*>(num_ops());
-    for (size_t j = 0, e = num_ops(); j != e; ++j) new_ops[j] = i == j ? new_op : op(j);
+    for (size_t j = 0, e = num_ops(); j != e; ++j)
+        new_ops[j] = i == j ? new_op : op(j);
     return rebuild(type(), new_ops);
 }
 
@@ -235,7 +236,8 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
 
 Def* Def::set(Defs ops) {
     assert(ops.size() == num_ops());
-    for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
+    for (size_t i = 0, e = num_ops(); i != e; ++i)
+        set(i, ops[i]);
     return this;
 }
 
@@ -373,6 +375,7 @@ template<bool init> Vars Def::free_vars(bool& todo, uint32_t run) {
     return vars_ = fvs;
 }
 
+
 void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
@@ -499,7 +502,8 @@ Def::Cmp Def::cmp(const Def* a, const Def* b) {
     return cmp(a->type(), b->type());
 }
 
-template<Def::Cmp c> bool Def::cmp_(const Def* a, const Def* b) {
+template<Def::Cmp c>
+bool Def::cmp_(const Def* a, const Def* b) {
     auto res = cmp(a, b);
     if (res == Cmp::U) {
         a->world().WLOG("resorting to unstable gid-based compare for commute check");
@@ -547,7 +551,8 @@ bool Def::equal(const Def* other) const {
     bool result = this->node() == other->node() && this->flags() == other->flags()
                && this->num_ops() == other->num_ops() && this->type() == other->type();
 
-    for (size_t i = 0, e = num_ops(); result && i != e; ++i) result &= this->op(i) == other->op(i);
+    for (size_t i = 0, e = num_ops(); result && i != e; ++i)
+        result &= this->op(i) == other->op(i);
 
     return result;
 }

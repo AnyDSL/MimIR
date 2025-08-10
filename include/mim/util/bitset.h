@@ -149,11 +149,13 @@ public:
 
 private:
     void ensure_capacity(size_t num_bits) const;
-    template<class F> BitSet& op_assign(const BitSet& other) {
+    template<class F>
+    BitSet& op_assign(const BitSet& other) {
         if (this->num_words() < other.num_words()) this->ensure_capacity(other.num_bits() - 1);
         auto this_words  = this->words();
         auto other_words = other.words();
-        for (size_t i = 0, e = other.num_words(); i != e; ++i) this_words[i] = F()(this_words[i], other_words[i]);
+        for (size_t i = 0, e = other.num_words(); i != e; ++i)
+            this_words[i] = F()(this_words[i], other_words[i]);
         return *this;
     }
 
