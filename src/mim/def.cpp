@@ -171,6 +171,8 @@ template const Def* TBound<true >::rebuild_(World&, const Def*, Defs) const;
  */
 
 bool Def::is_immutabilizable() {
+    if (!is_set()) return false;
+
     if (auto v = has_var()) {
         for (auto op : deps())
             if (op->free_vars().contains(v)) return false;
@@ -223,7 +225,8 @@ Defs Def::reduce_(const Def* arg) const {
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
     auto new_ops = absl::FixedArray<const Def*>(num_ops());
-    for (size_t j = 0, e = num_ops(); j != e; ++j) new_ops[j] = i == j ? new_op : op(j);
+    for (size_t j = 0, e = num_ops(); j != e; ++j)
+        new_ops[j] = i == j ? new_op : op(j);
     return rebuild(type(), new_ops);
 }
 
@@ -233,7 +236,8 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
 
 Def* Def::set(Defs ops) {
     assert(ops.size() == num_ops());
-    for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
+    for (size_t i = 0, e = num_ops(); i != e; ++i)
+        set(i, ops[i]);
     return this;
 }
 
@@ -281,6 +285,24 @@ bool Def::is_set() const {
  * free_vars
  */
 
+const Def* Def::var() {
+    if (var_) return var_;
+    auto& w = world();
+
+    // clang-format off
+    if (w.is_frozen()) return nullptr;
+    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
+    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
+    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (isa<Bound >()) return w.var(this, this);
+    if (isa<Hole  >()) return nullptr;
+    if (isa<Global>()) return nullptr;
+    // clang-format on
+    fe::unreachable();
+}
+
 Muts Def::local_muts() const {
     if (auto mut = isa_mut()) return Muts(mut);
     return muts_;
@@ -291,7 +313,8 @@ Vars Def::free_vars() const {
 
     auto& vars = world().vars();
     auto fvs   = local_vars();
-    for (auto mut : local_muts()) fvs = vars.merge(fvs, mut->free_vars());
+    for (auto mut : local_muts())
+        fvs = vars.merge(fvs, mut->free_vars());
 
     return fvs;
 }
@@ -302,26 +325,35 @@ Vars Def::free_vars() {
     if (mark_ == 0) {
         // fixed-point iteration to recompute free vars:
         // (run - 1) identifies the previous iteration; so make sure to offset run by 2 for the first iteration
-        auto& w = world();
+        auto& w     = world();
+        bool cyclic = false;
         w.next_run();
-        for (bool todo = true, cyclic = false; todo;) {
+        free_vars<true>(cyclic, w.next_run());
+
+        for (bool todo = cyclic; todo;) {
             todo = false;
-            free_vars(todo, cyclic, w.next_run());
-            if (!cyclic) break; // triggers either immediately or never
+            free_vars<false>(todo, w.next_run());
         }
     }
 
     return vars_;
 }
 
-Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
-    assert(isa_mut());
+template<bool init>
+Vars Def::free_vars(bool& todo, uint32_t run) {
+    // If init == true : todo flag detects cycle.
+    // If init == false: todo flag keeps track whether sth changed.
+    //
     // Recursively recompute free vars. If
-    // * mark_ == 0: invalid - need to recompute
-    // * mark_ == run - 1: Previous iteration - need to recompute
-    // * mark_ == run: We are running in cycles within the *current* iteration of our fixed-point loop
-    // * all other values for mark_: valid!
-    if (mark_ != 0 && mark_ != run - 1) return cyclic |= mark_ == run, vars_;
+    // * mark_ == 0:        Invalid - need to recompute.
+    // * mark_ == run - 1:  Previous iteration - need to recompute.
+    // * mark_ == run:      We are running in cycles within the *current* iteration of our fixed-point loop.
+    // * otherwise:         Valid!
+    if (mark_ != 0 && mark_ != run - 1) {
+        if constexpr (init) todo |= mark_ == run;
+        return vars_;
+    }
+
     mark_ = run;
 
     auto fvs0  = vars_;
@@ -331,27 +363,28 @@ Vars Def::free_vars(bool& todo, bool& cyclic, uint32_t run) {
     auto& vars = w.vars();
 
     for (auto op : deps()) {
-        fvs = vars.merge(fvs, op->local_vars());
+        if constexpr (init) fvs = vars.merge(fvs, op->local_vars());
 
         for (auto mut : op->local_muts()) {
-            mut->muts_ = muts.insert(mut->muts_, this); // register "this" as user of local_mut
-            fvs        = vars.merge(fvs, mut->free_vars(todo, cyclic, run));
+            if constexpr (init) mut->muts_ = muts.insert(mut->muts_, this); // register "this" as user of local_mut
+            fvs = vars.merge(fvs, mut->free_vars<init>(todo, run));
         }
     }
 
     if (auto var = has_var()) fvs = vars.erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
 
-    todo |= fvs0 != fvs;
+    if constexpr (!init) todo |= fvs0 != fvs;
+
     return vars_ = fvs;
 }
 
 void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
-        // if (vars_) { // only necessary, if the cached free vars are non-empty
-        for (auto mut : users()) mut->invalidate();
+        // TODO optimize if vars empty?
+        for (auto mut : users())
+            mut->invalidate();
         vars_ = Vars();
-        // }
         muts_ = Muts();
     }
 }
@@ -397,7 +430,7 @@ const Def* Def::unfold_type() const {
 
 std::string_view Def::node_name() const {
     switch (node()) {
-#define CODE(name, _, __) \
+#define CODE(name, _) \
     case Node::name: return #name;
         MIM_NODE(CODE)
 #undef CODE
@@ -413,7 +446,7 @@ Defs Def::deps() const noexcept {
 
 u32 Def::judge() const noexcept {
     switch (node()) {
-#define CODE(n, _, j) \
+#define CODE(n, j) \
     case Node::n: return u32(j);
         MIM_NODE(CODE)
 #undef CODE
@@ -437,39 +470,81 @@ const Def* Def::debug_prefix(std::string prefix) const { return dbg_.set(world()
 const Def* Def::debug_suffix(std::string suffix) const { return dbg_.set(world().sym(sym().str() + suffix)), this; }
 #endif
 
-// clang-format off
+/*
+ * cmp
+ */
 
-const Def* Def::var() {
-    if (var_) return var_;
-    auto& w = world();
+Def::Cmp Def::cmp(const Def* a, const Def* b) {
+    if (a == b) return Cmp::E;
 
-    if (w.is_frozen()) return nullptr;
-    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
-    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
-    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
-    if (isa<Bound >()) return w.var(this, this);
-    if (isa<Hole  >()) return nullptr;
-    if (isa<Global>()) return nullptr;
-    fe::unreachable();
+    if (a->isa_imm() && b->isa_mut()) return Cmp::L;
+    if (a->isa_mut() && b->isa_imm()) return Cmp::G;
+
+    // clang-format off
+    if (a->node()    != b->node()   ) return a->node()    < b->node()    ? Cmp::L : Cmp::G;
+    if (a->num_ops() != b->num_ops()) return a->num_ops() < b->num_ops() ? Cmp::L : Cmp::G;
+    if (a->flags()   != b->flags()  ) return a->flags()   < b->flags()   ? Cmp::L : Cmp::G;
+    // clang-format on
+
+    if (a->isa_mut() && b->isa_mut()) return Cmp::U;
+    assert(a->isa_imm() && b->isa_imm());
+
+    if (auto va = a->isa<Var>()) {
+        auto vb = b->as<Var>();
+        auto ma = va->mut();
+        auto mb = vb->mut();
+        if (ma->is_set() && ma->free_vars().contains(vb)) return Cmp::L;
+        if (mb->is_set() && mb->free_vars().contains(va)) return Cmp::G;
+        return Cmp::U;
+    }
+
+    // heuristic: iterate backwards as index (often a Lit) comes last and will faster find a solution
+    for (size_t i = a->num_ops(); i-- != 0;)
+        if (auto res = cmp(a->op(i), b->op(i)); res == Cmp::L || res == Cmp::G) return res;
+
+    return cmp(a->type(), b->type());
 }
 
+template<Def::Cmp c>
+bool Def::cmp_(const Def* a, const Def* b) {
+    auto res = cmp(a, b);
+    if (res == Cmp::U) {
+        a->world().WLOG("resorting to unstable gid-based compare for commute check");
+        return c == Cmp::L ? a->gid() < b->gid() : a->gid() > b->gid();
+    }
+    return res == c;
+}
+
+// clang-format off
+bool Def::less   (const Def* a, const Def* b) { return cmp_<Cmp::L>(a, b); }
+bool Def::greater(const Def* a, const Def* b) { return cmp_<Cmp::G>(a, b); }
+// clang-format on
+
 const Def* Def::arity() const {
-    if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
-    if (auto arr    = isa<Arr  >()) return arr->shape();
-    if (auto t = type())            return t->arity();
+    if (auto sigma = isa<Sigma>()) {
+        auto n = sigma->num_ops();
+        if (n != 1 || sigma->isa_mut()) return world().lit_nat(n);
+        return sigma->op(0)->arity();
+    }
+
+    if (auto arr = isa<Arr>()) return arr->shape();
+    if (auto t = type()) return t->arity();
+
     return world().lit_nat_1();
 }
 
 std::optional<nat_t> Def::isa_lit_arity() const {
-    if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
-    if (auto arr    = isa<Arr  >()) return Lit::isa(arr->shape());
-    if (auto t = type())            return t->isa_lit_arity();
+    if (auto sigma = isa<Sigma>()) {
+        auto n = sigma->num_ops();
+        if (n != 1 || sigma->isa_mut()) return n;
+        return sigma->op(0)->isa_lit_arity();
+    }
+
+    if (auto arr = isa<Arr>()) return Lit::isa(arr->shape());
+    if (auto t = type()) return t->isa_lit_arity();
+
     return 1;
 }
-
-// clang-format on
 
 bool Def::equal(const Def* other) const {
     if (isa<Univ>() || this->isa_mut() || other->isa_mut()) return this == other;
@@ -477,7 +552,8 @@ bool Def::equal(const Def* other) const {
     bool result = this->node() == other->node() && this->flags() == other->flags()
                && this->num_ops() == other->num_ops() && this->type() == other->type();
 
-    for (size_t i = 0, e = num_ops(); result && i != e; ++i) result &= this->op(i) == other->op(i);
+    for (size_t i = 0, e = num_ops(); result && i != e; ++i)
+        result &= this->op(i) == other->op(i);
 
     return result;
 }
@@ -495,21 +571,17 @@ nat_t Def::num_tprojs() const {
 const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
 
-    if (auto arr = isa<Arr>()) {
-        if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->reduce(w.lit_idx(a, i));
-    } else if (auto pack = isa<Pack>()) {
-        if (pack->arity()->isa<Top>()) return pack->body();
-        assert(!w.is_frozen() && "TODO");
-        return pack->reduce(w.lit_idx(a, i));
-    }
-
     if (a == 1) {
         if (!type()) return this;
         if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
     }
 
-    if (isa<Tuple>() || isa<Sigma>()) return op(i);
+    if (auto seq = isa<Seq>()) {
+        if (seq->has_var()) return seq->reduce(world().lit_idx(a, i));
+        return seq->body();
+    }
+
+    if (isa<Prod>()) return op(i);
     if (w.is_frozen()) return nullptr;
 
     return w.extract(this, a, i);
