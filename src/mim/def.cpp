@@ -196,9 +196,9 @@ const Def* Sigma::immutabilize() {
 
 const Def* Arr::immutabilize() {
     auto& w = world();
-    if (is_immutabilizable()) return w.arr(shape(), body());
+    if (is_immutabilizable()) return w.arr(arity(), body());
 
-    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalarize_threshold)
+    if (auto n = Lit::isa(arity()); n && *n < w.flags().scalarize_threshold)
         return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
 
     return nullptr;
@@ -206,9 +206,9 @@ const Def* Arr::immutabilize() {
 
 const Def* Pack::immutabilize() {
     auto& w = world();
-    if (is_immutabilizable()) return w.pack(shape(), body());
+    if (is_immutabilizable()) return w.pack(arity(), body());
 
-    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalarize_threshold)
+    if (auto n = Lit::isa(arity()); n && *n < w.flags().scalarize_threshold)
         return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
 
     return nullptr;
@@ -294,8 +294,8 @@ const Def* Def::var() {
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->arity()), arr ); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->arity()), pack); // TODO shapes like (2, 3)
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Hole  >()) return nullptr;
     if (isa<Global>()) return nullptr;
@@ -521,29 +521,8 @@ bool Def::greater(const Def* a, const Def* b) { return cmp_<Cmp::G>(a, b); }
 // clang-format on
 
 const Def* Def::arity() const {
-    if (auto sigma = isa<Sigma>()) {
-        auto n = sigma->num_ops();
-        if (n != 1 || sigma->isa_mut()) return world().lit_nat(n);
-        return sigma->op(0)->arity();
-    }
-
-    if (auto arr = isa<Arr>()) return arr->shape();
-    if (auto t = type()) return t->arity();
-
+    if (auto t = type(); t && !t->isa<Type>()) return t->arity();
     return world().lit_nat_1();
-}
-
-std::optional<nat_t> Def::isa_lit_arity() const {
-    if (auto sigma = isa<Sigma>()) {
-        auto n = sigma->num_ops();
-        if (n != 1 || sigma->isa_mut()) return n;
-        return sigma->op(0)->isa_lit_arity();
-    }
-
-    if (auto arr = isa<Arr>()) return Lit::isa(arr->shape());
-    if (auto t = type()) return t->isa_lit_arity();
-
-    return 1;
 }
 
 bool Def::equal(const Def* other) const {
@@ -563,8 +542,10 @@ void Def::make_internal() { return world().make_internal(this); }
 
 std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
 
+nat_t Def::num_projs() const { return Lit::isa(arity()).value_or(1); }
+
 nat_t Def::num_tprojs() const {
-    if (auto a = isa_lit_arity(); a && *a < world().flags().scalarize_threshold) return *a;
+    if (auto a = Lit::isa(arity()); a && *a < world().flags().scalarize_threshold) return *a;
     return 1;
 }
 

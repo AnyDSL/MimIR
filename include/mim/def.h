@@ -260,17 +260,7 @@ public:
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     const Def* unfold_type() const;
     bool is_term() const;
-    ///@}
-
-    /// @name arity
-    ///@{
-    const Def* arity() const;
-    std::optional<nat_t> isa_lit_arity() const;
-    nat_t as_lit_arity() const {
-        auto a = isa_lit_arity();
-        assert(a.has_value());
-        return *a;
-    }
+    virtual const Def* arity() const;
     ///@}
 
     /// @name ops
@@ -349,8 +339,8 @@ public:
     /// ```
     ///@{
 
-    /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
-    nat_t num_projs() const { return isa_lit_arity().value_or(1); }
+    /// Yields Def::arity(), if it is a Lit, or `1` otherwise.
+    nat_t num_projs() const;
     nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalarize_threshold is exceeded.
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
@@ -366,7 +356,6 @@ public:
         if constexpr (A == std::dynamic_extent) {
             return projs(num_projs(), f);
         } else {
-            assert(A == as_lit_arity());
             std::array<R, A> array;
             for (nat_t i = 0; i != A; ++i)
                 array[i] = f(proj(A, i));

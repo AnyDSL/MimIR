@@ -61,7 +61,8 @@ World::World(Driver* driver)
     : World(driver, State()) {}
 
 World::~World() {
-    for (auto def : move_.defs) def->~Def();
+    for (auto def : move_.defs)
+        def->~Def();
 }
 
 /*
@@ -125,12 +126,14 @@ const Def* World::uinc(const Def* op, level_t offset) {
 
 static void flatten_umax(DefVec& ops, const Def* def) {
     if (auto umax = def->isa<UMax>())
-        for (auto op : umax->ops()) flatten_umax(ops, op);
+        for (auto op : umax->ops())
+            flatten_umax(ops, op);
     else
         ops.emplace_back(def);
 }
 
-template<int sort> const Def* World::umax(Defs ops_) {
+template<int sort>
+const Def* World::umax(Defs ops_) {
     DefVec ops;
     for (auto op : ops_) {
         op = op->zonk();
@@ -183,12 +186,15 @@ const Def* World::var(const Def* type, Def* mut) {
     return mut->var_ = unify<Var>(1, type, mut);
 }
 
-template<bool Normalize> const Def* World::implicit_app(const Def* callee, const Def* arg) {
-    while (auto pi = Pi::isa_implicit(callee->type())) callee = app(callee, mut_hole(pi->dom()));
+template<bool Normalize>
+const Def* World::implicit_app(const Def* callee, const Def* arg) {
+    while (auto pi = Pi::isa_implicit(callee->type()))
+        callee = app(callee, mut_hole(pi->dom()));
     return app<Normalize>(callee, arg);
 }
 
-template<bool Normalize> const Def* World::app(const Def* callee, const Def* arg) {
+template<bool Normalize>
+const Def* World::app(const Def* callee, const Def* arg) {
     callee = callee->zonk();
     arg    = arg->zonk();
 
@@ -348,7 +354,7 @@ const Def* World::extract(const Def* d, const Def* index) {
         auto ops = DefVec(n, [&](size_t i) { return d->proj(n, Lit::as(idx[i])); });
         return tuple(ops);
     } else if (index->isa<Pack>()) {
-        auto ops = DefVec(index->as_lit_arity(), [&](size_t) { return extract(d, index->ops().back()); });
+        auto ops = DefVec(Lit::as(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
         return tuple(ops);
     }
 
@@ -447,7 +453,7 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
 
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = d->isa<Pack>(); pack && lidx) {
-        if (auto a = pack->isa_lit_arity(); a && *a < flags().scalarize_threshold) {
+        if (auto a = Lit::isa(pack->arity()); a && *a < flags().scalarize_threshold) {
             auto new_ops   = DefVec(*a, pack->body());
             new_ops[*lidx] = val;
             return tuple(type, new_ops);
@@ -479,7 +485,7 @@ const Def* World::arr(const Def* shape, const Def* body) {
 
     // «‹n; x›; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = Lit::isa(p->shape())) return arr(p->body(), arr(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->arity())) return arr(p->body(), arr(pack(*s - 1, p->body()), body));
     }
 
     return unify<Arr>(2, body->unfold_type(), shape, body);
@@ -502,7 +508,7 @@ const Def* World::pack(const Def* shape, const Def* body) {
 
     // «‹n; x›; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = Lit::isa(p->shape())) return pack(p->body(), pack(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->arity())) return pack(p->body(), pack(pack(*s - 1, p->body()), body));
     }
 
     auto type = arr(shape, body->type());
@@ -539,16 +545,18 @@ const Lit* World::lit(const Def* type, u64 val) {
  * set
  */
 
-template<bool Up> const Def* World::ext(const Def* type) {
+template<bool Up>
+const Def* World::ext(const Def* type) {
     type = type->zonk();
 
-    if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
+    if (auto arr = type->isa<Arr>()) return pack(arr->arity(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefVec(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
     return unify<TExt<Up>>(0, type);
 }
 
-template<bool Up> const Def* World::bound(Defs ops_) {
+template<bool Up>
+const Def* World::bound(Defs ops_) {
     auto ops = DefVec();
     for (size_t i = 0, e = ops_.size(); i != e; ++i) {
         auto op = ops_[i]->zonk();
@@ -675,7 +683,8 @@ Defs World::reduce(const Var* var, const Def* arg) {
     auto buf    = move_.arena.substs.allocate(sizeof(Reduct) + size * sizeof(const Def*), alignof(const Def*));
     auto reduct = new (buf) Reduct(size);
     auto rw     = VarRewriter(var, arg);
-    for (size_t i = 0; i != size; ++i) reduct->defs_[i] = rw.rewrite(mut->op(i + offset));
+    for (size_t i = 0; i != size; ++i)
+        reduct->defs_[i] = rw.rewrite(mut->op(i + offset));
     assert_emplace(move_.substs, std::pair{var, arg}, reduct);
     return reduct->defs();
 }
@@ -696,8 +705,10 @@ const Def* World::gid2def(u32 gid) {
 }
 
 World& World::verify() {
-    for (auto mut : externals()) assert(mut->is_closed() && mut->is_set());
-    for (auto anx : annexes()) assert(anx->is_closed());
+    for (auto mut : externals())
+        assert(mut->is_closed() && mut->is_set());
+    for (auto anx : annexes())
+        assert(anx->is_closed());
     return *this;
 }
 

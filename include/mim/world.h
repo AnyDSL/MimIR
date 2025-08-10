@@ -379,7 +379,7 @@ public:
     ///@{
     const Def* extract(const Def* d, const Def* i);
     const Def* extract(const Def* d, u64 a, u64 i) { return extract(d, lit_idx(a, i)); }
-    const Def* extract(const Def* d, u64 i) { return extract(d, d->as_lit_arity(), i); }
+    const Def* extract(const Def* d, u64 i) { return extract(d, Lit::as(d->arity()), i); }
 
     /// Builds `(f, t)#cond`.
     /// @note Expects @p cond as first, @p t as second, and @p f as third argument.
@@ -391,7 +391,7 @@ public:
     ///@{
     const Def* insert(const Def* d, const Def* i, const Def* val);
     const Def* insert(const Def* d, u64 a, u64 i, const Def* val) { return insert(d, lit_idx(a, i), val); }
-    const Def* insert(const Def* d, u64 i, const Def* val) { return insert(d, d->as_lit_arity(), i, val); }
+    const Def* insert(const Def* d, u64 i, const Def* val) { return insert(d, Lit::as(d->arity()), i, val); }
     ///@}
 
     /// @name Lit

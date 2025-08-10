@@ -9,8 +9,8 @@
 namespace mim {
 
 // clang-format off
-const Def* Arr ::rebuild(World& w, const Def* shape, const Def* body) const { return w.arr (shape, body)->set(dbg()); }
-const Def* Pack::rebuild(World& w, const Def* shape, const Def* body) const { return w.pack(shape, body)->set(dbg()); }
+const Def* Arr ::rebuild(World& w, const Def* arity, const Def* body) const { return w.arr (arity, body)->set(dbg()); }
+const Def* Pack::rebuild(World& w, const Def* arity, const Def* body) const { return w.pack(arity, body)->set(dbg()); }
 
 const Def* Arr ::prod(World& w, Defs ops) const { return w.sigma(ops)->set(dbg()); }
 const Def* Pack::prod(World& w, Defs ops) const { return w.tuple(ops)->set(dbg()); }
@@ -21,7 +21,7 @@ bool should_flatten(const Def* def) {
     auto type = (def->is_term() ? def->type() : def);
     if (type->isa<Sigma>()) return true;
     if (auto arr = type->isa<Arr>()) {
-        if (auto a = arr->isa_lit_arity(); a && *a > def->world().flags().scalarize_threshold) return false;
+        if (auto a = Lit::isa(arr->arity()); a && *a > def->world().flags().scalarize_threshold) return false;
         return true;
     }
     return false;
@@ -34,7 +34,7 @@ bool mut_val_or_typ(const Def* def) {
 
 const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
     if (!defs.empty() && defs[0]->type() == type) return defs[j++];
-    if (auto a = type->isa_lit_arity();
+    if (auto a = Lit::isa(type->arity());
         flatten_muts == mut_val_or_typ(type) && a && *a != 1 && a <= type->world().flags().scalarize_threshold) {
         auto& world = type->world();
         auto ops    = DefVec(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
@@ -45,8 +45,14 @@ const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
 }
 } // namespace
 
-const Def* Pack::shape() const {
-    if (auto arr = type()->isa<Arr>()) return arr->shape();
+const Def* Sigma::arity() const {
+    auto n = num_ops();
+    if (n != 1 || isa_mut()) return world().lit_nat(n);
+    return op(0)->arity();
+}
+
+const Def* Pack::arity() const {
+    if (auto arr = type()->isa<Arr>()) return arr->arity();
     if (type() == world().sigma()) return world().lit_nat_0();
     return world().lit_nat_1();
 }
@@ -58,7 +64,7 @@ std::string tuple2str(const Def* def) {
 
     auto& w  = def->world();
     auto res = std::string();
-    if (auto n = def->isa_lit_arity()) {
+    if (auto n = Lit::isa(def->arity())) {
         for (size_t i = 0; i != *n; ++i) {
             auto elem = def->proj(*n, i);
             if (elem->type() == w.type_i8()) {
@@ -74,9 +80,10 @@ std::string tuple2str(const Def* def) {
 }
 
 size_t flatten(DefVec& ops, const Def* def, bool flatten_muts) {
-    if (auto a = def->isa_lit_arity(); a && *a != 1 && should_flatten(def) && flatten_muts == mut_val_or_typ(def)) {
+    if (auto a = Lit::isa(def->arity()); a && *a != 1 && should_flatten(def) && flatten_muts == mut_val_or_typ(def)) {
         auto n = 0;
-        for (size_t i = 0; i != *a; ++i) n += flatten(ops, def->proj(*a, i), flatten_muts);
+        for (size_t i = 0; i != *a; ++i)
+            n += flatten(ops, def->proj(*a, i), flatten_muts);
         return n;
     } else {
         ops.emplace_back(def);
@@ -98,7 +105,7 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
     return def;
 }
 
-const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(def->as_lit_arity()), type); }
+const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(Lit::as(def->arity())), type); }
 
 DefVec merge(const Def* def, Defs defs) {
     return DefVec(defs.size() + 1, [&](size_t i) { return i == 0 ? def : defs[i - 1]; });
@@ -130,7 +137,7 @@ const Def* merge_tuple(const Def* def, Defs defs) {
 const Def* tuple_of_types(const Def* t) {
     auto& world = t->world();
     if (auto sigma = t->isa<Sigma>()) return world.tuple(sigma->ops());
-    if (auto arr = t->isa<Arr>()) return world.pack(arr->shape(), arr->body());
+    if (auto arr = t->isa<Arr>()) return world.pack(arr->arity(), arr->body());
     return t;
 }
 

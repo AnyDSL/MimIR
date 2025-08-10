@@ -41,9 +41,12 @@ void Module::emit(AST& ast) const {
 
 void Module::emit(Emitter& e) const {
     auto _ = e.world().push(loc());
-    for (const auto& import : implicit_imports()) import->emit(e);
-    for (const auto& import : imports()) import->emit(e);
-    for (const auto& decl : decls()) decl->emit(e);
+    for (const auto& import : implicit_imports())
+        import->emit(e);
+    for (const auto& import : imports())
+        import->emit(e);
+    for (const auto& decl : decls())
+        decl->emit(e);
 }
 
 void Import::emit(Emitter& e) const { module()->emit(e); }
@@ -68,7 +71,8 @@ const Def* AliasPtrn::emit_value(Emitter& e, const Def* def) const {
 const Def* TuplePtrn::emit_value(Emitter& e, const Def* def) const {
     auto _ = e.world().push(loc());
     emit_type(e);
-    for (size_t i = 0, n = num_ptrns(); i != n; ++i) ptrn(i)->emit_value(e, def->proj(n, i));
+    for (size_t i = 0, n = num_ptrns(); i != n; ++i)
+        ptrn(i)->emit_value(e, def->proj(n, i));
     return def_ = def;
 }
 
@@ -185,9 +189,11 @@ const Def* LitExpr::emit_(Emitter& e) const {
 
 const Def* DeclExpr::emit_(Emitter& e) const {
     if (is_where())
-        for (const auto& decl : decls() | std::ranges::views::reverse) decl->emit(e);
+        for (const auto& decl : decls() | std::ranges::views::reverse)
+            decl->emit(e);
     else
-        for (const auto& decl : decls()) decl->emit(e);
+        for (const auto& decl : decls())
+            decl->emit(e);
     return expr()->emit(e);
 }
 
@@ -208,7 +214,8 @@ const Def* ArrowExpr::emit_(Emitter& e) const {
 
 const Def* UnionExpr::emit_(Emitter& e) const {
     DefVec etypes;
-    for (auto& t : types()) etypes.emplace_back(t->emit(e));
+    for (auto& t : types())
+        etypes.emplace_back(t->emit(e));
     return e.world().join(etypes);
 }
 
@@ -230,7 +237,8 @@ Lam* MatchExpr::Arm::emit(Emitter& e) const {
 const Def* MatchExpr::emit_(Emitter& e) const {
     DefVec res;
     res.emplace_back(scrutinee()->emit(e));
-    for (const auto& arm : arms()) res.emplace_back(arm->emit(e));
+    for (const auto& arm : arms())
+        res.emplace_back(arm->emit(e));
     return e.world().match(res);
 }
 
@@ -317,7 +325,7 @@ const Def* SeqExpr::emit_(Emitter& e) const {
 
     auto t = e.world().type_infer_univ();
     auto a = e.world().mut_arr(t);
-    a->set_shape(s);
+    a->set_arity(s);
 
     if (is_arr()) {
         auto var = a->var();
@@ -403,7 +411,8 @@ void AxmDecl::emit(Emitter& e) const {
             auto axm  = e.world().axm(norm, id.curry, id.trip, mim_type_, id.plugin, id.tag, s)->set(name);
             e.world().register_annex(id.plugin, id.tag, s, axm);
 
-            for (const auto& alias : sub(i)) alias->def_ = axm;
+            for (const auto& alias : sub(i))
+                alias->def_ = axm;
         }
     }
 }
@@ -415,8 +424,10 @@ void LetDecl::emit(Emitter& e) const {
 }
 
 void RecDecl::emit(Emitter& e) const {
-    for (auto curr = this; curr; curr = curr->next()) curr->emit_decl(e);
-    for (auto curr = this; curr; curr = curr->next()) curr->emit_body(e);
+    for (auto curr = this; curr; curr = curr->next())
+        curr->emit_decl(e);
+    for (auto curr = this; curr; curr = curr->next())
+        curr->emit_body(e);
 }
 
 void RecDecl::emit_decl(Emitter& e) const {
@@ -451,7 +462,8 @@ void LamDecl::emit_decl(Emitter& e) const {
 
     // Iterate over all doms: Build a Lam for cur dom, by first building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
-        for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
+        for (const auto& dom : doms() | std::ranges::views::drop(i))
+            dom->emit_type(e);
 
         auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_hole_type();
         for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse)
