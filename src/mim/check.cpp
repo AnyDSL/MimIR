@@ -13,7 +13,7 @@ namespace {
 static bool needs_zonk(const Def* def) {
     if (def->has_dep(Dep::Hole)) {
         for (auto mut : def->local_muts())
-            if (auto hole = mut->isa<Hole>(); hole && hole->is_set()) return true;
+            if (Hole::isa_set(mut)) return true;
     }
 
     return false;
@@ -62,6 +62,7 @@ const Def* Def::zonk_mut() const {
     if (!is_set()) return this;
 
     if (auto mut = isa_mut()) {
+        // TODO copy & paste from above
         if (auto hole = mut->isa<Hole>()) {
             auto [last, op] = hole->find();
             return op ? op->zonk() : last;
@@ -95,7 +96,7 @@ std::pair<Hole*, const Def*> Hole::find() {
     auto def  = Def::op(0);
     auto last = this;
 
-    for (; def;) {
+    while (def) {
         if (auto h = def->isa_mut<Hole>()) {
             def  = h->op();
             last = h;
