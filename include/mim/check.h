@@ -26,20 +26,44 @@ public:
     /// Transitively walks up Hole%s until the last one while path-compressing everything.
     /// @returns the final Hole in the chain and final op() (if any).
     std::pair<Hole*, const Def*> find();
+    ///@}
+
+    /// @name set/unset
+    ///@{
     Hole* set(const Def* op) {
         assert(op != this);
         return Def::set(0, op)->as<Hole>();
     }
+    Hole* unset() { return Def::unset()->as<Hole>(); }
     ///@}
 
-    Hole* unset() { return Def::unset()->as<Hole>(); }
     Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `this` if unsuccessful.
     const Def* tuplefy(nat_t);
 
-    static const Def* isa(const Def*);
+    /// @name isa
+    ///@{
+    static const Def* isa_set(const Def* def) {
+        if (auto hole = def->isa<Hole>(); hole && hole->is_set()) return hole->op();
+        return nullptr;
+    }
+
+    static Hole* isa_unset(const Def* def) {
+        if (auto hole = def->isa_mut<Hole>(); hole && !hole->is_set()) return hole;
+        return nullptr;
+    }
+
+    /// If @p def is a Hole, find last in chain, otherwise yields @p def again.
+    static const Def* find(const Def* def) {
+        if (auto hole = def->isa_mut<Hole>()) {
+            auto [last, op] = hole->find();
+            return op ? op : last;
+        }
+        return def;
+    }
+    ///@}
 
     static constexpr auto Node = mim::Node::Hole;
 

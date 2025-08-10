@@ -484,11 +484,18 @@ Def::Cmp Def::cmp(const Def* a, const Def* b) {
     if (a->isa_mut() && b->isa_mut()) return Cmp::U;
     assert(a->isa_imm() && b->isa_imm());
 
-    if (a->isa<Var>()) return Cmp::U;
+    if (auto va = a->isa<Var>()) {
+        auto vb = b->as<Var>();
+        auto ma = va->mut();
+        auto mb = vb->mut();
+        if (ma->is_set() && ma->free_vars().contains(vb)) return Cmp::L;
+        if (mb->is_set() && mb->free_vars().contains(va)) return Cmp::G;
+        return Cmp::U;
+    }
 
     // heuristic: iterate backwards as index (often a Lit) comes last and will faster find a solution
     for (size_t i = a->num_ops(); i-- != 0;)
-        if (auto res = cmp(a->op(i), b->op(i)); res >= Cmp::E) return res;
+        if (auto res = cmp(a->op(i), b->op(i)); res == Cmp::L || res == Cmp::G) return res;
 
     return cmp(a->type(), b->type());
 }
