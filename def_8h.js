@@ -12,8 +12,8 @@ var def_8h =
     [ "mim::Idx", "classmim_1_1Idx.html", "classmim_1_1Idx" ],
     [ "mim::Proxy", "classmim_1_1Proxy.html", "classmim_1_1Proxy" ],
     [ "mim::Global", "classmim_1_1Global.html", "classmim_1_1Global" ],
-    [ "CODE", "def_8h.html#a6adc9cd160778f527f2ed8fb931ff4ee", null ],
-    [ "CODE", "def_8h.html#a6adc9cd160778f527f2ed8fb931ff4ee", null ],
+    [ "CODE", "def_8h.html#a87f559632082486a774f25d565c9b958", null ],
+    [ "CODE", "def_8h.html#a87f559632082486a774f25d565c9b958", null ],
     [ "MIM_NODE", "def_8h.html#ae7b11a3eb455bf4f67f20e1d364be209", null ],
     [ "MIM_PROJ", "def_8h.html#af607f4cede9847484ec49abf7d351932", null ],
     [ "mim::Def2Def", "namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab", null ],
@@ -45,7 +45,7 @@ var def_8h =
       [ "mim::Judge::Hole", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988", null ]
     ] ],
     [ "mim::Node", "namespacemim.html#afb12dbffaaa27bca46f171517d96256d", [
-      [ "mim::Node::CODE", "namespacemim.html#afb12dbffaaa27bca46f171517d96256daf75458333a22f574140680447a32e95f", null ],
+      [ "mim::Node::CODE", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da2f14a262872a344ea85b24f3a2ecc68a", null ],
       [ "mim::Node::Lit", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dae5e556ecf935270736f5e46e73db06e4", null ],
       [ "mim::Node::Axm", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da772a78ebe7cabb9591df042871a5a849", null ],
       [ "mim::Node::Var", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77", null ],

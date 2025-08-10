@@ -486,10 +486,10 @@ $(function(){initNavTree('def_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    assert(<a class="code hl_function" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">isa_mut</a>());</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    <span class="comment">// Recursively recompute free vars. If</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    <span class="comment">// * mark_ == 0: invalid - need to recompute</span></div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="comment">// * mark_ == run - 1: Previous iteration - need to recompute</span></div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    <span class="comment">// * mark_ == run: We are running in cycles within the *current* iteration of our fixed-point loop</span></div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    <span class="comment">// * all other values for mark_: valid!</span></div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>    <span class="comment">// * mark_ == 0:        Invalid - need to recompute.</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="comment">// * mark_ == run - 1:  Previous iteration - need to recompute.</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    <span class="comment">// * mark_ == run:      We are running in cycles within the *current* iteration of our fixed-point loop.</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>    <span class="comment">// * otherwise:         Valid!</span></div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    <span class="keywordflow">if</span> (mark_ != 0 &amp;&amp; mark_ != run - 1) {</div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (init) todo |= mark_ == run;</div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        <span class="keywordflow">return</span> vars_;</div>
@@ -579,9 +579,9 @@ $(function(){initNavTree('def_8cpp_source.html',''); initResizable(true); });
 <div class="foldopen" id="foldopen00409" data-start="{" data-end="}">
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno"><a class="line" href="classmim_1_1Def.html#a361f116b80b8b8fd1eac9a22e34564b0">  409</a></span>std::string_view <a class="code hl_function" href="classmim_1_1Def.html#a361f116b80b8b8fd1eac9a22e34564b0">Def::node_name</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>    <span class="keywordflow">switch</span> (<a class="code hl_function" href="classmim_1_1Def.html#a107ccfac1058aee369926112bb593d35">node</a>()) {</div>
-<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="preprocessor">#define CODE(name, _, __) \</span></div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="preprocessor">#define CODE(name, _) \</span></div>
 <div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span><span class="preprocessor">    case Node::name: return #name;</span></div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>        <a class="code hl_define" href="def_8h.html#ae7b11a3eb455bf4f67f20e1d364be209">MIM_NODE</a>(<a class="code hl_enumvalue" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256daf75458333a22f574140680447a32e95f">CODE</a>)</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>        <a class="code hl_define" href="def_8h.html#ae7b11a3eb455bf4f67f20e1d364be209">MIM_NODE</a>(<a class="code hl_enumvalue" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da2f14a262872a344ea85b24f3a2ecc68a">CODE</a>)</div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span><span class="preprocessor">#undef CODE</span></div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>        <span class="keywordflow">default</span>: fe::unreachable();</div>
 <div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    }</div>
@@ -599,9 +599,9 @@ $(function(){initNavTree('def_8cpp_source.html',''); initResizable(true); });
 <div class="foldopen" id="foldopen00425" data-start="{" data-end="}">
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno"><a class="line" href="classmim_1_1Def.html#af0bca023516d92ff7bc3ce422bdf4178">  425</a></span><a class="code hl_typedef" href="namespacemim.html#ac95ee7c4fe2ecc8c69781e8fb2397ec0">u32</a> <a class="code hl_function" href="classmim_1_1Def.html#af0bca023516d92ff7bc3ce422bdf4178">Def::judge</a>() const noexcept {</div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    <span class="keywordflow">switch</span> (<a class="code hl_function" href="classmim_1_1Def.html#a107ccfac1058aee369926112bb593d35">node</a>()) {</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="preprocessor">#define CODE(n, _, j) \</span></div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="preprocessor">#define CODE(n, j) \</span></div>
 <div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span><span class="preprocessor">    case Node::n: return u32(j);</span></div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>        <a class="code hl_define" href="def_8h.html#ae7b11a3eb455bf4f67f20e1d364be209">MIM_NODE</a>(<a class="code hl_enumvalue" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256daf75458333a22f574140680447a32e95f">CODE</a>)</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>        <a class="code hl_define" href="def_8h.html#ae7b11a3eb455bf4f67f20e1d364be209">MIM_NODE</a>(<a class="code hl_enumvalue" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da2f14a262872a344ea85b24f3a2ecc68a">CODE</a>)</div>
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="preprocessor">#undef CODE</span></div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>        <span class="keywordflow">default</span>: fe::unreachable();</div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>    }</div>
@@ -932,8 +932,8 @@ $(function(){initNavTree('def_8cpp_source.html',''); initResizable(true); });
 <div class="ttc" id="anamespacemim_html_aef2afb7040e6345a0b89b209ae7560c7"><div class="ttname"><a href="namespacemim.html#aef2afb7040e6345a0b89b209ae7560c7">mim::u8</a></div><div class="ttdeci">uint8_t u8</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00034">types.h:34</a></div></div>
 <div class="ttc" id="anamespacemim_html_afb12dbffaaa27bca46f171517d96256d"><div class="ttname"><a href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">mim::Node</a></div><div class="ttdeci">Node</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00083">def.h:83</a></div></div>
 <div class="ttc" id="anamespacemim_html_afb12dbffaaa27bca46f171517d96256da143bb06341e537e7143fb33624517946"><div class="ttname"><a href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da143bb06341e537e7143fb33624517946">mim::Node::Univ</a></div><div class="ttdeci">@ Univ</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00085">def.h:85</a></div></div>
+<div class="ttc" id="anamespacemim_html_afb12dbffaaa27bca46f171517d96256da2f14a262872a344ea85b24f3a2ecc68a"><div class="ttname"><a href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da2f14a262872a344ea85b24f3a2ecc68a">mim::Node::CODE</a></div><div class="ttdeci">CODE(node, _)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00084">def.h:84</a></div></div>
 <div class="ttc" id="anamespacemim_html_afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77"><div class="ttname"><a href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77">mim::Node::Var</a></div><div class="ttdeci">@ Var</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00085">def.h:85</a></div></div>
-<div class="ttc" id="anamespacemim_html_afb12dbffaaa27bca46f171517d96256daf75458333a22f574140680447a32e95f"><div class="ttname"><a href="namespacemim.html#afb12dbffaaa27bca46f171517d96256daf75458333a22f574140680447a32e95f">mim::Node::CODE</a></div><div class="ttdeci">CODE(node, name, _)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00084">def.h:84</a></div></div>
 <div class="ttc" id="aworld_8h_html"><div class="ttname"><a href="world_8h.html">world.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
