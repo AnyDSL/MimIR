@@ -8,6 +8,7 @@
 namespace mim {
 
 Pass::Pass(PassMan& man, std::string_view name)
+
     : man_(man)
     , name_(name)
     , index_(man.passes().size()) {}
@@ -23,13 +24,15 @@ void PassMan::push_state() {
         curr_state().mut2visit = prev_state.mut2visit;
         curr_state().old_ops.assign(curr_state().curr_mut->ops().begin(), curr_state().curr_mut->ops().end());
 
-        for (size_t i = 0; i != passes().size(); ++i) curr_state().data[i] = passes_[i]->copy(prev_state.data[i]);
+        for (size_t i = 0; i != passes().size(); ++i)
+            curr_state().data[i] = passes_[i]->copy(prev_state.data[i]);
     }
 }
 
 void PassMan::pop_states(size_t undo) {
     while (states_.size() != undo) {
-        for (size_t i = 0, e = curr_state().data.size(); i != e; ++i) passes_[i]->dealloc(curr_state().data[i]);
+        for (size_t i = 0, e = curr_state().data.size(); i != e; ++i)
+            passes_[i]->dealloc(curr_state().data[i]);
 
         if (undo != 0) // only reset if not final cleanup
             curr_state().curr_mut->unset()->set(curr_state().old_ops);
@@ -43,12 +46,15 @@ void PassMan::run() {
 
     auto num = passes().size();
     states_.emplace_back(num);
-    for (size_t i = 0; i != num; ++i) curr_state().data[i] = passes_[i]->alloc();
+    for (size_t i = 0; i != num; ++i)
+        curr_state().data[i] = passes_[i]->alloc();
 
-    for (auto&& pass : passes_) world().ILOG(" + {}", pass->name());
+    for (auto&& pass : passes_)
+        world().ILOG(" + {}", pass->name());
     world().debug_dump();
 
-    for (auto&& pass : passes_) pass->prepare();
+    for (auto&& pass : passes_)
+        pass->prepare();
 
     for (auto mut : world().copy_externals()) {
         analyzed(mut);
@@ -68,13 +74,15 @@ void PassMan::run() {
         curr_mut_->world().DLOG("curr_mut: {} : {}", curr_mut_, curr_mut_->type());
 
         auto new_defs = absl::FixedArray<const Def*>(curr_mut_->num_ops());
-        for (size_t i = 0, e = curr_mut_->num_ops(); i != e; ++i) new_defs[i] = rewrite(curr_mut_->op(i));
+        for (size_t i = 0, e = curr_mut_->num_ops(); i != e; ++i)
+            new_defs[i] = rewrite(curr_mut_->op(i));
         curr_mut_->unset()->set(new_defs);
 
         world().VLOG("=== analyze ===");
         proxy_    = false;
         auto undo = No_Undo;
-        for (auto op : curr_mut_->deps()) undo = std::min(undo, analyze(op));
+        for (auto op : curr_mut_->deps())
+            undo = std::min(undo, analyze(op));
 
         if (undo == No_Undo) {
             assert(!proxy_ && "proxies must not occur anymore after leaving a mut with No_Undo");
@@ -109,7 +117,8 @@ const Def* PassMan::rewrite(const Def* old_def) {
 
     auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
     auto new_ops  = absl::FixedArray<const Def*>(old_def->num_ops());
-    for (size_t i = 0, e = old_def->num_ops(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
+    for (size_t i = 0, e = old_def->num_ops(); i != e; ++i)
+        new_ops[i] = rewrite(old_def->op(i));
     auto new_def = old_def->rebuild(new_type, new_ops);
 
     if (auto proxy = new_def->isa<Proxy>()) {
@@ -144,7 +153,8 @@ undo_t PassMan::analyze(const Def* def) {
     } else {
         auto var = def->isa<Var>();
         if (!var)
-            for (auto op : def->deps()) undo = std::min(undo, analyze(op));
+            for (auto op : def->deps())
+                undo = std::min(undo, analyze(op));
 
         for (auto&& pass : passes_)
             if (pass->inspect()) undo = std::min(undo, var ? pass->analyze(var) : pass->analyze(def));

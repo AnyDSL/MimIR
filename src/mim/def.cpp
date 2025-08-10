@@ -225,7 +225,8 @@ Defs Def::reduce_(const Def* arg) const {
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
     auto new_ops = absl::FixedArray<const Def*>(num_ops());
-    for (size_t j = 0, e = num_ops(); j != e; ++j) new_ops[j] = i == j ? new_op : op(j);
+    for (size_t j = 0, e = num_ops(); j != e; ++j)
+        new_ops[j] = i == j ? new_op : op(j);
     return rebuild(type(), new_ops);
 }
 
@@ -235,7 +236,8 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
 
 Def* Def::set(Defs ops) {
     assert(ops.size() == num_ops());
-    for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
+    for (size_t i = 0, e = num_ops(); i != e; ++i)
+        set(i, ops[i]);
     return this;
 }
 
@@ -283,11 +285,11 @@ bool Def::is_set() const {
  * free_vars
  */
 
-// clang-format off
 const Def* Def::var() {
     if (var_) return var_;
     auto& w = world();
 
+    // clang-format off
     if (w.is_frozen()) return nullptr;
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
@@ -297,6 +299,7 @@ const Def* Def::var() {
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Hole  >()) return nullptr;
     if (isa<Global>()) return nullptr;
+    // clang-format on
     fe::unreachable();
 }
 
@@ -310,7 +313,8 @@ Vars Def::free_vars() const {
 
     auto& vars = world().vars();
     auto fvs   = local_vars();
-    for (auto mut : local_muts()) fvs = vars.merge(fvs, mut->free_vars());
+    for (auto mut : local_muts())
+        fvs = vars.merge(fvs, mut->free_vars());
 
     return fvs;
 }
@@ -335,7 +339,8 @@ Vars Def::free_vars() {
     return vars_;
 }
 
-template<bool init> Vars Def::free_vars(bool& todo, uint32_t run) {
+template<bool init>
+Vars Def::free_vars(bool& todo, uint32_t run) {
     // If init == true : todo flag detects cycle.
     // If init == false: todo flag keeps track whether sth changed.
     //
@@ -377,7 +382,8 @@ void Def::invalidate() {
     if (mark_ != 0) {
         mark_ = 0;
         // TODO optimize if vars empty?
-        for (auto mut : users()) mut->invalidate();
+        for (auto mut : users())
+            mut->invalidate();
         vars_ = Vars();
         muts_ = Muts();
     }
@@ -499,7 +505,8 @@ Def::Cmp Def::cmp(const Def* a, const Def* b) {
     return cmp(a->type(), b->type());
 }
 
-template<Def::Cmp c> bool Def::cmp_(const Def* a, const Def* b) {
+template<Def::Cmp c>
+bool Def::cmp_(const Def* a, const Def* b) {
     auto res = cmp(a, b);
     if (res == Cmp::U) {
         a->world().WLOG("resorting to unstable gid-based compare for commute check");
@@ -511,8 +518,6 @@ template<Def::Cmp c> bool Def::cmp_(const Def* a, const Def* b) {
 // clang-format off
 bool Def::less   (const Def* a, const Def* b) { return cmp_<Cmp::L>(a, b); }
 bool Def::greater(const Def* a, const Def* b) { return cmp_<Cmp::G>(a, b); }
-// clang-format on
-
 // clang-format on
 
 const Def* Def::arity() const {
@@ -547,7 +552,8 @@ bool Def::equal(const Def* other) const {
     bool result = this->node() == other->node() && this->flags() == other->flags()
                && this->num_ops() == other->num_ops() && this->type() == other->type();
 
-    for (size_t i = 0, e = num_ops(); result && i != e; ++i) result &= this->op(i) == other->op(i);
+    for (size_t i = 0, e = num_ops(); result && i != e; ++i)
+        result &= this->op(i) == other->op(i);
 
     return result;
 }

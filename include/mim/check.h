@@ -91,7 +91,8 @@ public:
         Test,
     };
 
-    template<Mode mode> static bool alpha(const Def* d1, const Def* d2) {
+    template<Mode mode>
+    static bool alpha(const Def* d1, const Def* d2) {
         if (d1 == d2) return true;
         return Checker(d1->world()).alpha_<mode>(d1, d2);
     }
@@ -108,17 +109,24 @@ public:
 
 private:
 #ifdef MIM_ENABLE_CHECKS
-    template<Mode> bool fail();
+    template<Mode>
+    bool fail();
     const Def* fail();
 #else
-    template<Mode> bool fail() { return false; }
+    template<Mode>
+    bool fail() {
+        return false;
+    }
     const Def* fail() { return {}; }
 #endif
 
     [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
-    template<Mode> [[nodiscard]] bool alpha_(const Def* d1, const Def* d2);
-    template<Mode> [[nodiscard]] bool check(const Prod*, const Def*);
-    template<Mode> [[nodiscard]] bool check(const Seq*, const Def*);
+    template<Mode>
+    [[nodiscard]] bool alpha_(const Def* d1, const Def* d2);
+    template<Mode>
+    [[nodiscard]] bool check(const Prod*, const Def*);
+    template<Mode>
+    [[nodiscard]] bool check(const Seq*, const Def*);
     [[nodiscard]] bool check1(const Seq*, const Def*);
     [[nodiscard]] bool check(Seq*, const Seq*);
     [[nodiscard]] bool check(const UMax*, const Def*);

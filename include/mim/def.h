@@ -43,29 +43,32 @@ class World;
 /// @name Def
 /// GIDSet / GIDMap keyed by Def::gid of `conset Def*`.
 ///@{
-template<class To> using DefMap = GIDMap<const Def*, To>;
-using DefSet                    = GIDSet<const Def*>;
-using Def2Def                   = DefMap<const Def*>;
-using Defs                      = View<const Def*>;
-using DefVec                    = Vector<const Def*>;
+template<class To>
+using DefMap  = GIDMap<const Def*, To>;
+using DefSet  = GIDSet<const Def*>;
+using Def2Def = DefMap<const Def*>;
+using Defs    = View<const Def*>;
+using DefVec  = Vector<const Def*>;
 ///@}
 
 /// @name Def (Mutable)
 /// GIDSet / GIDMap keyed by Def::gid of `Def*`.
 ///@{
-template<class To> using MutMap = GIDMap<Def*, To>;
-using MutSet                    = GIDSet<Def*>;
-using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = Sets<Def>::Set;
+template<class To>
+using MutMap  = GIDMap<Def*, To>;
+using MutSet  = GIDSet<Def*>;
+using Mut2Mut = MutMap<Def*>;
+using Muts    = Sets<Def>::Set;
 ///@}
 
 /// @name Var
 /// GIDSet / GIDMap keyed by Var::gid of `const Var*`.
 ///@{
-template<class To> using VarMap = GIDMap<const Var*, To>;
-using VarSet                    = GIDSet<const Var*>;
-using Var2Var                   = VarMap<const Var*>;
-using Vars                      = Sets<const Var>::Set;
+template<class To>
+using VarMap  = GIDMap<const Var*, To>;
+using VarSet  = GIDSet<const Var*>;
+using Var2Var = VarMap<const Var*>;
+using Vars    = Sets<const Var>::Set;
 ///@}
 
 using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*);
@@ -114,26 +117,38 @@ enum class Judge : u32 {
 } // namespace mim
 
 #ifndef DOXYGEN
-template<> struct fe::is_bit_enum<mim::Dep> : std::true_type {};
-template<> struct fe::is_bit_enum<mim::Judge> : std::true_type {};
+template<>
+struct fe::is_bit_enum<mim::Dep> : std::true_type {};
+template<>
+struct fe::is_bit_enum<mim::Judge> : std::true_type {};
 #endif
 
 namespace mim {
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
-#define MIM_PROJ(NAME, CONST)                                                                                          \
-    nat_t num_##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_projs(); }                                 \
-    nat_t num_t##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_tprojs(); }                               \
-    const Def* NAME(nat_t a, nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(a, i); }                      \
-    const Def* NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(i); }                                  \
-    const Def* t##NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->tproj(i); }                              \
-    template<nat_t A = std::dynamic_extent, class F> auto NAME##s(F f) CONST noexcept {                                \
-        return ((const Def*)NAME())->projs<A, F>(f);                                                                   \
-    }                                                                                                                  \
-    template<class F> auto t##NAME##s(F f) CONST noexcept { return ((const Def*)NAME())->tprojs<F>(f); }               \
-    template<nat_t A = std::dynamic_extent> auto NAME##s() CONST noexcept { return ((const Def*)NAME())->projs<A>(); } \
-    auto t##NAME##s() CONST noexcept { return ((const Def*)NAME())->tprojs(); }                                        \
-    template<class F> auto NAME##s(nat_t a, F f) CONST noexcept { return ((const Def*)NAME())->projs<F>(a, f); }       \
+#define MIM_PROJ(NAME, CONST)                                                                     \
+    nat_t num_##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_projs(); }            \
+    nat_t num_t##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_tprojs(); }          \
+    const Def* NAME(nat_t a, nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(a, i); } \
+    const Def* NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(i); }             \
+    const Def* t##NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->tproj(i); }         \
+    template<nat_t A = std::dynamic_extent, class F>                                              \
+    auto NAME##s(F f) CONST noexcept {                                                            \
+        return ((const Def*)NAME())->projs<A, F>(f);                                              \
+    }                                                                                             \
+    template<class F>                                                                             \
+    auto t##NAME##s(F f) CONST noexcept {                                                         \
+        return ((const Def*)NAME())->tprojs<F>(f);                                                \
+    }                                                                                             \
+    template<nat_t A = std::dynamic_extent>                                                       \
+    auto NAME##s() CONST noexcept {                                                               \
+        return ((const Def*)NAME())->projs<A>();                                                  \
+    }                                                                                             \
+    auto t##NAME##s() CONST noexcept { return ((const Def*)NAME())->tprojs(); }                   \
+    template<class F>                                                                             \
+    auto NAME##s(nat_t a, F f) CONST noexcept {                                                   \
+        return ((const Def*)NAME())->projs<F>(a, f);                                              \
+    }                                                                                             \
     auto NAME##s(nat_t a) CONST noexcept { return ((const Def*)NAME())->projs(a); }
 
 /// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
@@ -260,7 +275,8 @@ public:
 
     /// @name ops
     ///@{
-    template<size_t N = std::dynamic_extent> constexpr auto ops() const noexcept {
+    template<size_t N = std::dynamic_extent>
+    constexpr auto ops() const noexcept {
         return View<const Def*, N>(ops_ptr(), num_ops_);
     }
     const Def* op(size_t i) const noexcept { return ops()[i]; }
@@ -344,25 +360,32 @@ public:
 
     /// Splits this Def via Def::proj%ections into an Array (if `A == std::dynamic_extent`) or `std::array` (otherwise).
     /// Applies @p f to each element.
-    template<nat_t A = std::dynamic_extent, class F> auto projs(F f) const {
+    template<nat_t A = std::dynamic_extent, class F>
+    auto projs(F f) const {
         using R = std::decay_t<decltype(f(this))>;
         if constexpr (A == std::dynamic_extent) {
             return projs(num_projs(), f);
         } else {
             assert(A == as_lit_arity());
             std::array<R, A> array;
-            for (nat_t i = 0; i != A; ++i) array[i] = f(proj(A, i));
+            for (nat_t i = 0; i != A; ++i)
+                array[i] = f(proj(A, i));
             return array;
         }
     }
 
-    template<class F> auto tprojs(F f) const { return projs(num_tprojs(), f); }
+    template<class F>
+    auto tprojs(F f) const {
+        return projs(num_tprojs(), f);
+    }
 
-    template<class F> auto projs(nat_t a, F f) const {
+    template<class F>
+    auto projs(nat_t a, F f) const {
         using R = std::decay_t<decltype(f(this))>;
         return Vector<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
-    template<nat_t A = std::dynamic_extent> auto projs() const {
+    template<nat_t A = std::dynamic_extent>
+    auto projs() const {
         return projs<A>([](const Def* def) { return def; });
     }
     auto tprojs() const {
@@ -428,7 +451,8 @@ public:
     // clang-format on
 
     /// If `this` is *mutable*, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
-    template<class T = Def, bool invert = false> T* isa_mut() const {
+    template<class T = Def, bool invert = false>
+    T* isa_mut() const {
         if constexpr (std::is_same<T, Def>::value)
             return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;
         else
@@ -436,7 +460,8 @@ public:
     }
 
     /// Asserts that `this` is a *mutable*, casts `const`ness away and performs a `static_cast` to @p T.
-    template<class T = Def, bool invert = false> T* as_mut() const {
+    template<class T = Def, bool invert = false>
+    T* as_mut() const {
         assert(mut_ ^ invert);
         if constexpr (std::is_same<T, Def>::value)
             return const_cast<Def*>(this);
@@ -504,7 +529,8 @@ public:
     const Def* refine(size_t i, const Def* new_op) const;
 
     /// @see World::reduce
-    template<size_t N = std::dynamic_extent> constexpr auto reduce(const Def* arg) const {
+    template<size_t N = std::dynamic_extent>
+    constexpr auto reduce(const Def* arg) const {
         return reduce_(arg).span<N>();
     }
 
@@ -585,14 +611,16 @@ private:
     virtual Def* stub_(World&, const Def*) { fe::unreachable(); }
     virtual const Def* rebuild_(World& w, const Def* type, Defs ops) const = 0;
 
-    template<bool init> Vars free_vars(bool&, uint32_t);
+    template<bool init>
+    Vars free_vars(bool&, uint32_t);
     void invalidate();
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
     bool equal(const Def* other) const;
 
-    template<Cmp> [[nodiscard]] static bool cmp_(const Def* a, const Def* b);
+    template<Cmp>
+    [[nodiscard]] static bool cmp_(const Def* a, const Def* b);
 
 protected:
     mutable Dbg dbg_;
@@ -623,7 +651,8 @@ private:
     mutable u32 tid_ = 0;
     const Def* type_;
 
-    template<class D, size_t N> friend class Sets;
+    template<class D, size_t N>
+    friend class Sets;
     friend class World;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
@@ -732,7 +761,8 @@ public:
 
     /// @name Get actual Constant
     ///@{
-    template<class T = flags_t> T get() const {
+    template<class T = flags_t>
+    T get() const {
         static_assert(sizeof(T) <= 8);
         return bitcast<T>(flags_);
     }
@@ -744,12 +774,16 @@ public:
     /// @name Casts
     ///@{
     /// @see @ref cast_lit
-    template<class T = nat_t> static std::optional<T> isa(const Def* def) {
+    template<class T = nat_t>
+    static std::optional<T> isa(const Def* def) {
         if (!def) return {};
         if (auto lit = def->isa<Lit>()) return lit->get<T>();
         return {};
     }
-    template<class T = nat_t> static T as(const Def* def) { return def->as<Lit>()->get<T>(); }
+    template<class T = nat_t>
+    static T as(const Def* def) {
+        return def->as<Lit>()->get<T>();
+    }
     ///@}
 
     static constexpr auto Node = mim::Node::Lit;

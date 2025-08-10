@@ -62,7 +62,8 @@ public:
 
     /// @name Add formatted message
     ///@{
-    template<class... Args> Error& msg(Loc loc, Tag tag, const char* s, Args&&... args) {
+    template<class... Args>
+    Error& msg(Loc loc, Tag tag, const char* s, Args&&... args) {
         msgs_.emplace_back(loc, tag, fmt(s, std::forward<Args&&>(args)...));
         return *this;
     }
@@ -95,7 +96,8 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Error& e) {
-        for (const auto& msg : e.msgs()) os << msg << std::endl;
+        for (const auto& msg : e.msgs())
+            os << msg << std::endl;
         return os;
     }
 
@@ -119,7 +121,8 @@ private:
 /// @name Formatted Output
 ///@{
 /// Single Error that `throw`s immediately.
-template<class... Args> [[noreturn]] void error(Loc loc, const char* f, Args&&... args) {
+template<class... Args>
+[[noreturn]] void error(Loc loc, const char* f, Args&&... args) {
     throw Error(loc, fmt(f, std::forward<Args&&>(args)...));
 }
 ///@}

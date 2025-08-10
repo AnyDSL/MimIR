@@ -6,13 +6,16 @@
 
 namespace mim {
 
-template<class Indexer, class Key, class Value> class IndexMap {
+template<class Indexer, class Key, class Value>
+class IndexMap {
 private:
-    template<class T> struct IsValidPred {
+    template<class T>
+    struct IsValidPred {
         static bool is_valid(T) { return true; }
     };
 
-    template<class T> struct IsValidPred<T*> {
+    template<class T>
+    struct IsValidPred<T*> {
         static bool is_valid(T* value) { return value != nullptr; }
     };
 
@@ -64,7 +67,8 @@ private:
 
 /// @name IndexMap find
 ///@{
-template<class Indexer, class Key, class Value> inline Value* find(IndexMap<Indexer, Key, Value*>& map, Key key) {
+template<class Indexer, class Key, class Value>
+inline Value* find(IndexMap<Indexer, Key, Value*>& map, Key key) {
     auto i = map.indexer().index(key);
     return i != size_t(-1) ? map.array()[i] : nullptr;
 }
