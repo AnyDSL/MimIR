@@ -336,10 +336,9 @@ Vars Def::free_vars() {
 }
 
 template<bool init> Vars Def::free_vars(bool& todo, uint32_t run) {
-    // If init == true  -> todo flag detects cycle
-    // If init == false -> todo flag keeps track whether sth changed
-
-    assert(isa_mut());
+    // If init == true : todo flag detects cycle.
+    // If init == false: todo flag keeps track whether sth changed.
+    //
     // Recursively recompute free vars. If
     // * mark_ == 0:        Invalid - need to recompute.
     // * mark_ == run - 1:  Previous iteration - need to recompute.
