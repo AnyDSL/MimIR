@@ -324,10 +324,10 @@ template<bool init> Vars Def::free_vars(bool& todo, uint32_t run) {
 
     assert(isa_mut());
     // Recursively recompute free vars. If
-    // * mark_ == 0: invalid - need to recompute
-    // * mark_ == run - 1: Previous iteration - need to recompute
-    // * mark_ == run: We are running in cycles within the *current* iteration of our fixed-point loop
-    // * all other values for mark_: valid!
+    // * mark_ == 0:        Invalid - need to recompute.
+    // * mark_ == run - 1:  Previous iteration - need to recompute.
+    // * mark_ == run:      We are running in cycles within the *current* iteration of our fixed-point loop.
+    // * otherwise:         Valid!
     if (mark_ != 0 && mark_ != run - 1) {
         if constexpr (init) todo |= mark_ == run;
         return vars_;
@@ -408,7 +408,7 @@ const Def* Def::unfold_type() const {
 
 std::string_view Def::node_name() const {
     switch (node()) {
-#define CODE(name, _, __) \
+#define CODE(name, _) \
     case Node::name: return #name;
         MIM_NODE(CODE)
 #undef CODE
@@ -424,7 +424,7 @@ Defs Def::deps() const noexcept {
 
 u32 Def::judge() const noexcept {
     switch (node()) {
-#define CODE(n, _, j) \
+#define CODE(n, j) \
     case Node::n: return u32(j);
         MIM_NODE(CODE)
 #undef CODE

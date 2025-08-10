@@ -14,22 +14,22 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define MIM_NODE(m)                                                                                                                             \
-    m(Lit,    lit,    Judge::Intro) /* keep as first */                                                                                         \
-    m(Axm,    axm,    Judge::Intro)                                                                                                             \
-    m(Var,    var,    Judge::Intro)                                                                                                             \
-    m(Global, global, Judge::Intro)                                                                                                             \
-    m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
-    m(Hole,   hole,   Judge::Hole)                                                                                                              \
-    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc,     Judge::Meta)                \
-    m(Pi,     pi,     Judge::Form) m(Lam,   lam,   Judge::Intro) m(App,     app,     Judge::Elim)                                               \
-    m(Sigma,  sigma,  Judge::Form) m(Tuple, tuple, Judge::Intro) m(Extract, extract, Judge::Elim) m(Insert, insert, Judge::Intro | Judge::Elim) \
-    m(Arr,    arr,    Judge::Form) m(Pack,  pack,  Judge::Intro)                                                                                \
-    m(Join,   join,   Judge::Form) m(Inj,   inj,   Judge::Intro) m(Match,   match,   Judge::Elim) m(Top,    top,    Judge::Intro)               \
-    m(Meet,   meet,   Judge::Form) m(Merge, merge, Judge::Intro) m(Split,   split,   Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
-    m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
-    m(Nat,    nat,    Judge::Form)                                                                                                              \
-    m(Idx,    idx,    Judge::Intro)
+#define MIM_NODE(m)                                                                                             \
+    m(Lit,    Judge::Intro) /* keep this first - used by cummute*/                                              \
+    m(Axm,    Judge::Intro)                                                                                     \
+    m(Var,    Judge::Intro)                                                                                     \
+    m(Global, Judge::Intro)                                                                                     \
+    m(Proxy,  Judge::Intro)                                                                                     \
+    m(Hole,   Judge::Hole)                                                                                      \
+    m(Type,   Judge::Meta) m(Univ,  Judge::Meta)  m(UMax,    Judge::Meta) m(UInc,   Judge::Meta)                \
+    m(Pi,     Judge::Form) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                       \
+    m(Sigma,  Judge::Form) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, Judge::Intro | Judge::Elim) \
+    m(Arr,    Judge::Form) m(Pack,  Judge::Intro)                                                               \
+    m(Join,   Judge::Form) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    Judge::Intro)               \
+    m(Meet,   Judge::Form) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    Judge::Intro)               \
+    m(Uniq,   Judge::Form)                                                                                      \
+    m(Nat,    Judge::Form)                                                                                      \
+    m(Idx,    Judge::Intro)
 // clang-format on
 
 namespace mim {
@@ -81,12 +81,12 @@ using fe::operator!=;
 ///@{
 
 enum class Node : node_t {
-#define CODE(node, name, _) node,
+#define CODE(node, _) node,
     MIM_NODE(CODE)
 #undef CODE
 };
 
-#define CODE(node, name, _) +size_t(1)
+#define CODE(node, _) +size_t(1)
 static constexpr size_t Num_Nodes = size_t(0) MIM_NODE(CODE);
 #undef CODE
 
