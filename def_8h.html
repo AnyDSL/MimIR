@@ -355,7 +355,7 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">node,</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00084">84</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00087">87</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -379,7 +379,7 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">+size_t(1)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00084">84</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00087">87</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -397,7 +397,7 @@ Typedefs</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m(Lit,    Judge::Intro) <span class="comment">/* keep this first - used by cummute*/</span>                                              \</div>
+<b>Value:</b><div class="fragment"><div class="line">    m(Lit,    Judge::Intro) <span class="comment">/* keep this first - causes Lit to appear left in Def::less/Def::greater*/</span>          \</div>
 <div class="line">    m(Axm,    Judge::Intro)                                                                                     \</div>
 <div class="line">    m(Var,    Judge::Intro)                                                                                     \</div>
 <div class="line">    m(Global, Judge::Intro)                                                                                     \</div>
@@ -415,7 +415,7 @@ Typedefs</h2></td></tr>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00017">17</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00425">mim::Def::judge()</a>, and <a class="el" href="def_8cpp_source.html#l00409">mim::Def::node_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00447">mim::Def::judge()</a>, and <a class="el" href="def_8cpp_source.html#l00431">mim::Def::node_name()</a>.</p>
 
 </div>
 </div>
@@ -437,18 +437,28 @@ Typedefs</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    nat_t num_##NAME##s() CONST noexcept { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;num_projs(); }                                 \</div>
-<div class="line">    nat_t num_t##NAME##s() CONST noexcept { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;num_tprojs(); }                               \</div>
-<div class="line">    <span class="keyword">const</span> Def* NAME(nat_t a, nat_t i) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;proj(a, i); }                      \</div>
-<div class="line">    <span class="keyword">const</span> Def* NAME(nat_t i) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;proj(i); }                                  \</div>
-<div class="line">    <span class="keyword">const</span> Def* <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">t</a>##NAME(nat_t i) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;tproj(i); }                              \</div>
-<div class="line">    <span class="keyword">template</span>&lt;nat_t A = std::dynamic_extent, <span class="keyword">class</span> F&gt; <span class="keyword">auto</span> NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>(F f) CONST <span class="keyword">noexcept</span> {                                \</div>
-<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;A, <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288">F</a>&gt;(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7">f</a>);                                                                   \</div>
-<div class="line">    }                                                                                                                  \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt; <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">t</a>##NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>(F f) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;tprojs&lt;<a class="code hl_enumeration" href="namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288">F</a>&gt;(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7">f</a>); }               \</div>
-<div class="line">    <span class="keyword">template</span>&lt;nat_t A = std::dynamic_extent&gt; <span class="keyword">auto</span> NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>() CONST noexcept { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;A&gt;(); } \</div>
-<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">t</a>##NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>() CONST noexcept { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;tprojs(); }                                        \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt; <span class="keyword">auto</span> NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>(nat_t a, F f) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;<a class="code hl_enumeration" href="namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288">F</a>&gt;(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7">f</a>); }       \</div>
+<b>Value:</b><div class="fragment"><div class="line">    nat_t num_##NAME##s() CONST noexcept { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;num_projs(); }            \</div>
+<div class="line">    nat_t num_t##NAME##s() CONST noexcept { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;num_tprojs(); }          \</div>
+<div class="line">    <span class="keyword">const</span> Def* NAME(nat_t a, nat_t i) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;proj(a, i); } \</div>
+<div class="line">    <span class="keyword">const</span> Def* NAME(nat_t i) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;proj(i); }             \</div>
+<div class="line">    <span class="keyword">const</span> Def* <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">t</a>##NAME(nat_t i) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;tproj(i); }         \</div>
+<div class="line">    <span class="keyword">template</span>&lt;nat_t A = std::dynamic_extent, <span class="keyword">class</span> F&gt;                                              \</div>
+<div class="line">    <span class="keyword">auto</span> NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>(F f) CONST <span class="keyword">noexcept</span> {                                                            \</div>
+<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;A, <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288">F</a>&gt;(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7">f</a>);                                              \</div>
+<div class="line">    }                                                                                             \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt;                                                                             \</div>
+<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">t</a>##NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>(F f) CONST <span class="keyword">noexcept</span> {                                                         \</div>
+<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;tprojs&lt;<a class="code hl_enumeration" href="namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288">F</a>&gt;(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7">f</a>);                                                \</div>
+<div class="line">    }                                                                                             \</div>
+<div class="line">    <span class="keyword">template</span>&lt;nat_t A = std::dynamic_extent&gt;                                                       \</div>
+<div class="line">    <span class="keyword">auto</span> NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>() CONST noexcept {                                                               \</div>
+<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;A&gt;();                                                  \</div>
+<div class="line">    }                                                                                             \</div>
+<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae358efa489f58062f10dd7316b65649e">t</a>##NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>() CONST noexcept { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;tprojs(); }                   \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt;                                                                             \</div>
+<div class="line">    <span class="keyword">auto</span> NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>(nat_t a, F f) CONST <span class="keyword">noexcept</span> {                                                   \</div>
+<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;<a class="code hl_enumeration" href="namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288">F</a>&gt;(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7">f</a>);                                              \</div>
+<div class="line">    }                                                                                             \</div>
 <div class="line">    <span class="keyword">auto</span> NAME##<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">s</a>(nat_t a) CONST <span class="keyword">noexcept</span> { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;projs(a); }</div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1core_html_a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html#a42b1555ce3001847c5543dd01ebc712aa03c7c0ace395d80182db07ae2c30f034">mim::plug::core::conv::s</a></div><div class="ttdeci">@ s</div><div class="ttdef"><b>Definition</b> <a href="core_2autogen_8h_source.html#l00251">autogen.h:251</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1core_html_a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7">mim::plug::core::ncmp::f</a></div><div class="ttdeci">@ f</div><div class="ttdef"><b>Definition</b> <a href="core_2autogen_8h_source.html#l00029">autogen.h:29</a></div></div>
@@ -458,7 +468,7 @@ Typedefs</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00124">124</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00129">129</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

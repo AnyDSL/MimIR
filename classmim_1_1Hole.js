@@ -1,7 +1,9 @@
 var classmim_1_1Hole =
 [
     [ "find", "classmim_1_1Hole.html#a1010da652535fd68cb5b0f982bc74e12", null ],
-    [ "isa", "classmim_1_1Hole.html#a494f94ae0593a247ab641d4935b35d3b", null ],
+    [ "find", "classmim_1_1Hole.html#a2ea54798a7d7819d81f94d0f0c5e0669", null ],
+    [ "isa_set", "classmim_1_1Hole.html#ac67c922abf10e80101a6442adfc06506", null ],
+    [ "isa_unset", "classmim_1_1Hole.html#a805da1d774ba0d78bcf3a780362fce0a", null ],
     [ "op", "classmim_1_1Hole.html#a1d6405f684572dd5ce1a872f1d7fe401", null ],
     [ "rebuild_", "classmim_1_1Hole.html#a5854b91c089088856b4fc32f44149cdd", null ],
     [ "set", "classmim_1_1Hole.html#a230c55acb7e2c2b8451d738882ad85da", null ],

@@ -1,5 +1,11 @@
 var classmim_1_1Def =
 [
+    [ "Cmp", "classmim_1_1Def.html#afefb7dc2241a0caf582a2c4d7ed4b954", [
+      [ "L", "classmim_1_1Def.html#afefb7dc2241a0caf582a2c4d7ed4b954ad20caec3b48a1eef164cb4ca81ba2587", null ],
+      [ "G", "classmim_1_1Def.html#afefb7dc2241a0caf582a2c4d7ed4b954adfcf28d0734569a6a693bc8194de62bf", null ],
+      [ "E", "classmim_1_1Def.html#afefb7dc2241a0caf582a2c4d7ed4b954a3a3ea00cfc35332cedf6e5e9a32e94da", null ],
+      [ "U", "classmim_1_1Def.html#afefb7dc2241a0caf582a2c4d7ed4b954a4c614360da93c0a041b22e537de151eb", null ]
+    ] ],
     [ "Def", "classmim_1_1Def.html#ae59703ead7befb26e835d4d9793e2786", null ],
     [ "Def", "classmim_1_1Def.html#a7d17c70789416483a8f248e2c7e9a5e3", null ],
     [ "Def", "classmim_1_1Def.html#a73acaf4ded5bcd2d42491fe01140f880", null ],
@@ -10,6 +16,7 @@ var classmim_1_1Def =
     [ "as_mut", "classmim_1_1Def.html#a18c97ca601e090eed9bcbc9369c2c792", null ],
     [ "check", "classmim_1_1Def.html#a2ec320f7eb49e3c8c9d26f210f4ce71d", null ],
     [ "check", "classmim_1_1Def.html#a17535d230ca604f1b7f153cca756e3b4", null ],
+    [ "cmp", "classmim_1_1Def.html#aca2d44a9fbceeb56fbffda6003ef26bc", null ],
     [ "dbg", "classmim_1_1Def.html#aefa7b1a57b3a67d30070c9aa9d3b20b3", null ],
     [ "debug_prefix", "classmim_1_1Def.html#a66978d46660dbc8222365432fae2568a", null ],
     [ "debug_suffix", "classmim_1_1Def.html#a8daf14a811af7e64ffc033ea347862f0", null ],
@@ -24,6 +31,7 @@ var classmim_1_1Def =
     [ "free_vars", "classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9", null ],
     [ "free_vars", "classmim_1_1Def.html#aed49f75ef33a07d498daffbcc3d2d838", null ],
     [ "gid", "classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4", null ],
+    [ "greater", "classmim_1_1Def.html#ab53725bf0bb0b66ad322d671f25d7a4a", null ],
     [ "has_dep", "classmim_1_1Def.html#ab6114c2f33845b89df6c4e551ea438bb", null ],
     [ "has_dep", "classmim_1_1Def.html#a24e57816b839ef9209073cff35710c22", null ],
     [ "has_dep", "classmim_1_1Def.html#a2aedb3937891f8e9575ede65c32b13c2", null ],
@@ -45,6 +53,7 @@ var classmim_1_1Def =
     [ "isa_lit_arity", "classmim_1_1Def.html#ad556c5c2c74abd4f5b739fcb8e5221ed", null ],
     [ "isa_mut", "classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1", null ],
     [ "judge", "classmim_1_1Def.html#af0bca023516d92ff7bc3ce422bdf4178", null ],
+    [ "less", "classmim_1_1Def.html#ab1215de2b56ede04a5df0f3d3628bb4c", null ],
     [ "loc", "classmim_1_1Def.html#ababa287f8ec65ff8971c8b379a0afa2f", null ],
     [ "local_muts", "classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212", null ],
     [ "local_vars", "classmim_1_1Def.html#a3f5a341398bd97b516f9fd7d1d170e5b", null ],

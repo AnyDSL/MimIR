@@ -214,8 +214,6 @@ var namespacemim =
     [ "binary_find", "namespacemim.html#a490bc82fced6d1222ca1e66d50e573a6", null ],
     [ "bitcast", "namespacemim.html#a1aae5adc4db386bfd618fdc8303ceb0c", null ],
     [ "collect_args", "namespacemim.html#a1a9c49cf26963e97393735d2a4b2eb26", null ],
-    [ "commute", "namespacemim.html#a307ec82f001174b56a7c48db7f9aba9f", null ],
-    [ "commute_", "namespacemim.html#ad44acc026174077a9917c302274ce996", null ],
     [ "compose_cn", "namespacemim.html#aab8bd049eb0b9bf7561a602f62ce7ebd", null ],
     [ "decurry", "namespacemim.html#a9efd9244dd974dd7a5ad80a98c9a2297", null ],
     [ "erase", "namespacemim.html#abbff49ce5bff270e09db6d916fa58c3a", null ],

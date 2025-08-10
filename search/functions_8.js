@@ -68,7 +68,7 @@ var searchData=
   ['is_5fvalid_65',['is_valid',['../classmim_1_1ll_1_1Emitter.html#ad43b49a65f405d25e5e1a6124c2aedb9',1,'mim::ll::Emitter']]],
   ['is_5fwhere_66',['is_where',['../classmim_1_1ast_1_1DeclExpr.html#aeb34f62478eb3d88f8d546e41b2249dc',1,'mim::ast::DeclExpr']]],
   ['isa_67',['IsA',['../classmim_1_1Axm_1_1IsA.html#af7e49b22ba96454bf3d28462e052a437',1,'mim::Axm::IsA::IsA()=default'],['../classmim_1_1Axm_1_1IsA.html#a5cce74687e1b939d117b313a8c0424d9',1,'mim::Axm::IsA::IsA(const Axm *axm, const D *def)']]],
-  ['isa_68',['isa',['../classmim_1_1ast_1_1Tok.html#aa8e362d15b5edca914970143cbd966f2',1,'mim::ast::Tok::isa()'],['../classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1',1,'mim::Axm::isa(const Def *def)'],['../classmim_1_1Axm.html#ab8bf53920525bca48e837591c7f2458f',1,'mim::Axm::isa(Id id, const Def *def)'],['../classmim_1_1Hole.html#a494f94ae0593a247ab641d4935b35d3b',1,'mim::Hole::isa()'],['../classmim_1_1Lit.html#a429b15b3da51e9b60ffab09a744896b7',1,'mim::Lit::isa()'],['../classmim_1_1Idx.html#a7b4496e71deaa94835f732de364e5d76',1,'mim::Idx::isa()']]],
+  ['isa_68',['isa',['../classmim_1_1ast_1_1Tok.html#aa8e362d15b5edca914970143cbd966f2',1,'mim::ast::Tok::isa()'],['../classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1',1,'mim::Axm::isa(const Def *def)'],['../classmim_1_1Axm.html#ab8bf53920525bca48e837591c7f2458f',1,'mim::Axm::isa(Id id, const Def *def)'],['../classmim_1_1Lit.html#a429b15b3da51e9b60ffab09a744896b7',1,'mim::Lit::isa()'],['../classmim_1_1Idx.html#a7b4496e71deaa94835f732de364e5d76',1,'mim::Idx::isa()']]],
   ['isa_5fapped_5fmut_5flam_69',['isa_apped_mut_lam',['../namespacemim.html#a3036ca68b9ff9ebd00b9b35c7ad1a9a0',1,'mim']]],
   ['isa_5fbasicblock_70',['isa_basicblock',['../classmim_1_1Pi.html#a6b21a83dcd04211ce2bf6c3770d64919',1,'mim::Pi::isa_basicblock()'],['../classmim_1_1Lam.html#a846446604fca73562a518ec65fc65cb8',1,'mim::Lam::isa_basicblock()']]],
   ['isa_5fcallee_71',['isa_callee',['../namespacemim.html#aa6e918f49777aea04b1993cded8aa1f7',1,'mim']]],
@@ -86,6 +86,8 @@ var searchData=
   ['isa_5fmut_5freturning_83',['isa_mut_returning',['../classmim_1_1Lam.html#a637291bc1cf994803562402bb0d77909',1,'mim::Lam']]],
   ['isa_5fproxy_84',['isa_proxy',['../classmim_1_1Pass.html#aecf198ac657f8ef581878741e2282aef',1,'mim::Pass']]],
   ['isa_5freturning_85',['isa_returning',['../classmim_1_1Pi.html#afe493c2ca2eb3e7e1d484eceb5138356',1,'mim::Pi::isa_returning()'],['../classmim_1_1Lam.html#a527fd77ec7597902c4cbe37e6c0ccf79',1,'mim::Lam::isa_returning()']]],
-  ['isa_5fworkable_86',['isa_workable',['../namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4',1,'mim']]],
-  ['iterator_87',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator']]]
+  ['isa_5fset_86',['isa_set',['../classmim_1_1Hole.html#ac67c922abf10e80101a6442adfc06506',1,'mim::Hole']]],
+  ['isa_5funset_87',['isa_unset',['../classmim_1_1Hole.html#a805da1d774ba0d78bcf3a780362fce0a',1,'mim::Hole']]],
+  ['isa_5fworkable_88',['isa_workable',['../namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4',1,'mim']]],
+  ['iterator_89',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator']]]
 ];
