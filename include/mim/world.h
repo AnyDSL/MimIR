@@ -345,7 +345,7 @@ public:
     Arr* mut_arr() {
         return mut_arr(type<level>());
     }
-    const Def* arr(const Def* shape, const Def* body);
+    const Def* arr(const Def* arity, const Def* body);
     const Def* arr(Defs shape, const Def* body);
     const Def* arr(u64 n, const Def* body) { return arr(lit_nat(n), body); }
     const Def* arr(View<u64> shape, const Def* body) {

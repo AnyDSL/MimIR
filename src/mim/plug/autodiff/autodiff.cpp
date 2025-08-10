@@ -143,11 +143,11 @@ const Def* zero_def(const Def* T) {
     auto& world = T->world();
     world.DLOG("zero_def for type {} <{}>", T, T->node_name());
     if (auto arr = T->isa<Arr>()) {
-        auto shape      = arr->arity();
+        auto arity      = arr->arity();
         auto body       = arr->body();
         auto inner_zero = world.app(world.annex<zero>(), body);
-        auto zero_arr   = world.pack(shape, inner_zero);
-        world.DLOG("zero_def for array of shape {} with type {}", shape, body);
+        auto zero_arr   = world.pack(arity, inner_zero);
+        world.DLOG("zero_def for array of shape {} with type {}", arity, body);
         world.DLOG("zero_arr: {}", zero_arr);
         return zero_arr;
     } else if (Idx::isa(T)) {

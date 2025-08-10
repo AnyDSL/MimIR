@@ -18,8 +18,10 @@ class Module;
 class Scopes;
 class Emitter;
 
-template<class T> using Ptr  = fe::Arena::Ptr<const T>;
-template<class T> using Ptrs = std::deque<Ptr<T>>;
+template<class T>
+using Ptr = fe::Arena::Ptr<const T>;
+template<class T>
+using Ptrs                   = std::deque<Ptr<T>>;
 /*             */ using Dbgs = std::deque<Dbg>;
 
 struct AnnexInfo {
@@ -72,7 +74,8 @@ public:
     Sym sym_error() { return sym("_error_"); } ///< `"_error_"`.
     ///@}
 
-    template<class T, class... Args> auto ptr(Args&&... args) {
+    template<class T, class... Args>
+    auto ptr(Args&&... args) {
         return arena_.mk<const T>(std::forward<Args&&>(args)...);
     }
 
@@ -731,17 +734,17 @@ private:
     Ptrs<Expr> elems_;
 };
 
-/// `«dbg: shape; body»` or `‹dbg: shape; body›`
+/// `«dbg: arity; body»` or `‹dbg: arity; body›`
 class SeqExpr : public Expr {
 public:
-    SeqExpr(Loc loc, bool is_arr, Ptr<IdPtrn>&& shape, Ptr<Expr>&& body)
+    SeqExpr(Loc loc, bool is_arr, Ptr<IdPtrn>&& arity, Ptr<Expr>&& body)
         : Expr(loc)
         , is_arr_(is_arr)
-        , shape_(std::move(shape))
+        , arity_(std::move(arity))
         , body_(std::move(body)) {}
 
     bool is_arr() const { return is_arr_; }
-    const IdPtrn* shape() const { return shape_.get(); }
+    const IdPtrn* arity() const { return arity_.get(); }
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
@@ -751,7 +754,7 @@ private:
     const Def* emit_(Emitter&) const override;
 
     bool is_arr_;
-    Ptr<IdPtrn> shape_;
+    Ptr<IdPtrn> arity_;
     Ptr<Expr> body_;
 };
 

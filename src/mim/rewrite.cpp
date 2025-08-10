@@ -57,9 +57,9 @@ const Def* Rewriter::rewrite_seq(const Seq* seq) {
         return map(seq, new_seq);
     }
 
-    auto new_shape = rewrite(seq->arity());
+    auto new_arity = rewrite(seq->arity());
 
-    if (auto l = Lit::isa(new_shape); l && *l <= world().flags().scalarize_threshold) {
+    if (auto l = Lit::isa(new_arity); l && *l <= world().flags().scalarize_threshold) {
         auto new_ops = absl::FixedArray<const Def*>(*l);
         for (size_t i = 0, e = *l; i != e; ++i) {
             if (auto var = seq->has_var()) {
@@ -74,7 +74,7 @@ const Def* Rewriter::rewrite_seq(const Seq* seq) {
         return map(seq, seq->prod(world(), new_ops));
     }
 
-    if (!seq->has_var()) return map(seq, seq->rebuild(world(), new_shape, rewrite(seq->body())));
+    if (!seq->has_var()) return map(seq, seq->rebuild(world(), new_arity, rewrite(seq->body())));
     return rewrite_mut(seq->as_mut());
 }
 

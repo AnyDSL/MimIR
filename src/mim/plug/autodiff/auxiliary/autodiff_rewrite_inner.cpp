@@ -156,18 +156,18 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 }
 
 const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
-    auto shape = pack->arity(); // TODO: arity vs shape
+    auto arity = pack->arity(); // TODO: arity vs shape
     auto body  = pack->body();
 
-    auto aug_shape = augment_(shape, f, f_diff);
+    auto aug_arity = augment_(arity, f, f_diff);
     auto aug_body  = augment(body, f, f_diff);
 
-    auto aug_pack = world().pack(aug_shape, aug_body);
+    auto aug_pack = world().pack(aug_arity, aug_body);
 
     assert(partial_pullback[aug_body] && "pack pullback should exists");
     // TODO: or use scale axm
     auto body_pb              = partial_pullback[aug_body];
-    auto pb_pack              = world().pack(aug_shape, body_pb);
+    auto pb_pack              = world().pack(aug_arity, body_pb);
     shadow_pullback[aug_pack] = pb_pack;
 
     world().DLOG("shadow pb of pack: {} : {}", pb_pack, pb_pack->type());
@@ -178,7 +178,7 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     world().DLOG("pb of pack: {} : {}", pb, pb_type);
 
     auto f_arg_ty_diff = tangent_type_fun(f->dom(2, 0));
-    auto app_pb        = world().mut_pack(world().arr(aug_shape, f_arg_ty_diff));
+    auto app_pb        = world().mut_pack(world().arr(aug_arity, f_arg_ty_diff));
 
     // TODO: special case for const width (special tuple)
 
@@ -187,7 +187,7 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
 
     world().DLOG("app pb of pack: {} : {}", app_pb, app_pb->type());
 
-    auto sumup = world().app(world().annex<sum>(), {aug_shape, f_arg_ty_diff});
+    auto sumup = world().app(world().annex<sum>(), {aug_arity, f_arg_ty_diff});
     world().DLOG("sumup: {} : {}", sumup, sumup->type());
 
     pb->app(true, pb->var(1), world().app(sumup, app_pb));
@@ -339,9 +339,9 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_tuple(tup, f, f_diff);
     } else if (auto pack = def->isa<Pack>()) {
         // TODO: handle mut packs (dependencies in the pack) (=> see paper about vectors)
-        auto shape = pack->arity(); // TODO: arity vs shape
+        auto arity = pack->arity(); // TODO: arity vs shape
         auto body  = pack->body();
-        world().DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
+        world().DLOG("Augment pack: {} : {} with {}", arity, arity->type(), body);
         return augment_pack(pack, f, f_diff);
     } else if (auto ax = def->isa<Axm>()) {
         //  TODO: move concrete handling to own function / file / directory (file per plugin)

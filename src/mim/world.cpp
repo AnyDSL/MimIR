@@ -469,49 +469,49 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
 }
 
 // TODO merge this code with pack
-const Def* World::arr(const Def* shape, const Def* body) {
-    shape = shape->zonk();
+const Def* World::arr(const Def* arity, const Def* body) {
+    arity = arity->zonk();
     body  = body->zonk();
 
-    if (!is_shape(shape->type())) error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->type());
+    if (!is_shape(arity->type())) error(arity->loc(), "expected arity but got `{}` of type `{}`", arity, arity->type());
 
-    if (auto a = Lit::isa(shape)) {
+    if (auto a = Lit::isa(arity)) {
         if (*a == 0) return sigma();
         if (*a == 1) return body;
     }
 
     // «(a, b, c); body» -> «a; «(b, c); body»»
-    if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
+    if (auto tuple = arity->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
 
     // «‹n; x›; body» -> «x; «<n-1, x>; body»»
-    if (auto p = shape->isa<Pack>()) {
+    if (auto p = arity->isa<Pack>()) {
         if (auto s = Lit::isa(p->arity())) return arr(p->body(), arr(pack(*s - 1, p->body()), body));
     }
 
-    return unify<Arr>(2, body->unfold_type(), shape, body);
+    return unify<Arr>(2, body->unfold_type(), arity, body);
 }
 
-const Def* World::pack(const Def* shape, const Def* body) {
-    shape = shape->zonk();
+const Def* World::pack(const Def* arity, const Def* body) {
+    arity = arity->zonk();
     body  = body->zonk();
 
-    if (!is_shape(shape->unfold_type()))
-        error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->unfold_type());
+    if (!is_shape(arity->unfold_type()))
+        error(arity->loc(), "expected shape but got `{}` of type `{}`", arity, arity->unfold_type());
 
-    if (auto a = Lit::isa(shape)) {
+    if (auto a = Lit::isa(arity)) {
         if (*a == 0) return tuple();
         if (*a == 1) return body;
     }
 
     // <(a, b, c); body> -> <a; «(b, c); body>>
-    if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().subspan(1), body));
+    if (auto tuple = arity->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().subspan(1), body));
 
     // «‹n; x›; body» -> «x; «<n-1, x>; body»»
-    if (auto p = shape->isa<Pack>()) {
+    if (auto p = arity->isa<Pack>()) {
         if (auto s = Lit::isa(p->arity())) return pack(p->body(), pack(pack(*s - 1, p->body()), body));
     }
 
-    auto type = arr(shape, body->type());
+    auto type = arr(arity, body->type());
     return unify<Pack>(1, type, body);
 }
 

@@ -80,9 +80,12 @@ void Module::bind(AST& ast) const {
 }
 
 void Module::bind(Scopes& s) const {
-    for (const auto& import : implicit_imports()) import->bind(s);
-    for (const auto& import : imports()) import->bind(s);
-    for (const auto& decl : decls()) decl->bind(s);
+    for (const auto& import : implicit_imports())
+        import->bind(s);
+    for (const auto& import : imports())
+        import->bind(s);
+    for (const auto& decl : decls())
+        decl->bind(s);
 }
 
 void Import::bind(Scopes& s) const { module()->bind(s); }
@@ -105,7 +108,8 @@ void AliasPtrn::bind(Scopes& s, bool rebind, bool quiet) const {
 }
 
 void TuplePtrn::bind(Scopes& s, bool rebind, bool quiet) const {
-    for (const auto& ptrn : ptrns()) ptrn->bind(s, rebind, quiet);
+    for (const auto& ptrn : ptrns())
+        ptrn->bind(s, rebind, quiet);
 }
 
 /*
@@ -132,9 +136,11 @@ void LitExpr::bind(Scopes& s) const {
 
 void DeclExpr::bind(Scopes& s) const {
     if (is_where())
-        for (const auto& decl : decls() | std::ranges::views::reverse) decl->bind(s);
+        for (const auto& decl : decls() | std::ranges::views::reverse)
+            decl->bind(s);
     else
-        for (const auto& decl : decls()) decl->bind(s);
+        for (const auto& decl : decls())
+            decl->bind(s);
     expr()->bind(s);
 }
 
@@ -144,7 +150,8 @@ void ArrowExpr::bind(Scopes& s) const {
 }
 
 void UnionExpr::bind(Scopes& s) const {
-    for (auto& type : types()) type->bind(s);
+    for (auto& type : types())
+        type->bind(s);
 }
 
 void InjExpr::bind(Scopes& s) const {
@@ -161,7 +168,8 @@ void MatchExpr::Arm::bind(Scopes& s) const {
 
 void MatchExpr::bind(Scopes& s) const {
     scrutinee()->bind(s);
-    for (const auto& arm : arms()) arm->bind(s);
+    for (const auto& arm : arms())
+        arm->bind(s);
 }
 
 void PiExpr::Dom::bind(Scopes& s, bool quiet) const {
@@ -203,12 +211,13 @@ void SigmaExpr::bind(Scopes& s) const {
 }
 
 void TupleExpr::bind(Scopes& s) const {
-    for (const auto& elem : elems()) elem->bind(s);
+    for (const auto& elem : elems())
+        elem->bind(s);
 }
 
 void SeqExpr::bind(Scopes& s) const {
     s.push();
-    shape()->bind(s, false, false);
+    arity()->bind(s, false, false);
     body()->bind(s);
     s.pop();
 }
@@ -277,11 +286,13 @@ void AxmDecl::bind(Scopes& s) const {
 
         offset_ = annex_->subs.size();
         for (const auto& aliases : subs())
-            for (const auto& alias : aliases) alias->bind(s, this);
+            for (const auto& alias : aliases)
+                alias->bind(s, this);
 
         for (auto& sub : subs()) {
             auto& aliases = annex_->subs.emplace_back(std::deque<Sym>());
-            for (const auto& alias : sub) aliases.emplace_back(alias->dbg().sym());
+            for (const auto& alias : sub)
+                aliases.emplace_back(alias->dbg().sym());
         }
     }
 }
@@ -296,8 +307,10 @@ void LetDecl::bind(Scopes& s) const {
 }
 
 void RecDecl::bind(Scopes& s) const {
-    for (auto curr = this; curr; curr = curr->next()) curr->bind_decl(s);
-    for (auto curr = this; curr; curr = curr->next()) curr->bind_body(s);
+    for (auto curr = this; curr; curr = curr->next())
+        curr->bind_decl(s);
+    for (auto curr = this; curr; curr = curr->next())
+        curr->bind_body(s);
     annex_ = s.ast().name2annex(dbg(), &sub_);
 }
 
@@ -321,7 +334,8 @@ void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
 
 void LamDecl::bind_decl(Scopes& s) const {
     s.push();
-    for (size_t i = 0, e = num_doms(); i != e; ++i) dom(i)->bind(s);
+    for (size_t i = 0, e = num_doms(); i != e; ++i)
+        dom(i)->bind(s);
 
     if (auto filter = doms().back()->filter()) {
         if (auto pe = filter->isa<PrimaryExpr>()) {
@@ -351,7 +365,8 @@ void LamDecl::bind_decl(Scopes& s) const {
 
 void LamDecl::bind_body(Scopes& s) const {
     s.push();
-    for (const auto& dom : doms()) dom->bind(s, true);
+    for (const auto& dom : doms())
+        dom->bind(s, true);
     body()->bind(s);
     s.pop();
 }
