@@ -4,11 +4,11 @@
 
 namespace mim {
 
-/// A rewrite rule type
-/// currently opaque
-class RuleType : public Def, public Setters<RuleType> {
+/// Type <b>form</b>ation of a <b>re</b>write Rule.
+/// Currently opaque.
+class Reform : public Def, public Setters<Reform> {
 protected:
-    RuleType(const Def* type, const Def* meta_type)
+    Reform(const Def* type, const Def* meta_type)
         : Def(Node, type, {meta_type}, 0) {}
 
 public:
@@ -16,16 +16,16 @@ public:
 
     /// @name Setters
     ///@{
-    using Setters<RuleType>::set;
-    RuleType* set(size_t i, const Def* def) { return Def::set(i, def)->as<RuleType>(); }
-    RuleType* set(Defs ops) { return Def::set(ops)->as<RuleType>(); }
-    RuleType* unset() { return Def::unset()->as<RuleType>(); }
+    using Setters<Reform>::set;
+    Reform* set(size_t i, const Def* def) { return Def::set(i, def)->as<Reform>(); }
+    Reform* set(Defs ops) { return Def::set(ops)->as<Reform>(); }
+    Reform* unset() { return Def::unset()->as<Reform>(); }
     ///@}
 
     static const Def* infer(const Def* meta_type);
     const Def* check() override;
 
-    static constexpr auto Node = mim::Node::RuleType;
+    static constexpr auto Node = mim::Node::Reform;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -36,16 +36,16 @@ private:
 /// A rewrite rule
 class Rule : public Def, public Setters<Rule> {
 private:
-    Rule(const RuleType* type, const Def* lhs, const Def* rhs, const Def* condition)
+    Rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* condition)
         : Def(Node, type, {lhs, rhs, condition}, 0) {}
-    Rule(const RuleType* type)
+    Rule(const Reform* type)
         : Def(Node, type, 3, 0) {}
 
 public:
     /// @name lhs & rhs
     /// @see @ref proj
     ///@{
-    const RuleType* type() const { return Def::type()->as<RuleType>(); }
+    const Reform* type() const { return Def::type()->as<Reform>(); }
     const Def* lhs() const { return op(0); }
     const Def* rhs() const { return op(1); }
     const Def* condition() const { return op(2); }

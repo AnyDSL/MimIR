@@ -27,7 +27,7 @@
     m(Arr,      Judge::Form) m(Pack,  Judge::Intro)                                                               \
     m(Join,     Judge::Form) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    Judge::Intro)               \
     m(Meet,     Judge::Form) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    Judge::Intro)               \
-    m(RuleType, Judge::Form) m(Rule,  Judge::Intro)                                                               \
+    m(Reform,   Judge::Form) m(Rule,  Judge::Intro)                                                               \
     m(Uniq,     Judge::Form)                                                                                      \
     m(Nat,      Judge::Form)                                                                                      \
     m(Idx,      Judge::Intro)
@@ -191,6 +191,7 @@ public:
 /// | Uniq              | Wrap              | Unwrap            |
 /// | Join              | Inj               | Match             |
 /// | Meet              | Merge             | Split             |
+/// | Reform            | Rule              |                   |
 /// | Nat               | Lit               |                   |
 /// | Idx               | Lit               |                   |
 /// In addition there is:
