@@ -21,10 +21,12 @@ concept Elemable = requires(T elem) {
     elem.f;
 };
 
-template<class R, class F> std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
+template<class R, class F>
+std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
     const char* cur_sep = "";
     for (const auto& elem : r) {
-        for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
+        for (auto i = cur_sep; *i != '\0'; ++i)
+            os << *i;
 
         if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>)
             std::invoke(f, os, elem);
@@ -79,7 +81,8 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 ///@{
 
 /// Use with print to output complicated `std::ranges::range`s.
-template<class R, class F> struct Elem {
+template<class R, class F>
+struct Elem {
     Elem(const R& range, const F& f)
         : range(range)
         , f(f) {}
@@ -90,7 +93,8 @@ template<class R, class F> struct Elem {
 
 std::ostream& print(std::ostream& os, const char* s); ///< Base case.
 
-template<class T, class... Args> std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
+template<class T, class... Args>
+std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
     while (*s != '\0') {
         auto next = s + 1;
 
@@ -100,7 +104,8 @@ template<class T, class... Args> std::ostream& print(std::ostream& os, const cha
                 s++; // skip opening brace '{'
 
                 std::string spec;
-                while (*s != '\0' && *s != '}') spec.push_back(*s++);
+                while (*s != '\0' && *s != '}')
+                    spec.push_back(*s++);
                 assert(*s == '}' && "unmatched closing brace '}' in format string");
 
                 if constexpr (std::is_invocable_v<decltype(t)>) {
@@ -148,27 +153,32 @@ template<class T, class... Args> std::ostream& print(std::ostream& os, const cha
 }
 
 /// As above but end with `std::endl`.
-template<class... Args> std::ostream& println(std::ostream& os, const char* fmt, Args&&... args) {
+template<class... Args>
+std::ostream& println(std::ostream& os, const char* fmt, Args&&... args) {
     return print(os, fmt, std::forward<Args&&>(args)...) << std::endl;
 }
 
 /// Wraps mim::print to output a formatted `std:string`.
-template<class... Args> std::string fmt(const char* s, Args&&... args) {
+template<class... Args>
+std::string fmt(const char* s, Args&&... args) {
     std::ostringstream os;
     print(os, s, std::forward<Args&&>(args)...);
     return os.str();
 }
 
 /// Wraps mim::print to throw `T` with a formatted message.
-template<class T = std::logic_error, class... Args> [[noreturn]] void error(const char* fmt, Args&&... args) {
+template<class T = std::logic_error, class... Args>
+[[noreturn]] void error(const char* fmt, Args&&... args) {
     std::ostringstream oss;
     print(oss << "error: ", fmt, std::forward<Args&&>(args)...);
     throw T(oss.str());
 }
 
 #ifdef NDEBUG
-#    define assertf(condition, ...) \
-        do { (void)sizeof(condition); } while (false)
+#    define assertf(condition, ...)  \
+        do {                         \
+            (void)sizeof(condition); \
+        } while (false)
 #else
 #    define assertf(condition, ...)                                  \
         do {                                                         \
@@ -209,16 +219,20 @@ public:
     /// Wraps mim::print to prefix it with indentation.
     /// @see @ref fmt "Formatted Output"
     ///@{
-    template<class... Args> std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
-        for (size_t i = 0; i < indent_; ++i) os << tab_;
+    template<class... Args>
+    std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
+        for (size_t i = 0; i < indent_; ++i)
+            os << tab_;
         return mim::print(os, s, std::forward<Args>(args)...);
     }
     /// Same as Tab::print but **prepends** a `std::endl` to @p os.
-    template<class... Args> std::ostream& lnprint(std::ostream& os, const char* s, Args&&... args) {
+    template<class... Args>
+    std::ostream& lnprint(std::ostream& os, const char* s, Args&&... args) {
         return print(os << std::endl, s, std::forward<Args>(args)...);
     }
     /// Same as Tab::print but **appends** a `std::endl` to @p os.
-    template<class... Args> std::ostream& println(std::ostream& os, const char* s, Args&&... args) {
+    template<class... Args>
+    std::ostream& println(std::ostream& os, const char* s, Args&&... args) {
         return print(os, s, std::forward<Args>(args)...) << std::endl;
     }
     ///@}

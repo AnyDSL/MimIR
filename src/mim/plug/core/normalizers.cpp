@@ -114,7 +114,7 @@ const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b, con
         }
     }
 
-    if (::mim::is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (::mim::is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
     return nullptr;
 }
 
@@ -216,7 +216,7 @@ template<class Id> const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, 
 template<nat id> const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
-    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
     auto la = Lit::isa(a);
     auto lb = Lit::isa(b);
 
@@ -260,7 +260,7 @@ template<ncmp id> const Def* normalize_ncmp(const Def* type, const Def* callee, 
     if (id == ncmp::f) return world.lit_ff();
 
     auto [a, b] = arg->projs<2>();
-    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
 
     if (auto la = Lit::isa(a)) {
         if (auto lb = Lit::isa(b)) {
@@ -346,7 +346,7 @@ template<bit2 id> const Def* normalize_bit2(const Def* type, const Def* c, const
     auto ls     = Lit::isa(s);
     // TODO cope with wrap around
 
-    if (is_commutative(id) && commute(a, b)) std::swap(a, b);
+    if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
 
     auto tab = make_truth_table(id);
     if (auto res = merge_cmps<icmp>(tab, a, b)) return res;

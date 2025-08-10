@@ -13,7 +13,7 @@ namespace {
 static bool needs_zonk(const Def* def) {
     if (def->has_dep(Dep::Hole)) {
         for (auto mut : def->local_muts())
-            if (auto hole = mut->isa<Hole>(); hole && hole->is_set()) return true;
+            if (Hole::isa_set(mut)) return true;
     }
 
     return false;
@@ -44,7 +44,8 @@ public:
 
         root->unset()->set_type(rewrite(old_type));
 
-        for (size_t i = 0, e = root->num_ops(); i != e; ++i) root->set(i, rewrite(old_ops[i]));
+        for (size_t i = 0, e = root->num_ops(); i != e; ++i)
+            root->set(i, rewrite(old_ops[i]));
         if (auto new_imm = root->immutabilize()) return map(root, new_imm);
 
         return root;
@@ -62,6 +63,7 @@ const Def* Def::zonk_mut() const {
     if (!is_set()) return this;
 
     if (auto mut = isa_mut()) {
+        // TODO copy & paste from above
         if (auto hole = mut->isa<Hole>()) {
             auto [last, op] = hole->find();
             return op ? op->zonk() : last;
@@ -95,7 +97,7 @@ std::pair<Hole*, const Def*> Hole::find() {
     auto def  = Def::op(0);
     auto last = this;
 
-    for (; def;) {
+    while (def) {
         if (auto h = def->isa_mut<Hole>()) {
             def  = h->op();
             last = h;
@@ -130,7 +132,8 @@ const Def* Hole::tuplefy(nat_t n) {
             holes[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
         }
     } else {
-        for (size_t i = 0; i != n; ++i) holes[i] = w.mut_hole(type()->proj(n, i));
+        for (size_t i = 0; i != n; ++i)
+            holes[i] = w.mut_hole(type()->proj(n, i));
     }
 
     auto tuple = w.tuple(holes);
@@ -143,7 +146,8 @@ const Def* Hole::tuplefy(nat_t n) {
  */
 
 #ifdef MIM_ENABLE_CHECKS
-template<Checker::Mode mode> bool Checker::fail() {
+template<Checker::Mode mode>
+bool Checker::fail() {
     if (mode == Check && world().flags().break_on_alpha) fe::breakpoint();
     return false;
 }
@@ -189,7 +193,8 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
     return alpha_<Check>(type, val_ty) ? val : fail();
 }
 
-template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
+template<Checker::Mode mode>
+bool Checker::alpha_(const Def* d1, const Def* d2) {
     for (bool todo = true; todo;) {
         // below we check type and arity which may in turn open up more opportunities for zonking
         todo = false;
@@ -278,7 +283,8 @@ template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) 
     return true;
 }
 
-template<Checker::Mode mode> bool Checker::check(const Prod* prod, const Def* def) {
+template<Checker::Mode mode>
+bool Checker::check(const Prod* prod, const Def* def) {
     size_t a = prod->num_ops();
     for (size_t i = 0; i != a; ++i)
         if (!alpha_<mode>(prod->op(i), def->proj(a, i))) return fail<mode>();
@@ -325,13 +331,15 @@ const Def* Arr::check() {
 
 const Def* Tuple::infer(World& world, Defs ops) {
     auto elems = absl::FixedArray<const Def*>(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->unfold_type();
+    for (size_t i = 0, e = ops.size(); i != e; ++i)
+        elems[i] = ops[i]->unfold_type();
     return world.sigma(elems);
 }
 
 const Def* Sigma::infer(World& w, Defs ops) {
     auto elems = absl::FixedArray<const Def*>(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->unfold_type();
+    for (size_t i = 0, e = ops.size(); i != e; ++i)
+        elems[i] = ops[i]->unfold_type();
     return w.umax<UMax::Kind>(elems);
 }
 

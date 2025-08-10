@@ -402,7 +402,7 @@ const Def* World::extract(const Def* d, const Def* index) {
         elem_t = join(type->as<Sigma>()->ops());
 
     if (index->isa<Top>()) {
-        if (auto hole = d->isa_mut<Hole>(); hole && !hole->is_set()) {
+        if (auto hole = Hole::isa_unset(d)) {
             auto elem_hole = mut_hole(elem_t);
             hole->set(pack(size, elem_hole));
             return elem_hole;

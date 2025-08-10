@@ -10,6 +10,7 @@ class Seq;
 /// This node is a hole in the IR that is inferred by its context later on.
 /// It is modelled as a *mutable* Def.
 /// If inference was successful, it's Hole::op will be set to the inferred Def.
+/// @note Hole%s are not type-checked as they are used during type-checking - causing a chicken-and-egg problem.
 class Hole : public Def, public Setters<Hole> {
 private:
     Hole(const Def* type)
@@ -25,20 +26,44 @@ public:
     /// Transitively walks up Hole%s until the last one while path-compressing everything.
     /// @returns the final Hole in the chain and final op() (if any).
     std::pair<Hole*, const Def*> find();
+    ///@}
+
+    /// @name set/unset
+    ///@{
     Hole* set(const Def* op) {
         assert(op != this);
         return Def::set(0, op)->as<Hole>();
     }
+    Hole* unset() { return Def::unset()->as<Hole>(); }
     ///@}
 
-    Hole* unset() { return Def::unset()->as<Hole>(); }
     Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
 
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `this` if unsuccessful.
     const Def* tuplefy(nat_t);
 
-    static const Def* isa(const Def*);
+    /// @name isa
+    ///@{
+    static const Def* isa_set(const Def* def) {
+        if (auto hole = def->isa<Hole>(); hole && hole->is_set()) return hole->op();
+        return nullptr;
+    }
+
+    static Hole* isa_unset(const Def* def) {
+        if (auto hole = def->isa_mut<Hole>(); hole && !hole->is_set()) return hole;
+        return nullptr;
+    }
+
+    /// If @p def is a Hole, find last in chain, otherwise yields @p def again.
+    static const Def* find(const Def* def) {
+        if (auto hole = def->isa_mut<Hole>()) {
+            auto [last, op] = hole->find();
+            return op ? op : last;
+        }
+        return def;
+    }
+    ///@}
 
     static constexpr auto Node = mim::Node::Hole;
 
@@ -66,7 +91,8 @@ public:
         Test,
     };
 
-    template<Mode mode> static bool alpha(const Def* d1, const Def* d2) {
+    template<Mode mode>
+    static bool alpha(const Def* d1, const Def* d2) {
         if (d1 == d2) return true;
         return Checker(d1->world()).alpha_<mode>(d1, d2);
     }
@@ -83,17 +109,24 @@ public:
 
 private:
 #ifdef MIM_ENABLE_CHECKS
-    template<Mode> bool fail();
+    template<Mode>
+    bool fail();
     const Def* fail();
 #else
-    template<Mode> bool fail() { return false; }
+    template<Mode>
+    bool fail() {
+        return false;
+    }
     const Def* fail() { return {}; }
 #endif
 
     [[nodiscard]] const Def* assignable_(const Def* type, const Def* value);
-    template<Mode> [[nodiscard]] bool alpha_(const Def* d1, const Def* d2);
-    template<Mode> [[nodiscard]] bool check(const Prod*, const Def*);
-    template<Mode> [[nodiscard]] bool check(const Seq*, const Def*);
+    template<Mode>
+    [[nodiscard]] bool alpha_(const Def* d1, const Def* d2);
+    template<Mode>
+    [[nodiscard]] bool check(const Prod*, const Def*);
+    template<Mode>
+    [[nodiscard]] bool check(const Seq*, const Def*);
     [[nodiscard]] bool check1(const Seq*, const Def*);
     [[nodiscard]] bool check(Seq*, const Seq*);
     [[nodiscard]] bool check(const UMax*, const Def*);

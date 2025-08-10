@@ -34,7 +34,8 @@ public:
     virtual void run(); ///< Entry point and generates some debug output; invokes Phase::start.
 
     /// Runs a single Phase.
-    template<class P, class... Args> static void run(Args&&... args) {
+    template<class P, class... Args>
+    static void run(Args&&... args) {
         P p(std::forward<Args>(args)...);
         p.run();
     }
@@ -84,7 +85,8 @@ public:
 };
 
 /// Wraps a Pass as a Phase.
-template<class P> class PassPhase : public Phase {
+template<class P>
+class PassPhase : public Phase {
 public:
     template<class... Args>
     PassPhase(World& world, Args&&... args)
@@ -128,7 +130,8 @@ public:
     /// Add a Phase.
     /// You don't need to pass the World to @p args - it will be passed automatically.
     /// If @p P is a Pass, this method will wrap this in a PassPhase.
-    template<class P, class... Args> auto add(Args&&... args) {
+    template<class P, class... Args>
+    auto add(Args&&... args) {
         if constexpr (std::is_base_of_v<Pass, P>) {
             return add<PassPhase<P>>(std::forward<Args>(args)...);
         } else {
@@ -149,7 +152,8 @@ private:
 /// Select with `elide_empty` whether you want to visit trivial *muts* without body.
 /// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
 /// If you a are only interested in specific mutables, you can pass this to @p M.
-template<class M = Def> class ClosedMutPhase : public Phase {
+template<class M = Def>
+class ClosedMutPhase : public Phase {
 public:
     ClosedMutPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
         : Phase(world, name, dirty)
@@ -157,14 +161,16 @@ public:
 
     void start() override {
         unique_queue<MutSet> queue;
-        for (auto mut : world().externals()) queue.push(mut);
+        for (auto mut : world().externals())
+            queue.push(mut);
 
         while (!queue.empty()) {
             auto mut = queue.pop();
             if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(root_ = m);
 
             for (auto op : mut->deps())
-                for (auto mut : op->local_muts()) queue.push(mut);
+                for (auto mut : op->local_muts())
+                    queue.push(mut);
         }
     }
 
@@ -178,7 +184,8 @@ private:
 };
 
 /// Transitively collects all *closed* mutables (Def::is_closed) in a World.
-template<class M = Def> class ClosedCollector : public ClosedMutPhase<M> {
+template<class M = Def>
+class ClosedCollector : public ClosedMutPhase<M> {
 public:
     ClosedCollector(World& world)
         : ClosedMutPhase<M>(world, "collector", false, false) {}
@@ -196,7 +203,8 @@ public:
 };
 
 /// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
-template<class M = Def> class NestPhase : public ClosedMutPhase<M> {
+template<class M = Def>
+class NestPhase : public ClosedMutPhase<M> {
 public:
     NestPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
         : ClosedMutPhase<M>(world, name, dirty, elide_empty) {}
