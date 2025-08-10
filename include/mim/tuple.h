@@ -153,7 +153,8 @@ public:
     const Def* check() final;
     ///@}
 
-    static constexpr auto Node = mim::Node::Arr;
+    static constexpr auto Node      = mim::Node::Arr;
+    static constexpr size_t Num_Ops = 2;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -196,7 +197,8 @@ public:
     const Def* prod(World&, Defs) const final;
     ///@}
 
-    static constexpr auto Node = mim::Node::Pack;
+    static constexpr auto Node      = mim::Node::Pack;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
