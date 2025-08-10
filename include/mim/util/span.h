@@ -99,20 +99,15 @@ using View = Span<const T, N>;
 
 /// @name Deduction Guides
 ///@{
-template<class I, class E>
-Span(I, E) -> Span<std::remove_reference_t<std::iter_reference_t<I>>>;
-template<class T, size_t N>
-Span(T (&)[N]) -> Span<T, N>;
-template<class T, size_t N>
-Span(std::array<T, N>&) -> Span<T, N>;
-template<class T, size_t N>
-Span(const std::array<T, N>&) -> Span<const T, N>;
-template<class R>
-Span(R&&) -> Span<std::remove_reference_t<std::ranges::range_reference_t<R>>>;
-template<Vectorlike Vec>
-Span(Vec&) -> Span<typename Vec::value_type, std::dynamic_extent>;
-template<Vectorlike Vec>
-Span(const Vec&) -> Span<const typename Vec::value_type, std::dynamic_extent>;
+// clang-format off
+template<class I, class E>  Span(I, E)                    -> Span<std::remove_reference_t<std::iter_reference_t<I>>>;
+template<class T, size_t N> Span(T (&)[N])                -> Span<      T, N>;
+template<class T, size_t N> Span(      std::array<T, N>&) -> Span<      T, N>;
+template<class T, size_t N> Span(const std::array<T, N>&) -> Span<const T, N>;
+template<class R>           Span(R&&)                     -> Span<std::remove_reference_t<std::ranges::range_reference_t<R>>>;
+template<Vectorlike Vec>    Span(      Vec&)              -> Span<      typename Vec::value_type, std::dynamic_extent>;
+template<Vectorlike Vec>    Span(const Vec&)              -> Span<const typename Vec::value_type, std::dynamic_extent>;
+// clang-format on
 ///@}
 
 template<size_t I, class T, size_t N>
