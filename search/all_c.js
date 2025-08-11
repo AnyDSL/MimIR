@@ -174,7 +174,7 @@ var searchData=
   ['mut_171',['mut',['../classmim_1_1Var.html#aa8d07cb130fdf324995f4402f0c5cfc7',1,'mim::Var::mut()'],['../classmim_1_1Nest_1_1Node.html#a73f5b9658f4d8830f9dda6717377aadf',1,'mim::Nest::Node::mut()']]],
   ['mut2mut_172',['Mut2Mut',['../namespacemim.html#a9fd6d037a8eb540c32dbe840e32c90e9',1,'mim']]],
   ['mut2node_173',['mut2node',['../classmim_1_1Nest.html#af09bb7338b6e44e8b74c3ba3c45b68d2',1,'mim::Nest::mut2node() const'],['../classmim_1_1Nest.html#abeda129cd07aedbe1ca88fad7f2483c2',1,'mim::Nest::mut2node(Def *mut) const']]],
-  ['mut_5farr_174',['mut_arr',['../classmim_1_1World.html#a5cbd853edc17a6223f7578297b776e39',1,'mim::World::mut_arr(const Def *type)'],['../classmim_1_1World.html#ade2c4cd0464f3b54829c93fd1ff65e16',1,'mim::World::mut_arr()']]],
+  ['mut_5farr_174',['mut_arr',['../classmim_1_1World.html#ade2c4cd0464f3b54829c93fd1ff65e16',1,'mim::World::mut_arr()'],['../classmim_1_1World.html#a5cbd853edc17a6223f7578297b776e39',1,'mim::World::mut_arr(const Def *type)']]],
   ['mut_5fcon_175',['mut_con',['../classmim_1_1World.html#ade141ec63f54f6a72fde808046e0508f',1,'mim::World::mut_con(const Def *dom)'],['../classmim_1_1World.html#ae633c16d97913478bc487dff8286b880',1,'mim::World::mut_con(Defs dom)'],['../namespacemim_1_1plug_1_1mem.html#a928dd317ed1a94219fe0f8b8b3d90e32',1,'mim::plug::mem::mut_con(World &amp;w)'],['../namespacemim_1_1plug_1_1mem.html#adbee722c1697d7962e26b44e1972a6dd',1,'mim::plug::mem::mut_con(const Def *dom)']]],
   ['mut_5ffun_176',['mut_fun',['../classmim_1_1World.html#a7352725d10ff0c94797a530c025fb0cf',1,'mim::World::mut_fun(const Def *dom, const Def *codom)'],['../classmim_1_1World.html#a6e7ca2a6a72ed3738885ed30662bf7e6',1,'mim::World::mut_fun(Defs dom, const Def *codom)'],['../classmim_1_1World.html#a2ca0832a86edbcf865f3bd0cc23defa8',1,'mim::World::mut_fun(const Def *dom, Defs codom)'],['../classmim_1_1World.html#a95187ede81bee1e0e92956183d5665eb',1,'mim::World::mut_fun(Defs dom, Defs codom)']]],
   ['mut_5fhole_177',['mut_hole',['../classmim_1_1World.html#a79a04b80cdeb782492aa3381043769b9',1,'mim::World']]],
@@ -184,11 +184,12 @@ var searchData=
   ['mut_5flam_181',['mut_lam',['../classmim_1_1World.html#afa7919f0e7f69f2451aedd9da912c857',1,'mim::World::mut_lam(const Pi *pi)'],['../classmim_1_1World.html#a80dceeb681ecd7a9de86594e87da2e70',1,'mim::World::mut_lam(const Def *dom, const Def *codom)'],['../classmim_1_1World.html#aa73185d0c676369e038901dc5d59d35e',1,'mim::World::mut_lam(Defs dom, const Def *codom)'],['../classmim_1_1World.html#a34fdcb231ade33e447306b8739704e9e',1,'mim::World::mut_lam(const Def *dom, Defs codom)'],['../classmim_1_1World.html#ab7ecddb780da3a0b13e16085094e1f17',1,'mim::World::mut_lam(Defs dom, Defs codom)']]],
   ['mut_5fpack_182',['mut_pack',['../classmim_1_1World.html#a9918b4797f61044b34b61b82f4a01e2b',1,'mim::World']]],
   ['mut_5fpi_183',['mut_pi',['../classmim_1_1World.html#a62054f4dbd855e2352dfb17aed10274b',1,'mim::World']]],
-  ['mut_5fsigma_184',['mut_sigma',['../classmim_1_1World.html#ae54352dda91fcfd8412ce37e0a3ba624',1,'mim::World::mut_sigma(const Def *type, size_t size)'],['../classmim_1_1World.html#ab98632ddaa3d773e7626b46d673eeb2b',1,'mim::World::mut_sigma(size_t size)']]],
-  ['mutables_185',['Mutables',['../passes.html#autotoc_md65',1,'Creating Mutables'],['../dev.html#autotoc_md21',1,'Downcast for Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables']]],
-  ['mutmap_186',['MutMap',['../namespacemim.html#afccd5f832a8d98e22ada5860ea24afd2',1,'mim']]],
-  ['muts_187',['Muts',['../namespacemim.html#a808d4cab01734432fc4218de6dae0ef2',1,'mim']]],
-  ['muts_188',['muts',['../classmim_1_1ClosedCollector.html#a2cd0e6091e9fe2cc2dbf1572e7bbfa48',1,'mim::ClosedCollector::muts'],['../classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b',1,'mim::Nest::muts()'],['../classmim_1_1World.html#a1ab828141bfcd0c0bdc3608ac24ec358',1,'mim::World::muts()'],['../classmim_1_1World.html#a52b5c22ff4c01fdfa5b1c18412f38a6f',1,'mim::World::muts() const']]],
-  ['mutset_189',['MutSet',['../namespacemim.html#a9cef35a428a391739d168b05bad8dfb2',1,'mim']]],
-  ['my_5fprec_190',['MY_PREC',['../dump_8cpp.html#a6bff0ba92b8da6688daba417375c5449',1,'dump.cpp']]]
+  ['mut_5fseq_184',['mut_seq',['../classmim_1_1World.html#a8b9e4db84d00c784e9c574454c9a1cb0',1,'mim::World']]],
+  ['mut_5fsigma_185',['mut_sigma',['../classmim_1_1World.html#ae54352dda91fcfd8412ce37e0a3ba624',1,'mim::World::mut_sigma(const Def *type, size_t size)'],['../classmim_1_1World.html#ab98632ddaa3d773e7626b46d673eeb2b',1,'mim::World::mut_sigma(size_t size)']]],
+  ['mutables_186',['Mutables',['../passes.html#autotoc_md65',1,'Creating Mutables'],['../dev.html#autotoc_md21',1,'Downcast for Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables']]],
+  ['mutmap_187',['MutMap',['../namespacemim.html#afccd5f832a8d98e22ada5860ea24afd2',1,'mim']]],
+  ['muts_188',['Muts',['../namespacemim.html#a808d4cab01734432fc4218de6dae0ef2',1,'mim']]],
+  ['muts_189',['muts',['../classmim_1_1ClosedCollector.html#a2cd0e6091e9fe2cc2dbf1572e7bbfa48',1,'mim::ClosedCollector::muts'],['../classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b',1,'mim::Nest::muts()'],['../classmim_1_1World.html#a1ab828141bfcd0c0bdc3608ac24ec358',1,'mim::World::muts()'],['../classmim_1_1World.html#a52b5c22ff4c01fdfa5b1c18412f38a6f',1,'mim::World::muts() const']]],
+  ['mutset_190',['MutSet',['../namespacemim.html#a9cef35a428a391739d168b05bad8dfb2',1,'mim']]],
+  ['my_5fprec_191',['MY_PREC',['../dump_8cpp.html#a6bff0ba92b8da6688daba417375c5449',1,'dump.cpp']]]
 ];

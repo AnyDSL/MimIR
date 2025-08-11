@@ -13,5 +13,6 @@ var classmim_1_1Hole =
     [ "unset", "classmim_1_1Hole.html#a8d591b06cb894d13113e8514343faa8b", null ],
     [ "Checker", "classmim_1_1Hole.html#a42e74b7760f36154466246901e25398f", null ],
     [ "World", "classmim_1_1Hole.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
-    [ "Node", "classmim_1_1Hole.html#a56f1733069c1b5dbc77702109a5e6a4b", null ]
+    [ "Node", "classmim_1_1Hole.html#a56f1733069c1b5dbc77702109a5e6a4b", null ],
+    [ "Num_Ops", "classmim_1_1Hole.html#a04ae04d4aa12598b438080cc07ea738d", null ]
 ];

@@ -5,5 +5,6 @@ var classmim_1_1Lit =
     [ "isa", "classmim_1_1Lit.html#a429b15b3da51e9b60ffab09a744896b7", null ],
     [ "rebuild_", "classmim_1_1Lit.html#aa51116fb46057f10b755b2b922b7a523", null ],
     [ "World", "classmim_1_1Lit.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
-    [ "Node", "classmim_1_1Lit.html#a3b012fa69b7b09bbb7c10ed7cbc73e19", null ]
+    [ "Node", "classmim_1_1Lit.html#a3b012fa69b7b09bbb7c10ed7cbc73e19", null ],
+    [ "Num_Ops", "classmim_1_1Lit.html#a95f30ac0763a3755fd0a98e868e99bcb", null ]
 ];

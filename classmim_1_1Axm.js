@@ -20,5 +20,6 @@ var classmim_1_1Axm =
     [ "trip", "classmim_1_1Axm.html#a487d487a0cce32b39edbaf56c0a00cd5", null ],
     [ "World", "classmim_1_1Axm.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "Node", "classmim_1_1Axm.html#ad10b35a52c08bb5252205f0b7851e99f", null ],
+    [ "Num_Ops", "classmim_1_1Axm.html#a81bf9cbb926bc652f226f77a86179246", null ],
     [ "Trip_End", "classmim_1_1Axm.html#acc0ce530cead2cf2565961ac2c1b8ffd", null ]
 ];

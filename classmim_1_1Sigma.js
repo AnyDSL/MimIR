@@ -1,5 +1,6 @@
 var classmim_1_1Sigma =
 [
+    [ "arity", "classmim_1_1Sigma.html#ad3444708c04904c67cad47a48a82c68d", null ],
     [ "check", "classmim_1_1Sigma.html#a9268c73d0fc902431c99e4913ac4fbfe", null ],
     [ "check", "classmim_1_1Sigma.html#a64377cb7f41c7afcf664c4c5d3aa9f62", null ],
     [ "immutabilize", "classmim_1_1Sigma.html#a8990bb67135aac2606388da8d4f122df", null ],

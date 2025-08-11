@@ -9,5 +9,6 @@ var classmim_1_1Global =
     [ "stub_", "classmim_1_1Global.html#a9c7e8b188af7568154f387c8e25ce640", null ],
     [ "type", "classmim_1_1Global.html#a8c515822a19a30f0e15e7b46b13b42a0", null ],
     [ "World", "classmim_1_1Global.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
-    [ "Node", "classmim_1_1Global.html#acce2485856774b081b0c081d44c84df2", null ]
+    [ "Node", "classmim_1_1Global.html#acce2485856774b081b0c081d44c84df2", null ],
+    [ "Num_Ops", "classmim_1_1Global.html#a922f87e2511a4400f04107720986382f", null ]
 ];

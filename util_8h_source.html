@@ -249,7 +249,7 @@ $(function(){initNavTree('util_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keyword">template</span>&lt;<span class="keyword">class </span>C, <span class="keyword">class</span>... Args&gt;</div>
 <div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="namespacemim.html#a217db174daa31eb9e4001c60c099a96f">  110</a></span><span class="keyword">auto</span> <a class="code hl_function" href="namespacemim.html#a217db174daa31eb9e4001c60c099a96f">assert_emplace</a>(C&amp; container, Args&amp;&amp;... args) {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">auto</span> [i, ins] = container.emplace(std::forward&lt;Args&amp;&amp;&gt;(args)...);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">auto</span> [i, ins] = container.emplace(std::forward&lt;Args&gt;(args)...);</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    assert_unused(ins);</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">return</span> i;</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>}<span class="comment"></span></div>

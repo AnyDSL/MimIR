@@ -30,5 +30,6 @@ var classmim_1_1Lam =
     [ "type", "classmim_1_1Lam.html#a6380ad84433a405f9e2a7695ecffa6b3", null ],
     [ "unset", "classmim_1_1Lam.html#a072eca45c3daaf3e26a30cef5c17f589", null ],
     [ "World", "classmim_1_1Lam.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
-    [ "Node", "classmim_1_1Lam.html#a73ebdebf9efc615941facd062fd89f4c", null ]
+    [ "Node", "classmim_1_1Lam.html#a73ebdebf9efc615941facd062fd89f4c", null ],
+    [ "Num_Ops", "classmim_1_1Lam.html#a0fe182867fe4bdf6d6d99286268404b6", null ]
 ];

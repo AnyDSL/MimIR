@@ -29,5 +29,6 @@ var classmim_1_1Pi =
     [ "stub_", "classmim_1_1Pi.html#ae2126dd5126feb51962d0ac408de139b", null ],
     [ "unset", "classmim_1_1Pi.html#a33ce4a2b9f089af0ca6a99385ebed77d", null ],
     [ "World", "classmim_1_1Pi.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
-    [ "Node", "classmim_1_1Pi.html#ab9dee5ab84bdc0bcd567cafe9c4a2231", null ]
+    [ "Node", "classmim_1_1Pi.html#ab9dee5ab84bdc0bcd567cafe9c4a2231", null ],
+    [ "Num_Ops", "classmim_1_1Pi.html#a505e23708fcdd64d72263e5b2f967792", null ]
 ];

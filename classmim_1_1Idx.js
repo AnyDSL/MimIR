@@ -9,5 +9,6 @@ var classmim_1_1Idx =
     [ "size2bitwidth", "classmim_1_1Idx.html#a476bd0b41bda503d46dac1584823e1e1", null ],
     [ "size2bitwidth", "classmim_1_1Idx.html#a445658b6d8a1922d7fc9fb33235417ff", null ],
     [ "World", "classmim_1_1Idx.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
-    [ "Node", "classmim_1_1Idx.html#a1ad0fc50124498f395680f359fbf7182", null ]
+    [ "Node", "classmim_1_1Idx.html#a1ad0fc50124498f395680f359fbf7182", null ],
+    [ "Num_Ops", "classmim_1_1Idx.html#ac93da5e225fd598b474fd464af1198dc", null ]
 ];
