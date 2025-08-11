@@ -553,6 +553,7 @@ const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
 
     if (a == 1) {
+        assert(i == 0);
         if (!type()) return this;
         if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
     }

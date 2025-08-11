@@ -346,14 +346,17 @@ const Def* World::extract(const Def* d, const Def* index) {
     d     = d->zonk();
     index = index->zonk();
 
-    if (index->isa<Tuple>()) {
-        auto n   = index->num_ops();
-        auto idx = DefVec(n, [&](size_t i) { return index->op(i); });
-        auto ops = DefVec(n, [&](size_t i) { return d->proj(n, Lit::as(idx[i])); });
-        return tuple(ops);
-    } else if (index->isa<Pack>()) {
-        auto ops = DefVec(Lit::as(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
-        return tuple(ops);
+    if (auto tuple = index->isa<Tuple>()) {
+        for (auto op : tuple->ops())
+            d = extract(d, op);
+        return d;
+    } else if (auto pack = index->isa<Pack>()) {
+        if (auto a = Lit::isa(index->arity())) {
+            for (nat_t i = 0, e = *a; i != e; ++i)
+                d = extract(d, pack->body());
+            return d;
+        }
+        assert(false && "TODO");
     }
 
     auto size = Idx::isa(index->type());
