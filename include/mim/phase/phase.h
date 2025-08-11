@@ -135,7 +135,7 @@ public:
         if constexpr (std::is_base_of_v<Pass, P>) {
             return add<PassPhase<P>>(std::forward<Args>(args)...);
         } else {
-            auto p     = std::make_unique<P>(world(), std::forward<Args&&>(args)...);
+            auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
             auto phase = p.get();
             phases_.emplace_back(std::move(p));
             if (phase->is_dirty()) phases_.emplace_back(std::make_unique<Cleanup>(world()));

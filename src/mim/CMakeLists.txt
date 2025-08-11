@@ -1,4 +1,4 @@
-add_library(libmim)
+add_library(libmim SHARED)
 target_sources(libmim
     PRIVATE
         axm.cpp

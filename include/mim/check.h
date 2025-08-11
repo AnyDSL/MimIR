@@ -65,7 +65,8 @@ public:
     }
     ///@}
 
-    static constexpr auto Node = mim::Node::Hole;
+    static constexpr auto Node      = mim::Node::Hole;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

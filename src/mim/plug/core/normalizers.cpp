@@ -572,7 +572,7 @@ const Def* normalize_trait(const Def*, const Def*, const Def* type) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
         auto b = op(trait::size, arr->body());
-        if (b->isa<Lit>()) return world.call(nat::mul, Defs{arr->shape(), b});
+        if (b->isa<Lit>()) return world.call(nat::mul, Defs{arr->arity(), b});
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma);
     }

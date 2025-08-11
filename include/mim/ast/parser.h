@@ -44,8 +44,9 @@ public:
     Ptr<Module> plugin(const char* name) { return plugin({Loc(), driver().sym(name)}); }
 
 private:
-    template<class T, class... Args> auto ptr(Args&&... args) {
-        return ast_.ptr<const T>(std::forward<Args&&>(args)...);
+    template<class T, class... Args>
+    auto ptr(Args&&... args) {
+        return ast_.ptr<const T>(std::forward<Args>(args)...);
     }
 
     Dbg anon() const { return {ahead().loc().anew_begin(), ast_.sym_anon()}; }
@@ -62,11 +63,14 @@ private:
     Ptr<Import> parse_plugin();
     Ptr<Expr> parse_type_ascr(std::string_view ctxt = {});
 
-    template<class F> void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
+    template<class F>
+    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
         expect(delim_l, ctxt);
         auto delim_r = Tok::delim_l2r(delim_l);
         if (!ahead().isa(delim_r)) {
-            do { f(); } while (accept(sep) && !ahead().isa(delim_r));
+            do {
+                f();
+            } while (accept(sep) && !ahead().isa(delim_r));
         }
         expect(delim_r, std::string("closing delimiter of a ") + ctxt);
     }
@@ -147,9 +151,10 @@ private:
     }
 
     using Super::expect;
-    template<class... Args> Tok expect(Tok::Tag tag, const char* f, Args&&... args) {
+    template<class... Args>
+    Tok expect(Tok::Tag tag, const char* f, Args&&... args) {
         std::ostringstream oss;
-        print(oss, f, std::forward<Args&&>(args)...);
+        print(oss, f, std::forward<Args>(args)...);
         return Super::expect(tag, oss.str());
     }
     ///@}

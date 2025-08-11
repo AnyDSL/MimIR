@@ -25,7 +25,8 @@ public:
     static const Def* infer(const Def* meta_type);
     const Def* check() override;
 
-    static constexpr auto Node = mim::Node::Reform;
+    static constexpr auto Node      = mim::Node::Reform;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;
@@ -90,7 +91,8 @@ public:
 
     static bool is_in_rule(const Def*);
 
-    static constexpr auto Node = mim::Node::Rule;
+    static constexpr auto Node      = mim::Node::Rule;
+    static constexpr size_t Num_Ops = 3;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;

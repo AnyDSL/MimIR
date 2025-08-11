@@ -138,7 +138,7 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
 
                 ++s; // skip closing brace '}'
                 // call even when *s == '\0' to detect extra arguments
-                return print(os, s, std::forward<Args&&>(args)...);
+                return print(os, s, std::forward<Args>(args)...);
             }
             case '}':
                 if (detail::match2nd(os, next, s, '}')) continue;
@@ -155,14 +155,14 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
 /// As above but end with `std::endl`.
 template<class... Args>
 std::ostream& println(std::ostream& os, const char* fmt, Args&&... args) {
-    return print(os, fmt, std::forward<Args&&>(args)...) << std::endl;
+    return print(os, fmt, std::forward<Args>(args)...) << std::endl;
 }
 
 /// Wraps mim::print to output a formatted `std:string`.
 template<class... Args>
 std::string fmt(const char* s, Args&&... args) {
     std::ostringstream os;
-    print(os, s, std::forward<Args&&>(args)...);
+    print(os, s, std::forward<Args>(args)...);
     return os.str();
 }
 
@@ -170,7 +170,7 @@ std::string fmt(const char* s, Args&&... args) {
 template<class T = std::logic_error, class... Args>
 [[noreturn]] void error(const char* fmt, Args&&... args) {
     std::ostringstream oss;
-    print(oss << "error: ", fmt, std::forward<Args&&>(args)...);
+    print(oss << "error: ", fmt, std::forward<Args>(args)...);
     throw T(oss.str());
 }
 
@@ -195,10 +195,10 @@ template<class T = std::logic_error, class... Args>
 /// mim::print%s to `std::cout`/`std::cerr`; the *`ln` variants emit an additional `std::endl`.
 ///@{
 // clang-format off
-template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args&&>(args)...); }
-template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args&&>(args)...); }
-template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { return outf(fmt, std::forward<Args&&>(args)...) << std::endl; }
-template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...) << std::endl; }
+template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args>(args)...); }
+template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args>(args)...); }
+template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { return outf(fmt, std::forward<Args>(args)...) << std::endl; }
+template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args>(args)...) << std::endl; }
 // clang-format on
 ///@}
 
