@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <span>
 
 #include <fe/assert.h>
 #include <fe/cast.h>
@@ -260,17 +261,7 @@ public:
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     const Def* unfold_type() const;
     bool is_term() const;
-    ///@}
-
-    /// @name arity
-    ///@{
-    const Def* arity() const;
-    std::optional<nat_t> isa_lit_arity() const;
-    nat_t as_lit_arity() const {
-        auto a = isa_lit_arity();
-        assert(a.has_value());
-        return *a;
-    }
+    virtual const Def* arity() const;
     ///@}
 
     /// @name ops
@@ -349,8 +340,8 @@ public:
     /// ```
     ///@{
 
-    /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
-    nat_t num_projs() const { return isa_lit_arity().value_or(1); }
+    /// Yields Def::arity(), if it is a Lit, or `1` otherwise.
+    nat_t num_projs() const;
     nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalarize_threshold is exceeded.
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
@@ -366,7 +357,6 @@ public:
         if constexpr (A == std::dynamic_extent) {
             return projs(num_projs(), f);
         } else {
-            assert(A == as_lit_arity());
             std::array<R, A> array;
             for (nat_t i = 0; i != A; ++i)
                 array[i] = f(proj(A, i));
@@ -671,7 +661,8 @@ public:
     Def* mut() const { return op(0)->as_mut(); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Var;
+    static constexpr auto Node      = mim::Node::Var;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -682,7 +673,8 @@ private:
 class Univ : public Def, public Setters<Univ> {
 public:
     using Setters<Univ>::set;
-    static constexpr auto Node = mim::Node::Univ;
+    static constexpr auto Node      = mim::Node::Univ;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     Univ(World& world)
@@ -696,7 +688,8 @@ private:
 class UMax : public Def, public Setters<UMax> {
 public:
     using Setters<UMax>::set;
-    static constexpr auto Node = mim::Node::UMax;
+    static constexpr auto Node      = mim::Node::UMax;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 
     enum Sort { Univ, Kind, Type, Term };
 
@@ -722,7 +715,8 @@ public:
     level_t offset() const { return flags(); }
     ///@}
 
-    static constexpr auto Node = mim::Node::UInc;
+    static constexpr auto Node      = mim::Node::UInc;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -743,7 +737,8 @@ public:
     const Def* level() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Type;
+    static constexpr auto Node      = mim::Node::Type;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -786,7 +781,8 @@ public:
     }
     ///@}
 
-    static constexpr auto Node = mim::Node::Lit;
+    static constexpr auto Node      = mim::Node::Lit;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -797,7 +793,8 @@ private:
 class Nat : public Def, public Setters<Nat> {
 public:
     using Setters<Nat>::set;
-    static constexpr auto Node = mim::Node::Nat;
+    static constexpr auto Node      = mim::Node::Nat;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     Nat(World& world);
@@ -845,7 +842,8 @@ public:
     static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 
-    static constexpr auto Node = mim::Node::Idx;
+    static constexpr auto Node      = mim::Node::Idx;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -855,7 +853,7 @@ private:
 
 class Proxy : public Def, public Setters<Proxy> {
 private:
-    Proxy(const Def* type, Defs ops, u32 pass, u32 tag)
+    Proxy(const Def* type, u32 pass, u32 tag, Defs ops)
         : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag)) {}
 
 public:
@@ -867,7 +865,8 @@ public:
     u32 tag() const { return u32(flags()); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Proxy;
+    static constexpr auto Node      = mim::Node::Proxy;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -908,7 +907,8 @@ public:
     Global* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Global;
+    static constexpr auto Node      = mim::Node::Global;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

@@ -109,7 +109,8 @@ MyPrec my_prec(const Def* def) {
 // clang-format on
 
 // TODO prec is currently broken
-template<bool L> struct LRPrec {
+template<bool L>
+struct LRPrec {
     LRPrec(const Def* l, const Def* r)
         : l(l)
         , r(r) {}
@@ -247,12 +248,12 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return tuple->type()->isa_mut() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
         if (auto mut = arr->isa_mut<Arr>(); mut && mut->var())
-            return print(os, "{}{}: {}; {}{}", al, mut->var(), mut->shape(), mut->body(), ar);
-        return print(os, "{}{}; {}{}", al, arr->shape(), arr->body(), ar);
+            return print(os, "{}{}: {}; {}{}", al, mut->var(), mut->arity(), mut->body(), ar);
+        return print(os, "{}{}; {}{}", al, arr->arity(), arr->body(), ar);
     } else if (auto pack = u->isa<Pack>()) {
         if (auto mut = pack->isa_mut<Pack>(); mut && mut->var())
-            return print(os, "{}{}: {}; {}{}", pl, mut->var(), mut->shape(), mut->body(), pr);
-        return print(os, "{}{}; {}{}", pl, pack->shape(), pack->body(), pr);
+            return print(os, "{}{}: {}; {}{}", pl, mut->var(), mut->arity(), mut->body(), pr);
+        return print(os, "{}{}; {}{}", pl, pack->arity(), pack->body(), pr);
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
     } else if (auto bound = u->isa<Bound>()) {
@@ -311,8 +312,8 @@ void Dumper::dump(Def* mut) {
 
     auto mut_op0 = [&](const Def* def) -> std::ostream& {
         if (auto sig = def->isa<Sigma>()) return print(os, ", {}", sig->num_ops());
-        if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
-        if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
+        if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->arity());
+        if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->arity());
         if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
         if (auto hole = def->isa_mut<Hole>()) return hole->is_set() ? print(os, ", {}", hole->op()) : print(os, ", ??");
         fe::unreachable();
@@ -403,7 +404,8 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 
     if (!defs.emplace(def).second) return;
 
-    for (auto op : def->deps()) recurse(op);
+    for (auto op : def->deps())
+        recurse(op);
 
     if (!first && !Inline(def)) dump_let(def);
 }
@@ -439,7 +441,8 @@ std::ostream& Def::stream(std::ostream& os, int max) const {
         --max;
     }
 
-    for (; !dumper.muts.empty() && max > 0; --max) dumper.dump(dumper.muts.pop());
+    for (; !dumper.muts.empty() && max > 0; --max)
+        dumper.dump(dumper.muts.pop());
 
     return os;
 }
@@ -467,8 +470,10 @@ void World::dump(std::ostream& os) {
 
     if (flags().dump_recursive) {
         auto dumper = Dumper(os);
-        for (auto mut : externals()) dumper.muts.push(mut);
-        while (!dumper.muts.empty()) dumper.dump(dumper.muts.pop());
+        for (auto mut : externals())
+            dumper.muts.push(mut);
+        while (!dumper.muts.empty())
+            dumper.dump(dumper.muts.pop());
     } else {
         auto nest   = Nest(*this);
         auto dumper = Dumper(os, &nest);
