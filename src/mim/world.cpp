@@ -1,7 +1,5 @@
 #include "mim/world.h"
 
-#include <string>
-
 #include "mim/check.h"
 #include "mim/def.h"
 #include "mim/driver.h"
