@@ -43,7 +43,7 @@ public:
     UnionFind ptr_union_find;
 };
 
-const Def* build_copy_array(const Def* mem, const Def* src, const Def* dst, const Def* src_shape) {
+const Def* build_copy_array(const Def* mem, const Def* src, const Def* dst, const Def* src_arity) {
     auto& w = src->world();
     if (src == dst) return mem; // No need to copy if they are the same
     w.DLOG("Copying array from {} to {}", src, dst);
@@ -55,15 +55,15 @@ const Def* build_copy_array(const Def* mem, const Def* src, const Def* dst, cons
     auto body = w.mut_con(Defs{w.type_idx(0_u64), w.annex<mem::M>(), exitT});
     {
         auto [index, mem, yield] = body->vars<3>();
-        auto converted_index     = w.call(core::conv::u, src_shape, index);
+        auto converted_index     = w.call(core::conv::u, src_arity, index);
         auto src_lea             = w.call<mem::lea>(Defs{src, converted_index});
         auto dst_lea             = w.call<mem::lea>(Defs{dst, converted_index});
         auto [load_mem, value]   = w.call<mem::load>(Defs{mem, src_lea})->projs<2>();
         body->app(false, yield, w.call<mem::store>(Defs{load_mem, dst_lea, value}));
     }
 
-    auto shape_conv = w.call<core::idx>(w.lit_nat_0(), w.lit_nat(static_cast<nat_t>(core::Mode::none)), src_shape);
-    auto loop = w.call<affine::For>(Defs{w.lit_idx(0_u64), shape_conv, w.lit_idx(1_u64), wrapper_mem, body, exit});
+    auto arity_conv = w.call<core::idx>(w.lit_nat_0(), w.lit_nat(static_cast<nat_t>(core::Mode::none)), src_arity);
+    auto loop = w.call<affine::For>(Defs{w.lit_idx(0_u64), arity_conv, w.lit_idx(1_u64), wrapper_mem, body, exit});
 
     wrapper->set(false, loop);
 
@@ -74,7 +74,7 @@ const Def* build_copy_array(const Def* mem, const Def* src, const Def* dst, cons
     return new_mem;
 }
 
-const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst, const Def* src_shape) {
+const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst, const Def* src_arity) {
     auto& w = src->world();
     if (src == dst) return mem; // No need to copy if they are the same
     w.DLOG("Copying array from {} to {}", src, dst);
@@ -88,7 +88,8 @@ const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst, const
 
 bool is_tuple_to_consider(const Def* def) {
     auto seq = def->type()->isa<Seq>();
-    return seq && (!seq->shape()->isa_lit_arity() || seq->isa_lit_arity() > 10) && seq->body()->type()
+    // use def->world().flags().scalarize_threshold instead?
+    return seq && (!Lit::isa(seq->arity()->arity()) || Lit::isa(seq->arity()) > 10) && seq->body()->type()
         && seq->body()->type()->isa<Type>();
 }
 
@@ -137,11 +138,11 @@ void Bufferize::visit(const Nest& nest) {
     //                      return visit_def(def);
     //                  }};
     // root->unset()->set(new_ops);
-    auto new_filter  = visit_def(root->filter());
-    auto new_body    = visit_def(root->body());
+    auto new_filter = visit_def(root->filter());
+    auto new_body   = visit_def(root->body());
     if (auto app = new_body->isa<App>()) {
         auto new_mem_arg = world().call<mem::merge>(lam2mem_[root]);
-        auto new_args = app->args();
+        auto new_args    = app->args();
         DefVec new_args_vec(new_args.size(), [&](size_t i) {
             if (i == 0) return new_mem_arg;
             return new_args[i];
@@ -227,7 +228,7 @@ const Def* Bufferize::visit_insert(Lam* place, const Insert* insert) {
         world().DLOG("Created target buffer for Insert {}", insert);
 
         auto [mem, ptr] = buffer->projs<2>();
-        mem             = call_copy_array(mem, tuple_ptr, ptr, insert->type()->as<Seq>()->shape());
+        mem             = call_copy_array(mem, tuple_ptr, ptr, insert->type()->as<Seq>()->arity());
         // store the value in the buffer.
         auto elem_ptr = world().call<mem::lea>(Defs{ptr, index});
         mem           = world().call<mem::store>(Defs{mem, elem_ptr, value});
@@ -247,7 +248,7 @@ const Def* Bufferize::visit_extract(Lam* place, const Extract* extract) {
     if (auto it = rewritten_.find(tuple); it != rewritten_.end() && is_tuple_to_consider(tuple)) {
         // If we have already rewritten this tuple, use the rewritten version.
         auto [mem, ptr] = it->second->projs<2>();
-        mem = active_mem(place);
+        mem             = active_mem(place);
 
         ptr                   = world().call<mem::lea>(Defs{ptr, index});
         auto [new_mem, value] = world().call<mem::load>(Defs{mem, ptr})->projs<2>();

@@ -21,7 +21,8 @@ using Ranges = mim::Vector<Range>;
 
 namespace mim::plug::regex {
 
-template<quant id> const Def* normalize_quant(const Def* type, const Def* callee, const Def* arg) {
+template<quant id>
+const Def* normalize_quant(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
 
     // quantifiers are idempotent
@@ -47,7 +48,8 @@ template<quant id> const Def* normalize_quant(const Def* type, const Def* callee
     return {};
 }
 
-template<class ConjOrDisj> void flatten_in_arg(const Def* arg, DefVec& new_args) {
+template<class ConjOrDisj>
+void flatten_in_arg(const Def* arg, DefVec& new_args) {
     for (const auto* proj : arg->projs()) {
         // flatten conjs in conjs / disj in disjs
         if (auto seq_app = Axm::isa<ConjOrDisj>(proj))
@@ -57,13 +59,15 @@ template<class ConjOrDisj> void flatten_in_arg(const Def* arg, DefVec& new_args)
     }
 }
 
-template<class ConjOrDisj> DefVec flatten_in_arg(const Def* arg) {
+template<class ConjOrDisj>
+DefVec flatten_in_arg(const Def* arg) {
     DefVec new_args;
     flatten_in_arg<ConjOrDisj>(arg, new_args);
     return new_args;
 }
 
-template<class ConjOrDisj> const Def* make_binary_tree(Defs args) {
+template<class ConjOrDisj>
+const Def* make_binary_tree(Defs args) {
     assert(!args.empty());
     auto& world = args.front()->world();
     return std::accumulate(args.begin() + 1, args.end(), args.front(), [&world](const Def* lhs, const Def* rhs) {
@@ -75,7 +79,7 @@ const Def* normalize_conj(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     world.DLOG("conj {}:{} ({})", type, callee, arg);
 
-    if (auto a = arg->isa_lit_arity()) {
+    if (auto a = Lit::isa(arg->arity())) {
         switch (*a) {
             case 0: return world.lit_tt();
             case 1: return arg;
@@ -120,7 +124,8 @@ struct app_range {
 
 void merge_ranges(DefVec& args) {
     auto ranges_begin = args.begin();
-    while (ranges_begin != args.end() && !Axm::isa<range>(*ranges_begin)) ranges_begin++;
+    while (ranges_begin != args.end() && !Axm::isa<range>(*ranges_begin))
+        ranges_begin++;
     if (ranges_begin == args.end()) return;
 
     std::set<const Def*> to_remove;
@@ -139,7 +144,8 @@ void merge_ranges(DefVec& args) {
     make_vector_unique(args);
 }
 
-template<cls A, cls B> bool equals_any(const Def* cls0, const Def* cls1) {
+template<cls A, cls B>
+bool equals_any(const Def* cls0, const Def* cls1) {
     return (Axm::isa(A, cls0) && Axm::isa(B, cls1)) || (Axm::isa(A, cls1) && Axm::isa(B, cls0));
 }
 
@@ -165,38 +171,44 @@ bool equals_any(Defs lhs, Defs rhs) {
 
 const Def* normalize_disj(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
-    if (arg->as_lit_arity() > 1) {
-        auto contains_any = [](auto args) {
-            return std::ranges::find_if(args, [](const Def* ax) -> bool { return Axm::isa<any>(ax); }) != args.end();
-        };
+    if (auto a = Lit::isa(arg->arity())) {
+        switch (*a) {
+            case 0: return world.lit_ff();
+            case 1: return arg;
+            default:
+                auto contains_any = [](auto args) {
+                    return std::ranges::find_if(args, [](const Def* ax) -> bool { return Axm::isa<any>(ax); })
+                        != args.end();
+                };
 
-        auto new_args = flatten_in_arg<disj>(arg);
-        if (contains_any(new_args)) return world.annex<any>();
-        make_vector_unique(new_args);
-        merge_ranges(new_args);
+                auto new_args = flatten_in_arg<disj>(arg);
+                if (contains_any(new_args)) return world.annex<any>();
+                make_vector_unique(new_args);
+                merge_ranges(new_args);
 
-        const Def* to_remove = nullptr;
-        for (const auto* cls0 : new_args) {
-            for (const auto* cls1 : new_args)
-                if (equals_any(cls0, cls1)) return world.annex<any>();
+                const Def* to_remove = nullptr;
+                for (const auto* cls0 : new_args) {
+                    for (const auto* cls1 : new_args)
+                        if (equals_any(cls0, cls1)) return world.annex<any>();
 
-            if (auto not_rhs = Axm::isa<not_>(cls0)) {
-                if (auto disj_rhs = Axm::isa<disj>(not_rhs->arg())) {
-                    auto rngs = flatten_in_arg<disj>(disj_rhs->arg());
-                    make_vector_unique(rngs);
-                    if (equals_any(new_args, rngs)) return world.annex<any>();
+                    if (auto not_rhs = Axm::isa<not_>(cls0)) {
+                        if (auto disj_rhs = Axm::isa<disj>(not_rhs->arg())) {
+                            auto rngs = flatten_in_arg<disj>(disj_rhs->arg());
+                            make_vector_unique(rngs);
+                            if (equals_any(new_args, rngs)) return world.annex<any>();
+                        }
+                    }
                 }
-            }
+
+                erase(new_args, to_remove);
+                world.DLOG("final ranges {, }", new_args);
+
+                if (new_args.size() > 2) return make_binary_tree<disj>(new_args);
+                if (new_args.size() > 1) return world.call<disj, false>(new_args);
+                return new_args.back();
         }
-
-        erase(new_args, to_remove);
-        world.DLOG("final ranges {, }", new_args);
-
-        if (new_args.size() > 2) return make_binary_tree<disj>(new_args);
-        if (new_args.size() > 1) return world.call<disj, false>(new_args);
-        return new_args.back();
     }
-    return arg;
+    return {};
 }
 
 const Def* normalize_range(const Def* type, const Def* callee, const Def* arg) {

@@ -356,7 +356,7 @@ Ptr<Expr> Parser::parse_seq_expr() {
     auto track  = tracker();
     bool is_arr = accept(Tag::D_quote_l) ? true : (eat(Tag::D_angle_l), false);
 
-    std::deque<std::pair<Ptr<IdPtrn>, Ptr<Expr>>> shapes;
+    std::deque<std::pair<Ptr<IdPtrn>, Ptr<Expr>>> arities;
 
     do {
         Dbg dbg;
@@ -367,7 +367,7 @@ Ptr<Expr> Parser::parse_seq_expr() {
 
         auto expr = parse_expr(is_arr ? "shape of an array" : "shape of a pack");
         auto ptrn = IdPtrn::make_id(ast(), dbg, std::move(expr));
-        shapes.emplace_back(std::move(ptrn), std::move(expr));
+        arities.emplace_back(std::move(ptrn), std::move(expr));
     } while (accept(Tag::T_comma));
 
     expect(Tag::T_semicolon, is_arr ? "array" : "pack");
@@ -375,7 +375,7 @@ Ptr<Expr> Parser::parse_seq_expr() {
     expect(is_arr ? Tag::D_quote_r : Tag::D_angle_r,
            is_arr ? "closing delimiter of an array" : "closing delimiter of a pack");
 
-    for (auto& [ptrn, expr] : shapes | std::ranges::views::reverse)
+    for (auto& [ptrn, expr] : arities | std::ranges::views::reverse)
         body = ptr<SeqExpr>(track, is_arr, std::move(ptrn), std::move(body));
 
     return body;
@@ -534,7 +534,8 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(int style) {
 
         if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::M_id)) {
             Dbgs dbgs;
-            while (auto tok = accept(Tag::M_id)) dbgs.emplace_back(tok.dbg());
+            while (auto tok = accept(Tag::M_id))
+                dbgs.emplace_back(tok.dbg());
 
             if (accept(Tag::T_colon)) { // identifier group: x y x: T
                 auto dbg  = dbgs.back();
@@ -623,7 +624,8 @@ Ptr<ValDecl> Parser::parse_axm_decl() {
         parse_list("tag list of an axm", Tag::D_paren_l, [&]() {
             auto& aliases = subs.emplace_back();
             aliases.emplace_back(ptr<AxmDecl::Alias>(parse_id("tag of an axm")));
-            while (accept(Tag::T_assign)) aliases.emplace_back(ptr<AxmDecl::Alias>(parse_id("alias of an axm tag")));
+            while (accept(Tag::T_assign))
+                aliases.emplace_back(ptr<AxmDecl::Alias>(parse_id("alias of an axm tag")));
         });
     }
 

@@ -54,7 +54,7 @@ public:
             std::ostringstream oss;
             print(ostream(), "{}{}:{}{}:{} ", level2color(level), level2acro(level), rang::fg::gray, loc,
                   rang::fg::reset);
-            print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
+            print(ostream(), fmt, std::forward<Args>(args)...) << std::endl;
 #ifdef MIM_ENABLE_CHECKS
             if ((level == Level::Error && flags().break_on_error) || (level == Level::Warn && flags().break_on_warn))
                 fe::breakpoint();
@@ -64,7 +64,7 @@ public:
     template<class... Args>
     void log(Level level, const char* file, uint16_t line, const char* fmt, Args&&... args) {
         auto path = fs::path(file);
-        log(level, Loc(&path, line), fmt, std::forward<Args&&>(args)...);
+        log(level, Loc(&path, line), fmt, std::forward<Args>(args)...);
     }
     ///@}
 

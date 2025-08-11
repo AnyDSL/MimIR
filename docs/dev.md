@@ -345,16 +345,16 @@ TODO
 
 ### Summary
 
-| Expression         | Class                    | [artiy](@ref mim::Def::arity) | [isa_lit_artiy](@ref mim::Def::isa_lit_arity) | [as_lit_artiy](@ref mim::Def::as_lit_arity) | [num_projs](@ref mim::Def::num_projs) | [num_tprojs](@ref mim::Def::num_tprojs) |
-| ------------------ | ------------------------ | ----------------------------- | --------------------------------------------- | ------------------------------------------- | ------------------------------------- | --------------------------------------- |
-| `(0, 1, 2)`        | [Tuple](@ref mim::Tuple) | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `‹3; 0›`           | [Pack](@ref mim::Pack)   | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `‹n; 0›`           | [Pack](@ref mim::Pack)   | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
-| `[Nat, Bool, Nat]` | [Sigma](@ref mim::Sigma) | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `«3; Nat»`         | [Arr](@ref mim::Arr)     | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `«n; Nat»`         | [Arr](@ref mim::Arr)     | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
-| `x: [Nat, Bool]`   | [Var](@ref mim::Var)     | `2`                           | `2`                                           | `2`                                         | `2`                                   | `2`                                     |
-| `‹32; 0›`          | [Pack](@ref mim::Pack)   | `32`                          | `32`                                          | `32`                                        | `32`                                  | `1`                                     |
+| Expression         | Class                    | [artiy](@ref mim::Def::arity) | [num_projs](@ref mim::Def::num_projs) | [num_tprojs](@ref mim::Def::num_tprojs) |
+| ------------------ | ------------------------ | ----------------------------- | ------------------------------------- | --------------------------------------- |
+| `(0, 1, 2)`        | [Tuple](@ref mim::Tuple) | `3`                           | `3`                                   | `3`                                     |
+| `‹3; 0›`           | [Pack](@ref mim::Pack)   | `3`                           | `3`                                   | `3`                                     |
+| `‹n; 0›`           | [Pack](@ref mim::Pack)   | `n`                           | `1`                                   | `1`                                     |
+| `[Nat, Bool, Nat]` | [Sigma](@ref mim::Sigma) | `3`                           | `3`                                   | `3`                                     |
+| `«3; Nat»`         | [Arr](@ref mim::Arr)     | `3`                           | `3`                                   | `3`                                     |
+| `«n; Nat»`         | [Arr](@ref mim::Arr)     | `n`                           | `1`                                   | `1`                                     |
+| `x: [Nat, Bool]`   | [Var](@ref mim::Var)     | `2`                           | `2`                                   | `2`                                     |
+| `‹32; 0›`          | [Pack](@ref mim::Pack)   | `32`                          | `32`                                  | `1`                                     |
 
 The last line assumes mim::Flags::scalarize_threshold = 32.
 
