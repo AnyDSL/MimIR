@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <span>
 
 #include <fe/assert.h>
 #include <fe/cast.h>
@@ -660,7 +661,8 @@ public:
     Def* mut() const { return op(0)->as_mut(); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Var;
+    static constexpr auto Node      = mim::Node::Var;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -671,7 +673,8 @@ private:
 class Univ : public Def, public Setters<Univ> {
 public:
     using Setters<Univ>::set;
-    static constexpr auto Node = mim::Node::Univ;
+    static constexpr auto Node      = mim::Node::Univ;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     Univ(World& world)
@@ -685,7 +688,8 @@ private:
 class UMax : public Def, public Setters<UMax> {
 public:
     using Setters<UMax>::set;
-    static constexpr auto Node = mim::Node::UMax;
+    static constexpr auto Node      = mim::Node::UMax;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 
     enum Sort { Univ, Kind, Type, Term };
 
@@ -711,7 +715,8 @@ public:
     level_t offset() const { return flags(); }
     ///@}
 
-    static constexpr auto Node = mim::Node::UInc;
+    static constexpr auto Node      = mim::Node::UInc;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -732,7 +737,8 @@ public:
     const Def* level() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Type;
+    static constexpr auto Node      = mim::Node::Type;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -775,7 +781,8 @@ public:
     }
     ///@}
 
-    static constexpr auto Node = mim::Node::Lit;
+    static constexpr auto Node      = mim::Node::Lit;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -786,7 +793,8 @@ private:
 class Nat : public Def, public Setters<Nat> {
 public:
     using Setters<Nat>::set;
-    static constexpr auto Node = mim::Node::Nat;
+    static constexpr auto Node      = mim::Node::Nat;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     Nat(World& world);
@@ -834,7 +842,8 @@ public:
     static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 
-    static constexpr auto Node = mim::Node::Idx;
+    static constexpr auto Node      = mim::Node::Idx;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -844,7 +853,7 @@ private:
 
 class Proxy : public Def, public Setters<Proxy> {
 private:
-    Proxy(const Def* type, Defs ops, u32 pass, u32 tag)
+    Proxy(const Def* type, u32 pass, u32 tag, Defs ops)
         : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag)) {}
 
 public:
@@ -856,7 +865,8 @@ public:
     u32 tag() const { return u32(flags()); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Proxy;
+    static constexpr auto Node      = mim::Node::Proxy;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -897,7 +907,8 @@ public:
     Global* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Global;
+    static constexpr auto Node      = mim::Node::Global;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

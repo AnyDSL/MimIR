@@ -36,18 +36,18 @@ bool World::Lock::guard_ = false;
 World::World(Driver* driver, const State& state)
     : driver_(driver)
     , state_(state) {
-    data_.univ        = insert<Univ>(0, *this);
+    data_.univ        = insert<Univ>(*this);
     data_.lit_univ_0  = lit_univ(0);
     data_.lit_univ_1  = lit_univ(1);
     data_.type_0      = type(lit_univ_0());
     data_.type_1      = type(lit_univ_1());
-    data_.type_bot    = insert<Bot>(0, type());
-    data_.type_top    = insert<Top>(0, type());
-    data_.sigma       = insert<Sigma>(0, type(), Defs{})->as<Sigma>();
-    data_.tuple       = insert<Tuple>(0, sigma(), Defs{})->as<Tuple>();
-    data_.type_nat    = insert<mim::Nat>(0, *this);
-    data_.type_idx    = insert<mim::Idx>(0, pi(type_nat(), type()));
-    data_.top_nat     = insert<Top>(0, type_nat());
+    data_.type_bot    = insert<Bot>(type());
+    data_.type_top    = insert<Top>(type());
+    data_.sigma       = unify<Sigma>(type(), Defs{})->as<Sigma>();
+    data_.tuple       = unify<Tuple>(sigma(), Defs{})->as<Tuple>();
+    data_.type_nat    = insert<mim::Nat>(*this);
+    data_.type_idx    = insert<mim::Idx>(pi(type_nat(), type()));
+    data_.top_nat     = insert<Top>(type_nat());
     data_.lit_nat_0   = lit_nat(0);
     data_.lit_nat_1   = lit_nat(1);
     data_.lit_idx_1_0 = lit_idx(1, 0);
@@ -110,7 +110,7 @@ const Type* World::type(const Def* level) {
     if (!level->type()->isa<Univ>())
         error(level->loc(), "argument `{}` to `Type` must be of type `Univ` but is of type `{}`", level, level->type());
 
-    return unify<Type>(1, level)->as<Type>();
+    return unify<Type>(level)->as<Type>();
 }
 
 const Def* World::uinc(const Def* op, level_t offset) {
@@ -121,7 +121,7 @@ const Def* World::uinc(const Def* op, level_t offset) {
               op->type());
 
     if (auto l = Lit::isa(op)) return lit_univ(*l + 1);
-    return unify<UInc>(1, op, offset);
+    return unify<UInc>(op, offset);
 }
 
 static void flatten_umax(DefVec& ops, const Def* def) {
@@ -169,7 +169,7 @@ const Def* World::umax(Defs ops_) {
 
     std::ranges::sort(res, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
     res.erase(std::unique(res.begin(), res.end()), res.end());
-    const Def* umax = unify<UMax>(res.size(), *this, res);
+    const Def* umax = unify<UMax>(*this, res);
     return sort == UMax::Univ ? umax : type(umax);
 }
 
@@ -183,7 +183,7 @@ const Def* World::var(const Def* type, Def* mut) {
     }
 
     if (auto var = mut->var_) return var;
-    return mut->var_ = unify<Var>(1, type, mut);
+    return mut->var_ = unify<Var>(type, mut);
 }
 
 template<bool Normalize>
@@ -273,7 +273,7 @@ const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg) {
 }
 
 const Def* World::raw_app(const Axm* axm, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg) {
-    return unify<App>(2, axm, curry, trip, type, callee, arg);
+    return unify<App>(axm, curry, trip, type, callee, arg);
 }
 
 const Def* World::sigma(Defs ops) {
@@ -283,7 +283,7 @@ const Def* World::sigma(Defs ops) {
 
     auto zops = Def::zonk(ops);
     if (auto uni = Checker::is_uniform(zops)) return arr(n, uni);
-    return unify<Sigma>(zops.size(), Sigma::infer(*this, zops), ops);
+    return unify<Sigma>(Sigma::infer(*this, zops), zops);
 }
 
 const Def* World::tuple(Defs ops) {
@@ -335,7 +335,7 @@ const Def* World::tuple(const Def* type, Defs ops_) {
         }
     }
 
-    return unify<Tuple>(ops.size(), type, ops);
+    return unify<Tuple>(type, ops);
 }
 
 const Def* World::tuple(Sym sym) {
@@ -394,10 +394,10 @@ const Def* World::extract(const Def* d, const Def* index) {
         if (auto sigma = type->isa<Sigma>()) {
             if (auto var = sigma->has_var()) {
                 auto t = VarRewriter(var, d).rewrite(sigma->op(*i));
-                return unify<Extract>(2, t, d, index);
+                return unify<Extract>(t, d, index);
             }
 
-            return unify<Extract>(2, sigma->op(*i), d, index);
+            return unify<Extract>(sigma->op(*i), d, index);
         }
     }
 
@@ -416,7 +416,7 @@ const Def* World::extract(const Def* d, const Def* index) {
     }
 
     assert(d);
-    return unify<Extract>(2, elem_t, d, index);
+    return unify<Extract>(elem_t, d, index);
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val) {
@@ -465,7 +465,7 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
         if (insert->index() == index) d = insert->tuple();
     }
 
-    return unify<Insert>(3, d, index, val);
+    return unify<Insert>(d, index, val);
 }
 
 const Def* World::seq(bool term, const Def* arity, const Def* body) {
@@ -491,9 +491,9 @@ const Def* World::seq(bool term, const Def* arity, const Def* body) {
 
     if (term) {
         auto type = arr(arity, body->type());
-        return unify<Pack>(1, type, body);
+        return unify<Pack>(type, body);
     } else {
-        return unify<Arr>(2, body->unfold_type(), arity, body);
+        return unify<Arr>(body->unfold_type(), arity, body);
     }
 }
 
@@ -515,7 +515,7 @@ const Lit* World::lit(const Def* type, u64 val) {
         }
     }
 
-    return unify<Lit>(0, type, val);
+    return unify<Lit>(type, val);
 }
 
 /*
@@ -529,7 +529,7 @@ const Def* World::ext(const Def* type) {
     if (auto arr = type->isa<Arr>()) return pack(arr->arity(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefVec(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
-    return unify<TExt<Up>>(0, type);
+    return unify<TExt<Up>>(type);
 }
 
 template<bool Up>
@@ -553,7 +553,7 @@ const Def* World::bound(Defs ops_) {
     if (ops.size() == 1) return ops[0];
 
     // TODO simplify mixed terms with joins and meets?
-    return unify<TBound<Up>>(ops.size(), kind, ops);
+    return unify<TBound<Up>>(kind, ops);
 }
 
 const Def* World::merge(const Def* type, Defs ops_) {
@@ -562,7 +562,7 @@ const Def* World::merge(const Def* type, Defs ops_) {
 
     if (type->isa<Meet>()) {
         auto types = DefVec(ops.size(), [&](size_t i) { return ops[i]->type(); });
-        return unify<Merge>(ops.size(), meet(types), ops);
+        return unify<Merge>(meet(types), ops);
     }
 
     assert(ops.size() == 1);
@@ -578,7 +578,7 @@ const Def* World::inj(const Def* type, const Def* value) {
     type  = type->zonk();
     value = value->zonk();
 
-    if (type->isa<Join>()) return unify<Inj>(1, type, value);
+    if (type->isa<Join>()) return unify<Inj>(type, value);
     return value;
 }
 
@@ -586,7 +586,7 @@ const Def* World::split(const Def* type, const Def* value) {
     type  = type->zonk();
     value = value->zonk();
 
-    return unify<Split>(1, type, value);
+    return unify<Split>(type, value);
 }
 
 const Def* World::match(Defs ops_) {
@@ -622,12 +622,12 @@ const Def* World::match(Defs ops_) {
         type = type ? this->join({type, pi->codom()}) : pi->codom();
     }
 
-    return unify<Match>(ops.size(), type, ops);
+    return unify<Match>(type, ops);
 }
 
 const Def* World::uniq(const Def* inhabitant) {
     inhabitant = inhabitant->zonk();
-    return unify<Uniq>(1, inhabitant->type()->unfold_type(), inhabitant);
+    return unify<Uniq>(inhabitant->type()->unfold_type(), inhabitant);
 }
 
 Sym World::append_suffix(Sym symbol, std::string suffix) {

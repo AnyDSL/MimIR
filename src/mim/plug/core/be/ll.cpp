@@ -91,13 +91,13 @@ struct BB {
 
     template<class... Args>
     std::string assign(std::string_view name, const char* s, Args&&... args) {
-        print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args&&>(args)...);
+        print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args>(args)...);
         return std::string(name);
     }
 
     template<class... Args>
     void tail(const char* s, Args&&... args) {
-        print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
+        print(tail().emplace_back(), s, std::forward<Args>(args)...);
     }
 
     friend void swap(BB& a, BB& b) noexcept {
@@ -128,7 +128,7 @@ public:
     template<class... Args>
     void declare(const char* s, Args&&... args) {
         std::ostringstream decl;
-        print(decl << "declare ", s, std::forward<Args&&>(args)...);
+        print(decl << "declare ", s, std::forward<Args>(args)...);
         decls_.emplace(decl.str());
     }
 

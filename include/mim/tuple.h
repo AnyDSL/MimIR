@@ -1,5 +1,7 @@
 #pragma once
 
+#include <span>
+
 #include "mim/def.h"
 
 namespace mim {
@@ -8,6 +10,9 @@ namespace mim {
 class Prod : public Def, public Setters<Prod> {
 protected:
     using Def::Def;
+
+public:
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 };
 
 /// A [dependent tuple type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A3_type).
@@ -216,7 +221,8 @@ public:
     const Def* index() const { return op(1); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Extract;
+    static constexpr auto Node      = mim::Node::Extract;
+    static constexpr size_t Num_Ops = 2;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -243,7 +249,8 @@ public:
     const Def* value() const { return op(2); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Insert;
+    static constexpr auto Node      = mim::Node::Insert;
+    static constexpr size_t Num_Ops = 3;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
