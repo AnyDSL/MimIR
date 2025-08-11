@@ -8,7 +8,7 @@ const Def* normalize_lea(const Def*, const Def*, const Def* arg) {
     auto [ptr, index]          = arg->projs<2>();
     auto [pointee, addr_space] = Axm::as<Ptr>(ptr->type())->args<2>();
 
-    if (auto a = pointee->isa_lit_arity(); a && *a == 1) return ptr;
+    if (auto a = Lit::isa(pointee->arity()); a && *a == 1) return ptr;
 
     return {};
 }

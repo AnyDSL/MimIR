@@ -222,11 +222,9 @@ public:
             return type(lit_univ(level));
     }
     const Def* var(const Def* type, Def* mut);
-    const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag) {
-        return unify<Proxy>(ops.size(), type, ops, index, tag);
-    }
+    const Proxy* proxy(const Def* type, u32 index, u32 tag, Defs ops) { return unify<Proxy>(type, index, tag, ops); }
 
-    Hole* mut_hole(const Def* type) { return insert<Hole>(1, type); }
+    Hole* mut_hole(const Def* type) { return insert<Hole>(type); }
     Hole* mut_hole_univ() { return mut_hole(univ()); }
     Hole* mut_hole_type() { return mut_hole(type_infer_univ()); }
 
@@ -242,7 +240,7 @@ public:
     /// @name Axm
     ///@{
     const Axm* axm(NormalizeFn n, u8 curry, u8 trip, const Def* type, plugin_t p, tag_t t, sub_t s) {
-        return unify<Axm>(0, n, curry, trip, type, p, t, s);
+        return unify<Axm>(n, curry, trip, type, p, t, s);
     }
     const Axm* axm(const Def* type, plugin_t p, tag_t t, sub_t s) { return axm(nullptr, 0, 0, type, p, t, s); }
 
@@ -259,11 +257,11 @@ public:
     /// @name Pi
     ///@{
     // clang-format off
-    const Pi* pi(const Def* dom, const Def* codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
+    const Pi* pi(const Def* dom, const Def* codom, bool implicit = false) { return unify<Pi>(Pi::infer(dom, codom), dom, codom, implicit); }
     const Pi* pi(Defs       dom, const Def* codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
     const Pi* pi(const Def* dom, Defs       codom, bool implicit = false) { return pi(dom, sigma(codom), implicit); }
     const Pi* pi(Defs       dom, Defs       codom, bool implicit = false) { return pi(sigma(dom), sigma(codom), implicit); }
-    Pi*   mut_pi(const Def* type,                  bool implicit = false) { return insert<Pi>(2, type, implicit); }
+    Pi*   mut_pi(const Def* type,                  bool implicit = false) { return insert<Pi>(type, implicit); }
     // clang-format on
     ///@}
 
@@ -287,29 +285,29 @@ public:
         if (auto b = std::get_if<bool>(&filter)) return lit_bool(*b);
         return std::get<const Def*>(filter);
     }
-    const Lam* lam(const Pi* pi, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi, filter(f), body); }
-    Lam* mut_lam(const Pi* pi) { return insert<Lam>(2, pi); }
+    const Lam* lam(const Pi* pi, Lam::Filter f, const Def* body) { return unify<Lam>(pi, filter(f), body); }
+    Lam* mut_lam(const Pi* pi) { return insert<Lam>(pi); }
     // clang-format off
-    const Lam* con(const Def* dom,                   Lam::Filter f, const Def* body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
-    const Lam* con(Defs       dom,                   Lam::Filter f, const Def* body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
-    const Lam* lam(const Def* dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(Defs       dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(const Def* dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* lam(Defs       dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* fun(const Def* dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Defs       dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(const Def* dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Defs       dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
-    Lam*   mut_con(const Def* dom                  ) { return insert<Lam>(2, cn(dom       )); }
-    Lam*   mut_con(Defs       dom                  ) { return insert<Lam>(2, cn(dom       )); }
-    Lam*   mut_lam(const Def* dom, const Def* codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam*   mut_lam(Defs       dom, const Def* codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam*   mut_lam(const Def* dom, Defs       codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam*   mut_lam(Defs       dom, Defs       codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam*   mut_fun(const Def* dom, const Def* codom) { return insert<Lam>(2, fn(dom, codom)); }
-    Lam*   mut_fun(Defs       dom, const Def* codom) { return insert<Lam>(2, fn(dom, codom)); }
-    Lam*   mut_fun(const Def* dom, Defs       codom) { return insert<Lam>(2, fn(dom, codom)); }
-    Lam*   mut_fun(Defs       dom, Defs       codom) { return insert<Lam>(2, fn(dom, codom)); }
+    const Lam* con(const Def* dom,                   Lam::Filter f, const Def* body) { return unify<Lam>(cn(dom        ), filter(f), body); }
+    const Lam* con(Defs       dom,                   Lam::Filter f, const Def* body) { return unify<Lam>(cn(dom        ), filter(f), body); }
+    const Lam* lam(const Def* dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Defs       dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(pi(dom,  codom), filter(f), body); }
+    const Lam* lam(const Def* dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Defs       dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(pi(dom,  codom), filter(f), body); }
+    const Lam* fun(const Def* dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Defs       dom, const Def* codom, Lam::Filter f, const Def* body) { return unify<Lam>(fn(dom,  codom), filter(f), body); }
+    const Lam* fun(const Def* dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Defs       dom, Defs       codom, Lam::Filter f, const Def* body) { return unify<Lam>(fn(dom,  codom), filter(f), body); }
+    Lam*   mut_con(const Def* dom                  ) { return insert<Lam>(cn(dom       )); }
+    Lam*   mut_con(Defs       dom                  ) { return insert<Lam>(cn(dom       )); }
+    Lam*   mut_lam(const Def* dom, const Def* codom) { return insert<Lam>(pi(dom, codom)); }
+    Lam*   mut_lam(Defs       dom, const Def* codom) { return insert<Lam>(pi(dom, codom)); }
+    Lam*   mut_lam(const Def* dom, Defs       codom) { return insert<Lam>(pi(dom, codom)); }
+    Lam*   mut_lam(Defs       dom, Defs       codom) { return insert<Lam>(pi(dom, codom)); }
+    Lam*   mut_fun(const Def* dom, const Def* codom) { return insert<Lam>(fn(dom, codom)); }
+    Lam*   mut_fun(Defs       dom, const Def* codom) { return insert<Lam>(fn(dom, codom)); }
+    Lam*   mut_fun(const Def* dom, Defs       codom) { return insert<Lam>(fn(dom, codom)); }
+    Lam*   mut_fun(Defs       dom, Defs       codom) { return insert<Lam>(fn(dom, codom)); }
     // clang-format on
     ///@}
 
@@ -328,7 +326,7 @@ public:
 
     /// @name Sigma
     ///@{
-    Sigma* mut_sigma(const Def* type, size_t size) { return insert<Sigma>(size, type, size); }
+    Sigma* mut_sigma(const Def* type, size_t size) { return insert<Sigma>(type, size); }
     /// A *mutable* Sigma of type @p level.
     template<level_t level = 0>
     Sigma* mut_sigma(size_t size) {
@@ -340,18 +338,36 @@ public:
 
     /// @name Arr
     ///@{
-    Arr* mut_arr(const Def* type) { return insert<Arr>(2, type); }
+    // clang-format off
+    const Def* unit(bool term) { return term ? (const Def*)tuple() : sigma(); }
+
+    Seq* mut_seq(bool term, const Def* type) { return term ? (Seq*)insert<Pack>(type) : insert<Arr>(type); }
+    const Def* seq(bool term, const Def* arity, const Def* body);
+    const Def* seq(bool term, Defs shape, const Def* body);
+    const Def* seq(bool term, u64 n, const Def* body) { return seq(term, lit_nat(n), body); }
+    const Def* seq(bool term, View<u64> shape, const Def* body) { return seq(term, DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body); }
+    const Def* seq_unsafe(bool term, const Def* body) { return seq(term, top_nat(), body); }
+
     template<level_t level = 0>
     Arr* mut_arr() {
         return mut_arr(type<level>());
     }
-    const Def* arr(const Def* shape, const Def* body);
-    const Def* arr(Defs shape, const Def* body);
-    const Def* arr(u64 n, const Def* body) { return arr(lit_nat(n), body); }
-    const Def* arr(View<u64> shape, const Def* body) {
-        return arr(DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
-    }
-    const Def* arr_unsafe(const Def* body) { return arr(top_nat(), body); }
+
+    Arr * mut_arr (const Def* type) { return mut_seq(false, type)->as<Arr >(); }
+    Pack* mut_pack(const Def* type) { return mut_seq(true , type)->as<Pack>(); }
+    const Def* arr (const Def* arity, const Def* body) { return seq(false, arity, body); }
+    const Def* pack(const Def* arity, const Def* body) { return seq(true , arity, body); }
+    const Def* arr (Defs       shape, const Def* body) { return seq(false, shape, body); }
+    const Def* pack(Defs       shape, const Def* body) { return seq(true , shape, body); }
+    const Def* arr (u64            n, const Def* body) { return seq(false,     n, body); }
+    const Def* pack(u64            n, const Def* body) { return seq(true ,     n, body); }
+    const Def* arr (View<u64>  shape, const Def* body) { return seq(false, shape, body); }
+    const Def* pack(View<u64>  shape, const Def* body) { return seq(true , shape, body); }
+    const Def*  arr_unsafe(           const Def* body) { return seq_unsafe(false, body); }
+    const Def* pack_unsafe(           const Def* body) { return seq_unsafe(true , body); }
+
+    const Def* prod(bool term, Defs ops) { return term ? tuple(ops) : sigma(ops); }
+    // clang-format on
     ///@}
 
     /// @name Tuple
@@ -363,23 +379,12 @@ public:
     const Def* tuple(Sym sym);                   ///< Converts @p sym to a tuple of type '«n; I8»'.
     ///@}
 
-    /// @name Pack
-    ///@{
-    Pack* mut_pack(const Def* type) { return insert<Pack>(1, type); }
-    const Def* pack(const Def* arity, const Def* body);
-    const Def* pack(Defs shape, const Def* body);
-    const Def* pack(u64 n, const Def* body) { return pack(lit_nat(n), body); }
-    const Def* pack(View<u64> shape, const Def* body) {
-        return pack(DefVec(shape.size(), [&](auto i) { return lit_nat(shape[i]); }), body);
-    }
-    ///@}
-
     /// @name Extract
     /// @see core::extract_unsafe
     ///@{
     const Def* extract(const Def* d, const Def* i);
     const Def* extract(const Def* d, u64 a, u64 i) { return extract(d, lit_idx(a, i)); }
-    const Def* extract(const Def* d, u64 i) { return extract(d, d->as_lit_arity(), i); }
+    const Def* extract(const Def* d, u64 i) { return extract(d, Lit::as(d->arity()), i); }
 
     /// Builds `(f, t)#cond`.
     /// @note Expects @p cond as first, @p t as second, and @p f as third argument.
@@ -391,7 +396,7 @@ public:
     ///@{
     const Def* insert(const Def* d, const Def* i, const Def* val);
     const Def* insert(const Def* d, u64 a, u64 i, const Def* val) { return insert(d, lit_idx(a, i), val); }
-    const Def* insert(const Def* d, u64 i, const Def* val) { return insert(d, d->as_lit_arity(), i, val); }
+    const Def* insert(const Def* d, u64 i, const Def* val) { return insert(d, Lit::as(d->arity()), i, val); }
     ///@}
 
     /// @name Lit
@@ -467,7 +472,7 @@ public:
     /// @name Globals
     /// @deprecated Will be removed.
     ///@{
-    Global* global(const Def* type, bool is_mutable = true) { return insert<Global>(1, type, is_mutable); }
+    Global* global(const Def* type, bool is_mutable = true) { return insert<Global>(type, is_mutable); }
     ///@}
 
     /// @name Types
@@ -577,7 +582,13 @@ private:
     /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args>
-    const T* unify(size_t num_ops, Args&&... args) {
+    const T* unify(Args&&... args) {
+        auto num_ops = T::Num_Ops;
+        if constexpr (T::Num_Ops == std::dynamic_extent) {
+            auto&& last = std::get<sizeof...(Args) - 1>(std::forward_as_tuple(std::forward<Args>(args)...));
+            num_ops     = last.size();
+        }
+
         auto state = move_.arena.defs.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = get_loc()) def->set(loc);
@@ -611,8 +622,12 @@ private:
     }
 
     template<class T, class... Args>
-    T* insert(size_t num_ops, Args&&... args) {
-        auto def = allocate<T>(num_ops, std::forward<Args&&>(args)...);
+    T* insert(Args&&... args) {
+        auto num_ops = T::Num_Ops;
+        if constexpr (T::Num_Ops == std::dynamic_extent)
+            num_ops = std::get<sizeof...(Args) - 1>(std::forward_as_tuple(std::forward<Args>(args)...));
+
+        auto def = allocate<T>(num_ops, std::forward<Args>(args)...);
         if (auto loc = get_loc()) def->set(loc);
 #ifdef MIM_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
@@ -641,7 +656,7 @@ private:
         auto lock      = Lock();
         auto num_bytes = sizeof(Def) + sizeof(uintptr_t) * num_ops;
         auto ptr       = move_.arena.defs.allocate(num_bytes, alignof(T));
-        auto res       = new (ptr) T(std::forward<Args&&>(args)...);
+        auto res       = new (ptr) T(std::forward<Args>(args)...);
         assert(res->num_ops() == num_ops);
         return res;
     }

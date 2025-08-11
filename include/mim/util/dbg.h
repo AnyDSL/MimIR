@@ -64,15 +64,15 @@ public:
     ///@{
     template<class... Args>
     Error& msg(Loc loc, Tag tag, const char* s, Args&&... args) {
-        msgs_.emplace_back(loc, tag, fmt(s, std::forward<Args&&>(args)...));
+        msgs_.emplace_back(loc, tag, fmt(s, std::forward<Args>(args)...));
         return *this;
     }
 
     // clang-format off
-    template<class... Args> Error& error(Loc loc, const char* s, Args&&... args) { ++num_errors_;   return msg(loc, Tag::Error, s, std::forward<Args&&>(args)...); }
-    template<class... Args> Error& warn (Loc loc, const char* s, Args&&... args) { ++num_warnings_; return msg(loc, Tag::Warn,  s, std::forward<Args&&>(args)...); }
+    template<class... Args> Error& error(Loc loc, const char* s, Args&&... args) { ++num_errors_;   return msg(loc, Tag::Error, s, std::forward<Args>(args)...); }
+    template<class... Args> Error& warn (Loc loc, const char* s, Args&&... args) { ++num_warnings_; return msg(loc, Tag::Warn,  s, std::forward<Args>(args)...); }
     template<class... Args> Error& note (Loc loc, const char* s, Args&&... args) {
-        assert(num_errors() > 0 || num_warnings() > 0); /*                      */ ++num_notes_;    return msg(loc, Tag::Note,  s, std::forward<Args&&>(args)...);
+        assert(num_errors() > 0 || num_warnings() > 0); /*                      */ ++num_notes_;    return msg(loc, Tag::Note,  s, std::forward<Args>(args)...);
     }
     // clang-format on
     ///@}
@@ -123,7 +123,7 @@ private:
 /// Single Error that `throw`s immediately.
 template<class... Args>
 [[noreturn]] void error(Loc loc, const char* f, Args&&... args) {
-    throw Error(loc, fmt(f, std::forward<Args&&>(args)...));
+    throw Error(loc, fmt(f, std::forward<Args>(args)...));
 }
 ///@}
 

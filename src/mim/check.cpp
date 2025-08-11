@@ -255,8 +255,8 @@ bool Checker::alpha_(const Def* d1, const Def* d2) {
         if (auto umax = d1->isa<UMax>(); umax && !d2->isa<UMax>()) return check(umax, d2);
         if (auto umax = d2->isa<UMax>(); umax && !d1->isa<UMax>()) return check(umax, d1);
 
-        if (seq1 && seq1->shape() == world().lit_nat_1() && !seq2) return check1(seq1, d2);
-        if (seq2 && seq2->shape() == world().lit_nat_1() && !seq1) return check1(seq2, d1);
+        if (seq1 && seq1->arity() == world().lit_nat_1() && !seq2) return check1(seq1, d2);
+        if (seq2 && seq2->arity() == world().lit_nat_1() && !seq1) return check1(seq2, d1);
 
         if (seq1 && seq2) {
             if (auto mut_seq = seq1->isa_mut<Seq>(); mut_seq && seq2->isa_imm()) return check(mut_seq, seq2);
@@ -302,10 +302,10 @@ bool Checker::check1(const Seq* seq, const Def* def) {
 // Try to get rid of mut_seq's var: it may occur in its body and vanish after reduction
 // as holes might have been filled in the meantime.
 bool Checker::check(Seq* mut_seq, const Seq* imm_seq) {
-    auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->shape())));
+    auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->arity())));
     if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
 
-    auto mut_shape = mut_seq->shape();
+    auto mut_shape = mut_seq->arity();
     mut_seq->unset()->set(mut_shape, mut_body->zonk());
     return true;
 }
