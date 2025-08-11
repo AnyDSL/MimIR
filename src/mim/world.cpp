@@ -352,11 +352,12 @@ const Def* World::extract(const Def* d, const Def* index) {
         return d;
     } else if (auto pack = index->isa<Pack>()) {
         if (auto a = Lit::isa(index->arity())) {
-            for (nat_t i = 0, e = *a; i != e; ++i)
-                d = extract(d, pack->body());
+            for (nat_t i = 0, e = *a; i != e; ++i) {
+                auto idx = pack->has_var() ? pack->reduce(lit_idx(*a, i)) : pack->body();
+                d        = extract(d, idx);
+            }
             return d;
         }
-        assert(false && "TODO");
     }
 
     auto size = Idx::isa(index->type());
@@ -500,7 +501,7 @@ const Def* World::seq(bool term, const Def* arity, const Def* body) {
 
 const Def* World::seq(bool term, Defs shape, const Def* body) {
     if (shape.empty()) return body;
-    return seq(term, shape.rsubspan(1), arr(shape.back(), body));
+    return seq(term, shape.rsubspan(1), seq(term, shape.back(), body));
 }
 
 const Lit* World::lit(const Def* type, u64 val) {
