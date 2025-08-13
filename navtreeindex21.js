@@ -1,10 +1,10 @@
 var NAVTREEINDEX21 =
 {
-"namespacemim_1_1plug_1_1matrix.html#ad88476eb54b27ecc6ea9b6656c378f01":[3,0,1,4,8,13],
 "namespacemim_1_1plug_1_1matrix.html#ae3f0ab7b8527477c358984c01ddbd94c":[3,0,1,4,8,8],
 "namespacemim_1_1plug_1_1matrix.html#aed39265d1e8f9976a8736695ee834126":[3,0,1,4,8,24],
 "namespacemim_1_1plug_1_1matrix.html#af206cc10642f27ab0e14c586d512f3d6":[3,0,1,4,8,9],
 "namespacemim_1_1plug_1_1matrix.html#af3d33c72062b1db8a1b997ec650a8f3d":[3,0,1,4,8,4],
+"namespacemim_1_1plug_1_1matrix.html#af543155056078bfd4e2df4f16ad7458f":[3,0,1,4,8,17],
 "namespacemim_1_1plug_1_1matrix.html#af6839dbbb5d2ef291479523aafd649d4":[3,0,1,4,8,11],
 "namespacemim_1_1plug_1_1mem.html":[3,0,1,4,9],
 "namespacemim_1_1plug_1_1mem.html#a029144aa6e194281070cc4406fe2268e":[3,0,1,4,9,15],

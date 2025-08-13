@@ -112,7 +112,7 @@ var NAVTREEINDEX =
 "namespacemembers_u.html",
 "namespacemim_1_1plug.html",
 "namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673af4e34c879c89192fcf3b851dddc46899",
-"namespacemim_1_1plug_1_1matrix.html#ad88476eb54b27ecc6ea9b6656c378f01",
+"namespacemim_1_1plug_1_1matrix.html#ae3f0ab7b8527477c358984c01ddbd94c",
 "ord_2autogen_8h.html#ab2db641114f266cff3ffff4e098675ab",
 "structmim_1_1World_1_1Freezer.html#aee3e0e14f3c3fc7cd29f5c0c894c8140"
 ];

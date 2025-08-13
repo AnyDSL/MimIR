@@ -177,8 +177,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ab3dde8b812f5e14656689aa5a2d89880" id="r_ab3dde8b812f5e14656689aa5a2d89880"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ad8bae182cdb06699fc07a348105f193c">u64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab3dde8b812f5e14656689aa5a2d89880">get_max_index</a> (<a class="el" href="namespacemim.html#ad8bae182cdb06699fc07a348105f193c">u64</a> <a class="el" href="#af3d33c72062b1db8a1b997ec650a8f3d">init</a>, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> inputs)</td></tr>
 <tr class="memdesc:ab3dde8b812f5e14656689aa5a2d89880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Matrix normalizer for product on two-dimensional matrices.  <br /></td></tr>
 <tr class="separator:ab3dde8b812f5e14656689aa5a2d89880"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab58fe9e0929f29b8a2dd0068260629e4" id="r_ab58fe9e0929f29b8a2dd0068260629e4"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classmim_1_1Lam.html">Lam</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab58fe9e0929f29b8a2dd0068260629e4">counting_for</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *bound, <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> acc, const <a class="el" href="classmim_1_1Def.html">Def</a> *exit, const char *name=&quot;for_body&quot;)</td></tr>
-<tr class="separator:ab58fe9e0929f29b8a2dd0068260629e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af543155056078bfd4e2df4f16ad7458f" id="r_af543155056078bfd4e2df4f16ad7458f"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classmim_1_1Lam.html">Lam</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af543155056078bfd4e2df4f16ad7458f">counting_for</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *bound, <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> acc, const <a class="el" href="classmim_1_1Def.html">Def</a> *exit, Sym name)</td></tr>
+<tr class="separator:af543155056078bfd4e2df4f16ad7458f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d735b8748b3f4626e15b3c1b0e64bdd" id="r_a6d735b8748b3f4626e15b3c1b0e64bdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d735b8748b3f4626e15b3c1b0e64bdd">register_normalizers</a> (<a class="el" href="namespacemim.html#ab875464e5f495601abff7287573e1405">Normalizers</a> &amp;normalizers)</td></tr>
 <tr class="separator:a6d735b8748b3f4626e15b3c1b0e64bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -567,8 +567,8 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ab58fe9e0929f29b8a2dd0068260629e4" name="ab58fe9e0929f29b8a2dd0068260629e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab58fe9e0929f29b8a2dd0068260629e4">&#9670;&#160;</a></span>counting_for()</h2>
+<a id="af543155056078bfd4e2df4f16ad7458f" name="af543155056078bfd4e2df4f16ad7458f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af543155056078bfd4e2df4f16ad7458f">&#9670;&#160;</a></span>counting_for()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -591,7 +591,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;for_body&quot;</span>&#160;)</td>
+          <td class="paramtype">Sym</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -600,7 +600,7 @@ Variables</h2></td></tr>
 
 <p class="reference">References <a class="el" href="world_8cpp_source.html#l00287">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00260">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00413">mim::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00039">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
 
 </div>
 </div>
@@ -874,7 +874,7 @@ Variables</h2></td></tr>
 
 <p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00038">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00039">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
 
 </div>
 </div>

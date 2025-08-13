@@ -17,7 +17,7 @@ var namespacemim_1_1plug_1_1matrix =
     [ "shape", "namespacemim_1_1plug_1_1matrix.html#a1a46381ed716136bd172a2ea0fd27614", null ],
     [ "sum", "namespacemim_1_1plug_1_1matrix.html#a6c2b2ed70d211b556dfd52f59e9d827b", null ],
     [ "transpose", "namespacemim_1_1plug_1_1matrix.html#a5b14c9f2cfc5a0f1d95a3657b2ec5be3", null ],
-    [ "counting_for", "namespacemim_1_1plug_1_1matrix.html#ab58fe9e0929f29b8a2dd0068260629e4", null ],
+    [ "counting_for", "namespacemim_1_1plug_1_1matrix.html#af543155056078bfd4e2df4f16ad7458f", null ],
     [ "get_max_index", "namespacemim_1_1plug_1_1matrix.html#ab3dde8b812f5e14656689aa5a2d89880", null ],
     [ "normalize_insert", "namespacemim_1_1plug_1_1matrix.html#a0b41485a06205af808adacf92db6e069", null ],
     [ "normalize_map_reduce", "namespacemim_1_1plug_1_1matrix.html#a25b7c31b65c2a91faeb93be61e409944", null ],
