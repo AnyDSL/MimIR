@@ -14,7 +14,7 @@ namespace {
 
 bool is_shape(const Def* s) {
     if (s->isa<Nat>()) return true;
-    if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
+    if (auto arr = s->isa<Arr>()) return arr->body()->zonk()->isa<Nat>();
     if (auto sig = s->isa_imm<Sigma>())
         return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
 
@@ -471,11 +471,11 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
 }
 
 const Def* World::seq(bool term, const Def* arity, const Def* body) {
-    arity = arity->zonk();
+    arity = arity->zonk(); // TODO use zonk_mut all over the place and rmeove zonk from is_shape?
     body  = body->zonk();
 
-    if (!is_shape(arity->unfold_type()))
-        error(arity->loc(), "expected arity but got `{}` of type `{}`", arity, arity->type());
+    auto arity_ty = arity->unfold_type();
+    if (!is_shape(arity_ty)) error(arity->loc(), "expected arity but got `{}` of type `{}`", arity, arity_ty);
 
     if (auto a = Lit::isa(arity)) {
         if (*a == 0) return unit(term);

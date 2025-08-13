@@ -26,7 +26,8 @@ Driver::Driver()
     if (auto env_path = std::getenv("MIM_PLUGIN_PATH")) {
         std::stringstream env_path_stream{env_path};
         std::string sub_path;
-        while (std::getline(env_path_stream, sub_path, ':')) add_search_path(sub_path);
+        while (std::getline(env_path_stream, sub_path, ':'))
+            add_search_path(sub_path);
     }
 
     // add path/to/mim.exe/../../lib/mim
@@ -60,7 +61,7 @@ void Driver::load(Sym name) {
 
     auto handle = Plugin::Handle{nullptr, dl::close};
     if (auto path = fs::path{name.view()}; path.is_absolute() && fs::is_regular_file(path))
-        handle.reset(dl::open(name));
+        handle.reset(dl::open(name.c_str()));
     if (!handle) {
         for (const auto& path : search_paths()) {
             for (auto name_variants = get_plugin_name_variants(name); const auto& name_variant : name_variants) {
