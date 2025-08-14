@@ -307,6 +307,7 @@ void Dumper::dump(Def* mut) {
         if (def->isa<Pack>()) return "pack";
         if (def->isa<Pi>()) return "Pi";
         if (def->isa<Hole>()) return "Hole";
+        if (def->isa<Rule>()) return "Rule";
         fe::unreachable();
     };
 
@@ -316,6 +317,7 @@ void Dumper::dump(Def* mut) {
         if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->arity());
         if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
         if (auto hole = def->isa_mut<Hole>()) return hole->is_set() ? print(os, ", {}", hole->op()) : print(os, ", ??");
+        if (auto rule = def->isa<Rule>()) return print(os, "{} => {}", rule->lhs(), rule->rhs());
         fe::unreachable();
     };
 

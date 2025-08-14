@@ -15,22 +15,23 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define MIM_NODE(m)                                                                                             \
-    m(Lit,    Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/          \
-    m(Axm,    Judge::Intro)                                                                                     \
-    m(Var,    Judge::Intro)                                                                                     \
-    m(Global, Judge::Intro)                                                                                     \
-    m(Proxy,  Judge::Intro)                                                                                     \
-    m(Hole,   Judge::Hole)                                                                                      \
-    m(Type,   Judge::Meta) m(Univ,  Judge::Meta)  m(UMax,    Judge::Meta) m(UInc,   Judge::Meta)                \
-    m(Pi,     Judge::Form) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                       \
-    m(Sigma,  Judge::Form) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, Judge::Intro | Judge::Elim) \
-    m(Arr,    Judge::Form) m(Pack,  Judge::Intro)                                                               \
-    m(Join,   Judge::Form) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    Judge::Intro)               \
-    m(Meet,   Judge::Form) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    Judge::Intro)               \
-    m(Uniq,   Judge::Form)                                                                                      \
-    m(Nat,    Judge::Form)                                                                                      \
-    m(Idx,    Judge::Intro)
+#define MIM_NODE(m)                                                                                               \
+    m(Lit,      Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/          \
+    m(Axm,      Judge::Intro)                                                                                     \
+    m(Var,      Judge::Intro)                                                                                     \
+    m(Global,   Judge::Intro)                                                                                     \
+    m(Proxy,    Judge::Intro)                                                                                     \
+    m(Hole,     Judge::Hole)                                                                                      \
+    m(Type,     Judge::Meta) m(Univ,  Judge::Meta)  m(UMax,    Judge::Meta) m(UInc,   Judge::Meta)                \
+    m(Pi,       Judge::Form) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                       \
+    m(Sigma,    Judge::Form) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, Judge::Intro | Judge::Elim) \
+    m(Arr,      Judge::Form) m(Pack,  Judge::Intro)                                                               \
+    m(Join,     Judge::Form) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    Judge::Intro)               \
+    m(Meet,     Judge::Form) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    Judge::Intro)               \
+    m(Reform,   Judge::Form) m(Rule,  Judge::Intro)                                                               \
+    m(Uniq,     Judge::Form)                                                                                      \
+    m(Nat,      Judge::Form)                                                                                      \
+    m(Idx,      Judge::Intro)
 // clang-format on
 
 namespace mim {
@@ -191,6 +192,7 @@ public:
 /// | Uniq              | Wrap              | Unwrap            |
 /// | Join              | Inj               | Match             |
 /// | Meet              | Merge             | Split             |
+/// | Reform            | Rule              |                   |
 /// | Nat               | Lit               |                   |
 /// | Idx               | Lit               |                   |
 /// In addition there is:

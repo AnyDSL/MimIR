@@ -12,6 +12,7 @@ target_sources(libmim
         nest.cpp
         plugin.cpp
         rewrite.cpp
+        rule.cpp
         schedule.cpp
         tuple.cpp
         world.cpp

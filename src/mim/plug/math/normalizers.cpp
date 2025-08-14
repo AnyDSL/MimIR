@@ -136,7 +136,8 @@ Res fold(u64 a, u64 b) {
 }
 // clang-format on
 
-template<class Id, Id id> const Def* fold(World& world, const Def* type, const Def* a) {
+template<class Id, Id id>
+const Def* fold(World& world, const Def* type, const Def* a) {
     if (a->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -157,7 +158,8 @@ template<class Id, Id id> const Def* fold(World& world, const Def* type, const D
 }
 
 // Note that @p a and @p b are passed by reference as fold also commutes if possible.
-template<class Id, Id id> const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b) {
+template<class Id, Id id>
+const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b) {
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -225,7 +227,8 @@ const Def* reassociate(Id id, World& world, [[maybe_unused]] const App* ab, cons
     return nullptr;
 }
 
-template<class Id, Id id, nat_t sw, nat_t dw> Res fold(u64 a) {
+template<class Id, Id id, nat_t sw, nat_t dw>
+Res fold(u64 a) {
     using S = std::conditional_t<id == conv::s2f, w2s<sw>, std::conditional_t<id == conv::u2f, w2u<sw>, w2f<sw>>>;
     using D = std::conditional_t<id == conv::f2s, w2s<dw>, std::conditional_t<id == conv::f2u, w2u<dw>, w2f<dw>>>;
     return D(bitcast<S>(a));
@@ -233,71 +236,21 @@ template<class Id, Id id, nat_t sw, nat_t dw> Res fold(u64 a) {
 
 } // namespace
 
-template<arith id> const Def* normalize_arith(const Def* type, const Def* c, const Def* arg) {
+template<arith id>
+const Def* normalize_arith(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto mode   = callee->arg();
-    auto lm     = Lit::isa(mode);
-    auto w      = isa_f(a->type());
 
     if (auto result = fold<arith, id>(world, type, a, b)) return result;
-
-    // clang-format off
-    // TODO check mode properly
-    if (lm && *lm == Mode::fast) {
-        if (auto la = a->isa<Lit>()) {
-            if (la == lit_f(world, *w, 0.0)) {
-                switch (id) {
-                    case arith::add: return b;  // 0 + b -> b
-                    case arith::sub: break;
-                    case arith::mul: return la; // 0 * b -> 0
-                    case arith::div: return la; // 0 / b -> 0
-                    case arith::rem: return la; // 0 % b -> 0
-                }
-            }
-
-            if (la == lit_f(world, *w, 1.0)) {
-                switch (id) {
-                    case arith::add: break;
-                    case arith::sub: break;
-                    case arith::mul: return b;  // 1 * b -> b
-                    case arith::div: break;
-                    case arith::rem: break;
-                }
-            }
-        }
-
-        if (auto lb = b->isa<Lit>()) {
-            if (lb == lit_f(world, *w, 0.0)) {
-                switch (id) {
-                    case arith::sub: return a;  // a - 0 -> a
-                    case arith::div: break;
-                    case arith::rem: break;
-                    default: fe::unreachable();
-                    // add, mul are commutative, the literal has been normalized to the left
-                }
-            }
-        }
-
-        if (a == b) {
-            switch (id) {
-                case arith::add: return world.call(arith::mul, mode, Defs{lit_f(world, *w, 2.0), a}); // a + a -> 2 * a
-                case arith::sub: return lit_f(world, *w, 0.0);                                        // a - a -> 0
-                case arith::mul: break;
-                case arith::div: return lit_f(world, *w, 1.0);                                        // a / a -> 1
-                case arith::rem: break;
-            }
-        }
-    }
-    // clang-format on
 
     if (auto res = reassociate<arith>(id, world, callee, a, b)) return res;
 
     return world.raw_app(type, callee, {a, b});
 }
 
-template<extrema id> const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg) {
+template<extrema id>
+const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -318,7 +271,8 @@ template<extrema id> const Def* normalize_extrema(const Def* type, const Def* c,
     return world.raw_app(type, c, {a, b});
 }
 
-template<tri id> const Def* normalize_tri(const Def* type, const Def*, const Def* arg) {
+template<tri id>
+const Def* normalize_tri(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<tri, id>(world, type, arg)) return lit;
     return {};
@@ -331,31 +285,36 @@ const Def* normalize_pow(const Def* type, const Def*, const Def* arg) {
     return {};
 }
 
-template<rt id> const Def* normalize_rt(const Def* type, const Def*, const Def* arg) {
+template<rt id>
+const Def* normalize_rt(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<rt, id>(world, type, arg)) return lit;
     return {};
 }
 
-template<exp id> const Def* normalize_exp(const Def* type, const Def*, const Def* arg) {
+template<exp id>
+const Def* normalize_exp(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<exp, id>(world, type, arg)) return lit;
     return {};
 }
 
-template<er id> const Def* normalize_er(const Def* type, const Def*, const Def* arg) {
+template<er id>
+const Def* normalize_er(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<er, id>(world, type, arg)) return lit;
     return {};
 }
 
-template<gamma id> const Def* normalize_gamma(const Def* type, const Def*, const Def* arg) {
+template<gamma id>
+const Def* normalize_gamma(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<gamma, id>(world, type, arg)) return lit;
     return {};
 }
 
-template<cmp id> const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg) {
+template<cmp id>
+const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -367,7 +326,8 @@ template<cmp id> const Def* normalize_cmp(const Def* type, const Def* c, const D
     return world.raw_app(type, callee, {a, b});
 }
 
-template<conv id> const Def* normalize_conv(const Def* dst_t, const Def*, const Def* x) {
+template<conv id>
+const Def* normalize_conv(const Def* dst_t, const Def*, const Def* x) {
     auto& world = dst_t->world();
     auto s_t    = x->type()->as<App>();
     auto d_t    = dst_t->as<App>();
@@ -419,7 +379,8 @@ const Def* normalize_abs(const Def* type, const Def*, const Def* arg) {
     return {};
 }
 
-template<round id> const Def* normalize_round(const Def* type, const Def*, const Def* arg) {
+template<round id>
+const Def* normalize_round(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
     if (auto lit = fold<round, id>(world, type, arg)) return lit;
     return {};

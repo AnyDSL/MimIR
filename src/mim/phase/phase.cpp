@@ -32,6 +32,11 @@ void Cleanup::start() {
         new_mut->make_external();
     }
 
+    for (auto r : world().all_rules()) {
+        auto nr = rewriter.rewrite(r)->as<Rule>();
+        new_world.register_rule(nr);
+    }
+
     swap(world(), new_world);
 }
 

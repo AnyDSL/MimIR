@@ -13,6 +13,7 @@
 #include "mim/flags.h"
 #include "mim/lam.h"
 #include "mim/lattice.h"
+#include "mim/rule.h"
 #include "mim/tuple.h"
 
 #include "mim/util/dbg.h"
@@ -311,6 +312,18 @@ public:
     // clang-format on
     ///@}
 
+    /// @name Rewrite Rules
+    ///@{
+    const Reform* rule_type(const Def* meta_type) { return unify<Reform>(Reform::infer(meta_type), meta_type); }
+    Rule* mut_rule(const Reform* type) { return insert<Rule>(type); }
+    const Rule* rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* condition) {
+        return mut_rule(type)->set(lhs, rhs, condition);
+    }
+    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs, const Def* condition) {
+        return rule(rule_type(meta_type), lhs, rhs, condition);
+    }
+    ///@}
+
     /// @name App
     ///@{
     template<bool Normalize = true>
@@ -565,6 +578,11 @@ public:
     void dot(const char* file = nullptr, bool annexes = false, bool types = false) const;
     ///@}
 
+    /// Try to apply all known rewrites to an expression
+    const Def* apply_rules(const Axm*, const Def* expr);
+    void register_rule(const Rule* rule);
+    absl::btree_set<const Rule*> all_rules() const { return known_rules_; }
+
 private:
     /// @name call_
     /// Helpers to unwind World::call with variadic templates.
@@ -748,11 +766,16 @@ private:
         swap(w1.data_,  w2.data_ );
         swap(w1.move_,  w2.move_ );
         // clang-format on
+        swap(w1.known_rules_, w2.known_rules_);
+        swap(w1.rules_of_axm_, w2.rules_of_axm_);
 
         swap(w1.data_.univ->world_, w2.data_.univ->world_);
         assert(&w1.univ()->world() == &w1);
         assert(&w2.univ()->world() == &w2);
     }
+
+    absl::btree_set<const Rule*> known_rules_;
+    absl::btree_multimap<const Axm*, const Rule*> rules_of_axm_;
 };
 
 } // namespace mim
