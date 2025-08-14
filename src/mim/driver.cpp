@@ -7,15 +7,6 @@
 
 namespace mim {
 
-namespace {
-std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
-    std::vector<fs::path> names;
-    names.push_back(name); // if the user gives "libmim_foo.so"
-    names.push_back(fmt("libmim_{}.{}", name, dl::extension));
-    return names;
-}
-} // namespace
-
 Driver::Driver()
     : log_(flags_)
     , world_(this) {
@@ -64,13 +55,11 @@ void Driver::load(Sym name) {
         handle.reset(dl::open(name.c_str()));
     if (!handle) {
         for (const auto& path : search_paths()) {
-            for (auto name_variants = get_plugin_name_variants(name); const auto& name_variant : name_variants) {
-                auto full_path = path / name_variant;
-                std::error_code ignore;
-                if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
-                    auto path_str = full_path.string();
-                    if (handle.reset(dl::open(path_str.c_str())); handle) break;
-                }
+            auto full_path = path / fmt("libmim_{}.{}", name, dl::extension);
+            std::error_code ignore;
+            if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
+                auto path_str = full_path.string();
+                if (handle.reset(dl::open(path_str.c_str())); handle) break;
             }
             if (handle) break;
         }
