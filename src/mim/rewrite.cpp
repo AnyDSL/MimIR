@@ -42,7 +42,7 @@ const Def* Rewriter::rewrite_mut(Def* old_mut) {
     auto new_mut  = old_mut->stub(world(), new_type);
     map(old_mut, new_mut);
 
-    if (old_mut->is_set()) {
+    if (old_mut->is_set() && new_type->is_set()) {
         for (size_t i = 0, e = old_mut->num_ops(); i != e; ++i)
             new_mut->set(i, rewrite(old_mut->op(i)));
         if (auto new_imm = new_mut->immutabilize()) return map(old_mut, new_imm);
