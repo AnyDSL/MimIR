@@ -492,7 +492,7 @@ void LamDecl::emit_body(Emitter& e) const {
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         auto rw  = VarRewriter(e.world());
         auto lam = dom(i)->lam_;
-        auto* pi = lam->type()->as_mut<Pi>();
+        auto pi  = lam->type()->as_mut<Pi>();
         for (const auto& dom : doms() | std::ranges::views::drop(i)) {
             if (auto var = pi->has_var()) rw.add(dom->lam_->var()->as<Var>(), var);
             auto cod = pi->codom();
