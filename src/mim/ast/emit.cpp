@@ -495,12 +495,13 @@ void LamDecl::emit_body(Emitter& e) const {
         auto* pi = lam->type()->as_mut<Pi>();
         for (const auto& dom : doms() | std::ranges::views::drop(i)) {
             auto cod = pi->codom();
+            if (!cod) break;
             if (auto var = pi->has_var()) rw.add(dom->lam_->var()->as<Var>(), var);
             if (cod->isa_mut<Pi>()) {
                 pi = cod->as_mut<Pi>();
                 continue;
             }
-            if (cod && cod->has_dep(Dep::Hole)) {
+            if (cod->has_dep(Dep::Hole)) {
                 auto d = pi->dom();
                 pi->unset()->set(d, rw.rewrite(cod));
             }
