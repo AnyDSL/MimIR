@@ -518,12 +518,6 @@ public:
 
     const Def* refine(size_t i, const Def* new_op) const;
 
-    /// Unsafe set the `i`th Def::op with @p op and returns `this`.
-    const Def* unsafe_set_op(size_t i, const Def* op) const {
-        ops_ptr()[i] = op;
-        return this;
-    }
-
     /// @see World::reduce
     template<size_t N = std::dynamic_extent>
     constexpr auto reduce(const Def* arg) const {
