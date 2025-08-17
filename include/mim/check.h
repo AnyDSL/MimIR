@@ -35,6 +35,7 @@ public:
         return Def::set(0, op)->as<Hole>();
     }
     Hole* unset() { return Def::unset()->as<Hole>(); }
+    Hole* reset(const Def* op) { return Def::reset({op})->as<Hole>(); }
     ///@}
 
     Hole* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }

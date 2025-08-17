@@ -499,9 +499,8 @@ void LamDecl::emit_body(Emitter& e) const {
             if (!cod || !cod->isa_mut<Pi>()) break;
             pi = cod->as_mut<Pi>();
         }
-        auto d   = pi->dom();
-        auto cod = pi->codom();
-        if (cod && cod->has_dep(Dep::Hole)) pi->unset()->set(d, rw.rewrite(cod));
+
+        if (auto cod = pi->codom(); cod && cod->has_dep(Dep::Hole)) pi->reset(pi->dom(), rw.rewrite(cod));
     }
 
     for (const auto& dom : doms() | std::ranges::views::reverse) {

@@ -75,6 +75,7 @@ public:
     Pi* set_dom(Defs doms);
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
     Pi* unset() { return Def::unset()->as<Pi>(); }
+    Pi* reset(const Def* dom, const Def* codom) { return Def::reset({dom, codom})->as<Pi>(); }
     ///@}
 
     /// @name Type Checking
@@ -174,6 +175,7 @@ public:
     Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem = nullptr);
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     Lam* unset() { return Def::unset()->as<Lam>(); }
+    Lam* reset(Filter filter, const Def* body);
     ///@}
 
     /// @name Rebuild

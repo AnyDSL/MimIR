@@ -111,7 +111,7 @@ std::pair<Hole*, const Def*> Hole::find() {
     // path compression
     for (auto h = this; h != last;) {
         auto next = h->op()->as_mut<Hole>();
-        h->unset()->set(root);
+        h->reset(root);
         h = next;
     }
 
@@ -295,7 +295,7 @@ bool Checker::check(const Prod* prod, const Def* def) {
 bool Checker::check1(const Seq* seq, const Def* def) {
     auto body = seq->reduce(world().lit_idx_1_0()); // try to get rid of var inside of body
     if (!alpha_<Check>(body, def)) return fail<Check>();
-    if (auto mut_seq = seq->isa_mut<Seq>()) mut_seq->unset()->set(world().lit_nat_1(), body->zonk());
+    if (auto mut_seq = seq->isa_mut<Seq>()) mut_seq->reset(world().lit_nat_1(), body->zonk());
     return true;
 }
 
@@ -305,8 +305,7 @@ bool Checker::check(Seq* mut_seq, const Seq* imm_seq) {
     auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->arity())));
     if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
 
-    auto mut_shape = mut_seq->arity();
-    mut_seq->unset()->set(mut_shape, mut_body->zonk());
+    mut_seq->reset(mut_seq->arity(), mut_body->zonk());
     return true;
 }
 

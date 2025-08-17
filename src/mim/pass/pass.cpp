@@ -35,7 +35,7 @@ void PassMan::pop_states(size_t undo) {
             passes_[i]->dealloc(curr_state().data[i]);
 
         if (undo != 0) // only reset if not final cleanup
-            curr_state().curr_mut->unset()->set(curr_state().old_ops);
+            curr_state().curr_mut->reset(curr_state().old_ops);
 
         states_.pop_back();
     }
@@ -76,7 +76,7 @@ void PassMan::run() {
         auto new_defs = absl::FixedArray<const Def*>(curr_mut_->num_ops());
         for (size_t i = 0, e = curr_mut_->num_ops(); i != e; ++i)
             new_defs[i] = rewrite(curr_mut_->op(i));
-        curr_mut_->unset()->set(new_defs);
+        curr_mut_->reset(new_defs);
 
         world().VLOG("=== analyze ===");
         proxy_    = false;
