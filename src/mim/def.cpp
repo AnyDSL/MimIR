@@ -245,7 +245,7 @@ Def* Def::set(Defs ops) {
 
     for (size_t i = 0; i != n; ++i) {
         auto def = check(i, ops[i]);
-        assert(def && !op(i));
+        assert(def);
         ops_ptr()[i] = def;
     }
 #ifndef NDEBUG
@@ -295,29 +295,6 @@ bool Def::is_set() const {
     assert((!result || std::ranges::all_of(ops().rsubspan(1), [](auto op) { return op; }))
            && "the last operand is set but others in front of it aren't");
     return result;
-}
-
-Def* Def::reset(Defs ops) {
-#ifdef MIM_ENABLE_CHECKS
-    if (world().watchpoints().contains(gid())) fe::breakpoint();
-#endif
-    invalidate();
-
-    size_t n = ops.size();
-    assert(ops.size() == n && "num ops don't match");
-
-    for (size_t i = 0; i != n; ++i) {
-        auto def = check(i, ops[i]);
-        assert(def);
-        ops_ptr()[i] = def;
-    }
-#ifndef NDEBUG
-    curr_op_ = n;
-#endif
-
-    if (auto t = check()->zonk(); t != type()) type_ = t;
-
-    return this;
 }
 
 /*

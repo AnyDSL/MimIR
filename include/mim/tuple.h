@@ -32,7 +32,6 @@ public:
     Sigma* set(size_t i, const Def* def) { return Def::set(i, def)->as<Sigma>(); }
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
     Sigma* unset() { return Def::unset()->as<Sigma>(); }
-    Sigma* reset(Defs ops) { return Def::reset(ops)->as<Sigma>(); }
     ///@}
 
     /// @name Rebuild
@@ -100,16 +99,9 @@ public:
     /// Common setter for Pack%s and Arr%ays.
     /// @p arity will be ignored, if it's a Pack.
     Seq* set(const Def* arity, const Def* body) {
-        if (node() == Node::Arr) Def::set(0, arity);
-        Def::set(num_ops() - 1, body);
-        return this;
+        return (node() == Node::Arr ? Def::set({arity, body}) : Def::set({body}))->as<Seq>();
     }
-
     Seq* unset() { return Def::unset()->as<Seq>(); }
-
-    Seq* reset(const Def* arity, const Def* body) {
-        return (node() == Node::Arr ? Def::reset({arity, body}) : Def::reset({body}))->as<Seq>();
-    }
     ///@}
 
     /// @name Rebuild
@@ -143,7 +135,6 @@ public:
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     Arr* set(const Def* arity, const Def* body) { return set_arity(arity)->set_body(body); }
     Arr* unset() { return Def::unset()->as<Arr>(); }
-    Arr* reset(const Def* arity, const Def* body) { return Def::reset({arity, body})->as<Arr>(); }
     ///@}
 
     /// @name Rebuild
@@ -189,9 +180,8 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Pack>::set;
-    Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
+    Pack* set(const Def* body) { return Def::set({body})->as<Pack>(); }
     Pack* unset() { return Def::unset()->as<Pack>(); }
-    Pack* reset(const Def* body) { return Def::reset({body})->as<Pack>(); }
     ///@}
 
     /// @name Rebuild
