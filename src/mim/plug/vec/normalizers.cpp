@@ -24,6 +24,13 @@ template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def*
 
     if (auto pack = vec->isa_imm<Pack>()) w.WLOG("packs not yet implemented: {}", pack);
 
+    if (auto l = vec->isa<Lit>()) {
+        if constexpr (id == fold::l)
+            return w.app(f, {acc, l});
+        else
+            return w.app(f, {l, acc});
+    }
+
     return nullptr;
 }
 
@@ -60,6 +67,8 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
         if (auto l = Lit::isa(pack->shape())) return w.lit_ff();
     }
 
+    if (vec->isa<Lit>()) return w.lit_tt();
+
     return nullptr;
 }
 
@@ -84,6 +93,13 @@ const Def* normalize_diff(const Def* type, const Def* c, const Def* arg) {
 
             for (size_t i = 0, e = tup_vec->num_ops(); i != e; ++i)
                 if (!set.contains(i)) defs.emplace_back(tup_vec->op(i));
+            return w.tuple(defs);
+        }
+        if (auto lit_is = Lit::isa(is)) {
+            auto defs = DefVec();
+
+            for (size_t i = 0, e = tup_vec->num_ops(); i != e; ++i)
+                if (i != lit_is) defs.emplace_back(tup_vec->op(i));
             return w.tuple(defs);
         }
     }

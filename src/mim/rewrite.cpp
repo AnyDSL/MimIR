@@ -13,6 +13,10 @@ const Def* Rewriter::rewrite(const Def* old_def) {
     if (old_def->isa<Univ>()) return world().univ();
     if (auto new_def = lookup(old_def)) return new_def;
 
+    return dispatch(old_def);
+}
+
+const Def* Rewriter::dispatch(const Def* old_def) {
     // clang-format off
     if (auto arr     = old_def->isa<Arr     >()) return rewrite_arr    (arr    );
     if (auto pack    = old_def->isa<Pack    >()) return rewrite_pack   (pack   );
@@ -86,8 +90,7 @@ const Def* Rewriter::rewrite_extract(const Extract* ex) {
 
 const Def* Rewriter::rewrite_hole(Hole* hole) {
     auto [last, op] = hole->find();
-    if (op) return rewrite(op);
-    return rewrite_mut(last);
+    return op ? rewrite(op) : rewrite_mut(last);
 }
 
 } // namespace mim

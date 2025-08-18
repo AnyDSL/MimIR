@@ -50,7 +50,7 @@ World::World(Driver* driver, const State& state)
     data_.top_nat     = insert<Top>(0, type_nat());
     data_.lit_nat_0   = lit_nat(0);
     data_.lit_nat_1   = lit_nat(1);
-    data_.lit_0_1     = lit_idx(1, 0);
+    data_.lit_idx_1_0 = lit_idx(1, 0);
     data_.type_bool   = type_idx(2);
     data_.lit_bool[0] = lit_idx(2, 0_u64);
     data_.lit_bool[1] = lit_idx(2, 1_u64);
@@ -123,50 +123,51 @@ const Def* World::uinc(const Def* op, level_t offset) {
     return unify<UInc>(1, op, offset);
 }
 
-template<Sort sort> const Def* World::umax(Defs ops_) {
-    // consume nested umax
+static void flatten_umax(DefVec& ops, const Def* def) {
+    if (auto umax = def->isa<UMax>())
+        for (auto op : umax->ops()) flatten_umax(ops, op);
+    else
+        ops.emplace_back(def);
+}
+
+template<int sort> const Def* World::umax(Defs ops_) {
     DefVec ops;
     for (auto op : ops_) {
         op = op->zonk();
-        if (auto um = op->isa<UMax>())
-            for (auto umo : um->ops()) ops.emplace_back(umo->zonk());
-        else
-            ops.emplace_back(op);
+
+        if constexpr (sort == UMax::Term) op = op->unfold_type();
+        if constexpr (sort >= UMax::Type) op = op->unfold_type();
+        if constexpr (sort >= UMax::Kind) {
+            if (auto type = op->isa<Type>())
+                op = type->level();
+            else
+                error(op->loc(), "operand '{}' must be a Type of some level", op); // TODO better error message
+        }
+
+        flatten_umax(ops, op);
     }
 
     level_t lvl = 0;
-    for (auto& op : ops) {
-        const Def* r = op;
-        if (sort == Sort::Term) r = r->unfold_type();
-        if (sort <= Sort::Type) r = r->unfold_type();
-        if (sort <= Sort::Kind) {
-            if (auto type = r->isa<Type>())
-                r = type->level();
-            else
-                error(r->loc(), "operand '{}' must be a Type of some level", r);
-        }
-
-        if (!r->type()->isa<Univ>())
-            error(r->loc(), "operand '{}' of a universe max must be of type 'Univ' but is of type '{}'", r, r->type());
-
-        op = r;
+    DefVec res;
+    for (auto op : ops) {
+        if (!op->type()->isa<Univ>())
+            error(op->loc(), "operand '{}' of a universe max must be of type 'Univ' but is of type '{}'", op,
+                  op->type());
 
         if (auto l = Lit::isa(op))
             lvl = std::max(lvl, *l);
         else
-            lvl = level_t(-1);
+            res.emplace_back(op);
     }
 
-    const Def* ldef;
-    if (lvl != level_t(-1))
-        ldef = lit_univ(lvl);
-    else {
-        std::ranges::sort(ops, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
-        ops.erase(std::unique(ops.begin(), ops.end()), ops.end());
-        ldef = unify<UMax>(ops.size(), *this, ops);
-    }
+    const Def* l = lit_univ(lvl);
+    if (res.empty()) return sort == UMax::Univ ? l : type(l);
+    if (lvl > 0) res.emplace_back(l);
 
-    return sort == Sort::Univ ? ldef : type(ldef);
+    std::ranges::sort(res, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
+    res.erase(std::unique(res.begin(), res.end()), res.end());
+    const Def* umax = unify<UMax>(res.size(), *this, res);
+    return sort == UMax::Univ ? umax : type(umax);
 }
 
 // TODO more thorough & consistent checks for singleton types
@@ -175,7 +176,7 @@ const Def* World::var(const Def* type, Def* mut) {
     type = type->zonk();
 
     if (auto s = Idx::isa(type)) {
-        if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
+        if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
     }
 
     if (auto var = mut->var_) return var;
@@ -401,7 +402,7 @@ const Def* World::extract(const Def* d, const Def* index) {
         elem_t = join(type->as<Sigma>()->ops());
 
     if (index->isa<Top>()) {
-        if (auto hole = d->isa_mut<Hole>(); hole && !hole->is_set()) {
+        if (auto hole = Hole::isa_unset(d)) {
             auto elem_hole = mut_hole(elem_t);
             hole->set(pack(size, elem_hole));
             return elem_hole;
@@ -420,6 +421,8 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
     auto type = d->unfold_type();
     auto size = Idx::isa(index->type());
     auto lidx = Lit::isa(index);
+
+    if (!size) error(d->loc(), "index '{}' must be of type 'Idx' but is of type '{}'", index, index->type());
 
     if (!Checker::alpha<Checker::Check>(type->arity(), size))
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
@@ -474,9 +477,9 @@ const Def* World::arr(const Def* shape, const Def* body) {
     // «(a, b, c); body» -> «a; «(b, c); body»»
     if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
 
-    // «<n; x>; body» -> «x; «<n-1, x>; body»»
+    // «‹n; x›; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = Lit::isa(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->shape())) return arr(p->body(), arr(pack(*s - 1, p->body()), body));
     }
 
     return unify<Arr>(2, body->unfold_type(), shape, body);
@@ -497,9 +500,9 @@ const Def* World::pack(const Def* shape, const Def* body) {
     // <(a, b, c); body> -> <a; «(b, c); body>>
     if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().subspan(1), body));
 
-    // <<n; x>; body> -> <x; <<n-1, x>; body>>
+    // «‹n; x›; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = Lit::isa(p->shape())) return pack(*s, pack(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->shape())) return pack(p->body(), pack(pack(*s - 1, p->body()), body));
     }
 
     auto type = arr(shape, body->type());
@@ -552,7 +555,7 @@ template<bool Up> const Def* World::bound(Defs ops_) {
         if (!op->isa<TExt<!Up>>()) ops.emplace_back(op); // ignore: ext<!Up>
     }
 
-    auto kind = umax<Sort::Type>(ops);
+    auto kind = umax<UMax::Type>(ops);
 
     // has ext<Up> value?
     if (std::ranges::any_of(ops, [&](const Def* op) -> bool { return op->isa<TExt<Up>>(); })) return ext<Up>(kind);
@@ -583,7 +586,7 @@ const Def* World::merge(const Def* type, Defs ops_) {
 
 const Def* World::merge(Defs ops_) {
     auto ops = Def::zonk(ops_);
-    return merge(umax<Sort::Term>(ops), ops);
+    return merge(umax<UMax::Term>(ops), ops);
 }
 
 const Def* World::inj(const Def* type, const Def* value) {
@@ -684,6 +687,7 @@ Defs World::reduce(const Var* var, const Def* arg) {
 #ifdef MIM_ENABLE_CHECKS
 
 void World::breakpoint(u32 gid) { state_.breakpoints.emplace(gid); }
+void World::watchpoint(u32 gid) { state_.watchpoints.emplace(gid); }
 
 const Def* World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });
@@ -700,10 +704,10 @@ World& World::verify() {
 #endif
 
 #ifndef DOXYGEN
-template const Def* World::umax<Sort::Term>(Defs);
-template const Def* World::umax<Sort::Type>(Defs);
-template const Def* World::umax<Sort::Kind>(Defs);
-template const Def* World::umax<Sort::Univ>(Defs);
+template const Def* World::umax<UMax::Term>(Defs);
+template const Def* World::umax<UMax::Type>(Defs);
+template const Def* World::umax<UMax::Kind>(Defs);
+template const Def* World::umax<UMax::Univ>(Defs);
 template const Def* World::ext<true>(const Def*);
 template const Def* World::ext<false>(const Def*);
 template const Def* World::bound<true>(Defs);
