@@ -14,8 +14,9 @@ void init_pi(py::module_& m){
 }
 
 void init_lam(py::module_& m) {
-    py::class_<mim::Lam>(m, "Lam");
-        // .def("app", static_cast<Lam* (Lam::*)(Lam::Filter, const Def*, const Def* )>(&Lam::app));
+    py::class_<mim::Lam>(m, "Lam")
+        .def("var", static_cast<const mim::Def* (Def::*)()>(&mim::Def::var), py::return_value_policy::reference_internal)
+        .def("app", static_cast<Lam* (Lam::*)(Lam::Filter, const Def*, const Def* )>(&Lam::app));
 }
 
 } // namespace mim
