@@ -241,7 +241,7 @@ Def* Def::set(Defs ops) {
     invalidate();
 
     size_t n = ops.size();
-    assert(ops.size() == n && "num ops don't match");
+    assert(n == num_ops() && "num ops don't match");
 
     for (size_t i = 0; i != n; ++i) {
         auto def = check(i, ops[i]);
