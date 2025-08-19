@@ -1,7 +1,5 @@
 var NAVTREEINDEX18 =
 {
-"namespacemembers_u.html":[3,1,0,20],
-"namespacemembers_v.html":[3,1,0,21],
 "namespacemembers_vars.html":[3,1,2],
 "namespacemembers_w.html":[3,1,0,22],
 "namespacemembers_z.html":[3,1,0,23],
@@ -249,5 +247,7 @@ var NAVTREEINDEX18 =
 "namespacemim_1_1ll.html#a469e9639fe5031433849021ed17047ea":[3,0,1,3,4],
 "namespacemim_1_1ll.html#a58f332ff50319041ec5458482d1de347":[3,0,1,3,2],
 "namespacemim_1_1ll.html#a7e9fadd25e15c54724c0db2a57cdd16d":[3,0,1,3,5],
-"namespacemim_1_1ll.html#a8853938d8898dc6f8759f6cfe4e7ff95":[3,0,1,3,3]
+"namespacemim_1_1ll.html#a8853938d8898dc6f8759f6cfe4e7ff95":[3,0,1,3,3],
+"namespacemim_1_1plug.html":[3,0,1,4],
+"namespacemim_1_1plug_1_1affine.html":[3,0,1,4,0]
 };

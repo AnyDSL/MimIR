@@ -159,7 +159,7 @@ $(function(){initNavTree('pass_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            passes_[i]-&gt;dealloc(curr_state().data[i]);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">if</span> (undo != 0) <span class="comment">// only reset if not final cleanup</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            curr_state().curr_mut-&gt;unset()-&gt;set(curr_state().old_ops);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            curr_state().curr_mut-&gt;set(curr_state().old_ops);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        states_.pop_back();</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
@@ -201,7 +201,7 @@ $(function(){initNavTree('pass_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keyword">auto</span> new_defs = absl::FixedArray&lt;const Def*&gt;(curr_mut_-&gt;num_ops());</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0, e = curr_mut_-&gt;num_ops(); i != e; ++i)</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            new_defs[i] = rewrite(curr_mut_-&gt;op(i));</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        curr_mut_-&gt;unset()-&gt;set(new_defs);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        curr_mut_-&gt;set(new_defs);</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <a class="code hl_function" href="classmim_1_1PassMan.html#ab74087ef15849289b586b9843e886652">world</a>().VLOG(<span class="stringliteral">&quot;=== analyze ===&quot;</span>);</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        proxy_    = <span class="keyword">false</span>;</div>
@@ -291,7 +291,7 @@ $(function(){initNavTree('pass_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>} <span class="comment">// namespace mim</span></div>
 <div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00216">def.h:216</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_a20e9e09e55fc9b46a6f74423f2c5d35d"><div class="ttname"><a href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">mim::Def::deps</a></div><div class="ttdeci">Defs deps() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00441">def.cpp:441</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a20e9e09e55fc9b46a6f74423f2c5d35d"><div class="ttname"><a href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">mim::Def::deps</a></div><div class="ttdeci">Defs deps() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00457">def.cpp:457</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_a3e96d1f2d3715f3d059a7396366af7eb"><div class="ttname"><a href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">mim::Def::ops</a></div><div class="ttdeci">constexpr auto ops() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00270">def.h:270</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_a53a70702795d9c4bafe6de0d4f4a66f1"><div class="ttname"><a href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1">mim::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is mutable, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00445">def.h:445</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_a67a94030742a4217fe19bb739990f73e"><div class="ttname"><a href="classmim_1_1Def.html#a67a94030742a4217fe19bb739990f73e">mim::Def::op</a></div><div class="ttdeci">const Def * op(size_t i) const noexcept</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00273">def.h:273</a></div></div>

@@ -5,7 +5,6 @@ var classmim_1_1Pack =
     [ "rebuild_", "classmim_1_1Pack.html#aa88c1c31163072412363109536b96be1", null ],
     [ "reduce", "classmim_1_1Pack.html#ab2414ebb055399b4a6a0cda845db292e", null ],
     [ "reduction_offset", "classmim_1_1Pack.html#ae5ef92005c8a3e788480a5287de54087", null ],
-    [ "reset", "classmim_1_1Pack.html#a337efe7580c2f507ea9a7b897a250b94", null ],
     [ "set", "classmim_1_1Pack.html#acadd633931b696bad4cd49b5812e763e", null ],
     [ "stub", "classmim_1_1Pack.html#ada167862c7630f20342f40c0b335ae53", null ],
     [ "stub_", "classmim_1_1Pack.html#a29519b84cefe207522c20077384377a7", null ],

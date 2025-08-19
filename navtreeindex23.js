@@ -1,7 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"structmim_1_1World_1_1Freezer.html#aee3e0e14f3c3fc7cd29f5c0c894c8140":[3,0,1,94,0,3],
-"structmim_1_1World_1_1Freezer.html#aee3e0e14f3c3fc7cd29f5c0c894c8140":[5,0,1,92,0,3],
 "structmim_1_1World_1_1ScopedLoc.html":[3,0,1,94,2],
 "structmim_1_1World_1_1ScopedLoc.html":[5,0,1,92,2],
 "structmim_1_1World_1_1ScopedLoc.html#a5ede016f5ad81b87b0e5dcce51117f9c":[3,0,1,94,2,1],
