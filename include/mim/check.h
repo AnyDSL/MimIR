@@ -32,7 +32,7 @@ public:
     ///@{
     Hole* set(const Def* op) {
         assert(op != this);
-        return Def::set(0, op)->as<Hole>();
+        return Def::set({op})->as<Hole>();
     }
     Hole* unset() { return Def::unset()->as<Hole>(); }
     ///@}

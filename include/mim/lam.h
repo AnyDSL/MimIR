@@ -70,7 +70,7 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Pi>::set;
-    Pi* set(const Def* dom, const Def* codom) { return set_dom(dom)->set_codom(codom); }
+    Pi* set(const Def* dom, const Def* codom) { return Def::set({dom, codom})->as<Pi>(); }
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
@@ -163,7 +163,7 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Lam>::set;
-    Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
+    Lam* set(Filter filter, const Def* body);
     Lam* set_filter(Filter);                                                ///< Set filter first.
     Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.
     /// Set body to an App of @p callee and @p arg.

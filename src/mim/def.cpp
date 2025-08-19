@@ -235,9 +235,25 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
  */
 
 Def* Def::set(Defs ops) {
-    assert(ops.size() == num_ops());
-    for (size_t i = 0, e = num_ops(); i != e; ++i)
-        set(i, ops[i]);
+#ifdef MIM_ENABLE_CHECKS
+    if (world().watchpoints().contains(gid())) fe::breakpoint();
+#endif
+    invalidate();
+
+    size_t n = ops.size();
+    assert(n == num_ops() && "num ops don't match");
+
+    for (size_t i = 0; i != n; ++i) {
+        auto def = check(i, ops[i]);
+        assert(def);
+        ops_ptr()[i] = def;
+    }
+#ifndef NDEBUG
+    curr_op_ = n;
+#endif
+
+    if (auto t = check()->zonk(); t != type()) type_ = t;
+
     return this;
 }
 
@@ -245,6 +261,7 @@ Def* Def::set(size_t i, const Def* def) {
 #ifdef MIM_ENABLE_CHECKS
     if (world().watchpoints().contains(gid())) fe::breakpoint();
 #endif
+
     invalidate();
     def = check(i, def);
     assert(def && !op(i) && curr_op_++ == i);
@@ -259,7 +276,6 @@ Def* Def::set(size_t i, const Def* def) {
 
 Def* Def::set_type(const Def* type) {
     invalidate();
-    assert(curr_op_ == 0);
     type_ = type;
     return this;
 }

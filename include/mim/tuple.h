@@ -99,11 +99,8 @@ public:
     /// Common setter for Pack%s and Arr%ays.
     /// @p arity will be ignored, if it's a Pack.
     Seq* set(const Def* arity, const Def* body) {
-        if (node() == Node::Arr) Def::set(0, arity);
-        Def::set(num_ops() - 1, body);
-        return this;
+        return (node() == Node::Arr ? Def::set({arity, body}) : Def::set({body}))->as<Seq>();
     }
-
     Seq* unset() { return Def::unset()->as<Seq>(); }
     ///@}
 
@@ -183,8 +180,7 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Pack>::set;
-    Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
-    Pack* reset(const Def* body) { return unset()->set(body); }
+    Pack* set(const Def* body) { return Def::set({body})->as<Pack>(); }
     Pack* unset() { return Def::unset()->as<Pack>(); }
     ///@}
 
