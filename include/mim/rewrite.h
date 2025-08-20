@@ -43,6 +43,11 @@ public:
     virtual const Def* rewrite_imm(const Def*);
     virtual const Def* rewrite_mut(Def*);
 
+    virtual const Def* rewrite_app(const App* app) { return map(app, rewrite_imm(app)); }
+    virtual const Def* rewrite_lam(const Lam* old_lam) {
+        if (auto old_mut = old_lam->isa_mut()) return rewrite_mut(old_mut);
+        return map(old_lam, rewrite_imm(old_lam));
+    }
     virtual const Def* rewrite_arr(const Arr* arr) { return rewrite_seq(arr); }
     virtual const Def* rewrite_pack(const Pack* pack) { return rewrite_seq(pack); }
     virtual const Def* rewrite_seq(const Seq*);
