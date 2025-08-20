@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['f_0',['F',['../math.html#autotoc_md145',1,'%math.F'],['../namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288',1,'mim::plug::math::F']]],
+  ['f_0',['F',['../math.html#autotoc_md141',1,'%math.F'],['../namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288',1,'mim::plug::math::F']]],
   ['f_1',['f',['../structmim_1_1Elem.html#a39ae5bd9af08c76d24b5cdcbdc02bcaf',1,'mim::Elem::f'],['../structmim_1_1ast_1_1R.html#a53a1d36e051e4dc07ca51382d8f594fb',1,'mim::ast::R::f'],['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea8fa14cdd754f91cc6554c9e71929cce7',1,'mim::plug::core::f'],['../namespacemim_1_1plug_1_1core.html#a7a60a2da3c1482d92696ed97b26f1b4ca8fa14cdd754f91cc6554c9e71929cce7',1,'mim::plug::core::f'],['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205a8fa14cdd754f91cc6554c9e71929cce7',1,'mim::plug::core::f'],['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673a8fa14cdd754f91cc6554c9e71929cce7',1,'mim::plug::core::f'],['../namespacemim_1_1plug_1_1math.html#acad4db7382e2aa7eb1580c177148e4bba8fa14cdd754f91cc6554c9e71929cce7',1,'mim::plug::math::f'],['../namespacemim_1_1plug_1_1math.html#aaf7502aae7bb9f2d1d1a1b56cc65f87aa8fa14cdd754f91cc6554c9e71929cce7',1,'mim::plug::math::f'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a8fa14cdd754f91cc6554c9e71929cce7',1,'mim::plug::math::f']]],
   ['f16_2',['F16',['../namespacemim_1_1plug_1_1math.html#a323f568770c539e1621e3d566638e5e6',1,'mim::plug::math']]],
   ['f16_3',['f16',['../namespacemim_1_1plug_1_1math.html#a4d006780938c80873a21b6c739c6b867',1,'mim::plug::math::f16'],['../namespacemim.html#ab64b7b3af527682b0daf50d786c8689b',1,'mim::f16']]],
@@ -24,7 +24,7 @@ var searchData=
   ['find_5fcmd_21',['find_cmd',['../namespacemim_1_1sys.html#aabf9e272ba0bd6b36223a016499591a6',1,'mim::sys']]],
   ['finite_22',['finite',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91af08d9f9dd085b62425e34097fc724a5f',1,'mim::plug::math']]],
   ['first_23',['first',['../namespacemim_1_1plug_1_1vec.html#a9988495005995ff4aaf5b257dcb1703c',1,'mim::plug::vec']]],
-  ['first_20vec_20last_24',['%%vec.first / %%vec.last',['../vec.html#autotoc_md275',1,'']]],
+  ['first_20vec_20last_24',['%%vec.first / %%vec.last',['../vec.html#autotoc_md271',1,'']]],
   ['fixed_20point_20pass_25',['Fixed-Point Pass',['../passes.html#autotoc_md58',1,'']]],
   ['fixed_5fpoint_26',['fixed_point',['../classmim_1_1Pass.html#aaa4d94d4f8d7fe1b6f7e854ba2251f59',1,'mim::Pass::fixed_point()'],['../classmim_1_1PassMan.html#af877dfdffb3aba71cee64635965146d5',1,'mim::PassMan::fixed_point()'],['../classmim_1_1FPPass.html#a81399219639d659e6886d2af363aeadd',1,'mim::FPPass::fixed_point()']]],
   ['flags_27',['Flags',['../namespacemim.html#structmim_1_1Flags',1,'mim']]],
@@ -51,7 +51,7 @@ var searchData=
   ['fnv1_48',['FNV1',['../namespacemim.html#structmim_1_1FNV1',1,'mim']]],
   ['fnv1_3c_204_20_3e_49',['FNV1&lt; 4 &gt;',['../structmim_1_1FNV1_3_014_01_4.html',1,'mim']]],
   ['fnv1_3c_208_20_3e_50',['FNV1&lt; 8 &gt;',['../structmim_1_1FNV1_3_018_01_4.html',1,'mim']]],
-  ['fold_51',['fold',['../vec.html#autotoc_md272',1,'%vec.fold'],['../namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dc',1,'mim::plug::vec::fold']]],
+  ['fold_51',['fold',['../vec.html#autotoc_md268',1,'%vec.fold'],['../namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dc',1,'mim::plug::vec::fold']]],
   ['for_52',['For',['../affine.html#autotoc_md74',1,'%affine.For'],['../namespacemim_1_1plug_1_1affine.html#a6ff8673e1d2565961963aec89b59c068',1,'mim::plug::affine::For']]],
   ['for_20built_20ins_53',['Downcast for Built-ins',['../dev.html#cast_builtin',1,'']]],
   ['for_20immutables_54',['Downcast for Immutables',['../dev.html#autotoc_md20',1,'']]],
@@ -68,7 +68,7 @@ var searchData=
   ['fppass_3c_20ssaconstr_2c_20lam_20_3e_65',['FPPass&lt; SSAConstr, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
   ['fppass_3c_20tailrecelim_2c_20lam_20_3e_66',['FPPass&lt; TailRecElim, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
   ['fpphase_67',['FPPhase',['../classmim_1_1FPPhase.html',1,'mim::FPPhase'],['../classmim_1_1FPPhase.html#a213508ba780f4bceebee455577f986d3',1,'mim::FPPhase::FPPhase()']]],
-  ['free_68',['free',['../mem.html#autotoc_md193',1,'%mem.free'],['../namespacemim_1_1plug_1_1mem.html#aa920d510e2e4277188e0b9517e6ea64b',1,'mim::plug::mem::free']]],
+  ['free_68',['free',['../mem.html#autotoc_md189',1,'%mem.free'],['../namespacemim_1_1plug_1_1mem.html#aa920d510e2e4277188e0b9517e6ea64b',1,'mim::plug::mem::free']]],
   ['free_5fdefs_69',['free_defs',['../namespacemim_1_1plug_1_1clos.html#a5485374ab8e8586644bc7537515df475',1,'mim::plug::clos']]],
   ['free_5fvars_70',['free_vars',['../classmim_1_1Def.html#aed49f75ef33a07d498daffbcc3d2d838',1,'mim::Def::free_vars() const'],['../classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9',1,'mim::Def::free_vars()']]],
   ['freebb_71',['freeBB',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8cafe63353cdfb591c479c9e6076beccb55',1,'mim::plug::clos']]],
@@ -84,7 +84,7 @@ var searchData=
   ['fun_81',['fun',['../classmim_1_1World.html#a8c26f975e073f144c693904cc99432a9',1,'mim::World::fun(const Def *dom, const Def *codom, Lam::Filter f, const Def *body)'],['../classmim_1_1World.html#a58f6deb4c2f0747490dbdfacce1a01b5',1,'mim::World::fun(Defs dom, const Def *codom, Lam::Filter f, const Def *body)'],['../classmim_1_1World.html#a6ad7073ebe6fe154f2c1700bbaceb929',1,'mim::World::fun(const Def *dom, Defs codom, Lam::Filter f, const Def *body)'],['../classmim_1_1World.html#a7ea64d61855d93ede0d879ca158ecec7',1,'mim::World::fun(Defs dom, Defs codom, Lam::Filter f, const Def *body)']]],
   ['function_20types_82',['Function Types',['../langref.html#autotoc_md52',1,'']]],
   ['functions_83',['Functions',['../langref.html#autotoc_md45',1,'']]],
-  ['functions_84',['Unfolding functions',['../matrix.html#autotoc_md176',1,'']]],
+  ['functions_84',['Unfolding functions',['../matrix.html#autotoc_md172',1,'']]],
   ['functions_20types_85',['Summary: Functions &amp; Types',['../langref.html#autotoc_md48',1,'']]],
   ['further_20casts_86',['Further Casts',['../dev.html#autotoc_md23',1,'']]]
 ];

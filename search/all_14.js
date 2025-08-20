@@ -42,7 +42,7 @@ var searchData=
   ['une_39',['une',['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a92df19e29c9d45d888ed5f68bad1c3b5',1,'mim::plug::math']]],
   ['unflatten_40',['unflatten',['../namespacemim.html#a869f7a593f368b079211689192152385',1,'mim::unflatten(const Def *def, const Def *type)'],['../namespacemim.html#a829c76d14d02cad2fb4f21aff1e0fb6a',1,'mim::unflatten(Defs ops, const Def *type, bool flatten_muts=true)']]],
   ['unfold_5ftype_41',['unfold_type',['../classmim_1_1Def.html#a718d2d516d8014f4ce3011aad8009c96',1,'mim::Def']]],
-  ['unfolding_20functions_42',['Unfolding functions',['../matrix.html#autotoc_md176',1,'']]],
+  ['unfolding_20functions_42',['Unfolding functions',['../matrix.html#autotoc_md172',1,'']]],
   ['union_43',['Union',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caaef12e903e606a4895a16b393bfdec8c',1,'mim::ast::Expr']]],
   ['unionexpr_44',['UnionExpr',['../classmim_1_1ast_1_1UnionExpr.html',1,'mim::ast::UnionExpr'],['../classmim_1_1ast_1_1UnionExpr.html#a0d0e31dffce181c4656acc477dab5814',1,'mim::ast::UnionExpr::UnionExpr()']]],
   ['uniq_45',['Uniq',['../classmim_1_1Uniq.html',1,'mim::Uniq'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa52035083e0f187cb1b19b131b4ecdd5',1,'mim::Uniq']]],

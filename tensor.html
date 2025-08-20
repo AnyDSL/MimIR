@@ -123,43 +123,43 @@ $(function(){initNavTree('tensor.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md252">Dependencies</a>
+    <a href="#autotoc_md248">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md253">Types</a>
+    <a href="#autotoc_md249">Types</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md254">Operations</a>
+    <a href="#autotoc_md250">Operations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md255">%tensor.prod_2d</a>
+        <a href="#autotoc_md251">%tensor.prod_2d</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md256">%tensor.element_wise</a>
+        <a href="#autotoc_md252">%tensor.element_wise</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md257">%tensor.transpose</a>
+        <a href="#autotoc_md253">%tensor.transpose</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md258">%tensor.slice</a>
+        <a href="#autotoc_md254">%tensor.slice</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md259">%tensor.reshape</a>
+        <a href="#autotoc_md255">%tensor.reshape</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md260">%tensor.dot_general</a>
+        <a href="#autotoc_md256">%tensor.dot_general</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md261">%tensor.prod_2d</a>
+        <a href="#autotoc_md257">%tensor.prod_2d</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md262">%tensor.broadcast_in_dim</a>
+        <a href="#autotoc_md258">%tensor.broadcast_in_dim</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md263">%tensor.reduce</a>
+        <a href="#autotoc_md259">%tensor.reduce</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md264">%tensor.map_reduce</a>
+        <a href="#autotoc_md260">%tensor.map_reduce</a>
       </li>
     </ul>
   </li>
@@ -167,13 +167,13 @@ $(function(){initNavTree('tensor.html',''); initResizable(true); });
 </div>
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2tensor"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1tensor.html" title="The tensor Plugin">mim::plug::tensor</a></dd></dl>
-<h1><a class="anchor" id="autotoc_md252"></a>
+<h1><a class="anchor" id="autotoc_md248"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin tuple;</div>
 <div class="line">plugin refly;</div>
 <div class="line">plugin vec;</div>
 </div><!-- fragment --><p>A tensor plugin</p>
-<h1><a class="anchor" id="autotoc_md253"></a>
+<h1><a class="anchor" id="autotoc_md249"></a>
 Types</h1>
 <p>Represents an <a href="https://en.wikipedia.org/wiki/Ring_(mathematics)">algebraic Ring</a>.</p>
 <div class="fragment"><div class="line">let Ring = [</div>
@@ -183,12 +183,12 @@ Types</h1>
 <div class="line">    add: [T, T] → T,</div>
 <div class="line">    mul: [T, T] → T,</div>
 <div class="line">];</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md254"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md250"></a>
 Operations</h1>
-<h2><a class="anchor" id="autotoc_md255"></a>
+<h2><a class="anchor" id="autotoc_md251"></a>
 %tensor.prod_2d</h2>
 <p>let nat_ring = (Nat, 0, 1, core.nat.add, core.nat.mul);</p>
-<h2><a class="anchor" id="autotoc_md256"></a>
+<h2><a class="anchor" id="autotoc_md252"></a>
 %tensor.element_wise</h2>
 <div class="fragment"><div class="line">axm %tensor.map:  {T: *}</div>
 <div class="line">                → {r: Nat, s: «r; Nat»}</div>
@@ -196,25 +196,25 @@ Operations</h1>
 <div class="line">                → [app: «i: ni; Is#i» → T]</div>
 <div class="line">                → [is: «i: ni; «s; Is#i» »]</div>
 <div class="line">                → «s; T»;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md257"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md253"></a>
 %tensor.transpose</h2>
 <div class="fragment"><div class="line">axm %tensor.transpose:  {T: *}</div>
 <div class="line">                      → {r: Nat, s: «r; Nat»}</div>
 <div class="line">                      → [input: «s;T», permutation: «r;Idx r»]</div>
 <div class="line">                      → « &lt;j: r; s#(permutation#j)&gt;; T»;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md258"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md254"></a>
 %tensor.slice</h2>
 <div class="fragment"><div class="line">axm %tensor.slice:  {T: *}</div>
 <div class="line">                  → {r: Nat, s: «r; Nat»}</div>
 <div class="line">                  → [input: «s;T», output_shape: «r; Nat», start_indices: «i :r; Idx (s#i)», steps: «i: r; Nat»]</div>
 <div class="line">                  → «output_shape; T»;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md259"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md255"></a>
 %tensor.reshape</h2>
 <div class="fragment"><div class="line">axm %tensor.reshape:  {T: *}</div>
 <div class="line">                    → {r: Nat, s: «r; Nat»}</div>
 <div class="line">                    → [input: «s;T», output_shape: «r; Nat»]</div>
 <div class="line">                    → «output_shape; T»;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md260"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md256"></a>
 %tensor.dot_general</h2>
 <p><a href="https://github.com/openxla/stablehlo/blob/main/docs/spec.md#dot_general">Generalized dot product</a>:</p><ul>
 <li><code>out_r = nb + (r1 - nc - nb) + (r2 - nc - nb)</code></li>
@@ -232,7 +232,7 @@ Operations</h1>
 <div class="line">                          let s12_res  = %tuple.cat (%vec.diff (s1, bc_1), %vec.diff (s2, bc_2));</div>
 <div class="line">                          let s_out    = %tuple.cat (bs, s12_res);</div>
 <div class="line">                          «s_out; R#T», normalize_dot;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md261"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md257"></a>
 %tensor.prod_2d</h2>
 <div class="fragment"><div class="line">//lam %tensor.prod_2d_lam {R: Ring} {m: Nat, k: Nat, l: Nat} [t1: «m, k; R#T», t2: «k, l; R#T»]</div>
 <div class="line">//         : «m, l; R#T»</div>
@@ -241,13 +241,13 @@ Operations</h1>
 <div class="line">axm %tensor.dot_2d_01: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;</div>
 <div class="line">axm %tensor.dot_2d_10: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;</div>
 <div class="line">axm %tensor.dot_2d_11: {R: Ring} → {m: Nat, k: Nat, l: Nat} → [t1: «m, k; R#T», t2: «k, l; R#T»] → «m, l; R#T»;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md262"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md258"></a>
 %tensor.broadcast_in_dim</h2>
 <div class="fragment"><div class="line">axm %tensor.broadcast_in_dim: {T: *}</div>
 <div class="line">                            → {r_in r_out: Nat, s_in: «r_in; Nat», s_out: «r_out; Nat»}</div>
 <div class="line">                            → [«s_in; T», «r_in; Idx r_in»]</div>
 <div class="line">                            → «s_out; T»;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md263"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md259"></a>
 %tensor.reduce</h2>
 <p><code>ni</code> tensors each of shape <code>s</code> and type <code>Is#i</code> in arg is</p><ul>
 <li>i: ni is a notation for i : (Idx ni)</li>
@@ -257,7 +257,7 @@ Operations</h1>
 <div class="line">                  → [f: «2; «i: ni; Is#i» » → «i: ni; Is#i»]</div>
 <div class="line">                  → [is: «i: ni; «s; Is#i» », init: «i: ni; Is#i», dims: «r; Bool»]</div>
 <div class="line">                  → «i: ni; « &lt;j: r; (s#j, 1)#(dims#j)&gt;; Is#i» »;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md264"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md260"></a>
 %tensor.map_reduce</h2>
 <ul>
 <li><code>nis</code>: number of inputs</li>

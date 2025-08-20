@@ -162,6 +162,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abe4950e5b3e1591ed5a956b5e0cdc0bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62c1d60439f3bcf82da250acd2098112" id="r_a62c1d60439f3bcf82da250acd2098112"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62c1d60439f3bcf82da250acd2098112">rewrite_mut</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a62c1d60439f3bcf82da250acd2098112"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a992bf1ea67cba4a176e1997793e07d08" id="r_a992bf1ea67cba4a176e1997793e07d08"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a992bf1ea67cba4a176e1997793e07d08">rewrite_app</a> (const <a class="el" href="classmim_1_1App.html">App</a> *app)</td></tr>
+<tr class="separator:a992bf1ea67cba4a176e1997793e07d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87effaf45cbf33abe328d5ed2eaf038d" id="r_a87effaf45cbf33abe328d5ed2eaf038d"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87effaf45cbf33abe328d5ed2eaf038d">rewrite_lam</a> (const <a class="el" href="classmim_1_1Lam.html">Lam</a> *old_lam)</td></tr>
+<tr class="separator:a87effaf45cbf33abe328d5ed2eaf038d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af274c0b840aea800e23c5a46202b9361" id="r_af274c0b840aea800e23c5a46202b9361"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af274c0b840aea800e23c5a46202b9361">rewrite_arr</a> (const <a class="el" href="classmim_1_1Arr.html">Arr</a> *arr)</td></tr>
 <tr class="separator:af274c0b840aea800e23c5a46202b9361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aa0a2c62dbf7585bdf74e6f1aae5e30" id="r_a7aa0a2c62dbf7585bdf74e6f1aae5e30"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7aa0a2c62dbf7585bdf74e6f1aae5e30">rewrite_pack</a> (const <a class="el" href="classmim_1_1Pack.html">Pack</a> *pack)</td></tr>
@@ -206,7 +210,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="reference">References <a class="el" href="rewrite_8h_source.html#l00022">push()</a>, and <a class="el" href="rewrite_8h_source.html#l00018">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00059">mim::RWPhase::RWPhase()</a>, <a class="el" href="rewrite_8h_source.html#l00063">mim::VarRewriter::VarRewriter()</a>, and <a class="el" href="rewrite_8h_source.html#l00060">mim::VarRewriter::VarRewriter()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00059">mim::RWPhase::RWPhase()</a>, <a class="el" href="rewrite_8h_source.html#l00068">mim::VarRewriter::VarRewriter()</a>, and <a class="el" href="rewrite_8h_source.html#l00065">mim::VarRewriter::VarRewriter()</a>.</p>
 
 </div>
 </div>
@@ -236,9 +240,9 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00019">19</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00445">mim::Def::isa_mut()</a>, <a class="el" href="rewrite_8h_source.html#l00027">map()</a>, <a class="el" href="rewrite_8h_source.html#l00046">rewrite_arr()</a>, <a class="el" href="rewrite_8cpp_source.html#l00081">rewrite_extract()</a>, <a class="el" href="rewrite_8cpp_source.html#l00093">rewrite_hole()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00040">rewrite_mut()</a>, and <a class="el" href="rewrite_8h_source.html#l00047">rewrite_pack()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00445">mim::Def::isa_mut()</a>, <a class="el" href="rewrite_8h_source.html#l00027">map()</a>, <a class="el" href="rewrite_8h_source.html#l00046">rewrite_app()</a>, <a class="el" href="rewrite_8h_source.html#l00051">rewrite_arr()</a>, <a class="el" href="rewrite_8cpp_source.html#l00083">rewrite_extract()</a>, <a class="el" href="rewrite_8cpp_source.html#l00095">rewrite_hole()</a>, <a class="el" href="rewrite_8cpp_source.html#l00033">rewrite_imm()</a>, <a class="el" href="rewrite_8h_source.html#l00047">rewrite_lam()</a>, <a class="el" href="rewrite_8cpp_source.html#l00042">rewrite_mut()</a>, and <a class="el" href="rewrite_8h_source.html#l00052">rewrite_pack()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00083">mim::VarRewriter::rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00088">mim::VarRewriter::rewrite()</a>.</p>
 
 </div>
 </div>
@@ -270,7 +274,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00031">31</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00083">mim::VarRewriter::rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00088">mim::VarRewriter::rewrite()</a>.</p>
 
 </div>
 </div>
@@ -306,7 +310,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00027">27</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00068">mim::VarRewriter::add()</a>, <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>, <a class="el" href="rewrite_8cpp_source.html#l00081">rewrite_extract()</a>, <a class="el" href="rewrite_8cpp_source.html#l00040">rewrite_mut()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite_seq()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00073">mim::VarRewriter::add()</a>, <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>, <a class="el" href="rewrite_8h_source.html#l00046">rewrite_app()</a>, <a class="el" href="rewrite_8cpp_source.html#l00083">rewrite_extract()</a>, <a class="el" href="rewrite_8h_source.html#l00047">rewrite_lam()</a>, <a class="el" href="rewrite_8cpp_source.html#l00042">rewrite_mut()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00056">rewrite_seq()</a>.</p>
 
 </div>
 </div>
@@ -337,7 +341,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00023">23</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00078">mim::VarRewriter::pop()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite_seq()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00083">mim::VarRewriter::pop()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00056">rewrite_seq()</a>.</p>
 
 </div>
 </div>
@@ -368,7 +372,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00022">22</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00073">mim::VarRewriter::push()</a>, <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite_seq()</a>, and <a class="el" href="rewrite_8h_source.html#l00013">Rewriter()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00078">mim::VarRewriter::push()</a>, <a class="el" href="rewrite_8cpp_source.html#l00056">rewrite_seq()</a>, and <a class="el" href="rewrite_8h_source.html#l00013">Rewriter()</a>.</p>
 
 </div>
 </div>
@@ -401,7 +405,38 @@ Public Member Functions</h2></td></tr>
 
 <p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>, <a class="el" href="rewrite_8h_source.html#l00031">lookup()</a>, <a class="el" href="world_8h_source.html#l00209">mim::World::univ()</a>, and <a class="el" href="rewrite_8h_source.html#l00018">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00081">rewrite_extract()</a>, <a class="el" href="rewrite_8cpp_source.html#l00093">rewrite_hole()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00054">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00040">rewrite_mut()</a>, <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite_seq()</a>, <a class="el" href="phase_8cpp_source.html#l00025">mim::Cleanup::start()</a>, and <a class="el" href="phase_8cpp_source.html#l00011">mim::RWPhase::start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00083">rewrite_extract()</a>, <a class="el" href="rewrite_8cpp_source.html#l00095">rewrite_hole()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00054">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00033">rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00042">rewrite_mut()</a>, <a class="el" href="rewrite_8cpp_source.html#l00056">rewrite_seq()</a>, <a class="el" href="phase_8cpp_source.html#l00025">mim::Cleanup::start()</a>, and <a class="el" href="phase_8cpp_source.html#l00011">mim::RWPhase::start()</a>.</p>
+
+</div>
+</div>
+<a id="a992bf1ea67cba4a176e1997793e07d08" name="a992bf1ea67cba4a176e1997793e07d08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a992bf1ea67cba4a176e1997793e07d08">&#9670;&#160;</a></span>rewrite_app()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Rewriter::rewrite_app </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1App.html">App</a> *</td>          <td class="paramname"><span class="paramname"><em>app</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00046">46</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+
+<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00027">map()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00033">rewrite_imm()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>.</p>
 
 </div>
 </div>
@@ -428,9 +463,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00046">46</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00051">51</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite_seq()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00056">rewrite_seq()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>.</p>
 
@@ -459,7 +494,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00081">81</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00083">83</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00046">mim::Pack::arity()</a>, <a class="el" href="def_8h_source.html#l00465">mim::Def::dbg()</a>, <a class="el" href="tuple_8h_source.html#l00217">mim::Extract::index()</a>, <a class="el" href="def_8cpp_source.html#l00408">mim::Def::is_closed()</a>, <a class="el" href="def_8h_source.html#l00773">mim::Lit::isa()</a>, <a class="el" href="def_8h_source.html#l00439">mim::Def::isa_imm()</a>, <a class="el" href="rewrite_8h_source.html#l00027">map()</a>, <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, <a class="el" href="tuple_8h_source.html#l00216">mim::Extract::tuple()</a>, and <a class="el" href="rewrite_8h_source.html#l00018">world()</a>.</p>
 
@@ -490,9 +525,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00093">93</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00095">95</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="check_8cpp_source.html#l00096">mim::Hole::find()</a>, <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00040">rewrite_mut()</a>.</p>
+<p class="reference">References <a class="el" href="check_8cpp_source.html#l00096">mim::Hole::find()</a>, <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00042">rewrite_mut()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>.</p>
 
@@ -523,11 +558,42 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html#a7adf9454446c8e9e871510a1ca1d0c1d">mim::plug::matrix::LowerMatrixLowLevel</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00031">31</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00033">33</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00274">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">mim::Def::op()</a>, <a class="el" href="def_8h_source.html#l00508">mim::Def::rebuild()</a>, <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, <a class="el" href="def_8h_source.html#l00260">mim::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00018">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>, and <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00054">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>, <a class="el" href="rewrite_8h_source.html#l00046">rewrite_app()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00054">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, and <a class="el" href="rewrite_8h_source.html#l00047">rewrite_lam()</a>.</p>
+
+</div>
+</div>
+<a id="a87effaf45cbf33abe328d5ed2eaf038d" name="a87effaf45cbf33abe328d5ed2eaf038d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87effaf45cbf33abe328d5ed2eaf038d">&#9670;&#160;</a></span>rewrite_lam()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Rewriter::rewrite_lam </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Lam.html">Lam</a> *</td>          <td class="paramname"><span class="paramname"><em>old_lam</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00047">47</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00445">mim::Def::isa_mut()</a>, <a class="el" href="rewrite_8h_source.html#l00027">map()</a>, <a class="el" href="rewrite_8cpp_source.html#l00033">rewrite_imm()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00042">rewrite_mut()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>.</p>
 
 </div>
 </div>
@@ -556,11 +622,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classmim_1_1VarRewriter.html#a4112e9587c65e5149025bef372c1a016">mim::VarRewriter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00040">40</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00042">42</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00292">mim::Def::is_set()</a>, <a class="el" href="rewrite_8h_source.html#l00027">map()</a>, <a class="el" href="def_8h_source.html#l00274">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">mim::Def::op()</a>, <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, <a class="el" href="def_8h_source.html#l00504">mim::Def::stub()</a>, <a class="el" href="def_8h_source.html#l00260">mim::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00018">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>, <a class="el" href="rewrite_8cpp_source.html#l00093">rewrite_hole()</a>, <a class="el" href="rewrite_8h_source.html#l00103">mim::VarRewriter::rewrite_mut()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite_seq()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>, <a class="el" href="rewrite_8cpp_source.html#l00095">rewrite_hole()</a>, <a class="el" href="rewrite_8h_source.html#l00047">rewrite_lam()</a>, <a class="el" href="rewrite_8h_source.html#l00108">mim::VarRewriter::rewrite_mut()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00056">rewrite_seq()</a>.</p>
 
 </div>
 </div>
@@ -587,9 +653,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00047">47</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00052">52</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite_seq()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00056">rewrite_seq()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00019">dispatch()</a>.</p>
 
@@ -618,11 +684,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00054">54</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00056">56</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00539">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00454">mim::Def::as_mut()</a>, <a class="el" href="tuple_8h_source.html#l00091">mim::Seq::body()</a>, <a class="el" href="world_8cpp_source.html#l00071">mim::World::flags()</a>, <a class="el" href="def_8h_source.html#l00398">mim::Def::has_var()</a>, <a class="el" href="def_8h_source.html#l00249">mim::Def::is_intro()</a>, <a class="el" href="def_8cpp_source.html#l00292">mim::Def::is_set()</a>, <a class="el" href="def_8h_source.html#l00773">mim::Lit::isa()</a>, <a class="el" href="rewrite_8h_source.html#l00027">map()</a>, <a class="el" href="rewrite_8h_source.html#l00023">pop()</a>, <a class="el" href="rewrite_8h_source.html#l00022">push()</a>, <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00040">rewrite_mut()</a>, <a class="el" href="flags_8h_source.html#l00013">mim::Flags::scalarize_threshold</a>, <a class="el" href="def_8h_source.html#l00260">mim::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00018">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00539">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00454">mim::Def::as_mut()</a>, <a class="el" href="tuple_8h_source.html#l00091">mim::Seq::body()</a>, <a class="el" href="world_8cpp_source.html#l00071">mim::World::flags()</a>, <a class="el" href="def_8h_source.html#l00398">mim::Def::has_var()</a>, <a class="el" href="def_8h_source.html#l00249">mim::Def::is_intro()</a>, <a class="el" href="def_8cpp_source.html#l00292">mim::Def::is_set()</a>, <a class="el" href="def_8h_source.html#l00773">mim::Lit::isa()</a>, <a class="el" href="rewrite_8h_source.html#l00027">map()</a>, <a class="el" href="rewrite_8h_source.html#l00023">pop()</a>, <a class="el" href="rewrite_8h_source.html#l00022">push()</a>, <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00042">rewrite_mut()</a>, <a class="el" href="flags_8h_source.html#l00013">mim::Flags::scalarize_threshold</a>, <a class="el" href="def_8h_source.html#l00260">mim::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00018">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00046">rewrite_arr()</a>, and <a class="el" href="rewrite_8h_source.html#l00047">rewrite_pack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00051">rewrite_arr()</a>, and <a class="el" href="rewrite_8h_source.html#l00052">rewrite_pack()</a>.</p>
 
 </div>
 </div>
@@ -651,7 +717,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00018">18</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, <a class="el" href="rewrite_8h_source.html#l00083">mim::VarRewriter::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00081">rewrite_extract()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00040">rewrite_mut()</a>, <a class="el" href="rewrite_8h_source.html#l00103">mim::VarRewriter::rewrite_mut()</a>, <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite_seq()</a>, <a class="el" href="rewrite_8h_source.html#l00013">Rewriter()</a>, <a class="el" href="rewrite_8h_source.html#l00063">mim::VarRewriter::VarRewriter()</a>, and <a class="el" href="rewrite_8h_source.html#l00060">mim::VarRewriter::VarRewriter()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00012">rewrite()</a>, <a class="el" href="rewrite_8h_source.html#l00088">mim::VarRewriter::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00083">rewrite_extract()</a>, <a class="el" href="rewrite_8cpp_source.html#l00033">rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00042">rewrite_mut()</a>, <a class="el" href="rewrite_8h_source.html#l00108">mim::VarRewriter::rewrite_mut()</a>, <a class="el" href="rewrite_8cpp_source.html#l00056">rewrite_seq()</a>, <a class="el" href="rewrite_8h_source.html#l00013">Rewriter()</a>, <a class="el" href="rewrite_8h_source.html#l00068">mim::VarRewriter::VarRewriter()</a>, and <a class="el" href="rewrite_8h_source.html#l00065">mim::VarRewriter::VarRewriter()</a>.</p>
 
 </div>
 </div>

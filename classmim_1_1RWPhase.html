@@ -180,6 +180,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abe4950e5b3e1591ed5a956b5e0cdc0bb inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62c1d60439f3bcf82da250acd2098112 inherit pub_methods_classmim_1_1Rewriter" id="r_a62c1d60439f3bcf82da250acd2098112"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112">rewrite_mut</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a62c1d60439f3bcf82da250acd2098112 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a992bf1ea67cba4a176e1997793e07d08 inherit pub_methods_classmim_1_1Rewriter" id="r_a992bf1ea67cba4a176e1997793e07d08"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a992bf1ea67cba4a176e1997793e07d08">rewrite_app</a> (const <a class="el" href="classmim_1_1App.html">App</a> *app)</td></tr>
+<tr class="separator:a992bf1ea67cba4a176e1997793e07d08 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87effaf45cbf33abe328d5ed2eaf038d inherit pub_methods_classmim_1_1Rewriter" id="r_a87effaf45cbf33abe328d5ed2eaf038d"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a87effaf45cbf33abe328d5ed2eaf038d">rewrite_lam</a> (const <a class="el" href="classmim_1_1Lam.html">Lam</a> *old_lam)</td></tr>
+<tr class="separator:a87effaf45cbf33abe328d5ed2eaf038d inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af274c0b840aea800e23c5a46202b9361 inherit pub_methods_classmim_1_1Rewriter" id="r_af274c0b840aea800e23c5a46202b9361"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#af274c0b840aea800e23c5a46202b9361">rewrite_arr</a> (const <a class="el" href="classmim_1_1Arr.html">Arr</a> *arr)</td></tr>
 <tr class="separator:af274c0b840aea800e23c5a46202b9361 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7aa0a2c62dbf7585bdf74e6f1aae5e30 inherit pub_methods_classmim_1_1Rewriter" id="r_a7aa0a2c62dbf7585bdf74e6f1aae5e30"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a7aa0a2c62dbf7585bdf74e6f1aae5e30">rewrite_pack</a> (const <a class="el" href="classmim_1_1Pack.html">Pack</a> *pack)</td></tr>
@@ -203,7 +207,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Visits the current <a class="el" href="classmim_1_1Phase.html#afeae25f4ecab3e3812e9607f630a506f">Phase::world</a> and constructs a new <a class="el" href="#a89180e277c093838bfb69dfbd3a8250e">RWPhase::world</a> along the way. </p>
-<p>It recursively <b>rewrites</b> all <a class="el" href="classmim_1_1World.html#a9f1dafe6dd69d4a63ad6f883c9194872">World::externals()</a>. </p><dl class="section note"><dt>Note</dt><dd>You can override <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">Rewriter::rewrite</a>, <a class="el" href="classmim_1_1Rewriter.html#abe4950e5b3e1591ed5a956b5e0cdc0bb">Rewriter::rewrite_imm</a>, and <a class="el" href="classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112">Rewriter::rewrite_mut</a>. </dd></dl>
+<p>It recursively <b>rewrites</b> all <a class="el" href="classmim_1_1World.html#a9f1dafe6dd69d4a63ad6f883c9194872">World::externals()</a>. </p><dl class="section note"><dt>Note</dt><dd>You can override <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">Rewriter::rewrite</a>, <a class="el" href="classmim_1_1Rewriter.html#abe4950e5b3e1591ed5a956b5e0cdc0bb">Rewriter::rewrite_imm</a>, <a class="el" href="classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112">Rewriter::rewrite_mut</a>, etc. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00057">57</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -238,7 +242,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="phase_8h_source.html#l00028">mim::Phase::name()</a>, <a class="el" href="phase_8h_source.html#l00019">mim::Phase::Phase()</a>, <a class="el" href="rewrite_8h_source.html#l00013">mim::Rewriter::Rewriter()</a>, and <a class="el" href="phase_8h_source.html#l00063">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00080">mim::FPPhase::FPPhase()</a>, and <a class="el" href="lower__matrix__lowlevel_8h_source.html#l00019">mim::plug::matrix::LowerMatrixLowLevel::LowerMatrixLowLevel()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00081">mim::FPPhase::FPPhase()</a>, and <a class="el" href="lower__matrix__lowlevel_8h_source.html#l00019">mim::plug::matrix::LowerMatrixLowLevel::LowerMatrixLowLevel()</a>.</p>
 
 </div>
 </div>
@@ -305,7 +309,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="phase_8h_source.html#l00027">mim::Phase::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00080">mim::FPPhase::FPPhase()</a>, <a class="el" href="lower__matrix__lowlevel_8h_source.html#l00019">mim::plug::matrix::LowerMatrixLowLevel::LowerMatrixLowLevel()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00054">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="phase_8h_source.html#l00059">RWPhase()</a>, and <a class="el" href="phase_8cpp_source.html#l00011">start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00081">mim::FPPhase::FPPhase()</a>, <a class="el" href="lower__matrix__lowlevel_8h_source.html#l00019">mim::plug::matrix::LowerMatrixLowLevel::LowerMatrixLowLevel()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00054">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="phase_8h_source.html#l00059">RWPhase()</a>, and <a class="el" href="phase_8cpp_source.html#l00011">start()</a>.</p>
 
 </div>
 </div>

@@ -8,6 +8,8 @@ var classmim_1_1Lam =
     [ "check", "classmim_1_1Lam.html#aedf6eca8c7a5d6df883e88acfb5f989f", null ],
     [ "codom", "classmim_1_1Lam.html#afe57c9c0e30c3c94239efae40e4dea26", null ],
     [ "dom", "classmim_1_1Lam.html#a59d460811127f9d66d354c86e5c74483", null ],
+    [ "eta_expand", "classmim_1_1Lam.html#aff5a5f6863bb09e99ba63778e8d26e5a", null ],
+    [ "eta_reduce", "classmim_1_1Lam.html#a7f8009af756ca53c9a6e833f0f17b1ba", null ],
     [ "filter", "classmim_1_1Lam.html#a077994a2dbd8255456a1b9dbbdde4521", null ],
     [ "isa_basicblock", "classmim_1_1Lam.html#a846446604fca73562a518ec65fc65cb8", null ],
     [ "isa_cn", "classmim_1_1Lam.html#a08040ceb92d88eaa4a9d68e1484eeb5e", null ],
