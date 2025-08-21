@@ -83,10 +83,10 @@ const Def* Rewriter::rewrite_imm_Pack(const Pack* d) { return rewrite_imm_Seq(d)
 const Def* Rewriter::rewrite_mut_Arr (      Arr*  d) { return rewrite_mut_Seq(d); }
 const Def* Rewriter::rewrite_mut_Pack(      Pack* d) { return rewrite_mut_Seq(d); }
 
-const Def* Rewriter::rewrite_mut_Pi    (Pi*     d) { return rewrite_mut_(d, world().mut_pi   (rewrite(d->type()), d->is_implicit())); }
-const Def* Rewriter::rewrite_mut_Lam   (Lam*    d) { return rewrite_mut_(d, world().mut_lam  (rewrite(d->type())->as<Pi>()));         }
-const Def* Rewriter::rewrite_mut_Sigma (Sigma*  d) { return rewrite_mut_(d, world().mut_sigma(rewrite(d->type()), d->num_ops()));     }
-const Def* Rewriter::rewrite_mut_Global(Global* d) { return rewrite_mut_(d, world().global   (rewrite(d->type()), d->is_mutable()));  }
+const Def* Rewriter::rewrite_mut_Pi    (Pi*     d) { return rewrite_stub(d, world().mut_pi   (rewrite(d->type()), d->is_implicit())); }
+const Def* Rewriter::rewrite_mut_Lam   (Lam*    d) { return rewrite_stub(d, world().mut_lam  (rewrite(d->type())->as<Pi>()));         }
+const Def* Rewriter::rewrite_mut_Sigma (Sigma*  d) { return rewrite_stub(d, world().mut_sigma(rewrite(d->type()), d->num_ops()));     }
+const Def* Rewriter::rewrite_mut_Global(Global* d) { return rewrite_stub(d, world().global   (rewrite(d->type()), d->is_mutable()));  }
 // clang-format on
 
 const Def* Rewriter::rewrite_imm_Axm(const Axm* a) {
@@ -111,7 +111,7 @@ const Def* Rewriter::rewrite_imm_Extract(const Extract* ex) {
 
 const Def* Rewriter::rewrite_mut_Hole(Hole* hole) {
     auto [last, op] = hole->find();
-    return op ? rewrite(op) : rewrite_mut_(last, world().mut_hole(rewrite(last->type())));
+    return op ? rewrite(op) : rewrite_stub(last, world().mut_hole(rewrite(last->type())));
 }
 
 #endif
@@ -144,10 +144,10 @@ const Def* Rewriter::rewrite_mut_Seq(Seq* seq) {
     }
 
     if (!seq->has_var()) return map(seq, world().seq(seq->is_intro(), new_arity, rewrite(seq->body())));
-    return rewrite_mut_(seq->as_mut(), world().mut_seq(seq->is_term(), rewrite(seq->type())));
+    return rewrite_stub(seq->as_mut(), world().mut_seq(seq->is_term(), rewrite(seq->type())));
 }
 
-const Def* Rewriter::rewrite_mut_(Def* old_mut, Def* new_mut) {
+const Def* Rewriter::rewrite_stub(Def* old_mut, Def* new_mut) {
     map(old_mut, new_mut);
 
     if (old_mut->is_set()) {

@@ -42,6 +42,7 @@ public:
     virtual const Def* rewrite(const Def*);
     virtual const Def* rewrite_imm(const Def*);
     virtual const Def* rewrite_mut(Def*);
+    virtual const Def* rewrite_stub(Def*, Def*);
     virtual DefVec rewrite(Defs);
 
 #define CODE_IMM(N) virtual const Def* rewrite_imm_##N(const N*);
@@ -56,8 +57,6 @@ public:
     ///@}
 
 private:
-    const Def* rewrite_mut_(Def*, Def*);
-
     World& world_;
     std::deque<Def2Def> old2news_;
 };
