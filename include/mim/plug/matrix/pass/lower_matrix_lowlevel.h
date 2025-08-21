@@ -19,7 +19,7 @@ public:
     LowerMatrixLowLevel(World& world)
         : RWPhase(world, "lower_matrix_lowlevel") {}
 
-    const Def* rewrite_imm(const Def*) override;
+    const Def* rewrite_app(const App*) override;
 
 private:
     Def2Def rewritten;

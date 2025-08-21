@@ -21,7 +21,8 @@ const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
     world.DLOG("op_lea_tuple arr {} : {}", arr, arr->type());
     auto n       = tuple->num_projs();
     auto element = arr;
-    for (size_t i = 0; i < n; ++i) element = mem::op_lea(element, tuple->proj(n, i));
+    for (size_t i = 0; i < n; ++i)
+        element = mem::op_lea(element, tuple->proj(n, i));
     return element;
 }
 
@@ -51,7 +52,7 @@ const Def* arr_ty_of_matrix_ty(const Def* S, const Def* T) {
 
 } // namespace
 
-const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
+const Def* LowerMatrixLowLevel::rewrite_app(const App* def) {
     assert(!Axm::isa<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
     assert(!Axm::isa<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
     assert(!Axm::isa<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
@@ -139,10 +140,7 @@ const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
         return world().tuple({mem3, ptr_mat});
     }
 
-    // ignore unapplied axms to avoid spurious type replacements
-    if (def->isa<Axm>()) return def;
-
-    return Rewriter::rewrite_imm(def); // continue recursive rewriting with everything else
+    return Rewriter::rewrite_app(def); // continue recursive rewriting with everything else
 }
 
 } // namespace mim::plug::matrix
