@@ -39,27 +39,24 @@ public:
     /// Recursively rewrite old Def%s.
     ///@{
     virtual const Def* rewrite(const Def*);
+    virtual const Def* rewrite_imm(const Def*);
+    virtual const Def* rewrite_mut(Def*);
     virtual DefVec rewrite(Defs);
 
-    virtual const Def* rewrite_mut(Def*);
+#define CODE_IMM(N) virtual const Def* rewrite_imm_##N(const N*);
+#define CODE_MUT(N) virtual const Def* rewrite_mut_##N(N*);
+    MIM_IMM_NODE(CODE_IMM)
+    MIM_MUT_NODE(CODE_MUT)
+#undef CODE_IMM
+#undef CODE_MUT
 
-    // virtual const Def* rewrite_app(const App* app) { return map(app, rewrite_imm(app)); }
-    // virtual const Def* rewrite_lam(const Lam* old_lam) {
-    //     if (auto old_mut = old_lam->isa_mut()) return rewrite_mut(old_mut);
-    //     return map(old_lam, rewrite_imm(old_lam));
-    // }
-    // virtual const Def* rewrite_extract(const Extract*);
-    // virtual const Def* rewrite_hole(Hole*);
-
-#define CODE(N, n, _, mut) virtual const Def* rewrite_##n(std::conditional_t<mut == Mut::Mut, N*, const N*>);
-    MIM_NODE(CODE)
-#undef CODE
-
-    virtual const Def* rewrite_seq(const Seq*);
-
+    virtual const Def* rewrite_imm_Seq(const Seq* seq);
+    virtual const Def* rewrite_mut_Seq(Seq* seq);
     ///@}
 
 private:
+    const Def* rewrite_mut_(Def*);
+
     World& world_;
     std::deque<Def2Def> old2news_;
 };

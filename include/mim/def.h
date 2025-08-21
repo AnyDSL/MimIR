@@ -15,22 +15,44 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define MIM_NODE(m)                                                                                                                                                                                                   \
-    m(Lit,    lit,    Judge::Intro, (Mut::Imm           )) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/                                                                                \
-    m(Axm,    axm,    Judge::Intro, (Mut::Imm           ))                                                                                                                                                           \
-    m(Var,    var,    Judge::Intro, (Mut::Imm           ))                                                                                                                                                           \
-    m(Global, global, Judge::Intro, (Mut::Mut           ))                                                                                                                                                           \
-    m(Proxy,  proxy,  Judge::Intro, (Mut::Imm           ))                                                                                                                                                           \
-    m(Hole,   hole,   Judge::Hole , (Mut::Mut           ))                                                                                                                                                           \
-    m(Type,   type,   Judge::Meta , (Mut::Imm           )) m(Univ,  univ,  Judge::Meta , (Mut::Imm           )) m(UMax,    umax,    Judge::Meta, Mut::Imm) m(UInc,   uinc,   (Judge::Meta               ), Mut::Imm) \
-    m(Pi,     pi,     Judge::Form , (Mut::Imm | Mut::Mut)) m(Lam,   lam,   Judge::Intro, (Mut::Imm | Mut::Mut)) m(App,     app,     Judge::Elim, Mut::Imm)                                                           \
-    m(Sigma,  sigma,  Judge::Form , (Mut::Imm | Mut::Mut)) m(Tuple, tuple, Judge::Intro, (Mut::Imm           )) m(Extract, extract, Judge::Elim, Mut::Imm) m(Insert, insert, (Judge::Intro | Judge::Elim), Mut::Imm) \
-    m(Arr,    arr,    Judge::Form , (Mut::Imm | Mut::Mut)) m(Pack,  pack,  Judge::Intro, (Mut::Imm | Mut::Mut))                                                                                                      \
-    m(Join,   join,   Judge::Form , (Mut::Imm           )) m(Inj,   inj,   Judge::Intro, (Mut::Imm           )) m(Match,   match,   Judge::Elim, Mut::Imm) m(Top,    top,    (Judge::Intro              ), Mut::Imm) \
-    m(Meet,   meet,   Judge::Form , (Mut::Imm           )) m(Merge, merge, Judge::Intro, (Mut::Imm           )) m(Split,   split,   Judge::Elim, Mut::Imm) m(Bot,    bot,    (Judge::Intro              ), Mut::Imm) \
-    m(Uniq,   uniq,   Judge::Form , (Mut::Imm           ))                                                                                                                                                           \
-    m(Nat,    nat,    Judge::Form , (Mut::Imm           ))                                                                                                                                                           \
-    m(Idx,    idx,    Judge::Intro, (Mut::Imm           ))
+#define MIM_NODE(m)                                                                                                \
+    m(Lit,    Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/             \
+    m(Axm,    Judge::Intro)                                                                                        \
+    m(Var,    Judge::Intro)                                                                                        \
+    m(Global, Judge::Intro)                                                                                        \
+    m(Proxy,  Judge::Intro)                                                                                        \
+    m(Hole,   Judge::Hole )                                                                                        \
+    m(Type,   Judge::Meta ) m(Univ,  Judge::Meta ) m(UMax,    Judge::Meta) m(UInc,   (Judge::Meta               )) \
+    m(Pi,     Judge::Form ) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                         \
+    m(Sigma,  Judge::Form ) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, (Judge::Intro | Judge::Elim)) \
+    m(Arr,    Judge::Form ) m(Pack,  Judge::Intro)                                                                 \
+    m(Join,   Judge::Form ) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    (Judge::Intro              )) \
+    m(Meet,   Judge::Form ) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    (Judge::Intro              )) \
+    m(Uniq,   Judge::Form )                                                                                        \
+    m(Nat,    Judge::Form )                                                                                        \
+    m(Idx,    Judge::Intro)
+
+#define MIM_IMM_NODE(m)                                                                                            \
+    m(Lit)                                                                                                         \
+    m(Axm)                                                                                                         \
+    m(Var)                                                                                                         \
+    m(Proxy)                                                                                                       \
+    m(Type)  m(Univ)  m(UMax)    m(UInc)                                                                           \
+    m(Pi)    m(Lam)   m(App)                                                                                       \
+    m(Sigma) m(Tuple) m(Extract) m(Insert)                                                                         \
+    m(Arr)   m(Pack)                                                                                               \
+    m(Join)  m(Inj)   m(Match)   m(Top)                                                                            \
+    m(Meet)  m(Merge) m(Split)   m(Bot)                                                                            \
+    m(Uniq)                                                                                                        \
+    m(Nat)                                                                                                         \
+    m(Idx)
+
+#define MIM_MUT_NODE(m)                                                                                            \
+    m(Global)                                                                                                      \
+    m(Hole)                                                                                                        \
+    m(Pi)    m(Lam)                                                                                                \
+    m(Sigma)                                                                                                       \
+    m(Arr)   m(Pack)
 // clang-format on
 
 namespace mim {
@@ -85,12 +107,12 @@ using fe::operator!=;
 ///@{
 
 enum class Node : node_t {
-#define CODE(node, _, __, ___) node,
+#define CODE(node, _) node,
     MIM_NODE(CODE)
 #undef CODE
 };
 
-#define CODE(node, _, __, ___) +size_t(1)
+#define CODE(node, _) +size_t(1)
 static constexpr size_t Num_Nodes = size_t(0) MIM_NODE(CODE);
 #undef CODE
 

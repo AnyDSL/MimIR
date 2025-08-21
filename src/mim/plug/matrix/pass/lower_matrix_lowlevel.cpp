@@ -52,7 +52,7 @@ const Def* arr_ty_of_matrix_ty(const Def* S, const Def* T) {
 
 } // namespace
 
-const Def* LowerMatrixLowLevel::rewrite_app(const App* def) {
+const Def* LowerMatrixLowLevel::rewrite_imm_App(const App* def) {
     assert(!Axm::isa<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
     assert(!Axm::isa<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
     assert(!Axm::isa<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
@@ -140,7 +140,7 @@ const Def* LowerMatrixLowLevel::rewrite_app(const App* def) {
         return world().tuple({mem3, ptr_mat});
     }
 
-    return Rewriter::rewrite_app(def); // continue recursive rewriting with everything else
+    return Rewriter::rewrite_imm_App(def); // continue recursive rewriting with everything else
 }
 
 } // namespace mim::plug::matrix
