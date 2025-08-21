@@ -81,7 +81,6 @@ const Def* Rewriter::rewrite_imm_Arr (const Arr * d) { return rewrite_imm_Seq(d)
 const Def* Rewriter::rewrite_imm_Pack(const Pack* d) { return rewrite_imm_Seq(d); }
 const Def* Rewriter::rewrite_mut_Arr (      Arr * d) { return rewrite_mut_Seq(d); }
 const Def* Rewriter::rewrite_mut_Pack(      Pack* d) { return rewrite_mut_Seq(d); }
-
 // clang-format on
 
 const Def* Rewriter::rewrite_imm_Axm(const Axm* a) {
@@ -117,30 +116,9 @@ const Def* Rewriter::rewrite_mut_(Def* old_mut) {
 }
 
 const Def* Rewriter::rewrite_imm_Seq(const Seq* seq) {
-    if (!seq->is_set()) {
-        auto new_seq = seq->as_mut<Seq>()->stub(world(), rewrite(seq->type()));
-        return map(seq, new_seq);
-    }
-
     auto new_arity = rewrite(seq->arity());
-
-    if (auto l = Lit::isa(new_arity); l && *l <= world().flags().scalarize_threshold) {
-        auto new_ops = absl::FixedArray<const Def*>(*l);
-        for (size_t i = 0, e = *l; i != e; ++i) {
-            if (auto var = seq->has_var()) {
-                push();
-                map(var, world().lit_idx(e, i));
-                new_ops[i] = rewrite(seq->body());
-                pop();
-            } else {
-                new_ops[i] = rewrite(seq->body());
-            }
-        }
-        return map(seq, world().prod(seq->is_intro(), new_ops));
-    }
-
-    if (!seq->has_var()) return map(seq, world().seq(seq->is_intro(), new_arity, rewrite(seq->body())));
-    return rewrite_mut_(seq->as_mut());
+    if (auto l = Lit::isa(new_arity); l && *l == 0) return world().prod(seq->is_intro(), {});
+    return world().seq(seq->is_intro(), new_arity, rewrite(seq->body()));
 }
 
 const Def* Rewriter::rewrite_mut_Seq(Seq* seq) {
