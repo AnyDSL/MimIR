@@ -40,9 +40,7 @@ public:
     ///@{
     virtual const Def* rewrite(const Def*);
     virtual DefVec rewrite(Defs);
-    const Def* dispatch(const Def*);
 
-    virtual const Def* rewrite_imm(const Def*);
     virtual const Def* rewrite_mut(Def*);
 
     // virtual const Def* rewrite_app(const App* app) { return map(app, rewrite_imm(app)); }
@@ -91,13 +89,7 @@ public:
         Rewriter::pop();
     }
 
-    const Def* rewrite(const Def* old_def) final {
-        if (old_def->isa<Univ>()) return world().univ();
-        if (auto new_def = lookup(old_def)) return new_def;
-        if (descend(old_def)) return Rewriter::dispatch(old_def);
-        // return map(mut, mut);
-        return old_def;
-    }
+    const Def* rewrite(const Def* old_def) final { return descend(old_def) ? Rewriter::rewrite(old_def) : old_def; }
 
     bool descend(const Def* old_def) {
         if (auto imm = old_def->isa_imm()) {

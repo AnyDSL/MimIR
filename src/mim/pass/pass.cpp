@@ -8,7 +8,6 @@
 namespace mim {
 
 Pass::Pass(PassMan& man, std::string_view name)
-
     : man_(man)
     , name_(name)
     , index_(man.passes().size()) {}
