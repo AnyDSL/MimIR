@@ -14,7 +14,7 @@ namespace mim {
 const Def* Rewriter::rewrite(const Def* old_def) {
     if (auto new_def = lookup(old_def)) return new_def;
 
-    auto new_def = old_def->is_mut() ? rewrite_mut((Def*)old_def) : rewrite_imm(old_def);
+    auto new_def = old_def->isa_mut() ? rewrite_mut((Def*)old_def) : rewrite_imm(old_def);
     return new_def->set(old_def->dbg());
 }
 

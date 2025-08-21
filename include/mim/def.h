@@ -466,9 +466,6 @@ public:
     /// @name Casts
     /// @see @ref cast_builtin
     ///@{
-    bool is_mut() const noexcept { return mut_; }
-    bool is_imm() const noexcept { return !mut_; }
-
     // clang-format off
     template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
     template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }

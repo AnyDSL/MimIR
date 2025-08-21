@@ -86,18 +86,15 @@ public:
         Rewriter::pop();
     }
 
-    const Def* rewrite(const Def* old_def) final { return descend(old_def) ? Rewriter::rewrite(old_def) : old_def; }
+    const Def* rewrite(const Def* old_def) final {
+        if (auto new_def = lookup(old_def)) return new_def;
 
-    bool descend(const Def* old_def) {
-        if (auto imm = old_def->isa_imm()) {
-            if (imm->has_dep(Dep::Hole)) return true;
-            if (imm->local_vars().empty() && imm->local_muts().empty()) return false; // safe to skip
-        }
+        if (auto old_mut = old_def->isa_mut())
+            return has_intersection(old_mut) ? rewrite_mut(old_mut)->set(old_mut->dbg()) : old_mut;
 
-        for (const auto& vars : vars_ | std::views::reverse)
-            if (vars.has_intersection(old_def->free_vars())) return true;
+        if (old_def->local_vars().empty() && old_def->local_muts().empty()) return old_def; // safe to skip
 
-        return false;
+        return has_intersection(old_def) ? rewrite_imm(old_def)->set(old_def->dbg()) : old_def;
     }
 
     const Def* rewrite_mut(Def* mut) final {
@@ -110,6 +107,12 @@ public:
     }
 
 private:
+    bool has_intersection(const Def* old_def) {
+        for (const auto& vars : vars_ | std::views::reverse)
+            if (vars.has_intersection(old_def->free_vars())) return true;
+        return false;
+    }
+
     Vector<Vars> vars_;
 };
 
