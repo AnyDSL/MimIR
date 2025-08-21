@@ -34,6 +34,7 @@ public:
             if (auto i = old2new.find(old_def); i != old2new.end()) return i->second;
         return nullptr;
     }
+    ///@}
 
     /// @name rewrite
     /// Recursively rewrite old Def%s.
@@ -55,7 +56,7 @@ public:
     ///@}
 
 private:
-    const Def* rewrite_mut_(Def*);
+    const Def* rewrite_mut_(Def*, Def*);
 
     World& world_;
     std::deque<Def2Def> old2news_;
