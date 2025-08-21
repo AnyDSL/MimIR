@@ -446,7 +446,7 @@ const Def* Def::unfold_type() const {
 
 std::string_view Def::node_name() const {
     switch (node()) {
-#define CODE(name, _) \
+#define CODE(name, _, __, ___) \
     case Node::name: return #name;
         MIM_NODE(CODE)
 #undef CODE
@@ -462,7 +462,7 @@ Defs Def::deps() const noexcept {
 
 u32 Def::judge() const noexcept {
     switch (node()) {
-#define CODE(n, j) \
+#define CODE(n, _, j, __) \
     case Node::n: return u32(j);
         MIM_NODE(CODE)
 #undef CODE

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ranges>
+#include <type_traits>
 
 #include "mim/world.h"
 
@@ -38,21 +39,26 @@ public:
     /// Recursively rewrite old Def%s.
     ///@{
     virtual const Def* rewrite(const Def*);
-    virtual const Def* dispatch(const Def*);
+    virtual DefVec rewrite(Defs);
+    const Def* dispatch(const Def*);
 
     virtual const Def* rewrite_imm(const Def*);
     virtual const Def* rewrite_mut(Def*);
 
-    virtual const Def* rewrite_app(const App* app) { return map(app, rewrite_imm(app)); }
-    virtual const Def* rewrite_lam(const Lam* old_lam) {
-        if (auto old_mut = old_lam->isa_mut()) return rewrite_mut(old_mut);
-        return map(old_lam, rewrite_imm(old_lam));
-    }
-    virtual const Def* rewrite_arr(const Arr* arr) { return rewrite_seq(arr); }
-    virtual const Def* rewrite_pack(const Pack* pack) { return rewrite_seq(pack); }
+    // virtual const Def* rewrite_app(const App* app) { return map(app, rewrite_imm(app)); }
+    // virtual const Def* rewrite_lam(const Lam* old_lam) {
+    //     if (auto old_mut = old_lam->isa_mut()) return rewrite_mut(old_mut);
+    //     return map(old_lam, rewrite_imm(old_lam));
+    // }
+    // virtual const Def* rewrite_extract(const Extract*);
+    // virtual const Def* rewrite_hole(Hole*);
+
+#define CODE(N, n, _, mut) virtual const Def* rewrite_##n(std::conditional_t<mut == Mut::Mut, N*, const N*>);
+    MIM_NODE(CODE)
+#undef CODE
+
     virtual const Def* rewrite_seq(const Seq*);
-    virtual const Def* rewrite_extract(const Extract*);
-    virtual const Def* rewrite_hole(Hole*);
+
     ///@}
 
 private:
