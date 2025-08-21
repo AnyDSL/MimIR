@@ -128,18 +128,16 @@ const Def* Rewriter::rewrite_mut_Seq(Seq* seq) {
     }
 
     auto new_arity = rewrite(seq->arity());
+    auto l         = Lit::isa(new_arity);
+    if (l && *l == 0) return world().prod(seq->is_intro(), {});
 
-    if (auto l = Lit::isa(new_arity); l && *l <= world().flags().scalarize_threshold) {
+    if (auto var = seq->has_var(); var && l && *l <= world().flags().scalarize_threshold) {
         auto new_ops = absl::FixedArray<const Def*>(*l);
         for (size_t i = 0, e = *l; i != e; ++i) {
-            if (auto var = seq->has_var()) {
-                push();
-                map(var, world().lit_idx(e, i));
-                new_ops[i] = rewrite(seq->body());
-                pop();
-            } else {
-                new_ops[i] = rewrite(seq->body());
-            }
+            push();
+            map(var, world().lit_idx(e, i));
+            new_ops[i] = rewrite(seq->body());
+            pop();
         }
         return map(seq, world().prod(seq->is_intro(), new_ops));
     }
