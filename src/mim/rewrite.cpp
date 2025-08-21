@@ -117,7 +117,7 @@ const Def* Rewriter::rewrite_mut_(Def* old_mut) {
 
 const Def* Rewriter::rewrite_imm_Seq(const Seq* seq) {
     auto new_arity = rewrite(seq->arity());
-    if (auto l = Lit::isa(new_arity); l && *l == 0) return world().prod(seq->is_intro(), {});
+    if (auto l = Lit::isa(new_arity); l && *l == 0) return world().prod(seq->is_intro());
     return world().seq(seq->is_intro(), new_arity, rewrite(seq->body()));
 }
 
@@ -129,7 +129,7 @@ const Def* Rewriter::rewrite_mut_Seq(Seq* seq) {
 
     auto new_arity = rewrite(seq->arity());
     auto l         = Lit::isa(new_arity);
-    if (l && *l == 0) return world().prod(seq->is_intro(), {});
+    if (l && *l == 0) return world().prod(seq->is_intro());
 
     if (auto var = seq->has_var(); var && l && *l <= world().flags().scalarize_threshold) {
         auto new_ops = absl::FixedArray<const Def*>(*l);

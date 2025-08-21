@@ -367,6 +367,7 @@ public:
     const Def* pack_unsafe(           const Def* body) { return seq_unsafe(true , body); }
 
     const Def* prod(bool term, Defs ops) { return term ? tuple(ops) : sigma(ops); }
+    const Def* prod(bool term) { return term ? (const Def*)tuple() : (const Def*)sigma(); }
     // clang-format on
     ///@}
 
