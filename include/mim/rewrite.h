@@ -1,8 +1,5 @@
 #pragma once
 
-#include <ranges>
-#include <type_traits>
-
 #include "mim/world.h"
 
 namespace mim {
