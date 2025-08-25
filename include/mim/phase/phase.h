@@ -27,6 +27,7 @@ public:
     World& world() { return world_; }
     std::string_view name() const { return name_; }
     bool is_dirty() const { return dirty_; }
+    bool todo() const { return todo_; }
     ///@}
 
     /// @name run
@@ -49,6 +50,9 @@ private:
     World& world_;
     std::string name_;
     bool dirty_;
+
+protected:
+    bool todo_ = false; ///< Set to `true` if you want to run all Phase%es in your Pipeline within a fixed-point.
 };
 
 /// Visits the current Phase::world and constructs a new RWPhase::world along the way.

@@ -32,6 +32,9 @@ target_sources(libmim
         pass/ret_wrap.cpp
         pass/scalarize.cpp
         pass/tail_rec_elim.cpp
+        phase/beta_red_phase.cpp
+        phase/eta_red_phase.cpp
+        phase/eta_exp_phase.cpp
         phase/phase.cpp
         util/bitset.cpp
         util/dbg.cpp
