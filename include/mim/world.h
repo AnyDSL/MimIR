@@ -316,11 +316,11 @@ public:
     ///@{
     const Reform* rule_type(const Def* meta_type) { return unify<Reform>(Reform::infer(meta_type), meta_type); }
     Rule* mut_rule(const Reform* type) { return insert<Rule>(type); }
-    const Rule* rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* condition) {
-        return mut_rule(type)->set(lhs, rhs, condition);
+    const Rule* rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* guard) {
+        return mut_rule(type)->set(lhs, rhs, guard);
     }
-    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs, const Def* condition) {
-        return rule(rule_type(meta_type), lhs, rhs, condition);
+    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs, const Def* guard) {
+        return rule(rule_type(meta_type), lhs, rhs, guard);
     }
     ///@}
 
