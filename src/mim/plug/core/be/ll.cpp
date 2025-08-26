@@ -840,8 +840,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return {};
     } else if (auto mslot = Axm::isa<mem::mslot>(def)) {
         auto [Ta, msi]             = mslot->uncurry<2>();
-        auto [mem, _, __]          = Ta->projs<3>();
-        auto [pointee, addr_space] = msi->projs<2>();
+        auto [pointee, addr_space] = Ta->projs<2>();
+        auto [mem, _, __]          = msi->projs<3>();
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto v_size = emit(mslot->arg(1));

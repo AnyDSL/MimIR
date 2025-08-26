@@ -252,14 +252,36 @@ public:
     ///@}
 
     /// @name Uncurry
+    /// Retrieve all App::arg%s of a curried App.
+    /// Use like this:
+    /// ```
+    /// // 1. Variant:
+    /// auto [abc, de] = app->uncurry<2>();
+    /// auto [a, b, c] = abc->projs<3>();
+    /// auto [d, e]    = de->projs<2>();
+    ///
+    /// // 2. Variant:
+    /// auto [callee , args] = App::uncurry(def);
+    ///
+    /// ```
+    /// @returns
+    /// 1. Variant: <br>
+    ///    *only* the arguments in a `std::array<const Def*, N>`.
+    ///    You will *not* retrieve the initial callee because if you know the number of curried App%s,
+    ///    you probably also know the callee anyway.
+    /// 2. Variant: <br>
+    ///    A pair that contains:
+    ///     1. The initial callee.
+    ///     2. A DefVec of all curried App::arg%s.
     ///@{
-    /// Helper function to cope with the fact that normalizers take all arguments and not only its axm arguments.
-    template<size_t N>
-    using Args = std::conditional_t<N == std::dynamic_extent, std::pair<const Def*, DefVec>, std::array<const Def*, N>>;
+    constexpr static auto D = std::dynamic_extent;
 
-    template<size_t N = std::dynamic_extent, bool Callee = true>
-    static Args<N> uncurry(const Def* callee) {
-        if constexpr (N == std::dynamic_extent) {
+    template<size_t N>
+    using Uncurry = std::conditional_t<N == D, std::pair<const Def*, DefVec>, std::array<const Def*, N>>;
+
+    template<size_t N = D, bool Callee = true>
+    static Uncurry<N> uncurry(const Def* callee) {
+        if constexpr (N == D) {
             auto args = DefVec();
             while (auto app = callee->isa<App>()) {
                 args.emplace_back(app->arg());
@@ -280,9 +302,9 @@ public:
         }
     }
 
-    template<size_t N = std::dynamic_extent>
-    Args<N> uncurry() const {
-        return App::uncurry(this);
+    template<size_t N = D>
+    auto uncurry() const {
+        return App::uncurry<N>(this);
     }
     ///@}
 
