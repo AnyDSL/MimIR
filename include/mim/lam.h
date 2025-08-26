@@ -1,5 +1,7 @@
 #pragma once
 
+#include <span>
+#include <type_traits>
 #include <variant>
 
 #include "mim/def.h"
@@ -252,7 +254,36 @@ public:
     /// @name Uncurry
     ///@{
     /// Helper function to cope with the fact that normalizers take all arguments and not only its axm arguments.
-    static std::pair<const Def*, DefVec> uncurry(const Def* def);
+    template<size_t N>
+    using Args = std::conditional_t<N == std::dynamic_extent, std::pair<const Def*, DefVec>, std::array<const Def*, N>>;
+
+    template<size_t N = std::dynamic_extent, bool Callee = true>
+    static Args<N> uncurry(const Def* callee) {
+        if constexpr (N == std::dynamic_extent) {
+            auto args = DefVec();
+            while (auto app = callee->isa<App>()) {
+                args.emplace_back(app->arg());
+                callee = app->callee();
+            }
+
+            std::ranges::reverse(args);
+            return {callee, args};
+        } else {
+            auto args = std::array<const Def*, N>();
+            for (size_t i = N; i-- != 0;) {
+                auto app = callee->as<App>();
+                args[i]  = app->arg();
+                callee   = app->callee();
+            }
+
+            return args;
+        }
+    }
+
+    template<size_t N = std::dynamic_extent>
+    Args<N> uncurry() const {
+        return App::uncurry(this);
+    }
     ///@}
 
     static constexpr auto Node      = mim::Node::App;
@@ -278,9 +309,6 @@ inline std::pair<const App*, Lam*> isa_apped_mut_lam(const Def* def) {
     if (auto app = def->isa<App>()) return {app, app->callee()->isa_mut<Lam>()};
     return {nullptr, nullptr};
 }
-
-/// Yields curried App%s in a flat `std::deque<const App*>`.
-std::deque<const App*> decurry(const Def*);
 
 /// The high level view is:
 /// ```

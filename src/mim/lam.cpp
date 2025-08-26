@@ -53,15 +53,6 @@ const Def* Lam::eta_expand(Filter filter, const Def* f) {
  * Helpers
  */
 
-std::deque<const App*> decurry(const Def* def) {
-    std::deque<const App*> apps;
-    while (auto app = def->isa<App>()) {
-        apps.emplace_front(app);
-        def = app->callee();
-    }
-    return apps;
-}
-
 const Def* compose_cn(const Def* f, const Def* g) {
     auto& world = f->world();
     world.DLOG("compose f (B->C): {} : {}", f, f->type());
@@ -93,19 +84,6 @@ const Def* compose_cn(const Def* f, const Def* g) {
     hcont->app(true, f, {hcont_var, h->var(1) /* ret_var */});
 
     return h;
-}
-
-std::pair<const Def*, DefVec> App::uncurry(const Def* callee) {
-    auto args = DefVec();
-
-    while (auto app = callee->isa<App>()) {
-        args.emplace_back(app->arg());
-        callee = app->callee();
-    }
-
-    std::ranges::reverse(args);
-
-    return {callee, args};
 }
 
 } // namespace mim
