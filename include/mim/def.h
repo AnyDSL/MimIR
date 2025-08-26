@@ -153,7 +153,7 @@ namespace mim {
     }                                                                                             \
     auto NAME##s(nat_t a) CONST noexcept { return ((const Def*)NAME())->projs(a); }
 
-/// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
+/// CRTP-based mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
 template<class P, class D = Def>
 class // D is only needed to make the resolution `D::template set` lazy
 #ifdef _MSC_VER
