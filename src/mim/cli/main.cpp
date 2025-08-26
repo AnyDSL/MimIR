@@ -68,7 +68,6 @@ int main(int argc, char** argv) {
             | lyra::opt(flags.dump_recursive               )      ["--dump-recursive"       ]("Dumps Mim program with a simple recursive algorithm that is not readable again from Mim but is less fragile and also works for broken Mim programs.")
             | lyra::opt(flags.aggressive_lam_spec          )      ["--aggr-lam-spec"        ]("Overrides LamSpec behavior to follow recursive calls.")
             | lyra::opt(flags.scalarize_threshold, "threshold")   ["--scalarize-threshold"  ]("MimIR will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.")
-            | lyra::opt(flags.normalization_rules) ["--normalization-rules"] ("Apply normalization rules during normalization.")
 #ifdef MIM_ENABLE_CHECKS
             | lyra::opt(breakpoints,    "gid"              )["-b"]["--break"                ]("*Triggers breakpoint when creating a node whose global id is <gid>.")
             | lyra::opt(watchpoints,    "gid"              )["-w"]["--watch"                ]("*Triggers breakpoint when setting a node whose global id is <gid>.")
@@ -98,7 +97,8 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         }
 
-        for (auto&& path : search_paths) driver.add_search_path(path);
+        for (auto&& path : search_paths)
+            driver.add_search_path(path);
 
         if (list_search_paths) {
             for (auto&& path : driver.search_paths() | std::views::drop(1)) // skip first empty path
@@ -108,8 +108,10 @@ int main(int argc, char** argv) {
 
         World& world = driver.world();
 #ifdef MIM_ENABLE_CHECKS
-        for (auto b : breakpoints) world.breakpoint(b);
-        for (auto w : watchpoints) world.watchpoint(w);
+        for (auto b : breakpoints)
+            world.breakpoint(b);
+        for (auto w : watchpoints)
+            world.watchpoint(w);
 #endif
         driver.log().set(&std::cerr).set((Log::Level)verbose);
 

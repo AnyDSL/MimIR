@@ -236,15 +236,8 @@ const Def* World::app(const Def* callee, const Def* arg) {
                 curry = curry == 0 ? trip : curry;
                 curry = curry == Axm::Trip_End ? curry : curry - 1;
 
-                if (Normalize && curry == 0) {
-                    auto app_ = raw_app(axm, curry, trip, type, callee, arg);
-                    if (this->flags().normalization_rules) {
-                        auto result = apply_rules(axm, app_);
-
-                        if (result != app_) return result;
-                    }
-                    if (auto normalizer = axm->normalizer(); normalizer && !Rule::is_in_rule(app_))
-                        if (auto norm = normalizer(type, callee, arg)) return norm;
+                if (auto normalizer = axm->normalizer(); Normalize && normalizer && curry == 0) {
+                    if (auto norm = normalizer(type, callee, arg)) return norm;
                 }
             }
 
@@ -674,25 +667,6 @@ Defs World::reduce(const Var* var, const Def* arg) {
         reduct->defs_[i] = rw.rewrite(mut->op(i + offset));
     assert_emplace(move_.substs, std::pair{var, arg}, reduct);
     return reduct->defs();
-}
-
-const Def* World::apply_rules(const Axm* axm, const Def* expr) {
-    auto c = rules_of_axm_.equal_range(axm);
-    if (c.first == rules_of_axm_.end()) return expr;
-    for (auto rule = c.first; rule != c.second; rule++) {
-        auto r = rule->second;
-        Def2Def v2v;
-        if (r->its_a_match(expr, v2v)) return r->replace(expr, v2v);
-    }
-    return expr;
-}
-
-void World::register_rule(const Rule* rule) {
-    // find upper axm; add the rule to its datastructure
-    // we still keep a global dict in case it fails
-    known_rules_.insert(rule);
-    auto [axm, curry, _] = Axm::get(rule->lhs());
-    if (axm) rules_of_axm_.emplace(axm, rule);
 }
 
 /*

@@ -232,6 +232,26 @@ const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
                 case nat::mul: return world.lit_nat(*la * *lb);
             }
         }
+
+        if (*la == 0) {
+            switch (id) {
+                case nat::add: return b;
+                case nat::sub: return a; // 0 - b = 0
+                case nat::mul: return a; // 0 * b = 0
+            }
+        }
+
+        if (*la == 1 && id == nat::mul) return b; // 1 * b = b
+    }
+
+    if (lb && *lb == 0 && id == nat::sub) return a; // a - 0 = a
+
+    if (a == b) {
+        switch (id) {
+            case nat::add: return world.call(nat::mul, Defs{world.lit_nat(2), a}); // a + a = 2 * a
+            case nat::sub: return world.lit_nat(0);                                // a - a = 0
+            case nat::mul: break;
+        }
     }
 
     return world.raw_app(type, callee, {a, b});
@@ -430,8 +450,28 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
+    auto s      = Idx::isa(arg->type());
+    auto ls     = Lit::isa(s);
 
     if (auto result = fold<shr, id>(world, type, a, b)) return result;
+
+    if (auto la = Lit::isa(a); la && *la == 0) {
+        switch (id) {
+            case shr::a: return a;
+            case shr::l: return a;
+        }
+    }
+
+    if (auto lb = Lit::isa(b)) {
+        if (ls && *lb > *ls) return world.bot(type);
+
+        if (*lb == 0) {
+            switch (id) {
+                case shr::a: return a;
+                case shr::l: return a;
+            }
+        }
+    }
 
     return world.raw_app(type, callee, {a, b});
 }
@@ -447,11 +487,50 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg) {
 
     if (auto result = fold<wrap, id>(world, type, a, b)) return result;
 
-    if (auto lb = Lit::isa(b)) {
-        if (auto lm = Lit::isa(mode); lm && ls && *lm == 0 && id == wrap::sub)
-            return world.call(wrap::add, mode,
-                              Defs{a, world.lit_idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
+    // clang-format off
+    if (auto la = Lit::isa(a)) {
+        if (*la == 0) {
+            switch (id) {
+                case wrap::add: return b;    // 0  + b -> b
+                case wrap::sub: break;
+                case wrap::mul: return a;    // 0  * b -> 0
+                case wrap::shl: return a;    // 0 << b -> 0
+            }
+        } else if (*la == 1) {
+            switch (id) {
+                case wrap::add: break;
+                case wrap::sub: break;
+                case wrap::mul: return b;    // 1  * b -> b
+                case wrap::shl: break;
+            }
+        }
     }
+
+    if (auto lb = Lit::isa(b)) {
+        if (*lb == 0) {
+            switch (id) {
+                case wrap::sub: return a;    // a  - 0 -> a
+                case wrap::shl: return a;    // a >> 0 -> a
+                default: fe::unreachable();
+                // add, mul are commutative, the literal has been normalized to the left
+            }
+        }
+
+        if (auto lm = Lit::isa(mode); lm && ls && *lm == 0 && id == wrap::sub)
+            return world.call(wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
+        else if (id == wrap::shl && ls && *lb > *ls)
+            return world.bot(type);
+    }
+
+    if (a == b) {
+        switch (id) {
+            case wrap::add: return world.call(wrap::mul, mode, Defs{world.lit(type, 2), a}); // a + a -> 2 * a
+            case wrap::sub: return world.lit(type, 0);                                       // a - a -> 0
+            case wrap::mul: break;
+            case wrap::shl: break;
+        }
+    }
+    // clang-format on
 
     if (auto res = reassociate<wrap>(id, world, callee, a, b)) return res;
 
@@ -467,6 +546,32 @@ const Def* normalize_div(const Def* full_type, const Def*, const Def* arg) {
     auto make_res  = [&, mem = mem](const Def* res) { return world.tuple({mem, res}); };
 
     if (auto result = fold<div, id>(world, type, a, b)) return make_res(result);
+
+    if (auto la = Lit::isa(a)) {
+        if (*la == 0) return make_res(a); // 0 / b -> 0 and 0 % b -> 0
+    }
+
+    if (auto lb = Lit::isa(b)) {
+        if (*lb == 0) return make_res(world.bot(type)); // a / 0 -> ⊥ and a % 0 -> ⊥
+
+        if (*lb == 1) {
+            switch (id) {
+                case div::sdiv: return make_res(a);                  // a / 1 -> a
+                case div::udiv: return make_res(a);                  // a / 1 -> a
+                case div::srem: return make_res(world.lit(type, 0)); // a % 1 -> 0
+                case div::urem: return make_res(world.lit(type, 0)); // a % 1 -> 0
+            }
+        }
+    }
+
+    if (a == b) {
+        switch (id) {
+            case div::sdiv: return make_res(world.lit(type, 1)); // a / a -> 1
+            case div::udiv: return make_res(world.lit(type, 1)); // a / a -> 1
+            case div::srem: return make_res(world.lit(type, 0)); // a % a -> 0
+            case div::urem: return make_res(world.lit(type, 0)); // a % a -> 0
+        }
+    }
 
     return {};
 }

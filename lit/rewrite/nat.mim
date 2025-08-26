@@ -1,8 +1,0 @@
-// RUN: %mim %s
-plugin refly;
-plugin core;
-
-rule zero_neutral (x:Nat) : %core.nat.add (0,x) => x;
-fun extern id2(a b:Nat) :Nat = return b;
-fun extern test2(a b:Nat) :Nat = return (%core.nat.add(0,b));
-let _ = %refly.equiv.struc_eq (id2, test2);

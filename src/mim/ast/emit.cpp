@@ -530,11 +530,11 @@ void RuleDecl::emit(Emitter& e) const {
     auto meta_t = e.world().rule_type(var()->emit_type(e));
     auto rule_  = e.world().mut_rule(meta_t);
     var()->emit_value(e, rule_->var());
-    auto l   = lhs()->emit(e);
-    auto r   = rhs()->emit(e);
-    auto c   = condition()->emit(e);
-    auto res = rule_->set(l, r, c);
-    if (is_normalizer()) e.world().register_rule(res);
+    auto l = lhs()->emit(e);
+    auto r = rhs()->emit(e);
+    auto c = condition()->emit(e);
+    rule_->set(l, r, c);
+    // TODO register rule somewhere
 }
 
 } // namespace mim::ast

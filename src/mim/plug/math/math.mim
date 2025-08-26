@@ -248,24 +248,3 @@ lam %math.sgn {pe : <<2; Nat>>} (m : Nat) (x : %math.F pe): %math.F pe =
 /// [Reciprocal](https://en.wikipedia.org/wiki/Multiplicative_inverse) of the [square root](https://en.wikipedia.org/wiki/Square_root) (\f$rrt(x) = \frac{1}{\sqrt{x}}\f$)
 lam %math.rrt {pe : <<2; Nat>>} (m : Nat) (x : %math.F pe): %math.F pe =
     %math.arith.div m (%math.conv.f2f pe 1.0:(%math.F64), %math.rt.sq m x);
-
-
-/// ## Normalizers
-
-norm zero_plus (mode: Nat, type: «2; Nat», b: %math.F type) : %math.arith.add(mode) (0: (%math.F type), b) => b;
-norm zero_mul (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (0: (%math.F type), b) => 0:(%math.F type);
-norm zero_plus2 (mode: Nat, type: «2; Nat», b: %math.F type) : %math.arith.add(mode) (b, 0: (%math.F type)) => b;
-norm zero_mul2 (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (b, 0: (%math.F type)) => 0:(%math.F type);
-norm zero_div (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.div(mode) (0: (%math.F type), b) => 0:(%math.F type);
-norm zero_rem (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.rem(mode) (0: (%math.F type), b) => 0:(%math.F type);
-
-norm one_mul (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (1.0: (%math.F type), b) => b;
-norm one_mul2 (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.mul(mode) (b, 1.0: (%math.F type)) => b;
-
-norm zero_sub (mode: Nat, type: «2; Nat», b: %math.F type): %math.arith.sub(mode) (b, 0: (%math.F type)) => 0:(%math.F type);
-
-norm equal_add (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.add(mode) (a, a) => %math.arith.mul(mode) (2.0: (%math.F type), a);
-norm equal_sub (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.sub(mode) (a, a) => 0:(%math.F type);
-norm equal_div (mode: Nat, type: «2; Nat», a: %math.F type): %math.arith.div(mode) (a, a) => 1.0:(%math.F type);
-
-// <- wrong, should restrict to fast mode; defined in math.h as 127 :(

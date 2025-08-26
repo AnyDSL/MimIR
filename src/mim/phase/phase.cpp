@@ -9,8 +9,10 @@ void Phase::run() {
 }
 
 void RWPhase::start() {
-    for (auto def : world().annexes()) rewrite(def);
-    for (auto mut : world().copy_externals()) mut->transfer_external(rewrite(mut)->as_mut());
+    for (auto def : world().annexes())
+        rewrite(def);
+    for (auto mut : world().copy_externals())
+        mut->transfer_external(rewrite(mut)->as_mut());
 }
 
 void FPPhase::start() {
@@ -26,22 +28,19 @@ void Cleanup::start() {
     auto new_world = world().inherit();
     Rewriter rewriter(new_world);
 
-    for (const auto& [f, def] : world().flags2annex()) new_world.register_annex(f, rewriter.rewrite(def));
+    for (const auto& [f, def] : world().flags2annex())
+        new_world.register_annex(f, rewriter.rewrite(def));
     for (auto mut : world().externals()) {
         auto new_mut = rewriter.rewrite(mut)->as_mut();
         new_mut->make_external();
-    }
-
-    for (auto r : world().all_rules()) {
-        auto nr = rewriter.rewrite(r)->as<Rule>();
-        new_world.register_rule(nr);
     }
 
     swap(world(), new_world);
 }
 
 void Pipeline::start() {
-    for (auto& phase : phases()) phase->run();
+    for (auto& phase : phases())
+        phase->run();
 }
 
 } // namespace mim

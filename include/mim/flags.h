@@ -13,10 +13,8 @@ struct Flags {
     uint64_t scalarize_threshold = 32;
     bool ascii                   = false;
     bool dump_recursive          = false;
-    bool disable_type_checking   = false; // TODO implement this flag
     bool bootstrap               = false;
     bool aggressive_lam_spec     = false; // HACK makes LamSpec more agressive but potentially non-terminating
-    bool normalization_rules     = false;
 #ifdef MIM_ENABLE_CHECKS
     bool reeval_breakpoints = false;
     bool trace_gids         = false;
