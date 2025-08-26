@@ -12,7 +12,8 @@
 
 namespace mim {
 
-template<class T> bool same(const Def* exp1, const Def* exp2) {
+template<class T>
+bool same(const Def* exp1, const Def* exp2) {
     return !(exp1->isa<T>() == nullptr || exp2->isa<T>() == nullptr);
 }
 
@@ -32,7 +33,8 @@ std::tuple<const Var*, const Def*> tuple_of_dict(World& world, Def2Def& v2v) {
     }
 
     std::vector<const Def*> fin(tuple_size, nullptr);
-    for (auto val_pos : tuple_of_args) fin[val_pos.second] = val_pos.first;
+    for (auto val_pos : tuple_of_args)
+        fin[val_pos.second] = val_pos.first;
     if (var_of_rule) {
         for (size_t i = 0; i < tuple_size; i++)
             if (fin[i] == nullptr) fin[i] = world.mut_hole(world.mut_hole_type());
