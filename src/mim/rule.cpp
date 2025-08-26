@@ -12,7 +12,8 @@
 
 namespace mim {
 
-template<class T> bool same(const Def* exp1, const Def* exp2) {
+template<class T>
+bool same(const Def* exp1, const Def* exp2) {
     return !(exp1->isa<T>() == nullptr || exp2->isa<T>() == nullptr);
 }
 
@@ -32,24 +33,14 @@ std::tuple<const Var*, const Def*> tuple_of_dict(World& world, Def2Def& v2v) {
     }
 
     std::vector<const Def*> fin(tuple_size, nullptr);
-    for (auto val_pos : tuple_of_args) fin[val_pos.second] = val_pos.first;
+    for (auto val_pos : tuple_of_args)
+        fin[val_pos.second] = val_pos.first;
     if (var_of_rule) {
         for (size_t i = 0; i < tuple_size; i++)
             if (fin[i] == nullptr) fin[i] = world.mut_hole(world.mut_hole_type());
         return {var_of_rule, world.tuple(fin)};
     }
     return {nullptr, nullptr};
-}
-
-bool are_same_node(const Def* expr1, const Def* expr2) {
-    return same<Lam>(expr1, expr2) || same<Lit>(expr1, expr2) || same<Axm>(expr1, expr2) || same<Var>(expr1, expr2)
-        || same<Global>(expr1, expr2) || same<Proxy>(expr1, expr2) || same<Hole>(expr1, expr2)
-        || same<Type>(expr1, expr2) || same<Univ>(expr1, expr2) || same<UInc>(expr1, expr2) || same<Pi>(expr1, expr2)
-        || same<Lam>(expr1, expr2) || same<App>(expr1, expr2) || same<Sigma>(expr1, expr2) || same<Tuple>(expr1, expr2)
-        || same<Extract>(expr1, expr2) || same<Insert>(expr1, expr2) || same<Arr>(expr1, expr2)
-        || same<Pack>(expr1, expr2) || same<Join>(expr1, expr2) || same<Inj>(expr1, expr2) || same<Match>(expr1, expr2)
-        || same<Top>(expr1, expr2) || same<Meet>(expr1, expr2) || same<Merge>(expr1, expr2) || same<Split>(expr1, expr2)
-        || same<Bot>(expr1, expr2) || same<Uniq>(expr1, expr2) || same<Nat>(expr1, expr2) || same<Idx>(expr1, expr2);
 }
 
 bool Rule::is_in_rule(const Def* expr) {
@@ -97,7 +88,7 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, Def2Def& already_seen)
         }
     }
 
-    if (are_same_node(exp1, exp2)) {
+    if (exp1->node() == exp2->node()) {
         // gotta assume that we have the same kind of node now
 
         if (exp1->type() != nullptr && exp2->type() != nullptr)

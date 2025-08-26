@@ -183,6 +183,14 @@ public:
     constexpr size_t reduction_offset() const noexcept final { return 0; }
     ///@}
 
+    /// @name Eta-Conversion
+    ///@{
+    static const Def* eta_expand(Filter, const Def* f);
+    /// Yields body(), if eta-convertible and `nullptr` otherwise.
+    /// η-convertible means: `lm x = body x` where `x` ∉ `body`.
+    const Def* eta_reduce() const;
+    ///@}
+
     /// @name Type Checking
     ///@{
     const Def* check(size_t, const Def*) final;

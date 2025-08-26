@@ -33,6 +33,21 @@ Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, con
     return app(filter, world().select(cond, t, f), mem ? mem : world().tuple());
 }
 
+const Def* Lam::eta_reduce() const {
+    if (auto var = has_var()) {
+        if (auto app = body()->isa<App>())
+            if (app->arg() == var && !app->callee()->free_vars().contains(var)) return app->callee();
+    }
+    return nullptr;
+}
+
+const Def* Lam::eta_expand(Filter filter, const Def* f) {
+    auto& w  = f->world();
+    auto eta = w.mut_lam(f->type()->as<Pi>());
+    eta->debug_suffix("eta_"s + f->sym().str());
+    return eta->app(filter, f, eta->var());
+}
+
 /*
  * Helpers
  */

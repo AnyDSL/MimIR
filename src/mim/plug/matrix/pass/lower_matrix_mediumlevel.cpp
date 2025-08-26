@@ -23,12 +23,13 @@ const Def* LowerMatrixMediumLevel::rewrite(const Def* def) {
     return rewritten[def];
 }
 
-std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def* exit, const char* name = "for_body") {
+std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def* exit, Sym name) {
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
     auto body
         = world.mut_con({/* iter */ world.type_i32(), /* acc */ acc_ty, /* return */ world.cn(acc_ty)})->set(name);
-    auto for_loop = world.call<affine::For>(Defs{world.lit_i32(0), bound, world.lit_i32(1), world.tuple(acc), body, exit});
+    auto for_loop
+        = world.call<affine::For>(Defs{world.lit_i32(0), bound, world.lit_i32(1), world.tuple(acc), body, exit});
     return {body, for_loop};
 }
 
