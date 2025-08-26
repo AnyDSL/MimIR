@@ -2,20 +2,12 @@
 
 #include <utility>
 
-#include "mim/check.h"
 #include "mim/def.h"
-#include "mim/lam.h"
-#include "mim/lattice.h"
 #include "mim/rewrite.h"
 #include "mim/tuple.h"
 #include "mim/world.h"
 
 namespace mim {
-
-template<class T>
-bool same(const Def* exp1, const Def* exp2) {
-    return !(exp1->isa<T>() == nullptr || exp2->isa<T>() == nullptr);
-}
 
 std::tuple<const Var*, const Def*> tuple_of_dict(World& world, Def2Def& v2v) {
     if (v2v.empty()) return {nullptr, nullptr};
@@ -89,8 +81,6 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, Def2Def& already_seen)
     }
 
     if (exp1->node() == exp2->node()) {
-        // gotta assume that we have the same kind of node now
-
         if (exp1->type() != nullptr && exp2->type() != nullptr)
             if (!its_a_match_(exp1->type(), exp2->type(), already_seen)) return false;
 
@@ -125,8 +115,9 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, Def2Def& already_seen)
 
 const Def* Rule::replace(const Def* expr, Def2Def& v2v) const {
     auto [var, meta_values] = tuple_of_dict(world(), v2v);
-    auto rw                 = VarRewriter(var, meta_values);
-    auto g                  = rw.rewrite(guard());
+    assert(var);
+    auto rw = VarRewriter(var, meta_values);
+    auto g  = rw.rewrite(guard());
     if (g == world().lit_tt()) return rw.rewrite(rhs());
     return expr;
 }
