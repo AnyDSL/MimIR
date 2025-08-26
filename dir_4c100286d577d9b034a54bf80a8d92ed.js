@@ -17,6 +17,7 @@ var dir_4c100286d577d9b034a54bf80a8d92ed =
     [ "normalize.h", "normalize_8h.html", "normalize_8h" ],
     [ "plugin.h", "plugin_8h.html", "plugin_8h" ],
     [ "rewrite.h", "rewrite_8h.html", "rewrite_8h" ],
+    [ "rule.h", "rule_8h.html", "rule_8h" ],
     [ "schedule.h", "schedule_8h.html", "schedule_8h" ],
     [ "tuple.h", "tuple_8h.html", "tuple_8h" ],
     [ "world.h", "world_8h.html", "world_8h" ]

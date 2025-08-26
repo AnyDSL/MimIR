@@ -7,7 +7,7 @@ var searchData=
   ['value_5ftype_4',['value_type',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a7f35b127254884aae02bbfe8d646e3e6',1,'mim::Sets::Set::iterator']]],
   ['values_5',['Values',['../regex.html#autotoc_md238',1,'']]],
   ['var_6',['Var',['../classmim_1_1Var.html',1,'mim::Var'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77',1,'mim::Var'],['../namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77',1,'mim::Var']]],
-  ['var_7',['var',['../classmim_1_1Def.html#a6e757a3ae8e52ee5b9ebdaea32c6abd8',1,'mim::Def::var(nat_t a, nat_t i) noexcept'],['../classmim_1_1Def.html#aa27dd2653d480c90cc944ff68f253264',1,'mim::Def::var(nat_t i) noexcept'],['../classmim_1_1Def.html#ac0d3c5c425d581e1e6836790d1437d1d',1,'mim::Def::var()'],['../classmim_1_1World.html#a918decd7bcf528bb9cb8aca1fadce0b5',1,'mim::World::var()']]],
+  ['var_7',['var',['../classmim_1_1ast_1_1RuleDecl.html#a3b47f29265106727248c3f18e9cac35c',1,'mim::ast::RuleDecl::var()'],['../classmim_1_1Def.html#a6e757a3ae8e52ee5b9ebdaea32c6abd8',1,'mim::Def::var(nat_t a, nat_t i) noexcept'],['../classmim_1_1Def.html#aa27dd2653d480c90cc944ff68f253264',1,'mim::Def::var(nat_t i) noexcept'],['../classmim_1_1Def.html#ac0d3c5c425d581e1e6836790d1437d1d',1,'mim::Def::var()'],['../classmim_1_1World.html#a918decd7bcf528bb9cb8aca1fadce0b5',1,'mim::World::var()']]],
   ['var2var_8',['Var2Var',['../namespacemim.html#afe12e59f7ee4253d3b71cd8c0db61d06',1,'mim']]],
   ['variants_9',['Thresholded Variants',['../dev.html#autotoc_md30',1,'']]],
   ['varmap_10',['VarMap',['../namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab',1,'mim']]],

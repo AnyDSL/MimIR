@@ -6,7 +6,6 @@ var namespacemim_structmim_1_1Flags_dup =
     [ "break_on_alpha", "namespacemim.html#aecd8da1c3713216fee4463e6b7c76fe8", null ],
     [ "break_on_error", "namespacemim.html#a815524784f39e99f0d5929c8ef950552", null ],
     [ "break_on_warn", "namespacemim.html#accee3d68c6800853cbb887679212d540", null ],
-    [ "disable_type_checking", "namespacemim.html#ad48fe9903dddefa784e0201f665fc0b3", null ],
     [ "dump_gid", "namespacemim.html#a17a6522e1abbe40ec6463cfd669c6f20", null ],
     [ "dump_recursive", "namespacemim.html#afc6c15ed47123ead7dae5a3c7b5e8506", null ],
     [ "reeval_breakpoints", "namespacemim.html#aa3d3421bf85526b22938b6f5d289af22", null ],

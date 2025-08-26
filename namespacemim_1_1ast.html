@@ -227,6 +227,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1RetExpr.html">RetExpr</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>ret ptrn = callee $ arg; body</code>  <a href="classmim_1_1ast_1_1RetExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1RuleDecl.html">RuleDecl</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">rewrite rules rule (x:T, y:T) : x+y =&gt; y+x (when ); all meta variables have to be introduced  <a href="classmim_1_1ast_1_1RuleDecl.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1ast_1_1S.html">S</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1Scopes.html">Scopes</a></td></tr>
@@ -288,7 +291,7 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:a34bc31636965297acb1596eeeb396b29" id="r_a34bc31636965297acb1596eeeb396b29"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34bc31636965297acb1596eeeb396b29">Look_Ahead</a> = 2</td></tr>
 <tr class="separator:a34bc31636965297acb1596eeeb396b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4b52dbb4d1c2d76a66fbdd47af52ea9" id="r_ab4b52dbb4d1c2d76a66fbdd47af52ea9"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b52dbb4d1c2d76a66fbdd47af52ea9">Num_Keys</a> = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td></tr>
+<tr class="memitem:ab4b52dbb4d1c2d76a66fbdd47af52ea9" id="r_ab4b52dbb4d1c2d76a66fbdd47af52ea9"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4b52dbb4d1c2d76a66fbdd47af52ea9">Num_Keys</a> = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td></tr>
 <tr class="separator:ab4b52dbb4d1c2d76a66fbdd47af52ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Class Documentation</h2>
@@ -457,9 +460,9 @@ template&lt;class T&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="ast_8cpp_source.html#l00190">190</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="flags_8h_source.html#l00017">mim::Flags::bootstrap</a>, <a class="el" href="world_8h_source.html#l00083">mim::World::driver()</a>, <a class="el" href="driver_8h_source.html#l00023">mim::Driver::flags()</a>, and <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>.</p>
+<p class="reference">References <a class="el" href="flags_8h_source.html#l00016">mim::Flags::bootstrap</a>, <a class="el" href="world_8h_source.html#l00084">mim::World::driver()</a>, <a class="el" href="driver_8h_source.html#l00023">mim::Driver::flags()</a>, and <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8h_source.html#l01101">load_plugins()</a>, <a class="el" href="ast_8h_source.html#l01100">load_plugins()</a>, and <a class="el" href="ast_8h_source.html#l01097">load_plugins()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8h_source.html#l01136">load_plugins()</a>, <a class="el" href="ast_8h_source.html#l01135">load_plugins()</a>, and <a class="el" href="ast_8h_source.html#l01132">load_plugins()</a>.</p>
 
 </div>
 </div>
@@ -490,7 +493,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01101">1101</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01136">1136</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00190">load_plugins()</a>.</p>
 
@@ -523,7 +526,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01100">1100</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01135">1135</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00190">load_plugins()</a>.</p>
 
@@ -556,7 +559,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01097">1097</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01132">1132</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00190">load_plugins()</a>.</p>
 
@@ -620,7 +623,7 @@ template&lt;class T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto mim::ast::Num_Keys = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td>
+          <td class="memname">auto mim::ast::Num_Keys = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td>
         </tr>
       </table>
   </td>
@@ -630,7 +633,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00058">58</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00061">61</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>

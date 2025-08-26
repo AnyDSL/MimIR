@@ -42,6 +42,7 @@ var ast_8h =
     [ "mim::ast::LamDecl", "classmim_1_1ast_1_1LamDecl.html", "classmim_1_1ast_1_1LamDecl" ],
     [ "mim::ast::LamDecl::Dom", "classmim_1_1ast_1_1LamDecl_1_1Dom.html", "classmim_1_1ast_1_1LamDecl_1_1Dom" ],
     [ "mim::ast::CDecl", "classmim_1_1ast_1_1CDecl.html", "classmim_1_1ast_1_1CDecl" ],
+    [ "mim::ast::RuleDecl", "classmim_1_1ast_1_1RuleDecl.html", "classmim_1_1ast_1_1RuleDecl" ],
     [ "mim::ast::Import", "classmim_1_1ast_1_1Import.html", "classmim_1_1ast_1_1Import" ],
     [ "mim::ast::Module", "classmim_1_1ast_1_1Module.html", "classmim_1_1ast_1_1Module" ],
     [ "mim::ast::AnnexInfo.sym", "namespacemim_1_1ast.html#structmim_1_1ast_1_1AnnexInfo_8sym", [

@@ -6,7 +6,6 @@ var searchData=
   ['def_5f_3',['def_',['../classmim_1_1ast_1_1Decl.html#ae3ddbb0016f6130e84f3e7b423144cf2',1,'mim::ast::Decl']]],
   ['default_5finlined_5fsize_4',['Default_Inlined_Size',['../namespacemim.html#a39efaf0b2304223993b837cc3e0bd605',1,'mim']]],
   ['defs_5',['defs',['../classmim_1_1World.html#acd8fc2597193b4c938e7ff50062936e3',1,'mim::World::Move.arena']]],
-  ['disable_5ftype_5fchecking_6',['disable_type_checking',['../namespacemim.html#ad48fe9903dddefa784e0201f665fc0b3',1,'mim::Flags']]],
-  ['dump_5fgid_7',['dump_gid',['../namespacemim.html#a17a6522e1abbe40ec6463cfd669c6f20',1,'mim::Flags']]],
-  ['dump_5frecursive_8',['dump_recursive',['../namespacemim.html#afc6c15ed47123ead7dae5a3c7b5e8506',1,'mim::Flags']]]
+  ['dump_5fgid_6',['dump_gid',['../namespacemim.html#a17a6522e1abbe40ec6463cfd669c6f20',1,'mim::Flags']]],
+  ['dump_5frecursive_7',['dump_recursive',['../namespacemim.html#afc6c15ed47123ead7dae5a3c7b5e8506',1,'mim::Flags']]]
 ];

@@ -247,6 +247,8 @@ var hierarchy =
           [ "mim::Tuple", "classmim_1_1Tuple.html", null ]
         ] ],
         [ "mim::Proxy", "classmim_1_1Proxy.html", null ],
+        [ "mim::Reform", "classmim_1_1Reform.html", null ],
+        [ "mim::Rule", "classmim_1_1Rule.html", null ],
         [ "mim::Seq", "classmim_1_1Seq.html", [
           [ "mim::Arr", "classmim_1_1Arr.html", null ],
           [ "mim::Pack", "classmim_1_1Pack.html", null ]
@@ -276,7 +278,8 @@ var hierarchy =
             [ "mim::ast::LetDecl", "classmim_1_1ast_1_1LetDecl.html", null ],
             [ "mim::ast::RecDecl", "classmim_1_1ast_1_1RecDecl.html", [
               [ "mim::ast::LamDecl", "classmim_1_1ast_1_1LamDecl.html", null ]
-            ] ]
+            ] ],
+            [ "mim::ast::RuleDecl", "classmim_1_1ast_1_1RuleDecl.html", null ]
           ] ]
         ] ],
         [ "mim::ast::Expr", "classmim_1_1ast_1_1Expr.html", [
@@ -370,6 +373,12 @@ var hierarchy =
     ] ],
     [ "mim::Setters< Proxy >", "classmim_1_1Setters.html", [
       [ "mim::Proxy", "classmim_1_1Proxy.html", null ]
+    ] ],
+    [ "mim::Setters< Reform >", "classmim_1_1Setters.html", [
+      [ "mim::Reform", "classmim_1_1Reform.html", null ]
+    ] ],
+    [ "mim::Setters< Rule >", "classmim_1_1Setters.html", [
+      [ "mim::Rule", "classmim_1_1Rule.html", null ]
     ] ],
     [ "mim::Setters< Seq >", "classmim_1_1Setters.html", [
       [ "mim::Seq", "classmim_1_1Seq.html", null ]
