@@ -1,5 +1,6 @@
 #pragma once
 
+#include <span>
 #include <type_traits>
 #include <variant>
 
@@ -273,14 +274,13 @@ public:
     ///     1. The initial callee.
     ///     2. A DefVec of all curried App::arg%s.
     ///@{
-    constexpr static auto D = std::dynamic_extent;
-
     template<size_t N>
-    using Uncurry = std::conditional_t<N == D, std::pair<const Def*, DefVec>, std::array<const Def*, N>>;
+    using Uncurry
+        = std::conditional_t<N == std::dynamic_extent, std::pair<const Def*, DefVec>, std::array<const Def*, N>>;
 
-    template<size_t N = D, bool Callee = true>
+    template<size_t N = std::dynamic_extent, bool Callee = true>
     static Uncurry<N> uncurry(const Def* callee) {
-        if constexpr (N == D) {
+        if constexpr (N == std::dynamic_extent) {
             auto args = DefVec();
             while (auto app = callee->isa<App>()) {
                 args.emplace_back(app->arg());
@@ -301,7 +301,7 @@ public:
         }
     }
 
-    template<size_t N = D>
+    template<size_t N = std::dynamic_extent>
     auto uncurry() const {
         return App::uncurry<N>(this);
     }
