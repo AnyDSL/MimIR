@@ -124,7 +124,7 @@ const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pa
 const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
 const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
 const Def* Rule   ::rebuild_(World& w, const Def* t, Defs o) const { return w.rule(t->as<Reform>(), o[0], o[1], o[2]); }
-const Def* Reform ::rebuild_(World& w, const Def* , Defs o) const { return w.rule_type(o[0]); }
+const Def* Reform ::rebuild_(World& w, const Def* ,  Defs o) const { return w.reform(o[0]); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
 const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
 const Def* Match  ::rebuild_(World& w, const Def*  , Defs o) const { return w.match(o); }
