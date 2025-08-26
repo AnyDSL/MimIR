@@ -1,4 +1,5 @@
 #include "mim/def.h"
+#include "mim/rewrite.h"
 
 #include "mim/ast/ast.h"
 
@@ -460,7 +461,7 @@ void LamDecl::emit_decl(Emitter& e) const {
     auto _      = e.world().push(loc());
     bool is_cps = tag_ == Tag::K_cn || tag_ == Tag::K_con || tag_ == Tag::K_fn || tag_ == Tag::K_fun;
 
-    // Iterate over all doms: Build a Lam for cur dom, by first building a curried Pi for the remaining doms.
+    // Iterate over all doms: Build a Lam for curr dom, by first building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i))
             dom->emit_type(e);
@@ -486,6 +487,21 @@ void LamDecl::emit_decl(Emitter& e) const {
 void LamDecl::emit_body(Emitter& e) const {
     auto b = body()->emit(e);
     doms().back()->lam_->set_body(b);
+
+    // rewrite holes
+    for (size_t i = 0, n = num_doms(); i != n; ++i) {
+        auto rw  = VarRewriter(e.world());
+        auto lam = dom(i)->lam_;
+        auto pi  = lam->type()->as_mut<Pi>();
+        for (const auto& dom : doms() | std::ranges::views::drop(i)) {
+            if (auto var = pi->has_var()) rw.add(dom->lam_->var()->as<Var>(), var);
+            auto cod = pi->codom();
+            if (!cod || !cod->isa_mut<Pi>()) break;
+            pi = cod->as_mut<Pi>();
+        }
+
+        if (auto cod = pi->codom(); cod && cod->has_dep(Dep::Hole)) pi->set(pi->dom(), rw.rewrite(cod));
+    }
 
     for (const auto& dom : doms() | std::ranges::views::reverse) {
         if (auto imm = dom->pi_->immutabilize()) {

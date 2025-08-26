@@ -26,11 +26,27 @@ Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); 
  */
 
 Lam* Lam::set_filter(Filter filter) { return Def::set(0, world().filter(filter))->as<Lam>(); }
+Lam* Lam::set(Filter filter, const Def* body) { return Def::set({world().filter(filter), body})->as<Lam>(); }
 Lam* Lam::app(Filter f, const Def* callee, const Def* arg) { return set_filter(f)->set_body(world().app(callee, arg)); }
 Lam* Lam::app(Filter filter, const Def* callee, Defs args) { return app(filter, callee, world().tuple(args)); }
 
 Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem) {
     return app(filter, world().select(cond, t, f), mem ? mem : world().tuple());
+}
+
+const Def* Lam::eta_reduce() const {
+    if (auto var = has_var()) {
+        if (auto app = body()->isa<App>())
+            if (app->arg() == var && !app->callee()->free_vars().contains(var)) return app->callee();
+    }
+    return nullptr;
+}
+
+const Def* Lam::eta_expand(Filter filter, const Def* f) {
+    auto& w  = f->world();
+    auto eta = w.mut_lam(f->type()->as<Pi>());
+    eta->debug_suffix("eta_"s + f->sym().str());
+    return eta->app(filter, f, eta->var());
 }
 
 /*

@@ -45,7 +45,7 @@ target_sources(libmim
 set_target_properties(libmim PROPERTIES PREFIX "")
 
 if(MSVC)
-    target_compile_features(libmim PUBLIC cxx_std_23) # /std:c++latest - unlocks non-stable c++20 features
+    target_compile_features(libmim PUBLIC cxx_std_23)
     target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
     if(BUILD_SHARED_LIBS)
         target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)

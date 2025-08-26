@@ -53,7 +53,7 @@ private:
 
 /// Visits the current Phase::world and constructs a new RWPhase::world along the way.
 /// It recursively **rewrites** all World::externals().
-/// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, and Rewriter::rewrite_mut.
+/// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
 public:
     RWPhase(World& world, std::string_view name)
@@ -75,13 +75,14 @@ public:
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
 /// Inherit from this one to implement a classic data-flow analysis.
+/// @note If you don't need a fixed-point just return `true` after the first run of analyze.
 class FPPhase : public RWPhase {
 public:
     FPPhase(World& world, std::string_view name)
         : RWPhase(world, name) {}
 
-    void start() override;
     virtual bool analyze() = 0;
+    void start() override;
 };
 
 /// Wraps a Pass as a Phase.

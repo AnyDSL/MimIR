@@ -18,6 +18,8 @@ const Def* Rewriter::rewrite(const Def* old_def) {
 
 const Def* Rewriter::dispatch(const Def* old_def) {
     // clang-format off
+    if (auto app     = old_def->isa<App     >()) return rewrite_app    (app    );
+    if (auto lam     = old_def->isa<Lam     >()) return rewrite_lam    (lam    );
     if (auto arr     = old_def->isa<Arr     >()) return rewrite_arr    (arr    );
     if (auto pack    = old_def->isa<Pack    >()) return rewrite_pack   (pack   );
     if (auto extract = old_def->isa<Extract >()) return rewrite_extract(extract);
