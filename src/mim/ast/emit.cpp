@@ -525,4 +525,16 @@ void CDecl::emit(Emitter& e) const {
     }
 }
 
+void RuleDecl::emit(Emitter& e) const {
+    auto _      = e.world().push(loc());
+    auto meta_t = e.world().rule_type(var()->emit_type(e));
+    auto rule_  = e.world().mut_rule(meta_t);
+    var()->emit_value(e, rule_->var());
+    auto l = lhs()->emit(e);
+    auto r = rhs()->emit(e);
+    auto c = guard()->emit(e);
+    rule_->set(l, r, c);
+    // TODO register rule somewhere
+}
+
 } // namespace mim::ast

@@ -379,4 +379,13 @@ void CDecl::bind(Scopes& s) const {
     s.bind(dbg(), this);
 }
 
+void RuleDecl::bind(Scopes& s) const {
+    s.push();
+    var()->bind(s, true, false);
+    lhs()->bind(s);
+    rhs()->bind(s);
+    guard()->bind(s);
+    s.pop();
+}
+
 } // namespace mim::ast

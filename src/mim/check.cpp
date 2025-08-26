@@ -4,6 +4,7 @@
 #include <fe/assert.h>
 
 #include "mim/rewrite.h"
+#include "mim/rule.h"
 #include "mim/world.h"
 
 namespace mim {
@@ -389,6 +390,32 @@ const Def* Lam::check(size_t i, const Def* def) {
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
     fe::unreachable();
+}
+
+const Def* Reform::check() {
+    auto t = infer(meta_type());
+    if (!Checker::alpha<Checker::Check>(t, type()))
+        error(type()->loc(), "declared sort '{}' of rule type does not match inferred one '{}'", type(), t);
+    return t;
+}
+
+const Def* Reform::infer(const Def* meta_type) { return meta_type->unfold_type(); }
+
+const Def* Rule::check() {
+    auto t1 = lhs()->type();
+    auto t2 = rhs()->type();
+    if (!Checker::alpha<Checker::Check>(t1, t2))
+        error(type()->loc(), "type mismatch: '{}' for lhs, but '{}' for rhs", t1, t2);
+    if (!Checker::assignable(world().type_bool(), guard()))
+        error(guard()->loc(), "condition '{}' of rewrite is of type '{}' but must be of type 'Bool'", guard(),
+              guard()->type());
+
+    return type();
+}
+
+const Def* Rule::check(size_t, const Def* def) {
+    return def;
+    // TODO: do actual check + what are the parameters ?
 }
 
 #ifndef DOXYGEN
