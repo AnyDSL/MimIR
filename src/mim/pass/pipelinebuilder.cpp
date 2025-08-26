@@ -1,16 +1,9 @@
 #include "mim/pass/pipelinebuilder.h"
 
 #include "mim/def.h"
-#include "mim/lattice.h"
 #include "mim/plugin.h"
 
-#include "mim/pass/beta_red.h"
-#include "mim/pass/eta_exp.h"
-#include "mim/pass/eta_red.h"
 #include "mim/pass/pass.h"
-#include "mim/pass/ret_wrap.h"
-#include "mim/pass/scalarize.h"
-#include "mim/pass/tail_rec_elim.h"
 #include "mim/phase/phase.h"
 
 namespace mim {
