@@ -18,7 +18,7 @@ extern "C" MIM_EXPORT Plugin mim_get_plugin() {
                 passes[flags_t(Annex::Base<compile::plugin_select>)] = [&](World& world, PipelineBuilder& builder,
                                                                            const Def* app) {
                     auto& driver      = builder.world().driver();
-                    auto [ax, args]   = collect_args(app);
+                    auto [axm, args]  = App::uncurry(app);
                     auto plugin_axm   = args[1]->as<Axm>();
                     auto then_phase   = args[2];
                     auto else_phase   = args[3];

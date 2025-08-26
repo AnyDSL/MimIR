@@ -95,17 +95,17 @@ const Def* compose_cn(const Def* f, const Def* g) {
     return h;
 }
 
-std::pair<const Def*, DefVec> collect_args(const Def* def) {
-    DefVec args;
-    if (auto app = def->isa<App>()) {
-        auto callee               = app->callee();
-        auto arg                  = app->arg();
-        auto [inner_callee, args] = collect_args(callee);
-        args.push_back(arg);
-        return {inner_callee, args};
-    } else {
-        return {def, args};
+std::pair<const Def*, DefVec> App::uncurry(const Def* callee) {
+    auto args = DefVec();
+
+    while (auto app = callee->isa<App>()) {
+        args.emplace_back(app->arg());
+        callee = app->callee();
     }
+
+    std::ranges::reverse(args);
+
+    return {callee, args};
 }
 
 } // namespace mim

@@ -249,6 +249,12 @@ public:
     u8 trip() const { return trip_; }
     ///@}
 
+    /// @name Uncurry
+    ///@{
+    /// Helper function to cope with the fact that normalizers take all arguments and not only its axm arguments.
+    static std::pair<const Def*, DefVec> uncurry(const Def* def);
+    ///@}
+
     static constexpr auto Node      = mim::Node::App;
     static constexpr size_t Num_Ops = 2;
 
@@ -293,9 +299,6 @@ std::deque<const App*> decurry(const Def*);
 /// h'= λ b = f (b, ret_h)
 /// ```
 const Def* compose_cn(const Def* f, const Def* g);
-
-/// Helper function to cope with the fact that normalizers take all arguments and not only its axm arguments.
-std::pair<const Def*, DefVec> collect_args(const Def* def);
 ///@}
 
 } // namespace mim
