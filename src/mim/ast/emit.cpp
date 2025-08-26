@@ -532,7 +532,7 @@ void RuleDecl::emit(Emitter& e) const {
     var()->emit_value(e, rule_->var());
     auto l = lhs()->emit(e);
     auto r = rhs()->emit(e);
-    auto c = condition()->emit(e);
+    auto c = guard()->emit(e);
     rule_->set(l, r, c);
     // TODO register rule somewhere
 }

@@ -406,9 +406,9 @@ const Def* Rule::check() {
     auto t2 = rhs()->type();
     if (!Checker::alpha<Checker::Check>(t1, t2))
         error(type()->loc(), "type mismatch: '{}' for lhs, but '{}' for rhs", t1, t2);
-    if (!Checker::assignable(world().type_bool(), condition()))
-        error(condition()->loc(), "condition '{}' of rewrite is of type '{}' but must be of type 'Bool'", condition(),
-              condition()->type());
+    if (!Checker::assignable(world().type_bool(), guard()))
+        error(guard()->loc(), "condition '{}' of rewrite is of type '{}' but must be of type 'Bool'", guard(),
+              guard()->type());
 
     return type();
 }

@@ -1040,25 +1040,19 @@ private:
 
 class RuleDecl : public ValDecl {
 public:
-    RuleDecl(Loc loc,
-             Dbg dbg,
-             Ptr<Ptrn>&& var,
-             Ptr<Expr>&& lhs,
-             Ptr<Expr>&& rhs,
-             Ptr<Expr>&& condition,
-             bool is_normalizer)
+    RuleDecl(Loc loc, Dbg dbg, Ptr<Ptrn>&& var, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs, Ptr<Expr>&& guard, bool is_normalizer)
         : ValDecl(loc)
         , dbg_(std::move(dbg))
         , var_(std::move(var))
         , lhs_(std::move(lhs))
         , rhs_(std::move(rhs))
-        , condition_(std::move(condition))
+        , guard_(std::move(guard))
         , is_normalizer_(is_normalizer) {}
 
     const Ptrn* var() const { return var_.get(); }
     const Expr* lhs() const { return lhs_.get(); }
     const Expr* rhs() const { return rhs_.get(); }
-    const Expr* condition() const { return condition_.get(); }
+    const Expr* guard() const { return guard_.get(); }
     bool is_normalizer() const { return is_normalizer_; }
 
     void bind(Scopes&) const override;
@@ -1071,7 +1065,7 @@ private:
     Ptr<Ptrn> var_;
     Ptr<Expr> lhs_;
     Ptr<Expr> rhs_;
-    Ptr<Expr> condition_;
+    Ptr<Expr> guard_;
     bool is_normalizer_;
 };
 

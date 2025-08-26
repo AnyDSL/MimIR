@@ -384,7 +384,7 @@ void RuleDecl::bind(Scopes& s) const {
     var()->bind(s, true, false);
     lhs()->bind(s);
     rhs()->bind(s);
-    condition()->bind(s);
+    guard()->bind(s);
     s.pop();
 }
 

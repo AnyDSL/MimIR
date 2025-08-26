@@ -135,10 +135,10 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, Def2Def& already_seen)
 }
 
 const Def* Rule::replace(const Def* expr, Def2Def& v2v) const {
-    auto [var_of_rule, meta_values] = tuple_of_dict(world(), v2v);
-    auto rw                         = VarRewriter(var_of_rule, meta_values);
-    auto condi                      = rw.rewrite(condition());
-    if (condi == world().lit_tt()) return rw.rewrite(rhs());
+    auto [var, meta_values] = tuple_of_dict(world(), v2v);
+    auto rw                 = VarRewriter(var, meta_values);
+    auto g                  = rw.rewrite(guard());
+    if (g == world().lit_tt()) return rw.rewrite(rhs());
     return expr;
 }
 

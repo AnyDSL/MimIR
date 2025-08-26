@@ -239,6 +239,6 @@ std::ostream& CDecl::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& RuleDecl::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "rule {} : {} => {} when {}", S(tab, var()), S(tab, lhs()), S(tab, rhs()), S(tab, condition()));
+    return print(os, "rule {} : {} => {} when {}", S(tab, var()), S(tab, lhs()), S(tab, rhs()), S(tab, guard()));
 }
 } // namespace mim::ast
