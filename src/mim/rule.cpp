@@ -43,17 +43,6 @@ std::tuple<const Var*, const Def*> tuple_of_dict(World& world, Def2Def& v2v) {
     return {nullptr, nullptr};
 }
 
-bool are_same_node(const Def* expr1, const Def* expr2) {
-    return same<Lam>(expr1, expr2) || same<Lit>(expr1, expr2) || same<Axm>(expr1, expr2) || same<Var>(expr1, expr2)
-        || same<Global>(expr1, expr2) || same<Proxy>(expr1, expr2) || same<Hole>(expr1, expr2)
-        || same<Type>(expr1, expr2) || same<Univ>(expr1, expr2) || same<UInc>(expr1, expr2) || same<Pi>(expr1, expr2)
-        || same<Lam>(expr1, expr2) || same<App>(expr1, expr2) || same<Sigma>(expr1, expr2) || same<Tuple>(expr1, expr2)
-        || same<Extract>(expr1, expr2) || same<Insert>(expr1, expr2) || same<Arr>(expr1, expr2)
-        || same<Pack>(expr1, expr2) || same<Join>(expr1, expr2) || same<Inj>(expr1, expr2) || same<Match>(expr1, expr2)
-        || same<Top>(expr1, expr2) || same<Meet>(expr1, expr2) || same<Merge>(expr1, expr2) || same<Split>(expr1, expr2)
-        || same<Bot>(expr1, expr2) || same<Uniq>(expr1, expr2) || same<Nat>(expr1, expr2) || same<Idx>(expr1, expr2);
-}
-
 bool Rule::is_in_rule(const Def* expr) {
     // are we inside a rule ?
     for (auto var : expr->free_vars()) {
@@ -99,7 +88,7 @@ bool Rule::its_a_match_(const Def* exp1, const Def* exp2, Def2Def& already_seen)
         }
     }
 
-    if (are_same_node(exp1, exp2)) {
+    if (exp1->node() == exp2->node()) {
         // gotta assume that we have the same kind of node now
 
         if (exp1->type() != nullptr && exp2->type() != nullptr)
