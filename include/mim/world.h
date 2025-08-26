@@ -13,6 +13,7 @@
 #include "mim/flags.h"
 #include "mim/lam.h"
 #include "mim/lattice.h"
+#include "mim/rule.h"
 #include "mim/tuple.h"
 
 #include "mim/util/dbg.h"
@@ -309,6 +310,18 @@ public:
     Lam*   mut_fun(const Def* dom, Defs       codom) { return insert<Lam>(fn(dom, codom)); }
     Lam*   mut_fun(Defs       dom, Defs       codom) { return insert<Lam>(fn(dom, codom)); }
     // clang-format on
+    ///@}
+
+    /// @name Rewrite Rules
+    ///@{
+    const Reform* rule_type(const Def* meta_type) { return unify<Reform>(Reform::infer(meta_type), meta_type); }
+    Rule* mut_rule(const Reform* type) { return insert<Rule>(type); }
+    const Rule* rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* condition) {
+        return mut_rule(type)->set(lhs, rhs, condition);
+    }
+    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs, const Def* condition) {
+        return rule(rule_type(meta_type), lhs, rhs, condition);
+    }
     ///@}
 
     /// @name App

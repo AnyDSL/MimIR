@@ -5,6 +5,7 @@
 #include <absl/container/fixed_array.h>
 #include <fe/assert.h>
 
+#include "mim/rule.h"
 #include "mim/world.h"
 
 #include "mim/util/hash.h"
@@ -122,6 +123,8 @@ const Def* Merge  ::rebuild_(World& w, const Def* t, Defs o) const { return w.me
 const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
 const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
 const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
+const Def* Rule   ::rebuild_(World& w, const Def* t, Defs o) const { return w.rule(t->as<Reform>(), o[0], o[1], o[2]); }
+const Def* Reform ::rebuild_(World& w, const Def* , Defs o) const { return w.rule_type(o[0]); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
 const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
 const Def* Match  ::rebuild_(World& w, const Def*  , Defs o) const { return w.match(o); }
@@ -151,6 +154,7 @@ Hole*   Hole  ::stub_(World& w, const Def* t) { return w.mut_hole (t); }
 Lam*    Lam   ::stub_(World& w, const Def* t) { return w.mut_lam  (t->as<Pi>()); }
 Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
 Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }
+Rule*   Rule  ::stub_(World& w, const Def* t) { return w.mut_rule(t->as<Reform>()); }
 Sigma*  Sigma ::stub_(World& w, const Def* t) { return w.mut_sigma(t, num_ops()); }
 
 /*
@@ -188,6 +192,8 @@ const Pi* Pi::immutabilize() {
     if (is_immutabilizable()) return world().pi(dom(), codom());
     return nullptr;
 }
+
+const Rule* Rule::immutabilize() { return world().rule(type(), lhs(), rhs(), guard()); }
 
 const Def* Sigma::immutabilize() {
     if (is_immutabilizable()) return static_cast<const Sigma*>(world().sigma(ops()));
@@ -312,6 +318,7 @@ const Def* Def::var() {
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
     if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->arity()), arr ); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->arity()), pack); // TODO shapes like (2, 3)
+    if (auto rule = isa<Rule >()) return w.var(rule->type()->meta_type(), rule);
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Hole  >()) return nullptr;
     if (isa<Global>()) return nullptr;

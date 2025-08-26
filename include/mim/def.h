@@ -28,6 +28,7 @@
     m(Arr,    Judge::Form ) m(Pack,  Judge::Intro)                                                                 \
     m(Join,   Judge::Form ) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    (Judge::Intro              )) \
     m(Meet,   Judge::Form ) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    (Judge::Intro              )) \
+    m(Reform, Judge::Form ) m(Rule,  Judge::Intro)                                                                 \
     m(Uniq,   Judge::Form )                                                                                        \
     m(Nat,    Judge::Form )                                                                                        \
     m(Idx,    Judge::Intro)
@@ -43,6 +44,7 @@
     m(Arr)   m(Pack)                                                                                               \
     m(Join)  m(Inj)   m(Match)   m(Top)                                                                            \
     m(Meet)  m(Merge) m(Split)   m(Bot)                                                                            \
+    m(Rule)                                                                                                        \
     m(Uniq)                                                                                                        \
     m(Nat)                                                                                                         \
     m(Idx)
@@ -52,7 +54,8 @@
     m(Hole)                                                                                                        \
     m(Pi)    m(Lam)                                                                                                \
     m(Sigma)                                                                                                       \
-    m(Arr)   m(Pack)
+    m(Arr)   m(Pack)                                                                                               \
+    m(Rule)
 // clang-format on
 
 namespace mim {
@@ -222,6 +225,7 @@ public:
 /// | Uniq              | Wrap              | Unwrap            |
 /// | Join              | Inj               | Match             |
 /// | Meet              | Merge             | Split             |
+/// | Reform            | Rule              |                   |
 /// | Nat               | Lit               |                   |
 /// | Idx               | Lit               |                   |
 /// In addition there is:
