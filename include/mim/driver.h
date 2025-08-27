@@ -61,10 +61,12 @@ public:
     void load(const std::string& name) { return load(sym(name)); }
     bool is_loaded(Sym sym) const { return lookup(plugins_, sym); }
     void* get_fun_ptr(Sym plugin, const char* name);
+
     template<class F>
     auto get_fun_ptr(Sym plugin, const char* name) {
         return reinterpret_cast<F*>(get_fun_ptr(plugin, name));
     }
+
     template<class F>
     auto get_fun_ptr(const char* plugin, const char* name) {
         return get_fun_ptr<F>(sym(plugin), name);

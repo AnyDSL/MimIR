@@ -1,4 +1,5 @@
-#include "mim/plug/compile/autogen.h"
+#include <mim/world.h>
+
 #include "mim/plug/compile/compile.h"
 
 namespace mim::plug::compile {

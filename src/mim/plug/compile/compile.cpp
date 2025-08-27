@@ -20,6 +20,22 @@ using namespace mim;
 using namespace mim::plug;
 
 template<class P, class B>
+void apply(P& ps, B& builder, const Def* app) {
+    auto& world     = app->world();
+    auto [p_def, _] = App::uncurry(app);
+
+    world.DLOG("apply pass/phase: {}", p_def);
+
+    if (auto axm = p_def->isa<Axm>())
+        if (auto i = ps.find(axm->flags()); i != ps.end())
+            i->second(builder, app);
+        else
+            world.ELOG("pass/phase '{}' not found", axm->sym());
+    else
+        world.ELOG("unsupported callee for a a phase/pass", p_def);
+}
+
+template<class P, class B>
 struct PluginSelect {
     PluginSelect(P& ps)
         : ps(ps) {}
@@ -35,11 +51,9 @@ struct PluginSelect {
         bool is_loaded    = driver.is_loaded(driver.sym(plugin));
 
         assert(tag.view().find('_') != std::string_view::npos && "mim/plugin_phase: invalid plugin name");
-        world.DLOG("mim/plugin_phase for: {}", axm->sym());
-        world.DLOG("mim/plugin: {}", plugin);
-        world.DLOG("contained: {}", is_loaded);
+        world.DLOG("plugin select for `{}` - loaded: `{}`", plugin, is_loaded);
 
-        compile::apply(ps, builder, is_loaded ? tt : ff);
+        apply(ps, builder, is_loaded ? tt : ff);
     }
 
     P& ps;
@@ -53,7 +67,7 @@ void reg_stages(Phases& phases, Passes& passes) {
     assert_emplace(passes, flags_t(Annex::Base<compile::plugin_select>), PluginSelect<Passes, PassMan >(passes));
     // clang-format on
 
-    assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::debug_phase>), [](Pipeline& pipe, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<compile::debug_phase>), [](Pipeline& pipe, const Def* app) {
         auto& world = pipe.world();
         world.DLOG("Generate debug_phase: {}", app);
         int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
@@ -61,25 +75,23 @@ void reg_stages(Phases& phases, Passes& passes) {
         pipe.add<compile::DebugPrint>(level);
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::passes_to_phase>),
-                   [&](Pipeline& pipe, const Def* app) {
-                       auto defs = app->as<App>()->arg()->projs();
-                       auto man  = std::make_unique<PassMan>(app->world());
-                       for (auto def : defs)
-                           compile::apply(passes, *man, def);
-                       pipe.add<PassManPhase>(std::move(man));
-                   });
+    assert_emplace(phases, flags_t(Annex::Base<compile::passes_to_phase>), [&](Pipeline& pipe, const Def* app) {
+        auto defs = app->as<App>()->arg()->projs();
+        auto man  = std::make_unique<PassMan>(app->world());
+        for (auto def : defs)
+            apply(passes, *man, def);
+        pipe.add<PassManPhase>(std::move(man));
+    });
 
-    assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::phases_to_phase>),
-                   [&](Pipeline& pipe, const Def* app) {
-                       for (auto def : app->as<App>()->arg()->projs())
-                           compile::apply(phases, pipe, def);
-                   });
+    assert_emplace(phases, flags_t(Annex::Base<compile::phases_to_phase>), [&](Pipeline& pipe, const Def* app) {
+        for (auto def : app->as<App>()->arg()->projs())
+            apply(phases, pipe, def);
+    });
 
-    assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::pipe>), [&](Pipeline& pipe, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<compile::pipe>), [&](Pipeline& pipe, const Def* app) {
         auto [_, defs] = App::uncurry(app);
         for (auto def : defs)
-            compile::apply(phases, pipe, def);
+            apply(phases, pipe, def);
     });
 
     using compile::InternalCleanup;
@@ -95,6 +107,6 @@ void reg_stages(Phases& phases, Passes& passes) {
     // clang-format on
 }
 
-extern "C" MIM_EXPORT mim::Plugin mim_get_plugin() {
+extern "C" MIM_EXPORT Plugin mim_get_plugin() {
     return {"compile", [](Normalizers& n) { compile::register_normalizers(n); }, reg_stages, nullptr};
 }
