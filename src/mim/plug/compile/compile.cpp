@@ -19,11 +19,6 @@
 using namespace mim;
 using namespace mim::plug;
 
-void add_phases(Phases& phases, Pipeline& pipe, Defs defs) {
-    for (auto def : defs)
-        compile::apply(phases, pipe, def);
-}
-
 template<class P, class B>
 struct PluginSelect {
     PluginSelect(P& ps)
@@ -77,17 +72,14 @@ void reg_stages(Phases& phases, Passes& passes) {
 
     assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::phases_to_phase>),
                    [&](Pipeline& pipe, const Def* app) {
-                       auto phase_array = app->as<App>()->arg()->projs();
-                       DefVec phase_list;
-                       for (auto phase : phase_array)
-                           phase_list.push_back(phase);
-
-                       add_phases(phases, pipe, phase_list);
+                       for (auto def : app->as<App>()->arg()->projs())
+                           compile::apply(phases, pipe, def);
                    });
 
     assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::pipe>), [&](Pipeline& pipe, const Def* app) {
-        auto [ax, defs] = App::uncurry(app);
-        add_phases(phases, pipe, defs);
+        auto [_, defs] = App::uncurry(app);
+        for (auto def : defs)
+            compile::apply(phases, pipe, def);
     });
 
     using compile::InternalCleanup;

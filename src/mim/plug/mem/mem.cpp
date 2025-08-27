@@ -24,18 +24,16 @@ void reg_stages(Phases& phases, Passes& passes) {
     PassMan::hook<mem::remem_elim_pass, mem::RememElim>(passes);
     PassMan::hook<mem::alloc2malloc_pass, mem::Alloc2Malloc>(passes);
 
-    passes[flags_t(Annex::Base<mem::copy_prop_pass>)] = [&](PassMan& man, const Def* app) {
+    assert_emplace(passes, flags_t(Annex::Base<mem::copy_prop_pass>), [&](PassMan& man, const Def* app) {
         auto bb_only = Lit::as(app->as<App>()->arg());
-        app->world().DLOG("registering copy_prop with bb_only = {}", bb_only);
         man.add<mem::CopyProp>(bb_only);
-    };
+    });
 
-    passes[flags_t(Annex::Base<mem::reshape_pass>)] = [&](PassMan& man, const Def* app) {
-        auto mode_axm = app->as<App>()->arg()->as<Axm>();
-        auto mode
-            = mode_axm->flags() == flags_t(Annex::Base<mem::reshape_arg>) ? mem::Reshape::Arg : mem::Reshape::Flat;
+    assert_emplace(passes, flags_t(Annex::Base<mem::reshape_pass>), [&](PassMan& man, const Def* app) {
+        auto axm  = app->as<App>()->arg()->as<Axm>();
+        auto mode = axm->flags() == flags_t(Annex::Base<mem::reshape_arg>) ? mem::Reshape::Arg : mem::Reshape::Flat;
         man.add<mem::Reshape>(mode);
-    };
+    });
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
