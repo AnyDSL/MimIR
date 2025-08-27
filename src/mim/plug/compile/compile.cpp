@@ -1,6 +1,7 @@
 #include "mim/plug/compile/compile.h"
 
 #include <mim/config.h>
+#include <mim/driver.h>
 
 #include <mim/pass/beta_red.h>
 #include <mim/pass/eta_exp.h>
@@ -25,6 +26,42 @@ void add_phases(Phases& phases, Pipeline& pipe, Defs defs) {
 
 void reg_stages(Phases& phases, Passes& passes) {
     assert_emplace(passes, flags_t(Annex::Base<mim::plug::compile::nullptr_pass>), [](PassMan&, const Def*) {});
+
+    phases[flags_t(Annex::Base<compile::plugin_select>)] = [&](Pipeline& pipe, const Def* app) {
+        auto& world        = pipe.world();
+        auto& driver       = world.driver();
+        auto [axm, tt, ff] = app->as<App>()->uncurry<3>(app);
+
+        auto name         = axm->sym();                                 // name has the form %opt.tag
+        auto [_, tag, __] = Annex::split(driver, name);                 // where tag = [plugin]_plugin
+        auto plugin       = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
+        bool is_loaded    = driver.is_loaded(driver.sym(plugin));
+
+        assert(tag.view().find('_') != std::string_view::npos && "mim/plugin_phase: invalid plugin name");
+        world.DLOG("mim/plugin_phase for: {}", axm->sym());
+        world.DLOG("mim/plugin: {}", plugin);
+        world.DLOG("contained: {}", is_loaded);
+
+        compile::apply(phases, pipe, is_loaded ? tt : ff);
+    };
+
+    passes[flags_t(Annex::Base<compile::plugin_select>)] = [&](PassMan& man, const Def* app) {
+        auto& world        = man.world();
+        auto& driver       = world.driver();
+        auto [axm, tt, ff] = app->as<App>()->uncurry<3>(app);
+
+        auto name         = axm->sym();                                 // name has the form %opt.tag
+        auto [_, tag, __] = Annex::split(driver, name);                 // where tag = [plugin]_plugin
+        auto plugin       = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
+        bool is_loaded    = driver.is_loaded(driver.sym(plugin));
+
+        assert(tag.view().find('_') != std::string_view::npos && "mim/plugin_phase: invalid plugin name");
+        world.DLOG("mim/plugin_phase for: {}", axm->sym());
+        world.DLOG("mim/plugin: {}", plugin);
+        world.DLOG("contained: {}", is_loaded);
+
+        compile::apply(passes, man, is_loaded ? tt : ff);
+    };
 
     auto debug_phase_flag = flags_t(Annex::Base<mim::plug::compile::debug_phase>);
     assert_emplace(phases, debug_phase_flag, [](Pipeline& pipe, const Def* app) {
