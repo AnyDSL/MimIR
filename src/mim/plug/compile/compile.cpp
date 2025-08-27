@@ -24,50 +24,41 @@ void add_phases(Phases& phases, Pipeline& pipe, Defs defs) {
         compile::apply(phases, pipe, def);
 }
 
+template<class P, class B>
+struct PluginSelect {
+    PluginSelect(P& ps)
+        : ps(ps) {}
+
+    void operator()(B& builder, const Def* app) {
+        auto& world        = builder.world();
+        auto& driver       = world.driver();
+        auto [axm, tt, ff] = app->as<App>()->uncurry<3>(app);
+
+        auto name         = axm->sym();                                 // name has the form %opt.tag
+        auto [_, tag, __] = Annex::split(driver, name);                 // where tag = [plugin]_plugin
+        auto plugin       = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
+        bool is_loaded    = driver.is_loaded(driver.sym(plugin));
+
+        assert(tag.view().find('_') != std::string_view::npos && "mim/plugin_phase: invalid plugin name");
+        world.DLOG("mim/plugin_phase for: {}", axm->sym());
+        world.DLOG("mim/plugin: {}", plugin);
+        world.DLOG("contained: {}", is_loaded);
+
+        compile::apply(ps, builder, is_loaded ? tt : ff);
+    }
+
+    P& ps;
+};
+
 void reg_stages(Phases& phases, Passes& passes) {
     // clang-format off
-    assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::null_phase>), [](Pipeline&, const Def*) {});
-    assert_emplace(passes, flags_t(Annex::Base<mim::plug::compile::null_pass >), [](PassMan&,  const Def*) {});
+    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase   >), [](Pipeline&, const Def*) {});
+    assert_emplace(passes, flags_t(Annex::Base<compile::null_pass    >), [](PassMan&,  const Def*) {});
+    assert_emplace(phases, flags_t(Annex::Base<compile::plugin_select>), PluginSelect<Phases, Pipeline>(phases));
+    assert_emplace(passes, flags_t(Annex::Base<compile::plugin_select>), PluginSelect<Passes, PassMan >(passes));
     // clang-format on
 
-    phases[flags_t(Annex::Base<compile::plugin_select>)] = [&](Pipeline& pipe, const Def* app) {
-        auto& world        = pipe.world();
-        auto& driver       = world.driver();
-        auto [axm, tt, ff] = app->as<App>()->uncurry<3>(app);
-
-        auto name         = axm->sym();                                 // name has the form %opt.tag
-        auto [_, tag, __] = Annex::split(driver, name);                 // where tag = [plugin]_plugin
-        auto plugin       = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
-        bool is_loaded    = driver.is_loaded(driver.sym(plugin));
-
-        assert(tag.view().find('_') != std::string_view::npos && "mim/plugin_phase: invalid plugin name");
-        world.DLOG("mim/plugin_phase for: {}", axm->sym());
-        world.DLOG("mim/plugin: {}", plugin);
-        world.DLOG("contained: {}", is_loaded);
-
-        compile::apply(phases, pipe, is_loaded ? tt : ff);
-    };
-
-    passes[flags_t(Annex::Base<compile::plugin_select>)] = [&](PassMan& man, const Def* app) {
-        auto& world        = man.world();
-        auto& driver       = world.driver();
-        auto [axm, tt, ff] = app->as<App>()->uncurry<3>(app);
-
-        auto name         = axm->sym();                                 // name has the form %opt.tag
-        auto [_, tag, __] = Annex::split(driver, name);                 // where tag = [plugin]_plugin
-        auto plugin       = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
-        bool is_loaded    = driver.is_loaded(driver.sym(plugin));
-
-        assert(tag.view().find('_') != std::string_view::npos && "mim/plugin_phase: invalid plugin name");
-        world.DLOG("mim/plugin_phase for: {}", axm->sym());
-        world.DLOG("mim/plugin: {}", plugin);
-        world.DLOG("contained: {}", is_loaded);
-
-        compile::apply(passes, man, is_loaded ? tt : ff);
-    };
-
-    auto debug_phase_flag = flags_t(Annex::Base<mim::plug::compile::debug_phase>);
-    assert_emplace(phases, debug_phase_flag, [](Pipeline& pipe, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::debug_phase>), [](Pipeline& pipe, const Def* app) {
         auto& world = pipe.world();
         world.DLOG("Generate debug_phase: {}", app);
         int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
