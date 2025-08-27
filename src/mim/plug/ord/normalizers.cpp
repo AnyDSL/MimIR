@@ -57,11 +57,9 @@ const Def* normalize_insert(const Def* type, const Def*, const Def* arg) {
     auto [ms, kv] = arg->projs<2>();
 
     if (auto init = Axm::isa<ord::init>(ms)) {
-        auto [_, args] = App::uncurry(ms);
-        if (auto tuple = init->arg()->isa<Tuple>()) {
-            auto n = init->decurry()->arg();
-            auto V = init->decurry()->decurry()->arg();
-            auto K = id == ord::insert::map ? init->decurry()->decurry()->decurry()->arg() : V;
+        auto [K, V, n, arg] = init->uncurry<4>();
+        if (auto tuple = arg->isa<Tuple>()) {
+            K = K ? K : V;
             if (auto l = Lit::isa(n)) {
                 auto new_ops = DefVec();
                 bool updated = false;

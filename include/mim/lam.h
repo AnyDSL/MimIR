@@ -269,17 +269,22 @@ public:
     ///    *only* the arguments in a `std::array<const Def*, N>`.
     ///    You will *not* retrieve the initial callee because if you know the number of curried App%s,
     ///    you probably also know the callee anyway.
+    ///    Also, if you "overshoot" the number of curried App%s, the superflous args on the left will be set to
+    ///    `nullptr`.
     /// 2. Variant: <br>
     ///    A pair that contains:
     ///     1. The initial callee.
     ///     2. A DefVec of all curried App::arg%s.
+    /// You can enforce variant 1 / variant 2 by with the template argument @p Callee.
     ///@{
     template<size_t N>
-    using Uncurry
-        = std::conditional_t<N == std::dynamic_extent, std::pair<const Def*, DefVec>, std::array<const Def*, N>>;
+    using Args = std::conditional_t<N == std::dynamic_extent, DefVec, std::array<const Def*, N>>;
 
-    template<size_t N = std::dynamic_extent, bool Callee = true>
-    static Uncurry<N> uncurry(const Def* callee) {
+    template<size_t N, bool Callee>
+    using Uncurry = std::conditional_t<Callee, std::pair<const Def*, Args<N>>, Args<N>>;
+
+    template<size_t N = std::dynamic_extent, bool Callee = N == std::dynamic_extent>
+    static Uncurry<N, Callee> uncurry(const Def* callee) {
         if constexpr (N == std::dynamic_extent) {
             auto args = DefVec();
             while (auto app = callee->isa<App>()) {
@@ -288,22 +293,31 @@ public:
             }
 
             std::ranges::reverse(args);
-            return {callee, args};
+            if constexpr (Callee)
+                return {callee, args};
+            else
+                return args;
         } else {
             auto args = std::array<const Def*, N>();
             for (size_t i = N; i-- != 0;) {
-                auto app = callee->as<App>();
-                args[i]  = app->arg();
-                callee   = app->callee();
+                if (auto app = callee->isa<App>()) {
+                    args[i] = app->arg();
+                    callee  = app->callee();
+                } else {
+                    args[i] = nullptr;
+                }
             }
 
-            return args;
+            if constexpr (Callee)
+                return {callee, args};
+            else
+                return args;
         }
     }
 
-    template<size_t N = std::dynamic_extent>
+    template<size_t N = std::dynamic_extent, bool Callee = N == std::dynamic_extent>
     auto uncurry() const {
-        return App::uncurry<N>(this);
+        return App::uncurry<N, Callee>(this);
     }
     ///@}
 
