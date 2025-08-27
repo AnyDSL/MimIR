@@ -33,32 +33,24 @@ void optimize(World& world) {
             }
         }
     }
-    assert(compilation && "no compilation function found");
 
-    // We found a compilation directive in the file and use it to build the compilation pipeline.
-    // The general idea is that passes and phases are exposed as axms.
-    // Each pass/phase axm is associated with a handler function operating on the PipelineBuilder in the
-    // passes map. This registering is analogous to the normalizers (`code -> code`) but only operated using
-    // side effects that change the pipeline.
+    if (!compilation) world.ELOG("no compilation function found");
     world.DLOG("compilation using {} : {}", compilation, compilation->type());
 
     // We can not directly access compile axms here.
     // But the compile plugin has not the necessary communication pipeline.
     // Therefore, we register the handlers and let the compile plugin call them.
 
-    auto pipe          = Pipeline(world);
-    auto pipeline_prog = compilation->as<Lam>()->body();
-    auto [axm, phases] = App::uncurry(pipeline_prog);
-
-    // handle pipeline like all other pass axms
-    auto pipeline_axm   = axm->as<Axm>();
-    auto pipeline_flags = pipeline_axm->flags();
+    auto pipe             = Pipeline(world);
+    auto pipeline_prog    = compilation->as<Lam>()->body();
+    auto [callee, phases] = App::uncurry(pipeline_prog);
+    auto axm              = callee->as<Axm>();
 
     world.DLOG("Building pipeline");
-    if (auto phase = world.driver().phase(pipeline_flags))
+    if (auto phase = world.driver().phase(axm->flags()))
         (*phase)(pipe, pipeline_prog);
     else
-        error("axm not found in passes");
+        world.ELOG("axm not found in passes");
 
     pipe.run();
 }

@@ -11,7 +11,7 @@ void apply(P& ps, B& builder, const Def* app) {
     auto& world     = app->world();
     auto [p_def, _] = App::uncurry(app);
 
-    world.DLOG("pass/phase: {}", p_def);
+    world.DLOG("apply pass/phase: {}", p_def);
 
     if (auto axm = p_def->isa<Axm>())
         if (auto i = ps.find(axm->flags()); i != ps.end())

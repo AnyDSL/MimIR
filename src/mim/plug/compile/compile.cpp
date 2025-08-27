@@ -24,6 +24,8 @@ void add_phases(Phases& phases, Pipeline& pipe, Defs defs) {
 }
 
 void reg_stages(Phases& phases, Passes& passes) {
+    assert_emplace(passes, flags_t(Annex::Base<mim::plug::compile::nullptr_pass>), [](PassMan&, const Def*) {});
+
     auto debug_phase_flag = flags_t(Annex::Base<mim::plug::compile::debug_phase>);
     assert_emplace(phases, debug_phase_flag, [](Pipeline& pipe, const Def* app) {
         auto& world = pipe.world();
