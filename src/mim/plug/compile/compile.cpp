@@ -19,7 +19,8 @@ using namespace mim;
 using namespace mim::plug;
 
 void add_phases(Defs phases, World& world, Passes& passes, PipelineBuilder& builder) {
-    for (auto phase : phases) compile::handle_optimization_part(phase, world, passes, builder);
+    for (auto phase : phases)
+        compile::handle_optimization_part(phase, world, passes, builder);
 }
 
 void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& pass_list) {
@@ -29,7 +30,8 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
     // We create a new dummy phase in which the passes should be inserted.
     // builder.append_phase_end([](Pipeline&) {});
     builder.begin_pass_phase();
-    for (auto pass : pass_list) compile::handle_optimization_part(pass, world, passes, builder);
+    for (auto pass : pass_list)
+        compile::handle_optimization_part(pass, world, passes, builder);
     builder.end_pass_phase();
 }
 
@@ -48,7 +50,8 @@ extern "C" MIM_EXPORT mim::Plugin mim_get_plugin() {
                                [&](World& world, PipelineBuilder& builder, const Def* app) {
                                    auto pass_array = app->as<App>()->arg()->projs();
                                    DefVec pass_list;
-                                   for (auto pass : pass_array) pass_list.push_back(pass);
+                                   for (auto pass : pass_array)
+                                       pass_list.push_back(pass);
                                    add_passes(world, builder, passes, pass_list);
                                });
 
@@ -56,13 +59,14 @@ extern "C" MIM_EXPORT mim::Plugin mim_get_plugin() {
                                [&](World& world, PipelineBuilder& builder, const Def* app) {
                                    auto phase_array = app->as<App>()->arg()->projs();
                                    DefVec phase_list;
-                                   for (auto phase : phase_array) phase_list.push_back(phase);
+                                   for (auto phase : phase_array)
+                                       phase_list.push_back(phase);
                                    add_phases(phase_list, world, passes, builder);
                                });
 
                 assert_emplace(passes, flags_t(Annex::Base<mim::plug::compile::pipe>),
                                [&](World& world, PipelineBuilder& builder, const Def* app) {
-                                   auto [ax, phases] = collect_args(app);
+                                   auto [ax, phases] = App::uncurry(app);
                                    add_phases(phases, world, passes, builder);
                                });
                 assert_emplace(

@@ -15,7 +15,7 @@ inline void handle_optimization_part(const Def* part, World& world, Passes& pass
         }
     }
 
-    auto [phase_def, phase_args] = collect_args(part);
+    auto [phase_def, phase_args] = App::uncurry(part);
     world.DLOG("pass/phase: {}", phase_def);
     if (auto phase_ax = phase_def->isa<Axm>()) {
         auto flag = phase_ax->flags();

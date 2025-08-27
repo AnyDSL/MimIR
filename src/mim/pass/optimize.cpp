@@ -42,7 +42,7 @@ void optimize(World& world) {
 
     PipelineBuilder pipe_builder(world);
     auto pipeline     = compilation->as<Lam>()->body();
-    auto [ax, phases] = collect_args(pipeline);
+    auto [ax, phases] = App::uncurry(pipeline);
 
     // handle pipeline like all other pass axms
     auto pipeline_axm   = ax->as<Axm>();

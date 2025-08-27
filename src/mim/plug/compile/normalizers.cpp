@@ -7,10 +7,10 @@ namespace mim::plug::compile {
 const Def* normalize_pass_phase(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
 
-    auto [ax, _] = collect_args(arg);
-    if (ax->flags() != flags_t(Annex::Base<pass_list>)) {
+    auto [axm, _] = App::uncurry(arg);
+    if (axm->flags() != flags_t(Annex::Base<pass_list>)) {
         // TODO: remove when normalizers are fixed
-        if (ax->flags() == flags_t(Annex::Base<combine_pass_list>)) {
+        if (axm->flags() == flags_t(Annex::Base<combine_pass_list>)) {
             auto arg_cpl = arg->as<App>();
             arg          = normalize_combine_pass_list(arg_cpl->type(), arg_cpl->callee(), arg_cpl->arg());
         } else {
@@ -18,8 +18,8 @@ const Def* normalize_pass_phase(const Def* type, const Def*, const Def* arg) {
         }
     }
 
-    auto [f_ax, pass_list_defs] = collect_args(arg);
-    assert(f_ax->flags() == flags_t(Annex::Base<pass_list>));
+    auto [f_axm, pass_list_defs] = App::uncurry(arg);
+    assert(f_axm->flags() == flags_t(Annex::Base<pass_list>));
 
     return world.call<passes_to_phase>(pass_list_defs);
 }
@@ -28,8 +28,8 @@ const Def* normalize_pass_phase(const Def* type, const Def*, const Def* arg) {
 const Def* normalize_combined_phase(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
 
-    auto [ax, phase_list_defs] = collect_args(arg);
-    assert(ax->flags() == flags_t(Annex::Base<phase_list>));
+    auto [axm, phase_list_defs] = App::uncurry(arg);
+    assert(axm->flags() == flags_t(Annex::Base<phase_list>));
 
     return world.call<phases_to_phase>(phase_list_defs);
 }
@@ -47,12 +47,15 @@ const Def* normalize_combine_pass_list(const Def* type, const Def*, const Def* a
     DefVec passes;
 
     for (auto pass_list_def : pass_lists) {
-        auto [ax, pass_list_defs] = collect_args(pass_list_def);
-        assert(ax->flags() == flags_t(Annex::Base<pass_list>));
+        auto [axm, pass_list_defs] = App::uncurry(pass_list_def);
+        assert(axm->flags() == flags_t(Annex::Base<pass_list>));
         passes.insert(passes.end(), pass_list_defs.begin(), pass_list_defs.end());
     }
-    const Def* app_list = world.annex<pass_list>();
-    for (auto pass : passes) app_list = world.app(app_list, pass);
+
+    auto app_list = world.annex<pass_list>();
+    for (auto pass : passes)
+        app_list = world.app(app_list, pass);
+
     return app_list;
 }
 
