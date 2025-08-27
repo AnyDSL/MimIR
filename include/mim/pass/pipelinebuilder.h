@@ -58,16 +58,6 @@ void register_phase(Passes& passes, CArgs&&... args) {
                        builder.add_phase<P>(args...);
                    });
 }
-
-template<class A, class P, class Q>
-void register_pass_with_arg(Passes& passes) {
-    assert_emplace(passes, flags_t(Annex::Base<A>), [](World& world, PipelineBuilder& builder, const Def* app) {
-        auto pass_arg = builder.man().find<Q>();
-        world.DLOG("register using arg: {} of type {} for gid {}", pass_arg, typeid(Q).name(),
-                   app->as<App>()->arg()->gid());
-        builder.add_pass<P>(pass_arg);
-    });
-}
 ///@}
 
 } // namespace mim
