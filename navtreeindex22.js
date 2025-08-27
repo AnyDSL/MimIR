@@ -1,5 +1,10 @@
 var NAVTREEINDEX22 =
 {
+"namespacemim_1_1plug_1_1regex.html#a22ae7a476a9fc4465086b7c5c57c33a7":[3,0,1,4,13,17],
+"namespacemim_1_1plug_1_1regex.html#a27ecf9ea39cecd2d5eedd5a90b4d36a4":[3,0,1,4,13,14],
+"namespacemim_1_1plug_1_1regex.html#a4ac65a499cb646a0c978d08d6d91d0b7":[3,0,1,4,13,16],
+"namespacemim_1_1plug_1_1regex.html#a503fd044ea11748600b636a1590a3945":[3,0,1,4,13,4],
+"namespacemim_1_1plug_1_1regex.html#a571f5196daa1119e017b08d1f210aff2":[3,0,1,4,13,8],
 "namespacemim_1_1plug_1_1regex.html#a57ccd812190be59e69cc7ab1b563dfa9":[3,0,1,4,13,18],
 "namespacemim_1_1plug_1_1regex.html#a64e05eb3efae975d47944dc127eede75":[3,0,1,4,13,10],
 "namespacemim_1_1plug_1_1regex.html#a69e15eff07c15faf117e019314f4ab43":[3,0,1,4,13,22],
@@ -244,10 +249,5 @@ var NAVTREEINDEX22 =
 "stream_8cpp_source.html":[6,0,3,1,0,5],
 "structautomaton_1_1DFANode_1_1Lt.html":[3,0,0,2,0],
 "structautomaton_1_1DFANode_1_1Lt.html":[5,0,0,2,0],
-"structautomaton_1_1DFANode_1_1Lt.html#a96ef0a9ea74d7fa46eb32090989d95cc":[3,0,0,2,0,0],
-"structautomaton_1_1DFANode_1_1Lt.html#a96ef0a9ea74d7fa46eb32090989d95cc":[5,0,0,2,0,0],
-"structautomaton_1_1RangeCompare.html":[3,0,0,5],
-"structautomaton_1_1RangeCompare.html":[5,0,0,5],
-"structautomaton_1_1RangeCompare.html#a11d4080a44670384c6537de6daeffd5d":[3,0,0,5,0],
-"structautomaton_1_1RangeCompare.html#a11d4080a44670384c6537de6daeffd5d":[5,0,0,5,0]
+"structautomaton_1_1DFANode_1_1Lt.html#a96ef0a9ea74d7fa46eb32090989d95cc":[3,0,0,2,0,0]
 };

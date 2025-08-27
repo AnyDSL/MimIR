@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['passes_0',['Passes',['../namespacemim.html#a5f064c54d1071e6194374edddc618658',1,'mim']]],
-  ['plugin_5ft_1',['plugin_t',['../namespacemim.html#abb3c4d87d349db095756fced097d8ac8',1,'mim']]],
-  ['pointer_2',['pointer',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a68a83086b569a1bbdfab44abeae501bc',1,'mim::Sets::Set::iterator']]],
-  ['ptr_3',['Ptr',['../namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b',1,'mim::ast']]],
-  ['ptrs_4',['Ptrs',['../namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed',1,'mim::ast']]]
+  ['nat_5ft_0',['nat_t',['../namespacemim.html#a02aae51c2293663cb7352f21c7fbe490',1,'mim']]],
+  ['node_5ft_1',['node_t',['../namespacemim.html#a459cb02e53212327ccb3957614a485ca',1,'mim']]],
+  ['normalizefn_2',['NormalizeFn',['../namespacemim.html#ab992e926dce870b1e086b34589849a92',1,'mim']]],
+  ['normalizers_3',['Normalizers',['../namespacemim.html#ab875464e5f495601abff7287573e1405',1,'mim']]]
 ];

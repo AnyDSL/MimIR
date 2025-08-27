@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['iterator_5fcategory_0',['iterator_category',['../classmim_1_1Sets_1_1Set_1_1iterator.html#ab299636e45522b09b7da7c97ecc78da2',1,'mim::Sets::Set::iterator']]]
+  ['handle_0',['Handle',['../structmim_1_1Plugin.html#aeb76fcde7e35346fbfa6b654345b3bab',1,'mim::Plugin']]]
 ];

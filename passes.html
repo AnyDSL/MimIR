@@ -210,8 +210,9 @@ Rewrite Pass</h1>
 <div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#afaa1b7ff42fe8de01c9ae6f3531c5cbc">alloc</a>-&gt;decurry()-&gt;args&lt;2&gt;();</div>
 <div class="line">        <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemim_1_1plug_1_1mem.html#a4674799ce943d9db2a4da04cc0067df8">op_malloc</a>(pointee, <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#afaa1b7ff42fe8de01c9ae6f3531c5cbc">alloc</a>-&gt;arg());</div>
 <div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4">slot</a> = <a class="code hl_function" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">Axm::isa&lt;mem::slot&gt;</a>(def)) {</div>
-<div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4">slot</a>-&gt;decurry()-&gt;args&lt;2&gt;();</div>
-<div class="line">        <span class="keyword">auto</span> [mem, id]             = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4">slot</a>-&gt;args&lt;2&gt;();</div>
+<div class="line">        <span class="keyword">auto</span> [Ta, mi]              = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4">slot</a>-&gt;uncurry&lt;2&gt;();</div>
+<div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = Ta-&gt;projs&lt;2&gt;();</div>
+<div class="line">        <span class="keyword">auto</span> [mem, id]             = mi-&gt;projs&lt;2&gt;();</div>
 <div class="line">        <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemim_1_1plug_1_1mem.html#a44065fab91e9fa4ac7e6011a4dd5e2c0">op_mslot</a>(pointee, mem, <span class="keywordtype">id</span>);</div>
 <div class="line">    }</div>
 <div class="line"> </div>
