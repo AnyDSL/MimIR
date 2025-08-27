@@ -13,21 +13,13 @@ void apply(P& ps, B& builder, const Def* app) {
 
     world.DLOG("pass/phase: {}", p_def);
 
-    if (auto phase_ax = p_def->isa<Axm>()) {
-        auto flag = phase_ax->flags();
-        if (ps.contains(flag)) {
-            auto phase_fun = ps[flag];
-            phase_fun(builder, app);
-        } else {
-            world.WLOG("pass/phase '{}' not found", phase_ax->sym());
-            assert(ps.contains(flag) && "pass/phase not found");
-        }
-    } else if (p_def->isa<Lam>()) {
-        assert(0 && "curried lambas are not supported");
-    } else {
-        world.WLOG("pass/phase '{}' is not an axm", p_def);
-        assert(p_def->isa<Axm>() && "pass/phase is not an axm");
-    }
+    if (auto axm = p_def->isa<Axm>())
+        if (auto i = ps.find(axm->flags()); i != ps.end())
+            i->second(builder, app);
+        else
+            world.ELOG("pass/phase '{}' not found", axm->sym());
+    else
+        world.ELOG("unsupported callee for a a phase/pass", p_def);
 }
 
 } // namespace mim::plug::compile
