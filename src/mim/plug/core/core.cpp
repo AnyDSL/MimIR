@@ -10,13 +10,20 @@ using namespace mim;
 using namespace mim::plug;
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"core", [](Normalizers& normalizers) { core::register_normalizers(normalizers); }, nullptr,
-            [](Backends& backends) { backends["ll"] = &ll::emit; }};
+    // clang-format off
+    return {
+        "core",
+        [](Normalizers& normalizers) { core::register_normalizers(normalizers); },
+        nullptr,
+        [](Backends& backends) { backends["ll"] = &ll::emit; }
+    };
+    // clang-format on
 }
 
 namespace mim::plug::core {
 
-template<bool up> const Sigma* convert(const TBound<up>* b) {
+template<bool up>
+const Sigma* convert(const TBound<up>* b) {
     auto& w = b->world();
 
     if constexpr (up) {

@@ -8,7 +8,7 @@
 namespace mim::plug::mem {
 
 CopyProp::CopyProp(PassMan& man, bool bb_only)
-    : FPPass(man, "copy_prop")
+    : FPPass(man, std::format("copy_prop {}", bb_only))
     , beta_red_(man.find<BetaRed>())
     , eta_exp_(man.find<EtaExp>())
     , bb_only_(bb_only) {}

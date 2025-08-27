@@ -2,8 +2,6 @@
 
 #include <mim/world.h>
 
-#include <mim/pass/pipelinebuilder.h>
-
 #include "mim/plug/matrix/autogen.h"
 
 namespace mim::plug::matrix {

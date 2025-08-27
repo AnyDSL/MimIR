@@ -21,7 +21,7 @@ static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 /// * If you do not rely on interaction between different Pass%es, consider using Phase instead.
 class Pass {
 public:
-    Pass(PassMan&, std::string_view name);
+    Pass(PassMan&, std::string name);
     virtual ~Pass() = default;
 
     /// @name Getters
@@ -106,6 +106,8 @@ private:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
 class PassMan {
 public:
+    using P = Pass;
+
     PassMan(World& world)
         : world_(world) {}
 
@@ -147,6 +149,12 @@ public:
         PassMan man(world);
         man.add<P>(std::forward<Args>(args)...);
         man.run();
+    }
+
+    template<class A, class P, class... Args>
+    static void hook(Passes& passes, Args&&... args) {
+        auto f = [... args = std::forward<Args>(args)](PassMan& man, const Def*) { man.add<P>(args...); };
+        assert_emplace(passes, flags_t(Annex::Base<A>), f);
     }
     ///@}
 
@@ -229,8 +237,8 @@ private:
 template<class P, class M = Def>
 class RWPass : public Pass {
 public:
-    RWPass(PassMan& man, std::string_view name)
-        : Pass(man, name) {}
+    RWPass(PassMan& man, std::string name)
+        : Pass(man, std::move(name)) {}
 
     bool inspect() const override {
         if constexpr (std::is_same<M, Def>::value)
@@ -255,8 +263,8 @@ public:
     using Super = RWPass<P, M>;
     using Data  = std::tuple<>; ///< Default.
 
-    FPPass(PassMan& man, std::string_view name)
-        : Super(man, name) {}
+    FPPass(PassMan& man, std::string name)
+        : Super(man, std::move(name)) {}
 
     bool fixed_point() const override { return true; }
 

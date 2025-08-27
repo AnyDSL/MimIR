@@ -13,16 +13,14 @@
 using namespace mim;
 using namespace mim::plug;
 
+void reg_stages(Phases& phases, Passes& passes) {
+    Pipeline::hook<matrix::lower_matrix_low_level, mim::plug::matrix::LowerMatrixLowLevel>(phases);
+
+    PassMan::hook<matrix::lower_matrix_high_level_map_reduce, mim::plug::matrix::LowerMatrixHighLevelMapRed>(passes);
+    PassMan::hook<matrix::lower_matrix_medium_level, mim::plug::matrix::LowerMatrixMediumLevel>(passes);
+    PassMan::hook<matrix::internal_map_reduce_cleanup, mim::plug::compile::InternalCleanup>(passes, INTERNAL_PREFIX);
+}
+
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {
-        "matrix", [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); },
-        [](Passes& passes) {
-            register_pass<matrix::lower_matrix_high_level_map_reduce, mim::plug::matrix::LowerMatrixHighLevelMapRed>(
-                passes);
-            register_pass<matrix::lower_matrix_medium_level, mim::plug::matrix::LowerMatrixMediumLevel>(passes);
-            register_phase<matrix::lower_matrix_low_level, mim::plug::matrix::LowerMatrixLowLevel>(passes);
-            register_pass<matrix::internal_map_reduce_cleanup, mim::plug::compile::InternalCleanup>(passes,
-                                                                                                    INTERNAL_PREFIX);
-        },
-        nullptr};
+    return {"matrix", [](Normalizers& n) { matrix::register_normalizers(n); }, reg_stages, nullptr};
 }

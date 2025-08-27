@@ -10,7 +10,6 @@
 #include <mim/pass/eta_red.h>
 #include <mim/pass/optimize.h>
 #include <mim/pass/pass.h>
-#include <mim/pass/pipelinebuilder.h>
 
 #include <mim/plug/compile/compile.h>
 #include <mim/plug/core/core.h>
