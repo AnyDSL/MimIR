@@ -7,6 +7,12 @@
 
 namespace mim::plug::mem {
 
+CopyProp::CopyProp(PassMan& man, bool bb_only)
+    : FPPass(man, "copy_prop")
+    , beta_red_(man.find<BetaRed>())
+    , eta_exp_(man.find<EtaExp>())
+    , bb_only_(bb_only) {}
+
 const Def* CopyProp::rewrite(const Def* def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
     if (!isa_workable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;

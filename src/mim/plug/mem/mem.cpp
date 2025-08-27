@@ -21,27 +21,24 @@ using namespace mim::plug;
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
     return {"mem", [](Normalizers& normalizers) { mem::register_normalizers(normalizers); },
             [](Passes& passes) {
-                register_pass_with_arg<mem::ssa_pass, mem::SSAConstr, EtaExp>(passes);
+                register_pass<mem::ssa_pass, mem::SSAConstr>(passes);
                 register_pass<mem::remem_elim_pass, mem::RememElim>(passes);
                 register_pass<mem::alloc2malloc_pass, mem::Alloc2Malloc>(passes);
 
                 // TODO: generalize register_pass_with_arg
                 passes[flags_t(Annex::Base<mem::copy_prop_pass>)]
                     = [&](World& world, PipelineBuilder& builder, const Def* app) {
-                          auto [br, ee, bb] = app->as<App>()->args<3>();
                           // TODO: let get_pass do the casts
-                          auto br_pass = (BetaRed*)builder.pass(br);
-                          auto ee_pass = (EtaExp*)builder.pass(ee);
-                          auto bb_only = bb->as<Lit>()->get<u64>();
-                          world.DLOG("registering copy_prop with br = {}, ee = {}, bb_only = {}", br, ee, bb_only);
-                          builder.add_pass<mem::CopyProp>(app, br_pass, ee_pass, bb_only);
+                          auto bb_only = Lit::as(app->as<App>()->arg());
+                          world.DLOG("registering copy_prop with bb_only = {}", bb_only);
+                          builder.add_pass<mem::CopyProp>(bb_only);
                       };
                 passes[flags_t(Annex::Base<mem::reshape_pass>)]
                     = [&](World&, PipelineBuilder& builder, const Def* app) {
                           auto mode_axm = app->as<App>()->arg()->as<Axm>();
                           auto mode = mode_axm->flags() == flags_t(Annex::Base<mem::reshape_arg>) ? mem::Reshape::Arg
                                                                                                   : mem::Reshape::Flat;
-                          builder.add_pass<mem::Reshape>(app, mode);
+                          builder.add_pass<mem::Reshape>(mode);
                       };
                 register_phase<mem::add_mem_phase, mem::AddMem>(passes);
             },

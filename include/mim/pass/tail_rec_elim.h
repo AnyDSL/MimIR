@@ -8,9 +8,7 @@ class EtaRed;
 
 class TailRecElim : public FPPass<TailRecElim, Lam> {
 public:
-    TailRecElim(PassMan& man, EtaRed* eta_red = nullptr)
-        : FPPass(man, "tail_rec_elim")
-        , eta_red_(eta_red) {}
+    TailRecElim(PassMan&);
 
 private:
     /// @name PassMan hooks

@@ -32,7 +32,7 @@ extern "C" MIM_EXPORT Plugin mim_get_plugin() {
                     = [&](World&, PipelineBuilder& builder, const Def* app) {
                           auto bb      = app->as<App>()->arg();
                           auto bb_only = bb->as<Lit>()->get<u64>();
-                          builder.add_pass<EtaRed>(app, bb_only);
+                          builder.add_pass<EtaRed>(bb_only);
                       };
             },
             nullptr};

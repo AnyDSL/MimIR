@@ -69,9 +69,8 @@ extern "C" MIM_EXPORT mim::Plugin mim_get_plugin() {
                                    auto [ax, phases] = App::uncurry(app);
                                    add_phases(phases, world, passes, builder);
                                });
-                assert_emplace(
-                    passes, flags_t(Annex::Base<mim::plug::compile::nullptr_pass>),
-                    [](World&, PipelineBuilder& builder, const Def* def) { builder.def2pass(def, nullptr); });
+                assert_emplace(passes, flags_t(Annex::Base<mim::plug::compile::nullptr_pass>),
+                               [](World&, PipelineBuilder&, const Def*) {});
 
                 register_pass<compile::beta_red_pass, BetaRed>(passes);
                 register_pass<compile::eta_red_pass, EtaRed>(passes);
@@ -80,9 +79,9 @@ extern "C" MIM_EXPORT mim::Plugin mim_get_plugin() {
                 register_pass<compile::ret_wrap_pass, RetWrap>(passes);
                 register_pass<compile::internal_cleanup_pass, compile::InternalCleanup>(passes);
 
-                register_pass_with_arg<compile::eta_exp_pass, EtaExp, EtaRed>(passes);
-                register_pass_with_arg<compile::scalarize_pass, Scalarize, EtaExp>(passes);
-                register_pass_with_arg<compile::tail_rec_elim_pass, TailRecElim, EtaRed>(passes);
+                register_pass<compile::eta_exp_pass, EtaExp>(passes);
+                register_pass<compile::scalarize_pass, Scalarize>(passes);
+                register_pass<compile::tail_rec_elim_pass, TailRecElim>(passes);
             },
             nullptr};
 }

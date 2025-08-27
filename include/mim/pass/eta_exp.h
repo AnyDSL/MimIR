@@ -12,9 +12,7 @@ class EtaRed;
 /// It gives other Pass%es such as SSAConstr the opportunity to change `f`'s signature (e.g. adding or removingp Var%s).
 class EtaExp : public FPPass<EtaExp, Lam> {
 public:
-    EtaExp(PassMan& man, EtaRed* eta_red)
-        : FPPass(man, "eta_exp")
-        , eta_red_(eta_red) {}
+    EtaExp(PassMan&);
 
     /// @name interface for other passes
     ///@{

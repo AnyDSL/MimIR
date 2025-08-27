@@ -121,17 +121,23 @@ public:
     ///@{
     void run(); ///< Run all registered passes on the whole World.
 
+    template<class P>
+    P* find() {
+        auto key = std::type_index(typeid(P));
+        if (auto i = registry_.find(key); i != registry_.end()) return static_cast<P*>(i->second);
+        return nullptr;
+    }
+
     /// Add a pass to this PassMan.
     /// If a pass of the same class has been added already, returns the earlier added instance.
     template<class P, class... Args>
     P* add(Args&&... args) {
-        auto key = std::type_index(typeid(P));
-        if (auto it = registry_.find(key); it != registry_.end()) return static_cast<P*>(it->second);
+        if (auto pass = find<P>()) return pass;
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
         auto res = p.get();
         fixed_point_ |= res->fixed_point();
         passes_.emplace_back(std::move(p));
-        registry_.emplace(key, res);
+        registry_.emplace(std::type_index(typeid(P)), res);
         return res;
     }
 
