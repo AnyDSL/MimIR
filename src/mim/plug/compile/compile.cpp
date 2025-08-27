@@ -25,7 +25,10 @@ void add_phases(Phases& phases, Pipeline& pipe, Defs defs) {
 }
 
 void reg_stages(Phases& phases, Passes& passes) {
-    assert_emplace(passes, flags_t(Annex::Base<mim::plug::compile::nullptr_pass>), [](PassMan&, const Def*) {});
+    // clang-format off
+    assert_emplace(phases, flags_t(Annex::Base<mim::plug::compile::null_phase>), [](Pipeline&, const Def*) {});
+    assert_emplace(passes, flags_t(Annex::Base<mim::plug::compile::null_pass >), [](PassMan&,  const Def*) {});
+    // clang-format on
 
     phases[flags_t(Annex::Base<compile::plugin_select>)] = [&](Pipeline& pipe, const Def* app) {
         auto& world        = pipe.world();
@@ -96,16 +99,17 @@ void reg_stages(Phases& phases, Passes& passes) {
         add_phases(phases, pipe, defs);
     });
 
-    PassMan::hook<compile::beta_red_pass, BetaRed>(passes);
-    PassMan::hook<compile::eta_red_pass, EtaRed>(passes);
-
-    PassMan::hook<compile::lam_spec_pass, LamSpec>(passes);
-    PassMan::hook<compile::ret_wrap_pass, RetWrap>(passes);
-    PassMan::hook<compile::internal_cleanup_pass, compile::InternalCleanup>(passes);
-
-    PassMan::hook<compile::eta_exp_pass, EtaExp>(passes);
-    PassMan::hook<compile::scalarize_pass, Scalarize>(passes);
-    PassMan::hook<compile::tail_rec_elim_pass, TailRecElim>(passes);
+    using compile::InternalCleanup;
+    // clang-format off
+    PassMan::hook<compile::beta_red_pass,          BetaRed        >(passes);
+    PassMan::hook<compile::eta_red_pass,           EtaRed         >(passes);
+    PassMan::hook<compile::lam_spec_pass,          LamSpec        >(passes);
+    PassMan::hook<compile::ret_wrap_pass,          RetWrap        >(passes);
+    PassMan::hook<compile::internal_cleanup_pass,  InternalCleanup>(passes);
+    PassMan::hook<compile::eta_exp_pass,           EtaExp         >(passes);
+    PassMan::hook<compile::scalarize_pass,         Scalarize      >(passes);
+    PassMan::hook<compile::tail_rec_elim_pass,     TailRecElim    >(passes);
+    // clang-format on
 }
 
 extern "C" MIM_EXPORT mim::Plugin mim_get_plugin() {

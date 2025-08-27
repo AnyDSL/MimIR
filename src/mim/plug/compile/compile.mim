@@ -85,6 +85,10 @@ axm %compile.phase_list: %compile.CombinedPhase;
 axm %compile.combined_phase: %compile.CombinedPhase → %compile.Phase, normalize_combined_phase;
 axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Phase;
 ///
+/// ### Phases
+///
+axm %compile.null_phase:            %compile.Phase;
+///
 /// ### Passes
 ///
 /// Basic passes that are defined in the core of Mim.
@@ -96,7 +100,7 @@ axm %compile.scalarize_pass:        %compile.Pass;
 axm %compile.tail_rec_elim_pass:    %compile.Pass;
 axm %compile.lam_spec_pass:         %compile.Pass;
 axm %compile.ret_wrap_pass:         %compile.Pass;
-axm %compile.nullptr_pass:          %compile.Pass; // has to be registered in the pipeline
+axm %compile.null_pass:             %compile.Pass;
 axm %compile.internal_cleanup_pass: %compile.Pass;
 ///
 /// ### Pipelines
@@ -125,13 +129,10 @@ lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
 ///
 /// ### Dependent Passes and Phases
 ///
-let empty_pass  = %compile.nullptr_pass;
-let empty_phase = %compile.passes_to_phase ();
-
 axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;
 
 let plugin_phase = %compile.plugin_select %compile.Phase;
 let plugin_pass  = %compile.plugin_select %compile.Pass;
 
-lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase empty_phase;
-lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  empty_pass;
+lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase %compile.null_phase;
+lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  %compile.null_pass;
