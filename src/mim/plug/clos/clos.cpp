@@ -5,7 +5,6 @@
 #include <mim/pass/eta_exp.h>
 #include <mim/pass/eta_red.h>
 #include <mim/pass/pass.h>
-#include <mim/pass/pipelinebuilder.h>
 #include <mim/pass/scalarize.h>
 
 #include "mim/plug/clos/pass/branch_clos_elim.h"
@@ -18,24 +17,25 @@
 using namespace mim;
 using namespace mim::plug;
 
+void reg_stages(Phases& phases, Passes& passes) {
+    Pipeline::hook<clos::clos_conv_phase, clos::ClosConv>(phases);
+    Pipeline::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
+
+    // TODO:; remove after ho_codegen merge
+    phases[flags_t(Annex::Base<clos::eta_red_bool_pass>)] = [&](Pipeline& pipe, const Def* app) {
+        auto bb      = app->as<App>()->arg();
+        auto bb_only = bb->as<Lit>()->get<u64>();
+        pipe.add<EtaRed>(bb_only);
+    };
+
+    PassMan::hook<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
+    PassMan::hook<clos::branch_clos_pass, clos::BranchClosElim>(passes);
+    PassMan::hook<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
+    PassMan::hook<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
+}
+
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"clos", [](Normalizers& normalizers) { clos::register_normalizers(normalizers); },
-            [](Passes& passes) {
-                register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
-                register_pass<clos::branch_clos_pass, clos::BranchClosElim>(passes);
-                register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
-                register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
-                register_phase<clos::clos_conv_phase, clos::ClosConv>(passes);
-                register_phase<clos::lower_typed_clos_phase, clos::LowerTypedClos>(passes);
-                // TODO:; remove after ho_codegen merge
-                passes[flags_t(Annex::Base<clos::eta_red_bool_pass>)]
-                    = [&](World&, PipelineBuilder& builder, const Def* app) {
-                          auto bb      = app->as<App>()->arg();
-                          auto bb_only = bb->as<Lit>()->get<u64>();
-                          builder.add_pass<EtaRed>(app, bb_only);
-                      };
-            },
-            nullptr};
+    return {"clos", [](Normalizers& n) { clos::register_normalizers(n); }, reg_stages, nullptr};
 }
 
 namespace mim::plug::clos {

@@ -29,7 +29,6 @@ target_sources(libmim
         pass/lam_spec.cpp
         pass/optimize.cpp
         pass/pass.cpp
-        pass/pipelinebuilder.cpp
         pass/ret_wrap.cpp
         pass/scalarize.cpp
         pass/tail_rec_elim.cpp

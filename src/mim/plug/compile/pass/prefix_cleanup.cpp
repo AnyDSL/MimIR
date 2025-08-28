@@ -1,4 +1,4 @@
-#include "mim/plug/compile/pass/internal_cleanup.h"
+#include "mim/plug/compile/pass/prefix_cleanup.h"
 
 #include <iostream>
 
@@ -6,7 +6,7 @@
 
 namespace mim::plug::compile {
 
-void InternalCleanup::enter() {
+void PrefixCleanup::enter() {
     Lam* lam = curr_mut();
     if (lam->sym().view().starts_with(prefix_)) {
         lam->make_internal();

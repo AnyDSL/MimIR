@@ -1,5 +1,7 @@
 #pragma once
 
+#include <span>
+#include <type_traits>
 #include <variant>
 
 #include "mim/def.h"
@@ -224,6 +226,44 @@ private:
         trip_  = trip;
     }
 
+    template<size_t N, bool Callee, bool Args>
+    static auto uncurry_(const Def* callee) {
+        if constexpr (N == std::dynamic_extent) {
+            auto args = DefVec();
+            while (auto app = callee->isa<App>()) {
+                if constexpr (Args) args.emplace_back(app->arg());
+                callee = app->callee();
+            }
+
+            if constexpr (Callee && Args) {
+                std::ranges::reverse(args);
+                return std::pair{callee, args};
+            } else if constexpr (Args) {
+                std::ranges::reverse(args);
+                return args;
+            } else {
+                return callee;
+            }
+        } else {
+            auto args = std::array<const Def*, N>();
+            for (size_t i = N; i-- != 0;) {
+                if (auto app = callee->isa<App>()) {
+                    if constexpr (Args) args[i] = app->arg();
+                    callee = app->callee();
+                } else {
+                    if constexpr (Args) args[i] = nullptr;
+                }
+            }
+
+            if constexpr (Callee && Args)
+                return std::pair{callee, args};
+            else if constexpr (Args)
+                return args;
+            else
+                return callee;
+        }
+    }
+
 public:
     using Setters<App>::set;
 
@@ -247,6 +287,44 @@ public:
     const Axm* axm() const { return axm_; }
     u8 curry() const { return curry_; }
     u8 trip() const { return trip_; }
+    ///@}
+
+    /// @name Uncurry
+    /// Retrieve all App::arg%s of a curried App.
+    /// Use like this:
+    /// ```
+    /// // 1. Variant:
+    /// auto [abc, de] = app->uncurry<2>();
+    /// auto [a, b, c] = abc->projs<3>();
+    /// auto [d, e]    = de->projs<2>();
+    ///
+    /// // 2. Variant:
+    /// auto [callee , args] = App::uncurry(def);
+    ///
+    /// ```
+    /// @returns
+    /// 1. Variant: <br>
+    ///    *only* the arguments in a `std::array<const Def*, N>`.
+    ///    You will *not* retrieve the initial callee because if you know the number of curried App%s,
+    ///    you probably also know the callee anyway.
+    ///    Also, if you "overshoot" the number of curried App%s, the superflous args on the left will be set to
+    ///    `nullptr`.
+    /// 2. Variant: <br>
+    ///    A pair that contains:
+    ///     1. The initial callee.
+    ///     2. A DefVec of all curried App::arg%s.
+    /// You can enforce variant 1 / variant 2 by with the template argument @p Callee.
+    ///@{
+    // clang-format off
+    template<size_t N = std::dynamic_extent> static auto uncurry(const Def* def) { return uncurry_<N, true, true >(def ); }
+    template<size_t N = std::dynamic_extent>        auto uncurry() const         { return uncurry_<N, true, true >(this); }
+
+    static const Def* uncurry_callee(const Def* def) { return uncurry_<std::dynamic_extent, true, false>(def ); }
+           const Def* uncurry_callee() const         { return uncurry_<std::dynamic_extent, true, false>(this); }
+
+    template<size_t N = std::dynamic_extent> static auto uncurry_args(const Def* def) { return uncurry_<N, false, true>(def ); }
+    template<size_t N = std::dynamic_extent>        auto uncurry_args() const         { return uncurry_<N, false, true>(this); }
+    // clang-format on
     ///@}
 
     static constexpr auto Node      = mim::Node::App;
@@ -273,9 +351,6 @@ inline std::pair<const App*, Lam*> isa_apped_mut_lam(const Def* def) {
     return {nullptr, nullptr};
 }
 
-/// Yields curried App%s in a flat `std::deque<const App*>`.
-std::deque<const App*> decurry(const Def*);
-
 /// The high level view is:
 /// ```
 /// f: B -> C
@@ -293,9 +368,6 @@ std::deque<const App*> decurry(const Def*);
 /// h'= λ b = f (b, ret_h)
 /// ```
 const Def* compose_cn(const Def* f, const Def* g);
-
-/// Helper function to cope with the fact that normalizers take all arguments and not only its axm arguments.
-std::pair<const Def*, DefVec> collect_args(const Def* def);
 ///@}
 
 } // namespace mim

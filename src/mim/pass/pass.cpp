@@ -7,9 +7,9 @@
 
 namespace mim {
 
-Pass::Pass(PassMan& man, std::string_view name)
+Pass::Pass(PassMan& man, std::string name)
     : man_(man)
-    , name_(name)
+    , name_(std::move(name))
     , index_(man.passes().size()) {}
 
 void PassMan::push_state() {

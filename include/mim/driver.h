@@ -61,10 +61,14 @@ public:
     void load(const std::string& name) { return load(sym(name)); }
     bool is_loaded(Sym sym) const { return lookup(plugins_, sym); }
     void* get_fun_ptr(Sym plugin, const char* name);
-    template<class F> auto get_fun_ptr(Sym plugin, const char* name) {
+
+    template<class F>
+    auto get_fun_ptr(Sym plugin, const char* name) {
         return reinterpret_cast<F*>(get_fun_ptr(plugin, name));
     }
-    template<class F> auto get_fun_ptr(const char* plugin, const char* name) {
+
+    template<class F>
+    auto get_fun_ptr(const char* plugin, const char* name) {
         return get_fun_ptr<F>(sym(plugin), name);
     }
     ///@}
@@ -73,6 +77,7 @@ public:
     /// All these lookups yield `nullptr` if the key has not been found.
     ///@{
     auto pass(flags_t flags) { return lookup(passes_, flags); }
+    auto phase(flags_t flags) { return lookup(phases_, flags); }
     auto normalizer(flags_t flags) const { return lookup(normalizers_, flags); }
     auto normalizer(plugin_t d, tag_t t, sub_t s) const { return normalizer(d | flags_t(t << 8u) | s); }
     auto backend(std::string_view name) { return lookup(backends_, name); }
@@ -88,6 +93,7 @@ private:
     std::list<fs::path>::iterator insert_ = search_paths_.end();
     Backends backends_;
     Passes passes_;
+    Phases phases_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> import_path2sym_;
 };

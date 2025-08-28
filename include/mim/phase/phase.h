@@ -6,6 +6,8 @@
 
 #include "mim/pass/pass.h"
 
+#include "fe/cast.h"
+
 namespace mim {
 
 class Nest;
@@ -14,7 +16,7 @@ class World;
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
 /// Phase::dirty indicates whether we may need a Cleanup afterwards.
-class Phase {
+class Phase : public fe::RuntimeCast<Phase> {
 public:
     Phase(World& world, std::string_view name, bool dirty)
         : world_(world)
@@ -123,6 +125,8 @@ private:
 /// Organizes several Phase%s as a pipeline.
 class Pipeline : public Phase {
 public:
+    using P = Phase;
+
     Pipeline(World& world)
         : Phase(world, "pipeline", true) {}
 
@@ -148,6 +152,12 @@ public:
         }
     }
     ///@}
+
+    template<class A, class P, class... Args>
+    static void hook(Phases& phases, Args&&... args) {
+        auto f = [... args = std::forward<Args>(args)](Pipeline& pipe, const Def*) { pipe.template add<P>(args...); };
+        assert_emplace(phases, flags_t(Annex::Base<A>), f);
+    }
 
 private:
     std::deque<std::unique_ptr<Phase>> phases_;
