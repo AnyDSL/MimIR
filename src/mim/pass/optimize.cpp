@@ -1,12 +1,8 @@
 #include "mim/pass/optimize.h"
 
-#include <mim/plug/compile/compile.h>
-
 #include "mim/driver.h"
 
 #include "mim/phase/phase.h"
-
-using namespace mim::plug;
 
 namespace mim {
 
@@ -31,7 +27,8 @@ void optimize(World& world) {
     // make all functions `[] -> Pipeline` internal
     for (auto def : world.copy_externals()) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
-            if (Axm::isa<compile::Pipeline>(lam->codom())) {
+            // TODO use Axm::isa - but rn there is a problem with the rec Pi and plugin deps
+            if (lam->codom()->sym().view() == "%compile.Pipeline") {
                 if (!compilation) compilation = lam;
                 def->make_internal();
             }
