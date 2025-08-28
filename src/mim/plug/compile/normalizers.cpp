@@ -8,7 +8,7 @@ namespace mim::plug::compile {
 const Def* normalize_pass_phase(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
 
-    auto [axm, _] = App::uncurry(arg);
+    auto axm = App::uncurry_callee(arg)->as<Axm>(); // TODO or use isa?
     if (axm->flags() != flags_t(Annex::Base<pass_list>)) {
         // TODO: remove when normalizers are fixed
         if (axm->flags() == flags_t(Annex::Base<combine_pass_list>)) {
@@ -19,20 +19,20 @@ const Def* normalize_pass_phase(const Def* type, const Def*, const Def* arg) {
         }
     }
 
-    auto [f_axm, pass_list_defs] = App::uncurry(arg);
+    auto [f_axm, passes] = App::uncurry(arg);
     assert(f_axm->flags() == flags_t(Annex::Base<pass_list>));
 
-    return world.call<passes_to_phase>(pass_list_defs);
+    return world.call<passes_to_phase>(passes);
 }
 
 /// `combined_phase (phase_list phase1 ... phasen)` -> `phases_to_phase n (phase1, ..., phasen)`
 const Def* normalize_combined_phase(const Def* type, const Def*, const Def* arg) {
     auto& world = type->world();
 
-    auto [axm, phase_list_defs] = App::uncurry(arg);
+    auto [axm, phases] = App::uncurry(arg);
     assert(axm->flags() == flags_t(Annex::Base<phase_list>));
 
-    return world.call<phases_to_phase>(phase_list_defs);
+    return world.call<phases_to_phase>(phases);
 }
 
 /// `single_pass_phase pass` -> `passes_to_phase pass`
