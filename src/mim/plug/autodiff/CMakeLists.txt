@@ -7,6 +7,5 @@ add_mim_plugin(autodiff
         auxiliary/autodiff_rewrite_inner.cpp
         auxiliary/autodiff_rewrite_toplevel.cpp
         normalizers.cpp
-        ../compile/pass/internal_cleanup.cpp # hack
     INSTALL
 )

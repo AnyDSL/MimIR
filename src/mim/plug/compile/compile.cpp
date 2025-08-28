@@ -13,8 +13,9 @@
 #include <mim/pass/tail_rec_elim.h>
 #include <mim/phase/phase.h>
 
+#include "mim/plug/compile/autogen.h"
 #include "mim/plug/compile/pass/debug_print.h"
-#include "mim/plug/compile/pass/internal_cleanup.h"
+#include "mim/plug/compile/pass/prefix_cleanup.h"
 
 using namespace mim;
 using namespace mim::plug;
@@ -98,17 +99,20 @@ void reg_stages(Phases& phases, Passes& passes) {
             apply(phases, pipe, def);
     });
 
-    using compile::InternalCleanup;
     // clang-format off
     PassMan::hook<compile::beta_red_pass,          BetaRed        >(passes);
     PassMan::hook<compile::eta_red_pass,           EtaRed         >(passes);
     PassMan::hook<compile::lam_spec_pass,          LamSpec        >(passes);
     PassMan::hook<compile::ret_wrap_pass,          RetWrap        >(passes);
-    PassMan::hook<compile::internal_cleanup_pass,  InternalCleanup>(passes);
     PassMan::hook<compile::eta_exp_pass,           EtaExp         >(passes);
     PassMan::hook<compile::scalarize_pass,         Scalarize      >(passes);
     PassMan::hook<compile::tail_rec_elim_pass,     TailRecElim    >(passes);
     // clang-format on
+
+    assert_emplace(passes, flags_t(Annex::Base<compile::prefix_cleanup_pass>), [&](PassMan& man, const Def* app) {
+        auto prefix = tuple2str(app->as<App>()->arg());
+        man.add<compile::PrefixCleanup>(prefix);
+    });
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {

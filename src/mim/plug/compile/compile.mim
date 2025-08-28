@@ -101,7 +101,9 @@ axm %compile.tail_rec_elim_pass:    %compile.Pass;
 axm %compile.lam_spec_pass:         %compile.Pass;
 axm %compile.ret_wrap_pass:         %compile.Pass;
 axm %compile.null_pass:             %compile.Pass;
-axm %compile.internal_cleanup_pass: %compile.Pass;
+axm %compile.prefix_cleanup_pass: {n: Nat} → «n; I8» → %compile.Pass;
+
+let %compile.internal_cleanup_pass = %compile.prefix_cleanup_pass "internal_";
 ///
 /// ### Pipelines
 ///

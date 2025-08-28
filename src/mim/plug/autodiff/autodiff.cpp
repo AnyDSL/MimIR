@@ -4,7 +4,6 @@
 
 #include <mim/pass/pass.h>
 
-#include <mim/plug/compile/pass/internal_cleanup.h>
 #include <mim/plug/mem/mem.h>
 
 #include "mim/plug/autodiff/pass/autodiff_eval.h"
@@ -16,10 +15,11 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Phases&, Passes& passes) {
-    PassMan::hook<autodiff::ad_eval_pass, autodiff::AutoDiffEval>(passes);
-    PassMan::hook<autodiff::ad_zero_pass, autodiff::AutoDiffZero>(passes);
+    // clang-format off
+    PassMan::hook<autodiff::ad_eval_pass,         autodiff::AutoDiffEval       >(passes);
+    PassMan::hook<autodiff::ad_zero_pass,         autodiff::AutoDiffZero       >(passes);
     PassMan::hook<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(passes);
-    PassMan::hook<autodiff::ad_ext_cleanup_pass, compile::InternalCleanup>(passes, "internal_diff_");
+    // clang-format on
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {

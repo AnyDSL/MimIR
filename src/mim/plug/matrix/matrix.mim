@@ -232,8 +232,9 @@ fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
 ///
 axm %matrix.lower_matrix_high_level_map_reduce: %compile.Pass;
 axm %matrix.lower_matrix_medium_level:          %compile.Pass;
-axm %matrix.internal_map_reduce_cleanup:        %compile.Pass;
 axm %matrix.lower_matrix_low_level:             %compile.Phase;
+
+let %matrix.internal_map_reduce_cleanup = %compile.prefix_cleanup_pass "internal_mapRed_";
 ///
 /// ### Phases
 ///
