@@ -21,18 +21,21 @@ using namespace mim::plug;
 
 template<class P, class B>
 void apply(P& ps, B& builder, const Def* app) {
-    auto& world     = app->world();
-    auto [p_def, _] = App::uncurry(app);
+    auto& world = app->world();
+    auto p_def  = App::uncurry_callee(app);
 
-    world.DLOG("apply pass/phase: {}", p_def);
+    auto [xxx, _] = App::uncurry(app);
+    assert(xxx = p_def);
+
+    world.DLOG("apply pass/phase: `{}`", p_def);
 
     if (auto axm = p_def->isa<Axm>())
         if (auto i = ps.find(axm->flags()); i != ps.end())
             i->second(builder, app);
         else
-            world.ELOG("pass/phase '{}' not found", axm->sym());
+            world.ELOG("pass/phase `{}` not found", axm->sym());
     else
-        world.ELOG("unsupported callee for a a phase/pass", p_def);
+        world.ELOG("unsupported callee for a phase/pass: `{}`", p_def);
 }
 
 template<class P, class B>
@@ -43,15 +46,16 @@ struct PluginSelect {
     void operator()(B& builder, const Def* app) {
         auto& world        = builder.world();
         auto& driver       = world.driver();
-        auto [axm, tt, ff] = app->as<App>()->uncurry<3>(app);
+        auto [axm, tt, ff] = App::uncurry_args<3>(app);
+        auto name          = axm->sym();                                 // name has the form %opt.tag
+        auto [_, tag, __]  = Annex::split(driver, name);                 // where tag = [plugin]_plugin
+        auto plugin        = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
+        bool is_loaded     = driver.is_loaded(driver.sym(plugin));
 
-        auto name         = axm->sym();                                 // name has the form %opt.tag
-        auto [_, tag, __] = Annex::split(driver, name);                 // where tag = [plugin]_plugin
-        auto plugin       = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
-        bool is_loaded    = driver.is_loaded(driver.sym(plugin));
-
-        assert(tag.view().find('_') != std::string_view::npos && "mim/plugin_phase: invalid plugin name");
-        world.DLOG("plugin select for `{}` - loaded: `{}`", plugin, is_loaded);
+        if (tag.view().find('_') == std::string_view::npos)
+            world.ELOG("mim/plugin_phase: invalid plugin name");
+        else
+            world.DLOG("plugin select for `{}` - loaded: `{}`", plugin, is_loaded);
 
         apply(ps, builder, is_loaded ? tt : ff);
     }

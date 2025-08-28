@@ -686,7 +686,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto wrap = Axm::isa<core::wrap>(def)) {
-        auto [mode, ab] = wrap->uncurry<2>();
+        auto [mode, ab] = wrap->uncurry_args<2>();
         auto [a, b]     = ab->projs<2>([this](auto def) { return emit(def); });
         auto t          = convert(wrap->type());
         auto lmode      = Lit::as(mode);
@@ -839,7 +839,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         bb.tail("call void @free(i8* {})", name + "i8");
         return {};
     } else if (auto mslot = Axm::isa<mem::mslot>(def)) {
-        auto [Ta, msi]             = mslot->uncurry<2>();
+        auto [Ta, msi]             = mslot->uncurry_args<2>();
         auto [pointee, addr_space] = Ta->projs<2>();
         auto [mem, _, __]          = msi->projs<3>();
         emit_unsafe(mslot->arg(0));
@@ -886,7 +886,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_jb = emit(jmpbuf);
         return bb.assign(name, "call i32 @_setjmp(i8* {})", v_jb);
     } else if (auto arith = Axm::isa<math::arith>(def)) {
-        auto [mode, ab] = arith->uncurry<2>();
+        auto [mode, ab] = arith->uncurry_args<2>();
         auto [a, b]     = ab->projs<2>([this](auto def) { return emit(def); });
         auto t          = convert(arith->type());
         auto lmode      = Lit::as(mode);
