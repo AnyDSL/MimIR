@@ -52,7 +52,7 @@ let clos_opt1_phase =
 let clos_opt2_phase =
     %compile.pass_phase
         (%compile.pass_list
-            (%compile.scalarize_pass )
+            %compile.scalarize_pass
             %clos.branch_clos_pass
             (%mem.copy_prop_pass tt)
             %clos.lower_typed_clos_prep_pass

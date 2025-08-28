@@ -57,7 +57,7 @@ protected:
     bool todo_ = false; ///< Set to `true` if you want to run all Phase%es in your Pipeline within a fixed-point.
 };
 
-/// Visits the current Phase::world and constructs a new RWPhase::world along the way.
+/// Rewrites the whole World.
 /// It recursively **rewrites** all World::externals().
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
@@ -81,7 +81,7 @@ public:
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
 /// Inherit from this one to implement a classic data-flow analysis.
-/// @note If you don't need a fixed-point just return `true` after the first run of analyze.
+/// @note If you don't need a fixed-point, just return `true` after the first run of analyze.
 class FPPhase : public RWPhase {
 public:
     FPPhase(World& world, std::string_view name)
