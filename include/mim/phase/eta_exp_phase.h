@@ -29,7 +29,7 @@ public:
     bool analyze() final;
 
 private:
-    void analyze(const Def*);
+    // void analyze(const Def*);
     const Def* rewrite_imm(const Def*) final;
     const Def* rewrite_mut(Def*) final;
 

@@ -2,6 +2,8 @@
 
 namespace mim {
 
+bool EtaExpPhase::analyze() { return false; }
+
 const Def* EtaExpPhase::rewrite_imm(const Def* def) { return Rewriter::rewrite_imm(def); }
 
 const Def* EtaExpPhase::rewrite_mut(Def* def) { return Rewriter::rewrite_mut(def); }

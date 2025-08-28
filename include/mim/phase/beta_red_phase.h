@@ -5,9 +5,9 @@
 namespace mim {
 
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
-class BetaEtaRedPhase : public FPPhase {
+class BetaRedPhase : public FPPhase {
 public:
-    BetaEtaRedPhase(World& world)
+    BetaRedPhase(World& world)
         : FPPhase(world, "beta reduction") {}
 
     void inc(Lam* lam) {

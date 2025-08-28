@@ -87,7 +87,11 @@ axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Ph
 ///
 /// ### Phases
 ///
-axm %compile.null_phase:            %compile.Phase;
+axm %compile.null_phase:             %compile.Phase;
+axm %compile.beta_red_phase:         %compile.Phase;
+axm %compile.eta_red_phase:          %compile.Phase;
+axm %compile.eta_exp_phase:          %compile.Phase;
+axm %compile.branch_normalize_phase: %compile.Phase;
 ///
 /// ### Passes
 ///

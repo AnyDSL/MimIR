@@ -2,13 +2,13 @@
 
 namespace mim {
 
-bool BetaEtaRedPhase::analyze() {
+bool BetaRedPhase::analyze() {
     for (auto def : world().externals())
         analyze(def);
     return false; // no fixed-point neccessary
 }
 
-void BetaEtaRedPhase::analyze(const Def* def) {
+void BetaRedPhase::analyze(const Def* def) {
     if (auto [_, ins] = analyzed_.emplace(def); !ins) return;
 
     for (auto d : def->deps()) {
@@ -17,7 +17,7 @@ void BetaEtaRedPhase::analyze(const Def* def) {
     }
 }
 
-const Def* BetaEtaRedPhase::rewrite_imm_App(const App* app) {
+const Def* BetaRedPhase::rewrite_imm_App(const App* app) {
     if (auto old_lam = app->callee()->isa_mut<Lam>(); old_lam && is_candidate(old_lam)) {
         if (auto var = old_lam->has_var()) {
             auto new_arg = rewrite(app->arg());
