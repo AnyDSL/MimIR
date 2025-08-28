@@ -90,7 +90,7 @@ var annotated_dup =
         ] ],
         [ "compile", "namespacemim_1_1plug_1_1compile.html", [
           [ "DebugPrint", "classmim_1_1plug_1_1compile_1_1DebugPrint.html", "classmim_1_1plug_1_1compile_1_1DebugPrint" ],
-          [ "InternalCleanup", "classmim_1_1plug_1_1compile_1_1InternalCleanup.html", "classmim_1_1plug_1_1compile_1_1InternalCleanup" ]
+          [ "PrefixCleanup", "classmim_1_1plug_1_1compile_1_1PrefixCleanup.html", "classmim_1_1plug_1_1compile_1_1PrefixCleanup" ]
         ] ],
         [ "direct", "namespacemim_1_1plug_1_1direct.html", [
           [ "CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", "classmim_1_1plug_1_1direct_1_1CPS2DS" ],
@@ -170,7 +170,6 @@ var annotated_dup =
       [ "Phase", "classmim_1_1Phase.html", "classmim_1_1Phase" ],
       [ "Pi", "classmim_1_1Pi.html", "classmim_1_1Pi" ],
       [ "Pipeline", "classmim_1_1Pipeline.html", "classmim_1_1Pipeline" ],
-      [ "PipelineBuilder", "classmim_1_1PipelineBuilder.html", "classmim_1_1PipelineBuilder" ],
       [ "Plugin", "structmim_1_1Plugin.html", "structmim_1_1Plugin" ],
       [ "Prod", "classmim_1_1Prod.html", "classmim_1_1Prod" ],
       [ "Proxy", "classmim_1_1Proxy.html", "classmim_1_1Proxy" ],
@@ -213,5 +212,6 @@ var annotated_dup =
       [ "tuple_element< I, mim::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4", "namespacestd_structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4_dup" ],
       [ "tuple_size< mim::Span< T, N > >", "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
-    [ "DebugDump", "classDebugDump.html", "classDebugDump" ]
+    [ "DebugDump", "classDebugDump.html", "classDebugDump" ],
+    [ "PluginSelect", "structPluginSelect.html", "structPluginSelect" ]
 ];

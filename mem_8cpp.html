@@ -127,7 +127,6 @@ $(function(){initNavTree('mem_8cpp.html',''); initResizable(true); });
 <code>#include &lt;<a class="el" href="beta__red_8h_source.html">mim/pass/beta_red.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="eta__exp_8h_source.html">mim/pass/eta_exp.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="pass_8h_source.html">mim/pass/pass.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="pipelinebuilder_8h_source.html">mim/pass/pipelinebuilder.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="mem_2autogen_8h_source.html">mim/plug/mem/autogen.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="alloc2malloc_8h_source.html">mim/plug/mem/pass/alloc2malloc.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="copy__prop_8h_source.html">mim/plug/mem/pass/copy_prop.h</a>&quot;</code><br />
@@ -145,6 +144,8 @@ Include dependency graph for mem.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:adcb8f2abfd55ab7f53284374406b757b" id="r_adcb8f2abfd55ab7f53284374406b757b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adcb8f2abfd55ab7f53284374406b757b">reg_stages</a> (<a class="el" href="namespacemim.html#aed0d84aedf2c5766d4e3fbc5ff3c2660">Phases</a> &amp;phases, <a class="el" href="namespacemim.html#a780d7f029e0bbc4a1c80c8698de15651">Passes</a> &amp;passes)</td></tr>
+<tr class="separator:adcb8f2abfd55ab7f53284374406b757b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35bb34350e93d508e52544f4abd50e59" id="r_a35bb34350e93d508e52544f4abd50e59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmim_1_1Plugin.html">Plugin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35bb34350e93d508e52544f4abd50e59">mim_get_plugin</a> ()</td></tr>
 <tr class="separator:a35bb34350e93d508e52544f4abd50e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -164,9 +165,34 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mem_8cpp_source.html#l00021">21</a> of file <a class="el" href="mem_8cpp_source.html">mem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_8cpp_source.html#l00039">39</a> of file <a class="el" href="mem_8cpp_source.html">mem.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="reshape_8h_source.html#l00025">mim::plug::mem::Reshape::Arg</a>, <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, <a class="el" href="reshape_8h_source.html#l00025">mim::plug::mem::Reshape::Flat</a>, <a class="el" href="span_8h_source.html#l00115">mim::get()</a>, <a class="el" href="config_8h_source.html#l00016">MIM_EXPORT</a>, <a class="el" href="namespacemim_1_1plug_1_1mem.html#a04961411480726ed252bc02a62e51aa6">mim::plug::mem::register_normalizers()</a>, <a class="el" href="pipelinebuilder_8h_source.html#l00047">mim::register_pass()</a>, <a class="el" href="pipelinebuilder_8h_source.html#l00061">mim::register_pass_with_arg()</a>, and <a class="el" href="pipelinebuilder_8h_source.html#l00054">mim::register_phase()</a>.</p>
+<p class="reference">References <a class="el" href="config_8h_source.html#l00016">MIM_EXPORT</a>, <a class="el" href="affine_8cpp_source.html#l00012">reg_stages()</a>, and <a class="el" href="namespacemim_1_1plug_1_1mem.html#a04961411480726ed252bc02a62e51aa6">mim::plug::mem::register_normalizers()</a>.</p>
+
+</div>
+</div>
+<a id="adcb8f2abfd55ab7f53284374406b757b" name="adcb8f2abfd55ab7f53284374406b757b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcb8f2abfd55ab7f53284374406b757b">&#9670;&#160;</a></span>reg_stages()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void reg_stages </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacemim.html#aed0d84aedf2c5766d4e3fbc5ff3c2660">Phases</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>phases</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacemim.html#a780d7f029e0bbc4a1c80c8698de15651">Passes</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>passes</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="mem_8cpp_source.html#l00020">20</a> of file <a class="el" href="mem_8cpp_source.html">mem.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00136">mim::PassMan::add()</a>, <a class="el" href="reshape_8h_source.html#l00025">mim::plug::mem::Reshape::Arg</a>, <a class="el" href="lam_8h_source.html#l00281">mim::App::arg()</a>, <a class="el" href="def_8h_source.html#l00781">mim::Lit::as()</a>, <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="reshape_8h_source.html#l00025">mim::plug::mem::Reshape::Flat</a>, <a class="el" href="pass_8h_source.html#l00155">mim::PassMan::hook()</a>, and <a class="el" href="phase_8h_source.html#l00153">mim::Pipeline::hook()</a>.</p>
 
 </div>
 </div>

@@ -10,11 +10,12 @@ var searchData=
   ['pi_7',['Pi',['../classmim_1_1Pi.html',1,'mim']]],
   ['piexpr_8',['PiExpr',['../classmim_1_1ast_1_1PiExpr.html',1,'mim::ast']]],
   ['pipeline_9',['Pipeline',['../classmim_1_1Pipeline.html',1,'mim']]],
-  ['pipelinebuilder_10',['PipelineBuilder',['../classmim_1_1PipelineBuilder.html',1,'mim']]],
-  ['plugin_11',['Plugin',['../structmim_1_1Plugin.html',1,'mim']]],
+  ['plugin_10',['Plugin',['../structmim_1_1Plugin.html',1,'mim']]],
+  ['pluginselect_11',['PluginSelect',['../structPluginSelect.html',1,'']]],
   ['pod_12',['POD',['../structmim_1_1World_1_1State.html#structmim_1_1World_1_1State_1_1POD',1,'mim::World::State']]],
-  ['primaryexpr_13',['PrimaryExpr',['../classmim_1_1ast_1_1PrimaryExpr.html',1,'mim::ast']]],
-  ['prod_14',['Prod',['../classmim_1_1Prod.html',1,'mim']]],
-  ['proxy_15',['Proxy',['../classmim_1_1Proxy.html',1,'mim']]],
-  ['ptrn_16',['Ptrn',['../classmim_1_1ast_1_1Ptrn.html',1,'mim::ast']]]
+  ['prefixcleanup_13',['PrefixCleanup',['../classmim_1_1plug_1_1compile_1_1PrefixCleanup.html',1,'mim::plug::compile']]],
+  ['primaryexpr_14',['PrimaryExpr',['../classmim_1_1ast_1_1PrimaryExpr.html',1,'mim::ast']]],
+  ['prod_15',['Prod',['../classmim_1_1Prod.html',1,'mim']]],
+  ['proxy_16',['Proxy',['../classmim_1_1Proxy.html',1,'mim']]],
+  ['ptrn_17',['Ptrn',['../classmim_1_1ast_1_1Ptrn.html',1,'mim::ast']]]
 ];

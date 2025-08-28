@@ -28,5 +28,6 @@ var namespacemim_1_1plug_1_1matrix =
     [ "op_read", "namespacemim_1_1plug_1_1matrix.html#a44054a55721da5ba91baa9d661a598f0", null ],
     [ "register_normalizers", "namespacemim_1_1plug_1_1matrix.html#a6d735b8748b3f4626e15b3c1b0e64bdd", null ],
     [ "zero_int", "namespacemim_1_1plug_1_1matrix.html#a750e0b32ccf200ae772efbbdc9687e30", null ],
+    [ "internal_prefix", "namespacemim_1_1plug_1_1matrix.html#a78ac1aa3e5173b14494a87fcf982cfb0", null ],
     [ "Plugin_Id", "namespacemim_1_1plug_1_1matrix.html#a16779fcb9eddd2e937cd68822b511231", null ]
 ];

@@ -140,7 +140,7 @@ $(function(){initNavTree('compile.html',''); initResizable(true); });
         <a href="#autotoc_md100">Registered Plugins</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md101">%compile.pipe</a>
+        <a href="#autotoc_md101">%compile.pipeline</a>
       </li>
     </ul>
   </li>
@@ -157,13 +157,16 @@ $(function(){initNavTree('compile.html',''); initResizable(true); });
         <a href="#autotoc_md105">%compile.combined_phase</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md106">Passes</a>
+        <a href="#autotoc_md106">Phases</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md107">Pipelines</a>
+        <a href="#autotoc_md107">Passes</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md108">Dependent Passes and Phases</a>
+        <a href="#autotoc_md108">Pipelines</a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md109">Dependent Passes and Phases</a>
       </li>
     </ul>
   </li>
@@ -203,9 +206,9 @@ Registered Plugins</h2>
 <div class="line">axm %compile.regex_plugin:    %compile.Plugin;</div>
 <div class="line">axm %compile.matrix_plugin:   %compile.Plugin;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md101"></a>
-%compile.pipe</h2>
+%compile.pipeline</h2>
 <p>Given n phases, returns the representation of a pipeline.</p>
-<div class="fragment"><div class="line">axm %compile.pipe: %compile.Pipeline;</div>
+<div class="fragment"><div class="line">axm %compile.pipeline: %compile.Pipeline;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md102"></a>
 Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md103"></a>
@@ -228,56 +231,54 @@ Passes and Phases</h1>
 </div><!-- fragment --><p> <code>combined_phase (phase_list phase1 ... phaseN) = phases_to_phase N (phase1, ..., phaseN)</code> </p><div class="fragment"><div class="line">axm %compile.combined_phase: %compile.CombinedPhase → %compile.Phase, normalize_combined_phase;</div>
 <div class="line">axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Phase;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md106"></a>
+Phases</h2>
+<div class="fragment"><div class="line">axm %compile.null_phase:            %compile.Phase;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md107"></a>
 Passes</h2>
 <p>Basic passes that are defined in the core of Mim.</p>
 <div class="fragment"><div class="line">axm %compile.beta_red_pass:         %compile.Pass;</div>
 <div class="line">axm %compile.eta_red_pass:          %compile.Pass;</div>
-<div class="line">axm %compile.eta_exp_pass:          %compile.Pass → %compile.Pass; // Expects an instance of mim::EtaRed as argument.</div>
-<div class="line">axm %compile.scalarize_pass:        %compile.Pass → %compile.Pass; // Expects an instance of mim::EtaExp as argument.</div>
-<div class="line">axm %compile.tail_rec_elim_pass:    %compile.Pass → %compile.Pass; // Expects an instance of mim::EtaRed as argument.</div>
+<div class="line">axm %compile.eta_exp_pass:          %compile.Pass;</div>
+<div class="line">axm %compile.scalarize_pass:        %compile.Pass;</div>
+<div class="line">axm %compile.tail_rec_elim_pass:    %compile.Pass;</div>
 <div class="line">axm %compile.lam_spec_pass:         %compile.Pass;</div>
 <div class="line">axm %compile.ret_wrap_pass:         %compile.Pass;</div>
-<div class="line">axm %compile.nullptr_pass:          %compile.Pass; // has to be registered in the pipeline</div>
-<div class="line">axm %compile.internal_cleanup_pass: %compile.Pass;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md107"></a>
+<div class="line">axm %compile.null_pass:             %compile.Pass;</div>
+<div class="line">axm %compile.prefix_cleanup_pass: {n: Nat} → «n; I8» → %compile.Pass;</div>
+<div class="line"> </div>
+<div class="line">let %compile.internal_cleanup_pass = %compile.prefix_cleanup_pass &quot;internal_&quot;;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md108"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">let optimization_pass_list =</div>
-<div class="line">    let eta_red = %compile.eta_red_pass;</div>
-<div class="line">    let eta_exp = %compile.eta_exp_pass eta_red;</div>
 <div class="line">    %compile.pass_list</div>
 <div class="line">        %compile.beta_red_pass</div>
-<div class="line">        eta_red</div>
-<div class="line">        eta_exp</div>
-<div class="line">        (%compile.scalarize_pass eta_exp)</div>
-<div class="line">        (%compile.tail_rec_elim_pass eta_red);</div>
+<div class="line">        %compile.eta_red_pass</div>
+<div class="line">        %compile.eta_exp_pass</div>
+<div class="line">        (%compile.scalarize_pass)</div>
+<div class="line">        (%compile.tail_rec_elim_pass);</div>
 <div class="line"> </div>
 <div class="line">let optimization_phase = %compile.pass_phase optimization_pass_list;</div>
 <div class="line"> </div>
 <div class="line">let default_core_pipeline =</div>
-<div class="line">    let nullptr = %compile.nullptr_pass;</div>
-<div class="line">    %compile.pipe</div>
-<div class="line">        (%compile.single_pass_phase nullptr)</div>
-<div class="line">        (%compile.single_pass_phase (%compile.scalarize_pass nullptr))</div>
+<div class="line">    %compile.pipeline</div>
+<div class="line">        (%compile.single_pass_phase (%compile.scalarize_pass))</div>
 <div class="line">        (%compile.single_pass_phase %compile.eta_red_pass)</div>
-<div class="line">        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))</div>
+<div class="line">        (%compile.single_pass_phase (%compile.tail_rec_elim_pass))</div>
 <div class="line">        optimization_phase</div>
 <div class="line">        (%compile.single_pass_phase %compile.internal_cleanup_pass)</div>
 <div class="line">        (%compile.single_pass_phase %compile.lam_spec_pass)</div>
 <div class="line">        (%compile.single_pass_phase %compile.ret_wrap_pass);</div>
 <div class="line"> </div>
 <div class="line">lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md108"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md109"></a>
 Dependent Passes and Phases</h2>
-<div class="fragment"><div class="line">let empty_pass = %compile.nullptr_pass;</div>
-<div class="line">let empty_phase = %compile.passes_to_phase ();</div>
-<div class="line"> </div>
-<div class="line">axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;</div>
+<div class="fragment"><div class="line">axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;</div>
 <div class="line"> </div>
 <div class="line">let plugin_phase = %compile.plugin_select %compile.Phase;</div>
 <div class="line">let plugin_pass  = %compile.plugin_select %compile.Pass;</div>
 <div class="line"> </div>
-<div class="line">lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase empty_phase;</div>
-<div class="line">lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  empty_pass;</div>
+<div class="line">lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase %compile.null_phase;</div>
+<div class="line">lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  %compile.null_pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

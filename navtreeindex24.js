@@ -1,5 +1,8 @@
 var NAVTREEINDEX24 =
 {
+"tensor_2normalizers_8cpp_source.html":[6,0,3,1,4,14,0],
+"tensor_8cpp.html":[6,0,3,1,4,14,1],
+"tensor_8cpp.html#a35bb34350e93d508e52544f4abd50e59":[6,0,3,1,4,14,1,0],
 "tensor_8cpp_source.html":[6,0,3,1,4,14,1],
 "tensor_8h.html":[6,0,2,1,4,14,0],
 "tensor_8h_source.html":[6,0,2,1,4,14,0],

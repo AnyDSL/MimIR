@@ -238,7 +238,11 @@ var menudata={children:[
 {text:"r",url:"globals.html#index_r"},
 {text:"v",url:"globals.html#index_v"},
 {text:"w",url:"globals.html#index_w"}]},
-{text:"Functions",url:"globals_func.html"},
+{text:"Functions",url:"globals_func.html",children:[
+{text:"a",url:"globals_func.html#index_a"},
+{text:"d",url:"globals_func.html#index_d"},
+{text:"m",url:"globals_func.html#index_m"},
+{text:"r",url:"globals_func.html#index_r"}]},
 {text:"Typedefs",url:"globals_type.html"},
 {text:"Macros",url:"globals_defs.html",children:[
 {text:"a",url:"globals_defs.html#index_a"},

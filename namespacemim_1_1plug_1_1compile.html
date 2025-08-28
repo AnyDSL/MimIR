@@ -132,7 +132,7 @@ $(function(){initNavTree('namespacemim_1_1plug_1_1compile.html',''); initResizab
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html">DebugPrint</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1plug_1_1compile_1_1InternalCleanup.html">InternalCleanup</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1plug_1_1compile_1_1PrefixCleanup.html">PrefixCleanup</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -146,6 +146,8 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.Pipeline</div></td></tr>
 <tr class="memitem:a503c163370d42ec5dbb207a4ede762ba" id="r_a503c163370d42ec5dbb207a4ede762ba"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a503c163370d42ec5dbb207a4ede762ba">Pipeline</a> : flags_t </td></tr>
 <tr class="separator:a503c163370d42ec5dbb207a4ede762ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776b5f064883f6a47e230d138a9ddb90" id="r_a776b5f064883f6a47e230d138a9ddb90"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a776b5f064883f6a47e230d138a9ddb90">pipeline</a> : flags_t </td></tr>
+<tr class="separator:a776b5f064883f6a47e230d138a9ddb90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.PassList</div></td></tr>
 <tr class="memitem:ad83a85274e9614deff427d7cfdfcfa39" id="r_ad83a85274e9614deff427d7cfdfcfa39"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad83a85274e9614deff427d7cfdfcfa39">PassList</a> : flags_t </td></tr>
 <tr class="separator:ad83a85274e9614deff427d7cfdfcfa39"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,9 +187,6 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.matrix_plugin</div></td></tr>
 <tr class="memitem:acf363d4b7b8edc6ef36087d972644e70" id="r_acf363d4b7b8edc6ef36087d972644e70"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf363d4b7b8edc6ef36087d972644e70">matrix_plugin</a> : flags_t </td></tr>
 <tr class="separator:acf363d4b7b8edc6ef36087d972644e70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">%compile.pipe</div></td></tr>
-<tr class="memitem:a4a1e9d156f1cdbc814c37a5396d2793b" id="r_a4a1e9d156f1cdbc814c37a5396d2793b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a1e9d156f1cdbc814c37a5396d2793b">pipe</a> : flags_t </td></tr>
-<tr class="separator:a4a1e9d156f1cdbc814c37a5396d2793b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.debug_phase</div></td></tr>
 <tr class="memitem:af6d0e501b91805e80ca15ebdf0d8a2fe" id="r_af6d0e501b91805e80ca15ebdf0d8a2fe"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6d0e501b91805e80ca15ebdf0d8a2fe">debug_phase</a> : flags_t </td></tr>
 <tr class="separator:af6d0e501b91805e80ca15ebdf0d8a2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,6 +202,9 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.phases_to_phase</div></td></tr>
 <tr class="memitem:a9a7de07a9562215d2d8e80ff90dca075" id="r_a9a7de07a9562215d2d8e80ff90dca075"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a7de07a9562215d2d8e80ff90dca075">phases_to_phase</a> : flags_t </td></tr>
 <tr class="separator:a9a7de07a9562215d2d8e80ff90dca075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.null_phase</div></td></tr>
+<tr class="memitem:a717b94f01a471ccef3b533ec1a3e5433" id="r_a717b94f01a471ccef3b533ec1a3e5433"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a717b94f01a471ccef3b533ec1a3e5433">null_phase</a> : flags_t </td></tr>
+<tr class="separator:a717b94f01a471ccef3b533ec1a3e5433"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.beta_red_pass</div></td></tr>
 <tr class="memitem:a4b060f32fdef8a01e50415099cd48416" id="r_a4b060f32fdef8a01e50415099cd48416"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b060f32fdef8a01e50415099cd48416">beta_red_pass</a> : flags_t </td></tr>
 <tr class="separator:a4b060f32fdef8a01e50415099cd48416"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -224,9 +226,12 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.ret_wrap_pass</div></td></tr>
 <tr class="memitem:aeea954817fa22f9e9d045999b093eca9" id="r_aeea954817fa22f9e9d045999b093eca9"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeea954817fa22f9e9d045999b093eca9">ret_wrap_pass</a> : flags_t </td></tr>
 <tr class="separator:aeea954817fa22f9e9d045999b093eca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">%compile.nullptr_pass</div></td></tr>
-<tr class="memitem:af9c3ab84a67c6c302637c35dbabe59db" id="r_af9c3ab84a67c6c302637c35dbabe59db"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9c3ab84a67c6c302637c35dbabe59db">nullptr_pass</a> : flags_t </td></tr>
-<tr class="separator:af9c3ab84a67c6c302637c35dbabe59db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.null_pass</div></td></tr>
+<tr class="memitem:aadfaa97d82794c8513ba2b0e1f14a388" id="r_aadfaa97d82794c8513ba2b0e1f14a388"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadfaa97d82794c8513ba2b0e1f14a388">null_pass</a> : flags_t </td></tr>
+<tr class="separator:aadfaa97d82794c8513ba2b0e1f14a388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.prefix_cleanup_pass</div></td></tr>
+<tr class="memitem:a49387146762a8a2c3a3afed551458685" id="r_a49387146762a8a2c3a3afed551458685"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a49387146762a8a2c3a3afed551458685">prefix_cleanup_pass</a> : flags_t </td></tr>
+<tr class="separator:a49387146762a8a2c3a3afed551458685"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.internal_cleanup_pass</div></td></tr>
 <tr class="memitem:aef6fe00932262fad4a1aee46455e2bec" id="r_aef6fe00932262fad4a1aee46455e2bec"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef6fe00932262fad4a1aee46455e2bec">internal_cleanup_pass</a> : flags_t </td></tr>
 <tr class="separator:aef6fe00932262fad4a1aee46455e2bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -236,8 +241,6 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af3d359502fb20a04654862a567549f7c" id="r_af3d359502fb20a04654862a567549f7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3d359502fb20a04654862a567549f7c">handle_optimization_part</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *part, <a class="el" href="classmim_1_1World.html">World</a> &amp;world, <a class="el" href="namespacemim.html#a5f064c54d1071e6194374edddc618658">Passes</a> &amp;passes, <a class="el" href="classmim_1_1PipelineBuilder.html">PipelineBuilder</a> &amp;builder)</td></tr>
-<tr class="separator:af3d359502fb20a04654862a567549f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a538868adc12502b1140af4b6f2f0efa2" id="r_a538868adc12502b1140af4b6f2f0efa2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a538868adc12502b1140af4b6f2f0efa2">register_normalizers</a> (<a class="el" href="namespacemim.html#ab875464e5f495601abff7287573e1405">Normalizers</a> &amp;normalizers)</td></tr>
 <tr class="separator:a538868adc12502b1140af4b6f2f0efa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -344,7 +347,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00200">200</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00207">207</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -560,7 +563,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00214">214</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00221">221</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -584,7 +587,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00207">207</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00214">214</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -608,7 +611,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00256">256</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00270">270</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -632,7 +635,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00235">235</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00242">242</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -684,8 +687,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="af9c3ab84a67c6c302637c35dbabe59db" name="af9c3ab84a67c6c302637c35dbabe59db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9c3ab84a67c6c302637c35dbabe59db">&#9670;&#160;</a></span>nullptr_pass</h2>
+<a id="aadfaa97d82794c8513ba2b0e1f14a388" name="aadfaa97d82794c8513ba2b0e1f14a388"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadfaa97d82794c8513ba2b0e1f14a388">&#9670;&#160;</a></span>null_pass</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -694,7 +697,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#af9c3ab84a67c6c302637c35dbabe59db">mim::plug::compile::nullptr_pass</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
+          <td class="memname">enum class <a class="el" href="#aadfaa97d82794c8513ba2b0e1f14a388">mim::plug::compile::null_pass</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
         </tr>
       </table>
   </td>
@@ -704,7 +707,31 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00249">249</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00256">256</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
+<a id="a717b94f01a471ccef3b533ec1a3e5433" name="a717b94f01a471ccef3b533ec1a3e5433"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a717b94f01a471ccef3b533ec1a3e5433">&#9670;&#160;</a></span>null_phase</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a717b94f01a471ccef3b533ec1a3e5433">mim::plug::compile::null_phase</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00200">200</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -900,30 +927,6 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a4a1e9d156f1cdbc814c37a5396d2793b" name="a4a1e9d156f1cdbc814c37a5396d2793b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a1e9d156f1cdbc814c37a5396d2793b">&#9670;&#160;</a></span>pipe</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="#a4a1e9d156f1cdbc814c37a5396d2793b">mim::plug::compile::pipe</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00126">126</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
-
-</div>
-</div>
 <a id="a503c163370d42ec5dbb207a4ede762ba" name="a503c163370d42ec5dbb207a4ede762ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a503c163370d42ec5dbb207a4ede762ba">&#9670;&#160;</a></span>Pipeline</h2>
 
@@ -945,6 +948,30 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00028">28</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
+<a id="a776b5f064883f6a47e230d138a9ddb90" name="a776b5f064883f6a47e230d138a9ddb90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a776b5f064883f6a47e230d138a9ddb90">&#9670;&#160;</a></span>pipeline</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a776b5f064883f6a47e230d138a9ddb90">mim::plug::compile::pipeline</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00126">126</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -983,6 +1010,30 @@ Variables</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">enum class <a class="el" href="#a8234dedd9c0cf467db256b27a11f7116">mim::plug::compile::plugin_select</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00277">277</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
+<a id="a49387146762a8a2c3a3afed551458685" name="a49387146762a8a2c3a3afed551458685"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49387146762a8a2c3a3afed551458685">&#9670;&#160;</a></span>prefix_cleanup_pass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a49387146762a8a2c3a3afed551458685">mim::plug::compile::prefix_cleanup_pass</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
         </tr>
       </table>
   </td>
@@ -1064,7 +1115,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00242">242</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00249">249</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -1088,7 +1139,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00221">221</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00228">228</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -1136,56 +1187,11 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00228">228</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00235">235</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="af3d359502fb20a04654862a567549f7c" name="af3d359502fb20a04654862a567549f7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3d359502fb20a04654862a567549f7c">&#9670;&#160;</a></span>handle_optimization_part()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void mim::plug::compile::handle_optimization_part </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>part</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classmim_1_1World.html">World</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>world</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacemim.html#a5f064c54d1071e6194374edddc618658">Passes</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>passes</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classmim_1_1PipelineBuilder.html">PipelineBuilder</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>builder</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="compile_8h_source.html#l00010">10</a> of file <a class="el" href="compile_8h_source.html">compile.h</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8h_source.html#l00262">mim::Def::type()</a>, and <a class="el" href="lam_8h_source.html#l00319">mim::App::uncurry()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00026">add_passes()</a>, <a class="el" href="compile_8cpp_source.html#l00021">add_phases()</a>, and <a class="el" href="opt_8cpp_source.html#l00013">mim_get_plugin()</a>.</p>
-
-</div>
-</div>
 <a id="a65a7808c6e86fd1f65b2eae68045147e" name="a65a7808c6e86fd1f65b2eae68045147e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a65a7808c6e86fd1f65b2eae68045147e">&#9670;&#160;</a></span>normalize_combine_pass_list()</h2>
 
@@ -1212,11 +1218,11 @@ Variables</h2></td></tr>
 
 <p><code><a class="el" href="#af76efd65225b17e5bbae91d45faf64c8">combine_pass_list</a> K (<a class="el" href="#acf1934a130e787322009f1b142af6734">pass_list</a> pass11 ... pass1N) ... (<a class="el" href="#acf1934a130e787322009f1b142af6734">pass_list</a> passK1 ... passKM) = <a class="el" href="#acf1934a130e787322009f1b142af6734">pass_list</a> pass11 ... p1N ... / passK1 ... passKM</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00044">44</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00045">45</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, <a class="el" href="def_8h_source.html#l00357">mim::Def::projs()</a>, and <a class="el" href="lam_8h_source.html#l00319">mim::App::uncurry()</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="def_8h_source.html#l00357">mim::Def::projs()</a>, and <a class="el" href="lam_8h_source.html#l00320">mim::App::uncurry()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compile_2normalizers_8cpp_source.html#l00007">normalize_pass_phase()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compile_2normalizers_8cpp_source.html#l00008">normalize_pass_phase()</a>.</p>
 
 </div>
 </div>
@@ -1246,9 +1252,9 @@ Variables</h2></td></tr>
 
 <p><code><a class="el" href="#a6d01b3e592dcf881fbe508add96ad9f6">combined_phase</a> (<a class="el" href="#a1b6af4bf840fb72f2bbd6fcce767e8cc">phase_list</a> phase1 ... phasen)</code> -&gt; <code><a class="el" href="#a9a7de07a9562215d2d8e80ff90dca075">phases_to_phase</a> n (phase1, ..., phasen)</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00028">28</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00029">29</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, and <a class="el" href="lam_8h_source.html#l00319">mim::App::uncurry()</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, and <a class="el" href="lam_8h_source.html#l00320">mim::App::uncurry()</a>.</p>
 
 </div>
 </div>
@@ -1276,9 +1282,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00007">7</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00008">8</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="plugin_8h_source.html#l00118">mim::Annex::Base</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00044">normalize_combine_pass_list()</a>, and <a class="el" href="lam_8h_source.html#l00319">mim::App::uncurry()</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00045">normalize_combine_pass_list()</a>, <a class="el" href="lam_8h_source.html#l00320">mim::App::uncurry()</a>, and <a class="el" href="lam_8h_source.html#l00323">mim::App::uncurry_callee()</a>.</p>
 
 </div>
 </div>
@@ -1308,7 +1314,7 @@ Variables</h2></td></tr>
 
 <p><code><a class="el" href="#a847ce6ecda2bb689fa0ba4755e2716d7">single_pass_phase</a> pass</code> -&gt; <code><a class="el" href="#a59f28bf6164c88df601c027da7a2d3f7">passes_to_phase</a> pass</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00038">38</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2normalizers_8cpp_source.html#l00039">39</a> of file <a class="el" href="compile_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 </div>
 </div>
@@ -1327,7 +1333,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00038">mim_get_plugin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00118">mim_get_plugin()</a>.</p>
 
 </div>
 </div>

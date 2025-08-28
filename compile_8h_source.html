@@ -122,58 +122,8 @@ $(function(){initNavTree('compile_8h_source.html',''); initResizable(true); });
 <div class="contents">
 <a href="compile_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="world_8h.html">mim/world.h</a>&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="pipelinebuilder_8h.html">mim/pass/pipelinebuilder.h</a>&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="compile_2autogen_8h.html">mim/plug/compile/autogen.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="foldopen" id="foldopen00009" data-start="{" data-end="}">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacemim_1_1plug_1_1compile.html">    9</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim_1_1plug_1_1compile.html">mim::plug::compile</a> {</div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacemim_1_1plug_1_1compile.html#af3d359502fb20a04654862a567549f7c">   10</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacemim_1_1plug_1_1compile.html#af3d359502fb20a04654862a567549f7c">handle_optimization_part</a>(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* part, <a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; world, <a class="code hl_typedef" href="namespacemim.html#a5f064c54d1071e6194374edddc618658">Passes</a>&amp; passes, <a class="code hl_class" href="classmim_1_1PipelineBuilder.html">PipelineBuilder</a>&amp; builder) {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> app = part-&gt;isa&lt;<a class="code hl_class" href="classmim_1_1App.html">App</a>&gt;()) {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = app-&gt;callee()-&gt;isa&lt;<a class="code hl_class" href="classmim_1_1Lam.html">Lam</a>&gt;()) {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            part = lam-&gt;reduce_body(app-&gt;arg());</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>            world.DLOG(<span class="stringliteral">&quot;reduce pass/phase lambda {} to {} : {}&quot;</span>, lam, part, part-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">type</a>());</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>        }</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    }</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">auto</span> [phase_def, phase_args] = <a class="code hl_function" href="classmim_1_1App.html#af5dffa71b7599ddc5c46cf309815a9fa">App::uncurry</a>(part);</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    world.DLOG(<span class="stringliteral">&quot;pass/phase: {}&quot;</span>, phase_def);</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> phase_ax = phase_def-&gt;isa&lt;<a class="code hl_class" href="classmim_1_1Axm.html">Axm</a>&gt;()) {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>        <span class="keyword">auto</span> flag = phase_ax-&gt;flags();</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keywordflow">if</span> (passes.contains(flag)) {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            <span class="keyword">auto</span> phase_fun = passes[flag];</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            phase_fun(world, builder, part);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            world.WLOG(<span class="stringliteral">&quot;pass/phase &#39;{}&#39; not found&quot;</span>, phase_ax-&gt;sym());</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            assert(passes.contains(flag) &amp;&amp; <span class="stringliteral">&quot;pass/phase not found&quot;</span>);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        }</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (phase_def-&gt;isa&lt;<a class="code hl_class" href="classmim_1_1Lam.html">Lam</a>&gt;()) {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        assert(0 &amp;&amp; <span class="stringliteral">&quot;curried lambas are not supported&quot;</span>);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        world.WLOG(<span class="stringliteral">&quot;pass/phase &#39;{}&#39; is not an axm&quot;</span>, phase_def);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        assert(phase_def-&gt;isa&lt;<a class="code hl_class" href="classmim_1_1Axm.html">Axm</a>&gt;() &amp;&amp; <span class="stringliteral">&quot;pass/phase is not an axm&quot;</span>);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
-</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>} <span class="comment">// namespace mim::plug::compile</span></div>
-</div>
-<div class="ttc" id="aclassmim_1_1App_html"><div class="ttname"><a href="classmim_1_1App.html">mim::App</a></div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00220">lam.h:220</a></div></div>
-<div class="ttc" id="aclassmim_1_1App_html_af5dffa71b7599ddc5c46cf309815a9fa"><div class="ttname"><a href="classmim_1_1App.html#af5dffa71b7599ddc5c46cf309815a9fa">mim::App::uncurry</a></div><div class="ttdeci">auto uncurry() const</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00319">lam.h:319</a></div></div>
-<div class="ttc" id="aclassmim_1_1Axm_html"><div class="ttname"><a href="classmim_1_1Axm.html">mim::Axm</a></div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00009">axm.h:9</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00218">def.h:218</a></div></div>
-<div class="ttc" id="aclassmim_1_1Def_html_a9ab6cb5c35d630f631fd365cf7fa8f0c"><div class="ttname"><a href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c">mim::Def::type</a></div><div class="ttdeci">const Def * type() const noexcept</div><div class="ttdoc">Yields the &quot;raw&quot; type of this Def (maybe nullptr).</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00262">def.h:262</a></div></div>
-<div class="ttc" id="aclassmim_1_1Lam_html"><div class="ttname"><a href="classmim_1_1Lam.html">mim::Lam</a></div><div class="ttdoc">A function.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00109">lam.h:109</a></div></div>
-<div class="ttc" id="aclassmim_1_1PipelineBuilder_html"><div class="ttname"><a href="classmim_1_1PipelineBuilder.html">mim::PipelineBuilder</a></div><div class="ttdef"><b>Definition</b> <a href="pipelinebuilder_8h_source.html#l00011">pipelinebuilder.h:11</a></div></div>
-<div class="ttc" id="aclassmim_1_1World_html"><div class="ttname"><a href="classmim_1_1World.html">mim::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of MimIR nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00035">world.h:35</a></div></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="compile_2autogen_8h.html">mim/plug/compile/autogen.h</a>&quot;</span></div>
 <div class="ttc" id="acompile_2autogen_8h_html"><div class="ttname"><a href="compile_2autogen_8h.html">autogen.h</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1compile_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1compile.html">mim::plug::compile</a></div><div class="ttdoc">The compile Plugin</div><div class="ttdef"><b>Definition</b> <a href="#l00009">compile.h:9</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1compile_html_af3d359502fb20a04654862a567549f7c"><div class="ttname"><a href="namespacemim_1_1plug_1_1compile.html#af3d359502fb20a04654862a567549f7c">mim::plug::compile::handle_optimization_part</a></div><div class="ttdeci">void handle_optimization_part(const Def *part, World &amp;world, Passes &amp;passes, PipelineBuilder &amp;builder)</div><div class="ttdef"><b>Definition</b> <a href="#l00010">compile.h:10</a></div></div>
-<div class="ttc" id="anamespacemim_html_a5f064c54d1071e6194374edddc618658"><div class="ttname"><a href="namespacemim.html#a5f064c54d1071e6194374edddc618658">mim::Passes</a></div><div class="ttdeci">absl::flat_hash_map&lt; flags_t, std::function&lt; void(World &amp;, PipelineBuilder &amp;, const Def *)&gt; &gt; Passes</div><div class="ttdoc">axm ↦ (pipeline part) × (axm application) → ()   The function should inspect Application to construct...</div><div class="ttdef"><b>Definition</b> <a href="plugin_8h_source.html#l00022">plugin.h:22</a></div></div>
-<div class="ttc" id="apipelinebuilder_8h_html"><div class="ttname"><a href="pipelinebuilder_8h.html">pipelinebuilder.h</a></div></div>
-<div class="ttc" id="aworld_8h_html"><div class="ttname"><a href="world_8h.html">world.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

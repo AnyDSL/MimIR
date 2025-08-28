@@ -119,13 +119,12 @@ $(function(){initNavTree('matrix_8h.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">matrix.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="world_8h_source.html">mim/world.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="pipelinebuilder_8h_source.html">mim/pass/pipelinebuilder.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="matrix_2autogen_8h_source.html">mim/plug/matrix/autogen.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for matrix.h:</div>
@@ -150,11 +149,6 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacemim_1_1plug_1_1matrix"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="matrix.html">The matrix Plugin</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a076f90e3d41ff22230a75a561d43d116" id="r_a076f90e3d41ff22230a75a561d43d116"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a076f90e3d41ff22230a75a561d43d116">INTERNAL_PREFIX</a>&#160;&#160;&#160;&quot;internal_mapRed_&quot;</td></tr>
-<tr class="separator:a076f90e3d41ff22230a75a561d43d116"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a750e0b32ccf200ae772efbbdc9687e30" id="r_a750e0b32ccf200ae772efbbdc9687e30"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a750e0b32ccf200ae772efbbdc9687e30">mim::plug::matrix::zero_int</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;w, const <a class="el" href="classmim_1_1Def.html">Def</a> *n, const <a class="el" href="classmim_1_1Def.html">Def</a> *S, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem, <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> m)</td></tr>
@@ -162,26 +156,12 @@ Functions</h2></td></tr>
 <tr class="separator:a750e0b32ccf200ae772efbbdc9687e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44054a55721da5ba91baa9d661a598f0" id="r_a44054a55721da5ba91baa9d661a598f0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a44054a55721da5ba91baa9d661a598f0">mim::plug::matrix::op_read</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *mem, const <a class="el" href="classmim_1_1Def.html">Def</a> *matrix, const <a class="el" href="classmim_1_1Def.html">Def</a> *idx)</td></tr>
 <tr class="separator:a44054a55721da5ba91baa9d661a598f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a78ac1aa3e5173b14494a87fcf982cfb0" id="r_a78ac1aa3e5173b14494a87fcf982cfb0"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a78ac1aa3e5173b14494a87fcf982cfb0">mim::plug::matrix::internal_prefix</a> = &quot;internal_mapRed_&quot;</td></tr>
+<tr class="separator:a78ac1aa3e5173b14494a87fcf982cfb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a076f90e3d41ff22230a75a561d43d116" name="a076f90e3d41ff22230a75a561d43d116"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a076f90e3d41ff22230a75a561d43d116">&#9670;&#160;</a></span>INTERNAL_PREFIX</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define INTERNAL_PREFIX&#160;&#160;&#160;&quot;internal_mapRed_&quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="matrix_8h_source.html#l00011">11</a> of file <a class="el" href="matrix_8h_source.html">matrix.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="matrix_8cpp_source.html#l00016">mim_get_plugin()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

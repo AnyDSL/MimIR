@@ -179,7 +179,7 @@ Additional Inherited Members</h2></td></tr>
 class mim::ClosedMutPhase&lt; M &gt;</div><p>Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>. </p>
 <p>Select with <code>elide_empty</code> whether you want to visit trivial <em>muts</em> without body. Assumes that you don't change anything - hence <code>dirty</code> flag is set to <code>false</code>. If you a are only interested in specific mutables, you can pass this to <code class="param">M</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00157">157</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00167">167</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a22a532b6bfb9b93e6c2e6b03c6ff6468" name="a22a532b6bfb9b93e6c2e6b03c6ff6468"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a22a532b6bfb9b93e6c2e6b03c6ff6468">&#9670;&#160;</a></span>ClosedMutPhase()</h2>
@@ -220,9 +220,9 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00159">159</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00169">169</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00028">mim::Phase::name()</a>, <a class="el" href="phase_8h_source.html#l00019">mim::Phase::Phase()</a>, and <a class="el" href="phase_8h_source.html#l00027">mim::Phase::world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00030">mim::Phase::name()</a>, <a class="el" href="phase_8h_source.html#l00021">mim::Phase::Phase()</a>, and <a class="el" href="phase_8h_source.html#l00029">mim::Phase::world()</a>.</p>
 
 </div>
 </div>
@@ -252,7 +252,7 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00180">180</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00190">190</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 <p class="reference">References <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>.</p>
 
@@ -289,9 +289,9 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 
 <p>Reimplemented in <a class="el" href="classmim_1_1ll_1_1Emitter.html#a5aea82862b4a3573857ac4080a01e789">mim::ll::Emitter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00163">163</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00173">173</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00464">mim::Def::deps()</a>, <a class="el" href="util_8h_source.html#l00160">mim::unique_queue&lt; Set &gt;::empty()</a>, <a class="el" href="def_8cpp_source.html#l00329">mim::Def::local_muts()</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="util_8h_source.html#l00161">mim::unique_queue&lt; Set &gt;::pop()</a>, <a class="el" href="util_8h_source.html#l00152">mim::unique_queue&lt; Set &gt;::push()</a>, <a class="el" href="#ad472ea7c10d353cbd478faa84708322e">visit()</a>, and <a class="el" href="phase_8h_source.html#l00027">mim::Phase::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00464">mim::Def::deps()</a>, <a class="el" href="util_8h_source.html#l00160">mim::unique_queue&lt; Set &gt;::empty()</a>, <a class="el" href="def_8cpp_source.html#l00329">mim::Def::local_muts()</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="util_8h_source.html#l00161">mim::unique_queue&lt; Set &gt;::pop()</a>, <a class="el" href="util_8h_source.html#l00152">mim::unique_queue&lt; Set &gt;::push()</a>, <a class="el" href="#ad472ea7c10d353cbd478faa84708322e">visit()</a>, and <a class="el" href="phase_8h_source.html#l00029">mim::Phase::world()</a>.</p>
 
 </div>
 </div>
@@ -324,7 +324,7 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 
 <p class="reference">References <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00163">start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00173">start()</a>.</p>
 
 </div>
 </div>

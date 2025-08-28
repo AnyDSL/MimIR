@@ -135,8 +135,8 @@ var hierarchy =
       [ "mim::RWPass< DebugPrint, Lam >", "classmim_1_1RWPass.html", [
         [ "mim::plug::compile::DebugPrint", "classmim_1_1plug_1_1compile_1_1DebugPrint.html", null ]
       ] ],
-      [ "mim::RWPass< InternalCleanup, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::compile::InternalCleanup", "classmim_1_1plug_1_1compile_1_1InternalCleanup.html", null ]
+      [ "mim::RWPass< PrefixCleanup, Lam >", "classmim_1_1RWPass.html", [
+        [ "mim::plug::compile::PrefixCleanup", "classmim_1_1plug_1_1compile_1_1PrefixCleanup.html", null ]
       ] ],
       [ "mim::RWPass< CPS2DS, Lam >", "classmim_1_1RWPass.html", [
         [ "mim::plug::direct::CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", null ]
@@ -178,34 +178,8 @@ var hierarchy =
       [ "mim::RWPass< P, M >", "classmim_1_1RWPass.html", null ]
     ] ],
     [ "mim::PassMan", "classmim_1_1PassMan.html", null ],
-    [ "mim::Phase", "classmim_1_1Phase.html", [
-      [ "mim::ClosedMutPhase< Def >", "classmim_1_1ClosedMutPhase.html", [
-        [ "mim::ClosedCollector< M >", "classmim_1_1ClosedCollector.html", null ],
-        [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", null ]
-      ] ],
-      [ "mim::ClosedMutPhase< Lam >", "classmim_1_1ClosedMutPhase.html", [
-        [ "mim::NestPhase< Lam >", "classmim_1_1NestPhase.html", [
-          [ "mim::Emitter< std::string, std::string, BB, Emitter >", "classmim_1_1Emitter.html", [
-            [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ]
-          ] ],
-          [ "mim::Emitter< Value, Type, BB, Child >", "classmim_1_1Emitter.html", null ],
-          [ "mim::plug::mem::AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", null ]
-        ] ]
-      ] ],
-      [ "mim::Cleanup", "classmim_1_1Cleanup.html", null ],
-      [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", null ],
-      [ "mim::PassManPhase", "classmim_1_1PassManPhase.html", null ],
-      [ "mim::PassPhase< P >", "classmim_1_1PassPhase.html", null ],
-      [ "mim::Pipeline", "classmim_1_1Pipeline.html", null ],
-      [ "mim::RWPhase", "classmim_1_1RWPhase.html", [
-        [ "mim::FPPhase", "classmim_1_1FPPhase.html", null ],
-        [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
-      ] ],
-      [ "mim::plug::clos::ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", null ],
-      [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ]
-    ] ],
-    [ "mim::PipelineBuilder", "classmim_1_1PipelineBuilder.html", null ],
     [ "mim::Plugin", "structmim_1_1Plugin.html", null ],
+    [ "PluginSelect< P, B >", "structPluginSelect.html", null ],
     [ "mim::World::State::POD", "structmim_1_1World_1_1State.html#structmim_1_1World_1_1State_1_1POD", null ],
     [ "mim::ast::R< T >", "structmim_1_1ast_1_1R.html", null ],
     [ "automaton::RangeCompare", "structautomaton_1_1RangeCompare.html", null ],
@@ -213,7 +187,10 @@ var hierarchy =
     [ "mim::IndexSet< Indexer, Key >::reference", "classmim_1_1IndexSet_1_1reference.html", null ],
     [ "mim::Res", "classmim_1_1Res.html", null ],
     [ "mim::Rewriter", "classmim_1_1Rewriter.html", [
-      [ "mim::RWPhase", "classmim_1_1RWPhase.html", null ],
+      [ "mim::RWPhase", "classmim_1_1RWPhase.html", [
+        [ "mim::FPPhase", "classmim_1_1FPPhase.html", null ],
+        [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
+      ] ],
       [ "mim::VarRewriter", "classmim_1_1VarRewriter.html", null ]
     ] ],
     [ "fe::RuntimeCast", null, [
@@ -260,6 +237,29 @@ var hierarchy =
         [ "mim::Uniq", "classmim_1_1Uniq.html", null ],
         [ "mim::Univ", "classmim_1_1Univ.html", null ],
         [ "mim::Var", "classmim_1_1Var.html", null ]
+      ] ],
+      [ "mim::Phase", "classmim_1_1Phase.html", [
+        [ "mim::ClosedMutPhase< Def >", "classmim_1_1ClosedMutPhase.html", [
+          [ "mim::ClosedCollector< M >", "classmim_1_1ClosedCollector.html", null ],
+          [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", null ]
+        ] ],
+        [ "mim::ClosedMutPhase< Lam >", "classmim_1_1ClosedMutPhase.html", [
+          [ "mim::NestPhase< Lam >", "classmim_1_1NestPhase.html", [
+            [ "mim::Emitter< std::string, std::string, BB, Emitter >", "classmim_1_1Emitter.html", [
+              [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ]
+            ] ],
+            [ "mim::Emitter< Value, Type, BB, Child >", "classmim_1_1Emitter.html", null ],
+            [ "mim::plug::mem::AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", null ]
+          ] ]
+        ] ],
+        [ "mim::Cleanup", "classmim_1_1Cleanup.html", null ],
+        [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", null ],
+        [ "mim::PassManPhase", "classmim_1_1PassManPhase.html", null ],
+        [ "mim::PassPhase< P >", "classmim_1_1PassPhase.html", null ],
+        [ "mim::Pipeline", "classmim_1_1Pipeline.html", null ],
+        [ "mim::RWPhase", "classmim_1_1RWPhase.html", null ],
+        [ "mim::plug::clos::ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", null ],
+        [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ]
       ] ],
       [ "mim::ast::Node", "classmim_1_1ast_1_1Node.html", [
         [ "mim::ast::Decl", "classmim_1_1ast_1_1Decl.html", [

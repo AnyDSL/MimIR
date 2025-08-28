@@ -123,60 +123,60 @@ $(function(){initNavTree('refly.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md216">Dependencies</a>
+    <a href="#autotoc_md217">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md217">Types</a>
+    <a href="#autotoc_md218">Types</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md218">Reify / Reflect</a>
+    <a href="#autotoc_md219">Reify / Reflect</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md219">%refly.reify</a>
+        <a href="#autotoc_md220">%refly.reify</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md220">%refly.reflect</a>
+        <a href="#autotoc_md221">%refly.reflect</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md221">Inspect</a>
+    <a href="#autotoc_md222">Inspect</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md222">%refly.type</a>
+        <a href="#autotoc_md223">%refly.type</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md223">%refly.gid</a>
+        <a href="#autotoc_md224">%refly.gid</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md224">%refly.dbg</a>
+        <a href="#autotoc_md225">%refly.dbg</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md225">Testing</a>
+    <a href="#autotoc_md226">Testing</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md226">%refly.equiv</a>
+        <a href="#autotoc_md227">%refly.equiv</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md227">%refly.check</a>
-      </li>
-    </ul>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md228">Manipulate</a>
-    <ul>
-      <li class="level2">
-        <a href="#autotoc_md229">%refly.refine</a>
+        <a href="#autotoc_md228">%refly.check</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md230">Passes and Phases</a>
+    <a href="#autotoc_md229">Manipulate</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md231">Passes</a>
+        <a href="#autotoc_md230">%refly.refine</a>
+      </li>
+    </ul>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md231">Passes and Phases</a>
+    <ul>
+      <li class="level2">
+        <a href="#autotoc_md232">Passes</a>
       </li>
     </ul>
   </li>
@@ -185,33 +185,33 @@ $(function(){initNavTree('refly.html',''); initResizable(true); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2refly"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1refly.html" title="The refly Plugin">mim::plug::refly</a></dd></dl>
 <p>The refly plugin allows to <a href="https://en.wikipedia.org/wiki/Reification_(computer_science)">reify</a> and <a href="https://en.wikipedia.org/wiki/Reflective_programming">reflect</a> MimIR's own representation.</p>
-<h1><a class="anchor" id="autotoc_md216"></a>
+<h1><a class="anchor" id="autotoc_md217"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">import compile;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md217"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md218"></a>
 Types</h1>
 <div class="fragment"><div class="line">axm %refly.Code: * → *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md218"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md219"></a>
 Reify / Reflect</h1>
-<h2><a class="anchor" id="autotoc_md219"></a>
+<h2><a class="anchor" id="autotoc_md220"></a>
 %refly.reify</h2>
 <p>Yields the internal MimIR representation of a Mim expression as <code>%refly.Code</code>.</p>
 <div class="fragment"><div class="line">axm %refly.reify: {T: *} → T → [%refly.Code T], normalize_reify;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md220"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md221"></a>
 %refly.reflect</h2>
 <p>Converts a <code>%refly.Code</code> back to a Mim expression.</p>
 <div class="fragment"><div class="line">axm %refly.reflect: {T: *} → [%refly.Code T] → T, normalize_reflect;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md221"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md222"></a>
 Inspect</h1>
-<h2><a class="anchor" id="autotoc_md222"></a>
+<h2><a class="anchor" id="autotoc_md223"></a>
 %refly.type</h2>
 <p>Retuns type of an expression.</p>
 <div class="fragment"><div class="line">axm %refly.type: {T: *} → T → *, normalize_type;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md223"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md224"></a>
 %refly.gid</h2>
 <p>Retuns the internal <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> of the argument.</p>
 <div class="fragment"><div class="line">axm %refly.gid: {T: *} → T → Nat, normalize_gid;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md224"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md225"></a>
 %refly.dbg</h2>
 <p>Debugs a given expression.</p><ul>
 <li><code>tmp</code>: Prints debug information of a given expression at construction time and vanishes afterwards.</li>
@@ -224,9 +224,9 @@ Inspect</h1>
 <div class="line">let %refly.debug   = 4;</div>
 <div class="line"> </div>
 <div class="line">axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md225"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md226"></a>
 Testing</h1>
-<h2><a class="anchor" id="autotoc_md226"></a>
+<h2><a class="anchor" id="autotoc_md227"></a>
 %refly.equiv</h2>
 <p>Checks for structurual / alpha-equivalence. We are using two disjoint relations:</p><ul>
 <li><code>A</code>lpha</li>
@@ -247,19 +247,19 @@ Testing</h1>
 <div class="fragment"><div class="line">axm %refly.equiv(ae = struc_ne, aE = struc_eq,</div>
 <div class="line">                 Ae = alpha_ne, AE = alpha_eq):</div>
 <div class="line">    {T: *} → [T, T] → T, normalize_equiv;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md227"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md228"></a>
 %refly.check</h2>
 <p>Checks the given condition and emits the error message, if false.</p>
 <div class="fragment"><div class="line">axm %refly.check: {T: *} → {n: Nat} → [Bool, T, «n; I8»] → T, normalize_check;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md228"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md229"></a>
 Manipulate</h1>
-<h2><a class="anchor" id="autotoc_md229"></a>
+<h2><a class="anchor" id="autotoc_md230"></a>
 %refly.refine</h2>
 <p>Sets the <code>i</code>th operand of the reified Code <code>e</code> to <code>x</code>.</p>
 <div class="fragment"><div class="line">axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md230"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md231"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md231"></a>
+<h2><a class="anchor" id="autotoc_md232"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %refly.remove_dbg_perm_pass: %compile.Pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

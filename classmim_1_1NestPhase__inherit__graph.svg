@@ -47,7 +47,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 1440;
+var viewWidth = 1624;
 var viewHeight = 102;
 var sectionId = 'dynsection-0';
 </script>
@@ -59,37 +59,37 @@ var sectionId = 'dynsection-0';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit.">
-<polygon fill="#999999" stroke="#666666" points="639,-62 511,-62 511,-43 639,-43 639,-62"/>
-<text text-anchor="middle" x="575" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">mim::NestPhase&lt; M &gt;</text>
+<polygon fill="#999999" stroke="#666666" points="823,-62 695,-62 695,-43 823,-43 823,-62"/>
+<text text-anchor="middle" x="759" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">mim::NestPhase&lt; M &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node5 -->
-<g id="Node000005" class="node">
-<title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classmim_1_1NestPhase.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="862,-62 722,-62 722,-43 862,-43 862,-62"/>
-<text text-anchor="middle" x="792" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">mim::NestPhase&lt; Lam &gt;</text>
+<!-- Node6 -->
+<g id="Node000006" class="node">
+<title>Node6</title>
+<g id="a_Node000006"><a xlink:href="classmim_1_1NestPhase.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="1046,-62 906,-62 906,-43 1046,-43 1046,-62"/>
+<text text-anchor="middle" x="976" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">mim::NestPhase&lt; Lam &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node5 -->
-<g id="edge5_Node000001_Node000005" class="edge">
-<title>Node1&#45;&gt;Node5</title>
-<g id="a_edge5_Node000001_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M649.31,-52.5C672.81,-52.5 698.74,-52.5 721.93,-52.5"/>
-<polygon fill="orange" stroke="orange" points="649.05,-49 639.05,-52.5 649.05,-56 649.05,-49"/>
+<!-- Node1&#45;&gt;Node6 -->
+<g id="edge6_Node000001_Node000006" class="edge">
+<title>Node1&#45;&gt;Node6</title>
+<g id="a_edge6_Node000001_Node000006"><a xlink:title=" ">
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M833.31,-52.5C856.81,-52.5 882.74,-52.5 905.93,-52.5"/>
+<polygon fill="orange" stroke="orange" points="833.05,-49 823.05,-52.5 833.05,-56 833.05,-49"/>
 </a>
 </g>
-<text text-anchor="middle" x="680.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Lam &gt;</text>
+<text text-anchor="middle" x="864.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Lam &gt;</text>
 </g>
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classmim_1_1ClosedMutPhase.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="474,-67.5 348,-67.5 348,-37.5 474,-37.5 474,-67.5"/>
-<text text-anchor="start" x="356" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ClosedMutPhase</text>
-<text text-anchor="middle" x="411" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Def &gt;</text>
+<polygon fill="white" stroke="#666666" points="658,-67.5 532,-67.5 532,-37.5 658,-37.5 658,-67.5"/>
+<text text-anchor="start" x="540" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ClosedMutPhase</text>
+<text text-anchor="middle" x="595" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Def &gt;</text>
 </a>
 </g>
 </g>
@@ -97,8 +97,8 @@ var sectionId = 'dynsection-0';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node2&#45;&gt;Node1</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M484.45,-52.5C493.28,-52.5 502.25,-52.5 510.92,-52.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="484.17,-49 474.17,-52.5 484.17,-56 484.17,-49"/>
+<path fill="none" stroke="#63b8ff" d="M668.45,-52.5C677.28,-52.5 686.25,-52.5 694.92,-52.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="668.17,-49 658.17,-52.5 668.17,-56 668.17,-49"/>
 </a>
 </g>
 </g>
@@ -106,8 +106,8 @@ var sectionId = 'dynsection-0';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
-<polygon fill="white" stroke="#666666" points="74,-59 0,-59 0,-40 74,-40 74,-59"/>
-<text text-anchor="middle" x="37" y="-47" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
+<polygon fill="white" stroke="#666666" points="258,-62 184,-62 184,-43 258,-43 258,-62"/>
+<text text-anchor="middle" x="221" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
 </a>
 </g>
 </g>
@@ -115,102 +115,65 @@ var sectionId = 'dynsection-0';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node3&#45;&gt;Node2</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M84.32,-54.07C86.92,-54.24 89.49,-54.38 92,-54.5 197.67,-59.38 224.23,-55.82 330,-54.5 335.83,-54.43 341.91,-54.32 347.99,-54.2"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="84.51,-50.57 74.28,-53.32 83.99,-57.55 84.51,-50.57"/>
+<path fill="none" stroke="#63b8ff" d="M268.32,-57.07C270.92,-57.24 273.49,-57.38 276,-57.5 381.67,-62.38 408.27,-60.8 514,-57.5 519.7,-57.32 525.63,-57.07 531.57,-56.78"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="268.51,-53.57 258.28,-56.32 267.99,-60.55 268.51,-53.57"/>
+</a>
+</g>
+</g>
+<!-- Node5 -->
+<g id="Node000005" class="node">
+<title>Node5</title>
+<g id="a_Node000005"><a xlink:href="classmim_1_1ClosedMutPhase.html" target="_top" xlink:title="Transitively visits all reachable closed mutables (Def::is_closed()) in World.">
+<polygon fill="white" stroke="#666666" points="453,-43 295,-43 295,-24 453,-24 453,-43"/>
+<text text-anchor="middle" x="374" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ClosedMutPhase&lt; M &gt;</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node5 -->
+<g id="edge5_Node000005_Node000003" class="edge">
+<title>Node3&#45;&gt;Node5</title>
+<g id="a_edge5_Node000005_Node000003"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M268.27,-46.68C277.51,-45.52 287.44,-44.27 297.37,-43.02"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="267.65,-43.23 258.17,-47.95 268.53,-50.17 267.65,-43.23"/>
 </a>
 </g>
 </g>
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classmim_1_1ClosedMutPhase.html" target="_top" xlink:title="Transitively visits all reachable closed mutables (Def::is_closed()) in World.">
-<polygon fill="white" stroke="#666666" points="269,-40 111,-40 111,-21 269,-21 269,-40"/>
-<text text-anchor="middle" x="190" y="-28" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ClosedMutPhase&lt; M &gt;</text>
+<g id="a_Node000004"><a xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="147,-62 0,-62 0,-43 147,-43 147,-62"/>
+<text text-anchor="middle" x="73.5" y="-50" font-family="Helvetica,sans-Serif" font-size="10.00">fe::RuntimeCast&lt; Phase &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node4 -->
-<g id="edge4_Node000004_Node000003" class="edge">
-<title>Node3&#45;&gt;Node4</title>
-<g id="a_edge4_Node000004_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M84.27,-43.68C93.51,-42.52 103.44,-41.27 113.37,-40.02"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="83.65,-40.23 74.17,-44.95 84.53,-47.17 83.65,-40.23"/>
+<!-- Node4&#45;&gt;Node3 -->
+<g id="edge3_Node000003_Node000004" class="edge">
+<title>Node4&#45;&gt;Node3</title>
+<g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M157.3,-52.5C166.51,-52.5 175.5,-52.5 183.66,-52.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="157.25,-49 147.25,-52.5 157.25,-56 157.25,-49"/>
 </a>
 </g>
 </g>
-<!-- Node4&#45;&gt;Node2 -->
-<g id="edge3_Node000002_Node000004" class="edge">
-<title>Node4&#45;&gt;Node2</title>
-<g id="a_edge3_Node000002_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M279.64,-38.54C296.37,-40.13 313.73,-41.82 330,-43.5 335.84,-44.1 341.92,-44.75 347.99,-45.41"/>
-<polygon fill="orange" stroke="orange" points="279.6,-35.02 269.32,-37.56 278.94,-41.99 279.6,-35.02"/>
+<!-- Node5&#45;&gt;Node2 -->
+<g id="edge4_Node000002_Node000005" class="edge">
+<title>Node5&#45;&gt;Node2</title>
+<g id="a_edge4_Node000002_Node000005"><a xlink:title=" ">
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M463.23,-41.15C486.17,-43.15 510.42,-45.25 531.71,-47.1"/>
+<polygon fill="orange" stroke="orange" points="463.4,-37.66 453.14,-40.28 462.8,-44.63 463.4,-37.66"/>
 </a>
 </g>
-<text text-anchor="middle" x="308.5" y="-46.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Def &gt;</text>
-</g>
-<!-- Node6 -->
-<g id="Node000006" class="node">
-<title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classmim_1_1Emitter.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="1302,-94 1189,-94 1189,-53 1302,-53 1302,-94"/>
-<text text-anchor="start" x="1197" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Emitter&lt; std::</text>
-<text text-anchor="start" x="1197" y="-71" font-family="Helvetica,sans-Serif" font-size="10.00">string, std::string,</text>
-<text text-anchor="middle" x="1245.5" y="-60" font-family="Helvetica,sans-Serif" font-size="10.00"> BB, Emitter &gt;</text>
-</a>
-</g>
-</g>
-<!-- Node5&#45;&gt;Node6 -->
-<g id="edge6_Node000005_Node000006" class="edge">
-<title>Node5&#45;&gt;Node6</title>
-<g id="a_edge6_Node000005_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M837.35,-64.54C856.21,-69.14 878.53,-73.9 899,-76.5 1018.94,-91.75 1050.27,-88.05 1171,-81.5 1176.77,-81.19 1182.78,-80.74 1188.77,-80.21"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="838.1,-61.12 827.55,-62.09 836.4,-67.91 838.1,-61.12"/>
-</a>
-</g>
-</g>
-<!-- Node8 -->
-<g id="Node000008" class="node">
-<title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classmim_1_1Emitter.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="1033.5,-67.5 911.5,-67.5 911.5,-37.5 1033.5,-37.5 1033.5,-67.5"/>
-<text text-anchor="start" x="919.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Emitter&lt; Value,</text>
-<text text-anchor="middle" x="972.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00"> Type, BB, Child &gt;</text>
-</a>
-</g>
-</g>
-<!-- Node5&#45;&gt;Node8 -->
-<g id="edge8_Node000005_Node000008" class="edge">
-<title>Node5&#45;&gt;Node8</title>
-<g id="a_edge8_Node000005_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M872.03,-52.5C885.24,-52.5 898.75,-52.5 911.39,-52.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="872.01,-49 862.01,-52.5 872.01,-56 872.01,-49"/>
-</a>
-</g>
-</g>
-<!-- Node9 -->
-<g id="Node000009" class="node">
-<title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classmim_1_1plug_1_1mem_1_1AddMem.html" target="_top" xlink:title="This phase adds mems to all lambdas and continuations.">
-<polygon fill="white" stroke="#666666" points="1046,-19 899,-19 899,0 1046,0 1046,-19"/>
-<text text-anchor="middle" x="972.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::mem::AddMem</text>
-</a>
-</g>
-</g>
-<!-- Node5&#45;&gt;Node9 -->
-<g id="edge10_Node000005_Node000009" class="edge">
-<title>Node5&#45;&gt;Node9</title>
-<g id="a_edge10_Node000005_Node000009"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M842.68,-40.53C870.87,-33.74 905.67,-25.36 932,-19.02"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="841.52,-37.21 832.61,-42.96 843.16,-44.02 841.52,-37.21"/>
-</a>
-</g>
+<text text-anchor="middle" x="492.5" y="-48.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Def &gt;</text>
 </g>
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="classmim_1_1ll_1_1Emitter.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="1432,-83 1339,-83 1339,-64 1432,-64 1432,-83"/>
-<text text-anchor="middle" x="1385.5" y="-71" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ll::Emitter</text>
+<g id="a_Node000007"><a xlink:href="classmim_1_1Emitter.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="1486,-94 1373,-94 1373,-53 1486,-53 1486,-94"/>
+<text text-anchor="start" x="1381" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Emitter&lt; std::</text>
+<text text-anchor="start" x="1381" y="-71" font-family="Helvetica,sans-Serif" font-size="10.00">string, std::string,</text>
+<text text-anchor="middle" x="1429.5" y="-60" font-family="Helvetica,sans-Serif" font-size="10.00"> BB, Emitter &gt;</text>
 </a>
 </g>
 </g>
@@ -218,21 +181,76 @@ var sectionId = 'dynsection-0';
 <g id="edge7_Node000006_Node000007" class="edge">
 <title>Node6&#45;&gt;Node7</title>
 <g id="a_edge7_Node000006_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1312.27,-73.5C1321.21,-73.5 1330.23,-73.5 1338.72,-73.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="1312.23,-70 1302.23,-73.5 1312.23,-77 1312.23,-70"/>
+<path fill="none" stroke="#63b8ff" d="M1021.35,-64.54C1040.21,-69.14 1062.53,-73.9 1083,-76.5 1202.94,-91.75 1234.27,-88.05 1355,-81.5 1360.77,-81.19 1366.78,-80.74 1372.77,-80.21"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1022.1,-61.12 1011.55,-62.09 1020.4,-67.91 1022.1,-61.12"/>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node6 -->
-<g id="edge9_Node000008_Node000006" class="edge">
-<title>Node8&#45;&gt;Node6</title>
-<g id="a_edge9_Node000008_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M1044.13,-52.39C1081.88,-52.99 1129.08,-54.79 1171,-59.5 1176.81,-60.15 1182.85,-61.01 1188.85,-61.98"/>
-<polygon fill="orange" stroke="orange" points="1043.79,-48.89 1033.75,-52.25 1043.7,-55.89 1043.79,-48.89"/>
+<!-- Node9 -->
+<g id="Node000009" class="node">
+<title>Node9</title>
+<g id="a_Node000009"><a xlink:href="classmim_1_1Emitter.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="1217.5,-67.5 1095.5,-67.5 1095.5,-37.5 1217.5,-37.5 1217.5,-67.5"/>
+<text text-anchor="start" x="1103.5" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Emitter&lt; Value,</text>
+<text text-anchor="middle" x="1156.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00"> Type, BB, Child &gt;</text>
 </a>
 </g>
-<text text-anchor="start" x="1064" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; std::string, std</text>
-<text text-anchor="middle" x="1117.5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">::string, BB, Emitter &gt;</text>
+</g>
+<!-- Node6&#45;&gt;Node9 -->
+<g id="edge9_Node000006_Node000009" class="edge">
+<title>Node6&#45;&gt;Node9</title>
+<g id="a_edge9_Node000006_Node000009"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M1056.03,-52.5C1069.24,-52.5 1082.75,-52.5 1095.39,-52.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1056.01,-49 1046.01,-52.5 1056.01,-56 1056.01,-49"/>
+</a>
+</g>
+</g>
+<!-- Node10 -->
+<g id="Node000010" class="node">
+<title>Node10</title>
+<g id="a_Node000010"><a xlink:href="classmim_1_1plug_1_1mem_1_1AddMem.html" target="_top" xlink:title="This phase adds mems to all lambdas and continuations.">
+<polygon fill="white" stroke="#666666" points="1230,-19 1083,-19 1083,0 1230,0 1230,-19"/>
+<text text-anchor="middle" x="1156.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::mem::AddMem</text>
+</a>
+</g>
+</g>
+<!-- Node6&#45;&gt;Node10 -->
+<g id="edge11_Node000006_Node000010" class="edge">
+<title>Node6&#45;&gt;Node10</title>
+<g id="a_edge11_Node000006_Node000010"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M1026.68,-40.53C1054.87,-33.74 1089.67,-25.36 1116,-19.02"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1025.52,-37.21 1016.61,-42.96 1027.16,-44.02 1025.52,-37.21"/>
+</a>
+</g>
+</g>
+<!-- Node8 -->
+<g id="Node000008" class="node">
+<title>Node8</title>
+<g id="a_Node000008"><a xlink:href="classmim_1_1ll_1_1Emitter.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="1616,-83 1523,-83 1523,-64 1616,-64 1616,-83"/>
+<text text-anchor="middle" x="1569.5" y="-71" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ll::Emitter</text>
+</a>
+</g>
+</g>
+<!-- Node7&#45;&gt;Node8 -->
+<g id="edge8_Node000007_Node000008" class="edge">
+<title>Node7&#45;&gt;Node8</title>
+<g id="a_edge8_Node000007_Node000008"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M1496.27,-73.5C1505.21,-73.5 1514.23,-73.5 1522.72,-73.5"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1496.23,-70 1486.23,-73.5 1496.23,-77 1496.23,-70"/>
+</a>
+</g>
+</g>
+<!-- Node9&#45;&gt;Node7 -->
+<g id="edge10_Node000009_Node000007" class="edge">
+<title>Node9&#45;&gt;Node7</title>
+<g id="a_edge10_Node000009_Node000007"><a xlink:title=" ">
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M1228.13,-52.39C1265.88,-52.99 1313.08,-54.79 1355,-59.5 1360.81,-60.15 1366.85,-61.01 1372.85,-61.98"/>
+<polygon fill="orange" stroke="orange" points="1227.79,-48.89 1217.75,-52.25 1227.7,-55.89 1227.79,-48.89"/>
+</a>
+</g>
+<text text-anchor="start" x="1248" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; std::string, std</text>
+<text text-anchor="middle" x="1301.5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">::string, BB, Emitter &gt;</text>
 </g>
 </g>
 </svg>

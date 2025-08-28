@@ -18,6 +18,7 @@ var classmim_1_1Driver =
     [ "normalizer", "classmim_1_1Driver.html#a9da4ca3384f62706a603bacad94e98e6", null ],
     [ "normalizer", "classmim_1_1Driver.html#a66bee8d7f5f315deb200c65bf3ea0bff", null ],
     [ "pass", "classmim_1_1Driver.html#a01203ec32b497c80004506589ce92537", null ],
+    [ "phase", "classmim_1_1Driver.html#ae98e9444e90210ce6ab197daec6c56fb", null ],
     [ "search_paths", "classmim_1_1Driver.html#afd36aa36d224823727e7c4e249874754", null ],
     [ "world", "classmim_1_1Driver.html#a6bb261071b0b8c994cf8dd9c90e78351", null ]
 ];

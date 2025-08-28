@@ -489,9 +489,9 @@ Friends</h2></td></tr>
 <div class="line"><span class="keyword">auto</span> [d, e]    = de-&gt;projs&lt;2&gt;();</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// 2. Variant:</span></div>
-<div class="line"><span class="keyword">auto</span> [<a class="code hl_function" href="#a9df7e6baae6a143ed3af2bc7ec643641">callee</a> , args] = <a class="code hl_function" href="#af5dffa71b7599ddc5c46cf309815a9fa">App::uncurry</a>(def);</div>
-<div class="ttc" id="aclassmim_1_1App_html_a9df7e6baae6a143ed3af2bc7ec643641"><div class="ttname"><a href="#a9df7e6baae6a143ed3af2bc7ec643641">mim::App::callee</a></div><div class="ttdeci">const Def * callee() const</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00234">lam.h:234</a></div></div>
-<div class="ttc" id="aclassmim_1_1App_html_af5dffa71b7599ddc5c46cf309815a9fa"><div class="ttname"><a href="#af5dffa71b7599ddc5c46cf309815a9fa">mim::App::uncurry</a></div><div class="ttdeci">auto uncurry() const</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00319">lam.h:319</a></div></div>
+<div class="line"><span class="keyword">auto</span> [<a class="code hl_function" href="#a9df7e6baae6a143ed3af2bc7ec643641">callee</a> , args] = <a class="code hl_function" href="#a7ef3a62008e14c5bd706e56bf81b7d31">App::uncurry</a>(def);</div>
+<div class="ttc" id="aclassmim_1_1App_html_a7ef3a62008e14c5bd706e56bf81b7d31"><div class="ttname"><a href="#a7ef3a62008e14c5bd706e56bf81b7d31">mim::App::uncurry</a></div><div class="ttdeci">auto uncurry() const</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00320">lam.h:320</a></div></div>
+<div class="ttc" id="aclassmim_1_1App_html_a9df7e6baae6a143ed3af2bc7ec643641"><div class="ttname"><a href="#a9df7e6baae6a143ed3af2bc7ec643641">mim::App::callee</a></div><div class="ttdeci">const Def * callee() const</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00272">lam.h:272</a></div></div>
 </div><!-- fragment --> <dl class="section return"><dt>Returns</dt><dd><ol type="1">
 <li>Variant: <br  />
  <em>only</em> the arguments in a <code>std::array&lt;const Def*, N&gt;</code>. You will <em>not</em> retrieve the initial callee because if you know the number of curried <a class="el" href="classmim_1_1App.html">App</a>s, you probably also know the callee anyway. Also, if you "overshoot" the number of curried <a class="el" href="classmim_1_1App.html">App</a>s, the superflous args on the left will be set to <code>nullptr</code>.</li>
@@ -504,18 +504,22 @@ Friends</h2></td></tr>
 </ol>
 </dd></dl>
 </td></tr>
-<tr class="memitem:abcba206677008a2ab2dd451f892bdb04" id="r_abcba206677008a2ab2dd451f892bdb04"><td class="memTemplParams" colspan="2">template&lt;size_t N&gt; </td></tr>
-<tr class="memitem:abcba206677008a2ab2dd451f892bdb04"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abcba206677008a2ab2dd451f892bdb04">Args</a> = std::conditional_t&lt;N == std::dynamic_extent, <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>, std::array&lt;const <a class="el" href="classmim_1_1Def.html">Def</a>*, N&gt;&gt;</td></tr>
-<tr class="separator:abcba206677008a2ab2dd451f892bdb04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a799f62d0d988915a13a61824b9d53c35" id="r_a799f62d0d988915a13a61824b9d53c35"><td class="memTemplParams" colspan="2">template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Callee&gt; </td></tr>
-<tr class="memitem:a799f62d0d988915a13a61824b9d53c35"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a799f62d0d988915a13a61824b9d53c35">Uncurry</a> = std::conditional_t&lt;Callee, std::pair&lt;const <a class="el" href="classmim_1_1Def.html">Def</a>*, <a class="el" href="#abcba206677008a2ab2dd451f892bdb04">Args</a>&lt;N&gt;&gt;, <a class="el" href="#abcba206677008a2ab2dd451f892bdb04">Args</a>&lt;N&gt;&gt;</td></tr>
-<tr class="separator:a799f62d0d988915a13a61824b9d53c35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5dffa71b7599ddc5c46cf309815a9fa" id="r_af5dffa71b7599ddc5c46cf309815a9fa"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Callee = N == std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:af5dffa71b7599ddc5c46cf309815a9fa"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af5dffa71b7599ddc5c46cf309815a9fa">uncurry</a> () const</td></tr>
-<tr class="separator:af5dffa71b7599ddc5c46cf309815a9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd872fa1bdce9300b6fe8b16175ccae0" id="r_acd872fa1bdce9300b6fe8b16175ccae0"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Callee = N == std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:acd872fa1bdce9300b6fe8b16175ccae0"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="#a799f62d0d988915a13a61824b9d53c35">Uncurry</a>&lt; N, Callee &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#acd872fa1bdce9300b6fe8b16175ccae0">uncurry</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *<a class="el" href="#a9df7e6baae6a143ed3af2bc7ec643641">callee</a>)</td></tr>
-<tr class="separator:acd872fa1bdce9300b6fe8b16175ccae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ef3a62008e14c5bd706e56bf81b7d31" id="r_a7ef3a62008e14c5bd706e56bf81b7d31"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:a7ef3a62008e14c5bd706e56bf81b7d31"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a7ef3a62008e14c5bd706e56bf81b7d31">uncurry</a> () const</td></tr>
+<tr class="separator:a7ef3a62008e14c5bd706e56bf81b7d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd69aef92172ab4b4bbc3a5eb76cca78" id="r_abd69aef92172ab4b4bbc3a5eb76cca78"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd69aef92172ab4b4bbc3a5eb76cca78">uncurry_callee</a> () const</td></tr>
+<tr class="separator:abd69aef92172ab4b4bbc3a5eb76cca78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac69c2673100202cef7725773dcc08d5f" id="r_ac69c2673100202cef7725773dcc08d5f"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ac69c2673100202cef7725773dcc08d5f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac69c2673100202cef7725773dcc08d5f">uncurry_args</a> () const</td></tr>
+<tr class="separator:ac69c2673100202cef7725773dcc08d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88adc23138a6b3ce936b0af483421a11" id="r_a88adc23138a6b3ce936b0af483421a11"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:a88adc23138a6b3ce936b0af483421a11"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a88adc23138a6b3ce936b0af483421a11">uncurry</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:a88adc23138a6b3ce936b0af483421a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a320c191c83b4f6e864686a20c0931739" id="r_a320c191c83b4f6e864686a20c0931739"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a320c191c83b4f6e864686a20c0931739">uncurry_callee</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:a320c191c83b4f6e864686a20c0931739"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6d570d00183417757fd4ebdf2ee45b8" id="r_aa6d570d00183417757fd4ebdf2ee45b8"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:aa6d570d00183417757fd4ebdf2ee45b8"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa6d570d00183417757fd4ebdf2ee45b8">uncurry_args</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:aa6d570d00183417757fd4ebdf2ee45b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -586,44 +590,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
 <p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00220">220</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="abcba206677008a2ab2dd451f892bdb04" name="abcba206677008a2ab2dd451f892bdb04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abcba206677008a2ab2dd451f892bdb04">&#9670;&#160;</a></span>Args</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t N&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#abcba206677008a2ab2dd451f892bdb04">mim::App::Args</a> = std::conditional_t&lt;N == std::dynamic_extent, <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>, std::array&lt;const <a class="el" href="classmim_1_1Def.html">Def</a>*, N&gt;&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00281">281</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
-
-</div>
-</div>
-<a id="a799f62d0d988915a13a61824b9d53c35" name="a799f62d0d988915a13a61824b9d53c35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a799f62d0d988915a13a61824b9d53c35">&#9670;&#160;</a></span>Uncurry</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Callee&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#a799f62d0d988915a13a61824b9d53c35">mim::App::Uncurry</a> = std::conditional_t&lt;Callee, std::pair&lt;const <a class="el" href="classmim_1_1Def.html">Def</a>*, <a class="el" href="#abcba206677008a2ab2dd451f892bdb04">Args</a>&lt;N&gt;&gt;, <a class="el" href="#abcba206677008a2ab2dd451f892bdb04">Args</a>&lt;N&gt;&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00284">284</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="adf118f16568ef138e33bdb1f330112d1" name="adf118f16568ef138e33bdb1f330112d1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adf118f16568ef138e33bdb1f330112d1">&#9670;&#160;</a></span>arg()</h2>
 
@@ -647,11 +614,11 @@ template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classboo
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00243">243</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00281">281</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00275">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00624">mim::Global::alloced_type()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="compile_8cpp_source.html#l00038">mim_get_plugin()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00580">mim::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00382">mim::plug::math::normalize_conv()</a>, <a class="el" href="vec_2normalizers_8cpp_source.html#l00041">mim::plug::vec::normalize_scan()</a>, <a class="el" href="tuple_2normalizers_8cpp_source.html#l00056">mim::plug::tuple::normalize_zip()</a>, <a class="el" href="pipelinebuilder_8h_source.html#l00061">mim::register_pass_with_arg()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00058">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00624">mim::Global::alloced_type()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00580">mim::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00382">mim::plug::math::normalize_conv()</a>, <a class="el" href="vec_2normalizers_8cpp_source.html#l00041">mim::plug::vec::normalize_scan()</a>, <a class="el" href="tuple_2normalizers_8cpp_source.html#l00056">mim::plug::tuple::normalize_zip()</a>, <a class="el" href="compile_8cpp_source.html#l00067">reg_stages()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00058">mim::plug::clos::ClosConvPrep::rewrite_arg()</a>.</p>
 
 </div>
 </div>
@@ -678,11 +645,11 @@ template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classboo
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00249">249</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00287">287</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00249">axm()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00287">axm()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00249">axm()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00287">axm()</a>.</p>
 
 </div>
 </div>
@@ -709,11 +676,11 @@ template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classboo
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00234">234</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00272">272</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00275">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="lam_8h_source.html#l00236">callee_type()</a>, <a class="el" href="lam_8h_source.html#l00235">decurry()</a>, <a class="el" href="ll_8cpp_source.html#l00455">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00112">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>, and <a class="el" href="lam_8h_source.html#l00287">uncurry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00200">mim::plug::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="lam_8h_source.html#l00274">callee_type()</a>, <a class="el" href="lam_8h_source.html#l00273">decurry()</a>, <a class="el" href="ll_8cpp_source.html#l00455">mim::ll::Emitter::emit_bb()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00112">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>.</p>
 
 </div>
 </div>
@@ -740,9 +707,9 @@ template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classboo
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00236">236</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00274">274</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00234">callee()</a>, and <a class="el" href="def_8h_source.html#l00262">mim::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00272">callee()</a>, and <a class="el" href="def_8h_source.html#l00262">mim::Def::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="clos__conv__prep_8cpp_source.html#l00112">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>.</p>
 
@@ -771,7 +738,7 @@ template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classboo
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00250">250</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00288">288</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00626">mim::Def::curry_</a>.</p>
 
@@ -802,9 +769,9 @@ template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classboo
 
 <p>Returns <a class="el" href="#a9df7e6baae6a143ed3af2bc7ec643641">App::callee</a> again as <a class="el" href="classmim_1_1App.html">App</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00235">235</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00273">273</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00234">callee()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00272">callee()</a>.</p>
 
 </div>
 </div>
@@ -844,7 +811,7 @@ template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classboo
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00115">115</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00330">World</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00336">World</a>.</p>
 
 </div>
 </div>
@@ -871,19 +838,19 @@ template&lt;size_t N, <a class="el" href="namespace_3globalScope_4.html#classboo
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00251">251</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00289">289</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00627">mim::Def::trip_</a>.</p>
 
 </div>
 </div>
-<a id="af5dffa71b7599ddc5c46cf309815a9fa" name="af5dffa71b7599ddc5c46cf309815a9fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5dffa71b7599ddc5c46cf309815a9fa">&#9670;&#160;</a></span>uncurry() <span class="overload">[1/2]</span></h2>
+<a id="a7ef3a62008e14c5bd706e56bf81b7d31" name="a7ef3a62008e14c5bd706e56bf81b7d31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ef3a62008e14c5bd706e56bf81b7d31">&#9670;&#160;</a></span>uncurry() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Callee = N == std::dynamic_extent&gt; </div>
+template&lt;size_t N = std::dynamic_extent&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -902,29 +869,27 @@ template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globa
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00319">319</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00320">320</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00319">uncurry()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="compile_8h_source.html#l00010">mim::plug::compile::handle_optimization_part()</a>, <a class="el" href="compile_8cpp_source.html#l00038">mim_get_plugin()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00044">mim::plug::compile::normalize_combine_pass_list()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00028">mim::plug::compile::normalize_combined_phase()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00007">mim::plug::compile::normalize_pass_phase()</a>, <a class="el" href="optimize_8cpp_source.html#l00010">mim::optimize()</a>, and <a class="el" href="lam_8h_source.html#l00319">uncurry()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00024">apply()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00045">mim::plug::compile::normalize_combine_pass_list()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00029">mim::plug::compile::normalize_combined_phase()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00008">mim::plug::compile::normalize_pass_phase()</a>, <a class="el" href="optimize_8cpp_source.html#l00009">mim::optimize()</a>, and <a class="el" href="compile_8cpp_source.html#l00067">reg_stages()</a>.</p>
 
 </div>
 </div>
-<a id="acd872fa1bdce9300b6fe8b16175ccae0" name="acd872fa1bdce9300b6fe8b16175ccae0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd872fa1bdce9300b6fe8b16175ccae0">&#9670;&#160;</a></span>uncurry() <span class="overload">[2/2]</span></h2>
+<a id="a88adc23138a6b3ce936b0af483421a11" name="a88adc23138a6b3ce936b0af483421a11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88adc23138a6b3ce936b0af483421a11">&#9670;&#160;</a></span>uncurry() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Callee = N == std::dynamic_extent&gt; </div>
+template&lt;size_t N = std::dynamic_extent&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="#a799f62d0d988915a13a61824b9d53c35">Uncurry</a>&lt; N, Callee &gt; mim::App::uncurry </td>
+          <td class="memname">static auto mim::App::uncurry </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>callee</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -935,9 +900,123 @@ template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globa
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00287">287</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00319">319</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00234">callee()</a>.</p>
+</div>
+</div>
+<a id="ac69c2673100202cef7725773dcc08d5f" name="ac69c2673100202cef7725773dcc08d5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac69c2673100202cef7725773dcc08d5f">&#9670;&#160;</a></span>uncurry_args() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t N = std::dynamic_extent&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto mim::App::uncurry_args </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00326">326</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00047">PluginSelect&lt; P, B &gt;::operator()()</a>.</p>
+
+</div>
+</div>
+<a id="aa6d570d00183417757fd4ebdf2ee45b8" name="aa6d570d00183417757fd4ebdf2ee45b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6d570d00183417757fd4ebdf2ee45b8">&#9670;&#160;</a></span>uncurry_args() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t N = std::dynamic_extent&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static auto mim::App::uncurry_args </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00325">325</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+
+</div>
+</div>
+<a id="abd69aef92172ab4b4bbc3a5eb76cca78" name="abd69aef92172ab4b4bbc3a5eb76cca78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd69aef92172ab4b4bbc3a5eb76cca78">&#9670;&#160;</a></span>uncurry_callee() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::App::uncurry_callee </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00323">323</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00024">apply()</a>, and <a class="el" href="compile_2normalizers_8cpp_source.html#l00008">mim::plug::compile::normalize_pass_phase()</a>.</p>
+
+</div>
+</div>
+<a id="a320c191c83b4f6e864686a20c0931739" name="a320c191c83b4f6e864686a20c0931739"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a320c191c83b4f6e864686a20c0931739">&#9670;&#160;</a></span>uncurry_callee() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::App::uncurry_callee </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00322">322</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 </div>
 </div>
@@ -962,11 +1041,11 @@ template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globa
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00330">330</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00336">336</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00330">World</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00336">World</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00115">rebuild_()</a>, and <a class="el" href="lam_8h_source.html#l00330">World</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00115">rebuild_()</a>, and <a class="el" href="lam_8h_source.html#l00336">World</a>.</p>
 
 </div>
 </div>
@@ -991,7 +1070,7 @@ template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globa
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00324">324</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00330">330</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 </div>
 </div>
@@ -1015,7 +1094,7 @@ template&lt;size_t N = std::dynamic_extent, <a class="el" href="namespace_3globa
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00325">325</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00331">331</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 </div>
 </div>
