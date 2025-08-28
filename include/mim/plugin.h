@@ -12,14 +12,17 @@
 namespace mim {
 
 class Driver;
-class PipelineBuilder;
+class PassMan;
+class Pipeline;
 
 /// @name Plugin Interface
 ///@{
 using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
-/// `axm ↦ (pipeline part) × (axm application) → ()` <br/>
-/// The function should inspect App%lication to construct the Pass/Phase and add it to the pipeline.
-using Passes   = absl::flat_hash_map<flags_t, std::function<void(World&, PipelineBuilder&, const Def*)>>;
+
+/// Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a Pipeline.
+using Phases = absl::flat_hash_map<flags_t, std::function<void(Pipeline&, const Def*)>>;
+using Passes = absl::flat_hash_map<flags_t, std::function<void(PassMan&, const Def*)>>;
+
 using Backends = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;
 ///@}
 
@@ -32,11 +35,11 @@ struct Plugin {
     const char* plugin_name; ///< Name of the Plugin.
 
     /// Callback for registering the mapping from axm ids to normalizer functions in the given @p normalizers map.
-    void (*register_normalizers)(Normalizers& normalizers);
-    /// Callback for registering the Plugin's callbacks for the pipeline extension points.
-    void (*register_passes)(Passes& passes);
+    void (*register_normalizers)(Normalizers&);
+    /// Callback for registering the Plugin's callbacks for Pass%es and Phase%s.
+    void (*register_stages)(Phases&, Passes&);
     /// Callback for registering the mapping from backend names to emission functions in the given @p backends map.
-    void (*register_backends)(Backends& backends);
+    void (*register_backends)(Backends&);
 };
 
 /// @name Plugin Interface
@@ -112,10 +115,12 @@ struct Annex {
     /// These are set via template specialization.
     ///@{
     /// Number of Axm::sub%tags.
-    template<class Id> static constexpr size_t Num = size_t(-1);
+    template<class Id>
+    static constexpr size_t Num = size_t(-1);
 
     /// @see Axm::base.
-    template<class Id> static constexpr flags_t Base = flags_t(-1);
+    template<class Id>
+    static constexpr flags_t Base = flags_t(-1);
     ///@}
 };
 

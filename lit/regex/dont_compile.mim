@@ -5,6 +5,6 @@ import compile;
 
 // we want to check the normalizer working → that's much easier not having the lower_regex phase running :)
 lam extern _compile(): %compile.Pipeline =
-    %compile.pipe
+    %compile.pipeline
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (%compile.passes_to_phase %compile.ret_wrap_pass);

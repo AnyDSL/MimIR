@@ -70,9 +70,11 @@ void Driver::load(Sym name) {
     if (auto get_info = reinterpret_cast<decltype(&mim_get_plugin)>(dl::get(handle.get(), "mim_get_plugin"))) {
         assert_emplace(plugins_, name, std::move(handle));
         auto info = get_info();
-        if (auto reg = info.register_passes) reg(passes_);
+        // clang-format off
         if (auto reg = info.register_normalizers) reg(normalizers_);
-        if (auto reg = info.register_backends) reg(backends_);
+        if (auto reg = info.register_stages)      reg(phases_, passes_);
+        if (auto reg = info.register_backends)    reg(backends_);
+        // clang-format on
     } else {
         error("mim/plugin has no 'mim_get_plugin()'");
     }

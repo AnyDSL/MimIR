@@ -6,6 +6,10 @@ using namespace std::literals;
 
 namespace mim {
 
+EtaExp::EtaExp(PassMan& man)
+    : FPPass(man, "eta_exp")
+    , eta_red_(man.find<EtaRed>()) {}
+
 Lam* EtaExp::new2old(Lam* new_lam) {
     if (auto old = lookup(new2old_, new_lam)) {
         auto root = new2old(old); // path compression

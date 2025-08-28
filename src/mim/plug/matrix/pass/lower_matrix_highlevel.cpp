@@ -19,7 +19,7 @@ std::optional<const Def*> internal_function_of_axm(const Axm* axm, const Def* me
     auto name   = axm->sym().str();
     find_and_replace(name, ".", "_");
     find_and_replace(name, "%", "");
-    name = INTERNAL_PREFIX + name;
+    name = internal_prefix + name;
 
     auto replacement = world.external(world.sym(name));
     if (replacement) {

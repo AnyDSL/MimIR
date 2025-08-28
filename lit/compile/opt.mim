@@ -11,7 +11,7 @@ con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0)
     f (mem, 42I32, return);
 
 lam extern _compile(): %compile.Pipeline =
-    %compile.pipe
+    %compile.pipeline
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         optimization_phase;
 

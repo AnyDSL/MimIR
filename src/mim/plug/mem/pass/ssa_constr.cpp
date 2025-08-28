@@ -14,6 +14,10 @@ std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
 }
 } // namespace
 
+SSAConstr::SSAConstr(PassMan& man)
+    : FPPass(man, "ssa_constr")
+    , eta_exp_(man.find<EtaExp>()) {}
+
 void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 
 const Def* SSAConstr::rewrite(const Proxy* proxy) {
@@ -163,7 +167,8 @@ undo_t SSAConstr::analyze(const Def* def) {
 
             // TODO this is a bit scruffy - maybe we can do better
             if (Lam::isa_basicblock(succ_lam) && succ_lam != curr_mut())
-                for (auto writable = data(curr_mut()).writable; auto&& w : writable) succ_info.writable.insert(w);
+                for (auto writable = data(curr_mut()).writable; auto&& w : writable)
+                    succ_info.writable.insert(w);
 
             if (!isa_callee(def, i)) {
                 if (succ_info.pred) {

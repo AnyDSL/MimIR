@@ -226,6 +226,44 @@ private:
         trip_  = trip;
     }
 
+    template<size_t N, bool Callee, bool Args>
+    static auto uncurry_(const Def* callee) {
+        if constexpr (N == std::dynamic_extent) {
+            auto args = DefVec();
+            while (auto app = callee->isa<App>()) {
+                if constexpr (Args) args.emplace_back(app->arg());
+                callee = app->callee();
+            }
+
+            if constexpr (Callee && Args) {
+                std::ranges::reverse(args);
+                return std::pair{callee, args};
+            } else if constexpr (Args) {
+                std::ranges::reverse(args);
+                return args;
+            } else {
+                return callee;
+            }
+        } else {
+            auto args = std::array<const Def*, N>();
+            for (size_t i = N; i-- != 0;) {
+                if (auto app = callee->isa<App>()) {
+                    if constexpr (Args) args[i] = app->arg();
+                    callee = app->callee();
+                } else {
+                    if constexpr (Args) args[i] = nullptr;
+                }
+            }
+
+            if constexpr (Callee && Args)
+                return std::pair{callee, args};
+            else if constexpr (Args)
+                return args;
+            else
+                return callee;
+        }
+    }
+
 public:
     using Setters<App>::set;
 
@@ -277,48 +315,16 @@ public:
     ///     2. A DefVec of all curried App::arg%s.
     /// You can enforce variant 1 / variant 2 by with the template argument @p Callee.
     ///@{
-    template<size_t N>
-    using Args = std::conditional_t<N == std::dynamic_extent, DefVec, std::array<const Def*, N>>;
+    // clang-format off
+    template<size_t N = std::dynamic_extent> static auto uncurry(const Def* def) { return uncurry_<N, true, true >(def ); }
+    template<size_t N = std::dynamic_extent>        auto uncurry() const         { return uncurry_<N, true, true >(this); }
 
-    template<size_t N, bool Callee>
-    using Uncurry = std::conditional_t<Callee, std::pair<const Def*, Args<N>>, Args<N>>;
+    static const Def* uncurry_callee(const Def* def) { return uncurry_<std::dynamic_extent, true, false>(def ); }
+           const Def* uncurry_callee() const         { return uncurry_<std::dynamic_extent, true, false>(this); }
 
-    template<size_t N = std::dynamic_extent, bool Callee = N == std::dynamic_extent>
-    static Uncurry<N, Callee> uncurry(const Def* callee) {
-        if constexpr (N == std::dynamic_extent) {
-            auto args = DefVec();
-            while (auto app = callee->isa<App>()) {
-                args.emplace_back(app->arg());
-                callee = app->callee();
-            }
-
-            std::ranges::reverse(args);
-            if constexpr (Callee)
-                return {callee, args};
-            else
-                return args;
-        } else {
-            auto args = std::array<const Def*, N>();
-            for (size_t i = N; i-- != 0;) {
-                if (auto app = callee->isa<App>()) {
-                    args[i] = app->arg();
-                    callee  = app->callee();
-                } else {
-                    args[i] = nullptr;
-                }
-            }
-
-            if constexpr (Callee)
-                return {callee, args};
-            else
-                return args;
-        }
-    }
-
-    template<size_t N = std::dynamic_extent, bool Callee = N == std::dynamic_extent>
-    auto uncurry() const {
-        return App::uncurry<N, Callee>(this);
-    }
+    template<size_t N = std::dynamic_extent> static auto uncurry_args(const Def* def) { return uncurry_<N, false, true>(def ); }
+    template<size_t N = std::dynamic_extent>        auto uncurry_args() const         { return uncurry_<N, false, true>(this); }
+    // clang-format on
     ///@}
 
     static constexpr auto Node      = mim::Node::App;

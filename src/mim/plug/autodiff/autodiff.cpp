@@ -3,9 +3,7 @@
 #include <mim/config.h>
 
 #include <mim/pass/pass.h>
-#include <mim/pass/pipelinebuilder.h>
 
-#include <mim/plug/compile/pass/internal_cleanup.h>
 #include <mim/plug/mem/mem.h>
 
 #include "mim/plug/autodiff/pass/autodiff_eval.h"
@@ -16,15 +14,16 @@ using namespace std::literals;
 using namespace mim;
 using namespace mim::plug;
 
+void reg_stages(Phases&, Passes& passes) {
+    // clang-format off
+    PassMan::hook<autodiff::ad_eval_pass,         autodiff::AutoDiffEval       >(passes);
+    PassMan::hook<autodiff::ad_zero_pass,         autodiff::AutoDiffZero       >(passes);
+    PassMan::hook<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(passes);
+    // clang-format on
+}
+
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"autodiff", [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); },
-            [](Passes& passes) {
-                register_pass<autodiff::ad_eval_pass, autodiff::AutoDiffEval>(passes);
-                register_pass<autodiff::ad_zero_pass, autodiff::AutoDiffZero>(passes);
-                register_pass<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(passes);
-                register_pass<autodiff::ad_ext_cleanup_pass, compile::InternalCleanup>(passes, "internal_diff_");
-            },
-            nullptr};
+    return {"autodiff", [](Normalizers& n) { autodiff::register_normalizers(n); }, reg_stages, nullptr};
 }
 
 namespace mim::plug::autodiff {

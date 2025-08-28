@@ -3,6 +3,6 @@ add_mim_plugin(compile
         compile.cpp
         normalizers.cpp
         pass/debug_print.cpp
-        pass/internal_cleanup.cpp
+        pass/prefix_cleanup.cpp
     INSTALL
 )

@@ -43,35 +43,29 @@ axm %clos.clos_conv_phase:        %compile.Phase;
 axm %clos.lower_typed_clos_phase: %compile.Phase;
 
 let clos_opt1_phase =
-    let eta_red = %clos.eta_red_bool_pass tt;
-    let eta_exp = %compile.eta_exp_pass eta_red;
     %compile.pass_phase (%compile.pass_list
-        eta_red
-        eta_exp
-        (%compile.scalarize_pass eta_exp)
+        (%clos.eta_red_bool_pass tt)
+        %compile.eta_exp_pass
+        %compile.scalarize_pass
     );
 
 let clos_opt2_phase =
-    let nullptr = %compile.nullptr_pass;
     %compile.pass_phase
         (%compile.pass_list
-            nullptr
-            (%compile.scalarize_pass nullptr)
+            (%compile.scalarize_pass )
             %clos.branch_clos_pass
-            (%mem.copy_prop_pass (nullptr, nullptr, tt))
+            (%mem.copy_prop_pass tt)
             %clos.lower_typed_clos_prep_pass
             %clos.clos2sjlj_pass);
 
 let clos_phases =
-    let nullptr = %compile.nullptr_pass;
     %compile.combined_phase
         (%compile.phase_list
-            (%compile.single_pass_phase nullptr)
             optimization_phase
             (%compile.single_pass_phase (%mem.reshape_pass %mem.reshape_flat))
             %mem.add_mem_phase
             (%compile.single_pass_phase %clos.clos_conv_prep_pass)
-            (%compile.single_pass_phase (%compile.eta_exp_pass nullptr))
+            (%compile.single_pass_phase %compile.eta_exp_pass)
             %clos.clos_conv_phase
             clos_opt1_phase
             clos_opt2_phase

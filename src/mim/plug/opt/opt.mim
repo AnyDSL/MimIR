@@ -23,13 +23,10 @@ import regex;
 /// ### Pipelines
 ///
 lam extern _default_compile []: %compile.Pipeline =
-    let nullptr   = %compile.nullptr_pass;
-    let nullphase = %compile.single_pass_phase nullptr;
-    %compile.pipe
-        nullphase
-        (%compile.single_pass_phase (%compile.scalarize_pass nullptr))
+    %compile.pipeline
+        (%compile.single_pass_phase %compile.scalarize_pass)
         (%compile.single_pass_phase %compile.eta_red_pass)
-        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
+        (%compile.single_pass_phase %compile.tail_rec_elim_pass)
         (%compile.single_pass_phase (plugin_cond_pass (%compile.regex_plugin, %regex.lower_regex)))
         // optimize
         (%compile.pass_phase
