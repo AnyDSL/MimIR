@@ -47,11 +47,11 @@ axm %compile.refly_plugin:    %compile.Plugin;
 axm %compile.regex_plugin:    %compile.Plugin;
 axm %compile.matrix_plugin:   %compile.Plugin;
 ///
-/// ### %%compile.pipe
+/// ### %%compile.pipeline
 ///
 /// Given n phases, returns the representation of a pipeline.
 ///
-axm %compile.pipe: %compile.Pipeline;
+axm %compile.pipeline: %compile.Pipeline;
 ///
 /// ## Passes and Phases
 ///
@@ -116,7 +116,7 @@ let optimization_pass_list =
 let optimization_phase = %compile.pass_phase optimization_pass_list;
 
 let default_core_pipeline =
-    %compile.pipe
+    %compile.pipeline
         (%compile.single_pass_phase (%compile.scalarize_pass))
         (%compile.single_pass_phase %compile.eta_red_pass)
         (%compile.single_pass_phase (%compile.tail_rec_elim_pass))

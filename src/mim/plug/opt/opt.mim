@@ -23,7 +23,7 @@ import regex;
 /// ### Pipelines
 ///
 lam extern _default_compile []: %compile.Pipeline =
-    %compile.pipe
+    %compile.pipeline
         (%compile.single_pass_phase %compile.scalarize_pass)
         (%compile.single_pass_phase %compile.eta_red_pass)
         (%compile.single_pass_phase %compile.tail_rec_elim_pass)
