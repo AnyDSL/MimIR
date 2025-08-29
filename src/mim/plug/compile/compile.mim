@@ -117,8 +117,8 @@ let optimization_pass_list =
         %compile.beta_red_pass
         %compile.eta_red_pass
         %compile.eta_exp_pass
-        (%compile.scalarize_pass)
-        (%compile.tail_rec_elim_pass);
+        %compile.scalarize_pass
+        %compile.tail_rec_elim_pass;
 
 let optimization_phase = %compile.pass_phase optimization_pass_list;
 
