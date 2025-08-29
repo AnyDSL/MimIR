@@ -72,9 +72,6 @@ axm %compile.pass_phase: %compile.PassList → %compile.Phase, normalize_pass_ph
 axm %compile.passes_to_phase: {n: Nat} → «n; %compile.Pass» → %compile.Phase;
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM`
 axm %compile.combine_pass_list: {n: Nat} → «n; %compile.PassList» → %compile.PassList, normalize_combine_pass_list;
-/// `single_pass_phase pass = passes_to_phase pass`
-// TODO: as let instead of axiom
-axm %compile.single_pass_phase: %compile.Pass → %compile.Phase, normalize_single_pass_phase;
 ///
 /// ### %%compile.combined_phase
 ///
@@ -124,13 +121,13 @@ let optimization_phase = %compile.pass_phase optimization_pass_list;
 
 let default_core_pipeline =
     %compile.pipeline
-        (%compile.single_pass_phase %compile.scalarize_pass)
-        (%compile.single_pass_phase %compile.eta_red_pass)
-        (%compile.single_pass_phase %compile.tail_rec_elim_pass)
+        (%compile.passes_to_phase %compile.scalarize_pass)
+        (%compile.passes_to_phase %compile.eta_red_pass)
+        (%compile.passes_to_phase %compile.tail_rec_elim_pass)
         optimization_phase
-        (%compile.single_pass_phase %compile.internal_cleanup_pass)
-        (%compile.single_pass_phase %compile.lam_spec_pass)
-        (%compile.single_pass_phase %compile.ret_wrap_pass);
+        (%compile.passes_to_phase %compile.internal_cleanup_pass)
+        (%compile.passes_to_phase %compile.lam_spec_pass)
+        (%compile.passes_to_phase %compile.ret_wrap_pass);
 
 lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
 ///
