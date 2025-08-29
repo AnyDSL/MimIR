@@ -10,24 +10,16 @@ public:
     BetaRedPhase(World& world)
         : FPPhase(world, "beta reduction") {}
 
-    void inc(Lam* lam) {
-        if (auto [i, ins] = candidate_.emplace(lam, false); !ins) i->second = false;
-    }
-
-    bool is_candidate(Lam* lam) const {
-        auto i = candidate_.find(lam);
-        assert(i != candidate_.end());
-        return i->second;
-    }
-
-    bool analyze() final;
-
 private:
+    bool analyze() final;
     void analyze(const Def*);
+    void visit(Lam*);
+
     const Def* rewrite_imm_App(const App*) final;
+    bool is_candidate(Lam*) const;
 
     DefSet analyzed_;
-    LamMap<bool> candidate_;
+    LamMap<bool> candidates_;
 };
 
 } // namespace mim

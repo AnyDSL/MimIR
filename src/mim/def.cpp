@@ -563,6 +563,12 @@ bool Def::equal(const Def* other) const {
 void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
 
+void Def::transfer_external(Def* to) {
+    assert(this->sym() == to->sym());
+    make_internal();
+    to->make_external();
+}
+
 std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
 
 nat_t Def::num_projs() const { return Lit::isa(arity()).value_or(1); }

@@ -43,7 +43,7 @@ void Pipeline::start() {
         todo_ = false;
         for (auto& phase : phases()) {
             phase->run();
-            todo_ |= phase->todo();
+            // todo_ |= phase->todo();
         }
     }
 }

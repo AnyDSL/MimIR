@@ -11,10 +11,17 @@ bool BetaRedPhase::analyze() {
 void BetaRedPhase::analyze(const Def* def) {
     if (auto [_, ins] = analyzed_.emplace(def); !ins) return;
 
+    if (auto var = def->isa<Var>()) return analyze(var->type()); // ignore Var's mut
+
     for (auto d : def->deps()) {
-        if (auto lam = d->isa_mut<Lam>()) inc(lam);
-        analyze(def);
+        if (auto lam = d->isa_mut<Lam>()) visit(lam);
+        analyze(d);
     }
+}
+
+void BetaRedPhase::visit(Lam* lam) {
+    if (lam->is_external()) return;
+    if (auto [i, ins] = candidates_.emplace(lam, true); !ins) i->second = false;
 }
 
 const Def* BetaRedPhase::rewrite_imm_App(const App* app) {
@@ -32,7 +39,15 @@ const Def* BetaRedPhase::rewrite_imm_App(const App* app) {
         todo_ = true;
     }
 
-    return rewrite_imm(app);
+    return Rewriter::rewrite_imm_App(app);
+}
+
+bool BetaRedPhase::is_candidate(Lam* lam) const {
+    if (lam->is_external()) return false;
+
+    auto i = candidates_.find(lam);
+    assert(i != candidates_.end());
+    return i->second;
 }
 
 } // namespace mim

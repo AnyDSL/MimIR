@@ -464,7 +464,7 @@ public:
     bool is_external() const noexcept { return external_; }
     void make_external();
     void make_internal();
-    void transfer_external(Def* to) { make_internal(), to->make_external(); }
+    void transfer_external(Def* to);
     ///@}
 
     /// @name Casts

@@ -67,6 +67,8 @@ public:
         , Rewriter(world) {}
 
     World& world() { return Phase::world(); }
+
+protected:
     void start() override;
 };
 
