@@ -120,5 +120,5 @@ void reg_stages(Phases& phases, Passes& passes) {
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"compile", [](Normalizers& n) { compile::register_normalizers(n); }, reg_stages, nullptr};
+    return {"compile", compile::register_normalizers, reg_stages, nullptr};
 }

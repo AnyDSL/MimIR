@@ -106,8 +106,6 @@ private:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
 class PassMan {
 public:
-    using P = Pass;
-
     PassMan(World& world)
         : world_(world) {}
 

@@ -13,5 +13,5 @@ void reg_stages(Phases&, Passes& passes) {
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"refly", [](Normalizers& n) { plug::refly::register_normalizers(n); }, reg_stages, nullptr};
+    return {"refly", plug::refly::register_normalizers, reg_stages, nullptr};
 }

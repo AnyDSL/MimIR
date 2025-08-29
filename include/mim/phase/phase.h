@@ -127,8 +127,6 @@ private:
 /// Organizes several Phase%s as a pipeline.
 class Pipeline : public Phase {
 public:
-    using P = Phase;
-
     Pipeline(World& world)
         : Phase(world, "pipeline", true) {}
 
