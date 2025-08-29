@@ -39,37 +39,10 @@ void apply(P& ps, B& builder, const Def* app) {
         world.ELOG("unsupported callee for a phase/pass: `{}`", p_def);
 }
 
-template<class P, class B>
-struct PluginSelect {
-    PluginSelect(P& ps)
-        : ps(ps) {}
-
-    void operator()(B& builder, const Def* app) {
-        auto& world        = builder.world();
-        auto& driver       = world.driver();
-        auto [axm, tt, ff] = App::uncurry_args<3>(app);
-        auto name          = axm->sym();                                 // name has the form %opt.tag
-        auto [_, tag, __]  = Annex::split(driver, name);                 // where tag = [plugin]_plugin
-        auto plugin        = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
-        bool is_loaded     = driver.is_loaded(driver.sym(plugin));
-
-        if (tag.view().find('_') == std::string_view::npos)
-            world.ELOG("mim/plugin_phase: invalid plugin name");
-        else
-            world.DLOG("plugin select for `{}` - loaded: `{}`", plugin, is_loaded);
-
-        apply(ps, builder, is_loaded ? tt : ff);
-    }
-
-    P& ps;
-};
-
 void reg_stages(Phases& phases, Passes& passes) {
     // clang-format off
-    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase   >), [](Pipeline&, const Def*) {});
-    assert_emplace(passes, flags_t(Annex::Base<compile::null_pass    >), [](PassMan&,  const Def*) {});
-    assert_emplace(phases, flags_t(Annex::Base<compile::plugin_select>), PluginSelect<Phases, Pipeline>(phases));
-    assert_emplace(passes, flags_t(Annex::Base<compile::plugin_select>), PluginSelect<Passes, PassMan >(passes));
+    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](Pipeline&, const Def*) {});
+    assert_emplace(passes, flags_t(Annex::Base<compile::null_pass >), [](PassMan&,  const Def*) {});
 
     Pipeline::hook<compile::beta_red_phase, BetaRedPhase>(phases);
     Pipeline::hook<compile::eta_red_phase,  EtaRedPhase >(phases);

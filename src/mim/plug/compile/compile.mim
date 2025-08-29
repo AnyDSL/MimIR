@@ -25,27 +25,7 @@ rec %compile.Pipeline:      □ = %compile.Phase → %compile.Pipeline;
 rec %compile.PassList:      □ = %compile.Pass  → %compile.PassList;
 rec %compile.CombinedPhase: □ = %compile.Phase → %compile.CombinedPhase;
 ///
-/// @note This is a forward declaration for `opt.mim`.
-///
-axm %compile.Plugin: *;
-///
 /// ## Expressions
-///
-/// ### Registered Plugins
-///
-/// We expect the name in the tag before the `_` to be the name of the plugin (as given in `%%comiple.name_plugin`).
-/// @note This is a forward declaration for `opt.mim`.
-///
-axm %compile.core_plugin:     %compile.Plugin;
-axm %compile.mem_plugin:      %compile.Plugin;
-axm %compile.demo_plugin:     %compile.Plugin;
-axm %compile.affine_plugin:   %compile.Plugin;
-axm %compile.autodiff_plugin: %compile.Plugin;
-axm %compile.clos_plugin:     %compile.Plugin;
-axm %compile.direct_plugin:   %compile.Plugin;
-axm %compile.refly_plugin:    %compile.Plugin;
-axm %compile.regex_plugin:    %compile.Plugin;
-axm %compile.matrix_plugin:   %compile.Plugin;
 ///
 /// ### %%compile.pipeline
 ///
@@ -130,13 +110,3 @@ let default_core_pipeline =
         (%compile.passes_to_phase %compile.ret_wrap_pass);
 
 lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
-///
-/// ### Dependent Passes and Phases
-///
-axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;
-
-let plugin_phase = %compile.plugin_select %compile.Phase;
-let plugin_pass  = %compile.plugin_select %compile.Pass;
-
-lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase %compile.null_phase;
-lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  %compile.null_pass;
