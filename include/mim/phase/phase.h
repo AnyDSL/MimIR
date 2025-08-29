@@ -24,6 +24,8 @@ public:
         , dirty_(dirty) {}
     virtual ~Phase() = default;
 
+    virtual void reset() { todo_ = false; }
+
     /// @name Getters
     ///@{
     World& world() { return world_; }
@@ -46,12 +48,11 @@ public:
 
 protected:
     virtual void start() = 0; ///< Actual entry.
-    void set_name(std::string name) { name_ = name; }
 
 private:
     World& world_;
-    std::string name_;
-    bool dirty_;
+    const std::string name_;
+    const bool dirty_;
 
 protected:
     bool todo_ = false; ///< Set to `true` if you want to run all Phase%es in your Pipeline within a fixed-point.
@@ -65,6 +66,8 @@ public:
     RWPhase(World& world, std::string_view name)
         : Phase(world, name, true)
         , Rewriter(world) {}
+
+    void reset() override { Phase::reset(), Rewriter::reset(); }
 
     World& world() { return Phase::world(); }
 
@@ -99,10 +102,9 @@ class PassPhase : public Phase {
 public:
     template<class... Args>
     PassPhase(World& world, Args&&... args)
-        : Phase(world, {}, false)
+        : Phase(world, "pass phase", false)
         , man_(world) {
         man_.template add<P>(std::forward<Args>(args)...);
-        set_name(std::string(man_.passes().back()->name()) + ".pass_phase");
     }
 
     void start() override { man_.run(); }

@@ -13,6 +13,12 @@ public:
         push(); // create root map
     }
 
+    void reset() {
+        pop();
+        assert(old2news_.empty());
+        push();
+    }
+
     World& world() { return world_; }
 
     /// @name Stack of Maps

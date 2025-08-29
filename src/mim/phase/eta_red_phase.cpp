@@ -21,7 +21,10 @@ void EtaRedPhase::start() {
 }
 
 const Def* EtaRedPhase::rewrite_mut_Lam(Lam* lam) {
-    if (auto callee = lam->eta_reduce()) return todo_ = true, map(lam, rewrite(callee));
+    if (auto callee = lam->eta_reduce()) {
+        if (!lam->is_external()) todo_ = true;
+        return map(lam, rewrite(callee));
+    }
     return Rewriter::rewrite_mut_Lam(lam);
 }
 
