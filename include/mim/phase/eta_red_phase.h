@@ -11,6 +11,7 @@ public:
         : RWPhase(world, "eta reduction") {}
 
 private:
+    void start() final;
     const Def* rewrite_mut_Lam(Lam*) final;
 };
 
