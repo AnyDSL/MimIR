@@ -511,14 +511,14 @@ public:
     template<bool Ow = false>       Def* set(Loc l)       { if (Ow || !dbg_.loc()) dbg_.set(l); return this; }
     template<bool Ow = false> const Def* set(Sym s) const { if (Ow || !dbg_.sym()) dbg_.set(s); return this; }
     template<bool Ow = false>       Def* set(Sym s)       { if (Ow || !dbg_.sym()) dbg_.set(s); return this; }
-    template<bool Ow = false> const Def* set(       std::string s) const { set(sym(std::move(s))); return this; }
-    template<bool Ow = false>       Def* set(       std::string s)       { set(sym(std::move(s))); return this; }
-    template<bool Ow = false> const Def* set(Loc l, Sym s        ) const { set(l); set(s); return this; }
-    template<bool Ow = false>       Def* set(Loc l, Sym s        )       { set(l); set(s); return this; }
-    template<bool Ow = false> const Def* set(Loc l, std::string s) const { set(l); set(sym(std::move(s))); return this; }
-    template<bool Ow = false>       Def* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); return this; }
-    template<bool Ow = false> const Def* set(Dbg d) const { set(d.loc(), d.sym()); return this; }
-    template<bool Ow = false>       Def* set(Dbg d)       { set(d.loc(), d.sym()); return this; }
+    template<bool Ow = false> const Def* set(       std::string s) const { set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false>       Def* set(       std::string s)       { set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false> const Def* set(Loc l, Sym s        ) const { set<Ow>(l); set<Ow>(s); return this; }
+    template<bool Ow = false>       Def* set(Loc l, Sym s        )       { set<Ow>(l); set<Ow>(s); return this; }
+    template<bool Ow = false> const Def* set(Loc l, std::string s) const { set<Ow>(l); set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false>       Def* set(Loc l, std::string s)       { set<Ow>(l); set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false> const Def* set(Dbg d) const { set<Ow>(d.loc(), d.sym()); return this; }
+    template<bool Ow = false>       Def* set(Dbg d)       { set<Ow>(d.loc(), d.sym()); return this; }
     // clang-format on
     ///@}
 
