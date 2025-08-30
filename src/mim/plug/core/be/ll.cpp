@@ -39,7 +39,7 @@ namespace {
 bool is_const(const Def* def) {
     if (def->isa<Bot>()) return true;
     if (def->isa<Lit>()) return true;
-    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
+    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->arity()) && is_const(pack->body());
 
     if (auto tuple = def->isa<Tuple>()) {
         auto ops = tuple->ops();
@@ -89,13 +89,15 @@ struct BB {
     std::deque<std::ostringstream>& body() { return parts[1]; }
     std::deque<std::ostringstream>& tail() { return parts[2]; }
 
-    template<class... Args> std::string assign(std::string_view name, const char* s, Args&&... args) {
-        print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args&&>(args)...);
+    template<class... Args>
+    std::string assign(std::string_view name, const char* s, Args&&... args) {
+        print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args>(args)...);
         return std::string(name);
     }
 
-    template<class... Args> void tail(const char* s, Args&&... args) {
-        print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
+    template<class... Args>
+    void tail(const char* s, Args&&... args) {
+        print(tail().emplace_back(), s, std::forward<Args>(args)...);
     }
 
     friend void swap(BB& a, BB& b) noexcept {
@@ -123,9 +125,10 @@ public:
     std::string prepare();
     void finalize();
 
-    template<class... Args> void declare(const char* s, Args&&... args) {
+    template<class... Args>
+    void declare(const char* s, Args&&... args) {
         std::ostringstream decl;
-        print(decl << "declare ", s, std::forward<Args&&>(args)...);
+        print(decl << "declare ", s, std::forward<Args>(args)...);
         decls_.emplace(decl.str());
     }
 
@@ -184,7 +187,7 @@ std::string Emitter::convert(const Def* type) {
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
         u64 size    = 0;
-        if (auto arity = Lit::isa(arr->shape())) size = *arity;
+        if (auto arity = Lit::isa(arr->arity())) size = *arity;
         print(s, "[{} x {}]", size, t_elem);
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
@@ -242,7 +245,8 @@ void Emitter::start() {
     Super::start();
 
     ostream() << type_decls_.str() << '\n';
-    for (auto&& decl : decls_) ostream() << decl << '\n';
+    for (auto&& decl : decls_)
+        ostream() << decl << '\n';
     ostream() << func_decls_.str() << '\n';
     ostream() << vars_decls_.str() << '\n';
     ostream() << func_impls_.str() << '\n';
@@ -297,7 +301,8 @@ void Emitter::finalize() {
 
             ++tab;
             for (const auto& part : bb.parts)
-                for (const auto& line : part) tab.print(func_impls_, "{}\n", line.str());
+                for (const auto& line : part)
+                    tab.print(func_impls_, "{}\n", line.str());
             --tab;
             func_impls_ << std::endl;
         }
@@ -556,7 +561,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // As they aren't they likely depend on a var, which is implemented as array -> need extractvalue
         if (auto app = extract->type()->isa<App>();
             app && app->callee()->isa<Idx>() && !index->isa<Lit>() && tuple->type()->isa<Arr>()) {
-            if (auto arity = tuple->type()->isa_lit_arity(); arity && *arity == 2) {
+            if (auto arity = Lit::isa(tuple->type()->arity()); arity && *arity == 2) {
                 auto t                = convert(extract->type());
                 auto [elem_a, elem_b] = tuple->projs<2>([&](auto e) { return emit_unsafe(e); });
 
@@ -681,9 +686,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto wrap = Axm::isa<core::wrap>(def)) {
-        auto [a, b] = wrap->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(wrap->type());
-        auto mode   = Lit::as(wrap->decurry()->arg());
+        auto [mode, ab] = wrap->uncurry_args<2>();
+        auto [a, b]     = ab->projs<2>([this](auto def) { return emit(def); });
+        auto t          = convert(wrap->type());
+        auto lmode      = Lit::as(mode);
 
         switch (wrap.id()) {
             case core::wrap::add: op = "add"; break;
@@ -692,8 +698,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::wrap::shl: op = "shl"; break;
         }
 
-        if (mode & core::Mode::nuw) op += " nuw";
-        if (mode & core::Mode::nsw) op += " nsw";
+        if (lmode & core::Mode::nuw) op += " nuw";
+        if (lmode & core::Mode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto div = Axm::isa<core::div>(def)) {
@@ -833,10 +839,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         bb.tail("call void @free(i8* {})", name + "i8");
         return {};
     } else if (auto mslot = Axm::isa<mem::mslot>(def)) {
+        auto [Ta, msi]             = mslot->uncurry_args<2>();
+        auto [pointee, addr_space] = Ta->projs<2>();
+        auto [mem, _, __]          = msi->projs<3>();
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto v_size = emit(mslot->arg(1));
-        auto [pointee, addr_space] = mslot->decurry()->args<2>();
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
     } else if (auto free = Axm::isa<mem::free>(def)) {
@@ -878,9 +886,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_jb = emit(jmpbuf);
         return bb.assign(name, "call i32 @_setjmp(i8* {})", v_jb);
     } else if (auto arith = Axm::isa<math::arith>(def)) {
-        auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(arith->type());
-        auto mode   = Lit::as(arith->decurry()->arg());
+        auto [mode, ab] = arith->uncurry_args<2>();
+        auto [a, b]     = ab->projs<2>([this](auto def) { return emit(def); });
+        auto t          = convert(arith->type());
+        auto lmode      = Lit::as(mode);
 
         switch (arith.id()) {
             case math::arith::add: op = "fadd"; break;
@@ -890,17 +899,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case math::arith::rem: op = "frem"; break;
         }
 
-        if (mode == math::Mode::fast)
+        if (lmode == math::Mode::fast)
             op += " fast";
         else {
             // clang-format off
-            if (mode & math::Mode::nnan    ) op += " nnan";
-            if (mode & math::Mode::ninf    ) op += " ninf";
-            if (mode & math::Mode::nsz     ) op += " nsz";
-            if (mode & math::Mode::arcp    ) op += " arcp";
-            if (mode & math::Mode::contract) op += " contract";
-            if (mode & math::Mode::afn     ) op += " afn";
-            if (mode & math::Mode::reassoc ) op += " reassoc";
+            if (lmode & math::Mode::nnan    ) op += " nnan";
+            if (lmode & math::Mode::ninf    ) op += " ninf";
+            if (lmode & math::Mode::nsz     ) op += " nsz";
+            if (lmode & math::Mode::arcp    ) op += " arcp";
+            if (lmode & math::Mode::contract) op += " contract";
+            if (lmode & math::Mode::afn     ) op += " afn";
+            if (lmode & math::Mode::reassoc ) op += " reassoc";
             // clang-format on
         }
 

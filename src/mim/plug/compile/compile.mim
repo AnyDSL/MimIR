@@ -10,16 +10,14 @@
 ///
 /// ## Types
 ///
-/// ### %%compile.Pass
-/// ### %%compile.Phase
+/// ### %%compile.Pass / %%compile.Phase
 ///
 /// Types for compilation passes and phases.
 ///
 axm %compile.Pass:  *;
 axm %compile.Phase: *;
 ///
-/// ### %%compile.Pipeline
-/// ### %%compile.PassList
+/// ### %%compile.Pipeline / %%compile.PassList
 ///
 /// Types for functions that accept an arbitrary number of phases and passes respectively.
 ///
@@ -27,7 +25,7 @@ rec %compile.Pipeline:      □ = %compile.Phase → %compile.Pipeline;
 rec %compile.PassList:      □ = %compile.Pass  → %compile.PassList;
 rec %compile.CombinedPhase: □ = %compile.Phase → %compile.CombinedPhase;
 ///
-/// (This is a forward declaration for opt.mim.)
+/// @note This is a forward declaration for `opt.mim`.
 ///
 axm %compile.Plugin: *;
 ///
@@ -35,8 +33,8 @@ axm %compile.Plugin: *;
 ///
 /// ### Registered Plugins
 ///
-/// We expect the name in the tag before the `_` to be the name of the plugin (as given in `Pluginplugin_name`).
-/// (This is a forward declaration for opt.mim.)
+/// We expect the name in the tag before the `_` to be the name of the plugin (as given in `%%comiple.name_plugin`).
+/// @note This is a forward declaration for `opt.mim`.
 ///
 axm %compile.core_plugin:     %compile.Plugin;
 axm %compile.mem_plugin:      %compile.Plugin;
@@ -49,19 +47,11 @@ axm %compile.refly_plugin:    %compile.Plugin;
 axm %compile.regex_plugin:    %compile.Plugin;
 axm %compile.matrix_plugin:   %compile.Plugin;
 ///
-/// ### %%opt.is_loaded
-///
-/// Indicates whether a plugin is loaded.
-/// The normalizer will statically evaluate this expression to a constant boolean.
-/// TODO: find correct point (not at parsing but before compilation)
-///
-// axm %opt.is_loaded: %opt.Plugin → Bool;
-///
-/// ### %%compile.pipe
+/// ### %%compile.pipeline
 ///
 /// Given n phases, returns the representation of a pipeline.
 ///
-axm %compile.pipe: %compile.Pipeline;
+axm %compile.pipeline: %compile.Pipeline;
 ///
 /// ## Passes and Phases
 ///
@@ -95,48 +85,43 @@ axm %compile.phase_list: %compile.CombinedPhase;
 axm %compile.combined_phase: %compile.CombinedPhase → %compile.Phase, normalize_combined_phase;
 axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Phase;
 ///
+/// ### Phases
+///
+axm %compile.null_phase:            %compile.Phase;
+///
 /// ### Passes
 ///
 /// Basic passes that are defined in the core of Mim.
 ///
-axm %compile.beta_red_pass: %compile.Pass;
-axm %compile.eta_red_pass: %compile.Pass;
-/// Eta expansion expects an instance of eta reduction as argument.
-axm %compile.eta_exp_pass: %compile.Pass → %compile.Pass;
-/// Scalarize expects an instance of eta expansion as argument.
-axm %compile.scalarize_pass: %compile.Pass → %compile.Pass;
-/// Tail recursion elimination expects an instance of eta reduction as argument.
-axm %compile.tail_rec_elim_pass: %compile.Pass → %compile.Pass;
-axm %compile.lam_spec_pass: %compile.Pass;
-axm %compile.ret_wrap_pass: %compile.Pass;
-/// has to be registered in the pipeline
-axm %compile.nullptr_pass: %compile.Pass;
-axm %compile.internal_cleanup_pass: %compile.Pass;
-///
-/// ### Phases
-///
-// TODO: allow functions by inlining them first
-let optimization_pass_list =
-    let eta_red = %compile.eta_red_pass;
-    let eta_exp = %compile.eta_exp_pass eta_red;
-    %compile.pass_list
-        %compile.beta_red_pass
-        eta_red
-        eta_exp
-        (%compile.scalarize_pass eta_exp)
-        (%compile.tail_rec_elim_pass eta_red);
+axm %compile.beta_red_pass:         %compile.Pass;
+axm %compile.eta_red_pass:          %compile.Pass;
+axm %compile.eta_exp_pass:          %compile.Pass;
+axm %compile.scalarize_pass:        %compile.Pass;
+axm %compile.tail_rec_elim_pass:    %compile.Pass;
+axm %compile.lam_spec_pass:         %compile.Pass;
+axm %compile.ret_wrap_pass:         %compile.Pass;
+axm %compile.null_pass:             %compile.Pass;
+axm %compile.prefix_cleanup_pass: {n: Nat} → «n; I8» → %compile.Pass;
 
-let optimization_phase = %compile.pass_phase optimization_pass_list;
+let %compile.internal_cleanup_pass = %compile.prefix_cleanup_pass "internal_";
 ///
 /// ### Pipelines
 ///
+let optimization_pass_list =
+    %compile.pass_list
+        %compile.beta_red_pass
+        %compile.eta_red_pass
+        %compile.eta_exp_pass
+        (%compile.scalarize_pass)
+        (%compile.tail_rec_elim_pass);
+
+let optimization_phase = %compile.pass_phase optimization_pass_list;
+
 let default_core_pipeline =
-    let nullptr = %compile.nullptr_pass;
-    %compile.pipe
-        (%compile.single_pass_phase nullptr)
-        (%compile.single_pass_phase (%compile.scalarize_pass nullptr))
+    %compile.pipeline
+        (%compile.single_pass_phase (%compile.scalarize_pass))
         (%compile.single_pass_phase %compile.eta_red_pass)
-        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
+        (%compile.single_pass_phase (%compile.tail_rec_elim_pass))
         optimization_phase
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (%compile.single_pass_phase %compile.lam_spec_pass)
@@ -146,13 +131,10 @@ lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
 ///
 /// ### Dependent Passes and Phases
 ///
-let empty_pass = %compile.nullptr_pass;
-let empty_phase = %compile.passes_to_phase ();
-
 axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;
 
 let plugin_phase = %compile.plugin_select %compile.Phase;
 let plugin_pass  = %compile.plugin_select %compile.Pass;
 
-lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase empty_phase;
-lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  empty_pass;
+lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase %compile.null_phase;
+lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  %compile.null_pass;

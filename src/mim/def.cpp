@@ -5,6 +5,7 @@
 #include <absl/container/fixed_array.h>
 #include <fe/assert.h>
 
+#include "mim/rule.h"
 #include "mim/world.h"
 
 #include "mim/util/hash.h"
@@ -121,7 +122,9 @@ const Def* Lit    ::rebuild_(World& w, const Def* t, Defs  ) const { return w.li
 const Def* Merge  ::rebuild_(World& w, const Def* t, Defs o) const { return w.merge(t, o); }
 const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
 const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
-const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
+const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, pass(), tag(), o); }
+const Def* Rule   ::rebuild_(World& w, const Def* t, Defs o) const { return w.rule(t->as<Reform>(), o[0], o[1], o[2]); }
+const Def* Reform ::rebuild_(World& w, const Def* , Defs o) const { return w.rule_type(o[0]); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
 const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
 const Def* Match  ::rebuild_(World& w, const Def*  , Defs o) const { return w.match(o); }
@@ -151,6 +154,7 @@ Hole*   Hole  ::stub_(World& w, const Def* t) { return w.mut_hole (t); }
 Lam*    Lam   ::stub_(World& w, const Def* t) { return w.mut_lam  (t->as<Pi>()); }
 Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
 Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }
+Rule*   Rule  ::stub_(World& w, const Def* t) { return w.mut_rule(t->as<Reform>()); }
 Sigma*  Sigma ::stub_(World& w, const Def* t) { return w.mut_sigma(t, num_ops()); }
 
 /*
@@ -189,6 +193,8 @@ const Pi* Pi::immutabilize() {
     return nullptr;
 }
 
+const Rule* Rule::immutabilize() { return world().rule(type(), lhs(), rhs(), guard()); }
+
 const Def* Sigma::immutabilize() {
     if (is_immutabilizable()) return static_cast<const Sigma*>(world().sigma(ops()));
     return nullptr;
@@ -196,9 +202,9 @@ const Def* Sigma::immutabilize() {
 
 const Def* Arr::immutabilize() {
     auto& w = world();
-    if (is_immutabilizable()) return w.arr(shape(), body());
+    if (is_immutabilizable()) return w.arr(arity(), body());
 
-    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalarize_threshold)
+    if (auto n = Lit::isa(arity()); n && *n < w.flags().scalarize_threshold)
         return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
 
     return nullptr;
@@ -206,9 +212,9 @@ const Def* Arr::immutabilize() {
 
 const Def* Pack::immutabilize() {
     auto& w = world();
-    if (is_immutabilizable()) return w.pack(shape(), body());
+    if (is_immutabilizable()) return w.pack(arity(), body());
 
-    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalarize_threshold)
+    if (auto n = Lit::isa(arity()); n && *n < w.flags().scalarize_threshold)
         return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
 
     return nullptr;
@@ -235,9 +241,25 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
  */
 
 Def* Def::set(Defs ops) {
-    assert(ops.size() == num_ops());
-    for (size_t i = 0, e = num_ops(); i != e; ++i)
-        set(i, ops[i]);
+#ifdef MIM_ENABLE_CHECKS
+    if (world().watchpoints().contains(gid())) fe::breakpoint();
+#endif
+    invalidate();
+
+    size_t n = ops.size();
+    assert(n == num_ops() && "num ops don't match");
+
+    for (size_t i = 0; i != n; ++i) {
+        auto def = check(i, ops[i]);
+        assert(def);
+        ops_ptr()[i] = def;
+    }
+#ifndef NDEBUG
+    curr_op_ = n;
+#endif
+
+    if (auto t = check()->zonk(); t != type()) type_ = t;
+
     return this;
 }
 
@@ -245,6 +267,7 @@ Def* Def::set(size_t i, const Def* def) {
 #ifdef MIM_ENABLE_CHECKS
     if (world().watchpoints().contains(gid())) fe::breakpoint();
 #endif
+
     invalidate();
     def = check(i, def);
     assert(def && !op(i) && curr_op_++ == i);
@@ -259,7 +282,6 @@ Def* Def::set(size_t i, const Def* def) {
 
 Def* Def::set_type(const Def* type) {
     invalidate();
-    assert(curr_op_ == 0);
     type_ = type;
     return this;
 }
@@ -294,8 +316,9 @@ const Def* Def::var() {
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->arity()), arr ); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->arity()), pack); // TODO shapes like (2, 3)
+    if (auto rule = isa<Rule >()) return w.var(rule->type()->meta_type(), rule);
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Hole  >()) return nullptr;
     if (isa<Global>()) return nullptr;
@@ -521,29 +544,8 @@ bool Def::greater(const Def* a, const Def* b) { return cmp_<Cmp::G>(a, b); }
 // clang-format on
 
 const Def* Def::arity() const {
-    if (auto sigma = isa<Sigma>()) {
-        auto n = sigma->num_ops();
-        if (n != 1 || sigma->isa_mut()) return world().lit_nat(n);
-        return sigma->op(0)->arity();
-    }
-
-    if (auto arr = isa<Arr>()) return arr->shape();
-    if (auto t = type()) return t->arity();
-
+    if (auto t = type(); t && !t->isa<Type>()) return t->arity();
     return world().lit_nat_1();
-}
-
-std::optional<nat_t> Def::isa_lit_arity() const {
-    if (auto sigma = isa<Sigma>()) {
-        auto n = sigma->num_ops();
-        if (n != 1 || sigma->isa_mut()) return n;
-        return sigma->op(0)->isa_lit_arity();
-    }
-
-    if (auto arr = isa<Arr>()) return Lit::isa(arr->shape());
-    if (auto t = type()) return t->isa_lit_arity();
-
-    return 1;
 }
 
 bool Def::equal(const Def* other) const {
@@ -563,8 +565,10 @@ void Def::make_internal() { return world().make_internal(this); }
 
 std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
 
+nat_t Def::num_projs() const { return Lit::isa(arity()).value_or(1); }
+
 nat_t Def::num_tprojs() const {
-    if (auto a = isa_lit_arity(); a && *a < world().flags().scalarize_threshold) return *a;
+    if (auto a = Lit::isa(arity()); a && *a < world().flags().scalarize_threshold) return *a;
     return 1;
 }
 
@@ -572,6 +576,7 @@ const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
 
     if (a == 1) {
+        assert(i == 0 && "only inhabitant of Idx 2 is 0_1");
         if (!type()) return this;
         if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
     }

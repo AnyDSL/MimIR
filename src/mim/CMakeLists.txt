@@ -1,4 +1,4 @@
-add_library(libmim)
+add_library(libmim SHARED)
 target_sources(libmim
     PRIVATE
         axm.cpp
@@ -12,6 +12,7 @@ target_sources(libmim
         nest.cpp
         plugin.cpp
         rewrite.cpp
+        rule.cpp
         schedule.cpp
         tuple.cpp
         world.cpp
@@ -28,7 +29,6 @@ target_sources(libmim
         pass/lam_spec.cpp
         pass/optimize.cpp
         pass/pass.cpp
-        pass/pipelinebuilder.cpp
         pass/ret_wrap.cpp
         pass/scalarize.cpp
         pass/tail_rec_elim.cpp
@@ -44,7 +44,7 @@ target_sources(libmim
 set_target_properties(libmim PROPERTIES PREFIX "")
 
 if(MSVC)
-    target_compile_features(libmim PUBLIC cxx_std_23) # /std:c++latest - unlocks non-stable c++20 features
+    target_compile_features(libmim PUBLIC cxx_std_23)
     target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
     if(BUILD_SHARED_LIBS)
         target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)

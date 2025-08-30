@@ -6,6 +6,8 @@
 
 #include "mim/pass/pass.h"
 
+#include "fe/cast.h"
+
 namespace mim {
 
 class Nest;
@@ -14,7 +16,7 @@ class World;
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
 /// Phase::dirty indicates whether we may need a Cleanup afterwards.
-class Phase {
+class Phase : public fe::RuntimeCast<Phase> {
 public:
     Phase(World& world, std::string_view name, bool dirty)
         : world_(world)
@@ -53,7 +55,7 @@ private:
 
 /// Visits the current Phase::world and constructs a new RWPhase::world along the way.
 /// It recursively **rewrites** all World::externals().
-/// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, and Rewriter::rewrite_mut.
+/// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
 public:
     RWPhase(World& world, std::string_view name)
@@ -75,13 +77,14 @@ public:
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
 /// Inherit from this one to implement a classic data-flow analysis.
+/// @note If you don't need a fixed-point just return `true` after the first run of analyze.
 class FPPhase : public RWPhase {
 public:
     FPPhase(World& world, std::string_view name)
         : RWPhase(world, name) {}
 
-    void start() override;
     virtual bool analyze() = 0;
+    void start() override;
 };
 
 /// Wraps a Pass as a Phase.
@@ -118,6 +121,8 @@ private:
 /// Organizes several Phase%s as a pipeline.
 class Pipeline : public Phase {
 public:
+    using P = Phase;
+
     Pipeline(World& world)
         : Phase(world, "pipeline", true) {}
 
@@ -135,7 +140,7 @@ public:
         if constexpr (std::is_base_of_v<Pass, P>) {
             return add<PassPhase<P>>(std::forward<Args>(args)...);
         } else {
-            auto p     = std::make_unique<P>(world(), std::forward<Args&&>(args)...);
+            auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
             auto phase = p.get();
             phases_.emplace_back(std::move(p));
             if (phase->is_dirty()) phases_.emplace_back(std::make_unique<Cleanup>(world()));
@@ -143,6 +148,12 @@ public:
         }
     }
     ///@}
+
+    template<class A, class P, class... Args>
+    static void hook(Phases& phases, Args&&... args) {
+        auto f = [... args = std::forward<Args>(args)](Pipeline& pipe, const Def*) { pipe.template add<P>(args...); };
+        assert_emplace(phases, flags_t(Annex::Base<A>), f);
+    }
 
 private:
     std::deque<std::unique_ptr<Phase>> phases_;

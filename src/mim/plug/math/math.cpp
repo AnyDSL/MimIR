@@ -7,5 +7,5 @@
 using namespace mim;
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"math", [](Normalizers& normalizers) { plug::math::register_normalizers(normalizers); }, nullptr, nullptr};
+    return {"math", [](Normalizers& n) { plug::math::register_normalizers(n); }, nullptr, nullptr};
 }

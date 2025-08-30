@@ -6,12 +6,14 @@
 
 namespace mim::plug::ord {
 
-template<init id> const Def* normalize_init(const Def* type, const Def* callee, const Def* arg) {
+template<init id>
+const Def* normalize_init(const Def* type, const Def* callee, const Def* arg) {
     auto& world = type->world();
     return world.raw_app(type, callee, arg);
 }
 
-template<size> const Def* normalize_size(const Def*, const Def*, const Def* arg) {
+template<size>
+const Def* normalize_size(const Def*, const Def*, const Def* arg) {
     if (auto init = Axm::isa<ord::init>(arg)) return init->decurry()->arg();
     return nullptr;
 }
@@ -29,7 +31,8 @@ const Def* normalize_get(const Def*, const Def*, const Def* arg) {
     return nullptr;
 }
 
-template<contains id> const Def* normalize_contains(const Def*, const Def*, const Def* arg) {
+template<contains id>
+const Def* normalize_contains(const Def*, const Def*, const Def* arg) {
     auto& w     = arg->world();
     auto [c, k] = arg->projs<2>();
 
@@ -48,15 +51,15 @@ template<contains id> const Def* normalize_contains(const Def*, const Def*, cons
     return nullptr;
 }
 
-template<insert id> const Def* normalize_insert(const Def* type, const Def*, const Def* arg) {
+template<insert id>
+const Def* normalize_insert(const Def* type, const Def*, const Def* arg) {
     auto& w       = type->world();
     auto [ms, kv] = arg->projs<2>();
 
     if (auto init = Axm::isa<ord::init>(ms)) {
-        if (auto tuple = init->arg()->isa<Tuple>()) {
-            auto n = init->decurry()->arg();
-            auto V = init->decurry()->decurry()->arg();
-            auto K = id == ord::insert::map ? init->decurry()->decurry()->decurry()->arg() : V;
+        auto [K, V, n, arg] = init->uncurry_args<4>();
+        if (auto tuple = arg->isa<Tuple>()) {
+            K = K ? K : V;
             if (auto l = Lit::isa(n)) {
                 auto new_ops = DefVec();
                 bool updated = false;

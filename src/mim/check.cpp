@@ -4,6 +4,7 @@
 #include <fe/assert.h>
 
 #include "mim/rewrite.h"
+#include "mim/rule.h"
 #include "mim/world.h"
 
 namespace mim {
@@ -111,7 +112,7 @@ std::pair<Hole*, const Def*> Hole::find() {
     // path compression
     for (auto h = this; h != last;) {
         auto next = h->op()->as_mut<Hole>();
-        h->unset()->set(root);
+        h->set(root);
         h = next;
     }
 
@@ -255,8 +256,8 @@ bool Checker::alpha_(const Def* d1, const Def* d2) {
         if (auto umax = d1->isa<UMax>(); umax && !d2->isa<UMax>()) return check(umax, d2);
         if (auto umax = d2->isa<UMax>(); umax && !d1->isa<UMax>()) return check(umax, d1);
 
-        if (seq1 && seq1->shape() == world().lit_nat_1() && !seq2) return check1(seq1, d2);
-        if (seq2 && seq2->shape() == world().lit_nat_1() && !seq1) return check1(seq2, d1);
+        if (seq1 && seq1->arity() == world().lit_nat_1() && !seq2) return check1(seq1, d2);
+        if (seq2 && seq2->arity() == world().lit_nat_1() && !seq1) return check1(seq2, d1);
 
         if (seq1 && seq2) {
             if (auto mut_seq = seq1->isa_mut<Seq>(); mut_seq && seq2->isa_imm()) return check(mut_seq, seq2);
@@ -295,18 +296,17 @@ bool Checker::check(const Prod* prod, const Def* def) {
 bool Checker::check1(const Seq* seq, const Def* def) {
     auto body = seq->reduce(world().lit_idx_1_0()); // try to get rid of var inside of body
     if (!alpha_<Check>(body, def)) return fail<Check>();
-    if (auto mut_seq = seq->isa_mut<Seq>()) mut_seq->unset()->set(world().lit_nat_1(), body->zonk());
+    if (auto mut_seq = seq->isa_mut<Seq>()) mut_seq->set(world().lit_nat_1(), body->zonk());
     return true;
 }
 
 // Try to get rid of mut_seq's var: it may occur in its body and vanish after reduction
 // as holes might have been filled in the meantime.
 bool Checker::check(Seq* mut_seq, const Seq* imm_seq) {
-    auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->shape())));
+    auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->arity())));
     if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
 
-    auto mut_shape = mut_seq->shape();
-    mut_seq->unset()->set(mut_shape, mut_body->zonk());
+    mut_seq->set(mut_seq->arity(), mut_body->zonk());
     return true;
 }
 
@@ -390,6 +390,32 @@ const Def* Lam::check(size_t i, const Def* def) {
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
     fe::unreachable();
+}
+
+const Def* Reform::check() {
+    auto t = infer(meta_type());
+    if (!Checker::alpha<Checker::Check>(t, type()))
+        error(type()->loc(), "declared sort '{}' of rule type does not match inferred one '{}'", type(), t);
+    return t;
+}
+
+const Def* Reform::infer(const Def* meta_type) { return meta_type->unfold_type(); }
+
+const Def* Rule::check() {
+    auto t1 = lhs()->type();
+    auto t2 = rhs()->type();
+    if (!Checker::alpha<Checker::Check>(t1, t2))
+        error(type()->loc(), "type mismatch: '{}' for lhs, but '{}' for rhs", t1, t2);
+    if (!Checker::assignable(world().type_bool(), guard()))
+        error(guard()->loc(), "condition '{}' of rewrite is of type '{}' but must be of type 'Bool'", guard(),
+              guard()->type());
+
+    return type();
+}
+
+const Def* Rule::check(size_t, const Def* def) {
+    return def;
+    // TODO: do actual check + what are the parameters ?
 }
 
 #ifndef DOXYGEN

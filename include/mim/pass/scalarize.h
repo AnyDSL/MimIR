@@ -19,9 +19,7 @@ class EtaExp;
 /// It will not flatten mutable @p Sigma%s or @p Arr%ays.
 class Scalarize : public RWPass<Scalarize, Lam> {
 public:
-    Scalarize(PassMan& man, EtaExp* eta_exp)
-        : RWPass(man, "scalarize")
-        , eta_exp_(eta_exp) {}
+    Scalarize(PassMan&);
 
     const Def* rewrite(const Def*) override;
 

@@ -18,6 +18,8 @@ const Def* Rewriter::rewrite(const Def* old_def) {
 
 const Def* Rewriter::dispatch(const Def* old_def) {
     // clang-format off
+    if (auto app     = old_def->isa<App     >()) return rewrite_app    (app    );
+    if (auto lam     = old_def->isa<Lam     >()) return rewrite_lam    (lam    );
     if (auto arr     = old_def->isa<Arr     >()) return rewrite_arr    (arr    );
     if (auto pack    = old_def->isa<Pack    >()) return rewrite_pack   (pack   );
     if (auto extract = old_def->isa<Extract >()) return rewrite_extract(extract);
@@ -32,7 +34,8 @@ const Def* Rewriter::rewrite_imm(const Def* old_def) {
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
     auto size     = old_def->num_ops();
     auto new_ops  = absl::FixedArray<const Def*>(size);
-    for (size_t i = 0; i != size; ++i) new_ops[i] = rewrite(old_def->op(i));
+    for (size_t i = 0; i != size; ++i)
+        new_ops[i] = rewrite(old_def->op(i));
     return old_def->rebuild(world(), new_type, new_ops);
 }
 
@@ -42,7 +45,8 @@ const Def* Rewriter::rewrite_mut(Def* old_mut) {
     map(old_mut, new_mut);
 
     if (old_mut->is_set()) {
-        for (size_t i = 0, e = old_mut->num_ops(); i != e; ++i) new_mut->set(i, rewrite(old_mut->op(i)));
+        for (size_t i = 0, e = old_mut->num_ops(); i != e; ++i)
+            new_mut->set(i, rewrite(old_mut->op(i)));
         if (auto new_imm = new_mut->immutabilize()) return map(old_mut, new_imm);
     }
 
@@ -55,9 +59,9 @@ const Def* Rewriter::rewrite_seq(const Seq* seq) {
         return map(seq, new_seq);
     }
 
-    auto new_shape = rewrite(seq->shape());
+    auto new_arity = rewrite(seq->arity());
 
-    if (auto l = Lit::isa(new_shape); l && *l <= world().flags().scalarize_threshold) {
+    if (auto l = Lit::isa(new_arity); l && *l <= world().flags().scalarize_threshold) {
         auto new_ops = absl::FixedArray<const Def*>(*l);
         for (size_t i = 0, e = *l; i != e; ++i) {
             if (auto var = seq->has_var()) {
@@ -69,10 +73,10 @@ const Def* Rewriter::rewrite_seq(const Seq* seq) {
                 new_ops[i] = rewrite(seq->body());
             }
         }
-        return map(seq, seq->prod(world(), new_ops));
+        return map(seq, world().prod(seq->is_intro(), new_ops));
     }
 
-    if (!seq->has_var()) return map(seq, seq->rebuild(world(), new_shape, rewrite(seq->body())));
+    if (!seq->has_var()) return map(seq, world().seq(seq->is_intro(), new_arity, rewrite(seq->body())));
     return rewrite_mut(seq->as_mut());
 }
 
@@ -80,7 +84,7 @@ const Def* Rewriter::rewrite_extract(const Extract* ex) {
     auto new_index = rewrite(ex->index());
     if (auto index = Lit::isa(new_index)) {
         if (auto tuple = ex->tuple()->isa<Tuple>()) return map(ex, rewrite(tuple->op(*index)));
-        if (auto pack = ex->tuple()->isa_imm<Pack>(); pack && pack->shape()->is_closed())
+        if (auto pack = ex->tuple()->isa_imm<Pack>(); pack && pack->arity()->is_closed())
             return map(ex, rewrite(pack->body()));
     }
 

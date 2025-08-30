@@ -32,7 +32,7 @@ public:
     ///@{
     Hole* set(const Def* op) {
         assert(op != this);
-        return Def::set(0, op)->as<Hole>();
+        return Def::set({op})->as<Hole>();
     }
     Hole* unset() { return Def::unset()->as<Hole>(); }
     ///@}
@@ -65,7 +65,8 @@ public:
     }
     ///@}
 
-    static constexpr auto Node = mim::Node::Hole;
+    static constexpr auto Node      = mim::Node::Hole;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

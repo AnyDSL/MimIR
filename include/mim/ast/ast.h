@@ -18,8 +18,10 @@ class Module;
 class Scopes;
 class Emitter;
 
-template<class T> using Ptr  = fe::Arena::Ptr<const T>;
-template<class T> using Ptrs = std::deque<Ptr<T>>;
+template<class T>
+using Ptr = fe::Arena::Ptr<const T>;
+template<class T>
+using Ptrs                   = std::deque<Ptr<T>>;
 /*             */ using Dbgs = std::deque<Dbg>;
 
 struct AnnexInfo {
@@ -72,16 +74,17 @@ public:
     Sym sym_error() { return sym("_error_"); } ///< `"_error_"`.
     ///@}
 
-    template<class T, class... Args> auto ptr(Args&&... args) {
-        return arena_.mk<const T>(std::forward<Args&&>(args)...);
+    template<class T, class... Args>
+    auto ptr(Args&&... args) {
+        return arena_.mk<const T>(std::forward<Args>(args)...);
     }
 
     /// @name Formatted Output
     ///@{
     // clang-format off
-    template<class... Args> Error& error(Loc loc, const char* fmt, Args&&... args) const { return err_.error(loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> Error& warn (Loc loc, const char* fmt, Args&&... args) const { return err_.warn (loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> Error& note (Loc loc, const char* fmt, Args&&... args) const { return err_.note (loc, fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> Error& error(Loc loc, const char* fmt, Args&&... args) const { return err_.error(loc, fmt, std::forward<Args>(args)...); }
+    template<class... Args> Error& warn (Loc loc, const char* fmt, Args&&... args) const { return err_.warn (loc, fmt, std::forward<Args>(args)...); }
+    template<class... Args> Error& note (Loc loc, const char* fmt, Args&&... args) const { return err_.note (loc, fmt, std::forward<Args>(args)...); }
     // clang-format on
     ///@}
 
@@ -731,17 +734,17 @@ private:
     Ptrs<Expr> elems_;
 };
 
-/// `«dbg: shape; body»` or `‹dbg: shape; body›`
+/// `«dbg: arity; body»` or `‹dbg: arity; body›`
 class SeqExpr : public Expr {
 public:
-    SeqExpr(Loc loc, bool is_arr, Ptr<IdPtrn>&& shape, Ptr<Expr>&& body)
+    SeqExpr(Loc loc, bool is_arr, Ptr<IdPtrn>&& arity, Ptr<Expr>&& body)
         : Expr(loc)
         , is_arr_(is_arr)
-        , shape_(std::move(shape))
+        , arity_(std::move(arity))
         , body_(std::move(body)) {}
 
     bool is_arr() const { return is_arr_; }
-    const IdPtrn* shape() const { return shape_.get(); }
+    const IdPtrn* arity() const { return arity_.get(); }
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
@@ -751,7 +754,7 @@ private:
     const Def* emit_(Emitter&) const override;
 
     bool is_arr_;
-    Ptr<IdPtrn> shape_;
+    Ptr<IdPtrn> arity_;
     Ptr<Expr> body_;
 };
 
@@ -1029,6 +1032,41 @@ private:
     Dbg dbg_;
     Ptr<Ptrn> dom_;
     Ptr<Expr> codom_;
+};
+
+/// rewrite rules
+/// rule (x:T, y:T) : x+y => y+x (when );
+/// all meta variables have to be introduced
+
+class RuleDecl : public ValDecl {
+public:
+    RuleDecl(Loc loc, Dbg dbg, Ptr<Ptrn>&& var, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs, Ptr<Expr>&& guard, bool is_normalizer)
+        : ValDecl(loc)
+        , dbg_(std::move(dbg))
+        , var_(std::move(var))
+        , lhs_(std::move(lhs))
+        , rhs_(std::move(rhs))
+        , guard_(std::move(guard))
+        , is_normalizer_(is_normalizer) {}
+
+    const Ptrn* var() const { return var_.get(); }
+    const Expr* lhs() const { return lhs_.get(); }
+    const Expr* rhs() const { return rhs_.get(); }
+    const Expr* guard() const { return guard_.get(); }
+    bool is_normalizer() const { return is_normalizer_; }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    void emit(Emitter&) const override;
+
+    Dbg dbg_;
+    Ptr<Ptrn> var_;
+    Ptr<Expr> lhs_;
+    Ptr<Expr> rhs_;
+    Ptr<Expr> guard_;
+    bool is_normalizer_;
 };
 
 /*

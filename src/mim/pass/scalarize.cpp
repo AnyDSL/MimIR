@@ -6,6 +6,10 @@
 
 namespace mim {
 
+Scalarize::Scalarize(PassMan& man)
+    : RWPass(man, "scalarize")
+    , eta_exp_(man.find<EtaExp>()) {}
+
 // TODO should also work for mutable non-dependent sigmas
 
 // TODO merge with make_scalar

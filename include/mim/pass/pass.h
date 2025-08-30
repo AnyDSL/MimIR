@@ -21,7 +21,7 @@ static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 /// * If you do not rely on interaction between different Pass%es, consider using Phase instead.
 class Pass {
 public:
-    Pass(PassMan&, std::string_view name);
+    Pass(PassMan&, std::string name);
     virtual ~Pass() = default;
 
     /// @name Getters
@@ -72,7 +72,7 @@ public:
 
     /// @name proxy
     ///@{
-    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) { return world().proxy(type, ops, index(), tag); }
+    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) { return world().proxy(type, index(), tag, ops); }
     /// Check whether given @p def is a Proxy whose Proxy::pass matches this Pass's @p IPass::index.
     const Proxy* isa_proxy(const Def* def, u32 tag = 0) {
         if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->pass() == index() && proxy->tag() == tag)
@@ -106,6 +106,8 @@ private:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
 class PassMan {
 public:
+    using P = Pass;
+
     PassMan(World& world)
         : world_(world) {}
 
@@ -121,17 +123,23 @@ public:
     ///@{
     void run(); ///< Run all registered passes on the whole World.
 
+    template<class P>
+    P* find() {
+        auto key = std::type_index(typeid(P));
+        if (auto i = registry_.find(key); i != registry_.end()) return static_cast<P*>(i->second);
+        return nullptr;
+    }
+
     /// Add a pass to this PassMan.
     /// If a pass of the same class has been added already, returns the earlier added instance.
     template<class P, class... Args>
     P* add(Args&&... args) {
-        auto key = std::type_index(typeid(P));
-        if (auto it = registry_.find(key); it != registry_.end()) return static_cast<P*>(it->second);
+        if (auto pass = find<P>()) return pass;
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
         auto res = p.get();
         fixed_point_ |= res->fixed_point();
         passes_.emplace_back(std::move(p));
-        registry_.emplace(key, res);
+        registry_.emplace(std::type_index(typeid(P)), res);
         return res;
     }
 
@@ -141,6 +149,12 @@ public:
         PassMan man(world);
         man.add<P>(std::forward<Args>(args)...);
         man.run();
+    }
+
+    template<class A, class P, class... Args>
+    static void hook(Passes& passes, Args&&... args) {
+        auto f = [... args = std::forward<Args>(args)](PassMan& man, const Def*) { man.add<P>(args...); };
+        assert_emplace(passes, flags_t(Annex::Base<A>), f);
     }
     ///@}
 
@@ -223,8 +237,8 @@ private:
 template<class P, class M = Def>
 class RWPass : public Pass {
 public:
-    RWPass(PassMan& man, std::string_view name)
-        : Pass(man, name) {}
+    RWPass(PassMan& man, std::string name)
+        : Pass(man, std::move(name)) {}
 
     bool inspect() const override {
         if constexpr (std::is_same<M, Def>::value)
@@ -249,8 +263,8 @@ public:
     using Super = RWPass<P, M>;
     using Data  = std::tuple<>; ///< Default.
 
-    FPPass(PassMan& man, std::string_view name)
-        : Super(man, name) {}
+    FPPass(PassMan& man, std::string name)
+        : Super(man, std::move(name)) {}
 
     bool fixed_point() const override { return true; }
 

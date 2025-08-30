@@ -7,15 +7,6 @@
 
 namespace mim {
 
-namespace {
-std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
-    std::vector<fs::path> names;
-    names.push_back(name); // if the user gives "libmim_foo.so"
-    names.push_back(fmt("libmim_{}.{}", name, dl::extension));
-    return names;
-}
-} // namespace
-
 Driver::Driver()
     : log_(flags_)
     , world_(this) {
@@ -26,7 +17,8 @@ Driver::Driver()
     if (auto env_path = std::getenv("MIM_PLUGIN_PATH")) {
         std::stringstream env_path_stream{env_path};
         std::string sub_path;
-        while (std::getline(env_path_stream, sub_path, ':')) add_search_path(sub_path);
+        while (std::getline(env_path_stream, sub_path, ':'))
+            add_search_path(sub_path);
     }
 
     // add path/to/mim.exe/../../lib/mim
@@ -60,16 +52,14 @@ void Driver::load(Sym name) {
 
     auto handle = Plugin::Handle{nullptr, dl::close};
     if (auto path = fs::path{name.view()}; path.is_absolute() && fs::is_regular_file(path))
-        handle.reset(dl::open(name));
+        handle.reset(dl::open(name.c_str()));
     if (!handle) {
         for (const auto& path : search_paths()) {
-            for (auto name_variants = get_plugin_name_variants(name); const auto& name_variant : name_variants) {
-                auto full_path = path / name_variant;
-                std::error_code ignore;
-                if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
-                    auto path_str = full_path.string();
-                    if (handle.reset(dl::open(path_str.c_str())); handle) break;
-                }
+            auto full_path = path / fmt("libmim_{}.{}", name, dl::extension);
+            std::error_code ignore;
+            if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
+                auto path_str = full_path.string();
+                if (handle.reset(dl::open(path_str.c_str())); handle) break;
             }
             if (handle) break;
         }
@@ -80,9 +70,11 @@ void Driver::load(Sym name) {
     if (auto get_info = reinterpret_cast<decltype(&mim_get_plugin)>(dl::get(handle.get(), "mim_get_plugin"))) {
         assert_emplace(plugins_, name, std::move(handle));
         auto info = get_info();
-        if (auto reg = info.register_passes) reg(passes_);
+        // clang-format off
         if (auto reg = info.register_normalizers) reg(normalizers_);
-        if (auto reg = info.register_backends) reg(backends_);
+        if (auto reg = info.register_stages)      reg(phases_, passes_);
+        if (auto reg = info.register_backends)    reg(backends_);
+        // clang-format on
     } else {
         error("mim/plugin has no 'mim_get_plugin()'");
     }
