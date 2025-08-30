@@ -9,9 +9,9 @@ void Phase::run() {
 }
 
 void RWPhase::start() {
-    for (auto def : world().annexes())
+    for (auto def : old_world().annexes())
         rewrite(def);
-    for (auto mut : world().copy_externals())
+    for (auto mut : old_world().copy_externals())
         mut->transfer_external(rewrite(mut)->as_mut());
 }
 
@@ -43,7 +43,7 @@ void Pipeline::start() {
         todo_ = false;
         for (auto& phase : phases()) {
             phase->run();
-            todo_ |= phase->todo();
+            // todo_ |= phase->todo();
         }
 
         if (todo_)

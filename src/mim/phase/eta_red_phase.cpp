@@ -3,10 +3,10 @@
 namespace mim {
 
 void EtaRedPhase::start() {
-    for (auto def : world().annexes())
+    for (auto def : old_world().annexes())
         rewrite(def);
 
-    for (auto old_mut : world().copy_externals()) {
+    for (auto old_mut : old_world().copy_externals()) {
         auto new_mut = rewrite(old_mut);
 
         if (auto old_lam = old_mut->isa<Lam>()) {

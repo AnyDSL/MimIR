@@ -44,6 +44,7 @@ void reg_stages(Phases& phases, Passes& passes) {
     assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](Pipeline&, const Def*) {});
     assert_emplace(passes, flags_t(Annex::Base<compile::null_pass >), [](PassMan&,  const Def*) {});
 
+    Pipeline::hook<compile::cleanup_phase,  Cleanup     >(phases);
     Pipeline::hook<compile::beta_red_phase, BetaRedPhase>(phases);
     Pipeline::hook<compile::eta_red_phase,  EtaRedPhase >(phases);
     Pipeline::hook<compile::eta_exp_phase,  EtaExpPhase >(phases);

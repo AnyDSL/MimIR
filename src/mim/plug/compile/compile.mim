@@ -65,6 +65,7 @@ axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Ph
 /// ### Phases
 ///
 axm %compile.null_phase:             %compile.Phase;
+axm %compile.cleanup_phase:          %compile.Phase;
 axm %compile.beta_red_phase:         %compile.Phase;
 axm %compile.eta_red_phase:          %compile.Phase;
 axm %compile.eta_exp_phase:          %compile.Phase;

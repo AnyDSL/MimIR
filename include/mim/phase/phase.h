@@ -15,9 +15,10 @@ class World;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
-/// Phase::dirty indicates whether we may need a Cleanup afterwards.
 class Phase : public fe::RuntimeCast<Phase> {
 public:
+    /// @name Construction & Destruction
+    ///@{
     Phase(World& world, std::string_view name, bool dirty)
         : world_(world)
         , name_(name)
@@ -25,6 +26,7 @@ public:
     virtual ~Phase() = default;
 
     virtual void reset() { todo_ = false; }
+    ///@}
 
     /// @name Getters
     ///@{
@@ -64,15 +66,20 @@ protected:
 class RWPhase : public Phase, public Rewriter {
 public:
     RWPhase(World& world, std::string_view name)
-        : Phase(world, name, true)
+        : Phase(world, name, false)
         , Rewriter(world) {}
 
     void reset() override { Phase::reset(), Rewriter::reset(); }
 
-    World& world() { return Phase::world(); }
+    World& old_world() { return Phase::world(); }
+    World& new_world() { return Rewriter::world(); }
 
 protected:
     void start() override;
+
+private:
+    using Phase::world;
+    using Rewriter::world;
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.
@@ -102,7 +109,7 @@ class PassPhase : public Phase {
 public:
     template<class... Args>
     PassPhase(World& world, Args&&... args)
-        : Phase(world, "pass phase", false)
+        : Phase(world, "pass phase", true)
         , man_(world) {
         man_.template add<P>(std::forward<Args>(args)...);
     }
@@ -117,7 +124,7 @@ private:
 class PassManPhase : public Phase {
 public:
     PassManPhase(World& world, std::unique_ptr<PassMan>&& man)
-        : Phase(world, "pass_man_phase", false)
+        : Phase(world, "pass_man_phase", true)
         , man_(std::move(man)) {}
 
     void start() override { man_->run(); }
@@ -130,7 +137,7 @@ private:
 class Pipeline : public Phase {
 public:
     Pipeline(World& world)
-        : Phase(world, "pipeline", true) {}
+        : Phase(world, "pipeline", false) {}
 
     void start() override;
 
