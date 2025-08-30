@@ -2,6 +2,14 @@
 
 namespace mim {
 
+BetaRedPhase::BetaRedPhase(World& world)
+    : FPPhase(world, "beta_red") {}
+
+void BetaRedPhase::reset() {
+    analyzed_.clear();
+    candidates_.clear();
+}
+
 bool BetaRedPhase::analyze() {
     for (auto def : old_world().externals())
         analyze(def);

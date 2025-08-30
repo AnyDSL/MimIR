@@ -7,10 +7,10 @@ namespace mim {
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
 class BetaRedPhase : public FPPhase {
 public:
-    BetaRedPhase(World& world)
-        : FPPhase(world, "beta reduction") {}
+    BetaRedPhase(World&);
 
 private:
+    void reset() final;
     bool analyze() final;
     void analyze(const Def*);
     void visit(Lam*);
