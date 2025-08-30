@@ -16,7 +16,14 @@ namespace mim {
 /// Well, there are not really global - that's the point of this class.
 class Driver : public fe::SymPool {
 public:
+    /// @name Construction
+    ///@{
     Driver();
+
+    Driver(const Driver&)     = delete;
+    Driver(Driver&&)          = delete;
+    Driver& operator=(Driver) = delete;
+    ///@}
 
     /// @name Getters
     ///@{
