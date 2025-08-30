@@ -187,7 +187,7 @@ public:
 
     /// @name ops
     ///@{
-    const Def* inhabitant() const { return op(0); }
+    const Def* op() const { return Def::op(0); }
     ///@}
 
     static constexpr auto Node      = mim::Node::Uniq;

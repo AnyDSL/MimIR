@@ -34,9 +34,7 @@ void reg_stages(Phases& phases, Passes& passes) {
     PassMan::hook<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
 }
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"clos", [](Normalizers& n) { clos::register_normalizers(n); }, reg_stages, nullptr};
-}
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"clos", clos::register_normalizers, reg_stages, nullptr}; }
 
 namespace mim::plug::clos {
 

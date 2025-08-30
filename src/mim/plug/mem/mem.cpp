@@ -36,6 +36,4 @@ void reg_stages(Phases& phases, Passes& passes) {
     });
 }
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"mem", [](Normalizers& n) { mem::register_normalizers(n); }, reg_stages, nullptr};
-}
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"mem", mem::register_normalizers, reg_stages, nullptr}; }

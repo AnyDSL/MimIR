@@ -25,27 +25,7 @@ rec %compile.Pipeline:      □ = %compile.Phase → %compile.Pipeline;
 rec %compile.PassList:      □ = %compile.Pass  → %compile.PassList;
 rec %compile.CombinedPhase: □ = %compile.Phase → %compile.CombinedPhase;
 ///
-/// @note This is a forward declaration for `opt.mim`.
-///
-axm %compile.Plugin: *;
-///
 /// ## Expressions
-///
-/// ### Registered Plugins
-///
-/// We expect the name in the tag before the `_` to be the name of the plugin (as given in `%%comiple.name_plugin`).
-/// @note This is a forward declaration for `opt.mim`.
-///
-axm %compile.core_plugin:     %compile.Plugin;
-axm %compile.mem_plugin:      %compile.Plugin;
-axm %compile.demo_plugin:     %compile.Plugin;
-axm %compile.affine_plugin:   %compile.Plugin;
-axm %compile.autodiff_plugin: %compile.Plugin;
-axm %compile.clos_plugin:     %compile.Plugin;
-axm %compile.direct_plugin:   %compile.Plugin;
-axm %compile.refly_plugin:    %compile.Plugin;
-axm %compile.regex_plugin:    %compile.Plugin;
-axm %compile.matrix_plugin:   %compile.Plugin;
 ///
 /// ### %%compile.pipeline
 ///
@@ -72,9 +52,6 @@ axm %compile.pass_phase: %compile.PassList → %compile.Phase, normalize_pass_ph
 axm %compile.passes_to_phase: {n: Nat} → «n; %compile.Pass» → %compile.Phase;
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM`
 axm %compile.combine_pass_list: {n: Nat} → «n; %compile.PassList» → %compile.PassList, normalize_combine_pass_list;
-/// `single_pass_phase pass = passes_to_phase pass`
-// TODO: as let instead of axiom
-axm %compile.single_pass_phase: %compile.Pass → %compile.Phase, normalize_single_pass_phase;
 ///
 /// ### %%compile.combined_phase
 ///
@@ -87,20 +64,25 @@ axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Ph
 ///
 /// ### Phases
 ///
-axm %compile.null_phase:            %compile.Phase;
+axm %compile.null_phase:             %compile.Phase;
+axm %compile.beta_red_phase:         %compile.Phase;
+axm %compile.eta_red_phase:          %compile.Phase;
+axm %compile.eta_exp_phase:          %compile.Phase;
+axm %compile.branch_normalize_phase: %compile.Phase;
 ///
 /// ### Passes
 ///
 /// Basic passes that are defined in the core of Mim.
 ///
-axm %compile.beta_red_pass:         %compile.Pass;
-axm %compile.eta_red_pass:          %compile.Pass;
-axm %compile.eta_exp_pass:          %compile.Pass;
-axm %compile.scalarize_pass:        %compile.Pass;
-axm %compile.tail_rec_elim_pass:    %compile.Pass;
-axm %compile.lam_spec_pass:         %compile.Pass;
-axm %compile.ret_wrap_pass:         %compile.Pass;
-axm %compile.null_pass:             %compile.Pass;
+axm %compile.beta_red_pass:       %compile.Pass;
+axm %compile.eta_red_pass:        %compile.Pass;
+axm %compile.eta_exp_pass:        %compile.Pass;
+axm %compile.scalarize_pass:      %compile.Pass;
+axm %compile.tail_rec_elim_pass:  %compile.Pass;
+axm %compile.lam_spec_pass:       %compile.Pass;
+axm %compile.ret_wrap_pass:       %compile.Pass;
+axm %compile.null_pass:           %compile.Pass;
+
 axm %compile.prefix_cleanup_pass: {n: Nat} → «n; I8» → %compile.Pass;
 
 let %compile.internal_cleanup_pass = %compile.prefix_cleanup_pass "internal_";
@@ -112,29 +94,19 @@ let optimization_pass_list =
         %compile.beta_red_pass
         %compile.eta_red_pass
         %compile.eta_exp_pass
-        (%compile.scalarize_pass)
-        (%compile.tail_rec_elim_pass);
+        %compile.scalarize_pass
+        %compile.tail_rec_elim_pass;
 
 let optimization_phase = %compile.pass_phase optimization_pass_list;
 
 let default_core_pipeline =
     %compile.pipeline
-        (%compile.single_pass_phase (%compile.scalarize_pass))
-        (%compile.single_pass_phase %compile.eta_red_pass)
-        (%compile.single_pass_phase (%compile.tail_rec_elim_pass))
+        (%compile.passes_to_phase %compile.scalarize_pass)
+        (%compile.passes_to_phase %compile.eta_red_pass)
+        (%compile.passes_to_phase %compile.tail_rec_elim_pass)
         optimization_phase
-        (%compile.single_pass_phase %compile.internal_cleanup_pass)
-        (%compile.single_pass_phase %compile.lam_spec_pass)
-        (%compile.single_pass_phase %compile.ret_wrap_pass);
+        (%compile.passes_to_phase %compile.internal_cleanup_pass)
+        (%compile.passes_to_phase %compile.lam_spec_pass)
+        (%compile.passes_to_phase %compile.ret_wrap_pass);
 
 lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
-///
-/// ### Dependent Passes and Phases
-///
-axm %compile.plugin_select: [T: *] → %compile.Plugin → T → T → T;
-
-let plugin_phase = %compile.plugin_select %compile.Phase;
-let plugin_pass  = %compile.plugin_select %compile.Pass;
-
-lam plugin_cond_phase(plug: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plug phase %compile.null_phase;
-lam plugin_cond_pass (plug: %compile.Plugin, pass:  %compile.Pass ): %compile.Pass  = plugin_pass  plug pass  %compile.null_pass;

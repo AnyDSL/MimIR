@@ -56,6 +56,12 @@ let %refly.verbose = 3;
 let %refly.debug   = 4;
 
 axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;
+////
+/// ### %%refly.is_loaded
+///
+/// Checks whether the given plugin is loaded.
+///
+axm %refly.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
 /// ## Testing
 ///

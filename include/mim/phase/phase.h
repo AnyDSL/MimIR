@@ -24,11 +24,14 @@ public:
         , dirty_(dirty) {}
     virtual ~Phase() = default;
 
+    virtual void reset() { todo_ = false; }
+
     /// @name Getters
     ///@{
     World& world() { return world_; }
     std::string_view name() const { return name_; }
     bool is_dirty() const { return dirty_; }
+    bool todo() const { return todo_; }
     ///@}
 
     /// @name run
@@ -45,15 +48,17 @@ public:
 
 protected:
     virtual void start() = 0; ///< Actual entry.
-    void set_name(std::string name) { name_ = name; }
 
 private:
     World& world_;
-    std::string name_;
-    bool dirty_;
+    const std::string name_;
+    const bool dirty_;
+
+protected:
+    bool todo_ = false; ///< Set to `true` if you want to run all Phase%es in your Pipeline within a fixed-point.
 };
 
-/// Visits the current Phase::world and constructs a new RWPhase::world along the way.
+/// Rewrites the whole World.
 /// It recursively **rewrites** all World::externals().
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
@@ -62,7 +67,11 @@ public:
         : Phase(world, name, true)
         , Rewriter(world) {}
 
+    void reset() override { Phase::reset(), Rewriter::reset(); }
+
     World& world() { return Phase::world(); }
+
+protected:
     void start() override;
 };
 
@@ -77,7 +86,7 @@ public:
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
 /// Inherit from this one to implement a classic data-flow analysis.
-/// @note If you don't need a fixed-point just return `true` after the first run of analyze.
+/// @note If you don't need a fixed-point, just return `true` after the first run of analyze.
 class FPPhase : public RWPhase {
 public:
     FPPhase(World& world, std::string_view name)
@@ -93,10 +102,9 @@ class PassPhase : public Phase {
 public:
     template<class... Args>
     PassPhase(World& world, Args&&... args)
-        : Phase(world, {}, false)
+        : Phase(world, "pass phase", false)
         , man_(world) {
         man_.template add<P>(std::forward<Args>(args)...);
-        set_name(std::string(man_.passes().back()->name()) + ".pass_phase");
     }
 
     void start() override { man_.run(); }
@@ -121,8 +129,6 @@ private:
 /// Organizes several Phase%s as a pipeline.
 class Pipeline : public Phase {
 public:
-    using P = Phase;
-
     Pipeline(World& world)
         : Phase(world, "pipeline", true) {}
 

@@ -19,6 +19,4 @@ void reg_stages(Phases& phases, Passes& passes) {
     // clang-format on
 }
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"matrix", [](Normalizers& n) { matrix::register_normalizers(n); }, reg_stages, nullptr};
-}
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"matrix", matrix::register_normalizers, reg_stages, nullptr}; }

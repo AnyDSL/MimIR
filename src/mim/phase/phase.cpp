@@ -39,8 +39,17 @@ void Cleanup::start() {
 }
 
 void Pipeline::start() {
-    for (auto& phase : phases())
-        phase->run();
+    for (todo_ = true; todo_;) {
+        todo_ = false;
+        for (auto& phase : phases()) {
+            phase->run();
+            todo_ |= phase->todo();
+        }
+
+        if (todo_)
+            for (auto& phase : phases())
+                phase->reset();
+    }
 }
 
 } // namespace mim

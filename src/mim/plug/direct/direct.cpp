@@ -13,6 +13,4 @@ void reg_stages(Phases&, Passes& passes) {
     PassMan::hook<direct::cps2ds_pass, direct::CPS2DS>(passes);
 }
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"direct", [](Normalizers& n) { direct::register_normalizers(n); }, reg_stages, nullptr};
-}
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"direct", direct::register_normalizers, reg_stages, nullptr}; }

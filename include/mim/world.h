@@ -223,7 +223,7 @@ public:
             return type(lit_univ(level));
     }
     const Def* var(const Def* type, Def* mut);
-    const Proxy* proxy(const Def* type, u32 index, u32 tag, Defs ops) { return unify<Proxy>(type, index, tag, ops); }
+    const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag) { return unify<Proxy>(type, index, tag, ops); }
 
     Hole* mut_hole(const Def* type) { return insert<Hole>(type); }
     Hole* mut_hole_univ() { return mut_hole(univ()); }
@@ -314,13 +314,13 @@ public:
 
     /// @name Rewrite Rules
     ///@{
-    const Reform* rule_type(const Def* meta_type) { return unify<Reform>(Reform::infer(meta_type), meta_type); }
+    const Reform* reform(const Def* meta_type) { return unify<Reform>(Reform::infer(meta_type), meta_type); }
     Rule* mut_rule(const Reform* type) { return insert<Rule>(type); }
-    const Rule* rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* condition) {
-        return mut_rule(type)->set(lhs, rhs, condition);
+    const Rule* rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* guard) {
+        return mut_rule(type)->set(lhs, rhs, guard);
     }
-    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs, const Def* condition) {
-        return rule(rule_type(meta_type), lhs, rhs, condition);
+    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs, const Def* guard) {
+        return rule(reform(meta_type), lhs, rhs, guard);
     }
     ///@}
 
@@ -380,6 +380,7 @@ public:
     const Def* pack_unsafe(           const Def* body) { return seq_unsafe(true , body); }
 
     const Def* prod(bool term, Defs ops) { return term ? tuple(ops) : sigma(ops); }
+    const Def* prod(bool term) { return term ? (const Def*)tuple() : (const Def*)sigma(); }
     // clang-format on
     ///@}
 

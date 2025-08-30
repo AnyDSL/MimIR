@@ -35,11 +35,6 @@ const Def* normalize_combined_phase(const Def* type, const Def*, const Def* arg)
     return world.call<phases_to_phase>(phases);
 }
 
-/// `single_pass_phase pass` -> `passes_to_phase pass`
-const Def* normalize_single_pass_phase(const Def* type, const Def*, const Def* arg) {
-    return type->world().call<passes_to_phase>(arg);
-}
-
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ...
 /// passK1 ... passKM`
 const Def* normalize_combine_pass_list(const Def* type, const Def*, const Def* arg) {
