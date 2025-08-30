@@ -194,6 +194,7 @@ public:
     }
     const Def* sym2annex(Sym sym) {
         for (auto [_, def] : flags2annex()) {
+            std::cout << "contained in flags2sym: " << def->sym() << std::endl;
             outln("{}: {}", sym, def->sym());
             if (def->sym() == sym) return def;
         }
