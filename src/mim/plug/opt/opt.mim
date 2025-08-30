@@ -54,7 +54,7 @@ lam extern _default_compile []: %compile.Pipeline =
                         matrix_lower_phase
                         (cond_phase "direct" direct_phases)
                         (cond_phase "affine" (%compile.passes_to_phase %affine.lower_for_pass)))))
-        (%compile.passes_to_phase %compile.internal_cleanup_pass)
+        %compile.internal_cleanup_phase
         (cond_phase "clos" clos_phases)
         (%compile.passes_to_phase %compile.lam_spec_pass)
         (cond_phase "autodiff" ad_cleanup_phase)

@@ -36,6 +36,7 @@ target_sources(libmim
         phase/eta_red_phase.cpp
         phase/eta_exp_phase.cpp
         phase/branch_normalize.cpp
+        phase/prefix_cleanup.cpp
         phase/phase.cpp
         util/bitset.cpp
         util/dbg.cpp

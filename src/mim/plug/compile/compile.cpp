@@ -16,10 +16,10 @@
 #include <mim/phase/eta_exp_phase.h>
 #include <mim/phase/eta_red_phase.h>
 #include <mim/phase/phase.h>
+#include <mim/phase/prefix_cleanup.h>
 
 #include "mim/plug/compile/autogen.h"
 #include "mim/plug/compile/pass/debug_print.h"
-#include "mim/plug/compile/pass/prefix_cleanup.h"
 
 using namespace mim;
 using namespace mim::plug;
@@ -58,6 +58,11 @@ void reg_stages(Phases& phases, Passes& passes) {
         pipe.add<compile::DebugPrint>(level);
     });
 
+    assert_emplace(phases, flags_t(Annex::Base<compile::prefix_cleanup_phase>), [&](Pipeline& pipe, const Def* app) {
+        auto prefix = tuple2str(app->as<App>()->arg());
+        pipe.add<PrefixCleanup>(prefix);
+    });
+
     assert_emplace(phases, flags_t(Annex::Base<compile::passes_to_phase>), [&](Pipeline& pipe, const Def* app) {
         auto defs = app->as<App>()->arg()->projs();
         auto man  = std::make_unique<PassMan>(app->world());
@@ -86,11 +91,6 @@ void reg_stages(Phases& phases, Passes& passes) {
     PassMan::hook<compile::scalarize_pass,     Scalarize  >(passes);
     PassMan::hook<compile::tail_rec_elim_pass, TailRecElim>(passes);
     // clang-format on
-
-    assert_emplace(passes, flags_t(Annex::Base<compile::prefix_cleanup_pass>), [&](PassMan& man, const Def* app) {
-        auto prefix = tuple2str(app->as<App>()->arg());
-        man.add<compile::PrefixCleanup>(prefix);
-    });
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
