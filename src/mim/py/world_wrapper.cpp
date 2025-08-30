@@ -21,7 +21,9 @@ public:
         return world_->sym2annex(sym);
     }
 
-    const mim::Def* implicit_app(const mim::Def* calle, std::vector<mim::Def*> args) { return world_->implicit_app(calle, args); }
+    const mim::Def* implicit_app(const mim::Def* calle, std::vector<mim::Def*> args) {
+        return world_->implicit_app(calle, args);
+    }
 
     const mim::Def* type_i32() { return world_->type_i32(); }
 

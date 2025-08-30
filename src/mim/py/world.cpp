@@ -1,10 +1,11 @@
+#include <fe/sym.h>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
+#include <mim/def.h>
+#include <mim/world.h>
 
 #include "world_wrapper.cpp"
-#include <mim/world.h>
-#include <fe/sym.h>
-#include <mim/def.h>
-#include <pybind11/stl.h>
 namespace py = pybind11;
 
 namespace mim {
@@ -24,10 +25,10 @@ void init_world_wrapper(py::module_& m) {
 
 void init_world(py::module_& m) {
     py::class_<mim::World>(m, "World");
-        // .def("write", static_cast<mim::Def* (mim::World::*)()>(&mim::World::write), py::return_value_policy::reference)
-        // .def("annex", &mim::World::annex, py::return_value_policy::reference_internal)
-        // .def("implicit_app", &mim::World::implicit_app, py::return_value_policy::reference)
-        // .def("type_i32", &mim::World::type_i32, py::return_value_policy::reference_internal);
-// -        .def("write", static_cast<void (World::*)()>(&mim::World::write));
+    // .def("write", static_cast<mim::Def* (mim::World::*)()>(&mim::World::write), py::return_value_policy::reference)
+    // .def("annex", &mim::World::annex, py::return_value_policy::reference_internal)
+    // .def("implicit_app", &mim::World::implicit_app, py::return_value_policy::reference)
+    // .def("type_i32", &mim::World::type_i32, py::return_value_policy::reference_internal);
+    // -        .def("write", static_cast<void (World::*)()>(&mim::World::write));
 }
 } // namespace mim
