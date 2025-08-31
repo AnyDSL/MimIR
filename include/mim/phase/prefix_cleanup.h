@@ -9,7 +9,7 @@ public:
     PrefixCleanup(World&, std::string prefix = "internal_");
 
 private:
-    void start() final;
+    void rewrite_externals() final;
 
     std::string prefix_;
 };

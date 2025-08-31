@@ -63,8 +63,6 @@ const Def* EtaExpPhase::rewrite(const Def* old_def) {
 const Def* EtaExpPhase::rewrite_no_eta(const Def* old_def) { return Rewriter::rewrite(old_def); }
 
 const Def* EtaExpPhase::rewrite_imm_App(const App* app) {
-    if (auto lam = app->callee()->isa<Lam>()) lam->dump();
-
     auto callee = rewrite_no_eta(app->callee());
     return new_world().app(callee, rewrite(app->arg()));
 }

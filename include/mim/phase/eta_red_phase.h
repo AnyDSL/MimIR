@@ -11,8 +11,10 @@ public:
         : RWPhase(world, "eta reduction") {}
 
 private:
-    void start() final;
-    const Def* rewrite_mut_Lam(Lam*) final;
+    void rewrite_externals() final;
+    const Def* rewrite_no_eta(const Def*);
+    const Def* rewrite(const Def*);
+    const Def* rewrite_imm_Var(const Var*) final;
 };
 
 } // namespace mim

@@ -12,13 +12,19 @@ class Rewriter {
 public:
     Rewriter(std::unique_ptr<World>&& ptr)
         : ptr_(std::move(ptr))
-        , world_(*ptr_) {
+        , world_(ptr_.get()) {
         push(); // create root map
     }
 
     Rewriter(World& world)
-        : world_(world) {
+        : world_(&world) {
         push(); // create root map
+    }
+
+    void reset(std::unique_ptr<World>&& ptr) {
+        ptr_   = std::move(ptr);
+        world_ = ptr_.get();
+        reset();
     }
 
     void reset() {
@@ -27,7 +33,7 @@ public:
         push();
     }
 
-    World& world() { return world_; }
+    World& world() { return *world_; }
 
     /// @name Stack of Maps
     ///@{
@@ -69,7 +75,7 @@ public:
 
 private:
     std::unique_ptr<World> ptr_;
-    World& world_;
+    World* world_;
     std::deque<Def2Def> old2news_;
 };
 

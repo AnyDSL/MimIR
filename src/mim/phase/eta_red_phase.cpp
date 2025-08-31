@@ -2,32 +2,23 @@
 
 namespace mim {
 
-void EtaRedPhase::start() {
-    for (auto def : old_world().annexes())
-        rewrite(def);
-
-    for (auto old_mut : old_world().copy_externals()) {
-        auto new_mut = rewrite(old_mut);
-
-        if (auto old_lam = old_mut->isa<Lam>()) {
-            if (new_mut->sym() != old_lam->sym()) {
-                // we have eta-reduced an external so eta-expand it again
-                new_mut = Lam::eta_expand(new_mut);
-                new_mut->set<true>(old_lam->dbg());
-            }
-        }
-        old_mut->transfer_external(new_mut->as_mut());
-    }
+void EtaRedPhase::rewrite_externals() {
+    for (auto mut : old_world().copy_externals())
+        mut->transfer_external(rewrite_no_eta(mut)->as_mut());
 }
 
-const Def* EtaRedPhase::rewrite_mut_Lam(Lam* lam) {
-    if (auto callee = lam->eta_reduce()) {
-        if (!lam->is_external()) todo_ = true;
-        return map(lam, rewrite(callee));
+const Def* EtaRedPhase::rewrite(const Def* old_def) {
+    if (auto lam = old_def->isa<Lam>()) {
+        if (auto callee = lam->eta_reduce()) return todo_ = true, rewrite(callee);
     }
-    return Rewriter::rewrite_mut_Lam(lam);
+
+    return Rewriter::rewrite(old_def);
 }
 
-// TODO maybe we can eta-reduce immutable Lams in some edge casess like: lm _: [] = f ();
+const Def* EtaRedPhase::rewrite_no_eta(const Def* old_def) { return Rewriter::rewrite(old_def); }
+
+const Def* EtaRedPhase::rewrite_imm_Var(const Var* var) {
+    return new_world().var(rewrite(var->type()), rewrite_no_eta(var->mut())->as_mut());
+}
 
 } // namespace mim

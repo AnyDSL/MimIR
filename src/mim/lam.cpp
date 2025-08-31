@@ -34,6 +34,8 @@ Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, con
     return app(filter, world().select(cond, t, f), mem ? mem : world().tuple());
 }
 
+// TODO maybe we can eta-reduce immutable Lams in some edge casess like: lm _: [] = f ();
+
 const Def* Lam::eta_reduce() const {
     if (auto var = has_var()) {
         if (auto app = body()->isa<App>())

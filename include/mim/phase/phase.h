@@ -75,7 +75,10 @@ public:
         : Phase(world, std::move(name), false)
         , Rewriter(world.inherit_ptr()) {}
 
-    void reset() override { Phase::reset(), Rewriter::reset(); }
+    void reset() override {
+        Phase::reset();
+        Rewriter::reset(old_world().inherit_ptr());
+    }
     ///@}
 
     /// @name Rewrite
