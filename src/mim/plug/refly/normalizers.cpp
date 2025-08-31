@@ -1,6 +1,5 @@
 #include <rang.hpp>
 
-#include <mim/driver.h>
 #include <mim/tuple.h>
 #include <mim/world.h>
 
@@ -63,14 +62,6 @@ const Def* normalize_refine(const Def*, const Def*, const Def* arg) {
 
 const Def* normalize_type(const Def*, const Def*, const Def* arg) { return arg->type(); }
 const Def* normalize_gid(const Def*, const Def*, const Def* arg) { return arg->world().lit_nat(arg->gid()); }
-
-const Def* normalize_is_loaded(const Def*, const Def*, const Def* arg) {
-    auto& world  = arg->world();
-    auto& driver = world.driver();
-    if (auto str = tuple2str(arg); !str.empty()) return world.lit_bool(driver.is_loaded(driver.sym(str)));
-
-    return {};
-}
 
 template<equiv id>
 const Def* normalize_equiv(const Def*, const Def*, const Def* arg) {

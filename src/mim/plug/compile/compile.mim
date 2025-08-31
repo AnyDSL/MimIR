@@ -27,6 +27,12 @@ rec %compile.CombinedPhase: □ = %compile.Phase → %compile.CombinedPhase;
 ///
 /// ## Expressions
 ///
+/// ### %%compile.is_loaded
+///
+/// Checks whether the given plugin is loaded.
+///
+axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
+///
 /// ### %%compile.pipeline
 ///
 /// Given n phases, returns the representation of a pipeline.

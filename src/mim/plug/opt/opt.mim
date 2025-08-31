@@ -9,21 +9,22 @@
 /// ## Dependencies
 ///
 plugin core;
+plugin compile;
 /// supported plugins with passes
 import affine;
 import autodiff;
 import clos;
 import direct;
 import matrix;
-plugin refly;
+import refly;
 import regex;
 ///
 /// ## Passes, Phases, and Pipelines
 ///
 /// ### Pipelines
 ///
-lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%refly.is_loaded name, phase, %compile.null_phase);
-lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%refly.is_loaded name, pass , %compile.null_pass );
+lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);
+lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );
 
 lam extern _default_compile []: %compile.Pipeline =
     %compile.pipeline
