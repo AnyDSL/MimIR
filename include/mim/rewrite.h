@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "mim/world.h"
 
 namespace mim {
@@ -8,6 +10,12 @@ namespace mim {
 /// This World may be different than the World we started with.
 class Rewriter {
 public:
+    Rewriter(std::unique_ptr<World>&& ptr)
+        : ptr_(std::move(ptr))
+        , world_(*ptr_) {
+        push(); // create root map
+    }
+
     Rewriter(World& world)
         : world_(world) {
         push(); // create root map
@@ -60,6 +68,7 @@ public:
     ///@}
 
 private:
+    std::unique_ptr<World> ptr_;
     World& world_;
     std::deque<Def2Def> old2news_;
 };

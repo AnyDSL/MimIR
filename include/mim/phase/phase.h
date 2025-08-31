@@ -60,8 +60,9 @@ protected:
     bool todo_ = false; ///< Set to `true` if you want to run all Phase%es in your Pipeline within a fixed-point.
 };
 
-/// Rewrites the RWPhase::old_world into the RWPhase::new_world.
-/// It recursively **rewrites** all (old) World::externals() & World::annexes().
+/// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
+/// This will destroy RWPhase::old_world leaving RWPhase::new_world as the *current* World to work with.
+/// This Phase recursively **rewrites** all (old) World::externals() & World::annexes()
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
 public:
@@ -69,7 +70,7 @@ public:
     ///@{
     RWPhase(World& world, std::string name)
         : Phase(world, std::move(name), false)
-        , Rewriter(world) {}
+        , Rewriter(world.inherit_ptr()) {}
 
     void reset() override { Phase::reset(), Rewriter::reset(); }
     ///@}
@@ -86,17 +87,18 @@ public:
     World& new_world() { return Rewriter::world(); } ///< Create **new** Def%s into this.
     ///@}
 
+    bool is_bootstrapping() const { return bootstrapping_; }
+
 protected:
+    bool bootstrapping_ = true;
     void start() override;
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.
-class Cleanup : public Phase {
+class Cleanup : public RWPhase {
 public:
     Cleanup(World& world)
-        : Phase(world, "cleanup", false) {}
-
-    void start() override;
+        : RWPhase(world, "cleanup") {}
 };
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.

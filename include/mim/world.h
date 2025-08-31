@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -73,8 +74,10 @@ public:
         : World(&other.driver(), other.state()) {
         swap(*this, other);
     }
-    World inherit() { return World(&driver(), state()); } ///< Inherits the @p state into the new World.
     ~World();
+
+    World inherit() { return World(&driver(), state()); } ///< Inherits the @p state into the new World.
+    std::unique_ptr<World> inherit_ptr() { return std::make_unique<World>(&driver(), state()); } ///< As above.
     ///@}
 
     /// @name Getters/Setters
