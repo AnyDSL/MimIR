@@ -19,9 +19,9 @@ class Phase : public fe::RuntimeCast<Phase> {
 public:
     /// @name Construction & Destruction
     ///@{
-    Phase(World& world, std::string_view name, bool dirty)
+    Phase(World& world, std::string name, bool dirty)
         : world_(world)
-        , name_(name)
+        , name_(std::move(name))
         , dirty_(dirty) {}
     virtual ~Phase() = default;
 
@@ -60,26 +60,29 @@ protected:
     bool todo_ = false; ///< Set to `true` if you want to run all Phase%es in your Pipeline within a fixed-point.
 };
 
-/// Rewrites the whole World.
-/// It recursively **rewrites** all World::externals().
+/// Rewrites the RWPhase::old_world into the RWPhase::new_world.
+/// It recursively **rewrites** all (old) World::externals() & World::annexes().
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
 public:
-    RWPhase(World& world, std::string_view name)
-        : Phase(world, name, false)
+    /// @name Construction
+    ///@{
+    RWPhase(World& world, std::string name)
+        : Phase(world, std::move(name), false)
         , Rewriter(world) {}
 
     void reset() override { Phase::reset(), Rewriter::reset(); }
+    ///@}
 
+    /// @name World
+    ///@{
     World& old_world() { return Phase::world(); }
     World& new_world() { return Rewriter::world(); }
+    World& world() = delete;
+    ///@}
 
 protected:
     void start() override;
-
-private:
-    using Phase::world;
-    using Rewriter::world;
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.
@@ -96,8 +99,8 @@ public:
 /// @note If you don't need a fixed-point, just return `true` after the first run of analyze.
 class FPPhase : public RWPhase {
 public:
-    FPPhase(World& world, std::string_view name)
-        : RWPhase(world, name) {}
+    FPPhase(World& world, std::string name)
+        : RWPhase(world, std::move(name)) {}
 
     virtual bool analyze() = 0;
     void start() override;
@@ -179,9 +182,11 @@ private:
 template<class M = Def>
 class ClosedMutPhase : public Phase {
 public:
-    ClosedMutPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
-        : Phase(world, name, dirty)
+    ClosedMutPhase(World& world, std::string name, bool dirty, bool elide_empty)
+        : Phase(world, std::move(name), dirty)
         , elide_empty_(elide_empty) {}
+
+    bool elide_empty() const { return elide_empty_; }
 
     void start() override {
         unique_queue<MutSet> queue;
@@ -203,7 +208,7 @@ protected:
     M* root() const { return root_; }
 
 private:
-    bool elide_empty_;
+    const bool elide_empty_;
     M* root_;
 };
 
@@ -212,7 +217,7 @@ template<class M = Def>
 class ClosedCollector : public ClosedMutPhase<M> {
 public:
     ClosedCollector(World& world)
-        : ClosedMutPhase<M>(world, "collector", false, false) {}
+        : ClosedMutPhase<M>(world, "closed_collector", false, false) {}
 
     virtual void visit(M* mut) { muts.emplace_back(mut); }
 
@@ -230,8 +235,8 @@ public:
 template<class M = Def>
 class NestPhase : public ClosedMutPhase<M> {
 public:
-    NestPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
-        : ClosedMutPhase<M>(world, name, dirty, elide_empty) {}
+    NestPhase(World& world, std::string name, bool dirty, bool elide_empty)
+        : ClosedMutPhase<M>(world, std::move(name), dirty, elide_empty) {}
 
     const Nest& nest() const { return *nest_; }
     virtual void visit(const Nest&) = 0;

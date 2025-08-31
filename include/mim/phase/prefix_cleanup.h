@@ -6,13 +6,11 @@ namespace mim {
 
 class PrefixCleanup : public RWPhase {
 public:
-    PrefixCleanup(World& world, std::string prefix = "internal_")
-        : RWPhase(world, "prefix_cleanup " + prefix)
-        , prefix_(std::move(prefix)) {}
-
-    void start() final;
+    PrefixCleanup(World&, std::string prefix = "internal_");
 
 private:
+    void start() final;
+
     std::string prefix_;
 };
 

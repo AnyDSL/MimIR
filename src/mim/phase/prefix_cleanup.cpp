@@ -4,6 +4,10 @@
 
 namespace mim {
 
+PrefixCleanup::PrefixCleanup(World& world, std::string prefix)
+    : RWPhase(world, std::format("prefix_cleanup `{}`", prefix))
+    , prefix_(std::move(prefix)) {}
+
 void PrefixCleanup::start() {
     for (auto mut : old_world().copy_externals()) {
         if (mut->sym().view().starts_with(prefix_)) {

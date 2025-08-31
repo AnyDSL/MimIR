@@ -95,8 +95,8 @@ private:
     ///@}
 
     PassMan& man_;
-    std::string name_;
-    size_t index_;
+    const std::string name_;
+    const size_t index_;
 
     friend class PassMan;
 };

@@ -3,9 +3,9 @@
 namespace mim {
 
 void Phase::run() {
-    world().verify().ILOG("=== {}: start ===", name());
+    world().verify().ILOG("=== {}: Phase start ===", name());
     start();
-    world().verify().ILOG("=== {}: done ===", name());
+    world().verify().ILOG("=== {}: Phase done ===", name());
 }
 
 void RWPhase::start() {
