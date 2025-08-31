@@ -35,7 +35,6 @@ bool World::Lock::guard_ = false;
 World::World(Driver* driver, const State& state)
     : driver_(driver)
     , state_(state) {
-    state_.pod.frozen = false; // HACK
     data_.univ        = insert<Univ>(*this);
     data_.lit_univ_0  = lit_univ(0);
     data_.lit_univ_1  = lit_univ(1);

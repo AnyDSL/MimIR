@@ -77,12 +77,7 @@ public:
     ~World();
 
     World inherit() { return freeze(), World(&driver(), state()); } ///< Inherits the @p state into the new World.
-
-    /// As above.
-    std::unique_ptr<World> inherit_ptr() {
-        freeze();
-        return std::make_unique<World>(&driver(), state());
-    }
+    std::unique_ptr<World> inherit_ptr() { return std::make_unique<World>(&driver(), state()); } ///< As above.
     ///@}
 
     /// @name Getters/Setters
