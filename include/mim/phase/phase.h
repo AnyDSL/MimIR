@@ -75,10 +75,15 @@ public:
     ///@}
 
     /// @name World
+    /// * Phase::world is the **old** one.
+    /// * Rewriter::world is the **new** one.
+    /// * RWPhase::world is deleted to not confuse this.
     ///@{
-    World& old_world() { return Phase::world(); }
-    World& new_world() { return Rewriter::world(); }
-    World& world() = delete;
+    using Phase::world;
+    using Rewriter::world;
+    World& world() = delete;                         ///< Hides both and forbids direct access.
+    World& old_world() { return Phase::world(); }    ///< Get **old** Def%s from here.
+    World& new_world() { return Rewriter::world(); } ///< Create **new** Def%s into this.
     ///@}
 
 protected:

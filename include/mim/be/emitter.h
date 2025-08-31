@@ -23,8 +23,8 @@ public:
     Tab tab;
 
 protected:
-    Emitter(World& world, std::string_view name, std::ostream& ostream)
-        : NestPhase(world, name, false, false)
+    Emitter(World& world, std::string name, std::ostream& ostream)
+        : NestPhase(world, std::move(name), false, false)
         , ostream_(ostream) {}
 
     std::ostream& ostream() const { return ostream_; }
