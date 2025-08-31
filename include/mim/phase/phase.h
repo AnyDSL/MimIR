@@ -61,8 +61,11 @@ protected:
 };
 
 /// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
-/// This will destroy RWPhase::old_world leaving RWPhase::new_world as the *current* World to work with.
-/// This Phase recursively **rewrites** all (old) World::externals() & World::annexes()
+/// This will destroy RWPhase::old_world leaving RWPhase::new_world which will be created here as the *current* World to
+/// work with.
+/// This Phase will recursively Rewriter::rewrite
+/// 1. all (old) World::annexes() (during which RWPhase::is_bootstrapping is `true`), and then
+/// 2. all (old) World::externals() (during which RWPhase::is_bootstrapping is `false`).
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
 public:
@@ -73,6 +76,12 @@ public:
         , Rewriter(world.inherit_ptr()) {}
 
     void reset() override { Phase::reset(), Rewriter::reset(); }
+    ///@}
+
+    /// @name Rewrite
+    ///@{
+    virtual void rewrite_annexes();
+    virtual void rewrite_externals();
     ///@}
 
     /// @name World
@@ -94,7 +103,7 @@ protected:
     void start() override;
 };
 
-/// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.
+/// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping them afterwards.
 class Cleanup : public RWPhase {
 public:
     Cleanup(World& world)
@@ -182,10 +191,10 @@ private:
     std::deque<std::unique_ptr<Phase>> phases_;
 };
 
-/// Transitively visits all *reachable* closed mutables (Def::is_closed()) in World.
-/// Select with `elide_empty` whether you want to visit trivial *muts* without body.
-/// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
-/// If you a are only interested in specific mutables, you can pass this to @p M.
+/// Transitively visits all *reachable*, [*closed*](@ref Def::is_closed) mutables in the World.
+/// * Select with `elide_empty` whether you want to visit trivial mutables without body.
+/// * If you a are only interested in specific mutables, you can pass this to @p M.
+/// * If your Phase may change the World, set `dirty` flag to `true`.
 template<class M = Def>
 class ClosedMutPhase : public Phase {
 public:
@@ -219,7 +228,7 @@ private:
     M* root_;
 };
 
-/// Transitively collects all *closed* mutables (Def::is_closed) in a World.
+/// Transitively collects all [*closed*](@ref Def::is_closed) mutables in a World.
 template<class M = Def>
 class ClosedCollector : public ClosedMutPhase<M> {
 public:

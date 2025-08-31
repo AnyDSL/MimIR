@@ -1,5 +1,7 @@
 #include "mim/phase/eta_exp_phase.h"
 
+#include "mim/rewrite.h"
+
 namespace mim {
 
 EtaExpPhase::EtaExpPhase(World& world)
@@ -13,7 +15,6 @@ void EtaExpPhase::reset() {
 bool EtaExpPhase::analyze() {
     for (auto def : old_world().externals()) {
         if (auto lam = def->isa<Lam>()) join(lam, Lattice::Known);
-        outln("analyze: {}", def);
         analyze(def);
     }
 
@@ -44,22 +45,32 @@ void EtaExpPhase::analyze(const Def* def) {
     }
 }
 
-const Def* EtaExpPhase::eta(const Def* def) {
-    auto new_def = rewrite(def);
-    if (auto lam = def->isa_mut<Lam>())
-        if (auto l = lattice(lam); l == Both) return Lam::eta_expand(false, new_def);
-    return new_def;
+void EtaExpPhase::rewrite_externals() {
+    for (auto mut : old_world().copy_externals())
+        mut->transfer_external(rewrite_no_eta(mut)->as_mut());
 }
+
+const Def* EtaExpPhase::rewrite(const Def* old_def) {
+    if (auto lam = old_def->isa<Lam>(); lam && lattice(lam) == Both) {
+        auto [i, ins] = lam2eta_.emplace(lam, nullptr);
+        if (ins) i->second = Lam::eta_expand(rewrite_no_eta(lam));
+        return i->second;
+    }
+
+    return Rewriter::rewrite(old_def);
+}
+
+const Def* EtaExpPhase::rewrite_no_eta(const Def* old_def) { return Rewriter::rewrite(old_def); }
 
 const Def* EtaExpPhase::rewrite_imm_App(const App* app) {
-    auto callee = rewrite(app->callee());
-    return new_world().app(callee, eta(app->arg()));
+    if (auto lam = app->callee()->isa<Lam>()) lam->dump();
+
+    auto callee = rewrite_no_eta(app->callee());
+    return new_world().app(callee, rewrite(app->arg()));
 }
 
-const Def* EtaExpPhase::rewrite_mut_Lam(Lam* lam) {
-    auto new_def = Rewriter::rewrite_mut_Lam(lam);
-    if (auto l = lattice(lam); l == Both) return Lam::eta_expand(false, new_def);
-    return new_def;
+const Def* EtaExpPhase::rewrite_imm_Var(const Var* var) {
+    return new_world().var(rewrite(var->type()), rewrite_no_eta(var->mut())->as_mut());
 }
 
 } // namespace mim

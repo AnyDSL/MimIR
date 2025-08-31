@@ -12,7 +12,7 @@ void EtaRedPhase::start() {
         if (auto old_lam = old_mut->isa<Lam>()) {
             if (new_mut->sym() != old_lam->sym()) {
                 // we have eta-reduced an external so eta-expand it again
-                new_mut = Lam::eta_expand(rewrite(old_lam->filter()), new_mut);
+                new_mut = Lam::eta_expand(new_mut);
                 new_mut->set<true>(old_lam->dbg());
             }
         }

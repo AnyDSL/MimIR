@@ -9,15 +9,21 @@ void Phase::run() {
 }
 
 void RWPhase::start() {
-    for (const auto& [f, def] : old_world().flags2annex())
-        new_world().register_annex(f, rewrite(def));
-
+    rewrite_annexes();
     bootstrapping_ = false;
-
-    for (auto mut : old_world().copy_externals())
-        mut->transfer_external(rewrite(mut)->as_mut());
+    rewrite_externals();
 
     swap(old_world(), new_world());
+}
+
+void RWPhase::rewrite_annexes() {
+    for (const auto& [f, def] : old_world().flags2annex())
+        new_world().register_annex(f, rewrite(def));
+}
+
+void RWPhase::rewrite_externals() {
+    for (auto mut : old_world().copy_externals())
+        mut->transfer_external(rewrite(mut)->as_mut());
 }
 
 void FPPhase::start() {
