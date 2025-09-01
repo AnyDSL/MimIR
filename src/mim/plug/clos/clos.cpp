@@ -22,11 +22,11 @@ void reg_stages(Phases& phases, Passes& passes) {
     Pipeline::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
 
     // TODO:; remove after ho_codegen merge
-    phases[flags_t(Annex::Base<clos::eta_red_bool_pass>)] = [&](Pipeline& pipe, const Def* app) {
+    assert_emplace(passes, flags_t(Annex::Base<clos::eta_red_bool_pass>), [&](PassMan& man, const Def* app) {
         auto bb      = app->as<App>()->arg();
         auto bb_only = bb->as<Lit>()->get<u64>();
-        pipe.add<EtaRed>(bb_only);
-    };
+        man.add<EtaRed>(bb_only);
+    });
 
     PassMan::hook<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
     PassMan::hook<clos::branch_clos_pass, clos::BranchClosElim>(passes);

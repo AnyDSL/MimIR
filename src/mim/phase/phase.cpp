@@ -36,9 +36,7 @@ void FPPhase::start() {
 }
 
 void Pipeline::start() {
-    int i = 0;
     for (todo_ = true; todo_;) {
-        std::cout << i++ << std::endl;
         todo_ = false;
         for (auto& phase : phases()) {
             phase->run();
