@@ -83,8 +83,8 @@ public:
 
     /// @name Rewrite
     ///@{
-    virtual void rewrite_annexes();
-    virtual void rewrite_externals();
+    virtual void rewrite_annex(flags_t, const Def*);
+    virtual void rewrite_external(Def*);
     ///@}
 
     /// @name World

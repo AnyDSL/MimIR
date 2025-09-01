@@ -9,22 +9,20 @@ void Phase::run() {
 }
 
 void RWPhase::start() {
-    rewrite_annexes();
+    for (const auto& [f, def] : old_world().flags2annex())
+        rewrite_annex(f, def);
+
     bootstrapping_ = false;
-    rewrite_externals();
+
+    for (auto mut : old_world().copy_externals())
+        rewrite_external(mut);
 
     swap(old_world(), new_world());
 }
 
-void RWPhase::rewrite_annexes() {
-    for (const auto& [f, def] : old_world().flags2annex())
-        new_world().register_annex(f, rewrite(def));
-}
+void RWPhase::rewrite_annex(flags_t f, const Def* def) { new_world().register_annex(f, rewrite(def)); }
 
-void RWPhase::rewrite_externals() {
-    for (auto mut : old_world().copy_externals())
-        mut->transfer_external(rewrite(mut)->as_mut());
-}
+void RWPhase::rewrite_external(Def* mut) { mut->transfer_external(rewrite(mut)->as_mut()); }
 
 void FPPhase::start() {
     for (bool todo = true; todo;) {

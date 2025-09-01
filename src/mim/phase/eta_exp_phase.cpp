@@ -45,10 +45,7 @@ void EtaExpPhase::analyze(const Def* def) {
     }
 }
 
-void EtaExpPhase::rewrite_externals() {
-    for (auto mut : old_world().copy_externals())
-        mut->transfer_external(rewrite_no_eta(mut)->as_mut());
-}
+void EtaExpPhase::rewrite_external(Def* mut) { mut->transfer_external(rewrite_no_eta(mut)->as_mut()); }
 
 const Def* EtaExpPhase::rewrite(const Def* old_def) {
     if (auto lam = old_def->isa<Lam>(); lam && lattice(lam) == Both) {

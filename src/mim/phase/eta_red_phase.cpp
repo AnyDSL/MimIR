@@ -2,10 +2,7 @@
 
 namespace mim {
 
-void EtaRedPhase::rewrite_externals() {
-    for (auto mut : old_world().copy_externals())
-        mut->transfer_external(rewrite_no_eta(mut)->as_mut());
-}
+void EtaRedPhase::rewrite_external(Def* mut) { mut->transfer_external(rewrite_no_eta(mut)->as_mut()); }
 
 const Def* EtaRedPhase::rewrite(const Def* old_def) {
     if (auto lam = old_def->isa<Lam>()) {

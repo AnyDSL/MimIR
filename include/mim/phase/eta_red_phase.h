@@ -11,7 +11,7 @@ public:
         : RWPhase(world, "eta reduction") {}
 
 private:
-    void rewrite_externals() final;
+    void rewrite_external(Def*) final;
     const Def* rewrite_no_eta(const Def* def) { return Rewriter::rewrite(def); }
     const Def* rewrite(const Def*);
     const Def* rewrite_imm_Var(const Var*) final;

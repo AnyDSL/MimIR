@@ -34,7 +34,7 @@ private:
     bool analyze() final;
     void analyze(const Def*);
 
-    void rewrite_externals() final;
+    void rewrite_external(Def*) final;
     const Def* rewrite_no_eta(const Def*);
     const Def* rewrite(const Def*);
     const Def* rewrite_imm_App(const App*) final;
