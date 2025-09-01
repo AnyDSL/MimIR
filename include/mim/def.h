@@ -687,19 +687,16 @@ private:
 
 class Var : public Def, public Setters<Var> {
 private:
-    Var(const Def* type, Def* mut)
-        : Def(Node, type, Defs{mut}, 0) {}
+    Var(const Def* type, Def* binder)
+        : Def(Node, type, Defs{}, (flags_t)binder) {}
 
 public:
     using Setters<Var>::set;
 
-    /// @name ops
-    ///@{
-    Def* binder() const { return op(0)->as_mut(); }
-    ///@}
+    Def* binder() const { return (Def*)flags_; }
 
     static constexpr auto Node      = mim::Node::Var;
-    static constexpr size_t Num_Ops = 1;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

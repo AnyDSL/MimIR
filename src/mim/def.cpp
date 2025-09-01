@@ -37,17 +37,14 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         gid_  = world->next_gid();
         hash_ = mim::hash_begin(node_t(Node::Univ));
     } else if (auto var = isa<Var>()) {
-        assert(flags_ == 0); // if we ever need flags here, we need to hash that
         auto& world = type->world();
         gid_        = world.next_gid();
         vars_       = world.vars().insert(type->local_vars(), var);
         muts_       = type->local_muts();
         dep_ |= type->dep_;
-        auto op      = ops[0];
-        ops_ptr()[0] = op;
         hash_        = hash_begin(node_t(Node::Var));
+        hash_        = hash_combine(hash_, var->flags());
         hash_        = hash_combine(hash_, type->gid());
-        hash_        = hash_combine(hash_, op->gid());
     } else {
         hash_ = hash_begin(u8(node));
         hash_ = hash_combine(hash_, flags_);
@@ -133,7 +130,7 @@ const Def* Type   ::rebuild_(World& w, const Def*  , Defs o) const { return w.ty
 const Def* UInc   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uinc(o[0], offset()); }
 const Def* UMax   ::rebuild_(World& w, const Def*  , Defs o) const { return w.umax(o); }
 const Def* Uniq   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uniq(o[0]); }
-const Def* Var    ::rebuild_(World& w, const Def* t, Defs o) const { return w.var(t, o[0]->as_mut()); }
+const Def* Var    ::rebuild_(World& w, const Def* t, Defs  ) const { return w.var(t, binder()); }
 
 const Def* Axm    ::rebuild_(World& w, const Def* t, Defs ) const {
     if (&w != &world()) return w.axm(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());

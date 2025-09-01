@@ -174,15 +174,15 @@ const Def* World::umax(Defs ops_) {
 
 // TODO more thorough & consistent checks for singleton types
 
-const Def* World::var(const Def* type, Def* mut) {
+const Def* World::var(const Def* type, Def* binder) {
     type = type->zonk();
 
     if (auto s = Idx::isa(type)) {
         if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
     }
 
-    if (auto var = mut->var_) return var;
-    return mut->var_ = unify<Var>(type, mut);
+    if (auto var = binder->var_) return var;
+    return binder->var_ = unify<Var>(type, binder);
 }
 
 template<bool Normalize>
