@@ -52,15 +52,11 @@ axm %autodiff.sum: [n:Nat, T: *] → «n; T» → T, normalize_sum;
 axm %autodiff.ad_eval_pass:         %compile.Pass;
 axm %autodiff.ad_zero_pass:         %compile.Pass;
 axm %autodiff.ad_zero_cleanup_pass: %compile.Pass;
-axm %autodiff.ad_ext_cleanup_pass:  %compile.Pass;
 ///
 /// ### Phases
 ///
-let ad_cleanup_phase =
-    %compile.phases_to_phase (
-        (%compile.passes_to_phase %autodiff.ad_zero_cleanup_pass),
-        (%compile.passes_to_phase %autodiff.ad_ext_cleanup_pass)
-    );
+let ad_cleanup_phase = %compile.passes_to_phase %autodiff.ad_zero_cleanup_pass;
+
 let ad_phase =
     %compile.phases_to_phase (
         optimization_phase,
