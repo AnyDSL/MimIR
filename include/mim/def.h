@@ -695,7 +695,7 @@ public:
 
     /// @name ops
     ///@{
-    Def* mut() const { return op(0)->as_mut(); }
+    Def* binder() const { return op(0)->as_mut(); }
     ///@}
 
     static constexpr auto Node      = mim::Node::Var;

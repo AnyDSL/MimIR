@@ -68,7 +68,7 @@ const Def* EtaExpPhase::rewrite_imm_App(const App* app) {
 }
 
 const Def* EtaExpPhase::rewrite_imm_Var(const Var* var) {
-    return new_world().var(rewrite(var->type()), rewrite_no_eta(var->mut())->as_mut());
+    return new_world().var(rewrite(var->type()), rewrite_no_eta(var->binder())->as_mut());
 }
 
 } // namespace mim

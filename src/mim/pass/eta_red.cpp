@@ -35,7 +35,7 @@ const Def* EtaRed::rewrite(const Def* def) {
 }
 
 undo_t EtaRed::analyze(const Var* var) {
-    if (auto lam = var->mut()->isa_mut<Lam>()) {
+    if (auto lam = var->binder()->isa_mut<Lam>()) {
         auto [_, l] = *data().emplace(lam, Lattice::Bot).first;
         auto succ   = irreducible_.emplace(lam).second;
         if (l == Lattice::Reduce && succ) {

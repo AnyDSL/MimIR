@@ -514,10 +514,10 @@ Def::Cmp Def::cmp(const Def* a, const Def* b) {
 
     if (auto va = a->isa<Var>()) {
         auto vb = b->as<Var>();
-        auto ma = va->mut();
-        auto mb = vb->mut();
-        if (ma->is_set() && ma->free_vars().contains(vb)) return Cmp::L;
-        if (mb->is_set() && mb->free_vars().contains(va)) return Cmp::G;
+        auto ba = va->binder();
+        auto bb = vb->binder();
+        if (ba->is_set() && ba->free_vars().contains(vb)) return Cmp::L;
+        if (bb->is_set() && bb->free_vars().contains(va)) return Cmp::G;
         return Cmp::U;
     }
 

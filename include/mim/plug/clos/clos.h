@@ -78,8 +78,8 @@ inline const Def* apply_closure(const Def* closure, Defs args) {
 /// Checks is def is the variable of a mut of type N.
 template<class N> std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
     if (auto proj = def->isa<Extract>()) {
-        if (auto var = proj->tuple()->isa<Var>(); var && var->mut()->isa<N>())
-            return std::tuple(proj, var->mut()->as<N>());
+        if (auto var = proj->tuple()->isa<Var>(); var && var->binder()->isa<N>())
+            return std::tuple(proj, var->binder()->as<N>());
     }
     return {nullptr, nullptr};
 }
