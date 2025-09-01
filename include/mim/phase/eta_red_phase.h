@@ -12,7 +12,7 @@ public:
 
 private:
     void rewrite_externals() final;
-    const Def* rewrite_no_eta(const Def*);
+    const Def* rewrite_no_eta(const Def* def) { return Rewriter::rewrite(def); }
     const Def* rewrite(const Def*);
     const Def* rewrite_imm_Var(const Var*) final;
 };

@@ -15,8 +15,6 @@ const Def* EtaRedPhase::rewrite(const Def* old_def) {
     return Rewriter::rewrite(old_def);
 }
 
-const Def* EtaRedPhase::rewrite_no_eta(const Def* old_def) { return Rewriter::rewrite(old_def); }
-
 const Def* EtaRedPhase::rewrite_imm_Var(const Var* var) {
     return new_world().var(rewrite(var->type()), rewrite_no_eta(var->mut())->as_mut());
 }
