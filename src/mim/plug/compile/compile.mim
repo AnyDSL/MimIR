@@ -4,9 +4,9 @@
 ///
 /// [TOC]
 ///
-/// This plugin handles the optimization part of the compilation of Mim programs.
-/// Plugins can register passes and phases using the axioms from this plugin.
-/// The program then can invoke the optimization pipeline by defining a function `_compile: [] → %%compile.Pipeline`.
+/// This plugin handles the optimization part of the compilation of MimIR programs.
+/// This plugin's axioms can register mim::Pass%es and mim::PHase%s.
+/// Invoke the optimization pipeline by defining a function `_compile: [] → %%compile.Phase`.
 ///
 /// ## Types
 ///
@@ -17,7 +17,7 @@
 axm %compile.Pass:  *;
 axm %compile.Phase: *;
 ///
-/// ## Expressions
+/// ## Utility
 ///
 /// ### %%compile.is_loaded
 ///
@@ -25,13 +25,20 @@ axm %compile.Phase: *;
 ///
 axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
-/// ### %%compile.passes
+/// ### %%compile.cat
 ///
-/// Sets up `n` passes into the PassMan and wraps it as Phase.
+/// Concatenation of `n` Passes and `m` Passes to `n + m` Passes.
+///
+axm %compile.cat: {n m: Nat} → [«n; %compile.Pass», «m; %compile.Pass»] → %compile.Pass, normalize_cat;
+///
+/// ## Constructors
+///
+/// ### %%compile.phases / %%compile.passes
+///
+/// Sets up `n` phases / passes anad wraps them in a phase.
 ///
 axm %compile.passes: {n: Nat} → «n; %compile.Pass » → %compile.Phase;
 axm %compile.phases: {n: Nat} → «n; %compile.Phase» → %compile.Phase;
-axm %compile.cat: {n m: Nat} → [«n; %compile.Pass», «m; %compile.Pass»] → %compile.Pass, normalize_cat;
 ///
 /// ### Phases
 ///
