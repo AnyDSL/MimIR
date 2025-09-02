@@ -7,7 +7,8 @@
 
 namespace mim {
 
-template<class Value, class Type, class BB, class Child> class Emitter : public NestPhase<Lam> {
+template<class Value, class Type, class BB, class Child>
+class Emitter : public NestPhase<Lam> {
 private:
     constexpr const Child& child() const { return *static_cast<const Child*>(this); }
     constexpr Child& child() { return *static_cast<Child*>(this); }
@@ -24,7 +25,7 @@ public:
 
 protected:
     Emitter(World& world, std::string name, std::ostream& ostream)
-        : NestPhase(world, std::move(name), false, false)
+        : NestPhase(world, std::move(name), false)
         , ostream_(ostream) {}
 
     std::ostream& ostream() const { return ostream_; }

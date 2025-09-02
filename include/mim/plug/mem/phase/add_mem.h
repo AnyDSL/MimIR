@@ -12,7 +12,7 @@ namespace mim::plug::mem {
 class AddMem : public NestPhase<Lam> {
 public:
     AddMem(World& world)
-        : NestPhase(world, "add_mem", true, true) {}
+        : NestPhase(world, "add_mem", true) {}
 
     void visit(const Nest&) override;
 

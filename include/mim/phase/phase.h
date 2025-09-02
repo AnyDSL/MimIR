@@ -19,10 +19,9 @@ class Phase : public fe::RuntimeCast<Phase> {
 public:
     /// @name Construction & Destruction
     ///@{
-    Phase(World& world, std::string name, bool dirty)
+    Phase(World& world, std::string name)
         : world_(world)
-        , name_(std::move(name))
-        , dirty_(dirty) {}
+        , name_(std::move(name)) {}
     virtual ~Phase() = default;
 
     virtual void reset() { todo_ = false; }
@@ -32,7 +31,6 @@ public:
     ///@{
     World& world() { return world_; }
     std::string_view name() const { return name_; }
-    bool is_dirty() const { return dirty_; }
     bool todo() const { return todo_; }
     ///@}
 
@@ -54,7 +52,6 @@ protected:
 private:
     World& world_;
     const std::string name_;
-    const bool dirty_;
 
 protected:
     bool todo_ = false; ///< Set to `true` if you want to run all Phase%es in your Pipeline within a fixed-point.
@@ -72,10 +69,11 @@ public:
     /// @name Construction
     ///@{
     RWPhase(World& world, std::string name)
-        : Phase(world, std::move(name), false)
+        : Phase(world, std::move(name))
         , Rewriter(world.inherit_ptr()) {}
 
     void reset() override {
+        bootstrapping_ = true;
         Phase::reset();
         Rewriter::reset(old_world().inherit_ptr());
     }
@@ -131,7 +129,7 @@ class PassPhase : public Phase {
 public:
     template<class... Args>
     PassPhase(World& world, Args&&... args)
-        : Phase(world, "pass phase", true)
+        : Phase(world, "pass phase")
         , man_(world) {
         man_.template add<P>(std::forward<Args>(args)...);
     }
@@ -146,7 +144,7 @@ private:
 class PassManPhase : public Phase {
 public:
     PassManPhase(World& world, std::unique_ptr<PassMan>&& man)
-        : Phase(world, "pass_man_phase", true)
+        : Phase(world, "pass_man_phase")
         , man_(std::move(man)) {}
 
     void start() override { man_->run(); }
@@ -159,7 +157,7 @@ private:
 class Pipeline : public Phase {
 public:
     Pipeline(World& world)
-        : Phase(world, "pipeline", false) {}
+        : Phase(world, "pipeline") {}
 
     void start() override;
 
@@ -178,7 +176,6 @@ public:
             auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
             auto phase = p.get();
             phases_.emplace_back(std::move(p));
-            if (phase->is_dirty()) phases_.emplace_back(std::make_unique<Cleanup>(world()));
             return phase;
         }
     }
@@ -197,12 +194,11 @@ private:
 /// Transitively visits all *reachable*, [*closed*](@ref Def::is_closed) mutables in the World.
 /// * Select with `elide_empty` whether you want to visit trivial mutables without body.
 /// * If you a are only interested in specific mutables, you can pass this to @p M.
-/// * If your Phase may change the World, set `dirty` flag to `true`.
 template<class M = Def>
 class ClosedMutPhase : public Phase {
 public:
-    ClosedMutPhase(World& world, std::string name, bool dirty, bool elide_empty)
-        : Phase(world, std::move(name), dirty)
+    ClosedMutPhase(World& world, std::string name, bool elide_empty)
+        : Phase(world, std::move(name))
         , elide_empty_(elide_empty) {}
 
     bool elide_empty() const { return elide_empty_; }
@@ -236,7 +232,7 @@ template<class M = Def>
 class ClosedCollector : public ClosedMutPhase<M> {
 public:
     ClosedCollector(World& world)
-        : ClosedMutPhase<M>(world, "closed_collector", false, false) {}
+        : ClosedMutPhase<M>(world, "closed_collector", false) {}
 
     virtual void visit(M* mut) { muts.emplace_back(mut); }
 
@@ -254,8 +250,8 @@ public:
 template<class M = Def>
 class NestPhase : public ClosedMutPhase<M> {
 public:
-    NestPhase(World& world, std::string name, bool dirty, bool elide_empty)
-        : ClosedMutPhase<M>(world, std::move(name), dirty, elide_empty) {}
+    NestPhase(World& world, std::string name, bool elide_empty)
+        : ClosedMutPhase<M>(world, std::move(name), elide_empty) {}
 
     const Nest& nest() const { return *nest_; }
     virtual void visit(const Nest&) = 0;

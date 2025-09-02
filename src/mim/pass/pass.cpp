@@ -96,6 +96,7 @@ void PassMan::run() {
     pop_states(0);
 
     world().debug_dump();
+    Phase::run<Cleanup>(world());
 }
 
 const Def* PassMan::rewrite(const Def* old_def) {

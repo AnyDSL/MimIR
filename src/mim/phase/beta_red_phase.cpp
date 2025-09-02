@@ -33,18 +33,19 @@ void BetaRedPhase::visit(Lam* lam) {
 }
 
 const Def* BetaRedPhase::rewrite_imm_App(const App* app) {
-    if (auto old_lam = app->callee()->isa_mut<Lam>(); old_lam && is_candidate(old_lam)) {
+    if (auto old_lam = app->callee()->isa_mut<Lam>(); old_lam && old_lam->is_set() && is_candidate(old_lam)) {
         if (auto var = old_lam->has_var()) {
             auto new_arg = rewrite(app->arg());
             push();
             map(var, new_arg);
             auto res = rewrite(old_lam->body());
             pop();
+            todo_ = true;
             return res;
         } else {
+            todo_ = true;
             return rewrite(old_lam->body());
         }
-        todo_ = true;
     }
 
     return Rewriter::rewrite_imm_App(app);
