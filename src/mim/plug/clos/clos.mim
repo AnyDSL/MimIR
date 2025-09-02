@@ -31,32 +31,30 @@ axm %clos.attr(returning, freeBB, fstclassBB, esc, bottom): {T: *} → T → T, 
 ///
 /// ### Passes
 ///
-axm %clos.clos_conv_prep_pass: %compile.Pass;
-axm %clos.branch_clos_pass: %compile.Pass;
+axm %clos.clos_conv_prep_pass:        %compile.Pass;
+axm %clos.branch_clos_pass:           %compile.Pass;
 axm %clos.lower_typed_clos_prep_pass: %compile.Pass;
-axm %clos.clos2sjlj_pass: %compile.Pass;
-axm %clos.eta_red_bool_pass: Bool → %compile.Pass;
+axm %clos.clos2sjlj_pass:             %compile.Pass;
+axm %clos.eta_red_bool_pass:   Bool → %compile.Pass;
 ///
 /// ### Phases
 ///
 axm %clos.clos_conv_phase:        %compile.Phase;
 axm %clos.lower_typed_clos_phase: %compile.Phase;
 
-let clos_opt1_phase =
-    %compile.pass_phase (%compile.pass_list
-        (%clos.eta_red_bool_pass tt)
-        %compile.eta_exp_pass
-        %compile.scalarize_pass
-    );
+let clos_opt1_passes = (
+    %clos.eta_red_bool_pass tt,
+    %compile.eta_exp_pass,
+    %compile.scalarize_pass,
+);
 
-let clos_opt2_phase =
-    %compile.pass_phase
-        (%compile.pass_list
-            %compile.scalarize_pass
-            %clos.branch_clos_pass
-            (%mem.copy_prop_pass tt)
-            %clos.lower_typed_clos_prep_pass
-            %clos.clos2sjlj_pass);
+let clos_opt2_passes = (
+    %compile.scalarize_pass,
+    %clos.branch_clos_pass,
+    %mem.copy_prop_pass tt,
+    %clos.lower_typed_clos_prep_pass,
+    %clos.clos2sjlj_pass,
+);
 
 let clos_phases =
     %compile.combined_phase
@@ -67,6 +65,6 @@ let clos_phases =
             (%compile.passes_to_phase %clos.clos_conv_prep_pass)
             (%compile.passes_to_phase %compile.eta_exp_pass)
             %clos.clos_conv_phase
-            clos_opt1_phase
-            clos_opt2_phase
+            (%compile.passes_to_phase clos_opt1_passes)
+            (%compile.passes_to_phase clos_opt2_passes)
             %clos.lower_typed_clos_phase);

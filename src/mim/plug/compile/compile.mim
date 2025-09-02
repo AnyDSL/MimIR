@@ -52,13 +52,7 @@ axm %compile.debug_phase: Nat → %compile.Phase;
 ///
 /// Given n passes, returns a phase that applies them in order.
 ///
-/// TODO: combine two pass_list
-axm %compile.pass_list: %compile.PassList;
-/// `pass_phase (pass_list pass1 ... passN) = passes_to_phase N (pass1, ..., passN)`
-axm %compile.pass_phase: %compile.PassList → %compile.Phase, normalize_pass_phase;
 axm %compile.passes_to_phase: {n: Nat} → «n; %compile.Pass» → %compile.Phase;
-/// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM`
-axm %compile.combine_pass_list: {n: Nat} → «n; %compile.PassList» → %compile.PassList, normalize_combine_pass_list;
 ///
 /// ### %%compile.combined_phase
 ///
@@ -97,15 +91,15 @@ let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase "internal_";
 ///
 /// ### Pipelines
 ///
-let optimization_pass_list =
-    %compile.pass_list
-        %compile.beta_red_pass
-        %compile.eta_red_pass
-        %compile.eta_exp_pass
-        %compile.scalarize_pass
-        %compile.tail_rec_elim_pass;
+let optimization_passes = (
+        %compile.beta_red_pass,
+        %compile.eta_red_pass,
+        %compile.eta_exp_pass,
+        %compile.scalarize_pass,
+        %compile.tail_rec_elim_pass,
+    );
 
-let optimization_phase = %compile.pass_phase optimization_pass_list;
+let optimization_phase = %compile.passes_to_phase optimization_passes;
 
 let default_core_pipeline =
     %compile.pipeline

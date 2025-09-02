@@ -104,25 +104,20 @@ axm %mem.reshape_arg:  %mem.reshape_mode;
 ///
 /// ### Passes
 ///
-/// SSA pass expects eta expansion as argument
-axm %mem.ssa_pass: %compile.Pass;
-/// Copy propagation expects beta reduction and eta expansion as argument.
-axm %mem.copy_prop_pass:    Bool → %compile.Pass;
-axm %mem.remem_elim_pass:   %compile.Pass;
-axm %mem.alloc2malloc_pass: %compile.Pass;
+axm %mem.ssa_pass:                              %compile.Pass;
+axm %mem.copy_prop_pass:                 Bool → %compile.Pass;
+axm %mem.remem_elim_pass:                       %compile.Pass;
+axm %mem.alloc2malloc_pass:                     %compile.Pass;
 axm %mem.reshape_pass:      %mem.reshape_mode → %compile.Pass;
 ///
 /// ### Phases
 ///
 axm %mem.add_mem_phase: %compile.Phase;
 
-let mem_opt_pass_list =
-    %compile.pass_list
-        %compile.beta_red_pass
-        %compile.eta_red_pass
-        %compile.eta_exp_pass
-        %mem.ssa_pass
-        (%mem.copy_prop_pass ff);
-
-let mem_opt_phase  = %compile.pass_phase mem_opt_pass_list;
-let mem_prep_phase = %compile.passes_to_phase (%mem.remem_elim_pass, %mem.alloc2malloc_pass);
+let mem_opt_passes = (
+        %compile.beta_red_pass,
+        %compile.eta_red_pass,
+        %compile.eta_exp_pass,
+        %mem.ssa_pass,
+        %mem.copy_prop_pass ff,
+    );

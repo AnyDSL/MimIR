@@ -10,6 +10,7 @@
 ///
 plugin core;
 plugin compile;
+plugin vec;
 /// supported plugins with passes
 import affine;
 import autodiff;
@@ -33,15 +34,9 @@ lam extern _default_compile []: %compile.Pipeline =
         (%compile.passes_to_phase %compile.tail_rec_elim_pass)
         (%compile.passes_to_phase (cond_pass "regex" %regex.lower_regex))
         // optimize
-        (%compile.pass_phase
-            (%compile.combine_pass_list
-            (
-                optimization_pass_list,
-                %compile.pass_list
-                (cond_pass "affine" %affine.lower_for_pass),
-                mem_opt_pass_list
-            ))
-        )
+        (%compile.passes_to_phase
+            (%vec.cat (optimization_passes,
+                %vec.cat ((cond_pass "affine" %affine.lower_for_pass), mem_opt_passes))))
         (cond_phase "autodiff"
                 (%compile.combined_phase
                     (%compile.phase_list
@@ -60,16 +55,9 @@ lam extern _default_compile []: %compile.Pipeline =
         (%compile.passes_to_phase %compile.lam_spec_pass)
         (cond_phase "autodiff" ad_cleanup_phase)
         // CodeGenPrep
-        (%compile.pass_phase
-            (%compile.combine_pass_list
-            (
-                %compile.pass_list
+        (%compile.passes_to_phase (
                 %compile.ret_wrap_pass,
-                // mem
-                %compile.pass_list
-                %mem.remem_elim_pass
+                %mem.remem_elim_pass,
                 %mem.alloc2malloc_pass,
-                %compile.pass_list
-                (cond_pass "refly" %refly.remove_dbg_perm_pass)
-            ))
-        );
+                cond_pass "refly" %refly.remove_dbg_perm_pass,
+        ));
