@@ -57,14 +57,14 @@ let clos_opt2_passes = (
 );
 
 let clos_phases =
-    %compile.combined_phase
-        (%compile.phase_list
-            optimization_phase
-            (%compile.passes_to_phase (%mem.reshape_pass %mem.reshape_flat))
-            %mem.add_mem_phase
-            (%compile.passes_to_phase %clos.clos_conv_prep_pass)
-            (%compile.passes_to_phase %compile.eta_exp_pass)
-            %clos.clos_conv_phase
-            (%compile.passes_to_phase clos_opt1_passes)
-            (%compile.passes_to_phase clos_opt2_passes)
-            %clos.lower_typed_clos_phase);
+    %compile.phases_to_phase (
+        optimization_phase,
+        %compile.passes_to_phase (%mem.reshape_pass %mem.reshape_flat),
+        %mem.add_mem_phase,
+        %compile.passes_to_phase %clos.clos_conv_prep_pass,
+        %compile.passes_to_phase %compile.eta_exp_pass,
+        %clos.clos_conv_phase,
+        %compile.passes_to_phase clos_opt1_passes,
+        %compile.passes_to_phase clos_opt2_passes,
+        %clos.lower_typed_clos_phase,
+    );

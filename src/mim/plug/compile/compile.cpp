@@ -75,12 +75,6 @@ void reg_stages(Phases& phases, Passes& passes) {
             apply(phases, pipe, def);
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::pipeline>), [&](Pipeline& pipe, const Def* app) {
-        auto [_, defs] = App::uncurry(app);
-        for (auto def : defs)
-            apply(phases, pipe, def);
-    });
-
     // clang-format off
     PassMan::hook<compile::beta_red_pass,      BetaRed    >(passes);
     PassMan::hook<compile::eta_red_pass,       EtaRed     >(passes);

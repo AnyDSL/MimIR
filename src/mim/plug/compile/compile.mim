@@ -17,14 +17,6 @@
 axm %compile.Pass:  *;
 axm %compile.Phase: *;
 ///
-/// ### %%compile.Pipeline / %%compile.PassList
-///
-/// Types for functions that accept an arbitrary number of phases and passes respectively.
-///
-rec %compile.Pipeline:      □ = %compile.Phase → %compile.Pipeline;
-rec %compile.PassList:      □ = %compile.Pass  → %compile.PassList;
-rec %compile.CombinedPhase: □ = %compile.Phase → %compile.CombinedPhase;
-///
 /// ## Expressions
 ///
 /// ### %%compile.is_loaded
@@ -33,48 +25,27 @@ rec %compile.CombinedPhase: □ = %compile.Phase → %compile.CombinedPhase;
 ///
 axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
-/// ### %%compile.pipeline
+/// ### %%compile.passes_to_phase
 ///
-/// Given n phases, returns the representation of a pipeline.
+/// Sets up `n` passes into the PassMan and wraps it as Phase.
 ///
-axm %compile.pipeline:    %compile.Pipeline;
-axm %compile.fp_pipeline: %compile.Pipeline;
-///
-/// ## Passes and Phases
-///
-/// ### %%compile.debug_phase
-///
-/// Given a log level, returns a phase that prints the externals (for log level >= 2).
-///
-axm %compile.debug_phase: Nat → %compile.Phase;
-///
-/// ### %%compile.pass_phase
-///
-/// Given n passes, returns a phase that applies them in order.
-///
-axm %compile.passes_to_phase: {n: Nat} → «n; %compile.Pass» → %compile.Phase;
-///
-/// ### %%compile.combined_phase
-///
-/// Given n phases, returns a phase that applies them in order.
-///
-axm %compile.phase_list: %compile.CombinedPhase;
-/// `combined_phase (phase_list phase1 ... phaseN) = phases_to_phase N (phase1, ..., phaseN)`
-axm %compile.combined_phase: %compile.CombinedPhase → %compile.Phase, normalize_combined_phase;
+axm %compile.passes_to_phase: {n: Nat} → «n; %compile.Pass » → %compile.Phase;
 axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Phase;
 ///
 /// ### Phases
 ///
-axm %compile.null_phase:             %compile.Phase;
-axm %compile.cleanup_phase:          %compile.Phase;
-axm %compile.beta_red_phase:         %compile.Phase;
-axm %compile.eta_red_phase:          %compile.Phase;
-axm %compile.eta_exp_phase:          %compile.Phase;
-axm %compile.branch_normalize_phase: %compile.Phase;
+axm %compile.null_phase:                                %compile.Phase;
+axm %compile.cleanup_phase:                             %compile.Phase;
+axm %compile.beta_red_phase:                            %compile.Phase;
+axm %compile.eta_red_phase:                             %compile.Phase;
+axm %compile.eta_exp_phase:                             %compile.Phase;
+axm %compile.branch_normalize_phase:                    %compile.Phase;
+axm %compile.debug_phase:                         Nat → %compile.Phase;
+axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;
+
+let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase "internal_";
 ///
 /// ### Passes
-///
-/// Basic passes that are defined in the core of Mim.
 ///
 axm %compile.beta_red_pass:       %compile.Pass;
 axm %compile.eta_red_pass:        %compile.Pass;
@@ -84,31 +55,28 @@ axm %compile.tail_rec_elim_pass:  %compile.Pass;
 axm %compile.lam_spec_pass:       %compile.Pass;
 axm %compile.ret_wrap_pass:       %compile.Pass;
 axm %compile.null_pass:           %compile.Pass;
-
-axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;
-
-let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase "internal_";
 ///
 /// ### Pipelines
 ///
 let optimization_passes = (
-        %compile.beta_red_pass,
-        %compile.eta_red_pass,
-        %compile.eta_exp_pass,
-        %compile.scalarize_pass,
-        %compile.tail_rec_elim_pass,
-    );
+    %compile.beta_red_pass,
+    %compile.eta_red_pass,
+    %compile.eta_exp_pass,
+    %compile.scalarize_pass,
+    %compile.tail_rec_elim_pass,
+);
 
 let optimization_phase = %compile.passes_to_phase optimization_passes;
 
-let default_core_pipeline =
-    %compile.pipeline
-        (%compile.passes_to_phase %compile.scalarize_pass)
-        (%compile.passes_to_phase %compile.eta_red_pass)
-        (%compile.passes_to_phase %compile.tail_rec_elim_pass)
-        optimization_phase
-        %compile.internal_cleanup_phase
-        (%compile.passes_to_phase %compile.lam_spec_pass)
-        (%compile.passes_to_phase %compile.ret_wrap_pass);
+let default_core_phase =
+    %compile.phases_to_phase (
+        %compile.passes_to_phase %compile.scalarize_pass,
+        %compile.passes_to_phase %compile.eta_red_pass,
+        %compile.passes_to_phase %compile.tail_rec_elim_pass,
+        optimization_phase,
+        %compile.internal_cleanup_phase,
+        %compile.passes_to_phase %compile.lam_spec_pass,
+        %compile.passes_to_phase %compile.ret_wrap_pass,
+    );
 
-lam extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
+lam extern _fallback_compile(): %compile.Phase = default_core_phase;

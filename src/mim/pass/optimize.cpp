@@ -28,7 +28,7 @@ void optimize(World& world) {
     for (auto def : world.copy_externals()) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             // TODO use Axm::isa - but rn there is a problem with the rec Pi and plugin deps
-            if (lam->codom()->sym().view() == "%compile.Pipeline") {
+            if (lam->codom()->sym().view() == "%compile.Phase") {
                 if (!compilation) compilation = lam;
                 def->make_internal();
             }

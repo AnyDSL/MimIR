@@ -60,9 +60,9 @@ let ad_cleanup_phase = %compile.passes_to_phase %autodiff.ad_zero_cleanup_pass;
 let ad_phase =
     %compile.phases_to_phase (
         optimization_phase,
-        (%compile.passes_to_phase %autodiff.ad_eval_pass),
-        (%compile.passes_to_phase %autodiff.ad_zero_pass),
-        ad_cleanup_phase
+        %compile.passes_to_phase %autodiff.ad_eval_pass,
+        %compile.passes_to_phase %autodiff.ad_zero_pass,
+        ad_cleanup_phase,
     );
 ///
 /// ## Registered translations
