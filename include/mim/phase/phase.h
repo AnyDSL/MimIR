@@ -49,7 +49,7 @@ public:
 protected:
     virtual void start() = 0; ///< Actual entry.
 
-    /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point Pipeline.
+    /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
     bool todo_ = false;
 
 private:
@@ -153,11 +153,11 @@ private:
     std::unique_ptr<PassMan> man_;
 };
 
-/// Organizes several Phase%s as a pipeline.
-/// If @p fixed_point is `true`, run Pipeline until all Phase%s' Phase::todo_ flags yield `false`.
-class Pipeline : public Phase {
+/// Organizes several Phase%s in a a pipeline.
+/// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo_ flags yield `false`.
+class PhaseMan : public Phase {
 public:
-    Pipeline(World&, bool fixed_point = false);
+    PhaseMan(World&, bool fixed_point = false);
 
     bool fixed_point() const { return fixed_point_; }
     void start() override;
@@ -184,7 +184,7 @@ public:
 
     template<class A, class P, class... Args>
     static void hook(Phases& phases, Args&&... args) {
-        auto f = [... args = std::forward<Args>(args)](Pipeline& pipe, const Def*) { pipe.template add<P>(args...); };
+        auto f = [... args = std::forward<Args>(args)](PhaseMan& man, const Def*) { man.template add<P>(args...); };
         assert_emplace(phases, flags_t(Annex::Base<A>), f);
     }
 

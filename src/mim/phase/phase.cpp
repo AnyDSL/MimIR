@@ -33,11 +33,11 @@ void FPPhase::start() {
     RWPhase::start();
 }
 
-Pipeline::Pipeline(World& world, bool fixed_point)
+PhaseMan::PhaseMan(World& world, bool fixed_point)
     : Phase(world, std::format("pipeline (fixed_point_: `{}`)", fixed_point))
     , fixed_point_(fixed_point) {}
 
-void Pipeline::start() {
+void PhaseMan::start() {
     do {
         for (auto& phase : phases()) {
             phase->run();

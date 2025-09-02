@@ -18,8 +18,8 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Phases& phases, Passes& passes) {
-    Pipeline::hook<clos::clos_conv_phase, clos::ClosConv>(phases);
-    Pipeline::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
+    PhaseMan::hook<clos::clos_conv_phase, clos::ClosConv>(phases);
+    PhaseMan::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
 
     // TODO:; remove after ho_codegen merge
     assert_emplace(passes, flags_t(Annex::Base<clos::eta_red_bool_pass>), [&](PassMan& man, const Def* app) {

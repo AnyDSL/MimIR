@@ -12,7 +12,7 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Phases& phases, Passes& passes) {
-    Pipeline::hook<matrix::lower_matrix_low_level, matrix::LowerMatrixLowLevel>(phases);
+    PhaseMan::hook<matrix::lower_matrix_low_level, matrix::LowerMatrixLowLevel>(phases);
     // clang-format off
     PassMan::hook<matrix::lower_matrix_high_level_map_reduce, matrix::LowerMatrixHighLevelMapRed>(passes);
     PassMan::hook<matrix::lower_matrix_medium_level,          matrix::LowerMatrixMediumLevel    >(passes);

@@ -24,7 +24,7 @@ void optimize(World& world) {
         }
     }
 
-    // make all functions `[] -> Pipeline` internal
+    // make all functions `[] -> %compile.Phase` internal
     for (auto def : world.copy_externals()) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             // TODO use Axm::isa - but rn there is a problem with the rec Pi and plugin deps
@@ -38,7 +38,7 @@ void optimize(World& world) {
     if (!compilation) world.ELOG("no compilation function found");
     world.DLOG("compilation using {} : {}", compilation, compilation->type());
 
-    auto pipe             = Pipeline(world);
+    auto pipe             = PhaseMan(world);
     auto pipe_prog        = compilation->as<Lam>()->body();
     auto [callee, phases] = App::uncurry(pipe_prog);
     auto axm              = callee->as<Axm>();

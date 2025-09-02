@@ -18,7 +18,7 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Phases& phases, Passes& passes) {
-    Pipeline::hook<mem::add_mem_phase, mem::AddMem>(phases);
+    PhaseMan::hook<mem::add_mem_phase, mem::AddMem>(phases);
     // clang-format off
     PassMan::hook<mem::ssa_pass,          mem::SSAConstr   >(passes);
     PassMan::hook<mem::remem_elim_pass,   mem::RememElim   >(passes);

@@ -23,15 +23,15 @@
 using namespace mim;
 using namespace mim::plug;
 
-template<class P, class B>
-void apply(P& ps, B& builder, const Def* app) {
+template<class P, class M>
+void apply(P& ps, M& man, const Def* app) {
     auto& world = app->world();
     auto p_def  = App::uncurry_callee(app);
     world.DLOG("apply pass/phase: `{}`", p_def);
 
     if (auto axm = p_def->isa<Axm>())
         if (auto i = ps.find(axm->flags()); i != ps.end())
-            i->second(builder, app);
+            i->second(man, app);
         else
             world.ELOG("pass/phase `{}` not found", axm->sym());
     else
@@ -40,39 +40,39 @@ void apply(P& ps, B& builder, const Def* app) {
 
 void reg_stages(Phases& phases, Passes& passes) {
     // clang-format off
-    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](Pipeline&, const Def*) {});
+    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](PhaseMan&, const Def*) {});
     assert_emplace(passes, flags_t(Annex::Base<compile::null_pass >), [](PassMan&,  const Def*) {});
 
-    Pipeline::hook<compile::cleanup_phase,  Cleanup     >(phases);
-    Pipeline::hook<compile::beta_red_phase, BetaRedPhase>(phases);
-    Pipeline::hook<compile::eta_red_phase,  EtaRedPhase >(phases);
-    Pipeline::hook<compile::eta_exp_phase,  EtaExpPhase >(phases);
+    PhaseMan::hook<compile::cleanup_phase,  Cleanup     >(phases);
+    PhaseMan::hook<compile::beta_red_phase, BetaRedPhase>(phases);
+    PhaseMan::hook<compile::eta_red_phase,  EtaRedPhase >(phases);
+    PhaseMan::hook<compile::eta_exp_phase,  EtaExpPhase >(phases);
     // clang-format off
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::debug_phase>), [](Pipeline& pipe, const Def* app) {
-        auto& world = pipe.world();
+    assert_emplace(phases, flags_t(Annex::Base<compile::debug_phase>), [](PhaseMan& man, const Def* app) {
+        auto& world = man.world();
         world.DLOG("Generate debug_phase: {}", app);
         int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
         world.DLOG("  Level: {}", level);
-        pipe.add<compile::DebugPrint>(level);
+        man.add<compile::DebugPrint>(level);
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::prefix_cleanup_phase>), [&](Pipeline& pipe, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<compile::prefix_cleanup_phase>), [&](PhaseMan& man, const Def* app) {
         auto prefix = tuple2str(app->as<App>()->arg());
-        pipe.add<PrefixCleanup>(prefix);
+        man.add<PrefixCleanup>(prefix);
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::passes_to_phase>), [&](Pipeline& pipe, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<compile::passes_to_phase>), [&](PhaseMan& man, const Def* app) {
         auto defs = app->as<App>()->arg()->projs();
-        auto man  = std::make_unique<PassMan>(app->world());
+        auto pass_man  = std::make_unique<PassMan>(app->world());
         for (auto def : defs)
-            apply(passes, *man, def);
-        pipe.add<PassManPhase>(std::move(man));
+            apply(passes, *pass_man, def);
+        man.add<PassManPhase>(std::move(pass_man));
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::phases_to_phase>), [&](Pipeline& pipe, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<compile::phases_to_phase>), [&](PhaseMan& man, const Def* app) {
         for (auto def : app->as<App>()->arg()->projs())
-            apply(phases, pipe, def);
+            apply(phases, man, def);
     });
 
     // clang-format off
