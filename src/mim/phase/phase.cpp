@@ -33,18 +33,25 @@ void FPPhase::start() {
     RWPhase::start();
 }
 
+Pipeline::Pipeline(World& world, bool fixed_point)
+    : Phase(world, std::format("pipeline (fixed_point_: `{}`)", fixed_point))
+    , fixed_point_(fixed_point) {}
+
 void Pipeline::start() {
-    for (todo_ = true; todo_;) {
-        todo_ = false;
+    do {
         for (auto& phase : phases()) {
             phase->run();
             todo_ |= phase->todo();
         }
 
-        if (todo_)
+        todo_ &= fixed_point();
+
+        if (todo_) {
             for (auto& phase : phases())
                 phase->reset();
-    }
+            reset();
+        }
+    } while (todo_);
 }
 
 } // namespace mim

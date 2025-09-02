@@ -18,7 +18,6 @@
 #include <mim/phase/phase.h>
 #include <mim/phase/prefix_cleanup.h>
 
-#include "mim/plug/compile/autogen.h"
 #include "mim/plug/compile/pass/debug_print.h"
 
 using namespace mim;

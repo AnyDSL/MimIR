@@ -37,7 +37,8 @@ axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
 /// Given n phases, returns the representation of a pipeline.
 ///
-axm %compile.pipeline: %compile.Pipeline;
+axm %compile.pipeline:    %compile.Pipeline;
+axm %compile.fp_pipeline: %compile.Pipeline;
 ///
 /// ## Passes and Phases
 ///

@@ -49,12 +49,12 @@ public:
 protected:
     virtual void start() = 0; ///< Actual entry.
 
+    /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point Pipeline.
+    bool todo_ = false;
+
 private:
     World& world_;
     const std::string name_;
-
-protected:
-    bool todo_ = false; ///< Set to `true` if you want to run all Phase%es in your Pipeline within a fixed-point.
 };
 
 /// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
@@ -154,11 +154,12 @@ private:
 };
 
 /// Organizes several Phase%s as a pipeline.
+/// If @p fixed_point is `true`, run Pipeline until all Phase%s' Phase::todo_ flags yield `false`.
 class Pipeline : public Phase {
 public:
-    Pipeline(World& world)
-        : Phase(world, "pipeline") {}
+    Pipeline(World&, bool fixed_point = false);
 
+    bool fixed_point() const { return fixed_point_; }
     void start() override;
 
     /// @name phases
@@ -189,6 +190,7 @@ public:
 
 private:
     std::deque<std::unique_ptr<Phase>> phases_;
+    const bool fixed_point_;
 };
 
 /// Transitively visits all *reachable*, [*closed*](@ref Def::is_closed) mutables in the World.
