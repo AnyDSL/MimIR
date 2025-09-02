@@ -10,7 +10,6 @@
 ///
 plugin core;
 plugin compile;
-plugin vec;
 /// supported plugins with passes
 import affine;
 import autodiff;
@@ -35,8 +34,8 @@ lam extern _default_compile []: %compile.Phase =
         %compile.passes_to_phase (cond_pass "regex" %regex.lower_regex),
         // optimize
         %compile.passes_to_phase
-            (%vec.cat (optimization_passes,
-                %vec.cat ((cond_pass "affine" %affine.lower_for_pass), mem_opt_passes))),
+            (%compile.cat (optimization_passes,
+                %compile.cat ((cond_pass "affine" %affine.lower_for_pass), mem_opt_passes))),
         cond_phase "autodiff"
                 (%compile.phases_to_phase (
                     %compile.passes_to_phase %autodiff.ad_eval_pass,

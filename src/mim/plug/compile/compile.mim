@@ -31,6 +31,7 @@ axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
 axm %compile.passes_to_phase: {n: Nat} → «n; %compile.Pass » → %compile.Phase;
 axm %compile.phases_to_phase: {n: Nat} → «n; %compile.Phase» → %compile.Phase;
+axm %compile.cat: {n m: Nat} → [«n; %compile.Pass», «m; %compile.Pass»] → %compile.Pass, normalize_cat;
 ///
 /// ### Phases
 ///
