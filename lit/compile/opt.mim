@@ -11,7 +11,7 @@ con extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0), re
     f (mem, 42I32, return);
 
 lam extern _compile(): %compile.Phase =
-    %compile.phases_to_phase (
+    %compile.phases (
         %compile.internal_cleanup_phase,
         optimization_phase,
     );

@@ -27,32 +27,32 @@ lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phas
 lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );
 
 lam extern _default_compile []: %compile.Phase =
-    %compile.phases_to_phase (
-        %compile.passes_to_phase %compile.scalarize_pass,
-        %compile.passes_to_phase %compile.eta_red_pass,
-        %compile.passes_to_phase %compile.tail_rec_elim_pass,
-        %compile.passes_to_phase (cond_pass "regex" %regex.lower_regex),
+    %compile.phases (
+        %compile.passes %compile.scalarize_pass,
+        %compile.passes %compile.eta_red_pass,
+        %compile.passes %compile.tail_rec_elim_pass,
+        %compile.passes (cond_pass "regex" %regex.lower_regex),
         // optimize
-        %compile.passes_to_phase
+        %compile.passes
             (%compile.cat (optimization_passes,
                 %compile.cat ((cond_pass "affine" %affine.lower_for_pass), mem_opt_passes))),
         cond_phase "autodiff"
-                (%compile.phases_to_phase (
-                    %compile.passes_to_phase %autodiff.ad_eval_pass,
-                    %compile.passes_to_phase %autodiff.ad_zero_pass,
+                (%compile.phases (
+                    %compile.passes %autodiff.ad_eval_pass,
+                    %compile.passes %autodiff.ad_zero_pass,
                 )),
         cond_phase "direct" direct_phases,
         cond_phase "matrix"
-                (%compile.phases_to_phase (
+                (%compile.phases (
                     matrix_lower_phase,
                     cond_phase "direct" direct_phases,
-                    cond_phase "affine" (%compile.passes_to_phase %affine.lower_for_pass))),
+                    cond_phase "affine" (%compile.passes %affine.lower_for_pass))),
         %compile.internal_cleanup_phase,
         cond_phase "clos" clos_phases,
-        %compile.passes_to_phase %compile.lam_spec_pass,
+        %compile.passes %compile.lam_spec_pass,
         cond_phase "autodiff" ad_cleanup_phase,
         // CodeGenPrep
-        %compile.passes_to_phase (
+        %compile.passes (
             %compile.ret_wrap_pass,
             %mem.remem_elim_pass,
             %mem.alloc2malloc_pass,

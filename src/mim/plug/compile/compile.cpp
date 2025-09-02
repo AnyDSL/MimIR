@@ -62,7 +62,7 @@ void reg_stages(Phases& phases, Passes& passes) {
         man.add<PrefixCleanup>(prefix);
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::passes_to_phase>), [&](PhaseMan& man, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<compile::passes>), [&](PhaseMan& man, const Def* app) {
         auto defs = app->as<App>()->arg()->projs();
         auto pass_man  = std::make_unique<PassMan>(app->world());
         for (auto def : defs)
@@ -70,7 +70,7 @@ void reg_stages(Phases& phases, Passes& passes) {
         man.add<PassManPhase>(std::move(pass_man));
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::phases_to_phase>), [&](PhaseMan& man, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<compile::phases>), [&](PhaseMan& man, const Def* app) {
         for (auto def : app->as<App>()->arg()->projs())
             apply(phases, man, def);
     });
