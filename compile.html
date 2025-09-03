@@ -162,7 +162,7 @@ $(function(){initNavTree('compile.html',''); initResizable(true); });
 </div>
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2compile"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1compile.html" title="The compile Plugin">mim::plug::compile</a></dd></dl>
-<p>This plugin handles the optimization part of the compilation of MimIR programs. This plugin's axioms can register <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">mim::Pass</a>es and mim::PHases. Invoke the optimization pipeline by defining a function <code>_compile: [] → %compile.Phase</code>.</p>
+<p>This plugin handles the optimization pipeline of the compilation of MimIR programs. This plugin's axioms can register <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">mim::Pass</a>es and <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">mim::Phase</a>s. Invoke the optimization pipeline by defining a function <code>_compile: [] → %compile.Phase</code>.</p>
 <h1><a class="anchor" id="autotoc_md96"></a>
 Types</h1>
 <h2><a class="anchor" id="autotoc_md97"></a>
@@ -178,7 +178,7 @@ Utility</h1>
 <div class="fragment"><div class="line">axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md100"></a>
 %compile.cat</h2>
-<p>Concatenation of <code>n</code> Passes and <code>m</code> Passes to <code>n + m</code> Passes.</p>
+<p>Concatenation of <code>n</code> passes and <code>m</code> passes to <code>n + m</code> passes.</p>
 <div class="fragment"><div class="line">axm %compile.cat: {n m: Nat} → [«n; %compile.Pass», «m; %compile.Pass»] → %compile.Pass, normalize_cat;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md101"></a>
 Constructors</h1>
