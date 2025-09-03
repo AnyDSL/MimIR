@@ -105,20 +105,6 @@ private:
     friend class PassMan;
 };
 
-/// Groups several Pass%es into a single Pass.
-/// Will be merged into the PassMan.
-class MetaPass : public Pass {
-public:
-    MetaPass(PassMan& man, Passes& passes)
-        : Pass(man, "meta_pass")
-        , passes_(std::move(passes)) {}
-
-private:
-    Passes passes_;
-
-    friend class PassMan;
-};
-
 /// An optimizer that combines several optimizations in an optimal way.
 /// This is loosely based upon:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
@@ -157,11 +143,6 @@ public:
         passes_.emplace_back(std::move(p));
         registry_.emplace(std::type_index(typeid(P)), res);
         return res;
-    }
-
-    void add(std::unique_ptr<MetaPass>&& meta_pass) {
-        for (auto&& pass : meta_pass->passes_)
-            passes_.emplace_back(std::move(pass));
     }
 
     /// Runs a single Pass.
