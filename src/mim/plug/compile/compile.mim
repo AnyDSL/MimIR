@@ -4,8 +4,8 @@
 ///
 /// [TOC]
 ///
-/// This plugin handles the optimization part of the compilation of MimIR programs.
-/// This plugin's axioms can register mim::Pass%es and mim::PHase%s.
+/// This plugin handles the optimization pipeline of the compilation of MimIR programs.
+/// This plugin's axioms can register mim::Pass%es and mim::Phase%s.
 /// Invoke the optimization pipeline by defining a function `_compile: [] → %%compile.Phase`.
 ///
 /// ## Types
@@ -27,7 +27,7 @@ axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
 /// ### %%compile.cat
 ///
-/// Concatenation of `n` Passes and `m` Passes to `n + m` Passes.
+/// Concatenation of `n` passes and `m` passes to `n + m` passes.
 ///
 axm %compile.cat: {n m: Nat} → [«n; %compile.Pass», «m; %compile.Pass»] → %compile.Pass, normalize_cat;
 ///
