@@ -187,6 +187,10 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ae7b11a3eb455bf4f67f20e1d364be209" id="r_ae7b11a3eb455bf4f67f20e1d364be209"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7b11a3eb455bf4f67f20e1d364be209">MIM_NODE</a>(m)</td></tr>
 <tr class="separator:ae7b11a3eb455bf4f67f20e1d364be209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab848eb0da433016b7d9dba01ecec41eb" id="r_ab848eb0da433016b7d9dba01ecec41eb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab848eb0da433016b7d9dba01ecec41eb">MIM_IMM_NODE</a>(m)</td></tr>
+<tr class="separator:ab848eb0da433016b7d9dba01ecec41eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fb7823d5a9629e4b0d3e9cdc826d6e0" id="r_a7fb7823d5a9629e4b0d3e9cdc826d6e0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fb7823d5a9629e4b0d3e9cdc826d6e0">MIM_MUT_NODE</a>(m)</td></tr>
+<tr class="separator:a7fb7823d5a9629e4b0d3e9cdc826d6e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af607f4cede9847484ec49abf7d351932" id="r_af607f4cede9847484ec49abf7d351932"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af607f4cede9847484ec49abf7d351932">MIM_PROJ</a>(NAME,  CONST)</td></tr>
 <tr class="memdesc:af607f4cede9847484ec49abf7d351932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use as mixin to wrap all kind of Def::proj and Def::projs variants.  <br /></td></tr>
 <tr class="separator:af607f4cede9847484ec49abf7d351932"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -336,6 +340,14 @@ Typedefs</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:adccbc1a0a55e33b72bc7e987075c2293"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="https://ncatlab.org/nlab/show/judgment">Judgement</a>.  <a href="namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293">More...</a><br /></td></tr>
 <tr class="separator:adccbc1a0a55e33b72bc7e987075c2293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3c9308ec5430fd41d4aab5d38e3e08d" id="r_ad3c9308ec5430fd41d4aab5d38e3e08d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ad3c9308ec5430fd41d4aab5d38e3e08d">mim::Mut</a> { <br />
+&#160;&#160;<a class="el" href="namespacemim.html#ad3c9308ec5430fd41d4aab5d38e3e08daebb87a770abac0e394d963d20ed574b7">mim::Mut</a> = 1 &lt;&lt; 0
+, <br />
+&#160;&#160;<a class="el" href="namespacemim.html#ad3c9308ec5430fd41d4aab5d38e3e08dada9470e1aa5be1858e667318254dcb4b">mim::Imm</a> = 1 &lt;&lt; 1
+<br />
+ }</td></tr>
+<tr class="memdesc:ad3c9308ec5430fd41d4aab5d38e3e08d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="https://ncatlab.org/nlab/show/judgment">Judgement</a>.  <a href="namespacemim.html#ad3c9308ec5430fd41d4aab5d38e3e08d">More...</a><br /></td></tr>
+<tr class="separator:ad3c9308ec5430fd41d4aab5d38e3e08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5f8c3cd104922822656e5d29311f0dd" id="r_ab5f8c3cd104922822656e5d29311f0dd"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html#ab5f8c3cd104922822656e5d29311f0dd">mim::Num_Nodes</a> = size_t(0) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1)</td></tr>
 <tr class="separator:ab5f8c3cd104922822656e5d29311f0dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -360,7 +372,7 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">node,</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00089">89</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00113">113</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -384,7 +396,69 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">+size_t(1)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00089">89</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00113">113</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+</div>
+</div>
+<a id="ab848eb0da433016b7d9dba01ecec41eb" name="ab848eb0da433016b7d9dba01ecec41eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab848eb0da433016b7d9dba01ecec41eb">&#9670;&#160;</a></span>MIM_IMM_NODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MIM_IMM_NODE</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    m(Lit)                                                                                                         \</div>
+<div class="line">    m(Axm)                                                                                                         \</div>
+<div class="line">    m(Var)                                                                                                         \</div>
+<div class="line">    m(Proxy)                                                                                                       \</div>
+<div class="line">    m(Type)  m(Univ)  m(UMax)    m(UInc)                                                                           \</div>
+<div class="line">    m(Pi)    m(Lam)   m(App)                                                                                       \</div>
+<div class="line">    m(Sigma) m(Tuple) m(Extract) m(Insert)                                                                         \</div>
+<div class="line">    m(Arr)   m(Pack)                                                                                               \</div>
+<div class="line">    m(Join)  m(Inj)   m(Match)   m(Top)                                                                            \</div>
+<div class="line">    m(Meet)  m(Merge) m(Split)   m(Bot)                                                                            \</div>
+<div class="line">    m(Rule)                                                                                                        \</div>
+<div class="line">    m(Uniq)                                                                                                        \</div>
+<div class="line">    m(Nat)                                                                                                         \</div>
+<div class="line">    m(Idx)</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00036">36</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00026">mim::Rewriter::rewrite_imm()</a>.</p>
+
+</div>
+</div>
+<a id="a7fb7823d5a9629e4b0d3e9cdc826d6e0" name="a7fb7823d5a9629e4b0d3e9cdc826d6e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fb7823d5a9629e4b0d3e9cdc826d6e0">&#9670;&#160;</a></span>MIM_MUT_NODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MIM_MUT_NODE</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>m</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    m(Global)                                                                                                      \</div>
+<div class="line">    m(Hole)                                                                                                        \</div>
+<div class="line">    m(Pi)    m(Lam)                                                                                                \</div>
+<div class="line">    m(Sigma)                                                                                                       \</div>
+<div class="line">    m(Arr)   m(Pack)                                                                                               \</div>
+<div class="line">    m(Rule)</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00052">52</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00035">mim::Rewriter::rewrite_mut()</a>.</p>
 
 </div>
 </div>
@@ -402,22 +476,22 @@ Typedefs</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m(Lit,      Judge::Intro) <span class="comment">/* keep this first - causes Lit to appear left in Def::less/Def::greater*/</span>          \</div>
-<div class="line">    m(Axm,      Judge::Intro)                                                                                     \</div>
-<div class="line">    m(Var,      Judge::Intro)                                                                                     \</div>
-<div class="line">    m(Global,   Judge::Intro)                                                                                     \</div>
-<div class="line">    m(Proxy,    Judge::Intro)                                                                                     \</div>
-<div class="line">    m(Hole,     Judge::Hole)                                                                                      \</div>
-<div class="line">    m(Type,     Judge::Meta) m(Univ,  Judge::Meta)  m(UMax,    Judge::Meta) m(UInc,   Judge::Meta)                \</div>
-<div class="line">    m(Pi,       Judge::Form) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                       \</div>
-<div class="line">    m(Sigma,    Judge::Form) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, Judge::Intro | Judge::Elim) \</div>
-<div class="line">    m(Arr,      Judge::Form) m(Pack,  Judge::Intro)                                                               \</div>
-<div class="line">    m(Join,     Judge::Form) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    Judge::Intro)               \</div>
-<div class="line">    m(Meet,     Judge::Form) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    Judge::Intro)               \</div>
-<div class="line">    m(Reform,   Judge::Form) m(Rule,  Judge::Intro)                                                               \</div>
-<div class="line">    m(Uniq,     Judge::Form)                                                                                      \</div>
-<div class="line">    m(Nat,      Judge::Form)                                                                                      \</div>
-<div class="line">    m(Idx,      Judge::Intro)</div>
+<b>Value:</b><div class="fragment"><div class="line">    m(Lit,    Judge::Intro) <span class="comment">/* keep this first - causes Lit to appear left in Def::less/Def::greater*/</span>             \</div>
+<div class="line">    m(Axm,    Judge::Intro)                                                                                        \</div>
+<div class="line">    m(Var,    Judge::Intro)                                                                                        \</div>
+<div class="line">    m(Global, Judge::Intro)                                                                                        \</div>
+<div class="line">    m(Proxy,  Judge::Intro)                                                                                        \</div>
+<div class="line">    m(Hole,   Judge::Hole )                                                                                        \</div>
+<div class="line">    m(Type,   Judge::Meta ) m(Univ,  Judge::Meta ) m(UMax,    Judge::Meta) m(UInc,   (Judge::Meta               )) \</div>
+<div class="line">    m(Pi,     Judge::Form ) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                         \</div>
+<div class="line">    m(Sigma,  Judge::Form ) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, (Judge::Intro | Judge::Elim)) \</div>
+<div class="line">    m(Arr,    Judge::Form ) m(Pack,  Judge::Intro)                                                                 \</div>
+<div class="line">    m(Join,   Judge::Form ) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    (Judge::Intro              )) \</div>
+<div class="line">    m(Meet,   Judge::Form ) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    (Judge::Intro              )) \</div>
+<div class="line">    m(Reform, Judge::Form ) m(Rule,  Judge::Intro)                                                                 \</div>
+<div class="line">    m(Uniq,   Judge::Form )                                                                                        \</div>
+<div class="line">    m(Nat,    Judge::Form )                                                                                        \</div>
+<div class="line">    m(Idx,    Judge::Intro)</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00018">18</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
@@ -474,7 +548,7 @@ Typedefs</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00131">131</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00164">164</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

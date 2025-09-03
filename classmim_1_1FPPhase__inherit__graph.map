@@ -1,11 +1,15 @@
 <map id="mim::FPPhase" name="mim::FPPhase">
-<area shape="rect" id="Node000001" title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand." alt="" coords="111,225,226,251"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1RWPhase.html" title="Visits the current Phase::world and constructs a new RWPhase::world along the way." alt="" coords="108,152,229,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,191,171,225,166,225,166,191"/>
-<area shape="rect" id="Node000003" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="54,79,153,104"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,113,160,150,156,154,121,116"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,5,201,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="106,44,106,79,101,79,101,44"/>
-<area shape="rect" id="Node000005" href="$classmim_1_1Rewriter.html" title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map." alt="" coords="177,79,291,104"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="216,116,181,154,177,150,212,113"/>
+<area shape="rect" id="Node000001" title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand." alt="" coords="112,225,227,251"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1BetaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="5,299,160,324"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="147,261,99,301,95,296,143,257"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1EtaExpPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="184,299,328,324"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="195,257,244,296,240,301,192,261"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="109,152,230,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,191,172,225,167,225,167,191"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="55,79,153,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,113,161,150,157,154,122,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="6,5,202,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="107,44,107,79,101,79,101,44"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1Rewriter.html" title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map." alt="" coords="177,79,292,104"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="217,116,182,154,178,150,213,113"/>
 </map>

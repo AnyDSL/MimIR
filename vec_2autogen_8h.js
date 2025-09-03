@@ -1,6 +1,7 @@
 var vec_2autogen_8h =
 [
     [ "MIM_vec_NORMALIZER_IMPL", "vec_2autogen_8h.html#a397c9b9a8cd26cfb8927c171dc620410", null ],
+    [ "mim::plug::vec::cat", "namespacemim_1_1plug_1_1vec.html#a9311086c4747681ac49971c8321ca0ee", null ],
     [ "mim::plug::vec::diff", "namespacemim_1_1plug_1_1vec.html#a5c01986cca7021fdf3002667cb8f347e", null ],
     [ "mim::plug::vec::first", "namespacemim_1_1plug_1_1vec.html#a9988495005995ff4aaf5b257dcb1703c", null ],
     [ "mim::plug::vec::fold", "namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dc", [
@@ -14,6 +15,7 @@ var vec_2autogen_8h =
       [ "mim::plug::vec::scan::for_all", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03a0a6701462dd440321b2b782395bfcb68", null ],
       [ "mim::plug::vec::scan::exists", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03ae087923eb5dd1310f5f25ddd5ae5b580", null ]
     ] ],
+    [ "mim::plug::vec::normalize_cat", "namespacemim_1_1plug_1_1vec.html#a9ba68b9f5ebfbf60a5fb2aa3cdce4d11", null ],
     [ "mim::plug::vec::normalize_diff", "namespacemim_1_1plug_1_1vec.html#abbc9a471c743f28e6bd53866ad31be1b", null ],
     [ "mim::plug::vec::normalize_fold", "namespacemim_1_1plug_1_1vec.html#ad0011878a139b10d25a61654e5186877", null ],
     [ "mim::plug::vec::normalize_is_unique", "namespacemim_1_1plug_1_1vec.html#aa5bac705cb383e5ba770e7dc841f183c", null ],

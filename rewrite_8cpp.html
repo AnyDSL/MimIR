@@ -118,7 +118,8 @@ $(function(){initNavTree('rewrite_8cpp.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">rewrite.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -126,6 +127,7 @@ $(function(){initNavTree('rewrite_8cpp.html',''); initResizable(true); });
 <code>#include &lt;absl/container/fixed_array.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="check_8h_source.html">mim/check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="world_8h_source.html">mim/world.h</a>&quot;</code><br />
+<code>#include &quot;fe/assert.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for rewrite.cpp:</div>
 <div class="dyncontent">
@@ -138,7 +140,55 @@ Include dependency graph for rewrite.cpp:</div>
 Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim.html">mim</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a199de7dc7775a7eb7d9cc11702d1da1a" id="r_a199de7dc7775a7eb7d9cc11702d1da1a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a199de7dc7775a7eb7d9cc11702d1da1a">CODE_MUT</a>(N)</td></tr>
+<tr class="separator:a199de7dc7775a7eb7d9cc11702d1da1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf17bc3bdf547027cc35451498d99653" id="r_abf17bc3bdf547027cc35451498d99653"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf17bc3bdf547027cc35451498d99653">CODE_IMM</a>(N)</td></tr>
+<tr class="separator:abf17bc3bdf547027cc35451498d99653"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="abf17bc3bdf547027cc35451498d99653" name="abf17bc3bdf547027cc35451498d99653"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf17bc3bdf547027cc35451498d99653">&#9670;&#160;</a></span>CODE_IMM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE_IMM</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>N</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">case</span> Node::N: new_def = rewrite_imm_##N(old_def-&gt;as&lt;N&gt;()); <span class="keywordflow">break</span>;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00023">23</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a199de7dc7775a7eb7d9cc11702d1da1a" name="a199de7dc7775a7eb7d9cc11702d1da1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a199de7dc7775a7eb7d9cc11702d1da1a">&#9670;&#160;</a></span>CODE_MUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE_MUT</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>N</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">case</span> Node::N: new_def = rewrite_mut_##N(old_mut-&gt;as&lt;N&gt;()); <span class="keywordflow">break</span>;</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00022">22</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

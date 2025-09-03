@@ -207,6 +207,12 @@ Variables</h2></td></tr>
 <tr class="memitem:aa5bac705cb383e5ba770e7dc841f183c" id="r_aa5bac705cb383e5ba770e7dc841f183c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1vec.html#aa5bac705cb383e5ba770e7dc841f183c">mim::plug::vec::normalize_is_unique</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *vec)</td></tr>
 <tr class="separator:aa5bac705cb383e5ba770e7dc841f183c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">%vec.cat</h2></td></tr>
+<tr class="memitem:a9311086c4747681ac49971c8321ca0ee" id="r_a9311086c4747681ac49971c8321ca0ee"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1vec.html#a9311086c4747681ac49971c8321ca0ee">mim::plug::vec::cat</a> : flags_t </td></tr>
+<tr class="separator:a9311086c4747681ac49971c8321ca0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ba68b9f5ebfbf60a5fb2aa3cdce4d11" id="r_a9ba68b9f5ebfbf60a5fb2aa3cdce4d11"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1vec.html#a9ba68b9f5ebfbf60a5fb2aa3cdce4d11">mim::plug::vec::normalize_cat</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *callee, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="separator:a9ba68b9f5ebfbf60a5fb2aa3cdce4d11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%vec.diff</h2></td></tr>
 <tr class="memitem:a5c01986cca7021fdf3002667cb8f347e" id="r_a5c01986cca7021fdf3002667cb8f347e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1vec.html#a5c01986cca7021fdf3002667cb8f347e">mim::plug::vec::diff</a> : flags_t </td></tr>
 <tr class="separator:a5c01986cca7021fdf3002667cb8f347e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,10 +237,11 @@ Variables</h2></td></tr>
 <div class="line">        normalizers[flags_t(scan::for_all)] = &amp;normalize_scan&lt;scan::for_all&gt;; \</div>
 <div class="line">        normalizers[flags_t(scan::exists)] = &amp;normalize_scan&lt;scan::exists&gt;; \</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;is_unique&gt;)] = &amp;normalize_is_unique; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;cat&gt;)] = &amp;normalize_cat; \</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;diff&gt;)] = &amp;normalize_diff; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="vec_2autogen_8h_source.html#l00075">75</a> of file <a class="el" href="vec_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vec_2autogen_8h_source.html#l00083">83</a> of file <a class="el" href="vec_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

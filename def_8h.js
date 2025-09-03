@@ -14,6 +14,8 @@ var def_8h =
     [ "mim::Global", "classmim_1_1Global.html", "classmim_1_1Global" ],
     [ "CODE", "def_8h.html#a87f559632082486a774f25d565c9b958", null ],
     [ "CODE", "def_8h.html#a87f559632082486a774f25d565c9b958", null ],
+    [ "MIM_IMM_NODE", "def_8h.html#ab848eb0da433016b7d9dba01ecec41eb", null ],
+    [ "MIM_MUT_NODE", "def_8h.html#a7fb7823d5a9629e4b0d3e9cdc826d6e0", null ],
     [ "MIM_NODE", "def_8h.html#ae7b11a3eb455bf4f67f20e1d364be209", null ],
     [ "MIM_PROJ", "def_8h.html#af607f4cede9847484ec49abf7d351932", null ],
     [ "mim::Def2Def", "namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab", null ],
@@ -43,6 +45,10 @@ var def_8h =
       [ "mim::Judge::Elim", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293ae46a61588776648a5513d415ba6de279", null ],
       [ "mim::Judge::Meta", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293ab6755d218d5f4e1cef9cce9cc39aeda9", null ],
       [ "mim::Judge::Hole", "namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988", null ]
+    ] ],
+    [ "mim::Mut", "namespacemim.html#ad3c9308ec5430fd41d4aab5d38e3e08d", [
+      [ "mim::Mut::Mut", "namespacemim.html#ad3c9308ec5430fd41d4aab5d38e3e08daebb87a770abac0e394d963d20ed574b7", null ],
+      [ "mim::Mut::Imm", "namespacemim.html#ad3c9308ec5430fd41d4aab5d38e3e08dada9470e1aa5be1858e667318254dcb4b", null ]
     ] ],
     [ "mim::Node", "namespacemim.html#afb12dbffaaa27bca46f171517d96256d", [
       [ "mim::Node::CODE", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da2f14a262872a344ea85b24f3a2ecc68a", null ],

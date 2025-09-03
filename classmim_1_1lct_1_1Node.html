@@ -140,7 +140,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae1ce8b042f4bec0ae86dba699f216f23" id="r_ae1ce8b042f4bec0ae86dba699f216f23"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1ce8b042f4bec0ae86dba699f216f23">Node</a> () noexcept=default</td></tr>
 <tr class="separator:ae1ce8b042f4bec0ae86dba699f216f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Getters</div></td></tr>
-<tr class="memitem:a6e472145b3d5e2daf31486074b0657a1" id="r_a6e472145b3d5e2daf31486074b0657a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e472145b3d5e2daf31486074b0657a1">contains</a> (const K &amp;k) noexcept</td></tr>
+<tr class="memitem:a6e472145b3d5e2daf31486074b0657a1" id="r_a6e472145b3d5e2daf31486074b0657a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e472145b3d5e2daf31486074b0657a1">contains</a> (const K &amp;k) noexcept</td></tr>
 <tr class="separator:a6e472145b3d5e2daf31486074b0657a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95192bfe2aa611ed0e3b08b174e571e8" id="r_a95192bfe2aa611ed0e3b08b174e571e8"><td class="memItemLeft" align="right" valign="top">constexpr P *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a95192bfe2aa611ed0e3b08b174e571e8">find</a> (const K &amp;k) noexcept</td></tr>
 <tr class="memdesc:a95192bfe2aa611ed0e3b08b174e571e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find <code class="param">k</code> or the element just greater than <code class="param">k</code>.  <br /></td></tr>
@@ -172,7 +172,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a16293eb9b006d9cdc9beb634cb151933" id="r_a16293eb9b006d9cdc9beb634cb151933"><td class="memItemLeft" align="right" valign="top">constexpr P *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a16293eb9b006d9cdc9beb634cb151933">lca</a> (<a class="el" href="classmim_1_1lct_1_1Node.html">Node</a> *other) noexcept</td></tr>
 <tr class="memdesc:a16293eb9b006d9cdc9beb634cb151933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Least Common Ancestor of <code>this</code> and <code class="param">other</code> in the <em>aux</em> tree; leaves <code class="param">other</code> exposed.  <br /></td></tr>
 <tr class="separator:a16293eb9b006d9cdc9beb634cb151933"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bbe1bbad5c5444ff72c4d1bcb376b73" id="r_a6bbe1bbad5c5444ff72c4d1bcb376b73"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bbe1bbad5c5444ff72c4d1bcb376b73">is_descendant_of</a> (<a class="el" href="classmim_1_1lct_1_1Node.html">Node</a> *other) noexcept</td></tr>
+<tr class="memitem:a6bbe1bbad5c5444ff72c4d1bcb376b73" id="r_a6bbe1bbad5c5444ff72c4d1bcb376b73"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6bbe1bbad5c5444ff72c4d1bcb376b73">is_descendant_of</a> (<a class="el" href="classmim_1_1lct_1_1Node.html">Node</a> *other) noexcept</td></tr>
 <tr class="memdesc:a6bbe1bbad5c5444ff72c4d1bcb376b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is <code>this</code> a descendant of <code>other</code> in the <em>aux</em> tree?  <br /></td></tr>
 <tr class="separator:a6bbe1bbad5c5444ff72c4d1bcb376b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -272,7 +272,7 @@ template&lt;class P, class K&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> <a class="el" href="classmim_1_1lct_1_1Node.html">mim::lct::Node</a>&lt; P, K &gt;::contains </td>
+          <td class="memname">bool <a class="el" href="classmim_1_1lct_1_1Node.html">mim::lct::Node</a>&lt; P, K &gt;::contains </td>
           <td>(</td>
           <td class="paramtype">const K &amp;</td>          <td class="paramname"><span class="paramname"><em>k</em></span></td><td>)</td>
           <td></td>
@@ -366,7 +366,7 @@ template&lt;class P, class K&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> <a class="el" href="classmim_1_1lct_1_1Node.html">mim::lct::Node</a>&lt; P, K &gt;::is_descendant_of </td>
+          <td class="memname">bool <a class="el" href="classmim_1_1lct_1_1Node.html">mim::lct::Node</a>&lt; P, K &gt;::is_descendant_of </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classmim_1_1lct_1_1Node.html">Node</a>&lt; P, K &gt; *</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
           <td></td>

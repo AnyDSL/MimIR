@@ -6,7 +6,6 @@ var namespacemim_1_1plug_1_1autodiff =
     [ "AD", "namespacemim_1_1plug_1_1autodiff.html#ad4255585ac73ccd9e621fd1ccf342064", null ],
     [ "ad", "namespacemim_1_1plug_1_1autodiff.html#afb5a3e7eb156faf3bf02f211e7ad22ed", null ],
     [ "ad_eval_pass", "namespacemim_1_1plug_1_1autodiff.html#a49ead5910b48a085983572770c877b98", null ],
-    [ "ad_ext_cleanup_pass", "namespacemim_1_1plug_1_1autodiff.html#ace600ab8b8fd5e6ca6bad179e77da1fa", null ],
     [ "ad_zero_cleanup_pass", "namespacemim_1_1plug_1_1autodiff.html#a412239c5d51f7d3bcb9e1c21baab0235", null ],
     [ "ad_zero_pass", "namespacemim_1_1plug_1_1autodiff.html#a150c0c6f500c2ddf12998bf963b97242", null ],
     [ "add", "namespacemim_1_1plug_1_1autodiff.html#adec076a151d709a29626cbe2a3c20337", null ],

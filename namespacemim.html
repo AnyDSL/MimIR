@@ -158,21 +158,27 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1BetaRed.html">BetaRed</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optimistically performs β-reduction (aka inlining).  <a href="classmim_1_1BetaRed.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1BetaRedPhase.html">BetaRedPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inlines in post-order all <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s that occur exactly <em>once</em> in the program.  <a href="classmim_1_1BetaRedPhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1BitSet.html">BitSet</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Bound.html">Bound</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common base for <a class="el" href="classmim_1_1TBound.html" title="Specific Bound depending on Up.">TBound</a>.  <a href="classmim_1_1Bound.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1BranchNormalizePhase.html">BranchNormalizePhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inlines in post-order all <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s that occur exactly <em>once</em> in the program.  <a href="classmim_1_1BranchNormalizePhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Checker.html">Checker</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Cleanup.html">Cleanup</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes unreachable and dead code by rebuilding the whole <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> into a new one and <code>swap</code>ping afterwards.  <a href="classmim_1_1Cleanup.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes unreachable and dead code by rebuilding the whole <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> into a new one and <code>swap</code>ping them afterwards.  <a href="classmim_1_1Cleanup.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ClosedCollector.html">ClosedCollector</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively collects all <em>closed</em> mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed</a>) in a <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedCollector.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively collects all <a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69"><em>closed</em></a> mutables in a <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedCollector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ClosedMutPhase.html">ClosedMutPhase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedMutPhase.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em>, <a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69"><em>closed</em></a> mutables in the <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  <a href="classmim_1_1ClosedMutPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1Dbg.html">Dbg</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,8 +198,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1EtaExp.html">EtaExp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs η-expansion: <code>f -&gt; λx.f x</code>, if <code>f</code> is a <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a> with more than one user and does not appear in callee position.  <a href="classmim_1_1EtaExp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1EtaExpPhase.html">EtaExpPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inlines in post-order all <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s that occur exactly <em>once</em> in the program.  <a href="classmim_1_1EtaExpPhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1EtaRed.html">EtaRed</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs η-reduction.  <a href="classmim_1_1EtaRed.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1EtaRedPhase.html">EtaRedPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inlines in post-order all <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s that occur exactly <em>once</em> in the program.  <a href="classmim_1_1EtaRedPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Ext.html">Ext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common base for <a class="el" href="classmim_1_1TExt.html" title="Extremum. Either Top (Up) or Bottom.">TExt</a>remum.  <a href="classmim_1_1Ext.html#details">More...</a><br /></td></tr>
@@ -214,7 +226,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class using <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a>, if you <b>do</b> need a <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> with a state and a fixed-point.  <a href="classmim_1_1FPPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1FPPhase.html">FPPhase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like a <a class="el" href="classmim_1_1RWPhase.html" title="Visits the current Phase::world and constructs a new RWPhase::world along the way.">RWPhase</a> but starts with a fixed-point loop of <a class="el" href="classmim_1_1FPPhase.html#aafe4694aa466b87f672bead2734a4706">FPPhase::analyze</a> beforehand.  <a href="classmim_1_1FPPhase.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like a <a class="el" href="classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">RWPhase</a> but starts with a fixed-point loop of <a class="el" href="classmim_1_1FPPhase.html#aafe4694aa466b87f672bead2734a4706">FPPhase::analyze</a> beforehand.  <a href="classmim_1_1FPPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1GIDHash.html">GIDHash</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,7 +272,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a nesting tree of all <em>immutables</em>&zwj;/binders.  <a href="classmim_1_1Nest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1NestPhase.html">NestPhase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable closed mutables (Def::is_closed()) in World.">ClosedMutPhase</a> but computes a <a class="el" href="classmim_1_1Nest.html" title="Builds a nesting tree of all immutables‍/binders.">Nest</a> for each <a class="el" href="classmim_1_1NestPhase.html#a101203cdf21e91486513e9cd7e4b0396">NestPhase::visit</a>.  <a href="classmim_1_1NestPhase.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable, closed mutables in the World.">ClosedMutPhase</a> but computes a <a class="el" href="classmim_1_1Nest.html" title="Builds a nesting tree of all immutables‍/binders.">Nest</a> for each <a class="el" href="classmim_1_1NestPhase.html#a101203cdf21e91486513e9cd7e4b0396">NestPhase::visit</a>.  <a href="classmim_1_1NestPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Pack.html">Pack</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A (possibly paramterized) <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a>.  <a href="classmim_1_1Pack.html#details">More...</a><br /></td></tr>
@@ -280,14 +292,16 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Phase.html">Phase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">As opposed to a <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>, a <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a> does one thing at a time and does not mix with other <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s.  <a href="classmim_1_1Phase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1PhaseMan.html">PhaseMan</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Organizes several <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s in a a pipeline.  <a href="classmim_1_1PhaseMan.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Pi.html">Pi</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a href="https://en.wikipedia.org/wiki/Dependent_type#%CE%A0_type">dependent function type</a>.  <a href="classmim_1_1Pi.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Pipeline.html">Pipeline</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Organizes several <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s as a pipeline.  <a href="classmim_1_1Pipeline.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1Plugin.html">Plugin</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic info and registration function pointer to be returned from a specific plugin.  <a href="structmim_1_1Plugin.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1PrefixCleanup.html">PrefixCleanup</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Prod.html">Prod</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classmim_1_1Sigma.html" title="A dependent tuple type.">Sigma</a> and <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a>.  <a href="classmim_1_1Prod.html#details">More...</a><br /></td></tr>
@@ -312,7 +326,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class using <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a>, if your <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> does <b>not</b> need state and a fixed-point iteration.  <a href="classmim_1_1RWPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1RWPhase.html">RWPhase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visits the current <a class="el" href="classmim_1_1Phase.html#afeae25f4ecab3e3812e9607f630a506f">Phase::world</a> and constructs a new <a class="el" href="classmim_1_1RWPhase.html#a89180e277c093838bfb69dfbd3a8250e">RWPhase::world</a> along the way.  <a href="classmim_1_1RWPhase.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rewrites the <a class="el" href="classmim_1_1RWPhase.html#aef58721bd5f8d89e624eea65ff51f6b3" title="Get old Defs from here.">RWPhase::old_world</a> into the <a class="el" href="classmim_1_1RWPhase.html#a0f7249ac3c85d2f2b1d7c72455c61b19" title="Create new Defs into this.">RWPhase::new_world</a> and <code>swap</code>s them afterwards.  <a href="classmim_1_1RWPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Scalarize.html">Scalarize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform Scalarization (= Argument simplification).  <a href="classmim_1_1Scalarize.html#details">More...</a><br /></td></tr>
@@ -478,7 +492,7 @@ Typedefs</h2></td></tr>
 <tr class="separator:a82bd82851e0f25f0390ebe12e4963ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8bae182cdb06699fc07a348105f193c" id="r_ad8bae182cdb06699fc07a348105f193c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8bae182cdb06699fc07a348105f193c">u64</a> = uint64_t</td></tr>
 <tr class="separator:ad8bae182cdb06699fc07a348105f193c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5dd027fef8a0cc98781eb4780fa1669" id="r_ac5dd027fef8a0cc98781eb4780fa1669"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5dd027fef8a0cc98781eb4780fa1669">u1</a> = <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td></tr>
+<tr class="memitem:ac5dd027fef8a0cc98781eb4780fa1669" id="r_ac5dd027fef8a0cc98781eb4780fa1669"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5dd027fef8a0cc98781eb4780fa1669">u1</a> = bool</td></tr>
 <tr class="separator:ac5dd027fef8a0cc98781eb4780fa1669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab64b7b3af527682b0daf50d786c8689b" id="r_ab64b7b3af527682b0daf50d786c8689b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab64b7b3af527682b0daf50d786c8689b">f16</a> = half</td></tr>
 <tr class="separator:ab64b7b3af527682b0daf50d786c8689b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -543,44 +557,44 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="separator:acc7b1158f83b80e637de1a63f56d514c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">is_commutative/is_associative</div></td></tr>
 <tr class="memitem:a651a2dea89f330efd5ed961191620af8" id="r_a651a2dea89f330efd5ed961191620af8"><td class="memTemplParams" colspan="2">template&lt;class Id&gt; </td></tr>
-<tr class="memitem:a651a2dea89f330efd5ed961191620af8"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a651a2dea89f330efd5ed961191620af8">is_commutative</a> (Id)</td></tr>
+<tr class="memitem:a651a2dea89f330efd5ed961191620af8"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a651a2dea89f330efd5ed961191620af8">is_commutative</a> (Id)</td></tr>
 <tr class="separator:a651a2dea89f330efd5ed961191620af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe80f437b1eb4a8af99d7a4e6fff1fe3" id="r_abe80f437b1eb4a8af99d7a4e6fff1fe3"><td class="memTemplParams" colspan="2">template&lt;class Id&gt; </td></tr>
-<tr class="memitem:abe80f437b1eb4a8af99d7a4e6fff1fe3"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abe80f437b1eb4a8af99d7a4e6fff1fe3">is_associative</a> (Id id)</td></tr>
+<tr class="memitem:abe80f437b1eb4a8af99d7a4e6fff1fe3"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abe80f437b1eb4a8af99d7a4e6fff1fe3">is_associative</a> (Id id)</td></tr>
 <tr class="separator:abe80f437b1eb4a8af99d7a4e6fff1fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54b5eaeee81baedf35cb803d4c39b222" id="r_a54b5eaeee81baedf35cb803d4c39b222"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54b5eaeee81baedf35cb803d4c39b222">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566">plug::core::nat</a> id)</td></tr>
+<tr class="memitem:a54b5eaeee81baedf35cb803d4c39b222" id="r_a54b5eaeee81baedf35cb803d4c39b222"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54b5eaeee81baedf35cb803d4c39b222">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566">plug::core::nat</a> id)</td></tr>
 <tr class="separator:a54b5eaeee81baedf35cb803d4c39b222"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1189caa65b6a3177f4f13793dcd0fa26" id="r_a1189caa65b6a3177f4f13793dcd0fa26"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1189caa65b6a3177f4f13793dcd0fa26">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985e">plug::core::ncmp</a> id)</td></tr>
+<tr class="memitem:a1189caa65b6a3177f4f13793dcd0fa26" id="r_a1189caa65b6a3177f4f13793dcd0fa26"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1189caa65b6a3177f4f13793dcd0fa26">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985e">plug::core::ncmp</a> id)</td></tr>
 <tr class="separator:a1189caa65b6a3177f4f13793dcd0fa26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bdcde6a7d8c95ba967b0d003a60aa6b" id="r_a0bdcde6a7d8c95ba967b0d003a60aa6b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bdcde6a7d8c95ba967b0d003a60aa6b">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">plug::core::wrap</a> id)</td></tr>
+<tr class="memitem:a0bdcde6a7d8c95ba967b0d003a60aa6b" id="r_a0bdcde6a7d8c95ba967b0d003a60aa6b"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bdcde6a7d8c95ba967b0d003a60aa6b">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">plug::core::wrap</a> id)</td></tr>
 <tr class="separator:a0bdcde6a7d8c95ba967b0d003a60aa6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab43ced57443efca4748c2e3254568828" id="r_ab43ced57443efca4748c2e3254568828"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab43ced57443efca4748c2e3254568828">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673">plug::core::icmp</a> id)</td></tr>
+<tr class="memitem:ab43ced57443efca4748c2e3254568828" id="r_ab43ced57443efca4748c2e3254568828"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab43ced57443efca4748c2e3254568828">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673">plug::core::icmp</a> id)</td></tr>
 <tr class="separator:ab43ced57443efca4748c2e3254568828"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaabd11fa56b1d4815c409ba3eba2d5c8" id="r_aaabd11fa56b1d4815c409ba3eba2d5c8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaabd11fa56b1d4815c409ba3eba2d5c8">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205">plug::core::bit2</a> id)</td></tr>
+<tr class="memitem:aaabd11fa56b1d4815c409ba3eba2d5c8" id="r_aaabd11fa56b1d4815c409ba3eba2d5c8"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaabd11fa56b1d4815c409ba3eba2d5c8">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205">plug::core::bit2</a> id)</td></tr>
 <tr class="separator:aaabd11fa56b1d4815c409ba3eba2d5c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18ea687fca3cafcb3ae2e8afacdb6a43" id="r_a18ea687fca3cafcb3ae2e8afacdb6a43"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18ea687fca3cafcb3ae2e8afacdb6a43">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205">plug::core::bit2</a> id)</td></tr>
+<tr class="memitem:a18ea687fca3cafcb3ae2e8afacdb6a43" id="r_a18ea687fca3cafcb3ae2e8afacdb6a43"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18ea687fca3cafcb3ae2e8afacdb6a43">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205">plug::core::bit2</a> id)</td></tr>
 <tr class="separator:a18ea687fca3cafcb3ae2e8afacdb6a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4993d8ec478d9b21be0d34df1047d50" id="r_ae4993d8ec478d9b21be0d34df1047d50"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4993d8ec478d9b21be0d34df1047d50">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566">plug::core::nat</a> id)</td></tr>
+<tr class="memitem:ae4993d8ec478d9b21be0d34df1047d50" id="r_ae4993d8ec478d9b21be0d34df1047d50"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4993d8ec478d9b21be0d34df1047d50">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566">plug::core::nat</a> id)</td></tr>
 <tr class="separator:ae4993d8ec478d9b21be0d34df1047d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd0be8cef745edc10628729e7096bba0" id="r_abd0be8cef745edc10628729e7096bba0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd0be8cef745edc10628729e7096bba0">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985e">plug::core::ncmp</a> id)</td></tr>
+<tr class="memitem:abd0be8cef745edc10628729e7096bba0" id="r_abd0be8cef745edc10628729e7096bba0"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd0be8cef745edc10628729e7096bba0">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985e">plug::core::ncmp</a> id)</td></tr>
 <tr class="separator:abd0be8cef745edc10628729e7096bba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a789eca4a75e2540e6d34f59994f69704" id="r_a789eca4a75e2540e6d34f59994f69704"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a789eca4a75e2540e6d34f59994f69704">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673">plug::core::icmp</a> id)</td></tr>
+<tr class="memitem:a789eca4a75e2540e6d34f59994f69704" id="r_a789eca4a75e2540e6d34f59994f69704"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a789eca4a75e2540e6d34f59994f69704">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673">plug::core::icmp</a> id)</td></tr>
 <tr class="separator:a789eca4a75e2540e6d34f59994f69704"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7883d619ee40a111d64345ec295dbe89" id="r_a7883d619ee40a111d64345ec295dbe89"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7883d619ee40a111d64345ec295dbe89">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">plug::core::wrap</a> id)</td></tr>
+<tr class="memitem:a7883d619ee40a111d64345ec295dbe89" id="r_a7883d619ee40a111d64345ec295dbe89"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7883d619ee40a111d64345ec295dbe89">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">plug::core::wrap</a> id)</td></tr>
 <tr class="separator:a7883d619ee40a111d64345ec295dbe89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d08547c4fc3b6bcf3d8779269813b50" id="r_a2d08547c4fc3b6bcf3d8779269813b50"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d08547c4fc3b6bcf3d8779269813b50">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1math.html#ab3714a92165c9fc8ab8d7238944e428c">plug::math::extrema</a>)</td></tr>
+<tr class="memitem:a2d08547c4fc3b6bcf3d8779269813b50" id="r_a2d08547c4fc3b6bcf3d8779269813b50"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d08547c4fc3b6bcf3d8779269813b50">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1math.html#ab3714a92165c9fc8ab8d7238944e428c">plug::math::extrema</a>)</td></tr>
 <tr class="separator:a2d08547c4fc3b6bcf3d8779269813b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a645c73e7dc74e25de2bc1c7b4236a40a" id="r_a645c73e7dc74e25de2bc1c7b4236a40a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a645c73e7dc74e25de2bc1c7b4236a40a">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686">plug::math::arith</a> id)</td></tr>
+<tr class="memitem:a645c73e7dc74e25de2bc1c7b4236a40a" id="r_a645c73e7dc74e25de2bc1c7b4236a40a"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a645c73e7dc74e25de2bc1c7b4236a40a">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686">plug::math::arith</a> id)</td></tr>
 <tr class="separator:a645c73e7dc74e25de2bc1c7b4236a40a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bf9f164e985cb56deedf827f7fb2c3f" id="r_a1bf9f164e985cb56deedf827f7fb2c3f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1bf9f164e985cb56deedf827f7fb2c3f">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3">plug::math::cmp</a> id)</td></tr>
+<tr class="memitem:a1bf9f164e985cb56deedf827f7fb2c3f" id="r_a1bf9f164e985cb56deedf827f7fb2c3f"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1bf9f164e985cb56deedf827f7fb2c3f">is_commutative</a> (<a class="el" href="namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3">plug::math::cmp</a> id)</td></tr>
 <tr class="separator:a1bf9f164e985cb56deedf827f7fb2c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af485193faab3fd743dc27aa379950c00" id="r_af485193faab3fd743dc27aa379950c00"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af485193faab3fd743dc27aa379950c00">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686">plug::math::arith</a> id)</td></tr>
+<tr class="memitem:af485193faab3fd743dc27aa379950c00" id="r_af485193faab3fd743dc27aa379950c00"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af485193faab3fd743dc27aa379950c00">is_associative</a> (<a class="el" href="namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686">plug::math::arith</a> id)</td></tr>
 <tr class="separator:af485193faab3fd743dc27aa379950c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Helpers to work with Functions</div></td></tr>
 <tr class="memitem:aa6e918f49777aea04b1993cded8aa1f7" id="r_aa6e918f49777aea04b1993cded8aa1f7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1App.html">App</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6e918f49777aea04b1993cded8aa1f7">isa_callee</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def, size_t i)</td></tr>
 <tr class="separator:aa6e918f49777aea04b1993cded8aa1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e739ae65746f6a876447f9cdd48bfb4" id="r_a9e739ae65746f6a876447f9cdd48bfb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Lam.html">Lam</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e739ae65746f6a876447f9cdd48bfb4">isa_workable</a> (<a class="el" href="classmim_1_1Lam.html">Lam</a> *lam)</td></tr>
-<tr class="memdesc:a9e739ae65746f6a876447f9cdd48bfb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">These are <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s that are neither <code>nullptr</code>, nor <a class="el" href="classmim_1_1Def.html#a6fc1ebb1ac4c1458a432b1cbaffbf9af">Lam::is_external</a>, nor Lam::is_unset.  <br /></td></tr>
+<tr class="memdesc:a9e739ae65746f6a876447f9cdd48bfb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">These are <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s that are neither <code>nullptr</code>, nor <a class="el" href="classmim_1_1Def.html#aa3519178f6136b088a41d1bfa0cab603">Lam::is_external</a>, nor Lam::is_unset.  <br /></td></tr>
 <tr class="separator:a9e739ae65746f6a876447f9cdd48bfb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3036ca68b9ff9ebd00b9b35c7ad1a9a0" id="r_a3036ca68b9ff9ebd00b9b35c7ad1a9a0"><td class="memItemLeft" align="right" valign="top">std::pair&lt; const <a class="el" href="classmim_1_1App.html">App</a> *, <a class="el" href="classmim_1_1Lam.html">Lam</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3036ca68b9ff9ebd00b9b35c7ad1a9a0">isa_apped_mut_lam</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="separator:a3036ca68b9ff9ebd00b9b35c7ad1a9a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -588,20 +602,20 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="memdesc:aab8bd049eb0b9bf7561a602f62ce7ebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The high level view is:  <br /></td></tr>
 <tr class="separator:aab8bd049eb0b9bf7561a602f62ce7ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Helpers to work with Tulpes/Sigmas/Arrays/Packs</div></td></tr>
-<tr class="memitem:a2efd858db7ed2bd9c205337f6129daa8" id="r_a2efd858db7ed2bd9c205337f6129daa8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2efd858db7ed2bd9c205337f6129daa8">is_unit</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
+<tr class="memitem:a2efd858db7ed2bd9c205337f6129daa8" id="r_a2efd858db7ed2bd9c205337f6129daa8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2efd858db7ed2bd9c205337f6129daa8">is_unit</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a2efd858db7ed2bd9c205337f6129daa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a491928b70e9d5a3cc4bb053cd49bf49e" id="r_a491928b70e9d5a3cc4bb053cd49bf49e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a491928b70e9d5a3cc4bb053cd49bf49e">tuple2str</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a491928b70e9d5a3cc4bb053cd49bf49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a7202c211ff85c77fb009119a6b8fcc" id="r_a0a7202c211ff85c77fb009119a6b8fcc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0a7202c211ff85c77fb009119a6b8fcc">flatten</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="memdesc:a0a7202c211ff85c77fb009119a6b8fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flattens a sigma/array/pack/tuple.  <br /></td></tr>
 <tr class="separator:a0a7202c211ff85c77fb009119a6b8fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e6c9f839670748462f9d08a17a99fd4" id="r_a8e6c9f839670748462f9d08a17a99fd4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e6c9f839670748462f9d08a17a99fd4">flatten</a> (<a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> &amp;ops, const <a class="el" href="classmim_1_1Def.html">Def</a> *def, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> flatten_sigmas=true)</td></tr>
+<tr class="memitem:a8e6c9f839670748462f9d08a17a99fd4" id="r_a8e6c9f839670748462f9d08a17a99fd4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e6c9f839670748462f9d08a17a99fd4">flatten</a> (<a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> &amp;ops, const <a class="el" href="classmim_1_1Def.html">Def</a> *def, bool flatten_sigmas=true)</td></tr>
 <tr class="memdesc:a8e6c9f839670748462f9d08a17a99fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly.  <br /></td></tr>
 <tr class="separator:a8e6c9f839670748462f9d08a17a99fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a869f7a593f368b079211689192152385" id="r_a869f7a593f368b079211689192152385"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a869f7a593f368b079211689192152385">unflatten</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def, const <a class="el" href="classmim_1_1Def.html">Def</a> *type)</td></tr>
 <tr class="memdesc:a869f7a593f368b079211689192152385"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the reverse transformation on a <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a>, given the original type.  <br /></td></tr>
 <tr class="separator:a869f7a593f368b079211689192152385"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a829c76d14d02cad2fb4f21aff1e0fb6a" id="r_a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a829c76d14d02cad2fb4f21aff1e0fb6a">unflatten</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> ops, const <a class="el" href="classmim_1_1Def.html">Def</a> *type, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> flatten_muts=true)</td></tr>
+<tr class="memitem:a829c76d14d02cad2fb4f21aff1e0fb6a" id="r_a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a829c76d14d02cad2fb4f21aff1e0fb6a">unflatten</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> ops, const <a class="el" href="classmim_1_1Def.html">Def</a> *type, bool flatten_muts=true)</td></tr>
 <tr class="memdesc:a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly.  <br /></td></tr>
 <tr class="separator:a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75c9fb5e1cf36bc411049ccc18dccd1e" id="r_a75c9fb5e1cf36bc411049ccc18dccd1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75c9fb5e1cf36bc411049ccc18dccd1e">merge</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
@@ -691,7 +705,7 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="separator:ab5ea5e94765b1e6b74beae887d869c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">IndexSet visit</div></td></tr>
 <tr class="memitem:a01df1c711f47326f6d3b9efc933ccd26" id="r_a01df1c711f47326f6d3b9efc933ccd26"><td class="memTemplParams" colspan="2">template&lt;class Indexer, class Key&gt; </td></tr>
-<tr class="memitem:a01df1c711f47326f6d3b9efc933ccd26"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a01df1c711f47326f6d3b9efc933ccd26">visit</a> (<a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</td></tr>
+<tr class="memitem:a01df1c711f47326f6d3b9efc933ccd26"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a01df1c711f47326f6d3b9efc933ccd26">visit</a> (<a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</td></tr>
 <tr class="separator:a01df1c711f47326f6d3b9efc933ccd26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdac200da4be48df165deb24615fc940" id="r_afdac200da4be48df165deb24615fc940"><td class="memTemplParams" colspan="2">template&lt;class Indexer, class Key&gt; </td></tr>
 <tr class="memitem:afdac200da4be48df165deb24615fc940"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afdac200da4be48df165deb24615fc940">visit_first</a> (<a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</td></tr>
@@ -779,7 +793,7 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="memdesc:a1aae5adc4db386bfd618fdc8303ceb0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A bitcast from <code class="param">src</code> of type <code class="param">S</code> to <code class="param">D</code>.  <br /></td></tr>
 <tr class="separator:a1aae5adc4db386bfd618fdc8303ceb0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aead08c2a07775ee15b699d35fc31e34a" id="r_aead08c2a07775ee15b699d35fc31e34a"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
-<tr class="memitem:aead08c2a07775ee15b699d35fc31e34a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aead08c2a07775ee15b699d35fc31e34a">get_sign</a> (T val)</td></tr>
+<tr class="memitem:aead08c2a07775ee15b699d35fc31e34a"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aead08c2a07775ee15b699d35fc31e34a">get_sign</a> (T val)</td></tr>
 <tr class="separator:aead08c2a07775ee15b699d35fc31e34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a650811c0d49d453841b016dfa775c461" id="r_a650811c0d49d453841b016dfa775c461"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ad8bae182cdb06699fc07a348105f193c">u64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a650811c0d49d453841b016dfa775c461">pad</a> (<a class="el" href="#ad8bae182cdb06699fc07a348105f193c">u64</a> offset, <a class="el" href="#ad8bae182cdb06699fc07a348105f193c">u64</a> align)</td></tr>
 <tr class="separator:a650811c0d49d453841b016dfa775c461"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -921,6 +935,14 @@ Variables</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:adccbc1a0a55e33b72bc7e987075c2293"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="https://ncatlab.org/nlab/show/judgment">Judgement</a>.  <a href="#adccbc1a0a55e33b72bc7e987075c2293">More...</a><br /></td></tr>
 <tr class="separator:adccbc1a0a55e33b72bc7e987075c2293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3c9308ec5430fd41d4aab5d38e3e08d" id="r_ad3c9308ec5430fd41d4aab5d38e3e08d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3c9308ec5430fd41d4aab5d38e3e08d">Mut</a> { <br />
+&#160;&#160;<a class="el" href="#ad3c9308ec5430fd41d4aab5d38e3e08daebb87a770abac0e394d963d20ed574b7">Mut</a> = 1 &lt;&lt; 0
+, <br />
+&#160;&#160;<a class="el" href="#ad3c9308ec5430fd41d4aab5d38e3e08dada9470e1aa5be1858e667318254dcb4b">Imm</a> = 1 &lt;&lt; 1
+<br />
+ }</td></tr>
+<tr class="memdesc:ad3c9308ec5430fd41d4aab5d38e3e08d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="https://ncatlab.org/nlab/show/judgment">Judgement</a>.  <a href="#ad3c9308ec5430fd41d4aab5d38e3e08d">More...</a><br /></td></tr>
+<tr class="separator:ad3c9308ec5430fd41d4aab5d38e3e08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5f8c3cd104922822656e5d29311f0dd" id="r_ab5f8c3cd104922822656e5d29311f0dd"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5f8c3cd104922822656e5d29311f0dd">Num_Nodes</a> = size_t(0) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1)</td></tr>
 <tr class="separator:ab5f8c3cd104922822656e5d29311f0dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -937,9 +959,9 @@ Variables</h2></td></tr>
 </td></tr>
 <tr class="memitem:ab875464e5f495601abff7287573e1405" id="r_ab875464e5f495601abff7287573e1405"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab875464e5f495601abff7287573e1405">Normalizers</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, <a class="el" href="#ab992e926dce870b1e086b34589849a92">NormalizeFn</a>&gt;</td></tr>
 <tr class="separator:ab875464e5f495601abff7287573e1405"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed0d84aedf2c5766d4e3fbc5ff3c2660" id="r_aed0d84aedf2c5766d4e3fbc5ff3c2660"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed0d84aedf2c5766d4e3fbc5ff3c2660">Phases</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1Pipeline.html">Pipeline</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td></tr>
-<tr class="memdesc:aed0d84aedf2c5766d4e3fbc5ff3c2660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a <a class="el" href="classmim_1_1Pipeline.html" title="Organizes several Phases as a pipeline.">Pipeline</a>.  <br /></td></tr>
-<tr class="separator:aed0d84aedf2c5766d4e3fbc5ff3c2660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5da41b1df3ddaaf992f90ef1b9e111c2" id="r_a5da41b1df3ddaaf992f90ef1b9e111c2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5da41b1df3ddaaf992f90ef1b9e111c2">Phases</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PhaseMan.html">PhaseMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td></tr>
+<tr class="memdesc:a5da41b1df3ddaaf992f90ef1b9e111c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
+<tr class="separator:a5da41b1df3ddaaf992f90ef1b9e111c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a780d7f029e0bbc4a1c80c8698de15651" id="r_a780d7f029e0bbc4a1c80c8698de15651"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a780d7f029e0bbc4a1c80c8698de15651">Passes</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PassMan.html">PassMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td></tr>
 <tr class="separator:a780d7f029e0bbc4a1c80c8698de15651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e05089762ab1bde20507ee3d7b37242" id="r_a6e05089762ab1bde20507ee3d7b37242"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e05089762ab1bde20507ee3d7b37242">Backends</a> = absl::btree_map&lt;std::string, void (*)(<a class="el" href="classmim_1_1World.html">World</a>&amp;, std::ostream&amp;)&gt;</td></tr>
@@ -966,37 +988,37 @@ Variables</h2></td></tr>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
-<a id="aa34d78bc90a960fcde1dae529fcb452b" name="aa34d78bc90a960fcde1dae529fcb452b"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="aa34d78bc90a960fcde1dae529fcb452b" name="aa34d78bc90a960fcde1dae529fcb452b"></a>bool</td>
 <td class="fieldname">
 aggressive_lam_spec = false</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="ab215ed00a54cbe6b05280568ac1a6f7b" name="ab215ed00a54cbe6b05280568ac1a6f7b"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="ab215ed00a54cbe6b05280568ac1a6f7b" name="ab215ed00a54cbe6b05280568ac1a6f7b"></a>bool</td>
 <td class="fieldname">
 ascii = false</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="aa94eca913fb20d3b0f80e74aa12349fa" name="aa94eca913fb20d3b0f80e74aa12349fa"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="aa94eca913fb20d3b0f80e74aa12349fa" name="aa94eca913fb20d3b0f80e74aa12349fa"></a>bool</td>
 <td class="fieldname">
 bootstrap = false</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="aecd8da1c3713216fee4463e6b7c76fe8" name="aecd8da1c3713216fee4463e6b7c76fe8"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="aecd8da1c3713216fee4463e6b7c76fe8" name="aecd8da1c3713216fee4463e6b7c76fe8"></a>bool</td>
 <td class="fieldname">
 break_on_alpha = false</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="a815524784f39e99f0d5929c8ef950552" name="a815524784f39e99f0d5929c8ef950552"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="a815524784f39e99f0d5929c8ef950552" name="a815524784f39e99f0d5929c8ef950552"></a>bool</td>
 <td class="fieldname">
 break_on_error = false</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="accee3d68c6800853cbb887679212d540" name="accee3d68c6800853cbb887679212d540"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="accee3d68c6800853cbb887679212d540" name="accee3d68c6800853cbb887679212d540"></a>bool</td>
 <td class="fieldname">
 break_on_warn = false</td>
 <td class="fielddoc">
@@ -1008,13 +1030,13 @@ dump_gid = 0</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="afc6c15ed47123ead7dae5a3c7b5e8506" name="afc6c15ed47123ead7dae5a3c7b5e8506"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="afc6c15ed47123ead7dae5a3c7b5e8506" name="afc6c15ed47123ead7dae5a3c7b5e8506"></a>bool</td>
 <td class="fieldname">
 dump_recursive = false</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="aa3d3421bf85526b22938b6f5d289af22" name="aa3d3421bf85526b22938b6f5d289af22"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="aa3d3421bf85526b22938b6f5d289af22" name="aa3d3421bf85526b22938b6f5d289af22"></a>bool</td>
 <td class="fieldname">
 reeval_breakpoints = false</td>
 <td class="fielddoc">
@@ -1026,7 +1048,7 @@ scalarize_threshold = 32</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="a6751eae1d81d212268261fecba66fa6a" name="a6751eae1d81d212268261fecba66fa6a"></a><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+<a id="a6751eae1d81d212268261fecba66fa6a" name="a6751eae1d81d212268261fecba66fa6a"></a>bool</td>
 <td class="fieldname">
 trace_gids = false</td>
 <td class="fielddoc">
@@ -1103,7 +1125,7 @@ Inheritance diagram for mim::FNV1&lt; size_t &gt;:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00051">51</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00075">75</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1121,7 +1143,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00049">49</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00073">73</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1137,7 +1159,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00052">52</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00076">76</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1153,7 +1175,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00050">50</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00074">74</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1169,7 +1191,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00053">53</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00077">77</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1339,7 +1361,7 @@ template&lt;class K&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00217">217</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00218">218</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 </div>
 </div>
@@ -1357,7 +1379,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00215">215</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00216">216</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 </div>
 </div>
@@ -1373,7 +1395,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00216">216</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00217">217</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 </div>
 </div>
@@ -1423,7 +1445,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00062">62</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00086">86</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1441,7 +1463,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00060">60</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00084">84</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1457,7 +1479,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00063">63</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00087">87</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1473,7 +1495,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00061">61</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00085">85</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1521,7 +1543,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00076">76</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00100">100</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1557,19 +1579,19 @@ template&lt;class To&gt; </div>
 
 </div>
 </div>
-<a id="aed0d84aedf2c5766d4e3fbc5ff3c2660" name="aed0d84aedf2c5766d4e3fbc5ff3c2660"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed0d84aedf2c5766d4e3fbc5ff3c2660">&#9670;&#160;</a></span>Phases</h2>
+<a id="a5da41b1df3ddaaf992f90ef1b9e111c2" name="a5da41b1df3ddaaf992f90ef1b9e111c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5da41b1df3ddaaf992f90ef1b9e111c2">&#9670;&#160;</a></span>Phases</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="#aed0d84aedf2c5766d4e3fbc5ff3c2660">mim::Phases</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1Pipeline.html">Pipeline</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td>
+          <td class="memname">using <a class="el" href="#a5da41b1df3ddaaf992f90ef1b9e111c2">mim::Phases</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PhaseMan.html">PhaseMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a <a class="el" href="classmim_1_1Pipeline.html" title="Organizes several Phases as a pipeline.">Pipeline</a>. </p>
+<p>Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>. </p>
 
 <p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00023">23</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
@@ -1710,7 +1732,7 @@ template&lt;class To&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="#ac5dd027fef8a0cc98781eb4780fa1669">mim::u1</a> = <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>
+          <td class="memname">using <a class="el" href="#ac5dd027fef8a0cc98781eb4780fa1669">mim::u1</a> = bool</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1827,7 +1849,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00072">72</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00096">96</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1845,7 +1867,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00070">70</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00094">94</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1861,7 +1883,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00073">73</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00097">97</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1877,7 +1899,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00071">71</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00095">95</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1983,7 +2005,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classint">int</a> 
 <tr><td class="fieldname"><a id="a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f" name="a249738da6a953390b70691dd3fe7132baf56ec2ab97d604832d90f6394e3f341f"></a>Proxy&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00099">99</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00123">123</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2021,7 +2043,39 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classint">int</a> 
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00108">108</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00132">132</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+</div>
+</div>
+<a id="ad3c9308ec5430fd41d4aab5d38e3e08d" name="ad3c9308ec5430fd41d4aab5d38e3e08d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3c9308ec5430fd41d4aab5d38e3e08d">&#9670;&#160;</a></span>Mut</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#ad3c9308ec5430fd41d4aab5d38e3e08d">mim::Mut</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a href="https://ncatlab.org/nlab/show/judgment">Judgement</a>. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ad3c9308ec5430fd41d4aab5d38e3e08daebb87a770abac0e394d963d20ed574b7" name="ad3c9308ec5430fd41d4aab5d38e3e08daebb87a770abac0e394d963d20ed574b7"></a>Mut&#160;</td><td class="fielddoc"><p><a class="el" href="#afb12dbffaaa27bca46f171517d96256d">Node</a> may be mutable. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ad3c9308ec5430fd41d4aab5d38e3e08dada9470e1aa5be1858e667318254dcb4b" name="ad3c9308ec5430fd41d4aab5d38e3e08dada9470e1aa5be1858e667318254dcb4b"></a>Imm&#160;</td><td class="fielddoc"><p><a class="el" href="#afb12dbffaaa27bca46f171517d96256d">Node</a> may be immmutable. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00143">143</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2080,7 +2134,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classint">int</a> 
 <tr><td class="fieldname"><a id="afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939" name="afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939"></a>Idx&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00088">88</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00112">112</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2110,7 +2164,7 @@ template&lt;class C, class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00110">110</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00196">mim::World::app()</a>, <a class="el" href="pass_8h_source.html#l00155">mim::PassMan::hook()</a>, <a class="el" href="phase_8h_source.html#l00153">mim::Pipeline::hook()</a>, <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>, <a class="el" href="world_8cpp_source.html#l00088">mim::World::make_external()</a>, <a class="el" href="world_8cpp_source.html#l00656">mim::World::reduce()</a>, <a class="el" href="compile_8cpp_source.html#l00067">reg_stages()</a>, <a class="el" href="world_8cpp_source.html#l00078">mim::World::register_annex()</a>, and <a class="el" href="schedule_8cpp_source.html#l00009">mim::Scheduler::Scheduler()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00196">mim::World::app()</a>, <a class="el" href="pass_8h_source.html#l00153">mim::PassMan::hook()</a>, <a class="el" href="phase_8h_source.html#l00186">mim::PhaseMan::hook()</a>, <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>, <a class="el" href="world_8cpp_source.html#l00088">mim::World::make_external()</a>, <a class="el" href="world_8cpp_source.html#l00656">mim::World::reduce()</a>, <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>, <a class="el" href="world_8cpp_source.html#l00078">mim::World::register_annex()</a>, and <a class="el" href="schedule_8cpp_source.html#l00009">mim::Scheduler::Scheduler()</a>.</p>
 
 </div>
 </div>
@@ -2180,7 +2234,7 @@ template&lt;class D, class S&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00023">23</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00455">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="def_8h_source.html#l00762">mim::Lit::get()</a>, <a class="el" href="math_8h_source.html#l00089">mim::plug::math::lit_f()</a>, and <a class="el" href="normalize_8h_source.html#l00013">mim::Res::Res()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00455">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="def_8h_source.html#l00797">mim::Lit::get()</a>, <a class="el" href="math_8h_source.html#l00089">mim::plug::math::lit_f()</a>, and <a class="el" href="normalize_8h_source.html#l00013">mim::Res::Res()</a>.</p>
 
 </div>
 </div>
@@ -2215,7 +2269,7 @@ template&lt;class D, class S&gt; </div>
 <div class="line"><span class="stringliteral">h&#39;</span>: Cn B</div>
 <div class="line">h<span class="stringliteral">&#39;= λ b = f (b, ret_h)</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="lam_8cpp_source.html#l00056">56</a> of file <a class="el" href="lam_8cpp_source.html">lam.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8cpp_source.html#l00058">58</a> of file <a class="el" href="lam_8cpp_source.html">lam.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="lam_8h_source.html#l00034">mim::Pi::dom()</a>, <a class="el" href="lam_8h_source.html#l00048">mim::Pi::isa_returning()</a>, and <a class="el" href="lam_8h_source.html#l00068">mim::Pi::ret_dom()</a>.</p>
 
@@ -2409,7 +2463,7 @@ template&lt;class... Args&gt; </div>
 
 <p class="reference">References <a class="el" href="dbg_8h_source.html#l00125">error()</a>, and <a class="el" href="print_8h_source.html#l00163">fmt()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00178">mim::World::annex()</a>, <a class="el" href="bind_8cpp_source.html#l00253">mim::ast::AxmDecl::bind()</a>, <a class="el" href="check_8cpp_source.html#l00325">mim::Arr::check()</a>, <a class="el" href="check_8cpp_source.html#l00372">mim::Pi::check()</a>, <a class="el" href="check_8cpp_source.html#l00395">mim::Reform::check()</a>, <a class="el" href="check_8cpp_source.html#l00404">mim::Rule::check()</a>, <a class="el" href="dl_8cpp_source.html#l00055">mim::dl::close()</a>, <a class="el" href="ll_8cpp_source.html#l01088">mim::ll::compile_and_run()</a>, <a class="el" href="dfa2matcher_8cpp_source.html#l00095">dfa2matcher()</a>, <a class="el" href="emit_8cpp_source.html#l00383">mim::ast::AxmDecl::emit()</a>, <a class="el" href="emit_8cpp_source.html#l00349">mim::ast::ExtractExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00296">mim::ast::RetExpr::emit_()</a>, <a class="el" href="ll_8cpp_source.html#l00455">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="dbg_8h_source.html#l00125">error()</a>, <a class="el" href="sys_8cpp_source.html#l00056">mim::sys::exec()</a>, <a class="el" href="world_8cpp_source.html#l00346">mim::World::extract()</a>, <a class="el" href="dl_8cpp_source.html#l00036">mim::dl::get()</a>, <a class="el" href="world_8cpp_source.html#l00425">mim::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00508">mim::World::lit()</a>, <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>, <a class="el" href="main_8cpp_source.html#l00021">main()</a>, <a class="el" href="world_8cpp_source.html#l00595">mim::World::match()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00064">mim::plug::refly::normalize_equiv()</a>, <a class="el" href="dl_8cpp_source.html#l00017">mim::dl::open()</a>, <a class="el" href="world_8cpp_source.html#l00474">mim::World::seq()</a>, <a class="el" href="world_8cpp_source.html#l00288">mim::World::tuple()</a>, <a class="el" href="world_8cpp_source.html#l00106">mim::World::type()</a>, <a class="el" href="world_8cpp_source.html#l00115">mim::World::uinc()</a>, and <a class="el" href="world_8cpp_source.html#l00135">mim::World::umax()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00181">mim::World::annex()</a>, <a class="el" href="bind_8cpp_source.html#l00253">mim::ast::AxmDecl::bind()</a>, <a class="el" href="check_8cpp_source.html#l00325">mim::Arr::check()</a>, <a class="el" href="check_8cpp_source.html#l00372">mim::Pi::check()</a>, <a class="el" href="check_8cpp_source.html#l00395">mim::Reform::check()</a>, <a class="el" href="check_8cpp_source.html#l00404">mim::Rule::check()</a>, <a class="el" href="dl_8cpp_source.html#l00055">mim::dl::close()</a>, <a class="el" href="ll_8cpp_source.html#l01088">mim::ll::compile_and_run()</a>, <a class="el" href="dfa2matcher_8cpp_source.html#l00095">dfa2matcher()</a>, <a class="el" href="emit_8cpp_source.html#l00383">mim::ast::AxmDecl::emit()</a>, <a class="el" href="emit_8cpp_source.html#l00349">mim::ast::ExtractExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00296">mim::ast::RetExpr::emit_()</a>, <a class="el" href="ll_8cpp_source.html#l00455">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="dbg_8h_source.html#l00125">error()</a>, <a class="el" href="sys_8cpp_source.html#l00056">mim::sys::exec()</a>, <a class="el" href="world_8cpp_source.html#l00346">mim::World::extract()</a>, <a class="el" href="dl_8cpp_source.html#l00036">mim::dl::get()</a>, <a class="el" href="world_8cpp_source.html#l00425">mim::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00508">mim::World::lit()</a>, <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>, <a class="el" href="main_8cpp_source.html#l00021">main()</a>, <a class="el" href="world_8cpp_source.html#l00595">mim::World::match()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00067">mim::plug::refly::normalize_equiv()</a>, <a class="el" href="dl_8cpp_source.html#l00017">mim::dl::open()</a>, <a class="el" href="world_8cpp_source.html#l00474">mim::World::seq()</a>, <a class="el" href="world_8cpp_source.html#l00288">mim::World::tuple()</a>, <a class="el" href="world_8cpp_source.html#l00106">mim::World::type()</a>, <a class="el" href="world_8cpp_source.html#l00115">mim::World::uinc()</a>, and <a class="el" href="world_8cpp_source.html#l00135">mim::World::umax()</a>.</p>
 
 </div>
 </div>
@@ -2542,7 +2596,7 @@ template&lt;class Indexer, class Key, class Value&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00086">86</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00086">flatten()</a>, <a class="el" href="def_8h_source.html#l00251">mim::Def::is_intro()</a>, <a class="el" href="world_8cpp_source.html#l00278">mim::World::sigma()</a>, <a class="el" href="world_8cpp_source.html#l00288">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00262">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00086">flatten()</a>, <a class="el" href="def_8h_source.html#l00284">mim::Def::is_intro()</a>, <a class="el" href="world_8cpp_source.html#l00278">mim::World::sigma()</a>, <a class="el" href="world_8cpp_source.html#l00288">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00295">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00086">flatten()</a>, <a class="el" href="tuple_8cpp_source.html#l00074">flatten()</a>, and <a class="el" href="scalarize_8cpp_source.html#l00059">mim::Scalarize::rewrite()</a>.</p>
 
@@ -2567,7 +2621,7 @@ template&lt;class Indexer, class Key, class Value&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>          <td class="paramname"><span class="paramname"><em>flatten_sigmas</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>flatten_sigmas</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2576,7 +2630,7 @@ template&lt;class Indexer, class Key, class Value&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00074">74</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00546">mim::Def::arity()</a>, <a class="el" href="tuple_8cpp_source.html#l00086">flatten()</a>, <a class="el" href="def_8h_source.html#l00775">mim::Lit::isa()</a>, and <a class="el" href="def_8cpp_source.html#l00575">mim::Def::proj()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00546">mim::Def::arity()</a>, <a class="el" href="tuple_8cpp_source.html#l00086">flatten()</a>, <a class="el" href="def_8h_source.html#l00810">mim::Lit::isa()</a>, and <a class="el" href="def_8cpp_source.html#l00581">mim::Def::proj()</a>.</p>
 
 </div>
 </div>
@@ -2674,7 +2728,7 @@ requires (N != std::dynamic_extent)</div>
 
 <p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00115">115</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00349">mim::ast::ExtractExpr::emit_()</a>, <a class="el" href="def_8cpp_source.html#l00121">mim::Lit::rebuild_()</a>, <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00039">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00054">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, and <a class="el" href="rule_8cpp_source.html#l00012">tuple_of_dict()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00349">mim::ast::ExtractExpr::emit_()</a>, <a class="el" href="def_8cpp_source.html#l00121">mim::Lit::rebuild_()</a>, <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00039">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00056">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm_App()</a>, <a class="el" href="rewrite_8h_source.html#l00013">mim::Rewriter::Rewriter()</a>, and <a class="el" href="rule_8cpp_source.html#l00012">tuple_of_dict()</a>.</p>
 
 </div>
 </div>
@@ -2687,7 +2741,7 @@ requires (N != std::dynamic_extent)</div>
 template&lt;class T&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::get_sign </td>
+          <td class="memname">bool mim::get_sign </td>
           <td>(</td>
           <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
           <td></td>
@@ -2837,7 +2891,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_associative </td>
+          <td class="memname">bool mim::is_associative </td>
           <td>(</td>
           <td class="paramtype">Id</td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -2867,7 +2921,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_associative </td>
+          <td class="memname">bool mim::is_associative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205">plug::core::bit2</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -2896,7 +2950,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_associative </td>
+          <td class="memname">bool mim::is_associative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673">plug::core::icmp</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -2925,7 +2979,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_associative </td>
+          <td class="memname">bool mim::is_associative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566">plug::core::nat</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -2954,7 +3008,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_associative </td>
+          <td class="memname">bool mim::is_associative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985e">plug::core::ncmp</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -2983,7 +3037,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_associative </td>
+          <td class="memname">bool mim::is_associative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">plug::core::wrap</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3012,7 +3066,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_associative </td>
+          <td class="memname">bool mim::is_associative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686">plug::math::arith</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3043,7 +3097,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype">Id</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -3072,7 +3126,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205">plug::core::bit2</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3099,7 +3153,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673">plug::core::icmp</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3128,7 +3182,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a310a7363139e360a1370c73dc6038566">plug::core::nat</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3155,7 +3209,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985e">plug::core::ncmp</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3184,7 +3238,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">plug::core::wrap</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3213,7 +3267,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686">plug::math::arith</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3242,7 +3296,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3">plug::math::cmp</a></td>          <td class="paramname"><span class="paramname"><em>id</em></span></td><td>)</td>
           <td></td>
@@ -3269,7 +3323,7 @@ template&lt;class Id&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_commutative </td>
+          <td class="memname">bool mim::is_commutative </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacemim_1_1plug_1_1math.html#ab3714a92165c9fc8ab8d7238944e428c">plug::math::extrema</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -3293,7 +3347,7 @@ template&lt;class Id&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::is_unit </td>
+          <td class="memname">bool mim::is_unit </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
           <td></td>
@@ -3303,7 +3357,7 @@ template&lt;class Id&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00052">52</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00278">mim::World::sigma()</a>, <a class="el" href="def_8h_source.html#l00262">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00278">mim::World::sigma()</a>, <a class="el" href="def_8h_source.html#l00295">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -3330,7 +3384,7 @@ template&lt;class Id&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00349">349</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00350">350</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tail__rec__elim_8cpp_source.html#l00026">mim::TailRecElim::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00005">mim::BetaRed::rewrite()</a>, <a class="el" href="lam__spec_8cpp_source.html#l00009">mim::LamSpec::rewrite()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00016">mim::plug::mem::CopyProp::rewrite()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00034">mim::plug::mem::SSAConstr::rewrite()</a>, and <a class="el" href="tail__rec__elim_8cpp_source.html#l00011">mim::TailRecElim::rewrite()</a>.</p>
 
@@ -3363,7 +3417,7 @@ template&lt;class Id&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00341">341</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00342">342</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="eta__exp_8cpp_source.html#l00064">mim::EtaExp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00163">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00024">mim::EtaExp::rewrite()</a>, and <a class="el" href="eta__red_8cpp_source.html#l00021">mim::EtaRed::rewrite()</a>.</p>
 
@@ -3392,11 +3446,11 @@ template&lt;class Id&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>These are <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s that are neither <code>nullptr</code>, nor <a class="el" href="classmim_1_1Def.html#a6fc1ebb1ac4c1458a432b1cbaffbf9af">Lam::is_external</a>, nor Lam::is_unset. </p>
+<p>These are <a class="el" href="classmim_1_1Lam.html" title="A function.">Lam</a>s that are neither <code>nullptr</code>, nor <a class="el" href="classmim_1_1Def.html#aa3519178f6136b088a41d1bfa0cab603">Lam::is_external</a>, nor Lam::is_unset. </p>
 
-<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00344">344</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00345">345</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00431">mim::Def::is_external()</a>, and <a class="el" href="def_8cpp_source.html#l00298">mim::Def::is_set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00464">mim::Def::is_external()</a>, and <a class="el" href="def_8cpp_source.html#l00298">mim::Def::is_set()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00028">mim::BetaRed::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00163">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00005">mim::BetaRed::rewrite()</a>, <a class="el" href="lam__spec_8cpp_source.html#l00009">mim::LamSpec::rewrite()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00016">mim::plug::mem::CopyProp::rewrite()</a>, and <a class="el" href="ssa__constr_8cpp_source.html#l00034">mim::plug::mem::SSAConstr::rewrite()</a>.</p>
 
@@ -3428,7 +3482,7 @@ template&lt;class C, class K&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00100">100</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="driver_8h_source.html#l00083">mim::Driver::backend()</a>, <a class="el" href="world_8h_source.html#l00201">mim::World::external()</a>, <a class="el" href="driver_8cpp_source.html#l00083">mim::Driver::get_fun_ptr()</a>, <a class="el" href="driver_8h_source.html#l00062">mim::Driver::is_loaded()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00013">mim::EtaExp::new2old()</a>, <a class="el" href="driver_8h_source.html#l00081">mim::Driver::normalizer()</a>, <a class="el" href="driver_8h_source.html#l00079">mim::Driver::pass()</a>, <a class="el" href="driver_8h_source.html#l00080">mim::Driver::phase()</a>, and <a class="el" href="eta__exp_8cpp_source.html#l00024">mim::EtaExp::rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="driver_8h_source.html#l00083">mim::Driver::backend()</a>, <a class="el" href="world_8h_source.html#l00204">mim::World::external()</a>, <a class="el" href="driver_8cpp_source.html#l00083">mim::Driver::get_fun_ptr()</a>, <a class="el" href="driver_8h_source.html#l00062">mim::Driver::is_loaded()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00013">mim::EtaExp::new2old()</a>, <a class="el" href="driver_8h_source.html#l00081">mim::Driver::normalizer()</a>, <a class="el" href="driver_8h_source.html#l00079">mim::Driver::pass()</a>, <a class="el" href="driver_8h_source.html#l00080">mim::Driver::phase()</a>, and <a class="el" href="eta__exp_8cpp_source.html#l00024">mim::EtaExp::rewrite()</a>.</p>
 
 </div>
 </div>
@@ -3501,7 +3555,7 @@ template&lt;class C, class K&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00113">113</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00441">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00106">merge()</a>, <a class="el" href="world_8cpp_source.html#l00278">mim::World::sigma()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00476">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00106">merge()</a>, <a class="el" href="world_8cpp_source.html#l00278">mim::World::sigma()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -3526,7 +3580,7 @@ template&lt;class C, class K&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00118">118</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00441">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00106">merge()</a>, <a class="el" href="world_8cpp_source.html#l00288">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00262">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00476">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00106">merge()</a>, <a class="el" href="world_8cpp_source.html#l00288">mim::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00295">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -3980,7 +4034,7 @@ template&lt;class C, class K&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="optimize_8cpp_source.html#l00009">9</a> of file <a class="el" href="optimize_8cpp_source.html">optimize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00203">mim::World::copy_externals()</a>, <a class="el" href="world_8h_source.html#l00084">mim::World::driver()</a>, <a class="el" href="world_8h_source.html#l00201">mim::World::external()</a>, <a class="el" href="def_8cpp_source.html#l00564">mim::Def::make_internal()</a>, <a class="el" href="driver_8h_source.html#l00080">mim::Driver::phase()</a>, <a class="el" href="world_8cpp_source.html#l00075">mim::World::sym()</a>, <a class="el" href="def_8h_source.html#l00262">mim::Def::type()</a>, and <a class="el" href="lam_8h_source.html#l00320">mim::App::uncurry()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00206">mim::World::copy_externals()</a>, <a class="el" href="world_8h_source.html#l00087">mim::World::driver()</a>, <a class="el" href="world_8h_source.html#l00204">mim::World::external()</a>, <a class="el" href="def_8cpp_source.html#l00564">mim::Def::make_internal()</a>, <a class="el" href="driver_8h_source.html#l00080">mim::Driver::phase()</a>, <a class="el" href="world_8cpp_source.html#l00075">mim::World::sym()</a>, <a class="el" href="def_8h_source.html#l00295">mim::Def::type()</a>, and <a class="el" href="lam_8h_source.html#l00321">mim::App::uncurry()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00021">main()</a>.</p>
 
@@ -4613,9 +4667,9 @@ template&lt;Vectorlike Vec&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00054">54</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00546">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00775">mim::Lit::isa()</a>, <a class="el" href="def_8cpp_source.html#l00575">mim::Def::proj()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00546">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00810">mim::Lit::isa()</a>, <a class="el" href="def_8cpp_source.html#l00581">mim::Def::proj()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="refly_2normalizers_8cpp_source.html#l00078">mim::plug::refly::normalize_check()</a>, and <a class="el" href="compile_8cpp_source.html#l00067">reg_stages()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="refly_2normalizers_8cpp_source.html#l00081">mim::plug::refly::normalize_check()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00008">mim::plug::compile::normalize_is_loaded()</a>, and <a class="el" href="compile_8cpp_source.html#l00041">reg_stages()</a>.</p>
 
 </div>
 </div>
@@ -4640,7 +4694,7 @@ template&lt;Vectorlike Vec&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="rule_8cpp_source.html#l00012">12</a> of file <a class="el" href="rule_8cpp_source.html">rule.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="span_8h_source.html#l00115">get()</a>, <a class="el" href="world_8h_source.html#l00228">mim::World::mut_hole()</a>, <a class="el" href="world_8h_source.html#l00230">mim::World::mut_hole_type()</a>, and <a class="el" href="world_8cpp_source.html#l00288">mim::World::tuple()</a>.</p>
+<p class="reference">References <a class="el" href="span_8h_source.html#l00115">get()</a>, <a class="el" href="world_8h_source.html#l00231">mim::World::mut_hole()</a>, <a class="el" href="world_8h_source.html#l00233">mim::World::mut_hole_type()</a>, and <a class="el" href="world_8cpp_source.html#l00288">mim::World::tuple()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rule_8cpp_source.html#l00116">mim::Rule::replace()</a>.</p>
 
@@ -4690,7 +4744,7 @@ template&lt;Vectorlike Vec&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00100">100</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00546">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00781">mim::Lit::as()</a>, <a class="el" href="def_8h_source.html#l00357">mim::Def::projs()</a>, and <a class="el" href="tuple_8cpp_source.html#l00100">unflatten()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00546">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00816">mim::Lit::as()</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, and <a class="el" href="tuple_8cpp_source.html#l00100">unflatten()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00100">unflatten()</a>, and <a class="el" href="tuple_8cpp_source.html#l00093">unflatten()</a>.</p>
 
@@ -4715,7 +4769,7 @@ template&lt;Vectorlike Vec&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a></td>          <td class="paramname"><span class="paramname"><em>flatten_muts</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>flatten_muts</em></span><span class="paramdefsep"> = </span><span class="paramdefval">true</span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -4756,7 +4810,7 @@ template&lt;class I, class A = std::allocator&lt;typename std::iterator_traits&l
 
 <p class="reference">References <a class="el" href="vector_8h_source.html#l00011">Default_Inlined_Size</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00523">mim::Sets&lt; Def &gt;::Set&lt; Def &gt;::erase()</a>, <a class="el" href="sets_8h_source.html#l00487">mim::Sets&lt; Def &gt;::Set&lt; Def &gt;::merge()</a>, and <a class="el" href="def_8h_source.html#l00375">mim::Def::projs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00523">mim::Sets&lt; Def &gt;::Set&lt; Def &gt;::erase()</a>, <a class="el" href="sets_8h_source.html#l00487">mim::Sets&lt; Def &gt;::Set&lt; Def &gt;::merge()</a>, and <a class="el" href="def_8h_source.html#l00408">mim::Def::projs()</a>.</p>
 
 </div>
 </div>
@@ -4769,7 +4823,7 @@ template&lt;class I, class A = std::allocator&lt;typename std::iterator_traits&l
 template&lt;class Indexer, class Key&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> mim::visit </td>
+          <td class="memname">bool mim::visit </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt; Indexer, Key &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>set</em></span>, </td>
         </tr>
@@ -4867,7 +4921,7 @@ template&lt;class T&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00015">15</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00028">mim::BetaRed::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00018">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00064">mim::EtaExp::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00057">mim::EtaExp::analyze()</a>, <a class="el" href="eta__red_8cpp_source.html#l00037">mim::EtaRed::analyze()</a>, <a class="el" href="pass_8h_source.html#l00050">mim::Pass::analyze()</a>, <a class="el" href="pass_8h_source.html#l00052">mim::Pass::analyze()</a>, <a class="el" href="pass_8h_source.html#l00051">mim::Pass::analyze()</a>, <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00077">mim::plug::clos::LowerTypedClosPrep::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00099">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00163">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00143">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="tail__rec__elim_8cpp_source.html#l00026">mim::TailRecElim::analyze()</a>, <a class="el" href="pass_8cpp_source.html#l00043">mim::PassMan::run()</a>, <a class="el" href="pass_8h_source.html#l00308">mim::FPPass&lt; P, M &gt;::undo_enter()</a>, and <a class="el" href="pass_8h_source.html#l00301">mim::FPPass&lt; P, M &gt;::undo_visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00028">mim::BetaRed::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00018">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00064">mim::EtaExp::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00057">mim::EtaExp::analyze()</a>, <a class="el" href="eta__red_8cpp_source.html#l00037">mim::EtaRed::analyze()</a>, <a class="el" href="pass_8h_source.html#l00050">mim::Pass::analyze()</a>, <a class="el" href="pass_8h_source.html#l00052">mim::Pass::analyze()</a>, <a class="el" href="pass_8h_source.html#l00051">mim::Pass::analyze()</a>, <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00077">mim::plug::clos::LowerTypedClosPrep::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00099">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00163">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00143">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="tail__rec__elim_8cpp_source.html#l00026">mim::TailRecElim::analyze()</a>, <a class="el" href="pass_8cpp_source.html#l00043">mim::PassMan::run()</a>, <a class="el" href="pass_8h_source.html#l00306">mim::FPPass&lt; P, M &gt;::undo_enter()</a>, and <a class="el" href="pass_8h_source.html#l00299">mim::FPPass&lt; P, M &gt;::undo_visit()</a>.</p>
 
 </div>
 </div>
@@ -4891,7 +4945,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00095">95</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00119">119</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

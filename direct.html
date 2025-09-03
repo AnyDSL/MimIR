@@ -123,27 +123,27 @@ $(function(){initNavTree('direct.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md134">Dependencies</a>
+    <a href="#autotoc_md130">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md135">Operations</a>
+    <a href="#autotoc_md131">Operations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md136">%direct.ds2cps</a>
+        <a href="#autotoc_md132">%direct.ds2cps</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md137">%direct.cps2ds</a>
+        <a href="#autotoc_md133">%direct.cps2ds</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md138">Passes and Phases</a>
+    <a href="#autotoc_md134">Passes and Phases</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md139">Passes</a>
+        <a href="#autotoc_md135">Passes</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md140">Phases</a>
+        <a href="#autotoc_md136">Phases</a>
       </li>
     </ul>
   </li>
@@ -156,33 +156,33 @@ $(function(){initNavTree('direct.html',''); initResizable(true); });
 <li>Wrap DS functions to CPS functions using an axiom.</li>
 <li>Convert CPS functions to DS functions using an axiom.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md134"></a>
+<h1><a class="anchor" id="autotoc_md130"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">import compile;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md135"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md131"></a>
 Operations</h1>
-<h2><a class="anchor" id="autotoc_md136"></a>
+<h2><a class="anchor" id="autotoc_md132"></a>
 %direct.ds2cps</h2>
 <div class="fragment"><div class="line">// axm %direct.ds2cps: [T: *, U: *] → (T → U) → Cn [T, Cn U];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md137"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md133"></a>
 %direct.cps2ds</h2>
 <p>This axiom lets the user call a cps function in direct style. The function is not converted. Only the call site is changed.</p>
 <div class="fragment"><div class="line">axm %direct.cps2ds:     [T: *, U:     *] → Cn [T,    Cn U  ] → [    T  → U  ], normalize_cps2ds, 2;</div>
 <div class="line">axm %direct.cps2ds_dep: [T: *, U: T → *] → Cn [t: T, Cn U t] → [[t: T] → U t], 2;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md138"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md134"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md139"></a>
+<h2><a class="anchor" id="autotoc_md135"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %direct.ds2cps_pass: %compile.Pass;</div>
 <div class="line">axm %direct.cps2ds_pass: %compile.Pass;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md140"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md136"></a>
 Phases</h2>
 <div class="fragment"><div class="line">let direct_phases =</div>
-<div class="line">    %compile.combined_phase</div>
-<div class="line">        (%compile.phase_list</div>
-<div class="line">            (%compile.single_pass_phase %direct.ds2cps_pass)</div>
-<div class="line">            (%compile.single_pass_phase %direct.cps2ds_pass)</div>
-<div class="line">            optimization_phase);</div>
+<div class="line">    %compile.phases (</div>
+<div class="line">        %compile.passes %direct.ds2cps_pass,</div>
+<div class="line">        %compile.passes %direct.cps2ds_pass,</div>
+<div class="line">        optimization_phase,</div>
+<div class="line">    );</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

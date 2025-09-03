@@ -9,5 +9,5 @@ var searchData=
   ['hash_5fcombine_6',['hash_combine',['../namespacemim.html#a4d4c9094e2f043e1eca201f173cf96da',1,'mim']]],
   ['head_7',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB']]],
   ['holeexpr_8',['HoleExpr',['../classmim_1_1ast_1_1HoleExpr.html#af222f6ce623acf0004bf17ca86d59048',1,'mim::ast::HoleExpr']]],
-  ['hook_9',['hook',['../classmim_1_1PassMan.html#a33d41ef2caf8dc4ccd24cff9fe2f726c',1,'mim::PassMan::hook()'],['../classmim_1_1Pipeline.html#aec2e5556bd72d10f35b0aff650fbfb6c',1,'mim::Pipeline::hook()']]]
+  ['hook_9',['hook',['../classmim_1_1PassMan.html#a33d41ef2caf8dc4ccd24cff9fe2f726c',1,'mim::PassMan::hook()'],['../classmim_1_1PhaseMan.html#a9e21d73311e0c574478a85371977be04',1,'mim::PhaseMan::hook()']]]
 ];

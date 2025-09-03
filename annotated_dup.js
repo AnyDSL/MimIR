@@ -89,8 +89,7 @@ var annotated_dup =
           [ "LowerTypedClosPrep", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep" ]
         ] ],
         [ "compile", "namespacemim_1_1plug_1_1compile.html", [
-          [ "DebugPrint", "classmim_1_1plug_1_1compile_1_1DebugPrint.html", "classmim_1_1plug_1_1compile_1_1DebugPrint" ],
-          [ "PrefixCleanup", "classmim_1_1plug_1_1compile_1_1PrefixCleanup.html", "classmim_1_1plug_1_1compile_1_1PrefixCleanup" ]
+          [ "DebugPrint", "classmim_1_1plug_1_1compile_1_1DebugPrint.html", "classmim_1_1plug_1_1compile_1_1DebugPrint" ]
         ] ],
         [ "direct", "namespacemim_1_1plug_1_1direct.html", [
           [ "CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", "classmim_1_1plug_1_1direct_1_1CPS2DS" ],
@@ -122,8 +121,10 @@ var annotated_dup =
       [ "Arr", "classmim_1_1Arr.html", "classmim_1_1Arr" ],
       [ "Axm", "classmim_1_1Axm.html", "classmim_1_1Axm" ],
       [ "BetaRed", "classmim_1_1BetaRed.html", "classmim_1_1BetaRed" ],
+      [ "BetaRedPhase", "classmim_1_1BetaRedPhase.html", "classmim_1_1BetaRedPhase" ],
       [ "BitSet", "classmim_1_1BitSet.html", "classmim_1_1BitSet" ],
       [ "Bound", "classmim_1_1Bound.html", "classmim_1_1Bound" ],
+      [ "BranchNormalizePhase", "classmim_1_1BranchNormalizePhase.html", "classmim_1_1BranchNormalizePhase" ],
       [ "Checker", "classmim_1_1Checker.html", "classmim_1_1Checker" ],
       [ "Cleanup", "classmim_1_1Cleanup.html", "classmim_1_1Cleanup" ],
       [ "ClosedCollector", "classmim_1_1ClosedCollector.html", "classmim_1_1ClosedCollector" ],
@@ -135,7 +136,9 @@ var annotated_dup =
       [ "Emitter", "classmim_1_1Emitter.html", "classmim_1_1Emitter" ],
       [ "Error", "classmim_1_1Error.html", "classmim_1_1Error" ],
       [ "EtaExp", "classmim_1_1EtaExp.html", "classmim_1_1EtaExp" ],
+      [ "EtaExpPhase", "classmim_1_1EtaExpPhase.html", "classmim_1_1EtaExpPhase" ],
       [ "EtaRed", "classmim_1_1EtaRed.html", "classmim_1_1EtaRed" ],
+      [ "EtaRedPhase", "classmim_1_1EtaRedPhase.html", "classmim_1_1EtaRedPhase" ],
       [ "Ext", "classmim_1_1Ext.html", "classmim_1_1Ext" ],
       [ "Extract", "classmim_1_1Extract.html", "classmim_1_1Extract" ],
       [ "Flags", "namespacemim.html#structmim_1_1Flags", "namespacemim_structmim_1_1Flags_dup" ],
@@ -168,9 +171,10 @@ var annotated_dup =
       [ "PassManPhase", "classmim_1_1PassManPhase.html", "classmim_1_1PassManPhase" ],
       [ "PassPhase", "classmim_1_1PassPhase.html", "classmim_1_1PassPhase" ],
       [ "Phase", "classmim_1_1Phase.html", "classmim_1_1Phase" ],
+      [ "PhaseMan", "classmim_1_1PhaseMan.html", "classmim_1_1PhaseMan" ],
       [ "Pi", "classmim_1_1Pi.html", "classmim_1_1Pi" ],
-      [ "Pipeline", "classmim_1_1Pipeline.html", "classmim_1_1Pipeline" ],
       [ "Plugin", "structmim_1_1Plugin.html", "structmim_1_1Plugin" ],
+      [ "PrefixCleanup", "classmim_1_1PrefixCleanup.html", "classmim_1_1PrefixCleanup" ],
       [ "Prod", "classmim_1_1Prod.html", "classmim_1_1Prod" ],
       [ "Proxy", "classmim_1_1Proxy.html", "classmim_1_1Proxy" ],
       [ "Reform", "classmim_1_1Reform.html", "classmim_1_1Reform" ],
@@ -212,6 +216,5 @@ var annotated_dup =
       [ "tuple_element< I, mim::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4", "namespacestd_structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4_dup" ],
       [ "tuple_size< mim::Span< T, N > >", "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
-    [ "DebugDump", "classDebugDump.html", "classDebugDump" ],
-    [ "PluginSelect", "structPluginSelect.html", "structPluginSelect" ]
+    [ "DebugDump", "classDebugDump.html", "classDebugDump" ]
 ];

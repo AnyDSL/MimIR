@@ -8,9 +8,11 @@ var searchData=
   ['errorexpr_5',['ErrorExpr',['../classmim_1_1ast_1_1ErrorExpr.html',1,'mim::ast']]],
   ['errorptrn_6',['ErrorPtrn',['../classmim_1_1ast_1_1ErrorPtrn.html',1,'mim::ast']]],
   ['etaexp_7',['EtaExp',['../classmim_1_1EtaExp.html',1,'mim']]],
-  ['etared_8',['EtaRed',['../classmim_1_1EtaRed.html',1,'mim']]],
-  ['expr_9',['Expr',['../classmim_1_1ast_1_1Expr.html',1,'mim::ast']]],
-  ['ext_10',['Ext',['../classmim_1_1Ext.html',1,'mim']]],
-  ['extract_11',['Extract',['../classmim_1_1Extract.html',1,'mim']]],
-  ['extractexpr_12',['ExtractExpr',['../classmim_1_1ast_1_1ExtractExpr.html',1,'mim::ast']]]
+  ['etaexpphase_8',['EtaExpPhase',['../classmim_1_1EtaExpPhase.html',1,'mim']]],
+  ['etared_9',['EtaRed',['../classmim_1_1EtaRed.html',1,'mim']]],
+  ['etaredphase_10',['EtaRedPhase',['../classmim_1_1EtaRedPhase.html',1,'mim']]],
+  ['expr_11',['Expr',['../classmim_1_1ast_1_1Expr.html',1,'mim::ast']]],
+  ['ext_12',['Ext',['../classmim_1_1Ext.html',1,'mim']]],
+  ['extract_13',['Extract',['../classmim_1_1Extract.html',1,'mim']]],
+  ['extractexpr_14',['ExtractExpr',['../classmim_1_1ast_1_1ExtractExpr.html',1,'mim::ast']]]
 ];

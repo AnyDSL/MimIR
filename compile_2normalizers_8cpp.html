@@ -122,7 +122,8 @@ $(function(){initNavTree('compile_2normalizers_8cpp.html',''); initResizable(tru
   <div class="headertitle"><div class="title">normalizers.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="world_8h_source.html">mim/world.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="driver_8h_source.html">mim/driver.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="world_8h_source.html">mim/world.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="compile_8h_source.html">mim/plug/compile/compile.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for normalizers.cpp:</div>
@@ -144,21 +145,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">%compile.pass_phase</div></td></tr>
-<tr class="memitem:ac784679bd6ddeab0fd9ab1dd84f3ecb9" id="r_ac784679bd6ddeab0fd9ab1dd84f3ecb9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#ac784679bd6ddeab0fd9ab1dd84f3ecb9">mim::plug::compile::normalize_pass_phase</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
-<tr class="separator:ac784679bd6ddeab0fd9ab1dd84f3ecb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">%compile.combined_phase</div></td></tr>
-<tr class="memitem:a3cc42292a9b8fd5cb64b185ab2104f7c" id="r_a3cc42292a9b8fd5cb64b185ab2104f7c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#a3cc42292a9b8fd5cb64b185ab2104f7c">mim::plug::compile::normalize_combined_phase</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
-<tr class="memdesc:a3cc42292a9b8fd5cb64b185ab2104f7c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="namespacemim_1_1plug_1_1compile.html#a6d01b3e592dcf881fbe508add96ad9f6">combined_phase</a> (<a class="el" href="namespacemim_1_1plug_1_1compile.html#a1b6af4bf840fb72f2bbd6fcce767e8cc">phase_list</a> phase1 ... phasen)</code> -&gt; <code><a class="el" href="namespacemim_1_1plug_1_1compile.html#a9a7de07a9562215d2d8e80ff90dca075">phases_to_phase</a> n (phase1, ..., phasen)</code>  <br /></td></tr>
-<tr class="separator:a3cc42292a9b8fd5cb64b185ab2104f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">%compile.single_pass_phase</div></td></tr>
-<tr class="memitem:a1ade9770a5afa72f14d7948b4999199c" id="r_a1ade9770a5afa72f14d7948b4999199c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#a1ade9770a5afa72f14d7948b4999199c">mim::plug::compile::normalize_single_pass_phase</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
-<tr class="memdesc:a1ade9770a5afa72f14d7948b4999199c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="namespacemim_1_1plug_1_1compile.html#a847ce6ecda2bb689fa0ba4755e2716d7">single_pass_phase</a> pass</code> -&gt; <code><a class="el" href="namespacemim_1_1plug_1_1compile.html#a59f28bf6164c88df601c027da7a2d3f7">passes_to_phase</a> pass</code>  <br /></td></tr>
-<tr class="separator:a1ade9770a5afa72f14d7948b4999199c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">%compile.combine_pass_list</div></td></tr>
-<tr class="memitem:a65a7808c6e86fd1f65b2eae68045147e" id="r_a65a7808c6e86fd1f65b2eae68045147e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#a65a7808c6e86fd1f65b2eae68045147e">mim::plug::compile::normalize_combine_pass_list</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
-<tr class="memdesc:a65a7808c6e86fd1f65b2eae68045147e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="namespacemim_1_1plug_1_1compile.html#af76efd65225b17e5bbae91d45faf64c8">combine_pass_list</a> K (<a class="el" href="namespacemim_1_1plug_1_1compile.html#acf1934a130e787322009f1b142af6734">pass_list</a> pass11 ... pass1N) ... (<a class="el" href="namespacemim_1_1plug_1_1compile.html#acf1934a130e787322009f1b142af6734">pass_list</a> passK1 ... passKM) = <a class="el" href="namespacemim_1_1plug_1_1compile.html#acf1934a130e787322009f1b142af6734">pass_list</a> pass11 ... p1N ... / passK1 ... passKM</code>  <br /></td></tr>
-<tr class="separator:a65a7808c6e86fd1f65b2eae68045147e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.is_loaded</div></td></tr>
+<tr class="memitem:a99c96c2c9e8f4f5320e6c8c2b7f92f0d" id="r_a99c96c2c9e8f4f5320e6c8c2b7f92f0d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#a99c96c2c9e8f4f5320e6c8c2b7f92f0d">mim::plug::compile::normalize_is_loaded</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="separator:a99c96c2c9e8f4f5320e6c8c2b7f92f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.cat</div></td></tr>
+<tr class="memitem:a624456eafb0146de1f0f7c7cc8ce5d69" id="r_a624456eafb0146de1f0f7c7cc8ce5d69"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#a624456eafb0146de1f0f7c7cc8ce5d69">mim::plug::compile::normalize_cat</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *callee, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="separator:a624456eafb0146de1f0f7c7cc8ce5d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -135,9 +135,6 @@ var hierarchy =
       [ "mim::RWPass< DebugPrint, Lam >", "classmim_1_1RWPass.html", [
         [ "mim::plug::compile::DebugPrint", "classmim_1_1plug_1_1compile_1_1DebugPrint.html", null ]
       ] ],
-      [ "mim::RWPass< PrefixCleanup, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::compile::PrefixCleanup", "classmim_1_1plug_1_1compile_1_1PrefixCleanup.html", null ]
-      ] ],
       [ "mim::RWPass< CPS2DS, Lam >", "classmim_1_1RWPass.html", [
         [ "mim::plug::direct::CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", null ]
       ] ],
@@ -179,7 +176,6 @@ var hierarchy =
     ] ],
     [ "mim::PassMan", "classmim_1_1PassMan.html", null ],
     [ "mim::Plugin", "structmim_1_1Plugin.html", null ],
-    [ "PluginSelect< P, B >", "structPluginSelect.html", null ],
     [ "mim::World::State::POD", "structmim_1_1World_1_1State.html#structmim_1_1World_1_1State_1_1POD", null ],
     [ "mim::ast::R< T >", "structmim_1_1ast_1_1R.html", null ],
     [ "automaton::RangeCompare", "structautomaton_1_1RangeCompare.html", null ],
@@ -188,7 +184,14 @@ var hierarchy =
     [ "mim::Res", "classmim_1_1Res.html", null ],
     [ "mim::Rewriter", "classmim_1_1Rewriter.html", [
       [ "mim::RWPhase", "classmim_1_1RWPhase.html", [
-        [ "mim::FPPhase", "classmim_1_1FPPhase.html", null ],
+        [ "mim::BranchNormalizePhase", "classmim_1_1BranchNormalizePhase.html", null ],
+        [ "mim::Cleanup", "classmim_1_1Cleanup.html", null ],
+        [ "mim::EtaRedPhase", "classmim_1_1EtaRedPhase.html", null ],
+        [ "mim::FPPhase", "classmim_1_1FPPhase.html", [
+          [ "mim::BetaRedPhase", "classmim_1_1BetaRedPhase.html", null ],
+          [ "mim::EtaExpPhase", "classmim_1_1EtaExpPhase.html", null ]
+        ] ],
+        [ "mim::PrefixCleanup", "classmim_1_1PrefixCleanup.html", null ],
         [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
       ] ],
       [ "mim::VarRewriter", "classmim_1_1VarRewriter.html", null ]
@@ -252,11 +255,10 @@ var hierarchy =
             [ "mim::plug::mem::AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", null ]
           ] ]
         ] ],
-        [ "mim::Cleanup", "classmim_1_1Cleanup.html", null ],
         [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", null ],
         [ "mim::PassManPhase", "classmim_1_1PassManPhase.html", null ],
         [ "mim::PassPhase< P >", "classmim_1_1PassPhase.html", null ],
-        [ "mim::Pipeline", "classmim_1_1Pipeline.html", null ],
+        [ "mim::PhaseMan", "classmim_1_1PhaseMan.html", null ],
         [ "mim::RWPhase", "classmim_1_1RWPhase.html", null ],
         [ "mim::plug::clos::ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", null ],
         [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ]
@@ -453,7 +455,7 @@ var hierarchy =
     [ "mim::detail::w2u_< 64 >", null, null ],
     [ "mim::detail::w2u_< 8 >", null, null ],
     [ "mim::World", "classmim_1_1World.html", null ],
-    [ "bool", "namespace_3globalScope_4.html#classbool", null ],
+    [ "const bool", "namespace_3globalScope_4.html#classconst_01bool", null ],
     [ "int", "namespace_3globalScope_4.html#classint", null ],
     [ "list< DFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01DFANode_01_4", null ],
     [ "list< NFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01NFANode_01_4", null ]

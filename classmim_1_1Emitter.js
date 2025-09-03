@@ -1,6 +1,6 @@
 var classmim_1_1Emitter =
 [
-    [ "Emitter", "classmim_1_1Emitter.html#aa235c5be13e545eae455161d2c994311", null ],
+    [ "Emitter", "classmim_1_1Emitter.html#a11f77474d87a85e8f3e9651a611090b7", null ],
     [ "emit", "classmim_1_1Emitter.html#a2bcf71afb2c89408e62c247e80cf6061", null ],
     [ "emit_unsafe", "classmim_1_1Emitter.html#a75baacb814d981cf6b912267ba5cda90", null ],
     [ "ostream", "classmim_1_1Emitter.html#a614e61750773436c58e728b596c4b19b", null ],
