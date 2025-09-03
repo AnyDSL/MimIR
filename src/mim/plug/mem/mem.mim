@@ -114,7 +114,7 @@ axm %mem.reshape_pass:      %mem.reshape_mode → %compile.Pass;
 ///
 axm %mem.add_mem_phase: %compile.Phase;
 
-let mem_opt_passes = (
+let mem_opt_passes = %compile.meta_pass (
     %compile.beta_red_pass,
     %compile.eta_red_pass,
     %compile.eta_exp_pass,

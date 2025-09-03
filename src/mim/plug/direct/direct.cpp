@@ -8,7 +8,7 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Phases&, Passes& passes) {
+void reg_stages(Flags2Phases&, Flags2Passes& passes) {
     PassMan::hook<direct::ds2cps_pass, direct::DS2CPS>(passes);
     PassMan::hook<direct::cps2ds_pass, direct::CPS2DS>(passes);
 }

@@ -38,7 +38,7 @@ void apply(P& ps, M& man, const Def* app) {
         world.ELOG("unsupported callee for a phase/pass: `{}`", p_def);
 }
 
-void reg_stages(Phases& phases, Passes& passes) {
+void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     // clang-format off
     assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](PhaseMan&, const Def*) {});
     assert_emplace(passes, flags_t(Annex::Base<compile::null_pass >), [](PassMan&,  const Def*) {});
@@ -84,6 +84,11 @@ void reg_stages(Phases& phases, Passes& passes) {
     PassMan::hook<compile::scalarize_pass,     Scalarize  >(passes);
     PassMan::hook<compile::tail_rec_elim_pass, TailRecElim>(passes);
     // clang-format on
+
+    assert_emplace(passes, flags_t(Annex::Base<compile::meta_pass>), [&](PassMan& man, const Def* app) {
+        for (auto def : app->as<App>()->arg()->projs())
+            apply(passes, man, def);
+    });
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {

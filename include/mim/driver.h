@@ -92,8 +92,8 @@ private:
     std::list<fs::path> search_paths_;
     std::list<fs::path>::iterator insert_ = search_paths_.end();
     Backends backends_;
-    Passes passes_;
-    Phases phases_;
+    Flags2Passes passes_;
+    Flags2Phases phases_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> import_path2sym_;
 };

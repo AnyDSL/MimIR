@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <stack>
 #include <typeindex>
 
@@ -7,7 +8,10 @@
 
 namespace mim {
 
+class Pass;
 class PassMan;
+using Passes = std::deque<std::unique_ptr<Pass>>;
+
 /// @name Undo
 /// Used by FPPass::analyze to indicate where to backtrack to.
 ///@{
@@ -101,6 +105,20 @@ private:
     friend class PassMan;
 };
 
+/// Groups several Pass%es into a single Pass.
+/// Will be merged into the PassMan.
+class MetaPass : public Pass {
+public:
+    MetaPass(PassMan& man, Passes& passes)
+        : Pass(man, "meta_pass")
+        , passes_(std::move(passes)) {}
+
+private:
+    Passes passes_;
+
+    friend class PassMan;
+};
+
 /// An optimizer that combines several optimizations in an optimal way.
 /// This is loosely based upon:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
@@ -141,6 +159,11 @@ public:
         return res;
     }
 
+    void add(std::unique_ptr<MetaPass>&& meta_pass) {
+        for (auto&& pass : meta_pass->passes_)
+            passes_.emplace_back(std::move(pass));
+    }
+
     /// Runs a single Pass.
     template<class P, class... Args>
     static void run(World& world, Args&&... args) {
@@ -150,7 +173,7 @@ public:
     }
 
     template<class A, class P, class... Args>
-    static void hook(Passes& passes, Args&&... args) {
+    static void hook(Flags2Passes& passes, Args&&... args) {
         auto f = [... args = std::forward<Args>(args)](PassMan& man, const Def*) { man.add<P>(args...); };
         assert_emplace(passes, flags_t(Annex::Base<A>), f);
     }
@@ -218,7 +241,7 @@ private:
     ///@}
 
     World& world_;
-    std::deque<std::unique_ptr<Pass>> passes_;
+    Passes passes_;
     absl::flat_hash_map<std::type_index, Pass*> registry_;
     std::deque<State> states_;
     Def* curr_mut_    = nullptr;
