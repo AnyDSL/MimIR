@@ -11,7 +11,7 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Phases& phases, Passes& passes) {
+void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PhaseMan::hook<matrix::lower_matrix_low_level, matrix::LowerMatrixLowLevel>(phases);
     // clang-format off
     PassMan::hook<matrix::lower_matrix_high_level_map_reduce, matrix::LowerMatrixHighLevelMapRed>(passes);

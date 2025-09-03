@@ -17,7 +17,7 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Phases& phases, Passes& passes) {
+void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PhaseMan::hook<clos::clos_conv_phase, clos::ClosConv>(phases);
     PhaseMan::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
 

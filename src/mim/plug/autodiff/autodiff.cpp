@@ -14,7 +14,7 @@ using namespace std::literals;
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Phases&, Passes& passes) {
+void reg_stages(Flags2Phases&, Flags2Passes& passes) {
     // clang-format off
     PassMan::hook<autodiff::ad_eval_pass,         autodiff::AutoDiffEval       >(passes);
     PassMan::hook<autodiff::ad_zero_pass,         autodiff::AutoDiffZero       >(passes);

@@ -17,7 +17,7 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Phases& phases, Passes& passes) {
+void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PhaseMan::hook<mem::add_mem_phase, mem::AddMem>(phases);
     // clang-format off
     PassMan::hook<mem::ssa_pass,          mem::SSAConstr   >(passes);

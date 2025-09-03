@@ -9,6 +9,6 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Phases&, Passes& passes) { PassMan::hook<affine::lower_for_pass, affine::LowerFor>(passes); }
+void reg_stages(Flags2Phases&, Flags2Passes& passes) { PassMan::hook<affine::lower_for_pass, affine::LowerFor>(passes); }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"affine", nullptr, reg_stages, nullptr}; }

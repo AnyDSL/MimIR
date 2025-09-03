@@ -20,8 +20,8 @@ class PhaseMan;
 using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 
 /// Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a PhaseMan.
-using Phases = absl::flat_hash_map<flags_t, std::function<void(PhaseMan&, const Def*)>>;
-using Passes = absl::flat_hash_map<flags_t, std::function<void(PassMan&, const Def*)>>;
+using Flags2Phases = absl::flat_hash_map<flags_t, std::function<void(PhaseMan&, const Def*)>>;
+using Flags2Passes = absl::flat_hash_map<flags_t, std::function<void(PassMan&, const Def*)>>;
 
 using Backends = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;
 ///@}
@@ -37,7 +37,7 @@ struct Plugin {
     /// Callback for registering the mapping from axm ids to normalizer functions in the given @p normalizers map.
     void (*register_normalizers)(Normalizers&);
     /// Callback for registering the Plugin's callbacks for Pass%es and Phase%s.
-    void (*register_stages)(Phases&, Passes&);
+    void (*register_stages)(Flags2Phases&, Flags2Passes&);
     /// Callback for registering the mapping from backend names to emission functions in the given @p backends map.
     void (*register_backends)(Backends&);
 };

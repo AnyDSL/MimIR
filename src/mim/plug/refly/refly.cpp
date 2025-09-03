@@ -8,7 +8,7 @@
 
 using namespace mim;
 
-void reg_stages(Phases&, Passes& passes) {
+void reg_stages(Flags2Phases&, Flags2Passes& passes) {
     PassMan::hook<plug::refly::remove_dbg_perm_pass, plug::refly::RemoveDbgPerm>(passes);
 }
 

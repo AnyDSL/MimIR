@@ -9,8 +9,7 @@
 /// ## Dependencies
 ///
 plugin core;
-plugin compile;
-/// supported plugins with passes
+import compile;
 import affine;
 import autodiff;
 import clos;
@@ -33,9 +32,11 @@ lam extern _default_compile []: %compile.Phase =
         %compile.passes %compile.tail_rec_elim_pass,
         %compile.passes (cond_pass "regex" %regex.lower_regex),
         // optimize
-        %compile.passes
-            (%compile.cat (optimization_passes,
-                %compile.cat ((cond_pass "affine" %affine.lower_for_pass), mem_opt_passes))),
+        %compile.passes (
+            optimization_passes,
+            cond_pass "affine" %affine.lower_for_pass,
+            mem_opt_passes,
+        ),
         cond_phase "autodiff"
                 (%compile.phases (
                     %compile.passes %autodiff.ad_eval_pass,

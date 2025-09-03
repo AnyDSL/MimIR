@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <stack>
 #include <typeindex>
 
@@ -7,7 +8,10 @@
 
 namespace mim {
 
+class Pass;
 class PassMan;
+using Passes = std::deque<std::unique_ptr<Pass>>;
+
 /// @name Undo
 /// Used by FPPass::analyze to indicate where to backtrack to.
 ///@{
@@ -150,7 +154,7 @@ public:
     }
 
     template<class A, class P, class... Args>
-    static void hook(Passes& passes, Args&&... args) {
+    static void hook(Flags2Passes& passes, Args&&... args) {
         auto f = [... args = std::forward<Args>(args)](PassMan& man, const Def*) { man.add<P>(args...); };
         assert_emplace(passes, flags_t(Annex::Base<A>), f);
     }
@@ -218,7 +222,7 @@ private:
     ///@}
 
     World& world_;
-    std::deque<std::unique_ptr<Pass>> passes_;
+    Passes passes_;
     absl::flat_hash_map<std::type_index, Pass*> registry_;
     std::deque<State> states_;
     Def* curr_mut_    = nullptr;

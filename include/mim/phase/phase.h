@@ -183,7 +183,7 @@ public:
     ///@}
 
     template<class A, class P, class... Args>
-    static void hook(Phases& phases, Args&&... args) {
+    static void hook(Flags2Phases& phases, Args&&... args) {
         auto f = [... args = std::forward<Args>(args)](PhaseMan& man, const Def*) { man.template add<P>(args...); };
         assert_emplace(phases, flags_t(Annex::Base<A>), f);
     }
