@@ -188,6 +188,7 @@ public:
     /// @name Eta-Conversion
     ///@{
     static const Def* eta_expand(Filter, const Def* f);
+    static const Def* eta_expand(const Def* f) { return eta_expand(true, f); } ///< Use `true` Filter.
     /// Yields body(), if eta-convertible and `nullptr` otherwise.
     /// η-convertible means: `lm x = body x` where `x` ∉ `body`.
     const Def* eta_reduce() const;

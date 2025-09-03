@@ -15,23 +15,47 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define MIM_NODE(m)                                                                                               \
-    m(Lit,      Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/          \
-    m(Axm,      Judge::Intro)                                                                                     \
-    m(Var,      Judge::Intro)                                                                                     \
-    m(Global,   Judge::Intro)                                                                                     \
-    m(Proxy,    Judge::Intro)                                                                                     \
-    m(Hole,     Judge::Hole)                                                                                      \
-    m(Type,     Judge::Meta) m(Univ,  Judge::Meta)  m(UMax,    Judge::Meta) m(UInc,   Judge::Meta)                \
-    m(Pi,       Judge::Form) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                       \
-    m(Sigma,    Judge::Form) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, Judge::Intro | Judge::Elim) \
-    m(Arr,      Judge::Form) m(Pack,  Judge::Intro)                                                               \
-    m(Join,     Judge::Form) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    Judge::Intro)               \
-    m(Meet,     Judge::Form) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    Judge::Intro)               \
-    m(Reform,   Judge::Form) m(Rule,  Judge::Intro)                                                               \
-    m(Uniq,     Judge::Form)                                                                                      \
-    m(Nat,      Judge::Form)                                                                                      \
-    m(Idx,      Judge::Intro)
+#define MIM_NODE(m)                                                                                                \
+    m(Lit,    Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/             \
+    m(Axm,    Judge::Intro)                                                                                        \
+    m(Var,    Judge::Intro)                                                                                        \
+    m(Global, Judge::Intro)                                                                                        \
+    m(Proxy,  Judge::Intro)                                                                                        \
+    m(Hole,   Judge::Hole )                                                                                        \
+    m(Type,   Judge::Meta ) m(Univ,  Judge::Meta ) m(UMax,    Judge::Meta) m(UInc,   (Judge::Meta               )) \
+    m(Pi,     Judge::Form ) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                         \
+    m(Sigma,  Judge::Form ) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, (Judge::Intro | Judge::Elim)) \
+    m(Arr,    Judge::Form ) m(Pack,  Judge::Intro)                                                                 \
+    m(Join,   Judge::Form ) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    (Judge::Intro              )) \
+    m(Meet,   Judge::Form ) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    (Judge::Intro              )) \
+    m(Reform, Judge::Form ) m(Rule,  Judge::Intro)                                                                 \
+    m(Uniq,   Judge::Form )                                                                                        \
+    m(Nat,    Judge::Form )                                                                                        \
+    m(Idx,    Judge::Intro)
+
+#define MIM_IMM_NODE(m)                                                                                            \
+    m(Lit)                                                                                                         \
+    m(Axm)                                                                                                         \
+    m(Var)                                                                                                         \
+    m(Proxy)                                                                                                       \
+    m(Type)  m(Univ)  m(UMax)    m(UInc)                                                                           \
+    m(Pi)    m(Lam)   m(App)                                                                                       \
+    m(Sigma) m(Tuple) m(Extract) m(Insert)                                                                         \
+    m(Arr)   m(Pack)                                                                                               \
+    m(Join)  m(Inj)   m(Match)   m(Top)                                                                            \
+    m(Meet)  m(Merge) m(Split)   m(Bot)                                                                            \
+    m(Rule)                                                                                                        \
+    m(Uniq)                                                                                                        \
+    m(Nat)                                                                                                         \
+    m(Idx)
+
+#define MIM_MUT_NODE(m)                                                                                            \
+    m(Global)                                                                                                      \
+    m(Hole)                                                                                                        \
+    m(Pi)    m(Lam)                                                                                                \
+    m(Sigma)                                                                                                       \
+    m(Arr)   m(Pack)                                                                                               \
+    m(Rule)
 // clang-format on
 
 namespace mim {
@@ -114,15 +138,24 @@ enum class Judge : u32 {
     Hole  = 1 << 4, ///< Special rule for Hole.
     // clang-format on
 };
+
+/// [Judgement](https://ncatlab.org/nlab/show/judgment).
+enum class Mut {
+    // clang-format off
+    Mut = 1 << 0, ///< Node may be mutable.
+    Imm = 1 << 1, ///< Node may be immmutable.
+    // clang-format on
+};
 ///@}
 
 } // namespace mim
 
 #ifndef DOXYGEN
-template<>
-struct fe::is_bit_enum<mim::Dep> : std::true_type {};
-template<>
-struct fe::is_bit_enum<mim::Judge> : std::true_type {};
+// clang-format off
+template<> struct fe::is_bit_enum<mim::Dep>   : std::true_type {};
+template<> struct fe::is_bit_enum<mim::Judge> : std::true_type {};
+template<> struct fe::is_bit_enum<mim::Mut>   : std::true_type {};
+// clang-format on
 #endif
 
 namespace mim {
@@ -428,15 +461,17 @@ public:
 
     /// @name external
     ///@{
-    bool is_external() const { return external_; }
+    bool is_external() const noexcept { return external_; }
     void make_external();
     void make_internal();
-    void transfer_external(Def* to) { make_internal(), to->make_external(); }
+    void transfer_external(Def* to);
     ///@}
 
     /// @name Casts
     /// @see @ref cast_builtin
     ///@{
+    bool is_mutable() const noexcept { return mut_; }
+
     // clang-format off
     template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
     template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
@@ -478,14 +513,14 @@ public:
     template<bool Ow = false>       Def* set(Loc l)       { if (Ow || !dbg_.loc()) dbg_.set(l); return this; }
     template<bool Ow = false> const Def* set(Sym s) const { if (Ow || !dbg_.sym()) dbg_.set(s); return this; }
     template<bool Ow = false>       Def* set(Sym s)       { if (Ow || !dbg_.sym()) dbg_.set(s); return this; }
-    template<bool Ow = false> const Def* set(       std::string s) const { set(sym(std::move(s))); return this; }
-    template<bool Ow = false>       Def* set(       std::string s)       { set(sym(std::move(s))); return this; }
-    template<bool Ow = false> const Def* set(Loc l, Sym s        ) const { set(l); set(s); return this; }
-    template<bool Ow = false>       Def* set(Loc l, Sym s        )       { set(l); set(s); return this; }
-    template<bool Ow = false> const Def* set(Loc l, std::string s) const { set(l); set(sym(std::move(s))); return this; }
-    template<bool Ow = false>       Def* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); return this; }
-    template<bool Ow = false> const Def* set(Dbg d) const { set(d.loc(), d.sym()); return this; }
-    template<bool Ow = false>       Def* set(Dbg d)       { set(d.loc(), d.sym()); return this; }
+    template<bool Ow = false> const Def* set(       std::string s) const { set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false>       Def* set(       std::string s)       { set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false> const Def* set(Loc l, Sym s        ) const { set<Ow>(l); set<Ow>(s); return this; }
+    template<bool Ow = false>       Def* set(Loc l, Sym s        )       { set<Ow>(l); set<Ow>(s); return this; }
+    template<bool Ow = false> const Def* set(Loc l, std::string s) const { set<Ow>(l); set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false>       Def* set(Loc l, std::string s)       { set<Ow>(l); set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false> const Def* set(Dbg d) const { set<Ow>(d.loc(), d.sym()); return this; }
+    template<bool Ow = false>       Def* set(Dbg d)       { set<Ow>(d.loc(), d.sym()); return this; }
     // clang-format on
     ///@}
 

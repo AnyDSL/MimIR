@@ -3,17 +3,26 @@
 namespace mim {
 
 void Phase::run() {
-    world().verify().ILOG("=== {}: start ===", name());
+    world().verify().ILOG("=== {}: Phase start ===", name());
     start();
-    world().verify().ILOG("=== {}: done ===", name());
+    world().verify().ILOG("=== {}: Phase done ===", name());
 }
 
 void RWPhase::start() {
-    for (auto def : world().annexes())
-        rewrite(def);
-    for (auto mut : world().copy_externals())
-        mut->transfer_external(rewrite(mut)->as_mut());
+    for (const auto& [f, def] : old_world().flags2annex())
+        rewrite_annex(f, def);
+
+    bootstrapping_ = false;
+
+    for (auto mut : old_world().copy_externals())
+        rewrite_external(mut);
+
+    swap(old_world(), new_world());
 }
+
+void RWPhase::rewrite_annex(flags_t f, const Def* def) { new_world().register_annex(f, rewrite(def)); }
+
+void RWPhase::rewrite_external(Def* mut) { mut->transfer_external(rewrite(mut)->as_mut()); }
 
 void FPPhase::start() {
     for (bool todo = true; todo;) {
@@ -24,23 +33,25 @@ void FPPhase::start() {
     RWPhase::start();
 }
 
-void Cleanup::start() {
-    auto new_world = world().inherit();
-    Rewriter rewriter(new_world);
+PhaseMan::PhaseMan(World& world, bool fixed_point)
+    : Phase(world, std::format("pipeline (fixed_point_: `{}`)", fixed_point))
+    , fixed_point_(fixed_point) {}
 
-    for (const auto& [f, def] : world().flags2annex())
-        new_world.register_annex(f, rewriter.rewrite(def));
-    for (auto mut : world().externals()) {
-        auto new_mut = rewriter.rewrite(mut)->as_mut();
-        new_mut->make_external();
-    }
+void PhaseMan::start() {
+    do {
+        for (auto& phase : phases()) {
+            phase->run();
+            todo_ |= phase->todo();
+        }
 
-    swap(world(), new_world);
-}
+        todo_ &= fixed_point();
 
-void Pipeline::start() {
-    for (auto& phase : phases())
-        phase->run();
+        if (todo_) {
+            for (auto& phase : phases())
+                phase->reset();
+            reset();
+        }
+    } while (todo_);
 }
 
 } // namespace mim

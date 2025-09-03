@@ -15,20 +15,23 @@ class World;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
-/// Phase::dirty indicates whether we may need a Cleanup afterwards.
 class Phase : public fe::RuntimeCast<Phase> {
 public:
-    Phase(World& world, std::string_view name, bool dirty)
+    /// @name Construction & Destruction
+    ///@{
+    Phase(World& world, std::string name)
         : world_(world)
-        , name_(name)
-        , dirty_(dirty) {}
+        , name_(std::move(name)) {}
     virtual ~Phase() = default;
+
+    virtual void reset() { todo_ = false; }
+    ///@}
 
     /// @name Getters
     ///@{
     World& world() { return world_; }
     std::string_view name() const { return name_; }
-    bool is_dirty() const { return dirty_; }
+    bool todo() const { return todo_; }
     ///@}
 
     /// @name run
@@ -45,43 +48,76 @@ public:
 
 protected:
     virtual void start() = 0; ///< Actual entry.
-    void set_name(std::string name) { name_ = name; }
+
+    /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
+    bool todo_ = false;
 
 private:
     World& world_;
-    std::string name_;
-    bool dirty_;
+    const std::string name_;
 };
 
-/// Visits the current Phase::world and constructs a new RWPhase::world along the way.
-/// It recursively **rewrites** all World::externals().
+/// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
+/// This will destroy RWPhase::old_world leaving RWPhase::new_world which will be created here as the *current* World to
+/// work with.
+/// This Phase will recursively Rewriter::rewrite
+/// 1. all (old) World::annexes() (during which RWPhase::is_bootstrapping is `true`), and then
+/// 2. all (old) World::externals() (during which RWPhase::is_bootstrapping is `false`).
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
 public:
-    RWPhase(World& world, std::string_view name)
-        : Phase(world, name, true)
-        , Rewriter(world) {}
+    /// @name Construction
+    ///@{
+    RWPhase(World& world, std::string name)
+        : Phase(world, std::move(name))
+        , Rewriter(world.inherit_ptr()) {}
 
-    World& world() { return Phase::world(); }
+    void reset() override {
+        bootstrapping_ = true;
+        Phase::reset();
+        Rewriter::reset(old_world().inherit_ptr());
+    }
+    ///@}
+
+    /// @name Rewrite
+    ///@{
+    virtual void rewrite_annex(flags_t, const Def*);
+    virtual void rewrite_external(Def*);
+    ///@}
+
+    /// @name World
+    /// * Phase::world is the **old** one.
+    /// * Rewriter::world is the **new** one.
+    /// * RWPhase::world is deleted to not confuse this.
+    ///@{
+    using Phase::world;
+    using Rewriter::world;
+    World& world() = delete;                         ///< Hides both and forbids direct access.
+    World& old_world() { return Phase::world(); }    ///< Get **old** Def%s from here.
+    World& new_world() { return Rewriter::world(); } ///< Create **new** Def%s into this.
+    ///@}
+
+    bool is_bootstrapping() const { return bootstrapping_; }
+
+protected:
+    bool bootstrapping_ = true;
     void start() override;
 };
 
-/// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.
-class Cleanup : public Phase {
+/// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping them afterwards.
+class Cleanup : public RWPhase {
 public:
     Cleanup(World& world)
-        : Phase(world, "cleanup", false) {}
-
-    void start() override;
+        : RWPhase(world, "cleanup") {}
 };
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
 /// Inherit from this one to implement a classic data-flow analysis.
-/// @note If you don't need a fixed-point just return `true` after the first run of analyze.
+/// @note If you don't need a fixed-point, just return `true` after the first run of analyze.
 class FPPhase : public RWPhase {
 public:
-    FPPhase(World& world, std::string_view name)
-        : RWPhase(world, name) {}
+    FPPhase(World& world, std::string name)
+        : RWPhase(world, std::move(name)) {}
 
     virtual bool analyze() = 0;
     void start() override;
@@ -93,10 +129,9 @@ class PassPhase : public Phase {
 public:
     template<class... Args>
     PassPhase(World& world, Args&&... args)
-        : Phase(world, {}, false)
+        : Phase(world, "pass phase")
         , man_(world) {
         man_.template add<P>(std::forward<Args>(args)...);
-        set_name(std::string(man_.passes().back()->name()) + ".pass_phase");
     }
 
     void start() override { man_.run(); }
@@ -109,7 +144,7 @@ private:
 class PassManPhase : public Phase {
 public:
     PassManPhase(World& world, std::unique_ptr<PassMan>&& man)
-        : Phase(world, "pass_man_phase", false)
+        : Phase(world, "pass_man_phase")
         , man_(std::move(man)) {}
 
     void start() override { man_->run(); }
@@ -118,14 +153,13 @@ private:
     std::unique_ptr<PassMan> man_;
 };
 
-/// Organizes several Phase%s as a pipeline.
-class Pipeline : public Phase {
+/// Organizes several Phase%s in a a pipeline.
+/// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo_ flags yield `false`.
+class PhaseMan : public Phase {
 public:
-    using P = Phase;
+    PhaseMan(World&, bool fixed_point = false);
 
-    Pipeline(World& world)
-        : Phase(world, "pipeline", true) {}
-
+    bool fixed_point() const { return fixed_point_; }
     void start() override;
 
     /// @name phases
@@ -143,7 +177,6 @@ public:
             auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
             auto phase = p.get();
             phases_.emplace_back(std::move(p));
-            if (phase->is_dirty()) phases_.emplace_back(std::make_unique<Cleanup>(world()));
             return phase;
         }
     }
@@ -151,24 +184,26 @@ public:
 
     template<class A, class P, class... Args>
     static void hook(Phases& phases, Args&&... args) {
-        auto f = [... args = std::forward<Args>(args)](Pipeline& pipe, const Def*) { pipe.template add<P>(args...); };
+        auto f = [... args = std::forward<Args>(args)](PhaseMan& man, const Def*) { man.template add<P>(args...); };
         assert_emplace(phases, flags_t(Annex::Base<A>), f);
     }
 
 private:
     std::deque<std::unique_ptr<Phase>> phases_;
+    const bool fixed_point_;
 };
 
-/// Transitively visits all *reachable* closed mutables (Def::is_closed()) in World.
-/// Select with `elide_empty` whether you want to visit trivial *muts* without body.
-/// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
-/// If you a are only interested in specific mutables, you can pass this to @p M.
+/// Transitively visits all *reachable*, [*closed*](@ref Def::is_closed) mutables in the World.
+/// * Select with `elide_empty` whether you want to visit trivial mutables without body.
+/// * If you a are only interested in specific mutables, you can pass this to @p M.
 template<class M = Def>
 class ClosedMutPhase : public Phase {
 public:
-    ClosedMutPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
-        : Phase(world, name, dirty)
+    ClosedMutPhase(World& world, std::string name, bool elide_empty)
+        : Phase(world, std::move(name))
         , elide_empty_(elide_empty) {}
+
+    bool elide_empty() const { return elide_empty_; }
 
     void start() override {
         unique_queue<MutSet> queue;
@@ -190,16 +225,16 @@ protected:
     M* root() const { return root_; }
 
 private:
-    bool elide_empty_;
+    const bool elide_empty_;
     M* root_;
 };
 
-/// Transitively collects all *closed* mutables (Def::is_closed) in a World.
+/// Transitively collects all [*closed*](@ref Def::is_closed) mutables in a World.
 template<class M = Def>
 class ClosedCollector : public ClosedMutPhase<M> {
 public:
     ClosedCollector(World& world)
-        : ClosedMutPhase<M>(world, "collector", false, false) {}
+        : ClosedMutPhase<M>(world, "closed_collector", false) {}
 
     virtual void visit(M* mut) { muts.emplace_back(mut); }
 
@@ -217,8 +252,8 @@ public:
 template<class M = Def>
 class NestPhase : public ClosedMutPhase<M> {
 public:
-    NestPhase(World& world, std::string_view name, bool dirty, bool elide_empty)
-        : ClosedMutPhase<M>(world, name, dirty, elide_empty) {}
+    NestPhase(World& world, std::string name, bool elide_empty)
+        : ClosedMutPhase<M>(world, std::move(name), elide_empty) {}
 
     const Nest& nest() const { return *nest_; }
     virtual void visit(const Nest&) = 0;

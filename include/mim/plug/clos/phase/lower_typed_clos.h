@@ -28,7 +28,7 @@ namespace mim::plug::clos {
 class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world)
-        : Phase(world, "lower_typed_clos", true) {}
+        : Phase(world, "lower_typed_clos") {}
 
     void start() override;
 

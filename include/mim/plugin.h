@@ -13,14 +13,14 @@ namespace mim {
 
 class Driver;
 class PassMan;
-class Pipeline;
+class PhaseMan;
 
 /// @name Plugin Interface
 ///@{
 using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 
-/// Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a Pipeline.
-using Phases = absl::flat_hash_map<flags_t, std::function<void(Pipeline&, const Def*)>>;
+/// Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a PhaseMan.
+using Phases = absl::flat_hash_map<flags_t, std::function<void(PhaseMan&, const Def*)>>;
 using Passes = absl::flat_hash_map<flags_t, std::function<void(PassMan&, const Def*)>>;
 
 using Backends = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;

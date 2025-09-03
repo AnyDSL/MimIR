@@ -18,15 +18,15 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Phases& phases, Passes& passes) {
-    Pipeline::hook<clos::clos_conv_phase, clos::ClosConv>(phases);
-    Pipeline::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
+    PhaseMan::hook<clos::clos_conv_phase, clos::ClosConv>(phases);
+    PhaseMan::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
 
     // TODO:; remove after ho_codegen merge
-    phases[flags_t(Annex::Base<clos::eta_red_bool_pass>)] = [&](Pipeline& pipe, const Def* app) {
+    assert_emplace(passes, flags_t(Annex::Base<clos::eta_red_bool_pass>), [&](PassMan& man, const Def* app) {
         auto bb      = app->as<App>()->arg();
         auto bb_only = bb->as<Lit>()->get<u64>();
-        pipe.add<EtaRed>(bb_only);
-    };
+        man.add<EtaRed>(bb_only);
+    });
 
     PassMan::hook<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
     PassMan::hook<clos::branch_clos_pass, clos::BranchClosElim>(passes);
@@ -34,9 +34,7 @@ void reg_stages(Phases& phases, Passes& passes) {
     PassMan::hook<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
 }
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"clos", [](Normalizers& n) { clos::register_normalizers(n); }, reg_stages, nullptr};
-}
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"clos", clos::register_normalizers, reg_stages, nullptr}; }
 
 namespace mim::plug::clos {
 

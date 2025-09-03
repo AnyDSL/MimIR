@@ -122,9 +122,9 @@ const Def* Lit    ::rebuild_(World& w, const Def* t, Defs  ) const { return w.li
 const Def* Merge  ::rebuild_(World& w, const Def* t, Defs o) const { return w.merge(t, o); }
 const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
 const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
-const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, pass(), tag(), o); }
+const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
 const Def* Rule   ::rebuild_(World& w, const Def* t, Defs o) const { return w.rule(t->as<Reform>(), o[0], o[1], o[2]); }
-const Def* Reform ::rebuild_(World& w, const Def* , Defs o) const { return w.rule_type(o[0]); }
+const Def* Reform ::rebuild_(World& w, const Def* ,  Defs o) const { return w.reform(o[0]); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
 const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
 const Def* Match  ::rebuild_(World& w, const Def*  , Defs o) const { return w.match(o); }
@@ -562,6 +562,12 @@ bool Def::equal(const Def* other) const {
 
 void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
+
+void Def::transfer_external(Def* to) {
+    assert(this->sym() == to->sym());
+    make_internal();
+    to->make_external();
+}
 
 std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
 

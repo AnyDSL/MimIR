@@ -187,7 +187,7 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
         }
         return w.tuple(new_ops);
     } else if (auto uniq = val->type()->isa<Uniq>()) {
-        if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
+        if (auto new_val = assignable(type, uniq->op())) return new_val;
         return fail();
     }
 

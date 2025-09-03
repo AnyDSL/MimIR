@@ -89,7 +89,7 @@ private:
 class ClosConv : public Phase {
 public:
     ClosConv(World& world)
-        : Phase(world, "clos_conv", true)
+        : Phase(world, "clos_conv")
         , fva_(world) {}
 
     void start() override;

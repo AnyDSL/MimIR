@@ -57,6 +57,13 @@ axm %vec.is_unique: {T: *} → {n: Nat} → «n; T» → Bool, normalize_is_uniq
 ///
 /// ## Modifiers
 ///
+/// Concatenation of an `n`-vector and an `m`-vector to an `n + m`-vector.
+///
+axm %vec.cat: {n m: Nat}
+            → {T: *}
+            → [«n; T», «m; T»]
+            → «%core.nat.add (n, m); T», normalize_cat;
+///
 /// ### %%vec.diff
 ///
 /// Removes elements from vector.

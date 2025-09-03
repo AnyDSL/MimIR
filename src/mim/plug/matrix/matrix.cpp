@@ -12,13 +12,11 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Phases& phases, Passes& passes) {
-    Pipeline::hook<matrix::lower_matrix_low_level, matrix::LowerMatrixLowLevel>(phases);
+    PhaseMan::hook<matrix::lower_matrix_low_level, matrix::LowerMatrixLowLevel>(phases);
     // clang-format off
     PassMan::hook<matrix::lower_matrix_high_level_map_reduce, matrix::LowerMatrixHighLevelMapRed>(passes);
     PassMan::hook<matrix::lower_matrix_medium_level,          matrix::LowerMatrixMediumLevel    >(passes);
     // clang-format on
 }
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"matrix", [](Normalizers& n) { matrix::register_normalizers(n); }, reg_stages, nullptr};
-}
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"matrix", matrix::register_normalizers, reg_stages, nullptr}; }

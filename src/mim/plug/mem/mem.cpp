@@ -18,11 +18,12 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Phases& phases, Passes& passes) {
-    Pipeline::hook<mem::add_mem_phase, mem::AddMem>(phases);
-
-    PassMan::hook<mem::ssa_pass, mem::SSAConstr>(passes);
-    PassMan::hook<mem::remem_elim_pass, mem::RememElim>(passes);
+    PhaseMan::hook<mem::add_mem_phase, mem::AddMem>(phases);
+    // clang-format off
+    PassMan::hook<mem::ssa_pass,          mem::SSAConstr   >(passes);
+    PassMan::hook<mem::remem_elim_pass,   mem::RememElim   >(passes);
     PassMan::hook<mem::alloc2malloc_pass, mem::Alloc2Malloc>(passes);
+    // clang-format on
 
     assert_emplace(passes, flags_t(Annex::Base<mem::copy_prop_pass>), [&](PassMan& man, const Def* app) {
         auto bb_only = Lit::as(app->as<App>()->arg());
@@ -36,6 +37,4 @@ void reg_stages(Phases& phases, Passes& passes) {
     });
 }
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"mem", [](Normalizers& n) { mem::register_normalizers(n); }, reg_stages, nullptr};
-}
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"mem", mem::register_normalizers, reg_stages, nullptr}; }

@@ -72,7 +72,7 @@ public:
 
     /// @name proxy
     ///@{
-    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) { return world().proxy(type, index(), tag, ops); }
+    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) { return world().proxy(type, ops, index(), tag); }
     /// Check whether given @p def is a Proxy whose Proxy::pass matches this Pass's @p IPass::index.
     const Proxy* isa_proxy(const Def* def, u32 tag = 0) {
         if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->pass() == index() && proxy->tag() == tag)
@@ -95,8 +95,8 @@ private:
     ///@}
 
     PassMan& man_;
-    std::string name_;
-    size_t index_;
+    const std::string name_;
+    const size_t index_;
 
     friend class PassMan;
 };
@@ -106,8 +106,6 @@ private:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
 class PassMan {
 public:
-    using P = Pass;
-
     PassMan(World& world)
         : world_(world) {}
 
