@@ -123,13 +123,13 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md195">Dependencies</a>
+    <a href="#autotoc_md194">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md196">Passes, Phases, and Pipelines</a>
+    <a href="#autotoc_md195">Passes, Phases, and Pipelines</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md197">Pipelines</a>
+        <a href="#autotoc_md196">Pipelines</a>
       </li>
     </ul>
   </li>
@@ -138,20 +138,20 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2opt"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1opt.html" title="The opt Plugin">mim::plug::opt</a></dd></dl>
 <p>Manages the default compilation pipeline of Mim programs using plugins.</p>
-<h1><a class="anchor" id="autotoc_md195"></a>
+<h1><a class="anchor" id="autotoc_md194"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
-<div class="line">plugin compile;</div>
-</div><!-- fragment --><p> supported plugins with passes </p><div class="fragment"><div class="line">import affine;</div>
+<div class="line">import compile;</div>
+<div class="line">import affine;</div>
 <div class="line">import autodiff;</div>
 <div class="line">import clos;</div>
 <div class="line">import direct;</div>
 <div class="line">import matrix;</div>
 <div class="line">import refly;</div>
 <div class="line">import regex;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md196"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md195"></a>
 Passes, Phases, and Pipelines</h1>
-<h2><a class="anchor" id="autotoc_md197"></a>
+<h2><a class="anchor" id="autotoc_md196"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);</div>
 <div class="line">lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );</div>
@@ -163,9 +163,11 @@ Pipelines</h2>
 <div class="line">        %compile.passes %compile.tail_rec_elim_pass,</div>
 <div class="line">        %compile.passes (cond_pass &quot;regex&quot; %regex.lower_regex),</div>
 <div class="line">        // optimize</div>
-<div class="line">        %compile.passes</div>
-<div class="line">            (%compile.cat (optimization_passes,</div>
-<div class="line">                %compile.cat ((cond_pass &quot;affine&quot; %affine.lower_for_pass), mem_opt_passes))),</div>
+<div class="line">        %compile.passes (</div>
+<div class="line">            optimization_passes,</div>
+<div class="line">            cond_pass &quot;affine&quot; %affine.lower_for_pass,</div>
+<div class="line">            mem_opt_passes,</div>
+<div class="line">        ),</div>
 <div class="line">        cond_phase &quot;autodiff&quot;</div>
 <div class="line">                (%compile.phases (</div>
 <div class="line">                    %compile.passes %autodiff.ad_eval_pass,</div>

@@ -220,6 +220,9 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.null_pass</div></td></tr>
 <tr class="memitem:aadfaa97d82794c8513ba2b0e1f14a388" id="r_aadfaa97d82794c8513ba2b0e1f14a388"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#aadfaa97d82794c8513ba2b0e1f14a388">mim::plug::compile::null_pass</a> : flags_t </td></tr>
 <tr class="separator:aadfaa97d82794c8513ba2b0e1f14a388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.meta_pass</div></td></tr>
+<tr class="memitem:af81a0a8f6397f9cf05d4cb9185b2f6a6" id="r_af81a0a8f6397f9cf05d4cb9185b2f6a6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#af81a0a8f6397f9cf05d4cb9185b2f6a6">mim::plug::compile::meta_pass</a> : flags_t </td></tr>
+<tr class="separator:af81a0a8f6397f9cf05d4cb9185b2f6a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -236,12 +239,6 @@ Variables</h2></td></tr>
 <tr class="separator:a9019e60cd2374943087f2750b6ce0515"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99c96c2c9e8f4f5320e6c8c2b7f92f0d" id="r_a99c96c2c9e8f4f5320e6c8c2b7f92f0d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#a99c96c2c9e8f4f5320e6c8c2b7f92f0d">mim::plug::compile::normalize_is_loaded</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
 <tr class="separator:a99c96c2c9e8f4f5320e6c8c2b7f92f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">%compile.cat</h2></td></tr>
-<tr class="memitem:ae592ad3652c44c11011b9638dbedf039" id="r_ae592ad3652c44c11011b9638dbedf039"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#ae592ad3652c44c11011b9638dbedf039">mim::plug::compile::cat</a> : flags_t </td></tr>
-<tr class="separator:ae592ad3652c44c11011b9638dbedf039"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a624456eafb0146de1f0f7c7cc8ce5d69" id="r_a624456eafb0146de1f0f7c7cc8ce5d69"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1compile.html#a624456eafb0146de1f0f7c7cc8ce5d69">mim::plug::compile::normalize_cat</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *callee, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
-<tr class="separator:a624456eafb0146de1f0f7c7cc8ce5d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a7664b0fbc28b9dafd6c4ca3f00dad9a8" name="a7664b0fbc28b9dafd6c4ca3f00dad9a8"></a>
@@ -257,10 +254,9 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">void</span> register_normalizers(Normalizers&amp; normalizers) {\</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;is_loaded&gt;)] = &amp;normalize_is_loaded; \</div>
-<div class="line">        normalizers[flags_t(Annex::Base&lt;cat&gt;)] = &amp;normalize_cat; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00177">177</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00176">176</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

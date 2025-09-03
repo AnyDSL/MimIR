@@ -411,6 +411,8 @@ Concepts</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ab992e926dce870b1e086b34589849a92" id="r_ab992e926dce870b1e086b34589849a92"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab992e926dce870b1e086b34589849a92">NormalizeFn</a> = const <a class="el" href="classmim_1_1Def.html">Def</a>* (*)(const <a class="el" href="classmim_1_1Def.html">Def</a>*, const <a class="el" href="classmim_1_1Def.html">Def</a>*, const <a class="el" href="classmim_1_1Def.html">Def</a>*)</td></tr>
 <tr class="separator:ab992e926dce870b1e086b34589849a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a359a5d4bbfcb3ce23e5c0905ad186802" id="r_a359a5d4bbfcb3ce23e5c0905ad186802"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a359a5d4bbfcb3ce23e5c0905ad186802">Passes</a> = std::deque&lt;std::unique_ptr&lt;<a class="el" href="classmim_1_1Pass.html">Pass</a>&gt;&gt;</td></tr>
+<tr class="separator:a359a5d4bbfcb3ce23e5c0905ad186802"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5a838964832f04e880e1aa8c5789343" id="r_aa5a838964832f04e880e1aa8c5789343"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa5a838964832f04e880e1aa8c5789343">Uses</a> = absl::flat_hash_set&lt;<a class="el" href="classmim_1_1Use.html">Use</a>, <a class="el" href="structmim_1_1UseHash.html">UseHash</a>, <a class="el" href="structmim_1_1UseEq.html">UseEq</a>&gt;</td></tr>
 <tr class="separator:aa5a838964832f04e880e1aa8c5789343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d6e32c8985b06c92d46bf1c5fa7491a" id="r_a4d6e32c8985b06c92d46bf1c5fa7491a"><td class="memTemplParams" colspan="2">template&lt;class T, size_t N = std::dynamic_extent&gt; </td></tr>
@@ -959,11 +961,11 @@ Variables</h2></td></tr>
 </td></tr>
 <tr class="memitem:ab875464e5f495601abff7287573e1405" id="r_ab875464e5f495601abff7287573e1405"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab875464e5f495601abff7287573e1405">Normalizers</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, <a class="el" href="#ab992e926dce870b1e086b34589849a92">NormalizeFn</a>&gt;</td></tr>
 <tr class="separator:ab875464e5f495601abff7287573e1405"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5da41b1df3ddaaf992f90ef1b9e111c2" id="r_a5da41b1df3ddaaf992f90ef1b9e111c2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5da41b1df3ddaaf992f90ef1b9e111c2">Phases</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PhaseMan.html">PhaseMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td></tr>
-<tr class="memdesc:a5da41b1df3ddaaf992f90ef1b9e111c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
-<tr class="separator:a5da41b1df3ddaaf992f90ef1b9e111c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a780d7f029e0bbc4a1c80c8698de15651" id="r_a780d7f029e0bbc4a1c80c8698de15651"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a780d7f029e0bbc4a1c80c8698de15651">Passes</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PassMan.html">PassMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td></tr>
-<tr class="separator:a780d7f029e0bbc4a1c80c8698de15651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc4c8c6745943dbe59da4dafa9f18bb4" id="r_abc4c8c6745943dbe59da4dafa9f18bb4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc4c8c6745943dbe59da4dafa9f18bb4">Flags2Phases</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PhaseMan.html">PhaseMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td></tr>
+<tr class="memdesc:abc4c8c6745943dbe59da4dafa9f18bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
+<tr class="separator:abc4c8c6745943dbe59da4dafa9f18bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20a116c4c14737a5da434eafab641425" id="r_a20a116c4c14737a5da434eafab641425"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PassMan.html">PassMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td></tr>
+<tr class="separator:a20a116c4c14737a5da434eafab641425"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e05089762ab1bde20507ee3d7b37242" id="r_a6e05089762ab1bde20507ee3d7b37242"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e05089762ab1bde20507ee3d7b37242">Backends</a> = absl::btree_map&lt;std::string, void (*)(<a class="el" href="classmim_1_1World.html">World</a>&amp;, std::ostream&amp;)&gt;</td></tr>
 <tr class="separator:a6e05089762ab1bde20507ee3d7b37242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77f34c28f8418e4828b4684cbc025e52" id="r_a77f34c28f8418e4828b4684cbc025e52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmim_1_1Plugin.html">mim::Plugin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77f34c28f8418e4828b4684cbc025e52">mim_get_plugin</a> ()</td></tr>
@@ -1240,6 +1242,40 @@ template&lt;class To&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="types_8h_source.html#l00041">41</a> of file <a class="el" href="types_8h_source.html">types.h</a>.</p>
+
+</div>
+</div>
+<a id="a20a116c4c14737a5da434eafab641425" name="a20a116c4c14737a5da434eafab641425"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20a116c4c14737a5da434eafab641425">&#9670;&#160;</a></span>Flags2Passes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#a20a116c4c14737a5da434eafab641425">mim::Flags2Passes</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PassMan.html">PassMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00024">24</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+
+</div>
+</div>
+<a id="abc4c8c6745943dbe59da4dafa9f18bb4" name="abc4c8c6745943dbe59da4dafa9f18bb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc4c8c6745943dbe59da4dafa9f18bb4">&#9670;&#160;</a></span>Flags2Phases</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#abc4c8c6745943dbe59da4dafa9f18bb4">mim::Flags2Phases</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PhaseMan.html">PhaseMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00023">23</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
@@ -1563,37 +1599,19 @@ template&lt;class To&gt; </div>
 
 </div>
 </div>
-<a id="a780d7f029e0bbc4a1c80c8698de15651" name="a780d7f029e0bbc4a1c80c8698de15651"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a780d7f029e0bbc4a1c80c8698de15651">&#9670;&#160;</a></span>Passes</h2>
+<a id="a359a5d4bbfcb3ce23e5c0905ad186802" name="a359a5d4bbfcb3ce23e5c0905ad186802"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a359a5d4bbfcb3ce23e5c0905ad186802">&#9670;&#160;</a></span>Passes</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="#a780d7f029e0bbc4a1c80c8698de15651">mim::Passes</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PassMan.html">PassMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td>
+          <td class="memname">using <a class="el" href="#a359a5d4bbfcb3ce23e5c0905ad186802">mim::Passes</a> = std::deque&lt;std::unique_ptr&lt;<a class="el" href="classmim_1_1Pass.html">Pass</a>&gt;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00024">24</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
-
-</div>
-</div>
-<a id="a5da41b1df3ddaaf992f90ef1b9e111c2" name="a5da41b1df3ddaaf992f90ef1b9e111c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5da41b1df3ddaaf992f90ef1b9e111c2">&#9670;&#160;</a></span>Phases</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="#a5da41b1df3ddaaf992f90ef1b9e111c2">mim::Phases</a> = absl::flat_hash_map&lt;<a class="el" href="#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, std::function&lt;void(<a class="el" href="classmim_1_1PhaseMan.html">PhaseMan</a>&amp;, const <a class="el" href="classmim_1_1Def.html">Def</a>*)&gt;&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00023">23</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00013">13</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -1817,7 +1835,7 @@ template&lt;class To&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00014">14</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00018">18</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -2164,7 +2182,7 @@ template&lt;class C, class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00110">110</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00196">mim::World::app()</a>, <a class="el" href="pass_8h_source.html#l00153">mim::PassMan::hook()</a>, <a class="el" href="phase_8h_source.html#l00186">mim::PhaseMan::hook()</a>, <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>, <a class="el" href="world_8cpp_source.html#l00088">mim::World::make_external()</a>, <a class="el" href="world_8cpp_source.html#l00656">mim::World::reduce()</a>, <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>, <a class="el" href="world_8cpp_source.html#l00078">mim::World::register_annex()</a>, and <a class="el" href="schedule_8cpp_source.html#l00009">mim::Scheduler::Scheduler()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00196">mim::World::app()</a>, <a class="el" href="pass_8h_source.html#l00157">mim::PassMan::hook()</a>, <a class="el" href="phase_8h_source.html#l00186">mim::PhaseMan::hook()</a>, <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>, <a class="el" href="world_8cpp_source.html#l00088">mim::World::make_external()</a>, <a class="el" href="world_8cpp_source.html#l00656">mim::World::reduce()</a>, <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>, <a class="el" href="world_8cpp_source.html#l00078">mim::World::register_annex()</a>, and <a class="el" href="schedule_8cpp_source.html#l00009">mim::Scheduler::Scheduler()</a>.</p>
 
 </div>
 </div>
@@ -4919,9 +4937,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00015">15</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00019">19</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00028">mim::BetaRed::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00018">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00064">mim::EtaExp::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00057">mim::EtaExp::analyze()</a>, <a class="el" href="eta__red_8cpp_source.html#l00037">mim::EtaRed::analyze()</a>, <a class="el" href="pass_8h_source.html#l00050">mim::Pass::analyze()</a>, <a class="el" href="pass_8h_source.html#l00052">mim::Pass::analyze()</a>, <a class="el" href="pass_8h_source.html#l00051">mim::Pass::analyze()</a>, <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00077">mim::plug::clos::LowerTypedClosPrep::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00099">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00163">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00143">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="tail__rec__elim_8cpp_source.html#l00026">mim::TailRecElim::analyze()</a>, <a class="el" href="pass_8cpp_source.html#l00043">mim::PassMan::run()</a>, <a class="el" href="pass_8h_source.html#l00306">mim::FPPass&lt; P, M &gt;::undo_enter()</a>, and <a class="el" href="pass_8h_source.html#l00299">mim::FPPass&lt; P, M &gt;::undo_visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00028">mim::BetaRed::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00018">mim::BetaRed::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00064">mim::EtaExp::analyze()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00057">mim::EtaExp::analyze()</a>, <a class="el" href="eta__red_8cpp_source.html#l00037">mim::EtaRed::analyze()</a>, <a class="el" href="pass_8h_source.html#l00054">mim::Pass::analyze()</a>, <a class="el" href="pass_8h_source.html#l00056">mim::Pass::analyze()</a>, <a class="el" href="pass_8h_source.html#l00055">mim::Pass::analyze()</a>, <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00077">mim::plug::clos::LowerTypedClosPrep::analyze()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00099">mim::plug::mem::CopyProp::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00163">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="ssa__constr_8cpp_source.html#l00143">mim::plug::mem::SSAConstr::analyze()</a>, <a class="el" href="tail__rec__elim_8cpp_source.html#l00026">mim::TailRecElim::analyze()</a>, <a class="el" href="pass_8cpp_source.html#l00043">mim::PassMan::run()</a>, <a class="el" href="pass_8h_source.html#l00310">mim::FPPass&lt; P, M &gt;::undo_enter()</a>, and <a class="el" href="pass_8h_source.html#l00303">mim::FPPass&lt; P, M &gt;::undo_visit()</a>.</p>
 
 </div>
 </div>

@@ -13,11 +13,11 @@ var searchData=
   ['hash_5fbegin_10',['hash_begin',['../namespacemim.html#ab2a169d2e23178f0163bc05c774d2ac2',1,'mim::hash_begin() noexcept'],['../namespacemim.html#ac30b5cde9bbd181fac8b2cb7bf27fc62',1,'mim::hash_begin(T val) noexcept']]],
   ['hash_5fcombine_11',['hash_combine',['../namespacemim.html#a4d4c9094e2f043e1eca201f173cf96da',1,'mim']]],
   ['head_12',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB']]],
-  ['high_20level_20matrix_20operations_13',['High-level matrix operations',['../matrix.html#autotoc_md168',1,'']]],
+  ['high_20level_20matrix_20operations_13',['High-level matrix operations',['../matrix.html#autotoc_md167',1,'']]],
   ['highlighting_14',['Syntax Highlighting',['../coding.html#autotoc_md13',1,'']]],
   ['hlt_15',['hlt',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a4f4000d921968b9665f52e88333007da',1,'mim::plug::core']]],
   ['hole_16',['Hole',['../classmim_1_1Hole.html',1,'mim::Hole'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole'],['../namespacemim.html#a249738da6a953390b70691dd3fe7132ba6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole'],['../namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole']]],
   ['holeexpr_17',['HoleExpr',['../classmim_1_1ast_1_1HoleExpr.html',1,'mim::ast::HoleExpr'],['../classmim_1_1ast_1_1HoleExpr.html#af222f6ce623acf0004bf17ca86d59048',1,'mim::ast::HoleExpr::HoleExpr()']]],
-  ['hook_18',['hook',['../classmim_1_1PassMan.html#a33d41ef2caf8dc4ccd24cff9fe2f726c',1,'mim::PassMan::hook()'],['../classmim_1_1PhaseMan.html#a9e21d73311e0c574478a85371977be04',1,'mim::PhaseMan::hook()']]],
+  ['hook_18',['hook',['../classmim_1_1PassMan.html#a620eff5c7903a0802a121870a4b73971',1,'mim::PassMan::hook()'],['../classmim_1_1PhaseMan.html#a68a8974a975c4d1025b3093679edb7e3',1,'mim::PhaseMan::hook()']]],
   ['hooks_19',['Other Hooks',['../passes.html#autotoc_md62',1,'']]]
 ];

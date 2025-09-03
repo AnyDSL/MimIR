@@ -165,15 +165,15 @@ Friends</h2></td></tr>
 <tr class="memitem:a9d7d00adf7d608a7d54c355373abeeba"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a9d7d00adf7d608a7d54c355373abeeba">run</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="#ab74087ef15849289b586b9843e886652">world</a>, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a9d7d00adf7d608a7d54c355373abeeba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs a single <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>.  <br /></td></tr>
 <tr class="separator:a9d7d00adf7d608a7d54c355373abeeba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33d41ef2caf8dc4ccd24cff9fe2f726c" id="r_a33d41ef2caf8dc4ccd24cff9fe2f726c"><td class="memTemplParams" colspan="2">template&lt;class A, class P, class... Args&gt; </td></tr>
-<tr class="memitem:a33d41ef2caf8dc4ccd24cff9fe2f726c"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a33d41ef2caf8dc4ccd24cff9fe2f726c">hook</a> (<a class="el" href="namespacemim.html#a780d7f029e0bbc4a1c80c8698de15651">Passes</a> &amp;<a class="el" href="#abf7cfc02ff0875e8347b6113f6775be5">passes</a>, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:a33d41ef2caf8dc4ccd24cff9fe2f726c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620eff5c7903a0802a121870a4b73971" id="r_a620eff5c7903a0802a121870a4b73971"><td class="memTemplParams" colspan="2">template&lt;class A, class P, class... Args&gt; </td></tr>
+<tr class="memitem:a620eff5c7903a0802a121870a4b73971"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a620eff5c7903a0802a121870a4b73971">hook</a> (<a class="el" href="namespacemim.html#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> &amp;<a class="el" href="#abf7cfc02ff0875e8347b6113f6775be5">passes</a>, Args &amp;&amp;... args)</td></tr>
+<tr class="separator:a620eff5c7903a0802a121870a4b73971"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An optimizer that combines several optimizations in an optimal way. </p>
 <p>This is loosely based upon: "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00107">107</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00111">111</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aaaea04b8eb0ae418563319e49574d619" name="aaaea04b8eb0ae418563319e49574d619"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaaea04b8eb0ae418563319e49574d619">&#9670;&#160;</a></span>PassMan()</h2>
@@ -198,11 +198,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00109">109</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00113">113</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00114">world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00118">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00153">hook()</a>, and <a class="el" href="pass_8h_source.html#l00146">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00157">hook()</a>, and <a class="el" href="pass_8h_source.html#l00150">run()</a>.</p>
 
 </div>
 </div>
@@ -235,11 +235,11 @@ template&lt;class P, class... Args&gt; </div>
 <p>Add a pass to this <a class="el" href="classmim_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a>. </p>
 <p>If a pass of the same class has been added already, returns the earlier added instance. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00134">134</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00138">138</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00125">find()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00129">find()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>, and <a class="el" href="pass_8h_source.html#l00146">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>, and <a class="el" href="pass_8h_source.html#l00150">run()</a>.</p>
 
 </div>
 </div>
@@ -266,9 +266,9 @@ template&lt;class P, class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00117">117</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00121">121</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00248">mim::RWPass&lt; P, M &gt;::curr_mut()</a>, and <a class="el" href="pass_8h_source.html#l00241">mim::RWPass&lt; P, M &gt;::inspect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00252">mim::RWPass&lt; P, M &gt;::curr_mut()</a>, and <a class="el" href="pass_8h_source.html#l00245">mim::RWPass&lt; P, M &gt;::inspect()</a>.</p>
 
 </div>
 </div>
@@ -297,9 +297,9 @@ template&lt;class P&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00125">125</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00129">129</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00134">add()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00138">add()</a>.</p>
 
 </div>
 </div>
@@ -326,12 +326,12 @@ template&lt;class P&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00116">116</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00120">120</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
-<a id="a33d41ef2caf8dc4ccd24cff9fe2f726c" name="a33d41ef2caf8dc4ccd24cff9fe2f726c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33d41ef2caf8dc4ccd24cff9fe2f726c">&#9670;&#160;</a></span>hook()</h2>
+<a id="a620eff5c7903a0802a121870a4b73971" name="a620eff5c7903a0802a121870a4b73971"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a620eff5c7903a0802a121870a4b73971">&#9670;&#160;</a></span>hook()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -344,7 +344,7 @@ template&lt;class A, class P, class... Args&gt; </div>
         <tr>
           <td class="memname">static void mim::PassMan::hook </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacemim.html#a780d7f029e0bbc4a1c80c8698de15651">Passes</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>passes</em></span>, </td>
+          <td class="paramtype"><a class="el" href="namespacemim.html#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>passes</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -359,9 +359,9 @@ template&lt;class A, class P, class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00153">153</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00157">157</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="pass_8h_source.html#l00115">passes()</a>, and <a class="el" href="pass_8h_source.html#l00109">PassMan()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="pass_8h_source.html#l00119">passes()</a>, and <a class="el" href="pass_8h_source.html#l00113">PassMan()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="affine_8cpp_source.html#l00012">reg_stages()</a>, and <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>.</p>
 
@@ -390,9 +390,9 @@ template&lt;class A, class P, class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00115">115</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00119">119</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00153">hook()</a>, and <a class="el" href="pass_8cpp_source.html#l00043">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00157">hook()</a>, and <a class="el" href="pass_8cpp_source.html#l00043">run()</a>.</p>
 
 </div>
 </div>
@@ -415,9 +415,9 @@ template&lt;class A, class P, class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pass_8cpp_source.html#l00043">43</a> of file <a class="el" href="pass_8cpp_source.html">pass.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00493">mim::World::debug_dump()</a>, <a class="el" href="def_8cpp_source.html#l00464">mim::Def::deps()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="pass_8h_source.html#l00115">passes()</a>, <a class="el" href="util_8h_source.html#l00083">mim::pop()</a>, <a class="el" href="phase_8cpp_source.html#l00005">mim::Phase::run()</a>, <a class="el" href="world_8cpp_source.html#l00687">mim::World::verify()</a>, and <a class="el" href="pass_8h_source.html#l00114">world()</a>.</p>
+<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00493">mim::World::debug_dump()</a>, <a class="el" href="def_8cpp_source.html#l00464">mim::Def::deps()</a>, <a class="el" href="pass_8h_source.html#l00019">mim::No_Undo</a>, <a class="el" href="pass_8h_source.html#l00119">passes()</a>, <a class="el" href="util_8h_source.html#l00083">mim::pop()</a>, <a class="el" href="phase_8cpp_source.html#l00005">mim::Phase::run()</a>, <a class="el" href="world_8cpp_source.html#l00687">mim::World::verify()</a>, and <a class="el" href="pass_8h_source.html#l00118">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00146">run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00150">run()</a>.</p>
 
 </div>
 </div>
@@ -452,9 +452,9 @@ template&lt;class P, class... Args&gt; </div>
 
 <p>Runs a single <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00146">146</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00150">150</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00134">add()</a>, <a class="el" href="pass_8h_source.html#l00109">PassMan()</a>, <a class="el" href="pass_8cpp_source.html#l00043">run()</a>, and <a class="el" href="pass_8h_source.html#l00114">world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00138">add()</a>, <a class="el" href="pass_8h_source.html#l00113">PassMan()</a>, <a class="el" href="pass_8cpp_source.html#l00043">run()</a>, and <a class="el" href="pass_8h_source.html#l00118">world()</a>.</p>
 
 </div>
 </div>
@@ -481,9 +481,9 @@ template&lt;class P, class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00114">114</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00118">118</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00109">PassMan()</a>, <a class="el" href="pass_8cpp_source.html#l00043">run()</a>, <a class="el" href="pass_8h_source.html#l00146">run()</a>, and <a class="el" href="pass_8h_source.html#l00322">mim::Pass::world()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00113">PassMan()</a>, <a class="el" href="pass_8cpp_source.html#l00043">run()</a>, <a class="el" href="pass_8h_source.html#l00150">run()</a>, and <a class="el" href="pass_8h_source.html#l00326">mim::Pass::world()</a>.</p>
 
 </div>
 </div>
@@ -510,11 +510,11 @@ template&lt;class P, class <a class="el" href="core_2normalizers_8cpp.html#aeade
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00229">229</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00233">233</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00229">FPPass</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00233">FPPass</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00229">FPPass</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00233">FPPass</a>.</p>
 
 </div>
 </div>

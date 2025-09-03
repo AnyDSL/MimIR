@@ -4,7 +4,6 @@ var compile_2autogen_8h =
     [ "mim::plug::compile::beta_red_pass", "namespacemim_1_1plug_1_1compile.html#a4b060f32fdef8a01e50415099cd48416", null ],
     [ "mim::plug::compile::beta_red_phase", "namespacemim_1_1plug_1_1compile.html#ab5b6270aef0fd6eefef313a78ae42ed2", null ],
     [ "mim::plug::compile::branch_normalize_phase", "namespacemim_1_1plug_1_1compile.html#a5c6d8f36b1820caad534d4777a3bd136", null ],
-    [ "mim::plug::compile::cat", "namespacemim_1_1plug_1_1compile.html#ae592ad3652c44c11011b9638dbedf039", null ],
     [ "mim::plug::compile::cleanup_phase", "namespacemim_1_1plug_1_1compile.html#a1b62916f46aa4d27565c3691e67677d6", null ],
     [ "mim::plug::compile::debug_phase", "namespacemim_1_1plug_1_1compile.html#af6d0e501b91805e80ca15ebdf0d8a2fe", null ],
     [ "mim::plug::compile::eta_exp_pass", "namespacemim_1_1plug_1_1compile.html#af5d6fbc0d851384b27f36f203c5d0c2c", null ],
@@ -14,6 +13,7 @@ var compile_2autogen_8h =
     [ "mim::plug::compile::internal_cleanup_phase", "namespacemim_1_1plug_1_1compile.html#a235cf519806595c0244845a62b1d74ed", null ],
     [ "mim::plug::compile::is_loaded", "namespacemim_1_1plug_1_1compile.html#a9019e60cd2374943087f2750b6ce0515", null ],
     [ "mim::plug::compile::lam_spec_pass", "namespacemim_1_1plug_1_1compile.html#a2d4eb7a6b25350fd030a3a9087544b71", null ],
+    [ "mim::plug::compile::meta_pass", "namespacemim_1_1plug_1_1compile.html#af81a0a8f6397f9cf05d4cb9185b2f6a6", null ],
     [ "mim::plug::compile::null_pass", "namespacemim_1_1plug_1_1compile.html#aadfaa97d82794c8513ba2b0e1f14a388", null ],
     [ "mim::plug::compile::null_phase", "namespacemim_1_1plug_1_1compile.html#a717b94f01a471ccef3b533ec1a3e5433", null ],
     [ "mim::plug::compile::Pass", "namespacemim_1_1plug_1_1compile.html#adcce0ed42ddefa3bed2a2804a3e36a36", null ],
@@ -24,7 +24,6 @@ var compile_2autogen_8h =
     [ "mim::plug::compile::ret_wrap_pass", "namespacemim_1_1plug_1_1compile.html#aeea954817fa22f9e9d045999b093eca9", null ],
     [ "mim::plug::compile::scalarize_pass", "namespacemim_1_1plug_1_1compile.html#a961935589c51b84c285852b051fbbf37", null ],
     [ "mim::plug::compile::tail_rec_elim_pass", "namespacemim_1_1plug_1_1compile.html#aa116af339362d94ddef4135c1e9e67c7", null ],
-    [ "mim::plug::compile::normalize_cat", "namespacemim_1_1plug_1_1compile.html#a624456eafb0146de1f0f7c7cc8ce5d69", null ],
     [ "mim::plug::compile::normalize_is_loaded", "namespacemim_1_1plug_1_1compile.html#a99c96c2c9e8f4f5320e6c8c2b7f92f0d", null ],
     [ "mim::plug::compile::register_normalizers", "namespacemim_1_1plug_1_1compile.html#a538868adc12502b1140af4b6f2f0efa2", null ],
     [ "mim::plug::compile::Plugin_Id", "namespacemim_1_1plug_1_1compile.html#aef3b98337630972b708d60ed42298eda", null ]

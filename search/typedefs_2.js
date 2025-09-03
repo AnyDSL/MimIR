@@ -4,5 +4,7 @@ var searchData=
   ['f32_1',['f32',['../namespacemim.html#a82b4995bab86fa95f954caf7b4805764',1,'mim']]],
   ['f64_2',['f64',['../namespacemim.html#a43c8683ea43b0bd8c38bb973d5f91d63',1,'mim']]],
   ['filter_3',['Filter',['../classmim_1_1Lam.html#a0565c4cf6c92d40b051538f19417cb43',1,'mim::Lam']]],
-  ['flags_5ft_4',['flags_t',['../namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f',1,'mim']]]
+  ['flags2passes_4',['Flags2Passes',['../namespacemim.html#a20a116c4c14737a5da434eafab641425',1,'mim']]],
+  ['flags2phases_5',['Flags2Phases',['../namespacemim.html#abc4c8c6745943dbe59da4dafa9f18bb4',1,'mim']]],
+  ['flags_5ft_6',['flags_t',['../namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f',1,'mim']]]
 ];
