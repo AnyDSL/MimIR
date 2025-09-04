@@ -1,7 +1,7 @@
 var searchData=
 [
   ['ack_0',['ack',['../classmim_1_1Error.html#ace5d8cc68846c8b473a277395b3dd980',1,'mim::Error']]],
-  ['add_1',['add',['../classmim_1_1PassMan.html#ae27b0645ed171e881e9e2e91b09841d7',1,'mim::PassMan::add()'],['../classmim_1_1PhaseMan.html#a25254eec946efab2ab87cd0e0ee7c08d',1,'mim::PhaseMan::add()'],['../classmim_1_1VarRewriter.html#a002833bf130fb71bc3b0dd313fd9580b',1,'mim::VarRewriter::add()']]],
+  ['add_1',['add',['../classmim_1_1PassMan.html#ae27b0645ed171e881e9e2e91b09841d7',1,'mim::PassMan::add()'],['../classmim_1_1PhaseMan.html#a25254eec946efab2ab87cd0e0ee7c08d',1,'mim::PhaseMan::add(Args &amp;&amp;... args)'],['../classmim_1_1PhaseMan.html#a706a0c18e6ed3f515f7b195224aa8c22',1,'mim::PhaseMan::add(std::unique_ptr&lt; Phase &gt; &amp;&amp;phase)'],['../classmim_1_1VarRewriter.html#a002833bf130fb71bc3b0dd313fd9580b',1,'mim::VarRewriter::add()']]],
   ['add_5fimplicit_5fimports_2',['add_implicit_imports',['../classmim_1_1ast_1_1Module.html#ac8f3db4b7f29035a76e6f1461e342a28',1,'mim::ast::Module']]],
   ['add_5fimport_3',['add_import',['../classmim_1_1Driver.html#a99143ffe60f193b16080c619780ba9e3',1,'mim::Driver']]],
   ['add_5fret_4',['add_ret',['../classmim_1_1ast_1_1PiExpr_1_1Dom.html#afb586c305568594703cd48875d8f9b0a',1,'mim::ast::PiExpr::Dom']]],

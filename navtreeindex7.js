@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"classmim_1_1Res.html":[3,0,1,68],
+"classmim_1_1Res.html":[5,0,1,66],
 "classmim_1_1Res.html#a0ddac7ef9e2241da059df10b9d218993":[3,0,1,68,3],
 "classmim_1_1Res.html#a0ddac7ef9e2241da059df10b9d218993":[5,0,1,66,3],
 "classmim_1_1Res.html#a528a71af5fe5c806794a2d97ae2a2090":[3,0,1,68,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "classmim_1_1Sets_1_1Set_1_1iterator.html#ad2ed9f1e87b7cea30631fa367b19f477":[3,0,1,77,0,0,10],
 "classmim_1_1Sets_1_1Set_1_1iterator.html#ad2ed9f1e87b7cea30631fa367b19f477":[5,0,1,75,0,0,10],
 "classmim_1_1Sets_1_1Set_1_1iterator.html#ad47179d06518c1cbe34c9ff5ebda2cbc":[3,0,1,77,0,0,12],
-"classmim_1_1Sets_1_1Set_1_1iterator.html#ad47179d06518c1cbe34c9ff5ebda2cbc":[5,0,1,75,0,0,12],
-"classmim_1_1Setters.html":[3,0,1,78],
-"classmim_1_1Setters.html":[5,0,1,76]
+"classmim_1_1Sets_1_1Set_1_1iterator.html#ad47179d06518c1cbe34c9ff5ebda2cbc":[5,0,1,75,0,0,12]
 };

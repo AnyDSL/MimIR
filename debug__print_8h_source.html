@@ -123,36 +123,38 @@ $(function(){initNavTree('debug__print_8h_source.html',''); initResizable(true);
 <a href="debug__print_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">mim/def.h</a>&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;<a class="code" href="pass_8h.html">mim/pass/pass.h</a>&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="foldopen" id="foldopen00006" data-start="{" data-end="}">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacemim_1_1plug_1_1compile.html">    6</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim_1_1plug_1_1compile.html">mim::plug::compile</a> {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html">    8</a></span><span class="keyword">class </span><a class="code hl_function" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#afc0d3ac6ecdce625f2d5be7e0c189bfa">DebugPrint</a> : <span class="keyword">public</span> <a class="code hl_function" href="classmim_1_1RWPass.html#ad4c8c4d8cab01d298eacf21e7a2083c8">RWPass</a>&lt;DebugPrint, Lam&gt; {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#afc0d3ac6ecdce625f2d5be7e0c189bfa">   10</a></span>    <a class="code hl_function" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#afc0d3ac6ecdce625f2d5be7e0c189bfa">DebugPrint</a>(<a class="code hl_friend" href="classmim_1_1Pass.html#ae3b741f775f564409b46ea178ca0aefc">PassMan</a>&amp; <a class="code hl_function" href="classmim_1_1Pass.html#abea68f3b080ef021ca865d3764d22417">man</a>, <span class="keywordtype">int</span> level_)</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        : <a class="code hl_function" href="classmim_1_1RWPass.html#ad4c8c4d8cab01d298eacf21e7a2083c8">RWPass</a>(<a class="code hl_function" href="classmim_1_1Pass.html#abea68f3b080ef021ca865d3764d22417">man</a>, <span class="stringliteral">&quot;debug_print&quot;</span>)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        , level(level_) {}</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="pass_8h.html">mim/pass/pass.h</a>&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="}">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacemim_1_1plug_1_1compile.html">    7</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim_1_1plug_1_1compile.html">mim::plug::compile</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html">    9</a></span><span class="keyword">class </span><a class="code hl_function" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#a1f82a67f654ffe4582bbfa80713e0dbf">DebugPrint</a> : <span class="keyword">public</span> <a class="code hl_function" href="classmim_1_1RWPass.html#ad4c8c4d8cab01d298eacf21e7a2083c8">RWPass</a>&lt;DebugPrint, Lam&gt; {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#a1f82a67f654ffe4582bbfa80713e0dbf">   11</a></span>    <a class="code hl_function" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#a1f82a67f654ffe4582bbfa80713e0dbf">DebugPrint</a>(<a class="code hl_friend" href="classmim_1_1Pass.html#ae3b741f775f564409b46ea178ca0aefc">PassMan</a>&amp; <a class="code hl_function" href="classmim_1_1Pass.html#abea68f3b080ef021ca865d3764d22417">man</a>, <a class="code hl_typedef" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> level)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        : <a class="code hl_function" href="classmim_1_1RWPass.html#ad4c8c4d8cab01d298eacf21e7a2083c8">RWPass</a>(<a class="code hl_function" href="classmim_1_1Pass.html#abea68f3b080ef021ca865d3764d22417">man</a>, <span class="stringliteral">&quot;debug_print&quot;</span>)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        , level_(level) {}</div>
 </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#a02dc819ec7f706b2ddfa13e7974a01c8">enter</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordtype">int</span> level;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#a02dc819ec7f706b2ddfa13e7974a01c8">enter</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordtype">int</span> level_;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>};</div>
 </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>} <span class="comment">// namespace mim::plug::compile</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>} <span class="comment">// namespace mim::plug::compile</span></div>
 </div>
 <div class="ttc" id="aclassmim_1_1Pass_html_abea68f3b080ef021ca865d3764d22417"><div class="ttname"><a href="classmim_1_1Pass.html#abea68f3b080ef021ca865d3764d22417">mim::Pass::man</a></div><div class="ttdeci">PassMan &amp; man()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00034">pass.h:34</a></div></div>
 <div class="ttc" id="aclassmim_1_1Pass_html_ae3b741f775f564409b46ea178ca0aefc"><div class="ttname"><a href="classmim_1_1Pass.html#ae3b741f775f564409b46ea178ca0aefc">mim::Pass::PassMan</a></div><div class="ttdeci">friend class PassMan</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00105">pass.h:105</a></div></div>
 <div class="ttc" id="aclassmim_1_1RWPass_html_ad4c8c4d8cab01d298eacf21e7a2083c8"><div class="ttname"><a href="classmim_1_1RWPass.html#ad4c8c4d8cab01d298eacf21e7a2083c8">mim::RWPass&lt; DebugPrint, Lam &gt;::RWPass</a></div><div class="ttdeci">RWPass(PassMan &amp;man, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00242">pass.h:242</a></div></div>
 <div class="ttc" id="aclassmim_1_1plug_1_1compile_1_1DebugPrint_html_a02dc819ec7f706b2ddfa13e7974a01c8"><div class="ttname"><a href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#a02dc819ec7f706b2ddfa13e7974a01c8">mim::plug::compile::DebugPrint::enter</a></div><div class="ttdeci">void enter() override</div><div class="ttdoc">Invoked just before Pass::rewriteing PassMan::curr_mut&#39;s body.</div><div class="ttdef"><b>Definition</b> <a href="debug__print_8cpp_source.html#l00009">debug_print.cpp:9</a></div></div>
-<div class="ttc" id="aclassmim_1_1plug_1_1compile_1_1DebugPrint_html_afc0d3ac6ecdce625f2d5be7e0c189bfa"><div class="ttname"><a href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#afc0d3ac6ecdce625f2d5be7e0c189bfa">mim::plug::compile::DebugPrint::DebugPrint</a></div><div class="ttdeci">DebugPrint(PassMan &amp;man, int level_)</div><div class="ttdef"><b>Definition</b> <a href="#l00010">debug_print.h:10</a></div></div>
+<div class="ttc" id="aclassmim_1_1plug_1_1compile_1_1DebugPrint_html_a1f82a67f654ffe4582bbfa80713e0dbf"><div class="ttname"><a href="classmim_1_1plug_1_1compile_1_1DebugPrint.html#a1f82a67f654ffe4582bbfa80713e0dbf">mim::plug::compile::DebugPrint::DebugPrint</a></div><div class="ttdeci">DebugPrint(PassMan &amp;man, nat_t level)</div><div class="ttdef"><b>Definition</b> <a href="#l00011">debug_print.h:11</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1compile_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1compile.html">mim::plug::compile</a></div><div class="ttdoc">The compile Plugin</div><div class="ttdef"><b>Definition</b> <a href="#l00006">debug_print.h:6</a></div></div>
+<div class="ttc" id="anamespacemim_1_1plug_1_1compile_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1compile.html">mim::plug::compile</a></div><div class="ttdoc">The compile Plugin</div><div class="ttdef"><b>Definition</b> <a href="#l00007">debug_print.h:7</a></div></div>
+<div class="ttc" id="anamespacemim_html_a02aae51c2293663cb7352f21c7fbe490"><div class="ttname"><a href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">mim::nat_t</a></div><div class="ttdeci">u64 nat_t</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00043">types.h:43</a></div></div>
 <div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

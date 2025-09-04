@@ -123,6 +123,7 @@ $(function(){initNavTree('compile_8cpp.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="compile_8h_source.html">mim/plug/compile/compile.h</a>&quot;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;<a class="el" href="config_8h_source.html">mim/config.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="driver_8h_source.html">mim/driver.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="beta__red_8h_source.html">mim/pass/beta_red.h</a>&gt;</code><br />
@@ -185,11 +186,11 @@ template&lt;class P, class <a class="el" href="core_2normalizers_8cpp.html#aeade
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00027">27</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00029">29</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="lam_8h_source.html#l00324">mim::App::uncurry_callee()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00041">reg_stages()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00043">reg_stages()</a>.</p>
 
 </div>
 </div>
@@ -208,7 +209,7 @@ template&lt;class P, class <a class="el" href="core_2normalizers_8cpp.html#aeade
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00094">94</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00099">99</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="config_8h_source.html#l00016">MIM_EXPORT</a>, <a class="el" href="affine_8cpp_source.html#l00012">reg_stages()</a>, and <a class="el" href="namespacemim_1_1plug_1_1compile.html#a538868adc12502b1140af4b6f2f0efa2">mim::plug::compile::register_normalizers()</a>.</p>
 
@@ -233,9 +234,9 @@ template&lt;class P, class <a class="el" href="core_2normalizers_8cpp.html#aeade
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00041">41</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00043">43</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00173">mim::PhaseMan::add()</a>, <a class="el" href="compile_8cpp_source.html#l00027">apply()</a>, <a class="el" href="lam_8h_source.html#l00282">mim::App::arg()</a>, <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="def_8h_source.html#l00797">mim::Lit::get()</a>, <a class="el" href="pass_8h_source.html#l00157">mim::PassMan::hook()</a>, <a class="el" href="phase_8h_source.html#l00186">mim::PhaseMan::hook()</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, <a class="el" href="tuple_8cpp_source.html#l00054">mim::tuple2str()</a>, <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>, and <a class="el" href="phase_8h_source.html#l00032">mim::Phase::world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00175">mim::PhaseMan::add()</a>, <a class="el" href="compile_8cpp_source.html#l00029">apply()</a>, <a class="el" href="lam_8h_source.html#l00282">mim::App::arg()</a>, <a class="el" href="def_8h_source.html#l00816">mim::Lit::as()</a>, <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="pass_8h_source.html#l00157">mim::PassMan::hook()</a>, <a class="el" href="phase_8h_source.html#l00190">mim::PhaseMan::hook()</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, <a class="el" href="tuple_8cpp_source.html#l00054">mim::tuple2str()</a>, <a class="el" href="lam_8h_source.html#l00327">mim::App::uncurry_args()</a>, <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>, and <a class="el" href="phase_8h_source.html#l00034">mim::Phase::world()</a>.</p>
 
 </div>
 </div>

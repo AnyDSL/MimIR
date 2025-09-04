@@ -151,6 +151,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a25254eec946efab2ab87cd0e0ee7c08d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a25254eec946efab2ab87cd0e0ee7c08d">add</a> (Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a25254eec946efab2ab87cd0e0ee7c08d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>.  <br /></td></tr>
 <tr class="separator:a25254eec946efab2ab87cd0e0ee7c08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a706a0c18e6ed3f515f7b195224aa8c22" id="r_a706a0c18e6ed3f515f7b195224aa8c22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a706a0c18e6ed3f515f7b195224aa8c22">add</a> (std::unique_ptr&lt; <a class="el" href="classmim_1_1Phase.html">Phase</a> &gt; &amp;&amp;phase)</td></tr>
+<tr class="separator:a706a0c18e6ed3f515f7b195224aa8c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmim_1_1Phase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classmim_1_1Phase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmim_1_1Phase.html">mim::Phase</a></td></tr>
 <tr class="memitem:a5c9e1cb4322b15d946feaaabcc057260 inherit pub_methods_classmim_1_1Phase" id="r_a5c9e1cb4322b15d946feaaabcc057260"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Phase.html#a5c9e1cb4322b15d946feaaabcc057260">Phase</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="classmim_1_1Phase.html#afeae25f4ecab3e3812e9607f630a506f">world</a>, std::string <a class="el" href="classmim_1_1Phase.html#ac3a0b91d02e7086abfa1e5e69c40260a">name</a>)</td></tr>
 <tr class="separator:a5c9e1cb4322b15d946feaaabcc057260 inherit pub_methods_classmim_1_1Phase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,7 +191,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Organizes several <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s in a a pipeline. </p>
 <p>If <code class="param">fixed_point</code> is <code>true</code>, run <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a> until all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s' <a class="el" href="classmim_1_1Phase.html#a0390804e30acc01109b03f04109327a2" title="Set to true to indicate that you want to rerun all Phasees in current your fixed-point PhaseMan.">Phase::todo_</a> flags yield <code>false</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00158">158</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00160">160</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad0078c8db1bb595c42db6f015876edc4" name="ad0078c8db1bb595c42db6f015876edc4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0078c8db1bb595c42db6f015876edc4">&#9670;&#160;</a></span>PhaseMan()</h2>
@@ -212,15 +214,15 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00036">36</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00162">fixed_point()</a>, <a class="el" href="phase_8h_source.html#l00022">mim::Phase::Phase()</a>, and <a class="el" href="phase_8h_source.html#l00032">mim::Phase::world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00164">fixed_point()</a>, <a class="el" href="phase_8h_source.html#l00024">mim::Phase::Phase()</a>, and <a class="el" href="phase_8h_source.html#l00034">mim::Phase::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00186">hook()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00190">hook()</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a25254eec946efab2ab87cd0e0ee7c08d" name="a25254eec946efab2ab87cd0e0ee7c08d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25254eec946efab2ab87cd0e0ee7c08d">&#9670;&#160;</a></span>add()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a25254eec946efab2ab87cd0e0ee7c08d">&#9670;&#160;</a></span>add() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,11 +249,38 @@ template&lt;class P, class... Args&gt; </div>
 <p>Add a <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>. </p>
 <p>You don't need to pass the <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> to <code class="param">args</code> - it will be passed automatically. If <code class="param">P</code> is a <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>, this method will wrap this in a <a class="el" href="classmim_1_1PassPhase.html" title="Wraps a Pass as a Phase.">PassPhase</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00173">173</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00175">175</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00173">add()</a>, and <a class="el" href="phase_8h_source.html#l00032">mim::Phase::world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00175">add()</a>, and <a class="el" href="phase_8h_source.html#l00034">mim::Phase::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00173">add()</a>, <a class="el" href="phase_8h_source.html#l00186">hook()</a>, and <a class="el" href="compile_8cpp_source.html#l00041">reg_stages()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00175">add()</a>, <a class="el" href="phase_8h_source.html#l00190">hook()</a>, and <a class="el" href="compile_8cpp_source.html#l00043">reg_stages()</a>.</p>
+
+</div>
+</div>
+<a id="a706a0c18e6ed3f515f7b195224aa8c22" name="a706a0c18e6ed3f515f7b195224aa8c22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a706a0c18e6ed3f515f7b195224aa8c22">&#9670;&#160;</a></span>add() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mim::PhaseMan::add </td>
+          <td>(</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classmim_1_1Phase.html">Phase</a> &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>phase</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00186">186</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 </div>
 </div>
@@ -278,7 +307,7 @@ template&lt;class P, class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00162">162</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00164">164</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00036">PhaseMan()</a>, and <a class="el" href="phase_8cpp_source.html#l00040">start()</a>.</p>
 
@@ -313,9 +342,9 @@ template&lt;class A, class P, class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00186">186</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00190">190</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00173">add()</a>, <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="phase_8cpp_source.html#l00036">PhaseMan()</a>, and <a class="el" href="phase_8h_source.html#l00167">phases()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00175">add()</a>, <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="phase_8cpp_source.html#l00036">PhaseMan()</a>, and <a class="el" href="phase_8h_source.html#l00169">phases()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="clos_8cpp_source.html#l00020">reg_stages()</a>.</p>
 
@@ -344,9 +373,9 @@ template&lt;class A, class P, class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00167">167</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00169">169</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00186">hook()</a>, and <a class="el" href="phase_8cpp_source.html#l00040">start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00190">hook()</a>, and <a class="el" href="phase_8cpp_source.html#l00040">start()</a>.</p>
 
 </div>
 </div>
@@ -379,7 +408,7 @@ template&lt;class A, class P, class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00040">40</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00162">fixed_point()</a>, <a class="el" href="phase_8h_source.html#l00167">phases()</a>, <a class="el" href="phase_8h_source.html#l00027">mim::Phase::reset()</a>, and <a class="el" href="phase_8h_source.html#l00053">mim::Phase::todo_</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00164">fixed_point()</a>, <a class="el" href="phase_8h_source.html#l00169">phases()</a>, <a class="el" href="phase_8h_source.html#l00029">mim::Phase::reset()</a>, and <a class="el" href="phase_8h_source.html#l00055">mim::Phase::todo_</a>.</p>
 
 </div>
 </div>

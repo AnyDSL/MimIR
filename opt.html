@@ -157,7 +157,7 @@ Pipelines</h2>
 <div class="line">lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );</div>
 <div class="line"> </div>
 <div class="line">lam extern _default_compile []: %compile.Phase =</div>
-<div class="line">    %compile.phases (</div>
+<div class="line">    %compile.phases ff (</div>
 <div class="line">        %compile.passes %compile.scalarize_pass,</div>
 <div class="line">        %compile.passes %compile.eta_red_pass,</div>
 <div class="line">        %compile.passes %compile.tail_rec_elim_pass,</div>
@@ -169,13 +169,13 @@ Pipelines</h2>
 <div class="line">            mem_opt_passes,</div>
 <div class="line">        ),</div>
 <div class="line">        cond_phase &quot;autodiff&quot;</div>
-<div class="line">                (%compile.phases (</div>
+<div class="line">                (%compile.phases ff (</div>
 <div class="line">                    %compile.passes %autodiff.ad_eval_pass,</div>
 <div class="line">                    %compile.passes %autodiff.ad_zero_pass,</div>
 <div class="line">                )),</div>
 <div class="line">        cond_phase &quot;direct&quot; direct_phases,</div>
 <div class="line">        cond_phase &quot;matrix&quot;</div>
-<div class="line">                (%compile.phases (</div>
+<div class="line">                (%compile.phases ff (</div>
 <div class="line">                    matrix_lower_phase,</div>
 <div class="line">                    cond_phase &quot;direct&quot; direct_phases,</div>
 <div class="line">                    cond_phase &quot;affine&quot; (%compile.passes %affine.lower_for_pass))),</div>

@@ -207,7 +207,7 @@ Phases</h2>
 <div class="fragment"><div class="line">let ad_cleanup_phase = %compile.passes %autodiff.ad_zero_cleanup_pass;</div>
 <div class="line"> </div>
 <div class="line">let ad_phase =</div>
-<div class="line">    %compile.phases (</div>
+<div class="line">    %compile.phases ff (</div>
 <div class="line">        optimization_phase,</div>
 <div class="line">        %compile.passes %autodiff.ad_eval_pass,</div>
 <div class="line">        %compile.passes %autodiff.ad_zero_pass,</div>
