@@ -7,7 +7,7 @@
 namespace mim::plug::compile {
 
 void DebugPrint::enter() {
-    if (level >= 2) world().DLOG("L{}: enter {}", level, curr_mut());
+    if (level_ >= 2) world().DLOG("L{}: enter {}", level_, curr_mut());
 }
 
 } // namespace mim::plug::compile

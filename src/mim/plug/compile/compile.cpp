@@ -1,5 +1,7 @@
 #include "mim/plug/compile/compile.h"
 
+#include <memory>
+
 #include <mim/config.h>
 #include <mim/driver.h>
 
@@ -52,7 +54,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     assert_emplace(phases, flags_t(Annex::Base<compile::debug_phase>), [](PhaseMan& man, const Def* app) {
         auto& world = man.world();
         world.DLOG("Generate debug_phase: {}", app);
-        int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
+        auto level = Lit::as(app->as<App>()->arg(0));
         world.DLOG("  Level: {}", level);
         man.add<compile::DebugPrint>(level);
     });
@@ -70,9 +72,12 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
         man.add<PassManPhase>(std::move(pass_man));
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::phases>), [&](PhaseMan& man, const Def* app) {
+    assert_emplace(phases, flags_t(Annex::Base<compile::phases>), [&](PhaseMan& parent, const Def* app) {
+        auto [fp, arg] = App::uncurry_args<2>(app);
+        auto man = std::make_unique<PhaseMan>(parent.world(), Lit::as<bool>(fp));
         for (auto def : app->as<App>()->arg()->projs())
-            apply(phases, man, def);
+            apply(phases, *man, def);
+        parent.add(std::move(man));
     });
 
     // clang-format off

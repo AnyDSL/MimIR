@@ -26,7 +26,7 @@ lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phas
 lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );
 
 lam extern _default_compile []: %compile.Phase =
-    %compile.phases (
+    %compile.phases ff (
         %compile.passes %compile.scalarize_pass,
         %compile.passes %compile.eta_red_pass,
         %compile.passes %compile.tail_rec_elim_pass,
@@ -38,13 +38,13 @@ lam extern _default_compile []: %compile.Phase =
             mem_opt_passes,
         ),
         cond_phase "autodiff"
-                (%compile.phases (
+                (%compile.phases ff (
                     %compile.passes %autodiff.ad_eval_pass,
                     %compile.passes %autodiff.ad_zero_pass,
                 )),
         cond_phase "direct" direct_phases,
         cond_phase "matrix"
-                (%compile.phases (
+                (%compile.phases ff (
                     matrix_lower_phase,
                     cond_phase "direct" direct_phases,
                     cond_phase "affine" (%compile.passes %affine.lower_for_pass))),
