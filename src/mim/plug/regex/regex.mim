@@ -8,8 +8,8 @@
 ///
 /// ## Dependencies
 ///
-import compile;
 plugin core;
+import phase;
 plugin mem;
 plugin direct;
 ///
@@ -93,4 +93,4 @@ axm %regex.quant(optional,star,plus): RE → RE, normalize_quant, 1;
 ///
 /// ### Passes
 ///
-axm %regex.lower_regex: %compile.Pass;
+axm %regex.lower_regex: %phase.Pass;

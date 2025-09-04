@@ -1,6 +1,6 @@
-add_mim_plugin(compile
+add_mim_plugin(phase
     SOURCES
-        compile.cpp
+        phase.cpp
         normalizers.cpp
         pass/debug_print.cpp
     INSTALL

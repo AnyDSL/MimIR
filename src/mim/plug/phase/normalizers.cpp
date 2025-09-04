@@ -1,9 +1,9 @@
 #include <mim/driver.h>
 #include <mim/world.h>
 
-#include "mim/plug/compile/compile.h"
+#include "mim/plug/phase/phase.h"
 
-namespace mim::plug::compile {
+namespace mim::plug::phase {
 
 const Def* normalize_is_loaded(const Def*, const Def*, const Def* arg) {
     auto& world  = arg->world();
@@ -13,6 +13,6 @@ const Def* normalize_is_loaded(const Def*, const Def*, const Def* arg) {
     return {};
 }
 
-MIM_compile_NORMALIZER_IMPL
+MIM_phase_NORMALIZER_IMPL
 
-} // namespace mim::plug::compile
+} // namespace mim::plug::phase

@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
             ast::Ptrs<ast::Import> imports;
 
             if (!flags.bootstrap) {
-                plugins.insert(plugins.begin(), "compile"s);
+                plugins.insert(plugins.begin(), "phase"s);
                 if (opt >= 2) plugins.emplace_back("opt"s);
             }
 

@@ -2,7 +2,7 @@
 // RUN: %mim %s --output-ll %t.ll -o - | FileCheck %s
 
 import core;
-import compile;
+import phase;
 import opt;
 
 con f [mem : %mem.M, a : I32, return : Cn [%mem.M, I32]] =

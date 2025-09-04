@@ -6,7 +6,7 @@
 ///
 /// ## Dependencies
 ///
-import compile;
+import phase;
 ///
 /// ## Types
 ///
@@ -104,20 +104,20 @@ axm %mem.reshape_arg:  %mem.reshape_mode;
 ///
 /// ### Passes
 ///
-axm %mem.ssa_pass:                              %compile.Pass;
-axm %mem.copy_prop_pass:                 Bool → %compile.Pass;
-axm %mem.remem_elim_pass:                       %compile.Pass;
-axm %mem.alloc2malloc_pass:                     %compile.Pass;
-axm %mem.reshape_pass:      %mem.reshape_mode → %compile.Pass;
+axm %mem.ssa_pass:                              %phase.Pass;
+axm %mem.copy_prop_pass:                 Bool → %phase.Pass;
+axm %mem.remem_elim_pass:                       %phase.Pass;
+axm %mem.alloc2malloc_pass:                     %phase.Pass;
+axm %mem.reshape_pass:      %mem.reshape_mode → %phase.Pass;
 ///
 /// ### Phases
 ///
-axm %mem.add_mem_phase: %compile.Phase;
+axm %mem.add_mem_phase: %phase.Phase;
 
-let mem_opt_passes = %compile.meta_pass (
-    %compile.beta_red_pass,
-    %compile.eta_red_pass,
-    %compile.eta_exp_pass,
+let mem_opt_passes = %phase.meta_pass (
+    %phase.beta_red_pass,
+    %phase.eta_red_pass,
+    %phase.eta_exp_pass,
     %mem.ssa_pass,
     %mem.copy_prop_pass ff,
 );

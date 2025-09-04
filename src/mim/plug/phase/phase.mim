@@ -1,0 +1,85 @@
+/// # The phase Plugin {#phase}
+///
+/// @see mim::plug::phase
+///
+/// [TOC]
+///
+/// This plugin handles the optimization pipeline of the compilation of MimIR programs.
+/// This plugin's axioms can register mim::Pass%es and mim::Phase%s.
+/// Invoke the optimization pipeline by defining a function `_compile: [] → %%phase.Phase`.
+///
+/// ## Types
+///
+/// ### %%phase.Pass / %%phase.Phase
+///
+/// Types for compilation passes and phases.
+///
+axm %phase.Pass:  *;
+axm %phase.Phase: *;
+///
+/// ## Utility
+///
+/// ### %%phase.is_loaded
+///
+/// Checks whether the given plugin is loaded.
+///
+axm %phase.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
+///
+/// ## Constructors
+///
+/// ### %%phase.phases / %%phase.passes
+///
+/// Sets up `n` phases / passes anad wraps them in a phase.
+///
+axm %phase.passes: {n: Nat} →        «n; %phase.Pass » → %phase.Phase;
+axm %phase.phases: {n: Nat} → Bool → «n; %phase.Phase» → %phase.Phase;
+///
+/// ### Phases
+///
+axm %phase.null_phase:                                %phase.Phase;
+axm %phase.cleanup_phase:                             %phase.Phase;
+axm %phase.beta_red_phase:                            %phase.Phase;
+axm %phase.eta_red_phase:                             %phase.Phase;
+axm %phase.eta_exp_phase:                             %phase.Phase;
+axm %phase.branch_normalize_phase:                    %phase.Phase;
+axm %phase.debug_phase:                         Nat → %phase.Phase;
+axm %phase.prefix_cleanup_phase: {n: Nat} → «n; I8» → %phase.Phase;
+
+let %phase.internal_cleanup_phase = %phase.prefix_cleanup_phase "internal_";
+///
+/// ### Passes
+///
+axm %phase.beta_red_pass:                             %phase.Pass;
+axm %phase.eta_red_pass:                              %phase.Pass;
+axm %phase.eta_exp_pass:                              %phase.Pass;
+axm %phase.scalarize_pass:                            %phase.Pass;
+axm %phase.tail_rec_elim_pass:                        %phase.Pass;
+axm %phase.lam_spec_pass:                             %phase.Pass;
+axm %phase.ret_wrap_pass:                             %phase.Pass;
+axm %phase.null_pass:                                 %phase.Pass;
+axm %phase.meta_pass: {n: Nat} → «n; %phase.Pass» → %phase.Pass;
+///
+/// ### Pipelines
+///
+let optimization_passes = %phase.meta_pass (
+    %phase.beta_red_pass,
+    %phase.eta_red_pass,
+    %phase.eta_exp_pass,
+    %phase.scalarize_pass,
+    %phase.tail_rec_elim_pass,
+);
+
+let optimization_phase = %phase.passes optimization_passes;
+
+let default_core_phase =
+    %phase.phases ff (
+        %phase.passes %phase.scalarize_pass,
+        %phase.passes %phase.eta_red_pass,
+        %phase.passes %phase.tail_rec_elim_pass,
+        optimization_phase,
+        %phase.internal_cleanup_phase,
+        %phase.passes %phase.lam_spec_pass,
+        %phase.passes %phase.ret_wrap_pass,
+    );
+
+lam extern _fallback_compile(): %phase.Phase = default_core_phase;

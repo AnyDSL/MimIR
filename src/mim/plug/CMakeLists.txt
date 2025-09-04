@@ -2,7 +2,6 @@ set(MIM_PLUGINS
     affine
     autodiff
     clos
-    compile
     core
     demo
     direct
@@ -11,6 +10,7 @@ set(MIM_PLUGINS
     mem
     opt
     ord
+    phase
     refly
     regex
     tensor
