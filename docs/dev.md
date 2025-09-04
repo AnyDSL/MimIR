@@ -13,7 +13,7 @@ Let's jump straight into an example.
 It keeps track of a few "global" variables like some [Flags](@ref mim::Flags) or the [Log](@ref mim::Log).
 Here, the log is set up to output to `std::cerr` with mim::Log::Level::Debug (see also @ref clidebug).
 
-Then, we load the plugins [compile](@ref compile) and [core](@ref core), which in turn will load the plugin [mem](@ref mem).
+Then, we load the plugins [phase](@ref phase) and [core](@ref core), which in turn will load the plugin [mem](@ref mem).
 A plugin consists of a shared object (`.so`/`.dll`) and a `.mim` file.
 The shared object contains [Passes](@ref mim::Pass), [normalizers](@ref mim::Axm::normalizer), and so on.
 The `.mim` file contains the [axiom](@ref mim::Axm) declarations and links the normalizers with the [axioms](@ref mim::Axm).
