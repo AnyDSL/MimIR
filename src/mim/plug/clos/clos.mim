@@ -57,7 +57,7 @@ let clos_opt2_passes = (
 );
 
 let clos_phases =
-    %compile.phases (
+    %compile.phases ff (
         optimization_phase,
         %compile.passes (%mem.reshape_pass %mem.reshape_flat),
         %mem.add_mem_phase,

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "mim/def.h"
 #include "mim/nest.h"
 #include "mim/rewrite.h"
@@ -180,6 +182,8 @@ public:
             return phase;
         }
     }
+
+    void add(std::unique_ptr<Phase>&& phase) { phases_.emplace_back(std::move(phase)); }
     ///@}
 
     template<class A, class P, class... Args>
