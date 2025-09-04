@@ -11,10 +11,10 @@
 #include <mim/pass/optimize.h>
 #include <mim/pass/pass.h>
 
-#include <mim/plug/compile/compile.h>
 #include <mim/plug/core/core.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
+#include <mim/plug/phase/phase.h>
 
 using namespace std::literals;
 using namespace mim;
@@ -26,7 +26,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
         World& w = driver.world();
-        ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s});
+        ast::load_plugins(w, {"phase"s, "mem"s, "core"s, "math"s});
 
         auto i32_t = w.type_i32();
         auto i64_t = w.type_i64();
@@ -216,7 +216,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w = driver.world();
-    ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s});
+    ast::load_plugins(w, {"phase"s, "mem"s, "core"s, "math"s});
 
     auto mem_t  = w.annex<mem::M>();
     auto i32_t  = w.type_i32();

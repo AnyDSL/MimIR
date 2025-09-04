@@ -4,7 +4,7 @@
 
 #include <mim/pass/pass.h>
 
-namespace mim::plug::compile {
+namespace mim::plug::phase {
 
 class DebugPrint : public RWPass<DebugPrint, Lam> {
 public:
@@ -18,4 +18,4 @@ private:
     int level_;
 };
 
-} // namespace mim::plug::compile
+} // namespace mim::plug::phase

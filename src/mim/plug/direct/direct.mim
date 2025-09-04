@@ -11,7 +11,7 @@
 ///
 /// ## Dependencies
 ///
-import compile;
+import phase;
 ///
 /// ## Operations
 ///
@@ -31,14 +31,14 @@ axm %direct.cps2ds_dep: [T: *, U: T → *] → Cn [t: T, Cn U t] → [[t: T] →
 ///
 /// ### Passes
 ///
-axm %direct.ds2cps_pass: %compile.Pass;
-axm %direct.cps2ds_pass: %compile.Pass;
+axm %direct.ds2cps_pass: %phase.Pass;
+axm %direct.cps2ds_pass: %phase.Pass;
 ///
 /// ### Phases
 ///
 let direct_phases =
-    %compile.phases ff (
-        %compile.passes %direct.ds2cps_pass,
-        %compile.passes %direct.cps2ds_pass,
+    %phase.phases ff (
+        %phase.passes %direct.ds2cps_pass,
+        %phase.passes %direct.cps2ds_pass,
         optimization_phase,
     );

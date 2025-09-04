@@ -31,4 +31,4 @@ axm %affine.For: {m n: Nat, Ts: «n; *»}
 ///
 /// Loweres the %%%affine.For operation to recursive function calls.
 ///
-axm %affine.lower_for_pass: %compile.Pass;
+axm %affine.lower_for_pass: %phase.Pass;

@@ -2,12 +2,12 @@
 // RUN: %mim %s --output-ll %t.ll -o - | FileCheck %s
 
 plugin core;
-import compile;
+import phase;
 
 con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M, I32]] =
     return (mem, 42I32);
 
-lam extern _unused_compile(): %compile.Phase =
-    %compile.internal_cleanup_phase;
+lam extern _unused_compile(): %phase.Phase =
+    %phase.internal_cleanup_phase;
 
 // CHECK-DAG: return{{.*}}42

@@ -10,9 +10,9 @@ con extern h [a: I32, return: Cn [%mem.M, I32]] = return (⊤:%mem.M,a);
 con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M, I32]] =
     f (⊤:%mem.M, argc, return);
 
-lam extern _compile(): %compile.Phase =
-    %compile.phases ff (
-        %compile.internal_cleanup_phase,
+lam extern _compile(): %phase.Phase =
+    %phase.phases ff (
+        %phase.internal_cleanup_phase,
         %mem.add_mem_phase, /* optimization_phase */
     );
 

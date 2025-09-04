@@ -7,7 +7,7 @@
 /// ## Dependencies
 ///
 plugin mem;
-import compile;
+import phase;
 /// For derivatives:
 plugin core;
 ///
@@ -49,19 +49,19 @@ axm %autodiff.sum: [n:Nat, T: *] → «n; T» → T, normalize_sum;
 ///
 /// ### Passes
 ///
-axm %autodiff.ad_eval_pass:         %compile.Pass;
-axm %autodiff.ad_zero_pass:         %compile.Pass;
-axm %autodiff.ad_zero_cleanup_pass: %compile.Pass;
+axm %autodiff.ad_eval_pass:         %phase.Pass;
+axm %autodiff.ad_zero_pass:         %phase.Pass;
+axm %autodiff.ad_zero_cleanup_pass: %phase.Pass;
 ///
 /// ### Phases
 ///
-let ad_cleanup_phase = %compile.passes %autodiff.ad_zero_cleanup_pass;
+let ad_cleanup_phase = %phase.passes %autodiff.ad_zero_cleanup_pass;
 
 let ad_phase =
-    %compile.phases ff (
+    %phase.phases ff (
         optimization_phase,
-        %compile.passes %autodiff.ad_eval_pass,
-        %compile.passes %autodiff.ad_zero_pass,
+        %phase.passes %autodiff.ad_eval_pass,
+        %phase.passes %autodiff.ad_zero_pass,
         ad_cleanup_phase,
     );
 ///
