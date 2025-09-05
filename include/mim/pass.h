@@ -156,7 +156,7 @@ public:
     template<class A, class P, class... Args>
     static void hook(Flags2Passes& passes, Args&&... args) {
         auto f = [... args = std::forward<Args>(args)](PassMan& man, const Def*) { man.add<P>(args...); };
-        assert_emplace(passes, flags_t(Annex::Base<A>), f);
+        assert_emplace(passes, Annex::Base<A>, f);
     }
     ///@}
 

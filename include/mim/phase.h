@@ -23,7 +23,7 @@ public:
     Phase(World& world, std::string name)
         : world_(world)
         , name_(std::move(name)) {}
-    Phase(World& world, plugin_t annex)
+    Phase(World& world, flags_t annex)
         : world_(world)
         , annex_(annex)
         , name_(Annex::demangle(world.driver(), annex)) {}
@@ -59,7 +59,7 @@ protected:
 
 private:
     World& world_;
-    plugin_t annex_ = 0;
+    flags_t annex_ = 0;
     const std::string name_;
 };
 
@@ -77,7 +77,7 @@ public:
     RWPhase(World& world, std::string name)
         : Phase(world, std::move(name))
         , Rewriter(world.inherit_ptr()) {}
-    RWPhase(World& world, plugin_t annex)
+    RWPhase(World& world, flags_t annex)
         : Phase(world, annex)
         , Rewriter(world.inherit_ptr()) {}
 
@@ -127,7 +127,7 @@ class FPPhase : public RWPhase {
 public:
     FPPhase(World& world, std::string name)
         : RWPhase(world, std::move(name)) {}
-    FPPhase(World& world, plugin_t annex)
+    FPPhase(World& world, flags_t annex)
         : RWPhase(world, annex) {}
 
     virtual bool analyze() = 0;
@@ -199,7 +199,7 @@ public:
     static void hook(Flags2Phases& phases, Args&&... args) {
         auto f
             = [... args = std::forward<Args>(args)](World& w, const Def*) { return std::make_unique<P>(w, args...); };
-        assert_emplace(phases, flags_t(Annex::Base<A>), f);
+        assert_emplace(phases, Annex::Base<A>, f);
     }
 
 private:

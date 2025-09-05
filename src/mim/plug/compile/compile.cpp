@@ -43,8 +43,8 @@ auto apply(World& world, P& ps, M& man, const Def* app) {
 
 void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     // clang-format off
-    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](World&,    const Def*) { return std::unique_ptr<Phase>{}; });
-    assert_emplace(passes, flags_t(Annex::Base<compile::null_pass >), [](PassMan&,  const Def*) {});
+    assert_emplace(phases, Annex::Base<compile::null_phase>, [](World&,    const Def*) { return std::unique_ptr<Phase>{}; });
+    assert_emplace(passes, Annex::Base<compile::null_pass >, [](PassMan&,  const Def*) {});
 
     PhaseMan::hook<compile::cleanup_phase,  Cleanup     >(phases);
     PhaseMan::hook<compile::beta_red_phase, BetaRedPhase>(phases);
@@ -52,12 +52,12 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PhaseMan::hook<compile::eta_exp_phase,  EtaExpPhase >(phases);
     // clang-format on
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::prefix_cleanup_phase>), [&](World& world, const Def* app) {
+    assert_emplace(phases, Annex::Base<compile::prefix_cleanup_phase>, [&](World& world, const Def* app) {
         auto prefix = tuple2str(app->as<App>()->arg());
         return std::make_unique<PrefixCleanup>(world, prefix);
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::passes>), [&](World& world, const Def* app) {
+    assert_emplace(phases, Annex::Base<compile::passes>, [&](World& world, const Def* app) {
         auto defs = app->as<App>()->arg()->projs();
         auto man  = std::make_unique<PassMan>(app->world());
         for (auto def : defs)
@@ -65,7 +65,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
         return std::make_unique<PassManPhase>(world, std::move(man));
     });
 
-    assert_emplace(phases, flags_t(Annex::Base<compile::phases>), [&](World& world, const Def* app) {
+    assert_emplace(phases, Annex::Base<compile::phases>, [&](World& world, const Def* app) {
         auto [fp, arg] = App::uncurry_args<2>(app);
         auto man       = std::make_unique<PhaseMan>(world, Lit::as<bool>(fp));
         for (auto def : app->as<App>()->arg()->projs())
@@ -83,7 +83,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PassMan::hook<compile::tail_rec_elim_pass, TailRecElim>(passes);
     // clang-format on
 
-    assert_emplace(passes, flags_t(Annex::Base<compile::meta_pass>), [&](PassMan& man, const Def* app) {
+    assert_emplace(passes, Annex::Base<compile::meta_pass>, [&](PassMan& man, const Def* app) {
         for (auto def : app->as<App>()->arg()->projs())
             apply(man.world(), passes, man, def);
     });
