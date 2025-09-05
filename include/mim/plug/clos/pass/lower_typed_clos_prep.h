@@ -1,7 +1,8 @@
 #pragma once
 
+#include <mim/pass.h>
+
 #include <mim/pass/eta_exp.h>
-#include <mim/pass/pass.h>
 
 #include "mim/plug/clos/clos.h"
 

@@ -3,8 +3,7 @@
 #include <vector>
 
 #include <mim/def.h>
-
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 namespace mim::plug::direct {
 

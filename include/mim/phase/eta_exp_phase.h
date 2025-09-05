@@ -1,6 +1,7 @@
 #pragma once
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
+
 #include "mim/util/util.h"
 
 namespace mim {

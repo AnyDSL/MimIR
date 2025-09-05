@@ -4,12 +4,13 @@
 
 #include <mim/config.h>
 #include <mim/driver.h>
+#include <mim/pass.h>
+#include <mim/phase.h>
 
 #include <mim/pass/beta_red.h>
 #include <mim/pass/eta_exp.h>
 #include <mim/pass/eta_red.h>
 #include <mim/pass/lam_spec.h>
-#include <mim/pass/pass.h>
 #include <mim/pass/ret_wrap.h>
 #include <mim/pass/scalarize.h>
 #include <mim/pass/tail_rec_elim.h>
@@ -17,7 +18,6 @@
 #include <mim/phase/branch_normalize.h>
 #include <mim/phase/eta_exp_phase.h>
 #include <mim/phase/eta_red_phase.h>
-#include <mim/phase/phase.h>
 #include <mim/phase/prefix_cleanup.h>
 
 #include "mim/plug/compile/pass/debug_print.h"

@@ -1,10 +1,10 @@
 #include "mim/plug/mem/mem.h"
 
 #include <mim/config.h>
+#include <mim/pass.h>
 
 #include <mim/pass/beta_red.h>
 #include <mim/pass/eta_exp.h>
-#include <mim/pass/pass.h>
 
 #include "mim/plug/mem/autogen.h"
 #include "mim/plug/mem/pass/alloc2malloc.h"

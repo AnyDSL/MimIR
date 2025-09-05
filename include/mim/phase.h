@@ -4,9 +4,8 @@
 
 #include "mim/def.h"
 #include "mim/nest.h"
+#include "mim/pass.h"
 #include "mim/rewrite.h"
-
-#include "mim/pass/pass.h"
 
 #include "fe/cast.h"
 

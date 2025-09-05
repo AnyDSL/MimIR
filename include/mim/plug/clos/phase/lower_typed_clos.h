@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 #include "mim/plug/clos/clos.h"
 #include "mim/plug/mem/mem.h"
