@@ -4,7 +4,13 @@
 
 namespace mim {
 
-void PrefixCleanup::set(const App* app) { prefix_ = tuple2str(app->arg()); }
+void PrefixCleanup::apply(std::string prefix) {
+    prefix_ = prefix;
+    name_ += " \"" + prefix_ + " \"";
+}
+
+void PrefixCleanup::apply(const App* app) { apply(tuple2str(app->arg())); }
+void PrefixCleanup::apply(Phase& phase) { apply(std::move(static_cast<PrefixCleanup&>(phase).prefix_)); }
 
 void PrefixCleanup::rewrite_external(Def* mut) {
     if (mut->sym().view().starts_with(prefix_)) {

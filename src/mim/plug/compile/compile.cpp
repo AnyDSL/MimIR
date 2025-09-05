@@ -1,8 +1,5 @@
 #include "mim/plug/compile/compile.h"
 
-#include <memory>
-#include <type_traits>
-
 #include <mim/config.h>
 #include <mim/driver.h>
 #include <mim/pass.h>
@@ -54,7 +51,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PhaseMan::hook<compile::eta_exp_phase,        EtaExpPhase  >(phases);
     PhaseMan::hook<compile::prefix_cleanup_phase, PrefixCleanup>(phases);
     PhaseMan::hook<compile::phases,               PhaseMan     >(phases);
-    PhaseMan::hook<compile::passes,               PhaseMan     >(phases);
+    PhaseMan::hook<compile::passes,               PassManPhase >(phases);
     // clang-format on
 
     // clang-format off

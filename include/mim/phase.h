@@ -2,17 +2,20 @@
 
 #include <memory>
 
+#include <fe/assert.h>
+#include <fe/cast.h>
+
 #include "mim/def.h"
 #include "mim/nest.h"
 #include "mim/pass.h"
 #include "mim/rewrite.h"
 
-#include "fe/cast.h"
-
 namespace mim {
 
 class Nest;
 class World;
+
+using Phases = std::deque<std::unique_ptr<Phase>>;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
@@ -23,16 +26,13 @@ public:
     Phase(World& world, std::string name)
         : world_(world)
         , name_(std::move(name)) {}
-    Phase(World& world, flags_t annex)
-        : world_(world)
-        , annex_(annex)
-        , name_(Annex::demangle(world.driver(), annex)) {}
+    Phase(World& world, flags_t annex);
     virtual ~Phase() = default;
 
-    virtual void set(const App*) {}
+    virtual void apply(const App*) { fe::unreachable(); }
 
     std::unique_ptr<Phase> recreate();
-    virtual void inherit(Phase&) {}
+    virtual void apply(Phase&) {}
     ///@}
 
     /// @name Getters
@@ -55,16 +55,16 @@ public:
     }
     ///@}
 
-protected:
+private:
     virtual void start() = 0; ///< Actual entry.
 
-    /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
-    bool todo_ = false;
-
-private:
     World& world_;
     flags_t annex_ = 0;
-    const std::string name_;
+
+protected:
+    std::string name_;
+    /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
+    bool todo_ = false;
 };
 
 /// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
@@ -157,6 +157,11 @@ public:
     PassManPhase(World& world, std::unique_ptr<PassMan>&& man)
         : Phase(world, "pass_man_phase")
         , man_(std::move(man)) {}
+    PassManPhase(World& world, flags_t annex)
+        : Phase(world, annex) {}
+
+    void apply(const App*) final;
+    void apply(Phase&) final;
 
     void start() override { man_->run(); }
 
@@ -168,12 +173,16 @@ private:
 /// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo_ flags yield `false`.
 class PhaseMan : public Phase {
 public:
-    PhaseMan(World&, bool fixed_point = false);
-    void set(const App*) final;
+    PhaseMan(World& world, flags_t annex)
+        : Phase(world, annex) {}
+
+    void apply(bool, Phases&&);
+    void apply(const App*) final;
+    void apply(Phase&) final;
 
     bool fixed_point() const { return fixed_point_; }
     void start() override;
-
+    ///
     /// @name phases
     ///@{
     auto& phases() { return phases_; }
@@ -205,7 +214,7 @@ public:
     }
 
 private:
-    std::deque<std::unique_ptr<Phase>> phases_;
+    Phases phases_;
     bool fixed_point_;
 };
 
