@@ -1,6 +1,5 @@
 #include "mim/nest.h"
 
-#include "mim/phase.h"
 #include "mim/world.h"
 
 namespace mim {
@@ -22,8 +21,7 @@ Nest::Nest(View<Def*> muts)
 Nest::Nest(World& world)
     : world_(world)
     , root_(make_node(nullptr)) {
-    for (auto mut : ClosedCollector<>::collect(world))
-        make_node(mut, root_);
+    world.for_each(false, [this](Def* mut) { make_node(mut, root_); });
     populate();
 }
 

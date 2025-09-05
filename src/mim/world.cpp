@@ -669,6 +669,21 @@ Defs World::reduce(const Var* var, const Def* arg) {
     return reduct->defs();
 }
 
+void World::for_each(bool elide_empty, std::function<void(Def*)> f) {
+    unique_queue<MutSet> queue;
+    for (auto mut : externals())
+        queue.push(mut);
+
+    while (!queue.empty()) {
+        auto mut = queue.pop();
+        if (mut && mut->is_closed() && (!elide_empty || mut->is_set())) f(mut);
+
+        for (auto op : mut->deps())
+            for (auto mut : op->local_muts())
+                queue.push(mut);
+    }
+}
+
 /*
  * debugging
  */

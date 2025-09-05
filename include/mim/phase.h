@@ -209,18 +209,7 @@ public:
     bool elide_empty() const { return elide_empty_; }
 
     void start() override {
-        unique_queue<MutSet> queue;
-        for (auto mut : world().externals())
-            queue.push(mut);
-
-        while (!queue.empty()) {
-            auto mut = queue.pop();
-            if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(root_ = m);
-
-            for (auto op : mut->deps())
-                for (auto mut : op->local_muts())
-                    queue.push(mut);
-        }
+        world().template for_each<M>(elide_empty(), [this](M* mut) { root_ = mut, visit(mut); });
     }
 
 protected:
@@ -230,25 +219,6 @@ protected:
 private:
     const bool elide_empty_;
     M* root_;
-};
-
-/// Transitively collects all [*closed*](@ref Def::is_closed) mutables in a World.
-template<class M = Def>
-class ClosedCollector : public ClosedMutPhase<M> {
-public:
-    ClosedCollector(World& world)
-        : ClosedMutPhase<M>(world, "closed_collector", false) {}
-
-    virtual void visit(M* mut) { muts.emplace_back(mut); }
-
-    /// Wrapper to directly receive all *closed* mutables as Vector.
-    static Vector<M*> collect(World& world) {
-        ClosedCollector<M> collector(world);
-        collector.run();
-        return std::move(collector.muts);
-    }
-
-    Vector<M*> muts;
 };
 
 /// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
