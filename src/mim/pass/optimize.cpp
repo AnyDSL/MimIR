@@ -37,18 +37,15 @@ void optimize(World& world) {
     if (!compilation) world.ELOG("no compilation function found");
     world.DLOG("compilation using {} : {}", compilation, compilation->type());
 
-    auto pipe             = PhaseMan(world);
-    auto pipe_prog        = compilation->as<Lam>()->body();
-    auto [callee, phases] = App::uncurry(pipe_prog);
-    auto axm              = callee->as<Axm>();
+    auto body   = compilation->as<Lam>()->body();
+    auto callee = App::uncurry_callee(body);
 
     world.DLOG("Building pipeline");
-    if (auto phase = world.driver().phase(axm->flags()))
-        (*phase)(pipe, pipe_prog);
-    else
+    if (auto f = world.driver().phase(callee->flags())) {
+        auto phase = (*f)(world, body);
+        phase->run();
+    } else
         world.ELOG("axm not found in passes");
-
-    pipe.run();
 }
 
 } // namespace mim
