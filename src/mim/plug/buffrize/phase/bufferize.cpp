@@ -1,6 +1,12 @@
 #include "mim/plug/buffrize/phase/bufferize.h"
 
+#include <functional>
+#include <memory>
+#include <stdexcept>
+
 #include "mim/def.h"
+#include "mim/schedule.h"
+#include "mim/world.h"
 
 #include "mim/plug/affine/affine.h"
 #include "mim/plug/buffrize/autogen.h"
@@ -14,67 +20,7 @@
 namespace mim::plug::buffrize {
 namespace {
 
-// Union-Find data structure to keep track of equivalence classes of defs.
-class UnionFind {
-public:
-    UnionFind() = default;
-
-    // Find the root of the element with path compression.
-    const Def* find(const Def* def) {
-        if (parent_.find(def) == parent_.end() || parent_[def] == def) return def;
-        parent_[def] = find(parent_[def]); // Path compression.
-        return parent_[def];
-    }
-
-    // Union two elements.
-    void unite(const Def* def1, const Def* def2) {
-        const Def* root1 = find(def1);
-        const Def* root2 = find(def2);
-        if (root1 != root2) parent_[root1] = root2; // Make one root point to the other.
-    }
-
-private:
-    absl::flat_hash_map<const Def*, const Def*> parent_;
-};
-
-class BufferizationAnalysisInfo {
-public:
-    // Ptr alias union find
-    UnionFind ptr_union_find;
-};
-
-const Def* build_copy_array(const Def* mem, const Def* src, const Def* dst, const Def* src_shape) {
-    auto& w = src->world();
-    if (src == dst) return mem; // No need to copy if they are the same
-    w.DLOG("Copying array from {} to {}", src, dst);
-
-    auto exitT               = w.cn(w.annex<mem::M>());
-    auto wrapper             = w.mut_con({w.annex<mem::M>(), exitT});
-    auto [wrapper_mem, exit] = wrapper->vars<2>();
-
-    auto body = w.mut_con(Defs{w.type_idx(0_u64), w.annex<mem::M>(), exitT});
-    {
-        auto [index, mem, yield] = body->vars<3>();
-        auto converted_index     = w.call(core::conv::u, src_shape, index);
-        auto src_lea             = w.call<mem::lea>(Defs{src, converted_index});
-        auto dst_lea             = w.call<mem::lea>(Defs{dst, converted_index});
-        auto [load_mem, value]   = w.call<mem::load>(Defs{mem, src_lea})->projs<2>();
-        body->app(false, yield, w.call<mem::store>(Defs{load_mem, dst_lea, value}));
-    }
-
-    auto shape_conv = w.call<core::idx>(w.lit_nat_0(), w.lit_nat(static_cast<nat_t>(core::Mode::none)), src_shape);
-    auto loop = w.call<affine::For>(Defs{w.lit_idx(0_u64), shape_conv, w.lit_idx(1_u64), wrapper_mem, body, exit});
-
-    wrapper->set(false, loop);
-
-    auto new_mem = w.call<direct::cps2ds>(Defs{w.annex<mem::M>(), w.annex<mem::M>()}, wrapper, mem);
-
-    w.DLOG("Created affine.For loop for copying array contents: {}", loop);
-    // new_mem->dump(100);
-    return new_mem;
-}
-
-const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst, const Def* src_shape) {
+const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst) {
     auto& w = src->world();
     if (src == dst) return mem; // No need to copy if they are the same
     w.DLOG("Copying array from {} to {}", src, dst);
@@ -82,7 +28,6 @@ const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst, const
     auto copy_annex = w.call<buffrize::copy_array>(Defs{src, dst});
 
     auto new_mem = w.call<direct::cps2ds>(Defs{w.annex<mem::M>(), w.annex<mem::M>()}, copy_annex, mem);
-    // auto new_mem = w.call<buffrize::copy_array>(Defs{mem, src, dst});
     return new_mem;
 }
 
@@ -104,8 +49,250 @@ const Def* create_buffer(const Def* def, const Def* mem) {
     }
     return nullptr;
 }
-
 } // namespace
+
+namespace detail {
+const Def* AliasSet::find(const Def* def) {
+    auto it = parent_.find(def);
+    if (it == parent_.end() || it->second == def) return def;
+    assign_new_parent(it->second, find(it->second)); // Path compression.
+    return parent_[def];
+}
+
+const Def* AliasSet::find(const Def* def) const {
+    auto it = parent_.find(def);
+    if (it == parent_.end() || it->second == def) return def;
+    return find(it->second);
+}
+
+void AliasSet::unite(const Def* def1, const Def* def2) {
+    const Def* root1 = find(def1);
+    const Def* root2 = find(def2);
+    root1->world().DLOG("unite {} -- {} - {} -- {}", def1, def2, root1, root2);
+    if (root1 != root2) assign_new_parent(root1, root2); // Make one root point to the other.
+}
+
+DefSet& AliasSet::get_maybe_new_set(const Def* def) {
+    if (auto it = sets_.find(def); it != sets_.end()) return it->second;
+
+    sets_[def] = {def};
+    return sets_[def];
+}
+
+void AliasSet::assign_new_parent(const Def* def1, const Def* def2) {
+    parent_[def1] = def2;
+    if (def1 == def2) return;
+
+    auto def1_set  = get_maybe_new_set(def1);
+    auto& def2_set = get_maybe_new_set(def2);
+    def2_set.insert(def1_set.begin(), def1_set.end());
+    sets_.erase(def1);
+}
+
+InterferenceSchedule::InterferenceSchedule(Scheduler& sched)
+    : sched_(sched) {
+    Lam* root = sched_.root()->as_mut<Lam>();
+    schedule(root, root->body());
+}
+
+void InterferenceSchedule::schedule(Lam* mut, const Def* def) {
+    if (!seen_.insert(def).second) return;
+
+    auto loc = sched_.smart(mut, def);
+
+    for (const Def* op : def->ops()) {
+        def_use_map_[op].insert(def);
+        schedule(mut, op);
+    }
+
+    // if (is_tuple_to_consider(def) || std::any_of(def->ops().begin(), def->ops().end()))
+    ordered_schedule_[loc->mut()].push_back(def);
+}
+
+InterferenceSchedule::NodeOrder InterferenceSchedule::get_order(const Def* a, const Def* b) {
+    a->world().DLOG("Getting order for {} -- {}", a, b);
+    if (a == b) {
+        a->world().DLOG("order: SAME");
+        return SAME;
+    }
+    auto locA = sched_.smart(sched_.root(), a);
+    auto locB = sched_.smart(sched_.root(), b);
+
+    if (locA != locB) {
+        a->world().DLOG("order: INDEPENDENT");
+        return INDEPENDENT;
+    }
+
+    auto& lam = ordered_schedule_[locA->mut()];
+
+    auto itA = std::find(lam.cbegin(), lam.cend(), a);
+    auto itB = std::find(lam.cbegin(), lam.cend(), b);
+    if (itA == lam.cend() || itB == lam.cend()) {
+        a->world().DLOG("order: INDEPENDENT");
+        return INDEPENDENT;
+    }
+    if (itA < itB) {
+        a->world().DLOG("order: BEFORE");
+        return BEFORE;
+    } else if (itA > itB) {
+        a->world().DLOG("order: AFTER");
+        return AFTER;
+    }
+    throw std::runtime_error{"get_order should always find an order for two values of the same Lam."};
+}
+
+InterferenceSchedule::Interference InterferenceSchedule::get_interference(const Def* defA, const Def* defB) {
+    defA->world().DLOG("Getting Interference for {} -- {}", defA, defB);
+    if (defA == defB) return NONE;
+
+    // auto& usesA = sched_.uses(defA);
+    // auto& usesB = sched_.uses(defB);
+    auto usesA = def_use_map_[defA];
+    auto usesB = def_use_map_[defB];
+    for (auto use : usesA) defA->world().DLOG("use A: {}", use);
+    for (auto use : usesB) defA->world().DLOG("use B: {}", use);
+    if (usesA.empty() || usesB.empty()) return NONE;
+
+    auto defOrder = get_order(defA, defB);
+
+    auto comparison = [this, defOrder, defA, defB]() -> std::function<Interference(const Def*, const Def*)> {
+        switch (defOrder) {
+            case BEFORE:
+                return [this, defA, defB](const Def* useA, const Def* useB) {
+                    switch (get_order(useA, defB)) {
+                        case BEFORE: break;
+                        case AFTER: return YES;
+                        case INDEPENDENT:
+                        case SAME: break;
+                    }
+                    return NONE;
+                };
+            case AFTER:
+                return [this, defA, defB](const Def* useA, const Def* useB) {
+                    switch (get_order(defA, useB)) {
+                        case BEFORE: return YES;
+                        case AFTER:
+                        case INDEPENDENT:
+                        case SAME: break;
+                    }
+                    return NONE;
+                };
+            case INDEPENDENT:
+            case SAME: return [](const Def*, const Def*) { return NONE; };
+        }
+    }();
+
+    for (auto useA : usesA) {
+        for (auto useB : usesB)
+            if (comparison(useA, useB) == YES) {
+                useA->world().DLOG("{}--{} interferes with {}--{}", defA, useA, defB, useB);
+                return YES;
+            }
+    }
+    defA->world().DLOG("{} doesnt interfere with {}", defA, defB);
+    return NONE;
+}
+
+void InterferenceSchedule::dump() const {
+    for (auto [lam, nodes] : ordered_schedule_) {
+        lam->world().DLOG("lam {}", lam->unique_name());
+        for (auto node : nodes) node->world().DLOG("  node {}", node);
+    }
+}
+
+const BufferizationAnalysisInfo& BufferizationAnalysis::get_analysis_infO() const { return analysis_info_; }
+
+void BufferizationAnalysis::analyze(const Def* def) {
+    if (!seen_.insert(def).second) return;
+
+    switch (def->node()) {
+        case Node::Insert: analysis_info_.add_alias(def, def->as<Insert>()->tuple()); break;
+        case Node::Extract:
+            // don't care about uses here..
+        case Node::Lit:
+            // don't need to do anything here, is added as alias by users
+            break;
+        // case Node::Axm:
+        case Node::Var:
+        // case Node::Global:
+        // case Node::Proxy:
+        // case Node::Hole:
+        case Node::Type:
+        case Node::Univ:
+        // case Node::UMax:
+        // case Node::UInc:
+        // case Node::Pi:
+        case Node::Lam:
+        case Node::App:
+
+        // case Node::Sigma:
+        case Node::Tuple:
+        case Node::Arr:
+        case Node::Pack:
+            // case Node::Join:
+            // case Node::Inj:
+            // case Node::Match:
+            // case Node::Top:
+            // case Node::Meet:
+            // case Node::Merge:
+            // case Node::Split:
+            // case Node::Bot:
+            // case Node::Uniq:
+            // case Node::Nat:
+            // case Node::Idx:
+            break;
+        default: break;
+    }
+
+    for (auto op : def->ops()) analyze(op);
+}
+
+BufferizationAnalysis::BufferizationAnalysis(const Nest& nest, Scheduler& sched)
+    : nest_(nest)
+    , interference_(sched) {
+    interference_.dump();
+    analyze();
+}
+
+void BufferizationAnalysis::analyze() {
+    if (!nest_.root()->mut()->isa_mut<Lam>()) {
+        world().DLOG("Bufferization analysis: root is not a mutable Lam, skipping analysis");
+        return;
+    }
+    auto root = static_cast<Lam*>(nest_.root()->mut());
+    world().DLOG("Starting bufferization analysis for nest: {}", nest_.root()->name());
+
+    analyze(root->filter());
+    analyze(root->body());
+
+    seen_.clear();
+
+    decide(root->filter());
+    decide(root->body());
+}
+
+void BufferizationAnalysis::decide(const Def* def) {
+    if (!seen_.insert(def).second) return;
+
+    for (auto op : def->ops()) decide(op);
+
+    if (is_tuple_to_consider(def)) {
+        def->world().DLOG("deciding bufferization for {}", def);
+        if (def->isa<Seq>()) {
+            analysis_info_.must_allocate(def);
+            return;
+        }
+        def->world().DLOG("alias set size {}", analysis_info_.get_alias_set(def).size());
+
+        for (auto* alias : analysis_info_.get_alias_set(def)) {
+            if (interference_.get_order(def, alias) == InterferenceSchedule::BEFORE) {
+                if (interference_.get_interference(def, alias) == InterferenceSchedule::YES)
+                    analysis_info_.must_copy(alias);
+            }
+        }
+    }
+}
+} // namespace detail
 
 void Bufferize::visit(const Nest& nest) {
     if (auto it = rewritten_.find(nest.root()->mut()); it != rewritten_.end()) {
@@ -120,43 +307,29 @@ void Bufferize::visit(const Nest& nest) {
         world().DLOG("Bufferize phase: root is not a mutable Lam, skipping bufferization");
         return;
     }
+    nest.root()->mut()->dot(nest.root()->name() + "_bufferize.dot");
 
     sched_ = Scheduler{nest};
-    nest.root()->mut()->dot(nest.root()->name() + "_bufferize.dot");
-    // nest.dot(nest.root()->name() + "_bufferize.dot");
+    analysis_.reset(new detail::BufferizationAnalysis(nest, sched_));
 
     auto root = static_cast<Lam*>(nest.root()->mut());
-    // if(auto lam = root->isa<Lam>())
-    //     mem_ = mem::mem_var(lam);
-    // else
-    //     mem_ = world().annex<mem::m>();
 
-    // // Convert all arrays to buffers.
-    // auto new_ops = DefVec{root->ops(), [&](const Def* def) {
-    //                      // Visit each def and bufferize it if necessary.
-    //                      return visit_def(def);
-    //                  }};
-    // root->unset()->set(new_ops);
-    auto new_filter  = visit_def(root->filter());
-    auto new_body    = visit_def(root->body());
+    auto new_filter = visit_def(root->filter());
+    auto new_body   = visit_def(root->body());
     if (auto app = new_body->isa<App>()) {
+        // is arg 0 alwasy mem? :)
         auto new_mem_arg = world().call<mem::merge>(lam2mem_[root]);
-        auto new_args = app->args();
+        auto new_args    = app->args();
         DefVec new_args_vec(new_args.size(), [&](size_t i) {
             if (i == 0) return new_mem_arg;
             return new_args[i];
         });
         world().DLOG("Bufferize: Rewriting app {} with new args {}", app, new_args_vec);
+        // todo: is callee necessarily a mut we want to reuse?
         root->unset()->app(new_filter, app->callee(), new_args_vec);
     } else {
         root->unset()->set({new_filter, new_body});
     }
-    // for (const auto& op : root->ops()) {
-    //     // Visit each operation in the root and bufferize it.
-    //     auto rewritten = visit_def(op);
-    //     if (rewritten != op) world().DLOG("Rewritten {} to {}", op, rewritten);
-    // //     root->set(op->index(), rewritten);
-    // }
     world().DLOG("Bufferize phase finished");
     world().debug_dump();
 }
@@ -215,19 +388,26 @@ const Def* Bufferize::active_mem(Lam* place) {
 void Bufferize::add_mem(const Lam* place, const Def* mem) { lam2mem_[place].push_back(mem); }
 
 const Def* Bufferize::visit_insert(Lam* place, const Insert* insert) {
-    auto tuple = insert->tuple();
-    auto index = insert->index();
-    auto value = insert->value();
+    auto tuple = rewritten_[insert->tuple()];
+    auto index = rewritten_[insert->index()];
+    auto value = rewritten_[insert->value()];
 
-    auto [tuple_mem, tuple_ptr] = rewritten_[tuple]->projs<2>();
+    auto mem_ptr     = tuple->projs<2>();
+    auto& [mem, ptr] = mem_ptr;
 
     world().DLOG("Bufferizing Insert {}", insert);
-    // If the tuple is an array, we bufferize it.
-    if (auto buffer = create_buffer(insert, tuple_mem)) {
-        world().DLOG("Created target buffer for Insert {}", insert);
 
-        auto [mem, ptr] = buffer->projs<2>();
-        mem             = call_copy_array(mem, tuple_ptr, ptr, insert->type()->as<Seq>()->shape());
+    if (is_tuple_to_consider(insert)) {
+        if (analysis_->get_analysis_infO().get_choice(insert) == detail::BufferizationChoice::Inplace) {
+        } else if (auto buffer = create_buffer(insert, mem)) {
+            // If the tuple is an array, we bufferize it.
+            world().DLOG("Created target buffer for Insert {}", insert);
+
+            auto src_ptr = ptr;
+            mem_ptr      = buffer->projs<2>();
+            mem          = call_copy_array(mem, src_ptr, ptr);
+        }
+
         // store the value in the buffer.
         auto elem_ptr = world().call<mem::lea>(Defs{ptr, index});
         mem           = world().call<mem::store>(Defs{mem, elem_ptr, value});
@@ -242,16 +422,19 @@ const Def* Bufferize::visit_insert(Lam* place, const Insert* insert) {
 
 const Def* Bufferize::visit_extract(Lam* place, const Extract* extract) {
     auto tuple = extract->tuple();
-    auto index = extract->index();
+    auto index = rewritten_[extract->index()];
 
     if (auto it = rewritten_.find(tuple); it != rewritten_.end() && is_tuple_to_consider(tuple)) {
+        world().DLOG("Rewriting extract {}", extract);
+        std::cerr.flush();
+        std::cout.flush();
         // If we have already rewritten this tuple, use the rewritten version.
         auto [mem, ptr] = it->second->projs<2>();
-        mem = active_mem(place);
+        mem             = active_mem(place);
 
         ptr                   = world().call<mem::lea>(Defs{ptr, index});
         auto [new_mem, value] = world().call<mem::load>(Defs{mem, ptr})->projs<2>();
-        rewritten_[tuple]     = world().tuple(Defs{mem, ptr});
+        // rewritten_[tuple]     = world().tuple(Defs{mem, ptr});
 
         add_mem(place, new_mem);
         return rewritten_[extract] = value;
