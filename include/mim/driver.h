@@ -78,6 +78,7 @@ public:
     ///@{
     auto pass(flags_t flags) { return lookup(passes_, flags); }
     auto phase(flags_t flags) { return lookup(phases_, flags); }
+    const auto& phases() const { return phases_; }
     auto normalizer(flags_t flags) const { return lookup(normalizers_, flags); }
     auto normalizer(plugin_t d, tag_t t, sub_t s) const { return normalizer(d | flags_t(t << 8u) | s); }
     auto backend(std::string_view name) { return lookup(backends_, name); }

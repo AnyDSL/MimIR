@@ -15,8 +15,8 @@ namespace mim::plug::matrix {
 
 class LowerMatrixLowLevel : public RWPhase {
 public:
-    LowerMatrixLowLevel(World& world)
-        : RWPhase(world, "lower_matrix_lowlevel") {}
+    LowerMatrixLowLevel(World& world, flags_t annex)
+        : RWPhase(world, annex) {}
 
     const Def* rewrite_imm_App(const App*) override;
 

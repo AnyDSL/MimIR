@@ -27,8 +27,8 @@ namespace mim::plug::clos {
 /// These annotations are introduced by LowerTypedClosPrep.
 class LowerTypedClos : public Phase {
 public:
-    LowerTypedClos(World& world)
-        : Phase(world, "lower_typed_clos") {}
+    LowerTypedClos(World& world, flags_t annex)
+        : Phase(world, annex) {}
 
     void start() override;
 

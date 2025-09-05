@@ -4,9 +4,7 @@
 
 namespace mim {
 
-PrefixCleanup::PrefixCleanup(World& world, std::string prefix)
-    : RWPhase(world, std::format("prefix_cleanup `{}`", prefix))
-    , prefix_(std::move(prefix)) {}
+void PrefixCleanup::set(const App* app) { prefix_ = tuple2str(app->arg()); }
 
 void PrefixCleanup::rewrite_external(Def* mut) {
     if (mut->sym().view().starts_with(prefix_)) {

@@ -42,7 +42,8 @@ void optimize(World& world) {
 
     world.DLOG("Building pipeline");
     if (auto f = world.driver().phase(callee->flags())) {
-        auto phase = (*f)(world, body);
+        auto phase = (*f)(world);
+        // todo apply body
         phase->run();
     } else
         world.ELOG("axm not found in passes");

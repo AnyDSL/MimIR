@@ -9,7 +9,8 @@ namespace mim {
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
 class EtaExpPhase : public FPPhase {
 public:
-    EtaExpPhase(World&);
+    EtaExpPhase(World& world, flags_t annex)
+        : FPPhase(world, annex) {}
 
 private:
     enum Lattice : u8 {
@@ -29,8 +30,6 @@ private:
         if (auto i = lam2lattice_.find(lam); i != lam2lattice_.end()) return i->second;
         return None;
     }
-
-    void reset() final;
 
     bool analyze() final;
     void analyze(const Def*);

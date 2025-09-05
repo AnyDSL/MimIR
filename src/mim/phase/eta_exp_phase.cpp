@@ -4,14 +4,6 @@
 
 namespace mim {
 
-EtaExpPhase::EtaExpPhase(World& world)
-    : FPPhase(world, "eta_exp") {}
-
-void EtaExpPhase::reset() {
-    analyzed_.clear();
-    lam2lattice_.clear();
-}
-
 bool EtaExpPhase::analyze() {
     for (auto def : old_world().externals()) {
         if (auto lam = def->isa<Lam>()) join(lam, Lattice::Known);

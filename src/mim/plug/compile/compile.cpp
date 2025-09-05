@@ -21,6 +21,8 @@
 #include <mim/phase/eta_red_phase.h>
 #include <mim/phase/prefix_cleanup.h>
 
+#include "mim/plug/compile/autogen.h"
+
 using namespace mim;
 using namespace mim::plug;
 
@@ -32,7 +34,7 @@ auto apply(World& world, P& ps, M& man, const Def* app) {
     if (auto axm = p_def->isa<Axm>())
         if (auto i = ps.find(axm->flags()); i != ps.end())
             if constexpr (std::is_same_v<M, PhaseMan>)
-                return i->second(world, app);
+                return i->second(world);
             else
                 return i->second(man, app);
         else
@@ -43,35 +45,17 @@ auto apply(World& world, P& ps, M& man, const Def* app) {
 
 void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     // clang-format off
-    assert_emplace(phases, Annex::Base<compile::null_phase>, [](World&,    const Def*) { return std::unique_ptr<Phase>{}; });
+    assert_emplace(phases, Annex::Base<compile::null_phase>, [](World&) { return std::unique_ptr<Phase>{}; });
     assert_emplace(passes, Annex::Base<compile::null_pass >, [](PassMan&,  const Def*) {});
 
-    PhaseMan::hook<compile::cleanup_phase,  Cleanup     >(phases);
-    PhaseMan::hook<compile::beta_red_phase, BetaRedPhase>(phases);
-    PhaseMan::hook<compile::eta_red_phase,  EtaRedPhase >(phases);
-    PhaseMan::hook<compile::eta_exp_phase,  EtaExpPhase >(phases);
+    PhaseMan::hook<compile::cleanup_phase,        Cleanup      >(phases);
+    PhaseMan::hook<compile::beta_red_phase,       BetaRedPhase >(phases);
+    PhaseMan::hook<compile::eta_red_phase,        EtaRedPhase  >(phases);
+    PhaseMan::hook<compile::eta_exp_phase,        EtaExpPhase  >(phases);
+    PhaseMan::hook<compile::prefix_cleanup_phase, PrefixCleanup>(phases);
+    PhaseMan::hook<compile::phases,               PhaseMan     >(phases);
+    PhaseMan::hook<compile::passes,               PhaseMan     >(phases);
     // clang-format on
-
-    assert_emplace(phases, Annex::Base<compile::prefix_cleanup_phase>, [&](World& world, const Def* app) {
-        auto prefix = tuple2str(app->as<App>()->arg());
-        return std::make_unique<PrefixCleanup>(world, prefix);
-    });
-
-    assert_emplace(phases, Annex::Base<compile::passes>, [&](World& world, const Def* app) {
-        auto defs = app->as<App>()->arg()->projs();
-        auto man  = std::make_unique<PassMan>(app->world());
-        for (auto def : defs)
-            apply(man->world(), passes, *man, def);
-        return std::make_unique<PassManPhase>(world, std::move(man));
-    });
-
-    assert_emplace(phases, Annex::Base<compile::phases>, [&](World& world, const Def* app) {
-        auto [fp, arg] = App::uncurry_args<2>(app);
-        auto man       = std::make_unique<PhaseMan>(world, Lit::as<bool>(fp));
-        for (auto def : app->as<App>()->arg()->projs())
-            if (auto phase = apply(world, phases, *man, def)) man->add(std::move(phase));
-        return man;
-    });
 
     // clang-format off
     PassMan::hook<compile::beta_red_pass,      BetaRed    >(passes);
