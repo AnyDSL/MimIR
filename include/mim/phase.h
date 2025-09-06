@@ -188,7 +188,6 @@ public:
     auto& phases() { return phases_; }
     const auto& phases() const { return phases_; }
 
-#if 0
     /// Add a Phase.
     /// You don't need to pass the World to @p args - it will be passed automatically.
     /// If @p P is a Pass, this method will wrap this in a PassPhase.
@@ -203,7 +202,7 @@ public:
             return phase;
         }
     }
-#endif
+
     void add(std::unique_ptr<Phase>&& phase) { phases_.emplace_back(std::move(phase)); }
     ///@}
 
