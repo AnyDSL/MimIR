@@ -46,7 +46,7 @@ Phase::Phase(World& world, flags_t annex)
     , name_(world.annex(annex)->sym()) {}
 
 std::unique_ptr<Phase> Phase::recreate() {
-    auto ctor = world().driver().phase(annex());
+    auto ctor = driver().phase(annex());
     auto ptr  = (*ctor)(world());
     ptr->apply(*this);
     return ptr;
@@ -124,7 +124,7 @@ void PhaseMan::start() {
     for (bool todo = true; todo; ++iter) {
         todo = false;
 
-        if (fixed_point()) world().VLOG("fixed-point iteration: {}", iter);
+        if (fixed_point()) VLOG("fixed-point iteration: {}", iter);
 
         for (auto& phase : phases()) {
             phase->run();

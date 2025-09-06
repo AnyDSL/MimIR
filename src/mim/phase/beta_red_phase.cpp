@@ -26,7 +26,7 @@ void BetaRedPhase::visit(const Def* def) {
 
 const Def* BetaRedPhase::rewrite_imm_App(const App* app) {
     if (auto old_lam = app->callee()->isa_mut<Lam>(); old_lam && old_lam->is_set() && is_candidate(old_lam)) {
-        new_world().DLOG("beta-reduce: `{}`", old_lam);
+        this->DLOG("beta-reduce: `{}`", old_lam);
         if (auto var = old_lam->has_var()) {
             auto new_arg = rewrite(app->arg());
             push();

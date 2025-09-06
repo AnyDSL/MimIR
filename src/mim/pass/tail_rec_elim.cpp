@@ -32,7 +32,7 @@ undo_t TailRecElim::analyze(const Def* def) {
                 auto doms         = rec->doms();
                 auto loop_dom     = doms.view().rsubspan(1);
                 loop              = rec->stub(world().cn(loop_dom));
-                world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
+                DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 
                 auto n = rec->num_doms();
                 DefVec loop_args(n - 1);

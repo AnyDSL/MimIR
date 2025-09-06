@@ -50,7 +50,7 @@ void PassMan::run() {
         curr_state().data[i] = passes_[i]->alloc();
 
     for (auto&& pass : passes_)
-        world().ILOG(" + {}", pass->name());
+        ILOG(" + {}", pass->name());
     world().debug_dump();
 
     for (auto&& pass : passes_)
@@ -64,21 +64,21 @@ void PassMan::run() {
     while (!curr_state().stack.empty()) {
         push_state();
         curr_mut_ = pop(curr_state().stack);
-        world().VLOG("=== state {}: {} ===", states_.size() - 1, curr_mut_);
+        VLOG("=== state {}: {} ===", states_.size() - 1, curr_mut_);
 
         if (!curr_mut_->is_set()) continue;
 
         for (auto&& pass : passes_)
             if (pass->inspect()) pass->enter();
 
-        curr_mut_->world().DLOG("curr_mut: {} : {}", curr_mut_, curr_mut_->type());
+        DLOG("curr_mut: {} : {}", curr_mut_, curr_mut_->type());
 
         auto new_defs = absl::FixedArray<const Def*>(curr_mut_->num_ops());
         for (size_t i = 0, e = curr_mut_->num_ops(); i != e; ++i)
             new_defs[i] = rewrite(curr_mut_->op(i));
         curr_mut_->set(new_defs);
 
-        world().VLOG("=== analyze ===");
+        VLOG("=== analyze ===");
         proxy_    = false;
         auto undo = No_Undo;
         for (auto op : curr_mut_->deps())
@@ -86,10 +86,10 @@ void PassMan::run() {
 
         if (undo == No_Undo) {
             assert(!proxy_ && "proxies must not occur anymore after leaving a mut with No_Undo");
-            world().DLOG("=== done ===");
+            DLOG("=== done ===");
         } else {
             pop_states(undo);
-            world().DLOG("=== undo: {} -> {} ===", undo, curr_state().stack.top());
+            DLOG("=== undo: {} -> {} ===", undo, curr_state().stack.top());
         }
     }
 

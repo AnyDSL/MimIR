@@ -30,10 +30,10 @@ const Def* LowerRegex::rewrite(const Def* def) {
             || Axm::isa<regex::range>(callee) || Axm::isa<regex::any>(callee) || Axm::isa<quant>(callee)) {
             const auto n = app->arg();
             auto nfa     = regex2nfa(callee);
-            world().DLOG("nfa: {}", *nfa);
+            DLOG("nfa: {}", *nfa);
 
             auto dfa = automaton::nfa2dfa(*nfa);
-            world().DLOG("dfa: {}", *dfa);
+            DLOG("dfa: {}", *dfa);
 
             auto min_dfa = automaton::minimize_dfa(*dfa);
             new_app      = wrap_in_cps2ds(dfa2matcher(world(), *min_dfa, n));

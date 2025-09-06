@@ -68,7 +68,7 @@ World::~World() {
  * Driver
  */
 
-Log& World::log() { return driver().log(); }
+Log& World::log() const { return driver().log(); }
 Flags& World::flags() { return driver().flags(); }
 
 Sym World::sym(const char* s) { return driver().sym(s); }

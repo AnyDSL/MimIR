@@ -31,6 +31,8 @@ public:
     /// @name Getters
     ///@{
     World& world();
+    Driver& driver() { return world().driver(); }
+    Log& log() const;
     PassMan& man() { return man_; }
     const PassMan& man() const { return man_; }
     std::string_view name() const { return name_; }
@@ -115,7 +117,8 @@ public:
 
     /// @name Getters
     ///@{
-    World& world() const { return world_; }
+    World& world() { return world_; }
+    Log& log() const { return world_.log(); }
     const auto& passes() const { return passes_; }
     bool fixed_point() const { return fixed_point_; }
     Def* curr_mut() const { return curr_mut_; }
@@ -324,5 +327,6 @@ private:
 };
 
 inline World& Pass::world() { return man().world(); }
+inline Log& Pass::log() const { return man().log(); }
 
 } // namespace mim

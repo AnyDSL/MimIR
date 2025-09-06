@@ -22,7 +22,7 @@ void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 
 const Def* SSAConstr::rewrite(const Proxy* proxy) {
     if (proxy->tag() == Traxy) {
-        world().DLOG("traxy '{}'", proxy);
+        DLOG("traxy '{}'", proxy);
         for (size_t i = 1, e = proxy->num_ops(); i != e; i += 2)
             set_val(curr_mut(), as_proxy(proxy->op(i), Sloxy), proxy->op(i + 1));
         return proxy->op(0);
@@ -36,7 +36,7 @@ const Def* SSAConstr::rewrite(const Def* def) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
         auto sloxy     = proxy(ptr->type(), {curr_mut(), id}, Sloxy)->set(slot->dbg());
-        world().DLOG("sloxy: '{}'", sloxy);
+        DLOG("sloxy: '{}'", sloxy);
         if (!keep_.contains(sloxy)) {
             set_val(curr_mut(), sloxy, world().bot(get_sloxy_type(sloxy)));
             data(curr_mut()).writable.emplace(sloxy);
@@ -70,24 +70,24 @@ const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
     auto& sloxy2val = lam2sloxy2val_[lam];
     if (auto i = sloxy2val.find(sloxy); i != sloxy2val.end()) {
         auto val = i->second;
-        world().DLOG("get_val found: '{}': '{}': '{}'", sloxy, val, lam);
+        DLOG("get_val found: '{}': '{}': '{}'", sloxy, val, lam);
         return val;
     } else if (lam->is_external()) {
-        world().DLOG("cannot install phi for '{}' in '{}'", sloxy, lam);
+        DLOG("cannot install phi for '{}' in '{}'", sloxy, lam);
         return sloxy;
     } else if (auto pred = data(lam).pred) {
-        world().DLOG("get_val recurse: '{}': '{}' -> '{}'", sloxy, pred, lam);
+        DLOG("get_val recurse: '{}': '{}' -> '{}'", sloxy, pred, lam);
         return get_val(pred, sloxy);
     } else {
         auto phixy = proxy(get_sloxy_type(sloxy), {sloxy, lam}, Phixy)->set(sloxy->dbg());
         phixy->debug_prefix("_phi_");
-        world().DLOG("get_val phixy: '{}' '{}'", sloxy, lam);
+        DLOG("get_val phixy: '{}' '{}'", sloxy, lam);
         return set_val(lam, sloxy, phixy);
     }
 }
 
 const Def* SSAConstr::set_val(Lam* lam, const Proxy* sloxy, const Def* val) {
-    world().DLOG("set_val: '{}': '{}': '{}'", sloxy, val, lam);
+    DLOG("set_val: '{}': '{}': '{}'", sloxy, val, lam);
     return lam2sloxy2val_[lam][sloxy] = val;
 }
 
@@ -115,7 +115,7 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
         old_phis = phis;
         phi_lam  = world().mut_lam(merge_sigma(mem_lam->dom(), types), mem_lam->codom())->set(mem_lam->dbg());
         eta_exp_->new2old(phi_lam, mem_lam);
-        world().DLOG("new phi_lam '{}'", phi_lam);
+        DLOG("new phi_lam '{}'", phi_lam);
 
         auto num_mem_vars = mem_lam->num_vars();
         DefVec traxy_ops(2 * num_phis + 1);
@@ -130,11 +130,10 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
         auto new_vars = DefVec(num_mem_vars, [&](size_t i) { return traxy->proj(i); });
         phi_lam->set(mem_lam->reduce(world().tuple(mem_lam->dom(), new_vars)));
     } else {
-        world().DLOG("reuse phi_lam '{}'", phi_lam);
+        DLOG("reuse phi_lam '{}'", phi_lam);
     }
 
-    world().DLOG("mem_lam => phi_lam: '{}': '{}' => '{}': '{}'", mem_lam, mem_lam->type()->dom(), phi_lam,
-                 phi_lam->dom());
+    DLOG("mem_lam => phi_lam: '{}': '{}' => '{}': '{}'", mem_lam, mem_lam->type()->dom(), phi_lam, phi_lam->dom());
     auto sloxy = sloxys.begin();
     auto args  = DefVec(num_phis, [&](auto) { return get_val(curr_mut(), *sloxy++); });
     return world().app(phi_lam, merge_tuple(app->arg(), args));
@@ -145,7 +144,7 @@ undo_t SSAConstr::analyze(const Proxy* proxy) {
         auto sloxy_lam = proxy->op(0)->as_mut<Lam>();
 
         if (keep_.emplace(proxy).second) {
-            world().DLOG("keep: '{}'; pointer needed", proxy);
+            DLOG("keep: '{}'; pointer needed", proxy);
             return undo_enter(sloxy_lam);
         }
     }
@@ -153,7 +152,7 @@ undo_t SSAConstr::analyze(const Proxy* proxy) {
     assert(proxy->tag() == Phixy);
     auto [sloxy, mem_lam] = split_phixy(proxy);
     if (lam2sloxys_[mem_lam].emplace(sloxy).second) {
-        world().DLOG("phi needed: phixy '{}' for sloxy '{}' for mem_lam '{}'", proxy, sloxy, mem_lam);
+        DLOG("phi needed: phixy '{}' for sloxy '{}' for mem_lam '{}'", proxy, sloxy, mem_lam);
         return undo_visit(mem_lam);
     }
 
@@ -172,10 +171,10 @@ undo_t SSAConstr::analyze(const Def* def) {
 
             if (!isa_callee(def, i)) {
                 if (succ_info.pred) {
-                    world().DLOG("several preds in non-callee position; wait for EtaExp");
+                    DLOG("several preds in non-callee position; wait for EtaExp");
                     succ_info.pred = nullptr;
                 } else {
-                    world().DLOG("'{}' -> '{}'", curr_mut(), succ_lam);
+                    DLOG("'{}' -> '{}'", curr_mut(), succ_lam);
                     succ_info.pred = curr_mut();
                 }
             }

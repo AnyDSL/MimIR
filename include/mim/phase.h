@@ -39,6 +39,8 @@ public:
     /// @name Getters
     ///@{
     World& world() { return world_; }
+    Driver& driver() { return world().driver(); }
+    Log& log() const { return world_.log(); }
     std::string_view name() const { return name_; }
     bool todo() const { return todo_; }
     flags_t annex() const { return annex_; }

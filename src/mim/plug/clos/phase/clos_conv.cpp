@@ -67,7 +67,8 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
         // Results of memops must not be floated down
         node->add_fvs(fd);
     } else {
-        for (auto op : fd->ops()) split_fd(node, op, init_node, worklist);
+        for (auto op : fd->ops())
+            split_fd(node, op, init_node, worklist);
     }
 }
 
@@ -80,7 +81,8 @@ std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* mut, NodeQueue& w
     auto node      = p->second.get();
     auto nest      = Nest(mut);
     bool init_node = false;
-    for (auto v : free_defs(nest)) split_fd(node, v, init_node, worklist);
+    for (auto v : free_defs(nest))
+        split_fd(node, v, init_node, worklist);
     if (!init_node) {
         worklist.push(node);
         w.DLOG("FVA: init {}", mut);
@@ -97,10 +99,12 @@ void FreeDefAna::run(NodeQueue& worklist) {
         mark(node);
         for (auto p : node->preds) {
             auto& pfvs = p->fvs;
-            for (auto&& pfv : pfvs) changed |= node->add_fvs(pfv).second;
+            for (auto&& pfv : pfvs)
+                changed |= node->add_fvs(pfv).second;
         }
         if (changed)
-            for (auto s : node->succs) worklist.push(s);
+            for (auto s : node->succs)
+                worklist.push(s);
     }
 }
 
@@ -121,7 +125,8 @@ DefSet& FreeDefAna::run(Lam* lam) {
 
 void ClosConv::start() {
     auto subst = Def2Def();
-    for (auto mut : world().copy_externals()) rewrite(mut, subst);
+    for (auto mut : world().copy_externals())
+        rewrite(mut, subst);
     while (!worklist_.empty()) {
         auto def = worklist_.front();
         subst    = Def2Def();
@@ -129,7 +134,7 @@ void ClosConv::start() {
         if (auto i = closures_.find(def); i != closures_.end()) {
             rewrite_body(i->second.fn, subst);
         } else {
-            world().DLOG("RUN: rewrite def {}", def);
+            DLOG("RUN: rewrite def {}", def);
             rewrite(def, subst);
         }
     }
@@ -143,7 +148,7 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
 
     if (!old_fn->is_set()) return;
 
-    w.DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
+    DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
     auto env_param = new_fn->var(Clos_Env_Param)->set("closure_env");
     if (num_fvs == 1) {
         subst.emplace(env, env_param);
@@ -189,7 +194,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto clos_ty                  = rewrite(lam->type(), subst);
         auto env                      = rewrite(fv_env, subst);
         auto closure                  = clos_pack(env, new_lam, clos_ty);
-        world().DLOG("RW: pack {} ~> {} : {}", lam, closure, clos_ty);
+        DLOG("RW: pack {} ~> {} : {}", lam, closure, clos_ty);
         return map(closure);
     } else if (auto a = Axm::isa<attr>(def)) {
         switch (a.id()) {
@@ -238,7 +243,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             return glob_muts_[mut] = rewrite_mut(global, new_type, subst);
         }
         assert(!isa_clos_type(mut));
-        w.DLOG("RW: mut {}", mut);
+        DLOG("RW: mut {}", mut);
         auto new_mut = rewrite_mut(mut, new_type, subst);
         // Try to reduce the amount of muts that are created
         if (!mut->isa_mut<Global>() && Checker::alpha<Checker::Check>(mut, new_mut)) return map(mut);
@@ -281,9 +286,9 @@ const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type
     auto ct       = ctype(w, new_doms, env_type);
     if (!env_type) {
         glob_muts_.emplace(pi, ct);
-        w.DLOG("C-TYPE: pct {} ~~> {}", pi, ct);
+        DLOG("C-TYPE: pct {} ~~> {}", pi, ct);
     } else {
-        w.DLOG("C-TYPE: ct {}, env = {} ~~> {}", pi, env_type, ct);
+        DLOG("C-TYPE: ct {}, env = {} ~~> {}", pi, env_type, ct);
     }
     return ct;
 }
@@ -301,7 +306,7 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
     if (!isa_workable(old_lam)) {
         auto new_ext_type = w.cn(clos_remove_env(new_fn_type->dom()));
         auto new_ext_lam  = old_lam->stub(new_ext_type);
-        w.DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
+        DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
         if (old_lam->is_set()) {
             old_lam->transfer_external(new_ext_lam);
             new_ext_lam->app(false, new_lam, clos_insert_env(env, new_ext_lam->var()));
@@ -313,7 +318,7 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
     } else {
         new_lam->set(old_lam->filter(), old_lam->body());
     }
-    w.DLOG("STUB {} ~~> ({}, {})", old_lam, env, new_lam);
+    DLOG("STUB {} ~~> ({}, {})", old_lam, env, new_lam);
     auto closure = Stub{old_lam, num_fvs, env, new_lam};
     closures_.emplace(old_lam, closure);
     closures_.emplace(closure.fn, closure);

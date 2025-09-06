@@ -30,7 +30,7 @@ const Def* AutoDiffEval::rewrite(const Def* def) {
         // arg = function of type T
         //   (or operator)
         auto arg = ad_app->arg();
-        world().DLOG("found a autodiff::autodiff of {}", arg);
+        DLOG("found a autodiff::autodiff of {}", arg);
 
         if (arg->isa<Lam>()) return derive(arg);
 

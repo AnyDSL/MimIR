@@ -35,7 +35,7 @@ const Def* CopyProp::rewrite(const Def* def) {
             case Lattice::Dead: break;
             case Lattice::Prop:
                 if (app->arg(n, i)->has_dep(Dep::Proxy)) {
-                    world().DLOG("found proxy within app: {}@{} - wait till proxy is gone", var_lam, app);
+                    DLOG("found proxy within app: {}@{} - wait till proxy is gone", var_lam, app);
                     return app;
                 } else if (args[i] == nullptr) {
                     args[i] = app->arg(n, i);
@@ -53,13 +53,13 @@ const Def* CopyProp::rewrite(const Def* def) {
         }
     }
 
-    world().DLOG("app->args(): {, }", app->args());
-    world().DLOG("args: {, }", args);
-    world().DLOG("new_args: {, }", new_args);
+    DLOG("app->args(): {, }", app->args());
+    DLOG("args: {, }", args);
+    DLOG("new_args: {, }", new_args);
 
     if (appxy_ops.size() > 1) {
         auto appxy = proxy(app->type(), appxy_ops, Appxy);
-        world().DLOG("appxy: '{}': {, }", appxy, appxy_ops);
+        DLOG("appxy: '{}': {, }", appxy, appxy_ops);
         return appxy;
     }
 
@@ -70,7 +70,7 @@ const Def* CopyProp::rewrite(const Def* def) {
         auto new_pi   = world().pi(prop_dom, var_lam->codom());
         prop_lam      = var_lam->stub(new_pi);
 
-        world().DLOG("new prop_lam: {}", prop_lam);
+        DLOG("new prop_lam: {}", prop_lam);
         if (beta_red_) beta_red_->keep(prop_lam);
         if (eta_exp_) eta_exp_->new2old(prop_lam, var_lam);
 
@@ -87,7 +87,7 @@ const Def* CopyProp::rewrite(const Def* def) {
         prop_lam->set(var_lam->reduce(world().tuple(new_vars)));
     }
 
-    world().DLOG("var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->dom(), prop_lam, prop_lam->dom());
+    DLOG("var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->dom(), prop_lam, prop_lam->dom());
     auto res = app->world().app(prop_lam, new_args);
 
     // Don't optimize again. Also, keep this line here at the very bottom as this invalidates all references.
@@ -97,7 +97,7 @@ const Def* CopyProp::rewrite(const Def* def) {
 }
 
 undo_t CopyProp::analyze(const Proxy* proxy) {
-    world().DLOG("found proxy: {}", proxy);
+    DLOG("found proxy: {}", proxy);
     auto var_lam                        = proxy->op(0)->as_mut<Lam>();
     auto& [lattice, prop_lam, old_args] = lam2info_[var_lam];
 
@@ -105,7 +105,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
         auto i = Lit::as(proxy->op(1));
         if (auto& l = lattice[i]; l == Lattice::Dead) {
             l = Lattice::Prop;
-            world().DLOG("Dead -> Prop: @{}#{}", var_lam, i);
+            DLOG("Dead -> Prop: @{}#{}", var_lam, i);
             return undo_visit(var_lam);
         }
     } else {
@@ -114,7 +114,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
             auto i = Lit::as(op);
             if (auto& l = lattice[i]; l != Lattice::Keep) {
                 l = Lattice::Keep;
-                world().DLOG("Prop -> Keep: @{}#{}", var_lam, i);
+                DLOG("Prop -> Keep: @{}#{}", var_lam, i);
             }
         }
 

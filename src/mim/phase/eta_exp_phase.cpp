@@ -42,7 +42,7 @@ const Def* EtaExpPhase::rewrite(const Def* old_def) {
         todo_         = true;
         auto [i, ins] = lam2eta_.emplace(lam, nullptr);
         if (ins) i->second = Lam::eta_expand(rewrite_no_eta(lam));
-        new_world().DLOG("eta-expand: `{}` → `{}`", lam, i->second);
+        DLOG("eta-expand: `{}` → `{}`", lam, i->second);
         return i->second;
     }
 

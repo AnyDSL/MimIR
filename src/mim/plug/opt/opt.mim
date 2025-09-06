@@ -32,6 +32,11 @@ lam extern _default_compile []: %compile.Phase =
         %compile.passes %compile.tail_rec_elim_pass,
         %compile.passes (cond_pass "regex" %regex.lower_regex),
         // optimize
+        %compile.phases tt (
+            %compile.beta_red_phase,
+            %compile.eta_red_phase,
+        ),
+        %compile.eta_exp_phase,
         %compile.passes (
             optimization_passes,
             cond_pass "affine" %affine.lower_for_pass,
@@ -53,6 +58,7 @@ lam extern _default_compile []: %compile.Phase =
         %compile.passes %compile.lam_spec_pass,
         cond_phase "autodiff" ad_cleanup_phase,
         // CodeGenPrep
+        %compile.branch_normalize_phase,
         %compile.passes (
             %compile.ret_wrap_pass,
             %mem.remem_elim_pass,

@@ -27,11 +27,13 @@ Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); 
 
 Lam* Lam::set_filter(Filter filter) { return Def::set(0, world().filter(filter))->as<Lam>(); }
 Lam* Lam::set(Filter filter, const Def* body) { return Def::set({world().filter(filter), body})->as<Lam>(); }
-Lam* Lam::app(Filter f, const Def* callee, const Def* arg) { return set_filter(f)->set_body(world().app(callee, arg)); }
+Lam* Lam::app(Filter f, const Def* callee, const Def* arg) {
+    return Def::set({world().filter(f), world().app(callee, arg)})->as<Lam>();
+}
 Lam* Lam::app(Filter filter, const Def* callee, Defs args) { return app(filter, callee, world().tuple(args)); }
 
-Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem) {
-    return app(filter, world().select(cond, t, f), mem ? mem : world().tuple());
+Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* arg) {
+    return app(filter, world().select(cond, t, f), arg ? arg : world().tuple());
 }
 
 // TODO maybe we can eta-reduce immutable Lams in some edge casess like: lm _: [] = f ();
@@ -58,13 +60,15 @@ const Def* Lam::eta_expand(Filter filter, const Def* f) {
 Branch::Branch(const Def* def) {
     if ((app_ = def->isa<App>())) {
         callee_ = app_->callee();
-        arg_    = app_->callee();
+        arg_    = app_->arg();
         if ((extract_ = app_->callee()->isa<Extract>())) {
             pair_ = extract_->tuple();
             cond_ = extract_->index();
-            if (auto a = Lit::isa(pair_->arity()); a && a == 2) {
-                ff_ = pair_->proj(2, 0);
-                tt_ = pair_->proj(2, 1);
+            if (pair_->type()->isa<Arr>()) {
+                if (auto a = Lit::isa(pair_->arity()); a && a == 2) {
+                    ff_ = pair_->proj(2, 0);
+                    tt_ = pair_->proj(2, 1);
+                }
             }
         }
     }

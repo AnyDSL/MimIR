@@ -11,6 +11,7 @@ public:
         : RWPhase(world, annex) {}
 
 private:
+    const Def* normalize(const Def*);
     const Def* rewrite_mut_Lam(Lam*) final;
 
     DefSet analyzed_;

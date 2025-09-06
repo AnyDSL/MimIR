@@ -21,7 +21,8 @@ public:
     /// @name Getters
     ///@{
     Flags& flags() { return flags_; }
-    Log& log() { return log_; }
+    const Flags& flags() const { return flags_; }
+    Log& log() const { return log_; }
     World& world() { return world_; }
     ///@}
 
@@ -89,7 +90,7 @@ private:
     // This must go *first* so plugins will be unloaded *last* in the d'tor; otherwise funny things might happen ...
     absl::node_hash_map<Sym, Plugin::Handle> plugins_;
     Flags flags_;
-    Log log_;
+    mutable Log log_;
     World world_;
     std::list<fs::path> search_paths_;
     std::list<fs::path>::iterator insert_ = search_paths_.end();
