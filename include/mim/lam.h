@@ -8,6 +8,8 @@
 
 namespace mim {
 
+class Extract;
+
 /// A [dependent function type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A0_type).
 /// @see Lam
 class Pi : public Def, public Setters<Pi> {
@@ -335,6 +337,33 @@ private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
 
     friend class World;
+};
+
+/// Match `(ff, tt)#cond arg`
+class Branch {
+public:
+    Branch(const Def*);
+
+    explicit operator bool() const noexcept { return tt_; }
+
+    const App* app() const { return app_; }
+    const Def* callee() const { return callee_; }
+    const Def* arg() const { return arg_; }
+    const Extract* extract() const { return extract_; }
+    const Def* pair() const { return pair_; }
+    const Def* cond() const { return cond_; }
+    const Def* tt() const { return tt_; }
+    const Def* ff() const { return ff_; }
+
+private:
+    const App* app_         = nullptr;
+    const Def* callee_      = nullptr;
+    const Def* arg_         = nullptr;
+    const Extract* extract_ = nullptr;
+    const Def* pair_        = nullptr;
+    const Def* cond_        = nullptr;
+    const Def* tt_          = nullptr;
+    const Def* ff_          = nullptr;
 };
 
 /// @name Helpers to work with Functions

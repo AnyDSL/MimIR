@@ -52,6 +52,25 @@ const Def* Lam::eta_expand(Filter filter, const Def* f) {
 }
 
 /*
+ * Lam
+ */
+
+Branch::Branch(const Def* def) {
+    if ((app_ = def->isa<App>())) {
+        callee_ = app_->callee();
+        arg_    = app_->callee();
+        if ((extract_ = app_->callee()->isa<Extract>())) {
+            pair_ = extract_->tuple();
+            cond_ = extract_->index();
+            if (auto a = Lit::isa(pair_->arity()); a && a == 2) {
+                ff_ = pair_->proj(2, 0);
+                tt_ = pair_->proj(2, 1);
+            }
+        }
+    }
+}
+
+/*
  * Helpers
  */
 
