@@ -209,7 +209,7 @@ public:
     template<class A, class P>
     static void hook(Flags2Phases& phases) {
         auto f = [](World& w) { return std::make_unique<P>(w, Annex::Base<A>); };
-        assert_emplace(phases, Annex::Base<A>, f);
+        assert_emplace(phases, flags_t(Annex::Base<A>), f);
     }
 
 private:

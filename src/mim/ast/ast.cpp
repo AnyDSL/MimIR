@@ -62,7 +62,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     plugin_t plugin_id = *Annex::mangle(plugin);
     std::vector<std::ostringstream> normalizers, outer_namespace;
 
-    tab.print(h, "static inline constexpr plugin_t Plugin_Id = 0x{x};\n\n", plugin_id);
+    tab.print(h, "static constexpr plugin_t Plugin_Id = 0x{x};\n\n", plugin_id);
 
     const auto& unordered = plugin2annexes(plugin);
     std::deque<std::pair<Sym, AnnexInfo>> infos(unordered.begin(), unordered.end());
@@ -79,7 +79,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         flags_t ax_id = plugin_id | (annex.id.tag << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os, "template<> inline constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, sym.tag, ax_id);
+        print(os, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, sym.tag, ax_id);
 
         if (auto& subs = annex.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
@@ -99,7 +99,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         --tab;
         tab.print(h, "}};\n\n");
 
-        print(outer_namespace.emplace_back(), "template<> inline constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, sym.tag, annex.subs.size());
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, sym.tag, annex.subs.size());
 
         if (auto norm = annex.normalizer) {
             if (auto& subs = annex.subs; !subs.empty()) {
