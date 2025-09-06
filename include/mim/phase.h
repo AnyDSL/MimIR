@@ -27,11 +27,12 @@ public:
         : world_(world)
         , name_(std::move(name)) {}
     Phase(World& world, flags_t annex);
+
     virtual ~Phase() = default;
 
-    virtual void apply(const App*) { fe::unreachable(); }
+    virtual std::unique_ptr<Phase> recreate();
 
-    std::unique_ptr<Phase> recreate();
+    virtual void apply(const App*) { fe::unreachable(); }
     virtual void apply(Phase&) {}
     ///@}
 

@@ -13,7 +13,7 @@ public:
 private:
     bool analyze() final;
     void analyze(const Def*);
-    void visit(Lam*);
+    void visit(const Def*);
 
     const Def* rewrite_imm_App(const App*) final;
     bool is_candidate(Lam*) const;

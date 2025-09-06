@@ -33,6 +33,7 @@ private:
 
     bool analyze() final;
     void analyze(const Def*);
+    void visit(const Def*, Lattice = Lattice::Unknown);
 
     void rewrite_external(Def*) final;
     const Def* rewrite_no_eta(const Def*);

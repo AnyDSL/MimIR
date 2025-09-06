@@ -46,16 +46,16 @@ Phase::Phase(World& world, flags_t annex)
     , name_(world.annex(annex)->sym()) {}
 
 std::unique_ptr<Phase> Phase::recreate() {
-    auto ctor = world().driver().phase(annex_);
+    auto ctor = world().driver().phase(annex());
     auto ptr  = (*ctor)(world());
     ptr->apply(*this);
     return ptr;
 }
 
 void Phase::run() {
-    world().verify().ILOG("=== Phase start: {} ===", name());
+    world().verify().ILOG("=== Phase start: `{}` ===", name());
     start();
-    world().verify().ILOG("=== Phase done:  {} ===", name());
+    world().verify().ILOG("=== Phase done:  `{}` ===", name());
 }
 
 /*
@@ -76,7 +76,10 @@ void RWPhase::start() {
 
 void RWPhase::rewrite_annex(flags_t f, const Def* def) { new_world().register_annex(f, rewrite(def)); }
 
-void RWPhase::rewrite_external(Def* mut) { mut->transfer_external(rewrite(mut)->as_mut()); }
+void RWPhase::rewrite_external(Def* old_mut) {
+    auto new_mut = rewrite(old_mut)->as_mut();
+    if (old_mut->is_external()) new_mut->make_external();
+}
 
 /*
  * FPPhase
@@ -117,8 +120,12 @@ void PhaseMan::apply(Phase& phase) {
 }
 
 void PhaseMan::start() {
-    for (bool todo = true; todo;) {
+    int iter = 0;
+    for (bool todo = true; todo; ++iter) {
         todo = false;
+
+        if (fixed_point()) world().VLOG("fixed-point iteration: {}", iter);
+
         for (auto& phase : phases()) {
             phase->run();
             todo |= phase->todo();
@@ -127,10 +134,9 @@ void PhaseMan::start() {
         todo &= fixed_point();
 
         if (todo) {
-            for (auto& phase : phases()) {
-                auto new_phase = phase->recreate();
-                new_phase->apply(*phase);
-                swap(new_phase, phase);
+            for (auto& old_phase : phases()) {
+                auto new_phase = old_phase->recreate();
+                swap(new_phase, old_phase);
             }
         }
 

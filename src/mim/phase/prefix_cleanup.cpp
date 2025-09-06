@@ -12,12 +12,13 @@ void PrefixCleanup::apply(std::string prefix) {
 void PrefixCleanup::apply(const App* app) { apply(tuple2str(app->arg())); }
 void PrefixCleanup::apply(Phase& phase) { apply(std::move(static_cast<PrefixCleanup&>(phase).prefix_)); }
 
-void PrefixCleanup::rewrite_external(Def* mut) {
-    if (mut->sym().view().starts_with(prefix_)) {
-        mut->make_internal();
-        new_world().DLOG("internalized {}", mut);
-    } else {
-        mut->transfer_external(rewrite(mut)->as_mut());
+void PrefixCleanup::rewrite_external(Def* old_mut) {
+    auto new_mut = rewrite(old_mut)->as_mut();
+    if (old_mut->is_external()) {
+        if (old_mut->sym().view().starts_with(prefix_))
+            new_world().DLOG("internalized: `{}`", old_mut);
+        else
+            new_mut->make_external();
     }
 }
 
