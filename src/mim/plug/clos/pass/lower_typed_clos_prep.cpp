@@ -76,7 +76,6 @@ const Def* LowerTypedClosPrep::rewrite(const Def* def) {
 }
 
 undo_t LowerTypedClosPrep::analyze(const Def* def) {
-    auto& w = world();
     if (auto c = isa_clos_lit(def, false)) {
         DLOG("closure ({}, {})", c.env(), c.fnc());
         if (!c.fnc_as_lam() || is_esc(c.fnc_as_lam()) || is_esc(c.env_var())) return set_esc(c.env());

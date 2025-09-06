@@ -346,7 +346,6 @@ void Emitter::emit_epilogue(Lam* lam) {
     } else if (auto ex = app->callee()->isa<Extract>(); ex && Pi::isa_basicblock(app->callee_type())) {
         // emit_unsafe(app->arg());
         // A call to an extract like constructed for conditionals (else,then)#cond (args)
-        // TODO: we can not rely on the structure of the extract (it might be a nested extract)
         for (auto callee_def : ex->tuple()->projs()) {
             // dissect the tuple of lambdas
             auto callee = callee_def->as_mut<Lam>();
@@ -552,24 +551,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto pack = def->isa<Pack>()) {
         if (auto lit = Lit::isa(pack->body()); lit && *lit == 0) return "zeroinitializer";
         return emit_tuple(pack);
+    } else if (auto sel = Select(def)) {
+        std::cout << def->gid() << std::endl;
+        auto t                = convert(sel.extract()->type());
+        auto [elem_a, elem_b] = sel.pair()->projs<2>([&](auto e) { return emit_unsafe(e); });
+        auto cond_t           = convert(sel.cond()->type());
+        auto cond             = emit(sel.cond());
+        return bb.assign(name, "select {} {}, {} {}, {} {}", cond_t, cond, t, elem_b, t, elem_a);
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
-
-        // use select when extracting from 2-element integral tuples
-        // literal indices would be normalized away already, if it was possible
-        // As they aren't they likely depend on a var, which is implemented as array -> need extractvalue
-        if (auto app = extract->type()->isa<App>();
-            app && app->callee()->isa<Idx>() && !index->isa<Lit>() && tuple->type()->isa<Arr>()) {
-            if (auto arity = Lit::isa(tuple->type()->arity()); arity && *arity == 2) {
-                auto t                = convert(extract->type());
-                auto [elem_a, elem_b] = tuple->projs<2>([&](auto e) { return emit_unsafe(e); });
-
-                return bb.assign(name, "select {} {}, {} {}, {} {}", convert(index->type()), emit(index), t, elem_b, t,
-                                 elem_a);
-            }
-        }
-
         auto v_tup = emit_unsafe(tuple);
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops

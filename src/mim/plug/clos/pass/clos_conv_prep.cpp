@@ -110,7 +110,6 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
 }
 
 const App* ClosConvPrep::rewrite_callee(const App* app) {
-    auto& w = world();
     if (Pi::isa_cn(app->callee_type())) {
         if (auto br = app->callee()->isa<Extract>()) {
             auto branches = br->tuple();
