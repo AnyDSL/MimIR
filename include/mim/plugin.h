@@ -115,13 +115,12 @@ struct Annex {
     /// @name Helpers for Matching
     /// These are set via template specialization.
     ///@{
-    /// Number of Axm::sub%tags.
-    template<class Id>
-    static constexpr size_t Num = size_t(-1);
-
-    /// @see Axm::base.
-    template<class Id>
-    static constexpr flags_t Base = flags_t(-1);
+    // clang-format off
+    template<class Id> static constexpr size_t  Num  =  size_t(-1); ///< Number of Axm::sub%tags.
+    template<class Id> static constexpr flags_t Base = flags_t(-1); ///< @see Axm::base.
+    template<class Id> static consteval size_t  num () { return Num <Id>; }
+    template<class Id> static consteval flags_t base() { return Base<Id>; }
+    // clang-format of
     ///@}
 };
 

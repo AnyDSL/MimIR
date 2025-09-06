@@ -189,7 +189,7 @@ public:
     /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axm.
     template<annex_without_subs id>
     const Def* annex() {
-        return annex(Annex::Base<id>);
+        return annex(Annex::base<id>());
     }
 
     const Def* register_annex(flags_t f, const Def*);

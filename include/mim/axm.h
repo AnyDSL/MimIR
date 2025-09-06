@@ -67,8 +67,8 @@ public:
 
     template<class Id, class D>
     class IsA {
-        static_assert(Annex::Num<Id> != size_t(-1), "invalid number of sub tags");
-        static_assert(Annex::Base<Id> != flags_t(-1), "invalid axm base");
+        static_assert(Annex::num<Id>() != size_t(-1), "invalid number of sub tags");
+        static_assert(Annex::base<Id>() != flags_t(-1), "invalid axm base");
 
     public:
         IsA() = default;
@@ -107,7 +107,7 @@ public:
     static auto isa(const Def* def) {
         using D              = typename Axm::IsANode<Id>::type;
         auto [axm, curry, _] = Axm::get(def);
-        bool cond            = axm && curry == 0 && axm->base() == Annex::Base<Id>;
+        bool cond            = axm && curry == 0 && axm->base() == Annex::base<Id>();
 
         if constexpr (DynCast) return cond ? IsA<Id, D>(axm, def->as<D>()) : IsA<Id, D>();
         assert(cond && "assumed to be correct axm");
@@ -142,8 +142,8 @@ private:
 };
 
 // clang-format off
-template<class Id> concept annex_with_subs    = Annex::Num<Id> != 0;
-template<class Id> concept annex_without_subs = Annex::Num<Id> == 0;
+template<class Id> concept annex_with_subs    = Annex::num<Id>() != 0;
+template<class Id> concept annex_without_subs = Annex::num<Id>() == 0;
 // clang-format on
 
 /// @name is_commutative/is_associative

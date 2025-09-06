@@ -927,7 +927,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             if (tri.sub() & sub_t(math::tri::a)) f += "a";
 
-            switch (math::tri((tri.id() & 0x3) | Annex::Base<math::tri>)) {
+            switch (math::tri((tri.id() & 0x3) | Annex::base<math::tri>())) {
                 case math::tri::sin: f += "sin"; break;
                 case math::tri::cos: f += "cos"; break;
                 case math::tri::tan: f += "tan"; break;
