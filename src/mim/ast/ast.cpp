@@ -62,7 +62,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     plugin_t plugin_id = *Annex::mangle(plugin);
     std::vector<std::ostringstream> normalizers, outer_namespace;
 
-    tab.print(h, "static constexpr plugin_t Plugin_Id = 0x{x};\n\n", plugin_id);
+    tab.print(h, "static inline constexpr plugin_t Plugin_Id = 0x{x};\n\n", plugin_id);
 
     const auto& unordered = plugin2annexes(plugin);
     std::deque<std::pair<Sym, AnnexInfo>> infos(unordered.begin(), unordered.end());
@@ -79,7 +79,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         flags_t ax_id = plugin_id | (annex.id.tag << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, sym.tag, ax_id);
+        print(os, "template<> inline constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, sym.tag, ax_id);
 
         if (auto& subs = annex.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
@@ -99,7 +99,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         --tab;
         tab.print(h, "}};\n\n");
 
-        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, sym.tag, annex.subs.size());
+        print(outer_namespace.emplace_back(), "template<> inline constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, sym.tag, annex.subs.size());
 
         if (auto norm = annex.normalizer) {
             if (auto& subs = annex.subs; !subs.empty()) {
@@ -118,7 +118,8 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         ++tab;
         tab.print(h, "void register_normalizers(Normalizers& normalizers) {{\\\n");
         ++tab;
-        for (const auto& normalizer : normalizers) tab.print(h, "{} \\\n", normalizer.str());
+        for (const auto& normalizer : normalizers)
+            tab.print(h, "{} \\\n", normalizer.str());
         --tab;
         tab.print(h, "}}\n");
         --tab;
@@ -127,7 +128,8 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     tab.print(h, "}} // namespace plug::{}\n\n", plugin);
 
     tab.print(h, "#ifndef DOXYGEN // don't include in Doxygen documentation\n\n");
-    for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
+    for (const auto& line : outer_namespace)
+        tab.print(h, "{}", line.str());
     tab.print(h, "\n");
 
     // emit helpers for non-function axm
@@ -190,7 +192,8 @@ void Module::compile(AST& ast) const {
 AST load_plugins(World& world, View<Sym> plugins) {
     auto tag = Tok::Tag::K_import;
     if (!world.driver().flags().bootstrap) {
-        for (auto plugin : plugins) world.driver().load(plugin);
+        for (auto plugin : plugins)
+            world.driver().load(plugin);
         tag = Tok::Tag::K_plugin;
     }
 
