@@ -1,8 +1,7 @@
 #include "mim/plug/demo/demo.h"
 
+#include <mim/pass.h>
 #include <mim/plugin.h>
-
-#include <mim/pass/pass.h>
 
 using namespace mim;
 

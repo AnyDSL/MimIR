@@ -42,7 +42,6 @@ axm %compile.beta_red_phase:                            %compile.Phase;
 axm %compile.eta_red_phase:                             %compile.Phase;
 axm %compile.eta_exp_phase:                             %compile.Phase;
 axm %compile.branch_normalize_phase:                    %compile.Phase;
-axm %compile.debug_phase:                         Nat → %compile.Phase;
 axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;
 
 let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase "internal_";

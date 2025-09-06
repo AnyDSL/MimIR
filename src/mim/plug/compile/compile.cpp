@@ -1,15 +1,14 @@
 #include "mim/plug/compile/compile.h"
 
-#include <memory>
-
 #include <mim/config.h>
 #include <mim/driver.h>
+#include <mim/pass.h>
+#include <mim/phase.h>
 
 #include <mim/pass/beta_red.h>
 #include <mim/pass/eta_exp.h>
 #include <mim/pass/eta_red.h>
 #include <mim/pass/lam_spec.h>
-#include <mim/pass/pass.h>
 #include <mim/pass/ret_wrap.h>
 #include <mim/pass/scalarize.h>
 #include <mim/pass/tail_rec_elim.h>
@@ -17,68 +16,43 @@
 #include <mim/phase/branch_normalize.h>
 #include <mim/phase/eta_exp_phase.h>
 #include <mim/phase/eta_red_phase.h>
-#include <mim/phase/phase.h>
 #include <mim/phase/prefix_cleanup.h>
 
-#include "mim/plug/compile/pass/debug_print.h"
+#include "mim/plug/compile/autogen.h"
 
 using namespace mim;
 using namespace mim::plug;
 
 template<class P, class M>
-void apply(P& ps, M& man, const Def* app) {
-    auto& world = app->world();
-    auto p_def  = App::uncurry_callee(app);
+auto apply(World& world, P& ps, M& man, const Def* app) {
+    auto p_def = App::uncurry_callee(app);
     world.DLOG("apply pass/phase: `{}`", p_def);
 
     if (auto axm = p_def->isa<Axm>())
         if (auto i = ps.find(axm->flags()); i != ps.end())
-            i->second(man, app);
+            if constexpr (std::is_same_v<M, PhaseMan>)
+                return i->second(world);
+            else
+                return i->second(man, app);
         else
-            world.ELOG("pass/phase `{}` not found", axm->sym());
+            error("pass/phase `{}` not found", axm->sym());
     else
-        world.ELOG("unsupported callee for a phase/pass: `{}`", p_def);
+        error("unsupported callee for a phase/pass: `{}`", p_def);
 }
 
 void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     // clang-format off
-    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](PhaseMan&, const Def*) {});
+    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](World&) { return std::unique_ptr<Phase>{}; });
     assert_emplace(passes, flags_t(Annex::Base<compile::null_pass >), [](PassMan&,  const Def*) {});
 
-    PhaseMan::hook<compile::cleanup_phase,  Cleanup     >(phases);
-    PhaseMan::hook<compile::beta_red_phase, BetaRedPhase>(phases);
-    PhaseMan::hook<compile::eta_red_phase,  EtaRedPhase >(phases);
-    PhaseMan::hook<compile::eta_exp_phase,  EtaExpPhase >(phases);
-    // clang-format off
-
-    assert_emplace(phases, flags_t(Annex::Base<compile::debug_phase>), [](PhaseMan& man, const Def* app) {
-        auto& world = man.world();
-        world.DLOG("Generate debug_phase: {}", app);
-        auto level = Lit::as(app->as<App>()->arg(0));
-        world.DLOG("  Level: {}", level);
-        man.add<compile::DebugPrint>(level);
-    });
-
-    assert_emplace(phases, flags_t(Annex::Base<compile::prefix_cleanup_phase>), [&](PhaseMan& man, const Def* app) {
-        auto prefix = tuple2str(app->as<App>()->arg());
-        man.add<PrefixCleanup>(prefix);
-    });
-
-    assert_emplace(phases, flags_t(Annex::Base<compile::passes>), [&](PhaseMan& man, const Def* app) {
-        auto defs = app->as<App>()->arg()->projs();
-        auto pass_man  = std::make_unique<PassMan>(app->world());
-        for (auto def : defs)
-            apply(passes, *pass_man, def);
-        man.add<PassManPhase>(std::move(pass_man));
-    });
-
-    assert_emplace(phases, flags_t(Annex::Base<compile::phases>), [&](PhaseMan& parent, const Def* app) {
-        auto [fp, arg] = App::uncurry_args<2>(app);
-        auto man = std::make_unique<PhaseMan>(parent.world(), Lit::as<bool>(fp));
-        for (auto def : app->as<App>()->arg()->projs())
-            apply(phases, *man, def);
-        parent.add(std::move(man));
-    });
+    PhaseMan::hook<compile::cleanup_phase,        Cleanup      >(phases);
+    PhaseMan::hook<compile::beta_red_phase,       BetaRedPhase >(phases);
+    PhaseMan::hook<compile::eta_red_phase,        EtaRedPhase  >(phases);
+    PhaseMan::hook<compile::eta_exp_phase,        EtaExpPhase  >(phases);
+    PhaseMan::hook<compile::prefix_cleanup_phase, PrefixCleanup>(phases);
+    PhaseMan::hook<compile::phases,               PhaseMan     >(phases);
+    PhaseMan::hook<compile::passes,               PassManPhase >(phases);
+    // clang-format on
 
     // clang-format off
     PassMan::hook<compile::beta_red_pass,      BetaRed    >(passes);
@@ -92,7 +66,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
 
     assert_emplace(passes, flags_t(Annex::Base<compile::meta_pass>), [&](PassMan& man, const Def* app) {
         for (auto def : app->as<App>()->arg()->projs())
-            apply(passes, man, def);
+            apply(man.world(), passes, man, def);
     });
 }
 

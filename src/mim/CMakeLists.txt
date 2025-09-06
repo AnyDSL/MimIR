@@ -10,6 +10,8 @@ target_sources(libmim
         lam.cpp
         lattice.cpp
         nest.cpp
+        pass.cpp
+        phase.cpp
         plugin.cpp
         rewrite.cpp
         rule.cpp
@@ -23,7 +25,6 @@ target_sources(libmim
         ast/parser.cpp
         ast/stream.cpp
         ast/tok.cpp
-        pass/pass.cpp
         pass/beta_red.cpp
         pass/eta_exp.cpp
         pass/eta_red.cpp
@@ -32,7 +33,6 @@ target_sources(libmim
         pass/ret_wrap.cpp
         pass/scalarize.cpp
         pass/tail_rec_elim.cpp
-        phase/phase.cpp
         phase/beta_red_phase.cpp
         phase/eta_red_phase.cpp
         phase/eta_exp_phase.cpp

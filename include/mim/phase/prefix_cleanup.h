@@ -1,12 +1,17 @@
 #pragma once
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 namespace mim {
 
 class PrefixCleanup : public RWPhase {
 public:
-    PrefixCleanup(World&, std::string prefix = "internal_");
+    PrefixCleanup(World& world, flags_t annex)
+        : RWPhase(world, annex) {}
+
+    void apply(std::string);
+    void apply(const App*) final;
+    void apply(Phase&) final;
 
 private:
     void rewrite_external(Def*) final;

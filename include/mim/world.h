@@ -558,6 +558,19 @@ public:
     Defs reduce(const Var* var, const Def* arg);
     ///@}
 
+    /// @name for_each
+    /// Visits all closed mutables in this World.
+    ///@{
+    void for_each(bool elide_empty, std::function<void(Def*)>);
+
+    template<class M>
+    void for_each(bool elide_empty, std::function<void(M*)> f) {
+        for_each(elide_empty, [f](Def* m) {
+            if (auto mut = m->template isa<M>()) f(mut);
+        });
+    }
+    ///@}
+
     /// @name dump/log
     ///@{
     Log& log();

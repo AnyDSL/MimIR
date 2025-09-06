@@ -1,8 +1,7 @@
 #include "mim/plug/refly/refly.h"
 
 #include <mim/config.h>
-
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 #include "mim/plug/refly/pass/remove_perm.h"
 

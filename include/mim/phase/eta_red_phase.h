@@ -1,14 +1,14 @@
 #pragma once
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 namespace mim {
 
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
 class EtaRedPhase : public RWPhase {
 public:
-    EtaRedPhase(World& world)
-        : RWPhase(world, "eta reduction") {}
+    EtaRedPhase(World& world, flags_t annex)
+        : RWPhase(world, annex) {}
 
 private:
     void rewrite_external(Def*) final;

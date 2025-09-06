@@ -1,8 +1,7 @@
 #include "mim/plug/autodiff/autodiff.h"
 
 #include <mim/config.h>
-
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 #include <mim/plug/mem/mem.h>
 

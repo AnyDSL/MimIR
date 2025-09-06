@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 namespace mim::plug::mem {
 

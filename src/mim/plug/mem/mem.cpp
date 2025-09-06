@@ -1,10 +1,10 @@
 #include "mim/plug/mem/mem.h"
 
 #include <mim/config.h>
+#include <mim/pass.h>
 
 #include <mim/pass/beta_red.h>
 #include <mim/pass/eta_exp.h>
-#include <mim/pass/pass.h>
 
 #include "mim/plug/mem/autogen.h"
 #include "mim/plug/mem/pass/alloc2malloc.h"
@@ -32,7 +32,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
 
     assert_emplace(passes, flags_t(Annex::Base<mem::reshape_pass>), [&](PassMan& man, const Def* app) {
         auto axm  = app->as<App>()->arg()->as<Axm>();
-        auto mode = axm->flags() == flags_t(Annex::Base<mem::reshape_arg>) ? mem::Reshape::Arg : mem::Reshape::Flat;
+        auto mode = axm->flags() == Annex::Base<mem::reshape_arg> ? mem::Reshape::Arg : mem::Reshape::Flat;
         man.add<mem::Reshape>(mode);
     });
 }

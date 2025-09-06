@@ -1,9 +1,8 @@
 #pragma once
 
+#include "mim/phase.h"
 #include "mim/schedule.h"
 #include "mim/world.h"
-
-#include "mim/phase/phase.h"
 
 namespace mim {
 

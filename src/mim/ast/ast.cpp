@@ -118,7 +118,8 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         ++tab;
         tab.print(h, "void register_normalizers(Normalizers& normalizers) {{\\\n");
         ++tab;
-        for (const auto& normalizer : normalizers) tab.print(h, "{} \\\n", normalizer.str());
+        for (const auto& normalizer : normalizers)
+            tab.print(h, "{} \\\n", normalizer.str());
         --tab;
         tab.print(h, "}}\n");
         --tab;
@@ -127,7 +128,8 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     tab.print(h, "}} // namespace plug::{}\n\n", plugin);
 
     tab.print(h, "#ifndef DOXYGEN // don't include in Doxygen documentation\n\n");
-    for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
+    for (const auto& line : outer_namespace)
+        tab.print(h, "{}", line.str());
     tab.print(h, "\n");
 
     // emit helpers for non-function axm
@@ -190,7 +192,8 @@ void Module::compile(AST& ast) const {
 AST load_plugins(World& world, View<Sym> plugins) {
     auto tag = Tok::Tag::K_import;
     if (!world.driver().flags().bootstrap) {
-        for (auto plugin : plugins) world.driver().load(plugin);
+        for (auto plugin : plugins)
+            world.driver().load(plugin);
         tag = Tok::Tag::K_plugin;
     }
 

@@ -1,8 +1,7 @@
 #include "mim/plug/regex/regex.h"
 
+#include <mim/pass.h>
 #include <mim/plugin.h>
-
-#include <mim/pass/pass.h>
 
 #include "mim/plug/regex/pass/lower_regex.h"
 

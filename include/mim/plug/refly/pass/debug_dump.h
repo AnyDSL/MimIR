@@ -1,7 +1,7 @@
 #pragma once
 
 #include <mim/config.h>
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 using namespace mim;
 

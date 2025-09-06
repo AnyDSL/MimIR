@@ -3,7 +3,7 @@
 #include <queue>
 #include <vector>
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 #include "mim/plug/clos/clos.h"
 #include "mim/plug/mem/mem.h"
@@ -88,8 +88,8 @@ private:
 /// problems with polymorphic functions.
 class ClosConv : public Phase {
 public:
-    ClosConv(World& world)
-        : Phase(world, "clos_conv")
+    ClosConv(World& world, flags_t annex)
+        : Phase(world, annex)
         , fva_(world) {}
 
     void start() override;

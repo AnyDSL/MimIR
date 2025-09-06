@@ -3,7 +3,7 @@
 #include <map>
 #include <tuple>
 
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 namespace mim::plug::clos {
 
