@@ -344,6 +344,7 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
     } else if (auto ex = app->callee()->isa<Extract>(); ex && Pi::isa_basicblock(app->callee_type())) {
+        // TODO use Branch
         // emit_unsafe(app->arg());
         // A call to an extract like constructed for conditionals (else,then)#cond (args)
         for (auto callee_def : ex->tuple()->projs()) {
