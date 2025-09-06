@@ -22,7 +22,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PhaseMan::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
 
     // TODO:; remove after ho_codegen merge
-    assert_emplace(passes, Annex::Base<clos::eta_red_bool_pass>, [&](PassMan& man, const Def* app) {
+    assert_emplace(passes, flags_t(Annex::Base<clos::eta_red_bool_pass>), [&](PassMan& man, const Def* app) {
         auto bb      = app->as<App>()->arg();
         auto bb_only = bb->as<Lit>()->get<u64>();
         man.add<EtaRed>(bb_only);

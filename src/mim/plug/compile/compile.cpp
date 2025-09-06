@@ -42,8 +42,8 @@ auto apply(World& world, P& ps, M& man, const Def* app) {
 
 void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     // clang-format off
-    assert_emplace(phases, Annex::Base<compile::null_phase>, [](World&) { return std::unique_ptr<Phase>{}; });
-    assert_emplace(passes, Annex::Base<compile::null_pass >, [](PassMan&,  const Def*) {});
+    assert_emplace(phases, flags_t(Annex::Base<compile::null_phase>), [](World&) { return std::unique_ptr<Phase>{}; });
+    assert_emplace(passes, flags_t(Annex::Base<compile::null_pass >), [](PassMan&,  const Def*) {});
 
     PhaseMan::hook<compile::cleanup_phase,        Cleanup      >(phases);
     PhaseMan::hook<compile::beta_red_phase,       BetaRedPhase >(phases);
@@ -64,7 +64,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PassMan::hook<compile::tail_rec_elim_pass, TailRecElim>(passes);
     // clang-format on
 
-    assert_emplace(passes, Annex::Base<compile::meta_pass>, [&](PassMan& man, const Def* app) {
+    assert_emplace(passes, flags_t(Annex::Base<compile::meta_pass>), [&](PassMan& man, const Def* app) {
         for (auto def : app->as<App>()->arg()->projs())
             apply(man.world(), passes, man, def);
     });
