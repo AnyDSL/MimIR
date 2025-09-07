@@ -574,7 +574,6 @@ public:
     /// @name dump/log
     ///@{
     Log& log() const;
-    void dummy() {}
     void dump(std::ostream& os);  ///< Dump to @p os.
     void dump();                  ///< Dump to `std::cout`.
     void debug_dump();            ///< Dump in Debug build if World::log::level is Log::Level::Debug.
