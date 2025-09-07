@@ -77,7 +77,7 @@ void PhaseMan::apply(const App* app) {
 
     auto phases = Phases();
     for (auto arg : args->projs())
-        if (auto phase = create(app->world().driver().phases(), *this, arg)) phases.emplace_back(std::move(phase));
+        if (auto phase = create(driver().phases(), *this, arg)) phases.emplace_back(std::move(phase));
 
     apply(Lit::as<bool>(fp), std::move(phases));
 }
@@ -121,9 +121,9 @@ std::unique_ptr<Phase> PassManPhase::recreate() {
 }
 
 void PassManPhase::apply(const App* app) {
-    man_ = std::make_unique<PassMan>(app->world());
+    man_ = std::make_unique<PassMan>(world());
     for (auto arg : app->args())
-        Phase::create(arg->world().driver().passes(), *man_, arg);
+        Phase::create(driver().passes(), *man_, arg);
 }
 
 void PassManPhase::apply(Phase& phase) {
