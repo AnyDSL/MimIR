@@ -6,8 +6,8 @@ namespace mim::plug::regex {
 
 class LowerRegex : public RWPass<LowerRegex, Lam> {
 public:
-    LowerRegex(PassMan& man)
-        : RWPass(man, "lower_regex") {}
+    LowerRegex(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     const Def* rewrite(const Def*) override;
 };

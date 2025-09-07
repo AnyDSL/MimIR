@@ -8,10 +8,17 @@
 
 namespace mim {
 
-Pass::Pass(PassMan& man, std::string name)
-    : man_(man)
-    , name_(std::move(name))
-    , index_(man.passes().size()) {}
+Pass::Pass(World& world, flags_t annex)
+    : world_(world)
+    , annex_(annex)
+    , name_(world.annex(annex)->sym()) {}
+
+std::unique_ptr<Pass> Pass::recreate() {
+    auto ctor = driver().pass(annex());
+    auto ptr  = (*ctor)(world());
+    ptr->apply(*this);
+    return ptr;
+}
 
 void PassMan::push_state() {
     if (fixed_point()) {
@@ -161,6 +168,23 @@ undo_t PassMan::analyze(const Def* def) {
     }
 
     return undo;
+}
+
+/*
+ * MetaPass
+ */
+
+void MetaPass::apply(const App* app) {
+    auto passes = Passes();
+    for (auto arg : app->args())
+        if (auto pass = Phase::create(driver().passes(), arg)) passes.emplace_back(std::move(pass));
+
+    apply(std::move(passes));
+}
+
+void MetaPass::apply(Pass& pass) {
+    auto& man = static_cast<MetaPass&>(pass);
+    apply(std::move(man.passes_));
 }
 
 } // namespace mim

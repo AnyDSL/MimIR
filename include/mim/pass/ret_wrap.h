@@ -6,8 +6,8 @@ namespace mim {
 
 class RetWrap : public RWPass<RetWrap, Lam> {
 public:
-    RetWrap(PassMan& man)
-        : RWPass(man, "ret_wrap") {}
+    RetWrap(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     void enter() override;
 };

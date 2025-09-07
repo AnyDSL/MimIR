@@ -25,10 +25,10 @@ import regex;
 lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);
 lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );
 
-lam extern _default_compile []: %compile.Phase =
+lam extern _default_compile (): %compile.Phase =
     %compile.phases ff (
         %compile.passes %compile.scalarize_pass,
-        %compile.passes %compile.eta_red_pass,
+        %compile.passes (%compile.eta_red_pass ff),
         %compile.passes %compile.tail_rec_elim_pass,
         %compile.passes (cond_pass "regex" %regex.lower_regex),
         // optimize

@@ -7,11 +7,12 @@
 
 namespace mim::plug::mem {
 
-CopyProp::CopyProp(PassMan& man, bool bb_only)
-    : FPPass(man, std::format("copy_prop (bb_only: {})", bb_only))
-    , beta_red_(man.find<BetaRed>())
-    , eta_exp_(man.find<EtaExp>())
-    , bb_only_(bb_only) {}
+void CopyProp::apply(bool bb_only) {
+    beta_red_ = man().find<BetaRed>();
+    eta_exp_  = man().find<EtaExp>();
+    bb_only_  = bb_only;
+    name_ += bb_only_ ? " tt" : " ff";
+}
 
 const Def* CopyProp::rewrite(const Def* def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);

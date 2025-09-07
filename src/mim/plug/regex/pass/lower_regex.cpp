@@ -12,7 +12,6 @@
 
 #include "mim/plug/regex/autogen.h"
 #include "mim/plug/regex/dfa2matcher.h"
-#include "mim/plug/regex/regex.h"
 #include "mim/plug/regex/regex2nfa.h"
 
 namespace mim::plug::regex {

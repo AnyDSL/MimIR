@@ -9,9 +9,6 @@ void PrefixCleanup::apply(std::string prefix) {
     name_ += " \"" + prefix_ + " \"";
 }
 
-void PrefixCleanup::apply(const App* app) { apply(tuple2str(app->arg())); }
-void PrefixCleanup::apply(Phase& phase) { apply(std::move(static_cast<PrefixCleanup&>(phase).prefix_)); }
-
 void PrefixCleanup::rewrite_external(Def* old_mut) {
     auto new_mut = rewrite(old_mut)->as_mut();
     if (old_mut->is_external()) {

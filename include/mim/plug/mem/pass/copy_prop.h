@@ -15,7 +15,14 @@ namespace plug::mem {
 /// Finally, it will also remove dead Var%s.
 class CopyProp : public FPPass<CopyProp, Lam> {
 public:
-    CopyProp(PassMan& man, bool bb_only = false);
+    CopyProp(World& world, flags_t annex)
+        : FPPass(world, annex) {}
+
+    void apply(bool bb_only);
+    void apply(const App* app) final { apply(Lit::as<bool>(app->arg())); }
+    void apply(Pass& pass) final { apply(static_cast<CopyProp&>(pass).bb_only()); }
+
+    bool bb_only() const { return bb_only_; }
 
     using Data = LamMap<DefVec>;
 
@@ -41,7 +48,7 @@ private:
     BetaRed* beta_red_;
     EtaExp* eta_exp_;
     LamMap<std::tuple<Lattices, Lam*, DefVec>> lam2info_;
-    const bool bb_only_;
+    bool bb_only_;
 };
 
 } // namespace plug::mem

@@ -12,11 +12,12 @@ namespace plug::clos {
 
 class ClosConvPrep : public RWPass<ClosConvPrep, Lam> {
 public:
-    ClosConvPrep(PassMan& man, EtaExp* eta_exp)
-        : RWPass(man, "clos_conv_prep")
-        , eta_exp_(eta_exp)
-        , old2wrapper_()
-        , lam2fscope_() {}
+    ClosConvPrep(World& world, flags_t annex)
+        : RWPass(world, annex) {}
+
+    void apply();
+    void apply(const App*) final { apply(); }
+    void apply(Pass&) final { apply(); }
 
     void enter() override;
     const Def* rewrite(const Def*) override;

@@ -8,7 +8,12 @@ class EtaRed;
 
 class TailRecElim : public FPPass<TailRecElim, Lam> {
 public:
-    TailRecElim(PassMan&);
+    TailRecElim(World& world, flags_t annex)
+        : FPPass(world, annex) {}
+
+    void apply();
+    void apply(const App*) final { apply(); }
+    void apply(Pass&) final { apply(); }
 
 private:
     /// @name PassMan hooks

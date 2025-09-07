@@ -9,8 +9,8 @@ namespace mim::plug::autodiff {
 /// We replace an `autodiff fun` call with the differentiated function.
 class AutoDiffEval : public RWPass<AutoDiffEval, Lam> {
 public:
-    AutoDiffEval(PassMan& man)
-        : RWPass(man, "autodiff_eval") {}
+    AutoDiffEval(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     /// Detect autodiff calls.
     const Def* rewrite(const Def*) override;

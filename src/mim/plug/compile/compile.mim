@@ -50,7 +50,7 @@ let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase "internal_";
 ///
 axm %compile.beta_red_pass:                             %compile.Pass;
 axm %compile.eta_exp_pass:                              %compile.Pass;
-axm %compile.eta_red_pass:                              %compile.Pass;
+axm %compile.eta_red_pass:                       Bool → %compile.Pass;
 axm %compile.lam_spec_pass:                             %compile.Pass;
 axm %compile.meta_pass: {n: Nat} → «n; %compile.Pass» → %compile.Pass;
 axm %compile.null_pass:                                 %compile.Pass;
@@ -62,7 +62,7 @@ axm %compile.tail_rec_elim_pass:                        %compile.Pass;
 ///
 let optimization_passes = %compile.meta_pass (
     %compile.beta_red_pass,
-    %compile.eta_red_pass,
+    %compile.eta_red_pass ff,
     %compile.eta_exp_pass,
     %compile.scalarize_pass,
     %compile.tail_rec_elim_pass,

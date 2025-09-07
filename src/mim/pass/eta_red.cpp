@@ -9,6 +9,11 @@ static const App* eta_rule(Lam* lam) {
     return nullptr;
 }
 
+void EtaRed::apply(bool callee_only) {
+    callee_only_ = callee_only;
+    name_ += callee_only_ ? " tt" : " ff";
+}
+
 const Def* EtaRed::rewrite(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         // TODO (ClosureConv): Factor this out

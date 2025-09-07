@@ -1,7 +1,5 @@
 #pragma once
 
-#include <queue>
-
 #include "mim/phase.h"
 
 namespace mim::plug::mem {
@@ -24,9 +22,14 @@ class Reshape : public RWPass<Reshape, Lam> {
 public:
     enum Mode { Flat, Arg };
 
-    Reshape(PassMan& man, Mode mode)
-        : RWPass(man, "reshape")
-        , mode_(mode) {}
+    Reshape(World& world, flags_t annex)
+        : RWPass(world, annex) {}
+
+    void apply(Mode);
+    void apply(const App* app) final;
+    void apply(Pass& pass) final { apply(static_cast<Reshape&>(pass).mode()); }
+
+    Mode mode() const { return mode_; }
 
     /// Fall-through to `rewrite_def` which falls through to `rewrite_lam`.
     void enter() override;

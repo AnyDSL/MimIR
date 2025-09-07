@@ -8,8 +8,8 @@ namespace mim::plug::autodiff {
 /// Replaces calls to the zero axms with actual zeros.
 class AutoDiffZero : public RWPass<AutoDiffZero, Lam> {
 public:
-    AutoDiffZero(PassMan& man)
-        : RWPass(man, "autodiff_zero") {}
+    AutoDiffZero(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     const Def* rewrite(const Def*) override;
 };

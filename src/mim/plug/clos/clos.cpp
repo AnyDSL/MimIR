@@ -18,20 +18,15 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
-    PhaseMan::hook<clos::clos_conv_phase, clos::ClosConv>(phases);
+    // clang-format off
+    PhaseMan::hook<clos::clos_conv_phase,        clos::ClosConv      >(phases);
     PhaseMan::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
 
-    // TODO:; remove after ho_codegen merge
-    assert_emplace(passes, Annex::base<clos::eta_red_bool_pass>(), [&](PassMan& man, const Def* app) {
-        auto bb      = app->as<App>()->arg();
-        auto bb_only = bb->as<Lit>()->get<u64>();
-        man.add<EtaRed>(bb_only);
-    });
-
-    PassMan::hook<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
-    PassMan::hook<clos::branch_clos_pass, clos::BranchClosElim>(passes);
+    PassMan::hook<clos::clos_conv_prep_pass,        clos::ClosConvPrep      >(passes);
+    PassMan::hook<clos::branch_clos_pass,           clos::BranchClosElim    >(passes);
     PassMan::hook<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
-    PassMan::hook<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
+    PassMan::hook<clos::clos2sjlj_pass,             clos::Clos2SJLJ         >(passes);
+    // clang-format on
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"clos", clos::register_normalizers, reg_stages, nullptr}; }

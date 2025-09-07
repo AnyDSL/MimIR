@@ -14,7 +14,8 @@ namespace plug::mem {
 /// by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau.
 class SSAConstr : public FPPass<SSAConstr, Lam> {
 public:
-    SSAConstr(PassMan&);
+    SSAConstr(World& world, flags_t annex)
+        : FPPass(world, annex) {}
 
     enum : u32 { Phixy, Sloxy, Traxy };
 

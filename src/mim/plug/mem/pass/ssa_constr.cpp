@@ -14,10 +14,6 @@ std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
 }
 } // namespace
 
-SSAConstr::SSAConstr(PassMan& man)
-    : FPPass(man, "ssa_constr")
-    , eta_exp_(man.find<EtaExp>()) {}
-
 void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 
 const Def* SSAConstr::rewrite(const Proxy* proxy) {

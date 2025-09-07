@@ -8,9 +8,14 @@ namespace mim {
 /// Rewrites `λx.e x` to `e`, whenever `x` does (optimistically) not appear free in `e`.
 class EtaRed : public FPPass<EtaRed, Def> {
 public:
-    EtaRed(PassMan& man, bool callee_only = false)
-        : FPPass(man, "eta_red")
-        , callee_only_(callee_only) {}
+    EtaRed(World& world, flags_t annex)
+        : FPPass(world, annex) {}
+
+    void apply(bool callee_only);
+    void apply(const App* app) final { apply(Lit::as<bool>(app->arg())); }
+    void apply(Pass& pass) final { apply(static_cast<EtaRed&>(pass).callee_only()); }
+
+    bool callee_only() const { return callee_only_; }
 
     enum Lattice {
         Bot,         ///< Never seen.
@@ -22,11 +27,11 @@ public:
     void mark_irreducible(Lam* lam) { irreducible_.emplace(lam); }
 
 private:
-    const bool callee_only_;
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Var*) override;
 
     LamSet irreducible_;
+    bool callee_only_;
 };
 
 } // namespace mim

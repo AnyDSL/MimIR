@@ -10,8 +10,8 @@ public:
         : RWPhase(world, annex) {}
 
     void apply(std::string);
-    void apply(const App*) final;
-    void apply(Phase&) final;
+    void apply(const App* app) final { apply(tuple2str(app->arg())); }
+    void apply(Phase& phase) final { apply(std::move(static_cast<PrefixCleanup&>(phase).prefix_)); }
 
 private:
     void rewrite_external(Def*) final;

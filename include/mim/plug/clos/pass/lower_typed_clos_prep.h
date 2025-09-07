@@ -10,8 +10,8 @@ namespace mim::plug::clos {
 
 class LowerTypedClosPrep : public FPPass<LowerTypedClosPrep, Lam> {
 public:
-    LowerTypedClosPrep(PassMan& man)
-        : FPPass<LowerTypedClosPrep, Lam>(man, "lower_typed_clos_prep") {}
+    LowerTypedClosPrep(World& world, flags_t annex)
+        : FPPass(world, annex) {}
 
 private:
     const Def* rewrite(const Def*) override;

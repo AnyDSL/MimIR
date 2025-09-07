@@ -22,7 +22,7 @@ using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 
 /// Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a PhaseMan.
 using Flags2Phases = absl::flat_hash_map<flags_t, std::function<std::unique_ptr<Phase>(World&)>>;
-using Flags2Passes = absl::flat_hash_map<flags_t, std::function<void(PassMan&, const Def*)>>;
+using Flags2Passes = absl::flat_hash_map<flags_t, std::function<std::unique_ptr<Pass>(World&)>>;
 
 using Backends = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;
 ///@}

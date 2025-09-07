@@ -8,8 +8,8 @@ namespace mim::plug::refly {
 /// Removes all `%refly.debug.perm` markers for code gen.
 class RemoveDbgPerm : public RWPass<RemoveDbgPerm, Lam> {
 public:
-    RemoveDbgPerm(PassMan& man)
-        : RWPass(man, "remove_dbg_perm") {}
+    RemoveDbgPerm(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     const Def* rewrite(const Def*) override;
 };

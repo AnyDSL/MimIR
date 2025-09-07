@@ -6,6 +6,8 @@
 
 #include "mim/world.h"
 
+#include "fe/assert.h"
+
 namespace mim {
 
 class Pass;
@@ -25,18 +27,29 @@ static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 /// * If you do not rely on interaction between different Pass%es, consider using Phase instead.
 class Pass {
 public:
-    Pass(PassMan&, std::string name);
+    /// @name Construction & Destruction
+    ///@{
+    Pass(World& world, std::string name)
+        : world_(world)
+        , name_(std::move(name)) {}
+    Pass(World& world, flags_t annex);
+
     virtual ~Pass() = default;
+    virtual std::unique_ptr<Pass> recreate();             ///< Creates a new instance; needed by a fixed-point PassMan.
+    virtual void apply(const App*) { fe::unreachable(); } ///< Invoked if you Pass has additional args.
+    virtual void apply(Pass&) {}                          ///< Dito, but invoked by Pass::recreate.
+    ///@}
 
     /// @name Getters
     ///@{
-    World& world();
+    World& world() { return world_; }
     Driver& driver() { return world().driver(); }
-    Log& log() const;
-    PassMan& man() { return man_; }
-    const PassMan& man() const { return man_; }
+    Log& log() const { return world_.log(); }
+    PassMan& man() { return *man_; }
+    const PassMan& man() const { return *man_; }
     std::string_view name() const { return name_; }
     size_t index() const { return index_; }
+    flags_t annex() const { return annex_; }
     ///@}
 
     /// @name Rewrite Hook for the PassMan
@@ -100,9 +113,13 @@ private:
     virtual void dealloc(void*) {}                      ///< Destructor.
     ///@}
 
-    PassMan& man_;
-    const std::string name_;
-    const size_t index_;
+    World& world_;
+    flags_t annex_;
+    PassMan* man_ = nullptr;
+    size_t index_;
+
+protected:
+    std::string name_;
 
     friend class PassMan;
 };
@@ -156,11 +173,11 @@ public:
         man.run();
     }
 
-    template<class A, class P, class... Args>
-    static void hook(Flags2Passes& passes, Args&&... args) {
-        auto f = [... args = std::forward<Args>(args)](PassMan& man, const Def*) { man.add<P>(args...); };
-        assert_emplace(passes, Annex::base<A>(), f);
+    template<class A, class P>
+    static void hook(Flags2Passes& passes) {
+        assert_emplace(passes, Annex::base<A>(), [](World& w) { return std::make_unique<P>(w, Annex::base<A>()); });
     }
+
     ///@}
 
 private:
@@ -242,8 +259,10 @@ private:
 template<class P, class M = Def>
 class RWPass : public Pass {
 public:
-    RWPass(PassMan& man, std::string name)
-        : Pass(man, std::move(name)) {}
+    RWPass(World& world, std::string name)
+        : Pass(world, std::move(name)) {}
+    RWPass(World& world, flags_t annex)
+        : Pass(world, annex) {}
 
     bool inspect() const override {
         if constexpr (std::is_same<M, Def>::value)
@@ -268,8 +287,10 @@ public:
     using Super = RWPass<P, M>;
     using Data  = std::tuple<>; ///< Default.
 
-    FPPass(PassMan& man, std::string name)
-        : Super(man, std::move(name)) {}
+    FPPass(World& world, std::string name)
+        : Super(world, std::move(name)) {}
+    FPPass(World& world, flags_t annex)
+        : Super(world, annex) {}
 
     bool fixed_point() const override { return true; }
 
@@ -326,7 +347,19 @@ private:
     ///@}
 };
 
-inline World& Pass::world() { return man().world(); }
-inline Log& Pass::log() const { return man().log(); }
+class MetaPass : public Pass {
+public:
+    MetaPass(World& world, flags_t annex)
+        : Pass(world, annex) {}
+
+    void apply(Passes&& passes) { passes_ = std::move(passes); }
+    void apply(const App*) final;
+    void apply(Pass&) final;
+
+private:
+    bool inspect() const final { fe::unreachable(); }
+
+    Passes passes_;
+};
 
 } // namespace mim

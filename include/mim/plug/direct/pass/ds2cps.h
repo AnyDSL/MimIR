@@ -19,8 +19,8 @@ namespace mim::plug::direct {
 /// The underlying substitution is `f` -> `cps2ds_dep ... f_cps`.
 class DS2CPS : public RWPass<DS2CPS, Lam> {
 public:
-    DS2CPS(PassMan& man)
-        : RWPass(man, "ds2cps") {}
+    DS2CPS(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     const Def* rewrite(const Def*) override;
 

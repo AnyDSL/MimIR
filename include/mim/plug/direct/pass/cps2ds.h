@@ -12,8 +12,8 @@ namespace mim::plug::direct {
 /// `b = f args` becomes `f (args,cont)` with a newly introduced continuation `cont: Cn b`.
 class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
-    CPS2DS(PassMan& man)
-        : RWPass(man, "cps2ds") {}
+    CPS2DS(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     void enter() override;
 

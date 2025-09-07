@@ -35,20 +35,23 @@ public:
     virtual void apply(const App*) { fe::unreachable(); } ///< Invoked if you Phase has additional args.
     virtual void apply(Phase&) {}                         ///< Dito, but invoked by Phase::recreate.
 
-    template<class Ps, class M>
-    static auto create(const Ps& ps, M& man, const Def* def) {
+    template<class Ps>
+    static auto create(const Ps& ps, const Def* def) {
         auto& world = def->world();
         auto p_def  = App::uncurry_callee(def);
         world.DLOG("apply pass/phase: `{}`", p_def);
 
         if (auto axm = p_def->isa<Axm>())
             if (auto i = ps.find(axm->flags()); i != ps.end())
-                if constexpr (std::is_same_v<M, PhaseMan>) {
+                if constexpr (std::is_same_v<Ps, Flags2Phases>) {
                     auto phase = i->second(world);
-                    if (auto app = def->isa<App>()) phase->apply(app);
+                    phase->apply(def->isa<App>());
                     return phase;
-                } else
-                    return i->second(man, def);
+                } else {
+                    auto pass = i->second(world);
+                    pass->apply(def->isa<App>());
+                    return pass;
+                }
             else
                 error("pass/phase `{}` not found", axm->sym());
         else
@@ -65,6 +68,8 @@ public:
     std::string_view name() const { return name_; }
     bool todo() const { return todo_; }
     flags_t annex() const { return annex_; }
+    PhaseMan& man() { return *man_; }
+    const PhaseMan& man() const { return *man_; }
     ///@}
 
     /// @name run
@@ -84,6 +89,7 @@ private:
 
     World& world_;
     flags_t annex_ = 0;
+    PhaseMan* man_ = nullptr;
 
 protected:
     std::string name_;
@@ -233,8 +239,7 @@ public:
 
     template<class A, class P>
     static void hook(Flags2Phases& phases) {
-        auto f = [](World& w) { return std::make_unique<P>(w, Annex::base<A>()); };
-        assert_emplace(phases, Annex::base<A>(), f);
+        assert_emplace(phases, Annex::base<A>(), [](World& w) { return std::make_unique<P>(w, Annex::base<A>()); });
     }
 
 private:

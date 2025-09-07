@@ -238,7 +238,7 @@ let %matrix.internal_map_reduce_cleanup = %compile.prefix_cleanup_phase "interna
 /// ### Phases
 ///
 axm %matrix.lower_matrix_low_level: %compile.Phase;
-///
+
 let matrix_lower_phase =
     %compile.phases ff (
         %compile.passes (
