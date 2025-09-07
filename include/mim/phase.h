@@ -29,11 +29,9 @@ public:
     Phase(World& world, flags_t annex);
 
     virtual ~Phase() = default;
-
-    virtual std::unique_ptr<Phase> recreate();
-
-    virtual void apply(const App*) { fe::unreachable(); }
-    virtual void apply(Phase&) {}
+    virtual std::unique_ptr<Phase> recreate();            ///< Creates a new instance; needed by a fixed-point PhaseMan.
+    virtual void apply(const App*) { fe::unreachable(); } ///< Invoked if you Phase has additional args.
+    virtual void apply(Phase&) {}                         ///< Dito, but invoked by Phase::recreate.
     ///@}
 
     /// @name Getters
