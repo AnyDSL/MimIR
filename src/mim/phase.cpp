@@ -4,38 +4,6 @@
 
 namespace mim {
 
-auto do_apply(const Def* def) {
-    World& world = def->world();
-    auto& phases = world.driver().phases();
-    auto p_def   = App::uncurry_callee(def);
-    world.DLOG("apply pass/phase: `{}`", p_def);
-
-    if (auto axm = p_def->isa<Axm>())
-        if (auto i = phases.find(axm->flags()); i != phases.end()) {
-            auto phase = i->second(world);
-            if (auto app = def->isa<App>()) phase->apply(app);
-            return phase;
-        } else
-            error("pass/phase `{}` not found", axm->sym());
-    else
-        error("unsupported callee for a phase/pass: `{}`", p_def);
-}
-
-auto do_apply(PassMan& man, const Def* app) {
-    World& world = app->world();
-    auto& passes = world.driver().passes();
-    auto p_def   = App::uncurry_callee(app);
-    app->world().DLOG("apply pass/phase: `{}`", p_def);
-
-    if (auto axm = p_def->isa<Axm>())
-        if (auto i = passes.find(axm->flags()); i != passes.end())
-            return i->second(man, app);
-        else
-            error("pass/phase `{}` not found", axm->sym());
-    else
-        error("unsupported callee for a phase/pass: `{}`", p_def);
-}
-
 /*
  * Phase
  */
@@ -109,7 +77,7 @@ void PhaseMan::apply(const App* app) {
 
     auto phases = Phases();
     for (auto def : arg->projs())
-        if (auto phase = do_apply(def)) phases.emplace_back(std::move(phase));
+        if (auto phase = create(app->world().driver().phases(), *this, def)) phases.emplace_back(std::move(phase));
 
     apply(Lit::as<bool>(fp), std::move(phases));
 }
@@ -148,10 +116,14 @@ void PhaseMan::start() {
  * PassManPhase
  */
 
+std::unique_ptr<Phase> PassManPhase::recreate() {
+    error("Recreate not supported for Passes and doesn't really make sense as they are already run in a fixed-point");
+}
+
 void PassManPhase::apply(const App* app) {
     man_ = std::make_unique<PassMan>(app->world());
     for (auto arg : app->args())
-        do_apply(*man_, arg);
+        Phase::create(arg->world().driver().passes(), *man_, arg);
 }
 
 void PassManPhase::apply(Phase& phase) {

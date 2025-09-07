@@ -6,6 +6,7 @@
 #include <fe/cast.h>
 
 #include "mim/def.h"
+#include "mim/driver.h"
 #include "mim/nest.h"
 #include "mim/pass.h"
 #include "mim/rewrite.h"
@@ -13,6 +14,7 @@
 namespace mim {
 
 class Nest;
+class PhaseMan;
 class World;
 
 using Phases = std::deque<std::unique_ptr<Phase>>;
@@ -32,6 +34,25 @@ public:
     virtual std::unique_ptr<Phase> recreate();            ///< Creates a new instance; needed by a fixed-point PhaseMan.
     virtual void apply(const App*) { fe::unreachable(); } ///< Invoked if you Phase has additional args.
     virtual void apply(Phase&) {}                         ///< Dito, but invoked by Phase::recreate.
+
+    template<class Ps, class M>
+    static auto create(const Ps& ps, M& man, const Def* app) {
+        auto& world = app->world();
+        auto p_def  = App::uncurry_callee(app);
+        world.DLOG("apply pass/phase: `{}`", p_def);
+
+        if (auto axm = p_def->isa<Axm>())
+            if (auto i = ps.find(axm->flags()); i != ps.end())
+                if constexpr (std::is_same_v<M, PhaseMan>)
+                    return i->second(world);
+                else
+                    return i->second(man, app);
+            else
+                error("pass/phase `{}` not found", axm->sym());
+        else
+            error("unsupported callee for a phase/pass: `{}`", p_def);
+    }
+
     ///@}
 
     /// @name Getters
@@ -161,6 +182,7 @@ public:
     PassManPhase(World& world, flags_t annex)
         : Phase(world, annex) {}
 
+    std::unique_ptr<Phase> recreate() final;
     void apply(const App*) final;
     void apply(Phase&) final;
 

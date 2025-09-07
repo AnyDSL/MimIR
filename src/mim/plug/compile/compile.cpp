@@ -23,23 +23,6 @@
 using namespace mim;
 using namespace mim::plug;
 
-template<class P, class M>
-auto apply(World& world, P& ps, M& man, const Def* app) {
-    auto p_def = App::uncurry_callee(app);
-    world.DLOG("apply pass/phase: `{}`", p_def);
-
-    if (auto axm = p_def->isa<Axm>())
-        if (auto i = ps.find(axm->flags()); i != ps.end())
-            if constexpr (std::is_same_v<M, PhaseMan>)
-                return i->second(world);
-            else
-                return i->second(man, app);
-        else
-            error("pass/phase `{}` not found", axm->sym());
-    else
-        error("unsupported callee for a phase/pass: `{}`", p_def);
-}
-
 void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     // clang-format off
     assert_emplace(phases, Annex::base<compile::null_phase>(), [](World&) { return std::unique_ptr<Phase>{}; });
@@ -67,7 +50,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
 
     assert_emplace(passes, Annex::base<compile::meta_pass>(), [&](PassMan& man, const Def* app) {
         for (auto def : app->as<App>()->arg()->projs())
-            apply(man.world(), passes, man, def);
+            PhaseMan::create(passes, man, def);
     });
 }
 
