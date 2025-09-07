@@ -36,17 +36,19 @@ public:
     virtual void apply(Phase&) {}                         ///< Dito, but invoked by Phase::recreate.
 
     template<class Ps, class M>
-    static auto create(const Ps& ps, M& man, const Def* app) {
-        auto& world = app->world();
-        auto p_def  = App::uncurry_callee(app);
+    static auto create(const Ps& ps, M& man, const Def* def) {
+        auto& world = def->world();
+        auto p_def  = App::uncurry_callee(def);
         world.DLOG("apply pass/phase: `{}`", p_def);
 
         if (auto axm = p_def->isa<Axm>())
             if (auto i = ps.find(axm->flags()); i != ps.end())
-                if constexpr (std::is_same_v<M, PhaseMan>)
-                    return i->second(world);
-                else
-                    return i->second(man, app);
+                if constexpr (std::is_same_v<M, PhaseMan>) {
+                    auto phase = i->second(world);
+                    if (auto app = def->isa<App>()) phase->apply(app);
+                    return phase;
+                } else
+                    return i->second(man, def);
             else
                 error("pass/phase `{}` not found", axm->sym());
         else

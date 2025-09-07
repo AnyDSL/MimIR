@@ -73,11 +73,11 @@ void PhaseMan::apply(bool fp, Phases&& phases) {
 }
 
 void PhaseMan::apply(const App* app) {
-    auto [fp, arg] = app->uncurry_args<2>();
+    auto [fp, args] = app->uncurry_args<2>();
 
     auto phases = Phases();
-    for (auto def : arg->projs())
-        if (auto phase = create(app->world().driver().phases(), *this, def)) phases.emplace_back(std::move(phase));
+    for (auto arg : args->projs())
+        if (auto phase = create(app->world().driver().phases(), *this, arg)) phases.emplace_back(std::move(phase));
 
     apply(Lit::as<bool>(fp), std::move(phases));
 }
