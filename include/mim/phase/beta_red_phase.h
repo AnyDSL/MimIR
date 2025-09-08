@@ -1,19 +1,19 @@
 #pragma once
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 namespace mim {
 
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
 class BetaRedPhase : public FPPhase {
 public:
-    BetaRedPhase(World&);
+    BetaRedPhase(World& world, flags_t annex)
+        : FPPhase(world, annex) {}
 
 private:
-    void reset() final;
     bool analyze() final;
     void analyze(const Def*);
-    void visit(Lam*);
+    void visit(const Def*);
 
     const Def* rewrite_imm_App(const App*) final;
     bool is_candidate(Lam*) const;

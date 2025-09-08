@@ -31,18 +31,18 @@ axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
 /// Sets up `n` phases / passes anad wraps them in a phase.
 ///
-axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Phase;
+axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Pass;
 axm %compile.phases: {n: Nat} → Bool → «n; %compile.Phase» → %compile.Phase;
 ///
 /// ### Phases
 ///
-axm %compile.null_phase:                                %compile.Phase;
-axm %compile.cleanup_phase:                             %compile.Phase;
 axm %compile.beta_red_phase:                            %compile.Phase;
-axm %compile.eta_red_phase:                             %compile.Phase;
-axm %compile.eta_exp_phase:                             %compile.Phase;
 axm %compile.branch_normalize_phase:                    %compile.Phase;
-axm %compile.debug_phase:                         Nat → %compile.Phase;
+axm %compile.cleanup_phase:                             %compile.Phase;
+axm %compile.eta_exp_phase:                             %compile.Phase;
+axm %compile.eta_red_phase:                             %compile.Phase;
+axm %compile.null_phase:                                %compile.Phase;
+axm %compile.pass2phase:                %compile.Pass → %compile.Phase;
 axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;
 
 let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase "internal_";
@@ -50,36 +50,22 @@ let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase "internal_";
 /// ### Passes
 ///
 axm %compile.beta_red_pass:                             %compile.Pass;
-axm %compile.eta_red_pass:                              %compile.Pass;
 axm %compile.eta_exp_pass:                              %compile.Pass;
+axm %compile.eta_red_pass:                       Bool → %compile.Pass;
+axm %compile.lam_spec_pass:                             %compile.Pass;
+axm %compile.null_pass:                                 %compile.Pass;
+axm %compile.ret_wrap_pass:                             %compile.Pass;
 axm %compile.scalarize_pass:                            %compile.Pass;
 axm %compile.tail_rec_elim_pass:                        %compile.Pass;
-axm %compile.lam_spec_pass:                             %compile.Pass;
-axm %compile.ret_wrap_pass:                             %compile.Pass;
-axm %compile.null_pass:                                 %compile.Pass;
-axm %compile.meta_pass: {n: Nat} → «n; %compile.Pass» → %compile.Pass;
 ///
 /// ### Pipelines
 ///
-let optimization_passes = %compile.meta_pass (
+let optimization_passes = %compile.passes (
     %compile.beta_red_pass,
-    %compile.eta_red_pass,
+    %compile.eta_red_pass ff,
     %compile.eta_exp_pass,
     %compile.scalarize_pass,
     %compile.tail_rec_elim_pass,
 );
 
-let optimization_phase = %compile.passes optimization_passes;
-
-let default_core_phase =
-    %compile.phases ff (
-        %compile.passes %compile.scalarize_pass,
-        %compile.passes %compile.eta_red_pass,
-        %compile.passes %compile.tail_rec_elim_pass,
-        optimization_phase,
-        %compile.internal_cleanup_phase,
-        %compile.passes %compile.lam_spec_pass,
-        %compile.passes %compile.ret_wrap_pass,
-    );
-
-lam extern _fallback_compile(): %compile.Phase = default_core_phase;
+let optimization_phase = %compile.pass2phase optimization_passes;

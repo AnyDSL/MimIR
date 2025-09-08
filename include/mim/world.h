@@ -76,8 +76,12 @@ public:
     }
     ~World();
 
-    World inherit() { return freeze(), World(&driver(), state()); } ///< Inherits the @p state into the new World.
-    std::unique_ptr<World> inherit_ptr() { return std::make_unique<World>(&driver(), state()); } ///< As above.
+    /// Inherits the State into the new World.
+    /// World::curr_gid will be offset to not collide with the original World.
+    std::unique_ptr<World> inherit() {
+        auto s = state();
+        s.pod.curr_gid += move_.defs.size();
+        return std::make_unique<World>(&driver(), s); }
     ///@}
 
     /// @name Getters/Setters
@@ -189,7 +193,7 @@ public:
     /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axm.
     template<annex_without_subs id>
     const Def* annex() {
-        return annex(Annex::Base<id>);
+        return annex(Annex::base<id>());
     }
 
     const Def* register_annex(flags_t f, const Def*);
@@ -558,10 +562,22 @@ public:
     Defs reduce(const Var* var, const Def* arg);
     ///@}
 
+    /// @name for_each
+    /// Visits all closed mutables in this World.
+    ///@{
+    void for_each(bool elide_empty, std::function<void(Def*)>);
+
+    template<class M>
+    void for_each(bool elide_empty, std::function<void(M*)> f) {
+        for_each(elide_empty, [f](Def* m) {
+            if (auto mut = m->template isa<M>()) f(mut);
+        });
+    }
+    ///@}
+
     /// @name dump/log
     ///@{
-    Log& log();
-    void dummy() {}
+    Log& log() const;
     void dump(std::ostream& os);  ///< Dump to @p os.
     void dump();                  ///< Dump to `std::cout`.
     void debug_dump();            ///< Dump in Debug build if World::log::level is Log::Level::Debug.

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
-
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 namespace mim::plug::affine {
 
@@ -28,8 +27,8 @@ namespace mim::plug::affine {
 /// @todo We probably want to have phases which fix such things so we don't have to do this in C++.
 class LowerFor : public RWPass<LowerFor, Lam> {
 public:
-    LowerFor(PassMan& man)
-        : RWPass(man, "lower_affine_for") {}
+    LowerFor(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     const Def* rewrite(const Def*) override;
 

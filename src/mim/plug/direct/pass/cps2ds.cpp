@@ -16,11 +16,11 @@ void CPS2DS::rewrite_lam(Lam* lam) {
     if (auto [_, ins] = rewritten_lams.emplace(lam); !ins) return;
 
     if (lam->isa_imm() || !lam->is_set() || lam->codom()->isa<Type>()) {
-        world().DLOG("skipped {}", lam);
+        DLOG("skipped {}", lam);
         return;
     }
 
-    world().DLOG("Rewrite lam: {}", lam->sym());
+    DLOG("Rewrite lam: {}", lam->sym());
 
     lam_stack.push_back(curr_lam_);
     curr_lam_ = lam;
@@ -28,7 +28,7 @@ void CPS2DS::rewrite_lam(Lam* lam) {
     auto new_f = rewrite_body(curr_lam_->filter());
     auto new_b = rewrite_body(curr_lam_->body());
     // curr_lam_ might be different at this point (newly introduced continuation).
-    world().DLOG("Result of rewrite {} in {}", lam, curr_lam_);
+    DLOG("Result of rewrite {} in {}", lam, curr_lam_);
     // TODO This is odd: Why is this *sometimes* not set?
     curr_lam_->unset()->set({new_f, new_b});
     curr_lam_ = lam_stack.back();
@@ -51,12 +51,12 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         auto new_arg    = rewrite_body(arg);
 
         if (auto cps2ds = Axm::isa<direct::cps2ds_dep>(new_callee)) {
-            world().DLOG("rewrite callee {} : {}", callee, callee->type());
-            world().DLOG("rewrite arg  {} : {}", arg, arg->type());
+            DLOG("rewrite callee {} : {}", callee, callee->type());
+            DLOG("rewrite arg  {} : {}", arg, arg->type());
             // TODO: rewrite function?
             auto cps_fun = cps2ds->arg();
             cps_fun      = rewrite_body(cps_fun);
-            world().DLOG("function: {} : {}", cps_fun, cps_fun->type());
+            DLOG("function: {} : {}", cps_fun, cps_fun->type());
 
             // ```
             // h:
@@ -81,9 +81,9 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             // We instantiate the function type with the applied argument.
             auto ty     = callee->type();
             auto ret_ty = ty->as<Pi>()->codom();
-            world().DLOG("callee {} : {}", callee, ty);
-            world().DLOG("new arguments {} : {}", new_arg, new_arg->type());
-            world().DLOG("ret_ty {}", ret_ty);
+            DLOG("callee {} : {}", callee, ty);
+            DLOG("new arguments {} : {}", new_arg, new_arg->type());
+            DLOG("ret_ty {}", ret_ty);
 
             auto inst_ret_ty = ret_ty;
             if (auto pi = ty->isa_mut<Pi>()) inst_ret_ty = pi->reduce(new_arg);
@@ -95,7 +95,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
             // Generate the cps function call `f a` -> `f_cps(a,cont)`
             auto cps_call = world().app(cps_fun, {new_arg, fun_cont})->set("cps_call");
-            world().DLOG("  curr_lam {}", curr_lam_->sym());
+            DLOG("  curr_lam {}", curr_lam_->sym());
             if (curr_lam_->is_set()) {
                 auto filter = curr_lam_->filter();
                 curr_lam_->unset()->set({filter, cps_call});
@@ -116,7 +116,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             // `res` is the result of the cps function.
             auto res = fun_cont->var();
 
-            world().DLOG("  result {} : {} instead of {} : {}", res, res->type(), def, def->type());
+            DLOG("  result {} : {} instead of {} : {}", res, res->type(), def, def->type());
             return res;
         }
 
@@ -152,10 +152,10 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     }
 
     auto new_ops = DefVec(def->ops(), [&](const Def* op) { return rewrite_body(op); });
-    world().DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
+    DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
 
     if (def->isa<Hole>()) {
-        world().WLOG("Hole {} : {} [{}]", def, def->type(), def->node_name());
+        WLOG("Hole {} : {} [{}]", def, def->type(), def->node_name());
         return def;
     }
 

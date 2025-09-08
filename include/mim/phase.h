@@ -2,43 +2,42 @@
 
 #include <memory>
 
+#include <fe/assert.h>
+#include <fe/cast.h>
+
 #include "mim/def.h"
 #include "mim/nest.h"
+#include "mim/pass.h"
 #include "mim/rewrite.h"
-
-#include "mim/pass/pass.h"
-
-#include "fe/cast.h"
 
 namespace mim {
 
 class Nest;
+class PhaseMan;
 class World;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
-class Phase : public fe::RuntimeCast<Phase> {
+class Phase : public Stage {
 public:
     /// @name Construction & Destruction
     ///@{
     Phase(World& world, std::string name)
-        : world_(world)
-        , name_(std::move(name)) {}
-    virtual ~Phase() = default;
+        : Stage(world, name) {}
+    Phase(World& world, flags_t annex)
+        : Stage(world, annex) {}
 
-    virtual void reset() { todo_ = false; }
     ///@}
 
     /// @name Getters
     ///@{
-    World& world() { return world_; }
-    std::string_view name() const { return name_; }
     bool todo() const { return todo_; }
     ///@}
 
     /// @name run
     ///@{
     virtual void run(); ///< Entry point and generates some debug output; invokes Phase::start.
+    virtual void start() = 0; ///< Actual entry.
 
     /// Runs a single Phase.
     template<class P, class... Args>
@@ -49,15 +48,11 @@ public:
     ///@}
 
 protected:
-    virtual void start() = 0; ///< Actual entry.
-
     /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
     bool todo_ = false;
-
-private:
-    World& world_;
-    const std::string name_;
 };
+
+using Phases = std::deque<std::unique_ptr<Phase>>;
 
 /// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
 /// This will destroy RWPhase::old_world leaving RWPhase::new_world which will be created here as the *current* World to
@@ -72,13 +67,10 @@ public:
     ///@{
     RWPhase(World& world, std::string name)
         : Phase(world, std::move(name))
-        , Rewriter(world.inherit_ptr()) {}
-
-    void reset() override {
-        bootstrapping_ = true;
-        Phase::reset();
-        Rewriter::reset(old_world().inherit_ptr());
-    }
+        , Rewriter(world.inherit()) {}
+    RWPhase(World& world, flags_t annex)
+        : Phase(world, annex)
+        , Rewriter(world.inherit()) {}
     ///@}
 
     /// @name Rewrite
@@ -111,6 +103,8 @@ class Cleanup : public RWPhase {
 public:
     Cleanup(World& world)
         : RWPhase(world, "cleanup") {}
+    Cleanup(World& world, flags_t annex)
+        : RWPhase(world, annex) {}
 };
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
@@ -120,26 +114,11 @@ class FPPhase : public RWPhase {
 public:
     FPPhase(World& world, std::string name)
         : RWPhase(world, std::move(name)) {}
+    FPPhase(World& world, flags_t annex)
+        : RWPhase(world, annex) {}
 
     virtual bool analyze() = 0;
     void start() override;
-};
-
-/// Wraps a Pass as a Phase.
-template<class P>
-class PassPhase : public Phase {
-public:
-    template<class... Args>
-    PassPhase(World& world, Args&&... args)
-        : Phase(world, "pass phase")
-        , man_(world) {
-        man_.template add<P>(std::forward<Args>(args)...);
-    }
-
-    void start() override { man_.run(); }
-
-private:
-    PassMan man_;
 };
 
 /// Wraps a PassMan pipeline as a Phase.
@@ -148,6 +127,13 @@ public:
     PassManPhase(World& world, std::unique_ptr<PassMan>&& man)
         : Phase(world, "pass_man_phase")
         , man_(std::move(man)) {}
+    PassManPhase(World& world, flags_t annex)
+        : Phase(world, annex) {}
+
+    void apply(const App*) final;
+    void apply(Stage&) final;
+
+    const PassMan& man() const { return *man_; }
 
     void start() override { man_->run(); }
 
@@ -159,42 +145,26 @@ private:
 /// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo_ flags yield `false`.
 class PhaseMan : public Phase {
 public:
-    PhaseMan(World&, bool fixed_point = false);
+    PhaseMan(World& world, flags_t annex)
+        : Phase(world, annex) {}
+
+    void apply(bool, Phases&&);
+    void apply(const App*) final;
+    void apply(Stage&) final;
 
     bool fixed_point() const { return fixed_point_; }
     void start() override;
-
+    ///
     /// @name phases
     ///@{
+    auto& phases() { return phases_; }
     const auto& phases() const { return phases_; }
-
-    /// Add a Phase.
-    /// You don't need to pass the World to @p args - it will be passed automatically.
-    /// If @p P is a Pass, this method will wrap this in a PassPhase.
-    template<class P, class... Args>
-    auto add(Args&&... args) {
-        if constexpr (std::is_base_of_v<Pass, P>) {
-            return add<PassPhase<P>>(std::forward<Args>(args)...);
-        } else {
-            auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
-            auto phase = p.get();
-            phases_.emplace_back(std::move(p));
-            return phase;
-        }
-    }
-
     void add(std::unique_ptr<Phase>&& phase) { phases_.emplace_back(std::move(phase)); }
     ///@}
 
-    template<class A, class P, class... Args>
-    static void hook(Flags2Phases& phases, Args&&... args) {
-        auto f = [... args = std::forward<Args>(args)](PhaseMan& man, const Def*) { man.template add<P>(args...); };
-        assert_emplace(phases, flags_t(Annex::Base<A>), f);
-    }
-
 private:
-    std::deque<std::unique_ptr<Phase>> phases_;
-    const bool fixed_point_;
+    Phases phases_;
+    bool fixed_point_;
 };
 
 /// Transitively visits all *reachable*, [*closed*](@ref Def::is_closed) mutables in the World.
@@ -206,22 +176,14 @@ public:
     ClosedMutPhase(World& world, std::string name, bool elide_empty)
         : Phase(world, std::move(name))
         , elide_empty_(elide_empty) {}
+    ClosedMutPhase(World& world, flags_t annex, bool elide_empty)
+        : Phase(world, annex)
+        , elide_empty_(elide_empty) {}
 
     bool elide_empty() const { return elide_empty_; }
 
     void start() override {
-        unique_queue<MutSet> queue;
-        for (auto mut : world().externals())
-            queue.push(mut);
-
-        while (!queue.empty()) {
-            auto mut = queue.pop();
-            if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(root_ = m);
-
-            for (auto op : mut->deps())
-                for (auto mut : op->local_muts())
-                    queue.push(mut);
-        }
+        world().template for_each<M>(elide_empty(), [this](M* mut) { root_ = mut, visit(mut); });
     }
 
 protected:
@@ -233,31 +195,14 @@ private:
     M* root_;
 };
 
-/// Transitively collects all [*closed*](@ref Def::is_closed) mutables in a World.
-template<class M = Def>
-class ClosedCollector : public ClosedMutPhase<M> {
-public:
-    ClosedCollector(World& world)
-        : ClosedMutPhase<M>(world, "closed_collector", false) {}
-
-    virtual void visit(M* mut) { muts.emplace_back(mut); }
-
-    /// Wrapper to directly receive all *closed* mutables as Vector.
-    static Vector<M*> collect(World& world) {
-        ClosedCollector<M> collector(world);
-        collector.run();
-        return std::move(collector.muts);
-    }
-
-    Vector<M*> muts;
-};
-
 /// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
 template<class M = Def>
 class NestPhase : public ClosedMutPhase<M> {
 public:
     NestPhase(World& world, std::string name, bool elide_empty)
         : ClosedMutPhase<M>(world, std::move(name), elide_empty) {}
+    NestPhase(World& world, flags_t annex, bool elide_empty)
+        : ClosedMutPhase<M>(world, annex, elide_empty) {}
 
     const Nest& nest() const { return *nest_; }
     virtual void visit(const Nest&) = 0;

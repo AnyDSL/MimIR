@@ -1,16 +1,54 @@
-#include "mim/pass/pass.h"
+#include "mim/pass.h"
+
+#include <memory>
 
 #include <absl/container/fixed_array.h>
 
-#include "mim/phase/phase.h"
+#include "mim/driver.h"
+#include "mim/phase.h"
+
 #include "mim/util/util.h"
 
 namespace mim {
 
-Pass::Pass(PassMan& man, std::string name)
-    : man_(man)
-    , name_(std::move(name))
-    , index_(man.passes().size()) {}
+/*
+ * Stage
+ */
+
+Stage::Stage(World& world, flags_t annex)
+    : world_(world)
+    , annex_(annex)
+    , name_(world.annex(annex)->sym()) {}
+
+std::unique_ptr<Stage> Stage::recreate() {
+    auto ctor = driver().stage(annex());
+    auto ptr  = (*ctor)(world());
+    ptr->apply(*this);
+    return ptr;
+}
+
+void Pass::init(PassMan* man) { man_ = man; }
+
+/*
+ * PassMan
+ */
+
+void PassMan::apply(Passes&& passes) {
+    for (auto&& pass : passes)
+        if (auto&& man = pass->isa<PassMan>())
+            apply(std::move(man->passes_));
+        else
+            add(std::move(pass));
+}
+
+void PassMan::apply(const App* app) {
+    auto passes = Passes();
+    for (auto arg : app->args())
+        if (auto stage = Stage::create(driver().stages(), arg))
+            passes.emplace_back(std::unique_ptr<Pass>(static_cast<Pass*>(stage.release())));
+
+    apply(std::move(passes));
+}
 
 void PassMan::push_state() {
     if (fixed_point()) {
@@ -45,11 +83,15 @@ void PassMan::run() {
 
     auto num = passes().size();
     states_.emplace_back(num);
-    for (size_t i = 0; i != num; ++i)
-        curr_state().data[i] = passes_[i]->alloc();
+    for (size_t i = 0; i != num; ++i) {
+        auto pass    = passes_[i].get();
+        pass->index_ = i;
+        pass->init(this);
+        curr_state().data[i] = pass->alloc();
+    }
 
     for (auto&& pass : passes_)
-        world().ILOG(" + {}", pass->name());
+        ILOG(" + {}", pass->name());
     world().debug_dump();
 
     for (auto&& pass : passes_)
@@ -63,21 +105,21 @@ void PassMan::run() {
     while (!curr_state().stack.empty()) {
         push_state();
         curr_mut_ = pop(curr_state().stack);
-        world().VLOG("=== state {}: {} ===", states_.size() - 1, curr_mut_);
+        VLOG("=== state {}: {} ===", states_.size() - 1, curr_mut_);
 
         if (!curr_mut_->is_set()) continue;
 
         for (auto&& pass : passes_)
             if (pass->inspect()) pass->enter();
 
-        curr_mut_->world().DLOG("curr_mut: {} : {}", curr_mut_, curr_mut_->type());
+        DLOG("curr_mut: {} : {}", curr_mut_, curr_mut_->type());
 
         auto new_defs = absl::FixedArray<const Def*>(curr_mut_->num_ops());
         for (size_t i = 0, e = curr_mut_->num_ops(); i != e; ++i)
             new_defs[i] = rewrite(curr_mut_->op(i));
         curr_mut_->set(new_defs);
 
-        world().VLOG("=== analyze ===");
+        VLOG("=== analyze ===");
         proxy_    = false;
         auto undo = No_Undo;
         for (auto op : curr_mut_->deps())
@@ -85,10 +127,10 @@ void PassMan::run() {
 
         if (undo == No_Undo) {
             assert(!proxy_ && "proxies must not occur anymore after leaving a mut with No_Undo");
-            world().DLOG("=== done ===");
+            DLOG("=== done ===");
         } else {
             pop_states(undo);
-            world().DLOG("=== undo: {} -> {} ===", undo, curr_state().stack.top());
+            DLOG("=== undo: {} -> {} ===", undo, curr_state().stack.top());
         }
     }
 
@@ -96,6 +138,7 @@ void PassMan::run() {
     pop_states(0);
 
     world().debug_dump();
+
     Phase::run<Cleanup>(world());
 }
 

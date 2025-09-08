@@ -9,10 +9,10 @@
 
 #include "mim/config.h"
 #include "mim/driver.h"
+#include "mim/phase.h"
 
 #include "mim/ast/parser.h"
 #include "mim/pass/optimize.h"
-#include "mim/phase/phase.h"
 #include "mim/util/sys.h"
 
 using namespace mim;

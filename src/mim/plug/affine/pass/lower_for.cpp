@@ -33,7 +33,7 @@ const Def* LowerFor::rewrite(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
     if (auto for_ax = Axm::isa<affine::For>(def)) {
-        world().DLOG("rewriting for axm: {} within {}", for_ax, curr_mut());
+        DLOG("rewriting for axm: {} within {}", for_ax, curr_mut());
         auto [begin, end, step, init, body, exit] = for_ax->args<6>();
 
         auto body_lam = body->isa_mut<Lam>();

@@ -94,7 +94,7 @@ private:
 #ifndef NDEBUG
 #define DLOG(...) log().log(mim::Log::Level::Debug,   __FILE__, __LINE__, __VA_ARGS__)
 #else
-#define DLOG(...) dummy()
+#define DLOG(...) log()
 #endif
 // clang-format on
 ///@}

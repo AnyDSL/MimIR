@@ -1,8 +1,7 @@
 #pragma once
 
+#include <mim/phase.h>
 #include <mim/schedule.h>
-
-#include <mim/phase/phase.h>
 
 namespace mim::plug::mem {
 
@@ -11,8 +10,8 @@ namespace mim::plug::mem {
 /// that rely on all continuations having a mem.
 class AddMem : public NestPhase<Lam> {
 public:
-    AddMem(World& world)
-        : NestPhase(world, "add_mem", true) {}
+    AddMem(World& world, flags_t annex)
+        : NestPhase(world, annex, true) {}
 
     void visit(const Nest&) override;
 

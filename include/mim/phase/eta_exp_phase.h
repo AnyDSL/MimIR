@@ -1,6 +1,7 @@
 #pragma once
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
+
 #include "mim/util/util.h"
 
 namespace mim {
@@ -8,7 +9,8 @@ namespace mim {
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
 class EtaExpPhase : public FPPhase {
 public:
-    EtaExpPhase(World&);
+    EtaExpPhase(World& world, flags_t annex)
+        : FPPhase(world, annex) {}
 
 private:
     enum Lattice : u8 {
@@ -29,10 +31,9 @@ private:
         return None;
     }
 
-    void reset() final;
-
     bool analyze() final;
     void analyze(const Def*);
+    void visit(const Def*, Lattice = Lattice::Unknown);
 
     void rewrite_external(Def*) final;
     const Def* rewrite_no_eta(const Def*);

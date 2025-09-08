@@ -254,6 +254,46 @@ private:
     friend class World;
 };
 
+/// Matches `(ff, tt)#cond` - where `cond` is not a Lit%eral.
+/// @note If `cond` is a Lit%eral, either
+/// * `(x, y)#lit` would have been folded to `x`/`y` anymway, or
+/// * Select::pair() yields again `pair#lit` for `pair#lit`.
+class Select {
+public:
+    Select(const Def*);
+
+    explicit operator bool() const noexcept { return tt_; }
+
+    const Extract* extract() const { return extract_; }
+    const Def* pair() const { return pair_; }
+    const Def* cond() const { return cond_; }
+    const Def* tt() const { return tt_; }
+    const Def* ff() const { return ff_; }
+
+private:
+    const Extract* extract_ = nullptr;
+    const Def* pair_        = nullptr;
+    const Def* cond_        = nullptr;
+    const Def* tt_          = nullptr;
+    const Def* ff_          = nullptr;
+};
+
+/// Matches `(ff, tt)#cond arg`.
+/// `(ff, tt)#cond` is matched as a Select.
+class Branch : public Select {
+public:
+    Branch(const Def*);
+
+    const App* app() const { return app_; }
+    const Def* callee() const { return callee_; }
+    const Def* arg() const { return arg_; }
+
+private:
+    const App* app_    = nullptr;
+    const Def* callee_ = nullptr;
+    const Def* arg_    = nullptr;
+};
+
 /// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs
 ///@{
 bool is_unit(const Def*);

@@ -68,7 +68,7 @@ World::~World() {
  * Driver
  */
 
-Log& World::log() { return driver().log(); }
+Log& World::log() const { return driver().log(); }
 Flags& World::flags() { return driver().flags(); }
 
 Sym World::sym(const char* s) { return driver().sym(s); }
@@ -667,6 +667,21 @@ Defs World::reduce(const Var* var, const Def* arg) {
         reduct->defs_[i] = rw.rewrite(mut->op(i + offset));
     assert_emplace(move_.substs, std::pair{var, arg}, reduct);
     return reduct->defs();
+}
+
+void World::for_each(bool elide_empty, std::function<void(Def*)> f) {
+    unique_queue<MutSet> queue;
+    for (auto mut : externals())
+        queue.push(mut);
+
+    while (!queue.empty()) {
+        auto mut = queue.pop();
+        if (mut && mut->is_closed() && (!elide_empty || mut->is_set())) f(mut);
+
+        for (auto op : mut->deps())
+            for (auto mut : op->local_muts())
+                queue.push(mut);
+    }
 }
 
 /*

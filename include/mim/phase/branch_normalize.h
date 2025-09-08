@@ -1,16 +1,17 @@
 #pragma once
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 namespace mim {
 
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
 class BranchNormalizePhase : public RWPhase {
 public:
-    BranchNormalizePhase(World& world)
-        : RWPhase(world, "branch normalize") {}
+    BranchNormalizePhase(World& world, flags_t annex)
+        : RWPhase(world, annex) {}
 
 private:
+    const Def* normalize(const Def*);
     const Def* rewrite_mut_Lam(Lam*) final;
 
     DefSet analyzed_;

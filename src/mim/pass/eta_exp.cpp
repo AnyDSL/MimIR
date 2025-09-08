@@ -6,9 +6,10 @@ using namespace std::literals;
 
 namespace mim {
 
-EtaExp::EtaExp(PassMan& man)
-    : FPPass(man, "eta_exp")
-    , eta_red_(man.find<EtaRed>()) {}
+void EtaExp::init(PassMan* man) {
+    Pass::init(man);
+    eta_red_ = man->find<EtaRed>();
+}
 
 Lam* EtaExp::new2old(Lam* new_lam) {
     if (auto old = lookup(new2old_, new_lam)) {
@@ -55,7 +56,7 @@ Lam* EtaExp::eta_exp(Lam* lam) {
 }
 
 undo_t EtaExp::analyze(const Proxy* proxy) {
-    world().DLOG("found proxy: {}", proxy);
+    DLOG("found proxy: {}", proxy);
     auto lam = proxy->op(0)->as_mut<Lam>();
     if (expand_.emplace(lam).second) return undo_visit(lam);
     return No_Undo;
@@ -70,19 +71,19 @@ undo_t EtaExp::analyze(const Def* def) {
 
             if (isa_callee(def, i)) {
                 if (auto [_, p] = *pos().emplace(lam, Pos::Callee).first; p == Pos::Non_Callee_1) {
-                    world().DLOG("Callee: Callee -> Expand: '{}'", lam);
+                    DLOG("Callee: Callee -> Expand: '{}'", lam);
                     expand_.emplace(lam);
                     undo = std::min(undo, undo_visit(lam));
                 } else {
-                    world().DLOG("Callee: Bot/Callee -> Callee: '{}'", lam);
+                    DLOG("Callee: Bot/Callee -> Callee: '{}'", lam);
                 }
             } else {
                 auto [it, first] = pos().emplace(lam, Pos::Non_Callee_1);
 
                 if (first) {
-                    world().DLOG("Non_Callee: Bot -> Non_Callee_1: '{}'", lam);
+                    DLOG("Non_Callee: Bot -> Non_Callee_1: '{}'", lam);
                 } else {
-                    world().DLOG("Non_Callee: {} -> Expand: '{}'", pos2str(it->second), lam);
+                    DLOG("Non_Callee: {} -> Expand: '{}'", pos2str(it->second), lam);
                     expand_.emplace(lam);
                     undo = std::min(undo, undo_visit(lam));
                 }

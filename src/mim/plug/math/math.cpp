@@ -1,8 +1,7 @@
 #include "mim/plug/math/math.h"
 
 #include <mim/config.h>
-
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 using namespace mim;
 

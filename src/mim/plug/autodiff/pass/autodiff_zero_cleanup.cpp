@@ -18,7 +18,7 @@ const Def* AutoDiffZeroCleanup::rewrite(const Def* def) {
         // callee = zero
         // arg = type T
         auto T = zero_app->arg();
-        world().DLOG("found a remaining autodiff::zero of {}", T);
+        DLOG("found a remaining autodiff::zero of {}", T);
         // generate ⊥:T
         auto dummy = world().bot(T);
         return dummy;

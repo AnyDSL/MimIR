@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 namespace mim {
 
@@ -14,7 +14,10 @@ namespace plug::mem {
 /// by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau.
 class SSAConstr : public FPPass<SSAConstr, Lam> {
 public:
-    SSAConstr(PassMan&);
+    SSAConstr(World& world, flags_t annex)
+        : FPPass(world, annex) {}
+
+    void init(PassMan*) final;
 
     enum : u32 { Phixy, Sloxy, Traxy };
 

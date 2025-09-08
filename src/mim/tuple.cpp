@@ -49,6 +49,29 @@ const Def* Pack::arity() const {
     return world().lit_nat_1();
 }
 
+Select::Select(const Def* def) {
+    if (def) {
+        if ((extract_ = def->isa<Extract>())) {
+            pair_ = extract_->tuple();
+            cond_ = extract_->index();
+            if (!Lit::isa(cond_)) {
+                if (auto a = Lit::isa(pair_->arity()); a && a == 2) {
+                    ff_ = pair_->proj(2, 0);
+                    tt_ = pair_->proj(2, 1);
+                }
+            }
+        }
+    }
+}
+
+Branch::Branch(const Def* def)
+    : Select(def->isa<App>() ? def->as<App>()->callee() : nullptr) {
+    if ((app_ = def->isa<App>())) {
+        callee_ = app_->callee();
+        arg_    = app_->arg();
+    }
+}
+
 bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 
 std::string tuple2str(const Def* def) {

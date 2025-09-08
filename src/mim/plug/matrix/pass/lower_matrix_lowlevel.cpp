@@ -5,6 +5,7 @@
 #include <mim/axm.h>
 #include <mim/def.h>
 #include <mim/lam.h>
+
 #include "mim/rewrite.h"
 
 #include "mim/plug/affine/affine.h"
@@ -75,31 +76,31 @@ const Def* LowerMatrixLowLevel::rewrite_imm_App(const App* app) {
 
         return ptr_ty;
     } else if (auto init_ax = Axm::isa<matrix::init>(app)) {
-        w.DLOG("init {} : {}", app, app->type());
+        DLOG("init {} : {}", app, app->type());
         auto [_, S, T, mem] = init_ax->args<4>();
-        w.DLOG("  S T mem {} {} {}", S, T, mem);
+        DLOG("  S T mem {} {} {}", S, T, mem);
         S   = rewrite(S);
         T   = rewrite(T);
         mem = rewrite(mem);
-        w.DLOG("  S T mem {} {} {}", S, T, mem);
+        DLOG("  S T mem {} {} {}", S, T, mem);
         auto arr_ty          = arr_ty_of_matrix_ty(S, T);
         auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
         auto res             = w.tuple({mem2, ptr_mat});
-        w.DLOG("  res {} : {}", res, res->type());
+        DLOG("  res {} : {}", res, res->type());
         return res;
     } else if (auto read_ax = Axm::isa<matrix::read>(app)) {
         auto [mem, mat, idx] = read_ax->args<3>();
-        w.DLOG("read_ax: {}", read_ax);
-        w.DLOG("  mem: {} : {}", mem, mem->type());
-        w.DLOG("  mat: {} : {}", mat, mat->type());
-        w.DLOG("  idx: {} : {}", idx, idx->type());
+        DLOG("read_ax: {}", read_ax);
+        DLOG("  mem: {} : {}", mem, mem->type());
+        DLOG("  mat: {} : {}", mat, mat->type());
+        DLOG("  idx: {} : {}", idx, idx->type());
         mem = rewrite(mem);
         mat = rewrite(mat);
         idx = rewrite(idx);
-        w.DLOG("rewritten read");
-        w.DLOG("  mem: {} : {}", mem, mem->type());
-        w.DLOG("  mat: {} : {}", mat, mat->type());
-        w.DLOG("  idx: {} : {}", idx, idx->type());
+        DLOG("rewritten read");
+        DLOG("  mem: {} : {}", mem, mem->type());
+        DLOG("  mat: {} : {}", mat, mat->type());
+        DLOG("  idx: {} : {}", idx, idx->type());
         // TODO: check if mat is already converted
         auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
@@ -107,20 +108,20 @@ const Def* LowerMatrixLowLevel::rewrite_imm_App(const App* app) {
         return w.tuple({mem2, val});
     } else if (auto insert_ax = Axm::isa<matrix::insert>(app)) {
         auto [mem, mat, idx, val] = insert_ax->args<4>();
-        w.DLOG("insert_ax: {}", insert_ax);
-        w.DLOG("  mem: {} : {}", mem, mem->type());
-        w.DLOG("  mat: {} : {}", mat, mat->type());
-        w.DLOG("  idx: {} : {}", idx, idx->type());
-        w.DLOG("  val: {} : {}", val, val->type());
+        DLOG("insert_ax: {}", insert_ax);
+        DLOG("  mem: {} : {}", mem, mem->type());
+        DLOG("  mat: {} : {}", mat, mat->type());
+        DLOG("  idx: {} : {}", idx, idx->type());
+        DLOG("  val: {} : {}", val, val->type());
         mem = rewrite(mem);
         mat = rewrite(mat);
         idx = rewrite(idx);
         val = rewrite(val);
-        w.DLOG("rewritten insert");
-        w.DLOG("  mem: {} : {}", mem, mem->type());
-        w.DLOG("  mat: {} : {}", mat, mat->type());
-        w.DLOG("  idx: {} : {}", idx, idx->type());
-        w.DLOG("  val: {} : {}", val, val->type());
+        DLOG("rewritten insert");
+        DLOG("  mem: {} : {}", mem, mem->type());
+        DLOG("  mat: {} : {}", mat, mat->type());
+        DLOG("  idx: {} : {}", idx, idx->type());
+        DLOG("  val: {} : {}", val, val->type());
         auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
         auto mem2        = w.call<mem::store>(Defs{mem, element_ptr, val});

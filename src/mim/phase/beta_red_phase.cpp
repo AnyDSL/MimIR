@@ -2,14 +2,6 @@
 
 namespace mim {
 
-BetaRedPhase::BetaRedPhase(World& world)
-    : FPPhase(world, "beta_red") {}
-
-void BetaRedPhase::reset() {
-    analyzed_.clear();
-    candidates_.clear();
-}
-
 bool BetaRedPhase::analyze() {
     for (auto def : old_world().externals())
         analyze(def);
@@ -19,21 +11,22 @@ bool BetaRedPhase::analyze() {
 void BetaRedPhase::analyze(const Def* def) {
     if (auto [_, ins] = analyzed_.emplace(def); !ins) return;
 
-    if (auto var = def->isa<Var>()) return analyze(var->type()); // ignore Var's mut
+    if (auto var = def->isa<Var>()) return visit(var->type()); // ignore Var's mut
 
-    for (auto d : def->deps()) {
-        if (auto lam = d->isa_mut<Lam>()) visit(lam);
-        analyze(d);
-    }
+    for (auto d : def->deps())
+        visit(d);
 }
 
-void BetaRedPhase::visit(Lam* lam) {
-    if (lam->is_external()) return;
-    if (auto [i, ins] = candidates_.emplace(lam, true); !ins) i->second = false;
+void BetaRedPhase::visit(const Def* def) {
+    if (auto lam = def->isa_mut<Lam>(); lam && !lam->is_external()) {
+        if (auto [i, ins] = candidates_.emplace(lam, true); !ins) i->second = false;
+    }
+    analyze(def);
 }
 
 const Def* BetaRedPhase::rewrite_imm_App(const App* app) {
     if (auto old_lam = app->callee()->isa_mut<Lam>(); old_lam && old_lam->is_set() && is_candidate(old_lam)) {
+        DLOG("beta-reduce: `{}`", old_lam);
         if (auto var = old_lam->has_var()) {
             auto new_arg = rewrite(app->arg());
             push();

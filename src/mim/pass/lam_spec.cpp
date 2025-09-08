@@ -45,7 +45,7 @@ const Def* LamSpec::rewrite(const Def* def) {
     }
 
     new_lam->set(old_lam->reduce(world().tuple(new_vars)));
-    world().DLOG("{} -> {}: {} -> {})", old_lam, new_lam, old_lam->dom(), new_lam->dom());
+    DLOG("{} -> {}: {} -> {})", old_lam, new_lam, old_lam->dom(), new_lam->dom());
 
     return old2new_[def] = world().app(new_lam, new_args);
 }

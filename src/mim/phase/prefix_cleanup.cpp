@@ -4,16 +4,18 @@
 
 namespace mim {
 
-PrefixCleanup::PrefixCleanup(World& world, std::string prefix)
-    : RWPhase(world, std::format("prefix_cleanup `{}`", prefix))
-    , prefix_(std::move(prefix)) {}
+void PrefixCleanup::apply(std::string prefix) {
+    prefix_ = prefix;
+    name_ += " \"" + prefix_ + " \"";
+}
 
-void PrefixCleanup::rewrite_external(Def* mut) {
-    if (mut->sym().view().starts_with(prefix_)) {
-        mut->make_internal();
-        new_world().DLOG("internalized {}", mut);
-    } else {
-        mut->transfer_external(rewrite(mut)->as_mut());
+void PrefixCleanup::rewrite_external(Def* old_mut) {
+    auto new_mut = rewrite(old_mut)->as_mut();
+    if (old_mut->is_external()) {
+        if (old_mut->sym().view().starts_with(prefix_))
+            DLOG("internalized: `{}`", old_mut);
+        else
+            new_mut->make_external();
     }
 }
 

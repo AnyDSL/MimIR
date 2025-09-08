@@ -16,7 +16,7 @@ const Def* AutoDiffZero::rewrite(const Def* def) {
         // callee = zero
         // arg = type T
         auto T = zero_app->arg();
-        world().DLOG("found a autodiff::zero of {}", T);
+        DLOG("found a autodiff::zero of {}", T);
         auto zero = zero_def(T);
         if (zero) return zero;
         return def;

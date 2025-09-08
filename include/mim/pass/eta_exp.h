@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mim/pass/pass.h"
+#include "mim/pass.h"
 
 namespace mim {
 
@@ -12,7 +12,10 @@ class EtaRed;
 /// It gives other Pass%es such as SSAConstr the opportunity to change `f`'s signature (e.g. adding or removingp Var%s).
 class EtaExp : public FPPass<EtaExp, Lam> {
 public:
-    EtaExp(PassMan&);
+    EtaExp(World& world, flags_t annex)
+        : FPPass(world, annex) {}
+
+    void init(PassMan*) final;
 
     /// @name interface for other passes
     ///@{

@@ -12,16 +12,14 @@
 namespace mim {
 
 class Driver;
-class PassMan;
-class PhaseMan;
+class Stage;
 
 /// @name Plugin Interface
 ///@{
 using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 
-/// Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a PhaseMan.
-using Flags2Phases = absl::flat_hash_map<flags_t, std::function<void(PhaseMan&, const Def*)>>;
-using Flags2Passes = absl::flat_hash_map<flags_t, std::function<void(PassMan&, const Def*)>>;
+/// Maps an an axiom of a Pass/Phase to a function that creates one.
+using Flags2Stages = absl::flat_hash_map<flags_t, std::function<std::unique_ptr<Stage>(World&)>>;
 
 using Backends = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;
 ///@}
@@ -37,7 +35,7 @@ struct Plugin {
     /// Callback for registering the mapping from axm ids to normalizer functions in the given @p normalizers map.
     void (*register_normalizers)(Normalizers&);
     /// Callback for registering the Plugin's callbacks for Pass%es and Phase%s.
-    void (*register_stages)(Flags2Phases&, Flags2Passes&);
+    void (*register_stages)(Flags2Stages&);
     /// Callback for registering the mapping from backend names to emission functions in the given @p backends map.
     void (*register_backends)(Backends&);
 };
@@ -114,13 +112,12 @@ struct Annex {
     /// @name Helpers for Matching
     /// These are set via template specialization.
     ///@{
-    /// Number of Axm::sub%tags.
-    template<class Id>
-    static constexpr size_t Num = size_t(-1);
-
-    /// @see Axm::base.
-    template<class Id>
-    static constexpr flags_t Base = flags_t(-1);
+    // clang-format off
+    template<class Id> static constexpr size_t  Num  =  size_t(-1); ///< Number of Axm::sub%tags.
+    template<class Id> static constexpr flags_t Base = flags_t(-1); ///< @see Axm::base.
+    template<class Id> static consteval size_t  num () { return Num <Id>; }
+    template<class Id> static consteval flags_t base() { return Base<Id>; }
+    // clang-format of
     ///@}
 };
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mim/pass/pass.h"
+#include "mim/pass.h"
 
 namespace mim {
 
@@ -19,7 +19,10 @@ class EtaExp;
 /// It will not flatten mutable @p Sigma%s or @p Arr%ays.
 class Scalarize : public RWPass<Scalarize, Lam> {
 public:
-    Scalarize(PassMan&);
+    Scalarize(World& world, flags_t annex)
+        : RWPass(world, annex) {}
+
+    void init(PassMan*) final;
 
     const Def* rewrite(const Def*) override;
 
