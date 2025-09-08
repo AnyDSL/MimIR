@@ -1,5 +1,7 @@
 #include "mim/phase.h"
 
+#include <memory>
+
 #include "mim/driver.h"
 
 namespace mim {
@@ -7,18 +9,6 @@ namespace mim {
 /*
  * Phase
  */
-
-Phase::Phase(World& world, flags_t annex)
-    : world_(world)
-    , annex_(annex)
-    , name_(world.annex(annex)->sym()) {}
-
-std::unique_ptr<Phase> Phase::recreate() {
-    auto ctor = driver().phase(annex());
-    auto ptr  = (*ctor)(world());
-    ptr->apply(*this);
-    return ptr;
-}
 
 void Phase::run() {
     world().verify().ILOG("=== Phase start: `{}` ===", name());
@@ -77,13 +67,14 @@ void PhaseMan::apply(const App* app) {
 
     auto phases = Phases();
     for (auto arg : args->projs())
-        if (auto phase = create(this, driver().phases(), arg)) phases.emplace_back(std::move(phase));
+        if (auto stage = create(driver().stages(), arg))
+            phases.emplace_back(std::unique_ptr<Phase>(static_cast<Phase*>(stage.release())));
 
     apply(Lit::as<bool>(fp), std::move(phases));
 }
 
-void PhaseMan::apply(Phase& phase) {
-    auto& man = static_cast<PhaseMan&>(phase);
+void PhaseMan::apply(Stage& stage) {
+    auto& man = static_cast<PhaseMan&>(stage);
     apply(man.fixed_point(), std::move(man.phases_));
 }
 
@@ -103,7 +94,7 @@ void PhaseMan::start() {
 
         if (todo) {
             for (auto& old_phase : phases()) {
-                auto new_phase = old_phase->recreate();
+                auto new_phase = std::unique_ptr<Phase>(static_cast<Phase*>(old_phase->recreate().release()));
                 swap(new_phase, old_phase);
             }
         }
@@ -120,12 +111,13 @@ void PassManPhase::apply(const App* app) {
     man_        = std::make_unique<PassMan>(world(), annex());
     auto passes = Passes();
     for (auto arg : app->args())
-        if (auto pass = Phase::create(man_.get(), driver().passes(), arg)) passes.emplace_back(std::move(pass));
+        if (auto stage = Phase::create(driver().stages(), arg))
+            passes.emplace_back(std::unique_ptr<Pass>(static_cast<Pass*>(stage.release())));
     man_->apply(std::move(passes));
 }
 
-void PassManPhase::apply(Phase& phase) {
-    auto& pmp = static_cast<PassManPhase&>(phase);
+void PassManPhase::apply(Stage& stage) {
+    auto& pmp = static_cast<PassManPhase&>(stage);
     swap(man_, pmp.man_);
 }
 

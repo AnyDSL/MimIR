@@ -41,8 +41,9 @@ void optimize(World& world) {
     auto callee = App::uncurry_callee(body);
 
     world.DLOG("Building pipeline");
-    if (auto f = world.driver().phase(callee->flags())) {
-        auto phase = (*f)(world);
+    if (auto f = world.driver().stage(callee->flags())) {
+        auto stage = (*f)(world);
+        auto phase = stage.get()->as<Phase>();
         if (auto app = body->isa<App>()) phase->apply(app);
         phase->run();
     } else

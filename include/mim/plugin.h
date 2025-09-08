@@ -12,17 +12,14 @@
 namespace mim {
 
 class Driver;
-class PassMan;
-class Pass;
-class Phase;
+class Stage;
 
 /// @name Plugin Interface
 ///@{
 using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 
-/// Maps an an axiom of a Pass/Phaseto a function that appneds a new Pass/Phase to a PhaseMan.
-using Flags2Phases = absl::flat_hash_map<flags_t, std::function<std::unique_ptr<Phase>(World&)>>;
-using Flags2Passes = absl::flat_hash_map<flags_t, std::function<std::unique_ptr<Pass>(World&)>>;
+/// Maps an an axiom of a Pass/Phase to a function that creates one.
+using Flags2Stages = absl::flat_hash_map<flags_t, std::function<std::unique_ptr<Stage>(World&)>>;
 
 using Backends = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;
 ///@}
@@ -38,7 +35,7 @@ struct Plugin {
     /// Callback for registering the mapping from axm ids to normalizer functions in the given @p normalizers map.
     void (*register_normalizers)(Normalizers&);
     /// Callback for registering the Plugin's callbacks for Pass%es and Phase%s.
-    void (*register_stages)(Flags2Phases&, Flags2Passes&);
+    void (*register_stages)(Flags2Stages&);
     /// Callback for registering the mapping from backend names to emission functions in the given @p backends map.
     void (*register_backends)(Backends&);
 };

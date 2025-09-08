@@ -17,14 +17,16 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
-    PhaseMan::hook<mem::add_mem_phase, mem::AddMem>(phases);
+void reg_stages(Flags2Stages& stages) {
     // clang-format off
-    PassMan::hook<mem::ssa_pass,          mem::SSAConstr   >(passes);
-    PassMan::hook<mem::remem_elim_pass,   mem::RememElim   >(passes);
-    PassMan::hook<mem::alloc2malloc_pass, mem::Alloc2Malloc>(passes);
-    PassMan::hook<mem::copy_prop_pass,    mem::CopyProp    >(passes);
-    PassMan::hook<mem::reshape_pass,      mem::Reshape     >(passes);
+    // phases
+    Stage::hook<mem::add_mem_phase,     mem::AddMem      >(stages);
+    // passes
+    Stage::hook<mem::ssa_pass,          mem::SSAConstr   >(stages);
+    Stage::hook<mem::remem_elim_pass,   mem::RememElim   >(stages);
+    Stage::hook<mem::alloc2malloc_pass, mem::Alloc2Malloc>(stages);
+    Stage::hook<mem::copy_prop_pass,    mem::CopyProp    >(stages);
+    Stage::hook<mem::reshape_pass,      mem::Reshape     >(stages);
     // clang-format on
 }
 

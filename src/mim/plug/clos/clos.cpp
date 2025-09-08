@@ -17,15 +17,16 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
+void reg_stages(Flags2Stages& stages) {
     // clang-format off
-    PhaseMan::hook<clos::clos_conv_phase,        clos::ClosConv      >(phases);
-    PhaseMan::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
-
-    PassMan::hook<clos::clos_conv_prep_pass,        clos::ClosConvPrep      >(passes);
-    PassMan::hook<clos::branch_clos_pass,           clos::BranchClosElim    >(passes);
-    PassMan::hook<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
-    PassMan::hook<clos::clos2sjlj_pass,             clos::Clos2SJLJ         >(passes);
+    // phases
+    Stage::hook<clos::clos_conv_phase,            clos::ClosConv          >(stages);
+    Stage::hook<clos::lower_typed_clos_phase,     clos::LowerTypedClos    >(stages);
+    // passes
+    Stage::hook<clos::clos_conv_prep_pass,        clos::ClosConvPrep      >(stages);
+    Stage::hook<clos::branch_clos_pass,           clos::BranchClosElim    >(stages);
+    Stage::hook<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(stages);
+    Stage::hook<clos::clos2sjlj_pass,             clos::Clos2SJLJ         >(stages);
     // clang-format on
 }
 

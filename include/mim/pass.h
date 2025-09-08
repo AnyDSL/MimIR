@@ -13,6 +13,7 @@ namespace mim {
 
 class Pass;
 class PassMan;
+class StageMan;
 using Passes = std::deque<std::unique_ptr<Pass>>;
 
 /// @name Undo
@@ -22,24 +23,41 @@ using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 ///@}
 
-/// All Pass%es that want to be registered in the PassMan must implement this interface.
-/// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
-/// * Inherit from FPPass if you **do** need state and a fixed-point.
-/// * If you do not rely on interaction between different Pass%es, consider using Phase instead.
-class Pass : public fe::RuntimeCast<Pass> {
+/// Common base for Phase and Pass.
+class Stage : public fe::RuntimeCast<Stage> {
 public:
     /// @name Construction & Destruction
     ///@{
-    Pass(World& world, std::string name)
+    Stage(World& world, std::string name)
         : world_(world)
         , name_(std::move(name)) {}
-    Pass(World& world, flags_t annex);
+    Stage(World& world, flags_t annex);
 
-    virtual ~Pass() = default;
-    virtual void init(PassMan* man) { man_ = man; }
-    virtual std::unique_ptr<Pass> recreate(); ///< Creates a new instance; needed by a fixed-point PassMan.
-    virtual void apply(const App*) {}         ///< Invoked if you Pass has additional args.
-    virtual void apply(Pass&) {}              ///< Dito, but invoked by Pass::recreate.
+    virtual ~Stage() = default;
+    virtual std::unique_ptr<Stage> recreate(); ///< Creates a new instance; needed by a fixed-point PhaseMan.
+    virtual void apply(const App*) {}          ///< Invoked if your Stage has additional args.
+    virtual void apply(Stage&) {}              ///< Dito, but invoked by Stage::recreate.
+
+    static auto create(const Flags2Stages& stages, const Def* def) {
+        auto& world = def->world();
+        auto p_def  = App::uncurry_callee(def);
+        world.DLOG("apply pass/phase: `{}`", p_def);
+
+        if (auto axm = p_def->isa<Axm>())
+            if (auto i = stages.find(axm->flags()); i != stages.end()) {
+                auto stage = i->second(world);
+                if (stage) stage->apply(def->isa<App>());
+                return stage;
+            } else
+                error("pass/phase `{}` not found", axm->sym());
+        else
+            error("unsupported callee for a phase/pass: `{}`", p_def);
+    }
+
+    template<class A, class P>
+    static void hook(Flags2Stages& stages) {
+        assert_emplace(stages, Annex::base<A>(), [](World& w) { return std::make_unique<P>(w, Annex::base<A>()); });
+    }
     ///@}
 
     /// @name Getters
@@ -47,11 +65,45 @@ public:
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
     Log& log() const { return world_.log(); }
-    PassMan& man() { return *man_; }
-    const PassMan& man() const { return *man_; }
     std::string_view name() const { return name_; }
-    size_t index() const { return index_; }
     flags_t annex() const { return annex_; }
+    StageMan& man() { return *man_; }
+    const StageMan& man() const { return *man_; }
+    ///@}
+
+private:
+    World& world_;
+    flags_t annex_ = 0;
+
+protected:
+    std::string name_;
+    StageMan* man_ = nullptr;
+};
+
+class StageMan {
+};
+
+/// All Pass%es that want to be registered in the PassMan must implement this interface.
+/// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
+/// * Inherit from FPPass if you **do** need state and a fixed-point.
+/// * If you do not rely on interaction between different Pass%es, consider using Phase instead.
+class Pass : public Stage {
+public:
+    /// @name Construction & Destruction
+    ///@{
+    Pass(World& world, std::string name)
+        : Stage(world, name) {}
+    Pass(World& world, flags_t annex)
+        : Stage(world, annex) {}
+
+    virtual void init(PassMan*);
+    ///@}
+
+    /// @name Getters
+    ///@{
+    PassMan& man() { return reinterpret_cast<PassMan&>(Stage::man()); }
+    const PassMan& man() const { return reinterpret_cast<const PassMan&>(Stage::man()); }
+    size_t index() const { return index_; }
     ///@}
 
     /// @name Rewrite Hook for the PassMan
@@ -115,13 +167,7 @@ private:
     virtual void dealloc(void*) {}                      ///< Destructor.
     ///@}
 
-    World& world_;
-    flags_t annex_;
-    PassMan* man_ = nullptr;
     size_t index_;
-
-protected:
-    std::string name_;
 
     friend class PassMan;
 };
@@ -129,14 +175,14 @@ protected:
 /// An optimizer that combines several optimizations in an optimal way.
 /// This is loosely based upon:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
-class PassMan : public Pass {
+class PassMan : public Pass, public StageMan {
 public:
     PassMan(World& world, flags_t annex)
         : Pass(world, annex) {}
 
     void apply(Passes&&);
     void apply(const App* app) final;
-    void apply(Pass& pass) final { apply(std::move(static_cast<PassMan&>(pass).passes_)); }
+    void apply(Stage& pass) final { apply(std::move(static_cast<PassMan&>(pass).passes_)); }
     void init(PassMan*) final { fe::unreachable(); }
 
     bool inspect() const final { fe::unreachable(); }
@@ -152,38 +198,25 @@ public:
     ///@{
     void run(); ///< Run all registered passes on the whole World.
 
-    template<class P>
-    P* find() {
-        auto key = std::type_index(typeid(P));
-        if (auto i = registry_.find(key); i != registry_.end()) return static_cast<P*>(i->second);
+    Pass* find(std::type_index key) {
+        if (auto i = registry_.find(key); i != registry_.end()) return i->second;
         return nullptr;
     }
 
-    /// Add a pass to this PassMan.
-    /// If a pass of the same class has been added already, returns the earlier added instance.
-    template<class P, class... Args>
-    P* add(Args&&... args) {
-        if (auto pass = find<P>()) return pass;
-        auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
-        auto res = p.get();
-        fixed_point_ |= res->fixed_point();
-        passes_.emplace_back(std::move(p));
-        registry_.emplace(std::type_index(typeid(P)), res);
-        return res;
+    template<class P>
+    P* find() {
+        if (auto pass = find(std::type_index(typeid(P)))) return static_cast<P*>(pass);
+        return nullptr;
     }
 
     void add(std::unique_ptr<Pass>&& pass) {
         fixed_point_ |= pass->fixed_point();
         auto p = pass.get();
+        auto type_idx = std::type_index(typeid(*p));
+        if (auto pass = find(type_idx)) error("already added `{}`", pass);
+        registry_.emplace(type_idx, p);
         passes_.emplace_back(std::move(pass));
-        registry_.emplace(std::type_index(typeid(*p)), p);
     }
-
-    template<class A, class P>
-    static void hook(Flags2Passes& passes) {
-        assert_emplace(passes, Annex::base<A>(), [](World& w) { return std::make_unique<P>(w, Annex::base<A>()); });
-    }
-
     ///@}
 
 private:

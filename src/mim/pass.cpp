@@ -1,24 +1,33 @@
 #include "mim/pass.h"
 
+#include <memory>
+
 #include <absl/container/fixed_array.h>
 
+#include "mim/driver.h"
 #include "mim/phase.h"
 
 #include "mim/util/util.h"
 
 namespace mim {
 
-Pass::Pass(World& world, flags_t annex)
+/*
+ * Stage
+ */
+
+Stage::Stage(World& world, flags_t annex)
     : world_(world)
     , annex_(annex)
     , name_(world.annex(annex)->sym()) {}
 
-std::unique_ptr<Pass> Pass::recreate() {
-    auto ctor = driver().pass(annex());
+std::unique_ptr<Stage> Stage::recreate() {
+    auto ctor = driver().stage(annex());
     auto ptr  = (*ctor)(world());
     ptr->apply(*this);
     return ptr;
 }
+
+void Pass::init(PassMan* man) { man_ = man; }
 
 /*
  * PassMan
@@ -35,7 +44,8 @@ void PassMan::apply(Passes&& passes) {
 void PassMan::apply(const App* app) {
     auto passes = Passes();
     for (auto arg : app->args())
-        if (auto pass = Phase::create(this, driver().passes(), arg)) passes.emplace_back(std::move(pass));
+        if (auto stage = Stage::create(driver().stages(), arg))
+            passes.emplace_back(std::unique_ptr<Pass>(static_cast<Pass*>(stage.release())));
 
     apply(std::move(passes));
 }

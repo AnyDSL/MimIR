@@ -13,7 +13,7 @@ public:
 
     void apply(bool callee_only);
     void apply(const App* app) final { apply(Lit::as<bool>(app->arg())); }
-    void apply(Pass& pass) final { apply(static_cast<EtaRed&>(pass).callee_only()); }
+    void apply(Stage& s) final { apply(static_cast<EtaRed&>(s).callee_only()); }
 
     bool callee_only() const { return callee_only_; }
 

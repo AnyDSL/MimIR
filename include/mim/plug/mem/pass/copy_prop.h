@@ -20,7 +20,7 @@ public:
 
     void apply(bool bb_only);
     void apply(const App* app) final { apply(Lit::as<bool>(app->arg())); }
-    void apply(Pass& pass) final { apply(static_cast<CopyProp&>(pass).bb_only()); }
+    void apply(Stage& s) final { apply(static_cast<CopyProp&>(s).bb_only()); }
     void init(PassMan*) final;
 
     bool bb_only() const { return bb_only_; }

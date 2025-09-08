@@ -8,9 +8,9 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Flags2Phases&, Flags2Passes& passes) {
-    PassMan::hook<direct::ds2cps_pass, direct::DS2CPS>(passes);
-    PassMan::hook<direct::cps2ds_pass, direct::CPS2DS>(passes);
+void reg_stages(Flags2Stages& stages) {
+    PassMan::hook<direct::ds2cps_pass, direct::DS2CPS>(stages);
+    PassMan::hook<direct::cps2ds_pass, direct::CPS2DS>(stages);
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"direct", direct::register_normalizers, reg_stages, nullptr}; }

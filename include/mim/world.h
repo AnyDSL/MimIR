@@ -571,8 +571,6 @@ public:
     }
     ///@}
 
-    void cleanup() { /*TODO*/ }
-
     /// @name dump/log
     ///@{
     Log& log() const;

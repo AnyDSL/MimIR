@@ -6,7 +6,6 @@
 #include <fe/cast.h>
 
 #include "mim/def.h"
-#include "mim/driver.h"
 #include "mim/nest.h"
 #include "mim/pass.h"
 #include "mim/rewrite.h"
@@ -17,59 +16,24 @@ class Nest;
 class PhaseMan;
 class World;
 
-using Phases = std::deque<std::unique_ptr<Phase>>;
-
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
-class Phase : public fe::RuntimeCast<Phase> {
+class Phase : public Stage {
 public:
     /// @name Construction & Destruction
     ///@{
     Phase(World& world, std::string name)
-        : world_(world)
-        , name_(std::move(name)) {}
-    Phase(World& world, flags_t annex);
-
-    virtual ~Phase() = default;
-    virtual std::unique_ptr<Phase> recreate(); ///< Creates a new instance; needed by a fixed-point PhaseMan.
-    virtual void apply(const App*) {}          ///< Invoked if you Phase has additional args.
-    virtual void apply(Phase&) {}              ///< Dito, but invoked by Phase::recreate.
-
-    template<class M, class Ps>
-    static auto create(M*, const Ps& ps, const Def* def) {
-        auto& world = def->world();
-        auto p_def  = App::uncurry_callee(def);
-        world.DLOG("apply pass/phase: `{}`", p_def);
-
-        if (auto axm = p_def->isa<Axm>())
-            if (auto i = ps.find(axm->flags()); i != ps.end())
-                if constexpr (std::is_same_v<Ps, Flags2Phases>) {
-                    auto phase = i->second(world);
-                    if (phase) phase->apply(def->isa<App>());
-                    return phase;
-                } else {
-                    auto pass = i->second(world);
-                    if (pass) pass->apply(def->isa<App>());
-                    return pass;
-                }
-            else
-                error("pass/phase `{}` not found", axm->sym());
-        else
-            error("unsupported callee for a phase/pass: `{}`", p_def);
-    }
+        : Stage(world, name) {}
+    Phase(World& world, flags_t annex)
+        : Stage(world, annex) {}
 
     ///@}
 
     /// @name Getters
     ///@{
-    World& world() { return world_; }
-    Driver& driver() { return world().driver(); }
-    Log& log() const { return world_.log(); }
-    std::string_view name() const { return name_; }
     bool todo() const { return todo_; }
-    flags_t annex() const { return annex_; }
-    PhaseMan& man() { return *man_; }
-    const PhaseMan& man() const { return *man_; }
+    PhaseMan& man() { return reinterpret_cast<PhaseMan&>(Stage::man()); }
+    const PhaseMan& man() const { return reinterpret_cast<const PhaseMan&>(Stage::man()); }
     ///@}
 
     /// @name run
@@ -87,15 +51,12 @@ public:
 private:
     virtual void start() = 0; ///< Actual entry.
 
-    World& world_;
-    flags_t annex_ = 0;
-    PhaseMan* man_ = nullptr;
-
 protected:
-    std::string name_;
     /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
     bool todo_ = false;
 };
+
+using Phases = std::deque<std::unique_ptr<Phase>>;
 
 /// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
 /// This will destroy RWPhase::old_world leaving RWPhase::new_world which will be created here as the *current* World to
@@ -174,7 +135,7 @@ public:
         : Phase(world, annex) {}
 
     void apply(const App*) final;
-    void apply(Phase&) final;
+    void apply(Stage&) final;
 
     void start() override { man_->run(); }
 
@@ -191,7 +152,7 @@ public:
 
     void apply(bool, Phases&&);
     void apply(const App*) final;
-    void apply(Phase&) final;
+    void apply(Stage&) final;
 
     bool fixed_point() const { return fixed_point_; }
     void start() override;
@@ -200,24 +161,8 @@ public:
     ///@{
     auto& phases() { return phases_; }
     const auto& phases() const { return phases_; }
-
-    /// Add a Phase.
-    /// You don't need to pass the World to @p args - it will be passed automatically.
-    template<class P, class... Args>
-    auto add(Args&&... args) {
-        auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
-        auto phase = p.get();
-        phases_.emplace_back(std::move(p));
-        return phase;
-    }
-
     void add(std::unique_ptr<Phase>&& phase) { phases_.emplace_back(std::move(phase)); }
     ///@}
-
-    template<class A, class P>
-    static void hook(Flags2Phases& phases) {
-        assert_emplace(phases, Annex::base<A>(), [](World& w) { return std::make_unique<P>(w, Annex::base<A>()); });
-    }
 
 private:
     Phases phases_;

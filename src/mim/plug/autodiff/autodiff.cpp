@@ -13,11 +13,11 @@ using namespace std::literals;
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Flags2Phases&, Flags2Passes& passes) {
+void reg_stages(Flags2Stages& stages) {
     // clang-format off
-    PassMan::hook<autodiff::ad_eval_pass,         autodiff::AutoDiffEval       >(passes);
-    PassMan::hook<autodiff::ad_zero_pass,         autodiff::AutoDiffZero       >(passes);
-    PassMan::hook<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(passes);
+    PassMan::hook<autodiff::ad_eval_pass,         autodiff::AutoDiffEval       >(stages);
+    PassMan::hook<autodiff::ad_zero_pass,         autodiff::AutoDiffZero       >(stages);
+    PassMan::hook<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(stages);
     // clang-format on
 }
 
