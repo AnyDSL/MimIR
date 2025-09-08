@@ -24,6 +24,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y llvm-16-tools valgrind
           sudo pip install lit psutil
+          sudo ln -s /usr/bin/FileCheck-16 /usr/bin/FileCheck
 
       - name: Configure Debug
         if: matrix.build-type == 'Debug'
