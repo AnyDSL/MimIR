@@ -31,7 +31,7 @@ axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
 /// Sets up `n` phases / passes anad wraps them in a phase.
 ///
-axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Phase;
+axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Pass;
 axm %compile.phases: {n: Nat} → Bool → «n; %compile.Phase» → %compile.Phase;
 ///
 /// ### Phases
@@ -42,6 +42,7 @@ axm %compile.cleanup_phase:                             %compile.Phase;
 axm %compile.eta_exp_phase:                             %compile.Phase;
 axm %compile.eta_red_phase:                             %compile.Phase;
 axm %compile.null_phase:                                %compile.Phase;
+axm %compile.pass2phase:                %compile.Pass → %compile.Phase;
 axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;
 
 let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase "internal_";
@@ -68,4 +69,4 @@ let optimization_passes = %compile.meta_pass (
     %compile.tail_rec_elim_pass,
 );
 
-let optimization_phase = %compile.passes optimization_passes;
+let optimization_phase = %compile.pass2phase optimization_passes;

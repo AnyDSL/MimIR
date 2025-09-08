@@ -170,6 +170,7 @@ undo_t PassMan::analyze(const Def* def) {
     return undo;
 }
 
+#if 0
 /*
  * MetaPass
  */
@@ -186,5 +187,6 @@ void MetaPass::apply(Pass& pass) {
     auto& man = static_cast<MetaPass&>(pass);
     apply(std::move(man.passes_));
 }
+#endif
 
 } // namespace mim

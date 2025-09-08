@@ -77,7 +77,7 @@ void PhaseMan::apply(const App* app) {
 
     auto phases = Phases();
     for (auto arg : args->projs())
-        if (auto phase = create(driver().phases(), arg)) phases.emplace_back(std::move(phase));
+        if (auto phase = create(this, driver().phases(), arg)) phases.emplace_back(std::move(phase));
 
     apply(Lit::as<bool>(fp), std::move(phases));
 }
@@ -116,14 +116,10 @@ void PhaseMan::start() {
  * PassManPhase
  */
 
-std::unique_ptr<Phase> PassManPhase::recreate() {
-    error("Recreate not supported for Passes and doesn't really make sense as they are already run in a fixed-point");
-}
-
 void PassManPhase::apply(const App* app) {
-    man_ = std::make_unique<PassMan>(world());
+    man_ = std::make_unique<PassMan>(world(), annex());
     for (auto arg : app->args())
-        Phase::create(driver().passes(), arg);
+        Phase::create(man_.get(), driver().passes(), arg);
 }
 
 void PassManPhase::apply(Phase& phase) {

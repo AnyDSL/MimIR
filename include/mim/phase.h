@@ -35,8 +35,8 @@ public:
     virtual void apply(const App*) { fe::unreachable(); } ///< Invoked if you Phase has additional args.
     virtual void apply(Phase&) {}                         ///< Dito, but invoked by Phase::recreate.
 
-    template<class Ps>
-    static auto create(const Ps& ps, const Def* def) {
+    template<class M, class Ps>
+    static auto create(M*, const Ps& ps, const Def* def) {
         auto& world = def->world();
         auto p_def  = App::uncurry_callee(def);
         world.DLOG("apply pass/phase: `{}`", p_def);
@@ -190,7 +190,6 @@ public:
     PassManPhase(World& world, flags_t annex)
         : Phase(world, annex) {}
 
-    std::unique_ptr<Phase> recreate() final;
     void apply(const App*) final;
     void apply(Phase&) final;
 

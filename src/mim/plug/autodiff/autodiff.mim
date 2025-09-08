@@ -55,13 +55,13 @@ axm %autodiff.ad_zero_cleanup_pass: %compile.Pass;
 ///
 /// ### Phases
 ///
-let ad_cleanup_phase = %compile.passes %autodiff.ad_zero_cleanup_pass;
+let ad_cleanup_phase = %compile.pass2phase %autodiff.ad_zero_cleanup_pass;
 
 let ad_phase =
     %compile.phases ff (
         optimization_phase,
-        %compile.passes %autodiff.ad_eval_pass,
-        %compile.passes %autodiff.ad_zero_pass,
+        %compile.pass2phase %autodiff.ad_eval_pass,
+        %compile.pass2phase %autodiff.ad_zero_pass,
         ad_cleanup_phase,
     );
 ///

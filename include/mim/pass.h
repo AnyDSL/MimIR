@@ -127,15 +127,15 @@ protected:
 /// An optimizer that combines several optimizations in an optimal way.
 /// This is loosely based upon:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
-class PassMan {
+class PassMan : public Pass {
 public:
-    PassMan(World& world)
-        : world_(world) {}
+    PassMan(World& world, flags_t annex)
+        : Pass(world, annex) {}
+
+    bool inspect() const final { fe::unreachable(); }
 
     /// @name Getters
     ///@{
-    World& world() { return world_; }
-    Log& log() const { return world_.log(); }
     const auto& passes() const { return passes_; }
     bool fixed_point() const { return fixed_point_; }
     Def* curr_mut() const { return curr_mut_; }
@@ -241,7 +241,6 @@ private:
     }
     ///@}
 
-    World& world_;
     Passes passes_;
     absl::flat_hash_map<std::type_index, Pass*> registry_;
     std::deque<State> states_;
@@ -345,21 +344,6 @@ private:
     void* copy(const void* p) override { return new typename P::Data(*static_cast<const typename P::Data*>(p)); }
     void dealloc(void* state) override { delete static_cast<typename P::Data*>(state); }
     ///@}
-};
-
-class MetaPass : public Pass {
-public:
-    MetaPass(World& world, flags_t annex)
-        : Pass(world, annex) {}
-
-    void apply(Passes&& passes) { passes_ = std::move(passes); }
-    void apply(const App*) final;
-    void apply(Pass&) final;
-
-private:
-    bool inspect() const final { fe::unreachable(); }
-
-    Passes passes_;
 };
 
 } // namespace mim

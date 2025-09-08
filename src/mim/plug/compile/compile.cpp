@@ -46,7 +46,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PassMan::hook<compile::ret_wrap_pass,      RetWrap    >(passes);
     PassMan::hook<compile::scalarize_pass,     Scalarize  >(passes);
     PassMan::hook<compile::tail_rec_elim_pass, TailRecElim>(passes);
-    PassMan::hook<compile::meta_pass,          MetaPass   >(passes);
+    PassMan::hook<compile::meta_pass,          PassMan    >(passes);
     // clang-format on
 }
 
