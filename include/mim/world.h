@@ -76,8 +76,12 @@ public:
     }
     ~World();
 
-    World inherit() { return freeze(), World(&driver(), state()); } ///< Inherits the @p state into the new World.
-    std::unique_ptr<World> inherit_ptr() { return std::make_unique<World>(&driver(), state()); } ///< As above.
+    /// Inherits the State into the new World.
+    /// World::curr_gid will be offset to not collide with the original World.
+    std::unique_ptr<World> inherit() {
+        auto s = state();
+        s.pod.curr_gid += move_.defs.size();
+        return std::make_unique<World>(&driver(), s); }
     ///@}
 
     /// @name Getters/Setters

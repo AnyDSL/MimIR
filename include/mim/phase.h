@@ -67,10 +67,10 @@ public:
     ///@{
     RWPhase(World& world, std::string name)
         : Phase(world, std::move(name))
-        , Rewriter(world.inherit_ptr()) {}
+        , Rewriter(world.inherit()) {}
     RWPhase(World& world, flags_t annex)
         : Phase(world, annex)
-        , Rewriter(world.inherit_ptr()) {}
+        , Rewriter(world.inherit()) {}
     ///@}
 
     /// @name Rewrite
