@@ -67,8 +67,10 @@ void PhaseMan::apply(const App* app) {
 
     auto phases = Phases();
     for (auto arg : args->projs())
-        if (auto stage = create(driver().stages(), arg))
+        if (auto stage = create(driver().stages(), arg)) {
+            if (auto pmp = stage->isa<PassManPhase>(); pmp && pmp->man().empty()) continue;
             phases.emplace_back(std::unique_ptr<Phase>(static_cast<Phase*>(stage.release())));
+        }
 
     apply(Lit::as<bool>(fp), std::move(phases));
 }

@@ -13,7 +13,6 @@ namespace mim {
 
 class Pass;
 class PassMan;
-class StageMan;
 using Passes = std::deque<std::unique_ptr<Pass>>;
 
 /// @name Undo
@@ -67,8 +66,6 @@ public:
     Log& log() const { return world_.log(); }
     std::string_view name() const { return name_; }
     flags_t annex() const { return annex_; }
-    StageMan& man() { return *man_; }
-    const StageMan& man() const { return *man_; }
     ///@}
 
 private:
@@ -77,10 +74,6 @@ private:
 
 protected:
     std::string name_;
-    StageMan* man_ = nullptr;
-};
-
-class StageMan {
 };
 
 /// All Pass%es that want to be registered in the PassMan must implement this interface.
@@ -101,8 +94,8 @@ public:
 
     /// @name Getters
     ///@{
-    PassMan& man() { return reinterpret_cast<PassMan&>(Stage::man()); }
-    const PassMan& man() const { return reinterpret_cast<const PassMan&>(Stage::man()); }
+    PassMan& man() { return *man_; }
+    const PassMan& man() const { return *man_; }
     size_t index() const { return index_; }
     ///@}
 
@@ -167,6 +160,7 @@ private:
     virtual void dealloc(void*) {}                      ///< Destructor.
     ///@}
 
+    PassMan* man_ = nullptr;
     size_t index_;
 
     friend class PassMan;
@@ -175,7 +169,7 @@ private:
 /// An optimizer that combines several optimizations in an optimal way.
 /// This is loosely based upon:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
-class PassMan : public Pass, public StageMan {
+class PassMan : public Pass {
 public:
     PassMan(World& world, flags_t annex)
         : Pass(world, annex) {}
@@ -189,6 +183,7 @@ public:
 
     /// @name Getters
     ///@{
+    bool empty() const { return passes_.empty(); }
     const auto& passes() const { return passes_; }
     bool fixed_point() const { return fixed_point_; }
     Def* curr_mut() const { return curr_mut_; }

@@ -32,13 +32,12 @@ public:
     /// @name Getters
     ///@{
     bool todo() const { return todo_; }
-    PhaseMan& man() { return reinterpret_cast<PhaseMan&>(Stage::man()); }
-    const PhaseMan& man() const { return reinterpret_cast<const PhaseMan&>(Stage::man()); }
     ///@}
 
     /// @name run
     ///@{
     virtual void run(); ///< Entry point and generates some debug output; invokes Phase::start.
+    virtual void start() = 0; ///< Actual entry.
 
     /// Runs a single Phase.
     template<class P, class... Args>
@@ -47,9 +46,6 @@ public:
         p.run();
     }
     ///@}
-
-private:
-    virtual void start() = 0; ///< Actual entry.
 
 protected:
     /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
@@ -136,6 +132,8 @@ public:
 
     void apply(const App*) final;
     void apply(Stage&) final;
+
+    const PassMan& man() const { return *man_; }
 
     void start() override { man_->run(); }
 
