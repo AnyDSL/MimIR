@@ -15,14 +15,14 @@ jobs:
 
     steps:
       - name: Clone recursively
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
         with:
           submodules: recursive
 
       - name: Install llvm, valgrind, lit, and psutil
         run: |
           sudo apt-get update
-          sudo apt-get install llvm valgrind
+          sudo apt-get install -y llvm-16-tools valgrind
           sudo pip install lit psutil
 
       - name: Configure Debug
