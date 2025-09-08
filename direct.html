@@ -179,8 +179,8 @@ Passes</h2>
 Phases</h2>
 <div class="fragment"><div class="line">let direct_phases =</div>
 <div class="line">    %compile.phases ff (</div>
-<div class="line">        %compile.passes %direct.ds2cps_pass,</div>
-<div class="line">        %compile.passes %direct.cps2ds_pass,</div>
+<div class="line">        %compile.pass2phase %direct.ds2cps_pass,</div>
+<div class="line">        %compile.pass2phase %direct.cps2ds_pass,</div>
 <div class="line">        optimization_phase,</div>
 <div class="line">    );</div>
 </div><!-- fragment --> </div></div><!-- contents -->

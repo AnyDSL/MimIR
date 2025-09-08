@@ -69,112 +69,6 @@ var hierarchy =
     [ "fe::Parser", null, [
       [ "mim::ast::Parser", "classmim_1_1ast_1_1Parser.html", null ]
     ] ],
-    [ "mim::Pass", "classmim_1_1Pass.html", [
-      [ "mim::RWPass< P, M >", "classmim_1_1RWPass.html", null ],
-      [ "mim::RWPass< DebugDump, Lam >", "classmim_1_1RWPass.html", [
-        [ "DebugDump", "classDebugDump.html", null ]
-      ] ],
-      [ "mim::RWPass< BetaRed, Def >", "classmim_1_1RWPass.html", [
-        [ "mim::FPPass< BetaRed, Def >", "classmim_1_1FPPass.html", [
-          [ "mim::BetaRed", "classmim_1_1BetaRed.html", null ]
-        ] ]
-      ] ],
-      [ "mim::RWPass< EtaExp, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::FPPass< EtaExp, Lam >", "classmim_1_1FPPass.html", [
-          [ "mim::EtaExp", "classmim_1_1EtaExp.html", null ]
-        ] ]
-      ] ],
-      [ "mim::RWPass< EtaRed, Def >", "classmim_1_1RWPass.html", [
-        [ "mim::FPPass< EtaRed, Def >", "classmim_1_1FPPass.html", [
-          [ "mim::EtaRed", "classmim_1_1EtaRed.html", null ]
-        ] ]
-      ] ],
-      [ "mim::RWPass< P, Def >", "classmim_1_1RWPass.html", [
-        [ "mim::FPPass< P, M >", "classmim_1_1FPPass.html", null ]
-      ] ],
-      [ "mim::RWPass< LamSpec, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::LamSpec", "classmim_1_1LamSpec.html", null ]
-      ] ],
-      [ "mim::RWPass< RetWrap, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::RetWrap", "classmim_1_1RetWrap.html", null ]
-      ] ],
-      [ "mim::RWPass< Scalarize, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::Scalarize", "classmim_1_1Scalarize.html", null ]
-      ] ],
-      [ "mim::RWPass< TailRecElim, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::FPPass< TailRecElim, Lam >", "classmim_1_1FPPass.html", [
-          [ "mim::TailRecElim", "classmim_1_1TailRecElim.html", null ]
-        ] ]
-      ] ],
-      [ "mim::RWPass< LowerFor, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::affine::LowerFor", "classmim_1_1plug_1_1affine_1_1LowerFor.html", null ]
-      ] ],
-      [ "mim::RWPass< AutoDiffEval, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::autodiff::AutoDiffEval", "classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html", null ]
-      ] ],
-      [ "mim::RWPass< AutoDiffZero, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::autodiff::AutoDiffZero", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZero.html", null ]
-      ] ],
-      [ "mim::RWPass< AutoDiffZeroCleanup, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::autodiff::AutoDiffZeroCleanup", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html", null ]
-      ] ],
-      [ "mim::RWPass< BranchClosElim, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::clos::BranchClosElim", "classmim_1_1plug_1_1clos_1_1BranchClosElim.html", null ]
-      ] ],
-      [ "mim::RWPass< Clos2SJLJ, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::clos::Clos2SJLJ", "classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html", null ]
-      ] ],
-      [ "mim::RWPass< ClosConvPrep, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::clos::ClosConvPrep", "classmim_1_1plug_1_1clos_1_1ClosConvPrep.html", null ]
-      ] ],
-      [ "mim::RWPass< LowerTypedClosPrep, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::FPPass< LowerTypedClosPrep, Lam >", "classmim_1_1FPPass.html", [
-          [ "mim::plug::clos::LowerTypedClosPrep", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html", null ]
-        ] ]
-      ] ],
-      [ "mim::RWPass< DebugPrint, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::compile::DebugPrint", "classmim_1_1plug_1_1compile_1_1DebugPrint.html", null ]
-      ] ],
-      [ "mim::RWPass< CPS2DS, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::direct::CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", null ]
-      ] ],
-      [ "mim::RWPass< DS2CPS, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::direct::DS2CPS", "classmim_1_1plug_1_1direct_1_1DS2CPS.html", null ]
-      ] ],
-      [ "mim::RWPass< LowerMatrixHighLevelMapRed, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::matrix::LowerMatrixHighLevelMapRed", "classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html", null ]
-      ] ],
-      [ "mim::RWPass< LowerMatrixMediumLevel, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::matrix::LowerMatrixMediumLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html", null ]
-      ] ],
-      [ "mim::RWPass< Alloc2Malloc, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::mem::Alloc2Malloc", "classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html", null ]
-      ] ],
-      [ "mim::RWPass< CopyProp, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::FPPass< CopyProp, Lam >", "classmim_1_1FPPass.html", [
-          [ "mim::plug::mem::CopyProp", "classmim_1_1plug_1_1mem_1_1CopyProp.html", null ]
-        ] ]
-      ] ],
-      [ "mim::RWPass< RememElim, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::mem::RememElim", "classmim_1_1plug_1_1mem_1_1RememElim.html", null ]
-      ] ],
-      [ "mim::RWPass< Reshape, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::mem::Reshape", "classmim_1_1plug_1_1mem_1_1Reshape.html", null ]
-      ] ],
-      [ "mim::RWPass< SSAConstr, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::FPPass< SSAConstr, Lam >", "classmim_1_1FPPass.html", [
-          [ "mim::plug::mem::SSAConstr", "classmim_1_1plug_1_1mem_1_1SSAConstr.html", null ]
-        ] ]
-      ] ],
-      [ "mim::RWPass< RemoveDbgPerm, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::refly::RemoveDbgPerm", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html", null ]
-      ] ],
-      [ "mim::RWPass< LowerRegex, Lam >", "classmim_1_1RWPass.html", [
-        [ "mim::plug::regex::LowerRegex", "classmim_1_1plug_1_1regex_1_1LowerRegex.html", null ]
-      ] ],
-      [ "mim::RWPass< P, M >", "classmim_1_1RWPass.html", null ]
-    ] ],
-    [ "mim::PassMan", "classmim_1_1PassMan.html", null ],
     [ "mim::Plugin", "structmim_1_1Plugin.html", null ],
     [ "mim::World::State::POD", "structmim_1_1World_1_1State.html#structmim_1_1World_1_1State_1_1POD", null ],
     [ "mim::ast::R< T >", "structmim_1_1ast_1_1R.html", null ],
@@ -241,27 +135,130 @@ var hierarchy =
         [ "mim::Univ", "classmim_1_1Univ.html", null ],
         [ "mim::Var", "classmim_1_1Var.html", null ]
       ] ],
-      [ "mim::Phase", "classmim_1_1Phase.html", [
-        [ "mim::ClosedMutPhase< Def >", "classmim_1_1ClosedMutPhase.html", [
-          [ "mim::ClosedCollector< M >", "classmim_1_1ClosedCollector.html", null ],
-          [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", null ]
+      [ "mim::Stage", "classmim_1_1Stage.html", [
+        [ "mim::Pass", "classmim_1_1Pass.html", [
+          [ "mim::RWPass< P, M >", "classmim_1_1RWPass.html", null ],
+          [ "mim::RWPass< DebugDump, Lam >", "classmim_1_1RWPass.html", [
+            [ "DebugDump", "classDebugDump.html", null ]
+          ] ],
+          [ "mim::RWPass< BetaRed, Def >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< BetaRed, Def >", "classmim_1_1FPPass.html", [
+              [ "mim::BetaRed", "classmim_1_1BetaRed.html", null ]
+            ] ]
+          ] ],
+          [ "mim::RWPass< EtaExp, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< EtaExp, Lam >", "classmim_1_1FPPass.html", [
+              [ "mim::EtaExp", "classmim_1_1EtaExp.html", null ]
+            ] ]
+          ] ],
+          [ "mim::RWPass< EtaRed, Def >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< EtaRed, Def >", "classmim_1_1FPPass.html", [
+              [ "mim::EtaRed", "classmim_1_1EtaRed.html", null ]
+            ] ]
+          ] ],
+          [ "mim::RWPass< P, Def >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< P, M >", "classmim_1_1FPPass.html", null ]
+          ] ],
+          [ "mim::RWPass< LamSpec, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::LamSpec", "classmim_1_1LamSpec.html", null ]
+          ] ],
+          [ "mim::RWPass< RetWrap, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::RetWrap", "classmim_1_1RetWrap.html", null ]
+          ] ],
+          [ "mim::RWPass< Scalarize, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::Scalarize", "classmim_1_1Scalarize.html", null ]
+          ] ],
+          [ "mim::RWPass< TailRecElim, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< TailRecElim, Lam >", "classmim_1_1FPPass.html", [
+              [ "mim::TailRecElim", "classmim_1_1TailRecElim.html", null ]
+            ] ]
+          ] ],
+          [ "mim::RWPass< LowerFor, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::affine::LowerFor", "classmim_1_1plug_1_1affine_1_1LowerFor.html", null ]
+          ] ],
+          [ "mim::RWPass< AutoDiffEval, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::autodiff::AutoDiffEval", "classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html", null ]
+          ] ],
+          [ "mim::RWPass< AutoDiffZero, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::autodiff::AutoDiffZero", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZero.html", null ]
+          ] ],
+          [ "mim::RWPass< AutoDiffZeroCleanup, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::autodiff::AutoDiffZeroCleanup", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html", null ]
+          ] ],
+          [ "mim::RWPass< BranchClosElim, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::clos::BranchClosElim", "classmim_1_1plug_1_1clos_1_1BranchClosElim.html", null ]
+          ] ],
+          [ "mim::RWPass< Clos2SJLJ, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::clos::Clos2SJLJ", "classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html", null ]
+          ] ],
+          [ "mim::RWPass< ClosConvPrep, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::clos::ClosConvPrep", "classmim_1_1plug_1_1clos_1_1ClosConvPrep.html", null ]
+          ] ],
+          [ "mim::RWPass< LowerTypedClosPrep, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< LowerTypedClosPrep, Lam >", "classmim_1_1FPPass.html", [
+              [ "mim::plug::clos::LowerTypedClosPrep", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html", null ]
+            ] ]
+          ] ],
+          [ "mim::RWPass< CPS2DS, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::direct::CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", null ]
+          ] ],
+          [ "mim::RWPass< DS2CPS, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::direct::DS2CPS", "classmim_1_1plug_1_1direct_1_1DS2CPS.html", null ]
+          ] ],
+          [ "mim::RWPass< LowerMatrixHighLevelMapRed, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::matrix::LowerMatrixHighLevelMapRed", "classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html", null ]
+          ] ],
+          [ "mim::RWPass< LowerMatrixMediumLevel, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::matrix::LowerMatrixMediumLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html", null ]
+          ] ],
+          [ "mim::RWPass< Alloc2Malloc, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::mem::Alloc2Malloc", "classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html", null ]
+          ] ],
+          [ "mim::RWPass< CopyProp, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< CopyProp, Lam >", "classmim_1_1FPPass.html", [
+              [ "mim::plug::mem::CopyProp", "classmim_1_1plug_1_1mem_1_1CopyProp.html", null ]
+            ] ]
+          ] ],
+          [ "mim::RWPass< RememElim, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::mem::RememElim", "classmim_1_1plug_1_1mem_1_1RememElim.html", null ]
+          ] ],
+          [ "mim::RWPass< Reshape, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::mem::Reshape", "classmim_1_1plug_1_1mem_1_1Reshape.html", null ]
+          ] ],
+          [ "mim::RWPass< SSAConstr, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< SSAConstr, Lam >", "classmim_1_1FPPass.html", [
+              [ "mim::plug::mem::SSAConstr", "classmim_1_1plug_1_1mem_1_1SSAConstr.html", null ]
+            ] ]
+          ] ],
+          [ "mim::RWPass< RemoveDbgPerm, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::refly::RemoveDbgPerm", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html", null ]
+          ] ],
+          [ "mim::RWPass< LowerRegex, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::regex::LowerRegex", "classmim_1_1plug_1_1regex_1_1LowerRegex.html", null ]
+          ] ],
+          [ "mim::PassMan", "classmim_1_1PassMan.html", null ],
+          [ "mim::RWPass< P, M >", "classmim_1_1RWPass.html", null ]
         ] ],
-        [ "mim::ClosedMutPhase< Lam >", "classmim_1_1ClosedMutPhase.html", [
-          [ "mim::NestPhase< Lam >", "classmim_1_1NestPhase.html", [
-            [ "mim::Emitter< std::string, std::string, BB, Emitter >", "classmim_1_1Emitter.html", [
-              [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ]
-            ] ],
-            [ "mim::Emitter< Value, Type, BB, Child >", "classmim_1_1Emitter.html", null ],
-            [ "mim::plug::mem::AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", null ]
-          ] ]
-        ] ],
-        [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", null ],
-        [ "mim::PassManPhase", "classmim_1_1PassManPhase.html", null ],
-        [ "mim::PassPhase< P >", "classmim_1_1PassPhase.html", null ],
-        [ "mim::PhaseMan", "classmim_1_1PhaseMan.html", null ],
-        [ "mim::RWPhase", "classmim_1_1RWPhase.html", null ],
-        [ "mim::plug::clos::ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", null ],
-        [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ]
+        [ "mim::Phase", "classmim_1_1Phase.html", [
+          [ "mim::ClosedMutPhase< Lam >", "classmim_1_1ClosedMutPhase.html", [
+            [ "mim::NestPhase< Lam >", "classmim_1_1NestPhase.html", [
+              [ "mim::Emitter< std::string, std::string, BB, Emitter >", "classmim_1_1Emitter.html", [
+                [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ]
+              ] ],
+              [ "mim::Emitter< Value, Type, BB, Child >", "classmim_1_1Emitter.html", null ],
+              [ "mim::plug::mem::AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", null ]
+            ] ]
+          ] ],
+          [ "mim::ClosedMutPhase< Def >", "classmim_1_1ClosedMutPhase.html", [
+            [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", null ]
+          ] ],
+          [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", null ],
+          [ "mim::PassManPhase", "classmim_1_1PassManPhase.html", null ],
+          [ "mim::PhaseMan", "classmim_1_1PhaseMan.html", null ],
+          [ "mim::RWPhase", "classmim_1_1RWPhase.html", null ],
+          [ "mim::plug::clos::ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", null ],
+          [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ]
+        ] ]
       ] ],
       [ "mim::ast::Node", "classmim_1_1ast_1_1Node.html", [
         [ "mim::ast::Decl", "classmim_1_1ast_1_1Decl.html", [
@@ -319,6 +316,9 @@ var hierarchy =
     [ "mim::Scheduler", "classmim_1_1Scheduler.html", null ],
     [ "mim::World::ScopedLoc", "structmim_1_1World_1_1ScopedLoc.html", null ],
     [ "mim::ast::Scopes", "classmim_1_1ast_1_1Scopes.html", null ],
+    [ "mim::Select", "classmim_1_1Select.html", [
+      [ "mim::Branch", "classmim_1_1Branch.html", null ]
+    ] ],
     [ "mim::Sets< D, N >::Set", "classmim_1_1Sets_1_1Set.html", null ],
     [ "mim::Sets< D, N >", "classmim_1_1Sets.html", null ],
     [ "mim::Setters< P, D >", "classmim_1_1Setters.html", null ],

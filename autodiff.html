@@ -204,13 +204,13 @@ Passes</h2>
 <div class="line">axm %autodiff.ad_zero_cleanup_pass: %compile.Pass;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md85"></a>
 Phases</h2>
-<div class="fragment"><div class="line">let ad_cleanup_phase = %compile.passes %autodiff.ad_zero_cleanup_pass;</div>
+<div class="fragment"><div class="line">let ad_cleanup_phase = %compile.pass2phase %autodiff.ad_zero_cleanup_pass;</div>
 <div class="line"> </div>
 <div class="line">let ad_phase =</div>
 <div class="line">    %compile.phases ff (</div>
 <div class="line">        optimization_phase,</div>
-<div class="line">        %compile.passes %autodiff.ad_eval_pass,</div>
-<div class="line">        %compile.passes %autodiff.ad_zero_pass,</div>
+<div class="line">        %compile.pass2phase %autodiff.ad_eval_pass,</div>
+<div class="line">        %compile.pass2phase %autodiff.ad_zero_pass,</div>
 <div class="line">        ad_cleanup_phase,</div>
 <div class="line">    );</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md86"></a>

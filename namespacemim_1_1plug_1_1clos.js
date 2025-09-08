@@ -21,7 +21,6 @@ var namespacemim_1_1plug_1_1clos =
     [ "clos2sjlj_pass", "namespacemim_1_1plug_1_1clos.html#abb2506abb24ae1082f7a97bce14ad441", null ],
     [ "clos_conv_phase", "namespacemim_1_1plug_1_1clos.html#a06db2561d2196363ea9e5c065fb88e7e", null ],
     [ "clos_conv_prep_pass", "namespacemim_1_1plug_1_1clos.html#ae28a45e1b39902e063d72479292711be", null ],
-    [ "eta_red_bool_pass", "namespacemim_1_1plug_1_1clos.html#a28bc7deb94083526f3991de22fdaa6b2", null ],
     [ "longjmp", "namespacemim_1_1plug_1_1clos.html#a8c9d1749e78425672fc67a331980da7d", null ],
     [ "lower_typed_clos_phase", "namespacemim_1_1plug_1_1clos.html#a9602b11d42128cf1a9d2f396e1af7243", null ],
     [ "lower_typed_clos_prep_pass", "namespacemim_1_1plug_1_1clos.html#a0c2680156b5d79d705d4d4556d1bc007", null ],

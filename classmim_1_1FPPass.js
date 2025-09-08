@@ -2,7 +2,8 @@ var classmim_1_1FPPass =
 [
     [ "Data", "classmim_1_1FPPass.html#aad9760571285c5e0fd38c55e4e79d47d", null ],
     [ "Super", "classmim_1_1FPPass.html#a2fc64cc8188503235ee1f63f9cf455f6", null ],
-    [ "FPPass", "classmim_1_1FPPass.html#a2b1d435736dc7b8669dd51cc56dba0d9", null ],
+    [ "FPPass", "classmim_1_1FPPass.html#a612b5f826e477057752b2dd0a25728f9", null ],
+    [ "FPPass", "classmim_1_1FPPass.html#a41c9278f56c222a1a17678d79e0e008b", null ],
     [ "alloc", "classmim_1_1FPPass.html#abd16ecd8821d9482bc6b35e3771402b7", null ],
     [ "copy", "classmim_1_1FPPass.html#a65d7f941f11b074aabb4af67b01039c2", null ],
     [ "curr_undo", "classmim_1_1FPPass.html#a6eadcb331d94726f2e91a74d62f06eda", null ],

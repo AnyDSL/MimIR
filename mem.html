@@ -267,10 +267,10 @@ Passes</h2>
 Phases</h2>
 <div class="fragment"><div class="line">axm %mem.add_mem_phase: %compile.Phase;</div>
 <div class="line"> </div>
-<div class="line">let mem_opt_passes = %compile.meta_pass (</div>
-<div class="line">    %compile.beta_red_pass,</div>
-<div class="line">    %compile.eta_red_pass,</div>
-<div class="line">    %compile.eta_exp_pass,</div>
+<div class="line">let mem_opt_passes = %compile.passes (</div>
+<div class="line">    //%compile.beta_red_pass,</div>
+<div class="line">    //%compile.eta_red_pass ff,</div>
+<div class="line">    //%compile.eta_exp_pass,</div>
 <div class="line">    %mem.ssa_pass,</div>
 <div class="line">    %mem.copy_prop_pass ff,</div>
 <div class="line">);</div>

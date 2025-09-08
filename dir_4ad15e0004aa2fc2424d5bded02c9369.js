@@ -4,6 +4,5 @@ var dir_4ad15e0004aa2fc2424d5bded02c9369 =
     [ "branch_normalize.cpp", "branch__normalize_8cpp.html", null ],
     [ "eta_exp_phase.cpp", "eta__exp__phase_8cpp.html", null ],
     [ "eta_red_phase.cpp", "eta__red__phase_8cpp.html", null ],
-    [ "phase.cpp", "phase_8cpp.html", null ],
     [ "prefix_cleanup.cpp", "prefix__cleanup_8cpp.html", null ]
 ];

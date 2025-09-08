@@ -47,7 +47,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 750;
+var viewWidth = 858;
 var viewHeight = 224;
 var sectionId = 'dynsection-0';
 </script>
@@ -59,35 +59,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">
-<polygon fill="#999999" stroke="#666666" points="396,-122.5 305,-122.5 305,-103.5 396,-103.5 396,-122.5"/>
-<text text-anchor="middle" x="350.5" y="-110.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
-</a>
-</g>
-</g>
-<!-- Node5 -->
-<g id="Node000005" class="node">
-<title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classmim_1_1BranchNormalizePhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
-<polygon fill="white" stroke="#666666" points="590,-215.5 432,-215.5 432,-196.5 590,-196.5 590,-215.5"/>
-<text text-anchor="middle" x="511" y="-203.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::BranchNormalizePhase</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node5 -->
-<g id="edge4_Node000001_Node000005" class="edge">
-<title>Node1&#45;&gt;Node5</title>
-<g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M365.79,-130.93C380.55,-148.19 405.14,-173.73 432,-188 438.38,-191.39 445.39,-194.15 452.5,-196.39"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="368.1,-128.22 359.02,-122.76 362.71,-132.69 368.1,-128.22"/>
+<polygon fill="#999999" stroke="#666666" points="504,-122.5 413,-122.5 413,-103.5 504,-103.5 504,-122.5"/>
+<text text-anchor="middle" x="458.5" y="-110.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
 </a>
 </g>
 </g>
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classmim_1_1Cleanup.html" target="_top" xlink:title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping them afte...">
-<polygon fill="white" stroke="#666666" points="553.5,-178.5 468.5,-178.5 468.5,-159.5 553.5,-159.5 553.5,-178.5"/>
-<text text-anchor="middle" x="511" y="-166.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Cleanup</text>
+<g id="a_Node000006"><a xlink:href="classmim_1_1BranchNormalizePhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
+<polygon fill="white" stroke="#666666" points="698,-215.5 540,-215.5 540,-196.5 698,-196.5 698,-215.5"/>
+<text text-anchor="middle" x="619" y="-203.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::BranchNormalizePhase</text>
 </a>
 </g>
 </g>
@@ -95,17 +77,17 @@ var sectionId = 'dynsection-0';
 <g id="edge5_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
 <g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M377.9,-127.22C393.33,-135.09 413.38,-144.54 432,-151 443.55,-155.01 456.38,-158.39 468.24,-161.1"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="379.43,-124.08 368.95,-122.58 376.21,-130.29 379.43,-124.08"/>
+<path fill="none" stroke="#63b8ff" d="M473.79,-130.93C488.55,-148.19 513.14,-173.73 540,-188 546.38,-191.39 553.39,-194.15 560.5,-196.39"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="476.1,-128.22 467.02,-122.76 470.71,-132.69 476.1,-128.22"/>
 </a>
 </g>
 </g>
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="classmim_1_1EtaRedPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
-<polygon fill="white" stroke="#666666" points="565.5,-141.5 456.5,-141.5 456.5,-122.5 565.5,-122.5 565.5,-141.5"/>
-<text text-anchor="middle" x="511" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::EtaRedPhase</text>
+<g id="a_Node000007"><a xlink:href="classmim_1_1Cleanup.html" target="_top" xlink:title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping them afte...">
+<polygon fill="white" stroke="#666666" points="661.5,-178.5 576.5,-178.5 576.5,-159.5 661.5,-159.5 661.5,-178.5"/>
+<text text-anchor="middle" x="619" y="-166.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Cleanup</text>
 </a>
 </g>
 </g>
@@ -113,17 +95,17 @@ var sectionId = 'dynsection-0';
 <g id="edge6_Node000001_Node000007" class="edge">
 <title>Node1&#45;&gt;Node7</title>
 <g id="a_edge6_Node000001_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M406.01,-119.53C422.34,-121.49 440.22,-123.64 456.49,-125.58"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="406.42,-116.06 396.07,-118.34 405.59,-123.01 406.42,-116.06"/>
+<path fill="none" stroke="#63b8ff" d="M485.9,-127.22C501.33,-135.09 521.38,-144.54 540,-151 551.55,-155.01 564.38,-158.39 576.24,-161.1"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="487.43,-124.08 476.95,-122.58 484.21,-130.29 487.43,-124.08"/>
 </a>
 </g>
 </g>
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classmim_1_1FPPhase.html" target="_top" xlink:title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand.">
-<polygon fill="white" stroke="#666666" points="554,-104.5 468,-104.5 468,-85.5 554,-85.5 554,-104.5"/>
-<text text-anchor="middle" x="511" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::FPPhase</text>
+<g id="a_Node000008"><a xlink:href="classmim_1_1EtaRedPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
+<polygon fill="white" stroke="#666666" points="673.5,-141.5 564.5,-141.5 564.5,-122.5 673.5,-122.5 673.5,-141.5"/>
+<text text-anchor="middle" x="619" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::EtaRedPhase</text>
 </a>
 </g>
 </g>
@@ -131,36 +113,35 @@ var sectionId = 'dynsection-0';
 <g id="edge7_Node000001_Node000008" class="edge">
 <title>Node1&#45;&gt;Node8</title>
 <g id="a_edge7_Node000001_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M406.1,-106.8C426.35,-104.5 448.98,-101.93 467.94,-99.78"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="405.61,-103.33 396.07,-107.94 406.4,-110.29 405.61,-103.33"/>
+<path fill="none" stroke="#63b8ff" d="M514.01,-119.53C530.34,-121.49 548.22,-123.64 564.49,-125.58"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="514.42,-116.06 504.07,-118.34 513.59,-123.01 514.42,-116.06"/>
 </a>
 </g>
 </g>
-<!-- Node11 -->
-<g id="Node000011" class="node">
-<title>Node11</title>
-<g id="a_Node000011"><a xlink:href="classmim_1_1PrefixCleanup.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="567.5,-67.5 454.5,-67.5 454.5,-48.5 567.5,-48.5 567.5,-67.5"/>
-<text text-anchor="middle" x="511" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PrefixCleanup</text>
+<!-- Node9 -->
+<g id="Node000009" class="node">
+<title>Node9</title>
+<g id="a_Node000009"><a xlink:href="classmim_1_1FPPhase.html" target="_top" xlink:title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand.">
+<polygon fill="white" stroke="#666666" points="662,-104.5 576,-104.5 576,-85.5 662,-85.5 662,-104.5"/>
+<text text-anchor="middle" x="619" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::FPPhase</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node11 -->
-<g id="edge10_Node000001_Node000011" class="edge">
-<title>Node1&#45;&gt;Node11</title>
-<g id="a_edge10_Node000001_Node000011"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M378.55,-98.89C393.91,-91.3 413.68,-82.25 432,-76 441.47,-72.77 451.78,-69.93 461.72,-67.52"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="376.97,-95.76 369.61,-103.38 380.11,-102.02 376.97,-95.76"/>
+<!-- Node1&#45;&gt;Node9 -->
+<g id="edge8_Node000001_Node000009" class="edge">
+<title>Node1&#45;&gt;Node9</title>
+<g id="a_edge8_Node000001_Node000009"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M514.1,-106.8C534.35,-104.5 556.98,-101.93 575.94,-99.78"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="513.61,-103.33 504.07,-107.94 514.4,-110.29 513.61,-103.33"/>
 </a>
 </g>
 </g>
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" target="_top" xlink:title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer...">
-<polygon fill="white" stroke="#666666" points="572.5,-30 449.5,-30 449.5,0 572.5,0 572.5,-30"/>
-<text text-anchor="start" x="457.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::matrix::</text>
-<text text-anchor="middle" x="511" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">LowerMatrixLowLevel</text>
+<g id="a_Node000012"><a xlink:href="classmim_1_1PrefixCleanup.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="675.5,-67.5 562.5,-67.5 562.5,-48.5 675.5,-48.5 675.5,-67.5"/>
+<text text-anchor="middle" x="619" y="-55.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PrefixCleanup</text>
 </a>
 </g>
 </g>
@@ -168,8 +149,27 @@ var sectionId = 'dynsection-0';
 <g id="edge11_Node000001_Node000012" class="edge">
 <title>Node1&#45;&gt;Node12</title>
 <g id="a_edge11_Node000001_Node000012"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M366.31,-95.46C381.3,-78.74 405.92,-53.96 432,-39 437.9,-35.62 444.33,-32.66 450.88,-30.08"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="363.34,-93.54 359.4,-103.37 368.61,-98.14 363.34,-93.54"/>
+<path fill="none" stroke="#63b8ff" d="M486.55,-98.89C501.91,-91.3 521.68,-82.25 540,-76 549.47,-72.77 559.78,-69.93 569.72,-67.52"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="484.97,-95.76 477.61,-103.38 488.11,-102.02 484.97,-95.76"/>
+</a>
+</g>
+</g>
+<!-- Node13 -->
+<g id="Node000013" class="node">
+<title>Node13</title>
+<g id="a_Node000013"><a xlink:href="classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" target="_top" xlink:title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer...">
+<polygon fill="white" stroke="#666666" points="680.5,-30 557.5,-30 557.5,0 680.5,0 680.5,-30"/>
+<text text-anchor="start" x="565.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::matrix::</text>
+<text text-anchor="middle" x="619" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">LowerMatrixLowLevel</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node13 -->
+<g id="edge12_Node000001_Node000013" class="edge">
+<title>Node1&#45;&gt;Node13</title>
+<g id="a_edge12_Node000001_Node000013"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M474.31,-95.46C489.3,-78.74 513.92,-53.96 540,-39 545.9,-35.62 552.33,-32.66 558.88,-30.08"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="471.34,-93.54 467.4,-103.37 476.61,-98.14 471.34,-93.54"/>
 </a>
 </g>
 </g>
@@ -177,8 +177,8 @@ var sectionId = 'dynsection-0';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
-<polygon fill="white" stroke="#666666" points="263,-141.5 189,-141.5 189,-122.5 263,-122.5 263,-141.5"/>
-<text text-anchor="middle" x="226" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
+<polygon fill="white" stroke="#666666" points="371,-141.5 297,-141.5 297,-122.5 371,-122.5 371,-141.5"/>
+<text text-anchor="middle" x="334" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
 </a>
 </g>
 </g>
@@ -186,17 +186,17 @@ var sectionId = 'dynsection-0';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node2&#45;&gt;Node1</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M273.24,-124.83C283.64,-123.22 294.65,-121.51 304.98,-119.9"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="272.44,-121.41 263.09,-126.4 273.51,-128.33 272.44,-121.41"/>
+<path fill="none" stroke="#63b8ff" d="M381.24,-124.83C391.64,-123.22 402.65,-121.51 412.98,-119.9"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="380.44,-121.41 371.09,-126.4 381.51,-128.33 380.44,-121.41"/>
 </a>
 </g>
 </g>
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="147,-141.5 0,-141.5 0,-122.5 147,-122.5 147,-141.5"/>
-<text text-anchor="middle" x="73.5" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">fe::RuntimeCast&lt; Phase &gt;</text>
+<g id="a_Node000003"><a xlink:href="classmim_1_1Stage.html" target="_top" xlink:title="Common base for Phase and Pass.">
+<polygon fill="white" stroke="#666666" points="255,-141.5 182,-141.5 182,-122.5 255,-122.5 255,-141.5"/>
+<text text-anchor="middle" x="218.5" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Stage</text>
 </a>
 </g>
 </g>
@@ -204,62 +204,80 @@ var sectionId = 'dynsection-0';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node3&#45;&gt;Node2</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M157.25,-132C168.25,-132 179.04,-132 188.66,-132"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="157.11,-128.5 147.1,-132 157.1,-135.5 157.11,-128.5"/>
+<path fill="none" stroke="#63b8ff" d="M265.33,-132C275.78,-132 286.75,-132 296.74,-132"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="265.1,-128.5 255.1,-132 265.1,-135.5 265.1,-128.5"/>
 </a>
 </g>
 </g>
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classmim_1_1Rewriter.html" target="_top" xlink:title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map.">
-<polygon fill="white" stroke="#666666" points="269,-104.5 183,-104.5 183,-85.5 269,-85.5 269,-104.5"/>
-<text text-anchor="middle" x="226" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Rewriter</text>
+<g id="a_Node000004"><a xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="146,-141.5 0,-141.5 0,-122.5 146,-122.5 146,-141.5"/>
+<text text-anchor="middle" x="73" y="-129.5" font-family="Helvetica,sans-Serif" font-size="10.00">fe::RuntimeCast&lt; Stage &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node4&#45;&gt;Node1 -->
-<g id="edge3_Node000001_Node000004" class="edge">
-<title>Node4&#45;&gt;Node1</title>
-<g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M279.33,-102.69C287.79,-103.93 296.49,-105.21 304.76,-106.43"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="279.56,-99.19 269.16,-101.19 278.54,-106.11 279.56,-99.19"/>
+<!-- Node4&#45;&gt;Node3 -->
+<g id="edge3_Node000003_Node000004" class="edge">
+<title>Node4&#45;&gt;Node3</title>
+<g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M156.33,-132C165.27,-132 173.98,-132 181.9,-132"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="156.17,-128.5 146.17,-132 156.17,-135.5 156.17,-128.5"/>
 </a>
 </g>
 </g>
-<!-- Node9 -->
-<g id="Node000009" class="node">
-<title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classmim_1_1BetaRedPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
-<polygon fill="white" stroke="#666666" points="742,-122.5 626,-122.5 626,-103.5 742,-103.5 742,-122.5"/>
-<text text-anchor="middle" x="684" y="-110.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::BetaRedPhase</text>
+<!-- Node5 -->
+<g id="Node000005" class="node">
+<title>Node5</title>
+<g id="a_Node000005"><a xlink:href="classmim_1_1Rewriter.html" target="_top" xlink:title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map.">
+<polygon fill="white" stroke="#666666" points="377,-104.5 291,-104.5 291,-85.5 377,-85.5 377,-104.5"/>
+<text text-anchor="middle" x="334" y="-92.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Rewriter</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node9 -->
-<g id="edge8_Node000008_Node000009" class="edge">
-<title>Node8&#45;&gt;Node9</title>
-<g id="a_edge8_Node000008_Node000009"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M564.44,-100.52C583.84,-102.56 605.93,-104.89 625.74,-106.97"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="564.58,-97.02 554.27,-99.45 563.85,-103.98 564.58,-97.02"/>
+<!-- Node5&#45;&gt;Node1 -->
+<g id="edge4_Node000001_Node000005" class="edge">
+<title>Node5&#45;&gt;Node1</title>
+<g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M387.33,-102.69C395.79,-103.93 404.49,-105.21 412.76,-106.43"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="387.56,-99.19 377.16,-101.19 386.54,-106.11 387.56,-99.19"/>
 </a>
 </g>
 </g>
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="classmim_1_1EtaExpPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
-<polygon fill="white" stroke="#666666" points="738,-85.5 630,-85.5 630,-66.5 738,-66.5 738,-85.5"/>
-<text text-anchor="middle" x="684" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::EtaExpPhase</text>
+<g id="a_Node000010"><a xlink:href="classmim_1_1BetaRedPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
+<polygon fill="white" stroke="#666666" points="850,-122.5 734,-122.5 734,-103.5 850,-103.5 850,-122.5"/>
+<text text-anchor="middle" x="792" y="-110.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::BetaRedPhase</text>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node10 -->
-<g id="edge9_Node000008_Node000010" class="edge">
-<title>Node8&#45;&gt;Node10</title>
-<g id="a_edge9_Node000008_Node000010"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M564.21,-89.2C585.03,-86.89 608.97,-84.23 629.88,-81.9"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="563.82,-85.72 554.27,-90.3 564.6,-92.68 563.82,-85.72"/>
+<!-- Node9&#45;&gt;Node10 -->
+<g id="edge9_Node000009_Node000010" class="edge">
+<title>Node9&#45;&gt;Node10</title>
+<g id="a_edge9_Node000009_Node000010"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M672.44,-100.52C691.84,-102.56 713.93,-104.89 733.74,-106.97"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="672.58,-97.02 662.27,-99.45 671.85,-103.98 672.58,-97.02"/>
+</a>
+</g>
+</g>
+<!-- Node11 -->
+<g id="Node000011" class="node">
+<title>Node11</title>
+<g id="a_Node000011"><a xlink:href="classmim_1_1EtaExpPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
+<polygon fill="white" stroke="#666666" points="846,-85.5 738,-85.5 738,-66.5 846,-66.5 846,-85.5"/>
+<text text-anchor="middle" x="792" y="-73.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::EtaExpPhase</text>
+</a>
+</g>
+</g>
+<!-- Node9&#45;&gt;Node11 -->
+<g id="edge10_Node000009_Node000011" class="edge">
+<title>Node9&#45;&gt;Node11</title>
+<g id="a_edge10_Node000009_Node000011"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M672.21,-89.2C693.03,-86.89 716.97,-84.23 737.88,-81.9"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="671.82,-85.72 662.27,-90.3 672.6,-92.68 671.82,-85.72"/>
 </a>
 </g>
 </g>

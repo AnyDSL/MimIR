@@ -125,7 +125,7 @@ $(function(){initNavTree('autodiff_8cpp.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="autodiff_8h_source.html">mim/plug/autodiff/autodiff.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="config_8h_source.html">mim/config.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="pass_8h_source.html">mim/pass/pass.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="pass_8h_source.html">mim/pass.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mem_8h_source.html">mim/plug/mem/mem.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="autodiff__eval_8h_source.html">mim/plug/autodiff/pass/autodiff_eval.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="autodiff__zero_8h_source.html">mim/plug/autodiff/pass/autodiff_zero.h</a>&quot;</code><br />
@@ -150,8 +150,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6753726882d3672b3d6998ef70bea04d" id="r_a6753726882d3672b3d6998ef70bea04d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6753726882d3672b3d6998ef70bea04d">reg_stages</a> (<a class="el" href="namespacemim.html#abc4c8c6745943dbe59da4dafa9f18bb4">Flags2Phases</a> &amp;, <a class="el" href="namespacemim.html#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> &amp;passes)</td></tr>
-<tr class="separator:a6753726882d3672b3d6998ef70bea04d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3886e4c865b2b15eae2cc4c6f84a9176" id="r_a3886e4c865b2b15eae2cc4c6f84a9176"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3886e4c865b2b15eae2cc4c6f84a9176">reg_stages</a> (<a class="el" href="namespacemim.html#a73c02685bc8b4078797ffde79a9c1ac9">Flags2Stages</a> &amp;stages)</td></tr>
+<tr class="separator:a3886e4c865b2b15eae2cc4c6f84a9176"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35bb34350e93d508e52544f4abd50e59" id="r_a35bb34350e93d508e52544f4abd50e59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmim_1_1Plugin.html">Plugin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35bb34350e93d508e52544f4abd50e59">mim_get_plugin</a> ()</td></tr>
 <tr class="separator:a35bb34350e93d508e52544f4abd50e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Helpers</div></td></tr>
@@ -192,14 +192,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff_8cpp_source.html#l00025">25</a> of file <a class="el" href="autodiff_8cpp_source.html">autodiff.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff_8cpp_source.html#l00024">24</a> of file <a class="el" href="autodiff_8cpp_source.html">autodiff.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="config_8h_source.html#l00016">MIM_EXPORT</a>, <a class="el" href="affine_8cpp_source.html#l00012">reg_stages()</a>, and <a class="el" href="namespacemim_1_1plug_1_1autodiff.html#ae559e1df7e384d843cb9e1951c7d1d90">mim::plug::autodiff::register_normalizers()</a>.</p>
+<p class="reference">References <a class="el" href="config_8h_source.html#l00016">MIM_EXPORT</a>, <a class="el" href="affine_8cpp_source.html#l00011">reg_stages()</a>, and <a class="el" href="namespacemim_1_1plug_1_1autodiff.html#ae559e1df7e384d843cb9e1951c7d1d90">mim::plug::autodiff::register_normalizers()</a>.</p>
 
 </div>
 </div>
-<a id="a6753726882d3672b3d6998ef70bea04d" name="a6753726882d3672b3d6998ef70bea04d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6753726882d3672b3d6998ef70bea04d">&#9670;&#160;</a></span>reg_stages()</h2>
+<a id="a3886e4c865b2b15eae2cc4c6f84a9176" name="a3886e4c865b2b15eae2cc4c6f84a9176"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3886e4c865b2b15eae2cc4c6f84a9176">&#9670;&#160;</a></span>reg_stages()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,19 +207,15 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void reg_stages </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacemim.html#abc4c8c6745943dbe59da4dafa9f18bb4">Flags2Phases</a> &amp;</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="namespacemim.html#a73c02685bc8b4078797ffde79a9c1ac9">Flags2Stages</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>stages</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacemim.html#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>passes</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff_8cpp_source.html#l00017">17</a> of file <a class="el" href="autodiff_8cpp_source.html">autodiff.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff_8cpp_source.html#l00016">16</a> of file <a class="el" href="autodiff_8cpp_source.html">autodiff.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00157">mim::PassMan::hook()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00057">mim::Stage::hook()</a>.</p>
 
 </div>
 </div>

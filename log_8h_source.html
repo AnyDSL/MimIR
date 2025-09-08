@@ -230,7 +230,7 @@ $(function(){initNavTree('log_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">#ifndef NDEBUG</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="log_8h.html#a87fe05eb8767a6b1abf71eea0bdcfcac">   95</a></span><span class="preprocessor">#define DLOG(...) log().log(mim::Log::Level::Debug,   __FILE__, __LINE__, __VA_ARGS__)</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">#define DLOG(...) dummy()</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">#define DLOG(...) log()</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">// clang-format on</span><span class="comment"></span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">///@}</span></div>

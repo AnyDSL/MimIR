@@ -4,7 +4,7 @@ var classmim_1_1Lam =
     [ "app", "classmim_1_1Lam.html#aa5c1c1fa53947444e053016d9254830f", null ],
     [ "app", "classmim_1_1Lam.html#aeb1b28bd416cc50f801312fe6d34e967", null ],
     [ "body", "classmim_1_1Lam.html#aca3affe9def9af98032c560f4f7a06ec", null ],
-    [ "branch", "classmim_1_1Lam.html#a12f902f5c2c56acec3cbac5d081dd286", null ],
+    [ "branch", "classmim_1_1Lam.html#a9371fbebae39cfcc9a4c7943b756a18a", null ],
     [ "check", "classmim_1_1Lam.html#aedf6eca8c7a5d6df883e88acfb5f989f", null ],
     [ "codom", "classmim_1_1Lam.html#afe57c9c0e30c3c94239efae40e4dea26", null ],
     [ "dom", "classmim_1_1Lam.html#a59d460811127f9d66d354c86e5c74483", null ],

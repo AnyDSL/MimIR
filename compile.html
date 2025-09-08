@@ -178,55 +178,41 @@ Constructors</h1>
 <h2><a class="anchor" id="autotoc_md101"></a>
 %compile.phases / %compile.passes</h2>
 <p>Sets up <code>n</code> phases / passes anad wraps them in a phase.</p>
-<div class="fragment"><div class="line">axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Phase;</div>
+<div class="fragment"><div class="line">axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Pass;</div>
 <div class="line">axm %compile.phases: {n: Nat} → Bool → «n; %compile.Phase» → %compile.Phase;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md102"></a>
 Phases</h2>
-<div class="fragment"><div class="line">axm %compile.null_phase:                                %compile.Phase;</div>
-<div class="line">axm %compile.cleanup_phase:                             %compile.Phase;</div>
-<div class="line">axm %compile.beta_red_phase:                            %compile.Phase;</div>
-<div class="line">axm %compile.eta_red_phase:                             %compile.Phase;</div>
-<div class="line">axm %compile.eta_exp_phase:                             %compile.Phase;</div>
+<div class="fragment"><div class="line">axm %compile.beta_red_phase:                            %compile.Phase;</div>
 <div class="line">axm %compile.branch_normalize_phase:                    %compile.Phase;</div>
-<div class="line">axm %compile.debug_phase:                         Nat → %compile.Phase;</div>
+<div class="line">axm %compile.cleanup_phase:                             %compile.Phase;</div>
+<div class="line">axm %compile.eta_exp_phase:                             %compile.Phase;</div>
+<div class="line">axm %compile.eta_red_phase:                             %compile.Phase;</div>
+<div class="line">axm %compile.null_phase:                                %compile.Phase;</div>
+<div class="line">axm %compile.pass2phase:                %compile.Pass → %compile.Phase;</div>
 <div class="line">axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;</div>
 <div class="line"> </div>
 <div class="line">let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase &quot;internal_&quot;;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md103"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %compile.beta_red_pass:                             %compile.Pass;</div>
-<div class="line">axm %compile.eta_red_pass:                              %compile.Pass;</div>
 <div class="line">axm %compile.eta_exp_pass:                              %compile.Pass;</div>
+<div class="line">axm %compile.eta_red_pass:                       Bool → %compile.Pass;</div>
+<div class="line">axm %compile.lam_spec_pass:                             %compile.Pass;</div>
+<div class="line">axm %compile.null_pass:                                 %compile.Pass;</div>
+<div class="line">axm %compile.ret_wrap_pass:                             %compile.Pass;</div>
 <div class="line">axm %compile.scalarize_pass:                            %compile.Pass;</div>
 <div class="line">axm %compile.tail_rec_elim_pass:                        %compile.Pass;</div>
-<div class="line">axm %compile.lam_spec_pass:                             %compile.Pass;</div>
-<div class="line">axm %compile.ret_wrap_pass:                             %compile.Pass;</div>
-<div class="line">axm %compile.null_pass:                                 %compile.Pass;</div>
-<div class="line">axm %compile.meta_pass: {n: Nat} → «n; %compile.Pass» → %compile.Pass;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md104"></a>
 Pipelines</h2>
-<div class="fragment"><div class="line">let optimization_passes = %compile.meta_pass (</div>
+<div class="fragment"><div class="line">let optimization_passes = %compile.passes (</div>
 <div class="line">    %compile.beta_red_pass,</div>
-<div class="line">    %compile.eta_red_pass,</div>
+<div class="line">    %compile.eta_red_pass ff,</div>
 <div class="line">    %compile.eta_exp_pass,</div>
 <div class="line">    %compile.scalarize_pass,</div>
 <div class="line">    %compile.tail_rec_elim_pass,</div>
 <div class="line">);</div>
 <div class="line"> </div>
-<div class="line">let optimization_phase = %compile.passes optimization_passes;</div>
-<div class="line"> </div>
-<div class="line">let default_core_phase =</div>
-<div class="line">    %compile.phases ff (</div>
-<div class="line">        %compile.passes %compile.scalarize_pass,</div>
-<div class="line">        %compile.passes %compile.eta_red_pass,</div>
-<div class="line">        %compile.passes %compile.tail_rec_elim_pass,</div>
-<div class="line">        optimization_phase,</div>
-<div class="line">        %compile.internal_cleanup_phase,</div>
-<div class="line">        %compile.passes %compile.lam_spec_pass,</div>
-<div class="line">        %compile.passes %compile.ret_wrap_pass,</div>
-<div class="line">    );</div>
-<div class="line"> </div>
-<div class="line">lam extern _fallback_compile(): %compile.Phase = default_core_phase;</div>
+<div class="line">let optimization_phase = %compile.pass2phase optimization_passes;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

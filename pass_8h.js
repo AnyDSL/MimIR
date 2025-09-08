@@ -1,5 +1,6 @@
 var pass_8h =
 [
+    [ "mim::Stage", "classmim_1_1Stage.html", "classmim_1_1Stage" ],
     [ "mim::Pass", "classmim_1_1Pass.html", "classmim_1_1Pass" ],
     [ "mim::PassMan", "classmim_1_1PassMan.html", "classmim_1_1PassMan" ],
     [ "mim::RWPass< P, M >", "classmim_1_1RWPass.html", "classmim_1_1RWPass" ],

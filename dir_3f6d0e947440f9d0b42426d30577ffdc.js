@@ -15,6 +15,8 @@ var dir_3f6d0e947440f9d0b42426d30577ffdc =
     [ "lam.cpp", "lam_8cpp.html", "lam_8cpp" ],
     [ "lattice.cpp", "lattice_8cpp.html", null ],
     [ "nest.cpp", "nest_8cpp.html", null ],
+    [ "pass.cpp", "pass_8cpp.html", null ],
+    [ "phase.cpp", "phase_8cpp.html", null ],
     [ "plugin.cpp", "plugin_8cpp.html", null ],
     [ "rewrite.cpp", "rewrite_8cpp.html", "rewrite_8cpp" ],
     [ "rule.cpp", "rule_8cpp.html", "rule_8cpp" ],

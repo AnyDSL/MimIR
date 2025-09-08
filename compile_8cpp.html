@@ -126,11 +126,12 @@ $(function(){initNavTree('compile_8cpp.html',''); initResizable(true); });
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;<a class="el" href="config_8h_source.html">mim/config.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="driver_8h_source.html">mim/driver.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="pass_8h_source.html">mim/pass.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="phase_8h_source.html">mim/phase.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="beta__red_8h_source.html">mim/pass/beta_red.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="eta__exp_8h_source.html">mim/pass/eta_exp.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="eta__red_8h_source.html">mim/pass/eta_red.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="lam__spec_8h_source.html">mim/pass/lam_spec.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="pass_8h_source.html">mim/pass/pass.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="ret__wrap_8h_source.html">mim/pass/ret_wrap.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="scalarize_8h_source.html">mim/pass/scalarize.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="tail__rec__elim_8h_source.html">mim/pass/tail_rec_elim.h</a>&gt;</code><br />
@@ -138,9 +139,8 @@ $(function(){initNavTree('compile_8cpp.html',''); initResizable(true); });
 <code>#include &lt;<a class="el" href="branch__normalize_8h_source.html">mim/phase/branch_normalize.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="eta__exp__phase_8h_source.html">mim/phase/eta_exp_phase.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="eta__red__phase_8h_source.html">mim/phase/eta_red_phase.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="phase_8h_source.html">mim/phase/phase.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="prefix__cleanup_8h_source.html">mim/phase/prefix_cleanup.h</a>&gt;</code><br />
-<code>#include &quot;<a class="el" href="debug__print_8h_source.html">mim/plug/compile/pass/debug_print.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="compile_2autogen_8h_source.html">mim/plug/compile/autogen.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for compile.cpp:</div>
 <div class="dyncontent">
@@ -151,49 +151,12 @@ Include dependency graph for compile.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5e05082dd0ca76a1374cd910101710fd" id="r_a5e05082dd0ca76a1374cd910101710fd"><td class="memTemplParams" colspan="2">template&lt;class P, class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>&gt; </td></tr>
-<tr class="memitem:a5e05082dd0ca76a1374cd910101710fd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5e05082dd0ca76a1374cd910101710fd">apply</a> (P &amp;ps, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a> &amp;man, const <a class="el" href="classmim_1_1Def.html">Def</a> *app)</td></tr>
-<tr class="separator:a5e05082dd0ca76a1374cd910101710fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5651c09faa73ecae039da77788b08a7f" id="r_a5651c09faa73ecae039da77788b08a7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5651c09faa73ecae039da77788b08a7f">reg_stages</a> (<a class="el" href="namespacemim.html#abc4c8c6745943dbe59da4dafa9f18bb4">Flags2Phases</a> &amp;phases, <a class="el" href="namespacemim.html#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> &amp;passes)</td></tr>
-<tr class="separator:a5651c09faa73ecae039da77788b08a7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3886e4c865b2b15eae2cc4c6f84a9176" id="r_a3886e4c865b2b15eae2cc4c6f84a9176"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3886e4c865b2b15eae2cc4c6f84a9176">reg_stages</a> (<a class="el" href="namespacemim.html#a73c02685bc8b4078797ffde79a9c1ac9">Flags2Stages</a> &amp;stages)</td></tr>
+<tr class="separator:a3886e4c865b2b15eae2cc4c6f84a9176"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35bb34350e93d508e52544f4abd50e59" id="r_a35bb34350e93d508e52544f4abd50e59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmim_1_1Plugin.html">Plugin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35bb34350e93d508e52544f4abd50e59">mim_get_plugin</a> ()</td></tr>
 <tr class="separator:a35bb34350e93d508e52544f4abd50e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a5e05082dd0ca76a1374cd910101710fd" name="a5e05082dd0ca76a1374cd910101710fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e05082dd0ca76a1374cd910101710fd">&#9670;&#160;</a></span>apply()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class P, class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void apply </td>
-          <td>(</td>
-          <td class="paramtype">P &amp;</td>          <td class="paramname"><span class="paramname"><em>ps</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>man</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>app</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00029">29</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="lam_8h_source.html#l00324">mim::App::uncurry_callee()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00043">reg_stages()</a>.</p>
-
-</div>
-</div>
 <a id="a35bb34350e93d508e52544f4abd50e59" name="a35bb34350e93d508e52544f4abd50e59"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35bb34350e93d508e52544f4abd50e59">&#9670;&#160;</a></span>mim_get_plugin()</h2>
 
@@ -209,14 +172,14 @@ template&lt;class P, class <a class="el" href="core_2normalizers_8cpp.html#aeade
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00099">99</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00053">53</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="config_8h_source.html#l00016">MIM_EXPORT</a>, <a class="el" href="affine_8cpp_source.html#l00012">reg_stages()</a>, and <a class="el" href="namespacemim_1_1plug_1_1compile.html#a538868adc12502b1140af4b6f2f0efa2">mim::plug::compile::register_normalizers()</a>.</p>
+<p class="reference">References <a class="el" href="config_8h_source.html#l00016">MIM_EXPORT</a>, <a class="el" href="affine_8cpp_source.html#l00011">reg_stages()</a>, and <a class="el" href="namespacemim_1_1plug_1_1compile.html#a538868adc12502b1140af4b6f2f0efa2">mim::plug::compile::register_normalizers()</a>.</p>
 
 </div>
 </div>
-<a id="a5651c09faa73ecae039da77788b08a7f" name="a5651c09faa73ecae039da77788b08a7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5651c09faa73ecae039da77788b08a7f">&#9670;&#160;</a></span>reg_stages()</h2>
+<a id="a3886e4c865b2b15eae2cc4c6f84a9176" name="a3886e4c865b2b15eae2cc4c6f84a9176"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3886e4c865b2b15eae2cc4c6f84a9176">&#9670;&#160;</a></span>reg_stages()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,19 +187,15 @@ template&lt;class P, class <a class="el" href="core_2normalizers_8cpp.html#aeade
         <tr>
           <td class="memname">void reg_stages </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacemim.html#abc4c8c6745943dbe59da4dafa9f18bb4">Flags2Phases</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>phases</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="namespacemim.html#a73c02685bc8b4078797ffde79a9c1ac9">Flags2Stages</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>stages</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacemim.html#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>passes</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00043">43</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00028">28</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00175">mim::PhaseMan::add()</a>, <a class="el" href="compile_8cpp_source.html#l00029">apply()</a>, <a class="el" href="lam_8h_source.html#l00282">mim::App::arg()</a>, <a class="el" href="def_8h_source.html#l00816">mim::Lit::as()</a>, <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00123">mim::Annex::Base</a>, <a class="el" href="pass_8h_source.html#l00157">mim::PassMan::hook()</a>, <a class="el" href="phase_8h_source.html#l00190">mim::PhaseMan::hook()</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, <a class="el" href="tuple_8cpp_source.html#l00054">mim::tuple2str()</a>, <a class="el" href="lam_8h_source.html#l00327">mim::App::uncurry_args()</a>, <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>, and <a class="el" href="phase_8h_source.html#l00034">mim::Phase::world()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00110">mim::assert_emplace()</a>, <a class="el" href="plugin_8h_source.html#l00119">mim::Annex::base()</a>, and <a class="el" href="pass_8h_source.html#l00057">mim::Stage::hook()</a>.</p>
 
 </div>
 </div>

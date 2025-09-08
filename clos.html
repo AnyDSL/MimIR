@@ -173,36 +173,37 @@ Passes</h2>
 <div class="line">axm %clos.branch_clos_pass:           %compile.Pass;</div>
 <div class="line">axm %clos.lower_typed_clos_prep_pass: %compile.Pass;</div>
 <div class="line">axm %clos.clos2sjlj_pass:             %compile.Pass;</div>
-<div class="line">axm %clos.eta_red_bool_pass:   Bool → %compile.Pass;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md95"></a>
 Phases</h2>
 <div class="fragment"><div class="line">axm %clos.clos_conv_phase:        %compile.Phase;</div>
 <div class="line">axm %clos.lower_typed_clos_phase: %compile.Phase;</div>
 <div class="line"> </div>
-<div class="line">let clos_opt1_passes = (</div>
-<div class="line">    %clos.eta_red_bool_pass tt,</div>
-<div class="line">    %compile.eta_exp_pass,</div>
-<div class="line">    %compile.scalarize_pass,</div>
-<div class="line">);</div>
+<div class="line">let clos_opt1_passes =</div>
+<div class="line">    %compile.passes (</div>
+<div class="line">        %compile.eta_red_pass tt,</div>
+<div class="line">        %compile.eta_exp_pass,</div>
+<div class="line">        %compile.scalarize_pass,</div>
+<div class="line">    );</div>
 <div class="line"> </div>
-<div class="line">let clos_opt2_passes = (</div>
-<div class="line">    %compile.scalarize_pass,</div>
-<div class="line">    %clos.branch_clos_pass,</div>
-<div class="line">    %mem.copy_prop_pass tt,</div>
-<div class="line">    %clos.lower_typed_clos_prep_pass,</div>
-<div class="line">    %clos.clos2sjlj_pass,</div>
-<div class="line">);</div>
+<div class="line">let clos_opt2_passes =</div>
+<div class="line">    %compile.passes (</div>
+<div class="line">        %compile.scalarize_pass,</div>
+<div class="line">        %clos.branch_clos_pass,</div>
+<div class="line">        %mem.copy_prop_pass tt,</div>
+<div class="line">        %clos.lower_typed_clos_prep_pass,</div>
+<div class="line">        %clos.clos2sjlj_pass,</div>
+<div class="line">    );</div>
 <div class="line"> </div>
 <div class="line">let clos_phases =</div>
 <div class="line">    %compile.phases ff (</div>
 <div class="line">        optimization_phase,</div>
-<div class="line">        %compile.passes (%mem.reshape_pass %mem.reshape_flat),</div>
+<div class="line">        %compile.pass2phase (%mem.reshape_pass %mem.reshape_flat),</div>
 <div class="line">        %mem.add_mem_phase,</div>
-<div class="line">        %compile.passes %clos.clos_conv_prep_pass,</div>
-<div class="line">        %compile.passes %compile.eta_exp_pass,</div>
+<div class="line">        %compile.pass2phase %clos.clos_conv_prep_pass,</div>
+<div class="line">        %compile.pass2phase %compile.eta_exp_pass,</div>
 <div class="line">        %clos.clos_conv_phase,</div>
-<div class="line">        %compile.passes clos_opt1_passes,</div>
-<div class="line">        %compile.passes clos_opt2_passes,</div>
+<div class="line">        %compile.pass2phase clos_opt1_passes,</div>
+<div class="line">        %compile.pass2phase clos_opt2_passes,</div>
 <div class="line">        %clos.lower_typed_clos_phase,</div>
 <div class="line">    );</div>
 </div><!-- fragment --> </div></div><!-- contents -->

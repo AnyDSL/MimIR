@@ -1,23 +1,25 @@
 <map id="mim::NestPhase&lt; M &gt;" name="mim::NestPhase&lt; M &gt;">
-<area shape="rect" id="Node000001" title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit." alt="" coords="932,48,1103,73"/>
-<area shape="rect" id="Node000006" href="$classmim_1_1NestPhase.html" title=" " alt="" coords="1213,48,1400,73"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="1116,58,1213,58,1213,63,1116,63"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="715,41,883,81"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="897,58,932,58,932,63,897,63"/>
-<area shape="rect" id="Node000003" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="251,48,349,73"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="363,52,373,51,532,47,691,51,714,52,714,58,691,57,532,53,373,57,363,57"/>
-<area shape="rect" id="Node000005" href="$classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable, closed mutables in the World." alt="" coords="399,73,609,99"/>
-<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="363,66,402,71,401,76,363,71"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,48,201,73"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="215,58,250,58,250,63,215,63"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="623,73,714,65,715,71,623,78"/>
-<area shape="rect" id="Node000007" href="$classmim_1_1Emitter.html" title=" " alt="" coords="1836,5,1987,60"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="1367,42,1449,26,1551,15,1630,12,1812,19,1836,21,1835,26,1812,25,1630,17,1551,20,1450,31,1368,47"/>
-<area shape="rect" id="Node000009" href="$classmim_1_1Emitter.html" title=" " alt="" coords="1466,41,1629,81"/>
-<area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="1413,58,1466,58,1466,63,1413,63"/>
-<area shape="rect" id="Node000010" href="$classmim_1_1plug_1_1mem_1_1AddMem.html" title="This phase adds mems to all lambdas and continuations." alt="" coords="1449,105,1645,131"/>
-<area shape="poly" id="edge11_Node000006_Node000010" title=" " alt="" coords="1375,74,1494,103,1493,108,1374,79"/>
-<area shape="rect" id="Node000008" href="$classmim_1_1ll_1_1Emitter.html" title=" " alt="" coords="2036,20,2160,45"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="2000,30,2036,30,2036,35,2000,35"/>
-<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="1643,58,1725,55,1812,49,1835,45,1836,51,1812,54,1725,61,1643,63"/>
+<area shape="rect" id="Node000001" title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit." alt="" coords="1077,48,1248,73"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1NestPhase.html" title=" " alt="" coords="1359,48,1545,73"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="1262,58,1359,58,1359,63,1262,63"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="860,41,1028,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1042,58,1077,58,1077,63,1042,63"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="396,48,495,73"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="508,52,519,51,677,47,836,51,860,52,859,58,836,57,677,53,519,57,509,57"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable, closed mutables in the World." alt="" coords="544,73,755,99"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="509,66,547,71,547,76,508,71"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="249,48,347,73"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="360,58,396,58,396,63,360,63"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,48,200,73"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="214,58,249,58,249,63,214,63"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="768,73,859,65,860,71,769,78"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1Emitter.html" title=" " alt="" coords="1981,5,2132,60"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="1512,42,1594,26,1696,15,1776,12,1957,19,1981,21,1981,26,1957,25,1776,17,1696,20,1595,31,1513,47"/>
+<area shape="rect" id="Node000010" href="$classmim_1_1Emitter.html" title=" " alt="" coords="1611,41,1774,81"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="1559,58,1611,58,1611,63,1559,63"/>
+<area shape="rect" id="Node000011" href="$classmim_1_1plug_1_1mem_1_1AddMem.html" title="This phase adds mems to all lambdas and continuations." alt="" coords="1595,105,1791,131"/>
+<area shape="poly" id="edge12_Node000007_Node000011" title=" " alt="" coords="1520,74,1639,103,1638,108,1519,79"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1ll_1_1Emitter.html" title=" " alt="" coords="2181,20,2305,45"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="2146,30,2181,30,2181,35,2146,35"/>
+<area shape="poly" id="edge11_Node000010_Node000008" title=" " alt="" coords="1788,58,1871,55,1957,49,1981,45,1982,51,1958,54,1871,61,1788,63"/>
 </map>

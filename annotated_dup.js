@@ -88,9 +88,6 @@ var annotated_dup =
           [ "LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", "classmim_1_1plug_1_1clos_1_1LowerTypedClos" ],
           [ "LowerTypedClosPrep", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep" ]
         ] ],
-        [ "compile", "namespacemim_1_1plug_1_1compile.html", [
-          [ "DebugPrint", "classmim_1_1plug_1_1compile_1_1DebugPrint.html", "classmim_1_1plug_1_1compile_1_1DebugPrint" ]
-        ] ],
         [ "direct", "namespacemim_1_1plug_1_1direct.html", [
           [ "CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", "classmim_1_1plug_1_1direct_1_1CPS2DS" ],
           [ "DS2CPS", "classmim_1_1plug_1_1direct_1_1DS2CPS.html", "classmim_1_1plug_1_1direct_1_1DS2CPS" ]
@@ -124,10 +121,10 @@ var annotated_dup =
       [ "BetaRedPhase", "classmim_1_1BetaRedPhase.html", "classmim_1_1BetaRedPhase" ],
       [ "BitSet", "classmim_1_1BitSet.html", "classmim_1_1BitSet" ],
       [ "Bound", "classmim_1_1Bound.html", "classmim_1_1Bound" ],
+      [ "Branch", "classmim_1_1Branch.html", "classmim_1_1Branch" ],
       [ "BranchNormalizePhase", "classmim_1_1BranchNormalizePhase.html", "classmim_1_1BranchNormalizePhase" ],
       [ "Checker", "classmim_1_1Checker.html", "classmim_1_1Checker" ],
       [ "Cleanup", "classmim_1_1Cleanup.html", "classmim_1_1Cleanup" ],
-      [ "ClosedCollector", "classmim_1_1ClosedCollector.html", "classmim_1_1ClosedCollector" ],
       [ "ClosedMutPhase", "classmim_1_1ClosedMutPhase.html", "classmim_1_1ClosedMutPhase" ],
       [ "Dbg", "structmim_1_1Dbg.html", "structmim_1_1Dbg" ],
       [ "Def", "classmim_1_1Def.html", "classmim_1_1Def" ],
@@ -169,7 +166,6 @@ var annotated_dup =
       [ "Pass", "classmim_1_1Pass.html", "classmim_1_1Pass" ],
       [ "PassMan", "classmim_1_1PassMan.html", "classmim_1_1PassMan" ],
       [ "PassManPhase", "classmim_1_1PassManPhase.html", "classmim_1_1PassManPhase" ],
-      [ "PassPhase", "classmim_1_1PassPhase.html", "classmim_1_1PassPhase" ],
       [ "Phase", "classmim_1_1Phase.html", "classmim_1_1Phase" ],
       [ "PhaseMan", "classmim_1_1PhaseMan.html", "classmim_1_1PhaseMan" ],
       [ "Pi", "classmim_1_1Pi.html", "classmim_1_1Pi" ],
@@ -186,12 +182,14 @@ var annotated_dup =
       [ "RWPhase", "classmim_1_1RWPhase.html", "classmim_1_1RWPhase" ],
       [ "Scalarize", "classmim_1_1Scalarize.html", "classmim_1_1Scalarize" ],
       [ "Scheduler", "classmim_1_1Scheduler.html", "classmim_1_1Scheduler" ],
+      [ "Select", "classmim_1_1Select.html", "classmim_1_1Select" ],
       [ "Seq", "classmim_1_1Seq.html", "classmim_1_1Seq" ],
       [ "Sets", "classmim_1_1Sets.html", "classmim_1_1Sets" ],
       [ "Setters", "classmim_1_1Setters.html", "classmim_1_1Setters" ],
       [ "Sigma", "classmim_1_1Sigma.html", "classmim_1_1Sigma" ],
       [ "Span", "classmim_1_1Span.html", "classmim_1_1Span" ],
       [ "Split", "classmim_1_1Split.html", "classmim_1_1Split" ],
+      [ "Stage", "classmim_1_1Stage.html", "classmim_1_1Stage" ],
       [ "Tab", "classmim_1_1Tab.html", "classmim_1_1Tab" ],
       [ "TailRecElim", "classmim_1_1TailRecElim.html", "classmim_1_1TailRecElim" ],
       [ "TBound", "classmim_1_1TBound.html", "classmim_1_1TBound" ],

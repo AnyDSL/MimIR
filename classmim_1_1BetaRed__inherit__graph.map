@@ -1,18 +1,22 @@
 <map id="mim::BetaRed" name="mim::BetaRed">
-<area shape="rect" id="Node000001" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="106,435,221,460"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1FPPass.html" title=" " alt="" coords="74,345,253,385"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,399,166,434,161,434,161,399"/>
-<area shape="rect" id="Node000003" href="$classmim_1_1RWPass.html" title=" " alt="" coords="5,168,191,208"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="112,220,159,344,154,346,107,222"/>
-<area shape="rect" id="Node000004" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="176,5,265,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="179,39,150,57,125,82,114,103,107,126,101,168,96,168,102,125,109,101,121,78,147,53,177,34"/>
-<area shape="rect" id="Node000005" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="136,80,305,105"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="223,45,223,80,218,80,218,45"/>
-<area shape="rect" id="Node000007" href="$classmim_1_1RWPass.html" title=" " alt="" coords="215,175,395,201"/>
-<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="259,35,290,54,319,78,337,101,347,129,347,145,336,163,322,177,318,173,332,160,342,143,342,130,332,104,315,82,286,58,256,39"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="161,113,130,131,116,149,106,169,102,167,112,146,127,127,158,108"/>
-<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="242,114,296,173,292,177,238,117"/>
-<area shape="rect" id="Node000006" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="201,257,363,283"/>
-<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="258,293,189,347,186,343,255,289"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="300,215,288,258,283,257,295,213"/>
+<area shape="rect" id="Node000001" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="106,584,221,609"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1FPPass.html" title=" " alt="" coords="74,495,253,535"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,548,166,584,161,584,161,548"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1RWPass.html" title=" " alt="" coords="5,317,191,357"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="112,369,159,493,154,495,107,371"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="176,155,265,180"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="179,188,150,206,125,231,114,252,107,275,101,318,96,317,102,274,109,250,121,228,147,202,177,184"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="136,229,305,255"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="223,194,223,229,218,229,218,194"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1RWPass.html" title=" " alt="" coords="215,325,395,350"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="260,184,291,203,320,227,338,250,347,278,347,294,336,312,322,326,318,323,332,309,342,293,342,279,333,253,316,231,288,207,257,189"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="172,80,269,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="223,120,223,154,218,154,218,120"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="123,5,318,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="223,45,223,80,218,80,218,45"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="161,262,130,281,116,299,106,318,102,316,112,296,127,277,158,257"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="242,263,296,323,292,326,238,266"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="201,407,363,432"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="258,443,189,497,186,492,255,439"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="300,364,288,407,283,406,295,362"/>
 </map>

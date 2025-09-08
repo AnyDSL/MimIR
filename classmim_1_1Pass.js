@@ -1,7 +1,7 @@
 var classmim_1_1Pass =
 [
-    [ "Pass", "classmim_1_1Pass.html#ace8a2412872a94a6bd6e770ab5f616db", null ],
-    [ "~Pass", "classmim_1_1Pass.html#a798696d2cd4d0f52bafdb3955e00747f", null ],
+    [ "Pass", "classmim_1_1Pass.html#a6582d93ab7013db848996d61cb1cde58", null ],
+    [ "Pass", "classmim_1_1Pass.html#aafc54b9de7dcd76171e4bb221e2ba16d", null ],
     [ "alloc", "classmim_1_1Pass.html#a269688a4477727f21e76fd3ee5775242", null ],
     [ "analyze", "classmim_1_1Pass.html#a803886d9af511e72c0699f0968ab5b38", null ],
     [ "analyze", "classmim_1_1Pass.html#a0a4ded23822ce9fd5cb8aa3e3aa3a1ef", null ],
@@ -12,16 +12,15 @@ var classmim_1_1Pass =
     [ "enter", "classmim_1_1Pass.html#a042a62b4077a40083e0a28452361015a", null ],
     [ "fixed_point", "classmim_1_1Pass.html#aaa4d94d4f8d7fe1b6f7e854ba2251f59", null ],
     [ "index", "classmim_1_1Pass.html#a0d1f2c94055ee3b00915f140602d2fb5", null ],
+    [ "init", "classmim_1_1Pass.html#a664c152c7af2163500a3f9d2e44a5586", null ],
     [ "inspect", "classmim_1_1Pass.html#abcbc16b450856dc2aad2be7152bb3d4f", null ],
     [ "isa_proxy", "classmim_1_1Pass.html#aecf198ac657f8ef581878741e2282aef", null ],
     [ "man", "classmim_1_1Pass.html#abea68f3b080ef021ca865d3764d22417", null ],
     [ "man", "classmim_1_1Pass.html#a10cb8e09728f14935edf66e087f68fc8", null ],
-    [ "name", "classmim_1_1Pass.html#addfeb76a2f6e4caa817be25b0a2ced88", null ],
     [ "prepare", "classmim_1_1Pass.html#a87c5574acbd09037bb38ad7391d1e8a5", null ],
     [ "proxy", "classmim_1_1Pass.html#a0a31235cd0315bb4fbc13c7e26928af7", null ],
     [ "rewrite", "classmim_1_1Pass.html#ac54f62d3cb72b9ed5aab224122b84450", null ],
     [ "rewrite", "classmim_1_1Pass.html#a4fc19f1e3541627a9ce41378d14b0ee1", null ],
     [ "rewrite", "classmim_1_1Pass.html#a36776e4983fc43ab11fc027c2542cd0c", null ],
-    [ "world", "classmim_1_1Pass.html#a057c5c5dfff49f8e3b17ad1c3d838ce6", null ],
     [ "PassMan", "classmim_1_1Pass.html#ae3b741f775f564409b46ea178ca0aefc", null ]
 ];

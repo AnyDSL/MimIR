@@ -18,6 +18,6 @@ var searchData=
   ['hlt_15',['hlt',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a4f4000d921968b9665f52e88333007da',1,'mim::plug::core']]],
   ['hole_16',['Hole',['../classmim_1_1Hole.html',1,'mim::Hole'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole'],['../namespacemim.html#a249738da6a953390b70691dd3fe7132ba6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole'],['../namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole']]],
   ['holeexpr_17',['HoleExpr',['../classmim_1_1ast_1_1HoleExpr.html',1,'mim::ast::HoleExpr'],['../classmim_1_1ast_1_1HoleExpr.html#af222f6ce623acf0004bf17ca86d59048',1,'mim::ast::HoleExpr::HoleExpr()']]],
-  ['hook_18',['hook',['../classmim_1_1PassMan.html#a620eff5c7903a0802a121870a4b73971',1,'mim::PassMan::hook()'],['../classmim_1_1PhaseMan.html#a68a8974a975c4d1025b3093679edb7e3',1,'mim::PhaseMan::hook()']]],
+  ['hook_18',['hook',['../classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90',1,'mim::Stage']]],
   ['hooks_19',['Other Hooks',['../passes.html#autotoc_md62',1,'']]]
 ];

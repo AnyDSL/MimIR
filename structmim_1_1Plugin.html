@@ -143,9 +143,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af596141c0f181569c973ce79d5825850" id="r_af596141c0f181569c973ce79d5825850"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af596141c0f181569c973ce79d5825850">register_normalizers</a> )(<a class="el" href="namespacemim.html#ab875464e5f495601abff7287573e1405">Normalizers</a> &amp;)</td></tr>
 <tr class="memdesc:af596141c0f181569c973ce79d5825850"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the mapping from axm ids to normalizer functions in the given <code class="param">normalizers</code> map.  <br /></td></tr>
 <tr class="separator:af596141c0f181569c973ce79d5825850"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cc1b3d4052c0a87943afa5e11635f75" id="r_a6cc1b3d4052c0a87943afa5e11635f75"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6cc1b3d4052c0a87943afa5e11635f75">register_stages</a> )(<a class="el" href="namespacemim.html#abc4c8c6745943dbe59da4dafa9f18bb4">Flags2Phases</a> &amp;, <a class="el" href="namespacemim.html#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> &amp;)</td></tr>
-<tr class="memdesc:a6cc1b3d4052c0a87943afa5e11635f75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the <a class="el" href="structmim_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>'s callbacks for <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es and <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s.  <br /></td></tr>
-<tr class="separator:a6cc1b3d4052c0a87943afa5e11635f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7ce23460f578233ba712ef157e2a5be" id="r_ae7ce23460f578233ba712ef157e2a5be"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7ce23460f578233ba712ef157e2a5be">register_stages</a> )(<a class="el" href="namespacemim.html#a73c02685bc8b4078797ffde79a9c1ac9">Flags2Stages</a> &amp;)</td></tr>
+<tr class="memdesc:ae7ce23460f578233ba712ef157e2a5be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the <a class="el" href="structmim_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>'s callbacks for <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es and <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s.  <br /></td></tr>
+<tr class="separator:ae7ce23460f578233ba712ef157e2a5be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbd7dd0139a32bfe4d0858dfebdcdffd" id="r_acbd7dd0139a32bfe4d0858dfebdcdffd"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acbd7dd0139a32bfe4d0858dfebdcdffd">register_backends</a> )(<a class="el" href="namespacemim.html#a6e05089762ab1bde20507ee3d7b37242">Backends</a> &amp;)</td></tr>
 <tr class="memdesc:acbd7dd0139a32bfe4d0858dfebdcdffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the mapping from backend names to emission functions in the given <code class="param">backends</code> map.  <br /></td></tr>
 <tr class="separator:acbd7dd0139a32bfe4d0858dfebdcdffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,7 +154,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>Basic info and registration function pointer to be returned from a specific plugin. </p>
 <p><a class="el" href="classmim_1_1Use.html" title="const Def*erences a user.">Use</a> <a class="el" href="classmim_1_1Driver.html" title="Some &quot;global&quot; variables needed all over the place.">Driver</a> to load such a plugin. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00032">32</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00030">30</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aeb76fcde7e35346fbfa6b654345b3bab" name="aeb76fcde7e35346fbfa6b654345b3bab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeb76fcde7e35346fbfa6b654345b3bab">&#9670;&#160;</a></span>Handle</h2>
@@ -168,7 +168,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00033">33</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00031">31</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
@@ -187,7 +187,7 @@ Public Attributes</h2></td></tr>
 
 <p>Name of the <a class="el" href="structmim_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00035">35</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00033">33</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
@@ -205,7 +205,7 @@ Public Attributes</h2></td></tr>
 
 <p>Callback for registering the mapping from backend names to emission functions in the given <code class="param">backends</code> map. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00042">42</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00040">40</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
@@ -223,25 +223,25 @@ Public Attributes</h2></td></tr>
 
 <p>Callback for registering the mapping from axm ids to normalizer functions in the given <code class="param">normalizers</code> map. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00038">38</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00036">36</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
-<a id="a6cc1b3d4052c0a87943afa5e11635f75" name="a6cc1b3d4052c0a87943afa5e11635f75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cc1b3d4052c0a87943afa5e11635f75">&#9670;&#160;</a></span>register_stages</h2>
+<a id="ae7ce23460f578233ba712ef157e2a5be" name="ae7ce23460f578233ba712ef157e2a5be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7ce23460f578233ba712ef157e2a5be">&#9670;&#160;</a></span>register_stages</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void(* mim::Plugin::register_stages) (<a class="el" href="namespacemim.html#abc4c8c6745943dbe59da4dafa9f18bb4">Flags2Phases</a> &amp;, <a class="el" href="namespacemim.html#a20a116c4c14737a5da434eafab641425">Flags2Passes</a> &amp;)</td>
+          <td class="memname">void(* mim::Plugin::register_stages) (<a class="el" href="namespacemim.html#a73c02685bc8b4078797ffde79a9c1ac9">Flags2Stages</a> &amp;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Callback for registering the <a class="el" href="structmim_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>'s callbacks for <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es and <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00040">40</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00038">38</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
