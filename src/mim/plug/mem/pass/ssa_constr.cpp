@@ -14,6 +14,11 @@ std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
 }
 } // namespace
 
+void SSAConstr::init(PassMan* man) {
+    Pass::init(man);
+    eta_exp_ = man->find<EtaExp>();
+}
+
 void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 
 const Def* SSAConstr::rewrite(const Proxy* proxy) {

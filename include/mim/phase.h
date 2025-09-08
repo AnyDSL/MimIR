@@ -31,9 +31,9 @@ public:
     Phase(World& world, flags_t annex);
 
     virtual ~Phase() = default;
-    virtual std::unique_ptr<Phase> recreate();            ///< Creates a new instance; needed by a fixed-point PhaseMan.
-    virtual void apply(const App*) { fe::unreachable(); } ///< Invoked if you Phase has additional args.
-    virtual void apply(Phase&) {}                         ///< Dito, but invoked by Phase::recreate.
+    virtual std::unique_ptr<Phase> recreate(); ///< Creates a new instance; needed by a fixed-point PhaseMan.
+    virtual void apply(const App*) {}          ///< Invoked if you Phase has additional args.
+    virtual void apply(Phase&) {}              ///< Dito, but invoked by Phase::recreate.
 
     template<class M, class Ps>
     static auto create(M*, const Ps& ps, const Def* def) {
@@ -45,11 +45,11 @@ public:
             if (auto i = ps.find(axm->flags()); i != ps.end())
                 if constexpr (std::is_same_v<Ps, Flags2Phases>) {
                     auto phase = i->second(world);
-                    phase->apply(def->isa<App>());
+                    if (phase) phase->apply(def->isa<App>());
                     return phase;
                 } else {
                     auto pass = i->second(world);
-                    pass->apply(def->isa<App>());
+                    if (pass) pass->apply(def->isa<App>());
                     return pass;
                 }
             else
@@ -164,23 +164,6 @@ public:
     void start() override;
 };
 
-/// Wraps a Pass as a Phase.
-template<class P>
-class PassPhase : public Phase {
-public:
-    template<class... Args>
-    PassPhase(World& world, Args&&... args)
-        : Phase(world, "pass phase")
-        , man_(world) {
-        man_.template add<P>(std::forward<Args>(args)...);
-    }
-
-    void start() override { man_.run(); }
-
-private:
-    PassMan man_;
-};
-
 /// Wraps a PassMan pipeline as a Phase.
 class PassManPhase : public Phase {
 public:
@@ -220,17 +203,12 @@ public:
 
     /// Add a Phase.
     /// You don't need to pass the World to @p args - it will be passed automatically.
-    /// If @p P is a Pass, this method will wrap this in a PassPhase.
     template<class P, class... Args>
     auto add(Args&&... args) {
-        if constexpr (std::is_base_of_v<Pass, P>) {
-            return add<PassPhase<P>>(std::forward<Args>(args)...);
-        } else {
-            auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
-            auto phase = p.get();
-            phases_.emplace_back(std::move(p));
-            return phase;
-        }
+        auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
+        auto phase = p.get();
+        phases_.emplace_back(std::move(p));
+        return phase;
     }
 
     void add(std::unique_ptr<Phase>&& phase) { phases_.emplace_back(std::move(phase)); }

@@ -4,9 +4,10 @@
 #include <stack>
 #include <typeindex>
 
-#include "mim/world.h"
+#include <fe/assert.h>
+#include <fe/cast.h>
 
-#include "fe/assert.h"
+#include "mim/world.h"
 
 namespace mim {
 
@@ -25,7 +26,7 @@ static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 /// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
 /// * Inherit from FPPass if you **do** need state and a fixed-point.
 /// * If you do not rely on interaction between different Pass%es, consider using Phase instead.
-class Pass {
+class Pass : public fe::RuntimeCast<Pass> {
 public:
     /// @name Construction & Destruction
     ///@{
@@ -35,9 +36,10 @@ public:
     Pass(World& world, flags_t annex);
 
     virtual ~Pass() = default;
-    virtual std::unique_ptr<Pass> recreate();             ///< Creates a new instance; needed by a fixed-point PassMan.
-    virtual void apply(const App*) { fe::unreachable(); } ///< Invoked if you Pass has additional args.
-    virtual void apply(Pass&) {}                          ///< Dito, but invoked by Pass::recreate.
+    virtual void init(PassMan* man) { man_ = man; }
+    virtual std::unique_ptr<Pass> recreate(); ///< Creates a new instance; needed by a fixed-point PassMan.
+    virtual void apply(const App*) {}         ///< Invoked if you Pass has additional args.
+    virtual void apply(Pass&) {}              ///< Dito, but invoked by Pass::recreate.
     ///@}
 
     /// @name Getters
@@ -132,6 +134,11 @@ public:
     PassMan(World& world, flags_t annex)
         : Pass(world, annex) {}
 
+    void apply(Passes&&);
+    void apply(const App* app) final;
+    void apply(Pass& pass) final { apply(std::move(static_cast<PassMan&>(pass).passes_)); }
+    void init(PassMan*) final { fe::unreachable(); }
+
     bool inspect() const final { fe::unreachable(); }
 
     /// @name Getters
@@ -165,12 +172,11 @@ public:
         return res;
     }
 
-    /// Runs a single Pass.
-    template<class P, class... Args>
-    static void run(World& world, Args&&... args) {
-        PassMan man(world);
-        man.add<P>(std::forward<Args>(args)...);
-        man.run();
+    void add(std::unique_ptr<Pass>&& pass) {
+        fixed_point_ |= pass->fixed_point();
+        auto p = pass.get();
+        passes_.emplace_back(std::move(pass));
+        registry_.emplace(std::type_index(typeid(*p)), p);
     }
 
     template<class A, class P>

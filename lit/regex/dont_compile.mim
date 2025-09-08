@@ -7,5 +7,5 @@ import compile;
 lam extern _compile(): %compile.Phase =
     %compile.phases ff (
         %compile.internal_cleanup_phase,
-        %compile.passes %compile.ret_wrap_pass,
+        %compile.pass2phase %compile.ret_wrap_pass,
     );

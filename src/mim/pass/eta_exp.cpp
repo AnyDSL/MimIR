@@ -6,7 +6,10 @@ using namespace std::literals;
 
 namespace mim {
 
-void EtaExp::apply() { eta_red_ = man().find<EtaRed>(); }
+void EtaExp::init(PassMan* man) {
+    Pass::init(man);
+    eta_red_ = man->find<EtaRed>();
+}
 
 Lam* EtaExp::new2old(Lam* new_lam) {
     if (auto old = lookup(new2old_, new_lam)) {

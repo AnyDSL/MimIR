@@ -8,10 +8,14 @@
 namespace mim::plug::mem {
 
 void CopyProp::apply(bool bb_only) {
-    beta_red_ = man().find<BetaRed>();
-    eta_exp_  = man().find<EtaExp>();
     bb_only_  = bb_only;
     name_ += bb_only_ ? " tt" : " ff";
+}
+
+void CopyProp::init(PassMan* man) {
+    Pass::init(man);
+    beta_red_ = man->find<BetaRed>();
+    eta_exp_  = man->find<EtaExp>();
 }
 
 const Def* CopyProp::rewrite(const Def* def) {

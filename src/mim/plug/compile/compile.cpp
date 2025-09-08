@@ -35,7 +35,7 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PhaseMan::hook<compile::cleanup_phase,          Cleanup             >(phases);
     PhaseMan::hook<compile::eta_exp_phase,          EtaExpPhase         >(phases);
     PhaseMan::hook<compile::eta_red_phase,          EtaRedPhase         >(phases);
-    PhaseMan::hook<compile::passes,                 PassManPhase        >(phases);
+    PhaseMan::hook<compile::pass2phase,             PassManPhase        >(phases);
     PhaseMan::hook<compile::phases,                 PhaseMan            >(phases);
     PhaseMan::hook<compile::prefix_cleanup_phase,   PrefixCleanup       >(phases);
 
@@ -43,10 +43,10 @@ void reg_stages(Flags2Phases& phases, Flags2Passes& passes) {
     PassMan::hook<compile::eta_exp_pass,       EtaExp     >(passes);
     PassMan::hook<compile::eta_red_pass,       EtaRed     >(passes);
     PassMan::hook<compile::lam_spec_pass,      LamSpec    >(passes);
+    PassMan::hook<compile::passes,             PassMan    >(passes);
     PassMan::hook<compile::ret_wrap_pass,      RetWrap    >(passes);
     PassMan::hook<compile::scalarize_pass,     Scalarize  >(passes);
     PassMan::hook<compile::tail_rec_elim_pass, TailRecElim>(passes);
-    PassMan::hook<compile::meta_pass,          PassMan    >(passes);
     // clang-format on
 }
 

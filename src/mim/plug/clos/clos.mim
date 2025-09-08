@@ -42,19 +42,20 @@ axm %clos.clos_conv_phase:        %compile.Phase;
 axm %clos.lower_typed_clos_phase: %compile.Phase;
 
 let clos_opt1_passes =
-    %compile.meta_pass (
+    %compile.passes (
         %compile.eta_red_pass tt,
         %compile.eta_exp_pass,
         %compile.scalarize_pass,
     );
 
-let clos_opt2_passes = (
-    %compile.scalarize_pass,
-    %clos.branch_clos_pass,
-    %mem.copy_prop_pass tt,
-    %clos.lower_typed_clos_prep_pass,
-    %clos.clos2sjlj_pass,
-);
+let clos_opt2_passes =
+    %compile.passes (
+        %compile.scalarize_pass,
+        %clos.branch_clos_pass,
+        %mem.copy_prop_pass tt,
+        %clos.lower_typed_clos_prep_pass,
+        %clos.clos2sjlj_pass,
+    );
 
 let clos_phases =
     %compile.phases ff (

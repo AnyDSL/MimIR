@@ -11,9 +11,7 @@ public:
     TailRecElim(World& world, flags_t annex)
         : FPPass(world, annex) {}
 
-    void apply();
-    void apply(const App*) final { apply(); }
-    void apply(Pass&) final { apply(); }
+    void init(PassMan*) final;
 
 private:
     /// @name PassMan hooks

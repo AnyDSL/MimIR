@@ -20,6 +20,26 @@ std::unique_ptr<Pass> Pass::recreate() {
     return ptr;
 }
 
+/*
+ * PassMan
+ */
+
+void PassMan::apply(Passes&& passes) {
+    for (auto&& pass : passes)
+        if (auto&& man = pass->isa<PassMan>())
+            apply(std::move(man->passes_));
+        else
+            add(std::move(pass));
+}
+
+void PassMan::apply(const App* app) {
+    auto passes = Passes();
+    for (auto arg : app->args())
+        if (auto pass = Phase::create(this, driver().passes(), arg)) passes.emplace_back(std::move(pass));
+
+    apply(std::move(passes));
+}
+
 void PassMan::push_state() {
     if (fixed_point()) {
         states_.emplace_back(passes().size());
@@ -53,8 +73,12 @@ void PassMan::run() {
 
     auto num = passes().size();
     states_.emplace_back(num);
-    for (size_t i = 0; i != num; ++i)
-        curr_state().data[i] = passes_[i]->alloc();
+    for (size_t i = 0; i != num; ++i) {
+        auto pass    = passes_[i].get();
+        pass->index_ = i;
+        pass->init(this);
+        curr_state().data[i] = pass->alloc();
+    }
 
     for (auto&& pass : passes_)
         ILOG(" + {}", pass->name());
@@ -104,7 +128,9 @@ void PassMan::run() {
     pop_states(0);
 
     world().debug_dump();
-    Phase::run<Cleanup>(world());
+
+    auto cleanup = Cleanup(world());
+    cleanup.run();
 }
 
 const Def* PassMan::rewrite(const Def* old_def) {
@@ -169,24 +195,5 @@ undo_t PassMan::analyze(const Def* def) {
 
     return undo;
 }
-
-#if 0
-/*
- * MetaPass
- */
-
-void MetaPass::apply(const App* app) {
-    auto passes = Passes();
-    for (auto arg : app->args())
-        if (auto pass = Phase::create(driver().passes(), arg)) passes.emplace_back(std::move(pass));
-
-    apply(std::move(passes));
-}
-
-void MetaPass::apply(Pass& pass) {
-    auto& man = static_cast<MetaPass&>(pass);
-    apply(std::move(man.passes_));
-}
-#endif
 
 } // namespace mim

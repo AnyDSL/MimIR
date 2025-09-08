@@ -15,9 +15,7 @@ public:
     ClosConvPrep(World& world, flags_t annex)
         : RWPass(world, annex) {}
 
-    void apply();
-    void apply(const App*) final { apply(); }
-    void apply(Pass&) final { apply(); }
+    void init(PassMan*) final;
 
     void enter() override;
     const Def* rewrite(const Def*) override;

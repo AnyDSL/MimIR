@@ -17,6 +17,8 @@ public:
     SSAConstr(World& world, flags_t annex)
         : FPPass(world, annex) {}
 
+    void init(PassMan*) final;
+
     enum : u32 { Phixy, Sloxy, Traxy };
 
     struct Info {

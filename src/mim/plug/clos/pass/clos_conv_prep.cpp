@@ -32,6 +32,11 @@ Lam* isa_retvar(const Def* def) {
 
 } // namespace
 
+void ClosConvPrep::init(PassMan* man) {
+    Pass::init(man);
+    eta_exp_ = man->find<EtaExp>();
+}
+
 Lam* ClosConvPrep::scope(Lam* lam) {
     if (eta_exp_) lam = eta_exp_->new2old(lam);
     return lam2fscope_[lam];

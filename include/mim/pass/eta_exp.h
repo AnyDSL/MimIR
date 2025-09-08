@@ -15,9 +15,7 @@ public:
     EtaExp(World& world, flags_t annex)
         : FPPass(world, annex) {}
 
-    void apply();
-    void apply(const App*) final { apply(); }
-    void apply(Pass&) final { apply(); }
+    void init(PassMan*) final;
 
     /// @name interface for other passes
     ///@{

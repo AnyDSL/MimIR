@@ -117,15 +117,16 @@ void PhaseMan::start() {
  */
 
 void PassManPhase::apply(const App* app) {
-    man_ = std::make_unique<PassMan>(world(), annex());
+    man_        = std::make_unique<PassMan>(world(), annex());
+    auto passes = Passes();
     for (auto arg : app->args())
-        Phase::create(man_.get(), driver().passes(), arg);
+        if (auto pass = Phase::create(man_.get(), driver().passes(), arg)) passes.emplace_back(std::move(pass));
+    man_->apply(std::move(passes));
 }
 
 void PassManPhase::apply(Phase& phase) {
-    assert(false);
     auto& pmp = static_cast<PassManPhase&>(phase);
-    man_      = std::move(pmp.man_);
+    swap(man_, pmp.man_);
 }
 
 } // namespace mim

@@ -4,7 +4,10 @@
 
 namespace mim {
 
-void TailRecElim::apply() { eta_red_ = man().find<EtaRed>(); }
+void TailRecElim::init(PassMan* man) {
+    Pass::init(man);
+    eta_red_ = man->find<EtaRed>();
+}
 
 const Def* TailRecElim::rewrite(const Def* def) {
     if (auto [app, old] = isa_apped_mut_lam(def); old) {
