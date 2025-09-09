@@ -210,7 +210,7 @@ $(function(){initNavTree('pass_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="foldopen" id="foldopen00081" data-start="{" data-end="}">
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classmim_1_1PassMan.html#a65259d543c7d9396d4c69a19b966a80b">   81</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1PassMan.html#a65259d543c7d9396d4c69a19b966a80b">PassMan::run</a>() {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>().<a class="code hl_function" href="classmim_1_1World.html#a5b9a9472a5b36bf076bdce94bcb0b672">verify</a>().ILOG(<span class="stringliteral">&quot;run&quot;</span>);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>().<a class="code hl_function" href="classmim_1_1World.html#a5b9a9472a5b36bf076bdce94bcb0b672">verify</a>().ILOG(<span class="stringliteral">&quot;🔥 run&quot;</span>);</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keyword">auto</span> num = <a class="code hl_function" href="classmim_1_1PassMan.html#abf7cfc02ff0875e8347b6113f6775be5">passes</a>().size();</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    states_.emplace_back(num);</div>
@@ -222,7 +222,7 @@ $(function(){initNavTree('pass_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; pass : passes_)</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <a class="code hl_define" href="log_8h.html#a0c221110c77b993968e98cb53c0d652e">ILOG</a>(<span class="stringliteral">&quot; + {}&quot;</span>, pass-&gt;name());</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <a class="code hl_define" href="log_8h.html#a0c221110c77b993968e98cb53c0d652e">ILOG</a>(<span class="stringliteral">&quot; 🔹 `{}`&quot;</span>, pass-&gt;name());</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>().<a class="code hl_function" href="classmim_1_1World.html#a888c0001cb304f075ddcb69ad0063996">debug_dump</a>();</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; pass : passes_)</div>
@@ -236,7 +236,7 @@ $(function(){initNavTree('pass_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">while</span> (!curr_state().stack.empty()) {</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        push_state();</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        curr_mut_ = <a class="code hl_function" href="namespacemim.html#a0fa4d8ae744818bd552b43dc4c5fa947">pop</a>(curr_state().stack);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <a class="code hl_define" href="log_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(<span class="stringliteral">&quot;=== state {}: {} ===&quot;</span>, states_.size() - 1, curr_mut_);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <a class="code hl_define" href="log_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(<span class="stringliteral">&quot;⚙️ state {}: `{}`&quot;</span>, states_.size() - 1, curr_mut_);</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">if</span> (!curr_mut_-&gt;is_set()) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
@@ -250,7 +250,7 @@ $(function(){initNavTree('pass_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            new_defs[i] = rewrite(curr_mut_-&gt;op(i));</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        curr_mut_-&gt;set(new_defs);</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <a class="code hl_define" href="log_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(<span class="stringliteral">&quot;=== analyze ===&quot;</span>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <a class="code hl_define" href="log_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(<span class="stringliteral">&quot;🔍 analyze&quot;</span>);</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        proxy_    = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keyword">auto</span> undo = <a class="code hl_variable" href="namespacemim.html#ae97e9f99aa1fed4c2dbc1a807a8e689e">No_Undo</a>;</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : curr_mut_-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps</a>())</div>
@@ -265,7 +265,7 @@ $(function(){initNavTree('pass_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        }</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    }</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>().<a class="code hl_function" href="classmim_1_1World.html#a5b9a9472a5b36bf076bdce94bcb0b672">verify</a>().ILOG(<span class="stringliteral">&quot;finished&quot;</span>);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>().<a class="code hl_function" href="classmim_1_1World.html#a5b9a9472a5b36bf076bdce94bcb0b672">verify</a>().ILOG(<span class="stringliteral">&quot;🔒 finished&quot;</span>);</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    pop_states(0);</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>().<a class="code hl_function" href="classmim_1_1World.html#a888c0001cb304f075ddcb69ad0063996">debug_dump</a>();</div>
