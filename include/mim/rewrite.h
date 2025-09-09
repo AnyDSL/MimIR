@@ -16,9 +16,9 @@ public:
         : world_(&world) {
         push(); // create root map
     }
-    Rewriter() { push(); /* create root map */ } ///< Rewrite::set World later.
+    Rewriter() { push(); /* create root map */ } ///< Rewrite::init World later.
 
-    void set(std::unique_ptr<World>&& ptr) {
+    void init(std::unique_ptr<World>&& ptr) {
         ptr_   = std::move(ptr);
         world_ = ptr_.get();
     }

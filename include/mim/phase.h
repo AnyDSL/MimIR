@@ -128,7 +128,9 @@ public:
         : Phase(world, annex)
         , man_(std::move(man)) {}
 
-    PassManPhase* recreate() final { return driver().stage<PassManPhase>(world(), annex(), man_); }
+    PassManPhase* recreate() final {
+        return driver().stage<PassManPhase>(world(), annex(), man_->recreate()->as<PassMan>());
+    }
 
     const PassMan& man() const { return *man_; }
 
@@ -143,7 +145,7 @@ private:
 class PhaseMan : public Phase {
 public:
     PhaseMan(World&, flags_t annex, bool fixed_piont, Phases&&);
-    PhaseMan* recreate() final { return driver().stage<PhaseMan>(world(), annex(), fixed_point(), std::move(phases_)); }
+    PhaseMan* recreate() final;
 
     bool fixed_point() const { return fixed_point_; }
     void start() override;

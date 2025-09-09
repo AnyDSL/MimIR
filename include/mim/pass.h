@@ -123,9 +123,7 @@ public:
         : Pass(world, annex) {
         fill(passes);
     }
-
-    PassMan* recreate() final { return driver().stage<PassMan>(world(), annex(), std::move(passes_)); }
-
+    PassMan* recreate() final;
     void init(PassMan*) final { fe::unreachable(); }
     bool inspect() const final { fe::unreachable(); }
 

@@ -19,7 +19,7 @@ void Phase::run() {
  */
 
 void RWPhase::start() {
-    set(old_world().inherit());
+    init(old_world().inherit());
 
     for (const auto& [f, def] : old_world().flags2annex())
         rewrite_annex(f, def);
@@ -64,6 +64,12 @@ PhaseMan::PhaseMan(World& world, flags_t annex, bool fixed_point, Phases&& phase
     name_ += fixed_point_ ? " tt" : " ff";
 }
 
+PhaseMan* PhaseMan::recreate() {
+    for (auto& phase : phases_)
+        phase = phase->recreate()->as<Phase>();
+    return driver().stage<PhaseMan>(world(), annex(), fixed_point(), std::move(phases_));
+}
+
 void PhaseMan::start() {
     int iter = 0;
     for (bool todo = true; todo; ++iter) {
@@ -72,16 +78,12 @@ void PhaseMan::start() {
         if (fixed_point()) VLOG("🔄 fixed-point iteration: {}", iter);
 
         for (auto& phase : phases()) {
+            phase = phase->recreate()->as<Phase>();
             phase->run();
             todo |= phase->todo();
         }
 
         todo &= fixed_point();
-
-        if (todo)
-            for (auto& phase : phases())
-                phase = phase->recreate()->as<Phase>();
-
         todo_ |= todo;
     }
 }

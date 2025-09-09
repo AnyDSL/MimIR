@@ -23,6 +23,12 @@ void Pass::init(PassMan* man) { man_ = man; }
  * PassMan
  */
 
+PassMan* PassMan::recreate() {
+    for (auto& pass : passes_)
+        pass = pass->recreate()->as<Pass>();
+    return driver().stage<PassMan>(world(), annex(), std::move(passes_));
+}
+
 void PassMan::fill(const Passes& passes) {
     for (auto&& pass : passes)
         if (auto&& man = pass->isa<PassMan>())
