@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "mim/pass.h"
 
 namespace mim {
@@ -8,12 +10,11 @@ namespace mim {
 /// Rewrites `λx.e x` to `e`, whenever `x` does (optimistically) not appear free in `e`.
 class EtaRed : public FPPass<EtaRed, Def> {
 public:
-    EtaRed(World& world, flags_t annex)
-        : FPPass(world, annex) {}
+    EtaRed(World& world, flags_t annex, bool callee_only)
+        : FPPass(world, annex)
+        , callee_only_(callee_only) {}
 
-    void apply(bool callee_only);
-    void apply(const App* app) final { apply(Lit::as<bool>(app->arg())); }
-    void apply(Stage& s) final { apply(static_cast<EtaRed&>(s).callee_only()); }
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<EtaRed>(world(), annex(), callee_only()); }
 
     bool callee_only() const { return callee_only_; }
 

@@ -41,6 +41,7 @@ void optimize(World& world) {
     auto callee = App::uncurry_callee(body);
 
     world.DLOG("Building pipeline");
+    #if 0
     if (auto f = world.driver().stage(callee->flags())) {
         auto stage = (*f)(world);
         auto phase = stage.get()->as<Phase>();
@@ -48,6 +49,7 @@ void optimize(World& world) {
         phase->run();
     } else
         world.ELOG("axm not found in passes");
+    #endif
 }
 
 } // namespace mim

@@ -7,17 +7,6 @@
 
 namespace mim::plug::mem {
 
-void CopyProp::apply(bool bb_only) {
-    bb_only_  = bb_only;
-    name_ += bb_only_ ? " tt" : " ff";
-}
-
-void CopyProp::init(PassMan* man) {
-    Pass::init(man);
-    beta_red_ = man->find<BetaRed>();
-    eta_exp_  = man->find<EtaExp>();
-}
-
 const Def* CopyProp::rewrite(const Def* def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
     if (!isa_workable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;

@@ -31,41 +31,41 @@ axm %clos.attr(returning, freeBB, fstclassBB, esc, bottom): {T: *} → T → T, 
 ///
 /// ### Passes
 ///
-axm %clos.clos_conv_prep_pass:        %compile.Pass;
-axm %clos.branch_clos_pass:           %compile.Pass;
-axm %clos.lower_typed_clos_prep_pass: %compile.Pass;
-axm %clos.clos2sjlj_pass:             %compile.Pass;
+axm %clos.pass(clos_conv_prep):        [] → %compile.Pass;
+axm %clos.pass(branch_clos):           [] → %compile.Pass;
+axm %clos.pass(lower_typed_clos_prep): [] → %compile.Pass;
+axm %clos.pass(clos2sjlj):             [] → %compile.Pass;
 ///
 /// ### Phases
 ///
-axm %clos.clos_conv_phase:        %compile.Phase;
-axm %clos.lower_typed_clos_phase: %compile.Phase;
+axm %clos.phase(clos_conv):        [] → %compile.Phase;
+axm %clos.phase(lower_typed_clos): [] → %compile.Phase;
 
 let clos_opt1_passes =
     %compile.passes (
-        %compile.eta_red_pass tt,
-        %compile.eta_exp_pass,
-        %compile.scalarize_pass,
+        %compile.pass.eta_red tt,
+        %compile.pass.eta_exp,
+        %compile.pass.scalarize,
     );
 
 let clos_opt2_passes =
     %compile.passes (
-        %compile.scalarize_pass,
-        %clos.branch_clos_pass,
-        %mem.copy_prop_pass tt,
-        %clos.lower_typed_clos_prep_pass,
-        %clos.clos2sjlj_pass,
+        %compile.pass.scalarize,
+        %clos.pass.branch_clos,
+        %mem.pass.copy_prop tt,
+        %clos.pass.lower_typed_clos_prep,
+        %clos.pass.clos2sjlj,
     );
 
 let clos_phases =
     %compile.phases ff (
         optimization_phase,
-        %compile.pass2phase (%mem.reshape_pass %mem.reshape_flat),
-        %mem.add_mem_phase,
-        %compile.pass2phase %clos.clos_conv_prep_pass,
-        %compile.pass2phase %compile.eta_exp_pass,
-        %clos.clos_conv_phase,
-        %compile.pass2phase clos_opt1_passes,
-        %compile.pass2phase clos_opt2_passes,
-        %clos.lower_typed_clos_phase,
+        %compile.phase.from_pass (%mem.pass.reshape %mem.reshape_flat),
+        %mem.phase.add_mem,
+        %compile.phase.from_pass %clos.pass.clos_conv_prep,
+        %compile.phase.from_pass %compile.pass.eta_exp,
+        %clos.phase.clos_conv,
+        %compile.phase.from_pass clos_opt1_passes,
+        %compile.phase.from_pass clos_opt2_passes,
+        %clos.phase.lower_typed_clos,
     );

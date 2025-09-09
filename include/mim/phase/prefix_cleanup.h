@@ -6,12 +6,9 @@ namespace mim {
 
 class PrefixCleanup : public RWPhase {
 public:
-    PrefixCleanup(World& world, flags_t annex)
-        : RWPhase(world, annex) {}
+    PrefixCleanup(World& world, flags_t annex, std::string prefix);
 
-    void apply(std::string);
-    void apply(const App* app) final { apply(tuple2str(app->arg())); }
-    void apply(Stage& s) final { apply(std::move(static_cast<PrefixCleanup&>(s).prefix_)); }
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<PrefixCleanup>(new_world(), annex(), prefix_); }
 
 private:
     void rewrite_external(Def*) final;

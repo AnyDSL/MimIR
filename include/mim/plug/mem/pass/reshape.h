@@ -22,12 +22,8 @@ class Reshape : public RWPass<Reshape, Lam> {
 public:
     enum Mode { Flat, Arg };
 
-    Reshape(World& world, flags_t annex)
-        : RWPass(world, annex) {}
-
-    void apply(Mode);
-    void apply(const App* app) final;
-    void apply(Stage& s) final { apply(static_cast<Reshape&>(s).mode()); }
+    Reshape(World&, flags_t annex, Mode);
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<Reshape>(world(), annex(), mode()); }
 
     Mode mode() const { return mode_; }
 

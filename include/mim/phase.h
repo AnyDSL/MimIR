@@ -26,7 +26,6 @@ public:
         : Stage(world, name) {}
     Phase(World& world, flags_t annex)
         : Stage(world, annex) {}
-
     ///@}
 
     /// @name Getters
@@ -36,7 +35,7 @@ public:
 
     /// @name run
     ///@{
-    virtual void run(); ///< Entry point and generates some debug output; invokes Phase::start.
+    virtual void run();       ///< Entry point and generates some debug output; invokes Phase::start.
     virtual void start() = 0; ///< Actual entry.
 
     /// Runs a single Phase.
@@ -105,6 +104,8 @@ public:
         : RWPhase(world, "cleanup") {}
     Cleanup(World& world, flags_t annex)
         : RWPhase(world, annex) {}
+
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<Cleanup>(new_world(), annex()); }
 };
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
@@ -124,14 +125,13 @@ public:
 /// Wraps a PassMan pipeline as a Phase.
 class PassManPhase : public Phase {
 public:
-    PassManPhase(World& world, std::unique_ptr<PassMan>&& man)
-        : Phase(world, "pass_man_phase")
+    PassManPhase(World& world, flags_t annex, std::unique_ptr<PassMan>&& man)
+        : Phase(world, annex)
         , man_(std::move(man)) {}
-    PassManPhase(World& world, flags_t annex)
-        : Phase(world, annex) {}
 
-    void apply(const App*) final;
-    void apply(Stage&) final;
+    std::unique_ptr<Stage> recreate() final {
+        return std::make_unique<PassManPhase>(world(), annex(), std::move(man_));
+    }
 
     const PassMan& man() const { return *man_; }
 
@@ -145,12 +145,8 @@ private:
 /// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo_ flags yield `false`.
 class PhaseMan : public Phase {
 public:
-    PhaseMan(World& world, flags_t annex)
-        : Phase(world, annex) {}
-
-    void apply(bool, Phases&&);
-    void apply(const App*) final;
-    void apply(Stage&) final;
+    PhaseMan(World&, flags_t annex, bool fixed_piont, Phases&&);
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<PhaseMan>(world(), annex(), fixed_point(), std::move(phases_)); }
 
     bool fixed_point() const { return fixed_point_; }
     void start() override;
@@ -163,8 +159,8 @@ public:
     ///@}
 
 private:
-    Phases phases_;
     bool fixed_point_;
+    Phases phases_;
 };
 
 /// Transitively visits all *reachable*, [*closed*](@ref Def::is_closed) mutables in the World.

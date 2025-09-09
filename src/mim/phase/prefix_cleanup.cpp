@@ -1,11 +1,14 @@
 #include "mim/phase/prefix_cleanup.h"
 
 #include <mim/lam.h>
+#include "mim/phase.h"
 
 namespace mim {
 
-void PrefixCleanup::apply(std::string prefix) {
-    prefix_ = prefix;
+
+PrefixCleanup::PrefixCleanup(World& world, flags_t annex, std::string prefix)
+    : RWPhase(world, annex)
+    , prefix_(prefix) {
     name_ += " \"" + prefix_ + " \"";
 }
 

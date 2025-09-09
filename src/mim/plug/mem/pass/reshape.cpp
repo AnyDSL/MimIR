@@ -66,14 +66,10 @@ DefVec flatten_def(const Def* def) {
 
 } // namespace
 
-void Reshape::apply(Mode mode) {
-    mode_ = mode;
+Reshape::Reshape(World& world, flags_t annex, Mode mode)
+    : RWPass(world, annex)
+    , mode_(mode) {
     name_ += mode == Flat ? " Flat" : " Arg";
-}
-
-void Reshape::apply(const App* app) {
-    auto axm = app->arg()->as<Axm>();
-    apply(axm->flags() == Annex::base<mem::reshape_arg>() ? mem::Reshape::Arg : mem::Reshape::Flat);
 }
 
 void Reshape::enter() { rewrite_def(curr_mut()); }

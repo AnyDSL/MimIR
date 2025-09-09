@@ -9,15 +9,10 @@ static const App* eta_rule(Lam* lam) {
     return nullptr;
 }
 
-void EtaRed::apply(bool callee_only) {
-    callee_only_ = callee_only;
-    name_ += callee_only_ ? " tt" : " ff";
-}
-
 const Def* EtaRed::rewrite(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         // TODO (ClosureConv): Factor this out
-        if (auto lam = def->op(i)->isa_mut<Lam>(); (!callee_only_ || isa_callee(def, i)) && lam && lam->is_set()) {
+        if (auto lam = def->op(i)->isa_mut<Lam>(); (!callee_only() || isa_callee(def, i)) && lam && lam->is_set()) {
             if (auto app = eta_rule(lam); app && !irreducible_.contains(lam)) {
                 data().emplace(lam, Lattice::Reduce);
                 auto new_def = def->refine(i, app->callee());

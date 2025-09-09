@@ -1,36 +1,9 @@
 #include "mim/plug/clos/clos.h"
 
-#include <mim/config.h>
-#include <mim/pass.h>
-
-#include <mim/pass/eta_exp.h>
-#include <mim/pass/eta_red.h>
-#include <mim/pass/scalarize.h>
-
-#include "mim/plug/clos/pass/branch_clos_elim.h"
-#include "mim/plug/clos/pass/clos2sjlj.h"
-#include "mim/plug/clos/pass/clos_conv_prep.h"
-#include "mim/plug/clos/pass/lower_typed_clos_prep.h"
-#include "mim/plug/clos/phase/clos_conv.h"
-#include "mim/plug/clos/phase/lower_typed_clos.h"
-
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Flags2Stages& stages) {
-    // clang-format off
-    // phases
-    Stage::hook<clos::clos_conv_phase,            clos::ClosConv          >(stages);
-    Stage::hook<clos::lower_typed_clos_phase,     clos::LowerTypedClos    >(stages);
-    // passes
-    Stage::hook<clos::clos_conv_prep_pass,        clos::ClosConvPrep      >(stages);
-    Stage::hook<clos::branch_clos_pass,           clos::BranchClosElim    >(stages);
-    Stage::hook<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(stages);
-    Stage::hook<clos::clos2sjlj_pass,             clos::Clos2SJLJ         >(stages);
-    // clang-format on
-}
-
-extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"clos", clos::register_normalizers, reg_stages, nullptr}; }
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"clos", clos::register_normalizers, nullptr}; }
 
 namespace mim::plug::clos {
 

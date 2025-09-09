@@ -20,27 +20,21 @@ Stage::Stage(World& world, flags_t annex)
     , annex_(annex)
     , name_(world.annex(annex)->sym()) {}
 
-std::unique_ptr<Stage> Stage::recreate() {
-    auto ctor = driver().stage(annex());
-    auto ptr  = (*ctor)(world());
-    ptr->apply(*this);
-    return ptr;
-}
-
 void Pass::init(PassMan* man) { man_ = man; }
 
 /*
  * PassMan
  */
 
-void PassMan::apply(Passes&& passes) {
+void PassMan::fill(Passes&& passes) {
     for (auto&& pass : passes)
         if (auto&& man = pass->isa<PassMan>())
-            apply(std::move(man->passes_));
+            fill(std::move(man->passes_));
         else
             add(std::move(pass));
 }
 
+#if 0
 void PassMan::apply(const App* app) {
     auto passes = Passes();
     for (auto arg : app->args())
@@ -49,6 +43,7 @@ void PassMan::apply(const App* app) {
 
     apply(std::move(passes));
 }
+#endif
 
 void PassMan::push_state() {
     if (fixed_point()) {

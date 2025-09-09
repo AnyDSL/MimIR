@@ -15,13 +15,15 @@ namespace plug::mem {
 /// Finally, it will also remove dead Var%s.
 class CopyProp : public FPPass<CopyProp, Lam> {
 public:
-    CopyProp(World& world, flags_t annex)
-        : FPPass(world, annex) {}
+    CopyProp(World& world, flags_t annex, bool bb_only, BetaRed* br, EtaExp* ee)
+        : FPPass(world, annex)
+        , bb_only_(bb_only)
+        , beta_red_(br)
+        , eta_exp_(ee) {}
 
-    void apply(bool bb_only);
-    void apply(const App* app) final { apply(Lit::as<bool>(app->arg())); }
-    void apply(Stage& s) final { apply(static_cast<CopyProp&>(s).bb_only()); }
-    void init(PassMan*) final;
+    std::unique_ptr<Stage> recreate() final {
+        return std::make_unique<CopyProp>(world(), annex(), bb_only(), beta_red_, eta_exp_);
+    }
 
     bool bb_only() const { return bb_only_; }
 
@@ -46,10 +48,10 @@ private:
     undo_t analyze(const Proxy*) override;
     ///@}
 
+    bool bb_only_;
     BetaRed* beta_red_;
     EtaExp* eta_exp_;
     LamMap<std::tuple<Lattices, Lam*, DefVec>> lam2info_;
-    bool bb_only_;
 };
 
 } // namespace plug::mem

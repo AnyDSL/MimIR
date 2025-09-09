@@ -32,31 +32,7 @@ public:
         , name_(std::move(name)) {}
     Stage(World& world, flags_t annex);
 
-    virtual ~Stage() = default;
-    virtual std::unique_ptr<Stage> recreate(); ///< Creates a new instance; needed by a fixed-point PhaseMan.
-    virtual void apply(const App*) {}          ///< Invoked if your Stage has additional args.
-    virtual void apply(Stage&) {}              ///< Dito, but invoked by Stage::recreate.
-
-    static auto create(const Flags2Stages& stages, const Def* def) {
-        auto& world = def->world();
-        auto p_def  = App::uncurry_callee(def);
-        world.DLOG("apply pass/phase: `{}`", p_def);
-
-        if (auto axm = p_def->isa<Axm>())
-            if (auto i = stages.find(axm->flags()); i != stages.end()) {
-                auto stage = i->second(world);
-                if (stage) stage->apply(def->isa<App>());
-                return stage;
-            } else
-                error("pass/phase `{}` not found", axm->sym());
-        else
-            error("unsupported callee for a phase/pass: `{}`", p_def);
-    }
-
-    template<class A, class P>
-    static void hook(Flags2Stages& stages) {
-        assert_emplace(stages, Annex::base<A>(), [](World& w) { return std::make_unique<P>(w, Annex::base<A>()); });
-    }
+    virtual std::unique_ptr<Stage> recreate() = 0; ///< Creates a new instance; needed by a fixed-point PhaseMan.
     ///@}
 
     /// @name Getters
@@ -171,14 +147,14 @@ private:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
 class PassMan : public Pass {
 public:
-    PassMan(World& world, flags_t annex)
-        : Pass(world, annex) {}
+    PassMan(World& world, flags_t annex, Passes&& passes)
+        : Pass(world, annex) {
+        fill(std::move(passes));
+    }
 
-    void apply(Passes&&);
-    void apply(const App* app) final;
-    void apply(Stage& pass) final { apply(std::move(static_cast<PassMan&>(pass).passes_)); }
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<PassMan>(world(), annex(), std::move(passes_)); }
+
     void init(PassMan*) final { fe::unreachable(); }
-
     bool inspect() const final { fe::unreachable(); }
 
     /// @name Getters
@@ -206,7 +182,7 @@ public:
 
     void add(std::unique_ptr<Pass>&& pass) {
         fixed_point_ |= pass->fixed_point();
-        auto p = pass.get();
+        auto p        = pass.get();
         auto type_idx = std::type_index(typeid(*p));
         if (auto pass = find(type_idx)) error("already added `{}`", pass);
         registry_.emplace(type_idx, p);
@@ -215,6 +191,8 @@ public:
     ///@}
 
 private:
+    void fill(Passes&&);
+
     /// @name State
     ///@{
     struct State {

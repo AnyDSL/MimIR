@@ -1,15 +1,12 @@
 #include "mim/plug/core/core.h"
 
-#include <mim/config.h>
-#include <mim/pass.h>
-
 #include "mim/plug/core/be/ll.h"
 
 using namespace mim;
 using namespace mim::plug;
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"core", core::register_normalizers, nullptr, [](Backends& backends) { backends["ll"] = &ll::emit; }};
+    return {"core", core::register_normalizers, [](Backends& backends) { backends["ll"] = &ll::emit; }};
 }
 
 namespace mim::plug::core {

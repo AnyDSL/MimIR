@@ -56,12 +56,14 @@ void FPPhase::start() {
  * PhaseMan
  */
 
-void PhaseMan::apply(bool fp, Phases&& phases) {
-    fixed_point_ = fp;
-    phases_      = std::move(phases);
+PhaseMan::PhaseMan(World& world, flags_t annex, bool fixed_point, Phases&& phases)
+    : Phase(world, annex)
+    , fixed_point_(fixed_point)
+    , phases_(std::move(phases)) {
     name_ += fixed_point_ ? " tt" : " ff";
 }
 
+#if 0
 void PhaseMan::apply(const App* app) {
     auto [fp, args] = app->uncurry_args<2>();
 
@@ -74,11 +76,7 @@ void PhaseMan::apply(const App* app) {
 
     apply(Lit::as<bool>(fp), std::move(phases));
 }
-
-void PhaseMan::apply(Stage& stage) {
-    auto& man = static_cast<PhaseMan&>(stage);
-    apply(man.fixed_point(), std::move(man.phases_));
-}
+#endif
 
 void PhaseMan::start() {
     int iter = 0;
@@ -94,12 +92,11 @@ void PhaseMan::start() {
 
         todo &= fixed_point();
 
-        if (todo) {
+        if (todo)
             for (auto& old_phase : phases()) {
-                auto new_phase = std::unique_ptr<Phase>(static_cast<Phase*>(old_phase->recreate().release()));
-                swap(new_phase, old_phase);
+                auto new_phase = std::unique_ptr<Phase>(old_phase->recreate().release()->as<Phase>());
+                swap(old_phase, new_phase);
             }
-        }
 
         todo_ |= todo;
     }
@@ -109,6 +106,7 @@ void PhaseMan::start() {
  * PassManPhase
  */
 
+#if 0
 void PassManPhase::apply(const App* app) {
     man_        = std::make_unique<PassMan>(world(), annex());
     auto passes = Passes();
@@ -117,10 +115,6 @@ void PassManPhase::apply(const App* app) {
             passes.emplace_back(std::unique_ptr<Pass>(static_cast<Pass*>(stage.release())));
     man_->apply(std::move(passes));
 }
-
-void PassManPhase::apply(Stage& stage) {
-    auto& pmp = static_cast<PassManPhase&>(stage);
-    swap(man_, pmp.man_);
-}
+#endif
 
 } // namespace mim

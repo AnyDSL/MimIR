@@ -5,24 +5,12 @@
 
 #include <mim/plug/mem/mem.h>
 
-#include "mim/plug/autodiff/pass/autodiff_eval.h"
-#include "mim/plug/autodiff/pass/autodiff_zero.h"
-#include "mim/plug/autodiff/pass/autodiff_zero_cleanup.h"
-
 using namespace std::literals;
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Flags2Stages& stages) {
-    // clang-format off
-    PassMan::hook<autodiff::ad_eval_pass,         autodiff::AutoDiffEval       >(stages);
-    PassMan::hook<autodiff::ad_zero_pass,         autodiff::AutoDiffZero       >(stages);
-    PassMan::hook<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(stages);
-    // clang-format on
-}
-
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"autodiff", [](Normalizers& n) { autodiff::register_normalizers(n); }, reg_stages, nullptr};
+    return {"autodiff", [](Normalizers& n) { autodiff::register_normalizers(n); }, nullptr};
 }
 
 namespace mim::plug::autodiff {

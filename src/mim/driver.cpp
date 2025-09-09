@@ -72,7 +72,6 @@ void Driver::load(Sym name) {
         auto info = get_info();
         // clang-format off
         if (auto reg = info.register_normalizers) reg(normalizers_);
-        if (auto reg = info.register_stages)      reg(stages_);
         if (auto reg = info.register_backends)    reg(backends_);
         // clang-format on
     } else {
