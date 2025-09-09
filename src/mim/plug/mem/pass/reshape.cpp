@@ -66,10 +66,10 @@ DefVec flatten_def(const Def* def) {
 
 } // namespace
 
-Reshape::Reshape(World& world, flags_t annex, Mode mode)
+Reshape::Reshape(World& world, flags_t annex, bool flat)
     : RWPass(world, annex)
-    , mode_(mode) {
-    name_ += mode == Flat ? " Flat" : " Arg";
+    , flat_(flat) {
+    name_ += flat ? " tt" : " ff";
 }
 
 void Reshape::enter() { rewrite_def(curr_mut()); }
@@ -192,7 +192,7 @@ const Def* Reshape::reshape_type(const Def* T) {
         auto flat_types = flatten_ty(sigma);
         auto new_types  = DefVec(flat_types.size());
         std::ranges::transform(flat_types, new_types.begin(), [&](auto T) { return reshape_type(T); });
-        if (mode_ == Mode::Flat) {
+        if (flat()) {
             const Def* mem = nullptr;
             // find mem
             for (auto i = new_types.begin(); i != new_types.end(); i++)
@@ -275,7 +275,7 @@ const Def* Reshape::reshape(const Def* def) {
     auto flat_defs = flatten_def(def);
     if (flat_defs.size() == 1) return flat_defs[0];
     // TODO: move mem removal to flatten_def
-    if (mode_ == Mode::Flat) {
+    if (flat()) {
         const Def* mem = nullptr;
         // find mem
         for (auto i = flat_defs.begin(); i != flat_defs.end(); i++)

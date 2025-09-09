@@ -9,7 +9,7 @@ class EtaRedPhase : public RWPhase {
 public:
     EtaRedPhase(World& world, flags_t annex)
         : RWPhase(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<EtaRedPhase>(new_world(), annex()); }
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<EtaRedPhase>(old_world(), annex()); }
 
 private:
     void rewrite_external(Def*) final;

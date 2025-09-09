@@ -8,7 +8,7 @@ class PrefixCleanup : public RWPhase {
 public:
     PrefixCleanup(World& world, flags_t annex, std::string prefix);
 
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<PrefixCleanup>(new_world(), annex(), prefix_); }
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<PrefixCleanup>(old_world(), annex(), prefix_); }
 
 private:
     void rewrite_external(Def*) final;

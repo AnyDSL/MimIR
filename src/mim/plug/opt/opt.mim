@@ -18,8 +18,6 @@ import matrix;
 import refly;
 import regex;
 ///
-/// ## Passes, Phases, and Pipelines
-///
 /// ### Pipelines
 ///
 lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.phase.null ());

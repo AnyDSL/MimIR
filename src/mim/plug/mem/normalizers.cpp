@@ -1,6 +1,13 @@
-#include "mim/world.h"
+#include <mim/world.h>
+
+#include <mim/pass/eta_red.h>
 
 #include "mim/plug/mem/mem.h"
+#include "mim/plug/mem/pass/alloc2malloc.h"
+#include "mim/plug/mem/pass/copy_prop.h"
+#include "mim/plug/mem/pass/remem_elim.h"
+#include "mim/plug/mem/pass/reshape.h"
+#include "mim/plug/mem/pass/ssa_constr.h"
 
 namespace mim::plug::mem {
 
@@ -28,8 +35,6 @@ const Def* normalize_load(const Def* type, const Def*, const Def* arg) {
     return {};
 }
 
-const Def* normalize_remem(const Def*, const Def*, const Def*) { return {}; }
-
 const Def* normalize_store(const Def*, const Def*, const Def* arg) {
     auto [mem, ptr, val] = arg->projs<3>();
 
@@ -40,6 +45,22 @@ const Def* normalize_store(const Def*, const Def*, const Def* arg) {
     }
 
     return {};
+}
+
+template<pass id>
+const Def* normalize_pass(const Def* t, const Def* callee, const Def* arg) {
+    switch (id) {
+            // clang-format off
+        case pass::alloc2malloc: return create<Alloc2Malloc>(id, t);
+        case pass::remem_elim:   return create<RememElim   >(id, t);
+        case pass::reshape:      return create<Reshape     >(id, t, Lit::get<bool   >(arg));
+        case pass::ssa:          return create<SSAConstr   >(id, t, Lit::get<EtaExp*>(arg));
+        // clang-format on
+        case pass::copy_prop: {
+            auto [bb_only, br] = App::uncurry_args<2>(callee);
+            return create<CopyProp>(id, t, Lit::get<bool>(bb_only), Lit::get<BetaRed*>(br), Lit::get<EtaExp*>(arg));
+        }
+    }
 }
 
 MIM_mem_NORMALIZER_IMPL

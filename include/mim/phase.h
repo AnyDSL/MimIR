@@ -67,11 +67,9 @@ public:
     /// @name Construction
     ///@{
     RWPhase(World& world, std::string name)
-        : Phase(world, std::move(name))
-        , Rewriter(world.inherit()) {}
+        : Phase(world, std::move(name)) {}
     RWPhase(World& world, flags_t annex)
-        : Phase(world, annex)
-        , Rewriter(world.inherit()) {}
+        : Phase(world, annex) {}
     ///@}
 
     /// @name Rewrite
@@ -107,7 +105,7 @@ public:
     Cleanup(World& world, flags_t annex)
         : RWPhase(world, annex) {}
 
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<Cleanup>(new_world(), annex()); }
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<Cleanup>(old_world(), annex()); }
 };
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.

@@ -14,10 +14,10 @@ namespace plug::mem {
 /// by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau.
 class SSAConstr : public FPPass<SSAConstr, Lam> {
 public:
-    SSAConstr(World& world, flags_t annex)
-        : FPPass(world, annex) {}
-
-    void init(PassMan*) final;
+    SSAConstr(World& world, flags_t annex, EtaExp* ee)
+        : FPPass(world, annex)
+        , eta_exp_(ee) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<SSAConstr>(world(), annex(), eta_exp_); }
 
     enum : u32 { Phixy, Sloxy, Traxy };
 

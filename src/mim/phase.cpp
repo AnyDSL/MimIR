@@ -11,9 +11,9 @@ namespace mim {
  */
 
 void Phase::run() {
-    world().verify().ILOG("=== Phase start: `{}` ===", name());
+    world().verify().ILOG("=== 🚀 Phase launch: `{}` ===", name());
     start();
-    world().verify().ILOG("=== Phase done:  `{}` ===", name());
+    world().verify().ILOG("=== 🏁 Phase finish: `{}` ===", name());
 }
 
 /*
@@ -21,6 +21,8 @@ void Phase::run() {
  */
 
 void RWPhase::start() {
+    set(old_world().inherit());
+
     for (const auto& [f, def] : old_world().flags2annex())
         rewrite_annex(f, def);
 
@@ -29,6 +31,7 @@ void RWPhase::start() {
     for (auto mut : old_world().copy_externals())
         rewrite_external(mut);
 
+    assert(old_world().incarnation() + 1 == new_world().incarnation());
     swap(old_world(), new_world());
 }
 

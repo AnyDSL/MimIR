@@ -42,8 +42,9 @@ public:
 
         /// [Plain Old Data](https://en.cppreference.com/w/cpp/named_req/PODType)
         struct POD {
-            u32 curr_gid = 0;
-            u32 curr_sub = 0;
+            u32 curr_gid     = 0;
+            u32 curr_sub     = 0;
+            u32 incarnation_ = 0;
             Loc loc;
             Sym name;
             mutable bool frozen = false;
@@ -77,10 +78,12 @@ public:
     ~World();
 
     /// Inherits the State into the new World.
-    /// World::curr_gid will be offset to not collide with the original World.
+    /// * World::curr_gid will be offset to not collide with the original World.
+    /// * World::incarnation will be incremented.
     std::unique_ptr<World> inherit() {
         auto s = state();
         s.pod.curr_gid += move_.defs.size();
+        ++s.pod.incarnation_;
         return std::make_unique<World>(&driver(), s);
     }
     ///@}
@@ -91,6 +94,8 @@ public:
 
     const Driver& driver() const { return *driver_; }
     Driver& driver() { return *driver_; }
+
+    u32 incarnation() const { return state_.pod.incarnation_; }
 
     Sym name() const { return state_.pod.name; }
     void set(Sym name) { state_.pod.name = name; }

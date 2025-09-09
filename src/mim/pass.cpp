@@ -64,6 +64,9 @@ void PassMan::pop_states(size_t undo) {
 
 void PassMan::run() {
     world().verify().ILOG("run");
+    for (auto&& pass : passes_)
+        ILOG(" + {}", pass->name());
+    world().debug_dump();
 
     auto num = passes().size();
     states_.emplace_back(num);
@@ -73,10 +76,6 @@ void PassMan::run() {
         pass->init(this);
         curr_state().data[i] = pass->alloc();
     }
-
-    for (auto&& pass : passes_)
-        ILOG(" + {}", pass->name());
-    world().debug_dump();
 
     for (auto&& pass : passes_)
         pass->prepare();

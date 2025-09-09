@@ -20,12 +20,10 @@ using DefQueue = std::deque<const Def*>;
 // TODO: use RWPhase instead
 class Reshape : public RWPass<Reshape, Lam> {
 public:
-    enum Mode { Flat, Arg };
+    Reshape(World&, flags_t annex, bool flat);
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<Reshape>(world(), annex(), flat()); }
 
-    Reshape(World&, flags_t annex, Mode);
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<Reshape>(world(), annex(), mode()); }
-
-    Mode mode() const { return mode_; }
+    bool flat() const { return flat_; }
 
     /// Fall-through to `rewrite_def` which falls through to `rewrite_lam`.
     void enter() override;
@@ -51,8 +49,8 @@ private:
 
     /// Keeps track of the replacements.
     Def2Def old2new_;
-    /// The mode to rewrite all lambas to. Either flat or arg.
-    Mode mode_;
+    /// The mode to rewrite all lambas to. Either flat (true) or arg (false).
+    bool flat_;
 };
 
 } // namespace mim::plug::mem

@@ -1,3 +1,5 @@
+#include <memory>
+
 #include <mim/driver.h>
 #include <mim/world.h>
 
@@ -27,7 +29,7 @@ const Def* normalize_is_loaded(const Def*, const Def*, const Def* arg) {
 }
 
 template<phase id>
-const Def* normalize_phase(const Def* t, const Def*, const Def* arg) {
+const Def* normalize_phase(const Def* t, const Def* callee, const Def* arg) {
     switch (id) {
             // clang-format off
         case phase::null:             return arg->world().lit(t, 0);
@@ -39,14 +41,20 @@ const Def* normalize_phase(const Def* t, const Def*, const Def* arg) {
         case phase::prefix_cleanup:   return create<PrefixCleanup  >(id, t, tuple2str(arg));
             // clang-format on
         case phase::from_pass:
-            if (auto pass = ::mim::Pass::make_unique(arg)) return create<PassManPhase>(id, t, std::move(pass));
+            if (auto l = Lit::isa<::mim::Pass*>(arg)) {
+                if (auto pass = *l) {
+                    if (auto man = pass->isa<PassMan>())
+                        return create<PassManPhase>(id, t, std::unique_ptr<PassMan>(man));
+                    return create<PassManPhase>(id, t, std::unique_ptr<::mim::Pass>(pass));
+                }
+            }
             return arg->world().lit(t, 0);
         case phase::man: {
-            auto [fp, args] = App::uncurry_args<2>(arg);
-            auto phases     = Phases();
+            auto fp     = callee->as<App>()->arg();
+            auto phases = Phases();
             for (auto phase : arg->projs())
                 if (auto p = ::mim::Phase::make_unique(phase)) phases.emplace_back(std::move(p));
-            return create<PhaseMan>(id, t, fp, std::move(phases));
+            return create<PhaseMan>(id, t, Lit::get<bool>(fp), std::move(phases));
         }
     }
 }
