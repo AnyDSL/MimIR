@@ -95,4 +95,4 @@ axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] →
 ///
 /// ### Passes
 ///
-axm %refly.remove_dbg_perm_pass: %compile.Pass;
+axm %refly.remove_dbg_perm_pass: [] → %compile.Pass;

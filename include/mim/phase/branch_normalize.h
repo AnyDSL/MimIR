@@ -5,10 +5,11 @@
 namespace mim {
 
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
-class BranchNormalizePhase : public RWPhase {
+class BranchNormalize : public RWPhase {
 public:
-    BranchNormalizePhase(World& world, flags_t annex)
+    BranchNormalize(World& world, flags_t annex)
         : RWPhase(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<BranchNormalize>(new_world(), annex()); }
 
 private:
     const Def* normalize(const Def*);

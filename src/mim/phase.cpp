@@ -63,21 +63,6 @@ PhaseMan::PhaseMan(World& world, flags_t annex, bool fixed_point, Phases&& phase
     name_ += fixed_point_ ? " tt" : " ff";
 }
 
-#if 0
-void PhaseMan::apply(const App* app) {
-    auto [fp, args] = app->uncurry_args<2>();
-
-    auto phases = Phases();
-    for (auto arg : args->projs())
-        if (auto stage = create(driver().stages(), arg)) {
-            if (auto pmp = stage->isa<PassManPhase>(); pmp && pmp->man().empty()) continue;
-            phases.emplace_back(std::unique_ptr<Phase>(static_cast<Phase*>(stage.release())));
-        }
-
-    apply(Lit::as<bool>(fp), std::move(phases));
-}
-#endif
-
 void PhaseMan::start() {
     int iter = 0;
     for (bool todo = true; todo; ++iter) {
@@ -106,15 +91,10 @@ void PhaseMan::start() {
  * PassManPhase
  */
 
-#if 0
-void PassManPhase::apply(const App* app) {
-    man_        = std::make_unique<PassMan>(world(), annex());
-    auto passes = Passes();
-    for (auto arg : app->args())
-        if (auto stage = Phase::create(driver().stages(), arg))
-            passes.emplace_back(std::unique_ptr<Pass>(static_cast<Pass*>(stage.release())));
-    man_->apply(std::move(passes));
+PassManPhase::PassManPhase(World& world, flags_t annex, std::unique_ptr<Pass>&& pass)
+    : Phase(world, annex)
+    , man_(std::make_unique<PassMan>(world, annex)) {
+    man_->add(std::move(pass));
 }
-#endif
 
 } // namespace mim

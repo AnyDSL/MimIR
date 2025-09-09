@@ -10,6 +10,7 @@ class AutoDiffZeroCleanup : public RWPass<AutoDiffZeroCleanup, Lam> {
 public:
     AutoDiffZeroCleanup(World& world, flags_t annex)
         : RWPass(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<AutoDiffZeroCleanup>(world(), annex()); }
 
     const Def* rewrite(const Def*) override;
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <mim/def.h>
 #include <mim/pass.h>
 
@@ -11,6 +13,7 @@ class AutoDiffEval : public RWPass<AutoDiffEval, Lam> {
 public:
     AutoDiffEval(World& world, flags_t annex)
         : RWPass(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<AutoDiffEval>(world(), annex()); }
 
     /// Detect autodiff calls.
     const Def* rewrite(const Def*) override;

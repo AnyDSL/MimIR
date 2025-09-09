@@ -4,11 +4,6 @@
 
 namespace mim {
 
-void TailRecElim::init(PassMan* man) {
-    Pass::init(man);
-    eta_red_ = man->find<EtaRed>();
-}
-
 const Def* TailRecElim::rewrite(const Def* def) {
     if (auto [app, old] = isa_apped_mut_lam(def); old) {
         if (auto i = old2rec_loop_.find(old); i != old2rec_loop_.end()) {

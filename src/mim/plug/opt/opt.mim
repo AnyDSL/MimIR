@@ -22,59 +22,59 @@ import regex;
 ///
 /// ### Pipelines
 ///
-lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.phase.null);
-lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.pass.null );
+lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.phase.null ());
+lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.pass.null  ());
 
 lam extern _default_compile (): %compile.Phase =
-    %compile.phases ff (
-        %compile.phase.from_pass (%compile.pass.scalarize %compile.pass.null),
+    %compile.phase.man ff (
+        %compile.phase.from_pass (%compile.pass.scalarize (%compile.pass.null ())),
         %compile.phase.from_pass (%compile.pass.eta_red ff),
-        %compile.phase.from_pass (%compile.pass.tail_rec_elim %compile.pass.null),
-        %compile.phase.from_pass (cond_pass "regex" %regex.lower_regex),
+        %compile.phase.from_pass (%compile.pass.tail_rec_elim (%compile.pass.null ())),
+        %compile.phase.from_pass (cond_pass "regex" (%regex.lower_regex ())),
         // optimize
-        %compile.phases tt (
+        %compile.phase.man tt (
             %compile.phase.beta_red (),
             %compile.phase.eta_red (),
         ),
         %compile.phase.eta_exp (),
         %compile.phase.from_pass (
-            %compile.passes (
+            %compile.pass.man (
                 let br = %compile.pass.beta_red (); br,
                 let er = %compile.pass.eta_red ff; er,
                 let ee = %compile.pass.eta_exp er; ee,
                 %compile.pass.scalarize ee,
                 %compile.pass.tail_rec_elim er,
-                cond_pass "affine" %affine.pass.lower_for (),
+                cond_pass "affine" (%affine.pass.lower_for ()),
                 %mem.pass.ssa ee,
                 %mem.pass.copy_prop ff br ee,
             )
         ),
         cond_phase "autodiff" (
-            %compile.phases ff (
-                %compile.phase.from_pass %autodiff.pass.ad_eval,
-                %compile.phase.from_pass %autodiff.pass.ad_zero,
+            %compile.phase.man ff (
+                %compile.phase.from_pass (%autodiff.pass.ad_eval ()),
+                %compile.phase.from_pass (%autodiff.pass.ad_zero ()),
             )
         ),
         cond_phase "direct" direct_phases,
         cond_phase "matrix" (
-            %compile.phases ff (
+            %compile.phase.man ff (
                 matrix_lower_phase,
                 cond_phase "direct" direct_phases,
-                cond_phase "affine" (%compile.phase.from_pass %affine.pass.lower_for ())
+                cond_phase "affine" (%compile.phase.from_pass (%affine.pass.lower_for ())),
             )
         ),
         %compile.internal_cleanup_phase,
         cond_phase "clos" clos_phases,
-        %compile.phase.from_pass %compile.pass.lam_spec (),
+        %compile.phase.from_pass (%compile.pass.lam_spec ()),
         cond_phase "autodiff" ad_cleanup_phase,
         // CodeGenPrep
-        %compile.phase.branch_normalize,
+        %compile.phase.branch_normalize (),
         %compile.phase.from_pass (
-            %compile.passes (
-                %compile.pass.ret_wrap,
-                %mem.pass.remem_elim,
-                %mem.pass.alloc2malloc,
-                cond_pass "refly" %refly.remove_dbg_perm_pass,
+            %compile.pass.man (
+                %compile.pass.ret_wrap (),
+                %mem.pass.remem_elim (),
+                %mem.pass.alloc2malloc (),
+                cond_pass "refly" (%refly.remove_dbg_perm_pass ()),
             )
         ),
     );

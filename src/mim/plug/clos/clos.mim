@@ -42,30 +42,30 @@ axm %clos.phase(clos_conv):        [] → %compile.Phase;
 axm %clos.phase(lower_typed_clos): [] → %compile.Phase;
 
 let clos_opt1_passes =
-    %compile.passes (
-        %compile.pass.eta_red tt,
-        %compile.pass.eta_exp,
-        %compile.pass.scalarize,
+    %compile.pass.man (
+        let er = %compile.pass.eta_red tt; er,
+        %compile.pass.eta_exp er,
+        %compile.pass.scalarize (%compile.pass.null ()),
     );
 
 let clos_opt2_passes =
-    %compile.passes (
-        %compile.pass.scalarize,
-        %clos.pass.branch_clos,
-        %mem.pass.copy_prop tt,
-        %clos.pass.lower_typed_clos_prep,
-        %clos.pass.clos2sjlj,
+    %compile.pass.man (
+        %compile.pass.scalarize (%compile.pass.null ()),
+        %clos.pass.branch_clos (),
+        %mem.pass.copy_prop tt (%compile.pass.null ()) (%compile.pass.null ()),
+        %clos.pass.lower_typed_clos_prep (),
+        %clos.pass.clos2sjlj (),
     );
 
 let clos_phases =
-    %compile.phases ff (
+    %compile.phase.man ff (
         optimization_phase,
         %compile.phase.from_pass (%mem.pass.reshape %mem.reshape_flat),
-        %mem.phase.add_mem,
-        %compile.phase.from_pass %clos.pass.clos_conv_prep,
-        %compile.phase.from_pass %compile.pass.eta_exp,
-        %clos.phase.clos_conv,
+        %mem.phase.add_mem (),
+        %compile.phase.from_pass (%clos.pass.clos_conv_prep ()),
+        %compile.phase.from_pass (%compile.pass.eta_exp (%compile.pass.null ())),
+        %clos.phase.clos_conv (),
         %compile.phase.from_pass clos_opt1_passes,
         %compile.phase.from_pass clos_opt2_passes,
-        %clos.phase.lower_typed_clos,
+        %clos.phase.lower_typed_clos (),
     );

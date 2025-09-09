@@ -37,19 +37,9 @@ void optimize(World& world) {
     if (!compilation) world.ELOG("no compilation function found");
     world.DLOG("compilation using {} : {}", compilation, compilation->type());
 
-    auto body   = compilation->as<Lam>()->body();
-    auto callee = App::uncurry_callee(body);
-
-    world.DLOG("Building pipeline");
-    #if 0
-    if (auto f = world.driver().stage(callee->flags())) {
-        auto stage = (*f)(world);
-        auto phase = stage.get()->as<Phase>();
-        if (auto app = body->isa<App>()) phase->apply(app);
-        phase->run();
-    } else
-        world.ELOG("axm not found in passes");
-    #endif
+    auto body  = compilation->as<Lam>()->body();
+    auto phase = Phase::make_unique(body);
+    phase->run();
 }
 
 } // namespace mim

@@ -81,7 +81,8 @@ public:
     std::unique_ptr<World> inherit() {
         auto s = state();
         s.pod.curr_gid += move_.defs.size();
-        return std::make_unique<World>(&driver(), s); }
+        return std::make_unique<World>(&driver(), s);
+    }
     ///@}
 
     /// @name Getters/Setters
@@ -442,11 +443,11 @@ public:
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
     const Lit* lit_idx_unsafe(u64 val) { return lit(type_idx(top(type_nat())), val); }
 
-    template<class I> const Lit* lit_idx(I val) {
+    template<class I>
+    const Lit* lit_idx(I val) {
         static_assert(std::is_integral<I>());
         return lit_idx(Idx::bitwidth2size(sizeof(I) * 8), val);
     }
-
     /// Constructs a Lit @p of type Idx of size 2^width.
     /// `val = 64` will be automatically converted to size `0` - the encoding for 2^64.
     const Lit* lit_int(nat_t width, u64 val) { return lit_idx(Idx::bitwidth2size(width), val); }

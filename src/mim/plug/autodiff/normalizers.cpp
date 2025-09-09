@@ -1,8 +1,12 @@
-#include "mim/axm.h"
-#include "mim/world.h"
+#include <mim/axm.h>
+#include <mim/world.h>
+
+#include <mim/plug/core/core.h>
 
 #include "mim/plug/autodiff/autodiff.h"
-#include "mim/plug/core/core.h"
+#include "mim/plug/autodiff/pass/autodiff_eval.h"
+#include "mim/plug/autodiff/pass/autodiff_zero.h"
+#include "mim/plug/autodiff/pass/autodiff_zero_cleanup.h"
 
 namespace mim::plug::autodiff {
 
@@ -90,11 +94,23 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg) {
         auto sum  = world.app(world.annex<zero>(), T);
         // This special case would also be handled by add zero
         if (val >= 1) sum = args[0];
-        for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.annex<add>(), T), {sum, args[i]});
+        for (size_t i = 1; i < val; ++i)
+            sum = world.app(world.app(world.annex<add>(), T), {sum, args[i]});
         return sum;
     }
     assert(0);
     return {};
+}
+
+template<pass id>
+const Def* normalize_pass(const Def* t, const Def*, const Def*) {
+    // clang-format off
+    switch (id) {
+        case pass::ad_eval:         return create<AutoDiffEval       >(id, t);
+        case pass::ad_zero:         return create<AutoDiffZero       >(id, t);
+        case pass::ad_zero_cleanup: return create<AutoDiffZeroCleanup>(id, t);
+    }
+    // clang-format on
 }
 
 MIM_autodiff_NORMALIZER_IMPL

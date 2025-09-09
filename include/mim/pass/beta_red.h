@@ -10,6 +10,7 @@ class BetaRed : public FPPass<BetaRed, Def> {
 public:
     BetaRed(World& world, flags_t annex)
         : FPPass(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<BetaRed>(world(), annex()); }
 
     using Data = LamSet;
 

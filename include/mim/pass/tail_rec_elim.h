@@ -8,10 +8,10 @@ class EtaRed;
 
 class TailRecElim : public FPPass<TailRecElim, Lam> {
 public:
-    TailRecElim(World& world, flags_t annex)
-        : FPPass(world, annex) {}
-
-    void init(PassMan*) final;
+    TailRecElim(World& world, flags_t annex, EtaRed* er)
+        : FPPass(world, annex)
+        , eta_red_(er) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<TailRecElim>(world(), annex(), eta_red_); }
 
 private:
     /// @name PassMan hooks

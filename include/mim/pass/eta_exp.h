@@ -12,8 +12,10 @@ class EtaRed;
 /// It gives other Pass%es such as SSAConstr the opportunity to change `f`'s signature (e.g. adding or removingp Var%s).
 class EtaExp : public FPPass<EtaExp, Lam> {
 public:
-    EtaExp(World& world, flags_t annex)
-        : FPPass(world, annex) {}
+    EtaExp(World& world, flags_t annex, EtaRed* er)
+        : FPPass(world, annex)
+        , eta_red_(er) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<EtaExp>(world(), annex(), eta_red_); }
 
     void init(PassMan*) final;
 

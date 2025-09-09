@@ -49,19 +49,19 @@ axm %autodiff.sum: [n:Nat, T: *] → «n; T» → T, normalize_sum;
 ///
 /// ### Passes
 ///
-axm %autodiff.pass(ad_eval):         [] → %compile.Pass;
-axm %autodiff.pass(ad_zero):         [] → %compile.Pass;
-axm %autodiff.pass(ad_zero_cleanup): [] → %compile.Pass;
+axm %autodiff.pass(ad_eval):         [] → %compile.Pass, normalize_pass;
+axm %autodiff.pass(ad_zero):         [] → %compile.Pass, normalize_pass;
+axm %autodiff.pass(ad_zero_cleanup): [] → %compile.Pass, normalize_pass;
 ///
 /// ### Phases
 ///
 let ad_cleanup_phase = %compile.phase.from_pass (%autodiff.pass.ad_zero_cleanup ());
 
 let ad_phase =
-    %compile.phases ff (
+    %compile.phase.man ff (
         optimization_phase,
-        %compile.phase.from_pass %autodiff.pass.ad_eval,
-        %compile.phase.from_pass %autodiff.pass.ad_zero,
+        %compile.phase.from_pass (%autodiff.pass.ad_eval ()),
+        %compile.phase.from_pass (%autodiff.pass.ad_zero ()),
         ad_cleanup_phase,
     );
 ///

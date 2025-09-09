@@ -15,6 +15,13 @@ class Pass;
 class PassMan;
 using Passes = std::deque<std::unique_ptr<Pass>>;
 
+/// Heap-alloc `P` and wrap it in a Lit%eral.
+template<class P, class Q, class... Args>
+const Def* create(Q q, const Def* type, Args&&... args) {
+    auto& w = type->world();
+    return w.lit(type, (nat_t) new P(w, flags_t(q), std::forward<Args>(args)...));
+}
+
 /// @name Undo
 /// Used by FPPass::analyze to indicate where to backtrack to.
 ///@{
@@ -128,6 +135,8 @@ public:
     }
     ///@}
 
+    static auto make_unique(const Def* arg) { return std::unique_ptr<Pass>(Lit::isa<Pass*>(arg).value_or(nullptr)); }
+
 private:
     /// @name Memory Management
     ///@{
@@ -147,6 +156,8 @@ private:
 /// "Composing dataflow analyses and transformations" by Lerner, Grove, Chambers.
 class PassMan : public Pass {
 public:
+    PassMan(World& world, flags_t annex)
+        : Pass(world, annex) {}
     PassMan(World& world, flags_t annex, Passes&& passes)
         : Pass(world, annex) {
         fill(std::move(passes));

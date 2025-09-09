@@ -245,7 +245,7 @@ const Def* World::app(const Def* callee, const Def* arg) {
         }
 
         throw Error()
-            .error(arg->loc(), "cannot apply argument to callee")
+            .error(get_loc(), "cannot apply argument to callee")
             .note(callee->loc(), "callee: '{}'", callee)
             .note(arg->loc(), "argument: '{}'", arg)
             .note(callee->loc(), "vvv domain type vvv\n'{}'\n'{}'", pi->dom(), arg->type())
@@ -253,7 +253,7 @@ const Def* World::app(const Def* callee, const Def* arg) {
     }
 
     throw Error()
-        .error(callee->loc(), "called expression not of function type")
+        .error(get_loc(), "called expression not of function type")
         .error(callee->loc(), "'{}' <--- callee type", callee->type());
 }
 

@@ -34,17 +34,6 @@ void PassMan::fill(Passes&& passes) {
             add(std::move(pass));
 }
 
-#if 0
-void PassMan::apply(const App* app) {
-    auto passes = Passes();
-    for (auto arg : app->args())
-        if (auto stage = Stage::create(driver().stages(), arg))
-            passes.emplace_back(std::unique_ptr<Pass>(static_cast<Pass*>(stage.release())));
-
-    apply(std::move(passes));
-}
-#endif
-
 void PassMan::push_state() {
     if (fixed_point()) {
         states_.emplace_back(passes().size());

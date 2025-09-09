@@ -11,6 +11,7 @@ class EtaExpPhase : public FPPhase {
 public:
     EtaExpPhase(World& world, flags_t annex)
         : FPPhase(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<EtaExpPhase>(new_world(), annex()); }
 
 private:
     enum Lattice : u8 {

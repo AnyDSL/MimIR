@@ -19,8 +19,10 @@ class EtaExp;
 /// It will not flatten mutable @p Sigma%s or @p Arr%ays.
 class Scalarize : public RWPass<Scalarize, Lam> {
 public:
-    Scalarize(World& world, flags_t annex)
-        : RWPass(world, annex) {}
+    Scalarize(World& world, flags_t annex, EtaExp* ee)
+        : RWPass(world, annex)
+        , eta_exp_(ee) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<Scalarize>(world(), annex(), eta_exp_); }
 
     void init(PassMan*) final;
 

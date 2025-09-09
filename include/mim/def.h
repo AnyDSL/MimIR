@@ -816,6 +816,13 @@ public:
     static T as(const Def* def) {
         return def->as<Lit>()->get<T>();
     }
+
+    /// Like Lit::as but throws an error on failure.
+    template<class T>
+    static T get(const Def* def) {
+        if (auto l = Lit::template isa<T>(def)) return *l;
+        error("exptected a literal");
+    }
     ///@}
 
     static constexpr auto Node      = mim::Node::Lit;

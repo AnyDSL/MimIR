@@ -46,6 +46,8 @@ public:
     }
     ///@}
 
+    static auto make_unique(const Def* arg) { return std::unique_ptr<Phase>(Lit::isa<Phase*>(arg).value_or(nullptr)); }
+
 protected:
     /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
     bool todo_ = false;
@@ -125,6 +127,7 @@ public:
 /// Wraps a PassMan pipeline as a Phase.
 class PassManPhase : public Phase {
 public:
+    PassManPhase(World& world, flags_t annex, std::unique_ptr<Pass>&&);
     PassManPhase(World& world, flags_t annex, std::unique_ptr<PassMan>&& man)
         : Phase(world, annex)
         , man_(std::move(man)) {}
@@ -146,7 +149,9 @@ private:
 class PhaseMan : public Phase {
 public:
     PhaseMan(World&, flags_t annex, bool fixed_piont, Phases&&);
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<PhaseMan>(world(), annex(), fixed_point(), std::move(phases_)); }
+    std::unique_ptr<Stage> recreate() final {
+        return std::make_unique<PhaseMan>(world(), annex(), fixed_point(), std::move(phases_));
+    }
 
     bool fixed_point() const { return fixed_point_; }
     void start() override;

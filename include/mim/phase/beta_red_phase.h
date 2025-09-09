@@ -9,6 +9,7 @@ class BetaRedPhase : public FPPhase {
 public:
     BetaRedPhase(World& world, flags_t annex)
         : FPPhase(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<BetaRedPhase>(new_world(), annex()); }
 
 private:
     bool analyze() final;
