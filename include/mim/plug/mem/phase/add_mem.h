@@ -12,6 +12,7 @@ class AddMem : public NestPhase<Lam> {
 public:
     AddMem(World& world, flags_t annex)
         : NestPhase(world, annex, true) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<AddMem>(world(), annex()); }
 
     void visit(const Nest&) override;
 

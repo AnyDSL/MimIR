@@ -5,7 +5,6 @@ namespace mim::plug::affine {
 
 template<pass>
 const Def* normalize_pass(const Def* t, const Def*, const Def*) {
-    outln("XXX");
     return create<LowerFor>(pass::lower_for, t);
 }
 

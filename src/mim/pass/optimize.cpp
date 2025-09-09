@@ -39,7 +39,7 @@ void optimize(World& world) {
 
     auto body  = compilation->as<Lam>()->body();
     auto phase = Phase::make_unique(body);
-    phase->run();
+    if (phase) phase->run();
 }
 
 } // namespace mim

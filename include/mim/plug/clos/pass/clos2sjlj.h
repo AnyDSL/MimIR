@@ -12,6 +12,7 @@ class Clos2SJLJ : public RWPass<Clos2SJLJ, Lam> {
 public:
     Clos2SJLJ(World& world, flags_t annex)
         : RWPass(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<Clos2SJLJ>(world(), annex()); }
 
     void enter() override;
     const Def* rewrite(const Def*) override;

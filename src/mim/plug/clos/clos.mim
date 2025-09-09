@@ -27,20 +27,22 @@ axm %clos.longjmp: Cn [%mem.M, %clos.BufPtr, I32];
 ///
 axm %clos.attr(returning, freeBB, fstclassBB, esc, bottom): {T: *} → T → T, normalize_clos;
 ///
-/// ## Passes and Phases
+/// ## Phases and Passes
 ///
 /// ### Passes
 ///
-axm %clos.pass(clos_conv_prep):        [] → %compile.Pass;
-axm %clos.pass(branch_clos):           [] → %compile.Pass;
-axm %clos.pass(lower_typed_clos_prep): [] → %compile.Pass;
-axm %clos.pass(clos2sjlj):             [] → %compile.Pass;
+axm %clos.pass(clos_conv_prep):        [] → %compile.Pass, normalize_pass;
+axm %clos.pass(branch_clos):           [] → %compile.Pass, normalize_pass;
+axm %clos.pass(lower_typed_clos_prep): [] → %compile.Pass, normalize_pass;
+axm %clos.pass(clos2sjlj):             [] → %compile.Pass, normalize_pass;
 ///
 /// ### Phases
 ///
-axm %clos.phase(clos_conv):        [] → %compile.Phase;
-axm %clos.phase(lower_typed_clos): [] → %compile.Phase;
-
+axm %clos.phase(clos_conv):        [] → %compile.Phase, normalize_phase;
+axm %clos.phase(lower_typed_clos): [] → %compile.Phase, normalize_phase;
+///
+/// ### Pipelines
+///
 let clos_opt1_passes =
     %compile.pass.man (
         let er = %compile.pass.eta_red tt; er,

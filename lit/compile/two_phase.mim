@@ -13,7 +13,7 @@ con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0)
 lam extern _compile(): %compile.Phase =
     %compile.phase.man ff (
         %compile.internal_cleanup_phase,
-        %compile.pass2phase %compile.ret_wrap_pass,
+        %compile.phase.from_pass (%compile.pass.ret_wrap ()),
     );
 
 // CHECK-DAG: con return

@@ -38,6 +38,7 @@ public:
         : world_(world)
         , name_(std::move(name)) {}
     Stage(World& world, flags_t annex);
+    virtual ~Stage() {}
 
     virtual std::unique_ptr<Stage> recreate() = 0; ///< Creates a new instance; needed by a fixed-point PhaseMan.
     ///@}

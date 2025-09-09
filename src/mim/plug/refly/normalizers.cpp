@@ -4,6 +4,7 @@
 #include <mim/world.h>
 
 #include "mim/plug/refly/refly.h"
+#include "mim/plug/refly/pass/remove_perm.h"
 
 using namespace std::string_literals;
 
@@ -91,6 +92,9 @@ const Def* normalize_check(const Def* type, const Def*, const Def* arg) {
 
     return nullptr;
 }
+
+template<pass>
+const Def* normalize_pass(const Def* t, const Def*, const Def*) { return create<RemoveDbgPerm>(pass::remove_dbg_perm, t); }
 
 MIM_refly_NORMALIZER_IMPL
 

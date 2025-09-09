@@ -8,6 +8,7 @@
 #include "mim/plug/mem/pass/remem_elim.h"
 #include "mim/plug/mem/pass/reshape.h"
 #include "mim/plug/mem/pass/ssa_constr.h"
+#include "mim/plug/mem/phase/add_mem.h"
 
 namespace mim::plug::mem {
 
@@ -45,6 +46,11 @@ const Def* normalize_store(const Def*, const Def*, const Def* arg) {
     }
 
     return {};
+}
+
+template<phase>
+const Def* normalize_phase(const Def* t, const Def*, const Def*) {
+    return create<AddMem>(phase::add_mem, t);
 }
 
 template<pass id>

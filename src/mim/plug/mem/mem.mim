@@ -92,24 +92,16 @@ lam %mem.rm (n: Nat, Is: «n; *», O: *)
              (is: «i: n; Is#i»): O
     = %mem.ignore (f (%mem.m, is));
 ///
-/// ## Passes and Phases
+/// ## Phases and Passes
 ///
-/// ### Misc
+/// ### Phases
 ///
-/// Reshape mode enum.
+axm %mem.phase(add_mem): [] → %compile.Phase, normalize_phase;
 ///
 /// ### Passes
 ///
-axm %mem.pass(ssa):                                 %compile.Pass → %compile.Pass, normalize_pass; // expects eta_exp
-axm %mem.pass(copy_prop):    Bool → %compile.Pass → %compile.Pass → %compile.Pass, normalize_pass; // expects beta_red, eta_exp
 axm %mem.pass(remem_elim):                                     [] → %compile.Pass, normalize_pass;
 axm %mem.pass(alloc2malloc):                                   [] → %compile.Pass, normalize_pass;
 axm %mem.pass(reshape):                                      Bool → %compile.Pass, normalize_pass;
-///
-/// ### Phases
-///
-axm %mem.phase(add_mem): [] → %compile.Phase;
-///
-/// ### Phases
-///
-axm %mem.add_mem_phase: %compile.Phase;
+axm %mem.pass(ssa):                                 %compile.Pass → %compile.Pass, normalize_pass; // expects eta_exp
+axm %mem.pass(copy_prop):    Bool → %compile.Pass → %compile.Pass → %compile.Pass, normalize_pass; // expects beta_red, eta_exp

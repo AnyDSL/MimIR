@@ -72,7 +72,7 @@ lam extern _default_compile (): %compile.Phase =
                 %compile.pass.ret_wrap (),
                 %mem.pass.remem_elim (),
                 %mem.pass.alloc2malloc (),
-                cond_pass "refly" (%refly.remove_dbg_perm_pass ()),
+                cond_pass "refly" (%refly.pass.remove_dbg_perm ()),
             )
         ),
     );

@@ -226,19 +226,21 @@ fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
         );
     return (mem, %core.bitcast R res); // TODO: test this cast
 ///
-/// ## Passes and Phases
-///
-/// ### Passes
-///
-axm %matrix.pass(lower_matrix_high_level_map_reduce): [] → %compile.Pass;
-axm %matrix.pass(lower_matrix_medium_level):          [] → %compile.Pass;
-
-let %matrix.internal_map_reduce_cleanup = %compile.phase.prefix_cleanup "internal_mapRed_";
+/// ## Phases and Passe
 ///
 /// ### Phases
 ///
 axm %matrix.phase(lower_matrix_low_level): [] → %compile.Phase;
 
+let %matrix.internal_map_reduce_cleanup = %compile.phase.prefix_cleanup "internal_mapRed_";
+///
+/// ### Passes
+///
+axm %matrix.pass(lower_matrix_high_level_map_reduce): [] → %compile.Pass;
+axm %matrix.pass(lower_matrix_medium_level):          [] → %compile.Pass;
+///
+/// ### Pipelines
+///
 let matrix_lower_phase =
     %compile.phase.man ff (
         %compile.phase.from_pass (

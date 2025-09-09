@@ -25,6 +25,7 @@ axm %compile.Phase: *;
 ///
 axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;
 ///
+/// ## Phases and Passes
 ///
 /// ### Phases
 ///
@@ -51,7 +52,9 @@ axm %compile.pass(null):                           [] → %compile.Pass, normali
 axm %compile.pass(ret_wrap):                       [] → %compile.Pass, normalize_pass;
 axm %compile.pass(scalarize):           %compile.Pass → %compile.Pass, normalize_pass; // expects eta_exp
 axm %compile.pass(tail_rec_elim):       %compile.Pass → %compile.Pass, normalize_pass; // expects eta_red
-
+///
+/// ### PipeLines
+///
 let optimization_passes = %compile.pass.man (
     %compile.pass.beta_red (),
     let er = %compile.pass.eta_red ff; er,

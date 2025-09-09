@@ -91,6 +91,7 @@ public:
     ClosConv(World& world, flags_t annex)
         : Phase(world, annex)
         , fva_(world) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<ClosConv>(world(), annex()); }
 
     void start() override;
 
