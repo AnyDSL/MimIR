@@ -8,7 +8,7 @@ class LamSpec : public RWPass<LamSpec, Lam> {
 public:
     LamSpec(World& world, flags_t annex)
         : RWPass(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<LamSpec>(world(), annex()); }
+    LamSpec* recreate() final { return driver().stage<LamSpec>(world(), annex()); }
 
 private:
     /// @name PassMan hooks

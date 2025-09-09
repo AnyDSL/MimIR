@@ -1,10 +1,7 @@
 #include "mim/pass.h"
 
-#include <memory>
-
 #include <absl/container/fixed_array.h>
 
-#include "mim/driver.h"
 #include "mim/phase.h"
 
 #include "mim/util/util.h"
@@ -26,7 +23,7 @@ void Pass::init(PassMan* man) { man_ = man; }
  * PassMan
  */
 
-void PassMan::fill(Passes&& passes) {
+void PassMan::fill(const Passes& passes) {
     for (auto&& pass : passes)
         if (auto&& man = pass->isa<PassMan>())
             fill(std::move(man->passes_));
@@ -63,15 +60,15 @@ void PassMan::pop_states(size_t undo) {
 }
 
 void PassMan::run() {
-    world().verify().ILOG("run");
+    world().verify().ILOG("🔥 run");
     for (auto&& pass : passes_)
-        ILOG(" + {}", pass->name());
+        ILOG(" 🔹 `{}`", pass->name());
     world().debug_dump();
 
     auto num = passes().size();
     states_.emplace_back(num);
     for (size_t i = 0; i != num; ++i) {
-        auto pass    = passes_[i].get();
+        auto pass    = passes_[i];
         pass->index_ = i;
         pass->init(this);
         curr_state().data[i] = pass->alloc();
@@ -88,7 +85,7 @@ void PassMan::run() {
     while (!curr_state().stack.empty()) {
         push_state();
         curr_mut_ = pop(curr_state().stack);
-        VLOG("=== state {}: {} ===", states_.size() - 1, curr_mut_);
+        VLOG("⚙️ state {}: `{}`", states_.size() - 1, curr_mut_);
 
         if (!curr_mut_->is_set()) continue;
 
@@ -102,7 +99,7 @@ void PassMan::run() {
             new_defs[i] = rewrite(curr_mut_->op(i));
         curr_mut_->set(new_defs);
 
-        VLOG("=== analyze ===");
+        VLOG("🔍 analyze");
         proxy_    = false;
         auto undo = No_Undo;
         for (auto op : curr_mut_->deps())
@@ -117,7 +114,7 @@ void PassMan::run() {
         }
     }
 
-    world().verify().ILOG("finished");
+    world().verify().ILOG("🔒 finished");
     pop_states(0);
 
     world().debug_dump();

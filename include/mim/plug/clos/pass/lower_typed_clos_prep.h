@@ -12,7 +12,7 @@ class LowerTypedClosPrep : public FPPass<LowerTypedClosPrep, Lam> {
 public:
     LowerTypedClosPrep(World& world, flags_t annex)
         : FPPass(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<LowerTypedClosPrep>(world(), annex()); }
+    LowerTypedClosPrep* recreate() final { return driver().stage<LowerTypedClosPrep>(world(), annex()); }
 
 private:
     const Def* rewrite(const Def*) override;

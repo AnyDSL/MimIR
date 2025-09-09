@@ -1,7 +1,5 @@
 #pragma once
 
-#include <memory>
-
 #include "mim/pass.h"
 
 namespace mim {
@@ -14,7 +12,7 @@ public:
         : FPPass(world, annex)
         , callee_only_(callee_only) {}
 
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<EtaRed>(world(), annex(), callee_only()); }
+    EtaRed* recreate() final { return driver().stage<EtaRed>(world(), annex(), callee_only()); }
 
     bool callee_only() const { return callee_only_; }
 

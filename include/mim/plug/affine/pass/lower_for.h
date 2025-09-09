@@ -29,7 +29,7 @@ class LowerFor : public RWPass<LowerFor, Lam> {
 public:
     LowerFor(World& world, flags_t annex)
         : RWPass(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<LowerFor>(world(), annex()); }
+    LowerFor* recreate() final { return driver().stage<LowerFor>(world(), annex()); }
 
     const Def* rewrite(const Def*) override;
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mim/phase.h>
+#include <mim/driver.h>
 #include <mim/schedule.h>
 
 namespace mim::plug::mem {
@@ -12,7 +13,7 @@ class AddMem : public NestPhase<Lam> {
 public:
     AddMem(World& world, flags_t annex)
         : NestPhase(world, annex, true) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<AddMem>(world(), annex()); }
+    AddMem* recreate() final { return driver().stage<AddMem>(world(), annex()); }
 
     void visit(const Nest&) override;
 

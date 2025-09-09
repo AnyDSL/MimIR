@@ -46,6 +46,7 @@ class LowerMatrixMediumLevel : public RWPass<LowerMatrixMediumLevel, Lam> {
 public:
     LowerMatrixMediumLevel(World& world, flags_t annex)
         : RWPass(world, annex) {}
+    LowerMatrixMediumLevel* recreate() final { return new LowerMatrixMediumLevel(world(), annex()); }
 
     /// custom rewrite function
     /// memoized version of rewrite_

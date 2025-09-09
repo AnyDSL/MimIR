@@ -8,7 +8,7 @@ class BranchClosElim : public RWPass<BranchClosElim, Lam> {
 public:
     BranchClosElim(World& world, flags_t annex)
         : RWPass(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<BranchClosElim>(world(), annex()); }
+    BranchClosElim* recreate() final { return driver().stage<BranchClosElim>(world(), annex()); }
 
     const Def* rewrite(const Def*) override;
 

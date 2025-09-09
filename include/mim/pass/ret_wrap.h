@@ -8,7 +8,7 @@ class RetWrap : public RWPass<RetWrap, Lam> {
 public:
     RetWrap(World& world, flags_t annex)
         : RWPass(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<RetWrap>(world(), annex()); }
+    RetWrap* recreate() final { return driver().stage<RetWrap>(world(), annex()); }
 
     void enter() override;
 };

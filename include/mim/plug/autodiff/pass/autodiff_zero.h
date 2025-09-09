@@ -10,7 +10,7 @@ class AutoDiffZero : public RWPass<AutoDiffZero, Lam> {
 public:
     AutoDiffZero(World& world, flags_t annex)
         : RWPass(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<AutoDiffZero>(world(), annex()); }
+    AutoDiffZero* recreate() final { return driver().stage<AutoDiffZero>(world(), annex()); }
 
     const Def* rewrite(const Def*) override;
 };

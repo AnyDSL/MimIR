@@ -51,7 +51,7 @@ protected:
     bool todo_ = false;
 };
 
-using Phases = std::deque<std::unique_ptr<Phase>>;
+using Phases = std::deque<Phase*>;
 
 /// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
 /// This will destroy RWPhase::old_world leaving RWPhase::new_world which will be created here as the *current* World to
@@ -103,7 +103,7 @@ public:
     Cleanup(World& world, flags_t annex)
         : RWPhase(world, annex) {}
 
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<Cleanup>(old_world(), annex()); }
+    Cleanup* recreate() final { return driver().stage<Cleanup>(old_world(), annex()); }
 };
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
@@ -123,21 +123,19 @@ public:
 /// Wraps a PassMan pipeline as a Phase.
 class PassManPhase : public Phase {
 public:
-    PassManPhase(World& world, flags_t annex, std::unique_ptr<Pass>&&);
-    PassManPhase(World& world, flags_t annex, std::unique_ptr<PassMan>&& man)
+    PassManPhase(World& world, flags_t annex, Pass*);
+    PassManPhase(World& world, flags_t annex, PassMan* man)
         : Phase(world, annex)
         , man_(std::move(man)) {}
 
-    std::unique_ptr<Stage> recreate() final {
-        return std::make_unique<PassManPhase>(world(), annex(), std::move(man_));
-    }
+    PassManPhase* recreate() final { return driver().stage<PassManPhase>(world(), annex(), man_); }
 
     const PassMan& man() const { return *man_; }
 
     void start() override { man_->run(); }
 
 private:
-    std::unique_ptr<PassMan> man_;
+    PassMan* man_;
 };
 
 /// Organizes several Phase%s in a a pipeline.
@@ -145,9 +143,7 @@ private:
 class PhaseMan : public Phase {
 public:
     PhaseMan(World&, flags_t annex, bool fixed_piont, Phases&&);
-    std::unique_ptr<Stage> recreate() final {
-        return std::make_unique<PhaseMan>(world(), annex(), fixed_point(), std::move(phases_));
-    }
+    PhaseMan* recreate() final { return driver().stage<PhaseMan>(world(), annex(), fixed_point(), std::move(phases_)); }
 
     bool fixed_point() const { return fixed_point_; }
     void start() override;
@@ -156,7 +152,7 @@ public:
     ///@{
     auto& phases() { return phases_; }
     const auto& phases() const { return phases_; }
-    void add(std::unique_ptr<Phase>&& phase) { phases_.emplace_back(std::move(phase)); }
+    void add(Phase* phase) { phases_.emplace_back(phase); }
     ///@}
 
 private:

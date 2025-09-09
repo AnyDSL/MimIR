@@ -15,7 +15,7 @@ public:
     EtaExp(World& world, flags_t annex, EtaRed* er)
         : FPPass(world, annex)
         , eta_red_(er) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<EtaExp>(world(), annex(), eta_red_); }
+    EtaExp* recreate() final { return driver().stage<EtaExp>(world(), annex(), eta_red_); }
 
     void init(PassMan*) final;
 

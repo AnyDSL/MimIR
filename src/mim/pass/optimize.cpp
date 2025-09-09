@@ -40,7 +40,7 @@ void optimize(World& world) {
     auto body  = compilation->as<Lam>()->body();
     auto stage = Lit::get<Stage*>(body);
     if (stage) {
-        auto phase = world.driver().own<Phase>(stage)->as<Phase>();
+        auto phase = stage->as<Phase>();
         phase->run();
     }
 }

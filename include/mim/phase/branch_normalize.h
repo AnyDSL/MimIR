@@ -9,7 +9,7 @@ class BranchNormalize : public RWPhase {
 public:
     BranchNormalize(World& world, flags_t annex)
         : RWPhase(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<BranchNormalize>(old_world(), annex()); }
+    BranchNormalize* recreate() final { return driver().stage<BranchNormalize>(old_world(), annex()); }
 
 private:
     const Def* normalize(const Def*);

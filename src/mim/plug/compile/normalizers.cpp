@@ -43,8 +43,8 @@ const Def* normalize_phase(const Def* t, const Def* callee, const Def* arg) {
         case phase::from_pass:
             if (auto l = Lit::isa<::mim::Pass*>(arg)) {
                 if (auto pass = *l) {
-                    if (auto man = pass->isa<PassMan>()) return d.stage_lit<PassManPhase>(id, t, d.own<PassMan>(man));
-                    return d.stage_lit<PassManPhase>(id, t, d.own<::mim::Pass>(pass));
+                    if (auto man = pass->isa<PassMan>()) return d.stage_lit<PassManPhase>(id, t, man);
+                    return d.stage_lit<PassManPhase>(id, t, pass);
                 }
             }
             return arg->world().lit(t, 0);
@@ -53,7 +53,7 @@ const Def* normalize_phase(const Def* t, const Def* callee, const Def* arg) {
             auto phases = Phases();
             for (auto a : arg->projs()) {
                 if (auto l = Lit::isa<Stage*>(a)) {
-                    if (auto s = *l) phases.emplace_back(d.own<::mim::Phase>(s));
+                    if (auto s = *l) phases.emplace_back(s->as<::mim::Phase>());
                 }
             }
             return d.stage_lit<PhaseMan>(id, t, Lit::get<bool>(fp), std::move(phases));
@@ -79,7 +79,7 @@ const Def* normalize_pass(const Def* t, const Def*, const Def* arg) {
             auto passes = Passes();
             for (auto a : arg->projs()) {
                 if (auto l = Lit::isa<Stage*>(a)) {
-                    if (auto s = *l) passes.emplace_back(d.own<::mim::Pass>(s));
+                    if (auto s = *l) passes.emplace_back(s->as<::mim::Pass>());
                 }
             }
             return d.stage_lit<PassMan>(id, t, std::move(passes));

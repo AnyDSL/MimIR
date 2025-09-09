@@ -17,6 +17,7 @@ class LowerMatrixLowLevel : public RWPhase {
 public:
     LowerMatrixLowLevel(World& world, flags_t annex)
         : RWPhase(world, annex) {}
+    LowerMatrixLowLevel* recreate() final { return new LowerMatrixLowLevel(old_world(), annex()); }
 
     const Def* rewrite_imm_App(const App*) override;
 

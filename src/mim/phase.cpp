@@ -1,7 +1,5 @@
 #include "mim/phase.h"
 
-#include <memory>
-
 #include "mim/driver.h"
 
 namespace mim {
@@ -11,9 +9,9 @@ namespace mim {
  */
 
 void Phase::run() {
-    world().verify().ILOG("=== 🚀 Phase launch: `{}` ===", name());
+    world().verify().ILOG("🚀 Phase launch: `{}`", name());
     start();
-    world().verify().ILOG("=== 🏁 Phase finish: `{}` ===", name());
+    world().verify().ILOG("🏁 Phase finish: `{}`", name());
 }
 
 /*
@@ -71,7 +69,7 @@ void PhaseMan::start() {
     for (bool todo = true; todo; ++iter) {
         todo = false;
 
-        if (fixed_point()) VLOG("fixed-point iteration: {}", iter);
+        if (fixed_point()) VLOG("🔄 fixed-point iteration: {}", iter);
 
         for (auto& phase : phases()) {
             phase->run();
@@ -81,10 +79,8 @@ void PhaseMan::start() {
         todo &= fixed_point();
 
         if (todo)
-            for (auto& old_phase : phases()) {
-                auto new_phase = std::unique_ptr<Phase>(old_phase->recreate().release()->as<Phase>());
-                swap(old_phase, new_phase);
-            }
+            for (auto& phase : phases())
+                phase = phase->recreate()->as<Phase>();
 
         todo_ |= todo;
     }
@@ -94,10 +90,10 @@ void PhaseMan::start() {
  * PassManPhase
  */
 
-PassManPhase::PassManPhase(World& world, flags_t annex, std::unique_ptr<Pass>&& pass)
+PassManPhase::PassManPhase(World& world, flags_t annex, Pass* pass)
     : Phase(world, annex)
-    , man_(std::make_unique<PassMan>(world, annex)) {
-    man_->add(std::move(pass));
+    , man_(driver().stage<PassMan>(world, annex)) {
+    man_->add(pass);
 }
 
 } // namespace mim

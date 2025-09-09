@@ -22,7 +22,7 @@ public:
     Scalarize(World& world, flags_t annex, EtaExp* ee)
         : RWPass(world, annex)
         , eta_exp_(ee) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<Scalarize>(world(), annex(), eta_exp_); }
+    Scalarize* recreate() final { return driver().stage<Scalarize>(world(), annex(), eta_exp_); }
 
     void init(PassMan*) final;
 

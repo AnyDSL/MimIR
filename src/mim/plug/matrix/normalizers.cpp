@@ -1,9 +1,10 @@
-#include <iostream>
-
-#include "mim/axm.h"
-#include "mim/world.h"
+#include <mim/axm.h>
+#include <mim/world.h>
 
 #include "mim/plug/matrix/matrix.h"
+#include "mim/plug/matrix/pass/lower_matrix_highlevel.h"
+#include "mim/plug/matrix/pass/lower_matrix_mediumlevel.h"
+#include "mim/plug/matrix/phase/lower_matrix_lowlevel.h"
 
 // TODO: combine map_reduce calls
 
@@ -89,6 +90,22 @@ u64 get_max_index(u64 init, Defs inputs) {
 const Def* normalize_map_reduce(const Def*, const Def*, const Def*) { return {}; }
 const Def* normalize_prod(const Def*, const Def*, const Def*) { return {}; }
 const Def* normalize_transpose(const Def*, const Def*, const Def*) { return {}; }
+
+template<phase>
+const Def* normalize_phase(const Def* t, const Def*, const Def*) {
+    return t->driver().stage_lit<LowerMatrixLowLevel>(phase::lower_matrix_low_level, t);
+}
+
+template<pass id>
+const Def* normalize_pass(const Def* t, const Def*, const Def*) {
+    auto& d = t->driver();
+    // clang-format off
+    switch (id) {
+        case pass::lower_matrix_high_level_map_reduce: return d.stage_lit<LowerMatrixHighLevelMapRed>(id, t);
+        case pass::lower_matrix_medium_level:          return d.stage_lit<LowerMatrixMediumLevel    >(id, t);
+    }
+    // clang-format on
+}
 
 MIM_matrix_NORMALIZER_IMPL
 

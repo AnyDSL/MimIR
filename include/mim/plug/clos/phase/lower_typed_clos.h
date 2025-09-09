@@ -29,7 +29,7 @@ class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world, flags_t annex)
         : Phase(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<LowerTypedClos>(world(), annex()); }
+    LowerTypedClos* recreate() final { return driver().stage<LowerTypedClos>(world(), annex()); }
 
     void start() override;
 

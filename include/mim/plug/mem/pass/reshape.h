@@ -21,7 +21,7 @@ using DefQueue = std::deque<const Def*>;
 class Reshape : public RWPass<Reshape, Lam> {
 public:
     Reshape(World&, flags_t annex, bool flat);
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<Reshape>(world(), annex(), flat()); }
+    Reshape* recreate() final { return driver().stage<Reshape>(world(), annex(), flat()); }
 
     bool flat() const { return flat_; }
 

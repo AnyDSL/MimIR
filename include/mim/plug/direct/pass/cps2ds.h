@@ -1,8 +1,5 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-
 #include <mim/def.h>
 #include <mim/pass.h>
 
@@ -15,14 +12,14 @@ class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(World& world, flags_t annex)
         : RWPass(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<CPS2DS>(world(), annex()); }
+    CPS2DS* recreate() final { return driver().stage<CPS2DS>(world(), annex()); }
 
     void enter() override;
 
 private:
     Def2Def rewritten_;
     DefSet rewritten_lams;
-    std::vector<Lam*> lam_stack;
+    Vector<Lam*> lam_stack;
     Lam* curr_lam_ = nullptr;
 
     void rewrite_lam(Lam* lam);

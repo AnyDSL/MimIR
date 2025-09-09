@@ -43,7 +43,7 @@ const fs::path* Driver::add_import(fs::path path, Sym sym) {
 }
 
 void Driver::load(Sym name) {
-    ILOG("loading plugin: '{}'", name);
+    ILOG("💾 loading plugin: '{}'", name);
 
     if (is_loaded(name)) {
         WLOG("mim/plugin '{}' already loaded", name);

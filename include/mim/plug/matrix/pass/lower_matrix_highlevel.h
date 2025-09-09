@@ -14,6 +14,7 @@ class LowerMatrixHighLevelMapRed : public RWPass<LowerMatrixHighLevelMapRed, Lam
 public:
     LowerMatrixHighLevelMapRed(World& world, flags_t annex)
         : RWPass(world, annex) {}
+    LowerMatrixHighLevelMapRed* recreate() final { return new LowerMatrixHighLevelMapRed(world(), annex()); }
 
     /// custom rewrite function
     /// memoized version of rewrite_

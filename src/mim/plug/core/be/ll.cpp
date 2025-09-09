@@ -117,7 +117,7 @@ public:
     Emitter(World& world, std::ostream& ostream)
         : Super(world, "llvm_emitter", ostream) {}
 
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<Emitter>(world(), ostream()); }
+    Emitter* recreate() final { return driver().stage<Emitter>(world(), ostream()); }
 
     bool is_valid(std::string_view s) { return !s.empty(); }
     void start() override;

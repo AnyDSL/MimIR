@@ -86,28 +86,17 @@ public:
 
     /// @name Stages
     ///@{
-    template<class P, class Q, class... Args>
-    P* stage(Q q, Args&&... args) {
-        auto p     = new P(world(), flags_t(q), std::forward<Args>(args)...);
-        stages_[p] = std::unique_ptr<P>(p);
-        outln("insert: {}", (uintptr_t)p);
+    template<class P, class... Args>
+    P* stage(Args&&... args) {
+        auto p = new P(std::forward<Args>(args)...);
+        stages_.emplace_back(std::unique_ptr<P>(p));
         return p;
     }
 
     template<class P, class Q, class... Args>
-    const Def* stage_lit(Q q, const Def* type, Args&&... args) {
-        return world().lit(type, (nat_t)stage<P>(q, std::forward<Args>(args)...));
-    }
-
-    template<class P>
-    std::unique_ptr<P> own(Stage* p) {
-        if (auto i = stages_.find(p); i != stages_.end()) {
-            auto res = std::unique_ptr<P>(i->second.release()->as<P>());
-            stages_.erase(i);
-            outln("erase: {}", (uintptr_t)res.get());
-            return res;
-        } else
-            error("stage not found: {}", (uintptr_t)p);
+    const Lit* stage_lit(Q q, const Def* type, Args&&... args) {
+        auto p = stage<P>(world(), flags_t(q), std::forward<Args>(args)...);
+        return world().lit(type, (nat_t)p);
     }
     ///@}
 
@@ -122,7 +111,7 @@ private:
     Backends backends_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> import_path2sym_;
-    absl::flat_hash_map<Stage*, std::unique_ptr<Stage>> stages_;
+    std::deque<std::unique_ptr<Stage>> stages_;
 };
 
 #define GET_FUN_PTR(plugin, f) get_fun_ptr<decltype(f)>(plugin, #f)

@@ -1,20 +1,19 @@
 #pragma once
 
-#include <memory>
 #include <stack>
 #include <typeindex>
 
 #include <fe/assert.h>
 #include <fe/cast.h>
 
+#include "mim/driver.h"
 #include "mim/stage.h"
-#include "mim/world.h"
 
 namespace mim {
 
 class Pass;
 class PassMan;
-using Passes = std::deque<std::unique_ptr<Pass>>;
+using Passes = std::deque<Pass*>;
 
 /// @name Undo
 /// Used by FPPass::analyze to indicate where to backtrack to.
@@ -120,12 +119,12 @@ class PassMan : public Pass {
 public:
     PassMan(World& world, flags_t annex)
         : Pass(world, annex) {}
-    PassMan(World& world, flags_t annex, Passes&& passes)
+    PassMan(World& world, flags_t annex, const Passes&& passes)
         : Pass(world, annex) {
-        fill(std::move(passes));
+        fill(passes);
     }
 
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<PassMan>(world(), annex(), std::move(passes_)); }
+    PassMan* recreate() final { return driver().stage<PassMan>(world(), annex(), std::move(passes_)); }
 
     void init(PassMan*) final { fe::unreachable(); }
     bool inspect() const final { fe::unreachable(); }
@@ -153,18 +152,17 @@ public:
         return nullptr;
     }
 
-    void add(std::unique_ptr<Pass>&& pass) {
+    void add(Pass* pass) {
         fixed_point_ |= pass->fixed_point();
-        auto p        = pass.get();
-        auto type_idx = std::type_index(typeid(*p));
+        auto type_idx = std::type_index(typeid(*pass));
         if (auto pass = find(type_idx)) error("already added `{}`", pass);
-        registry_.emplace(type_idx, p);
-        passes_.emplace_back(std::move(pass));
+        registry_.emplace(type_idx, pass);
+        passes_.emplace_back(pass);
     }
     ///@}
 
 private:
-    void fill(Passes&&);
+    void fill(const Passes&);
 
     /// @name State
     ///@{

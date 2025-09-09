@@ -172,7 +172,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         }
 
         for (auto [idx, dim] : dims) {
-            ILOG("dim {} = {}", idx, dim);
+            DLOG("dim {} = {}", idx, dim);
             if (idx < n_nat)
                 out_indices.push_back(idx);
             else

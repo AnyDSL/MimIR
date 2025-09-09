@@ -1,4 +1,4 @@
-#include "mim/plug/matrix/pass/lower_matrix_lowlevel.h"
+#include "mim/plug/matrix/phase/lower_matrix_lowlevel.h"
 
 #include <cassert>
 
@@ -8,9 +8,6 @@
 
 #include "mim/rewrite.h"
 
-#include "mim/plug/affine/affine.h"
-#include "mim/plug/core/core.h"
-#include "mim/plug/direct/direct.h"
 #include "mim/plug/matrix/matrix.h"
 #include "mim/plug/mem/mem.h"
 

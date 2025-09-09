@@ -21,9 +21,7 @@ public:
         , beta_red_(br)
         , eta_exp_(ee) {}
 
-    std::unique_ptr<Stage> recreate() final {
-        return std::make_unique<CopyProp>(world(), annex(), bb_only(), beta_red_, eta_exp_);
-    }
+    CopyProp* recreate() final { return driver().stage<CopyProp>(world(), annex(), bb_only(), beta_red_, eta_exp_); }
 
     bool bb_only() const { return bb_only_; }
 

@@ -17,7 +17,7 @@ public:
     SSAConstr(World& world, flags_t annex, EtaExp* ee)
         : FPPass(world, annex)
         , eta_exp_(ee) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<SSAConstr>(world(), annex(), eta_exp_); }
+    SSAConstr* recreate() final { return driver().stage<SSAConstr>(world(), annex(), eta_exp_); }
 
     enum : u32 { Phixy, Sloxy, Traxy };
 

@@ -14,7 +14,7 @@ class ClosConvPrep : public RWPass<ClosConvPrep, Lam> {
 public:
     ClosConvPrep(World& world, flags_t annex)
         : RWPass(world, annex) {}
-    std::unique_ptr<Stage> recreate() final { return std::make_unique<ClosConvPrep>(world(), annex()); }
+    ClosConvPrep* recreate() final { return driver().stage<ClosConvPrep>(world(), annex()); }
 
     void init(PassMan*) final;
 
