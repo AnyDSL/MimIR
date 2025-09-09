@@ -122,7 +122,7 @@ Ptr<Module> Parser::parse_module() {
 Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
     auto name     = dbg.sym();
     auto filename = fs::path(name.view());
-    driver().VLOG("import: {}", name);
+    driver().VLOG("📥 import: {}", name);
 
     if (!filename.has_extension()) filename.replace_extension("mim"); // TODO error cases
 
@@ -143,7 +143,7 @@ Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
 }
 
 Ptr<Module> Parser::import(std::istream& is, Loc loc, const fs::path* path, std::ostream* md) {
-    driver().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
+    driver().VLOG("📄 reading: {}", path ? path->string() : "<unknown file>"s);
     if (!is) {
         ast().error(loc, "cannot read file {}", *path);
         return {};

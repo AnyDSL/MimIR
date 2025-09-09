@@ -11,9 +11,9 @@ namespace mim {
  */
 
 void Phase::run() {
-    world().verify().ILOG("=== Phase start: `{}` ===", name());
+    world().verify().ILOG("🚀 Phase launch: `{}`", name());
     start();
-    world().verify().ILOG("=== Phase done:  `{}` ===", name());
+    world().verify().ILOG("🏁 Phase finish: `{}`", name());
 }
 
 /*
@@ -85,7 +85,7 @@ void PhaseMan::start() {
     for (bool todo = true; todo; ++iter) {
         todo = false;
 
-        if (fixed_point()) VLOG("fixed-point iteration: {}", iter);
+        if (fixed_point()) VLOG("🔄 fixed-point iteration: {}", iter);
 
         for (auto& phase : phases()) {
             phase->run();
