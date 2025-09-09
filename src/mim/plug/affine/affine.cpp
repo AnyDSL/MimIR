@@ -3,4 +3,4 @@
 using namespace mim;
 using namespace mim::plug;
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"affine", nullptr, nullptr}; }
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"affine", affine::register_normalizers, nullptr}; }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include <mim/def.h>
@@ -14,6 +15,7 @@ class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(World& world, flags_t annex)
         : RWPass(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<CPS2DS>(world(), annex()); }
 
     void enter() override;
 

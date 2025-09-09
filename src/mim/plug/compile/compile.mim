@@ -42,18 +42,16 @@ let %compile.internal_cleanup_phase = %compile.phase.prefix_cleanup "internal_";
 ///
 /// ### Passes
 ///
-axm %compile.pass(man): {n: Nat} → «n; %compile.Pass » → %compile.Pass, normalize_pass;
-axm %compile.pass(beta_red):                        [] → %compile.Pass, normalize_pass;
-axm %compile.pass(eta_exp):              %compile.Pass → %compile.Pass, normalize_pass; // expects eta_red
-axm %compile.pass(eta_red):                       Bool → %compile.Pass, normalize_pass;
-axm %compile.pass(lam_spec):                        [] → %compile.Pass, normalize_pass;
-axm %compile.pass(null):                            [] → %compile.Pass, normalize_pass;
-axm %compile.pass(ret_wrap):                        [] → %compile.Pass, normalize_pass;
-axm %compile.pass(scalarize):            %compile.Pass → %compile.Pass, normalize_pass; // expects eta_exp
-axm %compile.pass(tail_rec_elim):        %compile.Pass → %compile.Pass, normalize_pass; // expects eta_red
-///
-/// ### Pipelines
-///
+axm %compile.pass(man): {n: Nat} → «n; %compile.Pass» → %compile.Pass, normalize_pass;
+axm %compile.pass(beta_red):                       [] → %compile.Pass, normalize_pass;
+axm %compile.pass(eta_exp):             %compile.Pass → %compile.Pass, normalize_pass; // expects eta_red
+axm %compile.pass(eta_red):                      Bool → %compile.Pass, normalize_pass;
+axm %compile.pass(lam_spec):                       [] → %compile.Pass, normalize_pass;
+axm %compile.pass(null):                           [] → %compile.Pass, normalize_pass;
+axm %compile.pass(ret_wrap):                       [] → %compile.Pass, normalize_pass;
+axm %compile.pass(scalarize):           %compile.Pass → %compile.Pass, normalize_pass; // expects eta_exp
+axm %compile.pass(tail_rec_elim):       %compile.Pass → %compile.Pass, normalize_pass; // expects eta_red
+
 let optimization_passes = %compile.pass.man (
     %compile.pass.beta_red (),
     let er = %compile.pass.eta_red ff; er,

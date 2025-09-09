@@ -93,4 +93,4 @@ axm %regex.quant(optional,star,plus): RE → RE, normalize_quant, 1;
 ///
 /// ### Passes
 ///
-axm %regex.lower_regex: [] → %compile.Pass;
+axm %regex.pass(lower_regex): [] → %compile.Pass, normalize_pass;

@@ -2,18 +2,15 @@
 #include <iterator>
 #include <numeric>
 #include <ranges>
-#include <vector>
 
 #include <automaton/range_helper.h>
 #include <fe/assert.h>
 
-#include "mim/axm.h"
-#include "mim/def.h"
-#include "mim/tuple.h"
-#include "mim/world.h"
+#include <mim/axm.h>
+#include <mim/def.h>
+#include <mim/world.h>
 
-#include "mim/util/log.h"
-
+#include "mim/plug/regex/pass/lower_regex.h"
 #include "mim/plug/regex/regex.h"
 
 using Range  = automaton::Range;
@@ -222,6 +219,9 @@ const Def* normalize_range(const Def* type, const Def* callee, const Def* arg) {
 }
 
 const Def* normalize_not(const Def*, const Def*, const Def*) { return {}; }
+
+template<pass>
+const Def* normalize_pass(const Def* t, const Def*, const Def*) { return create<LowerRegex>(pass::lower_regex, t); }
 
 MIM_regex_NORMALIZER_IMPL
 

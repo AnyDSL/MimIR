@@ -6,7 +6,7 @@
 ///
 /// ## Dependencies
 ///
-import mem;
+import compile;
 ///
 /// ## Operations
 ///
@@ -25,10 +25,10 @@ axm %affine.For: {m n: Nat, Ts: «n; *»}
                      body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],
                      exit: Cn «i: n; Ts#i»];
 ///
-/// ## Passes and Phases
+/// ## Passes
 ///
 /// ### %%affine.lower_for_pass
 ///
 /// Loweres the %%%affine.For operation to recursive function calls.
 ///
-axm %affine.pass(lower_for): [] → %compile.Pass;
+axm %affine.pass(lower_for): [] → %compile.Pass, normalize_pass;

@@ -21,6 +21,7 @@ class DS2CPS : public RWPass<DS2CPS, Lam> {
 public:
     DS2CPS(World& world, flags_t annex)
         : RWPass(world, annex) {}
+    std::unique_ptr<Stage> recreate() final { return std::make_unique<DS2CPS>(world(), annex()); }
 
     const Def* rewrite(const Def*) override;
 

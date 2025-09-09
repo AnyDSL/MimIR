@@ -31,14 +31,14 @@ axm %direct.cps2ds_dep: [T: *, U: T → *] → Cn [t: T, Cn U t] → [[t: T] →
 ///
 /// ### Passes
 ///
-axm %direct.ds2cps_pass: %compile.Pass;
-axm %direct.cps2ds_pass: %compile.Pass;
+axm %direct.pass(ds2cps): [] → %compile.Pass, normalize_pass;
+axm %direct.pass(cps2ds): [] → %compile.Pass, normalize_pass;
 ///
 /// ### Phases
 ///
 let direct_phases =
     %compile.phase.man ff (
-        %compile.phase.from_pass %direct.ds2cps_pass,
-        %compile.phase.from_pass %direct.cps2ds_pass,
+        %compile.phase.from_pass (%direct.pass.ds2cps ()),
+        %compile.phase.from_pass (%direct.pass.cps2ds ()),
         optimization_phase,
     );

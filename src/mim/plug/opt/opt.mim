@@ -28,7 +28,7 @@ lam extern _default_compile (): %compile.Phase =
         %compile.phase.from_pass (%compile.pass.scalarize (%compile.pass.null ())),
         %compile.phase.from_pass (%compile.pass.eta_red ff),
         %compile.phase.from_pass (%compile.pass.tail_rec_elim (%compile.pass.null ())),
-        %compile.phase.from_pass (cond_pass "regex" (%regex.lower_regex ())),
+        %compile.phase.from_pass (cond_pass "regex" (%regex.pass.lower_regex ())),
         // optimize
         %compile.phase.man tt (
             %compile.phase.beta_red (),
