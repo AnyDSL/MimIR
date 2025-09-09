@@ -1,4 +1,4 @@
-#include <mim/world.h>
+#include <mim/driver.h>
 
 #include "mim/plug/direct/direct.h"
 #include "mim/plug/direct/pass/cps2ds.h"
@@ -11,9 +11,10 @@ const Def* normalize_cps2ds(const Def*, const Def*, const Def* fun) { return op_
 
 template<pass id>
 const Def* normalize_pass(const Def* t, const Def*, const Def*) {
+    auto& d = t->driver();
     switch (id) {
-        case pass::cps2ds: return create<CPS2DS>(id, t);
-        case pass::ds2cps: return create<DS2CPS>(id, t);
+        case pass::cps2ds: return d.stage_lit<CPS2DS>(id, t);
+        case pass::ds2cps: return d.stage_lit<DS2CPS>(id, t);
     }
 }
 

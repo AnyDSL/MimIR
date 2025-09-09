@@ -46,8 +46,6 @@ public:
     }
     ///@}
 
-    static auto make_unique(const Def* arg) { return std::unique_ptr<Phase>(Lit::isa<Phase*>(arg).value_or(nullptr)); }
-
 protected:
     /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
     bool todo_ = false;

@@ -1,5 +1,4 @@
-#include <mim/axm.h>
-#include <mim/world.h>
+#include <mim/driver.h>
 
 #include <mim/plug/core/core.h>
 
@@ -104,11 +103,12 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg) {
 
 template<pass id>
 const Def* normalize_pass(const Def* t, const Def*, const Def*) {
+    auto& d = t->driver();
     // clang-format off
     switch (id) {
-        case pass::ad_eval:         return create<AutoDiffEval       >(id, t);
-        case pass::ad_zero:         return create<AutoDiffZero       >(id, t);
-        case pass::ad_zero_cleanup: return create<AutoDiffZeroCleanup>(id, t);
+        case pass::ad_eval:         return d.stage_lit<AutoDiffEval       >(id, t);
+        case pass::ad_zero:         return d.stage_lit<AutoDiffZero       >(id, t);
+        case pass::ad_zero_cleanup: return d.stage_lit<AutoDiffZeroCleanup>(id, t);
     }
     // clang-format on
 }

@@ -1,4 +1,4 @@
-#include <mim/world.h>
+#include <mim/driver.h>
 
 #include <mim/pass/eta_red.h>
 
@@ -50,21 +50,23 @@ const Def* normalize_store(const Def*, const Def*, const Def* arg) {
 
 template<phase>
 const Def* normalize_phase(const Def* t, const Def*, const Def*) {
-    return create<AddMem>(phase::add_mem, t);
+    return t->driver().stage_lit<AddMem>(phase::add_mem, t);
 }
 
 template<pass id>
 const Def* normalize_pass(const Def* t, const Def* callee, const Def* arg) {
+    auto& d = t->driver();
     switch (id) {
             // clang-format off
-        case pass::alloc2malloc: return create<Alloc2Malloc>(id, t);
-        case pass::remem_elim:   return create<RememElim   >(id, t);
-        case pass::reshape:      return create<Reshape     >(id, t, Lit::get<bool   >(arg));
-        case pass::ssa:          return create<SSAConstr   >(id, t, Lit::get<EtaExp*>(arg));
+        case pass::alloc2malloc: return d.stage_lit<Alloc2Malloc>(id, t);
+        case pass::remem_elim:   return d.stage_lit<RememElim   >(id, t);
+        case pass::reshape:      return d.stage_lit<Reshape     >(id, t, Lit::get<bool   >(arg));
+        case pass::ssa:          return d.stage_lit<SSAConstr   >(id, t, Lit::get<EtaExp*>(arg));
         // clang-format on
         case pass::copy_prop: {
             auto [bb_only, br] = App::uncurry_args<2>(callee);
-            return create<CopyProp>(id, t, Lit::get<bool>(bb_only), Lit::get<BetaRed*>(br), Lit::get<EtaExp*>(arg));
+            return d.stage_lit<CopyProp>(id, t, Lit::get<bool>(bb_only), Lit::get<BetaRed*>(br),
+                                         Lit::get<EtaExp*>(arg));
         }
     }
 }

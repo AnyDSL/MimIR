@@ -101,6 +101,8 @@ Nat::Nat(World& world)
 UMax::UMax(World& world, Defs ops)
     : Def(Node, world.univ(), ops, 0) {}
 
+Driver& Def::driver() const noexcept { return world().driver(); }
+
 // clang-format off
 
 /*

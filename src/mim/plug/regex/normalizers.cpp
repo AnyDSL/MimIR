@@ -8,7 +8,7 @@
 
 #include <mim/axm.h>
 #include <mim/def.h>
-#include <mim/world.h>
+#include <mim/driver.h>
 
 #include "mim/plug/regex/pass/lower_regex.h"
 #include "mim/plug/regex/regex.h"
@@ -221,7 +221,9 @@ const Def* normalize_range(const Def* type, const Def* callee, const Def* arg) {
 const Def* normalize_not(const Def*, const Def*, const Def*) { return {}; }
 
 template<pass>
-const Def* normalize_pass(const Def* t, const Def*, const Def*) { return create<LowerRegex>(pass::lower_regex, t); }
+const Def* normalize_pass(const Def* t, const Def*, const Def*) {
+    return t->driver().stage_lit<LowerRegex>(pass::lower_regex, t);
+}
 
 MIM_regex_NORMALIZER_IMPL
 

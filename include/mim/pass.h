@@ -7,6 +7,7 @@
 #include <fe/assert.h>
 #include <fe/cast.h>
 
+#include "mim/stage.h"
 #include "mim/world.h"
 
 namespace mim {
@@ -15,50 +16,12 @@ class Pass;
 class PassMan;
 using Passes = std::deque<std::unique_ptr<Pass>>;
 
-/// Heap-alloc `P` and wrap it in a Lit%eral.
-template<class P, class Q, class... Args>
-const Def* create(Q q, const Def* type, Args&&... args) {
-    auto& w = type->world();
-    return w.lit(type, (nat_t) new P(w, flags_t(q), std::forward<Args>(args)...));
-}
-
 /// @name Undo
 /// Used by FPPass::analyze to indicate where to backtrack to.
 ///@{
 using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 ///@}
-
-/// Common base for Phase and Pass.
-class Stage : public fe::RuntimeCast<Stage> {
-public:
-    /// @name Construction & Destruction
-    ///@{
-    Stage(World& world, std::string name)
-        : world_(world)
-        , name_(std::move(name)) {}
-    Stage(World& world, flags_t annex);
-    virtual ~Stage() {}
-
-    virtual std::unique_ptr<Stage> recreate() = 0; ///< Creates a new instance; needed by a fixed-point PhaseMan.
-    ///@}
-
-    /// @name Getters
-    ///@{
-    World& world() { return world_; }
-    Driver& driver() { return world().driver(); }
-    Log& log() const { return world_.log(); }
-    std::string_view name() const { return name_; }
-    flags_t annex() const { return annex_; }
-    ///@}
-
-private:
-    World& world_;
-    flags_t annex_ = 0;
-
-protected:
-    std::string name_;
-};
 
 /// All Pass%es that want to be registered in the PassMan must implement this interface.
 /// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
@@ -135,8 +98,6 @@ public:
         return proxy;
     }
     ///@}
-
-    static auto make_unique(const Def* arg) { return std::unique_ptr<Pass>(Lit::isa<Pass*>(arg).value_or(nullptr)); }
 
 private:
     /// @name Memory Management

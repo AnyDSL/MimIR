@@ -1,5 +1,3 @@
-#include <memory>
-
 #include <mim/driver.h>
 #include <mim/world.h>
 
@@ -30,53 +28,61 @@ const Def* normalize_is_loaded(const Def*, const Def*, const Def* arg) {
 
 template<phase id>
 const Def* normalize_phase(const Def* t, const Def* callee, const Def* arg) {
+    auto& d = t->driver();
+
     switch (id) {
             // clang-format off
         case phase::null:             return arg->world().lit(t, 0);
-        case phase::beta_red:         return create<BetaRedPhase   >(id, t);
-        case phase::branch_normalize: return create<BranchNormalize>(id, t);
-        case phase::cleanup:          return create<Cleanup        >(id, t);
-        case phase::eta_exp:          return create<EtaExpPhase    >(id, t);
-        case phase::eta_red:          return create<EtaRedPhase    >(id, t);
-        case phase::prefix_cleanup:   return create<PrefixCleanup  >(id, t, tuple2str(arg));
+        case phase::beta_red:         return d.stage_lit<BetaRedPhase   >(id, t);
+        case phase::branch_normalize: return d.stage_lit<BranchNormalize>(id, t);
+        case phase::cleanup:          return d.stage_lit<Cleanup        >(id, t);
+        case phase::eta_exp:          return d.stage_lit<EtaExpPhase    >(id, t);
+        case phase::eta_red:          return d.stage_lit<EtaRedPhase    >(id, t);
+        case phase::prefix_cleanup:   return d.stage_lit<PrefixCleanup  >(id, t, tuple2str(arg));
             // clang-format on
         case phase::from_pass:
             if (auto l = Lit::isa<::mim::Pass*>(arg)) {
                 if (auto pass = *l) {
-                    if (auto man = pass->isa<PassMan>())
-                        return create<PassManPhase>(id, t, std::unique_ptr<PassMan>(man));
-                    return create<PassManPhase>(id, t, std::unique_ptr<::mim::Pass>(pass));
+                    if (auto man = pass->isa<PassMan>()) return d.stage_lit<PassManPhase>(id, t, d.own<PassMan>(man));
+                    return d.stage_lit<PassManPhase>(id, t, d.own<::mim::Pass>(pass));
                 }
             }
             return arg->world().lit(t, 0);
         case phase::man: {
             auto fp     = callee->as<App>()->arg();
             auto phases = Phases();
-            for (auto phase : arg->projs())
-                if (auto p = ::mim::Phase::make_unique(phase)) phases.emplace_back(std::move(p));
-            return create<PhaseMan>(id, t, Lit::get<bool>(fp), std::move(phases));
+            for (auto a : arg->projs()) {
+                if (auto l = Lit::isa<Stage*>(a)) {
+                    if (auto s = *l) phases.emplace_back(d.own<::mim::Phase>(s));
+                }
+            }
+            return d.stage_lit<PhaseMan>(id, t, Lit::get<bool>(fp), std::move(phases));
         }
     }
 }
 
 template<pass id>
 const Def* normalize_pass(const Def* t, const Def*, const Def* arg) {
+    auto& d = t->driver();
     switch (id) {
             // clang-format off
         case pass::null:          return arg->world().lit(t, 0);
-        case pass::beta_red:      return create<BetaRed    >(id, t);
-        case pass::lam_spec:      return create<LamSpec    >(id, t);
-        case pass::ret_wrap:      return create<RetWrap    >(id, t);
-        case pass::eta_red:       return create<EtaRed     >(id, t, Lit::get<bool   >(arg));
-        case pass::eta_exp:       return create<EtaExp     >(id, t, Lit::get<EtaRed*>(arg));
-        case pass::scalarize:     return create<Scalarize  >(id, t, Lit::get<EtaExp*>(arg));
-        case pass::tail_rec_elim: return create<TailRecElim>(id, t, Lit::get<EtaRed*>(arg));
+        case pass::beta_red:      return d.stage_lit<BetaRed    >(id, t);
+        case pass::lam_spec:      return d.stage_lit<LamSpec    >(id, t);
+        case pass::ret_wrap:      return d.stage_lit<RetWrap    >(id, t);
+        case pass::eta_red:       return d.stage_lit<EtaRed     >(id, t, Lit::get<bool   >(arg));
+        case pass::eta_exp:       return d.stage_lit<EtaExp     >(id, t, Lit::get<EtaRed*>(arg));
+        case pass::scalarize:     return d.stage_lit<Scalarize  >(id, t, Lit::get<EtaExp*>(arg));
+        case pass::tail_rec_elim: return d.stage_lit<TailRecElim>(id, t, Lit::get<EtaRed*>(arg));
             // clang-format on
         case pass::man: {
             auto passes = Passes();
-            for (auto pass : arg->projs())
-                if (auto p = ::mim::Pass::make_unique(pass)) passes.emplace_back(std::move(p));
-            return create<PassMan>(id, t, std::move(passes));
+            for (auto a : arg->projs()) {
+                if (auto l = Lit::isa<Stage*>(a)) {
+                    if (auto s = *l) passes.emplace_back(d.own<::mim::Pass>(s));
+                }
+            }
+            return d.stage_lit<PassMan>(id, t, std::move(passes));
         }
     }
 }

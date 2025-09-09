@@ -38,8 +38,11 @@ void optimize(World& world) {
     world.DLOG("compilation using {} : {}", compilation, compilation->type());
 
     auto body  = compilation->as<Lam>()->body();
-    auto phase = Phase::make_unique(body);
-    if (phase) phase->run();
+    auto stage = Lit::get<Stage*>(body);
+    if (stage) {
+        auto phase = world.driver().own<Phase>(stage)->as<Phase>();
+        phase->run();
+    }
 }
 
 } // namespace mim

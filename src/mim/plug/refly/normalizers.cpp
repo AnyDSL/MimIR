@@ -1,10 +1,9 @@
 #include <rang.hpp>
 
-#include <mim/tuple.h>
-#include <mim/world.h>
+#include <mim/driver.h>
 
-#include "mim/plug/refly/refly.h"
 #include "mim/plug/refly/pass/remove_perm.h"
+#include "mim/plug/refly/refly.h"
 
 using namespace std::string_literals;
 
@@ -94,7 +93,9 @@ const Def* normalize_check(const Def* type, const Def*, const Def* arg) {
 }
 
 template<pass>
-const Def* normalize_pass(const Def* t, const Def*, const Def*) { return create<RemoveDbgPerm>(pass::remove_dbg_perm, t); }
+const Def* normalize_pass(const Def* t, const Def*, const Def*) {
+    return t->driver().stage_lit<RemoveDbgPerm>(pass::remove_dbg_perm, t);
+}
 
 MIM_refly_NORMALIZER_IMPL
 
