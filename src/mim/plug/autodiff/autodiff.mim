@@ -45,25 +45,15 @@ axm %autodiff.zero: [T: *] → T, normalize_zero;
 axm %autodiff.add: {T: *} → [T, T] → T, normalize_add;
 axm %autodiff.sum: [n:Nat, T: *] → «n; T» → T, normalize_sum;
 ///
-/// ## Passes and Phases
+/// ## Stages
+///
+/// ### Repls
+///
+axm %autodiff.zero_repl: %compile.Repl;
 ///
 /// ### Passes
 ///
-axm %autodiff.ad_eval_pass:         %compile.Pass;
-axm %autodiff.ad_zero_pass:         %compile.Pass;
-axm %autodiff.ad_zero_cleanup_pass: %compile.Pass;
-///
-/// ### Phases
-///
-let ad_cleanup_phase = %compile.pass2phase %autodiff.ad_zero_cleanup_pass;
-
-let ad_phase =
-    %compile.phases ff (
-        optimization_phase,
-        %compile.pass2phase %autodiff.ad_eval_pass,
-        %compile.pass2phase %autodiff.ad_zero_pass,
-        ad_cleanup_phase,
-    );
+axm %autodiff.eval_pass: %compile.Pass;
 ///
 /// ## Registered translations
 ///

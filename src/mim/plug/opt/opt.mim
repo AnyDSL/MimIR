@@ -47,8 +47,8 @@ lam extern _default_compile (): %compile.Phase =
         ),
         cond_phase "autodiff" (
             %compile.phases ff (
-                %compile.pass2phase %autodiff.ad_eval_pass,
-                %compile.pass2phase %autodiff.ad_zero_pass,
+                %compile.pass2phase %autodiff.eval_pass,
+                %compile.repl2phase %autodiff.zero_repl,
             )
         ),
         cond_phase "direct" direct_phases,
@@ -62,7 +62,6 @@ lam extern _default_compile (): %compile.Phase =
         %compile.internal_cleanup_phase,
         cond_phase "clos" clos_phases,
         %compile.pass2phase %compile.lam_spec_pass,
-        cond_phase "autodiff" ad_cleanup_phase,
         // CodeGenPrep
         %compile.branch_normalize_phase,
         %compile.ret_wrap_phase,

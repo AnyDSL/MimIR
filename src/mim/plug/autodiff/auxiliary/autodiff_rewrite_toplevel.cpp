@@ -1,10 +1,10 @@
 #include "mim/plug/autodiff/autodiff.h"
-#include "mim/plug/autodiff/pass/autodiff_eval.h"
+#include "mim/plug/autodiff/pass/eval.h"
 
 namespace mim::plug::autodiff {
 
 /// Additionally to the derivation, the pullback is registered and the maps are initialized.
-const Def* AutoDiffEval::derive_(const Def* def) {
+const Def* Eval::derive_(const Def* def) {
     auto lam = def->as_mut<Lam>(); // TODO check if mutable
     DLOG("Derive lambda: {}", def);
     auto deriv_ty = autodiff_type_fun_pi(lam->type());

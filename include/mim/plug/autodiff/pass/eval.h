@@ -7,9 +7,9 @@ namespace mim::plug::autodiff {
 
 /// This pass is the heart of AD.
 /// We replace an `autodiff fun` call with the differentiated function.
-class AutoDiffEval : public RWPass<AutoDiffEval, Lam> {
+class Eval : public RWPass<Eval, Lam> {
 public:
-    AutoDiffEval(World& world, flags_t annex)
+    Eval(World& world, flags_t annex)
         : RWPass(world, annex) {}
 
     /// Detect autodiff calls.
