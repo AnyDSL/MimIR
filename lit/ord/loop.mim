@@ -60,4 +60,4 @@ fun extern f(mem: %mem.M, x: I64): [%mem.M, I64] =
     end;
 
 // CHECK: define i64 @f(i64 [[X:%[[:alnum:]_]+]])
-// CHECK: phi i64 [ [[X]]
+// CHECK: ret i64 [[X]]

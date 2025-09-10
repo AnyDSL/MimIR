@@ -74,4 +74,4 @@ let map = (%ord.Map, %ord.init.map, %ord.get, %ord.insert.map, %ord.contains.map
 fun extern f(mem: %mem.M, x: I64): [%mem.M, I64] = poly map ((mem, x), return);
 
 // CHECK: define i64 @f(i64 [[X:%[[:alnum:]_]+]])
-// CHECK: phi i64 [ [[X]]
+// CHECK: ret i64 [[X]]

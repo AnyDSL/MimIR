@@ -21,6 +21,11 @@ void Phase::run() {
  */
 
 void RWPhase::start() {
+    for (bool todo = true; todo;) {
+        todo = false;
+        todo |= analyze();
+    }
+
     for (const auto& [f, def] : old_world().flags2annex())
         rewrite_annex(f, def);
 
@@ -37,19 +42,6 @@ void RWPhase::rewrite_annex(flags_t f, const Def* def) { new_world().register_an
 void RWPhase::rewrite_external(Def* old_mut) {
     auto new_mut = rewrite(old_mut)->as_mut();
     if (old_mut->is_external()) new_mut->make_external();
-}
-
-/*
- * FPPhase
- */
-
-void FPPhase::start() {
-    for (bool todo = true; todo;) {
-        todo = false;
-        todo |= analyze();
-    }
-
-    RWPhase::start();
 }
 
 /*

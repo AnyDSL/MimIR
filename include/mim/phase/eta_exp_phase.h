@@ -7,10 +7,10 @@
 namespace mim {
 
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
-class EtaExpPhase : public FPPhase {
+class EtaExpPhase : public RWPhase {
 public:
     EtaExpPhase(World& world, flags_t annex)
-        : FPPhase(world, annex) {}
+        : RWPhase(world, annex) {}
 
 private:
     enum Lattice : u8 {
@@ -20,10 +20,10 @@ private:
         Both    = Known | Unknown,
     };
 
-    static void join(Lattice& l1, Lattice l2) { l1 = (Lattice)((u8)l1 | (u8)l2); }
+    static Lattice join(Lattice l1, Lattice l2) { return Lattice((u8)l1 | (u8)l2); }
 
     void join(const Lam* lam, Lattice l) {
-        if (auto [i, ins] = lam2lattice_.emplace(lam, l); !ins) join(i->second, l);
+        if (auto [i, ins] = lam2lattice_.emplace(lam, l); !ins) i->second = join(i->second, l);
     }
 
     Lattice lattice(const Lam* lam) {
@@ -36,10 +36,10 @@ private:
     void visit(const Def*, Lattice = Lattice::Unknown);
 
     void rewrite_external(Def*) final;
-    const Def* rewrite_no_eta(const Def*);
-    const Def* rewrite(const Def*);
+    const Def* rewrite(const Def*) final;
     const Def* rewrite_imm_App(const App*) final;
     const Def* rewrite_imm_Var(const Var*) final;
+    const Def* rewrite_no_eta(const Def* old_def) { return Rewriter::rewrite(old_def); }
 
     DefSet analyzed_;
     GIDMap<const Lam*, Lattice> lam2lattice_;

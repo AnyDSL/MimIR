@@ -30,7 +30,6 @@ target_sources(libmim
         pass/eta_red.cpp
         pass/lam_spec.cpp
         pass/optimize.cpp
-        pass/ret_wrap.cpp
         pass/scalarize.cpp
         pass/tail_rec_elim.cpp
         phase/beta_red_phase.cpp
@@ -38,6 +37,7 @@ target_sources(libmim
         phase/eta_exp_phase.cpp
         phase/branch_normalize.cpp
         phase/prefix_cleanup.cpp
+        phase/ret_wrap.cpp
         util/bitset.cpp
         util/dbg.cpp
         util/dl.cpp

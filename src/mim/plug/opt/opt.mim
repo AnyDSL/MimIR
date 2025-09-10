@@ -64,9 +64,9 @@ lam extern _default_compile (): %compile.Phase =
         cond_phase "autodiff" ad_cleanup_phase,
         // CodeGenPrep
         %compile.branch_normalize_phase,
+        %compile.ret_wrap_phase,
         %compile.pass2phase (
             %compile.passes (
-                %compile.ret_wrap_pass,
                 %mem.remem_elim_pass,
                 %mem.alloc2malloc_pass,
                 cond_pass "refly" %refly.remove_dbg_perm_pass,

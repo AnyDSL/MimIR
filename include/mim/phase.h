@@ -36,7 +36,7 @@ public:
 
     /// @name run
     ///@{
-    virtual void run(); ///< Entry point and generates some debug output; invokes Phase::start.
+    virtual void run();       ///< Entry point and generates some debug output; invokes Phase::start.
     virtual void start() = 0; ///< Actual entry.
 
     /// Runs a single Phase.
@@ -73,6 +73,10 @@ public:
         , Rewriter(world.inherit()) {}
     ///@}
 
+    /// Ycou can do an optional fixed-point loop on the RWPhase::old_world before rewriting.
+    /// @note If you don't need a fixed-point, just return `false` after the first run of analyze.
+    virtual bool analyze() { return false; }
+
     /// @name Rewrite
     ///@{
     virtual void rewrite_annex(flags_t, const Def*);
@@ -105,20 +109,6 @@ public:
         : RWPhase(world, "cleanup") {}
     Cleanup(World& world, flags_t annex)
         : RWPhase(world, annex) {}
-};
-
-/// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
-/// Inherit from this one to implement a classic data-flow analysis.
-/// @note If you don't need a fixed-point, just return `true` after the first run of analyze.
-class FPPhase : public RWPhase {
-public:
-    FPPhase(World& world, std::string name)
-        : RWPhase(world, std::move(name)) {}
-    FPPhase(World& world, flags_t annex)
-        : RWPhase(world, annex) {}
-
-    virtual bool analyze() = 0;
-    void start() override;
 };
 
 /// Wraps a PassMan pipeline as a Phase.
