@@ -7,7 +7,7 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Flags2Stages& stages) {
-    MIM_REPL(refly::remove_dbg_repl, {
+    MIM_REPL(stages, refly::remove_dbg_repl, {
         if (auto dbg_perm = Axm::isa(refly::dbg::perm, def)) {
             auto [lvl, x] = dbg_perm->args<2>();
             DLOG("dbg_perm: {}", x);

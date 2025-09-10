@@ -16,12 +16,12 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Flags2Stages& stages) {
-    MIM_REPL(mem::remem_repl, {
+    MIM_REPL(stages, mem::remem_repl, {
         if (auto remem = Axm::isa<mem::remem>(def)) return remem->arg();
         return {};
     });
 
-    MIM_REPL(mem::alloc2malloc_repl, {
+    MIM_REPL(stages, mem::alloc2malloc_repl, {
         if (auto alloc = Axm::isa<mem::alloc>(def)) {
             auto [pointee, addr_space] = alloc->decurry()->args<2>();
             return mem::op_malloc(pointee, alloc->arg());

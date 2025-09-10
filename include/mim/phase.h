@@ -138,18 +138,18 @@ private:
 #define MIM_CONCAT_INNER(a, b) a##b
 #define MIM_CONCAT(a, b)       MIM_CONCAT_INNER(a, b)
 
-#define MIM_REPL(__annex, ...) MIM_REPL_IMPL(__annex, __LINE__, __VA_ARGS__)
+#define MIM_REPL(__stages, __annex, ...) MIM_REPL_IMPL(__stages, __annex, __LINE__, __VA_ARGS__)
 
-#define MIM_REPL_IMPL(__annex, __id, ...)                                  \
-    struct MIM_CONCAT(Repl_, __id)                                         \
-        : ::mim::Repl {                                                    \
-        MIM_CONCAT(Repl_, __id)                                            \
-        (::mim::World & world, ::mim::flags_t annex)                       \
-            : Repl(world, annex) {}                                        \
-                                                                           \
-        const ::mim::Def* replace(const ::mim::Def* def) final __VA_ARGS__ \
-    };                                                                     \
-    ::mim::Stage::hook<__annex, MIM_CONCAT(Repl_, __id)>(stages)
+// clang-format off
+#define MIM_REPL_IMPL(__stages, __annex, __id, ...)                         \
+    struct MIM_CONCAT(Repl_, __id) : ::mim::Repl {                          \
+        MIM_CONCAT(Repl_, __id)(::mim::World & world, ::mim::flags_t annex) \
+            : Repl(world, annex) {}                                         \
+                                                                            \
+        const ::mim::Def* replace(const ::mim::Def* def) final __VA_ARGS__  \
+    };                                                                      \
+    ::mim::Stage::hook<__annex, MIM_CONCAT(Repl_, __id)>(__stages)
+// clang-format on
 
 class ReplManPhase : public RWPhase {
 public:
