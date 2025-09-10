@@ -4,8 +4,6 @@
 
 namespace mim::plug::mem::pass {
 
-using DefQueue = std::deque<const Def*>;
-
 /// The general idea of this Pass is to change the shape of signatures of functions.
 /// * Example: `Cn[ [mem,  A, B], C  , ret]`
 /// * Arg    : `Cn[ [mem, [A, B , C]], ret]` (general `Cn[ [mem, args], ret]`)

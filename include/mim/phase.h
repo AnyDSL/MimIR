@@ -135,10 +135,29 @@ private:
     Repls repls_;
 };
 
+#define MIM_CONCAT_INNER(a, b) a##b
+#define MIM_CONCAT(a, b)       MIM_CONCAT_INNER(a, b)
+
+#define MIM_REPL(__annex, ...) MIM_REPL_IMPL(__annex, __LINE__, __VA_ARGS__)
+
+#define MIM_REPL_IMPL(__annex, __id, ...)                                  \
+    struct MIM_CONCAT(Repl_, __id)                                         \
+        : ::mim::Repl {                                                    \
+        MIM_CONCAT(Repl_, __id)                                            \
+        (::mim::World & world, ::mim::flags_t annex)                       \
+            : Repl(world, annex) {}                                        \
+                                                                           \
+        const ::mim::Def* replace(const ::mim::Def* def) final __VA_ARGS__ \
+    };                                                                     \
+    ::mim::Stage::hook<__annex, MIM_CONCAT(Repl_, __id)>(stages)
+
 class ReplManPhase : public RWPhase {
 public:
     /// @name Construction
     ///@{
+    ReplManPhase(World& world, std::unique_ptr<ReplMan>&& man)
+        : RWPhase(world, "pass_man_phase")
+        , man_(std::move(man)) {}
     ReplManPhase(World& world, flags_t annex)
         : RWPhase(world, annex) {}
 
@@ -146,7 +165,7 @@ public:
     void apply(Stage&) final;
     ///@}
 
-    ReplMan& man() { return *man_; }
+    const ReplMan& man() const { return *man_; }
 
 private:
     void start() final;
@@ -200,7 +219,6 @@ public:
     void apply(const App*) final;
     void apply(Stage&) final;
     ///@}
-
 
     /// @name Getters
     ///@{
