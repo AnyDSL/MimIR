@@ -78,14 +78,13 @@ var hierarchy =
     [ "mim::Res", "classmim_1_1Res.html", null ],
     [ "mim::Rewriter", "classmim_1_1Rewriter.html", [
       [ "mim::RWPhase", "classmim_1_1RWPhase.html", [
+        [ "mim::BetaRedPhase", "classmim_1_1BetaRedPhase.html", null ],
         [ "mim::BranchNormalizePhase", "classmim_1_1BranchNormalizePhase.html", null ],
         [ "mim::Cleanup", "classmim_1_1Cleanup.html", null ],
+        [ "mim::EtaExpPhase", "classmim_1_1EtaExpPhase.html", null ],
         [ "mim::EtaRedPhase", "classmim_1_1EtaRedPhase.html", null ],
-        [ "mim::FPPhase", "classmim_1_1FPPhase.html", [
-          [ "mim::BetaRedPhase", "classmim_1_1BetaRedPhase.html", null ],
-          [ "mim::EtaExpPhase", "classmim_1_1EtaExpPhase.html", null ]
-        ] ],
         [ "mim::PrefixCleanup", "classmim_1_1PrefixCleanup.html", null ],
+        [ "mim::RetWrap", "classmim_1_1RetWrap.html", null ],
         [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
       ] ],
       [ "mim::VarRewriter", "classmim_1_1VarRewriter.html", null ]
@@ -161,9 +160,6 @@ var hierarchy =
           ] ],
           [ "mim::RWPass< LamSpec, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::LamSpec", "classmim_1_1LamSpec.html", null ]
-          ] ],
-          [ "mim::RWPass< RetWrap, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::RetWrap", "classmim_1_1RetWrap.html", null ]
           ] ],
           [ "mim::RWPass< Scalarize, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::Scalarize", "classmim_1_1Scalarize.html", null ]

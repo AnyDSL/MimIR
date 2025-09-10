@@ -1,55 +1,55 @@
 <map id="mim::Phase" name="mim::Phase">
-<area shape="rect" id="Node000001" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="396,198,495,223"/>
-<area shape="rect" id="Node000004" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="911,16,1079,56"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="453,183,465,153,484,117,510,83,543,56,587,34,635,19,684,9,734,4,829,6,911,15,910,21,829,11,734,10,685,15,636,24,589,39,545,61,514,87,489,120,470,155,458,185"/>
-<area shape="rect" id="Node000010" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="911,80,1079,120"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="477,188,508,171,543,157,640,132,739,116,832,105,910,100,910,105,832,110,740,121,641,138,545,162,510,176,479,193"/>
-<area shape="rect" id="Node000012" href="$classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable, closed mutables in the World." alt="" coords="556,71,767,96"/>
-<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="457,184,481,147,498,129,517,114,561,94,563,99,520,118,502,133,486,151,461,187"/>
-<area shape="rect" id="Node000013" href="$classmim_1_1PassManPhase.html" title="Wraps a PassMan pipeline as a Phase." alt="" coords="583,172,739,198"/>
-<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="508,201,583,192,584,197,509,206"/>
-<area shape="rect" id="Node000014" href="$classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline." alt="" coords="598,222,725,247"/>
-<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="509,215,598,225,598,230,508,220"/>
-<area shape="rect" id="Node000015" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="601,271,722,296"/>
-<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="481,228,545,257,601,272,599,277,543,262,479,232"/>
-<area shape="rect" id="Node000024" href="$classmim_1_1plug_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion." alt="" coords="566,320,757,346"/>
-<area shape="poly" id="edge27_Node000001_Node000024" title=" " alt="" coords="465,233,500,272,521,291,545,307,572,318,570,323,543,312,518,295,496,275,461,236"/>
-<area shape="rect" id="Node000025" href="$classmim_1_1plug_1_1clos_1_1LowerTypedClos.html" title="This pass lowers typed closures to untyped closures." alt="" coords="544,370,779,395"/>
-<area shape="poly" id="edge28_Node000001_Node000025" title=" " alt="" coords="459,235,491,297,515,329,546,356,567,367,564,372,542,361,511,333,486,300,454,237"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="249,198,347,223"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="360,208,396,208,396,213,360,213"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,198,200,223"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="214,208,249,208,249,213,214,213"/>
-<area shape="rect" id="Node000005" href="$classmim_1_1NestPhase.html" title=" " alt="" coords="1431,52,1617,78"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1093,38,1407,54,1430,56,1430,61,1407,60,1092,43"/>
-<area shape="rect" id="Node000006" href="$classmim_1_1Emitter.html" title=" " alt="" coords="2053,10,2204,64"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1584,46,1666,31,1768,20,1848,16,2029,24,2053,26,2053,31,2029,29,1848,22,1768,25,1667,36,1585,52"/>
-<area shape="rect" id="Node000008" href="$classmim_1_1Emitter.html" title=" " alt="" coords="1683,45,1846,85"/>
-<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="1631,62,1683,62,1683,68,1631,68"/>
-<area shape="rect" id="Node000009" href="$classmim_1_1plug_1_1mem_1_1AddMem.html" title="This phase adds mems to all lambdas and continuations." alt="" coords="1667,110,1863,135"/>
-<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="1592,79,1711,107,1710,112,1591,84"/>
-<area shape="rect" id="Node000007" href="$classmim_1_1ll_1_1Emitter.html" title=" " alt="" coords="2253,24,2377,50"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="2218,34,2253,34,2253,40,2218,40"/>
-<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="1860,63,1943,60,2029,53,2053,50,2054,55,2030,58,1943,65,1860,68"/>
-<area shape="rect" id="Node000011" href="$classmim_1_1NestPhase.html" title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit." alt="" coords="1149,79,1320,104"/>
-<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="1092,94,1149,92,1149,97,1093,99"/>
-<area shape="poly" id="edge12_Node000011_Node000005" title=" " alt="" coords="1334,80,1430,71,1431,76,1334,85"/>
-<area shape="poly" id="edge14_Node000012_Node000004" title=" " alt="" coords="763,67,910,45,911,50,764,72"/>
-<area shape="poly" id="edge15_Node000012_Node000010" title=" " alt="" coords="781,87,911,93,911,98,780,92"/>
-<area shape="rect" id="Node000016" href="$classmim_1_1BranchNormalizePhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="889,376,1100,402"/>
-<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="736,294,780,307,812,320,835,334,859,348,890,361,932,374,930,379,888,366,856,352,833,339,809,325,778,312,735,299"/>
-<area shape="rect" id="Node000017" href="$classmim_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping them afte..." alt="" coords="938,426,1051,451"/>
-<area shape="poly" id="edge20_Node000015_Node000017" title=" " alt="" coords="737,287,760,295,780,307,791,319,794,332,797,344,805,357,825,377,843,390,890,412,938,427,937,432,888,417,840,395,821,381,801,360,792,346,789,333,786,322,777,311,757,300,735,292"/>
-<area shape="rect" id="Node000018" href="$classmim_1_1EtaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="922,163,1067,188"/>
-<area shape="poly" id="edge21_Node000015_Node000018" title=" " alt="" coords="735,273,777,258,789,246,801,232,843,211,889,199,935,186,936,191,890,204,845,216,804,237,793,249,780,262,737,278"/>
-<area shape="rect" id="Node000019" href="$classmim_1_1FPPhase.html" title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand." alt="" coords="937,212,1052,238"/>
-<area shape="poly" id="edge22_Node000015_Node000019" title=" " alt="" coords="735,268,937,233,938,238,736,274"/>
-<area shape="rect" id="Node000022" href="$classmim_1_1PrefixCleanup.html" title=" " alt="" coords="919,262,1070,287"/>
-<area shape="poly" id="edge25_Node000015_Node000022" title=" " alt="" coords="736,279,919,274,919,279,736,284"/>
-<area shape="rect" id="Node000023" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer..." alt="" coords="913,312,1077,352"/>
-<area shape="poly" id="edge26_Node000015_Node000023" title=" " alt="" coords="736,292,913,317,912,323,735,297"/>
-<area shape="rect" id="Node000020" href="$classmim_1_1BetaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="1157,188,1312,214"/>
-<area shape="poly" id="edge23_Node000019_Node000020" title=" " alt="" coords="1065,215,1157,206,1158,211,1066,221"/>
-<area shape="rect" id="Node000021" href="$classmim_1_1EtaExpPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="1163,238,1307,263"/>
-<area shape="poly" id="edge24_Node000019_Node000021" title=" " alt="" coords="1066,230,1163,240,1162,246,1066,235"/>
+<area shape="rect" id="Node000001" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="396,203,495,228"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="911,13,1079,53"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="453,188,465,158,484,123,510,88,543,61,587,39,634,23,684,12,733,7,829,6,911,14,910,19,828,11,734,12,684,18,636,28,589,44,545,66,514,92,489,125,470,160,458,190"/>
+<area shape="rect" id="Node000010" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="911,77,1079,117"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="477,193,508,176,543,162,640,136,739,118,832,105,910,98,911,104,832,111,740,123,641,141,545,167,510,181,479,198"/>
+<area shape="rect" id="Node000012" href="$classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable, closed mutables in the World." alt="" coords="556,76,767,101"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="457,189,481,152,498,134,517,118,561,99,563,104,520,123,502,138,486,155,461,192"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1PassManPhase.html" title="Wraps a PassMan pipeline as a Phase." alt="" coords="583,177,739,203"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="508,205,583,196,584,202,509,211"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline." alt="" coords="598,227,725,252"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="509,220,598,230,598,235,508,225"/>
+<area shape="rect" id="Node000015" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="601,276,722,301"/>
+<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="481,232,545,262,601,277,599,282,543,267,479,237"/>
+<area shape="rect" id="Node000024" href="$classmim_1_1plug_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion." alt="" coords="566,325,757,351"/>
+<area shape="poly" id="edge27_Node000001_Node000024" title=" " alt="" coords="465,237,500,276,521,296,545,312,572,323,570,328,543,316,518,300,496,280,461,241"/>
+<area shape="rect" id="Node000025" href="$classmim_1_1plug_1_1clos_1_1LowerTypedClos.html" title="This pass lowers typed closures to untyped closures." alt="" coords="544,375,779,400"/>
+<area shape="poly" id="edge28_Node000001_Node000025" title=" " alt="" coords="459,240,491,302,515,334,546,361,567,372,564,377,542,366,511,338,486,305,454,242"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="249,203,347,228"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="360,213,396,213,396,218,360,218"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,203,200,228"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="214,213,249,213,249,218,214,218"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1NestPhase.html" title=" " alt="" coords="1431,48,1617,73"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1093,35,1407,51,1430,53,1430,58,1407,57,1092,40"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1Emitter.html" title=" " alt="" coords="2053,5,2204,60"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1584,42,1666,26,1768,15,1848,12,2029,19,2053,21,2053,26,2029,25,1848,17,1768,20,1667,31,1585,47"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1Emitter.html" title=" " alt="" coords="1683,41,1846,81"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="1631,58,1683,58,1683,63,1631,63"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1plug_1_1mem_1_1AddMem.html" title="This phase adds mems to all lambdas and continuations." alt="" coords="1667,105,1863,131"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="1592,74,1711,103,1710,108,1591,79"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1ll_1_1Emitter.html" title=" " alt="" coords="2253,20,2377,45"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="2218,30,2253,30,2253,35,2218,35"/>
+<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="1860,58,1943,55,2029,49,2053,45,2054,51,2030,54,1943,61,1860,63"/>
+<area shape="rect" id="Node000011" href="$classmim_1_1NestPhase.html" title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit." alt="" coords="1149,75,1320,100"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="1092,90,1149,88,1149,93,1093,96"/>
+<area shape="poly" id="edge12_Node000011_Node000005" title=" " alt="" coords="1334,76,1430,67,1431,72,1334,81"/>
+<area shape="poly" id="edge14_Node000012_Node000004" title=" " alt="" coords="751,71,910,44,911,49,752,76"/>
+<area shape="poly" id="edge15_Node000012_Node000010" title=" " alt="" coords="781,91,803,91,910,93,910,99,803,97,780,96"/>
+<area shape="rect" id="Node000016" href="$classmim_1_1BetaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="917,356,1072,381"/>
+<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="736,302,779,311,890,341,941,353,940,359,889,346,778,317,735,307"/>
+<area shape="rect" id="Node000017" href="$classmim_1_1BranchNormalizePhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="889,405,1100,431"/>
+<area shape="poly" id="edge20_Node000015_Node000017" title=" " alt="" coords="737,295,780,312,793,325,805,339,845,369,890,392,924,403,923,408,888,396,842,374,801,343,789,328,777,316,735,300"/>
+<area shape="rect" id="Node000018" href="$classmim_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping them afte..." alt="" coords="938,455,1051,480"/>
+<area shape="poly" id="edge21_Node000015_Node000018" title=" " alt="" coords="736,290,760,298,781,312,793,330,795,349,796,367,805,386,824,407,842,420,890,441,938,456,937,461,888,446,839,425,820,411,800,389,791,368,790,349,788,332,777,316,757,303,735,295"/>
+<area shape="rect" id="Node000019" href="$classmim_1_1EtaExpPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="923,504,1067,529"/>
+<area shape="poly" id="edge22_Node000015_Node000019" title=" " alt="" coords="737,289,760,297,781,312,792,328,797,343,796,374,794,405,797,420,805,436,828,462,858,481,890,495,923,504,921,509,889,500,855,486,825,466,800,440,792,422,788,405,791,374,792,344,787,330,777,316,758,302,735,294"/>
+<area shape="rect" id="Node000020" href="$classmim_1_1EtaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="922,143,1067,168"/>
+<area shape="poly" id="edge23_Node000015_Node000020" title=" " alt="" coords="735,280,757,273,777,263,785,254,789,245,793,234,801,223,822,205,841,194,888,177,926,166,927,171,890,182,844,199,825,209,805,226,797,236,794,246,790,257,780,267,759,278,737,286"/>
+<area shape="rect" id="Node000021" href="$classmim_1_1PrefixCleanup.html" title=" " alt="" coords="919,192,1070,217"/>
+<area shape="poly" id="edge24_Node000015_Node000021" title=" " alt="" coords="735,275,778,262,802,249,845,236,889,227,940,215,942,220,890,233,846,241,804,254,780,267,736,280"/>
+<area shape="rect" id="Node000022" href="$classmim_1_1RetWrap.html" title=" " alt="" coords="937,241,1053,267"/>
+<area shape="poly" id="edge25_Node000015_Node000022" title=" " alt="" coords="735,278,936,257,937,263,736,284"/>
+<area shape="rect" id="Node000023" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer..." alt="" coords="913,291,1077,331"/>
+<area shape="poly" id="edge26_Node000015_Node000023" title=" " alt="" coords="736,291,913,303,912,308,736,296"/>
 </map>

@@ -48,7 +48,6 @@ var namespacemim =
     [ "FNV1< 4 >", "structmim_1_1FNV1_3_014_01_4.html", "structmim_1_1FNV1_3_014_01_4" ],
     [ "FNV1< 8 >", "structmim_1_1FNV1_3_018_01_4.html", "structmim_1_1FNV1_3_018_01_4" ],
     [ "FPPass", "classmim_1_1FPPass.html", "classmim_1_1FPPass" ],
-    [ "FPPhase", "classmim_1_1FPPhase.html", "classmim_1_1FPPhase" ],
     [ "GIDHash", "structmim_1_1GIDHash.html", "structmim_1_1GIDHash" ],
     [ "GIDLt", "structmim_1_1GIDLt.html", "structmim_1_1GIDLt" ],
     [ "Global", "classmim_1_1Global.html", "classmim_1_1Global" ],
@@ -226,6 +225,7 @@ var namespacemim =
       [ "Idx", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939", null ]
     ] ],
     [ "assert_emplace", "namespacemim.html#a217db174daa31eb9e4001c60c099a96f", null ],
+    [ "assert_lookup", "namespacemim.html#af140486d32afbf3b0c29b21703baa0dc", null ],
     [ "binary_find", "namespacemim.html#a490bc82fced6d1222ca1e66d50e573a6", null ],
     [ "bitcast", "namespacemim.html#a1aae5adc4db386bfd618fdc8303ceb0c", null ],
     [ "compose_cn", "namespacemim.html#aab8bd049eb0b9bf7561a602f62ce7ebd", null ],

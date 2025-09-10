@@ -9,6 +9,7 @@ var util_8h =
     [ "mim::GIDNodeSet", "namespacemim.html#ac72c144b58d202d61352e52698a65ebe", null ],
     [ "mim::GIDSet", "namespacemim.html#aed213d360936f015062f16dd7a3210d4", null ],
     [ "mim::assert_emplace", "namespacemim.html#a217db174daa31eb9e4001c60c099a96f", null ],
+    [ "mim::assert_lookup", "namespacemim.html#af140486d32afbf3b0c29b21703baa0dc", null ],
     [ "mim::binary_find", "namespacemim.html#a490bc82fced6d1222ca1e66d50e573a6", null ],
     [ "mim::bitcast", "namespacemim.html#a1aae5adc4db386bfd618fdc8303ceb0c", null ],
     [ "mim::find_and_replace", "namespacemim.html#a8d4798ff41a16cf4a8020359f7679969", null ],

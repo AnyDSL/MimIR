@@ -195,9 +195,9 @@ Pipelines</h2>
 <div class="line">        cond_phase &quot;autodiff&quot; ad_cleanup_phase,</div>
 <div class="line">        // CodeGenPrep</div>
 <div class="line">        %compile.branch_normalize_phase,</div>
+<div class="line">        %compile.ret_wrap_phase,</div>
 <div class="line">        %compile.pass2phase (</div>
 <div class="line">            %compile.passes (</div>
-<div class="line">                %compile.ret_wrap_pass,</div>
 <div class="line">                %mem.remem_elim_pass,</div>
 <div class="line">                %mem.alloc2malloc_pass,</div>
 <div class="line">                cond_pass &quot;refly&quot; %refly.remove_dbg_perm_pass,</div>

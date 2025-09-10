@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: include/mim/pass/ret_wrap.h Source File</title>
+<title>MimIR: include/mim/phase/ret_wrap.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -122,38 +122,77 @@ $(function(){initNavTree('ret__wrap_8h_source.html',''); initResizable(true); })
 <div class="contents">
 <a href="ret__wrap_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="pass_8h.html">mim/pass.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="phase_8h.html">mim/phase.h</a>&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim.html">mim</a> {</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classmim_1_1RetWrap.html">    7</a></span><span class="keyword">class </span><a class="code hl_function" href="classmim_1_1RetWrap.html#a8f635420d7b52c193e44a10899668bf0">RetWrap</a> : <span class="keyword">public</span> <a class="code hl_function" href="classmim_1_1RWPass.html#a0658053fe0b5e63e4041ccd20711bc5a">RWPass</a>&lt;RetWrap, Lam&gt; {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classmim_1_1RetWrap.html">    7</a></span><span class="keyword">class </span><a class="code hl_function" href="classmim_1_1RetWrap.html#a8f635420d7b52c193e44a10899668bf0">RetWrap</a> : <span class="keyword">public</span> <a class="code hl_function" href="classmim_1_1RWPhase.html#a1a93b5334758ffeae74e6244806284cf">RWPhase</a> {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00009" data-start="{" data-end="}">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classmim_1_1RetWrap.html#a8f635420d7b52c193e44a10899668bf0">    9</a></span>    <a class="code hl_function" href="classmim_1_1RetWrap.html#a8f635420d7b52c193e44a10899668bf0">RetWrap</a>(<a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>, <a class="code hl_typedef" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>)</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        : <a class="code hl_function" href="classmim_1_1RWPass.html#a0658053fe0b5e63e4041ccd20711bc5a">RWPass</a>(<a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>, <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>) {}</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classmim_1_1RetWrap.html#a8f635420d7b52c193e44a10899668bf0">    9</a></span>    <a class="code hl_function" href="classmim_1_1RetWrap.html#a8f635420d7b52c193e44a10899668bf0">RetWrap</a>(<a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; <a class="code hl_function" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">world</a>, <a class="code hl_typedef" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>)</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>        : <a class="code hl_function" href="classmim_1_1RWPhase.html#a1a93b5334758ffeae74e6244806284cf">RWPhase</a>(<a class="code hl_function" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">world</a>, <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>) {}</div>
 </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1RetWrap.html#a2890cf2dc88bb2c4ad9cd02ea1c4d9cc">enter</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>};</div>
-</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">enum</span> Lattice : <a class="code hl_typedef" href="namespacemim.html#aef2afb7040e6345a0b89b209ae7560c7">u8</a> { <a class="code hl_typedef" href="namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4">Bot</a>, Single, Eta };</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>} <span class="comment">// namespace mim</span></div>
-<div class="ttc" id="aclassmim_1_1RWPass_html_a0658053fe0b5e63e4041ccd20711bc5a"><div class="ttname"><a href="classmim_1_1RWPass.html#a0658053fe0b5e63e4041ccd20711bc5a">mim::RWPass&lt; RetWrap, Lam &gt;::RWPass</a></div><div class="ttdeci">RWPass(World &amp;world, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00295">pass.h:295</a></div></div>
-<div class="ttc" id="aclassmim_1_1RetWrap_html_a2890cf2dc88bb2c4ad9cd02ea1c4d9cc"><div class="ttname"><a href="classmim_1_1RetWrap.html#a2890cf2dc88bb2c4ad9cd02ea1c4d9cc">mim::RetWrap::enter</a></div><div class="ttdeci">void enter() override</div><div class="ttdoc">Invoked just before Pass::rewriteing PassMan::curr_mut&#39;s body.</div><div class="ttdef"><b>Definition</b> <a href="ret__wrap_8cpp_source.html#l00005">ret_wrap.cpp:5</a></div></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">static</span> Lattice join(Lattice l1, Lattice l2) {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>        <span class="keywordflow">if</span> (l1 == Bot) <span class="keywordflow">return</span> l2;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        <span class="keywordflow">if</span> (l2 == Bot) <span class="keywordflow">return</span> l1;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">return</span> Eta;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordtype">void</span> join(<span class="keyword">const</span> Def* def, Lattice l) {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [i, ins] = def2lattice_.emplace(def, l); !ins) i-&gt;second = join(i-&gt;second, l);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    }</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    Lattice lattice(<span class="keyword">const</span> Def* def) {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> i = def2lattice_.find(def); i != def2lattice_.end()) <span class="keywordflow">return</span> i-&gt;second;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keywordflow">return</span> Bot;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classmim_1_1RetWrap.html#a6c01ff79d3efb73f5bcfe3d07f44a187">analyze</a>() final;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1RetWrap.html#a6c01ff79d3efb73f5bcfe3d07f44a187">analyze</a>(const Def*);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordtype">void</span> visit(const Def*, Lattice = Eta);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    const Def* <a class="code hl_function" href="classmim_1_1RetWrap.html#a77c92d9fbfb483b8b22e8351c5775629">rewrite</a>(const Def*) final;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    const Def* <a class="code hl_function" href="classmim_1_1RetWrap.html#a559a99562b59905db20676ccd52a8d71">rewrite_mut_Lam</a>(<a class="code hl_enumvalue" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da36b73508d151b2fc641e0c0265d3d360">Lam</a>*) final;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    const Def* rewrite_no_eta(const Def*);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_typedef" href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">DefSet</a> analyzed_;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_typedef" href="namespacemim.html#a879f9e518002de13d65d757536033f0e">DefMap</a>&lt;Lattice&gt; def2lattice_;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_typedef" href="namespacemim.html#a879f9e518002de13d65d757536033f0e">DefMap</a>&lt;const Def*&gt; def2eta_;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_typedef" href="namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab">VarMap</a>&lt;const Def*&gt; var2def_; <span class="comment">// vars that contain a ret_var</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_typedef" href="namespacemim.html#a26a0e9df92d9733ba607a78d19edbbe9">LamSet</a> split_;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>};</div>
+</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>} <span class="comment">// namespace mim</span></div>
+<div class="ttc" id="aclassmim_1_1RWPhase_html_a1a93b5334758ffeae74e6244806284cf"><div class="ttname"><a href="classmim_1_1RWPhase.html#a1a93b5334758ffeae74e6244806284cf">mim::RWPhase::RWPhase</a></div><div class="ttdeci">RWPhase(World &amp;world, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00068">phase.h:68</a></div></div>
+<div class="ttc" id="aclassmim_1_1RWPhase_html_ab2f627b52ee66162e8dcf2249f67ed3e"><div class="ttname"><a href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">mim::RWPhase::world</a></div><div class="ttdeci">World &amp; world()=delete</div><div class="ttdoc">Hides both and forbids direct access.</div></div>
+<div class="ttc" id="aclassmim_1_1RetWrap_html_a559a99562b59905db20676ccd52a8d71"><div class="ttname"><a href="classmim_1_1RetWrap.html#a559a99562b59905db20676ccd52a8d71">mim::RetWrap::rewrite_mut_Lam</a></div><div class="ttdeci">const Def * rewrite_mut_Lam(Lam *) final</div><div class="ttdef"><b>Definition</b> <a href="ret__wrap_8cpp_source.html#l00060">ret_wrap.cpp:60</a></div></div>
+<div class="ttc" id="aclassmim_1_1RetWrap_html_a6c01ff79d3efb73f5bcfe3d07f44a187"><div class="ttname"><a href="classmim_1_1RetWrap.html#a6c01ff79d3efb73f5bcfe3d07f44a187">mim::RetWrap::analyze</a></div><div class="ttdeci">bool analyze() final</div><div class="ttdoc">You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.</div><div class="ttdef"><b>Definition</b> <a href="ret__wrap_8cpp_source.html#l00005">ret_wrap.cpp:5</a></div></div>
+<div class="ttc" id="aclassmim_1_1RetWrap_html_a77c92d9fbfb483b8b22e8351c5775629"><div class="ttname"><a href="classmim_1_1RetWrap.html#a77c92d9fbfb483b8b22e8351c5775629">mim::RetWrap::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) final</div><div class="ttdef"><b>Definition</b> <a href="ret__wrap_8cpp_source.html#l00050">ret_wrap.cpp:50</a></div></div>
 <div class="ttc" id="aclassmim_1_1RetWrap_html_a8f635420d7b52c193e44a10899668bf0"><div class="ttname"><a href="classmim_1_1RetWrap.html#a8f635420d7b52c193e44a10899668bf0">mim::RetWrap::RetWrap</a></div><div class="ttdeci">RetWrap(World &amp;world, flags_t annex)</div><div class="ttdef"><b>Definition</b> <a href="#l00009">ret_wrap.h:9</a></div></div>
-<div class="ttc" id="aclassmim_1_1Stage_html_a39ade56bc81b636a7830048ca2b68a42"><div class="ttname"><a href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">mim::Stage::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00064">pass.h:64</a></div></div>
 <div class="ttc" id="aclassmim_1_1Stage_html_af3818779efacabd21b68b1e3d3ec8c15"><div class="ttname"><a href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">mim::Stage::annex</a></div><div class="ttdeci">flags_t annex() const</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00068">pass.h:68</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html"><div class="ttname"><a href="classmim_1_1World.html">mim::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of MimIR nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00036">world.h:36</a></div></div>
 <div class="ttc" id="anamespacemim_html"><div class="ttname"><a href="namespacemim.html">mim</a></div><div class="ttdef"><b>Definition</b> <a href="ast_8h_source.html#l00014">ast.h:14</a></div></div>
+<div class="ttc" id="anamespacemim_html_a26a0e9df92d9733ba607a78d19edbbe9"><div class="ttname"><a href="namespacemim.html#a26a0e9df92d9733ba607a78d19edbbe9">mim::LamSet</a></div><div class="ttdeci">GIDSet&lt; Lam * &gt; LamSet</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00219">lam.h:219</a></div></div>
 <div class="ttc" id="anamespacemim_html_a2aaf0a830058bfdf4884b0addad6a93f"><div class="ttname"><a href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">mim::flags_t</a></div><div class="ttdeci">u64 flags_t</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00045">types.h:45</a></div></div>
-<div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>
+<div class="ttc" id="anamespacemim_html_a71e90dca4edd9dfdf7b1199a44faf1ab"><div class="ttname"><a href="namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab">mim::VarMap</a></div><div class="ttdeci">GIDMap&lt; const Var *, To &gt; VarMap</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00094">def.h:94</a></div></div>
+<div class="ttc" id="anamespacemim_html_a879f9e518002de13d65d757536033f0e"><div class="ttname"><a href="namespacemim.html#a879f9e518002de13d65d757536033f0e">mim::DefMap</a></div><div class="ttdeci">GIDMap&lt; const Def *, To &gt; DefMap</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00073">def.h:73</a></div></div>
+<div class="ttc" id="anamespacemim_html_aa55cde5ad8246840d0a046cc728f987d"><div class="ttname"><a href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">mim::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00074">def.h:74</a></div></div>
+<div class="ttc" id="anamespacemim_html_ad6a85076174e8ee770ec5ad1f3c06ea4"><div class="ttname"><a href="namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4">mim::Bot</a></div><div class="ttdeci">TExt&lt; false &gt; Bot</div><div class="ttdef"><b>Definition</b> <a href="lattice_8h_source.html#l00171">lattice.h:171</a></div></div>
+<div class="ttc" id="anamespacemim_html_aef2afb7040e6345a0b89b209ae7560c7"><div class="ttname"><a href="namespacemim.html#aef2afb7040e6345a0b89b209ae7560c7">mim::u8</a></div><div class="ttdeci">uint8_t u8</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00034">types.h:34</a></div></div>
+<div class="ttc" id="anamespacemim_html_afb12dbffaaa27bca46f171517d96256da36b73508d151b2fc641e0c0265d3d360"><div class="ttname"><a href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da36b73508d151b2fc641e0c0265d3d360">mim::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00114">def.h:114</a></div></div>
+<div class="ttc" id="aphase_8h_html"><div class="ttname"><a href="phase_8h.html">phase.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a></li><li class="navelem"><a class="el" href="dir_02aa4652d0d99765f599a240a9bcc9fa.html">pass</a></li><li class="navelem"><a class="el" href="ret__wrap_8h.html">ret_wrap.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a></li><li class="navelem"><a class="el" href="dir_b94543b43292d94334aee5f8fc74aa82.html">phase</a></li><li class="navelem"><a class="el" href="ret__wrap_8h.html">ret_wrap.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

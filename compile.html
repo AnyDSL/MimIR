@@ -188,6 +188,7 @@ Phases</h2>
 <div class="line">axm %compile.eta_exp_phase:                             %compile.Phase;</div>
 <div class="line">axm %compile.eta_red_phase:                             %compile.Phase;</div>
 <div class="line">axm %compile.null_phase:                                %compile.Phase;</div>
+<div class="line">axm %compile.ret_wrap_phase:                            %compile.Phase;</div>
 <div class="line">axm %compile.pass2phase:                %compile.Pass → %compile.Phase;</div>
 <div class="line">axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;</div>
 <div class="line"> </div>
@@ -199,7 +200,6 @@ Passes</h2>
 <div class="line">axm %compile.eta_red_pass:                       Bool → %compile.Pass;</div>
 <div class="line">axm %compile.lam_spec_pass:                             %compile.Pass;</div>
 <div class="line">axm %compile.null_pass:                                 %compile.Pass;</div>
-<div class="line">axm %compile.ret_wrap_pass:                             %compile.Pass;</div>
 <div class="line">axm %compile.scalarize_pass:                            %compile.Pass;</div>
 <div class="line">axm %compile.tail_rec_elim_pass:                        %compile.Pass;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md104"></a>

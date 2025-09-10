@@ -225,9 +225,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1FPPass.html">FPPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class using <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a>, if you <b>do</b> need a <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> with a state and a fixed-point.  <a href="classmim_1_1FPPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1FPPhase.html">FPPhase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like a <a class="el" href="classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">RWPhase</a> but starts with a fixed-point loop of <a class="el" href="classmim_1_1FPPhase.html#aafe4694aa466b87f672bead2734a4706">FPPhase::analyze</a> beforehand.  <a href="classmim_1_1FPPhase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1GIDHash.html">GIDHash</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1GIDLt.html">GIDLt</a></td></tr>
@@ -827,6 +824,10 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="memitem:a2b0eba3a59bd19880f571afb77e4d611"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2b0eba3a59bd19880f571afb77e4d611">lookup</a> (const C &amp;container, const K &amp;key)</td></tr>
 <tr class="memdesc:a2b0eba3a59bd19880f571afb77e4d611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields pointer to element (or the element itself if it is already a pointer), if found and <code>nullptr</code> otherwise.  <br /></td></tr>
 <tr class="separator:a2b0eba3a59bd19880f571afb77e4d611"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af140486d32afbf3b0c29b21703baa0dc" id="r_af140486d32afbf3b0c29b21703baa0dc"><td class="memTemplParams" colspan="2">template&lt;class C, class K&gt; </td></tr>
+<tr class="memitem:af140486d32afbf3b0c29b21703baa0dc"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af140486d32afbf3b0c29b21703baa0dc">assert_lookup</a> (C &amp;container, const K &amp;key)</td></tr>
+<tr class="memdesc:af140486d32afbf3b0c29b21703baa0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Looks up <code class="param">key</code> in <code class="param">container</code>, asserts that it exists, and returns the mapped value.  <br /></td></tr>
+<tr class="separator:af140486d32afbf3b0c29b21703baa0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a217db174daa31eb9e4001c60c099a96f" id="r_a217db174daa31eb9e4001c60c099a96f"><td class="memTemplParams" colspan="2">template&lt;class C, class... Args&gt; </td></tr>
 <tr class="memitem:a217db174daa31eb9e4001c60c099a96f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a217db174daa31eb9e4001c60c099a96f">assert_emplace</a> (C &amp;container, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a217db174daa31eb9e4001c60c099a96f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes <code>emplace</code> on <code class="param">container</code>, asserts that insertion actually happened, and returns the iterator.  <br /></td></tr>
@@ -1298,7 +1299,7 @@ template&lt;class K, class V&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00187">187</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00195">195</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>
@@ -1316,7 +1317,7 @@ template&lt;class K, class V&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00189">189</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00197">197</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>
@@ -1334,7 +1335,7 @@ template&lt;class K&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00190">190</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00198">198</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>
@@ -1352,7 +1353,7 @@ template&lt;class K&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00188">188</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00196">196</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>
@@ -2185,9 +2186,36 @@ template&lt;class C, class... Args&gt; </div>
 
 <p>Invokes <code>emplace</code> on <code class="param">container</code>, asserts that insertion actually happened, and returns the iterator. </p>
 
-<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00110">110</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00118">118</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00196">mim::World::app()</a>, <a class="el" href="pass_8h_source.html#l00057">mim::Stage::hook()</a>, <a class="el" href="driver_8cpp_source.html#l00045">mim::Driver::load()</a>, <a class="el" href="world_8cpp_source.html#l00088">mim::World::make_external()</a>, <a class="el" href="world_8cpp_source.html#l00656">mim::World::reduce()</a>, <a class="el" href="compile_8cpp_source.html#l00028">reg_stages()</a>, <a class="el" href="world_8cpp_source.html#l00078">mim::World::register_annex()</a>, and <a class="el" href="schedule_8cpp_source.html#l00009">mim::Scheduler::Scheduler()</a>.</p>
+
+</div>
+</div>
+<a id="af140486d32afbf3b0c29b21703baa0dc" name="af140486d32afbf3b0c29b21703baa0dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af140486d32afbf3b0c29b21703baa0dc">&#9670;&#160;</a></span>assert_lookup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class C, class K&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto mim::assert_lookup </td>
+          <td>(</td>
+          <td class="paramtype">C &amp;</td>          <td class="paramname"><span class="paramname"><em>container</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const K &amp;</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Looks up <code class="param">key</code> in <code class="param">container</code>, asserts that it exists, and returns the mapped value. </p>
+
+<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00110">110</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
 </div>
 </div>
@@ -2834,7 +2862,7 @@ template&lt;class T&gt; </div>
 
 <p class="reference">References <a class="el" href="hash_8h_source.html#l00014">murmur3()</a>, and <a class="el" href="hash_8h_source.html#l00023">splitmix64()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00084">mim::Def::Def()</a>, <a class="el" href="util_8h_source.html#l00176">mim::GIDHash&lt; T &gt;::operator()()</a>, and <a class="el" href="schedule_8h_source.html#l00030">mim::UseHash::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00084">mim::Def::Def()</a>, <a class="el" href="util_8h_source.html#l00184">mim::GIDHash&lt; T &gt;::operator()()</a>, and <a class="el" href="schedule_8h_source.html#l00030">mim::UseHash::operator()()</a>.</p>
 
 </div>
 </div>
@@ -4223,7 +4251,7 @@ template&lt;class S&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00083">83</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="clos__conv_8cpp_source.html#l00022">mim::plug::clos::free_defs()</a>, <a class="el" href="util_8h_source.html#l00161">mim::unique_queue&lt; Set &gt;::pop()</a>, <a class="el" href="util_8h_source.html#l00132">mim::unique_stack&lt; Set &gt;::pop()</a>, and <a class="el" href="pass_8cpp_source.html#l00081">mim::PassMan::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="clos__conv_8cpp_source.html#l00022">mim::plug::clos::free_defs()</a>, <a class="el" href="util_8h_source.html#l00169">mim::unique_queue&lt; Set &gt;::pop()</a>, <a class="el" href="util_8h_source.html#l00140">mim::unique_stack&lt; Set &gt;::pop()</a>, and <a class="el" href="pass_8cpp_source.html#l00081">mim::PassMan::run()</a>.</p>
 
 </div>
 </div>

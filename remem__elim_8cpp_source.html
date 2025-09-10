@@ -91,7 +91,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('plug_2mem_2pass_2remem__elim_8cpp_source.html',''); initResizable(true); });
+$(function(){initNavTree('remem__elim_8cpp_source.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -120,20 +120,23 @@ $(function(){initNavTree('plug_2mem_2pass_2remem__elim_8cpp_source.html',''); in
   <div class="headertitle"><div class="title">remem_elim.cpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="plug_2mem_2pass_2remem__elim_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="remem__elim_8h.html">mim/plug/mem/pass/remem_elim.h</a>&quot;</span></div>
+<a href="remem__elim_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="remem__elim_8h.html">mim/plug/mem/pass/remem_elim.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="mem_8h.html">mim/plug/mem/mem.h</a>&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim_1_1plug_1_1mem.html">mim::plug::mem</a> {</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">const</span> Def* <a class="code hl_function" href="classmim_1_1plug_1_1mem_1_1RememElim.html#a0221e54cc5ef2b717d1e998005231cc5">RememElim::rewrite</a>(<span class="keyword">const</span> Def* def) {</div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="}">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1mem_1_1RememElim.html#a0221e54cc5ef2b717d1e998005231cc5">    7</a></span><span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* <a class="code hl_function" href="classmim_1_1plug_1_1mem_1_1RememElim.html#a0221e54cc5ef2b717d1e998005231cc5">RememElim::rewrite</a>(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502">remem</a> = <a class="code hl_function" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">Axm::isa&lt;mem::remem&gt;</a>(def)) <span class="keywordflow">return</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502">remem</a>-&gt;arg();</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keywordflow">return</span> def;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>}</div>
+</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>} <span class="comment">// namespace mim::plug::mem</span></div>
 <div class="ttc" id="aclassmim_1_1Axm_html_a877535f1d66f92f61585f323b1b986f1"><div class="ttname"><a href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">mim::Axm::isa</a></div><div class="ttdeci">static auto isa(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00107">axm.h:107</a></div></div>
-<div class="ttc" id="aclassmim_1_1plug_1_1mem_1_1RememElim_html_a0221e54cc5ef2b717d1e998005231cc5"><div class="ttname"><a href="classmim_1_1plug_1_1mem_1_1RememElim.html#a0221e54cc5ef2b717d1e998005231cc5">mim::plug::mem::RememElim::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) override</div><div class="ttdef"><b>Definition</b> <a href="pass_2remem__elim_8cpp_source.html#l00005">remem_elim.cpp:5</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00251">def.h:251</a></div></div>
+<div class="ttc" id="aclassmim_1_1plug_1_1mem_1_1RememElim_html_a0221e54cc5ef2b717d1e998005231cc5"><div class="ttname"><a href="classmim_1_1plug_1_1mem_1_1RememElim.html#a0221e54cc5ef2b717d1e998005231cc5">mim::plug::mem::RememElim::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) override</div><div class="ttdef"><b>Definition</b> <a href="#l00007">remem_elim.cpp:7</a></div></div>
 <div class="ttc" id="amem_8h_html"><div class="ttname"><a href="mem_8h.html">mem.h</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1mem_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html">mim::plug::mem</a></div><div class="ttdoc">The mem Plugin</div><div class="ttdef"><b>Definition</b> <a href="mem_8h_source.html#l00011">mem.h:11</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1mem_html_a94b7e75543b6cd09a1ff0c3fa3ac1502"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502">mim::plug::mem::remem</a></div><div class="ttdeci">remem</div><div class="ttdef"><b>Definition</b> <a href="mem_2autogen_8h_source.html#l00051">autogen.h:51</a></div></div>
@@ -143,7 +146,7 @@ $(function(){initNavTree('plug_2mem_2pass_2remem__elim_8cpp_source.html',''); in
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3f6d0e947440f9d0b42426d30577ffdc.html">mim</a></li><li class="navelem"><a class="el" href="dir_07110a8747d2517ee97007224f1d2994.html">plug</a></li><li class="navelem"><a class="el" href="dir_a8769299ba688646b3b09d59765dd001.html">mem</a></li><li class="navelem"><a class="el" href="dir_7b9c196618ac4c2206a9ef3ea12cec2d.html">pass</a></li><li class="navelem"><a class="el" href="plug_2mem_2pass_2remem__elim_8cpp.html">remem_elim.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3f6d0e947440f9d0b42426d30577ffdc.html">mim</a></li><li class="navelem"><a class="el" href="dir_07110a8747d2517ee97007224f1d2994.html">plug</a></li><li class="navelem"><a class="el" href="dir_a8769299ba688646b3b09d59765dd001.html">mem</a></li><li class="navelem"><a class="el" href="dir_7b9c196618ac4c2206a9ef3ea12cec2d.html">pass</a></li><li class="navelem"><a class="el" href="remem__elim_8cpp.html">remem_elim.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

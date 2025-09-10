@@ -1,6 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"namespacemim_1_1plug_1_1matrix.html":[3,0,1,4,8],
 "namespacemim_1_1plug_1_1matrix.html#a0943b82dc41b6820008e7a6936b08adc":[3,0,1,4,8,6],
 "namespacemim_1_1plug_1_1matrix.html#a0b41485a06205af808adacf92db6e069":[3,0,1,4,8,19],
 "namespacemim_1_1plug_1_1matrix.html#a11b9674b35894ca4f3605791d4783b74":[3,0,1,4,8,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX22 =
 "nest_8h.html":[6,0,2,1,13],
 "nest_8h_source.html":[6,0,2,1,13],
 "nfa2dfa_8cpp.html":[6,0,3,0,3],
-"nfa2dfa_8cpp_source.html":[6,0,3,0,3]
+"nfa2dfa_8cpp_source.html":[6,0,3,0,3],
+"nfa2dfa_8h.html":[6,0,2,0,4]
 };
