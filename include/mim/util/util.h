@@ -105,7 +105,7 @@ auto lookup(const C& container, const K& key) {
         return i != container.end() ? &i->second : nullptr;
 }
 
-/// Invokes `emplace` on @p container, asserts that insertion actually happened, and returns the iterator.
+/// Looks up @p key in @p container, asserts that it exists, and returns the mapped value.
 template<class C, class K>
 auto assert_lookup(C& container, const K& key) {
     auto i = container.find(key);
