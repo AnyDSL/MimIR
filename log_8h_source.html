@@ -232,11 +232,12 @@ $(function(){initNavTree('log_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="log_8h.html#a69dcfba03c6d43734c25d912a4f2288c">   96</a></span><span class="preprocessor">#define TLOG(...) log().log(mim::Log::Level::Trace,   __FILE__, __LINE__, __VA_ARGS__)</span></div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">#else</span></div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">#define DLOG(...) log()</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">// clang-format on</span><span class="comment"></span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">///@}</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>} <span class="comment">// namespace mim</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#define TLOG(...) log()</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// clang-format on</span><span class="comment"></span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">///@}</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>} <span class="comment">// namespace mim</span></div>
 <div class="ttc" id="aclassmim_1_1Log_html_a489724a84829e8b3de2435e186ccfd25"><div class="ttname"><a href="classmim_1_1Log.html#a489724a84829e8b3de2435e186ccfd25">mim::Log::level2acro</a></div><div class="ttdeci">static char level2acro(Level)</div><div class="ttdef"><b>Definition</b> <a href="log_8cpp_source.html#l00006">log.cpp:6</a></div></div>
 <div class="ttc" id="aclassmim_1_1Log_html_a49e3c6b8b969fd0e8c907f9e472e316d"><div class="ttname"><a href="classmim_1_1Log.html#a49e3c6b8b969fd0e8c907f9e472e316d">mim::Log::log</a></div><div class="ttdeci">void log(Level level, const char *file, uint16_t line, const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition</b> <a href="#l00065">log.h:65</a></div></div>
 <div class="ttc" id="aclassmim_1_1Log_html_a56d140e471c99a5737bf1b5f815de975"><div class="ttname"><a href="classmim_1_1Log.html#a56d140e471c99a5737bf1b5f815de975">mim::Log::level</a></div><div class="ttdeci">Level level() const</div><div class="ttdef"><b>Definition</b> <a href="#l00027">log.h:27</a></div></div>
