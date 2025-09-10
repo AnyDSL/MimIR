@@ -111,7 +111,6 @@ auto assert_lookup(C& container, const K& key) {
     auto i = container.find(key);
     assert(i != container.end());
     return i->second;
-    ;
 }
 
 /// Invokes `emplace` on @p container, asserts that insertion actually happened, and returns the iterator.
