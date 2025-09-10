@@ -4,7 +4,7 @@
 
 #include "mim/plug/mem/mem.h"
 
-namespace mim::plug::mem {
+namespace mim::plug::mem::phase {
 
 namespace {
 
@@ -278,4 +278,4 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     return tmp;
 }
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::phase

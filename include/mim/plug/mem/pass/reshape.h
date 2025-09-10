@@ -2,7 +2,7 @@
 
 #include "mim/phase.h"
 
-namespace mim::plug::mem {
+namespace mim::plug::mem::pass {
 
 using DefQueue = std::deque<const Def*>;
 
@@ -59,4 +59,4 @@ private:
     Mode mode_;
 };
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::pass

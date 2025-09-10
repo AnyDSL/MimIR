@@ -2,11 +2,11 @@ add_mim_plugin(mem
     SOURCES
         mem.cpp
         normalizers.cpp
-        pass/alloc2malloc.cpp
-        pass/copy_prop.cpp
-        pass/remem_elim.cpp
-        pass/reshape.cpp
-        pass/ssa_constr.cpp
         phase/add_mem.cpp
+        phase/alloc2malloc.cpp
+        phase/remem_elim.cpp
+        pass/copy_prop.cpp
+        pass/reshape.cpp
+        pass/ssa.cpp
     INSTALL
 )

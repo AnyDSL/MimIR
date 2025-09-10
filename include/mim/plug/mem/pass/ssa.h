@@ -6,15 +6,15 @@ namespace mim {
 
 class EtaExp;
 
-namespace plug::mem {
+namespace plug::mem::pass {
 
 /// SSA construction algorithm that promotes slot%s, load%s, and store%s to SSA values.
 /// This is loosely based upon:
 /// "Simple and Efficient Construction of Static Single Assignment Form"
 /// by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau.
-class SSAConstr : public FPPass<SSAConstr, Lam> {
+class SSA : public FPPass<SSA, Lam> {
 public:
-    SSAConstr(World& world, flags_t annex)
+    SSA(World& world, flags_t annex)
         : FPPass(world, annex) {}
 
     void init(PassMan*) final;
@@ -58,5 +58,5 @@ private:
     GIDSet<const Proxy*> keep_;
 };
 
-} // namespace plug::mem
+} // namespace plug::mem::pass
 } // namespace mim

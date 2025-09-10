@@ -65,11 +65,7 @@ lam extern _default_compile (): %compile.Phase =
         // CodeGenPrep
         %compile.branch_normalize_phase,
         %compile.ret_wrap_phase,
-        %compile.pass2phase (
-            %compile.passes (
-                %mem.remem_elim_pass,
-                %mem.alloc2malloc_pass,
-                cond_pass "refly" %refly.remove_dbg_perm_pass,
-            )
-        ),
+        %mem.remem_elim_phase,
+        %mem.alloc2malloc_phase,
+        cond_phase "refly" %refly.remove_dbg_phase,
     );

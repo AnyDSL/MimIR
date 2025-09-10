@@ -1,10 +1,10 @@
-#include "mim/plug/mem/pass/ssa_constr.h"
+#include "mim/plug/mem/pass/ssa.h"
 
 #include <mim/pass/eta_exp.h>
 
 #include "mim/plug/mem/mem.h"
 
-namespace mim::plug::mem {
+namespace mim::plug::mem::pass {
 
 namespace {
 const Def* get_sloxy_type(const Proxy* sloxy) { return Axm::as<mem::Ptr>(sloxy->type())->arg(0); }
@@ -14,14 +14,14 @@ std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
 }
 } // namespace
 
-void SSAConstr::init(PassMan* man) {
+void SSA::init(PassMan* man) {
     Pass::init(man);
     eta_exp_ = man->find<EtaExp>();
 }
 
-void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
+void SSA::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 
-const Def* SSAConstr::rewrite(const Proxy* proxy) {
+const Def* SSA::rewrite(const Proxy* proxy) {
     if (proxy->tag() == Traxy) {
         DLOG("traxy '{}'", proxy);
         for (size_t i = 1, e = proxy->num_ops(); i != e; i += 2)
@@ -32,7 +32,7 @@ const Def* SSAConstr::rewrite(const Proxy* proxy) {
     return proxy;
 }
 
-const Def* SSAConstr::rewrite(const Def* def) {
+const Def* SSA::rewrite(const Def* def) {
     if (auto slot = Axm::isa<mem::slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
@@ -67,7 +67,7 @@ const Def* SSAConstr::rewrite(const Def* def) {
     return def;
 }
 
-const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
+const Def* SSA::get_val(Lam* lam, const Proxy* sloxy) {
     auto& sloxy2val = lam2sloxy2val_[lam];
     if (auto i = sloxy2val.find(sloxy); i != sloxy2val.end()) {
         auto val = i->second;
@@ -87,12 +87,12 @@ const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
     }
 }
 
-const Def* SSAConstr::set_val(Lam* lam, const Proxy* sloxy, const Def* val) {
+const Def* SSA::set_val(Lam* lam, const Proxy* sloxy, const Def* val) {
     DLOG("set_val: '{}': '{}': '{}'", sloxy, val, lam);
     return lam2sloxy2val_[lam][sloxy] = val;
 }
 
-const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
+const Def* SSA::mem2phi(const App* app, Lam* mem_lam) {
     auto&& sloxys = lam2sloxys_[mem_lam];
     if (sloxys.empty()) return app;
 
@@ -140,7 +140,7 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
     return world().app(phi_lam, merge_tuple(app->arg(), args));
 }
 
-undo_t SSAConstr::analyze(const Proxy* proxy) {
+undo_t SSA::analyze(const Proxy* proxy) {
     if (proxy->tag() == Sloxy) {
         auto sloxy_lam = proxy->op(0)->as_mut<Lam>();
 
@@ -160,7 +160,7 @@ undo_t SSAConstr::analyze(const Proxy* proxy) {
     return No_Undo;
 }
 
-undo_t SSAConstr::analyze(const Def* def) {
+undo_t SSA::analyze(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto succ_lam = isa_workable(def->op(i)->isa_mut<Lam>())) {
             auto& succ_info = data(succ_lam);
@@ -185,4 +185,4 @@ undo_t SSAConstr::analyze(const Def* def) {
     return No_Undo;
 }
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::pass

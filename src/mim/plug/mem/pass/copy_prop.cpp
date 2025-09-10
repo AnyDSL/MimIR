@@ -5,10 +5,10 @@
 
 #include "mim/plug/mem/mem.h"
 
-namespace mim::plug::mem {
+namespace mim::plug::mem::pass {
 
 void CopyProp::apply(bool bb_only) {
-    bb_only_  = bb_only;
+    bb_only_ = bb_only;
     name_ += bb_only_ ? " tt" : " ff";
 }
 
@@ -129,4 +129,4 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     return No_Undo;
 }
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::pass

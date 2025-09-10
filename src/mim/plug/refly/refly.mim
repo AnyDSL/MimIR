@@ -91,8 +91,8 @@ axm %refly.check: {T: *} → {n: Nat} → [Bool, T, «n; I8»] → T, normalize_
 ///
 axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;
 ///
-/// ## Passes and Phases
+/// ## Phases and Passes
 ///
-/// ### Passes
+/// ### Phases
 ///
-axm %refly.remove_dbg_perm_pass: %compile.Pass;
+axm %refly.remove_dbg_phase: %compile.Phase;
