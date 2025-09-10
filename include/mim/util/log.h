@@ -96,6 +96,7 @@ private:
 #define TLOG(...) log().log(mim::Log::Level::Trace,   __FILE__, __LINE__, __VA_ARGS__)
 #else
 #define DLOG(...) log()
+#define TLOG(...) log()
 #endif
 // clang-format on
 ///@}
