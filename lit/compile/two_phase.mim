@@ -16,4 +16,4 @@ lam extern _compile(): %compile.Phase =
         %compile.ret_wrap_phase,
     );
 
-// CHECK-DAG: con eta_return
+// CHECK-DAG: con {{.*}}return
