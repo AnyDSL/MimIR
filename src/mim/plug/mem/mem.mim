@@ -92,26 +92,30 @@ lam %mem.rm (n: Nat, Is: «n; *», O: *)
              (is: «i: n; Is#i»): O
     = %mem.ignore (f (%mem.m, is));
 ///
-/// ## Passes and Phases
+/// ## Stages
 ///
 /// ### Phases
 ///
-axm %mem.add_mem_phase:      %compile.Phase;
-axm %mem.remem_elim_phase:   %compile.Phase;
-axm %mem.alloc2malloc_phase: %compile.Phase;
+axm %mem.add_mem_phase: %compile.Phase;
+///
+/// ### Repls
+///
+axm %mem.remem_repl:        %compile.Repl;
+axm %mem.alloc2malloc_repl: %compile.Repl;
 ///
 /// ### Passes
 ///
 axm %mem.ssa_pass:              %compile.Pass;
 axm %mem.copy_prop_pass: Bool → %compile.Pass;
 ///
-/// #### %mem.reshape
+/// ##### %mem.reshape
 ///
 axm %mem.reshape_mode: *;
 axm %mem.reshape_flat: %mem.reshape_mode;
 axm %mem.reshape_arg:  %mem.reshape_mode;
 ///
 axm %mem.reshape_pass: %mem.reshape_mode → %compile.Pass;
+///
 /// ### Pipelines
 ///
 let mem_opt_passes = %compile.passes (

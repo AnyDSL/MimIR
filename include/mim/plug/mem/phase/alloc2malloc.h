@@ -4,12 +4,12 @@
 
 namespace mim::plug::mem::phase {
 
-class Alloc2Malloc : public RWPhase {
+class Alloc2Malloc : public Repl {
 public:
     Alloc2Malloc(World& world, flags_t annex)
-        : RWPhase(world, annex) {}
+        : Repl(world, annex) {}
 
-    const Def* rewrite(const Def*) override;
+    const Def* replace(const Def*) final;
 };
 
 } // namespace mim::plug::mem::phase

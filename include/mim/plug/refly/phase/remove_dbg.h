@@ -1,17 +1,16 @@
 #pragma once
 
-#include <mim/def.h>
 #include <mim/phase.h>
 
 namespace mim::plug::refly::phase {
 
 /// Removes all `%refly.debug.perm` markers for code gen.
-class RemoveDbg : public RWPhase {
+class RemoveDbg : public Repl {
 public:
     RemoveDbg(World& world, flags_t annex)
-        : RWPhase(world, annex) {}
+        : Repl(world, annex) {}
 
-    const Def* rewrite(const Def*) override;
+    const Def* replace(const Def*) final;
 };
 
 } // namespace mim::plug::refly::phase

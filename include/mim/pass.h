@@ -40,7 +40,7 @@ public:
     static auto create(const Flags2Stages& stages, const Def* def) {
         auto& world = def->world();
         auto p_def  = App::uncurry_callee(def);
-        world.DLOG("apply pass/phase: `{}`", p_def);
+        world.DLOG("apply stage: `{}`", p_def);
 
         if (auto axm = p_def->isa<Axm>())
             if (auto i = stages.find(axm->flags()); i != stages.end()) {
@@ -48,9 +48,9 @@ public:
                 if (stage) stage->apply(def->isa<App>());
                 return stage;
             } else
-                error("pass/phase `{}` not found", axm->sym());
+                error("stage `{}` not found", axm->sym());
         else
-            error("unsupported callee for a phase/pass: `{}`", p_def);
+            error("unsupported callee for a stage: `{}`", p_def);
     }
 
     template<class A, class P>
@@ -176,7 +176,7 @@ public:
 
     void apply(Passes&&);
     void apply(const App* app) final;
-    void apply(Stage& pass) final { apply(std::move(static_cast<PassMan&>(pass).passes_)); }
+    void apply(Stage& stage) final { apply(std::move(static_cast<PassMan&>(stage).passes_)); }
     void init(PassMan*) final { fe::unreachable(); }
 
     bool inspect() const final { fe::unreachable(); }

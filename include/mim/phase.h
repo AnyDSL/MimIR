@@ -13,8 +13,13 @@
 namespace mim {
 
 class Nest;
+class Phase;
 class PhaseMan;
+class Repl;
 class World;
+
+using Repls  = std::deque<std::unique_ptr<Repl>>;
+using Phases = std::deque<std::unique_ptr<Phase>>;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
@@ -52,8 +57,6 @@ protected:
     bool todo_ = false;
 };
 
-using Phases = std::deque<std::unique_ptr<Phase>>;
-
 /// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
 /// This will destroy RWPhase::old_world leaving RWPhase::new_world which will be created here as the *current* World to
 /// work with.
@@ -72,6 +75,8 @@ public:
         : Phase(world, annex)
         , Rewriter(world.inherit()) {}
     ///@}
+
+    bool is_bootstrapping() const { return bootstrapping_; }
 
     /// You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.
     /// @note If you don't need a fixed-point, just return `false` after the first run of analyze.
@@ -95,11 +100,59 @@ public:
     World& new_world() { return Rewriter::world(); } ///< Create **new** Def%s into this.
     ///@}
 
-    bool is_bootstrapping() const { return bootstrapping_; }
-
 protected:
-    bool bootstrapping_ = true;
     void start() override;
+
+private:
+    bool bootstrapping_ = true;
+};
+
+/// Simple Stage that searches for a pattern and replaces it.
+/// Combine them in a ReplPhase.
+class Repl : public Stage {
+public:
+    Repl(World& world, flags_t annex)
+        : Stage(world, annex) {}
+
+    virtual const Def* replace(const Def* def) = 0;
+};
+
+class ReplMan : public Repl {
+public:
+    ReplMan(World& world, flags_t annex)
+        : Repl(world, annex) {}
+
+    void apply(Repls&&);
+    void apply(const App*) final;
+    void apply(Stage& stage) final { apply(std::move(static_cast<ReplMan&>(stage).repls_)); }
+
+    void add(std::unique_ptr<Repl>&& repl) { repls_.emplace_back(std::move(repl)); }
+    const auto& repls() const { return repls_; }
+
+private:
+    const Def* replace(const Def*) final { fe::unreachable(); }
+
+    Repls repls_;
+};
+
+class ReplManPhase : public RWPhase {
+public:
+    /// @name Construction
+    ///@{
+    ReplManPhase(World& world, flags_t annex)
+        : RWPhase(world, annex) {}
+
+    void apply(const App*) final;
+    void apply(Stage&) final;
+    ///@}
+
+    ReplMan& man() { return *man_; }
+
+private:
+    void start() final;
+    const Def* rewrite(const Def*) final;
+
+    std::unique_ptr<ReplMan> man_;
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping them afterwards.
@@ -114,6 +167,8 @@ public:
 /// Wraps a PassMan pipeline as a Phase.
 class PassManPhase : public Phase {
 public:
+    /// @name Construction
+    ///@{
     PassManPhase(World& world, std::unique_ptr<PassMan>&& man)
         : Phase(world, "pass_man_phase")
         , man_(std::move(man)) {}
@@ -122,12 +177,13 @@ public:
 
     void apply(const App*) final;
     void apply(Stage&) final;
+    ///@}
 
     const PassMan& man() const { return *man_; }
 
-    void start() override { man_->run(); }
-
 private:
+    void start() final { man_->run(); }
+
     std::unique_ptr<PassMan> man_;
 };
 
@@ -135,24 +191,27 @@ private:
 /// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo_ flags yield `false`.
 class PhaseMan : public Phase {
 public:
+    /// @name Construction
+    ///@{
     PhaseMan(World& world, flags_t annex)
         : Phase(world, annex) {}
 
     void apply(bool, Phases&&);
     void apply(const App*) final;
     void apply(Stage&) final;
+    ///@}
 
-    bool fixed_point() const { return fixed_point_; }
-    void start() override;
-    ///
-    /// @name phases
+
+    /// @name Getters
     ///@{
+    bool fixed_point() const { return fixed_point_; }
     auto& phases() { return phases_; }
     const auto& phases() const { return phases_; }
-    void add(std::unique_ptr<Phase>&& phase) { phases_.emplace_back(std::move(phase)); }
     ///@}
 
 private:
+    void start() final;
+
     Phases phases_;
     bool fixed_point_;
 };
@@ -172,11 +231,10 @@ public:
 
     bool elide_empty() const { return elide_empty_; }
 
+protected:
     void start() override {
         world().template for_each<M>(elide_empty(), [this](M* mut) { root_ = mut, visit(mut); });
     }
-
-protected:
     virtual void visit(M*) = 0;
     M* root() const { return root_; }
 

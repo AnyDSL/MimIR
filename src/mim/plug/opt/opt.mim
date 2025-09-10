@@ -23,6 +23,7 @@ import regex;
 /// ### Pipelines
 ///
 lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);
+lam cond_repl  {n: Nat} (name: «n; I8») (repl:  %compile.Repl ): %compile.Repl  = %core.select (%compile.is_loaded name, repl , %compile.null_repl );
 lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );
 
 lam extern _default_compile (): %compile.Phase =
@@ -65,7 +66,11 @@ lam extern _default_compile (): %compile.Phase =
         // CodeGenPrep
         %compile.branch_normalize_phase,
         %compile.ret_wrap_phase,
-        %mem.remem_elim_phase,
-        %mem.alloc2malloc_phase,
-        cond_phase "refly" %refly.remove_dbg_phase,
+        %compile.repl2phase (
+            %compile.repls (
+                %mem.remem_repl,
+                %mem.alloc2malloc_repl,
+                cond_repl "refly" %refly.remove_dbg_repl,
+            )
+        ),
     );

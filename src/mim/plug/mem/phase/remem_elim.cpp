@@ -4,9 +4,9 @@
 
 namespace mim::plug::mem::phase {
 
-const Def* RememElim::rewrite(const Def* def) {
-    if (auto remem = Axm::isa<mem::remem>(def)) return rewrite(remem->arg());
-    return Rewriter::rewrite(def);
+const Def* RememElim::replace(const Def* def) {
+    if (auto remem = Axm::isa<mem::remem>(def)) return remem->arg();
+    return {};
 }
 
 } // namespace mim::plug::mem::phase

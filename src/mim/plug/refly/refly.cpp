@@ -8,7 +8,7 @@
 using namespace mim;
 
 void reg_stages(Flags2Stages& stages) {
-    PassMan::hook<plug::refly::remove_dbg_phase, plug::refly::phase::RemoveDbg>(stages);
+    PassMan::hook<plug::refly::remove_dbg_repl, plug::refly::phase::RemoveDbg>(stages);
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {

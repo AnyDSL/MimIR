@@ -45,6 +45,63 @@ void RWPhase::rewrite_external(Def* old_mut) {
 }
 
 /*
+ * ReplMan
+ */
+
+void ReplMan::apply(Repls&& repls) {
+    for (auto&& repl : repls)
+        if (auto&& man = repl->isa<ReplMan>())
+            apply(std::move(man->repls_));
+        else
+            add(std::move(repl));
+}
+
+void ReplMan::apply(const App* app) {
+    auto repls = Repls();
+    for (auto arg : app->args())
+        if (auto stage = Stage::create(driver().stages(), arg))
+            repls.emplace_back(std::unique_ptr<Repl>(static_cast<Repl*>(stage.release())));
+
+    apply(std::move(repls));
+}
+
+/*
+ * ReplManPhase
+ */
+
+void ReplManPhase::apply(const App* app) {
+    man_       = std::make_unique<ReplMan>(old_world(), annex());
+    auto repls = Repls();
+    for (auto arg : app->args())
+        if (auto stage = Phase::create(driver().stages(), arg))
+            repls.emplace_back(std::unique_ptr<Repl>(static_cast<Repl*>(stage.release())));
+    man_->apply(std::move(repls));
+}
+
+void ReplManPhase::apply(Stage& stage) {
+    auto& rmp = static_cast<ReplManPhase&>(stage);
+    swap(man_, rmp.man_);
+}
+
+void ReplManPhase::start() {
+    old_world().verify().ILOG("🔥 run");
+    for (auto&& repl : man().repls())
+        ILOG(" 🔹 `{}`", repl->name());
+    old_world().debug_dump();
+    RWPhase::start();
+}
+
+const Def* ReplManPhase::rewrite(const Def* def) {
+    for (bool todo = true; todo;) {
+        todo = false;
+        for (auto&& repl : man().repls())
+            if (auto subst = repl->replace(def)) todo = true, def = subst;
+    }
+
+    return Rewriter::rewrite(def);
+}
+
+/*
  * PhaseMan
  */
 
@@ -60,7 +117,10 @@ void PhaseMan::apply(const App* app) {
     auto phases = Phases();
     for (auto arg : args->projs())
         if (auto stage = create(driver().stages(), arg)) {
-            if (auto pmp = stage->isa<PassManPhase>(); pmp && pmp->man().empty()) continue;
+            // clang-format off
+            if (auto pm = stage->isa<PassManPhase>(); pm && pm->  man().empty()) continue;
+            if (auto rp = stage->isa<ReplMan   >(); rp && rp->repls().empty()) continue;
+            // clang-format on
             phases.emplace_back(std::unique_ptr<Phase>(static_cast<Phase*>(stage.release())));
         }
 
@@ -107,6 +167,7 @@ void PassManPhase::apply(const App* app) {
     for (auto arg : app->args())
         if (auto stage = Phase::create(driver().stages(), arg))
             passes.emplace_back(std::unique_ptr<Pass>(static_cast<Pass*>(stage.release())));
+
     man_->apply(std::move(passes));
 }
 
