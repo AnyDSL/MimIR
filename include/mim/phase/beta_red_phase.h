@@ -5,18 +5,18 @@
 namespace mim {
 
 /// Inlines in post-order all Lam%s that occur exactly *once* in the program.
-class BetaRedPhase : public FPPhase {
+class BetaRedPhase : public RWPhase {
 public:
     BetaRedPhase(World& world, flags_t annex)
-        : FPPhase(world, annex) {}
+        : RWPhase(world, annex) {}
 
 private:
     bool analyze() final;
     void analyze(const Def*);
-    void visit(const Def*);
+    void visit(const Def*, bool candidate = true); // lattice: true -> false
 
     const Def* rewrite_imm_App(const App*) final;
-    bool is_candidate(Lam*) const;
+    bool is_candidate(Lam* lam) const { return assert_lookup(candidates_, lam); }
 
     DefSet analyzed_;
     LamMap<bool> candidates_;

@@ -5,7 +5,6 @@
 namespace mim {
 
 bool EtaExpPhase::analyze() {
-    old_world().debug_dump();
     for (auto def : old_world().externals())
         visit(def, Lattice::Known);
 
@@ -39,7 +38,6 @@ void EtaExpPhase::rewrite_external(Def* old_mut) {
 
 const Def* EtaExpPhase::rewrite(const Def* old_def) {
     if (auto lam = old_def->isa<Lam>(); lam && lattice(lam) == Both) {
-        todo_         = true;
         auto [i, ins] = lam2eta_.emplace(lam, nullptr);
         if (ins) i->second = Lam::eta_expand(rewrite_no_eta(lam));
         DLOG("eta-expand: `{}` → `{}`", lam, i->second);
@@ -48,8 +46,6 @@ const Def* EtaExpPhase::rewrite(const Def* old_def) {
 
     return Rewriter::rewrite(old_def);
 }
-
-const Def* EtaExpPhase::rewrite_no_eta(const Def* old_def) { return Rewriter::rewrite(old_def); }
 
 const Def* EtaExpPhase::rewrite_imm_App(const App* app) {
     auto callee = rewrite_no_eta(app->callee());
