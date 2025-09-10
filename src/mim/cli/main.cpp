@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
             | lyra::opt(clang,        "clang"              )["-c"]["--clang"                ]("Path to clang executable (default: '" MIM_WHICH " clang').")
             | lyra::opt(plugins,      "plugin"             )["-p"]["--plugin"               ]("Dynamically load plugin.")
             | lyra::opt(search_paths, "path"               )["-P"]["--plugin-path"          ]("Path to search for plugins.")
-            | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
+            | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 5)
             | lyra::opt(opt,          "level"              )["-O"]["--optimize"             ]("Optimization level (default: 2).")
             | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST represntation of input.")
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
