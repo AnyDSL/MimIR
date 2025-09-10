@@ -9,7 +9,7 @@ var searchData=
   ['less_6',['less',['../classmim_1_1Def.html#ab1215de2b56ede04a5df0f3d3628bb4c',1,'mim::Def']]],
   ['letdecl_7',['LetDecl',['../classmim_1_1ast_1_1LetDecl.html#ac8872f1a83511a2852022ff50f9fcd35',1,'mim::ast::LetDecl']]],
   ['level_8',['level',['../classmim_1_1ast_1_1TypeExpr.html#a39453cdf57c2c95c8ca7ce9df3fcada7',1,'mim::ast::TypeExpr::level()'],['../classmim_1_1Type.html#ad08cbde7c9801e27a6181ff0cf633fc8',1,'mim::Type::level()'],['../classmim_1_1Nest_1_1Node.html#a5ca8a41842e20f1ccf3a9ecb40630546',1,'mim::Nest::Node::level()'],['../classmim_1_1Log.html#a56d140e471c99a5737bf1b5f815de975',1,'mim::Log::level() const']]],
-  ['level2acro_9',['level2acro',['../classmim_1_1Log.html#ad64accaa3d6ad90906278fb11da83a41',1,'mim::Log']]],
+  ['level2acro_9',['level2acro',['../classmim_1_1Log.html#a489724a84829e8b3de2435e186ccfd25',1,'mim::Log']]],
   ['level2color_10',['level2color',['../classmim_1_1Log.html#ad8f11a38f9affff739754f54d0b33257',1,'mim::Log']]],
   ['lex_11',['lex',['../classmim_1_1ast_1_1Lexer.html#a90fea1e1e499fa571bac95fb0d3afdc0',1,'mim::ast::Lexer']]],
   ['lexer_12',['Lexer',['../classmim_1_1ast_1_1Lexer.html#a2c4465a819bb668e3af188f07e455bc8',1,'mim::ast::Lexer']]],

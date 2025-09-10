@@ -5,12 +5,13 @@ var classmim_1_1Log =
       [ "Warn", "classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590a56525ae64d370c0b448ac0d60710ef17", null ],
       [ "Info", "classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590a4059b0251f66a18cb56f544728796875", null ],
       [ "Verbose", "classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590ad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
-      [ "Debug", "classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590aa603905470e2a5b8c13e96b579ef0dba", null ]
+      [ "Debug", "classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590aa603905470e2a5b8c13e96b579ef0dba", null ],
+      [ "Trace", "classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590add4ec0ac4e58f7c32a01244ae91150b1", null ]
     ] ],
     [ "Log", "classmim_1_1Log.html#a895593e3c8fa6435d2214090a35f560e", null ],
     [ "flags", "classmim_1_1Log.html#a82ecbd5ec62978304a8f3eda60981d9b", null ],
     [ "level", "classmim_1_1Log.html#a56d140e471c99a5737bf1b5f815de975", null ],
-    [ "level2acro", "classmim_1_1Log.html#ad64accaa3d6ad90906278fb11da83a41", null ],
+    [ "level2acro", "classmim_1_1Log.html#a489724a84829e8b3de2435e186ccfd25", null ],
     [ "level2color", "classmim_1_1Log.html#ad8f11a38f9affff739754f54d0b33257", null ],
     [ "log", "classmim_1_1Log.html#a49e3c6b8b969fd0e8c907f9e472e316d", null ],
     [ "log", "classmim_1_1Log.html#ab3fb5890b2e5c09efad830efeae6f508", null ],
