@@ -49,7 +49,7 @@ const Def* Lam::eta_reduce() const {
 const Def* Lam::eta_expand(Filter filter, const Def* f) {
     auto& w  = f->world();
     auto eta = w.mut_lam(f->type()->as<Pi>());
-    eta->debug_suffix("eta_"s + f->sym().str());
+    eta->set(f->dbg())->debug_prefix("eta_"s);
     return eta->app(filter, f, eta->var());
 }
 
