@@ -38,8 +38,8 @@ const Def* LowerFor::rewrite(const Def* def) {
 
         auto body_lam = body->isa_mut<Lam>();
         auto exit_lam = exit->isa_mut<Lam>();
-        if (!body_lam) body = Lam::eta_expand(body);
-        if (!exit_lam) exit = Lam::eta_expand(exit);
+        if (!body_lam) body_lam = Lam::eta_expand(body);
+        if (!exit_lam) exit_lam = Lam::eta_expand(exit);
 
         auto mem       = mem::mem_def(init);
         auto head_lam  = world().mut_con(merge_s(world(), begin->type(), init->type(), mem))->set("head");
@@ -56,8 +56,8 @@ const Def* LowerFor::rewrite(const Def* def) {
 
         head_lam->branch(false, cmp, new_body, new_exit, mem);
         new_yield->app(false, head_lam, merge_t(world(), new_iter, new_yield->var(), mem));
-        new_body->set(body->reduce(world().tuple({iter, acc, new_yield})));
-        new_exit->set(exit->reduce(acc));
+        new_body->set(body_lam->reduce({iter, acc, new_yield}));
+        new_exit->set(exit_lam->reduce(acc));
 
         return rewritten_[def] = world().app(head_lam, merge_t(world(), begin, init, mem));
     }

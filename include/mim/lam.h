@@ -183,14 +183,16 @@ public:
     /// @name Rebuild
     ///@{
     Lam* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+    using Def::reduce;
+    Defs reduce(Defs) const;
     const Def* reduce_body(const Def* arg) const { return reduce(arg).back(); }
     constexpr size_t reduction_offset() const noexcept final { return 0; }
     ///@}
 
     /// @name Eta-Conversion
     ///@{
-    static const Def* eta_expand(Filter, const Def* f);
-    static const Def* eta_expand(const Def* f) { return eta_expand(true, f); } ///< Use `true` Filter.
+    static Lam* eta_expand(Filter, const Def* f);
+    static Lam* eta_expand(const Def* f) { return eta_expand(true, f); } ///< Use `true` Filter.
     /// Yields body(), if eta-convertible and `nullptr` otherwise.
     /// η-convertible means: `lm x = body x` where `x` ∉ `body`.
     const Def* eta_reduce() const;
