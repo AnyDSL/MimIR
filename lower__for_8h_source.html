@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: include/mim/plug/affine/pass/lower_for.h Source File</title>
+<title>MimIR: include/mim/plug/affine/phase/lower_for.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -122,67 +122,61 @@ $(function(){initNavTree('lower__for_8h_source.html',''); initResizable(true); }
 <div class="contents">
 <a href="lower__for_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">mim/def.h</a>&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;<a class="code" href="pass_8h.html">mim/pass.h</a>&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="foldopen" id="foldopen00006" data-start="{" data-end="}">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacemim_1_1plug.html">    6</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim_1_1plug_1_1affine.html">mim::plug::affine</a> {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"></span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/// Lowers the for axm to actual control flow in CPS.</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/// It basically mimics this implementation:</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/// ```</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/// con %affine.For_impl</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">///     (m: Nat , n: Nat , Ts: «n; *»)</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">///     (begin: Idx m, end: Idx m, step: Idx m, init: «i: n; Ts#i»,</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">///             body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">///             exit: Cn «i: n; Ts#i»</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">///     ) =</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">///     con head(iter: Idx m, acc: «i: n; Ts#i») =</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">///         con new_body() = body (iter, acc, cn acc: «i: n; Ts#i» =</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">///             let iter2 = %core.wrap.add %core.mode.nsuw (iter, step);</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">///             head (iter2, acc));</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">///         con new_exit() = exit (acc);</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">///         (new_exit, new_body)#(%core.icmp.ul (iter, end)) ();</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">///     head(begin, init);</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">/// ```</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">/// However, we merge `init`/`acc` into the signature, as it may contain a `mem`.</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">/// In this case we have to equip `new_body`/`new_exit` with a `mem` as well.</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">/// @todo We probably want to have phases which fix such things so we don&#39;t have to do this in C++.</span></div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1affine_1_1LowerFor.html">   28</a></span><span class="keyword">class </span><a class="code hl_function" href="classmim_1_1plug_1_1affine_1_1LowerFor.html#a0177b7851326259d8b0f4f21c5d5d12a">LowerFor</a> : <span class="keyword">public</span> <a class="code hl_function" href="classmim_1_1RWPass.html#a0658053fe0b5e63e4041ccd20711bc5a">RWPass</a>&lt;LowerFor, Lam&gt; {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1affine_1_1LowerFor.html#a0177b7851326259d8b0f4f21c5d5d12a">   30</a></span>    <a class="code hl_function" href="classmim_1_1plug_1_1affine_1_1LowerFor.html#a0177b7851326259d8b0f4f21c5d5d12a">LowerFor</a>(<a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>, <a class="code hl_typedef" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>)</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        : <a class="code hl_function" href="classmim_1_1RWPass.html#a0658053fe0b5e63e4041ccd20711bc5a">RWPass</a>(<a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>, <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>) {}</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="phase_8h.html">mim/phase.h</a>&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="foldopen" id="foldopen00005" data-start="{" data-end="}">
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespacemim_1_1plug.html">    5</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim_1_1plug_1_1affine_1_1phase.html">mim::plug::affine::phase</a> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">/// Lowers the for axm to actual control flow in CPS.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/// It basically mimics this implementation:</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/// ```</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">/// con %affine.For_impl</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">///     {m n: Nat, Ts: «n; *»}</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">///     (begin: Idx m, end: Idx m, step: Idx m, init: «i: n; Ts#i»,</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">///             body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">///             exit: Cn «i: n; Ts#i»</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">///     ) =</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">///     con head(iter: Idx m, acc: «i: n; Ts#i») =</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">///         con new_body() = body (iter, acc, cn acc: «i: n; Ts#i» =</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">///             let iter2 = %core.wrap.add %core.mode.nsuw (iter, step);</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">///             head (iter2, acc));</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">///         con new_exit() = exit (acc);</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">///         (new_exit, new_body)#(%core.icmp.ul (iter, end)) ();</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">///     head(begin, init);</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">/// ```</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">/// However, we merge `init`/`acc` into the signature, as it may contain a `mem`.</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">/// In this case we have to equip `new_body`/`new_exit` with a `mem` as well.</span></div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html">   26</a></span><span class="keyword">class </span><a class="code hl_function" href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html#a6796f282a28efaf49f4709fbc2eacb42">LowerFor</a> : <span class="keyword">public</span> <a class="code hl_function" href="classmim_1_1RWPhase.html#a1a93b5334758ffeae74e6244806284cf">RWPhase</a> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html#a6796f282a28efaf49f4709fbc2eacb42">   28</a></span>    <a class="code hl_function" href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html#a6796f282a28efaf49f4709fbc2eacb42">LowerFor</a>(<a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; <a class="code hl_function" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">world</a>, <a class="code hl_typedef" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        : <a class="code hl_function" href="classmim_1_1RWPhase.html#a1a93b5334758ffeae74e6244806284cf">RWPhase</a>(<a class="code hl_function" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">world</a>, <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>) {}</div>
 </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* <a class="code hl_function" href="classmim_1_1plug_1_1affine_1_1LowerFor.html#a010f0f6e01d667838e2900185da46739">rewrite</a>(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>*) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_typedef" href="namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a> rewritten_;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* <a class="code hl_function" href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html#a0b912a156f5bd792f2e131e3febf5440">rewrite_imm_App</a>(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1App.html">App</a>*) <span class="keyword">final</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
 </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>} <span class="comment">// namespace mim::plug::affine</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace mim::plug::affine::phase</span></div>
 </div>
+<div class="ttc" id="aclassmim_1_1App_html"><div class="ttname"><a href="classmim_1_1App.html">mim::App</a></div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00225">lam.h:225</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00251">def.h:251</a></div></div>
-<div class="ttc" id="aclassmim_1_1RWPass_html_a0658053fe0b5e63e4041ccd20711bc5a"><div class="ttname"><a href="classmim_1_1RWPass.html#a0658053fe0b5e63e4041ccd20711bc5a">mim::RWPass&lt; LowerFor, Lam &gt;::RWPass</a></div><div class="ttdeci">RWPass(World &amp;world, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00295">pass.h:295</a></div></div>
-<div class="ttc" id="aclassmim_1_1Stage_html_a39ade56bc81b636a7830048ca2b68a42"><div class="ttname"><a href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">mim::Stage::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00064">pass.h:64</a></div></div>
+<div class="ttc" id="aclassmim_1_1RWPhase_html_a1a93b5334758ffeae74e6244806284cf"><div class="ttname"><a href="classmim_1_1RWPhase.html#a1a93b5334758ffeae74e6244806284cf">mim::RWPhase::RWPhase</a></div><div class="ttdeci">RWPhase(World &amp;world, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00071">phase.h:71</a></div></div>
+<div class="ttc" id="aclassmim_1_1RWPhase_html_ab2f627b52ee66162e8dcf2249f67ed3e"><div class="ttname"><a href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">mim::RWPhase::world</a></div><div class="ttdeci">World &amp; world()=delete</div><div class="ttdoc">Hides both and forbids direct access.</div></div>
 <div class="ttc" id="aclassmim_1_1Stage_html_af3818779efacabd21b68b1e3d3ec8c15"><div class="ttname"><a href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">mim::Stage::annex</a></div><div class="ttdeci">flags_t annex() const</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00068">pass.h:68</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html"><div class="ttname"><a href="classmim_1_1World.html">mim::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of MimIR nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00036">world.h:36</a></div></div>
-<div class="ttc" id="aclassmim_1_1plug_1_1affine_1_1LowerFor_html_a010f0f6e01d667838e2900185da46739"><div class="ttname"><a href="classmim_1_1plug_1_1affine_1_1LowerFor.html#a010f0f6e01d667838e2900185da46739">mim::plug::affine::LowerFor::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) override</div><div class="ttdef"><b>Definition</b> <a href="lower__for_8cpp_source.html#l00032">lower_for.cpp:32</a></div></div>
-<div class="ttc" id="aclassmim_1_1plug_1_1affine_1_1LowerFor_html_a0177b7851326259d8b0f4f21c5d5d12a"><div class="ttname"><a href="classmim_1_1plug_1_1affine_1_1LowerFor.html#a0177b7851326259d8b0f4f21c5d5d12a">mim::plug::affine::LowerFor::LowerFor</a></div><div class="ttdeci">LowerFor(World &amp;world, flags_t annex)</div><div class="ttdef"><b>Definition</b> <a href="#l00030">lower_for.h:30</a></div></div>
-<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1affine_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1affine.html">mim::plug::affine</a></div><div class="ttdoc">The affine Plugin</div><div class="ttdef"><b>Definition</b> <a href="#l00006">lower_for.h:6</a></div></div>
-<div class="ttc" id="anamespacemim_html_a06961d2806f7fb3afe05273fb4c112ab"><div class="ttname"><a href="namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab">mim::Def2Def</a></div><div class="ttdeci">DefMap&lt; const Def * &gt; Def2Def</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00075">def.h:75</a></div></div>
+<div class="ttc" id="aclassmim_1_1plug_1_1affine_1_1phase_1_1LowerFor_html_a0b912a156f5bd792f2e131e3febf5440"><div class="ttname"><a href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html#a0b912a156f5bd792f2e131e3febf5440">mim::plug::affine::phase::LowerFor::rewrite_imm_App</a></div><div class="ttdeci">const Def * rewrite_imm_App(const App *) final</div><div class="ttdef"><b>Definition</b> <a href="lower__for_8cpp_source.html#l00034">lower_for.cpp:34</a></div></div>
+<div class="ttc" id="aclassmim_1_1plug_1_1affine_1_1phase_1_1LowerFor_html_a6796f282a28efaf49f4709fbc2eacb42"><div class="ttname"><a href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html#a6796f282a28efaf49f4709fbc2eacb42">mim::plug::affine::phase::LowerFor::LowerFor</a></div><div class="ttdeci">LowerFor(World &amp;world, flags_t annex)</div><div class="ttdef"><b>Definition</b> <a href="#l00028">lower_for.h:28</a></div></div>
+<div class="ttc" id="anamespacemim_1_1plug_1_1affine_1_1phase_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1affine_1_1phase.html">mim::plug::affine::phase</a></div><div class="ttdef"><b>Definition</b> <a href="#l00005">lower_for.h:5</a></div></div>
 <div class="ttc" id="anamespacemim_html_a2aaf0a830058bfdf4884b0addad6a93f"><div class="ttname"><a href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">mim::flags_t</a></div><div class="ttdeci">u64 flags_t</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00045">types.h:45</a></div></div>
-<div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>
+<div class="ttc" id="aphase_8h_html"><div class="ttname"><a href="phase_8h.html">phase.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a></li><li class="navelem"><a class="el" href="dir_3b1e9a08cfbf85cfa8a1068ec81a2c37.html">plug</a></li><li class="navelem"><a class="el" href="dir_54381ff9b6fe69a53e93aa1c021f973f.html">affine</a></li><li class="navelem"><a class="el" href="dir_3d1b184c51467233f4a8cb188ee399f2.html">pass</a></li><li class="navelem"><a class="el" href="lower__for_8h.html">lower_for.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_4c100286d577d9b034a54bf80a8d92ed.html">mim</a></li><li class="navelem"><a class="el" href="dir_3b1e9a08cfbf85cfa8a1068ec81a2c37.html">plug</a></li><li class="navelem"><a class="el" href="dir_54381ff9b6fe69a53e93aa1c021f973f.html">affine</a></li><li class="navelem"><a class="el" href="dir_ea889ec0e66b820da679271ab505d321.html">phase</a></li><li class="navelem"><a class="el" href="lower__for_8h.html">lower_for.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

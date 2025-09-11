@@ -71,7 +71,9 @@ var annotated_dup =
       ] ],
       [ "plug", "namespacemim_1_1plug.html", [
         [ "affine", "namespacemim_1_1plug_1_1affine.html", [
-          [ "LowerFor", "classmim_1_1plug_1_1affine_1_1LowerFor.html", "classmim_1_1plug_1_1affine_1_1LowerFor" ]
+          [ "phase", "namespacemim_1_1plug_1_1affine_1_1phase.html", [
+            [ "LowerFor", "classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html", "classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor" ]
+          ] ]
         ] ],
         [ "autodiff", "namespacemim_1_1plug_1_1autodiff.html", [
           [ "Eval", "classmim_1_1plug_1_1autodiff_1_1Eval.html", "classmim_1_1plug_1_1autodiff_1_1Eval" ]

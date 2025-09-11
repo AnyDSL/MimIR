@@ -158,15 +158,15 @@ Operations</h1>
 <li>a <code>yield</code> continuation to prematurely continue with the next iteration.</li>
 </ul>
 <p>After termination of the loop <code>exit</code> is invoked. </p><div class="fragment"><div class="line">axm %affine.For: {m n: Nat, Ts: «n; *»}</div>
-<div class="line">               → Cn [begin _end step: Idx m, init: «i: n; Ts#i»,</div>
-<div class="line">                     body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],</div>
-<div class="line">                     exit: Cn «i: n; Ts#i»];</div>
+<div class="line">               → [Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»]] // body</div>
+<div class="line">               → [Cn «i: n; Ts#i»]                                             // exit</div>
+<div class="line">               → Cn [begin _end step: Idx m, init: «i: n; Ts#i»];</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md75"></a>
 Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md76"></a>
 %affine.lower_for_pass</h2>
 <p>Loweres the %%affine.For operation to recursive function calls.</p>
-<div class="fragment"><div class="line">axm %affine.lower_for_pass: %compile.Pass;</div>
+<div class="fragment"><div class="line">axm %affine.lower_for_phase: %compile.Phase;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

@@ -86,6 +86,7 @@ var hierarchy =
         [ "mim::PrefixCleanup", "classmim_1_1PrefixCleanup.html", null ],
         [ "mim::ReplManPhase", "classmim_1_1ReplManPhase.html", null ],
         [ "mim::RetWrap", "classmim_1_1RetWrap.html", null ],
+        [ "mim::plug::affine::phase::LowerFor", "classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html", null ],
         [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
       ] ],
       [ "mim::VarRewriter", "classmim_1_1VarRewriter.html", null ]
@@ -166,9 +167,6 @@ var hierarchy =
             [ "mim::FPPass< TailRecElim, Lam >", "classmim_1_1FPPass.html", [
               [ "mim::TailRecElim", "classmim_1_1TailRecElim.html", null ]
             ] ]
-          ] ],
-          [ "mim::RWPass< LowerFor, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::affine::LowerFor", "classmim_1_1plug_1_1affine_1_1LowerFor.html", null ]
           ] ],
           [ "mim::RWPass< Eval, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::plug::autodiff::Eval", "classmim_1_1plug_1_1autodiff_1_1Eval.html", null ]

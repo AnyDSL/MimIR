@@ -9,7 +9,7 @@ var searchData=
   ['lit_6',['lit',['../namespacemim_1_1plug_1_1regex.html#aeded541d9600938bd2b0f7949ebfe7d9',1,'mim::plug::regex']]],
   ['load_7',['load',['../namespacemim_1_1plug_1_1mem.html#a029144aa6e194281070cc4406fe2268e',1,'mim::plug::mem']]],
   ['longjmp_8',['longjmp',['../namespacemim_1_1plug_1_1clos.html#a8c9d1749e78425672fc67a331980da7d',1,'mim::plug::clos']]],
-  ['lower_5ffor_5fpass_9',['lower_for_pass',['../namespacemim_1_1plug_1_1affine.html#aec3379fec686b17472152beb1c39b349',1,'mim::plug::affine']]],
+  ['lower_5ffor_5fphase_9',['lower_for_phase',['../namespacemim_1_1plug_1_1affine.html#aa58381bede626b4c4d80d8f15e996d3e',1,'mim::plug::affine']]],
   ['lower_5fmatrix_5fhigh_5flevel_5fmap_5freduce_10',['lower_matrix_high_level_map_reduce',['../namespacemim_1_1plug_1_1matrix.html#a26667b55e4b1b958050cfe9ecbf327fd',1,'mim::plug::matrix']]],
   ['lower_5fmatrix_5flow_5flevel_11',['lower_matrix_low_level',['../namespacemim_1_1plug_1_1matrix.html#ae3f0ab7b8527477c358984c01ddbd94c',1,'mim::plug::matrix']]],
   ['lower_5fmatrix_5fmedium_5flevel_12',['lower_matrix_medium_level',['../namespacemim_1_1plug_1_1matrix.html#af206cc10642f27ab0e14c586d512f3d6',1,'mim::plug::matrix']]],

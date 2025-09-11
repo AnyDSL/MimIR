@@ -9,7 +9,7 @@ var searchData=
   ['lit_6',['Lit',['../classmim_1_1Lit.html',1,'mim']]],
   ['litexpr_7',['LitExpr',['../classmim_1_1ast_1_1LitExpr.html',1,'mim::ast']]],
   ['log_8',['Log',['../classmim_1_1Log.html',1,'mim']]],
-  ['lowerfor_9',['LowerFor',['../classmim_1_1plug_1_1affine_1_1LowerFor.html',1,'mim::plug::affine']]],
+  ['lowerfor_9',['LowerFor',['../classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html',1,'mim::plug::affine::phase']]],
   ['lowermatrixhighlevelmapred_10',['LowerMatrixHighLevelMapRed',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html',1,'mim::plug::matrix']]],
   ['lowermatrixlowlevel_11',['LowerMatrixLowLevel',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html',1,'mim::plug::matrix']]],
   ['lowermatrixmediumlevel_12',['LowerMatrixMediumLevel',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html',1,'mim::plug::matrix']]],
