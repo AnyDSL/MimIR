@@ -26,7 +26,7 @@ var searchData=
   ['top_23',['Top',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa4ffdcf0dc1f31b9acaf295d75b51d00',1,'mim']]],
   ['top_24',['top',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91ab28354b543375bfa94dabaeda722927f',1,'mim::plug::math']]],
   ['trace_25',['Trace',['../classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590add4ec0ac4e58f7c32a01244ae91150b1',1,'mim::Log']]],
-  ['traxy_26',['Traxy',['../classmim_1_1plug_1_1mem_1_1SSAConstr.html#a013677415e8c00e4de0aa4795048ae9ca1a332304d24a77d84c751b0cf224038a',1,'mim::plug::mem::SSAConstr']]],
+  ['traxy_26',['Traxy',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#a798af4cb0426f7ceafcb84a8dfa6f89fa300861a8f090a37151ec3de8edd4c705',1,'mim::plug::mem::pass::SSA']]],
   ['tuple_27',['Tuple',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daafcbeb58fca053cad573bd9efda1dc5b',1,'mim']]],
   ['type_28',['Type',['../classmim_1_1UMax.html#a098634bb335cad742136e612032ab42fa26c76cc5fcedbdc51e9860ee6e1add3a',1,'mim::UMax::Type'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa1fa27779242b4902f7ae3bdd5c6d508',1,'mim::Type']]]
 ];

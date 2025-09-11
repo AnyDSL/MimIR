@@ -27,7 +27,7 @@ var searchData=
   ['pos2str_24',['pos2str',['../classmim_1_1EtaExp.html#a918d0ba86a1f3fb19042ff312f90ff15',1,'mim::EtaExp']]],
   ['post_5forder_25',['post_order',['../namespacemim.html#ada5cb760897eaa1e558552b65009fa67',1,'mim']]],
   ['prefixcleanup_26',['PrefixCleanup',['../classmim_1_1PrefixCleanup.html#aa7bead5f8d19dd41b54ff69f1ee4aaea',1,'mim::PrefixCleanup']]],
-  ['prepare_27',['prepare',['../classmim_1_1Pass.html#a87c5574acbd09037bb38ad7391d1e8a5',1,'mim::Pass::prepare()'],['../classDebugDump.html#a7ba3146f154bab174637913ddb675b3c',1,'DebugDump::prepare()'],['../classmim_1_1ll_1_1Emitter.html#a3125973a7f9b998d59ab1753d43ce786',1,'mim::ll::Emitter::prepare()']]],
+  ['prepare_27',['prepare',['../classmim_1_1Pass.html#a87c5574acbd09037bb38ad7391d1e8a5',1,'mim::Pass::prepare()'],['../classmim_1_1ll_1_1Emitter.html#a3125973a7f9b998d59ab1753d43ce786',1,'mim::ll::Emitter::prepare()']]],
   ['primaryexpr_28',['PrimaryExpr',['../classmim_1_1ast_1_1PrimaryExpr.html#ace8b734d832e31954b747ab0a33a5980',1,'mim::ast::PrimaryExpr::PrimaryExpr(Loc loc, Tok::Tag tag)'],['../classmim_1_1ast_1_1PrimaryExpr.html#aec9bd95b309823a1a050a436840e16ca',1,'mim::ast::PrimaryExpr::PrimaryExpr(Tok tok)']]],
   ['print_29',['print',['../classmim_1_1Tab.html#afa9d4993668faaa9cc8cb658c4ec5b5b',1,'mim::Tab::print()'],['../namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83',1,'mim::print(std::ostream &amp;os, const char *s)'],['../namespacemim.html#aa40aa81b4928c7e18a7aaaff1fd810fc',1,'mim::print(std::ostream &amp;os, const char *s, T &amp;&amp;t, Args &amp;&amp;... args)']]],
   ['print_5fnode_30',['print_node',['../namespaceautomaton.html#ab8673e0658e5b031357bc29c86647de1',1,'automaton']]],

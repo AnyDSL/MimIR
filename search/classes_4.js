@@ -11,8 +11,9 @@ var searchData=
   ['etaexpphase_8',['EtaExpPhase',['../classmim_1_1EtaExpPhase.html',1,'mim']]],
   ['etared_9',['EtaRed',['../classmim_1_1EtaRed.html',1,'mim']]],
   ['etaredphase_10',['EtaRedPhase',['../classmim_1_1EtaRedPhase.html',1,'mim']]],
-  ['expr_11',['Expr',['../classmim_1_1ast_1_1Expr.html',1,'mim::ast']]],
-  ['ext_12',['Ext',['../classmim_1_1Ext.html',1,'mim']]],
-  ['extract_13',['Extract',['../classmim_1_1Extract.html',1,'mim']]],
-  ['extractexpr_14',['ExtractExpr',['../classmim_1_1ast_1_1ExtractExpr.html',1,'mim::ast']]]
+  ['eval_11',['Eval',['../classmim_1_1plug_1_1autodiff_1_1Eval.html',1,'mim::plug::autodiff']]],
+  ['expr_12',['Expr',['../classmim_1_1ast_1_1Expr.html',1,'mim::ast']]],
+  ['ext_13',['Ext',['../classmim_1_1Ext.html',1,'mim']]],
+  ['extract_14',['Extract',['../classmim_1_1Extract.html',1,'mim']]],
+  ['extractexpr_15',['ExtractExpr',['../classmim_1_1ast_1_1ExtractExpr.html',1,'mim::ast']]]
 ];

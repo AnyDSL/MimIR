@@ -123,13 +123,13 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md194">Dependencies</a>
+    <a href="#autotoc_md197">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md195">Passes, Phases, and Pipelines</a>
+    <a href="#autotoc_md198">Passes, Phases, and Pipelines</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md196">Pipelines</a>
+        <a href="#autotoc_md199">Pipelines</a>
       </li>
     </ul>
   </li>
@@ -138,7 +138,7 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2opt"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1opt.html" title="The opt Plugin">mim::plug::opt</a></dd></dl>
 <p>Manages the default compilation pipeline of Mim programs using plugins.</p>
-<h1><a class="anchor" id="autotoc_md194"></a>
+<h1><a class="anchor" id="autotoc_md197"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
 <div class="line">import compile;</div>
@@ -149,11 +149,12 @@ Dependencies</h1>
 <div class="line">import matrix;</div>
 <div class="line">import refly;</div>
 <div class="line">import regex;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md195"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md198"></a>
 Passes, Phases, and Pipelines</h1>
-<h2><a class="anchor" id="autotoc_md196"></a>
+<h2><a class="anchor" id="autotoc_md199"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);</div>
+<div class="line">lam cond_repl  {n: Nat} (name: «n; I8») (repl:  %compile.Repl ): %compile.Repl  = %core.select (%compile.is_loaded name, repl , %compile.null_repl );</div>
 <div class="line">lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );</div>
 <div class="line"> </div>
 <div class="line">lam extern _default_compile (): %compile.Phase =</div>
@@ -177,8 +178,8 @@ Pipelines</h2>
 <div class="line">        ),</div>
 <div class="line">        cond_phase &quot;autodiff&quot; (</div>
 <div class="line">            %compile.phases ff (</div>
-<div class="line">                %compile.pass2phase %autodiff.ad_eval_pass,</div>
-<div class="line">                %compile.pass2phase %autodiff.ad_zero_pass,</div>
+<div class="line">                %compile.pass2phase %autodiff.eval_pass,</div>
+<div class="line">                %compile.repl2phase %autodiff.zero_repl,</div>
 <div class="line">            )</div>
 <div class="line">        ),</div>
 <div class="line">        cond_phase &quot;direct&quot; direct_phases,</div>
@@ -192,15 +193,14 @@ Pipelines</h2>
 <div class="line">        %compile.internal_cleanup_phase,</div>
 <div class="line">        cond_phase &quot;clos&quot; clos_phases,</div>
 <div class="line">        %compile.pass2phase %compile.lam_spec_pass,</div>
-<div class="line">        cond_phase &quot;autodiff&quot; ad_cleanup_phase,</div>
 <div class="line">        // CodeGenPrep</div>
 <div class="line">        %compile.branch_normalize_phase,</div>
 <div class="line">        %compile.ret_wrap_phase,</div>
-<div class="line">        %compile.pass2phase (</div>
-<div class="line">            %compile.passes (</div>
-<div class="line">                %mem.remem_elim_pass,</div>
-<div class="line">                %mem.alloc2malloc_pass,</div>
-<div class="line">                cond_pass &quot;refly&quot; %refly.remove_dbg_perm_pass,</div>
+<div class="line">        %compile.repl2phase (</div>
+<div class="line">            %compile.repls (</div>
+<div class="line">                %mem.remem_repl,</div>
+<div class="line">                %mem.alloc2malloc_repl,</div>
+<div class="line">                cond_repl &quot;refly&quot; %refly.remove_dbg_repl,</div>
 <div class="line">            )</div>
 <div class="line">        ),</div>
 <div class="line">    );</div>

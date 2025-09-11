@@ -52,7 +52,7 @@ var searchData=
   ['span_49',['Span',['../classmim_1_1Span.html',1,'mim']]],
   ['span_3c_20const_20t_2c_20n_20_3e_50',['Span&lt; const T, N &gt;',['../classmim_1_1Span.html',1,'mim']]],
   ['split_51',['Split',['../classmim_1_1Split.html',1,'mim']]],
-  ['ssaconstr_52',['SSAConstr',['../classmim_1_1plug_1_1mem_1_1SSAConstr.html',1,'mim::plug::mem']]],
+  ['ssa_52',['SSA',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html',1,'mim::plug::mem::pass']]],
   ['stage_53',['Stage',['../classmim_1_1Stage.html',1,'mim']]],
   ['state_54',['State',['../structmim_1_1World_1_1State.html',1,'mim::World']]]
 ];

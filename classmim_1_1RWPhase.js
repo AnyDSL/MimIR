@@ -9,6 +9,5 @@ var classmim_1_1RWPhase =
     [ "rewrite_annex", "classmim_1_1RWPhase.html#a64aef791fdf4d2b1e46a49254d9be5bd", null ],
     [ "rewrite_external", "classmim_1_1RWPhase.html#af324f7c09f5b26f88fbf3dad4e059b26", null ],
     [ "start", "classmim_1_1RWPhase.html#a8f18849b836d888382aed5b2bcc249f8", null ],
-    [ "world", "classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e", null ],
-    [ "bootstrapping_", "classmim_1_1RWPhase.html#aae0214459d368c59a9e209e2c25e14cb", null ]
+    [ "world", "classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e", null ]
 ];

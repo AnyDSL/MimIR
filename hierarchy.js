@@ -35,7 +35,7 @@ var hierarchy =
     [ "mim::GIDLt< T >", "structmim_1_1GIDLt.html", null ],
     [ "mim::IndexMap< Indexer, Key, Value >", "classmim_1_1IndexMap.html", null ],
     [ "mim::IndexSet< Indexer, Key >", "classmim_1_1IndexSet.html", null ],
-    [ "mim::plug::mem::SSAConstr::Info", "classmim_1_1plug_1_1mem_1_1SSAConstr.html#structmim_1_1plug_1_1mem_1_1SSAConstr_1_1Info", null ],
+    [ "mim::plug::mem::pass::SSA::Info", "classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#structmim_1_1plug_1_1mem_1_1pass_1_1SSA_1_1Info", null ],
     [ "absl::InlinedVector", null, [
       [ "mim::Vector< const Def * >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< Lattice >", "classmim_1_1Vector.html", null ],
@@ -84,6 +84,7 @@ var hierarchy =
         [ "mim::EtaExpPhase", "classmim_1_1EtaExpPhase.html", null ],
         [ "mim::EtaRedPhase", "classmim_1_1EtaRedPhase.html", null ],
         [ "mim::PrefixCleanup", "classmim_1_1PrefixCleanup.html", null ],
+        [ "mim::ReplManPhase", "classmim_1_1ReplManPhase.html", null ],
         [ "mim::RetWrap", "classmim_1_1RetWrap.html", null ],
         [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
       ] ],
@@ -137,9 +138,6 @@ var hierarchy =
       [ "mim::Stage", "classmim_1_1Stage.html", [
         [ "mim::Pass", "classmim_1_1Pass.html", [
           [ "mim::RWPass< P, M >", "classmim_1_1RWPass.html", null ],
-          [ "mim::RWPass< DebugDump, Lam >", "classmim_1_1RWPass.html", [
-            [ "DebugDump", "classDebugDump.html", null ]
-          ] ],
           [ "mim::RWPass< BetaRed, Def >", "classmim_1_1RWPass.html", [
             [ "mim::FPPass< BetaRed, Def >", "classmim_1_1FPPass.html", [
               [ "mim::BetaRed", "classmim_1_1BetaRed.html", null ]
@@ -172,14 +170,8 @@ var hierarchy =
           [ "mim::RWPass< LowerFor, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::plug::affine::LowerFor", "classmim_1_1plug_1_1affine_1_1LowerFor.html", null ]
           ] ],
-          [ "mim::RWPass< AutoDiffEval, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::autodiff::AutoDiffEval", "classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html", null ]
-          ] ],
-          [ "mim::RWPass< AutoDiffZero, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::autodiff::AutoDiffZero", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZero.html", null ]
-          ] ],
-          [ "mim::RWPass< AutoDiffZeroCleanup, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::autodiff::AutoDiffZeroCleanup", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html", null ]
+          [ "mim::RWPass< Eval, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::plug::autodiff::Eval", "classmim_1_1plug_1_1autodiff_1_1Eval.html", null ]
           ] ],
           [ "mim::RWPass< BranchClosElim, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::plug::clos::BranchClosElim", "classmim_1_1plug_1_1clos_1_1BranchClosElim.html", null ]
@@ -207,27 +199,18 @@ var hierarchy =
           [ "mim::RWPass< LowerMatrixMediumLevel, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::plug::matrix::LowerMatrixMediumLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html", null ]
           ] ],
-          [ "mim::RWPass< Alloc2Malloc, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::mem::Alloc2Malloc", "classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html", null ]
-          ] ],
           [ "mim::RWPass< CopyProp, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::FPPass< CopyProp, Lam >", "classmim_1_1FPPass.html", [
-              [ "mim::plug::mem::CopyProp", "classmim_1_1plug_1_1mem_1_1CopyProp.html", null ]
+              [ "mim::plug::mem::pass::CopyProp", "classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html", null ]
             ] ]
-          ] ],
-          [ "mim::RWPass< RememElim, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::mem::RememElim", "classmim_1_1plug_1_1mem_1_1RememElim.html", null ]
           ] ],
           [ "mim::RWPass< Reshape, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::mem::Reshape", "classmim_1_1plug_1_1mem_1_1Reshape.html", null ]
+            [ "mim::plug::mem::pass::Reshape", "classmim_1_1plug_1_1mem_1_1pass_1_1Reshape.html", null ]
           ] ],
-          [ "mim::RWPass< SSAConstr, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::FPPass< SSAConstr, Lam >", "classmim_1_1FPPass.html", [
-              [ "mim::plug::mem::SSAConstr", "classmim_1_1plug_1_1mem_1_1SSAConstr.html", null ]
+          [ "mim::RWPass< SSA, Lam >", "classmim_1_1RWPass.html", [
+            [ "mim::FPPass< SSA, Lam >", "classmim_1_1FPPass.html", [
+              [ "mim::plug::mem::pass::SSA", "classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html", null ]
             ] ]
-          ] ],
-          [ "mim::RWPass< RemoveDbgPerm, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::refly::RemoveDbgPerm", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html", null ]
           ] ],
           [ "mim::RWPass< LowerRegex, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::plug::regex::LowerRegex", "classmim_1_1plug_1_1regex_1_1LowerRegex.html", null ]
@@ -242,7 +225,7 @@ var hierarchy =
                 [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ]
               ] ],
               [ "mim::Emitter< Value, Type, BB, Child >", "classmim_1_1Emitter.html", null ],
-              [ "mim::plug::mem::AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", null ]
+              [ "mim::plug::mem::phase::AddMem", "classmim_1_1plug_1_1mem_1_1phase_1_1AddMem.html", null ]
             ] ]
           ] ],
           [ "mim::ClosedMutPhase< Def >", "classmim_1_1ClosedMutPhase.html", [
@@ -254,6 +237,9 @@ var hierarchy =
           [ "mim::RWPhase", "classmim_1_1RWPhase.html", null ],
           [ "mim::plug::clos::ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", null ],
           [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ]
+        ] ],
+        [ "mim::Repl", "classmim_1_1Repl.html", [
+          [ "mim::ReplMan", "classmim_1_1ReplMan.html", null ]
         ] ]
       ] ],
       [ "mim::ast::Node", "classmim_1_1ast_1_1Node.html", [

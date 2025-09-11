@@ -24,7 +24,7 @@ var refly_2autogen_8h =
     [ "mim::plug::refly::refine", "namespacemim_1_1plug_1_1refly.html#a6f3aaae5967d2117b76b540b8cd92065", null ],
     [ "mim::plug::refly::reflect", "namespacemim_1_1plug_1_1refly.html#aee2261b0b7331b07efb5c1cea91421ae", null ],
     [ "mim::plug::refly::reify", "namespacemim_1_1plug_1_1refly.html#a7d9a82248335e8645a9d39bb906f230b", null ],
-    [ "mim::plug::refly::remove_dbg_perm_pass", "namespacemim_1_1plug_1_1refly.html#a9b324d47a3885cb1be1194e91bd047d9", null ],
+    [ "mim::plug::refly::remove_dbg_repl", "namespacemim_1_1plug_1_1refly.html#aaa7635b22e58dbea43a404116ff8a640", null ],
     [ "mim::plug::refly::type", "namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4", null ],
     [ "mim::plug::refly::verbose", "namespacemim_1_1plug_1_1refly.html#adb7a95dc4452056bbd12a22f40d875e7", null ],
     [ "mim::plug::refly::warn", "namespacemim_1_1plug_1_1refly.html#a7b28d3c30005b51a4045c19a3beee279", null ],

@@ -1,12 +1,7 @@
 var namespacemim_1_1plug_1_1mem =
 [
-    [ "AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", "classmim_1_1plug_1_1mem_1_1AddMem" ],
-    [ "Alloc2Malloc", "classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html", "classmim_1_1plug_1_1mem_1_1Alloc2Malloc" ],
-    [ "CopyProp", "classmim_1_1plug_1_1mem_1_1CopyProp.html", "classmim_1_1plug_1_1mem_1_1CopyProp" ],
-    [ "RememElim", "classmim_1_1plug_1_1mem_1_1RememElim.html", "classmim_1_1plug_1_1mem_1_1RememElim" ],
-    [ "Reshape", "classmim_1_1plug_1_1mem_1_1Reshape.html", "classmim_1_1plug_1_1mem_1_1Reshape" ],
-    [ "SSAConstr", "classmim_1_1plug_1_1mem_1_1SSAConstr.html", "classmim_1_1plug_1_1mem_1_1SSAConstr" ],
-    [ "DefQueue", "namespacemim_1_1plug_1_1mem.html#ac7f22fbdebfe5955105c1ae6e9ef5901", null ],
+    [ "pass", "namespacemim_1_1plug_1_1mem_1_1pass.html", "namespacemim_1_1plug_1_1mem_1_1pass" ],
+    [ "phase", "namespacemim_1_1plug_1_1mem_1_1phase.html", "namespacemim_1_1plug_1_1mem_1_1phase" ],
     [ "add_mem_phase", "namespacemim_1_1plug_1_1mem.html#a1890f866b3c4a93c26c295f76b7c507b", null ],
     [ "AddrSpace", "namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9", [
       [ "Generic", "namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9a8045a0a6c688b0635e3caccc408a1446", null ],
@@ -16,7 +11,7 @@ var namespacemim_1_1plug_1_1mem =
       [ "Constant", "namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9acb17869fe51048b5a5c4c6106551a255", null ]
     ] ],
     [ "alloc", "namespacemim_1_1plug_1_1mem.html#afaa1b7ff42fe8de01c9ae6f3531c5cbc", null ],
-    [ "alloc2malloc_pass", "namespacemim_1_1plug_1_1mem.html#af6ae467bb55fa3b24c2e17c8b6848843", null ],
+    [ "alloc2malloc_repl", "namespacemim_1_1plug_1_1mem.html#a4af6c0a89b26ab2719c93fa85a18d9fc", null ],
     [ "copy_prop_pass", "namespacemim_1_1plug_1_1mem.html#a526eb86f6219aa1645e12144c1a3a6e8", null ],
     [ "free", "namespacemim_1_1plug_1_1mem.html#aa920d510e2e4277188e0b9517e6ea64b", null ],
     [ "ignore", "namespacemim_1_1plug_1_1mem.html#afa678c2b9ae814e269ec20cb54fc4a7d", null ],
@@ -29,7 +24,7 @@ var namespacemim_1_1plug_1_1mem =
     [ "Ptr", "namespacemim_1_1plug_1_1mem.html#afbf5b5fae36f11d5031d0b7672eabf06", null ],
     [ "Ptr0", "namespacemim_1_1plug_1_1mem.html#ace46b7b29a70a8a286dd0a1fc74855f3", null ],
     [ "remem", "namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502", null ],
-    [ "remem_elim_pass", "namespacemim_1_1plug_1_1mem.html#a3b3bba4f272dc05b457fb2b39968d94a", null ],
+    [ "remem_repl", "namespacemim_1_1plug_1_1mem.html#ad9d89e9549e0e2492fa7f2f4ae29a230", null ],
     [ "reshape_arg", "namespacemim_1_1plug_1_1mem.html#aeb9697d7f21a6353fec209d17af59b1b", null ],
     [ "reshape_flat", "namespacemim_1_1plug_1_1mem.html#af1ce190e137cdb2ed5ad67076a0c4b24", null ],
     [ "reshape_mode", "namespacemim_1_1plug_1_1mem.html#a710a923b412df8100cf79e67ba3f6601", null ],

@@ -4,7 +4,7 @@ var searchData=
   ['backend_1',['backend',['../classmim_1_1Driver.html#a41e5a945cac9fdfd37830a722b5bd2a4',1,'mim::Driver']]],
   ['base_2',['base',['../classmim_1_1Axm.html#a7f72e924025ab0db142542e4fcc92bf1',1,'mim::Axm::base()'],['../classmim_1_1Axm_1_1IsA.html#a0435403d6bd226f0773aee962e52f3a5',1,'mim::Axm::IsA::base()'],['../structmim_1_1Annex.html#abb47b7da8a1e6cc0e8c2754b978b2658',1,'mim::Annex::base()']]],
   ['bb_3',['BB',['../structmim_1_1ll_1_1BB.html#a4a4d9b0d1e775d317b1e7b9cb0fa15f1',1,'mim::ll::BB::BB()=default'],['../structmim_1_1ll_1_1BB.html#a3d1557df2180ac4ebb037bcc0da01b56',1,'mim::ll::BB::BB(const BB &amp;)=delete'],['../structmim_1_1ll_1_1BB.html#a617d59a5fcdf3054999de3a9a2c55ffa',1,'mim::ll::BB::BB(BB &amp;&amp;other) noexcept=default']]],
-  ['bb_5fonly_4',['bb_only',['../classmim_1_1plug_1_1mem_1_1CopyProp.html#a1ad8a38fb0f21d044652a9b9c2341a03',1,'mim::plug::mem::CopyProp']]],
+  ['bb_5fonly_4',['bb_only',['../classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html#a0ad0e6d65b748f6bf0eec9c3fc5c009b',1,'mim::plug::mem::pass::CopyProp']]],
   ['begin_5',['begin',['../classmim_1_1IndexMap.html#a6f61edc7c6bdd2aaaa687ffef3fb0f62',1,'mim::IndexMap::begin()'],['../classmim_1_1Sets_1_1Set.html#a60caa2b410ba32ac48f32b5b01ff8ba9',1,'mim::Sets::Set::begin()']]],
   ['betared_6',['BetaRed',['../classmim_1_1BetaRed.html#ad18358e51ced85ae37fabf93dbbac626',1,'mim::BetaRed']]],
   ['betaredphase_7',['BetaRedPhase',['../classmim_1_1BetaRedPhase.html#a9ae396205354df9d7c096c339679b578',1,'mim::BetaRedPhase']]],

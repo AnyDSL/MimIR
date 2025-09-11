@@ -6,7 +6,7 @@ var searchData=
   ['import_3',['Import',['../classmim_1_1ast_1_1Import.html',1,'mim::ast']]],
   ['indexmap_4',['IndexMap',['../classmim_1_1IndexMap.html',1,'mim']]],
   ['indexset_5',['IndexSet',['../classmim_1_1IndexSet.html',1,'mim']]],
-  ['info_6',['Info',['../classmim_1_1plug_1_1mem_1_1SSAConstr.html#structmim_1_1plug_1_1mem_1_1SSAConstr_1_1Info',1,'mim::plug::mem::SSAConstr']]],
+  ['info_6',['Info',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#structmim_1_1plug_1_1mem_1_1pass_1_1SSA_1_1Info',1,'mim::plug::mem::pass::SSA']]],
   ['inj_7',['Inj',['../classmim_1_1Inj.html',1,'mim']]],
   ['injexpr_8',['InjExpr',['../classmim_1_1ast_1_1InjExpr.html',1,'mim::ast']]],
   ['insert_9',['Insert',['../classmim_1_1Insert.html',1,'mim']]],

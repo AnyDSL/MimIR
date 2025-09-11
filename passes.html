@@ -169,7 +169,7 @@ $(function(){initNavTree('passes.html',''); initResizable(true); });
 <div class="line">opt.add&lt;Scalarize&gt;(ee);</div>
 <div class="line">opt.add&lt;CopyProp&gt;(br, ee);</div>
 <div class="line">opt.run();</div>
-</div><!-- fragment --><p>Note how some passes depend on other passes. For example, the <a class="el" href="classmim_1_1plug_1_1mem_1_1CopyProp.html">CopyProp</a>agation depends on the <a class="el" href="classmim_1_1BetaRed.html">BetaRed</a>uction and <a class="el" href="classmim_1_1EtaExp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, MimIR's <a class="el" href="classmim_1_1PassMan.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
+</div><!-- fragment --><p>Note how some passes depend on other passes. For example, the <a class="el" href="classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html">CopyProp</a>agation depends on the <a class="el" href="classmim_1_1BetaRed.html">BetaRed</a>uction and <a class="el" href="classmim_1_1EtaExp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, MimIR's <a class="el" href="classmim_1_1PassMan.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
 <p>There are two kind of passes in MimIR:</p>
 <ol type="1">
 <li><a class="el" href="classmim_1_1RWPass.html">Rewrite Pass</a></li>
@@ -177,58 +177,8 @@ $(function(){initNavTree('passes.html',''); initResizable(true); });
 </ol>
 <h1><a class="anchor" id="autotoc_md57"></a>
 Rewrite Pass</h1>
-<p>In order to write a <a class="el" href="classmim_1_1RWPass.html">rewrite pass</a>, you have to inherit from <a class="el" href="classmim_1_1RWPass.html">RWPass</a>. Usually, you are only interested in looking for code patterns that only occur in specific mutables - typically <a class="el" href="classmim_1_1Lam.html">Lam</a>bdas. You can filter for these mutables by passing it as template parameter to <a class="el" href="classmim_1_1RWPass.html">RWPass</a> when inherting from it. The main hook to the <a class="el" href="classmim_1_1PassMan.html">PassMan</a>, is the <a class="el" href="classmim_1_1Pass.html#ac54f62d3cb72b9ed5aab224122b84450">rewrite</a> method. As an example, let's have a look at the <a class="el" href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html">Alloc2Malloc</a> pass. It rewrites <code>alloc</code>/<code>slot</code> calls into their more verbose siblings <code>malloc</code>/<code>mslot</code> that make the size of the alloc'ed type explicit: This is <code><a class="el" href="alloc2malloc_8h.html">alloc2malloc.h</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#pragma once</span></div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="pass_8h.html">mim/pass.h</a>&gt;</span></div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim_1_1plug_1_1mem.html">mim::plug::mem</a> {</div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">class </span>Alloc2Malloc : <span class="keyword">public</span> RWPass&lt;Alloc2Malloc, Lam&gt; {</div>
-<div class="line"><span class="keyword">public</span>:</div>
-<div class="line">    <a class="code hl_function" href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html#a23ba5eab07b081543b4e40fd140bb957">Alloc2Malloc</a>(World&amp; <a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>, <a class="code hl_typedef" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>)</div>
-<div class="line">        : <a class="code hl_function" href="classmim_1_1RWPass.html#a0658053fe0b5e63e4041ccd20711bc5a">RWPass</a>(<a class="code hl_function" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>, <a class="code hl_function" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>) {}</div>
-<div class="line"> </div>
-<div class="line">    <span class="keyword">const</span> Def* <a class="code hl_function" href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html#a797e9a6280ed6508a6e6eda249aef122">rewrite</a>(<span class="keyword">const</span> Def*) <span class="keyword">override</span>;</div>
-<div class="line">};</div>
-<div class="line"> </div>
-<div class="line">} <span class="comment">// namespace mim::plug::mem</span></div>
-<div class="ttc" id="aclassmim_1_1RWPass_html_a0658053fe0b5e63e4041ccd20711bc5a"><div class="ttname"><a href="classmim_1_1RWPass.html#a0658053fe0b5e63e4041ccd20711bc5a">mim::RWPass&lt; Alloc2Malloc, Lam &gt;::RWPass</a></div><div class="ttdeci">RWPass(World &amp;world, std::string name)</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00295">pass.h:295</a></div></div>
-<div class="ttc" id="aclassmim_1_1Stage_html_a39ade56bc81b636a7830048ca2b68a42"><div class="ttname"><a href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">mim::Stage::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00064">pass.h:64</a></div></div>
-<div class="ttc" id="aclassmim_1_1Stage_html_af3818779efacabd21b68b1e3d3ec8c15"><div class="ttname"><a href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">mim::Stage::annex</a></div><div class="ttdeci">flags_t annex() const</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00068">pass.h:68</a></div></div>
-<div class="ttc" id="aclassmim_1_1plug_1_1mem_1_1Alloc2Malloc_html_a23ba5eab07b081543b4e40fd140bb957"><div class="ttname"><a href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html#a23ba5eab07b081543b4e40fd140bb957">mim::plug::mem::Alloc2Malloc::Alloc2Malloc</a></div><div class="ttdeci">Alloc2Malloc(World &amp;world, flags_t annex)</div><div class="ttdef"><b>Definition</b> <a href="alloc2malloc_8h_source.html#l00009">alloc2malloc.h:9</a></div></div>
-<div class="ttc" id="aclassmim_1_1plug_1_1mem_1_1Alloc2Malloc_html_a797e9a6280ed6508a6e6eda249aef122"><div class="ttname"><a href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html#a797e9a6280ed6508a6e6eda249aef122">mim::plug::mem::Alloc2Malloc::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) override</div><div class="ttdef"><b>Definition</b> <a href="alloc2malloc_8cpp_source.html#l00007">alloc2malloc.cpp:7</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1mem_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html">mim::plug::mem</a></div><div class="ttdoc">The mem Plugin</div><div class="ttdef"><b>Definition</b> <a href="mem_8h_source.html#l00011">mem.h:11</a></div></div>
-<div class="ttc" id="anamespacemim_html_a2aaf0a830058bfdf4884b0addad6a93f"><div class="ttname"><a href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">mim::flags_t</a></div><div class="ttdeci">u64 flags_t</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00045">types.h:45</a></div></div>
-<div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>
-</div><!-- fragment --><p>The actual <code>rewrite</code> simply inspects the current <code>def</code>. If this happens to be a <code>alloc</code>/<code>slot</code>, it will simply return the more explicit counterpart. This is <code><a class="el" href="alloc2malloc_8cpp.html">alloc2malloc.cpp</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="alloc2malloc_8h.html">mim/plug/mem/pass/alloc2malloc.h</a>&quot;</span></div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="mem_8h.html">mim/plug/mem/mem.h</a>&quot;</span></div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim_1_1plug_1_1mem.html">mim::plug::mem</a> {</div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">const</span> Def* <a class="code hl_function" href="classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html#a797e9a6280ed6508a6e6eda249aef122">Alloc2Malloc::rewrite</a>(<span class="keyword">const</span> Def* def) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#afaa1b7ff42fe8de01c9ae6f3531c5cbc">alloc</a> = <a class="code hl_function" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">Axm::isa&lt;mem::alloc&gt;</a>(def)) {</div>
-<div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#afaa1b7ff42fe8de01c9ae6f3531c5cbc">alloc</a>-&gt;decurry()-&gt;args&lt;2&gt;();</div>
-<div class="line">        <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemim_1_1plug_1_1mem.html#a4674799ce943d9db2a4da04cc0067df8">op_malloc</a>(pointee, <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#afaa1b7ff42fe8de01c9ae6f3531c5cbc">alloc</a>-&gt;arg());</div>
-<div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4">slot</a> = <a class="code hl_function" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">Axm::isa&lt;mem::slot&gt;</a>(def)) {</div>
-<div class="line">        <span class="keyword">auto</span> [Ta, mi]              = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4">slot</a>-&gt;uncurry_args&lt;2&gt;();</div>
-<div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = Ta-&gt;projs&lt;2&gt;();</div>
-<div class="line">        <span class="keyword">auto</span> [mem, id]             = mi-&gt;projs&lt;2&gt;();</div>
-<div class="line">        <span class="keywordflow">return</span> <a class="code hl_function" href="namespacemim_1_1plug_1_1mem.html#a44065fab91e9fa4ac7e6011a4dd5e2c0">op_mslot</a>(pointee, mem, <span class="keywordtype">id</span>);</div>
-<div class="line">    }</div>
-<div class="line"> </div>
-<div class="line">    <span class="keywordflow">return</span> def;</div>
-<div class="line">}</div>
-<div class="line"> </div>
-<div class="line">} <span class="comment">// namespace mim::plug::mem</span></div>
-<div class="ttc" id="aalloc2malloc_8h_html"><div class="ttname"><a href="alloc2malloc_8h.html">alloc2malloc.h</a></div></div>
-<div class="ttc" id="aclassmim_1_1Axm_html_a877535f1d66f92f61585f323b1b986f1"><div class="ttname"><a href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">mim::Axm::isa</a></div><div class="ttdeci">static auto isa(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00107">axm.h:107</a></div></div>
-<div class="ttc" id="amem_8h_html"><div class="ttname"><a href="mem_8h.html">mem.h</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1mem_html_a44065fab91e9fa4ac7e6011a4dd5e2c0"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html#a44065fab91e9fa4ac7e6011a4dd5e2c0">mim::plug::mem::op_mslot</a></div><div class="ttdeci">const Def * op_mslot(const Def *type, const Def *mem, const Def *id)</div><div class="ttdef"><b>Definition</b> <a href="mem_8h_source.html#l00161">mem.h:161</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1mem_html_a4674799ce943d9db2a4da04cc0067df8"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html#a4674799ce943d9db2a4da04cc0067df8">mim::plug::mem::op_malloc</a></div><div class="ttdeci">const Def * op_malloc(const Def *type, const Def *mem)</div><div class="ttdef"><b>Definition</b> <a href="mem_8h_source.html#l00152">mem.h:152</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1mem_html_ae34ad21e9af0dc16eaaba90794a316f4"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html#ae34ad21e9af0dc16eaaba90794a316f4">mim::plug::mem::slot</a></div><div class="ttdeci">slot</div><div class="ttdef"><b>Definition</b> <a href="mem_2autogen_8h_source.html#l00066">autogen.h:66</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1mem_html_afaa1b7ff42fe8de01c9ae6f3531c5cbc"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html#afaa1b7ff42fe8de01c9ae6f3531c5cbc">mim::plug::mem::alloc</a></div><div class="ttdeci">alloc</div><div class="ttdef"><b>Definition</b> <a href="mem_2autogen_8h_source.html#l00059">autogen.h:59</a></div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md58"></a>
+<p>In order to write a <a class="el" href="classmim_1_1RWPass.html">rewrite pass</a>, you have to inherit from <a class="el" href="classmim_1_1RWPass.html">RWPass</a>. Usually, you are only interested in looking for code patterns that only occur in specific mutables - typically <a class="el" href="classmim_1_1Lam.html">Lam</a>bdas. You can filter for these mutables by passing it as template parameter to <a class="el" href="classmim_1_1RWPass.html">RWPass</a> when inherting from it. The main hook to the <a class="el" href="classmim_1_1PassMan.html">PassMan</a>, is the <a class="el" href="classmim_1_1Pass.html#ac54f62d3cb72b9ed5aab224122b84450">rewrite</a> method.</p>
+<h1><a class="anchor" id="autotoc_md58"></a>
 Fixed-Point Pass</h1>
 <p>A <a class="el" href="classmim_1_1FPPass.html">fixed-point pass</a> allows you to implement a data-flow analysis. Traditionally, an optimizations performs</p>
 <ol type="1">

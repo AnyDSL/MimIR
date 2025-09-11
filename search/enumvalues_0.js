@@ -31,7 +31,7 @@ var searchData=
   ['and_5f_28',['and_',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205aa195f8c413b580691c2daa246c1b16ce',1,'mim::plug::core']]],
   ['app_29',['App',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941',1,'mim::ast::Expr::App'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daac863f346e618f9a959b5c95d5d28941',1,'mim::App']]],
   ['arcp_30',['arcp',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91a1e53eb7993b8fa102e59ad895d7acc68',1,'mim::plug::math']]],
-  ['arg_31',['Arg',['../classmim_1_1plug_1_1mem_1_1Reshape.html#a617258263a341812a1f828bfeb4751ceaefdbc31d724b7994da6b2c479782f865',1,'mim::plug::mem::Reshape']]],
+  ['arg_31',['Arg',['../classmim_1_1plug_1_1mem_1_1pass_1_1Reshape.html#a9b5c2d0ea58a8d29ccdb44072e124fe8aeeeab2544c1119c65e9bd42849ee259a',1,'mim::plug::mem::pass::Reshape']]],
   ['arr_32',['Arr',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da3e09ae791896ec3e7e65b3fe363f0fc3',1,'mim']]],
   ['arrow_33',['Arrow',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01ca0f4e1aaabd074689b7d3ead824d1ee8e',1,'mim::ast::Expr']]],
   ['asin_34',['asin',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a62130e1b1e81120c6344cc4e661f9e4b',1,'mim::plug::math']]],

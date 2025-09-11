@@ -16,12 +16,14 @@ var searchData=
   ['mim_3a_3aplug_3a_3amath_13',['math',['../namespacemim_1_1plug_1_1math.html',1,'mim::plug']]],
   ['mim_3a_3aplug_3a_3amatrix_14',['matrix',['../namespacemim_1_1plug_1_1matrix.html',1,'mim::plug']]],
   ['mim_3a_3aplug_3a_3amem_15',['mem',['../namespacemim_1_1plug_1_1mem.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3aopt_16',['opt',['../namespacemim_1_1plug_1_1opt.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3aord_17',['ord',['../namespacemim_1_1plug_1_1ord.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3arefly_18',['refly',['../namespacemim_1_1plug_1_1refly.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3aregex_19',['regex',['../namespacemim_1_1plug_1_1regex.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3atensor_20',['tensor',['../namespacemim_1_1plug_1_1tensor.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3atuple_21',['tuple',['../namespacemim_1_1plug_1_1tuple.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3avec_22',['vec',['../namespacemim_1_1plug_1_1vec.html',1,'mim::plug']]],
-  ['mim_3a_3asys_23',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
+  ['mim_3a_3aplug_3a_3amem_3a_3apass_16',['pass',['../namespacemim_1_1plug_1_1mem_1_1pass.html',1,'mim::plug::mem']]],
+  ['mim_3a_3aplug_3a_3amem_3a_3aphase_17',['phase',['../namespacemim_1_1plug_1_1mem_1_1phase.html',1,'mim::plug::mem']]],
+  ['mim_3a_3aplug_3a_3aopt_18',['opt',['../namespacemim_1_1plug_1_1opt.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3aord_19',['ord',['../namespacemim_1_1plug_1_1ord.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3arefly_20',['refly',['../namespacemim_1_1plug_1_1refly.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3aregex_21',['regex',['../namespacemim_1_1plug_1_1regex.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3atensor_22',['tensor',['../namespacemim_1_1plug_1_1tensor.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3atuple_23',['tuple',['../namespacemim_1_1plug_1_1tuple.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3avec_24',['vec',['../namespacemim_1_1plug_1_1vec.html',1,'mim::plug']]],
+  ['mim_3a_3asys_25',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
 ];

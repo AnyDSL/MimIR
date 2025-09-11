@@ -15,7 +15,7 @@ var searchData=
   ['size_12',['size',['../namespacemim_1_1plug_1_1core.html#a699face68306eeb01636f32010cc2d9daf7bd60b75b29d79b660a2859395c1a24',1,'mim::plug::core']]],
   ['sl_13',['sl',['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673a54a2bf8c09ace67d3513aaa1aa7aa0f3',1,'mim::plug::core']]],
   ['sle_14',['sle',['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673aaa7c2f8b74458aeae4e388c376197581',1,'mim::plug::core']]],
-  ['sloxy_15',['Sloxy',['../classmim_1_1plug_1_1mem_1_1SSAConstr.html#a013677415e8c00e4de0aa4795048ae9ca4941e5c9fceae710142df44da30c0b2c',1,'mim::plug::mem::SSAConstr']]],
+  ['sloxy_15',['Sloxy',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#a798af4cb0426f7ceafcb84a8dfa6f89fa8718aee70ca8f05d38e4761388efb2ed',1,'mim::plug::mem::pass::SSA']]],
   ['sm_16',['SM',['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2a4e0d4f6ce30646f5a3f3e2a7422c1c5a',1,'mim::plug::core']]],
   ['sm_17',['Sm',['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2a20c4c6104a283ee7383776e722439342',1,'mim::plug::core']]],
   ['sm_18',['sM',['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2a2651e1c446cbafad18625fedad79a9ec',1,'mim::plug::core']]],

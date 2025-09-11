@@ -10,7 +10,7 @@ var searchData=
   ['fppass_3c_20etaexp_2c_20lam_20_3e_7',['FPPass&lt; EtaExp, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
   ['fppass_3c_20etared_2c_20def_20_3e_8',['FPPass&lt; EtaRed, Def &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
   ['fppass_3c_20lowertypedclosprep_2c_20lam_20_3e_9',['FPPass&lt; LowerTypedClosPrep, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
-  ['fppass_3c_20ssaconstr_2c_20lam_20_3e_10',['FPPass&lt; SSAConstr, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
+  ['fppass_3c_20ssa_2c_20lam_20_3e_10',['FPPass&lt; SSA, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
   ['fppass_3c_20tailrecelim_2c_20lam_20_3e_11',['FPPass&lt; TailRecElim, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
   ['freedefana_12',['FreeDefAna',['../classmim_1_1plug_1_1clos_1_1FreeDefAna.html',1,'mim::plug::clos']]],
   ['freezer_13',['Freezer',['../structmim_1_1World_1_1Freezer.html',1,'mim::World']]]

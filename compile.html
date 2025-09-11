@@ -148,10 +148,13 @@ $(function(){initNavTree('compile.html',''); initResizable(true); });
         <a href="#autotoc_md102">Phases</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md103">Passes</a>
+        <a href="#autotoc_md103">Repls</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md104">Pipelines</a>
+        <a href="#autotoc_md104">Passes</a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md105">Pipelines</a>
       </li>
     </ul>
   </li>
@@ -165,8 +168,9 @@ Types</h1>
 <h2><a class="anchor" id="autotoc_md97"></a>
 %compile.Pass / %compile.Phase</h2>
 <p>Types for compilation passes and phases.</p>
-<div class="fragment"><div class="line">axm %compile.Pass:  *;</div>
-<div class="line">axm %compile.Phase: *;</div>
+<div class="fragment"><div class="line">axm %compile.Phase: *;</div>
+<div class="line">axm %compile.Pass:  *;</div>
+<div class="line">axm %compile.Repl:  *;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md98"></a>
 Utility</h1>
 <h2><a class="anchor" id="autotoc_md99"></a>
@@ -177,9 +181,10 @@ Utility</h1>
 Constructors</h1>
 <h2><a class="anchor" id="autotoc_md101"></a>
 %compile.phases / %compile.passes</h2>
-<p>Sets up <code>n</code> phases / passes anad wraps them in a phase.</p>
-<div class="fragment"><div class="line">axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Pass;</div>
-<div class="line">axm %compile.phases: {n: Nat} → Bool → «n; %compile.Phase» → %compile.Phase;</div>
+<p>Sets up <code>n</code> phases / passes anad bundles them</p>
+<div class="fragment"><div class="line">axm %compile.phases: {n: Nat} → Bool → «n; %compile.Phase» → %compile.Phase;</div>
+<div class="line">axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Pass;</div>
+<div class="line">axm %compile.repls:  {n: Nat} →        «n; %compile.Repl » → %compile.Repl;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md102"></a>
 Phases</h2>
 <div class="fragment"><div class="line">axm %compile.beta_red_phase:                            %compile.Phase;</div>
@@ -190,10 +195,14 @@ Phases</h2>
 <div class="line">axm %compile.null_phase:                                %compile.Phase;</div>
 <div class="line">axm %compile.ret_wrap_phase:                            %compile.Phase;</div>
 <div class="line">axm %compile.pass2phase:                %compile.Pass → %compile.Phase;</div>
+<div class="line">axm %compile.repl2phase:                %compile.Repl → %compile.Phase;</div>
 <div class="line">axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;</div>
 <div class="line"> </div>
 <div class="line">let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase &quot;internal_&quot;;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md103"></a>
+Repls</h2>
+<div class="fragment"><div class="line">axm %compile.null_repl: %compile.Repl;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md104"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %compile.beta_red_pass:                             %compile.Pass;</div>
 <div class="line">axm %compile.eta_exp_pass:                              %compile.Pass;</div>
@@ -202,7 +211,7 @@ Passes</h2>
 <div class="line">axm %compile.null_pass:                                 %compile.Pass;</div>
 <div class="line">axm %compile.scalarize_pass:                            %compile.Pass;</div>
 <div class="line">axm %compile.tail_rec_elim_pass:                        %compile.Pass;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md104"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md105"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">let optimization_passes = %compile.passes (</div>
 <div class="line">    %compile.beta_red_pass,</div>

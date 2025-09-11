@@ -74,9 +74,7 @@ var annotated_dup =
           [ "LowerFor", "classmim_1_1plug_1_1affine_1_1LowerFor.html", "classmim_1_1plug_1_1affine_1_1LowerFor" ]
         ] ],
         [ "autodiff", "namespacemim_1_1plug_1_1autodiff.html", [
-          [ "AutoDiffEval", "classmim_1_1plug_1_1autodiff_1_1AutoDiffEval.html", "classmim_1_1plug_1_1autodiff_1_1AutoDiffEval" ],
-          [ "AutoDiffZero", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZero.html", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZero" ],
-          [ "AutoDiffZeroCleanup", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html", "classmim_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup" ]
+          [ "Eval", "classmim_1_1plug_1_1autodiff_1_1Eval.html", "classmim_1_1plug_1_1autodiff_1_1Eval" ]
         ] ],
         [ "clos", "namespacemim_1_1plug_1_1clos.html", [
           [ "BranchClosElim", "classmim_1_1plug_1_1clos_1_1BranchClosElim.html", "classmim_1_1plug_1_1clos_1_1BranchClosElim" ],
@@ -98,15 +96,14 @@ var annotated_dup =
           [ "LowerMatrixMediumLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html", "classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel" ]
         ] ],
         [ "mem", "namespacemim_1_1plug_1_1mem.html", [
-          [ "AddMem", "classmim_1_1plug_1_1mem_1_1AddMem.html", "classmim_1_1plug_1_1mem_1_1AddMem" ],
-          [ "Alloc2Malloc", "classmim_1_1plug_1_1mem_1_1Alloc2Malloc.html", "classmim_1_1plug_1_1mem_1_1Alloc2Malloc" ],
-          [ "CopyProp", "classmim_1_1plug_1_1mem_1_1CopyProp.html", "classmim_1_1plug_1_1mem_1_1CopyProp" ],
-          [ "RememElim", "classmim_1_1plug_1_1mem_1_1RememElim.html", "classmim_1_1plug_1_1mem_1_1RememElim" ],
-          [ "Reshape", "classmim_1_1plug_1_1mem_1_1Reshape.html", "classmim_1_1plug_1_1mem_1_1Reshape" ],
-          [ "SSAConstr", "classmim_1_1plug_1_1mem_1_1SSAConstr.html", "classmim_1_1plug_1_1mem_1_1SSAConstr" ]
-        ] ],
-        [ "refly", "namespacemim_1_1plug_1_1refly.html", [
-          [ "RemoveDbgPerm", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm" ]
+          [ "pass", "namespacemim_1_1plug_1_1mem_1_1pass.html", [
+            [ "CopyProp", "classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html", "classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp" ],
+            [ "Reshape", "classmim_1_1plug_1_1mem_1_1pass_1_1Reshape.html", "classmim_1_1plug_1_1mem_1_1pass_1_1Reshape" ],
+            [ "SSA", "classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html", "classmim_1_1plug_1_1mem_1_1pass_1_1SSA" ]
+          ] ],
+          [ "phase", "namespacemim_1_1plug_1_1mem_1_1phase.html", [
+            [ "AddMem", "classmim_1_1plug_1_1mem_1_1phase_1_1AddMem.html", "classmim_1_1plug_1_1mem_1_1phase_1_1AddMem" ]
+          ] ]
         ] ],
         [ "regex", "namespacemim_1_1plug_1_1regex.html", [
           [ "app_range", "structmim_1_1plug_1_1regex_1_1app__range.html", "structmim_1_1plug_1_1regex_1_1app__range" ],
@@ -173,6 +170,9 @@ var annotated_dup =
       [ "Prod", "classmim_1_1Prod.html", "classmim_1_1Prod" ],
       [ "Proxy", "classmim_1_1Proxy.html", "classmim_1_1Proxy" ],
       [ "Reform", "classmim_1_1Reform.html", "classmim_1_1Reform" ],
+      [ "Repl", "classmim_1_1Repl.html", "classmim_1_1Repl" ],
+      [ "ReplMan", "classmim_1_1ReplMan.html", "classmim_1_1ReplMan" ],
+      [ "ReplManPhase", "classmim_1_1ReplManPhase.html", "classmim_1_1ReplManPhase" ],
       [ "Res", "classmim_1_1Res.html", "classmim_1_1Res" ],
       [ "RetWrap", "classmim_1_1RetWrap.html", "classmim_1_1RetWrap" ],
       [ "Rewriter", "classmim_1_1Rewriter.html", "classmim_1_1Rewriter" ],
@@ -212,6 +212,5 @@ var annotated_dup =
     [ "std", "namespacestd.html", [
       [ "tuple_element< I, mim::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4", "namespacestd_structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4_dup" ],
       [ "tuple_size< mim::Span< T, N > >", "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
-    ] ],
-    [ "DebugDump", "classDebugDump.html", "classDebugDump" ]
+    ] ]
 ];

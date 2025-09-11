@@ -143,13 +143,13 @@ $(function(){initNavTree('autodiff.html',''); initResizable(true); });
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md83">Passes and Phases</a>
+    <a href="#autotoc_md83">Stages</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md84">Passes</a>
+        <a href="#autotoc_md84">Repls</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md85">Phases</a>
+        <a href="#autotoc_md85">Passes</a>
       </li>
     </ul>
   </li>
@@ -196,23 +196,13 @@ Operations</h1>
 <p>TODO: how do we handle summations that need memory? (grab current memory?) </p><div class="fragment"><div class="line">axm %autodiff.add: {T: *} → [T, T] → T, normalize_add;</div>
 <div class="line">axm %autodiff.sum: [n:Nat, T: *] → «n; T» → T, normalize_sum;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md83"></a>
-Passes and Phases</h1>
+Stages</h1>
 <h2><a class="anchor" id="autotoc_md84"></a>
-Passes</h2>
-<div class="fragment"><div class="line">axm %autodiff.ad_eval_pass:         %compile.Pass;</div>
-<div class="line">axm %autodiff.ad_zero_pass:         %compile.Pass;</div>
-<div class="line">axm %autodiff.ad_zero_cleanup_pass: %compile.Pass;</div>
+Repls</h2>
+<div class="fragment"><div class="line">axm %autodiff.zero_repl: %compile.Repl;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md85"></a>
-Phases</h2>
-<div class="fragment"><div class="line">let ad_cleanup_phase = %compile.pass2phase %autodiff.ad_zero_cleanup_pass;</div>
-<div class="line"> </div>
-<div class="line">let ad_phase =</div>
-<div class="line">    %compile.phases ff (</div>
-<div class="line">        optimization_phase,</div>
-<div class="line">        %compile.pass2phase %autodiff.ad_eval_pass,</div>
-<div class="line">        %compile.pass2phase %autodiff.ad_zero_pass,</div>
-<div class="line">        ad_cleanup_phase,</div>
-<div class="line">    );</div>
+Passes</h2>
+<div class="fragment"><div class="line">axm %autodiff.eval_pass: %compile.Pass;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md86"></a>
 Registered translations</h1>
 <p>In this section, we define translations for axioms of other plugins. This best would be done using a register mechanism in a third plugin or at least in a separate file.</p>
