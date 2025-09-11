@@ -42,7 +42,12 @@ public:
 
     /// Map @p old_def to @p new_def and returns @p new_def.
     /// @returns `new_def`
-    const Def* map(const Def* old_def, const Def* new_def) { return old2news_.back()[old_def] = new_def; }
+    // clang-format off
+    const Def* map(const Def* old_def , const Def* new_def ) { return old2news_.back()[              old_def  ] =               new_def  ; }
+    const Def* map(const Def* old_def ,       Defs new_defs) { return old2news_.back()[              old_def  ] = world().tuple(new_defs); }
+    const Def* map(Defs       old_defs, const Def* new_def ) { return old2news_.back()[world().tuple(old_defs)] =               new_def  ; }
+    const Def* map(Defs       old_defs,       Defs new_defs) { return old2news_.back()[world().tuple(old_defs)] = world().tuple(new_defs); }
+    // clang-format on
 
     /// Lookup `old_def` by searching in reverse through the stack of maps.
     /// @returns `nullptr` if nothing was found.

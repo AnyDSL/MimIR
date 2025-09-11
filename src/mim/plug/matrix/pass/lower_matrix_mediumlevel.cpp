@@ -29,7 +29,7 @@ std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def
     auto body
         = world.mut_con({/* iter */ world.type_i32(), /* acc */ acc_ty, /* return */ world.cn(acc_ty)})->set(name);
     auto for_loop
-        = world.call<affine::For>(Defs{world.lit_i32(0), bound, world.lit_i32(1), world.tuple(acc), body, exit});
+        = world.call<affine::For>(body, exit, Defs{world.lit_i32(0), bound, world.lit_i32(1), world.tuple(acc)});
     return {body, for_loop};
 }
 

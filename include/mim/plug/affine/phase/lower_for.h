@@ -1,15 +1,14 @@
 #pragma once
 
-#include <mim/def.h>
-#include <mim/pass.h>
+#include <mim/phase.h>
 
-namespace mim::plug::affine {
+namespace mim::plug::affine::phase {
 
 /// Lowers the for axm to actual control flow in CPS.
 /// It basically mimics this implementation:
 /// ```
 /// con %affine.For_impl
-///     (m: Nat , n: Nat , Ts: «n; *»)
+///     {m n: Nat, Ts: «n; *»}
 ///     (begin: Idx m, end: Idx m, step: Idx m, init: «i: n; Ts#i»,
 ///             body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],
 ///             exit: Cn «i: n; Ts#i»
@@ -24,16 +23,12 @@ namespace mim::plug::affine {
 /// ```
 /// However, we merge `init`/`acc` into the signature, as it may contain a `mem`.
 /// In this case we have to equip `new_body`/`new_exit` with a `mem` as well.
-/// @todo We probably want to have phases which fix such things so we don't have to do this in C++.
-class LowerFor : public RWPass<LowerFor, Lam> {
+class LowerFor : public RWPhase {
 public:
     LowerFor(World& world, flags_t annex)
-        : RWPass(world, annex) {}
+        : RWPhase(world, annex) {}
 
-    const Def* rewrite(const Def*) override;
-
-private:
-    Def2Def rewritten_;
+    const Def* rewrite_imm_App(const App*) final;
 };
 
-} // namespace mim::plug::affine
+} // namespace mim::plug::affine::phase
