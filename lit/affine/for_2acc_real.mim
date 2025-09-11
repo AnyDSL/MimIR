@@ -9,7 +9,7 @@ plugin math;
 plugin affine;
 
 con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0), 0), return : Cn [%mem.M, Idx 0]] =
-    %affine.For (0I32, argc, 1I32, (0I32, 0:%math.F64), for_body, for_exit)
+    %affine.For for_body for_exit (0I32, argc, 1I32, (0I32, 0:%math.F64))
     where
         con for_body [i : I32, [acc_a : I32, acc_b : %math.F64], continue : Cn [[I32, %math.F64]]] =
             let a = %core.wrap.add 0 (i, acc_a);
