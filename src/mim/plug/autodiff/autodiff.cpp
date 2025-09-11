@@ -12,7 +12,7 @@ using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Flags2Stages& stages) {
-    PassMan::hook<autodiff::eval_pass, autodiff::Eval>(stages);
+    Stage::hook<autodiff::eval_pass, autodiff::Eval>(stages);
 
     MIM_REPL(stages, autodiff::zero_repl, {
         if (auto zero = Axm::isa<autodiff::zero>(def); zero) {
