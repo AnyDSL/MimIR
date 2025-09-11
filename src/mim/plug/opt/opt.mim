@@ -23,6 +23,7 @@ import regex;
 /// ### Pipelines
 ///
 lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);
+lam cond_repl  {n: Nat} (name: «n; I8») (repl:  %compile.Repl ): %compile.Repl  = %core.select (%compile.is_loaded name, repl , %compile.null_repl );
 lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );
 
 lam extern _default_compile (): %compile.Phase =
@@ -46,8 +47,8 @@ lam extern _default_compile (): %compile.Phase =
         ),
         cond_phase "autodiff" (
             %compile.phases ff (
-                %compile.pass2phase %autodiff.ad_eval_pass,
-                %compile.pass2phase %autodiff.ad_zero_pass,
+                %compile.pass2phase %autodiff.eval_pass,
+                %compile.repl2phase %autodiff.zero_repl,
             )
         ),
         cond_phase "direct" direct_phases,
@@ -61,15 +62,14 @@ lam extern _default_compile (): %compile.Phase =
         %compile.internal_cleanup_phase,
         cond_phase "clos" clos_phases,
         %compile.pass2phase %compile.lam_spec_pass,
-        cond_phase "autodiff" ad_cleanup_phase,
         // CodeGenPrep
         %compile.branch_normalize_phase,
         %compile.ret_wrap_phase,
-        %compile.pass2phase (
-            %compile.passes (
-                %mem.remem_elim_pass,
-                %mem.alloc2malloc_pass,
-                cond_pass "refly" %refly.remove_dbg_perm_pass,
+        %compile.repl2phase (
+            %compile.repls (
+                %mem.remem_repl,
+                %mem.alloc2malloc_repl,
+                cond_repl "refly" %refly.remove_dbg_repl,
             )
         ),
     );

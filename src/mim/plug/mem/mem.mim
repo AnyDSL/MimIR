@@ -92,28 +92,32 @@ lam %mem.rm (n: Nat, Is: «n; *», O: *)
              (is: «i: n; Is#i»): O
     = %mem.ignore (f (%mem.m, is));
 ///
-/// ## Passes and Phases
+/// ## Stages
 ///
-/// ### Misc
+/// ### Phases
 ///
-/// Reshape mode enum.
+axm %mem.add_mem_phase: %compile.Phase;
+///
+/// ### Repls
+///
+axm %mem.remem_repl:        %compile.Repl;
+axm %mem.alloc2malloc_repl: %compile.Repl;
+///
+/// ### Passes
+///
+axm %mem.ssa_pass:              %compile.Pass;
+axm %mem.copy_prop_pass: Bool → %compile.Pass;
+///
+/// ##### %mem.reshape
 ///
 axm %mem.reshape_mode: *;
 axm %mem.reshape_flat: %mem.reshape_mode;
 axm %mem.reshape_arg:  %mem.reshape_mode;
 ///
-/// ### Passes
+axm %mem.reshape_pass: %mem.reshape_mode → %compile.Pass;
 ///
-axm %mem.ssa_pass:                              %compile.Pass;
-axm %mem.copy_prop_pass:                 Bool → %compile.Pass;
-axm %mem.remem_elim_pass:                       %compile.Pass;
-axm %mem.alloc2malloc_pass:                     %compile.Pass;
-axm %mem.reshape_pass:      %mem.reshape_mode → %compile.Pass;
+/// ### Pipelines
 ///
-/// ### Phases
-///
-axm %mem.add_mem_phase: %compile.Phase;
-
 let mem_opt_passes = %compile.passes (
     //%compile.beta_red_pass,
     //%compile.eta_red_pass ff,

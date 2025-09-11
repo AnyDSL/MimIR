@@ -1,9 +1,5 @@
 #include "mim/plug/mem/pass/reshape.h"
 
-#include <functional>
-#include <sstream>
-#include <vector>
-
 #include <mim/check.h>
 #include <mim/def.h>
 #include <mim/lam.h>
@@ -11,7 +7,7 @@
 
 #include "mim/plug/mem/mem.h"
 
-namespace mim::plug::mem {
+namespace mim::plug::mem::pass {
 
 namespace {
 
@@ -73,7 +69,7 @@ void Reshape::apply(Mode mode) {
 
 void Reshape::apply(const App* app) {
     auto axm = app->arg()->as<Axm>();
-    apply(axm->flags() == Annex::base<mem::reshape_arg>() ? mem::Reshape::Arg : mem::Reshape::Flat);
+    apply(axm->flags() == Annex::base<mem::reshape_arg>() ? Arg : Flat);
 }
 
 void Reshape::enter() { rewrite_def(curr_mut()); }
@@ -314,4 +310,4 @@ const Def* Reshape::reshape(const Def* def) {
     }
 }
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::pass

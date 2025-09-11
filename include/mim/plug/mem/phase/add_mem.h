@@ -3,7 +3,7 @@
 #include <mim/phase.h>
 #include <mim/schedule.h>
 
-namespace mim::plug::mem {
+namespace mim::plug::mem::phase {
 
 /// This phase adds mems to all lambdas and continuations.
 /// It's primarily to be used as preparation for other phases
@@ -29,4 +29,4 @@ private:
     Def2Def mem_rewritten_;
 };
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::phase

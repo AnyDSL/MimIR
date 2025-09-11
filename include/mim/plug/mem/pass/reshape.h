@@ -2,11 +2,9 @@
 
 #include "mim/phase.h"
 
-namespace mim::plug::mem {
+namespace mim::plug::mem::pass {
 
-using DefQueue = std::deque<const Def*>;
-
-/// The general idea of this pass/phase is to change the shape of signatures of functions.
+/// The general idea of this Pass is to change the shape of signatures of functions.
 /// * Example: `Cn[ [mem,  A, B], C  , ret]`
 /// * Arg    : `Cn[ [mem, [A, B , C]], ret]` (general `Cn[ [mem, args], ret]`)
 /// * Flat   : `Cn[  mem,  A, B , C  , ret]` (general `Cn[mem, ...args, ret]`)
@@ -59,4 +57,4 @@ private:
     Mode mode_;
 };
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::pass

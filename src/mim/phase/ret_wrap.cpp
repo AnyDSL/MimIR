@@ -75,6 +75,4 @@ const Def* RetWrap::rewrite_mut_Lam(Lam* old_lam) {
     return Rewriter::rewrite_mut_Lam(old_lam);
 }
 
-const Def* RetWrap::rewrite_no_eta(const Def* old_def) { return Rewriter::rewrite(old_def); }
-
 } // namespace mim

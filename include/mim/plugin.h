@@ -18,7 +18,7 @@ class Stage;
 ///@{
 using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 
-/// Maps an an axiom of a Pass/Phase to a function that creates one.
+/// Maps an an axiom of a Stage to a function that creates one.
 using Flags2Stages = absl::flat_hash_map<flags_t, std::function<std::unique_ptr<Stage>(World&)>>;
 
 using Backends = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;

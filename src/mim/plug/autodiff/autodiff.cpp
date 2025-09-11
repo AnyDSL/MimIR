@@ -1,24 +1,25 @@
 #include "mim/plug/autodiff/autodiff.h"
 
 #include <mim/config.h>
-#include <mim/pass.h>
+#include <mim/phase.h>
 
 #include <mim/plug/mem/mem.h>
 
-#include "mim/plug/autodiff/pass/autodiff_eval.h"
-#include "mim/plug/autodiff/pass/autodiff_zero.h"
-#include "mim/plug/autodiff/pass/autodiff_zero_cleanup.h"
+#include "mim/plug/autodiff/pass/eval.h"
 
 using namespace std::literals;
 using namespace mim;
 using namespace mim::plug;
 
 void reg_stages(Flags2Stages& stages) {
-    // clang-format off
-    PassMan::hook<autodiff::ad_eval_pass,         autodiff::AutoDiffEval       >(stages);
-    PassMan::hook<autodiff::ad_zero_pass,         autodiff::AutoDiffZero       >(stages);
-    PassMan::hook<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(stages);
-    // clang-format on
+    Stage::hook<autodiff::eval_pass, autodiff::Eval>(stages);
+
+    MIM_REPL(stages, autodiff::zero_repl, {
+        if (auto zero = Axm::isa<autodiff::zero>(def); zero) {
+            if (auto z = autodiff::zero_def(zero->arg())) return z;
+        }
+        return {};
+    });
 }
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
@@ -26,7 +27,6 @@ extern "C" MIM_EXPORT Plugin mim_get_plugin() {
 }
 
 namespace mim::plug::autodiff {
-
 const Def* id_pullback(const Def* A) {
     auto& world       = A->world();
     auto arg_pb_ty    = pullback_type(A, A);

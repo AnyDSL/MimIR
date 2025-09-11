@@ -1,13 +1,13 @@
 #pragma once
 
-#include "mim/pass.h"
+#include <mim/pass.h>
 
 namespace mim {
 
 class BetaRed;
 class EtaExp;
 
-namespace plug::mem {
+namespace plug::mem::pass {
 
 /// This FPPass is similar to sparse conditional constant propagation (SCCP).
 /// However, this optmization also works on all Lam%s alike and does not only consider basic blocks as opposed to
@@ -52,5 +52,5 @@ private:
     bool bb_only_;
 };
 
-} // namespace plug::mem
+} // namespace plug::mem::pass
 } // namespace mim

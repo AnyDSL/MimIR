@@ -28,6 +28,7 @@ using namespace mim::plug;
 void reg_stages(Flags2Stages& stages) {
     // clang-format off
     assert_emplace(stages, Annex::base<compile::null_phase>(), [](World&) { return std::unique_ptr<Phase>{}; });
+    assert_emplace(stages, Annex::base<compile::null_repl >(), [](World&) { return std::unique_ptr<Repl >{}; });
     assert_emplace(stages, Annex::base<compile::null_pass >(), [](World&) { return std::unique_ptr<Pass >{}; });
     // phases
     Stage::hook<compile::beta_red_phase,         BetaRedPhase        >(stages);
@@ -36,8 +37,11 @@ void reg_stages(Flags2Stages& stages) {
     Stage::hook<compile::eta_exp_phase,          EtaExpPhase         >(stages);
     Stage::hook<compile::eta_red_phase,          EtaRedPhase         >(stages);
     Stage::hook<compile::pass2phase,             PassManPhase        >(stages);
+    Stage::hook<compile::repl2phase,             ReplManPhase        >(stages);
     Stage::hook<compile::phases,                 PhaseMan            >(stages);
     Stage::hook<compile::prefix_cleanup_phase,   PrefixCleanup       >(stages);
+    // repls
+    Stage::hook<compile::repls,                  ReplMan             >(stages);
     // passes
     Stage::hook<compile::beta_red_pass,          BetaRed             >(stages);
     Stage::hook<compile::eta_exp_pass,           EtaExp              >(stages);

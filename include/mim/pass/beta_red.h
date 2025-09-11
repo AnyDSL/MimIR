@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mim/pass.h"
+#include <mim/pass.h>
 
 namespace mim {
 
