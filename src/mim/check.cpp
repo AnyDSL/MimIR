@@ -62,13 +62,7 @@ private:
 };
 
 const Def* Def::zonk() const {
-    if (needs_zonk(this)) {
-        auto z = Zonker(world(), nullptr);
-        // outln("start: {}", this);
-        auto r = z.rewrite(this);
-        // outln("end:   {}", r);
-        return r;
-    }
+    if (needs_zonk(this)) return Zonker(world(), nullptr).rewrite(this);
     return this;
 }
 
