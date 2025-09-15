@@ -13,8 +13,7 @@ bool EtaExpPhase::analyze() {
 
 void EtaExpPhase::analyze(const Def* def) {
     if (auto [_, ins] = analyzed_.emplace(def); !ins) return;
-
-    if (auto var = def->isa<Var>()) return visit(var->type()); // ignore Var's mut
+    if (def->isa<Var>()) return; // ignore Var's mut
 
     if (auto app = def->isa<App>()) {
         visit(app->type());
