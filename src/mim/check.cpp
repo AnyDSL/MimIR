@@ -34,7 +34,7 @@ public:
 
         if (def == root_ || needs_zonk(def)) {
             auto res = Rewriter::rewrite(def);
-            if (!needs_zonk(res)) def->zonked_ = res;
+            if (!res->has_dep(Dep::Hole)) def->zonked_ = res;
             return res;
         }
         return def;
