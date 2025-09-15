@@ -445,7 +445,7 @@ World& Def::world() const noexcept {
     }
 }
 const Def* Def::type() const noexcept {
-    if (auto var = isa<Var>()) return var->type();
+    if (auto var = isa<Var>()) return var->mut()->var_type();
     return type_;
 }
 
