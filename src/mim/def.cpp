@@ -42,7 +42,6 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         auto& world  = mut->world();
         gid_         = world.next_gid();
         vars_        = Vars(var);
-        muts_        = Muts();
         ops_ptr()[0] = mut;
         hash_        = hash_begin(node_t(Node::Var));
         hash_        = hash_combine(hash_, mut->gid());
