@@ -89,7 +89,8 @@ var hierarchy =
         [ "mim::plug::affine::phase::LowerFor", "classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html", null ],
         [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
       ] ],
-      [ "mim::VarRewriter", "classmim_1_1VarRewriter.html", null ]
+      [ "mim::VarRewriter", "classmim_1_1VarRewriter.html", null ],
+      [ "mim::Zonker", "classmim_1_1Zonker.html", null ]
     ] ],
     [ "fe::RuntimeCast", null, [
       [ "mim::Def", "classmim_1_1Def.html", [

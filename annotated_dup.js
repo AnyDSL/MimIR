@@ -209,7 +209,8 @@ var annotated_dup =
       [ "Var", "classmim_1_1Var.html", "classmim_1_1Var" ],
       [ "VarRewriter", "classmim_1_1VarRewriter.html", "classmim_1_1VarRewriter" ],
       [ "Vector", "classmim_1_1Vector.html", "classmim_1_1Vector" ],
-      [ "World", "classmim_1_1World.html", "classmim_1_1World" ]
+      [ "World", "classmim_1_1World.html", "classmim_1_1World" ],
+      [ "Zonker", "classmim_1_1Zonker.html", "classmim_1_1Zonker" ]
     ] ],
     [ "std", "namespacestd.html", [
       [ "tuple_element< I, mim::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4", "namespacestd_structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4_dup" ],

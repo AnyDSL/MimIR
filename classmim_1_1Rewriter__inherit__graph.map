@@ -1,16 +1,18 @@
 <map id="mim::Rewriter" name="mim::Rewriter">
-<area shape="rect" id="Node000001" title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map." alt="" coords="5,253,120,279"/>
+<area shape="rect" id="Node000001" title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map." alt="" coords="5,277,120,303"/>
 <area shape="rect" id="Node000002" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="175,228,297,253"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,253,174,247,175,252,134,258"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,271,190,251,191,256,122,276"/>
 <area shape="rect" id="Node000013" href="$classmim_1_1VarRewriter.html" title=" " alt="" coords="168,277,304,303"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="134,273,168,278,167,283,133,278"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="134,287,168,287,168,293,134,293"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1Zonker.html" title=" " alt="" coords="183,327,289,352"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="122,304,191,324,190,329,120,309"/>
 <area shape="rect" id="Node000003" href="$classmim_1_1BetaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="380,5,535,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="242,214,257,175,279,128,310,80,350,40,378,26,381,30,354,44,314,83,283,130,261,177,247,216"/>
 <area shape="rect" id="Node000004" href="$classmim_1_1BranchNormalizePhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="352,55,563,80"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="247,215,287,151,316,117,351,89,374,78,376,83,353,94,320,121,291,154,252,217"/>
 <area shape="rect" id="Node000005" href="$classmim_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping them afte..." alt="" coords="401,104,514,129"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="256,216,297,176,323,155,351,138,399,122,401,127,353,143,326,160,300,180,259,219"/>
-<area shape="rect" id="Node000006" href="$classmim_1_1EtaExpPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="385,153,529,179"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1EtaExpPhase.html" title="This phase takes care that Lamdas appear either only in callee position (Known) or not (Unknown)." alt="" coords="385,153,529,179"/>
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="273,220,351,187,392,176,393,181,353,193,275,225"/>
 <area shape="rect" id="Node000007" href="$classmim_1_1EtaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="385,203,530,228"/>
 <area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="310,230,384,221,385,226,311,235"/>

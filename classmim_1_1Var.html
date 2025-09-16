@@ -118,6 +118,7 @@ $(function(){initNavTree('classmim_1_1Var.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
@@ -125,6 +126,9 @@ $(function(){initNavTree('classmim_1_1Var.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">mim::Var Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A variable introduced by a binder (mutable).  
+ <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="def_8h_source.html">mim/def.h</a>&gt;</code></p>
 <div class="dynheader">
@@ -135,6 +139,8 @@ Inheritance diagram for mim::Var:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a42bc9b2f4d88e8d4cd8cf8f4b3d45db9" id="r_a42bc9b2f4d88e8d4cd8cf8f4b3d45db9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42bc9b2f4d88e8d4cd8cf8f4b3d45db9">type</a> () const</td></tr>
+<tr class="separator:a42bc9b2f4d88e8d4cd8cf8f4b3d45db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">ops</div></td></tr>
 <tr class="memitem:aa8d07cb130fdf324995f4402f0c5cfc7" id="r_aa8d07cb130fdf324995f4402f0c5cfc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8d07cb130fdf324995f4402f0c5cfc7">mut</a> () const</td></tr>
 <tr class="separator:aa8d07cb130fdf324995f4402f0c5cfc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,19 +277,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a78ada1c494388d830fcbc7cfa94e9a81 inherit pub_methods_classmim_1_1Def" id="r_a78ada1c494388d830fcbc7cfa94e9a81"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a78ada1c494388d830fcbc7cfa94e9a81">vars</a> (<a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> a) noexcept</td></tr>
 <tr class="separator:a78ada1c494388d830fcbc7cfa94e9a81 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0d3c5c425d581e1e6836790d1437d1d inherit pub_methods_classmim_1_1Def" id="r_ac0d3c5c425d581e1e6836790d1437d1d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ac0d3c5c425d581e1e6836790d1437d1d">var</a> ()</td></tr>
-<tr class="memdesc:ac0d3c5c425d581e1e6836790d1437d1d inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not necessarily a <a class="el" href="classmim_1_1Var.html">Var</a>: E.g., if the return type is <code>[]</code>, this will yield <code>()</code>.  <br /></td></tr>
+<tr class="memdesc:ac0d3c5c425d581e1e6836790d1437d1d inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not necessarily a <a class="el" href="classmim_1_1Var.html" title="A variable introduced by a binder (mutable).">Var</a>: E.g., if the return type is <code>[]</code>, this will yield <code>()</code>.  <br /></td></tr>
 <tr class="separator:ac0d3c5c425d581e1e6836790d1437d1d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af82f20111e9f1cbdbf910d30341bd4ee inherit pub_methods_classmim_1_1Def" id="r_af82f20111e9f1cbdbf910d30341bd4ee"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#af82f20111e9f1cbdbf910d30341bd4ee">has_var</a> ()</td></tr>
-<tr class="memdesc:af82f20111e9f1cbdbf910d30341bd4ee inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only returns not <code>nullptr</code>, if <a class="el" href="classmim_1_1Var.html">Var</a> of this mutable has ever been created.  <br /></td></tr>
+<tr class="memdesc:af82f20111e9f1cbdbf910d30341bd4ee inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Only returns not <code>nullptr</code>, if <a class="el" href="classmim_1_1Var.html" title="A variable introduced by a binder (mutable).">Var</a> of this mutable has ever been created.  <br /></td></tr>
 <tr class="separator:af82f20111e9f1cbdbf910d30341bd4ee inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18f12761a17e1e15e867178e2f383dc3 inherit pub_methods_classmim_1_1Def" id="r_a18f12761a17e1e15e867178e2f383dc3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a18f12761a17e1e15e867178e2f383dc3">has_var</a> () const</td></tr>
 <tr class="memdesc:a18f12761a17e1e15e867178e2f383dc3 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above if <code>this</code> is a <em>mutable</em>.  <br /></td></tr>
 <tr class="separator:a18f12761a17e1e15e867178e2f383dc3 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae27e362495c89965b30a40f16cfd860a inherit pub_methods_classmim_1_1Def" id="r_ae27e362495c89965b30a40f16cfd860a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae27e362495c89965b30a40f16cfd860a">var_type</a> ()</td></tr>
+<tr class="memdesc:ae27e362495c89965b30a40f16cfd860a inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>this</code> is a binder, compute the type of its <a class="el" href="classmim_1_1Var.html" title="A variable introduced by a binder (mutable).">Var</a>iable.  <br /></td></tr>
+<tr class="separator:ae27e362495c89965b30a40f16cfd860a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a6a0861bea1acfecbf8e2260774b212 inherit pub_methods_classmim_1_1Def" id="r_a8a6a0861bea1acfecbf8e2260774b212"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a808d4cab01734432fc4218de6dae0ef2">Muts</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a> () const</td></tr>
 <tr class="memdesc:a8a6a0861bea1acfecbf8e2260774b212 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutables reachable by following <em>immutable</em> <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps()</a>; <code>mut-&gt;<a class="el" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212" title="Mutables reachable by following immutable deps(); mut-&gt;local_muts() is by definition the set { mut }...">local_muts()</a></code> is by definition the set <code>{ mut }</code>.  <br /></td></tr>
 <tr class="separator:a8a6a0861bea1acfecbf8e2260774b212 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def" id="r_a3f5a341398bd97b516f9fd7d1d170e5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f">Vars</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a3f5a341398bd97b516f9fd7d1d170e5b">local_vars</a> () const</td></tr>
-<tr class="memdesc:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Var.html">Var</a>s reachable by following <em>immutable</em> <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps()</a>.  <br /></td></tr>
+<tr class="memdesc:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Var.html" title="A variable introduced by a binder (mutable).">Var</a>s reachable by following <em>immutable</em> <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps()</a>.  <br /></td></tr>
 <tr class="separator:a3f5a341398bd97b516f9fd7d1d170e5b inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed49f75ef33a07d498daffbcc3d2d838 inherit pub_methods_classmim_1_1Def" id="r_aed49f75ef33a07d498daffbcc3d2d838"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f">Vars</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#aed49f75ef33a07d498daffbcc3d2d838">free_vars</a> () const</td></tr>
 <tr class="memdesc:aed49f75ef33a07d498daffbcc3d2d838 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute a global solution by transitively following <em>mutables</em> as well.  <br /></td></tr>
@@ -519,7 +528,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memdesc:a04bc8e1def424e32119e0b0e7e57d7c5 inherit pro_attribs_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1App.html">App</a> only: Curried <a class="el" href="classmim_1_1App.html">App</a>s of <a class="el" href="classmim_1_1Axm.html">Axm</a>s use this member to propagate the <a class="el" href="classmim_1_1Axm.html">Axm</a>.  <br /></td></tr>
 <tr class="separator:a04bc8e1def424e32119e0b0e7e57d7c5 inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8dda13ab372b84110880c5af5d1266d inherit pro_attribs_classmim_1_1Def" id="r_ad8dda13ab372b84110880c5af5d1266d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ad8dda13ab372b84110880c5af5d1266d">var_</a></td></tr>
-<tr class="memdesc:ad8dda13ab372b84110880c5af5d1266d inherit pro_attribs_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable only: <a class="el" href="classmim_1_1Var.html">Var</a> of a mutable.  <br /></td></tr>
+<tr class="memdesc:ad8dda13ab372b84110880c5af5d1266d inherit pro_attribs_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable only: <a class="el" href="classmim_1_1Var.html" title="A variable introduced by a binder (mutable).">Var</a> of a mutable.  <br /></td></tr>
 <tr class="separator:ad8dda13ab372b84110880c5af5d1266d inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a610767dbe638769ffeb450ee0f3b30ef inherit pro_attribs_classmim_1_1Def" id="r_a610767dbe638769ffeb450ee0f3b30ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1World.html">World</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a610767dbe638769ffeb450ee0f3b30ef">world_</a></td></tr>
 <tr class="separator:a610767dbe638769ffeb450ee0f3b30ef inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -533,8 +542,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a24712467bea03b1120d3c69c1ad02916 inherit pro_attribs_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00688">688</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<div class="textblock"><p>A variable introduced by a binder (mutable). </p>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classmim_1_1Var.html" title="A variable introduced by a binder (mutable).">Var</a> will keep its type_ field as <code>nullptr</code>. Instead, <a class="el" href="classmim_1_1Def.html#a9ab6cb5c35d630f631fd365cf7fa8f0c" title="Yields the &quot;raw&quot; type of this Def (maybe nullptr).">Def::type()</a> and <a class="el" href="#a42bc9b2f4d88e8d4cd8cf8f4b3d45db9">Var::type()</a> will compute the type via <a class="el" href="classmim_1_1Def.html#ae27e362495c89965b30a40f16cfd860a" title="If this is a binder, compute the type of its Variable.">Def::var_type()</a>. The reason is that the type could need a <a class="el" href="classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a" title="If Holes have been filled, reconstruct the program without them.">Def::zonk()</a>. But we don't want to have several <a class="el" href="classmim_1_1Var.html" title="A variable introduced by a binder (mutable).">Var</a>s that belong to the same binder. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00698">698</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa8d07cb130fdf324995f4402f0c5cfc7" name="aa8d07cb130fdf324995f4402f0c5cfc7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa8d07cb130fdf324995f4402f0c5cfc7">&#9670;&#160;</a></span>mut()</h2>
@@ -559,11 +570,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00698">698</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00710">710</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00491">mim::Def::as_mut()</a>, and <a class="el" href="def_8h_source.html#l00308">mim::Def::op()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00494">mim::Def::as_mut()</a>, and <a class="el" href="def_8h_source.html#l00308">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="eta__red_8cpp_source.html#l00033">mim::EtaRed::analyze()</a>, <a class="el" href="clos_8h_source.html#l00079">mim::plug::clos::ca_isa_var()</a>, <a class="el" href="def_8cpp_source.html#l00500">mim::Def::cmp()</a>, <a class="el" href="eta__exp__phase_8cpp_source.html#l00055">mim::EtaExpPhase::rewrite_imm_Var()</a>, and <a class="el" href="eta__red__phase_8cpp_source.html#l00022">mim::EtaRedPhase::rewrite_imm_Var()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="eta__red_8cpp_source.html#l00033">mim::EtaRed::analyze()</a>, <a class="el" href="clos_8h_source.html#l00079">mim::plug::clos::ca_isa_var()</a>, <a class="el" href="def_8cpp_source.html#l00507">mim::Def::cmp()</a>, <a class="el" href="eta__exp__phase_8cpp_source.html#l00054">mim::EtaExpPhase::rewrite_imm_Var()</a>, <a class="el" href="eta__red__phase_8cpp_source.html#l00022">mim::EtaRedPhase::rewrite_imm_Var()</a>, and <a class="el" href="def_8h_source.html#l00706">type()</a>.</p>
 
 </div>
 </div>
@@ -584,7 +595,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>t</em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -601,9 +612,38 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classmim_1_1Def.html#a6ccce4edfee895dcb8944ad14cf8c2d4">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00136">136</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00133">133</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00491">mim::Def::as_mut()</a>, and <a class="el" href="def_8h_source.html#l00707">World</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00494">mim::Def::as_mut()</a>, and <a class="el" href="def_8h_source.html#l00719">World</a>.</p>
+
+</div>
+</div>
+<a id="a42bc9b2f4d88e8d4cd8cf8f4b3d45db9" name="a42bc9b2f4d88e8d4cd8cf8f4b3d45db9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42bc9b2f4d88e8d4cd8cf8f4b3d45db9">&#9670;&#160;</a></span>type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Var::type </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00706">706</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00710">mut()</a>, and <a class="el" href="def_8cpp_source.html#l00314">mim::Def::var_type()</a>.</p>
 
 </div>
 </div>
@@ -628,11 +668,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00707">707</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00719">719</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00707">World</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00719">World</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00136">rebuild_()</a>, and <a class="el" href="def_8h_source.html#l00707">World</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00133">rebuild_()</a>, and <a class="el" href="def_8h_source.html#l00719">World</a>.</p>
 
 </div>
 </div>
@@ -657,7 +697,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00701">701</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00713">713</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -681,7 +721,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00702">702</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00714">714</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
