@@ -81,7 +81,8 @@ public:
     std::unique_ptr<World> inherit() {
         auto s = state();
         s.pod.curr_gid += move_.defs.size();
-        return std::make_unique<World>(&driver(), s); }
+        return std::make_unique<World>(&driver(), s);
+    }
     ///@}
 
     /// @name Getters/Setters
@@ -229,7 +230,7 @@ public:
         else
             return type(lit_univ(level));
     }
-    const Def* var(const Def* type, Def* mut);
+    const Def* var(Def* mut);
     const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag) { return unify<Proxy>(type, index, tag, ops); }
 
     Hole* mut_hole(const Def* type) { return insert<Hole>(type); }

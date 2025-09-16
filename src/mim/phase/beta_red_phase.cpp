@@ -10,8 +10,7 @@ bool BetaRedPhase::analyze() {
 
 void BetaRedPhase::analyze(const Def* def) {
     if (auto [_, ins] = analyzed_.emplace(def); !ins) return;
-
-    if (auto var = def->isa<Var>()) return visit(var->type()); // ignore Var's mut
+    if (def->isa<Var>()) return; // ignore Var's mut
 
     for (auto d : def->deps())
         visit(d);

@@ -38,16 +38,13 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         hash_ = mim::hash_begin(node_t(Node::Univ));
     } else if (auto var = isa<Var>()) {
         assert(flags_ == 0); // if we ever need flags here, we need to hash that
-        auto& world = type->world();
-        gid_        = world.next_gid();
-        vars_       = world.vars().insert(type->local_vars(), var);
-        muts_       = type->local_muts();
-        dep_ |= type->dep_;
-        auto op      = ops[0];
-        ops_ptr()[0] = op;
+        auto mut     = ops[0];
+        auto& world  = mut->world();
+        gid_         = world.next_gid();
+        vars_        = Vars(var);
+        ops_ptr()[0] = mut;
         hash_        = hash_begin(node_t(Node::Var));
-        hash_        = hash_combine(hash_, type->gid());
-        hash_        = hash_combine(hash_, op->gid());
+        hash_        = hash_combine(hash_, mut->gid());
     } else {
         hash_ = hash_begin(u8(node));
         hash_ = hash_combine(hash_, flags_);
@@ -133,7 +130,7 @@ const Def* Type   ::rebuild_(World& w, const Def*  , Defs o) const { return w.ty
 const Def* UInc   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uinc(o[0], offset()); }
 const Def* UMax   ::rebuild_(World& w, const Def*  , Defs o) const { return w.umax(o); }
 const Def* Uniq   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uniq(o[0]); }
-const Def* Var    ::rebuild_(World& w, const Def* t, Defs o) const { return w.var(t, o[0]->as_mut()); }
+const Def* Var    ::rebuild_(World& w, const Def*  , Defs o) const { return w.var(o[0]->as_mut()); }
 
 const Def* Axm    ::rebuild_(World& w, const Def* t, Defs ) const {
     if (&w != &world()) return w.axm(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
@@ -310,16 +307,22 @@ bool Def::is_set() const {
 const Def* Def::var() {
     if (var_) return var_;
     auto& w = world();
+    if (w.is_frozen()) return nullptr;
+    return w.var(this);
+}
+
+const Def* Def::var_type() {
+    auto& w = world();
 
     // clang-format off
     if (w.is_frozen()) return nullptr;
-    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
-    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
-    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->arity()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->arity()), pack); // TODO shapes like (2, 3)
-    if (auto rule = isa<Rule >()) return w.var(rule->type()->meta_type(), rule);
-    if (isa<Bound >()) return w.var(this, this);
+    if (auto lam  = isa<Lam  >()) return lam ->dom();
+    if (auto pi   = isa<Pi   >()) return pi  ->dom();
+    if (auto sig  = isa<Sigma>()) return sig;
+    if (auto arr  = isa<Arr  >()) return w.type_idx(arr ->arity()); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.type_idx(pack->arity()); // TODO shapes like (2, 3)
+    if (auto rule = isa<Rule >()) return rule->type()->meta_type();
+    if (isa<Bound >()) return this;
     if (isa<Hole  >()) return nullptr;
     if (isa<Global>()) return nullptr;
     // clang-format on
@@ -434,21 +437,24 @@ Sym Def::sym(std::string_view s) const { return world().sym(s); }
 Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 
 World& Def::world() const noexcept {
+    if (auto var = isa<Var>()) return var->mut()->world();
+
     for (auto def = this;; def = def->type()) {
         if (def->isa<Univ>()) return *def->world_;
         if (auto type = def->isa<Type>()) return *type->level()->type()->as<Univ>()->world_;
     }
 }
+const Def* Def::type() const noexcept {
+    if (auto var = isa<Var>()) return var->mut()->var_type();
+    return type_;
+}
 
 const Def* Def::unfold_type() const {
-    if (!type_) {
-        auto& w = world();
-        if (auto t = isa<Type>()) return w.type(w.uinc(t->level()));
-        assert(isa<Univ>());
-        return nullptr;
-    }
-
-    return type_;
+    if (auto t = type()) return t;
+    auto& w = world();
+    if (auto t = isa<Type>()) return w.type(w.uinc(t->level()));
+    assert(isa<Univ>());
+    return nullptr;
 }
 
 std::string_view Def::node_name() const {
@@ -463,7 +469,8 @@ std::string_view Def::node_name() const {
 
 Defs Def::deps() const noexcept {
     if (isa<Type>() || isa<Univ>()) return Defs();
-    assert(type());
+    if (isa<Var>()) return ops();
+    assert(type_);
     return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);
 }
 
@@ -581,6 +588,8 @@ nat_t Def::num_tprojs() const {
 const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
 
+    if (w.is_frozen()) return nullptr;
+
     if (a == 1) {
         assert(i == 0 && "only inhabitant of Idx 2 is 0_1");
         if (!type()) return this;
@@ -593,7 +602,6 @@ const Def* Def::proj(nat_t a, nat_t i) const {
     }
 
     if (isa<Prod>()) return op(i);
-    if (w.is_frozen()) return nullptr;
 
     return w.extract(this, a, i);
 }

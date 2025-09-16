@@ -292,7 +292,7 @@ public:
 
     /// Yields the "raw" type of this Def (maybe `nullptr`).
     /// @see Def::unfold_type.
-    const Def* type() const noexcept { return type_; }
+    const Def* type() const noexcept;
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     const Def* unfold_type() const;
     bool is_term() const;
@@ -436,6 +436,9 @@ public:
         if (auto mut = isa_mut()) return mut->has_var();
         return nullptr;
     }
+
+    /// If `this` is a binder, compute the type of its Var%iable.
+    const Def* var_type();
     ///@}
 
     /// @name Free Vars and Muts
@@ -675,23 +678,32 @@ private:
     size_t hash_;
     Vars vars_; // Mutable: local vars; Immutable: free vars.
     Muts muts_; // Immutable: local_muts; Mutable: users;
-    mutable u32 tid_ = 0;
-    const Def* type_;
+    mutable u32 tid_           = 0;
+    mutable const Def* zonked_ = nullptr;
+    mutable const Def* type_;
 
     template<class D, size_t N>
     friend class Sets;
     friend class World;
+    friend class Zonker;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
 };
 
+/// A variable introduced by a binder (mutable).
+/// @note Var will keep its type_ field as `nullptr`.
+/// Instead, Def::type() and Var::type() will compute the type via Def::var_type().
+/// The reason is that the type could need a Def::zonk().
+/// But we don't want to have several Var%s that belong to the same binder.
 class Var : public Def, public Setters<Var> {
 private:
-    Var(const Def* type, Def* mut)
-        : Def(Node, type, Defs{mut}, 0) {}
+    Var(Def* mut)
+        : Def(Node, nullptr, Defs{mut}, 0) {}
 
 public:
     using Setters<Var>::set;
+
+    const Def* type() const { return mut()->var_type(); }
 
     /// @name ops
     ///@{

@@ -13,8 +13,7 @@ bool EtaExpPhase::analyze() {
 
 void EtaExpPhase::analyze(const Def* def) {
     if (auto [_, ins] = analyzed_.emplace(def); !ins) return;
-
-    if (auto var = def->isa<Var>()) return visit(var->type()); // ignore Var's mut
+    if (def->isa<Var>()) return; // ignore Var's mut
 
     if (auto app = def->isa<App>()) {
         visit(app->type());
@@ -53,7 +52,7 @@ const Def* EtaExpPhase::rewrite_imm_App(const App* app) {
 }
 
 const Def* EtaExpPhase::rewrite_imm_Var(const Var* var) {
-    return new_world().var(rewrite(var->type()), rewrite_no_eta(var->mut())->as_mut());
+    return new_world().var(rewrite_no_eta(var->mut())->as_mut());
 }
 
 } // namespace mim

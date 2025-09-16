@@ -9,8 +9,6 @@
 
 namespace mim {
 
-namespace {
-
 static bool needs_zonk(const Def* def) {
     if (def->has_dep(Dep::Hole)) {
         for (auto mut : def->local_muts())
@@ -27,12 +25,26 @@ public:
         , root_(root) {}
 
     const Def* rewrite(const Def* def) final {
-        if (auto hole = def->isa_mut<Hole>()) {
+        auto res = def;
+        while (res->zonked_)
+            res = res->zonked_;
+        auto last = res;
+
+        if (auto hole = res->isa_mut<Hole>()) {
             auto [last, op] = hole->find();
-            return op ? rewrite(op) : last;
+            res             = op ? rewrite(op) : last;
         }
 
-        return def == root_ || needs_zonk(def) ? Rewriter::rewrite(def) : def;
+        if (res == root_ || needs_zonk(res)) res = Rewriter::rewrite(res);
+
+        // path compression
+        for (auto d = def; d != last;) {
+            auto next  = d->zonked_;
+            d->zonked_ = res;
+            d          = next;
+        }
+
+        return res;
     }
 
     const Def* rewrite_mut(Def* root) final {
@@ -56,9 +68,10 @@ private:
     Def* root_; // Always rewrite this one!
 };
 
-} // namespace
-
-const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world(), nullptr).rewrite(this) : this; }
+const Def* Def::zonk() const {
+    if (needs_zonk(this)) return Zonker(world(), nullptr).rewrite(this);
+    return this;
+}
 
 const Def* Def::zonk_mut() const {
     if (!is_set()) return this;

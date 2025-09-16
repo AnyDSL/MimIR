@@ -6,7 +6,9 @@
 
 namespace mim {
 
-/// Inlines in post-order all Lam%s that occur exactly *once* in the program.
+/// This phase takes care that Lam%das appear either **only** in callee position (Known) or not (Unknown).
+/// If a function `f` is both Known and Unknown,
+/// this Phase will η-expand the Unknown occurance which makes the function Known: `g f -> g (λx.f x)`
 class EtaExpPhase : public RWPhase {
 public:
     EtaExpPhase(World& world, flags_t annex)
