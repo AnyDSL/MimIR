@@ -28,18 +28,20 @@ public:
         auto res = def;
         while (res->zonked_)
             res = res->zonked_;
+        auto last = res;
 
         if (auto hole = res->isa_mut<Hole>()) {
             auto [last, op] = hole->find();
             res             = op ? rewrite(op) : last;
         }
 
-        if (res == root_ || needs_zonk(res)) res = Rewriter::rewrite(def);
+        if (res == root_ || needs_zonk(res)) res = Rewriter::rewrite(res);
 
-        while (def->zonked_) {
-            auto old     = def;
-            def          = def->zonked_;
-            old->zonked_ = res;
+        // path compression
+        for (auto d = def; d != last;) {
+            auto next  = d->zonked_;
+            d->zonked_ = res;
+            d          = next;
         }
 
         return res;
