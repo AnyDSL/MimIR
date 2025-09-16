@@ -316,8 +316,8 @@ const Def* Def::var_type() {
 
     // clang-format off
     if (w.is_frozen()) return nullptr;
-    if (auto lam  = isa<Lam  >()) return lam ->dom();
-    if (auto pi   = isa<Pi   >()) return pi  ->dom();
+    if (auto lam  = isa<Lam  >()) return lam->dom();
+    if (auto pi   = isa<Pi   >()) return pi ->dom();
     if (auto sig  = isa<Sigma>()) return sig;
     if (auto arr  = isa<Arr  >()) return w.type_idx(arr ->arity()); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.type_idx(pack->arity()); // TODO shapes like (2, 3)
