@@ -19,7 +19,7 @@ std::optional<const Def*> internal_function_of_axm(const Axm* axm, const Def* me
     auto name   = axm->sym().str();
     find_and_replace(name, ".", "_");
     find_and_replace(name, "%", "");
-    name = INTERNAL_PREFIX + name;
+    name = internal_prefix + name;
 
     auto replacement = world.external(world.sym(name));
     if (replacement) {
@@ -57,8 +57,8 @@ const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
         if (auto inner_app = outer_app->callee()->isa<App>()) {
             if (auto axm = inner_app->callee()->isa<Axm>()) {
                 if (auto internal_function = internal_function_of_axm(axm, inner_app->arg(), outer_app->arg())) {
-                    world().DLOG("lower matrix axm {} in {} : {}", *axm->sym(), def, def->type());
-                    world().DLOG("lower matrix axm using: {} : {}", *internal_function, (*internal_function)->type());
+                    DLOG("lower matrix axm {} in {} : {}", *axm->sym(), def, def->type());
+                    DLOG("lower matrix axm using: {} : {}", *internal_function, (*internal_function)->type());
                     return *internal_function;
                 }
             }

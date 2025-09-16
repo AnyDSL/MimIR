@@ -4,11 +4,10 @@
 #include <fe/assert.h>
 
 #include "mim/rewrite.h"
+#include "mim/rule.h"
 #include "mim/world.h"
 
 namespace mim {
-
-namespace {
 
 static bool needs_zonk(const Def* def) {
     if (def->has_dep(Dep::Hole)) {
@@ -26,12 +25,26 @@ public:
         , root_(root) {}
 
     const Def* rewrite(const Def* def) final {
-        if (auto hole = def->isa_mut<Hole>()) {
+        auto res = def;
+        while (res->zonked_)
+            res = res->zonked_;
+        auto last = res;
+
+        if (auto hole = res->isa_mut<Hole>()) {
             auto [last, op] = hole->find();
-            return op ? rewrite(op) : last;
+            res             = op ? rewrite(op) : last;
         }
 
-        return def == root_ || needs_zonk(def) ? Rewriter::rewrite(def) : def;
+        if (res == root_ || needs_zonk(res)) res = Rewriter::rewrite(res);
+
+        // path compression
+        for (auto d = def; d != last;) {
+            auto next  = d->zonked_;
+            d->zonked_ = res;
+            d          = next;
+        }
+
+        return res;
     }
 
     const Def* rewrite_mut(Def* root) final {
@@ -55,9 +68,10 @@ private:
     Def* root_; // Always rewrite this one!
 };
 
-} // namespace
-
-const Def* Def::zonk() const { return needs_zonk(this) ? Zonker(world(), nullptr).rewrite(this) : this; }
+const Def* Def::zonk() const {
+    if (needs_zonk(this)) return Zonker(world(), nullptr).rewrite(this);
+    return this;
+}
 
 const Def* Def::zonk_mut() const {
     if (!is_set()) return this;
@@ -111,7 +125,7 @@ std::pair<Hole*, const Def*> Hole::find() {
     // path compression
     for (auto h = this; h != last;) {
         auto next = h->op()->as_mut<Hole>();
-        h->unset()->set(root);
+        h->set(root);
         h = next;
     }
 
@@ -186,7 +200,7 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
         }
         return w.tuple(new_ops);
     } else if (auto uniq = val->type()->isa<Uniq>()) {
-        if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
+        if (auto new_val = assignable(type, uniq->op())) return new_val;
         return fail();
     }
 
@@ -295,7 +309,7 @@ bool Checker::check(const Prod* prod, const Def* def) {
 bool Checker::check1(const Seq* seq, const Def* def) {
     auto body = seq->reduce(world().lit_idx_1_0()); // try to get rid of var inside of body
     if (!alpha_<Check>(body, def)) return fail<Check>();
-    if (auto mut_seq = seq->isa_mut<Seq>()) mut_seq->unset()->set(world().lit_nat_1(), body->zonk());
+    if (auto mut_seq = seq->isa_mut<Seq>()) mut_seq->set(world().lit_nat_1(), body->zonk());
     return true;
 }
 
@@ -305,8 +319,7 @@ bool Checker::check(Seq* mut_seq, const Seq* imm_seq) {
     auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->arity())));
     if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
 
-    auto mut_shape = mut_seq->arity();
-    mut_seq->unset()->set(mut_shape, mut_body->zonk());
+    mut_seq->set(mut_seq->arity(), mut_body->zonk());
     return true;
 }
 
@@ -390,6 +403,32 @@ const Def* Lam::check(size_t i, const Def* def) {
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
     fe::unreachable();
+}
+
+const Def* Reform::check() {
+    auto t = infer(meta_type());
+    if (!Checker::alpha<Checker::Check>(t, type()))
+        error(type()->loc(), "declared sort '{}' of rule type does not match inferred one '{}'", type(), t);
+    return t;
+}
+
+const Def* Reform::infer(const Def* meta_type) { return meta_type->unfold_type(); }
+
+const Def* Rule::check() {
+    auto t1 = lhs()->type();
+    auto t2 = rhs()->type();
+    if (!Checker::alpha<Checker::Check>(t1, t2))
+        error(type()->loc(), "type mismatch: '{}' for lhs, but '{}' for rhs", t1, t2);
+    if (!Checker::assignable(world().type_bool(), guard()))
+        error(guard()->loc(), "condition '{}' of rewrite is of type '{}' but must be of type 'Bool'", guard(),
+              guard()->type());
+
+    return type();
+}
+
+const Def* Rule::check(size_t, const Def* def) {
+    return def;
+    // TODO: do actual check + what are the parameters ?
 }
 
 #ifndef DOXYGEN

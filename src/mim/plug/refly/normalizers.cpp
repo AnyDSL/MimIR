@@ -1,6 +1,7 @@
 #include <rang.hpp>
 
-#include "mim/world.h"
+#include <mim/tuple.h>
+#include <mim/world.h>
 
 #include "mim/plug/refly/refly.h"
 
@@ -38,7 +39,8 @@ void debug_print(const Def* lvl, const Def* def) {
 
 } // namespace
 
-template<dbg id> const Def* normalize_dbg(const Def*, const Def*, const Def* arg) {
+template<dbg id>
+const Def* normalize_dbg(const Def*, const Def*, const Def* arg) {
     auto [lvl, x] = arg->projs<2>();
     debug_print(lvl, x);
     return id == dbg::perm ? nullptr : x;
@@ -61,7 +63,8 @@ const Def* normalize_refine(const Def*, const Def*, const Def* arg) {
 const Def* normalize_type(const Def*, const Def*, const Def* arg) { return arg->type(); }
 const Def* normalize_gid(const Def*, const Def*, const Def* arg) { return arg->world().lit_nat(arg->gid()); }
 
-template<equiv id> const Def* normalize_equiv(const Def*, const Def*, const Def* arg) {
+template<equiv id>
+const Def* normalize_equiv(const Def*, const Def*, const Def* arg) {
     auto [a, b] = arg->projs<2>();
     bool eq     = id & (equiv::aE & 0xff);
 

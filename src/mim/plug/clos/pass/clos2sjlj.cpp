@@ -48,12 +48,13 @@ void Clos2SJLJ::get_exn_closures(const Def* def, DefSet& visited) {
     if (auto c = isa_clos_lit(def)) {
         auto lam = c.fnc_as_lam();
         if (c.is_basicblock() && !ignore_.contains(lam)) {
-            def->world().DLOG("FOUND exn closure: {}", c.fnc_as_lam());
+            DLOG("FOUND exn closure: {}", c.fnc_as_lam());
             lam2tag_[c.fnc_as_lam()] = {lam2tag_.size() + 1, c.env()};
         }
         get_exn_closures(c.env(), visited);
     } else {
-        for (auto op : def->ops()) get_exn_closures(op, visited);
+        for (auto op : def->ops())
+            get_exn_closures(op, visited);
     }
 }
 
@@ -72,7 +73,7 @@ void Clos2SJLJ::get_exn_closures() {
                 auto c = isa_clos_lit(b);
                 if (c) {
                     ignore_.emplace(c.fnc_as_lam());
-                    world().DLOG("IGNORE {}", c.fnc_as_lam());
+                    DLOG("IGNORE {}", c.fnc_as_lam());
                 }
             }
         }

@@ -4,6 +4,7 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 #include "mim/rewrite.h"
+#include "mim/rule.h"
 #include "mim/tuple.h"
 
 #include "mim/util/util.h"
@@ -14,7 +15,7 @@ namespace {
 
 bool is_shape(const Def* s) {
     if (s->isa<Nat>()) return true;
-    if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
+    if (auto arr = s->isa<Arr>()) return arr->body()->zonk()->isa<Nat>();
     if (auto sig = s->isa_imm<Sigma>())
         return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
 
@@ -67,7 +68,7 @@ World::~World() {
  * Driver
  */
 
-Log& World::log() { return driver().log(); }
+Log& World::log() const { return driver().log(); }
 Flags& World::flags() { return driver().flags(); }
 
 Sym World::sym(const char* s) { return driver().sym(s); }
@@ -75,7 +76,7 @@ Sym World::sym(std::string_view s) { return driver().sym(s); }
 Sym World::sym(const std::string& s) { return driver().sym(s); }
 
 const Def* World::register_annex(flags_t f, const Def* def) {
-    DLOG("register: 0x{x} -> {}", f, def);
+    TLOG("register: 0x{x} -> {}", f, def);
     auto plugin = Annex::demangle(driver(), f);
     if (driver().is_loaded(plugin)) {
         assert_emplace(move_.flags2annex, f, def);
@@ -173,15 +174,13 @@ const Def* World::umax(Defs ops_) {
 
 // TODO more thorough & consistent checks for singleton types
 
-const Def* World::var(const Def* type, Def* mut) {
-    type = type->zonk();
-
-    if (auto s = Idx::isa(type)) {
+const Def* World::var(Def* mut) {
+    if (auto s = Idx::isa(mut->var_type())) {
         if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
     }
 
     if (auto var = mut->var_) return var;
-    return mut->var_ = unify<Var>(type, mut);
+    return mut->var_ = unify<Var>(mut);
 }
 
 template<bool Normalize>
@@ -471,11 +470,11 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val) {
 }
 
 const Def* World::seq(bool term, const Def* arity, const Def* body) {
-    arity = arity->zonk();
+    arity = arity->zonk(); // TODO use zonk_mut all over the place and rmeove zonk from is_shape?
     body  = body->zonk();
 
-    if (!is_shape(arity->unfold_type()))
-        error(arity->loc(), "expected arity but got `{}` of type `{}`", arity, arity->type());
+    auto arity_ty = arity->unfold_type();
+    if (!is_shape(arity_ty)) error(arity->loc(), "expected arity but got `{}` of type `{}`", arity, arity_ty);
 
     if (auto a = Lit::isa(arity)) {
         if (*a == 0) return unit(term);
@@ -666,6 +665,21 @@ Defs World::reduce(const Var* var, const Def* arg) {
         reduct->defs_[i] = rw.rewrite(mut->op(i + offset));
     assert_emplace(move_.substs, std::pair{var, arg}, reduct);
     return reduct->defs();
+}
+
+void World::for_each(bool elide_empty, std::function<void(Def*)> f) {
+    unique_queue<MutSet> queue;
+    for (auto mut : externals())
+        queue.push(mut);
+
+    while (!queue.empty()) {
+        auto mut = queue.pop();
+        if (mut && mut->is_closed() && (!elide_empty || mut->is_set())) f(mut);
+
+        for (auto op : mut->deps())
+            for (auto mut : op->local_muts())
+                queue.push(mut);
+    }
 }
 
 /*

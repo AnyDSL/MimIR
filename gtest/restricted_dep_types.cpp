@@ -4,13 +4,13 @@
 #include <gtest/gtest-spi.h>
 #include <gtest/gtest.h>
 
+#include <mim/pass.h>
+
 #include <mim/ast/parser.h>
 #include <mim/pass/beta_red.h>
 #include <mim/pass/eta_exp.h>
 #include <mim/pass/eta_red.h>
 #include <mim/pass/optimize.h>
-#include <mim/pass/pass.h>
-#include <mim/pass/pipelinebuilder.h>
 
 #include <mim/plug/compile/compile.h>
 #include <mim/plug/core/core.h>
@@ -217,7 +217,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w = driver.world();
-    ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s});
+    ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s, "opt"s});
 
     auto mem_t  = w.annex<mem::M>();
     auto i32_t  = w.type_i32();

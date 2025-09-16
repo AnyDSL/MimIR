@@ -189,7 +189,8 @@ const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) 
 
     std::set<u64> set_perm;
     std::map<u64, u64> map_perm;
-    for (u64 i = 0; i < r_out_nat; ++i) set_perm.insert(i);
+    for (u64 i = 0; i < r_out_nat; ++i)
+        set_perm.insert(i);
     for (u64 i = 0; i < r_in_nat; ++i) {
         auto idx     = index->proj(r_in_nat, i);
         auto idx_lit = Lit::isa(idx);
@@ -222,12 +223,11 @@ const Def* normalize_broadcast_in_dim(const Def*, const Def* c, const Def* arg) 
     return bc;
 }
 
-std::pair<Lam*, const Def*>
-counting_for(const Def* bound, const Def* acc, const Def* exit, const char* name = "for_body") {
+std::pair<Lam*, const Def*> counting_for(const Def* bound, const Def* acc, const Def* exit, Sym name) {
     auto& w       = bound->world();
     auto acc_ty   = acc->type();
     auto body     = w.mut_con({/* iter */ w.type_i32(), /* acc */ acc_ty, /* return */ w.cn(acc_ty)})->set(name);
-    auto for_loop = w.call<affine::For>(Defs{w.lit_i32(0), bound, w.lit_i32(1), acc, body, exit});
+    auto for_loop = w.call<affine::For>(body, exit, Defs{w.lit_i32(0), bound, w.lit_i32(1), acc});
     return {body, for_loop};
 }
 

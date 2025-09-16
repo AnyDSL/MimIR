@@ -8,7 +8,7 @@ plugin core;
 plugin affine;
 
 con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0), 0), return : Cn [%mem.M, Idx 0]] =
-    %affine.For (0I32, argc, 1I32, (0I32, 0:(Idx 0)), for_body, for_exit)
+    %affine.For for_body for_exit (0I32, argc, 1I32, (0I32, 0:(Idx 0)))
     where
         con for_body [i : I32, acc : [I32, Idx 0], continue : Cn [[I32, Idx 0]]] =
             let a : I32 = %core.wrap.add 0 (i, acc#ff);

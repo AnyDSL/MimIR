@@ -1,19 +1,16 @@
 #pragma once
 
-#include <mim/phase/phase.h>
-
-#include "mim/plug/tensor/tensor.h"
+#include <mim/phase.h>
 
 namespace mim::plug::tensor {
 
 class Lower : public RWPhase {
 public:
-    Lower(World& world)
-        : RWPhase(world, "tensor_lower") {}
+    Lower(World& world, flags_t annex)
+        : RWPhase(world, annex) {}
 
 private:
-    const Def* rewrite_imm(const Def*) override;
-    const Def* lower_map_reduce(const App*);
+    const Def* rewrite_imm_App(const App*) final;
 };
 
 } // namespace mim::plug::tensor

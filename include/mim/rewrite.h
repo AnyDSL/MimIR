@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ranges>
+#include <memory>
 
 #include "mim/world.h"
 
@@ -10,12 +10,30 @@ namespace mim {
 /// This World may be different than the World we started with.
 class Rewriter {
 public:
-    Rewriter(World& world)
-        : world_(world) {
+    Rewriter(std::unique_ptr<World>&& ptr)
+        : ptr_(std::move(ptr))
+        , world_(ptr_.get()) {
         push(); // create root map
     }
 
-    World& world() { return world_; }
+    Rewriter(World& world)
+        : world_(&world) {
+        push(); // create root map
+    }
+
+    void reset(std::unique_ptr<World>&& ptr) {
+        ptr_   = std::move(ptr);
+        world_ = ptr_.get();
+        reset();
+    }
+
+    void reset() {
+        pop();
+        assert(old2news_.empty());
+        push();
+    }
+
+    World& world() { return *world_; }
 
     /// @name Stack of Maps
     ///@{
@@ -24,7 +42,12 @@ public:
 
     /// Map @p old_def to @p new_def and returns @p new_def.
     /// @returns `new_def`
-    const Def* map(const Def* old_def, const Def* new_def) { return old2news_.back()[old_def] = new_def; }
+    // clang-format off
+    const Def* map(const Def* old_def , const Def* new_def ) { return old2news_.back()[              old_def  ] =               new_def  ; }
+    const Def* map(const Def* old_def ,       Defs new_defs) { return old2news_.back()[              old_def  ] = world().tuple(new_defs); }
+    const Def* map(Defs       old_defs, const Def* new_def ) { return old2news_.back()[world().tuple(old_defs)] =               new_def  ; }
+    const Def* map(Defs       old_defs,       Defs new_defs) { return old2news_.back()[world().tuple(old_defs)] = world().tuple(new_defs); }
+    // clang-format on
 
     /// Lookup `old_def` by searching in reverse through the stack of maps.
     /// @returns `nullptr` if nothing was found.
@@ -33,25 +56,31 @@ public:
             if (auto i = old2new.find(old_def); i != old2new.end()) return i->second;
         return nullptr;
     }
+    ///@}
 
     /// @name rewrite
     /// Recursively rewrite old Def%s.
     ///@{
     virtual const Def* rewrite(const Def*);
-    virtual const Def* dispatch(const Def*);
-
     virtual const Def* rewrite_imm(const Def*);
     virtual const Def* rewrite_mut(Def*);
+    virtual const Def* rewrite_stub(Def*, Def*);
+    virtual DefVec rewrite(Defs);
 
-    virtual const Def* rewrite_arr(const Arr* arr) { return rewrite_seq(arr); }
-    virtual const Def* rewrite_pack(const Pack* pack) { return rewrite_seq(pack); }
-    virtual const Def* rewrite_seq(const Seq*);
-    virtual const Def* rewrite_extract(const Extract*);
-    virtual const Def* rewrite_hole(Hole*);
+#define CODE_IMM(N) virtual const Def* rewrite_imm_##N(const N*);
+#define CODE_MUT(N) virtual const Def* rewrite_mut_##N(N*);
+    MIM_IMM_NODE(CODE_IMM)
+    MIM_MUT_NODE(CODE_MUT)
+#undef CODE_IMM
+#undef CODE_MUT
+
+    virtual const Def* rewrite_imm_Seq(const Seq* seq);
+    virtual const Def* rewrite_mut_Seq(Seq* seq);
     ///@}
 
 private:
-    World& world_;
+    std::unique_ptr<World> ptr_;
+    World* world_;
     std::deque<Def2Def> old2news_;
 };
 
@@ -81,23 +110,14 @@ public:
     }
 
     const Def* rewrite(const Def* old_def) final {
-        if (old_def->isa<Univ>()) return world().univ();
         if (auto new_def = lookup(old_def)) return new_def;
-        if (descend(old_def)) return Rewriter::dispatch(old_def);
-        // return map(mut, mut);
-        return old_def;
-    }
 
-    bool descend(const Def* old_def) {
-        if (auto imm = old_def->isa_imm()) {
-            if (imm->has_dep(Dep::Hole)) return true;
-            if (imm->local_vars().empty() && imm->local_muts().empty()) return false; // safe to skip
-        }
+        if (auto old_mut = old_def->isa_mut())
+            return has_intersection(old_mut) ? rewrite_mut(old_mut)->set(old_mut->dbg()) : old_mut;
 
-        for (const auto& vars : vars_ | std::views::reverse)
-            if (vars.has_intersection(old_def->free_vars())) return true;
+        if (old_def->local_vars().empty() && old_def->local_muts().empty()) return old_def; // safe to skip
 
-        return false;
+        return has_intersection(old_def) ? rewrite_imm(old_def)->set(old_def->dbg()) : old_def;
     }
 
     const Def* rewrite_mut(Def* mut) final {
@@ -110,6 +130,12 @@ public:
     }
 
 private:
+    bool has_intersection(const Def* old_def) {
+        for (const auto& vars : vars_ | std::views::reverse)
+            if (vars.has_intersection(old_def->free_vars())) return true;
+        return false;
+    }
+
     Vector<Vars> vars_;
 };
 

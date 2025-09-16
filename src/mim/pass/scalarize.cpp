@@ -6,6 +6,11 @@
 
 namespace mim {
 
+void Scalarize::init(PassMan* man) {
+    Pass::init(man);
+    eta_exp_ = man->find<EtaExp>();
+}
+
 // TODO should also work for mutable non-dependent sigmas
 
 // TODO merge with make_scalar
@@ -40,7 +45,7 @@ Lam* Scalarize::make_scalar(const Def* def) {
     auto sca_lam = tup_lam->stub(cn);
     if (eta_exp_) eta_exp_->new2old(sca_lam, tup_lam);
     size_t n = 0;
-    world().DLOG("type {} ~> {}", tup_lam->type(), cn);
+    DLOG("type {} ~> {}", tup_lam->type(), cn);
     auto new_vars = world().tuple(DefVec(tup_lam->num_doms(), [&](auto i) {
         auto tuple = DefVec(arg_sz.at(i), [&](auto) { return sca_lam->var(n++); });
         return unflatten(tuple, tup_lam->dom(i), false);
@@ -48,7 +53,7 @@ Lam* Scalarize::make_scalar(const Def* def) {
     sca_lam->set(tup_lam->reduce(new_vars));
     tup2sca_[sca_lam] = sca_lam;
     tup2sca_.emplace(tup_lam, sca_lam);
-    world().DLOG("lambda {} : {} ~> {} : {}", tup_lam, tup_lam->type(), sca_lam, sca_lam->type());
+    DLOG("lambda {} : {} ~> {} : {}", tup_lam, tup_lam->type(), sca_lam, sca_lam->type());
     return sca_lam;
 }
 
@@ -67,7 +72,7 @@ const Def* Scalarize::rewrite(const Def* def) {
                 })) {
                 auto new_tuple = w.tuple(DefVec(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));
                 sca_callee     = w.extract(new_tuple, proj->index());
-                w.DLOG("Expand tuple: {, } ~> {, }", tuple->ops(), new_tuple->ops());
+                DLOG("Expand tuple: {, } ~> {, }", tuple->ops(), new_tuple->ops());
             }
         }
 

@@ -34,8 +34,8 @@ axm %ord.Map: %ord.Key → * → *;
 ///
 /// Create set / map from a list of values / key-value-pairs.
 ///
-axm %ord.init(set): [K: %ord.Key] →          {n: Nat} → [«n;  K#T    »] → %ord.Set K  , normalize_init;
-axm %ord.init(map): [K: %ord.Key] → {V: *} → {n: Nat} → [«n; [K#T, V]»] → %ord.Map K V, normalize_init;
+axm %ord.init(set): [K: %ord.Key] →          {n: Nat} → «n;  K#T    » → %ord.Set K  , normalize_init;
+axm %ord.init(map): [K: %ord.Key] → {V: *} → {n: Nat} → «n; [K#T, V]» → %ord.Map K V, normalize_init;
 ///
 /// ### %%ord.create
 ///
@@ -50,8 +50,8 @@ lam %ord.create_map [K: %ord.Key] (V: *) : %ord.Map K V = %ord.init.map K @V @0 
 ///
 /// Get number of elements in container.
 ///
-axm %ord.size(set): {K: %ord.Key} →          [%ord.Set K  ] → Nat, normalize_size;
-axm %ord.size(map): {K: %ord.Key} → {V: *} → [%ord.Map K V] → Nat, normalize_size;
+axm %ord.size(set): {K: %ord.Key} →          %ord.Set K   → Nat, normalize_size;
+axm %ord.size(map): {K: %ord.Key} → {V: *} → %ord.Map K V → Nat, normalize_size;
 ///
 /// ### %%ord.is_empty
 ///

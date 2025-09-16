@@ -26,25 +26,38 @@ Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); 
  */
 
 Lam* Lam::set_filter(Filter filter) { return Def::set(0, world().filter(filter))->as<Lam>(); }
-Lam* Lam::app(Filter f, const Def* callee, const Def* arg) { return set_filter(f)->set_body(world().app(callee, arg)); }
+Lam* Lam::set(Filter filter, const Def* body) { return Def::set({world().filter(filter), body})->as<Lam>(); }
+Lam* Lam::app(Filter f, const Def* callee, const Def* arg) {
+    return Def::set({world().filter(f), world().app(callee, arg)})->as<Lam>();
+}
 Lam* Lam::app(Filter filter, const Def* callee, Defs args) { return app(filter, callee, world().tuple(args)); }
 
-Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem) {
-    return app(filter, world().select(cond, t, f), mem ? mem : world().tuple());
+Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* arg) {
+    return app(filter, world().select(cond, t, f), arg ? arg : world().tuple());
+}
+
+Defs Lam::reduce(Defs args) const { return Def::reduce(world().tuple(args)); }
+
+// TODO maybe we can eta-reduce immutable Lams in some edge casess like: lm _: [] = f ();
+
+const Def* Lam::eta_reduce() const {
+    if (auto var = has_var()) {
+        if (auto app = body()->isa<App>())
+            if (app->arg() == var && !app->callee()->free_vars().contains(var)) return app->callee();
+    }
+    return nullptr;
+}
+
+Lam* Lam::eta_expand(Filter filter, const Def* f) {
+    auto& w  = f->world();
+    auto eta = w.mut_lam(f->type()->as<Pi>());
+    eta->set(f->dbg())->debug_prefix("eta_"s);
+    return eta->app(filter, f, eta->var());
 }
 
 /*
  * Helpers
  */
-
-std::deque<const App*> decurry(const Def* def) {
-    std::deque<const App*> apps;
-    while (auto app = def->isa<App>()) {
-        apps.emplace_front(app);
-        def = app->callee();
-    }
-    return apps;
-}
 
 const Def* compose_cn(const Def* f, const Def* g) {
     auto& world = f->world();
@@ -77,19 +90,6 @@ const Def* compose_cn(const Def* f, const Def* g) {
     hcont->app(true, f, {hcont_var, h->var(1) /* ret_var */});
 
     return h;
-}
-
-std::pair<const Def*, DefVec> collect_args(const Def* def) {
-    DefVec args;
-    if (auto app = def->isa<App>()) {
-        auto callee               = app->callee();
-        auto arg                  = app->arg();
-        auto [inner_callee, args] = collect_args(callee);
-        args.push_back(arg);
-        return {inner_callee, args};
-    } else {
-        return {def, args};
-    }
 }
 
 } // namespace mim

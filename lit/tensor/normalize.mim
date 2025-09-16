@@ -49,7 +49,7 @@ let s2 = (k, l);
 let bs = ‹i: nb; s1#(b#i)›;
 let _ = %refly.equiv.struc_eq (bs, ());
 
-let bc_1     = %tuple.cat_uniform (b, c1);
+let bc_1     = %vec.cat (b, c1);
 let _ = %refly.equiv.struc_eq (bc_1, 1_2);
 
 let s1_res   = %vec.diff (s1, bc_1);
@@ -58,7 +58,7 @@ let _ = %refly.equiv.struc_eq (s1_res, m);
 let n_s1_res = %vec.len s1_res;
 let _ = %refly.equiv.struc_eq (n_s1_res, 1);
 
-let bc_2     = %tuple.cat_uniform (b, c2);
+let bc_2     = %vec.cat (b, c2);
 let _ = %refly.equiv.struc_eq (bc_2, 0_2);
 
 let s2_res   = %vec.diff (s2, bc_2);
@@ -67,10 +67,10 @@ let _ = %refly.equiv.struc_eq (s2_res, l);
 let n_s2_res = %vec.len s1_res;
 let _ = %refly.equiv.struc_eq (n_s2_res, 1);
 
-let s12_res  = %tuple.cat_uniform (s1_res, s2_res);
+let s12_res  = %vec.cat (s1_res, s2_res);
 let _ = %refly.equiv.struc_eq (s12_res, (m, l));
 
-let s_out    = %tuple.cat_uniform (bs, s12_res);
+let s_out    = %vec.cat (bs, s12_res);
 let _ = %refly.equiv.struc_eq (s_out, (m, l));
 
 let f        = dot_general_fun R;

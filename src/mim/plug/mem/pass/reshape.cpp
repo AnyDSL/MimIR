@@ -1,9 +1,5 @@
 #include "mim/plug/mem/pass/reshape.h"
 
-#include <functional>
-#include <sstream>
-#include <vector>
-
 #include <mim/check.h>
 #include <mim/def.h>
 #include <mim/lam.h>
@@ -11,7 +7,7 @@
 
 #include "mim/plug/mem/mem.h"
 
-namespace mim::plug::mem {
+namespace mim::plug::mem::pass {
 
 namespace {
 
@@ -66,6 +62,16 @@ DefVec flatten_def(const Def* def) {
 
 } // namespace
 
+void Reshape::apply(Mode mode) {
+    mode_ = mode;
+    name_ += mode == Flat ? " Flat" : " Arg";
+}
+
+void Reshape::apply(const App* app) {
+    auto axm = app->arg()->as<Axm>();
+    apply(axm->flags() == Annex::base<mem::reshape_arg>() ? Arg : Flat);
+}
+
 void Reshape::enter() { rewrite_def(curr_mut()); }
 
 const Def* Reshape::rewrite_def(const Def* def) {
@@ -96,26 +102,26 @@ const Def* Reshape::rewrite_def_(const Def* def) {
     std::string str = ss.str();
 
     // vars are handled by association.
-    if (def->isa<Var>()) world().ELOG("Var: {}", def);
+    if (def->isa<Var>()) ELOG("Var: {}", def);
     assert(!def->isa<Var>());
 
     if (auto app = def->isa<App>()) {
         auto callee = rewrite_def(app->callee());
         auto arg    = rewrite_def(app->arg());
 
-        world().DLOG("callee: {} : {}", callee, callee->type());
+        DLOG("callee: {} : {}", callee, callee->type());
 
         // Reshape normally (not to callee) to ensure that callee is reshaped correctly.
         auto reshaped_arg = reshape(arg);
-        world().DLOG("reshape arg {} : {}", arg, arg->type());
-        world().DLOG("into arg {} : {}", reshaped_arg, reshaped_arg->type());
+        DLOG("reshape arg {} : {}", arg, arg->type());
+        DLOG("into arg {} : {}", reshaped_arg, reshaped_arg->type());
         auto new_app = world().app(callee, reshaped_arg);
         return new_app;
     } else if (auto lam = def->isa_mut<Lam>()) {
-        world().DLOG("rewrite_def lam {} : {}", def, def->type());
+        DLOG("rewrite_def lam {} : {}", def, def->type());
         auto new_lam = reshape_lam(lam);
-        world().DLOG("rewrote lam {} : {}", def, def->type());
-        world().DLOG("into lam {} : {}", new_lam, new_lam->type());
+        DLOG("rewrote lam {} : {}", def, def->type());
+        DLOG("into lam {} : {}", new_lam, new_lam->type());
         return new_lam;
     } else if (auto tuple = def->isa<Tuple>()) {
         auto elements = DefVec(tuple->ops(), [&](const Def* op) { return rewrite_def(op); });
@@ -131,7 +137,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
 
 Lam* Reshape::reshape_lam(Lam* old_lam) {
     if (!old_lam->is_set()) {
-        world().DLOG("reshape_lam: {} is not a set", old_lam);
+        DLOG("reshape_lam: {} is not a set", old_lam);
         return old_lam;
     }
     auto pi_ty  = old_lam->type();
@@ -146,8 +152,8 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
         old2new_[old_lam] = new_lam;
     }
 
-    world().DLOG("Reshape lam: {} : {}", old_lam, pi_ty);
-    world().DLOG("         to: {} : {}", new_lam, new_ty);
+    DLOG("Reshape lam: {} : {}", old_lam, pi_ty);
+    DLOG("         to: {} : {}", new_lam, new_ty);
 
     // We associate the arguments (reshape the old vars).
     // Alternatively, we could use beta reduction (reduce) to do this for us.
@@ -156,11 +162,11 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     // We deeply associate `old_lam->var()` with `new_arg` in a reconstructed shape.
     // Idea: first make new_arg into "atomic" old_lam list, then recrusively imitate `old_lam->var`.
     auto reformed_new_arg = reshape(new_arg, old_lam->var()->type()); // `old_lam->var()->type() = pi_ty`
-    world().DLOG("var {} : {}", old_lam->var(), old_lam->var()->type());
-    world().DLOG("new var {} : {}", new_arg, new_arg->type());
-    world().DLOG("reshaped new_var {} : {}", reformed_new_arg, reformed_new_arg->type());
-    world().DLOG("{}", old_lam->var()->type());
-    world().DLOG("{}", reformed_new_arg->type());
+    DLOG("var {} : {}", old_lam->var(), old_lam->var()->type());
+    DLOG("new var {} : {}", new_arg, new_arg->type());
+    DLOG("reshaped new_var {} : {}", reformed_new_arg, reformed_new_arg->type());
+    DLOG("{}", old_lam->var()->type());
+    DLOG("{}", reformed_new_arg->type());
     old2new_[old_lam->var()] = reformed_new_arg;
     // TODO: add if necessary. This probably was an issue with unintended overriding due to bad previous naming.
     // TODO: Remove after testing.
@@ -173,7 +179,7 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
 
     if (old_lam->is_external()) old_lam->transfer_external(new_lam);
 
-    world().DLOG("finished transforming: {} : {}", new_lam, new_ty);
+    DLOG("finished transforming: {} : {}", new_lam, new_ty);
     return new_lam;
 }
 
@@ -251,13 +257,13 @@ const Def* Reshape::reshape(DefVec& defs, const Def* T, const Def* mem) {
 }
 
 const Def* Reshape::reshape(const Def* def, const Def* target) {
-    world().DLOG("reshape:\n  {} =>\n  {}", def->type(), target);
+    DLOG("reshape:\n  {} =>\n  {}", def->type(), target);
     auto flat_defs = flatten_def(def);
     const Def* mem = nullptr;
     // find mem
     for (auto i = flat_defs.begin(); i != flat_defs.end(); i++)
         if (is_mem_ty((*i)->type()) && !mem) mem = *i;
-    world().DLOG("mem: {}", mem);
+    DLOG("mem: {}", mem);
     return reshape(flat_defs, target, mem);
 }
 
@@ -304,4 +310,4 @@ const Def* Reshape::reshape(const Def* def) {
     }
 }
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::pass

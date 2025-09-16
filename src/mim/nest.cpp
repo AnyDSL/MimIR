@@ -2,8 +2,6 @@
 
 #include "mim/world.h"
 
-#include "mim/phase/phase.h"
-
 namespace mim {
 
 Nest::Nest(Def* r)
@@ -15,14 +13,15 @@ Nest::Nest(Def* r)
 Nest::Nest(View<Def*> muts)
     : world_(muts.front()->world())
     , root_(make_node(nullptr)) {
-    for (auto mut : muts) make_node(mut, root_);
+    for (auto mut : muts)
+        make_node(mut, root_);
     populate();
 }
 
 Nest::Nest(World& world)
     : world_(world)
     , root_(make_node(nullptr)) {
-    for (auto mut : ClosedCollector<>::collect(world)) make_node(mut, root_);
+    world.for_each(false, [this](Def* mut) { make_node(mut, root_); });
     populate();
 }
 
@@ -32,7 +31,8 @@ void Nest::populate() {
     if (root()->mut())
         queue.push(root_);
     else
-        for (auto [_, child] : root_->child_mut2node_) queue.push(child);
+        for (auto [_, child] : root_->child_mut2node_)
+            queue.push(child);
 
     while (!queue.empty()) {
         auto curr_node = pop(queue);
@@ -76,8 +76,10 @@ Nest::Node* Nest::make_node(Def* mut, Node* parent) {
 }
 
 const Nest::Node* Nest::lca(const Node* n, const Node* m) {
-    while (n->level() < m->level()) m = m->parent();
-    while (m->level() < n->level()) n = n->parent();
+    while (n->level() < m->level())
+        m = m->parent();
+    while (m->level() < n->level())
+        n = n->parent();
     while (n != m) {
         // TODO support longer dep chains and and the possibility to opt out from this
         if (n->deps().depends_.contains(m)) return n;

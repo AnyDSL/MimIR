@@ -23,12 +23,13 @@ const Def* LowerMatrixMediumLevel::rewrite(const Def* def) {
     return rewritten[def];
 }
 
-std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def* exit, const char* name = "for_body") {
+std::pair<Lam*, const Def*> counting_for(const Def* bound, DefVec acc, const Def* exit, Sym name) {
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
     auto body
         = world.mut_con({/* iter */ world.type_i32(), /* acc */ acc_ty, /* return */ world.cn(acc_ty)})->set(name);
-    auto for_loop = world.call<affine::For>(Defs{world.lit_i32(0), bound, world.lit_i32(1), world.tuple(acc), body, exit});
+    auto for_loop
+        = world.call<affine::For>(body, exit, Defs{world.lit_i32(0), bound, world.lit_i32(1), world.tuple(acc)});
     return {body, for_loop};
 }
 
@@ -52,20 +53,20 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         // * input matrixes
         auto [mem, zero, comb, inputs] = map_reduce_ax->args<4>();
         auto [n, S, T, m, NI, TI, SI]  = map_reduce_ax->callee()->as<App>()->args<7>();
-        world().DLOG("map_reduce_ax {} : {}", map_reduce_ax, map_reduce_ax->type());
-        world().DLOG("meta variables:");
-        world().DLOG("  n = {}", n);
-        world().DLOG("  S = {}", S);
-        world().DLOG("  T = {}", T);
-        world().DLOG("  m = {}", m);
-        world().DLOG("  NI = {} : {}", NI, NI->type());
-        world().DLOG("  TI = {} : {}", TI, TI->type());
-        world().DLOG("  SI = {} : {}", SI, SI->type());
-        world().DLOG("arguments:");
-        world().DLOG("  mem = {}", mem);
-        world().DLOG("  zero = {}", zero);
-        world().DLOG("  comb = {} : {}", comb, comb->type());
-        world().DLOG("  inputs = {} : {}", inputs, inputs->type());
+        DLOG("map_reduce_ax {} : {}", map_reduce_ax, map_reduce_ax->type());
+        DLOG("meta variables:");
+        DLOG("  n = {}", n);
+        DLOG("  S = {}", S);
+        DLOG("  T = {}", T);
+        DLOG("  m = {}", m);
+        DLOG("  NI = {} : {}", NI, NI->type());
+        DLOG("  TI = {} : {}", TI, TI->type());
+        DLOG("  SI = {} : {}", SI, SI->type());
+        DLOG("arguments:");
+        DLOG("  mem = {}", mem);
+        DLOG("  zero = {}", zero);
+        DLOG("  comb = {} : {}", comb, comb->type());
+        DLOG("  inputs = {} : {}", inputs, inputs->type());
 
         // Our goal is to generate a call to a function that performs:
         // ```
@@ -94,7 +95,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         auto n_lit = n->isa<Lit>();
         auto m_lit = m->isa<Lit>();
         if (!n_lit || !m_lit) {
-            world().DLOG("n or m is not a literal");
+            DLOG("n or m is not a literal");
             return def;
         }
 
@@ -102,31 +103,31 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         auto m_nat = m_lit->get<u64>(); // number of input matrices
 
         // collect output dimensions
-        world().DLOG("out dims (n) = {}", n_nat);
+        DLOG("out dims (n) = {}", n_nat);
         for (u64 i = 0; i < n_nat; ++i) {
             auto dim = S->proj(n_nat, i);
-            world().DLOG("dim {} = {}", i, dim);
+            DLOG("dim {} = {}", i, dim);
             dims[i] = dim;
             output_dims.push_back(dim);
         }
 
         // collect other (input) dimensions
-        world().DLOG("matrix count (m) = {}", m_nat);
+        DLOG("matrix count (m) = {}", m_nat);
 
         for (u64 i = 0; i < m_nat; ++i) {
             auto ni     = NI->proj(m_nat, i);
             auto ni_lit = Lit::isa(ni);
             if (!ni_lit) {
-                world().DLOG("matrix {} has non-constant dimension count", i);
+                DLOG("matrix {} has non-constant dimension count", i);
                 return def;
             }
             u64 ni_nat = *ni_lit;
-            world().DLOG("  dims({i}) = {}", i, ni_nat);
+            DLOG("  dims({i}) = {}", i, ni_nat);
             auto SI_i = SI->proj(m_nat, i);
             DefVec input_dims_i;
             for (u64 j = 0; j < ni_nat; ++j) {
                 auto dim = SI_i->proj(ni_nat, j);
-                world().DLOG("    dim {} {} = {}", i, j, dim);
+                DLOG("    dim {} {} = {}", i, j, dim);
                 // dims[i * n_nat + j] = dim;
                 input_dims_i.push_back(dim);
             }
@@ -136,29 +137,29 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         // extracts bounds for each index (in, out)
         for (u64 i = 0; i < m_nat; ++i) {
-            world().DLOG("investigate {} / {}", i, m_nat);
+            DLOG("investigate {} / {}", i, m_nat);
             auto [indices, mat] = inputs->proj(m_nat, i)->projs<2>();
-            world().DLOG("  indices {} = {}", i, indices);
-            world().DLOG("  matrix {} = {}", i, mat);
+            DLOG("  indices {} = {}", i, indices);
+            DLOG("  matrix {} = {}", i, mat);
             for (u64 j = 0; j < n_input[i]; ++j) {
-                // world().DLOG("    dimension {} / {}", j, n_input[i]);
+                // DLOG("    dimension {} / {}", j, n_input[i]);
                 auto idx     = indices->proj(n_input[i], j);
                 auto idx_lit = Lit::isa(idx);
                 if (!idx_lit) {
-                    world().DLOG("    index {} {} is not a literal", i, j);
+                    DLOG("    index {} {} is not a literal", i, j);
                     return def;
                 }
                 u64 idx_nat = *idx_lit;
                 auto dim    = input_dims[i][j];
-                world().DLOG("      index {} = {}", j, idx);
-                world().DLOG("        dim {} = {}", idx, dim);
+                DLOG("      index {} = {}", j, idx);
+                DLOG("        dim {} = {}", idx, dim);
                 if (!dims.contains(idx_nat)) {
                     dims[idx_nat] = dim;
-                    world().DLOG("        {} ↦ {}", idx_nat, dim);
+                    DLOG("        {} ↦ {}", idx_nat, dim);
                 } else {
                     // assert(dims[idx_nat] == dim);
                     auto prev_dim = dims[idx_nat];
-                    world().DLOG("        prev dim {} = {}", idx_nat, prev_dim);
+                    DLOG("        prev dim {} = {}", idx_nat, prev_dim);
                     // override with more precise information
                     if (auto dim_lit = dim->isa<Lit>()) {
                         if (auto prev_dim_lit = prev_dim->isa<Lit>())
@@ -171,7 +172,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         }
 
         for (auto [idx, dim] : dims) {
-            world().ILOG("dim {} = {}", idx, dim);
+            DLOG("dim {} = {}", idx, dim);
             if (idx < n_nat)
                 out_indices.push_back(idx);
             else
@@ -188,9 +189,9 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         // assert(0);
         auto ds_fun = direct::op_cps2ds_dep(fun);
-        world().DLOG("ds_fun {} : {}", ds_fun, ds_fun->type());
+        DLOG("ds_fun {} : {}", ds_fun, ds_fun->type());
         auto call = world().app(ds_fun, mem);
-        world().DLOG("call {} : {}", call, call->type());
+        DLOG("call {} : {}", call, call->type());
 
         // flowchart:
         // ```
@@ -247,7 +248,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         // Now the inner loops for the inputs:
         // Each of the inner loops contains the element accumulator and memory as accumulator (in an inner monad).
-        world().DLOG("acc at inner: {;}", acc);
+        DLOG("acc at inner: {;}", acc);
 
         // First create the accumulator.
         auto element_acc = zero;
@@ -255,22 +256,22 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         current_mem    = acc[0];
         auto wb_matrix = acc[1];
         assert(wb_matrix);
-        world().DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
+        DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
         auto write_back = mem::mut_con(T)->set("matrixWriteBack");
-        world().DLOG("write_back {} : {}", write_back, write_back->type());
+        DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 
         auto output_iterators = DefVec((size_t)n_nat, [&](u64 i) {
             auto idx = out_indices[i];
-            if (idx != i) world().ELOG("output indices must be consecutive 0..n-1 but {} != {}", idx, i);
+            if (idx != i) ELOG("output indices must be consecutive 0..n-1 but {} != {}", idx, i);
             assert(idx == i && "output indices must be consecutive 0..n-1");
             auto iter_idx_def = iterator[idx];
             return iter_idx_def;
         });
         auto output_it_tuple  = world().tuple(output_iterators);
-        world().DLOG("output tuple: {} : {}", output_it_tuple, output_it_tuple->type());
+        DLOG("output tuple: {} : {}", output_it_tuple, output_it_tuple->type());
 
         auto [wb_mem2, written_matrix] = world()
                                              .app(world().app(world().annex<matrix::insert>(), {n, S, T}),
@@ -313,26 +314,26 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
             auto input_i                       = inputs->proj(m_nat, i);
             auto [input_idx_tup, input_matrix] = input_i->projs<2>();
 
-            world().DLOG("input matrix {} is {} : {}", i, input_matrix, input_matrix->type());
+            DLOG("input matrix {} is {} : {}", i, input_matrix, input_matrix->type());
 
             auto indices         = input_idx_tup->projs(n_input[i]);
             auto input_iterators = DefVec(n_input[i], [&](u64 j) {
                 auto idx     = indices[j];
                 auto idx_lit = idx->as<Lit>()->get<u64>();
-                world().DLOG("  idx {} {} = {}", i, j, idx_lit);
+                DLOG("  idx {} {} = {}", i, j, idx_lit);
                 return iterator[idx_lit];
             });
             auto input_it_tuple  = world().tuple(input_iterators);
 
             auto read_entry = op_read(current_mem, input_matrix, input_it_tuple);
-            world().DLOG("read_entry {} : {}", read_entry, read_entry->type());
+            DLOG("read_entry {} : {}", read_entry, read_entry->type());
             auto [new_mem, element_i] = read_entry->projs<2>();
             current_mem               = new_mem;
             input_elements[i]         = element_i;
         }
 
-        world().DLOG("  read elements {,}", input_elements);
-        world().DLOG("  fun {} : {}", fun, fun->type());
+        DLOG("  read elements {,}", input_elements);
+        DLOG("  fun {} : {}", fun, fun->type());
 
         // TODO: make non-scalar or completely scalar?
         current_mut->app(true, comb, {world().tuple({current_mem, element_acc, world().tuple(input_elements)}), cont});

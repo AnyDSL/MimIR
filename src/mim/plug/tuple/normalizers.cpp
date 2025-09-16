@@ -15,16 +15,14 @@ const Def* normalize_cat(const Def* type, const Def* callee, const Def* arg) {
 
     if (n && m) {
         auto defs = DefVec();
-        for (size_t i = 0, e = *n; i != e; ++i) defs.emplace_back(a->proj(e, i));
-        for (size_t i = 0, e = *m; i != e; ++i) defs.emplace_back(b->proj(e, i));
+        for (size_t i = 0, e = *n; i != e; ++i)
+            defs.emplace_back(a->proj(e, i));
+        for (size_t i = 0, e = *m; i != e; ++i)
+            defs.emplace_back(b->proj(e, i));
         return world.tuple(defs);
     }
 
     return nullptr;
-}
-
-const Def* normalize_cat_uniform(const Def* type, const Def* callee, const Def* arg) {
-    return normalize_cat(type, callee, arg);
 }
 
 const Def* normalize_contains(const Def* type, const Def*, const Def* arg) {

@@ -92,40 +92,36 @@ lam %mem.rm (n: Nat, Is: «n; *», O: *)
              (is: «i: n; Is#i»): O
     = %mem.ignore (f (%mem.m, is));
 ///
-/// ## Passes and Phases
+/// ## Stages
 ///
-/// ### Misc
+/// ### Phases
 ///
-/// Reshape mode enum.
+axm %mem.add_mem_phase: %compile.Phase;
+///
+/// ### Repls
+///
+axm %mem.remem_repl:        %compile.Repl;
+axm %mem.alloc2malloc_repl: %compile.Repl;
+///
+/// ### Passes
+///
+axm %mem.ssa_pass:              %compile.Pass;
+axm %mem.copy_prop_pass: Bool → %compile.Pass;
+///
+/// ##### %mem.reshape
 ///
 axm %mem.reshape_mode: *;
 axm %mem.reshape_flat: %mem.reshape_mode;
 axm %mem.reshape_arg:  %mem.reshape_mode;
 ///
-/// ### Passes
+axm %mem.reshape_pass: %mem.reshape_mode → %compile.Pass;
 ///
-/// SSA pass expects eta expansion as argument
-axm %mem.ssa_pass: %compile.Pass → %compile.Pass;
-/// Copy propagation expects beta reduction and eta expansion as argument.
-axm %mem.copy_prop_pass:    [%compile.Pass, %compile.Pass, Bool] → %compile.Pass;
-axm %mem.remem_elim_pass:   %compile.Pass;
-axm %mem.alloc2malloc_pass: %compile.Pass;
-axm %mem.reshape_pass:      %mem.reshape_mode → %compile.Pass;
+/// ### Pipelines
 ///
-/// ### Phases
-///
-axm %mem.add_mem_phase: %compile.Phase;
-
-let mem_opt_pass_list =
-    let beta_red = %compile.beta_red_pass;
-    let eta_red  = %compile.eta_red_pass;
-    let eta_exp  = %compile.eta_exp_pass eta_red;
-    %compile.pass_list
-        beta_red
-        eta_red
-        eta_exp
-        (%mem.ssa_pass eta_exp)
-        (%mem.copy_prop_pass (beta_red, eta_exp, ff));
-
-let mem_opt_phase  = %compile.pass_phase mem_opt_pass_list;
-let mem_prep_phase = %compile.passes_to_phase (%mem.remem_elim_pass, %mem.alloc2malloc_pass);
+let mem_opt_passes = %compile.passes (
+    //%compile.beta_red_pass,
+    //%compile.eta_red_pass ff,
+    //%compile.eta_exp_pass,
+    %mem.ssa_pass,
+    %mem.copy_prop_pass ff,
+);
