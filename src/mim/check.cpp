@@ -25,19 +25,24 @@ public:
         , root_(root) {}
 
     const Def* rewrite(const Def* def) final {
-        if (auto zonked = def->zonked_) return zonked;
+        auto res = def;
+        while (res->zonked_)
+            res = res->zonked_;
 
-        if (auto hole = def->isa_mut<Hole>()) {
+        if (auto hole = res->isa_mut<Hole>()) {
             auto [last, op] = hole->find();
-            return op ? rewrite(op) : last;
+            res             = op ? rewrite(op) : last;
         }
 
-        if (def == root_ || needs_zonk(def)) {
-            auto res = Rewriter::rewrite(def);
-            if (!res->has_dep(Dep::Hole)) def->zonked_ = res;
-            return res;
+        if (res == root_ || needs_zonk(res)) res = Rewriter::rewrite(def);
+
+        while (def->zonked_) {
+            auto old     = def;
+            def          = def->zonked_;
+            old->zonked_ = res;
         }
-        return def;
+
+        return res;
     }
 
     const Def* rewrite_mut(Def* root) final {
