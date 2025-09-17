@@ -2,7 +2,6 @@
 
 #include <absl/container/fixed_array.h>
 
-#include "mim/check.h"
 #include "mim/world.h"
 
 #include "fe/assert.h"
@@ -10,6 +9,16 @@
 // Don't use fancy C++-lambdas; it's way too annoying stepping through them in a debugger.
 
 namespace mim {
+
+const Def* Rewriter::map(const Def* old_def, Defs new_defs) {
+    return old2news_.back()[old_def] = world().tuple(new_defs);
+}
+const Def* Rewriter::map(Defs old_defs, const Def* new_def) {
+    return old2news_.back()[world().tuple(old_defs)] = new_def;
+}
+const Def* Rewriter::map(Defs old_defs, Defs new_defs) {
+    return old2news_.back()[world().tuple(old_defs)] = world().tuple(new_defs);
+}
 
 const Def* Rewriter::rewrite(const Def* old_def) {
     if (auto new_def = lookup(old_def)) return new_def;
@@ -159,6 +168,19 @@ const Def* Rewriter::rewrite_stub(Def* old_mut, Def* new_mut) {
     }
 
     return new_mut;
+}
+
+/*
+ * VarRewriter
+ */
+
+const Def* VarRewriter::rewrite_mut(Def* mut) {
+    if (auto var = mut->has_var()) {
+        auto& vars = vars_.back();
+        vars       = world().vars().insert(vars, var);
+    }
+
+    return Rewriter::rewrite_mut(mut);
 }
 
 } // namespace mim

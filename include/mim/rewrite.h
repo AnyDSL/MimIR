@@ -2,9 +2,16 @@
 
 #include <memory>
 
-#include "mim/world.h"
+#include "mim/check.h"
+#include "mim/def.h"
+#include "mim/lam.h"
+#include "mim/lattice.h"
+#include "mim/rule.h"
+#include "mim/tuple.h"
 
 namespace mim {
+
+class World;
 
 /// Recurseivly rebuilds part of a program **into** the provided World w.r.t.\ Rewriter::map.
 /// This World may be different than the World we started with.
@@ -43,10 +50,10 @@ public:
     /// Map @p old_def to @p new_def and returns @p new_def.
     /// @returns `new_def`
     // clang-format off
-    const Def* map(const Def* old_def , const Def* new_def ) { return old2news_.back()[              old_def  ] =               new_def  ; }
-    const Def* map(const Def* old_def ,       Defs new_defs) { return old2news_.back()[              old_def  ] = world().tuple(new_defs); }
-    const Def* map(Defs       old_defs, const Def* new_def ) { return old2news_.back()[world().tuple(old_defs)] =               new_def  ; }
-    const Def* map(Defs       old_defs,       Defs new_defs) { return old2news_.back()[world().tuple(old_defs)] = world().tuple(new_defs); }
+    const Def* map(const Def* old_def , const Def* new_def ) { return old2news_.back()[old_def] = new_def; }
+    const Def* map(const Def* old_def ,       Defs new_defs);
+    const Def* map(Defs       old_defs, const Def* new_def );
+    const Def* map(Defs       old_defs,       Defs new_defs);
     // clang-format on
 
     /// Lookup `old_def` by searching in reverse through the stack of maps.
@@ -77,6 +84,15 @@ public:
     virtual const Def* rewrite_imm_Seq(const Seq* seq);
     virtual const Def* rewrite_mut_Seq(Seq* seq);
     ///@}
+
+    friend void swap(Rewriter& rw1, Rewriter& rw2) {
+        using std::swap;
+        // clang-format off
+        swap(rw1.ptr_,      rw2.ptr_);
+        swap(rw1.world_,    rw2.world_);
+        swap(rw1.old2news_, rw2.old2news_);
+        // clang-format on
+    }
 
 private:
     std::unique_ptr<World> ptr_;
@@ -120,13 +136,12 @@ public:
         return has_intersection(old_def) ? rewrite_imm(old_def)->set(old_def->dbg()) : old_def;
     }
 
-    const Def* rewrite_mut(Def* mut) final {
-        if (auto var = mut->has_var()) {
-            auto& vars = vars_.back();
-            vars       = world().vars().insert(vars, var);
-        }
+    const Def* rewrite_mut(Def*) final;
 
-        return Rewriter::rewrite_mut(mut);
+    friend void swap(VarRewriter& vrw1, VarRewriter& vrw2) {
+        using std::swap;
+        swap(static_cast<Rewriter&>(vrw1), static_cast<Rewriter&>(vrw2));
+        swap(vrw1.vars_, vrw2.vars_);
     }
 
 private:
@@ -137,6 +152,61 @@ private:
     }
 
     Vector<Vars> vars_;
+};
+
+class Zonker : public Rewriter {
+public:
+    Zonker(World& world, Def* root)
+        : Rewriter(world)
+        , root_(root) {}
+
+    const Def* rewrite(const Def* def) final {
+        auto res = def;
+        while (res->zonked_)
+            res = res->zonked_;
+        auto last = res;
+
+        if (auto hole = res->isa_mut<Hole>()) {
+            auto [last, op] = hole->find();
+            res             = op ? rewrite(op) : last;
+        }
+
+        if (res == root_ || res->needs_zonk()) res = Rewriter::rewrite(res);
+
+        // path compression
+        for (auto d = def; d != last;) {
+            auto next  = d->zonked_;
+            d->zonked_ = res;
+            d          = next;
+        }
+
+        return res;
+    }
+
+    const Def* rewrite_mut(Def* root) final {
+        // Don't create a new stub, instead rewrire the ops of the old mutable root.
+        assert(root == root_);
+        map(root, root);
+
+        auto old_type = root->type();
+        auto old_ops  = absl::FixedArray<const Def*>(root->ops().begin(), root->ops().end());
+
+        root->unset()->set_type(rewrite(old_type));
+
+        for (size_t i = 0, e = root->num_ops(); i != e; ++i)
+            root->set(i, rewrite(old_ops[i]));
+        if (auto new_imm = root->immutabilize()) return map(root, new_imm);
+
+        return root;
+    }
+
+    friend void swap(Zonker& z1, Zonker& z2) {
+        using std::swap;
+        swap(static_cast<Rewriter&>(z1), static_cast<Rewriter&>(z2));
+    }
+
+private:
+    Def* root_; // Always rewrite this one!
 };
 
 } // namespace mim

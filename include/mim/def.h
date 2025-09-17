@@ -582,6 +582,10 @@ public:
     /// If different from Def::type, it will update its Def::type to a Def::zonk%ed version of that.
     virtual const Def* check() { return type(); }
 
+    /// Yields `true`, if Def::local_muts() contain a Hole that is set.
+    /// Rewriting (Def::zonk%ing) will resolve the Hole to its operand.
+    bool needs_zonk() const;
+
     /// If Hole%s have been filled, reconstruct the program without them.
     /// Only gues up to but excluding other mutables.
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
