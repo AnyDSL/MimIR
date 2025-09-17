@@ -5,6 +5,8 @@
 namespace mim {
 
 bool EtaExpPhase::analyze() {
+    for (auto def : old_world().annexes())
+        visit(def, Lattice::Known);
     for (auto def : old_world().externals())
         visit(def, Lattice::Known);
 
