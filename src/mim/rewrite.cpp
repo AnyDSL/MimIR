@@ -10,6 +10,10 @@
 
 namespace mim {
 
+/*
+ * Rewriter
+ */
+
 const Def* Rewriter::map(const Def* old_def, Defs new_defs) {
     return old2news_.back()[old_def] = world().tuple(new_defs);
 }
@@ -174,6 +178,17 @@ const Def* Rewriter::rewrite_stub(Def* old_mut, Def* new_mut) {
  * VarRewriter
  */
 
+const Def* VarRewriter::rewrite(const Def* old_def) {
+    if (auto new_def = lookup(old_def)) return new_def;
+
+    if (auto old_mut = old_def->isa_mut())
+        return has_intersection(old_mut) ? rewrite_mut(old_mut)->set(old_mut->dbg()) : old_mut;
+
+    if (old_def->local_vars().empty() && old_def->local_muts().empty()) return old_def; // safe to skip
+
+    return has_intersection(old_def) ? rewrite_imm(old_def)->set(old_def->dbg()) : old_def;
+}
+
 const Def* VarRewriter::rewrite_mut(Def* mut) {
     if (auto var = mut->has_var()) {
         auto& vars = vars_.back();
@@ -183,4 +198,65 @@ const Def* VarRewriter::rewrite_mut(Def* mut) {
     return Rewriter::rewrite_mut(mut);
 }
 
+/*
+ * Zonker
+ */
+
+const Def* Zonker::map(const Def* old_def, const Def* new_def) {
+    auto repr = lookup(new_def); // always normalize new_def to its representative
+    if (!repr) repr = new_def;
+    return old2news_.back()[old_def] = repr;
+}
+
+const Def* Zonker::lookup(const Def* old_def) {
+    for (auto& old2new : old2news_ | std::views::reverse) {
+        const Def* repr;
+        auto path = DefVec();
+        while (true) {
+            repr = get(old_def);
+
+            if (repr == nullptr) break;
+
+            path.emplace_back(repr);
+            if (repr == old_def) break; // explicit self-map
+
+            old_def = repr;
+        }
+
+        if (path.empty()) continue;
+
+        // path compression: flatten all visited nodes
+        for (auto def : path)
+            old2new[def] = repr;
+
+        return repr;
+    }
+
+    return nullptr;
+}
+
+const Def* Zonker::rewrite(const Def* def) {
+    if (auto hole = def->isa_mut<Hole>()) {
+        auto [last, op] = hole->find();
+        def             = op ? op : last;
+    }
+
+    return def->needs_zonk() ? Rewriter::rewrite(def) : def;
+}
+
+const Def* Zonker::rewrite_mut(Def* root) {
+    // Don't create a new stub, instead rewrire the ops of the old mutable root.
+    map(root, root);
+
+    auto old_type = root->type();
+    auto old_ops  = absl::FixedArray<const Def*>(root->ops().begin(), root->ops().end());
+
+    root->unset()->set_type(rewrite(old_type));
+
+    for (size_t i = 0, e = root->num_ops(); i != e; ++i)
+        root->set(i, rewrite(old_ops[i]));
+    if (auto new_imm = root->immutabilize()) return map(root, new_imm);
+
+    return root;
+}
 } // namespace mim

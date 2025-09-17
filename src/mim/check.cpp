@@ -19,7 +19,6 @@ bool Def::needs_zonk() const {
 }
 
 const Def* Def::zonk() const {
-    assert(&world() == &world().zonker().world());
     if (needs_zonk()) return world().zonker().rewrite(this);
     return this;
 }
