@@ -156,9 +156,8 @@ private:
 
 class Zonker : public Rewriter {
 public:
-    Zonker(World& world, Def* root)
-        : Rewriter(world)
-        , root_(root) {}
+    Zonker(World& world)
+        : Rewriter(world) {}
 
     const Def* rewrite(const Def* def) final {
         auto res = def;
@@ -171,7 +170,7 @@ public:
             res             = op ? rewrite(op) : last;
         }
 
-        if (res == root_ || res->needs_zonk()) res = Rewriter::rewrite(res);
+        if (res->needs_zonk()) res = Rewriter::rewrite(res);
 
         // path compression
         for (auto d = def; d != last;) {
@@ -185,7 +184,6 @@ public:
 
     const Def* rewrite_mut(Def* root) final {
         // Don't create a new stub, instead rewrire the ops of the old mutable root.
-        assert(root == root_);
         map(root, root);
 
         auto old_type = root->type();
@@ -204,9 +202,6 @@ public:
         using std::swap;
         swap(static_cast<Rewriter&>(z1), static_cast<Rewriter&>(z2));
     }
-
-private:
-    Def* root_; // Always rewrite this one!
 };
 
 } // namespace mim
