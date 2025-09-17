@@ -19,7 +19,8 @@ bool Def::needs_zonk() const {
 }
 
 const Def* Def::zonk() const {
-    if (needs_zonk()) return Zonker(world()).rewrite(this);
+    assert(&world() == &world().zonker().world());
+    if (needs_zonk()) return world().zonker().rewrite(this);
     return this;
 }
 
@@ -40,7 +41,7 @@ const Def* Def::zonk_mut() const {
                 break;
             }
 
-        if (zonk) return Zonker(world()).rewrite_mut(mut);
+        if (zonk) return world().zonker().rewrite_mut(mut);
 
         if (auto imm = mut->immutabilize()) return imm;
         return this;

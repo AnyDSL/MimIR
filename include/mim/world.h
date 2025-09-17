@@ -10,12 +10,7 @@
 #include <fe/arena.h>
 
 #include "mim/axm.h"
-#include "mim/check.h"
-#include "mim/flags.h"
-#include "mim/lam.h"
-#include "mim/lattice.h"
-#include "mim/rule.h"
-#include "mim/tuple.h"
+#include "mim/rewrite.h"
 
 #include "mim/util/dbg.h"
 #include "mim/util/log.h"
@@ -23,6 +18,7 @@
 namespace mim {
 
 class Driver;
+struct Flags;
 
 /// The World represents the whole program and manages creation of MimIR nodes (Def%s).
 /// Def%s are hashed into an internal HashSet.
@@ -88,9 +84,9 @@ public:
     /// @name Getters/Setters
     ///@{
     const State& state() const { return state_; }
-
     const Driver& driver() const { return *driver_; }
     Driver& driver() { return *driver_; }
+    Zonker& zonker() { return zonker_; }
 
     Sym name() const { return state_.pod.name; }
     void set(Sym name) { state_.pod.name = name; }
@@ -697,6 +693,7 @@ private:
     ///@}
 
     Driver* driver_;
+    Zonker zonker_;
     State state_;
 
     struct SeaHash {
@@ -778,9 +775,11 @@ private:
     friend void swap(World& w1, World& w2) noexcept {
         using std::swap;
         // clang-format off
-        swap(w1.state_, w2.state_);
-        swap(w1.data_,  w2.data_ );
-        swap(w1.move_,  w2.move_ );
+        swap(w1.driver_,  w2.driver_ );
+        swap(w1.zonker_,  w2.zonker_ );
+        swap(w1.state_,   w2.state_);
+        swap(w1.data_,    w2.data_ );
+        swap(w1.move_,    w2.move_ );
         // clang-format on
 
         swap(w1.data_.univ->world_, w2.data_.univ->world_);

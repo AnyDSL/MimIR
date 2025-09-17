@@ -28,6 +28,8 @@ public:
         push(); // create root map
     }
 
+    virtual ~Rewriter() = default;
+
     void reset(std::unique_ptr<World>&& ptr) {
         ptr_   = std::move(ptr);
         world_ = ptr_.get();
@@ -49,8 +51,14 @@ public:
 
     /// Map @p old_def to @p new_def and returns @p new_def.
     /// @returns `new_def`
+    const Def* map(const Def* old_def, const Def* new_def) {
+        // always normalize new_def to its representative
+        auto repr = lookup(new_def);
+        if (!repr) repr = new_def;
+        return old2news_.back()[old_def] = repr;
+    }
+
     // clang-format off
-    const Def* map(const Def* old_def , const Def* new_def ) { return old2news_.back()[old_def] = new_def; }
     const Def* map(const Def* old_def ,       Defs new_defs);
     const Def* map(Defs       old_defs, const Def* new_def );
     const Def* map(Defs       old_defs,       Defs new_defs);
@@ -59,8 +67,29 @@ public:
     /// Lookup `old_def` by searching in reverse through the stack of maps.
     /// @returns `nullptr` if nothing was found.
     const Def* lookup(const Def* old_def) {
-        for (const auto& old2new : old2news_ | std::views::reverse)
-            if (auto i = old2new.find(old_def); i != old2new.end()) return i->second;
+        for (auto& old2new : old2news_ | std::views::reverse) {
+            auto i = old2new.find(old_def);
+            if (i == old2new.end()) continue;
+
+            auto repr = i->second;
+            if (repr == old_def) return repr; // explicit self-map
+
+            auto path = DefVec{old_def};
+
+            // Follow until terminal representative
+            while (true) {
+                auto next = get(repr);
+                if (!next || next == repr) break;
+                path.push_back(repr);
+                repr = next;
+            }
+
+            // Path compression: flatten all visited nodes
+            for (auto def : path)
+                old2new[def] = repr;
+
+            return repr;
+        }
         return nullptr;
     }
     ///@}
@@ -85,16 +114,23 @@ public:
     virtual const Def* rewrite_mut_Seq(Seq* seq);
     ///@}
 
-    friend void swap(Rewriter& rw1, Rewriter& rw2) {
+    friend void swap(Rewriter& rw1, Rewriter& rw2) noexcept {
         using std::swap;
+        assert(!rw1.ptr_);
         // clang-format off
         swap(rw1.ptr_,      rw2.ptr_);
-        swap(rw1.world_,    rw2.world_);
+        // swap(rw1.world_,    rw2.world_);
         swap(rw1.old2news_, rw2.old2news_);
         // clang-format on
     }
 
 private:
+    const Def* get(const Def* old) {
+        auto& old2new = old2news_.back();
+        if (auto i = old2new.find(old); i != old2new.end()) return i->second;
+        return nullptr;
+    }
+
     std::unique_ptr<World> ptr_;
     World* world_;
     std::deque<Def2Def> old2news_;
@@ -138,7 +174,7 @@ public:
 
     const Def* rewrite_mut(Def*) final;
 
-    friend void swap(VarRewriter& vrw1, VarRewriter& vrw2) {
+    friend void swap(VarRewriter& vrw1, VarRewriter& vrw2) noexcept {
         using std::swap;
         swap(static_cast<Rewriter&>(vrw1), static_cast<Rewriter&>(vrw2));
         swap(vrw1.vars_, vrw2.vars_);
@@ -160,26 +196,14 @@ public:
         : Rewriter(world) {}
 
     const Def* rewrite(const Def* def) final {
-        auto res = def;
-        while (res->zonked_)
-            res = res->zonked_;
-        auto last = res;
-
-        if (auto hole = res->isa_mut<Hole>()) {
+        if (auto hole = def->isa_mut<Hole>()) {
             auto [last, op] = hole->find();
-            res             = op ? rewrite(op) : last;
+            def             = op ? op : last;
         }
 
-        if (res->needs_zonk()) res = Rewriter::rewrite(res);
+        if (def->needs_zonk()) return Rewriter::rewrite(def);
 
-        // path compression
-        for (auto d = def; d != last;) {
-            auto next  = d->zonked_;
-            d->zonked_ = res;
-            d          = next;
-        }
-
-        return res;
+        return def;
     }
 
     const Def* rewrite_mut(Def* root) final {
@@ -198,7 +222,7 @@ public:
         return root;
     }
 
-    friend void swap(Zonker& z1, Zonker& z2) {
+    friend void swap(Zonker& z1, Zonker& z2) noexcept {
         using std::swap;
         swap(static_cast<Rewriter&>(z1), static_cast<Rewriter&>(z2));
     }

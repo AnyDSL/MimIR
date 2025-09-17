@@ -119,7 +119,7 @@ void PhaseMan::apply(const App* app) {
         if (auto stage = create(driver().stages(), arg)) {
             // clang-format off
             if (auto pm = stage->isa<PassManPhase>(); pm && pm->  man().empty()) continue;
-            if (auto rp = stage->isa<ReplMan   >(); rp && rp->repls().empty()) continue;
+            if (auto rp = stage->isa<ReplMan     >(); rp && rp->repls().empty()) continue;
             // clang-format on
             phases.emplace_back(std::unique_ptr<Phase>(static_cast<Phase*>(stage.release())));
         }

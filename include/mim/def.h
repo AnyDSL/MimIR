@@ -682,14 +682,12 @@ private:
     size_t hash_;
     Vars vars_; // Mutable: local vars; Immutable: free vars.
     Muts muts_; // Immutable: local_muts; Mutable: users;
-    mutable u32 tid_           = 0;
-    mutable const Def* zonked_ = nullptr;
+    mutable u32 tid_ = 0;
     mutable const Def* type_;
 
     template<class D, size_t N>
     friend class Sets;
     friend class World;
-    friend class Zonker;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
 };
