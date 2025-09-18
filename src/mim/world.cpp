@@ -105,6 +105,7 @@ void World::make_internal(Def* def) {
  */
 
 const Type* World::type(const Def* level) {
+    if (!level) return nullptr;
     level = level->zonk();
 
     if (!level->type()->isa<Univ>())
@@ -343,6 +344,7 @@ const Def* World::tuple(Sym sym) {
 }
 
 const Def* World::extract(const Def* d, const Def* index) {
+    if (!d || !index) return nullptr; // can happen if frozen
     d     = d->zonk();
     index = index->zonk();
 

@@ -621,12 +621,15 @@ private:
 
         auto state = move_.arena.defs.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
-        if (auto loc = get_loc()) def->set(loc);
         assert(!def->isa_mut());
+
+        if (auto loc = get_loc()) def->set(loc);
+
 #ifdef MIM_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
+
         if (is_frozen()) {
             auto i = move_.defs.find(def);
             deallocate<T>(state, def);
@@ -638,6 +641,7 @@ private:
             deallocate<T>(state, def);
             return static_cast<const T*>(*i);
         }
+
 #ifdef MIM_ENABLE_CHECKS
         if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
@@ -653,12 +657,15 @@ private:
 
     template<class T, class... Args>
     T* insert(Args&&... args) {
+        if (is_frozen()) return nullptr;
+
         auto num_ops = T::Num_Ops;
         if constexpr (T::Num_Ops == std::dynamic_extent)
             num_ops = std::get<sizeof...(Args) - 1>(std::forward_as_tuple(std::forward<Args>(args)...));
 
         auto def = allocate<T>(num_ops, std::forward<Args>(args)...);
         if (auto loc = get_loc()) def->set(loc);
+
 #ifdef MIM_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) fe::breakpoint();
