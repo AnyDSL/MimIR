@@ -37,6 +37,7 @@ private:
     void analyze(const Def*);
     void visit(const Def*, Lattice = Lattice::Unknown);
 
+    void rewrite_annex(flags_t, const Def*) final;
     void rewrite_external(Def*) final;
     const Def* rewrite(const Def*) final;
     const Def* rewrite_imm_App(const App*) final;

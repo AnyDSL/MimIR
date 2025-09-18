@@ -1,10 +1,10 @@
 #include "mim/phase/eta_exp_phase.h"
 
-#include "mim/rewrite.h"
-
 namespace mim {
 
 bool EtaExpPhase::analyze() {
+    for (auto def : old_world().annexes())
+        visit(def, Lattice::Known);
     for (auto def : old_world().externals())
         visit(def, Lattice::Known);
 
@@ -29,6 +29,8 @@ void EtaExpPhase::visit(const Def* def, Lattice l) {
     if (auto lam = def->isa_mut<Lam>()) join(lam, l);
     analyze(def);
 }
+
+void EtaExpPhase::rewrite_annex(flags_t f, const Def* def) { new_world().register_annex(f, rewrite_no_eta(def)); }
 
 void EtaExpPhase::rewrite_external(Def* old_mut) {
     auto new_mut = rewrite_no_eta(old_mut)->as_mut();
