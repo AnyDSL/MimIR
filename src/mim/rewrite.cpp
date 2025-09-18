@@ -2,7 +2,6 @@
 
 #include <absl/container/fixed_array.h>
 
-#include "mim/check.h"
 #include "mim/world.h"
 
 #include "fe/assert.h"
@@ -10,6 +9,20 @@
 // Don't use fancy C++-lambdas; it's way too annoying stepping through them in a debugger.
 
 namespace mim {
+
+/*
+ * Rewriter
+ */
+
+const Def* Rewriter::map(const Def* old_def, Defs new_defs) {
+    return old2news_.back()[old_def] = world().tuple(new_defs);
+}
+const Def* Rewriter::map(Defs old_defs, const Def* new_def) {
+    return old2news_.back()[world().tuple(old_defs)] = new_def;
+}
+const Def* Rewriter::map(Defs old_defs, Defs new_defs) {
+    return old2news_.back()[world().tuple(old_defs)] = world().tuple(new_defs);
+}
 
 const Def* Rewriter::rewrite(const Def* old_def) {
     if (auto new_def = lookup(old_def)) return new_def;
@@ -159,6 +172,92 @@ const Def* Rewriter::rewrite_stub(Def* old_mut, Def* new_mut) {
     }
 
     return new_mut;
+}
+
+/*
+ * VarRewriter
+ */
+
+const Def* VarRewriter::rewrite(const Def* old_def) {
+    if (auto new_def = lookup(old_def)) return new_def;
+
+    if (auto old_mut = old_def->isa_mut())
+        return has_intersection(old_mut) ? rewrite_mut(old_mut)->set(old_mut->dbg()) : old_mut;
+
+    if (old_def->local_vars().empty() && old_def->local_muts().empty()) return old_def; // safe to skip
+
+    return has_intersection(old_def) ? rewrite_imm(old_def)->set(old_def->dbg()) : old_def;
+}
+
+const Def* VarRewriter::rewrite_mut(Def* mut) {
+    if (auto var = mut->has_var()) {
+        auto& vars = vars_.back();
+        vars       = world().vars().insert(vars, var);
+    }
+
+    return Rewriter::rewrite_mut(mut);
+}
+
+/*
+ * Zonker
+ */
+
+const Def* Zonker::map(const Def* old_def, const Def* new_def) {
+    auto repr = lookup(new_def); // always normalize new_def to its representative
+    if (!repr) repr = new_def;
+    return old2news_.back()[old_def] = repr;
+}
+
+const Def* Zonker::lookup(const Def* old_def) {
+    for (auto& old2new : old2news_ | std::views::reverse) {
+        const Def* repr;
+        auto path = DefVec();
+        while (true) {
+            repr = get(old_def);
+
+            if (repr == nullptr) break;
+
+            path.emplace_back(repr);
+            if (repr == old_def) break; // explicit self-map
+
+            old_def = repr;
+        }
+
+        if (path.empty()) continue;
+
+        // path compression: flatten all visited nodes
+        for (auto def : path)
+            old2new[def] = repr;
+
+        return repr;
+    }
+
+    return nullptr;
+}
+
+const Def* Zonker::rewrite(const Def* def) {
+    if (auto hole = def->isa_mut<Hole>()) {
+        auto [last, op] = hole->find();
+        def             = op ? op : last;
+    }
+
+    return def->needs_zonk() ? Rewriter::rewrite(def) : def;
+}
+
+const Def* Zonker::rewire_mut(Def* mut) {
+    map(mut, mut);
+
+    auto old_type = mut->type();
+    auto old_ops  = absl::FixedArray<const Def*>(mut->ops().begin(), mut->ops().end());
+
+    mut->unset()->set_type(rewrite(old_type));
+
+    for (size_t i = 0, e = mut->num_ops(); i != e; ++i)
+        mut->set(i, rewrite(old_ops[i]));
+
+    if (auto new_imm = mut->immutabilize()) return map(mut, new_imm);
+
+    return mut;
 }
 
 } // namespace mim

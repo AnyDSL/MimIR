@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mim/rewrite.h>
+#include <mim/world.h>
 
 #include "mim/plug/direct/autogen.h"
 

@@ -330,7 +330,7 @@ public:
 
     /// Update type.
     /// @warning Only make type-preserving updates such as removing Hole%s.
-    /// Do this even before updating all other ops()!.
+    /// Do this even before updating all other ops()!
     Def* set_type(const Def*);
     ///@}
 
@@ -582,8 +582,12 @@ public:
     /// If different from Def::type, it will update its Def::type to a Def::zonk%ed version of that.
     virtual const Def* check() { return type(); }
 
+    /// Yields `true`, if Def::local_muts() contain a Hole that is set.
+    /// Rewriting (Def::zonk%ing) will resolve the Hole to its operand.
+    bool needs_zonk() const;
+
     /// If Hole%s have been filled, reconstruct the program without them.
-    /// Only gues up to but excluding other mutables.
+    /// Only goes up to but excluding other mutables.
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
 
@@ -678,14 +682,12 @@ private:
     size_t hash_;
     Vars vars_; // Mutable: local vars; Immutable: free vars.
     Muts muts_; // Immutable: local_muts; Mutable: users;
-    mutable u32 tid_           = 0;
-    mutable const Def* zonked_ = nullptr;
+    mutable u32 tid_ = 0;
     mutable const Def* type_;
 
     template<class D, size_t N>
     friend class Sets;
     friend class World;
-    friend class Zonker;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
 };

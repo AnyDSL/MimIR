@@ -9,88 +9,28 @@
 
 namespace mim {
 
-static bool needs_zonk(const Def* def) {
-    if (def->has_dep(Dep::Hole)) {
-        for (auto mut : def->local_muts())
+bool Def::needs_zonk() const {
+    if (has_dep(Dep::Hole)) {
+        for (auto mut : local_muts())
             if (Hole::isa_set(mut)) return true;
     }
 
     return false;
 }
 
-class Zonker : public Rewriter {
-public:
-    Zonker(World& world, Def* root)
-        : Rewriter(world)
-        , root_(root) {}
-
-    const Def* rewrite(const Def* def) final {
-        auto res = def;
-        while (res->zonked_)
-            res = res->zonked_;
-        auto last = res;
-
-        if (auto hole = res->isa_mut<Hole>()) {
-            auto [last, op] = hole->find();
-            res             = op ? rewrite(op) : last;
-        }
-
-        if (res == root_ || needs_zonk(res)) res = Rewriter::rewrite(res);
-
-        // path compression
-        for (auto d = def; d != last;) {
-            auto next  = d->zonked_;
-            d->zonked_ = res;
-            d          = next;
-        }
-
-        return res;
-    }
-
-    const Def* rewrite_mut(Def* root) final {
-        // Don't create a new stub, instead rewrire the ops of the old mutable root.
-        assert(root == root_);
-        map(root, root);
-
-        auto old_type = root->type();
-        auto old_ops  = absl::FixedArray<const Def*>(root->ops().begin(), root->ops().end());
-
-        root->unset()->set_type(rewrite(old_type));
-
-        for (size_t i = 0, e = root->num_ops(); i != e; ++i)
-            root->set(i, rewrite(old_ops[i]));
-        if (auto new_imm = root->immutabilize()) return map(root, new_imm);
-
-        return root;
-    }
-
-private:
-    Def* root_; // Always rewrite this one!
-};
-
-const Def* Def::zonk() const {
-    if (needs_zonk(this)) return Zonker(world(), nullptr).rewrite(this);
-    return this;
-}
+const Def* Def::zonk() const { return needs_zonk() ? world().zonker().rewrite(this) : this; }
 
 const Def* Def::zonk_mut() const {
     if (!is_set()) return this;
 
     if (auto mut = isa_mut()) {
-        // TODO copy & paste from above
         if (auto hole = mut->isa<Hole>()) {
             auto [last, op] = hole->find();
             return op ? op->zonk() : last;
         }
 
-        bool zonk = false;
         for (auto def : deps())
-            if (needs_zonk(def)) {
-                zonk = true;
-                break;
-            }
-
-        if (zonk) return Zonker(world(), mut).rewrite(mut);
+            if (def->needs_zonk()) return world().zonker().rewire_mut(mut);
 
         if (auto imm = mut->immutabilize()) return imm;
         return this;
