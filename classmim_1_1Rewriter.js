@@ -2,8 +2,9 @@ var classmim_1_1Rewriter =
 [
     [ "Rewriter", "classmim_1_1Rewriter.html#acbd0fb347253ef6deb7846de430ace8e", null ],
     [ "Rewriter", "classmim_1_1Rewriter.html#a91e2e9a8aac307e43309ce8458e74d91", null ],
-    [ "lookup", "classmim_1_1Rewriter.html#a29101661859c41e055478df703232537", null ],
-    [ "map", "classmim_1_1Rewriter.html#a85d96cbeb961ed21800497582152862b", null ],
+    [ "~Rewriter", "classmim_1_1Rewriter.html#a082f5f959b732a0429397cb244d18b23", null ],
+    [ "lookup", "classmim_1_1Rewriter.html#aed2afef37f09545f262d8a8ce5471954", null ],
+    [ "map", "classmim_1_1Rewriter.html#a832644b4df14efed752cba8e8568aca4", null ],
     [ "map", "classmim_1_1Rewriter.html#a052f77bcdfc66751ed8f33ffd0b3be04", null ],
     [ "map", "classmim_1_1Rewriter.html#ab799239c0c41f5dfa4afb2f9fe3522b9", null ],
     [ "map", "classmim_1_1Rewriter.html#ac2f8ad29b11cf04069145a379cda1c16", null ],
@@ -18,5 +19,7 @@ var classmim_1_1Rewriter =
     [ "rewrite_mut", "classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112", null ],
     [ "rewrite_mut_Seq", "classmim_1_1Rewriter.html#a509aa94f5f2daf12f190a684001dd58d", null ],
     [ "rewrite_stub", "classmim_1_1Rewriter.html#a82d16f0f2d9cc130004428a547920ffd", null ],
-    [ "world", "classmim_1_1Rewriter.html#a5fdd3ce8c4bd5220007469a503338854", null ]
+    [ "world", "classmim_1_1Rewriter.html#a5fdd3ce8c4bd5220007469a503338854", null ],
+    [ "swap", "classmim_1_1Rewriter.html#a173bf3b3d9deeef3e89e07419b61934e", null ],
+    [ "old2news_", "classmim_1_1Rewriter.html#abbcbabc35c7bffffb0e01346e248d99f", null ]
 ];

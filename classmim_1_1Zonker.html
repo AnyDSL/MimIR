@@ -118,11 +118,13 @@ $(function(){initNavTree('classmim_1_1Zonker.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classmim_1_1Zonker-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mim::Zonker Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="rewrite_8h_source.html">mim/rewrite.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for mim::Zonker:</div>
 <div class="dyncontent">
@@ -131,17 +133,29 @@ Inheritance diagram for mim::Zonker:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:acd35f90fccb2b03d1d005affcf8e7852" id="r_acd35f90fccb2b03d1d005affcf8e7852"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd35f90fccb2b03d1d005affcf8e7852">Zonker</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="classmim_1_1Rewriter.html#a5fdd3ce8c4bd5220007469a503338854">world</a>, <a class="el" href="classmim_1_1Def.html">Def</a> *root)</td></tr>
-<tr class="separator:acd35f90fccb2b03d1d005affcf8e7852"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d0f42d4a47be79977484279ef6ce9da" id="r_a0d0f42d4a47be79977484279ef6ce9da"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0d0f42d4a47be79977484279ef6ce9da">rewrite</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def) final</td></tr>
-<tr class="separator:a0d0f42d4a47be79977484279ef6ce9da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a542601bae272527440d4fc913c76eca6" id="r_a542601bae272527440d4fc913c76eca6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a542601bae272527440d4fc913c76eca6">rewrite_mut</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *root) final</td></tr>
-<tr class="separator:a542601bae272527440d4fc913c76eca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">C'tor</div></td></tr>
+<tr class="memitem:acfad5d4a8e2eb21b9ad54bf912bffc08" id="r_acfad5d4a8e2eb21b9ad54bf912bffc08"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acfad5d4a8e2eb21b9ad54bf912bffc08">Zonker</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="classmim_1_1Rewriter.html#a5fdd3ce8c4bd5220007469a503338854">world</a>)</td></tr>
+<tr class="separator:acfad5d4a8e2eb21b9ad54bf912bffc08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Stack of Maps</div></td></tr>
+<tr class="memitem:ac03640caf7a25f32fcfe79c9cd573749" id="r_ac03640caf7a25f32fcfe79c9cd573749"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac03640caf7a25f32fcfe79c9cd573749">map</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *old_def, const <a class="el" href="classmim_1_1Def.html">Def</a> *new_def) final</td></tr>
+<tr class="separator:ac03640caf7a25f32fcfe79c9cd573749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9baa4de21ec32c764ae27a4d7c99d436" id="r_a9baa4de21ec32c764ae27a4d7c99d436"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9baa4de21ec32c764ae27a4d7c99d436">lookup</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *old_def) final</td></tr>
+<tr class="memdesc:a9baa4de21ec32c764ae27a4d7c99d436"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lookup <code>old_def</code> by searching in reverse through the stack of maps.  <br /></td></tr>
+<tr class="separator:a9baa4de21ec32c764ae27a4d7c99d436"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">rewrite</div></td></tr>
+<tr class="memitem:abc811eed4b4219640c6bcfa5d344755a" id="r_abc811eed4b4219640c6bcfa5d344755a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc811eed4b4219640c6bcfa5d344755a">rewrite</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *) final</td></tr>
+<tr class="separator:abc811eed4b4219640c6bcfa5d344755a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5e5119d7e26d92114e89b5e74284668" id="r_af5e5119d7e26d92114e89b5e74284668"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af5e5119d7e26d92114e89b5e74284668">rewrite_mut</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *mut) final</td></tr>
+<tr class="separator:af5e5119d7e26d92114e89b5e74284668"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a333b9eed839f321ed4a149c6f45e870f" id="r_a333b9eed839f321ed4a149c6f45e870f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a333b9eed839f321ed4a149c6f45e870f">rewire_mut</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
+<tr class="separator:a333b9eed839f321ed4a149c6f45e870f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classmim_1_1Rewriter"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classmim_1_1Rewriter')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classmim_1_1Rewriter.html">mim::Rewriter</a></td></tr>
 <tr class="memitem:acbd0fb347253ef6deb7846de430ace8e inherit pub_methods_classmim_1_1Rewriter" id="r_acbd0fb347253ef6deb7846de430ace8e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#acbd0fb347253ef6deb7846de430ace8e">Rewriter</a> (std::unique_ptr&lt; <a class="el" href="classmim_1_1World.html">World</a> &gt; &amp;&amp;ptr)</td></tr>
 <tr class="separator:acbd0fb347253ef6deb7846de430ace8e inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91e2e9a8aac307e43309ce8458e74d91 inherit pub_methods_classmim_1_1Rewriter" id="r_a91e2e9a8aac307e43309ce8458e74d91"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a91e2e9a8aac307e43309ce8458e74d91">Rewriter</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="classmim_1_1Rewriter.html#a5fdd3ce8c4bd5220007469a503338854">world</a>)</td></tr>
 <tr class="separator:a91e2e9a8aac307e43309ce8458e74d91 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a082f5f959b732a0429397cb244d18b23 inherit pub_methods_classmim_1_1Rewriter" id="r_a082f5f959b732a0429397cb244d18b23"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a082f5f959b732a0429397cb244d18b23">~Rewriter</a> ()=default</td></tr>
+<tr class="separator:a082f5f959b732a0429397cb244d18b23 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e38e7953ae7273701e26867136934c8 inherit pub_methods_classmim_1_1Rewriter" id="r_a8e38e7953ae7273701e26867136934c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a8e38e7953ae7273701e26867136934c8">reset</a> (std::unique_ptr&lt; <a class="el" href="classmim_1_1World.html">World</a> &gt; &amp;&amp;ptr)</td></tr>
 <tr class="separator:a8e38e7953ae7273701e26867136934c8 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7102318660bc8e25e068db6142bf737 inherit pub_methods_classmim_1_1Rewriter" id="r_ab7102318660bc8e25e068db6142bf737"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#ab7102318660bc8e25e068db6142bf737">reset</a> ()</td></tr>
@@ -152,18 +166,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7fc46133b467d4b2683529aa6c4eea96 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87c9821a28ae231d8e9434ff049dce35 inherit pub_methods_classmim_1_1Rewriter" id="r_a87c9821a28ae231d8e9434ff049dce35"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a87c9821a28ae231d8e9434ff049dce35">pop</a> ()</td></tr>
 <tr class="separator:a87c9821a28ae231d8e9434ff049dce35 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85d96cbeb961ed21800497582152862b inherit pub_methods_classmim_1_1Rewriter" id="r_a85d96cbeb961ed21800497582152862b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a85d96cbeb961ed21800497582152862b">map</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *old_def, const <a class="el" href="classmim_1_1Def.html">Def</a> *new_def)</td></tr>
-<tr class="memdesc:a85d96cbeb961ed21800497582152862b inherit pub_methods_classmim_1_1Rewriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map <code class="param">old_def</code> to <code class="param">new_def</code> and returns <code class="param">new_def</code>.  <br /></td></tr>
-<tr class="separator:a85d96cbeb961ed21800497582152862b inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a052f77bcdfc66751ed8f33ffd0b3be04 inherit pub_methods_classmim_1_1Rewriter" id="r_a052f77bcdfc66751ed8f33ffd0b3be04"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a052f77bcdfc66751ed8f33ffd0b3be04">map</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *old_def, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> new_defs)</td></tr>
 <tr class="separator:a052f77bcdfc66751ed8f33ffd0b3be04 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab799239c0c41f5dfa4afb2f9fe3522b9 inherit pub_methods_classmim_1_1Rewriter" id="r_ab799239c0c41f5dfa4afb2f9fe3522b9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#ab799239c0c41f5dfa4afb2f9fe3522b9">map</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> old_defs, const <a class="el" href="classmim_1_1Def.html">Def</a> *new_def)</td></tr>
 <tr class="separator:ab799239c0c41f5dfa4afb2f9fe3522b9 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2f8ad29b11cf04069145a379cda1c16 inherit pub_methods_classmim_1_1Rewriter" id="r_ac2f8ad29b11cf04069145a379cda1c16"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#ac2f8ad29b11cf04069145a379cda1c16">map</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> old_defs, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> new_defs)</td></tr>
 <tr class="separator:ac2f8ad29b11cf04069145a379cda1c16 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29101661859c41e055478df703232537 inherit pub_methods_classmim_1_1Rewriter" id="r_a29101661859c41e055478df703232537"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a29101661859c41e055478df703232537">lookup</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *old_def)</td></tr>
-<tr class="memdesc:a29101661859c41e055478df703232537 inherit pub_methods_classmim_1_1Rewriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lookup <code>old_def</code> by searching in reverse through the stack of maps.  <br /></td></tr>
-<tr class="separator:a29101661859c41e055478df703232537 inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe4950e5b3e1591ed5a956b5e0cdc0bb inherit pub_methods_classmim_1_1Rewriter" id="r_abe4950e5b3e1591ed5a956b5e0cdc0bb"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#abe4950e5b3e1591ed5a956b5e0cdc0bb">rewrite_imm</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:abe4950e5b3e1591ed5a956b5e0cdc0bb inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82d16f0f2d9cc130004428a547920ffd inherit pub_methods_classmim_1_1Rewriter" id="r_a82d16f0f2d9cc130004428a547920ffd"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a82d16f0f2d9cc130004428a547920ffd">rewrite_stub</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *, <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
@@ -174,13 +182,24 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2a27820f2a968a37e4024cdba81a870c inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a509aa94f5f2daf12f190a684001dd58d inherit pub_methods_classmim_1_1Rewriter" id="r_a509aa94f5f2daf12f190a684001dd58d"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#a509aa94f5f2daf12f190a684001dd58d">rewrite_mut_Seq</a> (<a class="el" href="classmim_1_1Seq.html">Seq</a> *seq)</td></tr>
 <tr class="separator:a509aa94f5f2daf12f190a684001dd58d inherit pub_methods_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a4c5fa948b542f86d327f7939efe70d74" id="r_a4c5fa948b542f86d327f7939efe70d74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c5fa948b542f86d327f7939efe70d74">swap</a> (<a class="el" href="classmim_1_1Zonker.html">Zonker</a> &amp;z1, <a class="el" href="classmim_1_1Zonker.html">Zonker</a> &amp;z2) noexcept</td></tr>
+<tr class="separator:a4c5fa948b542f86d327f7939efe70d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classmim_1_1Rewriter"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Rewriter')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmim_1_1Rewriter.html">mim::Rewriter</a></td></tr>
+<tr class="memitem:abbcbabc35c7bffffb0e01346e248d99f inherit pro_attribs_classmim_1_1Rewriter" id="r_abbcbabc35c7bffffb0e01346e248d99f"><td class="memItemLeft" align="right" valign="top">std::deque&lt; <a class="el" href="namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Rewriter.html#abbcbabc35c7bffffb0e01346e248d99f">old2news_</a></td></tr>
+<tr class="separator:abbcbabc35c7bffffb0e01346e248d99f inherit pro_attribs_classmim_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00021">21</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00157">157</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="acd35f90fccb2b03d1d005affcf8e7852" name="acd35f90fccb2b03d1d005affcf8e7852"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd35f90fccb2b03d1d005affcf8e7852">&#9670;&#160;</a></span>Zonker()</h2>
+<a id="acfad5d4a8e2eb21b9ad54bf912bffc08" name="acfad5d4a8e2eb21b9ad54bf912bffc08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfad5d4a8e2eb21b9ad54bf912bffc08">&#9670;&#160;</a></span>Zonker()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -191,12 +210,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">mim::Zonker::Zonker </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1World.html">World</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>world</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype"><a class="el" href="classmim_1_1World.html">World</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>world</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>root</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -206,15 +221,113 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00023">23</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00161">161</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00013">mim::Rewriter::Rewriter()</a>, and <a class="el" href="rewrite_8h_source.html#l00036">mim::Rewriter::world()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00022">mim::Rewriter::Rewriter()</a>, and <a class="el" href="rewrite_8h_source.html#l00047">mim::Rewriter::world()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00178">swap</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0d0f42d4a47be79977484279ef6ce9da" name="a0d0f42d4a47be79977484279ef6ce9da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d0f42d4a47be79977484279ef6ce9da">&#9670;&#160;</a></span>rewrite()</h2>
+<a id="a9baa4de21ec32c764ae27a4d7c99d436" name="a9baa4de21ec32c764ae27a4d7c99d436"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9baa4de21ec32c764ae27a4d7c99d436">&#9670;&#160;</a></span>lookup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Zonker::lookup </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>old_def</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Lookup <code>old_def</code> by searching in reverse through the stack of maps. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>nullptr</code> if nothing was found. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classmim_1_1Rewriter.html#aed2afef37f09545f262d8a8ce5471954">mim::Rewriter</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00211">211</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00107">mim::Rewriter::old2news_</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00205">map()</a>.</p>
+
+</div>
+</div>
+<a id="ac03640caf7a25f32fcfe79c9cd573749" name="ac03640caf7a25f32fcfe79c9cd573749"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac03640caf7a25f32fcfe79c9cd573749">&#9670;&#160;</a></span>map()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Zonker::map </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>old_def</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>new_def</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classmim_1_1Rewriter.html#a832644b4df14efed752cba8e8568aca4">mim::Rewriter</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00205">205</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00211">lookup()</a>, and <a class="el" href="rewrite_8h_source.html#l00107">mim::Rewriter::old2news_</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00247">rewire_mut()</a>, and <a class="el" href="rewrite_8h_source.html#l00174">rewrite_mut()</a>.</p>
+
+</div>
+</div>
+<a id="a333b9eed839f321ed4a149c6f45e870f" name="a333b9eed839f321ed4a149c6f45e870f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a333b9eed839f321ed4a149c6f45e870f">&#9670;&#160;</a></span>rewire_mut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Zonker::rewire_mut </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>mut</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00247">247</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00556">mim::Def::immutabilize()</a>, <a class="el" href="rewrite_8cpp_source.html#l00205">map()</a>, <a class="el" href="def_8h_source.html#l00309">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00305">mim::Def::ops()</a>, <a class="el" href="rewrite_8cpp_source.html#l00238">rewrite()</a>, <a class="el" href="def_8cpp_source.html#l00263">mim::Def::set()</a>, <a class="el" href="def_8cpp_source.html#l00280">mim::Def::set_type()</a>, <a class="el" href="def_8cpp_source.html#l00447">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00286">mim::Def::unset()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00023">mim::Def::zonk_mut()</a>.</p>
+
+</div>
+</div>
+<a id="abc811eed4b4219640c6bcfa5d344755a" name="abc811eed4b4219640c6bcfa5d344755a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc811eed4b4219640c6bcfa5d344755a">&#9670;&#160;</a></span>rewrite()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,23 +344,23 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel final">final</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">mim::Rewriter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00027">27</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00238">238</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="check_8cpp_source.html#l00012">mim::needs_zonk()</a>, <a class="el" href="rewrite_8cpp_source.html#l00014">mim::Rewriter::rewrite()</a>, and <a class="el" href="check_8cpp_source.html#l00027">rewrite()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00485">mim::Def::isa_mut()</a>, <a class="el" href="check_8cpp_source.html#l00012">mim::Def::needs_zonk()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00027">mim::Rewriter::rewrite()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00027">rewrite()</a>, and <a class="el" href="check_8cpp_source.html#l00050">rewrite_mut()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00247">rewire_mut()</a>, and <a class="el" href="check_8cpp_source.html#l00021">mim::Def::zonk()</a>.</p>
 
 </div>
 </div>
-<a id="a542601bae272527440d4fc913c76eca6" name="a542601bae272527440d4fc913c76eca6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a542601bae272527440d4fc913c76eca6">&#9670;&#160;</a></span>rewrite_mut()</h2>
+<a id="af5e5119d7e26d92114e89b5e74284668" name="af5e5119d7e26d92114e89b5e74284668"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5e5119d7e26d92114e89b5e74284668">&#9670;&#160;</a></span>rewrite_mut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,7 +371,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Zonker::rewrite_mut </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>root</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>mut</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -271,14 +384,51 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112">mim::Rewriter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00050">50</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00174">174</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00046">mim::Rewriter::map()</a>, and <a class="el" href="check_8cpp_source.html#l00027">rewrite()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00205">map()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/mim/<a class="el" href="check_8cpp_source.html">check.cpp</a></li>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a4c5fa948b542f86d327f7939efe70d74" name="a4c5fa948b542f86d327f7939efe70d74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c5fa948b542f86d327f7939efe70d74">&#9670;&#160;</a></span>swap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Zonker.html">Zonker</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>z1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Zonker.html">Zonker</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>z2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel friend">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00178">178</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+
+<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00022">mim::Rewriter::Rewriter()</a>, <a class="el" href="rewrite_8h_source.html#l00178">swap</a>, and <a class="el" href="rewrite_8h_source.html#l00161">Zonker()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00178">swap</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>include/mim/<a class="el" href="rewrite_8h_source.html">rewrite.h</a></li>
+<li>src/mim/<a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

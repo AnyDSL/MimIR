@@ -281,7 +281,6 @@ var namespacemim =
     [ "merge_tuple", "namespacemim.html#af14a8799e94d48634c4752a702d6bc9e", null ],
     [ "mim_get_plugin", "namespacemim.html#a77f34c28f8418e4828b4684cbc025e52", null ],
     [ "murmur3", "namespacemim.html#acc8c144dd090446d1c2fc0ae2ca908a9", null ],
-    [ "needs_zonk", "namespacemim.html#a5beea9cd6bb17fbd73e1f46632937606", null ],
     [ "operator\"\"_f16", "namespacemim.html#a4bf566d30acb02a88282abc247652798", null ],
     [ "operator\"\"_f32", "namespacemim.html#a61b2fdd37c28d1e89083abc4067c904c", null ],
     [ "operator\"\"_f64", "namespacemim.html#aae6c4385816d5c6a71b458ffb99b89d1", null ],

@@ -415,6 +415,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a17535d230ca604f1b7f153cca756e3b4 inherit pub_methods_classmim_1_1Def" id="r_a17535d230ca604f1b7f153cca756e3b4"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a17535d230ca604f1b7f153cca756e3b4">check</a> (size_t i, const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="memdesc:a17535d230ca604f1b7f153cca756e3b4 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the <code>i</code>th operand can be set to <code>def</code>.  <br /></td></tr>
 <tr class="separator:a17535d230ca604f1b7f153cca756e3b4 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def" id="r_ae9f80ca1bccce9842c16092f977fbf79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae9f80ca1bccce9842c16092f977fbf79">needs_zonk</a> () const</td></tr>
+<tr class="memdesc:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <code>true</code>, if <a class="el" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212" title="Mutables reachable by following immutable deps(); mut-&gt;local_muts() is by definition the set { mut }...">Def::local_muts()</a> contain a <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a> that is set.  <br /></td></tr>
+<tr class="separator:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def" id="r_a29019dd6f96db3881b604f0b16cba29a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a">zonk</a> () const</td></tr>
 <tr class="memdesc:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a>s have been filled, reconstruct the program without them.  <br /></td></tr>
 <tr class="separator:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -627,9 +630,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Def.html#a2ec320f7eb49e3c8c9d26f210f4ce71d">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00408">408</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00348">348</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="check_8h_source.html#l00096">mim::Checker::alpha()</a>, <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, <a class="el" href="check_8cpp_source.html#l00415">infer()</a>, <a class="el" href="def_8h_source.html#l00506">mim::Def::loc()</a>, <a class="el" href="rule_8h_source.html#l00015">meta_type()</a>, and <a class="el" href="def_8cpp_source.html#l00447">mim::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="check_8h_source.html#l00096">mim::Checker::alpha()</a>, <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, <a class="el" href="check_8cpp_source.html#l00355">infer()</a>, <a class="el" href="def_8h_source.html#l00506">mim::Def::loc()</a>, <a class="el" href="rule_8h_source.html#l00015">meta_type()</a>, and <a class="el" href="def_8cpp_source.html#l00447">mim::Def::type()</a>.</p>
 
 </div>
 </div>
@@ -656,11 +659,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00415">415</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00355">355</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="rule_8h_source.html#l00015">meta_type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00408">check()</a>, and <a class="el" href="world_8h_source.html#l00325">mim::World::reform()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00348">check()</a>, and <a class="el" href="world_8h_source.html#l00321">mim::World::reform()</a>.</p>
 
 </div>
 </div>
@@ -691,7 +694,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00308">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00408">check()</a>, <a class="el" href="check_8cpp_source.html#l00415">infer()</a>, and <a class="el" href="rule_8h_source.html#l00011">Reform()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00348">check()</a>, <a class="el" href="check_8cpp_source.html#l00355">infer()</a>, and <a class="el" href="rule_8h_source.html#l00011">Reform()</a>.</p>
 
 </div>
 </div>

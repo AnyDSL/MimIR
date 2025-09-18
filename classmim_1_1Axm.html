@@ -149,7 +149,7 @@ Public Member Functions</h2></td></tr>
 <div class="line">          ^         |</div>
 <div class="line">          |         |</div>
 <div class="line">          +---------+</div>
-<div class="ttc" id="aclassmim_1_1Def_html_afefb7dc2241a0caf582a2c4d7ed4b954a3a3ea00cfc35332cedf6e5e9a32e94da"><div class="ttname"><a href="classmim_1_1Def.html#afefb7dc2241a0caf582a2c4d7ed4b954a3a3ea00cfc35332cedf6e5e9a32e94da">mim::Def::Cmp::E</a></div><div class="ttdeci">@ E</div><div class="ttdoc">Equal.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00611">def.h:611</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_afefb7dc2241a0caf582a2c4d7ed4b954a3a3ea00cfc35332cedf6e5e9a32e94da"><div class="ttname"><a href="classmim_1_1Def.html#afefb7dc2241a0caf582a2c4d7ed4b954a3a3ea00cfc35332cedf6e5e9a32e94da">mim::Def::Cmp::E</a></div><div class="ttdeci">@ E</div><div class="ttdoc">Equal.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00615">def.h:615</a></div></div>
 </div><!-- fragment --><p> Using an initial value as <code>5</code> for <a class="el" href="#aec7f0dbaadfa263bd4d845a36217deba">Axm::curry</a> and <code>3</code> as <a class="el" href="#a487d487a0cce32b39edbaf56c0a00cd5">Axm::trip</a> has the effect that here </p><div class="fragment"><div class="line">x a b c1 d1 e1 c2 d2 e2 c3 d3 e3</div>
 </div><!-- fragment --><p> the <a class="el" href="#a86709d59d9d1dec24da36a52db1177f4">Axm::normalizer</a> will be triggered after <a class="el" href="classmim_1_1App.html">App</a>'ing <code>e1</code>, <code>e2</code>, and <code>e3</code>. </p>
 </div></td></tr>
@@ -435,6 +435,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2ec320f7eb49e3c8c9d26f210f4ce71d inherit pub_methods_classmim_1_1Def" id="r_a2ec320f7eb49e3c8c9d26f210f4ce71d"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a2ec320f7eb49e3c8c9d26f210f4ce71d">check</a> ()</td></tr>
 <tr class="memdesc:a2ec320f7eb49e3c8c9d26f210f4ce71d inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">After all <a class="el" href="classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb">Def::ops</a> have ben <a class="el" href="classmim_1_1Def.html#a1164a26b23818879edfa4e6b9fe41d97" title="Successively set from left to right.">Def::set</a>, this method will be invoked to check the type of this mutable.  <br /></td></tr>
 <tr class="separator:a2ec320f7eb49e3c8c9d26f210f4ce71d inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def" id="r_ae9f80ca1bccce9842c16092f977fbf79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae9f80ca1bccce9842c16092f977fbf79">needs_zonk</a> () const</td></tr>
+<tr class="memdesc:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <code>true</code>, if <a class="el" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212" title="Mutables reachable by following immutable deps(); mut-&gt;local_muts() is by definition the set { mut }...">Def::local_muts()</a> contain a <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a> that is set.  <br /></td></tr>
+<tr class="separator:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def" id="r_a29019dd6f96db3881b604f0b16cba29a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a">zonk</a> () const</td></tr>
 <tr class="memdesc:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a>s have been filled, reconstruct the program without them.  <br /></td></tr>
 <tr class="separator:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -745,7 +748,7 @@ template&lt;class Id&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="axm_8h_source.html#l00037">37</a> of file <a class="el" href="axm_8h_source.html">axm.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00664">mim::Def::curry_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00668">mim::Def::curry_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="axm_8cpp_source.html#l00014">infer_curry_and_trip()</a>, <a class="el" href="axm_8h_source.html#l00107">isa()</a>, <a class="el" href="axm_8h_source.html#l00118">isa()</a>, and <a class="el" href="def_8cpp_source.html#l00135">rebuild_()</a>.</p>
 
@@ -781,7 +784,7 @@ template&lt;class Id&gt; </div>
 
 <p class="reference">References <a class="el" href="axm_8cpp_source.html#l00038">get()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00194">mim::World::app()</a>, <a class="el" href="axm_8cpp_source.html#l00038">get()</a>, <a class="el" href="axm_8h_source.html#l00107">isa()</a>, <a class="el" href="axm_8h_source.html#l00118">isa()</a>, and <a class="el" href="world_8cpp_source.html#l00258">mim::World::raw_app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00195">mim::World::app()</a>, <a class="el" href="axm_8cpp_source.html#l00038">get()</a>, <a class="el" href="axm_8h_source.html#l00107">isa()</a>, <a class="el" href="axm_8h_source.html#l00118">isa()</a>, and <a class="el" href="world_8cpp_source.html#l00259">mim::World::raw_app()</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1075,7 @@ template&lt;class Id, bool DynCast = true&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="axm_8h_source.html#l00038">38</a> of file <a class="el" href="axm_8h_source.html">axm.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00665">mim::Def::trip_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00669">mim::Def::trip_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="axm_8cpp_source.html#l00014">infer_curry_and_trip()</a>, and <a class="el" href="def_8cpp_source.html#l00135">rebuild_()</a>.</p>
 
@@ -1178,7 +1181,7 @@ template&lt;class Id, bool DynCast = true&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="axm_8h_source.html#l00134">134</a> of file <a class="el" href="axm_8h_source.html">axm.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00194">mim::World::app()</a>, and <a class="el" href="world_8cpp_source.html#l00258">mim::World::raw_app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00195">mim::World::app()</a>, and <a class="el" href="world_8cpp_source.html#l00259">mim::World::raw_app()</a>.</p>
 
 </div>
 </div>

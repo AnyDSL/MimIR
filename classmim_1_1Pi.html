@@ -439,6 +439,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae6b9f93f0a138c3b7534a798e9a6e1ba inherit pub_methods_classmim_1_1Def" id="r_ae6b9f93f0a138c3b7534a798e9a6e1ba"><td class="memTemplParams" colspan="2">template&lt;size_t N = std::dynamic_extent&gt; </td></tr>
 <tr class="memitem:ae6b9f93f0a138c3b7534a798e9a6e1ba inherit pub_methods_classmim_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae6b9f93f0a138c3b7534a798e9a6e1ba">reduce</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *arg) const</td></tr>
 <tr class="separator:ae6b9f93f0a138c3b7534a798e9a6e1ba inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def" id="r_ae9f80ca1bccce9842c16092f977fbf79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#ae9f80ca1bccce9842c16092f977fbf79">needs_zonk</a> () const</td></tr>
+<tr class="memdesc:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <code>true</code>, if <a class="el" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212" title="Mutables reachable by following immutable deps(); mut-&gt;local_muts() is by definition the set { mut }...">Def::local_muts()</a> contain a <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a> that is set.  <br /></td></tr>
+<tr class="separator:ae9f80ca1bccce9842c16092f977fbf79 inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def" id="r_a29019dd6f96db3881b604f0b16cba29a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Def.html#a29019dd6f96db3881b604f0b16cba29a">zonk</a> () const</td></tr>
 <tr class="memdesc:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a>s have been filled, reconstruct the program without them.  <br /></td></tr>
 <tr class="separator:a29019dd6f96db3881b604f0b16cba29a inherit pub_methods_classmim_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -730,9 +733,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Def.html#a2ec320f7eb49e3c8c9d26f210f4ce71d">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00385">385</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00325">325</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="check_8h_source.html#l00096">mim::Checker::alpha()</a>, <a class="el" href="lam_8h_source.html#l00037">codom()</a>, <a class="el" href="lam_8h_source.html#l00036">dom()</a>, <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, <a class="el" href="check_8cpp_source.html#l00378">infer()</a>, <a class="el" href="def_8h_source.html#l00506">mim::Def::loc()</a>, and <a class="el" href="def_8cpp_source.html#l00447">mim::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="check_8h_source.html#l00096">mim::Checker::alpha()</a>, <a class="el" href="lam_8h_source.html#l00037">codom()</a>, <a class="el" href="lam_8h_source.html#l00036">dom()</a>, <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, <a class="el" href="check_8cpp_source.html#l00318">infer()</a>, <a class="el" href="def_8h_source.html#l00506">mim::Def::loc()</a>, and <a class="el" href="def_8cpp_source.html#l00447">mim::Def::type()</a>.</p>
 
 </div>
 </div>
@@ -768,7 +771,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Def.html#a17535d230ca604f1b7f153cca756e3b4">mim::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00383">383</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00323">323</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
 </div>
 </div>
@@ -799,7 +802,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00308">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff_8cpp_source.html#l00088">mim::plug::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="check_8cpp_source.html#l00385">check()</a>, <a class="el" href="lam_8h_source.html#l00133">mim::Lam::codom()</a>, <a class="el" href="def_8cpp_source.html#l00188">immutabilize()</a>, <a class="el" href="check_8cpp_source.html#l00378">infer()</a>, <a class="el" href="lam_8h_source.html#l00018">Pi()</a>, <a class="el" href="lam_8h_source.html#l00077">set()</a>, and <a class="el" href="lam_8h_source.html#l00080">set_codom()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff_8cpp_source.html#l00088">mim::plug::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="check_8cpp_source.html#l00325">check()</a>, <a class="el" href="lam_8h_source.html#l00133">mim::Lam::codom()</a>, <a class="el" href="def_8cpp_source.html#l00188">immutabilize()</a>, <a class="el" href="check_8cpp_source.html#l00318">infer()</a>, <a class="el" href="lam_8h_source.html#l00018">Pi()</a>, <a class="el" href="lam_8h_source.html#l00077">set()</a>, and <a class="el" href="lam_8h_source.html#l00080">set_codom()</a>.</p>
 
 </div>
 </div>
@@ -830,7 +833,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00308">mim::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00023">mim::plug::autodiff::Eval::augment_lam()</a>, <a class="el" href="autodiff_8cpp_source.html#l00088">mim::plug::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="check_8cpp_source.html#l00385">check()</a>, <a class="el" href="lam_8cpp_source.html#l00062">mim::compose_cn()</a>, <a class="el" href="lam_8h_source.html#l00132">mim::Lam::dom()</a>, <a class="el" href="def_8cpp_source.html#l00188">immutabilize()</a>, <a class="el" href="check_8cpp_source.html#l00378">infer()</a>, <a class="el" href="direct_8h_source.html#l00015">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="lam_8h_source.html#l00018">Pi()</a>, <a class="el" href="lam_8h_source.html#l00155">mim::Lam::ret_dom()</a>, <a class="el" href="lam_8h_source.html#l00070">ret_dom()</a>, <a class="el" href="lam_8cpp_source.html#l00013">ret_pi()</a>, <a class="el" href="lam_8h_source.html#l00077">set()</a>, and <a class="el" href="lam_8h_source.html#l00078">set_dom()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00023">mim::plug::autodiff::Eval::augment_lam()</a>, <a class="el" href="autodiff_8cpp_source.html#l00088">mim::plug::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="check_8cpp_source.html#l00325">check()</a>, <a class="el" href="lam_8cpp_source.html#l00062">mim::compose_cn()</a>, <a class="el" href="lam_8h_source.html#l00132">mim::Lam::dom()</a>, <a class="el" href="def_8cpp_source.html#l00188">immutabilize()</a>, <a class="el" href="check_8cpp_source.html#l00318">infer()</a>, <a class="el" href="direct_8h_source.html#l00016">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="lam_8h_source.html#l00018">Pi()</a>, <a class="el" href="lam_8h_source.html#l00155">mim::Lam::ret_dom()</a>, <a class="el" href="lam_8h_source.html#l00070">ret_dom()</a>, <a class="el" href="lam_8cpp_source.html#l00013">ret_pi()</a>, <a class="el" href="lam_8h_source.html#l00077">set()</a>, and <a class="el" href="lam_8h_source.html#l00078">set_dom()</a>.</p>
 
 </div>
 </div>
@@ -897,7 +900,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00188">188</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00037">codom()</a>, <a class="el" href="lam_8h_source.html#l00036">dom()</a>, <a class="el" href="def_8cpp_source.html#l00174">mim::Def::is_immutabilizable()</a>, <a class="el" href="lam_8h_source.html#l00018">Pi()</a>, <a class="el" href="world_8h_source.html#l00269">mim::World::pi()</a>, and <a class="el" href="def_8cpp_source.html#l00439">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00037">codom()</a>, <a class="el" href="lam_8h_source.html#l00036">dom()</a>, <a class="el" href="def_8cpp_source.html#l00174">mim::Def::is_immutabilizable()</a>, <a class="el" href="lam_8h_source.html#l00018">Pi()</a>, <a class="el" href="world_8h_source.html#l00265">mim::World::pi()</a>, and <a class="el" href="def_8cpp_source.html#l00439">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -928,11 +931,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00378">378</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00318">318</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00037">codom()</a>, <a class="el" href="lam_8h_source.html#l00036">dom()</a>, and <a class="el" href="def_8h_source.html#l00743">mim::UMax::Kind</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00037">codom()</a>, <a class="el" href="lam_8h_source.html#l00036">dom()</a>, and <a class="el" href="def_8h_source.html#l00745">mim::UMax::Kind</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00385">check()</a>, and <a class="el" href="world_8h_source.html#l00269">mim::World::pi()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00325">check()</a>, and <a class="el" href="world_8h_source.html#l00265">mim::World::pi()</a>.</p>
 
 </div>
 </div>
@@ -1029,7 +1032,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00114">mim::Bot</a>, <a class="el" href="lam_8h_source.html#l00048">isa_cn()</a>, <a class="el" href="def_8h_source.html#l00274">mim::Def::node()</a>, and <a class="el" href="lam_8h_source.html#l00018">Pi()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00078">mim::plug::clos::LowerTypedClosPrep::analyze()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00195">mim::plug::autodiff::Eval::augment_app()</a>, <a class="el" href="autodiff_8cpp_source.html#l00088">mim::plug::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00045">mim::plug::clos::ClosConvPrep::enter()</a>, <a class="el" href="lam_8h_source.html#l00052">isa_basicblock()</a>, <a class="el" href="clos_8cpp_source.html#l00106">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="lam_8h_source.html#l00142">mim::Lam::isa_cn()</a>, <a class="el" href="lam_8h_source.html#l00048">isa_cn()</a>, <a class="el" href="lam_8h_source.html#l00050">isa_returning()</a>, <a class="el" href="direct_8h_source.html#l00015">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="branch__clos__elim_8cpp_source.html#l00027">mim::plug::clos::BranchClosElim::rewrite()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00117">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lower__typed__clos__prep_8cpp_source.html#l00078">mim::plug::clos::LowerTypedClosPrep::analyze()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00195">mim::plug::autodiff::Eval::augment_app()</a>, <a class="el" href="autodiff_8cpp_source.html#l00088">mim::plug::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00045">mim::plug::clos::ClosConvPrep::enter()</a>, <a class="el" href="lam_8h_source.html#l00052">isa_basicblock()</a>, <a class="el" href="clos_8cpp_source.html#l00106">mim::plug::clos::isa_clos_type()</a>, <a class="el" href="lam_8h_source.html#l00142">mim::Lam::isa_cn()</a>, <a class="el" href="lam_8h_source.html#l00048">isa_cn()</a>, <a class="el" href="lam_8h_source.html#l00050">isa_returning()</a>, <a class="el" href="direct_8h_source.html#l00016">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="branch__clos__elim_8cpp_source.html#l00027">mim::plug::clos::BranchClosElim::rewrite()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00117">mim::plug::clos::ClosConvPrep::rewrite_callee()</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1065,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="lam_8h_source.html#l00018">Pi()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00187">mim::World::implicit_app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00188">mim::World::implicit_app()</a>.</p>
 
 </div>
 </div>
@@ -1124,7 +1127,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00029">29</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00663">mim::Def::flags_</a>, and <a class="el" href="lam_8h_source.html#l00018">Pi()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00667">mim::Def::flags_</a>, and <a class="el" href="lam_8h_source.html#l00018">Pi()</a>.</p>
 
 </div>
 </div>
@@ -1153,7 +1156,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="lam_8h_source.html#l00028">28</a> of file <a class="el" href="lam_8h_source.html">lam.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00663">mim::Def::flags_</a>, and <a class="el" href="lam_8h_source.html#l00018">Pi()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00667">mim::Def::flags_</a>, and <a class="el" href="lam_8h_source.html#l00018">Pi()</a>.</p>
 
 </div>
 </div>

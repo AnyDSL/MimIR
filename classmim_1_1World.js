@@ -226,5 +226,6 @@ var classmim_1_1World =
     [ "watchpoints", "classmim_1_1World.html#a3927508f5ffda384019188e6141e7f85", null ],
     [ "write", "classmim_1_1World.html#a6c0a289376552934ff442e317dc95acd", null ],
     [ "write", "classmim_1_1World.html#aada6df5fabc3554f7dab128f1f6b3deb", null ],
+    [ "zonker", "classmim_1_1World.html#a2a88991106de4223e4ed8d5fb0c7bfa0", null ],
     [ "swap", "classmim_1_1World.html#a135815fb4bc60759449fe056c54a7eaa", null ]
 ];

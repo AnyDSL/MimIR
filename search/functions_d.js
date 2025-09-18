@@ -2,7 +2,7 @@ var searchData=
 [
   ['name_0',['name',['../classmim_1_1Nest_1_1Node.html#a025d0c2e4c0c53d47930f363c0e5f61d',1,'mim::Nest::Node::name()'],['../classmim_1_1Stage.html#a988e8b306b37bd8f2bc3777582516527',1,'mim::Stage::name()'],['../classmim_1_1World.html#a64e913f4ed33daa7e3a6192cd714e4e7',1,'mim::World::name()']]],
   ['name2annex_1',['name2annex',['../classmim_1_1ast_1_1AST.html#a53873fe117107e145fa35a1eda8383c7',1,'mim::ast::AST']]],
-  ['needs_5fzonk_2',['needs_zonk',['../namespacemim.html#a5beea9cd6bb17fbd73e1f46632937606',1,'mim']]],
+  ['needs_5fzonk_2',['needs_zonk',['../classmim_1_1Def.html#ae9f80ca1bccce9842c16092f977fbf79',1,'mim::Def']]],
   ['nest_3',['Nest',['../classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9',1,'mim::Nest::Nest(Def *root)'],['../classmim_1_1Nest.html#aa1a16f9ef090ca5caac178ca6b668d51',1,'mim::Nest::Nest(View&lt; Def * &gt; muts)'],['../classmim_1_1Nest.html#a08053d4366e8a98131a5f12925333228',1,'mim::Nest::Nest(World &amp;)']]],
   ['nest_4',['nest',['../classmim_1_1Nest_1_1Node.html#ae1c9f7727e8b614745014e839656825c',1,'mim::Nest::Node::nest()'],['../classmim_1_1NestPhase.html#a522f99e02ecca1b57c3ef45f11e00a93',1,'mim::NestPhase::nest()'],['../classmim_1_1Scheduler.html#acf5b68038f54c059d56ec799215ee07d',1,'mim::Scheduler::nest()']]],
   ['nestphase_5',['NestPhase',['../classmim_1_1NestPhase.html#ad9ab81063d7cd142861d4ca9c2d13ede',1,'mim::NestPhase::NestPhase(World &amp;world, std::string name, bool elide_empty)'],['../classmim_1_1NestPhase.html#a0fbc884ad139a25468d8ffbfccff42f4',1,'mim::NestPhase::NestPhase(World &amp;world, flags_t annex, bool elide_empty)']]],
