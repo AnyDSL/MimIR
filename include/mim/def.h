@@ -587,7 +587,7 @@ public:
     bool needs_zonk() const;
 
     /// If Hole%s have been filled, reconstruct the program without them.
-    /// Only gues up to but excluding other mutables.
+    /// Only goes up to but excluding other mutables.
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
 
