@@ -330,7 +330,7 @@ public:
 
     /// Update type.
     /// @warning Only make type-preserving updates such as removing Hole%s.
-    /// Do this even before updating all other ops()!.
+    /// Do this even before updating all other ops()!
     Def* set_type(const Def*);
     ///@}
 

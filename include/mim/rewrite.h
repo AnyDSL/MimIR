@@ -171,7 +171,8 @@ public:
     /// @name rewrite
     ///@{
     const Def* rewrite(const Def*) final;
-    const Def* rewrite_mut(Def*) final;
+    const Def* rewrite_mut(Def* mut) final { return map(mut, mut); }
+    const Def* rewire_mut(Def*);
     ///@}
 
     friend void swap(Zonker& z1, Zonker& z2) noexcept {

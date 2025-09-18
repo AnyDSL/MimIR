@@ -244,19 +244,20 @@ const Def* Zonker::rewrite(const Def* def) {
     return def->needs_zonk() ? Rewriter::rewrite(def) : def;
 }
 
-const Def* Zonker::rewrite_mut(Def* root) {
-    // Don't create a new stub, instead rewrire the ops of the old mutable root.
-    map(root, root);
+const Def* Zonker::rewire_mut(Def* mut) {
+    map(mut, mut);
 
-    auto old_type = root->type();
-    auto old_ops  = absl::FixedArray<const Def*>(root->ops().begin(), root->ops().end());
+    auto old_type = mut->type();
+    auto old_ops  = absl::FixedArray<const Def*>(mut->ops().begin(), mut->ops().end());
 
-    root->unset()->set_type(rewrite(old_type));
+    mut->unset()->set_type(rewrite(old_type));
 
-    for (size_t i = 0, e = root->num_ops(); i != e; ++i)
-        root->set(i, rewrite(old_ops[i]));
-    if (auto new_imm = root->immutabilize()) return map(root, new_imm);
+    for (size_t i = 0, e = mut->num_ops(); i != e; ++i)
+        mut->set(i, rewrite(old_ops[i]));
 
-    return root;
+    if (auto new_imm = mut->immutabilize()) return map(mut, new_imm);
+
+    return mut;
 }
+
 } // namespace mim

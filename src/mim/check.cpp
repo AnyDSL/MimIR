@@ -18,29 +18,19 @@ bool Def::needs_zonk() const {
     return false;
 }
 
-const Def* Def::zonk() const {
-    if (needs_zonk()) return world().zonker().rewrite(this);
-    return this;
-}
+const Def* Def::zonk() const { return needs_zonk() ? world().zonker().rewrite(this) : this; }
 
 const Def* Def::zonk_mut() const {
     if (!is_set()) return this;
 
     if (auto mut = isa_mut()) {
-        // TODO copy & paste from above
         if (auto hole = mut->isa<Hole>()) {
             auto [last, op] = hole->find();
             return op ? op->zonk() : last;
         }
 
-        bool zonk = false;
         for (auto def : deps())
-            if (def->needs_zonk()) {
-                zonk = true;
-                break;
-            }
-
-        if (zonk) return world().zonker().rewrite_mut(mut);
+            if (def->needs_zonk()) return world().zonker().rewire_mut(mut);
 
         if (auto imm = mut->immutabilize()) return imm;
         return this;
