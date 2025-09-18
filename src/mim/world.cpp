@@ -177,11 +177,14 @@ const Def* World::umax(Defs ops_) {
 // TODO more thorough & consistent checks for singleton types
 
 const Def* World::var(Def* mut) {
-    if (auto s = Idx::isa(mut->var_type())) {
-        if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
+    if (auto var = mut->var_) return var;
+
+    if (auto var_type = mut->var_type()) { // could be nullptr, if frozen
+        if (auto s = Idx::isa(var_type)) {
+            if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
+        }
     }
 
-    if (auto var = mut->var_) return var;
     return mut->var_ = unify<Var>(mut);
 }
 
@@ -397,6 +400,7 @@ const Def* World::extract(const Def* d, const Def* index) {
 
         if (auto sigma = type->isa<Sigma>()) {
             if (auto var = sigma->has_var()) {
+                if (is_frozen()) return nullptr; // if frozen, we don't risk rewriting
                 auto t = VarRewriter(var, d).rewrite(sigma->op(*i));
                 return unify<Extract>(t, d, index);
             }
