@@ -162,7 +162,7 @@ public:
         : Rewriter(world) {}
     ///@}
 
-    /// @name Stack of Mpas
+    /// @name Stack of Maps
     ///@{
     const Def* map(const Def* old_def, const Def* new_def) final;
     const Def* lookup(const Def* old_def) final;
