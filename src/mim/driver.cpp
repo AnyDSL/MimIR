@@ -26,7 +26,7 @@ Driver::Driver()
 
     // add install path if different from above
     if (auto install_path = fs::path{MIM_INSTALL_PREFIX} / "lib" / "mim"; fs::exists(install_path)) {
-        if (search_paths().empty() || !fs::equivalent(install_path, search_paths().back()))
+        if (search_paths().size() < 2 || !fs::equivalent(install_path, search_paths().back()))
             add_search_path(std::move(install_path));
     }
 
@@ -35,6 +35,10 @@ Driver::Driver()
 }
 
 const fs::path* Driver::add_import(fs::path path, Sym sym) {
+    if(!fs::exists(path)) {
+        WLOG("import path '{}' does not exist", path.string());
+        return nullptr;
+    }
     for (auto p : import_paths())
         if (fs::equivalent(p, path)) return nullptr;
 
