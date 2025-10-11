@@ -1,8 +1,9 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %mim %s -o - --output-ll %t.ll | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
-// RUN: %t "g5 "; test $? -eq 0
-// RUN: %t "g1g"; test $? -eq 1
+// RUN: %t "aad"; test $? -eq 1
+// RUN: %t "abd"; test $? -eq 0
+// RUN: %t "aaa"; test $? -eq 0
 
 plugin mem;
 plugin core;
@@ -10,7 +11,7 @@ plugin regex;
 plugin direct;
 
 let Top = ⊤:Nat;
-let re  = %regex.neg_lookahead (%regex.conj (%regex.cls.w, %regex.conj (%regex.cls.d, %regex.cls.s)));
+let re  = %regex.conj (%regex.lit 'a', %regex.not_ (%regex.disj (%regex.lit 'b', %regex.lit 'c')), %regex.lit 'd');
 
 con extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), exit : Cn [%mem.M, I32]] =
     (exit, match_argument) # (%core.icmp.ug (argc, 1I32)) (mem, 0I32)

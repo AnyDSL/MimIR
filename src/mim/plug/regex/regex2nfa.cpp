@@ -39,10 +39,10 @@ struct Regex2NfaConverter {
             add_range_transitions(start, end, 0_u16, 255);
         } else if (auto range = Axm::isa<regex::range>(regex)) {
             add_range_transitions(start, end, range->arg(0), range->arg(1));
+            if (error) add_range_transitions(start, error, 0, 255);
         } else if (auto not_ = Axm::isa<regex::not_>(regex)) {
             auto first = nfa_->add_state();
             auto error = nfa_->add_state();
-            // error->set_erroring(true);
 
             start->add_transition(first, automaton::NFA::SpecialTransitons::EPSILON);
             auto args = detail::flatten_in_arg<regex::disj>(not_->arg());
@@ -62,6 +62,15 @@ struct Regex2NfaConverter {
                 last = std::min(rng.second + 1_u16, 255);
             }
             if (last < 255) add_range_transitions(first, end, last, 255);
+        } else if (auto neg = Axm::isa<regex::neg_lookahead>(regex)) {
+            auto first = nfa_->add_state();
+            auto error = nfa_->add_state();
+            error->set_erroring(true);
+
+            start->add_transition(first, automaton::NFA::SpecialTransitons::EPSILON);
+
+            convert(neg->arg(), first, error, end);
+            first->add_transition(end, automaton::NFA::SpecialTransitons::EPSILON);
         } else if (auto disj = Axm::isa<regex::disj>(regex)) {
             convert(disj->arg(0), start, end, error);
             convert(disj->arg(1), start, end, error);

@@ -55,9 +55,15 @@ lam %regex.lit(val: Char) = %regex.range (val, val);
 ///
 /// ### %%regex.not_
 ///
-/// Do not match the parameter - parameter must only contain `regex.disj`s and `regex.range`s.
+/// Do not match any of the ranges in the parameter - parameter must only contain `regex.disj`s and `regex.range`s.
 ///
 axm %regex.not_: RE → RE, normalize_not, 1;
+///
+/// ### %%regex.neg_lookahead
+///
+/// Do not match the parameter!
+///
+axm %regex.neg_lookahead: RE → RE, 1;
 ///
 /// ### %%regex.cls.*
 ///
