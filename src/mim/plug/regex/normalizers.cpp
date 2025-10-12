@@ -12,8 +12,10 @@
 #include "mim/tuple.h"
 #include "mim/world.h"
 
+#include "mim/util/dbg.h"
 #include "mim/util/log.h"
 
+#include "mim/plug/regex/autogen.h"
 #include "mim/plug/regex/regex.h"
 
 using Range  = automaton::Range;
@@ -49,24 +51,6 @@ const Def* normalize_quant(const Def* type, const Def* callee, const Def* arg) {
 }
 
 template<class ConjOrDisj>
-void flatten_in_arg(const Def* arg, DefVec& new_args) {
-    for (const auto* proj : arg->projs()) {
-        // flatten conjs in conjs / disj in disjs
-        if (auto seq_app = Axm::isa<ConjOrDisj>(proj))
-            flatten_in_arg<ConjOrDisj>(seq_app->arg(), new_args);
-        else
-            new_args.push_back(proj);
-    }
-}
-
-template<class ConjOrDisj>
-DefVec flatten_in_arg(const Def* arg) {
-    DefVec new_args;
-    flatten_in_arg<ConjOrDisj>(arg, new_args);
-    return new_args;
-}
-
-template<class ConjOrDisj>
 const Def* make_binary_tree(Defs args) {
     assert(!args.empty());
     auto& world = args.front()->world();
@@ -83,7 +67,7 @@ const Def* normalize_conj(const Def* type, const Def* callee, const Def* arg) {
         switch (*a) {
             case 0: return world.lit_tt();
             case 1: return arg;
-            default: return make_binary_tree<conj>(flatten_in_arg<conj>(arg));
+            default: return make_binary_tree<conj>(detail::flatten_in_arg<conj>(arg));
         }
     }
 
@@ -181,7 +165,7 @@ const Def* normalize_disj(const Def* type, const Def*, const Def* arg) {
                         != args.end();
                 };
 
-                auto new_args = flatten_in_arg<disj>(arg);
+                auto new_args = detail::flatten_in_arg<disj>(arg);
                 if (contains_any(new_args)) return world.annex<any>();
                 make_vector_unique(new_args);
                 merge_ranges(new_args);
@@ -193,7 +177,7 @@ const Def* normalize_disj(const Def* type, const Def*, const Def* arg) {
 
                     if (auto not_rhs = Axm::isa<not_>(cls0)) {
                         if (auto disj_rhs = Axm::isa<disj>(not_rhs->arg())) {
-                            auto rngs = flatten_in_arg<disj>(disj_rhs->arg());
+                            auto rngs = detail::flatten_in_arg<disj>(disj_rhs->arg());
                             make_vector_unique(rngs);
                             if (equals_any(new_args, rngs)) return world.annex<any>();
                         }
@@ -221,7 +205,24 @@ const Def* normalize_range(const Def* type, const Def* callee, const Def* arg) {
     return {};
 }
 
-const Def* normalize_not(const Def*, const Def*, const Def*) { return {}; }
+const Def* any_unwanted(const Def* arg) {
+    if (auto ax = Axm::isa<regex::range>(arg)) return nullptr;
+    if (auto disj = Axm::isa<regex::disj>(arg)) {
+        for (const auto* disj_arg : disj->args())
+            if (auto ret = any_unwanted(disj_arg)) return ret;
+        return nullptr;
+    }
+    return arg;
+}
+
+const Def* normalize_not(const Def*, const Def* callee, const Def* arg) {
+    if (auto unwanted = any_unwanted(arg)) {
+        throw Error()
+            .error(arg->loc(), "regex.not_ must only be used with regex.disj and regex.range: {} {}", callee, arg)
+            .error(unwanted->loc(), "found unwanted: {}", unwanted);
+    }
+    return {};
+}
 
 MIM_regex_NORMALIZER_IMPL
 
