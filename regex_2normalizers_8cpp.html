@@ -136,7 +136,9 @@ $(function(){initNavTree('regex_2normalizers_8cpp.html',''); initResizable(true)
 <code>#include &quot;<a class="el" href="def_8h_source.html">mim/def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tuple_8h_source.html">mim/tuple.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="world_8h_source.html">mim/world.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="dbg_8h_source.html">mim/util/dbg.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="log_8h_source.html">mim/util/log.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="regex_2autogen_8h_source.html">mim/plug/regex/autogen.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="regex_8h_source.html">mim/plug/regex/regex.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for normalizers.cpp:</div>
@@ -168,12 +170,6 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4ac65a499cb646a0c978d08d6d91d0b7" id="r_a4ac65a499cb646a0c978d08d6d91d0b7"><td class="memTemplParams" colspan="2">template&lt;class ConjOrDisj&gt; </td></tr>
-<tr class="memitem:a4ac65a499cb646a0c978d08d6d91d0b7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#a4ac65a499cb646a0c978d08d6d91d0b7">mim::plug::regex::flatten_in_arg</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *arg, <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> &amp;new_args)</td></tr>
-<tr class="separator:a4ac65a499cb646a0c978d08d6d91d0b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6f702da3d1be110a5b012af87cd02a9" id="r_ae6f702da3d1be110a5b012af87cd02a9"><td class="memTemplParams" colspan="2">template&lt;class ConjOrDisj&gt; </td></tr>
-<tr class="memitem:ae6f702da3d1be110a5b012af87cd02a9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#ae6f702da3d1be110a5b012af87cd02a9">mim::plug::regex::flatten_in_arg</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
-<tr class="separator:ae6f702da3d1be110a5b012af87cd02a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af81cf78b33c5d7b68c0c2d58e1b05edc" id="r_af81cf78b33c5d7b68c0c2d58e1b05edc"><td class="memTemplParams" colspan="2">template&lt;class ConjOrDisj&gt; </td></tr>
 <tr class="memitem:af81cf78b33c5d7b68c0c2d58e1b05edc"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#af81cf78b33c5d7b68c0c2d58e1b05edc">mim::plug::regex::make_binary_tree</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> args)</td></tr>
 <tr class="separator:af81cf78b33c5d7b68c0c2d58e1b05edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,6 +190,8 @@ Functions</h2></td></tr>
 <tr class="separator:aa8cfe9b14b05191510c403314b69f2f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27ecf9ea39cecd2d5eedd5a90b4d36a4" id="r_a27ecf9ea39cecd2d5eedd5a90b4d36a4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#a27ecf9ea39cecd2d5eedd5a90b4d36a4">mim::plug::regex::equals_any</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> lhs, <a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> rhs)</td></tr>
 <tr class="separator:a27ecf9ea39cecd2d5eedd5a90b4d36a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201f070f889e21a2fbf4308918cd34d9" id="r_a201f070f889e21a2fbf4308918cd34d9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#a201f070f889e21a2fbf4308918cd34d9">mim::plug::regex::any_unwanted</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="separator:a201f070f889e21a2fbf4308918cd34d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%regex.quant</div></td></tr>
 <tr class="memitem:aceec5ccd650757e2d47331a58afeaed1" id="r_aceec5ccd650757e2d47331a58afeaed1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55">quant</a> id&gt; </td></tr>
 <tr class="memitem:aceec5ccd650757e2d47331a58afeaed1"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#aceec5ccd650757e2d47331a58afeaed1">mim::plug::regex::normalize_quant</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *callee, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
@@ -208,8 +206,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a82ed8ada05887f87eca2042aee3d1b1a" id="r_a82ed8ada05887f87eca2042aee3d1b1a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#a82ed8ada05887f87eca2042aee3d1b1a">mim::plug::regex::normalize_range</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *callee, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
 <tr class="separator:a82ed8ada05887f87eca2042aee3d1b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%regex.not_</div></td></tr>
-<tr class="memitem:ade9931e9b2f114bf296d7336f124e85b" id="r_ade9931e9b2f114bf296d7336f124e85b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#ade9931e9b2f114bf296d7336f124e85b">mim::plug::regex::normalize_not</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
-<tr class="separator:ade9931e9b2f114bf296d7336f124e85b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad065605ee526d9128e4bc7f4ef505fc9" id="r_ad065605ee526d9128e4bc7f4ef505fc9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1regex.html#ad065605ee526d9128e4bc7f4ef505fc9">mim::plug::regex::normalize_not</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *callee, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="separator:ad065605ee526d9128e4bc7f4ef505fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="a89da4931e7b75c7ac81211ba6b410f48" name="a89da4931e7b75c7ac81211ba6b410f48"></a>
@@ -224,7 +222,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="regex_2normalizers_8cpp_source.html#l00020">20</a> of file <a class="el" href="regex_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="regex_2normalizers_8cpp_source.html#l00022">22</a> of file <a class="el" href="regex_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 </div>
 </div>

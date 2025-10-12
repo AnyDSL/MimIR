@@ -154,29 +154,35 @@ $(function(){initNavTree('regex.html',''); initResizable(true); });
         <a href="#autotoc_md239">%regex.lit</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md240">%regex.not</a>
+        <a href="#autotoc_md240">%regex.not_</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md241">%regex.cls.*</a>
+        <a href="#autotoc_md241">%regex.neg_lookahead</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md242">%regex.any</a>
+        <a href="#autotoc_md242">%regex.cls.*</a>
       </li>
-    </ul>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md243">Quantifiers</a>
-    <ul>
       <li class="level2">
-        <a href="#autotoc_md244">%regex.quant.*</a>
+        <a href="#autotoc_md243">%regex.any</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md245">Passes and Phases</a>
+    <a href="#autotoc_md244">%regex.empty</a>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md245">Quantifiers</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md246">Passes</a>
+        <a href="#autotoc_md246">%regex.quant.*</a>
+      </li>
+    </ul>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md247">Passes and Phases</a>
+    <ul>
+      <li class="level2">
+        <a href="#autotoc_md248">Passes</a>
       </li>
     </ul>
   </li>
@@ -220,10 +226,14 @@ Values</h1>
 <p>Wraps a literal.</p>
 <div class="fragment"><div class="line">lam %regex.lit(val: Char) = %regex.range (val, val);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md240"></a>
-%regex.not</h2>
-<p>Do not match the parameter.</p>
+%regex.not_</h2>
+<p>Do not match any of the ranges in the parameter - parameter must only contain <code>regex.disj</code>s and <code>regex.range</code>s.</p>
 <div class="fragment"><div class="line">axm %regex.not_: RE → RE, normalize_not, 1;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md241"></a>
+%regex.neg_lookahead</h2>
+<p>Do not match the parameter!</p>
+<div class="fragment"><div class="line">axm %regex.neg_lookahead: RE → RE, 1;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md242"></a>
 %regex.cls.*</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -247,18 +257,22 @@ Values</h1>
 <div class="line">let %regex.cls.W = %regex.not_ %regex.cls.w;</div>
 <div class="line">let %regex.cls.s = %regex.disj (%regex.range (&#39;\t&#39;, &#39;\n&#39;), %regex.lit &#39;\r&#39;, %regex.lit &#39; &#39;);</div>
 <div class="line">let %regex.cls.S = %regex.not_ %regex.cls.s;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md242"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md243"></a>
 %regex.any</h2>
 <p>Match any character.</p>
 <div class="fragment"><div class="line">axm %regex.any: RE;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md243"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md244"></a>
+%regex.empty</h1>
+<p>Matches the empty string.</p>
+<div class="fragment"><div class="line">axm %regex.empty: RE;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md245"></a>
 Quantifiers</h1>
-<h2><a class="anchor" id="autotoc_md244"></a>
+<h2><a class="anchor" id="autotoc_md246"></a>
 %regex.quant.*</h2>
 <div class="fragment"><div class="line">axm %regex.quant(optional,star,plus): RE → RE, normalize_quant, 1;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md245"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md247"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md246"></a>
+<h2><a class="anchor" id="autotoc_md248"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %regex.lower_regex: %compile.Pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

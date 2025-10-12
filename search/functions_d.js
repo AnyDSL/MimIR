@@ -64,7 +64,7 @@ var searchData=
   ['normalize_5fmap_5freduce_61',['normalize_map_reduce',['../namespacemim_1_1plug_1_1matrix.html#a25b7c31b65c2a91faeb93be61e409944',1,'mim::plug::matrix']]],
   ['normalize_5fnat_62',['normalize_nat',['../namespacemim_1_1plug_1_1core.html#a02c742e75a36b8e924ddff10bcfa34e6',1,'mim::plug::core']]],
   ['normalize_5fncmp_63',['normalize_ncmp',['../namespacemim_1_1plug_1_1core.html#ac5e6745c0724f9ad515f710379700abe',1,'mim::plug::core']]],
-  ['normalize_5fnot_64',['normalize_not',['../namespacemim_1_1plug_1_1regex.html#ade9931e9b2f114bf296d7336f124e85b',1,'mim::plug::regex']]],
+  ['normalize_5fnot_64',['normalize_not',['../namespacemim_1_1plug_1_1regex.html#ad065605ee526d9128e4bc7f4ef505fc9',1,'mim::plug::regex']]],
   ['normalize_5fpe_65',['normalize_pe',['../namespacemim_1_1plug_1_1core.html#a1c1bc54436049519a58d20e2c92d0945',1,'mim::plug::core']]],
   ['normalize_5fpow_66',['normalize_pow',['../namespacemim_1_1plug_1_1math.html#afdab7fe16d606d2e9ce35568c84b0960',1,'mim::plug::math']]],
   ['normalize_5fprod_67',['normalize_prod',['../namespacemim_1_1plug_1_1matrix.html#a9cfdfa17dccd4a83feae85135342336d',1,'mim::plug::matrix']]],

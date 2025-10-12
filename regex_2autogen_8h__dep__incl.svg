@@ -47,7 +47,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 639;
+var viewWidth = 607;
 var viewHeight = 236;
 var sectionId = 'dynsection-1';
 </script>
@@ -59,9 +59,9 @@ var sectionId = 'dynsection-1';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title=" ">
-<polygon fill="#999999" stroke="#666666" points="510.5,-228 382.5,-228 382.5,-198 510.5,-198 510.5,-228"/>
-<text text-anchor="start" x="390.5" y="-216" font-family="Helvetica,sans-Serif" font-size="10.00">build/include/mim/plug</text>
-<text text-anchor="middle" x="446.5" y="-205" font-family="Helvetica,sans-Serif" font-size="10.00">/regex/autogen.h</text>
+<polygon fill="#999999" stroke="#666666" points="587.5,-228 459.5,-228 459.5,-198 587.5,-198 587.5,-228"/>
+<text text-anchor="start" x="467.5" y="-216" font-family="Helvetica,sans-Serif" font-size="10.00">build/include/mim/plug</text>
+<text text-anchor="middle" x="523.5" y="-205" font-family="Helvetica,sans-Serif" font-size="10.00">/regex/autogen.h</text>
 </a>
 </g>
 </g>
@@ -69,9 +69,9 @@ var sectionId = 'dynsection-1';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="regex_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="390.5,-162 258.5,-162 258.5,-132 390.5,-132 390.5,-162"/>
-<text text-anchor="start" x="266.5" y="-150" font-family="Helvetica,sans-Serif" font-size="10.00">include/mim/plug/regex</text>
-<text text-anchor="middle" x="324.5" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00">/regex.h</text>
+<polygon fill="white" stroke="#666666" points="374.5,-162 242.5,-162 242.5,-132 374.5,-132 374.5,-162"/>
+<text text-anchor="start" x="250.5" y="-150" font-family="Helvetica,sans-Serif" font-size="10.00">include/mim/plug/regex</text>
+<text text-anchor="middle" x="308.5" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00">/regex.h</text>
 </a>
 </g>
 </g>
@@ -79,8 +79,8 @@ var sectionId = 'dynsection-1';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M410.74,-193.24C391.7,-183.25 368.68,-171.18 351.21,-162.01"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="409.25,-196.41 419.73,-197.95 412.5,-190.21 409.25,-196.41"/>
+<path fill="none" stroke="#63b8ff" d="M466.35,-194.99C431.76,-184.69 388.17,-171.72 355.57,-162.01"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="465.73,-198.46 476.32,-197.95 467.73,-191.75 465.73,-198.46"/>
 </a>
 </g>
 </g>
@@ -88,56 +88,18 @@ var sectionId = 'dynsection-1';
 <g id="Node000005" class="node">
 <title>Node5</title>
 <g id="a_Node000005"><a xlink:href="lower__regex_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="631,-30 506,-30 506,0 631,0 631,-30"/>
-<text text-anchor="start" x="514" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
-<text text-anchor="middle" x="568.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/pass/lower_regex.cpp</text>
+<polygon fill="white" stroke="#666666" points="415,-30 290,-30 290,0 415,0 415,-30"/>
+<text text-anchor="start" x="298" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
+<text text-anchor="middle" x="352.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/pass/lower_regex.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
-<g id="edge10_Node000001_Node000005" class="edge">
+<g id="edge12_Node000001_Node000005" class="edge">
 <title>Node1&#45;&gt;Node5</title>
-<g id="a_edge10_Node000001_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M471.14,-191.03C494.78,-169.55 529.74,-134 549.5,-96 560.63,-74.6 565.35,-46.59 567.27,-30.02"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="468.72,-188.49 463.59,-197.76 473.38,-193.72 468.72,-188.49"/>
-</a>
-</g>
-</g>
-<!-- Node3 -->
-<g id="Node000003" class="node">
-<title>Node3</title>
-<g id="a_Node000003"><a xlink:href="dfa2matcher_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="540.5,-96 408.5,-96 408.5,-66 540.5,-66 540.5,-96"/>
-<text text-anchor="start" x="416.5" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">include/mim/plug/regex</text>
-<text text-anchor="middle" x="474.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/dfa2matcher.h</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node3 -->
-<g id="edge2_Node000002_Node000003" class="edge">
-<title>Node2&#45;&gt;Node3</title>
-<g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M366.88,-127.92C390.58,-117.8 419.69,-105.38 441.66,-96.01"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="365.24,-124.81 357.42,-131.95 367.99,-131.25 365.24,-124.81"/>
-</a>
-</g>
-</g>
-<!-- Node6 -->
-<g id="Node000006" class="node">
-<title>Node6</title>
-<g id="a_Node000006"><a xlink:href="regex2nfa_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="390.5,-96 258.5,-96 258.5,-66 390.5,-66 390.5,-96"/>
-<text text-anchor="start" x="266.5" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">include/mim/plug/regex</text>
-<text text-anchor="middle" x="324.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/regex2nfa.h</text>
-</a>
-</g>
-</g>
-<!-- Node2&#45;&gt;Node6 -->
-<g id="edge5_Node000002_Node000006" class="edge">
-<title>Node2&#45;&gt;Node6</title>
-<g id="a_edge5_Node000002_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M324.5,-121.54C324.5,-112.96 324.5,-103.61 324.5,-96.16"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="321,-121.8 324.5,-131.8 328,-121.8 321,-121.8"/>
+<g id="a_edge12_Node000001_Node000005"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M546.17,-190.71C575.61,-160.49 619.74,-104.55 588.5,-66 585.72,-62.57 484.06,-41.93 415.09,-28.27"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="543.66,-188.27 539.05,-197.82 548.6,-193.23 543.66,-188.27"/>
 </a>
 </g>
 </g>
@@ -145,74 +107,56 @@ var sectionId = 'dynsection-1';
 <g id="Node000008" class="node">
 <title>Node8</title>
 <g id="a_Node000008"><a xlink:href="regex_2normalizers_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="111,-96 0,-96 0,-66 111,-66 111,-96"/>
-<text text-anchor="start" x="8" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
-<text text-anchor="middle" x="55.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/normalizers.cpp</text>
+<polygon fill="white" stroke="#666666" points="579,-96 468,-96 468,-66 579,-66 579,-96"/>
+<text text-anchor="start" x="476" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
+<text text-anchor="middle" x="523.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/normalizers.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node8 -->
-<g id="edge8_Node000002_Node000008" class="edge">
-<title>Node2&#45;&gt;Node8</title>
-<g id="a_edge8_Node000002_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M255.53,-129.59C210.72,-118.93 153.07,-105.21 111.18,-95.25"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="254.93,-133.05 265.47,-131.95 256.55,-126.24 254.93,-133.05"/>
+<!-- Node1&#45;&gt;Node8 -->
+<g id="edge11_Node000001_Node000008" class="edge">
+<title>Node1&#45;&gt;Node8</title>
+<g id="a_edge11_Node000001_Node000008"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M523.5,-187.68C523.5,-160.7 523.5,-118.11 523.5,-96.14"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="520,-187.84 523.5,-197.84 527,-187.84 520,-187.84"/>
 </a>
 </g>
 </g>
-<!-- Node9 -->
-<g id="Node000009" class="node">
-<title>Node9</title>
-<g id="a_Node000009"><a xlink:href="regex_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="240,-96 129,-96 129,-66 240,-66 240,-96"/>
-<text text-anchor="start" x="137" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
-<text text-anchor="middle" x="184.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/regex.cpp</text>
+<!-- Node3 -->
+<g id="Node000003" class="node">
+<title>Node3</title>
+<g id="a_Node000003"><a xlink:href="dfa2matcher_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="449.5,-96 317.5,-96 317.5,-66 449.5,-66 449.5,-96"/>
+<text text-anchor="start" x="325.5" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">include/mim/plug/regex</text>
+<text text-anchor="middle" x="383.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/dfa2matcher.h</text>
 </a>
 </g>
 </g>
-<!-- Node2&#45;&gt;Node9 -->
-<g id="edge9_Node000002_Node000009" class="edge">
-<title>Node2&#45;&gt;Node9</title>
-<g id="a_edge9_Node000002_Node000009"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M284.65,-127.78C262.58,-117.69 235.56,-105.34 215.15,-96.01"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="283.23,-130.98 293.78,-131.95 286.14,-124.61 283.23,-130.98"/>
+<!-- Node2&#45;&gt;Node3 -->
+<g id="edge2_Node000002_Node000003" class="edge">
+<title>Node2&#45;&gt;Node3</title>
+<g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M332.87,-125.2C344.01,-115.7 356.91,-104.69 366.9,-96.16"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="330.48,-122.64 325.14,-131.8 335.02,-127.97 330.48,-122.64"/>
 </a>
 </g>
 </g>
-<!-- Node4 -->
-<g id="Node000004" class="node">
-<title>Node4</title>
-<g id="a_Node000004"><a xlink:href="dfa2matcher_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="488,-30 377,-30 377,0 488,0 488,-30"/>
-<text text-anchor="start" x="385" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
-<text text-anchor="middle" x="432.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/dfa2matcher.cpp</text>
+<!-- Node6 -->
+<g id="Node000006" class="node">
+<title>Node6</title>
+<g id="a_Node000006"><a xlink:href="regex2nfa_8h.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="299.5,-96 167.5,-96 167.5,-66 299.5,-66 299.5,-96"/>
+<text text-anchor="start" x="175.5" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">include/mim/plug/regex</text>
+<text text-anchor="middle" x="233.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/regex2nfa.h</text>
 </a>
 </g>
 </g>
-<!-- Node3&#45;&gt;Node4 -->
-<g id="edge3_Node000003_Node000004" class="edge">
-<title>Node3&#45;&gt;Node4</title>
-<g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M459.57,-57.24C453.64,-48.21 447.01,-38.11 441.8,-30.16"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="456.77,-59.36 465.18,-65.8 462.62,-55.52 456.77,-59.36"/>
-</a>
-</g>
-</g>
-<!-- Node3&#45;&gt;Node5 -->
-<g id="edge4_Node000003_Node000005" class="edge">
-<title>Node3&#45;&gt;Node5</title>
-<g id="a_edge4_Node000003_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M503.83,-60.03C518.06,-50.34 534.81,-38.94 547.7,-30.16"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="501.66,-57.28 495.36,-65.8 505.6,-63.06 501.66,-57.28"/>
-</a>
-</g>
-</g>
-<!-- Node6&#45;&gt;Node5 -->
-<g id="edge6_Node000006_Node000005" class="edge">
-<title>Node6&#45;&gt;Node5</title>
-<g id="a_edge6_Node000006_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M387.84,-63.39C427.34,-53.03 477.6,-39.84 515.08,-30.01"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="386.83,-60.03 378.05,-65.95 388.61,-66.8 386.83,-60.03"/>
+<!-- Node2&#45;&gt;Node6 -->
+<g id="edge5_Node000002_Node000006" class="edge">
+<title>Node2&#45;&gt;Node6</title>
+<g id="a_edge5_Node000002_Node000006"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M284.13,-125.2C272.99,-115.7 260.09,-104.69 250.1,-96.16"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="281.98,-127.97 291.86,-131.8 286.52,-122.64 281.98,-127.97"/>
 </a>
 </g>
 </g>
@@ -220,9 +164,83 @@ var sectionId = 'dynsection-1';
 <g id="Node000007" class="node">
 <title>Node7</title>
 <g id="a_Node000007"><a xlink:href="regex2nfa_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="359,-30 248,-30 248,0 359,0 359,-30"/>
-<text text-anchor="start" x="256" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
-<text text-anchor="middle" x="303.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/regex2nfa.cpp</text>
+<polygon fill="white" stroke="#666666" points="242,-30 131,-30 131,0 242,0 242,-30"/>
+<text text-anchor="start" x="139" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
+<text text-anchor="middle" x="186.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/regex2nfa.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node7 -->
+<g id="edge10_Node000002_Node000007" class="edge">
+<title>Node2&#45;&gt;Node7</title>
+<g id="a_edge10_Node000002_Node000007"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M232.58,-139.1C204.64,-132.45 175.66,-119.8 158.5,-96 143.87,-75.71 161.02,-47.09 174.19,-30.15"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="231.89,-142.53 242.4,-141.21 233.36,-135.69 231.89,-142.53"/>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node8 -->
+<g id="edge8_Node000002_Node000008" class="edge">
+<title>Node2&#45;&gt;Node8</title>
+<g id="a_edge8_Node000002_Node000008"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M365.65,-128.99C400.24,-118.69 443.83,-105.72 476.43,-96.01"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="364.27,-125.75 355.68,-131.95 366.27,-132.46 364.27,-125.75"/>
+</a>
+</g>
+</g>
+<!-- Node9 -->
+<g id="Node000009" class="node">
+<title>Node9</title>
+<g id="a_Node000009"><a xlink:href="regex_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="111,-96 0,-96 0,-66 111,-66 111,-96"/>
+<text text-anchor="start" x="8" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
+<text text-anchor="middle" x="55.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/regex.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node2&#45;&gt;Node9 -->
+<g id="edge9_Node000002_Node000009" class="edge">
+<title>Node2&#45;&gt;Node9</title>
+<g id="a_edge9_Node000002_Node000009"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M243.08,-129.45C202.09,-119.08 149.83,-105.86 110.89,-96.01"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="242.43,-132.9 252.98,-131.95 244.14,-126.11 242.43,-132.9"/>
+</a>
+</g>
+</g>
+<!-- Node4 -->
+<g id="Node000004" class="node">
+<title>Node4</title>
+<g id="a_Node000004"><a xlink:href="dfa2matcher_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="544,-30 433,-30 433,0 544,0 544,-30"/>
+<text text-anchor="start" x="441" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">src/mim/plug/regex</text>
+<text text-anchor="middle" x="488.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/dfa2matcher.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node4 -->
+<g id="edge3_Node000003_Node000004" class="edge">
+<title>Node3&#45;&gt;Node4</title>
+<g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M415.17,-60.69C431.38,-50.82 450.75,-39.01 465.51,-30.01"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="413.26,-57.76 406.54,-65.95 416.9,-63.74 413.26,-57.76"/>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node5 -->
+<g id="edge4_Node000003_Node000005" class="edge">
+<title>Node3&#45;&gt;Node5</title>
+<g id="a_edge4_Node000003_Node000005"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M372.2,-56.68C367.9,-47.79 363.13,-37.95 359.36,-30.16"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="369.11,-58.32 376.62,-65.8 375.41,-55.27 369.11,-58.32"/>
+</a>
+</g>
+</g>
+<!-- Node6&#45;&gt;Node5 -->
+<g id="edge6_Node000006_Node000005" class="edge">
+<title>Node6&#45;&gt;Node5</title>
+<g id="a_edge6_Node000006_Node000005"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M268.63,-61.11C287.15,-51.14 309.49,-39.13 326.45,-30.01"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="266.76,-58.14 259.62,-65.95 270.08,-64.3 266.76,-58.14"/>
 </a>
 </g>
 </g>
@@ -230,8 +248,8 @@ var sectionId = 'dynsection-1';
 <g id="edge7_Node000006_Node000007" class="edge">
 <title>Node6&#45;&gt;Node7</title>
 <g id="a_edge7_Node000006_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M316.66,-56.11C313.8,-47.38 310.65,-37.78 308.15,-30.16"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="313.4,-57.39 319.84,-65.8 320.05,-55.2 313.4,-57.39"/>
+<path fill="none" stroke="#63b8ff" d="M217,-57.53C210.31,-48.43 202.8,-38.19 196.9,-30.16"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="214.33,-59.81 223.07,-65.8 219.97,-55.66 214.33,-59.81"/>
 </a>
 </g>
 </g>
