@@ -22,10 +22,10 @@ Driver::Driver()
     }
 
     // add path/to/mim.exe/../../lib/mim
-    if (auto path = sys::path_to_curr_exe()) add_search_path(path->parent_path().parent_path() / "lib" / "mim");
+    if (auto path = sys::path_to_curr_exe()) add_search_path(path->parent_path().parent_path() / MIM_LIBDIR / "mim");
 
     // add install path if different from above
-    if (auto install_path = fs::path{MIM_INSTALL_PREFIX} / "lib" / "mim"; fs::exists(install_path)) {
+    if (auto install_path = fs::path{MIM_INSTALL_PREFIX} / MIM_LIBDIR / "mim"; fs::exists(install_path)) {
         if (search_paths().size() < 2 || !fs::equivalent(install_path, search_paths().back()))
             add_search_path(std::move(install_path));
     }
