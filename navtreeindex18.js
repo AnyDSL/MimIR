@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"direct.html":[2,6],
 "direct_2autogen_8h.html":[6,0,0,1,0,0,6,0],
 "direct_2autogen_8h.html#a63ab0390a9840f205dd5132836778f00":[6,0,0,1,0,0,6,0,0],
 "direct_2autogen_8h_source.html":[6,0,0,1,0,0,6,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "namespaceautomaton.html#ab8673e0658e5b031357bc29c86647de1":[3,0,0,17],
 "namespaceautomaton.html#ada83a1afb11a83442f8fff527c4df2b9":[3,0,0,6],
 "namespaceautomaton.html#aef07ecf43eaae4c4c5c5f371e56d7f79":[3,0,0,9],
-"namespaceautomaton.html#afa6a570db4fdd2ae8e3f1f5e4b654ec6":[3,0,0,12],
-"namespacemembers.html":[3,1,0]
+"namespaceautomaton.html#afa6a570db4fdd2ae8e3f1f5e4b654ec6":[3,0,0,12]
 };

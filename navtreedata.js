@@ -109,12 +109,12 @@ var NAVTREEINDEX =
 "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a644cd57745626e1e7bfaa30032c1bcf4",
 "classmim_1_1ll_1_1Emitter.html#ad5dad6431ffc8fb3d803e7c43fcf0722",
 "classmim_1_1unique__queue.html#a1d2b139e34bfc51d1cd42c7fb1244fd8",
-"direct_2autogen_8h.html",
+"direct.html",
 "namespacemembers.html",
-"namespacemim.html#afb12dbffaaa27bca46f171517d96256da2f14a262872a344ea85b24f3a2ecc68a",
-"namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205a8fa14cdd754f91cc6554c9e71929cce7",
-"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3ad2b1d11152e7976269ef052c4f8a0206",
-"namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dca4b43b0aee35624cd95b910189b3dc231",
+"namespacemim.html#afb12dbffaaa27bca46f171517d96256da1448e86d90e0feb307c2894c24e87767",
+"namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205a87cab54248fb9116e9a0944967396ec6",
+"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3ab2f5ff47436671b6e533d8dc3614845d",
+"namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dca2db95e8e1a9267b7a1188556b2013b33",
 "structmim_1_1Elem.html#a39ae5bd9af08c76d24b5cdcbdc02bcaf"
 ];
 
