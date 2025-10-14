@@ -106,7 +106,7 @@ var searchData=
   ['rewrite_2ecpp_103',['rewrite.cpp',['../rewrite_8cpp.html',1,'']]],
   ['rewrite_2eh_104',['rewrite.h',['../rewrite_8h.html',1,'']]],
   ['rewrite_5f_105',['rewrite_',['../classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html#aa5a63ee7a4670ac8d41e8fad2c3c954b',1,'mim::plug::matrix::LowerMatrixHighLevelMapRed::rewrite_()'],['../classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html#a4014a3a71c55fd41d078ded0a8980700',1,'mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()']]],
-  ['rewrite_5fannex_106',['rewrite_annex',['../classmim_1_1RWPhase.html#a64aef791fdf4d2b1e46a49254d9be5bd',1,'mim::RWPhase']]],
+  ['rewrite_5fannex_106',['rewrite_annex',['../classmim_1_1RWPhase.html#a64aef791fdf4d2b1e46a49254d9be5bd',1,'mim::RWPhase::rewrite_annex()'],['../classmim_1_1EtaExpPhase.html#a8148616eb41b1f07fd1ce827c11b569d',1,'mim::EtaExpPhase::rewrite_annex()']]],
   ['rewrite_5farg_107',['rewrite_arg',['../classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a411a9e18df4811dc62e6ae127db12698',1,'mim::plug::clos::ClosConvPrep']]],
   ['rewrite_5fcallee_108',['rewrite_callee',['../classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a0a2ab354bda717294cd7aaaadbdd5f46',1,'mim::plug::clos::ClosConvPrep']]],
   ['rewrite_5fexternal_109',['rewrite_external',['../classmim_1_1RWPhase.html#af324f7c09f5b26f88fbf3dad4e059b26',1,'mim::RWPhase::rewrite_external()'],['../classmim_1_1EtaExpPhase.html#a86a8ce5b38654f2a6dec3753f01c2ed7',1,'mim::EtaExpPhase::rewrite_external()'],['../classmim_1_1EtaRedPhase.html#a7278908daa1212badcc3dfc65c759cb6',1,'mim::EtaRedPhase::rewrite_external()'],['../classmim_1_1PrefixCleanup.html#a513d6067fa39fbceee7a64a5e3ae6a8c',1,'mim::PrefixCleanup::rewrite_external()']]],
