@@ -90,7 +90,7 @@ public:
         }
     }
 
-    /// Helpfer for Splay-Tree: rotate left/right:
+    /// Helper for Splay-Tree: rotate left/right:
     /// ```
     ///  | Left                  | Right                  |
     ///  |-----------------------|------------------------|
