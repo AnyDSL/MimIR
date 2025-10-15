@@ -87,13 +87,13 @@ let %regex.cls.S = %regex.not_ %regex.cls.s;
 ///
 /// Match any character.
 ///
-axm %regex.any: RE;
+axm %regex.any: RE, 0;
 ///
 /// ## %%regex.empty
 ///
 /// Matches the empty string.
 ///
-axm %regex.empty: RE;
+axm %regex.empty: RE, 0;
 ///
 /// ## Quantifiers
 ///
