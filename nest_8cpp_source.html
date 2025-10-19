@@ -210,7 +210,7 @@ $(function(){initNavTree('nest_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">while</span> (m-&gt;level() &lt; n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a5ca8a41842e20f1ccf3a9ecb40630546">level</a>())</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        n = n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#ac9b1473e086555e945e0dae19ff38637">parent</a>();</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">while</span> (n != m) {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="comment">// TODO support longer dep chains and and the possibility to opt out from this</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="comment">// TODO support longer dep chains and the possibility to opt out from this</span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keywordflow">if</span> (n-&gt;deps().depends_.contains(m)) <span class="keywordflow">return</span> n;</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">if</span> (m-&gt;deps().depends_.contains(n)) <span class="keywordflow">return</span> m;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        n = n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#ac9b1473e086555e945e0dae19ff38637">parent</a>();</div>
