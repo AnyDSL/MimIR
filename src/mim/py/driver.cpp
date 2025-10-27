@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/stl/filesystem.h>
+#include <fe/sym.h>
 
 #include <mim/driver.h>
 namespace py = pybind11;
@@ -8,7 +9,7 @@ namespace py = pybind11;
 namespace mim {
 
 void init_driver(py::module_& m) {
-    py::class_<mim::Driver, std::unique_ptr<mim::Driver, py::nodelete>>(m, "Driver")
+    py::class_<mim::Driver, std::unique_ptr<mim::Driver, py::nodelete>, fe::SymPool>(m, "Driver")
         .def(py::init<>())
         .def("world", &mim::Driver::world, py::return_value_policy::reference_internal)
         .def("add_import", &mim::Driver::add_import, py::return_value_policy::reference_internal)

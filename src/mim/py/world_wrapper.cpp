@@ -13,11 +13,6 @@ public:
         : world_(world) {}
 
     const mim::Def* annex(Sym sym) {
-        world_->DLOG("given sym: {}", sym);
-
-        auto ret = world_->sym2annex(sym);
-
-        world_->DLOG("returned Def: {}", ret);
         return world_->sym2annex(sym);
     }
 
@@ -32,7 +27,15 @@ public:
         return;
     }
 
-    Lam* mut_fun(const mim::Def* dom, std::vector<mim::Def*> codom) { return world_->mut_fun(dom, codom); }
+    Lam* mut_fun(const mim::Def* dom, std::vector<mim::Def*> codom) {
+        auto c = dom;
+        std::cout  << "hello from cpp: " <<  c << std::endl;
+        return world_->mut_fun(dom, codom); 
+    }
+
+    Sym sym(const std::string& s){
+        return world_->sym(s);
+    }
 
 private:
     mim::World* world_;
