@@ -78,7 +78,7 @@ var searchData=
   ['any_5fbegin_75',['any_begin',['../classmim_1_1BitSet.html#a767e387952e754fc3fe35a062a800173',1,'mim::BitSet']]],
   ['any_5fend_76',['any_end',['../classmim_1_1BitSet.html#a169583be595bfb21a63ff5faaf74690d',1,'mim::BitSet']]],
   ['any_5frange_77',['any_range',['../classmim_1_1BitSet.html#ad66d4f6866425716331c6ea3258ae99e',1,'mim::BitSet']]],
-  ['any_5funwanted_78',['any_unwanted',['../namespacemim_1_1plug_1_1regex.html#a201f070f889e21a2fbf4308918cd34d9',1,'mim::plug::regex']]],
+  ['any_5funwanted_5ffor_5fnot_78',['any_unwanted_for_not',['../namespacemim_1_1plug_1_1regex.html#afc913cbf58308232750894b06c902854',1,'mim::plug::regex']]],
   ['app_79',['App',['../classmim_1_1App.html',1,'mim::App'],['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01caac863f346e618f9a959b5c95d5d28941',1,'mim::ast::Expr::App'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daac863f346e618f9a959b5c95d5d28941',1,'mim::App']]],
   ['app_80',['app',['../classmim_1_1Lam.html#aa5c1c1fa53947444e053016d9254830f',1,'mim::Lam::app(Filter filter, const Def *callee, const Def *arg)'],['../classmim_1_1Lam.html#aeb1b28bd416cc50f801312fe6d34e967',1,'mim::Lam::app(Filter filter, const Def *callee, Defs args)'],['../classmim_1_1Branch.html#a900ff0e894cfe0147f7e5bf17cac2d3b',1,'mim::Branch::app()'],['../classmim_1_1World.html#a41d6416de4c8ec665cb15c3ca7db77e6',1,'mim::World::app(const Def *callee, const Def *arg)'],['../classmim_1_1World.html#a93a98b93cc3a2bf64432ca28a53668b7',1,'mim::World::app(const Def *callee, Defs args)']]],
   ['app_5frange_81',['app_range',['../structmim_1_1plug_1_1regex_1_1app__range.html',1,'mim::plug::regex']]],

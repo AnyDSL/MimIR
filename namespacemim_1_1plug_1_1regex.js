@@ -24,11 +24,11 @@ var namespacemim_1_1plug_1_1regex =
       [ "plus", "namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55ad7d18cfb3a0d8293e2f5d94ea30e04d2", null ]
     ] ],
     [ "range", "namespacemim_1_1plug_1_1regex.html#a64e05eb3efae975d47944dc127eede75", null ],
-    [ "any_unwanted", "namespacemim_1_1plug_1_1regex.html#a201f070f889e21a2fbf4308918cd34d9", null ],
+    [ "any_unwanted_for_not", "namespacemim_1_1plug_1_1regex.html#afc913cbf58308232750894b06c902854", null ],
     [ "compare_re", "namespacemim_1_1plug_1_1regex.html#ae5b509ae2785246a5099b89e294ac2fe", null ],
     [ "equals_any", "namespacemim_1_1plug_1_1regex.html#afe291bf091de248e352dada9e3653c04", null ],
     [ "equals_any", "namespacemim_1_1plug_1_1regex.html#aa8cfe9b14b05191510c403314b69f2f7", null ],
-    [ "equals_any", "namespacemim_1_1plug_1_1regex.html#a27ecf9ea39cecd2d5eedd5a90b4d36a4", null ],
+    [ "equals_any", "namespacemim_1_1plug_1_1regex.html#adf2180c7f13b0b63b87d77fdb41f2e92", null ],
     [ "get_range", "namespacemim_1_1plug_1_1regex.html#a22ae7a476a9fc4465086b7c5c57c33a7", null ],
     [ "is_in_range", "namespacemim_1_1plug_1_1regex.html#a57ccd812190be59e69cc7ab1b563dfa9", null ],
     [ "make_binary_tree", "namespacemim_1_1plug_1_1regex.html#af81cf78b33c5d7b68c0c2d58e1b05edc", null ],

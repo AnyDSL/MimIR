@@ -2,11 +2,11 @@ var regex_2normalizers_8cpp =
 [
     [ "mim::plug::regex::app_range", "structmim_1_1plug_1_1regex_1_1app__range.html", "structmim_1_1plug_1_1regex_1_1app__range" ],
     [ "Ranges", "regex_2normalizers_8cpp.html#a89da4931e7b75c7ac81211ba6b410f48", null ],
-    [ "mim::plug::regex::any_unwanted", "namespacemim_1_1plug_1_1regex.html#a201f070f889e21a2fbf4308918cd34d9", null ],
+    [ "mim::plug::regex::any_unwanted_for_not", "namespacemim_1_1plug_1_1regex.html#afc913cbf58308232750894b06c902854", null ],
     [ "mim::plug::regex::compare_re", "namespacemim_1_1plug_1_1regex.html#ae5b509ae2785246a5099b89e294ac2fe", null ],
     [ "mim::plug::regex::equals_any", "namespacemim_1_1plug_1_1regex.html#afe291bf091de248e352dada9e3653c04", null ],
     [ "mim::plug::regex::equals_any", "namespacemim_1_1plug_1_1regex.html#aa8cfe9b14b05191510c403314b69f2f7", null ],
-    [ "mim::plug::regex::equals_any", "namespacemim_1_1plug_1_1regex.html#a27ecf9ea39cecd2d5eedd5a90b4d36a4", null ],
+    [ "mim::plug::regex::equals_any", "namespacemim_1_1plug_1_1regex.html#adf2180c7f13b0b63b87d77fdb41f2e92", null ],
     [ "mim::plug::regex::get_range", "namespacemim_1_1plug_1_1regex.html#a22ae7a476a9fc4465086b7c5c57c33a7", null ],
     [ "mim::plug::regex::is_in_range", "namespacemim_1_1plug_1_1regex.html#a57ccd812190be59e69cc7ab1b563dfa9", null ],
     [ "mim::plug::regex::make_binary_tree", "namespacemim_1_1plug_1_1regex.html#af81cf78b33c5d7b68c0c2d58e1b05edc", null ],
