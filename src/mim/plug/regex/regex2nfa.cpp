@@ -14,6 +14,37 @@ using namespace mim;
 namespace mim::plug::regex {
 
 namespace {
+
+std::vector<std::pair<std::uint8_t, std::uint8_t>> gather_ranges(const Def* regex) {
+    auto args = detail::flatten_in_arg<regex::disj>(regex);
+    std::vector<std::pair<std::uint8_t, std::uint8_t>> inner_ranges;
+    for (auto& arg : args) {
+        if (auto not_ = Axm::isa<regex::not_>(arg)) {
+            auto not_ranges = gather_ranges(not_->arg());
+            inner_ranges.insert(inner_ranges.end(), not_ranges.begin(), not_ranges.end());
+        } else if (auto any = Axm::isa<regex::any>(arg)) {
+            inner_ranges.emplace_back(0, 255);
+        } else {
+            assert(Axm::isa<regex::range>(arg)
+                   && "as per normalizer, if we're in a 'not_' argument, we must only have disjs, not_ and ranges!");
+
+            auto rng_match = Axm::isa<regex::range, false>(arg);
+            inner_ranges.emplace_back(Lit::as<std::uint8_t>(rng_match->arg(0)),
+                                      Lit::as<std::uint8_t>(rng_match->arg(1)));
+        }
+    }
+    std::sort(inner_ranges.begin(), inner_ranges.end());
+    std::uint8_t last{0};
+    std::vector<std::pair<std::uint8_t, std::uint8_t>> ranges;
+    for (auto rng : inner_ranges) {
+        if (rng.first > last) ranges.push_back({last, static_cast<std::uint8_t>(rng.first - 1)});
+        // ranges.push_back({rng.first, rng.second});
+        last = std::min(rng.second + 1_u16, 255);
+    }
+    if (last < 255) ranges.push_back({last, 255});
+    return ranges;
+}
+
 struct Regex2NfaConverter {
     Regex2NfaConverter()
         : nfa_(std::make_unique<automaton::NFA>()) {}
@@ -42,26 +73,12 @@ struct Regex2NfaConverter {
             if (error) add_range_transitions(start, error, 0, 255);
         } else if (auto not_ = Axm::isa<regex::not_>(regex)) {
             auto first = nfa_->add_state();
-            auto error = nfa_->add_state();
 
             start->add_transition(first, automaton::NFA::SpecialTransitons::EPSILON);
-            auto args = detail::flatten_in_arg<regex::disj>(not_->arg());
-            std::vector<std::pair<std::uint8_t, std::uint8_t>> ranges;
-            for (auto& arg : args) {
-                assert(Axm::isa<regex::range>(arg)
-                       && "as per normalizer, if we're in a 'not_' argument, we must only have disjs and ranges!");
+            auto ranges = gather_ranges(not_->arg());
 
-                auto rng_match = Axm::isa<regex::range, false>(arg);
-                ranges.emplace_back(Lit::as<std::uint8_t>(rng_match->arg(0)), Lit::as<std::uint8_t>(rng_match->arg(1)));
-            }
-            std::sort(ranges.begin(), ranges.end());
-            std::uint8_t last{0};
-            for (auto rng : ranges) {
-                if (rng.first > last) add_range_transitions(first, end, last, rng.first - 1);
-                add_range_transitions(first, error, rng.first, rng.second);
-                last = std::min(rng.second + 1_u16, 255);
-            }
-            if (last < 255) add_range_transitions(first, end, last, 255);
+            for (auto rng : ranges)
+                add_range_transitions(first, end, rng.first, rng.second);
         } else if (auto neg = Axm::isa<regex::neg_lookahead>(regex)) {
             auto first = nfa_->add_state();
             auto error = nfa_->add_state();

@@ -145,12 +145,14 @@ bool equals_any(const Def* lhs, const Def* rhs) {
     return check_arg_equiv(lhs, rhs) || check_arg_equiv(rhs, lhs);
 }
 
-bool equals_any(Defs lhs, Defs rhs) {
+bool equals_any(Defs lhs, Defs negated_rhs) {
     Ranges lhs_ranges, rhs_ranges;
     auto only_ranges = std::ranges::views::filter([](auto d) { return Axm::isa<range>(d); });
     std::ranges::transform(lhs | only_ranges, std::back_inserter(lhs_ranges), get_range);
-    std::ranges::transform(rhs | only_ranges, std::back_inserter(rhs_ranges), get_range);
-    return std::ranges::includes(lhs_ranges, rhs_ranges) || std::ranges::includes(rhs_ranges, lhs_ranges);
+    std::ranges::transform(negated_rhs | only_ranges, std::back_inserter(rhs_ranges), get_range);
+    if (rhs_ranges.size() != negated_rhs.size()) return false;
+    // this only holds, if the rhs only contains ranges and the ranges in lhs fully cover the ranges on rhs
+    return std::ranges::includes(lhs_ranges, rhs_ranges);
 }
 
 const Def* normalize_disj(const Def* type, const Def*, const Def* arg) {
@@ -205,20 +207,24 @@ const Def* normalize_range(const Def* type, const Def* callee, const Def* arg) {
     return {};
 }
 
-const Def* any_unwanted(const Def* arg) {
+const Def* any_unwanted_for_not(const Def* arg) {
     if (auto ax = Axm::isa<regex::range>(arg)) return nullptr;
+    if (auto ax = Axm::isa<regex::not_>(arg)) return nullptr;
+    if (auto ax = Axm::isa<regex::any>(arg)) return nullptr;
     if (auto disj = Axm::isa<regex::disj>(arg)) {
         for (const auto* disj_arg : disj->args())
-            if (auto ret = any_unwanted(disj_arg)) return ret;
+            if (auto ret = any_unwanted_for_not(disj_arg)) return ret;
         return nullptr;
     }
     return arg;
 }
 
 const Def* normalize_not(const Def*, const Def* callee, const Def* arg) {
-    if (auto unwanted = any_unwanted(arg)) {
+    if (auto unwanted = any_unwanted_for_not(arg)) {
         throw Error()
-            .error(arg->loc(), "regex.not_ must only be used with regex.disj and regex.range: {} {}", callee, arg)
+            .error(arg->loc(),
+                   "regex.not_ must only be used with regex.disj, regex.range, regex.any and regex.not_: {} {}", callee,
+                   arg)
             .error(unwanted->loc(), "found unwanted: {}", unwanted);
     }
     return {};
