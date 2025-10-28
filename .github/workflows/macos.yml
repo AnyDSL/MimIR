@@ -27,7 +27,7 @@ jobs:
           override_cache_key: mac-15-ccache-${{matrix.build-type}}
 
       - name: Install LLVM and Clang
-        run: brew install llvm@${{ matrix.clang }}
+        run: brew install llvm@${{ matrix.clang }} lit
 
       - name: Configure
         run: |
@@ -53,7 +53,6 @@ jobs:
 
       - name: Install LIT
         run: |
-          ${MIM_PYTHON} -m pip install lit psutil
           ln -s ${{github.workspace}}/bin/${{ steps.configure.outputs.FILE_NAME }} ${{github.workspace}}/bin/FileCheck
           chmod +x ${{github.workspace}}/bin/FileCheck
 
