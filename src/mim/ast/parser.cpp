@@ -501,7 +501,6 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
             return ptr<IdPtrn>(track, dbg, std::move(type));
         } else if (is_paren_style(style)) {
             // p ->  s
-            // p -> `s
             auto dbg = eat(Tag::M_id).dbg();
             return ptr<IdPtrn>(track, dbg, nullptr);
         } else {
