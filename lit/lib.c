@@ -1,5 +1,5 @@
-#include <inttypes.h>
 #include <stdint.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef linux
