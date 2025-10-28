@@ -2,7 +2,7 @@
 
 [TOC]
 
-This guide summaries typical idioms you want to use when working with MimIR as a developer.
+This guide summarizes typical idioms you want to use when working with MimIR as a developer.
 
 ## Basics
 
