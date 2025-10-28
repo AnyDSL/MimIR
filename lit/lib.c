@@ -1,7 +1,7 @@
-#include <stdint.h>
-#include <inttypes.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdint>
+#include <cinttypes>
+#include <cstdio>
+#include <cstdlib>
 #ifdef linux
 // TODO: use platform independent time functions
 #    include <sys/time.h>
