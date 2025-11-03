@@ -20,7 +20,7 @@ void init_world_wrapper(py::module_& m) {
         .def("type_i32", &mim::PyWorld::type_i32, py::return_value_policy::reference_internal)
         .def("mut_fun", &mim::PyWorld::mut_fun, py::return_value_policy::reference_internal)
         .def("sym", &mim::PyWorld::sym, py::return_value_policy::reference_internal);
-        
+
     // clang-format on
 }
 
@@ -42,6 +42,7 @@ void init_world(py::module_& m) {
         
         std:: cout << "called mut_fun with domain: " << d << std::endl;
         return w.mut_fun(dom, codom);
-    }, py::return_value_policy::reference_internal);
+    }, py::return_value_policy::reference_internal)
+    .def("call", static_cast<const mim::Def* (World::*)(mim::Sym, py::kwargs)>);
 }
 } // namespace mim
