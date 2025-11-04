@@ -7,8 +7,8 @@ import dont_compile.mim;
 
 let Top = ⊤:Nat;
 
-con extern conj(mem: %mem.M, string: %mem.Ptr (<<Top; I8>>, 0), return: Cn [%mem.M, Bool, I32]) =
-    let pattern = %regex.conj (%regex.lit 'a', %regex.empty);
+con extern conj_empty(mem: %mem.M, string: %mem.Ptr (<<Top; I8>>, 0), return: Cn [%mem.M, Bool, I32]) =
+    let pattern = %regex.conj (%regex.empty);
     return (pattern (mem, string, 0I32));
-// CHECK: %regex.range ‹2; 97I8›
+// CHECK: %regex.empty
 // CHECK-NOT: %regex.conj
