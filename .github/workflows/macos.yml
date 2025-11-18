@@ -19,6 +19,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Set up Python
+        run: |
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install lit psutil
 
       - name: Install LLVM
         run: brew install llvm
@@ -54,7 +59,7 @@ jobs:
       #
       - name: Configure
         run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3)) -DMIM_LIT_TIMEOUT=300
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=${{ github.workspace }}/.venv -DMIM_LIT_TIMEOUT=300
           sed -n -E "s/_Python3_EXECUTABLE:INTERNAL=([a-zA-Z0-9/.]+)$/MIM_PYTHON=\1/p" ${{github.workspace}}/build/CMakeCache.txt >> $GITHUB_ENV
         id: configure
 
@@ -67,11 +72,11 @@ jobs:
       #     out-file-path: bin
       #     token: ${{ secrets.GITHUB_TOKEN }}
       #
-      - name: Install LIT
-        run: |
-          ${MIM_PYTHON} -m pip install lit psutil
-          # ln -s ${{github.workspace}}/bin/${{ steps.configure.outputs.FILE_NAME }} ${{github.workspace}}/bin/FileCheck
-          # chmod +x ${{github.workspace}}/bin/FileCheck
+      # - name: Install LIT
+        # run: |
+          # ${MIM_PYTHON} -m pip install lit psutil
+          # # ln -s ${{github.workspace}}/bin/${{ steps.configure.outputs.FILE_NAME }} ${{github.workspace}}/bin/FileCheck
+          # # chmod +x ${{github.workspace}}/bin/FileCheck
 
       # - name: Prepare LLVM
       #   run: |
