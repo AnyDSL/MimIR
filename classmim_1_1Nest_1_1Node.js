@@ -1,12 +1,10 @@
 var classmim_1_1Nest_1_1Node =
 [
+    [ "Children", "structmim_1_1Nest_1_1Node_1_1Children.html", "structmim_1_1Nest_1_1Node_1_1Children" ],
+    [ "Siblings", "structmim_1_1Nest_1_1Node_1_1Siblings.html", "structmim_1_1Nest_1_1Node_1_1Siblings" ],
     [ "SCC", "classmim_1_1Nest_1_1Node.html#acbe7fe8d7710b145f48364b5c0ce7c72", null ],
-    [ "child", "classmim_1_1Nest_1_1Node.html#a3b393f4a0c9e81a38055c821e56fd3c1", null ],
-    [ "child_mut2node", "classmim_1_1Nest_1_1Node.html#a2cb62b1ce661e6267c21b05a1e704c13", null ],
-    [ "child_muts", "classmim_1_1Nest_1_1Node.html#a2d4bdc898818fbd8ee894ed0712c33b1", null ],
-    [ "child_nodes", "classmim_1_1Nest_1_1Node.html#ab850aa31ec3823bdd8c35bc2e30c841a", null ],
-    [ "controls", "classmim_1_1Nest_1_1Node.html#a718efe0b43d430c046807ea90b88d262", null ],
-    [ "depends", "classmim_1_1Nest_1_1Node.html#ab995cb714e52c292807b20291630e794", null ],
+    [ "children", "classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a", null ],
+    [ "inest", "classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985", null ],
     [ "is_directly_recursive", "classmim_1_1Nest_1_1Node.html#ae2e265b880bc9c14348f8eeb3c38eec1", null ],
     [ "is_mutually_recursive", "classmim_1_1Nest_1_1Node.html#ae7bc3d2bb2a18017ff6a9a18ca529f0c", null ],
     [ "is_recursive", "classmim_1_1Nest_1_1Node.html#aa81c36ca3e5a1b8aa646c841bea42351", null ],
@@ -16,10 +14,9 @@ var classmim_1_1Nest_1_1Node =
     [ "mut", "classmim_1_1Nest_1_1Node.html#a73f5b9658f4d8830f9dda6717377aadf", null ],
     [ "name", "classmim_1_1Nest_1_1Node.html#a025d0c2e4c0c53d47930f363c0e5f61d", null ],
     [ "nest", "classmim_1_1Nest_1_1Node.html#ae1c9f7727e8b614745014e839656825c", null ],
-    [ "num_children", "classmim_1_1Nest_1_1Node.html#a55dfe9106d35582e0f681b8b72df0ed7", null ],
-    [ "num_depends", "classmim_1_1Nest_1_1Node.html#a0529b738364d895b38ef62e93a9a11f4", null ],
-    [ "parent", "classmim_1_1Nest_1_1Node.html#ac9b1473e086555e945e0dae19ff38637", null ],
     [ "SCCs", "classmim_1_1Nest_1_1Node.html#a187c295f32e602fcc4573db9741a55c6", null ],
+    [ "siblings", "classmim_1_1Nest_1_1Node.html#af79ac8f15524252e678627512472e950", null ],
+    [ "siblings", "classmim_1_1Nest_1_1Node.html#a505beb3d18709d8d7507d4c0b1abdfd4", null ],
     [ "topo", "classmim_1_1Nest_1_1Node.html#acc9b1a95929c76ea4a03e8b9a75e9c5c", null ],
     [ "Nest", "classmim_1_1Nest_1_1Node.html#a835cdf64395521c736b393399a1dddbd", null ]
 ];

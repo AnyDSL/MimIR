@@ -16,6 +16,7 @@ var hierarchy =
     [ "mim::ll::BB", "structmim_1_1ll_1_1BB.html", null ],
     [ "mim::BitSet", "classmim_1_1BitSet.html", null ],
     [ "mim::Checker", "classmim_1_1Checker.html", null ],
+    [ "mim::Nest::Node::Children", "structmim_1_1Nest_1_1Node_1_1Children.html", null ],
     [ "mim::plug::clos::ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", null ],
     [ "mim::Dbg", "structmim_1_1Dbg.html", null ],
     [ "automaton::DFANode", "classautomaton_1_1DFANode.html", null ],
@@ -401,6 +402,7 @@ var hierarchy =
     [ "mim::Setters< Var >", "classmim_1_1Setters.html", [
       [ "mim::Var", "classmim_1_1Var.html", null ]
     ] ],
+    [ "mim::Nest::Node::Siblings< Forward >", "structmim_1_1Nest_1_1Node_1_1Siblings.html", null ],
     [ "std::span", null, [
       [ "mim::Span< const T, N >", "classmim_1_1Span.html", null ],
       [ "mim::Span< T, N >", "classmim_1_1Span.html", null ]

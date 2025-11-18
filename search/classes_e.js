@@ -47,12 +47,15 @@ var searchData=
   ['setters_3c_20uniq_20_3e_44',['Setters&lt; Uniq &gt;',['../classmim_1_1Setters.html',1,'mim']]],
   ['setters_3c_20univ_20_3e_45',['Setters&lt; Univ &gt;',['../classmim_1_1Setters.html',1,'mim']]],
   ['setters_3c_20var_20_3e_46',['Setters&lt; Var &gt;',['../classmim_1_1Setters.html',1,'mim']]],
-  ['sigma_47',['Sigma',['../classmim_1_1Sigma.html',1,'mim']]],
-  ['sigmaexpr_48',['SigmaExpr',['../classmim_1_1ast_1_1SigmaExpr.html',1,'mim::ast']]],
-  ['span_49',['Span',['../classmim_1_1Span.html',1,'mim']]],
-  ['span_3c_20const_20t_2c_20n_20_3e_50',['Span&lt; const T, N &gt;',['../classmim_1_1Span.html',1,'mim']]],
-  ['split_51',['Split',['../classmim_1_1Split.html',1,'mim']]],
-  ['ssa_52',['SSA',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html',1,'mim::plug::mem::pass']]],
-  ['stage_53',['Stage',['../classmim_1_1Stage.html',1,'mim']]],
-  ['state_54',['State',['../structmim_1_1World_1_1State.html',1,'mim::World']]]
+  ['siblings_47',['Siblings',['../structmim_1_1Nest_1_1Node_1_1Siblings.html',1,'mim::Nest::Node']]],
+  ['siblings_3c_20false_20_3e_48',['Siblings&lt; false &gt;',['../structmim_1_1Nest_1_1Node_1_1Siblings.html',1,'mim::Nest::Node']]],
+  ['siblings_3c_20true_20_3e_49',['Siblings&lt; true &gt;',['../structmim_1_1Nest_1_1Node_1_1Siblings.html',1,'mim::Nest::Node']]],
+  ['sigma_50',['Sigma',['../classmim_1_1Sigma.html',1,'mim']]],
+  ['sigmaexpr_51',['SigmaExpr',['../classmim_1_1ast_1_1SigmaExpr.html',1,'mim::ast']]],
+  ['span_52',['Span',['../classmim_1_1Span.html',1,'mim']]],
+  ['span_3c_20const_20t_2c_20n_20_3e_53',['Span&lt; const T, N &gt;',['../classmim_1_1Span.html',1,'mim']]],
+  ['split_54',['Split',['../classmim_1_1Split.html',1,'mim']]],
+  ['ssa_55',['SSA',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html',1,'mim::plug::mem::pass']]],
+  ['stage_56',['Stage',['../classmim_1_1Stage.html',1,'mim']]],
+  ['state_57',['State',['../structmim_1_1World_1_1State.html',1,'mim::World']]]
 ];

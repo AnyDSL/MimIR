@@ -6,7 +6,7 @@ var searchData=
   ['pad_3',['pad',['../namespacemim.html#a650811c0d49d453841b016dfa775c461',1,'mim']]],
   ['padding_4',['padding',['../classmim_1_1BitSet.html#abf89cda56a6eb098ea09c20c83f14978',1,'mim::BitSet']]],
   ['pair_5',['pair',['../classmim_1_1Select.html#a59031e25a631153cee4285eb00e5e01c',1,'mim::Select']]],
-  ['parent_6',['parent',['../classmim_1_1lct_1_1Node.html#abf5b870123a02874621655b08e29792b',1,'mim::lct::Node::parent'],['../classmim_1_1Nest_1_1Node.html#ac9b1473e086555e945e0dae19ff38637',1,'mim::Nest::Node::parent()']]],
+  ['parent_6',['parent',['../classmim_1_1lct_1_1Node.html#abf5b870123a02874621655b08e29792b',1,'mim::lct::Node']]],
   ['parser_7',['Parser',['../classmim_1_1ast_1_1Parser.html',1,'mim::ast::Parser'],['../classmim_1_1ast_1_1Parser.html#a3a6fc31bddc3da721fe722fb315b14f0',1,'mim::ast::Parser::Parser()']]],
   ['parser_2ecpp_8',['parser.cpp',['../parser_8cpp.html',1,'']]],
   ['parser_2eh_9',['parser.h',['../parser_8h.html',1,'']]],
