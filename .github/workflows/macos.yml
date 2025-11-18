@@ -23,18 +23,28 @@ jobs:
       - name: Install LLVM
         run: brew install llvm
 
-      - name: Confirm FileCheck exists
+
+      - name: Find LLVM bin prefix
         run: |
-          ls /usr/local/opt/llvm/bin | grep FileCheck || (echo "FileCheck missing" && exit 1)
-
-
-      - name: Install LLVM (with FileCheck)
-        uses: KyleMayes/install-llvm-action@v2
-        with:
-          version: "20"
+          brew --prefix llvm
+          ls "$(brew --prefix llvm)/bin"
 
       - name: Add LLVM to PATH
         run: echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
+
+      - name: Check FileCheck
+        run: |
+          which FileCheck
+          FileCheck --version
+
+
+      # - name: Install LLVM (with FileCheck)
+      #   uses: KyleMayes/install-llvm-action@v2
+      #   with:
+      #     version: "20"
+
+      # - name: Add LLVM to PATH
+      #   run: echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
 
       # - name: Setup ccache
       #   uses: Chocobo1/setup-ccache-action@v1
