@@ -25,44 +25,34 @@ jobs:
             source venv/bin/activate
             pip install lit psutil
 
-      - name: Install LLVM
-        run: brew install llvm
-
-
-      - name: Find LLVM bin prefix
+      - name: Install LLVM and add to PATH
         run: |
-          brew --prefix llvm
-          ls "$(brew --prefix llvm)/bin"
-
-      - name: Add LLVM to PATH
-        run: echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
+          brew install llvm
+          echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
 
       - name: Check FileCheck
         run: |
           which FileCheck
           FileCheck --version
 
-
-      # - name: Install LLVM (with FileCheck)
-      #   uses: KyleMayes/install-llvm-action@v2
-      #   with:
-      #     version: "20"
-
-      # - name: Add LLVM to PATH
-      #   run: echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
-
-      # - name: Setup ccache
-      #   uses: Chocobo1/setup-ccache-action@v1
-      #   with:
-      #     ccache_options: max_size=500M
-      #     override_cache_key: mac-latest-ccache-${{matrix.build-type}}
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
+        with:
+          ccache_options: max_size=500M
+          override_cache_key: mac-latest-ccache-${{matrix.build-type}}
       #
       - name: Configure
         run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=${{ github.workspace }}/.venv -DMIM_LIT_TIMEOUT=300
-          sed -n -E "s/_Python3_EXECUTABLE:INTERNAL=([a-zA-Z0-9/.]+)$/MIM_PYTHON=\1/p" ${{github.workspace}}/build/CMakeCache.txt >> $GITHUB_ENV
-        id: configure
+          cmake -B ${{github.workspace}}/build \
+                -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
+                -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON \
+                -DPython3_EXECUTABLE=${{github.workspace}}/.venv/bin/python3 \
+                -DMIM_LIT_TIMEOUT=300 \
+                -DPython3_EXECUTABLE=.venv/bin/python3
+        # id: configure
 
+          # sed -n -E "s/_Python3_EXECUTABLE:INTERNAL=([a-zA-Z0-9/.]+)$/MIM_PYTHON=\1/p" ${{github.workspace}}/build/CMakeCache.txt >> $GITHUB_ENV
+          # -DPython3_ROOT_DIR=${{github.workspace}}/.venv
       # - name: Install FileCheck
       #   uses: robinraju/release-downloader@v1.8
       #   with:
