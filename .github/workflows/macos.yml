@@ -30,7 +30,7 @@ jobs:
           ls "$(brew --prefix llvm)/bin"
 
       - name: Add LLVM to PATH
-        run: echo "/opt/homebrew/opt/llvm" >> $GITHUB_PATH
+        run: echo "/opt/homebrew/opt/llvm/bin" >> $GITHUB_PATH
 
       - name: Check FileCheck
         run: |
