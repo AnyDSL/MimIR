@@ -585,17 +585,16 @@ Iterating over the Program</h1>
 <p>There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classmim_1_1World.html#a9f1dafe6dd69d4a63ad6f883c9194872">World::externals</a> and recursively run over <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">Def::deps</a> like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">DefSet</a> done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> mut : world.externals())</div>
-<div class="line">    <a class="code hl_function" href="namespacemim.html#a01df1c711f47326f6d3b9efc933ccd26">visit</a>(done, mut);</div>
+<div class="line">    visit(done, mut);</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="namespacemim.html#a01df1c711f47326f6d3b9efc933ccd26">visit</a>(<a class="code hl_typedef" href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">DefSet</a>&amp; done, <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
+<div class="line"><span class="keywordtype">void</span> visit(<a class="code hl_typedef" href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">DefSet</a>&amp; done, <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (!done.emplace(def).second) <span class="keywordflow">return</span>;</div>
 <div class="line"> </div>
 <div class="line">    do_sth(def);</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps</a>()) <a class="code hl_function" href="namespacemim.html#a01df1c711f47326f6d3b9efc933ccd26">visit</a>(done, op);</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps</a>()) visit(done, op);</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassmim_1_1Def_html_a20e9e09e55fc9b46a6f74423f2c5d35d"><div class="ttname"><a href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">mim::Def::deps</a></div><div class="ttdeci">Defs deps() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00467">def.cpp:467</a></div></div>
-<div class="ttc" id="anamespacemim_html_a01df1c711f47326f6d3b9efc933ccd26"><div class="ttname"><a href="namespacemim.html#a01df1c711f47326f6d3b9efc933ccd26">mim::visit</a></div><div class="ttdeci">bool visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</div><div class="ttdef"><b>Definition</b> <a href="indexset_8h_source.html#l00100">indexset.h:100</a></div></div>
 <div class="ttc" id="anamespacemim_html_aa55cde5ad8246840d0a046cc728f987d"><div class="ttname"><a href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">mim::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00074">def.h:74</a></div></div>
 </div><!-- fragment --><p>However, you will most likely want to use the <a class="el" href="passes.html#md_docs_2passes">pass</a> or the phase infrastructure. </p>
 </div></div><!-- contents -->

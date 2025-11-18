@@ -3,7 +3,7 @@ var searchData=
   ['r_0',['R',['../structmim_1_1ast_1_1R.html',1,'mim::ast']]],
   ['rangecompare_1',['RangeCompare',['../structautomaton_1_1RangeCompare.html',1,'automaton']]],
   ['recdecl_2',['RecDecl',['../classmim_1_1ast_1_1RecDecl.html',1,'mim::ast']]],
-  ['reference_3',['reference',['../classmim_1_1BitSet_1_1reference.html',1,'mim::BitSet::reference'],['../classmim_1_1IndexSet_1_1reference.html',1,'mim::IndexSet&lt; Indexer, Key &gt;::reference']]],
+  ['reference_3',['reference',['../classmim_1_1BitSet_1_1reference.html',1,'mim::BitSet']]],
   ['reform_4',['Reform',['../classmim_1_1Reform.html',1,'mim']]],
   ['repl_5',['Repl',['../classmim_1_1Repl.html',1,'mim']]],
   ['replman_6',['ReplMan',['../classmim_1_1ReplMan.html',1,'mim']]],

@@ -1,13 +1,11 @@
 var searchData=
 [
-  ['main_2ecpp_0',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['math_2ecpp_1',['math.cpp',['../math_8cpp.html',1,'']]],
-  ['math_2eh_2',['math.h',['../math_8h.html',1,'']]],
-  ['math_2emd_3',['math.md',['../math_8md.html',1,'']]],
-  ['matrix_2ecpp_4',['matrix.cpp',['../matrix_8cpp.html',1,'']]],
-  ['matrix_2eh_5',['matrix.h',['../matrix_8h.html',1,'']]],
-  ['matrix_2emd_6',['matrix.md',['../matrix_8md.html',1,'']]],
-  ['mem_2ecpp_7',['mem.cpp',['../mem_8cpp.html',1,'']]],
-  ['mem_2eh_8',['mem.h',['../mem_8h.html',1,'']]],
-  ['mem_2emd_9',['mem.md',['../mem_8md.html',1,'']]]
+  ['nest_2ecpp_0',['nest.cpp',['../nest_8cpp.html',1,'']]],
+  ['nest_2eh_1',['nest.h',['../nest_8h.html',1,'']]],
+  ['nfa_2ecpp_2',['nfa.cpp',['../nfa_8cpp.html',1,'']]],
+  ['nfa_2eh_3',['nfa.h',['../nfa_8h.html',1,'']]],
+  ['nfa2dfa_2ecpp_4',['nfa2dfa.cpp',['../nfa2dfa_8cpp.html',1,'']]],
+  ['nfa2dfa_2eh_5',['nfa2dfa.h',['../nfa2dfa_8h.html',1,'']]],
+  ['normalize_2eh_6',['normalize.h',['../normalize_8h.html',1,'']]],
+  ['normalizers_2ecpp_7',['normalizers.cpp',['../autodiff_2normalizers_8cpp.html',1,'(Global Namespace)'],['../clos_2normalizers_8cpp.html',1,'(Global Namespace)'],['../compile_2normalizers_8cpp.html',1,'(Global Namespace)'],['../core_2normalizers_8cpp.html',1,'(Global Namespace)'],['../demo_2normalizers_8cpp.html',1,'(Global Namespace)'],['../direct_2normalizers_8cpp.html',1,'(Global Namespace)'],['../math_2normalizers_8cpp.html',1,'(Global Namespace)'],['../matrix_2normalizers_8cpp.html',1,'(Global Namespace)'],['../mem_2normalizers_8cpp.html',1,'(Global Namespace)'],['../ord_2normalizers_8cpp.html',1,'(Global Namespace)'],['../refly_2normalizers_8cpp.html',1,'(Global Namespace)'],['../regex_2normalizers_8cpp.html',1,'(Global Namespace)'],['../tensor_2normalizers_8cpp.html',1,'(Global Namespace)'],['../tuple_2normalizers_8cpp.html',1,'(Global Namespace)'],['../vec_2normalizers_8cpp.html',1,'(Global Namespace)']]]
 ];

@@ -24,7 +24,7 @@ var searchData=
   ['new_20plugins_21',['New Plugins',['../coding.html#autotoc_md14',1,'']]],
   ['new2old_22',['new2old',['../classmim_1_1EtaExp.html#a1c99683720dd0408bc0faf362579e1fd',1,'mim::EtaExp::new2old(Lam *new_lam, Lam *old_lam)'],['../classmim_1_1EtaExp.html#a85210f23e4e1788174e1fb81ea6d819f',1,'mim::EtaExp::new2old(Lam *new_lam)']]],
   ['new_5fworld_23',['new_world',['../classmim_1_1RWPhase.html#a0f7249ac3c85d2f2b1d7c72455c61b19',1,'mim::RWPhase']]],
-  ['next_24',['next',['../classmim_1_1ast_1_1RecDecl.html#ac7c21cf066f7dbb313f5408b392d49f3',1,'mim::ast::RecDecl::next()'],['../classmim_1_1IndexSet.html#a9575fca574b2be3bd86a52cc7fdbadd7',1,'mim::IndexSet::next()']]],
+  ['next_24',['next',['../classmim_1_1ast_1_1RecDecl.html#ac7c21cf066f7dbb313f5408b392d49f3',1,'mim::ast::RecDecl']]],
   ['next_5fgid_25',['next_gid',['../classmim_1_1World.html#a89d20b63f0497a0be16a946ef05134ca',1,'mim::World']]],
   ['next_5frun_26',['next_run',['../classmim_1_1World.html#a134d0723f41a4dc94a40e4c6ccaed459',1,'mim::World']]],
   ['nfa_27',['NFA',['../classautomaton_1_1NFA.html',1,'automaton::NFA'],['../classautomaton_1_1NFA.html#abeb6ccb3a3571e6858e5721923bda6ae',1,'automaton::NFA::NFA()=default'],['../classautomaton_1_1NFA.html#ab414e1c657bc6cfc97c1158e9a72d01b',1,'automaton::NFA::NFA(const NFA &amp;)=delete']]],

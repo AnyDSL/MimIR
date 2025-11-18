@@ -237,10 +237,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Idx.html">Idx</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A built-in constant of type <code><a class="el" href="classmim_1_1Nat.html">Nat</a> -&gt; *</code>.  <a href="classmim_1_1Idx.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1IndexMap.html">IndexMap</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1IndexSet.html">IndexSet</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Inj.html">Inj</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="#a56993a288f2c09ca7ec203a365dce3ad">Join</a> <b>value</b>.  <a href="classmim_1_1Inj.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -714,20 +710,6 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="memitem:ac30b5cde9bbd181fac8b2cb7bf27fc62" id="r_ac30b5cde9bbd181fac8b2cb7bf27fc62"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:ac30b5cde9bbd181fac8b2cb7bf27fc62"><td class="memTemplItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac30b5cde9bbd181fac8b2cb7bf27fc62">hash_begin</a> (T val) noexcept</td></tr>
 <tr class="separator:ac30b5cde9bbd181fac8b2cb7bf27fc62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">IndexMap find</div></td></tr>
-<tr class="memitem:ae4d6eb0ad34c66ebefba58cf2f73f615" id="r_ae4d6eb0ad34c66ebefba58cf2f73f615"><td class="memTemplParams" colspan="2">template&lt;class Indexer, class Key, class Value&gt; </td></tr>
-<tr class="memitem:ae4d6eb0ad34c66ebefba58cf2f73f615"><td class="memTemplItemLeft" align="right" valign="top">Value *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ae4d6eb0ad34c66ebefba58cf2f73f615">find</a> (<a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt; Indexer, Key, Value * &gt; &amp;map, Key key)</td></tr>
-<tr class="separator:ae4d6eb0ad34c66ebefba58cf2f73f615"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5ea5e94765b1e6b74beae887d869c97" id="r_ab5ea5e94765b1e6b74beae887d869c97"><td class="memTemplParams" colspan="2">template&lt;class Indexer, class Key, class Value&gt; </td></tr>
-<tr class="memitem:ab5ea5e94765b1e6b74beae887d869c97"><td class="memTemplItemLeft" align="right" valign="top">const Value *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ab5ea5e94765b1e6b74beae887d869c97">find</a> (const <a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt; Indexer, Key, Value * &gt; &amp;map, Key key)</td></tr>
-<tr class="separator:ab5ea5e94765b1e6b74beae887d869c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">IndexSet visit</div></td></tr>
-<tr class="memitem:a01df1c711f47326f6d3b9efc933ccd26" id="r_a01df1c711f47326f6d3b9efc933ccd26"><td class="memTemplParams" colspan="2">template&lt;class Indexer, class Key&gt; </td></tr>
-<tr class="memitem:a01df1c711f47326f6d3b9efc933ccd26"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a01df1c711f47326f6d3b9efc933ccd26">visit</a> (<a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</td></tr>
-<tr class="separator:a01df1c711f47326f6d3b9efc933ccd26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdac200da4be48df165deb24615fc940" id="r_afdac200da4be48df165deb24615fc940"><td class="memTemplParams" colspan="2">template&lt;class Indexer, class Key&gt; </td></tr>
-<tr class="memitem:afdac200da4be48df165deb24615fc940"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afdac200da4be48df165deb24615fc940">visit_first</a> (<a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</td></tr>
-<tr class="separator:afdac200da4be48df165deb24615fc940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">out/err</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="el" href="#a299eaedf188f01c3d4634dd51dedcb83" title="Base case.">mim::print</a>s to <code>std::cout</code>/<code>std::cerr</code>; the *<code>ln</code> variants emit an additional <code>std::endl</code>. </p>
 </div></td></tr>
@@ -2574,76 +2556,6 @@ template&lt;class... Args&gt; </div>
 <p class="reference">References <a class="el" href="lam_8h_source.html#l00124">mim::Lam::body()</a>, and <a class="el" href="def_8h_source.html#l00429">mim::Def::var()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="eta__red_8cpp_source.html#l00017">mim::EtaRed::rewrite()</a>.</p>
-
-</div>
-</div>
-<a id="ab5ea5e94765b1e6b74beae887d869c97" name="ab5ea5e94765b1e6b74beae887d869c97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5ea5e94765b1e6b74beae887d869c97">&#9670;&#160;</a></span>find() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Indexer, class Key, class Value&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const Value * mim::find </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt; Indexer, Key, Value * &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>map</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Key</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="indexmap_8h_source.html#l00077">77</a> of file <a class="el" href="indexmap_8h_source.html">indexmap.h</a>.</p>
-
-<p class="reference">References <a class="el" href="indexmap_8h_source.html#l00071">find()</a>.</p>
-
-</div>
-</div>
-<a id="ae4d6eb0ad34c66ebefba58cf2f73f615" name="ae4d6eb0ad34c66ebefba58cf2f73f615"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4d6eb0ad34c66ebefba58cf2f73f615">&#9670;&#160;</a></span>find() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Indexer, class Key, class Value&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Value * mim::find </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1IndexMap.html">IndexMap</a>&lt; Indexer, Key, Value * &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>map</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Key</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="indexmap_8h_source.html#l00071">71</a> of file <a class="el" href="indexmap_8h_source.html">indexmap.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="indexmap_8h_source.html#l00077">find()</a>.</p>
 
 </div>
 </div>
@@ -4921,60 +4833,6 @@ template&lt;class I, class A = std::allocator&lt;typename std::iterator_traits&l
 <p class="reference">References <a class="el" href="vector_8h_source.html#l00011">Default_Inlined_Size</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="sets_8h_source.html#l00523">mim::Sets&lt; Def &gt;::Set&lt; Def &gt;::erase()</a>, <a class="el" href="sets_8h_source.html#l00487">mim::Sets&lt; Def &gt;::Set&lt; Def &gt;::merge()</a>, and <a class="el" href="def_8h_source.html#l00408">mim::Def::projs()</a>.</p>
-
-</div>
-</div>
-<a id="a01df1c711f47326f6d3b9efc933ccd26" name="a01df1c711f47326f6d3b9efc933ccd26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01df1c711f47326f6d3b9efc933ccd26">&#9670;&#160;</a></span>visit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Indexer, class Key&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool mim::visit </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt; Indexer, Key &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>set</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Key &amp;</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="indexset_8h_source.html#l00100">100</a> of file <a class="el" href="indexset_8h_source.html">indexset.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="indexset_8h_source.html#l00105">visit_first()</a>.</p>
-
-</div>
-</div>
-<a id="afdac200da4be48df165deb24615fc940" name="afdac200da4be48df165deb24615fc940"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdac200da4be48df165deb24615fc940">&#9670;&#160;</a></span>visit_first()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Indexer, class Key&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void mim::visit_first </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1IndexSet.html">IndexSet</a>&lt; Indexer, Key &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>set</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Key &amp;</td>          <td class="paramname"><span class="paramname"><em>key</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="indexset_8h_source.html#l00105">105</a> of file <a class="el" href="indexset_8h_source.html">indexset.h</a>.</p>
-
-<p class="reference">References <a class="el" href="indexset_8h_source.html#l00100">visit()</a>.</p>
 
 </div>
 </div>

@@ -147,8 +147,6 @@ var annotated_dup =
       [ "Global", "classmim_1_1Global.html", "classmim_1_1Global" ],
       [ "Hole", "classmim_1_1Hole.html", "classmim_1_1Hole" ],
       [ "Idx", "classmim_1_1Idx.html", "classmim_1_1Idx" ],
-      [ "IndexMap", "classmim_1_1IndexMap.html", "classmim_1_1IndexMap" ],
-      [ "IndexSet", "classmim_1_1IndexSet.html", "classmim_1_1IndexSet" ],
       [ "Inj", "classmim_1_1Inj.html", "classmim_1_1Inj" ],
       [ "Insert", "classmim_1_1Insert.html", "classmim_1_1Insert" ],
       [ "Lam", "classmim_1_1Lam.html", "classmim_1_1Lam" ],

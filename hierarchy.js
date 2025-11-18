@@ -34,16 +34,12 @@ var hierarchy =
     [ "mim::World::Freezer", "structmim_1_1World_1_1Freezer.html", null ],
     [ "mim::GIDHash< T >", "structmim_1_1GIDHash.html", null ],
     [ "mim::GIDLt< T >", "structmim_1_1GIDLt.html", null ],
-    [ "mim::IndexMap< Indexer, Key, Value >", "classmim_1_1IndexMap.html", null ],
-    [ "mim::IndexSet< Indexer, Key >", "classmim_1_1IndexSet.html", null ],
     [ "mim::plug::mem::pass::SSA::Info", "classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#structmim_1_1plug_1_1mem_1_1pass_1_1SSA_1_1Info", null ],
     [ "absl::InlinedVector", null, [
       [ "mim::Vector< const Def * >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< Lattice >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< Def * >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< Range >", "classmim_1_1Vector.html", null ],
-      [ "mim::Vector< Value >", "classmim_1_1Vector.html", null ],
-      [ "mim::Vector< uint64_t >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< void * >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< mim::Sets::Set >", "classmim_1_1Vector.html", null ],
       [ "mim::Vector< T, N, A >", "classmim_1_1Vector.html", null ]
@@ -73,7 +69,6 @@ var hierarchy =
     [ "mim::ast::R< T >", "structmim_1_1ast_1_1R.html", null ],
     [ "automaton::RangeCompare", "structautomaton_1_1RangeCompare.html", null ],
     [ "mim::BitSet::reference", "classmim_1_1BitSet_1_1reference.html", null ],
-    [ "mim::IndexSet< Indexer, Key >::reference", "classmim_1_1IndexSet_1_1reference.html", null ],
     [ "mim::Res", "classmim_1_1Res.html", null ],
     [ "mim::Rewriter", "classmim_1_1Rewriter.html", [
       [ "mim::RWPhase", "classmim_1_1RWPhase.html", [
