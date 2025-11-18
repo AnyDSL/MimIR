@@ -47,9 +47,8 @@ jobs:
                 -DCMAKE_BUILD_TYPE=${{matrix.build-type}} \
                 -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON \
                 -DMIM_LIT_TIMEOUT=300 \
-                -DPython_FIND_VIRTUALENV=${{github.workspace}}/.venv
+                -DPython3_EXECUTABLE=${{github.workspace}}/.venv/bin/python3
         # id: configure
-        # -DPython3_EXECUTABLE=${{github.workspace}}/.venv/bin/python3 \
 
           # sed -n -E "s/_Python3_EXECUTABLE:INTERNAL=([a-zA-Z0-9/.]+)$/MIM_PYTHON=\1/p" ${{github.workspace}}/build/CMakeCache.txt >> $GITHUB_ENV
           # -DPython3_ROOT_DIR=${{github.workspace}}/.venv
