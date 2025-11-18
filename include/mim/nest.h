@@ -30,31 +30,36 @@ public:
         /// @name Children
         ///@{
         struct Children {
-            auto muts() const { return mut2node_ | std::views::keys; }
-
-            auto nodes() const {
-                return mut2node_
-                     | std::views::transform([](const auto& pair) { return const_cast<const Node*>(pair.second); });
-            }
-            auto nodes() { return mut2node_ | std::views::values; }
-
-            auto mut2node() const {
-                return mut2node_ | std::views::transform([](const auto& pair) {
-                           return std::pair{pair.first, const_cast<const Node*>(pair.second)};
-                       });
-            }
+            ///@name Get children as muts and/or nodes.
+            ///{
+            // clang-format off
             auto mut2node() { return mut2node_; }
+            auto muts()     { return mut2node_ | std::views::keys; }
+            auto nodes()    { return mut2node_ | std::views::values; }
 
-            size_t num() const { return mut2node_.size(); }
+            auto mut2node() const { return mut2node_ | std::views::transform([](auto pair) { return std::pair{pair.first, const_cast<const Node*>(pair.second)}; }); }
+            auto muts()     const { return mut2node_ | std::views::keys; }
+            auto nodes()    const { return mut2node_ | std::views::transform([](auto p) { return const_cast<const Node*>(p.second); }); }
+            // clang-format on
+            ///}
 
-            const Node* operator[](Def* mut) const {
+            /// @name Lookup
+            /// Retrieves `Node*` from @p mut.
+            ///@{
+            Node* operator[](Def* mut) {
                 if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second;
                 return nullptr;
             }
+            const Node* operator[](Def* mut) const { return const_cast<Children*>(this)->operator[](mut); }
+            ///@}
 
-            bool contains(Def* mut) const { return mut2node_.contains(mut); }
+            /// @name Getters
+            ///@{
+            size_t num() const { return mut2node_.size(); }                   ///< Number of children.
+            bool contains(Def* mut) const { return mut2node_.contains(mut); } ///< is @p mut a child?
+            ///@}
 
-            /// @name Iterator
+            /// @name Iterators
             ///@{
             auto begin() { return mut2node_.begin(); }
             auto end() { return mut2node_.end(); }
@@ -69,6 +74,7 @@ public:
         };
 
         const Children& children() const { return children_; }
+        Children& children() { return children_; }
         ///@}
 
         template<bool Forward>

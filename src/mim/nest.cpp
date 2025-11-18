@@ -31,7 +31,7 @@ void Nest::populate() {
     if (root()->mut())
         queue.push(root_);
     else
-        for (auto [_, child] : root_->children())
+        for (auto child : root_->children().nodes())
             queue.push(child);
 
     while (!queue.empty()) {
@@ -108,7 +108,7 @@ void Nest::sibl(Node* curr) const {
         }
     }
 
-    for (auto [_, child] : curr->children()) {
+    for (auto child : curr->children().nodes()) {
         curr->curr_child = child;
         sibl(child);
         curr->curr_child = nullptr;
