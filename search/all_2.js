@@ -30,7 +30,7 @@ var searchData=
   ['check_2eh_27',['check.h',['../check_8h.html',1,'']]],
   ['checker_28',['Checker',['../classmim_1_1Checker.html',1,'mim::Checker'],['../classmim_1_1Hole.html#a42e74b7760f36154466246901e25398f',1,'mim::Hole::Checker()'],['../classmim_1_1Checker.html#a21c175b65314ea7dd534dd913e347da1',1,'mim::Checker::Checker()']]],
   ['children_29',['Children',['../structmim_1_1Nest_1_1Node_1_1Children.html',1,'mim::Nest::Node']]],
-  ['children_30',['children',['../classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a',1,'mim::Nest::Node']]],
+  ['children_30',['children',['../classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a',1,'mim::Nest::Node::children() const'],['../classmim_1_1Nest_1_1Node.html#ae93dcb002e841ab5e3660b44c63cfdd9',1,'mim::Nest::Node::children()']]],
   ['ciff_31',['ciff',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205a870ac2c5fac99933ec00d76e9c6ab759',1,'mim::plug::core']]],
   ['cleanup_32',['Cleanup',['../classmim_1_1Cleanup.html',1,'mim::Cleanup'],['../classmim_1_1Cleanup.html#af1de642ec25e581a4091c3f1e48beaee',1,'mim::Cleanup::Cleanup(World &amp;world)'],['../classmim_1_1Cleanup.html#ac181084cd594a1b51302b8f4b6a03a10',1,'mim::Cleanup::Cleanup(World &amp;world, flags_t annex)']]],
   ['cleanup_5fphase_33',['cleanup_phase',['../namespacemim_1_1plug_1_1compile.html#a1b62916f46aa4d27565c3691e67677d6',1,'mim::plug::compile']]],

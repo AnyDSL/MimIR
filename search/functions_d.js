@@ -17,7 +17,7 @@ var searchData=
   ['node_14',['Node',['../classmim_1_1ast_1_1Node.html#afdb34ab39948858d55430441bd53c9dc',1,'mim::ast::Node::Node()'],['../classmim_1_1lct_1_1Node.html#ae1ce8b042f4bec0ae86dba699f216f23',1,'mim::lct::Node::Node()']]],
   ['node_15',['node',['../classmim_1_1Def.html#a107ccfac1058aee369926112bb593d35',1,'mim::Def']]],
   ['node_5fname_16',['node_name',['../classmim_1_1Def.html#a361f116b80b8b8fd1eac9a22e34564b0',1,'mim::Def']]],
-  ['nodes_17',['nodes',['../structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d',1,'mim::Nest::Node::Children::nodes() const'],['../structmim_1_1Nest_1_1Node_1_1Children.html#aa6d4d78fa2ae72822f115cef77befb9b',1,'mim::Nest::Node::Children::nodes()'],['../structmim_1_1Nest_1_1Node_1_1Siblings.html#abad2c9b4942967a926643096f563edd6',1,'mim::Nest::Node::Siblings::nodes()'],['../classmim_1_1Nest.html#a619bc4de18e21d5d585355f4beaf2769',1,'mim::Nest::nodes()']]],
+  ['nodes_17',['nodes',['../structmim_1_1Nest_1_1Node_1_1Children.html#aa6d4d78fa2ae72822f115cef77befb9b',1,'mim::Nest::Node::Children::nodes()'],['../structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d',1,'mim::Nest::Node::Children::nodes() const'],['../structmim_1_1Nest_1_1Node_1_1Siblings.html#abad2c9b4942967a926643096f563edd6',1,'mim::Nest::Node::Siblings::nodes()'],['../classmim_1_1Nest.html#a619bc4de18e21d5d585355f4beaf2769',1,'mim::Nest::nodes()']]],
   ['none_18',['none',['../classmim_1_1BitSet.html#a6518fd253154c0d603f82c1cb44e974d',1,'mim::BitSet']]],
   ['none_5fbegin_19',['none_begin',['../classmim_1_1BitSet.html#ace56e804cffec819a9ac800942af4ff1',1,'mim::BitSet']]],
   ['none_5fend_20',['none_end',['../classmim_1_1BitSet.html#a8b5e65cb40be30e4c620d419287dc5c1',1,'mim::BitSet']]],

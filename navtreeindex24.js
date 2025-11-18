@@ -1,5 +1,11 @@
 var NAVTREEINDEX24 =
 {
+"structmim_1_1UseHash.html#a6d13f2e0a9453f2bfcc5f67bcd47e741":[3,0,1,97,0],
+"structmim_1_1UseHash.html#a6d13f2e0a9453f2bfcc5f67bcd47e741":[5,0,1,95,0],
+"structmim_1_1World_1_1Freezer.html":[3,0,1,101,0],
+"structmim_1_1World_1_1Freezer.html":[5,0,1,99,0],
+"structmim_1_1World_1_1Freezer.html#a818ef9b85c0577003a841560821c188e":[3,0,1,101,0,0],
+"structmim_1_1World_1_1Freezer.html#a818ef9b85c0577003a841560821c188e":[5,0,1,99,0,0],
 "structmim_1_1World_1_1Freezer.html#ac21d511504dbcff5cc63b43519ab7fa3":[3,0,1,101,0,2],
 "structmim_1_1World_1_1Freezer.html#ac21d511504dbcff5cc63b43519ab7fa3":[5,0,1,99,0,2],
 "structmim_1_1World_1_1Freezer.html#adfb433df1f4257c5c82bb3842559b6d4":[3,0,1,101,0,1],
