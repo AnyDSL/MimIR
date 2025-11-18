@@ -85,7 +85,7 @@ const Nest::Node* Scheduler::smart(Def* curr_mut, const Def* def) {
 
     int depth = l->loop_depth();
     for (auto i = l; i != e;) {
-        i = i->parent();
+        i = i->inest();
 
         if (i == nullptr) {
             world().ELOG("this should never occur - don't know where to put {}", def);

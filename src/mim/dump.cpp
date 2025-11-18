@@ -394,7 +394,7 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
 }
 
 void Dumper::recurse(const Nest::Node* node) {
-    for (auto child : node->child_muts())
+    for (auto child : node->children().muts())
         if (auto mut = isa_decl(child)) dump(mut);
 }
 
