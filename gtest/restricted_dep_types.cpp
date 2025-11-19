@@ -225,7 +225,7 @@ TEST(RestrictedDependentTypes, ll) {
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
     auto main = w.mut_con({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})})->set("main");
-    main->make_external();
+    main->externalize();
 
     auto R = w.axm(w.type())->set("R");
     auto W = w.axm(w.type())->set("W");

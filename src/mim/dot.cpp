@@ -146,7 +146,7 @@ void World::dot(const char* file, bool annexes, bool types) const {
 void World::dot(std::ostream& os, bool anx, bool types) const {
     Dot dot(os, types);
     dot.prologue();
-    for (auto external : externals())
+    for (auto external : externals().muts())
         dot.recurse(external, uint32_t(-1));
     if (anx)
         for (auto annex : annexes())

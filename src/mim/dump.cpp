@@ -472,7 +472,7 @@ void World::dump(std::ostream& os) {
 
     if (flags().dump_recursive) {
         auto dumper = Dumper(os);
-        for (auto mut : externals())
+        for (auto mut : externals().muts())
             dumper.muts.push(mut);
         while (!dumper.muts.empty())
             dumper.dump(dumper.muts.pop());

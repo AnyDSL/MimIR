@@ -58,11 +58,7 @@ public:
             auto muts() { return mut2node_ | std::views::keys; }
             auto begin() { return mut2node_.begin(); }
             auto end() { return mut2node_.end(); }
-
-            Node* operator[](Def* mut) {
-                if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second;
-                return nullptr;
-            }
+            Node* operator[](Def* mut) { return mim::lookup(mut2node_, mut); }
 
             MutMap<Node*> mut2node_;
 

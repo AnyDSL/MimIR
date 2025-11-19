@@ -96,7 +96,7 @@ void PassMan::run() {
     for (auto&& pass : passes_)
         pass->prepare();
 
-    for (auto mut : world().copy_externals()) {
+    for (auto mut : world().externals().muts()) {
         analyzed(mut);
         if (mut->is_set()) curr_state().stack.push(mut);
     }

@@ -15,7 +15,7 @@ void PrefixCleanup::rewrite_external(Def* old_mut) {
         if (old_mut->sym().view().starts_with(prefix_))
             DLOG("internalized: `{}`", old_mut);
         else
-            new_mut->make_external();
+            new_mut->externalize();
     }
 }
 
