@@ -20,7 +20,7 @@ var searchData=
   ['delim_5fr_17',['delim_r',['../classmim_1_1ast_1_1TuplePtrn.html#a45e9dbd1449e0e581ccc9a6ecef06f02',1,'mim::ast::TuplePtrn']]],
   ['demangle_18',['demangle',['../structmim_1_1Annex.html#a85288ce68d99c7929f4a4d88de7f7306',1,'mim::Annex']]],
   ['dep_19',['dep',['../classmim_1_1Def.html#a9fe87cd9f1f625de3bd75be4ba46c3ce',1,'mim::Def']]],
-  ['deps_20',['deps',['../classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d',1,'mim::Def::deps()'],['../structmim_1_1Nest_1_1Node_1_1Siblings.html#a4b18ca131bd7833c3c8d2088ba8cf72d',1,'mim::Nest::Node::Siblings::deps()']]],
+  ['deps_20',['deps',['../classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d',1,'mim::Def']]],
   ['derive_21',['derive',['../classmim_1_1plug_1_1autodiff_1_1Eval.html#af70ead2918d33d379f73d0c337b037ac',1,'mim::plug::autodiff::Eval']]],
   ['derive_5f_22',['derive_',['../classmim_1_1plug_1_1autodiff_1_1Eval.html#a16c6cf5927782756779686bf896ff504',1,'mim::plug::autodiff::Eval']]],
   ['dfa_23',['DFA',['../classautomaton_1_1DFA.html#ac93a51665758426fa9fd076430b60e6a',1,'automaton::DFA::DFA()=default'],['../classautomaton_1_1DFA.html#af156bb68080e09f0e0210401b7ce2d07',1,'automaton::DFA::DFA(const DFA &amp;)=delete']]],

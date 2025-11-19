@@ -64,7 +64,7 @@ var searchData=
   ['dep_61',['dep',['../classmim_1_1Def.html#a9fe87cd9f1f625de3bd75be4ba46c3ce',1,'mim::Def']]],
   ['dependencies_62',['Dependencies',['../index.html#autotoc_md70',1,'Dependencies'],['../affine.html#autotoc_md72',1,'Dependencies'],['../autodiff.html#autotoc_md77',1,'Dependencies'],['../clos.html#autotoc_md90',1,'Dependencies'],['../core.html#autotoc_md106',1,'Dependencies'],['../direct.html#autotoc_md130',1,'Dependencies'],['../matrix.html#autotoc_md156',1,'Dependencies'],['../mem.html#autotoc_md176',1,'Dependencies'],['../opt.html#autotoc_md197',1,'Dependencies'],['../ord.html#autotoc_md200',1,'Dependencies'],['../refly.html#autotoc_md215',1,'Dependencies'],['../regex.html#autotoc_md231',1,'Dependencies'],['../tensor.html#autotoc_md249',1,'Dependencies'],['../tuple.html#autotoc_md262',1,'Dependencies'],['../vec.html#autotoc_md267',1,'Dependencies']]],
   ['deprecated_20list_63',['Deprecated List',['../deprecated.html',1,'']]],
-  ['deps_64',['deps',['../classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d',1,'mim::Def::deps()'],['../structmim_1_1Nest_1_1Node_1_1Siblings.html#a4b18ca131bd7833c3c8d2088ba8cf72d',1,'mim::Nest::Node::Siblings::deps()']]],
+  ['deps_64',['deps',['../classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d',1,'mim::Def']]],
   ['derive_65',['derive',['../classmim_1_1plug_1_1autodiff_1_1Eval.html#af70ead2918d33d379f73d0c337b037ac',1,'mim::plug::autodiff::Eval']]],
   ['derive_5f_66',['derive_',['../classmim_1_1plug_1_1autodiff_1_1Eval.html#a16c6cf5927782756779686bf896ff504',1,'mim::plug::autodiff::Eval']]],
   ['destroy_67',['%%mem.create/destroy',['../mem.html#autotoc_md190',1,'']]],
