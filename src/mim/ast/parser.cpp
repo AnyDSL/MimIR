@@ -135,7 +135,7 @@ Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
         if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
     }
 
-    if (auto path = driver().add_import(std::move(rel_path), name)) {
+    if (auto path = driver().imports().add(std::move(rel_path), name)) {
         auto ifs = std::ifstream(*path);
         return import(ifs, dbg.loc(), path, md);
     }

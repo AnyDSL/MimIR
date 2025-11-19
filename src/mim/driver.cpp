@@ -7,9 +7,22 @@
 
 namespace mim {
 
+const fs::path* Driver::Imports::add(fs::path path, Sym sym) {
+    if (!fs::exists(path)) {
+        driver_.WLOG("import path '{}' does not exist", path.string());
+        return nullptr;
+    }
+    for (auto p : paths())
+        if (fs::equivalent(p, path)) return nullptr;
+
+    path2sym_.emplace_back(std::pair(std::move(path), sym));
+    return &path2sym_.back().first;
+}
+
 Driver::Driver()
     : log_(flags_)
-    , world_(this) {
+    , world_(this)
+    , imports_(*this) {
     // prepend empty path
     search_paths_.emplace_front(fs::path{});
 
@@ -32,18 +45,6 @@ Driver::Driver()
 
     // all other user paths are placed just behind the first path (the empty path)
     insert_ = ++search_paths_.begin();
-}
-
-const fs::path* Driver::add_import(fs::path path, Sym sym) {
-    if(!fs::exists(path)) {
-        WLOG("import path '{}' does not exist", path.string());
-        return nullptr;
-    }
-    for (auto p : import_paths())
-        if (fs::equivalent(p, path)) return nullptr;
-
-    import_path2sym_.emplace_back(std::pair(std::move(path), sym));
-    return &import_path2sym_.back().first;
 }
 
 void Driver::load(Sym name) {
