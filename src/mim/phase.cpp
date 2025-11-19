@@ -31,7 +31,7 @@ void RWPhase::start() {
 
     bootstrapping_ = false;
 
-    for (auto mut : old_world().externals().mutate())
+    for (auto mut : old_world().externals().muts())
         rewrite_external(mut);
 
     swap(old_world(), new_world());
