@@ -187,7 +187,7 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
         s += "] ";
     }
 
-    for (auto sibl : siblings())
+    for (auto sibl : sibl_deps())
         tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", name(), sibl->name());
 
     auto rec = is_mutually_recursive() ? "rec*" : (is_directly_recursive() ? "rec" : "");

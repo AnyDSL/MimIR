@@ -82,8 +82,8 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
         n = n->inest();
     while (n != m) {
         // TODO support longer dep chains and the possibility to opt out from this
-        if (n->siblings().contains(m)) return n;
-        if (m->siblings().contains(n)) return m;
+        if (n->sibl_deps().contains(m)) return n;
+        if (m->sibl_deps().contains(n)) return m;
         n = n->inest();
         m = m->inest();
     }
@@ -134,7 +134,7 @@ uint32_t Nest::Node::tarjan(uint32_t i, Node* inest, Stack& stack) {
     this->on_stack_         = true;
     stack.emplace(this);
 
-    for (auto dep : this->siblings_.nodes_) {
+    for (auto dep : this->sibl_deps_.nodes_) {
         if (dep->idx_ == Unvisited) i = dep->tarjan(i, inest, stack);
         if (dep->on_stack_) this->low_ = std::min(this->low_, dep->low_);
     }
@@ -156,7 +156,7 @@ uint32_t Nest::Node::tarjan(uint32_t i, Node* inest, Stack& stack) {
             assert_unused(ins);
         } while (node != this);
 
-        if (num == 1 && !this->siblings().contains(this)) this->recursive_ = false;
+        if (num == 1 && !this->sibl_deps().contains(this)) this->recursive_ = false;
     }
 
     return i;

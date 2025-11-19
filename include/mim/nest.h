@@ -77,7 +77,7 @@ public:
         ///@}
 
         template<bool Forward>
-        struct Siblings {
+        struct SiblDeps {
             /// @name Getters
             ///@{
             const auto& nodes() { return nodes_; }
@@ -111,17 +111,17 @@ public:
         /// A child `n` depends() on `m`, if a subtree of `n` uses `m`.
         ///@{
         template<bool Forward = true>
-        auto& siblings() {
-            nest().calcuate_siblings();
+        auto& sibl_deps() {
+            nest().calc_sibl_deps();
             if constexpr (Forward)
-                return siblings_;
+                return sibl_deps_;
             else
-                return rev_siblings_;
+                return sibl_rev_deps_;
         }
 
         template<bool Forward = true>
-        const auto& siblings() const {
-            return const_cast<Node*>(this)->siblings<Forward>();
+        const auto& sibl_deps() const {
+            return const_cast<Node*>(this)->sibl_deps<Forward>();
         }
         ///@}
 
@@ -148,9 +148,9 @@ public:
             if (inest) inest->children_.mut2node_.emplace(mut, this);
         }
 
-        const Node& sccs() const { return nest().calculate_SCCs(), *this; }
+        const Node& sccs() const { return nest().calc_SCCs(), *this; }
 
-        void link(Node* other) { this->siblings_.nodes_.emplace(other), other->rev_siblings_.nodes_.emplace(this); }
+        void link(Node* other) { this->sibl_deps_.nodes_.emplace(other), other->sibl_rev_deps_.nodes_.emplace(this); }
         void dot(Tab, std::ostream&) const;
 
         /// SCCs
@@ -164,8 +164,8 @@ public:
         uint32_t level_;
         uint32_t loop_depth_ : 31 = 0;
         bool recursive_      : 1  = false;
-        Siblings<true> siblings_;
-        Siblings<false> rev_siblings_;
+        SiblDeps<true> sibl_deps_;
+        SiblDeps<false> sibl_rev_deps_;
         Children children_;
         std::deque<std::unique_ptr<SCC>> topo_;
         absl::node_hash_map<const Node*, const SCC*> SCCs_;
@@ -193,7 +193,7 @@ public:
     const Node* root() const { return root_; }
     Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
     bool contains(const Def* def) const { return vars().has_intersection(def->free_vars()); }
-    bool is_recursive() const { return calculate_SCCs().root()->is_recursive(); }
+    bool is_recursive() const { return calc_SCCs().root()->is_recursive(); }
     ///@}
 
     /// @name Nodes
@@ -234,14 +234,14 @@ private:
     void sibl(Node*) const;
     void find_SCCs(Node*) const;
 
-    void calcuate_siblings() const {
+    void calc_sibl_deps() const {
         if (!siblings_) {
             siblings_ = true;
             sibl(root_);
         }
     }
 
-    const Nest& calculate_SCCs() const {
+    const Nest& calc_SCCs() const {
         if (!sccs_) {
             sccs_ = true;
             find_SCCs(root_);
