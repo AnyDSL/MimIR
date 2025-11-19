@@ -23,7 +23,7 @@ jobs:
       - name: Install valgrind, lit, llvm, and psutil
         run: |
           sudo apt-get update
-          sudo apt-get install g++-14 valgrind llvm-21-tools
+          sudo apt-get install g++-14 valgrind llvm-20-tools
           sudo pip install lit psutil
 
       - name: Setup ccache
