@@ -466,7 +466,7 @@ $(function(){initNavTree('dump_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    }</div>
 <div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>    tab.<a class="code hl_function" href="classmim_1_1Tab.html#a660c6191ebdb863823a556938ceff3ce">println</a>(os, <span class="stringliteral">&quot; = {{&quot;</span>);</div>
 <div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    ++tab;</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keywordflow">if</span> (nest) recurse(nest-&gt;<a class="code hl_function" href="classmim_1_1Nest.html#af09bb7338b6e44e8b74c3ba3c45b68d2">mut2node</a>(mut));</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keywordflow">if</span> (nest) recurse((*nest)[mut]);</div>
 <div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    recurse(mut);</div>
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    tab.<a class="code hl_function" href="classmim_1_1Tab.html#afa9d4993668faaa9cc8cb658c4ec5b5b">print</a>(os, <span class="stringliteral">&quot;{, }\n&quot;</span>, mut-&gt;ops());</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    --tab;</div>
@@ -484,7 +484,7 @@ $(function(){initNavTree('dump_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    ++tab;</div>
 <div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">if</span> (lam-&gt;is_set()) {</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        <span class="keywordflow">if</span> (nest) recurse(nest-&gt;<a class="code hl_function" href="classmim_1_1Nest.html#af09bb7338b6e44e8b74c3ba3c45b68d2">mut2node</a>(lam));</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>        <span class="keywordflow">if</span> (nest) recurse((*nest)[lam]);</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        recurse(lam-&gt;filter());</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        recurse(lam-&gt;body(), <span class="keyword">true</span>);</div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>        <span class="keywordflow">if</span> (lam-&gt;body()-&gt;isa_mut())</div>
@@ -665,7 +665,6 @@ $(function(){initNavTree('dump_8cpp_source.html',''); initResizable(true); });
 <div class="ttc" id="aclassmim_1_1Log_html_aab4ab68f72a5d79c8acc1f1cf7c68590aa603905470e2a5b8c13e96b579ef0dba"><div class="ttname"><a href="classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590aa603905470e2a5b8c13e96b579ef0dba">mim::Log::Level::Debug</a></div><div class="ttdeci">@ Debug</div><div class="ttdef"><b>Definition</b> <a href="log_8h_source.html#l00022">log.h:22</a></div></div>
 <div class="ttc" id="aclassmim_1_1Nat_html"><div class="ttname"><a href="classmim_1_1Nat.html">mim::Nat</a></div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00844">def.h:844</a></div></div>
 <div class="ttc" id="aclassmim_1_1Nest_html"><div class="ttname"><a href="classmim_1_1Nest.html">mim::Nest</a></div><div class="ttdoc">Builds a nesting tree of all immutables‍/binders.</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00011">nest.h:11</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html_af09bb7338b6e44e8b74c3ba3c45b68d2"><div class="ttname"><a href="classmim_1_1Nest.html#af09bb7338b6e44e8b74c3ba3c45b68d2">mim::Nest::mut2node</a></div><div class="ttdeci">const auto &amp; mut2node() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00206">nest.h:206</a></div></div>
 <div class="ttc" id="aclassmim_1_1Pack_html"><div class="ttname"><a href="classmim_1_1Pack.html">mim::Pack</a></div><div class="ttdoc">A (possibly paramterized) Tuple.</div><div class="ttdef"><b>Definition</b> <a href="tuple_8h_source.html#l00166">tuple.h:166</a></div></div>
 <div class="ttc" id="aclassmim_1_1Pi_html"><div class="ttname"><a href="classmim_1_1Pi.html">mim::Pi</a></div><div class="ttdoc">A dependent function type.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00015">lam.h:15</a></div></div>
 <div class="ttc" id="aclassmim_1_1Pi_html_a60c2d05d18e618930742433ce71e0a61"><div class="ttname"><a href="classmim_1_1Pi.html#a60c2d05d18e618930742433ce71e0a61">mim::Pi::isa_cn</a></div><div class="ttdeci">static const Pi * isa_cn(const Def *d)</div><div class="ttdoc">Is this a continuation - i.e. is the Pi::codom mim::Bottom?</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00048">lam.h:48</a></div></div>

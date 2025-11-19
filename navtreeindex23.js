@@ -1,7 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"phase_8h.html#a4b6ee482611c96913829f74c17ee1df4":[6,0,2,1,16,10],
-"phase_8h.html#a5524d37751342ad354f02d31c7fd6a55":[6,0,2,1,16,11],
 "phase_8h_source.html":[6,0,2,1,16],
 "plug_2tuple_2tuple_8cpp.html":[6,0,3,1,4,15,1],
 "plug_2tuple_2tuple_8cpp.html#a35bb34350e93d508e52544f4abd50e59":[6,0,3,1,4,15,1,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX23 =
 "structmim_1_1Nest_1_1Node_1_1Siblings.html#af7e17d408a325f16de540a837448eb27":[3,0,1,50,0,1,2],
 "structmim_1_1Nest_1_1Node_1_1Siblings.html#af7e17d408a325f16de540a837448eb27":[5,0,1,48,0,1,2],
 "structmim_1_1Plugin.html":[3,0,1,59],
-"structmim_1_1Plugin.html":[5,0,1,57]
+"structmim_1_1Plugin.html":[5,0,1,57],
+"structmim_1_1Plugin.html#ac05dc9f22694920410acdd4fe0f92d57":[3,0,1,59,1],
+"structmim_1_1Plugin.html#ac05dc9f22694920410acdd4fe0f92d57":[5,0,1,57,1]
 };
