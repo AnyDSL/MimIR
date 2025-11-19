@@ -90,7 +90,7 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     return n;
 }
 
-void Nest::sibl(Node* curr) const {
+void Nest::calc_sibl_deps(Node* curr) const {
     if (curr->mut()) {
         for (auto op : curr->mut()->deps()) {
             for (auto local_mut : op->local_muts()) {
@@ -110,20 +110,20 @@ void Nest::sibl(Node* curr) const {
 
     for (auto child : curr->children().nodes()) {
         curr->curr_child = child;
-        sibl(child);
+        calc_sibl_deps(child);
         curr->curr_child = nullptr;
     }
 }
 
-void Nest::find_SCCs(Node* curr) const {
-    curr->find_SCCs();
+void Nest::calc_SCCs(Node* curr) const {
+    curr->calc_SCCs();
     for (auto [_, child] : curr->children()) {
         child->loop_depth_ = child->is_recursive() ? curr->loop_depth() + 1 : curr->loop_depth();
-        find_SCCs(child);
+        calc_SCCs(child);
     }
 }
 
-void Nest::Node::find_SCCs() {
+void Nest::Node::calc_SCCs() {
     Stack stack;
     for (int i = 0; auto& [_, node] : children())
         if (node->idx_ == Unvisited) i = node->tarjan(i, this, stack);

@@ -33,40 +33,37 @@ public:
             ///@name Get children as muts and/or nodes.
             ///@{
             // clang-format off
-            const auto& mut2node() { return mut2node_; }
-            auto mut2node()  const { return mut2node_ | std::views::transform([](auto p) { return std::pair{p.first, const_cast<const Node*>(p.second)}; }); }
-            auto muts()            { return mut2node_ | std::views::keys; }
-            auto muts()      const { return mut2node_ | std::views::keys; }
-            auto nodes()           { return mut2node_ | std::views::values; }
-            auto nodes()     const { return mut2node_ | std::views::transform([](auto p) { return const_cast<const Node*>(p.second); }); }
+            auto mut2node() const { return mut2node_ | std::views::transform([](auto p) { return std::pair{p.first, const_cast<const Node*>(p.second)}; }); }
+            auto muts()     const { return mut2node_ | std::views::keys; }
+            auto nodes()    const { return mut2node_ | std::views::transform([](auto p) { return const_cast<const Node*>(p.second); }); }
             // clang-format on
+            size_t num() const { return mut2node_.size(); } ///< Number of children.
             ///@}
 
             /// @name Lookup
-            /// Retrieves `Node*` from @p mut.
             ///@{
-            Node* operator[](Def* mut) {
-                if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second;
-                return nullptr;
-            }
             const Node* operator[](Def* mut) const { return const_cast<Children*>(this)->operator[](mut); }
-            ///@}
-
-            /// @name Getters
-            ///@{
-            size_t num() const { return mut2node_.size(); }                   ///< Number of children.
             bool contains(Def* mut) const { return mut2node_.contains(mut); } ///< is @p mut a child?
             ///@}
 
             /// @name Iterators
             ///@{
-            auto begin() { return mut2node_.begin(); }
-            auto end() { return mut2node_.end(); }
             auto begin() const { return mut2node_.cbegin(); }
             auto end() const { return mut2node_.cend(); }
             ///@}
 
         private:
+            const auto& mut2node() { return mut2node_; }
+            auto nodes() { return mut2node_ | std::views::values; }
+            auto muts() { return mut2node_ | std::views::keys; }
+            auto begin() { return mut2node_.begin(); }
+            auto end() { return mut2node_.end(); }
+
+            Node* operator[](Def* mut) {
+                if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second;
+                return nullptr;
+            }
+
             MutMap<Node*> mut2node_;
 
             friend class Nest;
@@ -78,9 +75,8 @@ public:
 
         template<bool Forward>
         struct SiblDeps {
-            /// @name Getters
+            /// @name Get sibling dependencies
             ///@{
-            const auto& nodes() { return nodes_; }
             auto nodes() const {
                 return nodes_ | std::views::transform([](Node* n) { return const_cast<const Node*>(n); });
             }
@@ -94,13 +90,15 @@ public:
 
             /// @name Iterators
             ///@{
-            auto begin() { return nodes_.begin(); }
-            auto end() { return nodes_.end(); }
             auto begin() const { return nodes_.cbegin(); }
             auto end() const { return nodes_.cend(); }
             ///@}
 
         private:
+            const auto& nodes() { return nodes_; }
+            auto begin() { return nodes_.begin(); }
+            auto end() { return nodes_.end(); }
+
             absl::flat_hash_set<Node*> nodes_;
 
             friend class Nest;
@@ -155,7 +153,7 @@ public:
 
         /// SCCs
         using Stack = std::stack<Node*>;
-        void find_SCCs();
+        void calc_SCCs();
         uint32_t tarjan(uint32_t, Node*, Stack&);
 
         const Nest& nest_;
@@ -203,17 +201,11 @@ public:
     auto muts()  const { return mut2node_ | std::views::keys; }
     auto nodes() const { return mut2node_ | std::views::transform([](const auto& p) { return (const Node*)p.second.get(); }); }
     // clang-format on
-    Node* operator[](Def* mut) {
-        if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second.get();
-        return nullptr;
-    }
     const Node* operator[](Def* mut) const { return const_cast<Nest*>(this)->operator[](mut); }
     ///@}
 
     /// @name Iterators
     ///@{
-    auto begin() { return mut2node_.begin(); }
-    auto end() { return mut2node_.end(); }
     auto begin() const { return mut2node_.cbegin(); }
     auto end() const { return mut2node_.cend(); }
     ///@}
@@ -229,22 +221,30 @@ public:
     ///@}
 
 private:
+    auto begin() { return mut2node_.begin(); }
+    auto end() { return mut2node_.end(); }
+
     void populate();
     Node* make_node(Def*, Node* inest = nullptr);
-    void sibl(Node*) const;
-    void find_SCCs(Node*) const;
+    void calc_sibl_deps(Node*) const;
+    void calc_SCCs(Node*) const;
+
+    Node* operator[](Def* mut) {
+        if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second.get();
+        return nullptr;
+    }
 
     void calc_sibl_deps() const {
         if (!siblings_) {
             siblings_ = true;
-            sibl(root_);
+            calc_sibl_deps(root_);
         }
     }
 
     const Nest& calc_SCCs() const {
         if (!sccs_) {
             sccs_ = true;
-            find_SCCs(root_);
+            calc_SCCs(root_);
         }
         return *this;
     }
