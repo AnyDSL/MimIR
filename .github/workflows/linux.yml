@@ -44,12 +44,13 @@ jobs:
 
       - name: Configure Release
         if: matrix.build-type == 'Release'
-        run: CXX=g++-14 cmake -B ${{github.workspace}}/build \
-          -DCMAKE_BUILD_TYPE=${{matrix.build-type}}       \
-          -DBUILD_TESTING=ON                              \
-          -DMIM_BUILD_EXAMPLES=ON                         \
-          -DMIM_LIT_WITH_VALGRIND=ON                      \
-          -DMIM_LIT_TIMEOUT=300
+        run: |
+          CXX=g++-14 cmake -B ${{github.workspace}}/build \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}     \
+            -DBUILD_TESTING=ON                            \
+            -DMIM_BUILD_EXAMPLES=ON                       \
+            -DMIM_LIT_WITH_VALGRIND=ON                    \
+            -DMIM_LIT_TIMEOUT=300
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build -v

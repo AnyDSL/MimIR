@@ -31,17 +31,16 @@ public:
         ///@{
         struct Children {
             ///@name Get children as muts and/or nodes.
-            ///{
+            ///@{
             // clang-format off
-            auto mut2node() { return mut2node_; }
-            auto muts()     { return mut2node_ | std::views::keys; }
-            auto nodes()    { return mut2node_ | std::views::values; }
-
-            auto mut2node() const { return mut2node_ | std::views::transform([](auto pair) { return std::pair{pair.first, const_cast<const Node*>(pair.second)}; }); }
-            auto muts()     const { return mut2node_ | std::views::keys; }
-            auto nodes()    const { return mut2node_ | std::views::transform([](auto p) { return const_cast<const Node*>(p.second); }); }
+            const auto& mut2node() { return mut2node_; }
+            auto mut2node()  const { return mut2node_ | std::views::transform([](auto p) { return std::pair{p.first, const_cast<const Node*>(p.second)}; }); }
+            auto muts()            { return mut2node_ | std::views::keys; }
+            auto muts()      const { return mut2node_ | std::views::keys; }
+            auto nodes()           { return mut2node_ | std::views::values; }
+            auto nodes()     const { return mut2node_ | std::views::transform([](auto p) { return const_cast<const Node*>(p.second); }); }
             // clang-format on
-            ///}
+            ///@}
 
             /// @name Lookup
             /// Retrieves `Node*` from @p mut.
@@ -79,12 +78,27 @@ public:
 
         template<bool Forward>
         struct Siblings {
-            size_t num() const { return nodes().size(); }
-            absl::flat_hash_set<Node*>& deps() { return nodes_; }
+            /// @name Getters
+            ///@{
+            const auto& nodes() { return nodes_; }
             auto nodes() const {
                 return nodes_ | std::views::transform([](Node* n) { return const_cast<const Node*>(n); });
             }
+            ///@}
+
+            /// @name Getters
+            ///@{
+            size_t num() const { return nodes().size(); }
             bool contains(const Node* n) const { return nodes_.contains(n); }
+            ///@}
+
+            /// @name Iterators
+            ///@{
+            auto begin() { return nodes_.begin(); }
+            auto end() { return nodes_.end(); }
+            auto begin() const { return nodes_.cbegin(); }
+            auto end() const { return nodes_.cend(); }
+            ///@}
 
         private:
             absl::flat_hash_set<Node*> nodes_;
@@ -184,14 +198,22 @@ public:
 
     /// @name Nodes
     ///@{
-    auto muts() const { return mut2node_ | std::views::keys; }
-    auto nodes() const {
-        return mut2node_ | std::views::transform([](const auto& pair) { return (const Node*)pair.second.get(); });
-    }
-    const auto& mut2node() const { return mut2node_; }
     size_t num_nodes() const { return mut2node_.size(); }
+    // clang-format off
+    auto muts()  const { return mut2node_ | std::views::keys; }
+    auto nodes() const { return mut2node_ | std::views::transform([](const auto& p) { return (const Node*)p.second.get(); }); }
+    // clang-format on
+    const auto& mut2node() const { return mut2node_; }
     const Node* mut2node(Def* mut) const { return mut2node_nonconst(mut); }
     const Node* operator[](Def* mut) const { return mut2node(mut); } ///< Same as above.
+    ///@}
+
+    /// @name Iterators
+    ///@{
+    auto begin() { return mut2node_.begin(); }
+    auto end() { return mut2node_.end(); }
+    auto begin() const { return mut2node_.cbegin(); }
+    auto end() const { return mut2node_.cend(); }
     ///@}
 
     static const Node* lca(const Node* n, const Node* m); ///< Least common ancestor of @p n and @p m.
