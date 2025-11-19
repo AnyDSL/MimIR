@@ -38,7 +38,7 @@ void Nest::populate() {
         auto curr_node = pop(queue);
         for (auto op : curr_node->mut()->deps()) {
             for (auto local_mut : op->local_muts()) {
-                if (mut2node(local_mut) || !contains(local_mut)) continue;
+                if ((*this)[local_mut] || !contains(local_mut)) continue;
 
                 if (curr_node->level() < local_mut->free_vars().size()) {
                     for (auto node = curr_node;; node = node->inest_) {
@@ -53,7 +53,7 @@ void Nest::populate() {
                     uint32_t max = 0;
                     auto inest   = root_;
                     for (auto var : local_mut->free_vars()) {
-                        if (auto node = mut2node_nonconst(var->mut()); node && node->level() > max) {
+                        if (auto node = (*this)[var->mut()]; node && node->level() > max) {
                             max   = node->level();
                             inest = node;
                         }
@@ -94,7 +94,7 @@ void Nest::sibl(Node* curr) const {
     if (curr->mut()) {
         for (auto op : curr->mut()->deps()) {
             for (auto local_mut : op->local_muts()) {
-                if (auto local_node = mut2node_nonconst(local_mut)) {
+                if (auto local_node = const_cast<Nest&>(*this)[local_mut]) {
                     if (local_node == curr)
                         local_node->link(local_node);
                     else if (auto inest = local_node->inest()) {

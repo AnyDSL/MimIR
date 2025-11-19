@@ -203,9 +203,11 @@ public:
     auto muts()  const { return mut2node_ | std::views::keys; }
     auto nodes() const { return mut2node_ | std::views::transform([](const auto& p) { return (const Node*)p.second.get(); }); }
     // clang-format on
-    const auto& mut2node() const { return mut2node_; }
-    const Node* mut2node(Def* mut) const { return mut2node_nonconst(mut); }
-    const Node* operator[](Def* mut) const { return mut2node(mut); } ///< Same as above.
+    Node* operator[](Def* mut) {
+        if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second.get();
+        return nullptr;
+    }
+    const Node* operator[](Def* mut) const { return const_cast<Nest*>(this)->operator[](mut); }
     ///@}
 
     /// @name Iterators
@@ -227,11 +229,6 @@ public:
     ///@}
 
 private:
-    Node* mut2node_nonconst(Def* mut) const {
-        if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second.get();
-        return nullptr;
-    }
-
     void populate();
     Node* make_node(Def*, Node* inest = nullptr);
     void sibl(Node*) const;

@@ -342,7 +342,7 @@ void Dumper::dump(Def* mut) {
     }
     tab.println(os, " = {{");
     ++tab;
-    if (nest) recurse(nest->mut2node(mut));
+    if (nest) recurse((*nest)[mut]);
     recurse(mut);
     tab.print(os, "{, }\n", mut->ops());
     --tab;
@@ -360,7 +360,7 @@ void Dumper::dump(Lam* lam) {
 
     ++tab;
     if (lam->is_set()) {
-        if (nest) recurse(nest->mut2node(lam));
+        if (nest) recurse((*nest)[lam]);
         recurse(lam->filter());
         recurse(lam->body(), true);
         if (lam->body()->isa_mut())
