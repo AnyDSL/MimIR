@@ -397,7 +397,7 @@ var hierarchy =
     [ "mim::Setters< Var >", "classmim_1_1Setters.html", [
       [ "mim::Var", "classmim_1_1Var.html", null ]
     ] ],
-    [ "mim::Nest::Node::Siblings< Forward >", "structmim_1_1Nest_1_1Node_1_1Siblings.html", null ],
+    [ "mim::Nest::Node::SiblDeps< Forward >", "structmim_1_1Nest_1_1Node_1_1SiblDeps.html", null ],
     [ "std::span", null, [
       [ "mim::Span< const T, N >", "classmim_1_1Span.html", null ],
       [ "mim::Span< T, N >", "classmim_1_1Span.html", null ]

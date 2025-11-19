@@ -132,7 +132,7 @@ $(function(){initNavTree('classmim_1_1Nest_1_1Node.html',''); initResizable(true
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1Nest_1_1Node_1_1Children.html">Children</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1Nest_1_1Node_1_1Siblings.html">Siblings</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1Nest_1_1Node_1_1SiblDeps.html">SiblDeps</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -168,12 +168,12 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Sibling Dependencies</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>These are the dependencies across <a class="el" href="#aabfd78eeaa88bfaa0ce7f9dbb08b751a">children()</a>: A child <code>n</code> depends() on <code>m</code>, if a subtree of <code>n</code> uses <code>m</code>. </p>
 </div></td></tr>
-<tr class="memitem:af79ac8f15524252e678627512472e950" id="r_af79ac8f15524252e678627512472e950"><td class="memTemplParams" colspan="2">template&lt;bool Forward = true&gt; </td></tr>
-<tr class="memitem:af79ac8f15524252e678627512472e950"><td class="memTemplItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#af79ac8f15524252e678627512472e950">siblings</a> ()</td></tr>
-<tr class="separator:af79ac8f15524252e678627512472e950"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a505beb3d18709d8d7507d4c0b1abdfd4" id="r_a505beb3d18709d8d7507d4c0b1abdfd4"><td class="memTemplParams" colspan="2">template&lt;bool Forward = true&gt; </td></tr>
-<tr class="memitem:a505beb3d18709d8d7507d4c0b1abdfd4"><td class="memTemplItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a505beb3d18709d8d7507d4c0b1abdfd4">siblings</a> () const</td></tr>
-<tr class="separator:a505beb3d18709d8d7507d4c0b1abdfd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a29ed570ed6ad81039fa1ad52a9b784" id="r_a2a29ed570ed6ad81039fa1ad52a9b784"><td class="memTemplParams" colspan="2">template&lt;bool Forward = true&gt; </td></tr>
+<tr class="memitem:a2a29ed570ed6ad81039fa1ad52a9b784"><td class="memTemplItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a2a29ed570ed6ad81039fa1ad52a9b784">sibl_deps</a> ()</td></tr>
+<tr class="separator:a2a29ed570ed6ad81039fa1ad52a9b784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42cacaae58788b53f4aeaea495b1293e" id="r_a42cacaae58788b53f4aeaea495b1293e"><td class="memTemplParams" colspan="2">template&lt;bool Forward = true&gt; </td></tr>
+<tr class="memitem:a42cacaae58788b53f4aeaea495b1293e"><td class="memTemplItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a42cacaae58788b53f4aeaea495b1293e">sibl_deps</a> () const</td></tr>
+<tr class="separator:a42cacaae58788b53f4aeaea495b1293e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">SCCs</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a href="https://en.wikipedia.org/wiki/Strongly_connected_component">SCCs</a> for all children dependencies.</p>
 <dl class="section note"><dt>Note</dt><dd>The <a class="el" href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">Nest::root()</a> cannot be <a class="el" href="#ae7bc3d2bb2a18017ff6a9a18ca529f0c">is_mutually_recursive()</a> by definition. If you have a set of mutually recursive <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>s as "root", include them all by using a <em>virtual root</em>. </dd></dl>
@@ -564,7 +564,7 @@ Friends</h2></td></tr>
 
 <p class="reference">References <a class="el" href="nest_8h_source.html#l00180">Nest</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00114">siblings()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00114">sibl_deps()</a>.</p>
 
 </div>
 </div>
@@ -595,8 +595,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="af79ac8f15524252e678627512472e950" name="af79ac8f15524252e678627512472e950"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af79ac8f15524252e678627512472e950">&#9670;&#160;</a></span>siblings() <span class="overload">[1/2]</span></h2>
+<a id="a2a29ed570ed6ad81039fa1ad52a9b784" name="a2a29ed570ed6ad81039fa1ad52a9b784"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a29ed570ed6ad81039fa1ad52a9b784">&#9670;&#160;</a></span>sibl_deps() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -607,7 +607,7 @@ template&lt;bool Forward = true&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">auto &amp; mim::Nest::Node::siblings </td>
+          <td class="memname">auto &amp; mim::Nest::Node::sibl_deps </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -624,12 +624,12 @@ template&lt;bool Forward = true&gt; </div>
 
 <p class="reference">References <a class="el" href="nest_8h_source.html#l00018">nest()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8cpp_source.html#l00078">mim::Nest::lca()</a>, and <a class="el" href="nest_8h_source.html#l00123">siblings()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8cpp_source.html#l00078">mim::Nest::lca()</a>, and <a class="el" href="nest_8h_source.html#l00123">sibl_deps()</a>.</p>
 
 </div>
 </div>
-<a id="a505beb3d18709d8d7507d4c0b1abdfd4" name="a505beb3d18709d8d7507d4c0b1abdfd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a505beb3d18709d8d7507d4c0b1abdfd4">&#9670;&#160;</a></span>siblings() <span class="overload">[2/2]</span></h2>
+<a id="a42cacaae58788b53f4aeaea495b1293e" name="a42cacaae58788b53f4aeaea495b1293e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42cacaae58788b53f4aeaea495b1293e">&#9670;&#160;</a></span>sibl_deps() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -640,7 +640,7 @@ template&lt;bool Forward = true&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const auto &amp; mim::Nest::Node::siblings </td>
+          <td class="memname">const auto &amp; mim::Nest::Node::sibl_deps </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -655,7 +655,7 @@ template&lt;bool Forward = true&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00123">123</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00114">siblings()</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00114">sibl_deps()</a>.</p>
 
 </div>
 </div>
