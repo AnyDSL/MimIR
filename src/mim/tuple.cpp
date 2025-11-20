@@ -152,17 +152,6 @@ const Def* cat_sigma(nat_t n, nat_t m, const Def* a, const Def* b) { return a->w
 const Def* cat_tuple(World& world, Defs a, Defs b) { return world.tuple(cat(a, b)); }
 const Def* cat_sigma(World& world, Defs a, Defs b) { return world.sigma(cat(a, b)); }
 
-const Def* merge_tuple(const Def* def, Defs defs) {
-    auto& w = def->world();
-    if (auto sigma = def->type()->isa_imm<Sigma>()) {
-        auto a     = sigma->num_ops();
-        auto tuple = DefVec(a, [&](auto i) { return w.extract(def, a, i); });
-        return w.tuple(cat(tuple, defs));
-    }
-
-    return def->world().tuple(cat(def, defs));
-}
-
 const Def* tuple_of_types(const Def* t) {
     auto& world = t->world();
     if (auto sigma = t->isa<Sigma>()) return world.tuple(sigma->ops());
