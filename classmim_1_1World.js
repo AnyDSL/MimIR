@@ -1,5 +1,6 @@
 var classmim_1_1World =
 [
+    [ "Externals", "classmim_1_1World_1_1Externals.html", "classmim_1_1World_1_1Externals" ],
     [ "Freezer", "structmim_1_1World_1_1Freezer.html", "structmim_1_1World_1_1Freezer" ],
     [ "Move.arena", "classmim_1_1World.html#structmim_1_1World_1_1Move_8arena", [
       [ "defs", "classmim_1_1World.html#acd8fc2597193b4c938e7ff50062936e3", null ],
@@ -37,7 +38,6 @@ var classmim_1_1World =
     [ "cn", "classmim_1_1World.html#a68176f2f91337dd7424f8cfed7d800b3", null ],
     [ "con", "classmim_1_1World.html#acbe77774e9e87180aafc7ec9150d4a03", null ],
     [ "con", "classmim_1_1World.html#a0c7dfef7a0114fbf8dbd040dbf50bf5e", null ],
-    [ "copy_externals", "classmim_1_1World.html#acac4089b33ce3b95d8fba86e2d35bc7a", null ],
     [ "curr_gid", "classmim_1_1World.html#a42972b62b30faf83a3470c03a4883685", null ],
     [ "debug_dump", "classmim_1_1World.html#a888c0001cb304f075ddcb69ad0063996", null ],
     [ "dot", "classmim_1_1World.html#a722b0c4b3f8511b485bf2232359e64fe", null ],
@@ -47,8 +47,8 @@ var classmim_1_1World =
     [ "dump", "classmim_1_1World.html#a6948f411fa7465945b028dc5d8b2831e", null ],
     [ "dump", "classmim_1_1World.html#ae302b97de79c9c2516e265df6fa5104f", null ],
     [ "ext", "classmim_1_1World.html#aae3cfee47850ad9fc89aedf2fbf2738b", null ],
-    [ "external", "classmim_1_1World.html#aaac7d4050e707ed01cc7761b3205bb53", null ],
-    [ "externals", "classmim_1_1World.html#a9f1dafe6dd69d4a63ad6f883c9194872", null ],
+    [ "externals", "classmim_1_1World.html#a3336433005ad21cbf70d42c2837ec05a", null ],
+    [ "externals", "classmim_1_1World.html#ac5b0195c62710ec975a71944002a53b5", null ],
     [ "extract", "classmim_1_1World.html#a9799c99593056d7d6d47b1993de4ee33", null ],
     [ "extract", "classmim_1_1World.html#a1903b151f4eae823761959c4d816f2a0", null ],
     [ "extract", "classmim_1_1World.html#a8b068b0c79a1c0cae408007c4ace7180", null ],
@@ -115,8 +115,6 @@ var classmim_1_1World =
     [ "lit_univ_0", "classmim_1_1World.html#a621ad5961def1d0659b279ba88300971", null ],
     [ "lit_univ_1", "classmim_1_1World.html#a6af880f9d61f7fa014e338df3c27413c", null ],
     [ "log", "classmim_1_1World.html#aed6fcb0dc74ef6d72a12b7441964d890", null ],
-    [ "make_external", "classmim_1_1World.html#a2ee0491af73c423ac7f39e05abdc8e90", null ],
-    [ "make_internal", "classmim_1_1World.html#ab0b9570d9c3ba07fd434646ee355049d", null ],
     [ "match", "classmim_1_1World.html#a4647f46eaad8cc510000f88a7f3e543f", null ],
     [ "meet", "classmim_1_1World.html#a0433f7debfbd793528514ac31c92f005", null ],
     [ "merge", "classmim_1_1World.html#ad042699cd6434abf9a9a9c3b8f9e0e53", null ],
@@ -188,7 +186,6 @@ var classmim_1_1World =
     [ "sym", "classmim_1_1World.html#aaf0847343a45223101b3550faed8bb1b", null ],
     [ "sym", "classmim_1_1World.html#a079bca4777830870f5d7d70af2d82ff6", null ],
     [ "sym", "classmim_1_1World.html#aa4df2feb5a0d1c856ca94a05445c1e99", null ],
-    [ "sym2external", "classmim_1_1World.html#a39fb7279463bd3fbae7675bad3b25019", null ],
     [ "top", "classmim_1_1World.html#add72ef789482ede968aef2ffba2ce2f2", null ],
     [ "top_nat", "classmim_1_1World.html#ae7e4d31bb70b0da09051f5cdbea43f48", null ],
     [ "tuple", "classmim_1_1World.html#abc39bbd21ae5797d53b9e82c494e2be9", null ],

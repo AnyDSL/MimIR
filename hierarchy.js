@@ -26,6 +26,7 @@ var hierarchy =
     [ "std::exception", null, [
       [ "mim::Error", "classmim_1_1Error.html", null ]
     ] ],
+    [ "mim::World::Externals", "classmim_1_1World_1_1Externals.html", null ],
     [ "mim::Flags", "namespacemim.html#structmim_1_1Flags", null ],
     [ "mim::FNV1< size_t >", "namespacemim.html#structmim_1_1FNV1", null ],
     [ "mim::FNV1< 4 >", "structmim_1_1FNV1_3_014_01_4.html", null ],
@@ -34,6 +35,7 @@ var hierarchy =
     [ "mim::World::Freezer", "structmim_1_1World_1_1Freezer.html", null ],
     [ "mim::GIDHash< T >", "structmim_1_1GIDHash.html", null ],
     [ "mim::GIDLt< T >", "structmim_1_1GIDLt.html", null ],
+    [ "mim::Driver::Imports", "classmim_1_1Driver_1_1Imports.html", null ],
     [ "mim::plug::mem::pass::SSA::Info", "classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#structmim_1_1plug_1_1mem_1_1pass_1_1SSA_1_1Info", null ],
     [ "absl::InlinedVector", null, [
       [ "mim::Vector< const Def * >", "classmim_1_1Vector.html", null ],

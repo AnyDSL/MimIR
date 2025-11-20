@@ -222,7 +222,8 @@ Basics</h1>
 <div class="line">        driver.<a class="code hl_function" href="classmim_1_1Driver.html#a6c91cf5797a4c02730475dda317cf14e">log</a>().<a class="code hl_function" href="classmim_1_1Log.html#a981c33b8d1500c0c4c595701d0bfd044">set</a>(&amp;std::cerr).<a class="code hl_function" href="classmim_1_1Log.html#a981c33b8d1500c0c4c595701d0bfd044">set</a>(<a class="code hl_enumvalue" href="classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590aa603905470e2a5b8c13e96b579ef0dba">Log::Level::Debug</a>);</div>
 <div class="line"> </div>
 <div class="line">        <span class="keyword">auto</span> parser = <a class="code hl_class" href="classmim_1_1ast_1_1Parser.html">ast::Parser</a>(<a class="code hl_namespace" href="namespacemim_1_1ast.html">ast</a>);</div>
-<div class="line">        <span class="keywordflow">for</span> (<span class="keyword">auto</span> plugin : {<span class="stringliteral">&quot;compile&quot;</span>, <span class="stringliteral">&quot;core&quot;</span>}) parser.plugin(plugin);</div>
+<div class="line">        <span class="keywordflow">for</span> (<span class="keyword">auto</span> plugin : {<span class="stringliteral">&quot;compile&quot;</span>, <span class="stringliteral">&quot;core&quot;</span>})</div>
+<div class="line">            parser.plugin(plugin);</div>
 <div class="line"> </div>
 <div class="line">        <span class="comment">// Cn [%mem.M, I32, %mem.Ptr (I32, 0) Cn [%mem.M, I32]]</span></div>
 <div class="line">        <span class="keyword">auto</span> mem_t  = w.annex&lt;<a class="code hl_enumeration" href="namespacemim_1_1plug_1_1mem.html#a44127c99fa94a5143565463d65206ea6">mem::M</a>&gt;();</div>
@@ -231,7 +232,7 @@ Basics</h1>
 <div class="line"> </div>
 <div class="line">        <span class="keyword">auto</span> [<a class="code hl_namespace" href="namespacemim_1_1plug_1_1mem.html">mem</a>, argc, argv, ret] = <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;vars&lt;4&gt;();</div>
 <div class="line">        <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;app(<span class="keyword">false</span>, ret, {<a class="code hl_namespace" href="namespacemim_1_1plug_1_1mem.html">mem</a>, argc});</div>
-<div class="line">        <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;make_external();</div>
+<div class="line">        <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;externalize();</div>
 <div class="line"> </div>
 <div class="line">        <a class="code hl_function" href="namespacemim.html#a60ee93398f76269a406c841b2bb2c306">optimize</a>(w);</div>
 <div class="line">        std::ofstream ofs(<span class="stringliteral">&quot;hello.ll&quot;</span>);</div>
@@ -251,7 +252,7 @@ Basics</h1>
 <div class="line">    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassmim_1_1Driver_html"><div class="ttname"><a href="classmim_1_1Driver.html">mim::Driver</a></div><div class="ttdoc">Some &quot;global&quot; variables needed all over the place.</div><div class="ttdef"><b>Definition</b> <a href="driver_8h_source.html#l00017">driver.h:17</a></div></div>
-<div class="ttc" id="aclassmim_1_1Driver_html_a41e5a945cac9fdfd37830a722b5bd2a4"><div class="ttname"><a href="classmim_1_1Driver.html#a41e5a945cac9fdfd37830a722b5bd2a4">mim::Driver::backend</a></div><div class="ttdeci">auto backend(std::string_view name)</div><div class="ttdef"><b>Definition</b> <a href="driver_8h_source.html#l00084">driver.h:84</a></div></div>
+<div class="ttc" id="aclassmim_1_1Driver_html_a41e5a945cac9fdfd37830a722b5bd2a4"><div class="ttname"><a href="classmim_1_1Driver.html#a41e5a945cac9fdfd37830a722b5bd2a4">mim::Driver::backend</a></div><div class="ttdeci">auto backend(std::string_view name)</div><div class="ttdef"><b>Definition</b> <a href="driver_8h_source.html#l00107">driver.h:107</a></div></div>
 <div class="ttc" id="aclassmim_1_1Driver_html_a6bb261071b0b8c994cf8dd9c90e78351"><div class="ttname"><a href="classmim_1_1Driver.html#a6bb261071b0b8c994cf8dd9c90e78351">mim::Driver::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="driver_8h_source.html#l00026">driver.h:26</a></div></div>
 <div class="ttc" id="aclassmim_1_1Driver_html_a6c91cf5797a4c02730475dda317cf14e"><div class="ttname"><a href="classmim_1_1Driver.html#a6c91cf5797a4c02730475dda317cf14e">mim::Driver::log</a></div><div class="ttdeci">Log &amp; log() const</div><div class="ttdef"><b>Definition</b> <a href="driver_8h_source.html#l00025">driver.h:25</a></div></div>
 <div class="ttc" id="aclassmim_1_1Log_html_a981c33b8d1500c0c4c595701d0bfd044"><div class="ttname"><a href="classmim_1_1Log.html#a981c33b8d1500c0c4c595701d0bfd044">mim::Log::set</a></div><div class="ttdeci">Log &amp; set(std::ostream *ostream)</div><div class="ttdef"><b>Definition</b> <a href="log_8h_source.html#l00037">log.h:37</a></div></div>
@@ -285,7 +286,7 @@ Basics</h1>
 <div class="fragment"><div class="line">Cn [%mem.M, I32, %mem.Ptr (I32, 0), Cn [%mem.M, I32]]</div>
 </div><!-- fragment --><p>The <code>%mem.M</code> type is a type that keeps track of side effects that may occur. Since, <code>main</code> introduces <a class="el" href="classmim_1_1Var.html">Var</a>iables we must create a <b>mutable</b> <a class="el" href="classmim_1_1Lam.html">Lam</a>bda (see <a class="el" href="#mut">Immutables vs. Mutables</a>). The only thing <code>main</code> is doing, is to invoke its <code>ret</code>urn continuation with <code>mem</code> and <code>argc</code> as argument:</p>
 <div class="fragment"><div class="line">ret (mem, argc)</div>
-</div><!-- fragment --><p>It is also important to make <code>main</code> <a class="el" href="classmim_1_1Def.html#a40fa93a786143fbf727f567b3c875101">external</a>. Otherwise, MimIR will simply remove this function.</p>
+</div><!-- fragment --><p>It is also important to make <code>main</code> <a class="el" href="classmim_1_1Def.html#a63ab063b609e964b0c90c5ca651ca5e0">external</a>. Otherwise, MimIR will simply remove this function.</p>
 <p>We <a class="el" href="namespacemim.html#a60ee93398f76269a406c841b2bb2c306">optimize</a> the program, emit an <a href="https://llvm.org/docs/LangRef.html">LLVM assembly file</a>, and compile it <a class="el" href="namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396">via</a> <code>clang</code>. Finally, we <a class="el" href="namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396">execute</a> the generated program with <code>./hello a b c</code> and <a class="el" href="namespacemim.html#fmt">output</a> its exit code - which should be <code>4</code>.</p>
 <h1><a class="anchor" id="mut"></a>
 Immutables vs. Mutables</h1>
@@ -582,7 +583,7 @@ Summary</h2>
 <p>The last line assumes <a class="el" href="namespacemim.html#a39f92287adf5cb956f0696a740ba3fe7">mim::Flags::scalarize_threshold</a> = 32.</p>
 <h1><a class="anchor" id="autotoc_md33"></a>
 Iterating over the Program</h1>
-<p>There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classmim_1_1World.html#a9f1dafe6dd69d4a63ad6f883c9194872">World::externals</a> and recursively run over <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">Def::deps</a> like this:</p>
+<p>There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classmim_1_1World.html#ac5b0195c62710ec975a71944002a53b5">World::externals</a> and recursively run over <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">Def::deps</a> like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacemim.html#aa55cde5ad8246840d0a046cc728f987d">DefSet</a> done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> mut : world.externals())</div>
 <div class="line">    visit(done, mut);</div>

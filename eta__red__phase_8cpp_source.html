@@ -127,7 +127,7 @@ $(function(){initNavTree('eta__red__phase_8cpp_source.html',''); initResizable(t
 <div class="foldopen" id="foldopen00005" data-start="{" data-end="}">
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="classmim_1_1EtaRedPhase.html#a7278908daa1212badcc3dfc65c759cb6">    5</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1EtaRedPhase.html#a7278908daa1212badcc3dfc65c759cb6">EtaRedPhase::rewrite_external</a>(<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* old_mut) {</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    <span class="keyword">auto</span> new_mut = rewrite_no_eta(old_mut)-&gt;as_mut();</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keywordflow">if</span> (old_mut-&gt;<a class="code hl_function" href="classmim_1_1Def.html#aa3519178f6136b088a41d1bfa0cab603">is_external</a>()) new_mut-&gt;make_external();</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keywordflow">if</span> (old_mut-&gt;<a class="code hl_function" href="classmim_1_1Def.html#aa3519178f6136b088a41d1bfa0cab603">is_external</a>()) new_mut-&gt;externalize();</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>}</div>
 </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>

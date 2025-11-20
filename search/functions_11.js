@@ -64,9 +64,10 @@ var searchData=
   ['subview_61',['subview',['../namespacemim.html#afa3494e65f05e62afeb1a0fd07f41e94',1,'mim']]],
   ['swap_62',['swap',['../classmim_1_1BitSet.html#a046bda62c88726d84b2d7d92554c4db5',1,'mim::BitSet']]],
   ['sym_63',['sym',['../classmim_1_1ast_1_1AST.html#aabc7c822c356b3cc17ce638289966b13',1,'mim::ast::AST::sym(const char *s)'],['../classmim_1_1ast_1_1AST.html#a607ada8eb3fe062648edbd483b0f2ff6',1,'mim::ast::AST::sym(std::string_view s)'],['../classmim_1_1ast_1_1AST.html#af37a2dfcc38d784f2e8b47039e9e108a',1,'mim::ast::AST::sym(const std::string &amp;s)'],['../classmim_1_1ast_1_1Tok.html#a1614f4001b6ff119534d0d434a80f608',1,'mim::ast::Tok::sym()'],['../classmim_1_1Def.html#acd076ce85473d3ea5dee55259338951c',1,'mim::Def::sym() const'],['../classmim_1_1Def.html#a21afe5afd0b258ded3981bed4d78364c',1,'mim::Def::sym(const char *) const'],['../classmim_1_1Def.html#afe3ec0b409009159678e603ebea3489b',1,'mim::Def::sym(std::string_view) const'],['../classmim_1_1Def.html#aabd288124bdb49880e02a1e053b87737',1,'mim::Def::sym(std::string) const'],['../structmim_1_1Dbg.html#a1f6805e001bec9cd88aa3297a108cd80',1,'mim::Dbg::sym()'],['../classmim_1_1World.html#aa4df2feb5a0d1c856ca94a05445c1e99',1,'mim::World::sym(std::string_view)'],['../classmim_1_1World.html#aaf0847343a45223101b3550faed8bb1b',1,'mim::World::sym(const char *)'],['../classmim_1_1World.html#a079bca4777830870f5d7d70af2d82ff6',1,'mim::World::sym(const std::string &amp;)']]],
-  ['sym2external_64',['sym2external',['../classmim_1_1World.html#a39fb7279463bd3fbae7675bad3b25019',1,'mim::World']]],
+  ['sym2mut_64',['sym2mut',['../classmim_1_1World_1_1Externals.html#ac72a6eff11ad513f4a98462cc487e36a',1,'mim::World::Externals']]],
   ['sym_5fanon_65',['sym_anon',['../classmim_1_1ast_1_1AST.html#a8899c2750a526004e0bbcae3f327a01c',1,'mim::ast::AST']]],
   ['sym_5ferror_66',['sym_error',['../classmim_1_1ast_1_1AST.html#addcecc401fa2340d35035a6c8bf23f1e',1,'mim::ast::AST']]],
   ['sym_5freturn_67',['sym_return',['../classmim_1_1ast_1_1AST.html#a85ddb7b560da4ba40d7923a8dc6ccd2d',1,'mim::ast::AST']]],
-  ['system_68',['system',['../namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396',1,'mim::sys']]]
+  ['syms_68',['syms',['../classmim_1_1Driver_1_1Imports.html#a419f8de09b60fbe8b2c40c91972dd817',1,'mim::Driver::Imports::syms()'],['../classmim_1_1World_1_1Externals.html#af73e1fc6bb699ac0af55a3339f366e85',1,'mim::World::Externals::syms()']]],
+  ['system_69',['system',['../namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396',1,'mim::sys']]]
 ];

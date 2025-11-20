@@ -279,7 +279,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Rewrites the <a class="el" href="#aef58721bd5f8d89e624eea65ff51f6b3" title="Get old Defs from here.">RWPhase::old_world</a> into the <a class="el" href="#a0f7249ac3c85d2f2b1d7c72455c61b19" title="Create new Defs into this.">RWPhase::new_world</a> and <code>swap</code>s them afterwards. </p>
 <p>This will destroy <a class="el" href="#aef58721bd5f8d89e624eea65ff51f6b3" title="Get old Defs from here.">RWPhase::old_world</a> leaving <a class="el" href="#a0f7249ac3c85d2f2b1d7c72455c61b19" title="Create new Defs into this.">RWPhase::new_world</a> which will be created here as the <em>current</em> <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> to work with. This <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a> will recursively <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">Rewriter::rewrite</a></p><ol type="1">
 <li>all (old) <a class="el" href="classmim_1_1World.html#ae8850b8e8f58014a9fb7205ddd7ffb47">World::annexes()</a> (during which <a class="el" href="#a8c1256f93cc63c1d8d0609e2aa474b51">RWPhase::is_bootstrapping</a> is <code>true</code>), and then</li>
-<li>all (old) <a class="el" href="classmim_1_1World.html#a9f1dafe6dd69d4a63ad6f883c9194872">World::externals()</a> (during which <a class="el" href="#a8c1256f93cc63c1d8d0609e2aa474b51">RWPhase::is_bootstrapping</a> is <code>false</code>). <dl class="section note"><dt>Note</dt><dd>You can override <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">Rewriter::rewrite</a>, <a class="el" href="classmim_1_1Rewriter.html#abe4950e5b3e1591ed5a956b5e0cdc0bb">Rewriter::rewrite_imm</a>, <a class="el" href="classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112">Rewriter::rewrite_mut</a>, etc. </dd></dl>
+<li>all (old) <a class="el" href="classmim_1_1World.html#a3336433005ad21cbf70d42c2837ec05a">World::externals()</a> (during which <a class="el" href="#a8c1256f93cc63c1d8d0609e2aa474b51">RWPhase::is_bootstrapping</a> is <code>false</code>). <dl class="section note"><dt>Note</dt><dd>You can override <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">Rewriter::rewrite</a>, <a class="el" href="classmim_1_1Rewriter.html#abe4950e5b3e1591ed5a956b5e0cdc0bb">Rewriter::rewrite_imm</a>, <a class="el" href="classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112">Rewriter::rewrite_mut</a>, etc. </dd></dl>
 </li>
 </ol>
 
@@ -514,7 +514,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00040">40</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00100">new_world()</a>, <a class="el" href="world_8cpp_source.html#l00079">mim::World::register_annex()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00027">mim::Rewriter::rewrite()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00100">new_world()</a>, <a class="el" href="world_8cpp_source.html#l00093">mim::World::register_annex()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00027">mim::Rewriter::rewrite()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00023">start()</a>.</p>
 
