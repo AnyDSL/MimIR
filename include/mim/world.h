@@ -6,7 +6,6 @@
 #include <type_traits>
 
 #include <absl/container/btree_map.h>
-#include <absl/container/btree_set.h>
 #include <fe/arena.h>
 
 #include "mim/axm.h"
@@ -201,12 +200,42 @@ public:
 
     /// @name Externals
     ///@{
-    const auto& sym2external() const { return move_.sym2external; }
-    Def* external(Sym name) { return mim::lookup(move_.sym2external, name); } ///< Lookup by @p name.
-    auto externals() const { return move_.sym2external | std::views::values; }
-    Vector<Def*> copy_externals() const { return {externals().begin(), externals().end()}; }
-    void make_external(Def*);
-    void make_internal(Def*);
+    class Externals {
+    public:
+        ///@name Get syms/muts
+        ///@{
+        const auto& sym2mut() const { return sym2mut_; }
+        auto syms() const { return sym2mut_ | std::views::keys; }
+        auto muts() const { return sym2mut_ | std::views::values; }
+        /// Returns a copy of @p muts() in a Vector; this allows you modify the Externals while iterating.
+        /// @note The iteration will see all old externals, of course.
+        Vector<Def*> mutate() const { return {muts().begin(), muts().end()}; }
+        Def* operator[](Sym name) const { return mim::lookup(sym2mut_, name); } ///< Lookup by @p name.
+        ///@}
+
+        ///@name externalize/internalize
+        ///@{
+        void externalize(Def*);
+        void internalize(Def*);
+        ///@}
+
+        /// @name Iterators
+        ///@{
+        auto begin() const { return sym2mut_.cbegin(); }
+        auto end() const { return sym2mut_.cend(); }
+        ///@}
+
+        friend void swap(Externals& ex1, Externals& ex2) noexcept {
+            using std::swap;
+            swap(ex1.sym2mut_, ex2.sym2mut_);
+        }
+
+    private:
+        fe::SymMap<Def*> sym2mut_;
+    };
+
+    const Externals& externals() const { return move_.externals; }
+    Externals& externals() { return move_.externals; }
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Hole
@@ -733,8 +762,8 @@ private:
             fe::Arena defs, substs;
         } arena;
 
+        Externals externals;
         absl::btree_map<flags_t, const Def*> flags2annex;
-        absl::btree_map<Sym, Def*> sym2external;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         Sets<Def> muts;
         Sets<const Var> vars;
@@ -750,7 +779,7 @@ private:
             swap(m1.vars,         m2.vars);
             swap(m1.muts,         m2.muts);
             swap(m1.flags2annex,  m2.flags2annex);
-            swap(m1.sym2external, m2.sym2external);
+            swap(m1.externals,    m2.externals);
             // clang-format on
         }
     } move_;

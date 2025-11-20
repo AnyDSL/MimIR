@@ -4,7 +4,7 @@ namespace mim {
 
 void EtaRedPhase::rewrite_external(Def* old_mut) {
     auto new_mut = rewrite_no_eta(old_mut)->as_mut();
-    if (old_mut->is_external()) new_mut->make_external();
+    if (old_mut->is_external()) new_mut->externalize();
 }
 
 const Def* EtaRedPhase::rewrite(const Def* old_def) {

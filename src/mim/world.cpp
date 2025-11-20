@@ -24,6 +24,20 @@ bool is_shape(const Def* s) {
 
 } // namespace
 
+void World::Externals::externalize(Def* def) {
+    assert(!def->is_external());
+    assert(def->is_closed());
+    def->external_ = true;
+    assert_emplace(sym2mut_, def->sym(), def);
+}
+
+void World::Externals::internalize(Def* def) {
+    assert(def->is_external());
+    def->external_ = false;
+    auto num       = sym2mut_.erase(def->sym());
+    assert_unused(num == 1);
+}
+
 /*
  * constructor & destructor
  */
@@ -84,20 +98,6 @@ const Def* World::register_annex(flags_t f, const Def* def) {
         return def;
     }
     return nullptr;
-}
-
-void World::make_external(Def* def) {
-    assert(!def->is_external());
-    assert(def->is_closed());
-    def->external_ = true;
-    assert_emplace(move_.sym2external, def->sym(), def);
-}
-
-void World::make_internal(Def* def) {
-    assert(def->is_external());
-    def->external_ = false;
-    auto num       = move_.sym2external.erase(def->sym());
-    assert_unused(num == 1);
 }
 
 /*
@@ -676,7 +676,7 @@ Defs World::reduce(const Var* var, const Def* arg) {
 
 void World::for_each(bool elide_empty, std::function<void(Def*)> f) {
     unique_queue<MutSet> queue;
-    for (auto mut : externals())
+    for (auto mut : externals().muts())
         queue.push(mut);
 
     while (!queue.empty()) {
@@ -705,7 +705,7 @@ const Def* World::gid2def(u32 gid) {
 }
 
 World& World::verify() {
-    for (auto mut : externals())
+    for (auto mut : externals().muts())
         assert(mut->is_closed() && mut->is_set());
     for (auto anx : annexes())
         assert(anx->is_closed());

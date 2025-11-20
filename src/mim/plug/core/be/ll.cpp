@@ -5,6 +5,8 @@
 #include <iomanip>
 #include <ranges>
 
+#include <absl/container/btree_set.h>
+
 #include <mim/plug/clos/clos.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>

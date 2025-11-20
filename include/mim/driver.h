@@ -45,11 +45,34 @@ public:
     /// 1. The `fs::path` used during import,
     /// 2. The name as Sym%bol used in the `import` directive or in Parser::import.
     ///@{
-    const auto& import_path2sym() { return import_path2sym_; }
-    auto import_paths() { return import_path2sym_ | std::views::keys; }
-    auto import_syms() { return import_path2sym_ | std::views::values; }
-    /// Yields a `fs::path*` if not already added that you can use in Loc%ation; returns `nullptr` otherwise.
-    const fs::path* add_import(fs::path, Sym);
+    class Imports {
+    public:
+        Imports(Driver& driver)
+            : driver_(driver) {}
+
+        /// @name Get imports
+        ///@{
+        const auto& path2sym() { return path2sym_; }
+        auto paths() { return path2sym_ | std::views::keys; }
+        auto syms() { return path2sym_ | std::views::values; }
+        ///@}
+
+        /// @name Iterators
+        ///@{
+        auto begin() const { return path2sym_.cbegin(); }
+        auto end() const { return path2sym_.cbegin(); }
+        ///@}
+
+        /// Yields a `fs::path*`, if not already added that you can use in Loc%ation; returns `nullptr` otherwise.
+        const fs::path* add(fs::path, Sym);
+
+    private:
+        Driver& driver_;
+        std::deque<std::pair<fs::path, Sym>> path2sym_;
+    };
+
+    const Imports& imports() const { return imports_; }
+    Imports& imports() { return imports_; }
     ///@}
 
     /// @name Load Plugin
@@ -95,7 +118,7 @@ private:
     Backends backends_;
     Flags2Stages stages_;
     Normalizers normalizers_;
-    std::deque<std::pair<fs::path, Sym>> import_path2sym_;
+    Imports imports_;
 };
 
 #define GET_FUN_PTR(plugin, f) get_fun_ptr<decltype(f)>(plugin, #f)

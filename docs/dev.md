@@ -46,7 +46,7 @@ The only thing `main` is doing, is to invoke its `ret`urn continuation with `mem
 ret (mem, argc)
 ```
 
-It is also important to make `main` [external](@ref mim::Def::make_external).
+It is also important to make `main` [external](@ref mim::Def::externalize).
 Otherwise, MimIR will simply remove this function.
 
 We [optimize](@ref mim::optimize) the program, emit an [LLVM assembly file](https://llvm.org/docs/LangRef.html), and compile it [via](@ref mim::sys::system) `clang`.
