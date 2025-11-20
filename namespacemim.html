@@ -632,16 +632,35 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="memitem:a829c76d14d02cad2fb4f21aff1e0fb6a" id="r_a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a829c76d14d02cad2fb4f21aff1e0fb6a">unflatten</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> ops, const <a class="el" href="classmim_1_1Def.html">Def</a> *type, bool flatten_muts=true)</td></tr>
 <tr class="memdesc:a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly.  <br /></td></tr>
 <tr class="separator:a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75c9fb5e1cf36bc411049ccc18dccd1e" id="r_a75c9fb5e1cf36bc411049ccc18dccd1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75c9fb5e1cf36bc411049ccc18dccd1e">merge</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
-<tr class="separator:a75c9fb5e1cf36bc411049ccc18dccd1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fa31151e8354486d4a510a57eaaa292" id="r_a7fa31151e8354486d4a510a57eaaa292"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fa31151e8354486d4a510a57eaaa292">merge</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> defs)</td></tr>
-<tr class="separator:a7fa31151e8354486d4a510a57eaaa292"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a458de6495f8b0a7ca2a0320496bd6fd7" id="r_a458de6495f8b0a7ca2a0320496bd6fd7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a458de6495f8b0a7ca2a0320496bd6fd7">merge_sigma</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> defs)</td></tr>
-<tr class="separator:a458de6495f8b0a7ca2a0320496bd6fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af14a8799e94d48634c4752a702d6bc9e" id="r_af14a8799e94d48634c4752a702d6bc9e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af14a8799e94d48634c4752a702d6bc9e">merge_tuple</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> defs)</td></tr>
-<tr class="separator:af14a8799e94d48634c4752a702d6bc9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8edd5d2569579fbdac7077d606a2e2b5" id="r_a8edd5d2569579fbdac7077d606a2e2b5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8edd5d2569579fbdac7077d606a2e2b5">tuple_of_types</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *t)</td></tr>
 <tr class="separator:a8edd5d2569579fbdac7077d606a2e2b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Concatenation</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Works for <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a>s, <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a>s, <a class="el" href="classmim_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s, and <a class="el" href="classmim_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays alike. </p>
+</div></td></tr>
+<tr class="memitem:af31034ef60ae23c248b2e3b8da809f88" id="r_af31034ef60ae23c248b2e3b8da809f88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af31034ef60ae23c248b2e3b8da809f88">cat</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
+<tr class="separator:af31034ef60ae23c248b2e3b8da809f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a639d79a26031657a5241a869b4cefd66" id="r_a639d79a26031657a5241a869b4cefd66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a639d79a26031657a5241a869b4cefd66">cat</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *a, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> bs)</td></tr>
+<tr class="separator:a639d79a26031657a5241a869b4cefd66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb823ea7aa7f75cc118981aa88f06a45" id="r_abb823ea7aa7f75cc118981aa88f06a45"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb823ea7aa7f75cc118981aa88f06a45">cat</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> as, const <a class="el" href="classmim_1_1Def.html">Def</a> *b)</td></tr>
+<tr class="separator:abb823ea7aa7f75cc118981aa88f06a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a223de04c3ed44a4b7074eb67520bd05b" id="r_a223de04c3ed44a4b7074eb67520bd05b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a223de04c3ed44a4b7074eb67520bd05b">cat</a> (<a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> n, <a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> m, const <a class="el" href="classmim_1_1Def.html">Def</a> *a, const <a class="el" href="classmim_1_1Def.html">Def</a> *b)</td></tr>
+<tr class="separator:a223de04c3ed44a4b7074eb67520bd05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a213c0f00c3278ceee24bcd47bcdcd364" id="r_a213c0f00c3278ceee24bcd47bcdcd364"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a213c0f00c3278ceee24bcd47bcdcd364">cat_tuple</a> (<a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> n, <a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> m, const <a class="el" href="classmim_1_1Def.html">Def</a> *a, const <a class="el" href="classmim_1_1Def.html">Def</a> *b)</td></tr>
+<tr class="separator:a213c0f00c3278ceee24bcd47bcdcd364"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dc4d615e77568b8535fcc6b330440f6" id="r_a6dc4d615e77568b8535fcc6b330440f6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6dc4d615e77568b8535fcc6b330440f6">cat_sigma</a> (<a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> n, <a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> m, const <a class="el" href="classmim_1_1Def.html">Def</a> *a, const <a class="el" href="classmim_1_1Def.html">Def</a> *b)</td></tr>
+<tr class="separator:a6dc4d615e77568b8535fcc6b330440f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba5c71eb98c1f9313de052e38fa1f58" id="r_a8ba5c71eb98c1f9313de052e38fa1f58"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ba5c71eb98c1f9313de052e38fa1f58">cat_tuple</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
+<tr class="separator:a8ba5c71eb98c1f9313de052e38fa1f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac405a8032b1f45706d85f2c1271afbe" id="r_aac405a8032b1f45706d85f2c1271afbe"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac405a8032b1f45706d85f2c1271afbe">cat_sigma</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
+<tr class="separator:aac405a8032b1f45706d85f2c1271afbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77f128a7488e833a0c10c28a25dccf2d" id="r_a77f128a7488e833a0c10c28a25dccf2d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77f128a7488e833a0c10c28a25dccf2d">cat_tuple</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *a, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> bs)</td></tr>
+<tr class="separator:a77f128a7488e833a0c10c28a25dccf2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7c402b5f8955bcf0e7aabb44621a8a2" id="r_ad7c402b5f8955bcf0e7aabb44621a8a2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7c402b5f8955bcf0e7aabb44621a8a2">cat_tuple</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> as, const <a class="el" href="classmim_1_1Def.html">Def</a> *b)</td></tr>
+<tr class="separator:ad7c402b5f8955bcf0e7aabb44621a8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebf853265433179025b2905852b2164b" id="r_aebf853265433179025b2905852b2164b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebf853265433179025b2905852b2164b">cat_sigma</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *a, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> bs)</td></tr>
+<tr class="separator:aebf853265433179025b2905852b2164b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6585afae9a790d72d5bba1e46e7c0c68" id="r_a6585afae9a790d72d5bba1e46e7c0c68"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6585afae9a790d72d5bba1e46e7c0c68">cat_sigma</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> as, const <a class="el" href="classmim_1_1Def.html">Def</a> *b)</td></tr>
+<tr class="separator:a6585afae9a790d72d5bba1e46e7c0c68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Formatted Output</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code class="param">s</code> with <code class="param">args</code> and puts it into <code class="param">os</code>.</p>
 <p><a class="el" href="classmim_1_1Use.html" title="const Def*erences a user.">Use</a> <code>{}</code> as a placeholder within your format string <code class="param">s</code>.</p><ul>
@@ -2299,6 +2318,398 @@ template&lt;class D, class S&gt; </div>
 
 </div>
 </div>
+<a id="a639d79a26031657a5241a869b4cefd66" name="a639d79a26031657a5241a869b4cefd66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a639d79a26031657a5241a869b4cefd66">&#9670;&#160;</a></span>cat() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> mim::cat </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>bs</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00319">319</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00130">cat()</a>.</p>
+
+</div>
+</div>
+<a id="abb823ea7aa7f75cc118981aa88f06a45" name="abb823ea7aa7f75cc118981aa88f06a45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb823ea7aa7f75cc118981aa88f06a45">&#9670;&#160;</a></span>cat() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> mim::cat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>as</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00320">320</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00130">cat()</a>.</p>
+
+</div>
+</div>
+<a id="af31034ef60ae23c248b2e3b8da809f88" name="af31034ef60ae23c248b2e3b8da809f88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af31034ef60ae23c248b2e3b8da809f88">&#9670;&#160;</a></span>cat() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> mim::cat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00130">130</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tuple_8h_source.html#l00319">cat()</a>, <a class="el" href="tuple_8h_source.html#l00320">cat()</a>, <a class="el" href="tuple_8cpp_source.html#l00150">cat_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00153">cat_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00149">cat_tuple()</a>, and <a class="el" href="tuple_8cpp_source.html#l00152">cat_tuple()</a>.</p>
+
+</div>
+</div>
+<a id="a223de04c3ed44a4b7074eb67520bd05b" name="a223de04c3ed44a4b7074eb67520bd05b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a223de04c3ed44a4b7074eb67520bd05b">&#9670;&#160;</a></span>cat() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> mim::cat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a></td>          <td class="paramname"><span class="paramname"><em>n</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a></td>          <td class="paramname"><span class="paramname"><em>m</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00138">138</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00585">mim::Def::proj()</a>.</p>
+
+</div>
+</div>
+<a id="aebf853265433179025b2905852b2164b" name="aebf853265433179025b2905852b2164b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebf853265433179025b2905852b2164b">&#9670;&#160;</a></span>cat_sigma() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::cat_sigma </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>bs</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00332">332</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00150">cat_sigma()</a>.</p>
+
+</div>
+</div>
+<a id="a6585afae9a790d72d5bba1e46e7c0c68" name="a6585afae9a790d72d5bba1e46e7c0c68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6585afae9a790d72d5bba1e46e7c0c68">&#9670;&#160;</a></span>cat_sigma() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::cat_sigma </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>as</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00333">333</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00150">cat_sigma()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
+
+</div>
+</div>
+<a id="a6dc4d615e77568b8535fcc6b330440f6" name="a6dc4d615e77568b8535fcc6b330440f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6dc4d615e77568b8535fcc6b330440f6">&#9670;&#160;</a></span>cat_sigma() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::cat_sigma </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a></td>          <td class="paramname"><span class="paramname"><em>n</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a></td>          <td class="paramname"><span class="paramname"><em>m</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00150">150</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00130">cat()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tuple_8h_source.html#l00332">cat_sigma()</a>, and <a class="el" href="tuple_8h_source.html#l00333">cat_sigma()</a>.</p>
+
+</div>
+</div>
+<a id="aac405a8032b1f45706d85f2c1271afbe" name="aac405a8032b1f45706d85f2c1271afbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac405a8032b1f45706d85f2c1271afbe">&#9670;&#160;</a></span>cat_sigma() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::cat_sigma </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1World.html">World</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>world</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00153">153</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00130">cat()</a>, and <a class="el" href="world_8cpp_source.html#l00281">mim::World::sigma()</a>.</p>
+
+</div>
+</div>
+<a id="a77f128a7488e833a0c10c28a25dccf2d" name="a77f128a7488e833a0c10c28a25dccf2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77f128a7488e833a0c10c28a25dccf2d">&#9670;&#160;</a></span>cat_tuple() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::cat_tuple </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>bs</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00330">330</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00149">cat_tuple()</a>.</p>
+
+</div>
+</div>
+<a id="ad7c402b5f8955bcf0e7aabb44621a8a2" name="ad7c402b5f8955bcf0e7aabb44621a8a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7c402b5f8955bcf0e7aabb44621a8a2">&#9670;&#160;</a></span>cat_tuple() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::cat_tuple </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>as</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00331">331</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00149">cat_tuple()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
+
+</div>
+</div>
+<a id="a213c0f00c3278ceee24bcd47bcdcd364" name="a213c0f00c3278ceee24bcd47bcdcd364"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a213c0f00c3278ceee24bcd47bcdcd364">&#9670;&#160;</a></span>cat_tuple() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::cat_tuple </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a></td>          <td class="paramname"><span class="paramname"><em>n</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a></td>          <td class="paramname"><span class="paramname"><em>m</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00149">149</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00130">cat()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tuple_8h_source.html#l00330">cat_tuple()</a>, <a class="el" href="tuple_8h_source.html#l00331">cat_tuple()</a>, <a class="el" href="tuple_2normalizers_8cpp_source.html#l00008">mim::plug::tuple::normalize_cat()</a>, and <a class="el" href="vec_2normalizers_8cpp_source.html#l00082">mim::plug::vec::normalize_cat()</a>.</p>
+
+</div>
+</div>
+<a id="a8ba5c71eb98c1f9313de052e38fa1f58" name="a8ba5c71eb98c1f9313de052e38fa1f58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ba5c71eb98c1f9313de052e38fa1f58">&#9670;&#160;</a></span>cat_tuple() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::cat_tuple </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1World.html">World</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>world</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00152">152</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00130">cat()</a>, and <a class="el" href="world_8cpp_source.html#l00291">mim::World::tuple()</a>.</p>
+
+</div>
+</div>
 <a id="aab8bd049eb0b9bf7561a602f62ce7ebd" name="aab8bd049eb0b9bf7561a602f62ce7ebd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab8bd049eb0b9bf7561a602f62ce7ebd">&#9670;&#160;</a></span>compose_cn()</h2>
 
@@ -2616,11 +3027,11 @@ template&lt;class... Args&gt; </div>
 
 <p>Flattens a sigma/array/pack/tuple. </p>
 
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00109">109</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00110">110</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00109">flatten()</a>, <a class="el" href="def_8h_source.html#l00284">mim::Def::is_intro()</a>, <a class="el" href="world_8cpp_source.html#l00281">mim::World::sigma()</a>, <a class="el" href="world_8cpp_source.html#l00291">mim::World::tuple()</a>, <a class="el" href="def_8cpp_source.html#l00444">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00110">flatten()</a>, <a class="el" href="def_8h_source.html#l00284">mim::Def::is_intro()</a>, <a class="el" href="world_8cpp_source.html#l00281">mim::World::sigma()</a>, <a class="el" href="world_8cpp_source.html#l00291">mim::World::tuple()</a>, <a class="el" href="def_8cpp_source.html#l00444">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00109">flatten()</a>, <a class="el" href="tuple_8cpp_source.html#l00097">flatten()</a>, and <a class="el" href="scalarize_8cpp_source.html#l00060">mim::Scalarize::rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00110">flatten()</a>, <a class="el" href="tuple_8cpp_source.html#l00098">flatten()</a>, and <a class="el" href="scalarize_8cpp_source.html#l00060">mim::Scalarize::rewrite()</a>.</p>
 
 </div>
 </div>
@@ -2650,9 +3061,9 @@ template&lt;class... Args&gt; </div>
 
 <p>Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly. </p>
 
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00097">97</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00098">98</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00550">mim::Def::arity()</a>, <a class="el" href="tuple_8cpp_source.html#l00109">flatten()</a>, <a class="el" href="def_8h_source.html#l00824">mim::Lit::isa()</a>, and <a class="el" href="def_8cpp_source.html#l00585">mim::Def::proj()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00550">mim::Def::arity()</a>, <a class="el" href="tuple_8cpp_source.html#l00110">flatten()</a>, <a class="el" href="def_8h_source.html#l00824">mim::Lit::isa()</a>, and <a class="el" href="def_8cpp_source.html#l00585">mim::Def::proj()</a>.</p>
 
 </div>
 </div>
@@ -3377,7 +3788,7 @@ template&lt;class Id&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00075">75</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00076">76</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="world_8cpp_source.html#l00281">mim::World::sigma()</a>, <a class="el" href="def_8cpp_source.html#l00444">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
@@ -3505,104 +3916,6 @@ template&lt;class C, class K&gt; </div>
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00100">100</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="driver_8h_source.html#l00107">mim::Driver::backend()</a>, <a class="el" href="driver_8cpp_source.html#l00088">mim::Driver::get_fun_ptr()</a>, <a class="el" href="driver_8h_source.html#l00086">mim::Driver::is_loaded()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00014">mim::EtaExp::new2old()</a>, <a class="el" href="driver_8h_source.html#l00105">mim::Driver::normalizer()</a>, <a class="el" href="world_8h_source.html#l00213">mim::World::Externals::operator[]()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00025">mim::EtaExp::rewrite()</a>, and <a class="el" href="driver_8h_source.html#l00103">mim::Driver::stage()</a>.</p>
-
-</div>
-</div>
-<a id="a7fa31151e8354486d4a510a57eaaa292" name="a7fa31151e8354486d4a510a57eaaa292"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fa31151e8354486d4a510a57eaaa292">&#9670;&#160;</a></span>merge() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> mim::merge </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>defs</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00125">125</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a75c9fb5e1cf36bc411049ccc18dccd1e" name="a75c9fb5e1cf36bc411049ccc18dccd1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75c9fb5e1cf36bc411049ccc18dccd1e">&#9670;&#160;</a></span>merge() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> mim::merge </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00129">129</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00136">merge_sigma()</a>, and <a class="el" href="tuple_8cpp_source.html#l00141">merge_tuple()</a>.</p>
-
-</div>
-</div>
-<a id="a458de6495f8b0a7ca2a0320496bd6fd7" name="a458de6495f8b0a7ca2a0320496bd6fd7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a458de6495f8b0a7ca2a0320496bd6fd7">&#9670;&#160;</a></span>merge_sigma()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::merge_sigma </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>defs</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00136">136</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8h_source.html#l00479">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00129">merge()</a>, <a class="el" href="world_8cpp_source.html#l00281">mim::World::sigma()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
-
-</div>
-</div>
-<a id="af14a8799e94d48634c4752a702d6bc9e" name="af14a8799e94d48634c4752a702d6bc9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af14a8799e94d48634c4752a702d6bc9e">&#9670;&#160;</a></span>merge_tuple()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::merge_tuple </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a></td>          <td class="paramname"><span class="paramname"><em>defs</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00141">141</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8h_source.html#l00479">mim::Def::isa_imm()</a>, <a class="el" href="tuple_8cpp_source.html#l00129">merge()</a>, <a class="el" href="world_8cpp_source.html#l00291">mim::World::tuple()</a>, <a class="el" href="def_8cpp_source.html#l00444">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -4687,7 +5000,7 @@ template&lt;Vectorlike Vec&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00077">77</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00078">78</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00550">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00824">mim::Lit::isa()</a>, <a class="el" href="def_8cpp_source.html#l00585">mim::Def::proj()</a>, and <a class="el" href="def_8cpp_source.html#l00436">mim::Def::world()</a>.</p>
 
@@ -4737,7 +5050,7 @@ template&lt;Vectorlike Vec&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00152">152</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00155">155</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="mem_8h_source.html#l00111">mim::plug::mem::op_lea()</a>.</p>
 
@@ -4764,11 +5077,11 @@ template&lt;Vectorlike Vec&gt; </div>
 
 <p>Applies the reverse transformation on a <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a>, given the original type. </p>
 
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00123">123</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00124">124</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00550">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00830">mim::Lit::as()</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, and <a class="el" href="tuple_8cpp_source.html#l00123">unflatten()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00550">mim::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00830">mim::Lit::as()</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, and <a class="el" href="tuple_8cpp_source.html#l00124">unflatten()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00123">unflatten()</a>, and <a class="el" href="tuple_8cpp_source.html#l00116">unflatten()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00124">unflatten()</a>, and <a class="el" href="tuple_8cpp_source.html#l00117">unflatten()</a>.</p>
 
 </div>
 </div>
@@ -4798,9 +5111,9 @@ template&lt;Vectorlike Vec&gt; </div>
 
 <p>Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly. </p>
 
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00116">116</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00117">117</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00123">unflatten()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00124">unflatten()</a>.</p>
 
 </div>
 </div>

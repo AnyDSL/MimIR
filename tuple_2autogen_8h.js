@@ -6,7 +6,7 @@ var tuple_2autogen_8h =
     [ "mim::plug::tuple::contains", "namespacemim_1_1plug_1_1tuple.html#a2c3b889c139b975a1735543c8ed40664", null ],
     [ "mim::plug::tuple::prepend", "namespacemim_1_1plug_1_1tuple.html#ac27303d7e38479898972453b4e58f1f2", null ],
     [ "mim::plug::tuple::zip", "namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2", null ],
-    [ "mim::plug::tuple::normalize_cat", "namespacemim_1_1plug_1_1tuple.html#a522f3692e2db235d2f8f16b798c0f615", null ],
+    [ "mim::plug::tuple::normalize_cat", "namespacemim_1_1plug_1_1tuple.html#a43eed0d13fc869cc12b19c0eb9f388af", null ],
     [ "mim::plug::tuple::normalize_contains", "namespacemim_1_1plug_1_1tuple.html#a9bcfd0ca8c95fef42ecb4ea084635916", null ],
     [ "mim::plug::tuple::normalize_zip", "namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448", null ],
     [ "mim::plug::tuple::register_normalizers", "namespacemim_1_1plug_1_1tuple.html#a4a5ac0ade39e76f6e910b0b5af8284bd", null ],

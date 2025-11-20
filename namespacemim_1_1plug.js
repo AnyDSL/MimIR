@@ -516,7 +516,7 @@ var namespacemim_1_1plug =
       [ "contains", "namespacemim_1_1plug_1_1tuple.html#a2c3b889c139b975a1735543c8ed40664", null ],
       [ "prepend", "namespacemim_1_1plug_1_1tuple.html#ac27303d7e38479898972453b4e58f1f2", null ],
       [ "zip", "namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2", null ],
-      [ "normalize_cat", "namespacemim_1_1plug_1_1tuple.html#a522f3692e2db235d2f8f16b798c0f615", null ],
+      [ "normalize_cat", "namespacemim_1_1plug_1_1tuple.html#a43eed0d13fc869cc12b19c0eb9f388af", null ],
       [ "normalize_contains", "namespacemim_1_1plug_1_1tuple.html#a9bcfd0ca8c95fef42ecb4ea084635916", null ],
       [ "normalize_zip", "namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448", null ],
       [ "register_normalizers", "namespacemim_1_1plug_1_1tuple.html#a4a5ac0ade39e76f6e910b0b5af8284bd", null ],
@@ -537,7 +537,7 @@ var namespacemim_1_1plug =
         [ "for_all", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03a0a6701462dd440321b2b782395bfcb68", null ],
         [ "exists", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03ae087923eb5dd1310f5f25ddd5ae5b580", null ]
       ] ],
-      [ "normalize_cat", "namespacemim_1_1plug_1_1vec.html#a9ba68b9f5ebfbf60a5fb2aa3cdce4d11", null ],
+      [ "normalize_cat", "namespacemim_1_1plug_1_1vec.html#a33960430a521324a04b3eae57f4c837d", null ],
       [ "normalize_diff", "namespacemim_1_1plug_1_1vec.html#abbc9a471c743f28e6bd53866ad31be1b", null ],
       [ "normalize_fold", "namespacemim_1_1plug_1_1vec.html#ad0011878a139b10d25a61654e5186877", null ],
       [ "normalize_is_unique", "namespacemim_1_1plug_1_1vec.html#aa5bac705cb383e5ba770e7dc841f183c", null ],

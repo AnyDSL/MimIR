@@ -15,7 +15,7 @@ var vec_2autogen_8h =
       [ "mim::plug::vec::scan::for_all", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03a0a6701462dd440321b2b782395bfcb68", null ],
       [ "mim::plug::vec::scan::exists", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03ae087923eb5dd1310f5f25ddd5ae5b580", null ]
     ] ],
-    [ "mim::plug::vec::normalize_cat", "namespacemim_1_1plug_1_1vec.html#a9ba68b9f5ebfbf60a5fb2aa3cdce4d11", null ],
+    [ "mim::plug::vec::normalize_cat", "namespacemim_1_1plug_1_1vec.html#a33960430a521324a04b3eae57f4c837d", null ],
     [ "mim::plug::vec::normalize_diff", "namespacemim_1_1plug_1_1vec.html#abbc9a471c743f28e6bd53866ad31be1b", null ],
     [ "mim::plug::vec::normalize_fold", "namespacemim_1_1plug_1_1vec.html#ad0011878a139b10d25a61654e5186877", null ],
     [ "mim::plug::vec::normalize_is_unique", "namespacemim_1_1plug_1_1vec.html#aa5bac705cb383e5ba770e7dc841f183c", null ],
