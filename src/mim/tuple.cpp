@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "mim/tuple.h"
 #include "mim/world.h"
 
 // TODO this code needs to be rewritten
@@ -122,31 +123,44 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
 
 const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(Lit::as(def->arity())), type); }
 
-DefVec merge(const Def* def, Defs defs) {
-    return DefVec(defs.size() + 1, [&](size_t i) { return i == 0 ? def : defs[i - 1]; });
+/*
+ * merge & cat
+ */
+
+DefVec cat(Defs a, Defs b) {
+    auto res = DefVec();
+    res.reserve(a.size() + b.size());
+    res.insert(res.end(), a.begin(), a.end());
+    res.insert(res.end(), b.begin(), b.end());
+    return res;
 }
 
-DefVec merge(Defs a, Defs b) {
-    DefVec result(a.size() + b.size());
-    auto [_, o] = std::ranges::copy(a, result.begin());
-    std::ranges::copy(b, o);
-    return result;
+DefVec cat(nat_t n, nat_t m, const Def* a, const Def* b) {
+    auto defs = DefVec();
+    defs.reserve(n + m);
+    for (size_t i = 0, e = n; i != e; ++i)
+        defs.emplace_back(a->proj(e, i));
+    for (size_t i = 0, e = m; i != e; ++i)
+        defs.emplace_back(b->proj(e, i));
+
+    return defs;
 }
 
-const Def* merge_sigma(const Def* def, Defs defs) {
-    if (auto sigma = def->isa_imm<Sigma>()) return def->world().sigma(merge(sigma->ops(), defs));
-    return def->world().sigma(merge(def, defs));
-}
+const Def* cat_tuple(nat_t n, nat_t m, const Def* a, const Def* b) { return a->world().tuple(cat(n, m, a, b)); }
+const Def* cat_sigma(nat_t n, nat_t m, const Def* a, const Def* b) { return a->world().sigma(cat(n, m, a, b)); }
+
+const Def* cat_tuple(World& world, Defs a, Defs b) { return world.tuple(cat(a, b)); }
+const Def* cat_sigma(World& world, Defs a, Defs b) { return world.sigma(cat(a, b)); }
 
 const Def* merge_tuple(const Def* def, Defs defs) {
     auto& w = def->world();
     if (auto sigma = def->type()->isa_imm<Sigma>()) {
         auto a     = sigma->num_ops();
         auto tuple = DefVec(a, [&](auto i) { return w.extract(def, a, i); });
-        return w.tuple(merge(tuple, defs));
+        return w.tuple(cat(tuple, defs));
     }
 
-    return def->world().tuple(merge(def, defs));
+    return def->world().tuple(cat(def, defs));
 }
 
 const Def* tuple_of_types(const Def* t) {

@@ -309,12 +309,24 @@ const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened Pack / Tuple directly.
 const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
 
-DefVec merge(Defs, Defs);
-DefVec merge(const Def* def, Defs defs);
-const Def* merge_sigma(const Def* def, Defs defs);
-const Def* merge_tuple(const Def* def, Defs defs);
-
 const Def* tuple_of_types(const Def* t);
+///@}
+
+/// @name Concatenation
+/// Works for Tuple%s, Pack%s, Sigma%s, and Arr%ays alike.
+///@{
+DefVec cat(Defs, Defs);
+inline DefVec cat(const Def* a, Defs bs) { return cat(Defs{a}, bs); }
+inline DefVec cat(Defs as, const Def* b) { return cat(as, Defs{b}); }
+DefVec cat(nat_t n, nat_t m, const Def* a, const Def* b);
+const Def* cat_tuple(World&, Defs, Defs);
+const Def* cat_sigma(World&, Defs, Defs);
+inline const Def* cat_tuple(const Def* a, Defs bs) { return cat_tuple(a->world(), Defs{a}, bs); }
+inline const Def* cat_tuple(Defs as, const Def* b) { return cat_tuple(b->world(), as, Defs{b}); }
+inline const Def* cat_sigma(const Def* a, Defs bs) { return cat_sigma(a->world(), Defs{a}, bs); }
+inline const Def* cat_sigma(Defs as, const Def* b) { return cat_sigma(b->world(), as, Defs{b}); }
+const Def* cat_tuple(nat_t n, nat_t m, const Def* a, const Def* b);
+const Def* cat_sigma(nat_t n, nat_t m, const Def* a, const Def* b);
 ///@}
 
 } // namespace mim
