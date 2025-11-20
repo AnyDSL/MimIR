@@ -2,6 +2,7 @@
 
 #include <mim/plug/core/core.h>
 
+#include "mim/tuple.h"
 #include "mim/world.h"
 
 #include "mim/plug/vec/vec.h"
@@ -78,23 +79,12 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
     return nullptr;
 }
 
-const Def* normalize_cat(const Def* type, const Def* callee, const Def* arg) {
-    auto& world = type->world();
+const Def* normalize_cat(const Def*, const Def* callee, const Def* arg) {
     auto [a, b] = arg->projs<2>();
     auto [n, m] = callee->as<App>()->decurry()->args<2>([](auto def) { return Lit::isa(def); });
-
     if (n && *n == 0) return b;
     if (m && *m == 0) return a;
-
-    if (n && m) {
-        auto defs = DefVec();
-        for (size_t i = 0, e = *n; i != e; ++i)
-            defs.emplace_back(a->proj(e, i));
-        for (size_t i = 0, e = *m; i != e; ++i)
-            defs.emplace_back(b->proj(e, i));
-        return world.tuple(defs);
-    }
-
+    if (n && m) return mim::cat_tuple(*n, *m, a, b);
     return nullptr;
 }
 
