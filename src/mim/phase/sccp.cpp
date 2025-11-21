@@ -3,10 +3,14 @@
 namespace mim {
 
 bool SCCP::analyze() {
-    for (auto def : old_world().annexes())
-        concr2abstr(init(def));
-    for (auto def : old_world().externals().muts())
-        concr2abstr(init(def));
+    while (todo_) {
+        todo_ = false;
+        visited_.clear();
+        for (auto def : old_world().annexes())
+            concr2abstr(init(def));
+        for (auto def : old_world().externals().muts())
+            concr2abstr(init(def));
+    }
 
     return false; // no fixed-point neccessary
 }
@@ -19,7 +23,16 @@ const Def* SCCP::init(const Def* def) {
 }
 
 const Def* SCCP::concr2abstr(const Def* def) {
-    if (auto i = concr2abstr_.find(def); i != concr2abstr_.end()) return i->second;
+    if (auto [_, inserted] = visited_.emplace(def); !inserted) {
+        auto i = concr2abstr_.find(def);
+        assert(i != concr2abstr_.end());
+        return i->second;
+    }
+
+    return concr2abstr_[def] = concr2abstr_impl(def);
+}
+
+const Def* SCCP::concr2abstr_impl(const Def* def) {
     if (auto type = def->type()) concr2abstr(type);
 
     if (auto app = def->isa<App>()) {
@@ -69,10 +82,15 @@ const Def* SCCP::concr2abstr(const Def* def) {
 const Def* SCCP::join(const Def* var, const Def* abstr) {
     auto abstr_var = concr2abstr(var);
 
-    if (abstr_var->isa<Bot>()) return abstr;
-    if (abstr_var == abstr) return abstr_var;
+    const Def* result;
 
-    return var;
+    if (abstr_var->isa<Bot>()) result = abstr;
+    else if (abstr_var == abstr) result = abstr_var;
+    else result = var;
+
+    if (result != abstr_var) todo_ = true;
+
+    return result;
 }
 
 #if 0
