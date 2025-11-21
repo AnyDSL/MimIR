@@ -38,6 +38,7 @@ target_sources(libmim
         phase/branch_normalize.cpp
         phase/prefix_cleanup.cpp
         phase/ret_wrap.cpp
+        phase/sccp.cpp
         util/bitset.cpp
         util/dbg.cpp
         util/dl.cpp
