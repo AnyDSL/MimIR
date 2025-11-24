@@ -46,7 +46,7 @@ const Def* SCCP::concr2abstr(const Def* concr) {
     }
 
     auto i = concr2abstr_.find(concr);
-    assert(i != concr2abstr_.end());
+    if (i == concr2abstr_.end()) return old_world().bot(concr->type());
     return i->second;
 }
 
