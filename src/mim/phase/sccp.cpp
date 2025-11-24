@@ -31,7 +31,7 @@ const Def* SCCP::init(Def* mut) {
 }
 
 const Def* SCCP::concr2abstr(const Def* concr) {
-    if (auto [_, inserted] = visited_.emplace(concr); inserted) {
+    if (auto [_, ins] = visited_.emplace(concr); ins) {
         if (auto mut = concr->isa_mut()) {
             // concr2abstr_[mut] = mut;
             concr2abstr(mut, mut);
@@ -53,12 +53,13 @@ const Def* SCCP::concr2abstr(const Def* concr) {
 const Def* SCCP::concr2abstr_impl(const Def* def) {
     if (auto type = def->type()) concr2abstr(type);
 
-    if (auto branch = Branch(def)) {
-        auto abstr = branch.cond();
-        auto l = Lit::isa<bool>(abstr);
-        if (l && *l) concr2abstr(branch.tt());
-        if (l && !*l) concr2abstr(branch.ff());
-    } else if (auto app = def->isa<App>()) {
+    // if (auto branch = Branch(def)) {
+    //     auto abstr = branch.cond();
+    //     auto l     = Lit::isa<bool>(abstr);
+    //     if (l && *l) concr2abstr(branch.tt());
+    //     if (l && !*l) concr2abstr(branch.ff());
+    /*} else*/
+    if (auto app = def->isa<App>()) {
         if (auto lam = app->callee()->isa_mut<Lam>()) {
             auto ins = concr2abstr(lam, lam).second;
 
@@ -122,39 +123,19 @@ const Def* SCCP::join(const Def* concr, const Def* abstr1, const Def* abstr2) {
         result = concr;
 
     todo_ |= abstr1 != result;
+#if 0
     concr->dump();
     abstr1->dump();
     abstr2->dump();
     result->dump();
     std::cout << "--" << std::endl;
+#endif
     return result;
 }
 
-#if 0
-const Def* SCCP::join(const Def* var, const Def* abstr) {
-    auto abstr_var = concr2abstr(var);
-
-    const Def* result = nullptr;
-
-    if (abstr_var->isa<Bot>())
-        result = abstr;
-    else if (abstr_var == abstr)
-        result = abstr_var;
-    else
-        result = var;
-
-    if (result != abstr_var) {
-        result->dump();
-        todo_ = true;
-    }
-
-    return concr2abstr(var, result), result;
-}
-#endif
-
 const Def* SCCP::rewrite_imm_App(const App* old_app) {
-    if (auto old_lam = old_app->callee()->isa_mut<Lam>()) {
-        if (auto var = old_lam->has_var()) {
+    if (auto old_lam = old_app->callee()->isa_mut<Lam>(); old_lam && old_lam->is_set() && !old_lam->is_external()) {
+        if (old_lam->has_var()) {
             size_t num_old = old_lam->num_vars();
 
             Lam* new_lam;
@@ -164,8 +145,8 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 // build new dom
                 auto new_doms = DefVec();
                 for (size_t i = 0; i != num_old; ++i) {
-                    auto old_var = var->proj(num_old, i);
-                    auto abstr   = concr2abstr_[var->proj(num_old, i)];
+                    auto old_var = old_lam->var(num_old, i);
+                    auto abstr   = concr2abstr_[old_lam->var(num_old, i)];
                     if (abstr == old_var) new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
                 }
 
@@ -175,18 +156,14 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 new_lam           = new_world().mut_lam(new_doms, rewrite(old_lam->codom()))->set(old_lam->dbg());
                 lam2lam_[old_lam] = new_lam;
 
+                // build new var
                 for (size_t i = 0, j = 0; i != num_old; ++i) {
-                    auto old_var = var->proj(num_old, i);
+                    auto old_var = old_lam->var(num_old, i);
                     auto abstr   = concr2abstr_[old_var];
-                    if (abstr == old_var)
-                        new_vars[i] = new_lam->var(num_new, j++);
-                    else
-                        new_vars[i] = rewrite(abstr);
+                    new_vars[i]  = abstr == old_var ? new_lam->var(num_new, j++) : rewrite(abstr);
                 }
-                auto tup = new_world().tuple(new_vars);
-                map(var, tup);
 
-                // TODO or below?
+                map(old_lam->var(), new_vars);
                 new_lam->set(rewrite(old_lam->filter()), rewrite(old_lam->body()));
             }
 
@@ -194,16 +171,13 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
             size_t num_new = new_lam->num_vars();
             auto new_args  = absl::FixedArray<const Def*>(num_new);
             for (size_t i = 0, j = 0; i != num_old; ++i) {
-                auto old_var = var->proj(num_old, i);
+                auto old_var = old_lam->var(num_old, i);
                 auto abstr   = concr2abstr_[old_var];
                 if (abstr == old_var) new_args[j++] = rewrite(old_app->arg(num_old, i));
             }
 
-            auto new_app = new_world().app(new_lam, new_args);
-            map(old_app, new_app);
-            return new_app;
+            return map(old_app, new_world().app(new_lam, new_args));
         }
-        // }
     }
 
     return Rewriter::rewrite_imm_App(old_app);
