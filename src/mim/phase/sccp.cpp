@@ -1,7 +1,6 @@
 #include "mim/phase/sccp.h"
 
 #include "absl/container/fixed_array.h"
-#include "fe/assert.h"
 
 namespace mim {
 
@@ -16,6 +15,14 @@ bool SCCP::analyze() {
         for (auto def : old_world().externals().muts())
             concr2abstr(init(def));
     }
+
+    // std::cout << "analysis done" << std::endl;
+    // for (auto [k, v] : concr2abstr_) {
+        // if (k == v) continue;
+    //     k->dump();
+    //     v->dump();
+    //     std::cout << "---" << std::endl;
+    // }
 
     return false; // no fixed-point neccessary
 }
@@ -123,35 +130,13 @@ const Def* SCCP::join(const Def* concr, const Def* abstr1, const Def* abstr2) {
         result = concr;
 
     todo_ |= abstr1 != result;
-    concr->dump();
-    abstr1->dump();
-    abstr2->dump();
-    result->dump();
-    std::cout << "--" << std::endl;
+    // concr->dump();
+    // abstr1->dump();
+    // abstr2->dump();
+    // result->dump();
+    // std::cout << "--" << std::endl;
     return result;
 }
-
-#if 0
-const Def* SCCP::join(const Def* var, const Def* abstr) {
-    auto abstr_var = concr2abstr(var);
-
-    const Def* result = nullptr;
-
-    if (abstr_var->isa<Bot>())
-        result = abstr;
-    else if (abstr_var == abstr)
-        result = abstr_var;
-    else
-        result = var;
-
-    if (result != abstr_var) {
-        result->dump();
-        todo_ = true;
-    }
-
-    return concr2abstr(var, result), result;
-}
-#endif
 
 const Def* SCCP::rewrite_imm_App(const App* old_app) {
     if (auto old_lam = old_app->callee()->isa_mut<Lam>(); old_lam && old_lam->is_set()) {
