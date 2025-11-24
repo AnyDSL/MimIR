@@ -153,7 +153,7 @@ const Def* SCCP::join(const Def* var, const Def* abstr) {
 #endif
 
 const Def* SCCP::rewrite_imm_App(const App* old_app) {
-    if (auto old_lam = old_app->callee()->isa_mut<Lam>()) {
+    if (auto old_lam = old_app->callee()->isa_mut<Lam>(); old_lam && old_lam->is_set()) {
         if (auto var = old_lam->has_var()) {
             size_t num_old = old_lam->num_vars();
 
