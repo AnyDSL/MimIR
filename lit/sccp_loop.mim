@@ -1,0 +1,31 @@
+// RUN: %mim %s --output-ll - | FileCheck %s
+
+plugin core;
+
+cfun dont_know[]: Bool;
+
+fun extern f(x: Nat): Nat =
+    head 0 where
+        con head(i: Nat) =
+            ret cond = dont_know $ ();
+            (exit, body)#cond () where
+                con body() =
+                    let cond       = %core.ncmp.e (i, 0);
+                    (false, true)#cond ()
+                    where
+                        con true () =
+                            next i;
+
+                        con false() =
+                            let i = %core.nat.add (i, 1);
+                            next i;
+                        con next (i: Nat) = head i;
+                    end;
+
+                con exit() =
+                    return i;
+            end
+    end;
+
+// CHECK: define i64 @f(i64 [[X:%[[:alnum:]_]+]])
+// CHECK: ret i64 [[X]]

@@ -53,7 +53,12 @@ const Def* SCCP::concr2abstr(const Def* concr) {
 const Def* SCCP::concr2abstr_impl(const Def* def) {
     if (auto type = def->type()) concr2abstr(type);
 
-    if (auto app = def->isa<App>()) {
+    if (auto branch = Branch(def)) {
+        auto abstr = branch.cond();
+        auto l = Lit::isa<bool>(abstr);
+        if (l && *l) concr2abstr(branch.tt());
+        if (l && !*l) concr2abstr(branch.ff());
+    } else if (auto app = def->isa<App>()) {
         if (auto lam = app->callee()->isa_mut<Lam>()) {
             auto ins = concr2abstr(lam, lam).second;
 
