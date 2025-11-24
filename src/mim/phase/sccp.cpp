@@ -71,7 +71,8 @@ const Def* SCCP::concr2abstr_impl(const Def* def) {
                 abstr_vars[i] = concr2abstr(lam->var(n, i), abstr).first;
             }
 
-            concr2abstr(lam->var(), old_world().tuple(abstr_vars));
+            visited_.emplace(lam->var());
+            concr2abstr_[lam->var()] = old_world().tuple(abstr_vars);
 
             if (ins)
                 for (auto d : lam->deps())
