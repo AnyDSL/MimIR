@@ -12,16 +12,19 @@ public:
 
 private:
     bool analyze() final;
+    const Def* init(Def*);
     const Def* init(const Def*);
+
+    std::pair<const Def*, bool> concr2abstr(const Def* concr, const Def* abstr);
     const Def* concr2abstr(const Def*);
     const Def* concr2abstr_impl(const Def*);
-    const Def* join(const Def*, const Def*);
+    const Def* join(const Def*, const Def*, const Def*);
 
-    // const Def* rewrite_imm_App(const App*) final;
+    const Def* rewrite_imm_App(const App*) final;
 
     DefSet visited_;
-    LamMap<DefVec> lam2vars_;
     Def2Def concr2abstr_;
+    Lam2Lam lam2lam_;
     bool todo_ = true;
 };
 
