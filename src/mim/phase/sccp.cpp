@@ -1,7 +1,6 @@
 #include "mim/phase/sccp.h"
 
-#include "absl/container/fixed_array.h"
-#include "fe/assert.h"
+#include <absl/container/fixed_array.h>
 
 namespace mim {
 
@@ -31,23 +30,20 @@ const Def* SCCP::init(Def* mut) {
 }
 
 const Def* SCCP::concr2abstr(const Def* concr) {
-    if (auto [_, ins] = visited_.emplace(concr); ins) {
-        if (auto mut = concr->isa_mut()) {
-            // concr2abstr_[mut] = mut;
-            concr2abstr(mut, mut);
-            init(mut);
-            return concr2abstr_impl(concr);
-        }
-
-        auto abstr = concr2abstr_impl(concr);
-        // concr2abstr_[concr] = abstr;
-        concr2abstr(concr, abstr);
-        return abstr;
+    if (auto [_, ins] = visited_.emplace(concr); !ins) {
+        if (auto i = concr2abstr_.find(concr); i != concr2abstr_.end()) return i->second;
+        // in some rare cyclic cases we haven't build the immutabe yet
     }
 
-    auto i = concr2abstr_.find(concr);
-    assert(i != concr2abstr_.end());
-    return i->second;
+    if (auto mut = concr->isa_mut()) {
+        concr2abstr(mut, mut);
+        init(mut);
+        for (auto d : mut->deps())
+            concr2abstr(d);
+        return mut;
+    }
+
+    return concr2abstr(concr, concr2abstr_impl(concr)).first;
 }
 
 const Def* SCCP::concr2abstr_impl(const Def* def) {
@@ -60,7 +56,7 @@ const Def* SCCP::concr2abstr_impl(const Def* def) {
     //     if (l && !*l) concr2abstr(branch.ff());
     /*} else*/
     if (auto app = def->isa<App>()) {
-        if (auto lam = app->callee()->isa_mut<Lam>()) {
+        if (auto lam = app->callee()->isa_mut<Lam>(); lam && lam->is_set()) {
             auto ins = concr2abstr(lam, lam).second;
 
             auto n          = app->num_args();
@@ -68,8 +64,8 @@ const Def* SCCP::concr2abstr_impl(const Def* def) {
             auto abstr_vars = absl::FixedArray<const Def*>(n);
             for (size_t i = 0; i != n; ++i) {
                 auto abstr    = concr2abstr(app->arg(n, i));
-                abstr_args[i] = abstr;
                 abstr_vars[i] = concr2abstr(lam->var(n, i), abstr).first;
+                abstr_args[i] = abstr;
             }
 
             concr2abstr(lam->var(), old_world().tuple(abstr_vars));
@@ -80,12 +76,6 @@ const Def* SCCP::concr2abstr_impl(const Def* def) {
 
             return old_world().app(lam, abstr_args);
         }
-    } else if (auto mut = def->isa_mut()) {
-        for (auto d : mut->deps())
-            concr2abstr(d);
-        return mut;
-    } else if (auto lam = def->isa_mut<Lam>()) {
-        init(lam);
     } else if (auto var = def->isa<Var>()) {
         assert(var->mut()->isa<Lam>());
         return old_world().bot(var->type());
@@ -123,13 +113,6 @@ const Def* SCCP::join(const Def* concr, const Def* abstr1, const Def* abstr2) {
         result = concr;
 
     todo_ |= abstr1 != result;
-#if 0
-    concr->dump();
-    abstr1->dump();
-    abstr2->dump();
-    result->dump();
-    std::cout << "--" << std::endl;
-#endif
     return result;
 }
 
@@ -146,7 +129,7 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 auto new_doms = DefVec();
                 for (size_t i = 0; i != num_old; ++i) {
                     auto old_var = old_lam->var(num_old, i);
-                    auto abstr   = concr2abstr_[old_lam->var(num_old, i)];
+                    auto abstr   = concr2abstr_[old_var];
                     if (abstr == old_var) new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
                 }
 

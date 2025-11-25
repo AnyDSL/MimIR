@@ -1,3 +1,4 @@
+// RUN: %mim %s -o -
 plugin core;
 
 lam f (x1: Nat, x2: Nat, x3: Nat)@ff: Nat = %core.nat.add (x1, %core.nat.add (x2, x3));
@@ -14,4 +15,3 @@ lam extern _compile(): %compile.Phase =
         %compile.internal_cleanup_phase,
         %compile.sccp,
     );
-

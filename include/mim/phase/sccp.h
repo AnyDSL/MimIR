@@ -26,6 +26,7 @@ private:
     Def2Def concr2abstr_;
     Lam2Lam lam2lam_;
     bool todo_ = true;
+    unique_queue<MutSet> queue_;
 };
 
 } // namespace mim
