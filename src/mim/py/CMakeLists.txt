@@ -5,12 +5,14 @@ pybind11_add_module(pymim
     sym.cpp
     py.cpp
     ast.cpp
+    # app.cpp
     log.cpp
     flags.cpp
     lam.cpp
     parser.cpp
     world_wrapper.cpp
     parser_wrapper.cpp
+    mim.cpp
 #    def_wrapper.cpp
     def.cpp
 )
