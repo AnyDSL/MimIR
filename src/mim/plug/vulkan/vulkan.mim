@@ -1,0 +1,15 @@
+/// # The vulkan Plugin {#vulkan}
+///
+/// @see mim::plug::vulkan
+///
+/// A minimal vulkan plugin
+///
+/// [TOC]
+///
+/// ## Operations
+///
+/// ### %%vulkan.const_idx
+///
+/// The 42 constant, evaluated using a normalizer
+///
+axm %vulkan.const_idx: [n: Nat] → Idx n, normalize_const;
