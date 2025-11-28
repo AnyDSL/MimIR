@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 set -eu
 
 # Create a new plugin called <plugin_name> derived from the demo plugin:
