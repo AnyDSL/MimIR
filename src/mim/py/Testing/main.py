@@ -18,22 +18,23 @@ world  = driver.world()
 
 mem = world.sym(f"%mem.M")
 ptr = world.sym(f"%mem.Ptr0")
+
 print(ptr)
 
 #####
 ast = mim.AST(world)
 parser = mim.PyParser(mim.Parser(ast))
 parser.plugin("core")
-arg_v = world.annex(ptr)()
+arg_v = world.annex(mem)
 print(arg_v)
-mem_t = world.annex(mem)
+mem_t = world.call(ptr, [world.call(ptr, [world.type_i32()])])
+
 print("mem_t: ")
 print(mem_t)
 print("-----------")
 print("arg_v: ")
 print(arg_v)
 print("-----------")
-main = world.mut_fun2(arg_v, arg_v)
 
 #####
 
