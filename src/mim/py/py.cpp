@@ -13,9 +13,6 @@ void init_lam(py::module_&);
 void init_pi(py::module_&);
 void init_def(py::module_&);
 // void init_app(py::module_&);
-void init_MIM(py::module_&);
-void init_MIM_World(py::module_&);
-void init_MIM_Sym(py::module_&);
 } // namespace mim
 
 namespace mim::ast{
@@ -46,7 +43,5 @@ PYBIND11_MODULE(mim, m) {
     mim::ast::init_parser(m);
     mim::ast::init_parser_wrapper(m);
     // mim::init_app(m);
-    mim::init_MIM(m);
-    mim::init_MIM_World(m);
-    mim::init_MIM_Sym(m);
+
 }

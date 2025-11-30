@@ -12,7 +12,6 @@ pybind11_add_module(pymim
     parser.cpp
     world_wrapper.cpp
     parser_wrapper.cpp
-    mim.cpp
 #    def_wrapper.cpp
     def.cpp
 )
