@@ -7,7 +7,7 @@ sys.path.insert(0, build_dir)
 
 import mim  # Import from that list
 # this is currently very rudimentary, actual test cases will follow
-#mim_h_plugin_path = os.fspath()
+# mim_h_plugin_path = os.fspath()
 
 driver = mim.Driver()
 driver.log().set_stdout().set(mim.Level.Debug)
@@ -25,8 +25,10 @@ print(ptr)
 ast = mim.AST(world)
 parser = mim.PyParser(mim.Parser(ast))
 parser.plugin("core")
+arg_v = world.annex(ptr)
 arg_v = world.annex(mem)
 print(arg_v)
+mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
 mem_t = world.call(ptr, [world.call(ptr, [world.type_i32()])])
 
 print("mem_t: ")

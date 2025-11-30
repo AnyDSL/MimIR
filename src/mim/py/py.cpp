@@ -42,6 +42,7 @@ PYBIND11_MODULE(mim, m) {
     mim::init_pi(m);
     mim::ast::init_parser(m);
     mim::ast::init_parser_wrapper(m);
+    // mim::init_app(m);
 
     mim::register_error(m);
 

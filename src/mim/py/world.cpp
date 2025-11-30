@@ -33,16 +33,20 @@ void init_world(py::module_& m) {
     .def("sym", static_cast<fe::Sym (World::*)(std::string_view)>(&mim::World::sym), py::return_value_policy::reference_internal)
     .def("mut_fun2",[](mim::World &w, const mim::Def* dom, const mim::Def* dom2) {
         auto d = dom;
-        
+
         std:: cout << "called mut_fun with domain: " << d << std::endl;
         return w.mut_fun(dom, dom2);
     }, py::return_value_policy::reference_internal)
     .def("mut_fun",[](mim::World &w, const mim::Def* dom, std::vector<mim::Def*> codom) {
         auto d = dom;
-        
+
         std:: cout << "called mut_fun with domain: " << d << std::endl;
         return w.mut_fun(dom, codom);
     }, py::return_value_policy::reference_internal)
-    .def("call", static_cast<const mim::Def* (World::*)(mim::Sym, py::kwargs)>);
+    .def("call",[](mim::World &w, fe::Sym sym, std::vector<mim::Def*> args){
+        return w.call(sym, mim::Defs(args));
+
+    });
+    // .def("call", static_cast<const mim::Def* (World::*)(mim::Sym, py::args)>);
 }
 } // namespace mim
