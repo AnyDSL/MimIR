@@ -1,0 +1,43 @@
+import mem;
+import spirv;
+import vec;
+
+let positions = (
+    (0.0:%math.F32, -0.5:%math.F32),
+    (0.5:%math.F32, 0.5:%math.F32),
+    (-0.5:%math.F32, 0.5:%math.F32),
+);
+
+let colors = (
+    (1.0:%math.F32, 0.0:%math.F32, 0.0:%math.F32),
+    (0.0:%math.F32, 1.0:%math.F32, 0.0:%math.F32),
+    (0.0:%math.F32, 0.0:%math.F32, 1.0:%math.F32),
+);
+
+lam vertex (vert_id: Idx 3): [<<2; %math.F32>>, <<3; %math.F32>>]
+    = (positions#vert_id, colors#vert_id);
+
+lam fragment [position: <<3; %math.F32>>]: <<4; %math.F32>>
+    = %vec.cat (position, (1.0:%math.F32));
+
+
+// wrapper
+
+lam extern _vertex () = %spirv.wrap
+    %spirv.model.vertex
+    @ (1, 2)
+    @ (1, 1)
+    ((%spirv.input, (%spirv.builtin.vertex_index)))
+    (
+        (%spirv.output, (%spirv.builtin.position)),
+        (%spirv.output, (%spirv.location 0)),
+    )
+    vertex;
+
+lam extern _fragment () = %spirv.wrap
+    %spirv.model.fragment
+    @ (1, 1)
+    @ (1, 1)
+    ((%spirv.input, (%spirv.location 0)))
+    ((%spirv.output, (%spirv.location 0)))
+    fragment;
