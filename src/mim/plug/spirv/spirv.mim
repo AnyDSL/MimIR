@@ -5,3 +5,48 @@
 /// [TOC]
 ///
 /// A plugin providing a spir-v backend for MimIR.
+///
+import mem;
+
+/// ## execution models
+axm %spirv.Model: *;
+axm %spirv.model(fragment, vertex, compute): %spirv.Model;
+
+/// ## storage classes
+axm %spirv.Input: *;
+axm %spirv.Output: *;
+
+axm %spirv.input: %spirv.Input;
+axm %spirv.uniform: %spirv.Input;
+
+axm %spirv.output: %spirv.Output;
+
+/// ## decorations
+axm %spirv.Decoration: *;
+
+axm %spirv.builtin(
+    vertex_index,
+    instance_index,
+    vertex_id,
+    instance_id,
+
+    position,
+    point_size,
+    clip_distance,
+    cull_distance,
+
+    frag_coord,
+): %spirv.Decoration;
+
+axm %spirv.location: Nat -> %spirv.Decoration;
+
+axm %spirv.Entry: *;
+axm %spirv.wrap: [%spirv.Model]
+    -> {n m: Nat}
+    -> {in_d out_d: Nat}
+    -> <<n; [%spirv.Input, <<in_d; %spirv.Decoration>>]>>
+    -> <<m; [%spirv.Output, <<out_d; %spirv.Decoration>>]>>
+    -> {Ti: <<n; *>>}
+    -> {To: <<m; *>>}
+    -> [<<i: n; Ti#i>> -> <<o: m; To#o>>]
+    -> %spirv.Entry;
