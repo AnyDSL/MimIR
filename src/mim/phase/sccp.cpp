@@ -108,7 +108,7 @@ const Def* SCCP::join(const Def* concr, const Def* abstr1, const Def* abstr2) {
         result = abstr2;
     else if (abstr2->isa<Bot>())
         result = abstr1;
-    else // abstr1 != abstr2)
+    else // abstr1 != abstr2
         result = concr;
 
     todo_ |= abstr1 != result;
