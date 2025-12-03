@@ -32,7 +32,7 @@ const Def* SCCP::init(Def* mut) {
 const Def* SCCP::concr2abstr(const Def* concr) {
     if (auto [_, ins] = visited_.emplace(concr); !ins) {
         if (auto i = concr2abstr_.find(concr); i != concr2abstr_.end()) return i->second;
-        // in some rare cyclic cases we haven't build the immutabe yet
+        // in some rare cyclic cases we haven't built the immutable yet
     }
 
     if (auto mut = concr->isa_mut()) {
