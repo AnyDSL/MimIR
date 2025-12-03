@@ -4,7 +4,7 @@
 
 namespace mim {
 
-/// Inlines in post-order all Lam%s that occur exactly *once* in the program.
+/// Sparse Conditional Constant Propagation.
 class SCCP : public RWPhase {
 public:
     SCCP(World& world, flags_t annex)
@@ -15,7 +15,7 @@ private:
     const Def* init(Def*);
     const Def* init(const Def*);
 
-    std::pair<const Def*, bool> concr2abstr(const Def* concr, const Def* abstr);
+    std::pair<const Def*, bool> concr2abstr(const Def*, const Def*);
     const Def* concr2abstr(const Def*);
     const Def* concr2abstr_impl(const Def*);
     const Def* join(const Def*, const Def*, const Def*);
