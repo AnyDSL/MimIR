@@ -18,24 +18,31 @@ world  = driver.world()
 
 mem = world.sym(f"%mem.M")
 ptr = world.sym(f"%mem.Ptr0")
-
 print(ptr)
 
 #####
 ast = mim.AST(world)
 parser = mim.PyParser(mim.Parser(ast))
 parser.plugin("core")
-arg_v = world.annex(ptr)
-arg_v = world.annex(mem)
-print(arg_v)
-mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
-mem_t = world.call(ptr, [world.call(ptr, [world.type_i32()])])
+mem_t = world.annex(mem)
+#following line of code is just to observe mim_error behaviour
+#mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
+argv_t = world.call(ptr, [world.call(ptr, [world.type_i32()])])
+main = world.mut_fun2([mem_t, world.type_i32(), argv_t], [mem_t, world.type_i32()]).set("main")
+
+print(main.var().num_projs())
+
+args, ret = main.var().projs(2)
+mem, argc, argv = args.projs(3)
+main.app(False, ret, [mem, argc])
+print(mem, argc, argv)
+print(type(main))
 
 print("mem_t: ")
 print(mem_t)
 print("-----------")
 print("arg_v: ")
-print(arg_v)
+print(argv_t)
 print("-----------")
 
 #####
