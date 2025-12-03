@@ -2,11 +2,12 @@
 
 #include "mim/phase.h"
 
-namespace mim {
+namespace mim::plug::mem::phase {
 
-class SCCP : public RWPhase {
+/// Sparse Conditional Constant Propagation.
+class SSAPhase : public RWPhase {
 public:
-    SCCP(World& world, flags_t annex)
+    SSAPhase(World& world, flags_t annex)
         : RWPhase(world, annex) {}
 
 private:
@@ -27,4 +28,4 @@ private:
     bool todo_ = true;
 };
 
-} // namespace mim
+} // namespace mim::plug::mem::phase

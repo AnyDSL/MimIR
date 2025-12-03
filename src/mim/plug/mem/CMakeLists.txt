@@ -3,6 +3,7 @@ add_mim_plugin(mem
         mem.cpp
         normalizers.cpp
         phase/add_mem.cpp
+        phase/ssa_phase.cpp
         pass/copy_prop.cpp
         pass/reshape.cpp
         pass/ssa.cpp
