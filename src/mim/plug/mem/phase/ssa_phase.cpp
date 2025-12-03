@@ -61,7 +61,7 @@ const Def* mem_store(const Def* mem, const Def* key, const Def* value) {
     auto new_entry = world.tuple({key, value});
     if (auto proxy = mem->isa<Proxy>()) {
         auto new_map_entries = DefVec();
-        new_map_entries.push_back(mem);
+        new_map_entries.push_back(proxy->op(0));
         for (auto kv : proxy->ops() | std::views::drop(1)) {
             auto [k, v] = kv->projs<2>();
             if (k != key) new_map_entries.push_back(kv);
