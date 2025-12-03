@@ -26,7 +26,6 @@ lam fragment [position: <<3; %math.F32>>]: <<4; %math.F32>>
 lam extern _vertex () = %spirv.wrap
     %spirv.model.vertex
     @ (1, 2)
-    @ (1, 1)
     ((%spirv.input, (%spirv.builtin.vertex_index)))
     (
         (%spirv.output, (%spirv.builtin.position)),
@@ -36,7 +35,6 @@ lam extern _vertex () = %spirv.wrap
 
 lam extern _fragment () = %spirv.wrap
     %spirv.model.fragment
-    @ (1, 1)
     @ (1, 1)
     ((%spirv.input, (%spirv.location 0)))
     ((%spirv.output, (%spirv.location 0)))
