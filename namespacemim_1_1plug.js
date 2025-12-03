@@ -29,6 +29,7 @@ var namespacemim_1_1plug =
       [ "repls", "namespacemim_1_1plug_1_1compile.html#a98382c32be847ac58cfba2794409e926", null ],
       [ "ret_wrap_phase", "namespacemim_1_1plug_1_1compile.html#a2b6919d5df487ee98ed953de54459789", null ],
       [ "scalarize_pass", "namespacemim_1_1plug_1_1compile.html#a961935589c51b84c285852b051fbbf37", null ],
+      [ "sccp", "namespacemim_1_1plug_1_1compile.html#a7c6f14e6f0e8f8f3a40ae6763af9c8a0", null ],
       [ "tail_rec_elim_pass", "namespacemim_1_1plug_1_1compile.html#aa116af339362d94ddef4135c1e9e67c7", null ],
       [ "normalize_is_loaded", "namespacemim_1_1plug_1_1compile.html#a99c96c2c9e8f4f5320e6c8c2b7f92f0d", null ],
       [ "register_normalizers", "namespacemim_1_1plug_1_1compile.html#a538868adc12502b1140af4b6f2f0efa2", null ],

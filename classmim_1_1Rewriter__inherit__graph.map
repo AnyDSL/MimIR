@@ -1,29 +1,31 @@
 <map id="mim::Rewriter" name="mim::Rewriter">
-<area shape="rect" id="Node000001" title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map." alt="" coords="5,277,120,303"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="175,228,297,253"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,271,190,251,191,256,122,276"/>
-<area shape="rect" id="Node000013" href="$classmim_1_1VarRewriter.html" title=" " alt="" coords="168,277,304,303"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="134,287,168,287,168,293,134,293"/>
-<area shape="rect" id="Node000014" href="$classmim_1_1Zonker.html" title=" " alt="" coords="183,327,289,352"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="122,304,191,324,190,329,120,309"/>
+<area shape="rect" id="Node000001" title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map." alt="" coords="5,301,120,327"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="175,252,297,277"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,295,190,275,191,280,122,300"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1VarRewriter.html" title=" " alt="" coords="168,301,304,327"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="134,311,168,311,168,317,134,317"/>
+<area shape="rect" id="Node000015" href="$classmim_1_1Zonker.html" title=" " alt="" coords="183,351,289,376"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="122,328,191,348,190,353,120,333"/>
 <area shape="rect" id="Node000003" href="$classmim_1_1BetaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="380,5,535,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="242,214,257,175,279,128,310,80,350,40,378,26,381,30,354,44,314,83,283,130,261,177,247,216"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="241,238,253,194,275,140,307,86,327,61,350,40,379,25,381,30,354,44,331,65,311,89,280,143,259,196,246,239"/>
 <area shape="rect" id="Node000004" href="$classmim_1_1BranchNormalizePhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="352,55,563,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="247,215,287,151,316,117,351,89,374,78,376,83,353,94,320,121,291,154,252,217"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="244,238,260,204,283,164,313,123,350,89,372,78,375,82,354,94,317,127,287,167,265,207,249,240"/>
 <area shape="rect" id="Node000005" href="$classmim_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping them afte..." alt="" coords="401,104,514,129"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="256,216,297,176,323,155,351,138,399,122,401,127,353,143,326,160,300,180,259,219"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="251,239,292,188,319,161,351,138,375,128,400,121,401,126,376,133,353,143,323,165,296,191,255,242"/>
 <area shape="rect" id="Node000006" href="$classmim_1_1EtaExpPhase.html" title="This phase takes care that Lamdas appear either only in callee position (Known) or not (Unknown)." alt="" coords="385,153,529,179"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="273,220,351,187,392,176,393,181,353,193,275,225"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="262,242,303,213,351,188,385,176,386,181,353,192,305,218,265,246"/>
 <area shape="rect" id="Node000007" href="$classmim_1_1EtaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="385,203,530,228"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="310,230,384,221,385,226,311,235"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="306,246,399,225,400,231,308,252"/>
 <area shape="rect" id="Node000008" href="$classmim_1_1PrefixCleanup.html" title=" " alt="" coords="382,252,533,277"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="311,246,382,254,382,259,311,251"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="311,262,382,262,382,267,311,267"/>
 <area shape="rect" id="Node000009" href="$classmim_1_1ReplManPhase.html" title=" " alt="" coords="379,301,535,327"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="289,256,305,262,329,275,353,286,394,299,393,304,351,291,327,279,303,267,287,261"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="308,278,400,299,399,304,306,283"/>
 <area shape="rect" id="Node000010" href="$classmim_1_1RetWrap.html" title=" " alt="" coords="399,351,515,376"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="299,258,306,263,322,282,330,301,338,319,354,336,376,348,400,355,399,360,374,352,350,340,333,322,325,303,318,285,302,267,296,262"/>
-<area shape="rect" id="Node000011" href="$classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html" title="Lowers the for axm to actual control flow in CPS." alt="" coords="387,401,528,441"/>
-<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="301,259,306,263,319,279,326,295,330,326,335,356,342,371,354,385,369,397,388,405,385,410,367,401,350,389,337,374,330,358,325,327,321,296,314,281,302,267,298,263"/>
-<area shape="rect" id="Node000012" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer..." alt="" coords="375,465,539,505"/>
-<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="302,259,306,263,323,287,330,312,330,359,329,383,330,405,338,428,354,451,377,467,373,471,350,455,333,430,325,406,323,383,325,359,325,313,318,290,302,266,298,263"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="295,281,306,286,321,299,330,312,339,324,353,336,376,346,400,353,399,358,374,351,351,340,335,328,326,315,317,303,302,291,293,285"/>
+<area shape="rect" id="Node000011" href="$classmim_1_1SCCP.html" title="Sparse Conditional Constant Propagation." alt="" coords="410,400,505,425"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="300,282,306,287,317,299,324,313,330,338,336,363,343,374,354,385,381,400,410,407,409,413,379,405,350,389,338,377,331,365,325,339,319,314,313,303,302,291,297,286"/>
+<area shape="rect" id="Node000012" href="$classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html" title="Lowers the for axm to actual control flow in CPS." alt="" coords="387,450,528,490"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="301,283,306,287,320,306,328,325,330,363,333,399,340,417,354,435,369,447,388,455,385,460,367,451,350,439,336,420,328,401,325,363,322,326,316,309,302,290,298,287"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer..." alt="" coords="375,514,539,554"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="303,284,306,287,324,315,332,342,333,369,330,396,327,422,328,448,336,474,354,500,377,517,374,521,350,504,331,476,323,449,322,422,325,396,327,369,327,343,319,317,302,290,299,288"/>
 </map>
