@@ -16,7 +16,7 @@ bool SCCP::analyze() {
             concr2abstr(init(def));
     }
 
-    return false; // no fixed-point neccessary
+    return false; // no fixed-point necessary
 }
 
 const Def* SCCP::init(const Def* def) {
