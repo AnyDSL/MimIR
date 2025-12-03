@@ -50,7 +50,7 @@ const Def* SCCP::concr2abstr_impl(const Def* def) {
     if (auto type = def->type()) concr2abstr(type);
 
     if (auto branch = Branch(def)) {
-        auto abstr = branch.cond();
+        auto abstr = concr2abstr(branch.cond());
         auto l     = Lit::isa<bool>(abstr);
         if (l && *l) return concr2abstr(branch.tt());
         if (l && !*l) return concr2abstr(branch.ff());
