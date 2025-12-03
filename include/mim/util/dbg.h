@@ -14,7 +14,7 @@ using fe::Loc;
 using fe::Pos;
 using fe::Sym;
 
-class Error : std::exception {
+class Error : public std::exception {
 public:
     enum class Tag {
         Error,
@@ -31,6 +31,11 @@ public:
             return print(os, "{}{}: {}: {}{}", rang::fg::yellow, msg.loc, msg.tag, rang::fg::reset, msg.str);
             return print(os, "{}{}: {}: {}{}", rang::fg::yellow, msg.loc, msg.tag, rang::fg::reset, msg.str);
         }
+
+        public:
+            std::string to_str(){
+                return this->str;
+            }
     };
 
     /// @name Constructors
@@ -84,6 +89,17 @@ public:
     void ack(std::ostream& os = std::cerr);
     ///@}
 
+    const char* what() const noexcept override {
+        if (cached_.empty()) {
+            for (const auto& msg : msgs_) {
+                cached_ += msg.str;
+                cached_ += "\n";
+            }
+        }
+        std::cout << "what got called" << std::endl;
+        return cached_.c_str();
+    }
+ 
     friend std::ostream& operator<<(std::ostream& o, Tag tag) {
         // clang-format off
         switch (tag) {
@@ -113,6 +129,7 @@ public:
 
 private:
     std::vector<Msg> msgs_;
+    mutable std::string cached_;
     size_t num_errors_   = 0;
     size_t num_warnings_ = 0;
     size_t num_notes_    = 0;
