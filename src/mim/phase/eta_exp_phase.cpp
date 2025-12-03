@@ -16,12 +16,12 @@ void EtaExpPhase::analyze(const Def* def) {
     if (def->isa<Var>()) return; // ignore Var's mut
 
     if (auto app = def->isa<App>()) {
-        visit(app->type());
+        visit(app->type(), Lattice::Unknown);
         visit(app->callee(), Lattice::Known);
-        visit(app->arg());
+        visit(app->arg(), Lattice::Unknown);
     } else {
         for (auto d : def->deps())
-            visit(d);
+            visit(d, Lattice::Unknown);
     }
 }
 
