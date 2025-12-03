@@ -62,8 +62,8 @@ const Def* SCCP::concr2abstr_impl(const Def* def) {
             auto abstr_args = absl::FixedArray<const Def*>(n);
             auto abstr_vars = absl::FixedArray<const Def*>(n);
             for (size_t i = 0; i != n; ++i) {
-                auto abstr    = concr2abstr(app->arg(n, i));
-                abstr_vars[i] = concr2abstr(lam->var(n, i), abstr).first;
+                auto abstr    = concr2abstr(app->targ(i));
+                abstr_vars[i] = concr2abstr(lam->tvar(i), abstr).first;
                 abstr_args[i] = abstr;
             }
 
@@ -129,7 +129,7 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 for (size_t i = 0; i != num_old; ++i) {
                     auto old_var = old_lam->var(num_old, i);
                     auto abstr   = concr2abstr_[old_var];
-                    if (abstr == old_var) new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
+                    if (abstr == old_var) new_doms.emplace_back(rewrite(old_lam->tdom(i)));
                 }
 
                 // build new lam
@@ -155,7 +155,7 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
             for (size_t i = 0, j = 0; i != num_old; ++i) {
                 auto old_var = old_lam->var(num_old, i);
                 auto abstr   = concr2abstr_[old_var];
-                if (abstr == old_var) new_args[j++] = rewrite(old_app->arg(num_old, i));
+                if (abstr == old_var) new_args[j++] = rewrite(old_app->targ(i));
             }
 
             return map(old_app, new_world().app(new_lam, new_args));
