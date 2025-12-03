@@ -43,9 +43,10 @@ axm %spirv.location: Nat -> %spirv.Decoration;
 axm %spirv.Entry: *;
 axm %spirv.wrap: [%spirv.Model]
     -> {n m: Nat}
-    -> {in_d out_d: Nat}
-    -> <<n; [%spirv.Input, <<in_d; %spirv.Decoration>>]>>
-    -> <<m; [%spirv.Output, <<out_d; %spirv.Decoration>>]>>
+    -> {dn: <<n; Nat>>}
+    -> {dm: <<m; Nat>>}
+    -> <<i: n; [%spirv.Input, <<dn#i; %spirv.Decoration>>]>>
+    -> <<i: m; [%spirv.Output, <<dm#i; %spirv.Decoration>>]>>
     -> {Ti: <<n; *>>}
     -> {To: <<m; *>>}
     -> [<<i: n; Ti#i>> -> <<o: m; To#o>>]
