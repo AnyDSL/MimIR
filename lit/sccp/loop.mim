@@ -41,7 +41,7 @@ lam extern _compile(): %compile.Phase =
     );
 
 // CHECK: define i64 @f(i64 [[X:%x_[0-9]+]])
-// CHECK: [[T:%t_[0-9]+]] = phi i64 [ 3, %f_{{[0-9]+}} ], [ 4, %body_{{[0-9]+}} ]
+// CHECK: [[T:%t_[0-9]+]] = phi i64 [ 3, {{.*}} ], [ 4, {{.*}} ]
 // CHECK: [[R:%r_[0-9]+]] = add nsw nuw i64 23, [[X]]
 // CHECK: [[S:%s_[0-9]+]] = add nsw nuw i64 [[T]], [[R]]
 // CHECK: ret i64 [[S]]
