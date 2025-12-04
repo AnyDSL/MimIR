@@ -97,6 +97,7 @@ lam %mem.rm (n: Nat, Is: «n; *», O: *)
 /// ### Phases
 ///
 axm %mem.add_mem_phase: %compile.Phase;
+axm %mem.ssa_phase:     %compile.Phase;
 ///
 /// ### Repls
 ///
