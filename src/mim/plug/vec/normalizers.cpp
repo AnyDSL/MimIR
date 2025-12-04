@@ -7,6 +7,8 @@
 
 #include "mim/plug/vec/vec.h"
 
+#include "absl/container/fixed_array.h"
+
 namespace mim::plug::vec {
 
 template<fold id>
@@ -35,6 +37,26 @@ const Def* normalize_fold(const Def*, const Def* c, const Def* arg) {
             return w.app(f, {acc, l});
         else
             return w.app(f, {l, acc});
+    }
+
+    return nullptr;
+}
+
+const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
+    return {};
+    auto& w     = type->world();
+    auto [a, b] = arg->projs<2>();
+    auto callee = c->as<App>();
+    auto f      = callee->arg();
+
+    if (auto ta = a->isa<Tuple>()) {
+        if (auto tb = b->isa<Tuple>()) {
+            size_t n     = ta->num_ops();
+            auto new_ops = absl::FixedArray<const Def*>(n);
+            for (size_t i = 0; i != n; ++i)
+                new_ops[i] = w.app(f, {ta->op(i), tb->op(i)});
+            return w.tuple(new_ops);
+        }
     }
 
     return nullptr;
