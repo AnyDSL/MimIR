@@ -26,6 +26,10 @@ plugin refly;
 axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;
 axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;
 ///
+/// ### %%vec.zip
+///
+axm %vec.zip: {ni n: Nat} → {Is: «ni; *», R: *} → [f: «i: ni; Is#i» → R] → [«i: ni; «n; Is#i»»] → «n; R», normalize_zip;
+///
 /// ## Scanning
 ///
 /// ### %%vec.scan
