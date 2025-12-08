@@ -564,14 +564,6 @@ public:
     const Def* implicit_app(const Def* callee, const Def* arg);
     template<bool Normalize = true>
     const Def* implicit_app(const Def* callee, Defs args) {
-        std::cout << "args: " << std::endl;
-        for(const char* sep = ""; auto def : args) {
-            std::cout << sep;
-            def->dump();
-            sep = ", ";
-        }
-        std::cout << std::endl;
-        std::cout << "got called with defs, callee: " << callee << std::endl;
         return implicit_app<Normalize>(callee, tuple(args));
     }
     template<bool Normalize = true>
@@ -582,7 +574,6 @@ public:
     const Def* implicit_app(const Def* callee, E arg)
         requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
     {
-        std::cout << "got called with any class" << std::endl;
         return implicit_app<Normalize>(callee, lit_nat((nat_t)arg));
     }
 
@@ -590,9 +581,8 @@ public:
     // clang-format off
     template<class Id, bool Normalize = true, class... Args> const Def* call(Id id, Args&&... args) { return call_<Normalize>(annex(id),   std::forward<Args>(args)...); }
     template<class Id, bool Normalize = true, class... Args> const Def* call(       Args&&... args) { return call_<Normalize>(annex<Id>(), std::forward<Args>(args)...); }
-    template<bool Normalize = true, class... Args> const Def* call(Sym sym,  Args&&... args) { return call_<Normalize>(sym2annex(sym), std::forward<Args>(args)...); }
-    // --- meine impl
-    template<bool Normalize = true> const Def* call(Sym sym, Defs defs) { return call_<Normalize>(sym2annex(sym), defs); }
+    template<bool Normalize = true, class... Args> const Def* call_sym(Sym sym,  Args&&... args) { return call_<Normalize>(sym2annex(sym), std::forward<Args>(args)...); }
+    // template<bool Normalize = true> const Def* call_sym(Sym sym, Defs defs) { return call_<Normalize>(sym2annex(sym), defs); }
     // clang-format on
     ///@}
 
@@ -658,15 +648,15 @@ private:
     const Def* call_(const Def* callee, T arg) {
         return implicit_app<Normalize>(callee, arg);
     }
-    template<bool Normalize = true>
-    const Def* call_(const Def* callee, Defs args){
-        if(args.size()>1){
-            return call_<Normalize>(implicit_app(callee, args.subspan(0,1)), args.subspan(1));
-        }
-        else{
-            return implicit_app<Normalize>(callee, args.subspan(0,1));
-        }
-    }
+    // template<bool Normalize = true>
+    // const Def* call_(const Def* callee, Defs args){
+    //     if(args.size()>1){
+    //         return call_<Normalize>(implicit_app(callee, args.subspan(0,1)), args.subspan(1));
+    //     }
+    //     else{
+    //         return implicit_app<Normalize>(callee, args.subspan(0,1));
+    //     }
+    // }
     ///@}
 
     /// @name Put into Sea of Nodes
