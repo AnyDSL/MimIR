@@ -511,7 +511,7 @@ void LamDecl::emit_body(Emitter& e) const {
         }
     }
 
-    if (is_external()) doms().front()->lam_->make_external();
+    if (is_external()) doms().front()->lam_->externalize();
     e.register_annex(annex_, sub_, def_);
 }
 
@@ -527,7 +527,7 @@ void CDecl::emit(Emitter& e) const {
 
 void RuleDecl::emit(Emitter& e) const {
     auto _      = e.world().push(loc());
-    auto meta_t = e.world().rule_type(var()->emit_type(e));
+    auto meta_t = e.world().reform(var()->emit_type(e));
     auto rule_  = e.world().mut_rule(meta_t);
     var()->emit_value(e, rule_->var());
     auto l = lhs()->emit(e);

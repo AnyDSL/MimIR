@@ -18,14 +18,14 @@ void LowerTypedClos::start() {
     // TODO put into c'tor - doesn't work right now, because world becomes invalid
     dummy_ret_ = world().bot(world().cn(world().annex<mem::M>()));
 
-    for (auto mut : world().copy_externals())
+    for (auto mut : world().externals().mutate())
         rewrite(mut);
     while (!worklist_.empty()) {
         auto [lvm, lcm, lam] = worklist_.front();
         worklist_.pop();
         lcm_ = lcm;
         lvm_ = lvm;
-        world().DLOG("in {} (lvm={}, lcm={})", lam, lvm_, lcm_);
+        DLOG("in {} (lvm={}, lcm={})", lam, lvm_, lcm_);
         if (lam->is_set()) {
             auto new_f = rewrite(lam->filter());
             auto new_b = rewrite(lam->body());
@@ -34,7 +34,7 @@ void LowerTypedClos::start() {
     }
 
     for (auto lam : new_externals_)
-        lam->make_external();
+        lam->externalize();
 }
 
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
@@ -54,10 +54,10 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     if (Lam::isa_basicblock(lam) && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
     auto new_lam  = lam->stub(new_type);
-    w.DLOG("stub {} ~> {}", lam, new_lam);
+    DLOG("stub {} ~> {}", lam, new_lam);
     if (lam->is_set()) new_lam->set(lam->filter(), lam->body());
     if (lam->is_external()) {
-        lam->make_internal();
+        lam->internalize();
         new_externals_.emplace_back(new_lam);
     }
     auto lcm = mem::mem_var(new_lam);

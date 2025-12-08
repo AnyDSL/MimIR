@@ -53,11 +53,17 @@ axm %regex.range: «2; Char» → RE, normalize_range, 1;
 ///
 lam %regex.lit(val: Char) = %regex.range (val, val);
 ///
-/// ### %%regex.not
+/// ### %%regex.not_
 ///
-/// Do not match the parameter.
+/// Do not match any of the ranges in the parameter - parameter must only contain `regex.disj`s and `regex.range`s.
 ///
 axm %regex.not_: RE → RE, normalize_not, 1;
+///
+/// ### %%regex.neg_lookahead
+///
+/// Do not match the parameter!
+///
+axm %regex.neg_lookahead: RE → RE, 1;
 ///
 /// ### %%regex.cls.*
 ///
@@ -81,7 +87,13 @@ let %regex.cls.S = %regex.not_ %regex.cls.s;
 ///
 /// Match any character.
 ///
-axm %regex.any: RE;
+axm %regex.any: RE, 0;
+///
+/// ## %%regex.empty
+///
+/// Matches the empty string.
+///
+axm %regex.empty: RE, 0;
 ///
 /// ## Quantifiers
 ///

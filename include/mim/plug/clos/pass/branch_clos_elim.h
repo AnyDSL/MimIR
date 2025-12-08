@@ -1,17 +1,13 @@
 #pragma once
 
-#include <map>
-#include <tuple>
-
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 namespace mim::plug::clos {
 
 class BranchClosElim : public RWPass<BranchClosElim, Lam> {
 public:
-    BranchClosElim(PassMan& man)
-        : RWPass(man, "branch_clos_elim")
-        , branch2dropped_() {}
+    BranchClosElim(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     const Def* rewrite(const Def*) override;
 

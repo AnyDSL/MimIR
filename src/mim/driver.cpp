@@ -7,9 +7,22 @@
 
 namespace mim {
 
+const fs::path* Driver::Imports::add(fs::path path, Sym sym) {
+    if (!fs::exists(path)) {
+        driver_.WLOG("import path '{}' does not exist", path.string());
+        return nullptr;
+    }
+    for (auto p : paths())
+        if (fs::equivalent(p, path)) return nullptr;
+
+    path2sym_.emplace_back(std::pair(std::move(path), sym));
+    return &path2sym_.back().first;
+}
+
 Driver::Driver()
     : log_(flags_)
-    , world_(this) {
+    , world_(this)
+    , imports_(*this) {
     // prepend empty path
     search_paths_.emplace_front(fs::path{});
 
@@ -22,11 +35,11 @@ Driver::Driver()
     }
 
     // add path/to/mim.exe/../../lib/mim
-    if (auto path = sys::path_to_curr_exe()) add_search_path(path->parent_path().parent_path() / "lib" / "mim");
+    if (auto path = sys::path_to_curr_exe()) add_search_path(path->parent_path().parent_path() / MIM_LIBDIR / "mim");
 
     // add install path if different from above
-    if (auto install_path = fs::path{MIM_INSTALL_PREFIX} / "lib" / "mim"; fs::exists(install_path)) {
-        if (search_paths().empty() || !fs::equivalent(install_path, search_paths().back()))
+    if (auto install_path = fs::path{MIM_INSTALL_PREFIX} / MIM_LIBDIR / "mim"; fs::exists(install_path)) {
+        if (search_paths().size() < 2 || !fs::equivalent(install_path, search_paths().back()))
             add_search_path(std::move(install_path));
     }
 
@@ -34,16 +47,8 @@ Driver::Driver()
     insert_ = ++search_paths_.begin();
 }
 
-const fs::path* Driver::add_import(fs::path path, Sym sym) {
-    for (auto p : import_paths())
-        if (fs::equivalent(p, path)) return nullptr;
-
-    import_path2sym_.emplace_back(std::pair(std::move(path), sym));
-    return &import_path2sym_.back().first;
-}
-
 void Driver::load(Sym name) {
-    ILOG("loading plugin: '{}'", name);
+    ILOG("💾 loading plugin: '{}'", name);
 
     if (is_loaded(name)) {
         WLOG("mim/plugin '{}' already loaded", name);
@@ -72,7 +77,7 @@ void Driver::load(Sym name) {
         auto info = get_info();
         // clang-format off
         if (auto reg = info.register_normalizers) reg(normalizers_);
-        if (auto reg = info.register_stages)      reg(phases_, passes_);
+        if (auto reg = info.register_stages)      reg(stages_);
         if (auto reg = info.register_backends)    reg(backends_);
         // clang-format on
     } else {

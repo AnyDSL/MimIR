@@ -2,6 +2,7 @@ name: linux
 
 on:
   push:
+    branches: [master]
   pull_request:
     branches: [master]
 
@@ -15,43 +16,16 @@ jobs:
 
     steps:
       - name: Clone recursively
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Cache LLVM and Clang
-        id: cache-llvm
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./llvm
-          key: llvm-14.0.0-ubuntu
-
-      - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1.6.0
-        with:
-          version: "14.0.0"
-          cached: ${{ steps.cache-llvm.outputs.cache-hit }}
-
-      - name: Install FileCheck
-        uses: i3h/download-release-asset@v1
-        with:
-          owner: fodinabor
-          repo: FileCheckBuild
-          tag: latest
-          file: FileCheck-x86_64-ubuntu
-          path: ${{github.workspace}}/bin
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install newest g++, valgrind, lit, and psutil
+      - name: Install valgrind, lit, llvm, and psutil
         run: |
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get install g++-13 valgrind
-          sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
-          sudo chmod +x /usr/bin/FileCheck
-          # sudo python -m pip install --upgrade pip
-          sudo pip install lit psutil # --break-system-packages
+          sudo apt-get install g++-14 valgrind llvm-20-tools
+          sudo pip install lit psutil
+          sudo ln -s /usr/bin/FileCheck-20 /usr/local/bin/FileCheck
 
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
@@ -62,11 +36,22 @@ jobs:
 
       - name: Configure Debug
         if: matrix.build-type == 'Debug'
-        run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON -DMIM_LIT_TIMEOUT=300
+        run: |
+          CXX=g++-14 cmake -B ${{github.workspace}}/build \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}     \
+            -DBUILD_TESTING=ON                            \
+            -DMIM_BUILD_EXAMPLES=ON                       \
+            -DMIM_LIT_TIMEOUT=300
 
       - name: Configure Release
         if: matrix.build-type == 'Release'
-        run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON -DMIM_LIT_WITH_VALGRIND=ON -DMIM_LIT_TIMEOUT=300
+        run: |
+          CXX=g++-14 cmake -B ${{github.workspace}}/build \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}     \
+            -DBUILD_TESTING=ON                            \
+            -DMIM_BUILD_EXAMPLES=ON                       \
+            -DMIM_LIT_WITH_VALGRIND=ON                    \
+            -DMIM_LIT_TIMEOUT=300
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build -v

@@ -18,7 +18,7 @@ void init_lam(py::module_& m) {
         .def("app", [](mim::Lam &l, bool filter, mim::Def* callee, std::vector<mim::Def*> args){
             return l.app(filter, callee, mim::Defs(args));
         })
-        .def("make_external", &mim::Lam::make_external, py::return_value_policy::reference_internal);
+        .def("externalize", &mim::Lam::externalize, py::return_value_policy::reference_internal);
 }
 
 } // namespace mim

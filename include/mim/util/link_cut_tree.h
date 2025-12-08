@@ -9,8 +9,8 @@ namespace mim::lct {
 /// [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) like this:
 /// ```
 /// class Node : public lct::Node<Node, MyKey> {
-///     constexpr bool lt(const MyKey& key) const noexcept { /*...*/ }
-///     constexpr bool eq(const MyKey& key) const noexcept { /*...*/ }
+///     constexpr bool lt(const MyKey& key) const noexcept { ... }
+///     constexpr bool eq(const MyKey& key) const noexcept { ... }
 ///     // ...
 /// };
 /// ```
@@ -90,7 +90,7 @@ public:
         }
     }
 
-    /// Helpfer for Splay-Tree: rotate left/right:
+    /// Helper for Splay-Tree: rotate left/right:
     /// ```
     ///  | Left                  | Right                  |
     ///  |-----------------------|------------------------|

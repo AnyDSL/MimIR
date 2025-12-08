@@ -1,10 +1,10 @@
 #include "mim/plug/clos/clos.h"
 
 #include <mim/config.h>
+#include <mim/pass.h>
 
 #include <mim/pass/eta_exp.h>
 #include <mim/pass/eta_red.h>
-#include <mim/pass/pass.h>
 #include <mim/pass/scalarize.h>
 
 #include "mim/plug/clos/pass/branch_clos_elim.h"
@@ -17,26 +17,20 @@
 using namespace mim;
 using namespace mim::plug;
 
-void reg_stages(Phases& phases, Passes& passes) {
-    Pipeline::hook<clos::clos_conv_phase, clos::ClosConv>(phases);
-    Pipeline::hook<clos::lower_typed_clos_phase, clos::LowerTypedClos>(phases);
-
-    // TODO:; remove after ho_codegen merge
-    phases[flags_t(Annex::Base<clos::eta_red_bool_pass>)] = [&](Pipeline& pipe, const Def* app) {
-        auto bb      = app->as<App>()->arg();
-        auto bb_only = bb->as<Lit>()->get<u64>();
-        pipe.add<EtaRed>(bb_only);
-    };
-
-    PassMan::hook<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
-    PassMan::hook<clos::branch_clos_pass, clos::BranchClosElim>(passes);
-    PassMan::hook<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
-    PassMan::hook<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
+void reg_stages(Flags2Stages& stages) {
+    // clang-format off
+    // phases
+    Stage::hook<clos::clos_conv_phase,            clos::ClosConv          >(stages);
+    Stage::hook<clos::lower_typed_clos_phase,     clos::LowerTypedClos    >(stages);
+    // passes
+    Stage::hook<clos::clos_conv_prep_pass,        clos::ClosConvPrep      >(stages);
+    Stage::hook<clos::branch_clos_pass,           clos::BranchClosElim    >(stages);
+    Stage::hook<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(stages);
+    Stage::hook<clos::clos2sjlj_pass,             clos::Clos2SJLJ         >(stages);
+    // clang-format on
 }
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"clos", [](Normalizers& n) { clos::register_normalizers(n); }, reg_stages, nullptr};
-}
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"clos", clos::register_normalizers, reg_stages, nullptr}; }
 
 namespace mim::plug::clos {
 

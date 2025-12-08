@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mim/pass/pass.h"
+#include "mim/pass.h"
 
 namespace mim {
 
@@ -8,7 +8,10 @@ class EtaRed;
 
 class TailRecElim : public FPPass<TailRecElim, Lam> {
 public:
-    TailRecElim(PassMan&);
+    TailRecElim(World& world, flags_t annex)
+        : FPPass(world, annex) {}
+
+    void init(PassMan*) final;
 
 private:
     /// @name PassMan hooks

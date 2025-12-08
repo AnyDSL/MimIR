@@ -1,8 +1,7 @@
 #include "mim/pass/optimize.h"
 
 #include "mim/driver.h"
-
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 namespace mim {
 
@@ -18,18 +17,19 @@ void optimize(World& world) {
 
     const Def* compilation = nullptr;
     for (auto compilation_function : compilation_functions) {
-        if (auto compilation_ = world.external(compilation_function)) {
+        if (auto compilation_ = world.externals()[compilation_function]) {
             if (!compilation) compilation = compilation_;
-            compilation_->make_internal();
+            compilation_->internalize();
         }
     }
 
-    // make all functions `[] -> Pipeline` internal
-    for (auto def : world.copy_externals()) {
+    // make all functions `[] -> %compile.Phase` internal
+    for (auto def : world.externals().mutate()) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
-            if (lam->codom()->sym().view() == "%compile.Pipeline") {
+            // TODO use Axm::isa - but rn there is a problem with the rec Pi and plugin deps
+            if (lam->codom()->sym().view() == "%compile.Phase") {
                 if (!compilation) compilation = lam;
-                def->make_internal();
+                def->internalize();
             }
         }
     }
@@ -37,22 +37,17 @@ void optimize(World& world) {
     if (!compilation) world.ELOG("no compilation function found");
     world.DLOG("compilation using {} : {}", compilation, compilation->type());
 
-    // We can not directly access compile axms here.
-    // But the compile plugin has not the necessary communication pipeline.
-    // Therefore, we register the handlers and let the compile plugin call them.
-
-    auto pipe             = Pipeline(world);
-    auto pipeline_prog    = compilation->as<Lam>()->body();
-    auto [callee, phases] = App::uncurry(pipeline_prog);
-    auto axm              = callee->as<Axm>();
+    auto body   = compilation->as<Lam>()->body();
+    auto callee = App::uncurry_callee(body);
 
     world.DLOG("Building pipeline");
-    if (auto phase = world.driver().phase(axm->flags()))
-        (*phase)(pipe, pipeline_prog);
-    else
+    if (auto f = world.driver().stage(callee->flags())) {
+        auto stage = (*f)(world);
+        auto phase = stage.get()->as<Phase>();
+        if (auto app = body->isa<App>()) phase->apply(app);
+        phase->run();
+    } else
         world.ELOG("axm not found in passes");
-
-    pipe.run();
 }
 
 } // namespace mim

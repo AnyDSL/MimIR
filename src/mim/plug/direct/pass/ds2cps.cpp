@@ -13,12 +13,12 @@ namespace mim::plug::direct {
 const Def* DS2CPS::rewrite(const Def* def) {
     if (auto app = def->isa<App>()) {
         if (auto lam = app->callee()->isa_mut<Lam>()) {
-            world().DLOG("encountered lam app");
+            DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
-            world().DLOG("new lam: {} : {}", new_lam, new_lam->type());
-            world().DLOG("arg: {} : {}", app->arg(), app->arg()->type());
+            DLOG("new lam: {} : {}", new_lam, new_lam->type());
+            DLOG("arg: {} : {}", app->arg(), app->arg()->type());
             auto new_app = world().app(new_lam, app->arg());
-            world().DLOG("new app: {} : {}", new_app, new_app->type());
+            DLOG("new app: {} : {}", new_app, new_app->type());
             return new_app;
         }
     }
@@ -40,7 +40,7 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
         return lam;
     }
 
-    world().DLOG("rewrite DS function {} : {}", lam, lam->type());
+    DLOG("rewrite DS function {} : {}", lam, lam->type());
 
     auto ty    = lam->type();
     auto var   = ty->has_var();
@@ -52,22 +52,22 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     sigma->set(0, dom);
     sigma->set(1, world().cn(rw_codom));
 
-    world().DLOG("original codom: {}", codom);
-    world().DLOG("rewritten codom: {}", rw_codom);
+    DLOG("original codom: {}", codom);
+    DLOG("rewritten codom: {}", rw_codom);
 
     auto cps_lam            = world().mut_con(sigma)->set(lam->sym().str() + "_cps");
     auto [filter, cps_body] = lam->reduce<2>(cps_lam->var(0_n));
 
     // rewrite vars of new function
     // calls handled separately
-    world().DLOG("body: {} : {}", lam->body(), lam->body()->type());
-    world().DLOG("cps body: {} : {}", cps_body, cps_body->type());
+    DLOG("body: {} : {}", lam->body(), lam->body()->type());
+    DLOG("cps body: {} : {}", cps_body, cps_body->type());
 
     cps_lam->app(filter, cps_lam->vars().back(), cps_body);
 
     rewritten_[lam] = op_cps2ds_dep(cps_lam);
-    world().DLOG("replace {} : {}", lam, lam->type());
-    world().DLOG("with {} : {}", rewritten_[lam], rewritten_[lam]->type());
+    DLOG("replace {} : {}", lam, lam->type());
+    DLOG("with {} : {}", rewritten_[lam], rewritten_[lam]->type());
 
     return rewritten_[lam];
 }

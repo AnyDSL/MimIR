@@ -37,8 +37,8 @@ axm %direct.cps2ds_pass: %compile.Pass;
 /// ### Phases
 ///
 let direct_phases =
-    %compile.combined_phase
-        (%compile.phase_list
-            (%compile.single_pass_phase %direct.ds2cps_pass)
-            (%compile.single_pass_phase %direct.cps2ds_pass)
-            optimization_phase);
+    %compile.phases ff (
+        %compile.pass2phase %direct.ds2cps_pass,
+        %compile.pass2phase %direct.cps2ds_pass,
+        optimization_phase,
+    );

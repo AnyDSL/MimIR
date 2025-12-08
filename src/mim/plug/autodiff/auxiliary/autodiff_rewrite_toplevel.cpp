@@ -1,12 +1,12 @@
 #include "mim/plug/autodiff/autodiff.h"
-#include "mim/plug/autodiff/pass/autodiff_eval.h"
+#include "mim/plug/autodiff/pass/eval.h"
 
 namespace mim::plug::autodiff {
 
 /// Additionally to the derivation, the pullback is registered and the maps are initialized.
-const Def* AutoDiffEval::derive_(const Def* def) {
+const Def* Eval::derive_(const Def* def) {
     auto lam = def->as_mut<Lam>(); // TODO check if mutable
-    world().DLOG("Derive lambda: {}", def);
+    DLOG("Derive lambda: {}", def);
     auto deriv_ty = autodiff_type_fun_pi(lam->type());
     auto deriv    = world().mut_lam(deriv_ty)->set(lam->sym().str() + "_deriv");
 
@@ -33,19 +33,18 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     partial_pullback[ret_var] = ret_pb;
 
     shadow_pullback[deriv_all_args] = world().tuple({arg_id_pb, ret_pb});
-    world().DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb,
-                 arg_id_pb->type());
-    world().DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args], shadow_pullback[deriv_all_args]->type());
+    DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb, arg_id_pb->type());
+    DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args], shadow_pullback[deriv_all_args]->type());
 
     // We pre-register the augment replacements.
     // The function and its variables are replaced by their new derived versions.
     // TODO: maybe leave out function call (duplication with derived)
     augmented[def] = deriv;
-    world().DLOG("Associate {} with {}", def, deriv);
-    world().DLOG("  {} : {}", lam, lam->type());
-    world().DLOG("  {} : {}", deriv, deriv->type());
+    DLOG("Associate {} with {}", def, deriv);
+    DLOG("  {} : {}", lam, lam->type());
+    DLOG("  {} : {}", deriv, deriv->type());
     augmented[lam->var()] = deriv->var();
-    world().DLOG("Associate vars {} with {}", lam->var(), deriv->var());
+    DLOG("Associate vars {} with {}", lam->var(), deriv->var());
 
     // already contains the correct application of
     // deriv->ret_var() by specification

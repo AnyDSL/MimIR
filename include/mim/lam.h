@@ -8,6 +8,8 @@
 
 namespace mim {
 
+class Extract;
+
 /// A [dependent function type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A0_type).
 /// @see Lam
 class Pi : public Def, public Setters<Pi> {
@@ -173,7 +175,7 @@ public:
     /// Set body to an App of @p callee and @p args.
     Lam* app(Filter filter, const Def* callee, Defs args);
     /// Set body to an App of `(f, t)#cond mem` or `(f, t)#cond ()` if @p mem is `nullptr`.
-    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem = nullptr);
+    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* arg = nullptr);
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
@@ -181,13 +183,16 @@ public:
     /// @name Rebuild
     ///@{
     Lam* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+    using Def::reduce;
+    Defs reduce(Defs) const;
     const Def* reduce_body(const Def* arg) const { return reduce(arg).back(); }
     constexpr size_t reduction_offset() const noexcept final { return 0; }
     ///@}
 
     /// @name Eta-Conversion
     ///@{
-    static const Def* eta_expand(Filter, const Def* f);
+    static Lam* eta_expand(Filter, const Def* f);
+    static Lam* eta_expand(const Def* f) { return eta_expand(true, f); } ///< Use `true` Filter.
     /// Yields body(), if eta-convertible and `nullptr` otherwise.
     /// η-convertible means: `lm x = body x` where `x` ∉ `body`.
     const Def* eta_reduce() const;

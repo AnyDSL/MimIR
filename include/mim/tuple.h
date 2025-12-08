@@ -254,6 +254,46 @@ private:
     friend class World;
 };
 
+/// Matches `(ff, tt)#cond` - where `cond` is not a Lit%eral.
+/// @note If `cond` is a Lit%eral, either
+/// * `(x, y)#lit` would have been folded to `x`/`y` anymway, or
+/// * Select::pair() yields again `pair#lit` for `pair#lit`.
+class Select {
+public:
+    Select(const Def*);
+
+    explicit operator bool() const noexcept { return tt_; }
+
+    const Extract* extract() const { return extract_; }
+    const Def* pair() const { return pair_; }
+    const Def* cond() const { return cond_; }
+    const Def* tt() const { return tt_; }
+    const Def* ff() const { return ff_; }
+
+private:
+    const Extract* extract_ = nullptr;
+    const Def* pair_        = nullptr;
+    const Def* cond_        = nullptr;
+    const Def* tt_          = nullptr;
+    const Def* ff_          = nullptr;
+};
+
+/// Matches `(ff, tt)#cond arg`.
+/// `(ff, tt)#cond` is matched as a Select.
+class Branch : public Select {
+public:
+    Branch(const Def*);
+
+    const App* app() const { return app_; }
+    const Def* callee() const { return callee_; }
+    const Def* arg() const { return arg_; }
+
+private:
+    const App* app_    = nullptr;
+    const Def* callee_ = nullptr;
+    const Def* arg_    = nullptr;
+};
+
 /// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs
 ///@{
 bool is_unit(const Def*);
@@ -269,12 +309,28 @@ const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened Pack / Tuple directly.
 const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
 
-DefVec merge(Defs, Defs);
-DefVec merge(const Def* def, Defs defs);
-const Def* merge_sigma(const Def* def, Defs defs);
-const Def* merge_tuple(const Def* def, Defs defs);
-
 const Def* tuple_of_types(const Def* t);
+///@}
+
+/// @name Concatenation
+/// Works for Tuple%s, Pack%s, Sigma%s, and Arr%ays alike.
+///@{
+DefVec cat(Defs, Defs);
+inline DefVec cat(const Def* a, Defs bs) { return cat(Defs{a}, bs); }
+inline DefVec cat(Defs as, const Def* b) { return cat(as, Defs{b}); }
+
+DefVec cat(nat_t n, nat_t m, const Def* a, const Def* b);
+
+const Def* cat_tuple(nat_t n, nat_t m, const Def* a, const Def* b);
+const Def* cat_sigma(nat_t n, nat_t m, const Def* a, const Def* b);
+
+const Def* cat_tuple(World&, Defs, Defs);
+const Def* cat_sigma(World&, Defs, Defs);
+
+inline const Def* cat_tuple(const Def* a, Defs bs) { return cat_tuple(a->world(), Defs{a}, bs); }
+inline const Def* cat_tuple(Defs as, const Def* b) { return cat_tuple(b->world(), as, Defs{b}); }
+inline const Def* cat_sigma(const Def* a, Defs bs) { return cat_sigma(a->world(), Defs{a}, bs); }
+inline const Def* cat_sigma(Defs as, const Def* b) { return cat_sigma(b->world(), as, Defs{b}); }
 ///@}
 
 } // namespace mim

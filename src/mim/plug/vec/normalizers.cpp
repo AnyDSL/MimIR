@@ -1,5 +1,8 @@
+#include <absl/container/btree_set.h>
+
 #include <mim/plug/core/core.h>
 
+#include "mim/tuple.h"
 #include "mim/world.h"
 
 #include "mim/plug/vec/vec.h"
@@ -73,6 +76,15 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
 
     if (vec->isa<Lit>()) return w.lit_tt();
 
+    return nullptr;
+}
+
+const Def* normalize_cat(const Def*, const Def* callee, const Def* arg) {
+    auto [a, b] = arg->projs<2>();
+    auto [n, m] = callee->as<App>()->decurry()->args<2>([](auto def) { return Lit::isa(def); });
+    if (n && *n == 0) return b;
+    if (m && *m == 0) return a;
+    if (n && m) return mim::cat_tuple(*n, *m, a, b);
     return nullptr;
 }
 

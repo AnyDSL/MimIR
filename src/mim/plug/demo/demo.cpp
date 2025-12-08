@@ -1,12 +1,9 @@
 #include "mim/plug/demo/demo.h"
 
+#include <mim/pass.h>
 #include <mim/plugin.h>
-
-#include <mim/pass/pass.h>
 
 using namespace mim;
 
-/// Registers Pass%es in the different optimization Phase%s as well as normalizers for the Axm%s.
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"demo", [](Normalizers& n) { plug::demo::register_normalizers(n); }, nullptr, nullptr};
-}
+/// Registers normalizers as well as Phase%s and Pass%es for the Axm%s of this Plugin.
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"demo", plug::demo::register_normalizers, nullptr, nullptr}; }
