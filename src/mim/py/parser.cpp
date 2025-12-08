@@ -11,8 +11,11 @@ namespace mim::ast {
 
 void init_parser(py::module_& m) {
     py::class_<mim::ast::Parser, std::unique_ptr<mim::ast::Parser, py::nodelete>>(m, "Parser")
-        .def(py::init<mim::ast::AST&>());
-        //.def("plugin", static_cast<void (Parser::*)(const std::string&)>, py::return_value_policy::reference);
+        .def(py::init<mim::ast::AST&>())
+        .def("plugin", [](mim::ast::Parser &p, const std::string plug){
+            std::cout << "called plugin" << std::endl;
+            p.plugin(plug);
+        });
 }
 
 void init_parser_wrapper(py::module_& m){

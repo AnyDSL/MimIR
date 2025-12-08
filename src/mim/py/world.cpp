@@ -5,6 +5,7 @@
 #include <mim/def.h>
 #include <mim/world.h>
 #include <fe/sym.h>
+#include <mim/pass/optimize.h>
 #include "world_wrapper.cpp"
 namespace py = pybind11;
 
@@ -43,6 +44,9 @@ void init_world(py::module_& m) {
     }, py::return_value_policy::reference_internal)
     .def("call",[](mim::World &w, fe::Sym sym, std::vector<mim::Def*> args){
         return w.call(sym, mim::Defs(args));
+    })
+    .def("optimize", [](mim::World &w){
+        mim::optimize(w);
     });
     // .def("call", static_cast<const mim::Def* (World::*)(mim::Sym, py::args)>);
 }

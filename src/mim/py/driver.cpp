@@ -14,7 +14,12 @@ void init_driver(py::module_& m) {
         .def("world", &mim::Driver::world, py::return_value_policy::reference_internal)
         .def("add_import", &mim::Driver::add_import, py::return_value_policy::reference_internal)
         .def("add_search_path", &mim::Driver::add_search_path)
-        .def("log", &mim::Driver::log, py::return_value_policy::reference_internal);
+        .def("log", &mim::Driver::log, py::return_value_policy::reference_internal)
+        .def("backend", [](mim::Driver &d,std::string backend, std::string output_file_name, mim::World &world){
+            std::ofstream ofs(output_file_name);
+            d.backend(backend)(world, ofs);
+            ofs.close();
+        });
 }
 
 } // namespace mim

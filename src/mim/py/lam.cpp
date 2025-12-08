@@ -15,7 +15,10 @@ void init_pi(py::module_& m){
 void init_lam(py::module_& m) {
     py::class_<mim::Lam, mim::Def>(m, "Lam")
         .def("var", static_cast<const mim::Def* (mim::Lam::*)()>(&mim::Def::var), py::return_value_policy::reference_internal)
-        .def("app", static_cast<mim::Lam* (mim::Lam::*)(mim::Lam::Filter, const mim::Def*, const mim::Def* )>(&mim::Lam::app));
+        .def("app", [](mim::Lam &l, bool filter, mim::Def* callee, std::vector<mim::Def*> args){
+            return l.app(filter, callee, mim::Defs(args));
+        })
+        .def("make_external", &mim::Lam::make_external, py::return_value_policy::reference_internal);
 }
 
 } // namespace mim

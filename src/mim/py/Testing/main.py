@@ -1,5 +1,6 @@
 import sys
 import os
+import subprocess
 from pathlib import Path
 # Add our build dir to the python modules list
 build_dir = os.path.abspath("../../../../build/lib/")
@@ -18,12 +19,15 @@ world  = driver.world()
 
 mem = world.sym(f"%mem.M")
 ptr = world.sym(f"%mem.Ptr0")
+#world.sym(f"%compile")
 print(ptr)
 
 #####
 ast = mim.AST(world)
 parser = mim.PyParser(mim.Parser(ast))
+#parser = mim.Parser(ast)
 parser.plugin("core")
+parser.plugin("compile")
 mem_t = world.annex(mem)
 #following line of code is just to observe mim_error behaviour
 #mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
@@ -35,6 +39,16 @@ print(main.var().num_projs())
 args, ret = main.var().projs(2)
 mem, argc, argv = args.projs(3)
 main.app(False, ret, [mem, argc])
+main.make_external()
+#world.optimize()
+
+driver.backend("ll", "hello.ll", world)
+
+subprocess.run("clang hello.ll -o hello -Wno-override-module")
+
+
+
+
 print(mem, argc, argv)
 print(type(main))
 
