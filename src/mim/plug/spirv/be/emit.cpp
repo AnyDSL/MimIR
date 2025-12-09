@@ -69,10 +69,10 @@ public:
         ostream() << "; SPIR-V\n"
                   << "; Version: 1.0\n"
                   << "; Generator: MimIR; 0"
-                  << "; Bound " << 0 << "\n"
+                  << "; Bound " << next_id() << "\n"
                   << "; Schema " << 0 << "\n";
 
-        auto indent = max_name_length() + 3;
+        auto indent = max_name_length() + 4;
 
         assembly(indent, capabilities);
         assembly(indent, extensions);
@@ -102,7 +102,7 @@ private:
         // result
         if (op.result.has_value()) {
             auto result = id_name(op.result.value());
-            for (int i = result.length() + 3; i < indent; i++)
+            for (int i = result.length() + 4; i < indent; i++)
                 ostream() << " ";
             ostream() << "%" << result << " = ";
         } else {
