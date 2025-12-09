@@ -30,7 +30,7 @@ parser.plugin("core")
 parser.plugin("compile")
 mem_t = world.annex(mem)
 #following line of code is just to observe mim_error behaviour
-#mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
+mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
 argv_t = world.call(ptr, [world.call(ptr, [world.type_i32()])])
 main = world.mut_fun2([mem_t, world.type_i32(), argv_t], [mem_t, world.type_i32()]).set("main")
 
