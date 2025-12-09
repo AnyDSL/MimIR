@@ -40,6 +40,11 @@ public:
     bool is_valid(Word _) { return true; }
     void start() override {
         capabilities.emplace_back(Op{OpKind::Capability, {capability::Shader}, {}});
+
+        glsl_ext_inst_id_ = next_id();
+        extInstImports.emplace_back(Op{OpKind::ExtInstImport, {ext_inst::GLSLstd450}, glsl_ext_inst_id_});
+        id_names[glsl_ext_inst_id_] = "GLSL.std.450";
+
         memoryModel = Op{
             OpKind::MemoryModel,
             {addressing_model::Logical, memory_model::GLSL450},
@@ -109,6 +114,7 @@ private:
         ostream() << op.name();
         switch (op.kind) {
             case OpKind::Capability: ostream() << " " << capability::name(op.operands[0]); break;
+            case OpKind::ExtInstImport: ostream() << " " << ext_inst::name(op.operands[0]); break;
             case OpKind::MemoryModel:
                 ostream() << " " << addressing_model::name(op.operands[0]);
                 ostream() << " " << memory_model::name(op.operands[1]);
@@ -149,6 +155,7 @@ private:
     absl::flat_hash_map<Word, std::string> id_names;
 
     Word next_id_{0};
+    Word glsl_ext_inst_id_{0};
 };
 
 Word Emitter::convert(const Def* type) {
