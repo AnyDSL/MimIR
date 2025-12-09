@@ -10,8 +10,7 @@ public:
 
     void plugin(std::string_view plug) {
         auto& ast = parser_->ast();
-        auto mod  = parser_->import(plug);
-        mod->compile(ast);
+        if (auto mod = parser_->plugin(plug)) mod->compile(ast);
     }
 
 private:

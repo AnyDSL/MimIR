@@ -44,7 +44,7 @@ main.externalize()
 
 driver.backend("ll", "hello.ll", world)
 
-subprocess.run("clang hello.ll -o hello -Wno-override-module")
+subprocess.run(["clang", "hello.ll", "-o", "hello", "-Wno-override-module"])
 
 
 

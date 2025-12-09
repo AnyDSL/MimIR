@@ -47,7 +47,8 @@ struct AnnexInfo {
 
 class AST {
 public:
-    AST() = default;
+    AST()           = default;
+    AST(const AST&) = delete;
     AST(World& world)
         : world_(&world) {}
     AST(AST&& other)
