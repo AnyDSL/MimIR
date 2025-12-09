@@ -68,7 +68,7 @@ public:
     void assembly() {
         ostream() << "; SPIR-V\n"
                   << "; Version: 1.0\n"
-                  << "; Generator: MimIR; 0"
+                  << "; Generator: MimIR; 0\n"
                   << "; Bound " << next_id() << "\n"
                   << "; Schema " << 0 << "\n";
 
