@@ -13,12 +13,12 @@ set(MIM_PLUGINS
     ord
     refly
     regex
-    sflow
+    # sflow
     spirv
     tensor
     tuple
     vec
-    vulkan
+    # vulkan
 )
 
 list(TRANSFORM MIM_PLUGINS PREPEND "mim_internal_" OUTPUT_VARIABLE MIM_INTERNAL_PLUGINS)
