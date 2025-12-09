@@ -35,4 +35,13 @@ std::string name(int model) {
     }
 }
 } // namespace memory_model
+
+namespace ext_inst {
+std::string name(int set) {
+    switch (set) {
+        case GLSLstd450: return "\"GLSL.std.450\""s;
+        default: fe::unreachable();
+    }
+}
+} // namespace ext_inst
 } // namespace mim::plug::spirv
