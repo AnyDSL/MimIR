@@ -42,6 +42,14 @@ enum MemoryModel {
 std::string name(int model);
 } // namespace memory_model
 
+namespace ext_inst {
+enum ExtInstSet {
+    GLSLstd450 = 1,
+};
+
+std::string name(int set);
+} // namespace ext_inst
+
 enum class OpKind {
     Capability,
     Extension,
