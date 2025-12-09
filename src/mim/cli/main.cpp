@@ -19,7 +19,7 @@ using namespace mim;
 using namespace std::literals;
 
 int main(int argc, char** argv) {
-    enum Backends { AST, Dot, H, LL, Md, Mim, Nest, Num_Backends };
+    enum Backends { AST, Dot, H, LL, SpirV, Md, Mim, Nest, Num_Backends };
 
     try {
         static const auto version = "mim command-line utility version " MIM_VER "\n";
@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
             | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
             | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
+            | lyra::opt(output[SpirV], "file"              )      ["--output-spirv"         ]("Compiles the Mim program to Spir-V.")
             | lyra::opt(output[Md ],  "file"               )      ["--output-md"            ]("Emits the input formatted as Markdown.")
             | lyra::opt(output[Mim],  "file"               )["-o"]["--output-mim"           ]("Emits the Mim program again.")
             | lyra::opt(output[Nest], "file"               )      ["--output-nest"          ]("Emits program nesting tree as Dot.")
@@ -143,6 +144,7 @@ int main(int argc, char** argv) {
 
             if (!flags.bootstrap) {
                 plugins.insert(plugins.begin(), "compile"s);
+                if (os[SpirV]) plugins.emplace_back("spirv"s);
                 if (opt >= 2) plugins.emplace_back("opt"s);
             }
 
@@ -190,6 +192,13 @@ int main(int argc, char** argv) {
                 }
             } else {
                 error("couldn't read file '{}'", input);
+            }
+
+            if (auto s = os[SpirV]) {
+                if (auto backend = driver.backend("spirv"))
+                    backend(world, *s);
+                else
+                    error("'spirv' emitter not loaded; try loading 'spirv' plugin");
             }
         } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
             std::cerr << e;
