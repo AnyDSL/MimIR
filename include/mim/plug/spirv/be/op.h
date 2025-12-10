@@ -68,6 +68,8 @@ enum class OpKind {
     TypeArray,
     TypeStruct,
     Constant,
+    ConstantComposite,
+    CompositeConstruct,
 };
 } // namespace mim::plug::spirv
 
@@ -97,6 +99,8 @@ struct Op {
             case OpKind::TypeArray: return "OpTypeArray";
             case OpKind::TypeStruct: return "OpTypeStruct";
             case OpKind::Constant: return "OpConstant";
+            case OpKind::ConstantComposite: return "OpConstantComposite";
+            case OpKind::CompositeConstruct: return "OpCompositeConstruct";
             default: fe::unreachable();
         }
     }
