@@ -264,10 +264,29 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
 
     Word id = next_id();
 
-    auto emit_tuple = [&](const Def* tuple) { Word t = convert(tuple->type()); };
+    if (auto tuple = def->isa<Tuple>()) {
+        Word type_id = convert(tuple->type());
+        std::vector<Word> constituents;
 
-    // if (auto tuple = def->isa<Tuple>()) {
-    // }
+        // Emit all tuple elements
+        for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
+            auto elem = tuple->proj(n, i);
+            constituents.push_back(emit(elem));
+        }
+
+        if (is_const(tuple)) {
+            // OpConstantComposite: result type is implicit, constituents are operands
+            declarations.emplace_back(Op{OpKind::ConstantComposite, constituents, id});
+            id_names[id] = std::format("const_composite_{}", id);
+        } else {
+            // OpCompositeConstruct: result type ID first, then constituents
+            constituents.insert(constituents.begin(), type_id);
+            bb.ops.emplace_back(Op{OpKind::CompositeConstruct, constituents, id});
+            id_names[id] = std::format("composite_{}", id);
+        }
+
+        return id;
+    }
 
     std::cerr << "def not yet implemented: " << def->node_name() << "\n";
 
