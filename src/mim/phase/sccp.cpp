@@ -4,19 +4,21 @@
 
 namespace mim {
 
-bool SCCP::analyze() {
-    int i = 0;
-    while (todo_) {
-        ILOG("iter: {}", i++);
-        todo_ = false;
-        visited_.clear();
-        for (auto def : old_world().annexes())
-            concr2abstr(init(def));
-        for (auto def : old_world().externals().muts())
-            concr2abstr(init(def));
-    }
+void SCCP::Analysis::rewrite_annex(flags_t, const Def*) {}
 
-    return false; // no fixed-point necessary
+void SCCP::Analysis::rewrite_external(Def*) {}
+
+const Def* SCCP::Analysis::rewrite_imm_App(const App* app) { return Rewriter::rewrite_imm_App(app); }
+
+bool SCCP::analyze() {
+    todo_ = false;
+    visited_.clear();
+    for (auto def : old_world().annexes())
+        concr2abstr(init(def));
+    for (auto def : old_world().externals().muts())
+        concr2abstr(init(def));
+
+    return todo_;
 }
 
 const Def* SCCP::init(const Def* def) {
@@ -47,8 +49,6 @@ const Def* SCCP::concr2abstr(const Def* concr) {
 }
 
 const Def* SCCP::concr2abstr_impl(const Def* def) {
-    if (auto type = def->type()) concr2abstr(type);
-
     if (auto branch = Branch(def)) {
         auto abstr = concr2abstr(branch.cond());
         auto l     = Lit::isa<bool>(abstr);
@@ -80,12 +80,13 @@ const Def* SCCP::concr2abstr_impl(const Def* def) {
         return old_world().bot(var->type());
     }
 
+    auto type   = def->type() ? concr2abstr(def->type()) : nullptr;
     auto n      = def->num_ops();
     auto abstrs = absl::FixedArray<const Def*>(n);
     for (size_t i = 0; i != n; ++i)
         abstrs[i] = concr2abstr(def->op(i));
 
-    return def->rebuild(old_world(), def->type(), abstrs);
+    return def->rebuild(old_world(), type, abstrs);
 }
 
 std::pair<const Def*, bool> SCCP::concr2abstr(const Def* concr, const Def* abstr) {

@@ -17,6 +17,25 @@ void Phase::run() {
 }
 
 /*
+ * Analyzer
+ */
+
+void Analysis::start() {
+    for (const auto& [f, def] : world().flags2annex())
+        rewrite_annex(f, def);
+
+    bootstrapping_ = false;
+
+    for (auto mut : world().externals().muts())
+        rewrite_external(mut);
+}
+
+void Analysis::rewrite_annex(flags_t, const Def* def) { rewrite(def); }
+void Analysis::rewrite_external(Def* mut) { rewrite(mut); }
+
+Def* rewrite_mut(Def* def) override {}
+
+/*
  * RWPhase
  */
 
