@@ -121,7 +121,7 @@ private:
                 break;
             default:
                 for (Word operand : op.operands)
-                    ostream() << " " << id_name(operand);
+                    ostream() << " %" << id_name(operand);
         }
 
         ostream() << "\n";
