@@ -18,7 +18,11 @@ lam f (t1 t2: *) (x:t1) (y: t2): t2  =
         | b: t2 => b;
 
 lam minject2 (t1 t2 t3: *) (x: t3) : t3 =
-    match x inj t1 ∪ t2 ∪ t3 with
+    let u = x inj t1 ∪ t2 ∪ t3;
+    match u with
         | a: t1 => x
         | b: t2 => x
         | c: t3 => c;
+
+
+lam tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 = tup#i;
