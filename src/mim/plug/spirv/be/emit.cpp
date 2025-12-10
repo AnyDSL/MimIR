@@ -24,6 +24,22 @@ namespace math = mim::plug::math;
 // Helper function to check if a type is a scalar type suitable for vectors
 bool is_scalar_type(const Def* type) { return type->isa<Nat>() || Idx::isa(type) || math::isa_f(type); }
 
+// Helper function to check if a value is constant
+// copied from mim::core::ll
+// TODO: this should maybe be in utils::be or something
+bool is_const(const Def* def) {
+    if (def->isa<Bot>()) return true;
+    if (def->isa<Lit>()) return true;
+    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->arity()) && is_const(pack->body());
+
+    if (auto tuple = def->isa<Tuple>()) {
+        auto ops = tuple->ops();
+        return std::ranges::all_of(ops, [](auto def) { return is_const(def); });
+    }
+
+    return false;
+}
+
 using OpVec = std::vector<Op>;
 
 struct BB {
@@ -221,6 +237,14 @@ Word Emitter::convert(const Def* type) {
                 });
                 id_names[id] = std::format("arr{}_{}", size, id_name(elem_id));
             }
+        } else if (auto sigma = type->isa<Sigma>()) {
+            if (sigma->isa_mut()) std::cerr << "mutable sigmas not yet supported\n";
+
+            std::vector<Word> fields{};
+            for (auto t : sigma->ops())
+                fields.emplace_back(convert(t));
+
+            declarations.emplace_back(Op{OpKind::TypeStruct, fields, id});
         } else {
             // TODO: runtime-sized arrays
             std::cerr << "dynamic arrays not yet supported\n";

@@ -66,6 +66,7 @@ enum class OpKind {
     TypeFloat,
     TypeVector,
     TypeArray,
+    TypeStruct,
     Constant,
 };
 } // namespace mim::plug::spirv
@@ -94,6 +95,7 @@ struct Op {
             case OpKind::TypeFloat: return "OpTypeFloat";
             case OpKind::TypeVector: return "OpTypeVector";
             case OpKind::TypeArray: return "OpTypeArray";
+            case OpKind::TypeStruct: return "OpTypeStruct";
             case OpKind::Constant: return "OpConstant";
             default: fe::unreachable();
         }
