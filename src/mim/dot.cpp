@@ -146,7 +146,7 @@ void World::dot(const char* file, bool annexes, bool types) const {
 void World::dot(std::ostream& os, bool anx, bool types) const {
     Dot dot(os, types);
     dot.prologue();
-    for (auto external : externals())
+    for (auto external : externals().muts())
         dot.recurse(external, uint32_t(-1));
     if (anx)
         for (auto annex : annexes())
@@ -187,12 +187,12 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
         s += "] ";
     }
 
-    for (auto dep : depends())
-        tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", this->name(), dep->name());
+    for (auto sibl : sibl_deps())
+        tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", name(), sibl->name());
 
     auto rec = is_mutually_recursive() ? "rec*" : (is_directly_recursive() ? "rec" : "");
     tab.println(os, "\"{}\" [label=\"{} {} {}\",tooltip=\"{}\"]", name(), rec, name(), loop_depth(), s);
-    for (auto child : child_nodes()) {
+    for (auto child : children().nodes()) {
         tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);
     }

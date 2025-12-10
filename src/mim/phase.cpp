@@ -31,7 +31,7 @@ void RWPhase::start() {
 
     bootstrapping_ = false;
 
-    for (auto mut : old_world().copy_externals())
+    for (auto mut : old_world().externals().muts())
         rewrite_external(mut);
 
     swap(old_world(), new_world());
@@ -41,7 +41,7 @@ void RWPhase::rewrite_annex(flags_t f, const Def* def) { new_world().register_an
 
 void RWPhase::rewrite_external(Def* old_mut) {
     auto new_mut = rewrite(old_mut)->as_mut();
-    if (old_mut->is_external()) new_mut->make_external();
+    if (old_mut->is_external()) new_mut->externalize();
 }
 
 /*

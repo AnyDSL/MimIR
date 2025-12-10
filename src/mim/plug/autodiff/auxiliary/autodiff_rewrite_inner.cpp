@@ -349,7 +349,7 @@ const Def* Eval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         DLOG("axm name: {}", ax->sym());
         DLOG("axm function name: {}", diff_name);
 
-        auto diff_fun = world().external(world().sym(diff_name));
+        auto diff_fun = world().externals()[world().sym(diff_name)];
         if (!diff_fun) {
             ELOG("derivation not found: {}", diff_name);
             auto expected_type = autodiff_type_fun(ax->type());

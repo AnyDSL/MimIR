@@ -31,17 +31,17 @@ void Nest::populate() {
     if (root()->mut())
         queue.push(root_);
     else
-        for (auto [_, child] : root_->child_mut2node_)
+        for (auto child : root_->children().nodes())
             queue.push(child);
 
     while (!queue.empty()) {
         auto curr_node = pop(queue);
         for (auto op : curr_node->mut()->deps()) {
             for (auto local_mut : op->local_muts()) {
-                if (mut2node(local_mut) || !contains(local_mut)) continue;
+                if ((*this)[local_mut] || !contains(local_mut)) continue;
 
                 if (curr_node->level() < local_mut->free_vars().size()) {
-                    for (auto node = curr_node;; node = node->parent_) {
+                    for (auto node = curr_node;; node = node->inest_) {
                         if (auto var = node->mut()->has_var()) {
                             if (local_mut->free_vars().contains(var)) {
                                 queue.push(make_node(local_mut, node));
@@ -51,22 +51,22 @@ void Nest::populate() {
                     }
                 } else {
                     uint32_t max = 0;
-                    auto parent  = root_;
+                    auto inest   = root_;
                     for (auto var : local_mut->free_vars()) {
-                        if (auto node = mut2node_nonconst(var->mut()); node && node->level() > max) {
-                            max    = node->level();
-                            parent = node;
+                        if (auto node = (*this)[var->mut()]; node && node->level() > max) {
+                            max   = node->level();
+                            inest = node;
                         }
                     }
-                    queue.push(make_node(local_mut, parent));
+                    queue.push(make_node(local_mut, inest));
                 }
             }
         }
     }
 }
 
-Nest::Node* Nest::make_node(Def* mut, Node* parent) {
-    auto node = std::unique_ptr<Node>(new Node(*this, mut, parent)); // can't use make_unique - c'tor is private
+Nest::Node* Nest::make_node(Def* mut, Node* inest) {
+    auto node = std::unique_ptr<Node>(new Node(*this, mut, inest)); // can't use make_unique - c'tor is private
     auto res  = node.get();
     mut2node_.emplace(mut, std::move(node));
     if (mut) {
@@ -77,29 +77,29 @@ Nest::Node* Nest::make_node(Def* mut, Node* parent) {
 
 const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     while (n->level() < m->level())
-        m = m->parent();
+        m = m->inest();
     while (m->level() < n->level())
-        n = n->parent();
+        n = n->inest();
     while (n != m) {
         // TODO support longer dep chains and the possibility to opt out from this
-        if (n->deps().depends_.contains(m)) return n;
-        if (m->deps().depends_.contains(n)) return m;
-        n = n->parent();
-        m = m->parent();
+        if (n->sibl_deps().contains(m)) return n;
+        if (m->sibl_deps().contains(n)) return m;
+        n = n->inest();
+        m = m->inest();
     }
     return n;
 }
 
-void Nest::deps(Node* curr) const {
+void Nest::calc_sibl_deps(Node* curr) const {
     if (curr->mut()) {
         for (auto op : curr->mut()->deps()) {
             for (auto local_mut : op->local_muts()) {
-                if (auto local_node = mut2node_nonconst(local_mut)) {
+                if (auto local_node = const_cast<Nest&>(*this)[local_mut]) {
                     if (local_node == curr)
                         local_node->link(local_node);
-                    else if (auto parent = local_node->parent()) {
-                        if (auto curr_child = parent->curr_child) {
-                            assert(parent->child_mut2node_.contains(curr_child->mut()));
+                    else if (auto inest = local_node->inest()) {
+                        if (auto curr_child = inest->curr_child) {
+                            assert(inest->children().contains(curr_child->mut()));
                             curr_child->link(local_node);
                         }
                     }
@@ -108,40 +108,40 @@ void Nest::deps(Node* curr) const {
         }
     }
 
-    for (auto [_, child] : curr->child_mut2node_) {
+    for (auto child : curr->children().nodes()) {
         curr->curr_child = child;
-        deps(child);
+        calc_sibl_deps(child);
         curr->curr_child = nullptr;
     }
 }
 
-void Nest::find_SCCs(Node* curr) const {
-    curr->find_SCCs();
-    for (auto [_, child] : curr->child_mut2node_) {
+void Nest::calc_SCCs(Node* curr) const {
+    curr->calc_SCCs();
+    for (auto [_, child] : curr->children()) {
         child->loop_depth_ = child->is_recursive() ? curr->loop_depth() + 1 : curr->loop_depth();
-        find_SCCs(child);
+        calc_SCCs(child);
     }
 }
 
-void Nest::Node::find_SCCs() {
+void Nest::Node::calc_SCCs() {
     Stack stack;
-    for (int i = 0; auto& [_, node] : child_mut2node_)
+    for (int i = 0; auto& [_, node] : children())
         if (node->idx_ == Unvisited) i = node->tarjan(i, this, stack);
 }
 
-uint32_t Nest::Node::tarjan(uint32_t i, Node* parent, Stack& stack) {
+uint32_t Nest::Node::tarjan(uint32_t i, Node* inest, Stack& stack) {
     this->idx_ = this->low_ = i++;
     this->on_stack_         = true;
     stack.emplace(this);
 
-    for (auto dep : this->depends_) {
-        if (dep->idx_ == Unvisited) i = dep->tarjan(i, parent, stack);
+    for (auto dep : this->sibl_deps_.nodes_) {
+        if (dep->idx_ == Unvisited) i = dep->tarjan(i, inest, stack);
         if (dep->on_stack_) this->low_ = std::min(this->low_, dep->low_);
     }
 
     if (this->idx_ == this->low_) {
-        parent_->topo_.emplace_front(std::make_unique<SCC>());
-        SCC* scc = parent_->topo_.front().get();
+        inest_->topo_.emplace_front(std::make_unique<SCC>());
+        SCC* scc = inest_->topo_.front().get();
         Node* node;
         int num = 0;
         do {
@@ -152,11 +152,11 @@ uint32_t Nest::Node::tarjan(uint32_t i, Node* parent, Stack& stack) {
             ++num;
 
             scc->emplace(node);
-            auto [_, ins] = parent_->SCCs_.emplace(node, scc);
+            auto [_, ins] = inest_->SCCs_.emplace(node, scc);
             assert_unused(ins);
         } while (node != this);
 
-        if (num == 1 && !this->depends_.contains(this)) this->recursive_ = false;
+        if (num == 1 && !this->sibl_deps().contains(this)) this->recursive_ = false;
     }
 
     return i;

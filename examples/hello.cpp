@@ -19,7 +19,8 @@ int main(int, char**) {
         driver.log().set(&std::cerr).set(Log::Level::Debug);
 
         auto parser = ast::Parser(ast);
-        for (auto plugin : {"compile", "core"}) parser.plugin(plugin);
+        for (auto plugin : {"compile", "core"})
+            parser.plugin(plugin);
 
         // Cn [%mem.M, I32, %mem.Ptr (I32, 0) Cn [%mem.M, I32]]
         auto mem_t  = w.annex<mem::M>();
@@ -28,7 +29,7 @@ int main(int, char**) {
 
         auto [mem, argc, argv, ret] = main->vars<4>();
         main->app(false, ret, {mem, argc});
-        main->make_external();
+        main->externalize();
 
         optimize(w);
         std::ofstream ofs("hello.ll");

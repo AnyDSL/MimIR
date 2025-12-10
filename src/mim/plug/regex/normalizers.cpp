@@ -67,7 +67,11 @@ const Def* normalize_conj(const Def* type, const Def* callee, const Def* arg) {
         switch (*a) {
             case 0: return world.lit_tt();
             case 1: return arg;
-            default: return make_binary_tree<conj>(detail::flatten_in_arg<conj>(arg));
+            default:
+                if (auto args = detail::flatten_in_arg<conj>(arg); !args.empty())
+                    return make_binary_tree<conj>(args);
+                else
+                    return world.annex<empty>();
         }
     }
 
@@ -162,26 +166,38 @@ const Def* normalize_disj(const Def* type, const Def*, const Def* arg) {
             case 0: return world.lit_ff();
             case 1: return arg;
             default:
-                auto contains_any = [](auto args) {
-                    return std::ranges::find_if(args, [](const Def* ax) -> bool { return Axm::isa<any>(ax); })
-                        != args.end();
+                auto new_args = detail::flatten_in_arg<disj>(arg);
+
+                const bool contains_any
+                    = std::ranges::find_if(new_args, [](const Def* ax) -> bool { return Axm::isa<any>(ax); })
+                   != new_args.end();
+                const bool contains_empty
+                    = std::ranges::find_if(new_args, [](const Def* ax) -> bool { return Axm::isa<empty>(ax); })
+                   != new_args.end();
+
+                auto make_any = [&world, contains_empty]() {
+                    if (contains_empty)
+                        // (any|) matches everything, including empty string
+                        // don't normalize again, as we'd just run into this normalizer again..
+                        return world.call<disj, false>(Defs{world.annex<any>(), world.annex<empty>()});
+                    else
+                        return world.annex<any>();
                 };
 
-                auto new_args = detail::flatten_in_arg<disj>(arg);
-                if (contains_any(new_args)) return world.annex<any>();
+                if (contains_any) return make_any();
                 make_vector_unique(new_args);
                 merge_ranges(new_args);
 
                 const Def* to_remove = nullptr;
                 for (const auto* cls0 : new_args) {
                     for (const auto* cls1 : new_args)
-                        if (equals_any(cls0, cls1)) return world.annex<any>();
+                        if (equals_any(cls0, cls1)) return make_any();
 
                     if (auto not_rhs = Axm::isa<not_>(cls0)) {
                         if (auto disj_rhs = Axm::isa<disj>(not_rhs->arg())) {
                             auto rngs = detail::flatten_in_arg<disj>(disj_rhs->arg());
                             make_vector_unique(rngs);
-                            if (equals_any(new_args, rngs)) return world.annex<any>();
+                            if (equals_any(new_args, rngs)) return make_any();
                         }
                     }
                 }

@@ -195,9 +195,9 @@ public:
 
             /// @name Dereference
             ///@{
-            constexpr reference operator*() const noexcept {
+            constexpr value_type operator*() const noexcept {
                 switch (tag_) {
-                    case Tag::Uniq: return *std::bit_cast<D* const*>(&ptr_);
+                    case Tag::Uniq: return std::bit_cast<D*>(ptr_);
                     case Tag::Data: return *std::bit_cast<D* const*>(ptr_);
                     case Tag::Node: return std::bit_cast<Node*>(ptr_)->def;
                     default: fe::unreachable();
@@ -207,7 +207,11 @@ public:
             constexpr pointer operator->() const noexcept { return this->operator*(); }
             ///@}
 
-            iterator& clear() { return tag_ = Tag::Null, ptr_ = 0, *this; }
+            iterator& clear() noexcept {
+                tag_ = Tag::Null;
+                ptr_ = 0;
+                return *this;
+            }
 
         private:
             Tag tag_;
