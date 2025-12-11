@@ -65,10 +65,16 @@ public:
     bool is_valid(std::string_view s) { return !s.empty(); }
     void start() override;
     void emit_imported(Lam*);
-    void emit_epilogue(Lam*);
+    virtual void emit_epilogue(Lam*);
     std::string emit_bb(BB&, const Def*);
-    std::string prepare();
+    virtual std::string prepare();
     void finalize();
+
+    virtual std::optional<std::string> isa_targetspecific_intrinsic(BB&, const Def*) { return std::nullopt; }
+    std::string as_targetspecific_intrinsic(BB& bb, const Def* def) {
+        if (auto res = isa_targetspecific_intrinsic(bb, def)) return res.value();
+        error("target-specific intrinsic detected but not handled in LLVM backend: {} : {}", def, def->type());
+    }
 
     template<class... Args>
     void declare(const char* s, Args&&... args) {
@@ -77,9 +83,12 @@ public:
         decls_.emplace(decl.str());
     }
 
-private:
+protected:
+    Emitter(World& world, std::string name, std::ostream& ostream)
+        : Super(world, std::move(name), ostream) {}
+
     std::string id(const Def*, bool force_bb = false) const;
-    std::string convert(const Def*);
+    virtual std::string convert(const Def*);
     std::string convert_ret_pi(const Pi*);
 
     absl::btree_set<std::string> decls_;

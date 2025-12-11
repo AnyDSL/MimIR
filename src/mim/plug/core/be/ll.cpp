@@ -978,6 +978,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         f += llvm_suffix(round->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
+    } else if (auto res = isa_targetspecific_intrinsic(bb, def)) {
+        return res.value();
     }
     error("unhandled def in LLVM backend: {} : {}", def, def->type());
 }
