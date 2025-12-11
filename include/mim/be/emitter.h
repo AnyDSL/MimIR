@@ -77,7 +77,7 @@ protected:
 
         child().finalize();
         locals_.clear();
-        assert_unused(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
+        assert_unused(lam2bb_.size() == old_size && "really make sure we didn't trigger a rehash");
     }
 
     Lam* curr_lam_ = nullptr;
