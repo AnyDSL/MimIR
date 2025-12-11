@@ -11,7 +11,6 @@
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
 
-#include "mim/be/emitter.h"
 #include "mim/util/print.h"
 #include "mim/util/sys.h"
 
@@ -80,71 +79,6 @@ const Def* isa_mem_sigma_2(const Def* type) {
     return {};
 }
 } // namespace
-
-struct BB {
-    BB()                    = default;
-    BB(const BB&)           = delete;
-    BB(BB&& other) noexcept = default;
-    BB& operator=(BB other) noexcept { return swap(*this, other), *this; }
-
-    std::deque<std::ostringstream>& head() { return parts[0]; }
-    std::deque<std::ostringstream>& body() { return parts[1]; }
-    std::deque<std::ostringstream>& tail() { return parts[2]; }
-
-    template<class... Args>
-    std::string assign(std::string_view name, const char* s, Args&&... args) {
-        print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args>(args)...);
-        return std::string(name);
-    }
-
-    template<class... Args>
-    void tail(const char* s, Args&&... args) {
-        print(tail().emplace_back(), s, std::forward<Args>(args)...);
-    }
-
-    friend void swap(BB& a, BB& b) noexcept {
-        using std::swap;
-        swap(a.phis, b.phis);
-        swap(a.parts, b.parts);
-    }
-
-    DefMap<std::deque<std::pair<std::string, std::string>>> phis;
-    std::array<std::deque<std::ostringstream>, 3> parts;
-};
-
-class Emitter : public mim::Emitter<std::string, std::string, BB, Emitter> {
-public:
-    using Super = mim::Emitter<std::string, std::string, BB, Emitter>;
-
-    Emitter(World& world, std::ostream& ostream)
-        : Super(world, "llvm_emitter", ostream) {}
-
-    bool is_valid(std::string_view s) { return !s.empty(); }
-    void start() override;
-    void emit_imported(Lam*);
-    void emit_epilogue(Lam*);
-    std::string emit_bb(BB&, const Def*);
-    std::string prepare();
-    void finalize();
-
-    template<class... Args>
-    void declare(const char* s, Args&&... args) {
-        std::ostringstream decl;
-        print(decl << "declare ", s, std::forward<Args>(args)...);
-        decls_.emplace(decl.str());
-    }
-
-private:
-    std::string id(const Def*, bool force_bb = false) const;
-    std::string convert(const Def*);
-    std::string convert_ret_pi(const Pi*);
-
-    absl::btree_set<std::string> decls_;
-    std::ostringstream type_decls_;
-    std::ostringstream vars_decls_;
-    std::ostringstream func_decls_;
-    std::ostringstream func_impls_;
-};
 
 /*
  * convert
