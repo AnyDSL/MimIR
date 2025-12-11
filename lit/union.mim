@@ -24,5 +24,8 @@ lam minject2 (t1 t2 t3: *) (x: t3) : t3 =
         | b: t2 => x
         | c: t3 => c;
 
+Enum IPAddr =
+    | IP4: «4; I32»
+    | IP6: «6; I32»;
 
 lam tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 = tup#i;

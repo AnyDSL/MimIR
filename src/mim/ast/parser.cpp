@@ -48,6 +48,7 @@
 
 #define C_DECL        \
               K_axm:  \
+    case Tag::K_Enum: \
     case Tag::K_let:  \
     case Tag::K_rec:  \
     case Tag::K_ccon: \
@@ -596,16 +597,17 @@ Ptrs<ValDecl> Parser::parse_decls() {
         // clang-format off
         switch (ahead().tag()) {
             case Tag::T_semicolon: lex(); break; // eat up stray semicolons
-            case Tag::K_axm:       decls.emplace_back(parse_axm_decl());        break;
+            case Tag::K_axm:       decls.emplace_back(parse_axm_decl());     break;
             case Tag::K_ccon:
-            case Tag::K_cfun:      decls.emplace_back(parse_c_decl());            break;
-            case Tag::K_let:       decls.emplace_back(parse_let_decl());          break;
-            case Tag::K_rec:       decls.emplace_back(parse_rec_decl(true));      break;
+            case Tag::K_cfun:      decls.emplace_back(parse_c_decl());       break;
+            case Tag::K_Enum:      decls.emplace_back(parse_enum_decl());    break;
+            case Tag::K_let:       decls.emplace_back(parse_let_decl());     break;
+            case Tag::K_rec:       decls.emplace_back(parse_rec_decl(true)); break;
             case Tag::K_con:
             case Tag::K_fun:
-            case Tag::K_lam:       decls.emplace_back(parse_lam_decl());          break;
+            case Tag::K_lam:       decls.emplace_back(parse_lam_decl());     break;
             case Tag::K_norm:
-            case Tag::K_rule:      decls.emplace_back(parse_rule_decl());         break;
+            case Tag::K_rule:      decls.emplace_back(parse_rule_decl());    break;
             default:               return decls;
         }
         // clang-format on
@@ -646,6 +648,25 @@ Ptr<ValDecl> Parser::parse_axm_decl() {
     }
 
     return ptr<AxmDecl>(track, dbg, std::move(subs), std::move(type), normalizer, curry, trip);
+}
+
+Ptr<ValDecl> Parser::parse_enum_decl() {
+    auto track = tracker();
+    eat(Tag::K_Enum);
+    auto dbg = parse_name("name of an Enum type");
+    expect(Tag::T_assign, "Enum type");
+    accept(Tag::T_pipe);
+    Ptrs<EnumDecl::Elem> elems;
+    do {
+        auto track = tracker();
+        auto dbg   = parse_name("name of an Enum element");
+        expect(Tag::T_colon, "Enum element");
+        auto type = parse_expr("type of an Enum element");
+        elems.emplace_back(ptr<EnumDecl::Elem>(track, dbg, std::move(type)));
+
+    } while (accept(Tag::T_pipe));
+
+    return ptr<EnumDecl>(track, dbg, std::move(elems));
 }
 
 Ptr<ValDecl> Parser::parse_let_decl() {

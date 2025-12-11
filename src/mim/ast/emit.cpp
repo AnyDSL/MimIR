@@ -424,6 +424,13 @@ void LetDecl::emit(Emitter& e) const {
     e.register_annex(annex_, sub_, def_);
 }
 
+void EnumDecl::Elem::emit(Emitter& e) const { type()->emit(e); }
+
+void EnumDecl::emit(Emitter& e) const {
+    for (const auto& elem : elems())
+        elem->emit(e);
+}
+
 void RecDecl::emit(Emitter& e) const {
     for (auto curr = this; curr; curr = curr->next())
         curr->emit_decl(e);

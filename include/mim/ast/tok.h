@@ -31,6 +31,7 @@ namespace ast {
     m(K_cn,     "cn"    )             \
     m(K_con,    "con"   )             \
     m(K_end,    "end"   )             \
+    m(K_Enum,   "Enum"  )             \
     m(K_extern, "extern")             \
     m(K_ff,     "ff"    )             \
     m(K_fn,     "fn"    )             \

@@ -297,6 +297,16 @@ void AxmDecl::bind(Scopes& s) const {
     }
 }
 
+void EnumDecl::Elem::bind(Scopes& s) const { s.bind(dbg(), this); }
+
+void EnumDecl::bind(Scopes& s) const {
+    s.bind(dbg(), this);
+    s.push();
+    for (const auto& elem : elems())
+        elem->bind(s);
+    s.pop();
+}
+
 void LetDecl::bind(Scopes& s) const {
     s.push();
     value()->bind(s);

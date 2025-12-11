@@ -198,6 +198,19 @@ std::ostream& AxmDecl::stream(Tab& tab, std::ostream& os) const {
     return os << ";";
 }
 
+std::ostream& EnumDecl::Elem::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "{}: {}", dbg(), S(tab, type()));
+}
+
+std::ostream& EnumDecl::stream(Tab& tab, std::ostream& os) const {
+    print(os, "Enum {} =", dbg());
+    ++tab;
+    for (const auto& elem : elems())
+        tab.lnprint(os, "| {}", S(tab, elem.get()));
+    --tab;
+    return os;
+}
+
 std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
     return print(os, "let {} = {};", S(tab, ptrn()), S(tab, value()));
 }

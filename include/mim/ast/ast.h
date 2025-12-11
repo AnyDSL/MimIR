@@ -941,6 +941,48 @@ private:
     mutable sub_t sub_        = 0;
 };
 
+/// `Enum dbg = elem | elem ...`
+class EnumDecl : public ValDecl {
+public:
+    /// `dbg: type`
+    class Elem : public ValDecl {
+    public:
+        Elem(Loc loc, Dbg dbg, Ptr<Expr>&& type)
+            : ValDecl(loc)
+            , dbg_(dbg)
+            , type_(std::move(type)) {}
+
+        Dbg dbg() const { return dbg_; }
+        const Expr* type() const { return type_.get(); }
+
+        void bind(Scopes&) const override;
+        void emit(Emitter&) const override;
+        std::ostream& stream(Tab&, std::ostream&) const override;
+
+    private:
+        Dbg dbg_;
+        Ptr<Expr> type_;
+    };
+
+    EnumDecl(Loc loc, Dbg dbg, Ptrs<Elem>&& elems)
+        : ValDecl(loc)
+        , dbg_(dbg)
+        , elems_(std::move(elems)) {}
+
+    Dbg dbg() const { return dbg_; }
+    const Ptrs<Elem>& elems() const { return elems_; }
+    const Elem* elem(size_t i) const { return elems_[i].get(); }
+    size_t num_elems() const { return elems_.size(); }
+
+    void bind(Scopes&) const override;
+    void emit(Emitter&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Dbg dbg_;
+    Ptrs<Elem> elems_;
+};
+
 /// One of:
 /// * `λ   dom_0 ... dom_n-1 -> codom`
 /// * `cn dom_0 ... dom_n-1`
