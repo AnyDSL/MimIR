@@ -18,14 +18,22 @@ lam f (t1 t2: *) (x:t1) (y: t2): t2  =
         | b: t2 => b;
 
 lam minject2 (t1 t2 t3: *) (x: t3) : t3 =
-    let u = x inj t1 ∪ t2 ∪ t3;
+    let u = x inj t1 ∪ t2 ∪ t3 ∪ [I32, t3];
     match u with
         | a: t1 => x
         | b: t2 => x
-        | c: t3 => c;
+        | c: t3 => c
+        | (i, x) => x;
+
+lam tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 = tup#i;
 
 Enum IPAddr =
     | IP4: «4; I32»
     | IP6: «6; I32»;
 
-lam tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 = tup#i;
+/*
+lam fst(ip: IPAddr): I32 =
+    match ip with
+        | IPAddr.IP4 (a, _, _, _      ) => a
+        | IPAddr.IP6 (a, _, _, _, _, _) => a;
+*/
