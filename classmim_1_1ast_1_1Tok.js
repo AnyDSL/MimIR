@@ -84,7 +84,8 @@ var classmim_1_1ast_1_1Tok =
       [ "T_lm", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aef24a45c736c5c5aca00490b376cc0ae", null ],
       [ "T_semicolon", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5adab652135089c23c5b48db9b0d22754d", null ],
       [ "T_star", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5adffb83ae407bb72e9b9ac7f79028bb7e", null ],
-      [ "T_union", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a3f5d39a69c94afa1cdd482e1f29a0ab0", null ]
+      [ "T_union", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a3f5d39a69c94afa1cdd482e1f29a0ab0", null ],
+      [ "T_pipe", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5ac9b6e7d62e5012f8224ddefc5ddd5804", null ]
     ] ],
     [ "Tok", "classmim_1_1ast_1_1Tok.html#a9183c9bc35c812b5d121b1300ad7c07c", null ],
     [ "Tok", "classmim_1_1ast_1_1Tok.html#a24ad263ca4e074e894216830942050bb", null ],
