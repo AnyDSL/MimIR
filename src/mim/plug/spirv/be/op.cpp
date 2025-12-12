@@ -36,6 +36,30 @@ std::string name(int model) {
 }
 } // namespace memory_model
 
+namespace execution_model {
+std::string name(int model) {
+    switch (model) {
+        case Vertex: return "Vertex"s;
+        case Fragment: return "Fragment"s;
+        case GLCompute: return "GLCompute"s;
+        default: fe::unreachable();
+    }
+}
+} // namespace execution_model
+
+namespace function_control {
+std::string name(int control) {
+    switch (control) {
+        case None: return "None"s;
+        case Inline: return "Inline"s;
+        case DontInline: return "DontInline"s;
+        case Pure: return "Pure"s;
+        case Const: return "Const"s;
+        default: fe::unreachable();
+    }
+}
+} // namespace function_control
+
 namespace ext_inst {
 std::string name(int set) {
     switch (set) {
