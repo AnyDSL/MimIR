@@ -249,7 +249,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg) {
 
     // clang-format off
     // TODO check mode properly
-    if (lm && *lm == Mode::fast) {
+    if (w && lm && *lm == Mode::fast) {
         if (auto la = a->isa<Lit>()) {
             if (la == lit_f(world, *w, 0.0)) {
                 switch (id) {
