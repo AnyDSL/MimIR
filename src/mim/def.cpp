@@ -306,16 +306,13 @@ bool Def::is_set() const {
 
 const Def* Def::var() {
     if (var_) return var_;
-    auto& w = world();
-    if (w.is_frozen()) return nullptr;
-    return w.var(this);
+    return world().var(this);
 }
 
 const Def* Def::var_type() {
     auto& w = world();
 
     // clang-format off
-    if (w.is_frozen()) return nullptr;
     if (auto lam  = isa<Lam  >()) return lam->dom();
     if (auto pi   = isa<Pi   >()) return pi ->dom();
     if (auto sig  = isa<Sigma>()) return sig;
@@ -567,13 +564,13 @@ bool Def::equal(const Def* other) const {
     return result;
 }
 
-void Def::make_external() { return world().make_external(this); }
-void Def::make_internal() { return world().make_internal(this); }
+void Def::externalize() { return world().externals().externalize(this); }
+void Def::internalize() { return world().externals().internalize(this); }
 
 void Def::transfer_external(Def* to) {
     assert(this->sym() == to->sym());
-    make_internal();
-    to->make_external();
+    internalize();
+    to->externalize();
 }
 
 std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
@@ -587,8 +584,6 @@ nat_t Def::num_tprojs() const {
 
 const Def* Def::proj(nat_t a, nat_t i) const {
     World& w = world();
-
-    if (w.is_frozen()) return nullptr;
 
     if (a == 1) {
         assert(i == 0 && "only inhabitant of Idx 2 is 0_1");

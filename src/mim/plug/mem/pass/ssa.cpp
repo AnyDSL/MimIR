@@ -114,7 +114,7 @@ const Def* SSA::mem2phi(const App* app, Lam* mem_lam) {
     auto&& [phi_lam, old_phis] = mem2phi_[mem_lam];
     if (phi_lam == nullptr || old_phis != phis) {
         old_phis = phis;
-        phi_lam  = world().mut_lam(merge_sigma(mem_lam->dom(), types), mem_lam->codom())->set(mem_lam->dbg());
+        phi_lam  = world().mut_lam(cat_sigma(mem_lam->dom(), types), mem_lam->codom())->set(mem_lam->dbg());
         eta_exp_->new2old(phi_lam, mem_lam);
         DLOG("new phi_lam '{}'", phi_lam);
 
@@ -137,7 +137,7 @@ const Def* SSA::mem2phi(const App* app, Lam* mem_lam) {
     DLOG("mem_lam => phi_lam: '{}': '{}' => '{}': '{}'", mem_lam, mem_lam->type()->dom(), phi_lam, phi_lam->dom());
     auto sloxy = sloxys.begin();
     auto args  = DefVec(num_phis, [&](auto) { return get_val(curr_mut(), *sloxy++); });
-    return world().app(phi_lam, merge_tuple(app->arg(), args));
+    return world().app(phi_lam, cat_tuple(app->arg(), args));
 }
 
 undo_t SSA::analyze(const Proxy* proxy) {

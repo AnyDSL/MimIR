@@ -15,7 +15,7 @@ const Def* merge_s(const Def* elem, const Def* sigma, const Def* mem) {
     auto& w = elem->world();
     if (mem) {
         auto elems = sigma->projs();
-        return merge_sigma(elem, elems);
+        return cat_sigma(elem, elems);
     }
     return w.sigma({elem, sigma});
 }
@@ -24,7 +24,7 @@ const Def* merge_t(const Def* elem, const Def* tuple, const Def* mem) {
     auto& w = elem->world();
     if (mem) {
         auto elems = tuple->projs();
-        return merge_tuple(elem, elems);
+        return cat_tuple(elem, elems);
     }
     return w.tuple({elem, tuple});
 }

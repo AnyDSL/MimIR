@@ -103,6 +103,7 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(T_semicolon,  ";")               \
     m(T_star,       "*")               \
     m(T_union,      "∪")               \
+    m(T_pipe,       "|")               \
 
 #define MIM_SUBST(m)                  \
     m("lm",     T_lm   )              \

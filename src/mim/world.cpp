@@ -24,6 +24,20 @@ bool is_shape(const Def* s) {
 
 } // namespace
 
+void World::Externals::externalize(Def* def) {
+    assert(!def->is_external());
+    assert(def->is_closed());
+    def->external_ = true;
+    assert_emplace(sym2mut_, def->sym(), def);
+}
+
+void World::Externals::internalize(Def* def) {
+    assert(def->is_external());
+    def->external_ = false;
+    auto num       = sym2mut_.erase(def->sym());
+    assert_unused(num == 1);
+}
+
 /*
  * constructor & destructor
  */
@@ -86,25 +100,12 @@ const Def* World::register_annex(flags_t f, const Def* def) {
     return nullptr;
 }
 
-void World::make_external(Def* def) {
-    assert(!def->is_external());
-    assert(def->is_closed());
-    def->external_ = true;
-    assert_emplace(move_.sym2external, def->sym(), def);
-}
-
-void World::make_internal(Def* def) {
-    assert(def->is_external());
-    def->external_ = false;
-    auto num       = move_.sym2external.erase(def->sym());
-    assert_unused(num == 1);
-}
-
 /*
  * factory methods
  */
 
 const Type* World::type(const Def* level) {
+    if (!level) return nullptr;
     level = level->zonk();
 
     if (!level->type()->isa<Univ>())
@@ -176,11 +177,14 @@ const Def* World::umax(Defs ops_) {
 // TODO more thorough & consistent checks for singleton types
 
 const Def* World::var(Def* mut) {
-    if (auto s = Idx::isa(mut->var_type())) {
-        if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
+    if (auto var = mut->var_) return var;
+
+    if (auto var_type = mut->var_type()) { // could be nullptr, if frozen
+        if (auto s = Idx::isa(var_type)) {
+            if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
+        }
     }
 
-    if (auto var = mut->var_) return var;
     return mut->var_ = unify<Var>(mut);
 }
 
@@ -343,6 +347,7 @@ const Def* World::tuple(Sym sym) {
 }
 
 const Def* World::extract(const Def* d, const Def* index) {
+    if (!d || !index) return nullptr; // can happen if frozen
     d     = d->zonk();
     index = index->zonk();
 
@@ -395,6 +400,7 @@ const Def* World::extract(const Def* d, const Def* index) {
 
         if (auto sigma = type->isa<Sigma>()) {
             if (auto var = sigma->has_var()) {
+                if (is_frozen()) return nullptr; // if frozen, we don't risk rewriting
                 auto t = VarRewriter(var, d).rewrite(sigma->op(*i));
                 return unify<Extract>(t, d, index);
             }
@@ -670,7 +676,7 @@ Defs World::reduce(const Var* var, const Def* arg) {
 
 void World::for_each(bool elide_empty, std::function<void(Def*)> f) {
     unique_queue<MutSet> queue;
-    for (auto mut : externals())
+    for (auto mut : externals().muts())
         queue.push(mut);
 
     while (!queue.empty()) {
@@ -699,7 +705,7 @@ const Def* World::gid2def(u32 gid) {
 }
 
 World& World::verify() {
-    for (auto mut : externals())
+    for (auto mut : externals().muts())
         assert(mut->is_closed() && mut->is_set());
     for (auto anx : annexes())
         assert(anx->is_closed());

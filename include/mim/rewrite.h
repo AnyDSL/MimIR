@@ -96,7 +96,7 @@ public:
     friend void swap(Rewriter& rw1, Rewriter& rw2) noexcept {
         using std::swap;
         swap(rw1.old2news_, rw2.old2news_);
-        // do NOT back pointers ptr_ and world_
+        // Do NOT swap ptr_ and world_: they are back pointers!
     }
 
 private:

@@ -38,6 +38,7 @@ target_sources(libmim
         phase/branch_normalize.cpp
         phase/prefix_cleanup.cpp
         phase/ret_wrap.cpp
+        phase/sccp.cpp
         util/bitset.cpp
         util/dbg.cpp
         util/dl.cpp
@@ -47,15 +48,13 @@ target_sources(libmim
 )
 
 set_target_properties(libmim PROPERTIES PREFIX "")
+target_compile_features(libmim PUBLIC cxx_std_20)
 
 if(MSVC)
-    target_compile_features(libmim PUBLIC cxx_std_23)
     target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
     if(BUILD_SHARED_LIBS)
         target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)
     endif()
-else()
-    target_compile_features(libmim PUBLIC cxx_std_20)
 endif()
 
 configure_file(

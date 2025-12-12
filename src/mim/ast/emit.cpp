@@ -511,7 +511,7 @@ void LamDecl::emit_body(Emitter& e) const {
         }
     }
 
-    if (is_external()) doms().front()->lam_->make_external();
+    if (is_external()) doms().front()->lam_->externalize();
     e.register_annex(annex_, sub_, def_);
 }
 

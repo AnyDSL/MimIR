@@ -17,19 +17,19 @@ void optimize(World& world) {
 
     const Def* compilation = nullptr;
     for (auto compilation_function : compilation_functions) {
-        if (auto compilation_ = world.external(compilation_function)) {
+        if (auto compilation_ = world.externals()[compilation_function]) {
             if (!compilation) compilation = compilation_;
-            compilation_->make_internal();
+            compilation_->internalize();
         }
     }
 
     // make all functions `[] -> %compile.Phase` internal
-    for (auto def : world.copy_externals()) {
+    for (auto def : world.externals().mutate()) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             // TODO use Axm::isa - but rn there is a problem with the rec Pi and plugin deps
             if (lam->codom()->sym().view() == "%compile.Phase") {
                 if (!compilation) compilation = lam;
-                def->make_internal();
+                def->internalize();
             }
         }
     }

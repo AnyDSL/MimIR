@@ -21,7 +21,7 @@ std::optional<const Def*> internal_function_of_axm(const Axm* axm, const Def* me
     find_and_replace(name, "%", "");
     name = internal_prefix + name;
 
-    auto replacement = world.external(world.sym(name));
+    auto replacement = world.externals()[world.sym(name)];
     if (replacement) {
         auto spec_fun = world.app(replacement, meta_args);
         auto ds_fun   = direct::op_cps2ds_dep(spec_fun);
@@ -45,7 +45,7 @@ const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
         auto [m, k, l, w] = mat_ax->decurry()->args<4>();
         auto w_lit        = Lit::isa(w);
 
-        auto ext_fun = world().external(world().sym("extern_matrix_prod"));
+        auto ext_fun = world().externals()[world().sym("extern_matrix_prod")];
         if (ext_fun && (w_lit && *w_lit == 64)) {
             auto ds_fun  = direct::op_cps2ds_dep(ext_fun);
             auto fun_app = world().app(ds_fun, {mem, m, k, l, M, N});

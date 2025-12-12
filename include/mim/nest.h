@@ -10,14 +10,14 @@ namespace mim {
 /// Builds a nesting tree of all *immutables*/binders.
 class Nest {
 public:
-    class Node : private lct::Node<Node, int> {
+    class Node {
     public:
         /// @name Getters
         ///@{
         std::string name() const { return mut() ? mut()->unique_name() : std::string("<virtual>"); }
         const Nest& nest() const { return nest_; }
-        const Node* parent() const { return parent_; }
-        bool is_root() const { return parent_ == nullptr; }
+        const Node* inest() const { return inest_; } ///< Immediate nester/parent of this Node.
+        bool is_root() const { return inest_ == nullptr; }
         /// The mutable capsulated in this Node or `nullptr`, if it's a *virtual root* comprising several Node%s.
         Def* mut() const {
             assert(mut_ || is_root());
@@ -29,35 +29,94 @@ public:
 
         /// @name Children
         ///@{
-        auto child_muts() const { return child_mut2node_ | std::views::keys; }
-        auto child_nodes() const {
-            return child_mut2node_
-                 | std::views::transform([](const auto& pair) { return const_cast<const Node*>(pair.second); });
-        }
-        auto child_mut2node() const {
-            return child_mut2node_ | std::views::transform([](const auto& pair) {
-                       return std::pair{pair.first, const_cast<const Node*>(pair.second)};
-                   });
-        }
-        const Node* child(Def* mut) const {
-            if (auto i = child_mut2node_.find(mut); i != child_mut2node_.end()) return i->second;
-            return nullptr;
-        }
-        size_t num_children() const { return child_mut2node_.size(); }
+        struct Children {
+            ///@name Get children as muts and/or nodes.
+            ///@{
+            // clang-format off
+            auto mut2node() const { return mut2node_ | std::views::transform([](auto p) { return std::pair{p.first, const_cast<const Node*>(p.second)}; }); }
+            auto muts()     const { return mut2node_ | std::views::keys; }
+            auto nodes()    const { return mut2node_ | std::views::transform([](auto p) { return const_cast<const Node*>(p.second); }); }
+            // clang-format on
+            size_t num() const { return mut2node_.size(); } ///< Number of children.
+            ///@}
+
+            /// @name Lookup
+            ///@{
+            const Node* operator[](Def* mut) const { return const_cast<Children*>(this)->operator[](mut); }
+            bool contains(Def* mut) const { return mut2node_.contains(mut); } ///< is @p mut a child?
+            ///@}
+
+            /// @name Iterators
+            ///@{
+            auto begin() const { return mut2node_.cbegin(); }
+            auto end() const { return mut2node_.cend(); }
+            ///@}
+
+        private:
+            const auto& mut2node() { return mut2node_; }
+            auto nodes() { return mut2node_ | std::views::values; }
+            auto muts() { return mut2node_ | std::views::keys; }
+            auto begin() { return mut2node_.begin(); }
+            auto end() { return mut2node_.end(); }
+            Node* operator[](Def* mut) { return mim::lookup(mut2node_, mut); }
+
+            MutMap<Node*> mut2node_;
+
+            friend class Nest;
+        };
+
+        const Children& children() const { return children_; }
+        Children& children() { return children_; }
         ///@}
 
-        /// @name depends/controls
+        template<bool Forward>
+        struct SiblDeps {
+            /// @name Get sibling dependencies
+            ///@{
+            auto nodes() const {
+                return nodes_ | std::views::transform([](Node* n) { return const_cast<const Node*>(n); });
+            }
+            ///@}
+
+            /// @name Getters
+            ///@{
+            size_t num() const { return nodes().size(); }
+            bool contains(const Node* n) const { return nodes_.contains(n); }
+            ///@}
+
+            /// @name Iterators
+            ///@{
+            auto begin() const { return nodes_.cbegin(); }
+            auto end() const { return nodes_.cend(); }
+            ///@}
+
+        private:
+            const auto& nodes() { return nodes_; }
+            auto begin() { return nodes_.begin(); }
+            auto end() { return nodes_.end(); }
+
+            absl::flat_hash_set<Node*> nodes_;
+
+            friend class Nest;
+        };
+
+        /// @name Sibling Dependencies
         /// These are the dependencies across children():
-        /// * A child `n` depends() on `m`, if a subtree of `n` uses `m`.
-        /// * Conversly: `m` controls() `n`.
+        /// A child `n` depends() on `m`, if a subtree of `n` uses `m`.
         ///@{
-        auto depends() const {
-            return deps().depends_ | std::views::transform([](Node* n) { return const_cast<const Node*>(n); });
+        template<bool Forward = true>
+        auto& sibl_deps() {
+            nest().calc_sibl_deps();
+            if constexpr (Forward)
+                return sibl_deps_;
+            else
+                return sibl_rev_deps_;
         }
-        auto controls() const {
-            return deps().controls_ | std::views::transform([](Node* n) { return const_cast<const Node*>(n); });
+
+        template<bool Forward = true>
+        const auto& sibl_deps() const {
+            return const_cast<Node*>(this)->sibl_deps<Forward>();
         }
-        size_t num_depends() const { return depends().size(); }
         ///@}
 
         /// Strongly Connected Component.
@@ -70,39 +129,38 @@ public:
         const auto& SCCs() { return sccs().SCCs_; }
         const auto& topo() const { return sccs().topo_; } ///< Topological sorting of all SCCs.
         bool is_recursive() const { return sccs().recursive_; }
-        bool is_mutually_recursive() const { return is_recursive() && parent_ && parent_->SCCs_[this]->size() > 1; }
-        bool is_directly_recursive() const { return is_recursive() && (!parent_ || parent_->SCCs_[this]->size() == 1); }
+        bool is_mutually_recursive() const { return is_recursive() && inest_ && inest_->SCCs_[this]->size() > 1; }
+        bool is_directly_recursive() const { return is_recursive() && (!inest_ || inest_->SCCs_[this]->size() == 1); }
         ///@}
 
     private:
-        Node(const Nest& nest, Def* mut, Node* parent)
+        Node(const Nest& nest, Def* mut, Node* inest)
             : nest_(nest)
             , mut_(mut)
-            , parent_(parent)
-            , level_(parent ? parent->level() + 1 : 0) {
-            if (parent) parent->child_mut2node_.emplace(mut, this);
+            , inest_(inest)
+            , level_(inest ? inest->level() + 1 : 0) {
+            if (inest) inest->children_.mut2node_.emplace(mut, this);
         }
 
-        const Node& deps() const { return nest().deps(), *this; }
-        const Node& sccs() const { return nest().sccs(), *this; }
+        const Node& sccs() const { return nest().calc_SCCs(), *this; }
 
-        void link(Node* node) { this->depends_.emplace(node), node->controls_.emplace(this); }
+        void link(Node* other) { this->sibl_deps_.nodes_.emplace(other), other->sibl_rev_deps_.nodes_.emplace(this); }
         void dot(Tab, std::ostream&) const;
 
         /// SCCs
         using Stack = std::stack<Node*>;
-        void find_SCCs();
+        void calc_SCCs();
         uint32_t tarjan(uint32_t, Node*, Stack&);
 
         const Nest& nest_;
         Def* mut_;
-        Node* parent_;
+        Node* inest_;
         uint32_t level_;
         uint32_t loop_depth_ : 31 = 0;
         bool recursive_      : 1  = false;
-        MutMap<Node*> child_mut2node_;
-        absl::flat_hash_set<Node*> depends_;
-        absl::flat_hash_set<Node*> controls_;
+        SiblDeps<true> sibl_deps_;
+        SiblDeps<false> sibl_rev_deps_;
+        Children children_;
         std::deque<std::unique_ptr<SCC>> topo_;
         absl::node_hash_map<const Node*, const SCC*> SCCs_;
 
@@ -129,19 +187,23 @@ public:
     const Node* root() const { return root_; }
     Vars vars() const { return vars_; } ///< All Var%s occurring in this Nest.
     bool contains(const Def* def) const { return vars().has_intersection(def->free_vars()); }
-    bool is_recursive() const { return sccs().root()->is_recursive(); }
+    bool is_recursive() const { return calc_SCCs().root()->is_recursive(); }
     ///@}
 
     /// @name Nodes
     ///@{
-    auto muts() const { return mut2node_ | std::views::keys; }
-    auto nodes() const {
-        return mut2node_ | std::views::transform([](const auto& pair) { return (const Node*)pair.second.get(); });
-    }
-    const auto& mut2node() const { return mut2node_; }
     size_t num_nodes() const { return mut2node_.size(); }
-    const Node* mut2node(Def* mut) const { return mut2node_nonconst(mut); }
-    const Node* operator[](Def* mut) const { return mut2node(mut); } ///< Same as above.
+    // clang-format off
+    auto muts()  const { return mut2node_ | std::views::keys; }
+    auto nodes() const { return mut2node_ | std::views::transform([](const auto& p) { return (const Node*)p.second.get(); }); }
+    // clang-format on
+    const Node* operator[](Def* mut) const { return const_cast<Nest*>(this)->operator[](mut); }
+    ///@}
+
+    /// @name Iterators
+    ///@{
+    auto begin() const { return mut2node_.cbegin(); }
+    auto end() const { return mut2node_.cend(); }
     ///@}
 
     static const Node* lca(const Node* n, const Node* m); ///< Least common ancestor of @p n and @p m.
@@ -155,28 +217,30 @@ public:
     ///@}
 
 private:
-    Node* mut2node_nonconst(Def* mut) const {
+    auto begin() { return mut2node_.begin(); }
+    auto end() { return mut2node_.end(); }
+
+    void populate();
+    Node* make_node(Def*, Node* inest = nullptr);
+    void calc_sibl_deps(Node*) const;
+    void calc_SCCs(Node*) const;
+
+    Node* operator[](Def* mut) {
         if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second.get();
         return nullptr;
     }
 
-    void populate();
-    Node* make_node(Def*, Node* parent = nullptr);
-    void deps(Node*) const;
-    void find_SCCs(Node*) const;
-
-    const Nest& deps() const {
-        if (!deps_) {
-            deps_ = true;
-            deps(root_);
+    void calc_sibl_deps() const {
+        if (!siblings_) {
+            siblings_ = true;
+            calc_sibl_deps(root_);
         }
-        return *this;
     }
 
-    const Nest& sccs() const {
+    const Nest& calc_SCCs() const {
         if (!sccs_) {
             sccs_ = true;
-            find_SCCs(root_);
+            calc_SCCs(root_);
         }
         return *this;
     }
@@ -185,8 +249,8 @@ private:
     absl::flat_hash_map<Def*, std::unique_ptr<Node>> mut2node_;
     Vars vars_;
     Node* root_;
-    mutable bool deps_ = false;
-    mutable bool sccs_ = false;
+    mutable bool siblings_ = false;
+    mutable bool sccs_     = false;
 };
 
 } // namespace mim

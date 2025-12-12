@@ -5,6 +5,8 @@
 #include <iomanip>
 #include <ranges>
 
+#include <absl/container/btree_set.h>
+
 #include <mim/plug/clos/clos.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
@@ -553,7 +555,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (auto lit = Lit::isa(pack->body()); lit && *lit == 0) return "zeroinitializer";
         return emit_tuple(pack);
     } else if (auto sel = Select(def)) {
-        std::cout << def->gid() << std::endl;
         auto t                = convert(sel.extract()->type());
         auto [elem_a, elem_b] = sel.pair()->projs<2>([&](auto e) { return emit_unsafe(e); });
         auto cond_t           = convert(sel.cond()->type());

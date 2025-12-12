@@ -465,8 +465,8 @@ public:
     /// @name external
     ///@{
     bool is_external() const noexcept { return external_; }
-    void make_external();
-    void make_internal();
+    void externalize();
+    void internalize();
     void transfer_external(Def* to);
     ///@}
 
