@@ -42,6 +42,28 @@ enum MemoryModel {
 std::string name(int model);
 } // namespace memory_model
 
+namespace execution_model {
+enum ExecutionModel {
+    Vertex    = 0,
+    Fragment  = 4,
+    GLCompute = 5,
+};
+
+std::string name(int model);
+} // namespace execution_model
+
+namespace function_control {
+enum FunctionControl {
+    None       = 0,
+    Inline     = 1,
+    DontInline = 2,
+    Pure       = 4,
+    Const      = 8,
+};
+
+std::string name(int control);
+} // namespace function_control
+
 namespace ext_inst {
 enum ExtInstSet {
     GLSLstd450 = 1,
@@ -59,9 +81,13 @@ enum class OpKind {
     ExecutionMode,
     Decoration,
     Decl,
-    FunDecl,
+    Function,
+    FunctionParameter,
+    FunctionEnd,
     FunDef,
     Type,
+    TypeVoid,
+    TypeFunction,
     TypeInt,
     TypeFloat,
     TypeVector,
@@ -79,6 +105,7 @@ struct Op {
     OpKind kind;
     std::vector<Word> operands;
     std::optional<Word> result;
+    std::optional<Word> result_type;
 
     constexpr const char* name() {
         switch (this->kind) {
@@ -90,9 +117,12 @@ struct Op {
             case OpKind::ExecutionMode: return "OpExecutionMode";
             case OpKind::Decoration: return "OpDecoration";
             case OpKind::Decl: return "OpDecl";
-            case OpKind::FunDecl: return "OpFunDecl";
-            case OpKind::FunDef: return "OpFunDef";
+            case OpKind::Function: return "OpFuntion";
+            case OpKind::FunctionParameter: return "OpFunctionParameter";
+            case OpKind::FunctionEnd: return "OpFunctionEnd";
             case OpKind::Type: return "OpType";
+            case OpKind::TypeVoid: return "OpTypeVoid";
+            case OpKind::TypeFunction: return "OpTypeFunction";
             case OpKind::TypeInt: return "OpTypeInt";
             case OpKind::TypeFloat: return "OpTypeFloat";
             case OpKind::TypeVector: return "OpTypeVector";
