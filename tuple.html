@@ -129,13 +129,16 @@ $(function(){initNavTree('tuple.html',''); initResizable(true); });
     <a href="#autotoc_md263">Operations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md264">%tuple.cat</a>
+        <a href="#autotoc_md264">%tuple.typecat</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md265">%tuple.contains</a>
+        <a href="#autotoc_md265">%tuple.cat</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md266">%tuple.zip</a>
+        <a href="#autotoc_md266">%tuple.contains</a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md267">%tuple.zip</a>
       </li>
     </ul>
   </li>
@@ -150,43 +153,39 @@ Dependencies</h1>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md263"></a>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md264"></a>
+%tuple.typecat</h2>
+<p>Computes the type of a <code>%tuple.cat</code> with an <code>n</code>- and an <code>m</code>-tuple: <code>«i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</code> </p><div class="fragment"><div class="line">lam %tuple.typecat {n m: Nat} (Ts: «n; *») (Us: «m; *») : * =</div>
+<div class="line">    «i: %core.nat.add (n, m);</div>
+<div class="line">        let nat_i = %core.bitcast Nat i;</div>
+<div class="line">        %core.select (</div>
+<div class="line">            %core.ncmp.l (nat_i, n),</div>
+<div class="line">            Ts#(%core.bitcast (Idx n) i),</div>
+<div class="line">            Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, n))))»;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md265"></a>
 %tuple.cat</h2>
-<p>Concatenation of an <code>n</code>-tuple and an <code>m</code>-tuple to an <code>n + m</code>-tuple.</p>
-<div class="fragment"><div class="line">lam %tuple.typecat</div>
-<div class="line">    {n m: Nat}</div>
-<div class="line">    [Ts: &lt;&lt;n; *&gt;&gt;]</div>
-<div class="line">    [Us: &lt;&lt;m; *&gt;&gt;]</div>
-<div class="line">        : *</div>
-<div class="line">        // «i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</div>
-<div class="line">        = &lt;&lt;i: %core.nat.add (n, m);</div>
-<div class="line">            let nat_i = %core.bitcast Nat i;</div>
-<div class="line">            %core.select (</div>
-<div class="line">                %core.ncmp.l (nat_i, n),</div>
-<div class="line">                Ts#(%core.bitcast (Idx n) i),</div>
-<div class="line">                Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, n))))&gt;&gt;;</div>
-<div class="line"> </div>
-<div class="line">axm %tuple.cat: {n m: Nat}</div>
+<p>Concatenation of an <code>n</code>-tuple and an <code>m</code>-tuple to an <code>n + m</code>-tuple yielding</p>
+<div class="fragment"><div class="line">axm %tuple.cat: {n m: Nat}</div>
 <div class="line">                 → {Ts: «n; *», Us: «m; *»}</div>
 <div class="line">                 → [«i: n; Ts#i», «i: m; Us#i»]</div>
-<div class="line">                 → (%tuple.typecat Ts Us)</div>
+<div class="line">                 → %tuple.typecat Ts Us</div>
 <div class="line">                 , normalize_cat;</div>
 <div class="line"> </div>
 <div class="line">lam %tuple.append   {n: Nat}</div>
 <div class="line">                    {Ts: «n; *», U: *}</div>
 <div class="line">                    (a: «i: n; Ts#i», b: U)</div>
-<div class="line">                  : (%tuple.typecat Ts U)</div>
+<div class="line">                  : %tuple.typecat Ts U</div>
 <div class="line">                  = %tuple.cat (a, b);</div>
 <div class="line"> </div>
 <div class="line">lam %tuple.prepend  {m: Nat}</div>
 <div class="line">                    {T: *, Us: «m; *»}</div>
 <div class="line">                    (a: T, b: «i: m; Us#i»)</div>
-<div class="line">                  : (%tuple.typecat T Us)</div>
+<div class="line">                  : %tuple.typecat T Us</div>
 <div class="line">                  = %tuple.cat (a, b);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md265"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md266"></a>
 %tuple.contains</h2>
 <p>Does the tuple conain the given element?</p>
 <div class="fragment"><div class="line">axm %tuple.contains: {n: Nat} → {Ts: «n; *», U: *} → [«i: n; Ts#i», U] → Bool, normalize_contains;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md266"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md267"></a>
 %tuple.zip</h2>
 <p><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>
 <p>What is more, the signature will likely change in the future:</p><ul>

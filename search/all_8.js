@@ -98,7 +98,7 @@ var searchData=
   ['is_5fset_95',['is_set',['../classmim_1_1Def.html#a075f30462bdc7ae0e435c8e15cb48fff',1,'mim::Def']]],
   ['is_5fterm_96',['is_term',['../classmim_1_1Def.html#a648a10d226521d9f30d10973296476b3',1,'mim::Def']]],
   ['is_5funiform_97',['is_uniform',['../classmim_1_1Checker.html#a169a88c923419cfcfb6d15a14d1cfa4b',1,'mim::Checker']]],
-  ['is_5funique_98',['is_unique',['../vec.html#autotoc_md274',1,'%vec.is_unique'],['../namespacemim_1_1plug_1_1vec.html#a091d66d323366df2a44ace85c3e624a8',1,'mim::plug::vec::is_unique']]],
+  ['is_5funique_98',['is_unique',['../vec.html#autotoc_md275',1,'%vec.is_unique'],['../namespacemim_1_1plug_1_1vec.html#a091d66d323366df2a44ace85c3e624a8',1,'mim::plug::vec::is_unique']]],
   ['is_5funit_99',['is_unit',['../namespacemim.html#a2efd858db7ed2bd9c205337f6129daa8',1,'mim']]],
   ['is_5fvalid_100',['is_valid',['../classmim_1_1ll_1_1Emitter.html#ad43b49a65f405d25e5e1a6124c2aedb9',1,'mim::ll::Emitter']]],
   ['is_5fwhere_101',['is_where',['../classmim_1_1ast_1_1DeclExpr.html#aeb34f62478eb3d88f8d546e41b2249dc',1,'mim::ast::DeclExpr']]],
@@ -127,6 +127,6 @@ var searchData=
   ['iterating_20over_20the_20program_124',['Iterating over the Program',['../dev.html#autotoc_md33',1,'']]],
   ['iterator_125',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html',1,'mim::Sets&lt; D, N &gt;::Set::iterator'],['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator::iterator() noexcept=default']]],
   ['iterator_5fcategory_126',['iterator_category',['../classmim_1_1Sets_1_1Set_1_1iterator.html#ab299636e45522b09b7da7c97ecc78da2',1,'mim::Sets::Set::iterator']]],
-  ['iterators_127',['Iterators',['../vec.html#autotoc_md268',1,'']]],
+  ['iterators_127',['Iterators',['../vec.html#autotoc_md269',1,'']]],
   ['its_5fa_5fmatch_128',['its_a_match',['../classmim_1_1Rule.html#a686d82d5d20cf127fb03d1e380a8d612',1,'mim::Rule']]]
 ];
