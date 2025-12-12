@@ -252,7 +252,7 @@ void AxmDecl::Alias::bind(Scopes& s, const AxmDecl* axm) const {
 
 void AxmDecl::bind(Scopes& s) const {
     type()->bind(s);
-    annex_ = s.ast().name2annex(dbg(), nullptr);
+    if (!(annex_ = s.ast().name2annex(dbg(), nullptr))) error(dbg().loc(), "axiom name has to be an annex");
 
     if (annex_->fresh) {
         annex_->normalizer = normalizer();
