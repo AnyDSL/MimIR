@@ -152,32 +152,35 @@ Operations</h1>
 <h2><a class="anchor" id="autotoc_md264"></a>
 %tuple.cat</h2>
 <p>Concatenation of an <code>n</code>-tuple and an <code>m</code>-tuple to an <code>n + m</code>-tuple.</p>
-<div class="fragment"><div class="line">axm %tuple.cat: {n m: Nat}</div>
+<div class="fragment"><div class="line">lam %tuple.typecat</div>
+<div class="line">    {n m: Nat}</div>
+<div class="line">    [Ts: &lt;&lt;n; *&gt;&gt;]</div>
+<div class="line">    [Us: &lt;&lt;m; *&gt;&gt;]</div>
+<div class="line">        : *</div>
+<div class="line">        // «i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</div>
+<div class="line">        = &lt;&lt;i: %core.nat.add (n, m);</div>
+<div class="line">            let nat_i = %core.bitcast Nat i;</div>
+<div class="line">            %core.select (</div>
+<div class="line">                %core.ncmp.l (nat_i, n),</div>
+<div class="line">                Ts#(%core.bitcast (Idx n) i),</div>
+<div class="line">                Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, n))))&gt;&gt;;</div>
+<div class="line"> </div>
+<div class="line">axm %tuple.cat: {n m: Nat}</div>
 <div class="line">                 → {Ts: «n; *», Us: «m; *»}</div>
 <div class="line">                 → [«i: n; Ts#i», «i: m; Us#i»]</div>
-<div class="line">                 → «i: %core.nat.add (n, m);</div>
-<div class="line">                       let nat_i = %core.bitcast Nat i;</div>
-<div class="line">                       %core.select (%core.ncmp.l (nat_i, n),</div>
-<div class="line">                                     Ts#(%core.bitcast (Idx n) i),</div>
-<div class="line">                                     Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, n))))</div>
-<div class="line">                   » // «i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</div>
+<div class="line">                 → (%tuple.typecat Ts Us)</div>
 <div class="line">                 , normalize_cat;</div>
 <div class="line"> </div>
 <div class="line">lam %tuple.append   {n: Nat}</div>
 <div class="line">                    {Ts: «n; *», U: *}</div>
 <div class="line">                    (a: «i: n; Ts#i», b: U)</div>
-<div class="line">                  : «i: %core.nat.add (n, 1);</div>
-<div class="line">                        %core.select (%core.ncmp.l (%core.bitcast Nat i, n), Ts#(%core.bitcast (Idx n) i), U)</div>
-<div class="line">                    » // «i: n + 1; select(i &lt; n , Ts#i, U)»</div>
+<div class="line">                  : (%tuple.typecat Ts U)</div>
 <div class="line">                  = %tuple.cat (a, b);</div>
 <div class="line"> </div>
 <div class="line">lam %tuple.prepend  {m: Nat}</div>
 <div class="line">                    {T: *, Us: «m; *»}</div>
 <div class="line">                    (a: T, b: «i: m; Us#i»)</div>
-<div class="line">                  : «i: %core.nat.add (1, m);</div>
-<div class="line">                        let nat_i = %core.bitcast Nat i;</div>
-<div class="line">                        %core.select (%core.ncmp.l (nat_i, 1), T, Us#(%core.bitcast (Idx m) (%core.nat.sub (nat_i, 1))))</div>
-<div class="line">                    » // «i: 1 + m; select(i &lt; 1 , T, Us#(i - 1))»</div>
+<div class="line">                  : (%tuple.typecat T Us)</div>
 <div class="line">                  = %tuple.cat (a, b);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md265"></a>
 %tuple.contains</h2>

@@ -114,7 +114,7 @@ var NAVTREEINDEX =
 "namespacemim_1_1ast.html#ae8647f142657ffe401f0ca6f29c09b74",
 "namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673af4e34c879c89192fcf3b851dddc46899",
 "namespacemim_1_1plug_1_1matrix.html#ad88476eb54b27ecc6ea9b6656c378f01",
-"optimize_8h_source.html",
+"optimize_8h.html",
 "structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d"
 ];
 

@@ -6,5 +6,6 @@ var searchData=
   ['trait_3',['trait',['../namespacemim_1_1plug_1_1core.html#a699face68306eeb01636f32010cc2d9d',1,'mim::plug::core']]],
   ['transpose_4',['transpose',['../namespacemim_1_1plug_1_1matrix.html#a5b14c9f2cfc5a0f1d95a3657b2ec5be3',1,'mim::plug::matrix::transpose'],['../namespacemim_1_1plug_1_1tensor.html#aaa0644a4e639f6682b0e95d95eb32c47',1,'mim::plug::tensor::transpose']]],
   ['tri_5',['tri',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72',1,'mim::plug::math']]],
-  ['type_6',['type',['../namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4',1,'mim::plug::refly']]]
+  ['type_6',['type',['../namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4',1,'mim::plug::refly']]],
+  ['typecat_7',['typecat',['../namespacemim_1_1plug_1_1tuple.html#a7947132a755044df3687e189d12929a3',1,'mim::plug::tuple']]]
 ];

@@ -516,6 +516,7 @@ var namespacemim_1_1plug =
       [ "cat", "namespacemim_1_1plug_1_1tuple.html#a3e6250caa1e19267b5edccdc28b4428a", null ],
       [ "contains", "namespacemim_1_1plug_1_1tuple.html#a2c3b889c139b975a1735543c8ed40664", null ],
       [ "prepend", "namespacemim_1_1plug_1_1tuple.html#ac27303d7e38479898972453b4e58f1f2", null ],
+      [ "typecat", "namespacemim_1_1plug_1_1tuple.html#a7947132a755044df3687e189d12929a3", null ],
       [ "zip", "namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2", null ],
       [ "normalize_cat", "namespacemim_1_1plug_1_1tuple.html#a43eed0d13fc869cc12b19c0eb9f388af", null ],
       [ "normalize_contains", "namespacemim_1_1plug_1_1tuple.html#a9bcfd0ca8c95fef42ecb4ea084635916", null ],

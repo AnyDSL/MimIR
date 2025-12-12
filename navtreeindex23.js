@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"optimize_8h.html":[6,0,2,1,2,4],
 "optimize_8h_source.html":[6,0,2,1,2,4],
 "ord.html":[2,11],
 "ord_2autogen_8h.html":[6,0,0,1,0,0,11,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "structmim_1_1Nest_1_1Node_1_1Children.html#a7cd6467a476c3a7d4dceb5b720acdc7d":[3,0,1,50,0,0,1],
 "structmim_1_1Nest_1_1Node_1_1Children.html#a7cd6467a476c3a7d4dceb5b720acdc7d":[5,0,1,48,0,0,1],
 "structmim_1_1Nest_1_1Node_1_1Children.html#a835cdf64395521c736b393399a1dddbd":[3,0,1,50,0,0,8],
-"structmim_1_1Nest_1_1Node_1_1Children.html#a835cdf64395521c736b393399a1dddbd":[5,0,1,48,0,0,8],
-"structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d":[3,0,1,50,0,0,5]
+"structmim_1_1Nest_1_1Node_1_1Children.html#a835cdf64395521c736b393399a1dddbd":[5,0,1,48,0,0,8]
 };
