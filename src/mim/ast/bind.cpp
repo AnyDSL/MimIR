@@ -253,7 +253,7 @@ void AxmDecl::Alias::bind(Scopes& s, const AxmDecl* axm) const {
 void AxmDecl::bind(Scopes& s) const {
     type()->bind(s);
     if (!(annex_ = s.ast().name2annex(dbg(), nullptr))) {
-        s.ast().error(dbg().loc(), "expected <annex name>, got '{}', while binding axiom declaration", dbg().sym());
+        s.ast().error(dbg().loc(), "axiom name must be an annex name starting with '%', got '{}', while binding axiom declaration", dbg().sym());
         return;
     }
 
