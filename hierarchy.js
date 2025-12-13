@@ -20,6 +20,7 @@ var hierarchy =
     [ "mim::plug::clos::ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", null ],
     [ "mim::Dbg", "structmim_1_1Dbg.html", null ],
     [ "automaton::DFANode", "classautomaton_1_1DFANode.html", null ],
+    [ "mim::Dispatch", "classmim_1_1Dispatch.html", null ],
     [ "mim::Elem< R, F >", "structmim_1_1Elem.html", null ],
     [ "mim::ast::Emitter", "classmim_1_1ast_1_1Emitter.html", null ],
     [ "mim::Sets< D, N >::Data::Equal", "structmim_1_1Sets_1_1Data_1_1Equal.html", null ],

@@ -154,7 +154,7 @@ Dependencies</h1>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md264"></a>
 %tuple.typecat</h2>
-<p>Computes the type of a <code>%tuple.cat</code> with an <code>n</code>- and an <code>m</code>-tuple: <code>«i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</code> </p><div class="fragment"><div class="line">lam %tuple.typecat {n m: Nat} (Ts: «n; *») (Us: «m; *») : * =</div>
+<p>Computes the type of a <code>%tuple.cat</code> with an <code>n</code>- and an <code>m</code>-tuple. </p><div class="fragment"><div class="line">lam %tuple.typecat {n m: Nat} (Ts: «n; *») (Us: «m; *») : * = // «i: n + m; select(i &lt; n , Ts#i, Us#(i - n))»</div>
 <div class="line">    «i: %core.nat.add (n, m);</div>
 <div class="line">        let nat_i = %core.bitcast Nat i;</div>
 <div class="line">        %core.select (</div>

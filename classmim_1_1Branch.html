@@ -124,7 +124,7 @@ $(function(){initNavTree('classmim_1_1Branch.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>Matches <code>(ff, tt)#cond arg</code>.  
+<p>Matches <code>(ff, tt)#cond arg</code> where <code>cond</code> is <b>not</b> a <a class="el" href="classmim_1_1Lit.html">Lit</a>eral.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="tuple_8h_source.html">mim/tuple.h</a>&gt;</code></p>
@@ -138,6 +138,8 @@ Inheritance diagram for mim::Branch:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9aa9b480fdb0fe09f1f8277505459280" id="r_a9aa9b480fdb0fe09f1f8277505459280"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9aa9b480fdb0fe09f1f8277505459280">Branch</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a9aa9b480fdb0fe09f1f8277505459280"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a90299b3338ad0547e1be1521292111" id="r_a1a90299b3338ad0547e1be1521292111"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a90299b3338ad0547e1be1521292111">operator bool</a> () const noexcept</td></tr>
+<tr class="separator:a1a90299b3338ad0547e1be1521292111"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a900ff0e894cfe0147f7e5bf17cac2d3b" id="r_a900ff0e894cfe0147f7e5bf17cac2d3b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1App.html">App</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a900ff0e894cfe0147f7e5bf17cac2d3b">app</a> () const</td></tr>
 <tr class="separator:a900ff0e894cfe0147f7e5bf17cac2d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93dc9a88cca31bb2a82ae273fc03a2ba" id="r_a93dc9a88cca31bb2a82ae273fc03a2ba"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93dc9a88cca31bb2a82ae273fc03a2ba">callee</a> () const</td></tr>
@@ -161,10 +163,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa6c46f08301444ded1c51834a0358c04 inherit pub_methods_classmim_1_1Select"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Matches <code>(ff, tt)#cond arg</code>. </p>
+<div class="textblock"><p>Matches <code>(ff, tt)#cond arg</code> where <code>cond</code> is <b>not</b> a <a class="el" href="classmim_1_1Lit.html">Lit</a>eral. </p>
 <p><code>(ff, tt)#cond</code> is matched as a <a class="el" href="classmim_1_1Select.html" title="Matches (ff, tt)#cond - where cond is not a Literal.">Select</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00283">283</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00279">279</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9aa9b480fdb0fe09f1f8277505459280" name="a9aa9b480fdb0fe09f1f8277505459280"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9aa9b480fdb0fe09f1f8277505459280">&#9670;&#160;</a></span>Branch()</h2>
@@ -181,9 +183,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00068">68</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00059">59</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8h_source.html#l00288">callee()</a>, and <a class="el" href="tuple_8cpp_source.html#l00053">mim::Select::Select()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00064">callee()</a>, <a class="el" href="tuple_8h_source.html#l00267">mim::Select::extract()</a>, and <a class="el" href="tuple_8cpp_source.html#l00051">mim::Select::Select()</a>.</p>
 
 </div>
 </div>
@@ -211,7 +213,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00287">287</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00285">285</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00065">arg()</a>, and <a class="el" href="tuple_8cpp_source.html#l00064">callee()</a>.</p>
 
 </div>
 </div>
@@ -220,9 +224,6 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Branch::arg </td>
@@ -231,14 +232,11 @@ Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00289">289</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00065">65</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8h_source.html#l00285">app()</a>, and <a class="el" href="lam_8h_source.html#l00286">mim::App::arg()</a>.</p>
 
 </div>
 </div>
@@ -247,9 +245,6 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::Branch::callee </td>
@@ -258,16 +253,40 @@ Public Member Functions</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00064">64</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8h_source.html#l00285">app()</a>, and <a class="el" href="lam_8h_source.html#l00277">mim::App::callee()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00059">Branch()</a>.</p>
+
+</div>
+</div>
+<a id="a1a90299b3338ad0547e1be1521292111" name="a1a90299b3338ad0547e1be1521292111"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a90299b3338ad0547e1be1521292111">&#9670;&#160;</a></span>operator bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mim::Branch::operator bool </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span><span class="mlabel noexcept">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00288">288</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00068">Branch()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00283">283</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
 </div>
 </div>

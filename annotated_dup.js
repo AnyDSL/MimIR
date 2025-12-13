@@ -127,6 +127,7 @@ var annotated_dup =
       [ "ClosedMutPhase", "classmim_1_1ClosedMutPhase.html", "classmim_1_1ClosedMutPhase" ],
       [ "Dbg", "structmim_1_1Dbg.html", "structmim_1_1Dbg" ],
       [ "Def", "classmim_1_1Def.html", "classmim_1_1Def" ],
+      [ "Dispatch", "classmim_1_1Dispatch.html", "classmim_1_1Dispatch" ],
       [ "Driver", "classmim_1_1Driver.html", "classmim_1_1Driver" ],
       [ "Elem", "structmim_1_1Elem.html", "structmim_1_1Elem" ],
       [ "Emitter", "classmim_1_1Emitter.html", "classmim_1_1Emitter" ],
