@@ -256,7 +256,7 @@ private:
 
 /// Matches `(ff, tt)#cond` - where `cond` is **not** a Lit%eral.
 /// @note If `cond` is a Lit%eral, either
-/// * `(x, y)#lit` would have been folded to `x`/`y` anymway, or
+/// * `(x, y)#lit` would have been folded to `x`/`y` anyway, or
 /// * we have something like this: `pair#0_2`
 class Select {
 public:
