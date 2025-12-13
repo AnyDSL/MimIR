@@ -5,8 +5,6 @@
 #include "mim/tuple.h"
 #include "mim/world.h"
 
-// TODO this code needs to be rewritten
-
 namespace mim {
 
 namespace {
@@ -52,26 +50,33 @@ const Def* Pack::arity() const {
 
 Select::Select(const Def* def) {
     if (def) {
-        if ((extract_ = def->isa<Extract>())) {
-            pair_ = extract_->tuple();
-            cond_ = extract_->index();
-            if (!Lit::isa(cond_)) {
-                if (auto a = Lit::isa(pair_->arity()); a && a == 2) {
-                    ff_ = pair_->proj(2, 0);
-                    tt_ = pair_->proj(2, 1);
-                }
-            }
+        if (auto extract = def->isa<Extract>(); extract && !Lit::isa(extract->index())) {
+            if (auto a = Lit::isa(extract->tuple()->arity()); a && a == 2) extract_ = extract;
         }
     }
 }
 
 Branch::Branch(const Def* def)
     : Select(def->isa<App>() ? def->as<App>()->callee() : nullptr) {
-    if ((app_ = def->isa<App>())) {
-        callee_ = app_->callee();
-        arg_    = app_->arg();
+    if (extract()) app_ = def->as<App>();
+}
+
+const Def* Branch::callee() const { return app()->callee(); }
+const Def* Branch::arg() const { return app()->arg(); }
+
+Dispatch::Dispatch(const Def* def) {
+    if (auto app = def->isa<App>()) {
+        if (auto extract = app->callee()->isa<Extract>(); extract && !Lit::isa(extract->index())) {
+            if (auto a = Lit::isa(extract->tuple()->arity())) {
+                app_     = app;
+                extract_ = extract;
+            }
+        }
     }
 }
+
+const Def* Dispatch::callee() const { return app()->callee(); }
+const Def* Dispatch::arg() const { return app()->arg(); }
 
 bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 
@@ -94,6 +99,8 @@ std::string tuple2str(const Def* def) {
     }
     return res;
 }
+
+// TODO flatten/unflatten needs to be rewritten
 
 size_t flatten(DefVec& ops, const Def* def, bool flatten_muts) {
     if (auto a = Lit::isa(def->arity()); a && *a != 1 && should_flatten(def) && flatten_muts == mut_val_or_typ(def)) {
@@ -124,7 +131,7 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
 const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(Lit::as(def->arity())), type); }
 
 /*
- * merge & cat
+ * cat
  */
 
 DefVec cat(Defs a, Defs b) {

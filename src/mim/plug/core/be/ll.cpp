@@ -17,6 +17,9 @@
 
 #include "mim/plug/core/core.h"
 
+#include "absl/container/fixed_array.h"
+#include "fe/assert.h"
+
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
 //   Otherwise, you might end up with an incorrect schedule.
@@ -345,20 +348,10 @@ void Emitter::emit_epilogue(Lam* lam) {
                 bb.tail("ret {} {}", type, prev);
             }
         }
-    } else if (auto ex = app->callee()->isa<Extract>(); ex && Pi::isa_basicblock(app->callee_type())) {
-        // TODO use Branch
-        // emit_unsafe(app->arg());
-        // A call to an extract like constructed for conditionals (else,then)#cond (args)
-        for (auto callee_def : ex->tuple()->projs()) {
-            // dissect the tuple of lambdas
-            auto callee = callee_def->as_mut<Lam>();
-            // each callees type should agree with the argument type (should be checked by type checking).
-            // Especially, the number of vars should be the number of arguments.
-            // TODO: does not hold for complex arguments that are not tuples.
-            assert(callee->num_tvars() == app->num_targs());
+    } else if (auto dispatch = Dispatch(app)) {
+        for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
             size_t n = callee->num_tvars();
             for (size_t i = 0; i != n; ++i) {
-                // emits the arguments one by one (TODO: handle together like before)
                 if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
                     auto phi = callee->var(n, i);
                     assert(!Axm::isa<mem::M>(phi->type()));
@@ -368,17 +361,19 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
 
-        auto c = emit(ex->index());
-        if (ex->tuple()->num_projs() == 2) {
-            auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
-            return bb.tail("br i1 {}, label {}, label {}", c, t, f);
-        } else {
-            auto t_c = convert(ex->index()->type());
-            bb.tail("switch {} {}, label {} [ ", t_c, c, emit(ex->tuple()->proj(0)));
-            for (auto i = 1u; i < ex->tuple()->num_projs(); i++)
-                print(bb.tail().back(), "{} {}, label {} ", t_c, std::to_string(i), emit(ex->tuple()->proj(i)));
-            print(bb.tail().back(), "]");
-        }
+        auto v_index = emit(dispatch.index());
+        size_t n     = dispatch.num_targets();
+        auto bbs     = absl::FixedArray<std::string>(n);
+        for (size_t i = 0; i != n; ++i)
+            bbs[i] = emit(dispatch.target(i));
+
+        if (auto branch = Branch(app)) return bb.tail("br i1 {}, label {}, label {}", v_index, bbs[1], bbs[0]);
+
+        auto t_index = convert(dispatch.index()->type());
+        bb.tail("switch {} {}, label {} [ ", t_index, v_index, bbs[0]);
+        for (size_t i = 1; i != n; ++i)
+            print(bb.tail().back(), "{} {}, label {} ", t_index, std::to_string(i), bbs[i]);
+        print(bb.tail().back(), "]");
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
