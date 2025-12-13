@@ -316,7 +316,7 @@ public:
     const Def* index() const { return extract()->index(); }
 
     size_t num_targets() const { return Lit::as(extract()->tuple()->arity()); }
-    const Def* target(size_t i) { return tuple()->proj(i); }
+    const Def* target(size_t i) const { return tuple()->proj(i); }
 
 private:
     const App* app_         = nullptr;
