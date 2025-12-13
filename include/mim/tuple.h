@@ -323,7 +323,7 @@ private:
     const Extract* extract_ = nullptr;
 };
 
-/// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs
+/// @name Helpers to work with Tuples/Sigmas/Arrays/Packs
 ///@{
 bool is_unit(const Def*);
 std::string tuple2str(const Def*);
