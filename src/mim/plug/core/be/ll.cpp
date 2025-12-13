@@ -17,9 +17,6 @@
 
 #include "mim/plug/core/core.h"
 
-#include "absl/container/fixed_array.h"
-#include "fe/assert.h"
-
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
 //   Otherwise, you might end up with an incorrect schedule.
