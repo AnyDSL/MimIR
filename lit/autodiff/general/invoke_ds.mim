@@ -11,7 +11,7 @@ con extract_pb_535733 [s_535741: %mem.M 0, _535737: Cn [%mem.M 0, «2; I32»]] =
 
 con extract_pb_535776 [s_535787: I32, _535780: Cn [%mem.M 0, «2; I32»]] =
     con _535777 _535781: [%mem.M 0, «2; I32»] = _535780 _535781;
-    _535777 (%autodiff.zero %mem.M 0, (0I32, s_535787));
+    _535777 (%autodiff.zero (%mem.M 0), (0I32, s_535787));
 
 con extern main [mem_535757: %mem.M 0, I32, %mem.Ptr (%mem.Ptr ((I8), 0), 0), return_535686: Cn [%mem.M 0, I32]] =
     let _535758: [%mem.M 0, «2; I32»] = %direct.cps2ds (%mem.M 0, [%mem.M 0, «2; I32»]) extract_pb_535733 mem_535757;
