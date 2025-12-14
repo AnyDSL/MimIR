@@ -158,7 +158,7 @@ void Clos2SJLJ::enter() {
     }
 
     auto m0 = body->arg(0);
-    assert(m0->type() == w.annex<mem::M>());
+    assert(m0->type() == w.call<mem::M>(0));
     auto [m1, tag] = w.call<setjmp>(Defs{m0, cur_jbuf_})->projs<2>();
     tag            = w.call(core::conv::s, branches.size(), tag);
     auto filter    = curr_mut()->filter();
