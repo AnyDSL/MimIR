@@ -221,9 +221,9 @@ $(function(){initNavTree('dfa2matcher_8cpp_source.html',''); initResizable(true)
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keyword">auto</span> states = dfa.<a class="code hl_function" href="classautomaton_1_1AutomatonBase.html#ab8aad500443bc3c938b8ecbfc5b9f41d">get_reachable_states</a>();</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <a class="code hl_typedef" href="namespaceautomaton.html#ada83a1afb11a83442f8fff527c4df2b9">DFAMap&lt;Lam*&gt;</a> state2matcher;</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// ((mem: %mem.M, string: Str n, pos: Idx n), Cn [%mem.M, Bool, Idx n])</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keyword">auto</span> matcher = w.mut_fun({w.annex&lt;mem::M&gt;(), w.call&lt;mem::Ptr0&gt;(w.arr(n, w.type_i8())), w.type_idx(n)},</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                             {w.annex&lt;mem::M&gt;(), w.type_bool(), w.type_idx(n)});</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// ((mem: %mem.M 0, string: Str n, pos: Idx n), Cn [%mem.M 0, Bool, Idx n])</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keyword">auto</span> matcher = w.mut_fun({w.call&lt;mem::M&gt;(0), w.call&lt;mem::Ptr0&gt;(w.arr(n, w.type_i8())), w.type_idx(n)},</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                             {w.call&lt;mem::M&gt;(0), w.type_bool(), w.type_idx(n)});</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    matcher-&gt;debug_prefix(std::string(<span class="stringliteral">&quot;match_regex&quot;</span>));</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">auto</span> [args, exit] = matcher-&gt;vars&lt;2&gt;();</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    exit-&gt;debug_prefix(std::string(<span class="stringliteral">&quot;exit&quot;</span>));</div>

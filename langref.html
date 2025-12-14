@@ -536,7 +536,7 @@ Alias Pattern</h3>
 <li><code>abc</code> to <code>(1, 2, 3)</code>.</li>
 </ul>
 <p>Here is another example:</p>
-<div class="fragment"><div class="line">{T: *, a: Nat} as Ts → [%mem.M, %mem.Ptr Ts] → [%mem.M, T]</div>
+<div class="fragment"><div class="line">{T: *, a: Nat} as Ts → [%mem.M a, %mem.Ptr Ts] → [%mem.M a, T]</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md42"></a>
 Rebind</h3>
 <p>A <code>let</code> and <code>ret</code> expression allows you to rebind the same name to a different value. This is particularly useful, when dealing with memory:</p>

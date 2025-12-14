@@ -194,7 +194,7 @@ $(function(){initNavTree('ll_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1refly.html#a4fcbc03e42bd8c41c1e524e747d3e5ed">error</a>(<span class="stringliteral">&quot;unsupported foating point type &#39;{}&#39;&quot;</span>, type);</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">// [%mem.M, T] =&gt; T</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">// [%mem.M 0, T] =&gt; T</span></div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">// TODO there may be more instances where we have to deal with this trickery</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">const</span> Def* isa_mem_sigma_2(<span class="keyword">const</span> Def* type) {</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1refly.html#a28d21b99af5c1d61200601d069b512a4">type</a>-&gt;isa&lt;Sigma&gt;())</div>

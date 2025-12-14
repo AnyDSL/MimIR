@@ -228,7 +228,7 @@ Normalization</h3>
 <div class="fragment"><div class="line">axm %matrix.shape: [n: Nat, S: «n; Nat», T: *] as nST → [%matrix.Mat nST, i: Idx n] → Nat, normalize_shape;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md162"></a>
 %matrix.const</h2>
-<p>a constant matrix </p><div class="fragment"><div class="line">axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, T] → [%mem.M, %matrix.Mat nST];</div>
+<p>a constant matrix </p><div class="fragment"><div class="line">axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, T] → [%mem.M 0, %matrix.Mat nST];</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md163"></a>
 %matrix.read</h2>
 <p>read _ (mat, idx) : body_type</p>
@@ -239,7 +239,7 @@ Normalization:</h3>
 <li>read(insert)</li>
 <li>read(const)</li>
 </ul>
-<div class="fragment"><div class="line">axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M, T], normalize_read;</div>
+<div class="fragment"><div class="line">axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M 0, T], normalize_read;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md165"></a>
 %matrix.insert</h2>
 <p>insert (dims, sizes, type) (mat, idx, val) : mat</p>
@@ -250,24 +250,24 @@ Normalization:</h3>
 <li>with other inserts</li>
 <li>with initialization</li>
 </ul>
-<div class="fragment"><div class="line">axm %matrix.insert: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M, %matrix.Mat nST], normalize_insert;</div>
+<div class="fragment"><div class="line">axm %matrix.insert: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M 0, %matrix.Mat nST], normalize_insert;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md167"></a>
 %matrix.init</h2>
-<p>A fresh matrix with uninitialized values. </p><div class="fragment"><div class="line">axm %matrix.init: [n: Nat, S: «n; Nat», T: *, %mem.M] → [%mem.M, %matrix.Mat (n, S, T)];</div>
+<p>A fresh matrix with uninitialized values. </p><div class="fragment"><div class="line">axm %matrix.init: [n: Nat, S: «n; Nat», T: *, %mem.M 0] → [%mem.M 0, %matrix.Mat (n, S, T)];</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md168"></a>
 High-level matrix operations</h2>
 <div class="fragment"><div class="line">// TODO: define alias: * fst, snd, split * zip = zipWith id</div>
 <div class="line">axm %matrix.prod: [m: Nat, k: Nat, l: Nat, [p: Nat, e:Nat]]</div>
-<div class="line">                → [%mem.M, %matrix.Mat (2, (m, k), %math.F (p, e)), %matrix.Mat (2, (k, l), %math.F (p, e))]</div>
-<div class="line">                → [%mem.M, %matrix.Mat (2, (m, l), %math.F (p, e))], normalize_prod;</div>
+<div class="line">                → [%mem.M 0, %matrix.Mat (2, (m, k), %math.F (p, e)), %matrix.Mat (2, (k, l), %math.F (p, e))]</div>
+<div class="line">                → [%mem.M 0, %matrix.Mat (2, (m, l), %math.F (p, e))], normalize_prod;</div>
 <div class="line"> </div>
 <div class="line">axm %matrix.transpose: [[k:Nat, l:Nat], T: *]</div>
-<div class="line">                     → [%mem.M, %matrix.Mat (2, (k, l), T)]</div>
-<div class="line">                     → [%mem.M, %matrix.Mat (2, (l, k), T)], normalize_transpose;</div>
+<div class="line">                     → [%mem.M 0, %matrix.Mat (2, (k, l), T)]</div>
+<div class="line">                     → [%mem.M 0, %matrix.Mat (2, (l, k), T)], normalize_transpose;</div>
 <div class="line"> </div>
 <div class="line">axm %matrix.sum: [n: Nat, S: «n; Nat», [p:Nat, e:Nat]]</div>
-<div class="line">               → [%mem.M, %matrix.Mat (n, S, %math.F (p, e))]</div>
-<div class="line">               → [%mem.M, %math.F (p, e)];</div>
+<div class="line">               → [%mem.M 0, %matrix.Mat (n, S, %math.F (p, e))]</div>
+<div class="line">               → [%mem.M 0, %math.F (p, e)];</div>
 </div><!-- fragment --><div class="fragment"><div class="line">// TODO: handle reduction case: n=0, S=[] =&gt; not empty but scalar</div>
 </div><!-- fragment --><p> Our notation is inspired by einsum (with some generalizations):</p><ul>
 <li>Tensorflow / XLA: einsum</li>
@@ -303,13 +303,13 @@ High-level matrix operations</h2>
 <div class="line">        SI: «i:m; «NI#i; Nat»»      // input shapes</div>
 <div class="line">    ]</div>
 <div class="line">  → [</div>
-<div class="line">        mem:    %mem.M,              // memory</div>
+<div class="line">        mem:    %mem.M 0,              // memory</div>
 <div class="line">        zero:   T,                   // initial value</div>
 <div class="line">        // TODO: propagate change: no addition but instead take acc as argument (like mlir.linarith.generic)</div>
-<div class="line">        comb:   Fn [%mem.M, T, «i: m; TI#i»] → [%mem.M, T], // inner combination</div>
+<div class="line">        comb:   Fn [%mem.M 0, T, «i: m; TI#i»] → [%mem.M 0, T], // inner combination</div>
 <div class="line">        // out_index not needed =&gt; always ij (0 ... n) for n dimensions</div>
 <div class="line">        input:  «i: m; [«NI#i; Nat», %matrix.Mat (NI#i, SI#i, TI#i)]»</div>
-<div class="line">    ] → [%mem.M, %matrix.Mat (n, S, T)],</div>
+<div class="line">    ] → [%mem.M 0, %matrix.Mat (n, S, T)],</div>
 <div class="line">    normalize_map_reduce;</div>
 </div><!-- fragment --></li>
 </ul>
@@ -318,9 +318,9 @@ Unfolding functions</h1>
 <h2><a class="anchor" id="autotoc_md170"></a>
 product</h2>
 <p>Follow the principle <code>ij &lt;- ik, kj</code> (<code>out[i, j] = sum_k in1[i, k] * in2[k, j]</code>) by using mulplication as combination function and addition as reduction function. </p><div class="fragment"><div class="line">fun extern internal_mapRed_matrix_prod(m k l: Nat, pe: «2; Nat»)</div>
-<div class="line">                                      (mem: %mem.M, M: %matrix.Mat (2, (m, k), %math.F pe),</div>
+<div class="line">                                      (mem: %mem.M 0, M: %matrix.Mat (2, (m, k), %math.F pe),</div>
 <div class="line">                                                    N: %matrix.Mat (2, (k, l), %math.F pe))@tt</div>
-<div class="line">                                    : [     %mem.M,    %matrix.Mat (2, (m, l), %math.F pe)] =</div>
+<div class="line">                                    : [     %mem.M 0,    %matrix.Mat (2, (m, l), %math.F pe)] =</div>
 <div class="line">    let R = %math.F pe;</div>
 <div class="line">    let zero_real = %math.conv.f2f pe 0.0:%math.F64;</div>
 <div class="line">    return (</div>
@@ -334,7 +334,7 @@ product</h2>
 <div class="line">            (</div>
 <div class="line">                mem,</div>
 <div class="line">                zero_real,</div>
-<div class="line">                fn (mem: %mem.M, acc: R, ab: «2; R»): [%mem.M, R] =</div>
+<div class="line">                fn (mem: %mem.M 0, acc: R, ab: «2; R»): [%mem.M 0, R] =</div>
 <div class="line">                    return (mem, %math.arith.add 0 (acc, %math.arith.mul 0 ab)),</div>
 <div class="line">                (</div>
 <div class="line">                    ((0, 2), M),</div>
@@ -347,8 +347,8 @@ transpose</h2>
 <p>Transpose a matrix by iterating the indices in swapped order. </p><div class="fragment"><div class="line">// TODO: check code for 1-matrix edge case</div>
 <div class="line">// TODO: would this automatically be handled by read(transpose) ?</div>
 <div class="line">fun extern internal_mapRed_matrix_transpose((k l: Nat), T: *)</div>
-<div class="line">                                           (mem: %mem.M, M: %matrix.Mat (2, (k, l), T))@tt</div>
-<div class="line">                                         : [     %mem.M,    %matrix.Mat (2, (l, k), T)] =</div>
+<div class="line">                                           (mem: %mem.M 0, M: %matrix.Mat (2, (k, l), T))@tt</div>
+<div class="line">                                         : [     %mem.M 0,    %matrix.Mat (2, (l, k), T)] =</div>
 <div class="line">    let zero = ⊥:T; // TODO: use generalized zero</div>
 <div class="line">    return (</div>
 <div class="line">        %matrix.map_reduce</div>
@@ -362,7 +362,7 @@ transpose</h2>
 <div class="line">                mem,</div>
 <div class="line">                zero,</div>
 <div class="line">                // We ignore the (zero) accumulator and just return the read value.</div>
-<div class="line">                fn (mem: %mem.M, acc a: T): [%mem.M, T] = return (mem, a),</div>
+<div class="line">                fn (mem: %mem.M 0, acc a: T): [%mem.M 0, T] = return (mem, a),</div>
 <div class="line">                ((1, 0), M)</div>
 <div class="line">            )</div>
 <div class="line">    );</div>
@@ -370,8 +370,8 @@ transpose</h2>
 sum</h2>
 <p>Sums up all elements of a matrix and returns a scalar. </p><div class="fragment"><div class="line">//  TODO: test 0d matrix (edge cases in code)</div>
 <div class="line">fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)</div>
-<div class="line">                                     (mem: %mem.M, M: %matrix.Mat (n, S, %math.F pe))@tt</div>
-<div class="line">                                   : [%mem.M, %math.F pe] =</div>
+<div class="line">                                     (mem: %mem.M 0, M: %matrix.Mat (n, S, %math.F pe))@tt</div>
+<div class="line">                                   : [%mem.M 0, %math.F pe] =</div>
 <div class="line">    let R = %math.F pe;</div>
 <div class="line">    // TODO: use generalized zero</div>
 <div class="line">    let zero_64 = 0.0:(%math.F (52,11));</div>
@@ -388,7 +388,7 @@ sum</h2>
 <div class="line">        (</div>
 <div class="line">            mem,</div>
 <div class="line">            zero_real,</div>
-<div class="line">            fn (mem: %mem.M, acc: R, a: R): [%mem.M, R]</div>
+<div class="line">            fn (mem: %mem.M 0, acc: R, a: R): [%mem.M 0, R]</div>
 <div class="line">                = return (mem, %math.arith.add 0 (acc, a)),</div>
 <div class="line">            (</div>
 <div class="line">                (idxs, M)</div>
