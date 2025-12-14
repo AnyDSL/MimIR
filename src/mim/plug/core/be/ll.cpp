@@ -72,7 +72,7 @@ const char* llvm_suffix(const Def* type) {
     error("unsupported foating point type '{}'", type);
 }
 
-// [%mem.M, T] => T
+// [%mem.M 0, T] => T
 // TODO there may be more instances where we have to deal with this trickery
 const Def* isa_mem_sigma_2(const Def* type) {
     if (auto sigma = type->isa<Sigma>())
