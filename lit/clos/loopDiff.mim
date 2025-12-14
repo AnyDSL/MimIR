@@ -67,18 +67,18 @@ con const [mem: %mem.M 0, arr : %mem.Ptr (<<size; I32>>, 0), constValue : I32, r
     loop_head ( mem, 0I32 );
 
 con outer [mem: %mem.M 0, x : I32, return : Cn [%mem.M 0]] =
-    let (alloc_mem_a, a_arr) = %mem.alloc (<<size; I32>>, 0) (mem);
-    let (alloc_mem_b, b_arr) = %mem.alloc (<<size; I32>>, 0) (alloc_mem_a);
-    let (alloc_mem_c, c_arr) = %mem.alloc (<<size; I32>>, 0) (alloc_mem_b);
+    let (alloc_mem_a, a_arr) = %mem.alloc «size; I32» mem;
+    let (alloc_mem_b, b_arr) = %mem.alloc «size; I32» alloc_mem_a;
+    let (alloc_mem_c, c_arr) = %mem.alloc «size; I32» alloc_mem_b;
 
-    let (alloc_mem_ad, ad_arr) = %mem.alloc (<<size; I32>>, 0) (alloc_mem_c);
-    let (alloc_mem_bd, bd_arr) = %mem.alloc (<<size; I32>>, 0) (alloc_mem_ad);
-    let (alloc_mem_cd, cd_arr) = %mem.alloc (<<size; I32>>, 0) (alloc_mem_bd);
+    let (alloc_mem_ad, ad_arr) = %mem.alloc «size; I32» alloc_mem_c;
+    let (alloc_mem_bd, bd_arr) = %mem.alloc «size; I32» alloc_mem_ad;
+    let (alloc_mem_cd, cd_arr) = %mem.alloc «size; I32» alloc_mem_bd;
 
-    con end_ [mem: %mem.M 0, return : Cn [%mem.M 0]] = return (mem);
+    con end_ [mem: %mem.M 0, return : Cn [%mem.M 0]] = return mem;
 
     let pb_type = Cn [%mem.M 0, Cn [%mem.M 0]];
-    let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (alloc_mem_cd, 32); // besser slot
+    let (alloc_pb_mem, pb_ptr) = %mem.malloc pb_type (alloc_mem_cd, 32); // besser slot
     let pb_arr = %core.bitcast (%mem.Ptr («⊤:Nat; pb_type», 0)) pb_ptr;
     let lea_pb = %mem.lea (pb_arr, 0_100);
     let mem_assign_pb_anchor = %mem.store (alloc_pb_mem, lea_pb, end_);

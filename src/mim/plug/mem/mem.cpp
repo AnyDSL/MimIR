@@ -23,8 +23,10 @@ void reg_stages(Flags2Stages& stages) {
 
     MIM_REPL(stages, mem::alloc2malloc_repl, {
         if (auto alloc = Axm::isa<mem::alloc>(def)) {
-            auto [pointee, addr_space] = alloc->decurry()->args<2>();
-            return mem::op_malloc(pointee, alloc->arg());
+            auto pointee = alloc->decurry()->decurry()->arg();
+            auto mem     = alloc->arg();
+            auto size    = world().call(core::trait::size, pointee);
+            return world().call<mem::malloc>(pointee, Defs{mem, size});
         } else if (auto slot = Axm::isa<mem::slot>(def)) {
             auto [Ta, mi]              = slot->uncurry_args<2>();
             auto [pointee, addr_space] = Ta->projs<2>();

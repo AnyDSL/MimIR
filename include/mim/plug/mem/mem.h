@@ -110,28 +110,11 @@ inline const Def* op_lea_unsafe(const Def* ptr, const Def* i) {
 inline const Def* op_lea_unsafe(const Def* ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world().lit_i64(i)); }
 ///@}
 
-/// @name %%mem.alloc
-///@{
-inline const Def* op_alloc(const Def* type, const Def* mem) {
-    World& w = type->world();
-    return w.app(w.app(w.annex<alloc>(), {type, w.lit_nat_0()}), mem);
-}
-///@}
-
 /// @name %%mem.slot
 ///@{
 inline const Def* op_slot(const Def* type, const Def* mem) {
     World& w = type->world();
     return w.app(w.app(w.annex<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())});
-}
-///@}
-
-/// @name %%mem.malloc
-///@{
-inline const Def* op_malloc(const Def* type, const Def* mem) {
-    World& w  = type->world();
-    auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.annex<malloc>(), {type, w.lit_nat_0()}), {mem, size});
 }
 ///@}
 
