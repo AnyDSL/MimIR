@@ -80,18 +80,6 @@ axm %mem.mslot: [*, Nat] as Ta → [%mem.M, size: Nat, id: Nat] → [%mem.M, %me
 /// Performs address computation by offsetting the passed pointer with index `i`.
 axm %mem.lea: {n: Nat, Ts: «n; *», a: Nat} → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;
 ///
-/// ### %%mem.create/destroy
-///
-/// Create side effect out of thin or pretend that the side effect does not exists.
-/// @warning Use with caution since you completely remove the %%mem.M dependency.
-///
-let %mem.m = ⊤:%mem.M;
-lam %mem.ignore {O: *} (_: %mem.M, o: O): O = o;
-lam %mem.rm (n: Nat, Is: «n; *», O: *)
-             (f: [%mem.M, «i: n; Is#i»] → [%mem.M, O])
-             (is: «i: n; Is#i»): O
-    = %mem.ignore (f (%mem.m, is));
-///
 /// ## Stages
 ///
 /// ### Phases
