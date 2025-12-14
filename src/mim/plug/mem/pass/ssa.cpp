@@ -51,7 +51,7 @@ const Def* SSA::rewrite(const Def* def) {
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_mut()).writable.contains(sloxy)) {
                 set_val(curr_mut(), sloxy, val);
-                return op_remem(mem)->set(store->dbg());
+                return world().call<mem::remem>(mem)->set(store->dbg());
             }
         }
     } else if (auto [app, mem_lam] = isa_apped_mut_lam(def); isa_workable(mem_lam)) {

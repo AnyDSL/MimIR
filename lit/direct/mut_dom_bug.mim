@@ -1,10 +1,10 @@
 // RUN: %mim %s -p direct -o -
 plugin core;
 
-lam ForBody [n: Nat] = [%mem.M, Idx n] → %mem.M;
+lam ForBody [n: Nat] = [%mem.M 0, Idx n] → [%mem.M 0];
 
-lam For {n: Nat} (start: Idx n, _end: Idx n) (mem: %mem.M) (it: ForBody n): %mem.M =
-    lam loop [mem: %mem.M, i: Idx n] @(%core.pe.is_closed i) : [%mem.M, Idx n] =
+lam For {n: Nat} (start: Idx n, _end: Idx n) (mem: %mem.M 0) (it: ForBody n): %mem.M 0 =
+    lam loop [mem: %mem.M 0, i: Idx n] @(%core.pe.is_closed i) : [%mem.M 0, Idx n] =
         let mem = it (mem, i);
 
         let j   = %core.wrap.add 0 (i, %core.idx n 0 1);
@@ -14,6 +14,6 @@ lam For {n: Nat} (start: Idx n, _end: Idx n) (mem: %mem.M) (it: ForBody n): %mem
     let (mem, _) = loop (mem, start);
     mem;
 
-con extern main [mem: %mem.M, return: Cn [%mem.M, I32]] =
-    let mem = For (0_123, 122_123) mem (lm [mem: %mem.M, i: Idx 123]: %mem.M = mem);
+con extern main [mem: %mem.M 0, return: Cn [%mem.M 0, I32]] =
+    let mem = For (0_123, 122_123) mem (lm [mem: %mem.M 0, i: Idx 123]: %mem.M 0 = mem);
     return (mem, 0I32);
