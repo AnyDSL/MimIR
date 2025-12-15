@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
             | lyra::opt(search_paths, "path"               )["-P"]["--plugin-path"          ]("Path to search for plugins.")
             | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 5)
             | lyra::opt(opt,          "level"              )["-O"]["--optimize"             ]("Optimization level (default: 2).")
-            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST represntation of input.")
+            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST representation of input.")
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
             | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
             | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
@@ -186,7 +186,7 @@ int main(int argc, char** argv) {
                 if (auto backend = driver.backend("ll"))
                     backend(world, *s);
                 else
-                    error("'ll' emitter not loaded; try loading 'mem' plugin");
+                    error("'ll' emitter not loaded; try loading 'core' plugin");
             }
         } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
             std::cerr << e;

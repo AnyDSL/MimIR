@@ -1,7 +1,7 @@
 // RUN: %mim %s -o -
 
 lam combine (t1 t2: *) : * =
- t1 ∪ t2;
+    t1 ∪ t2;
 
 lam inject (t1 t2: *) (x:t1) : t1 ∪ t2 =
     x inj t1 ∪ t2;
@@ -10,20 +10,19 @@ lam minject (t1 t2 t3: *) (x: t3) : t1 ∪ t2 ∪ t3 =
     x inj t1 ∪ t2 ∪ t3;
 
 lam extern f1 (t1 t2: *) (x:t1) (y:t2): t1 =
-    match x inj t1 ∪ t2 with {
-        a: t1 => x,
-        b: t2 => x
-    };
+    match x inj t1 ∪ t2 with a: t1 => x | b: t2 => x;
 
 lam f (t1 t2: *) (x:t1) (y: t2): t2  =
-    match x inj t1 ∪ t2 with {
-        a: t1 => y,
-        b: t2 => b
-   };
+    match x inj t1 ∪ t2 with
+        | a: t1 => y
+        | b: t2 => b;
 
 lam minject2 (t1 t2 t3: *) (x: t3) : t3 =
-    match x inj t1 ∪ t2 ∪ t3 with {
-        a: t1 => x,
-        b: t2 => x,
-        c: t3 => c,
-    };
+    let u = x inj t1 ∪ t2 ∪ t3 ∪ [I32, t3];
+    match u with
+        | a: t1 => x
+        | b: t2 => x
+        | c: t3 => c
+        | (i, x) => x;
+
+lam tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 = tup#i;
