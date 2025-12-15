@@ -90,7 +90,7 @@ Lam* Clos2SJLJ::get_throw(const Def* dom) {
         tlam                = w.mut_con(clos_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})))->set("throw");
         auto [m0, env, var] = split(tlam->var());
         auto [jbuf, rbuf, tag] = env->projs<3>();
-        auto [m1, r]           = mem::op_alloc(var->type(), m0)->projs<2>();
+        auto [m1, r]           = w.call<mem::alloc>(var->type(), m0)->projs<2>();
         auto m2                = w.call<mem::store>(Defs{m1, r, var});
         rbuf    = w.call<core::bitcast>(world().call<mem::Ptr0>(world().call<mem::Ptr0>(var->type())), rbuf);
         auto m3 = w.call<mem::store>(Defs{m2, rbuf, r});

@@ -5,8 +5,6 @@
 
 plugin core;
 
-let Tas = (I32, 0);
-
 // We want the functions to be extern.
 // Functions with argstyle might stay until code gen and can not be inlined in general.
 // Therefore, we need to handle them explicitely.
@@ -56,8 +54,8 @@ con extern e3 [[mem: %mem.M 0, [a: I32, []]], return: Cn [%mem.M 0, I32]] =
     return (mem,a);
 
 con extern main [mem : %mem.M 0, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M 0, I32]] =
-    let (mem2,p) = %mem.alloc Tas mem;
-    // let mem3 = %mem.store Tas (mem2, p, argc);
+    let (mem2,p) = %mem.alloc I32 mem;
+    // let mem3 = %mem.store I32 (mem2, p, argc);
 
     // con extern cont_f1 [mem:%mem.M 0, v:I32] = f1 ();
     return (mem2, argc);

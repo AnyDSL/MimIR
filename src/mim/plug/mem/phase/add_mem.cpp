@@ -209,12 +209,18 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
              = app->rebuild(app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())});
     }
 
+    if (auto alloc = Axm::isa<mem::alloc>(def)) {
+        auto pointee = alloc->decurry()->decurry();
+        add_mem_to_lams(place, alloc->arg());
+        return world().call<mem::alloc>(pointee, mem_for_lam(place));
+    }
+
     // call-site of an axm (assuming mems are only in the final app..)
     // assume all "negative" curry depths are fully applied axms, so we do not want to rewrite those here..
     if (auto app = def->isa<App>(); app && app->axm() && app->curry() ^ 0x8000) {
         auto arg = app->arg();
         DefVec new_args(arg->num_projs());
-        for (int i = new_args.size() - 1; i >= 0; i--) {
+        for (size_t i = new_args.size(); i-- != 0;) {
             // replace memory operand with followed mem
             if (Axm::isa<mem::M>(arg->proj(i)->type())) {
                 // depth-first, follow the mems

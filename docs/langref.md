@@ -243,7 +243,7 @@ A `let` and `ret` expression allows you to rebind the same name to a different v
 This is particularly useful, when dealing with memory:
 
 ```rust
-let (mem, ptr) = %mem.alloc (I32, 0) mem;
+let (mem, ptr) = %mem.alloc I32 mem;
 let mem        = %mem.store (mem, ptr, 23:I32);
 let (mem, val) = %mem.load (mem, ptr);
 ```

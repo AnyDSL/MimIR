@@ -46,7 +46,7 @@ axm %mem.remem: {a: Nat} → %mem.M a → %mem.M a, normalize_remem;
 /// ### %%mem.alloc
 ///
 /// Allocates memory of type `T` in address space `a`.
-axm %mem.alloc: [*, a: Nat] as Ta → [%mem.M a] → [%mem.M a, %mem.Ptr Ta];
+axm %mem.alloc: [T: *] →  {a: Nat} → [%mem.M a] → [%mem.M a, %mem.Ptr (T, a)];
 ///
 /// ### %%mem.slot
 ///
@@ -58,7 +58,7 @@ axm %mem.slot: [*, a: Nat] as Ta → [%mem.M a, id: Nat] → [%mem.M a, %mem.Ptr
 ///
 /// Allocates memory of type `T` in address space `a`.
 /// The difference to `%%mem.alloc` is that the `size` is automatically inferred.
-axm %mem.malloc: [*, a: Nat] as Ta → [%mem.M a, Nat] → [%mem.M a, %mem.Ptr Ta];
+axm %mem.malloc: [T: *] → {a: Nat} → [%mem.M a, Nat] → [%mem.M a, %mem.Ptr (T, a)];
 ///
 /// ### %%mem.free
 ///

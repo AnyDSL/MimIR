@@ -8,7 +8,7 @@ con extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr (�
     let a = %core.bitcast Nat argc;
     (%core.select (%core.icmp.e (argc, 0I32), t, f)) mem where
         con t(mem: %mem.M 0) =
-            let (mem, ptr) = %mem.alloc («a; I32», 0) mem; // hidden %core.nat.mul (a, 4)) will pop up here causing poptential probls in schedule
+            let (mem, ptr) = %mem.alloc «a; I32» mem; // hidden %core.nat.mul (a, 4)) will pop up here causing poptential probls in schedule
             n (mem, 23);
         con f(mem: %mem.M 0) =
             n (mem, %core.nat.mul (a, 4));

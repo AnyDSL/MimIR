@@ -84,7 +84,7 @@ const Def* LowerMatrixLowLevel::rewrite_imm_App(const App* app) {
         mem = rewrite(mem);
         DLOG("  S T mem {} {} {}", S, T, mem);
         auto arr_ty          = arr_ty_of_matrix_ty(S, T);
-        auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
+        auto [mem2, ptr_mat] = w.call<mem::alloc>(arr_ty, mem)->projs<2>();
         auto res             = w.tuple({mem2, ptr_mat});
         DLOG("  res {} : {}", res, res->type());
         return res;
@@ -134,7 +134,7 @@ const Def* LowerMatrixLowLevel::rewrite_imm_App(const App* app) {
         S                    = rewrite(S);
         T                    = rewrite(T);
         auto arr_ty          = arr_ty_of_matrix_ty(S, T);
-        auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
+        auto [mem2, ptr_mat] = w.call<mem::alloc>(arr_ty, mem)->projs<2>();
 
         // store initial value
         auto n       = n_def->as<Lit>()->get<u64>();
