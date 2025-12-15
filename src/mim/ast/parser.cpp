@@ -617,10 +617,13 @@ Ptr<ValDecl> Parser::parse_axm_decl() {
     eat(Tag::K_axm);
     Dbg dbg, normalizer;
     Tok curry, trip;
+    // TODO if we check this later, we also have to report this error later
     if (auto name = expect(Tag::M_anx, "annex name of an axm"))
         dbg = name.dbg();
-    else
+    else {
+        accept(Tag::M_id);
         dbg = Dbg(curr_, ast().sym("<error annex name>"));
+    }
 
     std::deque<Ptrs<AxmDecl::Alias>> subs;
     if (ahead().isa(Tag::D_paren_l)) {
