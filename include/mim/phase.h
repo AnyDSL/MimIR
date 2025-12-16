@@ -79,10 +79,6 @@ public:
 
     bool is_bootstrapping() const { return bootstrapping_; }
 
-    /// /// You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.
-    /// /// @note If you don't need a fixed-point, just return `false` after the first run of analyze.
-    /// virtual bool analyze() { return false; }
-
     /// @name Rewrite
     ///@{
     virtual void rewrite_annex(flags_t, const Def*);
