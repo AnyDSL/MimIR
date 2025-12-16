@@ -54,11 +54,11 @@ const Def* SSA::rewrite(const Def* def) {
                 return world().call<mem::remem>(mem)->set(store->dbg());
             }
         }
-    } else if (auto [app, mem_lam] = isa_apped_mut_lam(def); isa_workable(mem_lam)) {
+    } else if (auto [app, mem_lam] = isa_apped_mut_lam(def); isa_optimizable(mem_lam)) {
         return mem2phi(app, mem_lam);
     } else {
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-            if (auto lam = def->op(i)->isa_mut<Lam>(); isa_workable(lam)) {
+            if (auto lam = def->op(i)->isa_mut<Lam>(); isa_optimizable(lam)) {
                 if (mem2phi_.contains(lam)) return def->refine(i, eta_exp_->proxy(lam));
             }
         }
@@ -162,7 +162,7 @@ undo_t SSA::analyze(const Proxy* proxy) {
 
 undo_t SSA::analyze(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto succ_lam = isa_workable(def->op(i)->isa_mut<Lam>())) {
+        if (auto succ_lam = isa_optimizable(def->op(i)->isa_mut<Lam>())) {
             auto& succ_info = data(succ_lam);
 
             // TODO this is a bit scruffy - maybe we can do better

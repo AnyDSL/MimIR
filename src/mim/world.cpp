@@ -95,6 +95,7 @@ const Def* World::register_annex(flags_t f, const Def* def) {
     auto plugin = Annex::demangle(driver(), f);
     if (driver().is_loaded(plugin)) {
         assert_emplace(move_.flags2annex, f, def);
+        def->annex_ = true;
         return def;
     }
     return nullptr;

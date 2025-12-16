@@ -1,7 +1,6 @@
 #pragma once
 
 #include <span>
-#include <type_traits>
 #include <variant>
 
 #include "mim/def.h"
@@ -345,9 +344,13 @@ private:
 ///@{
 inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
 
-/// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
-inline Lam* isa_workable(Lam* lam) {
-    if (!lam || lam->is_external() || !lam->is_set()) return nullptr;
+/// These are Lam%s that are
+/// * neither `nullptr`,
+/// * nor Lam::is_external,
+/// * nor Lam::is_annex,
+/// * nor Lam::is_unset.
+inline Lam* isa_optimizable(Lam* lam) {
+    if (!lam || lam->is_external() || lam->is_annex() || !lam->is_set()) return nullptr;
     return lam;
 }
 
