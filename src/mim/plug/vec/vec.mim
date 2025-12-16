@@ -28,6 +28,10 @@ axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] 
 ///
 /// ### %%vec.zip
 ///
+/// [Combines](https://en.wikipedia.org/wiki/Zipping_(computer_science)) multiple vectors element-wise using the provided function.
+/// Given `ni` vectors of length `n`, and a function `f` that takes one element from each vector,
+/// `%%vec.zip` produces a new vector of length `n` where each element is the result of applying `f`.
+///
 axm %vec.zip: {ni n: Nat} → {Is: «ni; *», R: *} → [f: «i: ni; Is#i» → R] → [«i: ni; «n; Is#i»»] → «n; R», normalize_zip;
 ///
 /// ## Scanning
