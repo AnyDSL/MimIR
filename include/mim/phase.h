@@ -58,8 +58,8 @@ protected:
 };
 
 /// This Phase will recursively Rewriter::rewrite
-/// 1. all World::annexes() (during which RWPhase::is_bootstrapping is `true`), and then
-/// 2. all World::externals() (during which RWPhase::is_bootstrapping is `false`).
+/// 1. all World::annexes() (during which Analysis::is_bootstrapping is `true`), and then
+/// 2. all World::externals() (during which Analysis::is_bootstrapping is `false`).
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class Analysis : public Phase, public Rewriter {
 public:
