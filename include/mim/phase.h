@@ -112,19 +112,22 @@ class RWPhase : public Phase, public Rewriter {
 public:
     /// @name Construction
     ///@{
-    RWPhase(World& world, std::string name)
+    RWPhase(World& world, std::string name, Analysis* analysis = nullptr)
         : Phase(world, std::move(name))
-        , Rewriter(world.inherit()) {}
-    RWPhase(World& world, flags_t annex)
+        , Rewriter(world.inherit())
+        , analysis_(analysis) {}
+    RWPhase(World& world, flags_t annex, Analysis* analysis = nullptr)
         : Phase(world, annex)
-        , Rewriter(world.inherit()) {}
+        , Rewriter(world.inherit())
+        , analysis_(analysis) {}
     ///@}
 
     bool is_bootstrapping() const { return bootstrapping_; }
 
     /// You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.
+    /// If analysis_ is set, use this for the fixed-point loop.
     /// @note If you don't need a fixed-point, just return `false` after the first run of analyze.
-    virtual bool analyze() { return false; }
+    virtual bool analyze();
 
     /// @name Rewrite
     ///@{
@@ -148,6 +151,7 @@ protected:
     void start() override;
 
 private:
+    Analysis* analysis_;
     bool bootstrapping_ = true;
 };
 

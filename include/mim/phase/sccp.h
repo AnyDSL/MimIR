@@ -24,14 +24,11 @@ private:
 
 public:
     SCCP(World& world, flags_t annex)
-        : RWPhase(world, annex)
+        : RWPhase(world, annex, &analysis_)
         , analysis_(world) {}
 
-    bool analyze() final;
-
 private:
-    auto& lattice() { return analysis_.lattice(); }
-    const Def* lattice(const Def* def) { return lattice()[def]; }
+    const Def* lattice(const Def* def) { return analysis_.lattice()[def]; }
     const Def* rewrite_imm_App(const App*) final;
 
     Analysis analysis_;

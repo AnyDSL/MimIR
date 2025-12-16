@@ -60,6 +60,16 @@ void RWPhase::start() {
     swap(old_world(), new_world());
 }
 
+bool RWPhase::analyze() {
+    if (analysis_) {
+        analysis_->reset();
+        analysis_->run();
+        return analysis_->todo();
+    }
+
+    return false;
+}
+
 void RWPhase::rewrite_annex(flags_t f, const Def* def) { new_world().register_annex(f, rewrite(def)); }
 
 void RWPhase::rewrite_external(Def* old_mut) {

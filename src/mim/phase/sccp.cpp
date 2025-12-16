@@ -63,12 +63,6 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
     return Rewriter::rewrite_imm_App(app);
 }
 
-bool SCCP::analyze() {
-    analysis_.reset();
-    analysis_.run();
-    return analysis_.todo();
-}
-
 const Def* SCCP::rewrite_imm_App(const App* old_app) {
     if (auto old_lam = old_app->callee()->isa_mut<Lam>()) {
         if (auto l = lattice(old_lam->var()); l && l != old_lam->var()) {
