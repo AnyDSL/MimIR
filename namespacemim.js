@@ -18,6 +18,7 @@ var namespacemim =
       [ "run", "namespacemim_1_1sys.html#a427b6a5c17042bb1943e921a81bebec4", null ],
       [ "system", "namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396", null ]
     ] ],
+    [ "Analysis", "classmim_1_1Analysis.html", "classmim_1_1Analysis" ],
     [ "Annex", "structmim_1_1Annex.html", "structmim_1_1Annex" ],
     [ "App", "classmim_1_1App.html", "classmim_1_1App" ],
     [ "Arr", "classmim_1_1Arr.html", "classmim_1_1Arr" ],
@@ -283,7 +284,7 @@ var namespacemim =
     [ "is_unit", "namespacemim.html#a2efd858db7ed2bd9c205337f6129daa8", null ],
     [ "isa_apped_mut_lam", "namespacemim.html#a3036ca68b9ff9ebd00b9b35c7ad1a9a0", null ],
     [ "isa_callee", "namespacemim.html#aa6e918f49777aea04b1993cded8aa1f7", null ],
-    [ "isa_workable", "namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4", null ],
+    [ "isa_optimizable", "namespacemim.html#a4c25bbfc1f84134320947fd7980fbacf", null ],
     [ "lookup", "namespacemim.html#a2b0eba3a59bd19880f571afb77e4d611", null ],
     [ "mim_get_plugin", "namespacemim.html#a77f34c28f8418e4828b4684cbc025e52", null ],
     [ "murmur3", "namespacemim.html#acc8c144dd090446d1c2fc0ae2ca908a9", null ],

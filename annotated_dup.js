@@ -112,6 +112,7 @@ var annotated_dup =
           [ "LowerRegex", "classmim_1_1plug_1_1regex_1_1LowerRegex.html", "classmim_1_1plug_1_1regex_1_1LowerRegex" ]
         ] ]
       ] ],
+      [ "Analysis", "classmim_1_1Analysis.html", "classmim_1_1Analysis" ],
       [ "Annex", "structmim_1_1Annex.html", "structmim_1_1Annex" ],
       [ "App", "classmim_1_1App.html", "classmim_1_1App" ],
       [ "Arr", "classmim_1_1Arr.html", "classmim_1_1Arr" ],

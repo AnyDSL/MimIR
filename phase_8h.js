@@ -1,6 +1,7 @@
 var phase_8h =
 [
     [ "mim::Phase", "classmim_1_1Phase.html", "classmim_1_1Phase" ],
+    [ "mim::Analysis", "classmim_1_1Analysis.html", "classmim_1_1Analysis" ],
     [ "mim::RWPhase", "classmim_1_1RWPhase.html", "classmim_1_1RWPhase" ],
     [ "mim::Repl", "classmim_1_1Repl.html", "classmim_1_1Repl" ],
     [ "mim::ReplMan", "classmim_1_1ReplMan.html", "classmim_1_1ReplMan" ],

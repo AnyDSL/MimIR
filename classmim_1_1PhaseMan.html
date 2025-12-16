@@ -204,7 +204,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:aaf397a927e480d7c69023d39441e7a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classmim_1_1Phase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Phase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmim_1_1Phase.html">mim::Phase</a></td></tr>
 <tr class="memitem:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase" id="r_a0390804e30acc01109b03f04109327a2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Phase.html#a0390804e30acc01109b03f04109327a2">todo_</a> = false</td></tr>
-<tr class="memdesc:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to <code>true</code> to indicate that you want to rerun all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>es in current your fixed-point <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
+<tr class="memdesc:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to <code>true</code> to indicate that you want to rerun all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>es in your current fixed-point <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
 <tr class="separator:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classmim_1_1Stage"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Stage')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmim_1_1Stage.html">mim::Stage</a></td></tr>
 <tr class="memitem:a6e49075de2431065ae4e8e804131c28a inherit pro_attribs_classmim_1_1Stage" id="r_a6e49075de2431065ae4e8e804131c28a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Stage.html#a6e49075de2431065ae4e8e804131c28a">name_</a></td></tr>
@@ -212,9 +212,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Organizes several <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s in a a pipeline. </p>
-<p>If <code class="param">fixed_point</code> is <code>true</code>, run <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a> until all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s' <a class="el" href="classmim_1_1Phase.html#a0390804e30acc01109b03f04109327a2" title="Set to true to indicate that you want to rerun all Phasees in current your fixed-point PhaseMan.">Phase::todo_</a> flags yield <code>false</code>. </p>
+<p>If <code class="param">fixed_point</code> is <code>true</code>, run <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a> until all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s' <a class="el" href="classmim_1_1Phase.html#a0390804e30acc01109b03f04109327a2" title="Set to true to indicate that you want to rerun all Phasees in your current fixed-point PhaseMan.">Phase::todo_</a> flags yield <code>false</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00211">211</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00255">255</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a07c8ecc9846081ddbe641bd1533f919d" name="a07c8ecc9846081ddbe641bd1533f919d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07c8ecc9846081ddbe641bd1533f919d">&#9670;&#160;</a></span>PhaseMan()</h2>
@@ -243,11 +243,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00215">215</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00259">259</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="phase_8h_source.html#l00030">mim::Phase::Phase()</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00130">apply()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00163">apply()</a>.</p>
 
 </div>
 </div>
@@ -271,11 +271,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00108">108</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00141">141</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00076">mim::Stage::name_</a>, and <a class="el" href="phase_8h_source.html#l00226">phases()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00076">mim::Stage::name_</a>, and <a class="el" href="phase_8h_source.html#l00270">phases()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00114">apply()</a>, and <a class="el" href="phase_8cpp_source.html#l00130">apply()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00147">apply()</a>, and <a class="el" href="phase_8cpp_source.html#l00163">apply()</a>.</p>
 
 </div>
 </div>
@@ -306,9 +306,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Stage.html#a86d4778398f4afe1a7088dba6361b7e3">mim::Stage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00114">114</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00147">147</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8cpp_source.html#l00108">apply()</a>, <a class="el" href="def_8h_source.html#l00830">mim::Lit::as()</a>, <a class="el" href="pass_8h_source.html#l00040">mim::Stage::create()</a>, <a class="el" href="pass_8h_source.html#l00065">mim::Stage::driver()</a>, <a class="el" href="phase_8h_source.html#l00030">mim::Phase::Phase()</a>, <a class="el" href="phase_8h_source.html#l00226">phases()</a>, <a class="el" href="phase_8h_source.html#l00130">mim::ReplMan::repls()</a>, and <a class="el" href="lam_8h_source.html#l00330">mim::App::uncurry_args()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8cpp_source.html#l00141">apply()</a>, <a class="el" href="def_8h_source.html#l00832">mim::Lit::as()</a>, <a class="el" href="pass_8h_source.html#l00040">mim::Stage::create()</a>, <a class="el" href="pass_8h_source.html#l00065">mim::Stage::driver()</a>, <a class="el" href="phase_8h_source.html#l00030">mim::Phase::Phase()</a>, <a class="el" href="phase_8h_source.html#l00270">phases()</a>, <a class="el" href="phase_8h_source.html#l00174">mim::ReplMan::repls()</a>, and <a class="el" href="lam_8h_source.html#l00329">mim::App::uncurry_args()</a>.</p>
 
 </div>
 </div>
@@ -339,9 +339,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Stage.html#ab10946657aaf4281daa0af3b2daa50d7">mim::Stage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00130">130</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00163">163</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8cpp_source.html#l00108">apply()</a>, and <a class="el" href="phase_8h_source.html#l00215">PhaseMan()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8cpp_source.html#l00141">apply()</a>, and <a class="el" href="phase_8h_source.html#l00259">PhaseMan()</a>.</p>
 
 </div>
 </div>
@@ -368,9 +368,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00225">225</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00269">269</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00135">start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00168">start()</a>.</p>
 
 </div>
 </div>
@@ -397,9 +397,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00226">226</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00270">270</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00108">apply()</a>, <a class="el" href="phase_8cpp_source.html#l00114">apply()</a>, and <a class="el" href="phase_8cpp_source.html#l00135">start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00141">apply()</a>, <a class="el" href="phase_8cpp_source.html#l00147">apply()</a>, and <a class="el" href="phase_8cpp_source.html#l00168">start()</a>.</p>
 
 </div>
 </div>
@@ -426,7 +426,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00227">227</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00271">271</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 </div>
 </div>
@@ -457,9 +457,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classmim_1_1Phase.html#ac440f59a1682e69dcc4327bda527ce9d">mim::Phase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00135">135</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00168">168</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00225">fixed_point()</a>, <a class="el" href="phase_8h_source.html#l00030">mim::Phase::Phase()</a>, <a class="el" href="phase_8h_source.html#l00226">phases()</a>, <a class="el" href="phase_8h_source.html#l00039">mim::Phase::todo()</a>, <a class="el" href="phase_8h_source.html#l00057">mim::Phase::todo_</a>, and <a class="el" href="log_8h_source.html#l00092">VLOG</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00269">fixed_point()</a>, <a class="el" href="phase_8h_source.html#l00030">mim::Phase::Phase()</a>, <a class="el" href="phase_8h_source.html#l00270">phases()</a>, <a class="el" href="phase_8h_source.html#l00039">mim::Phase::todo()</a>, <a class="el" href="phase_8h_source.html#l00057">mim::Phase::todo_</a>, and <a class="el" href="log_8h_source.html#l00092">VLOG</a>.</p>
 
 </div>
 </div>

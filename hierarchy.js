@@ -74,6 +74,7 @@ var hierarchy =
     [ "mim::BitSet::reference", "classmim_1_1BitSet_1_1reference.html", null ],
     [ "mim::Res", "classmim_1_1Res.html", null ],
     [ "mim::Rewriter", "classmim_1_1Rewriter.html", [
+      [ "mim::Analysis", "classmim_1_1Analysis.html", null ],
       [ "mim::RWPhase", "classmim_1_1RWPhase.html", [
         [ "mim::BetaRedPhase", "classmim_1_1BetaRedPhase.html", null ],
         [ "mim::BranchNormalizePhase", "classmim_1_1BranchNormalizePhase.html", null ],
@@ -228,6 +229,7 @@ var hierarchy =
           [ "mim::ClosedMutPhase< Def >", "classmim_1_1ClosedMutPhase.html", [
             [ "mim::NestPhase< M >", "classmim_1_1NestPhase.html", null ]
           ] ],
+          [ "mim::Analysis", "classmim_1_1Analysis.html", null ],
           [ "mim::ClosedMutPhase< M >", "classmim_1_1ClosedMutPhase.html", null ],
           [ "mim::PassManPhase", "classmim_1_1PassManPhase.html", null ],
           [ "mim::PhaseMan", "classmim_1_1PhaseMan.html", null ],

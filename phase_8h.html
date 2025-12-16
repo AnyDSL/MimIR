@@ -150,6 +150,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Phase.html">mim::Phase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">As opposed to a <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>, a <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a> does one thing at a time and does not mix with other <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s.  <a href="classmim_1_1Phase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Analysis.html">mim::Analysis</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a> will recursively <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">Rewriter::rewrite</a>.  <a href="classmim_1_1Analysis.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1RWPhase.html">mim::RWPhase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rewrites the <a class="el" href="classmim_1_1RWPhase.html#aef58721bd5f8d89e624eea65ff51f6b3" title="Get old Defs from here.">RWPhase::old_world</a> into the <a class="el" href="classmim_1_1RWPhase.html#a0f7249ac3c85d2f2b1d7c72455c61b19" title="Create new Defs into this.">RWPhase::new_world</a> and <code>swap</code>s them afterwards.  <a href="classmim_1_1RWPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -219,9 +222,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><a class="code hl_define" href="#a5524d37751342ad354f02d31c7fd6a55">MIM_CONCAT_INNER</a>(a, b)</div>
-<div class="ttc" id="aphase_8h_html_a5524d37751342ad354f02d31c7fd6a55"><div class="ttname"><a href="#a5524d37751342ad354f02d31c7fd6a55">MIM_CONCAT_INNER</a></div><div class="ttdeci">#define MIM_CONCAT_INNER(a, b)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00138">phase.h:138</a></div></div>
+<div class="ttc" id="aphase_8h_html_a5524d37751342ad354f02d31c7fd6a55"><div class="ttname"><a href="#a5524d37751342ad354f02d31c7fd6a55">MIM_CONCAT_INNER</a></div><div class="ttdeci">#define MIM_CONCAT_INNER(a, b)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00182">phase.h:182</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00139">139</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00183">183</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 </div>
 </div>
@@ -245,7 +248,7 @@ Typedefs</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">a##b</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00138">138</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00182">182</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 </div>
 </div>
@@ -273,9 +276,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><a class="code hl_define" href="#a1693314d391945ecfbd2e15c321036b1">MIM_REPL_IMPL</a>(__stages, __annex, __LINE__, __VA_ARGS__)</div>
-<div class="ttc" id="aphase_8h_html_a1693314d391945ecfbd2e15c321036b1"><div class="ttname"><a href="#a1693314d391945ecfbd2e15c321036b1">MIM_REPL_IMPL</a></div><div class="ttdeci">#define MIM_REPL_IMPL(__stages, __annex, __id,...)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00144">phase.h:144</a></div></div>
+<div class="ttc" id="aphase_8h_html_a1693314d391945ecfbd2e15c321036b1"><div class="ttname"><a href="#a1693314d391945ecfbd2e15c321036b1">MIM_REPL_IMPL</a></div><div class="ttdeci">#define MIM_REPL_IMPL(__stages, __annex, __id,...)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00188">phase.h:188</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00141">141</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00185">185</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="autodiff_8cpp_source.html#l00014">reg_stages()</a>.</p>
 
@@ -316,16 +319,16 @@ Typedefs</h2></td></tr>
 <div class="line">        const ::mim::Def* <a class="code hl_function" href="classmim_1_1Repl.html#a8ca5d2ad78b41df8e0604778eba97ddc">replace</a>(const ::mim::Def* def) <span class="keyword">final</span> __VA_ARGS__  \</div>
 <div class="line">    };                                                                      \</div>
 <div class="line">    ::mim::Stage::hook&lt;__annex, MIM_CONCAT(Repl_, __id)&gt;(__stages)</div>
-<div class="ttc" id="aclassmim_1_1Repl_html"><div class="ttname"><a href="classmim_1_1Repl.html">mim::Repl</a></div><div class="ttdoc">Simple Stage that searches for a pattern and replaces it.</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00112">phase.h:112</a></div></div>
+<div class="ttc" id="aclassmim_1_1Repl_html"><div class="ttname"><a href="classmim_1_1Repl.html">mim::Repl</a></div><div class="ttdoc">Simple Stage that searches for a pattern and replaces it.</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00156">phase.h:156</a></div></div>
 <div class="ttc" id="aclassmim_1_1Repl_html_a8ca5d2ad78b41df8e0604778eba97ddc"><div class="ttname"><a href="classmim_1_1Repl.html#a8ca5d2ad78b41df8e0604778eba97ddc">mim::Repl::replace</a></div><div class="ttdeci">virtual const Def * replace(const Def *def)=0</div></div>
-<div class="ttc" id="aclassmim_1_1Repl_html_ad5ec29af334815089ee5155aa1aaa038"><div class="ttname"><a href="classmim_1_1Repl.html#ad5ec29af334815089ee5155aa1aaa038">mim::Repl::Repl</a></div><div class="ttdeci">Repl(World &amp;world, flags_t annex)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00114">phase.h:114</a></div></div>
+<div class="ttc" id="aclassmim_1_1Repl_html_ad5ec29af334815089ee5155aa1aaa038"><div class="ttname"><a href="classmim_1_1Repl.html#ad5ec29af334815089ee5155aa1aaa038">mim::Repl::Repl</a></div><div class="ttdeci">Repl(World &amp;world, flags_t annex)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00158">phase.h:158</a></div></div>
 <div class="ttc" id="aclassmim_1_1Stage_html_a39ade56bc81b636a7830048ca2b68a42"><div class="ttname"><a href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">mim::Stage::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00064">pass.h:64</a></div></div>
 <div class="ttc" id="aclassmim_1_1Stage_html_af3818779efacabd21b68b1e3d3ec8c15"><div class="ttname"><a href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">mim::Stage::annex</a></div><div class="ttdeci">flags_t annex() const</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00068">pass.h:68</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html"><div class="ttname"><a href="classmim_1_1World.html">mim::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of MimIR nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00031">world.h:31</a></div></div>
 <div class="ttc" id="anamespacemim_html_a2aaf0a830058bfdf4884b0addad6a93f"><div class="ttname"><a href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">mim::flags_t</a></div><div class="ttdeci">u64 flags_t</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00045">types.h:45</a></div></div>
-<div class="ttc" id="aphase_8h_html_a4b6ee482611c96913829f74c17ee1df4"><div class="ttname"><a href="#a4b6ee482611c96913829f74c17ee1df4">MIM_CONCAT</a></div><div class="ttdeci">#define MIM_CONCAT(a, b)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00139">phase.h:139</a></div></div>
+<div class="ttc" id="aphase_8h_html_a4b6ee482611c96913829f74c17ee1df4"><div class="ttname"><a href="#a4b6ee482611c96913829f74c17ee1df4">MIM_CONCAT</a></div><div class="ttdeci">#define MIM_CONCAT(a, b)</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00183">phase.h:183</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00144">144</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00188">188</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 </div>
 </div>

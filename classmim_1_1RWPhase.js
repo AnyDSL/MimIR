@@ -1,8 +1,8 @@
 var classmim_1_1RWPhase =
 [
-    [ "RWPhase", "classmim_1_1RWPhase.html#a1a93b5334758ffeae74e6244806284cf", null ],
-    [ "RWPhase", "classmim_1_1RWPhase.html#abd6df45af80da29b6de67704a1b9e50e", null ],
-    [ "analyze", "classmim_1_1RWPhase.html#acd7e8ce99e3493e9ac4bd3d11759d71b", null ],
+    [ "RWPhase", "classmim_1_1RWPhase.html#a8ef0c8aebc6eabaa582028156aaf081e", null ],
+    [ "RWPhase", "classmim_1_1RWPhase.html#a338b4217843a5a9514433f2c70edeb5c", null ],
+    [ "analyze", "classmim_1_1RWPhase.html#a03163daff4b06d1ab84f40886ddab811", null ],
     [ "is_bootstrapping", "classmim_1_1RWPhase.html#a8c1256f93cc63c1d8d0609e2aa474b51", null ],
     [ "new_world", "classmim_1_1RWPhase.html#a0f7249ac3c85d2f2b1d7c72455c61b19", null ],
     [ "old_world", "classmim_1_1RWPhase.html#aef58721bd5f8d89e624eea65ff51f6b3", null ],

@@ -40,6 +40,7 @@ var classmim_1_1Def =
     [ "hash", "classmim_1_1Def.html#a7a2188433df55928789a717ab00afc53", null ],
     [ "immutabilize", "classmim_1_1Def.html#a8080a9a8bd58ffad7a1759c4e2efc952", null ],
     [ "internalize", "classmim_1_1Def.html#aa73c33fa04415ff69e455ec10193244c", null ],
+    [ "is_annex", "classmim_1_1Def.html#af91732c930dedfdd6fce8d6befe8e6bc", null ],
     [ "is_closed", "classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69", null ],
     [ "is_elim", "classmim_1_1Def.html#a24edc8f00822c4b32e141cf5169970ab", null ],
     [ "is_external", "classmim_1_1Def.html#aa3519178f6136b088a41d1bfa0cab603", null ],

@@ -215,7 +215,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a06b703ae1027080726991949ee0deec5 inherit pro_methods_classmim_1_1ClosedMutPhase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classmim_1_1Phase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Phase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmim_1_1Phase.html">mim::Phase</a></td></tr>
 <tr class="memitem:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase" id="r_a0390804e30acc01109b03f04109327a2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Phase.html#a0390804e30acc01109b03f04109327a2">todo_</a> = false</td></tr>
-<tr class="memdesc:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to <code>true</code> to indicate that you want to rerun all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>es in current your fixed-point <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
+<tr class="memdesc:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to <code>true</code> to indicate that you want to rerun all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>es in your current fixed-point <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
 <tr class="separator:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classmim_1_1Stage"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Stage')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmim_1_1Stage.html">mim::Stage</a></td></tr>
 <tr class="memitem:a6e49075de2431065ae4e8e804131c28a inherit pro_attribs_classmim_1_1Stage" id="r_a6e49075de2431065ae4e8e804131c28a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Stage.html#a6e49075de2431065ae4e8e804131c28a">name_</a></td></tr>
@@ -225,7 +225,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a> = Def&gt;<br />
 class mim::NestPhase&lt; M &gt;</div><p>Like <a class="el" href="classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable, closed mutables in the World.">ClosedMutPhase</a> but computes a <a class="el" href="classmim_1_1Nest.html" title="Builds a nesting tree of all immutables‍/binders.">Nest</a> for each <a class="el" href="#a101203cdf21e91486513e9cd7e4b0396">NestPhase::visit</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00266">266</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00310">310</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad9ab81063d7cd142861d4ca9c2d13ede" name="ad9ab81063d7cd142861d4ca9c2d13ede"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9ab81063d7cd142861d4ca9c2d13ede">&#9670;&#160;</a></span>NestPhase() <span class="overload">[1/2]</span></h2>
@@ -261,9 +261,9 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00268">268</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00312">312</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00243">mim::ClosedMutPhase&lt; Def &gt;::ClosedMutPhase()</a>, <a class="el" href="phase_8h_source.html#l00250">mim::ClosedMutPhase&lt; Def &gt;::elide_empty()</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00287">mim::ClosedMutPhase&lt; Def &gt;::ClosedMutPhase()</a>, <a class="el" href="phase_8h_source.html#l00294">mim::ClosedMutPhase&lt; Def &gt;::elide_empty()</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
 
 </div>
 </div>
@@ -301,9 +301,9 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00270">270</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00314">314</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="phase_8h_source.html#l00243">mim::ClosedMutPhase&lt; Def &gt;::ClosedMutPhase()</a>, <a class="el" href="phase_8h_source.html#l00250">mim::ClosedMutPhase&lt; Def &gt;::elide_empty()</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="phase_8h_source.html#l00287">mim::ClosedMutPhase&lt; Def &gt;::ClosedMutPhase()</a>, <a class="el" href="phase_8h_source.html#l00294">mim::ClosedMutPhase&lt; Def &gt;::elide_empty()</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
 
 </div>
 </div>
@@ -333,9 +333,9 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00273">273</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00317">317</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00277">visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00321">visit()</a>.</p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 
 <p>Implemented in <a class="el" href="classmim_1_1Emitter.html#aadf52c65867f33786a2359b96806b67c">mim::Emitter&lt; Value, Type, BB, Child &gt;</a>, <a class="el" href="classmim_1_1Emitter.html#aadf52c65867f33786a2359b96806b67c">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;</a>, <a class="el" href="classmim_1_1Emitter.html#aadf52c65867f33786a2359b96806b67c">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;</a>, and <a class="el" href="classmim_1_1plug_1_1mem_1_1phase_1_1AddMem.html#af0a9accb45252d683e6ddaf37c2e4e91">mim::plug::mem::phase::AddMem</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00277">visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00321">visit()</a>.</p>
 
 </div>
 </div>
@@ -395,9 +395,9 @@ template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae541
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00277">277</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00321">321</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="phase_8h_source.html#l00273">nest()</a>, and <a class="el" href="#a101203cdf21e91486513e9cd7e4b0396">visit()</a>.</p>
+<p class="reference">References <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="phase_8h_source.html#l00317">nest()</a>, and <a class="el" href="#a101203cdf21e91486513e9cd7e4b0396">visit()</a>.</p>
 
 </div>
 </div>

@@ -9,5 +9,5 @@ var lam_8h =
     [ "mim::compose_cn", "namespacemim.html#aab8bd049eb0b9bf7561a602f62ce7ebd", null ],
     [ "mim::isa_apped_mut_lam", "namespacemim.html#a3036ca68b9ff9ebd00b9b35c7ad1a9a0", null ],
     [ "mim::isa_callee", "namespacemim.html#aa6e918f49777aea04b1993cded8aa1f7", null ],
-    [ "mim::isa_workable", "namespacemim.html#a9e739ae65746f6a876447f9cdd48bfb4", null ]
+    [ "mim::isa_optimizable", "namespacemim.html#a4c25bbfc1f84134320947fd7980fbacf", null ]
 ];
