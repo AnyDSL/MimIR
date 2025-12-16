@@ -189,11 +189,17 @@ Variables</h2></td></tr>
 <tr class="memitem:ad0011878a139b10d25a61654e5186877"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1vec.html#ad0011878a139b10d25a61654e5186877">mim::plug::vec::normalize_fold</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *c, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
 <tr class="separator:ad0011878a139b10d25a61654e5186877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">%vec.zip</h2></td></tr>
+<tr class="memitem:a2e32f89440fc8e5beac96559a98f4303" id="r_a2e32f89440fc8e5beac96559a98f4303"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1vec.html#a2e32f89440fc8e5beac96559a98f4303">mim::plug::vec::zip</a> : flags_t </td></tr>
+<tr class="separator:a2e32f89440fc8e5beac96559a98f4303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2df07a23e69b8802ebe4ec5df3ae747" id="r_ae2df07a23e69b8802ebe4ec5df3ae747"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1vec.html#ae2df07a23e69b8802ebe4ec5df3ae747">mim::plug::vec::normalize_zip</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *c, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="separator:ae2df07a23e69b8802ebe4ec5df3ae747"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%vec.scan</h2></td></tr>
 <tr class="memitem:afc4be00d00e10620d57d3d788bec3f03" id="r_afc4be00d00e10620d57d3d788bec3f03"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03">mim::plug::vec::scan</a> : flags_t { <br />
-&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03a0a6701462dd440321b2b782395bfcb68">mim::plug::vec::for_all</a> = 0x5c61000000000100
+&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03a0a6701462dd440321b2b782395bfcb68">mim::plug::vec::for_all</a> = 0x5c61000000000200
 , <br />
-&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03ae087923eb5dd1310f5f25ddd5ae5b580">mim::plug::vec::exists</a> = 0x5c61000000000101
+&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03ae087923eb5dd1310f5f25ddd5ae5b580">mim::plug::vec::exists</a> = 0x5c61000000000201
 <br />
  }</td></tr>
 <tr class="separator:afc4be00d00e10620d57d3d788bec3f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,6 +240,7 @@ Variables</h2></td></tr>
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">void</span> register_normalizers(Normalizers&amp; normalizers) {\</div>
 <div class="line">        normalizers[flags_t(fold::l)] = &amp;normalize_fold&lt;fold::l&gt;; \</div>
 <div class="line">        normalizers[flags_t(fold::r)] = &amp;normalize_fold&lt;fold::r&gt;; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;zip&gt;)] = &amp;normalize_zip; \</div>
 <div class="line">        normalizers[flags_t(scan::for_all)] = &amp;normalize_scan&lt;scan::for_all&gt;; \</div>
 <div class="line">        normalizers[flags_t(scan::exists)] = &amp;normalize_scan&lt;scan::exists&gt;; \</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;is_unique&gt;)] = &amp;normalize_is_unique; \</div>
@@ -241,7 +248,7 @@ Variables</h2></td></tr>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;diff&gt;)] = &amp;normalize_diff; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="vec_2autogen_8h_source.html#l00083">83</a> of file <a class="el" href="vec_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vec_2autogen_8h_source.html#l00091">91</a> of file <a class="el" href="vec_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

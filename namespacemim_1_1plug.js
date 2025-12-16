@@ -539,11 +539,13 @@ var namespacemim_1_1plug =
         [ "for_all", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03a0a6701462dd440321b2b782395bfcb68", null ],
         [ "exists", "namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03ae087923eb5dd1310f5f25ddd5ae5b580", null ]
       ] ],
+      [ "zip", "namespacemim_1_1plug_1_1vec.html#a2e32f89440fc8e5beac96559a98f4303", null ],
       [ "normalize_cat", "namespacemim_1_1plug_1_1vec.html#a33960430a521324a04b3eae57f4c837d", null ],
       [ "normalize_diff", "namespacemim_1_1plug_1_1vec.html#abbc9a471c743f28e6bd53866ad31be1b", null ],
       [ "normalize_fold", "namespacemim_1_1plug_1_1vec.html#ad0011878a139b10d25a61654e5186877", null ],
       [ "normalize_is_unique", "namespacemim_1_1plug_1_1vec.html#aa5bac705cb383e5ba770e7dc841f183c", null ],
       [ "normalize_scan", "namespacemim_1_1plug_1_1vec.html#a009bb0ca6ee61eaae893c94c8e145e13", null ],
+      [ "normalize_zip", "namespacemim_1_1plug_1_1vec.html#ae2df07a23e69b8802ebe4ec5df3ae747", null ],
       [ "register_normalizers", "namespacemim_1_1plug_1_1vec.html#a0f5ea338a78435939ef48ab0e1111e1b", null ],
       [ "Plugin_Id", "namespacemim_1_1plug_1_1vec.html#ad3b6bd69dddb4ad52e620122c43f9965", null ]
     ] ]

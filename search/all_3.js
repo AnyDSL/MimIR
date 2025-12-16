@@ -79,7 +79,7 @@ var searchData=
   ['dfamin_2ecpp_76',['dfamin.cpp',['../dfamin_8cpp.html',1,'']]],
   ['dfamin_2eh_77',['dfamin.h',['../dfamin_8h.html',1,'']]],
   ['dfanode_78',['DFANode',['../classautomaton_1_1DFANode.html',1,'automaton::DFANode'],['../classautomaton_1_1DFANode.html#a92167a1ac6cae89eba1fabe128bdfb9b',1,'automaton::DFANode::DFANode()']]],
-  ['diff_79',['diff',['../vec.html#autotoc_md276',1,'%vec.diff'],['../namespacemim_1_1plug_1_1vec.html#a5c01986cca7021fdf3002667cb8f347e',1,'mim::plug::vec::diff']]],
+  ['diff_79',['diff',['../vec.html#autotoc_md277',1,'%vec.diff'],['../namespacemim_1_1plug_1_1vec.html#a5c01986cca7021fdf3002667cb8f347e',1,'mim::plug::vec::diff']]],
   ['difference_5ftype_80',['difference_type',['../classmim_1_1Sets_1_1Set_1_1iterator.html#ab643abf06d36d2f96e9545977afff53b',1,'mim::Sets::Set::iterator']]],
   ['differentiation_20plugin_81',['The automatic differentiation Plugin',['../autodiff.html',1,'']]],
   ['direct_20cps2ds_82',['%%direct.cps2ds',['../direct.html#autotoc_md133',1,'']]],

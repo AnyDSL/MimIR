@@ -124,7 +124,7 @@ var searchData=
   ['normalize_5ftype_121',['normalize_type',['../namespacemim_1_1plug_1_1refly.html#aabcca7ba2e76b301232765af42655418',1,'mim::plug::refly']]],
   ['normalize_5fwrap_122',['normalize_wrap',['../namespacemim_1_1plug_1_1core.html#a67845d51427dee2eba8a9b9c6399d7b7',1,'mim::plug::core']]],
   ['normalize_5fzero_123',['normalize_zero',['../namespacemim_1_1plug_1_1autodiff.html#ab295e085cfcd4ba9cf9ed821621d02ef',1,'mim::plug::autodiff']]],
-  ['normalize_5fzip_124',['normalize_zip',['../namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448',1,'mim::plug::tuple']]],
+  ['normalize_5fzip_124',['normalize_zip',['../namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448',1,'mim::plug::tuple::normalize_zip()'],['../namespacemim_1_1plug_1_1vec.html#ae2df07a23e69b8802ebe4ec5df3ae747',1,'mim::plug::vec::normalize_zip()']]],
   ['normalizefn_125',['NormalizeFn',['../namespacemim.html#ab992e926dce870b1e086b34589849a92',1,'mim']]],
   ['normalizer_126',['normalizer',['../structmim_1_1ast_1_1AnnexInfo.html#a7f272ae0295326d1015bb7e7220e5bd0',1,'mim::ast::AnnexInfo::normalizer'],['../classmim_1_1ast_1_1AxmDecl.html#aa902b994cb0fdfb2b0d59d8dce6c236a',1,'mim::ast::AxmDecl::normalizer()'],['../classmim_1_1Axm.html#a86709d59d9d1dec24da36a52db1177f4',1,'mim::Axm::normalizer()'],['../classmim_1_1Driver.html#a9da4ca3384f62706a603bacad94e98e6',1,'mim::Driver::normalizer(flags_t flags) const'],['../classmim_1_1Driver.html#a66bee8d7f5f315deb200c65bf3ea0bff',1,'mim::Driver::normalizer(plugin_t d, tag_t t, sub_t s) const']]],
   ['normalizers_127',['Normalizers',['../namespacemim.html#ab875464e5f495601abff7287573e1405',1,'mim']]],
