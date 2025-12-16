@@ -43,23 +43,25 @@ const Def* normalize_fold(const Def*, const Def* c, const Def* arg) {
 }
 
 const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
-    return {};
-    auto& w     = type->world();
-    auto [a, b] = arg->projs<2>();
-    auto callee = c->as<App>();
-    auto f      = callee->arg();
+    if (arg->is_open()) return {};
+    auto& w           = type->world();
+    auto [ni_n, _, f] = App::uncurry_args<3>(c);
+    auto [ni, n]      = ni_n->projs<2>([](const Def* def) { return Lit::isa(def); });
 
-    if (auto ta = a->isa<Tuple>()) {
-        if (auto tb = b->isa<Tuple>()) {
-            size_t n     = ta->num_ops();
-            auto new_ops = absl::FixedArray<const Def*>(n);
-            for (size_t i = 0; i != n; ++i)
-                new_ops[i] = w.app(f, {ta->op(i), tb->op(i)});
-            return w.tuple(new_ops);
-        }
+    if (!ni || !n) return {};
+    if (ni >= w.flags().scalarize_threshold || n >= w.flags().scalarize_threshold) return {};
+
+    auto res = absl::FixedArray<const Def*>(*n);
+    auto tup = absl::FixedArray<const Def*>(*ni);
+
+    for (size_t j = 0; j != n; ++j) {
+        for (size_t i = 0; i != ni; ++i)
+            tup[i] = arg->proj(*ni, i)->proj(*n, j);
+
+        res[j] = w.app(f, tup);
     }
 
-    return nullptr;
+    return w.tuple(res);
 }
 
 template<scan id>
