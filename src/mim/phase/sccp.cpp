@@ -39,7 +39,7 @@ Def* SCCP::Analysis::rewrite_mut(Def* mut) {
 }
 
 const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
-    if (auto lam = app->callee()->isa_mut<Lam>(); lam && lam->is_set() && !lam->is_external() && !lam->is_annex()) {
+    if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
         auto abstr_vars = absl::FixedArray<const Def*>(n);
