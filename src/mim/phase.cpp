@@ -20,6 +20,12 @@ void Phase::run() {
  * Analyzer
  */
 
+void Analysis::reset() {
+    old2news_.clear();
+    push();
+    todo_ = false;
+}
+
 void Analysis::start() {
     for (const auto& [f, def] : world().flags2annex())
         rewrite_annex(f, def);
@@ -32,8 +38,6 @@ void Analysis::start() {
 
 void Analysis::rewrite_annex(flags_t, const Def* def) { rewrite(def); }
 void Analysis::rewrite_external(Def* mut) { rewrite(mut); }
-
-Def* rewrite_mut(Def* def) override {}
 
 /*
  * RWPhase

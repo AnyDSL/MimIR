@@ -4,121 +4,77 @@
 
 namespace mim {
 
-void SCCP::Analysis::rewrite_annex(flags_t, const Def*) {}
+const Def* SCCP::Analysis::join(const Def* top, const Def* def) {
+    auto [i, ins] = lattice_.emplace(top, def);
+    if (ins) {
+        todo_ = true;
+        return def;
+    }
 
-void SCCP::Analysis::rewrite_external(Def*) {}
+    auto cur = i->second;
+    if (def->isa<Bot>() || cur == def || cur == top) return cur;
 
-const Def* SCCP::Analysis::rewrite_imm_App(const App* app) { return Rewriter::rewrite_imm_App(app); }
-
-bool SCCP::analyze() {
-    todo_ = false;
-    visited_.clear();
-    for (auto def : old_world().annexes())
-        concr2abstr(init(def));
-    for (auto def : old_world().externals().muts())
-        concr2abstr(init(def));
-
-    return todo_;
+    todo_ = true;
+    if (cur->isa<Bot>()) return i->second = def;
+    return i->second = top;
 }
 
-const Def* SCCP::init(const Def* def) {
-    if (auto mut = def->isa_mut()) return init(mut);
-    return def;
-}
+Def* SCCP::Analysis::rewrite_mut(Def* mut) {
+    map(mut, mut);
 
-const Def* SCCP::init(Def* mut) {
-    if (auto var = mut->has_var()) concr2abstr(var, var);
+    if (auto var = mut->has_var()) {
+        map(var, var);
+
+        if (mut->isa<Lam>())
+            for (auto var : mut->tvars()) {
+                map(var, var);
+                join(var, var);
+            }
+    }
+
+    for (auto d : mut->deps())
+        rewrite(d);
+
     return mut;
 }
 
-const Def* SCCP::concr2abstr(const Def* concr) {
-    if (auto [_, ins] = visited_.emplace(concr); !ins) {
-        if (auto i = concr2abstr_.find(concr); i != concr2abstr_.end()) return i->second;
-        // in some rare cyclic cases we haven't built the immutable yet
-    }
-
-    if (auto mut = concr->isa_mut()) {
-        concr2abstr(mut, mut);
-        init(mut);
-        for (auto d : mut->deps())
-            concr2abstr(d);
-        return mut;
-    }
-
-    return concr2abstr(concr, concr2abstr_impl(concr)).first;
-}
-
-const Def* SCCP::concr2abstr_impl(const Def* def) {
-    if (auto branch = Branch(def)) {
-        if (auto l = Lit::isa<bool>(concr2abstr(branch.cond())))
-            return old_world().app(concr2abstr(*l ? branch.tt() : branch.ff()), concr2abstr(branch.arg()));
-    } else if (auto app = def->isa<App>()) {
-        if (auto lam = app->callee()->isa_mut<Lam>(); lam && lam->is_set()) {
-            auto ins = concr2abstr(lam, lam).second;
-
-            auto n          = app->num_args();
-            auto abstr_args = absl::FixedArray<const Def*>(n);
-            auto abstr_vars = absl::FixedArray<const Def*>(n);
-            for (size_t i = 0; i != n; ++i) {
-                auto abstr    = concr2abstr(app->targ(i));
-                abstr_vars[i] = concr2abstr(lam->tvar(i), abstr).first;
-                abstr_args[i] = abstr;
-            }
-
-            concr2abstr(lam->var(), old_world().tuple(abstr_vars));
-
-            if (ins)
-                for (auto d : lam->deps())
-                    concr2abstr(d);
-
-            return old_world().app(lam, abstr_args);
+const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
+    if (auto lam = app->callee()->isa_mut<Lam>(); lam && lam->is_set() && !lam->is_external() && !lam->is_annex()) {
+        auto n          = app->num_targs();
+        auto abstr_args = absl::FixedArray<const Def*>(n);
+        auto abstr_vars = absl::FixedArray<const Def*>(n);
+        for (size_t i = 0; i != n; ++i) {
+            auto abstr    = rewrite(app->targ(i));
+            abstr_vars[i] = join(lam->tvar(i), abstr);
+            abstr_args[i] = abstr;
         }
-    } else if (auto var = def->isa<Var>()) {
-        assert(var->mut()->isa<Lam>());
-        return old_world().bot(var->type());
+
+        auto abstr_var = world().tuple(abstr_vars);
+        map(lam->var(), abstr_var);
+        lattice_[lam->var()] = abstr_var;
+
+        if (!lookup(lam))
+            for (auto d : lam->deps())
+                rewrite(d);
+
+        return world().app(lam, abstr_args);
     }
 
-    auto type   = def->type() ? concr2abstr(def->type()) : nullptr;
-    auto n      = def->num_ops();
-    auto abstrs = absl::FixedArray<const Def*>(n);
-    for (size_t i = 0; i != n; ++i)
-        abstrs[i] = concr2abstr(def->op(i));
-
-    return def->rebuild(old_world(), type, abstrs);
+    return Rewriter::rewrite_imm_App(app);
 }
 
-std::pair<const Def*, bool> SCCP::concr2abstr(const Def* concr, const Def* abstr) {
-    auto [_, v_ins]   = visited_.emplace(concr);
-    auto [i, c2a_ins] = concr2abstr_.emplace(concr, abstr);
-
-    if (c2a_ins)
-        todo_ = true;
-    else
-        i->second = join(concr, i->second, abstr);
-
-    return {i->second, v_ins};
-}
-
-const Def* SCCP::join(const Def* concr, const Def* abstr1, const Def* abstr2) {
-    const Def* result = nullptr;
-    if (abstr1 == abstr2) return abstr1;
-
-    if (abstr1->isa<Bot>())
-        result = abstr2;
-    else if (abstr2->isa<Bot>())
-        result = abstr1;
-    else // abstr1 != abstr2
-        result = concr;
-
-    todo_ |= abstr1 != result;
-    return result;
+bool SCCP::analyze() {
+    analysis_.reset();
+    analysis_.run();
+    return analysis_.todo();
 }
 
 const Def* SCCP::rewrite_imm_App(const App* old_app) {
-    if (auto old_lam = old_app->callee()->isa_mut<Lam>(); old_lam && old_lam->is_set() && !old_lam->is_external()) {
-        if (old_lam->has_var()) {
-            size_t num_old = old_lam->num_vars();
+    if (auto old_lam = old_app->callee()->isa_mut<Lam>()) {
+        if (auto l = lattice(old_lam->var()); l && l != old_lam->var()) {
+            todo_ = true;
 
+            size_t num_old = old_lam->num_tvars();
             Lam* new_lam;
             if (auto i = lam2lam_.find(old_lam); i != lam2lam_.end())
                 new_lam = i->second;
@@ -127,8 +83,8 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 auto new_doms = DefVec();
                 for (size_t i = 0; i != num_old; ++i) {
                     auto old_var = old_lam->var(num_old, i);
-                    auto abstr   = concr2abstr_[old_var];
-                    if (abstr == old_var) new_doms.emplace_back(rewrite(old_lam->tdom(i)));
+                    auto abstr   = lattice(old_var);
+                    if (abstr == old_var) new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
                 }
 
                 // build new lam
@@ -140,7 +96,7 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 // build new var
                 for (size_t i = 0, j = 0; i != num_old; ++i) {
                     auto old_var = old_lam->var(num_old, i);
-                    auto abstr   = concr2abstr_[old_var];
+                    auto abstr   = lattice(old_var);
                     new_vars[i]  = abstr == old_var ? new_lam->var(num_new, j++) : rewrite(abstr);
                 }
 
@@ -153,7 +109,7 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
             auto new_args  = absl::FixedArray<const Def*>(num_new);
             for (size_t i = 0, j = 0; i != num_old; ++i) {
                 auto old_var = old_lam->var(num_old, i);
-                auto abstr   = concr2abstr_[old_var];
+                auto abstr   = lattice(old_var);
                 if (abstr == old_var) new_args[j++] = rewrite(old_app->targ(i));
             }
 

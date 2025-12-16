@@ -12,10 +12,14 @@ private:
         Analysis(World& world)
             : mim::Analysis(world, "SCCP::Analyzer") {}
 
+        auto& lattice() { return lattice_; }
+
     private:
-        void rewrite_annex(flags_t, const Def*) final;
-        void rewrite_external(Def*) final;
+        const Def* join(const Def*, const Def*);
+        Def* rewrite_mut(Def*) final;
         const Def* rewrite_imm_App(const App*) final;
+
+        Def2Def lattice_;
     };
 
 public:
@@ -23,23 +27,15 @@ public:
         : RWPhase(world, annex)
         , analysis_(world) {}
 
-private:
     bool analyze() final;
-    const Def* init(Def*);
-    const Def* init(const Def*);
 
-    std::pair<const Def*, bool> concr2abstr(const Def*, const Def*);
-    const Def* concr2abstr(const Def*);
-    const Def* concr2abstr_impl(const Def*);
-    const Def* join(const Def*, const Def*, const Def*);
-
+private:
+    auto& lattice() { return analysis_.lattice(); }
+    const Def* lattice(const Def* def) { return lattice()[def]; }
     const Def* rewrite_imm_App(const App*) final;
 
     Analysis analysis_;
-    DefSet visited_;
-    Def2Def concr2abstr_;
     Lam2Lam lam2lam_;
-    bool todo_ = true;
 };
 
 } // namespace mim

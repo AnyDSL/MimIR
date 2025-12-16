@@ -63,7 +63,7 @@ protected:
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class Analysis : public Phase, public Rewriter {
 public:
-    /// @name Construction
+    /// @name Construction & Destruction
     ///@{
     Analysis(World& world, std::string name)
         : Phase(world, std::move(name))
@@ -71,6 +71,10 @@ public:
     Analysis(World& world, flags_t annex)
         : Phase(world, annex)
         , Rewriter(world) {}
+
+    /// Clears all members and sets todo() to `false` for next round in a fixed-point iteration.
+    /// @sa RWPhase::analyze
+    virtual void reset();
     ///@}
 
     bool is_bootstrapping() const { return bootstrapping_; }
@@ -83,7 +87,6 @@ public:
     ///@{
     virtual void rewrite_annex(flags_t, const Def*);
     virtual void rewrite_external(Def*);
-    Def* rewrite_mut(Def*) override;
     ///@}
 
     /// @name Getters

@@ -7,8 +7,7 @@ lam g (y: Nat)@ff: Nat = y;
 lam extern lf(a: Nat): Nat =
     %core.nat.add (f (42, a, 23), f (42, a, 3));
 
-lam extern lg(a: Nat): Nat =
-    %core.nat.add (g 23, g 23);
+lam extern lg(a: Nat): [Nat, Nat] = (g 23, g 23);
 
 lam extern _compile(): %compile.Phase =
     %compile.phases ff (
