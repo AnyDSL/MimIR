@@ -3,6 +3,8 @@
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
 
+#include "mim/axm.h"
+
 #include "mim/plug/core/core.h"
 
 namespace mim::plug::core {
@@ -222,6 +224,22 @@ const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
     if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
     auto la = Lit::isa(a);
     auto lb = Lit::isa(b);
+    if (la || lb) {
+        std::cerr << "-----------------------\n";
+        switch (id) {
+            case nat::add: std::cerr << "  mode: add\n"; break;
+            case nat::sub: std::cerr << "  mode: sub\n"; break;
+            case nat::mul: std::cerr << "  mode: mul\n"; break;
+        }
+        if (la)
+            std::cerr << "     a: " << *la << "\n";
+        else
+            std::cerr << "     a: " << a->unique_name() << "\n";
+        if (lb)
+            std::cerr << "     b: " << *lb << "\n";
+        else
+            std::cerr << "     b: " << b->unique_name() << "\n";
+    }
 
     if (la) {
         if (lb) {
@@ -241,9 +259,108 @@ const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
         }
 
         if (*la == 1 && id == nat::mul) return b; // 1 * b = b
+
+        if (auto nb = Axm::isa<core::nat>(b)) {
+            auto [ba, bb] = nb->arg()->projs<2>();
+            auto lba      = Lit::isa(ba);
+            auto lbb      = Lit::isa(bb);
+            switch (nb.id()) {
+                case nat::add: std::cerr << "b mode: add\n"; break;
+                case nat::sub: std::cerr << "b mode: sub\n"; break;
+                case nat::mul: std::cerr << "b mode: mul\n"; break;
+            }
+            if (lba)
+                std::cerr << "   b.a: " << *lba << "\n";
+            else
+                std::cerr << "   b.a: " << ba->unique_name() << "\n";
+            if (lbb)
+                std::cerr << "   b.b: " << *lbb << "\n";
+            else
+                std::cerr << "   b.b: " << bb->unique_name() << "\n";
+
+            if (lba) {
+                // 3 + (2 + a) = 5 + a
+                if (id == nat::add && nb.id() == nat::add)
+                    return world.call(nat::add, Defs{world.lit_nat(*la + *lba), bb});
+
+                // 3 + (2 - a) = 5 - a
+                if (id == nat::add && nb.id() == nat::sub)
+                    return world.call(nat::sub, Defs{world.lit_nat(*la + *lba), bb});
+
+                // 3 - (2 + a) = 1 - a
+                if (id == nat::sub && nb.id() == nat::add) {
+                    if (*la >= *lba) return world.call(nat::sub, Defs{world.lit_nat(*la - *lba), bb});
+                }
+
+                // 3 - (2 - a) = 1 + a
+                if (id == nat::sub && nb.id() == nat::sub) {
+                    if (*la >= *lba) return world.call(nat::add, Defs{world.lit_nat(*la - *lba), bb});
+                }
+
+                // 3 * (2 * a) = 6 * a
+                if (id == nat::mul && nb.id() == nat::mul)
+                    return world.call(nat::mul, Defs{world.lit_nat(*la * *lba), bb});
+            }
+
+            if (lbb) {
+                // 3 + (a - 1) = 2 + a
+                if (nb.id() == nat::sub) {
+                    if (id == nat::add) {
+                        if (*la >= *lbb) return world.call(nat::add, Defs{world.lit_nat(*la - *lbb), ba});
+                    }
+                }
+
+                // 3 - (a - 2) = 5 - a
+                if (id == nat::sub && nb.id() == nat::sub)
+                    return world.call(nat::sub, Defs{world.lit_nat(*la + *lbb), ba});
+            }
+        }
     }
 
-    if (lb && *lb == 0 && id == nat::sub) return a; // a - 0 = a
+    if (lb) {
+        if (*lb == 0 && id == nat::sub) return a; // a - 0 = a
+
+        if (auto na = Axm::isa<core::nat>(a)) {
+            auto [aa, ab] = na->arg()->projs<2>();
+            auto laa      = Lit::isa(aa);
+            auto lab      = Lit::isa(ab);
+            switch (na.id()) {
+                case nat::add: std::cerr << "a mode: add\n"; break;
+                case nat::sub: std::cerr << "a mode: sub\n"; break;
+                case nat::mul: std::cerr << "a mode: mul\n"; break;
+            }
+            if (laa)
+                std::cerr << "   a.a: " << *laa << "\n";
+            else
+                std::cerr << "   a.a: " << aa->unique_name() << "\n";
+            if (lab)
+                std::cerr << "   a.b: " << *lab << "\n";
+            else
+                std::cerr << "   a.b: " << ab->unique_name() << "\n";
+
+            if (lab) {
+                // (a - 3) + 2 = a - 1
+                if (id == nat::add && na.id() == nat::sub) {
+                    if (*lab >= *lb) return world.call(nat::sub, Defs{aa, world.lit_nat(*lab - *lb)});
+                }
+
+                // (a - 3) - 2 = a - 5
+                if (id == nat::sub && na.id() == nat::sub)
+                    return world.call(nat::sub, Defs{aa, world.lit_nat(*lab + *lb)});
+            }
+
+            if (laa) {
+                // (3 - a) + 2 = 5 - a
+                if (id == nat::add && na.id() == nat::sub)
+                    return world.call(nat::sub, Defs{world.lit_nat(*laa + *lb), ab});
+
+                // (3 - a) - 2 = 1 - a
+                if (id == nat::sub && na.id() == nat::sub) {
+                    if (*laa >= *lb) return world.call(nat::sub, Defs{world.lit_nat(*laa - *lb), ab});
+                }
+            }
+        }
+    }
 
     if (a == b) {
         switch (id) {
