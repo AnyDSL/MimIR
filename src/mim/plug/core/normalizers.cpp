@@ -224,22 +224,6 @@ const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
     if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
     auto la = Lit::isa(a);
     auto lb = Lit::isa(b);
-    if (la || lb) {
-        std::cerr << "-----------------------\n";
-        switch (id) {
-            case nat::add: std::cerr << "  mode: add\n"; break;
-            case nat::sub: std::cerr << "  mode: sub\n"; break;
-            case nat::mul: std::cerr << "  mode: mul\n"; break;
-        }
-        if (la)
-            std::cerr << "     a: " << *la << "\n";
-        else
-            std::cerr << "     a: " << a->unique_name() << "\n";
-        if (lb)
-            std::cerr << "     b: " << *lb << "\n";
-        else
-            std::cerr << "     b: " << b->unique_name() << "\n";
-    }
 
     if (la) {
         if (lb) {
@@ -264,19 +248,6 @@ const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
             auto [ba, bb] = nb->arg()->projs<2>();
             auto lba      = Lit::isa(ba);
             auto lbb      = Lit::isa(bb);
-            switch (nb.id()) {
-                case nat::add: std::cerr << "b mode: add\n"; break;
-                case nat::sub: std::cerr << "b mode: sub\n"; break;
-                case nat::mul: std::cerr << "b mode: mul\n"; break;
-            }
-            if (lba)
-                std::cerr << "   b.a: " << *lba << "\n";
-            else
-                std::cerr << "   b.a: " << ba->unique_name() << "\n";
-            if (lbb)
-                std::cerr << "   b.b: " << *lbb << "\n";
-            else
-                std::cerr << "   b.b: " << bb->unique_name() << "\n";
 
             if (lba) {
                 // 3 + (2 + a) = 5 + a
@@ -324,19 +295,6 @@ const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
             auto [aa, ab] = na->arg()->projs<2>();
             auto laa      = Lit::isa(aa);
             auto lab      = Lit::isa(ab);
-            switch (na.id()) {
-                case nat::add: std::cerr << "a mode: add\n"; break;
-                case nat::sub: std::cerr << "a mode: sub\n"; break;
-                case nat::mul: std::cerr << "a mode: mul\n"; break;
-            }
-            if (laa)
-                std::cerr << "   a.a: " << *laa << "\n";
-            else
-                std::cerr << "   a.a: " << aa->unique_name() << "\n";
-            if (lab)
-                std::cerr << "   a.b: " << *lab << "\n";
-            else
-                std::cerr << "   a.b: " << ab->unique_name() << "\n";
 
             if (lab) {
                 // (a - 3) + 2 = a - 1
