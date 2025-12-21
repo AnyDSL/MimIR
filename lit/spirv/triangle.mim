@@ -14,27 +14,25 @@ let colors = (
     (0.0:%math.F32, 0.0:%math.F32, 1.0:%math.F32),
 );
 
-lam vertex (vert_id: Idx 3): [<<2; %math.F32>>, <<3; %math.F32>>]
-    = (positions#vert_id, colors#vert_id);
+fun vertex (vert_id: Idx 3): [«4; %math.F32», «3; %math.F32»]
+    = return (%vec.cat (positions#vert_id, (0.0:%math.F32, 1.0:%math.F32)), colors#vert_id);
 
-lam fragment [color: <<3; %math.F32>>]: <<4; %math.F32>>
-    = %vec.cat (color, 1.0:%math.F32);
+fun fragment [color: «3; %math.F32»]: «4; %math.F32»
+    = return (%vec.cat (color, 1.0:%math.F32));
 
 // wrapper
 
-lam extern _vertex () = %spirv.wrap
+fun extern _vertex () = return (%spirv.entry
     %spirv.model.vertex
-    @ (1, 2)
-    ((%spirv.input, (%spirv.builtin.vertex_index)))
-    (
-        (%spirv.output, (%spirv.builtin.position)),
-        (%spirv.output, (%spirv.location 0)),
-    )
-    vertex;
+    (%spirv.wrap
+        %spirv.builtin.vertex_index
+        (%spirv.builtin.position,
+        %spirv.output (%spirv.location 0) «3; %math.F32»)
+        vertex));
 
-lam extern _fragment () = %spirv.wrap
+fun extern _fragment () = return (%spirv.entry
     %spirv.model.fragment
-    @ (1, 1)
-    ((%spirv.input, (%spirv.location 0)))
-    ((%spirv.output, (%spirv.location 0)))
-    fragment;
+    (%spirv.wrap
+        (%spirv.input (%spirv.location 0) «3; %math.F32»)
+        (%spirv.output (%spirv.location 0) «4; %math.F32»)
+        fragment));
