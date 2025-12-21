@@ -6,48 +6,61 @@
 ///
 /// A plugin providing a spir-v backend for MimIR.
 ///
+import core;
+import math;
 import mem;
+import vec;
 
 /// ## execution models
-axm %spirv.Model: *;
+axm %spirv.Model: ★;
 axm %spirv.model(fragment, vertex, compute): %spirv.Model;
 
-/// ## storage classes
-axm %spirv.Input: *;
-axm %spirv.Output: *;
-
-axm %spirv.input: %spirv.Input;
-axm %spirv.uniform: %spirv.Input;
-
-axm %spirv.output: %spirv.Output;
-
 /// ## decorations
-axm %spirv.Decoration: *;
+axm %spirv.Decoration: ★;
 
-axm %spirv.builtin(
-    vertex_index,
-    instance_index,
-    vertex_id,
-    instance_id,
+axm %spirv.location: Nat → %spirv.Decoration;
 
-    position,
-    point_size,
-    clip_distance,
-    cull_distance,
+/// ## globals
+axm %spirv.global(Read, Write): ★ → □;
 
-    frag_coord,
-): %spirv.Decoration;
+axm %spirv.load: {T: ★} → [%mem.M 0, %spirv.global.Read T] → [%mem.M 0, T];
+axm %spirv.store: {T: ★} → [%mem.M 0, %spirv.global.Write T] → T → %mem.M 0;
 
-axm %spirv.location: Nat -> %spirv.Decoration;
+axm %spirv.input: {n: Nat} → «n; %spirv.Decoration» → [T: ★] → %spirv.global.Read T;
+axm %spirv.uniform: {n: Nat} → «n; %spirv.Decoration» → [T: ★] → %spirv.global.Read T;
+axm %spirv.output: {n: Nat} → «n; %spirv.Decoration» → [T: ★] → %spirv.global.Write T;
 
-axm %spirv.Entry: *;
-axm %spirv.wrap: [%spirv.Model]
-    -> {n m: Nat}
-    -> {dn: <<n; Nat>>}
-    -> {dm: <<m; Nat>>}
-    -> <<i: n; [%spirv.Input, <<dn#i; %spirv.Decoration>>]>>
-    -> <<i: m; [%spirv.Output, <<dm#i; %spirv.Decoration>>]>>
-    -> {Ti: <<n; *>>}
-    -> {To: <<m; *>>}
-    -> [<<i: n; Ti#i>> -> <<o: m; To#o>>]
-    -> %spirv.Entry;
+axm %spirv.builtin(vertex_index): %spirv.global.Read (Idx 3);
+axm %spirv.builtin(instance_index): %spirv.global.Read Nat;
+axm %spirv.builtin(vertex_id): %spirv.global.Read Nat;
+axm %spirv.builtin(instance_id): %spirv.global.Read Nat;
+axm %spirv.builtin(position): %spirv.global.Write «4; %math.F32»;
+axm %spirv.builtin(frag_coord): %spirv.global.Read «2; %math.F32»;
+
+/// ## Entry Points
+///
+/// Spir-V modules can have multiple entry points. Every external function of type
+/// `Fn () -> %spirv.Entry` gets converted to an entry point in the produced module.
+
+/// Creates an entry point from an execution model and a function
+axm %spirv.Entry: ★;
+axm %spirv.entry:
+    %spirv.Model
+  → {n m: Nat}
+  → {Ti: «n; ★»}
+  → {To: «m; ★»}
+  → {Gi: «i: n; %spirv.global.Read Ti#i»}
+  → {Go: «i: m; %spirv.global.Write To#i»}
+  → [Fn %mem.M 0 → «i: n; Gi#i» → «o: m; Go#o» → %mem.M 0]
+  → %spirv.Entry;
+
+/// Wraps a "regular" function using the given spirv globals
+axm %spirv.wrap:
+    {n m: Nat}
+  → {Ti: «n; ★»}
+  → {To: «m; ★»}
+  → [Gi: «i: n; %spirv.global.Read Ti#i»]
+  → [Go: «i: m; %spirv.global.Write To#i»]
+  → [Fn «i: n; Ti#i» → «i: m; To#i»]
+  → Fn %mem.M 0 → «i: n; Gi#i» → «i: m; Go#i» → %mem.M 0,
+    normalize_wrap;
