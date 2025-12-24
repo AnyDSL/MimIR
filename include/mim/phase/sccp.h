@@ -4,7 +4,6 @@
 
 namespace mim {
 
-/// Sparse Conditional Constant Propagation.
 class SCCP : public RWPhase {
 private:
     class Analysis : public mim::Analysis {
