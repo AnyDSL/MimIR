@@ -10,6 +10,7 @@ import core;
 import math;
 import mem;
 import vec;
+import refly;
 
 /// ## execution models
 axm %spirv.Model: ★;
@@ -18,49 +19,64 @@ axm %spirv.model(fragment, vertex, compute): %spirv.Model;
 /// ## decorations
 axm %spirv.Decoration: ★;
 
-axm %spirv.location: Nat → %spirv.Decoration;
+axm %spirv.decorc(block): %spirv.Decoration;
+axm %spirv.decor(builtin): {n: Nat} → «n; I8» → %spirv.Decoration;
+axm %spirv.decor(location): Nat → %spirv.Decoration;
 
 /// ## globals
-axm %spirv.global(Read, Write): ★ → □;
+axm %spirv.Input:   {n: Nat} → «n; %spirv.Decoration» → ★ → ★;
+axm %spirv.Output:  {n: Nat} → «n; %spirv.Decoration» → ★ → ★;
+axm %spirv.Uniform: {n: Nat} → «n; %spirv.Decoration» → ★ → ★;
 
-axm %spirv.load: {T: ★} → [%mem.M 0, %spirv.global.Read T] → [%mem.M 0, T];
-axm %spirv.store: {T: ★} → [%mem.M 0, %spirv.global.Write T] → T → %mem.M 0;
+axm %spirv.input(load):   {n: Nat, decs: «n; %spirv.Decoration»}
+  → {T: ★} → [%mem.M 0, %spirv.Input   decs T]    → [%mem.M 0, T];
+axm %spirv.output(store): {n: Nat, decs: «n; %spirv.Decoration»}
+  → {T: ★} → [%mem.M 0, %spirv.Output  decs T, T] → [%mem.M 0];
+axm %spirv.uniform(load): {n: Nat, decs: «n; %spirv.Decoration»}
+  → {T: ★} → [%mem.M 0, %spirv.Uniform decs T]    → [%mem.M 0, T];
 
-axm %spirv.input: {n: Nat} → «n; %spirv.Decoration» → [T: ★] → %spirv.global.Read T;
-axm %spirv.uniform: {n: Nat} → «n; %spirv.Decoration» → [T: ★] → %spirv.global.Read T;
-axm %spirv.output: {n: Nat} → «n; %spirv.Decoration» → [T: ★] → %spirv.global.Write T;
+let fragment_builtins = [
+    frag_coord:     %spirv.Input  (%spirv.decor.builtin "FragCoord"    ) «2; %math.F32»,
+];
 
-axm %spirv.builtin(vertex_index): %spirv.global.Read (Idx 3);
-axm %spirv.builtin(instance_index): %spirv.global.Read Nat;
-axm %spirv.builtin(vertex_id): %spirv.global.Read Nat;
-axm %spirv.builtin(instance_id): %spirv.global.Read Nat;
-axm %spirv.builtin(position): %spirv.global.Write «4; %math.F32»;
-axm %spirv.builtin(frag_coord): %spirv.global.Read «2; %math.F32»;
+let vertex_builtins = [
+    vertex_index:   %spirv.Input  (%spirv.decor.builtin "VertexIndex"  ) (Idx 3),
+    instance_index: %spirv.Input  (%spirv.decor.builtin "InstanceIndex") Nat,
+    vertex_id:      %spirv.Input  (%spirv.decor.builtin "VertexId"     ) Nat,
+    instance_id:    %spirv.Input  (%spirv.decor.builtin "InstanceId"   ) Nat,
+
+    position:       %spirv.Output (%spirv.decor.builtin "Position"     ) Nat,
+];
+
+let compute_builtins = [];
+
+axm %spirv.builtins: %spirv.Model → ★;
+// lam %spirv.builtins (model: %spirv.Model): ★
+//   = match model with
+//         | %spirv.model.fragment => fragment_builtins
+//         | %spirv.model.vertex   => vertex_builtins
+//         | %spirv.model.compute  => compute_builtins;
 
 /// ## Entry Points
 ///
 /// Spir-V modules can have multiple entry points. Every external function of type
 /// `Fn () -> %spirv.Entry` gets converted to an entry point in the produced module.
+axm %spirv.Entry: ★;
 
 /// Creates an entry point from an execution model and a function
-axm %spirv.Entry: ★;
 axm %spirv.entry:
-    %spirv.Model
-  → {n m: Nat}
-  → {Ti: «n; ★»}
-  → {To: «m; ★»}
-  → {Gi: «i: n; %spirv.global.Read Ti#i»}
-  → {Go: «i: m; %spirv.global.Write To#i»}
-  → [Fn %mem.M 0 → «i: n; Gi#i» → «o: m; Go#o» → %mem.M 0]
+    {model: %spirv.Model}
+  → {ni no nu: Nat}
+  → {Ti: «ni; ★»}
+  → {To: «no; ★»}
+  → {Tu: «nu; ★»}
+  → {idcs: «ni; %spirv.Decoration»}
+  → {odcs: «no; %spirv.Decoration»}
+  → {udcs: «nu; %spirv.Decoration»}
+  → [Fn [%mem.M 0]
+      → [%spirv.builtins model]
+      → «i: ni; %spirv.Input   idcs#i Ti#i»
+      → «i: no; %spirv.Output  odcs#i To#i»
+      → «i: nu; %spirv.Uniform udcs#i Tu#i»
+      → [%mem.M 0]]
   → %spirv.Entry;
-
-/// Wraps a "regular" function using the given spirv globals
-axm %spirv.wrap:
-    {n m: Nat}
-  → {Ti: «n; ★»}
-  → {To: «m; ★»}
-  → [Gi: «i: n; %spirv.global.Read Ti#i»]
-  → [Go: «i: m; %spirv.global.Write To#i»]
-  → [Fn «i: n; Ti#i» → «i: m; To#i»]
-  → Fn %mem.M 0 → «i: n; Gi#i» → «i: m; Go#i» → %mem.M 0,
-    normalize_wrap;

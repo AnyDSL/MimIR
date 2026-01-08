@@ -297,8 +297,6 @@ Word Emitter::convert_ret_pi(const Pi* pi) {
 }
 
 Word Emitter::prepare() {
-    if (Axm::isa<spirv::wrap>(root()->body()->as<App>()->arg())) return 0;
-
     Word id          = next_id();
     globals_[root()] = id;
 
@@ -332,20 +330,20 @@ void Emitter::emit_epilogue(Lam* lam) {
     auto& bb = lam2bb_[lam];
 
     if (app->callee() == root()->ret_var()) { // return
-        if (auto wrap = Axm::isa<spirv::wrap>(app->arg())) {
-            Op entry_point{OpKind::EntryPoint, {}, {}, {}};
-            auto [model, nm, dnm, ins, outs, in_ts, out_ts, f] = wrap->uncurry_args<8>();
-            if (auto model_ = Axm::isa<spirv::model>(model)) {
-                switch (model_.id()) {
-                    case spirv::model::fragment: entry_point.operands.emplace_back(execution_model::Fragment); break;
-                    case spirv::model::vertex: entry_point.operands.emplace_back(execution_model::Vertex); break;
-                    case spirv::model::compute: entry_point.operands.emplace_back(execution_model::GLCompute); break;
-                }
-            }
+        // if (auto wrap = Axm::isa<spirv::wrap>(app->arg())) {
+        //     Op entry_point{OpKind::EntryPoint, {}, {}, {}};
+        //     auto [model, nm, dnm, ins, outs, in_ts, out_ts, f] = wrap->uncurry_args<8>();
+        //     if (auto model_ = Axm::isa<spirv::model>(model)) {
+        //         switch (model_.id()) {
+        //             case spirv::model::fragment: entry_point.operands.emplace_back(execution_model::Fragment); break;
+        //             case spirv::model::vertex: entry_point.operands.emplace_back(execution_model::Vertex); break;
+        //             case spirv::model::compute: entry_point.operands.emplace_back(execution_model::GLCompute); break;
+        //         }
+        //     }
 
-            entryPoints.push_back(entry_point);
-            return;
-        }
+        //     entryPoints.push_back(entry_point);
+        //     return;
+        // }
     }
 }
 
@@ -383,11 +381,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     return id;
 }
 
-void Emitter::finalize() {
-    if (Axm::isa<spirv::wrap>(root()->body()->as<App>()->arg())) return;
-
-    funDefinitions.emplace_back(Op{OpKind::FunctionEnd, {}, {}, {}});
-}
+void Emitter::finalize() { funDefinitions.emplace_back(Op{OpKind::FunctionEnd, {}, {}, {}}); }
 
 void emit_bin(World& world, std::ostream& ostream) {
     Emitter emitter(world, ostream);
