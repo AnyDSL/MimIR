@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 #include <mim/plug/mem/mem.h>
 
@@ -10,12 +10,8 @@ namespace mim::plug::clos {
 
 class Clos2SJLJ : public RWPass<Clos2SJLJ, Lam> {
 public:
-    Clos2SJLJ(PassMan& man)
-        : RWPass(man, "closure2sjlj")
-        , lam2tag_()
-        , dom2throw_()
-        , lam2lpad_()
-        , ignore_() {}
+    Clos2SJLJ(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     void enter() override;
     const Def* rewrite(const Def*) override;

@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include "mim/phase/phase.h"
+#include "mim/phase.h"
 
 #include "mim/plug/clos/clos.h"
 #include "mim/plug/mem/mem.h"
@@ -27,8 +27,8 @@ namespace mim::plug::clos {
 /// These annotations are introduced by LowerTypedClosPrep.
 class LowerTypedClos : public Phase {
 public:
-    LowerTypedClos(World& world)
-        : Phase(world, "lower_typed_clos", true) {}
+    LowerTypedClos(World& world, flags_t annex)
+        : Phase(world, annex) {}
 
     void start() override;
 

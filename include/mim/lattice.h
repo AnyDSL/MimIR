@@ -1,5 +1,7 @@
 #pragma once
 
+#include <span>
+
 #include "mim/def.h"
 
 namespace mim {
@@ -28,7 +30,8 @@ public:
 /// [lattice](https://en.wikipedia.org/wiki/Lattice_(order)) while a [Meet](@ref mim::Meet) descends.
 /// * @p Up = `true`: [Join](@ref mim::Join) (aka least Upper bound/supremum/union)
 /// * @p Up = `false`: [Meet](@ref mim::Meet) (aka greatest lower bound/infimum/intersection)
-template<bool Up> class TBound : public Bound, public Setters<TBound<Up>> {
+template<bool Up>
+class TBound : public Bound, public Setters<TBound<Up>> {
 private:
     TBound(const Def* type, Defs ops)
         : Bound(Node, type, ops) {}
@@ -36,7 +39,8 @@ private:
 public:
     using Setters<TBound<Up>>::set;
 
-    static constexpr auto Node = Up ? mim::Node::Join : mim::Node::Meet;
+    static constexpr auto Node      = Up ? mim::Node::Join : mim::Node::Meet;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -49,7 +53,8 @@ private:
 class Merge : public Def, public Setters<Merge> {
 public:
     using Setters<Merge>::set;
-    static constexpr auto Node = mim::Node::Merge;
+    static constexpr auto Node      = mim::Node::Merge;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 
 private:
     Merge(const Def* type, Defs defs)
@@ -75,7 +80,8 @@ public:
     const Def* value() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Inj;
+    static constexpr auto Node      = mim::Node::Inj;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -97,7 +103,8 @@ public:
     const Def* value() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Split;
+    static constexpr auto Node      = mim::Node::Split;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -113,12 +120,16 @@ private:
 
 public:
     using Setters<Match>::set;
-    static constexpr auto Node = mim::Node::Match;
+    static constexpr auto Node      = mim::Node::Match;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 
     /// @name ops
     ///@{
     const Def* scrutinee() const { return op(0); }
-    template<size_t N = std::dynamic_extent> constexpr auto arms() const noexcept { return ops().subspan<1, N>(); }
+    template<size_t N = std::dynamic_extent>
+    constexpr auto arms() const noexcept {
+        return ops().subspan<1, N>();
+    }
     const Def* arm(size_t i) const { return arms()[i]; }
     size_t num_arms() const { return arms().size(); }
     ///@}
@@ -137,7 +148,8 @@ protected:
 };
 
 /// Ext%remum. Either Top (@p Up) or Bot%tom.
-template<bool Up> class TExt : public Ext, public Setters<TExt<Up>> {
+template<bool Up>
+class TExt : public Ext, public Setters<TExt<Up>> {
 private:
     TExt(const Def* type)
         : Ext(Node, type) {}
@@ -145,7 +157,8 @@ private:
 public:
     using Setters<TExt<Up>>::set;
 
-    static constexpr auto Node = Up ? mim::Node::Top : mim::Node::Bot;
+    static constexpr auto Node      = Up ? mim::Node::Top : mim::Node::Bot;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -174,10 +187,11 @@ public:
 
     /// @name ops
     ///@{
-    const Def* inhabitant() const { return op(0); }
+    const Def* op() const { return Def::op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Uniq;
+    static constexpr auto Node      = mim::Node::Uniq;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

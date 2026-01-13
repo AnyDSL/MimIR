@@ -60,13 +60,15 @@ public:
     /// @name IsA
     ///@{
     /// Type of IsA::def_.
-    template<class T> struct IsANode {
+    template<class T>
+    struct IsANode {
         using type = App;
     };
 
-    template<class Id, class D> class IsA {
-        static_assert(Annex::Num<Id> != size_t(-1), "invalid number of sub tags");
-        static_assert(Annex::Base<Id> != flags_t(-1), "invalid axm base");
+    template<class Id, class D>
+    class IsA {
+        static_assert(Annex::num<Id>() != size_t(-1), "invalid number of sub tags");
+        static_assert(Annex::base<Id>() != flags_t(-1), "invalid axm base");
 
     public:
         IsA() = default;
@@ -101,17 +103,19 @@ public:
     /// @name isa/as
     ///@{
     /// @see @ref cast_axm
-    template<class Id, bool DynCast = true> static auto isa(const Def* def) {
+    template<class Id, bool DynCast = true>
+    static auto isa(const Def* def) {
         using D              = typename Axm::IsANode<Id>::type;
         auto [axm, curry, _] = Axm::get(def);
-        bool cond            = axm && curry == 0 && axm->base() == Annex::Base<Id>;
+        bool cond            = axm && curry == 0 && axm->base() == Annex::base<Id>();
 
         if constexpr (DynCast) return cond ? IsA<Id, D>(axm, def->as<D>()) : IsA<Id, D>();
         assert(cond && "assumed to be correct axm");
         return IsA<Id, D>(axm, def->as<D>());
     }
 
-    template<class Id, bool DynCast = true> static auto isa(Id id, const Def* def) {
+    template<class Id, bool DynCast = true>
+    static auto isa(Id id, const Def* def) {
         using D              = typename Axm::IsANode<Id>::type;
         auto [axm, curry, _] = Axm::get(def);
         bool cond            = axm && curry == 0 && axm->flags() == (flags_t)id;
@@ -127,8 +131,9 @@ public:
     // clang-format on
     ///@}
 
-    static constexpr u8 Trip_End = u8(-1);
-    static constexpr auto Node   = mim::Node::Axm;
+    static constexpr u8 Trip_End    = u8(-1);
+    static constexpr auto Node      = mim::Node::Axm;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -137,16 +142,22 @@ private:
 };
 
 // clang-format off
-template<class Id> concept annex_with_subs    = Annex::Num<Id> != 0;
-template<class Id> concept annex_without_subs = Annex::Num<Id> == 0;
+template<class Id> concept annex_with_subs    = Annex::num<Id>() != 0;
+template<class Id> concept annex_without_subs = Annex::num<Id>() == 0;
 // clang-format on
 
 /// @name is_commutative/is_associative
 ///@{
-template<class Id> constexpr bool is_commutative(Id) { return false; }
+template<class Id>
+constexpr bool is_commutative(Id) {
+    return false;
+}
 /// @warning By default we assume that any commutative operation is also associative.
 /// Please provide a proper specialization if this is not the case.
-template<class Id> constexpr bool is_associative(Id id) { return is_commutative(id); }
+template<class Id>
+constexpr bool is_associative(Id id) {
+    return is_commutative(id);
+}
 ///@}
 
 } // namespace mim

@@ -1,8 +1,10 @@
+#include <mim/plug/core/core.h>
+#include <mim/plug/mem/mem.h>
+
 #include "mim/axm.h"
 #include "mim/world.h"
 
 #include "mim/plug/autodiff/autodiff.h"
-#include "mim/plug/core/core.h"
 
 namespace mim::plug::autodiff {
 
@@ -70,10 +72,12 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg) {
         auto int_add = world.call(core::wrap::add, 0_n, Defs{a, b});
         world.DLOG("int add {} : {}", int_add, Idx::isa(int_add->type()));
         return int_add;
+    } else if (Axm::isa<mem::M>(type)) {
+        // TODO: mem stays here (only resolved after direct simplification)
+        return {};
     } else if (T->isa<App>()) {
         assert(0 && "not handled");
     }
-    // TODO: mem stays here (only resolved after direct simplification)
 
     return {};
 }
@@ -90,7 +94,8 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg) {
         auto sum  = world.app(world.annex<zero>(), T);
         // This special case would also be handled by add zero
         if (val >= 1) sum = args[0];
-        for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.annex<add>(), T), {sum, args[i]});
+        for (size_t i = 1; i < val; ++i)
+            sum = world.app(world.app(world.annex<add>(), T), {sum, args[i]});
         return sum;
     }
     assert(0);

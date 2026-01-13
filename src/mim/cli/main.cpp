@@ -9,10 +9,10 @@
 
 #include "mim/config.h"
 #include "mim/driver.h"
+#include "mim/phase.h"
 
 #include "mim/ast/parser.h"
 #include "mim/pass/optimize.h"
-#include "mim/phase/phase.h"
 #include "mim/util/sys.h"
 
 using namespace mim;
@@ -51,9 +51,9 @@ int main(int argc, char** argv) {
             | lyra::opt(clang,        "clang"              )["-c"]["--clang"                ]("Path to clang executable (default: '" MIM_WHICH " clang').")
             | lyra::opt(plugins,      "plugin"             )["-p"]["--plugin"               ]("Dynamically load plugin.")
             | lyra::opt(search_paths, "path"               )["-P"]["--plugin-path"          ]("Path to search for plugins.")
-            | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
+            | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 5)
             | lyra::opt(opt,          "level"              )["-O"]["--optimize"             ]("Optimization level (default: 2).")
-            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST represntation of input.")
+            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST representation of input.")
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
             | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
             | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
@@ -98,7 +98,8 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         }
 
-        for (auto&& path : search_paths) driver.add_search_path(path);
+        for (auto&& path : search_paths)
+            driver.add_search_path(path);
 
         if (list_search_paths) {
             for (auto&& path : driver.search_paths() | std::views::drop(1)) // skip first empty path
@@ -108,8 +109,10 @@ int main(int argc, char** argv) {
 
         World& world = driver.world();
 #ifdef MIM_ENABLE_CHECKS
-        for (auto b : breakpoints) world.breakpoint(b);
-        for (auto w : watchpoints) world.watchpoint(w);
+        for (auto b : breakpoints)
+            world.breakpoint(b);
+        for (auto w : watchpoints)
+            world.watchpoint(w);
 #endif
         driver.log().set(&std::cerr).set((Log::Level)verbose);
 

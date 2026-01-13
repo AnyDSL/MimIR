@@ -1,34 +1,32 @@
 #include "mim/plug/autodiff/autodiff.h"
 
 #include <mim/config.h>
+#include <mim/phase.h>
 
-#include <mim/pass/pass.h>
-#include <mim/pass/pipelinebuilder.h>
-
-#include <mim/plug/compile/pass/internal_cleanup.h>
 #include <mim/plug/mem/mem.h>
 
-#include "mim/plug/autodiff/pass/autodiff_eval.h"
-#include "mim/plug/autodiff/pass/autodiff_zero.h"
-#include "mim/plug/autodiff/pass/autodiff_zero_cleanup.h"
+#include "mim/plug/autodiff/pass/eval.h"
 
 using namespace std::literals;
 using namespace mim;
 using namespace mim::plug;
 
+void reg_stages(Flags2Stages& stages) {
+    Stage::hook<autodiff::eval_pass, autodiff::Eval>(stages);
+
+    MIM_REPL(stages, autodiff::zero_repl, {
+        if (auto zero = Axm::isa<autodiff::zero>(def); zero) {
+            if (auto z = autodiff::zero_def(zero->arg())) return z;
+        }
+        return {};
+    });
+}
+
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"autodiff", [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); },
-            [](Passes& passes) {
-                register_pass<autodiff::ad_eval_pass, autodiff::AutoDiffEval>(passes);
-                register_pass<autodiff::ad_zero_pass, autodiff::AutoDiffZero>(passes);
-                register_pass<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(passes);
-                register_pass<autodiff::ad_ext_cleanup_pass, compile::InternalCleanup>(passes, "internal_diff_");
-            },
-            nullptr};
+    return {"autodiff", [](Normalizers& n) { autodiff::register_normalizers(n); }, reg_stages, nullptr};
 }
 
 namespace mim::plug::autodiff {
-
 const Def* id_pullback(const Def* A) {
     auto& world       = A->world();
     auto arg_pb_ty    = pullback_type(A, A);
@@ -119,7 +117,7 @@ const Def* autodiff_type_fun(const Def* ty) {
     if (Idx::isa(ty)) return ty;
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
-        auto shape   = arr->shape();
+        auto shape   = arr->arity();
         auto body    = arr->body();
         auto body_ad = autodiff_type_fun(body);
         if (!body_ad) return nullptr;
@@ -143,11 +141,11 @@ const Def* zero_def(const Def* T) {
     auto& world = T->world();
     world.DLOG("zero_def for type {} <{}>", T, T->node_name());
     if (auto arr = T->isa<Arr>()) {
-        auto shape      = arr->shape();
+        auto arity      = arr->arity();
         auto body       = arr->body();
         auto inner_zero = world.app(world.annex<zero>(), body);
-        auto zero_arr   = world.pack(shape, inner_zero);
-        world.DLOG("zero_def for array of shape {} with type {}", shape, body);
+        auto zero_arr   = world.pack(arity, inner_zero);
+        world.DLOG("zero_def for array of shape {} with type {}", arity, body);
         world.DLOG("zero_arr: {}", zero_arr);
         return zero_arr;
     } else if (Idx::isa(T)) {

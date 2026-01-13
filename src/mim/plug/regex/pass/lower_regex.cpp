@@ -12,7 +12,6 @@
 
 #include "mim/plug/regex/autogen.h"
 #include "mim/plug/regex/dfa2matcher.h"
-#include "mim/plug/regex/regex.h"
 #include "mim/plug/regex/regex2nfa.h"
 
 namespace mim::plug::regex {
@@ -27,13 +26,14 @@ const Def* LowerRegex::rewrite(const Def* def) {
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
         if (Axm::isa<regex::conj>(callee) || Axm::isa<regex::disj>(callee) || Axm::isa<regex::not_>(callee)
-            || Axm::isa<regex::range>(callee) || Axm::isa<regex::any>(callee) || Axm::isa<quant>(callee)) {
+            || Axm::isa<regex::neg_lookahead>(callee) || Axm::isa<regex::range>(callee) || Axm::isa<regex::any>(callee)
+            || Axm::isa<quant>(callee) || Axm::isa<regex::empty>(callee)) {
             const auto n = app->arg();
             auto nfa     = regex2nfa(callee);
-            world().DLOG("nfa: {}", *nfa);
+            DLOG("nfa: {}", *nfa);
 
             auto dfa = automaton::nfa2dfa(*nfa);
-            world().DLOG("dfa: {}", *dfa);
+            DLOG("dfa: {}", *dfa);
 
             auto min_dfa = automaton::minimize_dfa(*dfa);
             new_app      = wrap_in_cps2ds(dfa2matcher(world(), *min_dfa, n));

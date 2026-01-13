@@ -7,6 +7,8 @@
 #include <ranges>
 #include <sstream>
 
+#include <absl/container/btree_set.h>
+
 #include <mim/plug/clos/clos.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
@@ -34,7 +36,7 @@ namespace {
 bool is_const(const Def* def) {
     if (def->isa<Bot>()) return true;
     if (def->isa<Lit>()) return true;
-    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
+    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->arity()) && is_const(pack->body());
 
     if (auto tuple = def->isa<Tuple>()) {
         auto ops = tuple->ops();
@@ -103,12 +105,14 @@ struct BB {
     std::deque<std::ostringstream>& body() { return parts[1]; }
     std::deque<std::ostringstream>& tail() { return parts[2]; }
 
-    template<class... Args> std::string assign(std::string_view name, const char* s, Args&&... args) {
+    template<class... Args>
+    std::string assign(std::string_view name, const char* s, Args&&... args) {
         print(print(print(body().emplace_back(), "let {} = ", name), s, std::forward<Args&&>(args)...), ";");
         return std::string(name);
     }
 
-    template<class... Args> void tail(const char* s, Args&&... args) {
+    template<class... Args>
+    void tail(const char* s, Args&&... args) {
         print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
     }
 
@@ -200,9 +204,12 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
             print(s, "{}:{}", lit->get(), convert(lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
-        u64 size    = 0;
-        if (auto arity = Lit::isa(arr->shape())) size = *arity;
-        print(s, "<<{}; {}>>", size, t_elem);
+        if (auto arity = Lit::isa(arr->arity())) {
+            u64 size = *arity;
+            print(s, "<<{}; {}>>", size, t_elem);
+        } else {
+            print(s, "<<{}; {}>>", emit_unsafe(arr->arity()), t_elem);
+        }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))
             s << "Cn " << convert(pi->dom());
@@ -258,10 +265,11 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
 void Emitter::start() {
     Super::start();
 
-    for (auto name : world().driver().import_syms())
-        print(ostream(), "{} {};\n", world().driver().is_loaded(name) ? "plugin" : "import", name);
+    for (auto import : world().driver().imports().syms())
+        print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
 
-    for (auto&& decl : decls_) ostream() << decl << '\n';
+    for (auto&& decl : decls_)
+        ostream() << decl << '\n';
     ostream() << func_decls_.str() << '\n';
     ostream() << vars_decls_.str() << '\n';
     ostream() << func_impls_.str() << '\n';
@@ -328,14 +336,16 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
 
     ++tab;
     for (const auto& part : bb.parts | std::views::take(2))
-        for (auto& line : part) tab.print(func_impls_, "{}\n", line.str());
+        for (auto& line : part)
+            tab.print(func_impls_, "{}\n", line.str());
 
     for (auto op : node->mut()->deps()) {
         for (auto mut : op->local_muts())
-            if (auto next = nest().mut2node(mut)) finalize_nest(next, done);
+            if (auto next = nest()[mut]) finalize_nest(next, done);
     }
 
-    for (const auto& line : bb.tail()) tab.print(func_impls_, "{}\n", line.str());
+    for (const auto& line : bb.tail())
+        tab.print(func_impls_, "{}\n", line.str());
     --tab;
     func_impls_ << std::endl;
 }
@@ -380,6 +390,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         else
             print(os, "{}", lit);
         return os.str();
+    } else if (def->type()->isa<Nat>()) {
+        print(os, "{}", def->unique_name());
+        return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
         os << "(";
         for (auto sep = ""; auto e : tuple->ops()) {
@@ -392,7 +405,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return os.str();
     } else if (auto seq = def->isa<Seq>()) {
         auto body  = emit_unsafe(seq->body());
-        auto shape = emit_unsafe(seq->shape());
+        auto shape = emit_unsafe(seq->arity());
 
         return bb.assign(id(seq), "<<{}; {}>>", shape, body);
     } else if (auto extract = def->isa<Extract>()) {

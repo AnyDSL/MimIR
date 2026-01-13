@@ -122,7 +122,7 @@ Ptr<Module> Parser::parse_module() {
 Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
     auto name     = dbg.sym();
     auto filename = fs::path(name.view());
-    driver().VLOG("import: {}", name);
+    driver().VLOG("📥 import: {}", name);
 
     if (!filename.has_extension()) filename.replace_extension("mim"); // TODO error cases
 
@@ -135,7 +135,7 @@ Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
         if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
     }
 
-    if (auto path = driver().add_import(std::move(rel_path), name)) {
+    if (auto path = driver().imports().add(std::move(rel_path), name)) {
         auto ifs = std::ifstream(*path);
         return import(ifs, dbg.loc(), path, md);
     }
@@ -143,7 +143,7 @@ Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
 }
 
 Ptr<Module> Parser::import(std::istream& is, Loc loc, const fs::path* path, std::ostream* md) {
-    driver().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
+    driver().VLOG("📄 reading: {}", path ? path->string() : "<unknown file>"s);
     if (!is) {
         ast().error(loc, "cannot read file {}", *path);
         return {};
@@ -316,13 +316,15 @@ Ptr<Expr> Parser::parse_match_expr() {
     auto scrutinee = parse_expr("destroyed union element");
     expect(Tag::K_with, "match");
     Ptrs<MatchExpr::Arm> arms;
-    parse_list("match branches", Tag::D_brace_l, [&]() {
+    accept(Tag::T_pipe);
+    do {
         auto track = tracker();
         auto ptrn  = parse_ptrn(Paren_Style, "right-hand side of a match-arm", Expr::Prec::Bot);
         expect(Tag::T_fat_arrow, "arm of a match-expression");
         auto body = parse_expr("arm of a match-expression");
         arms.emplace_back(ptr<MatchExpr::Arm>(track, std::move(ptrn), std::move(body)));
-    });
+    } while (accept(Tag::T_pipe));
+
     return ptr<MatchExpr>(track, std::move(scrutinee), std::move(arms));
 }
 
@@ -356,7 +358,7 @@ Ptr<Expr> Parser::parse_seq_expr() {
     auto track  = tracker();
     bool is_arr = accept(Tag::D_quote_l) ? true : (eat(Tag::D_angle_l), false);
 
-    std::deque<std::pair<Ptr<IdPtrn>, Ptr<Expr>>> shapes;
+    std::deque<std::pair<Ptr<IdPtrn>, Ptr<Expr>>> arities;
 
     do {
         Dbg dbg;
@@ -367,7 +369,7 @@ Ptr<Expr> Parser::parse_seq_expr() {
 
         auto expr = parse_expr(is_arr ? "shape of an array" : "shape of a pack");
         auto ptrn = IdPtrn::make_id(ast(), dbg, std::move(expr));
-        shapes.emplace_back(std::move(ptrn), std::move(expr));
+        arities.emplace_back(std::move(ptrn), std::move(expr));
     } while (accept(Tag::T_comma));
 
     expect(Tag::T_semicolon, is_arr ? "array" : "pack");
@@ -375,7 +377,7 @@ Ptr<Expr> Parser::parse_seq_expr() {
     expect(is_arr ? Tag::D_quote_r : Tag::D_angle_r,
            is_arr ? "closing delimiter of an array" : "closing delimiter of a pack");
 
-    for (auto& [ptrn, expr] : shapes | std::ranges::views::reverse)
+    for (auto& [ptrn, expr] : arities | std::ranges::views::reverse)
         body = ptr<SeqExpr>(track, is_arr, std::move(ptrn), std::move(body));
 
     return body;
@@ -501,7 +503,6 @@ Ptr<Ptrn> Parser::parse_ptrn_(int style, std::string_view ctxt, Expr::Prec prec)
             return ptr<IdPtrn>(track, dbg, std::move(type));
         } else if (is_paren_style(style)) {
             // p ->  s
-            // p -> `s
             auto dbg = eat(Tag::M_id).dbg();
             return ptr<IdPtrn>(track, dbg, nullptr);
         } else {
@@ -534,7 +535,8 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(int style) {
 
         if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::M_id)) {
             Dbgs dbgs;
-            while (auto tok = accept(Tag::M_id)) dbgs.emplace_back(tok.dbg());
+            while (auto tok = accept(Tag::M_id))
+                dbgs.emplace_back(tok.dbg());
 
             if (accept(Tag::T_colon)) { // identifier group: x y x: T
                 auto dbg  = dbgs.back();
@@ -602,6 +604,8 @@ Ptrs<ValDecl> Parser::parse_decls() {
             case Tag::K_con:
             case Tag::K_fun:
             case Tag::K_lam:       decls.emplace_back(parse_lam_decl());          break;
+            case Tag::K_norm:
+            case Tag::K_rule:      decls.emplace_back(parse_rule_decl());         break;
             default:               return decls;
         }
         // clang-format on
@@ -613,17 +617,21 @@ Ptr<ValDecl> Parser::parse_axm_decl() {
     eat(Tag::K_axm);
     Dbg dbg, normalizer;
     Tok curry, trip;
+    // TODO if we check this later, we also have to report this error later
     if (auto name = expect(Tag::M_anx, "annex name of an axm"))
         dbg = name.dbg();
-    else
+    else {
+        accept(Tag::M_id);
         dbg = Dbg(curr_, ast().sym("<error annex name>"));
+    }
 
     std::deque<Ptrs<AxmDecl::Alias>> subs;
     if (ahead().isa(Tag::D_paren_l)) {
         parse_list("tag list of an axm", Tag::D_paren_l, [&]() {
             auto& aliases = subs.emplace_back();
             aliases.emplace_back(ptr<AxmDecl::Alias>(parse_id("tag of an axm")));
-            while (accept(Tag::T_assign)) aliases.emplace_back(ptr<AxmDecl::Alias>(parse_id("alias of an axm tag")));
+            while (accept(Tag::T_assign))
+                aliases.emplace_back(ptr<AxmDecl::Alias>(parse_id("alias of an axm tag")));
         });
     }
 
@@ -683,6 +691,20 @@ Ptr<RecDecl> Parser::parse_rec_decl(bool first) {
     auto body = parse_expr("body of a recursive declaration");
     auto next = ahead().isa(Tag::K_and) ? parse_and_decl() : nullptr;
     return ptr<RecDecl>(track, dbg, std::move(type), std::move(body), std::move(next));
+}
+
+Ptr<ValDecl> Parser::parse_rule_decl() {
+    auto track   = tracker();
+    auto is_norm = lex().tag() == Tag::K_norm;
+    auto dbg     = parse_name("rewrite rule");
+    auto ptrn    = parse_ptrn(0, "meta variables in rewrite rule");
+    expect(Tag::T_colon, "rewrite rule declaration");
+    auto lhs   = parse_expr("rewrite pattern");
+    auto guard = ahead().isa(Tag::K_when) ? (eat(Tag::K_when), parse_expr("rewrite guard"))
+                                          : ptr<PrimaryExpr>(track, std::move(Tag::K_tt));
+    expect(Tag::T_fat_arrow, "rewrite rule declaration");
+    auto rhs = parse_expr("rewrite result");
+    return ptr<RuleDecl>(track, dbg, std::move(ptrn), std::move(lhs), std::move(rhs), std::move(guard), is_norm);
 }
 
 Ptr<LamDecl> Parser::parse_lam_decl() {

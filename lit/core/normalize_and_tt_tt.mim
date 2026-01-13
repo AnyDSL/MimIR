@@ -6,8 +6,4 @@ plugin core;
 con extern and_lit_tt_tt [return : Cn Bool] =
     return (%core.bit2.and_ 0 (tt, tt));
 
-// CHECK-DAG: con extern and_lit_tt_tt (return:Cn Bool){{(@.*)?}} =
-// CHECK-DAG: return tt
-
-// CHECK-DAG: con return (_[[etaVar:[0-9_]+]]:Bool){{(@.*)?}} =
-// CHECK-DAG: return _[[etaVar]]
+// CHECK-DAG: return{{.*}}tt

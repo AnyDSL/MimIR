@@ -18,7 +18,8 @@ struct S {
     friend std::ostream& operator<<(std::ostream& os, const S& s) { return s.node->stream(s.tab, os); }
 };
 
-template<class T> struct R {
+template<class T>
+struct R {
     R(Tab& tab, const Ptrs<T>& range)
         : tab(tab)
         , range(range)
@@ -41,8 +42,10 @@ void Node::dump() const {
 std::ostream& Import::stream(Tab& tab, std::ostream& os) const { return tab.println(os, "{} '{}';", tag(), "TODO"); }
 
 std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
-    for (const auto& import : imports()) import->stream(tab, os);
-    for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
+    for (const auto& import : imports())
+        import->stream(tab, os);
+    for (const auto& decl : decls())
+        tab.println(os, "{}", S(tab, decl.get()));
     return os;
 }
 
@@ -94,11 +97,13 @@ std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
     if (is_where()) {
         tab.println(os, "{} where", S(tab, expr()));
         ++tab;
-        for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
+        for (const auto& decl : decls())
+            tab.println(os, "{}", S(tab, decl.get()));
         --tab;
         return os;
     } else {
-        for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
+        for (const auto& decl : decls())
+            tab.println(os, "{}", S(tab, decl.get()));
         return print(os, "{}", S(tab, expr()));
     }
 }
@@ -120,9 +125,10 @@ std::ostream& MatchExpr::Arm::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& MatchExpr::stream(Tab& tab, std::ostream& os) const {
-    tab.println(os, "match {} {{", S(tab, scrutinee()));
+    tab.println(os, "match {} with", S(tab, scrutinee()));
     ++tab;
-    for (const auto& arm : arms()) tab.println(os, "{},", S(tab, arm.get()));
+    for (const auto& arm : arms())
+        tab.println(os, "| {}", S(tab, arm.get()));
     --tab;
     return tab.println(os, "}}");
 }
@@ -134,7 +140,8 @@ std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& PiExpr::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{} {}", tag(), S(tab, dom()));
+    if (tag() != Tag::Nil) print(os, "{} ", tag());
+    print(os, "{}", S(tab, dom()));
     if (codom()) print(os, " -> {}", S(tab, codom()));
     return os;
 }
@@ -154,7 +161,7 @@ std::ostream& SigmaExpr::stream(Tab& tab, std::ostream& os) const { return ptrn(
 std::ostream& TupleExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "({, })", R(tab, elems())); }
 
 std::ostream& SeqExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{}{}; {}{}", is_arr() ? "«" : "‹", S(tab, shape()), S(tab, body()), is_arr() ? "»" : "›");
+    return print(os, "{}{}; {}{}", is_arr() ? "«" : "‹", S(tab, arity()), S(tab, body()), is_arr() ? "»" : "›");
 }
 
 std::ostream& ExtractExpr::stream(Tab& tab, std::ostream& os) const {
@@ -231,4 +238,7 @@ std::ostream& CDecl::stream(Tab& tab, std::ostream& os) const {
     return os;
 }
 
+std::ostream& RuleDecl::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "rule {} : {} => {} when {}", S(tab, var()), S(tab, lhs()), S(tab, rhs()), S(tab, guard()));
+}
 } // namespace mim::ast

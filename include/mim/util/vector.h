@@ -7,7 +7,8 @@
 namespace mim {
 
 /// Use up to 4 words (i.e., 4 * sizeof(size_t)) of inlined storage, rounded up.
-template<class T> static constexpr size_t Default_Inlined_Size = std::max((size_t)1, 4 * sizeof(size_t) / sizeof(T));
+template<class T>
+static constexpr size_t Default_Inlined_Size = std::max((size_t)1, 4 * sizeof(size_t) / sizeof(T));
 
 /// This is a thin wrapper for
 /// [`absl::InlinedVector<T, N, A>`](https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h)
@@ -26,7 +27,8 @@ public:
                                                            && std::is_nothrow_assignable_v<T&, T>)
         requires(std::is_invocable_r_v<T, F, size_t>)
         : Base(size) {
-        for (size_t i = 0; i != size; ++i) (*this)[i] = std::invoke(f, i);
+        for (size_t i = 0; i != size; ++i)
+            (*this)[i] = std::invoke(f, i);
     }
 
     template<std::ranges::forward_range R, class F>
@@ -37,7 +39,8 @@ public:
                  && !std::is_same_v<std::decay_t<R>, Vector>)
         : Base(std::ranges::distance(range)) {
         auto ri = std::ranges::begin(range);
-        for (auto& elem : *this) elem = std::invoke(f, *ri++);
+        for (auto& elem : *this)
+            elem = std::invoke(f, *ri++);
     }
     ///@}
 

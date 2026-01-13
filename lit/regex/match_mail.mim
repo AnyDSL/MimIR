@@ -65,18 +65,18 @@ let re = %regex.conj (letterOrDigit,
             letter,
             %regex.quant.plus letter);
 
-ccon strlen[%mem.M, %mem.Ptr («⊤:Nat; I8», 0), Cn [%mem.M, I32]];
+ccon strlen[%mem.M 0, %mem.Ptr («⊤:Nat; I8», 0), Cn [%mem.M 0, I32]];
 
-con extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), exit : Cn [%mem.M, I32]] =
+con extern main[mem: %mem.M 0, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), exit : Cn [%mem.M 0, I32]] =
     (exit, match_argument) # (%core.icmp.ug (argc, 1I32)) (mem, 0I32)
     where
-        con match_argument[mem: %mem.M, I32] =
+        con match_argument[mem: %mem.M 0, I32] =
             let arg1 = %mem.lea (argv, %core.idx_unsafe 1);
             let (mem, to_match) = %mem.load (mem, arg1);
             let (mem, matched, pos) = re (mem, to_match, %core.idx_unsafe 0);
             strlen(mem, to_match, exit_me)
             where
-            con exit_me(mem: %mem.M, len: I32) =
+            con exit_me(mem: %mem.M 0, len: I32) =
                 exit (mem, (%core.idx i32 0 255, %core.wrap.sub i32 (len, %core.conv.u i32 pos))#matched)
             end
     end;

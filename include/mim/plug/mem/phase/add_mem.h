@@ -1,18 +1,17 @@
 #pragma once
 
+#include <mim/phase.h>
 #include <mim/schedule.h>
 
-#include <mim/phase/phase.h>
-
-namespace mim::plug::mem {
+namespace mim::plug::mem::phase {
 
 /// This phase adds mems to all lambdas and continuations.
 /// It's primarily to be used as preparation for other phases
 /// that rely on all continuations having a mem.
 class AddMem : public NestPhase<Lam> {
 public:
-    AddMem(World& world)
-        : NestPhase(world, "add_mem", true, true) {}
+    AddMem(World& world, flags_t annex)
+        : NestPhase(world, annex, true) {}
 
     void visit(const Nest&) override;
 
@@ -30,4 +29,4 @@ private:
     Def2Def mem_rewritten_;
 };
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::phase

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 #include "mim/plug/clos/clos.h"
 
@@ -12,11 +12,10 @@ namespace plug::clos {
 
 class ClosConvPrep : public RWPass<ClosConvPrep, Lam> {
 public:
-    ClosConvPrep(PassMan& man, EtaExp* eta_exp)
-        : RWPass(man, "clos_conv_prep")
-        , eta_exp_(eta_exp)
-        , old2wrapper_()
-        , lam2fscope_() {}
+    ClosConvPrep(World& world, flags_t annex)
+        : RWPass(world, annex) {}
+
+    void init(PassMan*) final;
 
     void enter() override;
     const Def* rewrite(const Def*) override;

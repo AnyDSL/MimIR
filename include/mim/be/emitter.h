@@ -1,13 +1,13 @@
 #pragma once
 
+#include "mim/phase.h"
 #include "mim/schedule.h"
 #include "mim/world.h"
 
-#include "mim/phase/phase.h"
-
 namespace mim {
 
-template<class Value, class Type, class BB, class Child> class Emitter : public NestPhase<Lam> {
+template<class Value, class Type, class BB, class Child>
+class Emitter : public NestPhase<Lam> {
 private:
     constexpr const Child& child() const { return *static_cast<const Child*>(this); }
     constexpr Child& child() { return *static_cast<Child*>(this); }
@@ -23,8 +23,8 @@ public:
     Tab tab;
 
 protected:
-    Emitter(World& world, std::string_view name, std::ostream& ostream)
-        : NestPhase(world, name, false, false)
+    Emitter(World& world, std::string name, std::ostream& ostream)
+        : NestPhase(world, std::move(name), false)
         , ostream_(ostream) {}
 
     std::ostream& ostream() const { return ostream_; }
@@ -77,7 +77,7 @@ protected:
 
         child().finalize();
         locals_.clear();
-        assert_unused(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
+        assert_unused(lam2bb_.size() == old_size && "really make sure we didn't trigger a rehash");
     }
 
     Lam* curr_lam_ = nullptr;

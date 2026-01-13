@@ -24,7 +24,7 @@ int f(uint64_t x) { return poly<std::map>(x); }
 plugin mem;
 plugin ord;
 
-cfun dont_know[mem: %mem.M]: [%mem.M, Bool];
+cfun dont_know[mem: %mem.M 0]: [%mem.M 0, Bool];
 
 let Key = (I32, %core.icmp.ul @i32);
 
@@ -36,32 +36,32 @@ let Ord = [
     contains: {K: %ord.Key} → {V: *} → [Map K V, K#T     ] → Bool,
 ];
 
-fun poly (ord: Ord) (mem: %mem.M, x: I64): [%mem.M, I64] =
+fun poly (ord: Ord) (mem: %mem.M 0, x: I64): [%mem.M 0, I64] =
     // stack-alloc dictionary and init with: 0 -> 23, 1 -> x
     let (mem, ptr) = %mem.slot (ord#Map Key I64, 0) (mem, 0);
     let  mem       = %mem.store (mem, ptr, ord#init Key ((0I32, 23I64), (1I32, x)));
     head mem where
-        con head(mem: %mem.M) =
+        con head(mem: %mem.M 0) =
             ret (mem, cond) = dont_know $ mem;
             (exit, body)#cond mem where
-                con body(mem: %mem.M) =
+                con body(mem: %mem.M 0) =
                     let (mem, map) = %mem.load (mem, ptr);
                     let map        = ord#insert_ (map, (1I32, 42I64)); // 1 -> 42
                     let mem        = %mem.store (mem, ptr, map);
                     let cond       = ord#contains (map, 1I32);
                     (false, true)#cond mem
                     where
-                        con true (mem: %mem.M) =
+                        con true (mem: %mem.M 0) =
                             let (mem, map) = %mem.load (mem, ptr);
                             let map        = ord#insert_ (map, (1I32, x)); // 1 -> x
                             let mem        = %mem.store (mem, ptr, map);
                             next mem;
 
-                        con false(mem: %mem.M) = next mem;
-                        con next (mem: %mem.M) = head mem;
+                        con false(mem: %mem.M 0) = next mem;
+                        con next (mem: %mem.M 0) = head mem;
                     end;
 
-                con exit(mem: %mem.M) =
+                con exit(mem: %mem.M 0) =
                     let (mem, map) = %mem.load (mem, ptr);
                     let val            = ord#get (map, 1I32);
                     return (mem, val);
@@ -71,7 +71,7 @@ fun poly (ord: Ord) (mem: %mem.M, x: I64): [%mem.M, I64] =
 let map = (%ord.Map, %ord.init.map, %ord.get, %ord.insert.map, %ord.contains.map);
 
 // I can't have a polymorphic function as extern at the moment, so I instantiate here:
-fun extern f(mem: %mem.M, x: I64): [%mem.M, I64] = poly map ((mem, x), return);
+fun extern f(mem: %mem.M 0, x: I64): [%mem.M 0, I64] = poly map ((mem, x), return);
 
 // CHECK: define i64 @f(i64 [[X:%[[:alnum:]_]+]])
-// CHECK: phi i64 [ [[X]]
+// CHECK: ret i64 [[X]]

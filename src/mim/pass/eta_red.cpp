@@ -2,21 +2,17 @@
 
 namespace mim {
 
-namespace {
-bool is_var(const Def* def) {
-    if (def->isa<Var>()) return true;
-    if (auto extract = def->isa<Extract>()) return extract->tuple()->isa<Var>();
-    return false;
-}
-
-// For now, only η-reduce `lam x.e x` if e is a @p Var or a @p Lam.
-const App* eta_rule(Lam* lam) {
+static const App* eta_rule(Lam* lam) {
     if (auto app = lam->body()->isa<App>()) {
-        if (app->arg() == lam->var() && (is_var(app->callee()) || app->callee()->isa<Lam>())) return app;
+        if (app->arg() == lam->var()) return app;
     }
     return nullptr;
 }
-} // namespace
+
+void EtaRed::apply(bool callee_only) {
+    callee_only_ = callee_only;
+    name_ += callee_only_ ? " tt" : " ff";
+}
 
 const Def* EtaRed::rewrite(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
@@ -25,7 +21,7 @@ const Def* EtaRed::rewrite(const Def* def) {
             if (auto app = eta_rule(lam); app && !irreducible_.contains(lam)) {
                 data().emplace(lam, Lattice::Reduce);
                 auto new_def = def->refine(i, app->callee());
-                world().DLOG("eta-reduction '{}' -> '{}' by eliminating '{}'", def, new_def, lam);
+                DLOG("eta-reduction '{}' -> '{}' by eliminating '{}'", def, new_def, lam);
                 return new_def;
             }
         }
@@ -39,7 +35,7 @@ undo_t EtaRed::analyze(const Var* var) {
         auto [_, l] = *data().emplace(lam, Lattice::Bot).first;
         auto succ   = irreducible_.emplace(lam).second;
         if (l == Lattice::Reduce && succ) {
-            world().DLOG("irreducible: {}; found {}", lam, var);
+            DLOG("irreducible: {}; found {}", lam, var);
             return undo_visit(lam);
         }
     }

@@ -79,6 +79,7 @@ Tok Lexer::lex() {
         if (accept( '$')) return tok(Tag::T_dollar);
         if (accept( '#')) return tok(Tag::T_extract);
         if (accept(U'λ')) return tok(Tag::T_lm);
+        if (accept( '|')) return tok(Tag::T_pipe);
         if (accept( ';')) return tok(Tag::T_semicolon);
         if (accept(U'★')) return tok(Tag::T_star);
         if (accept( '*')) return tok(Tag::T_star);

@@ -1,12 +1,18 @@
+#include <absl/container/btree_set.h>
+
 #include <mim/plug/core/core.h>
 
+#include "mim/tuple.h"
 #include "mim/world.h"
 
 #include "mim/plug/vec/vec.h"
 
+#include "absl/container/fixed_array.h"
+
 namespace mim::plug::vec {
 
-template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def* arg) {
+template<fold id>
+const Def* normalize_fold(const Def*, const Def* c, const Def* arg) {
     auto& w     = c->world();
     auto callee = c->as<App>();
     auto f      = callee->arg();
@@ -16,9 +22,11 @@ template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def*
 
     if (auto tuple = vec->isa<Tuple>()) {
         if constexpr (id == fold::l)
-            for (auto op : tuple->ops()) acc = w.app(f, {acc, op});
+            for (auto op : tuple->ops())
+                acc = w.app(f, {acc, op});
         else // fold::r
-            for (auto op : tuple->ops() | std::ranges::views::reverse) acc = w.app(f, {op, acc});
+            for (auto op : tuple->ops() | std::ranges::views::reverse)
+                acc = w.app(f, {op, acc});
         return acc;
     }
 
@@ -34,7 +42,30 @@ template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def*
     return nullptr;
 }
 
-template<scan id> const Def* normalize_scan(const Def*, const Def* c, const Def* vec) {
+const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
+    if (arg->is_open()) return {};
+    auto& w           = type->world();
+    auto [ni_n, _, f] = App::uncurry_args<3>(c);
+    auto [ni, n]      = ni_n->projs<2>([](const Def* def) { return Lit::isa(def); });
+
+    if (!ni || !n) return {};
+    if (ni >= w.flags().scalarize_threshold || n >= w.flags().scalarize_threshold) return {};
+
+    auto res = absl::FixedArray<const Def*>(*n);
+    auto tup = absl::FixedArray<const Def*>(*ni);
+
+    for (size_t j = 0; j != n; ++j) {
+        for (size_t i = 0; i != ni; ++i)
+            tup[i] = arg->proj(*ni, i)->proj(*n, j);
+
+        res[j] = w.app(f, tup);
+    }
+
+    return w.tuple(res);
+}
+
+template<scan id>
+const Def* normalize_scan(const Def*, const Def* c, const Def* vec) {
     auto& w     = c->world();
     auto callee = c->as<App>();
     auto p      = callee->arg();
@@ -64,7 +95,7 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
     }
 
     if (auto pack = vec->isa_imm<Pack>()) {
-        if (auto l = Lit::isa(pack->shape())) return w.lit_ff();
+        if (auto l = Lit::isa(pack->arity())) return w.lit_ff();
     }
 
     if (vec->isa<Lit>()) return w.lit_tt();
@@ -72,9 +103,18 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
     return nullptr;
 }
 
+const Def* normalize_cat(const Def*, const Def* callee, const Def* arg) {
+    auto [a, b] = arg->projs<2>();
+    auto [n, m] = callee->as<App>()->decurry()->args<2>([](auto def) { return Lit::isa(def); });
+    if (n && *n == 0) return b;
+    if (m && *m == 0) return a;
+    if (n && m) return mim::cat_tuple(*n, *m, a, b);
+    return nullptr;
+}
+
 const Def* normalize_diff(const Def* type, const Def* c, const Def* arg) {
     if (auto arr = type->isa<Arr>()) {
-        if (arr->shape()->isa<Bot>()) return nullptr; // ack error
+        if (arr->arity()->isa<Bot>()) return nullptr; // ack error
     }
 
     auto& w        = type->world();
@@ -89,7 +129,8 @@ const Def* normalize_diff(const Def* type, const Def* c, const Def* arg) {
         if (auto tup_is = is->isa<Tuple>(); tup_is && tup_is->is_closed()) {
             auto defs = DefVec();
             auto set  = absl::btree_set<nat_t>();
-            for (auto opi : tup_is->ops()) set.emplace(Lit::as(opi));
+            for (auto opi : tup_is->ops())
+                set.emplace(Lit::as(opi));
 
             for (size_t i = 0, e = tup_vec->num_ops(); i != e; ++i)
                 if (!set.contains(i)) defs.emplace_back(tup_vec->op(i));

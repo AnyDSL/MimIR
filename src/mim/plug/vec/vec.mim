@@ -26,6 +26,14 @@ plugin refly;
 axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;
 axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;
 ///
+/// ### %%vec.zip
+///
+/// [Combines](https://en.wikipedia.org/wiki/Zipping_(computer_science)) multiple vectors element-wise using the provided function.
+/// Given `ni` vectors of length `n`, and a function `f` that takes one element from each vector,
+/// `%%vec.zip` produces a new vector of length `n` where each element is the result of applying `f`.
+///
+axm %vec.zip: {ni n: Nat} → {Is: «ni; *», R: *} → [f: «i: ni; Is#i» → R] → [«i: ni; «n; Is#i»»] → «n; R», normalize_zip;
+///
 /// ## Scanning
 ///
 /// ### %%vec.scan
@@ -56,6 +64,13 @@ lam %vec.len {n: Nat} {T: *} [«n; T»]: Nat = n;
 axm %vec.is_unique: {T: *} → {n: Nat} → «n; T» → Bool, normalize_is_unique;
 ///
 /// ## Modifiers
+///
+/// Concatenation of an `n`-vector and an `m`-vector to an `n + m`-vector.
+///
+axm %vec.cat: {n m: Nat}
+            → {T: *}
+            → [«n; T», «m; T»]
+            → «%core.nat.add (n, m); T», normalize_cat;
 ///
 /// ### %%vec.diff
 ///

@@ -227,8 +227,8 @@ TEST(Automaton, Regex2NFANotwds) {
     World& w = driver.world();
     ast::load_plugins(w, {"compile", "mem", "core", "math", "regex"});
 
-    // %regex.not_ (%regex.conj (%regex.cls.w, %regex.cls.d, %regex.cls.s))
-    auto pattern = w.call<regex::not_>(
+    // %regex.neg_lookahead (%regex.conj (%regex.cls.w, %regex.cls.d, %regex.cls.s))
+    auto pattern = w.call<regex::neg_lookahead>(
         w.call<regex::conj>(Defs{w.annex(regex::cls::w), w.annex(regex::cls::d), w.annex(regex::cls::s)}));
     pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);

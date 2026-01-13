@@ -5,6 +5,8 @@
 #include <iomanip>
 #include <ranges>
 
+#include <absl/container/btree_set.h>
+
 #include <mim/plug/clos/clos.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
@@ -39,7 +41,7 @@ namespace {
 bool is_const(const Def* def) {
     if (def->isa<Bot>()) return true;
     if (def->isa<Lit>()) return true;
-    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
+    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->arity()) && is_const(pack->body());
 
     if (auto tuple = def->isa<Tuple>()) {
         auto ops = tuple->ops();
@@ -70,7 +72,7 @@ const char* llvm_suffix(const Def* type) {
     error("unsupported foating point type '{}'", type);
 }
 
-// [%mem.M, T] => T
+// [%mem.M 0, T] => T
 // TODO there may be more instances where we have to deal with this trickery
 const Def* isa_mem_sigma_2(const Def* type) {
     if (auto sigma = type->isa<Sigma>())
@@ -89,13 +91,15 @@ struct BB {
     std::deque<std::ostringstream>& body() { return parts[1]; }
     std::deque<std::ostringstream>& tail() { return parts[2]; }
 
-    template<class... Args> std::string assign(std::string_view name, const char* s, Args&&... args) {
-        print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args&&>(args)...);
+    template<class... Args>
+    std::string assign(std::string_view name, const char* s, Args&&... args) {
+        print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args>(args)...);
         return std::string(name);
     }
 
-    template<class... Args> void tail(const char* s, Args&&... args) {
-        print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
+    template<class... Args>
+    void tail(const char* s, Args&&... args) {
+        print(tail().emplace_back(), s, std::forward<Args>(args)...);
     }
 
     friend void swap(BB& a, BB& b) noexcept {
@@ -123,9 +127,10 @@ public:
     std::string prepare();
     void finalize();
 
-    template<class... Args> void declare(const char* s, Args&&... args) {
+    template<class... Args>
+    void declare(const char* s, Args&&... args) {
         std::ostringstream decl;
-        print(decl << "declare ", s, std::forward<Args&&>(args)...);
+        print(decl << "declare ", s, std::forward<Args>(args)...);
         decls_.emplace(decl.str());
     }
 
@@ -184,7 +189,7 @@ std::string Emitter::convert(const Def* type) {
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
         u64 size    = 0;
-        if (auto arity = Lit::isa(arr->shape())) size = *arity;
+        if (auto arity = Lit::isa(arr->arity())) size = *arity;
         print(s, "[{} x {}]", size, t_elem);
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
@@ -242,7 +247,8 @@ void Emitter::start() {
     Super::start();
 
     ostream() << type_decls_.str() << '\n';
-    for (auto&& decl : decls_) ostream() << decl << '\n';
+    for (auto&& decl : decls_)
+        ostream() << decl << '\n';
     ostream() << func_decls_.str() << '\n';
     ostream() << vars_decls_.str() << '\n';
     ostream() << func_impls_.str() << '\n';
@@ -297,7 +303,8 @@ void Emitter::finalize() {
 
             ++tab;
             for (const auto& part : bb.parts)
-                for (const auto& line : part) tab.print(func_impls_, "{}\n", line.str());
+                for (const auto& line : part)
+                    tab.print(func_impls_, "{}\n", line.str());
             --tab;
             func_impls_ << std::endl;
         }
@@ -338,20 +345,10 @@ void Emitter::emit_epilogue(Lam* lam) {
                 bb.tail("ret {} {}", type, prev);
             }
         }
-    } else if (auto ex = app->callee()->isa<Extract>(); ex && Pi::isa_basicblock(app->callee_type())) {
-        // emit_unsafe(app->arg());
-        // A call to an extract like constructed for conditionals (else,then)#cond (args)
-        // TODO: we can not rely on the structure of the extract (it might be a nested extract)
-        for (auto callee_def : ex->tuple()->projs()) {
-            // dissect the tuple of lambdas
-            auto callee = callee_def->as_mut<Lam>();
-            // each callees type should agree with the argument type (should be checked by type checking).
-            // Especially, the number of vars should be the number of arguments.
-            // TODO: does not hold for complex arguments that are not tuples.
-            assert(callee->num_tvars() == app->num_targs());
+    } else if (auto dispatch = Dispatch(app)) {
+        for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
             size_t n = callee->num_tvars();
             for (size_t i = 0; i != n; ++i) {
-                // emits the arguments one by one (TODO: handle together like before)
                 if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
                     auto phi = callee->var(n, i);
                     assert(!Axm::isa<mem::M>(phi->type()));
@@ -361,17 +358,19 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
 
-        auto c = emit(ex->index());
-        if (ex->tuple()->num_projs() == 2) {
-            auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
-            return bb.tail("br i1 {}, label {}, label {}", c, t, f);
-        } else {
-            auto t_c = convert(ex->index()->type());
-            bb.tail("switch {} {}, label {} [ ", t_c, c, emit(ex->tuple()->proj(0)));
-            for (auto i = 1u; i < ex->tuple()->num_projs(); i++)
-                print(bb.tail().back(), "{} {}, label {} ", t_c, std::to_string(i), emit(ex->tuple()->proj(i)));
-            print(bb.tail().back(), "]");
-        }
+        auto v_index = emit(dispatch.index());
+        size_t n     = dispatch.num_targets();
+        auto bbs     = absl::FixedArray<std::string>(n);
+        for (size_t i = 0; i != n; ++i)
+            bbs[i] = emit(dispatch.target(i));
+
+        if (auto branch = Branch(app)) return bb.tail("br i1 {}, label {}, label {}", v_index, bbs[1], bbs[0]);
+
+        auto t_index = convert(dispatch.index()->type());
+        bb.tail("switch {} {}, label {} [ ", t_index, v_index, bbs[0]);
+        for (size_t i = 1; i != n; ++i)
+            print(bb.tail().back(), "{} {}, label {} ", t_index, std::to_string(i), bbs[i]);
+        print(bb.tail().back(), "]");
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
@@ -547,24 +546,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto pack = def->isa<Pack>()) {
         if (auto lit = Lit::isa(pack->body()); lit && *lit == 0) return "zeroinitializer";
         return emit_tuple(pack);
+    } else if (auto sel = Select(def)) {
+        auto t                = convert(sel.extract()->type());
+        auto [elem_a, elem_b] = sel.pair()->projs<2>([&](auto e) { return emit_unsafe(e); });
+        auto cond_t           = convert(sel.cond()->type());
+        auto cond             = emit(sel.cond());
+        return bb.assign(name, "select {} {}, {} {}, {} {}", cond_t, cond, t, elem_b, t, elem_a);
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
-
-        // use select when extracting from 2-element integral tuples
-        // literal indices would be normalized away already, if it was possible
-        // As they aren't they likely depend on a var, which is implemented as array -> need extractvalue
-        if (auto app = extract->type()->isa<App>();
-            app && app->callee()->isa<Idx>() && !index->isa<Lit>() && tuple->type()->isa<Arr>()) {
-            if (auto arity = tuple->type()->isa_lit_arity(); arity && *arity == 2) {
-                auto t                = convert(extract->type());
-                auto [elem_a, elem_b] = tuple->projs<2>([&](auto e) { return emit_unsafe(e); });
-
-                return bb.assign(name, "select {} {}, {} {}, {} {}", convert(index->type()), emit(index), t, elem_b, t,
-                                 elem_a);
-            }
-        }
-
         auto v_tup = emit_unsafe(tuple);
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
@@ -681,9 +671,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto wrap = Axm::isa<core::wrap>(def)) {
-        auto [a, b] = wrap->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(wrap->type());
-        auto mode   = Lit::as(wrap->decurry()->arg());
+        auto [mode, ab] = wrap->uncurry_args<2>();
+        auto [a, b]     = ab->projs<2>([this](auto def) { return emit(def); });
+        auto t          = convert(wrap->type());
+        auto lmode      = Lit::as(mode);
 
         switch (wrap.id()) {
             case core::wrap::add: op = "add"; break;
@@ -692,8 +683,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::wrap::shl: op = "shl"; break;
         }
 
-        if (mode & core::Mode::nuw) op += " nuw";
-        if (mode & core::Mode::nsw) op += " nsw";
+        if (lmode & core::Mode::nuw) op += " nuw";
+        if (lmode & core::Mode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto div = Axm::isa<core::div>(def)) {
@@ -833,10 +824,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         bb.tail("call void @free(i8* {})", name + "i8");
         return {};
     } else if (auto mslot = Axm::isa<mem::mslot>(def)) {
+        auto [Ta, msi]             = mslot->uncurry_args<2>();
+        auto [pointee, addr_space] = Ta->projs<2>();
+        auto [mem, _, __]          = msi->projs<3>();
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto v_size = emit(mslot->arg(1));
-        auto [pointee, addr_space] = mslot->decurry()->args<2>();
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
     } else if (auto free = Axm::isa<mem::free>(def)) {
@@ -878,9 +871,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_jb = emit(jmpbuf);
         return bb.assign(name, "call i32 @_setjmp(i8* {})", v_jb);
     } else if (auto arith = Axm::isa<math::arith>(def)) {
-        auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(arith->type());
-        auto mode   = Lit::as(arith->decurry()->arg());
+        auto [mode, ab] = arith->uncurry_args<2>();
+        auto [a, b]     = ab->projs<2>([this](auto def) { return emit(def); });
+        auto t          = convert(arith->type());
+        auto lmode      = Lit::as(mode);
 
         switch (arith.id()) {
             case math::arith::add: op = "fadd"; break;
@@ -890,17 +884,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case math::arith::rem: op = "frem"; break;
         }
 
-        if (mode == math::Mode::fast)
+        if (lmode == math::Mode::fast)
             op += " fast";
         else {
             // clang-format off
-            if (mode & math::Mode::nnan    ) op += " nnan";
-            if (mode & math::Mode::ninf    ) op += " ninf";
-            if (mode & math::Mode::nsz     ) op += " nsz";
-            if (mode & math::Mode::arcp    ) op += " arcp";
-            if (mode & math::Mode::contract) op += " contract";
-            if (mode & math::Mode::afn     ) op += " afn";
-            if (mode & math::Mode::reassoc ) op += " reassoc";
+            if (lmode & math::Mode::nnan    ) op += " nnan";
+            if (lmode & math::Mode::ninf    ) op += " ninf";
+            if (lmode & math::Mode::nsz     ) op += " nsz";
+            if (lmode & math::Mode::arcp    ) op += " arcp";
+            if (lmode & math::Mode::contract) op += " contract";
+            if (lmode & math::Mode::afn     ) op += " afn";
+            if (lmode & math::Mode::reassoc ) op += " reassoc";
             // clang-format on
         }
 
@@ -918,7 +912,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             if (tri.sub() & sub_t(math::tri::a)) f += "a";
 
-            switch (math::tri((tri.id() & 0x3) | Annex::Base<math::tri>)) {
+            switch (math::tri((tri.id() & 0x3) | Annex::base<math::tri>())) {
                 case math::tri::sin: f += "sin"; break;
                 case math::tri::cos: f += "cos"; break;
                 case math::tri::tan: f += "tan"; break;
