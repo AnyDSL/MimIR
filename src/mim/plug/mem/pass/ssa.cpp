@@ -51,14 +51,14 @@ const Def* SSA::rewrite(const Def* def) {
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_mut()).writable.contains(sloxy)) {
                 set_val(curr_mut(), sloxy, val);
-                return op_remem(mem)->set(store->dbg());
+                return world().call<mem::remem>(mem)->set(store->dbg());
             }
         }
-    } else if (auto [app, mem_lam] = isa_apped_mut_lam(def); isa_workable(mem_lam)) {
+    } else if (auto [app, mem_lam] = isa_apped_mut_lam(def); isa_optimizable(mem_lam)) {
         return mem2phi(app, mem_lam);
     } else {
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-            if (auto lam = def->op(i)->isa_mut<Lam>(); isa_workable(lam)) {
+            if (auto lam = def->op(i)->isa_mut<Lam>(); isa_optimizable(lam)) {
                 if (mem2phi_.contains(lam)) return def->refine(i, eta_exp_->proxy(lam));
             }
         }
@@ -114,7 +114,7 @@ const Def* SSA::mem2phi(const App* app, Lam* mem_lam) {
     auto&& [phi_lam, old_phis] = mem2phi_[mem_lam];
     if (phi_lam == nullptr || old_phis != phis) {
         old_phis = phis;
-        phi_lam  = world().mut_lam(merge_sigma(mem_lam->dom(), types), mem_lam->codom())->set(mem_lam->dbg());
+        phi_lam  = world().mut_lam(cat_sigma(mem_lam->dom(), types), mem_lam->codom())->set(mem_lam->dbg());
         eta_exp_->new2old(phi_lam, mem_lam);
         DLOG("new phi_lam '{}'", phi_lam);
 
@@ -137,7 +137,7 @@ const Def* SSA::mem2phi(const App* app, Lam* mem_lam) {
     DLOG("mem_lam => phi_lam: '{}': '{}' => '{}': '{}'", mem_lam, mem_lam->type()->dom(), phi_lam, phi_lam->dom());
     auto sloxy = sloxys.begin();
     auto args  = DefVec(num_phis, [&](auto) { return get_val(curr_mut(), *sloxy++); });
-    return world().app(phi_lam, merge_tuple(app->arg(), args));
+    return world().app(phi_lam, cat_tuple(app->arg(), args));
 }
 
 undo_t SSA::analyze(const Proxy* proxy) {
@@ -162,7 +162,7 @@ undo_t SSA::analyze(const Proxy* proxy) {
 
 undo_t SSA::analyze(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto succ_lam = isa_workable(def->op(i)->isa_mut<Lam>())) {
+        if (auto succ_lam = isa_optimizable(def->op(i)->isa_mut<Lam>())) {
             auto& succ_info = data(succ_lam);
 
             // TODO this is a bit scruffy - maybe we can do better

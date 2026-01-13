@@ -41,7 +41,7 @@ axm %matrix.shape: [n: Nat, S: «n; Nat», T: *] as nST → [%matrix.Mat nST, i:
 /// ### %%matrix.const
 ///
 /// a constant matrix
-axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, T] → [%mem.M, %matrix.Mat nST];
+axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, T] → [%mem.M 0, %matrix.Mat nST];
 ///
 /// ### %%matrix.read
 ///
@@ -54,7 +54,7 @@ axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, T] → [
 /// * read(insert)
 /// * read(const)
 ///
-axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M, T], normalize_read;
+axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M 0, T], normalize_read;
 ///
 /// ### %%matrix.insert
 ///
@@ -67,27 +67,27 @@ axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, %matrix.Mat 
 /// * with other inserts
 /// * with initialization
 ///
-axm %matrix.insert: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M, %matrix.Mat nST], normalize_insert;
+axm %matrix.insert: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M 0, %matrix.Mat nST], normalize_insert;
 ///
 /// ### %%matrix.init
 ///
 /// A fresh matrix with uninitialized values.
-axm %matrix.init: [n: Nat, S: «n; Nat», T: *, %mem.M] → [%mem.M, %matrix.Mat (n, S, T)];
+axm %matrix.init: [n: Nat, S: «n; Nat», T: *, %mem.M 0] → [%mem.M 0, %matrix.Mat (n, S, T)];
 ///
 /// ### High-level matrix operations
 ///
 // TODO: define alias: * fst, snd, split * zip = zipWith id
 axm %matrix.prod: [m: Nat, k: Nat, l: Nat, [p: Nat, e:Nat]]
-                → [%mem.M, %matrix.Mat (2, (m, k), %math.F (p, e)), %matrix.Mat (2, (k, l), %math.F (p, e))]
-                → [%mem.M, %matrix.Mat (2, (m, l), %math.F (p, e))], normalize_prod;
+                → [%mem.M 0, %matrix.Mat (2, (m, k), %math.F (p, e)), %matrix.Mat (2, (k, l), %math.F (p, e))]
+                → [%mem.M 0, %matrix.Mat (2, (m, l), %math.F (p, e))], normalize_prod;
 
 axm %matrix.transpose: [[k:Nat, l:Nat], T: *]
-                     → [%mem.M, %matrix.Mat (2, (k, l), T)]
-                     → [%mem.M, %matrix.Mat (2, (l, k), T)], normalize_transpose;
+                     → [%mem.M 0, %matrix.Mat (2, (k, l), T)]
+                     → [%mem.M 0, %matrix.Mat (2, (l, k), T)], normalize_transpose;
 
 axm %matrix.sum: [n: Nat, S: «n; Nat», [p:Nat, e:Nat]]
-               → [%mem.M, %matrix.Mat (n, S, %math.F (p, e))]
-               → [%mem.M, %math.F (p, e)];
+               → [%mem.M 0, %matrix.Mat (n, S, %math.F (p, e))]
+               → [%mem.M 0, %math.F (p, e)];
 ///
 // TODO: handle reduction case: n=0, S=[] => not empty but scalar
 /// Our notation is inspired by einsum (with some generalizations):
@@ -129,13 +129,13 @@ axm %matrix.map_reduce:
         SI: «i:m; «NI#i; Nat»»      // input shapes
     ]
   → [
-        mem:    %mem.M,              // memory
+        mem:    %mem.M 0,              // memory
         zero:   T,                   // initial value
         // TODO: propagate change: no addition but instead take acc as argument (like mlir.linarith.generic)
-        comb:   Fn [%mem.M, T, «i: m; TI#i»] → [%mem.M, T], // inner combination
+        comb:   Fn [%mem.M 0, T, «i: m; TI#i»] → [%mem.M 0, T], // inner combination
         // out_index not needed => always ij (0 ... n) for n dimensions
         input:  «i: m; [«NI#i; Nat», %matrix.Mat (NI#i, SI#i, TI#i)]»
-    ] → [%mem.M, %matrix.Mat (n, S, T)],
+    ] → [%mem.M 0, %matrix.Mat (n, S, T)],
     normalize_map_reduce;
 ///
 /// ## Unfolding functions
@@ -144,9 +144,9 @@ axm %matrix.map_reduce:
 ///
 /// Follow the principle `ij <- ik, kj` (`out[i, j] = sum_k in1[i, k] * in2[k, j]`) by using mulplication as combination function and addition as reduction function.
 fun extern internal_mapRed_matrix_prod(m k l: Nat, pe: «2; Nat»)
-                                      (mem: %mem.M, M: %matrix.Mat (2, (m, k), %math.F pe),
+                                      (mem: %mem.M 0, M: %matrix.Mat (2, (m, k), %math.F pe),
                                                     N: %matrix.Mat (2, (k, l), %math.F pe))@tt
-                                    : [     %mem.M,    %matrix.Mat (2, (m, l), %math.F pe)] =
+                                    : [     %mem.M 0,    %matrix.Mat (2, (m, l), %math.F pe)] =
     let R = %math.F pe;
     let zero_real = %math.conv.f2f pe 0.0:%math.F64;
     return (
@@ -160,7 +160,7 @@ fun extern internal_mapRed_matrix_prod(m k l: Nat, pe: «2; Nat»)
             (
                 mem,
                 zero_real,
-                fn (mem: %mem.M, acc: R, ab: «2; R»): [%mem.M, R] =
+                fn (mem: %mem.M 0, acc: R, ab: «2; R»): [%mem.M 0, R] =
                     return (mem, %math.arith.add 0 (acc, %math.arith.mul 0 ab)),
                 (
                     ((0, 2), M),
@@ -175,8 +175,8 @@ fun extern internal_mapRed_matrix_prod(m k l: Nat, pe: «2; Nat»)
 // TODO: check code for 1-matrix edge case
 // TODO: would this automatically be handled by read(transpose) ?
 fun extern internal_mapRed_matrix_transpose((k l: Nat), T: *)
-                                           (mem: %mem.M, M: %matrix.Mat (2, (k, l), T))@tt
-                                         : [     %mem.M,    %matrix.Mat (2, (l, k), T)] =
+                                           (mem: %mem.M 0, M: %matrix.Mat (2, (k, l), T))@tt
+                                         : [     %mem.M 0,    %matrix.Mat (2, (l, k), T)] =
     let zero = ⊥:T; // TODO: use generalized zero
     return (
         %matrix.map_reduce
@@ -190,7 +190,7 @@ fun extern internal_mapRed_matrix_transpose((k l: Nat), T: *)
                 mem,
                 zero,
                 // We ignore the (zero) accumulator and just return the read value.
-                fn (mem: %mem.M, acc a: T): [%mem.M, T] = return (mem, a),
+                fn (mem: %mem.M 0, acc a: T): [%mem.M 0, T] = return (mem, a),
                 ((1, 0), M)
             )
     );
@@ -200,8 +200,8 @@ fun extern internal_mapRed_matrix_transpose((k l: Nat), T: *)
 /// Sums up all elements of a matrix and returns a scalar.
 //  TODO: test 0d matrix (edge cases in code)
 fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
-                                     (mem: %mem.M, M: %matrix.Mat (n, S, %math.F pe))@tt
-                                   : [%mem.M, %math.F pe] =
+                                     (mem: %mem.M 0, M: %matrix.Mat (n, S, %math.F pe))@tt
+                                   : [%mem.M 0, %math.F pe] =
     let R = %math.F pe;
     // TODO: use generalized zero
     let zero_64 = 0.0:(%math.F (52,11));
@@ -218,7 +218,7 @@ fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
         (
             mem,
             zero_real,
-            fn (mem: %mem.M, acc: R, a: R): [%mem.M, R]
+            fn (mem: %mem.M 0, acc: R, a: R): [%mem.M 0, R]
                 = return (mem, %math.arith.add 0 (acc, a)),
             (
                 (idxs, M)

@@ -316,13 +316,15 @@ Ptr<Expr> Parser::parse_match_expr() {
     auto scrutinee = parse_expr("destroyed union element");
     expect(Tag::K_with, "match");
     Ptrs<MatchExpr::Arm> arms;
-    parse_list("match branches", Tag::D_brace_l, [&]() {
+    accept(Tag::T_pipe);
+    do {
         auto track = tracker();
         auto ptrn  = parse_ptrn(Paren_Style, "right-hand side of a match-arm", Expr::Prec::Bot);
         expect(Tag::T_fat_arrow, "arm of a match-expression");
         auto body = parse_expr("arm of a match-expression");
         arms.emplace_back(ptr<MatchExpr::Arm>(track, std::move(ptrn), std::move(body)));
-    });
+    } while (accept(Tag::T_pipe));
+
     return ptr<MatchExpr>(track, std::move(scrutinee), std::move(arms));
 }
 
@@ -615,10 +617,13 @@ Ptr<ValDecl> Parser::parse_axm_decl() {
     eat(Tag::K_axm);
     Dbg dbg, normalizer;
     Tok curry, trip;
+    // TODO if we check this later, we also have to report this error later
     if (auto name = expect(Tag::M_anx, "annex name of an axm"))
         dbg = name.dbg();
-    else
+    else {
+        accept(Tag::M_id);
         dbg = Dbg(curr_, ast().sym("<error annex name>"));
+    }
 
     std::deque<Ptrs<AxmDecl::Alias>> subs;
     if (ahead().isa(Tag::D_paren_l)) {

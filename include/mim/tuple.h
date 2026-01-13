@@ -254,47 +254,76 @@ private:
     friend class World;
 };
 
-/// Matches `(ff, tt)#cond` - where `cond` is not a Lit%eral.
+/// Matches `(ff, tt)#cond` - where `cond` is **not** a Lit%eral.
 /// @note If `cond` is a Lit%eral, either
-/// * `(x, y)#lit` would have been folded to `x`/`y` anymway, or
-/// * Select::pair() yields again `pair#lit` for `pair#lit`.
+/// * `(x, y)#lit` would have been folded to `x`/`y` anyway, or
+/// * we have something like this: `pair#0_2`
 class Select {
 public:
     Select(const Def*);
 
-    explicit operator bool() const noexcept { return tt_; }
+    explicit operator bool() const noexcept { return extract_; }
 
     const Extract* extract() const { return extract_; }
-    const Def* pair() const { return pair_; }
-    const Def* cond() const { return cond_; }
-    const Def* tt() const { return tt_; }
-    const Def* ff() const { return ff_; }
+    const Def* pair() const { return extract()->tuple(); }
+    const Def* cond() const { return extract()->index(); }
+    const Def* tt() const { return pair()->proj(2, 1); }
+    const Def* ff() const { return pair()->proj(2, 0); }
 
 private:
     const Extract* extract_ = nullptr;
-    const Def* pair_        = nullptr;
-    const Def* cond_        = nullptr;
-    const Def* tt_          = nullptr;
-    const Def* ff_          = nullptr;
 };
 
-/// Matches `(ff, tt)#cond arg`.
+/// Matches `(ff, tt)#cond arg` where `cond` is **not** a Lit%eral.
 /// `(ff, tt)#cond` is matched as a Select.
 class Branch : public Select {
 public:
     Branch(const Def*);
 
+    explicit operator bool() const noexcept { return app_; }
+
     const App* app() const { return app_; }
-    const Def* callee() const { return callee_; }
-    const Def* arg() const { return arg_; }
+    const Def* callee() const;
+    const Def* arg() const;
 
 private:
-    const App* app_    = nullptr;
-    const Def* callee_ = nullptr;
-    const Def* arg_    = nullptr;
+    const App* app_ = nullptr;
 };
 
-/// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs
+/// Matches a dispatch through a jump table of the form:
+/// `(target_0, target_1, ...)#index arg` where `index` is **not** a Lit%eral.
+/// @note Subsumes Branch.
+/// If you want to deal with Branch separately, match Branch first:
+/// ```
+/// if (auto branch = Branch(def)) {
+///     // special case first
+/// } else if (auto dispatch = Dispatch(def)) {
+///     // now, the generic case
+/// }
+/// ```
+class Dispatch {
+public:
+    Dispatch(const Def*);
+
+    explicit operator bool() const noexcept { return app_; }
+
+    const App* app() const { return app_; }
+    const Def* callee() const;
+    const Def* arg() const;
+
+    const Extract* extract() const { return extract_; }
+    const Def* tuple() const { return extract()->tuple(); }
+    const Def* index() const { return extract()->index(); }
+
+    size_t num_targets() const { return Lit::as(extract()->tuple()->arity()); }
+    const Def* target(size_t i) const { return tuple()->proj(i); }
+
+private:
+    const App* app_         = nullptr;
+    const Extract* extract_ = nullptr;
+};
+
+/// @name Helpers to work with Tuples/Sigmas/Arrays/Packs
 ///@{
 bool is_unit(const Def*);
 std::string tuple2str(const Def*);
@@ -309,12 +338,28 @@ const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened Pack / Tuple directly.
 const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
 
-DefVec merge(Defs, Defs);
-DefVec merge(const Def* def, Defs defs);
-const Def* merge_sigma(const Def* def, Defs defs);
-const Def* merge_tuple(const Def* def, Defs defs);
-
 const Def* tuple_of_types(const Def* t);
+///@}
+
+/// @name Concatenation
+/// Works for Tuple%s, Pack%s, Sigma%s, and Arr%ays alike.
+///@{
+DefVec cat(Defs, Defs);
+inline DefVec cat(const Def* a, Defs bs) { return cat(Defs{a}, bs); }
+inline DefVec cat(Defs as, const Def* b) { return cat(as, Defs{b}); }
+
+DefVec cat(nat_t n, nat_t m, const Def* a, const Def* b);
+
+const Def* cat_tuple(nat_t n, nat_t m, const Def* a, const Def* b);
+const Def* cat_sigma(nat_t n, nat_t m, const Def* a, const Def* b);
+
+const Def* cat_tuple(World&, Defs, Defs);
+const Def* cat_sigma(World&, Defs, Defs);
+
+inline const Def* cat_tuple(const Def* a, Defs bs) { return cat_tuple(a->world(), Defs{a}, bs); }
+inline const Def* cat_tuple(Defs as, const Def* b) { return cat_tuple(b->world(), as, Defs{b}); }
+inline const Def* cat_sigma(const Def* a, Defs bs) { return cat_sigma(a->world(), Defs{a}, bs); }
+inline const Def* cat_sigma(Defs as, const Def* b) { return cat_sigma(b->world(), as, Defs{b}); }
 ///@}
 
 } // namespace mim

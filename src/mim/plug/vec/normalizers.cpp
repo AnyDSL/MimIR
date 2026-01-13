@@ -2,9 +2,12 @@
 
 #include <mim/plug/core/core.h>
 
+#include "mim/tuple.h"
 #include "mim/world.h"
 
 #include "mim/plug/vec/vec.h"
+
+#include "absl/container/fixed_array.h"
 
 namespace mim::plug::vec {
 
@@ -37,6 +40,28 @@ const Def* normalize_fold(const Def*, const Def* c, const Def* arg) {
     }
 
     return nullptr;
+}
+
+const Def* normalize_zip(const Def* type, const Def* c, const Def* arg) {
+    if (arg->is_open()) return {};
+    auto& w           = type->world();
+    auto [ni_n, _, f] = App::uncurry_args<3>(c);
+    auto [ni, n]      = ni_n->projs<2>([](const Def* def) { return Lit::isa(def); });
+
+    if (!ni || !n) return {};
+    if (ni >= w.flags().scalarize_threshold || n >= w.flags().scalarize_threshold) return {};
+
+    auto res = absl::FixedArray<const Def*>(*n);
+    auto tup = absl::FixedArray<const Def*>(*ni);
+
+    for (size_t j = 0; j != n; ++j) {
+        for (size_t i = 0; i != ni; ++i)
+            tup[i] = arg->proj(*ni, i)->proj(*n, j);
+
+        res[j] = w.app(f, tup);
+    }
+
+    return w.tuple(res);
 }
 
 template<scan id>
@@ -78,23 +103,12 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
     return nullptr;
 }
 
-const Def* normalize_cat(const Def* type, const Def* callee, const Def* arg) {
-    auto& world = type->world();
+const Def* normalize_cat(const Def*, const Def* callee, const Def* arg) {
     auto [a, b] = arg->projs<2>();
     auto [n, m] = callee->as<App>()->decurry()->args<2>([](auto def) { return Lit::isa(def); });
-
     if (n && *n == 0) return b;
     if (m && *m == 0) return a;
-
-    if (n && m) {
-        auto defs = DefVec();
-        for (size_t i = 0, e = *n; i != e; ++i)
-            defs.emplace_back(a->proj(e, i));
-        for (size_t i = 0, e = *m; i != e; ++i)
-            defs.emplace_back(b->proj(e, i));
-        return world.tuple(defs);
-    }
-
+    if (n && m) return mim::cat_tuple(*n, *m, a, b);
     return nullptr;
 }
 
