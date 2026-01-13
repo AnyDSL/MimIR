@@ -14,29 +14,25 @@ let colors = (
     (0.0:%math.F32, 0.0:%math.F32, 1.0:%math.F32),
 );
 
-fun vertex (vert_id: Idx 3): [«4; %math.F32», «3; %math.F32»]
-    = return (%vec.cat (positions#vert_id, (0.0:%math.F32, 1.0:%math.F32)), colors#vert_id);
+lam vertex (vert_id: Idx 3): [«4; %math.F32», «3; %math.F32»]
+    = (%vec.cat (positions#vert_id, (0.0:%math.F32, 1.0:%math.F32)), colors#vert_id);
 
-fun fragment [color: «3; %math.F32»]: «4; %math.F32»
-    = return (%vec.cat (color, 1.0:%math.F32));
+lam fragment [color: «3; %math.F32»]: «4; %math.F32»
+    = (%vec.cat (color, 1.0:%math.F32));
 
-// wrapper
+fun extern vertex_ [
+    mem: %mem.M 0,
+    i_vertex_id: %spirv.vertex.vertex_id,
+    o_position: %spirv.vertex.position,
+    o_color: %spirv.Output (%spirv.decor.location 0) «3; %math.F32»,
+] = let (mem_, vertex_id) = %spirv.load (mem, i_vertex_id);
+    let (position, color) = vertex (%core.bitcast (Idx 3) vertex_id);
+    let mem__ = %spirv.store (mem_, o_position, position);
+    return (%spirv.store (mem__, o_color, color));
 
-let color = 0_1;
-fun extern _vertex () = return (%spirv.entry
-    (fn mem
-        (builtins: %spirv.builtins %spirv.model.vertex)
-        (inputs: [])
-        (outputs: [%spirv.Output (%spirv.decor.location 0) «3; %math.F32»])
-        (uniforms: [])
-          = let (mem_, vert_id) = %spirv.input.load (mem, builtins#vertex_id);
-            let (position, color) = vertex vert_id;
-            let mem__ = %spirv.output.store (mem_, builtins#position);
-            %spirv.output.store (mem__, outputs#color)));
-
-// fun extern _fragment () = return (%spirv.entry
-//     %spirv.model.fragment
-//     (%spirv.wrap
-//         (%spirv.input (%spirv.location 0) «3; %math.F32»)
-//         (%spirv.output (%spirv.location 0) «4; %math.F32»)
-//         fragment));
+fun extern fragment_ [
+    mem: %mem.M 0,
+    i_color: %spirv.Input (%spirv.decor.location 0) «3; %math.F32»,
+    o_color: %spirv.Output (%spirv.decor.location 0) «4; %math.F32»,
+] = let (mem_, color) = %spirv.load (mem, i_color);
+    return (%spirv.store (mem_, o_color, fragment color));
