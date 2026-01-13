@@ -391,13 +391,18 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
     std::sort(out_indices.begin(), out_indices.end());
     std::sort(in_indices.begin(), in_indices.end());
 
-    auto fun = w.mut_fun(w.sigma(), type)->set("mapRed");
+    auto fun = w.mut_fun(inputs->type(), type)->set("mapRed");
     w.DLOG("fun {} : {}", fun, fun->type());
 
     auto ds_fun = direct::op_cps2ds_dep(fun)->set("dsFun");
     w.DLOG("ds_fun {} : {}", ds_fun, ds_fun->type());
-    auto call = w.app(ds_fun, w.tuple())->set("call");
+    auto call = w.app(ds_fun, inputs)->set("call");
     w.DLOG("call {} : {}", call, call->type());
+
+    auto new_inputs = fun->var(0)->set("is");
+
+    w.DLOG("inputs = {} : {}", inputs, inputs->type());
+    w.DLOG("new_inputs = {} : {}", new_inputs, new_inputs->type());
 
     // flowchart:
     // ```
@@ -505,7 +510,7 @@ const Def* normalize_map_reduce(const Def* type, const Def* c, const Def* inputs
     DefVec input_elements((size_t)m_nat);
     for (u64 i = 0; i < m_nat; i++) {
         auto input_idx_tup = subs->proj(m_nat, i);
-        auto input_matrix  = inputs->proj(m_nat, i);
+        auto input_matrix  = new_inputs->proj(m_nat, i);
 
         auto input_T = TI->proj(m_nat, i);
         auto input_N = NI->proj(m_nat, i);
