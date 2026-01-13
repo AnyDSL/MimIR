@@ -12,71 +12,60 @@ import mem;
 import vec;
 import refly;
 
-/// ## execution models
-axm %spirv.Model: ★;
-axm %spirv.model(fragment, vertex, compute): %spirv.Model;
+/// ## Execution Models
+///
+axm %spirv.Model: □;
+axm %spirv.model(Fragment, Vertex, Compute): %spirv.Model;
 
-/// ## decorations
+/// ## Decorations
+///
 axm %spirv.Decoration: ★;
 
 axm %spirv.decorc(block): %spirv.Decoration;
 axm %spirv.decor(builtin): {n: Nat} → «n; I8» → %spirv.Decoration;
 axm %spirv.decor(location): Nat → %spirv.Decoration;
 
-/// ## globals
-axm %spirv.Input:   {n: Nat} → «n; %spirv.Decoration» → ★ → ★;
-axm %spirv.Output:  {n: Nat} → «n; %spirv.Decoration» → ★ → ★;
-axm %spirv.Uniform: {n: Nat} → «n; %spirv.Decoration» → ★ → ★;
-
-axm %spirv.input(load):   {n: Nat, decs: «n; %spirv.Decoration»}
-  → {T: ★} → [%mem.M 0, %spirv.Input   decs T]    → [%mem.M 0, T];
-axm %spirv.output(store): {n: Nat, decs: «n; %spirv.Decoration»}
-  → {T: ★} → [%mem.M 0, %spirv.Output  decs T, T] → [%mem.M 0];
-axm %spirv.uniform(load): {n: Nat, decs: «n; %spirv.Decoration»}
-  → {T: ★} → [%mem.M 0, %spirv.Uniform decs T]    → [%mem.M 0, T];
-
-let fragment_builtins = [
-    frag_coord:     %spirv.Input  (%spirv.decor.builtin "FragCoord"    ) «2; %math.F32»,
-];
-
-let vertex_builtins = [
-    vertex_index:   %spirv.Input  (%spirv.decor.builtin "VertexIndex"  ) (Idx 3),
-    instance_index: %spirv.Input  (%spirv.decor.builtin "InstanceIndex") Nat,
-    vertex_id:      %spirv.Input  (%spirv.decor.builtin "VertexId"     ) Nat,
-    instance_id:    %spirv.Input  (%spirv.decor.builtin "InstanceId"   ) Nat,
-
-    position:       %spirv.Output (%spirv.decor.builtin "Position"     ) Nat,
-];
-
-let compute_builtins = [];
-
-axm %spirv.builtins: %spirv.Model → ★;
-// lam %spirv.builtins (model: %spirv.Model): ★
-//   = match model with
-//         | %spirv.model.fragment => fragment_builtins
-//         | %spirv.model.vertex   => vertex_builtins
-//         | %spirv.model.compute  => compute_builtins;
-
-/// ## Entry Points
+/// ## Storage Classes
 ///
-/// Spir-V modules can have multiple entry points. Every external function of type
-/// `Fn () -> %spirv.Entry` gets converted to an entry point in the produced module.
-axm %spirv.Entry: ★;
+axm %spirv.storage(Class): ★;
+axm %spirv.storage(INPUT):   %spirv.storage.Class;
+axm %spirv.storage(OUTPUT):  %spirv.storage.Class;
+axm %spirv.storage(UNIFORM): %spirv.storage.Class;
 
-/// Creates an entry point from an execution model and a function
-axm %spirv.entry:
-    {model: %spirv.Model}
-  → {ni no nu: Nat}
-  → {Ti: «ni; ★»}
-  → {To: «no; ★»}
-  → {Tu: «nu; ★»}
-  → {idcs: «ni; %spirv.Decoration»}
-  → {odcs: «no; %spirv.Decoration»}
-  → {udcs: «nu; %spirv.Decoration»}
-  → [Fn [%mem.M 0]
-      → [%spirv.builtins model]
-      → «i: ni; %spirv.Input   idcs#i Ti#i»
-      → «i: no; %spirv.Output  odcs#i To#i»
-      → «i: nu; %spirv.Uniform udcs#i Tu#i»
-      → [%mem.M 0]]
-  → %spirv.Entry;
+/// ## Globals
+///
+axm %spirv.Global: %spirv.storage.Class → {n: Nat} → «n; %spirv.Decoration» → ★ → ★;
+
+let %spirv.Input = %spirv.Global %spirv.storage.INPUT;
+let %spirv.Output = %spirv.Global %spirv.storage.OUTPUT;
+let %spirv.Uniform = %spirv.Global %spirv.storage.UNIFORM;
+
+axm %spirv.loadable: %spirv.storage.Class → Bool, normalize_loadable;
+axm %spirv.load: {class: %spirv.storage.Class}
+    → {n: Nat, decs: «n; %spirv.Decoration»}
+    → {T: ★}
+    → [%mem.M 0, %spirv.Global
+        // (%refly.check (%spirv.loadable class, class, "storage class not loadable"))
+        class
+        decs T]
+    → [%mem.M 0, T];
+
+axm %spirv.storable: %spirv.storage.Class → Bool, normalize_storable;
+axm %spirv.store: {class: %spirv.storage.Class}
+    → {n: Nat, decs: «n; %spirv.Decoration»}
+    → {T: ★}
+    → [%mem.M 0, %spirv.Global
+        // (%refly.check (%spirv.storable class, class, "storage class not storable"))
+        class
+        decs T, T]
+    → [%mem.M 0];
+
+/// ## Builtins
+///
+let %spirv.fragment.frag_coord   = %spirv.Input  (%spirv.decor.builtin "FragCoord"    ) «2; %math.F32»;
+
+let %spirv.vertex.vertex_index   = %spirv.Input  (%spirv.decor.builtin "VertexIndex"  ) (Idx 3);
+let %spirv.vertex.instance_index = %spirv.Input  (%spirv.decor.builtin "InstanceIndex") Nat;
+let %spirv.vertex.vertex_id      = %spirv.Input  (%spirv.decor.builtin "VertexId"     ) Nat;
+let %spirv.vertex.instance_id    = %spirv.Input  (%spirv.decor.builtin "InstanceId"   ) Nat;
+let %spirv.vertex.position       = %spirv.Output (%spirv.decor.builtin "Position"     ) «4; %math.F32»;
