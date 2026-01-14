@@ -146,9 +146,10 @@ public:
 protected:
     void start() override;
 
+    bool bootstrapping_ = true;
+
 private:
     Analysis* analysis_;
-    bool bootstrapping_ = true;
 };
 
 /// Simple Stage that searches for a pattern and replaces it.

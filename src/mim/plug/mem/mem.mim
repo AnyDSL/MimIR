@@ -113,3 +113,8 @@ let mem_opt_passes = %compile.passes (
     %mem.ssa_pass,
     %mem.copy_prop_pass ff,
 );
+
+// TODO just for demo purposes
+axm %mem.launch: {T: *}
+               → [%mem.M 0, n_warps: Nat, n_threads: Nat, kernel: Cn [%mem.M 1, %mem.M 3, %mem.M 4, %mem.M 5, Idx n_warps, Idx n_threads, T, Cn [%mem.M 1, %mem.M 3, %mem.M 4, %mem.M 5]], T]
+               → %mem.M 0;
