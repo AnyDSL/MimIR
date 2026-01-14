@@ -1,6 +1,8 @@
-#include "mim/plug/mem/mem.h"
 #include "mim/plug/mem/phase/split_kernel.h"
+
 #include "mim/phase.h"
+
+#include "mim/plug/mem/mem.h"
 
 namespace mim::plug::mem::phase {
 
@@ -31,8 +33,7 @@ void SplitKernel::analyze(const Def* def) {
 
     if (auto launch = Axm::isa<mem::launch>(def)) {
         auto [mem0, n_warps, n_threads, kernel] = launch->args<4>();
-        if (auto lam = kernel->isa_mut<Lam>())
-            kernels_.emplace(lam);
+        if (auto lam = kernel->isa_mut<Lam>()) kernels_.emplace(lam);
     }
 
     for (auto d : def->deps())
@@ -40,13 +41,13 @@ void SplitKernel::analyze(const Def* def) {
 }
 
 const Def* SplitKernel::rewrite_mut_Lam(Lam* lam) {
+    auto res = RWPhase::rewrite_mut_Lam(lam);
     if (kernels_.contains(lam)) {
-        auto res = RWPhase::rewrite_mut_Lam(lam);
         res->as_mut<Lam>()->externalize();
         lam->unset();
-        return res;
     }
-    return RWPhase::rewrite_mut_Lam(lam);
+
+    return res;
 }
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::phase
