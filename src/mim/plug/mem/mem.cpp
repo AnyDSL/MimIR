@@ -36,10 +36,10 @@ void reg_stages(Flags2Stages& stages) {
     });
 
     // clang-format off
-    Stage::hook<mem::add_mem_phase,  mem::phase::AddMem      >(stages);
-    Stage::hook<mem::ssa_pass,       mem::pass:: SSA         >(stages);
-    Stage::hook<mem::copy_prop_pass, mem::pass:: CopyProp    >(stages);
-    Stage::hook<mem::reshape_pass,   mem::pass:: Reshape     >(stages);
+    Stage::hook<mem::add_mem_phase,  mem::phase::AddMem  >(stages);
+    Stage::hook<mem::ssa_pass,       mem::pass:: SSA     >(stages);
+    Stage::hook<mem::copy_prop_pass, mem::pass:: CopyProp>(stages);
+    Stage::hook<mem::reshape_pass,   mem::pass:: Reshape >(stages);
     // clang-format on
 }
 
