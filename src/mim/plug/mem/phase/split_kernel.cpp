@@ -42,6 +42,7 @@ void SplitKernel::analyze(const Def* def) {
 const Def* SplitKernel::rewrite_mut_Lam(Lam* lam) {
     if (kernels_.contains(lam)) {
         auto res = RWPhase::rewrite_mut_Lam(lam);
+        res->as_mut<Lam>()->externalize();
         lam->unset();
         return res;
     }
