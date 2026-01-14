@@ -1,31 +1,31 @@
 #pragma once
 
-#include "mim/phase.h"
+#include "mim/phase/sccp.h"
 
 namespace mim::plug::mem::phase {
 
-/// Sparse Conditional Constant Propagation.
-class SSAPhase : public RWPhase {
+/// Based on: [SSA Translation is an Abstract
+/// Interpretation](https://binsec.github.io/assets/publications/papers/2023-popl-full-with-appendices.pdf)
+class SSAPhase : public SCCP {
 public:
+    class Analysis : public mim::SCCP::Analysis {
+    public:
+        Analysis(World& world)
+            : mim::SCCP::Analysis(world, "SSA::Analysis") {}
+
+    private:
+        const Def* rewrite_imm_App(const App*) final;
+    };
+
     SSAPhase(World& world, flags_t annex)
-        : RWPhase(world, annex) {}
+        : SCCP(world, annex, &analysis_)
+        , analysis_(world) {}
 
 private:
-    bool analyze() final;
-    const Def* init(Def*);
-    const Def* init(const Def*);
-
-    std::pair<const Def*, bool> concr2abstr(const Def*, const Def*);
-    const Def* concr2abstr(const Def*);
-    const Def* concr2abstr_impl(const Def*);
-    const Def* join(const Def*, const Def*, const Def*);
-
     const Def* rewrite_imm_App(const App*) final;
 
-    DefSet visited_;
-    Def2Def concr2abstr_;
+    Analysis analysis_;
     Lam2Lam lam2lam_;
-    bool todo_ = true;
 };
 
 } // namespace mim::plug::mem::phase
