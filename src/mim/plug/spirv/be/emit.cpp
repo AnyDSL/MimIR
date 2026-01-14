@@ -143,8 +143,9 @@ private:
                 ostream() << " " << memory_model::name(op.operands[1]);
                 break;
             case OpKind::Function:
-                ostream() << " " << function_control::name(op.operands[0]);
-                ostream() << " %" << id_name(op.operands[1]);
+                ostream() << " %" << id_name(op.operands[0]);
+                ostream() << " " << function_control::name(op.operands[1]);
+                ostream() << " %" << id_name(op.operands[2]);
                 break;
             default:
                 for (Word operand : op.operands)
@@ -304,7 +305,7 @@ Word Emitter::prepare() {
     Word return_type = convert_ret_pi(root()->type()->ret_pi());
     funDefinitions.emplace_back(Op{
         OpKind::Function,
-        {0, type},
+        {return_type, 0, type},
         id,
         return_type
     });
