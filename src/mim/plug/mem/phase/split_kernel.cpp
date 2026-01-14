@@ -12,8 +12,6 @@ void SplitKernel::start() {
     for (const auto& [f, def] : old_world().flags2annex())
         rewrite_annex(f, def);
 
-    bootstrapping_ = false;
-
     for (auto kernel : kernels_)
         rewrite(kernel);
 }
@@ -29,10 +27,9 @@ bool SplitKernel::analyze() {
 
 void SplitKernel::analyze(const Def* def) {
     if (auto [_, ins] = analyzed_.emplace(def); !ins) return;
-    if (def->isa<Var>()) return; // ignore Var's mut
 
     if (auto launch = Axm::isa<mem::launch>(def)) {
-        auto [mem0, n_warps, n_threads, kernel] = launch->args<4>();
+        auto [mem, n_warps, n_threads, kernel] = launch->args<4>();
         if (auto lam = kernel->isa_mut<Lam>()) kernels_.emplace(lam);
     }
 
@@ -40,14 +37,15 @@ void SplitKernel::analyze(const Def* def) {
         analyze(d);
 }
 
-const Def* SplitKernel::rewrite_mut_Lam(Lam* lam) {
-    auto res = RWPhase::rewrite_mut_Lam(lam);
-    if (kernels_.contains(lam)) {
-        res->as_mut<Lam>()->externalize();
-        lam->unset();
+const Def* SplitKernel::rewrite_mut_Lam(Lam* old_lam) {
+    auto new_def = RWPhase::rewrite_mut_Lam(old_lam);
+
+    if (kernels_.contains(old_lam)) {
+        new_def->as_mut<Lam>()->externalize();
+        old_lam->unset();
     }
 
-    return res;
+    return new_def;
 }
 
 } // namespace mim::plug::mem::phase
