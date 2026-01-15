@@ -1,11 +1,14 @@
 #include "mim/plug/spirv/be/emit.h"
 
+#include <iostream>
+#include <optional>
 #include <ostream>
 #include <string>
 
 #include <mim/plug/math/math.h>
 
 #include "mim/def.h"
+#include "mim/lam.h"
 #include "mim/tuple.h"
 
 #include "mim/be/emitter.h"
@@ -40,6 +43,54 @@ bool is_const(const Def* def) {
     }
 
     return false;
+}
+
+/// Returns a unit type if the type is not a real type in
+/// the spirv target. This applies currently to
+/// - mem::M
+/// - spirv::Global
+const Def* isa_kept(const Def* type) {
+    auto& world = type->world();
+
+    if (Axm::isa<mem::M>(type)) return world.sigma();
+    if (Axm::isa<spirv::Global>(type)) return world.sigma();
+    return type;
+}
+
+/// Recursively removes any types that should not
+/// be emitted as actual types to spirv.
+const Def* strip_type(const Def* type) {
+    auto& world = type->world();
+
+    if (auto sigma = type->isa<Sigma>()) {
+        DefVec fields{};
+        for (auto field : sigma->ops()) {
+            auto stripped = strip_type(field);
+            if (stripped != world.sigma()) fields.push_back(stripped);
+        }
+
+        if (fields.empty()) return world.sigma();
+        if (fields.size() == 1) return fields[0];
+
+        return world.sigma(fields.view());
+    }
+
+    return isa_kept(type);
+}
+
+template<typename Iter>
+std::string words_to_string(Iter& begin, Iter end) {
+    std::string out;
+    Word mask = (1 << 8) - 1;
+    for (; begin != end; begin++) {
+        Word word = *begin;
+        for (int index = 0; index < 4; index++)
+            if (auto c = (word >> (index * 8)) & mask)
+                out.push_back(static_cast<char>(c));
+            else
+                return out;
+    }
+    return out;
 }
 
 using OpVec = std::vector<Op>;
@@ -121,6 +172,7 @@ private:
     // reusing MimIR ids.
     Word next_id() { return next_id_++; }
 
+    // TODO: move this to a separate file/class
     void assembly(int indent, Op& op) {
         // result
         if (op.result.has_value()) {
@@ -142,6 +194,17 @@ private:
                 ostream() << " " << addressing_model::name(op.operands[0]);
                 ostream() << " " << memory_model::name(op.operands[1]);
                 break;
+            case OpKind::EntryPoint: {
+                auto ops = op.operands.cbegin();
+                ostream() << " " << execution_model::name(*ops++);
+                ostream() << " %" << id_name(*ops++);
+                // TODO: investigate what is going slightly wrong here
+                auto name = words_to_string(ops, op.operands.cend());
+                ostream() << " \"" << name << "\"";
+                for (; ops != op.operands.cend(); ops++)
+                    ostream() << " %" << id_name(*ops);
+                break;
+            }
             case OpKind::Function:
                 ostream() << " %" << id_name(op.operands[0]);
                 ostream() << " " << function_control::name(op.operands[1]);
@@ -185,14 +248,18 @@ private:
 
     Word next_id_{0};
     Word glsl_ext_inst_id_{0};
+    DefMap<Word> interface_vars_{};
 };
 
 Word Emitter::convert(const Def* type) {
+    std::cerr << "converting: " << type << "\n";
+
     // check if already converted
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     // create new id
-    Word id = next_id();
+    Word id      = next_id();
+    id_names[id] = "ERROR";
 
     if (type == world().sigma()) {
         declarations.emplace_back(Op{OpKind::TypeVoid, {}, id, {}});
@@ -214,20 +281,16 @@ Word Emitter::convert(const Def* type) {
             {}
         });
         id_names[id] = std::format("i{}", bitwidth);
-    } else if (auto bitwidth_l = math::isa_f(type)) {
-        Word bitwidth = static_cast<Word>(bitwidth_l.value_or(64));
+    } else if (auto w = math::isa_f(type)) {
+        Word bitwidth = static_cast<Word>(*w);
+        std::cerr << "float with width " << bitwidth << "\n";
         declarations.emplace_back(Op{
             OpKind::TypeFloat,
             {bitwidth, 0},
             id,
             {}
         });
-        switch (bitwidth) {
-            case 16: id_names[id] = "f16"; break;
-            case 32: id_names[id] = "f32"; break;
-            case 64: id_names[id] = "f64"; break;
-            default: std::cerr << "weird float size\n"; fe::unreachable();
-        }
+        id_names[id] = std::format("f{}", bitwidth);
     } else if (auto arr = type->isa<Arr>()) {
         // Convert the element type
         Word elem_id = convert(arr->body());
@@ -266,27 +329,87 @@ Word Emitter::convert(const Def* type) {
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
         Word return_type = convert_ret_pi(pi->ret_pi());
-        Op type{OpKind::TypeFunction, {return_type}, {}, {}};
+        Op op{OpKind::TypeFunction, {return_type}, id, {}};
 
-        auto doms = pi->doms();
-        for (auto dom : doms.view().rsubspan(1)) {
-            if (Axm::isa<mem::M>(dom)) continue;
-            type.operands.emplace_back(convert(dom));
+        auto doms = strip_type(pi->dom());
+        std::cerr << "doms: " << doms << "\n";
+        if (doms != world().sigma()) {
+            // if it is not a sigma, it is just the continuation, which
+            // we don't want to convert
+            if (auto sigma = doms->isa<Sigma>())
+                for (auto dom : sigma->ops().rsubspan(1)) {
+                    std::cerr << "dom: " << pi->dom() << "\n";
+                    op.operands.emplace_back(convert(dom));
+                }
         }
 
-        declarations.push_back(type);
+        declarations.push_back(op);
+        id_names[id] = std::format("pi{}", type->unique_name());
     } else if (auto sigma = type->isa<Sigma>()) {
         if (sigma->isa_mut()) std::cerr << "mutable sigmas not yet supported\n";
 
         std::vector<Word> fields{};
-        for (auto t : sigma->ops())
+        for (auto t : sigma->ops()) {
+            if (Axm::isa<mem::M>(t)) continue;
+            if (Axm::isa<spirv::Global>(t)) {
+                convert(t);
+                continue;
+            }
             fields.emplace_back(convert(t));
+        }
 
         declarations.emplace_back(Op{OpKind::TypeStruct, fields, id, {}});
-    } else {
-        std::cerr << "type not yet implemented: " << type->node_name() << "\n";
-        // fe::unreachable();
+        id_names[id] = std::format("sigma{}", type->unique_name());
+
+        // TODO: don't catch all apps
+    } else if (auto app = type->isa<App>()) {
+        if (auto global = Axm::isa<spirv::Global>(app)) {
+            auto [storage_class, n, decorations, wrapped_type] = app->uncurry_args<4>();
+            std::cerr << "storage class: " << storage_class << "\n";
+            std::cerr << "n: " << n << "\n";
+            std::cerr << "decorations: " << decorations << "\n";
+            std::cerr << "wrapped type: " << wrapped_type << "\n";
+            if (auto _storage_class = Axm::isa<spirv::storage>(storage_class)) {
+                Word __storage_class;
+                switch (_storage_class.id()) {
+                    case spirv::storage::INPUT: __storage_class = 1; break;
+                    case spirv::storage::OUTPUT: __storage_class = 2; break;
+                    case spirv::storage::UNIFORM: __storage_class = 3; break;
+                    default: fe::unreachable();
+                }
+                Word _wrapped_type = convert(wrapped_type);
+
+                // emit pointer type of var
+                declarations.emplace_back(Op{
+                    OpKind::TypePointer,
+                    {__storage_class, _wrapped_type},
+                    id,
+                    {}
+                });
+                // TODO: better name (add storage class to it)
+                id_names[id] = std::format("ptr_{}", id_name(_wrapped_type));
+
+                // store global interface variable in map
+                // for access later
+                Word var_id           = next_id();
+                interface_vars_[type] = var_id;
+
+                // emit var
+                declarations.emplace_back(Op{
+                    OpKind::Variable,
+                    {id, __storage_class},
+                    var_id,
+                    {}
+                });
+                // TODO: better name (take from builtin or if possible annex)
+                id_names[var_id] = std::format("var_{}", id_name(_wrapped_type));
+
+                // TODO: emit decorations
+            }
+        }
     }
+
+    if (id_names[id] == "ERROR") std::cerr << "unsupported type: " << type << "\n";
 
     types_[type] = id;
     return id;
@@ -294,12 +417,31 @@ Word Emitter::convert(const Def* type) {
 
 Word Emitter::convert_ret_pi(const Pi* pi) {
     auto dom = mem::strip_mem_ty(pi->dom());
+    std::cerr << "ret pi dom: " << dom << "\n";
     return convert(dom);
+}
+
+std::optional<spirv::model> isa_builtin(const Def* type) {
+    if (auto global = Axm::isa<spirv::Global>(type)) {
+        auto decorations = global->arg(2);
+        for (auto decoration : decorations->ops()) {
+            if (auto builtin = Axm::isa<spirv::decor>(decoration)) {
+                if (builtin.id() == spirv::decor::builtin) {
+                    auto model = Axm::as<spirv::model>(builtin->arg(0));
+                    return std::optional<spirv::model>{model.id()};
+                }
+            }
+        }
+    }
+
+    return std::nullopt;
 }
 
 Word Emitter::prepare() {
     Word id          = next_id();
     globals_[root()] = id;
+
+    std::cerr << "preparing " << root()->unique_name() << "\n";
 
     Word type        = convert(root()->type());
     Word return_type = convert_ret_pi(root()->type()->ret_pi());
@@ -309,18 +451,73 @@ Word Emitter::prepare() {
         id,
         return_type
     });
+    id_names[id] = root()->unique_name();
 
-    auto vars = root()->vars();
-    for (auto var : vars.view().rsubspan(1)) {
-        if (Axm::isa<mem::M>(var->type())) continue;
+    std::optional<spirv::model> model{};
+    std::vector<Word> interfaces{};
 
-        Word param_id   = next_id();
-        Word param_type = convert(var->type());
+    auto var = root()->var(0);
 
-        funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, param_type});
+    if (Axm::isa<mem::M>(var->type())) {
+        // do nothing
+    } else if (auto sigma = var->type()->isa<Sigma>()) {
+        for (auto param : sigma->ops().rsubspan(1)) {
+            if (Axm::isa<mem::M>(param)) continue;
 
-        id_names[param_id] = var->unique_name();
-        locals_[var]       = param_id;
+            // try to get execution model from used builtins
+            // if builtins from different ones are mixed, throw error
+            std::cerr << "param: " << param << "\n";
+            if (auto global = Axm::isa<spirv::Global>(param)) {
+                convert(global);
+                interfaces.push_back(interface_vars_[global]);
+                auto builtin_model = isa_builtin(var->type());
+                if (!model.has_value()) {
+                    model = builtin_model;
+                } else if (builtin_model.has_value()) {
+                    if (*model != *builtin_model) error("mixed builtins from different execution model encountered");
+                }
+            }
+        }
+    }
+
+    Word param_type = convert(var->type());
+
+    Word param_id = next_id();
+
+    funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, param_type});
+    id_names[param_id] = var->unique_name();
+    locals_[var]       = param_id;
+
+    // external lams are converted to entry points
+    if (root()->is_external()) {
+        // assume compute shader if no builtins were used
+        if (!model.has_value()) model = spirv::model::Compute;
+
+        Word model_magic;
+        switch (*model) {
+            case spirv::model::Vertex: model_magic = 0; break;
+            case spirv::model::Fragment: model_magic = 4; break;
+            case spirv::model::Compute: model_magic = 5; break;
+        }
+
+        Op entry{
+            OpKind::EntryPoint,
+            {model_magic, id},
+            {},
+            {}
+        };
+
+        // append name
+        for (Word word : string_to_words(root()->unique_name()))
+            entry.operands.push_back(word);
+
+        // append interfacing globals
+        for (Word word : interfaces)
+            entry.operands.push_back(word);
+
+        std::cerr << "interfaces: " << interfaces.size() << "\n";
+
+        entryPoints.push_back(entry);
     }
 
     return id;
@@ -336,9 +533,10 @@ void Emitter::emit_epilogue(Lam* lam) {
         //     auto [model, nm, dnm, ins, outs, in_ts, out_ts, f] = wrap->uncurry_args<8>();
         //     if (auto model_ = Axm::isa<spirv::model>(model)) {
         //         switch (model_.id()) {
-        //             case spirv::model::fragment: entry_point.operands.emplace_back(execution_model::Fragment); break;
-        //             case spirv::model::vertex: entry_point.operands.emplace_back(execution_model::Vertex); break;
-        //             case spirv::model::compute: entry_point.operands.emplace_back(execution_model::GLCompute); break;
+        //             case spirv::model::fragment: entry_point.operands.emplace_back(execution_model::Fragment);
+        //             break; case spirv::model::vertex: entry_point.operands.emplace_back(execution_model::Vertex);
+        //             break; case spirv::model::compute:
+        //             entry_point.operands.emplace_back(execution_model::GLCompute); break;
         //         }
         //     }
 

@@ -12,6 +12,8 @@ using Word = int32_t;
 
 using namespace std::string_literals;
 
+std::vector<Word> string_to_words(std::string_view string);
+
 namespace capability {
 enum Capability {
     Shader = 1,
@@ -93,6 +95,8 @@ enum class OpKind {
     TypeVector,
     TypeArray,
     TypeStruct,
+    TypePointer,
+    Variable,
     Constant,
     ConstantComposite,
     CompositeConstruct,
@@ -128,6 +132,8 @@ struct Op {
             case OpKind::TypeVector: return "OpTypeVector";
             case OpKind::TypeArray: return "OpTypeArray";
             case OpKind::TypeStruct: return "OpTypeStruct";
+            case OpKind::TypePointer: return "OpTypePointer";
+            case OpKind::Variable: return "OpVariable";
             case OpKind::Constant: return "OpConstant";
             case OpKind::ConstantComposite: return "OpConstantComposite";
             case OpKind::CompositeConstruct: return "OpCompositeConstruct";

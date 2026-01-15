@@ -3,6 +3,37 @@
 #include <iostream>
 
 namespace mim::plug::spirv {
+
+std::vector<Word> string_to_words(std::string_view string) {
+    std::vector<Word> out{};
+    int index = 0;
+    Word word = 0;
+    for (auto c : string) {
+        word |= c << (8 * index);
+        index = (index + 1) % 4;
+        if (index == 0) {
+            out.push_back(word);
+            word = 0;
+        }
+    }
+    // ensure null termination character '0' exists
+    if (index == 0) out.push_back(0);
+    return out;
+}
+
+std::string words_to_string(std::vector<Word> words) {
+    std::string out;
+    Word mask = (1 << 8) - 1;
+    for (Word word : words) {
+        for (int index = 0; index < 4; index++)
+            if (auto c = (word >> index) & mask)
+                out.push_back(static_cast<char>(c));
+            else
+                return out;
+    }
+    return out;
+}
+
 namespace capability {
 std::string name(int capability) {
     switch (capability) {
