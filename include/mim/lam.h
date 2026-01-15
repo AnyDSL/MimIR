@@ -92,7 +92,8 @@ public:
     constexpr size_t reduction_offset() const noexcept final { return 1; }
     ///@}
 
-    static constexpr auto Node = mim::Node::Pi;
+    static constexpr auto Node      = mim::Node::Pi;
+    static constexpr size_t Num_Ops = 2;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -187,7 +188,8 @@ public:
     const Def* check(size_t, const Def*) final;
     ///@}
 
-    static constexpr auto Node = mim::Node::Lam;
+    static constexpr auto Node      = mim::Node::Lam;
+    static constexpr size_t Num_Ops = 2;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -199,9 +201,10 @@ private:
 /// @name Lam
 /// GIDSet / GIDMap keyed by Lam::gid of `Lam*`.
 ///@{
-template<class To> using LamMap = GIDMap<Lam*, To>;
-using LamSet                    = GIDSet<Lam*>;
-using Lam2Lam                   = LamMap<Lam*>;
+template<class To>
+using LamMap  = GIDMap<Lam*, To>;
+using LamSet  = GIDSet<Lam*>;
+using Lam2Lam = LamMap<Lam*>;
 ///@}
 
 class App : public Def, public Setters<App> {
@@ -238,7 +241,8 @@ public:
     u8 trip() const { return trip_; }
     ///@}
 
-    static constexpr auto Node = mim::Node::App;
+    static constexpr auto Node      = mim::Node::App;
+    static constexpr size_t Num_Ops = 2;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <span>
 
 #include <fe/assert.h>
 #include <fe/cast.h>
@@ -14,22 +15,22 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define MIM_NODE(m)                                                                                                                             \
-    m(Lit,    lit,    Judge::Intro) /* keep as first */                                                                                         \
-    m(Axm,    axm,    Judge::Intro)                                                                                                             \
-    m(Var,    var,    Judge::Intro)                                                                                                             \
-    m(Global, global, Judge::Intro)                                                                                                             \
-    m(Proxy,  proxy,  Judge::Intro)                                                                                                             \
-    m(Hole,   hole,   Judge::Hole)                                                                                                              \
-    m(Type,   type,   Judge::Meta) m(Univ,  univ,  Judge::Meta)  m(UMax,    umax,    Judge::Meta) m(UInc, uinc,     Judge::Meta)                \
-    m(Pi,     pi,     Judge::Form) m(Lam,   lam,   Judge::Intro) m(App,     app,     Judge::Elim)                                               \
-    m(Sigma,  sigma,  Judge::Form) m(Tuple, tuple, Judge::Intro) m(Extract, extract, Judge::Elim) m(Insert, insert, Judge::Intro | Judge::Elim) \
-    m(Arr,    arr,    Judge::Form) m(Pack,  pack,  Judge::Intro)                                                                                \
-    m(Join,   join,   Judge::Form) m(Inj,   inj,   Judge::Intro) m(Match,   match,   Judge::Elim) m(Top,    top,    Judge::Intro)               \
-    m(Meet,   meet,   Judge::Form) m(Merge, merge, Judge::Intro) m(Split,   split,   Judge::Elim) m(Bot,    bot,    Judge::Intro)               \
-    m(Uniq,   Uniq,   Judge::Form)                                                                                                              \
-    m(Nat,    nat,    Judge::Form)                                                                                                              \
-    m(Idx,    idx,    Judge::Intro)
+#define MIM_NODE(m)                                                                                             \
+    m(Lit,    Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/          \
+    m(Axm,    Judge::Intro)                                                                                     \
+    m(Var,    Judge::Intro)                                                                                     \
+    m(Global, Judge::Intro)                                                                                     \
+    m(Proxy,  Judge::Intro)                                                                                     \
+    m(Hole,   Judge::Hole)                                                                                      \
+    m(Type,   Judge::Meta) m(Univ,  Judge::Meta)  m(UMax,    Judge::Meta) m(UInc,   Judge::Meta)                \
+    m(Pi,     Judge::Form) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                       \
+    m(Sigma,  Judge::Form) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, Judge::Intro | Judge::Elim) \
+    m(Arr,    Judge::Form) m(Pack,  Judge::Intro)                                                               \
+    m(Join,   Judge::Form) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    Judge::Intro)               \
+    m(Meet,   Judge::Form) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    Judge::Intro)               \
+    m(Uniq,   Judge::Form)                                                                                      \
+    m(Nat,    Judge::Form)                                                                                      \
+    m(Idx,    Judge::Intro)
 // clang-format on
 
 namespace mim {
@@ -43,29 +44,32 @@ class World;
 /// @name Def
 /// GIDSet / GIDMap keyed by Def::gid of `conset Def*`.
 ///@{
-template<class To> using DefMap = GIDMap<const Def*, To>;
-using DefSet                    = GIDSet<const Def*>;
-using Def2Def                   = DefMap<const Def*>;
-using Defs                      = View<const Def*>;
-using DefVec                    = Vector<const Def*>;
+template<class To>
+using DefMap  = GIDMap<const Def*, To>;
+using DefSet  = GIDSet<const Def*>;
+using Def2Def = DefMap<const Def*>;
+using Defs    = View<const Def*>;
+using DefVec  = Vector<const Def*>;
 ///@}
 
 /// @name Def (Mutable)
 /// GIDSet / GIDMap keyed by Def::gid of `Def*`.
 ///@{
-template<class To> using MutMap = GIDMap<Def*, To>;
-using MutSet                    = GIDSet<Def*>;
-using Mut2Mut                   = MutMap<Def*>;
-using Muts                      = Sets<Def>::Set;
+template<class To>
+using MutMap  = GIDMap<Def*, To>;
+using MutSet  = GIDSet<Def*>;
+using Mut2Mut = MutMap<Def*>;
+using Muts    = Sets<Def>::Set;
 ///@}
 
 /// @name Var
 /// GIDSet / GIDMap keyed by Var::gid of `const Var*`.
 ///@{
-template<class To> using VarMap = GIDMap<const Var*, To>;
-using VarSet                    = GIDSet<const Var*>;
-using Var2Var                   = VarMap<const Var*>;
-using Vars                      = Sets<const Var>::Set;
+template<class To>
+using VarMap  = GIDMap<const Var*, To>;
+using VarSet  = GIDSet<const Var*>;
+using Var2Var = VarMap<const Var*>;
+using Vars    = Sets<const Var>::Set;
 ///@}
 
 using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*);
@@ -81,17 +85,14 @@ using fe::operator!=;
 ///@{
 
 enum class Node : node_t {
-#define CODE(node, name, _) node,
+#define CODE(node, _) node,
     MIM_NODE(CODE)
 #undef CODE
 };
 
-#define CODE(node, name, _) +size_t(1)
+#define CODE(node, _) +size_t(1)
 static constexpr size_t Num_Nodes = size_t(0) MIM_NODE(CODE);
 #undef CODE
-
-/// TODO remove or fix this
-enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
 /// Tracks a dependency to certain Def%s transitively through the Def::deps() up to but excliding *mutables*.
 enum class Dep : unsigned {
@@ -117,26 +118,38 @@ enum class Judge : u32 {
 } // namespace mim
 
 #ifndef DOXYGEN
-template<> struct fe::is_bit_enum<mim::Dep> : std::true_type {};
-template<> struct fe::is_bit_enum<mim::Judge> : std::true_type {};
+template<>
+struct fe::is_bit_enum<mim::Dep> : std::true_type {};
+template<>
+struct fe::is_bit_enum<mim::Judge> : std::true_type {};
 #endif
 
 namespace mim {
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
-#define MIM_PROJ(NAME, CONST)                                                                                          \
-    nat_t num_##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_projs(); }                                 \
-    nat_t num_t##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_tprojs(); }                               \
-    const Def* NAME(nat_t a, nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(a, i); }                      \
-    const Def* NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(i); }                                  \
-    const Def* t##NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->tproj(i); }                              \
-    template<nat_t A = std::dynamic_extent, class F> auto NAME##s(F f) CONST noexcept {                                \
-        return ((const Def*)NAME())->projs<A, F>(f);                                                                   \
-    }                                                                                                                  \
-    template<class F> auto t##NAME##s(F f) CONST noexcept { return ((const Def*)NAME())->tprojs<F>(f); }               \
-    template<nat_t A = std::dynamic_extent> auto NAME##s() CONST noexcept { return ((const Def*)NAME())->projs<A>(); } \
-    auto t##NAME##s() CONST noexcept { return ((const Def*)NAME())->tprojs(); }                                        \
-    template<class F> auto NAME##s(nat_t a, F f) CONST noexcept { return ((const Def*)NAME())->projs<F>(a, f); }       \
+#define MIM_PROJ(NAME, CONST)                                                                     \
+    nat_t num_##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_projs(); }            \
+    nat_t num_t##NAME##s() CONST noexcept { return ((const Def*)NAME())->num_tprojs(); }          \
+    const Def* NAME(nat_t a, nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(a, i); } \
+    const Def* NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->proj(i); }             \
+    const Def* t##NAME(nat_t i) CONST noexcept { return ((const Def*)NAME())->tproj(i); }         \
+    template<nat_t A = std::dynamic_extent, class F>                                              \
+    auto NAME##s(F f) CONST noexcept {                                                            \
+        return ((const Def*)NAME())->projs<A, F>(f);                                              \
+    }                                                                                             \
+    template<class F>                                                                             \
+    auto t##NAME##s(F f) CONST noexcept {                                                         \
+        return ((const Def*)NAME())->tprojs<F>(f);                                                \
+    }                                                                                             \
+    template<nat_t A = std::dynamic_extent>                                                       \
+    auto NAME##s() CONST noexcept {                                                               \
+        return ((const Def*)NAME())->projs<A>();                                                  \
+    }                                                                                             \
+    auto t##NAME##s() CONST noexcept { return ((const Def*)NAME())->tprojs(); }                   \
+    template<class F>                                                                             \
+    auto NAME##s(nat_t a, F f) CONST noexcept {                                                   \
+        return ((const Def*)NAME())->projs<F>(a, f);                                              \
+    }                                                                                             \
     auto NAME##s(nat_t a) CONST noexcept { return ((const Def*)NAME())->projs(a); }
 
 /// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
@@ -248,22 +261,13 @@ public:
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     const Def* unfold_type() const;
     bool is_term() const;
-    ///@}
-
-    /// @name arity
-    ///@{
-    const Def* arity() const;
-    std::optional<nat_t> isa_lit_arity() const;
-    nat_t as_lit_arity() const {
-        auto a = isa_lit_arity();
-        assert(a.has_value());
-        return *a;
-    }
+    virtual const Def* arity() const;
     ///@}
 
     /// @name ops
     ///@{
-    template<size_t N = std::dynamic_extent> constexpr auto ops() const noexcept {
+    template<size_t N = std::dynamic_extent>
+    constexpr auto ops() const noexcept {
         return View<const Def*, N>(ops_ptr(), num_ops_);
     }
     const Def* op(size_t i) const noexcept { return ops()[i]; }
@@ -336,8 +340,8 @@ public:
     /// ```
     ///@{
 
-    /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
-    nat_t num_projs() const { return isa_lit_arity().value_or(1); }
+    /// Yields Def::arity(), if it is a Lit, or `1` otherwise.
+    nat_t num_projs() const;
     nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalarize_threshold is exceeded.
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
@@ -347,25 +351,31 @@ public:
 
     /// Splits this Def via Def::proj%ections into an Array (if `A == std::dynamic_extent`) or `std::array` (otherwise).
     /// Applies @p f to each element.
-    template<nat_t A = std::dynamic_extent, class F> auto projs(F f) const {
+    template<nat_t A = std::dynamic_extent, class F>
+    auto projs(F f) const {
         using R = std::decay_t<decltype(f(this))>;
         if constexpr (A == std::dynamic_extent) {
             return projs(num_projs(), f);
         } else {
-            assert(A == as_lit_arity());
             std::array<R, A> array;
-            for (nat_t i = 0; i != A; ++i) array[i] = f(proj(A, i));
+            for (nat_t i = 0; i != A; ++i)
+                array[i] = f(proj(A, i));
             return array;
         }
     }
 
-    template<class F> auto tprojs(F f) const { return projs(num_tprojs(), f); }
+    template<class F>
+    auto tprojs(F f) const {
+        return projs(num_tprojs(), f);
+    }
 
-    template<class F> auto projs(nat_t a, F f) const {
+    template<class F>
+    auto projs(nat_t a, F f) const {
         using R = std::decay_t<decltype(f(this))>;
         return Vector<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
-    template<nat_t A = std::dynamic_extent> auto projs() const {
+    template<nat_t A = std::dynamic_extent>
+    auto projs() const {
         return projs<A>([](const Def* def) { return def; });
     }
     auto tprojs() const {
@@ -431,7 +441,8 @@ public:
     // clang-format on
 
     /// If `this` is *mutable*, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
-    template<class T = Def, bool invert = false> T* isa_mut() const {
+    template<class T = Def, bool invert = false>
+    T* isa_mut() const {
         if constexpr (std::is_same<T, Def>::value)
             return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;
         else
@@ -439,7 +450,8 @@ public:
     }
 
     /// Asserts that `this` is a *mutable*, casts `const`ness away and performs a `static_cast` to @p T.
-    template<class T = Def, bool invert = false> T* as_mut() const {
+    template<class T = Def, bool invert = false>
+    T* as_mut() const {
         assert(mut_ ^ invert);
         if constexpr (std::is_same<T, Def>::value)
             return const_cast<Def*>(this);
@@ -507,7 +519,8 @@ public:
     const Def* refine(size_t i, const Def* new_op) const;
 
     /// @see World::reduce
-    template<size_t N = std::dynamic_extent> constexpr auto reduce(const Def* arg) const {
+    template<size_t N = std::dynamic_extent>
+    constexpr auto reduce(const Def* arg) const {
         return reduce_(arg).span<N>();
     }
 
@@ -534,11 +547,12 @@ public:
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
 
-    /// zonk%s all ops of this *mutable* and tries to immutabilize it; if it succeeds return it.
-    const Def* zonk_mut();
+    /// If *mutable, zonk%s all ops and tries to immutabilize it; otherwise just zonk.
+    const Def* zonk_mut() const;
     ///@}
 
-    static DefVec zonk(Defs);
+    /// zonk%s all @p defs and retuns a new DefVec.
+    static DefVec zonk(Defs defs);
 
     /// @name dump
     ///@{
@@ -548,6 +562,18 @@ public:
     void write(int max, const char* file) const;
     std::ostream& stream(std::ostream&, int max) const;
     ///@}
+
+    /// @name Syntactic Comparison
+    ///
+    enum class Cmp {
+        L, ///< Less
+        G, ///< Greater
+        E, ///< Equal
+        U, ///< Unknown
+    };
+    [[nodiscard]] static Cmp cmp(const Def* a, const Def* b);
+    [[nodiscard]] static bool less(const Def* a, const Def* b);
+    [[nodiscard]] static bool greater(const Def* a, const Def* b);
 
     /// @name dot
     /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
@@ -575,12 +601,16 @@ private:
     virtual Def* stub_(World&, const Def*) { fe::unreachable(); }
     virtual const Def* rebuild_(World& w, const Def* type, Defs ops) const = 0;
 
-    Vars free_vars(bool&, bool&, uint32_t run);
+    template<bool init>
+    Vars free_vars(bool&, uint32_t);
     void invalidate();
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
     bool equal(const Def* other) const;
+
+    template<Cmp>
+    [[nodiscard]] static bool cmp_(const Def* a, const Def* b);
 
 protected:
     mutable Dbg dbg_;
@@ -611,7 +641,8 @@ private:
     mutable u32 tid_ = 0;
     const Def* type_;
 
-    template<class D, size_t N> friend class Sets;
+    template<class D, size_t N>
+    friend class Sets;
     friend class World;
     friend void swap(World&, World&) noexcept;
     friend std::ostream& operator<<(std::ostream&, const Def*);
@@ -630,7 +661,8 @@ public:
     Def* mut() const { return op(0)->as_mut(); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Var;
+    static constexpr auto Node      = mim::Node::Var;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -641,7 +673,8 @@ private:
 class Univ : public Def, public Setters<Univ> {
 public:
     using Setters<Univ>::set;
-    static constexpr auto Node = mim::Node::Univ;
+    static constexpr auto Node      = mim::Node::Univ;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     Univ(World& world)
@@ -655,7 +688,10 @@ private:
 class UMax : public Def, public Setters<UMax> {
 public:
     using Setters<UMax>::set;
-    static constexpr auto Node = mim::Node::UMax;
+    static constexpr auto Node      = mim::Node::UMax;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
+
+    enum Sort { Univ, Kind, Type, Term };
 
 private:
     UMax(World&, Defs ops);
@@ -679,7 +715,8 @@ public:
     level_t offset() const { return flags(); }
     ///@}
 
-    static constexpr auto Node = mim::Node::UInc;
+    static constexpr auto Node      = mim::Node::UInc;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -700,7 +737,8 @@ public:
     const Def* level() const { return op(0); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Type;
+    static constexpr auto Node      = mim::Node::Type;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -718,7 +756,8 @@ public:
 
     /// @name Get actual Constant
     ///@{
-    template<class T = flags_t> T get() const {
+    template<class T = flags_t>
+    T get() const {
         static_assert(sizeof(T) <= 8);
         return bitcast<T>(flags_);
     }
@@ -730,15 +769,20 @@ public:
     /// @name Casts
     ///@{
     /// @see @ref cast_lit
-    template<class T = nat_t> static std::optional<T> isa(const Def* def) {
+    template<class T = nat_t>
+    static std::optional<T> isa(const Def* def) {
         if (!def) return {};
         if (auto lit = def->isa<Lit>()) return lit->get<T>();
         return {};
     }
-    template<class T = nat_t> static T as(const Def* def) { return def->as<Lit>()->get<T>(); }
+    template<class T = nat_t>
+    static T as(const Def* def) {
+        return def->as<Lit>()->get<T>();
+    }
     ///@}
 
-    static constexpr auto Node = mim::Node::Lit;
+    static constexpr auto Node      = mim::Node::Lit;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -749,7 +793,8 @@ private:
 class Nat : public Def, public Setters<Nat> {
 public:
     using Setters<Nat>::set;
-    static constexpr auto Node = mim::Node::Nat;
+    static constexpr auto Node      = mim::Node::Nat;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     Nat(World& world);
@@ -797,7 +842,8 @@ public:
     static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 
-    static constexpr auto Node = mim::Node::Idx;
+    static constexpr auto Node      = mim::Node::Idx;
+    static constexpr size_t Num_Ops = 0;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -807,7 +853,7 @@ private:
 
 class Proxy : public Def, public Setters<Proxy> {
 private:
-    Proxy(const Def* type, Defs ops, u32 pass, u32 tag)
+    Proxy(const Def* type, u32 pass, u32 tag, Defs ops)
         : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag)) {}
 
 public:
@@ -819,7 +865,8 @@ public:
     u32 tag() const { return u32(flags()); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Proxy;
+    static constexpr auto Node      = mim::Node::Proxy;
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -860,7 +907,8 @@ public:
     Global* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Global;
+    static constexpr auto Node      = mim::Node::Global;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

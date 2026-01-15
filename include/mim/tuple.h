@@ -1,5 +1,7 @@
 #pragma once
 
+#include <span>
+
 #include "mim/def.h"
 
 namespace mim {
@@ -8,6 +10,9 @@ namespace mim {
 class Prod : public Def, public Setters<Prod> {
 protected:
     using Def::Def;
+
+public:
+    static constexpr size_t Num_Ops = std::dynamic_extent;
 };
 
 /// A [dependent tuple type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A3_type).
@@ -46,6 +51,7 @@ public:
     const Def* check(size_t, const Def*) final;
     const Def* check() final;
     static const Def* infer(World&, Defs);
+    const Def* arity() const final;
     ///@}
 
     static constexpr auto Node = mim::Node::Sigma;
@@ -82,15 +88,29 @@ protected:
 public:
     /// @name ops
     ///@{
-    virtual const Def* shape() const = 0;
     const Def* body() const { return ops().back(); }
+    ///@}
+
+    /// @name Setters
+    /// @see @ref set_ops "Setting Ops"
+    ///@{
+    using Setters<Seq>::set;
+
+    /// Common setter for Pack%s and Arr%ays.
+    /// @p arity will be ignored, if it's a Pack.
+    Seq* set(const Def* arity, const Def* body) {
+        if (node() == Node::Arr) Def::set(0, arity);
+        Def::set(num_ops() - 1, body);
+        return this;
+    }
+
+    Seq* unset() { return Def::unset()->as<Seq>(); }
     ///@}
 
     /// @name Rebuild
     ///@{
     Seq* stub(World& w, const Def* type) { return Def::stub(w, type)->as<Seq>(); }
-    virtual const Def* rebuild(World&, const Def* shape, const Def* body) const = 0;
-    virtual const Def* prod(World& w, Defs) const = 0; ///< Creates either a Tuple or Sigma.
+    virtual const Def* reduce(const Def* arg) const = 0;
     ///@}
 };
 
@@ -99,35 +119,33 @@ public:
 /// @see Sigma, Tuple, Pack
 class Arr : public Seq, public Setters<Arr> {
 private:
-    Arr(const Def* type, const Def* shape, const Def* body)
-        : Seq(Node, type, {shape, body}, 0) {} ///< Constructor for an *immutable* Arr.
+    Arr(const Def* type, const Def* arity, const Def* body)
+        : Seq(Node, type, {arity, body}, 0) {} ///< Constructor for an *immutable* Arr.
     Arr(const Def* type)
         : Seq(Node, type, 2, 0) {} ///< Constructor for a *mutable* Arr.
 
 public:
     /// @name ops
     ///@{
-    const Def* shape() const final { return op(0); }
+    const Def* arity() const final { return op(0); }
     ///@}
 
     /// @name Setters
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Arr>::set;
-    Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
+    Arr* set_arity(const Def* arity) { return Def::set(0, arity)->as<Arr>(); }
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
-    Arr* set(const Def* shape, const Def* body) { return set_shape(shape)->set_body(body); }
+    Arr* set(const Def* arity, const Def* body) { return set_arity(arity)->set_body(body); }
     Arr* unset() { return Def::unset()->as<Arr>(); }
     ///@}
 
     /// @name Rebuild
     ///@{
-    const Def* rebuild(World& w, const Def* shape, const Def* body) const final;
     Arr* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() final;
-    const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
+    const Def* reduce(const Def* arg) const final { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept final { return 1; }
-    const Def* prod(World&, Defs) const final;
     ///@}
 
     /// @name Type Checking
@@ -136,7 +154,8 @@ public:
     const Def* check() final;
     ///@}
 
-    static constexpr auto Node = mim::Node::Arr;
+    static constexpr auto Node      = mim::Node::Arr;
+    static constexpr size_t Num_Ops = 2;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -157,7 +176,7 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* shape() const final;
+    const Def* arity() const final;
     ///@}
 
     /// @name Setters
@@ -171,15 +190,14 @@ public:
 
     /// @name Rebuild
     ///@{
-    const Def* rebuild(World& w, const Def* shape, const Def* body) const final;
     Pack* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
     const Def* immutabilize() final;
-    const Def* reduce(const Def* arg) const { return Def::reduce(arg).front(); }
+    const Def* reduce(const Def* arg) const final { return Def::reduce(arg).front(); }
     constexpr size_t reduction_offset() const noexcept final { return 0; }
-    const Def* prod(World&, Defs) const final;
     ///@}
 
-    static constexpr auto Node = mim::Node::Pack;
+    static constexpr auto Node      = mim::Node::Pack;
+    static constexpr size_t Num_Ops = 1;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -203,7 +221,8 @@ public:
     const Def* index() const { return op(1); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Extract;
+    static constexpr auto Node      = mim::Node::Extract;
+    static constexpr size_t Num_Ops = 2;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;
@@ -230,7 +249,8 @@ public:
     const Def* value() const { return op(2); }
     ///@}
 
-    static constexpr auto Node = mim::Node::Insert;
+    static constexpr auto Node      = mim::Node::Insert;
+    static constexpr size_t Num_Ops = 3;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const final;

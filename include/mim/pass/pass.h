@@ -72,7 +72,7 @@ public:
 
     /// @name proxy
     ///@{
-    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) { return world().proxy(type, ops, index(), tag); }
+    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) { return world().proxy(type, index(), tag, ops); }
     /// Check whether given @p def is a Proxy whose Proxy::pass matches this Pass's @p IPass::index.
     const Proxy* isa_proxy(const Def* def, u32 tag = 0) {
         if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->pass() == index() && proxy->tag() == tag)
@@ -123,7 +123,8 @@ public:
 
     /// Add a pass to this PassMan.
     /// If a pass of the same class has been added already, returns the earlier added instance.
-    template<class P, class... Args> P* add(Args&&... args) {
+    template<class P, class... Args>
+    P* add(Args&&... args) {
         auto key = std::type_index(typeid(P));
         if (auto it = registry_.find(key); it != registry_.end()) return static_cast<P*>(it->second);
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
@@ -135,7 +136,8 @@ public:
     }
 
     /// Runs a single Pass.
-    template<class P, class... Args> static void run(World& world, Args&&... args) {
+    template<class P, class... Args>
+    static void run(World& world, Args&&... args) {
         PassMan man(world);
         man.add<P>(std::forward<Args>(args)...);
         man.run();
@@ -211,13 +213,15 @@ private:
     bool fixed_point_ = false;
     bool proxy_       = false;
 
-    template<class P, class M> friend class FPPass;
+    template<class P, class M>
+    friend class FPPass;
 };
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
 /// if your Pass does **not** need state and a fixed-point iteration.
 /// If you a are only interested in specific mutables, you can pass this to @p M.
-template<class P, class M = Def> class RWPass : public Pass {
+template<class P, class M = Def>
+class RWPass : public Pass {
 public:
     RWPass(PassMan& man, std::string_view name)
         : Pass(man, name) {}
@@ -239,7 +243,8 @@ public:
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
 /// if you **do** need a Pass with a state and a fixed-point.
-template<class P, class M = Def> class FPPass : public RWPass<P, M> {
+template<class P, class M = Def>
+class FPPass : public RWPass<P, M> {
 public:
     using Super = RWPass<P, M>;
     using Data  = std::tuple<>; ///< Default.
@@ -258,11 +263,20 @@ protected:
         assert(!states().empty());
         return *static_cast<typename P::Data*>(states().back().data[Super::index()]);
     }
-    template<size_t I> auto& data() { return std::get<I>(data()); }
+    template<size_t I>
+    auto& data() {
+        return std::get<I>(data());
+    }
     /// Use this for your convenience if `P::Data` is a map.
-    template<class K> auto& data(const K& key) { return data()[key]; }
+    template<class K>
+    auto& data(const K& key) {
+        return data()[key];
+    }
     /// Use this for your convenience if `P::Data<I>` is a map.
-    template<size_t I, class K> auto& data(const K& key) { return data<I>()[key]; }
+    template<size_t I, class K>
+    auto& data(const K& key) {
+        return data<I>()[key];
+    }
     ///@}
 
     /// @name undo

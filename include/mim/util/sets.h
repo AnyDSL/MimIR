@@ -10,7 +10,8 @@
 
 namespace mim {
 
-template<class D, size_t N = 16> class Sets {
+template<class D, size_t N = 16>
+class Sets {
 private:
     /// Trie Node.
     class Node : public lct::Node<Node, D*> {
@@ -46,8 +47,10 @@ private:
 
             println(os, "{} [tooltip=\"gid: {}, min: {}\"];", node2str(this), def ? def->gid() : 0, min);
 
-            for (const auto& [def, child] : children) println(os, "{} -> {}", node2str(this), node2str(child.get()));
-            for (const auto& [_, child] : children) child->dot(os);
+            for (const auto& [def, child] : children)
+                println(os, "{} -> {}", node2str(this), node2str(child.get()));
+            for (const auto& [_, child] : children)
+                child->dot(os);
 
 #if 0
             // clang-format off
@@ -94,7 +97,8 @@ private:
         struct Equal {
             constexpr bool operator()(const Data* d1, const Data* d2) const noexcept {
                 bool res = d1->size == d2->size;
-                for (size_t i = 0, e = d1->size; res && i != e; ++i) res &= d1->elems[i] == d2->elems[i];
+                for (size_t i = 0, e = d1->size; res && i != e; ++i)
+                    res &= d1->elems[i] == d2->elems[i];
                 return res;
             }
         };
@@ -107,7 +111,8 @@ private:
         constexpr D* const* end() const noexcept { return elems + size; }
         ///@}
 
-        template<class H> friend constexpr H AbslHashValue(H h, const Data* d) noexcept {
+        template<class H>
+        friend constexpr H AbslHashValue(H h, const Data* d) noexcept {
             if (!d) return H::combine(std::move(h), 0);
             return H::combine_contiguous(std::move(h), d->elems, d->size);
         }
@@ -349,7 +354,8 @@ public:
 
     private:
         constexpr Tag tag() const noexcept { return Tag(ptr_ & uintptr_t(0b11)); }
-        template<class T> constexpr T* ptr() const noexcept {
+        template<class T>
+        constexpr T* ptr() const noexcept {
             return std::bit_cast<T*>(ptr_ & (uintptr_t(-2) << uintptr_t(2)));
         }
         // clang-format off
@@ -405,7 +411,8 @@ public:
         std::sort(vb, vu, [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
 
         auto res = root();
-        for (auto i = vb; i != vu; ++i) res = insert(res, *i);
+        for (auto i = vb; i != vu; ++i)
+            res = insert(res, *i);
         return res;
     }
 
@@ -462,7 +469,8 @@ public:
                           [](D* d1, D* d2) { return d1->tid() != 0 && (d2->tid() == 0 || d1->tid() < d2->tid()); });
 
                 auto res = root();
-                for (auto i = dst->begin(), e = dst->end(); i != e; ++i) res = insert(res, *i);
+                for (auto i = dst->begin(), e = dst->end(); i != e; ++i)
+                    res = insert(res, *i);
                 return res;
             }
         }
@@ -489,8 +497,10 @@ public:
             auto v = Vector<D*>();
             v.reserve(d1->size + d2->size);
 
-            for (auto d : *d1) v.emplace_back(d);
-            for (auto d : *d2) v.emplace_back(d);
+            for (auto d : *d1)
+                v.emplace_back(d);
+            for (auto d : *d2)
+                v.emplace_back(d);
 
             return create(std::move(v));
         }
@@ -539,7 +549,8 @@ public:
 
             auto v = Vector<D*>();
             v.reserve(res->size);
-            for (auto i = res; !i->is_root(); i = i->parent) v.emplace_back(i->def);
+            for (auto i = res; !i->is_root(); i = i->parent)
+                v.emplace_back(i->def);
             return create(std::move(v));
         }
 

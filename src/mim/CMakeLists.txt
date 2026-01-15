@@ -1,4 +1,4 @@
-add_library(libmim)
+add_library(libmim SHARED)
 target_sources(libmim
     PRIVATE
         axm.cpp
@@ -10,7 +10,6 @@ target_sources(libmim
         lam.cpp
         lattice.cpp
         nest.cpp
-        normalize.cpp
         plugin.cpp
         rewrite.cpp
         schedule.cpp

@@ -18,7 +18,8 @@ void LowerTypedClos::start() {
     // TODO put into c'tor - doesn't work right now, because world becomes invalid
     dummy_ret_ = world().bot(world().cn(world().annex<mem::M>()));
 
-    for (auto mut : world().copy_externals()) rewrite(mut);
+    for (auto mut : world().copy_externals())
+        rewrite(mut);
     while (!worklist_.empty()) {
         auto [lvm, lcm, lam] = worklist_.front();
         worklist_.pop();
@@ -32,7 +33,8 @@ void LowerTypedClos::start() {
         }
     }
 
-    for (auto lam : new_externals_) lam->make_external();
+    for (auto lam : new_externals_)
+        lam->make_external();
 }
 
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
@@ -58,9 +60,9 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         lam->make_internal();
         new_externals_.emplace_back(new_lam);
     }
-    const Def* lcm = mem::mem_var(new_lam);
-    const Def* env
-        = new_lam->var(Clos_Env_Param); //, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
+    auto lcm = mem::mem_var(new_lam);
+    // TODO I guess, this is not correct: check mode?
+    auto env = new_lam->num_vars() < 2 ? new_lam->var() : new_lam->var(Clos_Env_Param);
     if (mode == Box) {
         auto env_mem = w.call<mem::load>(Defs{lcm, env});
         lcm          = w.extract(env_mem, 0_u64)->set("mem");

@@ -33,7 +33,8 @@ const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst) {
 
 bool is_tuple_to_consider(const Def* def) {
     auto seq = def->type()->isa<Seq>();
-    return seq && (!seq->shape()->isa_lit_arity() || seq->isa_lit_arity() > 10) && seq->body()->type()
+    // use def->world().flags().scalarize_threshold instead?
+    return seq && (!Lit::isa(seq->arity()->arity()) || Lit::isa(seq->arity()) > 10) && seq->body()->type()
         && seq->body()->type()->isa<Type>();
 }
 

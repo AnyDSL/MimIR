@@ -4,7 +4,8 @@
 
 namespace mim {
 
-template<class Indexer, class Key> class IndexSet {
+template<class Indexer, class Key>
+class IndexSet {
 public:
     class reference {
     private:
@@ -60,7 +61,8 @@ public:
     bool operator[](Key key) const { return (*const_cast<IndexSet<Indexer, Key>*>(this))[key]; }
 
     /// Depending on @p flag this method either inserts (true) or removes (false) @p key and returns true if successful.
-    template<bool flag> bool set(Key key) {
+    template<bool flag>
+    bool set(Key key) {
         auto ref = (*this)[key];
         auto old = ref.word();
         ref      = flag;
@@ -71,9 +73,11 @@ public:
     bool contains(Key key) const { return (*this)[key]; }
     void clear() { std::ranges::fill(bits_, 0u); }
 
-    template<class Op> IndexSet& transform(const IndexSet& other, Op op) {
+    template<class Op>
+    IndexSet& transform(const IndexSet& other, Op op) {
         assert(this->size() == other.size());
-        for (size_t i = 0, e = capacity(); i != e; ++i) this->bits_[i] = op(this->bits_[i], other.bits_[i]);
+        for (size_t i = 0, e = capacity(); i != e; ++i)
+            this->bits_[i] = op(this->bits_[i], other.bits_[i]);
         return *this;
     }
     IndexSet& operator&=(const IndexSet& other) { return transform(other, std::bit_and<uint64_t>()); }
@@ -92,9 +96,13 @@ private:
 
 /// @name IndexSet visit
 ///@{
-template<class Indexer, class Key> bool visit(IndexSet<Indexer, Key>& set, const Key& key) { return !set.insert(key); }
+template<class Indexer, class Key>
+bool visit(IndexSet<Indexer, Key>& set, const Key& key) {
+    return !set.insert(key);
+}
 
-template<class Indexer, class Key> void visit_first(IndexSet<Indexer, Key>& set, const Key& key) {
+template<class Indexer, class Key>
+void visit_first(IndexSet<Indexer, Key>& set, const Key& key) {
     assert(!set.contains(key));
     visit(set, key);
 }

@@ -6,7 +6,8 @@
 
 namespace mim::plug::vec {
 
-template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def* arg) {
+template<fold id>
+const Def* normalize_fold(const Def*, const Def* c, const Def* arg) {
     auto& w     = c->world();
     auto callee = c->as<App>();
     auto f      = callee->arg();
@@ -16,9 +17,11 @@ template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def*
 
     if (auto tuple = vec->isa<Tuple>()) {
         if constexpr (id == fold::l)
-            for (auto op : tuple->ops()) acc = w.app(f, {acc, op});
+            for (auto op : tuple->ops())
+                acc = w.app(f, {acc, op});
         else // fold::r
-            for (auto op : tuple->ops() | std::ranges::views::reverse) acc = w.app(f, {op, acc});
+            for (auto op : tuple->ops() | std::ranges::views::reverse)
+                acc = w.app(f, {op, acc});
         return acc;
     }
 
@@ -34,7 +37,8 @@ template<fold id> const Def* normalize_fold(const Def*, const Def* c, const Def*
     return nullptr;
 }
 
-template<scan id> const Def* normalize_scan(const Def*, const Def* c, const Def* vec) {
+template<scan id>
+const Def* normalize_scan(const Def*, const Def* c, const Def* vec) {
     auto& w     = c->world();
     auto callee = c->as<App>();
     auto p      = callee->arg();
@@ -64,7 +68,7 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
     }
 
     if (auto pack = vec->isa_imm<Pack>()) {
-        if (auto l = Lit::isa(pack->shape())) return w.lit_ff();
+        if (auto l = Lit::isa(pack->arity())) return w.lit_ff();
     }
 
     if (vec->isa<Lit>()) return w.lit_tt();
@@ -74,7 +78,7 @@ const Def* normalize_is_unique(const Def*, const Def*, const Def* vec) {
 
 const Def* normalize_diff(const Def* type, const Def* c, const Def* arg) {
     if (auto arr = type->isa<Arr>()) {
-        if (arr->shape()->isa<Bot>()) return nullptr; // ack error
+        if (arr->arity()->isa<Bot>()) return nullptr; // ack error
     }
 
     auto& w        = type->world();
@@ -89,7 +93,8 @@ const Def* normalize_diff(const Def* type, const Def* c, const Def* arg) {
         if (auto tup_is = is->isa<Tuple>(); tup_is && tup_is->is_closed()) {
             auto defs = DefVec();
             auto set  = absl::btree_set<nat_t>();
-            for (auto opi : tup_is->ops()) set.emplace(Lit::as(opi));
+            for (auto opi : tup_is->ops())
+                set.emplace(Lit::as(opi));
 
             for (size_t i = 0, e = tup_vec->num_ops(); i != e; ++i)
                 if (!set.contains(i)) defs.emplace_back(tup_vec->op(i));
