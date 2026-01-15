@@ -4,9 +4,9 @@
 plugin core;
 plugin demo;
 
-con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M, I32]] =
+con extern main [mem : %mem.M 0, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M 0, I32]] =
     con ret_cont r: I32 = return (mem, r);
     let c = %demo.const_idx i32;
     ret_cont c;
 
-// CHECK-DAG: return_{{[0-9]+}} (mem_{{[0-9]+}}, 42I32)
+// CHECK-DAG: return (mem, 42:I32)

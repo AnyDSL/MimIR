@@ -21,9 +21,9 @@ import mem;
 ///
 /// After termination of the loop `exit` is invoked.
 axm %affine.For: {m n: Nat, Ts: «n; *»}
-               → Cn [begin _end step: Idx m, init: «i: n; Ts#i»,
-                     body: Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»],
-                     exit: Cn «i: n; Ts#i»];
+               → [Cn [iter: Idx m, acc: «i: n; Ts#i», yield: Cn «i: n; Ts#i»]] // body
+               → [Cn «i: n; Ts#i»]                                             // exit
+               → Cn [begin _end step: Idx m, init: «i: n; Ts#i»];
 ///
 /// ## Passes and Phases
 ///
@@ -31,4 +31,4 @@ axm %affine.For: {m n: Nat, Ts: «n; *»}
 ///
 /// Loweres the %%%affine.For operation to recursive function calls.
 ///
-axm %affine.lower_for_pass: %compile.Pass;
+axm %affine.lower_for_phase: %compile.Phase;

@@ -19,7 +19,7 @@ public:
     Log(const Flags& flags)
         : flags_(flags) {}
 
-    enum class Level { Error, Warn, Info, Verbose, Debug };
+    enum class Level { Error, Warn, Info, Verbose, Debug, Trace };
 
     /// @name Getters
     ///@{
@@ -70,7 +70,7 @@ public:
 
     /// @name Conversions
     ///@{
-    static std::string_view level2acro(Level);
+    static char level2acro(Level);
     static rang::fg level2color(Level level);
     ///@}
 
@@ -93,8 +93,10 @@ private:
 /// Vaporizes to nothingness in `Debug` build.
 #ifndef NDEBUG
 #define DLOG(...) log().log(mim::Log::Level::Debug,   __FILE__, __LINE__, __VA_ARGS__)
+#define TLOG(...) log().log(mim::Log::Level::Trace,   __FILE__, __LINE__, __VA_ARGS__)
 #else
-#define DLOG(...) dummy()
+#define DLOG(...) log()
+#define TLOG(...) log()
 #endif
 // clang-format on
 ///@}

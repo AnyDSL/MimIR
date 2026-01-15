@@ -14,7 +14,6 @@ struct Flags {
     bool ascii                   = false;
     bool dump_recursive          = false;
     bool dump_emitter            = false;
-    bool disable_type_checking   = false; // TODO implement this flag
     bool bootstrap               = false;
     bool aggressive_lam_spec     = false; // HACK makes LamSpec more agressive but potentially non-terminating
 #ifdef MIM_ENABLE_CHECKS

@@ -13,7 +13,7 @@ std::array<const Def*, 3> split(const Def* def) {
     auto j = 0;
     for (size_t i = 0; i < def->num_projs(); i++) {
         auto op = def->proj(i);
-        if (op == w.annex<mem::M>() || op->type() == w.annex<mem::M>())
+        if (op == w.call<mem::M>(0) || op->type() == w.call<mem::M>(0))
             mem = op;
         else if (i == Clos_Env_Param)
             env = op;
@@ -48,12 +48,13 @@ void Clos2SJLJ::get_exn_closures(const Def* def, DefSet& visited) {
     if (auto c = isa_clos_lit(def)) {
         auto lam = c.fnc_as_lam();
         if (c.is_basicblock() && !ignore_.contains(lam)) {
-            def->world().DLOG("FOUND exn closure: {}", c.fnc_as_lam());
+            DLOG("FOUND exn closure: {}", c.fnc_as_lam());
             lam2tag_[c.fnc_as_lam()] = {lam2tag_.size() + 1, c.env()};
         }
         get_exn_closures(c.env(), visited);
     } else {
-        for (auto op : def->ops()) get_exn_closures(op, visited);
+        for (auto op : def->ops())
+            get_exn_closures(op, visited);
     }
 }
 
@@ -72,7 +73,7 @@ void Clos2SJLJ::get_exn_closures() {
                 auto c = isa_clos_lit(b);
                 if (c) {
                     ignore_.emplace(c.fnc_as_lam());
-                    world().DLOG("IGNORE {}", c.fnc_as_lam());
+                    DLOG("IGNORE {}", c.fnc_as_lam());
                 }
             }
         }
@@ -140,7 +141,7 @@ void Clos2SJLJ::enter() {
 
     auto body = curr_mut()->body()->as<App>();
 
-    auto branch_type = clos_type(w.cn(w.annex<mem::M>()));
+    auto branch_type = clos_type(w.cn(w.call<mem::M>(0)));
     auto branches    = DefVec(lam2tag_.size() + 1);
     {
         auto env             = w.tuple(body->args().view().subspan(1));
@@ -157,7 +158,7 @@ void Clos2SJLJ::enter() {
     }
 
     auto m0 = body->arg(0);
-    assert(m0->type() == w.annex<mem::M>());
+    assert(m0->type() == w.call<mem::M>(0));
     auto [m1, tag] = w.call<setjmp>(Defs{m0, cur_jbuf_})->projs<2>();
     tag            = w.call(core::conv::s, branches.size(), tag);
     auto filter    = curr_mut()->filter();

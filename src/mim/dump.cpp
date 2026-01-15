@@ -307,6 +307,7 @@ void Dumper::dump(Def* mut) {
         if (def->isa<Pack>()) return "pack";
         if (def->isa<Pi>()) return "Pi";
         if (def->isa<Hole>()) return "Hole";
+        if (def->isa<Rule>()) return "Rule";
         fe::unreachable();
     };
 
@@ -316,6 +317,7 @@ void Dumper::dump(Def* mut) {
         if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->arity());
         if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
         if (auto hole = def->isa_mut<Hole>()) return hole->is_set() ? print(os, ", {}", hole->op()) : print(os, ", ??");
+        if (auto rule = def->isa<Rule>()) return print(os, "{} => {}", rule->lhs(), rule->rhs());
         fe::unreachable();
     };
 
@@ -340,7 +342,7 @@ void Dumper::dump(Def* mut) {
     }
     tab.println(os, " = {{");
     ++tab;
-    if (nest) recurse(nest->mut2node(mut));
+    if (nest) recurse((*nest)[mut]);
     recurse(mut);
     tab.print(os, "{, }\n", mut->ops());
     --tab;
@@ -358,7 +360,7 @@ void Dumper::dump(Lam* lam) {
 
     ++tab;
     if (lam->is_set()) {
-        if (nest) recurse(nest->mut2node(lam));
+        if (nest) recurse((*nest)[lam]);
         recurse(lam->filter());
         recurse(lam->body(), true);
         if (lam->body()->isa_mut())
@@ -392,7 +394,7 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
 }
 
 void Dumper::recurse(const Nest::Node* node) {
-    for (auto child : node->child_muts())
+    for (auto child : node->children().muts())
         if (auto mut = isa_decl(child)) dump(mut);
 }
 
@@ -470,7 +472,7 @@ void World::dump(std::ostream& os) {
 
     if (flags().dump_recursive) {
         auto dumper = Dumper(os);
-        for (auto mut : externals())
+        for (auto mut : externals().muts())
             dumper.muts.push(mut);
         while (!dumper.muts.empty())
             dumper.dump(dumper.muts.pop());
@@ -480,7 +482,7 @@ void World::dump(std::ostream& os) {
         auto nest   = Nest(*this);
         auto dumper = Dumper(os, &nest);
 
-        for (auto name : driver().import_syms())
+        for (auto name : driver().imports().syms())
             print(os, ".{} {};\n", driver().is_loaded(name) ? "mim/plugin" : "import", name);
         dumper.recurse(nest.root());
     }

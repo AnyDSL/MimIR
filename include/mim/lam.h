@@ -1,10 +1,13 @@
 #pragma once
 
+#include <span>
 #include <variant>
 
 #include "mim/def.h"
 
 namespace mim {
+
+class Extract;
 
 /// A [dependent function type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A0_type).
 /// @see Lam
@@ -70,7 +73,7 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Pi>::set;
-    Pi* set(const Def* dom, const Def* codom) { return set_dom(dom)->set_codom(codom); }
+    Pi* set(const Def* dom, const Def* codom) { return Def::set({dom, codom})->as<Pi>(); }
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
@@ -163,7 +166,7 @@ public:
     /// @see @ref set_ops "Setting Ops"
     ///@{
     using Setters<Lam>::set;
-    Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
+    Lam* set(Filter filter, const Def* body);
     Lam* set_filter(Filter);                                                ///< Set filter first.
     Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.
     /// Set body to an App of @p callee and @p arg.
@@ -171,7 +174,7 @@ public:
     /// Set body to an App of @p callee and @p args.
     Lam* app(Filter filter, const Def* callee, Defs args);
     /// Set body to an App of `(f, t)#cond mem` or `(f, t)#cond ()` if @p mem is `nullptr`.
-    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem = nullptr);
+    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* arg = nullptr);
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
@@ -179,8 +182,19 @@ public:
     /// @name Rebuild
     ///@{
     Lam* stub(const Def* type) { return stub_(world(), type)->set(dbg()); }
+    using Def::reduce;
+    Defs reduce(Defs) const;
     const Def* reduce_body(const Def* arg) const { return reduce(arg).back(); }
     constexpr size_t reduction_offset() const noexcept final { return 0; }
+    ///@}
+
+    /// @name Eta-Conversion
+    ///@{
+    static Lam* eta_expand(Filter, const Def* f);
+    static Lam* eta_expand(const Def* f) { return eta_expand(true, f); } ///< Use `true` Filter.
+    /// Yields body(), if eta-convertible and `nullptr` otherwise.
+    /// η-convertible means: `lm x = body x` where `x` ∉ `body`.
+    const Def* eta_reduce() const;
     ///@}
 
     /// @name Type Checking
@@ -216,6 +230,44 @@ private:
         trip_  = trip;
     }
 
+    template<size_t N, bool Callee, bool Args>
+    static auto uncurry_(const Def* callee) {
+        if constexpr (N == std::dynamic_extent) {
+            auto args = DefVec();
+            while (auto app = callee->isa<App>()) {
+                if constexpr (Args) args.emplace_back(app->arg());
+                callee = app->callee();
+            }
+
+            if constexpr (Callee && Args) {
+                std::ranges::reverse(args);
+                return std::pair{callee, args};
+            } else if constexpr (Args) {
+                std::ranges::reverse(args);
+                return args;
+            } else {
+                return callee;
+            }
+        } else {
+            auto args = std::array<const Def*, N>();
+            for (size_t i = N; i-- != 0;) {
+                if (auto app = callee->isa<App>()) {
+                    if constexpr (Args) args[i] = app->arg();
+                    callee = app->callee();
+                } else {
+                    if constexpr (Args) args[i] = nullptr;
+                }
+            }
+
+            if constexpr (Callee && Args)
+                return std::pair{callee, args};
+            else if constexpr (Args)
+                return args;
+            else
+                return callee;
+        }
+    }
+
 public:
     using Setters<App>::set;
 
@@ -241,6 +293,44 @@ public:
     u8 trip() const { return trip_; }
     ///@}
 
+    /// @name Uncurry
+    /// Retrieve all App::arg%s of a curried App.
+    /// Use like this:
+    /// ```
+    /// // 1. Variant:
+    /// auto [abc, de] = app->uncurry<2>();
+    /// auto [a, b, c] = abc->projs<3>();
+    /// auto [d, e]    = de->projs<2>();
+    ///
+    /// // 2. Variant:
+    /// auto [callee , args] = App::uncurry(def);
+    ///
+    /// ```
+    /// @returns
+    /// 1. Variant: <br>
+    ///    *only* the arguments in a `std::array<const Def*, N>`.
+    ///    You will *not* retrieve the initial callee because if you know the number of curried App%s,
+    ///    you probably also know the callee anyway.
+    ///    Also, if you "overshoot" the number of curried App%s, the superflous args on the left will be set to
+    ///    `nullptr`.
+    /// 2. Variant: <br>
+    ///    A pair that contains:
+    ///     1. The initial callee.
+    ///     2. A DefVec of all curried App::arg%s.
+    /// You can enforce variant 1 / variant 2 by with the template argument @p Callee.
+    ///@{
+    // clang-format off
+    template<size_t N = std::dynamic_extent> static auto uncurry(const Def* def) { return uncurry_<N, true, true >(def ); }
+    template<size_t N = std::dynamic_extent>        auto uncurry() const         { return uncurry_<N, true, true >(this); }
+
+    static const Def* uncurry_callee(const Def* def) { return uncurry_<std::dynamic_extent, true, false>(def ); }
+           const Def* uncurry_callee() const         { return uncurry_<std::dynamic_extent, true, false>(this); }
+
+    template<size_t N = std::dynamic_extent> static auto uncurry_args(const Def* def) { return uncurry_<N, false, true>(def ); }
+    template<size_t N = std::dynamic_extent>        auto uncurry_args() const         { return uncurry_<N, false, true>(this); }
+    // clang-format on
+    ///@}
+
     static constexpr auto Node      = mim::Node::App;
     static constexpr size_t Num_Ops = 2;
 
@@ -254,9 +344,13 @@ private:
 ///@{
 inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
 
-/// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
-inline Lam* isa_workable(Lam* lam) {
-    if (!lam || lam->is_external() || !lam->is_set()) return nullptr;
+/// These are Lam%s that are
+/// * neither `nullptr`,
+/// * nor Lam::is_external,
+/// * nor Lam::is_annex,
+/// * nor Lam::is_unset.
+inline Lam* isa_optimizable(Lam* lam) {
+    if (!lam || lam->is_external() || lam->is_annex() || !lam->is_set()) return nullptr;
     return lam;
 }
 
@@ -264,9 +358,6 @@ inline std::pair<const App*, Lam*> isa_apped_mut_lam(const Def* def) {
     if (auto app = def->isa<App>()) return {app, app->callee()->isa_mut<Lam>()};
     return {nullptr, nullptr};
 }
-
-/// Yields curried App%s in a flat `std::deque<const App*>`.
-std::deque<const App*> decurry(const Def*);
 
 /// The high level view is:
 /// ```
@@ -285,9 +376,6 @@ std::deque<const App*> decurry(const Def*);
 /// h'= λ b = f (b, ret_h)
 /// ```
 const Def* compose_cn(const Def* f, const Def* g);
-
-/// Helper function to cope with the fact that normalizers take all arguments and not only its axm arguments.
-std::pair<const Def*, DefVec> collect_args(const Def* def);
 ///@}
 
 } // namespace mim

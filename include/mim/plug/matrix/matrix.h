@@ -2,13 +2,11 @@
 
 #include <mim/world.h>
 
-#include <mim/pass/pipelinebuilder.h>
-
 #include "mim/plug/matrix/autogen.h"
 
 namespace mim::plug::matrix {
 
-#define INTERNAL_PREFIX "internal_mapRed_"
+static constexpr auto internal_prefix = "internal_mapRed_";
 
 /// %mat.zero: [n: Nat, S: «n; Nat», m: Nat] -> %mat.Mat (n,S,(Idx m));
 inline const Def* zero_int(World& w, const Def* n, const Def* S, const Def* mem, nat_t m) {

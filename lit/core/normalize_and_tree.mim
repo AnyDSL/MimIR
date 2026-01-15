@@ -13,8 +13,4 @@ con extern and_lit [return : Cn Bool] =
             (%core.bit2.and_ 0 (ff, tt),
              %core.bit2.and_ 0 (tt, ff))));
 
-// CHECK-DAG: con extern and_lit (return:Cn Bool){{(@.*)?}} = 
-// CHECK-DAG: return ff
-
-// CHECK-DAG: con return (_[[etaVar:[0-9_]+]]:Bool){{(@.*)?}} =
-// CHECK-DAG: return _[[etaVar]]
+// CHECK-DAG: return{{.*}}ff

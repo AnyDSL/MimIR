@@ -15,22 +15,47 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define MIM_NODE(m)                                                                                             \
-    m(Lit,    Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/          \
-    m(Axm,    Judge::Intro)                                                                                     \
-    m(Var,    Judge::Intro)                                                                                     \
-    m(Global, Judge::Intro)                                                                                     \
-    m(Proxy,  Judge::Intro)                                                                                     \
-    m(Hole,   Judge::Hole)                                                                                      \
-    m(Type,   Judge::Meta) m(Univ,  Judge::Meta)  m(UMax,    Judge::Meta) m(UInc,   Judge::Meta)                \
-    m(Pi,     Judge::Form) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                       \
-    m(Sigma,  Judge::Form) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, Judge::Intro | Judge::Elim) \
-    m(Arr,    Judge::Form) m(Pack,  Judge::Intro)                                                               \
-    m(Join,   Judge::Form) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    Judge::Intro)               \
-    m(Meet,   Judge::Form) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    Judge::Intro)               \
-    m(Uniq,   Judge::Form)                                                                                      \
-    m(Nat,    Judge::Form)                                                                                      \
+#define MIM_NODE(m)                                                                                                \
+    m(Lit,    Judge::Intro) /* keep this first - causes Lit to appear left in Def::less/Def::greater*/             \
+    m(Axm,    Judge::Intro)                                                                                        \
+    m(Var,    Judge::Intro)                                                                                        \
+    m(Global, Judge::Intro)                                                                                        \
+    m(Proxy,  Judge::Intro)                                                                                        \
+    m(Hole,   Judge::Hole )                                                                                        \
+    m(Type,   Judge::Meta ) m(Univ,  Judge::Meta ) m(UMax,    Judge::Meta) m(UInc,   (Judge::Meta               )) \
+    m(Pi,     Judge::Form ) m(Lam,   Judge::Intro) m(App,     Judge::Elim)                                         \
+    m(Sigma,  Judge::Form ) m(Tuple, Judge::Intro) m(Extract, Judge::Elim) m(Insert, (Judge::Intro | Judge::Elim)) \
+    m(Arr,    Judge::Form ) m(Pack,  Judge::Intro)                                                                 \
+    m(Join,   Judge::Form ) m(Inj,   Judge::Intro) m(Match,   Judge::Elim) m(Top,    (Judge::Intro              )) \
+    m(Meet,   Judge::Form ) m(Merge, Judge::Intro) m(Split,   Judge::Elim) m(Bot,    (Judge::Intro              )) \
+    m(Reform, Judge::Form ) m(Rule,  Judge::Intro)                                                                 \
+    m(Uniq,   Judge::Form )                                                                                        \
+    m(Nat,    Judge::Form )                                                                                        \
     m(Idx,    Judge::Intro)
+
+#define MIM_IMM_NODE(m)                                                                                            \
+    m(Lit)                                                                                                         \
+    m(Axm)                                                                                                         \
+    m(Var)                                                                                                         \
+    m(Proxy)                                                                                                       \
+    m(Type)  m(Univ)  m(UMax)    m(UInc)                                                                           \
+    m(Pi)    m(Lam)   m(App)                                                                                       \
+    m(Sigma) m(Tuple) m(Extract) m(Insert)                                                                         \
+    m(Arr)   m(Pack)                                                                                               \
+    m(Join)  m(Inj)   m(Match)   m(Top)                                                                            \
+    m(Meet)  m(Merge) m(Split)   m(Bot)                                                                            \
+    m(Rule)                                                                                                        \
+    m(Uniq)                                                                                                        \
+    m(Nat)                                                                                                         \
+    m(Idx)
+
+#define MIM_MUT_NODE(m)                                                                                            \
+    m(Global)                                                                                                      \
+    m(Hole)                                                                                                        \
+    m(Pi)    m(Lam)                                                                                                \
+    m(Sigma)                                                                                                       \
+    m(Arr)   m(Pack)                                                                                               \
+    m(Rule)
 // clang-format on
 
 namespace mim {
@@ -113,15 +138,24 @@ enum class Judge : u32 {
     Hole  = 1 << 4, ///< Special rule for Hole.
     // clang-format on
 };
+
+/// [Judgement](https://ncatlab.org/nlab/show/judgment).
+enum class Mut {
+    // clang-format off
+    Mut = 1 << 0, ///< Node may be mutable.
+    Imm = 1 << 1, ///< Node may be immmutable.
+    // clang-format on
+};
 ///@}
 
 } // namespace mim
 
 #ifndef DOXYGEN
-template<>
-struct fe::is_bit_enum<mim::Dep> : std::true_type {};
-template<>
-struct fe::is_bit_enum<mim::Judge> : std::true_type {};
+// clang-format off
+template<> struct fe::is_bit_enum<mim::Dep>   : std::true_type {};
+template<> struct fe::is_bit_enum<mim::Judge> : std::true_type {};
+template<> struct fe::is_bit_enum<mim::Mut>   : std::true_type {};
+// clang-format on
 #endif
 
 namespace mim {
@@ -152,13 +186,13 @@ namespace mim {
     }                                                                                             \
     auto NAME##s(nat_t a) CONST noexcept { return ((const Def*)NAME())->projs(a); }
 
-/// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
+/// CRTP-based mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
 template<class P, class D = Def>
 class // D is only needed to make the resolution `D::template set` lazy
 #ifdef _MSC_VER
     __declspec(empty_bases)
 #endif
-        Setters {
+    Setters {
 private:
     P* super() { return static_cast<P*>(this); }
     const P* super() const { return static_cast<const P*>(this); }
@@ -191,6 +225,7 @@ public:
 /// | Uniq              | Wrap              | Unwrap            |
 /// | Join              | Inj               | Match             |
 /// | Meet              | Merge             | Split             |
+/// | Reform            | Rule              |                   |
 /// | Nat               | Lit               |                   |
 /// | Idx               | Lit               |                   |
 /// In addition there is:
@@ -257,7 +292,7 @@ public:
 
     /// Yields the "raw" type of this Def (maybe `nullptr`).
     /// @see Def::unfold_type.
-    const Def* type() const noexcept { return type_; }
+    const Def* type() const noexcept;
     /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     const Def* unfold_type() const;
     bool is_term() const;
@@ -288,14 +323,14 @@ public:
     /// MimIR assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
     ///@{
-    Def* set(size_t i, const Def*); ///< Successively set from left to right.
-    Def* set(Defs ops);             ///< Def::set @p ops all at once.
-    Def* unset();                   ///< Unsets all Def::ops; works even, if not set at all or partially.
     bool is_set() const;            ///< Yields `true` if empty or the last op is set.
+    Def* set(size_t i, const Def*); ///< Successively set from left to right.
+    Def* set(Defs ops);             ///< Set @p ops all at once (no Def::unset necessary beforehand).
+    Def* unset();                   ///< Unsets all Def::ops; works even, if not set at all or only partially set.
 
     /// Update type.
     /// @warning Only make type-preserving updates such as removing Hole%s.
-    /// Do this even before updating all other ops()!.
+    /// Do this even before updating all other ops()!
     Def* set_type(const Def*);
     ///@}
 
@@ -401,6 +436,9 @@ public:
         if (auto mut = isa_mut()) return mut->has_var();
         return nullptr;
     }
+
+    /// If `this` is a binder, compute the type of its Var%iable.
+    const Def* var_type();
     ///@}
 
     /// @name Free Vars and Muts
@@ -426,15 +464,18 @@ public:
 
     /// @name external
     ///@{
-    bool is_external() const { return external_; }
-    void make_external();
-    void make_internal();
-    void transfer_external(Def* to) { make_internal(), to->make_external(); }
+    bool is_external() const noexcept { return external_; }
+    void externalize();
+    void internalize();
+    void transfer_external(Def* to);
+    bool is_annex() const noexcept { return annex_; }
     ///@}
 
     /// @name Casts
     /// @see @ref cast_builtin
     ///@{
+    bool is_mutable() const noexcept { return mut_; }
+
     // clang-format off
     template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
     template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
@@ -476,14 +517,14 @@ public:
     template<bool Ow = false>       Def* set(Loc l)       { if (Ow || !dbg_.loc()) dbg_.set(l); return this; }
     template<bool Ow = false> const Def* set(Sym s) const { if (Ow || !dbg_.sym()) dbg_.set(s); return this; }
     template<bool Ow = false>       Def* set(Sym s)       { if (Ow || !dbg_.sym()) dbg_.set(s); return this; }
-    template<bool Ow = false> const Def* set(       std::string s) const { set(sym(std::move(s))); return this; }
-    template<bool Ow = false>       Def* set(       std::string s)       { set(sym(std::move(s))); return this; }
-    template<bool Ow = false> const Def* set(Loc l, Sym s        ) const { set(l); set(s); return this; }
-    template<bool Ow = false>       Def* set(Loc l, Sym s        )       { set(l); set(s); return this; }
-    template<bool Ow = false> const Def* set(Loc l, std::string s) const { set(l); set(sym(std::move(s))); return this; }
-    template<bool Ow = false>       Def* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); return this; }
-    template<bool Ow = false> const Def* set(Dbg d) const { set(d.loc(), d.sym()); return this; }
-    template<bool Ow = false>       Def* set(Dbg d)       { set(d.loc(), d.sym()); return this; }
+    template<bool Ow = false> const Def* set(       std::string s) const { set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false>       Def* set(       std::string s)       { set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false> const Def* set(Loc l, Sym s        ) const { set<Ow>(l); set<Ow>(s); return this; }
+    template<bool Ow = false>       Def* set(Loc l, Sym s        )       { set<Ow>(l); set<Ow>(s); return this; }
+    template<bool Ow = false> const Def* set(Loc l, std::string s) const { set<Ow>(l); set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false>       Def* set(Loc l, std::string s)       { set<Ow>(l); set<Ow>(sym(std::move(s))); return this; }
+    template<bool Ow = false> const Def* set(Dbg d) const { set<Ow>(d.loc(), d.sym()); return this; }
+    template<bool Ow = false>       Def* set(Dbg d)       { set<Ow>(d.loc(), d.sym()); return this; }
     // clang-format on
     ///@}
 
@@ -542,8 +583,12 @@ public:
     /// If different from Def::type, it will update its Def::type to a Def::zonk%ed version of that.
     virtual const Def* check() { return type(); }
 
+    /// Yields `true`, if Def::local_muts() contain a Hole that is set.
+    /// Rewriting (Def::zonk%ing) will resolve the Hole to its operand.
+    bool needs_zonk() const;
+
     /// If Hole%s have been filled, reconstruct the program without them.
-    /// Only gues up to but excluding other mutables.
+    /// Only goes up to but excluding other mutables.
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
 
@@ -625,10 +670,11 @@ protected:
     u8 trip_  = 0;
 
 private:
-    Node node_;
-    bool mut_      : 1;
-    bool external_ : 1;
-    unsigned dep_  : 6;
+    Node node_; // 8
+    bool mut_           : 1;
+    bool external_      : 1;
+    mutable bool annex_ : 1;
+    unsigned dep_       : 5;
     u32 mark_ = 0;
 #ifndef NDEBUG
     size_t curr_op_ = 0;
@@ -639,7 +685,7 @@ private:
     Vars vars_; // Mutable: local vars; Immutable: free vars.
     Muts muts_; // Immutable: local_muts; Mutable: users;
     mutable u32 tid_ = 0;
-    const Def* type_;
+    mutable const Def* type_;
 
     template<class D, size_t N>
     friend class Sets;
@@ -648,13 +694,20 @@ private:
     friend std::ostream& operator<<(std::ostream&, const Def*);
 };
 
+/// A variable introduced by a binder (mutable).
+/// @note Var will keep its type_ field as `nullptr`.
+/// Instead, Def::type() and Var::type() will compute the type via Def::var_type().
+/// The reason is that the type could need a Def::zonk().
+/// But we don't want to have several Var%s that belong to the same binder.
 class Var : public Def, public Setters<Var> {
 private:
-    Var(const Def* type, Def* mut)
-        : Def(Node, type, Defs{mut}, 0) {}
+    Var(Def* mut)
+        : Def(Node, nullptr, Defs{mut}, 0) {}
 
 public:
     using Setters<Var>::set;
+
+    const Def* type() const { return mut()->var_type(); }
 
     /// @name ops
     ///@{

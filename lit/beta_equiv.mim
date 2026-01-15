@@ -11,7 +11,7 @@ axm %bug.Arr: Num → *;
 
 fun test [N: Num] [A: %bug.Arr N]: Nat = return 0;
 
-fun extern stuff [mem: %mem.M, A: %bug.Arr F64]: %mem.M =
+fun extern stuff [mem: %mem.M 0, A: %bug.Arr F64]: %mem.M 0 =
     ret _ = test F64 $ A;
     return mem;
 

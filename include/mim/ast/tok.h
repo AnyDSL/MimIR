@@ -47,10 +47,13 @@ namespace ast {
     m(K_let,    "let"   )             \
     m(K_match,  "match" )             \
     m(K_module, "module")             \
+    m(K_norm,   "norm"  )             \
     m(K_plugin, "plugin")             \
     m(K_rec,    "rec"   )             \
     m(K_ret,    "ret"   )             \
+    m(K_rule,   "rule"  )             \
     m(K_tt,     "tt"    )             \
+    m(K_when,   "when"  )             \
     m(K_where,  "where" )             \
     m(K_with,   "with"  )             \
 
@@ -100,6 +103,7 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(T_semicolon,  ";")               \
     m(T_star,       "*")               \
     m(T_union,      "∪")               \
+    m(T_pipe,       "|")               \
 
 #define MIM_SUBST(m)                  \
     m("lm",     T_lm   )              \

@@ -1,19 +1,15 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <string_view>
 #include <type_traits>
 
 #include <absl/container/btree_map.h>
-#include <absl/container/btree_set.h>
 #include <fe/arena.h>
 
 #include "mim/axm.h"
-#include "mim/check.h"
-#include "mim/flags.h"
-#include "mim/lam.h"
-#include "mim/lattice.h"
-#include "mim/tuple.h"
+#include "mim/rewrite.h"
 
 #include "mim/util/dbg.h"
 #include "mim/util/log.h"
@@ -21,6 +17,7 @@
 namespace mim {
 
 class Driver;
+struct Flags;
 
 /// The World represents the whole program and manages creation of MimIR nodes (Def%s).
 /// Def%s are hashed into an internal HashSet.
@@ -72,16 +69,23 @@ public:
         : World(&other.driver(), other.state()) {
         swap(*this, other);
     }
-    World inherit() { return World(&driver(), state()); } ///< Inherits the @p state into the new World.
     ~World();
+
+    /// Inherits the State into the new World.
+    /// World::curr_gid will be offset to not collide with the original World.
+    std::unique_ptr<World> inherit() {
+        auto s = state();
+        s.pod.curr_gid += move_.defs.size();
+        return std::make_unique<World>(&driver(), s);
+    }
     ///@}
 
     /// @name Getters/Setters
     ///@{
     const State& state() const { return state_; }
-
     const Driver& driver() const { return *driver_; }
     Driver& driver() { return *driver_; }
+    Zonker& zonker() { return zonker_; }
 
     Sym name() const { return state_.pod.name; }
     void set(Sym name) { state_.pod.name = name; }
@@ -182,10 +186,9 @@ public:
 
     /// Get Axm from a plugin.
     /// Can be used to get an Axm without sub-tags.
-    /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axm.
     template<annex_without_subs id>
     const Def* annex() {
-        return annex(Annex::Base<id>);
+        return annex(Annex::base<id>());
     }
 
     const Def* register_annex(flags_t f, const Def*);
@@ -196,12 +199,42 @@ public:
 
     /// @name Externals
     ///@{
-    const auto& sym2external() const { return move_.sym2external; }
-    Def* external(Sym name) { return mim::lookup(move_.sym2external, name); } ///< Lookup by @p name.
-    auto externals() const { return move_.sym2external | std::views::values; }
-    Vector<Def*> copy_externals() const { return {externals().begin(), externals().end()}; }
-    void make_external(Def*);
-    void make_internal(Def*);
+    class Externals {
+    public:
+        ///@name Get syms/muts
+        ///@{
+        const auto& sym2mut() const { return sym2mut_; }
+        auto syms() const { return sym2mut_ | std::views::keys; }
+        auto muts() const { return sym2mut_ | std::views::values; }
+        /// Returns a copy of @p muts() in a Vector; this allows you modify the Externals while iterating.
+        /// @note The iteration will see all old externals, of course.
+        Vector<Def*> mutate() const { return {muts().begin(), muts().end()}; }
+        Def* operator[](Sym name) const { return mim::lookup(sym2mut_, name); } ///< Lookup by @p name.
+        ///@}
+
+        ///@name externalize/internalize
+        ///@{
+        void externalize(Def*);
+        void internalize(Def*);
+        ///@}
+
+        /// @name Iterators
+        ///@{
+        auto begin() const { return sym2mut_.cbegin(); }
+        auto end() const { return sym2mut_.cend(); }
+        ///@}
+
+        friend void swap(Externals& ex1, Externals& ex2) noexcept {
+            using std::swap;
+            swap(ex1.sym2mut_, ex2.sym2mut_);
+        }
+
+    private:
+        fe::SymMap<Def*> sym2mut_;
+    };
+
+    const Externals& externals() const { return move_.externals; }
+    Externals& externals() { return move_.externals; }
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Hole
@@ -221,8 +254,8 @@ public:
         else
             return type(lit_univ(level));
     }
-    const Def* var(const Def* type, Def* mut);
-    const Proxy* proxy(const Def* type, u32 index, u32 tag, Defs ops) { return unify<Proxy>(type, index, tag, ops); }
+    const Def* var(Def* mut);
+    const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag) { return unify<Proxy>(type, index, tag, ops); }
 
     Hole* mut_hole(const Def* type) { return insert<Hole>(type); }
     Hole* mut_hole_univ() { return mut_hole(univ()); }
@@ -311,6 +344,18 @@ public:
     // clang-format on
     ///@}
 
+    /// @name Rewrite Rules
+    ///@{
+    const Reform* reform(const Def* meta_type) { return unify<Reform>(Reform::infer(meta_type), meta_type); }
+    Rule* mut_rule(const Reform* type) { return insert<Rule>(type); }
+    const Rule* rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* guard) {
+        return mut_rule(type)->set(lhs, rhs, guard);
+    }
+    const Rule* rule(const Def* meta_type, const Def* lhs, const Def* rhs, const Def* guard) {
+        return rule(reform(meta_type), lhs, rhs, guard);
+    }
+    ///@}
+
     /// @name App
     ///@{
     template<bool Normalize = true>
@@ -367,6 +412,7 @@ public:
     const Def* pack_unsafe(           const Def* body) { return seq_unsafe(true , body); }
 
     const Def* prod(bool term, Defs ops) { return term ? tuple(ops) : sigma(ops); }
+    const Def* prod(bool term) { return term ? (const Def*)tuple() : (const Def*)sigma(); }
     // clang-format on
     ///@}
 
@@ -541,10 +587,22 @@ public:
     Defs reduce(const Var* var, const Def* arg);
     ///@}
 
+    /// @name for_each
+    /// Visits all closed mutables in this World.
+    ///@{
+    void for_each(bool elide_empty, std::function<void(Def*)>);
+
+    template<class M>
+    void for_each(bool elide_empty, std::function<void(M*)> f) {
+        for_each(elide_empty, [f](Def* m) {
+            if (auto mut = m->template isa<M>()) f(mut);
+        });
+    }
+    ///@}
+
     /// @name dump/log
     ///@{
-    Log& log();
-    void dummy() {}
+    Log& log() const;
     void dump(std::ostream& os);  ///< Dump to @p os.
     void dump();                  ///< Dump to `std::cout`.
     void debug_dump();            ///< Dump in Debug build if World::log::level is Log::Level::Debug.
@@ -591,12 +649,15 @@ private:
 
         auto state = move_.arena.defs.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
-        if (auto loc = get_loc()) def->set(loc);
         assert(!def->isa_mut());
+
+        if (auto loc = get_loc()) def->set(loc);
+
 #ifdef MIM_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
+
         if (is_frozen()) {
             auto i = move_.defs.find(def);
             deallocate<T>(state, def);
@@ -608,6 +669,7 @@ private:
             deallocate<T>(state, def);
             return static_cast<const T*>(*i);
         }
+
 #ifdef MIM_ENABLE_CHECKS
         if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
@@ -623,12 +685,15 @@ private:
 
     template<class T, class... Args>
     T* insert(Args&&... args) {
+        if (is_frozen()) return nullptr;
+
         auto num_ops = T::Num_Ops;
         if constexpr (T::Num_Ops == std::dynamic_extent)
             num_ops = std::get<sizeof...(Args) - 1>(std::forward_as_tuple(std::forward<Args>(args)...));
 
         auto def = allocate<T>(num_ops, std::forward<Args>(args)...);
         if (auto loc = get_loc()) def->set(loc);
+
 #ifdef MIM_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) fe::breakpoint();
@@ -663,6 +728,7 @@ private:
     ///@}
 
     Driver* driver_;
+    Zonker zonker_;
     State state_;
 
     struct SeaHash {
@@ -695,8 +761,8 @@ private:
             fe::Arena defs, substs;
         } arena;
 
+        Externals externals;
         absl::btree_map<flags_t, const Def*> flags2annex;
-        absl::btree_map<Sym, Def*> sym2external;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         Sets<Def> muts;
         Sets<const Var> vars;
@@ -712,7 +778,7 @@ private:
             swap(m1.vars,         m2.vars);
             swap(m1.muts,         m2.muts);
             swap(m1.flags2annex,  m2.flags2annex);
-            swap(m1.sym2external, m2.sym2external);
+            swap(m1.externals,    m2.externals);
             // clang-format on
         }
     } move_;
@@ -744,9 +810,11 @@ private:
     friend void swap(World& w1, World& w2) noexcept {
         using std::swap;
         // clang-format off
-        swap(w1.state_, w2.state_);
-        swap(w1.data_,  w2.data_ );
-        swap(w1.move_,  w2.move_ );
+        swap(w1.driver_,  w2.driver_ );
+        swap(w1.zonker_,  w2.zonker_ );
+        swap(w1.state_,   w2.state_);
+        swap(w1.data_,    w2.data_ );
+        swap(w1.move_,    w2.move_ );
         // clang-format on
 
         swap(w1.data_.univ->world_, w2.data_.univ->world_);

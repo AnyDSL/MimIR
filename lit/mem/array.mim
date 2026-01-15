@@ -9,6 +9,7 @@ plugin buffrize;
 
 let size = 128;
 let ArrayType = <<size; I32>>;
+let a = 0;
 
 con calculate_sum [arr: ArrayType, return: Cn I32] =
     con body [i: I32, acc: I32, yield: Cn I32] =
@@ -16,9 +17,9 @@ con calculate_sum [arr: ArrayType, return: Cn I32] =
         let acc = %core.wrap.add 0 (acc, arr#i);
         yield acc;
     let upper_bound = %core.idx i32 0 size;
-    %affine.For (0:I32, upper_bound, 1:I32, 0:I32, body, return);
+    %affine.For body return (0:I32, upper_bound, 1:I32, 0:I32);
 
-con extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0), return: Cn [%mem.M, I32]] =
+con extern main [mem: %mem.M a, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0), return: Cn [%mem.M a, I32]] =
     con return_cont [result: I32] = return (mem, result);
     let arr = <size; 0:I32>;
     let arr2 = ins (arr, 0:(Idx size), 2:I32);

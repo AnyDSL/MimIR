@@ -7,6 +7,8 @@
 #include <ranges>
 #include <sstream>
 
+#include <absl/container/btree_set.h>
+
 #include <mim/plug/clos/clos.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
@@ -260,7 +262,7 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
 void Emitter::start() {
     Super::start();
 
-    for (auto name : world().driver().import_syms())
+    for (auto name : world().driver().imports().syms())
         print(ostream(), "{} {};\n", world().driver().is_loaded(name) ? "plugin" : "import", name);
 
     for (auto&& decl : decls_)
@@ -283,7 +285,7 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 void Emitter::emit_con(Lam* lam) {
-    print(std::cout, "emit_con: {}\n", lam->unique_name());
+    // print(std::cout, "emit_con: {}\n", lam->unique_name());
     tab.print(func_impls_, "con {}{} [", external(lam), id(lam));
 
     if (lam->has_var()) {
@@ -336,7 +338,7 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
 
     for (auto op : node->mut()->deps()) {
         for (auto mut : op->local_muts())
-            if (auto next = nest().mut2node(mut)) finalize_nest(next, done);
+            if (auto next = nest()[mut]) finalize_nest(next, done);
     }
 
     for (const auto& line : bb.tail())
@@ -371,7 +373,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return convert(def);
     }
 
-    print(std::cout, "debug {}\n", def);
+    // print(std::cout, "debug {}\n", def);
 
     std::ostringstream os;
     if (auto lit = def->isa<Lit>()) {

@@ -1,9 +1,13 @@
 #include "mim/pass/tail_rec_elim.h"
 
-#include "mim/pass/beta_red.h"
 #include "mim/pass/eta_red.h"
 
 namespace mim {
+
+void TailRecElim::init(PassMan* man) {
+    Pass::init(man);
+    eta_red_ = man->find<EtaRed>();
+}
 
 const Def* TailRecElim::rewrite(const Def* def) {
     if (auto [app, old] = isa_apped_mut_lam(def); old) {
@@ -29,7 +33,7 @@ undo_t TailRecElim::analyze(const Def* def) {
                 auto doms         = rec->doms();
                 auto loop_dom     = doms.view().rsubspan(1);
                 loop              = rec->stub(world().cn(loop_dom));
-                world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
+                DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 
                 auto n = rec->num_doms();
                 DefVec loop_args(n - 1);

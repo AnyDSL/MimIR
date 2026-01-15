@@ -175,9 +175,9 @@ The following tables comprise all production rules:
 | d   | `con` n p+ ( `=` e)? `;`                                                                                                                          | continuation declaration<sup>s</sup> | [Lam](@ref mim::Lam)               |
 | d   | `fun` n p+ (`:` e<sub>ret</sub>)? ( `=` e)? `;`                                                                                                   | function declaration<sup>s</sup>     | [Lam](@ref mim::Lam)               |
 | d   | `Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                            | sigma declaration                    | [Sigma](@ref mim::Sigma)           |
-| d   | `axm` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axm)             |
+| d   | `axm` A (`(` sa `,` ... `,` sa `)`)? `:` e<sub>type</sub> <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axm)             |
 | n   | 𝖨 \| A                                                                                                                                            | identifier or annex name             | `fe::Sym`/[Annex](@ref mim::Annex) |
-| sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                          | subtag with aliases                  |                                    |
+| sa  | 𝖨 (`=` 𝖨 `=` ... `=` 𝖨)?                                                                                                                          | subtag with aliases                  |                                    |
 
 @note An elided type of a `.Pi` or `Sigma` declaration defaults to `*`.
 
@@ -234,7 +234,7 @@ This will bind
 Here is another example:
 
 ```rust
-{T: *, a: Nat} as Ts → [%mem.M, %mem.Ptr Ts] → [%mem.M, T]
+{T: *, a: Nat} as Ts → [%mem.M a, %mem.Ptr Ts] → [%mem.M a, T]
 ```
 
 #### Rebind

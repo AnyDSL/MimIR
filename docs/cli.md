@@ -23,6 +23,7 @@ Mim will look for plugins in this priority:
   - `-VV` corresponds to mim::Log::Level::Info.
   - `-VVV` corresponds to mim::Log::Level::Verbose.
   - `-VVVV` corresponds to mim::Log::Level::Debug. This output only exists in a Debug build of MimIR.
+  - `-VVVVV` corresponds to mim::Log::Level::Trace. This output only exists in a Debug build of MimIR.
 - You can trigger a breakpoint upon construction of a mim::Def with a specific global id.
 
   For example, this will trigger a breakpoint if the mim::Def with [global id](@ref mim::Def::gid) `4223` is being created:

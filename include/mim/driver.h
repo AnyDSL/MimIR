@@ -21,7 +21,8 @@ public:
     /// @name Getters
     ///@{
     Flags& flags() { return flags_; }
-    Log& log() { return log_; }
+    const Flags& flags() const { return flags_; }
+    Log& log() const { return log_; }
     World& world() { return world_; }
     ///@}
 
@@ -44,11 +45,34 @@ public:
     /// 1. The `fs::path` used during import,
     /// 2. The name as Sym%bol used in the `import` directive or in Parser::import.
     ///@{
-    const auto& import_path2sym() { return import_path2sym_; }
-    auto import_paths() { return import_path2sym_ | std::views::keys; }
-    auto import_syms() { return import_path2sym_ | std::views::values; }
-    /// Yields a `fs::path*` if not already added that you can use in Loc%ation; returns `nullptr` otherwise.
-    const fs::path* add_import(fs::path, Sym);
+    class Imports {
+    public:
+        Imports(Driver& driver)
+            : driver_(driver) {}
+
+        /// @name Get imports
+        ///@{
+        const auto& path2sym() { return path2sym_; }
+        auto paths() { return path2sym_ | std::views::keys; }
+        auto syms() { return path2sym_ | std::views::values; }
+        ///@}
+
+        /// @name Iterators
+        ///@{
+        auto begin() const { return path2sym_.cbegin(); }
+        auto end() const { return path2sym_.cbegin(); }
+        ///@}
+
+        /// Yields a `fs::path*`, if not already added that you can use in Loc%ation; returns `nullptr` otherwise.
+        const fs::path* add(fs::path, Sym);
+
+    private:
+        Driver& driver_;
+        std::deque<std::pair<fs::path, Sym>> path2sym_;
+    };
+
+    const Imports& imports() const { return imports_; }
+    Imports& imports() { return imports_; }
     ///@}
 
     /// @name Load Plugin
@@ -61,10 +85,14 @@ public:
     void load(const std::string& name) { return load(sym(name)); }
     bool is_loaded(Sym sym) const { return lookup(plugins_, sym); }
     void* get_fun_ptr(Sym plugin, const char* name);
-    template<class F> auto get_fun_ptr(Sym plugin, const char* name) {
+
+    template<class F>
+    auto get_fun_ptr(Sym plugin, const char* name) {
         return reinterpret_cast<F*>(get_fun_ptr(plugin, name));
     }
-    template<class F> auto get_fun_ptr(const char* plugin, const char* name) {
+
+    template<class F>
+    auto get_fun_ptr(const char* plugin, const char* name) {
         return get_fun_ptr<F>(sym(plugin), name);
     }
     ///@}
@@ -72,7 +100,8 @@ public:
     /// @name Manage Plugins
     /// All these lookups yield `nullptr` if the key has not been found.
     ///@{
-    auto pass(flags_t flags) { return lookup(passes_, flags); }
+    auto stage(flags_t flags) { return lookup(stages_, flags); }
+    const auto& stages() const { return stages_; }
     auto normalizer(flags_t flags) const { return lookup(normalizers_, flags); }
     auto normalizer(plugin_t d, tag_t t, sub_t s) const { return normalizer(d | flags_t(t << 8u) | s); }
     auto backend(std::string_view name) { return lookup(backends_, name); }
@@ -82,14 +111,14 @@ private:
     // This must go *first* so plugins will be unloaded *last* in the d'tor; otherwise funny things might happen ...
     absl::node_hash_map<Sym, Plugin::Handle> plugins_;
     Flags flags_;
-    Log log_;
+    mutable Log log_;
     World world_;
     std::list<fs::path> search_paths_;
     std::list<fs::path>::iterator insert_ = search_paths_.end();
     Backends backends_;
-    Passes passes_;
+    Flags2Stages stages_;
     Normalizers normalizers_;
-    std::deque<std::pair<fs::path, Sym>> import_path2sym_;
+    Imports imports_;
 };
 
 #define GET_FUN_PTR(plugin, f) get_fun_ptr<decltype(f)>(plugin, #f)

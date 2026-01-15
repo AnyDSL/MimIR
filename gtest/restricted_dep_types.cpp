@@ -4,13 +4,13 @@
 #include <gtest/gtest-spi.h>
 #include <gtest/gtest.h>
 
+#include <mim/pass.h>
+
 #include <mim/ast/parser.h>
 #include <mim/pass/beta_red.h>
 #include <mim/pass/eta_exp.h>
 #include <mim/pass/eta_red.h>
 #include <mim/pass/optimize.h>
-#include <mim/pass/pass.h>
-#include <mim/pass/pipelinebuilder.h>
 
 #include <mim/plug/compile/compile.h>
 #include <mim/plug/core/core.h>
@@ -217,15 +217,15 @@ TEST(RestrictedDependentTypes, join_singleton) {
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w = driver.world();
-    ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s});
+    ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s, "opt"s});
 
-    auto mem_t  = w.annex<mem::M>();
+    auto mem_t  = w.call<mem::M>(0);
     auto i32_t  = w.type_i32();
     auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
     auto main = w.mut_con({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})})->set("main");
-    main->make_external();
+    main->externalize();
 
     auto R = w.axm(w.type())->set("R");
     auto W = w.axm(w.type())->set("W");

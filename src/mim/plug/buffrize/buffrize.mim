@@ -12,18 +12,20 @@ import compile;
 import mem;
 import core;
 import affine;
+
 /// ## Operations
 ///
 /// ## Built-in Functions
 ///
 /// ### %%buffrize.copy_array
 ///
+
 con %buffrize.copy_array {n: Nat, Ts: «n; *», a: Nat}
     (src : %mem.Ptr («j: n; Ts#j», a), dst : %mem.Ptr («j: n; Ts#j», a))
-    [mem : %mem.M, exit: Cn %mem.M] =
+    [mem : %mem.M a, exit: Cn %mem.M a] =
     let size = %core.idx i64 0 n;
-    %affine.For(0:I64, size, 1:I64, mem, copy_array_body, exit) where
-            con copy_array_body [i:I64, mem: %mem.M, yield: Cn %mem.M] =
+    %affine.For copy_array_body exit (0:I64, size, 1:I64, mem) where
+            con copy_array_body [i:I64, mem: (%mem.M a), yield: Cn [%mem.M a]] =
                 let src_lea = %mem.lea (src, %core.conv.u n i);
                 let dst_lea = %mem.lea (dst, %core.conv.u n i);
                 let (mem, tmp) = %mem.load (mem, src_lea);

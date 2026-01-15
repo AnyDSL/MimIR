@@ -125,10 +125,10 @@ std::ostream& MatchExpr::Arm::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& MatchExpr::stream(Tab& tab, std::ostream& os) const {
-    tab.println(os, "match {} {{", S(tab, scrutinee()));
+    tab.println(os, "match {} with", S(tab, scrutinee()));
     ++tab;
     for (const auto& arm : arms())
-        tab.println(os, "{},", S(tab, arm.get()));
+        tab.println(os, "| {}", S(tab, arm.get()));
     --tab;
     return tab.println(os, "}}");
 }
@@ -140,7 +140,8 @@ std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& PiExpr::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{} {}", tag(), S(tab, dom()));
+    if (tag() != Tag::Nil) print(os, "{} ", tag());
+    print(os, "{}", S(tab, dom()));
     if (codom()) print(os, " -> {}", S(tab, codom()));
     return os;
 }
@@ -237,4 +238,7 @@ std::ostream& CDecl::stream(Tab& tab, std::ostream& os) const {
     return os;
 }
 
+std::ostream& RuleDecl::stream(Tab& tab, std::ostream& os) const {
+    return print(os, "rule {} : {} => {} when {}", S(tab, var()), S(tab, lhs()), S(tab, rhs()), S(tab, guard()));
+}
 } // namespace mim::ast

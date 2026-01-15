@@ -34,4 +34,4 @@ fun extern main(argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): I32 =
         con exit (a _: Nat) = return (%core.bitcast I32 a);
     end;
 
-// CHECK-DAG: 144I32
+// CHECK-DAG: 144:I32

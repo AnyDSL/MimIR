@@ -1,4 +1,5 @@
 #include "mim/def.h"
+#include "mim/rewrite.h"
 
 #include "mim/ast/ast.h"
 
@@ -380,6 +381,7 @@ const Def* UniqExpr::emit_(Emitter& e) const { return e.world().uniq(inhabitant(
  */
 
 void AxmDecl::emit(Emitter& e) const {
+    if (!annex_) return; // Skip emit if binding failed
     mim_type_ = type()->emit(e);
     auto& id  = annex_->id;
 
@@ -460,7 +462,7 @@ void LamDecl::emit_decl(Emitter& e) const {
     auto _      = e.world().push(loc());
     bool is_cps = tag_ == Tag::K_cn || tag_ == Tag::K_con || tag_ == Tag::K_fn || tag_ == Tag::K_fun;
 
-    // Iterate over all doms: Build a Lam for cur dom, by first building a curried Pi for the remaining doms.
+    // Iterate over all doms: Build a Lam for curr dom, by first building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i))
             dom->emit_type(e);
@@ -487,6 +489,21 @@ void LamDecl::emit_body(Emitter& e) const {
     auto b = body()->emit(e);
     doms().back()->lam_->set_body(b);
 
+    // rewrite holes
+    for (size_t i = 0, n = num_doms(); i != n; ++i) {
+        auto rw  = VarRewriter(e.world());
+        auto lam = dom(i)->lam_;
+        auto pi  = lam->type()->as_mut<Pi>();
+        for (const auto& dom : doms() | std::ranges::views::drop(i)) {
+            if (auto var = pi->has_var()) rw.add(dom->lam_->var()->as<Var>(), var);
+            auto cod = pi->codom();
+            if (!cod || !cod->isa_mut<Pi>()) break;
+            pi = cod->as_mut<Pi>();
+        }
+
+        if (auto cod = pi->codom(); cod && cod->has_dep(Dep::Hole)) pi->set(pi->dom(), rw.rewrite(cod));
+    }
+
     for (const auto& dom : doms() | std::ranges::views::reverse) {
         if (auto imm = dom->pi_->immutabilize()) {
             auto f = dom->lam_->filter();
@@ -495,7 +512,7 @@ void LamDecl::emit_body(Emitter& e) const {
         }
     }
 
-    if (is_external()) doms().front()->lam_->make_external();
+    if (is_external()) doms().front()->lam_->externalize();
     e.register_annex(annex_, sub_, def_);
 }
 
@@ -507,6 +524,18 @@ void CDecl::emit(Emitter& e) const {
     } else {
         def_ = e.world().mut_con(dom_t)->set(dbg());
     }
+}
+
+void RuleDecl::emit(Emitter& e) const {
+    auto _      = e.world().push(loc());
+    auto meta_t = e.world().reform(var()->emit_type(e));
+    auto rule_  = e.world().mut_rule(meta_t);
+    var()->emit_value(e, rule_->var());
+    auto l = lhs()->emit(e);
+    auto r = rhs()->emit(e);
+    auto c = guard()->emit(e);
+    rule_->set(l, r, c);
+    // TODO register rule somewhere
 }
 
 } // namespace mim::ast

@@ -10,8 +10,11 @@ target_sources(libmim
         lam.cpp
         lattice.cpp
         nest.cpp
+        pass.cpp
+        phase.cpp
         plugin.cpp
         rewrite.cpp
+        rule.cpp
         schedule.cpp
         tuple.cpp
         world.cpp
@@ -27,12 +30,15 @@ target_sources(libmim
         pass/eta_red.cpp
         pass/lam_spec.cpp
         pass/optimize.cpp
-        pass/pass.cpp
-        pass/pipelinebuilder.cpp
-        pass/ret_wrap.cpp
         pass/scalarize.cpp
         pass/tail_rec_elim.cpp
-        phase/phase.cpp
+        phase/beta_red_phase.cpp
+        phase/eta_red_phase.cpp
+        phase/eta_exp_phase.cpp
+        phase/branch_normalize.cpp
+        phase/prefix_cleanup.cpp
+        phase/ret_wrap.cpp
+        phase/sccp.cpp
         util/bitset.cpp
         util/dbg.cpp
         util/dl.cpp
@@ -42,15 +48,13 @@ target_sources(libmim
 )
 
 set_target_properties(libmim PROPERTIES PREFIX "")
+target_compile_features(libmim PUBLIC cxx_std_20)
 
 if(MSVC)
-    target_compile_features(libmim PUBLIC cxx_std_23) # /std:c++latest - unlocks non-stable c++20 features
     target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
     if(BUILD_SHARED_LIBS)
         target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)
     endif()
-else()
-    target_compile_features(libmim PUBLIC cxx_std_20)
 endif()
 
 configure_file(

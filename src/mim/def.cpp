@@ -5,6 +5,7 @@
 #include <absl/container/fixed_array.h>
 #include <fe/assert.h>
 
+#include "mim/rule.h"
 #include "mim/world.h"
 
 #include "mim/util/hash.h"
@@ -26,6 +27,7 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
     , node_(node)
     , mut_(false)
     , external_(false)
+    , annex_(false)
     , dep_(node == Node::Hole    ? unsigned(Dep::Hole)
            : node == Node::Proxy ? unsigned(Dep::Proxy)
            : node == Node::Var   ? (Dep::Var | Dep::Mut)
@@ -37,16 +39,13 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
         hash_ = mim::hash_begin(node_t(Node::Univ));
     } else if (auto var = isa<Var>()) {
         assert(flags_ == 0); // if we ever need flags here, we need to hash that
-        auto& world = type->world();
-        gid_        = world.next_gid();
-        vars_       = world.vars().insert(type->local_vars(), var);
-        muts_       = type->local_muts();
-        dep_ |= type->dep_;
-        auto op      = ops[0];
-        ops_ptr()[0] = op;
+        auto mut     = ops[0];
+        auto& world  = mut->world();
+        gid_         = world.next_gid();
+        vars_        = Vars(var);
+        ops_ptr()[0] = mut;
         hash_        = hash_begin(node_t(Node::Var));
-        hash_        = hash_combine(hash_, type->gid());
-        hash_        = hash_combine(hash_, op->gid());
+        hash_        = hash_combine(hash_, mut->gid());
     } else {
         hash_ = hash_begin(u8(node));
         hash_ = hash_combine(hash_, flags_);
@@ -85,6 +84,7 @@ Def::Def(Node node, const Def* type, size_t num_ops, flags_t flags)
     , node_(node)
     , mut_(true)
     , external_(false)
+    , annex_(false)
     , dep_(Dep::Mut | (node == Node::Hole ? Dep::Hole : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
@@ -121,7 +121,9 @@ const Def* Lit    ::rebuild_(World& w, const Def* t, Defs  ) const { return w.li
 const Def* Merge  ::rebuild_(World& w, const Def* t, Defs o) const { return w.merge(t, o); }
 const Def* Pack   ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
 const Def* Pi     ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
-const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, pass(), tag(), o); }
+const Def* Proxy  ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
+const Def* Rule   ::rebuild_(World& w, const Def* t, Defs o) const { return w.rule(t->as<Reform>(), o[0], o[1], o[2]); }
+const Def* Reform ::rebuild_(World& w, const Def* ,  Defs o) const { return w.reform(o[0]); }
 const Def* Sigma  ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
 const Def* Split  ::rebuild_(World& w, const Def* t, Defs o) const { return w.split(t, o[0]); }
 const Def* Match  ::rebuild_(World& w, const Def*  , Defs o) const { return w.match(o); }
@@ -130,7 +132,7 @@ const Def* Type   ::rebuild_(World& w, const Def*  , Defs o) const { return w.ty
 const Def* UInc   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uinc(o[0], offset()); }
 const Def* UMax   ::rebuild_(World& w, const Def*  , Defs o) const { return w.umax(o); }
 const Def* Uniq   ::rebuild_(World& w, const Def*  , Defs o) const { return w.uniq(o[0]); }
-const Def* Var    ::rebuild_(World& w, const Def* t, Defs o) const { return w.var(t, o[0]->as_mut()); }
+const Def* Var    ::rebuild_(World& w, const Def*  , Defs o) const { return w.var(o[0]->as_mut()); }
 
 const Def* Axm    ::rebuild_(World& w, const Def* t, Defs ) const {
     if (&w != &world()) return w.axm(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
@@ -151,6 +153,7 @@ Hole*   Hole  ::stub_(World& w, const Def* t) { return w.mut_hole (t); }
 Lam*    Lam   ::stub_(World& w, const Def* t) { return w.mut_lam  (t->as<Pi>()); }
 Pack*   Pack  ::stub_(World& w, const Def* t) { return w.mut_pack (t); }
 Pi*     Pi    ::stub_(World& w, const Def* t) { return w.mut_pi   (t, is_implicit()); }
+Rule*   Rule  ::stub_(World& w, const Def* t) { return w.mut_rule(t->as<Reform>()); }
 Sigma*  Sigma ::stub_(World& w, const Def* t) { return w.mut_sigma(t, num_ops()); }
 
 /*
@@ -188,6 +191,8 @@ const Pi* Pi::immutabilize() {
     if (is_immutabilizable()) return world().pi(dom(), codom());
     return nullptr;
 }
+
+const Rule* Rule::immutabilize() { return world().rule(type(), lhs(), rhs(), guard()); }
 
 const Def* Sigma::immutabilize() {
     if (is_immutabilizable()) return static_cast<const Sigma*>(world().sigma(ops()));
@@ -235,9 +240,25 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
  */
 
 Def* Def::set(Defs ops) {
-    assert(ops.size() == num_ops());
-    for (size_t i = 0, e = num_ops(); i != e; ++i)
-        set(i, ops[i]);
+#ifdef MIM_ENABLE_CHECKS
+    if (world().watchpoints().contains(gid())) fe::breakpoint();
+#endif
+    invalidate();
+
+    size_t n = ops.size();
+    assert(n == num_ops() && "num ops don't match");
+
+    for (size_t i = 0; i != n; ++i) {
+        auto def = check(i, ops[i]);
+        assert(def);
+        ops_ptr()[i] = def;
+    }
+#ifndef NDEBUG
+    curr_op_ = n;
+#endif
+
+    if (auto t = check()->zonk(); t != type()) type_ = t;
+
     return this;
 }
 
@@ -245,6 +266,7 @@ Def* Def::set(size_t i, const Def* def) {
 #ifdef MIM_ENABLE_CHECKS
     if (world().watchpoints().contains(gid())) fe::breakpoint();
 #endif
+
     invalidate();
     def = check(i, def);
     assert(def && !op(i) && curr_op_++ == i);
@@ -259,7 +281,6 @@ Def* Def::set(size_t i, const Def* def) {
 
 Def* Def::set_type(const Def* type) {
     invalidate();
-    assert(curr_op_ == 0);
     type_ = type;
     return this;
 }
@@ -287,16 +308,20 @@ bool Def::is_set() const {
 
 const Def* Def::var() {
     if (var_) return var_;
+    return world().var(this);
+}
+
+const Def* Def::var_type() {
     auto& w = world();
 
     // clang-format off
-    if (w.is_frozen()) return nullptr;
-    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
-    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
-    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->arity()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->arity()), pack); // TODO shapes like (2, 3)
-    if (isa<Bound >()) return w.var(this, this);
+    if (auto lam  = isa<Lam  >()) return lam->dom();
+    if (auto pi   = isa<Pi   >()) return pi ->dom();
+    if (auto sig  = isa<Sigma>()) return sig;
+    if (auto arr  = isa<Arr  >()) return w.type_idx(arr ->arity()); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.type_idx(pack->arity()); // TODO shapes like (2, 3)
+    if (auto rule = isa<Rule >()) return rule->type()->meta_type();
+    if (isa<Bound >()) return this;
     if (isa<Hole  >()) return nullptr;
     if (isa<Global>()) return nullptr;
     // clang-format on
@@ -411,21 +436,24 @@ Sym Def::sym(std::string_view s) const { return world().sym(s); }
 Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 
 World& Def::world() const noexcept {
+    if (auto var = isa<Var>()) return var->mut()->world();
+
     for (auto def = this;; def = def->type()) {
         if (def->isa<Univ>()) return *def->world_;
         if (auto type = def->isa<Type>()) return *type->level()->type()->as<Univ>()->world_;
     }
 }
+const Def* Def::type() const noexcept {
+    if (auto var = isa<Var>()) return var->mut()->var_type();
+    return type_;
+}
 
 const Def* Def::unfold_type() const {
-    if (!type_) {
-        auto& w = world();
-        if (auto t = isa<Type>()) return w.type(w.uinc(t->level()));
-        assert(isa<Univ>());
-        return nullptr;
-    }
-
-    return type_;
+    if (auto t = type()) return t;
+    auto& w = world();
+    if (auto t = isa<Type>()) return w.type(w.uinc(t->level()));
+    assert(isa<Univ>());
+    return nullptr;
 }
 
 std::string_view Def::node_name() const {
@@ -440,7 +468,8 @@ std::string_view Def::node_name() const {
 
 Defs Def::deps() const noexcept {
     if (isa<Type>() || isa<Univ>()) return Defs();
-    assert(type());
+    if (isa<Var>()) return ops();
+    assert(type_);
     return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);
 }
 
@@ -537,8 +566,14 @@ bool Def::equal(const Def* other) const {
     return result;
 }
 
-void Def::make_external() { return world().make_external(this); }
-void Def::make_internal() { return world().make_internal(this); }
+void Def::externalize() { return world().externals().externalize(this); }
+void Def::internalize() { return world().externals().internalize(this); }
+
+void Def::transfer_external(Def* to) {
+    assert(this->sym() == to->sym());
+    internalize();
+    to->externalize();
+}
 
 std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
 
@@ -564,7 +599,6 @@ const Def* Def::proj(nat_t a, nat_t i) const {
     }
 
     if (isa<Prod>()) return op(i);
-    if (w.is_frozen()) return nullptr;
 
     return w.extract(this, a, i);
 }

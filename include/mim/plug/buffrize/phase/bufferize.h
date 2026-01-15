@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <mim/schedule.h>
-#include <mim/phase/phase.h>
+#include <mim/phase.h>
 
 namespace mim::plug::buffrize {
 
@@ -123,8 +123,8 @@ private:
 
 class Bufferize : public NestPhase<Lam> {
 public:
-    Bufferize(World& world)
-        : NestPhase(world, "buffrize", true, true) {}
+    Bufferize(World& world, flags_t annex)
+        : NestPhase(world, annex, true) {}
 
     void visit(const Nest&) override;
 

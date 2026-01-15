@@ -86,7 +86,7 @@ const Nest::Node* Scheduler::smart(Def* curr_mut, const Def* def) {
 
     int depth = l->loop_depth();
     for (auto i = l; i != e;) {
-        i = i->parent();
+        i = i->inest();
 
         if (i == nullptr) {
             world().ELOG("this should never occur - don't know where to put {}", def);
@@ -109,7 +109,7 @@ static void post_order(const Nest& nest, const Nest::Node* node, Scheduler::Sche
 
     for (auto op : node->mut()->deps()) {
         for (auto mut : op->local_muts())
-            if (auto next = nest.mut2node(mut)) post_order(nest, next, res, done);
+            if (auto next = nest[mut]) post_order(nest, next, res, done);
     }
 
     res.emplace_back(node->mut());
