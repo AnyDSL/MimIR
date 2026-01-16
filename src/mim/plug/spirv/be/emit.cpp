@@ -87,8 +87,11 @@ std::string words_to_string(Iter& begin, Iter end) {
         for (int index = 0; index < 4; index++)
             if (auto c = (word >> (index * 8)) & mask)
                 out.push_back(static_cast<char>(c));
-            else
+            else {
+                // Advance past the null-terminator word
+                ++begin;
                 return out;
+            }
     }
     return out;
 }
@@ -188,6 +191,10 @@ private:
 
         // op
         ostream() << op.name();
+
+        // result type (if present)
+        if (op.result_type.has_value()) ostream() << " %" << id_name(op.result_type.value());
+
         switch (op.kind) {
             case OpKind::Capability: ostream() << " " << capability::name(op.operands[0]); break;
             case OpKind::ExtInstImport: ostream() << " " << ext_inst::name(op.operands[0]); break;
@@ -228,8 +235,9 @@ private:
                 ostream() << " %" << id_name(op.operands[1]);
                 break;
             case OpKind::Variable:
-                if (op.result_type.has_value()) ostream() << " " << storage_class::name(op.operands[0]);
-                if (op.operands.size() > 1) ostream() << " %" << id_name(op.operands[1]);
+                ostream() << " " << storage_class::name(op.operands[0]);
+                if (op.operands.size() > 1) // optional initializer
+                    ostream() << " %" << id_name(op.operands[1]);
                 break;
             case OpKind::TypeInt:
                 ostream() << " " << op.operands[0]; // width
@@ -442,14 +450,10 @@ Word Emitter::convert(const Def* type) {
                 // for access later
                 Word var_id           = next_id();
                 interface_vars_[type] = var_id;
+                std::cerr << "Stored interface_vars_[" << type << "] = " << var_id << "\n";
 
                 // emit var
-                declarations.emplace_back(Op{
-                    OpKind::Variable,
-                    {id, __storage_class},
-                    var_id,
-                    {}
-                });
+                declarations.emplace_back(Op{OpKind::Variable, {__storage_class}, var_id, id});
                 // TODO: better name (take from builtin or if possible annex)
                 id_names[var_id] = std::format("var_{}", id_name(_wrapped_type));
 
@@ -541,21 +545,34 @@ Word Emitter::prepare() {
     if (Axm::isa<mem::M>(var->type())) {
         // do nothing
     } else if (auto sigma = var->type()->isa<Sigma>()) {
-        for (auto param : sigma->ops().rsubspan(1)) {
-            if (Axm::isa<mem::M>(param)) continue;
+        std::cerr << "Sigma has " << sigma->num_ops() << " ops total\n";
+        std::cerr << "Processing all ops\n";
+        int idx = 0;
+        for (auto param : sigma->ops()) {
+            std::cerr << "  [" << idx++ << "] param: " << param << "\n";
+
+            if (Axm::isa<mem::M>(param)) {
+                std::cerr << "    -> is mem::M, skipping\n";
+                continue;
+            }
 
             // try to get execution model from used builtins
             // if builtins from different ones are mixed, throw error
-            std::cerr << "param: " << param << "\n";
             if (auto global = Axm::isa<spirv::Global>(param)) {
-                convert(global);
-                interfaces.push_back(interface_vars_[global]);
+                std::cerr << "    -> is Global, converting and adding to interfaces\n";
+                convert(param);
+                auto var_id = interface_vars_[param];
+                std::cerr << "    -> Looking up interface_vars_[" << param << "] = " << var_id << "\n";
+                interfaces.push_back(var_id);
+                std::cerr << "    -> Pushed " << var_id << " to interfaces, size now: " << interfaces.size() << "\n";
                 auto builtin_model = isa_builtin(var->type());
                 if (!model.has_value()) {
                     model = builtin_model;
                 } else if (builtin_model.has_value()) {
                     if (*model != *builtin_model) error("mixed builtins from different execution model encountered");
                 }
+            } else {
+                std::cerr << "    -> NOT a Global, skipping\n";
             }
         }
     }
@@ -592,10 +609,13 @@ Word Emitter::prepare() {
             entry.operands.push_back(word);
 
         // append interfacing globals
-        for (Word word : interfaces)
+        for (Word word : interfaces) {
             entry.operands.push_back(word);
+            std::cerr << "Appending interface var " << word << " (name: " << id_name(word) << ")\n";
+        }
 
         std::cerr << "interfaces: " << interfaces.size() << "\n";
+        std::cerr << "Entry point operands size: " << entry.operands.size() << "\n";
 
         entryPoints.push_back(entry);
     }

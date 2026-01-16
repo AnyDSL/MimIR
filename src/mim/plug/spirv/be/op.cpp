@@ -16,8 +16,8 @@ std::vector<Word> string_to_words(std::string_view string) {
             word = 0;
         }
     }
-    // ensure null termination character '0' exists
-    if (index == 0) out.push_back(0);
+    // push the last partially filled word (if any) or add null terminator word
+    out.push_back(word);
     return out;
 }
 
