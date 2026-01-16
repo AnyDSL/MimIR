@@ -167,7 +167,7 @@ public:
 private:
     // Converts a type into a spirv type referenced by the
     // returned id.
-    Word convert(const Def* type);
+    Word convert(const Def* type, std::string_view name = "");
     Word convert_ret_pi(const Pi* type);
     void emit_decoration(Word var_id, const Def* decoration_);
 
@@ -308,7 +308,7 @@ private:
     DefMap<Word> interface_vars_{};
 };
 
-Word Emitter::convert(const Def* type) {
+Word Emitter::convert(const Def* type, std::string_view name) {
     std::cerr << "converting: " << type << "\n";
 
     // check if already converted
@@ -454,8 +454,11 @@ Word Emitter::convert(const Def* type) {
 
                 // emit var
                 declarations.emplace_back(Op{OpKind::Variable, {__storage_class}, var_id, id});
-                // TODO: better name (take from builtin or if possible annex)
-                id_names[var_id] = std::format("var_{}", id_name(_wrapped_type));
+                // Use provided name if available, otherwise fall back to type name
+                if (!name.empty())
+                    id_names[var_id] = std::format("var_{}", name);
+                else
+                    id_names[var_id] = std::format("var_{}", id_name(_wrapped_type));
 
                 // TODO: emit decorations
                 if (auto sigma = decorations->isa<Sigma>())
@@ -547,20 +550,32 @@ Word Emitter::prepare() {
     } else if (auto sigma = var->type()->isa<Sigma>()) {
         std::cerr << "Sigma has " << sigma->num_ops() << " ops total\n";
         std::cerr << "Processing all ops\n";
-        int idx = 0;
-        for (auto param : sigma->ops()) {
-            std::cerr << "  [" << idx++ << "] param: " << param << "\n";
+        for (size_t idx = 0; idx < sigma->num_ops(); ++idx) {
+            auto param = sigma->op(idx);
+            std::cerr << "  [" << idx << "] param: " << param << "\n";
 
             if (Axm::isa<mem::M>(param)) {
                 std::cerr << "    -> is mem::M, skipping\n";
                 continue;
             }
 
+            // Try to get parameter name from the projection
+            std::string param_name;
+            try {
+                auto proj = var->proj(sigma->num_ops(), idx);
+                if (proj) {
+                    param_name = proj->unique_name();
+                    std::cerr << "    -> extracted param name: " << param_name << "\n";
+                }
+            } catch (...) {
+                // If projection fails, we'll use empty name
+            }
+
             // try to get execution model from used builtins
             // if builtins from different ones are mixed, throw error
             if (auto global = Axm::isa<spirv::Global>(param)) {
                 std::cerr << "    -> is Global, converting and adding to interfaces\n";
-                convert(param);
+                convert(param, param_name);
                 auto var_id = interface_vars_[param];
                 std::cerr << "    -> Looking up interface_vars_[" << param << "] = " << var_id << "\n";
                 interfaces.push_back(var_id);
