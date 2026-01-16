@@ -14,8 +14,10 @@ import refly;
 
 /// ## Execution Models
 ///
-axm %spirv.Model: □;
+axm %spirv.Model: ★;
 axm %spirv.model(Fragment, Vertex, Compute): %spirv.Model;
+
+axm %spirv.entry: %spirv.Model → ★;
 
 /// ## Decorations
 ///

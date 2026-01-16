@@ -54,6 +54,7 @@ const Def* isa_kept(const Def* type) {
 
     if (Axm::isa<mem::M>(type)) return world.sigma();
     if (Axm::isa<spirv::Global>(type)) return world.sigma();
+    if (Axm::isa<spirv::entry>(type)) return world.sigma();
     return type;
 }
 
@@ -395,7 +396,9 @@ Word Emitter::convert(const Def* type, std::string_view name) {
             // we don't want to convert
             if (auto sigma = doms->isa<Sigma>())
                 for (auto dom : sigma->ops().rsubspan(1)) {
-                    std::cerr << "dom: " << pi->dom() << "\n";
+                    if (Axm::isa<mem::M>(dom)) continue;
+                    if (Axm::isa<spirv::entry>(dom)) continue; // Skip entry markers
+                    std::cerr << "dom: " << dom << "\n";
                     op.operands.emplace_back(convert(dom));
                 }
         }
@@ -408,6 +411,7 @@ Word Emitter::convert(const Def* type, std::string_view name) {
         std::vector<Word> fields{};
         for (auto t : sigma->ops()) {
             if (Axm::isa<mem::M>(t)) continue;
+            if (Axm::isa<spirv::entry>(t)) continue; // Skip entry markers
             if (Axm::isa<spirv::Global>(t)) {
                 convert(t);
                 continue;
@@ -477,7 +481,7 @@ Word Emitter::convert(const Def* type, std::string_view name) {
 }
 
 Word Emitter::convert_ret_pi(const Pi* pi) {
-    auto dom = mem::strip_mem_ty(pi->dom());
+    auto dom = strip_type(pi->dom());
     std::cerr << "ret pi dom: " << dom << "\n";
     return convert(dom);
 }
@@ -510,7 +514,7 @@ void Emitter::emit_decoration(Word var_id, const Def* decoration_) {
 
 std::optional<spirv::model> isa_builtin(const Def* type) {
     if (auto global = Axm::isa<spirv::Global>(type)) {
-        auto decorations = global->arg(2);
+        auto [storage_class, n, decorations, wrapped_type] = global->uncurry_args<4>();
         for (auto decoration : decorations->ops()) {
             if (auto builtin = Axm::isa<spirv::decor>(decoration)) {
                 if (builtin.id() == spirv::decor::builtin) {
@@ -548,46 +552,53 @@ Word Emitter::prepare() {
     if (Axm::isa<mem::M>(var->type())) {
         // do nothing
     } else if (auto sigma = var->type()->isa<Sigma>()) {
-        std::cerr << "Sigma has " << sigma->num_ops() << " ops total\n";
-        std::cerr << "Processing all ops\n";
         for (size_t idx = 0; idx < sigma->num_ops(); ++idx) {
             auto param = sigma->op(idx);
-            std::cerr << "  [" << idx << "] param: " << param << "\n";
 
-            if (Axm::isa<mem::M>(param)) {
-                std::cerr << "    -> is mem::M, skipping\n";
+            if (Axm::isa<mem::M>(param)) continue;
+
+            // Check if this is an execution model marker
+            if (auto entry_marker = Axm::isa<spirv::entry>(param)) {
+                if (model.has_value()) {
+                    std::cerr << "Error: multiple execution model markers found in entry point\n";
+                    fe::unreachable();
+                }
+                // Extract the model from the entry marker argument
+                auto model_arg = entry_marker->arg();
+                if (auto model_marker = Axm::isa<spirv::model>(model_arg)) {
+                    model = model_marker.id();
+                } else {
+                    std::cerr << "Error: entry marker does not contain a valid execution model\n";
+                    fe::unreachable();
+                }
                 continue;
             }
 
-            // Try to get parameter name from the projection
+            // Extract parameter name from projection
             std::string param_name;
             try {
                 auto proj = var->proj(sigma->num_ops(), idx);
-                if (proj) {
-                    param_name = proj->unique_name();
-                    std::cerr << "    -> extracted param name: " << param_name << "\n";
-                }
+                if (proj) param_name = proj->unique_name();
             } catch (...) {
-                // If projection fails, we'll use empty name
+                // If projection fails, use empty name
             }
 
-            // try to get execution model from used builtins
-            // if builtins from different ones are mixed, throw error
+            // Process global interface variables
             if (auto global = Axm::isa<spirv::Global>(param)) {
-                std::cerr << "    -> is Global, converting and adding to interfaces\n";
                 convert(param, param_name);
                 auto var_id = interface_vars_[param];
-                std::cerr << "    -> Looking up interface_vars_[" << param << "] = " << var_id << "\n";
                 interfaces.push_back(var_id);
-                std::cerr << "    -> Pushed " << var_id << " to interfaces, size now: " << interfaces.size() << "\n";
-                auto builtin_model = isa_builtin(var->type());
-                if (!model.has_value()) {
-                    model = builtin_model;
-                } else if (builtin_model.has_value()) {
-                    if (*model != *builtin_model) error("mixed builtins from different execution model encountered");
+
+                // Validate that builtins align with the specified model
+                auto builtin_model = isa_builtin(param);
+                if (model.has_value() && builtin_model.has_value()) {
+                    if (*model != *builtin_model) {
+                        std::cerr << std::format(
+                            "Error: builtin from execution model {} does not match specified model {}\n",
+                            static_cast<int>(*builtin_model), static_cast<int>(*model));
+                        fe::unreachable();
+                    }
                 }
-            } else {
-                std::cerr << "    -> NOT a Global, skipping\n";
             }
         }
     }
