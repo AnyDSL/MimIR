@@ -8,7 +8,7 @@ namespace mim::plug::matrix {
 /// Resolves lowering of high level operations into medium/other high-level operations.
 /// Some of these transformations could be done as normalizer.
 /// We rewrite matrix operations like sum, transpose, and product into `map_reduce` operations.
-/// The corresponding `map_reduce` operation is looked up as `internal_mapRed_matrix_[name]`.
+/// The corresponding `map_reduce` operations are annexes in the `matrix` plugin.
 
 class LowerMatrixHighLevelMapRed : public RWPass<LowerMatrixHighLevelMapRed, Lam> {
 public:

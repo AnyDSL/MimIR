@@ -103,6 +103,7 @@ private:
 /// This Phase will recursively Rewriter::rewrite
 /// 1. all (old) World::annexes() (during which RWPhase::is_bootstrapping is `true`), and then
 /// 2. all (old) World::externals() (during which RWPhase::is_bootstrapping is `false`).
+/// All rewrites that refer to another annex have to be skipped during bootstrapping.
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
 public:
@@ -118,6 +119,8 @@ public:
         , analysis_(analysis) {}
     ///@}
 
+    /// Returns whether we are currently bootstrapping (rewriting annexes).
+    /// While bootstrapping, you have to skip rewrites that refer to other annexes, as they might not yet be available.
     bool is_bootstrapping() const { return bootstrapping_; }
 
     /// You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.

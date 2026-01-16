@@ -143,7 +143,7 @@ axm %matrix.map_reduce:
 /// ### product
 ///
 /// Follow the principle `ij <- ik, kj` (`out[i, j] = sum_k in1[i, k] * in2[k, j]`) by using mulplication as combination function and addition as reduction function.
-fun extern internal_mapRed_matrix_prod(m k l: Nat, pe: «2; Nat»)
+fun %matrix.mapRed_prod(m k l: Nat, pe: «2; Nat»)
                                       (mem: %mem.M 0, M: %matrix.Mat (2, (m, k), %math.F pe),
                                                     N: %matrix.Mat (2, (k, l), %math.F pe))@tt
                                     : [     %mem.M 0,    %matrix.Mat (2, (m, l), %math.F pe)] =
@@ -174,7 +174,7 @@ fun extern internal_mapRed_matrix_prod(m k l: Nat, pe: «2; Nat»)
 /// Transpose a matrix by iterating the indices in swapped order.
 // TODO: check code for 1-matrix edge case
 // TODO: would this automatically be handled by read(transpose) ?
-fun extern internal_mapRed_matrix_transpose((k l: Nat), T: *)
+fun %matrix.mapRed_transpose((k l: Nat), T: *)
                                            (mem: %mem.M 0, M: %matrix.Mat (2, (k, l), T))@tt
                                          : [     %mem.M 0,    %matrix.Mat (2, (l, k), T)] =
     let zero = ⊥:T; // TODO: use generalized zero
@@ -199,7 +199,7 @@ fun extern internal_mapRed_matrix_transpose((k l: Nat), T: *)
 ///
 /// Sums up all elements of a matrix and returns a scalar.
 //  TODO: test 0d matrix (edge cases in code)
-fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
+fun %matrix.mapRed_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
                                      (mem: %mem.M 0, M: %matrix.Mat (n, S, %math.F pe))@tt
                                    : [%mem.M 0, %math.F pe] =
     let R = %math.F pe;
@@ -233,7 +233,6 @@ fun extern internal_mapRed_matrix_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)
 axm %matrix.lower_matrix_high_level_map_reduce: %compile.Pass;
 axm %matrix.lower_matrix_medium_level:          %compile.Pass;
 
-let %matrix.internal_map_reduce_cleanup = %compile.prefix_cleanup_phase "internal_mapRed_";
 ///
 /// ### Phases
 ///
@@ -247,6 +246,5 @@ let matrix_lower_phase =
                 %matrix.lower_matrix_medium_level,
             )
         ),
-        %matrix.internal_map_reduce_cleanup,
         %matrix.lower_matrix_low_level
     );
