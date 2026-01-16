@@ -91,6 +91,43 @@ std::string name(int control) {
 }
 } // namespace function_control
 
+namespace storage_class {
+std::string name(int storage_class) {
+    switch (storage_class) {
+        case Input: return "Input"s;
+        case Uniform: return "Uniform"s;
+        case Output: return "Output"s;
+        default: fe::unreachable();
+    }
+}
+} // namespace storage_class
+
+namespace decoration {
+std::string name(int decoration) {
+    switch (decoration) {
+        case Block: return "Block"s;
+        case BuiltIn: return "BuiltIn"s;
+        case Location: return "Location"s;
+        default: fe::unreachable();
+    }
+}
+} // namespace decoration
+
+namespace builtin {
+std::string name(int builtin) {
+    switch (builtin) {
+        case Position: return "Position"s;
+        case PointSize: return "PointSize"s;
+        case VertexId: return "VertexId"s;
+        case InstanceId: return "InstanceId"s;
+        case VertexIndex: return "VertexIndex"s;
+        case InstanceIndex: return "InstanceIndex"s;
+        case FragCoord: return "FragCoord"s;
+        default: return std::to_string(builtin);
+    }
+}
+} // namespace builtin
+
 namespace ext_inst {
 std::string name(int set) {
     switch (set) {
