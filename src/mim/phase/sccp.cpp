@@ -28,7 +28,7 @@ Def* SCCP::Analysis::rewrite_mut(Def* mut) {
         if (mut->isa<Lam>())
             for (auto var : mut->tvars()) {
                 map(var, var);
-                join(var, var);
+                lattice_[var] = var;
             }
     }
 
