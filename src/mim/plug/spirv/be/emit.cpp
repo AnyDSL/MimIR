@@ -223,6 +223,42 @@ private:
                         ostream() << " " << op.operands[i];
                 }
                 break;
+            case OpKind::TypePointer:
+                ostream() << " " << storage_class::name(op.operands[0]);
+                ostream() << " %" << id_name(op.operands[1]);
+                break;
+            case OpKind::Variable:
+                if (op.result_type.has_value()) ostream() << " " << storage_class::name(op.operands[0]);
+                if (op.operands.size() > 1) ostream() << " %" << id_name(op.operands[1]);
+                break;
+            case OpKind::TypeInt:
+                ostream() << " " << op.operands[0]; // width
+                ostream() << " " << (op.operands[1] ? "Signed" : "Unsigned");
+                break;
+            case OpKind::TypeFloat:
+                ostream() << " " << op.operands[0]; // width
+                break;
+            case OpKind::TypeVector:
+                ostream() << " %" << id_name(op.operands[0]); // component type
+                ostream() << " " << op.operands[1];           // component count
+                break;
+            case OpKind::TypeArray:
+                ostream() << " %" << id_name(op.operands[0]); // element type
+                ostream() << " %" << id_name(op.operands[1]); // length (constant)
+                break;
+            case OpKind::TypeStruct:
+            case OpKind::TypeFunction:
+            case OpKind::ConstantComposite:
+            case OpKind::CompositeConstruct:
+                // All member/parameter/constituent types/values
+                for (Word operand : op.operands)
+                    ostream() << " %" << id_name(operand);
+                break;
+            case OpKind::FunctionParameter:
+            case OpKind::FunctionEnd:
+            case OpKind::TypeVoid:
+                // No operands
+                break;
             default:
                 for (Word operand : op.operands)
                     ostream() << " %" << id_name(operand);
