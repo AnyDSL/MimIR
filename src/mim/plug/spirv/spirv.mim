@@ -22,7 +22,7 @@ axm %spirv.model(Fragment, Vertex, Compute): %spirv.Model;
 axm %spirv.Decoration: ★;
 
 axm %spirv.decorc(block): %spirv.Decoration;
-axm %spirv.decor(builtin): %spirv.Model → {n: Nat} → «n; I8» → %spirv.Decoration;
+axm %spirv.decor(builtin): %spirv.Model → Nat → %spirv.Decoration;
 axm %spirv.decor(location): Nat → %spirv.Decoration;
 
 /// ## Storage Classes
@@ -63,15 +63,15 @@ axm %spirv.store: {class: %spirv.storage.Class}
 /// ## Builtins
 ///
 let %spirv.fragment.frag_coord
-    = %spirv.Input (%spirv.decor.builtin %spirv.model.Fragment "FragCoord") «2; %math.F32»;
+    = %spirv.Input (%spirv.decor.builtin %spirv.model.Fragment 15) «2; %math.F32»;
 
 let %spirv.vertex.vertex_index
-    = %spirv.Input  (%spirv.decor.builtin %spirv.model.Vertex "VertexIndex"  ) (Idx 3);
+    = %spirv.Input  (%spirv.decor.builtin %spirv.model.Vertex 42) (Idx 3);
 let %spirv.vertex.instance_index
-    = %spirv.Input  (%spirv.decor.builtin %spirv.model.Vertex "InstanceIndex") Nat;
+    = %spirv.Input  (%spirv.decor.builtin %spirv.model.Vertex 43) Nat;
 let %spirv.vertex.vertex_id
-    = %spirv.Input  (%spirv.decor.builtin %spirv.model.Vertex "VertexId"     ) Nat;
+    = %spirv.Input  (%spirv.decor.builtin %spirv.model.Vertex  5) Nat;
 let %spirv.vertex.instance_id
-    = %spirv.Input  (%spirv.decor.builtin %spirv.model.Vertex "InstanceId"   ) Nat;
+    = %spirv.Input  (%spirv.decor.builtin %spirv.model.Vertex  6) Nat;
 let %spirv.vertex.position
-    = %spirv.Output (%spirv.decor.builtin %spirv.model.Vertex "Position"     ) «4; %math.F32»;
+    = %spirv.Output (%spirv.decor.builtin %spirv.model.Vertex  0) «4; %math.F32»;

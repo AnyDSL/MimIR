@@ -66,6 +66,40 @@ enum FunctionControl {
 std::string name(int control);
 } // namespace function_control
 
+namespace storage_class {
+enum StorageClass {
+    Input   = 1,
+    Uniform = 2,
+    Output  = 3,
+};
+
+std::string name(int storage_class);
+} // namespace storage_class
+
+namespace decoration {
+enum Decoration {
+    Block    = 2,
+    BuiltIn  = 11,
+    Location = 30,
+};
+
+std::string name(int decoration);
+} // namespace decoration
+
+namespace builtin {
+enum BuiltIn {
+    Position      = 0,
+    PointSize     = 1,
+    VertexId      = 5,
+    InstanceId    = 6,
+    VertexIndex   = 42,
+    InstanceIndex = 43,
+    FragCoord     = 15,
+};
+
+std::string name(int builtin);
+} // namespace builtin
+
 namespace ext_inst {
 enum ExtInstSet {
     GLSLstd450 = 1,
@@ -81,7 +115,7 @@ enum class OpKind {
     MemoryModel,
     EntryPoint,
     ExecutionMode,
-    Decoration,
+    Decorate,
     Decl,
     Function,
     FunctionParameter,
@@ -119,7 +153,7 @@ struct Op {
             case OpKind::MemoryModel: return "OpMemoryModel";
             case OpKind::EntryPoint: return "OpEntryPoint";
             case OpKind::ExecutionMode: return "OpExecutionMode";
-            case OpKind::Decoration: return "OpDecoration";
+            case OpKind::Decorate: return "OpDecorate";
             case OpKind::Decl: return "OpDecl";
             case OpKind::Function: return "OpFuntion";
             case OpKind::FunctionParameter: return "OpFunctionParameter";
