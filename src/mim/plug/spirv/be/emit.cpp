@@ -386,8 +386,8 @@ Word Emitter::convert(const Def* type) {
                 Word __storage_class;
                 switch (_storage_class.id()) {
                     case spirv::storage::INPUT: __storage_class = 1; break;
-                    case spirv::storage::OUTPUT: __storage_class = 2; break;
-                    case spirv::storage::UNIFORM: __storage_class = 3; break;
+                    case spirv::storage::UNIFORM: __storage_class = 2; break;
+                    case spirv::storage::OUTPUT: __storage_class = 3; break;
                     default: fe::unreachable();
                 }
                 Word _wrapped_type = convert(wrapped_type);
