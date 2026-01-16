@@ -3,7 +3,7 @@
 #include <deque>
 #include <fstream>
 #include <iomanip>
-#include <ostream>
+#include <iostream>
 #include <ranges>
 #include <sstream>
 
@@ -204,9 +204,12 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
             print(s, "{}:{}", lit->get(), convert(lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
-        u64 size    = 0;
-        if (auto arity = Lit::isa(arr->arity())) size = *arity;
-        print(s, "<<{}; {}>>", size, t_elem);
+        if (auto arity = Lit::isa(arr->arity())) {
+            u64 size = *arity;
+            print(s, "<<{}; {}>>", size, t_elem);
+        } else {
+            print(s, "<<{}; {}>>", emit_unsafe(arr->arity()), t_elem);
+        }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))
             s << "Cn " << convert(pi->dom());
@@ -262,8 +265,8 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
 void Emitter::start() {
     Super::start();
 
-    for (auto name : world().driver().imports().syms())
-        print(ostream(), "{} {};\n", world().driver().is_loaded(name) ? "plugin" : "import", name);
+    for (auto import : world().driver().imports().syms())
+        print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
 
     for (auto&& decl : decls_)
         ostream() << decl << '\n';
@@ -286,7 +289,9 @@ void Emitter::emit_imported(Lam* lam) {
 
 void Emitter::emit_con(Lam* lam) {
     // print(std::cout, "emit_con: {}\n", lam->unique_name());
-    tab.print(func_impls_, "con {}{} [", external(lam), id(lam));
+    
+    const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
+    tab.print(func_impls_, "{} {}{} [", lam_kind, external(lam), id(lam));
 
     if (lam->has_var()) {
         auto vars  = lam->vars();
@@ -307,14 +312,13 @@ void Emitter::emit_con(Lam* lam) {
 
 std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
+    auto v_arg = emit_unsafe(app.arg());
     if (auto app_callee = app.callee()->isa<App>()) {
         auto v_callee = emit_curried_app(*app_callee);
-        auto v_arg    = emit_unsafe(app.arg());
 
         print(os, "{} {}", v_callee, v_arg);
     } else {
         auto v_callee = emit_unsafe(app.callee());
-        auto v_arg    = emit_unsafe(app.arg());
         print(os, "{} {}", v_callee, v_arg);
     }
     return os.str();
@@ -387,6 +391,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         else
             print(os, "{}", lit);
         return os.str();
+    } else if (def->type()->isa<Nat>()) {
+        print(os, "{}", def->unique_name());
+        return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
         os << "(";
         for (auto sep = ""; auto e : tuple->ops()) {
@@ -403,12 +410,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(id(seq), "<<{}; {}>>", arity, body);
     } else if (auto extract = def->isa<Extract>()) {
-        auto tuple = extract->tuple();
-        auto index = extract->index();
+        auto tuple     = extract->tuple();
+        auto index     = extract->index();
 
-        if (auto lit = Lit::isa(index)) return id(extract);
+        // need to emit the tuple even if we're just using the id!
+        auto tuple_str = emit_unsafe(tuple);
+        if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) return id(extract);
 
-        return bb.assign(id(extract), "{}#{}", emit_unsafe(tuple), emit_unsafe(index));
+        return bb.assign(id(extract), "{}#{}", tuple_str, emit_unsafe(index));
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = insert->tuple();
         auto index = insert->index();
