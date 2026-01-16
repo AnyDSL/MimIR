@@ -1,5 +1,6 @@
 var NAVTREEINDEX24 =
 {
+"structmim_1_1Error_1_1Msg.html#a48557b999065c7db3a7f8bddde75f0fc":[3,0,1,26,0,3],
 "structmim_1_1Error_1_1Msg.html#a48557b999065c7db3a7f8bddde75f0fc":[5,0,1,24,0,3],
 "structmim_1_1Error_1_1Msg.html#a9278f83e1385aa9acba822087457aaec":[3,0,1,26,0,0],
 "structmim_1_1Error_1_1Msg.html#a9278f83e1385aa9acba822087457aaec":[5,0,1,24,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX24 =
 "types_8h.html#af92a48651ac55f7fcab83b852481d5ed":[6,0,2,1,5,10,1],
 "types_8h.html#afd47c6d93599df8b73cfaa484a1a9d95":[6,0,2,1,5,10,7],
 "types_8h_source.html":[6,0,2,1,5,10],
-"usergroup0.html":[1],
-"usergroup1.html":[2]
+"usergroup0.html":[1]
 };

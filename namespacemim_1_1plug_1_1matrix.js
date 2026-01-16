@@ -6,11 +6,13 @@ var namespacemim_1_1plug_1_1matrix =
     [ "constMat", "namespacemim_1_1plug_1_1matrix.html#a11b9674b35894ca4f3605791d4783b74", null ],
     [ "init", "namespacemim_1_1plug_1_1matrix.html#af3d33c72062b1db8a1b997ec650a8f3d", null ],
     [ "insert", "namespacemim_1_1plug_1_1matrix.html#a43f6250da3d2391f05e4a545540a2f38", null ],
-    [ "internal_map_reduce_cleanup", "namespacemim_1_1plug_1_1matrix.html#a0943b82dc41b6820008e7a6936b08adc", null ],
     [ "lower_matrix_high_level_map_reduce", "namespacemim_1_1plug_1_1matrix.html#a26667b55e4b1b958050cfe9ecbf327fd", null ],
     [ "lower_matrix_low_level", "namespacemim_1_1plug_1_1matrix.html#ae3f0ab7b8527477c358984c01ddbd94c", null ],
     [ "lower_matrix_medium_level", "namespacemim_1_1plug_1_1matrix.html#af206cc10642f27ab0e14c586d512f3d6", null ],
     [ "map_reduce", "namespacemim_1_1plug_1_1matrix.html#a66955a2552e5d88d664a8212aedfe40d", null ],
+    [ "mapRed_prod", "namespacemim_1_1plug_1_1matrix.html#aca1703a7f3112b4a04835434362c12a7", null ],
+    [ "mapRed_sum", "namespacemim_1_1plug_1_1matrix.html#aed9dd1e1eb04afbbbe78ac969663cf80", null ],
+    [ "mapRed_transpose", "namespacemim_1_1plug_1_1matrix.html#a36565709b5af1a534d625e8c8443da7c", null ],
     [ "Mat", "namespacemim_1_1plug_1_1matrix.html#af6839dbbb5d2ef291479523aafd649d4", null ],
     [ "prod", "namespacemim_1_1plug_1_1matrix.html#a83d01fd34deff3e8ddae753c596038fc", null ],
     [ "read", "namespacemim_1_1plug_1_1matrix.html#ad88476eb54b27ecc6ea9b6656c378f01", null ],
@@ -28,6 +30,5 @@ var namespacemim_1_1plug_1_1matrix =
     [ "op_read", "namespacemim_1_1plug_1_1matrix.html#a44054a55721da5ba91baa9d661a598f0", null ],
     [ "register_normalizers", "namespacemim_1_1plug_1_1matrix.html#a6d735b8748b3f4626e15b3c1b0e64bdd", null ],
     [ "zero_int", "namespacemim_1_1plug_1_1matrix.html#a750e0b32ccf200ae772efbbdc9687e30", null ],
-    [ "internal_prefix", "namespacemim_1_1plug_1_1matrix.html#a78ac1aa3e5173b14494a87fcf982cfb0", null ],
     [ "Plugin_Id", "namespacemim_1_1plug_1_1matrix.html#a16779fcb9eddd2e937cd68822b511231", null ]
 ];

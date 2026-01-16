@@ -231,7 +231,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Resolves lowering of high level operations into medium/other high-level operations. </p>
-<p>Some of these transformations could be done as normalizer. We rewrite matrix operations like sum, transpose, and product into <code><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a66955a2552e5d88d664a8212aedfe40d">map_reduce</a></code> operations. The corresponding <code><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a66955a2552e5d88d664a8212aedfe40d">map_reduce</a></code> operation is looked up as <code>internal_mapRed_matrix_[name]</code>. </p>
+<p>Some of these transformations could be done as normalizer. We rewrite matrix operations like sum, transpose, and product into <code><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a66955a2552e5d88d664a8212aedfe40d">map_reduce</a></code> operations. The corresponding <code><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a66955a2552e5d88d664a8212aedfe40d">map_reduce</a></code> operations are annexes in the <code>matrix</code> plugin. </p>
 
 <p class="definition">Definition at line <a class="el" href="lower__matrix__highlevel_8h_source.html#l00013">13</a> of file <a class="el" href="lower__matrix__highlevel_8h_source.html">lower_matrix_highlevel.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -296,9 +296,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Pass.html#ac54f62d3cb72b9ed5aab224122b84450">mim::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00035">35</a> of file <a class="el" href="lower__matrix__highlevel_8cpp_source.html">lower_matrix_highlevel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00038">38</a> of file <a class="el" href="lower__matrix__highlevel_8cpp_source.html">lower_matrix_highlevel.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00042">rewrite_()</a>.</p>
+<p class="reference">References <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00045">rewrite_()</a>.</p>
 
 </div>
 </div>
@@ -317,11 +317,11 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00042">42</a> of file <a class="el" href="lower__matrix__highlevel_8cpp_source.html">lower_matrix_highlevel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00045">45</a> of file <a class="el" href="lower__matrix__highlevel_8cpp_source.html">lower_matrix_highlevel.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="world_8cpp_source.html#l00201">mim::World::app()</a>, <a class="el" href="log_8h_source.html#l00095">DLOG</a>, <a class="el" href="world_8h_source.html#l00236">mim::World::externals()</a>, <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="def_8h_source.html#l00826">mim::Lit::isa()</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="direct_8h_source.html#l00016">mim::plug::direct::op_cps2ds_dep()</a>, <a class="el" href="world_8cpp_source.html#l00090">mim::World::sym()</a>, <a class="el" href="def_8cpp_source.html#l00446">mim::Def::type()</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00035">rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00038">rewrite()</a>.</p>
 
 </div>
 </div>

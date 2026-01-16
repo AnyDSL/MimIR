@@ -169,15 +169,21 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%matrix.sum</div></td></tr>
 <tr class="memitem:a6c2b2ed70d211b556dfd52f59e9d827b" id="r_a6c2b2ed70d211b556dfd52f59e9d827b"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a6c2b2ed70d211b556dfd52f59e9d827b">mim::plug::matrix::sum</a> : flags_t </td></tr>
 <tr class="separator:a6c2b2ed70d211b556dfd52f59e9d827b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%matrix.mapRed_prod</div></td></tr>
+<tr class="memitem:aca1703a7f3112b4a04835434362c12a7" id="r_aca1703a7f3112b4a04835434362c12a7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#aca1703a7f3112b4a04835434362c12a7">mim::plug::matrix::mapRed_prod</a> : flags_t </td></tr>
+<tr class="separator:aca1703a7f3112b4a04835434362c12a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%matrix.mapRed_transpose</div></td></tr>
+<tr class="memitem:a36565709b5af1a534d625e8c8443da7c" id="r_a36565709b5af1a534d625e8c8443da7c"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a36565709b5af1a534d625e8c8443da7c">mim::plug::matrix::mapRed_transpose</a> : flags_t </td></tr>
+<tr class="separator:a36565709b5af1a534d625e8c8443da7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%matrix.mapRed_sum</div></td></tr>
+<tr class="memitem:aed9dd1e1eb04afbbbe78ac969663cf80" id="r_aed9dd1e1eb04afbbbe78ac969663cf80"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#aed9dd1e1eb04afbbbe78ac969663cf80">mim::plug::matrix::mapRed_sum</a> : flags_t </td></tr>
+<tr class="separator:aed9dd1e1eb04afbbbe78ac969663cf80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%matrix.lower_matrix_high_level_map_reduce</div></td></tr>
 <tr class="memitem:a26667b55e4b1b958050cfe9ecbf327fd" id="r_a26667b55e4b1b958050cfe9ecbf327fd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a26667b55e4b1b958050cfe9ecbf327fd">mim::plug::matrix::lower_matrix_high_level_map_reduce</a> : flags_t </td></tr>
 <tr class="separator:a26667b55e4b1b958050cfe9ecbf327fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%matrix.lower_matrix_medium_level</div></td></tr>
 <tr class="memitem:af206cc10642f27ab0e14c586d512f3d6" id="r_af206cc10642f27ab0e14c586d512f3d6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#af206cc10642f27ab0e14c586d512f3d6">mim::plug::matrix::lower_matrix_medium_level</a> : flags_t </td></tr>
 <tr class="separator:af206cc10642f27ab0e14c586d512f3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">%matrix.internal_map_reduce_cleanup</div></td></tr>
-<tr class="memitem:a0943b82dc41b6820008e7a6936b08adc" id="r_a0943b82dc41b6820008e7a6936b08adc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#a0943b82dc41b6820008e7a6936b08adc">mim::plug::matrix::internal_map_reduce_cleanup</a> : flags_t </td></tr>
-<tr class="separator:a0943b82dc41b6820008e7a6936b08adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%matrix.lower_matrix_low_level</div></td></tr>
 <tr class="memitem:ae3f0ab7b8527477c358984c01ddbd94c" id="r_ae3f0ab7b8527477c358984c01ddbd94c"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1matrix.html#ae3f0ab7b8527477c358984c01ddbd94c">mim::plug::matrix::lower_matrix_low_level</a> : flags_t </td></tr>
 <tr class="separator:ae3f0ab7b8527477c358984c01ddbd94c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -253,7 +259,7 @@ Variables</h2></td></tr>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;map_reduce&gt;)] = &amp;normalize_map_reduce; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="matrix_2autogen_8h_source.html#l00118">118</a> of file <a class="el" href="matrix_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_2autogen_8h_source.html#l00132">132</a> of file <a class="el" href="matrix_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
