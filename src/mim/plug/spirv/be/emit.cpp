@@ -166,6 +166,7 @@ private:
     // returned id.
     Word convert(const Def* type);
     Word convert_ret_pi(const Pi* type);
+    void emit_decoration(Word var_id, const Def* decoration_);
 
     // Returns a new unique id. To make ids as low as possible, as
     // recommended by the spirv spec, they are counted up instead of
@@ -209,6 +210,18 @@ private:
                 ostream() << " %" << id_name(op.operands[0]);
                 ostream() << " " << function_control::name(op.operands[1]);
                 ostream() << " %" << id_name(op.operands[2]);
+                break;
+            case OpKind::Decorate:
+                ostream() << " %" << id_name(op.operands[0]);
+                ostream() << " " << decoration::name(op.operands[1]);
+                if (op.operands[1] == decoration::BuiltIn && op.operands.size() > 2) {
+                    ostream() << " " << builtin::name(op.operands[2]);
+                    for (size_t i = 3; i < op.operands.size(); ++i)
+                        ostream() << " " << op.operands[i];
+                } else {
+                    for (size_t i = 2; i < op.operands.size(); ++i)
+                        ostream() << " " << op.operands[i];
+                }
                 break;
             default:
                 for (Word operand : op.operands)
@@ -387,7 +400,7 @@ Word Emitter::convert(const Def* type) {
                     {}
                 });
                 // TODO: better name (add storage class to it)
-                id_names[id] = std::format("ptr_{}", id_name(_wrapped_type));
+                id_names[id] = std::format("ptr_{}_{}", id_name(_wrapped_type), storage_class::name(__storage_class));
 
                 // store global interface variable in map
                 // for access later
@@ -405,6 +418,11 @@ Word Emitter::convert(const Def* type) {
                 id_names[var_id] = std::format("var_{}", id_name(_wrapped_type));
 
                 // TODO: emit decorations
+                if (auto sigma = decorations->isa<Sigma>())
+                    for (auto decoration : decorations->ops())
+                        emit_decoration(var_id, decoration);
+                else
+                    emit_decoration(var_id, decorations);
             }
         }
     }
@@ -419,6 +437,32 @@ Word Emitter::convert_ret_pi(const Pi* pi) {
     auto dom = mem::strip_mem_ty(pi->dom());
     std::cerr << "ret pi dom: " << dom << "\n";
     return convert(dom);
+}
+
+void Emitter::emit_decoration(Word var_id, const Def* decoration_) {
+    std::cerr << "decoration: " << decoration_ << "\n";
+    auto decoration = Axm::as<spirv::decor>(decoration_);
+    switch (decoration.id()) {
+        case spirv::decor::builtin: {
+            auto [_model, magic] = decoration->uncurry_args<2>();
+            annotations.emplace_back(Op{
+                OpKind::Decorate,
+                {var_id, decoration::BuiltIn, static_cast<Word>(Lit::as(magic))},
+                {},
+                {},
+            });
+            break;
+        }
+        case spirv::decor::location:
+            auto location = decoration->arg();
+            annotations.emplace_back(Op{
+                OpKind::Decorate,
+                {var_id, decoration::Location, static_cast<Word>(Lit::as(location))},
+                {},
+                {},
+            });
+            break;
+    }
 }
 
 std::optional<spirv::model> isa_builtin(const Def* type) {
