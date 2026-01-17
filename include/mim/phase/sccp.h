@@ -15,7 +15,8 @@ private:
         auto& lattice() { return lattice_; }
 
     private:
-        const Def* join(const Def*, const Def*);
+        const Def* propagate(const Def*, const Def*);
+        const Def* bundle(const Var*);
         Def* rewrite_mut(Def*) final;
         const Def* rewrite_imm_App(const App*) final;
 

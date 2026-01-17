@@ -4,20 +4,7 @@
 
 namespace mim {
 
-const Def* SCCP::Analysis::join(const Def* top, const Def* def) {
-    auto [i, ins] = lattice_.emplace(top, def);
-    if (ins) {
-        todo_ = true;
-        return def;
-    }
-
-    auto cur = i->second;
-    if (def->isa<Bot>() || cur == def || cur == top) return cur;
-
-    todo_ = true;
-    if (cur->isa<Bot>()) return i->second = def;
-    return i->second = top;
-}
+static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->index()); }
 
 Def* SCCP::Analysis::rewrite_mut(Def* mut) {
     map(mut, mut);
@@ -38,18 +25,107 @@ Def* SCCP::Analysis::rewrite_mut(Def* mut) {
     return mut;
 }
 
+const Def* SCCP::Analysis::propagate(const Def* top, const Def* def) {
+    auto [i, ins] = lattice_.emplace(top, def);
+    if (ins) {
+        todo_ = true;
+        return def;
+    }
+
+    auto cur = i->second;
+    if (def->isa<Bot>() || cur == def || cur == top || cur->isa<Proxy>()) return cur;
+
+    todo_ = true;
+    if (cur->isa<Bot>()) return i->second = def;
+    return i->second = nullptr; // we reached top for propagate; nullptr marks this to bundle for GVN
+}
+
 const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
     if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
+        auto& w         = world();
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
         auto abstr_vars = absl::FixedArray<const Def*>(n);
+
+        // propagate
         for (size_t i = 0; i != n; ++i) {
             auto abstr    = rewrite(app->targ(i));
-            abstr_vars[i] = join(lam->tvar(i), abstr);
+            abstr_vars[i] = propagate(lam->tvar(i), abstr);
             abstr_args[i] = abstr;
         }
 
-        auto abstr_var = world().tuple(abstr_vars);
+        // GVN: bundle
+        for (size_t i = 0; i != n;) {
+            if (abstr_vars[i]) {
+                ++i;
+                continue;
+            }
+
+            auto vars = DefVec();
+            auto vi   = lam->tvar(i);
+            auto ty   = vi->type();
+            vars.emplace_back(vi);
+
+            for (size_t j = i + 1; j != n; ++j) {
+                auto vj = lam->tvar(j);
+                if (abstr_vars[j] || vj->type() != ty) continue;
+                vars.emplace_back(vj);
+            }
+
+            if (vars.size() == 1) {
+                lattice_[vi] = abstr_vars[i] = vi; // top
+                ++i;
+            } else {
+                auto proxy = w.proxy(ty, vars, 0, 0);
+
+                for (; i != n; ++i) {
+                    auto vi = lam->tvar(i);
+                    if (abstr_vars[i] || vi->type() != ty) continue;
+                    lattice_[vi] = abstr_vars[i] = proxy;
+                }
+
+                DLOG("bundle: {}", proxy);
+            }
+        }
+
+        // GVN: split
+        for (size_t i = 0; i != n; ++i) {
+            if (auto proxy = abstr_vars[i]->isa<Proxy>()) {
+                auto num  = proxy->num_ops();
+                auto vars = DefVec();
+                auto ai   = abstr_args[i];
+                for (size_t p = 0, j = 0; p != num; ++j) {
+                    auto vj = lam->tvar(j);
+                    if (proxy->op(p) == vj) {
+                        if (ai == abstr_args[j]) vars.emplace_back(vj);
+                        ++p;
+                    }
+                }
+
+                auto new_num = vars.size();
+                if (new_num == 1) {
+                    todo_        = true;
+                    auto vi      = lam->tvar(i);
+                    lattice_[vi] = abstr_vars[i] = vi;
+                    DLOG("single: {}", vi);
+                } else if (new_num == num) {
+                    // do nothing
+                } else {
+                    todo_          = true;
+                    auto new_proxy = w.proxy(ai->type(), vars, 0, 0);
+                    DLOG("split: {}", new_proxy);
+                    for (size_t p = 0, j = 0; p != new_num && j != n; ++j) {
+                        auto vj = lam->tvar(j);
+                        if (new_proxy->op(p) == vj) {
+                            lattice_[vj] = abstr_vars[j] = new_proxy;
+                            ++p;
+                        }
+                    }
+                }
+            }
+        }
+
+        auto abstr_var = w.tuple(abstr_vars);
         map(lam->var(), abstr_var);
         lattice_[lam->var()] = abstr_var;
 
