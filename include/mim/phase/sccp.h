@@ -5,6 +5,16 @@
 namespace mim {
 
 /// Sparse Conditional Constant Propagation.
+/// Lattice per var:
+/// ```
+///  ⊤      ← Keep as is
+///  |
+/// Bundle  ← Vars that (horizontally) behave the same build a single congruence class
+///  |
+/// Expr    ← Whole expressoion is propagated (vertically) through var
+///  |
+///  ⊥
+/// ```
 class SCCP : public RWPhase {
 private:
     class Analysis : public mim::Analysis {
@@ -16,7 +26,6 @@ private:
 
     private:
         const Def* propagate(const Def*, const Def*);
-        const Def* bundle(const Var*);
         Def* rewrite_mut(Def*) final;
         const Def* rewrite_imm_App(const App*) final;
 

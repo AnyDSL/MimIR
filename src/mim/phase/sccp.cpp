@@ -53,7 +53,8 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
             abstr_args[i] = abstr;
         }
 
-        // GVN: bundle
+        // GVN bundle: all things marked as top (nullptr) by propagation are now treated as one entity by bundling them
+        // into one proxy
         for (size_t i = 0; i != n; ++i) {
             if (abstr_vars[i]) continue;
 
@@ -75,16 +76,24 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
 
                 for (auto p : proxy->ops()) {
                     auto j  = get_index(p);
-                    auto vi = lam->tvar(j);
+                    auto vj = lam->tvar(j);
                     if (abstr_vars[j] || abstr_args[j] != ai) continue;
-                    lattice_[vi] = abstr_vars[j] = proxy;
+                    lattice_[vj] = abstr_vars[j] = proxy;
                 }
 
                 DLOG("bundle: {}", proxy);
             }
         }
 
-        // GVN: split
+        // GVN split: We have to prove that all incoming args for all vars in a bundle are the same value.
+        // Otherwise we heve to refine the bundle by splitting off contradictions.
+        // E.g.: Say we started with `{a, b, c, d, e}` as a single bundle for all tvars of `lam`.
+        // Now, we see `lam (x, y, x, y, z)`. Then we have to build:
+        // a -> {a, c}
+        // b -> {b, d}
+        // c -> {a, c}
+        // d -> {b, d}
+        // e -> e      (top)
         for (size_t i = 0; i != n; ++i) {
             if (auto proxy = abstr_vars[i]->isa<Proxy>()) {
                 auto num  = proxy->num_ops();
@@ -189,7 +198,7 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 auto old_var = old_lam->var(num_old, i);
                 auto abstr   = lattice(old_var);
                 auto proxy   = abstr->isa<Proxy>();
-                if (abstr == old_var || (proxy && proxy->op(0) == old_var)) new_args[j++] = rewrite(old_app->targ(i));
+                if (abstr == old_var || first_in_bundle(proxy, old_var)) new_args[j++] = rewrite(old_app->targ(i));
             }
 
             return map(old_app, new_world().app(new_lam, new_args));
