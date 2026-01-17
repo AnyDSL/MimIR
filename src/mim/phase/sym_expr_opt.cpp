@@ -88,7 +88,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         }
 
         // GVN split: We have to prove that all incoming args for all vars in a bundle are the same value.
-        // Otherwise we heve to refine the bundle by splitting off contradictions.
+        // Otherwise we have to refine the bundle by splitting off contradictions.
         // E.g.: Say we started with `{a, b, c, d, e}` as a single bundle for all tvars of `lam`.
         // Now, we see `lam (x, y, x, y, z)`. Then we have to build:
         // a -> {a, c}
