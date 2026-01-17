@@ -135,6 +135,8 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
     return Rewriter::rewrite_imm_App(app);
 }
 
+static bool first_in_bundle(const Proxy* proxy, const Def* old_var) { return (proxy && proxy->op(0) == old_var); }
+
 const Def* SCCP::rewrite_imm_App(const App* old_app) {
     if (auto old_lam = old_app->callee()->isa_mut<Lam>()) {
         if (auto l = lattice(old_lam->var()); l && l != old_lam->var()) {
@@ -151,7 +153,7 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                     auto old_var = old_lam->var(num_old, i);
                     auto abstr   = lattice(old_var);
                     auto proxy   = abstr->isa<Proxy>();
-                    if (abstr == old_var || (proxy && proxy->op(0) == old_var))
+                    if (abstr == old_var || first_in_bundle(proxy, old_var))
                         new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
                 }
 
@@ -166,9 +168,14 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                     auto old_var = old_lam->var(num_old, i);
                     auto abstr   = lattice(old_var);
                     auto proxy   = abstr->isa<Proxy>();
-                    new_vars[i]  = (abstr == old_var || (proxy && proxy->op(0) == old_var)) ? new_lam->var(num_new, j++)
-                                                                                            : rewrite(abstr);
-                    if (proxy && proxy->op(0) == old_var) map(proxy, new_lam->var(num_new, j - 1));
+
+                    if (abstr == old_var || first_in_bundle(proxy, old_var)) { // top or GVN bundle
+                        auto v      = new_lam->var(num_new, j++);
+                        new_vars[i] = v;
+                        if (abstr != old_var) map(proxy, v); // GVN bundle
+                    } else {
+                        new_vars[i] = rewrite(abstr); // SCCP propagate
+                    }
                 }
 
                 map(old_lam->var(), new_vars);
