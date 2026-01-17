@@ -78,7 +78,8 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
             } else {
                 auto proxy = w.proxy(ty, vars, 0, 0);
 
-                for (; i != n; ++i) {
+                for (auto p : proxy->ops()) {
+                    auto i  = get_index(p);
                     auto vi = lam->tvar(i);
                     if (abstr_vars[i] || vi->type() != ty) continue;
                     lattice_[vi] = abstr_vars[i] = proxy;
@@ -94,11 +95,11 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
                 auto num  = proxy->num_ops();
                 auto vars = DefVec();
                 auto ai   = abstr_args[i];
-                for (size_t p = 0, j = 0; p != num; ++j) {
+                for (auto p : proxy->ops()) {
+                    auto j  = get_index(p);
                     auto vj = lam->tvar(j);
-                    if (proxy->op(p) == vj) {
+                    if (p == vj) {
                         if (ai == abstr_args[j]) vars.emplace_back(vj);
-                        ++p;
                     }
                 }
 
@@ -114,12 +115,10 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
                     todo_          = true;
                     auto new_proxy = w.proxy(ai->type(), vars, 0, 0);
                     DLOG("split: {}", new_proxy);
-                    for (size_t p = 0, j = 0; p != new_num && j != n; ++j) {
+                    for (auto p : new_proxy->ops()) {
+                        auto j  = get_index(p);
                         auto vj = lam->tvar(j);
-                        if (new_proxy->op(p) == vj) {
-                            lattice_[vj] = abstr_vars[j] = new_proxy;
-                            ++p;
-                        }
+                        if (p == vj) lattice_[vj] = abstr_vars[j] = new_proxy;
                     }
                 }
             }
