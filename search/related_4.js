@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['isa_5fclos_5flit_0',['isa_clos_lit',['../classmim_1_1plug_1_1clos_1_1ClosLit.html#aef73f27b67cfcb475627cfcb782c1b05',1,'mim::plug::clos::ClosLit']]]
+  ['lamdecl_0',['LamDecl',['../classmim_1_1ast_1_1LamDecl_1_1Dom.html#a3d6b84b4849cf59ca68ddf41600ed6f5',1,'mim::ast::LamDecl::Dom']]]
 ];

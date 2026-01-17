@@ -119,7 +119,6 @@ var annotated_dup =
       [ "Axm", "classmim_1_1Axm.html", "classmim_1_1Axm" ],
       [ "BetaRed", "classmim_1_1BetaRed.html", "classmim_1_1BetaRed" ],
       [ "BetaRedPhase", "classmim_1_1BetaRedPhase.html", "classmim_1_1BetaRedPhase" ],
-      [ "BitSet", "classmim_1_1BitSet.html", "classmim_1_1BitSet" ],
       [ "Bound", "classmim_1_1Bound.html", "classmim_1_1Bound" ],
       [ "Branch", "classmim_1_1Branch.html", "classmim_1_1Branch" ],
       [ "BranchNormalizePhase", "classmim_1_1BranchNormalizePhase.html", "classmim_1_1BranchNormalizePhase" ],

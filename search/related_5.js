@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lamdecl_0',['LamDecl',['../classmim_1_1ast_1_1LamDecl_1_1Dom.html#a3d6b84b4849cf59ca68ddf41600ed6f5',1,'mim::ast::LamDecl::Dom']]]
+  ['nest_0',['Nest',['../structmim_1_1Nest_1_1Node_1_1Children.html#a835cdf64395521c736b393399a1dddbd',1,'mim::Nest::Node::Children::Nest()'],['../structmim_1_1Nest_1_1Node_1_1SiblDeps.html#a835cdf64395521c736b393399a1dddbd',1,'mim::Nest::Node::SiblDeps::Nest()'],['../classmim_1_1Nest_1_1Node.html#a835cdf64395521c736b393399a1dddbd',1,'mim::Nest::Node::Nest()']]]
 ];

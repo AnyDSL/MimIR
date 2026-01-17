@@ -14,7 +14,6 @@ var hierarchy =
       [ "automaton::NFA", "classautomaton_1_1NFA.html", null ]
     ] ],
     [ "mim::ll::BB", "structmim_1_1ll_1_1BB.html", null ],
-    [ "mim::BitSet", "classmim_1_1BitSet.html", null ],
     [ "mim::Checker", "classmim_1_1Checker.html", null ],
     [ "mim::Nest::Node::Children", "structmim_1_1Nest_1_1Node_1_1Children.html", null ],
     [ "mim::plug::clos::ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", null ],
@@ -71,7 +70,6 @@ var hierarchy =
     [ "mim::World::State::POD", "structmim_1_1World_1_1State.html#structmim_1_1World_1_1State_1_1POD", null ],
     [ "mim::ast::R< T >", "structmim_1_1ast_1_1R.html", null ],
     [ "automaton::RangeCompare", "structautomaton_1_1RangeCompare.html", null ],
-    [ "mim::BitSet::reference", "classmim_1_1BitSet_1_1reference.html", null ],
     [ "mim::Res", "classmim_1_1Res.html", null ],
     [ "mim::Rewriter", "classmim_1_1Rewriter.html", [
       [ "mim::Analysis", "classmim_1_1Analysis.html", null ],

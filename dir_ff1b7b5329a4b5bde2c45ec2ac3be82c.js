@@ -1,6 +1,5 @@
 var dir_ff1b7b5329a4b5bde2c45ec2ac3be82c =
 [
-    [ "bitset.h", "bitset_8h.html", "bitset_8h" ],
     [ "dbg.h", "dbg_8h.html", "dbg_8h" ],
     [ "dl.h", "dl_8h.html", "dl_8h" ],
     [ "hash.h", "hash_8h.html", "hash_8h" ],

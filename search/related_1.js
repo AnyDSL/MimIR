@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bitset_0',['BitSet',['../classmim_1_1BitSet_1_1reference.html#a77d87545e15eea930a25387f5ed796e7',1,'mim::BitSet::reference']]]
+  ['checker_0',['Checker',['../classmim_1_1Hole.html#a42e74b7760f36154466246901e25398f',1,'mim::Hole']]]
 ];
