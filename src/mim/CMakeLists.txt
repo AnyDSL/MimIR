@@ -39,7 +39,6 @@ target_sources(libmim
         phase/prefix_cleanup.cpp
         phase/ret_wrap.cpp
         phase/sccp.cpp
-        util/bitset.cpp
         util/dbg.cpp
         util/dl.cpp
         util/log.cpp
