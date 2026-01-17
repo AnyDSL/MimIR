@@ -29,6 +29,7 @@ const Def* SCCP::Analysis::propagate(const Def* top, const Def* def) {
     auto [i, ins] = lattice_.emplace(top, def);
     if (ins) {
         todo_ = true;
+        DLOG("propagate: {} → {}", top, def);
         return def;
     }
 
@@ -36,6 +37,7 @@ const Def* SCCP::Analysis::propagate(const Def* top, const Def* def) {
     if (!cur || def->isa<Bot>() || cur == def || cur == top || cur->isa<Proxy>()) return cur;
 
     todo_ = true;
+    DLOG("cannot propagate {}, trying GVN", top);
     if (cur->isa<Bot>()) return i->second = def;
     return i->second = nullptr; // we reached top for propagate; nullptr marks this to bundle for GVN
 }
