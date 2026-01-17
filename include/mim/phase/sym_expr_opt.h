@@ -20,7 +20,7 @@ namespace mim {
 ///  |
 /// Bundle  ← Vars that (horizontally) behave the same build a single congruence class
 ///  |
-/// Expr    ← Whole expressoion is propagated (vertically) through var
+/// Expr    ← Whole expression is propagated (vertically) through var
 ///  |
 ///  ⊥
 /// ```
