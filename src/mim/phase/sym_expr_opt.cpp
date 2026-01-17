@@ -1,12 +1,10 @@
-#include "mim/phase/sccp.h"
+#include "mim/phase/sym_expr_opt.h"
 
 #include <absl/container/fixed_array.h>
 
 namespace mim {
 
-static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->index()); }
-
-Def* SCCP::Analysis::rewrite_mut(Def* mut) {
+Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
     map(mut, mut);
 
     if (auto var = mut->has_var()) {
@@ -25,7 +23,7 @@ Def* SCCP::Analysis::rewrite_mut(Def* mut) {
     return mut;
 }
 
-const Def* SCCP::Analysis::propagate(const Def* top, const Def* def) {
+const Def* SymExprOpt::Analysis::propagate(const Def* top, const Def* def) {
     auto [i, ins] = lattice_.emplace(top, def);
     if (ins) {
         todo_ = true;
@@ -42,7 +40,9 @@ const Def* SCCP::Analysis::propagate(const Def* top, const Def* def) {
     return i->second = nullptr; // we reached top for propagate; nullptr marks this to bundle for GVN
 }
 
-const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
+static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->index()); }
+
+const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
     if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
@@ -148,7 +148,7 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
 
 static bool first_in_bundle(const Proxy* proxy, const Def* old_var) { return (proxy && proxy->op(0) == old_var); }
 
-const Def* SCCP::rewrite_imm_App(const App* old_app) {
+const Def* SymExprOpt::rewrite_imm_App(const App* old_app) {
     if (auto old_lam = old_app->callee()->isa_mut<Lam>()) {
         if (auto l = lattice(old_lam->var()); l && l != old_lam->var()) {
             todo_ = true;

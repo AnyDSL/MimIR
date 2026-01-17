@@ -4,8 +4,16 @@
 
 namespace mim {
 
-/// Sparse Conditional Constant Propagation.
-/// Lattice per var:
+/// Symbolic Expression Optimization. Combines:
+/// * (Constant propagation with conditional branches)[https://dl.acm.org/doi/pdf/10.1145/103135.103136] but propagates
+/// arbitrary expressions
+/// * (Detecting equality of variables in programs)[https://dl.acm.org/doi/10.1145/73560.73561]
+/// Much in the spirit of:
+/// * (Combining analyses, combining optimizations)[https://dl.acm.org/doi/pdf/10.1145/201059.201061].
+/// Due to MimIR*s sea of node structure a number of other optimizations kick in such as arithmetic simplifications and
+/// code motion.
+///
+/// Lattice per Lam::var:
 /// ```
 ///  ⊤      ← Keep as is
 ///  |
@@ -15,12 +23,12 @@ namespace mim {
 ///  |
 ///  ⊥
 /// ```
-class SCCP : public RWPhase {
+class SymExprOpt : public RWPhase {
 private:
     class Analysis : public mim::Analysis {
     public:
         Analysis(World& world)
-            : mim::Analysis(world, "SCCP::Analyzer") {}
+            : mim::Analysis(world, "SEO::Analyzer") {}
 
         auto& lattice() { return lattice_; }
 
@@ -33,7 +41,7 @@ private:
     };
 
 public:
-    SCCP(World& world, flags_t annex)
+    SymExprOpt(World& world, flags_t annex)
         : RWPhase(world, annex, &analysis_)
         , analysis_(world) {}
 
