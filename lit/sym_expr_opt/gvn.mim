@@ -13,7 +13,7 @@ fun extern f(x: Nat): Nat =
                     (false, true)#cond ()
                     where
                         con false () =
-                            let i = %core.nat.add (i, 2); // unreachle due to GVN
+                            let i = %core.nat.add (i, 2); // unreachable due to GVN
                             let j = %core.nat.add (j, 1);
                             next (i, j);
 
