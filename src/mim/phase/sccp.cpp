@@ -55,34 +55,30 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
         }
 
         // GVN: bundle
-        for (size_t i = 0; i != n;) {
-            if (abstr_vars[i]) {
-                ++i;
-                continue;
-            }
+        for (size_t i = 0; i != n; ++i) {
+            if (abstr_vars[i]) continue;
 
             auto vars = DefVec();
             auto vi   = lam->tvar(i);
-            auto ty   = vi->type();
+            auto ai   = abstr_args[i];
             vars.emplace_back(vi);
 
             for (size_t j = i + 1; j != n; ++j) {
                 auto vj = lam->tvar(j);
-                if (abstr_vars[j] || vj->type() != ty) continue;
+                if (abstr_vars[j] || abstr_args[j] != ai) continue;
                 vars.emplace_back(vj);
             }
 
             if (vars.size() == 1) {
                 lattice_[vi] = abstr_vars[i] = vi; // top
-                ++i;
             } else {
-                auto proxy = w.proxy(ty, vars, 0, 0);
+                auto proxy = w.proxy(vi->type(), vars, 0, 0);
 
                 for (auto p : proxy->ops()) {
-                    auto i  = get_index(p);
-                    auto vi = lam->tvar(i);
-                    if (abstr_vars[i] || vi->type() != ty) continue;
-                    lattice_[vi] = abstr_vars[i] = proxy;
+                    auto j  = get_index(p);
+                    auto vi = lam->tvar(j);
+                    if (abstr_vars[j] || abstr_args[j] != ai) continue;
+                    lattice_[vi] = abstr_vars[j] = proxy;
                 }
 
                 DLOG("bundle: {}", proxy);
@@ -95,6 +91,7 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
                 auto num  = proxy->num_ops();
                 auto vars = DefVec();
                 auto ai   = abstr_args[i];
+
                 for (auto p : proxy->ops()) {
                     auto j  = get_index(p);
                     auto vj = lam->tvar(j);
@@ -109,21 +106,22 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
                     auto vi      = lam->tvar(i);
                     lattice_[vi] = abstr_vars[i] = vi;
                     DLOG("single: {}", vi);
-                } else if (new_num == num) {
-                    // do nothing
-                } else {
+                } else if (new_num != num) {
                     todo_          = true;
                     auto new_proxy = w.proxy(ai->type(), vars, 0, 0);
                     DLOG("split: {}", new_proxy);
+
                     for (auto p : new_proxy->ops()) {
                         auto j  = get_index(p);
                         auto vj = lam->tvar(j);
                         if (p == vj) lattice_[vj] = abstr_vars[j] = new_proxy;
                     }
                 }
+                // if new_num == num → do nothing
             }
         }
 
+        // set new abstract var
         auto abstr_var = w.tuple(abstr_vars);
         map(lam->var(), abstr_var);
         lattice_[lam->var()] = abstr_var;
@@ -153,7 +151,9 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 for (size_t i = 0; i != num_old; ++i) {
                     auto old_var = old_lam->var(num_old, i);
                     auto abstr   = lattice(old_var);
-                    if (abstr == old_var) new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
+                    auto proxy   = abstr->isa<Proxy>();
+                    if (abstr == old_var || (proxy && proxy->op(0) == old_var))
+                        new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
                 }
 
                 // build new lam
@@ -166,7 +166,10 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
                 for (size_t i = 0, j = 0; i != num_old; ++i) {
                     auto old_var = old_lam->var(num_old, i);
                     auto abstr   = lattice(old_var);
-                    new_vars[i]  = abstr == old_var ? new_lam->var(num_new, j++) : rewrite(abstr);
+                    auto proxy   = abstr->isa<Proxy>();
+                    new_vars[i]  = (abstr == old_var || (proxy && proxy->op(0) == old_var)) ? new_lam->var(num_new, j++)
+                                                                                            : rewrite(abstr);
+                    if (proxy && proxy->op(0) == old_var) map(proxy, new_lam->var(num_new, j - 1));
                 }
 
                 map(old_lam->var(), new_vars);
@@ -179,7 +182,8 @@ const Def* SCCP::rewrite_imm_App(const App* old_app) {
             for (size_t i = 0, j = 0; i != num_old; ++i) {
                 auto old_var = old_lam->var(num_old, i);
                 auto abstr   = lattice(old_var);
-                if (abstr == old_var) new_args[j++] = rewrite(old_app->targ(i));
+                auto proxy   = abstr->isa<Proxy>();
+                if (abstr == old_var || (proxy && proxy->op(0) == old_var)) new_args[j++] = rewrite(old_app->targ(i));
             }
 
             return map(old_app, new_world().app(new_lam, new_args));
