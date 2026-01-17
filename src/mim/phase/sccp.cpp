@@ -33,7 +33,7 @@ const Def* SCCP::Analysis::propagate(const Def* top, const Def* def) {
     }
 
     auto cur = i->second;
-    if (def->isa<Bot>() || cur == def || cur == top || cur->isa<Proxy>()) return cur;
+    if (!cur || def->isa<Bot>() || cur == def || cur == top || cur->isa<Proxy>()) return cur;
 
     todo_ = true;
     if (cur->isa<Bot>()) return i->second = def;
@@ -42,7 +42,6 @@ const Def* SCCP::Analysis::propagate(const Def* top, const Def* def) {
 
 const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
     if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
-        auto& w         = world();
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
         auto abstr_vars = absl::FixedArray<const Def*>(n);
@@ -72,7 +71,7 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
             if (vars.size() == 1) {
                 lattice_[vi] = abstr_vars[i] = vi; // top
             } else {
-                auto proxy = w.proxy(vi->type(), vars, 0, 0);
+                auto proxy = world().proxy(vi->type(), vars, 0, 0);
 
                 for (auto p : proxy->ops()) {
                     auto j  = get_index(p);
@@ -108,7 +107,7 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
                     DLOG("single: {}", vi);
                 } else if (new_num != num) {
                     todo_          = true;
-                    auto new_proxy = w.proxy(ai->type(), vars, 0, 0);
+                    auto new_proxy = world().proxy(ai->type(), vars, 0, 0);
                     DLOG("split: {}", new_proxy);
 
                     for (auto p : new_proxy->ops()) {
@@ -117,12 +116,12 @@ const Def* SCCP::Analysis::rewrite_imm_App(const App* app) {
                         if (p == vj) lattice_[vj] = abstr_vars[j] = new_proxy;
                     }
                 }
-                // if new_num == num → do nothing
+                // if new_num == num: do nothing
             }
         }
 
         // set new abstract var
-        auto abstr_var = w.tuple(abstr_vars);
+        auto abstr_var = world().tuple(abstr_vars);
         map(lam->var(), abstr_var);
         lattice_[lam->var()] = abstr_var;
 
