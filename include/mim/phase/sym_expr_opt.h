@@ -5,12 +5,13 @@
 namespace mim {
 
 /// Symbolic Expression Optimization. Combines:
-/// * (Constant propagation with conditional branches)[https://dl.acm.org/doi/pdf/10.1145/103135.103136] but propagates
-/// arbitrary expressions
-/// * (Detecting equality of variables in programs)[https://dl.acm.org/doi/10.1145/73560.73561]
-/// Much in the spirit of:
-/// * (Combining analyses, combining optimizations)[https://dl.acm.org/doi/pdf/10.1145/201059.201061].
-/// Due to MimIR*s sea of node structure a number of other optimizations kick in such as arithmetic simplifications and
+/// * *[Constant propagation with conditional branches](https://dl.acm.org/doi/pdf/10.1145/103135.103136)* but
+/// propagates arbitrary expressions
+/// * *[Detecting equality of variables in programs](https://dl.acm.org/doi/10.1145/73560.73561)*
+/// * Much in the spirit of *[Combining analyses, combining
+/// optimizations](https://dl.acm.org/doi/pdf/10.1145/201059.201061)*.
+///
+/// Due to MimIR's sea of node structure a number of other optimizations kick in such as arithmetic simplifications and
 /// code motion.
 ///
 /// Lattice per Lam::var:
