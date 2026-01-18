@@ -153,40 +153,43 @@ int main(int argc, char** argv) {
                 imports.emplace_back(std::move(import));
             }
 
-            auto mod = parser.import(driver.sym(input), os[Md]);
-            mod->add_implicit_imports(std::move(imports));
+            if (auto mod = parser.import(driver.sym(input), os[Md])) {
+                mod->add_implicit_imports(std::move(imports));
 
-            if (auto s = os[AST]) {
-                Tab tab;
-                mod->stream(tab, *s);
-            }
+                if (auto s = os[AST]) {
+                    Tab tab;
+                    mod->stream(tab, *s);
+                }
 
-            if (auto h = os[H]) {
-                mod->bind(ast);
-                ast.error().ack();
-                auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
-                ast.bootstrap(plugin, *h);
-                return EXIT_SUCCESS;
-            }
+                if (auto h = os[H]) {
+                    mod->bind(ast);
+                    ast.error().ack();
+                    auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
+                    ast.bootstrap(plugin, *h);
+                    return EXIT_SUCCESS;
+                }
 
-            mod->compile(ast);
+                mod->compile(ast);
 
-            switch (opt) {
-                case 0: break;
-                case 1: Phase::run<Cleanup>(world); break;
-                case 2: optimize(world); break;
-                default: error("illegal optimization level '{}'", opt);
-            }
+                switch (opt) {
+                    case 0: break;
+                    case 1: Phase::run<Cleanup>(world); break;
+                    case 2: optimize(world); break;
+                    default: error("illegal optimization level '{}'", opt);
+                }
 
-            if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
-            if (auto s = os[Mim]) world.dump(*s);
-            if (auto s = os[Nest]) mim::Nest(world).dot(*s);
+                if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
+                if (auto s = os[Mim]) world.dump(*s);
+                if (auto s = os[Nest]) mim::Nest(world).dot(*s);
 
-            if (auto s = os[LL]) {
-                if (auto backend = driver.backend("ll"))
-                    backend(world, *s);
-                else
-                    error("'ll' emitter not loaded; try loading 'core' plugin");
+                if (auto s = os[LL]) {
+                    if (auto backend = driver.backend("ll"))
+                        backend(world, *s);
+                    else
+                        error("'ll' emitter not loaded; try loading 'core' plugin");
+                }
+            } else {
+                error("couldn't read file '{}'", input);
             }
         } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
             std::cerr << e;

@@ -44,7 +44,9 @@ void Analysis::rewrite_external(Def* mut) { rewrite(mut); }
  */
 
 void RWPhase::start() {
+    int i = 0;
     for (bool todo = true; todo;) {
+        VLOG("iteration: {}", i++);
         todo = false;
         todo |= analyze();
     }
