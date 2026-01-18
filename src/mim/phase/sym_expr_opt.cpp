@@ -55,7 +55,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
             abstr_args[i] = abstr;
         }
 
-        // GVN bundle: all things marked as top (nullptr) by propagation are now treated as one entity by bundling them
+        // GVN bundle: All things marked as top (nullptr) by propagate are now treated as one entity by bundling them
         // into one proxy
         for (size_t i = 0; i != n; ++i) {
             if (abstr_vars[i]) continue;
@@ -146,7 +146,11 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
     return Rewriter::rewrite_imm_App(app);
 }
 
-static bool first_in_bundle(const Proxy* proxy, const Def* old_var) { return (proxy && proxy->op(0) == old_var); }
+static bool keep(const Def* old_var, const Def* abstr) {
+    if (old_var == abstr) return true; // top
+    auto proxy = abstr->isa<Proxy>();
+    return proxy && proxy->op(0) == old_var; // first in GVN bundle?
+}
 
 const Def* SymExprOpt::rewrite_imm_App(const App* old_app) {
     if (auto old_lam = old_app->callee()->isa_mut<Lam>()) {
@@ -163,9 +167,7 @@ const Def* SymExprOpt::rewrite_imm_App(const App* old_app) {
                 for (size_t i = 0; i != num_old; ++i) {
                     auto old_var = old_lam->var(num_old, i);
                     auto abstr   = lattice(old_var);
-                    auto proxy   = abstr->isa<Proxy>();
-                    if (abstr == old_var || first_in_bundle(proxy, old_var))
-                        new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
+                    if (keep(old_var, abstr)) new_doms.emplace_back(rewrite(old_lam->dom(num_old, i)));
                 }
 
                 // build new lam
@@ -178,12 +180,11 @@ const Def* SymExprOpt::rewrite_imm_App(const App* old_app) {
                 for (size_t i = 0, j = 0; i != num_old; ++i) {
                     auto old_var = old_lam->var(num_old, i);
                     auto abstr   = lattice(old_var);
-                    auto proxy   = abstr->isa<Proxy>();
 
-                    if (abstr == old_var || first_in_bundle(proxy, old_var)) { // top or GVN bundle
+                    if (keep(old_var, abstr)) {
                         auto v      = new_lam->var(num_new, j++);
                         new_vars[i] = v;
-                        if (abstr != old_var) map(proxy, v); // GVN bundle
+                        if (abstr != old_var) map(abstr, v); // GVN bundle
                     } else {
                         new_vars[i] = rewrite(abstr); // SCCP propagate
                     }
@@ -199,8 +200,7 @@ const Def* SymExprOpt::rewrite_imm_App(const App* old_app) {
             for (size_t i = 0, j = 0; i != num_old; ++i) {
                 auto old_var = old_lam->var(num_old, i);
                 auto abstr   = lattice(old_var);
-                auto proxy   = abstr->isa<Proxy>();
-                if (abstr == old_var || first_in_bundle(proxy, old_var)) new_args[j++] = rewrite(old_app->targ(i));
+                if (keep(old_var, abstr)) new_args[j++] = rewrite(old_app->targ(i));
             }
 
             return map(old_app, new_world().app(new_lam, new_args));
