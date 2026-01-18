@@ -572,8 +572,8 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="separator:aa05f64046ae1f04afb4f2d1685fcadf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f8602122730b2b3f82b08e473864e77" id="r_a3f8602122730b2b3f82b08e473864e77"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f8602122730b2b3f82b08e473864e77">get_index</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="separator:a3f8602122730b2b3f82b08e473864e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9f77d2db84654353f23749e635c7a77" id="r_ad9f77d2db84654353f23749e635c7a77"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9f77d2db84654353f23749e635c7a77">first_in_bundle</a> (const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *proxy, const <a class="el" href="classmim_1_1Def.html">Def</a> *old_var)</td></tr>
-<tr class="separator:ad9f77d2db84654353f23749e635c7a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bee7aaf08eb7700a34ec9808302d638" id="r_a0bee7aaf08eb7700a34ec9808302d638"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0bee7aaf08eb7700a34ec9808302d638">keep</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *old_var, const <a class="el" href="classmim_1_1Def.html">Def</a> *abstr)</td></tr>
+<tr class="separator:a0bee7aaf08eb7700a34ec9808302d638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31108855e962bd3bf8dbf912eb4349b0" id="r_a31108855e962bd3bf8dbf912eb4349b0"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; const <a class="el" href="classmim_1_1Var.html">Var</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31108855e962bd3bf8dbf912eb4349b0">tuple_of_dict</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;world, <a class="el" href="#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a> &amp;v2v)</td></tr>
 <tr class="separator:a31108855e962bd3bf8dbf912eb4349b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada5cb760897eaa1e558552b65009fa67" id="r_ada5cb760897eaa1e558552b65009fa67"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada5cb760897eaa1e558552b65009fa67">post_order</a> (const <a class="el" href="classmim_1_1Nest.html">Nest</a> &amp;nest, const <a class="el" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a> *node, <a class="el" href="classmim_1_1Scheduler.html#af7c082b610d8b7515f90b6512148f72c">Scheduler::Schedule</a> &amp;res, <a class="el" href="#a9cef35a428a391739d168b05bad8dfb2">MutSet</a> &amp;done)</td></tr>
@@ -3021,41 +3021,6 @@ template&lt;class... Args&gt; </div>
 
 </div>
 </div>
-<a id="ad9f77d2db84654353f23749e635c7a77" name="ad9f77d2db84654353f23749e635c7a77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9f77d2db84654353f23749e635c7a77">&#9670;&#160;</a></span>first_in_bundle()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool mim::first_in_bundle </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *</td>          <td class="paramname"><span class="paramname"><em>proxy</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>old_var</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="sym__expr__opt_8cpp_source.html#l00149">149</a> of file <a class="el" href="sym__expr__opt_8cpp_source.html">sym_expr_opt.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8h_source.html#l00308">mim::Def::op()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="sym__expr__opt_8cpp_source.html#l00151">mim::SymExprOpt::rewrite_imm_App()</a>.</p>
-
-</div>
-</div>
 <a id="a0a7202c211ff85c77fb009119a6b8fcc" name="a0a7202c211ff85c77fb009119a6b8fcc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0a7202c211ff85c77fb009119a6b8fcc">&#9670;&#160;</a></span>flatten() <span class="overload">[1/2]</span></h2>
 
@@ -3967,6 +3932,41 @@ template&lt;class Id&gt; </div>
 <p class="reference">References <a class="el" href="def_8h_source.html#l00471">mim::Def::is_annex()</a>, <a class="el" href="def_8h_source.html#l00467">mim::Def::is_external()</a>, and <a class="el" href="def_8cpp_source.html#l00297">mim::Def::is_set()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="beta__red_8cpp_source.html#l00028">mim::BetaRed::analyze()</a>, <a class="el" href="ssa_8cpp_source.html#l00163">mim::plug::mem::pass::SSA::analyze()</a>, <a class="el" href="beta__red_8cpp_source.html#l00005">mim::BetaRed::rewrite()</a>, <a class="el" href="lam__spec_8cpp_source.html#l00009">mim::LamSpec::rewrite()</a>, <a class="el" href="copy__prop_8cpp_source.html#l00021">mim::plug::mem::pass::CopyProp::rewrite()</a>, and <a class="el" href="ssa_8cpp_source.html#l00035">mim::plug::mem::pass::SSA::rewrite()</a>.</p>
+
+</div>
+</div>
+<a id="a0bee7aaf08eb7700a34ec9808302d638" name="a0bee7aaf08eb7700a34ec9808302d638"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bee7aaf08eb7700a34ec9808302d638">&#9670;&#160;</a></span>keep()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool mim::keep </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>old_var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>abstr</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sym__expr__opt_8cpp_source.html#l00149">149</a> of file <a class="el" href="sym__expr__opt_8cpp_source.html">sym_expr_opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00308">mim::Def::op()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="sym__expr__opt_8cpp_source.html#l00155">mim::SymExprOpt::rewrite_imm_App()</a>.</p>
 
 </div>
 </div>
