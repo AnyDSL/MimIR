@@ -6,5 +6,5 @@ var dir_b94543b43292d94334aee5f8fc74aa82 =
     [ "eta_red_phase.h", "eta__red__phase_8h.html", "eta__red__phase_8h" ],
     [ "prefix_cleanup.h", "prefix__cleanup_8h.html", "prefix__cleanup_8h" ],
     [ "ret_wrap.h", "ret__wrap_8h.html", "ret__wrap_8h" ],
-    [ "sccp.h", "sccp_8h.html", "sccp_8h" ]
+    [ "sym_expr_opt.h", "sym__expr__opt_8h.html", "sym__expr__opt_8h" ]
 ];

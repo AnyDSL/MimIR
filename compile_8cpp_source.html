@@ -141,7 +141,7 @@ $(function(){initNavTree('compile_8cpp_source.html',''); initResizable(true); })
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;<a class="code" href="eta__red__phase_8h.html">mim/phase/eta_red_phase.h</a>&gt;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;<a class="code" href="prefix__cleanup_8h.html">mim/phase/prefix_cleanup.h</a>&gt;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;<a class="code" href="ret__wrap_8h.html">mim/phase/ret_wrap.h</a>&gt;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;<a class="code" href="sccp_8h.html">mim/phase/sccp.h</a>&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;<a class="code" href="sym__expr__opt_8h.html">mim/phase/sym_expr_opt.h</a>&gt;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &quot;<a class="code" href="compile_2autogen_8h.html">mim/plug/compile/autogen.h</a>&quot;</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
@@ -162,7 +162,7 @@ $(function(){initNavTree('compile_8cpp_source.html',''); initResizable(true); })
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_function" href="classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90">Stage::hook&lt;compile::eta_red_phase,          EtaRedPhase         &gt;</a>(stages);</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_function" href="classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90">Stage::hook&lt;compile::pass2phase,             PassManPhase        &gt;</a>(stages);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_function" href="classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90">Stage::hook&lt;compile::repl2phase,             ReplManPhase        &gt;</a>(stages);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_function" href="classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90">Stage::hook&lt;compile::sccp,                   SCCP                &gt;</a>(stages);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_function" href="classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90">Stage::hook&lt;compile::sym_expr_opt,           SymExprOpt          &gt;</a>(stages);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_function" href="classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90">Stage::hook&lt;compile::phases,                 PhaseMan            &gt;</a>(stages);</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_function" href="classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90">Stage::hook&lt;compile::prefix_cleanup_phase,   PrefixCleanup       &gt;</a>(stages);</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="comment">// repls</span></div>
@@ -213,9 +213,9 @@ $(function(){initNavTree('compile_8cpp_source.html',''); initResizable(true); })
 <div class="ttc" id="aprefix__cleanup_8h_html"><div class="ttname"><a href="prefix__cleanup_8h.html">prefix_cleanup.h</a></div></div>
 <div class="ttc" id="aret__wrap_8h_html"><div class="ttname"><a href="ret__wrap_8h.html">ret_wrap.h</a></div></div>
 <div class="ttc" id="ascalarize_8h_html"><div class="ttname"><a href="scalarize_8h.html">scalarize.h</a></div></div>
-<div class="ttc" id="asccp_8h_html"><div class="ttname"><a href="sccp_8h.html">sccp.h</a></div></div>
 <div class="ttc" id="astructmim_1_1Annex_html_abb47b7da8a1e6cc0e8c2754b978b2658"><div class="ttname"><a href="structmim_1_1Annex.html#abb47b7da8a1e6cc0e8c2754b978b2658">mim::Annex::base</a></div><div class="ttdeci">static consteval flags_t base()</div><div class="ttdef"><b>Definition</b> <a href="plugin_8h_source.html#l00119">plugin.h:119</a></div></div>
 <div class="ttc" id="astructmim_1_1Plugin_html"><div class="ttname"><a href="structmim_1_1Plugin.html">mim::Plugin</a></div><div class="ttdoc">Basic info and registration function pointer to be returned from a specific plugin.</div><div class="ttdef"><b>Definition</b> <a href="plugin_8h_source.html#l00030">plugin.h:30</a></div></div>
+<div class="ttc" id="asym__expr__opt_8h_html"><div class="ttname"><a href="sym__expr__opt_8h.html">sym_expr_opt.h</a></div></div>
 <div class="ttc" id="atail__rec__elim_8h_html"><div class="ttname"><a href="tail__rec__elim_8h.html">tail_rec_elim.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

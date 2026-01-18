@@ -1,7 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"structmim_1_1UseHash.html#a6d13f2e0a9453f2bfcc5f67bcd47e741":[3,0,1,99,0],
-"structmim_1_1UseHash.html#a6d13f2e0a9453f2bfcc5f67bcd47e741":[5,0,1,97,0],
 "structmim_1_1World_1_1Freezer.html":[3,0,1,103,1],
 "structmim_1_1World_1_1Freezer.html":[5,0,1,101,1],
 "structmim_1_1World_1_1Freezer.html#a818ef9b85c0577003a841560821c188e":[3,0,1,103,1,0],
@@ -118,6 +116,10 @@ var NAVTREEINDEX24 =
 "structmim_1_1plug_1_1regex_1_1app__range.html#af1ab5901ab3afd9af20865f5eda6034b":[5,0,1,3,6,0,0],
 "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html":[3,0,2,1],
 "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html":[5,0,2,1],
+"sym__expr__opt_8cpp.html":[6,0,3,1,3,6],
+"sym__expr__opt_8cpp_source.html":[6,0,3,1,3,6],
+"sym__expr__opt_8h.html":[6,0,2,1,3,6],
+"sym__expr__opt_8h_source.html":[6,0,2,1,3,6],
 "sys_8cpp.html":[6,0,3,1,5,4],
 "sys_8cpp_source.html":[6,0,3,1,5,4],
 "sys_8h.html":[6,0,2,1,5,8],

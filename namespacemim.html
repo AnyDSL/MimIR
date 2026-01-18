@@ -332,9 +332,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Scalarize.html">Scalarize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform Scalarization (= Argument simplification).  <a href="classmim_1_1Scalarize.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1SCCP.html">SCCP</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sparse Conditional Constant Propagation.  <a href="classmim_1_1SCCP.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Scheduler.html">Scheduler</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Select.html">Select</a></td></tr>
@@ -359,6 +356,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Stage.html">Stage</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common base for <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a> and <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>.  <a href="classmim_1_1Stage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1SymExprOpt.html">SymExprOpt</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Symbolic Expression Optimization.  <a href="classmim_1_1SymExprOpt.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Tab.html">Tab</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps track of indentation level.  <a href="classmim_1_1Tab.html#details">More...</a><br /></td></tr>
@@ -570,6 +570,10 @@ requires (N != std::dynamic_extent)</td></tr>
 <tr class="separator:aba1dd89e9049fc3fd5f807e098d95cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa05f64046ae1f04afb4f2d1685fcadf1" id="r_aa05f64046ae1f04afb4f2d1685fcadf1"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1App.html">App</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa05f64046ae1f04afb4f2d1685fcadf1">eta_rule</a> (<a class="el" href="classmim_1_1Lam.html">Lam</a> *lam)</td></tr>
 <tr class="separator:aa05f64046ae1f04afb4f2d1685fcadf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f8602122730b2b3f82b08e473864e77" id="r_a3f8602122730b2b3f82b08e473864e77"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f8602122730b2b3f82b08e473864e77">get_index</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:a3f8602122730b2b3f82b08e473864e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9f77d2db84654353f23749e635c7a77" id="r_ad9f77d2db84654353f23749e635c7a77"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9f77d2db84654353f23749e635c7a77">first_in_bundle</a> (const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *proxy, const <a class="el" href="classmim_1_1Def.html">Def</a> *old_var)</td></tr>
+<tr class="separator:ad9f77d2db84654353f23749e635c7a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31108855e962bd3bf8dbf912eb4349b0" id="r_a31108855e962bd3bf8dbf912eb4349b0"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; const <a class="el" href="classmim_1_1Var.html">Var</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31108855e962bd3bf8dbf912eb4349b0">tuple_of_dict</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;world, <a class="el" href="#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a> &amp;v2v)</td></tr>
 <tr class="separator:a31108855e962bd3bf8dbf912eb4349b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada5cb760897eaa1e558552b65009fa67" id="r_ada5cb760897eaa1e558552b65009fa67"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada5cb760897eaa1e558552b65009fa67">post_order</a> (const <a class="el" href="classmim_1_1Nest.html">Nest</a> &amp;nest, const <a class="el" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a> *node, <a class="el" href="classmim_1_1Scheduler.html#af7c082b610d8b7515f90b6512148f72c">Scheduler::Schedule</a> &amp;res, <a class="el" href="#a9cef35a428a391739d168b05bad8dfb2">MutSet</a> &amp;done)</td></tr>
@@ -3017,6 +3021,41 @@ template&lt;class... Args&gt; </div>
 
 </div>
 </div>
+<a id="ad9f77d2db84654353f23749e635c7a77" name="ad9f77d2db84654353f23749e635c7a77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9f77d2db84654353f23749e635c7a77">&#9670;&#160;</a></span>first_in_bundle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool mim::first_in_bundle </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Proxy.html">Proxy</a> *</td>          <td class="paramname"><span class="paramname"><em>proxy</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>old_var</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sym__expr__opt_8cpp_source.html#l00149">149</a> of file <a class="el" href="sym__expr__opt_8cpp_source.html">sym_expr_opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00308">mim::Def::op()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="sym__expr__opt_8cpp_source.html#l00151">mim::SymExprOpt::rewrite_imm_App()</a>.</p>
+
+</div>
+</div>
 <a id="a0a7202c211ff85c77fb009119a6b8fcc" name="a0a7202c211ff85c77fb009119a6b8fcc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0a7202c211ff85c77fb009119a6b8fcc">&#9670;&#160;</a></span>flatten() <span class="overload">[1/2]</span></h2>
 
@@ -3169,6 +3208,35 @@ requires (N != std::dynamic_extent)</div>
 <p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00115">115</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="emit_8cpp_source.html#l00349">mim::ast::ExtractExpr::emit_()</a>, <a class="el" href="def_8cpp_source.html#l00120">mim::Lit::rebuild_()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00039">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00057">mim::plug::matrix::LowerMatrixLowLevel::rewrite_imm_App()</a>, <a class="el" href="rewrite_8h_source.html#l00022">mim::Rewriter::Rewriter()</a>, and <a class="el" href="rule_8cpp_source.html#l00012">tuple_of_dict()</a>.</p>
+
+</div>
+</div>
+<a id="a3f8602122730b2b3f82b08e473864e77" name="a3f8602122730b2b3f82b08e473864e77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f8602122730b2b3f82b08e473864e77">&#9670;&#160;</a></span>get_index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="#a02aae51c2293663cb7352f21c7fbe490">nat_t</a> mim::get_index </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sym__expr__opt_8cpp_source.html#l00043">43</a> of file <a class="el" href="sym__expr__opt_8cpp_source.html">sym_expr_opt.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00832">mim::Lit::as()</a>, and <a class="el" href="tuple_8h_source.html#l00217">mim::Extract::index()</a>.</p>
 
 </div>
 </div>
@@ -3552,7 +3620,7 @@ template&lt;class Id&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="axm_8h_source.html#l00152">152</a> of file <a class="el" href="axm_8h_source.html">axm.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="axm_8h_source.html#l00158">is_associative()</a>, <a class="el" href="core_8h_source.html#l00124">is_associative()</a>, <a class="el" href="core_8h_source.html#l00122">is_associative()</a>, <a class="el" href="core_8h_source.html#l00123">is_associative()</a>, <a class="el" href="core_8h_source.html#l00125">is_associative()</a>, <a class="el" href="math_8h_source.html#l00128">is_associative()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00350">mim::plug::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00220">mim::plug::core::normalize_nat()</a>, and <a class="el" href="core_2normalizers_8cpp_source.html#l00261">mim::plug::core::normalize_ncmp()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="axm_8h_source.html#l00158">is_associative()</a>, <a class="el" href="core_8h_source.html#l00124">is_associative()</a>, <a class="el" href="core_8h_source.html#l00122">is_associative()</a>, <a class="el" href="core_8h_source.html#l00123">is_associative()</a>, <a class="el" href="core_8h_source.html#l00125">is_associative()</a>, <a class="el" href="math_8h_source.html#l00128">is_associative()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00354">mim::plug::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00219">mim::plug::core::normalize_nat()</a>, and <a class="el" href="core_2normalizers_8cpp_source.html#l00260">mim::plug::core::normalize_ncmp()</a>.</p>
 
 </div>
 </div>
@@ -4473,7 +4541,7 @@ template&lt;class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00047">47</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="core_2normalizers_8cpp_source.html#l00642">mim::plug::core::normalize_trait()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_2normalizers_8cpp_source.html#l00646">mim::plug::core::normalize_trait()</a>.</p>
 
 </div>
 </div>

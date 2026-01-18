@@ -99,7 +99,7 @@ var NAVTREEINDEX =
 "classmim_1_1Nat.html#af83dbf0cb20076bff11417193f4689b7",
 "classmim_1_1Pi.html#a1a09e0736bfad41c305c11bcfe0238f8",
 "classmim_1_1Rewriter.html#acbd0fb347253ef6deb7846de430ace8e",
-"classmim_1_1Setters.html#ada0303a60a80d20598097ce98dcb769e",
+"classmim_1_1Sigma.html#a03817306a72b907aff0d8904e3c5bd1b",
 "classmim_1_1Use.html#a8da7b797895206c14c2f3e25f828f944",
 "classmim_1_1World.html#a722b0c4b3f8511b485bf2232359e64fe",
 "classmim_1_1World.html#afc51b09155c87f9d722e45c49daac526",
@@ -111,11 +111,11 @@ var NAVTREEINDEX =
 "core_2autogen_8h.html",
 "functions_func_~.html",
 "namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83",
-"namespacemim_1_1plug_1_1autodiff.html#a968c053d85aa0d5c782ca7bacb51e727",
-"namespacemim_1_1plug_1_1demo.html#a190324d76d5d13cf2c933c82e381fb46",
-"namespacemim_1_1plug_1_1mem.html#aa07d1f14255050ea3f0949fcb341c83f",
-"phase_8h_source.html",
-"structmim_1_1UseHash.html#a6d13f2e0a9453f2bfcc5f67bcd47e741"
+"namespacemim_1_1plug_1_1autodiff.html#a731a934813e6197c347e831cb312acda",
+"namespacemim_1_1plug_1_1core.html#af9d9013ee2de9117cc3576555e8df6c5",
+"namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502",
+"phase_8h.html#a4b6ee482611c96913829f74c17ee1df4",
+"structmim_1_1World_1_1Freezer.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

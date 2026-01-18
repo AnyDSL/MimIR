@@ -82,7 +82,7 @@ var hierarchy =
         [ "mim::PrefixCleanup", "classmim_1_1PrefixCleanup.html", null ],
         [ "mim::ReplManPhase", "classmim_1_1ReplManPhase.html", null ],
         [ "mim::RetWrap", "classmim_1_1RetWrap.html", null ],
-        [ "mim::SCCP", "classmim_1_1SCCP.html", null ],
+        [ "mim::SymExprOpt", "classmim_1_1SymExprOpt.html", null ],
         [ "mim::plug::affine::phase::LowerFor", "classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html", null ],
         [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
       ] ],
