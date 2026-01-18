@@ -77,9 +77,8 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
                 auto proxy = world().proxy(vi->type(), vars, 0, 0);
 
                 for (auto p : proxy->ops()) {
-                    auto j  = get_index(p);
-                    auto vj = lam->tvar(j);
-                    if (abstr_vars[j] || abstr_args[j] != ai) continue;
+                    auto j       = get_index(p);
+                    auto vj      = lam->tvar(j);
                     lattice_[vj] = abstr_vars[j] = proxy;
                 }
 
