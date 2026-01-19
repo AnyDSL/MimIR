@@ -44,7 +44,9 @@ void Analysis::rewrite_external(Def* mut) { rewrite(mut); }
  */
 
 void RWPhase::start() {
+    int i = 0;
     for (bool todo = true; todo;) {
+        VLOG("iteration: {}", i++);
         todo = false;
         todo |= analyze();
     }
@@ -162,7 +164,10 @@ void PhaseMan::apply(const App* app) {
 
 void PhaseMan::apply(Stage& stage) {
     auto& man = static_cast<PhaseMan&>(stage);
-    apply(man.fixed_point(), std::move(man.phases_));
+    Phases new_phases;
+    for (auto& old_phase : man.phases())
+        new_phases.emplace_back(std::unique_ptr<Phase>(static_cast<Phase*>(old_phase->recreate().release())));
+    apply(man.fixed_point(), std::move(new_phases));
 }
 
 void PhaseMan::start() {
