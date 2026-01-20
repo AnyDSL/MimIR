@@ -559,18 +559,10 @@ Word Emitter::prepare() {
 
             // Check if this is an execution model marker
             if (auto entry_marker = Axm::isa<spirv::entry>(param)) {
-                if (model.has_value()) {
-                    std::cerr << "Error: multiple execution model markers found in entry point\n";
-                    fe::unreachable();
-                }
+                if (model.has_value()) error("multiple execution model markers found in entry point");
+
                 // Extract the model from the entry marker argument
-                auto model_arg = entry_marker->arg();
-                if (auto model_marker = Axm::isa<spirv::model>(model_arg)) {
-                    model = model_marker.id();
-                } else {
-                    std::cerr << "Error: entry marker does not contain a valid execution model\n";
-                    fe::unreachable();
-                }
+                model = Axm::as<spirv::model>(entry_marker->arg()).id();
                 continue;
             }
 
@@ -592,12 +584,8 @@ Word Emitter::prepare() {
                 // Validate that builtins align with the specified model
                 auto builtin_model = isa_builtin(param);
                 if (model.has_value() && builtin_model.has_value()) {
-                    if (*model != *builtin_model) {
-                        std::cerr << std::format(
-                            "Error: builtin from execution model {} does not match specified model {}\n",
-                            static_cast<int>(*builtin_model), static_cast<int>(*model));
-                        fe::unreachable();
-                    }
+                    if (*model != *builtin_model)
+                        error("invalid builtin for specified execution model encountered in entry point");
                 }
             }
         }
