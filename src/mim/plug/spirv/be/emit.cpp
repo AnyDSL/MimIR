@@ -275,6 +275,9 @@ private:
                 ostream() << " %" << id_name(op.operands[0]); // element type
                 ostream() << " %" << id_name(op.operands[1]); // length (constant)
                 break;
+            case OpKind::CompositeExtract:
+                ostream() << " %" << id_name(op.operands[0]); // composite
+                ostream() << " " << op.operands[1];           // index
             case OpKind::TypeStruct:
             case OpKind::TypeFunction:
             case OpKind::ConstantComposite:
@@ -609,18 +612,34 @@ Word Emitter::prepare() {
                     if (*model != *builtin_model)
                         error("invalid builtin for specified execution model encountered in entry point");
                 }
+
+                // Add var extract to locals_, as it is not real
+                locals_[world().extract(var, idx)] = var_id;
+                continue;
+            }
+
+            auto param_type = strip_type(var->type());
+
+            // Handle "real" parameters
+            if (param_type != world().sigma()) {
+                Word param_id = next_id();
+
+                funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
+                id_names[param_id] = param->unique_name();
+
+                // Add var extract to locals_, as it is not real
+                locals_[world().extract(var, idx)] = param_id;
             }
         }
-    }
+    } else {
+        auto param_type = strip_type(var->type());
+        if (param_type != world().sigma()) {
+            Word param_id = next_id();
 
-    auto param_type = strip_type(var->type());
-
-    if (param_type != world().sigma()) {
-        Word param_id = next_id();
-
-        funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
-        id_names[param_id] = var->unique_name();
-        locals_[var]       = param_id;
+            funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
+            id_names[param_id] = var->unique_name();
+            locals_[var]       = param_id;
+        }
     }
 
     // external lams are converted to entry points
@@ -765,16 +784,39 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     }
 
     if (auto cat = Axm::isa<vec::cat>(def)) {
-        auto as_bs = cat->arg();
+        auto [nm, T, vs] = cat->uncurry_args<3>();
+        auto [n, m]      = nm->projs<2>();
+        auto [as, bs]    = vs->projs<2>();
         std::vector<Word> constituents;
 
-        for (auto vs : as_bs->ops()) {
-            std::cerr << "vs: " << vs << "\n";
-            for (auto v : vs->ops()) {
-                std::cerr << "v: " << v << "\n";
-                constituents.push_back(emit(v));
+        for (auto [n, vs] : {
+                 std::pair{n, as},
+                 std::pair{m, bs}
+        }) {
+            std::cerr << "vs: " << as << "\n";
+
+            if (auto size = Lit::isa(n)) {
+                if (size > 1) {
+                    auto index = 0;
+                    for (auto v : vs->type()->ops()) {
+                        Word id = next_id();
+                        constituents.push_back(id);
+                        bb.ops.push_back(Op{
+                            OpKind::CompositeExtract,
+                            {emit(vs), index},
+                            id,
+                            convert(v),
+                        });
+                    }
+                } else {
+                    // size == 1, as size == 0 would be normalized away
+                    constituents.push_back(emit(vs));
+                }
+            } else {
+                error("runtime sized arrays not supported yet");
             }
         }
+
         bb.ops.push_back(Op{
             OpKind::CompositeConstruct,
             {constituents},
@@ -784,11 +826,25 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         return id;
     }
 
+    if (auto extract = def->isa<Extract>()) {
+        auto tuple = extract->tuple();
+        auto index = extract->index();
+
+        // mem values should not happen here
+        assert(!Axm::isa<mem::M>(extract->type()) && "mem value extraction encountered");
+        // var extracts are not real and should have been added to locals_ already
+        assert(!def->isa<Var>() && "var extractions encountered in emit_bb");
+
+        // For non-parameter extracts, emit OpCompositeExtract
+        // TODO: implement OpCompositeExtract for actual composite extractions
+        return id;
+    }
+
     if (auto store = Axm::isa<spirv::store>(def)) {
         auto [mem, global, value] = store->arg()->projs<3>();
         bb.ops.emplace_back(Op{
             OpKind::Store,
-            {interface_vars_[global], emit(value)},
+            {emit(global), emit(value)},
             {},
             {}
         });
@@ -799,7 +855,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         auto [mem, global] = load->arg()->projs<2>();
         bb.ops.emplace_back(Op{
             OpKind::Load,
-            {interface_vars_[global]},
+            {emit(global)},
             id,
             type_id,
         });
