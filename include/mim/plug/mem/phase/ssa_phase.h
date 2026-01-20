@@ -1,24 +1,24 @@
 #pragma once
 
-#include "mim/phase/sccp.h"
+#include "mim/phase/sym_expr_opt.h"
 
 namespace mim::plug::mem::phase {
 
 /// Based on: [SSA Translation is an Abstract
 /// Interpretation](https://binsec.github.io/assets/publications/papers/2023-popl-full-with-appendices.pdf)
-class SSAPhase : public SCCP {
+class SSAPhase : public SymExprOpt {
 public:
-    class Analysis : public mim::SCCP::Analysis {
+    class Analysis : public mim::SymExprOpt::Analysis {
     public:
         Analysis(World& world)
-            : mim::SCCP::Analysis(world, "SSA::Analysis") {}
+            : mim::SymExprOpt::Analysis(world, "SSA::Analysis") {}
 
     private:
-        const Def* rewrite_imm_App(const App*) final;
+        const Def* rewrite_imm_App(const App*) override;
     };
 
     SSAPhase(World& world, flags_t annex)
-        : SCCP(world, annex, &analysis_)
+        : SymExprOpt(world, annex, &analysis_)
         , analysis_(world) {}
 
 private:

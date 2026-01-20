@@ -138,7 +138,8 @@ Tok Lexer::lex() {
                 continue;
             }
             if (accept('/')) {
-                while (ahead() != utf8::EoF && ahead() != '\n') next();
+                while (ahead() != utf8::EoF && ahead() != '\n')
+                    next();
                 continue;
             }
 
@@ -284,14 +285,15 @@ char8_t Lexer::lex_char() {
     }
     auto c = next();
     str_ += c;
-    if (utf8::isascii(c)) return c;
-    ast().error(loc_, "invalid character '{}'", (char)c);
+    if (utf8::isascii(c)) return char8_t(c);
+    ast().error(loc_, "invalid character '{}'", char(c));
     return '\0';
 }
 
 void Lexer::eat_comments() {
     while (true) {
-        while (ahead() != utf8::EoF && ahead() != '*') next();
+        while (ahead() != utf8::EoF && ahead() != '*')
+            next();
         if (accept(utf8::EoF)) {
             ast().error(loc_, "non-terminated multiline comment");
             return;
@@ -306,11 +308,13 @@ void Lexer::emit_md(bool start_of_file) {
 
     do {
         out_ = false;
-        for (int i = 0; i < 3; ++i) next();
+        for (int i = 0; i < 3; ++i)
+            next();
         accept(' ');
         out_ = true;
 
-        while (ahead() != utf8::EoF && ahead() != '\n') next();
+        while (ahead() != utf8::EoF && ahead() != '\n')
+            next();
         accept('\n');
     } while (start_md());
 

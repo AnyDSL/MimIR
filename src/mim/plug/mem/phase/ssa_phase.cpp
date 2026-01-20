@@ -2,6 +2,8 @@
 
 #include <absl/container/fixed_array.h>
 
+#include "mim/phase/sym_expr_opt.h"
+
 #include "mim/plug/mem/mem.h"
 
 namespace mim::plug::mem::phase {
@@ -55,7 +57,7 @@ const Def* SSAPhase::Analysis::rewrite_imm_App(const App* app) {
         }
     }
 
-    return SCCP::Analysis::rewrite_imm_App(app);
+    return SymExprOpt::Analysis::rewrite_imm_App(app);
 }
 
 const Def* SSAPhase::rewrite_imm_App(const App* old_app) {
@@ -76,7 +78,7 @@ const Def* SSAPhase::rewrite_imm_App(const App* old_app) {
         // }
     }
 
-    return SCCP::rewrite_imm_App(old_app);
+    return SymExprOpt::rewrite_imm_App(old_app);
 }
 
 } // namespace mim::plug::mem::phase
