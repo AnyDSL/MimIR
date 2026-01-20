@@ -138,6 +138,7 @@ enum class OpKind {
     Constant,
     ConstantComposite,
     CompositeConstruct,
+    CompositeExtract,
     Label,
     Phi,
     Branch,
@@ -186,6 +187,7 @@ struct Op {
             case OpKind::Constant: return "OpConstant";
             case OpKind::ConstantComposite: return "OpConstantComposite";
             case OpKind::CompositeConstruct: return "OpCompositeConstruct";
+            case OpKind::CompositeExtract: return "OpCompositeExtract";
             case OpKind::Label: return "OpLabel";
             case OpKind::Phi: return "OpPhi";
             case OpKind::Branch: return "OpBranch";
