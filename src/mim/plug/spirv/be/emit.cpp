@@ -50,6 +50,7 @@ bool is_const(const Def* def) {
 /// the spirv target. This applies currently to
 /// - mem::M
 /// - spirv::Global
+/// - spirv::entry
 const Def* isa_kept(const Def* type) {
     auto& world = type->world();
 
@@ -612,13 +613,15 @@ Word Emitter::prepare() {
         }
     }
 
-    Word param_type = convert(var->type());
+    auto param_type = strip_type(var->type());
 
-    Word param_id = next_id();
+    if (param_type != world().sigma()) {
+        Word param_id = next_id();
 
-    funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, param_type});
-    id_names[param_id] = var->unique_name();
-    locals_[var]       = param_id;
+        funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
+        id_names[param_id] = var->unique_name();
+        locals_[var]       = param_id;
+    }
 
     // external lams are converted to entry points
     if (root()->is_external()) {
@@ -679,8 +682,12 @@ void Emitter::emit_epilogue(Lam* lam) {
         std::vector<const Def*> types;
 
         for (auto arg : app->args()) {
-            values.emplace_back(emit(arg));
-            types.emplace_back(arg->type());
+            auto value    = emit(arg);
+            auto arg_type = strip_type(arg->type());
+            if (arg_type != world().sigma()) {
+                values.emplace_back(value);
+                types.emplace_back(arg_type);
+            }
         }
 
         switch (values.size()) {
