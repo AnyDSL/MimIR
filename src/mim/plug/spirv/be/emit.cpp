@@ -100,7 +100,12 @@ std::string words_to_string(Iter& begin, Iter end) {
 using OpVec = std::vector<Op>;
 
 struct BB {
+    Op label;
+    DefMap<std::vector<Word>> phis;
     OpVec ops;
+    OpVec tail;
+    std::optional<Op> merge;
+    Op end;
 };
 
 class Emitter : public mim::Emitter<Word, Word, BB, Emitter> {
@@ -127,6 +132,7 @@ public:
             {}
         };
     }
+
     Word prepare();
     void emit_imported(Lam*) {}
     void emit_epilogue(Lam*);
@@ -176,6 +182,19 @@ private:
     // recommended by the spirv spec, they are counted up instead of
     // reusing MimIR ids.
     Word next_id() { return next_id_++; }
+
+    /// Associates every unique value with an id Word.
+    Word id(const Def* def) {
+        // check if already assigned
+        if (auto i = ids.find(def); i != ids.end()) return i->second;
+
+        // create new id
+        Word id      = next_id();
+        ids[def]     = id;
+        id_names[id] = def->unique_name();
+
+        return id;
+    }
 
     // TODO: move this to a separate file/class
     void assembly(int indent, Op& op) {
@@ -302,6 +321,7 @@ private:
     OpVec funDeclarations;
     OpVec funDefinitions;
 
+    DefMap<Word> ids;
     absl::flat_hash_map<Word, std::string> id_names;
 
     Word next_id_{0};
@@ -460,9 +480,10 @@ Word Emitter::convert(const Def* type, std::string_view name) {
                 declarations.emplace_back(Op{OpKind::Variable, {__storage_class}, var_id, id});
                 // Use provided name if available, otherwise fall back to type name
                 if (!name.empty())
-                    id_names[var_id] = std::format("var_{}", name);
+                    id_names[var_id] = std::format("{}", name);
                 else
-                    id_names[var_id] = std::format("var_{}", id_name(_wrapped_type));
+                    id_names[var_id]
+                        = std::format("{}_{}", storage_class::name(__storage_class), id_name(_wrapped_type));
 
                 // TODO: emit decorations
                 if (auto sigma = decorations->isa<Sigma>())
@@ -641,23 +662,67 @@ void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
 
-    if (app->callee() == root()->ret_var()) { // return
-        // if (auto wrap = Axm::isa<spirv::wrap>(app->arg())) {
-        //     Op entry_point{OpKind::EntryPoint, {}, {}, {}};
-        //     auto [model, nm, dnm, ins, outs, in_ts, out_ts, f] = wrap->uncurry_args<8>();
-        //     if (auto model_ = Axm::isa<spirv::model>(model)) {
-        //         switch (model_.id()) {
-        //             case spirv::model::fragment: entry_point.operands.emplace_back(execution_model::Fragment);
-        //             break; case spirv::model::vertex: entry_point.operands.emplace_back(execution_model::Vertex);
-        //             break; case spirv::model::compute:
-        //             entry_point.operands.emplace_back(execution_model::GLCompute); break;
-        //         }
-        //     }
+    Word lam_id      = id(lam);
+    id_names[lam_id] = lam->unique_name();
 
-        //     entryPoints.push_back(entry_point);
-        //     return;
-        // }
+    bb.label = Op{OpKind::Label, {}, id(lam), {}};
+
+    // emit bb end instruction
+    if (app->callee() == root()->ret_var()) {
+        // return lam called
+        // => OpReturn | OpReturnValue
+
+        // generate new id for first basic block in function
+        bb.label = Op{OpKind::Label, {}, next_id(), {}};
+
+        std::vector<Word> values;
+        std::vector<const Def*> types;
+
+        for (auto arg : app->args()) {
+            values.emplace_back(emit(arg));
+            types.emplace_back(arg->type());
+        }
+
+        switch (values.size()) {
+            case 0: bb.end = Op{OpKind::Return, {}, {}, {}}; break;
+            case 1: bb.end = Op{OpKind::ReturnValue, {values[0]}, {}, {}}; break;
+            default:
+                Word val_id = next_id();
+                Word type   = convert(world().sigma(types));
+                bb.tail.emplace_back(Op{OpKind::CompositeConstruct, {values}, val_id, type});
+        }
+    } else if (auto dispatch = Dispatch(app)) {
+        // TODO
+        std::cerr << "branching not supported yet";
+        if (auto branch = Branch(app)) {
+            // if cond { A args… } else { B args… }
+            // => OpBranchConditional
+        } else {
+            // switch (index) { case 0: A args…; …; default: B args… }
+            // => OpSwitch
+        }
+    } else if (app->callee()->isa<Bot>()) {
+        // unreachable
+        // => OpUnreachable
+        bb.end = Op{OpKind::Unreachable, {}, {}, {}};
+    } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) {
+        // ordinary jump
+        // => OpBranch
+        size_t n = callee->num_tvars();
+        for (size_t i = 0; i != n; ++i) {
+            auto arg = emit(app->arg(n, i));
+            auto phi = callee->var(n, i);
+            assert(!Axm::isa<mem::M>(phi->type()));
+            lam2bb_[callee].phis[phi].emplace_back(arg);
+            lam2bb_[callee].phis[phi].emplace_back(id(lam));
+            locals_[phi] = id(phi);
+        }
+        bb.end = Op{OpKind::Branch, {id(lam)}, {}, {}};
+    } else if (Pi::isa_returning(app->callee_type())) {
+        // function call
+        // => Op
     }
+    // TODO: OpTerminateInvocation
 }
 
 Word Emitter::emit_bb(BB& bb, const Def* def) {
@@ -694,7 +759,27 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     return id;
 }
 
-void Emitter::finalize() { funDefinitions.emplace_back(Op{OpKind::FunctionEnd, {}, {}, {}}); }
+void Emitter::finalize() {
+    for (auto mut : Scheduler::schedule(nest())) {
+        if (auto lam = mut->isa_mut<Lam>()) {
+            assert(lam2bb_.contains(lam));
+            auto& bb = lam2bb_[lam];
+
+            // reserve space for ops
+            funDefinitions.reserve(1 + bb.merge.has_value() + bb.phis.size() + bb.ops.size() + bb.tail.size() + 1);
+
+            funDefinitions.push_back(bb.label);
+            for (auto [phi, var_parents] : bb.phis)
+                funDefinitions.emplace_back(Op{OpKind::Phi, var_parents, id(phi), convert(phi->type())});
+            funDefinitions.insert(funDefinitions.end(), bb.ops.begin(), bb.ops.end());
+            funDefinitions.insert(funDefinitions.end(), bb.tail.begin(), bb.tail.end());
+            if (bb.merge) funDefinitions.push_back(*bb.merge);
+            funDefinitions.push_back(bb.end);
+        }
+    }
+
+    funDefinitions.emplace_back(Op{OpKind::FunctionEnd, {}, {}, {}});
+}
 
 void emit_bin(World& world, std::ostream& ostream) {
     Emitter emitter(world, ostream);

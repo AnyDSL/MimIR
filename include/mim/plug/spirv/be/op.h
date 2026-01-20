@@ -109,6 +109,7 @@ std::string name(int set);
 } // namespace ext_inst
 
 enum class OpKind {
+    Error,
     Capability,
     Extension,
     ExtInstImport,
@@ -130,10 +131,18 @@ enum class OpKind {
     TypeArray,
     TypeStruct,
     TypePointer,
+    Unreachable,
     Variable,
     Constant,
     ConstantComposite,
     CompositeConstruct,
+    Label,
+    Phi,
+    Branch,
+    BranchConditional,
+    Switch,
+    Return,
+    ReturnValue,
 };
 } // namespace mim::plug::spirv
 
@@ -147,6 +156,7 @@ struct Op {
 
     constexpr const char* name() {
         switch (this->kind) {
+            case OpKind::Error: return "OpError";
             case OpKind::Capability: return "OpCapability";
             case OpKind::Extension: return "OpExtension";
             case OpKind::ExtInstImport: return "OpExtInstImport";
@@ -155,7 +165,7 @@ struct Op {
             case OpKind::ExecutionMode: return "OpExecutionMode";
             case OpKind::Decorate: return "OpDecorate";
             case OpKind::Decl: return "OpDecl";
-            case OpKind::Function: return "OpFuntion";
+            case OpKind::Function: return "OpFunction";
             case OpKind::FunctionParameter: return "OpFunctionParameter";
             case OpKind::FunctionEnd: return "OpFunctionEnd";
             case OpKind::Type: return "OpType";
@@ -167,10 +177,54 @@ struct Op {
             case OpKind::TypeArray: return "OpTypeArray";
             case OpKind::TypeStruct: return "OpTypeStruct";
             case OpKind::TypePointer: return "OpTypePointer";
+            case OpKind::Unreachable: return "OpUnreachable";
             case OpKind::Variable: return "OpVariable";
             case OpKind::Constant: return "OpConstant";
             case OpKind::ConstantComposite: return "OpConstantComposite";
             case OpKind::CompositeConstruct: return "OpCompositeConstruct";
+            case OpKind::Label: return "OpLabel";
+            case OpKind::Phi: return "OpPhi";
+            case OpKind::Branch: return "OpBranch";
+            case OpKind::BranchConditional: return "OpBranchConditional";
+            case OpKind::Switch: return "OpSwitch";
+            case OpKind::Return: return "OpReturn";
+            case OpKind::ReturnValue: return "OpReturnValue";
+            default: fe::unreachable();
+        }
+    }
+
+    constexpr Word magic() {
+        switch (this->kind) {
+            case OpKind::Capability: return 17;
+            case OpKind::Extension: return 10;
+            case OpKind::ExtInstImport: return 11;
+            case OpKind::MemoryModel: return 14;
+            case OpKind::EntryPoint: return 15;
+            case OpKind::ExecutionMode: return 16;
+            case OpKind::Decorate: return 71;
+            case OpKind::TypeVoid: return 19;
+            case OpKind::TypeFunction: return 33;
+            case OpKind::TypeInt: return 21;
+            case OpKind::TypeFloat: return 22;
+            case OpKind::TypeVector: return 23;
+            case OpKind::TypeArray: return 28;
+            case OpKind::TypeStruct: return 30;
+            case OpKind::TypePointer: return 32;
+            case OpKind::Unreachable: return 255;
+            case OpKind::Variable: return 59;
+            case OpKind::Constant: return 43;
+            case OpKind::ConstantComposite: return 44;
+            case OpKind::CompositeConstruct: return 80;
+            case OpKind::Function: return 54;
+            case OpKind::FunctionParameter: return 55;
+            case OpKind::FunctionEnd: return 56;
+            case OpKind::Label: return 248;
+            case OpKind::Phi: return 245;
+            case OpKind::Branch: return 249;
+            case OpKind::BranchConditional: return 250;
+            case OpKind::Switch: return 251;
+            case OpKind::Return: return 253;
+            case OpKind::ReturnValue: return 254;
             default: fe::unreachable();
         }
     }
