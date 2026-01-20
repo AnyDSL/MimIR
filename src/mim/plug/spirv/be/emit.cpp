@@ -16,6 +16,7 @@
 #include "mim/plug/mem/mem.h"
 #include "mim/plug/spirv/autogen.h"
 #include "mim/plug/spirv/be/op.h"
+#include "mim/plug/vec/autogen.h"
 
 #include "absl/container/flat_hash_map.h"
 #include "fe/assert.h"
@@ -234,9 +235,8 @@ private:
                 break;
             }
             case OpKind::Function:
-                ostream() << " %" << id_name(op.operands[0]);
-                ostream() << " " << function_control::name(op.operands[1]);
-                ostream() << " %" << id_name(op.operands[2]);
+                ostream() << " " << function_control::name(op.operands[0]);
+                ostream() << " %" << id_name(op.operands[1]);
                 break;
             case OpKind::Decorate:
                 ostream() << " %" << id_name(op.operands[0]);
@@ -559,7 +559,7 @@ Word Emitter::prepare() {
     Word return_type = convert_ret_pi(root()->type()->ret_pi());
     funDefinitions.emplace_back(Op{
         OpKind::Function,
-        {return_type, 0, type},
+        {0, type},
         id,
         return_type
     });
@@ -728,7 +728,8 @@ void Emitter::emit_epilogue(Lam* lam) {
 Word Emitter::emit_bb(BB& bb, const Def* def) {
     OpVec ops{};
 
-    Word id = next_id();
+    Word id      = next_id();
+    Word type_id = convert(def->type());
 
     if (auto tuple = def->isa<Tuple>()) {
         Word type_id = convert(tuple->type());
@@ -743,18 +744,68 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         if (is_const(tuple)) {
             // OpConstantComposite: result type is implicit, constituents are operands
             declarations.emplace_back(Op{OpKind::ConstantComposite, constituents, id, type_id});
-            id_names[id] = std::format("const_composite_{}", id);
         } else {
             // OpCompositeConstruct: result type ID first, then constituents
             constituents.insert(constituents.begin(), type_id);
             bb.ops.emplace_back(Op{OpKind::CompositeConstruct, constituents, id, type_id});
-            id_names[id] = std::format("composite_{}", id);
         }
 
         return id;
     }
 
-    std::cerr << "def not yet implemented: " << def->node_name() << "\n";
+    if (auto lit = def->isa<Lit>()) {
+        // TODO
+    }
+
+    if (auto cat = Axm::isa<vec::cat>(def)) {
+        auto as_bs = cat->arg();
+        std::vector<Word> constituents;
+
+        for (auto vs : as_bs->ops()) {
+            std::cerr << "vs: " << vs << "\n";
+            for (auto v : vs->ops()) {
+                std::cerr << "v: " << v << "\n";
+                constituents.push_back(emit(v));
+            }
+        }
+        bb.ops.push_back(Op{
+            OpKind::CompositeConstruct,
+            {constituents},
+            id,
+            type_id,
+        });
+        return id;
+    }
+
+    if (auto store = Axm::isa<spirv::store>(def)) {
+        auto [mem, global, value] = store->arg()->projs<3>();
+        bb.ops.emplace_back(Op{
+            OpKind::Store,
+            {interface_vars_[global], emit(value)},
+            {},
+            {}
+        });
+        return id;
+    }
+
+    if (auto load = Axm::isa<spirv::load>(def)) {
+        auto [mem, global] = load->arg()->projs<2>();
+        bb.ops.emplace_back(Op{
+            OpKind::Load,
+            {interface_vars_[global]},
+            id,
+            type_id,
+        });
+        return id;
+    }
+
+    // TODO: vars
+
+    bb.ops.emplace_back(Op{OpKind::Error, {}, id, type_id});
+    if (auto app = def->isa<App>())
+        std::cerr << "def not yet implemented: " << app->callee() << "\n";
+    else
+        std::cerr << "def not yet implemented: " << def << "\n";
 
     return id;
 }

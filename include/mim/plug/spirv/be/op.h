@@ -133,6 +133,8 @@ enum class OpKind {
     TypePointer,
     Unreachable,
     Variable,
+    Load,
+    Store,
     Constant,
     ConstantComposite,
     CompositeConstruct,
@@ -179,6 +181,8 @@ struct Op {
             case OpKind::TypePointer: return "OpTypePointer";
             case OpKind::Unreachable: return "OpUnreachable";
             case OpKind::Variable: return "OpVariable";
+            case OpKind::Load: return "OpLoad";
+            case OpKind::Store: return "OpStore";
             case OpKind::Constant: return "OpConstant";
             case OpKind::ConstantComposite: return "OpConstantComposite";
             case OpKind::CompositeConstruct: return "OpCompositeConstruct";
@@ -212,6 +216,8 @@ struct Op {
             case OpKind::TypePointer: return 32;
             case OpKind::Unreachable: return 255;
             case OpKind::Variable: return 59;
+            case OpKind::Load: return 61;
+            case OpKind::Store: return 62;
             case OpKind::Constant: return 43;
             case OpKind::ConstantComposite: return 44;
             case OpKind::CompositeConstruct: return 80;
