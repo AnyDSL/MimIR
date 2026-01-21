@@ -13,6 +13,7 @@
 
 #include "mim/be/emitter.h"
 
+#include "mim/plug/core/core.h"
 #include "mim/plug/mem/mem.h"
 #include "mim/plug/spirv/autogen.h"
 #include "mim/plug/spirv/be/op.h"
@@ -25,6 +26,7 @@ using namespace std::string_literals;
 
 namespace mim::plug::spirv {
 
+namespace core = mim::plug::core;
 namespace math = mim::plug::math;
 
 // Helper function to check if a type is a scalar type suitable for vectors
@@ -266,6 +268,17 @@ private:
                 break;
             case OpKind::TypeFloat:
                 ostream() << " " << op.operands[0]; // width
+                break;
+            case OpKind::Constant:
+                // hints[0] = type (0=int, 1=float), hints[1] = width
+                if (op.hints.size() >= 2 && op.hints[0] == 1) {
+                    ostream() << " " << words_to_float(op.operands, op.hints[1]);
+                } else if (op.hints.size() >= 2) {
+                    ostream() << " " << words_to_int(op.operands, op.hints[1]);
+                } else {
+                    // Fallback for constants without hints
+                    ostream() << " " << op.operands[0];
+                }
                 break;
             case OpKind::TypeVector:
                 ostream() << " %" << id_name(op.operands[0]); // component type
@@ -781,7 +794,43 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     }
 
     if (auto lit = def->isa<Lit>()) {
-        // TODO
+        if (lit->type()->isa<Nat>()) {
+            // Nat: assume 32-bit for now
+            // hints = {type=0 (int), width}
+            declarations.push_back(Op{
+                OpKind::Constant,
+                int_to_words(lit->get(), 32),
+                id,
+                convert(lit->type()),
+                {0, 32}
+            });
+            return id;
+        }
+
+        if (auto size = Idx::isa(lit->type())) {
+            int width = static_cast<int>(*Idx::size2bitwidth(size));
+            declarations.push_back(Op{
+                OpKind::Constant,
+                int_to_words(lit->get(), width),
+                id,
+                convert(lit->type()),
+                {0, width}
+            });
+            return id;
+        }
+
+        if (auto w = math::isa_f(lit->type())) {
+            // Float: hints = {type=1 (float), width}
+            int width = static_cast<int>(*w);
+            declarations.push_back(Op{
+                OpKind::Constant,
+                float_to_words(lit->get(), width),
+                id,
+                convert(lit->type()),
+                {1, width}
+            });
+            return id;
+        }
     }
 
     if (auto cat = Axm::isa<vec::cat>(def)) {

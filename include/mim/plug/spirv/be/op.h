@@ -13,6 +13,30 @@ using Word = int32_t;
 using namespace std::string_literals;
 
 std::vector<Word> string_to_words(std::string_view string);
+std::string words_to_string(std::vector<Word> words);
+
+std::vector<Word> float_to_words(uint64_t bits, int width);
+double words_to_float(const std::vector<Word>& words, int width);
+
+std::vector<Word> int_to_words(uint64_t value, int width);
+int64_t words_to_int(const std::vector<Word>& words, int width);
+
+// Helper for building operand vectors - supports Words and vectors of Words
+class Operands : public std::vector<Word> {
+public:
+    Operands() = default;
+    Operands(std::initializer_list<Word> words)
+        : std::vector<Word>(words) {}
+
+    Operands& operator<<(Word w) {
+        push_back(w);
+        return *this;
+    }
+    Operands& operator<<(const std::vector<Word>& ws) {
+        insert(end(), ws.begin(), ws.end());
+        return *this;
+    }
+};
 
 namespace capability {
 enum Capability {
@@ -68,9 +92,10 @@ std::string name(int control);
 
 namespace storage_class {
 enum StorageClass {
-    Input   = 1,
-    Uniform = 2,
-    Output  = 3,
+    Input    = 1,
+    Uniform  = 2,
+    Output   = 3,
+    Function = 7,
 };
 
 std::string name(int storage_class);
@@ -109,7 +134,7 @@ std::string name(int set);
 } // namespace ext_inst
 
 enum class OpKind {
-    Error,
+    Undefined,
     Capability,
     Extension,
     ExtInstImport,
@@ -133,8 +158,12 @@ enum class OpKind {
     TypePointer,
     Unreachable,
     Variable,
+    AccessChain,
     Load,
     Store,
+    Bitcast,
+    UConvert,
+    SConvert,
     Constant,
     ConstantComposite,
     CompositeConstruct,
@@ -157,9 +186,40 @@ struct Op {
     std::optional<Word> result;
     std::optional<Word> result_type;
 
-    constexpr const char* name() {
+    // Used to pass additional information to pretty printing
+    std::vector<Word> hints;
+
+    // Constructors allowing optional fields from the end
+    Op()
+        : kind(OpKind::Undefined) {}
+    Op(OpKind kind)
+        : kind(kind) {}
+    Op(OpKind kind, std::vector<Word> operands)
+        : kind(kind)
+        , operands(std::move(operands)) {}
+    Op(OpKind kind, std::vector<Word> operands, std::optional<Word> result)
+        : kind(kind)
+        , operands(std::move(operands))
+        , result(result) {}
+    Op(OpKind kind, std::vector<Word> operands, std::optional<Word> result, std::optional<Word> result_type)
+        : kind(kind)
+        , operands(std::move(operands))
+        , result(result)
+        , result_type(result_type) {}
+    Op(OpKind kind,
+       std::vector<Word> operands,
+       std::optional<Word> result,
+       std::optional<Word> result_type,
+       std::vector<Word> hints)
+        : kind(kind)
+        , operands(std::move(operands))
+        , result(result)
+        , result_type(result_type)
+        , hints(std::move(hints)) {}
+
+    const char* name() const {
         switch (this->kind) {
-            case OpKind::Error: return "OpError";
+            case OpKind::Undefined: return "Undefined";
             case OpKind::Capability: return "OpCapability";
             case OpKind::Extension: return "OpExtension";
             case OpKind::ExtInstImport: return "OpExtInstImport";
@@ -182,8 +242,12 @@ struct Op {
             case OpKind::TypePointer: return "OpTypePointer";
             case OpKind::Unreachable: return "OpUnreachable";
             case OpKind::Variable: return "OpVariable";
+            case OpKind::AccessChain: return "OpAccessChain";
             case OpKind::Load: return "OpLoad";
             case OpKind::Store: return "OpStore";
+            case OpKind::Bitcast: return "OpBitcast";
+            case OpKind::UConvert: return "OpUConvert";
+            case OpKind::SConvert: return "OpSConvert";
             case OpKind::Constant: return "OpConstant";
             case OpKind::ConstantComposite: return "OpConstantComposite";
             case OpKind::CompositeConstruct: return "OpCompositeConstruct";
@@ -199,7 +263,7 @@ struct Op {
         }
     }
 
-    constexpr Word magic() {
+    Word magic() const {
         switch (this->kind) {
             case OpKind::Capability: return 17;
             case OpKind::Extension: return 10;
@@ -218,8 +282,12 @@ struct Op {
             case OpKind::TypePointer: return 32;
             case OpKind::Unreachable: return 255;
             case OpKind::Variable: return 59;
+            case OpKind::AccessChain: return 65;
             case OpKind::Load: return 61;
             case OpKind::Store: return 62;
+            case OpKind::Bitcast: return 124;
+            case OpKind::UConvert: return 113;
+            case OpKind::SConvert: return 114;
             case OpKind::Constant: return 43;
             case OpKind::ConstantComposite: return 44;
             case OpKind::CompositeConstruct: return 80;
