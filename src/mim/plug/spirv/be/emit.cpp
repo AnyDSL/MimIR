@@ -83,24 +83,6 @@ const Def* strip_type(const Def* type) {
     return isa_kept(type);
 }
 
-template<typename Iter>
-std::string words_to_string(Iter& begin, Iter end) {
-    std::string out;
-    Word mask = (1 << 8) - 1;
-    for (; begin != end; begin++) {
-        Word word = *begin;
-        for (int index = 0; index < 4; index++)
-            if (auto c = (word >> (index * 8)) & mask)
-                out.push_back(static_cast<char>(c));
-            else {
-                // Advance past the null-terminator word
-                ++begin;
-                return out;
-            }
-    }
-    return out;
-}
-
 using OpVec = std::vector<Op>;
 
 struct BB {

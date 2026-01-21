@@ -13,7 +13,23 @@ using Word = int32_t;
 using namespace std::string_literals;
 
 std::vector<Word> string_to_words(std::string_view string);
-std::string words_to_string(std::vector<Word> words);
+template<typename Iter>
+std::string words_to_string(Iter& begin, Iter end) {
+    std::string out;
+    Word mask = (1 << 8) - 1;
+    for (; begin != end; begin++) {
+        Word word = *begin;
+        for (int index = 0; index < 4; index++)
+            if (auto c = (word >> (index * 8)) & mask)
+                out.push_back(static_cast<char>(c));
+            else {
+                // Advance past the null-terminator word
+                ++begin;
+                return out;
+            }
+    }
+    return out;
+}
 
 std::vector<Word> float_to_words(uint64_t bits, int width);
 double words_to_float(const std::vector<Word>& words, int width);
