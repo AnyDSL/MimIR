@@ -78,6 +78,23 @@ enum ExecutionModel {
 std::string name(int model);
 } // namespace execution_model
 
+namespace execution_mode {
+enum ExecutionMode {
+    Invocations           = 0,
+    SpacingEqual          = 1,
+    SpacingFractionalEven = 2,
+    SpacingFractionalOdd  = 3,
+    VertexOrderCw         = 4,
+    VertexOrderCcw        = 5,
+    PixelCenterInteger    = 6,
+    OriginUpperLeft       = 7,
+    OriginLowerLeft       = 8,
+    EarlyFragmentTests    = 9,
+};
+
+std::string name(int mode);
+} // namespace execution_mode
+
 namespace function_control {
 enum FunctionControl {
     None       = 0,
@@ -112,7 +129,7 @@ enum Decoration {
 std::string name(int decoration);
 } // namespace decoration
 
-namespace builtin {
+namespace spv_builtin {
 enum BuiltIn {
     Position      = 0,
     PointSize     = 1,
@@ -124,7 +141,7 @@ enum BuiltIn {
 };
 
 std::string name(int builtin);
-} // namespace builtin
+} // namespace spv_builtin
 
 namespace ext_inst {
 enum ExtInstSet {
