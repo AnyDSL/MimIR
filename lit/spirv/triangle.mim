@@ -22,9 +22,9 @@ lam fragment [color: «3; %math.F32»]: «4; %math.F32»
 
 fun extern vertex_ [
     mem: %mem.M 0,
-    model: %spirv.entry %spirv.model.Vertex,
-    i_vertex_id: %spirv.vertex.vertex_id,
-    o_position: %spirv.vertex.position,
+    model: %spirv.entry %spirv.model.vertex (),
+    i_vertex_id: %spirv.builtin.vertex_id,
+    o_position: %spirv.builtin.position,
     o_color: %spirv.Output (%spirv.decor.location 0) «3; %math.F32»,
 ] = let (mem_, vertex_id) = %spirv.load (mem, i_vertex_id);
     let (position, color) = vertex (%core.bitcast (Idx 3) vertex_id);
@@ -33,7 +33,7 @@ fun extern vertex_ [
 
 fun extern fragment_ [
     mem: %mem.M 0,
-    model: %spirv.entry %spirv.model.Fragment,
+    model: %spirv.entry %spirv.model.fragment %spirv.mode.origin_upper_left,
     i_color: %spirv.Input (%spirv.decor.location 0) «3; %math.F32»,
     o_color: %spirv.Output (%spirv.decor.location 0) «4; %math.F32»,
 ] = let (mem_, color) = %spirv.load (mem, i_color);

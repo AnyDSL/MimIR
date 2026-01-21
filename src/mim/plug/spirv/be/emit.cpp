@@ -237,6 +237,13 @@ private:
                     ostream() << " %" << id_name(*ops);
                 break;
             }
+            case OpKind::ExecutionMode:
+                ostream() << " %" << id_name(op.operands[0]);
+                ostream() << " " << execution_mode::name(op.operands[1]);
+                // Some execution modes have additional literal operands
+                for (size_t i = 2; i < op.operands.size(); ++i)
+                    ostream() << " " << op.operands[i];
+                break;
             case OpKind::Function:
                 ostream() << " " << function_control::name(op.operands[0]);
                 ostream() << " %" << id_name(op.operands[1]);
@@ -245,7 +252,7 @@ private:
                 ostream() << " %" << id_name(op.operands[0]);
                 ostream() << " " << decoration::name(op.operands[1]);
                 if (op.operands[1] == decoration::BuiltIn && op.operands.size() > 2) {
-                    ostream() << " " << builtin::name(op.operands[2]);
+                    ostream() << " " << spv_builtin::name(op.operands[2]);
                     for (size_t i = 3; i < op.operands.size(); ++i)
                         ostream() << " " << op.operands[i];
                 } else {
@@ -346,6 +353,7 @@ private:
     Word glsl_ext_inst_id_{0};
     std::optional<Word> i32_type_id_{}; // Shared 32-bit unsigned integer type for all Nat/Idx
     absl::flat_hash_map<std::pair<Word, Word>, Word> ptr_types_{}; // (storage_class, type_id) -> pointer_type_id
+    absl::flat_hash_map<std::vector<Word>, Word> func_types_{};    // [return_type, param_types...] -> func_type_id
     DefMap<Word> interface_vars_{};
 };
 
@@ -421,8 +429,9 @@ Word Emitter::convert(const Def* type, std::string_view name) {
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
         Word return_type = convert_ret_pi(pi->ret_pi());
-        Op op{OpKind::TypeFunction, {return_type}, id, {}};
 
+        // Build signature for deduplication
+        std::vector<Word> signature{return_type};
         auto doms = strip_type(pi->dom());
         if (doms != world().sigma()) {
             // if it is not a sigma, it is just the continuation, which
@@ -431,12 +440,20 @@ Word Emitter::convert(const Def* type, std::string_view name) {
                 for (auto dom : sigma->ops().rsubspan(1)) {
                     if (Axm::isa<mem::M>(dom)) continue;
                     if (Axm::isa<spirv::entry>(dom)) continue; // Skip entry markers
-                    op.operands.emplace_back(convert(dom));
+                    signature.emplace_back(convert(dom));
                 }
         }
 
+        // Check if this function type already exists
+        if (auto it = func_types_.find(signature); it != func_types_.end()) {
+            types_[type] = it->second;
+            return it->second;
+        }
+
+        Op op{OpKind::TypeFunction, signature, id, {}};
         declarations.push_back(op);
-        id_names[id] = std::format("pi{}", type->unique_name());
+        id_names[id]           = std::format("pi{}", type->unique_name());
+        func_types_[signature] = id;
     } else if (auto sigma = type->isa<Sigma>()) {
         if (sigma->isa_mut()) std::cerr << "mutable sigmas not yet supported\n";
 
@@ -523,7 +540,7 @@ Word Emitter::convert_ret_pi(const Pi* pi) {
 void Emitter::emit_decoration(Word var_id, const Def* decoration_) {
     auto decoration = Axm::as<spirv::decor>(decoration_);
     switch (decoration.id()) {
-        case spirv::decor::builtin: {
+        case spirv::decor::mk_builtin: {
             auto [_model, magic] = decoration->uncurry_args<2>();
             annotations.emplace_back(Op{
                 OpKind::Decorate,
@@ -550,7 +567,7 @@ std::optional<spirv::model> isa_builtin(const Def* type) {
         auto [storage_class, n, decorations, wrapped_type] = global->uncurry_args<4>();
         for (auto decoration : decorations->ops()) {
             if (auto builtin = Axm::isa<spirv::decor>(decoration)) {
-                if (builtin.id() == spirv::decor::builtin) {
+                if (builtin.id() == spirv::decor::mk_builtin) {
                     auto model = Axm::as<spirv::model>(builtin->arg(0));
                     return std::optional<spirv::model>{model.id()};
                 }
@@ -577,6 +594,7 @@ Word Emitter::prepare() {
 
     std::optional<spirv::model> model{};
     std::vector<Word> interfaces{};
+    std::vector<const Def*> exec_modes{};
 
     auto var = root()->var(0);
 
@@ -588,8 +606,22 @@ Word Emitter::prepare() {
             if (auto entry_marker = Axm::isa<spirv::entry>(param)) {
                 if (model.has_value()) error("multiple execution model markers found in entry point");
 
-                // Extract the model from the entry marker argument
-                model = Axm::as<spirv::model>(entry_marker->arg()).id();
+                // Extract model and modes: entry: Model → {n: Nat} → «n; Mode» → ★
+                auto [_model, n, modes] = entry_marker->uncurry_args<3>();
+                model                   = Axm::as<spirv::model>(_model).id();
+
+                // Collect execution modes
+                if (auto lit_n = Lit::isa(n)) {
+                    if (*lit_n == 1) {
+                        // Single mode
+                        exec_modes.push_back(modes);
+                    } else if (*lit_n > 1) {
+                        // Multiple modes in a tuple
+                        for (auto mode : modes->projs())
+                            exec_modes.push_back(mode);
+                    }
+                    // n == 0: no modes
+                }
                 continue;
             }
 
@@ -648,13 +680,13 @@ Word Emitter::prepare() {
     // external lams are converted to entry points
     if (root()->is_external()) {
         // assume compute shader if no builtins were used
-        if (!model.has_value()) model = spirv::model::Compute;
+        if (!model.has_value()) model = spirv::model::compute;
 
         Word model_magic;
         switch (*model) {
-            case spirv::model::Vertex: model_magic = 0; break;
-            case spirv::model::Fragment: model_magic = 4; break;
-            case spirv::model::Compute: model_magic = 5; break;
+            case spirv::model::vertex: model_magic = 0; break;
+            case spirv::model::fragment: model_magic = 4; break;
+            case spirv::model::compute: model_magic = 5; break;
         }
 
         Op entry{
@@ -673,6 +705,34 @@ Word Emitter::prepare() {
             entry.operands.push_back(word);
 
         entryPoints.push_back(entry);
+
+        // Emit execution modes
+        for (auto mode_def : exec_modes) {
+            if (auto mode = Axm::isa<spirv::mode>(mode_def)) {
+                Word mode_magic;
+                switch (mode.id()) {
+                    case spirv::mode::invocations: mode_magic = execution_mode::Invocations; break;
+                    case spirv::mode::spacing_equal: mode_magic = execution_mode::SpacingEqual; break;
+                    case spirv::mode::spacing_fractional_even:
+                        mode_magic = execution_mode::SpacingFractionalEven;
+                        break;
+                    case spirv::mode::spacing_fractional_odd: mode_magic = execution_mode::SpacingFractionalOdd; break;
+                    case spirv::mode::vertex_order_cw: mode_magic = execution_mode::VertexOrderCw; break;
+                    case spirv::mode::vertex_order_ccw: mode_magic = execution_mode::VertexOrderCcw; break;
+                    case spirv::mode::pixel_center_integer: mode_magic = execution_mode::PixelCenterInteger; break;
+                    case spirv::mode::origin_upper_left: mode_magic = execution_mode::OriginUpperLeft; break;
+                    case spirv::mode::origin_lower_left: mode_magic = execution_mode::OriginLowerLeft; break;
+                    case spirv::mode::early_fragment_tests: mode_magic = execution_mode::EarlyFragmentTests; break;
+                    default: continue;
+                }
+                executionModes.push_back(Op{
+                    OpKind::ExecutionMode,
+                    {id, mode_magic},
+                    {},
+                    {}
+                });
+            }
+        }
     }
 
     return id;

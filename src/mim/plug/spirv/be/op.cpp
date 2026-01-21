@@ -166,6 +166,24 @@ std::string name(int control) {
 }
 } // namespace function_control
 
+namespace execution_mode {
+std::string name(int mode) {
+    switch (mode) {
+        case Invocations: return "Invocations"s;
+        case SpacingEqual: return "SpacingEqual"s;
+        case SpacingFractionalEven: return "SpacingFractionalEven"s;
+        case SpacingFractionalOdd: return "SpacingFractionalOdd"s;
+        case VertexOrderCw: return "VertexOrderCw"s;
+        case VertexOrderCcw: return "VertexOrderCcw"s;
+        case PixelCenterInteger: return "PixelCenterInteger"s;
+        case OriginUpperLeft: return "OriginUpperLeft"s;
+        case OriginLowerLeft: return "OriginLowerLeft"s;
+        case EarlyFragmentTests: return "EarlyFragmentTests"s;
+        default: fe::unreachable();
+    }
+}
+} // namespace execution_mode
+
 namespace storage_class {
 std::string name(int storage_class) {
     switch (storage_class) {
@@ -190,7 +208,7 @@ std::string name(int decoration) {
 }
 } // namespace decoration
 
-namespace builtin {
+namespace spv_builtin {
 std::string name(int builtin) {
     switch (builtin) {
         case Position: return "Position"s;
@@ -203,7 +221,7 @@ std::string name(int builtin) {
         default: return std::to_string(builtin);
     }
 }
-} // namespace builtin
+} // namespace spv_builtin
 
 namespace ext_inst {
 std::string name(int set) {
