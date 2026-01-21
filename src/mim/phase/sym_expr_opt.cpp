@@ -142,7 +142,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         return world().app(lam, abstr_args);
     }
 
-    return Rewriter::rewrite_imm_App(app);
+    return mim::Analysis::rewrite_imm_App(app);
 }
 
 static bool keep(const Def* old_var, const Def* abstr) {
