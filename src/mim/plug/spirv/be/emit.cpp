@@ -930,7 +930,57 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
             }
         }
 
-        // TODO: dynamic indices require OpAccessChain
+        // Dynamic indices require OpAccessChain
+        // We need to:
+        // 1. Create a pointer type for the composite
+        // 2. Create a variable in Function storage with the composite as initializer
+        // 3. Use OpAccessChain to get a pointer to the element
+        // 4. Use OpLoad to load the value
+        if (is_const(tuple)) {
+            Word composite_id      = emit(tuple);
+            Word composite_type_id = convert(tuple->type());
+
+            // Create pointer type for the composite
+            Word ptr_type_id = next_id();
+            declarations.push_back(Op{
+                OpKind::TypePointer,
+                {storage_class::Function, composite_type_id},
+                ptr_type_id,
+                {}
+            });
+
+            // Create variable with initializer
+            Word var_id = next_id();
+            funDeclarations.push_back(Op{
+                OpKind::Variable,
+                {storage_class::Function, composite_id},
+                var_id,
+                ptr_type_id
+            });
+
+            // Create pointer type for the element
+            Word elem_ptr_type_id = next_id();
+            declarations.push_back(Op{
+                OpKind::TypePointer,
+                {storage_class::Function, type_id},
+                elem_ptr_type_id,
+                {}
+            });
+
+            // OpAccessChain to get pointer to element
+            Word ptr_id = next_id();
+            bb.ops.push_back(Op{
+                OpKind::AccessChain,
+                {var_id, emit(index)},
+                ptr_id,
+                elem_ptr_type_id
+            });
+
+            // OpLoad to load the value
+            bb.ops.push_back(Op{OpKind::Load, {ptr_id}, id, type_id});
+
+            return id;
+        }
     }
 
     if (auto store = Axm::isa<spirv::store>(def)) {
