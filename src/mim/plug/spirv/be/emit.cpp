@@ -78,6 +78,10 @@ const Def* strip_type(const Def* type) {
         return world.sigma(fields.view());
     }
 
+    if (auto arr = type->isa<Arr>()) return world.arr(arr->arity(), strip_type(arr->body()));
+
+    if (auto pi = type->isa<Pi>()) return world.pi(strip_type(pi->dom()), strip_type(pi->codom()), pi->is_implicit());
+
     if (isa_emitted(type))
         return type;
     else
