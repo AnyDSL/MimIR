@@ -492,7 +492,6 @@ Word Emitter::convert(const Def* type, std::string_view name) {
                 // for access later
                 Word var_id           = next_id();
                 interface_vars_[type] = var_id;
-                std::cerr << "Stored interface_vars_[" << type << "] = " << var_id << "\n";
 
                 // emit var
                 declarations.emplace_back(Op{OpKind::Variable, {__storage_class}, var_id, id});
@@ -588,13 +587,9 @@ Word Emitter::prepare() {
 
     auto var = root()->var(0);
 
-    if (Axm::isa<mem::M>(var->type())) {
-        // do nothing
-    } else if (auto sigma = var->type()->isa<Sigma>()) {
+    if (auto sigma = var->type()->isa<Sigma>()) {
         for (size_t idx = 0; idx < sigma->num_ops(); ++idx) {
             auto param = sigma->op(idx);
-
-            if (Axm::isa<mem::M>(param)) continue;
 
             // Check if this is an execution model marker
             if (auto entry_marker = Axm::isa<spirv::entry>(param)) {
@@ -633,27 +628,28 @@ Word Emitter::prepare() {
             }
 
             auto param_type = strip_type(var->type());
+            Word param_id   = next_id();
 
             // Handle "real" parameters
             if (param_type != world().sigma()) {
-                Word param_id = next_id();
-
                 funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
                 id_names[param_id] = param->unique_name();
-
-                // Add var extract to locals_, as it is not real
-                locals_[world().extract(var, idx)] = param_id;
             }
+
+            // Add var extract to locals_, as it is not real
+            locals_[world().extract(var, idx)] = param_id;
         }
     } else {
+        // TODO: markers broken here
         auto param_type = strip_type(var->type());
-        if (param_type != world().sigma()) {
-            Word param_id = next_id();
+        Word param_id   = next_id();
 
+        if (param_type != world().sigma()) {
             funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
             id_names[param_id] = var->unique_name();
-            locals_[var]       = param_id;
         }
+
+        locals_[var] = param_id;
     }
 
     // external lams are converted to entry points
@@ -680,13 +676,8 @@ Word Emitter::prepare() {
             entry.operands.push_back(word);
 
         // append interfacing globals
-        for (Word word : interfaces) {
+        for (Word word : interfaces)
             entry.operands.push_back(word);
-            std::cerr << "Appending interface var " << word << " (name: " << id_name(word) << ")\n";
-        }
-
-        std::cerr << "interfaces: " << interfaces.size() << "\n";
-        std::cerr << "Entry point operands size: " << entry.operands.size() << "\n";
 
         entryPoints.push_back(entry);
     }
@@ -768,18 +759,33 @@ void Emitter::emit_epilogue(Lam* lam) {
 Word Emitter::emit_bb(BB& bb, const Def* def) {
     OpVec ops{};
 
+    std::cerr << "emitting " << def << ": " << def->type() << "\n";
+
     Word id      = next_id();
     Word type_id = convert(strip_type(def->type()));
 
     if (auto tuple = def->isa<Tuple>()) {
-        Word type_id = convert(tuple->type());
+        std::cerr << "emitting tuple\n";
         std::vector<Word> constituents;
+
+        // Unit value
+        if (tuple == world().tuple()) return id;
 
         // Emit all tuple elements
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
             auto elem = tuple->proj(n, i);
+
+            // Skip fake values
+            if (isa_kept(elem->type()) == world().sigma()) continue;
+
+            std::cerr << "emitting tuple constituent\n";
             constituents.push_back(emit(elem));
         }
+
+        // Directly unpack tuple if it only has a single or no values
+        std::cerr << "emitting unpacked value\n";
+        if (constituents.empty()) return emit(world().tuple());
+        if (constituents.size() == 1) return constituents[0];
 
         if (is_const(tuple)) {
             // OpConstantComposite: result type is implicit, constituents are operands
@@ -843,8 +849,6 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                  std::pair{n, as},
                  std::pair{m, bs}
         }) {
-            std::cerr << "vs: " << as << ": " << as->type() << "\n";
-
             if (auto size = Lit::isa(n)) {
                 if (size > 1) {
                     auto array = vs->type()->as<Arr>();
@@ -880,11 +884,16 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
+        std::cerr << "emitting extract " << tuple << "#" << index << "\n";
 
-        // mem values should not happen here
-        assert(!Axm::isa<mem::M>(extract->type()) && "mem value extraction encountered");
         // var extracts are not real and should have been added to locals_ already
-        assert(!def->isa<Var>() && "var extractions encountered in emit_bb");
+        assert(!def->isa<Var>() && "var extractions encountered in emit_bb\n");
+
+        if (Axm::isa<mem::M>(extract->type())) {
+            std::cerr << "emitting tuple for mem value\n";
+            emit(tuple);
+            return id;
+        }
 
         // for literal indices, use OpCompositeExtract
         if (auto lit = Lit::isa(index)) {
@@ -908,6 +917,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                 // If only a single field is kept, the extract is not required
                 if (kept == 1) return emit(tuple);
 
+                std::cerr << "emitting tuple\n";
                 bb.ops.push_back(Op{
                     OpKind::CompositeExtract,
                     {emit(tuple), index_corrected},
@@ -919,6 +929,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
             }
 
             if (auto arr = tuple->type()->isa<Arr>()) {
+                std::cerr << "emitting tuple\n";
                 bb.ops.push_back(Op{
                     OpKind::CompositeExtract,
                     {emit(arr), index},
@@ -985,6 +996,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
 
     if (auto store = Axm::isa<spirv::store>(def)) {
         auto [mem, global, value] = store->arg()->projs<3>();
+        emit(mem);
         bb.ops.emplace_back(Op{
             OpKind::Store,
             {emit(global), emit(value)},
@@ -996,6 +1008,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
 
     if (auto load = Axm::isa<spirv::load>(def)) {
         auto [mem, global] = load->arg()->projs<2>();
+        emit(mem);
         bb.ops.emplace_back(Op{
             OpKind::Load,
             {emit(global)},
@@ -1005,13 +1018,40 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         return id;
     }
 
+    if (auto bitcast = Axm::isa<core::bitcast>(def)) {
+        auto src    = bitcast->arg();
+        auto src_id = emit(src);
+
+        auto size2width = [&](const Def* type) -> nat_t {
+            if (type->isa<Nat>()) return 64;
+            if (auto size = Idx::isa(type)) return *Idx::size2bitwidth(size);
+            return 0;
+        };
+
+        auto src_width = size2width(src->type());
+        auto dst_width = size2width(bitcast->type());
+
+        if (src_width == dst_width) {
+            // Same size: use OpBitcast or just return source
+            if (convert(src->type()) == type_id) return src_id;
+            bb.ops.push_back(Op{OpKind::Bitcast, {src_id}, id, type_id});
+        } else if (src_width < dst_width) {
+            // Widening: use OpUConvert (zero extend)
+            bb.ops.push_back(Op{OpKind::UConvert, {src_id}, id, type_id});
+        } else {
+            // Narrowing: use OpUConvert (truncate)
+            bb.ops.push_back(Op{OpKind::UConvert, {src_id}, id, type_id});
+        }
+        return id;
+    }
+
     // TODO: vars
 
-    bb.ops.emplace_back(Op{OpKind::Error, {}, id, type_id});
+    bb.ops.emplace_back(Op{OpKind::Undefined, {}, id, type_id});
     if (auto app = def->isa<App>())
-        std::cerr << "def not yet implemented: " << app->callee() << "\n";
+        std::cerr << "def not yet implemented: " << app->callee() << ": " << def->type() << "\n";
     else
-        std::cerr << "def not yet implemented: " << def << "\n";
+        std::cerr << "def not yet implemented: " << def << ": " << def->type() << "\n";
 
     return id;
 }
