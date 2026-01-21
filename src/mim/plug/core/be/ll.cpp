@@ -3,6 +3,7 @@
 #include <deque>
 #include <fstream>
 #include <iomanip>
+#include <optional>
 #include <ranges>
 
 #include <absl/container/btree_set.h>
@@ -136,7 +137,7 @@ public:
 
 private:
     std::string id(const Def*, bool force_bb = false) const;
-    std::string convert(const Def*);
+    std::string convert(const Def*, bool simd = true);
     std::string convert_ret_pi(const Pi*);
 
     absl::btree_set<std::string> decls_;
@@ -149,6 +150,16 @@ private:
 /*
  * convert
  */
+
+static std::optional<std::pair<nat_t, const Def*>> is_simd(const Def* type) {
+    if (auto arr = type->isa<Arr>()) {
+        if (auto l = Lit::isa(arr->arity())) {
+            if (arr->body()->isa<Nat>() || Idx::isa(arr->body()) || Axm::isa<math::F>(arr->body()))
+                return std::pair{*l, arr->body()};
+        }
+    }
+    return {};
+}
 
 std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto global = def->isa<Global>()) return "@" + global->unique_name();
@@ -164,7 +175,7 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     return "%"s + def->unique_name();
 }
 
-std::string Emitter::convert(const Def* type) {
+std::string Emitter::convert(const Def* type, bool simd) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     assert(!Axm::isa<mem::M>(type));
@@ -185,12 +196,17 @@ std::string Emitter::convert(const Def* type) {
     } else if (auto ptr = Axm::isa<mem::Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
         // TODO addr_space
-        print(s, "{}*", convert(pointee));
+        print(s, "{}*", convert(pointee, false));
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
         u64 size    = 0;
-        if (auto arity = Lit::isa(arr->arity())) size = *arity;
-        print(s, "[{} x {}]", size, t_elem);
+        if (auto se = is_simd(arr); se && simd) {
+            auto [size, elem] = *se;
+            print(s, "<{} x {}>", size, convert(elem));
+        } else {
+            if (auto arity = Lit::isa(arr->arity())) size = *arity;
+            print(s, "[{} x {}]", size, t_elem);
+        }
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
