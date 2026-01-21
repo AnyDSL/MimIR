@@ -348,8 +348,6 @@ private:
 };
 
 Word Emitter::convert(const Def* type, std::string_view name) {
-    std::cerr << "converting: " << type << "\n";
-
     // check if already converted
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
@@ -379,7 +377,6 @@ Word Emitter::convert(const Def* type, std::string_view name) {
         id_names[id] = std::format("i{}", bitwidth);
     } else if (auto w = math::isa_f(type)) {
         Word bitwidth = static_cast<Word>(*w);
-        std::cerr << "float with width " << bitwidth << "\n";
         declarations.emplace_back(Op{
             OpKind::TypeFloat,
             {bitwidth, 0},
@@ -428,7 +425,6 @@ Word Emitter::convert(const Def* type, std::string_view name) {
         Op op{OpKind::TypeFunction, {return_type}, id, {}};
 
         auto doms = strip_type(pi->dom());
-        std::cerr << "doms: " << doms << "\n";
         if (doms != world().sigma()) {
             // if it is not a sigma, it is just the continuation, which
             // we don't want to convert
@@ -436,7 +432,6 @@ Word Emitter::convert(const Def* type, std::string_view name) {
                 for (auto dom : sigma->ops().rsubspan(1)) {
                     if (Axm::isa<mem::M>(dom)) continue;
                     if (Axm::isa<spirv::entry>(dom)) continue; // Skip entry markers
-                    std::cerr << "dom: " << dom << "\n";
                     op.operands.emplace_back(convert(dom));
                 }
         }
@@ -464,10 +459,6 @@ Word Emitter::convert(const Def* type, std::string_view name) {
     } else if (auto app = type->isa<App>()) {
         if (auto global = Axm::isa<spirv::Global>(app)) {
             auto [storage_class, n, decorations, wrapped_type] = app->uncurry_args<4>();
-            std::cerr << "storage class: " << storage_class << "\n";
-            std::cerr << "n: " << n << "\n";
-            std::cerr << "decorations: " << decorations << "\n";
-            std::cerr << "wrapped type: " << wrapped_type << "\n";
             if (auto _storage_class = Axm::isa<spirv::storage>(storage_class)) {
                 Word __storage_class;
                 switch (_storage_class.id()) {
@@ -520,12 +511,10 @@ Word Emitter::convert(const Def* type, std::string_view name) {
 
 Word Emitter::convert_ret_pi(const Pi* pi) {
     auto dom = strip_type(pi->dom());
-    std::cerr << "ret pi dom: " << dom << "\n";
     return convert(dom);
 }
 
 void Emitter::emit_decoration(Word var_id, const Def* decoration_) {
-    std::cerr << "decoration: " << decoration_ << "\n";
     auto decoration = Axm::as<spirv::decor>(decoration_);
     switch (decoration.id()) {
         case spirv::decor::builtin: {
@@ -569,8 +558,6 @@ std::optional<spirv::model> isa_builtin(const Def* type) {
 Word Emitter::prepare() {
     Word id          = next_id();
     globals_[root()] = id;
-
-    std::cerr << "preparing " << root()->unique_name() << "\n";
 
     Word type        = convert(root()->type());
     Word return_type = convert_ret_pi(root()->type()->ret_pi());
@@ -759,13 +746,10 @@ void Emitter::emit_epilogue(Lam* lam) {
 Word Emitter::emit_bb(BB& bb, const Def* def) {
     OpVec ops{};
 
-    std::cerr << "emitting " << def << ": " << def->type() << "\n";
-
     Word id      = next_id();
     Word type_id = convert(strip_type(def->type()));
 
     if (auto tuple = def->isa<Tuple>()) {
-        std::cerr << "emitting tuple\n";
         std::vector<Word> constituents;
 
         // Unit value
@@ -778,12 +762,10 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
             // Skip fake values
             if (isa_kept(elem->type()) == world().sigma()) continue;
 
-            std::cerr << "emitting tuple constituent\n";
             constituents.push_back(emit(elem));
         }
 
         // Directly unpack tuple if it only has a single or no values
-        std::cerr << "emitting unpacked value\n";
         if (constituents.empty()) return emit(world().tuple());
         if (constituents.size() == 1) return constituents[0];
 
@@ -911,13 +893,11 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
-        std::cerr << "emitting extract " << tuple << "#" << index << "\n";
 
         // var extracts are not real and should have been added to locals_ already
         assert(!def->isa<Var>() && "var extractions encountered in emit_bb\n");
 
         if (Axm::isa<mem::M>(extract->type())) {
-            std::cerr << "emitting tuple for mem value\n";
             emit(tuple);
             return id;
         }
@@ -944,7 +924,6 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                 // If only a single field is kept, the extract is not required
                 if (kept == 1) return emit(tuple);
 
-                std::cerr << "emitting tuple\n";
                 bb.ops.push_back(Op{
                     OpKind::CompositeExtract,
                     {emit(tuple), index_corrected},
@@ -956,7 +935,6 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
             }
 
             if (auto arr = tuple->type()->isa<Arr>()) {
-                std::cerr << "emitting tuple\n";
                 bb.ops.push_back(Op{
                     OpKind::CompositeExtract,
                     {emit(arr), index},
