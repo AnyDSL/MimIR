@@ -1,8 +1,83 @@
 #include "mim/plug/spirv/be/op.h"
 
+#include <cstring>
+
 #include <iostream>
 
 namespace mim::plug::spirv {
+
+std::vector<Word> float_to_words(uint64_t bits, int width) {
+    // Input bits are always 64-bit double IEEE 754 representation
+    // Convert to the target width
+    double d;
+    std::memcpy(&d, &bits, sizeof(d));
+
+    switch (width) {
+        case 16: {
+            // Half precision: convert double to half
+            // TODO: proper half-float conversion
+            float f = static_cast<float>(d);
+            uint32_t f_bits;
+            std::memcpy(&f_bits, &f, sizeof(f_bits));
+            // Simple conversion: just truncate to 16 bits (not accurate for half-float)
+            return {static_cast<Word>(f_bits >> 16)};
+        }
+        case 32: {
+            // Single precision: convert double to float
+            float f = static_cast<float>(d);
+            uint32_t f_bits;
+            std::memcpy(&f_bits, &f, sizeof(f_bits));
+            return {static_cast<Word>(f_bits)};
+        }
+        case 64:
+            // Double precision: use bits directly
+            return {static_cast<Word>(bits & 0xFFFFFFFF), static_cast<Word>((bits >> 32) & 0xFFFFFFFF)};
+        default: fe::unreachable();
+    }
+}
+
+double words_to_float(const std::vector<Word>& words, int width) {
+    switch (width) {
+        case 16: {
+            // Half precision: convert to float for display
+            // TODO: proper half-float conversion
+            return static_cast<double>(words[0]);
+        }
+        case 32: {
+            float f;
+            uint32_t bits = static_cast<uint32_t>(words[0]);
+            std::memcpy(&f, &bits, sizeof(f));
+            return static_cast<double>(f);
+        }
+        case 64: {
+            double d;
+            uint64_t bits = static_cast<uint64_t>(words[0]) | (static_cast<uint64_t>(words[1]) << 32);
+            std::memcpy(&d, &bits, sizeof(d));
+            return d;
+        }
+        default: fe::unreachable();
+    }
+}
+
+std::vector<Word> int_to_words(uint64_t value, int width) {
+    switch (width) {
+        case 8:
+        case 16:
+        case 32: return {static_cast<Word>(value & 0xFFFFFFFF)};
+        case 64: return {static_cast<Word>(value & 0xFFFFFFFF), static_cast<Word>((value >> 32) & 0xFFFFFFFF)};
+        default: fe::unreachable();
+    }
+}
+
+int64_t words_to_int(const std::vector<Word>& words, int width) {
+    switch (width) {
+        case 8: return static_cast<int8_t>(words[0] & 0xFF);
+        case 16: return static_cast<int16_t>(words[0] & 0xFFFF);
+        case 32: return static_cast<int32_t>(words[0]);
+        case 64: return static_cast<int64_t>(static_cast<uint64_t>(words[0]) | (static_cast<uint64_t>(words[1]) << 32));
+        default: fe::unreachable();
+    }
+}
 
 std::vector<Word> string_to_words(std::string_view string) {
     std::vector<Word> out{};
@@ -97,6 +172,7 @@ std::string name(int storage_class) {
         case Input: return "Input"s;
         case Uniform: return "Uniform"s;
         case Output: return "Output"s;
+        case Function: return "Function"s;
         default: fe::unreachable();
     }
 }
