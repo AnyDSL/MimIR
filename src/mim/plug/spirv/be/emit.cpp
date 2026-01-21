@@ -684,7 +684,7 @@ Word Emitter::prepare() {
         };
 
         // append name
-        for (Word word : string_to_words(root()->unique_name()))
+        for (Word word : string_to_words(root()->sym().str()))
             entry.operands.push_back(word);
 
         // append interfacing globals
