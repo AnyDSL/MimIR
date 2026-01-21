@@ -794,19 +794,20 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                  std::pair{n, as},
                  std::pair{m, bs}
         }) {
-            std::cerr << "vs: " << as << "\n";
+            std::cerr << "vs: " << as << ": " << as->type() << "\n";
 
             if (auto size = Lit::isa(n)) {
                 if (size > 1) {
-                    auto index = 0;
-                    for (auto v : vs->type()->ops()) {
-                        Word id = next_id();
+                    auto array = vs->type()->as<Arr>();
+                    for (Word index = 0; index < size; index++) {
+                        Word id      = next_id();
+                        Word body_id = convert(array->body());
                         constituents.push_back(id);
                         bb.ops.push_back(Op{
                             OpKind::CompositeExtract,
                             {emit(vs), index},
                             id,
-                            convert(v),
+                            body_id,
                         });
                     }
                 } else {
