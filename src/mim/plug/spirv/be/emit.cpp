@@ -799,6 +799,33 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         return id;
     }
 
+    if (auto pack = def->isa<Pack>()) {
+        auto arity = pack->arity();
+        auto body  = pack->body();
+
+        auto arity_val = 0;
+        if (auto lit = Lit::isa(arity))
+            arity_val = *lit;
+        else
+            error("arrays of dynamic size are not supported yet");
+
+        Word body_id = emit(body);
+        std::vector<Word> constituents;
+        for (int i = 0; i < arity_val; i++)
+            constituents.push_back(body_id);
+
+        if (is_const(pack)) {
+            // OpConstantComposite: result type is implicit, constituents are operands
+            declarations.emplace_back(Op{OpKind::ConstantComposite, constituents, id, type_id});
+        } else {
+            // OpCompositeConstruct: result type ID first, then constituents
+            constituents.insert(constituents.begin(), type_id);
+            bb.ops.emplace_back(Op{OpKind::CompositeConstruct, constituents, id, type_id});
+        }
+
+        return id;
+    }
+
     if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
             // Nat: assume 32-bit for now
