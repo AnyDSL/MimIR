@@ -756,7 +756,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     OpVec ops{};
 
     Word id      = next_id();
-    Word type_id = convert(def->type());
+    Word type_id = convert(strip_type(def->type()));
 
     if (auto tuple = def->isa<Tuple>()) {
         Word type_id = convert(tuple->type());
