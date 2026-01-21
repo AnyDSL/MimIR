@@ -614,8 +614,8 @@ Word Emitter::prepare() {
                         error("invalid builtin for specified execution model encountered in entry point");
                 }
 
-                // Add var extract to locals_, as it is not real
-                locals_[world().extract(var, idx)] = var_id;
+                // Add var extract to globals_, as it is not real
+                globals_[world().extract(var, idx)] = var_id;
                 continue;
             }
 
