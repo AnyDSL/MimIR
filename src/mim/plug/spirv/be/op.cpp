@@ -172,6 +172,7 @@ std::string name(int storage_class) {
         case Input: return "Input"s;
         case Uniform: return "Uniform"s;
         case Output: return "Output"s;
+        case Private: return "Private"s;
         case Function: return "Function"s;
         default: fe::unreachable();
     }
