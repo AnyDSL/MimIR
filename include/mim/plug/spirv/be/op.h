@@ -95,6 +95,7 @@ enum StorageClass {
     Input    = 1,
     Uniform  = 2,
     Output   = 3,
+    Private  = 6,
     Function = 7,
 };
 

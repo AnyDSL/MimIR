@@ -127,7 +127,7 @@ public:
 
         glsl_ext_inst_id_ = next_id();
         extInstImports.emplace_back(Op{OpKind::ExtInstImport, {ext_inst::GLSLstd450}, glsl_ext_inst_id_, {}});
-        id_names[glsl_ext_inst_id_] = "GLSL.std.450";
+        id_names[glsl_ext_inst_id_] = "GLSL_std_450";
 
         memoryModel = Op{
             OpKind::MemoryModel,
@@ -264,7 +264,7 @@ private:
                 break;
             case OpKind::TypeInt:
                 ostream() << " " << op.operands[0]; // width
-                ostream() << " " << (op.operands[1] ? "Signed" : "Unsigned");
+                ostream() << " " << op.operands[1]; // signedness: 0=unsigned, 1=signed
                 break;
             case OpKind::TypeFloat:
                 ostream() << " " << op.operands[0]; // width
@@ -344,6 +344,8 @@ private:
 
     Word next_id_{0};
     Word glsl_ext_inst_id_{0};
+    std::optional<Word> i32_type_id_{}; // Shared 32-bit unsigned integer type for all Nat/Idx
+    absl::flat_hash_map<std::pair<Word, Word>, Word> ptr_types_{}; // (storage_class, type_id) -> pointer_type_id
     DefMap<Word> interface_vars_{};
 };
 
@@ -358,23 +360,20 @@ Word Emitter::convert(const Def* type, std::string_view name) {
     if (type == world().sigma()) {
         declarations.emplace_back(Op{OpKind::TypeVoid, {}, id, {}});
         id_names[id] = "void";
-    } else if (type->isa<Nat>()) {
+    } else if (type->isa<Nat>() || Idx::isa(type)) {
+        // All integer types map to a single shared 32-bit unsigned integer type
+        if (i32_type_id_.has_value()) {
+            types_[type] = *i32_type_id_;
+            return *i32_type_id_;
+        }
         declarations.emplace_back(Op{
             OpKind::TypeInt,
-            {64, 0},
+            {32, 0},
             id,
             {}
         });
-        id_names[id] = "nat";
-    } else if (auto size = Idx::isa(type)) {
-        Word bitwidth = Idx::size2bitwidth(size).value_or(64);
-        declarations.emplace_back(Op{
-            OpKind::TypeInt,
-            {64, 0},
-            id,
-            {}
-        });
-        id_names[id] = std::format("i{}", bitwidth);
+        id_names[id] = "i32";
+        i32_type_id_ = id;
     } else if (auto w = math::isa_f(type)) {
         Word bitwidth = static_cast<Word>(*w);
         declarations.emplace_back(Op{
@@ -469,15 +468,22 @@ Word Emitter::convert(const Def* type, std::string_view name) {
                 }
                 Word _wrapped_type = convert(wrapped_type);
 
-                // emit pointer type of var
-                declarations.emplace_back(Op{
-                    OpKind::TypePointer,
-                    {__storage_class, _wrapped_type},
-                    id,
-                    {}
-                });
-                // TODO: better name (add storage class to it)
-                id_names[id] = std::format("ptr_{}_{}", id_name(_wrapped_type), storage_class::name(__storage_class));
+                // Check if pointer type already exists
+                auto ptr_key = std::make_pair(__storage_class, _wrapped_type);
+                if (auto it = ptr_types_.find(ptr_key); it != ptr_types_.end()) {
+                    id = it->second;
+                } else {
+                    // emit pointer type of var
+                    declarations.emplace_back(Op{
+                        OpKind::TypePointer,
+                        {__storage_class, _wrapped_type},
+                        id,
+                        {}
+                    });
+                    id_names[id]
+                        = std::format("ptr_{}_{}", id_name(_wrapped_type), storage_class::name(__storage_class));
+                    ptr_types_[ptr_key] = id;
+                }
 
                 // store global interface variable in map
                 // for access later
@@ -822,14 +828,13 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
             return id;
         }
 
-        if (auto size = Idx::isa(lit->type())) {
-            int width = static_cast<int>(*Idx::size2bitwidth(size));
+        if (Idx::isa(lit->type())) {
             declarations.push_back(Op{
                 OpKind::Constant,
-                int_to_words(lit->get(), width),
+                int_to_words(lit->get(), 32),
                 id,
                 convert(lit->type()),
-                {0, width}
+                {0, 32}
             });
             return id;
         }
@@ -956,32 +961,48 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
             Word composite_id      = emit(tuple);
             Word composite_type_id = convert(tuple->type());
 
-            // Create pointer type for the composite
-            Word ptr_type_id = next_id();
-            declarations.push_back(Op{
-                OpKind::TypePointer,
-                {storage_class::Function, composite_type_id},
-                ptr_type_id,
-                {}
-            });
+            // Get or create pointer type for the composite
+            auto ptr_key = std::make_pair(static_cast<Word>(storage_class::Private), composite_type_id);
+            Word ptr_type_id;
+            if (auto it = ptr_types_.find(ptr_key); it != ptr_types_.end()) {
+                ptr_type_id = it->second;
+            } else {
+                ptr_type_id = next_id();
+                declarations.push_back(Op{
+                    OpKind::TypePointer,
+                    {storage_class::Private, composite_type_id},
+                    ptr_type_id,
+                    {}
+                });
+                id_names[ptr_type_id] = std::format("ptr_{}", id_name(composite_type_id));
+                ptr_types_[ptr_key]   = ptr_type_id;
+            }
 
             // Create variable with initializer
             Word var_id = next_id();
-            funDeclarations.push_back(Op{
+            declarations.push_back(Op{
                 OpKind::Variable,
-                {storage_class::Function, composite_id},
+                {storage_class::Private, composite_id},
                 var_id,
                 ptr_type_id
             });
 
-            // Create pointer type for the element
-            Word elem_ptr_type_id = next_id();
-            declarations.push_back(Op{
-                OpKind::TypePointer,
-                {storage_class::Function, type_id},
-                elem_ptr_type_id,
-                {}
-            });
+            // Get or create pointer type for the element
+            auto elem_ptr_key = std::make_pair(static_cast<Word>(storage_class::Private), type_id);
+            Word elem_ptr_type_id;
+            if (auto it = ptr_types_.find(elem_ptr_key); it != ptr_types_.end()) {
+                elem_ptr_type_id = it->second;
+            } else {
+                elem_ptr_type_id = next_id();
+                declarations.push_back(Op{
+                    OpKind::TypePointer,
+                    {storage_class::Private, type_id},
+                    elem_ptr_type_id,
+                    {}
+                });
+                id_names[elem_ptr_type_id] = std::format("ptr_{}", id_name(type_id));
+                ptr_types_[elem_ptr_key]   = elem_ptr_type_id;
+            }
 
             // OpAccessChain to get pointer to element
             Word ptr_id = next_id();
@@ -1028,8 +1049,8 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         auto src_id = emit(src);
 
         auto size2width = [&](const Def* type) -> nat_t {
-            if (type->isa<Nat>()) return 64;
-            if (auto size = Idx::isa(type)) return *Idx::size2bitwidth(size);
+            if (type->isa<Nat>()) return 32;
+            if (Idx::isa(type)) return 32;
             return 0;
         };
 
