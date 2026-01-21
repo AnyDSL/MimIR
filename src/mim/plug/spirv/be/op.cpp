@@ -96,19 +96,6 @@ std::vector<Word> string_to_words(std::string_view string) {
     return out;
 }
 
-std::string words_to_string(std::vector<Word> words) {
-    std::string out;
-    Word mask = (1 << 8) - 1;
-    for (Word word : words) {
-        for (int index = 0; index < 4; index++)
-            if (auto c = (word >> index) & mask)
-                out.push_back(static_cast<char>(c));
-            else
-                return out;
-    }
-    return out;
-}
-
 namespace capability {
 std::string name(int capability) {
     switch (capability) {
