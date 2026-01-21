@@ -837,9 +837,19 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         // var extracts are not real and should have been added to locals_ already
         assert(!def->isa<Var>() && "var extractions encountered in emit_bb");
 
-        // For non-parameter extracts, emit OpCompositeExtract
-        // TODO: implement OpCompositeExtract for actual composite extractions
-        return id;
+        // for literal indices, use OpCompositeExtract
+        if (auto lit = Lit::isa(index)) {
+            Word index = static_cast<Word>(*lit);
+            bb.ops.push_back(Op{
+                OpKind::CompositeExtract,
+                {emit(tuple), index},
+                id,
+                type_id
+            });
+            return id;
+        }
+
+        // TODO: dynamic indices require OpAccessChain
     }
 
     if (auto store = Axm::isa<spirv::store>(def)) {
