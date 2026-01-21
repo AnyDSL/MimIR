@@ -278,6 +278,7 @@ private:
             case OpKind::CompositeExtract:
                 ostream() << " %" << id_name(op.operands[0]); // composite
                 ostream() << " " << op.operands[1];           // index
+                break;
             case OpKind::TypeStruct:
             case OpKind::TypeFunction:
             case OpKind::ConstantComposite:
