@@ -840,13 +840,45 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         // for literal indices, use OpCompositeExtract
         if (auto lit = Lit::isa(index)) {
             Word index = static_cast<Word>(*lit);
-            bb.ops.push_back(Op{
-                OpKind::CompositeExtract,
-                {emit(tuple), index},
-                id,
-                type_id
-            });
-            return id;
+
+            if (auto sigma = tuple->type()->isa<Sigma>()) {
+                Word kept = 0;
+
+                // Skip stripped fields in index
+                Word index_corrected = index;
+                Word i               = 0;
+                for (auto field : sigma->ops()) {
+                    if (isa_kept(field) == world().sigma()) {
+                        if (i < index) index_corrected--;
+                    } else {
+                        kept++;
+                    }
+                    i++;
+                }
+
+                // If only a single field is kept, the extract is not required
+                if (kept == 1) return emit(tuple);
+
+                bb.ops.push_back(Op{
+                    OpKind::CompositeExtract,
+                    {emit(tuple), index_corrected},
+                    id,
+                    type_id
+                });
+
+                return id;
+            }
+
+            if (auto arr = tuple->type()->isa<Arr>()) {
+                bb.ops.push_back(Op{
+                    OpKind::CompositeExtract,
+                    {emit(arr), index},
+                    id,
+                    type_id
+                });
+
+                return id;
+            }
         }
 
         // TODO: dynamic indices require OpAccessChain
