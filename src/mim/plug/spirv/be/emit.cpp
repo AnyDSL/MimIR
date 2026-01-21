@@ -53,12 +53,10 @@ bool is_const(const Def* def) {
 /// - mem::M
 /// - spirv::Global
 /// - spirv::entry
-const Def* isa_kept(const Def* type) {
-    auto& world = type->world();
-
-    if (Axm::isa<mem::M>(type)) return world.sigma();
-    if (Axm::isa<spirv::Global>(type)) return world.sigma();
-    if (Axm::isa<spirv::entry>(type)) return world.sigma();
+const Def* isa_emitted(const Def* type) {
+    if (Axm::isa<mem::M>(type)) return nullptr;
+    if (Axm::isa<spirv::Global>(type)) return nullptr;
+    if (Axm::isa<spirv::entry>(type)) return nullptr;
     return type;
 }
 
@@ -80,7 +78,10 @@ const Def* strip_type(const Def* type) {
         return world.sigma(fields.view());
     }
 
-    return isa_kept(type);
+    if (isa_emitted(type))
+        return type;
+    else
+        return type->world().sigma();
 }
 
 using OpVec = std::vector<Op>;
@@ -808,7 +809,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
             auto elem = tuple->proj(n, i);
 
             // Skip fake values
-            if (isa_kept(elem->type()) == world().sigma()) continue;
+            if (!isa_emitted(elem->type())) continue;
 
             constituents.push_back(emit(elem));
         }
@@ -960,7 +961,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                 Word index_corrected = index;
                 Word i               = 0;
                 for (auto field : sigma->ops()) {
-                    if (isa_kept(field) == world().sigma()) {
+                    if (!isa_emitted(field)) {
                         if (i < index) index_corrected--;
                     } else {
                         kept++;
