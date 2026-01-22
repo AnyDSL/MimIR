@@ -18,7 +18,7 @@
 using namespace std::string_literals;
 using namespace std::literals;
 
-namespace mim::mim_be {
+namespace mim::sexpr {
 
 namespace math = mim::plug::math;
 
@@ -390,4 +390,4 @@ void emit(World& world, std::ostream& ostream) {
     emitter.run();
 }
 
-} // namespace mim::mim_be
+} // namespace mim::sexpr
