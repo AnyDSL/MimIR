@@ -10,7 +10,20 @@
 
 namespace mim::plug::direct {
 
-void CPS2DS::enter() { rewrite_lam(curr_mut()); }
+void CPS2DS::enter() {
+    static bool written = false;
+    if (!written) {
+        written = true;
+        world().write("before_cps2ds.mim");
+    }
+    world().log().set(mim::Log::Level::Debug);
+    world().DLOG("CPS2DS enter on {}", curr_mut());
+    rewrite_lam(curr_mut());
+    world().DLOG("CPS2DS leave on {}", curr_mut());
+    world().write("after_cps2ds.mim");
+    world().log().set(mim::Log::Level::Info);
+    std::terminate();
+}
 
 void CPS2DS::rewrite_lam(Lam* lam) {
     if (auto [_, ins] = rewritten_lams.emplace(lam); !ins) return;
@@ -38,9 +51,7 @@ void CPS2DS::rewrite_lam(Lam* lam) {
 const Def* CPS2DS::rewrite_body(const Def* def) {
     if (!def) return nullptr;
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
-    auto new_def    = rewrite_body_(def);
-    rewritten_[def] = new_def;
-    return rewritten_[def];
+    return rewritten_[def] = rewrite_body_(def);
 }
 
 const Def* CPS2DS::rewrite_body_(const Def* def) {

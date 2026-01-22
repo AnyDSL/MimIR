@@ -11,17 +11,30 @@
 namespace mim::plug::direct {
 
 const Def* DS2CPS::rewrite(const Def* def) {
+    world().log().set(mim::Log::Level::Debug);
+    static bool written = false;
+    if (!written) {
+        written = true;
+        world().write("before_ds2cps.mim");
+    }
     if (auto app = def->isa<App>()) {
         if (auto lam = app->callee()->isa_mut<Lam>()) {
             DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
+            if(new_lam == lam) {
+                DLOG("lam unchanged");
+                return def;
+            }
             DLOG("new lam: {} : {}", new_lam, new_lam->type());
             DLOG("arg: {} : {}", app->arg(), app->arg()->type());
             auto new_app = world().app(new_lam, app->arg());
             DLOG("new app: {} : {}", new_app, new_app->type());
+            world().write("after_ds2cps.mim");
+            world().log().set(mim::Log::Level::Debug);
             return new_app;
         }
     }
+    world().log().set(mim::Log::Level::Info);
     return def;
 }
 
