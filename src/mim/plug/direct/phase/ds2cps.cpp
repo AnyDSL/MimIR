@@ -8,11 +8,6 @@
 namespace mim::plug::direct {
 
 const Def* DS2CPS::rewrite_imm_App(const App* app) {
-    // static bool written = false;
-    // if (!written) {
-    //     written = true;
-    //     old_world().write("before_ds2cps.mim");
-    // }
     if (auto lam = app->callee()->isa_mut<Lam>()) {
         DLOG("encountered lam app");
         auto new_lam = rewrite_lam(lam);
@@ -27,10 +22,11 @@ const Def* DS2CPS::rewrite_imm_App(const App* app) {
         new_world().write("after_ds2cps.mim");
         return new_app;
     }
+
     return Rewriter::rewrite_imm_App(app);
 }
 
-/// This function generates the cps function `f_cps : cn [a:A, cn B]` for a ds function `f: [a : A] -> B`.
+/// This function generates the cps function `f_cps : Cn [a: A, Cn B]` for a ds function `f: [a : A] -> B`.
 /// The translation is associated in the `rewritten_` map.
 const Def* DS2CPS::rewrite_lam(Lam* lam) {
     if (auto i = rewritten_.find(lam); i != rewritten_.end()) return i->second;
@@ -47,13 +43,20 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
 
     DLOG("rewrite DS function {} : {}", lam, lam->type());
 
-    auto ty    = lam->type();
-    auto var   = ty->has_var();
-    auto dom   = ty->dom();
-    auto codom = ty->codom();
+    auto pi    = lam->type();
+    auto dom   = pi->dom();
+    auto codom = pi->codom();
     auto sigma = new_world().mut_sigma(2);
-    // replace ds dom var with cps sigma var (cps dom)
-    auto rw_codom = var ? VarRewriter(var, sigma->var(2, 0)).rewrite(codom) : codom;
+
+    auto rw_codom = codom;
+    if (auto var = pi->has_var()) {
+        // replace ds dom var with cps sigma var (cps dom)
+        push();
+        map(var, sigma->var(2, 0));
+        rw_codom = rewrite(codom);
+        pop();
+    }
+
     sigma->set(0, dom);
     sigma->set(1, new_world().cn(rw_codom));
 
