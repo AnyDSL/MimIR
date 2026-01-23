@@ -29,14 +29,10 @@ lam %direct.cps2ds (T: *, U:     *) (f: Cn [T,    Cn U  ]): [    T  → U  ] = %
     where lam Uf (T): * = U;
 end;
 ///
-/// ## Passes and Phases
-///
-/// ### Passes
+/// ## Phases
 ///
 axm %direct.ds2cps_phase: %compile.Phase;
 axm %direct.cps2ds_phase: %compile.Phase;
-///
-/// ### Phases
 ///
 let direct_phases =
     %compile.phases ff (
