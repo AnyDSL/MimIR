@@ -123,79 +123,79 @@ $(function(){initNavTree('mem.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md176">Dependencies</a>
+    <a href="#autotoc_md174">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md177">Types</a>
+    <a href="#autotoc_md175">Types</a>
     <ul>
       <li class="level2">
         <a href="#memM">%mem.M</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md178">%mem.Ptr</a>
+        <a href="#autotoc_md176">%mem.Ptr</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md179">Operations w/ Side Effects</a>
+    <a href="#autotoc_md177">Operations w/ Side Effects</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md180">%mem.load</a>
+        <a href="#autotoc_md178">%mem.load</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md181">%mem.store</a>
+        <a href="#autotoc_md179">%mem.store</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md182">%mem.remem</a>
+        <a href="#autotoc_md180">%mem.remem</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md183">%mem.alloc</a>
+        <a href="#autotoc_md181">%mem.alloc</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md184">%mem.slot</a>
+        <a href="#autotoc_md182">%mem.slot</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md185">%mem.malloc</a>
+        <a href="#autotoc_md183">%mem.malloc</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md186">%mem.free</a>
+        <a href="#autotoc_md184">%mem.free</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md187">%mem.mslot</a>
+        <a href="#autotoc_md185">%mem.mslot</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md188">Operations w/o Side Effects</a>
+    <a href="#autotoc_md186">Operations w/o Side Effects</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md189">%mem.lea</a>
+        <a href="#autotoc_md187">%mem.lea</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md190">Stages</a>
+    <a href="#autotoc_md188">Stages</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md191">Phases</a>
+        <a href="#autotoc_md189">Phases</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md192">Repls</a>
+        <a href="#autotoc_md190">Repls</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md193">Passes</a>
+        <a href="#autotoc_md191">Passes</a>
         <ul>
           <li class="level3 empty">
             <ul>
               <li class="level4">
-                <a href="#autotoc_md194">mem.reshape</a>
+                <a href="#autotoc_md192">mem.reshape</a>
               </li>
             </ul>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md195">Pipelines</a>
+        <a href="#autotoc_md193">Pipelines</a>
       </li>
     </ul>
   </li>
@@ -203,71 +203,71 @@ $(function(){initNavTree('mem.html',''); initResizable(true); });
 </div>
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2mem"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1mem.html" title="The mem Plugin">mim::plug::mem</a></dd></dl>
-<h1><a class="anchor" id="autotoc_md176"></a>
+<h1><a class="anchor" id="autotoc_md174"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">import compile;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md177"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md175"></a>
 Types</h1>
 <h2><a class="anchor" id="memM"></a>
 %mem.M</h2>
 <p>This type tracks all kind of side-effects in the given address space. </p><div class="fragment"><div class="line">axm %mem.M: Nat → *;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md178"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md176"></a>
 %mem.Ptr</h2>
 <p>Pointer type with <em>pointee</em> type <code>T</code> and <em>address space</em> <code>a</code>. At the moment, the <em>address space</em> is not really used and a placeholder for future work. </p><div class="fragment"><div class="line">axm %mem.Ptr: [*, Nat] → *;</div>
 <div class="line"> </div>
 <div class="line">lam %mem.Ptr0(T: *): * = %mem.Ptr (T, 0);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md179"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md177"></a>
 Operations w/ Side Effects</h1>
 <p>The following operations have side effects. For this reason, they consume a <code>%mem.M a</code> and yield a new <code>%mem.M a</code>.</p>
-<h2><a class="anchor" id="autotoc_md180"></a>
+<h2><a class="anchor" id="autotoc_md178"></a>
 %mem.load</h2>
 <p>Loads from a pointer of type <code>%mem.Ptr (T, a)</code> the pointed value of type <code>T</code>. </p><div class="fragment"><div class="line">axm %mem.load: {T: *, a: Nat} as Ta → [%mem.M a, %mem.Ptr Ta] → [%mem.M a, T], normalize_load;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md181"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md179"></a>
 %mem.store</h2>
 <p>Stores a value of type <code>T</code> to the location pointed to by a pointer of type <code>%mem.Ptr (T, a)</code>, </p><div class="fragment"><div class="line">axm %mem.store: {T: *, a: Nat} as Ta → [%mem.M a, %mem.Ptr Ta, T] → %mem.M a, normalize_store;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md182"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md180"></a>
 %mem.remem</h2>
 <p>Creates a new dummy <code>%mem.M a</code>-typed value in order to acknowledge the fact that some unspecified side-effect happened. </p><div class="fragment"><div class="line">axm %mem.remem: {a: Nat} → %mem.M a → %mem.M a, normalize_remem;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md183"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md181"></a>
 %mem.alloc</h2>
 <p>Allocates memory of type <code>T</code> in address space <code>a</code>. </p><div class="fragment"><div class="line">axm %mem.alloc: [*, a: Nat] as Ta → [%mem.M a] → [%mem.M a, %mem.Ptr Ta];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md184"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md182"></a>
 %mem.slot</h2>
 <p>Reserves a memory slot for type <code>T</code> in address space <code>a</code>. <code>id</code> has to be provided a unique id. </p><div class="fragment"><div class="line">axm %mem.slot: [*, a: Nat] as Ta → [%mem.M a, id: Nat] → [%mem.M a, %mem.Ptr Ta];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md185"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md183"></a>
 %mem.malloc</h2>
 <p>Allocates memory of type <code>T</code> in address space <code>a</code>. The difference to <code>%mem.alloc</code> is that the <code>size</code> is automatically inferred. </p><div class="fragment"><div class="line">axm %mem.malloc: [*, a: Nat] as Ta → [%mem.M a, Nat] → [%mem.M a, %mem.Ptr Ta];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md186"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md184"></a>
 %mem.free</h2>
 <p>Frees memory of type <code>T</code> in address space <code>a</code>. </p><div class="fragment"><div class="line">axm %mem.free: {*, a: Nat} as Ta → [%mem.M a, %mem.Ptr Ta] → %mem.M a;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md187"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md185"></a>
 %mem.mslot</h2>
 <p>Reserves a memory slot for type <code>T</code> in address space <code>a</code>. The reserved slot will be <code>size</code> bytes large. <code>id</code> has to be provided an unique id. </p><div class="fragment"><div class="line">axm %mem.mslot: [*, a: Nat] as Ta → [%mem.M a, size: Nat, id: Nat] → [%mem.M a, %mem.Ptr Ta];</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md188"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md186"></a>
 Operations w/o Side Effects</h1>
-<h2><a class="anchor" id="autotoc_md189"></a>
+<h2><a class="anchor" id="autotoc_md187"></a>
 %mem.lea</h2>
 <p>Load effective address. Performs address computation by offsetting the passed pointer with index <code>i</code>. </p><div class="fragment"><div class="line">axm %mem.lea: {n: Nat, Ts: «n; *», a: Nat} → [%mem.Ptr («j: n; Ts#j», a), i: Idx n] → %mem.Ptr (Ts#i, a), normalize_lea;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md190"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md188"></a>
 Stages</h1>
-<h2><a class="anchor" id="autotoc_md191"></a>
+<h2><a class="anchor" id="autotoc_md189"></a>
 Phases</h2>
 <div class="fragment"><div class="line">axm %mem.add_mem_phase: %compile.Phase;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md192"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md190"></a>
 Repls</h2>
 <div class="fragment"><div class="line">axm %mem.remem_repl:        %compile.Repl;</div>
 <div class="line">axm %mem.alloc2malloc_repl: %compile.Repl;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md193"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md191"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %mem.ssa_pass:              %compile.Pass;</div>
 <div class="line">axm %mem.copy_prop_pass: Bool → %compile.Pass;</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md194"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md192"></a>
 mem.reshape</h4>
 <div class="fragment"><div class="line">axm %mem.reshape_mode: *;</div>
 <div class="line">axm %mem.reshape_flat: %mem.reshape_mode;</div>
 <div class="line">axm %mem.reshape_arg:  %mem.reshape_mode;</div>
 </div><!-- fragment --><div class="fragment"><div class="line">axm %mem.reshape_pass: %mem.reshape_mode → %compile.Pass;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md195"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md193"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">let mem_opt_passes = %compile.passes (</div>
 <div class="line">    //%compile.beta_red_pass,</div>
