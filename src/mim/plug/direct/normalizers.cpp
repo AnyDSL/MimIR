@@ -4,6 +4,6 @@
 
 namespace mim::plug::direct {
 
-// Placehoder - we don't need normalizers here atm.
+// Placeholder - we don't need normalizers here atm.
 
 } // namespace mim::plug::direct
