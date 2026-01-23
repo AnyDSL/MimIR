@@ -1,10 +1,12 @@
 #include "mim/plug/core/be/ll.h"
 
 #include <deque>
+#include <format>
 #include <fstream>
 #include <iomanip>
 #include <optional>
 #include <ranges>
+#include <string>
 
 #include <absl/container/btree_set.h>
 
@@ -17,6 +19,8 @@
 #include "mim/util/sys.h"
 
 #include "mim/plug/core/core.h"
+#include "mim/plug/math/autogen.h"
+#include "mim/plug/refly/autogen.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
@@ -158,6 +162,14 @@ static std::optional<std::pair<nat_t, const Def*>> is_simd(const Def* type) {
                 return std::pair{*l, arr->body()};
         }
     }
+    return {};
+}
+static std::optional<std::pair<nat_t, const Def*>> is_simd_aggregate(const std::vector<const Def*> types) {
+    if (std::ranges::all_of(types, [&](auto i) { return i == types[0]; })) {
+        if (types[0]->isa<Nat>() || Idx::isa(types[0]) || Axm::isa<math::F>(types[0]))
+            return std::pair{types.size(), types[0]};
+    }
+
     return {};
 }
 
@@ -332,15 +344,19 @@ void Emitter::finalize() {
 void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
-
     if (app->callee() == root()->ret_var()) { // return
         std::vector<std::string> values;
         std::vector<const Def*> types;
+        if (locals_.contains(app->uncurry_args()[0]) && is_simd(app->uncurry_args()[0]->type())) {
+            values.emplace_back(locals_[app->uncurry_args()[0]]);
+            types.emplace_back(app->uncurry_args()[0]->type());
 
-        for (auto arg : app->args()) {
-            if (auto val = emit_unsafe(arg); !val.empty()) {
-                values.emplace_back(val);
-                types.emplace_back(arg->type());
+        } else {
+            for (auto arg : app->args()) {
+                if (auto val = emit_unsafe(arg); !val.empty()) {
+                    values.emplace_back(val);
+                    types.emplace_back(arg->type());
+                }
             }
         }
 
@@ -348,19 +364,36 @@ void Emitter::emit_epilogue(Lam* lam) {
             case 0: return bb.tail("ret void");
             case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
             default: {
-                std::string prev = "undef";
-                auto type        = convert(world().sigma(types));
-                for (size_t i = 0, n = values.size(); i != n; ++i) {
-                    auto v_elem = values[i];
-                    auto t_elem = convert(types[i]);
-                    auto namei  = "%ret_val." + std::to_string(i);
-                    bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, t_elem, v_elem, i);
-                    prev = namei;
-                }
+                std::string type;
+                std::string prev;
 
+                if (auto se = is_simd_aggregate(types)) {
+                    auto [size, elem] = *se;
+                    type              = std::format("<{} x {}>", size, convert(elem));
+
+                    for (auto val : values) {
+                        if (prev.empty())
+                            prev = "<";
+                        else
+                            prev += ", ";
+                        prev += std::format("{} {}", convert(elem), val);
+                    }
+                    prev += ">";
+                } else {
+                    prev = "undef";
+                    type = convert(world().sigma(types));
+                    for (size_t i = 0, n = values.size(); i != n; ++i) {
+                        auto v_elem = values[i];
+                        auto t_elem = convert(types[i]);
+                        auto namei  = "%ret_val." + std::to_string(i);
+                        bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, t_elem, v_elem, i);
+                        prev = namei;
+                    }
+                }
                 bb.tail("ret {} {}", type, prev);
             }
         }
+
     } else if (auto dispatch = Dispatch(app)) {
         for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
             size_t n = callee->num_tvars();
@@ -442,21 +475,9 @@ void Emitter::emit_epilogue(Lam* lam) {
             auto name  = "%" + app->unique_name() + "ret";
             auto t_ret = convert_ret_pi(ret_lam->type());
             bb.tail("{} = call {} {}({, })", name, t_ret, v_callee, args);
-
-            for (size_t i = 0, j = 0, e = ret_lam->num_vars(); i != e; ++i) {
-                auto phi = ret_lam->var(i);
-                if (Axm::isa<mem::M>(phi->type())) continue;
-
-                auto namej = name;
-                if (e > 2) {
-                    namej += '.' + std::to_string(j);
-                    bb.tail("{} = extractvalue {} {}, {}", namej, t_ret, name, j);
-                }
-                assert(!Axm::isa<mem::M>(phi->type()));
-                lam2bb_[ret_lam].phis[phi].emplace_back(namej, id(lam, true));
-                locals_[phi] = id(phi);
-                ++j;
-            }
+            auto phi = ret_lam->var();
+            lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
+            locals_[phi] = id(phi);
         }
 
         return bb.tail("br label {}", id(ret_lam));
@@ -495,13 +516,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         std::string prev = "undef";
         auto t           = convert(tuple->type());
+        auto op          = is_simd(tuple->type()) ? "insertelement" : "insertvalue";
         for (size_t src = 0, dst = 0, n = tuple->num_projs(); src != n; ++src) {
             auto e = tuple->proj(n, src);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
                 auto elem_t = convert(e->type());
                 // TODO: check dst vs src
                 auto namei = name + "." + std::to_string(dst);
-                prev       = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
+                prev       = bb.assign(namei, "{} {} {}, {} {}, {}", op, t, prev, elem_t, elem, dst);
                 dst++;
             }
         }
@@ -573,6 +595,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
         auto v_tup = emit_unsafe(tuple);
+        /*if (is_simd(tuple->type()) && !Axm::isa<mem::M>(tuple->type())) {
+            return v_tup;
+        }*/
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
         // before emitting the index, as it might be a weird value for mem vars.
@@ -582,8 +607,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (auto li = Lit::isa(index)) {
             if (isa_mem_sigma_2(tuple->type())) return v_tup;
             // Adjust index, if mem is present.
-            auto v_i = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
-            return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
+            auto v_i   = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
+            auto op    = is_simd(tuple->type()) ? "extractelement" : "extractvalue";
+            auto t_idx = is_simd(tuple->type()) ? "i32" : "";
+            return bb.assign(name, "{} {} {}, {} {}", op, t_tup, v_tup, t_idx, v_i);
         }
 
         auto t_elem     = convert(extract->type());
@@ -603,7 +630,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_val = emit(insert->value());
         if (auto idx = Lit::isa(insert->index())) {
             auto v_idx = emit(insert->index());
-            return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tup, v_tup, t_val, v_val, v_idx);
+            auto op    = is_simd(insert->tuple()->type()) ? "insertelement" : "insertvalue";
+            return bb.assign(name, "{} {} {}, {} {}, {}", op, t_tup, v_tup, t_val, v_val, v_idx);
         } else {
             auto t_elem     = convert(insert->value()->type());
             auto [v_i, t_i] = emit_gep_index(insert->index());
