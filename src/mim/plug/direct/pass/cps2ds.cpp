@@ -16,12 +16,12 @@ void CPS2DS::enter() {
         written = true;
         world().write("before_cps2ds.mim");
     }
-    world().log().set(mim::Log::Level::Debug);
+    // world().log().set(mim::Log::Level::Debug);
     world().DLOG("CPS2DS enter on {}", curr_mut());
     rewrite_lam(curr_mut());
     world().DLOG("CPS2DS leave on {}", curr_mut());
     world().write("after_cps2ds.mim");
-    world().log().set(mim::Log::Level::Info);
+    // world().log().set(mim::Log::Level::Info);
     std::terminate();
 }
 

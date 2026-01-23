@@ -11,7 +11,7 @@
 namespace mim::plug::direct {
 
 const Def* DS2CPS::rewrite(const Def* def) {
-    world().log().set(mim::Log::Level::Debug);
+    // world().log().set(mim::Log::Level::Debug);
     static bool written = false;
     if (!written) {
         written = true;
@@ -30,11 +30,11 @@ const Def* DS2CPS::rewrite(const Def* def) {
             auto new_app = world().app(new_lam, app->arg());
             DLOG("new app: {} : {}", new_app, new_app->type());
             world().write("after_ds2cps.mim");
-            world().log().set(mim::Log::Level::Debug);
+            // world().log().set(mim::Log::Level::Debug);
             return new_app;
         }
     }
-    world().log().set(mim::Log::Level::Info);
+    // world().log().set(mim::Log::Level::Info);
     return def;
 }
 
