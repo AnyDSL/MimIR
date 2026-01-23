@@ -4,6 +4,7 @@
 #include <pybind11/stl/filesystem.h>
 
 #include <mim/driver.h>
+#include <mim/ast/ast.h>
 namespace py = pybind11;
 
 namespace mim {
@@ -24,6 +25,9 @@ void init_driver(py::module_& m) {
             std::ofstream ofs(output_file_name);
             d.backend(backend)(world, ofs);
             ofs.close();
+        })
+        .def("load_pluins", [](mim::Driver& d, std::vector<std::string> plugins){
+            ast::load_plugins(d.world(), plugins);
         });
 }
 

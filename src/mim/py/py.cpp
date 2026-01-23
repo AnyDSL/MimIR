@@ -12,6 +12,7 @@ void init_log(py::module_&);
 void init_lam(py::module_&);
 void init_pi(py::module_&);
 void init_def(py::module_&);
+void init_lit(py::module_&);
 void register_error(py::module_&);
 } // namespace mim
 
@@ -30,6 +31,7 @@ void init_sym_pool(py::module_&);
 PYBIND11_MODULE(mim, m) {
     mim::init_world(m);
     mim::init_def(m);
+    mim::init_lit(m);
     fe::init_sym(m);
     fe::init_sym_pool(m);
     mim::init_driver(m);

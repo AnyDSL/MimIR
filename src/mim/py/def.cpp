@@ -18,7 +18,7 @@ void init_def(py::module_& m) {
         .def("externalize", &mim::Def::externalize)
         .def("dump", py::overload_cast<>(&mim::Def::dump, py::const_), py::return_value_policy::reference_internal)
         .def("set", static_cast<mim::Def* (mim::Def::*)(std::string)>(&mim::Def::set), py::return_value_policy::reference_internal)
-        .def("num_projs", &mim::Def::num_projs, py::return_value_policy::reference_internal)
+        .def("num_projs", &mim::Def::num_projs, py::return_value_policy::reference)
         .def("projs", [](mim::Def& d, nat_t a) {
             std::vector<const mim::Def*> ret_vec;
             ret_vec.reserve(a);
@@ -34,5 +34,14 @@ void init_def(py::module_& m) {
 
     // clang-format on
 }
+
+void init_lit(py::module_& m) {
+    // clang-format off
+    py::class_<mim::Lit, mim::Def>(m, "Lit");
+
+
+    // clang-format on
+}
+
 
 } // namespace mim

@@ -19,32 +19,35 @@ world  = driver.world()
 
 mem = world.sym(f"%mem.M")
 ptr = world.sym(f"%mem.Ptr0")
-#world.sym(f"%compile")
+phase = world.sym(f"%compile.Phase")
+# compile = world.sym(f"_compile")
 print(ptr)
 
 #####
 ast = mim.AST(world)
-parser = mim.PyParser(mim.Parser(ast))
-#parser = mim.Parser(ast)
+#parser = mim.PyParser(mim.Parser(ast))
+parser = mim.Parser(ast)
 parser.plugin("core")
 parser.plugin("compile")
 mem_t = world.annex(mem)
+world.annex(phase)
 #following line of code is just to observe mim_error behaviour
-mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
-argv_t = world.call(ptr, [world.call(ptr, [world.type_i32()])])
+#mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
+argv_t = world.call("%mem.Ptr0", [world.call("%mem.Ptr0", [world.type_i32()])])
 main = world.mut_fun2([mem_t, world.type_i32(), argv_t], [mem_t, world.type_i32()]).set("main")
 
 print(main.var().num_projs())
 
 args, ret = main.var().projs(2)
+print(f"args: {args.var()}")
 mem, argc, argv = args.projs(3)
 main.app(False, ret, [mem, argc])
 main.externalize()
-#world.optimize()
+# world.optimize()
 
 driver.backend("ll", "hello.ll", world)
 
-subprocess.run(["clang", "hello.ll", "-o", "hello", "-Wno-override-module"])
+subprocess.run(["clang", "hello.ll", "-o", "hello.exe", "-Wno-override-module"])
 
 
 
