@@ -205,15 +205,25 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
  */
 
 void Emitter::start() {
+    // Calls the run() method of NestPhase that computes a Nest for each closed mutable in the world
+    // and then calls the visit() method defined inside of the generic Emitter class for each of them.
+    // This visit method is responsible for corresponding each lambda with a basic block and filling these
+    // basic blocks (the tail, to be precise) with a string representation of the lambda. These basic block
+    // representations will then be written into func_impls_ via the finalize() method called by visit() and
+    // then printed out in the following.
     Super::start();
 
     for (auto import : world().driver().imports().syms())
         print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
 
+    // NOTE: seems to be unused (never written to)
     for (auto&& decl : decls_)
         ostream() << decl << '\n';
+    // written to in emit_imported (external import functions)
     ostream() << func_decls_.str() << '\n';
+    // NOTE: seems to be unused (never written to)
     ostream() << vars_decls_.str() << '\n';
+    // written to in finalize_nest and emit_con (called by finalize_nest)
     ostream() << func_impls_.str() << '\n';
 }
 
@@ -284,7 +294,12 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
 
     for (auto op : node->mut()->deps()) {
         for (auto mut : op->local_muts())
-            if (auto next = nest()[mut]) finalize_nest(next, done);
+            if (auto next = nest()[mut]) {
+                // recursively calls finalize_nest() on nested lambdas
+                // as part of the mutables that the lambda depends on (node->mut()->deps())
+                // for non-lambda muts finalize_nest() will simply return
+                finalize_nest(next, done);
+            }
     }
 
     for (const auto& line : bb.tail())

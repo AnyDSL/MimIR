@@ -64,6 +64,8 @@ protected:
 
         auto fct = child().prepare();
 
+        ostream() << "visit called for mutable: " << fct;
+
         Scheduler new_scheduler(nest);
         swap(scheduler_, new_scheduler);
 
