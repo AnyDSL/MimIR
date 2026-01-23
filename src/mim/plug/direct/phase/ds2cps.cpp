@@ -9,18 +9,14 @@ namespace mim::plug::direct {
 
 const Def* DS2CPS::rewrite_imm_App(const App* app) {
     if (auto lam = app->callee()->isa_mut<Lam>()) {
-        DLOG("encountered lam app");
         auto new_lam = rewrite_lam(lam);
-        if (new_lam == lam) {
-            DLOG("lam unchanged");
-            return Rewriter::rewrite_imm_App(app);
+        if (new_lam != lam) {
+            DLOG("new lam: {} : {}", new_lam, new_lam->type());
+            DLOG("arg: {} : {}", app->arg(), app->arg()->type());
+            auto new_app = new_world().app(new_lam, rewrite(app->arg()));
+            DLOG("new app: {} : {}", new_app, new_app->type());
+            return new_app;
         }
-        DLOG("new lam: {} : {}", new_lam, new_lam->type());
-        DLOG("arg: {} : {}", app->arg(), app->arg()->type());
-        auto new_app = new_world().app(new_lam, rewrite(app->arg()));
-        DLOG("new app: {} : {}", new_app, new_app->type());
-        new_world().write("after_ds2cps.mim");
-        return new_app;
     }
 
     return Rewriter::rewrite_imm_App(app);
@@ -31,26 +27,21 @@ const Def* DS2CPS::rewrite_imm_App(const App* app) {
 const Def* DS2CPS::rewrite_lam(Lam* lam) {
     if (auto i = rewritten_.find(lam); i != rewritten_.end()) return i->second;
 
-    // only look at lambdas (ds not cps)
-    if (Lam::isa_cn(lam)) return rewrite(lam);
-    // ignore ds on type level
-    if (lam->type()->codom()->isa<Type>()) return rewrite(lam);
-    // ignore higher order function
-    if (lam->type()->codom()->isa<Pi>()) {
-        // We can not set the filter here as this causes segfaults.
-        return rewrite(lam);
-    }
-
-    DLOG("rewrite DS function {} : {}", lam, lam->type());
-
     auto pi    = lam->type();
     auto dom   = pi->dom();
     auto codom = pi->codom();
-    auto sigma = new_world().mut_sigma(2);
 
+    if (Lam::isa_cn(lam)) return rewrite(lam);   // only look at lambdas (ds not cps)
+    if (codom->isa<Type>()) return rewrite(lam); // ignore ds on type level
+    if (codom->isa<Pi>()) return rewrite(lam);   // ignore higher order function
+
+    DLOG("rewrite DS function {} : {}", lam, lam->type());
+
+    auto sigma    = new_world().mut_sigma(2);
     auto rw_codom = codom;
+
+    // replace ds dom var with cps sigma var (cps dom)
     if (auto var = pi->has_var()) {
-        // replace ds dom var with cps sigma var (cps dom)
         push();
         map(var, sigma->var(2, 0));
         rw_codom = rewrite(codom);
@@ -60,7 +51,7 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     sigma->set(0, dom);
     sigma->set(1, new_world().cn(rw_codom));
 
-    DLOG("original codom: {}", codom);
+    DLOG("original codom: {},", codom);
     DLOG("rewritten codom: {}", rw_codom);
 
     auto cps_lam = new_world().mut_con(sigma)->set(lam->dbg());
