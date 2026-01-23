@@ -119,7 +119,6 @@ $(function(){initNavTree('namespacemim_1_1plug_1_1direct.html',''); initResizabl
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">mim::plug::direct Namespace Reference</div></div>
 </div><!--header-->
@@ -130,8 +129,8 @@ $(function(){initNavTree('namespacemim_1_1plug_1_1direct.html',''); initResizabl
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1plug_1_1direct_1_1CPS2DS.html">CPS2DS</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the second part of ds2cps.  <a href="classmim_1_1plug_1_1direct_1_1CPS2DS.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1plug_1_1direct_1_1CPS2DSPhase.html">CPS2DSPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rewrite <a class="el" href="#ab2a0fe9b03b60f04b11532493ed42cac">direct.cps2ds</a> to cps.  <a href="classmim_1_1plug_1_1direct_1_1CPS2DSPhase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1plug_1_1direct_1_1DS2CPS.html">DS2CPS</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts direct style function to cps functions.  <a href="classmim_1_1plug_1_1direct_1_1DS2CPS.html#details">More...</a><br /></td></tr>
@@ -139,29 +138,20 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">%direct.ds2cps_pass</div></td></tr>
-<tr class="memitem:aab6cf7598d2f6204964ca729585048dc" id="r_aab6cf7598d2f6204964ca729585048dc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab6cf7598d2f6204964ca729585048dc">ds2cps_pass</a> : flags_t </td></tr>
-<tr class="separator:aab6cf7598d2f6204964ca729585048dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">%direct.cps2ds_pass</div></td></tr>
-<tr class="memitem:a051ff263e9673bd32b0c15a836ddccf2" id="r_a051ff263e9673bd32b0c15a836ddccf2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a051ff263e9673bd32b0c15a836ddccf2">cps2ds_pass</a> : flags_t </td></tr>
-<tr class="separator:a051ff263e9673bd32b0c15a836ddccf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a06f176b4147beb00ababa04690da8255" id="r_a06f176b4147beb00ababa04690da8255"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06f176b4147beb00ababa04690da8255">register_normalizers</a> (<a class="el" href="namespacemim.html#ab875464e5f495601abff7287573e1405">Normalizers</a> &amp;normalizers)</td></tr>
-<tr class="separator:a06f176b4147beb00ababa04690da8255"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%direct.cps2ds</div></td></tr>
+<tr class="memitem:ab2a0fe9b03b60f04b11532493ed42cac" id="r_ab2a0fe9b03b60f04b11532493ed42cac"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2a0fe9b03b60f04b11532493ed42cac">cps2ds</a> : flags_t </td></tr>
+<tr class="separator:ab2a0fe9b03b60f04b11532493ed42cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%direct.ds2cps_phase</div></td></tr>
+<tr class="memitem:a3c094b343d7344c05a3cca414b8472d2" id="r_a3c094b343d7344c05a3cca414b8472d2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c094b343d7344c05a3cca414b8472d2">ds2cps_phase</a> : flags_t </td></tr>
+<tr class="separator:a3c094b343d7344c05a3cca414b8472d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%direct.cps2ds_phase</div></td></tr>
+<tr class="memitem:aa7cc430476ee39d6ac174c4f85bf5308" id="r_aa7cc430476ee39d6ac174c4f85bf5308"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7cc430476ee39d6ac174c4f85bf5308">cps2ds_phase</a> : flags_t </td></tr>
+<tr class="separator:aa7cc430476ee39d6ac174c4f85bf5308"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aba7c9ebfcb60169ec9b999fe23bf38fd" id="r_aba7c9ebfcb60169ec9b999fe23bf38fd"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacemim.html#abb3c4d87d349db095756fced097d8ac8">plugin_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba7c9ebfcb60169ec9b999fe23bf38fd">Plugin_Id</a> = 0x14a4c61150000000</td></tr>
 <tr class="separator:aba7c9ebfcb60169ec9b999fe23bf38fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">%direct.cps2ds</h2></td></tr>
-<tr class="memitem:ab2a0fe9b03b60f04b11532493ed42cac" id="r_ab2a0fe9b03b60f04b11532493ed42cac"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2a0fe9b03b60f04b11532493ed42cac">cps2ds</a> : flags_t </td></tr>
-<tr class="separator:ab2a0fe9b03b60f04b11532493ed42cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8aceb70ec50fe372c59ddade3e43d65d" id="r_a8aceb70ec50fe372c59ddade3e43d65d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8aceb70ec50fe372c59ddade3e43d65d">normalize_cps2ds</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *fun)</td></tr>
-<tr class="memdesc:a8aceb70ec50fe372c59ddade3e43d65d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="#ab2a0fe9b03b60f04b11532493ed42cac">cps2ds</a></code> is directly converted to <code>op_cps2ds_dep f</code> in its normalizer.  <br /></td></tr>
-<tr class="separator:a8aceb70ec50fe372c59ddade3e43d65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%direct.cps2ds_dep</h2></td></tr>
 <tr class="memitem:ae16ba35b7bcfa757a84a6e0ba0ca7e00" id="r_ae16ba35b7bcfa757a84a6e0ba0ca7e00"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae16ba35b7bcfa757a84a6e0ba0ca7e00">cps2ds_dep</a> : flags_t </td></tr>
@@ -192,7 +182,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00014">14</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00021">21</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -216,12 +206,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00022">22</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00014">14</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
-<a id="a051ff263e9673bd32b0c15a836ddccf2" name="a051ff263e9673bd32b0c15a836ddccf2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a051ff263e9673bd32b0c15a836ddccf2">&#9670;&#160;</a></span>cps2ds_pass</h2>
+<a id="aa7cc430476ee39d6ac174c4f85bf5308" name="aa7cc430476ee39d6ac174c4f85bf5308"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7cc430476ee39d6ac174c4f85bf5308">&#9670;&#160;</a></span>cps2ds_phase</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,7 +220,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#a051ff263e9673bd32b0c15a836ddccf2">mim::plug::direct::cps2ds_pass</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
+          <td class="memname">enum class <a class="el" href="#aa7cc430476ee39d6ac174c4f85bf5308">mim::plug::direct::cps2ds_phase</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
         </tr>
       </table>
   </td>
@@ -240,12 +230,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00036">36</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00035">35</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
-<a id="aab6cf7598d2f6204964ca729585048dc" name="aab6cf7598d2f6204964ca729585048dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab6cf7598d2f6204964ca729585048dc">&#9670;&#160;</a></span>ds2cps_pass</h2>
+<a id="a3c094b343d7344c05a3cca414b8472d2" name="a3c094b343d7344c05a3cca414b8472d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c094b343d7344c05a3cca414b8472d2">&#9670;&#160;</a></span>ds2cps_phase</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -254,7 +244,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="#aab6cf7598d2f6204964ca729585048dc">mim::plug::direct::ds2cps_pass</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
+          <td class="memname">enum class <a class="el" href="#a3c094b343d7344c05a3cca414b8472d2">mim::plug::direct::ds2cps_phase</a> : <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a></td>
         </tr>
       </table>
   </td>
@@ -264,43 +254,11 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00029">29</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00028">28</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a8aceb70ec50fe372c59ddade3e43d65d" name="a8aceb70ec50fe372c59ddade3e43d65d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8aceb70ec50fe372c59ddade3e43d65d">&#9670;&#160;</a></span>normalize_cps2ds()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::plug::direct::normalize_cps2ds </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>fun</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><code><a class="el" href="#ab2a0fe9b03b60f04b11532493ed42cac">cps2ds</a></code> is directly converted to <code>op_cps2ds_dep f</code> in its normalizer. </p>
-
-<p class="definition">Definition at line <a class="el" href="direct_2normalizers_8cpp_source.html#l00008">8</a> of file <a class="el" href="direct_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="direct_8h_source.html#l00016">op_cps2ds_dep()</a>.</p>
-
-</div>
-</div>
 <a id="a4d43157d6a14cfbcc46d5d765a82fe1c" name="a4d43157d6a14cfbcc46d5d765a82fe1c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d43157d6a14cfbcc46d5d765a82fe1c">&#9670;&#160;</a></span>op_cps2ds_dep()</h2>
 
@@ -328,26 +286,7 @@ Variables</h2></td></tr>
 
 <p class="reference">References <a class="el" href="lam_8h_source.html#l00035">mim::Pi::dom()</a>, <a class="el" href="lam_8h_source.html#l00047">mim::Pi::isa_cn()</a>, <a class="el" href="rewrite_8cpp_source.html#l00181">mim::VarRewriter::rewrite()</a>, <a class="el" href="def_8cpp_source.html#l00446">mim::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00438">mim::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00195">mim::plug::autodiff::Eval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00153">mim::plug::autodiff::Eval::augment_pack()</a>, <a class="el" href="direct_2normalizers_8cpp_source.html#l00008">normalize_cps2ds()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00044">mim::plug::matrix::LowerMatrixHighLevelMapRed::rewrite_()</a>, and <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00039">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
-
-</div>
-</div>
-<a id="a06f176b4147beb00ababa04690da8255" name="a06f176b4147beb00ababa04690da8255"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06f176b4147beb00ababa04690da8255">&#9670;&#160;</a></span>register_normalizers()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void mim::plug::direct::register_normalizers </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacemim.html#ab875464e5f495601abff7287573e1405">Normalizers</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>normalizers</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="reference">Referenced by <a class="el" href="direct_8cpp_source.html#l00016">mim_get_plugin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00195">mim::plug::autodiff::Eval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00153">mim::plug::autodiff::Eval::augment_pack()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00044">mim::plug::matrix::LowerMatrixHighLevelMapRed::rewrite_()</a>, and <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00039">mim::plug::matrix::LowerMatrixMediumLevel::rewrite_()</a>.</p>
 
 </div>
 </div>

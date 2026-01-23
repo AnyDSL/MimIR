@@ -8,13 +8,11 @@ var NAVTREEINDEX21 =
 "namespacemim_1_1plug_1_1demo.html#ab917477fbcc57a3f25e21953c7d70954":[3,0,1,4,5,1],
 "namespacemim_1_1plug_1_1demo.html#ae296affd3e0486ee32cf817d398dc72b":[3,0,1,4,5,2],
 "namespacemim_1_1plug_1_1direct.html":[3,0,1,4,6],
-"namespacemim_1_1plug_1_1direct.html#a051ff263e9673bd32b0c15a836ddccf2":[3,0,1,4,6,4],
-"namespacemim_1_1plug_1_1direct.html#a06f176b4147beb00ababa04690da8255":[3,0,1,4,6,8],
-"namespacemim_1_1plug_1_1direct.html#a4d43157d6a14cfbcc46d5d765a82fe1c":[3,0,1,4,6,7],
-"namespacemim_1_1plug_1_1direct.html#a8aceb70ec50fe372c59ddade3e43d65d":[3,0,1,4,6,6],
-"namespacemim_1_1plug_1_1direct.html#aab6cf7598d2f6204964ca729585048dc":[3,0,1,4,6,5],
+"namespacemim_1_1plug_1_1direct.html#a3c094b343d7344c05a3cca414b8472d2":[3,0,1,4,6,5],
+"namespacemim_1_1plug_1_1direct.html#a4d43157d6a14cfbcc46d5d765a82fe1c":[3,0,1,4,6,6],
+"namespacemim_1_1plug_1_1direct.html#aa7cc430476ee39d6ac174c4f85bf5308":[3,0,1,4,6,4],
 "namespacemim_1_1plug_1_1direct.html#ab2a0fe9b03b60f04b11532493ed42cac":[3,0,1,4,6,2],
-"namespacemim_1_1plug_1_1direct.html#aba7c9ebfcb60169ec9b999fe23bf38fd":[3,0,1,4,6,9],
+"namespacemim_1_1plug_1_1direct.html#aba7c9ebfcb60169ec9b999fe23bf38fd":[3,0,1,4,6,7],
 "namespacemim_1_1plug_1_1direct.html#ae16ba35b7bcfa757a84a6e0ba0ca7e00":[3,0,1,4,6,3],
 "namespacemim_1_1plug_1_1math.html":[3,0,1,4,7],
 "namespacemim_1_1plug_1_1math.html#a05ac4b1ef1e0a51c44e4b0622835c4f4":[3,0,1,4,7,57],
@@ -249,5 +247,7 @@ var NAVTREEINDEX21 =
 "namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9aa6156ea9d66fef24e87e841fbabf7cca":[3,0,1,4,9,3,3],
 "namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9acb17869fe51048b5a5c4c6106551a255":[3,0,1,4,9,3,4],
 "namespacemim_1_1plug_1_1mem.html#a8aed3859cb41cf28b52dd9e7a721260e":[3,0,1,4,9,32],
-"namespacemim_1_1plug_1_1mem.html#a8b2f069e29fa1d51255fd22d817b169f":[3,0,1,4,9,34]
+"namespacemim_1_1plug_1_1mem.html#a8b2f069e29fa1d51255fd22d817b169f":[3,0,1,4,9,34],
+"namespacemim_1_1plug_1_1mem.html#a8cedca0dc21ce4001f0f3b87655b6a29":[3,0,1,4,9,27],
+"namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502":[3,0,1,4,9,15]
 };

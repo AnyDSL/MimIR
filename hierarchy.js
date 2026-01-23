@@ -84,6 +84,7 @@ var hierarchy =
         [ "mim::RetWrap", "classmim_1_1RetWrap.html", null ],
         [ "mim::SymExprOpt", "classmim_1_1SymExprOpt.html", null ],
         [ "mim::plug::affine::phase::LowerFor", "classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html", null ],
+        [ "mim::plug::direct::DS2CPS", "classmim_1_1plug_1_1direct_1_1DS2CPS.html", null ],
         [ "mim::plug::matrix::LowerMatrixLowLevel", "classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
       ] ],
       [ "mim::VarRewriter", "classmim_1_1VarRewriter.html", null ],
@@ -183,12 +184,6 @@ var hierarchy =
               [ "mim::plug::clos::LowerTypedClosPrep", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html", null ]
             ] ]
           ] ],
-          [ "mim::RWPass< CPS2DS, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::direct::CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", null ]
-          ] ],
-          [ "mim::RWPass< DS2CPS, Lam >", "classmim_1_1RWPass.html", [
-            [ "mim::plug::direct::DS2CPS", "classmim_1_1plug_1_1direct_1_1DS2CPS.html", null ]
-          ] ],
           [ "mim::RWPass< LowerMatrixHighLevelMapRed, Lam >", "classmim_1_1RWPass.html", [
             [ "mim::plug::matrix::LowerMatrixHighLevelMapRed", "classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html", null ]
           ] ],
@@ -233,7 +228,8 @@ var hierarchy =
           [ "mim::PhaseMan", "classmim_1_1PhaseMan.html", null ],
           [ "mim::RWPhase", "classmim_1_1RWPhase.html", null ],
           [ "mim::plug::clos::ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", null ],
-          [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ]
+          [ "mim::plug::clos::LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", null ],
+          [ "mim::plug::direct::CPS2DSPhase", "classmim_1_1plug_1_1direct_1_1CPS2DSPhase.html", null ]
         ] ],
         [ "mim::Repl", "classmim_1_1Repl.html", [
           [ "mim::ReplMan", "classmim_1_1ReplMan.html", null ]

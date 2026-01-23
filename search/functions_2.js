@@ -41,7 +41,7 @@ var searchData=
   ['copy_38',['copy',['../classmim_1_1Pass.html#a91b8e66878e8a6ceba632d2f5ca2a27d',1,'mim::Pass::copy()'],['../classmim_1_1FPPass.html#a65d7f941f11b074aabb4af67b01039c2',1,'mim::FPPass::copy()']]],
   ['copyprop_39',['CopyProp',['../classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html#a46173609cce228fe3d7d56413d5326c7',1,'mim::plug::mem::pass::CopyProp']]],
   ['counting_5ffor_40',['counting_for',['../namespacemim_1_1plug_1_1matrix.html#af543155056078bfd4e2df4f16ad7458f',1,'mim::plug::matrix']]],
-  ['cps2ds_41',['CPS2DS',['../classmim_1_1plug_1_1direct_1_1CPS2DS.html#a8c2ee1ed91ca58b99741cd5b8068d88a',1,'mim::plug::direct::CPS2DS']]],
+  ['cps2dsphase_41',['CPS2DSPhase',['../classmim_1_1plug_1_1direct_1_1CPS2DSPhase.html#aaa7edf714e19fb4625c74fd887c28af1',1,'mim::plug::direct::CPS2DSPhase']]],
   ['create_42',['create',['../classmim_1_1Stage.html#a7d0782be17d913b25c63d782e4214e64',1,'mim::Stage::create()'],['../classmim_1_1Sets.html#ad6d2206fb706506210e1f4cbb4909ee6',1,'mim::Sets::create()']]],
   ['ctype_43',['ctype',['../namespacemim_1_1plug_1_1clos.html#a7820bb02f38dcb275393c75227c85114',1,'mim::plug::clos']]],
   ['curr_5fgid_44',['curr_gid',['../classmim_1_1World.html#a42972b62b30faf83a3470c03a4883685',1,'mim::World']]],

@@ -1,7 +1,5 @@
 var NAVTREEINDEX24 =
 {
-"structmim_1_1UseHash.html#a6d13f2e0a9453f2bfcc5f67bcd47e741":[5,0,1,97,0],
-"structmim_1_1World_1_1Freezer.html":[3,0,1,103,1],
 "structmim_1_1World_1_1Freezer.html":[5,0,1,101,1],
 "structmim_1_1World_1_1Freezer.html#a818ef9b85c0577003a841560821c188e":[3,0,1,103,1,0],
 "structmim_1_1World_1_1Freezer.html#a818ef9b85c0577003a841560821c188e":[5,0,1,101,1,0],

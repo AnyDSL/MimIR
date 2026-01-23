@@ -89,7 +89,7 @@ var annotated_dup =
           [ "LowerTypedClosPrep", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep" ]
         ] ],
         [ "direct", "namespacemim_1_1plug_1_1direct.html", [
-          [ "CPS2DS", "classmim_1_1plug_1_1direct_1_1CPS2DS.html", "classmim_1_1plug_1_1direct_1_1CPS2DS" ],
+          [ "CPS2DSPhase", "classmim_1_1plug_1_1direct_1_1CPS2DSPhase.html", "classmim_1_1plug_1_1direct_1_1CPS2DSPhase" ],
           [ "DS2CPS", "classmim_1_1plug_1_1direct_1_1DS2CPS.html", "classmim_1_1plug_1_1direct_1_1DS2CPS" ]
         ] ],
         [ "matrix", "namespacemim_1_1plug_1_1matrix.html", [

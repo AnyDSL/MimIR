@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: src/mim/plug/direct/pass/cps2ds.cpp File Reference</title>
+<title>MimIR: src/mim/plug/direct/phase/cps2ds.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -118,15 +118,17 @@ $(function(){initNavTree('cps2ds_8cpp.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">cps2ds.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="cps2ds_8h_source.html">mim/plug/direct/pass/cps2ds.h</a>&quot;</code><br />
-<code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;type_traits&gt;</code><br />
-<code>#include &lt;<a class="el" href="lam_8h_source.html">mim/lam.h</a>&gt;</code><br />
-<code>#include &quot;<a class="el" href="direct_2autogen_8h_source.html">mim/plug/direct/autogen.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="cps2ds_8h_source.html">mim/plug/direct/phase/cps2ds.h</a>&quot;</code><br />
+<code>#include &lt;ranges&gt;</code><br />
+<code>#include &quot;<a class="el" href="def_8h_source.html">mim/def.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="rewrite_8h_source.html">mim/rewrite.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="schedule_8h_source.html">mim/schedule.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="world_8h_source.html">mim/world.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="direct_8h_source.html">mim/plug/direct/direct.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for cps2ds.cpp:</div>
@@ -145,13 +147,35 @@ Namespaces</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1direct.html">mim::plug::direct</a></td></tr>
 <tr class="memdesc:namespacemim_1_1plug_1_1direct"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="direct.html">The direct style Plugin</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a54edf5356d4ed48c9d1963903ab7626f" id="r_a54edf5356d4ed48c9d1963903ab7626f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54edf5356d4ed48c9d1963903ab7626f">DEBUG_CPS2DS</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:a54edf5356d4ed48c9d1963903ab7626f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a54edf5356d4ed48c9d1963903ab7626f" name="a54edf5356d4ed48c9d1963903ab7626f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54edf5356d4ed48c9d1963903ab7626f">&#9670;&#160;</a></span>DEBUG_CPS2DS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DEBUG_CPS2DS&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="cps2ds_8cpp_source.html#l00012">12</a> of file <a class="el" href="cps2ds_8cpp_source.html">cps2ds.cpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3f6d0e947440f9d0b42426d30577ffdc.html">mim</a></li><li class="navelem"><a class="el" href="dir_07110a8747d2517ee97007224f1d2994.html">plug</a></li><li class="navelem"><a class="el" href="dir_e65ab785a1354e430e056185dc7a9950.html">direct</a></li><li class="navelem"><a class="el" href="dir_690d8605f9a52040970a2850e1002984.html">pass</a></li><li class="navelem"><a class="el" href="cps2ds_8cpp.html">cps2ds.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_3f6d0e947440f9d0b42426d30577ffdc.html">mim</a></li><li class="navelem"><a class="el" href="dir_07110a8747d2517ee97007224f1d2994.html">plug</a></li><li class="navelem"><a class="el" href="dir_e65ab785a1354e430e056185dc7a9950.html">direct</a></li><li class="navelem"><a class="el" href="dir_1b4fd90d483425c2079d1a7d69a5c919.html">phase</a></li><li class="navelem"><a class="el" href="cps2ds_8cpp.html">cps2ds.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

@@ -11,5 +11,5 @@ var searchData=
   ['dot_5f2d_5f10_8',['dot_2d_10',['../namespacemim_1_1plug_1_1tensor.html#ac1861d459b0ef51886b0d7ac6050ad6e',1,'mim::plug::tensor']]],
   ['dot_5f2d_5f11_9',['dot_2d_11',['../namespacemim_1_1plug_1_1tensor.html#aa65540590ca3cd4db49358f365b8c8ea',1,'mim::plug::tensor']]],
   ['dot_5fgeneral_10',['dot_general',['../namespacemim_1_1plug_1_1tensor.html#a6b05dd46a3d8119c30b9e7834ac5cb3b',1,'mim::plug::tensor']]],
-  ['ds2cps_5fpass_11',['ds2cps_pass',['../namespacemim_1_1plug_1_1direct.html#aab6cf7598d2f6204964ca729585048dc',1,'mim::plug::direct']]]
+  ['ds2cps_5fphase_11',['ds2cps_phase',['../namespacemim_1_1plug_1_1direct.html#a3c094b343d7344c05a3cca414b8472d2',1,'mim::plug::direct']]]
 ];
