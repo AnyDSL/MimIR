@@ -86,7 +86,7 @@ public:
     ///@}
 
     const char* what() const noexcept override {
-        std::cerr << *this << std::endl;;
+        std::cerr << *this << std::endl;
         return "MimIR type error";
     }
 
