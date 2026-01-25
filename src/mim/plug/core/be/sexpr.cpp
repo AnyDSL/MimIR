@@ -392,7 +392,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple_str = emit_unsafe(tuple);
         if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) return id(extract);
 
-        return bb.assign(id(extract), "(extract {} {})", tuple_str, emit_unsafe(index));
+        // return bb.assign(id(extract), "(extract {} {})", tuple_str, emit_unsafe(index));
+        os << "(extract " << tuple_str << emit_unsafe(index) << ")";
+        return os.str();
+
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = insert->tuple();
         auto index = insert->index();
