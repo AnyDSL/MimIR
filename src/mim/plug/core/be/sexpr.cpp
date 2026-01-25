@@ -55,7 +55,7 @@ struct BB {
 
     template<class... Args>
     std::string assign(std::string_view name, const char* s, Args&&... args) {
-        print(print(print(body().emplace_back(), "let {} = ", name), s, std::forward<Args&&>(args)...), ";");
+        print(print(print(body().emplace_back(), "(let {} ", name), s, std::forward<Args&&>(args)...), ")");
         return std::string(name);
     }
 
@@ -148,9 +148,9 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         auto t_elem = convert(arr->body());
         if (auto arity = Lit::isa(arr->arity())) {
             u64 size = *arity;
-            print(s, "<<{}; {}>>", size, t_elem);
+            print(s, "<<{};{}>>", size, t_elem);
         } else {
-            print(s, "<<{}; {}>>", emit_unsafe(arr->arity()), t_elem);
+            print(s, "<<{};{}>>", emit_unsafe(arr->arity()), t_elem);
         }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))
@@ -161,17 +161,17 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         size_t i = 0;
         if (var) {
             assert(var->arity() == sigma->arity());
-            print(s, "[{, }]", Elem(sigma->ops(), [&](auto op) {
+            print(s, "[{,}]", Elem(sigma->ops(), [&](auto op) {
                       if (auto v = var->proj(i++))
-                          print(s, "{}: {}", id(v), convert(op, v));
+                          print(s, "{}:{}", id(v), convert(op, v));
                       else
                           s << op;
                   }));
         } else {
-            print(s, "[{, }]", sigma->ops());
+            print(s, "[{,}]", sigma->ops());
         }
     } else if (auto tuple = type->isa<Tuple>()) {
-        print(s, "({, })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
+        print(s, "({,})", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
     } else if (auto app = type->isa<App>()) {
         print(s, "{} {}", convert(app->callee()), convert(app->arg()));
     } else if (auto ax = type->isa<Axm>()) {
@@ -243,7 +243,11 @@ void Emitter::emit_con(Lam* lam) {
     print(std::cout, "emit_con: {}\n", lam->unique_name());
 
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
-    tab.print(func_impls_, "{} {}{} [", lam_kind, external(lam), id(lam));
+    // tab.print(func_impls_, "{} {}{} [", lam_kind, external(lam), id(lam));
+
+    // TODO: maybe extern needs to be emitted aswell for reconstruction
+    // tab.print(func_impls_, "({} {}{} ", lam_kind, external(lam), id(lam));
+    tab.print(func_impls_, "({} {} ", lam_kind, id(lam));
 
     if (lam->has_var()) {
         auto vars  = lam->vars();
@@ -255,23 +259,27 @@ void Emitter::emit_con(Lam* lam) {
             } else {
                 print(func_impls_, "{}{}", sep, convert(lam->dom(i)));
             }
-            sep = ", ";
+            sep = " ";
             ++i;
         }
     }
-    print(func_impls_, "]@({}) = \n", emit_unsafe(lam->filter()));
+    // print(func_impls_, "]@({}) = \n", emit_unsafe(lam->filter()));
+    print(func_impls_, "\n");
 }
 
+// NOTE: when proecessing a continuation, this method is called to emit the tail of its basic block in emit_epilogue
+// and this then further calls on emit_unsafe() for the callee and arg in order to emit the body of the basic block in
+// emit_bb()
 std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
     auto v_arg = emit_unsafe(app.arg());
     if (auto app_callee = app.callee()->isa<App>()) {
         auto v_callee = emit_curried_app(*app_callee);
 
-        print(os, "{} {}", v_callee, v_arg);
+        print(os, "(app {} {})", v_callee, v_arg);
     } else {
         auto v_callee = emit_unsafe(app.callee());
-        print(os, "{} {}", v_callee, v_arg);
+        print(os, "(app {} {})", v_callee, v_arg);
     }
     return os.str();
 }
@@ -288,6 +296,7 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     emit_con(lam);
 
     ++tab;
+    // first prints all lines of the head and body of the basic block into func_impls_
     for (const auto& part : bb.parts | std::views::take(2))
         for (auto& line : part)
             tab.print(func_impls_, "{}\n", line.str());
@@ -305,7 +314,8 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     for (const auto& line : bb.tail())
         tab.print(func_impls_, "{}\n", line.str());
     --tab;
-    func_impls_ << std::endl;
+    tab.print(func_impls_, ")\n");
+    // func_impls_ << std::endl;
 }
 
 void Emitter::finalize() {
@@ -317,13 +327,21 @@ void Emitter::finalize() {
     finalize_nest(nest().root(), done);
 }
 
+// NOTE: we basically have lambdas whose structure is as follows:
+// 1) The signature of the lambda like:  lam extern foo(Nat): Nat
+// 2) The body, consisting of let assignments like:
+//        let i = bar#1:(Idx 3)
+//    and other nested lambdas like:
+//        con baz(Nat): Nat ...
+// 3) The tail, which is emitted below, where the actual logic of the lambda happens like:  baz i
+// This method will be called for every lambda inside of the loop in the emitter's visit() method.
 void Emitter::emit_epilogue(Lam* lam) {
     auto& bb = lam2bb_[lam];
     if (lam->isa_cn(lam)) {
         auto app = lam->body()->as<App>();
-        bb.tail("{};", emit_curried_app(*app));
+        bb.tail("{}", emit_curried_app(*app));
     } else {
-        bb.tail("{};", emit(lam->body()));
+        bb.tail("{}", emit(lam->body()));
     }
 }
 
@@ -352,11 +370,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(os, "{}", def->unique_name());
         return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
-        os << "(";
+        os << "(tuple ";
         for (auto sep = ""; auto e : tuple->ops()) {
             if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
                 os << sep << v_elem;
-                sep = ", ";
+                sep = " ";
             }
         }
         os << ")";
@@ -374,13 +392,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple_str = emit_unsafe(tuple);
         if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) return id(extract);
 
-        return bb.assign(id(extract), "{}#{}", tuple_str, emit_unsafe(index));
+        return bb.assign(id(extract), "(extract {} {})", tuple_str, emit_unsafe(index));
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = insert->tuple();
         auto index = insert->index();
         auto value = insert->value();
 
-        return bb.assign(id(insert), "ins({}, {}, {})", emit_unsafe(tuple), emit_unsafe(index), emit_unsafe(value));
+        return bb.assign(id(insert), "(ins {} {} {})", emit_unsafe(tuple), emit_unsafe(index), emit_unsafe(value));
     } else if (auto var = def->isa<Var>()) {
         return id(var);
     } else if (auto app = def->isa<App>()) {
