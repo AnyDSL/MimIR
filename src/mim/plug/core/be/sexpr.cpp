@@ -393,15 +393,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) return id(extract);
 
         // return bb.assign(id(extract), "(extract {} {})", tuple_str, emit_unsafe(index));
-        os << "(extract " << tuple_str << emit_unsafe(index) << ")";
+        os << "(extract " << tuple_str << " " << emit_unsafe(index) << ")";
         return os.str();
-
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = insert->tuple();
         auto index = insert->index();
         auto value = insert->value();
 
-        return bb.assign(id(insert), "(ins {} {} {})", emit_unsafe(tuple), emit_unsafe(index), emit_unsafe(value));
+        // return bb.assign(id(insert), "(ins {} {} {})", emit_unsafe(tuple), emit_unsafe(index), emit_unsafe(value));
+        os << "(ins " << emit_unsafe(tuple) << " " << emit_unsafe(index) << " " << emit_unsafe(value) << ")";
+        return os.str();
     } else if (auto var = def->isa<Var>()) {
         return id(var);
     } else if (auto app = def->isa<App>()) {
