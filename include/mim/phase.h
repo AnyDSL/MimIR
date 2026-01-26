@@ -53,8 +53,48 @@ public:
     ///@}
 
 protected:
-    /// Set to `true` to indicate that you want to rerun all Phase%es in current your fixed-point PhaseMan.
+    /// Set to `true` to indicate that you want to rerun all Phase%es in your current fixed-point PhaseMan.
     bool todo_ = false;
+};
+
+/// This Phase will recursively Rewriter::rewrite
+/// 1. all World::annexes() (during which Analysis::is_bootstrapping is `true`), and then
+/// 2. all World::externals() (during which Analysis::is_bootstrapping is `false`).
+/// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
+class Analysis : public Phase, public Rewriter {
+public:
+    /// @name Construction & Destruction
+    ///@{
+    Analysis(World& world, std::string name)
+        : Phase(world, std::move(name))
+        , Rewriter(world) {}
+    Analysis(World& world, flags_t annex)
+        : Phase(world, annex)
+        , Rewriter(world) {}
+
+    /// Clears all members and sets todo() to `false` for next round in a fixed-point iteration.
+    /// @sa RWPhase::analyze
+    virtual void reset();
+    ///@}
+
+    bool is_bootstrapping() const { return bootstrapping_; }
+
+    /// @name Rewrite
+    ///@{
+    virtual void rewrite_annex(flags_t, const Def*);
+    virtual void rewrite_external(Def*);
+    ///@}
+
+    /// @name Getters
+    ///@{
+    World& world() { return Phase::world(); }
+    ///@}
+
+protected:
+    void start() override;
+
+private:
+    bool bootstrapping_ = true;
 };
 
 /// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
@@ -63,24 +103,30 @@ protected:
 /// This Phase will recursively Rewriter::rewrite
 /// 1. all (old) World::annexes() (during which RWPhase::is_bootstrapping is `true`), and then
 /// 2. all (old) World::externals() (during which RWPhase::is_bootstrapping is `false`).
+/// All rewrites that refer to another annex have to be skipped during bootstrapping.
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
 class RWPhase : public Phase, public Rewriter {
 public:
     /// @name Construction
     ///@{
-    RWPhase(World& world, std::string name)
+    RWPhase(World& world, std::string name, Analysis* analysis = nullptr)
         : Phase(world, std::move(name))
-        , Rewriter(world.inherit()) {}
-    RWPhase(World& world, flags_t annex)
+        , Rewriter(world.inherit())
+        , analysis_(analysis) {}
+    RWPhase(World& world, flags_t annex, Analysis* analysis = nullptr)
         : Phase(world, annex)
-        , Rewriter(world.inherit()) {}
+        , Rewriter(world.inherit())
+        , analysis_(analysis) {}
     ///@}
 
+    /// Returns whether we are currently bootstrapping (rewriting annexes).
+    /// While bootstrapping, you have to skip rewrites that refer to other annexes, as they might not yet be available.
     bool is_bootstrapping() const { return bootstrapping_; }
 
     /// You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.
+    /// If analysis_ is set, use this for the fixed-point loop.
     /// @note If you don't need a fixed-point, just return `false` after the first run of analyze.
-    virtual bool analyze() { return false; }
+    virtual bool analyze();
 
     /// @name Rewrite
     ///@{
@@ -104,6 +150,7 @@ protected:
     void start() override;
 
 private:
+    Analysis* analysis_;
     bool bootstrapping_ = true;
 };
 

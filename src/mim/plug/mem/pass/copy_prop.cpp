@@ -20,7 +20,7 @@ void CopyProp::init(PassMan* man) {
 
 const Def* CopyProp::rewrite(const Def* def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
-    if (!isa_workable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;
+    if (!isa_optimizable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;
 
     auto n = app->num_targs();
     if (n == 0) return app;

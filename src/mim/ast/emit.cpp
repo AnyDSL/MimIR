@@ -381,6 +381,7 @@ const Def* UniqExpr::emit_(Emitter& e) const { return e.world().uniq(inhabitant(
  */
 
 void AxmDecl::emit(Emitter& e) const {
+    if (!annex_) return; // Skip emit if binding failed
     mim_type_ = type()->emit(e);
     auto& id  = annex_->id;
 

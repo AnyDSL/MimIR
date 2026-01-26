@@ -28,6 +28,7 @@ Scheduler::Scheduler(const Nest& nest)
         queue.pop();
 
         if (!def->is_set()) continue;
+        if (!def->type()) continue;
 
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             // all reachable muts have already been registered above

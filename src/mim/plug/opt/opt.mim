@@ -12,6 +12,7 @@ plugin core;
 import compile;
 import affine;
 import autodiff;
+import buffrize;
 import clos;
 import direct;
 import matrix;
@@ -58,6 +59,12 @@ lam extern _default_compile (): %compile.Phase =
             %compile.phases ff (
                 matrix_lower_phase,
                 cond_phase "direct" direct_phases,
+            )
+        ),
+        cond_phase "buffrize" (
+            %compile.phases ff (
+                %mem.add_mem_phase,
+                %buffrize.buffrize_phase,
             )
         ),
         cond_phase "affine" %affine.lower_for_phase,

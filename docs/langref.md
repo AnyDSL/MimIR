@@ -234,7 +234,7 @@ This will bind
 Here is another example:
 
 ```rust
-{T: *, a: Nat} as Ts → [%mem.M, %mem.Ptr Ts] → [%mem.M, T]
+{T: *, a: Nat} as Ts → [%mem.M a, %mem.Ptr Ts] → [%mem.M a, T]
 ```
 
 #### Rebind

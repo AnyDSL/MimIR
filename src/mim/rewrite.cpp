@@ -159,7 +159,7 @@ const Def* Rewriter::rewrite_mut_Seq(Seq* seq) {
     }
 
     if (!seq->has_var()) return map(seq, world().seq(seq->is_intro(), new_arity, rewrite(seq->body())));
-    return rewrite_stub(seq->as_mut(), world().mut_seq(seq->is_term(), rewrite(seq->type())));
+    return rewrite_stub(seq->as_mut(), world().mut_seq(seq->is_intro(), rewrite(seq->type())));
 }
 
 const Def* Rewriter::rewrite_stub(Def* old_mut, Def* new_mut) {

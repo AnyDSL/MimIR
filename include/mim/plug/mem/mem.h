@@ -13,15 +13,15 @@ namespace mim::plug::mem {
 /// @name %%mem.M
 ///@{
 
-inline Lam* mut_con(World& w) { return w.mut_con(w.annex<M>()); } ///< Yields `con[%mem.M]`.
+inline Lam* mut_con(World& w, nat_t a = 0) { return w.mut_con(w.call<M>(a)); } ///< Yields `con[%mem.M 0]`.
 
-/// Yields `con[%mem.M, dom]`.
+/// Yields `con[%mem.M 0, dom]`.
 inline Lam* mut_con(const Def* dom) {
     World& w = dom->world();
-    return w.mut_con({w.annex<M>(), dom});
+    return w.mut_con({w.call<M>(0), dom});
 }
 
-/// Returns the (first) element of type mem::M from the given tuple.
+/// Returns the (first) element of type `%mem.M a` from the given tuple.
 inline const Def* mem_def(const Def* def) {
     if (Axm::isa<mem::M>(def->type())) return def;
     if (def->type()->isa<Arr>()) return {}; // don't look into possibly gigantic arrays
@@ -36,19 +36,6 @@ inline const Def* mem_def(const Def* def) {
 
 /// Returns the memory argument of a function if it has one.
 inline const Def* mem_var(Lam* lam) { return mem_def(lam->var()); }
-
-/// Swaps the memory occurrences in the given def with the given memory.
-inline const Def* replace_mem(const Def* mem, const Def* arg) {
-    // TODO: maybe use rebuild instead?
-    if (arg->num_projs() > 1) {
-        auto& w = mem->world();
-        return w.tuple(DefVec(arg->num_projs(), [&](auto i) { return replace_mem(mem, arg->proj(i)); }));
-    }
-
-    if (Axm::isa<mem::M>(arg->type())) return mem;
-
-    return arg;
-}
 
 /// Removes recusively all occurences of mem from a type (sigma).
 inline const Def* strip_mem_ty(const Def* def) {
@@ -121,14 +108,6 @@ inline const Def* op_lea_unsafe(const Def* ptr, const Def* i) {
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world().lit_i64(i)); }
-///@}
-
-/// @name %%mem.remem
-///@{
-inline const Def* op_remem(const Def* mem) {
-    World& w = mem->world();
-    return w.app(w.annex<remem>(), mem);
-}
 ///@}
 
 /// @name %%mem.alloc

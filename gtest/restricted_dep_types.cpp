@@ -219,7 +219,7 @@ TEST(RestrictedDependentTypes, ll) {
     World& w = driver.world();
     ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s, "opt"s});
 
-    auto mem_t  = w.annex<mem::M>();
+    auto mem_t  = w.call<mem::M>(0);
     auto i32_t  = w.type_i32();
     auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(i32_t));
 

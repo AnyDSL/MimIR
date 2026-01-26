@@ -16,7 +16,7 @@ const Def* insert_ret(const Def* def, const Def* ret) {
 
 void LowerTypedClos::start() {
     // TODO put into c'tor - doesn't work right now, because world becomes invalid
-    dummy_ret_ = world().bot(world().cn(world().annex<mem::M>()));
+    dummy_ret_ = world().bot(world().cn(world().call<mem::M>(0)));
 
     for (auto mut : world().externals().mutate())
         rewrite(mut);
@@ -171,14 +171,14 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         // let ...
         // F (m'', a1', ..., (env_ptr, f'))
         for (size_t i = 0; i < new_def->num_ops(); i++)
-            if (new_def->op(i)->type() == w.annex<mem::M>()) new_def = new_def->refine(i, lcm_);
+            if (new_def->op(i)->type() == w.call<mem::M>(0)) new_def = new_def->refine(i, lcm_);
 
-        if (new_type == w.annex<mem::M>()) { // :store
+        if (new_type == w.call<mem::M>(0)) { // :store
             lcm_ = new_def;
             lvm_ = def;
         } else if (new_type->isa<Sigma>()) { // :alloc, :slot, ...
             for (size_t i = 0; i < new_type->num_ops(); i++) {
-                if (new_type->op(i) == w.annex<mem::M>()) {
+                if (new_type->op(i) == w.call<mem::M>(0)) {
                     lcm_ = w.extract(new_def, i);
                     lvm_ = w.extract(def, i);
                     break;

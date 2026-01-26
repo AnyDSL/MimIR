@@ -98,9 +98,9 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, const Def* n) {
     auto states = dfa.get_reachable_states();
     DFAMap<Lam*> state2matcher;
 
-    // ((mem: %mem.M, string: Str n, pos: Idx n), Cn [%mem.M, Bool, Idx n])
-    auto matcher = w.mut_fun({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)},
-                             {w.annex<mem::M>(), w.type_bool(), w.type_idx(n)});
+    // ((mem: %mem.M 0, string: Str n, pos: Idx n), Cn [%mem.M 0, Bool, Idx n])
+    auto matcher = w.mut_fun({w.call<mem::M>(0), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)},
+                             {w.call<mem::M>(0), w.type_bool(), w.type_idx(n)});
     matcher->debug_prefix(std::string("match_regex"));
     auto [args, exit] = matcher->vars<2>();
     exit->debug_prefix(std::string("exit"));

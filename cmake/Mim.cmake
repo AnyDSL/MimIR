@@ -1,3 +1,5 @@
+include(GNUInstallDirs)
+
 # clear globals
 SET(MIM_PLUGIN_LIST   "" CACHE INTERNAL "MIM_PLUGIN_LIST")
 SET(MIM_PLUGIN_LAYOUT "" CACHE INTERNAL "MIM_PLUGIN_LAYOUT")
@@ -17,7 +19,7 @@ function(add_mim_plugin)
     )
 
     set(PLUGIN_MIM      ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.mim)
-    set(OUT_PLUGIN_MIM  ${CMAKE_BINARY_DIR}/lib/mim/${PLUGIN}.mim)
+    set(OUT_PLUGIN_MIM  ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/mim/${PLUGIN}.mim)
     set(PLUGIN_MD       ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
     set(AUTOGEN_H       ${CMAKE_BINARY_DIR}/include/mim/plug/${PLUGIN}/autogen.h)
 
@@ -113,7 +115,7 @@ function(add_mim_plugin)
             VISIBILITY_INLINES_HIDDEN 1
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
             PREFIX "lib" # always use "lib" as prefix regardless of OS/compiler
-            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/mim
+            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/mim
     )
 
     #
@@ -130,7 +132,7 @@ function(add_mim_plugin)
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mim
         )
         install(
-            FILES ${CMAKE_BINARY_DIR}/lib/mim/${PLUGIN}.mim
+            FILES ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/mim/${PLUGIN}.mim
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/mim
         )
         install(

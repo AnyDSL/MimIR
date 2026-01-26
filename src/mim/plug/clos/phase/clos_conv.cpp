@@ -303,7 +303,7 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
     // TODO
     // new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set()) ? "cc_" + old_lam->name() :
     // old_lam->name());
-    if (!isa_workable(old_lam)) {
+    if (!isa_optimizable(old_lam)) {
         auto new_ext_type = w.cn(clos_remove_env(new_fn_type->dom()));
         auto new_ext_lam  = old_lam->stub(new_ext_type);
         DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);

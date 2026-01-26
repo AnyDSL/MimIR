@@ -22,8 +22,8 @@ int main(int, char**) {
         for (auto plugin : {"compile", "core"})
             parser.plugin(plugin);
 
-        // Cn [%mem.M, I32, %mem.Ptr (I32, 0) Cn [%mem.M, I32]]
-        auto mem_t  = w.annex<mem::M>();
+        // Cn [%mem.M 0, I32, %mem.Ptr (I32, 0) Cn [%mem.M 0, I32]]
+        auto mem_t  = w.call<mem::M>(0);
         auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(w.type_i32()));
         auto main   = w.mut_fun({mem_t, w.type_i32(), argv_t}, {mem_t, w.type_i32()})->set("main");
 

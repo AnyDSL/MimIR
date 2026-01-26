@@ -29,16 +29,16 @@ Here, we create the `main` function.
 In direct style, its type looks like this:
 
 ```mim
-[%mem.M, I32, %mem.Ptr (I32, 0)] -> [%mem.M, I32]]
+[%mem.M 0, I32, %mem.Ptr (I32, 0)] -> [%mem.M 0, I32]]
 ```
 
 Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style) this type looks like this:
 
 ```mim
-Cn [%mem.M, I32, %mem.Ptr (I32, 0), Cn [%mem.M, I32]]
+Cn [%mem.M 0, I32, %mem.Ptr (I32, 0), Cn [%mem.M 0, I32]]
 ```
 
-The `%%mem.M` type is a type that keeps track of side effects that may occur.
+The `%%mem.M 0` type is a type that keeps track of side effects that may occur.
 Since, `main` introduces [Var](@ref mim::Var)iables we must create a **mutable** [Lam](@ref mim::Lam)bda (see @ref mut).
 The only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
 
@@ -220,7 +220,6 @@ This will yield a mim::Axm::IsA`<Id, D>` which just wraps a `const D*`.
 `Id` is the `enum` of the corresponding `tag` of the [matched Axiom](@ref anatomy).
 Usually, `D` will be an [App](@ref mim::App) because most [Axioms](@ref mim::Axm) inhabit a [function type](@ref mim::Pi).
 Otherwise, it may wrap a [Def](@ref mim::Def) or other subclasses of it.
-For instance, [matching](@ref mim::Axm::isa) `%%mem.M` yields mim::Axm::IsA`<`[mem::M](@ref mim::plug::mem::M), [Def](@ref mim::Def)`>`.
 
 By default, MimIR assumes that the magic of an [Axiom](@ref mim::Axm) happens when applying the final argument to a curried [Axiom](@ref mim::Axm).
 For example, [matching](@ref mim::Axm::isa) a `%%mem.load` will only trigger for the final [App](@ref mim::App) of the curried call
