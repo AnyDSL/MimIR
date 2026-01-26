@@ -85,7 +85,7 @@ public:
     void start() override;
     void emit_imported(Lam*);
     void emit_epilogue(Lam*);
-    void emit_con(Lam*);
+    std::string emit_con(Lam*);
     std::string emit_bb(BB&, const Def*);
     std::string emit_curried_app(const App& app);
     std::string prepare();
@@ -239,15 +239,17 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, ")\n");
 }
 
-void Emitter::emit_con(Lam* lam) {
+std::string Emitter::emit_con(Lam* lam) {
     print(std::cout, "emit_con: {}\n", lam->unique_name());
+
+    std::ostringstream os;
 
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
     // tab.print(func_impls_, "{} {}{} [", lam_kind, external(lam), id(lam));
 
     // TODO: maybe extern needs to be emitted aswell for reconstruction
     // tab.print(func_impls_, "({} {}{} ", lam_kind, external(lam), id(lam));
-    tab.print(func_impls_, "({} {} ", lam_kind, id(lam));
+    print(os, "({} {} (", lam_kind, id(lam));
 
     if (lam->has_var()) {
         auto vars  = lam->vars();
@@ -255,16 +257,17 @@ void Emitter::emit_con(Lam* lam) {
         for (auto sep = ""; auto var : vars.view()) {
             if (var) {
                 auto name = id(var);
-                print(func_impls_, "{}{}:{}", sep, name, convert(var->type(), var));
+                print(os, "{}{}:{}", sep, name, convert(var->type(), var));
             } else {
-                print(func_impls_, "{}{}", sep, convert(lam->dom(i)));
+                print(os, "{}{}", sep, convert(lam->dom(i)));
             }
             sep = " ";
             ++i;
         }
     }
     // print(func_impls_, "]@({}) = \n", emit_unsafe(lam->filter()));
-    print(func_impls_, "\n");
+    print(os, ")");
+    return os.str();
 }
 
 // NOTE: when proecessing a continuation, this method is called to emit the tail of its basic block in emit_epilogue
@@ -275,7 +278,6 @@ std::string Emitter::emit_curried_app(const App& app) {
     auto v_arg = emit_unsafe(app.arg());
     if (auto app_callee = app.callee()->isa<App>()) {
         auto v_callee = emit_curried_app(*app_callee);
-
         print(os, "(app {} {})", v_callee, v_arg);
     } else {
         auto v_callee = emit_unsafe(app.callee());
@@ -293,28 +295,28 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     auto lam = node->mut()->as_mut<Lam>();
     assert(lam2bb_.contains(lam));
     auto& bb = lam2bb_[lam];
-    emit_con(lam);
+    print(func_impls_, "{} ", emit_con(lam));
 
-    ++tab;
+    // ++tab;
     // first prints all lines of the head and body of the basic block into func_impls_
     for (const auto& part : bb.parts | std::views::take(2))
         for (auto& line : part)
-            tab.print(func_impls_, "{}\n", line.str());
+            print(func_impls_, "{}", line.str());
 
-    for (auto op : node->mut()->deps()) {
-        for (auto mut : op->local_muts())
-            if (auto next = nest()[mut]) {
-                // recursively calls finalize_nest() on nested lambdas
-                // as part of the mutables that the lambda depends on (node->mut()->deps())
-                // for non-lambda muts finalize_nest() will simply return
-                finalize_nest(next, done);
-            }
-    }
+    // for (auto op : node->mut()->deps()) {
+    //     for (auto mut : op->local_muts())
+    //         if (auto next = nest()[mut]) {
+    //             // recursively calls finalize_nest() on nested lambdas
+    //             // as part of the mutables that the lambda depends on (node->mut()->deps())
+    //             // for non-lambda muts finalize_nest() will simply return
+    //             finalize_nest(next, done);
+    //         }
+    // }
 
     for (const auto& line : bb.tail())
-        tab.print(func_impls_, "{}\n", line.str());
-    --tab;
-    tab.print(func_impls_, ")\n");
+        tab.print(func_impls_, "{}", line.str());
+    // --tab;
+    print(func_impls_, ")\n");
     // func_impls_ << std::endl;
 }
 
@@ -346,16 +348,25 @@ void Emitter::emit_epilogue(Lam* lam) {
 }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
-    if (auto lam = def->isa<Lam>()) return id(lam);
+    // if (auto lam = def->isa<Lam>()) return id(lam);
     if (def->type()->isa<Type>() || def->type()->isa<Univ>()) {
         // This is a type, we don't emit it as an instruction
         return convert(def);
     }
 
-    print(std::cout, "debug {}\n", def);
+    // print(std::cout, "debug {}\n", def);
 
     std::ostringstream os;
-    if (auto lit = def->isa<Lit>()) {
+    if (auto lam = def->isa<Lam>()) {
+        os << emit_con(lam->as_mut<Lam>()) << " ";
+        if (lam->isa_cn(lam)) {
+            auto app = lam->body()->as<App>();
+            os << emit_curried_app(*app);
+        } else {
+            os << emit(lam->body());
+        }
+        return os.str();
+    } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
             print(os, "{}", lit->get<u64>());
         else if (auto size = Idx::isa(lit->type()))
