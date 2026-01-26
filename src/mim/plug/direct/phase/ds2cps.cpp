@@ -51,7 +51,7 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     sigma->set(0, dom);
     sigma->set(1, new_world().cn(rw_codom));
 
-    DLOG("original codom: {},", codom);
+    DLOG("original codom: {}", codom);
     DLOG("rewritten codom: {}", rw_codom);
 
     auto cps_lam = new_world().mut_con(sigma)->set(lam->dbg());
