@@ -90,6 +90,7 @@ enum class AddrSpace : nat_t {
     Texture  = 2,
     Shared   = 3,
     Constant = 4,
+    Local    = 5,
 };
 ///@}
 
@@ -112,35 +113,41 @@ inline const Def* op_lea_unsafe(const Def* ptr, u64 i) { return op_lea_unsafe(pt
 
 /// @name %%mem.alloc
 ///@{
-inline const Def* op_alloc(const Def* type, const Def* mem) {
+inline const Def* op_alloc(const Def* type, const Def* as, const Def* mem) {
     World& w = type->world();
-    return w.app(w.app(w.annex<alloc>(), {type, w.lit_nat_0()}), mem);
+    return w.app(w.app(w.annex<alloc>(), {type, as}), mem);
 }
+inline const Def* op_alloc(const Def* type, const Def* mem) { return op_alloc(type, type->world().lit_nat_0(), mem); }
 ///@}
 
 /// @name %%mem.slot
 ///@{
-inline const Def* op_slot(const Def* type, const Def* mem) {
+inline const Def* op_slot(const Def* type, const Def* as, const Def* mem) {
     World& w = type->world();
-    return w.app(w.app(w.annex<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())});
+    return w.app(w.app(w.annex<slot>(), {type, as}), {mem, w.lit_nat(w.curr_gid())});
 }
+inline const Def* op_slot(const Def* type, const Def* mem) { return op_slot(type, type->world().lit_nat_0(), mem); }
 ///@}
 
 /// @name %%mem.malloc
 ///@{
-inline const Def* op_malloc(const Def* type, const Def* mem) {
+inline const Def* op_malloc(const Def* type, const Def* as, const Def* mem) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.annex<malloc>(), {type, w.lit_nat_0()}), {mem, size});
+    return w.app(w.app(w.annex<malloc>(), {type, as}), {mem, size});
 }
+inline const Def* op_malloc(const Def* type, const Def* mem) { return op_malloc(type, type->world().lit_nat_0(), mem); }
 ///@}
 
 /// @name %%mem.mslot
 ///@{
-inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id) {
+inline const Def* op_mslot(const Def* type, const Def* as, const Def* mem, const Def* id) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.annex<mslot>(), {type, w.lit_nat_0()}), {mem, size, id});
+    return w.app(w.app(w.annex<mslot>(), {type, as}), {mem, size, id});
+}
+inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id) {
+    return op_mslot(type, type->world().lit_nat_0(), mem, id);
 }
 ///@}
 
