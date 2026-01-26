@@ -190,10 +190,10 @@ int main(int argc, char** argv) {
                     error("'ll' emitter not loaded; try loading 'core' plugin");
             }
             if (auto s = os[Mim]) {
-                if(auto backend = driver.backend("mim"))
+                if(auto backend = driver.backend("mim"); backend && flags.dump_emitter)
                     backend(world, *s);
                 else
-                    error("'mim' emitter not loaded; try loading 'core' plugin");
+                    world.dump(*s);
             }
         } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
             std::cerr << e;
