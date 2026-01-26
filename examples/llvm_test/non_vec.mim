@@ -1,0 +1,16 @@
+plugin core;
+
+fun foo (A: Nat, B:Nat):  Nat = 
+    let C = %core.nat.add (A, B);
+    let D = %core.nat.sub (C, 1);
+    return D;
+
+fun extern bar(): Nat =
+    let A = (4);
+    let B = (3);
+    ret C = foo $ (A, B);
+    ret D = foo $ (A, B);
+    return D;
+
+
+
