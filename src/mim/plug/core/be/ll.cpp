@@ -427,18 +427,19 @@ void Emitter::emit_epilogue(Lam* lam) {
             auto t_ret = convert_ret_pi(ret_lam->type());
             bb.tail("{} = call {} {}({, })", name, t_ret, v_callee, args);
 
-            for (size_t i = 0, e = ret_lam->num_vars(); i != e; ++i) {
+            for (size_t i = 0, j = 0, e = ret_lam->num_vars(); i != e; ++i) {
                 auto phi = ret_lam->var(i);
                 if (Axm::isa<mem::M>(phi->type())) continue;
 
-                auto namei = name;
+                auto namej = name;
                 if (e > 2) {
-                    namei += '.' + std::to_string(i - 1);
-                    bb.tail("{} = extractvalue {} {}, {}", namei, t_ret, name, i - 1);
+                    namej += '.' + std::to_string(j);
+                    bb.tail("{} = extractvalue {} {}, {}", namej, t_ret, name, j);
                 }
                 assert(!Axm::isa<mem::M>(phi->type()));
-                lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
+                lam2bb_[ret_lam].phis[phi].emplace_back(namej, id(lam, true));
                 locals_[phi] = id(phi);
+                ++j;
             }
         }
 
