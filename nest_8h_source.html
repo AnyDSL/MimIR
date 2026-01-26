@@ -298,7 +298,7 @@ $(function(){initNavTree('nest_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <a class="code hl_struct" href="structmim_1_1Nest_1_1Node_1_1SiblDeps.html">SiblDeps&lt;false&gt;</a> sibl_rev_deps_;</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        <a class="code hl_struct" href="structmim_1_1Nest_1_1Node_1_1Children.html">Children</a> children_;</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        std::deque&lt;std::unique_ptr&lt;SCC&gt;&gt; topo_;</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        absl::node_hash_map&lt;const Node*, const SCC*&gt; SCCs_;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        absl::flat_hash_map&lt;const Node*, const SCC*&gt; SCCs_;</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        <span class="comment">// implementaiton details</span></div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t Unvisited = uint32_t(-1);</div>

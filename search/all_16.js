@@ -2,9 +2,9 @@ var searchData=
 [
   ['w_0',['W',['../namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a61e9c06ea9a85a5088a499df6458d276',1,'mim::plug::regex']]],
   ['w_1',['w',['../structmim_1_1plug_1_1regex_1_1app__range.html#a2761d4060fc6d48c0bb624d69ad06286',1,'mim::plug::regex::app_range::w'],['../namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938af1290186a5d0b1ceab27f4e77c0c5d68',1,'mim::plug::regex::w']]],
-  ['w_20o_20side_20effects_2',['Operations w/o Side Effects',['../mem.html#autotoc_md186',1,'']]],
+  ['w_20o_20side_20effects_2',['Operations w/o Side Effects',['../mem.html#autotoc_md185',1,'']]],
   ['w_20o_20subtags_3',['w/o Subtags',['../dev.html#autotoc_md24',1,'']]],
-  ['w_20side_20effects_4',['Operations w/ Side Effects',['../mem.html#autotoc_md177',1,'']]],
+  ['w_20side_20effects_4',['Operations w/ Side Effects',['../mem.html#autotoc_md176',1,'']]],
   ['w_20subtags_5',['w/ Subtags',['../dev.html#autotoc_md25',1,'']]],
   ['w2f_6',['w2f',['../namespacemim.html#a2812faa6603be36aef320b6b3fb90767',1,'mim']]],
   ['w2s_7',['w2s',['../namespacemim.html#a92529c353d14b56a3c8470bdad2d770a',1,'mim']]],
