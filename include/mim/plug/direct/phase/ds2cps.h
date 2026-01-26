@@ -25,9 +25,9 @@ public:
     const Def* rewrite_imm_App(const App*) override;
 
 private:
-    Def2Def rewritten_;
-
     const Def* rewrite_lam(Lam* lam);
+
+    Def2Def rewritten_;
 };
 
 } // namespace mim::plug::direct
