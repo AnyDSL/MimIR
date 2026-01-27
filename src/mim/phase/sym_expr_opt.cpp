@@ -23,19 +23,19 @@ Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
     return mut;
 }
 
-const Def* SymExprOpt::Analysis::propagate(const Def* top, const Def* def) {
-    auto [i, ins] = lattice_.emplace(top, def);
+const Def* SymExprOpt::Analysis::propagate(const Def* var, const Def* def) {
+    auto [i, ins] = lattice_.emplace(var, def);
     if (ins) {
         todo_ = true;
-        DLOG("propagate: {} → {}", top, def);
+        DLOG("propagate: {} → {}", var, def);
         return def;
     }
 
     auto cur = i->second;
-    if (!cur || def->isa<Bot>() || cur == def || cur == top || cur->isa<Proxy>()) return cur;
+    if (!cur || def->isa<Bot>() || cur == def || cur == var || cur->isa<Proxy>()) return cur;
 
     todo_ = true;
-    DLOG("cannot propagate {}, trying GVN", top);
+    DLOG("cannot propagate {}, trying GVN", var);
     if (cur->isa<Bot>()) return i->second = def;
     return i->second = nullptr; // we reached top for propagate; nullptr marks this to bundle for GVN
 }
@@ -67,8 +67,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
 
             for (size_t j = i + 1; j != n; ++j) {
                 auto vj = lam->tvar(j);
-                if (abstr_vars[j] || abstr_args[j] != ai) continue;
-                vars.emplace_back(vj);
+                if (!abstr_vars[j] && abstr_args[j] == ai) vars.emplace_back(vj);
             }
 
             if (vars.size() == 1) {
@@ -142,7 +141,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         return world().app(lam, abstr_args);
     }
 
-    return Rewriter::rewrite_imm_App(app);
+    return mim::Analysis::rewrite_imm_App(app);
 }
 
 static bool keep(const Def* old_var, const Def* abstr) {
