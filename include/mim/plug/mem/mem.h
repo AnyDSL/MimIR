@@ -82,18 +82,6 @@ inline const Def* strip_mem(const Def* def) {
 }
 ///@}
 
-/// @name %%mem.Ptr
-///@{
-enum class AddrSpace : nat_t {
-    Generic  = 0,
-    Global   = 1,
-    Texture  = 2,
-    Shared   = 3,
-    Constant = 4,
-    Local    = 5,
-};
-///@}
-
 /// @name %%mem.lea
 ///@{
 inline const Def* op_lea(const Def* ptr, const Def* index) {
