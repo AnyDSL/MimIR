@@ -38,6 +38,7 @@ target_sources(libmim
         phase/branch_normalize.cpp
         phase/prefix_cleanup.cpp
         phase/ret_wrap.cpp
+        phase/static_arg_opt.cpp
         phase/sym_expr_opt.cpp
         util/dbg.cpp
         util/dl.cpp
