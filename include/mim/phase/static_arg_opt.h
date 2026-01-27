@@ -17,13 +17,12 @@ public:
 private:
     bool analyze() final;
     void analyze(const Def*);
-    void visit(const Def*, bool candidate = true); // lattice: true -> false
 
+    const Def* rewrite_mut_Lam(Lam*) final;
     const Def* rewrite_imm_App(const App*) final;
 
     DefSet analyzed_;
-    LamMap<uint64_t> lam2statics_;
-    LamMap<std::pair<Lam*, Lam*>> lam2ph_;
+    LamMap<Vector<bool>> lam2statics_;
 };
 
 } // namespace mim
