@@ -150,23 +150,6 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacemim_1_1plug_1_1mem"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="mem.html">The mem Plugin</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">%mem.Ptr</div></td></tr>
-<tr class="memitem:a7af459a62601d0916fafd0cc0e3f07e9" id="r_a7af459a62601d0916fafd0cc0e3f07e9"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9">mim::plug::mem::AddrSpace</a> : nat_t { <br />
-&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9a8045a0a6c688b0635e3caccc408a1446">mim::plug::mem::Generic</a> = 0
-, <br />
-&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9a4cc6684df7b4a92b1dec6fce3264fac8">mim::plug::mem::Global</a> = 1
-, <br />
-&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9aa3e8ae43188ae76d38f414b2bdb0077b">mim::plug::mem::Texture</a> = 2
-, <br />
-&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9aa6156ea9d66fef24e87e841fbabf7cca">mim::plug::mem::Shared</a> = 3
-, <br />
-&#160;&#160;<a class="el" href="namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9acb17869fe51048b5a5c4c6106551a255">mim::plug::mem::Constant</a> = 4
-<br />
- }</td></tr>
-<tr class="separator:a7af459a62601d0916fafd0cc0e3f07e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.M</div></td></tr>
@@ -196,15 +179,23 @@ Functions</h2></td></tr>
 <tr class="memitem:aa9ac02946899abba507db42e7407cd00" id="r_aa9ac02946899abba507db42e7407cd00"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#aa9ac02946899abba507db42e7407cd00">mim::plug::mem::op_lea_unsafe</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *ptr, <a class="el" href="namespacemim.html#ad8bae182cdb06699fc07a348105f193c">u64</a> i)</td></tr>
 <tr class="separator:aa9ac02946899abba507db42e7407cd00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.alloc</div></td></tr>
+<tr class="memitem:ac1f4762c5a3ac240c15d33cbb4352564" id="r_ac1f4762c5a3ac240c15d33cbb4352564"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#ac1f4762c5a3ac240c15d33cbb4352564">mim::plug::mem::op_alloc</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *as, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem)</td></tr>
+<tr class="separator:ac1f4762c5a3ac240c15d33cbb4352564"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aed3859cb41cf28b52dd9e7a721260e" id="r_a8aed3859cb41cf28b52dd9e7a721260e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#a8aed3859cb41cf28b52dd9e7a721260e">mim::plug::mem::op_alloc</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem)</td></tr>
 <tr class="separator:a8aed3859cb41cf28b52dd9e7a721260e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.slot</div></td></tr>
+<tr class="memitem:a1b78348e3f4c86316b13319b4488e43a" id="r_a1b78348e3f4c86316b13319b4488e43a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#a1b78348e3f4c86316b13319b4488e43a">mim::plug::mem::op_slot</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *as, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem)</td></tr>
+<tr class="separator:a1b78348e3f4c86316b13319b4488e43a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a202eddfb72e63f66c369964e5a028590" id="r_a202eddfb72e63f66c369964e5a028590"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#a202eddfb72e63f66c369964e5a028590">mim::plug::mem::op_slot</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem)</td></tr>
 <tr class="separator:a202eddfb72e63f66c369964e5a028590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.malloc</div></td></tr>
+<tr class="memitem:af9aec51697db161cb8413f3de9db5e12" id="r_af9aec51697db161cb8413f3de9db5e12"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#af9aec51697db161cb8413f3de9db5e12">mim::plug::mem::op_malloc</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *as, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem)</td></tr>
+<tr class="separator:af9aec51697db161cb8413f3de9db5e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4674799ce943d9db2a4da04cc0067df8" id="r_a4674799ce943d9db2a4da04cc0067df8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#a4674799ce943d9db2a4da04cc0067df8">mim::plug::mem::op_malloc</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem)</td></tr>
 <tr class="separator:a4674799ce943d9db2a4da04cc0067df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.mslot</div></td></tr>
+<tr class="memitem:ab9dc13e98db47613da7cefa40740ec82" id="r_ab9dc13e98db47613da7cefa40740ec82"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#ab9dc13e98db47613da7cefa40740ec82">mim::plug::mem::op_mslot</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *as, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem, const <a class="el" href="classmim_1_1Def.html">Def</a> *id)</td></tr>
+<tr class="separator:ab9dc13e98db47613da7cefa40740ec82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44065fab91e9fa4ac7e6011a4dd5e2c0" id="r_a44065fab91e9fa4ac7e6011a4dd5e2c0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1plug_1_1mem.html#a44065fab91e9fa4ac7e6011a4dd5e2c0">mim::plug::mem::op_mslot</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type, const <a class="el" href="classmim_1_1Def.html">Def</a> *mem, const <a class="el" href="classmim_1_1Def.html">Def</a> *id)</td></tr>
 <tr class="separator:a44065fab91e9fa4ac7e6011a4dd5e2c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

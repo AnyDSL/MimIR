@@ -123,13 +123,13 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md193">Dependencies</a>
+    <a href="#autotoc_md223">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md194">Passes, Phases, and Pipelines</a>
+    <a href="#autotoc_md224">Passes, Phases, and Pipelines</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md195">Pipelines</a>
+        <a href="#autotoc_md225">Pipelines</a>
       </li>
     </ul>
   </li>
@@ -138,7 +138,7 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2opt"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1opt.html" title="The opt Plugin">mim::plug::opt</a></dd></dl>
 <p>Manages the default compilation pipeline of Mim programs using plugins.</p>
-<h1><a class="anchor" id="autotoc_md193"></a>
+<h1><a class="anchor" id="autotoc_md223"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
 <div class="line">import compile;</div>
@@ -146,12 +146,13 @@ Dependencies</h1>
 <div class="line">import autodiff;</div>
 <div class="line">import clos;</div>
 <div class="line">import direct;</div>
+<div class="line">import gpu;</div>
 <div class="line">import matrix;</div>
 <div class="line">import refly;</div>
 <div class="line">import regex;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md194"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md224"></a>
 Passes, Phases, and Pipelines</h1>
-<h2><a class="anchor" id="autotoc_md195"></a>
+<h2><a class="anchor" id="autotoc_md225"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);</div>
 <div class="line">lam cond_repl  {n: Nat} (name: «n; I8») (repl:  %compile.Repl ): %compile.Repl  = %core.select (%compile.is_loaded name, repl , %compile.null_repl );</div>
@@ -202,6 +203,7 @@ Pipelines</h2>
 <div class="line">                %mem.remem_repl,</div>
 <div class="line">                %mem.alloc2malloc_repl,</div>
 <div class="line">                cond_repl &quot;refly&quot; %refly.remove_dbg_repl,</div>
+<div class="line">                cond_repl &quot;gpu&quot; %gpu.malloc2gpualloc_repl,</div>
 <div class="line">            )</div>
 <div class="line">        ),</div>
 <div class="line">    );</div>

@@ -38,6 +38,7 @@ var menudata={children:[
 {text:"core",url:"core.html"},
 {text:"demo",url:"demo.html"},
 {text:"direct",url:"direct.html"},
+{text:"gpu",url:"gpu.html"},
 {text:"math",url:"math.html"},
 {text:"matrix",url:"matrix.html"},
 {text:"mem",url:"mem.html"},

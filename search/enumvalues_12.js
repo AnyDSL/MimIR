@@ -22,12 +22,11 @@ var searchData=
   ['tanh_19',['tanh',['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a5c0dbba3a6ee4ac0eb26cfee75ccb8b4',1,'mim::plug::math']]],
   ['term_20',['Term',['../classmim_1_1UMax.html#a098634bb335cad742136e612032ab42fabad5cb6dd81e0e259935ad40cefe2b95',1,'mim::UMax']]],
   ['test_21',['Test',['../classmim_1_1Checker.html#a4c49a3e1dc4178b217f6922a36cc1daaa5569c000160b7a4bfbb24af91c3789b3',1,'mim::Checker']]],
-  ['texture_22',['Texture',['../namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9aa3e8ae43188ae76d38f414b2bdb0077b',1,'mim::plug::mem']]],
-  ['tmp_23',['tmp',['../namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65afa816edb83e95bf0c8da580bdfd491ef',1,'mim::plug::refly']]],
-  ['top_24',['Top',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa4ffdcf0dc1f31b9acaf295d75b51d00',1,'mim']]],
-  ['top_25',['top',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91ab28354b543375bfa94dabaeda722927f',1,'mim::plug::math']]],
-  ['trace_26',['Trace',['../classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590add4ec0ac4e58f7c32a01244ae91150b1',1,'mim::Log']]],
-  ['traxy_27',['Traxy',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#a798af4cb0426f7ceafcb84a8dfa6f89fa300861a8f090a37151ec3de8edd4c705',1,'mim::plug::mem::pass::SSA']]],
-  ['tuple_28',['Tuple',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daafcbeb58fca053cad573bd9efda1dc5b',1,'mim']]],
-  ['type_29',['Type',['../classmim_1_1UMax.html#a098634bb335cad742136e612032ab42fa26c76cc5fcedbdc51e9860ee6e1add3a',1,'mim::UMax::Type'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa1fa27779242b4902f7ae3bdd5c6d508',1,'mim::Type']]]
+  ['tmp_22',['tmp',['../namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65afa816edb83e95bf0c8da580bdfd491ef',1,'mim::plug::refly']]],
+  ['top_23',['Top',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa4ffdcf0dc1f31b9acaf295d75b51d00',1,'mim']]],
+  ['top_24',['top',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91ab28354b543375bfa94dabaeda722927f',1,'mim::plug::math']]],
+  ['trace_25',['Trace',['../classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590add4ec0ac4e58f7c32a01244ae91150b1',1,'mim::Log']]],
+  ['traxy_26',['Traxy',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#a798af4cb0426f7ceafcb84a8dfa6f89fa300861a8f090a37151ec3de8edd4c705',1,'mim::plug::mem::pass::SSA']]],
+  ['tuple_27',['Tuple',['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daafcbeb58fca053cad573bd9efda1dc5b',1,'mim']]],
+  ['type_28',['Type',['../classmim_1_1UMax.html#a098634bb335cad742136e612032ab42fa26c76cc5fcedbdc51e9860ee6e1add3a',1,'mim::UMax::Type'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256daa1fa27779242b4902f7ae3bdd5c6d508',1,'mim::Type']]]
 ];

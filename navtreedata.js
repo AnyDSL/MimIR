@@ -41,6 +41,7 @@ var NAVTREE =
       [ "core", "core.html", null ],
       [ "demo", "demo.html", null ],
       [ "direct", "direct.html", null ],
+      [ "gpu", "gpu.html", null ],
       [ "math", "math.html", null ],
       [ "matrix", "matrix.html", null ],
       [ "mem", "mem.html", null ],
@@ -109,13 +110,13 @@ var NAVTREEINDEX =
 "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aef24a45c736c5c5aca00490b376cc0ae",
 "classmim_1_1plug_1_1clos_1_1ClosLit.html#a7c4ed975b1f06a52769d8d83436e1e9e",
 "core_2autogen_8h.html",
-"functions_func_~.html",
-"namespacemim.html#a26a0e9df92d9733ba607a78d19edbbe9",
-"namespacemim_1_1plug_1_1autodiff.html#a68aae344814c11b1359c6b945f109153",
-"namespacemim_1_1plug_1_1core.html#aed6032a690b0654e14fdf971993025f5",
-"namespacemim_1_1plug_1_1mem.html#a966b87ce8236f82e10a5c87dc544b9c9",
-"phase_8h.html#a5524d37751342ad354f02d31c7fd6a55",
-"structmim_1_1World_1_1Freezer.html"
+"functions_func_v.html",
+"namespacemim.html#a1aae5adc4db386bfd618fdc8303ceb0c",
+"namespacemim_1_1plug_1_1autodiff.html#a0dc86993105c5eda1d3a217ba20ce699",
+"namespacemim_1_1plug_1_1core.html#aa90620d89f43753fb2f7907167019bf6",
+"namespacemim_1_1plug_1_1matrix.html#a66955a2552e5d88d664a8212aedfe40d",
+"opt_8cpp_source.html",
+"structmim_1_1Nest_1_1Node_1_1Children.html#a835cdf64395521c736b393399a1dddbd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

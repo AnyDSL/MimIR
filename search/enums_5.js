@@ -10,5 +10,6 @@ var searchData=
   ['first_7',['first',['../namespacemim_1_1plug_1_1vec.html#a9988495005995ff4aaf5b257dcb1703c',1,'mim::plug::vec']]],
   ['fold_8',['fold',['../namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dc',1,'mim::plug::vec']]],
   ['for_9',['For',['../namespacemim_1_1plug_1_1affine.html#a6ff8673e1d2565961963aec89b59c068',1,'mim::plug::affine']]],
-  ['free_10',['free',['../namespacemim_1_1plug_1_1mem.html#aa920d510e2e4277188e0b9517e6ea64b',1,'mim::plug::mem']]]
+  ['free_10',['free',['../namespacemim_1_1plug_1_1gpu.html#a984ce474f7a834df9bc48a3851e28650',1,'mim::plug::gpu::free'],['../namespacemim_1_1plug_1_1mem.html#aa920d510e2e4277188e0b9517e6ea64b',1,'mim::plug::mem::free']]],
+  ['free_5fasync_11',['free_async',['../namespacemim_1_1plug_1_1gpu.html#a5f007fae613c774b3bacd9d10a236f83',1,'mim::plug::gpu']]]
 ];
