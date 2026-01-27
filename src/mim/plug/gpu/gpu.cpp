@@ -15,14 +15,14 @@ void reg_stages(Flags2Stages& stages) {
     MIM_REPL(stages, gpu::malloc2gpualloc_repl, {
         if (auto malloc = Axm::isa<mem::malloc>(def)) {
             auto [type, addr_space] = malloc->decurry()->args<2>();
-            if (Axm::isa<gpu::AddrSpaceGlobal>(addr_space)) {
+            if (Axm::isa<gpu::addr_space_global>(addr_space)) {
                 auto [mem, _] = malloc->args<2>();
                 World& w      = type->world();
                 return w.app(w.app(w.annex<gpu::alloc>(), type), mem);
             }
         } else if (auto free = Axm::isa<mem::free>(def)) {
             auto [type, addr_space] = free->decurry()->args<2>();
-            if (Axm::isa<gpu::AddrSpaceGlobal>(addr_space)) {
+            if (Axm::isa<gpu::addr_space_global>(addr_space)) {
                 auto [mem, ptr] = free->args<2>();
                 World& w        = type->world();
                 return w.app(w.app(w.annex<gpu::free>(), type), {mem, ptr});

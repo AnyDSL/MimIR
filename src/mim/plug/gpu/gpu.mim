@@ -16,25 +16,25 @@ plugin mem;
 /// Address space numbers that correlate to the ones used by LLVM
 /// see https://llvm.org/docs/NVPTXUsage.html#address-spaces
 /// and https://llvm.org/docs/AMDGPUUsage.html#address-spaces
-let %gpu.AddrSpaceGlobal = 1;
-let %gpu.AddrSpaceShared = 3;
-let %gpu.AddrSpaceConst  = 4;
-let %gpu.AddrSpaceLocal  = 5;
+let %gpu.addr_space_global = 1;
+let %gpu.addr_space_shared = 3;
+let %gpu.addr_space_const  = 4;
+let %gpu.addr_space_local  = 5;
 ///
 /// ### Memory Types
 ///
-let %gpu.GlobalM = %mem.M %gpu.AddrSpaceGlobal;
-let %gpu.SharedM = %mem.M %gpu.AddrSpaceShared;
-let %gpu.ConstM  = %mem.M %gpu.AddrSpaceConst;
-let %gpu.LocalM  = %mem.M %gpu.AddrSpaceLocal;
+let %gpu.GlobalM = %mem.M %gpu.addr_space_global;
+let %gpu.SharedM = %mem.M %gpu.addr_space_shared;
+let %gpu.ConstM  = %mem.M %gpu.addr_space_const;
+let %gpu.LocalM  = %mem.M %gpu.addr_space_local;
 
 ///
 /// ### Pointer Types
 ///
-lam %gpu.GlobalPtr(T: *): * = %mem.Ptr (T, %gpu.AddrSpaceGlobal);
-lam %gpu.SharedPtr(T: *): * = %mem.Ptr (T, %gpu.AddrSpaceShared);
-lam %gpu.ConstPtr(T: *): *  = %mem.Ptr (T, %gpu.AddrSpaceConst);
-lam %gpu.LocalPtr(T: *): *  = %mem.Ptr (T, %gpu.AddrSpaceLocal);
+lam %gpu.GlobalPtr(T: *): * = %mem.Ptr (T, %gpu.addr_space_global);
+lam %gpu.SharedPtr(T: *): * = %mem.Ptr (T, %gpu.addr_space_shared);
+lam %gpu.ConstPtr(T: *): *  = %mem.Ptr (T, %gpu.addr_space_const);
+lam %gpu.LocalPtr(T: *): *  = %mem.Ptr (T, %gpu.addr_space_local);
 
 ///
 /// ### Streams
