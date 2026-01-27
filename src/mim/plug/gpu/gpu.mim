@@ -39,19 +39,19 @@ axm %gpu.DefaultStream: %gpu.Stream;
 /// ### %%gpu.stream_init
 ///
 /// Initializes a stream
-axm %gpu.stream_init: [%mem.M 0, %mem.Ptr0 %gpu.Stream] -> %mem.M 0;
+axm %gpu.stream_init: [%mem.M 0, %mem.Ptr0 %gpu.Stream] → %mem.M 0;
 
 ///
 /// ### %%gpu.stream_deinit
 ///
 /// Deinitializes a stream
-axm %gpu.stream_deinit: [%mem.M 0, %gpu.Stream] -> %mem.M 0;
+axm %gpu.stream_deinit: [%mem.M 0, %gpu.Stream] → %mem.M 0;
 
 ///
 /// ### %%gpu.stream_sync
 ///
 /// Waits for a stream to finish all its work
-axm %gpu.stream_sync: [%mem.M 0, %gpu.Stream] -> %mem.M 0;
+axm %gpu.stream_sync: [%mem.M 0, %gpu.Stream] → %mem.M 0;
 
 ///
 /// ## Blocking Memory Operations
@@ -86,7 +86,8 @@ axm %gpu.copy_to_host: {T: *}
 ///
 /// ### %%gpu.alloc_copy
 ///
-/// Allocates memory on the device (in global address space)
+/// Allocates memory on the device (in global address space) for the provided host data
+/// and copies the host data to that memory
 lam %gpu.alloc_copy {T: *}
                     (m0: %mem.M 0, m1: %gpu.GlobalM, ptr: %mem.Ptr0 T)
                   : [%mem.M 0, %gpu.GlobalM, %gpu.GlobalPtr T] =
@@ -128,7 +129,8 @@ axm %gpu.copy_to_host_async: {T: *}
 ///
 /// ### %%gpu.alloc_copy_async
 ///
-/// Asynchronously allocates memory on the device (in global address space)
+/// Asynchronously allocates memory on the device (in global address space) for the provided host data
+/// and copies the host data to that memory
 lam %gpu.alloc_copy_async {T: *} 
                           (m0: %mem.M 0, m1: %gpu.GlobalM, ptr: %mem.Ptr0 T, stream: %gpu.Stream)
                         : [%mem.M 0, %gpu.GlobalM, %gpu.GlobalPtr T] =

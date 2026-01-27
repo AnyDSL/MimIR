@@ -33,9 +33,9 @@ fun extern main (m0: %mem.M 0, m1: %gpu.GlobalM, argc: I32, argv: %mem.Ptr (Â«âŠ
 
     let (m0, m1) = %gpu.copy_to_host (m0, m1, d_ptr, arr);
     let m1 = %mem.free (m1, d_ptr);
-    
+
     let idx = %core.bitcast (Idx 4) (%core.wrap.sub 0 (argc, 1I32));
-    let val_arr = %mem.lea (arr, %core.bitcast (Idx 4) idx);
+    let val_arr = %mem.lea (arr, idx);
     let (m0, val) = %mem.load (m0, val_arr);
     let m0 = %mem.free (m0, arr);
 
