@@ -17,4 +17,9 @@ pybind11_add_module(_mim_core
 )
 
 set_target_properties(_mim_core PROPERTIES LIBRARY_OUTPUT_NAME _mim_core)
+set_target_properties(_mim_core PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/src/mim/py/mim"
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/src/mim/py/mim"
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/src/mim/py/mim"
+)
 target_link_libraries(_mim_core PRIVATE libmim)

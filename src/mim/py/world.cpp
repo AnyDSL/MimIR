@@ -110,20 +110,16 @@ void init_world(py::module_& m) {
             },
             py::return_value_policy::reference_internal)
         .def("call_by_id",
-            [](mim::World& w, uint64_t id, pybind11::args args) {
+            [](mim::World& w, uint64_t id, pybind11::object args) {
                 if (args.is_none()){
                     return w.annex(id);
                 }
-                auto arg = args[0];
-                if (py::isinstance<Def>(arg)){
-                    return w
+                auto defs = args.cast<std::vector<mim::Def*>>();
+                for (auto d : defs)
+                {
+                    std::cout << d << std::endl;
                 }
-                // auto defs = args.cast<std::vector<mim::Def*>>();
-                // for (auto d : defs)
-                // {
-                //     std::cout << d << std::endl;
-                // }
-                // return w.call(id, mim::Defs(defs));
+                return w.call(id, mim::Defs(defs));
             },
             pybind11::arg("sym"),
             pybind11::arg("args") = pybind11::none()

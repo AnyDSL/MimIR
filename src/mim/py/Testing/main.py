@@ -24,16 +24,18 @@ phase = world.sym(f"%compile.Phase")
 print(ptr)
 
 #####
-ast = mim.AST(world)
-#parser = mim.PyParser(mim.Parser(ast))
-parser = mim.Parser(ast)
-parser.plugin("core")
-parser.plugin("compile")
+# ast = mim.AST(world)
+# #parser = mim.PyParser(mim.Parser(ast))
+# parser = mim.Parser(ast)
+# parser.plugin("core")
+# parser.plugin("compile")
+driver.load_pluins(["core", "compile"])
 mem_t = world.annex(mem)
 world.annex(phase)
 #following line of code is just to observe mim_error behaviour
 #mem_t = world.call(mem, [world.call(mem, [world.type_i32()])])
 argv_t = world.call("%mem.Ptr0", [world.call("%mem.Ptr0", [world.type_i32()])])
+print(argv_t)
 main = world.mut_fun2([mem_t, world.type_i32(), argv_t], [mem_t, world.type_i32()]).set("main")
 
 print(main.var().num_projs())
