@@ -134,52 +134,52 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
                 default: break;
             }
         }
-        print(s, "(Idx {})", size);
+        print(s, "(idx {})", size);
         return types_[type] = s.str();
     } else if (auto w = math::isa_f(type)) {
-        print(s, "{}", type);
+        print(s, "(float {})", type);
         return types_[type] = s.str();
     } else if (auto lit = type->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
-            print(s, "{}", lit->get());
+            print(s, "(nat {})", lit->get());
         else
-            print(s, "{}:{}", lit->get(), convert(lit->type()));
+            print(s, "(lit {} {})", lit->get(), convert(lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
         if (auto arity = Lit::isa(arr->arity())) {
             u64 size = *arity;
-            print(s, "<<{};{}>>", size, t_elem);
+            print(s, "(arr {} {})", size, t_elem);
         } else {
-            print(s, "<<{};{}>>", emit_unsafe(arr->arity()), t_elem);
+            print(s, "(arr {} {})", emit_unsafe(arr->arity()), t_elem);
         }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))
-            s << "Cn " << convert(pi->dom());
+            s << "(cn " << convert(pi->dom()) << ")";
         else
-            s << "Pi " << convert(pi->dom()) << " -> " << convert(pi->codom());
+            s << "(pi " << convert(pi->dom()) << " " << convert(pi->codom()) << ")";
     } else if (auto sigma = type->isa<Sigma>()) {
         size_t i = 0;
         if (var) {
             assert(var->arity() == sigma->arity());
-            print(s, "[{,}]", Elem(sigma->ops(), [&](auto op) {
+            print(s, "(sigma { })", Elem(sigma->ops(), [&](auto op) {
                       if (auto v = var->proj(i++))
-                          print(s, "{}:{}", id(v), convert(op, v));
+                          print(s, "(var {} {})", id(v), convert(op, v));
                       else
                           s << op;
                   }));
         } else {
-            print(s, "[{,}]", sigma->ops());
+            print(s, "(sigma { })", sigma->ops());
         }
     } else if (auto tuple = type->isa<Tuple>()) {
-        print(s, "({,})", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
+        print(s, "(tupletype { })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
     } else if (auto app = type->isa<App>()) {
-        print(s, "{} {}", convert(app->callee()), convert(app->arg()));
+        print(s, "(apptype {} {})", convert(app->callee()), convert(app->arg()));
     } else if (auto ax = type->isa<Axm>()) {
-        print(s, "{}", ax->sym().str());
+        print(s, "(axmtype {})", ax->sym().str());
     } else if (auto hole = type->isa<Hole>()) {
-        print(s, "{}", id(hole));
+        print(s, "(hole {})", id(hole));
     } else if (auto extract = type->isa<Extract>()) {
-        print(s, "{}", extract);
+        print(s, "(extracttype {})", extract);
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
             if (level == 0) print(s, "★");
@@ -249,7 +249,7 @@ std::string Emitter::emit_con(Lam* lam) {
 
     // TODO: maybe extern needs to be emitted aswell for reconstruction
     // tab.print(func_impls_, "({} {}{} ", lam_kind, external(lam), id(lam));
-    print(os, "({} {} (", lam_kind, id(lam));
+    print(os, "({} {} (tuple ", lam_kind, id(lam));
 
     if (lam->has_var()) {
         auto vars  = lam->vars();
@@ -257,9 +257,9 @@ std::string Emitter::emit_con(Lam* lam) {
         for (auto sep = ""; auto var : vars.view()) {
             if (var) {
                 auto name = id(var);
-                print(os, "{}{}:{}", sep, name, convert(var->type(), var));
+                print(os, "{}(var {} {})", sep, name, convert(var->type(), var));
             } else {
-                print(os, "{}{}", sep, convert(lam->dom(i)));
+                print(os, "{}(var{})", sep, convert(lam->dom(i)));
             }
             sep = " ";
             ++i;
@@ -373,7 +373,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             if (auto lit_size = Idx::size2bitwidth(size); lit_size && *lit_size == 1)
                 print(os, "{}", lit);
             else
-                print(os, "{}:{}", lit->get(), convert(lit->type()));
+                print(os, "(lit {} {})", lit->get(), convert(lit->type()));
         else
             print(os, "{}", lit);
         return os.str();
