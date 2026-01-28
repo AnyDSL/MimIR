@@ -13,7 +13,7 @@
 
 #include "mim/util/dbg.h"
 #include "mim/util/log.h"
-
+#include "mim/util/span.h"
 namespace mim {
 
 class Driver;
@@ -195,6 +195,17 @@ public:
     const Def* register_annex(plugin_t p, tag_t t, sub_t s, const Def* def) {
         return register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), def);
     }
+    const Def* sym2annex(Sym sym) {
+        for (auto [_, def] : flags2annex()) {
+            // auto addr_debug = def->sym();
+            // std::cout << "contained in flags2sym: " << &addr_debug << std::endl;
+            // outln("{}: {}", sym, def->sym());
+            if (def->sym() == sym) return def;
+        }
+        error("Annex with name '{}' was not found", sym);
+        // return nullptr;
+    }
+
     ///@}
 
     /// @name Externals
@@ -569,7 +580,10 @@ public:
     /// Complete curried call of annexes obeying implicits.
     // clang-format off
     template<class Id, bool Normalize = true, class... Args> const Def* call(Id id, Args&&... args) { return call_<Normalize>(annex(id),   std::forward<Args>(args)...); }
+        template<class Id, bool Normalize = true, class... Args> const Def* call(Id id, Defs defs) { return call_<Normalize>(annex(id),   defs); }
     template<class Id, bool Normalize = true, class... Args> const Def* call(       Args&&... args) { return call_<Normalize>(annex<Id>(), std::forward<Args>(args)...); }
+    template<bool Normalize = true, class... Args> const Def* call_sym(Sym sym,  Args&&... args) { return call_<Normalize>(sym2annex(sym), std::forward<Args>(args)...); }
+    template<bool Normalize = true> const Def* call_sym(Sym sym, Defs defs) { return call_<Normalize>(sym2annex(sym), defs); }
     // clang-format on
     ///@}
 
@@ -635,6 +649,15 @@ private:
     const Def* call_(const Def* callee, T arg) {
         return implicit_app<Normalize>(callee, arg);
     }
+    // template<bool Normalize = true>
+    // const Def* call_(const Def* callee, Defs args){
+    //     if(args.size()>1){
+    //         return call_<Normalize>(implicit_app(callee, args.subspan(0,1)), args.subspan(1));
+    //     }
+    //     else{
+    //         return implicit_app<Normalize>(callee, args.subspan(0,1));
+    //     }
+    // }
     ///@}
 
     /// @name Put into Sea of Nodes

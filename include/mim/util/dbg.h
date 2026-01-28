@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sstream>
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
 #include <fe/loc.h>
@@ -14,7 +15,7 @@ using fe::Loc;
 using fe::Pos;
 using fe::Sym;
 
-class Error : std::exception {
+class Error : public std::exception {
 public:
     enum class Tag {
         Error,
@@ -44,7 +45,7 @@ public:
     /// Creates a single Tag::Error message.
     Error(Loc loc, const std::string& str)
         : msgs_{
-            {loc, Tag::Error, str}
+              {loc, Tag::Error, str}
     } {}
     ///@}
 
@@ -83,6 +84,11 @@ public:
     /// If errors occured, claim them and throw; if warnings occured, claim them and report to @p os.
     void ack(std::ostream& os = std::cerr);
     ///@}
+
+    const char* what() const noexcept override {
+        std::cerr << *this << std::endl;
+        return "MimIR type error";
+    }
 
     friend std::ostream& operator<<(std::ostream& o, Tag tag) {
         // clang-format off
