@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build-type: [Debug, Release]
+        build-type: [Debug, Release, Debug-AdSan]
+        compiler: [clang, g++]
+        validator: [AdSan]
 
     steps:
       - name: Clone recursively
@@ -20,10 +22,10 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install valgrind, lit, llvm, and psutil
+      - name: Install valgrind, lit, llvm, clang and psutil
         run: |
           sudo apt-get update
-          sudo apt-get install g++-14 valgrind llvm-20-tools
+          sudo apt-get install g++-14 valgrind llvm-20-tools clang
           sudo pip install lit psutil
           sudo ln -s /usr/bin/FileCheck-20 /usr/local/bin/FileCheck
 
@@ -43,6 +45,19 @@ jobs:
             -DMIM_BUILD_EXAMPLES=ON                       \
             -DMIM_LIT_TIMEOUT=300
 
+      - name: Configure Debug-AdSan
+        if: matrix.build-type == 'Debug-AdSan'
+        run: |
+          if [[ "${{ matrix.build-type }}" == "Debug-AdSan" ]]; then
+            export ASAN_OPTIONS="detect_leaks=1:symbolize=1:check_initialization_order=1:detect_stack_use_after_return=1"
+            export ASAN_SYMBOLIZER_PATH=/usr/local/bin/llvm-symbolizer 
+            
+            ctest --test-dir ${{github.workspace}}/build --verbose --output-on-failure
+          else
+            # Standard builds run with Valgrind
+            ctest --test-dir ${{github.workspace}}/build --verbose --output-on-failure -T memcheck
+          fi
+            
       - name: Configure Release
         if: matrix.build-type == 'Release'
         run: |
