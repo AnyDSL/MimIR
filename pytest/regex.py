@@ -65,7 +65,7 @@ class MimRegex():
 
     def star(self) -> Self:
         self.__conj(self.regex)
-        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), self.regex[0]))
+        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), [self.regex[0]]))
         return self
 
     # def dot(self) -> Self:
