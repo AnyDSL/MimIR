@@ -3,7 +3,7 @@
 namespace mim {
 
 const Def* BetaRed::rewrite(const Def* def) {
-    if (auto [app, lam] = isa_apped_mut_lam(def); isa_workable(lam) && !keep_.contains(lam)) {
+    if (auto [app, lam] = isa_apped_mut_lam(def); isa_optimizable(lam) && !keep_.contains(lam)) {
         if (auto [_, ins] = data().emplace(lam); ins) {
             DLOG("beta-reduction {}", lam);
             return lam->reduce_body(app->arg());
@@ -28,7 +28,7 @@ undo_t BetaRed::analyze(const Proxy* proxy) {
 undo_t BetaRed::analyze(const Def* def) {
     auto undo = No_Undo;
     for (auto op : def->ops()) {
-        if (auto lam = isa_workable(op->isa_mut<Lam>()); lam && keep_.emplace(lam).second) {
+        if (auto lam = isa_optimizable(op->isa_mut<Lam>()); lam && keep_.emplace(lam).second) {
             auto [_, ins] = data().emplace(lam);
             if (!ins) {
                 DLOG("non-callee-position of '{}'; undo inlining of {} within {}", lam, lam, curr_mut());

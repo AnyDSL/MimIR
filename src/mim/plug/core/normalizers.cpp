@@ -126,8 +126,7 @@ Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
     if constexpr (std::is_same_v<Id, abs>)
         return std::abs(s);
     else
-        []<bool flag = false>() { static_assert(flag, "missing tag"); }
-    ();
+        []<bool flag = false>() { static_assert(flag, "missing tag"); }();
 }
 
 template<class Id>
@@ -266,6 +265,11 @@ const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg) {
 
     auto [a, b] = arg->projs<2>();
     if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
+
+    if (a == b) {
+        if (id & (icmp::e & 0xff)) return world.lit_tt();
+        if (id == ncmp::ne) return world.lit_ff();
+    }
 
     if (auto la = Lit::isa(a)) {
         if (auto lb = Lit::isa(b)) {

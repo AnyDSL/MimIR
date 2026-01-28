@@ -79,15 +79,8 @@ void init_world(py::module_& m) {
         .def("call",
             [](mim::World& w, std::string sym, pybind11::object args) { 
                 // return w.call_sym(w.sym(sym), args);
-                // vielleicht funktioniert ein vector of Defs ? 
-                // problem ist das die dimension des arrays arbiträr sein kann
-                // array flattening ist nicht möglich
-
-
-                //andere Idee, keine collection weiter geben sondern einfach python args
-                //und dann wie vorher mit subspans arbeiten
                 // -----------------
-
+                
 
                 // -----------------
                 // if (args.is_none()){
@@ -110,16 +103,16 @@ void init_world(py::module_& m) {
             },
             py::return_value_policy::reference_internal)
         .def("call_by_id",
-            [](mim::World& w, uint64_t id, pybind11::object args) {
-                if (args.is_none()){
+            [](mim::World& w, uint64_t id, std::vector<Def*> args) {
+                if (args.size()<1){
                     return w.annex(id);
                 }
-                auto defs = args.cast<std::vector<mim::Def*>>();
-                for (auto d : defs)
-                {
-                    std::cout << d << std::endl;
-                }
-                return w.call(id, mim::Defs(defs));
+                // auto defs = args.cast<std::vector<mim::Def*>>();
+                // for (auto d : defs)
+                // {
+                //     std::cout << d << std::endl;
+                // }
+                return w.call(id, mim::Defs(args));
             },
             pybind11::arg("sym"),
             pybind11::arg("args") = pybind11::none()

@@ -252,17 +252,19 @@ void AxmDecl::Alias::bind(Scopes& s, const AxmDecl* axm) const {
 
 void AxmDecl::bind(Scopes& s) const {
     type()->bind(s);
+
     annex_ = s.ast().name2annex(dbg(), nullptr);
 
-    if (annex_->fresh) {
+    if (annex_ && annex_->fresh) {
         annex_->normalizer = normalizer();
         annex_->pi         = type()->isa<PiExpr>() || type()->isa<ArrowExpr>();
     } else {
         auto pi = type()->isa<PiExpr>() || type()->isa<ArrowExpr>();
-        if (pi ^ *annex_->pi)
-            error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is", dbg().sym());
+        if (annex_ && pi ^ *annex_->pi)
+            s.ast().error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is",
+                          dbg().sym());
 
-        if (annex_->normalizer.sym() != normalizer().sym()) {
+        if (annex_ && annex_->normalizer.sym() != normalizer().sym()) {
             auto l = normalizer().loc() ? normalizer().loc() : loc().anew_finis();
             s.ast().error(l, "normalizer mismatch for axm '{}'", dbg());
             if (auto norm = annex_->normalizer)
@@ -284,15 +286,17 @@ void AxmDecl::bind(Scopes& s) const {
             }
         }
 
-        offset_ = annex_->subs.size();
-        for (const auto& aliases : subs())
-            for (const auto& alias : aliases)
-                alias->bind(s, this);
+        if (annex_) {
+            offset_ = annex_->subs.size();
+            for (const auto& aliases : subs())
+                for (const auto& alias : aliases)
+                    alias->bind(s, this);
 
-        for (auto& sub : subs()) {
-            auto& aliases = annex_->subs.emplace_back(std::deque<Sym>());
-            for (const auto& alias : sub)
-                aliases.emplace_back(alias->dbg().sym());
+            for (auto& sub : subs()) {
+                auto& aliases = annex_->subs.emplace_back(std::deque<Sym>());
+                for (const auto& alias : sub)
+                    aliases.emplace_back(alias->dbg().sym());
+            }
         }
     }
 }

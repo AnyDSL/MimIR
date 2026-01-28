@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Self
 import ctypes
 # Add our build dir to the python modules list
-build_dir = os.path.abspath("../../../../build/lib/")
+build_dir = os.path.abspath("../build/lib/")
 sys.path.insert(0, build_dir)
 
 import mim  # Import from that list
@@ -41,7 +41,7 @@ std::function<bool(const char*)> MimirCodeGen::make_matcher(MimRegex re) {
 
 driver = mim.Driver()
 driver.log().set_stdout().set(mim.Level.Debug)
-driver.add_search_path(Path("../../../../build/lib/mim/"))
+driver.add_search_path(Path("../build/lib/mim/"))
 
 # world  = driver.world()
 
@@ -64,7 +64,8 @@ class MimRegex():
         return self.wrld.lit_i8(ord(lit))
 
     def star(self) -> Self:
-        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), self.regex))
+        self.__conj(self.regex)
+        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), [self.regex[0]]))
         return self
 
     # def dot(self) -> Self:
@@ -76,14 +77,14 @@ class MimRegex():
         # print(self.__char_lit(lit))
         self.regex.append(self.wrld.call_by_id(int(0x4c62066400000300), [self.__char_lit(lit)]))
         return self
-    
+
     def close(self) -> Self:
         self.__conj(self.regex)
         return self
 
     def __conj(self, expr: list) -> Self:
         self.regex = []
-        self.regex.append(self.wrld.call(self._conj_sym, expr))
+        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000000), expr))
         return self
 
     def any(self) -> Self:
@@ -108,7 +109,7 @@ class MimRegex():
 
         regex_mem, matched, pos = self.wrld.implicit_app(
             self.regex[0], [mem, to_match, self.wrld.lit(self.wrld.type_idx(self.wrld.top_nat()), 0)]
-        ).projs(3) 
+        ).projs(3)
         last_elem_ptr = self.wrld.call("%mem.lea", [to_match, pos])
         (final_mem, last_elem) = self.wrld.call("%mem.load", [regex_mem, last_elem_ptr]).projs(2)
         eq_zero = self.wrld.call_by_id(int(0x1104c60000000b01),[last_elem, self.wrld.lit_i8(0)])
@@ -129,5 +130,6 @@ reg = MimRegex(driver)
 # seg fault
 #reg.any().close()
 reg.literal("a").literal("b").literal("c").literal("d").star()
+print(reg.regex)
 reg.build(driver)
 #world.dot("out_no_literals", True, False)

@@ -491,7 +491,7 @@ void World::dump(std::ostream& os) {
 void World::dump() { dump(std::cout); }
 
 void World::debug_dump() {
-    if (log().level() == Log::Level::Debug) dump(log().ostream());
+    if (log().level() >= Log::Level::Debug) dump(log().ostream());
 }
 
 void World::write(const char* file) {

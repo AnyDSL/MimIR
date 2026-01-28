@@ -28,7 +28,7 @@ void init_sym(py::module_&);
 void init_sym_pool(py::module_&);
 }
 
-PYBIND11_MODULE(_mim_core, m) {
+PYBIND11_MODULE(mim, m) {
     mim::init_world(m);
     mim::init_def(m);
     mim::init_lit(m);
