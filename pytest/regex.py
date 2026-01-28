@@ -8,7 +8,7 @@ import ctypes
 build_dir = os.path.abspath("../build/lib/")
 sys.path.insert(0, build_dir)
 
-import _mim_core  # Import from that list
+import mim  # Import from that list
 # this is currently very rudimentary, actual test cases will follow
 # mim_h_plugin_path = os.fspath()
 # ---------------------------------------------------------------------
