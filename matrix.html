@@ -123,76 +123,76 @@ $(function(){initNavTree('matrix.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md183">Dependencies</a>
+    <a href="#autotoc_md184">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md184">Types</a>
+    <a href="#autotoc_md185">Types</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md185">%matrix.Mat</a>
+        <a href="#autotoc_md186">%matrix.Mat</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md186">Operations</a>
+    <a href="#autotoc_md187">Operations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md187">%matrix.shape</a>
+        <a href="#autotoc_md188">%matrix.shape</a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md188">Normalization</a>
+            <a href="#autotoc_md189">Normalization</a>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md189">%matrix.const</a>
+        <a href="#autotoc_md190">%matrix.const</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md190">%matrix.read</a>
+        <a href="#autotoc_md191">%matrix.read</a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md191">Normalization:</a>
+            <a href="#autotoc_md192">Normalization:</a>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md192">%matrix.insert</a>
+        <a href="#autotoc_md193">%matrix.insert</a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md193">Normalization:</a>
+            <a href="#autotoc_md194">Normalization:</a>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md194">%matrix.init</a>
+        <a href="#autotoc_md195">%matrix.init</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md195">High-level matrix operations</a>
+        <a href="#autotoc_md196">High-level matrix operations</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md196">Unfolding functions</a>
+    <a href="#autotoc_md197">Unfolding functions</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md197">product</a>
+        <a href="#autotoc_md198">product</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md198">transpose</a>
+        <a href="#autotoc_md199">transpose</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md199">sum</a>
+        <a href="#autotoc_md200">sum</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md200">Passes and Phases</a>
+    <a href="#autotoc_md201">Passes and Phases</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md201">Passes</a>
+        <a href="#autotoc_md202">Passes</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md202">Phases</a>
+        <a href="#autotoc_md203">Phases</a>
       </li>
     </ul>
   </li>
@@ -200,61 +200,61 @@ $(function(){initNavTree('matrix.html',''); initResizable(true); });
 </div>
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2matrix"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1matrix.html" title="The matrix Plugin">mim::plug::matrix</a></dd></dl>
-<h1><a class="anchor" id="autotoc_md183"></a>
+<h1><a class="anchor" id="autotoc_md184"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
 <div class="line">plugin math;</div>
 <div class="line">// needed to access cps2ds</div>
 <div class="line">plugin direct;</div>
 <div class="line">plugin affine;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md184"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md185"></a>
 Types</h1>
-<h2><a class="anchor" id="autotoc_md185"></a>
+<h2><a class="anchor" id="autotoc_md186"></a>
 %matrix.Mat</h2>
 <p>Matrices are n-dimensional tensors with elements of type T. They can be seen as a generalization of Coq's vector type (a container with a fixed number of elements specified on type level). </p><div class="fragment"><div class="line">matrix = [n: Nat, S: «n; Nat», T: *] → *</div>
 <div class="line">matrix n S T = «S_0; «S_1; ... «S_{n-1}; T» ... »»</div>
 </div><!-- fragment --><p> =&gt; a matrix is a dependend array</p>
 <div class="fragment"><div class="line">axm %matrix.Mat: [n: Nat, S: «n; Nat», T: *] → *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md186"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md187"></a>
 Operations</h1>
-<h2><a class="anchor" id="autotoc_md187"></a>
+<h2><a class="anchor" id="autotoc_md188"></a>
 %matrix.shape</h2>
 <p>Extracts the size along the i-th dimension from the type. For a dependent matrix this is a simple projection to S(i).</p>
-<h3><a class="anchor" id="autotoc_md188"></a>
+<h3><a class="anchor" id="autotoc_md189"></a>
 Normalization</h3>
 <ul>
 <li>resolve shape calls at construction by replacing them with the size argument</li>
 </ul>
 <div class="fragment"><div class="line">axm %matrix.shape: [n: Nat, S: «n; Nat», T: *] as nST → [%matrix.Mat nST, i: Idx n] → Nat, normalize_shape;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md189"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md190"></a>
 %matrix.const</h2>
 <p>a constant matrix </p><div class="fragment"><div class="line">axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, T] → [%mem.M 0, %matrix.Mat nST];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md190"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md191"></a>
 %matrix.read</h2>
 <p>read _ (mat, idx) : body_type</p>
 <p>Accesses an element of the matrix. (currently: arithmetic pointer access)</p>
-<h3><a class="anchor" id="autotoc_md191"></a>
+<h3><a class="anchor" id="autotoc_md192"></a>
 Normalization:</h3>
 <ul>
 <li>read(insert)</li>
 <li>read(const)</li>
 </ul>
 <div class="fragment"><div class="line">axm %matrix.read: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M 0, T], normalize_read;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md192"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md193"></a>
 %matrix.insert</h2>
 <p>insert (dims, sizes, type) (mat, idx, val) : mat</p>
 <p>Depending on the matrix implementation, this operations needs the mem monad The implementation can be either as write or array insertion.</p>
-<h3><a class="anchor" id="autotoc_md193"></a>
+<h3><a class="anchor" id="autotoc_md194"></a>
 Normalization:</h3>
 <ul>
 <li>with other inserts</li>
 <li>with initialization</li>
 </ul>
 <div class="fragment"><div class="line">axm %matrix.insert: [n: Nat, S: «n; Nat», T: *] as nST → [%mem.M 0, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M 0, %matrix.Mat nST], normalize_insert;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md194"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md195"></a>
 %matrix.init</h2>
 <p>A fresh matrix with uninitialized values. </p><div class="fragment"><div class="line">axm %matrix.init: [n: Nat, S: «n; Nat», T: *, %mem.M 0] → [%mem.M 0, %matrix.Mat (n, S, T)];</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md195"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md196"></a>
 High-level matrix operations</h2>
 <div class="fragment"><div class="line">// TODO: define alias: * fst, snd, split * zip = zipWith id</div>
 <div class="line">axm %matrix.prod: [m: Nat, k: Nat, l: Nat, [p: Nat, e:Nat]]</div>
@@ -313,9 +313,9 @@ High-level matrix operations</h2>
 <div class="line">    normalize_map_reduce;</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md196"></a>
+<h1><a class="anchor" id="autotoc_md197"></a>
 Unfolding functions</h1>
-<h2><a class="anchor" id="autotoc_md197"></a>
+<h2><a class="anchor" id="autotoc_md198"></a>
 product</h2>
 <p>Follow the principle <code>ij &lt;- ik, kj</code> (<code>out[i, j] = sum_k in1[i, k] * in2[k, j]</code>) by using mulplication as combination function and addition as reduction function. </p><div class="fragment"><div class="line">fun %matrix.mapRed_prod(m k l: Nat, pe: «2; Nat»)</div>
 <div class="line">                                      (mem: %mem.M 0, M: %matrix.Mat (2, (m, k), %math.F pe),</div>
@@ -342,7 +342,7 @@ product</h2>
 <div class="line">                )</div>
 <div class="line">            )</div>
 <div class="line">    );</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md198"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md199"></a>
 transpose</h2>
 <p>Transpose a matrix by iterating the indices in swapped order. </p><div class="fragment"><div class="line">// TODO: check code for 1-matrix edge case</div>
 <div class="line">// TODO: would this automatically be handled by read(transpose) ?</div>
@@ -366,7 +366,7 @@ transpose</h2>
 <div class="line">                ((1, 0), M)</div>
 <div class="line">            )</div>
 <div class="line">    );</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md199"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md200"></a>
 sum</h2>
 <p>Sums up all elements of a matrix and returns a scalar. </p><div class="fragment"><div class="line">//  TODO: test 0d matrix (edge cases in code)</div>
 <div class="line">fun %matrix.mapRed_sum(n: Nat, S: «n; Nat», pe: «2; Nat»)</div>
@@ -395,13 +395,13 @@ sum</h2>
 <div class="line">            )</div>
 <div class="line">        );</div>
 <div class="line">    return (mem, %core.bitcast R res); // TODO: test this cast</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md200"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md201"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md201"></a>
+<h2><a class="anchor" id="autotoc_md202"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %matrix.lower_matrix_high_level_map_reduce: %compile.Pass;</div>
 <div class="line">axm %matrix.lower_matrix_medium_level:          %compile.Pass;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md202"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md203"></a>
 Phases</h2>
 <div class="fragment"><div class="line">axm %matrix.lower_matrix_low_level: %compile.Phase;</div>
 <div class="line"> </div>
