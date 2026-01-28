@@ -64,7 +64,8 @@ class MimRegex():
         return self.wrld.lit_i8(ord(lit))
 
     def star(self) -> Self:
-        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), self.regex))
+        self.__conj(self.regex)
+        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), self.regex[0]))
         return self
 
     # def dot(self) -> Self:
@@ -83,7 +84,7 @@ class MimRegex():
 
     def __conj(self, expr: list) -> Self:
         self.regex = []
-        self.regex.append(self.wrld.call(self._conj_sym, expr))
+        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000000), expr))
         return self
 
     def any(self) -> Self:
@@ -129,5 +130,6 @@ reg = MimRegex(driver)
 # seg fault
 #reg.any().close()
 reg.literal("a").literal("b").literal("c").literal("d").star()
+print(reg.regex)
 reg.build(driver)
 #world.dot("out_no_literals", True, False)

@@ -79,15 +79,8 @@ void init_world(py::module_& m) {
         .def("call",
             [](mim::World& w, std::string sym, pybind11::object args) { 
                 // return w.call_sym(w.sym(sym), args);
-                // vielleicht funktioniert ein vector of Defs ? 
-                // problem ist das die dimension des arrays arbiträr sein kann
-                // array flattening ist nicht möglich
-
-
-                //andere Idee, keine collection weiter geben sondern einfach python args
-                //und dann wie vorher mit subspans arbeiten
                 // -----------------
-
+                
 
                 // -----------------
                 // if (args.is_none()){
