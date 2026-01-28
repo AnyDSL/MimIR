@@ -229,6 +229,8 @@ In addition, you may find it helpful to turn assertion failures into debugger br
 
 [This](https://github.com/AnyDSL/vim-mim) Vim plugin provides syntax highlighting for Mim files.
 
+There is also a [tree-sitter grammar](https://gitlab.com/amaeble/tree-sitter-mim) for Mim files and a [helix fork](https://github.com/amaebel/helix) with highlight and injection queries.
+
 ## New Plugins
 
 Check out the [demo](@ref demo) plugin for a minimalistic plugin.

@@ -14,6 +14,7 @@ import affine;
 import autodiff;
 import clos;
 import direct;
+import gpu;
 import matrix;
 import refly;
 import regex;
@@ -38,7 +39,7 @@ lam extern _default_compile (): %compile.Phase =
             %compile.eta_red_phase,
         ),
         %compile.eta_exp_phase,
-        %compile.sccp,
+        %compile.sym_expr_opt,
         cond_phase "affine" %affine.lower_for_phase,
         %compile.pass2phase (
             %compile.passes (
@@ -71,6 +72,7 @@ lam extern _default_compile (): %compile.Phase =
                 %mem.remem_repl,
                 %mem.alloc2malloc_repl,
                 cond_repl "refly" %refly.remove_dbg_repl,
+                cond_repl "gpu" %gpu.malloc2gpualloc_repl,
             )
         ),
     );

@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
             | lyra::opt(search_paths, "path"               )["-P"]["--plugin-path"          ]("Path to search for plugins.")
             | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 5)
             | lyra::opt(opt,          "level"              )["-O"]["--optimize"             ]("Optimization level (default: 2).")
-            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST represntation of input.")
+            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST representation of input.")
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
             | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
             | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
@@ -153,40 +153,43 @@ int main(int argc, char** argv) {
                 imports.emplace_back(std::move(import));
             }
 
-            auto mod = parser.import(driver.sym(input), os[Md]);
-            mod->add_implicit_imports(std::move(imports));
+            if (auto mod = parser.import(driver.sym(input), os[Md])) {
+                mod->add_implicit_imports(std::move(imports));
 
-            if (auto s = os[AST]) {
-                Tab tab;
-                mod->stream(tab, *s);
-            }
+                if (auto s = os[AST]) {
+                    Tab tab;
+                    mod->stream(tab, *s);
+                }
 
-            if (auto h = os[H]) {
-                mod->bind(ast);
-                ast.error().ack();
-                auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
-                ast.bootstrap(plugin, *h);
-                return EXIT_SUCCESS;
-            }
+                if (auto h = os[H]) {
+                    mod->bind(ast);
+                    ast.error().ack();
+                    auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
+                    ast.bootstrap(plugin, *h);
+                    return EXIT_SUCCESS;
+                }
 
-            mod->compile(ast);
+                mod->compile(ast);
 
-            switch (opt) {
-                case 0: break;
-                case 1: Phase::run<Cleanup>(world); break;
-                case 2: optimize(world); break;
-                default: error("illegal optimization level '{}'", opt);
-            }
+                switch (opt) {
+                    case 0: break;
+                    case 1: Phase::run<Cleanup>(world); break;
+                    case 2: optimize(world); break;
+                    default: error("illegal optimization level '{}'", opt);
+                }
 
-            if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
-            if (auto s = os[Mim]) world.dump(*s);
-            if (auto s = os[Nest]) mim::Nest(world).dot(*s);
+                if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
+                if (auto s = os[Mim]) world.dump(*s);
+                if (auto s = os[Nest]) mim::Nest(world).dot(*s);
 
-            if (auto s = os[LL]) {
-                if (auto backend = driver.backend("ll"))
-                    backend(world, *s);
-                else
-                    error("'ll' emitter not loaded; try loading 'mem' plugin");
+                if (auto s = os[LL]) {
+                    if (auto backend = driver.backend("ll"))
+                        backend(world, *s);
+                    else
+                        error("'ll' emitter not loaded; try loading 'core' plugin");
+                }
+            } else {
+                error("couldn't read file '{}'", input);
             }
         } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
             std::cerr << e;

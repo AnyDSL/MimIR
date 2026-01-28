@@ -125,10 +125,10 @@ std::ostream& MatchExpr::Arm::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& MatchExpr::stream(Tab& tab, std::ostream& os) const {
-    tab.println(os, "match {} {{", S(tab, scrutinee()));
+    tab.println(os, "match {} with", S(tab, scrutinee()));
     ++tab;
     for (const auto& arm : arms())
-        tab.println(os, "{},", S(tab, arm.get()));
+        tab.println(os, "| {}", S(tab, arm.get()));
     --tab;
     return tab.println(os, "}}");
 }

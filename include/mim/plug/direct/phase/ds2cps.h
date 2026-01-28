@@ -1,7 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
-#include <mim/pass.h>
+#include <mim/phase.h>
 
 namespace mim::plug::direct {
 
@@ -17,17 +17,17 @@ namespace mim::plug::direct {
 /// In a second distinct but connected step, the call sites are converted:
 /// For a direct style call `f args`, the call to the cps function `cps2ds_dep ... f_cps args` is introduced.
 /// The underlying substitution is `f` -> `cps2ds_dep ... f_cps`.
-class DS2CPS : public RWPass<DS2CPS, Lam> {
+class DS2CPS : public RWPhase {
 public:
     DS2CPS(World& world, flags_t annex)
-        : RWPass(world, annex) {}
+        : RWPhase(world, annex) {}
 
-    const Def* rewrite(const Def*) override;
+    const Def* rewrite_imm_App(const App*) override;
 
 private:
-    Def2Def rewritten_;
-
     const Def* rewrite_lam(Lam* lam);
+
+    Def2Def rewritten_;
 };
 
 } // namespace mim::plug::direct

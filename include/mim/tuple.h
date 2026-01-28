@@ -254,47 +254,76 @@ private:
     friend class World;
 };
 
-/// Matches `(ff, tt)#cond` - where `cond` is not a Lit%eral.
+/// Matches `(ff, tt)#cond` - where `cond` is **not** a Lit%eral.
 /// @note If `cond` is a Lit%eral, either
-/// * `(x, y)#lit` would have been folded to `x`/`y` anymway, or
-/// * Select::pair() yields again `pair#lit` for `pair#lit`.
+/// * `(x, y)#lit` would have been folded to `x`/`y` anyway, or
+/// * we have something like this: `pair#0_2`
 class Select {
 public:
     Select(const Def*);
 
-    explicit operator bool() const noexcept { return tt_; }
+    explicit operator bool() const noexcept { return extract_; }
 
     const Extract* extract() const { return extract_; }
-    const Def* pair() const { return pair_; }
-    const Def* cond() const { return cond_; }
-    const Def* tt() const { return tt_; }
-    const Def* ff() const { return ff_; }
+    const Def* pair() const { return extract()->tuple(); }
+    const Def* cond() const { return extract()->index(); }
+    const Def* tt() const { return pair()->proj(2, 1); }
+    const Def* ff() const { return pair()->proj(2, 0); }
 
 private:
     const Extract* extract_ = nullptr;
-    const Def* pair_        = nullptr;
-    const Def* cond_        = nullptr;
-    const Def* tt_          = nullptr;
-    const Def* ff_          = nullptr;
 };
 
-/// Matches `(ff, tt)#cond arg`.
+/// Matches `(ff, tt)#cond arg` where `cond` is **not** a Lit%eral.
 /// `(ff, tt)#cond` is matched as a Select.
 class Branch : public Select {
 public:
     Branch(const Def*);
 
+    explicit operator bool() const noexcept { return app_; }
+
     const App* app() const { return app_; }
-    const Def* callee() const { return callee_; }
-    const Def* arg() const { return arg_; }
+    const Def* callee() const;
+    const Def* arg() const;
 
 private:
-    const App* app_    = nullptr;
-    const Def* callee_ = nullptr;
-    const Def* arg_    = nullptr;
+    const App* app_ = nullptr;
 };
 
-/// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs
+/// Matches a dispatch through a jump table of the form:
+/// `(target_0, target_1, ...)#index arg` where `index` is **not** a Lit%eral.
+/// @note Subsumes Branch.
+/// If you want to deal with Branch separately, match Branch first:
+/// ```
+/// if (auto branch = Branch(def)) {
+///     // special case first
+/// } else if (auto dispatch = Dispatch(def)) {
+///     // now, the generic case
+/// }
+/// ```
+class Dispatch {
+public:
+    Dispatch(const Def*);
+
+    explicit operator bool() const noexcept { return app_; }
+
+    const App* app() const { return app_; }
+    const Def* callee() const;
+    const Def* arg() const;
+
+    const Extract* extract() const { return extract_; }
+    const Def* tuple() const { return extract()->tuple(); }
+    const Def* index() const { return extract()->index(); }
+
+    size_t num_targets() const { return Lit::as(extract()->tuple()->arity()); }
+    const Def* target(size_t i) const { return tuple()->proj(i); }
+
+private:
+    const App* app_         = nullptr;
+    const Extract* extract_ = nullptr;
+};
+
+/// @name Helpers to work with Tuples/Sigmas/Arrays/Packs
 ///@{
 bool is_unit(const Def*);
 std::string tuple2str(const Def*);
