@@ -213,8 +213,8 @@ void Emitter::start() {
     // then printed out in the following.
     Super::start();
 
-    for (auto import : world().driver().imports().syms())
-        print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
+    // for (auto import : world().driver().imports().syms())
+    //     print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
 
     // NOTE: seems to be unused (never written to)
     for (auto&& decl : decls_)
@@ -240,7 +240,7 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 std::string Emitter::emit_con(Lam* lam) {
-    print(std::cout, "emit_con: {}\n", lam->unique_name());
+    // print(std::cout, "emit_con: {}\n", lam->unique_name());
 
     std::ostringstream os;
 
@@ -249,24 +249,32 @@ std::string Emitter::emit_con(Lam* lam) {
 
     // TODO: maybe extern needs to be emitted aswell for reconstruction
     // tab.print(func_impls_, "({} {}{} ", lam_kind, external(lam), id(lam));
-    print(os, "({} {} (tuple ", lam_kind, id(lam));
+    tab.println(os, "\n({} {}", lam_kind, id(lam));
+    ++tab;
+    tab.println(os, "(tuple");
 
     if (lam->has_var()) {
         auto vars  = lam->vars();
         unsigned i = 0;
+        ++tab;
         for (auto sep = ""; auto var : vars.view()) {
             if (var) {
                 auto name = id(var);
-                print(os, "{}(var {} {})", sep, name, convert(var->type(), var));
+                tab.println(os, "{}(var {}", sep, name);
+                ++tab;
+                tab.println(os, "{}", convert(var->type(), var));
+                --tab;
+                tab.println(os, ")");
             } else {
-                print(os, "{}(var{})", sep, convert(lam->dom(i)));
+                tab.print(os, "{}(var{})", sep, convert(lam->dom(i)));
             }
-            sep = " ";
             ++i;
         }
+        --tab;
     }
     // print(func_impls_, "]@({}) = \n", emit_unsafe(lam->filter()));
-    print(os, ")");
+    tab.println(os, ")");
+    --tab;
     return os.str();
 }
 
@@ -274,15 +282,22 @@ std::string Emitter::emit_con(Lam* lam) {
 // and this then further calls on emit_unsafe() for the callee and arg in order to emit the body of the basic block in
 // emit_bb()
 std::string Emitter::emit_curried_app(const App& app) {
+    // TODO: the problem is that i am creating a new string here but adding the current indentation level
+    // to the start of it. i.e. creating a new string indented with 5 tabs if that is the current indentation level
+    // and that then gets printed on top of the already existing 5 tabs of indentation
     std::ostringstream os;
-    auto v_arg = emit_unsafe(app.arg());
     if (auto app_callee = app.callee()->isa<App>()) {
+        print(os, "(app ");
         auto v_callee = emit_curried_app(*app_callee);
-        print(os, "(app {} {})", v_callee, v_arg);
+        print(os, "{}", v_callee);
     } else {
+        print(os, "(app ");
         auto v_callee = emit_unsafe(app.callee());
-        print(os, "(app {} {})", v_callee, v_arg);
+        print(os, "{}", v_callee);
     }
+    auto v_arg = emit_unsafe(app.arg());
+    print(os, " {}", v_arg);
+    print(os, ")");
     return os.str();
 }
 
@@ -295,14 +310,18 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     auto lam = node->mut()->as_mut<Lam>();
     assert(lam2bb_.contains(lam));
     auto& bb = lam2bb_[lam];
-    print(func_impls_, "{} ", emit_con(lam));
+    tab.print(func_impls_, "{}", emit_con(lam));
 
-    // ++tab;
+    ++tab;
     // first prints all lines of the head and body of the basic block into func_impls_
     for (const auto& part : bb.parts | std::views::take(2))
         for (auto& line : part)
-            print(func_impls_, "{}", line.str());
+            tab.print(func_impls_, "{}", line.str());
 
+    // NOTE: The nested lambdas do not get recursively printed out here because
+    // we already print them out inside of emit_bb (therefore, tabbing doesn't apply to them yet
+    // because when they are printed we have not reached the first ++tab yet which happens a couple lines above)
+    //
     // for (auto op : node->mut()->deps()) {
     //     for (auto mut : op->local_muts())
     //         if (auto next = nest()[mut]) {
@@ -315,8 +334,8 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
 
     for (const auto& line : bb.tail())
         tab.print(func_impls_, "{}", line.str());
-    // --tab;
-    print(func_impls_, ")\n");
+    --tab;
+    tab.lnprint(func_impls_, ")");
     // func_impls_ << std::endl;
 }
 
@@ -347,6 +366,9 @@ void Emitter::emit_epilogue(Lam* lam) {
     }
 }
 
+// anything that returns a string should not use or modify the tab indentation level
+// because the caller already takes care of indentation and all we would end up is
+// duplicate indentations
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     // if (auto lam = def->isa<Lam>()) return id(lam);
     if (def->type()->isa<Type>() || def->type()->isa<Univ>()) {
@@ -358,12 +380,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
     std::ostringstream os;
     if (auto lam = def->isa<Lam>()) {
-        os << emit_con(lam->as_mut<Lam>()) << " ";
+        print(os, emit_con(lam->as_mut<Lam>()).c_str());
         if (lam->isa_cn(lam)) {
             auto app = lam->body()->as<App>();
-            os << emit_curried_app(*app);
+            print(os, emit_curried_app(*app).c_str());
+            print(os, ")");
         } else {
-            os << emit(lam->body());
+            print(os, emit(lam->body()).c_str());
         }
         return os.str();
     } else if (auto lit = def->isa<Lit>()) {
@@ -381,14 +404,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(os, "{}", def->unique_name());
         return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
-        os << "(tuple ";
+        print(os, "(tuple");
         for (auto sep = ""; auto e : tuple->ops()) {
             if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
                 os << sep << v_elem;
                 sep = " ";
             }
         }
-        os << ")";
+        print(os, ")");
         return os.str();
     } else if (auto seq = def->isa<Seq>()) {
         auto body  = emit_unsafe(seq->body());
@@ -404,6 +427,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) return id(extract);
 
         // return bb.assign(id(extract), "(extract {} {})", tuple_str, emit_unsafe(index));
+        // auto indent = std::string(tab.indent() * 4, ' ');
+
         os << "(extract " << tuple_str << " " << emit_unsafe(index) << ")";
         return os.str();
     } else if (auto insert = def->isa<Insert>()) {
