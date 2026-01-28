@@ -31,6 +31,7 @@ void StaticArgOpt::analyze(const Def* def) {
                     for (size_t i = 0; i != n; ++i)
                         cur[i] &= statics[i];
                 }
+                DLOG("statics for `{}`: {, }", lam, lam2statics_[lam]);
             }
         }
     }
@@ -47,7 +48,7 @@ const Def* StaticArgOpt::rewrite_mut_Lam(Lam* old_lam) {
         for (size_t i = 0; i != n; ++i)
             if (!statics[i]) loop_doms.emplace_back(rewrite(old_lam->tdom(i)));
 
-        if (auto num_loop_doms = loop_doms.size(); num_loop_doms > 0) {
+        if (auto num_loop_doms = loop_doms.size(); num_loop_doms != n) {
             todo_        = true;
             auto new_lam = new_world().mut_lam(rewrite(old_lam->type())->as<Pi>())->set(old_lam->dbg());
             auto loop    = new_world().mut_lam(loop_doms, rewrite(old_lam->codom()))->set(old_lam->dbg());

@@ -19,6 +19,7 @@
 #include <mim/phase/eta_red_phase.h>
 #include <mim/phase/prefix_cleanup.h>
 #include <mim/phase/ret_wrap.h>
+#include <mim/phase/static_arg_opt.h>
 #include <mim/phase/sym_expr_opt.h>
 
 #include "mim/plug/compile/autogen.h"
@@ -39,6 +40,7 @@ void reg_stages(Flags2Stages& stages) {
     Stage::hook<compile::eta_red_phase,          EtaRedPhase         >(stages);
     Stage::hook<compile::pass2phase,             PassManPhase        >(stages);
     Stage::hook<compile::repl2phase,             ReplManPhase        >(stages);
+    Stage::hook<compile::static_arg_opt,         StaticArgOpt        >(stages);
     Stage::hook<compile::sym_expr_opt,           SymExprOpt          >(stages);
     Stage::hook<compile::phases,                 PhaseMan            >(stages);
     Stage::hook<compile::prefix_cleanup_phase,   PrefixCleanup       >(stages);

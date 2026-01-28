@@ -45,6 +45,7 @@ axm %compile.eta_exp_phase:                             %compile.Phase;
 axm %compile.eta_red_phase:                             %compile.Phase;
 axm %compile.null_phase:                                %compile.Phase;
 axm %compile.ret_wrap_phase:                            %compile.Phase;
+axm %compile.static_arg_opt:                            %compile.Phase;
 axm %compile.sym_expr_opt:                              %compile.Phase;
 axm %compile.pass2phase:                %compile.Pass → %compile.Phase;
 axm %compile.repl2phase:                %compile.Repl → %compile.Phase;

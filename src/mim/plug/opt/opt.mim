@@ -38,6 +38,7 @@ lam extern _default_compile (): %compile.Phase =
             %compile.eta_red_phase,
         ),
         %compile.eta_exp_phase,
+        %compile.static_arg_opt,
         %compile.sym_expr_opt,
         cond_phase "affine" %affine.lower_for_phase,
         %compile.pass2phase (
