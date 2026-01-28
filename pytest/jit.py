@@ -7,4 +7,4 @@ import os
 class JIT(ABC):
 
     def jit():
-       pass 
+       pass

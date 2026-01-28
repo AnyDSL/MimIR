@@ -77,7 +77,7 @@ class MimRegex():
         # print(self.__char_lit(lit))
         self.regex.append(self.wrld.call_by_id(int(0x4c62066400000300), [self.__char_lit(lit)]))
         return self
-    
+
     def close(self) -> Self:
         self.__conj(self.regex)
         return self
@@ -109,7 +109,7 @@ class MimRegex():
 
         regex_mem, matched, pos = self.wrld.implicit_app(
             self.regex[0], [mem, to_match, self.wrld.lit(self.wrld.type_idx(self.wrld.top_nat()), 0)]
-        ).projs(3) 
+        ).projs(3)
         last_elem_ptr = self.wrld.call("%mem.lea", [to_match, pos])
         (final_mem, last_elem) = self.wrld.call("%mem.load", [regex_mem, last_elem_ptr]).projs(2)
         eq_zero = self.wrld.call_by_id(int(0x1104c60000000b01),[last_elem, self.wrld.lit_i8(0)])

@@ -14,6 +14,6 @@ class MimPlugin():
 
     def __init__(driver, log_level):
         driver.log().set_stdout().set(log_level)
-    
+
     def build():
         raise MemoryError("Needs to be implemented by plugin author")
