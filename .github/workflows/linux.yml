@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build-type: [Debug, Release, Debug-AdSan]
+        build-type: [Debug, Release]
         compiler: [clang, g++]
         validator: [AdSan]
 
@@ -39,25 +39,15 @@ jobs:
       - name: Configure Debug
         if: matrix.build-type == 'Debug'
         run: |
-          CXX=g++-14 cmake -B ${{github.workspace}}/build \
+          CXX=clang cmake -B ${{github.workspace}}/build  \
             -DCMAKE_BUILD_TYPE=${{matrix.build-type}}     \
             -DBUILD_TESTING=ON                            \
             -DMIM_BUILD_EXAMPLES=ON                       \
-            -DMIM_LIT_TIMEOUT=300
+            -DMIM_LIT_TIMEOUT=300                         \
+            -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
+            -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" \
+            -DCMAKE_MODULE_LINKER_FLAGS="-fsanitize=address" 
 
-      - name: Configure Debug-AdSan
-        if: matrix.build-type == 'Debug-AdSan'
-        run: |
-          if [[ "${{ matrix.build-type }}" == "Debug-AdSan" ]]; then
-            export ASAN_OPTIONS="detect_leaks=1:symbolize=1:check_initialization_order=1:detect_stack_use_after_return=1"
-            export ASAN_SYMBOLIZER_PATH=/usr/local/bin/llvm-symbolizer 
-            
-            ctest --test-dir ${{github.workspace}}/build --verbose --output-on-failure
-          else
-            # Standard builds run with Valgrind
-            ctest --test-dir ${{github.workspace}}/build --verbose --output-on-failure -T memcheck
-          fi
-            
       - name: Configure Release
         if: matrix.build-type == 'Release'
         run: |
