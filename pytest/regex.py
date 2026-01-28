@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Self
 import ctypes
 # Add our build dir to the python modules list
-build_dir = os.path.abspath("../../../../build/lib/")
+build_dir = os.path.abspath("../build/lib/")
 sys.path.insert(0, build_dir)
 
 import mim  # Import from that list
@@ -41,7 +41,7 @@ std::function<bool(const char*)> MimirCodeGen::make_matcher(MimRegex re) {
 
 driver = mim.Driver()
 driver.log().set_stdout().set(mim.Level.Debug)
-driver.add_search_path(Path("../../../../build/lib/mim/"))
+driver.add_search_path(Path("../build/lib/mim/"))
 
 # world  = driver.world()
 
