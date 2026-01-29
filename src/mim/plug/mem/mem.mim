@@ -85,6 +85,7 @@ axm %mem.lea: {n: Nat, Ts: «n; *», a: Nat} → [%mem.Ptr («j: n; Ts#j», a), 
 /// ### Phases
 ///
 axm %mem.add_mem_phase: %compile.Phase;
+axm %mem.ssa_phase:     %compile.Phase;
 ///
 /// ### Repls
 ///

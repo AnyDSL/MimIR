@@ -286,7 +286,7 @@ char8_t Lexer::lex_char() {
     auto c = next();
     str_ += c;
     if (utf8::isascii(c)) return char8_t(c);
-    ast().error(loc_, "invalid character '{}'", (char)c);
+    ast().error(loc_, "invalid character '{}'", char(c));
     return '\0';
 }
 
