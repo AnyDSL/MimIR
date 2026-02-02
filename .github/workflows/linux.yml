@@ -30,7 +30,7 @@ jobs:
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1.6.0
         with:
-          version: "14.0.0"
+          version: "14.0.0"   
           cached: ${{ steps.cache-llvm.outputs.cache-hit }}
 
       - name: Install FileCheck
@@ -47,7 +47,7 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get install g++-13 valgrind
+          sudo apt-get install g++-13 valgrind clang-17
           sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
           sudo chmod +x /usr/bin/FileCheck
           # sudo python -m pip install --upgrade pip
@@ -62,7 +62,15 @@ jobs:
 
       - name: Configure Debug
         if: matrix.build-type == 'Debug'
-        run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON -DMIM_LIT_TIMEOUT=300 -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer"  -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" -DCMAKE_SHARED_LINKER_FLAGS="-fsanitize=address"
+        run: |
+          CC=clang-17 CXX=clang++-17 cmake -B ${{ github.workspace }}/build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DBUILD_TESTING=ON \
+            -DMIM_BUILD_EXAMPLES=ON \
+            -DMIM_LIT_TIMEOUT=300 \
+            -DCMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
+            -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
+            -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address"
 
       - name: Configure Release
         if: matrix.build-type == 'Release'
