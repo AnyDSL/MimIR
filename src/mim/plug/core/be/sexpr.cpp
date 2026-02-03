@@ -10,7 +10,6 @@
 #include <mim/plug/mem/mem.h>
 
 #include "mim/def.h"
-#include "mim/driver.h"
 
 #include "mim/be/emitter.h"
 #include "mim/util/print.h"
@@ -85,7 +84,7 @@ public:
     void start() override;
     void emit_imported(Lam*);
     void emit_epilogue(Lam*);
-    std::string emit_con(Lam*);
+    std::string emit_header(Lam*);
     std::string emit_bb(BB&, const Def*);
     std::string emit_curried_app(const App& app);
     std::string prepare();
@@ -205,25 +204,20 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
  */
 
 void Emitter::start() {
-    // Calls the run() method of NestPhase that computes a Nest for each closed mutable in the world
-    // and then calls the visit() method defined inside of the generic Emitter class for each of them.
-    // This visit method is responsible for corresponding each lambda with a basic block and filling these
-    // basic blocks (the tail, to be precise) with a string representation of the lambda. These basic block
-    // representations will then be written into func_impls_ via the finalize() method called by visit() and
-    // then printed out in the following.
     Super::start();
 
+    // TODO: uncomment after development
     // for (auto import : world().driver().imports().syms())
     //     print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
 
-    // NOTE: seems to be unused (never written to)
+    // seems to be unused (never written to)
     for (auto&& decl : decls_)
         ostream() << decl << '\n';
     // written to in emit_imported (external import functions)
     ostream() << func_decls_.str() << '\n';
-    // NOTE: seems to be unused (never written to)
+    // seems to be unused (never written to)
     ostream() << vars_decls_.str() << '\n';
-    // written to in finalize_nest and emit_con (called by finalize_nest)
+    // written to in finalize_nest and emit_header (called by finalize_nest)
     ostream() << func_impls_.str() << '\n';
 }
 
@@ -239,8 +233,8 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, ")\n");
 }
 
-std::string Emitter::emit_con(Lam* lam) {
-    // print(std::cout, "emit_con: {}\n", lam->unique_name());
+std::string Emitter::emit_header(Lam* lam) {
+    // print(std::cout, "emit_header: {}\n", lam->unique_name());
 
     std::ostringstream os;
 
@@ -249,7 +243,7 @@ std::string Emitter::emit_con(Lam* lam) {
 
     // TODO: maybe extern needs to be emitted aswell for reconstruction
     // tab.print(func_impls_, "({} {}{} ", lam_kind, external(lam), id(lam));
-    tab.println(os, "\n({} {}", lam_kind, id(lam));
+    tab.println(os, "({} {}", lam_kind, id(lam));
     ++tab;
     tab.println(os, "(tuple");
 
@@ -278,13 +272,7 @@ std::string Emitter::emit_con(Lam* lam) {
     return os.str();
 }
 
-// NOTE: when proecessing a continuation, this method is called to emit the tail of its basic block in emit_epilogue
-// and this then further calls on emit_unsafe() for the callee and arg in order to emit the body of the basic block in
-// emit_bb()
 std::string Emitter::emit_curried_app(const App& app) {
-    // TODO: the problem is that i am creating a new string here but adding the current indentation level
-    // to the start of it. i.e. creating a new string indented with 5 tabs if that is the current indentation level
-    // and that then gets printed on top of the already existing 5 tabs of indentation
     std::ostringstream os;
     if (auto app_callee = app.callee()->isa<App>()) {
         print(os, "(app ");
@@ -303,84 +291,43 @@ std::string Emitter::emit_curried_app(const App& app) {
 
 std::string Emitter::prepare() { return root()->unique_name(); }
 
+// NOTE:
+// - finalize_nest gets called once per closed mutable def (separate top-level lambdas)
+// - emit_epilogue gets called for every single lambda nested inside one of these closed mutable defs
 void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     if (!node->mut()->isa<Lam>()) return;
     if (auto [_, ins] = done.emplace(node->mut()); !ins) return;
 
     auto lam = node->mut()->as_mut<Lam>();
     assert(lam2bb_.contains(lam));
-    auto& bb = lam2bb_[lam];
-    tab.print(func_impls_, "{}", emit_con(lam));
 
-    ++tab;
-    // first prints all lines of the head and body of the basic block into func_impls_
-    for (const auto& part : bb.parts | std::views::take(2))
-        for (auto& line : part)
-            tab.print(func_impls_, "{}", line.str());
+    tab.print(func_impls_, "{}", emit_header(lam));
 
-    // NOTE: The nested lambdas do not get recursively printed out here because
-    // we already print them out inside of emit_bb (therefore, tabbing doesn't apply to them yet
-    // because when they are printed we have not reached the first ++tab yet which happens a couple lines above)
-    //
-    // for (auto op : node->mut()->deps()) {
-    //     for (auto mut : op->local_muts())
-    //         if (auto next = nest()[mut]) {
-    //             // recursively calls finalize_nest() on nested lambdas
-    //             // as part of the mutables that the lambda depends on (node->mut()->deps())
-    //             // for non-lambda muts finalize_nest() will simply return
-    //             finalize_nest(next, done);
-    //         }
-    // }
+    if (lam->isa_cn(lam)) {
+        auto app = lam->body()->as<App>();
+        tab.print(func_impls_, "{}", emit_curried_app(*app));
+    } else {
+        tab.print(func_impls_, "{}", emit(lam->body()));
+    }
 
-    for (const auto& line : bb.tail())
-        tab.print(func_impls_, "{}", line.str());
-    --tab;
     tab.lnprint(func_impls_, ")");
-    // func_impls_ << std::endl;
 }
 
 void Emitter::finalize() {
-    if (root()->sym().str() == "_fallback_compile") {
-        // This is a fallback compile function, we don't want to emit it
-        return;
-    }
+    if (root()->sym().str() == "_fallback_compile") return;
     MutSet done;
     finalize_nest(nest().root(), done);
 }
 
-// NOTE: we basically have lambdas whose structure is as follows:
-// 1) The signature of the lambda like:  lam extern foo(Nat): Nat
-// 2) The body, consisting of let assignments like:
-//        let i = bar#1:(Idx 3)
-//    and other nested lambdas like:
-//        con baz(Nat): Nat ...
-// 3) The tail, which is emitted below, where the actual logic of the lambda happens like:  baz i
-// This method will be called for every lambda inside of the loop in the emitter's visit() method.
-void Emitter::emit_epilogue(Lam* lam) {
-    auto& bb = lam2bb_[lam];
-    if (lam->isa_cn(lam)) {
-        auto app = lam->body()->as<App>();
-        bb.tail("{}", emit_curried_app(*app));
-    } else {
-        bb.tail("{}", emit(lam->body()));
-    }
-}
+void Emitter::emit_epilogue(Lam* lam) { return; }
 
-// anything that returns a string should not use or modify the tab indentation level
-// because the caller already takes care of indentation and all we would end up is
-// duplicate indentations
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
-    // if (auto lam = def->isa<Lam>()) return id(lam);
-    if (def->type()->isa<Type>() || def->type()->isa<Univ>()) {
-        // This is a type, we don't emit it as an instruction
-        return convert(def);
-    }
-
-    // print(std::cout, "debug {}\n", def);
+    if (def->type()->isa<Type>() || def->type()->isa<Univ>()) return convert(def);
 
     std::ostringstream os;
     if (auto lam = def->isa<Lam>()) {
-        print(os, emit_con(lam->as_mut<Lam>()).c_str());
+        print(os, "\n");
+        print(os, emit_header(lam->as_mut<Lam>()).c_str());
         if (lam->isa_cn(lam)) {
             auto app = lam->body()->as<App>();
             print(os, emit_curried_app(*app).c_str());
