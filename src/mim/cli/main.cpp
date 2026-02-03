@@ -9,17 +9,17 @@
 
 #include "mim/config.h"
 #include "mim/driver.h"
+#include "mim/phase.h"
 
 #include "mim/ast/parser.h"
 #include "mim/pass/optimize.h"
-#include "mim/phase/phase.h"
 #include "mim/util/sys.h"
 
 using namespace mim;
 using namespace std::literals;
 
 int main(int argc, char** argv) {
-    enum Backends { AST, D, Dot, H, LL, Md, Mim, Nest, Num_Backends };
+    enum Backends { AST, Dot, H, LL, Md, Mim, Nest, Num_Backends };
 
     try {
         static const auto version = "mim command-line utility version " MIM_VER "\n";
@@ -34,7 +34,8 @@ int main(int argc, char** argv) {
         std::string clang = sys::find_cmd("clang");
         std::vector<std::string> plugins, search_paths;
 #ifdef MIM_ENABLE_CHECKS
-        std::vector<size_t> breakpoints;
+        std::vector<uint32_t> breakpoints;
+        std::vector<uint32_t> watchpoints;
 #endif
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
@@ -50,10 +51,9 @@ int main(int argc, char** argv) {
             | lyra::opt(clang,        "clang"              )["-c"]["--clang"                ]("Path to clang executable (default: '" MIM_WHICH " clang').")
             | lyra::opt(plugins,      "plugin"             )["-p"]["--plugin"               ]("Dynamically load plugin.")
             | lyra::opt(search_paths, "path"               )["-P"]["--plugin-path"          ]("Path to search for plugins.")
-            | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
+            | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 5)
             | lyra::opt(opt,          "level"              )["-O"]["--optimize"             ]("Optimization level (default: 2).")
-            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST represntation of input.")
-            | lyra::opt(output[D  ],  "file"               )      ["--output-d"             ]("Emits dependency file containing a rule suitable for 'make' describing the dependencies of the source file (requires --output-h).")
+            | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST representation of input.")
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
             | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
             | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
@@ -69,7 +69,8 @@ int main(int argc, char** argv) {
             | lyra::opt(flags.aggressive_lam_spec          )      ["--aggr-lam-spec"        ]("Overrides LamSpec behavior to follow recursive calls.")
             | lyra::opt(flags.scalarize_threshold, "threshold")   ["--scalarize-threshold"  ]("MimIR will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.")
 #ifdef MIM_ENABLE_CHECKS
-            | lyra::opt(breakpoints,    "gid"              )["-b"]["--break"                ]("*Triggers breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
+            | lyra::opt(breakpoints,    "gid"              )["-b"]["--break"                ]("*Triggers breakpoint when creating a node whose global id is <gid>.")
+            | lyra::opt(watchpoints,    "gid"              )["-w"]["--watch"                ]("*Triggers breakpoint when setting a node whose global id is <gid>.")
             | lyra::opt(flags.reeval_breakpoints           )      ["--reeval-breakpoints"   ]("*Triggers breakpoint even upon unfying a node that has already been built.")
             | lyra::opt(flags.break_on_alpha               )      ["--break-on-alpha"       ]("*Triggers breakpoint as soon as two expressions turn out to be not alpha-equivalent.")
             | lyra::opt(flags.break_on_error               )      ["--break-on-error"       ]("*Triggers breakpoint on ELOG.")
@@ -96,7 +97,8 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         }
 
-        for (auto&& path : search_paths) driver.add_search_path(path);
+        for (auto&& path : search_paths)
+            driver.add_search_path(path);
 
         if (list_search_paths) {
             for (auto&& path : driver.search_paths() | std::views::drop(1)) // skip first empty path
@@ -106,7 +108,10 @@ int main(int argc, char** argv) {
 
         World& world = driver.world();
 #ifdef MIM_ENABLE_CHECKS
-        for (auto b : breakpoints) world.breakpoint(b);
+        for (auto b : breakpoints)
+            world.breakpoint(b);
+        for (auto w : watchpoints)
+            world.watchpoint(w);
 #endif
         driver.log().set(&std::cerr).set((Log::Level)verbose);
 
@@ -128,12 +133,6 @@ int main(int argc, char** argv) {
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
-        // we always need standard plugins, as long as we are not in bootstrap mode
-        if (!flags.bootstrap) {
-            plugins.insert(plugins.begin(), "compile"s);
-            if (opt >= 2) plugins.emplace_back("opt"s);
-        }
-
         try {
             auto path = fs::path(input);
             world.set(path.filename().replace_extension().string());
@@ -142,59 +141,55 @@ int main(int argc, char** argv) {
             auto parser = ast::Parser(ast);
             ast::Ptrs<ast::Import> imports;
 
+            if (!flags.bootstrap) {
+                plugins.insert(plugins.begin(), "compile"s);
+                if (opt >= 2) plugins.emplace_back("opt"s);
+            }
+
             for (const auto& plugin : plugins) {
                 auto mod = parser.plugin(plugin);
                 auto import
                     = ast.ptr<ast::Import>(Loc(), ast::Tok::Tag::K_plugin, Dbg(driver.sym(plugin)), std::move(mod));
                 imports.emplace_back(std::move(import));
             }
-            auto mod = parser.import(driver.sym(input), os[Md]);
-            mod->add_implicit_imports(std::move(imports));
-            mod->compile(ast);
 
-            if (auto s = os[AST]) {
-                Tab tab;
-                mod->stream(tab, *s);
-            }
+            if (auto mod = parser.import(driver.sym(input), os[Md])) {
+                mod->add_implicit_imports(std::move(imports));
 
-            if (auto dep = os[D]) {
-                if (auto autogen_h = output[H]; !autogen_h.empty()) {
-                    *dep << autogen_h << ": ";
-                    assert(!driver.import_syms().empty());
-                    for (auto sep = ""; auto path : driver.import_paths() | std::views::drop(1)) {
-                        *dep << sep << sys::escape(path);
-                        sep = " \\\n ";
-                    }
-                } else {
-                    throw std::invalid_argument("error: --output-d requires --output-h");
+                if (auto s = os[AST]) {
+                    Tab tab;
+                    mod->stream(tab, *s);
                 }
-                *dep << std::endl;
-            }
 
-            if (flags.bootstrap) {
                 if (auto h = os[H]) {
+                    mod->bind(ast);
+                    ast.error().ack();
                     auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
                     ast.bootstrap(plugin, *h);
+                    return EXIT_SUCCESS;
                 }
-                opt = std::min(opt, 1);
-            }
 
-            switch (opt) {
-                case 0: break;
-                case 1: Phase::run<Cleanup>(world); break;
-                case 2: optimize(world); break;
-                default: error("illegal optimization level '{}'", opt);
-            }
+                mod->compile(ast);
 
-            if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
-            if (auto s = os[Mim]) world.dump(*s);
-            if (auto s = os[Nest]) mim::Nest(world).dot(*s);
+                switch (opt) {
+                    case 0: break;
+                    case 1: Phase::run<Cleanup>(world); break;
+                    case 2: optimize(world); break;
+                    default: error("illegal optimization level '{}'", opt);
+                }
 
-            if (auto s = os[LL]) {
-                if (auto backend = driver.backend("ll"))
-                    backend(world, *s);
-                else
-                    error("'ll' emitter not loaded; try loading 'mem' plugin");
+                if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
+                if (auto s = os[Mim]) world.dump(*s);
+                if (auto s = os[Nest]) mim::Nest(world).dot(*s);
+
+                if (auto s = os[LL]) {
+                    if (auto backend = driver.backend("ll"))
+                        backend(world, *s);
+                    else
+                        error("'ll' emitter not loaded; try loading 'core' plugin");
+                }
+            } else {
+                error("couldn't read file '{}'", input);
             }
         } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
             std::cerr << e;

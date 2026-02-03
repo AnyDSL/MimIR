@@ -10,7 +10,7 @@ const Def* LamSpec::rewrite(const Def* def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
 
     auto [app, old_lam] = isa_apped_mut_lam(def);
-    if (!isa_workable(old_lam)) return def;
+    if (!isa_optimizable(old_lam)) return def;
 
     // Skip recursion to avoid infinite inlining if not "aggressive_lam_spec".
     // This is a hack - but we want to get rid off this Pass anyway.
@@ -45,7 +45,7 @@ const Def* LamSpec::rewrite(const Def* def) {
     }
 
     new_lam->set(old_lam->reduce(world().tuple(new_vars)));
-    world().DLOG("{} -> {}: {} -> {})", old_lam, new_lam, old_lam->dom(), new_lam->dom());
+    DLOG("{} -> {}: {} -> {})", old_lam, new_lam, old_lam->dom(), new_lam->dom());
 
     return old2new_[def] = world().app(new_lam, new_args);
 }

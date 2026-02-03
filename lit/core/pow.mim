@@ -19,6 +19,6 @@ fun pow(a b: I32): I32 =
     let cmp = %core.icmp.e (b, 0I32);
     (pow_else, pow_then)#cmp ();
 
-fun extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M, I32] =
+fun extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M 0, I32] =
     ret res = pow $ (3I32, 4I32);
     return (mem, res);

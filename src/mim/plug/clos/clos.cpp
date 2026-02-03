@@ -1,11 +1,10 @@
 #include "mim/plug/clos/clos.h"
 
 #include <mim/config.h>
+#include <mim/pass.h>
 
 #include <mim/pass/eta_exp.h>
 #include <mim/pass/eta_red.h>
-#include <mim/pass/pass.h>
-#include <mim/pass/pipelinebuilder.h>
 #include <mim/pass/scalarize.h>
 
 #include "mim/plug/clos/pass/branch_clos_elim.h"
@@ -18,25 +17,20 @@
 using namespace mim;
 using namespace mim::plug;
 
-extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"clos", [](Normalizers& normalizers) { clos::register_normalizers(normalizers); },
-            [](Passes& passes) {
-                register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
-                register_pass<clos::branch_clos_pass, clos::BranchClosElim>(passes);
-                register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
-                register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
-                register_phase<clos::clos_conv_phase, clos::ClosConv>(passes);
-                register_phase<clos::lower_typed_clos_phase, clos::LowerTypedClos>(passes);
-                // TODO:; remove after ho_codegen merge
-                passes[flags_t(Annex::Base<clos::eta_red_bool_pass>)]
-                    = [&](World&, PipelineBuilder& builder, const Def* app) {
-                          auto bb      = app->as<App>()->arg();
-                          auto bb_only = bb->as<Lit>()->get<u64>();
-                          builder.add_pass<EtaRed>(app, bb_only);
-                      };
-            },
-            nullptr};
+void reg_stages(Flags2Stages& stages) {
+    // clang-format off
+    // phases
+    Stage::hook<clos::clos_conv_phase,            clos::ClosConv          >(stages);
+    Stage::hook<clos::lower_typed_clos_phase,     clos::LowerTypedClos    >(stages);
+    // passes
+    Stage::hook<clos::clos_conv_prep_pass,        clos::ClosConvPrep      >(stages);
+    Stage::hook<clos::branch_clos_pass,           clos::BranchClosElim    >(stages);
+    Stage::hook<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(stages);
+    Stage::hook<clos::clos2sjlj_pass,             clos::Clos2SJLJ         >(stages);
+    // clang-format on
 }
+
+extern "C" MIM_EXPORT Plugin mim_get_plugin() { return {"clos", clos::register_normalizers, reg_stages, nullptr}; }
 
 namespace mim::plug::clos {
 

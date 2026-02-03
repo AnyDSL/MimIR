@@ -1,0 +1,5 @@
+// RUN: (! %mim %s 2>&1) | FileCheck %s
+axm foo: Nat → x;
+
+// CHECK: error: expected '<annex name>'
+// CHECK: error: 'x' not found

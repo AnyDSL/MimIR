@@ -64,6 +64,10 @@ let %core.mode.nusw = %core.mode.US;
 ///
 axm %core.idx: [s: Nat] → [m: Nat] → [l: Nat] → Idx s, normalize_idx;
 ///
+/// Creates a literal of type `Idx ⊤`.
+///
+axm %core.idx_unsafe: Nat → Idx ⊤:Nat, normalize_idx_unsafe;
+///
 /// ### %%core.bit1
 ///
 /// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
@@ -129,7 +133,7 @@ lam %core.minus {s: Nat} (m: Nat) (a: Idx s): Idx s = %core.wrap.sub m (0:(Idx s
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
 axm %core.div(sdiv, udiv, srem, urem):
-    {s: Nat} → [%mem.M, «2; Idx s»] → [%mem.M, Idx s], normalize_div;
+    {s: Nat} → [%mem.M 0, «2; Idx s»] → [%mem.M 0, Idx s], normalize_div;
 ///
 /// ### %%core.icmp
 ///
@@ -218,7 +222,7 @@ axm %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): {s: Nat} → «2; Idx s»
 ///
 /// @warning Computing the absolute value of an Integer with the lowest possible value leads to *undefined behavior*, which is why this axiom expects a `%%mem.M`
 ///
-axm %core.abs: {s: Nat} → [%mem.M, Idx s] → [%mem.M, Idx s], normalize_abs;
+axm %core.abs: {s: Nat} → [%mem.M 0, Idx s] → [%mem.M 0, Idx s], normalize_abs;
 ///
 /// ## Conversions
 ///
@@ -250,22 +254,8 @@ axm %core.trait(size, align): * → Nat, normalize_trait;
 axm %core.pe(hlt, run):  {T: *} → T → T, normalize_pe;
 axm %core.pe(is_closed): {T: *} → T → Bool, normalize_pe;
 ///
-/// ### %%core.zip
+/// ## %%core.select
 ///
-/// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.
+/// More readable shorthand to create a select/if:
 ///
-/// @warning For now, not a better place for this and will be moved elsewhere.
-/// What is more, the signature will likely change in the future:
-/// * `r`: rank of the tensors to zip
-/// * `s`: shape of the tensors to zip
-/// * `n_i`: number if inputs
-/// * `n_o`: number if outputs
-/// * `Is`: tuple with `n_i` many elements that describe the element types of the inputs
-/// * `Os`: tuple with `n_o` many elements that describe the element types of the outputs
-/// * `f`: zipping function that expects an `n_i`-tuple whose elements correspond to `Is` and yields an `n_o`-tuple whose element types correspond to `Os`
-/// * `is`: the actual input tensors
-///
-axm %core.zip: [r: Nat, s: «r; Nat»]
-             → [n_i: Nat, Is: «n_i; *», n_o: Nat, Os: «n_o; *», f: «i: n_i; Is#i» → «o: n_o; Os#o»]
-             → «i: n_i; «s; Is#i»»
-             → «o: n_o; «s; Os#o»», normalize_zip;
+lam %core.select {T: *} (cond: Bool, t: T, f: T): T = (f, t)#cond;

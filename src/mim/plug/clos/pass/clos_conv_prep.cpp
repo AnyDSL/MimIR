@@ -32,6 +32,11 @@ Lam* isa_retvar(const Def* def) {
 
 } // namespace
 
+void ClosConvPrep::init(PassMan* man) {
+    Pass::init(man);
+    eta_exp_ = man->find<EtaExp>();
+}
+
 Lam* ClosConvPrep::scope(Lam* lam) {
     if (eta_exp_) lam = eta_exp_->new2old(lam);
     return lam2fscope_[lam];
@@ -40,11 +45,11 @@ Lam* ClosConvPrep::scope(Lam* lam) {
 void ClosConvPrep::enter() {
     if (Pi::isa_returning(curr_mut())) {
         lam2fscope_[curr_mut()] = curr_mut();
-        world().DLOG("scope {} -> {}", curr_mut(), curr_mut());
+        DLOG("scope {} -> {}", curr_mut(), curr_mut());
         auto nest = Nest(curr_mut());
         for (auto mut : nest.muts()) {
             if (auto bb_lam = Lam::isa_mut_basicblock(mut)) {
-                world().DLOG("scope {} -> {}", bb_lam, curr_mut());
+                DLOG("scope {} -> {}", bb_lam, curr_mut());
                 lam2fscope_[bb_lam] = curr_mut();
             }
         }
@@ -74,11 +79,11 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
         };
 
         if (auto lam = isa_retvar(op); lam && from_outer_scope(lam)) {
-            w.DLOG("found return var from enclosing scope: {}", op);
+            DLOG("found return var from enclosing scope: {}", op);
             return refine(eta_wrap(op, attr::freeBB)->set("free_ret"));
         }
         if (auto bb_lam = Lam::isa_mut_basicblock(op); bb_lam && from_outer_scope(bb_lam)) {
-            w.DLOG("found BB from enclosing scope {}", op);
+            DLOG("found BB from enclosing scope {}", op);
             return refine(w.call(attr::freeBB, op));
         }
         if (isa_cnt(app, arg, i)) {
@@ -88,19 +93,19 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
                 return refine(w.call(attr::returning, contlam));
             } else {
                 auto wrapper = eta_wrap(op, attr::returning)->set("eta_cont");
-                w.DLOG("eta expanded return cont: {} -> {}", op, wrapper);
+                DLOG("eta expanded return cont: {} -> {}", op, wrapper);
                 return refine(wrapper);
             }
         }
 
         if (!isa_callee_br(app, arg, i)) {
             if (auto bb_lam = Lam::isa_mut_basicblock(op)) {
-                w.DLOG("found firstclass use of BB: {}", bb_lam);
+                DLOG("found firstclass use of BB: {}", bb_lam);
                 return refine(w.call(attr::fstclassBB, bb_lam));
             }
             // TODO: If EtaRed eta-reduces branches, we have to wrap them again!
             if (isa_retvar(op)) {
-                w.DLOG("found firstclass use of return var: {}", op);
+                DLOG("found firstclass use of return var: {}", op);
                 return refine(eta_wrap(op, attr::fstclassBB)->set("fstclass_ret"));
             }
         }
@@ -110,7 +115,6 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
 }
 
 const App* ClosConvPrep::rewrite_callee(const App* app) {
-    auto& w = world();
     if (Pi::isa_cn(app->callee_type())) {
         if (auto br = app->callee()->isa<Extract>()) {
             auto branches = br->tuple();
@@ -119,7 +123,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
                 for (size_t i = 0, e = branches->num_ops(); i != e; ++i) {
                     if (!branches->op(i)->isa_mut<Lam>()) {
                         auto wrapper = eta_wrap(branches->op(i), attr::bottom)->set("eta_br");
-                        w.DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
+                        DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
                         branches = branches->refine(i, wrapper);
                     }
                 }

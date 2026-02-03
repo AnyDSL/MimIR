@@ -11,7 +11,7 @@ public:
     DummyDecl()
         : Decl(Loc()) {}
 
-    std::ostream& stream(Tab&, std::ostream& os) const override { return os << "<dummy>"; }
+    std::ostream& stream(Tab&, std::ostream& os) const final { return os << "<dummy>"; }
 };
 
 class Scopes {
@@ -80,9 +80,12 @@ void Module::bind(AST& ast) const {
 }
 
 void Module::bind(Scopes& s) const {
-    for (const auto& import : implicit_imports()) import->bind(s);
-    for (const auto& import : imports()) import->bind(s);
-    for (const auto& decl : decls()) decl->bind(s);
+    for (const auto& import : implicit_imports())
+        import->bind(s);
+    for (const auto& import : imports())
+        import->bind(s);
+    for (const auto& decl : decls())
+        decl->bind(s);
 }
 
 void Import::bind(Scopes& s) const { module()->bind(s); }
@@ -105,7 +108,8 @@ void AliasPtrn::bind(Scopes& s, bool rebind, bool quiet) const {
 }
 
 void TuplePtrn::bind(Scopes& s, bool rebind, bool quiet) const {
-    for (const auto& ptrn : ptrns()) ptrn->bind(s, rebind, quiet);
+    for (const auto& ptrn : ptrns())
+        ptrn->bind(s, rebind, quiet);
 }
 
 /*
@@ -132,15 +136,40 @@ void LitExpr::bind(Scopes& s) const {
 
 void DeclExpr::bind(Scopes& s) const {
     if (is_where())
-        for (const auto& decl : decls() | std::ranges::views::reverse) decl->bind(s);
+        for (const auto& decl : decls() | std::ranges::views::reverse)
+            decl->bind(s);
     else
-        for (const auto& decl : decls()) decl->bind(s);
+        for (const auto& decl : decls())
+            decl->bind(s);
     expr()->bind(s);
 }
 
 void ArrowExpr::bind(Scopes& s) const {
     dom()->bind(s);
     codom()->bind(s);
+}
+
+void UnionExpr::bind(Scopes& s) const {
+    for (auto& type : types())
+        type->bind(s);
+}
+
+void InjExpr::bind(Scopes& s) const {
+    value()->bind(s);
+    type()->bind(s);
+}
+
+void MatchExpr::Arm::bind(Scopes& s) const {
+    s.push();
+    ptrn()->bind(s, false, false);
+    body()->bind(s);
+    s.pop();
+}
+
+void MatchExpr::bind(Scopes& s) const {
+    scrutinee()->bind(s);
+    for (const auto& arm : arms())
+        arm->bind(s);
 }
 
 void PiExpr::Dom::bind(Scopes& s, bool quiet) const {
@@ -182,18 +211,16 @@ void SigmaExpr::bind(Scopes& s) const {
 }
 
 void TupleExpr::bind(Scopes& s) const {
-    for (const auto& elem : elems()) elem->bind(s);
+    for (const auto& elem : elems())
+        elem->bind(s);
 }
 
-template<bool arr> void ArrOrPackExpr<arr>::bind(Scopes& s) const {
+void SeqExpr::bind(Scopes& s) const {
     s.push();
-    shape()->bind(s, false, false);
+    arity()->bind(s, false, false);
     body()->bind(s);
     s.pop();
 }
-
-template void ArrOrPackExpr<true>::bind(Scopes&) const;
-template void ArrOrPackExpr<false>::bind(Scopes&) const;
 
 void ExtractExpr::bind(Scopes& s) const {
     tuple()->bind(s);
@@ -225,17 +252,26 @@ void AxmDecl::Alias::bind(Scopes& s, const AxmDecl* axm) const {
 
 void AxmDecl::bind(Scopes& s) const {
     type()->bind(s);
+
     annex_ = s.ast().name2annex(dbg(), nullptr);
 
-    if (annex_->fresh)
+    if (annex_ && annex_->fresh) {
         annex_->normalizer = normalizer();
-    else if (annex_->normalizer.sym() != normalizer().sym()) {
-        auto l = normalizer().loc() ? normalizer().loc() : loc().anew_finis();
-        s.ast().error(l, "normalizer mismatch for axm '{}'", dbg());
-        if (auto norm = annex_->normalizer)
-            s.ast().note(norm.loc(), "previous normalizer '{}'", norm);
-        else
-            s.ast().note(l, "initially no normalizer specified");
+        annex_->pi         = type()->isa<PiExpr>() || type()->isa<ArrowExpr>();
+    } else {
+        auto pi = type()->isa<PiExpr>() || type()->isa<ArrowExpr>();
+        if (annex_ && pi ^ *annex_->pi)
+            s.ast().error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is",
+                          dbg().sym());
+
+        if (annex_ && annex_->normalizer.sym() != normalizer().sym()) {
+            auto l = normalizer().loc() ? normalizer().loc() : loc().anew_finis();
+            s.ast().error(l, "normalizer mismatch for axm '{}'", dbg());
+            if (auto norm = annex_->normalizer)
+                s.ast().note(norm.loc(), "previous normalizer '{}'", norm);
+            else
+                s.ast().note(l, "initially no normalizer specified");
+        }
     }
 
     if (num_subs() == 0) {
@@ -249,8 +285,19 @@ void AxmDecl::bind(Scopes& s) const {
                 }
             }
         }
-        for (const auto& aliases : subs())
-            for (const auto& alias : aliases) alias->bind(s, this);
+
+        if (annex_) {
+            offset_ = annex_->subs.size();
+            for (const auto& aliases : subs())
+                for (const auto& alias : aliases)
+                    alias->bind(s, this);
+
+            for (auto& sub : subs()) {
+                auto& aliases = annex_->subs.emplace_back(std::deque<Sym>());
+                for (const auto& alias : sub)
+                    aliases.emplace_back(alias->dbg().sym());
+            }
+        }
     }
 }
 
@@ -264,8 +311,10 @@ void LetDecl::bind(Scopes& s) const {
 }
 
 void RecDecl::bind(Scopes& s) const {
-    for (auto curr = this; curr; curr = curr->next()) curr->bind_decl(s);
-    for (auto curr = this; curr; curr = curr->next()) curr->bind_body(s);
+    for (auto curr = this; curr; curr = curr->next())
+        curr->bind_decl(s);
+    for (auto curr = this; curr; curr = curr->next())
+        curr->bind_body(s);
     annex_ = s.ast().name2annex(dbg(), &sub_);
 }
 
@@ -289,7 +338,8 @@ void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
 
 void LamDecl::bind_decl(Scopes& s) const {
     s.push();
-    for (size_t i = 0, e = num_doms(); i != e; ++i) dom(i)->bind(s);
+    for (size_t i = 0, e = num_doms(); i != e; ++i)
+        dom(i)->bind(s);
 
     if (auto filter = doms().back()->filter()) {
         if (auto pe = filter->isa<PrimaryExpr>()) {
@@ -319,7 +369,8 @@ void LamDecl::bind_decl(Scopes& s) const {
 
 void LamDecl::bind_body(Scopes& s) const {
     s.push();
-    for (const auto& dom : doms()) dom->bind(s, true);
+    for (const auto& dom : doms())
+        dom->bind(s, true);
     body()->bind(s);
     s.pop();
 }
@@ -330,6 +381,15 @@ void CDecl::bind(Scopes& s) const {
     s.pop(); // we don't allow codom to depent on dom
     if (codom()) codom()->bind(s);
     s.bind(dbg(), this);
+}
+
+void RuleDecl::bind(Scopes& s) const {
+    s.push();
+    var()->bind(s, true, false);
+    lhs()->bind(s);
+    rhs()->bind(s);
+    guard()->bind(s);
+    s.pop();
 }
 
 } // namespace mim::ast

@@ -5,10 +5,10 @@ lam Ptr(T: *): * = %mem.Ptr (T, 0);
 
 let _ = 23;
 
-fun foo(mem: %mem.M, x: I32)@(%core.icmp.e (x, 23I32)): [%mem.M, I32] =
+fun foo(mem: %mem.M 0, x: I32)@(%core.icmp.e (x, 23I32)): [%mem.M 0, I32] =
     return (mem, %core.wrap.add 0 (x, 1I32));
 
-fun extern main(mem: %mem.M, argc: I32, argv: Ptr (Ptr I8)): [%mem.M, I32] =
+fun extern main(mem: %mem.M 0, argc: I32, argv: Ptr (Ptr I8)): [%mem.M 0, I32] =
     ret (mem, x) = foo $ (mem, 23I32);
     ret (mem, y) = foo $ (mem, 23I32);
     return (mem, %core.wrap.add 0 (x, y));

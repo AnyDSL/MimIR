@@ -8,6 +8,7 @@
 #define MIM_VER_PATCH "@PROJECT_VERSION_PATCH@"
 
 #define MIM_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
+#define MIM_LIBDIR "@CMAKE_INSTALL_LIBDIR@"
 
 #ifdef _MSC_VER
 #define MIM_EXPORT __declspec(dllexport)

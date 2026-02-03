@@ -10,14 +10,12 @@
 
 using namespace std::string_literals;
 
-// Do not zonk here!
-// We want to see all const Def*s in the DOT graph.
-
 namespace mim {
 
 namespace {
 
-template<class T> std::string escape(const T& val) {
+template<class T>
+std::string escape(const T& val) {
     std::ostringstream oss;
     oss << val;
     auto str = oss.str();
@@ -63,16 +61,16 @@ public:
         if (def->free_vars().empty()) os_ << "rank=min,";
         tooltip(def) << "];\n";
 
-        if (!def->is_set()) return;
-
-        for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-            auto op = def->op(i);
-            recurse(op, max - 1);
-            tab_.print(os_, "_{} -> _{}[taillabel=\"{}\",", def->gid(), op->gid(), i);
-            if (op->isa<Lit>() || op->isa<Axm>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
-                print(os_, "fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n");
-            else
-                print(os_, "];\n");
+        if (def->is_set()) {
+            for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
+                auto op = def->op(i);
+                recurse(op, max - 1);
+                tab_.print(os_, "_{} -> _{}[taillabel=\"{}\",", def->gid(), op->gid(), i);
+                if (op->isa<Lit>() || op->isa<Axm>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
+                    print(os_, "fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n");
+                else
+                    print(os_, "];\n");
+            }
         }
 
         if (auto t = def->type(); t && types_) {
@@ -96,8 +94,9 @@ public:
 
     std::ostream& tooltip(const Def* def) {
         static constexpr auto NL = "&#13;&#10;";
-        auto loc                 = escape(def->loc());
-        auto type                = escape(def->type());
+
+        auto loc  = escape(def->loc());
+        auto type = escape(def->type());
         escape(loc);
         print(os_, "tooltip=\"");
         print(os_, "<b>expr:</b> {}{}", def, NL);
@@ -147,9 +146,11 @@ void World::dot(const char* file, bool annexes, bool types) const {
 void World::dot(std::ostream& os, bool anx, bool types) const {
     Dot dot(os, types);
     dot.prologue();
-    for (auto external : externals()) dot.recurse(external, uint32_t(-1));
+    for (auto external : externals().muts())
+        dot.recurse(external, uint32_t(-1));
     if (anx)
-        for (auto annex : annexes()) dot.recurse(annex, uint32_t(-1));
+        for (auto annex : annexes())
+            dot.recurse(annex, uint32_t(-1));
     dot.epilogue();
 }
 
@@ -186,12 +187,12 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
         s += "] ";
     }
 
-    for (auto dep : depends())
-        tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", this->name(), dep->name());
+    for (auto sibl : sibl_deps())
+        tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", name(), sibl->name());
 
     auto rec = is_mutually_recursive() ? "rec*" : (is_directly_recursive() ? "rec" : "");
     tab.println(os, "\"{}\" [label=\"{} {} {}\",tooltip=\"{}\"]", name(), rec, name(), loop_depth(), s);
-    for (auto child : child_nodes()) {
+    for (auto child : children().nodes()) {
         tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);
     }

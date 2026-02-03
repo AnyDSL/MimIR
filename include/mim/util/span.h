@@ -25,7 +25,8 @@ concept Vectorlike = requires(Vec vec) {
 ///     // ...
 /// }
 /// ```
-template<class T, size_t N = std::dynamic_extent> class Span : public std::span<T, N> {
+template<class T, size_t N = std::dynamic_extent>
+class Span : public std::span<T, N> {
 public:
     using Base              = std::span<T, N>;
     constexpr static auto D = std::dynamic_extent;
@@ -37,10 +38,12 @@ public:
         : Base(std::begin(init), std::ranges::distance(init)) {}
     constexpr Span(std::span<T, N> span) noexcept
         : Base(span) {}
-    template<Vectorlike Vec> requires(std::is_same_v<typename Vec::value_type, T>)
+    template<Vectorlike Vec>
+    requires(std::is_same_v<typename Vec::value_type, T>)
     explicit(N != D) constexpr Span(Vec& vec) noexcept(noexcept(vec.data()) && noexcept(vec.size()))
         : Base(vec.data(), vec.size()) {}
-    template<Vectorlike Vec> requires(std::is_same_v<std::add_const_t<typename Vec::value_type>, std::add_const_t<T>>)
+    template<Vectorlike Vec>
+    requires(std::is_same_v<std::add_const_t<typename Vec::value_type>, std::add_const_t<T>>)
     explicit(N != D) constexpr Span(const Vec& vec) noexcept(noexcept(vec.data()) && noexcept(vec.size()))
         : Base(const_cast<T*>(vec.data()), vec.size()) {}
     constexpr explicit Span(typename Base::pointer p) noexcept
@@ -63,7 +66,8 @@ public:
     }
 
     /// Get first `n` elements while keeping track of size statically - useful for structured binding!
-    template<size_t n> [[nodiscard]] constexpr Span<T, n> span() const noexcept {
+    template<size_t n>
+    [[nodiscard]] constexpr Span<T, n> span() const noexcept {
         return Base::template subspan<0, n>();
     }
     ///@}
@@ -90,20 +94,24 @@ public:
 
 static_assert(std::ranges::contiguous_range<Span<int>>);
 
-template<class T, size_t N = std::dynamic_extent> using View = Span<const T, N>;
+template<class T, size_t N = std::dynamic_extent>
+using View = Span<const T, N>;
 
 /// @name Deduction Guides
 ///@{
-template<class I, class E> Span(I, E) -> Span<std::remove_reference_t<std::iter_reference_t<I>>>;
-template<class T, size_t N> Span(T (&)[N]) -> Span<T, N>;
-template<class T, size_t N> Span(std::array<T, N>&) -> Span<T, N>;
+// clang-format off
+template<class I, class E>  Span(I, E)                    -> Span<std::remove_reference_t<std::iter_reference_t<I>>>;
+template<class T, size_t N> Span(T (&)[N])                -> Span<      T, N>;
+template<class T, size_t N> Span(      std::array<T, N>&) -> Span<      T, N>;
 template<class T, size_t N> Span(const std::array<T, N>&) -> Span<const T, N>;
-template<class R> Span(R&&) -> Span<std::remove_reference_t<std::ranges::range_reference_t<R>>>;
-template<Vectorlike Vec> Span(Vec&) -> Span<typename Vec::value_type, std::dynamic_extent>;
-template<Vectorlike Vec> Span(const Vec&) -> Span<const typename Vec::value_type, std::dynamic_extent>;
+template<class R>           Span(R&&)                     -> Span<std::remove_reference_t<std::ranges::range_reference_t<R>>>;
+template<Vectorlike Vec>    Span(      Vec&)              -> Span<      typename Vec::value_type, std::dynamic_extent>;
+template<Vectorlike Vec>    Span(const Vec&)              -> Span<const typename Vec::value_type, std::dynamic_extent>;
+// clang-format on
 ///@}
 
-template<size_t I, class T, size_t N> requires(N != std::dynamic_extent)
+template<size_t I, class T, size_t N>
+requires(N != std::dynamic_extent)
 constexpr decltype(auto) get(Span<T, N> span) noexcept {
     static_assert(I < N, "index I out of bound N");
     return span[I];
@@ -114,10 +122,12 @@ constexpr decltype(auto) get(Span<T, N> span) noexcept {
 namespace std {
 /// @name Structured Binding Support for Span
 ///@{
-template<class T, size_t N> requires(N != std::dynamic_extent)
+template<class T, size_t N>
+requires(N != std::dynamic_extent)
 struct tuple_size<mim::Span<T, N>> : std::integral_constant<size_t, N> {};
 
-template<size_t I, class T, size_t N> requires(N != std::dynamic_extent)
+template<size_t I, class T, size_t N>
+requires(N != std::dynamic_extent)
 struct tuple_element<I, mim::Span<T, N>> {
     using type = typename mim::Span<T, N>::reference;
 };

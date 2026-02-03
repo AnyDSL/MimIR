@@ -4,7 +4,9 @@
 
 #include "mim/plug/mem/mem.h"
 
-namespace mim::plug::mem {
+// TODO make parametric in address space
+
+namespace mim::plug::mem::phase {
 
 namespace {
 
@@ -20,7 +22,8 @@ std::pair<const App*, Vector<Lam*>> isa_apped_mut_lam_in_tuple(const Def* def) {
                 lams.push_back(mut);
             } else if (auto extract = elem->isa<Extract>()) {
                 if (auto tuple = extract->tuple()->isa<Tuple>())
-                    for (auto&& op : tuple->ops()) wl.push_back(op);
+                    for (auto&& op : tuple->ops())
+                        wl.push_back(op);
                 else
                     return {nullptr, {}};
             } else {
@@ -33,7 +36,8 @@ std::pair<const App*, Vector<Lam*>> isa_apped_mut_lam_in_tuple(const Def* def) {
 }
 
 // @pre isa_apped_mut_lam_in_tuple(def) valid
-template<class F, class H> const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewrite_idx) {
+template<class F, class H>
+const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewrite_idx) {
     auto& w = def->world();
     if (auto mut = def->isa_mut<Lam>()) return std::forward<F>(rewrite)(mut);
 
@@ -72,7 +76,7 @@ const Def* AddMem::mem_for_lam(Lam* lam) const {
         lam = it->second->as_mut<Lam>();
     }
     if (auto it = val2mem_.find(lam); it != val2mem_.end()) {
-        lam->world().DLOG("found mem for {} in val2mem_ : {}", lam, it->second);
+        DLOG("found mem for {} in val2mem_ : {}", lam, it->second);
         // We found a (overwritten) memory in the lambda.
         return it->second;
     }
@@ -98,7 +102,7 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
     auto new_dom = DefVec(dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); });
     if (pi->num_doms() == 0 || !Axm::isa<mem::M>(pi->dom(0_s))) {
         new_dom
-            = DefVec(dom->num_projs() + 1, [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; });
+            = DefVec(dom->num_projs() + 1, [&](size_t i) { return i == 0 ? world().call<mem::M>(0) : new_dom[i - 1]; });
     }
 
     return mem_rewritten_[pi] = world().pi(new_dom, pi->codom());
@@ -115,17 +119,17 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     if (auto it = mem_rewritten_.find(def); it != mem_rewritten_.end()) {
         auto tmp = it->second;
         if (Axm::isa<mem::M>(def->type())) {
-            world().DLOG("already known mem {} in {}", def, curr_lam);
+            DLOG("already known mem {} in {}", def, curr_lam);
             auto new_mem = mem_for_lam(curr_lam);
-            world().DLOG("new mem {} in {}", new_mem, curr_lam);
+            DLOG("new mem {} in {}", new_mem, curr_lam);
             return new_mem;
         }
         if (curr_lam != def) {
-            // world().DLOG("rewritten def: {} : {} in {}", tmp, tmp->type(), curr_lam);
+            // DLOG("rewritten def: {} : {} in {}", tmp, tmp->type(), curr_lam);
             return tmp;
         }
     }
-    if (Axm::isa<mem::M>(def->type())) world().DLOG("new mem {} in {}", def, curr_lam);
+    if (Axm::isa<mem::M>(def->type())) DLOG("new mem {} in {}", def, curr_lam);
 
     auto rewrite_lam = [&](Lam* lam) -> const Def* {
         auto pi      = lam->type()->as<Pi>();
@@ -139,7 +143,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         }
 
         if (!lam->is_set()) return lam;
-        world().DLOG("rewrite lam {}", lam);
+        DLOG("rewrite lam {}", lam);
 
         bool is_bound = sched_.nest().contains(lam) || lam == curr_lam;
 
@@ -147,7 +151,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             if (auto new_pi = rewrite_pi(pi); new_pi != pi) new_lam = lam->stub(new_pi);
 
         if (!is_bound) {
-            world().DLOG("free lam {}", lam);
+            DLOG("free lam {}", lam);
             mem_rewritten_[lam] = new_lam;
             return new_lam;
         }
@@ -189,7 +193,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             new_args[i]
                 = i == 0 ? add_mem_to_lams(place, mem_for_lam(place)) : add_mem_to_lams(place, arg->proj(i - offset));
         }
-        return arg->world().tuple(new_args);
+        return world().tuple(new_args);
     };
 
     // call-site of a mutable lambda
@@ -224,11 +228,11 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
                                                                           world().tuple(new_args)->set(arg->dbg())})
                                                    ->set(app->dbg());
         if (Axm::isa<mem::M>(rewritten->type())) {
-            world().DLOG("memory from axm {} : {}", rewritten, rewritten->type());
+            DLOG("memory from axm {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;
         }
         if (rewritten->num_projs() > 0 && Axm::isa<mem::M>(rewritten->proj(0)->type())) {
-            world().DLOG("memory from axm 2 {} : {}", rewritten, rewritten->type());
+            DLOG("memory from axm 2 {} : {}", rewritten, rewritten->type());
             mem_rewritten_[rewritten->proj(0)] = rewritten->proj(0);
             val2mem_[place]                    = rewritten->proj(0);
         }
@@ -243,11 +247,11 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             new_arg = rewrite_arg(app->arg());
         auto rewritten = mem_rewritten_[def] = app->rebuild(app->type(), {new_callee, new_arg})->set(app->dbg());
         if (Axm::isa<mem::M>(rewritten->type())) {
-            world().DLOG("memory from other {} : {}", rewritten, rewritten->type());
+            DLOG("memory from other {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;
         }
         if (rewritten->num_projs() > 0 && Axm::isa<mem::M>(rewritten->proj(0)->type())) {
-            world().DLOG("memory from other 2 {} : {}", rewritten, rewritten->type());
+            DLOG("memory from other 2 {} : {}", rewritten, rewritten->type());
             mem_rewritten_[rewritten->proj(0)] = rewritten->proj(0);
             val2mem_[place]                    = rewritten->proj(0);
         }
@@ -265,15 +269,15 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
 
     auto tmp = mem_rewritten_[def] = def->rebuild(rewrite_type(def->type()), new_ops)->set(def->dbg());
     // if (Axm::isa<mem::M>(tmp->type())) {
-    //     world().DLOG("memory from other op 1 {} : {}", tmp, tmp->type());
+    //     DLOG("memory from other op 1 {} : {}", tmp, tmp->type());
     //     val2mem_[place] = tmp;
     // }
     // if (tmp->num_projs() > 0 && test<mem::M>(tmp->proj(0)->type())) {
-    //     world().DLOG("memory from other op 2 {} : {}", tmp, tmp->type());
+    //     DLOG("memory from other op 2 {} : {}", tmp, tmp->type());
     //     mem_rewritten_[tmp->proj(0)] = tmp->proj(0);
     //     val2mem_[place]              = tmp->proj(0);
     // }
     return tmp;
 }
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::phase

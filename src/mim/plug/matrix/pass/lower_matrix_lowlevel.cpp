@@ -6,6 +6,8 @@
 #include <mim/def.h>
 #include <mim/lam.h>
 
+#include "mim/rewrite.h"
+
 #include "mim/plug/affine/affine.h"
 #include "mim/plug/core/core.h"
 #include "mim/plug/direct/direct.h"
@@ -21,7 +23,8 @@ const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
     world.DLOG("op_lea_tuple arr {} : {}", arr, arr->type());
     auto n       = tuple->num_projs();
     auto element = arr;
-    for (size_t i = 0; i < n; ++i) element = mem::op_lea(element, tuple->proj(n, i));
+    for (size_t i = 0; i < n; ++i)
+        element = mem::op_lea(element, tuple->proj(n, i));
     return element;
 }
 
@@ -51,76 +54,79 @@ const Def* arr_ty_of_matrix_ty(const Def* S, const Def* T) {
 
 } // namespace
 
-const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
-    assert(!Axm::isa<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
-    assert(!Axm::isa<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
-    assert(!Axm::isa<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
-    assert(!Axm::isa<matrix::transpose>(def) && "high level operations should have been lowered to for loops by now");
-    assert(!Axm::isa<matrix::sum>(def) && "high level operations should have been lowered to for loops by now");
+const Def* LowerMatrixLowLevel::rewrite_imm_App(const App* app) {
+    if (is_bootstrapping()) return Rewriter::rewrite_imm_App(app);
+
+    assert(!Axm::isa<matrix::map_reduce>(app) && "map_reduce should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::shape>(app) && "high level operations should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::prod>(app) && "high level operations should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::transpose>(app) && "high level operations should have been lowered to for loops by now");
+    assert(!Axm::isa<matrix::sum>(app) && "high level operations should have been lowered to for loops by now");
+    auto& w = new_world();
 
     // TODO: generalize arg rewrite
-    if (auto mat_ax = Axm::isa<matrix::Mat>(def)) {
+    if (auto mat_ax = Axm::isa<matrix::Mat>(app)) {
         auto [_, S, T] = mat_ax->args<3>();
         S              = rewrite(S);
         T              = rewrite(T);
         auto arr_ty    = arr_ty_of_matrix_ty(S, T);
 
-        auto addr_space = world().lit_nat_0();
-        auto ptr_ty     = world().call<mem::Ptr>(Defs{arr_ty, addr_space});
+        auto addr_space = w.lit_nat_0();
+        auto ptr_ty     = w.call<mem::Ptr>(Defs{arr_ty, addr_space});
 
         return ptr_ty;
-    } else if (auto init_ax = Axm::isa<matrix::init>(def)) {
-        world().DLOG("init {} : {}", def, def->type());
+    } else if (auto init_ax = Axm::isa<matrix::init>(app)) {
+        DLOG("init {} : {}", app, app->type());
         auto [_, S, T, mem] = init_ax->args<4>();
-        world().DLOG("  S T mem {} {} {}", S, T, mem);
+        DLOG("  S T mem {} {} {}", S, T, mem);
         S   = rewrite(S);
         T   = rewrite(T);
         mem = rewrite(mem);
-        world().DLOG("  S T mem {} {} {}", S, T, mem);
+        DLOG("  S T mem {} {} {}", S, T, mem);
         auto arr_ty          = arr_ty_of_matrix_ty(S, T);
         auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
-        auto res             = world().tuple({mem2, ptr_mat});
-        world().DLOG("  res {} : {}", res, res->type());
+        auto res             = w.tuple({mem2, ptr_mat});
+        DLOG("  res {} : {}", res, res->type());
         return res;
-    } else if (auto read_ax = Axm::isa<matrix::read>(def)) {
+    } else if (auto read_ax = Axm::isa<matrix::read>(app)) {
         auto [mem, mat, idx] = read_ax->args<3>();
-        world().DLOG("read_ax: {}", read_ax);
-        world().DLOG("  mem: {} : {}", mem, mem->type());
-        world().DLOG("  mat: {} : {}", mat, mat->type());
-        world().DLOG("  idx: {} : {}", idx, idx->type());
+        DLOG("read_ax: {}", read_ax);
+        DLOG("  mem: {} : {}", mem, mem->type());
+        DLOG("  mat: {} : {}", mat, mat->type());
+        DLOG("  idx: {} : {}", idx, idx->type());
         mem = rewrite(mem);
         mat = rewrite(mat);
         idx = rewrite(idx);
-        world().DLOG("rewritten read");
-        world().DLOG("  mem: {} : {}", mem, mem->type());
-        world().DLOG("  mat: {} : {}", mat, mat->type());
-        world().DLOG("  idx: {} : {}", idx, idx->type());
+        DLOG("rewritten read");
+        DLOG("  mem: {} : {}", mem, mem->type());
+        DLOG("  mat: {} : {}", mat, mat->type());
+        DLOG("  idx: {} : {}", idx, idx->type());
         // TODO: check if mat is already converted
         auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
-        auto [mem2, val] = world().call<mem::load>(Defs{mem, element_ptr})->projs<2>();
-        return world().tuple({mem2, val});
-    } else if (auto insert_ax = Axm::isa<matrix::insert>(def)) {
+        auto [mem2, val] = w.call<mem::load>(Defs{mem, element_ptr})->projs<2>();
+        return w.tuple({mem2, val});
+    } else if (auto insert_ax = Axm::isa<matrix::insert>(app)) {
         auto [mem, mat, idx, val] = insert_ax->args<4>();
-        world().DLOG("insert_ax: {}", insert_ax);
-        world().DLOG("  mem: {} : {}", mem, mem->type());
-        world().DLOG("  mat: {} : {}", mat, mat->type());
-        world().DLOG("  idx: {} : {}", idx, idx->type());
-        world().DLOG("  val: {} : {}", val, val->type());
+        DLOG("insert_ax: {}", insert_ax);
+        DLOG("  mem: {} : {}", mem, mem->type());
+        DLOG("  mat: {} : {}", mat, mat->type());
+        DLOG("  idx: {} : {}", idx, idx->type());
+        DLOG("  val: {} : {}", val, val->type());
         mem = rewrite(mem);
         mat = rewrite(mat);
         idx = rewrite(idx);
         val = rewrite(val);
-        world().DLOG("rewritten insert");
-        world().DLOG("  mem: {} : {}", mem, mem->type());
-        world().DLOG("  mat: {} : {}", mat, mat->type());
-        world().DLOG("  idx: {} : {}", idx, idx->type());
-        world().DLOG("  val: {} : {}", val, val->type());
+        DLOG("rewritten insert");
+        DLOG("  mem: {} : {}", mem, mem->type());
+        DLOG("  mat: {} : {}", mat, mat->type());
+        DLOG("  idx: {} : {}", idx, idx->type());
+        DLOG("  val: {} : {}", val, val->type());
         auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
-        auto mem2        = world().call<mem::store>(Defs{mem, element_ptr, val});
-        return world().tuple({mem2, ptr_mat});
-    } else if (auto const_ax = Axm::isa<matrix::constMat>(def)) {
+        auto mem2        = w.call<mem::store>(Defs{mem, element_ptr, val});
+        return w.tuple({mem2, ptr_mat});
+    } else if (auto const_ax = Axm::isa<matrix::constMat>(app)) {
         auto [mem, val]      = const_ax->args<2>();
         mem                  = rewrite(mem);
         val                  = rewrite(val);
@@ -134,15 +140,12 @@ const Def* LowerMatrixLowLevel::rewrite_imm(const Def* def) {
         auto n       = n_def->as<Lit>()->get<u64>();
         auto initial = op_pack_tuple(n, S, val);
 
-        auto mem3 = world().call<mem::store>(Defs{mem2, ptr_mat, initial});
+        auto mem3 = w.call<mem::store>(Defs{mem2, ptr_mat, initial});
 
-        return world().tuple({mem3, ptr_mat});
+        return w.tuple({mem3, ptr_mat});
     }
 
-    // ignore unapplied axms to avoid spurious type replacements
-    if (def->isa<Axm>()) return def;
-
-    return Rewriter::rewrite_imm(def); // continue recursive rewriting with everything else
+    return Rewriter::rewrite_imm_App(app); // continue recursive rewriting with everything else
 }
 
 } // namespace mim::plug::matrix

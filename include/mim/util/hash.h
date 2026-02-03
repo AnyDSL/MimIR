@@ -43,19 +43,23 @@ inline constexpr size_t hash(size_t h) noexcept {
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash).
 ///@{
 /// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV-1 hash.
-template<size_t> struct FNV1 {};
+template<size_t>
+struct FNV1 {};
 
-template<> struct FNV1<4> {
+template<>
+struct FNV1<4> {
     static const uint32_t offset = UINT32_C(2166136261);
     static const uint32_t prime  = UINT32_C(16777619);
 };
 
-template<> struct FNV1<8> {
+template<>
+struct FNV1<8> {
     static const uint64_t offset = UINT64_C(14695981039346656037);
     static const uint64_t prime  = UINT64_C(1099511628211);
 };
 
-template<class T> constexpr size_t hash_combine(size_t seed, T v) noexcept {
+template<class T>
+constexpr size_t hash_combine(size_t seed, T v) noexcept {
     static_assert(std::is_signed<T>::value || std::is_unsigned<T>::value, "please provide your own hash function");
 
     size_t val = v;
@@ -70,7 +74,10 @@ template<class T> constexpr size_t hash_combine(size_t seed, T v) noexcept {
 
 inline consteval size_t hash_begin() noexcept { return FNV1<sizeof(size_t)>::offset; }
 
-template<class T> constexpr size_t hash_begin(T val) noexcept { return hash_combine(hash_begin(), val); }
+template<class T>
+constexpr size_t hash_begin(T val) noexcept {
+    return hash_combine(hash_begin(), val);
+}
 ///@}
 
 } // namespace mim

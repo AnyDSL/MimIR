@@ -1,0 +1,82 @@
+/// # The vec Plugin {#vec}
+///
+/// @see mim::plug::vec
+///
+/// Utilitly functions for arrays to behave them like vectors in other languages.
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+plugin core;
+plugin refly;
+///
+/// ## Iterators
+///
+/// ### %%vec.fold
+///
+/// [Fold aka Reduction](https://en.wikipedia.org/wiki/Fold_(higher-order_function)) of the vector with `f`:
+/// * `%%vec.fold.l f (init, (e1, ..., en))` is `f (... (f (f (init, e1), e2)) ..., en)`.
+/// * `%%vec.fold.r f ((e1, ..., en), init)` is `f (e1, f (e2, ... (f (en, init) ...)))`.
+///
+/// | `%%vec.fold.l`                                                                                 | `%%vec.fold.r`                                                                                   |
+/// |------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+/// | ![Left Fold](https://upload.wikimedia.org/wikipedia/commons/5/5a/Left-fold-transformation.png) | ![Right Fold](https://upload.wikimedia.org/wikipedia/commons/3/3e/Right-fold-transformation.png) |
+///
+axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;
+axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;
+///
+/// ### %%vec.zip
+///
+/// [Combines](https://en.wikipedia.org/wiki/Zipping_(computer_science)) multiple vectors element-wise using the provided function.
+/// Given `ni` vectors of length `n`, and a function `f` that takes one element from each vector,
+/// `%%vec.zip` produces a new vector of length `n` where each element is the result of applying `f`.
+///
+axm %vec.zip: {ni n: Nat} → {Is: «ni; *», R: *} → [f: «i: ni; Is#i» → R] → [«i: ni; «n; Is#i»»] → «n; R», normalize_zip;
+///
+/// ## Scanning
+///
+/// ### %%vec.scan
+///
+/// Does the given predicate hold for all elements/at least one element?
+///
+axm %vec.scan(for_all, exists): {E: *} → {n: Nat} → [p: E → Bool] → «n; E» → Bool, normalize_scan;
+///
+/// ### %%vec.first / %%vec.last
+///
+/// Is the given element in the vector, and what is the index of its first/last occurence?
+///
+lam f_first    {E: *} {n: Nat} (eq: [E, E] → Bool) (x: E) ((b: Bool, i: Idx n), y: E): [Bool, Idx n] = (((ff, %core.wrap.add 0 (i, %core.idx n 0 1)), (tt, i))#(eq (x, y)), (b, i))#b;
+lam f_last     {E: *} {n: Nat} (eq: [E, E] → Bool) (x: E) (y: E, [b: Bool, i: Idx n]): [Bool, Idx n] = f_first eq x ((b, i), y);
+lam %vec.first {E: *} {n: Nat} (eq: [E, E] → Bool) (v: «n; E», x: E):                  [Bool, Idx n] = %vec.fold.l (f_first eq x) ((ff, %core.idx n 0 0), v);
+lam %vec.last  {E: *} {n: Nat} (eq: [E, E] → Bool) (v: «n; E», x: E):                  [Bool, Idx n] = %vec.fold.r (f_last eq x) (v, (ff, %core.idx n 0 0));
+///
+/// ### %%vec.len
+///
+/// Get length of vector.
+///
+lam %vec.len {n: Nat} {T: *} [«n; T»]: Nat = n;
+///
+/// ### %%vec.is_unique
+///
+/// Checks whether all elements in the given vector are distinct from each other (using structural equivalence).
+///
+axm %vec.is_unique: {T: *} → {n: Nat} → «n; T» → Bool, normalize_is_unique;
+///
+/// ## Modifiers
+///
+/// Concatenation of an `n`-vector and an `m`-vector to an `n + m`-vector.
+///
+axm %vec.cat: {n m: Nat}
+            → {T: *}
+            → [«n; T», «m; T»]
+            → «%core.nat.add (n, m); T», normalize_cat;
+///
+/// ### %%vec.diff
+///
+/// Removes elements from vector.
+///
+axm %vec.diff: {T: *}
+             → {n m: Nat}
+             → [«n; T», is: «m; Idx n»]
+             → «%refly.check (%vec.is_unique is, %core.nat.sub (n, m), "given indices are not distinct"); T», normalize_diff;

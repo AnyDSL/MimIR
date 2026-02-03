@@ -1,8 +1,7 @@
 #include "mim/plug/core/core.h"
 
 #include <mim/config.h>
-
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 #include "mim/plug/core/be/ll.h"
 
@@ -10,13 +9,13 @@ using namespace mim;
 using namespace mim::plug;
 
 extern "C" MIM_EXPORT Plugin mim_get_plugin() {
-    return {"core", [](Normalizers& normalizers) { core::register_normalizers(normalizers); }, nullptr,
-            [](Backends& backends) { backends["ll"] = &ll::emit; }};
+    return {"core", core::register_normalizers, nullptr, [](Backends& backends) { backends["ll"] = &ll::emit; }};
 }
 
 namespace mim::plug::core {
 
-template<bool up> const Sigma* convert(const TBound<up>* b) {
+template<bool up>
+const Sigma* convert(const TBound<up>* b) {
     auto& w = b->world();
 
     if constexpr (up) {

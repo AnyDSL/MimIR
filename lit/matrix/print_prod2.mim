@@ -10,18 +10,18 @@ plugin matrix;
 let MT1 = (2, (2,4), %math.F64);
 let MT2 = (2, (4,3), %math.F64);
 
-ccon print_int_matrix   [mem: %mem.M, k l: Nat, m: %matrix.Mat (2, (⊤:Nat, ⊤:Nat),      I32), Cn %mem.M];
-ccon print_double_matrix[mem: %mem.M, k l: Nat, m: %matrix.Mat (2, (⊤:Nat, ⊤:Nat), %math.F64), Cn %mem.M];
+ccon print_int_matrix   [mem: %mem.M 0, k l: Nat, m: %matrix.Mat (2, (⊤:Nat, ⊤:Nat),      I32), Cn %mem.M 0];
+ccon print_double_matrix[mem: %mem.M 0, k l: Nat, m: %matrix.Mat (2, (⊤:Nat, ⊤:Nat), %math.F64), Cn %mem.M 0];
 
-con print_int_matrix_wrap [mem: %mem.M, k: Nat, l: Nat, m: %matrix.Mat (2, (k,l), I32), return: Cn %mem.M] =
+con print_int_matrix_wrap [mem: %mem.M 0, k: Nat, l: Nat, m: %matrix.Mat (2, (k,l), I32), return: Cn %mem.M 0] =
     let m2 = %core.bitcast (%matrix.Mat (2,(⊤:Nat,⊤:Nat),I32)) m;
     print_int_matrix (mem, k, l, m2, return);
 
-con print_double_matrix_wrap [mem: %mem.M, k: Nat, l: Nat, m: %matrix.Mat (2, (k,l), %math.F64), return: Cn %mem.M] =
+con print_double_matrix_wrap [mem: %mem.M 0, k: Nat, l: Nat, m: %matrix.Mat (2, (k,l), %math.F64), return: Cn %mem.M 0] =
     let m2 = %core.bitcast (%matrix.Mat (2,(⊤:Nat,⊤:Nat), %math.F64)) m;
     print_double_matrix (mem, k, l, m2, return);
 
-con extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0), return: Cn [%mem.M, I32]] =
+con extern main[mem: %mem.M 0, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0), return: Cn [%mem.M 0, I32]] =
     let c = 3.0:%math.F64;
     let d = 5.0:%math.F64;
 
@@ -32,7 +32,7 @@ con extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0), re
     let (mem6, mP  ) = %matrix.prod (2, 4, 3, %math.f64) (mem5, m1_2, m2_2);
     print_double_matrix_wrap (mem6, 2, 3, mP, return_cont)
     where
-        con return_cont [mem: %mem.M] = return (mem, 0I32);
+        con return_cont [mem: %mem.M 0] = return (mem, 0I32);
     end
 
 // CHECK: 65.00, 65.00, 68.00,

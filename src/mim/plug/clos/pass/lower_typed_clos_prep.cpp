@@ -35,7 +35,8 @@ void split(DefSet& out, const Def* def, bool as_callee) {
     } else if (auto pack = def->isa<Pack>()) {
         split(out, pack->body(), as_callee);
     } else if (auto tuple = def->isa<Tuple>()) {
-        for (auto op : tuple->ops()) split(out, op, as_callee);
+        for (auto op : tuple->ops())
+            split(out, op, as_callee);
     } else if (as_callee) {
         out.insert(def);
     }
@@ -57,7 +58,7 @@ undo_t LowerTypedClosPrep::set_esc(const Def* def) {
             undo = std::min(undo, undo_visit(lam));
         else if (auto [var, lam] = ca_isa_var<Lam>(d); var && lam)
             undo = std::min(undo, undo_visit(lam));
-        world().DLOG("set esc: {}", d);
+        DLOG("set esc: {}", d);
         esc_.emplace(d);
     }
     return undo;
@@ -75,15 +76,14 @@ const Def* LowerTypedClosPrep::rewrite(const Def* def) {
 }
 
 undo_t LowerTypedClosPrep::analyze(const Def* def) {
-    auto& w = world();
     if (auto c = isa_clos_lit(def, false)) {
-        w.DLOG("closure ({}, {})", c.env(), c.fnc());
+        DLOG("closure ({}, {})", c.env(), c.fnc());
         if (!c.fnc_as_lam() || is_esc(c.fnc_as_lam()) || is_esc(c.env_var())) return set_esc(c.env());
     } else if (auto store = Axm::isa<mem::store>(def)) {
-        w.DLOG("store {}", store->arg(2));
+        DLOG("store {}", store->arg(2));
         return set_esc(store->arg(2));
     } else if (auto app = def->isa<App>(); app && Pi::isa_cn(app->callee_type())) {
-        w.DLOG("app {}", def);
+        DLOG("app {}", def);
         auto undo    = No_Undo;
         auto callees = split(app->callee(), true);
         for (auto i = 0_u64; i < app->num_args(); i++) {

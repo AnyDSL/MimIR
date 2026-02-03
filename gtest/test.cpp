@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 
 #include <mim/driver.h>
+#include <mim/rewrite.h>
 
 #include <mim/ast/parser.h>
 
@@ -19,11 +20,11 @@ TEST(Zip, fold) {
     auto ast    = ast::AST(w);
     auto parser = ast::Parser(ast);
 
-    std::istringstream iss("plugin core;"
+    std::istringstream iss("plugin tuple;"
                            "let a = ((0I32, 1I32,  2I32), ( 3I32,  4I32,  5I32));"
                            "let b = ((6I32, 7I32,  8I32), ( 9I32, 10I32, 11I32));"
                            "let c = ((6I32, 8I32, 10I32), (12I32, 14I32, 16I32));"
-                           "let r = %core.zip (2, (2, 3)) (2, (I32, I32), 1, I32, %core.wrap.add 0) (a, b);");
+                           "let r = %tuple.zip (2, (2, 3)) (2, (I32, I32), 1, I32, %core.wrap.add 0) (a, b);");
     parser.import(iss);
     // auto c = parser.scopes().find({Loc(), driver.sym("c")});
     // auto r = parser.scopes().find({Loc(), driver.sym("r")});
@@ -427,5 +428,59 @@ TEST(ADT, Span) {
         check(d_0_6, 0, 6);
         check(d_0_2, 0, 2);
         check(d_3_7, 3, 7);
+    }
+}
+
+TEST(Rewrite, Hole) {
+    Driver driver;
+    World& w = driver.world();
+    auto nat = w.type_nat();
+    auto n23 = w.lit_nat(23);
+
+    auto mk_holes = [&w, nat]() {
+        auto hole1 = w.mut_hole(nat)->set("a");
+        auto hole2 = w.mut_hole(nat)->set("b");
+        auto hole3 = w.mut_hole(nat)->set("c");
+        return std::tuple(hole1, hole2, hole3);
+    };
+
+    {
+        auto [hole1, hole2, hole3] = mk_holes();
+        hole1->set(hole2->set(hole3->set(n23)));
+        auto rw  = Rewriter(w);
+        auto res = rw.rewrite(hole1);
+        ASSERT_EQ(res, n23);
+        ASSERT_EQ(hole1->op(), n23);
+        ASSERT_EQ(hole2->op(), n23);
+        ASSERT_EQ(hole3->op(), n23);
+    }
+
+    {
+        auto [hole1, hole2, hole3] = mk_holes();
+        hole1->set(hole2->set(hole3));
+        auto rw  = Rewriter(w);
+        auto res = rw.rewrite(hole1)->isa<Hole>();
+        ASSERT_EQ(hole1->op(), hole3);
+        ASSERT_EQ(hole2->op(), hole3);
+        ASSERT_TRUE(res);
+    }
+
+    {
+        auto [hole1, hole2, hole3] = mk_holes();
+        hole1->set(hole2->set(hole3->set(n23)));
+        auto res = hole1->zonk();
+        ASSERT_EQ(res, n23);
+        ASSERT_EQ(hole1->op(), n23);
+        ASSERT_EQ(hole2->op(), n23);
+        ASSERT_EQ(hole3->op(), n23);
+    }
+
+    {
+        auto [hole1, hole2, hole3] = mk_holes();
+        hole1->set(hole2->set(hole3));
+        auto res = hole1->zonk();
+        ASSERT_EQ(hole1->op(), hole3);
+        ASSERT_EQ(hole2->op(), hole3);
+        ASSERT_EQ(hole3, res);
     }
 }

@@ -1,8 +1,11 @@
 #include <rang.hpp>
 
-#include "mim/world.h"
+#include <mim/tuple.h>
+#include <mim/world.h>
 
 #include "mim/plug/refly/refly.h"
+
+using namespace std::string_literals;
 
 namespace mim::plug::refly {
 
@@ -36,7 +39,8 @@ void debug_print(const Def* lvl, const Def* def) {
 
 } // namespace
 
-template<dbg id> const Def* normalize_dbg(const Def*, const Def*, const Def* arg) {
+template<dbg id>
+const Def* normalize_dbg(const Def*, const Def*, const Def* arg) {
     auto [lvl, x] = arg->projs<2>();
     debug_print(lvl, x);
     return id == dbg::perm ? nullptr : x;
@@ -56,7 +60,37 @@ const Def* normalize_refine(const Def*, const Def*, const Def* arg) {
     return {};
 }
 
+const Def* normalize_type(const Def*, const Def*, const Def* arg) { return arg->type(); }
 const Def* normalize_gid(const Def*, const Def*, const Def* arg) { return arg->world().lit_nat(arg->gid()); }
+
+template<equiv id>
+const Def* normalize_equiv(const Def*, const Def*, const Def* arg) {
+    auto [a, b] = arg->projs<2>();
+    bool eq     = id & (equiv::aE & 0xff);
+
+    if (id & (equiv::Ae & 0xff)) {
+        auto res = Checker::alpha<Checker::Test>(a, b);
+        if (res ^ eq) mim::error(arg->loc(), "'{}' and '{}' {}alpha-equivalent", a, b, !res ? "not " : "");
+    } else {
+        auto res = a == b;
+        if (res ^ eq) mim::error(arg->loc(), "'{}' and '{}' {}structural-equivalent", a, b, !res ? "not " : "");
+    }
+    return a;
+}
+
+const Def* normalize_check(const Def* type, const Def*, const Def* arg) {
+    auto& w               = type->world();
+    auto [cond, val, msg] = arg->projs<3>();
+
+    if (cond == w.lit_tt()) return val;
+    if (cond == w.lit_ff()) {
+        auto s = tuple2str(msg);
+        if (s.empty()) s = "unknown error"s;
+        w.ELOG(s.c_str());
+    }
+
+    return nullptr;
+}
 
 MIM_refly_NORMALIZER_IMPL
 

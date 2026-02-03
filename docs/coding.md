@@ -158,16 +158,6 @@ valgrind --vgdb=yes --vgdb-error=0 mim-gtest
 
 and follow the instructions.
 
-### VS Code
-
-As a utility to make debugging MimIR itself less painful with certain debuggers, the `mim.natvis` file can be loaded for getting more expressive value inspection.
-In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
-
-```json
-"visualizerFile": "${workspaceFolder}/mim.natvis",
-"showDisplayString": true,
-```
-
 ## Tests {#tests}
 
 ### lit Tests
@@ -191,6 +181,16 @@ If your _build_ directory, is in fact `build` you can use the `probe.sh` script:
 cd lit
 ../scripts/probe.sh foo.mim
 ```
+
+### Trigger Breakpoints over Command Line
+
+You can directly instruct `mim` to trigger a breakpoint, if certain events happen:
+```sh
+mim test.mim -b 1234            # Trigger a breakpoint if node with gid 1234 is created.
+mim test.mim -w 1234            # Trigger a breakpoint if node with gid 1234 sets one of its operands.
+mim test.mim --break-on-alpha   # Trigger a breakpoint if a check for alpha-equivalence fails.
+```
+See [Command-Line Reference](@ref cli) for all flags.
 
 ### GoogleTest
 
@@ -228,6 +228,8 @@ In addition, you may find it helpful to turn assertion failures into debugger br
 ## Syntax Highlighting
 
 [This](https://github.com/AnyDSL/vim-mim) Vim plugin provides syntax highlighting for Mim files.
+
+There is also a [tree-sitter grammar](https://gitlab.com/amaeble/tree-sitter-mim) for Mim files and a [helix fork](https://github.com/amaebel/helix) with highlight and injection queries.
 
 ## New Plugins
 

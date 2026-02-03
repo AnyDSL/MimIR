@@ -30,7 +30,7 @@ const Def* BranchClosElim::rewrite(const Def* def) {
     if (!app || !Pi::isa_cn(app->callee_type())) return def;
 
     if (auto [branches, index] = isa_branch(app->callee()); index) {
-        w.DLOG("FLATTEN BRANCH {}", app->callee());
+        DLOG("FLATTEN BRANCH {}", app->callee());
         auto new_branches = w.tuple(DefVec(branches.size(), [&](auto i) {
             auto c                 = branches[i];
             auto [entry, inserted] = branch2dropped_.emplace(c, nullptr);

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
-
-#include <mim/pass/pass.h>
+#include <mim/pass.h>
 
 namespace mim::plug::matrix {
 
@@ -45,8 +44,8 @@ namespace mim::plug::matrix {
 /// ```
 class LowerMatrixMediumLevel : public RWPass<LowerMatrixMediumLevel, Lam> {
 public:
-    LowerMatrixMediumLevel(PassMan& man)
-        : RWPass(man, "lower_matrix_mediumlevel") {}
+    LowerMatrixMediumLevel(World& world, flags_t annex)
+        : RWPass(world, annex) {}
 
     /// custom rewrite function
     /// memoized version of rewrite_

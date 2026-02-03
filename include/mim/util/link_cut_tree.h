@@ -9,12 +9,13 @@ namespace mim::lct {
 /// [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) like this:
 /// ```
 /// class Node : public lct::Node<Node, MyKey> {
-///     constexpr bool lt(const MyKey& key) const noexcept { /*...*/ }
-///     constexpr bool eq(const MyKey& key) const noexcept { /*...*/ }
+///     constexpr bool lt(const MyKey& key) const noexcept { ... }
+///     constexpr bool eq(const MyKey& key) const noexcept { ... }
 ///     // ...
 /// };
 /// ```
-template<class P, class K> class Node {
+template<class P, class K>
+class Node {
 private:
     P* self() { return static_cast<P*>(this); }
     const P* self() const { return static_cast<const P*>(this); }
@@ -89,7 +90,7 @@ public:
         }
     }
 
-    /// Helpfer for Splay-Tree: rotate left/right:
+    /// Helper for Splay-Tree: rotate left/right:
     /// ```
     ///  | Left                  | Right                  |
     ///  |-----------------------|------------------------|
@@ -101,7 +102,8 @@ public:
     ///  |    / \        / \     |    / \            / \  |
     ///  |   b   d      a   b    |   d   b          b   a |
     ///  ```
-    template<size_t l> constexpr void rotate() noexcept {
+    template<size_t l>
+    constexpr void rotate() noexcept {
         constexpr size_t r   = (l + 1) % 2;
         constexpr auto child = [](Node* n, size_t i) -> Node*& { return i == 0 ? n->bot : n->top; };
 
@@ -169,7 +171,8 @@ public:
         this->expose();
         other->splay();
         auto curr = this;
-        while (auto p = curr->aux_parent()) curr = p;
+        while (auto p = curr->aux_parent())
+            curr = p;
         return curr == other;
     }
     ///@}

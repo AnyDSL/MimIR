@@ -68,7 +68,10 @@ Tok Lexer::lex() {
         // further tokens
         if (accept(U'→')) return tok(Tag::T_arrow);
         if (accept( '@')) return tok(Tag::T_at);
-        if (accept( '=')) return tok(Tag::T_assign);
+        if (accept( '=')) {
+            if (accept('>')) return tok(Tag::T_fat_arrow);
+            return tok(Tag::T_assign);
+        }
         if (accept(U'⊥')) return tok(Tag::T_bot);
         if (accept(U'⊤')) return tok(Tag::T_top);
         if (accept(U'□')) return tok(Tag::T_box);
@@ -76,10 +79,12 @@ Tok Lexer::lex() {
         if (accept( '$')) return tok(Tag::T_dollar);
         if (accept( '#')) return tok(Tag::T_extract);
         if (accept(U'λ')) return tok(Tag::T_lm);
+        if (accept( '|')) return tok(Tag::T_pipe);
         if (accept( ';')) return tok(Tag::T_semicolon);
         if (accept(U'★')) return tok(Tag::T_star);
         if (accept( '*')) return tok(Tag::T_star);
         if (accept( ':')) return tok(Tag::T_colon);
+        if (accept(U'∪')) return tok(Tag::T_union);
         // clang-format on
 
         if (accept('%')) {
@@ -133,7 +138,8 @@ Tok Lexer::lex() {
                 continue;
             }
             if (accept('/')) {
-                while (ahead() != utf8::EoF && ahead() != '\n') next();
+                while (ahead() != utf8::EoF && ahead() != '\n')
+                    next();
                 continue;
             }
 
@@ -279,14 +285,15 @@ char8_t Lexer::lex_char() {
     }
     auto c = next();
     str_ += c;
-    if (utf8::isascii(c)) return c;
+    if (utf8::isascii(c)) return char8_t(c);
     ast().error(loc_, "invalid character '{}'", (char)c);
     return '\0';
 }
 
 void Lexer::eat_comments() {
     while (true) {
-        while (ahead() != utf8::EoF && ahead() != '*') next();
+        while (ahead() != utf8::EoF && ahead() != '*')
+            next();
         if (accept(utf8::EoF)) {
             ast().error(loc_, "non-terminated multiline comment");
             return;
@@ -301,11 +308,13 @@ void Lexer::emit_md(bool start_of_file) {
 
     do {
         out_ = false;
-        for (int i = 0; i < 3; ++i) next();
+        for (int i = 0; i < 3; ++i)
+            next();
         accept(' ');
         out_ = true;
 
-        while (ahead() != utf8::EoF && ahead() != '\n') next();
+        while (ahead() != utf8::EoF && ahead() != '\n')
+            next();
         accept('\n');
     } while (start_md());
 

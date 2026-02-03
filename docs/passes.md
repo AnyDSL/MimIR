@@ -22,7 +22,7 @@ You can put together your optimization pipeline like so:
 ```
 
 Note how some passes depend on other passes.
-For example, the [CopyProp](@ref mim::plug::mem::CopyProp)agation depends on the [BetaRed](@ref mim::BetaRed)uction and [EtaExp](@ref mim::EtaExp)ansion.
+For example, the [CopyProp](@ref mim::plug::mem::pass::CopyProp)agation depends on the [BetaRed](@ref mim::BetaRed)uction and [EtaExp](@ref mim::EtaExp)ansion.
 In contrast to traditional passes in compilers, MimIR's [PassMan](@ref mim::PassMan) will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded _phase-ordering problem_.
 
 There are two kind of passes in MimIR:
@@ -36,15 +36,6 @@ In order to write a [rewrite pass](@ref mim::RWPass), you have to inherit from [
 Usually, you are only interested in looking for code patterns that only occur in specific mutables - typically [Lam](@ref mim::Lam)bdas.
 You can filter for these mutables by passing it as template parameter to [RWPass](@ref mim::RWPass) when inherting from it.
 The main hook to the [PassMan](@ref mim::PassMan), is the [rewrite](@ref mim::Pass::rewrite) method.
-As an example, let's have a look at the [Alloc2Malloc](@ref mim::plug::mem::Alloc2Malloc) pass.
-It rewrites `alloc`/`slot` calls into their more verbose siblings `malloc`/`mslot` that make the size of the alloc'ed type explicit:
-This is `alloc2malloc.h`:
-\include "mim/plug/mem/pass/alloc2malloc.h"
-
-The actual `rewrite` simply inspects the current `def`.
-If this happens to be a `alloc`/`slot`, it will simply return the more explicit counterpart.
-This is `alloc2malloc.cpp`:
-\include "mim/plug/mem/pass/alloc2malloc.cpp"
 
 ## Fixed-Point Pass
 

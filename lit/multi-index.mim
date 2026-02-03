@@ -1,0 +1,13 @@
+// RUN: %mim %s
+plugin core;
+plugin refly;
+
+lam f (r: Nat, s: «r; Nat», a: «s; Nat», i: «j: r; Idx s#j»): Nat = a#i;
+
+let a234 = ((( 1,  2,  3,  4), ( 5,  6,  7,  8), ( 9, 10, 11, 12)),
+            ((13, 14, 15, 16), (17, 18, 19, 20), (21, 22, 23, 24)));
+
+let a343 = ‹3, 4, 3; 23›;
+
+let _ = %refly.equiv.struc_eq (f (3, (2, 3, 4), a234, (0_2, 1_3, 2_4)),  7);
+let _ = %refly.equiv.struc_eq (f (3, (3, 4, 3), a343, (0_3, 1_4, 2_3)), 23);

@@ -1,14 +1,10 @@
 #pragma once
 
-#include <queue>
+#include "mim/phase.h"
 
-#include "mim/phase/phase.h"
+namespace mim::plug::mem::pass {
 
-namespace mim::plug::mem {
-
-using DefQueue = std::deque<const Def*>;
-
-/// The general idea of this pass/phase is to change the shape of signatures of functions.
+/// The general idea of this Pass is to change the shape of signatures of functions.
 /// * Example: `Cn[ [mem,  A, B], C  , ret]`
 /// * Arg    : `Cn[ [mem, [A, B , C]], ret]` (general `Cn[ [mem, args], ret]`)
 /// * Flat   : `Cn[  mem,  A, B , C  , ret]` (general `Cn[mem, ...args, ret]`)
@@ -24,9 +20,14 @@ class Reshape : public RWPass<Reshape, Lam> {
 public:
     enum Mode { Flat, Arg };
 
-    Reshape(PassMan& man, Mode mode)
-        : RWPass(man, "reshape")
-        , mode_(mode) {}
+    Reshape(World& world, flags_t annex)
+        : RWPass(world, annex) {}
+
+    void apply(Mode);
+    void apply(const App* app) final;
+    void apply(Stage& s) final { apply(static_cast<Reshape&>(s).mode()); }
+
+    Mode mode() const { return mode_; }
 
     /// Fall-through to `rewrite_def` which falls through to `rewrite_lam`.
     void enter() override;
@@ -56,4 +57,4 @@ private:
     Mode mode_;
 };
 
-} // namespace mim::plug::mem
+} // namespace mim::plug::mem::pass

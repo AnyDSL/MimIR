@@ -6,8 +6,4 @@ plugin core;
 con extern icmp_lit(return: Cn Bool) =
     return (%core.icmp.e (%core.icmp.uge (tt, ff), %core.icmp.ug (tt, ff)));
 
-// CHECK-DAG: icmp_lit return_[[retId:[0-9_]+]]: Cn Bool{{(@.*)?}}= {
-// CHECK-DAG: _[[etaId:[0-9_]+]] tt
-
-// CHECK-DAG: _[[etaId]] _[[etaVar:[0-9_]+]]: Bool{{(@.*)?}}= {
-// CHECK-DAG: _[[retId]] _[[etaVar]]
+// CHECK-DAG: return{{.*}}tt

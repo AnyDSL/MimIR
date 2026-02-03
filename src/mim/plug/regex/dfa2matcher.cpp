@@ -98,9 +98,9 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, const Def* n) {
     auto states = dfa.get_reachable_states();
     DFAMap<Lam*> state2matcher;
 
-    // ((mem: %mem.M, string: Str n, pos: Idx n), Cn [%mem.M, Bool, Idx n])
-    auto matcher = w.mut_fun({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)},
-                             {w.annex<mem::M>(), w.type_bool(), w.type_idx(n)});
+    // ((mem: %mem.M 0, string: Str n, pos: Idx n), Cn [%mem.M 0, Bool, Idx n])
+    auto matcher = w.mut_fun({w.call<mem::M>(0), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)},
+                             {w.call<mem::M>(0), w.type_bool(), w.type_idx(n)});
     matcher->debug_prefix(std::string("match_regex"));
     auto [args, exit] = matcher->vars<2>();
     exit->debug_prefix(std::string("exit"));
@@ -143,10 +143,10 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, const Def* n) {
             continue;
         }
 
-        auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.type_i8()), w.lit_nat(0)}), w.tuple({string, i}));
-        auto [mem2, c] = w.call<mem::load>(w.tuple({mem, lea}))->projs<2>();
+        auto lea       = w.call<mem::lea>(Defs{string, i});
+        auto [mem2, c] = w.call<mem::load>(Defs{mem, lea})->projs<2>();
 
-        auto is_end  = w.call(core::icmp::e, w.tuple({c, w.lit_i8(0)}));
+        auto is_end  = w.call(core::icmp::e, Defs({c, w.lit_i8(0)}));
         auto not_end = mem::mut_con(w.type_idx(n));
         not_end->debug_prefix("not_end_" + state_to_name(state));
 

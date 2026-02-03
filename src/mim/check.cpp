@@ -4,88 +4,104 @@
 #include <fe/assert.h>
 
 #include "mim/rewrite.h"
+#include "mim/rule.h"
 #include "mim/world.h"
 
 namespace mim {
 
-namespace {
-
-static bool needs_zonk(const Def* def) {
-    if (def->has_dep(Dep::Hole)) {
-        for (auto mut : def->local_muts())
-            if (auto infer = mut->isa<Hole>(); infer && infer->is_set()) return true;
+bool Def::needs_zonk() const {
+    if (has_dep(Dep::Hole)) {
+        for (auto mut : local_muts())
+            if (Hole::isa_set(mut)) return true;
     }
 
     return false;
 }
 
-class Zonker : public Rewriter {
-public:
-    Zonker(World& world)
-        : Rewriter(world) {}
+const Def* Def::zonk() const { return needs_zonk() ? world().zonker().rewrite(this) : this; }
 
-    const Def* rewrite(const Def* def) override {
-        def = Hole::find(def);
-        return needs_zonk(def) ? Rewriter::rewrite(def) : def;
+const Def* Def::zonk_mut() const {
+    if (!is_set()) return this;
+
+    if (auto mut = isa_mut()) {
+        if (auto hole = mut->isa<Hole>()) {
+            auto [last, op] = hole->find();
+            return op ? op->zonk() : last;
+        }
+
+        for (auto def : deps())
+            if (def->needs_zonk()) return world().zonker().rewire_mut(mut);
+
+        if (auto imm = mut->immutabilize()) return imm;
+        return this;
     }
-};
 
-} // namespace
+    return zonk();
+}
 
-const Def* Def::zonk() const {
-    auto def = Hole::find(this);
-    return needs_zonk(def) ? Zonker(world()).rewrite(def) : def;
+DefVec Def::zonk(Defs defs) {
+    return DefVec(defs.size(), [defs](size_t i) { return defs[i]->zonk(); });
 }
 
 /*
  * Hole
  */
 
-const Def* Hole::find(const Def* def) {
-    // find root
-    auto res = def;
-    for (auto hole = res->isa_mut<Hole>(); hole && hole->op(); hole = res->isa_mut<Hole>()) res = hole->op();
-    // TODO don't re-update last infer
+std::pair<Hole*, const Def*> Hole::find() {
+    auto def  = Def::op(0);
+    auto last = this;
 
-    // path compression: set all Holes along the chain to res
-    for (auto hole = def->isa_mut<Hole>(); hole && hole->op(); hole = def->isa_mut<Hole>()) {
-        def = hole->op();
-        hole->reset(res);
+    while (def) {
+        if (auto h = def->isa_mut<Hole>()) {
+            def  = h->op();
+            last = h;
+        } else {
+            break;
+        }
     }
 
-    return res;
+    auto root = def ? def : last;
+
+    // path compression
+    for (auto h = this; h != last;) {
+        auto next = h->op()->as_mut<Hole>();
+        h->set(root);
+        h = next;
+    }
+
+    return {last, def};
 }
 
-const Def* Hole::tuplefy() {
-    if (auto a = type()->isa_lit_arity(); a && !is_set()) {
-        auto& w     = world();
-        auto n      = *a;
-        auto infers = absl::FixedArray<const Def*>(n);
-        if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
-            auto var  = sigma->has_var();
-            auto rw   = VarRewriter(var, this);
-            infers[0] = w.mut_hole(sigma->op(0));
-            for (size_t i = 1; i != n; ++i) {
-                rw.map(sigma->var(n, i - 1), infers[i - 1]);
-                infers[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
-            }
-        } else {
-            for (size_t i = 0; i != n; ++i) infers[i] = w.mut_hole(type()->proj(n, i));
-        }
+const Def* Hole::tuplefy(nat_t n) {
+    if (is_set()) return this;
 
-        auto tuple = w.tuple(infers);
-        set(tuple);
-        return tuple;
+    auto& w    = world();
+    auto holes = absl::FixedArray<const Def*>(n);
+    if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
+        auto var = sigma->has_var();
+        auto rw  = VarRewriter(var, this);
+        holes[0] = w.mut_hole(sigma->op(0));
+        for (size_t i = 1; i != n; ++i) {
+            rw.map(sigma->var(n, i - 1), holes[i - 1]);
+            holes[i] = w.mut_hole(rw.rewrite(sigma->op(i)));
+        }
+    } else {
+        for (size_t i = 0; i != n; ++i)
+            holes[i] = w.mut_hole(type()->proj(n, i));
     }
-    return this;
+
+    auto tuple = w.tuple(holes);
+    set(tuple);
+    return tuple;
 }
 
 /*
- * Check
+ * Checker
  */
 
 #ifdef MIM_ENABLE_CHECKS
-template<Checker::Mode mode> bool Checker::fail() {
+template<Checker::Mode mode>
+bool Checker::fail() {
     if (mode == Check && world().flags().break_on_alpha) fe::breakpoint();
     return false;
 }
@@ -96,104 +112,16 @@ const Def* Checker::fail() {
 }
 #endif
 
-template<Checker::Mode mode> bool Checker::alpha_(const Def* d1, const Def* d2) {
-    d1 = Hole::find(d1);
-    d2 = Hole::find(d2);
-
-    if (!d1 && !d2) return true;
-    if (!d1 || !d2) return fail<mode>();
-
-    // It is only safe to check for pointer equality if there are no Vars involved.
-    // Otherwise, we have to look more thoroughly.
-    // Example: λx.x - λz.x
-    if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
-
-    auto h1 = d1->isa_mut<Hole>();
-    auto h2 = d2->isa_mut<Hole>();
-
-    if ((!h1 && !d1->is_set()) || (!h2 && !d2->is_set())) return fail<mode>();
-
-    if (mode == Check) {
-        if (h1 && h2) {
-            // union by rank
-            if (h1->rank() < h2->rank()) std::swap(h1, h2); // make sure h1 is heavier or equal
-            h2->set(h1);                                    // make h1 new root
-            if (h1->rank() == h2->rank()) ++h1->rank();
-            return true;
-        } else if (h1) {
-            h1->set(d2);
-            return true;
-        } else if (h2) {
-            h2->set(d1);
-            return true;
-        }
-    }
-
-    auto mut1 = d1->isa_mut();
-    auto mut2 = d2->isa_mut();
-    if (mut1 && mut2 && mut1 == mut2) return true;
-    // Globals are HACKs and require additionaly HACKs:
-    // Unless they are pointer equal (above) always consider them unequal.
-    if (d1->isa<Global>() || d2->isa<Global>()) return false;
-
-    if (mut1) {
-        if (auto [i, ins] = binders_.emplace(mut1, d2); !ins) return i->second == d2;
-    }
-    if (mut2) {
-        if (auto [i, ins] = binders_.emplace(mut2, d1); !ins) return i->second == d1;
-    }
-
-    // normalize:
-    if ((d1->isa<Lit>() && !d2->isa<Lit>())             // Lit to right
-        || (!d1->isa<UMax>() && d2->isa<UMax>())        // UMax to left
-        || (!d1->isa<Extract>() && d2->isa<Extract>())) // Extract to left
-        std::swap(d1, d2);
-
-    return alpha_internal<mode>(d1, d2);
-}
-
-template<Checker::Mode mode> bool Checker::alpha_internal(const Def* d1, const Def* d2) {
-    if (d1->type() && d2->type() && !alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
-    if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
-    if (mode == Test && (d1->isa_mut<Hole>() || d2->isa_mut<Hole>())) return fail<mode>();
-    if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
-
-    if (auto ts = d1->isa<Tuple, Sigma>()) {
-        size_t a = ts->num_ops();
-        for (size_t i = 0; i != a; ++i)
-            if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return fail<mode>();
-        return true;
-    } else if (auto pa = d1->isa<Pack, Arr>()) {
-        if (pa->node() == d2->node()) return alpha_<mode>(pa->ops().back(), d2->ops().back());
-        if (auto a = pa->isa_lit_arity()) {
-            for (size_t i = 0; i != *a; ++i)
-                if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
-            return true;
-        }
-    } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Hole) && !d2->isa<UMax>()) {
-        // .umax(a, ?) == x  =>  .umax(a, x)
-        for (auto op : umax->ops())
-            if (auto inf = op->isa_mut<Hole>(); inf && !inf->is_set()) inf->set(d2);
-        d1 = umax->rebuild(umax->type(), umax->ops());
-    }
-
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail<mode>();
-
-    if (auto var1 = d1->isa<Var>()) {
-        auto var2 = d2->as<Var>();
-        if (auto i = binders_.find(var1->mut()); i != binders_.end()) return i->second == var2->mut();
-        if (auto i = binders_.find(var2->mut()); i != binders_.end()) return fail<mode>(); // var2 is bound
-        // both var1 and var2 are free: OK, when they are the same or in Check mode
-        return var1 == var2 || mode == Check;
-    }
-
-    for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
-        if (!alpha_<mode>(d1->op(i), d2->op(i))) return fail<mode>();
-    return true;
+const Def* Checker::is_uniform(Defs defs) {
+    if (defs.empty()) return nullptr;
+    auto first = defs.front();
+    for (size_t i = 1, e = defs.size(); i != e; ++i)
+        if (!alpha<Test>(first, defs[i])) return nullptr;
+    return first;
 }
 
 const Def* Checker::assignable_(const Def* type, const Def* val) {
-    auto val_ty = Hole::find(val->type());
+    auto val_ty = val->type()->zonk();
     if (type == val_ty) return val;
 
     auto& w = world();
@@ -211,38 +139,134 @@ const Def* Checker::assignable_(const Def* type, const Def* val) {
                 return fail();
         }
         return w.tuple(new_ops);
-    } else if (auto arr = type->isa<Arr>()) {
-        if (!alpha_<Check>(type->arity(), val_ty->arity())) return fail();
-
-        // TODO ack sclarize threshold
-        if (auto a = Lit::isa(arr->arity())) {
-            auto new_ops = absl::FixedArray<const Def*>(*a);
-            for (size_t i = 0; i != *a; ++i) {
-                auto new_val = assignable_(arr->proj(*a, i), val->proj(*a, i));
-                if (new_val)
-                    new_ops[i] = new_val;
-                else
-                    return fail();
-            }
-            return w.tuple(new_ops);
-        }
-    } else if (auto inj = val->isa<Inj>()) {
-        if (auto new_val = assignable_(type, inj->value())) return w.inj(type, new_val);
-        return fail();
     } else if (auto uniq = val->type()->isa<Uniq>()) {
-        if (auto new_val = assignable(type, uniq->inhabitant())) return new_val;
+        if (auto new_val = assignable(type, uniq->op())) return new_val;
         return fail();
     }
 
     return alpha_<Check>(type, val_ty) ? val : fail();
 }
 
-const Def* Checker::is_uniform(Defs defs) {
-    if (defs.empty()) return nullptr;
-    auto first = defs.front();
-    for (size_t i = 1, e = defs.size(); i != e; ++i)
-        if (!alpha<Test>(first, defs[i])) return nullptr;
-    return first;
+template<Checker::Mode mode>
+bool Checker::alpha_(const Def* d1, const Def* d2) {
+    for (bool todo = true; todo;) {
+        // below we check type and arity which may in turn open up more opportunities for zonking
+        todo = false;
+        d1   = d1->zonk_mut();
+        d2   = d2->zonk_mut();
+
+        // It is only safe to check for pointer equality if there are no Vars involved.
+        // Otherwise, we have to look more thoroughly.
+        // Example: λx.x - λz.x
+        if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
+
+        auto h1 = d1->isa_mut<Hole>();
+        auto h2 = d2->isa_mut<Hole>();
+
+        if constexpr (mode == Check) {
+            if (h1) return h1->set(d2), true;
+            if (h2) return h2->set(d1), true;
+        } else if (h1 || h2) // mode == Test and h1 or h2 is an unresolved Hole
+            return fail<Test>();
+
+        if (!d1->is_set() || !d2->is_set()) return fail<mode>();
+
+        auto mut1 = d1->isa_mut();
+        auto mut2 = d2->isa_mut();
+
+        if (mut1 && mut2 && mut1 == mut2) return true;
+
+        // Globals are HACKs and require additionaly HACKs:
+        // Unless they are pointer equal (above) always consider them unequal.
+        if (d1->isa<Global>() || d2->isa<Global>()) return false;
+
+        if (auto [i, ins] = bind(mut1, d2); !ins) return i->second == d2;
+        if (auto [i, ins] = bind(mut2, d1); !ins) return i->second == d1;
+
+        if (d1->isa<Top>() || d2->isa<Top>()) return mode == Check;
+
+        if (auto t1 = d1->type()) {
+            if (auto t2 = d2->type()) {
+                if (!alpha_<mode>(t1, t2)) return fail<mode>();
+            }
+        }
+
+        if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
+
+        auto new_d1 = d1->zonk_mut();
+        auto new_d2 = d2->zonk_mut();
+        if (new_d1 != d1 || new_d2 != d2) {
+            todo = true;
+            d1   = new_d1;
+            d2   = new_d2;
+        }
+    }
+
+    auto seq1 = d1->isa<Seq>();
+    auto seq2 = d2->isa<Seq>();
+
+    if constexpr (mode == Mode::Check) {
+        if (auto umax = d1->isa<UMax>(); umax && !d2->isa<UMax>()) return check(umax, d2);
+        if (auto umax = d2->isa<UMax>(); umax && !d1->isa<UMax>()) return check(umax, d1);
+
+        if (seq1 && seq1->arity() == world().lit_nat_1() && !seq2) return check1(seq1, d2);
+        if (seq2 && seq2->arity() == world().lit_nat_1() && !seq1) return check1(seq2, d1);
+
+        if (seq1 && seq2) {
+            if (auto mut_seq = seq1->isa_mut<Seq>(); mut_seq && seq2->isa_imm()) return check(mut_seq, seq2);
+            if (auto mut_seq = seq2->isa_mut<Seq>(); mut_seq && seq1->isa_imm()) return check(mut_seq, seq1);
+        }
+    }
+
+    if (auto prod = d1->isa<Prod>()) return check<mode>(prod, d2);
+    if (auto prod = d2->isa<Prod>()) return check<mode>(prod, d1);
+    if (seq1 && seq2) return alpha_<mode>(seq1->body(), seq2->body());
+
+    if (d1->node() != d2->node() || d1->flags() != d2->flags()) return fail<mode>();
+
+    if (auto var1 = d1->isa<Var>()) {
+        auto var2 = d2->as<Var>();
+        if (auto i = binders_.find(var1->mut()); i != binders_.end()) return i->second == var2->mut();
+        if (auto i = binders_.find(var2->mut()); i != binders_.end()) return fail<mode>(); // var2 is bound
+        // both var1 and var2 are free: OK, when they are the same or in Check mode
+        return var1 == var2 || mode == Check;
+    }
+
+    for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
+        if (!alpha_<mode>(d1->op(i), d2->op(i))) return fail<mode>();
+    return true;
+}
+
+template<Checker::Mode mode>
+bool Checker::check(const Prod* prod, const Def* def) {
+    size_t a = prod->num_ops();
+    for (size_t i = 0; i != a; ++i)
+        if (!alpha_<mode>(prod->op(i), def->proj(a, i))) return fail<mode>();
+    return true;
+}
+
+// alpha(«1; body», def) -> alpha(body, def);
+bool Checker::check1(const Seq* seq, const Def* def) {
+    auto body = seq->reduce(world().lit_idx_1_0()); // try to get rid of var inside of body
+    if (!alpha_<Check>(body, def)) return fail<Check>();
+    if (auto mut_seq = seq->isa_mut<Seq>()) mut_seq->set(world().lit_nat_1(), body->zonk());
+    return true;
+}
+
+// Try to get rid of mut_seq's var: it may occur in its body and vanish after reduction
+// as holes might have been filled in the meantime.
+bool Checker::check(Seq* mut_seq, const Seq* imm_seq) {
+    auto mut_body = mut_seq->reduce(world().top(world().type_idx(mut_seq->arity())));
+    if (!alpha_<Check>(mut_body, imm_seq->body())) return fail<Check>();
+
+    mut_seq->set(mut_seq->arity(), mut_body->zonk());
+    return true;
+}
+
+bool Checker::check(const UMax* umax, const Def* def) {
+    for (auto op : umax->ops())
+        if (!alpha<Check>(op, def)) return fail<Check>();
+    return true;
 }
 
 /*
@@ -260,14 +284,16 @@ const Def* Arr::check() {
 
 const Def* Tuple::infer(World& world, Defs ops) {
     auto elems = absl::FixedArray<const Def*>(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
+    for (size_t i = 0, e = ops.size(); i != e; ++i)
+        elems[i] = ops[i]->unfold_type();
     return world.sigma(elems);
 }
 
 const Def* Sigma::infer(World& w, Defs ops) {
     auto elems = absl::FixedArray<const Def*>(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->unfold_type();
-    return w.umax<Sort::Kind>(elems);
+    for (size_t i = 0, e = ops.size(); i != e; ++i)
+        elems[i] = ops[i]->unfold_type();
+    return w.umax<UMax::Kind>(elems);
 }
 
 const Def* Sigma::check(size_t, const Def* def) { return def; } // TODO
@@ -291,7 +317,7 @@ const Def* Sigma::check() {
 
 const Def* Pi::infer(const Def* dom, const Def* codom) {
     auto& w = dom->world();
-    return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
+    return w.umax<UMax::Kind>({dom->unfold_type(), codom->unfold_type()});
 }
 
 const Def* Pi::check(size_t, const Def* def) { return def; }
@@ -317,6 +343,32 @@ const Def* Lam::check(size_t i, const Def* def) {
             .note(codom()->loc(), "codomain: '{}'", codom());
     }
     fe::unreachable();
+}
+
+const Def* Reform::check() {
+    auto t = infer(meta_type());
+    if (!Checker::alpha<Checker::Check>(t, type()))
+        error(type()->loc(), "declared sort '{}' of rule type does not match inferred one '{}'", type(), t);
+    return t;
+}
+
+const Def* Reform::infer(const Def* meta_type) { return meta_type->unfold_type(); }
+
+const Def* Rule::check() {
+    auto t1 = lhs()->type();
+    auto t2 = rhs()->type();
+    if (!Checker::alpha<Checker::Check>(t1, t2))
+        error(type()->loc(), "type mismatch: '{}' for lhs, but '{}' for rhs", t1, t2);
+    if (!Checker::assignable(world().type_bool(), guard()))
+        error(guard()->loc(), "condition '{}' of rewrite is of type '{}' but must be of type 'Bool'", guard(),
+              guard()->type());
+
+    return type();
+}
+
+const Def* Rule::check(size_t, const Def* def) {
+    return def;
+    // TODO: do actual check + what are the parameters ?
 }
 
 #ifndef DOXYGEN

@@ -18,8 +18,10 @@ class Module;
 class Scopes;
 class Emitter;
 
-template<class T> using Ptr  = fe::Arena::Ptr<const T>;
-template<class T> using Ptrs = std::deque<Ptr<T>>;
+template<class T>
+using Ptr = fe::Arena::Ptr<const T>;
+template<class T>
+using Ptrs                   = std::deque<Ptr<T>>;
 /*             */ using Dbgs = std::deque<Dbg>;
 
 struct AnnexInfo {
@@ -28,8 +30,6 @@ struct AnnexInfo {
         , id{id_plugin, id_tag, 0, 0} {
         assert(Annex::mangle(sym_plugin) == id_plugin);
     }
-
-    bool is_pi() const { return pi && *pi && bool((*pi)->isa<Pi>()); }
 
     struct {
         Sym plugin, tag;
@@ -41,7 +41,7 @@ struct AnnexInfo {
     } id;
     std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
     Dbg normalizer;
-    std::optional<const Pi*> pi;
+    std::optional<bool> pi;
     bool fresh = true;
 };
 
@@ -74,16 +74,17 @@ public:
     Sym sym_error() { return sym("_error_"); } ///< `"_error_"`.
     ///@}
 
-    template<class T, class... Args> auto ptr(Args&&... args) {
-        return arena_.mk<const T>(std::forward<Args&&>(args)...);
+    template<class T, class... Args>
+    auto ptr(Args&&... args) {
+        return arena_.mk<const T>(std::forward<Args>(args)...);
     }
 
     /// @name Formatted Output
     ///@{
     // clang-format off
-    template<class... Args> Error& error(Loc loc, const char* fmt, Args&&... args) const { return err_.error(loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> Error& warn (Loc loc, const char* fmt, Args&&... args) const { return err_.warn (loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> Error& note (Loc loc, const char* fmt, Args&&... args) const { return err_.note (loc, fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> Error& error(Loc loc, const char* fmt, Args&&... args) const { return err_.error(loc, fmt, std::forward<Args>(args)...); }
+    template<class... Args> Error& warn (Loc loc, const char* fmt, Args&&... args) const { return err_.warn (loc, fmt, std::forward<Args>(args)...); }
+    template<class... Args> Error& note (Loc loc, const char* fmt, Args&&... args) const { return err_.note (loc, fmt, std::forward<Args>(args)...); }
     // clang-format on
     ///@}
 
@@ -141,7 +142,9 @@ public:
         Where,
         Arrow,
         Pi,
+        Inj,
         App,
+        Union,
         Extract,
         Lit,
     };
@@ -445,6 +448,93 @@ private:
     Ptr<Expr> level_;
 };
 
+// union
+
+/// `t1 ∪ t2`
+class UnionExpr : public Expr {
+public:
+    UnionExpr(Loc loc, Ptrs<Expr>&& types)
+        : Expr(loc)
+        , types_(std::move(types)) {}
+
+    const auto& types() const { return types_; }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptrs<Expr> types_;
+};
+
+// injection
+
+/// `value inj t1 ∪ t2`
+class InjExpr : public Expr {
+public:
+    InjExpr(Loc loc, Ptr<Expr>&& value, Ptr<Expr>&& type)
+        : Expr(loc)
+        , value_(std::move(value))
+        , type_(std::move(type)) {}
+
+    const Expr* value() const { return value_.get(); }
+    const Expr* type() const { return type_.get(); }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptr<Expr> value_;
+    Ptr<Expr> type_;
+};
+
+// matching for destruction of sum types
+
+// n-ary match
+class MatchExpr : public Expr {
+public:
+    class Arm : public Node {
+    public:
+        Arm(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& body)
+            : Node(loc)
+            , ptrn_(std::move(ptrn))
+            , body_(std::move(body)) {}
+
+        const Ptrn* ptrn() const { return ptrn_.get(); }
+        const Expr* body() const { return body_.get(); }
+
+        virtual void bind(Scopes&) const;
+        Lam* emit(Emitter&) const;
+        std::ostream& stream(Tab&, std::ostream&) const override;
+
+    private:
+        Ptr<Ptrn> ptrn_;
+        Ptr<Expr> body_;
+    };
+
+    MatchExpr(Loc loc, Ptr<Expr>&& scrutinee, Ptrs<Arm>&& arms)
+        : Expr(loc)
+        , scrutinee_(std::move(scrutinee))
+        , arms_(std::move(arms)) {}
+
+    const Expr* scrutinee() const { return scrutinee_.get(); }
+    const auto& arms() const { return arms_; }
+    const Arm* arm(size_t i) const { return arms_[i].get(); }
+    size_t num_arms() const { return arms_.size(); }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptr<Expr> scrutinee_;
+    Ptrs<Arm> arms_;
+};
+
 // lam
 
 /// `dom -> codom`
@@ -493,19 +583,13 @@ public:
             ret_     = ast.ptr<IdPtrn>(loc, Dbg(loc, ast.sym_return()), std::move(type));
         }
 
-        virtual void bind(Scopes& scopes, bool quiet = false) const;
+        virtual void bind(Scopes&, bool quiet = false) const;
         virtual void emit_type(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     protected:
-        const Pi* set_codom(const Def* codom) const {
-            if (auto imm = pi_->set_codom(codom)->immutabilize()) return const_pi_ = imm;
-            return const_pi_ = pi_;
-        }
-
-        mutable Pi* decl_           = nullptr;
-        mutable Pi* pi_             = nullptr;
-        mutable const Pi* const_pi_ = nullptr;
+        mutable Pi* decl_ = nullptr;
+        mutable Pi* pi_   = nullptr;
 
     private:
         Ptr<Ptrn> ptrn_;
@@ -650,15 +734,17 @@ private:
     Ptrs<Expr> elems_;
 };
 
-/// `«dbg: shape; body»` or `‹dbg: shape; body›`
-template<bool arr> class ArrOrPackExpr : public Expr {
+/// `«dbg: arity; body»` or `‹dbg: arity; body›`
+class SeqExpr : public Expr {
 public:
-    ArrOrPackExpr(Loc loc, Ptr<IdPtrn>&& shape, Ptr<Expr>&& body)
+    SeqExpr(Loc loc, bool is_arr, Ptr<IdPtrn>&& arity, Ptr<Expr>&& body)
         : Expr(loc)
-        , shape_(std::move(shape))
+        , is_arr_(is_arr)
+        , arity_(std::move(arity))
         , body_(std::move(body)) {}
 
-    const IdPtrn* shape() const { return shape_.get(); }
+    bool is_arr() const { return is_arr_; }
+    const IdPtrn* arity() const { return arity_.get(); }
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
@@ -667,12 +753,10 @@ public:
 private:
     const Def* emit_(Emitter&) const override;
 
-    Ptr<IdPtrn> shape_;
+    bool is_arr_;
+    Ptr<IdPtrn> arity_;
     Ptr<Expr> body_;
 };
-
-using ArrExpr  = ArrOrPackExpr<true>;
-using PackExpr = ArrOrPackExpr<false>;
 
 /// `tuple#index`
 class ExtractExpr : public Expr {
@@ -818,6 +902,7 @@ private:
     Ptr<Expr> type_;
     Dbg normalizer_;
     Tok curry_, trip_;
+    mutable sub_t offset_;
     mutable AnnexInfo* annex_ = nullptr;
     mutable const Def* mim_type_;
 };
@@ -874,7 +959,7 @@ public:
         bool is_implicit() const { return ptrn()->is_implicit(); }
         const Expr* filter() const { return filter_.get(); }
 
-        void bind(Scopes& scopes, bool quiet = false) const override;
+        void bind(Scopes&, bool quiet = false) const override;
         Lam* emit_value(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -947,6 +1032,41 @@ private:
     Dbg dbg_;
     Ptr<Ptrn> dom_;
     Ptr<Expr> codom_;
+};
+
+/// rewrite rules
+/// rule (x:T, y:T) : x+y => y+x (when );
+/// all meta variables have to be introduced
+
+class RuleDecl : public ValDecl {
+public:
+    RuleDecl(Loc loc, Dbg dbg, Ptr<Ptrn>&& var, Ptr<Expr>&& lhs, Ptr<Expr>&& rhs, Ptr<Expr>&& guard, bool is_normalizer)
+        : ValDecl(loc)
+        , dbg_(std::move(dbg))
+        , var_(std::move(var))
+        , lhs_(std::move(lhs))
+        , rhs_(std::move(rhs))
+        , guard_(std::move(guard))
+        , is_normalizer_(is_normalizer) {}
+
+    const Ptrn* var() const { return var_.get(); }
+    const Expr* lhs() const { return lhs_.get(); }
+    const Expr* rhs() const { return rhs_.get(); }
+    const Expr* guard() const { return guard_.get(); }
+    bool is_normalizer() const { return is_normalizer_; }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    void emit(Emitter&) const override;
+
+    Dbg dbg_;
+    Ptr<Ptrn> var_;
+    Ptr<Expr> lhs_;
+    Ptr<Expr> rhs_;
+    Ptr<Expr> guard_;
+    bool is_normalizer_;
 };
 
 /*
