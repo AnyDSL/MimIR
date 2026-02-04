@@ -100,7 +100,7 @@ class BufferizationAnalysis {
 public:
     BufferizationAnalysis(const Nest& nest, Scheduler& sched);
 
-    const BufferizationAnalysisInfo& get_analysis_infO() const;
+    const BufferizationAnalysisInfo& get_analysis_info() const;
 
 private:
     inline World& world() const { return nest_.world(); }
@@ -131,8 +131,15 @@ public:
 private:
     const Def* visit_def(const Def*);
 
+    // We need to rewrite the type of Lams.
+    const Def* visit_type(const Def*);
+    Def* prep_mut(Def*);
+    const Def* visit_var(const Def*, const Def*, const Def*);
+
     const Def* visit_insert(Lam* place, const Insert* insert);
     const Def* visit_extract(Lam* place, const Extract* extract);
+
+    const Def* visit_app(Lam* place, const App* app);
 
     const Def* active_mem(Lam* place);
     void add_mem(const Lam* place, const Def* mem);

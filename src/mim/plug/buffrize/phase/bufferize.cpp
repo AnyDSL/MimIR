@@ -13,6 +13,7 @@
 #include "mim/plug/buffrize/buffrize.h"
 #include "mim/plug/core/core.h"
 #include "mim/plug/direct/direct.h"
+#include "mim/plug/mem/autogen.h"
 #include "mim/plug/mem/mem.h"
 
 #include "absl/container/flat_hash_map.h"
@@ -31,12 +32,14 @@ const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst) {
     return new_mem;
 }
 
-bool is_tuple_to_consider(const Def* def) {
-    auto seq = def->type()->isa<Seq>();
+bool is_type_to_consider(const Def* def) {
+    auto seq = def->isa<Seq>();
     // use def->world().flags().scalarize_threshold instead?
     return seq && (!Lit::isa(seq->arity()->arity()) || Lit::isa(seq->arity()) > 10) && seq->body()->type()
         && seq->body()->type()->isa<Type>();
 }
+
+bool is_tuple_to_consider(const Def* def) { return is_type_to_consider(def->type()); }
 
 // For a new array, we create a new buffer.
 const Def* create_buffer(const Def* def, const Def* mem) {
@@ -46,6 +49,8 @@ const Def* create_buffer(const Def* def, const Def* mem) {
         auto ptrType = w.tuple({def->type(), w.lit_nat_0()});
         auto buffer  = w.call<mem::alloc>(ptrType, mem);
         w.DLOG("Bufferize: Allocated {} to buffer {}", def, buffer);
+        buffer->dump(2);
+        buffer->type()->dump();
         return buffer;
     }
     return nullptr;
@@ -150,8 +155,10 @@ InterferenceSchedule::Interference InterferenceSchedule::get_interference(const 
     // auto& usesB = sched_.uses(defB);
     auto usesA = def_use_map_[defA];
     auto usesB = def_use_map_[defB];
-    for (auto use : usesA) defA->world().DLOG("use A: {}", use);
-    for (auto use : usesB) defA->world().DLOG("use B: {}", use);
+    for (auto use : usesA)
+        defA->world().DLOG("use A: {}", use);
+    for (auto use : usesB)
+        defA->world().DLOG("use B: {}", use);
     if (usesA.empty() || usesB.empty()) return NONE;
 
     auto defOrder = get_order(defA, defB);
@@ -197,11 +204,12 @@ InterferenceSchedule::Interference InterferenceSchedule::get_interference(const 
 void InterferenceSchedule::dump() const {
     for (auto [lam, nodes] : ordered_schedule_) {
         lam->world().DLOG("lam {}", lam->unique_name());
-        for (auto node : nodes) node->world().DLOG("  node {}", node);
+        for (auto node : nodes)
+            node->world().DLOG("  node {}", node);
     }
 }
 
-const BufferizationAnalysisInfo& BufferizationAnalysis::get_analysis_infO() const { return analysis_info_; }
+const BufferizationAnalysisInfo& BufferizationAnalysis::get_analysis_info() const { return analysis_info_; }
 
 void BufferizationAnalysis::analyze(const Def* def) {
     if (!seen_.insert(def).second) return;
@@ -245,7 +253,8 @@ void BufferizationAnalysis::analyze(const Def* def) {
         default: break;
     }
 
-    for (auto op : def->ops()) analyze(op);
+    for (auto op : def->ops())
+        analyze(op);
 }
 
 BufferizationAnalysis::BufferizationAnalysis(const Nest& nest, Scheduler& sched)
@@ -275,7 +284,8 @@ void BufferizationAnalysis::analyze() {
 void BufferizationAnalysis::decide(const Def* def) {
     if (!seen_.insert(def).second) return;
 
-    for (auto op : def->ops()) decide(op);
+    for (auto op : def->ops())
+        decide(op);
 
     if (is_tuple_to_consider(def)) {
         def->world().DLOG("deciding bufferization for {}", def);
@@ -313,24 +323,22 @@ void Bufferize::visit(const Nest& nest) {
     sched_ = Scheduler{nest};
     analysis_.reset(new detail::BufferizationAnalysis(nest, sched_));
 
-    auto root = static_cast<Lam*>(nest.root()->mut());
+    world().debug_dump();
+
+    auto root = nest.root()->mut()->as_mut<Lam>();
+
+    auto new_root = prep_mut(root)->as<Lam>();
 
     auto new_filter = visit_def(root->filter());
     auto new_body   = visit_def(root->body());
-    if (auto app = new_body->isa<App>()) {
-        // is arg 0 alwasy mem? :)
-        auto new_mem_arg = world().call<mem::merge>(lam2mem_[root]);
-        auto new_args    = app->args();
-        DefVec new_args_vec(new_args.size(), [&](size_t i) {
-            if (i == 0) return new_mem_arg;
-            return new_args[i];
-        });
-        world().DLOG("Bufferize: Rewriting app {} with new args {}", app, new_args_vec);
-        // todo: is callee necessarily a mut we want to reuse?
-        root->unset()->app(new_filter, app->callee(), new_args_vec);
-    } else {
-        root->unset()->set({new_filter, new_body});
+    new_root->set_filter(new_filter)->set_body(new_body);
+    if (root->is_external()) {
+        root->internalize();
+        new_root->externalize();
     }
+
+    // new_root->dump(100);
+
     world().DLOG("Bufferize phase finished");
     world().debug_dump();
 }
@@ -340,66 +348,88 @@ const Def* Bufferize::visit_def(const Def* def) {
         // If we have already rewritten this def, return the rewritten version.
         return it->second;
     }
-    if (def->isa_mut()) {
-        // fix me
-        rewritten_[def] = def;
+    if (auto mut = def->isa_mut()) prep_mut(mut);
+
+    auto place = static_cast<Lam*>(sched_.smart(root(), def)->mut());
+    place      = visit_def(place)->as_mut<Lam>();
+
+    // do this before new_ops, to handle multi-dimensional arrays.
+    if (auto seq = def->type()->isa<Seq>(); seq && is_type_to_consider(seq)) {
+        world().DLOG("Bufferizing Seq {}", def);
+        if (auto extract = def->isa<Extract>()) {
+            if (auto rw = visit_extract(place, extract)) return rw;
+        } else if (auto insert = def->isa<Insert>()) {
+            if (auto rw = visit_insert(place, insert)) return rw;
+        }
+
+        // If the def is a Seq, we check if it can be bufferized.
+        if (auto buffer = create_buffer(def, active_mem(place))) {
+            // store tuple to buffer.
+            auto [mem, ptr] = buffer->projs<2>();
+            mem             = world().call<mem::store>(Defs{mem, ptr, def});
+            lam2mem_[place].push_back(mem);
+
+            rewritten_[def] = world().tuple(Defs{mem, ptr});
+            world().DLOG("Bufferized Seq {} to {}", def, buffer);
+            return buffer;
+        }
     }
+
+    if (auto app = def->isa<App>(); app && !app->axm()) return rewritten_[def] = visit_app(place, app);
 
     auto new_ops = DefVec(def->ops(), [&](const Def* op) {
         // Recursively visit each operation in the def.
         return rewritten_[op] = visit_def(op);
     });
 
-    auto place = static_cast<Lam*>(sched_.smart(root(), def)->mut());
-    if (auto tuple = def->isa<Seq>()) {
-        world().DLOG("Bufferizing Seq {}", tuple);
-        // If the def is a Seq, we check if it can be bufferized.
-        if (auto buffer = create_buffer(tuple, active_mem(place))) {
-            // store tuple to buffer.
-            auto [mem, ptr] = buffer->projs<2>();
-            mem             = world().call<mem::store>(Defs{mem, ptr, tuple});
-            lam2mem_[place].push_back(mem);
-
-            rewritten_[def] = world().tuple(Defs{mem, ptr});
-            world().DLOG("Bufferized Seq {} to {}", tuple, buffer);
-            return buffer;
-        }
-    } else if (auto insert = def->isa<Insert>()) {
+    if (auto insert = def->isa<Insert>()) {
         // If the def is an Insert, we handle it specifically.
-        return visit_insert(place, insert);
+        if (auto rw = visit_insert(place, insert)) return rw;
     } else if (auto extract = def->isa<Extract>()) {
         // If the def is an Extract, we handle it specifically.
-        return visit_extract(place, extract);
+        if (auto rw = visit_extract(place, extract)) return rw;
     }
+
     if (auto mut = def->isa_mut()) {
-        mut->unset()->set(new_ops);
-        return mut;
+        auto new_mut = rewritten_[def]->as_mut()->set(new_ops);
+        if (mut->is_external()) {
+            new_mut->externalize();
+            mut->internalize();
+        }
+        return rewritten_[new_mut] = new_mut;
     }
+
+    world().DLOG("Rewriting def {}", def);
+    for (auto op : new_ops)
+        world().DLOG("new op: {}", op);
     return rewritten_[def] = def->rebuild(def->type(), new_ops);
 }
 
 const Def* Bufferize::active_mem(Lam* place) {
     if (auto it = lam2mem_.find(place); it != lam2mem_.end()) return world().call<mem::remem>(it->second.back());
 
-    auto mem = world().call<mem::remem>(mem::mem_var(place));
+    auto mem = world().call<mem::remem>(mem::mem_var(rewritten_[place]->as_mut<Lam>()));
     lam2mem_[place].push_back(mem);
+    lam2mem_[rewritten_[place]].push_back(mem);
     return mem;
 }
 
 void Bufferize::add_mem(const Lam* place, const Def* mem) { lam2mem_[place].push_back(mem); }
 
 const Def* Bufferize::visit_insert(Lam* place, const Insert* insert) {
-    auto tuple = rewritten_[insert->tuple()];
-    auto index = rewritten_[insert->index()];
-    auto value = rewritten_[insert->value()];
+    auto tuple = visit_def(insert->tuple());
+    auto index = visit_def(insert->index());
+    auto value = visit_def(insert->value());
 
-    auto mem_ptr     = tuple->projs<2>();
-    auto& [mem, ptr] = mem_ptr;
-
-    world().DLOG("Bufferizing Insert {}", insert);
+    world().DLOG("Bufferizing Insert {} :{}", insert, insert->type());
 
     if (is_tuple_to_consider(insert)) {
-        if (analysis_->get_analysis_infO().get_choice(insert) == detail::BufferizationChoice::Inplace) {
+        auto mem_ptr     = tuple->projs<2>();
+        auto& [mem, ptr] = mem_ptr;
+
+        if (analysis_->get_analysis_info().get_choice(insert) == detail::BufferizationChoice::Inplace) {
+            // intentionally left blank
+            world().DLOG("Bufferizing Insert inplace {}", insert);
         } else if (auto buffer = create_buffer(insert, mem)) {
             // If the tuple is an array, we bufferize it.
             world().DLOG("Created target buffer for Insert {}", insert);
@@ -411,39 +441,128 @@ const Def* Bufferize::visit_insert(Lam* place, const Insert* insert) {
 
         // store the value in the buffer.
         auto elem_ptr = world().call<mem::lea>(Defs{ptr, index});
-        mem           = world().call<mem::store>(Defs{mem, elem_ptr, value});
+
+        if (is_tuple_to_consider(insert->value())) {
+            if (analysis_->get_analysis_info().get_choice(insert->value()) == detail::BufferizationChoice::Inplace) {
+                return rewritten_[insert] = world().tuple(Defs{value->proj(0), ptr});
+            } else {
+                auto [val_mem, val_ptr] = value->projs<2>();
+                mem                     = world().call<mem::merge>(mem, val_mem);
+                mem                     = call_copy_array(mem, val_ptr, elem_ptr);
+                add_mem(place, mem);
+                return rewritten_[insert] = world().tuple(Defs{mem, ptr});
+            }
+        }
+
+        mem = world().call<mem::store>(Defs{mem, elem_ptr, value});
 
         add_mem(place, mem);
         return rewritten_[insert] = world().tuple(Defs{mem, ptr});
     }
 
-    // If the tuple is not an array, we just return the original insert.
-    return insert;
+    // If the tuple is not an array, we just let it being rewritten as any other node.
+    return nullptr;
 }
 
 const Def* Bufferize::visit_extract(Lam* place, const Extract* extract) {
     auto tuple = extract->tuple();
-    auto index = rewritten_[extract->index()];
 
     if (auto it = rewritten_.find(tuple); it != rewritten_.end() && is_tuple_to_consider(tuple)) {
         world().DLOG("Rewriting extract {}", extract);
-        std::cerr.flush();
-        std::cout.flush();
+        world().DLOG("Use rewritten tuple {}", it->second);
+
+        auto index = visit_def(extract->index());
+
         // If we have already rewritten this tuple, use the rewritten version.
         auto [mem, ptr] = it->second->projs<2>();
         mem             = active_mem(place);
 
-        ptr                   = world().call<mem::lea>(Defs{ptr, index});
+        ptr = world().call<mem::lea>(Defs{ptr, index});
+
+        if (is_tuple_to_consider(extract)) return rewritten_[extract] = world().tuple(Defs{mem, ptr});
+
         auto [new_mem, value] = world().call<mem::load>(Defs{mem, ptr})->projs<2>();
-        // rewritten_[tuple]     = world().tuple(Defs{mem, ptr});
 
         add_mem(place, new_mem);
         return rewritten_[extract] = value;
     }
-    // If the tuple is not an array, we just return the original extract.
-    return extract;
+    // If the tuple is not an array, we just let it being rewritten as any other node.
+    return nullptr;
 }
 
-// const Def* Bufferize::remem() { return world().call<mem::remem>(mem_); }
+const Def* Bufferize::visit_app(Lam* place, const App* app) {
+    // is arg 0 always mem? :)
+    auto new_callee = visit_def(app->callee());
+    auto args       = app->args([&](const Def* arg) {
+        auto new_def = visit_def(arg);
+        world().DLOG("App arg {} rewritten to {}", arg, new_def);
+        if (is_tuple_to_consider(arg)) // we only want the ptr part
+        {
+            world().DLOG("App arg {} is tuple to consider, extracting ptr", arg);
+            return new_def->projs<2>()[1];
+        }
+        return new_def;
+    });
 
+    if (Axm::isa<mem::M>(args[0]->type())) {
+        auto new_mem_arg = world().call<mem::merge>(active_mem(place));
+        args[0]          = new_mem_arg;
+        // todo: do we want to clear lam2mem_ and use a potential result mem..? is there a result mem?
+    }
+
+    world().DLOG("Bufferize: Rewriting app {} with new args {, }", app, args);
+    return world().app(new_callee, args);
+}
+
+const Def* Bufferize::visit_type(const Def* type) {
+    if (auto it = rewritten_.find(type); it != rewritten_.end()) {
+        // If we have already rewritten this def, return the rewritten version.
+        return it->second;
+    }
+
+    if (type->isa_mut()) {
+        // fix me
+        rewritten_[type] = type;
+    }
+
+    DefVec new_ops = DefVec(type->ops(), [&](const Def* op) {
+        // Recursively visit each operation in the def.
+        return rewritten_[op] = visit_type(op);
+    });
+
+    if (is_type_to_consider(type)) {
+        auto ptrType = world().call<mem::Ptr0>(type);
+        return ptrType;
+    }
+    return type->rebuild(type->type(), new_ops);
+}
+
+const Def* Bufferize::visit_var(const Def* mem_var, const Def* def, const Def* new_def) {
+    if (def->type()->isa<Sigma>()) {
+        for (unsigned i = 0; i < def->num_projs(); ++i) {
+            auto proj        = def->proj(i);
+            auto new_proj    = new_def->proj(i);
+            rewritten_[proj] = visit_var(mem_var, proj, new_proj);
+        }
+    }
+    if (is_tuple_to_consider(def)) {
+        world().DLOG("replace var proj {} with {}", def, new_def);
+        return world().tuple({mem_var, new_def});
+    }
+    return new_def;
+}
+
+Def* Bufferize::prep_mut(Def* mut) {
+    auto new_type       = visit_type(mut->type());
+    auto new_mut        = mut->stub(new_type);
+    rewritten_[mut]     = new_mut;
+    rewritten_[new_mut] = new_mut;
+
+    if (auto lam = new_mut->isa_mut<Lam>()) {
+        auto new_var               = visit_var(mem::mem_var(lam), mut->var(), new_mut->var());
+        rewritten_[mut->var()]     = new_var;
+        rewritten_[new_mut->var()] = new_var;
+    }
+    return new_mut;
+}
 } // namespace mim::plug::buffrize
