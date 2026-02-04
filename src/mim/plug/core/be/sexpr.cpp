@@ -272,20 +272,26 @@ std::string Emitter::emit_header(Lam* lam) {
     return os.str();
 }
 
+// TODO: incorporate tab.lnprint
 std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
+    ++tab;
     if (auto app_callee = app.callee()->isa<App>()) {
-        print(os, "(app ");
+        tab.lnprint(os, "(app ");
         auto v_callee = emit_curried_app(*app_callee);
-        print(os, "{}", v_callee);
+        ++tab;
+        tab.lnprint(os, "{}", v_callee);
     } else {
-        print(os, "(app ");
+        tab.lnprint(os, "(app ");
         auto v_callee = emit_unsafe(app.callee());
-        print(os, "{}", v_callee);
+        ++tab;
+        tab.lnprint(os, "{}", v_callee);
     }
     auto v_arg = emit_unsafe(app.arg());
-    print(os, " {}", v_arg);
-    print(os, ")");
+    tab.lnprint(os, "{}", v_arg);
+    --tab;
+    tab.lnprint(os, ")");
+    --tab;
     return os.str();
 }
 
@@ -301,16 +307,16 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     auto lam = node->mut()->as_mut<Lam>();
     assert(lam2bb_.contains(lam));
 
-    tab.print(func_impls_, "{}", emit_header(lam));
+    print(func_impls_, "{}", emit_header(lam));
 
     if (lam->isa_cn(lam)) {
         auto app = lam->body()->as<App>();
-        tab.print(func_impls_, "{}", emit_curried_app(*app));
+        print(func_impls_, "{}", emit_curried_app(*app));
     } else {
-        tab.print(func_impls_, "{}", emit(lam->body()));
+        print(func_impls_, "{}", emit(lam->body()));
     }
 
-    tab.lnprint(func_impls_, ")");
+    print(func_impls_, "\n)");
 }
 
 void Emitter::finalize() {
@@ -321,6 +327,8 @@ void Emitter::finalize() {
 
 void Emitter::emit_epilogue(Lam* lam) { return; }
 
+// TODO: use tab.lnprint whenever printing with a tab to ensure that every tab is prepended with a newline just so
+// we don't have the issue of tabbed strings on the same line (huge spaces inbetween)
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     if (def->type()->isa<Type>() || def->type()->isa<Univ>()) return convert(def);
 
