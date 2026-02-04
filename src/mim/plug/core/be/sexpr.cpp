@@ -234,8 +234,6 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 std::string Emitter::emit_header(Lam* lam) {
-    // print(std::cout, "emit_header: {}\n", lam->unique_name());
-
     std::ostringstream os;
 
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
@@ -272,16 +270,14 @@ std::string Emitter::emit_header(Lam* lam) {
     return os.str();
 }
 
-// TODO: incorporate tab.lnprint
 std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
     ++tab;
+    tab.lnprint(os, "(app ");
     if (auto app_callee = app.callee()->isa<App>()) {
-        tab.lnprint(os, "(app ");
         auto v_callee = emit_curried_app(*app_callee);
         tab.print(os, "{}", v_callee);
     } else {
-        tab.lnprint(os, "(app ");
         auto v_callee = emit_unsafe(app.callee());
         tab.print(os, "{}", v_callee);
     }
@@ -324,8 +320,6 @@ void Emitter::finalize() {
 
 void Emitter::emit_epilogue(Lam* lam) { return; }
 
-// TODO: use tab.lnprint whenever printing with a tab to ensure that every tab is prepended with a newline just so
-// we don't have the issue of tabbed strings on the same line (huge spaces inbetween)
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     if (def->type()->isa<Type>() || def->type()->isa<Univ>()) return convert(def);
 
@@ -340,8 +334,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             print(os, emit(lam->body()).c_str());
         }
+        tab.lnprint(os, ")");
         --tab;
-        print(os, ")");
         return os.str();
     } else if (auto lit = def->isa<Lit>()) {
         ++tab;
@@ -389,8 +383,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         ++tab;
         tab.lnprint(os, "(extract");
-        tab.print(os, emit_unsafe(tuple).c_str());
-        tab.print(os, emit_unsafe(index).c_str());
+        tab.print(os, emit_bb(bb, tuple).c_str());
+        tab.print(os, emit_bb(bb, index).c_str());
         tab.lnprint(os, ")");
         --tab;
 
@@ -402,9 +396,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         ++tab;
         tab.lnprint(os, "(ins");
-        tab.print(os, emit_unsafe(tuple).c_str());
-        tab.print(os, emit_unsafe(index).c_str());
-        tab.print(os, emit_unsafe(value).c_str());
+        tab.print(os, emit_bb(bb, tuple).c_str());
+        tab.print(os, emit_bb(bb, index).c_str());
+        tab.print(os, emit_bb(bb, value).c_str());
         tab.lnprint(os, ")");
         --tab;
 
