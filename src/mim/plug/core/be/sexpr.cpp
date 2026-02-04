@@ -351,7 +351,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         --tab;
         return os.str();
     } else if (def->type()->isa<Nat>()) {
-        print(os, "{}", def->unique_name());
+        ++tab;
+        tab.lnprint(os, "{}", def->unique_name());
+        --tab;
         return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
         ++tab;
@@ -411,7 +413,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto app = def->isa<App>()) {
         return bb.assign(id(app), "{}", emit_curried_app(*app));
     } else if (auto axm = def->isa<Axm>()) {
-        return id(axm);
+        ++tab;
+        tab.lnprint(os, id(axm).c_str());
+        --tab;
+        return os.str();
     } else if (def->isa<Top>() || def->isa<Bot>()) {
         std::string symbol = def->isa<Top>() ? "T" : "⊥";
         if (def->sym().empty())
