@@ -37,21 +37,21 @@ jobs:
       - name: Configure Debug
         if: matrix.build-type == 'Debug'
         run: |
-          CXX=clang++-20 cmake -B ${{github.workspace}}/build                                                                       \
-            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}                                                                               \
-            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined,leak,bounds -fsanitize-address-use-after-scope -fno-omit-frame-pointer" \
-            -DBUILD_TESTING=ON                                                                                                      \
-            -DMIM_BUILD_EXAMPLES=ON                                                                                                 \
+          CC=clang-20 CXX=clang++-20 cmake -B ${{github.workspace}}/build                                                                                  \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}                                                                                                      \
+            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined,leak,bounds -fsanitize-address-use-after-scope -fno-omit-frame-pointer -fno-sanitize=downcast" \ # clang-20 used currently in CI seems to have probls with downcast
+            -DBUILD_TESTING=ON                                                                                                                             \
+            -DMIM_BUILD_EXAMPLES=ON                                                                                                                        \
             -DMIM_LIT_TIMEOUT=300
 
       - name: Configure Release
         if: matrix.build-type == 'Release'
         run: |
-          CXX=g++-14 cmake -B ${{github.workspace}}/build \
-            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}     \
-            -DBUILD_TESTING=ON                            \
-            -DMIM_BUILD_EXAMPLES=ON                       \
-            -DMIM_LIT_WITH_VALGRIND=ON                    \
+          CC=gcc-14 CXX=g++-14 cmake -B ${{github.workspace}}/build \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}               \
+            -DBUILD_TESTING=ON                                      \
+            -DMIM_BUILD_EXAMPLES=ON                                 \
+            -DMIM_LIT_WITH_VALGRIND=ON                              \
             -DMIM_LIT_TIMEOUT=300
 
       - name: Build
