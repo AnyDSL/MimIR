@@ -267,7 +267,7 @@ std::string Emitter::emit_header(Lam* lam) {
         --tab;
     }
     // print(func_impls_, "]@({}) = \n", emit_unsafe(lam->filter()));
-    tab.println(os, ")");
+    tab.print(os, ")");
     --tab;
     return os.str();
 }
@@ -279,17 +279,14 @@ std::string Emitter::emit_curried_app(const App& app) {
     if (auto app_callee = app.callee()->isa<App>()) {
         tab.lnprint(os, "(app ");
         auto v_callee = emit_curried_app(*app_callee);
-        ++tab;
-        tab.lnprint(os, "{}", v_callee);
+        tab.print(os, "{}", v_callee);
     } else {
         tab.lnprint(os, "(app ");
         auto v_callee = emit_unsafe(app.callee());
-        ++tab;
-        tab.lnprint(os, "{}", v_callee);
+        tab.print(os, "{}", v_callee);
     }
     auto v_arg = emit_unsafe(app.arg());
     tab.lnprint(os, "{}", v_arg);
-    --tab;
     tab.lnprint(os, ")");
     --tab;
     return os.str();
@@ -335,14 +332,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     std::ostringstream os;
     if (auto lam = def->isa<Lam>()) {
         print(os, "\n");
+        ++tab;
         print(os, emit_header(lam->as_mut<Lam>()).c_str());
         if (lam->isa_cn(lam)) {
             auto app = lam->body()->as<App>();
             print(os, emit_curried_app(*app).c_str());
-            print(os, ")");
         } else {
             print(os, emit(lam->body()).c_str());
         }
+        --tab;
+        print(os, ")");
         return os.str();
     } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
@@ -359,14 +358,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(os, "{}", def->unique_name());
         return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
-        print(os, "(tuple");
+        ++tab;
+        tab.lnprint(os, "(tuple");
         for (auto sep = ""; auto e : tuple->ops()) {
             if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
                 os << sep << v_elem;
                 sep = " ";
             }
         }
-        print(os, ")");
+        tab.lnprint(os, ")");
+        --tab;
         return os.str();
     } else if (auto seq = def->isa<Seq>()) {
         auto body  = emit_unsafe(seq->body());
@@ -377,14 +378,21 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
-        // need to emit the tuple even if we're just using the id!
+        ++tab;
         auto tuple_str = emit_unsafe(tuple);
-        if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) return id(extract);
+        if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) {
+            tab.lnprint(os, id(extract).c_str());
+            --tab;
+            return os.str();
+        }
+        tab.lnprint(os, "(extract");
+        tab.print(os, tuple_str.c_str());
+        tab.lnprint(os, emit_unsafe(index).c_str());
 
-        // return bb.assign(id(extract), "(extract {} {})", tuple_str, emit_unsafe(index));
-        // auto indent = std::string(tab.indent() * 4, ' ');
+        tab.lnprint(os, ")");
+        --tab;
 
-        os << "(extract " << tuple_str << " " << emit_unsafe(index) << ")";
+        // os << "(extract " << tuple_str << " " << emit_unsafe(index) << ")";
         return os.str();
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = insert->tuple();
@@ -395,7 +403,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         os << "(ins " << emit_unsafe(tuple) << " " << emit_unsafe(index) << " " << emit_unsafe(value) << ")";
         return os.str();
     } else if (auto var = def->isa<Var>()) {
-        return id(var);
+        tab.lnprint(os, id(var).c_str());
+        return os.str();
     } else if (auto app = def->isa<App>()) {
         return bb.assign(id(app), "{}", emit_curried_app(*app));
     } else if (auto axm = def->isa<Axm>()) {
