@@ -76,27 +76,6 @@ void init_world(py::module_& m) {
                 return w.mut_fun(dom, codom);
             },
             py::return_value_policy::reference_internal)
-        .def("call",
-            [](mim::World& w, std::string sym, pybind11::object args) { 
-                // return w.call_sym(w.sym(sym), args);
-                // -----------------
-                
-
-                // -----------------
-                // if (args.is_none()){
-                //     return w.sym2annex(w.sym(sym));
-                // }
-                // auto defs = args.cast<std::vector<mim::Def*>>();
-                // for (auto d : defs)
-                // {
-                //     std::cout << d << std::endl;
-                // }
-                
-                // return w.call_sym(w.sym(sym), mim::Defs(defs));
-            },
-            pybind11::arg("sym"),
-            pybind11::arg("args") = pybind11::none()
-        )
         .def("arr",
             [](mim::World& w, Def* arity, Def* body){
                 return w.arr(arity, body);
