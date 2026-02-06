@@ -166,9 +166,7 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
                           s << op;
                   }));
         } else {
-            // TODO: the sigma of the second argument of 1tuple.mim (return cn with type applications)
-            // gets emitted here but the ops are output as %mem.Ptr 0  instead of (app %mem.Ptr (lit 0))
-            print(s, "(sigma { })", sigma->ops());
+            print(s, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
         }
     } else if (auto tuple = type->isa<Tuple>()) {
         print(s, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
@@ -331,9 +329,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, convert(def).c_str());
         --tab;
         return os.str();
-    }
-
-    if (auto lam = def->isa<Lam>()) {
+    } else if (auto lam = def->isa<Lam>()) {
         print(os, "\n");
         ++tab;
         print(os, emit_header(lam->as_mut<Lam>()).c_str());
