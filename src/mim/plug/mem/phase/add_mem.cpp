@@ -99,13 +99,18 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
     if (auto it = mem_rewritten_.find(pi); it != mem_rewritten_.end()) return it->second;
 
     auto dom     = pi->dom();
-    auto new_dom = DefVec(dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); });
-    if (pi->num_doms() == 0 || !Axm::isa<mem::M>(pi->dom(0_s))) {
-        new_dom
-            = DefVec(dom->num_projs() + 1, [&](size_t i) { return i == 0 ? world().call<mem::M>(0) : new_dom[i - 1]; });
+    auto new_dom = rewrite_type(pi->dom());
+    if (dom->isa<Sigma>()) {
+        new_dom = world().sigma(DefVec(
+            dom->num_projs() + 1, [&](size_t i) { return i == 0 ? world().call<mem::M>(0) : new_dom->proj(i - 1); }));
+    } else {
+        new_dom = world().sigma({world().call<mem::M>(0), new_dom});
     }
 
-    return mem_rewritten_[pi] = world().pi(new_dom, pi->codom());
+    world().DLOG("rewrite pi {} to new dom {}", pi, new_dom);
+    auto ret = mem_rewritten_[pi] = world().pi(new_dom, pi->codom());
+    world().DLOG("rewrote pi {} to {}", pi, ret);
+    return ret;
 }
 
 const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
@@ -188,12 +193,15 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             add_mem_to_lams(place, arg->proj(0));
         }
 
-        DefVec new_args{arg->type()->num_projs() + offset};
-        for (int i = new_args.size() - 1; i >= 0; i--) {
-            new_args[i]
-                = i == 0 ? add_mem_to_lams(place, mem_for_lam(place)) : add_mem_to_lams(place, arg->proj(i - offset));
+        if (arg->type()->isa<Sigma>()) {
+            DefVec new_args{arg->type()->num_projs() + offset};
+            for (int i = new_args.size() - 1; i >= 0; i--) {
+                new_args[i] = i == 0 ? add_mem_to_lams(place, mem_for_lam(place))
+                                     : add_mem_to_lams(place, arg->proj(i - offset));
+            }
+            return world().tuple(new_args);
         }
-        return world().tuple(new_args);
+        return world().tuple({add_mem_to_lams(place, mem_for_lam(place)), add_mem_to_lams(place, arg)});
     };
 
     // call-site of a mutable lambda
