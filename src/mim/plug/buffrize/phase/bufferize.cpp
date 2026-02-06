@@ -28,7 +28,8 @@ const Def* call_copy_array(const Def* mem, const Def* src, const Def* dst) {
 
     auto copy_annex = w.call<buffrize::copy_array>(Defs{src, dst});
 
-    auto new_mem = w.call<direct::cps2ds>(Defs{w.annex<mem::M>(), w.annex<mem::M>()}, copy_annex, mem);
+    auto new_mem
+        = w.call<direct::cps2ds>(Defs{w.call<mem::M>(w.lit_nat_0()), w.call<mem::M>(w.lit_nat_0())}, copy_annex, mem);
     return new_mem;
 }
 
@@ -447,7 +448,7 @@ const Def* Bufferize::visit_insert(Lam* place, const Insert* insert) {
                 return rewritten_[insert] = world().tuple(Defs{value->proj(0), ptr});
             } else {
                 auto [val_mem, val_ptr] = value->projs<2>();
-                mem                     = world().call<mem::merge>(mem, val_mem);
+                mem                     = world().call<mem::merge>(Defs{mem, val_mem});
                 mem                     = call_copy_array(mem, val_ptr, elem_ptr);
                 add_mem(place, mem);
                 return rewritten_[insert] = world().tuple(Defs{mem, ptr});

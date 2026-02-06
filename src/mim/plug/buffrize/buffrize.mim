@@ -20,11 +20,11 @@ import affine;
 /// ### %%buffrize.copy_array
 ///
 
-con %buffrize.copy_array {n: Nat, Ts: «n; *», a: Nat}
+fun %buffrize.copy_array {n: Nat, Ts: «n; *», a: Nat}
     (src : %mem.Ptr («j: n; Ts#j», a), dst : %mem.Ptr («j: n; Ts#j», a))
-    [mem : %mem.M a, exit: Cn %mem.M a] =
+    [mem : %mem.M a]: %mem.M a =
     let size = %core.idx i64 0 n;
-    %affine.For copy_array_body exit (0:I64, size, 1:I64, mem) where
+    %affine.For copy_array_body return (0:I64, size, 1:I64, mem) where
             con copy_array_body [i:I64, mem: (%mem.M a), yield: Cn [%mem.M a]] =
                 let src_lea = %mem.lea (src, %core.conv.u n i);
                 let dst_lea = %mem.lea (dst, %core.conv.u n i);

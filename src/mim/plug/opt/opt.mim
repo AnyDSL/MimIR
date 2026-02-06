@@ -65,6 +65,7 @@ lam extern _default_compile (): %compile.Phase =
             %compile.phases ff (
                 %mem.add_mem_phase,
                 %buffrize.buffrize_phase,
+                cond_phase "direct" direct_phases,
             )
         ),
         cond_phase "affine" %affine.lower_for_phase,
