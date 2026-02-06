@@ -116,7 +116,6 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
 std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
-    // assert(!Axm::isa<mem::M>(type));
     std::ostringstream s;
     std::string name;
 
@@ -167,14 +166,20 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
                           s << op;
                   }));
         } else {
+            // TODO: the sigma of the second argument of 1tuple.mim (return cn with type applications)
+            // gets emitted here but the ops are output as %mem.Ptr 0  instead of (app %mem.Ptr (lit 0))
             print(s, "(sigma { })", sigma->ops());
         }
     } else if (auto tuple = type->isa<Tuple>()) {
-        print(s, "(tupletype { })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
+        print(s, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
     } else if (auto app = type->isa<App>()) {
-        print(s, "(apptype {} {})", convert(app->callee()), convert(app->arg()));
+        print(s, "(app {} {})", convert(app->callee()), convert(app->arg()));
+
+        // TODO: below code will include indentation but we might not want that in function signatures
+        // print(s, emit_curried_app(*app).c_str());
+        // return s.str();
     } else if (auto ax = type->isa<Axm>()) {
-        print(s, "(axmtype {})", ax->sym().str());
+        print(s, "{}", ax->sym().str());
     } else if (auto hole = type->isa<Hole>()) {
         print(s, "(hole {})", id(hole));
     } else if (auto extract = type->isa<Extract>()) {
@@ -274,15 +279,13 @@ std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
     ++tab;
     tab.lnprint(os, "(app ");
-    if (auto app_callee = app.callee()->isa<App>()) {
-        auto v_callee = emit_curried_app(*app_callee);
-        tab.print(os, "{}", v_callee);
-    } else {
-        auto v_callee = emit_unsafe(app.callee());
-        tab.print(os, "{}", v_callee);
-    }
-    auto v_arg = emit_unsafe(app.arg());
-    tab.print(os, "{}", v_arg);
+
+    if (auto app_callee = app.callee()->isa<App>())
+        tab.print(os, "{}", emit_curried_app(*app_callee));
+    else
+        tab.print(os, "{}", emit_unsafe(app.callee()));
+    tab.print(os, "{}", emit_unsafe(app.arg()));
+
     tab.lnprint(os, ")");
     --tab;
     return os.str();
@@ -321,9 +324,15 @@ void Emitter::finalize() {
 void Emitter::emit_epilogue(Lam* lam) { return; }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
-    if (def->type()->isa<Type>() || def->type()->isa<Univ>()) return convert(def);
-
     std::ostringstream os;
+
+    if (def->type()->isa<Type>() || def->type()->isa<Univ>()) {
+        ++tab;
+        tab.lnprint(os, convert(def).c_str());
+        --tab;
+        return os.str();
+    }
+
     if (auto lam = def->isa<Lam>()) {
         print(os, "\n");
         ++tab;
@@ -340,21 +349,22 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto lit = def->isa<Lit>()) {
         ++tab;
         if (lit->type()->isa<Nat>())
-            tab.lnprint(os, "{}", lit->get<u64>());
+            tab.lnprint(os, "(lit {})", lit->get<u64>());
         else if (auto size = Idx::isa(lit->type()))
             if (auto lit_size = Idx::size2bitwidth(size); lit_size && *lit_size == 1)
-                tab.lnprint(os, "{}", lit);
+                tab.lnprint(os, "(lit {})", lit);
             else
                 tab.lnprint(os, "(lit {} {})", lit->get(), convert(lit->type()));
         else
-            tab.lnprint(os, "{}", lit);
+            tab.lnprint(os, "(lit {})", lit);
         --tab;
         return os.str();
-    } else if (def->type()->isa<Nat>()) {
-        ++tab;
-        tab.lnprint(os, "{}", def->unique_name());
-        --tab;
-        return os.str();
+        // NOTE: this was part of the original mim emitter, maybe we will need it again in the future?
+        // } else if (def->type()->isa<Nat>()) {
+        // ++tab;
+        // tab.lnprint(os, "{}", def->unique_name());
+        // --tab;
+        // return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
         ++tab;
         tab.lnprint(os, "(tuple");
@@ -367,6 +377,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, ")");
         --tab;
         return os.str();
+        // TODO: emit sexpr
     } else if (auto seq = def->isa<Seq>()) {
         auto body  = emit_unsafe(seq->body());
         auto shape = emit_unsafe(seq->arity());
@@ -410,13 +421,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, id(var).c_str());
         --tab;
         return os.str();
+        // TODO: emit sexpr
     } else if (auto app = def->isa<App>()) {
-        return bb.assign(id(app), "{}", emit_curried_app(*app));
+        print(os, emit_curried_app(*app).c_str());
+        return os.str();
     } else if (auto axm = def->isa<Axm>()) {
         ++tab;
         tab.lnprint(os, id(axm).c_str());
         --tab;
         return os.str();
+        // TODO: emit sexpr
     } else if (def->isa<Top>() || def->isa<Bot>()) {
         std::string symbol = def->isa<Top>() ? "T" : "⊥";
         if (def->sym().empty())

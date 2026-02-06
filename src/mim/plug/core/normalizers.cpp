@@ -126,8 +126,7 @@ Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
     if constexpr (std::is_same_v<Id, abs>)
         return std::abs(s);
     else
-        []<bool flag = false>() { static_assert(flag, "missing tag"); }
-    ();
+        []<bool flag = false>() { static_assert(flag, "missing tag"); }();
 }
 
 template<class Id>
@@ -235,7 +234,8 @@ const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
 
         if (*la == 0) {
             switch (id) {
-                case nat::add: return b;
+                // NOTE: this normalizer is applied in nat.mim to reduce core.add(b, 0) to b
+                // case nat::add: return b;
                 case nat::sub: return a; // 0 - b = 0
                 case nat::mul: return a; // 0 * b = 0
             }
