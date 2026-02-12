@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"copy__prop_8h_source.html":[6,0,2,1,4,10,0,0],
+"core.html":[2,4],
 "core_2autogen_8h.html":[6,0,0,1,0,0,4,0],
 "core_2autogen_8h.html#a2e550d7f2ef2f1786fe0e51ee3d26bf6":[6,0,0,1,0,0,4,0,0],
 "core_2autogen_8h_source.html":[6,0,0,1,0,0,4,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "functions_func_o.html":[5,3,1,14],
 "functions_func_p.html":[5,3,1,15],
 "functions_func_r.html":[5,3,1,16],
-"functions_func_s.html":[5,3,1,17],
-"functions_func_t.html":[5,3,1,18],
-"functions_func_u.html":[5,3,1,19]
+"functions_func_s.html":[5,3,1,17]
 };

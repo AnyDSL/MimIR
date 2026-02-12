@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"namespacemim.html#a18ea687fca3cafcb3ae2e8afacdb6a43":[3,0,1,205],
+"namespacemim.html#a190fd94a575b212f38ae8be611f1c367":[3,0,1,146],
 "namespacemim.html#a1aae5adc4db386bfd618fdc8303ceb0c":[3,0,1,171],
 "namespacemim.html#a1b6005cc1b5a083a366f7966710919d2":[3,0,1,260],
 "namespacemim.html#a1bf9f164e985cb56deedf827f7fb2c3f":[3,0,1,218],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "namespacemim_1_1plug_1_1affine.html#a6ff8673e1d2565961963aec89b59c068":[3,0,1,4,0,1],
 "namespacemim_1_1plug_1_1affine.html#aa58381bede626b4c4d80d8f15e996d3e":[3,0,1,4,0,2],
 "namespacemim_1_1plug_1_1affine.html#ad7c8f6316983dab0fe34c1c97dd6322e":[3,0,1,4,0,3],
-"namespacemim_1_1plug_1_1affine_1_1phase.html":[3,0,1,4,0,0],
-"namespacemim_1_1plug_1_1autodiff.html":[3,0,1,4,1],
-"namespacemim_1_1plug_1_1autodiff.html#a0147856a9a811ec390d08298087df30e":[3,0,1,4,1,10]
+"namespacemim_1_1plug_1_1affine_1_1phase.html":[3,0,1,4,0,0]
 };

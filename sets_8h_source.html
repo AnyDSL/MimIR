@@ -499,7 +499,7 @@ $(function(){initNavTree('sets_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>            os &lt;&lt; <span class="charliteral">&#39;{&#39;</span>;</div>
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>            <span class="keyword">auto</span> sep = <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> d : *<span class="keyword">this</span>) {</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                os &lt;&lt; sep &lt;&lt; d-&gt;gid() &lt;&lt; <span class="charliteral">&#39;/&#39;</span> &lt;&lt; d-&gt;tid();</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>                os &lt;&lt; sep &lt;&lt; d-&gt;sym() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; d-&gt;gid() &lt;&lt; <span class="charliteral">&#39;/&#39;</span> &lt;&lt; d-&gt;tid();</div>
 <div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>                sep = <span class="stringliteral">&quot;, &quot;</span>;</div>
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>            }</div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>            <span class="keywordflow">return</span> os &lt;&lt; <span class="charliteral">&#39;}&#39;</span>;</div>

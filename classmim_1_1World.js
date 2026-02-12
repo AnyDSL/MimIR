@@ -39,6 +39,7 @@ var classmim_1_1World =
     [ "con", "classmim_1_1World.html#acbe77774e9e87180aafc7ec9150d4a03", null ],
     [ "con", "classmim_1_1World.html#a0c7dfef7a0114fbf8dbd040dbf50bf5e", null ],
     [ "curr_gid", "classmim_1_1World.html#a42972b62b30faf83a3470c03a4883685", null ],
+    [ "curr_run", "classmim_1_1World.html#aeb6530d705b35411f9378cbd4b0f59d3", null ],
     [ "debug_dump", "classmim_1_1World.html#a888c0001cb304f075ddcb69ad0063996", null ],
     [ "dot", "classmim_1_1World.html#a722b0c4b3f8511b485bf2232359e64fe", null ],
     [ "dot", "classmim_1_1World.html#af475936db6f745b3567fce53a0f4a871", null ],

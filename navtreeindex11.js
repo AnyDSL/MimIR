@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"classmim_1_1World.html#afa7919f0e7f69f2451aedd9da912c857":[5,0,1,101,131],
+"classmim_1_1World.html#afc51b09155c87f9d722e45c49daac526":[3,0,1,103,9],
 "classmim_1_1World.html#afc51b09155c87f9d722e45c49daac526":[5,0,1,101,9],
 "classmim_1_1World.html#structmim_1_1World_1_1Move_8arena":[3,0,1,103,2],
 "classmim_1_1World.html#structmim_1_1World_1_1Move_8arena":[5,0,1,101,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "classmim_1_1ast_1_1ErrorExpr.html#ade153d2b9beef427cb928711cc925dad":[3,0,1,0,13,2],
 "classmim_1_1ast_1_1ErrorExpr.html#ade153d2b9beef427cb928711cc925dad":[5,0,1,0,13,2],
 "classmim_1_1ast_1_1ErrorPtrn.html":[3,0,1,0,14],
-"classmim_1_1ast_1_1ErrorPtrn.html":[5,0,1,0,14],
-"classmim_1_1ast_1_1ErrorPtrn.html#a56fbd3da5cc05d960f85701f57caf047":[3,0,1,0,14,2],
-"classmim_1_1ast_1_1ErrorPtrn.html#a56fbd3da5cc05d960f85701f57caf047":[5,0,1,0,14,2]
+"classmim_1_1ast_1_1ErrorPtrn.html":[5,0,1,0,14]
 };

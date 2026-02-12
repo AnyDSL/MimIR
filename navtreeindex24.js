@@ -1,5 +1,7 @@
 var NAVTREEINDEX24 =
 {
+"structmim_1_1Nest_1_1Node_1_1Children.html#a7cd6467a476c3a7d4dceb5b720acdc7d":[5,0,1,49,0,0,1],
+"structmim_1_1Nest_1_1Node_1_1Children.html#a835cdf64395521c736b393399a1dddbd":[3,0,1,51,0,0,8],
 "structmim_1_1Nest_1_1Node_1_1Children.html#a835cdf64395521c736b393399a1dddbd":[5,0,1,49,0,0,8],
 "structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d":[3,0,1,51,0,0,5],
 "structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d":[5,0,1,49,0,0,5],
