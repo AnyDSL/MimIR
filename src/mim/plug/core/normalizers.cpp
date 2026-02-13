@@ -226,30 +226,30 @@ const Def* normalize_nat(const Def* type, const Def* callee, const Def* arg) {
     if (la) {
         if (lb) {
             switch (id) {
-                case nat::add: return world.lit_nat(*la + *lb);
-                case nat::sub: return *la < *lb ? world.lit_nat_0() : world.lit_nat(*la - *lb);
-                case nat::mul: return world.lit_nat(*la * *lb);
+                // case nat::add: return world.lit_nat(*la + *lb);
+                // case nat::sub: return *la < *lb ? world.lit_nat_0() : world.lit_nat(*la - *lb);
+                // case nat::mul: return world.lit_nat(*la * *lb);
             }
         }
 
         if (*la == 0) {
             switch (id) {
-                // NOTE: this normalizer is applied in nat.mim to reduce core.add(b, 0) to b
                 // case nat::add: return b;
-                case nat::sub: return a; // 0 - b = 0
-                case nat::mul: return a; // 0 * b = 0
+                case nat::sub:
+                    return a; // 0 - b = 0
+                              // case nat::mul: return a; // 0 * b = 0
             }
         }
 
-        if (*la == 1 && id == nat::mul) return b; // 1 * b = b
+        // if (*la == 1 && id == nat::mul) return b; // 1 * b = b
     }
 
-    if (lb && *lb == 0 && id == nat::sub) return a; // a - 0 = a
+    // if (lb && *lb == 0 && id == nat::sub) return a; // a - 0 = a
 
     if (a == b) {
         switch (id) {
-            case nat::add: return world.call(nat::mul, Defs{world.lit_nat(2), a}); // a + a = 2 * a
-            case nat::sub: return world.lit_nat(0);                                // a - a = 0
+            // case nat::add: return world.call(nat::mul, Defs{world.lit_nat(2), a}); // a + a = 2 * a
+            case nat::sub: return world.lit_nat(0); // a - a = 0
             case nat::mul: break;
         }
     }

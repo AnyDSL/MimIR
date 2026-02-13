@@ -135,11 +135,12 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         print(s, "(idx {})", size);
         return types_[type] = s.str();
     } else if (auto w = math::isa_f(type)) {
-        print(s, "(float {})", type);
+        // TODO: what is the type name? (it's not 'float')
+        print(s, "(lit {} float)", type);
         return types_[type] = s.str();
     } else if (auto lit = type->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
-            print(s, "(nat {})", lit->get());
+            print(s, "(lit {})", lit->get());
         else
             print(s, "(lit {} {})", lit->get(), convert(lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
@@ -310,7 +311,7 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
         print(func_impls_, "{}", emit(lam->body()));
     }
 
-    print(func_impls_, "\n)");
+    print(func_impls_, "\n)\n\n");
 }
 
 void Emitter::finalize() {
