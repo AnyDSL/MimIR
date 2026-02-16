@@ -47,16 +47,32 @@ driver.add_search_path(Path("../build/lib64/"))
 
 from typing import List
 
-def call(self, callee, *args)->mim.Def:
+def call(self, callee, *args, by_id=False) -> mim.Def:
+    # print(f'{callee.str()} is the callee')
+    if(isinstance(callee, str)):
+        callee = self.sym(callee)
+    callee = self.annex(callee)
 
-    if(len(args) == 0):
-        return self.annex(callee)
-    
-    if(isinstance(args[0], List[mim.Def])):
+    if(len(args) == 0 and not by_id):
+        return callee
+    elif(len(args) == 0 and by_id):
+        pass
+
+    if(len(args) == 1):
+        if(isinstance(args[0],mim.Def)):
+            return self.implicit_app(callee, [args[0]])
+
+        elif isinstance(args[0], list) and all(isinstance(x, mim.Def) for x in args[0]):
+            return self.implicit_app(callee, args[0])
+
+        else:
+            raise TypeError("The given arguments dont match the expected types")
+        
+    if isinstance(args[0], list) and all(isinstance(x, mim.Def) for x in args[0]):
         return self.call(self.implicit_app(callee, args[0]), args[1::])
     
     if(isinstance(args[0], mim.Def)):
-        return self.implicit_app(callee, args[0])
+        return self.call(self.implicit_app(callee, [args[0]]), args[1::])
     
     raise TypeError("The given arguments dont match the expected types")
 
@@ -81,7 +97,8 @@ class MimRegex():
 
     def star(self) -> Self:
         self.__conj(self.regex)
-        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), [self.regex[0]]))
+        # self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), [self.regex[0]]))
+        self.regex.append(self.wrld.call(self._star_sym, [self.regex[0]]))
         return self
 
     # def dot(self) -> Self:
@@ -91,7 +108,8 @@ class MimRegex():
     def literal(self, lit) -> Self:
         # print("printing")
         # print(self.__char_lit(lit))
-        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000300), [self.__char_lit(lit)]))
+        # self.regex.append(self.wrld.call_by_id(int(0x4c62066400000300), [self.__char_lit(lit)]))
+        self.regex.append(self.wrld.call(self._literal_sym, self.__char_lit(lit)))
         return self
 
     def close(self) -> Self:
@@ -109,6 +127,7 @@ class MimRegex():
 
 
     def build(self, driver):
+        print(f"result of annexing with call: {self.wrld.call("%mem.M")}")
         self.match_func = self.wrld.mut_con(
             [
                 self.wrld.call("%mem.M"),
@@ -145,7 +164,7 @@ class MimRegex():
 reg = MimRegex(driver)
 # seg fault
 #reg.any().close()
-reg.literal("a").literal("b").literal("c").literal("d").star()
+reg.literal("a").literal("b").literal("c").literal("d").close().star()
 print(reg.regex)
 reg.build(driver)
 #world.dot("out_no_literals", True, False)

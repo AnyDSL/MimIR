@@ -154,6 +154,23 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     tab.print(h, "\n#endif\n");
 }
 
+void AST::bootstrap_python(Sym plugin, std::ostream& h){
+    Tab tab;
+    std::string indent = "  ";
+    plugin_t plugin_id = *Annex::mangle(plugin);
+
+    tab.print(h, "from enum import IntEnum\n\n");
+    tab.print(h, "class {}(IntEnum):\n", plugin);
+    tab.print(h, "{}ID = 0x{}", indent, plugin_id);
+
+    tab.print(h, "");
+
+    const auto& unordered = plugin2annexes(plugin);
+    std::deque<std::pair<Sym, AnnexInfo>> infos(unordered.begin(), unordered.end());
+    std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.id.tag < p2.second.id.tag; });
+
+}
+
 /*
  * Other
  */

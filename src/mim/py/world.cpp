@@ -107,23 +107,5 @@ void init_world(py::module_& m) {
         .def("mut_con", [](mim::World& w, std::vector<Def*> domains){
             return w.mut_con(Defs(domains));
         });
-    // .def("call", static_cast<const mim::Def* (World::*)(mim::Sym, py::args)>);
 }
-
-/*
-    // just do this the lambda I guess
-
-    // testing some python stuff
-    template<bool Normalize = true>
-    const Def* call_(const Def* callee, py::args args){
-        if (args.size()>1){
-            auto first_arg = *args.begin();
-            py::args remaining_vec = py::make_tuple(args.begin()+1);
-            return call_<Normalize>(implicit_app(callee, first_arg, remaining_vec));
-        }
-        else{
-            return implicit_app<Normalize>(callee, args);
-        }
-    }
-*/
 } // namespace mim
