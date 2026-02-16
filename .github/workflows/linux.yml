@@ -39,7 +39,7 @@ jobs:
         run: |
           CC=clang-20 CXX=clang++-20 cmake -B ${{github.workspace}}/build                                                                                  \
             -DCMAKE_BUILD_TYPE=${{matrix.build-type}}                                                                                                      \
-            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined,leak,bounds -fsanitize-address-use-after-scope -fno-omit-frame-pointer -fno-sanitize=downcast" \ # clang-20 used currently in CI seems to have probls with downcast
+            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined,leak,bounds -fsanitize-address-use-after-scope -fno-omit-frame-pointer -fno-sanitize=downcast" \
             -DBUILD_TESTING=ON                                                                                                                             \
             -DMIM_BUILD_EXAMPLES=ON                                                                                                                        \
             -DMIM_LIT_TIMEOUT=300
