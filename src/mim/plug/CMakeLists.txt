@@ -14,7 +14,7 @@ set(MIM_PLUGINS
     ord
     refly
     regex
-    # sflow
+    sflow
     spirv
     tensor
     tuple

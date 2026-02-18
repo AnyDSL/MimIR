@@ -2,8 +2,59 @@
 ///
 /// @see mim::plug::sflow
 ///
-///
 /// [TOC]
 ///
-/// A plugin with nodes and passes to transform MimIR programs to
-/// structured control flow.
+/// ## Dependencies
+///
+import compile;
+///
+/// A plugin with axioms to model explicit structured
+/// control flow and passes to transform arbitrary code
+/// to structured control flow constructs.
+///
+/// ## Structured Control Flow
+///
+/// Any basic block ending with an application with
+/// either one of the following two axioms as a callee
+/// is a header block. In structured control flow, all
+/// branching has to conform to one of those structures.
+///
+/// Branching to a header is only allowed in loop constructs
+/// from the continue block.
+///
+/// Each header block must strictly structurally dominate its
+/// merge block.
+///
+
+/// ## Branching
+/// Represents a structured branch (if-else or switch-case)
+///
+/// ### Notes:
+/// If the header argument is not an extract then it is
+/// assumed the branch has only a single case and it is
+/// normalized to a simple call to body.
+axm %sflow.branch:
+      {H: ★} → [header: Cn H]
+    → {M: ★} → [merge: Cn M]
+    → Cn H, normalize_branch;
+
+/// ## Loops
+///
+/// Represents a structured loop (for or while)
+axm %sflow.loop:
+      {H: ★} → [header: Cn H]
+    → {C: ★} → [continue: Cn C]
+    → {M: ★} → [merge: Cn M]
+    → Cn H, normalize_loop;
+
+/// ## Phases
+///
+axm %sflow.reduciblify: %compile.Phase;
+///
+/// Transforms control flow between basic blocks into
+/// explicit structured control flow using the structures defined above.
+axm %sflow.structuralize: %compile.Phase;
+///
+/// Transforms recursion in top-level returning Lams into basic blocks
+/// with an explicit stack.
+axm %sflow.derecursify: %compile.Phase;
