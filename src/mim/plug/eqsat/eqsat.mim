@@ -17,8 +17,17 @@
 /// ## Dependencies
 ///
 import compile;
+plugin core;
 ///
 /// ## Operations
+/// 
+/// TODO: implement an operation for adding rewrite rules to egg
+///
+/// ### %%demo.const_idx
+///
+/// The 42 constant, evaluated using a normalizer
+///
+axm %eqsat.const_idx: [n: Nat] → Idx n, normalize_const;
 ///
 /// ## Passes and Phases
 ///

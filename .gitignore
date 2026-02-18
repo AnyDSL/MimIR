@@ -8,6 +8,8 @@
 .DS_Store
 .cache
 build*/
+target/
+cargo.lock
 compile_commands.json
 vgcore.*
 assets/*.aux
