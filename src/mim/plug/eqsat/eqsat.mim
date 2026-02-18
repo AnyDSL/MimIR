@@ -1,0 +1,33 @@
+/// # The eqsat Plugin {#eqsat}
+///
+/// @see mim::plug::eqsat
+///
+/// An equality saturation plugin
+///
+/// [TOC]
+///
+/// This plugin is responsible for optimizing MimIR
+/// programs through the process of equality saturation.
+///
+/// It achieves this in three steps:
+/// 1) Convert the program into a symbolic expression
+/// 2) Pass this expression to the egg equality saturation implementation
+/// 3) Rewrite the program based on the optimized symbolic expression returned by egg
+///
+/// ## Dependencies
+///
+import compile;
+///
+/// ## Operations
+///
+/// ## Passes and Phases
+///
+/// ### Phases
+///
+axm %eqsat.egg_rewrite_phase: %compile.Phase;
+///
+let eqsat_phases =
+    %compile.phases ff (
+        optimization_phase,
+        %eqsat.egg_rewrite_phase,
+    );
