@@ -25,6 +25,8 @@ public:
     CFG(Lam* entry);
     ~CFG();
 
+    Node* entry() { return entry_; }
+
     /// Transforms the CFG into its limit graph by repeatedly applying
     /// - T_1: Deletion of self-loop
     /// - T_2: Merging of nodes a and b, where a is the only predecessor of b

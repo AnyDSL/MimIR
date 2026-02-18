@@ -6,60 +6,47 @@ namespace mim::plug::sflow {
 
 using namespace std::views;
 
-DominatorTree::DominatorTree(Lam* root) {
-    assign_names(root);
+DominatorTree::DominatorTree(CFG& cfg) {
+    assign_names(cfg.entry());
 
-    // idoms[n_0] = n_0
-    idoms_[root] = root;
+    // idoms[entry] = entry
+    idoms_[cfg.entry()] = cfg.entry();
 
-    defs_.resize(count_);
-    for (auto [def, index] : names_)
-        defs_[index] = def;
+    nodes_.resize(count_);
+    for (auto [node, index] : names_)
+        nodes_[index] = node;
 
     bool changed = true;
     while (changed) {
         changed = false;
-        for (auto def : defs_ | reverse | drop(1)) {
-            const Def* new_idom = nullptr;
-            for (auto pred : preds_[def])
+        for (auto node : nodes_ | reverse | drop(1)) {
+            Node* new_idom = nullptr;
+            for (auto pred : node->preds)
                 if (idoms_[pred]) new_idom = new_idom ? intersect(new_idom, pred) : pred;
-            if (idoms_[def] != new_idom) {
-                idoms_[def] = new_idom;
-                changed     = true;
+            if (idoms_[node] != new_idom) {
+                idoms_[node] = new_idom;
+                changed      = true;
             }
         }
     }
 }
 
-void DominatorTree::assign_names(Lam* lam) {
-    // Do not enter bodies of returning lams
-    // as they are not relevant for in-lam control
-    // flow. Return continuations also appear in local_muts
-    // and are handled separately.
-    if (lam->ret_pi()) return;
-
+void DominatorTree::assign_names(Node* node) {
     // Skip already visited
-    if (idoms_.contains(lam)) return;
+    if (idoms_.contains(node)) return;
 
     // Add placeholder idom
-    idoms_[lam] = nullptr;
+    idoms_[node] = nullptr;
 
     // Post-order traversal
-    for (auto op : lam->deps())
-        for (auto local_mut : op->local_muts())
-            if (auto local_lam = local_mut->isa<Lam>()) {
-                // add predecessor
-                if (!preds_.contains(local_lam)) preds_[local_lam] = DefVec();
-                preds_[local_lam].push_back(lam);
-
-                assign_names(local_lam);
-            }
+    for (auto succ : node->succs)
+        assign_names(succ);
 
     // Assign name
-    names_[lam] = count_++;
+    names_[node] = count_++;
 }
 
-const Def* DominatorTree::intersect(const Def* left, const Def* right) {
+DominatorTree::Node* DominatorTree::intersect(Node* left, Node* right) {
     auto finger1 = left;
     auto finger2 = right;
     while (finger1 != finger2) {
