@@ -1,7 +1,7 @@
 use crate::Mim::*;
 use crate::rules::*;
 use egg::*;
-use ffi::MimNode;
+use ffi::{MimKind, MimNode};
 
 mod rules;
 
@@ -36,8 +36,26 @@ pub fn equality_saturate(sexpr: &str) -> Vec<MimNode> {
 pub mod ffi {
 
     #[derive(Debug)]
+    enum MimKind {
+        Lam,
+        Con,
+        App,
+        Var,
+        Lit,
+        Tuple,
+        Extract,
+        Ins,
+        Sigma,
+        Arr,
+        Cn,
+        Idx,
+        Num,
+        Symbol,
+    }
+
+    #[derive(Debug)]
     struct MimNode {
-        variant: u32,
+        variant: MimKind,
         children: Vec<u32>,
         num: i32,
         symbol: String,
@@ -48,7 +66,7 @@ pub mod ffi {
     }
 }
 
-fn new_mim(variant: u32, children: &[Id], num: i32, symbol: String) -> MimNode {
+fn new_mim(variant: MimKind, children: &[Id], num: i32, symbol: String) -> MimNode {
     let mut converted_ids = Vec::new();
     for id in children {
         converted_ids.push(usize::from(*id) as u32);
@@ -67,24 +85,24 @@ fn rexpr_to_vec(rexpr: RecExpr<Mim>) -> Vec<MimNode> {
 
     for node in rexpr.as_ref() {
         match node {
-            Lam(children) => nodes.push(new_mim(0, children, 0, String::new())),
-            Con(children) => nodes.push(new_mim(1, children, 0, String::new())),
-            App(children) => nodes.push(new_mim(2, children, 0, String::new())),
+            Lam(children) => nodes.push(new_mim(MimKind::Lam, children, 0, String::new())),
+            Con(children) => nodes.push(new_mim(MimKind::Con, children, 0, String::new())),
+            App(children) => nodes.push(new_mim(MimKind::App, children, 0, String::new())),
 
-            Mim::Var(children) => nodes.push(new_mim(3, children, 0, String::new())),
-            Lit(children) => nodes.push(new_mim(4, children, 0, String::new())),
+            Mim::Var(children) => nodes.push(new_mim(MimKind::Var, children, 0, String::new())),
+            Lit(children) => nodes.push(new_mim(MimKind::Lit, children, 0, String::new())),
 
-            Tuple(children) => nodes.push(new_mim(5, children, 0, String::new())),
-            Extract(children) => nodes.push(new_mim(6, children, 0, String::new())),
-            Ins(children) => nodes.push(new_mim(7, children, 0, String::new())),
+            Tuple(children) => nodes.push(new_mim(MimKind::Tuple, children, 0, String::new())),
+            Extract(children) => nodes.push(new_mim(MimKind::Extract, children, 0, String::new())),
+            Ins(children) => nodes.push(new_mim(MimKind::Ins, children, 0, String::new())),
 
-            Sigma(children) => nodes.push(new_mim(8, children, 0, String::new())),
-            Arr(children) => nodes.push(new_mim(9, children, 0, String::new())),
-            Cn(child) => nodes.push(new_mim(10, &[*child], 0, String::new())),
-            Idx(child) => nodes.push(new_mim(11, &[*child], 0, String::new())),
+            Sigma(children) => nodes.push(new_mim(MimKind::Sigma, children, 0, String::new())),
+            Arr(children) => nodes.push(new_mim(MimKind::Arr, children, 0, String::new())),
+            Cn(child) => nodes.push(new_mim(MimKind::Cn, &[*child], 0, String::new())),
+            Idx(child) => nodes.push(new_mim(MimKind::Idx, &[*child], 0, String::new())),
 
-            Num(n) => nodes.push(new_mim(12, &[], *n, String::new())),
-            Symbol(s) => nodes.push(new_mim(13, &[], 0, s.clone())),
+            Num(n) => nodes.push(new_mim(MimKind::Num, &[], *n, String::new())),
+            Symbol(s) => nodes.push(new_mim(MimKind::Symbol, &[], 0, s.clone())),
         }
     }
 

@@ -33,10 +33,8 @@ void EggRewrite::start() {
 
     auto rec_expr = equality_saturate(sexpr.str());
 
-    // TODO: should define an enum for
-    // mim node variants at the FFI so node.variant is typed as that enum
     for (auto node : rec_expr)
-        node.variant = node.variant;
+        if (node.variant == MimKind::Lam) new_world().lam(nullptr, nullptr, nullptr);
 }
 
 } // namespace mim::plug::eqsat
