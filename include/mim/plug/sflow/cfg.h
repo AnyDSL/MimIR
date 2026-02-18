@@ -37,11 +37,11 @@ public:
     void reduce();
 
     /// Removes self-loop from given node, if present.
-    void t1(Node* node) { node->succs.erase(node); }
+    bool t1(Node* node) { node->succs.erase(node); }
 
     /// Merges given node with its predecessor, if there is only
     /// a single one.
-    void t2(Node* node);
+    bool t2(Node* node);
 
     /// Duplicate given node(s) into a separate copy per predecessor.
     //
@@ -56,6 +56,8 @@ public:
 
 private:
     Node* build(Lam* lam);
+
+    bool reduce(Node* current, Set<Node*>& visited);
 
     Node* entry_;
     DefMap<Set<Node*>> lam2node;

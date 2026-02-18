@@ -12,14 +12,32 @@ CFG::~CFG() {
         delete node;
 }
 
-void CFG::reduce() {}
+void CFG::reduce() {
+    Set<Node*> visited;
+    bool changed = true;
+    while (changed)
+        changed = reduce(entry(), visited);
+}
 
-void CFG::t2(Node* node) {
+bool CFG::reduce(Node* current, Set<Node*>& visited) {
+    visited.insert(current);
+    bool changed = false;
+    for (auto succ : current->succs) {
+        changed |= reduce(succ, visited);
+        changed |= t1(succ);
+        changed |= t2(succ);
+    }
+    changed |= t1(current);
+    visited.erase(current);
+    return changed;
+}
+
+bool CFG::t2(Node* node) {
     // The entry basically has another invisible predecessor
     // and should therefore not be merged ever.
-    if (node == entry_) return;
+    if (node == entry_) return false;
 
-    if (node->preds.size() != 1) return;
+    if (node->preds.size() != 1) return false;
 
     Node* pred = *node->preds.begin();
 
@@ -39,6 +57,8 @@ void CFG::t2(Node* node) {
     }
 
     delete node;
+
+    return true;
 }
 
 void CFG::split(Node* node) {
