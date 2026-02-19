@@ -14,10 +14,10 @@ class CFG {
 public:
     struct Node {
         Node() = default;
-        Node(Def* entry)
+        Node(Lam* entry)
             : lams({entry}) {}
 
-        DefSet lams;
+        GIDSet<Lam*> lams;
         Set<Node*> preds;
         Set<Node*> succs;
     };
@@ -46,7 +46,7 @@ public:
     void reduce();
 
     /// Removes self-loop from given node, if present.
-    bool t1(Node* node) { node->succs.erase(node); }
+    bool t1(Node* node) { return node->succs.erase(node); }
 
     /// Merges given node with its predecessor, if there is only
     /// a single one.
@@ -69,7 +69,8 @@ private:
     bool reduce(Node* current, Set<Node*>& visited);
 
     Node* entry_;
-    DefMap<Set<Node*>> lam2node;
+    DefMap<Set<Node*>> lam2node_;
+    bool split_lams_ = true;
 };
 
 } // namespace mim::plug::sflow
