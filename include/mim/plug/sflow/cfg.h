@@ -27,6 +27,15 @@ public:
 
     Node* entry() { return entry_; }
 
+    /// Creates the limit graph of this CFG by copying it and calling
+    /// [reduce](@ref CFG::reduce) on it.
+    CFG limit() {
+        CFG limit         = *this;
+        limit.split_lams_ = false;
+        limit.reduce();
+        return limit;
+    }
+
     /// Transforms the CFG into its limit graph by repeatedly applying
     /// - T_1: Deletion of self-loop
     /// - T_2: Merging of nodes a and b, where a is the only predecessor of b
