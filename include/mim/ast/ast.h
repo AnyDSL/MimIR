@@ -97,6 +97,7 @@ public:
 
     void bootstrap(Sym plugin, std::ostream& h);
     void bootstrap_python(Sym plugin, std::ostream& h);
+    void bootstrap_python_subs(std::vector<mim::ast::AnnexInfo> annexes_with_subs, Sym plugin, Tab &tab, std::ostream& h);
     friend void swap(AST& a1, AST& a2) noexcept {
         using std::swap;
         // clang-format off
