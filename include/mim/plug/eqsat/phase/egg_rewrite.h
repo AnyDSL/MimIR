@@ -15,6 +15,7 @@ public:
 
     void start() override;
 
+private:
     void convert_lam(MimNode node);
     void convert_con(MimNode node);
     void convert_app(MimNode node);
@@ -30,9 +31,21 @@ public:
     void convert_num(MimNode node);
     void convert_symbol(MimNode node);
 
-private:
+    void add_def(MimNode node, const Def* converted) { added_[node] = converted; }
+    void add_symbol(rust::String sym, const Def* converted) { sym_table_[sym] = converted; }
+
+    // TODO: what should be returned in case something isn't found?
+    // - i.e. get_num and get_symbol return 0 and "" respectively when
+    // the node is not a Num or Symbol node
+    // - get_def would panic though if called with a node that hasn't been
+    // put into added_ yet
+    MimNode get_node(int id) { return res_[id]; }
+    const Def* get_def(int id) { return added_[res_[id]]; }
+    rust::String get_symbol(int id) { return res_[id].symbol; }
+    int get_num(int id) { return res_[id].num; }
+
     rust::Vec<MimNode> res_;
-    DefVec added_;
+    std::unordered_map<MimNode, const Def*> added_;
     absl::node_hash_map<std::string, const Def*> sym_table_;
 };
 

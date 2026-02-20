@@ -39,54 +39,58 @@ void EggRewrite::start() {
 
 void EggRewrite::convert_lam(MimNode node) {}
 
+// (con <name> <arg_tuple> <body>)
+// i.e. (con foo (tuple (var a Nat)) (app %core.bar a))
 void EggRewrite::convert_con(MimNode node) {
-    auto sym       = res_[node.children[0]].symbol;
-    auto arg_tuple = res_[node.children[1]];
+    auto con_name  = get_symbol(node.children[0]);
+    auto arg_tuple = get_node(node.children[1]);
     assert(arg_tuple.kind == MimKind::Tuple);
 
-    auto var_syms = std::vector<std::string>();
-    auto domain   = DefVec{};
-    auto codomain = DefVec{};
+    auto var_names = std::vector<std::string>();
+    auto var_types = DefVec{};
+    auto ret_type  = DefVec{};
     for (auto child : arg_tuple.children) {
-        auto var = res_[child];
+        auto var = get_node(child);
         assert(var.kind == MimKind::Var);
 
-        auto var_sym = res_[var.children[0]].symbol;
-        var_syms.push_back(var_sym.c_str());
-        auto var_type = added_[var.children[1]];
+        auto var_name = get_symbol(var.children[0]);
+        auto var_type = get_def(var.children[1]);
+        var_names.push_back(var_name.c_str());
 
         if (child != arg_tuple.children.back())
-            domain.push_back(var_type);
+            var_types.push_back(var_type);
         else
-            codomain.push_back(var_type);
+            ret_type.push_back(var_type);
     }
 
-    auto new_lam = new_world().mut_fun(domain, codomain)->set(sym.c_str());
-    new_lam->set_body(added_[node.children[2]]);
-    added_.push_back(new_lam);
+    auto new_con = new_world().mut_fun(var_types, ret_type)->set(con_name.c_str());
+    new_con->set_body(get_def(node.children[2]));
+    add_def(node, new_con);
 
-    sym_table_[sym] = new_lam;
-    auto i          = 0;
-    for (auto var : new_lam->vars()) {
-        auto var_sym        = var_syms[i];
-        sym_table_[var_sym] = var;
+    add_symbol(con_name, new_con);
+    auto i = 0;
+    for (auto var : new_con->vars()) {
+        auto var_name = var_names[i];
+        add_symbol(var_name, var);
     }
 }
 
 void EggRewrite::convert_app(MimNode node) {
-    auto sym = res_[node.children[0]].symbol;
-    auto arg = added_[node.children[1]];
+    // TODO:
+    // case 1: the callee is a symbol (i.e. a variable or an axiom)
+    // case 2: the callee is a definition (i.e. a lambda)
+    auto callee = get_symbol(node.children[0]);
+    auto arg    = get_def(node.children[1]);
 
-    if (sym == "%core.nat.add") {
+    if (callee == "%core.nat.add") {
         // more generally, if the symbol refers to an annex
-        auto new_call = new_world().call(sym, arg);
-        added_.push_back(new_call);
+        auto new_call = new_world().call(callee, arg);
+        add_def(node, new_call);
     } else {
-        // if it refers, to something previously defined, like a variable
+        // if it refers, to something previously defined and referred to by name, like a variable
         // or a lambda, or anything else
-        auto callee  = sym_table_[sym];
-        auto new_app = new_world().app(callee, arg);
-        added_.push_back(new_app);
+        auto new_app = new_world().app(sym_table_[callee], arg);
+        add_def(node, new_app);
     }
 }
 
@@ -100,9 +104,9 @@ void EggRewrite::convert_var(MimNode node) {
 
 void EggRewrite::convert_lit(MimNode node) {
     // This can also be a symbol in the case of "tt" and "ff" literals
-    auto lit_val = res_[node.children[0]].num;
+    auto lit_val = get_num(node.children[0]);
     auto new_lit = new_world().lit_nat(lit_val);
-    added_.push_back(new_lit);
+    add_def(node, new_lit);
 }
 
 void EggRewrite::convert_tuple(MimNode node) {
@@ -112,9 +116,9 @@ void EggRewrite::convert_tuple(MimNode node) {
         // will only match if we add something for each and every
         // MimNode, meaning that we want some kind of dummy nodes
         // in the cases of Num and Symbol, for instance.
-        ops.push_back(added_[child]);
+        ops.push_back(get_def(child));
     auto new_tuple = new_world().tuple(ops);
-    added_.push_back(new_tuple);
+    add_def(node, new_tuple);
 }
 
 void EggRewrite::convert_extract(MimNode node) {}
