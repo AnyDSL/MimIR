@@ -38,19 +38,6 @@ namespace math = mim::plug::math;
 namespace mem  = mim::plug::mem;
 
 namespace {
-bool is_const(const Def* def) {
-    if (def->isa<Bot>()) return true;
-    if (def->isa<Lit>()) return true;
-    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->arity()) && is_const(pack->body());
-
-    if (auto tuple = def->isa<Tuple>()) {
-        auto ops = tuple->ops();
-        return std::ranges::all_of(ops, [](auto def) { return is_const(def); });
-    }
-
-    return false;
-}
-
 const char* math_suffix(const Def* type) {
     if (auto w = math::isa_f(type)) {
         switch (*w) {
@@ -459,7 +446,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             return emit(tuple->proj(2, 1));
         }
 
-        if (is_const(tuple)) {
+        if (tuple->is_closed()) {
             bool is_array = tuple->type()->isa<Arr>();
 
             std::string s;
