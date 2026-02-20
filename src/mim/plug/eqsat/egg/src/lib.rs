@@ -55,7 +55,7 @@ pub mod ffi {
 
     #[derive(Debug)]
     struct MimNode {
-        variant: MimKind,
+        kind: MimKind,
         children: Vec<u32>,
         num: i32,
         symbol: String,
@@ -66,14 +66,14 @@ pub mod ffi {
     }
 }
 
-fn new_mim(variant: MimKind, children: &[Id], num: i32, symbol: String) -> MimNode {
+fn new_mim(kind: MimKind, children: &[Id], num: i32, symbol: String) -> MimNode {
     let mut converted_ids = Vec::new();
     for id in children {
         converted_ids.push(usize::from(*id) as u32);
     }
 
     MimNode {
-        variant,
+        kind,
         children: converted_ids,
         num,
         symbol,
