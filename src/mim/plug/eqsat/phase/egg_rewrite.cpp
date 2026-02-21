@@ -35,12 +35,14 @@ void EggRewrite::start() {
             convert_lit(node);
         else if (node.kind == MimKind::Tuple)
             convert_tuple(node);
+
+    swap(old_world(), new_world());
 }
 
 void EggRewrite::convert_lam(MimNode node) {}
 
 // (con <name> <arg_tuple> <body>)
-// i.e. (con foo (tuple (var a Nat)) (app %core.bar a))
+// i.e. (con foo (tuple (var a Nat) (var ret (cn Nat))) (app ret a))
 void EggRewrite::convert_con(MimNode node) {
     auto con_name  = get_symbol(node.children[0]);
     auto arg_tuple = get_node(node.children[1]);
@@ -78,7 +80,7 @@ void EggRewrite::convert_con(MimNode node) {
 void EggRewrite::convert_app(MimNode node) {
     // TODO:
     // case 1: the callee is a symbol (i.e. a variable or an axiom)
-    // case 2: the callee is a definition (i.e. a lambda)
+    // case 2: the callee is a definition (i.e. a lambda or an app)
     auto callee = get_symbol(node.children[0]);
     auto arg    = get_def(node.children[1]);
 

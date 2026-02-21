@@ -3,17 +3,28 @@
 #include <mim/phase.h>
 
 #include "mim/def.h"
+#include "mim/rewrite.h"
 
 #include "../src/mim/plug/eqsat/egg/target/cxxbridge/eqsat/src/lib.rs.h"
 
 namespace mim::plug::eqsat {
 
-class EggRewrite : public RWPhase {
+class EggRewrite : public Phase, public Rewriter {
 public:
+    EggRewrite(World& world, std::string name)
+        : Phase(world, std::move(name))
+        , Rewriter(world.inherit()) {}
     EggRewrite(World& world, flags_t annex)
-        : RWPhase(world, annex) {}
+        : Phase(world, annex)
+        , Rewriter(world.inherit()) {}
 
     void start() override;
+
+    using Phase::world;
+    using Rewriter::world;
+    World& world() = delete;
+    World& old_world() { return Phase::world(); }
+    World& new_world() { return Rewriter::world(); }
 
 private:
     void convert_lam(MimNode node);
@@ -34,13 +45,11 @@ private:
     void add_def(MimNode node, const Def* converted) { added_[node] = converted; }
     void add_symbol(rust::String sym, const Def* converted) { sym_table_[sym] = converted; }
 
-    // TODO: what should be returned in case something isn't found?
-    // - i.e. get_num and get_symbol return 0 and "" respectively when
-    // the node is not a Num or Symbol node
-    // - get_def would panic though if called with a node that hasn't been
-    // put into added_ yet
     MimNode get_node(int id) { return res_[id]; }
-    const Def* get_def(int id) { return added_[res_[id]]; }
+    const Def* get_def(int id) {
+        auto node = res_[id];
+        return added_.contains(node) ? added_[node] : nullptr;
+    }
     rust::String get_symbol(int id) { return res_[id].symbol; }
     int get_num(int id) { return res_[id].num; }
 
