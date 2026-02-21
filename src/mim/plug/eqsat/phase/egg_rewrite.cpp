@@ -22,7 +22,10 @@ void EggRewrite::start() {
 
     auto res_ = equality_saturate(sexpr.str());
 
-    for (auto node : res_)
+    for (size_t id = 0; id < res_.size(); ++id) {
+        curr_id_  = id;
+        auto node = res_[id];
+
         if (node.kind == MimKind::Lam)
             convert_lam(node);
         else if (node.kind == MimKind::Con)
@@ -35,6 +38,7 @@ void EggRewrite::start() {
             convert_lit(node);
         else if (node.kind == MimKind::Tuple)
             convert_tuple(node);
+    }
 
     swap(old_world(), new_world());
 }
@@ -42,7 +46,7 @@ void EggRewrite::start() {
 void EggRewrite::convert_lam(MimNode node) {}
 
 // (con <name> <arg_tuple> <body>)
-// i.e. (con foo (tuple (var a Nat) (var ret (cn Nat))) (app ret a))
+// i.e. (con foo (tuple (var a Nat) (var ret (cn nat))) (app ret a))
 void EggRewrite::convert_con(MimNode node) {
     auto con_name  = get_symbol(node.children[0]);
     auto arg_tuple = get_node(node.children[1]);
@@ -67,7 +71,7 @@ void EggRewrite::convert_con(MimNode node) {
 
     auto new_con = new_world().mut_fun(var_types, ret_type)->set(con_name.c_str());
     new_con->set_body(get_def(node.children[2]));
-    add_def(node, new_con);
+    add_def(new_con);
 
     add_symbol(con_name, new_con);
     auto i = 0;
@@ -86,13 +90,14 @@ void EggRewrite::convert_app(MimNode node) {
 
     if (callee == "%core.nat.add") {
         // more generally, if the symbol refers to an annex
-        auto new_call = new_world().call(callee, arg);
-        add_def(node, new_call);
+        // TODO: there is some bug here when call(callee, arg) calls annex(callee) in world.h (l571 -> l182)
+        // auto new_call = new_world().call(callee, arg);
+        // add_def(new_call);
     } else {
         // if it refers, to something previously defined and referred to by name, like a variable
         // or a lambda, or anything else
-        auto new_app = new_world().app(sym_table_[callee], arg);
-        add_def(node, new_app);
+        auto new_app = new_world().app(sym_table_[callee.c_str()], arg);
+        add_def(new_app);
     }
 }
 
@@ -108,7 +113,7 @@ void EggRewrite::convert_lit(MimNode node) {
     // This can also be a symbol in the case of "tt" and "ff" literals
     auto lit_val = get_num(node.children[0]);
     auto new_lit = new_world().lit_nat(lit_val);
-    add_def(node, new_lit);
+    add_def(new_lit);
 }
 
 void EggRewrite::convert_tuple(MimNode node) {
@@ -120,16 +125,23 @@ void EggRewrite::convert_tuple(MimNode node) {
         // in the cases of Num and Symbol, for instance.
         ops.push_back(get_def(child));
     auto new_tuple = new_world().tuple(ops);
-    add_def(node, new_tuple);
+    add_def(new_tuple);
 }
 
 void EggRewrite::convert_extract(MimNode node) {}
 void EggRewrite::convert_ins(MimNode node) {}
+
 void EggRewrite::convert_sigma(MimNode node) {}
 void EggRewrite::convert_arr(MimNode node) {}
 void EggRewrite::convert_cn(MimNode node) {}
 void EggRewrite::convert_idx(MimNode node) {}
+
 void EggRewrite::convert_num(MimNode node) {}
-void EggRewrite::convert_symbol(MimNode node) {}
+void EggRewrite::convert_symbol(MimNode node) {
+    // TODO: certain types like "Nat" or "I8"
+    // need to be correctly converted here so that
+    // methods like convert_con can simply call on get_def
+    // to get a def representing the type
+}
 
 } // namespace mim::plug::eqsat

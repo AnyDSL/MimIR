@@ -120,15 +120,15 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
     std::string name;
 
     if (type->isa<Nat>()) {
-        return types_[type] = "Nat";
+        return types_[type] = "nat";
     } else if (auto size = Idx::isa(type)) {
         if (auto lit_size = Idx::size2bitwidth(size)) {
             switch (*lit_size) {
-                case 1: return types_[type] = "Bool";
-                case 8: return types_[type] = "I8";
-                case 16: return types_[type] = "I16";
-                case 32: return types_[type] = "I32";
-                case 64: return types_[type] = "I64";
+                case 1: return types_[type] = "bool";
+                case 8: return types_[type] = "i8";
+                case 16: return types_[type] = "i16";
+                case 32: return types_[type] = "i32";
+                case 64: return types_[type] = "i64";
                 default: break;
             }
         }
@@ -182,7 +182,7 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
     } else if (auto hole = type->isa<Hole>()) {
         print(s, "(hole {})", id(hole));
     } else if (auto extract = type->isa<Extract>()) {
-        print(s, "(extracttype {})", extract);
+        print(s, "(extract {})", extract);
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
             if (level == 0) print(s, "★");

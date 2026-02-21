@@ -35,27 +35,27 @@ private:
     void convert_tuple(MimNode node);
     void convert_extract(MimNode node);
     void convert_ins(MimNode node);
+
     void convert_sigma(MimNode node);
     void convert_arr(MimNode node);
     void convert_cn(MimNode node);
     void convert_idx(MimNode node);
+
     void convert_num(MimNode node);
     void convert_symbol(MimNode node);
 
-    void add_def(MimNode node, const Def* converted) { added_[node] = converted; }
-    void add_symbol(rust::String sym, const Def* converted) { sym_table_[sym] = converted; }
+    void add_def(const Def* converted) { added_[curr_id_] = converted; }
+    void add_symbol(rust::String sym, const Def* converted) { sym_table_[sym.c_str()] = converted; }
 
     MimNode get_node(int id) { return res_[id]; }
-    const Def* get_def(int id) {
-        auto node = res_[id];
-        return added_.contains(node) ? added_[node] : nullptr;
-    }
+    const Def* get_def(int id) { return added_.contains(id) ? added_[id] : nullptr; }
     rust::String get_symbol(int id) { return res_[id].symbol; }
     int get_num(int id) { return res_[id].num; }
 
+    int curr_id_;
     rust::Vec<MimNode> res_;
-    std::unordered_map<MimNode, const Def*> added_;
-    absl::node_hash_map<std::string, const Def*> sym_table_;
+    std::unordered_map<int, const Def*> added_;
+    std::unordered_map<std::string, const Def*> sym_table_;
 };
 
 }; // namespace mim::plug::eqsat
