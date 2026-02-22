@@ -1,25 +1,35 @@
 #---- Cargo integration ----
 
 set(CARGO_MANIFEST ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/Cargo.toml)
-set(CARGO_TARGET_DIR ${CMAKE_SOURCE_DIR}/build/include/rust)
+set(CARGO_TARGET_DIR ${CMAKE_SOURCE_DIR}/build/include/egg)
 
 set(EGG_SOURCE_FILE ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/src/lib.rs)
 set(EGG_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat/src/lib.rs.cc)
-set(EGG_LIB ${CARGO_TARGET_DIR}/release/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
 
+# TODO: differentiate between debug and release builds depending on ${CMAKE_BUILD_TYPE}
+set(EGG_LIB ${CARGO_TARGET_DIR}/debug/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_custom_command(
-  OUTPUT ${EGG_BRIDGE_CPP} ${EGG_LIB}
-  COMMAND cargo build --release --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
-  DEPENDS ${EGG_SOURCE_FILE}
-  USES_TERMINAL
-  COMMENT "Running cargo..."
+    OUTPUT ${EGG_BRIDGE_CPP} ${EGG_LIB}
+    COMMAND cargo build --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
+    DEPENDS ${EGG_SOURCE_FILE}
+    USES_TERMINAL
+    COMMENT "Running cargo..."
 )
 
 add_custom_target(rust_egg ALL
-  DEPENDS ${EGG_BRIDGE_CPP} ${EGG_LIB}
+    DEPENDS ${EGG_BRIDGE_CPP} ${EGG_LIB}
 )
 
 add_library(eqsat STATIC IMPORTED)
+
+# TODO: only required for windows
+target_link_libraries(eqsat
+    INTERFACE
+        ws2_32
+        userenv
+        advapi32
+        ntdll
+)
 set_target_properties(eqsat PROPERTIES IMPORTED_LOCATION ${EGG_LIB})
 add_dependencies(eqsat rust_egg)
 

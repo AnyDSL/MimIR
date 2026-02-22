@@ -1,6 +1,7 @@
 #include "mim/plug/eqsat/phase/egg_rewrite.h"
 
 #include "mim/def.h"
+#include "mim/driver.h"
 
 #include "mim/plug/core/be/sexpr.h"
 
@@ -11,7 +12,13 @@ namespace mim::plug::eqsat {
  */
 void EggRewrite::start() {
     std::ostringstream sexpr;
-    sexpr::emit(old_world(), sexpr);
+
+    // sexpr::emit(old_world(), sexpr);
+    Driver driver;
+    if (auto sexpr_backend = driver.backend("sexpr"))
+        sexpr_backend(old_world(), sexpr);
+    else
+        error("'sexpr' emitter not loaded; try loading 'core' plugin");
 
     auto res_ = equality_saturate(sexpr.str());
 
