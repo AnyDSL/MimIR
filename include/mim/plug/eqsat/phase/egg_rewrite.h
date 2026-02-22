@@ -5,7 +5,7 @@
 #include "mim/def.h"
 #include "mim/rewrite.h"
 
-#include "../src/mim/plug/eqsat/egg/target/cxxbridge/eqsat/src/lib.rs.h"
+#include "rust/cxxbridge/eqsat/src/lib.rs.h"
 
 namespace mim::plug::eqsat {
 

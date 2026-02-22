@@ -1,3 +1,30 @@
+#---- Cargo integration ----
+
+set(CARGO_MANIFEST ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/Cargo.toml)
+set(CARGO_TARGET_DIR ${CMAKE_SOURCE_DIR}/build/include/rust)
+
+set(EGG_SOURCE_FILE ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/src/lib.rs)
+set(EGG_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat/src/lib.rs.cc)
+set(EGG_LIB ${CARGO_TARGET_DIR}/release/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
+
+add_custom_command(
+  OUTPUT ${EGG_BRIDGE_CPP} ${EGG_LIB}
+  COMMAND cargo build --release --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
+  DEPENDS ${EGG_SOURCE_FILE}
+  USES_TERMINAL
+  COMMENT "Running cargo..."
+)
+
+add_custom_target(rust_egg ALL
+  DEPENDS ${EGG_BRIDGE_CPP} ${EGG_LIB}
+)
+
+add_library(eqsat STATIC IMPORTED)
+set_target_properties(eqsat PROPERTIES IMPORTED_LOCATION ${EGG_LIB})
+add_dependencies(eqsat rust_egg)
+
+#---------------------------
+
 add_library(libmim SHARED)
 target_sources(libmim
     PRIVATE
@@ -50,10 +77,10 @@ set_target_properties(libmim PROPERTIES PREFIX "")
 target_compile_features(libmim PUBLIC cxx_std_20)
 
 if(MSVC)
-    target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
-    if(BUILD_SHARED_LIBS)
-        target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)
-    endif()
+  target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
+  if(BUILD_SHARED_LIBS)
+    target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)
+  endif()
 endif()
 
 configure_file(
@@ -69,6 +96,7 @@ target_include_directories(libmim
 )
 target_link_libraries(libmim
     PUBLIC
+        eqsat
         absl::btree
         absl::fixed_array
         absl::inlined_vector

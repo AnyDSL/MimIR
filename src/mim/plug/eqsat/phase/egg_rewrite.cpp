@@ -4,13 +4,6 @@
 
 #include "mim/plug/core/be/sexpr.h"
 
-// TODO: we have to somehow include the build
-// of this header file in cmake as it is now manually
-// built from ../egg/ using 'cargo build --release'
-// Also, we might want the built files to end up
-// in the build directory rather than here in the src directory
-#include "../egg/target/cxxbridge/eqsat/src/lib.rs.h"
-
 namespace mim::plug::eqsat {
 
 /*
@@ -23,6 +16,8 @@ void EggRewrite::start() {
     auto res_ = equality_saturate(sexpr.str());
 
     for (size_t id = 0; id < res_.size(); ++id) {
+        // TODO: either pass the id as well or use curr_node_
+        // but don't mix up the two like this
         curr_id_  = id;
         auto node = res_[id];
 
