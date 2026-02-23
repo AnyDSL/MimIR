@@ -1,5 +1,6 @@
 #---- Cargo integration ----
 
+set(WIN_DEBUG_CONFIG ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/.cargo/windbg-config.toml)
 set(CARGO_MANIFEST ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/Cargo.toml)
 set(CARGO_TARGET_DIR ${CMAKE_SOURCE_DIR}/build/include/egg)
 
@@ -7,10 +8,11 @@ set(EGG_SOURCE_FILE ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/src/lib.rs)
 set(EGG_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat/src/lib.rs.cc)
 
 # TODO: differentiate between debug and release builds depending on ${CMAKE_BUILD_TYPE}
+# (only debug builds on windows require --config WIN_DEBUG_CONFIG)
 set(EGG_LIB ${CARGO_TARGET_DIR}/debug/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
 add_custom_command(
     OUTPUT ${EGG_BRIDGE_CPP} ${EGG_LIB}
-    COMMAND cargo build --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
+    COMMAND cargo build --manifest-path ${CARGO_MANIFEST} --config ${WIN_DEBUG_CONFIG} --target-dir ${CARGO_TARGET_DIR}
     DEPENDS ${EGG_SOURCE_FILE}
     USES_TERMINAL
     COMMENT "Running cargo..."
