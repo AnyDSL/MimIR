@@ -22,11 +22,8 @@ void EggRewrite::start() {
 
     auto res_ = equality_saturate(sexpr.str());
 
-    for (size_t id = 0; id < res_.size(); ++id) {
-        // TODO: either pass the id as well or use curr_node_
-        // but don't mix up the two like this
-        curr_id_  = id;
-        auto node = res_[id];
+    for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
+        auto node = res_[curr_id_];
 
         if (node.kind == MimKind::Lam)
             convert_lam(node);
@@ -51,16 +48,13 @@ void EggRewrite::convert_lam(MimNode node) {}
 // i.e. (con foo (tuple (var a Nat) (var ret (cn nat))) (app ret a))
 void EggRewrite::convert_con(MimNode node) {
     auto con_name  = get_symbol(node.children[0]);
-    auto arg_tuple = get_node(node.children[1]);
-    assert(arg_tuple.kind == MimKind::Tuple);
+    auto arg_tuple = get_node(MimKind::Tuple, node.children[1]);
 
-    auto var_names = std::vector<std::string>();
-    auto var_types = DefVec{};
-    auto ret_type  = DefVec{};
+    std::vector<std::string> var_names;
+    DefVec var_types;
+    DefVec ret_type;
     for (auto child : arg_tuple.children) {
-        auto var = get_node(child);
-        assert(var.kind == MimKind::Var);
-
+        auto var      = get_node(MimKind::Var, child);
         auto var_name = get_symbol(var.children[0]);
         auto var_type = get_def(var.children[1]);
         var_names.push_back(var_name.c_str());

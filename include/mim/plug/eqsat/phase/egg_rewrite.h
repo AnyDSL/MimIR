@@ -47,7 +47,10 @@ private:
     void add_def(const Def* converted) { added_[curr_id_] = converted; }
     void add_symbol(rust::String sym, const Def* converted) { sym_table_[sym.c_str()] = converted; }
 
-    MimNode get_node(int id) { return res_[id]; }
+    MimNode get_node(MimKind expected, int id) {
+        assert(res_[id].kind == expected && "get_node: mismatch between expected and actual node kind");
+        return res_[id];
+    }
     const Def* get_def(int id) { return added_.contains(id) ? added_[id] : nullptr; }
     rust::String get_symbol(int id) { return res_[id].symbol; }
     int get_num(int id) { return res_[id].num; }
