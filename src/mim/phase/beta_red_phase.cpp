@@ -16,7 +16,7 @@ void BetaRedPhase::analyze(const Def* def) {
     if (def->isa<Var>()) return; // ignore Var's mut
 
     for (auto d : def->deps())
-        visit(d);
+        visit(d, true);
 }
 
 void BetaRedPhase::visit(const Def* def, bool candidate) {

@@ -162,7 +162,7 @@ public:
         SiblDeps<false> sibl_rev_deps_;
         Children children_;
         std::deque<std::unique_ptr<SCC>> topo_;
-        absl::node_hash_map<const Node*, const SCC*> SCCs_;
+        absl::flat_hash_map<const Node*, const SCC*> SCCs_;
 
         // implementaiton details
         static constexpr uint32_t Unvisited = uint32_t(-1);

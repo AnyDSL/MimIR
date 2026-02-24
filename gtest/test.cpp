@@ -351,6 +351,114 @@ TEST(FV, fixed_point) {
     EXPECT_EQ(mark, n->mark());
 }
 
+// Testing the example from Table 1 in "SSA without Dominance for Higher-Order Programs".
+TEST(FV, algos) {
+    Driver driver;
+    driver.log().set(Log::Level::Debug).set(&std::cerr);
+    World& w = driver.world();
+    ast::load_plugins(w, "core");
+
+    auto nat = w.type_nat();
+    auto run = w.curr_run();
+
+    // continuations
+    auto f_ = w.mut_con({nat, w.cn(nat)})->set("f");
+    auto hi = w.mut_con(nat)->set("hi");
+    auto hj = w.mut_con(nat)->set("hj");
+    auto bi = w.mut_con(Defs{})->set("bi");
+    auto bj = w.mut_con(Defs{})->set("bj");
+    auto xi = w.mut_con(Defs{})->set("xi");
+    auto xj = w.mut_con(Defs{})->set("xj");
+
+    // vars
+    auto n   = f_->var(2, 0)->set("n");
+    auto ret = f_->var(2, 1)->set("ret");
+    auto vf  = f_->var()->as<Var>()->set("vf");
+    auto i1  = hi->var()->set("i1")->as<Var>();
+    auto j1  = hj->var()->set("j1")->as<Var>();
+    auto j2  = w.call(core::nat::add, Defs{j1, w.lit_nat_1()});
+    auto i2  = w.call(core::nat::add, Defs{i1, j1});
+
+    // var sets
+    auto vf_i1    = w.vars().create(Vector<const Var*>{vf, i1});
+    auto vf_j1    = w.vars().create(Vector<const Var*>{vf, j1});
+    auto vf_i1_j1 = w.vars().create(Vector<const Var*>{vf, i1, j1});
+
+    // connect
+    f_->app(false, hi, w.lit_nat_0());
+    hi->branch(false, w.call(core::ncmp::l, Defs{i1, n}), bi, xi);
+    hj->branch(false, w.call(core::ncmp::l, Defs{j1, n}), bj, xj);
+    bi->app(false, hj, i1);
+    bj->app(false, hj, j2);
+    xi->app(false, ret, i1);
+    xj->app(false, hi, j2);
+
+    EXPECT_EQ(f_->mark(), 0);
+    EXPECT_EQ(hi->mark(), 0);
+    EXPECT_EQ(hj->mark(), 0);
+    EXPECT_EQ(bi->mark(), 0);
+    EXPECT_EQ(bj->mark(), 0);
+    EXPECT_EQ(xi->mark(), 0);
+    EXPECT_EQ(xj->mark(), 0);
+
+    xi->free_vars();
+    EXPECT_EQ(w.curr_run(), run + 2);
+    EXPECT_EQ(f_->mark(), 0);
+    EXPECT_EQ(hi->mark(), 0);
+    EXPECT_EQ(hj->mark(), 0);
+    EXPECT_EQ(bi->mark(), 0);
+    EXPECT_EQ(bj->mark(), 0);
+    EXPECT_EQ(xi->mark(), run + 2);
+    EXPECT_EQ(xj->mark(), 0);
+    EXPECT_EQ(xi->free_vars(), vf_i1);
+
+    f_->free_vars();
+    EXPECT_EQ(w.curr_run(), run + 6);
+    EXPECT_EQ(f_->mark(), run + 6);
+    EXPECT_EQ(hi->mark(), run + 6);
+    EXPECT_EQ(hj->mark(), run + 6);
+    EXPECT_EQ(bi->mark(), run + 6);
+    EXPECT_EQ(bj->mark(), run + 6);
+    EXPECT_EQ(xi->mark(), run + 2);
+    EXPECT_EQ(xj->mark(), run + 6);
+    EXPECT_EQ(f_->free_vars(), Vars());
+    EXPECT_EQ(hi->free_vars(), Vars(vf));
+    EXPECT_EQ(hj->free_vars(), Vars(vf));
+    EXPECT_EQ(bi->free_vars(), vf_i1);
+    EXPECT_EQ(bj->free_vars(), vf_j1);
+    EXPECT_EQ(xi->free_vars(), vf_i1);
+    EXPECT_EQ(xj->free_vars(), vf_j1);
+
+    xj->unset();
+    EXPECT_EQ(w.curr_run(), run + 6);
+    EXPECT_EQ(f_->mark(), 0);
+    EXPECT_EQ(hi->mark(), 0);
+    EXPECT_EQ(hj->mark(), 0);
+    EXPECT_EQ(bi->mark(), 0);
+    EXPECT_EQ(bj->mark(), 0);
+    EXPECT_EQ(xj->mark(), 0);
+    EXPECT_EQ(xi->mark(), run + 2);
+    EXPECT_EQ(xi->free_vars(), vf_i1);
+
+    xj->app(false, hi, i2);
+    f_->free_vars();
+    EXPECT_EQ(w.curr_run(), run + 10);
+    EXPECT_EQ(f_->mark(), run + 10);
+    EXPECT_EQ(hi->mark(), run + 10);
+    EXPECT_EQ(hj->mark(), run + 10);
+    EXPECT_EQ(bi->mark(), run + 10);
+    EXPECT_EQ(bj->mark(), run + 10);
+    EXPECT_EQ(xj->mark(), run + 10);
+    EXPECT_EQ(xi->mark(), run + 2);
+    EXPECT_EQ(f_->free_vars(), Vars());
+    EXPECT_EQ(hi->free_vars(), Vars(vf));
+    EXPECT_EQ(hj->free_vars(), vf_i1);
+    EXPECT_EQ(bi->free_vars(), vf_i1);
+    EXPECT_EQ(bj->free_vars(), vf_i1_j1);
+    EXPECT_EQ(xi->free_vars(), vf_i1);
+    EXPECT_EQ(xj->free_vars(), vf_i1_j1);
+}
+
 TEST(ADT, Span) {
     {
         int a[3]        = {0, 1, 2};
