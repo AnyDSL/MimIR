@@ -81,9 +81,22 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     while (m->level() < n->level())
         n = n->inest();
     while (n != m) {
-        // TODO support longer dep chains and the possibility to opt out from this
-        if (n->sibl_deps().contains(m)) return n;
-        if (m->sibl_deps().contains(n)) return m;
+        // Walk back sibling dependencies if there is only one user and it is
+        // not part of a mutually recursive loop.
+        // Correctness is guaranteed by eta expansion, because both n and m have
+        // to be reachable from the immediate nester but functions do not have both
+        // known and unknown uses (including branching through extracts), so control
+        // cannot flow from both the known use of the sibling and a branch from
+        // their parent.
+        // TODO: support the possibility to opt out from this
+        if (!n->is_mutually_recursive() && n->sibl_deps().num() == 1) {
+            n = *n->sibl_deps().begin();
+            continue;
+        }
+        if (!m->is_mutually_recursive() && m->sibl_deps().num() == 1) {
+            m = *m->sibl_deps().begin();
+            continue;
+        }
         n = n->inest();
         m = m->inest();
     }
