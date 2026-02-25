@@ -131,7 +131,7 @@ public:
         /// @note The Nest::root() cannot be is_mutually_recursive() by definition.
         /// If you have a set of mutually recursive Def%s as "root", include them all by using a *virtual root*.
         ///@{
-        const auto& SCCs() { return sccs().SCCs_; }
+        const auto& SCCs() const { return sccs().SCCs_; }
         const auto& topo() const { return sccs().topo_; } ///< Topological sorting of all SCCs.
         bool is_recursive() const { return sccs().recursive_; }
         bool is_mutually_recursive() const { return is_recursive() && inest_ && inest_->SCCs_[this]->size() > 1; }
