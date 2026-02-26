@@ -34,9 +34,3 @@ axm %eqsat.const_idx: [n: Nat] → Idx n, normalize_const;
 /// ### Phases
 ///
 axm %eqsat.egg_rewrite_phase: %compile.Phase;
-///
-let eqsat_phases =
-    %compile.phases ff (
-        optimization_phase,
-        %eqsat.egg_rewrite_phase,
-    );

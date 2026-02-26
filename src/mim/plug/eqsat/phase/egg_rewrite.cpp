@@ -3,40 +3,37 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 
-#include "mim/plug/core/be/sexpr.h"
-
 namespace mim::plug::eqsat {
 
-/*
- * Egg Rewrite
- */
 void EggRewrite::start() {
     std::ostringstream sexpr;
 
-    // sexpr::emit(old_world(), sexpr);
-    Driver driver;
-    if (auto sexpr_backend = driver.backend("sexpr"))
+    if (auto sexpr_backend = old_world().driver().backend("sexpr"))
         sexpr_backend(old_world(), sexpr);
     else
-        error("'sexpr' emitter not loaded; try loading 'core' plugin");
+        error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
 
     auto res_ = equality_saturate(sexpr.str());
 
     for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
         auto node = res_[curr_id_];
-
-        if (node.kind == MimKind::Lam)
-            convert_lam(node);
-        else if (node.kind == MimKind::Con)
-            convert_con(node);
-        else if (node.kind == MimKind::App)
-            convert_app(node);
-        else if (node.kind == MimKind::Var)
-            convert_var(node);
-        else if (node.kind == MimKind::Lit)
-            convert_lit(node);
-        else if (node.kind == MimKind::Tuple)
-            convert_tuple(node);
+        switch (node.kind) {
+            case MimKind::Lam: convert_lam(node);
+            case MimKind::Con: convert_con(node);
+            case MimKind::App: convert_app(node);
+            case MimKind::Var: convert_var(node);
+            case MimKind::Lit: convert_lit(node);
+            case MimKind::Tuple: convert_tuple(node);
+            case MimKind::Extract: convert_extract(node);
+            case MimKind::Ins: convert_ins(node);
+            case MimKind::Sigma: convert_sigma(node);
+            case MimKind::Arr: convert_arr(node);
+            case MimKind::Cn: convert_cn(node);
+            case MimKind::Idx: convert_idx(node);
+            case MimKind::Num: convert_num(node);
+            case MimKind::Symbol: convert_symbol(node);
+            default: fe::unreachable();
+        }
     }
 
     swap(old_world(), new_world());
@@ -129,7 +126,13 @@ void EggRewrite::convert_ins(MimNode node) {}
 
 void EggRewrite::convert_sigma(MimNode node) {}
 void EggRewrite::convert_arr(MimNode node) {}
-void EggRewrite::convert_cn(MimNode node) {}
+
+void EggRewrite::convert_cn(MimNode node) {
+    auto domain = get_def(node.children[0]);
+    auto new_cn = new_world().cn(domain);
+    add_def(new_cn);
+}
+
 void EggRewrite::convert_idx(MimNode node) {}
 
 void EggRewrite::convert_num(MimNode node) {}
