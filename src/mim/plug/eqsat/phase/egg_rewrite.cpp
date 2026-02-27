@@ -63,17 +63,23 @@ void EggRewrite::convert_con(MimNode node) {
     }
 
     auto new_con = new_world().mut_fun(var_types, ret_type)->set(con_name.c_str());
+    add_symbol(con_name, new_con);
     new_con->set_body(get_def(node.children[2]));
     add_def(new_con);
 
-    add_symbol(con_name, new_con);
     auto i = 0;
     for (auto var : new_con->vars()) {
         auto var_name = var_names[i];
+        var->set(var_name);
         add_symbol(var_name, var);
     }
+
+    // TODO: if the var has projections, i.e. it is typed as sigma
+    // and therefore has nested variables, these also need to be set
+    // with their correct names
 }
 
+// (app <callee> <arg>)
 void EggRewrite::convert_app(MimNode node) {
     // TODO:
     // case 1: the callee is a symbol (i.e. a variable or an axiom)
@@ -94,6 +100,7 @@ void EggRewrite::convert_app(MimNode node) {
     }
 }
 
+// (var <name> <type>)
 void EggRewrite::convert_var(MimNode node) {
     // auto sym  = res_[node.children[0]].symbol;
     // auto type = added_[node.children[1]];
@@ -102,6 +109,7 @@ void EggRewrite::convert_var(MimNode node) {
     // added_.push_back(new_var);
 }
 
+// (lit <val> [<type>])
 void EggRewrite::convert_lit(MimNode node) {
     // This can also be a symbol in the case of "tt" and "ff" literals
     auto lit_val = get_num(node.children[0]);
@@ -109,13 +117,10 @@ void EggRewrite::convert_lit(MimNode node) {
     add_def(new_lit);
 }
 
+// (tuple <node> <node> <node> ...)
 void EggRewrite::convert_tuple(MimNode node) {
-    auto ops = DefVec{};
+    DefVec ops;
     for (auto child : node.children)
-        // TODO: the indices between 'added_' and 'res_'
-        // will only match if we add something for each and every
-        // MimNode, meaning that we want some kind of dummy nodes
-        // in the cases of Num and Symbol, for instance.
         ops.push_back(get_def(child));
     auto new_tuple = new_world().tuple(ops);
     add_def(new_tuple);
@@ -124,7 +129,29 @@ void EggRewrite::convert_tuple(MimNode node) {
 void EggRewrite::convert_extract(MimNode node) {}
 void EggRewrite::convert_ins(MimNode node) {}
 
-void EggRewrite::convert_sigma(MimNode node) {}
+// (sigma (var <name> <type>) (var <name> <type>)) or (sigma <type> <type>)
+void EggRewrite::convert_sigma(MimNode node) {
+    DefVec ops;
+    for (auto child : node.children) {
+        auto op = res_[child];
+        if (op.kind == MimKind::Var) {
+            auto var_type = get_def(op.children[1]);
+            ops.push_back(var_type);
+        } else {
+            auto type = get_def(child);
+            ops.push_back(type);
+        }
+    }
+
+    auto new_sigma = old_world().sigma(ops);
+    add_def(new_sigma);
+    // so this thing will be referred to in the lambda conversion
+    // via var_type = get_def(child_id) and so we need to simply create
+    // a sigma via sigma(types). The names of the sigma variables,
+    // if there are any, are the projections of the variable which is typed
+    // as the sigma accessible via var->proj(idx);
+}
+
 void EggRewrite::convert_arr(MimNode node) {}
 
 void EggRewrite::convert_cn(MimNode node) {
@@ -133,14 +160,32 @@ void EggRewrite::convert_cn(MimNode node) {
     add_def(new_cn);
 }
 
-void EggRewrite::convert_idx(MimNode node) {}
+// (idx <size>)
+void EggRewrite::convert_idx(MimNode node) {
+    // TODO: what if size is not a number like in (idx 3) but another
+    // def as in (idx (app %core.nat.add (lit 1) (lit 2)))
+    auto size    = get_num(node.children[0]);
+    auto new_idx = new_world().type_idx(size);
+    add_def(new_idx);
+}
 
 void EggRewrite::convert_num(MimNode node) {}
+
 void EggRewrite::convert_symbol(MimNode node) {
-    // TODO: certain types like "Nat" or "I8"
-    // need to be correctly converted here so that
-    // methods like convert_con can simply call on get_def
-    // to get a def representing the type
+    std::unordered_map<std::string, const Def*> sym2type;
+    sym2type["bool"] = new_world().type_bool();
+    sym2type["nat"]  = new_world().type_nat();
+    sym2type["i1"]   = new_world().type_i1();
+    sym2type["i2"]   = new_world().type_i2();
+    sym2type["i4"]   = new_world().type_i4();
+    sym2type["i8"]   = new_world().type_i8();
+    sym2type["i16"]  = new_world().type_i16();
+    sym2type["i32"]  = new_world().type_i32();
+    sym2type["i64"]  = new_world().type_i64();
+    // TODO: etc. and maybe as class attribute instead
+
+    auto val = node.symbol.c_str();
+    if (sym2type.contains(val)) add_def(sym2type[val]);
 }
 
 } // namespace mim::plug::eqsat
