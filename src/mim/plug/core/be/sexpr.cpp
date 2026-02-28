@@ -135,8 +135,7 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         print(s, "(idx {})", size);
         return types_[type] = s.str();
     } else if (auto w = math::isa_f(type)) {
-        // TODO: what is the type name? (it's not 'float')
-        print(s, "(lit {} float)", type);
+        print(s, "(lit {})", type);
         return types_[type] = s.str();
     } else if (auto lit = type->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
@@ -173,24 +172,20 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         print(s, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
     } else if (auto app = type->isa<App>()) {
         print(s, "(app {} {})", convert(app->callee()), convert(app->arg()));
-
-        // TODO: below code will include indentation but we might not want that in function signatures
-        // print(s, emit_curried_app(*app).c_str());
-        // return s.str();
     } else if (auto ax = type->isa<Axm>()) {
         print(s, "{}", ax->sym().str());
     } else if (auto hole = type->isa<Hole>()) {
         print(s, "(hole {})", id(hole));
     } else if (auto extract = type->isa<Extract>()) {
-        print(s, "(extract {})", extract);
+        print(s, "(extract {} {})", convert(extract->tuple()), convert(extract->index()));
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
-            if (level == 0) print(s, "★");
-            if (level == 1) print(s, "□");
+            if (level == 0) print(s, "(type 0)");
+            if (level == 1) print(s, "(type 1)");
         }
-        print(s, "(Type {})", convert(mType->level()));
+        print(s, "(type {})", convert(mType->level()));
     } else if (type->isa<Univ>()) {
-        print(s, "Univ");
+        print(s, "univ");
     } else {
         error("unsupported type '{}'", type);
         fe::unreachable();
@@ -199,7 +194,6 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
     if (name.empty()) return types_[type] = s.str();
 
     assert(!s.str().empty());
-    // type_decls_ << s.str() << '\n';
     return types_[type] = name;
 }
 

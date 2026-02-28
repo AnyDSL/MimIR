@@ -42,6 +42,7 @@ private:
     void convert_pi(MimNode node);
     void convert_idx(MimNode node);
     void convert_hole(MimNode node);
+    void convert_type(MimNode node);
 
     void convert_num(MimNode node);
     void convert_symbol(MimNode node);

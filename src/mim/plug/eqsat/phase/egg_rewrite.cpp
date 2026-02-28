@@ -32,6 +32,7 @@ void EggRewrite::start() {
             case MimKind::Pi: convert_pi(node);
             case MimKind::Idx: convert_idx(node);
             case MimKind::Hole: convert_hole(node);
+            case MimKind::Type: convert_type(node);
             case MimKind::Num: convert_num(node);
             case MimKind::Symbol: convert_symbol(node);
             default: fe::unreachable();
@@ -178,11 +179,15 @@ void EggRewrite::convert_idx(MimNode node) {
 }
 
 void EggRewrite::convert_hole(MimNode node) {}
+void EggRewrite::convert_type(MimNode node) {}
 
 void EggRewrite::convert_num(MimNode node) {}
 
 void EggRewrite::convert_symbol(MimNode node) {
+    // TODO: maybe as class attribute instead
     std::unordered_map<std::string, const Def*> sym2type;
+    sym2type["top"]  = new_world().type_top();
+    sym2type["bot"]  = new_world().type_bot();
     sym2type["bool"] = new_world().type_bool();
     sym2type["nat"]  = new_world().type_nat();
     sym2type["i1"]   = new_world().type_i1();
@@ -192,7 +197,6 @@ void EggRewrite::convert_symbol(MimNode node) {
     sym2type["i16"]  = new_world().type_i16();
     sym2type["i32"]  = new_world().type_i32();
     sym2type["i64"]  = new_world().type_i64();
-    // TODO: etc. and maybe as class attribute instead
 
     auto val = node.symbol.c_str();
     if (sym2type.contains(val)) add_def(sym2type[val]);

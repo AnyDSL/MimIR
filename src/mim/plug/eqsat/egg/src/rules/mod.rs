@@ -26,6 +26,7 @@ define_language! {
         "pi" = Pi([Id; 2]),
         "idx" = Idx(Id),
         "hole" = Hole(Id),
+        "type" = Type(Id),
 
         Num(i32), Symbol(String),
     }

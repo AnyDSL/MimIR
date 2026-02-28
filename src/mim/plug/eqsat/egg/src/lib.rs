@@ -51,6 +51,7 @@ pub mod ffi {
         Pi,
         Idx,
         Hole,
+        Type,
         Num,
         Symbol,
     }
@@ -104,6 +105,7 @@ fn rexpr_to_vec(rexpr: RecExpr<Mim>) -> Vec<MimNode> {
             Pi(children) => nodes.push(new_mim(MimKind::Pi, children, 0, String::new())),
             Idx(child) => nodes.push(new_mim(MimKind::Idx, &[*child], 0, String::new())),
             Hole(child) => nodes.push(new_mim(MimKind::Hole, &[*child], 0, String::new())),
+            Type(child) => nodes.push(new_mim(MimKind::Type, &[*child], 0, String::new())),
 
             Num(n) => nodes.push(new_mim(MimKind::Num, &[], *n, String::new())),
             Symbol(s) => nodes.push(new_mim(MimKind::Symbol, &[], 0, s.clone())),
