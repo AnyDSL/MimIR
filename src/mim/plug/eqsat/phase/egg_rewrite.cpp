@@ -23,13 +23,15 @@ void EggRewrite::start() {
             case MimKind::App: convert_app(node);
             case MimKind::Var: convert_var(node);
             case MimKind::Lit: convert_lit(node);
+            case MimKind::Arr: convert_arr(node);
             case MimKind::Tuple: convert_tuple(node);
             case MimKind::Extract: convert_extract(node);
             case MimKind::Ins: convert_ins(node);
             case MimKind::Sigma: convert_sigma(node);
-            case MimKind::Arr: convert_arr(node);
             case MimKind::Cn: convert_cn(node);
+            case MimKind::Pi: convert_pi(node);
             case MimKind::Idx: convert_idx(node);
+            case MimKind::Hole: convert_hole(node);
             case MimKind::Num: convert_num(node);
             case MimKind::Symbol: convert_symbol(node);
             default: fe::unreachable();
@@ -121,6 +123,8 @@ void EggRewrite::convert_lit(MimNode node) {
     add_def(new_lit);
 }
 
+void EggRewrite::convert_arr(MimNode node) {}
+
 // (tuple <node> <node> <node> ...)
 void EggRewrite::convert_tuple(MimNode node) {
     DefVec ops;
@@ -156,13 +160,13 @@ void EggRewrite::convert_sigma(MimNode node) {
     // as the sigma accessible via var->proj(idx);
 }
 
-void EggRewrite::convert_arr(MimNode node) {}
-
 void EggRewrite::convert_cn(MimNode node) {
     auto domain = get_def(node.children[0]);
     auto new_cn = new_world().cn(domain);
     add_def(new_cn);
 }
+
+void EggRewrite::convert_pi(MimNode node) {}
 
 // (idx <size>)
 void EggRewrite::convert_idx(MimNode node) {
@@ -172,6 +176,8 @@ void EggRewrite::convert_idx(MimNode node) {
     auto new_idx = new_world().type_idx(size);
     add_def(new_idx);
 }
+
+void EggRewrite::convert_hole(MimNode node) {}
 
 void EggRewrite::convert_num(MimNode node) {}
 

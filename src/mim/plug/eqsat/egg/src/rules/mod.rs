@@ -15,15 +15,17 @@ define_language! {
         "var" = Var([Id; 2]),
         "lit" = Lit(Box<[Id]>),
 
+        "arr" = Arr([Id; 2]),
         "tuple" = Tuple(Box<[Id]>),
         "extract" = Extract([Id; 2]),
         "ins" = Ins([Id; 3]),
 
         // TYPES
         "sigma" = Sigma(Box<[Id]>),
-        "arr" = Arr([Id; 2]),
         "cn" = Cn(Id),
+        "pi" = Pi([Id; 2]),
         "idx" = Idx(Id),
+        "hole" = Hole(Id),
 
         Num(i32), Symbol(String),
     }
