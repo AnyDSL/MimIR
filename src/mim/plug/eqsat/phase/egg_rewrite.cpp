@@ -59,6 +59,10 @@ void EggRewrite::convert_con(MimNode node) {
         if (child != arg_tuple.children.back())
             var_types.push_back(var_type);
         else
+            // NOTE: we are constructing a cn type in convert_cn and
+            // are trying to pass it here but the mut_fun constructor is probably expecting
+            // the types within that cn instead and will implicitly
+            // construct a cn type from those
             ret_type.push_back(var_type);
     }
 

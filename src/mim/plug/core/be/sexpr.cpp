@@ -214,14 +214,10 @@ void Emitter::start() {
     // for (auto import : world().driver().imports().syms())
     //     print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
 
-    // seems to be unused (never written to)
     for (auto&& decl : decls_)
         ostream() << decl << '\n';
-    // written to in emit_imported (external import functions)
     ostream() << func_decls_.str() << '\n';
-    // seems to be unused (never written to)
     ostream() << vars_decls_.str() << '\n';
-    // written to in finalize_nest and emit_header (called by finalize_nest)
     ostream() << func_impls_.str() << '\n';
 }
 
@@ -292,9 +288,6 @@ std::string Emitter::emit_curried_app(const App& app) {
 
 std::string Emitter::prepare() { return root()->unique_name(); }
 
-// NOTE:
-// - finalize_nest gets called once per closed mutable def (separate top-level lambdas)
-// - emit_epilogue gets called for every single lambda nested inside one of these closed mutable defs
 void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     if (!node->mut()->isa<Lam>()) return;
     if (auto [_, ins] = done.emplace(node->mut()); !ins) return;
@@ -329,6 +322,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         ++tab;
         tab.lnprint(os, convert(def).c_str());
         --tab;
+
         return os.str();
     } else if (auto lam = def->isa<Lam>()) {
         print(os, "\n");
@@ -342,6 +336,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
         tab.lnprint(os, ")");
         --tab;
+
         return os.str();
     } else if (auto lit = def->isa<Lit>()) {
         ++tab;
@@ -355,13 +350,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         else
             tab.lnprint(os, "(lit {})", lit);
         --tab;
+
         return os.str();
-        // NOTE: this was part of the original mim emitter, maybe we will need it again in the future?
-        // } else if (def->type()->isa<Nat>()) {
-        // ++tab;
-        // tab.lnprint(os, "{}", def->unique_name());
-        // --tab;
-        // return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
         ++tab;
         tab.lnprint(os, "(tuple");
@@ -373,13 +363,21 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
         tab.lnprint(os, ")");
         --tab;
-        return os.str();
-        // TODO: emit sexpr
-    } else if (auto seq = def->isa<Seq>()) {
-        auto body  = emit_unsafe(seq->body());
-        auto shape = emit_unsafe(seq->arity());
 
-        return bb.assign(id(seq), "<<{}; {}>>", shape, body);
+        return os.str();
+    } else if (auto seq = def->isa<Seq>()) {
+        // NOTE: are there any cases where this would not just be an (arr) node?
+        auto shape = seq->arity();
+        auto body  = seq->body();
+
+        ++tab;
+        tab.lnprint(os, "(arr");
+        tab.print(os, emit_bb(bb, shape).c_str());
+        tab.print(os, emit_bb(bb, body).c_str());
+        tab.lnprint(os, ")");
+        --tab;
+
+        return os.str();
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
@@ -417,15 +415,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         ++tab;
         tab.lnprint(os, id(var).c_str());
         --tab;
+
         return os.str();
-        // TODO: emit sexpr
     } else if (auto app = def->isa<App>()) {
         print(os, emit_curried_app(*app).c_str());
+
         return os.str();
     } else if (auto axm = def->isa<Axm>()) {
         ++tab;
         tab.lnprint(os, id(axm).c_str());
         --tab;
+
         return os.str();
         // TODO: emit sexpr
     } else if (def->isa<Top>() || def->isa<Bot>()) {
