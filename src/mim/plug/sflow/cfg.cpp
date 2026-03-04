@@ -9,21 +9,38 @@ namespace mim::plug::sflow {
 CFG::CFG(Lam* entry) { entry_ = build(entry); }
 
 CFG::~CFG() {
-    Set<Node*> all;
-    for (auto& [_, nodes] : lam2node_)
-        all.insert(nodes.begin(), nodes.end());
-    for (auto node : all)
+    for (auto [node, limit] : node2limit_) {
+        limit->nodes.erase(node);
+        if (limit->nodes.empty()) delete limit;
         delete node;
+    }
 }
 
-void CFG::reduce() {
-    Set<Node*> visited;
+CFG::LimitNode* CFG::limit() {
+    if (limit_) return limit_;
+
+    // Create new graph of LimitNodes
+    for (auto [_, node] : lam2node_)
+        node2limit_[node] = new LimitNode(node);
+    // Copy edges
+    for (auto [node, limit] : node2limit_) {
+        for (auto pred : node->preds)
+            limit->preds.insert(node2limit_[pred]);
+        for (auto pred : node->succs)
+            limit->succs.insert(node2limit_[pred]);
+    }
+
+    limit_ = node2limit_[entry_];
+
+    Set<LimitNode*> visited;
     bool changed = true;
     while (changed)
-        changed = reduce(entry(), visited);
+        changed = reduce(limit_, visited);
+
+    return limit_;
 }
 
-bool CFG::reduce(Node* current, Set<Node*>& visited) {
+bool CFG::reduce(LimitNode* current, Set<LimitNode*>& visited) {
     visited.insert(current);
     bool changed = false;
     for (auto succ : current->succs) {
@@ -36,44 +53,57 @@ bool CFG::reduce(Node* current, Set<Node*>& visited) {
     return changed;
 }
 
-bool CFG::t2(Node* node) {
+bool CFG::t2(LimitNode* lnode) {
     // The entry basically has another invisible predecessor
     // and should therefore not be merged ever.
-    if (node == entry_) return false;
+    if (lnode == limit_) return false;
 
-    if (node->preds.size() != 1) return false;
+    if (lnode->preds.size() != 1) return false;
 
-    Node* pred = *node->preds.begin();
+    auto pred = *lnode->preds.begin();
 
-    // Merge lams and update lam2node
-    for (auto lam : node->lams) {
-        pred->lams.insert(lam);
-        lam2node_[lam].erase(node);
-        lam2node_[lam].insert(pred);
+    // Merge nodes and update node2limit_
+    for (auto node : lnode->nodes) {
+        pred->nodes.insert(node);
+        node2limit_[node] = pred;
     }
 
     // Move successors from node to pred
-    pred->succs.erase(node);
-    for (auto succ : node->succs) {
+    pred->succs.erase(lnode);
+    for (auto succ : lnode->succs) {
         pred->succs.insert(succ);
-        succ->preds.erase(node);
+        succ->preds.erase(lnode);
         succ->preds.insert(pred);
     }
 
-    delete node;
+    delete lnode;
 
     return true;
 }
 
 /// Rewriter that substitutes mapped Defs but leaves unmapped mutables untouched.
-class SubstRewriter : public Rewriter {
+class SplitRewriter : public Rewriter {
 public:
-    using Rewriter::Rewriter;
+    // Constructor taking a DefSet
+    SplitRewriter(World& world, DefSet todo)
+        : Rewriter(world)
+        , todo_(std::move(todo)) {}
+
+    // Constructor taking any number of const Def*
+    template<std::same_as<const Def*>... Defs>
+    SplitRewriter(World& world, Defs... defs)
+        : Rewriter(world)
+        , todo_{defs...} {}
 
     const Def* rewrite_mut(Def* mut) override {
-        if (auto new_def = lookup(mut)) return new_def;
+        if (auto new_mut = lookup(mut)) return new_mut;
+        if (auto lam = mut->isa<Lam>())
+            if (todo_.contains(mut)) return rewrite_mut_Lam(lam);
         return mut;
     }
+
+private:
+    DefSet todo_;
 };
 
 /// Copies a mut Lam
@@ -93,63 +123,73 @@ Lam* split_lam(Lam* lam) {
     return copy;
 }
 
-void CFG::split(Node* node) {
-    if (node->preds.size() <= 1) return;
+void CFG::split(LimitNode* lnode) {
+    if (lnode->preds.size() <= 1) return;
 
     // Keep original node for first predecessor, create copies for the rest
-    auto pred_it = node->preds.begin();
+    auto pred_it = lnode->preds.begin();
     ++pred_it; // skip first predecessor
 
-    for (; pred_it != node->preds.end(); ++pred_it) {
-        Node* pred = *pred_it;
+    for (; pred_it != lnode->preds.end(); ++pred_it) {
+        LimitNode* pred = *pred_it;
 
-        // Create copy with same lams
-        Node* copy = new Node();
-        if (split_lams_) {
-            // Actually duplicate Lams
-            for (auto lam : node->lams) {
-                Lam* lam_copy = split_lam(lam);
-                copy->lams.insert(lam_copy);
-                lam2node_[lam_copy].insert(copy);
+        // Create copy
+        LimitNode* copy = new LimitNode();
 
-                // Update predecessor's bodies to reference lam_copy instead of lam
-                for (auto pred_lam : pred->lams) {
-                    SubstRewriter rw(pred_lam->world());
-                    rw.map(lam, lam_copy);
-                    pred_lam->set_body(rw.rewrite(pred_lam->body()));
+        Map<Node*, Node*> node2copy;
+
+        // Duplicate nodes
+        for (auto node : lnode->nodes) {
+            Lam* lam_copy       = split_lam(node->lam);
+            Node* node_copy     = new Node(lam_copy);
+            node2copy[node]     = node_copy;
+            lam2node_[lam_copy] = node_copy;
+            copy->nodes.insert(node_copy);
+        }
+
+        // Rewire internal edges within limit node
+        for (auto node : lnode->nodes) {
+            Node* copy = node2copy[node];
+            for (auto pred : node->preds)
+                if (lnode->nodes.contains(pred)) {
+                    copy->preds.insert(node2copy[pred]);
+                    rewire(pred->lam, node->lam, copy->lam);
                 }
-            }
-        } else {
-            for (auto lam : node->lams) {
-                copy->lams.insert(lam);
-                lam2node_[lam].insert(copy);
-            }
+            for (auto succ : node->succs)
+                if (lnode->nodes.contains(succ)) copy->succs.insert(node2copy[succ]);
+        }
+
+        // Update predecessor's bodies to reference lam_copy instead of lam
+        for (auto pred : pred->nodes) {
+            SplitRewriter rw(pred_lam->world());
+            rw.map(lam, lam_copy);
+            pred_lam->set_body(rw.rewrite(pred_lam->body()));
         }
 
         // Link copy to this predecessor only
         copy->preds.insert(pred);
-        pred->succs.erase(node);
+        pred->succs.erase(lnode);
         pred->succs.insert(copy);
 
         // Copy successor edges
-        for (auto succ : node->succs) {
+        for (auto succ : lnode->succs) {
             copy->succs.insert(succ);
             succ->preds.insert(copy);
         }
     }
 
     // Original node keeps only the first predecessor
-    Node* first_pred = *node->preds.begin();
-    node->preds.clear();
-    node->preds.insert(first_pred);
+    Node* first_pred = *lnode->preds.begin();
+    lnode->preds.clear();
+    lnode->preds.insert(first_pred);
 }
 
 CFG::Node* CFG::build(Lam* lam) {
     // only one node per lam
-    if (lam2node_.contains(lam)) return *lam2node_[lam].begin();
+    if (lam2node_.contains(lam)) return lam2node_[lam];
 
     Node* node     = new Node(lam);
-    lam2node_[lam] = Set<Node*>{node};
+    lam2node_[lam] = node;
 
     for (auto op : lam->deps())
         for (auto local_mut : op->local_muts())

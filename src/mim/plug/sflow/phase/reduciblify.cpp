@@ -1,41 +1,27 @@
 #include "mim/phase.h"
 
-#include "mim/plug/sflow/cfg.h"
-
 namespace mim::plug::sflow::phase {
 
 using namespace mim;
 
-class Reduciblifier : public mim::RWPhase {
+class Reduciblifier : public mim::NestPhase<Lam> {
 public:
     Reduciblifier(World& world, flags_t annex)
-        : RWPhase(world, annex) {}
+        : NestPhase(world, annex, true) {}
 
-    const Def* rewrite_mut_Lam(Lam* d) override {
-        // Create a CFG of this lam and make it reducible.
-        CFG cfg(d);
-        reduciblify(cfg);
-
-        return rewrite_stub(d, new_world().mut_lam(rewrite(d->type())->as<Pi>()));
-    }
-
-    const Def* rewrite_imm_App(const App* d) override {
-        // TODO: change callee depending on transformed cfg
-        // TODO: think of a way to keep track of exact occurrences of
-        // a lam in the cfg, to it can be matched here
-        return new_world().app(rewrite(d->callee()), rewrite(d->arg()));
-    }
+    void visit(const Nest& nest) override { visit(nest.root()); }
 
 private:
-    void reduciblify(CFG& cfg) {
-        // Create limit graph
-        CFG limit = cfg;
-        limit.reduce();
+    void visit(const Nest::Node* node) {
+        for (auto& scc : node->topo()) {
+            for (auto child : *scc) {
+                // Make deeper loops reducible first.
+                visit(child);
+            }
 
-        while (!limit.entry()->succs.empty()) {
-            // TODO: split some node
-
-            limit.reduce();
+            if (scc->size() > 1) {
+                // TODO: Check if loop actually has multiple entries
+            }
         }
     }
 };
