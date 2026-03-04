@@ -83,11 +83,12 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     while (n != m) {
         // Walk back sibling dependencies if there is only one user and it is
         // not part of a mutually recursive loop.
-        // Correctness is guaranteed by eta expansion, because both n and m have
-        // to be reachable from the immediate nester but functions do not have both
-        // known and unknown uses (including branching through extracts), so control
-        // cannot flow from both the known use of the sibling and a branch from
-        // their parent.
+        // After [eta expansion](mim:EtaExpPhase), any function is either well-known
+        // or only used once. Functions that are only used once do not have arguments,
+        // as all of them get reduced to the expression passed by the single call site.
+        // Walking up unique users is therefore correct, as any direct call from the
+        // immediate nester must be unknown for siblings to be reachable as well, which
+        // is not possible, meaning that control has to go through that single neighbor.
         // TODO: support the possibility to opt out from this
         if (!n->is_mutually_recursive() && n->sibl_deps().num() == 1) {
             n = *n->sibl_deps().begin();
