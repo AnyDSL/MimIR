@@ -90,11 +90,11 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
         // immediate nester must be unknown for siblings to be reachable as well, which
         // is not possible, meaning that control has to go through that single neighbor.
         // TODO: support the possibility to opt out from this
-        if (!n->is_mutually_recursive() && n->sibl_deps().num() == 1) {
+        if (!n->is_recursive() && n->sibl_deps().num() == 1) {
             n = *n->sibl_deps().begin();
             continue;
         }
-        if (!m->is_mutually_recursive() && m->sibl_deps().num() == 1) {
+        if (!m->is_recursive() && m->sibl_deps().num() == 1) {
             m = *m->sibl_deps().begin();
             continue;
         }
