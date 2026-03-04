@@ -15,6 +15,7 @@
 
 #include "mim/plug/core/core.h"
 #include "mim/plug/mem/mem.h"
+#include "mim/plug/sflow/autogen.h"
 #include "mim/plug/spirv/autogen.h"
 #include "mim/plug/spirv/be/op.h"
 #include "mim/plug/vec/autogen.h"
@@ -763,8 +764,25 @@ void Emitter::emit_epilogue(Lam* lam) {
                 bb.tail.emplace_back(Op{OpKind::CompositeConstruct, {values}, val_id, type});
         }
     } else if (auto dispatch = Dispatch(app)) {
+        // Handle explicit selections
+        if (auto selection = Axm::isa<sflow::branch>(app)) {
+            auto [merge, header] = selection->uncurry_args<2>();
+            bb.tail.emplace_back(Op{OpKind::SelectionMerge, {id(merge)}, {}, {}});
+            dispatch = header;
+        }
+        // Handle explicit loops
+        if (auto loop = Axm::isa<sflow::loop>(app)) {
+            auto [cont, exit, header] = loop->uncurry_args<3>();
+            bb.tail.emplace_back(Op{
+                OpKind::LoopMerge,
+                {id(exit), id(cont)},
+                {},
+                {}
+            });
+            dispatch = header;
+        }
+
         // TODO
-        std::cerr << "branching not supported yet";
         if (auto branch = Branch(app)) {
             // if cond { A args… } else { B args… }
             // => OpBranchConditional

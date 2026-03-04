@@ -204,6 +204,8 @@ enum class OpKind {
     CompositeExtract,
     Label,
     Phi,
+    SelectionMerge,
+    LoopMerge,
     Branch,
     BranchConditional,
     Switch,
@@ -288,6 +290,8 @@ struct Op {
             case OpKind::CompositeExtract: return "OpCompositeExtract";
             case OpKind::Label: return "OpLabel";
             case OpKind::Phi: return "OpPhi";
+            case OpKind::SelectionMerge: return "OpSelectionMerge";
+            case OpKind::LoopMerge: return "OpLoopMerge";
             case OpKind::Branch: return "OpBranch";
             case OpKind::BranchConditional: return "OpBranchConditional";
             case OpKind::Switch: return "OpSwitch";
@@ -330,6 +334,8 @@ struct Op {
             case OpKind::FunctionEnd: return 56;
             case OpKind::Label: return 248;
             case OpKind::Phi: return 245;
+            case OpKind::SelectionMerge: return 247;
+            case OpKind::LoopMerge: return 246;
             case OpKind::Branch: return 249;
             case OpKind::BranchConditional: return 250;
             case OpKind::Switch: return 251;
