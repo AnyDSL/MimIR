@@ -764,13 +764,13 @@ void Emitter::emit_epilogue(Lam* lam) {
                 bb.tail.emplace_back(Op{OpKind::CompositeConstruct, {values}, val_id, type});
         }
     } else if (auto dispatch = Dispatch(app)) {
-        // Handle explicit selections
+        // Handle explicit structured selections
         if (auto selection = Axm::isa<sflow::branch>(app)) {
             auto [merge, header] = selection->uncurry_args<2>();
             bb.tail.emplace_back(Op{OpKind::SelectionMerge, {id(merge)}, {}, {}});
             dispatch = header;
         }
-        // Handle explicit loops
+        // Handle explicit structured loops
         if (auto loop = Axm::isa<sflow::loop>(app)) {
             auto [cont, exit, header] = loop->uncurry_args<3>();
             bb.tail.emplace_back(Op{
@@ -782,13 +782,40 @@ void Emitter::emit_epilogue(Lam* lam) {
             dispatch = header;
         }
 
-        // TODO
-        if (auto branch = Branch(app)) {
+        for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
+            size_t n = callee->num_tvars();
+            for (size_t i = 0; i != n; ++i) {
+                auto arg = emit(dispatch.app()->arg(n, i));
+                auto phi = callee->var(n, i);
+                assert(!Axm::isa<mem::M>(phi->type()));
+                lam2bb_[callee].phis[phi].emplace_back(arg);
+                lam2bb_[callee].phis[phi].emplace_back(id(lam));
+                locals_[phi] = id(phi);
+            }
+        }
+
+        if (dispatch.num_targets() == 2) {
             // if cond { A args… } else { B args… }
             // => OpBranchConditional
+            Op op{OpKind::BranchConditional, {emit(dispatch.index())}, {}, {}};
+            for (auto callee : dispatch.tuple()->deps())
+                op.operands.push_back(id(callee));
+            bb.tail.push_back(op);
         } else {
-            // switch (index) { case 0: A args…; …; default: B args… }
-            // => OpSwitch
+            // switch (index) { case 0: A args…; …; case n: Z args… }
+            // => OpSwitch selector default_label [literal, label]*
+            // Use last case as default since all cases are explicit in MimIR
+            auto callees   = dispatch.tuple()->deps();
+            auto num_cases = callees.size();
+            assert(num_cases > 0);
+
+            Op op{OpKind::Switch, {emit(dispatch.index())}, {}, {}};
+            op.operands.push_back(id(callees[num_cases - 1])); // default = last case
+            for (size_t i = 0; i + 1 < num_cases; ++i) {
+                op.operands.push_back(int_to_words(i, 32)[0]);
+                op.operands.push_back(id(callees[i]));
+            }
+            bb.tail.push_back(op);
         }
     } else if (app->callee()->isa<Bot>()) {
         // unreachable
