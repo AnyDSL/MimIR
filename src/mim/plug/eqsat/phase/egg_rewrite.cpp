@@ -3,41 +3,62 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 
+#include "mim/plug/core/autogen.h"
+
 namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
     std::ostringstream sexpr;
+
+    std::cout << "started eqsat phase..\n";
 
     if (auto sexpr_backend = old_world().driver().backend("sexpr"))
         sexpr_backend(old_world(), sexpr);
     else
         error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
 
-    auto res_ = equality_saturate(sexpr.str());
+    std::cout << "got the sexpr..\n";
+
+    res_ = equality_saturate(sexpr.str());
+
+    std::cout << "got the rewrite result (size: " << res_.size() << ")..\n";
+
+    // TODO: Maybe we need a preceding loop that creates all the lambdas
+    // because with lambda creation comes variable creation and we can
+    // only utilize created variables in any other expressions we want to generate
+    // i.e. an application of a variable to something else.
+    // We also want to create the types of the variables here so they can
+    // be referred to via get_def. But how would we best do this?
 
     for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
         auto node = res_[curr_id_];
+
+        std::cout << "current id: " << curr_id_ << "\n";
+        std::cout << "current node: " << mim_node_str(node).c_str() << "\n";
+
         switch (node.kind) {
-            case MimKind::Lam: convert_lam(node);
-            case MimKind::Con: convert_con(node);
-            case MimKind::App: convert_app(node);
-            case MimKind::Var: convert_var(node);
-            case MimKind::Lit: convert_lit(node);
-            case MimKind::Arr: convert_arr(node);
-            case MimKind::Tuple: convert_tuple(node);
-            case MimKind::Extract: convert_extract(node);
-            case MimKind::Ins: convert_ins(node);
-            case MimKind::Sigma: convert_sigma(node);
-            case MimKind::Cn: convert_cn(node);
-            case MimKind::Pi: convert_pi(node);
-            case MimKind::Idx: convert_idx(node);
-            case MimKind::Hole: convert_hole(node);
-            case MimKind::Type: convert_type(node);
-            case MimKind::Num: convert_num(node);
-            case MimKind::Symbol: convert_symbol(node);
+            case MimKind::Lam: convert_lam(node); break;
+            case MimKind::Con: convert_con(node); break;
+            case MimKind::App: convert_app(node); break;
+            case MimKind::Var: convert_var(node); break;
+            case MimKind::Lit: convert_lit(node); break;
+            case MimKind::Arr: convert_arr(node); break;
+            case MimKind::Tuple: convert_tuple(node); break;
+            case MimKind::Extract: convert_extract(node); break;
+            case MimKind::Ins: convert_ins(node); break;
+            case MimKind::Sigma: convert_sigma(node); break;
+            case MimKind::Cn: convert_cn(node); break;
+            case MimKind::Pi: convert_pi(node); break;
+            case MimKind::Idx: convert_idx(node); break;
+            case MimKind::Hole: convert_hole(node); break;
+            case MimKind::Type: convert_type(node); break;
+            case MimKind::Num: convert_num(node); break;
+            case MimKind::Symbol: convert_symbol(node); break;
             default: fe::unreachable();
         }
     }
+
+    std::cout << "recreated the world..\n";
 
     swap(old_world(), new_world());
 }
@@ -97,8 +118,8 @@ void EggRewrite::convert_app(MimNode node) {
     if (callee == "%core.nat.add") {
         // more generally, if the symbol refers to an annex
         // TODO: there is some bug here when call(callee, arg) calls annex(callee) in world.h (l571 -> l182)
-        // auto new_call = new_world().call(callee, arg);
-        // add_def(new_call);
+        auto new_call = new_world().call(core::nat::add, arg);
+        add_def(new_call);
     } else {
         // if it refers, to something previously defined and referred to by name, like a variable
         // or a lambda, or anything else

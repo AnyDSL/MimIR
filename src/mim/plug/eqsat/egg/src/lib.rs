@@ -32,6 +32,10 @@ pub fn equality_saturate(sexpr: &str) -> Vec<MimNode> {
     rexpr_to_vec(best_expr)
 }
 
+pub fn mim_node_str(node: MimNode) -> String {
+    format!("{:?}", node)
+}
+
 #[cxx::bridge]
 pub mod ffi {
 
@@ -66,6 +70,7 @@ pub mod ffi {
 
     extern "Rust" {
         fn equality_saturate(sexpr: &str) -> Vec<MimNode>;
+        fn mim_node_str(node: MimNode) -> String;
     }
 }
 

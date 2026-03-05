@@ -180,8 +180,8 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         print(s, "(extract {} {})", convert(extract->tuple()), convert(extract->index()));
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
-            if (level == 0) print(s, "(type 0)");
-            if (level == 1) print(s, "(type 1)");
+            if (level == 0) print(s, "(type (lit 0))");
+            if (level == 1) print(s, "(type (lit 1))");
         }
         print(s, "(type {})", convert(mType->level()));
     } else if (type->isa<Univ>()) {
@@ -204,7 +204,7 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
 void Emitter::start() {
     Super::start();
 
-    // TODO: uncomment after development
+    // TODO: do we need this?
     // for (auto import : world().driver().imports().syms())
     //     print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
 
@@ -230,37 +230,42 @@ void Emitter::emit_imported(Lam* lam) {
 std::string Emitter::emit_header(Lam* lam) {
     std::ostringstream os;
 
+    // TODO: maybe extern needs to be emitted as well for reconstruction
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
-    // tab.print(func_impls_, "{} {}{} [", lam_kind, external(lam), id(lam));
-
-    // TODO: maybe extern needs to be emitted aswell for reconstruction
-    // tab.print(func_impls_, "({} {}{} ", lam_kind, external(lam), id(lam));
     tab.println(os, "({} {}", lam_kind, id(lam));
+
     ++tab;
     tab.println(os, "(tuple");
 
     if (lam->has_var()) {
-        auto vars  = lam->vars();
-        unsigned i = 0;
         ++tab;
-        for (auto sep = ""; auto var : vars.view()) {
+        auto vars = lam->vars();
+        auto sep  = "";
+        for (int i = 0; auto var : vars.view()) {
             if (var) {
-                auto name = id(var);
-                tab.println(os, "{}(var {}", sep, name);
+                tab.println(os, "{}(var {}", sep, id(var));
                 ++tab;
                 tab.println(os, "{}", convert(var->type(), var));
                 --tab;
                 tab.println(os, ")");
             } else {
-                tab.print(os, "{}(var{})", sep, convert(lam->dom(i)));
+                // TODO: anonymous var construction (egg expects (var <name> <type>))
+                tab.println(os, "{}(var", sep);
+                ++tab;
+                tab.println(os, "{}", convert(lam->dom(i)));
+                --tab;
+                tab.println(os, ")");
             }
             ++i;
         }
         --tab;
     }
-    // print(func_impls_, "]@({}) = \n", emit_unsafe(lam->filter()));
+    // TODO: the filter might be needed for reconstruction
+    // emit_unsafe(lam->filter());
+
     tab.print(os, ")");
     --tab;
+
     return os.str();
 }
 
