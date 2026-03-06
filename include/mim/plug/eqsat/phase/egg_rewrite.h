@@ -54,20 +54,22 @@ private:
     void convert_symbol(MimNode node);
 
     void add_def(const Def* converted) { added_[curr_id_] = converted; }
-    void add_symbol(rust::String sym, const Def* converted) { sym_table_[sym.c_str()] = converted; }
+    void add_var(std::string name, const Def* converted) { vars_[name] = converted; }
+
+    const Def* get_def(int id) { return added_.contains(id) ? added_[id] : nullptr; }
+    const Def* get_var(std::string name) { return vars_[name]; }
 
     MimNode get_node(MimKind expected, int id) {
         assert(res_[id].kind == expected && "get_node: mismatch between expected and actual node kind");
         return res_[id];
     }
-    const Def* get_def(int id) { return added_.contains(id) ? added_[id] : nullptr; }
-    rust::String get_symbol(int id) { return res_[id].symbol; }
+    std::string get_symbol(int id) { return res_[id].symbol.c_str(); }
     int get_num(int id) { return res_[id].num; }
 
     int curr_id_;
     rust::Vec<MimNode> res_;
     std::unordered_map<int, const Def*> added_;
-    std::unordered_map<std::string, const Def*> sym_table_;
+    std::unordered_map<std::string, const Def*> vars_;
 };
 
 }; // namespace mim::plug::eqsat

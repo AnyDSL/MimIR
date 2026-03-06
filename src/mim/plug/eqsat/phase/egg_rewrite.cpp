@@ -83,14 +83,14 @@ void EggRewrite::init_con(MimNode node) {
     }
 
     auto new_con = new_world().mut_fun(var_types, ret_types)->set(con_name.c_str());
-    add_symbol(con_name, new_con);
+    add_var(con_name, new_con);
     add_def(new_con);
 
     auto i = 0;
     for (auto var : new_con->vars()) {
         auto var_name = var_names[i];
         var->set(var_name);
-        add_symbol(var_name, var);
+        add_var(var_name, var);
     }
 }
 
@@ -148,7 +148,11 @@ void EggRewrite::convert_lam(MimNode node) {}
 // i.e. (con foo (tuple (var a Nat) (var ret (cn nat))) (app ret a))
 void EggRewrite::convert_con(MimNode node) {
     auto new_con = get_def(curr_id_)->as_mut<Lam>();
-    new_con->set_body(get_def(node.children[2]));
+    std::cout << new_con << "\n";
+    auto body = get_def(node.children[2]);
+    std::cout << body << "\n";
+    // TODO: this fails for some reason, not sure why yet
+    new_con->set_body(body);
 }
 
 // (app <callee> <arg>)
@@ -167,13 +171,18 @@ void EggRewrite::convert_app(MimNode node) {
     } else {
         // if it refers, to something previously defined and referred to by name, like a variable
         // or a lambda, or anything else
-        auto new_app = new_world().app(sym_table_[callee.c_str()], arg);
+        auto var     = get_var(callee);
+        auto new_app = new_world().app(var, arg);
         add_def(new_app);
     }
 }
 
 // (var <name> <type>)
-void EggRewrite::convert_var(MimNode node) {}
+void EggRewrite::convert_var(MimNode node) {
+    auto name = get_symbol(node.children[0]);
+    auto var  = get_var(name);
+    add_def(var);
+}
 
 // (lit <val> [<type>])
 void EggRewrite::convert_lit(MimNode node) {
@@ -186,6 +195,7 @@ void EggRewrite::convert_lit(MimNode node) {
 void EggRewrite::convert_arr(MimNode node) {}
 
 // (tuple <node> <node> <node> ...)
+// TODO: arg tuples of lambda headers shouldn't be added to the world
 void EggRewrite::convert_tuple(MimNode node) {
     DefVec ops;
     for (auto child : node.children)
