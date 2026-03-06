@@ -25,11 +25,15 @@ void EggRewrite::start() {
 
     for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
         auto node = res_[curr_id_];
+        if (node.kind == MimKind::Var) init_var(node);
+    }
 
-        std::cout << "init - current id: " << curr_id_ << "\n";
-        std::cout << "init - current node: " << mim_node_str(node).c_str() << "\n";
-
-        init_node(node);
+    for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
+        auto node = res_[curr_id_];
+        if (node.kind == MimKind::Lam)
+            init_lam(node);
+        else if (node.kind == MimKind::Con)
+            init_con(node);
     }
 
     for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
@@ -38,21 +42,12 @@ void EggRewrite::start() {
         std::cout << "convert - current id: " << curr_id_ << "\n";
         std::cout << "convert - current node: " << mim_node_str(node).c_str() << "\n";
 
-        convert_node(node);
+        convert(node);
     }
 
     std::cout << "recreated the world..\n";
 
     swap(old_world(), new_world());
-}
-
-void EggRewrite::init_node(MimNode node) {
-    switch (node.kind) {
-        case MimKind::Lam: init_lam(node); break;
-        case MimKind::Con: init_con(node); break;
-        case MimKind::Var: init_var(node); break;
-        default: break;
-    }
 }
 
 void EggRewrite::init_lam(MimNode node) {}
@@ -98,14 +93,11 @@ void EggRewrite::init_var(MimNode node) {
     // but this might not always be the case.
     // Also, I assume that adding a type to the world again
     // in the convert iteration that we already added here is fine.
-    auto var_type_node = res_[node.children[1]];
-
-    // TODO: this would only work if the conversion calls
-    // were recursively calling one another, which they aren't
-    convert_node(var_type_node);
+    auto var_type = res_[node.children[1]];
+    convert(var_type, true);
 }
 
-void EggRewrite::convert_node(MimNode node) {
+void EggRewrite::convert(MimNode node, bool recurse) {
     switch (node.kind) {
         case MimKind::Lam: convert_lam(node); break;
         case MimKind::Con: convert_con(node); break;
@@ -125,6 +117,13 @@ void EggRewrite::convert_node(MimNode node) {
         case MimKind::Num: convert_num(node); break;
         case MimKind::Symbol: convert_symbol(node); break;
         default: break;
+    }
+
+    if (recurse) {
+        for (auto child : node.children) {
+            auto child_node = res_[child];
+            convert(child_node);
+        }
     }
 }
 
@@ -160,16 +159,7 @@ void EggRewrite::convert_app(MimNode node) {
 }
 
 // (var <name> <type>)
-void EggRewrite::convert_var(MimNode node) {
-    // auto sym  = res_[node.children[0]].symbol;
-    // auto type = added_[node.children[1]];
-
-    // auto new_var = new_world().var(type);
-    // added_.push_back(new_var);
-
-    // TODO: call to some convert_node method
-    // to convert var type so it will be available in convert_lam?
-}
+void EggRewrite::convert_var(MimNode node) {}
 
 // (lit <val> [<type>])
 void EggRewrite::convert_lit(MimNode node) {
