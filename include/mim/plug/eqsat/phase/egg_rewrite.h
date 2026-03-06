@@ -27,6 +27,21 @@ public:
     World& new_world() { return Rewriter::world(); }
 
 private:
+    /* An initial iteration over all nodes of the recursive expression is performed
+     * in which certain nodes like lambdas and their variables are created.
+     * */
+    void init_node(MimNode node);
+
+    void init_lam(MimNode node);
+    void init_con(MimNode node);
+    void init_var(MimNode node);
+
+    /* This is followed by another iteration over all nodes
+     * of the recursive expression in which the rest of the nodes
+     * are created and lambas are finalized by setting their bodies.
+     * */
+    void convert_node(MimNode node);
+
     void convert_lam(MimNode node);
     void convert_con(MimNode node);
     void convert_app(MimNode node);

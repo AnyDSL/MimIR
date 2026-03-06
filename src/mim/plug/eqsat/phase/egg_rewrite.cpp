@@ -23,39 +23,22 @@ void EggRewrite::start() {
 
     std::cout << "got the rewrite result (size: " << res_.size() << ")..\n";
 
-    // TODO: Maybe we need a preceding loop that creates all the lambdas
-    // because with lambda creation comes variable creation and we can
-    // only utilize created variables in any other expressions we want to generate
-    // i.e. an application of a variable to something else.
-    // We also want to create the types of the variables here so they can
-    // be referred to via get_def. But how would we best do this?
+    for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
+        auto node = res_[curr_id_];
+
+        std::cout << "init - current id: " << curr_id_ << "\n";
+        std::cout << "init - current node: " << mim_node_str(node).c_str() << "\n";
+
+        init_node(node);
+    }
 
     for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
         auto node = res_[curr_id_];
 
-        std::cout << "current id: " << curr_id_ << "\n";
-        std::cout << "current node: " << mim_node_str(node).c_str() << "\n";
+        std::cout << "convert - current id: " << curr_id_ << "\n";
+        std::cout << "convert - current node: " << mim_node_str(node).c_str() << "\n";
 
-        switch (node.kind) {
-            case MimKind::Lam: convert_lam(node); break;
-            case MimKind::Con: convert_con(node); break;
-            case MimKind::App: convert_app(node); break;
-            case MimKind::Var: convert_var(node); break;
-            case MimKind::Lit: convert_lit(node); break;
-            case MimKind::Arr: convert_arr(node); break;
-            case MimKind::Tuple: convert_tuple(node); break;
-            case MimKind::Extract: convert_extract(node); break;
-            case MimKind::Ins: convert_ins(node); break;
-            case MimKind::Sigma: convert_sigma(node); break;
-            case MimKind::Cn: convert_cn(node); break;
-            case MimKind::Pi: convert_pi(node); break;
-            case MimKind::Idx: convert_idx(node); break;
-            case MimKind::Hole: convert_hole(node); break;
-            case MimKind::Type: convert_type(node); break;
-            case MimKind::Num: convert_num(node); break;
-            case MimKind::Symbol: convert_symbol(node); break;
-            default: fe::unreachable();
-        }
+        convert_node(node);
     }
 
     std::cout << "recreated the world..\n";
@@ -63,11 +46,18 @@ void EggRewrite::start() {
     swap(old_world(), new_world());
 }
 
-void EggRewrite::convert_lam(MimNode node) {}
+void EggRewrite::init_node(MimNode node) {
+    switch (node.kind) {
+        case MimKind::Lam: init_lam(node); break;
+        case MimKind::Con: init_con(node); break;
+        case MimKind::Var: init_var(node); break;
+        default: break;
+    }
+}
 
-// (con <name> <arg_tuple> <body>)
-// i.e. (con foo (tuple (var a Nat) (var ret (cn nat))) (app ret a))
-void EggRewrite::convert_con(MimNode node) {
+void EggRewrite::init_lam(MimNode node) {}
+
+void EggRewrite::init_con(MimNode node) {
     auto con_name  = get_symbol(node.children[0]);
     auto arg_tuple = get_node(MimKind::Tuple, node.children[1]);
 
@@ -101,10 +91,51 @@ void EggRewrite::convert_con(MimNode node) {
         var->set(var_name);
         add_symbol(var_name, var);
     }
+}
 
-    // TODO: if the var has projections, i.e. it is typed as sigma
-    // and therefore has nested variables, these also need to be set
-    // with their correct names
+void EggRewrite::init_var(MimNode node) {
+    // NOTE: Assuming (var <name> <type>)
+    // but this might not always be the case.
+    // Also, I assume that adding a type to the world again
+    // in the convert iteration that we already added here is fine.
+    auto var_type_node = res_[node.children[1]];
+
+    // TODO: this would only work if the conversion calls
+    // were recursively calling one another, which they aren't
+    convert_node(var_type_node);
+}
+
+void EggRewrite::convert_node(MimNode node) {
+    switch (node.kind) {
+        case MimKind::Lam: convert_lam(node); break;
+        case MimKind::Con: convert_con(node); break;
+        case MimKind::App: convert_app(node); break;
+        case MimKind::Var: convert_var(node); break;
+        case MimKind::Lit: convert_lit(node); break;
+        case MimKind::Arr: convert_arr(node); break;
+        case MimKind::Tuple: convert_tuple(node); break;
+        case MimKind::Extract: convert_extract(node); break;
+        case MimKind::Ins: convert_ins(node); break;
+        case MimKind::Sigma: convert_sigma(node); break;
+        case MimKind::Cn: convert_cn(node); break;
+        case MimKind::Pi: convert_pi(node); break;
+        case MimKind::Idx: convert_idx(node); break;
+        case MimKind::Hole: convert_hole(node); break;
+        case MimKind::Type: convert_type(node); break;
+        case MimKind::Num: convert_num(node); break;
+        case MimKind::Symbol: convert_symbol(node); break;
+        default: break;
+    }
+}
+
+void EggRewrite::convert_lam(MimNode node) {}
+
+// (con <name> <arg_tuple> <body>)
+// i.e. (con foo (tuple (var a Nat) (var ret (cn nat))) (app ret a))
+void EggRewrite::convert_con(MimNode node) {
+    auto new_con = get_def(curr_id_)->as_mut<Lam>();
+    new_con->set_body(get_def(node.children[2]));
+    add_def(new_con);
 }
 
 // (app <callee> <arg>)
@@ -135,6 +166,9 @@ void EggRewrite::convert_var(MimNode node) {
 
     // auto new_var = new_world().var(type);
     // added_.push_back(new_var);
+
+    // TODO: call to some convert_node method
+    // to convert var type so it will be available in convert_lam?
 }
 
 // (lit <val> [<type>])
