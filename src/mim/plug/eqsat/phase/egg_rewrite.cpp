@@ -23,20 +23,23 @@ void EggRewrite::start() {
 
     std::cout << "got the rewrite result (size: " << res_.size() << ")..\n";
 
-    for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
+    for (int id = 0; id < res_.size(); ++id) {
+        curr_id_  = id;
         auto node = res_[curr_id_];
-        if (node.kind == MimKind::Var) init_var(node);
-    }
 
-    for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
-        auto node = res_[curr_id_];
-        if (node.kind == MimKind::Lam)
+        std::cout << "init - current id: " << curr_id_ << "\n";
+        std::cout << "init - current node: " << mim_node_str(node).c_str() << "\n";
+
+        if (node.kind == MimKind::Var)
+            init_var(node);
+        else if (node.kind == MimKind::Lam)
             init_lam(node);
         else if (node.kind == MimKind::Con)
             init_con(node);
     }
 
-    for (curr_id_ = 0; curr_id_ < res_.size(); ++curr_id_) {
+    for (int id = 0; id < res_.size(); ++id) {
+        curr_id_  = id;
         auto node = res_[curr_id_];
 
         std::cout << "convert - current id: " << curr_id_ << "\n";
@@ -58,7 +61,7 @@ void EggRewrite::init_con(MimNode node) {
 
     std::vector<std::string> var_names;
     DefVec var_types;
-    DefVec ret_type;
+    DefVec ret_types;
     for (auto child : arg_tuple.children) {
         auto var      = get_node(MimKind::Var, child);
         auto var_name = get_symbol(var.children[0]);
@@ -67,17 +70,20 @@ void EggRewrite::init_con(MimNode node) {
 
         if (child != arg_tuple.children.back())
             var_types.push_back(var_type);
-        else
+        else {
             // NOTE: we are constructing a cn type in convert_cn and
             // are trying to pass it here but the mut_fun constructor is probably expecting
             // the types within that cn instead and will implicitly
             // construct a cn type from those
-            ret_type.push_back(var_type);
+            auto ret_type = get_def(
+                get_node(MimKind::Cn, var.children[1])
+                    .children[0]); // TODO: this is just a temporary solution, cn should have more than 1 child
+            ret_types.push_back(ret_type);
+        }
     }
 
-    auto new_con = new_world().mut_fun(var_types, ret_type)->set(con_name.c_str());
+    auto new_con = new_world().mut_fun(var_types, ret_types)->set(con_name.c_str());
     add_symbol(con_name, new_con);
-    new_con->set_body(get_def(node.children[2]));
     add_def(new_con);
 
     auto i = 0;
@@ -93,7 +99,8 @@ void EggRewrite::init_var(MimNode node) {
     // but this might not always be the case.
     // Also, I assume that adding a type to the world again
     // in the convert iteration that we already added here is fine.
-    auto var_type = res_[node.children[1]];
+    curr_id_      = node.children[1];
+    auto var_type = res_[curr_id_];
     convert(var_type, true);
 }
 
@@ -101,12 +108,17 @@ void EggRewrite::convert(MimNode node, bool recurse) {
     // NOTE: By putting this loop before the conversion calls
     // we ensure a conversion from the bottom up, which is necessary
     // because some higher level nodes depend on Def's created from their child nodes
+    int curr_id = curr_id_;
     if (recurse) {
-        for (auto child : node.children) {
-            auto child_node = res_[child];
+        for (int child_id : node.children) {
+            curr_id_        = child_id;
+            auto child_node = res_[curr_id_];
             convert(child_node);
         }
     }
+    // NOTE: This is needed because the loop sets curr_id_ to the id's of the current nodes' children
+    // and at this point it needs to be the id of the node itself again.
+    curr_id_ = curr_id;
 
     switch (node.kind) {
         case MimKind::Lam: convert_lam(node); break;
@@ -137,7 +149,6 @@ void EggRewrite::convert_lam(MimNode node) {}
 void EggRewrite::convert_con(MimNode node) {
     auto new_con = get_def(curr_id_)->as_mut<Lam>();
     new_con->set_body(get_def(node.children[2]));
-    add_def(new_con);
 }
 
 // (app <callee> <arg>)
