@@ -16,6 +16,7 @@
 #include "mim/plug/core/core.h"
 #include "mim/plug/mem/mem.h"
 #include "mim/plug/sflow/autogen.h"
+#include "mim/plug/sflow/tuple.h"
 #include "mim/plug/spirv/autogen.h"
 #include "mim/plug/spirv/be/op.h"
 #include "mim/plug/vec/autogen.h"
@@ -49,44 +50,76 @@ bool is_const(const Def* def) {
     return false;
 }
 
-/// Returns a unit type if the type is not a real type in
-/// the spirv target. This applies currently to
-/// - mem::M
-/// - spirv::Global
-/// - spirv::entry
-const Def* isa_emitted(const Def* type) {
-    if (Axm::isa<mem::M>(type)) return nullptr;
-    if (Axm::isa<spirv::Global>(type)) return nullptr;
-    if (Axm::isa<spirv::entry>(type)) return nullptr;
-    return type;
-}
+/// Recursively strips values and types that are not to be emitted.
+const Def* strip(const Def* def);
 
-/// Recursively removes any types that should not
-/// be emitted as actual types to spirv.
-const Def* strip_type(const Def* type) {
-    auto& world = type->world();
+/// Used by [strip]
+const Def* strip_rec(const Def* def) {
+    auto& world = def->world();
 
-    if (auto sigma = type->isa<Sigma>()) {
+    if (auto sigma = def->isa<Sigma>()) {
         DefVec fields{};
-        for (auto field : sigma->ops()) {
-            auto stripped = strip_type(field);
-            if (stripped != world.sigma()) fields.push_back(stripped);
-        }
+        for (auto field : sigma->ops())
+            if (auto stripped = strip_rec(field)) fields.push_back(stripped);
 
-        if (fields.empty()) return world.sigma();
-        if (fields.size() == 1) return fields[0];
-
-        return world.sigma(fields.view());
+        return world.sigma(fields);
     }
 
-    if (auto arr = type->isa<Arr>()) return world.arr(arr->arity(), strip_type(arr->body()));
+    if (auto sigma = def->isa<Tuple>()) {
+        DefVec fields{};
+        for (auto field : sigma->ops())
+            if (auto stripped = strip_rec(field)) fields.push_back(stripped);
 
-    if (auto pi = type->isa<Pi>()) return world.pi(strip_type(pi->dom()), strip_type(pi->codom()), pi->is_implicit());
+        return world.tuple(fields);
+    }
 
-    if (isa_emitted(type))
-        return type;
-    else
-        return type->world().sigma();
+    if (auto arr = def->isa<Arr>()) {
+        if (auto body = strip_rec(arr->body()))
+            return world.arr(arr->arity(), body);
+        else
+            return nullptr;
+    }
+
+    if (auto pack = def->isa<Pack>()) {
+        if (auto body = strip_rec(pack->body()))
+            return world.pack(pack->arity(), body);
+        else
+            return nullptr;
+    }
+
+    if (auto pi = def->isa<Pi>()) return world.pi(strip(pi->dom()), strip(pi->codom()), pi->is_implicit());
+
+    if (auto extract = def->isa<Extract>()) {
+        if (auto var = extract->tuple()->isa<Var>()) {
+            if (auto sigma = var->type()->isa<Sigma>()) {
+                size_t count = 0;
+                auto index   = Lit::as(extract->index());
+                for (auto stripped : sigma->projs([](const Def* def) { return strip_rec(def); }))
+                    if (!stripped) {
+                        if (count < index) index--;
+                    } else {
+                        count++;
+                    }
+
+                if (count > 1)
+                    return world.extract(var, index);
+                else
+                    return var;
+            }
+        }
+    }
+
+    if (Axm::isa<mem::M>(def->type())) return nullptr;
+    if (Axm::isa<mem::M>(def)) return nullptr;
+    if (Axm::isa<spirv::Global>(def)) return nullptr;
+    if (Axm::isa<spirv::entry>(def)) return nullptr;
+
+    return def;
+}
+
+const Def* strip(const Def* def) {
+    auto stripped = strip_rec(def);
+    return stripped ? stripped : (def->type()->isa<Type>() ? (const Def*)def->world().sigma() : def->world().tuple());
 }
 
 using OpVec = std::vector<Op>;
@@ -339,7 +372,18 @@ private:
 
     Word next_id_{0};
     Word glsl_ext_inst_id_{0};
-    std::optional<Word> i32_type_id_{}; // Shared 32-bit unsigned integer type for all Nat/Idx
+    std::optional<Word> bool_type_id_{}; // Shared Bool type (OpTypeBool)
+    std::optional<Word> i32_type_id_{};  // Shared 32-bit unsigned integer type for all Nat/Idx
+
+    /// Get or create the SPIR-V bool type (for comparisons and branch conditions)
+    Word bool_type() {
+        if (bool_type_id_.has_value()) return *bool_type_id_;
+        Word id = next_id();
+        declarations.emplace_back(Op{OpKind::TypeBool, {}, id, {}});
+        id_names[id]  = "bool";
+        bool_type_id_ = id;
+        return id;
+    }
     absl::flat_hash_map<std::pair<Word, Word>, Word> ptr_types_{}; // (storage_class, type_id) -> pointer_type_id
     absl::flat_hash_map<std::vector<Word>, Word> func_types_{};    // [return_type, param_types...] -> func_type_id
     DefMap<Word> interface_vars_{};
@@ -420,7 +464,7 @@ Word Emitter::convert(const Def* type, std::string_view name) {
 
         // Build signature for deduplication
         std::vector<Word> signature{return_type};
-        auto doms = strip_type(pi->dom());
+        auto doms = pi->dom();
         if (doms != world().sigma()) {
             // if it is not a sigma, it is just the continuation, which
             // we don't want to convert
@@ -521,7 +565,7 @@ Word Emitter::convert(const Def* type, std::string_view name) {
 }
 
 Word Emitter::convert_ret_pi(const Pi* pi) {
-    auto dom = strip_type(pi->dom());
+    auto dom = strip(pi->dom());
     return convert(dom);
 }
 
@@ -571,7 +615,7 @@ Word Emitter::prepare() {
     globals_[root()] = id;
 
     Word type        = convert(root()->type());
-    Word return_type = convert_ret_pi(root()->type()->ret_pi());
+    Word return_type = convert(root()->type()->ret_pi()->dom());
     funDefinitions.emplace_back(Op{
         OpKind::Function,
         {0, type},
@@ -586,83 +630,75 @@ Word Emitter::prepare() {
 
     auto var = root()->var(0);
 
-    if (auto sigma = var->type()->isa<Sigma>()) {
-        for (size_t idx = 0; idx < sigma->num_ops(); ++idx) {
-            auto param = sigma->op(idx);
+    // A fun always has a sigma domain type due to some regular argument and the
+    // return continuation, as long as the regular argument is not a continuation
+    // of the same type, which is unsupported in the backend anyway, as Spir-V does
+    // not support higher order programs.
+    auto sigma = root()->dom()->as<Sigma>();
+    for (size_t idx = 0; idx < sigma->num_ops() - 1; ++idx) {
+        auto param = sigma->op(idx);
 
-            // Check if this is an execution model marker
-            if (auto entry_marker = Axm::isa<spirv::entry>(param)) {
-                if (model.has_value()) error("multiple execution model markers found in entry point");
+        // Check if this is an execution model marker
+        if (auto entry_marker = Axm::isa<spirv::entry>(param)) {
+            if (model.has_value()) error("multiple execution model markers found in entry point");
 
-                // Extract model and modes: entry: Model → {n: Nat} → «n; Mode» → ★
-                auto [_model, n, modes] = entry_marker->uncurry_args<3>();
-                model                   = Axm::as<spirv::model>(_model).id();
+            // Extract model and modes: entry: Model → {n: Nat} → «n; Mode» → ★
+            auto [_model, n, modes] = entry_marker->uncurry_args<3>();
+            model                   = Axm::as<spirv::model>(_model).id();
 
-                // Collect execution modes
-                if (auto lit_n = Lit::isa(n)) {
-                    if (*lit_n == 1) {
-                        // Single mode
-                        exec_modes.push_back(modes);
-                    } else if (*lit_n > 1) {
-                        // Multiple modes in a tuple
-                        for (auto mode : modes->projs())
-                            exec_modes.push_back(mode);
-                    }
-                    // n == 0: no modes
+            // Collect execution modes
+            if (auto lit_n = Lit::isa(n)) {
+                if (*lit_n == 1) {
+                    // Single mode
+                    exec_modes.push_back(modes);
+                } else if (*lit_n > 1) {
+                    // Multiple modes in a tuple
+                    for (auto mode : modes->projs())
+                        exec_modes.push_back(mode);
                 }
-                continue;
+                // n == 0: no modes
             }
-
-            // Extract parameter name from projection
-            std::string param_name;
-            try {
-                auto proj = var->proj(sigma->num_ops(), idx);
-                if (proj) param_name = proj->unique_name();
-            } catch (...) {
-                // If projection fails, use empty name
-            }
-
-            // Process global interface variables
-            if (auto global = Axm::isa<spirv::Global>(param)) {
-                convert(param, param_name);
-                auto var_id = interface_vars_[param];
-                interfaces.push_back(var_id);
-
-                // Validate that builtins align with the specified model
-                auto builtin_model = isa_builtin(param);
-                if (model.has_value() && builtin_model.has_value()) {
-                    if (*model != *builtin_model)
-                        error("invalid builtin for specified execution model encountered in entry point");
-                }
-
-                // Add var extract to globals_, as it is not real
-                globals_[world().extract(var, idx)] = var_id;
-                continue;
-            }
-
-            auto param_type = strip_type(var->type());
-            Word param_id   = next_id();
-
-            // Handle "real" parameters
-            if (param_type != world().sigma()) {
-                funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
-                id_names[param_id] = param->unique_name();
-            }
-
-            // Add var extract to locals_, as it is not real
-            locals_[world().extract(var, idx)] = param_id;
+            continue;
         }
-    } else {
-        // TODO: markers broken here
-        auto param_type = strip_type(var->type());
+
+        // Extract parameter name from projection
+        std::string param_name;
+        try {
+            auto proj = var->proj(sigma->num_ops(), idx);
+            if (proj) param_name = proj->unique_name();
+        } catch (...) {
+            // If projection fails, use empty name
+        }
+
+        // Process global interface variables
+        if (auto global = Axm::isa<spirv::Global>(param)) {
+            convert(param, param_name);
+            auto var_id = interface_vars_[param];
+            interfaces.push_back(var_id);
+
+            // Validate that builtins align with the specified model
+            auto builtin_model = isa_builtin(param);
+            if (model.has_value() && builtin_model.has_value()) {
+                if (*model != *builtin_model)
+                    error("invalid builtin for specified execution model encountered in entry point");
+            }
+
+            // Add var extract to globals_, as it is not real
+            globals_[world().extract(var, idx)] = var_id;
+            continue;
+        }
+
+        auto param_type = strip(var->type());
         Word param_id   = next_id();
 
+        // Handle "real" parameters
         if (param_type != world().sigma()) {
             funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
-            id_names[param_id] = var->unique_name();
+            id_names[param_id] = param->unique_name();
         }
 
-        locals_[var] = param_id;
+        // Add var extract to locals_, as it is not real
+        locals_[world().extract(var, idx)] = param_id;
     }
 
     // external lams are converted to entry points
@@ -763,35 +799,34 @@ void Emitter::emit_epilogue(Lam* lam) {
                 Word type   = convert(world().sigma(types));
                 bb.tail.emplace_back(Op{OpKind::CompositeConstruct, {values}, val_id, type});
         }
-    } else if (auto dispatch = Dispatch(app)) {
-        // Handle explicit structured selections
-        if (auto selection = Axm::isa<sflow::branch>(app)) {
-            auto [merge, header] = selection->uncurry_args<2>();
-            bb.tail.emplace_back(Op{OpKind::SelectionMerge, {id(merge)}, {}, {}});
-            dispatch = header;
-        }
-        // Handle explicit structured loops
-        if (auto loop = Axm::isa<sflow::loop>(app)) {
-            auto [cont, exit, header] = loop->uncurry_args<3>();
-            bb.tail.emplace_back(Op{
-                OpKind::LoopMerge,
-                {id(exit), id(cont)},
-                {},
-                {}
-            });
-            dispatch = header;
-        }
-
+    } else if (auto dispatch = sflow::Dispatch(app)) {
+        std::cerr << "dispatch handling for: " << app->unique_name() << std::endl;
         for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
+            std::cerr << "  callee: " << callee->unique_name() << std::endl;
             size_t n = callee->num_tvars();
             for (size_t i = 0; i != n; ++i) {
-                auto arg = emit(dispatch.app()->arg(n, i));
-                auto phi = callee->var(n, i);
+                auto arg         = emit(dispatch.app()->arg(n, i));
+                auto phi         = callee->var(n, i);
+                auto extract_key = world().extract(callee->var(), i);
+                std::cerr << "    adding to locals_: " << extract_key->unique_name() << " (phi: " << phi->unique_name()
+                          << ")" << std::endl;
                 assert(!Axm::isa<mem::M>(phi->type()));
                 lam2bb_[callee].phis[phi].emplace_back(arg);
                 lam2bb_[callee].phis[phi].emplace_back(id(lam));
-                locals_[phi] = id(phi);
+                locals_[extract_key] = id(phi);
             }
+        }
+
+        // Emit structured control flow merge instructions if this is sflow.branch or sflow.loop
+        if (dispatch.kind() == sflow::Dispatch::Kind::Branch) {
+            bb.tail.emplace_back(Op{OpKind::SelectionMerge, {id(dispatch.merge())}, {}, {}});
+        } else if (dispatch.kind() == sflow::Dispatch::Kind::Loop) {
+            bb.tail.emplace_back(Op{
+                OpKind::LoopMerge,
+                {id(dispatch.merge()), id(dispatch.cont())},
+                {},
+                {}
+            });
         }
 
         if (dispatch.num_targets() == 2) {
@@ -824,16 +859,20 @@ void Emitter::emit_epilogue(Lam* lam) {
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) {
         // ordinary jump
         // => OpBranch
+        std::cerr << "ordinary jump to: " << callee->unique_name() << std::endl;
         size_t n = callee->num_tvars();
         for (size_t i = 0; i != n; ++i) {
-            auto arg = emit(app->arg(n, i));
-            auto phi = callee->var(n, i);
+            auto arg         = emit(app->arg(n, i));
+            auto phi         = callee->var(n, i);
+            auto extract_key = world().extract(callee->var(), i);
+            std::cerr << "  adding to locals_: " << extract_key->unique_name() << " -> phi: " << phi->unique_name()
+                      << std::endl;
             assert(!Axm::isa<mem::M>(phi->type()));
             lam2bb_[callee].phis[phi].emplace_back(arg);
             lam2bb_[callee].phis[phi].emplace_back(id(lam));
-            locals_[phi] = id(phi);
+            locals_[extract_key] = id(phi);
         }
-        bb.end = Op{OpKind::Branch, {id(lam)}, {}, {}};
+        bb.end = Op{OpKind::Branch, {id(callee)}, {}, {}};
     } else if (Pi::isa_returning(app->callee_type())) {
         // function call
         // => Op
@@ -842,6 +881,9 @@ void Emitter::emit_epilogue(Lam* lam) {
 }
 
 Word Emitter::emit_bb(BB& bb, const Def* def) {
+    std::cerr << "emit_bb: " << def->unique_name() << " (node: " << def->node_name() << "): " << def->type()
+              << std::endl;
+
     OpVec ops{};
 
     Word id      = next_id();
@@ -991,6 +1033,13 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
+        std::cerr << "  extract from tuple: " << tuple->unique_name() << " (node: " << tuple->node_name() << ")"
+                  << std::endl;
+        std::cerr << "  index: " << index << std::endl;
+        std::cerr << "  tuple is Var: " << (tuple->isa<Var>() ? "yes" : "no") << std::endl;
+        if (tuple->isa<Var>())
+            std::cerr << "  tuple in locals_: " << (locals_.count(tuple) ? "yes" : "no") << std::endl;
+
         // var extracts are not real and should have been added to locals_ already
         assert(!def->isa<Var>() && "var extractions encountered in emit_bb\n");
 
@@ -1031,10 +1080,10 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                 return id;
             }
 
-            if (auto arr = tuple->type()->isa<Arr>()) {
+            if (tuple->type()->isa<Arr>()) {
                 bb.ops.push_back(Op{
                     OpKind::CompositeExtract,
-                    {emit(arr), index},
+                    {emit(tuple), index},
                     id,
                     type_id
                 });
@@ -1163,13 +1212,68 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         return id;
     }
 
-    // TODO: vars
+    // Handle math comparisons - SPIR-V comparisons always return OpTypeBool
+    if (auto cmp = Axm::isa<math::cmp>(def)) {
+        auto [lhs, rhs]   = cmp->arg()->projs<2>();
+        Word lhs_id       = emit(lhs);
+        Word rhs_id       = emit(rhs);
+        Word bool_type_id = bool_type();
+
+        OpKind op_kind;
+        switch (cmp.id()) {
+            // Ordered comparisons (false if either is NaN)
+            case math::cmp::e: op_kind = OpKind::FOrdEqual; break;
+            case math::cmp::ne: op_kind = OpKind::FOrdNotEqual; break;
+            case math::cmp::l: op_kind = OpKind::FOrdLessThan; break;
+            case math::cmp::le: op_kind = OpKind::FOrdLessThanEqual; break;
+            case math::cmp::g: op_kind = OpKind::FOrdGreaterThan; break;
+            case math::cmp::ge: op_kind = OpKind::FOrdGreaterThanEqual; break;
+            // Unordered comparisons (true if either is NaN)
+            case math::cmp::ue: op_kind = OpKind::FUnordEqual; break;
+            case math::cmp::une: op_kind = OpKind::FUnordNotEqual; break;
+            case math::cmp::ul: op_kind = OpKind::FUnordLessThan; break;
+            case math::cmp::ule: op_kind = OpKind::FUnordLessThanEqual; break;
+            case math::cmp::ug: op_kind = OpKind::FUnordGreaterThan; break;
+            case math::cmp::uge: op_kind = OpKind::FUnordGreaterThanEqual; break;
+            // Special cases
+            case math::cmp::f: // always false
+                declarations.emplace_back(Op{OpKind::ConstantFalse, {}, id, bool_type_id});
+                return id;
+            case math::cmp::t: // always true
+                declarations.emplace_back(Op{OpKind::ConstantTrue, {}, id, bool_type_id});
+                return id;
+            case math::cmp::o: // ordered (neither is NaN) - use FOrdEqual(x,x) && FOrdEqual(y,y)
+            case math::cmp::u: // unordered (either is NaN) - use FUnordNotEqual(x,x) || FUnordNotEqual(y,y)
+                std::cerr << "math.cmp.o and math.cmp.u not yet implemented\n";
+                bb.ops.emplace_back(Op{OpKind::Undefined, {}, id, bool_type_id});
+                return id;
+            default:
+                std::cerr << "unknown math.cmp variant\n";
+                bb.ops.emplace_back(Op{OpKind::Undefined, {}, id, bool_type_id});
+                return id;
+        }
+
+        bb.ops.emplace_back(Op{
+            op_kind,
+            {lhs_id, rhs_id},
+            id,
+            bool_type_id
+        });
+        return id;
+    }
+
+    if (def->isa<Var>()) {
+        // Var nodes should have been registered in locals_ already (via phi handling)
+        if (auto it = locals_.find(def); it != locals_.end()) return it->second;
+        std::cerr << "Var not in locals_: " << def->unique_name() << "\n";
+    }
 
     bb.ops.emplace_back(Op{OpKind::Undefined, {}, id, type_id});
     if (auto app = def->isa<App>())
         std::cerr << "def not yet implemented: " << app->callee() << ": " << def->type() << "\n";
     else
-        std::cerr << "def not yet implemented: " << def << ": " << def->type() << "\n";
+        std::cerr << "def not yet implemented: " << def << " (node: " << def->node_name() << "): " << def->type()
+                  << "\n";
 
     return id;
 }

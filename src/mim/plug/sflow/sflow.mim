@@ -33,19 +33,19 @@ import compile;
 /// If the header argument is not an extract then it is
 /// assumed the branch has only a single case and it is
 /// normalized to a simple call to body.
-axm %sflow.branch: {H M: ★}
+axm %sflow.branch: {M: ★}
   → [merge: Cn M]
-  → [header: Cn H]
-  → Cn H, normalize_branch;
+  → [header: ⊥]
+  → ⊥, normalize_branch;
 
 /// ## Loops
 ///
 /// Represents a structured loop (for or while)
-axm %sflow.loop: {C M H: ★}
+axm %sflow.loop: {C M: ★}
   → [continue: Cn C]
   → [merge: Cn M]
-  → [header: Cn H]
-  → Cn H, normalize_loop;
+  → [header: ⊥]
+  → ⊥, normalize_loop;
 
 /// ## Phases
 ///

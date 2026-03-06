@@ -211,6 +211,23 @@ enum class OpKind {
     Switch,
     Return,
     ReturnValue,
+    // Float comparisons
+    FOrdEqual,
+    FOrdNotEqual,
+    FOrdLessThan,
+    FOrdGreaterThan,
+    FOrdLessThanEqual,
+    FOrdGreaterThanEqual,
+    FUnordEqual,
+    FUnordNotEqual,
+    FUnordLessThan,
+    FUnordGreaterThan,
+    FUnordLessThanEqual,
+    FUnordGreaterThanEqual,
+    // Bool type and constants
+    TypeBool,
+    ConstantTrue,
+    ConstantFalse,
 };
 } // namespace mim::plug::spirv
 
@@ -297,6 +314,21 @@ struct Op {
             case OpKind::Switch: return "OpSwitch";
             case OpKind::Return: return "OpReturn";
             case OpKind::ReturnValue: return "OpReturnValue";
+            case OpKind::FOrdEqual: return "OpFOrdEqual";
+            case OpKind::FOrdNotEqual: return "OpFOrdNotEqual";
+            case OpKind::FOrdLessThan: return "OpFOrdLessThan";
+            case OpKind::FOrdGreaterThan: return "OpFOrdGreaterThan";
+            case OpKind::FOrdLessThanEqual: return "OpFOrdLessThanEqual";
+            case OpKind::FOrdGreaterThanEqual: return "OpFOrdGreaterThanEqual";
+            case OpKind::FUnordEqual: return "OpFUnordEqual";
+            case OpKind::FUnordNotEqual: return "OpFUnordNotEqual";
+            case OpKind::FUnordLessThan: return "OpFUnordLessThan";
+            case OpKind::FUnordGreaterThan: return "OpFUnordGreaterThan";
+            case OpKind::FUnordLessThanEqual: return "OpFUnordLessThanEqual";
+            case OpKind::FUnordGreaterThanEqual: return "OpFUnordGreaterThanEqual";
+            case OpKind::TypeBool: return "OpTypeBool";
+            case OpKind::ConstantTrue: return "OpConstantTrue";
+            case OpKind::ConstantFalse: return "OpConstantFalse";
             default: fe::unreachable();
         }
     }
@@ -341,6 +373,21 @@ struct Op {
             case OpKind::Switch: return 251;
             case OpKind::Return: return 253;
             case OpKind::ReturnValue: return 254;
+            case OpKind::FOrdEqual: return 180;
+            case OpKind::FOrdNotEqual: return 182;
+            case OpKind::FOrdLessThan: return 184;
+            case OpKind::FOrdGreaterThan: return 186;
+            case OpKind::FOrdLessThanEqual: return 188;
+            case OpKind::FOrdGreaterThanEqual: return 190;
+            case OpKind::FUnordEqual: return 181;
+            case OpKind::FUnordNotEqual: return 183;
+            case OpKind::FUnordLessThan: return 185;
+            case OpKind::FUnordGreaterThan: return 187;
+            case OpKind::FUnordLessThanEqual: return 189;
+            case OpKind::FUnordGreaterThanEqual: return 191;
+            case OpKind::TypeBool: return 20;
+            case OpKind::ConstantTrue: return 41;
+            case OpKind::ConstantFalse: return 42;
             default: fe::unreachable();
         }
     }
