@@ -4,16 +4,25 @@ set(CARGO_WIN_DEBUG_CONFIG ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/.cargo/win
 set(CARGO_MANIFEST ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/Cargo.toml)
 set(CARGO_TARGET_DIR ${CMAKE_SOURCE_DIR}/build/include/egg)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(CARGO_BUILD_TYPE "")
+  set(EGG_LIB_DIR debug)
+else()
+  set(CARGO_BUILD_TYPE --release)
+  set(EGG_LIB_DIR release)
+endif()
+
+if(WIN32)
+  set(CARGO_EXTRA --config ${CARGO_WIN_DEBUG_CONFIG})
+endif()
+
 set(EGG_SOURCE_FILE ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/src/lib.rs)
 set(EGG_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat/src/lib.rs.cc)
-# TODO: debug or release dir based on CMAKE_BUILD_TYPE
-set(EGG_LIB ${CARGO_TARGET_DIR}/debug/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(EGG_LIB ${CARGO_TARGET_DIR}/${EGG_LIB_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
 
-# TODO: differentiate between debug and release builds depending on ${CMAKE_BUILD_TYPE}
-# (only debug builds on windows require --config WIN_DEBUG_CONFIG)
 add_custom_command(
     OUTPUT ${EGG_BRIDGE_CPP} ${EGG_LIB}
-    COMMAND cargo build --manifest-path ${CARGO_MANIFEST} --config ${CARGO_WIN_DEBUG_CONFIG} --target-dir ${CARGO_TARGET_DIR}
+    COMMAND cargo build ${CARGO_BUILD_TYPE} ${CARGO_EXTRA} --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
     DEPENDS ${EGG_SOURCE_FILE}
     USES_TERMINAL
     COMMENT "Running cargo..."

@@ -98,6 +98,16 @@ void EggRewrite::init_var(MimNode node) {
 }
 
 void EggRewrite::convert(MimNode node, bool recurse) {
+    // NOTE: By putting this loop before the conversion calls
+    // we ensure a conversion from the bottom up, which is necessary
+    // because some higher level nodes depend on Def's created from their child nodes
+    if (recurse) {
+        for (auto child : node.children) {
+            auto child_node = res_[child];
+            convert(child_node);
+        }
+    }
+
     switch (node.kind) {
         case MimKind::Lam: convert_lam(node); break;
         case MimKind::Con: convert_con(node); break;
@@ -117,13 +127,6 @@ void EggRewrite::convert(MimNode node, bool recurse) {
         case MimKind::Num: convert_num(node); break;
         case MimKind::Symbol: convert_symbol(node); break;
         default: break;
-    }
-
-    if (recurse) {
-        for (auto child : node.children) {
-            auto child_node = res_[child];
-            convert(child_node);
-        }
     }
 }
 
