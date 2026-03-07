@@ -68,9 +68,9 @@ void EggRewrite::init_con(MimNode node) {
         auto var_type = get_def(var.children[1]);
         var_names.push_back(var_name.c_str());
 
-        if (child != arg_tuple.children.back())
+        if (child != arg_tuple.children.back()) {
             var_types.push_back(var_type);
-        else {
+        } else {
             // NOTE: we are constructing a cn type in convert_cn and
             // are trying to pass it here but the mut_fun constructor is probably expecting
             // the types within that cn instead and will implicitly
@@ -86,11 +86,15 @@ void EggRewrite::init_con(MimNode node) {
     add_var(con_name, new_con);
     add_def(new_con);
 
-    auto i = 0;
-    for (auto var : new_con->vars()) {
+    // NOTE: We need an extra blank name for empty domain tuples.
+    // If we do have variables, will vars() only return the domain tuple instead of the vars?
+    if (var_types.empty()) var_names.insert(var_names.begin(), "");
+
+    for (int i = 0; auto var : new_con->vars()) {
         auto var_name = var_names[i];
         var->set(var_name);
         add_var(var_name, var);
+        i++;
     }
 }
 
@@ -148,11 +152,12 @@ void EggRewrite::convert_lam(MimNode node) {}
 // i.e. (con foo (tuple (var a Nat) (var ret (cn nat))) (app ret a))
 void EggRewrite::convert_con(MimNode node) {
     auto new_con = get_def(curr_id_)->as_mut<Lam>();
-    std::cout << new_con << "\n";
-    auto body = get_def(node.children[2]);
-    std::cout << body << "\n";
-    // TODO: this fails for some reason, not sure why yet
+    auto body    = get_def(node.children[2]);
+    // TODO: have to add filter to sexpr's and pass it here
+    new_con->set_filter(false);
     new_con->set_body(body);
+    // TODO: only for external lambdas, still have to add this to the sexpr's
+    new_con->externalize();
 }
 
 // (app <callee> <arg>)
