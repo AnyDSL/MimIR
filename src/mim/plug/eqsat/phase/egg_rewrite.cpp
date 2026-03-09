@@ -25,19 +25,17 @@ void EggRewrite::start() {
 
     for (int id = 0; id < res_.size(); ++id) {
         auto node = set_curr(id);
-        std::cout << "init - current id: " << curr_id_ << "\n";
-        std::cout << "init - current node: " << mim_node_str(node).c_str() << "\n";
+        std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
         init(node);
     }
 
     for (int id = 0; id < res_.size(); ++id) {
         auto node = set_curr(id);
-        std::cout << "convert - current id: " << curr_id_ << "\n";
-        std::cout << "convert - current node: " << mim_node_str(node).c_str() << "\n";
+        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
         convert(node);
     }
 
-    std::cout << "recreated the world..\n";
+    std::cout << "recreated the world..\n\n";
 
     swap(old_world(), new_world());
 }
@@ -57,37 +55,19 @@ void EggRewrite::init_con(MimNode node) {
     auto con_name  = get_symbol(node.children[0]);
     auto arg_tuple = get_node(MimKind::Tuple, node.children[1]);
 
-    std::vector<std::string> var_names;
     DefVec var_types;
-    DefVec ret_types;
+    std::vector<std::string> var_names;
     for (auto child : arg_tuple.children) {
         auto var      = get_node(MimKind::Var, child);
         auto var_name = get_symbol(var.children[0]);
         auto var_type = get_def(var.children[1]);
-        var_names.push_back(var_name.c_str());
-
-        if (child != arg_tuple.children.back()) {
-            var_types.push_back(var_type);
-        } else {
-            // NOTE: we are constructing a cn type in convert_cn and
-            // are trying to pass it here but the mut_fun constructor is probably expecting
-            // the types within that cn instead and will implicitly
-            // construct a cn type from those
-            auto ret_type = get_def(
-                get_node(MimKind::Cn, var.children[1])
-                    .children[0]); // TODO: this is just a temporary solution, cn should have more than 1 child
-            ret_types.push_back(ret_type);
-        }
+        var_names.push_back(var_name);
+        var_types.push_back(var_type);
     }
 
-    // TODO: figure out how to make this work with mut_con() instead of mut_fun()
-    auto new_con = new_world().mut_fun(var_types, ret_types)->set(con_name.c_str());
+    auto new_con = new_world().mut_con(var_types)->set(con_name.c_str());
     add_var(con_name, new_con);
     add_def(new_con);
-
-    // NOTE: We need an extra blank name for empty domain tuples.
-    // If we do have variables, will vars() only return the domain tuple instead of the vars?
-    if (var_types.empty()) var_names.insert(var_names.begin(), "");
 
     for (int i = 0; auto var : new_con->vars()) {
         auto var_name = var_names[i];
@@ -110,16 +90,14 @@ void EggRewrite::convert(MimNode node, bool recurse) {
     // NOTE: By putting this loop before the conversion calls
     // we ensure a conversion from the bottom up, which is necessary
     // because some higher level nodes depend on Def's created from their child nodes
-    int curr_id = curr_id_;
+    int temp = curr_id_;
     if (recurse) {
         for (int child_id : node.children) {
             auto child_node = set_curr(child_id);
             convert(child_node);
         }
     }
-    // NOTE: This is needed because the loop sets curr_id_ to the id's of the current nodes' children
-    // and at this point it needs to be the id of the node itself again.
-    curr_id_ = curr_id;
+    set_curr(temp);
 
     switch (node.kind) {
         case MimKind::Lam: convert_lam(node); break;
