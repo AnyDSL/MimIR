@@ -24,33 +24,31 @@ void EggRewrite::start() {
     std::cout << "got the rewrite result (size: " << res_.size() << ")..\n";
 
     for (int id = 0; id < res_.size(); ++id) {
-        curr_id_  = id;
-        auto node = res_[curr_id_];
-
+        auto node = set_curr(id);
         std::cout << "init - current id: " << curr_id_ << "\n";
         std::cout << "init - current node: " << mim_node_str(node).c_str() << "\n";
-
-        if (node.kind == MimKind::Var)
-            init_var(node);
-        else if (node.kind == MimKind::Lam)
-            init_lam(node);
-        else if (node.kind == MimKind::Con)
-            init_con(node);
+        init(node);
     }
 
     for (int id = 0; id < res_.size(); ++id) {
-        curr_id_  = id;
-        auto node = res_[curr_id_];
-
+        auto node = set_curr(id);
         std::cout << "convert - current id: " << curr_id_ << "\n";
         std::cout << "convert - current node: " << mim_node_str(node).c_str() << "\n";
-
         convert(node);
     }
 
     std::cout << "recreated the world..\n";
 
     swap(old_world(), new_world());
+}
+
+void EggRewrite::init(MimNode node) {
+    switch (node.kind) {
+        case MimKind::Var: init_var(node); break;
+        case MimKind::Lam: init_lam(node); break;
+        case MimKind::Con: init_con(node); break;
+        default: break;
+    }
 }
 
 void EggRewrite::init_lam(MimNode node) {}
@@ -82,6 +80,7 @@ void EggRewrite::init_con(MimNode node) {
         }
     }
 
+    // TODO: figure out how to make this work with mut_con() instead of mut_fun()
     auto new_con = new_world().mut_fun(var_types, ret_types)->set(con_name.c_str());
     add_var(con_name, new_con);
     add_def(new_con);
@@ -103,8 +102,7 @@ void EggRewrite::init_var(MimNode node) {
     // but this might not always be the case.
     // Also, I assume that adding a type to the world again
     // in the convert iteration that we already added here is fine.
-    curr_id_      = node.children[1];
-    auto var_type = res_[curr_id_];
+    auto var_type = set_curr(node.children[1]);
     convert(var_type, true);
 }
 
@@ -115,8 +113,7 @@ void EggRewrite::convert(MimNode node, bool recurse) {
     int curr_id = curr_id_;
     if (recurse) {
         for (int child_id : node.children) {
-            curr_id_        = child_id;
-            auto child_node = res_[curr_id_];
+            auto child_node = set_curr(child_id);
             convert(child_node);
         }
     }

@@ -27,6 +27,8 @@ public:
     World& new_world() { return Rewriter::world(); }
 
 private:
+    void init(MimNode node);
+
     void init_var(MimNode node);
     void init_lam(MimNode node);
     void init_con(MimNode node);
@@ -52,6 +54,11 @@ private:
 
     void convert_num(MimNode node);
     void convert_symbol(MimNode node);
+
+    MimNode set_curr(int id) {
+        curr_id_ = id;
+        return res_[curr_id_];
+    }
 
     void add_def(const Def* converted) { added_[curr_id_] = converted; }
     void add_var(std::string name, const Def* converted) { vars_[name] = converted; }
