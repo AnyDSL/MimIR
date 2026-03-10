@@ -33,14 +33,15 @@ add_custom_target(egg ALL
 )
 
 add_library(eqsat STATIC IMPORTED)
-# TODO: only required for windows
-target_link_libraries(eqsat
-    INTERFACE
-        ws2_32
-        userenv
-        advapi32
-        ntdll
-)
+if(WIN32)
+  target_link_libraries(eqsat
+      INTERFACE
+          ws2_32
+          userenv
+          advapi32
+          ntdll
+  )
+endif()
 set_target_properties(eqsat PROPERTIES IMPORTED_LOCATION ${EGG_LIB})
 add_dependencies(eqsat egg)
 

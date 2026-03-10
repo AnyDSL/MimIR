@@ -8,8 +8,8 @@ mod rules;
 pub fn equality_saturate(sexpr: &str) -> Vec<RewriteResult> {
     let rules: &[Rewrite<Mim, MimAnalysis>] = &rules();
 
-    // TODO: this is a naive split that only works on windows
-    let sexprs: Vec<&str> = sexpr.split("\r\n\r\n").collect();
+    // TODO: this is a naive split that only works on linux (win: split on \r\n\r\n)
+    let sexprs: Vec<&str> = sexpr.split("\n\n").collect();
     let mut rewritten_sexprs: Vec<RewriteResult> = Vec::new();
 
     for sexpr in sexprs {
