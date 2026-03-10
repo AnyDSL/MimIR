@@ -162,20 +162,14 @@ int main(int argc, char** argv) {
                     mod->stream(tab, *s);
                 }
 
-                if (auto h = os[H]) {
+                auto h  = os[H];
+                auto py = os[PY];
+                if (h || py) {
                     mod->bind(ast);
                     ast.error().ack();
                     auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
-                    ast.bootstrap(plugin, *h);
-                    return EXIT_SUCCESS;
-                }
-
-
-                if (auto py = os[PY]) {
-                    mod->bind(ast);
-                    ast.error().ack();
-                    auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
-                    ast.bootstrap_python(plugin, *py);
+                    if (h) ast.bootstrap(plugin, *h);
+                    if (py) ast.bootstrap_python(plugin, *py);
                     return EXIT_SUCCESS;
                 }
 
