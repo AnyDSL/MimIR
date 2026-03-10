@@ -24,7 +24,6 @@ function(add_mim_plugin)
     set(AUTOGEN_H       ${CMAKE_BINARY_DIR}/include/mim/plug/${PLUGIN}/autogen.h)
     set(AUTOGEN_PY      ${CMAKE_BINARY_DIR}/include/py/${PLUGIN}_plug.py)
 
-
     file(READ "${PLUGIN_MIM}" plugin_file_contents)
 
     # Strip block comments (/* ... */) — greedy, so repeat if needed
@@ -60,6 +59,7 @@ function(add_mim_plugin)
     add_custom_command(
         OUTPUT
             ${AUTOGEN_H}
+            ${AUTOGEN_PY}
             ${PLUGIN_MD}
         COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.." --bootstrap
             --output-h ${AUTOGEN_H}
@@ -80,6 +80,7 @@ function(add_mim_plugin)
     add_custom_target(mim_internal_${PLUGIN}
         DEPENDS
             ${AUTOGEN_H}
+            ${AUTOGEN_PY}
             ${PLUGIN_MD}
             ${OUT_PLUGIN_MIM}
     )
