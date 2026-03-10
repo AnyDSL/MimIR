@@ -9,7 +9,6 @@ namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
     std::ostringstream sexpr;
-
     std::cout << "started eqsat phase..\n";
 
     if (auto sexpr_backend = old_world().driver().backend("sexpr"))
@@ -19,15 +18,24 @@ void EggRewrite::start() {
 
     std::cout << "got the sexpr..\n";
 
-    // TODO: This will now return a Vec<RewriteResult> where each RewriteResult
-    // has a value field that contains a Vec<MimNode>.
-    // We will now have to iterate over all Vec<RewriteResult> and perform
-    // the below procedure anew for every RewriteResult.
-    // It is important that we reset class attributes such as curr_id_, res_, added_, vars_
-    // before processing a new RewriteResult.
-    res_ = equality_saturate(sexpr.str());
+    // NOTE: The symbolic expression 'sexpr' will actually be a series
+    // of symbolic expressions, one for each closed mutable Def.
+    // Passing 'sexpr' into equality_saturate(sexpr: &str) will return a Vec<RewriteResult>
+    // where each RewriteResult represents one rewritten symbolic expression
+    // in the form of a recursive expression (a way of representing a symbolic expression as a list of nodes)
+    auto rewrites = equality_saturate(sexpr.str());
+    std::cout << "got the rewrite results (total: " << rewrites.size() << ")..\n";
+    for (auto rewrite : rewrites)
+        process(rewrite);
 
-    std::cout << "got the rewrite result (size: " << res_.size() << ")..\n";
+    std::cout << "recreated the world..\n\n";
+    swap(old_world(), new_world());
+}
+
+void EggRewrite::process(RewriteResult rewrite) {
+    res_   = rewrite.value;
+    added_ = {};
+    vars_  = {};
 
     for (int id = 0; id < res_.size(); ++id) {
         auto node = set_curr(id);
@@ -40,10 +48,6 @@ void EggRewrite::start() {
         std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
         convert(node);
     }
-
-    std::cout << "recreated the world..\n\n";
-
-    swap(old_world(), new_world());
 }
 
 void EggRewrite::init(MimNode node) {

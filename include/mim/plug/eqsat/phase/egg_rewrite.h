@@ -27,14 +27,14 @@ public:
     World& new_world() { return Rewriter::world(); }
 
 private:
-    void init(MimNode node);
+    void process(RewriteResult rewrite);
 
+    void init(MimNode node);
     void init_var(MimNode node);
     void init_lam(MimNode node);
     void init_con(MimNode node);
 
     void convert(MimNode node, bool recurse = false);
-
     void convert_lam(MimNode node);
     void convert_con(MimNode node);
     void convert_app(MimNode node);
@@ -44,14 +44,12 @@ private:
     void convert_tuple(MimNode node);
     void convert_extract(MimNode node);
     void convert_ins(MimNode node);
-
     void convert_sigma(MimNode node);
     void convert_cn(MimNode node);
     void convert_pi(MimNode node);
     void convert_idx(MimNode node);
     void convert_hole(MimNode node);
     void convert_type(MimNode node);
-
     void convert_num(MimNode node);
     void convert_symbol(MimNode node);
 
