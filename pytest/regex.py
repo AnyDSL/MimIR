@@ -4,6 +4,7 @@ import subprocess
 from pathlib import Path
 from typing import Self
 import ctypes
+from regex_plug import regex
 # Add our build dir to the python modules list
 build_dir = os.path.abspath("../build/lib64/")
 sys.path.insert(0, build_dir)
@@ -47,25 +48,46 @@ driver.add_search_path(Path("../build/lib64/"))
 
 from typing import List
 
+'''
+the current call fn does not handle self.wrld.call(f"%core.bit2.and_", [self.wrld.lit_nat_0(), [matched, eq_zero]])
+
+my attempt to fix: 
+
+def call(self):
+
+
+
+
+
+'''
 def call(self, callee, *args, by_id=False) -> mim.Def:
     # print(f'{callee.str()} is the callee')
     if(isinstance(callee, str)):
+        print(f"callee is string, received string: {callee}")
         callee = self.sym(callee)
     callee = self.annex(callee)
 
-    if(len(args) == 0 and not by_id):
+    # if(len(args) == 0 and not by_id):
+    #     return callee
+    # elif(len(args) == 0 and by_id):
+    #     pass
+    if(len(args) == 0):
         return callee
-    elif(len(args) == 0 and by_id):
-        pass
-
+    
     if(len(args) == 1):
         if(isinstance(args[0],mim.Def)):
-            return self.implicit_app(callee, [args[0]])
 
-        elif isinstance(args[0], list) and all(isinstance(x, mim.Def) for x in args[0]):
+            return self.implicit_app(callee, [args[0]])
+        # check if the passed arguments are def or a list of def
+        # next we need to discern if its a mix of defs and def all passed as the arg, or just one of the two
+        elif isinstance(args[0], list) and all(isinstance(x, mim.Def) or is_def_list(x) for x in args[0]):
+            if(all(is_def_list(x) for x in args[0])):
+
+            
             return self.implicit_app(callee, args[0])
 
         else:
+            print(f"received: {callee} and len args is 1")
             raise TypeError("The given arguments dont match the expected types")
         
     if isinstance(args[0], list) and all(isinstance(x, mim.Def) for x in args[0]):
@@ -74,13 +96,24 @@ def call(self, callee, *args, by_id=False) -> mim.Def:
     if(isinstance(args[0], mim.Def)):
         return self.call(self.implicit_app(callee, [args[0]]), args[1::])
     
+    print(f"received: {callee}")
     raise TypeError("The given arguments dont match the expected types")
+
+def call_(self, callee, *args) -> mim.Def:
+    
+    
+    
+    pass
+
+#this seems wrong, should need to go into lists and check them, currently this doesnt work right
+def is_def_list(l:list):
+    return all(isinstance(x, mim.Def) for x in l)
 
 mim.World.call = call
 
 class MimRegex():
 
-    def __init__(self, driver):
+    def __init__(self, driver: mim.Driver, *args):
         self.wrld = driver.world()
         self.regex = []
         driver.load_pluins(["core", "compile", "regex"])
@@ -130,9 +163,9 @@ class MimRegex():
         print(f"result of annexing with call: {self.wrld.call("%mem.M")}")
         self.match_func = self.wrld.mut_con(
             [
-                self.wrld.call("%mem.M"),
+                self.wrld.call("%mem.M", self.wrld.lit_nat_0()),
                 self.wrld.call("%mem.Ptr0", [self.wrld.arr(self.wrld.top_nat(), self.wrld.type_i8())]),
-                self.wrld.cn([self.wrld.call("%mem.M"), self.wrld.type_bool()])
+                self.wrld.cn([self.wrld.call("%mem.M", self.wrld.lit_nat_0()), self.wrld.type_bool()])
             ]
         ).set("match_func")
 
@@ -151,7 +184,7 @@ class MimRegex():
         '''
         nested arrays dont work rn, need to pass py::obj to the call_ fn and then iteratively destructure it to pass the items to the next call site
         '''
-        matched_and_end = self.wrld.call(f"%core.bit2._and", [self.wrld.lit_nat_0(), [matched, eq_zero]])
+        matched_and_end = self.wrld.call(f"%core.bit2.and_", [self.wrld.lit_nat_0(), [matched, eq_zero]])
         self.match_func.app(False, exit, [final_mem, matched_and_end])
 
 

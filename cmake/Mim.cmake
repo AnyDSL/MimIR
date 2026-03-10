@@ -22,6 +22,8 @@ function(add_mim_plugin)
     set(OUT_PLUGIN_MIM  ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/mim/${PLUGIN}.mim)
     set(PLUGIN_MD       ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
     set(AUTOGEN_H       ${CMAKE_BINARY_DIR}/include/mim/plug/${PLUGIN}/autogen.h)
+    set(AUTOGEN_PY      ${CMAKE_BINARY_DIR}/include/py/${PLUGIN}_plug.py)
+
 
     file(READ "${PLUGIN_MIM}" plugin_file_contents)
 
@@ -52,6 +54,7 @@ function(add_mim_plugin)
         MAKE_DIRECTORY
             ${CMAKE_BINARY_DIR}/docs/plug/
             ${CMAKE_BINARY_DIR}/include/mim/plug/${PLUGIN}
+            ${CMAKE_BINARY_DIR}/include/py/
     )
 
     add_custom_command(
@@ -61,6 +64,7 @@ function(add_mim_plugin)
         COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.." --bootstrap
             --output-h ${AUTOGEN_H}
             --output-md ${PLUGIN_MD}
+            --output-py ${AUTOGEN_PY}
         MAIN_DEPENDENCY ${PLUGIN_MIM}
         DEPENDS ${MIM_TARGET_NAMESPACE}mim
         COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'; dependencies: ${PLUGIN_DEPS}"
