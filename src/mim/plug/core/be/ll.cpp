@@ -136,6 +136,7 @@ private:
     std::ostringstream vars_decls_;
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
+    LamMap<const Def*> simd_phi_;
 };
 
 /*
@@ -334,16 +335,39 @@ void Emitter::emit_epilogue(Lam* lam) {
     if (app->callee() == root()->ret_var()) { // return
         std::vector<std::string> values;
         std::vector<const Def*> types;
-        if (locals_.contains(app->uncurry_args()[0]) && is_simd(app->uncurry_args()[0]->type())) {
-            values.emplace_back(locals_[app->uncurry_args()[0]]);
-            types.emplace_back(app->uncurry_args()[0]->type());
+        // std::cout << app << ",t: " << app->type() << app->callee_type() << "\n";
+        // std::cout << app->uncurry_args()[0]->is_closed() << ", " << app->uncurry_args()[0] << "\n";
+        /*if (is_simd(app->uncurry_args()[0]->type())) {
+            if (app->uncurry_args()[0]->is_closed()) {
+                std::string type = convert(app->uncurry_args()[0]->type());
+                std::string prev{};
 
-        } else {
-            for (auto arg : app->args()) {
-                if (auto val = emit_unsafe(arg); !val.empty()) {
-                    values.emplace_back(val);
-                    types.emplace_back(arg->type());
+                for (auto arg : app->args()) {
+                    if (auto val = emit_unsafe(arg); !val.empty()) {
+                        if (prev.empty())
+                            prev = "<";
+                        else
+                            prev += ", ";
+                        prev += std::format("{} {}", convert(arg->type()), val);
+                    }
                 }
+                prev += ">";
+                bb.tail("ret {} {}", type, prev);
+
+            } else {
+                return bb.tail("ret {} {}", convert(app->uncurry_args()[0]->type()), locals_[app->uncurry_args()[0]]);
+            }
+            // for (auto ags : app->args())
+            //  /   std::cout << "T: " << ags->type() << ", " << ags << "\n";
+            // std::cout << "\n";
+            // std::cout << app->args()[0] << ", " << app->args()[0] << "\n";
+            // std::cout << app->uncurry_args()[0]->type() << "\n";
+
+        } else {*/
+        for (auto arg : app->args()) {
+            if (auto val = emit_unsafe(arg); !val.empty()) {
+                values.emplace_back(val);
+                types.emplace_back(arg->type());
             }
         }
 
@@ -355,6 +379,27 @@ void Emitter::emit_epilogue(Lam* lam) {
                 std::string prev;
 
                 if (auto se = is_simd_aggregate(types)) {
+                    const Def* common_src = nullptr;
+                    bool all_same_src     = true;
+                    for (auto arg : app->args()) {
+                        if (Axm::isa<mem::M>(arg->type())) continue;
+                        auto extract = arg->isa<Extract>();
+                        if (!extract || !is_simd(extract->tuple()->type())) {
+                            all_same_src = false;
+                            break;
+                        }
+                        if (!common_src)
+                            common_src = extract->tuple();
+                        else if (common_src != extract->tuple()) {
+                            all_same_src = false;
+                            break;
+                        }
+                    }
+                    if (all_same_src && common_src) {
+                        auto v_src = emit(common_src);
+                        auto t     = convert(common_src->type());
+                        return bb.tail("ret {} {}", t, v_src);
+                    }
                     auto [size, elem] = *se;
                     type              = std::format("<{} x {}>", size, convert(elem));
 
@@ -380,16 +425,24 @@ void Emitter::emit_epilogue(Lam* lam) {
                 bb.tail("ret {} {}", type, prev);
             }
         }
+        //}
 
     } else if (auto dispatch = Dispatch(app)) {
         for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
             size_t n = callee->num_tvars();
-            for (size_t i = 0; i != n; ++i) {
-                if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
-                    auto phi = callee->var(n, i);
-                    assert(!Axm::isa<mem::M>(phi->type()));
-                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
-                    locals_[phi] = id(phi);
+            if (n == 1 && is_simd(callee->var(0)->type())) {
+                auto phi = callee->var(0);
+                auto arg = emit(app->arg(n, 0));
+                lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                locals_[phi] = id(phi);
+            } else {
+                for (size_t i = 0; i != n; ++i) {
+                    if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                        auto phi = callee->var(n, i);
+                        assert(!Axm::isa<mem::M>(phi->type()));
+                        lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                        locals_[phi] = id(phi);
+                    }
                 }
             }
         }
@@ -410,16 +463,58 @@ void Emitter::emit_epilogue(Lam* lam) {
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
+                                                                       /*size_t n = callee->num_tvars();
+                                                                       for (size_t i = 0; i != n; ++i) {
+                                                                           if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                                                                               auto phi = callee->var(n, i);
+                                                                               assert(!Axm::isa<mem::M>(phi->type()));
+                                                                               lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                                                                               locals_[phi] = id(phi);
+                                                                           }
+                                                                       }
+                                                                       return bb.tail("br label {}", id(callee));
+                                                               */
+
         size_t n = callee->num_tvars();
+
+        const Def* common_src = nullptr;
+        bool all_same_src     = true;
         for (size_t i = 0; i != n; ++i) {
-            if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
-                auto phi = callee->var(n, i);
-                assert(!Axm::isa<mem::M>(phi->type()));
-                lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
-                locals_[phi] = id(phi);
+            auto arg     = app->arg(n, i);
+            auto extract = arg->isa<Extract>();
+            if (!extract || !is_simd(extract->tuple()->type())) {
+                all_same_src = false;
+                break;
+            }
+            if (!common_src)
+                common_src = extract->tuple();
+            else if (common_src != extract->tuple()) {
+                all_same_src = false;
+                break;
+            }
+        }
+        if (all_same_src && common_src) {
+            auto v_src      = emit(common_src);
+            auto callee_var = callee->var();
+            if (simd_phi_.find(callee) == simd_phi_.end()) simd_phi_[callee] = callee_var;
+            auto key = simd_phi_[callee];
+            lam2bb_[callee].phis[key].emplace_back(v_src, id(lam, true));
+            locals_[key] = id(key);
+            for (size_t i = 0; i != n; ++i)
+                locals_[callee->var(n, i)] = id(key);
+            locals_[callee_var] = id(key);
+        } else {
+            for (size_t i = 0; i != n; ++i) {
+                if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                    auto phi = callee->var(n, i);
+                    assert(!Axm::isa<mem::M>(phi->type()));
+                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                    locals_[phi] = id(phi);
+                }
             }
         }
         return bb.tail("br label {}", id(callee));
+
     } else if (auto longjmp = Axm::isa<clos::longjmp>(app)) {
         declare("void @longjmp(i8*, i32) noreturn");
 
@@ -503,14 +598,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         std::string prev = "undef";
         auto t           = convert(tuple->type());
-        auto op          = is_simd(tuple->type()) ? "insertelement" : "insertvalue";
         for (size_t src = 0, dst = 0, n = tuple->num_projs(); src != n; ++src) {
             auto e = tuple->proj(n, src);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
                 auto elem_t = convert(e->type());
                 // TODO: check dst vs src
                 auto namei = name + "." + std::to_string(dst);
-                prev       = bb.assign(namei, "{} {} {}, {} {}, {}", op, t, prev, elem_t, elem, dst);
+                if (is_simd(tuple->type()))
+                    prev = bb.assign(namei, "insertelement {} {}, {} {}, {} {}", t, prev, elem_t, elem, elem_t, dst);
+                else
+
+                    prev = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
                 dst++;
             }
         }
@@ -582,9 +680,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
         auto v_tup = emit_unsafe(tuple);
-        /*if (is_simd(tuple->type()) && !Axm::isa<mem::M>(tuple->type())) {
-            return v_tup;
-        }*/
+        if (is_simd(tuple->type()) && !Axm::isa<mem::M>(tuple->type())) return v_tup;
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
         // before emitting the index, as it might be a weird value for mem vars.
@@ -594,10 +690,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (auto li = Lit::isa(index)) {
             if (isa_mem_sigma_2(tuple->type())) return v_tup;
             // Adjust index, if mem is present.
-            auto v_i   = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
-            auto op    = is_simd(tuple->type()) ? "extractelement" : "extractvalue";
-            auto t_idx = is_simd(tuple->type()) ? "i32" : "";
-            return bb.assign(name, "{} {} {}, {} {}", op, t_tup, v_tup, t_idx, v_i);
+            auto v_i = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
+            if (is_simd(tuple->type()))
+
+                return bb.assign(name, "extractelement {} {}, i32 {}", t_tup, v_tup, v_i);
+            else
+
+                return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
         }
 
         auto t_elem     = convert(extract->type());
@@ -617,9 +716,22 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_val = emit(insert->value());
         if (auto idx = Lit::isa(insert->index())) {
             auto v_idx = emit(insert->index());
-            auto op    = is_simd(insert->tuple()->type()) ? "insertelement" : "insertvalue";
-            return bb.assign(name, "{} {} {}, {} {}, {}", op, t_tup, v_tup, t_val, v_val, v_idx);
+            if (is_simd(insert->tuple()->type()))
+
+                return bb.assign(name, "insertelement {} {}, {} {}, i32 {}", t_tup, v_tup, t_val, v_val, v_idx);
+            else
+
+                return bb.assign(name, " insertvalue {} {}, {} {}, {}", t_tup, v_tup, t_val, v_val, v_idx);
         } else {
+            if (is_simd(insert->tuple()->type())) {
+                auto v_i = emit(insert->index());
+                auto t_i = convert(insert->index()->type());
+                if (t_i != "i32") {
+                    auto w_src = *Idx::size2bitwidth(Idx::isa(insert->index()->type()));
+                    v_i        = bb.assign(name + ".idx", "{} {} {} to i32", w_src < 32 ? "zext" : "trunc", t_i, v_i);
+                }
+                return bb.assign(name, "insertelement {} {}, {} {}, i32 {}", t_tup, v_tup, t_val, v_val, v_i);
+            }
             auto t_elem     = convert(insert->value()->type());
             auto [v_i, t_i] = emit_gep_index(insert->index());
             print(lam2bb_[root()].body().emplace_front(),
