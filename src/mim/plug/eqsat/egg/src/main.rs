@@ -7,5 +7,5 @@ fn main() {
 
     let nodes = equality_saturate(&example);
 
-    println!("{:?}", nodes);
+    println!("{:#?}", nodes);
 }

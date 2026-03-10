@@ -19,6 +19,12 @@ void EggRewrite::start() {
 
     std::cout << "got the sexpr..\n";
 
+    // TODO: This will now return a Vec<RewriteResult> where each RewriteResult
+    // has a value field that contains a Vec<MimNode>.
+    // We will now have to iterate over all Vec<RewriteResult> and perform
+    // the below procedure anew for every RewriteResult.
+    // It is important that we reset class attributes such as curr_id_, res_, added_, vars_
+    // before processing a new RewriteResult.
     res_ = equality_saturate(sexpr.str());
 
     std::cout << "got the rewrite result (size: " << res_.size() << ")..\n";
