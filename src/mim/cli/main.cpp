@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
             | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST representation of input.")
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
             | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
-            | lyra::opt(output[PY  ],  "file"               )      ["--output-py"             ]("Emits a Python enum to be used to interface with a plugin in Python.")
+            | lyra::opt(output[PY ],  "file"               )      ["--output-py"             ]("Emits a Python enum to be used to interface with a plugin in Python.")
             | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
             | lyra::opt(output[Md ],  "file"               )      ["--output-md"            ]("Emits the input formatted as Markdown.")
             | lyra::opt(output[Mim],  "file"               )["-o"]["--output-mim"           ]("Emits the Mim program again.")
@@ -170,12 +170,12 @@ int main(int argc, char** argv) {
                     return EXIT_SUCCESS;
                 }
 
-                
-                if (auto h = os[PY]) {
+
+                if (auto py = os[PY]) {
                     mod->bind(ast);
                     ast.error().ack();
                     auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
-                    ast.bootstrap_python(plugin, *h);
+                    ast.bootstrap_python(plugin, *py);
                     return EXIT_SUCCESS;
                 }
 
