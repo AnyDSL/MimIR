@@ -5,6 +5,8 @@
 
 #include "mim/plug/core/autogen.h"
 
+#include "fe/assert.h"
+
 namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
@@ -89,9 +91,7 @@ void EggRewrite::init_con(MimNode node) {
 
 void EggRewrite::init_var(MimNode node) {
     // NOTE: Assuming (var <name> <type>)
-    // but this might not always be the case.
-    // Also, I assume that adding a type to the world again
-    // in the convert iteration that we already added here is fine.
+    // but this might not always be the case. (Anonymous vars)
     auto var_type = set_curr(node.children[1]);
     convert(var_type, true);
 }
@@ -99,7 +99,7 @@ void EggRewrite::init_var(MimNode node) {
 void EggRewrite::convert(MimNode node, bool recurse) {
     // NOTE: By putting this loop before the conversion calls
     // we ensure a conversion from the bottom up, which is necessary
-    // because some higher level nodes depend on Def's created from their child nodes
+    // because some higher level nodes depend on Def's created from their child nodes.
     int temp = curr_id_;
     if (recurse) {
         for (int child_id : node.children) {
@@ -147,23 +147,27 @@ void EggRewrite::convert_con(MimNode node) {
 
 // (app <callee> <arg>)
 void EggRewrite::convert_app(MimNode node) {
-    // TODO:
-    // case 1: the callee is a symbol (i.e. a variable or an axiom)
-    // case 2: the callee is a definition (i.e. a lambda or an app)
-    auto callee = get_symbol(node.children[0]);
-    auto arg    = get_def(node.children[1]);
+    auto callee_sym = get_symbol(node.children[0]);
+    auto callee_def = get_def(node.children[0]);
+    auto arg        = get_def(node.children[1]);
 
-    if (callee == "%core.nat.add") {
-        // more generally, if the symbol refers to an annex
-        // TODO: there is some bug here when call(callee, arg) calls annex(callee) in world.h (l571 -> l182)
-        auto new_call = new_world().call(core::nat::add, arg);
-        add_def(new_call);
-    } else {
-        // if it refers, to something previously defined and referred to by name, like a variable
-        // or a lambda, or anything else
-        auto var     = get_var(callee);
-        auto new_app = new_world().app(var, arg);
+    if (callee_sym != "") {
+        // Case 1: (app <symbol> <arg>)
+        if (callee_sym == "%core.nat.add") {
+            // TODO: annex string conversion to id
+            auto new_call = new_world().call(core::nat::add, arg);
+            add_def(new_call);
+        } else {
+            auto var     = get_var(callee_sym);
+            auto new_app = new_world().app(var, arg);
+            add_def(new_app);
+        }
+    } else if (callee_def != nullptr) {
+        // Case 2: (app <node> <arg>)
+        auto new_app = new_world().app(callee_def, arg);
         add_def(new_app);
+    } else {
+        fe::unreachable();
     }
 }
 
