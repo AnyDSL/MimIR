@@ -7,7 +7,7 @@
 
 namespace mim {
 
-/// Builds a nesting tree of all *immutables*/binders.
+/// Builds a nesting tree of all *mutables*/binders.
 class Nest {
 public:
     class Node {
