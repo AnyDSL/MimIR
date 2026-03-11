@@ -198,14 +198,13 @@ std::string Emitter::convert(const Def* type, bool simd) {
         // TODO addr_space
         print(s, "{}*", convert(pointee, false));
     } else if (auto arr = type->isa<Arr>()) {
-        auto t_elem = convert(arr->body());
-        u64 size    = 0;
+        u64 size = 0;
         if (auto se = is_simd(arr); se && simd) {
             auto [size, elem] = *se;
             print(s, "<{} x {}>", size, convert(elem));
         } else {
             if (auto arity = Lit::isa(arr->arity())) size = *arity;
-            print(s, "[{} x {}]", size, t_elem);
+            print(s, "[{} x {}]", size, convert(arr->body(), false));
         }
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
@@ -335,35 +334,6 @@ void Emitter::emit_epilogue(Lam* lam) {
     if (app->callee() == root()->ret_var()) { // return
         std::vector<std::string> values;
         std::vector<const Def*> types;
-        // std::cout << app << ",t: " << app->type() << app->callee_type() << "\n";
-        // std::cout << app->uncurry_args()[0]->is_closed() << ", " << app->uncurry_args()[0] << "\n";
-        /*if (is_simd(app->uncurry_args()[0]->type())) {
-            if (app->uncurry_args()[0]->is_closed()) {
-                std::string type = convert(app->uncurry_args()[0]->type());
-                std::string prev{};
-
-                for (auto arg : app->args()) {
-                    if (auto val = emit_unsafe(arg); !val.empty()) {
-                        if (prev.empty())
-                            prev = "<";
-                        else
-                            prev += ", ";
-                        prev += std::format("{} {}", convert(arg->type()), val);
-                    }
-                }
-                prev += ">";
-                bb.tail("ret {} {}", type, prev);
-
-            } else {
-                return bb.tail("ret {} {}", convert(app->uncurry_args()[0]->type()), locals_[app->uncurry_args()[0]]);
-            }
-            // for (auto ags : app->args())
-            //  /   std::cout << "T: " << ags->type() << ", " << ags << "\n";
-            // std::cout << "\n";
-            // std::cout << app->args()[0] << ", " << app->args()[0] << "\n";
-            // std::cout << app->uncurry_args()[0]->type() << "\n";
-
-        } else {*/
         for (auto arg : app->args()) {
             if (auto val = emit_unsafe(arg); !val.empty()) {
                 values.emplace_back(val);
@@ -425,7 +395,6 @@ void Emitter::emit_epilogue(Lam* lam) {
                 bb.tail("ret {} {}", type, prev);
             }
         }
-        //}
 
     } else if (auto dispatch = Dispatch(app)) {
         for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
@@ -463,18 +432,6 @@ void Emitter::emit_epilogue(Lam* lam) {
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
-                                                                       /*size_t n = callee->num_tvars();
-                                                                       for (size_t i = 0; i != n; ++i) {
-                                                                           if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
-                                                                               auto phi = callee->var(n, i);
-                                                                               assert(!Axm::isa<mem::M>(phi->type()));
-                                                                               lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
-                                                                               locals_[phi] = id(phi);
-                                                                           }
-                                                                       }
-                                                                       return bb.tail("br label {}", id(callee));
-                                                               */
-
         size_t n = callee->num_tvars();
 
         const Def* common_src = nullptr;
@@ -974,7 +931,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto v_size = emit(mslot->arg(1));
-        print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
+        print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee, false));
         return name;
     } else if (auto free = Axm::isa<mem::free>(def)) {
         declare("void @free(i8*)");
@@ -990,14 +947,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(load->arg(0));
         auto v_ptr     = emit(load->arg(1));
         auto t_ptr     = convert(load->arg(1)->type());
-        auto t_pointee = convert(Axm::as<mem::Ptr>(load->arg(1)->type())->arg(0));
+        auto t_pointee = convert(Axm::as<mem::Ptr>(load->arg(1)->type())->arg(0), false);
         return bb.assign(name, "load {}, {} {}", t_pointee, t_ptr, v_ptr);
     } else if (auto store = Axm::isa<mem::store>(def)) {
         emit_unsafe(store->arg(0));
         auto v_ptr = emit(store->arg(1));
         auto v_val = emit(store->arg(2));
         auto t_ptr = convert(store->arg(1)->type());
-        auto t_val = convert(store->arg(2)->type());
+        auto t_val = convert(store->arg(2)->type(), false);
         print(bb.body().emplace_back(), "store {} {}, {} {}", t_val, v_val, t_ptr, v_ptr);
         return {};
     } else if (auto q = Axm::isa<clos::alloc_jmpbuf>(def)) {
