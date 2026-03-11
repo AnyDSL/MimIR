@@ -3,8 +3,6 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 
-#include "mim/plug/core/autogen.h"
-
 #include "fe/assert.h"
 
 namespace mim::plug::eqsat {
@@ -13,7 +11,7 @@ void EggRewrite::start() {
     std::ostringstream sexpr;
     std::cout << "started eqsat phase..\n";
 
-    if (auto sexpr_backend = old_world().driver().backend("sexpr"))
+    if (auto sexpr_backend = driver().backend("sexpr"))
         sexpr_backend(old_world(), sexpr);
     else
         error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
@@ -153,9 +151,9 @@ void EggRewrite::convert_app(MimNode node) {
 
     if (callee_sym != "") {
         // Case 1: (app <symbol> <arg>)
-        if (callee_sym == "%core.nat.add") {
-            // TODO: annex string conversion to id
-            auto new_call = new_world().call(core::nat::add, arg);
+        if (callee_sym.starts_with("%")) {
+            flags_t annex_id = sym2flags_[callee_sym];
+            auto new_call    = new_world().call(annex_id, arg);
             add_def(new_call);
         } else {
             auto var     = get_var(callee_sym);
@@ -212,7 +210,7 @@ void EggRewrite::convert_tuple(MimNode node) {
 void EggRewrite::convert_extract(MimNode node) {}
 void EggRewrite::convert_ins(MimNode node) {}
 
-// (sigma (var <name> <type>) (var <name> <type>)) or (sigma <type> <type>)
+// (sigma (var <name1> <type1>) (var <name2> <type2>) ...) or (sigma <type1> <type2> ...)
 void EggRewrite::convert_sigma(MimNode node) {
     DefVec ops;
     for (auto child : node.children) {
@@ -258,22 +256,8 @@ void EggRewrite::convert_type(MimNode node) {}
 void EggRewrite::convert_num(MimNode node) {}
 
 void EggRewrite::convert_symbol(MimNode node) {
-    // TODO: maybe as class attribute instead
-    std::unordered_map<std::string, const Def*> sym2type;
-    sym2type["top"]  = new_world().type_top();
-    sym2type["bot"]  = new_world().type_bot();
-    sym2type["bool"] = new_world().type_bool();
-    sym2type["nat"]  = new_world().type_nat();
-    sym2type["i1"]   = new_world().type_i1();
-    sym2type["i2"]   = new_world().type_i2();
-    sym2type["i4"]   = new_world().type_i4();
-    sym2type["i8"]   = new_world().type_i8();
-    sym2type["i16"]  = new_world().type_i16();
-    sym2type["i32"]  = new_world().type_i32();
-    sym2type["i64"]  = new_world().type_i64();
-
     auto val = node.symbol.c_str();
-    if (sym2type.contains(val)) add_def(sym2type[val]);
+    if (sym2type_.contains(val)) add_def(sym2type_[val]);
 }
 
 } // namespace mim::plug::eqsat

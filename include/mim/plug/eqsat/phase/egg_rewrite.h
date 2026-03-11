@@ -13,10 +13,14 @@ class EggRewrite : public Phase, public Rewriter {
 public:
     EggRewrite(World& world, std::string name)
         : Phase(world, std::move(name))
-        , Rewriter(world.inherit()) {}
+        , Rewriter(world.inherit()) {
+        register_symbols();
+    }
     EggRewrite(World& world, flags_t annex)
         : Phase(world, annex)
-        , Rewriter(world.inherit()) {}
+        , Rewriter(world.inherit()) {
+        register_symbols();
+    }
 
     void start() override;
 
@@ -27,6 +31,23 @@ public:
     World& new_world() { return Rewriter::world(); }
 
 private:
+    void register_symbols() {
+        for (auto [flags, annex] : old_world().flags2annex())
+            sym2flags_[annex->sym().str()] = flags;
+
+        sym2type_["top"]  = new_world().type_top();
+        sym2type_["bot"]  = new_world().type_bot();
+        sym2type_["bool"] = new_world().type_bool();
+        sym2type_["nat"]  = new_world().type_nat();
+        sym2type_["i1"]   = new_world().type_i1();
+        sym2type_["i2"]   = new_world().type_i2();
+        sym2type_["i4"]   = new_world().type_i4();
+        sym2type_["i8"]   = new_world().type_i8();
+        sym2type_["i16"]  = new_world().type_i16();
+        sym2type_["i32"]  = new_world().type_i32();
+        sym2type_["i64"]  = new_world().type_i64();
+    }
+
     void process(RewriteResult rewrite);
 
     void init(MimNode node);
@@ -75,6 +96,9 @@ private:
     rust::Vec<MimNode> res_;
     std::unordered_map<int, const Def*> added_;
     std::unordered_map<std::string, const Def*> vars_;
+
+    std::unordered_map<std::string, flags_t> sym2flags_;
+    std::unordered_map<std::string, const Def*> sym2type_;
 };
 
 }; // namespace mim::plug::eqsat
