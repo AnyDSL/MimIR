@@ -376,10 +376,24 @@ const Def* Emitter::strip_rec(const Def* def) {
 
     if (auto extract = def->isa<Extract>()) {
         if (Axm::isa<mem::M>(def->type())) {
+            std::cerr << "  strip_rec: mem extract from " << def->unique_name()
+                      << ", tuple=" << extract->tuple()->unique_name() << " (node: " << extract->tuple()->node_name()
+                      << ", gid: " << extract->tuple()->gid() << ", type: " << extract->tuple()->type() << ")"
+                      << std::endl;
+            if (auto inner_extract = extract->tuple()->isa<Extract>())
+                std::cerr << "    inner extract from: " << inner_extract->tuple()->unique_name()
+                          << " (node: " << inner_extract->tuple()->node_name()
+                          << ", type: " << inner_extract->tuple()->type() << ")" << std::endl;
+            std::cerr << "    tuple in locals_: " << (locals_.count(extract->tuple()) ? "yes" : "no") << std::endl;
             emit(extract->tuple());
+            std::cerr << "    after emit, tuple in locals_: " << (locals_.count(extract->tuple()) ? "yes" : "no")
+                      << std::endl;
             return nullptr;
         }
         if (auto sigma = extract->tuple()->type()->isa<Sigma>()) {
+            std::cerr << "  strip_rec: non-mem extract from " << def->unique_name()
+                      << ", tuple=" << extract->tuple()->unique_name() << " (node: " << extract->tuple()->node_name()
+                      << "), tuple in locals_: " << (locals_.count(extract->tuple()) ? "yes" : "no") << std::endl;
             size_t count = 0;
             auto index   = Lit::as(extract->index());
             for (auto stripped : sigma->projs([this](const Def* def) { return strip_rec(def); }))
@@ -752,15 +766,20 @@ void Emitter::emit_epilogue(Lam* lam) {
     Word lam_id      = id(lam);
     id_names[lam_id] = lam->unique_name();
 
-    bb.label = Op{OpKind::Label, {}, id(lam), {}};
+    // For the root function's entry block, generate a unique label ID (different from function ID)
+    // For other basic blocks, use their lam's ID
+    if (lam == root()) {
+        Word label_id      = next_id();
+        id_names[label_id] = lam->unique_name() + "_entry";
+        bb.label           = Op{OpKind::Label, {}, label_id, {}};
+    } else {
+        bb.label = Op{OpKind::Label, {}, id(lam), {}};
+    }
 
     // emit bb end instruction
     if (app->callee() == root()->ret_var()) {
         // return lam called
         // => OpReturn | OpReturnValue
-
-        // generate new id for first basic block in function
-        bb.label = Op{OpKind::Label, {}, next_id(), {}};
 
         std::vector<Word> values;
         std::vector<const Def*> types;
@@ -812,13 +831,20 @@ void Emitter::emit_epilogue(Lam* lam) {
             });
         }
 
+        std::cerr << "dispatch.num_targets()=" << dispatch.num_targets() << std::endl;
         if (dispatch.num_targets() == 2) {
             // if cond { A args… } else { B args… }
             // => OpBranchConditional
+            std::cerr << "BranchConditional: index=" << dispatch.index() << std::endl;
+            std::cerr << "  tuple=" << dispatch.tuple() << std::endl;
+            std::cerr << "  tuple deps:" << std::endl;
+            for (auto dep : dispatch.tuple()->deps())
+                std::cerr << "    " << dep << " (node: " << dep->node_name() << ")" << std::endl;
             Op op{OpKind::BranchConditional, {emit(dispatch.index())}, {}, {}};
-            for (auto callee : dispatch.tuple()->deps())
+            for (auto callee : dispatch.tuple()->ops())
                 op.operands.push_back(id(callee));
-            bb.tail.push_back(op);
+            std::cerr << "  operands count: " << op.operands.size() << std::endl;
+            bb.end = op;
         } else {
             // switch (index) { case 0: A args…; …; case n: Z args… }
             // => OpSwitch selector default_label [literal, label]*
@@ -833,7 +859,7 @@ void Emitter::emit_epilogue(Lam* lam) {
                 op.operands.push_back(int_to_words(i, 32)[0]);
                 op.operands.push_back(id(callees[i]));
             }
-            bb.tail.push_back(op);
+            bb.end = op;
         }
     } else if (app->callee()->isa<Bot>()) {
         // unreachable
@@ -843,19 +869,12 @@ void Emitter::emit_epilogue(Lam* lam) {
         // ordinary jump
         // => OpBranch
         std::cerr << "ordinary jump to: " << callee->unique_name() << std::endl;
-        size_t n = callee->num_tvars();
-        for (size_t i = 0; i != n; ++i) {
-            auto arg         = emit(app->arg(n, i));
-            auto phi         = callee->var(n, i);
-            auto extract_key = world().extract(callee->var(), i);
-            std::cerr << "  adding to locals_: " << extract_key->unique_name() << " -> phi: " << phi->unique_name()
-                      << std::endl;
-            assert(!Axm::isa<mem::M>(phi->type()));
-            lam2bb_[callee].phis[phi].emplace_back(arg);
-            lam2bb_[callee].phis[phi].emplace_back(id(lam));
-            locals_[extract_key] = id(phi);
-        }
-        bb.end = Op{OpKind::Branch, {id(callee)}, {}, {}};
+        auto arg = emit(app->arg());
+        auto phi = callee->var();
+        lam2bb_[callee].phis[phi].emplace_back(arg);
+        lam2bb_[callee].phis[phi].emplace_back(id(lam));
+        locals_[callee->var()] = id(phi);
+        bb.end                 = Op{OpKind::Branch, {id(callee)}, {}, {}};
     } else if (Pi::isa_returning(app->callee_type())) {
         // function call
         // => Op
@@ -867,7 +886,8 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     std::cerr << "emit_bb: " << def->unique_name() << " (node: " << def->node_name() << "): " << def->type()
               << std::endl;
 
-    def = strip(def);
+    auto original_def = def;
+    def               = strip(def);
     if (!def) return -1;
 
     // Check if the stripped def was already emitted (e.g., via emit() in strip_rec)
@@ -876,6 +896,12 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     Word type_id = convert(strip(def->type()));
 
     Word id = next_id();
+
+    // Cache the stripped def if it's different from the original
+    // This ensures that when the same underlying value is accessed via different paths,
+    // we don't emit it multiple times
+    if (def != original_def) locals_[def] = id;
+    id_names[id] = def->unique_name();
 
     if (auto tuple = def->isa<Tuple>()) {
         std::vector<Word> constituents;
