@@ -50,78 +50,6 @@ bool is_const(const Def* def) {
     return false;
 }
 
-/// Recursively strips values and types that are not to be emitted.
-const Def* strip(const Def* def);
-
-/// Used by [strip]
-const Def* strip_rec(const Def* def) {
-    auto& world = def->world();
-
-    if (auto sigma = def->isa<Sigma>()) {
-        DefVec fields{};
-        for (auto field : sigma->ops())
-            if (auto stripped = strip_rec(field)) fields.push_back(stripped);
-
-        return world.sigma(fields);
-    }
-
-    if (auto sigma = def->isa<Tuple>()) {
-        DefVec fields{};
-        for (auto field : sigma->ops())
-            if (auto stripped = strip_rec(field)) fields.push_back(stripped);
-
-        return world.tuple(fields);
-    }
-
-    if (auto arr = def->isa<Arr>()) {
-        if (auto body = strip_rec(arr->body()))
-            return world.arr(arr->arity(), body);
-        else
-            return nullptr;
-    }
-
-    if (auto pack = def->isa<Pack>()) {
-        if (auto body = strip_rec(pack->body()))
-            return world.pack(pack->arity(), body);
-        else
-            return nullptr;
-    }
-
-    if (auto pi = def->isa<Pi>()) return world.pi(strip(pi->dom()), strip(pi->codom()), pi->is_implicit());
-
-    if (auto extract = def->isa<Extract>()) {
-        if (auto var = extract->tuple()->isa<Var>()) {
-            if (auto sigma = var->type()->isa<Sigma>()) {
-                size_t count = 0;
-                auto index   = Lit::as(extract->index());
-                for (auto stripped : sigma->projs([](const Def* def) { return strip_rec(def); }))
-                    if (!stripped) {
-                        if (count < index) index--;
-                    } else {
-                        count++;
-                    }
-
-                if (count > 1)
-                    return world.extract(var, index);
-                else
-                    return var;
-            }
-        }
-    }
-
-    if (Axm::isa<mem::M>(def->type())) return nullptr;
-    if (Axm::isa<mem::M>(def)) return nullptr;
-    if (Axm::isa<spirv::Global>(def)) return nullptr;
-    if (Axm::isa<spirv::entry>(def)) return nullptr;
-
-    return def;
-}
-
-const Def* strip(const Def* def) {
-    auto stripped = strip_rec(def);
-    return stripped ? stripped : (def->type()->isa<Type>() ? (const Def*)def->world().sigma() : def->world().tuple());
-}
-
 using OpVec = std::vector<Op>;
 
 struct BB {
@@ -197,10 +125,14 @@ public:
     void binary() {}
 
 private:
+    const Def* strip(const Def*);
+    const Def* strip_rec(const Def*);
+
     // Converts a type into a spirv type referenced by the
     // returned id.
     Word convert(const Def* type, std::string_view name = "");
     Word convert_ret_pi(const Pi* type);
+    Word emit_interface(std::string name, const Def* global);
     void emit_decoration(Word var_id, const Def* decoration_);
 
     // Returns a new unique id. To make ids as low as possible, as
@@ -385,9 +317,91 @@ private:
         return id;
     }
     absl::flat_hash_map<std::pair<Word, Word>, Word> ptr_types_{}; // (storage_class, type_id) -> pointer_type_id
-    absl::flat_hash_map<std::vector<Word>, Word> func_types_{};    // [return_type, param_types...] -> func_type_id
     DefMap<Word> interface_vars_{};
 };
+
+const Def* Emitter::strip(const Def* def) {
+    auto stripped = strip_rec(def);
+    return stripped ? stripped : (def->type()->isa<Type>() ? (const Def*)def->world().sigma() : def->world().tuple());
+}
+
+/// Used by [strip]
+const Def* Emitter::strip_rec(const Def* def) {
+    auto& world = def->world();
+
+    if (auto sigma = def->isa<Sigma>()) {
+        DefVec fields{};
+        for (auto field : sigma->ops())
+            if (auto stripped = strip_rec(field)) fields.push_back(stripped);
+
+        return world.sigma(fields);
+    }
+
+    if (auto sigma = def->isa<Tuple>()) {
+        DefVec fields{};
+        for (auto field : sigma->ops())
+            if (auto stripped = strip_rec(field)) fields.push_back(stripped);
+
+        return world.tuple(fields);
+    }
+
+    if (auto arr = def->isa<Arr>()) {
+        if (auto body = strip_rec(arr->body()))
+            return world.arr(arr->arity(), body);
+        else
+            return nullptr;
+    }
+
+    if (auto pack = def->isa<Pack>()) {
+        if (auto body = strip_rec(pack->body()))
+            return world.pack(pack->arity(), body);
+        else
+            return nullptr;
+    }
+
+    if (auto pi = def->isa<Pi>()) {
+        DefVec fields{};
+
+        // Strip return continuation from types, other lam values are not
+        // supported anyway
+        if (!pi->ret_pi()) return nullptr;
+
+        for (auto field : pi->dom()->as<Sigma>()->projs().view().rsubspan(1))
+            if (auto stripped = strip_rec(field)) fields.push_back(stripped);
+
+        auto dom   = world.sigma(fields);
+        auto codom = strip(pi->ret_pi()->dom());
+        return world.pi(dom, codom, pi->is_implicit());
+    }
+
+    if (auto extract = def->isa<Extract>()) {
+        if (Axm::isa<mem::M>(def->type())) {
+            emit(extract->tuple());
+            return nullptr;
+        }
+        if (auto sigma = extract->tuple()->type()->isa<Sigma>()) {
+            size_t count = 0;
+            auto index   = Lit::as(extract->index());
+            for (auto stripped : sigma->projs([this](const Def* def) { return strip_rec(def); }))
+                if (!stripped) {
+                    if (count < index) index--;
+                } else {
+                    count++;
+                }
+
+            if (count > 1)
+                return world.extract(extract->tuple(), index);
+            else
+                return strip_rec(extract->tuple());
+        }
+    }
+
+    if (Axm::isa<mem::M>(def)) return nullptr;
+    if (Axm::isa<spirv::Global>(def)) return nullptr;
+    if (Axm::isa<spirv::entry>(def)) return nullptr;
+
+    return def;
+}
 
 Word Emitter::convert(const Def* type, std::string_view name) {
     // check if already converted
@@ -459,33 +473,16 @@ Word Emitter::convert(const Def* type, std::string_view name) {
             fe::unreachable();
         }
     } else if (auto pi = type->isa<Pi>()) {
-        assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
-        Word return_type = convert_ret_pi(pi->ret_pi());
+        Word param_type  = convert(pi->dom());
+        Word return_type = convert(pi->codom());
 
-        // Build signature for deduplication
-        std::vector<Word> signature{return_type};
-        auto doms = pi->dom();
-        if (doms != world().sigma()) {
-            // if it is not a sigma, it is just the continuation, which
-            // we don't want to convert
-            if (auto sigma = doms->isa<Sigma>())
-                for (auto dom : sigma->ops().rsubspan(1)) {
-                    if (Axm::isa<mem::M>(dom)) continue;
-                    if (Axm::isa<spirv::entry>(dom)) continue; // Skip entry markers
-                    signature.emplace_back(convert(dom));
-                }
-        }
+        // Do not emit void argument type
+        std::vector<Word> ops{return_type};
+        if (pi->dom() != world().sigma()) ops.push_back(param_type);
 
-        // Check if this function type already exists
-        if (auto it = func_types_.find(signature); it != func_types_.end()) {
-            types_[type] = it->second;
-            return it->second;
-        }
-
-        Op op{OpKind::TypeFunction, signature, id, {}};
+        Op op{OpKind::TypeFunction, ops, id, {}};
         declarations.push_back(op);
-        id_names[id]           = std::format("pi{}", type->unique_name());
-        func_types_[signature] = id;
+        id_names[id] = std::format("pi{}", type->unique_name());
     } else if (auto sigma = type->isa<Sigma>()) {
         if (sigma->isa_mut()) std::cerr << "mutable sigmas not yet supported\n";
 
@@ -502,60 +499,6 @@ Word Emitter::convert(const Def* type, std::string_view name) {
 
         declarations.emplace_back(Op{OpKind::TypeStruct, fields, id, {}});
         id_names[id] = std::format("sigma{}", type->unique_name());
-
-        // TODO: don't catch all apps
-    } else if (auto app = type->isa<App>()) {
-        if (auto global = Axm::isa<spirv::Global>(app)) {
-            auto [storage_class, n, decorations, wrapped_type] = app->uncurry_args<4>();
-            if (auto _storage_class = Axm::isa<spirv::storage>(storage_class)) {
-                Word __storage_class;
-                switch (_storage_class.id()) {
-                    case spirv::storage::INPUT: __storage_class = 1; break;
-                    case spirv::storage::UNIFORM: __storage_class = 2; break;
-                    case spirv::storage::OUTPUT: __storage_class = 3; break;
-                    default: fe::unreachable();
-                }
-                Word _wrapped_type = convert(wrapped_type);
-
-                // Check if pointer type already exists
-                auto ptr_key = std::make_pair(__storage_class, _wrapped_type);
-                if (auto it = ptr_types_.find(ptr_key); it != ptr_types_.end()) {
-                    id = it->second;
-                } else {
-                    // emit pointer type of var
-                    declarations.emplace_back(Op{
-                        OpKind::TypePointer,
-                        {__storage_class, _wrapped_type},
-                        id,
-                        {}
-                    });
-                    id_names[id]
-                        = std::format("ptr_{}_{}", id_name(_wrapped_type), storage_class::name(__storage_class));
-                    ptr_types_[ptr_key] = id;
-                }
-
-                // store global interface variable in map
-                // for access later
-                Word var_id           = next_id();
-                interface_vars_[type] = var_id;
-
-                // emit var
-                declarations.emplace_back(Op{OpKind::Variable, {__storage_class}, var_id, id});
-                // Use provided name if available, otherwise fall back to type name
-                if (!name.empty())
-                    id_names[var_id] = std::format("{}", name);
-                else
-                    id_names[var_id]
-                        = std::format("{}_{}", storage_class::name(__storage_class), id_name(_wrapped_type));
-
-                // TODO: emit decorations
-                if (auto sigma = decorations->isa<Sigma>())
-                    for (auto decoration : decorations->ops())
-                        emit_decoration(var_id, decoration);
-                else
-                    emit_decoration(var_id, decorations);
-            }
-        }
     }
 
     if (id_names[id] == "ERROR") std::cerr << "unsupported type: " << type << "\n";
@@ -564,15 +507,62 @@ Word Emitter::convert(const Def* type, std::string_view name) {
     return id;
 }
 
-Word Emitter::convert_ret_pi(const Pi* pi) {
-    auto dom = strip(pi->dom());
-    return convert(dom);
+Word Emitter::emit_interface(std::string name, const Def* def) {
+    if (interface_vars_.contains(def)) return interface_vars_[def];
+
+    auto global                                        = Axm::as<spirv::Global>(def);
+    auto [storage_class, n, decorations, wrapped_type] = global->uncurry_args<4>();
+    auto _storage_class                                = Axm::as<spirv::storage>(storage_class);
+    Word __storage_class;
+    switch (_storage_class.id()) {
+        case spirv::storage::INPUT: __storage_class = 1; break;
+        case spirv::storage::UNIFORM: __storage_class = 2; break;
+        case spirv::storage::OUTPUT: __storage_class = 3; break;
+        default: fe::unreachable();
+    }
+    Word wrapped_type_id = convert(wrapped_type);
+
+    // Check if pointer type already exists
+    Word ptr_id;
+    auto ptr_key = std::make_pair(__storage_class, wrapped_type_id);
+    if (auto it = ptr_types_.find(ptr_key); it != ptr_types_.end()) {
+        ptr_id = it->second;
+    } else {
+        ptr_id = next_id();
+
+        // emit pointer type of var
+        declarations.emplace_back(Op{
+            OpKind::TypePointer,
+            {__storage_class, wrapped_type_id},
+            ptr_id,
+            {}
+        });
+        id_names[ptr_id]    = std::format("ptr_{}_{}", id_name(wrapped_type_id), storage_class::name(__storage_class));
+        ptr_types_[ptr_key] = ptr_id;
+    }
+
+    // store global interface variable in map
+    // for access later
+    Word interface_id    = next_id();
+    interface_vars_[def] = interface_id;
+
+    // emit var
+    declarations.emplace_back(Op{OpKind::Variable, {__storage_class}, interface_id, ptr_id});
+    id_names[interface_id] = std::format("{}", name);
+
+    if (decorations->isa<Sigma>())
+        for (auto decoration : decorations->ops())
+            emit_decoration(interface_id, decoration);
+    else
+        emit_decoration(interface_id, decorations);
+
+    return interface_id;
 }
 
 void Emitter::emit_decoration(Word var_id, const Def* decoration_) {
     auto decoration = Axm::as<spirv::decor>(decoration_);
     switch (decoration.id()) {
-        case spirv::decor::mk_builtin: {
+        case spirv::decor::builtin: {
             auto [_model, magic] = decoration->uncurry_args<2>();
             annotations.emplace_back(Op{
                 OpKind::Decorate,
@@ -599,7 +589,7 @@ std::optional<spirv::model> isa_builtin(const Def* type) {
         auto [storage_class, n, decorations, wrapped_type] = global->uncurry_args<4>();
         for (auto decoration : decorations->ops()) {
             if (auto builtin = Axm::isa<spirv::decor>(decoration)) {
-                if (builtin.id() == spirv::decor::mk_builtin) {
+                if (builtin.id() == spirv::decor::builtin) {
                     auto model = Axm::as<spirv::model>(builtin->arg(0));
                     return std::optional<spirv::model>{model.id()};
                 }
@@ -614,28 +604,40 @@ Word Emitter::prepare() {
     Word id          = next_id();
     globals_[root()] = id;
 
-    Word type        = convert(root()->type());
-    Word return_type = convert(root()->type()->ret_pi()->dom());
+    // Convert Pi type to direct style and strip
+    const Pi* type      = strip(root()->type())->as<Pi>();
+    Word type_id        = convert(type);
+    Word return_type_id = convert(type->codom());
     funDefinitions.emplace_back(Op{
         OpKind::Function,
-        {0, type},
+        {0, type_id},
         id,
-        return_type
+        return_type_id
     });
     id_names[id] = root()->unique_name();
 
+    // Handle function parameter
+    auto var      = root()->var();
+    auto var_type = type->dom();
+    Word var_id   = next_id();
+    if (var_type != world().sigma())
+        funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, var_id, convert(var_type)});
+    id_names[var_id]                         = var->unique_name();
+    locals_[world().extract(var, (size_t)0)] = var_id;
+
+    // Handle entry point markers and interface variables
     std::optional<spirv::model> model{};
     std::vector<Word> interfaces{};
     std::vector<const Def*> exec_modes{};
 
-    auto var = root()->var(0);
-
-    // A fun always has a sigma domain type due to some regular argument and the
+    // A fun always has a sigma domain type consisting of some regular argument and the
     // return continuation, as long as the regular argument is not a continuation
     // of the same type, which is unsupported in the backend anyway, as Spir-V does
     // not support higher order programs.
-    auto sigma = root()->dom()->as<Sigma>();
-    for (size_t idx = 0; idx < sigma->num_ops() - 1; ++idx) {
+    std::cerr << "dom: " << root()->dom() << " - " << root()->dom()->op(0)->node_name() << "\n";
+    auto sigma = root()->dom()->op(0)->as<Sigma>();
+    std::cerr << sigma << "\n";
+    for (size_t idx = 0; idx < sigma->num_ops(); ++idx) {
         auto param = sigma->op(idx);
 
         // Check if this is an execution model marker
@@ -661,20 +663,13 @@ Word Emitter::prepare() {
             continue;
         }
 
-        // Extract parameter name from projection
-        std::string param_name;
-        try {
-            auto proj = var->proj(sigma->num_ops(), idx);
-            if (proj) param_name = proj->unique_name();
-        } catch (...) {
-            // If projection fails, use empty name
-        }
+        // Get interface name
+        std::string interface_name = var->proj(0)->proj(idx)->unique_name();
 
         // Process global interface variables
         if (auto global = Axm::isa<spirv::Global>(param)) {
-            convert(param, param_name);
-            auto var_id = interface_vars_[param];
-            interfaces.push_back(var_id);
+            auto ivar_id = emit_interface(interface_name, global);
+            interfaces.push_back(ivar_id);
 
             // Validate that builtins align with the specified model
             auto builtin_model = isa_builtin(param);
@@ -683,22 +678,10 @@ Word Emitter::prepare() {
                     error("invalid builtin for specified execution model encountered in entry point");
             }
 
-            // Add var extract to globals_, as it is not real
-            globals_[world().extract(var, idx)] = var_id;
+            // Add interface_var to locals_
+            locals_[world().extract(world().extract(var, (size_t)0), idx)] = ivar_id;
             continue;
         }
-
-        auto param_type = strip(var->type());
-        Word param_id   = next_id();
-
-        // Handle "real" parameters
-        if (param_type != world().sigma()) {
-            funDefinitions.emplace_back(Op{OpKind::FunctionParameter, {}, param_id, convert(param_type)});
-            id_names[param_id] = param->unique_name();
-        }
-
-        // Add var extract to locals_, as it is not real
-        locals_[world().extract(var, idx)] = param_id;
     }
 
     // external lams are converted to entry points
@@ -784,7 +767,7 @@ void Emitter::emit_epilogue(Lam* lam) {
 
         for (auto arg : app->args()) {
             auto value    = emit(arg);
-            auto arg_type = strip_type(arg->type());
+            auto arg_type = strip(arg->type());
             if (arg_type != world().sigma()) {
                 values.emplace_back(value);
                 types.emplace_back(arg_type);
@@ -884,10 +867,15 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
     std::cerr << "emit_bb: " << def->unique_name() << " (node: " << def->node_name() << "): " << def->type()
               << std::endl;
 
-    OpVec ops{};
+    def = strip(def);
+    if (!def) return -1;
 
-    Word id      = next_id();
-    Word type_id = convert(strip_type(def->type()));
+    // Check if the stripped def was already emitted (e.g., via emit() in strip_rec)
+    if (auto it = locals_.find(def); it != locals_.end()) return it->second;
+
+    Word type_id = convert(strip(def->type()));
+
+    Word id = next_id();
 
     if (auto tuple = def->isa<Tuple>()) {
         std::vector<Word> constituents;
@@ -898,9 +886,6 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         // Emit all tuple elements
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
             auto elem = tuple->proj(n, i);
-
-            // Skip fake values
-            if (!isa_emitted(elem->type())) continue;
 
             constituents.push_back(emit(elem));
         }
@@ -959,6 +944,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                 convert(lit->type()),
                 {0, 32}
             });
+            globals_[def] = id;
             return id;
         }
 
@@ -970,6 +956,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                 convert(lit->type()),
                 {0, 32}
             });
+            globals_[def] = id;
             return id;
         }
 
@@ -983,6 +970,7 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
                 convert(lit->type()),
                 {1, width}
             });
+            globals_[def] = id;
             return id;
         }
     }
@@ -1040,56 +1028,18 @@ Word Emitter::emit_bb(BB& bb, const Def* def) {
         if (tuple->isa<Var>())
             std::cerr << "  tuple in locals_: " << (locals_.count(tuple) ? "yes" : "no") << std::endl;
 
-        // var extracts are not real and should have been added to locals_ already
-        assert(!def->isa<Var>() && "var extractions encountered in emit_bb\n");
-
-        if (Axm::isa<mem::M>(extract->type())) {
-            emit(tuple);
-            return id;
-        }
-
         // for literal indices, use OpCompositeExtract
         if (auto lit = Lit::isa(index)) {
             Word index = static_cast<Word>(*lit);
 
-            if (auto sigma = tuple->type()->isa<Sigma>()) {
-                Word kept = 0;
+            bb.ops.push_back(Op{
+                OpKind::CompositeExtract,
+                {emit(tuple), index},
+                id,
+                type_id
+            });
 
-                // Skip stripped fields in index
-                Word index_corrected = index;
-                Word i               = 0;
-                for (auto field : sigma->ops()) {
-                    if (!isa_emitted(field)) {
-                        if (i < index) index_corrected--;
-                    } else {
-                        kept++;
-                    }
-                    i++;
-                }
-
-                // If only a single field is kept, the extract is not required
-                if (kept == 1) return emit(tuple);
-
-                bb.ops.push_back(Op{
-                    OpKind::CompositeExtract,
-                    {emit(tuple), index_corrected},
-                    id,
-                    type_id
-                });
-
-                return id;
-            }
-
-            if (tuple->type()->isa<Arr>()) {
-                bb.ops.push_back(Op{
-                    OpKind::CompositeExtract,
-                    {emit(tuple), index},
-                    id,
-                    type_id
-                });
-
-                return id;
-            }
+            return id;
         }
 
         // Dynamic indices require OpAccessChain
