@@ -62,12 +62,12 @@ void EggRewrite::init(MimNode node) {
 void EggRewrite::init_lam(MimNode node) {}
 
 void EggRewrite::init_con(MimNode node) {
-    auto con_name  = get_symbol(node.children[0]);
-    auto arg_tuple = get_node(MimKind::Tuple, node.children[1]);
+    auto con_name = get_symbol(node.children[1]);
+    auto domain   = get_node(MimKind::Tuple, node.children[2]);
 
     DefVec var_types;
     std::vector<std::string> var_names;
-    for (auto child : arg_tuple.children) {
+    for (auto child : domain.children) {
         auto var      = get_node(MimKind::Var, child);
         auto var_name = get_symbol(var.children[0]);
         auto var_type = get_def(var.children[1]);
@@ -133,16 +133,16 @@ void EggRewrite::convert(MimNode node, bool recurse) {
 
 void EggRewrite::convert_lam(MimNode node) {}
 
-// (con <name> <arg_tuple> <body>)
-// i.e. (con foo (tuple (var a Nat) (var ret (cn nat))) (app ret a))
+// (con <extern> <name> <domain> <filter> <body>)
+// i.e. (con extern foo (tuple (var a Nat) (var ret (cn nat))) (lit ff) (app ret a))
 void EggRewrite::convert_con(MimNode node) {
-    auto new_con = get_def(curr_id_)->as_mut<Lam>();
-    auto body    = get_def(node.children[2]);
-    // TODO: have to add filter to sexpr's and pass it here
-    new_con->set_filter(false);
-    new_con->set_body(body);
-    // TODO: only for external lambdas, still have to add this to the sexpr's
-    new_con->externalize();
+    auto con       = get_def(curr_id_)->as_mut<Lam>();
+    auto is_extern = get_symbol(node.children[0]);
+    auto filter    = get_def(node.children[3]);
+    auto body      = get_def(node.children[4]);
+    con->set_filter(filter);
+    con->set_body(body);
+    if (is_extern == "extern") con->externalize();
 }
 
 // (app <callee> <arg>)
@@ -176,7 +176,18 @@ void EggRewrite::convert_var(MimNode node) {
 
 // (lit <val> [<type>])
 void EggRewrite::convert_lit(MimNode node) {
-    // This can also be a symbol in the case of "tt" and "ff" literals
+    auto lit_sym = get_symbol(node.children[0]);
+    if (lit_sym == "ff") {
+        auto new_lit = new_world().lit_ff();
+        add_def(new_lit);
+        return;
+    } else if (lit_sym == "tt") {
+        auto new_lit = new_world().lit_tt();
+        add_def(new_lit);
+        return;
+    }
+
+    // TODO: typed literals
     auto lit_val = get_num(node.children[0]);
     auto new_lit = new_world().lit_nat(lit_val);
     add_def(new_lit);

@@ -8,16 +8,25 @@ pub mod math;
 // and modify accordingly once extern and eval filter added to lambdas in sexpr
 define_language! {
     pub enum Mim {
-        "lam" = Lam([Id; 2]),
-        "con" = Con([Id; 3]),
+        // (lam <extern> <name> <domain> <codomain> <filter> <body>)
+        "lam" = Lam([Id; 6]),
+        // (con <extern> <name> <domain> <filter> <body>)
+        "con" = Con([Id; 5]),
+        // (app <callee> <arg>)
         "app" = App([Id; 2]),
 
+        // (var <name> <type>)
         "var" = Var([Id; 2]),
+        // (var <value> [<type>])
         "lit" = Lit(Box<[Id]>),
 
+        // (arr <arity> <value>)
         "arr" = Arr([Id; 2]),
+        // (tuple <value1> <value2> ...)
         "tuple" = Tuple(Box<[Id]>),
+        // (extract <tuple> <index>)
         "extract" = Extract([Id; 2]),
+        // (ins <tuple> <index> <value>)
         "ins" = Ins([Id; 3]),
 
         // TYPES

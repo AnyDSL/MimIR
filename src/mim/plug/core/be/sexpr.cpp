@@ -35,11 +35,6 @@ bool is_const(const Def* def) {
     return false;
 }
 
-std::string_view external(const Def* def) {
-    if (def->is_external()) return "extern "sv;
-    return ""sv;
-}
-
 } // namespace
 
 struct BB {
@@ -230,27 +225,25 @@ void Emitter::emit_imported(Lam* lam) {
 std::string Emitter::emit_header(Lam* lam) {
     std::ostringstream os;
 
-    // TODO: maybe extern needs to be emitted as well for reconstruction
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
-    tab.println(os, "({} {}", lam_kind, id(lam));
+    const std::string ext      = lam->is_external() ? "extern" : "intern";
+    tab.println(os, "({} {} {}", lam_kind, ext, id(lam));
 
     ++tab;
     tab.println(os, "(tuple");
-
     if (lam->has_var()) {
         ++tab;
         auto vars = lam->vars();
-        auto sep  = "";
         for (int i = 0; auto var : vars.view()) {
             if (var) {
-                tab.println(os, "{}(var {}", sep, id(var));
+                tab.println(os, "(var {}", id(var));
                 ++tab;
                 tab.println(os, "{}", convert(var->type(), var));
                 --tab;
                 tab.println(os, ")");
             } else {
                 // TODO: anonymous var construction (egg expects (var <name> <type>))
-                tab.println(os, "{}(var", sep);
+                tab.println(os, "(var");
                 ++tab;
                 tab.println(os, "{}", convert(lam->dom(i)));
                 --tab;
@@ -260,11 +253,10 @@ std::string Emitter::emit_header(Lam* lam) {
         }
         --tab;
     }
-    // TODO: the filter might be needed for reconstruction
-    // emit_unsafe(lam->filter());
-
     tab.print(os, ")");
     --tab;
+
+    tab.print(os, "{}", emit_unsafe(lam->filter()));
 
     return os.str();
 }
