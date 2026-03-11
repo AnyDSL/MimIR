@@ -561,7 +561,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 auto elem_t = convert(e->type());
                 // TODO: check dst vs src
                 auto namei = name + "." + std::to_string(dst);
-                if (is_simd(tuple->type()))
+                if (t.front() == '<') // not using is_simd to respect the pointer context (Pointer Pointee case)
                     prev = bb.assign(namei, "insertelement {} {}, {} {}, {} {}", t, prev, elem_t, elem, elem_t, dst);
                 else
 
@@ -573,6 +573,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     };
 
     if (def->isa<Var>()) {
+        if (is_simd(def->type())) return id(def);
         auto ts = def->type()->projs();
         if (std::ranges::any_of(ts, [](auto t) { return Axm::isa<mem::M>(t); })) return {};
         return emit_tuple(def);
@@ -648,7 +649,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             if (isa_mem_sigma_2(tuple->type())) return v_tup;
             // Adjust index, if mem is present.
             auto v_i = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
-            if (is_simd(tuple->type()))
+            if (t_tup.front() == '<') // not using is_simd to respect pointer context
 
                 return bb.assign(name, "extractelement {} {}, i32 {}", t_tup, v_tup, v_i);
             else
