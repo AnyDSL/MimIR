@@ -48,6 +48,8 @@ private:
         sym2type_["i64"]  = new_world().type_i64();
     }
 
+    std::pair<rust::Vec<RuleSet>, rust::Vec<int>> import_rules();
+
     void process(RewriteResult rewrite);
 
     void init(MimNode node);

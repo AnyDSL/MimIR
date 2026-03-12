@@ -3,6 +3,8 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 
+#include "mim/plug/eqsat/autogen.h"
+
 #include "fe/assert.h"
 
 namespace mim::plug::eqsat {
@@ -11,17 +13,8 @@ void EggRewrite::start() {
     std::ostringstream sexpr;
     std::cout << "started eqsat phase..\n";
 
-    // Internalize eqsat ruleset config functions (lam with signature () -> %eqsat.Ruleset)
-    DefVec rulesets;
-    for (auto def : old_world().externals().mutate()) {
-        if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
-            if (lam->codom()->sym().view() == "%eqsat.Ruleset") {
-                rulesets.push_back(lam);
-                def->internalize();
-            }
-        }
-    }
-    // TODO: Infer rulesets to be used by egg from the lam body as app.
+    auto [rulesets, rules] = import_rules();
+    std::cout << "imported rules and rulesets..\n";
 
     if (auto sexpr_backend = driver().backend("sexpr"))
         sexpr_backend(old_world(), sexpr);
@@ -35,13 +28,50 @@ void EggRewrite::start() {
     // Passing 'sexpr' into equality_saturate(sexpr: &str) will return a Vec<RewriteResult>
     // where each RewriteResult represents one rewritten symbolic expression
     // in the form of a recursive expression (a way of representing a symbolic expression as a list of nodes)
-    auto rewrites = equality_saturate(sexpr.str());
+    auto rewrites = equality_saturate(sexpr.str(), rulesets);
     std::cout << "got the rewrite results (total: " << rewrites.size() << ")..\n";
     for (auto rewrite : rewrites)
         process(rewrite);
 
     std::cout << "recreated the world..\n\n";
     swap(old_world(), new_world());
+}
+
+std::pair<rust::Vec<RuleSet>, rust::Vec<int>> EggRewrite::import_rules() {
+    // Internalize eqsat ruleset config functions (lam with signature [] -> %eqsat.Ruleset)
+    DefVec configs;
+    for (auto def : old_world().externals().mutate()) {
+        if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
+            if (lam->codom()->sym().view() == "%eqsat.Ruleset") {
+                configs.push_back(lam);
+                def->internalize();
+            }
+        }
+    }
+
+    // Import predefined rulesets and custom rules from config functions
+    rust::Vec<RuleSet> rulesets;
+    // TODO: int is just a placeholder and should be replaced
+    // with the actual type for rules later on
+    rust::Vec<int> rules;
+    for (auto config : configs) {
+        auto ruledef = config->as<Lam>()->body();
+        if (auto rs = Axm::isa<eqsat::rulesets>(ruledef)) {
+            for (auto ruleset : rs->args())
+                if (auto core = Axm::isa<eqsat::core>(ruleset))
+                    rulesets.push_back(RuleSet::Core);
+                else if (auto math = Axm::isa<eqsat::math>(ruleset))
+                    rulesets.push_back(RuleSet::Math);
+
+        } else if (auto rules = Axm::isa<eqsat::rules>(ruledef)) {
+            // TODO: translate custom rules from %eqsat.rules and pass as another arg
+            // to equality_saturate (rules: Vec<Rule> or something)
+            // - each custom rule might need to be translated into two
+            //   sexpr's for lhs and rhs before passing them on
+        }
+    }
+
+    return {rulesets, rules};
 }
 
 void EggRewrite::process(RewriteResult rewrite) {

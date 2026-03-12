@@ -100,11 +100,16 @@ fn _is_const(v: egg::Var) -> impl Fn(&mut EGraph<Mim, MimAnalysis>, Id, &Subst) 
     move |eg, _, subst| eg[subst[v]].data.constant.is_some()
 }
 
-pub fn rules() -> Vec<Rewrite<Mim, MimAnalysis>> {
+pub fn rules(rulesets: Vec<RuleSet>) -> Vec<Rewrite<Mim, MimAnalysis>> {
     let mut rules = Vec::new();
 
-    rules.extend(core::rules());
-    rules.extend(math::rules());
+    for ruleset in rulesets {
+        match ruleset {
+            RuleSet::Core => rules.extend(core::rules()),
+            RuleSet::Math => rules.extend(math::rules()),
+            _ => (),
+        }
+    }
 
     rules
 }

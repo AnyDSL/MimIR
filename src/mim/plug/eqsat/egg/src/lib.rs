@@ -1,12 +1,12 @@
 use crate::Mim::*;
 use crate::rules::*;
 use egg::*;
-use ffi::{MimKind, MimNode, RewriteResult};
+use ffi::{MimKind, MimNode, RewriteResult, RuleSet};
 
 mod rules;
 
-pub fn equality_saturate(sexpr: &str) -> Vec<RewriteResult> {
-    let rules: &[Rewrite<Mim, MimAnalysis>] = &rules();
+pub fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResult> {
+    let rules: &[Rewrite<Mim, MimAnalysis>] = &rules(rulesets);
 
     // TODO: this is a naive split that only works on linux (win: split on \r\n\r\n)
     let sexprs: Vec<&str> = sexpr.split("\n\n").collect();
@@ -36,6 +36,11 @@ pub fn mim_node_str(node: MimNode) -> String {
 
 #[cxx::bridge]
 pub mod ffi {
+    #[derive(Debug)]
+    enum RuleSet {
+        Core,
+        Math,
+    }
 
     #[derive(Debug)]
     enum MimKind {
@@ -72,7 +77,7 @@ pub mod ffi {
     }
 
     extern "Rust" {
-        fn equality_saturate(sexpr: &str) -> Vec<RewriteResult>;
+        fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResult>;
         fn mim_node_str(node: MimNode) -> String;
     }
 }
