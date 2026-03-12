@@ -13,6 +13,7 @@
 #include <mim/plug/clos/clos.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
+#include <mim/plug/vec/vec.h>
 
 #include "mim/be/emitter.h"
 #include "mim/util/print.h"
@@ -41,6 +42,7 @@ namespace clos = mim::plug::clos;
 namespace core = mim::plug::core;
 namespace math = mim::plug::math;
 namespace mem  = mim::plug::mem;
+namespace vec  = mim::plug::vec;
 
 namespace {
 const char* math_suffix(const Def* type) {
@@ -159,6 +161,20 @@ static std::optional<std::pair<nat_t, const Def*>> is_simd_aggregate(const std::
     }
 
     return {};
+}
+
+static const Def* find_common_simd_src(const App* app) {
+    const Def* common_src = nullptr;
+    for (auto arg : app->args()) {
+        if (Axm::isa<mem::M>(arg->type())) continue;
+        auto extract = arg->isa<Extract>();
+        if (!extract || !is_simd(extract->tuple()->type())) return nullptr;
+        if (!common_src)
+            common_src = extract->tuple();
+        else if (common_src != extract->tuple())
+            return nullptr;
+    }
+    return common_src;
 }
 
 std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
@@ -328,8 +344,27 @@ void Emitter::finalize() {
     print(func_impls_, "}}\n\n");
 }
 
+/*
+ Block           type              return
+BB:
+          Cn [M, a, A]         →    2 phi
+          Cn «2;A»             →    2 phi
+          Cn [M, «2;A»         →    1 phi
+Ret:
+          Cn[M,A,A]            →    1 phi
+          Cn «2;A»             →    1 phi
+          Cn[M, «2;A»]         →    1 phi
+
+Fun:
+          Cn[A, A, Cn R]       →    2 args + ret
+          Cn[«2; A», Cn R]     →    1 args + ret
+          Cn[M, A, A, Cn R]    →    2 args + ret
+          Cn[M, «2; A», Cn R]  →    1 args + ret
+*/
 void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
+    std::cout << app << ": " << app->uncurry_callee() << "; " << app->type() << "callee: " << app->callee() << "; "
+              << app->callee()->type() << "\n";
     auto& bb = lam2bb_[lam];
     if (app->callee() == root()->ret_var()) { // return
         std::vector<std::string> values;
@@ -349,23 +384,8 @@ void Emitter::emit_epilogue(Lam* lam) {
                 std::string prev;
 
                 if (auto se = is_simd_aggregate(types)) {
-                    const Def* common_src = nullptr;
-                    bool all_same_src     = true;
-                    for (auto arg : app->args()) {
-                        if (Axm::isa<mem::M>(arg->type())) continue;
-                        auto extract = arg->isa<Extract>();
-                        if (!extract || !is_simd(extract->tuple()->type())) {
-                            all_same_src = false;
-                            break;
-                        }
-                        if (!common_src)
-                            common_src = extract->tuple();
-                        else if (common_src != extract->tuple()) {
-                            all_same_src = false;
-                            break;
-                        }
-                    }
-                    if (all_same_src && common_src) {
+                    auto common_src = find_common_simd_src(app);
+                    if (common_src) {
                         auto v_src = emit(common_src);
                         auto t     = convert(common_src->type());
                         return bb.tail("ret {} {}", t, v_src);
@@ -432,35 +452,20 @@ void Emitter::emit_epilogue(Lam* lam) {
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
-        size_t n = callee->num_tvars();
 
-        const Def* common_src = nullptr;
-        bool all_same_src     = true;
-        for (size_t i = 0; i != n; ++i) {
-            auto arg     = app->arg(n, i);
-            auto extract = arg->isa<Extract>();
-            if (!extract || !is_simd(extract->tuple()->type())) {
-                all_same_src = false;
-                break;
-            }
-            if (!common_src)
-                common_src = extract->tuple();
-            else if (common_src != extract->tuple()) {
-                all_same_src = false;
-                break;
-            }
-        }
-        if (all_same_src && common_src) {
+        auto common_src = find_common_simd_src(app);
+        if (common_src) {
             auto v_src      = emit(common_src);
             auto callee_var = callee->var();
             if (simd_phi_.find(callee) == simd_phi_.end()) simd_phi_[callee] = callee_var;
             auto key = simd_phi_[callee];
             lam2bb_[callee].phis[key].emplace_back(v_src, id(lam, true));
             locals_[key] = id(key);
-            for (size_t i = 0; i != n; ++i)
-                locals_[callee->var(n, i)] = id(key);
+            for (auto var : callee->vars())
+                locals_[var] = id(key);
             locals_[callee_var] = id(key);
         } else {
+            size_t n = callee->num_tvars();
             for (size_t i = 0; i != n; ++i) {
                 if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
                     auto phi = callee->var(n, i);
@@ -649,12 +654,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             if (isa_mem_sigma_2(tuple->type())) return v_tup;
             // Adjust index, if mem is present.
             auto v_i = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
-            if (t_tup.front() == '<') // not using is_simd to respect pointer context
 
-                return bb.assign(name, "extractelement {} {}, i32 {}", t_tup, v_tup, v_i);
-            else
-
-                return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
+            return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
         }
 
         auto t_elem     = convert(extract->type());
@@ -1146,6 +1147,42 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         f += llvm_suffix(round->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
+    } else if (auto zip = Axm::isa<vec::zip>(def)) {
+        auto f = zip->decurry()->arg();
+        auto t = convert(def->type());
+
+        std::cout << "vec.zip f = " << f << " : " << f->type() << "\n";
+        std::cout << "vec.zip f node class = " << f->node_name() << "\n";
+        if (auto app = f->isa<App>()) {
+            std::cout << "  callee = " << app->callee() << "\n";
+            std::cout << "  arg    = " << app->arg() << "\n";
+        }
+        if (auto nat_op = Axm::isa<core::nat, 1>(f)) {
+            std::string op;
+            switch (nat_op.id()) {
+                case core::nat::add:
+                    op = "add nsw nuw";
+                    std::cout << "sub\n";
+                    break;
+                case core::nat::sub:
+                    op = "sub nsw nuw";
+                    std::cout << "sub\n";
+                    break;
+                case core::nat::mul: op = "mul nsw nuw"; break;
+            }
+            return bb.assign(name, "{} {} {}, {}", op, t, t, t);
+        } else if (auto arith_op = Axm::isa<math::arith>(f)) {
+            std::string op;
+            switch (arith_op.id()) {
+                case math::arith::add: op = "fadd"; break;
+                case math::arith::sub: op = "fsub"; break;
+                case math::arith::mul: op = "fmul"; break;
+                case math::arith::div: op = "fdiv"; break;
+                case math::arith::rem: op = "frem"; break;
+            }
+            return bb.assign(name, "{} {} {}, {}", op, t, t, t);
+        }
+        error("unhandled vec.zip operation: {}", f);
     }
     error("unhandled def in LLVM backend: {} : {}", def, def->type());
 }
