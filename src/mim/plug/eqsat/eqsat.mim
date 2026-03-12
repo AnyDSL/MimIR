@@ -18,16 +18,38 @@
 ///
 import compile;
 plugin core;
+/// 
+///
+/// ## Types
+///
+/// ### %%eqsat.Ruleset
+///
+/// Represents one of the rulesets defined inside of /eqsat/egg/src/rules/ 
+///
+axm %eqsat.Ruleset: *;
+///
+///
+/// ## Rulesets
+///
+axm %eqsat.core: %eqsat.Ruleset;
+axm %eqsat.math: %eqsat.Ruleset;
+///
 ///
 /// ## Operations
 /// 
-/// TODO: implement an operation for adding rewrite rules to egg
+/// ### %%eqsat.use
 ///
-/// ### %%demo.const_idx
+/// Add a rule to be used during equality saturation.
+/// TODO: Is there an actual rule type? Gotta find something better than just *
+/// 
+axm %eqsat.use: * → ⊥;
 ///
-/// The 42 constant, evaluated using a normalizer
+/// ### %%eqsat.rulesets
 ///
-axm %eqsat.const_idx: [n: Nat] → Idx n, normalize_const;
+/// Tell the equality saturation engine which of the predefined
+/// rulesets inside of eqsat/egg/src/rules/ it should use.
+/// 
+axm %eqsat.rulesets: {n: Nat} → «n; %eqsat.Ruleset» → ⊥;
 ///
 /// ## Passes and Phases
 ///
