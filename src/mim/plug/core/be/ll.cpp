@@ -1146,54 +1146,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto zip = Axm::isa<vec::zip>(def)) {
-        auto ni_n   = zip->decurry()->decurry()->decurry()->arg();
-        auto nat_ni = *Lit::isa(ni_n->proj(2, 0));
-        auto nat_n  = *Lit::isa(ni_n->proj(2, 1));
         auto f      = zip->decurry()->arg();
         auto inputs = zip->arg();
         auto t      = convert(def->type()); // <n x T>
 
         std::string op;
 
-        auto [axm, curry, _] = Axm::get(f);
-        std::cout << "axm: " << axm << " curry: " << (int)curry << "\n";
-
-        if (auto nat_op = Axm::isa<core::nat, 1>(f)) {
-            switch (nat_op.id()) {
-                case core::nat::add:
-                    op = "add";
-                    std::cout << "add" << "\n";
-                    break;
-                case core::nat::sub:
-                    op = "sub";
-                    std::cout << "add" << "\n";
-                    break;
-                case core::nat::mul:
-                    op = "mul";
-                    std::cout << "add" << "\n";
-                    break;
-            }
-        } else {
-            error("unhandled vec.zip operation: {}", f);
-        }
-
-        auto prev = emit(inputs->proj(nat_ni, 0));
-        for (nat_t i = 1; i != nat_ni; ++i) {
-            auto v_next = emit(inputs->proj(nat_ni, i));
-            auto namei  = name + "." + std::to_string(i);
-            prev        = bb.assign(namei, "{} {} {}, {}", op, t, prev, v_next);
-        }
-        return prev;
-        /*auto cur = def;
-        while (auto app = cur->isa<App>()) {
-            std::cout << "arg: " << app->arg() << " : " << app->arg()->type() << "\n";
-            cur = app->callee();
-        }
-        std::cout << "axm: " << cur << "\n";
-        */
-        // auto f               = zip->decurry()->arg();
-        // auto t               = convert(def->type());
-        error("unhandled vec.zip operation: {}", f);
+        // if (auto nat_op = Axm::isa<core::nat, 1>(f)) {
+        // TODO
+        //}
     }
     error("unhandled def in LLVM backend: {} : {}", def, def->type());
 }
