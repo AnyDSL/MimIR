@@ -2,7 +2,7 @@
 ///
 /// @see mim::plug::eqsat
 ///
-/// An equality saturation plugin
+/// An equality saturation plugin.
 ///
 /// [TOC]
 ///
@@ -10,9 +10,11 @@
 /// programs through the process of equality saturation.
 ///
 /// It achieves this in three steps:
-/// 1) Convert the program into a symbolic expression
-/// 2) Pass this expression to the egg equality saturation implementation
-/// 3) Rewrite the program based on the optimized symbolic expression returned by egg
+///
+/// 1) Converts the program into a series of symbolic expressions
+/// 2) Passes these expressions to the equality saturation engine implemented in egg
+/// 3) Rewrites the program based on the rewritten symbolic expressions
+///
 ///
 /// ## Dependencies
 ///
@@ -24,9 +26,15 @@ plugin core;
 ///
 /// ### %%eqsat.Ruleset
 ///
-/// Represents one of the rulesets defined inside of /eqsat/egg/src/rules/ 
+/// Represents a set of rules to be used during equality saturation.
 ///
 axm %eqsat.Ruleset: *;
+///
+/// ### %%eqsat.Rule
+///
+/// Represents a rule defined in MimIR
+///
+axm %eqsat.Rule: *;
 ///
 ///
 /// ## Rulesets
@@ -37,19 +45,19 @@ axm %eqsat.math: %eqsat.Ruleset;
 ///
 /// ## Operations
 /// 
-/// ### %%eqsat.use
-///
-/// Add a rule to be used during equality saturation.
-/// TODO: Is there an actual rule type? Gotta find something better than just *
-/// 
-axm %eqsat.use: * → ⊥;
-///
 /// ### %%eqsat.rulesets
 ///
 /// Tell the equality saturation engine which of the predefined
 /// rulesets inside of eqsat/egg/src/rules/ it should use.
 /// 
-axm %eqsat.rulesets: {n: Nat} → «n; %eqsat.Ruleset» → ⊥;
+axm %eqsat.rulesets: {n: Nat} → «n; %eqsat.Ruleset» → %eqsat.Ruleset;
+///
+/// ### %%eqsat.rules
+///
+/// Tell the equality saturation engine to use a set of rules during equality saturation.
+/// 
+axm %eqsat.rules: {n: Nat} → «n; %eqsat.Rule» → %eqsat.Ruleset;
+///
 ///
 /// ## Passes and Phases
 ///

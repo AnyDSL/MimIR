@@ -11,6 +11,18 @@ void EggRewrite::start() {
     std::ostringstream sexpr;
     std::cout << "started eqsat phase..\n";
 
+    // Internalize eqsat ruleset config functions (lam with signature () -> %eqsat.Ruleset)
+    DefVec rulesets;
+    for (auto def : old_world().externals().mutate()) {
+        if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
+            if (lam->codom()->sym().view() == "%eqsat.Ruleset") {
+                rulesets.push_back(lam);
+                def->internalize();
+            }
+        }
+    }
+    // TODO: Infer rulesets to be used by egg from the lam body as app.
+
     if (auto sexpr_backend = driver().backend("sexpr"))
         sexpr_backend(old_world(), sexpr);
     else
