@@ -214,11 +214,11 @@ std::string Emitter::convert(const Def* type, bool simd) {
         // TODO addr_space
         print(s, "{}*", convert(pointee, false));
     } else if (auto arr = type->isa<Arr>()) {
-        u64 size = 0;
         if (auto se = is_simd(arr); se && simd) {
             auto [size, elem] = *se;
             print(s, "<{} x {}>", size, convert(elem));
         } else {
+            u64 size = 0;
             if (auto arity = Lit::isa(arr->arity())) size = *arity;
             print(s, "[{} x {}]", size, convert(arr->body(), false));
         }
@@ -363,8 +363,6 @@ Fun:
 */
 void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
-    std::cout << app << ": " << app->uncurry_callee() << "; " << app->type() << "callee: " << app->callee() << "; "
-              << app->callee()->type() << "\n";
     auto& bb = lam2bb_[lam];
     if (app->callee() == root()->ret_var()) { // return
         std::vector<std::string> values;
@@ -391,14 +389,15 @@ void Emitter::emit_epilogue(Lam* lam) {
                         return bb.tail("ret {} {}", t, v_src);
                     }
                     auto [size, elem] = *se;
-                    type              = std::format("<{} x {}>", size, convert(elem));
+                    auto val_t        = convert(elem);
 
+                    type = std::format("<{} x {}>", size, val_t);
                     for (auto val : values) {
                         if (prev.empty())
                             prev = "<";
                         else
                             prev += ", ";
-                        prev += std::format("{} {}", convert(elem), val);
+                        prev += std::format("{} {}", val_t, val);
                     }
                     prev += ">";
                 } else {
@@ -569,7 +568,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 if (t.front() == '<') // not using is_simd to respect the pointer context (Pointer Pointee case)
                     prev = bb.assign(namei, "insertelement {} {}, {} {}, {} {}", t, prev, elem_t, elem, elem_t, dst);
                 else
-
                     prev = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
                 dst++;
             }
@@ -1148,40 +1146,53 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto zip = Axm::isa<vec::zip>(def)) {
-        auto f = zip->decurry()->arg();
-        auto t = convert(def->type());
+        auto ni_n   = zip->decurry()->decurry()->decurry()->arg();
+        auto nat_ni = *Lit::isa(ni_n->proj(2, 0));
+        auto nat_n  = *Lit::isa(ni_n->proj(2, 1));
+        auto f      = zip->decurry()->arg();
+        auto inputs = zip->arg();
+        auto t      = convert(def->type()); // <n x T>
 
-        std::cout << "vec.zip f = " << f << " : " << f->type() << "\n";
-        std::cout << "vec.zip f node class = " << f->node_name() << "\n";
-        if (auto app = f->isa<App>()) {
-            std::cout << "  callee = " << app->callee() << "\n";
-            std::cout << "  arg    = " << app->arg() << "\n";
-        }
+        std::string op;
+
+        auto [axm, curry, _] = Axm::get(f);
+        std::cout << "axm: " << axm << " curry: " << (int)curry << "\n";
+
         if (auto nat_op = Axm::isa<core::nat, 1>(f)) {
-            std::string op;
             switch (nat_op.id()) {
                 case core::nat::add:
-                    op = "add nsw nuw";
-                    std::cout << "sub\n";
+                    op = "add";
+                    std::cout << "add" << "\n";
                     break;
                 case core::nat::sub:
-                    op = "sub nsw nuw";
-                    std::cout << "sub\n";
+                    op = "sub";
+                    std::cout << "add" << "\n";
                     break;
-                case core::nat::mul: op = "mul nsw nuw"; break;
+                case core::nat::mul:
+                    op = "mul";
+                    std::cout << "add" << "\n";
+                    break;
             }
-            return bb.assign(name, "{} {} {}, {}", op, t, t, t);
-        } else if (auto arith_op = Axm::isa<math::arith>(f)) {
-            std::string op;
-            switch (arith_op.id()) {
-                case math::arith::add: op = "fadd"; break;
-                case math::arith::sub: op = "fsub"; break;
-                case math::arith::mul: op = "fmul"; break;
-                case math::arith::div: op = "fdiv"; break;
-                case math::arith::rem: op = "frem"; break;
-            }
-            return bb.assign(name, "{} {} {}, {}", op, t, t, t);
+        } else {
+            error("unhandled vec.zip operation: {}", f);
         }
+
+        auto prev = emit(inputs->proj(nat_ni, 0));
+        for (nat_t i = 1; i != nat_ni; ++i) {
+            auto v_next = emit(inputs->proj(nat_ni, i));
+            auto namei  = name + "." + std::to_string(i);
+            prev        = bb.assign(namei, "{} {} {}, {}", op, t, prev, v_next);
+        }
+        return prev;
+        /*auto cur = def;
+        while (auto app = cur->isa<App>()) {
+            std::cout << "arg: " << app->arg() << " : " << app->arg()->type() << "\n";
+            cur = app->callee();
+        }
+        std::cout << "axm: " << cur << "\n";
+        */
+        // auto f               = zip->decurry()->arg();
+        // auto t               = convert(def->type());
         error("unhandled vec.zip operation: {}", f);
     }
     error("unhandled def in LLVM backend: {} : {}", def, def->type());
