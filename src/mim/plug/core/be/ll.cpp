@@ -540,10 +540,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         if (tuple->is_closed()) {
-            bool is_array = tuple->type()->isa<Arr>();
-
+            bool is_array   = tuple->type()->isa<Arr>();
+            auto simd_array = convert(tuple->type()).front() == '<'; // needed to respect pointer context
             std::string s;
-            s += is_array ? "[" : "{";
+            s += simd_array ? "<" : is_array ? "[" : "{";
             auto sep = "";
             for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
                 auto e = tuple->proj(n, i);
@@ -554,7 +554,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 }
             }
 
-            return s += is_array ? "]" : "}";
+            return s += simd_array ? ">" : is_array ? "]" : "}";
         }
 
         std::string prev = "undef";
@@ -1146,15 +1146,37 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto zip = Axm::isa<vec::zip>(def)) {
+        auto ni_n   = zip->decurry()->decurry()->decurry()->arg();
+        auto nat_ni = *Lit::isa(ni_n->proj(2, 0));
         auto f      = zip->decurry()->arg();
         auto inputs = zip->arg();
         auto t      = convert(def->type()); // <n x T>
 
         std::string op;
+        std::string prev;
+        if (auto nat_op = Axm::isa<core::nat, 1>(f)) {
+            switch (nat_op.id()) {
+                case core::nat::add: op = "add"; break;
+                case core::nat::sub: op = "sub"; break;
+                case core::nat::mul: op = "mul"; break;
+            }
+        } else if (auto arith_op = Axm::isa<math::arith, 1>(f)) {
+            switch (arith_op.id()) {
+                case math::arith::add: op = "fadd"; break;
+                case math::arith::sub: op = "fsub"; break;
+                case math::arith::mul: op = "fmul"; break;
+                case math::arith::div: op = "fdiv"; break;
+                case math::arith::rem: op = "frem"; break;
+            }
+        } else {
+            error("unhandled vec.zip operation: {}", f);
+        }
 
-        // if (auto nat_op = Axm::isa<core::nat, 1>(f)) {
-        // TODO
-        //}
+        auto v1 = emit(inputs->proj(nat_ni, 0));
+        auto v2 = emit(inputs->proj(nat_ni, 1));
+        prev    = bb.assign(name, "{} {} {}, {}", op, t, v1, v2);
+        return prev;
+        error("unhandled vec.zip operation: {}", f);
     }
     error("unhandled def in LLVM backend: {} : {}", def, def->type());
 }
