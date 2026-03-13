@@ -105,7 +105,7 @@ public:
     /// @see @ref cast_axm
     template<class Id, u8 Curry = 0, bool DynCast = true>
     static auto isa(const Def* def) {
-        using D              = typename Axm::IsANode<Id>::type;
+        using D              = std::conditional_t<Curry == 0, typename Axm::IsANode<Id>::type, Def>;
         auto [axm, curry, _] = Axm::get(def);
         bool cond            = axm && curry == Curry && axm->base() == Annex::base<Id>();
 

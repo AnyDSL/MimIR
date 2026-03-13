@@ -1,0 +1,25 @@
+plugin core;
+plugin vec;
+
+fun foo{n:Nat} (A: «n; Nat», B:«n; Nat»):  «n; Nat» = 
+    let C = %vec.zip %core.nat.add (A, B);
+    let D = %vec.zip %core.nat.sub (C, ‹n; 1›);
+    return D;
+
+fun war{n:Nat} (A B: «n; %math.F32»): «n; %math.F32» =
+    let C = %vec.zip (%math.arith.add 0) (A, B);
+    let D = %vec.zip (%math.arith.mul 0) (C, B);
+    return D;
+
+fun extern bar(A B: «4; Nat»): «4; Nat» =
+    ret C = foo @4 $ (A, B);
+    ret D = foo @4 $ (A, B);
+    return D;
+
+
+
+fun extern bar2(A B: «2; %math.F32»): «2; %math.F32» =
+    ret C = war @2 $ (A, B);
+    ret D = war @2 $ (A, B);
+    return D;
+
