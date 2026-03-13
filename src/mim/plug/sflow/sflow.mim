@@ -29,23 +29,28 @@ import compile;
 /// ## Branching
 /// Represents a structured branch (if-else or switch-case)
 ///
+axm %sflow.MergeCn: {M: ★} → [Cn M] → ★;
+axm %sflow.merge: {M: ★} → {merge: Cn M} → [%sflow.MergeCn merge] → Cn M;
+///
 /// ### Notes:
 /// If the header argument is not an extract then it is
 /// assumed the branch has only a single case and it is
 /// normalized to a simple call to body.
-axm %sflow.branch: {M: ★}
+axm %sflow.branch: {n: Nat} → {T M: ★}
   → [merge: Cn M]
-  → [header: ⊥]
-  → ⊥, normalize_branch;
+  → [tuple: «n; [%sflow.MergeCn merge] → Cn T»]
+  → [index: Idx n]
+  → Cn T, normalize_branch;
 
 /// ## Loops
 ///
 /// Represents a structured loop (for or while)
-axm %sflow.loop: {C M: ★}
+axm %sflow.loop: {n: Nat} → {C M T: ★}
   → [continue: Cn C]
   → [merge: Cn M]
-  → [header: ⊥]
-  → ⊥, normalize_loop;
+  → [tuple: «n; [Cn C] → [Cn M] → Cn T»]
+  → [index: Idx n]
+  → Cn T, normalize_loop;
 
 /// ## Phases
 ///

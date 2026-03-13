@@ -128,6 +128,17 @@ private:
     const Def* strip(const Def*);
     const Def* strip_rec(const Def*);
 
+    void emit_jump(Lam* lam, Lam* callee, const Def* arg) {
+        std::cerr << "ordinary jump to: " << callee->unique_name() << std::endl;
+        auto& bb = lam2bb_[lam];
+        auto phi = callee->var();
+        if (!lam2bb_.contains(callee->as_mut<Lam>())) std::cerr << "oh no! " << callee << "\n";
+        lam2bb_[callee].phis[phi].emplace_back(emit(arg));
+        lam2bb_[callee].phis[phi].emplace_back(id(lam));
+        locals_[phi] = id(phi);
+        bb.end       = Op{OpKind::Branch, {id(callee)}, {}, {}};
+    }
+
     // Converts a type into a spirv type referenced by the
     // returned id.
     Word convert(const Def* type, std::string_view name = "");
@@ -760,6 +771,7 @@ Word Emitter::prepare() {
 }
 
 void Emitter::emit_epilogue(Lam* lam) {
+    std::cerr << "hello from lam " << lam << "!\n";
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
 
@@ -801,23 +813,33 @@ void Emitter::emit_epilogue(Lam* lam) {
                 Word type   = convert(world().sigma(types));
                 bb.tail.emplace_back(Op{OpKind::CompositeConstruct, {values}, val_id, type});
         }
+    } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) {
+        // ordinary jump
+        // => OpBranch
+        emit_jump(lam, callee, app->arg());
+    } else if (auto merge = Axm::isa<sflow::merge>(app->callee())) {
+        auto merge_con = Axm::as<sflow::MergeCn>(merge->arg()->type())->arg();
+        emit_jump(lam, merge_con->as_mut<Lam>(), app->arg());
     } else if (auto dispatch = sflow::Dispatch(app)) {
         std::cerr << "dispatch handling for: " << app->unique_name() << std::endl;
         for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
             std::cerr << "  callee: " << callee->unique_name() << std::endl;
-            size_t n = callee->num_tvars();
-            for (size_t i = 0; i != n; ++i) {
-                auto arg         = emit(dispatch.app()->arg(n, i));
-                auto phi         = callee->var(n, i);
-                auto extract_key = world().extract(callee->var(), i);
-                std::cerr << "    adding to locals_: " << extract_key->unique_name() << " (phi: " << phi->unique_name()
-                          << ")" << std::endl;
-                assert(!Axm::isa<mem::M>(phi->type()));
-                lam2bb_[callee].phis[phi].emplace_back(arg);
-                lam2bb_[callee].phis[phi].emplace_back(id(lam));
-                locals_[extract_key] = id(phi);
-            }
+            auto arg = emit(dispatch.arg());
+            auto phi = callee->var();
+
+            // Don't emit phi's without actual values
+            if (Axm::isa<mem::M>(phi->type())) break;
+            if (phi->type() == world().sigma()) break;
+
+            if (!lam2bb_.contains(callee->as_mut<Lam>())) std::cerr << "oh no! " << callee << "\n";
+            lam2bb_[callee].phis[phi].emplace_back(arg);
+            lam2bb_[callee].phis[phi].emplace_back(id(lam));
+            locals_[phi] = id(phi);
         }
+
+        // Set up phi for merge block
+        auto merge_var     = dispatch.merge()->var();
+        locals_[merge_var] = id(merge_var);
 
         // Emit structured control flow merge instructions if this is sflow.branch or sflow.loop
         if (dispatch.kind() == sflow::Dispatch::Kind::Branch) {
@@ -865,16 +887,6 @@ void Emitter::emit_epilogue(Lam* lam) {
         // unreachable
         // => OpUnreachable
         bb.end = Op{OpKind::Unreachable, {}, {}, {}};
-    } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) {
-        // ordinary jump
-        // => OpBranch
-        std::cerr << "ordinary jump to: " << callee->unique_name() << std::endl;
-        auto arg = emit(app->arg());
-        auto phi = callee->var();
-        lam2bb_[callee].phis[phi].emplace_back(arg);
-        lam2bb_[callee].phis[phi].emplace_back(id(lam));
-        locals_[callee->var()] = id(phi);
-        bb.end                 = Op{OpKind::Branch, {id(callee)}, {}, {}};
     } else if (Pi::isa_returning(app->callee_type())) {
         // function call
         // => Op
