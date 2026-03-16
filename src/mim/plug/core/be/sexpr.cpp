@@ -138,12 +138,12 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         else
             print(s, "(lit {} {})", lit->get(), convert(lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
-        auto t_elem = convert(arr->body());
         if (auto arity = Lit::isa(arr->arity())) {
             u64 size = *arity;
-            print(s, "(arr {} {})", size, t_elem);
+            print(s, "(arr (lit {}) {})", size, convert(arr->body()));
         } else {
-            print(s, "(arr {} {})", emit_unsafe(arr->arity()), t_elem);
+            // TODO: Is the arity being emitted correctly?
+            print(s, "(arr {} {})", emit_unsafe(arr->arity()), convert(arr->body()));
         }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))

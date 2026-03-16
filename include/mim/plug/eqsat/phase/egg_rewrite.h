@@ -32,7 +32,13 @@ public:
 
 private:
     void register_symbols() {
-        for (auto [flags, annex] : old_world().flags2annex())
+        // TODO: transfer all annexes (axm Def's identified via flags_t)
+        // from the old_world to the new new_world so they can be accessed via
+        // flags2annex below.
+        // Or maybe just load all plugins that were loaded in the old world
+        // via the driver of the new world.
+
+        for (auto [flags, annex] : new_world().flags2annex())
             sym2flags_[annex->sym().str()] = flags;
 
         sym2type_["top"]  = new_world().type_top();

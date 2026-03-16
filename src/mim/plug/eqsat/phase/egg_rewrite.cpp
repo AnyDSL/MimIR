@@ -22,6 +22,7 @@ void EggRewrite::start() {
         error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
 
     std::cout << "got the sexpr..\n";
+    std::cout << sexpr.str() << "\n";
 
     // NOTE: The symbolic expression 'sexpr' will actually be a series
     // of symbolic expressions, one for each closed mutable Def.
@@ -39,13 +40,18 @@ void EggRewrite::start() {
 
 std::pair<rust::Vec<RuleSet>, rust::Vec<int>> EggRewrite::import_rules() {
     // Internalize eqsat ruleset config functions (lam with signature [] -> %eqsat.Ruleset)
-    DefVec configs;
+    DefVec lams;
     for (auto def : old_world().externals().mutate()) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             if (lam->codom()->sym().view() == "%eqsat.Ruleset") {
-                configs.push_back(lam);
+                lams.push_back(lam);
                 def->internalize();
             }
+        } else if (auto rule = def->isa<mim::Rule>()) {
+            // TODO: rules are internal how do i access them here?
+            std::cout << "Rule found: \n";
+            std::cout << rule << "\n";
+            std::cout << rule->type() << "\n";
         }
     }
 
@@ -54,16 +60,16 @@ std::pair<rust::Vec<RuleSet>, rust::Vec<int>> EggRewrite::import_rules() {
     // TODO: int is just a placeholder and should be replaced
     // with the actual type for rules later on
     rust::Vec<int> rules;
-    for (auto config : configs) {
-        auto ruledef = config->as<Lam>()->body();
-        if (auto rs = Axm::isa<eqsat::rulesets>(ruledef)) {
+    for (auto lam : lams) {
+        auto body = lam->as<Lam>()->body();
+        if (auto rs = Axm::isa<eqsat::rulesets>(body)) {
             for (auto ruleset : rs->args())
                 if (auto core = Axm::isa<eqsat::core>(ruleset))
                     rulesets.push_back(RuleSet::Core);
                 else if (auto math = Axm::isa<eqsat::math>(ruleset))
                     rulesets.push_back(RuleSet::Math);
 
-        } else if (auto rules = Axm::isa<eqsat::rules>(ruledef)) {
+        } else if (auto rs = Axm::isa<eqsat::rules>(body)) {
             // TODO: translate custom rules from %eqsat.rules and pass as another arg
             // to equality_saturate (rules: Vec<Rule> or something)
             // - each custom rule might need to be translated into two
@@ -121,6 +127,7 @@ void EggRewrite::init_con(MimNode node) {
     add_var(con_name, new_con);
     add_def(new_con);
 
+    // TODO: also have to set projections of variables (i.e. sigma vars)
     for (int i = 0; auto var : new_con->vars()) {
         auto var_name = var_names[i];
         var->set(var_name);
@@ -144,7 +151,7 @@ void EggRewrite::convert(MimNode node, bool recurse) {
     if (recurse) {
         for (int child_id : node.children) {
             auto child_node = set_curr(child_id);
-            convert(child_node);
+            convert(child_node, recurse);
         }
     }
     set_curr(temp);
@@ -237,19 +244,44 @@ void EggRewrite::convert_lit(MimNode node) {
     add_def(new_lit);
 }
 
-void EggRewrite::convert_arr(MimNode node) {}
+void EggRewrite::convert_arr(MimNode node) {
+    auto arity = get_def(node.children[0]);
+    auto type  = get_def(node.children[1]);
 
-// (tuple <node> <node> <node> ...)
+    auto new_arr = new_world().arr(arity, type);
+    add_def(new_arr);
+}
+
+// (tuple <node1> <node2> <node3> ...)
 // TODO: arg tuples of lambda headers shouldn't be added to the world
 void EggRewrite::convert_tuple(MimNode node) {
     DefVec ops;
-    for (auto child : node.children)
-        ops.push_back(get_def(child));
+    for (auto child : node.children) {
+        auto op = get_def(child);
+        ops.push_back(op);
+    }
     auto new_tuple = new_world().tuple(ops);
     add_def(new_tuple);
 }
 
-void EggRewrite::convert_extract(MimNode node) {}
+void EggRewrite::convert_extract(MimNode node) {
+    auto tuple_sym = get_symbol(node.children[0]);
+    auto tuple_def = get_def(node.children[0]);
+    auto index     = get_def(node.children[1]);
+
+    if (tuple_sym != "") {
+        auto tuple = get_var(tuple_sym);
+        // TODO: somehow extract fails at the alpha equivalence check for index and tuple arity
+        auto extract = new_world().extract(tuple, index);
+        add_def(extract);
+    } else if (tuple_def != nullptr) {
+        auto extract = new_world().extract(tuple_def, index);
+        add_def(extract);
+    } else {
+        fe::unreachable();
+    }
+}
+
 void EggRewrite::convert_ins(MimNode node) {}
 
 // (sigma (var <name1> <type1>) (var <name2> <type2>) ...) or (sigma <type1> <type2> ...)
