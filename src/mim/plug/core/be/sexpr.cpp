@@ -143,7 +143,8 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
             print(s, "(arr (lit {}) {})", size, convert(arr->body()));
         } else {
             // TODO: Is the arity being emitted correctly?
-            print(s, "(arr {} {})", emit_unsafe(arr->arity()), convert(arr->body()));
+            auto dummy = BB{};
+            print(s, "(arr {} {})", emit_bb(dummy, arr->arity()), convert(arr->body()));
         }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))
@@ -256,7 +257,8 @@ std::string Emitter::emit_header(Lam* lam) {
     tab.print(os, ")");
     --tab;
 
-    tab.print(os, "{}", emit_unsafe(lam->filter()));
+    auto dummy = BB{};
+    tab.print(os, "{}", emit_bb(dummy, lam->filter()));
 
     return os.str();
 }
@@ -265,6 +267,7 @@ std::string Emitter::emit_header(Lam* lam) {
 // emitted uses caching which messes up indentation.
 // If we don't need basic blocks just use emit_bb with
 // some dummy basic blocks instead.
+// - rewrite the whole dummy BB thing
 std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
     ++tab;
@@ -272,9 +275,12 @@ std::string Emitter::emit_curried_app(const App& app) {
 
     if (auto app_callee = app.callee()->isa<App>())
         tab.print(os, "{}", emit_curried_app(*app_callee));
-    else
-        tab.print(os, "{}", emit_unsafe(app.callee()));
-    tab.print(os, "{}", emit_unsafe(app.arg()));
+    else {
+        auto dummy = BB{};
+        tab.print(os, "{}", emit_bb(dummy, app.callee()));
+    }
+    auto dummy = BB{};
+    tab.print(os, "{}", emit_bb(dummy, app.arg()));
 
     tab.lnprint(os, ")");
     --tab;
@@ -351,7 +357,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         ++tab;
         tab.lnprint(os, "(tuple");
         for (auto sep = ""; auto e : tuple->ops()) {
-            if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
+            if (auto v_elem = emit_bb(bb, e); !v_elem.empty()) {
                 os << sep << v_elem;
                 sep = " ";
             }

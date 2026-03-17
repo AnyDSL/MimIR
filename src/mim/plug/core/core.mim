@@ -106,7 +106,7 @@ axm %core.bit1(f, neg, id, t): {s: Nat} → [m: Nat] → Idx s → Idx s, normal
 ///
 axm %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
                 and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):
-    {s: Nat} → [m: Nat] → «2; Idx s» → Idx s , normalize_bit2;
+    {s: Nat} → [m: Nat] → «2; Idx s» → Idx s;
 ///
 /// ### %%core.shr
 ///

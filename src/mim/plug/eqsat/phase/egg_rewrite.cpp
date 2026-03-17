@@ -210,8 +210,9 @@ void EggRewrite::convert_app(MimNode node) {
         // Case 1: (app <symbol> <arg>)
         if (callee_sym.starts_with("%")) {
             flags_t annex_id = sym2flags_[callee_sym];
-            auto new_call    = new_world().call(annex_id, arg);
-            add_def(new_call);
+            auto annex       = new_world().annex(annex_id);
+            auto new_app     = new_world().app(annex, arg);
+            add_def(new_app);
         } else {
             auto var     = get_var(callee_sym);
             auto new_app = new_world().app(var, arg);
@@ -291,43 +292,6 @@ void EggRewrite::convert_extract(MimNode node) {
     } else {
         fe::unreachable();
     }
-
-    /*
-      auto tuple_sym = get_symbol(node.children[0]);
-      auto tuple_def = tuple_sym != "" ? get_var(tuple_sym) : get_def(node.children[0]);
-      auto index_def = get_def(node.children[1]);
-
-      std::cout << "Here 0\n";
-      std::cout << tuple_sym << "\n";
-      std::cout << tuple_def << "\n";
-      std::cout << tuple_def->type() << "\n";
-      if (tuple_def->type()->isa<Sigma>()) {
-          std::cout << "Here 1\n";
-          auto arity      = tuple_def->num_ops();
-          auto index_node = res_[node.children[1]];
-          if (index_node.kind == MimKind::Lit) {
-              std::cout << "Here 2\n";
-              auto index_num = get_num(index_node.children[0]);
-              auto index_sym = get_symbol(index_node.children[0]);
-              index_sym == "ff" ? index_num = 0 : index_sym == "tt" ? index_num = 1 : index_num = index_num;
-
-              if (tuple_sym != "") {
-                  std::cout << "Here 3\n";
-                  std::cout << (u64)arity << " : " << (u64)index_num << "\n";
-                  auto extract = new_world().extract(tuple_def, (u64)arity, (u64)index_num);
-                  std::cout << "Here 4\n";
-                  add_def(extract);
-              } else if (tuple_def != nullptr) {
-                  auto extract = new_world().extract(tuple_def, arity, index_num);
-                  add_def(extract);
-              } else {
-                  fe::unreachable();
-              }
-          } else {
-              // use extract(tuple_def, index_def) api
-          }
-      }
-    */
 }
 
 void EggRewrite::convert_ins(MimNode node) {}
