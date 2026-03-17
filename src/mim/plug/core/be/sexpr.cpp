@@ -367,12 +367,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return os.str();
     } else if (auto seq = def->isa<Seq>()) {
-        // NOTE: are there any cases where this would not just be an (arr) node?
         auto shape = seq->arity();
         auto body  = seq->body();
 
+        // NOTE: A pack is apparently a term sequence while an array is a type sequence
+        // But since the type conversion above also calls on emit_bb, we might have a problem
+        // if we just assume this is a pack as we are.
+
         ++tab;
-        tab.lnprint(os, "(arr");
+        tab.lnprint(os, "(pack");
         tab.print(os, emit_bb(bb, shape).c_str());
         tab.print(os, emit_bb(bb, body).c_str());
         tab.lnprint(os, ")");

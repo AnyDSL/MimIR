@@ -20,8 +20,8 @@ define_language! {
         // (var <value> [<type>])
         "lit" = Lit(Box<[Id]>),
 
-        // (arr <arity> <value>)
-        "arr" = Arr([Id; 2]),
+        // (pack <arity> <body>)
+        "pack" = Pack([Id; 2]),
         // (tuple <value1> <value2> ...)
         "tuple" = Tuple(Box<[Id]>),
         // (extract <tuple> <index>)
@@ -29,7 +29,11 @@ define_language! {
         // (ins <tuple> <index> <value>)
         "ins" = Ins([Id; 3]),
 
+
         // TYPES
+
+        // (arr <arity> <body>)
+        "arr" = Arr([Id; 2]),
         "sigma" = Sigma(Box<[Id]>),
         "cn" = Cn(Id),
         "pi" = Pi([Id; 2]),

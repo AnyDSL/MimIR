@@ -170,10 +170,11 @@ void EggRewrite::convert(MimNode node, bool recurse) {
         case MimKind::App: convert_app(node); break;
         case MimKind::Var: convert_var(node); break;
         case MimKind::Lit: convert_lit(node); break;
-        case MimKind::Arr: convert_arr(node); break;
+        case MimKind::Pack: convert_pack(node); break;
         case MimKind::Tuple: convert_tuple(node); break;
         case MimKind::Extract: convert_extract(node); break;
         case MimKind::Ins: convert_ins(node); break;
+        case MimKind::Arr: convert_arr(node); break;
         case MimKind::Sigma: convert_sigma(node); break;
         case MimKind::Cn: convert_cn(node); break;
         case MimKind::Pi: convert_pi(node); break;
@@ -253,12 +254,12 @@ void EggRewrite::convert_lit(MimNode node) {
     add_def(new_lit);
 }
 
-void EggRewrite::convert_arr(MimNode node) {
+void EggRewrite::convert_pack(MimNode node) {
     auto arity = get_def(node.children[0]);
-    auto type  = get_def(node.children[1]);
+    auto body  = get_def(node.children[1]);
 
-    auto new_arr = new_world().arr(arity, type);
-    add_def(new_arr);
+    auto new_pack = new_world().pack(arity, body);
+    add_def(new_pack);
 }
 
 // (tuple <node1> <node2> <node3> ...)
@@ -295,6 +296,14 @@ void EggRewrite::convert_extract(MimNode node) {
 }
 
 void EggRewrite::convert_ins(MimNode node) {}
+
+void EggRewrite::convert_arr(MimNode node) {
+    auto arity = get_def(node.children[0]);
+    auto body  = get_def(node.children[1]);
+
+    auto new_arr = new_world().arr(arity, body);
+    add_def(new_arr);
+}
 
 // (sigma (var <name1> <type1>) (var <name2> <type2>) ...) or (sigma <type1> <type2> ...)
 void EggRewrite::convert_sigma(MimNode node) {

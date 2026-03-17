@@ -65,10 +65,11 @@ private:
     void convert_app(MimNode node);
     void convert_var(MimNode node);
     void convert_lit(MimNode node);
-    void convert_arr(MimNode node);
+    void convert_pack(MimNode node);
     void convert_tuple(MimNode node);
     void convert_extract(MimNode node);
     void convert_ins(MimNode node);
+    void convert_arr(MimNode node);
     void convert_sigma(MimNode node);
     void convert_cn(MimNode node);
     void convert_pi(MimNode node);
