@@ -127,11 +127,19 @@ void EggRewrite::init_con(MimNode node) {
     add_var(con_name, new_con);
     add_def(new_con);
 
-    // TODO: also have to set projections of variables (i.e. sigma vars)
     for (int i = 0; auto var : new_con->vars()) {
         auto var_name = var_names[i];
         var->set(var_name);
         add_var(var_name, var);
+
+        // TODO: set projections of variables (i.e. sigma vars)
+        // auto projs = var->projs();
+        // if (!projs.empty()) {
+        //     for (auto proj : projs) {
+        //         // proj->set("Helloo");
+        //     }
+        // }
+
         i++;
     }
 }
@@ -257,8 +265,9 @@ void EggRewrite::convert_arr(MimNode node) {
 void EggRewrite::convert_tuple(MimNode node) {
     DefVec ops;
     for (auto child : node.children) {
-        auto op = get_def(child);
-        ops.push_back(op);
+        auto op_sym = get_symbol(child);
+        auto op_def = op_sym != "" ? get_var(op_sym) : get_def(child);
+        ops.push_back(op_def);
     }
     auto new_tuple = new_world().tuple(ops);
     add_def(new_tuple);
@@ -271,7 +280,9 @@ void EggRewrite::convert_extract(MimNode node) {
 
     if (tuple_sym != "") {
         auto tuple = get_var(tuple_sym);
-        // TODO: somehow extract fails at the alpha equivalence check for index and tuple arity
+        // TODO: Somehow extract fails at the alpha equivalence check for index and tuple arity.
+        // I guess if we are extracting from a sigma, we need to use the second extract api:
+        // extract(tuple, arity, index) (this is what they do in ExtractExpr::emit)
         auto extract = new_world().extract(tuple, index);
         add_def(extract);
     } else if (tuple_def != nullptr) {
@@ -280,6 +291,43 @@ void EggRewrite::convert_extract(MimNode node) {
     } else {
         fe::unreachable();
     }
+
+    /*
+      auto tuple_sym = get_symbol(node.children[0]);
+      auto tuple_def = tuple_sym != "" ? get_var(tuple_sym) : get_def(node.children[0]);
+      auto index_def = get_def(node.children[1]);
+
+      std::cout << "Here 0\n";
+      std::cout << tuple_sym << "\n";
+      std::cout << tuple_def << "\n";
+      std::cout << tuple_def->type() << "\n";
+      if (tuple_def->type()->isa<Sigma>()) {
+          std::cout << "Here 1\n";
+          auto arity      = tuple_def->num_ops();
+          auto index_node = res_[node.children[1]];
+          if (index_node.kind == MimKind::Lit) {
+              std::cout << "Here 2\n";
+              auto index_num = get_num(index_node.children[0]);
+              auto index_sym = get_symbol(index_node.children[0]);
+              index_sym == "ff" ? index_num = 0 : index_sym == "tt" ? index_num = 1 : index_num = index_num;
+
+              if (tuple_sym != "") {
+                  std::cout << "Here 3\n";
+                  std::cout << (u64)arity << " : " << (u64)index_num << "\n";
+                  auto extract = new_world().extract(tuple_def, (u64)arity, (u64)index_num);
+                  std::cout << "Here 4\n";
+                  add_def(extract);
+              } else if (tuple_def != nullptr) {
+                  auto extract = new_world().extract(tuple_def, arity, index_num);
+                  add_def(extract);
+              } else {
+                  fe::unreachable();
+              }
+          } else {
+              // use extract(tuple_def, index_def) api
+          }
+      }
+    */
 }
 
 void EggRewrite::convert_ins(MimNode node) {}

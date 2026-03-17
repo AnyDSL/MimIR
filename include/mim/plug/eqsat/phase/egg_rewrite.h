@@ -32,11 +32,10 @@ public:
 
 private:
     void register_symbols() {
-        for (const auto& [f, def] : old_world().flags2annex())
-            new_world().register_annex(f, rewrite(def));
-
-        for (auto [flags, annex] : new_world().flags2annex())
+        for (auto [flags, annex] : old_world().flags2annex()) {
             sym2flags_[annex->sym().str()] = flags;
+            new_world().register_annex(flags, rewrite(annex));
+        }
 
         sym2type_["top"]  = new_world().type_top();
         sym2type_["bot"]  = new_world().type_bot();

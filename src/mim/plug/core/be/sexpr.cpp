@@ -261,6 +261,10 @@ std::string Emitter::emit_header(Lam* lam) {
     return os.str();
 }
 
+// TODO: emit_unsafe() for Defs that were already
+// emitted uses caching which messes up indentation.
+// If we don't need basic blocks just use emit_bb with
+// some dummy basic blocks instead.
 std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
     ++tab;
