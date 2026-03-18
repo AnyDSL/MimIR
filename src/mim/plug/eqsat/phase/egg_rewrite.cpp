@@ -205,7 +205,9 @@ void EggRewrite::convert_con(MimNode node) {
 void EggRewrite::convert_app(MimNode node) {
     auto callee_sym = get_symbol(node.children[0]);
     auto callee_def = get_def(node.children[0]);
-    auto arg        = get_def(node.children[1]);
+    auto arg_sym    = get_symbol(node.children[1]);
+    auto arg_def    = get_def(node.children[1]);
+    auto arg        = arg_def == nullptr ? get_var(arg_sym) : arg_def;
 
     if (callee_sym != "") {
         // Case 1: (app <symbol> <arg>)
@@ -262,6 +264,7 @@ void EggRewrite::convert_lit(MimNode node) {
     }
 }
 
+// (pack <arity> <body>)
 void EggRewrite::convert_pack(MimNode node) {
     auto arity = get_def(node.children[0]);
     auto body  = get_def(node.children[1]);
@@ -275,36 +278,33 @@ void EggRewrite::convert_pack(MimNode node) {
 void EggRewrite::convert_tuple(MimNode node) {
     DefVec ops;
     for (auto child : node.children) {
+        // TODO: consider putting this sym->def->final pattern behind an abstraction to reduce code repetition
         auto op_sym = get_symbol(child);
-        auto op_def = op_sym != "" ? get_var(op_sym) : get_def(child);
-        ops.push_back(op_def);
+        auto op_def = get_def(child);
+        auto op     = op_def == nullptr ? get_var(op_sym) : op_def;
+        ops.push_back(op);
     }
     auto new_tuple = new_world().tuple(ops);
     add_def(new_tuple);
 }
 
+// (extract <tuple> <index>)
 void EggRewrite::convert_extract(MimNode node) {
     auto tuple_sym = get_symbol(node.children[0]);
     auto tuple_def = get_def(node.children[0]);
-    auto index     = get_def(node.children[1]);
+    auto tuple     = tuple_def == nullptr ? get_var(tuple_sym) : tuple_def;
 
-    if (tuple_sym != "") {
-        auto tuple = get_var(tuple_sym);
-        // TODO: Somehow extract fails at the alpha equivalence check for index and tuple arity.
-        // I guess if we are extracting from a sigma, we need to use the second extract api:
-        // extract(tuple, arity, index) (this is what they do in ExtractExpr::emit)
-        auto extract = new_world().extract(tuple, index);
-        add_def(extract);
-    } else if (tuple_def != nullptr) {
-        auto extract = new_world().extract(tuple_def, index);
-        add_def(extract);
-    } else {
-        fe::unreachable();
-    }
+    auto index_sym = get_symbol(node.children[1]);
+    auto index_def = get_def(node.children[1]);
+    auto index     = index_def == nullptr ? get_var(index_sym) : index_def;
+
+    auto new_extract = new_world().extract(tuple, index);
+    add_def(new_extract);
 }
 
 void EggRewrite::convert_ins(MimNode node) {}
 
+// (arr <arity> <body>)
 void EggRewrite::convert_arr(MimNode node) {
     auto arity = get_def(node.children[0]);
     auto body  = get_def(node.children[1]);
@@ -313,7 +313,9 @@ void EggRewrite::convert_arr(MimNode node) {
     add_def(new_arr);
 }
 
-// (sigma (var <name1> <type1>) (var <name2> <type2>) ...) or (sigma <type1> <type2> ...)
+// (sigma (var <name1> <type1>) (var <name2> <type2>) ...)
+//  or
+// (sigma <type1> <type2> ...)
 void EggRewrite::convert_sigma(MimNode node) {
     DefVec ops;
     for (auto child : node.children) {
@@ -329,13 +331,9 @@ void EggRewrite::convert_sigma(MimNode node) {
 
     auto new_sigma = old_world().sigma(ops);
     add_def(new_sigma);
-    // so this thing will be referred to in the lambda conversion
-    // via var_type = get_def(child_id) and so we need to simply create
-    // a sigma via sigma(types). The names of the sigma variables,
-    // if there are any, are the projections of the variable which is typed
-    // as the sigma accessible via var->proj(idx);
 }
 
+// (cn <domain>)
 void EggRewrite::convert_cn(MimNode node) {
     auto domain = get_def(node.children[0]);
     auto new_cn = new_world().cn(domain);
