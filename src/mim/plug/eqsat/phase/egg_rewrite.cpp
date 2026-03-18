@@ -8,31 +8,23 @@
 namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
-    std::ostringstream sexpr;
-    std::cout << "started eqsat phase..\n";
-
     auto [rulesets, rules] = import_rules();
     std::cout << "imported rules and rulesets..\n";
 
+    std::ostringstream sexpr;
     if (auto sexpr_backend = driver().backend("sexpr"))
         sexpr_backend(old_world(), sexpr);
     else
         error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
 
-    std::cout << "got the sexpr:\n";
+    std::cout << "got the sexpr:\n\n";
     std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
 
-    // NOTE: The symbolic expression 'sexpr' will actually be a series
-    // of symbolic expressions, one for each closed mutable Def.
-    // Passing 'sexpr' into equality_saturate(sexpr: &str) will return a Vec<RewriteResult>
-    // where each RewriteResult represents one rewritten symbolic expression
-    // in the form of a recursive expression (a way of representing a symbolic expression as a list of nodes)
     auto rewrites = equality_saturate(sexpr.str(), rulesets);
     std::cout << "got the rewrite results (total: " << rewrites.size() << ")..\n";
     for (auto rewrite : rewrites)
         process(rewrite);
 
-    std::cout << "recreated the world..\n\n";
     swap(old_world(), new_world());
 }
 
@@ -85,13 +77,11 @@ void EggRewrite::process(RewriteResult rewrite) {
 
     for (int id = 0; id < res_.size(); ++id) {
         auto node = set_curr(id);
-        std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
         init(node);
     }
 
     for (int id = 0; id < res_.size(); ++id) {
         auto node = set_curr(id);
-        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
         convert(node);
     }
 }
@@ -129,23 +119,25 @@ void EggRewrite::init_con(MimNode node) {
         auto var_name = var_names[i];
         var->set(var_name);
         add_var(var_name, var);
-
         // TODO: set projections of variables (i.e. sigma vars)
-        // auto projs = var->projs();
-        // if (!projs.empty()) {
-        //     for (auto proj : projs) {
-        //         // proj->set("Helloo");
-        //     }
-        // }
-
+        auto projs = var->projs();
+        std::cout << var << " projections: ";
+        for (auto proj : projs) {
+            std::cout << proj << ", ";
+            // proj->set("foo");
+        }
+        std::cout << "\n";
         i++;
     }
+    std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_con << "\n";
 }
 
 void EggRewrite::init_var(MimNode node) {
     // NOTE: Assuming (var <name> <type>)
     // but this might not always be the case. (Anonymous vars)
     auto var_type = set_curr(node.children[1]);
+    std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
     convert(var_type, true);
 }
 
@@ -197,6 +189,9 @@ void EggRewrite::convert_con(MimNode node) {
     con->set_filter(filter);
     con->set_body(body);
     if (is_extern == "extern") con->externalize();
+
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << con << "\n";
 }
 
 // (app <callee> <arg>)
@@ -205,6 +200,8 @@ void EggRewrite::convert_app(MimNode node) {
     auto arg     = get_def(node.children[1]);
     auto new_app = new_world().app(callee, arg);
     add_def(new_app);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_app << "\n";
 }
 
 // (var <name> <type>)
@@ -212,6 +209,8 @@ void EggRewrite::convert_var(MimNode node) {
     auto name = get_symbol(node.children[0]);
     auto var  = get_var(name);
     add_def(var);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << var << "\n";
 }
 
 // (lit <val> [<type>])
@@ -221,10 +220,14 @@ void EggRewrite::convert_lit(MimNode node) {
     if (lit_sym == "ff") {
         auto new_lit = new_world().lit_ff();
         add_def(new_lit);
+        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+        std::cout << new_lit << "\n";
         return;
     } else if (lit_sym == "tt") {
         auto new_lit = new_world().lit_tt();
         add_def(new_lit);
+        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+        std::cout << new_lit << "\n";
         return;
     }
 
@@ -234,10 +237,14 @@ void EggRewrite::convert_lit(MimNode node) {
         auto lit_type = get_def(node.children[1]);
         auto new_lit  = new_world().lit(lit_type, lit_val);
         add_def(new_lit);
+        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+        std::cout << new_lit << "\n";
     } else {
         // Case 3: (lit <val>)
         auto new_lit = new_world().lit_nat(lit_val);
         add_def(new_lit);
+        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+        std::cout << new_lit << "\n";
     }
 }
 
@@ -248,6 +255,8 @@ void EggRewrite::convert_pack(MimNode node) {
 
     auto new_pack = new_world().pack(arity, body);
     add_def(new_pack);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_pack << "\n";
 }
 
 // (tuple <node1> <node2> <node3> ...)
@@ -260,6 +269,8 @@ void EggRewrite::convert_tuple(MimNode node) {
     }
     auto new_tuple = new_world().tuple(ops);
     add_def(new_tuple);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_tuple << "\n";
 }
 
 // (extract <tuple> <index>)
@@ -267,8 +278,12 @@ void EggRewrite::convert_extract(MimNode node) {
     auto tuple = get_def(node.children[0]);
     auto index = get_def(node.children[1]);
 
+    // TODO: I don't know why but this fails at the sigma arity and idx size alpha equiv check in 1tuple.mim
+    // std::cout << "extract(" << tuple << ", " << index << ")\n";
     auto new_extract = new_world().extract(tuple, index);
     add_def(new_extract);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_extract << "\n";
 }
 
 void EggRewrite::convert_ins(MimNode node) {}
@@ -280,6 +295,8 @@ void EggRewrite::convert_arr(MimNode node) {
 
     auto new_arr = new_world().arr(arity, body);
     add_def(new_arr);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_arr << "\n";
 }
 
 // (sigma (var <name1> <type1>) (var <name2> <type2>) ...)
@@ -300,6 +317,8 @@ void EggRewrite::convert_sigma(MimNode node) {
 
     auto new_sigma = old_world().sigma(ops);
     add_def(new_sigma);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_sigma << "\n";
 }
 
 // (cn <domain>)
@@ -307,6 +326,8 @@ void EggRewrite::convert_cn(MimNode node) {
     auto domain = get_def(node.children[0]);
     auto new_cn = new_world().cn(domain);
     add_def(new_cn);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_cn << "\n";
 }
 
 void EggRewrite::convert_pi(MimNode node) {}
@@ -318,6 +339,8 @@ void EggRewrite::convert_idx(MimNode node) {
     auto size    = get_num(node.children[0]);
     auto new_idx = new_world().type_idx(size);
     add_def(new_idx);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << new_idx << "\n";
 }
 
 void EggRewrite::convert_hole(MimNode node) {}
@@ -328,6 +351,8 @@ void EggRewrite::convert_num(MimNode node) {}
 void EggRewrite::convert_symbol(MimNode node) {
     auto val = node.symbol.c_str();
     if (sym2type_.contains(val)) add_def(sym2type_[val]);
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << sym2type_[val] << "\n";
 }
 
 } // namespace mim::plug::eqsat

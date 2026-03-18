@@ -19,24 +19,6 @@ using namespace std::literals;
 
 namespace mim::sexpr {
 
-namespace math = mim::plug::math;
-
-namespace {
-bool is_const(const Def* def) {
-    if (def->isa<Bot>()) return true;
-    if (def->isa<Lit>()) return true;
-    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->arity()) && is_const(pack->body());
-
-    if (auto tuple = def->isa<Tuple>()) {
-        auto ops = tuple->ops();
-        return std::ranges::all_of(ops, [](auto def) { return is_const(def); });
-    }
-
-    return false;
-}
-
-} // namespace
-
 struct BB {
     BB()                    = default;
     BB(const BB&)           = delete;
@@ -73,7 +55,7 @@ public:
     using Super = mim::Emitter<std::string, std::string, BB, Emitter>;
 
     Emitter(World& world, std::ostream& ostream)
-        : Super(world, "mim_emitter", ostream) {}
+        : Super(world, "sexpr_emitter", ostream) {}
 
     bool is_valid(std::string_view s) { return !s.empty(); }
     void start() override;
@@ -96,10 +78,6 @@ private:
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
 };
-
-/*
- * convert
- */
 
 std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (def->isa<Axm>()) return def->sym().str();
@@ -127,9 +105,10 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
                 default: break;
             }
         }
+        // TODO: shouldn't it be (idx (lit size))
         print(s, "(idx {})", size);
         return types_[type] = s.str();
-    } else if (auto w = math::isa_f(type)) {
+    } else if (auto w = mim::plug::math::isa_f(type)) {
         print(s, "(lit {})", type);
         return types_[type] = s.str();
     } else if (auto lit = type->isa<Lit>()) {
@@ -193,16 +172,8 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
     return types_[type] = name;
 }
 
-/*
- * emit
- */
-
 void Emitter::start() {
     Super::start();
-
-    // TODO: do we need this?
-    // for (auto import : world().driver().imports().syms())
-    //     print(ostream(), "{} {};\n", world().driver().is_loaded(import) ? "plugin" : "import", import);
 
     for (auto&& decl : decls_)
         ostream() << decl << '\n';
@@ -211,6 +182,7 @@ void Emitter::start() {
     ostream() << func_impls_.str() << '\n';
 }
 
+// TODO: need sexpr printing here
 void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "cfun {}(", id(lam));
 
