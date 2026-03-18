@@ -334,9 +334,7 @@ void EggRewrite::convert_pi(MimNode node) {}
 
 // (idx <size>)
 void EggRewrite::convert_idx(MimNode node) {
-    // TODO: what if size is not a number like in (idx 3) but another
-    // def as in (idx (app %core.nat.add (lit 1) (lit 2)))
-    auto size    = get_num(node.children[0]);
+    auto size    = get_def(node.children[0]);
     auto new_idx = new_world().type_idx(size);
     add_def(new_idx);
     std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";

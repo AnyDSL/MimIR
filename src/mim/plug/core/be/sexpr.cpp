@@ -105,8 +105,7 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
                 default: break;
             }
         }
-        // TODO: shouldn't it be (idx (lit size))
-        print(s, "(idx {})", size);
+        print(s, "(idx (lit {}))", size);
         return types_[type] = s.str();
     } else if (auto w = mim::plug::math::isa_f(type)) {
         print(s, "(lit {})", type);

@@ -1,0 +1,23 @@
+plugin core;
+plugin eqsat;
+
+lam extern _rulesets(): %eqsat.Ruleset =
+    %eqsat.rulesets (
+        %eqsat.core,
+    );
+
+// TODO: let bindings for lambdas (mutual recursion between body and loop but its fine with mut_lam)
+fun extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M 0, I32] =
+    loop (mem, 0I32, 0I32)
+    where
+        con loop(mem: %mem.M 0, i: I32, acc: I32) =
+            let cond = %core.icmp.ul (i, argc);
+            (exit, body)#cond mem
+            where
+                con body m: %mem.M 0 =
+                    let inc = %core.wrap.add 0 (1I32, i);
+                    let acc = %core.wrap.add 0 (i, acc);
+                    loop (m, inc, acc);
+                con exit(m: %mem.M 0) = return (m, acc);
+            end
+    end

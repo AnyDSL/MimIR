@@ -1,0 +1,11 @@
+plugin core;
+plugin eqsat;
+
+lam extern _rulesets(): %eqsat.Ruleset =
+    %eqsat.rulesets (
+        %eqsat.core,
+        %eqsat.math,
+    );
+
+con g(n: Nat, i: Idx n, t: << n; [I32,I32]>>, return: Cn I32)@tt = return (t#i#(tt));
+con extern f(return: Cn I32) = g (1, 0_1, ((42I32, 43I32)), return);
