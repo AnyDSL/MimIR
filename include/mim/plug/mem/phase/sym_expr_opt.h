@@ -39,6 +39,18 @@ private:
         const Def* rewrite_imm_App(const App*) final;
 
         Def2Def lattice_;
+
+        DefSet memtrace_visited;
+        const Def* trace_load(const Def* mem, const Def* ptr);
+
+        void reset() {
+            ELOG("iteration, lattice:");
+            for (auto [k, v] : lattice_)
+                if (k != v)
+                    ELOG("{} -> {v}", k, v);
+
+            mim::Analysis::reset();
+        }
     };
 
 public:

@@ -2,6 +2,8 @@
 
 #include <absl/container/fixed_array.h>
 
+#include "mim/plug/mem/mem.h"
+
 namespace mim::plug::mem::phase {
 
 Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
@@ -42,8 +44,37 @@ const Def* SymExprOpt::Analysis::propagate(const Def* var, const Def* def) {
 
 static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->index()); }
 
+const Def* SymExprOpt::Analysis::trace_load(const Def* mem, const Def* ptr) {
+    memtrace_visited.emplace(mem);
+    if (auto store = Axm::isa<mem::store>(mem)) {
+        auto [mem, assigned_ptr, val] = store->args<3>();
+        if (assigned_ptr == ptr)
+            return val;
+        else
+            return trace_load(mem, ptr);
+    }
+    for (auto dep : mem->deps()) {
+        if (memtrace_visited.contains(dep))
+            return nullptr;
+        if (auto result = trace_load(dep, ptr))
+            return result;
+    }
+    return nullptr;
+}
+
 const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
-    if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
+    if (auto store = Axm::isa<mem::store>(app)) {
+        auto [mem, ptr, val] = store->args<3>();
+        ELOG("found a store: {} <- {}", ptr, val);
+    } else if (auto load = Axm::isa<mem::load>(app)) {
+        auto [mem, ptr] = load->args<2>();
+        auto abstr_mem = rewrite(mem);
+        auto abstr_ptr = rewrite(ptr);
+        memtrace_visited.clear();
+        ELOG("found a load, for {}, value is {}", ptr, trace_load(abstr_mem, abstr_ptr));
+    } else if (auto slot = Axm::isa<mem::slot>(app)) {
+        ELOG("found a slot");
+    } else if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
         auto abstr_vars = absl::FixedArray<const Def*>(n);
