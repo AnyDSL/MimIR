@@ -34,6 +34,24 @@ pub fn mim_node_str(node: MimNode) -> String {
     format!("{:?}", node)
 }
 
+pub fn pretty(sexpr: &str, line_len: usize) -> String {
+    // TODO: this is a naive split that only works on linux (win: split on \r\n\r\n)
+    let sexprs: Vec<&str> = sexpr.split("\n\n").collect();
+    let mut res = String::new();
+
+    for sexpr in sexprs {
+        if sexpr.replace("\r", "").replace("\n", "").is_empty() {
+            continue;
+        }
+
+        let parsed: RecExpr<Mim> = sexpr.parse().unwrap();
+        res.push_str(parsed.pretty(line_len).as_str());
+        res.push_str("\n\n");
+    }
+
+    res
+}
+
 #[cxx::bridge]
 pub mod ffi {
     #[derive(Debug)]
@@ -80,6 +98,7 @@ pub mod ffi {
     extern "Rust" {
         fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResult>;
         fn mim_node_str(node: MimNode) -> String;
+        fn pretty(sexpr: &str, line_len: usize) -> String;
     }
 }
 

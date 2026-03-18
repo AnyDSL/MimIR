@@ -68,6 +68,7 @@ pub struct Const {
     type_: Option<Mim>,
 }
 
+// TODO: ruleset-specific analyses
 impl Analysis<Mim> for MimAnalysis {
     type Data = AnalysisData;
 
@@ -89,12 +90,20 @@ impl Analysis<Mim> for MimAnalysis {
     fn modify(egraph: &mut EGraph<Mim, Self>, id: Id) {
         if let Some(Const {
             val: Some(c),
-            type_: _t,
+            type_: t_,
         }) = egraph[id].data.constant.clone()
         {
             let const_id = egraph.add(c);
-            let lit_id = egraph.add(Lit(Box::new([const_id])));
-            egraph.union(id, lit_id);
+            if let Some(t) = t_ {
+                // Case 1: (lit <const> <type>)
+                let type_id = egraph.add(t);
+                let lit_id = egraph.add(Lit(Box::new([const_id, type_id])));
+                egraph.union(id, lit_id);
+            } else {
+                // Case 2: (lit <const>)
+                let lit_id = egraph.add(Lit(Box::new([const_id])));
+                egraph.union(id, lit_id);
+            }
         }
     }
 }

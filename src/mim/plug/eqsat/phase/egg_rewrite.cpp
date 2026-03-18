@@ -21,8 +21,8 @@ void EggRewrite::start() {
     else
         error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
 
-    std::cout << "got the sexpr..\n";
-    std::cout << sexpr.str() << "\n";
+    std::cout << "got the sexpr:\n";
+    std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
 
     // NOTE: The symbolic expression 'sexpr' will actually be a series
     // of symbolic expressions, one for each closed mutable Def.
@@ -237,6 +237,7 @@ void EggRewrite::convert_var(MimNode node) {
 
 // (lit <val> [<type>])
 void EggRewrite::convert_lit(MimNode node) {
+    // Case 1: (lit tt) or (lit ff)
     auto lit_sym = get_symbol(node.children[0]);
     if (lit_sym == "ff") {
         auto new_lit = new_world().lit_ff();
@@ -248,10 +249,17 @@ void EggRewrite::convert_lit(MimNode node) {
         return;
     }
 
-    // TODO: typed literals
     auto lit_val = get_num(node.children[0]);
-    auto new_lit = new_world().lit_nat(lit_val);
-    add_def(new_lit);
+    if (node.children.size() > 1) {
+        // Case 2: (lit <val> <type>)
+        auto lit_type = get_def(node.children[1]);
+        auto new_lit  = new_world().lit(lit_type, lit_val);
+        add_def(new_lit);
+    } else {
+        // Case 3: (lit <val>)
+        auto new_lit = new_world().lit_nat(lit_val);
+        add_def(new_lit);
+    }
 }
 
 void EggRewrite::convert_pack(MimNode node) {
