@@ -1,0 +1,39 @@
+// RUN: %mim %s -o - | FileCheck %s
+plugin mem;
+
+cfun dont_know[mem: %mem.M 0]: [%mem.M 0, Bool];
+
+fun extern test1(mem: %mem.M 0): [%mem.M 0, I64] =
+    let (mem, ptr) = %mem.slot (I64, 0) (mem, 0);
+    let (mem, ptr_2) = %mem.slot (I64, 0) (mem, 1);
+    let mem        = %mem.store (mem, ptr, 0I64);
+    head mem where
+        con head(mem: %mem.M 0) =
+            ret (mem, cond) = dont_know $ mem;
+            (a, b)#cond mem where
+
+				// store different values on two branches
+                con a(mem: %mem.M 0) =
+                    let mem = %mem.store (mem, ptr, 1I64);
+                    join mem;
+
+                con b(mem: %mem.M 0) =
+                    let mem = %mem.store (mem, ptr_2, 32I64);
+                    join mem;
+
+                con join(mem: %mem.M 0) =
+                    let (mem, v) = %mem.load (mem, ptr);
+                    return (mem, v);
+            end
+    end;
+
+lam extern _compile(): %compile.Phase =
+    %compile.phases tt (
+        %compile.internal_cleanup_phase,
+        %compile.phases tt (
+            %compile.beta_red_phase,
+            %compile.eta_red_phase,
+        ),
+        %compile.eta_exp_phase,
+        %mem.sym_expr_opt,
+    );
