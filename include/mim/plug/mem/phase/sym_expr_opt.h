@@ -2,7 +2,7 @@
 
 #include "mim/phase.h"
 
-namespace mim {
+namespace mim::plug::mem::phase {
 
 /// Symbolic Expression Optimization. Combines:
 /// * *[Constant propagation with conditional branches](https://dl.acm.org/doi/pdf/10.1145/103135.103136)* but

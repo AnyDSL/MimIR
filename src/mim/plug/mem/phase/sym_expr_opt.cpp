@@ -1,8 +1,8 @@
-#include "mim/phase/sym_expr_opt.h"
+#include "mim/plug/mem/phase/sym_expr_opt.h"
 
 #include <absl/container/fixed_array.h>
 
-namespace mim {
+namespace mim::plug::mem::phase {
 
 Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
     map(mut, mut);
@@ -208,4 +208,4 @@ const Def* SymExprOpt::rewrite_imm_App(const App* old_app) {
     return Rewriter::rewrite_imm_App(old_app);
 }
 
-} // namespace mim
+} // namespace mim::plug::mem::phase
