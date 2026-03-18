@@ -1150,17 +1150,20 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto nat_ni = *Lit::isa(ni_n->proj(2, 0));
         auto f      = zip->decurry()->arg();
         auto inputs = zip->arg();
-        auto t      = convert(def->type()); // <n x T>
+        auto t_in   = convert(inputs->proj(nat_ni, 0)->type());
+        auto t_out  = convert(def->type()); // <n x T>
 
         std::string op;
         std::string prev;
+
         if (auto nat_op = Axm::isa<core::nat, 1>(f)) {
             switch (nat_op.id()) {
-                case core::nat::add: op = "add"; break;
-                case core::nat::sub: op = "sub"; break;
-                case core::nat::mul: op = "mul"; break;
+                case core::nat::add: op = "add nuw nsw"; break;
+                case core::nat::sub: op = "sub nuw nsw"; break;
+                case core::nat::mul: op = "mul nuw nsw"; break;
             }
         } else if (auto arith_op = Axm::isa<math::arith, 1>(f)) {
+            auto lmode = Lit::as(f->as<App>()->arg());
             switch (arith_op.id()) {
                 case math::arith::add: op = "fadd"; break;
                 case math::arith::sub: op = "fsub"; break;
@@ -1168,13 +1171,36 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 case math::arith::div: op = "fdiv"; break;
                 case math::arith::rem: op = "frem"; break;
             }
+
+            if (lmode == math::Mode::fast)
+                op += " fast";
+            else {
+                if (lmode & math::Mode::nnan) op += " nnan";
+                if (lmode & math::Mode::ninf) op += " ninf";
+                if (lmode & math::Mode::nsz) op += " nsz";
+                if (lmode & math::Mode::arcp) op += " arcp";
+                if (lmode & math::Mode::contract) op += " contract";
+                if (lmode & math::Mode::afn) op += " afn";
+                if (lmode & math::Mode::reassoc) op += " reassoc";
+            }
+        } else if (auto ncmp_op = Axm::isa<core::ncmp, 1>(f)) {
+            op = "icmp ";
+            switch (ncmp_op.id()) {
+                case core::ncmp::e: op += "eq"; break;
+                case core::ncmp::ne: op += "ne"; break;
+                case core::ncmp::g: op += "ugt"; break;
+                case core::ncmp::ge: op += "uge"; break;
+                case core::ncmp::l: op += "ult"; break;
+                case core::ncmp::le: op += "ule"; break;
+                default: fe::unreachable();
+            }
         } else {
             error("unhandled vec.zip operation: {}", f);
         }
 
         auto v1 = emit(inputs->proj(nat_ni, 0));
         auto v2 = emit(inputs->proj(nat_ni, 1));
-        prev    = bb.assign(name, "{} {} {}, {}", op, t, v1, v2);
+        prev    = bb.assign(name, "{} {} {}, {}", op, t_in, v1, v2);
         return prev;
         error("unhandled vec.zip operation: {}", f);
     }

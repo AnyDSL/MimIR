@@ -7,13 +7,13 @@ fun foo{n:Nat} (A: «n; Nat», B:«n; Nat»):  «n; Nat» =
     return D;
 
 fun war{n:Nat} (A B: «n; %math.F32»): «n; %math.F32» =
-    let C = %vec.zip (%math.arith.add 0) (A, B);
-    let D = %vec.zip (%math.arith.mul 0) (C, B);
+    let C = %vec.zip (%math.arith.add 1) (A, B);
+    let D = %vec.zip (%math.arith.mul 1) (C, B);
     return D;
 
 fun extern bar(A B: «4; Nat»): «4; Nat» =
     ret C = foo @4 $ (A, B);
-    ret D = foo @4 $ (A, B);
+    ret D = foo @4 $ (A, B);  
     return D;
 
 
