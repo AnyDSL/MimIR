@@ -300,7 +300,9 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 std::string Emitter::prepare() {
-    print(func_impls_, "define {} {}(", convert_ret_pi(root()->type()->ret_pi()), id(root()));
+    auto internal = root()->is_external() ? "" : "internal ";
+    auto ret_t    = convert_ret_pi(root()->type()->ret_pi());
+    print(func_impls_, "define {} {} {}(", internal, ret_t, id(root()));
 
     auto vars = root()->vars();
     for (auto sep = ""; auto var : vars.view().rsubspan(1)) {
