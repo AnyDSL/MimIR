@@ -87,7 +87,21 @@ private:
     void add_def(const Def* converted) { added_[curr_id_] = converted; }
     void add_var(std::string name, const Def* converted) { vars_[name] = converted; }
 
-    const Def* get_def(int id) { return added_.contains(id) ? added_[id] : nullptr; }
+    // A node that is associated with a Def can be:
+    // 1) A node representing an arbitrary term
+    // 2) A symbol node representing an annex
+    // 3) A symbol node representing a variable
+    const Def* get_def(int id) {
+        auto def = added_[id];
+        auto sym = get_symbol(id);
+        if (def == nullptr) {
+            if (sym.starts_with("%"))
+                def = new_world().annex(sym2flags_[sym]);
+            else
+                def = get_var(sym);
+        }
+        return def;
+    }
     const Def* get_var(std::string name) { return vars_[name]; }
 
     MimNode get_node(MimKind expected, int id) {

@@ -5,8 +5,6 @@
 
 #include "mim/plug/eqsat/autogen.h"
 
-#include "fe/assert.h"
-
 namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
@@ -203,31 +201,10 @@ void EggRewrite::convert_con(MimNode node) {
 
 // (app <callee> <arg>)
 void EggRewrite::convert_app(MimNode node) {
-    auto callee_sym = get_symbol(node.children[0]);
-    auto callee_def = get_def(node.children[0]);
-    auto arg_sym    = get_symbol(node.children[1]);
-    auto arg_def    = get_def(node.children[1]);
-    auto arg        = arg_def == nullptr ? get_var(arg_sym) : arg_def;
-
-    if (callee_sym != "") {
-        // Case 1: (app <symbol> <arg>)
-        if (callee_sym.starts_with("%")) {
-            flags_t annex_id = sym2flags_[callee_sym];
-            auto annex       = new_world().annex(annex_id);
-            auto new_app     = new_world().app(annex, arg);
-            add_def(new_app);
-        } else {
-            auto var     = get_var(callee_sym);
-            auto new_app = new_world().app(var, arg);
-            add_def(new_app);
-        }
-    } else if (callee_def != nullptr) {
-        // Case 2: (app <node> <arg>)
-        auto new_app = new_world().app(callee_def, arg);
-        add_def(new_app);
-    } else {
-        fe::unreachable();
-    }
+    auto callee  = get_def(node.children[0]);
+    auto arg     = get_def(node.children[1]);
+    auto new_app = new_world().app(callee, arg);
+    add_def(new_app);
 }
 
 // (var <name> <type>)
@@ -278,10 +255,7 @@ void EggRewrite::convert_pack(MimNode node) {
 void EggRewrite::convert_tuple(MimNode node) {
     DefVec ops;
     for (auto child : node.children) {
-        // TODO: consider putting this sym->def->final pattern behind an abstraction to reduce code repetition
-        auto op_sym = get_symbol(child);
-        auto op_def = get_def(child);
-        auto op     = op_def == nullptr ? get_var(op_sym) : op_def;
+        auto op = get_def(child);
         ops.push_back(op);
     }
     auto new_tuple = new_world().tuple(ops);
@@ -290,13 +264,8 @@ void EggRewrite::convert_tuple(MimNode node) {
 
 // (extract <tuple> <index>)
 void EggRewrite::convert_extract(MimNode node) {
-    auto tuple_sym = get_symbol(node.children[0]);
-    auto tuple_def = get_def(node.children[0]);
-    auto tuple     = tuple_def == nullptr ? get_var(tuple_sym) : tuple_def;
-
-    auto index_sym = get_symbol(node.children[1]);
-    auto index_def = get_def(node.children[1]);
-    auto index     = index_def == nullptr ? get_var(index_sym) : index_def;
+    auto tuple = get_def(node.children[0]);
+    auto index = get_def(node.children[1]);
 
     auto new_extract = new_world().extract(tuple, index);
     add_def(new_extract);
