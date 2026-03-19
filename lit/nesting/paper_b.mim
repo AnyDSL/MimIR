@@ -1,3 +1,6 @@
+// RUN: %mim %s --output-nest %t.dot
+// RUN: FileCheck %s < %t.dot
+
 import core;
 
 lam add (a: Nat) (b: Nat) = %core.nat.add (a, b);
@@ -15,3 +18,15 @@ fun extern f (n: Nat): Nat =
         con xj () = hi j_;
         (xj, bj)#(le j n) ();
     hi 0;
+
+// Dominance of f's children: f dominates hi (entry), hi dominates hj
+// CHECK-DAG: "f_{{[0-9]+}}" -> "hi_{{[0-9]+}}" [color=red,style=bold,constraint=false]
+// CHECK-DAG: "hi_{{[0-9]+}}" -> "hj_{{[0-9]+}}" [color=red,style=bold,constraint=false]
+//
+// Dominance of hi's children: hi dominates bi and xi
+// CHECK-DAG: "hi_{{[0-9]+}}" -> "bi_{{[0-9]+}}" [color=red,style=bold,constraint=false]
+// CHECK-DAG: "hi_{{[0-9]+}}" -> "xi_{{[0-9]+}}" [color=red,style=bold,constraint=false]
+//
+// Dominance of hj's children: hj dominates bj and xj
+// CHECK-DAG: "hj_{{[0-9]+}}" -> "bj_{{[0-9]+}}" [color=red,style=bold,constraint=false]
+// CHECK-DAG: "hj_{{[0-9]+}}" -> "xj_{{[0-9]+}}" [color=red,style=bold,constraint=false]
