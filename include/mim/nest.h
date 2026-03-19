@@ -178,7 +178,7 @@ public:
         absl::flat_hash_map<const Node*, const SCC*> SCCs_;
         mutable const Node* idom_ = nullptr;
         // Nodes higher up in dominator tree within same sibling layer have higher postorder numbers.
-        // This property is used to efficiently find the correct node for early code placement in [Schedule::early].
+        // This property is used to efficiently find the correct node for late code placement via [Nest::lca].
         mutable size_t postorder_number_ = -1;
 
         // implementaiton details
