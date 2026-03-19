@@ -4,8 +4,6 @@
 
 #include "mim/world.h"
 
-#include "absl/container/flat_hash_map.h"
-
 namespace mim {
 using std::ranges::views::reverse;
 
@@ -189,46 +187,45 @@ const Nest::Node& Nest::Node::with_dominance() const {
 
     // Holds all siblings in reverse post-order coming from the parent
     std::vector<const Nest::Node*> nodes;
-    // Map of nodes to indices in [nodes], also used as "visited" set with
-    // temporary 0 values
-    absl::flat_hash_map<const Nest::Node*, int> postord_num;
 
-    // Initialize nodes directly referenced by the parent
+    // Initialize entry nodes directly referenced by the parent
     for (auto op : inest()->mut()->deps()) {
         for (auto mut : op->local_muts()) {
             if (auto node = nest()[mut]; node && node->inest() == inest()) {
-                node->idom_       = inest();
-                postord_num[node] = 0;
+                node->idom_             = inest();
+                node->postorder_number_ = 0; // mark as visited
             }
         }
     }
 
     std::function<void(const Nest::Node*)> visit = [&](const Nest::Node* node) {
-        if (postord_num.contains(node)) return;
-        postord_num[node] = 0;
+        if (node->postorder_number_ != size_t(-1)) return; // already visited
+        node->postorder_number_ = 0;                       // mark in progress
         for (auto child : node->sibl_deps())
             visit(child);
-        postord_num[node] = nodes.size();
+        node->postorder_number_ = nodes.size();
         nodes.push_back(node);
     };
 
-    // Assign post-order numbers to nodes
+    // Assign post-order numbers via DFS from entry nodes
     for (auto op : inest()->mut()->deps()) {
         for (auto mut : op->local_muts()) {
             if (auto node = nest()[mut]; node && node->inest() == inest()) {
-                postord_num.erase(node);
+                node->postorder_number_ = size_t(-1); // reset so visit processes it
                 visit(node);
             }
         }
     }
 
-    auto intersect = [&](const Nest::Node* left, const Nest::Node* right) {
-        auto finger1 = left;
-        auto finger2 = right;
+    // Temporarily give largest post-order number to parent (restored below)
+    auto saved_parent_postorder = inest()->postorder_number_;
+    inest()->postorder_number_  = nodes.size();
+
+    auto intersect = [](const Nest::Node* finger1, const Nest::Node* finger2) {
         while (finger1 != finger2) {
-            while (postord_num[finger1] < postord_num[finger2])
+            while (finger1->postorder_number_ < finger2->postorder_number_)
                 finger1 = finger1->idom_;
-            while (postord_num[finger2] < postord_num[finger1])
+            while (finger2->postorder_number_ < finger1->postorder_number_)
                 finger2 = finger2->idom_;
         }
         return finger1;
@@ -252,6 +249,7 @@ const Nest::Node& Nest::Node::with_dominance() const {
         }
     }
 
+    inest()->postorder_number_ = saved_parent_postorder;
     return *this;
 }
 
