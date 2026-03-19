@@ -71,7 +71,6 @@ protected:
             if (auto lam = mut->isa<Lam>()) {
                 curr_lam_ = lam;
                 assert(lam == root() || Lam::isa_basicblock(lam));
-                // ostream() << "calling emit_epilogue: " << lam->unique_name() << "\n";
                 child().emit_epilogue(lam);
             }
         }

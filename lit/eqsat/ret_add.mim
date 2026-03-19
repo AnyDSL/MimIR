@@ -1,11 +1,4 @@
 plugin core;
-plugin eqsat;
-
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
-        %eqsat.core,
-        %eqsat.math,
-    );
 
 // TODO: sexpr emitter can't emit the whole thing (probably due to ccon)
 ccon atoi[%mem.M 0, %mem.Ptr («⊤:Nat; I8», 0), Cn [%mem.M 0, I32]];

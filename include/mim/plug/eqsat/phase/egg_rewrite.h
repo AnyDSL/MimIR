@@ -114,6 +114,8 @@ private:
     int curr_id_;
     rust::Vec<MimNode> res_;
     std::unordered_map<int, const Def*> added_;
+    // TODO: this is going to become problematic if our sexpr
+    // has nested lambdas using the same variable names
     std::unordered_map<std::string, const Def*> vars_;
 
     std::unordered_map<std::string, flags_t> sym2flags_;

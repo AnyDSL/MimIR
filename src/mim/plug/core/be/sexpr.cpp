@@ -72,9 +72,6 @@ private:
     std::string id(const Def*, bool force_bb = false) const;
     std::string convert(const Def*, const Def* = nullptr);
 
-    absl::btree_set<std::string> decls_;
-    std::ostringstream type_decls_;
-    std::ostringstream vars_decls_;
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
 };
@@ -174,14 +171,13 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
 void Emitter::start() {
     Super::start();
 
-    for (auto&& decl : decls_)
-        ostream() << decl << '\n';
     ostream() << func_decls_.str() << '\n';
-    ostream() << vars_decls_.str() << '\n';
     ostream() << func_impls_.str() << '\n';
 }
 
 // TODO: need sexpr printing here
+// - just emit them as lam or fun because that is how they are reconstructed
+//   or emitted in the api anyway (as world().mut_fun(dom, codom))
 void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "cfun {}(", id(lam));
 
@@ -260,6 +256,7 @@ std::string Emitter::emit_curried_app(const App& app) {
 
 std::string Emitter::prepare() { return root()->unique_name(); }
 
+// TODO: implement let bindings for lambdas instead of inline expanding them
 void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     if (!node->mut()->isa<Lam>()) return;
     if (auto [_, ins] = done.emplace(node->mut()); !ins) return;
