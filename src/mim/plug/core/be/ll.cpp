@@ -243,11 +243,14 @@ void Emitter::start() {
 
 void Emitter::emit_imported(Lam* lam) {
     // TODO merge with declare method
-    print(func_decls_, "declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
+    const Pi* ret_pi = lam->type()->ret_pi();
+    print(func_decls_, "declare {} {}(", convert_ret_pi(ret_pi), id(lam));
 
     auto doms = lam->doms();
     for (auto sep = ""; auto dom : doms.view().rsubspan(1)) {
         if (Axm::isa<mem::M>(dom)) continue;
+        if (dom == world().sigma()) continue;  // unit — not an LLVM arg
+        if (ret_pi && dom == ret_pi) continue; // CPS continuation — not an LLVM arg
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
     }
@@ -554,8 +557,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_tup = convert(tuple->type());
         if (auto li = Lit::isa(index)) {
             if (isa_mem_sigma_2(tuple->type())) return v_tup;
-            // Adjust index, if mem is present.
-            auto v_i = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
+            // Adjust index: skip all erased %mem.M elements before the target index.
+            size_t mem_count = 0;
+            if (auto sigma = tuple->type()->isa<Sigma>())
+                for (size_t i = 0; i < *li && i < sigma->num_ops(); ++i)
+                    if (Axm::isa<mem::M>(sigma->op(i))) ++mem_count;
+            auto v_i = std::to_string(*li - mem_count);
             return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
         }
 
