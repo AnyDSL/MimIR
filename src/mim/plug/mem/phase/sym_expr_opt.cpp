@@ -44,7 +44,7 @@ const Def* SymExprOpt::Analysis::propagate(const Def* var, const Def* def) {
 
 static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->index()); }
 
-static const Def* trace_load(const Def* mem, const Def* ptr) {
+const Def* SymExprOpt::Analysis::trace_load(const Def* mem, const Def* ptr) {
     if (auto store = Axm::isa<mem::store>(mem)) {
         auto [mem, assigned_ptr, val] = store->args<3>();
         if (assigned_ptr == ptr)
@@ -55,12 +55,36 @@ static const Def* trace_load(const Def* mem, const Def* ptr) {
         auto [mem, _] = load->args<2>();
         return trace_load(mem, ptr);
     } else if (auto slot = Axm::isa<mem::slot>(mem)) {
-        auto [mem, _] = slot->args<2>();
+        auto [Ta, mi]                      = slot->uncurry_args<2>();
+        auto [pointee_type, address_space] = Ta->projs<2>();
+        auto [mem, alloced_ptr]            = mi->projs<2>();
+        if (ptr == alloced_ptr) return world().bot(pointee_type);
         return trace_load(mem, ptr);
     } else if (auto extract = mem->isa<Extract>()) {
         return trace_load(extract->tuple(), ptr);
-    } else
+    } else {
+        if (auto var = mem->isa<Var>()) {
+            // todo: introduce new var here
+            auto [_, ins] = live_slots_[var->mut()].emplace(ptr);
+            if (ins) todo_ = true;
+        }
         return nullptr;
+    }
+}
+
+void SymExprOpt::Analysis::reset() {
+    ELOG("iteration, lattice:");
+    for (auto [k, v] : lattice_)
+        if (k != v)
+            ELOG("{} -> {v}", k, v);
+    ELOG("live slots:");
+    for (auto [lam, live] : live_slots_) {
+        ELOG("live_slots for {}:", lam);
+        for (auto slot : live)
+            ELOG("{}", slot);
+    }
+
+    mim::Analysis::reset();
 }
 
 const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
@@ -72,12 +96,12 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         ELOG("found a store: {} <- {}", abstr_ptr, val);
     } else if (auto load = Axm::isa<mem::load>(app)) {
         auto [mem, ptr] = load->args<2>();
+        auto [_, loaded] = load->projs<2>();
         auto abstr_mem = rewrite(mem);
         auto abstr_ptr = rewrite(ptr);
         if (auto value = trace_load(abstr_mem, abstr_ptr)) {
-            lattice_.emplace(load, value);
-        } else {
-            lattice_.emplace(load, load);
+            auto [i, ins] = lattice_.emplace(loaded, value);
+            if (ins) todo_ = true;
         }
         ELOG("found a load, for {}, value is {}", abstr_ptr, trace_load(abstr_mem, abstr_ptr));
     } else if (auto slot = Axm::isa<mem::slot>(app)) {
@@ -87,6 +111,11 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         auto abstr_mem = rewrite(mem);
         auto abstr_id = rewrite(id);
     } else if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
+
+        ELOG("live_slots for {}:", lam);
+        for (auto slot : live_slots_[lam])
+            ELOG("{}", slot);
+
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
         auto abstr_vars = absl::FixedArray<const Def*>(n);

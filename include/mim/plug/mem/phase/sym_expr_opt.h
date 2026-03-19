@@ -38,16 +38,13 @@ private:
         Def* rewrite_mut(Def*) final;
         const Def* rewrite_imm_App(const App*) final;
 
+        const Def* trace_load(const Def*, const Def*);
+
         Def2Def lattice_;
 
-        void reset() {
-            ELOG("iteration, lattice:");
-            for (auto [k, v] : lattice_)
-                if (k != v)
-                    ELOG("{} -> {v}", k, v);
+        DefMap<DefSet> live_slots_;
 
-            mim::Analysis::reset();
-        }
+        void reset();
     };
 
 public:
