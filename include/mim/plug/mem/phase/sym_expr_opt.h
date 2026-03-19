@@ -40,9 +40,6 @@ private:
 
         Def2Def lattice_;
 
-        DefSet memtrace_visited;
-        const Def* trace_load(const Def* mem, const Def* ptr);
-
         void reset() {
             ELOG("iteration, lattice:");
             for (auto [k, v] : lattice_)

@@ -44,36 +44,48 @@ const Def* SymExprOpt::Analysis::propagate(const Def* var, const Def* def) {
 
 static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->index()); }
 
-const Def* SymExprOpt::Analysis::trace_load(const Def* mem, const Def* ptr) {
-    memtrace_visited.emplace(mem);
+static const Def* trace_load(const Def* mem, const Def* ptr) {
     if (auto store = Axm::isa<mem::store>(mem)) {
         auto [mem, assigned_ptr, val] = store->args<3>();
         if (assigned_ptr == ptr)
             return val;
         else
             return trace_load(mem, ptr);
-    }
-    for (auto dep : mem->deps()) {
-        if (memtrace_visited.contains(dep))
-            return nullptr;
-        if (auto result = trace_load(dep, ptr))
-            return result;
-    }
-    return nullptr;
+    } else if (auto load = Axm::isa<mem::load>(mem)) {
+        auto [mem, _] = load->args<2>();
+        return trace_load(mem, ptr);
+    } else if (auto slot = Axm::isa<mem::slot>(mem)) {
+        auto [mem, _] = slot->args<2>();
+        return trace_load(mem, ptr);
+    } else if (auto extract = mem->isa<Extract>()) {
+        return trace_load(extract->tuple(), ptr);
+    } else
+        return nullptr;
 }
 
 const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
     if (auto store = Axm::isa<mem::store>(app)) {
         auto [mem, ptr, val] = store->args<3>();
-        ELOG("found a store: {} <- {}", ptr, val);
+        auto abstr_mem = rewrite(mem);
+        auto abstr_ptr = rewrite(ptr);
+        auto abstr_val = rewrite(val);
+        ELOG("found a store: {} <- {}", abstr_ptr, val);
     } else if (auto load = Axm::isa<mem::load>(app)) {
         auto [mem, ptr] = load->args<2>();
         auto abstr_mem = rewrite(mem);
         auto abstr_ptr = rewrite(ptr);
-        memtrace_visited.clear();
-        ELOG("found a load, for {}, value is {}", ptr, trace_load(abstr_mem, abstr_ptr));
+        if (auto value = trace_load(abstr_mem, abstr_ptr)) {
+            lattice_.emplace(load, value);
+        } else {
+            lattice_.emplace(load, load);
+        }
+        ELOG("found a load, for {}, value is {}", abstr_ptr, trace_load(abstr_mem, abstr_ptr));
     } else if (auto slot = Axm::isa<mem::slot>(app)) {
         ELOG("found a slot");
+        auto [mem, id] = slot->args<2>();
+        auto [_, ptr]  = slot->projs<2>();
+        auto abstr_mem = rewrite(mem);
+        auto abstr_id = rewrite(id);
     } else if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
