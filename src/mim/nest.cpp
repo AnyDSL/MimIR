@@ -1,8 +1,13 @@
 #include "mim/nest.h"
 
+#include <ranges>
+
 #include "mim/world.h"
 
+#include "absl/container/flat_hash_map.h"
+
 namespace mim {
+using std::ranges::views::reverse;
 
 Nest::Nest(Def* r)
     : world_(r->world())
@@ -174,6 +179,80 @@ uint32_t Nest::Node::tarjan(uint32_t i, Node* inest, Stack& stack) {
     }
 
     return i;
+}
+
+/// Calculates dominance using Cooper-Harvey-Kennedy algorithm
+/// from Cooper et al, "A Simple, Fast Dominance Algorithm".
+/// https://www.clear.rice.edu/comp512/Lectures/Papers/TR06-33870-Dom.pdf
+const Nest::Node& Nest::Node::with_dominance() const {
+    if (idom_ || is_root() || !inest()->mut()) return *this;
+
+    // Holds all siblings in reverse post-order coming from the parent
+    std::vector<const Nest::Node*> nodes;
+    // Map of nodes to indices in [nodes], also used as "visited" set with
+    // temporary 0 values
+    absl::flat_hash_map<const Nest::Node*, int> postord_num;
+
+    // Initialize nodes directly referenced by the parent
+    for (auto op : inest()->mut()->deps()) {
+        for (auto mut : op->local_muts()) {
+            if (auto node = nest()[mut]; node && node->inest() == inest()) {
+                node->idom_       = inest();
+                postord_num[node] = 0;
+            }
+        }
+    }
+
+    std::function<void(const Nest::Node*)> visit = [&](const Nest::Node* node) {
+        if (postord_num.contains(node)) return;
+        postord_num[node] = 0;
+        for (auto child : node->sibl_deps())
+            visit(child);
+        postord_num[node] = nodes.size();
+        nodes.push_back(node);
+    };
+
+    // Assign post-order numbers to nodes
+    for (auto op : inest()->mut()->deps()) {
+        for (auto mut : op->local_muts()) {
+            if (auto node = nest()[mut]; node && node->inest() == inest()) {
+                postord_num.erase(node);
+                visit(node);
+            }
+        }
+    }
+
+    auto intersect = [&](const Nest::Node* left, const Nest::Node* right) {
+        auto finger1 = left;
+        auto finger2 = right;
+        while (finger1 != finger2) {
+            while (postord_num[finger1] < postord_num[finger2])
+                finger1 = finger1->idom_;
+            while (postord_num[finger2] < postord_num[finger1])
+                finger2 = finger2->idom_;
+        }
+        return finger1;
+    };
+
+    // Actual dominance algorithm
+    bool changed = true;
+    while (changed) {
+        changed = false;
+        for (auto node : nodes | reverse) {
+            // skip entry nodes
+            if (node->idom_ == inest()) continue;
+
+            const Nest::Node* new_idom = nullptr;
+            for (auto user : node->sibl_deps<false>())
+                if (user->idom_) new_idom = new_idom ? intersect(new_idom, user) : user;
+            if (node->idom_ != new_idom) {
+                node->idom_ = new_idom;
+                changed     = true;
+            }
+        }
+    }
+
+    return *this;
 }
 
 } // namespace mim

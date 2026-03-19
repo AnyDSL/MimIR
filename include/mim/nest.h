@@ -5,6 +5,8 @@
 
 #include "mim/def.h"
 
+#include "absl/container/flat_hash_set.h"
+
 namespace mim {
 
 /// Builds a nesting tree of all *mutables*/binders.
@@ -133,6 +135,14 @@ public:
         bool is_directly_recursive() const { return is_recursive() && (!inest_ || inest_->SCCs_[this]->size() == 1); }
         ///@}
 
+        /// @name Dominance
+        /// [Dominance](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) relation for children in connected
+        /// components. This is used to transform first order programs into structured form in the
+        /// [sflow](mim::plug::sflow) plugin and for early code placement in [Scheduler::early].
+        /// @{
+        auto idom() const { return with_dominance().idom_; }
+        /// @}
+
     private:
         Node(const Nest& nest, Def* mut, Node* inest)
             : nest_(nest)
@@ -152,6 +162,9 @@ public:
         void calc_SCCs();
         uint32_t tarjan(uint32_t, Node*, Stack&);
 
+        /// Dominance
+        const Node& with_dominance() const;
+
         const Nest& nest_;
         Def* mut_;
         Node* inest_;
@@ -163,6 +176,10 @@ public:
         Children children_;
         std::deque<std::unique_ptr<SCC>> topo_;
         absl::flat_hash_map<const Node*, const SCC*> SCCs_;
+        mutable const Node* idom_ = nullptr;
+        // Nodes higher up in dominator tree within same sibling layer have higher postorder numbers.
+        // This property is used to efficiently find the correct node for early code placement in [Schedule::early].
+        mutable size_t postorder_number_ = -1;
 
         // implementaiton details
         static constexpr uint32_t Unvisited = uint32_t(-1);
