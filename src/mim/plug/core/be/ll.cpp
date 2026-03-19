@@ -1196,6 +1196,55 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 case core::ncmp::le: op += "ule"; break;
                 default: fe::unreachable();
             }
+        } else if (auto icmp_op = Axm::isa<core::icmp, 1>(f)) {
+            op = "icmp ";
+            switch (icmp_op.id()) {
+                case core::icmp::e: op += "eq"; break;
+                case core::icmp::ne: op += "ne"; break;
+                case core::icmp::sg: op += "sgt"; break;
+                case core::icmp::sge: op += "sge"; break;
+                case core::icmp::sl: op += "slt"; break;
+                case core::icmp::sle: op += "sle"; break;
+                case core::icmp::ug: op += "ugt"; break;
+                case core::icmp::uge: op += "uge"; break;
+                case core::icmp::ul: op += "ult"; break;
+                case core::icmp::ule: op += "ule"; break;
+                default: fe::unreachable();
+            }
+        } else if (auto icmp_op = Axm::isa<core::icmp, 1>(f)) {
+            op = "icmp ";
+            switch (icmp_op.id()) {
+                case core::icmp::e: op += "eq"; break;
+                case core::icmp::ne: op += "ne"; break;
+                case core::icmp::sg: op += "sgt"; break;
+                case core::icmp::sge: op += "sge"; break;
+                case core::icmp::sl: op += "slt"; break;
+                case core::icmp::sle: op += "sle"; break;
+                case core::icmp::ug: op += "ugt"; break;
+                case core::icmp::uge: op += "uge"; break;
+                case core::icmp::ul: op += "ult"; break;
+                case core::icmp::ule: op += "ule"; break;
+                default: fe::unreachable();
+            }
+        } else if (auto mcmp_op = Axm::isa<math::cmp, 1>(f)) {
+            op = "fcmp ";
+            switch (mcmp_op.id()) {
+                case math::cmp::e: op += "oeq"; break;
+                case math::cmp::l: op += "olt"; break;
+                case math::cmp::le: op += "ole"; break;
+                case math::cmp::g: op += "ogt"; break;
+                case math::cmp::ge: op += "oge"; break;
+                case math::cmp::ne: op += "one"; break;
+                case math::cmp::o: op += "ord"; break;
+                case math::cmp::u: op += "uno"; break;
+                case math::cmp::ue: op += "ueq"; break;
+                case math::cmp::ul: op += "ult"; break;
+                case math::cmp::ule: op += "ule"; break;
+                case math::cmp::ug: op += "ugt"; break;
+                case math::cmp::uge: op += "uge"; break;
+                case math::cmp::une: op += "une"; break;
+                default: fe::unreachable();
+            }
         } else {
             error("unhandled vec.zip operation: {}", f);
         }
