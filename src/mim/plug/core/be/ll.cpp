@@ -66,6 +66,16 @@ const Def* isa_mem_sigma_2(const Def* type) {
         if (sigma->num_ops() == 2 && Axm::isa<mem::M>(sigma->op(0))) return sigma->op(1);
     return {};
 }
+static std::optional<std::pair<nat_t, const Def*>> is_simd(const Def* type) {
+    if (auto arr = type->isa<Arr>()) {
+        if (auto l = Lit::isa(arr->arity()); l && *l > 1 && (*l & (*l - 1)) == 0) { // power of 2 only
+            if (arr->body()->isa<Nat>() || Idx::isa(arr->body()) || Axm::isa<math::F>(arr->body()))
+                return std::pair{*l, arr->body()};
+        }
+    }
+    return {};
+}
+
 } // namespace
 
 struct BB {
@@ -169,15 +179,18 @@ std::string Emitter::convert(const Def* type) {
             case 64: return types_[type] = "double";
             default: fe::unreachable();
         }
-    } else if (auto ptr = Axm::isa<mem::Ptr>(type)) {
-        auto [pointee, addr_space] = ptr->args<2>();
-        // TODO addr_space
-        print(s, "{}*", convert(pointee));
+    } else if (Axm::isa<mem::Ptr>(type)) {
+        return types_[type] = "ptr";
     } else if (auto arr = type->isa<Arr>()) {
-        auto t_elem = convert(arr->body());
-        u64 size    = 0;
-        if (auto arity = Lit::isa(arr->arity())) size = *arity;
-        print(s, "[{} x {}]", size, t_elem);
+        if (auto se = is_simd(arr)) {
+            auto [size, elem] = *se;
+            print(s, "<{} x {}>", size, convert(elem));
+        } else {
+            auto t_elem = convert(arr->body());
+            u64 size    = 0;
+            if (auto arity = Lit::isa(arr->arity())) size = *arity;
+            print(s, "[{} x {}]", size, t_elem);
+        }
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
@@ -260,8 +273,7 @@ void Emitter::emit_imported(Lam* lam) {
 
 std::string Emitter::prepare() {
     auto internal = root()->is_external() ? "" : "internal ";
-    auto ret_t    = convert_ret_pi(root()->type()->ret_pi());
-    print(func_impls_, "define {} {} {}(", internal, ret_t, id(root()));
+    print(func_impls_, "define {}{} {}(", internal, convert_ret_pi(root()->type()->ret_pi()), id(root()));
 
     auto vars = root()->vars();
     for (auto sep = ""; auto var : vars.view().rsubspan(1)) {
@@ -325,12 +337,17 @@ void Emitter::emit_epilogue(Lam* lam) {
             case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
             default: {
                 std::string prev = "undef";
-                auto type        = convert(world().sigma(types));
+                auto ret_sigma   = world().sigma(types);
+                auto type        = convert(ret_sigma);
+                bool simd        = is_simd(ret_sigma).has_value();
                 for (size_t i = 0, n = values.size(); i != n; ++i) {
                     auto v_elem = values[i];
                     auto t_elem = convert(types[i]);
                     auto namei  = "%ret_val." + std::to_string(i);
-                    bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, t_elem, v_elem, i);
+                    if (simd)
+                        bb.tail("{} = insertelement {} {}, {} {}, i32 {}", namei, type, prev, t_elem, v_elem, i);
+                    else
+                        bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, t_elem, v_elem, i);
                     prev = namei;
                 }
 
@@ -377,13 +394,13 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
         return bb.tail("br label {}", id(callee));
     } else if (auto longjmp = Axm::isa<clos::longjmp>(app)) {
-        declare("void @longjmp(i8*, i32) noreturn");
+        declare("void @longjmp(ptr, i32) noreturn");
 
         auto [mem, jbuf, tag] = app->args<3>();
         emit_unsafe(mem);
         auto v_jb  = emit(jbuf);
         auto v_tag = emit(tag);
-        bb.tail("call void @longjmp(i8* {}, i32 {})", v_jb, v_tag);
+        bb.tail("call void @longjmp(ptr {}, i32 {})", v_jb, v_tag);
         return bb.tail("unreachable");
     } else if (Pi::isa_returning(app->callee_type())) { // function call
         auto v_callee = emit(app->callee());
@@ -419,20 +436,9 @@ void Emitter::emit_epilogue(Lam* lam) {
             auto t_ret = convert_ret_pi(ret_lam->type());
             bb.tail("{} = call {} {}({, })", name, t_ret, v_callee, args);
 
-            for (size_t i = 0, j = 0, e = ret_lam->num_vars(); i != e; ++i) {
-                auto phi = ret_lam->var(i);
-                if (Axm::isa<mem::M>(phi->type())) continue;
-
-                auto namej = name;
-                if (e > 2) {
-                    namej += '.' + std::to_string(j);
-                    bb.tail("{} = extractvalue {} {}, {}", namej, t_ret, name, j);
-                }
-                assert(!Axm::isa<mem::M>(phi->type()));
-                lam2bb_[ret_lam].phis[phi].emplace_back(namej, id(lam, true));
-                locals_[phi] = id(phi);
-                ++j;
-            }
+            auto phi = ret_lam->var();
+            lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
+            locals_[phi] = id(phi);
         }
 
         return bb.tail("br label {}", id(ret_lam));
@@ -452,10 +458,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         if (tuple->is_closed()) {
-            bool is_array = tuple->type()->isa<Arr>();
+            bool is_vec   = is_simd(tuple->type()).has_value();
+            bool is_array = !is_vec && tuple->type()->isa<Arr>();
 
             std::string s;
-            s += is_array ? "[" : "{";
+            s += is_vec ? "<" : (is_array ? "[" : "{");
             auto sep = "";
             for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
                 auto e = tuple->proj(n, i);
@@ -466,18 +473,22 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 }
             }
 
-            return s += is_array ? "]" : "}";
+            return s += is_vec ? ">" : (is_array ? "]" : "}");
         }
 
         std::string prev = "undef";
         auto t           = convert(tuple->type());
+        bool simd_tup    = is_simd(tuple->type()).has_value();
         for (size_t src = 0, dst = 0, n = tuple->num_projs(); src != n; ++src) {
             auto e = tuple->proj(n, src);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
                 auto elem_t = convert(e->type());
                 // TODO: check dst vs src
                 auto namei = name + "." + std::to_string(dst);
-                prev       = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
+                if (simd_tup)
+                    prev = bb.assign(namei, "insertelement {} {}, {} {}, i32 {}", t, prev, elem_t, elem, dst);
+                else
+                    prev = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
                 dst++;
             }
         }
@@ -563,7 +574,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 for (size_t i = 0; i < *li && i < sigma->num_ops(); ++i)
                     if (Axm::isa<mem::M>(sigma->op(i))) ++mem_count;
             auto v_i = std::to_string(*li - mem_count);
-            return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
+            if (is_simd(tuple->type()))
+                return bb.assign(name, "extractelement {} {}, i32 {}", t_tup, v_tup, v_i);
+            else
+                return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
+        }
+
+        if (is_simd(tuple->type())) {
+            auto v_i = emit(index);
+            return bb.assign(name, "extractelement {} {}, i32 {}", t_tup, v_tup, v_i);
         }
 
         auto t_elem     = convert(extract->type());
@@ -571,10 +590,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         print(lam2bb_[root()].body().emplace_front(),
               "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, t_tup);
-        print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
-        print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name, t_tup,
-              t_tup, name, t_i, v_i);
-        return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
+        print(bb.body().emplace_back(), "store {} {}, ptr {}.alloca", t_tup, v_tup, name);
+        print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, ptr {}.alloca, i64 0, {} {}", name, t_tup,
+              name, t_i, v_i);
+        return bb.assign(name, "load {}, ptr {}.gep", t_elem, name);
     } else if (auto insert = def->isa<Insert>()) {
         assert(!Axm::isa<mem::M>(insert->tuple()->proj(0)->type()));
         auto t_tup = convert(insert->tuple()->type());
@@ -583,22 +602,30 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_val = emit(insert->value());
         if (auto idx = Lit::isa(insert->index())) {
             auto v_idx = emit(insert->index());
-            return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tup, v_tup, t_val, v_val, v_idx);
+            if (is_simd(insert->tuple()->type()))
+                return bb.assign(name, "insertelement {} {}, {} {}, i32 {}", t_tup, v_tup, t_val, v_val, v_idx);
+            else
+                return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tup, v_tup, t_val, v_val, v_idx);
         } else {
+            if (is_simd(insert->tuple()->type())) {
+                auto v_idx = emit(insert->index());
+                return bb.assign(name, "insertelement {} {}, {} {}, i32 {}", t_tup, v_tup, t_val, v_val, v_idx);
+            }
             auto t_elem     = convert(insert->value()->type());
             auto [v_i, t_i] = emit_gep_index(insert->index());
             print(lam2bb_[root()].body().emplace_front(),
                   "{}.alloca = alloca {} ; copy to alloca to emulate insert with store + gep + load", name, t_tup);
-            print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
-            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name,
-                  t_tup, t_tup, name, t_i, v_i);
-            print(bb.body().emplace_back(), "store {} {}, {}* {}.gep", t_val, v_val, t_val, name);
-            return bb.assign(name, "load {}, {}* {}.alloca", t_tup, t_tup, name);
+            print(bb.body().emplace_back(), "store {} {}, ptr {}.alloca", t_tup, v_tup, name);
+            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, ptr {}.alloca, i64 0, {} {}", name,
+                  t_tup, name, t_i, v_i);
+            print(bb.body().emplace_back(), "store {} {}, ptr {}.gep", t_val, v_val, name);
+            return bb.assign(name, "load {}, ptr {}.alloca", t_tup, name);
         }
     } else if (auto global = def->isa<Global>()) {
         auto v_init                = emit(global->init());
         auto [pointee, addr_space] = Axm::as<mem::Ptr>(global->type())->args<2>();
-        print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), v_init);
+        auto t_pointee             = convert(pointee);
+        print(vars_decls_, "{} = global {} {}\n", name, t_pointee, v_init);
         return globals_[global] = name;
     } else if (auto nat = Axm::isa<core::nat>(def)) {
         auto [a, b] = nat->args<2>([this](auto def) { return emit(def); });
@@ -769,9 +796,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         if (auto lit = Lit::isa(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
         // clang-format off
-        if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", t_src, v_src, t_dst);
-        if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", t_src, v_src, t_dst);
-        if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", t_src, v_src, t_dst);
+        if (src_type_ptr && dst_type_ptr) return v_src; // ptr → ptr is a no-op with opaque pointers
+        if (src_type_ptr)                 return bb.assign(name, "ptrtoint ptr {} to {}", v_src, t_dst);
+        if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to ptr", t_src, v_src);
         // clang-format on
 
         auto size2width = [&](const Def* type) {
@@ -794,31 +821,24 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto pointee   = Axm::as<mem::Ptr>(ptr->type())->arg(0);
         auto v_ptr     = emit(ptr);
         auto t_pointee = convert(pointee);
-        auto t_ptr     = convert(ptr->type());
         if (pointee->isa<Sigma>())
-            return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i32 {}", t_pointee, t_ptr, v_ptr,
-                             Lit::as(i));
+            return bb.assign(name, "getelementptr inbounds {}, ptr {}, i64 0, i32 {}", t_pointee, v_ptr, Lit::as(i));
 
         assert(pointee->isa<Arr>());
         auto [v_i, t_i] = emit_gep_index(i);
 
-        return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
+        return bb.assign(name, "getelementptr inbounds {}, ptr {}, i64 0, {} {}", t_pointee, v_ptr, t_i, v_i);
     } else if (auto malloc = Axm::isa<mem::malloc>(def)) {
-        declare("i8* @malloc(i64)");
+        declare("ptr @malloc(i64)");
 
         emit_unsafe(malloc->arg(0));
-        auto size  = emit(malloc->arg(1));
-        auto ptr_t = convert(Axm::as<mem::Ptr>(def->proj(1)->type()));
-        bb.assign(name + "i8", "call i8* @malloc(i64 {})", size);
-        return bb.assign(name, "bitcast i8* {} to {}", name + "i8", ptr_t);
+        auto size = emit(malloc->arg(1));
+        return bb.assign(name, "call ptr @malloc(i64 {})", size);
     } else if (auto free = Axm::isa<mem::free>(def)) {
-        declare("void @free(i8*)");
+        declare("void @free(ptr)");
         emit_unsafe(free->arg(0));
-        auto ptr   = emit(free->arg(1));
-        auto ptr_t = convert(Axm::as<mem::Ptr>(free->arg(1)->type()));
-
-        bb.assign(name + "i8", "bitcast {} {} to i8*", ptr_t, ptr);
-        bb.tail("call void @free(i8* {})", name + "i8");
+        auto v_ptr = emit(free->arg(1));
+        bb.tail("call void @free(ptr {})", v_ptr);
         return {};
     } else if (auto mslot = Axm::isa<mem::mslot>(def)) {
         auto [Ta, msi]             = mslot->uncurry_args<2>();
@@ -830,28 +850,24 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
     } else if (auto free = Axm::isa<mem::free>(def)) {
-        declare("void @free(i8*)");
+        declare("void @free(ptr)");
 
         emit_unsafe(free->arg(0));
         auto v_ptr = emit(free->arg(1));
-        auto t_ptr = convert(Axm::as<mem::Ptr>(free->arg(1)->type()));
-
-        bb.assign(name + "i8", "bitcast {} {} to i8*", t_ptr, v_ptr);
-        bb.tail("call void @free(i8* {})", name + "i8");
+        bb.tail("call void @free(ptr {})", v_ptr);
         return {};
     } else if (auto load = Axm::isa<mem::load>(def)) {
         emit_unsafe(load->arg(0));
         auto v_ptr     = emit(load->arg(1));
-        auto t_ptr     = convert(load->arg(1)->type());
-        auto t_pointee = convert(Axm::as<mem::Ptr>(load->arg(1)->type())->arg(0));
-        return bb.assign(name, "load {}, {} {}", t_pointee, t_ptr, v_ptr);
+        auto pointee   = Axm::as<mem::Ptr>(load->arg(1)->type())->arg(0);
+        auto t_pointee = convert(pointee);
+        return bb.assign(name, "load {}, ptr {}", t_pointee, v_ptr);
     } else if (auto store = Axm::isa<mem::store>(def)) {
         emit_unsafe(store->arg(0));
         auto v_ptr = emit(store->arg(1));
         auto v_val = emit(store->arg(2));
-        auto t_ptr = convert(store->arg(1)->type());
         auto t_val = convert(store->arg(2)->type());
-        print(bb.body().emplace_back(), "store {} {}, {} {}", t_val, v_val, t_ptr, v_ptr);
+        print(bb.body().emplace_back(), "store {} {}, ptr {}", t_val, v_val, v_ptr);
         return {};
     } else if (auto q = Axm::isa<clos::alloc_jmpbuf>(def)) {
         declare("i64 @jmpbuf_size()");
@@ -861,12 +877,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         bb.assign(size, "call i64 @jmpbuf_size()");
         return bb.assign(name, "alloca i8, i64 {}", size);
     } else if (auto setjmp = Axm::isa<clos::setjmp>(def)) {
-        declare("i32 @_setjmp(i8*) returns_twice");
+        declare("i32 @_setjmp(ptr) returns_twice");
 
         auto [mem, jmpbuf] = setjmp->arg()->projs<2>();
         emit_unsafe(mem);
         auto v_jb = emit(jmpbuf);
-        return bb.assign(name, "call i32 @_setjmp(i8* {})", v_jb);
+        return bb.assign(name, "call i32 @_setjmp(ptr {})", v_jb);
     } else if (auto arith = Axm::isa<math::arith>(def)) {
         auto [mode, ab] = arith->uncurry_args<2>();
         auto [a, b]     = ab->projs<2>([this](auto def) { return emit(def); });
