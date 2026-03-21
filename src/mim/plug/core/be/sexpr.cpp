@@ -280,11 +280,14 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     assert(lam2bb_.contains(lam));
     auto& bb = lam2bb_[lam];
 
-    // TODO: this should be emitted as a lambda let binding if the lam is not top-level
     // Prints the declaration or header (name dom->codom etc.) of the lambda
-    print(func_impls_, "\n");
-    if (id(lam) != "main") ++tab; // TODO: adjust later
-    print(func_impls_, "{}", emit_header(lam));
+    if (!lam->is_external()) {
+        ++tab;
+        print(func_impls_, "\n");
+        // TODO: this should be emitted as a lambda let binding
+        print(func_impls_, "{}", emit_header(lam));
+    } else
+        print(func_impls_, "{}", emit_header(lam));
 
     // Would print temporary variable let bindings if we were to use those (would have to print let bindings to body()
     // in emit_bb())
@@ -305,7 +308,10 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     }
 
     tab.lnprint(func_impls_, ")");
-    if (id(lam) != "main") --tab; // TODO: adjust later
+    if (!lam->is_external()) {
+        // TODO: need another closing bracket for lambda let binding
+        --tab;
+    }
 }
 
 void Emitter::finalize() {
