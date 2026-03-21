@@ -1,0 +1,12 @@
+plugin core;
+plugin eqsat;
+
+lam extern _rulesets(): %eqsat.Ruleset =
+    %eqsat.rulesets (
+        %eqsat.core,
+    );
+
+fun extern main(mem: %mem.M 0, argc: I32): [%mem.M 0, I32] =
+   return (mem, 0I32)
+
+

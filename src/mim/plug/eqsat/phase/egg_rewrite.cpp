@@ -123,13 +123,13 @@ void EggRewrite::init_con(MimNode node) {
         auto var_name = var_names[i];
         var->set(var_name);
         add_var(var_name, var);
-        // TODO: set projections of variables (i.e. sigma vars)
+        std::cout << var << " : " << var->type();
         auto projs = var->projs();
-        std::cout << var << " projections: ";
-        for (auto proj : projs) {
-            std::cout << proj << ", ";
-            // proj->set("foo");
-        }
+        // TODO: set projections of variables (i.e. sigma vars)
+        // for (auto proj : projs) {
+        // std::cout << proj << ", ";
+        // proj->set("foo");
+        // }
         std::cout << " - ";
         i++;
     }
@@ -322,7 +322,7 @@ void EggRewrite::convert_sigma(MimNode node) {
         }
     }
 
-    auto new_sigma = old_world().sigma(ops);
+    auto new_sigma = new_world().sigma(ops);
     add_def(new_sigma);
     std::cout << new_sigma << "\n";
 }
