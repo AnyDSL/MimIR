@@ -8,6 +8,9 @@ pub mod math;
 // and modify accordingly once extern and eval filter added to lambdas in sexpr
 define_language! {
     pub enum Mim {
+        // (let <name> <definition> <expression>)
+        "let" = Let([Id; 3]),
+
         // (lam <extern> <name> <domain> <codomain> <filter> <body>)
         "lam" = Lam([Id; 6]),
         // (con <extern> <name> <domain> <filter> <body>)

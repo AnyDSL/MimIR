@@ -277,9 +277,7 @@ std::string Emitter::emit_curried_app(const App& app) {
 std::string Emitter::prepare() { return root()->unique_name(); }
 
 void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
-    if (!node->mut()->isa<Lam>()) return;
-    if (auto [_, ins] = done.emplace(node->mut()); !ins) return;
-
+    done.emplace(node->mut());
     auto lam = node->mut()->as_mut<Lam>();
     assert(lam2bb_.contains(lam));
     auto& bb = lam2bb_[lam];
@@ -303,8 +301,10 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     for (auto op : node->mut()->deps()) {
         for (auto mut : op->local_muts())
             if (auto next = nest()[mut]) {
-                if (next->mut()->isa<Lam>() && !done.contains(next->mut())) lam_binding_count++;
-                finalize_nest(next, done);
+                if (next->mut()->isa<Lam>() && !done.contains(next->mut())) {
+                    finalize_nest(next, done);
+                    lam_binding_count++;
+                }
             }
     }
 
@@ -356,17 +356,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         --tab;
 
         return os.str();
-        // print(os, "\n");
-        // ++tab;
-        // print(os, emit_header(lam->as_mut<Lam>()).c_str());
-        // if (lam->isa_cn(lam)) {
-        //     auto app = lam->body()->as<App>();
-        //     print(os, emit_curried_app(*app).c_str());
-        // } else {
-        //     print(os, emit(lam->body()).c_str());
-        // }
-        // tab.lnprint(os, ")");
-        // --tab;
     } else if (auto lit = def->isa<Lit>()) {
         ++tab;
         if (lit->type()->isa<Nat>())
