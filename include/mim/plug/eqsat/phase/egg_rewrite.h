@@ -55,11 +55,13 @@ private:
     void process(RewriteResult rewrite);
 
     void init(MimNode node);
-    void init_var(MimNode node);
+    void init_let(MimNode node);
     void init_lam(MimNode node);
     void init_con(MimNode node);
+    void init_var(MimNode node);
 
     void convert(MimNode node, bool recurse = false);
+    void convert_let(MimNode node);
     void convert_lam(MimNode node);
     void convert_con(MimNode node);
     void convert_app(MimNode node);
