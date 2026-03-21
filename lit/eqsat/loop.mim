@@ -1,10 +1,10 @@
 plugin core;
-plugin eqsat;
-
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
-        %eqsat.core,
-    );
+// plugin eqsat;
+// 
+// lam extern _rulesets(): %eqsat.Ruleset =
+//     %eqsat.rulesets (
+//         %eqsat.core,
+//     );
 
 // TODO: let bindings for lambdas (mutual recursion between body and loop but its fine with mut_lam)
 fun extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M 0, I32] =

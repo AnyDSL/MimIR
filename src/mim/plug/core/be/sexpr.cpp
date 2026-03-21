@@ -30,9 +30,8 @@ struct BB {
     std::deque<std::ostringstream>& tail() { return parts[2]; }
 
     template<class... Args>
-    std::string assign(std::string_view name, const char* s, Args&&... args) {
-        print(print(print(body().emplace_back(), "(let {} ", name), s, std::forward<Args&&>(args)...), ")");
-        return std::string(name);
+    void body(const char* s, Args&&... args) {
+        print(body().emplace_back(), s, std::forward<Args&&>(args)...);
     }
 
     template<class... Args>
@@ -70,6 +69,7 @@ public:
 
 private:
     std::string id(const Def*, bool force_bb = false) const;
+    std::string indent_lines(std::string s, unsigned tabs);
     std::string convert(const Def*, const Def* = nullptr);
 
     std::ostringstream func_decls_;
@@ -81,6 +81,22 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym().str();
     if (!def->sym().empty()) return def->sym().str();
     return def->unique_name();
+}
+
+std::string Emitter::indent_lines(std::string s, unsigned tabs) {
+    std::stringstream ss(s);
+    std::string indent(tabs * 4, ' ');
+    std::string line;
+    std::string result;
+    bool first = true;
+
+    while (std::getline(ss, line)) {
+        if (!first) result += "\n";
+        result += indent + line;
+        first = false;
+    }
+
+    return result;
 }
 
 std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
@@ -256,24 +272,40 @@ std::string Emitter::emit_curried_app(const App& app) {
 
 std::string Emitter::prepare() { return root()->unique_name(); }
 
-// TODO: implement let bindings for lambdas instead of inline expanding them
 void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     if (!node->mut()->isa<Lam>()) return;
     if (auto [_, ins] = done.emplace(node->mut()); !ins) return;
 
     auto lam = node->mut()->as_mut<Lam>();
     assert(lam2bb_.contains(lam));
+    auto& bb = lam2bb_[lam];
 
+    // TODO: this should be emitted as a lambda let binding if the lam is not top-level
+    // Prints the declaration or header (name dom->codom etc.) of the lambda
+    print(func_impls_, "\n");
+    if (id(lam) != "main") ++tab; // TODO: adjust later
     print(func_impls_, "{}", emit_header(lam));
 
-    if (lam->isa_cn(lam)) {
-        auto app = lam->body()->as<App>();
-        print(func_impls_, "{}", emit_curried_app(*app));
-    } else {
-        print(func_impls_, "{}", emit(lam->body()));
+    // Would print temporary variable let bindings if we were to use those (would have to print let bindings to body()
+    // in emit_bb())
+    for (auto& line : bb.body())
+        print(func_impls_, "{}", line.str());
+
+    // Prints lambda let bindings based on nesting structure
+    for (auto op : node->mut()->deps()) {
+        for (auto mut : op->local_muts())
+            if (auto next = nest()[mut]) finalize_nest(next, done);
     }
 
-    print(func_impls_, "\n)\n\n");
+    // Prints the actual body of the lambda after dependent bindings have been printed (as defined by prints to tail()
+    // in emit_bb())
+    for (auto& line : bb.tail()) {
+        auto indented = indent_lines(line.str(), tab.indent());
+        print(func_impls_, "{}", indented);
+    }
+
+    tab.lnprint(func_impls_, ")");
+    if (id(lam) != "main") --tab; // TODO: adjust later
 }
 
 void Emitter::finalize() {
@@ -282,7 +314,16 @@ void Emitter::finalize() {
     finalize_nest(nest().root(), done);
 }
 
-void Emitter::emit_epilogue(Lam* lam) { return; }
+void Emitter::emit_epilogue(Lam* lam) {
+    auto& bb = lam2bb_[lam];
+
+    if (lam->isa_cn(lam)) {
+        auto app = lam->body()->as<App>();
+        bb.tail("{}", emit_curried_app(*app));
+    } else {
+        bb.tail("{}", emit(lam->body()));
+    }
+}
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     std::ostringstream os;
@@ -294,19 +335,22 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return os.str();
     } else if (auto lam = def->isa<Lam>()) {
-        print(os, "\n");
         ++tab;
-        print(os, emit_header(lam->as_mut<Lam>()).c_str());
-        if (lam->isa_cn(lam)) {
-            auto app = lam->body()->as<App>();
-            print(os, emit_curried_app(*app).c_str());
-        } else {
-            print(os, emit(lam->body()).c_str());
-        }
-        tab.lnprint(os, ")");
+        tab.lnprint(os, id(lam).c_str());
         --tab;
 
         return os.str();
+        // print(os, "\n");
+        // ++tab;
+        // print(os, emit_header(lam->as_mut<Lam>()).c_str());
+        // if (lam->isa_cn(lam)) {
+        //     auto app = lam->body()->as<App>();
+        //     print(os, emit_curried_app(*app).c_str());
+        // } else {
+        //     print(os, emit(lam->body()).c_str());
+        // }
+        // tab.lnprint(os, ")");
+        // --tab;
     } else if (auto lit = def->isa<Lit>()) {
         ++tab;
         if (lit->type()->isa<Nat>())
@@ -405,7 +449,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (def->sym().empty())
             print(os, "{}:{}", symbol, convert(def->type()));
         else
-            return bb.assign(id(def), "{}:{}", symbol, convert(def->type()));
+            // return bb.assign(id(def), "{}:{}", symbol, convert(def->type()));
+            return "todo";
     } else {
         error("unhandled def in Mim backend: {} : {}", def, def->type());
     }
