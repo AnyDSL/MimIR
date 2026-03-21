@@ -111,7 +111,7 @@ private:
         return res_[id];
     }
     std::string get_symbol(int id) { return res_[id].symbol.c_str(); }
-    int get_num(int id) { return res_[id].num; }
+    int64_t get_num(int id) { return res_[id].num; }
 
     int curr_id_;
     rust::Vec<MimNode> res_;

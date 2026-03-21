@@ -181,7 +181,13 @@ void EggRewrite::convert(MimNode node, bool recurse) {
     }
 }
 
-void EggRewrite::convert_let(MimNode node) {}
+// (let <name> <definition> <expression>)
+void EggRewrite::convert_let(MimNode node) {
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    auto expr = get_def(node.children[2]);
+    add_def(expr);
+    std::cout << expr << "\n";
+}
 
 void EggRewrite::convert_lam(MimNode node) {}
 
