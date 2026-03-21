@@ -60,7 +60,7 @@ public:
     void start() override;
     void emit_imported(Lam*);
     void emit_epilogue(Lam*);
-    std::string emit_header(Lam*);
+    std::string emit_header(Lam*, bool as_binding = false);
     std::string emit_bb(BB&, const Def*);
     std::string emit_curried_app(const App& app);
     std::string prepare();
@@ -206,12 +206,16 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, ")\n");
 }
 
-std::string Emitter::emit_header(Lam* lam) {
+std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     std::ostringstream os;
 
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
     const std::string ext      = lam->is_external() ? "extern" : "intern";
-    tab.println(os, "({} {} {}", lam_kind, ext, id(lam));
+
+    if (as_binding)
+        tab.println(os, "(let {} ({} {} {}", id(lam), lam_kind, ext, id(lam));
+    else
+        tab.println(os, "({} {} {}", lam_kind, ext, id(lam));
 
     ++tab;
     tab.println(os, "(tuple");
@@ -280,12 +284,11 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     assert(lam2bb_.contains(lam));
     auto& bb = lam2bb_[lam];
 
-    // Prints the declaration or header (name dom->codom etc.) of the lambda
+    // Prints the declaration or header (name dom->codom etc.) of the lambda (as part of a let binding for internal
+    // lambdas)
     if (!lam->is_external()) {
         ++tab;
-        print(func_impls_, "\n");
-        // TODO: this should be emitted as a lambda let binding
-        print(func_impls_, "{}", emit_header(lam));
+        print(func_impls_, "\n{}", emit_header(lam, true));
     } else
         print(func_impls_, "{}", emit_header(lam));
 
@@ -295,9 +298,14 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
         print(func_impls_, "{}", line.str());
 
     // Prints lambda let bindings based on nesting structure
+    // while keeping count of the number of lambda bindings the current lambdas' body depends on
+    auto lam_binding_count = 0;
     for (auto op : node->mut()->deps()) {
         for (auto mut : op->local_muts())
-            if (auto next = nest()[mut]) finalize_nest(next, done);
+            if (auto next = nest()[mut]) {
+                if (next->mut()->isa<Lam>() && !done.contains(next->mut())) lam_binding_count++;
+                finalize_nest(next, done);
+            }
     }
 
     // Prints the actual body of the lambda after dependent bindings have been printed (as defined by prints to tail()
@@ -307,11 +315,13 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
         print(func_impls_, "{}", indented);
     }
 
+    // Closes every lambda let binding for the current lambdas' body
+    std::string close_bindings(lam_binding_count, ')');
+    print(func_impls_, "{}", close_bindings);
+
+    // Closes the current lambda
     tab.lnprint(func_impls_, ")");
-    if (!lam->is_external()) {
-        // TODO: need another closing bracket for lambda let binding
-        --tab;
-    }
+    if (!lam->is_external()) --tab;
 }
 
 void Emitter::finalize() {
