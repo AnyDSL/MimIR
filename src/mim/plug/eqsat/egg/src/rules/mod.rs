@@ -44,7 +44,7 @@ define_language! {
         "hole" = Hole(Id),
         "type" = Type(Id),
 
-        Num(i32), Symbol(String),
+        Num(i64), Symbol(String),
     }
 }
 

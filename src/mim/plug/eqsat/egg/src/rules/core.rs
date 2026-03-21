@@ -444,7 +444,7 @@ fn bool_lit(tt: bool) -> Option<Const> {
     new_const(Some(Symbol(ret_val)), None)
 }
 
-fn nat_lit(n: i32) -> Option<Const> {
+fn nat_lit(n: i64) -> Option<Const> {
     new_const(Some(Num(n)), None)
 }
 

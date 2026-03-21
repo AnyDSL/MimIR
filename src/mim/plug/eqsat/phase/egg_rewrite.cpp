@@ -350,7 +350,9 @@ void EggRewrite::convert_idx(MimNode node) {
 void EggRewrite::convert_hole(MimNode node) {}
 void EggRewrite::convert_type(MimNode node) {}
 
-void EggRewrite::convert_num(MimNode node) {}
+void EggRewrite::convert_num(MimNode node) {
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
+}
 
 void EggRewrite::convert_symbol(MimNode node) {
     std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
