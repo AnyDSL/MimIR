@@ -54,14 +54,14 @@ private:
 
     void process(RewriteResult rewrite);
 
-    void init(MimNode node);
+    void init(uint32_t id);
     void init_let(MimNode node);
     void init_fun(MimNode node);
     void init_lam(MimNode node);
     void init_con(MimNode node);
     void init_var(MimNode node);
 
-    void convert(MimNode node, bool recurse = false);
+    void convert(uint32_t id, bool recurse = false);
     void convert_let(MimNode node);
     void convert_fun(MimNode node);
     void convert_lam(MimNode node);
@@ -85,7 +85,7 @@ private:
     void convert_num(MimNode node);
     void convert_symbol(MimNode node);
 
-    MimNode set_curr(int id) {
+    MimNode set_curr(uint32_t id) {
         curr_id_ = id;
         return res_[curr_id_];
     }
@@ -97,7 +97,7 @@ private:
     // 1) A node representing an arbitrary term
     // 2) A symbol node representing an annex
     // 3) A symbol node representing a variable
-    const Def* get_def(int id) {
+    const Def* get_def(uint32_t id) {
         auto def = added_[id];
         auto sym = get_symbol(id);
         if (def == nullptr) {
@@ -110,14 +110,14 @@ private:
     }
     const Def* get_var(std::string name) { return vars_[name]; }
 
-    MimNode get_node(MimKind expected, int id) {
+    MimNode get_node(MimKind expected, uint32_t id) {
         assert(res_[id].kind == expected && "get_node: mismatch between expected and actual node kind");
         return res_[id];
     }
-    std::string get_symbol(int id) { return res_[id].symbol.c_str(); }
-    int64_t get_num(int id) { return res_[id].num; }
+    std::string get_symbol(uint32_t id) { return res_[id].symbol.c_str(); }
+    int64_t get_num(uint32_t id) { return res_[id].num; }
 
-    int curr_id_;
+    uint32_t curr_id_;
     rust::Vec<MimNode> res_;
     std::unordered_map<int, const Def*> added_;
     // TODO: this is going to become problematic if our sexpr

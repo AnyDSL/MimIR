@@ -75,18 +75,17 @@ void EggRewrite::process(RewriteResult rewrite) {
     added_ = {};
     vars_  = {};
 
-    for (int id = 0; id < res_.size(); ++id) {
-        auto node = set_curr(id);
-        init(node);
-    }
+    for (uint32_t id = 0; id < res_.size(); ++id)
+        init(id);
 
-    for (int id = 0; id < res_.size(); ++id) {
-        auto node = set_curr(id);
-        convert(node);
-    }
+    for (uint32_t id = 0; id < res_.size(); ++id)
+        convert(id);
 }
 
-void EggRewrite::init(MimNode node) {
+void EggRewrite::init(uint32_t id) {
+    curr_id_  = id;
+    auto node = res_[curr_id_];
+
     switch (node.kind) {
         case MimKind::Let: init_let(node); break;
         case MimKind::Fun: init_fun(node); break;
@@ -98,22 +97,31 @@ void EggRewrite::init(MimNode node) {
 }
 
 void EggRewrite::init_let(MimNode node) {}
-
 void EggRewrite::init_fun(MimNode node) {}
-
 void EggRewrite::init_lam(MimNode node) {}
 
 void EggRewrite::init_con(MimNode node) {
-    std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
     auto con_name = get_symbol(node.children[1]);
     auto domain   = get_node(MimKind::Tuple, node.children[2]);
 
     DefVec var_types;
     std::vector<std::string> var_names;
     for (auto child : domain.children) {
-        auto var      = get_node(MimKind::Var, child);
-        auto var_name = get_symbol(var.children[0]);
-        auto var_type = get_def(var.children[1]);
+        auto var = res_[child];
+        std::string var_name;
+        const Def* var_type;
+        if (var.kind == MimKind::Var) {
+            var_name = get_symbol(var.children[0]);
+            var_type = get_def(var.children[1]);
+        } else {
+            // Calls on convert to create a Def for the current type
+            auto con_id = curr_id_;
+            convert(child, true);
+            curr_id_ = con_id;
+            var_name = "";
+            var_type = get_def(child);
+        }
         var_names.push_back(var_name);
         var_types.push_back(var_type);
     }
@@ -140,25 +148,19 @@ void EggRewrite::init_con(MimNode node) {
 }
 
 void EggRewrite::init_var(MimNode node) {
-    // NOTE: Assuming (var <name> <type>)
-    // but this might not always be the case. (Anonymous vars)
     std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
-    auto var_type = set_curr(node.children[1]);
-    convert(var_type, true);
+    convert(node.children[1], true);
 }
 
-void EggRewrite::convert(MimNode node, bool recurse) {
-    // NOTE: By putting this loop before the conversion calls
-    // we ensure a conversion from the bottom up, which is necessary
-    // because some higher level nodes depend on Def's created from their child nodes.
-    int temp = curr_id_;
-    if (recurse) {
-        for (int child_id : node.children) {
-            auto child_node = set_curr(child_id);
-            convert(child_node, recurse);
-        }
-    }
-    set_curr(temp);
+void EggRewrite::convert(uint32_t id, bool recurse) {
+    curr_id_  = id;
+    auto node = res_[curr_id_];
+
+    uint32_t temp = curr_id_;
+    if (recurse)
+        for (uint32_t child : node.children)
+            convert(child, recurse);
+    curr_id_ = temp;
 
     switch (node.kind) {
         case MimKind::Let: convert_let(node); break;
@@ -204,11 +206,18 @@ void EggRewrite::convert_con(MimNode node) {
     std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
     auto con       = get_def(curr_id_)->as_mut<Lam>();
     auto is_extern = get_symbol(node.children[0]);
-    auto filter    = get_def(node.children[3]);
-    auto body      = get_def(node.children[4]);
-    con->set_filter(filter);
-    con->set_body(body);
+
     if (is_extern == "extern") con->externalize();
+
+    const int CON_DECL_SIZE = 3;
+    const int CON_DEF_SIZE  = 5;
+    if (node.children.size() == CON_DEF_SIZE) {
+        auto filter = get_def(node.children[3]);
+        auto body   = get_def(node.children[4]);
+        con->set_filter(filter);
+        con->set_body(body);
+    } else if (node.children.size() == CON_DECL_SIZE)
+        con->set_filter(false);
 
     std::cout << con << "\n";
 }

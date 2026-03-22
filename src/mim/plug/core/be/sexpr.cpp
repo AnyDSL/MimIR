@@ -351,6 +351,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, id(lam).c_str());
     } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
+            // TODO: consider printing term aliases like "i32" for 2^32
+            // but that would require upper case printing of types like "I32" to prevent confusion
             tab.lnprint(os, "(lit {})", lit->get<u64>());
         else if (auto size = Idx::isa(lit->type()))
             if (auto lit_size = Idx::size2bitwidth(size); lit_size && *lit_size == 1)
