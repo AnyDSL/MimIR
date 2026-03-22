@@ -7,7 +7,6 @@ lam extern _rulesets(): %eqsat.Ruleset =
         %eqsat.math,
     );
 
-// TODO: sexpr emitter can't emit the whole thing (probably due to ccon)
 ccon atoi[%mem.M 0, %mem.Ptr («⊤:Nat; I8», 0), Cn [%mem.M 0, I32]];
 
 con extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr («⊤:Nat; %mem.Ptr («⊤:Nat; I8», 0)», 0), return: Cn [%mem.M 0, I32]) =

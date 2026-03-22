@@ -7,7 +7,7 @@ lam extern _rulesets(): %eqsat.Ruleset =
         %eqsat.math,
     );
 
-// TODO: pow is intern and thus not emitted by the sexpr emitter
+// TODO: some application in main doesn't get converted
 fun pow(a b: I32): I32 =
     con pow_cont(v: I32) =
         return (%core.wrap.mul 0 (a, v));

@@ -128,12 +128,12 @@ void EggRewrite::init_con(MimNode node) {
 
     auto new_con = new_world().mut_con(var_types)->set(con_name.c_str());
     add_def(new_con);
-    add_var(con_name, new_con);
+    register_lam(con_name, new_con);
 
     for (int i = 0; auto var : new_con->vars()) {
         auto var_name = var_names[i];
         var->set(var_name);
-        add_var(var_name, var);
+        register_var(var_name, var);
         std::cout << var << " : " << var->type();
         auto projs = var->projs();
         // TODO: set projections of variables (i.e. sigma vars)
@@ -332,7 +332,7 @@ void EggRewrite::convert_bot(MimNode node) {
 
     auto new_bot = new_world().bot(type);
     add_def(new_bot);
-    if (name != "⊥") add_var(name, new_bot);
+    if (name != "⊥") register_var(name, new_bot);
 
     std::cout << new_bot << "\n";
 }
@@ -344,7 +344,7 @@ void EggRewrite::convert_top(MimNode node) {
 
     auto new_top = new_world().top(type);
     add_def(new_top);
-    if (name != "T") add_var(name, new_top);
+    if (name != "T") register_var(name, new_top);
 
     std::cout << new_top << "\n";
 }
