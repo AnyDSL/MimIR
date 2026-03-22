@@ -153,6 +153,10 @@ void EggRewrite::init_var(MimNode node) {
 }
 
 void EggRewrite::convert(uint32_t id, bool recurse) {
+    // TODO: skip out on conversion if id already in added_
+    // - don't skip for lambdas because they will be added in init()
+    //   but their bodies will only be set in convert()
+
     curr_id_  = id;
     auto node = res_[curr_id_];
 
