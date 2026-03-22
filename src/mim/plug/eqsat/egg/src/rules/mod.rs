@@ -4,17 +4,19 @@ use crate::*;
 pub mod core;
 pub mod math;
 
-// TODO: define the rest of Mim (also add to rexpr_to_vec afterwards)
-// and modify accordingly once extern and eval filter added to lambdas in sexpr
+// TODO:
+// - allow anonymous lambda variables
 define_language! {
     pub enum Mim {
         // (let <name> <definition> <expression>)
         "let" = Let([Id; 3]),
 
-        // (lam <extern> <name> <domain> <codomain> <filter> <body>)
-        "lam" = Lam([Id; 6]),
-        // (con <extern> <name> <domain> <filter> <body>)
-        "con" = Con([Id; 5]),
+        // (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
+        "fun" = Fun(Box<[Id]>),
+        // (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
+        "lam" = Lam(Box<[Id]>),
+        // (con <extern> <name> <domain> [<filter>] [<body>])
+        "con" = Con(Box<[Id]>),
         // (app <callee> <arg>)
         "app" = App([Id; 2]),
 
@@ -35,6 +37,10 @@ define_language! {
 
         // TYPES
 
+        // (bot <name> <type>)
+        "bot" = Bot([Id; 2]),
+        // (top <name> <type>)
+        "top" = Top([Id; 2]),
         // (arr <arity> <body>)
         "arr" = Arr([Id; 2]),
         // (sigma <type1> <type2> ...)

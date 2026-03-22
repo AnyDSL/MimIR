@@ -63,6 +63,7 @@ pub mod ffi {
     #[derive(Debug)]
     enum MimKind {
         Let,
+        Fun,
         Lam,
         Con,
         App,
@@ -72,6 +73,8 @@ pub mod ffi {
         Tuple,
         Extract,
         Ins,
+        Bot,
+        Top,
         Arr,
         Sigma,
         Cn,
@@ -124,6 +127,7 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
         match node {
             Let(children) => nodes.push(new_mim(MimKind::Let, children, 0, String::new())),
 
+            Fun(children) => nodes.push(new_mim(MimKind::Fun, children, 0, String::new())),
             Lam(children) => nodes.push(new_mim(MimKind::Lam, children, 0, String::new())),
             Con(children) => nodes.push(new_mim(MimKind::Con, children, 0, String::new())),
             App(children) => nodes.push(new_mim(MimKind::App, children, 0, String::new())),
@@ -136,6 +140,8 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
             Extract(children) => nodes.push(new_mim(MimKind::Extract, children, 0, String::new())),
             Ins(children) => nodes.push(new_mim(MimKind::Ins, children, 0, String::new())),
 
+            Bot(children) => nodes.push(new_mim(MimKind::Bot, children, 0, String::new())),
+            Top(children) => nodes.push(new_mim(MimKind::Top, children, 0, String::new())),
             Arr(children) => nodes.push(new_mim(MimKind::Arr, children, 0, String::new())),
             Sigma(children) => nodes.push(new_mim(MimKind::Sigma, children, 0, String::new())),
             Cn(child) => nodes.push(new_mim(MimKind::Cn, &[*child], 0, String::new())),

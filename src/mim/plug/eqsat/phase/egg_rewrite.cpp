@@ -89,6 +89,7 @@ void EggRewrite::process(RewriteResult rewrite) {
 void EggRewrite::init(MimNode node) {
     switch (node.kind) {
         case MimKind::Let: init_let(node); break;
+        case MimKind::Fun: init_fun(node); break;
         case MimKind::Lam: init_lam(node); break;
         case MimKind::Con: init_con(node); break;
         case MimKind::Var: init_var(node); break;
@@ -97,6 +98,8 @@ void EggRewrite::init(MimNode node) {
 }
 
 void EggRewrite::init_let(MimNode node) {}
+
+void EggRewrite::init_fun(MimNode node) {}
 
 void EggRewrite::init_lam(MimNode node) {}
 
@@ -116,8 +119,8 @@ void EggRewrite::init_con(MimNode node) {
     }
 
     auto new_con = new_world().mut_con(var_types)->set(con_name.c_str());
-    add_var(con_name, new_con);
     add_def(new_con);
+    add_var(con_name, new_con);
 
     for (int i = 0; auto var : new_con->vars()) {
         auto var_name = var_names[i];
@@ -159,6 +162,7 @@ void EggRewrite::convert(MimNode node, bool recurse) {
 
     switch (node.kind) {
         case MimKind::Let: convert_let(node); break;
+        case MimKind::Fun: convert_fun(node); break;
         case MimKind::Lam: convert_lam(node); break;
         case MimKind::Con: convert_con(node); break;
         case MimKind::App: convert_app(node); break;
@@ -168,6 +172,8 @@ void EggRewrite::convert(MimNode node, bool recurse) {
         case MimKind::Tuple: convert_tuple(node); break;
         case MimKind::Extract: convert_extract(node); break;
         case MimKind::Ins: convert_ins(node); break;
+        case MimKind::Bot: convert_bot(node); break;
+        case MimKind::Top: convert_top(node); break;
         case MimKind::Arr: convert_arr(node); break;
         case MimKind::Sigma: convert_sigma(node); break;
         case MimKind::Cn: convert_cn(node); break;
@@ -189,9 +195,10 @@ void EggRewrite::convert_let(MimNode node) {
     std::cout << expr << "\n";
 }
 
+void EggRewrite::convert_fun(MimNode node) {}
 void EggRewrite::convert_lam(MimNode node) {}
 
-// (con <extern> <name> <domain> <filter> <body>)
+// (con <extern> <name> <domain> [<filter>] [<body>])
 // i.e. (con extern foo (tuple (var a Nat) (var ret (cn nat))) (lit ff) (app ret a))
 void EggRewrite::convert_con(MimNode node) {
     std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
@@ -306,6 +313,31 @@ void EggRewrite::convert_ins(MimNode node) {
     auto new_insert = new_world().insert(tuple, index, value);
     add_def(new_insert);
     std::cout << new_insert << "\n";
+}
+
+// (bot <name> <type>)
+void EggRewrite::convert_bot(MimNode node) {
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    auto name = get_symbol(node.children[0]);
+    auto type = get_def(node.children[1]);
+
+    auto new_bot = new_world().bot(type);
+    add_def(new_bot);
+    if (name != "⊥") add_var(name, new_bot);
+
+    std::cout << new_bot << "\n";
+}
+// (top <name> <type>)
+void EggRewrite::convert_top(MimNode node) {
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    auto name = get_symbol(node.children[0]);
+    auto type = get_def(node.children[1]);
+
+    auto new_top = new_world().top(type);
+    add_def(new_top);
+    if (name != "T") add_var(name, new_top);
+
+    std::cout << new_top << "\n";
 }
 
 // (arr <arity> <body>)

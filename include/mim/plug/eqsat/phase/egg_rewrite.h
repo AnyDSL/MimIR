@@ -56,12 +56,14 @@ private:
 
     void init(MimNode node);
     void init_let(MimNode node);
+    void init_fun(MimNode node);
     void init_lam(MimNode node);
     void init_con(MimNode node);
     void init_var(MimNode node);
 
     void convert(MimNode node, bool recurse = false);
     void convert_let(MimNode node);
+    void convert_fun(MimNode node);
     void convert_lam(MimNode node);
     void convert_con(MimNode node);
     void convert_app(MimNode node);
@@ -71,6 +73,8 @@ private:
     void convert_tuple(MimNode node);
     void convert_extract(MimNode node);
     void convert_ins(MimNode node);
+    void convert_bot(MimNode node);
+    void convert_top(MimNode node);
     void convert_arr(MimNode node);
     void convert_sigma(MimNode node);
     void convert_cn(MimNode node);
