@@ -415,9 +415,9 @@ void EggRewrite::convert_num(MimNode node) {
 
 void EggRewrite::convert_symbol(MimNode node) {
     std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
-    auto val = node.symbol.c_str();
-    if (sym2type_.contains(val)) add_def(sym2type_[val]);
-    std::cout << sym2type_[val] << "\n";
+    auto def = get_def(curr_id_);
+    add_def(def);
+    std::cout << def << "\n";
 }
 
 } // namespace mim::plug::eqsat

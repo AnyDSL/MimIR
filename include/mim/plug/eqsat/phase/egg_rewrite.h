@@ -92,13 +92,16 @@ private:
     // A node that is associated with a Def can be:
     // 1) A node representing an arbitrary term
     // 2) A symbol node representing an annex
-    // 3) A symbol node representing a variable
-    // 4) A symbol node representing a lambda
+    // 3) A symbol node representing a type (maybe later term-aliases as well)
+    // 4) A symbol node representing a variable
+    // 5) A symbol node representing a lambda
     const Def* get_def(uint32_t id) {
         auto def = added_[id];
         if (def == nullptr) {
             auto sym = get_symbol(id);
-            if (sym.starts_with("%"))
+            if (sym2type_.contains(sym))
+                def = sym2type_[sym];
+            else if (sym2flags_.contains(sym))
                 def = new_world().annex(sym2flags_[sym]);
             else if (vars_.contains(sym))
                 def = get_var(sym);
