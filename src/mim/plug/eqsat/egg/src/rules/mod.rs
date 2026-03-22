@@ -4,14 +4,12 @@ use crate::*;
 pub mod core;
 pub mod math;
 
-// TODO:
-// - allow anonymous lambda variables
 define_language! {
     pub enum Mim {
         // (let <name> <definition> <expression>)
         "let" = Let([Id; 3]),
 
-        // (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
+        // (fun <extern> <name> <domain> <codomain> [<filter>] [<body>])
         "fun" = Fun(Box<[Id]>),
         // (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
         "lam" = Lam(Box<[Id]>),
@@ -53,7 +51,7 @@ define_language! {
         "idx" = Idx(Id),
         // (hole ...)
         "hole" = Hole(Id),
-        // (type ...)
+        // (type <level>)
         "type" = Type(Id),
 
         Num(i64), Symbol(String),

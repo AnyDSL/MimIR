@@ -195,6 +195,7 @@ void Emitter::start() {
     ostream() << func_impls_.str() << '\n';
 }
 
+// TODO: emit domain and codomain seperately for lam and fun
 void Emitter::emit_imported(Lam* lam) {
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "fun";
     const std::string ext      = lam->is_external() ? "extern" : "intern";
@@ -210,6 +211,7 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "))\n");
 }
 
+// TODO: emit domain and codomain seperately for lam and fun
 std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     std::ostringstream os;
 

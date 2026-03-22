@@ -190,17 +190,17 @@ const Def* EggRewrite::convert_let(uint32_t id, MimNode node) {
     return expr;
 }
 
+// (fun <extern> <name> <domain> <codomain> [<filter>] [<body>])
 const Def* EggRewrite::convert_fun(uint32_t id, MimNode node) { return nullptr; }
+// (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
 const Def* EggRewrite::convert_lam(uint32_t id, MimNode node) { return nullptr; }
 
 // (con <extern> <name> <domain> [<filter>] [<body>])
-// i.e. (con extern foo (tuple (var a Nat) (var ret (cn nat))) (lit ff) (app ret a))
-
 const Def* EggRewrite::convert_con(uint32_t id, MimNode node) {
     std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto con       = get_def(id)->as_mut<Lam>();
-    auto is_extern = get_symbol(node.children[0]);
+    auto con = get_def(id)->as_mut<Lam>();
 
+    auto is_extern = get_symbol(node.children[0]);
     if (is_extern == "extern") con->externalize();
 
     const int CON_DECL_SIZE = 3;
@@ -272,7 +272,7 @@ const Def* EggRewrite::convert_pack(uint32_t id, MimNode node) {
     return new_pack;
 }
 
-// (tuple <node1> <node2> <node3> ...)
+// (tuple <node1> <node2> ...)
 // TODO: arg tuples of lambda headers shouldn't be added to the world
 const Def* EggRewrite::convert_tuple(uint32_t id, MimNode node) {
     std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
@@ -376,6 +376,7 @@ const Def* EggRewrite::convert_cn(uint32_t id, MimNode node) {
     return new_cn;
 }
 
+// (pi <domain> <codomain>)
 const Def* EggRewrite::convert_pi(uint32_t id, MimNode node) { return nullptr; }
 
 // (idx <size>)
@@ -387,14 +388,18 @@ const Def* EggRewrite::convert_idx(uint32_t id, MimNode node) {
     return new_idx;
 }
 
+// (hole ...)
 const Def* EggRewrite::convert_hole(uint32_t id, MimNode node) { return nullptr; }
+// (type <level>)
 const Def* EggRewrite::convert_type(uint32_t id, MimNode node) { return nullptr; }
 
+// <i64>
 const Def* EggRewrite::convert_num(uint32_t id, MimNode node) {
     std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << "\n";
     return nullptr;
 }
 
+// <string>
 const Def* EggRewrite::convert_symbol(uint32_t id, MimNode node) {
     std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto def = get_def(id);

@@ -1,10 +1,10 @@
 plugin core;
-plugin eqsat;
-
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
-        %eqsat.core,
-    );
+// plugin eqsat;
+// 
+// lam extern _rulesets(): %eqsat.Ruleset =
+//     %eqsat.rulesets (
+//         %eqsat.core,
+//     );
 
 // TODO: get it to work
 con seq {A: *} (n: Nat) (body: [Cn A] → Cn A) (exit: Cn A) (acc: A)@tt =
