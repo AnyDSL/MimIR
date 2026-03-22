@@ -6,6 +6,5 @@ lam extern _rulesets(): %eqsat.Ruleset =
         %eqsat.core,
     );
 
-// TODO: figure out why extract doesn't get converted
 fun extern foo(mem: %mem.M 0, p: %mem.Ptr0 «23; I32»): [%mem.M 0, %mem.Ptr0 I32] =
     return (mem, %core.bitcast (%mem.Ptr0 I32) p);

@@ -103,10 +103,20 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     std::ostringstream s;
-    std::string name;
-
-    if (type->isa<Nat>()) {
-        return types_[type] = "nat";
+    if (type->isa<Bot>()) {
+        std::string symbol = "⊥";
+        if (type->sym().empty())
+            print(s, "(bot {} {})", symbol, convert(type->type()));
+        else
+            print(s, "(bot {} {})", id(type), convert(type->type()));
+    } else if (type->isa<Top>()) {
+        std::string symbol = "T";
+        if (type->sym().empty())
+            print(s, "(top {} {})", symbol, convert(type->type()));
+        else
+            print(s, "(top {} {})", id(type), convert(type->type()));
+    } else if (type->isa<Nat>()) {
+        print(s, "nat");
     } else if (auto size = Idx::isa(type)) {
         if (auto lit_size = Idx::size2bitwidth(size)) {
             switch (*lit_size) {
@@ -119,10 +129,8 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
             }
         }
         print(s, "(idx (lit {}))", size);
-        return types_[type] = s.str();
     } else if (auto w = mim::plug::math::isa_f(type)) {
         print(s, "(lit {})", type);
-        return types_[type] = s.str();
     } else if (auto lit = type->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
             print(s, "(lit {})", lit->get());
@@ -133,9 +141,8 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
             u64 size = *arity;
             print(s, "(arr (lit {}) {})", size, convert(arr->body()));
         } else {
-            // TODO: Is the arity being emitted correctly?
-            auto dummy = BB{};
-            print(s, "(arr {} {})", emit_bb(dummy, arr->arity()), convert(arr->body()));
+            // TODO: Is there a case where we would need emit_bb for arr->arity()?
+            print(s, "(arr {} {})", convert(arr->arity()), convert(arr->body()));
         }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))
@@ -178,10 +185,7 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         fe::unreachable();
     }
 
-    if (name.empty()) return types_[type] = s.str();
-
-    assert(!s.str().empty());
-    return types_[type] = name;
+    return types_[type] = s.str();
 }
 
 void Emitter::start() {
@@ -191,19 +195,19 @@ void Emitter::start() {
     ostream() << func_impls_.str() << '\n';
 }
 
-// TODO: need sexpr printing here
-// - just emit them as lam or fun because that is how they are reconstructed
-//   or emitted in the api anyway (as world().mut_fun(dom, codom))
 void Emitter::emit_imported(Lam* lam) {
-    print(func_decls_, "cfun {}(", id(lam));
+    const std::string lam_kind = lam->isa_cn(lam) ? "con" : "fun";
+    const std::string ext      = lam->is_external() ? "extern" : "intern";
+
+    print(func_decls_, "({} {} {} (tuple ", lam_kind, ext, id(lam));
 
     auto doms = lam->doms();
     for (auto sep = ""; auto dom : doms.view()) {
         print(func_decls_, "{}{}", sep, convert(dom));
-        sep = ", ";
+        sep = " ";
     }
 
-    print(func_decls_, ")\n");
+    print(func_decls_, "))\n");
 }
 
 std::string Emitter::emit_header(Lam* lam, bool as_binding) {
@@ -230,12 +234,8 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
                 --tab;
                 tab.println(os, ")");
             } else {
-                // TODO: anonymous var construction (egg expects (var <name> <type>))
-                tab.println(os, "(var");
-                ++tab;
+                // TODO: allow unnamed vars in egg
                 tab.println(os, "{}", convert(lam->dom(i)));
-                --tab;
-                tab.println(os, ")");
             }
             ++i;
         }
@@ -344,20 +344,12 @@ void Emitter::emit_epilogue(Lam* lam) {
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     std::ostringstream os;
 
+    ++tab;
     if (def->type()->isa<Type>() || def->type()->isa<Univ>()) {
-        ++tab;
         tab.lnprint(os, convert(def).c_str());
-        --tab;
-
-        return os.str();
     } else if (auto lam = def->isa<Lam>()) {
-        ++tab;
         tab.lnprint(os, id(lam).c_str());
-        --tab;
-
-        return os.str();
     } else if (auto lit = def->isa<Lit>()) {
-        ++tab;
         if (lit->type()->isa<Nat>())
             tab.lnprint(os, "(lit {})", lit->get<u64>());
         else if (auto size = Idx::isa(lit->type()))
@@ -367,11 +359,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 tab.lnprint(os, "(lit {} {})", lit->get(), convert(lit->type()));
         else
             tab.lnprint(os, "(lit {})", lit);
-        --tab;
-
-        return os.str();
     } else if (auto tuple = def->isa<Tuple>()) {
-        ++tab;
         tab.lnprint(os, "(tuple");
         for (auto sep = ""; auto e : tuple->ops()) {
             if (auto v_elem = emit_bb(bb, e); !v_elem.empty()) {
@@ -380,85 +368,60 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             }
         }
         tab.lnprint(os, ")");
-        --tab;
-
-        return os.str();
     } else if (auto seq = def->isa<Seq>()) {
         auto shape = seq->arity();
         auto body  = seq->body();
 
-        // NOTE: A pack is apparently a term sequence while an array is a type sequence
-        // But since the type conversion above also calls on emit_bb, we might have a problem
-        // if we just assume this is a pack as we are.
-
-        ++tab;
         tab.lnprint(os, "(pack");
         tab.print(os, emit_bb(bb, shape).c_str());
         tab.print(os, emit_bb(bb, body).c_str());
         tab.lnprint(os, ")");
-        --tab;
-
-        return os.str();
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
         if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) {
-            ++tab;
             tab.lnprint(os, id(extract).c_str());
-            --tab;
-            return os.str();
+        } else {
+            tab.lnprint(os, "(extract");
+            tab.print(os, emit_bb(bb, tuple).c_str());
+            tab.print(os, emit_bb(bb, index).c_str());
+            tab.lnprint(os, ")");
         }
-
-        ++tab;
-        tab.lnprint(os, "(extract");
-        tab.print(os, emit_bb(bb, tuple).c_str());
-        tab.print(os, emit_bb(bb, index).c_str());
-        tab.lnprint(os, ")");
-        --tab;
-
-        return os.str();
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = insert->tuple();
         auto index = insert->index();
         auto value = insert->value();
 
-        ++tab;
         tab.lnprint(os, "(ins");
         tab.print(os, emit_bb(bb, tuple).c_str());
         tab.print(os, emit_bb(bb, index).c_str());
         tab.print(os, emit_bb(bb, value).c_str());
         tab.lnprint(os, ")");
-        --tab;
-
-        return os.str();
     } else if (auto var = def->isa<Var>()) {
-        ++tab;
         tab.lnprint(os, id(var).c_str());
-        --tab;
-
-        return os.str();
     } else if (auto app = def->isa<App>()) {
-        print(os, emit_curried_app(*app).c_str());
-
-        return os.str();
-    } else if (auto axm = def->isa<Axm>()) {
-        ++tab;
-        tab.lnprint(os, id(axm).c_str());
         --tab;
-
-        return os.str();
-        // TODO: emit sexpr
-    } else if (def->isa<Top>() || def->isa<Bot>()) {
-        std::string symbol = def->isa<Top>() ? "T" : "⊥";
+        print(os, emit_curried_app(*app).c_str());
+        ++tab;
+    } else if (auto axm = def->isa<Axm>()) {
+        tab.lnprint(os, id(axm).c_str());
+    } else if (def->isa<Bot>()) {
+        std::string symbol = "⊥";
         if (def->sym().empty())
-            print(os, "{}:{}", symbol, convert(def->type()));
+            tab.lnprint(os, "(bot {} {})", symbol, convert(def->type()));
         else
-            // return bb.assign(id(def), "{}:{}", symbol, convert(def->type()));
-            return "todo";
+            tab.lnprint(os, "(bot {} {})", id(def), convert(def->type()));
+    } else if (def->isa<Top>()) {
+        std::string symbol = "T";
+        if (def->sym().empty())
+            tab.lnprint(os, "(top {} {})", symbol, convert(def->type()));
+        else
+            tab.lnprint(os, "(top {} {})", id(def), convert(def->type()));
     } else {
         error("unhandled def in Mim backend: {} : {}", def, def->type());
     }
+    --tab;
 
     return os.str();
 }

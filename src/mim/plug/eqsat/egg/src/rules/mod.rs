@@ -37,11 +37,17 @@ define_language! {
 
         // (arr <arity> <body>)
         "arr" = Arr([Id; 2]),
+        // (sigma <type1> <type2> ...)
         "sigma" = Sigma(Box<[Id]>),
+        // (cn <domain>)
         "cn" = Cn(Id),
+        // (pi <domain> <codomain>)
         "pi" = Pi([Id; 2]),
+        // (idx <size>)
         "idx" = Idx(Id),
+        // (hole ...)
         "hole" = Hole(Id),
+        // (type ...)
         "type" = Type(Id),
 
         Num(i64), Symbol(String),

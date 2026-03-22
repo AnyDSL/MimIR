@@ -291,14 +291,22 @@ void EggRewrite::convert_extract(MimNode node) {
     auto tuple = get_def(node.children[0]);
     auto index = get_def(node.children[1]);
 
-    // TODO: I don't know why but this fails at the sigma arity and idx size alpha equiv check in 1tuple.mim
-    // std::cout << "extract(" << tuple << ", " << index << ")\n";
     auto new_extract = new_world().extract(tuple, index);
     add_def(new_extract);
     std::cout << new_extract << "\n";
 }
 
-void EggRewrite::convert_ins(MimNode node) {}
+// (ins <tuple> <index> <value>)
+void EggRewrite::convert_ins(MimNode node) {
+    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+    auto tuple = get_def(node.children[0]);
+    auto index = get_def(node.children[1]);
+    auto value = get_def(node.children[2]);
+
+    auto new_insert = new_world().insert(tuple, index, value);
+    add_def(new_insert);
+    std::cout << new_insert << "\n";
+}
 
 // (arr <arity> <body>)
 void EggRewrite::convert_arr(MimNode node) {
