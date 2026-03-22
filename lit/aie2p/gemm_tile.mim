@@ -1,0 +1,36 @@
+plugin aie2p;
+import core;
+import compile;
+import opt;
+import aie2p;
+
+let K_nat = ⊤:Nat;
+
+con extern gemm_tile [
+    mem: %mem.M 0,
+    A: %mem.Ptr («4; «32; I16»», 0),
+    B: %mem.Ptr («4; «32; I16»», 0),
+    C_out: %mem.Ptr («16; I32», 0),
+    shift: I32,
+    round: I32,
+    return: Cn [%mem.M 0]
+] =
+    let zero_acc = ‹16; 0:I64›;
+
+    %affine.For k_body k_exit (0I32, 4I32, 1I32, (mem, zero_acc))
+    where
+        con k_body [k: I32, [mem: %mem.M 0, acc: «16; I64»], continue: Cn [%mem.M 0, «16; I64»]] =
+            let a_lea = %mem.lea (A, %core.conv.u K_nat k);
+            let (mem, a_vec) = %mem.load (mem, a_lea);
+            let b_lea = %mem.lea (B, %core.conv.u K_nat k);
+            let (mem, b_vec) = %mem.load (mem, b_lea);
+            // conf=90: mac_elem_16_2 unsigned (amode=1, bmode=3, variant=2)
+            // C[i] += A[i] * B[i] for i=0..15 (element-wise, 16-lane)
+            let new_acc = %aie2p.mac_i16_i64 (a_vec, b_vec, acc, 90I32);
+            continue (mem, new_acc);
+
+        con k_exit [mem: %mem.M 0, acc: «16; I64»] =
+            let result = %aie2p.srs_i32_16 (acc, shift, round);
+            let mem = %mem.store (mem, C_out, result);
+            return (mem);
+    end;

@@ -1,0 +1,75 @@
+plugin aie2p;
+import core;
+import compile;
+import opt;
+import aie2p;
+
+let K_nat = ⊤:Nat;
+
+// 32x32x32 tiled GEMM kernel using mac_4x4x8 (non-blocked).
+//
+// Sub-tile layout (linear, row-major blocks):
+//   A: 64 sub-tiles (rowA=8 × colA=8), each «16; I32» (4×4 i16 packed as 16 i32)
+//   B: 32 sub-tiles (colA=8 × colB=4), each «32; I16» (4×8 i16)
+//   C: 32 sub-tiles (rowA=8 × colB=4), each «32; I16» (4×8 i16 output)
+//
+// Non-blocked: 1 accumulator per k-loop
+//   for z = 0..8 (rowA):
+//     for j = 0..4 (colB):
+//       acc = zero
+//       for k = 0..8 (colA):
+//         a = A[z*8+k], b = B[k*4+j]
+//         acc = mac(a, b, acc, 26)
+//       C[z*4+j] = srs(acc)
+//
+// 256 mac_4x4x8 calls, 65536 FLOPs, 512 loads
+con extern gemm_tile [
+    mem: %mem.M 0,
+    A: %mem.Ptr («64; «16; I32»», 0),
+    B: %mem.Ptr («32; «32; I16»», 0),
+    C_out: %mem.Ptr («32; «32; I16»», 0),
+    return: Cn [%mem.M 0]
+] =
+    // z-loop: 0..8 (rowA)
+    %affine.For z_body z_exit (0I32, 8I32, 1I32, mem)
+    where
+        con z_body [z: I32, mem: %mem.M 0, cont_z: Cn [%mem.M 0]] =
+            // j-loop: 0..4 (colB)
+            %affine.For j_body j_exit (0I32, 4I32, 1I32, mem)
+            where
+                con j_body [j: I32, mem: %mem.M 0, cont_j: Cn [%mem.M 0]] =
+                    let zero_acc = ‹32; 0:I64›;
+                    // k-loop: 0..8, state = (mem, acc)
+                    %affine.For k_body k_exit (0I32, 8I32, 1I32, (mem, zero_acc))
+                    where
+                        con k_body [k: I32,
+                            [mem: %mem.M 0, acc: «32; I64»],
+                            cont_k: Cn [%mem.M 0, «32; I64»]
+                        ] =
+                            // A load: a = A[z*8+k]
+                            let a_idx = %core.wrap.add 0 (%core.wrap.mul 0 (z, 8I32), k);
+                            let a_lea = %mem.lea (A, %core.conv.u K_nat a_idx);
+                            let (mem, a) = %mem.load (mem, a_lea);
+                            // B load: b = B[k*4+j]
+                            let b_idx = %core.wrap.add 0 (%core.wrap.mul 0 (k, 4I32), j);
+                            let b_lea = %mem.lea (B, %core.conv.u K_nat b_idx);
+                            let (mem, b) = %mem.load (mem, b_lea);
+                            // MAC
+                            let new_acc = %aie2p.mac_4x4x8 (a, b, acc, 26I32);
+                            cont_k (mem, new_acc);
+
+                        con k_exit [mem: %mem.M 0, acc: «32; I64»] =
+                            // SRS accumulator → i16 vector
+                            let result = %aie2p.srs_i16_32 (acc, 0I32, 0I32);
+                            // Store to C[z*4+j]
+                            let c_idx = %core.wrap.add 0 (%core.wrap.mul 0 (z, 4I32), j);
+                            let c_lea = %mem.lea (C_out, %core.conv.u K_nat c_idx);
+                            let mem = %mem.store (mem, c_lea, result);
+                            cont_j (mem);
+                    end;
+
+                con j_exit [mem: %mem.M 0] = cont_z (mem);
+            end;
+
+        con z_exit [mem: %mem.M 0] = return (mem);
+    end;
