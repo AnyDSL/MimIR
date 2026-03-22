@@ -55,7 +55,6 @@ private:
     void process(RewriteResult rewrite);
 
     const Def* init(uint32_t id);
-    const Def* init_let(uint32_t id, MimNode node);
     const Def* init_fun(uint32_t id, MimNode node);
     const Def* init_lam(uint32_t id, MimNode node);
     const Def* init_con(uint32_t id, MimNode node);

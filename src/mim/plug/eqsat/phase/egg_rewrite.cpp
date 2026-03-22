@@ -87,7 +87,6 @@ const Def* EggRewrite::init(uint32_t id) {
 
     const Def* res = nullptr;
     switch (node.kind) {
-        case MimKind::Let: res = init_let(id, node); break;
         case MimKind::Fun: res = init_fun(id, node); break;
         case MimKind::Lam: res = init_lam(id, node); break;
         case MimKind::Con: res = init_con(id, node); break;
@@ -97,7 +96,6 @@ const Def* EggRewrite::init(uint32_t id) {
     return added_[id] = res;
 }
 
-const Def* EggRewrite::init_let(uint32_t id, MimNode node) { return nullptr; }
 const Def* EggRewrite::init_fun(uint32_t id, MimNode node) { return nullptr; }
 const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 
@@ -240,35 +238,27 @@ const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
 
 // (lit <val> [<type>])
 const Def* EggRewrite::convert_lit(uint32_t id, MimNode node) {
-    // Case 1: (lit tt) or (lit ff)
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto lit_sym = get_symbol(node.children[0]);
-    if (lit_sym == "ff") {
-        std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-        auto new_lit = new_world().lit_ff();
-        std::cout << new_lit << "\n";
-        return new_lit;
-    } else if (lit_sym == "tt") {
-        std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-        auto new_lit = new_world().lit_tt();
-        std::cout << new_lit << "\n";
-        return new_lit;
-    }
+    auto lit_num = get_num(node.children[0]);
+    const Def* new_lit;
 
-    auto lit_val = get_num(node.children[0]);
-    if (node.children.size() > 1) {
+    if (lit_sym == "ff") {
+        // Case 1: (lit tt)
+        new_lit = new_world().lit_ff();
+    } else if (lit_sym == "tt") {
+        // Case 1: (lit ff)
+        new_lit = new_world().lit_tt();
+    } else if (node.children.size() > 1) {
         // Case 2: (lit <val> <type>)
-        std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
         auto lit_type = get_def(node.children[1]);
-        auto new_lit  = new_world().lit(lit_type, lit_val);
-        std::cout << new_lit << "\n";
-        return new_lit;
+        new_lit       = new_world().lit(lit_type, lit_num);
     } else {
         // Case 3: (lit <val>)
-        std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-        auto new_lit = new_world().lit_nat(lit_val);
-        std::cout << new_lit << "\n";
-        return new_lit;
+        new_lit = new_world().lit_nat(lit_num);
     }
+    std::cout << new_lit << "\n";
+    return new_lit;
 }
 
 // (pack <arity> <body>)
