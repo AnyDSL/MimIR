@@ -82,26 +82,27 @@ void EggRewrite::process(RewriteResult rewrite) {
         convert(id);
 }
 
-void EggRewrite::init(uint32_t id) {
-    curr_id_  = id;
-    auto node = res_[curr_id_];
+const Def* EggRewrite::init(uint32_t id) {
+    auto node = res_[id];
 
+    const Def* res = nullptr;
     switch (node.kind) {
-        case MimKind::Let: init_let(node); break;
-        case MimKind::Fun: init_fun(node); break;
-        case MimKind::Lam: init_lam(node); break;
-        case MimKind::Con: init_con(node); break;
-        case MimKind::Var: init_var(node); break;
+        case MimKind::Let: res = init_let(id, node); break;
+        case MimKind::Fun: res = init_fun(id, node); break;
+        case MimKind::Lam: res = init_lam(id, node); break;
+        case MimKind::Con: res = init_con(id, node); break;
         default: break;
     }
+
+    return added_[id] = res;
 }
 
-void EggRewrite::init_let(MimNode node) {}
-void EggRewrite::init_fun(MimNode node) {}
-void EggRewrite::init_lam(MimNode node) {}
+const Def* EggRewrite::init_let(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::init_fun(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 
-void EggRewrite::init_con(MimNode node) {
-    std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
+const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
+    std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << "\n";
     auto con_name = get_symbol(node.children[1]);
     auto domain   = get_node(MimKind::Tuple, node.children[2]);
 
@@ -113,21 +114,16 @@ void EggRewrite::init_con(MimNode node) {
         const Def* var_type;
         if (var.kind == MimKind::Var) {
             var_name = get_symbol(var.children[0]);
-            var_type = get_def(var.children[1]);
+            var_type = convert(var.children[1], true);
         } else {
-            // Calls on convert to create a Def for the current type
-            auto con_id = curr_id_;
-            convert(child, true);
-            curr_id_ = con_id;
             var_name = "";
-            var_type = get_def(child);
+            var_type = convert(child, true);
         }
         var_names.push_back(var_name);
         var_types.push_back(var_type);
     }
 
     auto new_con = new_world().mut_con(var_types)->set(con_name.c_str());
-    add_def(new_con);
     register_lam(con_name, new_con);
 
     for (int i = 0; auto var : new_con->vars()) {
@@ -145,70 +141,66 @@ void EggRewrite::init_con(MimNode node) {
         i++;
     }
     std::cout << new_con << "\n";
+    return new_con;
 }
 
-void EggRewrite::init_var(MimNode node) {
-    std::cout << "init - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
-    convert(node.children[1], true);
-}
-
-void EggRewrite::convert(uint32_t id, bool recurse) {
+const Def* EggRewrite::convert(uint32_t id, bool recurse) {
     // TODO: skip out on conversion if id already in added_
     // - don't skip for lambdas because they will be added in init()
     //   but their bodies will only be set in convert()
+    auto node = res_[id];
 
-    curr_id_  = id;
-    auto node = res_[curr_id_];
-
-    uint32_t temp = curr_id_;
     if (recurse)
         for (uint32_t child : node.children)
             convert(child, recurse);
-    curr_id_ = temp;
 
+    const Def* res = nullptr;
     switch (node.kind) {
-        case MimKind::Let: convert_let(node); break;
-        case MimKind::Fun: convert_fun(node); break;
-        case MimKind::Lam: convert_lam(node); break;
-        case MimKind::Con: convert_con(node); break;
-        case MimKind::App: convert_app(node); break;
-        case MimKind::Var: convert_var(node); break;
-        case MimKind::Lit: convert_lit(node); break;
-        case MimKind::Pack: convert_pack(node); break;
-        case MimKind::Tuple: convert_tuple(node); break;
-        case MimKind::Extract: convert_extract(node); break;
-        case MimKind::Ins: convert_ins(node); break;
-        case MimKind::Bot: convert_bot(node); break;
-        case MimKind::Top: convert_top(node); break;
-        case MimKind::Arr: convert_arr(node); break;
-        case MimKind::Sigma: convert_sigma(node); break;
-        case MimKind::Cn: convert_cn(node); break;
-        case MimKind::Pi: convert_pi(node); break;
-        case MimKind::Idx: convert_idx(node); break;
-        case MimKind::Hole: convert_hole(node); break;
-        case MimKind::Type: convert_type(node); break;
-        case MimKind::Num: convert_num(node); break;
-        case MimKind::Symbol: convert_symbol(node); break;
+        case MimKind::Let: res = convert_let(id, node); break;
+        case MimKind::Fun: res = convert_fun(id, node); break;
+        case MimKind::Lam: res = convert_lam(id, node); break;
+        case MimKind::Con: res = convert_con(id, node); break;
+        case MimKind::App: res = convert_app(id, node); break;
+        case MimKind::Var: res = convert_var(id, node); break;
+        case MimKind::Lit: res = convert_lit(id, node); break;
+        case MimKind::Pack: res = convert_pack(id, node); break;
+        case MimKind::Tuple: res = convert_tuple(id, node); break;
+        case MimKind::Extract: res = convert_extract(id, node); break;
+        case MimKind::Ins: res = convert_ins(id, node); break;
+        case MimKind::Bot: res = convert_bot(id, node); break;
+        case MimKind::Top: res = convert_top(id, node); break;
+        case MimKind::Arr: res = convert_arr(id, node); break;
+        case MimKind::Sigma: res = convert_sigma(id, node); break;
+        case MimKind::Cn: res = convert_cn(id, node); break;
+        case MimKind::Pi: res = convert_pi(id, node); break;
+        case MimKind::Idx: res = convert_idx(id, node); break;
+        case MimKind::Hole: res = convert_hole(id, node); break;
+        case MimKind::Type: res = convert_type(id, node); break;
+        case MimKind::Num: res = convert_num(id, node); break;
+        case MimKind::Symbol: res = convert_symbol(id, node); break;
         default: break;
     }
+
+    return added_[id] = res;
 }
 
 // (let <name> <definition> <expression>)
-void EggRewrite::convert_let(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_let(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto expr = get_def(node.children[2]);
-    add_def(expr);
     std::cout << expr << "\n";
+    return expr;
 }
 
-void EggRewrite::convert_fun(MimNode node) {}
-void EggRewrite::convert_lam(MimNode node) {}
+const Def* EggRewrite::convert_fun(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::convert_lam(uint32_t id, MimNode node) { return nullptr; }
 
 // (con <extern> <name> <domain> [<filter>] [<body>])
 // i.e. (con extern foo (tuple (var a Nat) (var ret (cn nat))) (lit ff) (app ret a))
-void EggRewrite::convert_con(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
-    auto con       = get_def(curr_id_)->as_mut<Lam>();
+
+const Def* EggRewrite::convert_con(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
+    auto con       = get_def(id)->as_mut<Lam>();
     auto is_extern = get_symbol(node.children[0]);
 
     if (is_extern == "extern") con->externalize();
@@ -224,151 +216,150 @@ void EggRewrite::convert_con(MimNode node) {
         con->set_filter(false);
 
     std::cout << con << "\n";
+    return con;
 }
 
 // (app <callee> <arg>)
-void EggRewrite::convert_app(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_app(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto callee  = get_def(node.children[0]);
     auto arg     = get_def(node.children[1]);
     auto new_app = new_world().app(callee, arg);
-    add_def(new_app);
     std::cout << new_app << "\n";
+    return new_app;
 }
 
 // (var <name> <type>)
-void EggRewrite::convert_var(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto name = get_symbol(node.children[0]);
     auto var  = get_var(name);
-    add_def(var);
     std::cout << var << "\n";
+    return var;
 }
 
 // (lit <val> [<type>])
-void EggRewrite::convert_lit(MimNode node) {
+const Def* EggRewrite::convert_lit(uint32_t id, MimNode node) {
     // Case 1: (lit tt) or (lit ff)
     auto lit_sym = get_symbol(node.children[0]);
     if (lit_sym == "ff") {
-        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+        std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
         auto new_lit = new_world().lit_ff();
-        add_def(new_lit);
         std::cout << new_lit << "\n";
-        return;
+        return new_lit;
     } else if (lit_sym == "tt") {
-        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+        std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
         auto new_lit = new_world().lit_tt();
-        add_def(new_lit);
         std::cout << new_lit << "\n";
-        return;
+        return new_lit;
     }
 
     auto lit_val = get_num(node.children[0]);
     if (node.children.size() > 1) {
         // Case 2: (lit <val> <type>)
-        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+        std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
         auto lit_type = get_def(node.children[1]);
         auto new_lit  = new_world().lit(lit_type, lit_val);
-        add_def(new_lit);
         std::cout << new_lit << "\n";
+        return new_lit;
     } else {
         // Case 3: (lit <val>)
-        std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+        std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
         auto new_lit = new_world().lit_nat(lit_val);
-        add_def(new_lit);
         std::cout << new_lit << "\n";
+        return new_lit;
     }
 }
 
 // (pack <arity> <body>)
-void EggRewrite::convert_pack(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_pack(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto arity = get_def(node.children[0]);
     auto body  = get_def(node.children[1]);
 
     auto new_pack = new_world().pack(arity, body);
-    add_def(new_pack);
     std::cout << new_pack << "\n";
+    return new_pack;
 }
 
 // (tuple <node1> <node2> <node3> ...)
 // TODO: arg tuples of lambda headers shouldn't be added to the world
-void EggRewrite::convert_tuple(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_tuple(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     DefVec ops;
     for (auto child : node.children) {
         auto op = get_def(child);
         ops.push_back(op);
     }
     auto new_tuple = new_world().tuple(ops);
-    add_def(new_tuple);
     std::cout << new_tuple << "\n";
+    return new_tuple;
 }
 
 // (extract <tuple> <index>)
-void EggRewrite::convert_extract(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_extract(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto tuple = get_def(node.children[0]);
     auto index = get_def(node.children[1]);
 
     auto new_extract = new_world().extract(tuple, index);
-    add_def(new_extract);
     std::cout << new_extract << "\n";
+    return new_extract;
 }
 
 // (ins <tuple> <index> <value>)
-void EggRewrite::convert_ins(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_ins(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto tuple = get_def(node.children[0]);
     auto index = get_def(node.children[1]);
     auto value = get_def(node.children[2]);
 
     auto new_insert = new_world().insert(tuple, index, value);
-    add_def(new_insert);
     std::cout << new_insert << "\n";
+    return new_insert;
 }
 
 // (bot <name> <type>)
-void EggRewrite::convert_bot(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_bot(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto name = get_symbol(node.children[0]);
     auto type = get_def(node.children[1]);
 
     auto new_bot = new_world().bot(type);
-    add_def(new_bot);
     if (name != "⊥") register_var(name, new_bot);
 
     std::cout << new_bot << "\n";
+    return new_bot;
 }
 // (top <name> <type>)
-void EggRewrite::convert_top(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_top(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto name = get_symbol(node.children[0]);
     auto type = get_def(node.children[1]);
 
     auto new_top = new_world().top(type);
-    add_def(new_top);
     if (name != "T") register_var(name, new_top);
 
     std::cout << new_top << "\n";
+    return new_top;
 }
 
 // (arr <arity> <body>)
-void EggRewrite::convert_arr(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_arr(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto arity = get_def(node.children[0]);
     auto body  = get_def(node.children[1]);
 
     auto new_arr = new_world().arr(arity, body);
-    add_def(new_arr);
     std::cout << new_arr << "\n";
+    return new_arr;
 }
 
 // (sigma (var <name1> <type1>) (var <name2> <type2>) ...)
 //  or
 // (sigma <type1> <type2> ...)
-void EggRewrite::convert_sigma(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_sigma(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     DefVec ops;
     for (auto child : node.children) {
         auto op = res_[child];
@@ -382,42 +373,43 @@ void EggRewrite::convert_sigma(MimNode node) {
     }
 
     auto new_sigma = new_world().sigma(ops);
-    add_def(new_sigma);
     std::cout << new_sigma << "\n";
+    return new_sigma;
 }
 
 // (cn <domain>)
-void EggRewrite::convert_cn(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_cn(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto domain = get_def(node.children[0]);
     auto new_cn = new_world().cn(domain);
-    add_def(new_cn);
     std::cout << new_cn << "\n";
+    return new_cn;
 }
 
-void EggRewrite::convert_pi(MimNode node) {}
+const Def* EggRewrite::convert_pi(uint32_t id, MimNode node) { return nullptr; }
 
 // (idx <size>)
-void EggRewrite::convert_idx(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
+const Def* EggRewrite::convert_idx(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto size    = get_def(node.children[0]);
     auto new_idx = new_world().type_idx(size);
-    add_def(new_idx);
     std::cout << new_idx << "\n";
+    return new_idx;
 }
 
-void EggRewrite::convert_hole(MimNode node) {}
-void EggRewrite::convert_type(MimNode node) {}
+const Def* EggRewrite::convert_hole(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::convert_type(uint32_t id, MimNode node) { return nullptr; }
 
-void EggRewrite::convert_num(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << "\n";
+const Def* EggRewrite::convert_num(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << "\n";
+    return nullptr;
 }
 
-void EggRewrite::convert_symbol(MimNode node) {
-    std::cout << "convert - current node(" << curr_id_ << "): " << mim_node_str(node).c_str() << " - ";
-    auto def = get_def(curr_id_);
-    add_def(def);
+const Def* EggRewrite::convert_symbol(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
+    auto def = get_def(id);
     std::cout << def << "\n";
+    return def;
 }
 
 } // namespace mim::plug::eqsat

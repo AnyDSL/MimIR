@@ -54,38 +54,36 @@ private:
 
     void process(RewriteResult rewrite);
 
-    void init(uint32_t id);
-    void init_let(MimNode node);
-    void init_fun(MimNode node);
-    void init_lam(MimNode node);
-    void init_con(MimNode node);
-    void init_var(MimNode node);
+    const Def* init(uint32_t id);
+    const Def* init_let(uint32_t id, MimNode node);
+    const Def* init_fun(uint32_t id, MimNode node);
+    const Def* init_lam(uint32_t id, MimNode node);
+    const Def* init_con(uint32_t id, MimNode node);
 
-    void convert(uint32_t id, bool recurse = false);
-    void convert_let(MimNode node);
-    void convert_fun(MimNode node);
-    void convert_lam(MimNode node);
-    void convert_con(MimNode node);
-    void convert_app(MimNode node);
-    void convert_var(MimNode node);
-    void convert_lit(MimNode node);
-    void convert_pack(MimNode node);
-    void convert_tuple(MimNode node);
-    void convert_extract(MimNode node);
-    void convert_ins(MimNode node);
-    void convert_bot(MimNode node);
-    void convert_top(MimNode node);
-    void convert_arr(MimNode node);
-    void convert_sigma(MimNode node);
-    void convert_cn(MimNode node);
-    void convert_pi(MimNode node);
-    void convert_idx(MimNode node);
-    void convert_hole(MimNode node);
-    void convert_type(MimNode node);
-    void convert_num(MimNode node);
-    void convert_symbol(MimNode node);
+    const Def* convert(uint32_t id, bool recurse = false);
+    const Def* convert_let(uint32_t id, MimNode node);
+    const Def* convert_fun(uint32_t id, MimNode node);
+    const Def* convert_lam(uint32_t id, MimNode node);
+    const Def* convert_con(uint32_t id, MimNode node);
+    const Def* convert_app(uint32_t id, MimNode node);
+    const Def* convert_var(uint32_t id, MimNode node);
+    const Def* convert_lit(uint32_t id, MimNode node);
+    const Def* convert_pack(uint32_t id, MimNode node);
+    const Def* convert_tuple(uint32_t id, MimNode node);
+    const Def* convert_extract(uint32_t id, MimNode node);
+    const Def* convert_ins(uint32_t id, MimNode node);
+    const Def* convert_bot(uint32_t id, MimNode node);
+    const Def* convert_top(uint32_t id, MimNode node);
+    const Def* convert_arr(uint32_t id, MimNode node);
+    const Def* convert_sigma(uint32_t id, MimNode node);
+    const Def* convert_cn(uint32_t id, MimNode node);
+    const Def* convert_pi(uint32_t id, MimNode node);
+    const Def* convert_idx(uint32_t id, MimNode node);
+    const Def* convert_hole(uint32_t id, MimNode node);
+    const Def* convert_type(uint32_t id, MimNode node);
+    const Def* convert_num(uint32_t id, MimNode node);
+    const Def* convert_symbol(uint32_t id, MimNode node);
 
-    void add_def(const Def* converted) { added_[curr_id_] = converted; }
     void register_var(std::string name, const Def* converted) { vars_[name] = converted; }
     void register_lam(std::string name, const Lam* converted) { lams_[name] = converted; }
 
@@ -120,7 +118,6 @@ private:
     std::string get_symbol(uint32_t id) { return res_[id].symbol.c_str(); }
     int64_t get_num(uint32_t id) { return res_[id].num; }
 
-    uint32_t curr_id_;
     rust::Vec<MimNode> res_;
     std::unordered_map<uint32_t, const Def*> added_;
 
