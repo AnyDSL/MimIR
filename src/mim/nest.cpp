@@ -111,8 +111,8 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     while (n != m) {
         // Nest::lca is also used within with_dominance and should not call it recursively
         if constexpr (!bootstrapping) {
-            n->with_dominance();
-            m->with_dominance();
+            n->calc_dominance();
+            m->calc_dominance();
         }
         if (n->postorder_number_ < m->postorder_number_)
             n = n->idom_ ? n->idom_ : n->inest();
@@ -198,7 +198,7 @@ uint32_t Nest::Node::tarjan(uint32_t i, Node* inest, Stack& stack) {
 /// Calculates dominance using Cooper-Harvey-Kennedy algorithm
 /// from Cooper et al, "A Simple, Fast Dominance Algorithm".
 /// https://www.clear.rice.edu/comp512/Lectures/Papers/TR06-33870-Dom.pdf
-const Nest::Node* Nest::Node::with_dominance() const {
+const Nest::Node* Nest::Node::calc_dominance() const {
     if (idom_ || is_root() || !inest()->mut()) return this;
     nest().assign_postorder_numbers();
 
@@ -222,6 +222,7 @@ const Nest::Node* Nest::Node::with_dominance() const {
         nodes.push_back(node);
     };
 
+    // Traverse siblings in postorder
     for (auto op : inest()->mut()->deps()) {
         for (auto mut : op->local_muts())
             if (auto node = nest()[mut]; node && node->inest() == inest()) visit(node);

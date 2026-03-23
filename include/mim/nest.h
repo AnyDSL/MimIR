@@ -141,7 +141,7 @@ public:
         /// components. This is used to transform first order programs into structured form in the
         /// [sflow](mim::plug::sflow) plugin and for late code placement in [Nest::lca].
         /// @{
-        auto idom() const { return with_dominance()->idom_; }
+        auto idom() const { return calc_dominance()->idom_; }
         /// @}
 
     private:
@@ -164,7 +164,7 @@ public:
         uint32_t tarjan(uint32_t, Node*, Stack&);
 
         /// Dominance
-        const Node* with_dominance() const;
+        const Node* calc_dominance() const;
 
         const Nest& nest_;
         Def* mut_;
