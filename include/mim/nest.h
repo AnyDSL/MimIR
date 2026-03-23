@@ -139,7 +139,7 @@ public:
         /// @name Dominance
         /// [Dominance](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) relation for children in connected
         /// components. This is used to transform first order programs into structured form in the
-        /// [sflow](mim::plug::sflow) plugin and for early code placement in [Scheduler::early].
+        /// [sflow](mim::plug::sflow) plugin and for late code placement in [Nest::lca].
         /// @{
         auto idom() const { return with_dominance()->idom_; }
         /// @}
