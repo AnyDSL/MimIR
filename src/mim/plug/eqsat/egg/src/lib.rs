@@ -63,7 +63,6 @@ pub mod ffi {
     #[derive(Debug)]
     enum MimKind {
         Let,
-        Fun,
         Lam,
         Con,
         App,
@@ -127,7 +126,6 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
         match node {
             Let(children) => nodes.push(new_mim(MimKind::Let, children, 0, String::new())),
 
-            Fun(children) => nodes.push(new_mim(MimKind::Fun, children, 0, String::new())),
             Lam(children) => nodes.push(new_mim(MimKind::Lam, children, 0, String::new())),
             Con(children) => nodes.push(new_mim(MimKind::Con, children, 0, String::new())),
             App(children) => nodes.push(new_mim(MimKind::App, children, 0, String::new())),

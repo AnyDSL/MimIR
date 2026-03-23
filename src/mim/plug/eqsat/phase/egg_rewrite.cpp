@@ -87,7 +87,6 @@ const Def* EggRewrite::init(uint32_t id) {
 
     const Def* res = nullptr;
     switch (node.kind) {
-        case MimKind::Fun: res = init_fun(id, node); break;
         case MimKind::Lam: res = init_lam(id, node); break;
         case MimKind::Con: res = init_con(id, node); break;
         default: break;
@@ -96,7 +95,7 @@ const Def* EggRewrite::init(uint32_t id) {
     return added_[id] = res;
 }
 
-const Def* EggRewrite::init_fun(uint32_t id, MimNode node) { return nullptr; }
+// TODO: implement
 const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 
 const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
@@ -155,7 +154,6 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
     const Def* res = nullptr;
     switch (node.kind) {
         case MimKind::Let: res = convert_let(id, node); break;
-        case MimKind::Fun: res = convert_fun(id, node); break;
         case MimKind::Lam: res = convert_lam(id, node); break;
         case MimKind::Con: res = convert_con(id, node); break;
         case MimKind::App: res = convert_app(id, node); break;
@@ -190,8 +188,6 @@ const Def* EggRewrite::convert_let(uint32_t id, MimNode node) {
     return expr;
 }
 
-// (fun <extern> <name> <domain> <codomain> [<filter>] [<body>])
-const Def* EggRewrite::convert_fun(uint32_t id, MimNode node) { return nullptr; }
 // (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
 const Def* EggRewrite::convert_lam(uint32_t id, MimNode node) { return nullptr; }
 
@@ -377,7 +373,14 @@ const Def* EggRewrite::convert_cn(uint32_t id, MimNode node) {
 }
 
 // (pi <domain> <codomain>)
-const Def* EggRewrite::convert_pi(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::convert_pi(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
+    auto domain   = get_def(node.children[0]);
+    auto codomain = get_def(node.children[1]);
+    auto new_pi   = new_world().pi(domain, codomain);
+    std::cout << new_pi << "\n";
+    return new_pi;
+}
 
 // (idx <size>)
 const Def* EggRewrite::convert_idx(uint32_t id, MimNode node) {
@@ -388,10 +391,23 @@ const Def* EggRewrite::convert_idx(uint32_t id, MimNode node) {
     return new_idx;
 }
 
-// (hole ...)
-const Def* EggRewrite::convert_hole(uint32_t id, MimNode node) { return nullptr; }
+// (hole <type>)
+const Def* EggRewrite::convert_hole(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
+    auto type_    = get_def(node.children[0]);
+    auto new_hole = new_world().mut_hole(type_);
+    std::cout << new_hole << "\n";
+    return new_hole;
+}
+
 // (type <level>)
-const Def* EggRewrite::convert_type(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::convert_type(uint32_t id, MimNode node) {
+    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
+    auto level    = get_def(node.children[0]);
+    auto new_type = new_world().type(level);
+    std::cout << new_type << "\n";
+    return new_type;
+}
 
 // <i64>
 const Def* EggRewrite::convert_num(uint32_t id, MimNode node) {

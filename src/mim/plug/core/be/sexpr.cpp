@@ -199,12 +199,12 @@ void Emitter::start() {
     // or as default after the sexpr backend has been completed
 }
 
-// TODO: emit domain and codomain seperately for lam and fun
+// We assume that the lambda will be a continuation since imports
+// only exist via cfun and ccon which are both internally modelled as con
 void Emitter::emit_imported(Lam* lam) {
-    const std::string lam_kind = lam->isa_cn(lam) ? "con" : "fun";
-    const std::string ext      = lam->is_external() ? "extern" : "intern";
+    const std::string ext = lam->is_external() ? "extern" : "intern";
 
-    print(func_decls_, "({} {} {} (tuple ", lam_kind, ext, id(lam));
+    print(func_decls_, "(con {} {} (tuple ", ext, id(lam));
 
     auto doms = lam->doms();
     for (auto sep = ""; auto dom : doms.view()) {
@@ -215,7 +215,7 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "))\n");
 }
 
-// TODO: emit domain and codomain seperately for lam and fun
+// TODO: should we emit the codomain seperately for lam?
 std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     std::ostringstream os;
 
@@ -240,7 +240,6 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
                 --tab;
                 tab.println(os, ")");
             } else {
-                // TODO: allow unnamed vars in egg
                 tab.println(os, "{}", convert(lam->dom(i)));
             }
             ++i;

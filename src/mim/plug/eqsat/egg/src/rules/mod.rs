@@ -9,8 +9,6 @@ define_language! {
         // (let <name> <definition> <expression>)
         "let" = Let([Id; 3]),
 
-        // (fun <extern> <name> <domain> <codomain> [<filter>] [<body>])
-        "fun" = Fun(Box<[Id]>),
         // (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
         "lam" = Lam(Box<[Id]>),
         // (con <extern> <name> <domain> [<filter>] [<body>])
@@ -49,7 +47,7 @@ define_language! {
         "pi" = Pi([Id; 2]),
         // (idx <size>)
         "idx" = Idx(Id),
-        // (hole ...)
+        // (hole <type>) - does it even make sense to have this?
         "hole" = Hole(Id),
         // (type <level>)
         "type" = Type(Id),
