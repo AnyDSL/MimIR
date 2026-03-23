@@ -42,9 +42,7 @@ private:
 
         Def2Def lattice_;
 
-        DefMap<DefSet> live_slots_;
-
-        void reset();
+        DefMap<Def2Def> live_slots_;
     };
 
 public:

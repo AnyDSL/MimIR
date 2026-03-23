@@ -6,6 +6,24 @@
 
 namespace mim::plug::mem::phase {
 
+#define PROXY_GVN 0
+#define PROXY_MEM 1
+#define PROXY_SLOT 2
+
+const Def* isa_mem_proxy(const Def* def) {
+    if (auto mem = def->isa<Proxy>())
+        if (mem->tag() == PROXY_MEM)
+            return mem;
+    return nullptr;
+}
+
+const Def* isa_gvn_proxy(const Def* def) {
+    if (auto mem = def->isa<Proxy>())
+        if (mem->tag() == PROXY_GVN)
+            return mem;
+    return nullptr;
+}
+
 Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
     map(mut, mut);
 
@@ -26,29 +44,82 @@ Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
 }
 
 const Def* SymExprOpt::Analysis::propagate(const Def* var, const Def* def) {
+    ELOG("called propagate: {} → {}", var, def);
     auto [i, ins] = lattice_.emplace(var, def);
     if (ins) {
         todo_ = true;
-        DLOG("propagate: {} → {}", var, def);
+        ELOG("propagate: {} → {}", var, def);
         return def;
     }
 
     auto cur = i->second;
-    if (!cur || def->isa<Bot>() || cur == def || cur == var || cur->isa<Proxy>()) return cur;
+    if (!cur || def->isa<Bot>() || cur == def || cur == var || isa_gvn_proxy(cur)) return cur;
 
     todo_ = true;
     DLOG("cannot propagate {}, trying GVN", var);
     if (cur->isa<Bot>()) return i->second = def;
+    ELOG("marking {} for gvn", var);
     return i->second = nullptr; // we reached top for propagate; nullptr marks this to bundle for GVN
 }
 
 static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->index()); }
 
+const Def* mem_proxy_set(const Def* mem, const Def* key, const Def* value) {
+    auto& world    = mem->world();
+    auto new_entry = world.tuple({key, value});
+    if (auto proxy = isa_mem_proxy(mem)) {
+        auto new_map_entries = DefVec();
+        new_map_entries.push_back(mem->op(0));
+        for (auto kv : proxy->ops() | std::views::drop(1)) {
+            auto [k, v] = kv->projs<2>();
+            if (k != key) new_map_entries.push_back(kv);
+        }
+        new_map_entries.push_back(new_entry);
+        return world.proxy(world.annex<mem::M>(), new_map_entries, 0, PROXY_MEM);
+    }
+    return world.proxy(world.annex<mem::M>(), {mem, new_entry}, 0, PROXY_MEM);
+}
+
+const Def* mem_proxy_empty(const Def* mem) {
+    auto& world    = mem->world();
+    return world.proxy(world.annex<mem::M>(), {mem}, 0, PROXY_MEM);
+}
+
+std::pair<const Def*, bool> mem_proxy_emplace(const Def* mem, const Def* key, const Def* value) {
+    auto& world    = mem->world();
+    auto new_entry = world.tuple({key, value});
+    if (auto proxy = isa_mem_proxy(mem)) {
+        bool already_contained = false;
+        auto new_map_entries = DefVec();
+        new_map_entries.push_back(mem->op(0));
+        for (auto kv : proxy->ops() | std::views::drop(1)) {
+            auto [k, v] = kv->projs<2>();
+            if (k == key) already_contained = true;
+            new_map_entries.push_back(kv);
+        }
+        if (!already_contained) new_map_entries.push_back(new_entry);
+        return {world.proxy(world.annex<mem::M>(), new_map_entries, 0, PROXY_MEM), !already_contained};
+    }
+    return {world.proxy(world.annex<mem::M>(), {mem, new_entry}, 0, PROXY_MEM), true};
+}
+
+const Def* mem_proxy_lookup(const Def* mem, const Def* key) {
+    if (auto proxy = isa_mem_proxy(mem)) {
+        for (auto kv : proxy->ops() | std::views::drop(1)) {
+            auto [k, v] = kv->projs<2>();
+            if (k == key) return v;
+        }
+    }
+    return nullptr;
+}
+
 const Def* SymExprOpt::Analysis::trace_load(const Def* mem, const Def* ptr) {
     if (auto store = Axm::isa<mem::store>(mem)) {
         auto [mem, assigned_ptr, val] = store->args<3>();
-        if (assigned_ptr == ptr)
+        if (assigned_ptr == ptr) {
+            ELOG("tracing found the store for {}, value is {}", ptr, val);
             return val;
+        }
         else
             return trace_load(mem, ptr);
     } else if (auto load = Axm::isa<mem::load>(mem)) {
@@ -65,26 +136,18 @@ const Def* SymExprOpt::Analysis::trace_load(const Def* mem, const Def* ptr) {
     } else {
         if (auto var = mem->isa<Var>()) {
             // todo: introduce new var here
-            auto [_, ins] = live_slots_[var->mut()].emplace(ptr);
-            if (ins) todo_ = true;
+            auto pointee_type = ptr->type()->op(1)->op(0);
+            auto [i, ins_lattice] = lattice_.emplace(var->mut(), mem_proxy_empty(var));
+            auto slot_proxy = mem->world().proxy(pointee_type, {}, 0, PROXY_SLOT);
+            auto [mem_proxy, ins] = mem_proxy_emplace(i->second, ptr, slot_proxy);
+            i->second = mem_proxy;
+            if (ins) {
+                ELOG("setting todo because of new live slot");
+                todo_ = true;
+            }
         }
         return nullptr;
     }
-}
-
-void SymExprOpt::Analysis::reset() {
-    ELOG("iteration, lattice:");
-    for (auto [k, v] : lattice_)
-        if (k != v)
-            ELOG("{} -> {v}", k, v);
-    ELOG("live slots:");
-    for (auto [lam, live] : live_slots_) {
-        ELOG("live_slots for {}:", lam);
-        for (auto slot : live)
-            ELOG("{}", slot);
-    }
-
-    mim::Analysis::reset();
 }
 
 const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
@@ -97,13 +160,16 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
     } else if (auto load = Axm::isa<mem::load>(app)) {
         auto [mem, ptr] = load->args<2>();
         auto [_, loaded] = load->projs<2>();
-        auto abstr_mem = rewrite(mem);
-        auto abstr_ptr = rewrite(ptr);
-        if (auto value = trace_load(abstr_mem, abstr_ptr)) {
-            auto [i, ins] = lattice_.emplace(loaded, value);
-            if (ins) todo_ = true;
+        // auto abstr_mem = rewrite(mem);
+        // auto abstr_ptr = rewrite(ptr);
+        if (auto value = trace_load(mem, ptr)) {
+            map(loaded, value);
         }
-        ELOG("found a load, for {}, value is {}", abstr_ptr, trace_load(abstr_mem, abstr_ptr));
+        ELOG("found a load, for {}, value is {}", ptr, trace_load(mem, ptr));
+        ELOG("after the trace, lattice:");
+        for (auto [k, v] : lattice_)
+            if (k != v)
+                ELOG("{} -> {v}", k, v);
     } else if (auto slot = Axm::isa<mem::slot>(app)) {
         ELOG("found a slot");
         auto [mem, id] = slot->args<2>();
@@ -111,20 +177,40 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         auto abstr_mem = rewrite(mem);
         auto abstr_id = rewrite(id);
     } else if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
-
         ELOG("live_slots for {}:", lam);
-        for (auto slot : live_slots_[lam])
-            ELOG("{}", slot);
+        for (auto [slot, thing] : live_slots_[lam])
+            ELOG("{} {}", slot, thing);
 
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
         auto abstr_vars = absl::FixedArray<const Def*>(n);
 
+        DefVec slot_vars;
+        DefVec slot_args;
         // propagate
-        for (size_t i = 0; i != n; ++i) {
+        for (size_t i = 0; i != app->num_targs(); ++i) {
+            // real vars
             auto abstr    = rewrite(app->targ(i));
             abstr_vars[i] = propagate(lam->tvar(i), abstr);
             abstr_args[i] = abstr;
+            ELOG("propagating for arg {}", app->targ(i));
+            if (Axm::isa<mem::M>(app->targ(i)->type())) {
+                ELOG("found mem, propagating stuff");
+                // found a mem arg, propagate mem slots
+                if (auto i_mem = lattice_.find(lam); i_mem != lattice_.end()) {
+                    auto proxy = i_mem->second;
+                    for (auto kv : proxy->ops() | std::views::drop(1)) {
+                        auto [slot, val] = kv->projs<2>();
+                        auto traced = trace_load(app->targ(i), slot);
+                        auto abstr = rewrite(traced ? traced: world().bot(val->type()));
+                        slot_vars.push_back(propagate(val, abstr));
+                        slot_args.push_back(abstr);
+                    }
+                }
+
+                ELOG("slot_vars for {}: {}", lam, slot_vars);
+                ELOG("slot_args for {}: {}", lam, slot_args);
+            }
         }
 
         // GVN bundle: All things marked as top (nullptr) by propagate are now treated as one entity by bundling them
@@ -145,7 +231,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
             if (vars.size() == 1) {
                 lattice_[vi] = abstr_vars[i] = vi; // top
             } else {
-                auto proxy = world().proxy(vi->type(), vars, 0, 0);
+                auto proxy = world().proxy(vi->type(), vars, 0, PROXY_GVN);
 
                 for (auto p : proxy->ops()) {
                     auto j       = get_index(p);
@@ -167,7 +253,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         // d -> {b, d}
         // e -> e      (top)
         for (size_t i = 0; i != n; ++i) {
-            if (auto proxy = abstr_vars[i]->isa<Proxy>()) {
+            if (auto proxy = isa_gvn_proxy(abstr_vars[i])) {
                 auto num  = proxy->num_ops();
                 auto vars = DefVec();
                 auto ai   = abstr_args[i];
@@ -182,13 +268,15 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
 
                 auto new_num = vars.size();
                 if (new_num == 1) {
+                    ELOG("setting todo due to new gvn slit");
                     todo_        = true;
                     auto vi      = lam->tvar(i);
                     lattice_[vi] = abstr_vars[i] = vi;
                     DLOG("single: {}", vi);
                 } else if (new_num != num) {
+                    ELOG("setting todo due to new gvn slit");
                     todo_          = true;
-                    auto new_proxy = world().proxy(ai->type(), vars, 0, 0);
+                    auto new_proxy = world().proxy(ai->type(), vars, 0, PROXY_GVN);
                     DLOG("split: {}", new_proxy);
 
                     for (auto p : new_proxy->ops()) {
@@ -218,7 +306,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
 
 static bool keep(const Def* old_var, const Def* abstr) {
     if (old_var == abstr) return true; // top
-    auto proxy = abstr->isa<Proxy>();
+    auto proxy = isa_gvn_proxy(abstr);
     return proxy && proxy->op(0) == old_var; // first in GVN bundle?
 }
 
