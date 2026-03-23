@@ -6,8 +6,6 @@
 
 #include "mim/def.h"
 
-#include "absl/container/flat_hash_set.h"
-
 namespace mim {
 
 /// Builds a nesting tree of all *mutables*/binders.
@@ -20,8 +18,12 @@ public:
         std::string name() const { return mut() ? mut()->unique_name() : std::string("<virtual>"); }
         const Nest& nest() const { return nest_; }
         const Node* inest() const { return inest_; } ///< Immediate nester/parent of this Node.
+        /// [Immediate Dominator](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) for children in connected components.
+        /// This is used to transform first order programs into structured form in the [sflow](mim::plug::sflow)
+        /// plugin and for late code placement in [Nest::lca].
+        auto idom() const { return calc_dominance()->idom_; }
         bool is_root() const { return inest_ == nullptr; }
-        /// The mutable capsulated in this Node or `nullptr`, if it's a *virtual root* comprising several Node%s.
+        /// The *mutable* capsulated in this Node or `nullptr`, if it's a *virtual root* comprising several Node%s.
         Def* mut() const {
             assert(mut_ || is_root());
             return mut_;
@@ -135,14 +137,6 @@ public:
         bool is_mutually_recursive() const { return is_recursive() && inest_ && inest_->SCCs_[this]->size() > 1; }
         bool is_directly_recursive() const { return is_recursive() && (!inest_ || inest_->SCCs_[this]->size() == 1); }
         ///@}
-
-        /// @name Dominance
-        /// [Dominance](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) relation for children in connected
-        /// components. This is used to transform first order programs into structured form in the
-        /// [sflow](mim::plug::sflow) plugin and for late code placement in [Nest::lca].
-        /// @{
-        auto idom() const { return calc_dominance()->idom_; }
-        /// @}
 
     private:
         Node(const Nest& nest, Def* mut, Node* inest)

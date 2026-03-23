@@ -1,13 +1,8 @@
 #include "mim/nest.h"
 
-#include <ranges>
-
 #include "mim/world.h"
 
-#include "absl/container/flat_hash_set.h"
-
 namespace mim {
-using std::ranges::views::reverse;
 
 Nest::Nest(Def* r)
     : world_(r->world())
@@ -231,7 +226,7 @@ const Nest::Node* Nest::Node::calc_dominance() const {
     // Actual dominance algorithm
     for (bool todo = true; todo;) {
         todo = false;
-        for (auto node : nodes | reverse) {
+        for (auto node : nodes | std::ranges::views::reverse) {
             // skip entry nodes
             if (node->idom_ == inest()) continue;
 
