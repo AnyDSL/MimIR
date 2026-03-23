@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 #include <ranges>
 
 #include "mim/def.h"
@@ -140,7 +141,7 @@ public:
         /// components. This is used to transform first order programs into structured form in the
         /// [sflow](mim::plug::sflow) plugin and for early code placement in [Scheduler::early].
         /// @{
-        auto idom() const { return with_dominance().idom_; }
+        auto idom() const { return with_dominance()->idom_; }
         /// @}
 
     private:
@@ -163,7 +164,7 @@ public:
         uint32_t tarjan(uint32_t, Node*, Stack&);
 
         /// Dominance
-        const Node& with_dominance() const;
+        const Node* with_dominance() const;
 
         const Nest& nest_;
         Def* mut_;
@@ -179,7 +180,7 @@ public:
         mutable const Node* idom_ = nullptr;
         // Nodes higher up in dominator tree within same sibling layer have higher postorder numbers.
         // This property is used to efficiently find the correct node for late code placement via [Nest::lca].
-        mutable size_t postorder_number_ = -1;
+        mutable std::optional<size_t> postorder_number_ = std::nullopt;
 
         // implementaiton details
         static constexpr uint32_t Unvisited = uint32_t(-1);
@@ -223,6 +224,8 @@ public:
     auto end() const { return mut2node_.cend(); }
     ///@}
 
+    void assign_postorder_numbers() const;
+    template<bool bootstrapping = false>
     static const Node* lca(const Node* n, const Node* m); ///< Least common ancestor of @p n and @p m.
 
     /// @name dot

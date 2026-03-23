@@ -1,7 +1,10 @@
+#include "mim/nest.h"
+
 #include <ranges>
 
-#include "mim/nest.h"
 #include "mim/world.h"
+
+#include "absl/container/flat_hash_set.h"
 
 namespace mim {
 using std::ranges::views::reverse;
@@ -77,42 +80,46 @@ Nest::Node* Nest::make_node(Def* mut, Node* inest) {
     return res;
 }
 
-const Nest::Node* Nest::lca(const Node* n, const Node* m) {
-    while (n->level() < m->level())
-        m = m->inest();
-    while (m->level() < n->level())
-        n = n->inest();
-    while (n != m) {
-        // Go up if nodes don't share the same immediate nester.
-        if (n->inest() != m->inest()) {
-            n = n->inest();
-            m = m->inest();
-            continue;
-        }
+void Nest::assign_postorder_numbers() const {
+    if (root()->postorder_number_.has_value()) return;
 
-        // Walk back dominators within siblings and go one layer up once no longer possible.
-        // This uses the postorder numbers created during dominance calculation,
-        // where nodes higher up in the dominator tree within the same nest layer
-        // have higher postorder numbers.
-        if (n->idom() != n->inest() && m->idom() != m->inest()) {
-            // Both can walk back siblings via dominance, see intersect in [with_dominance]
-            if (n->postorder_number_ < m->postorder_number_)
-                n = n->idom();
-            else
-                m = m->idom();
-        } else {
-            // At most one can
-            if (n->idom() != n->inest())
-                n = n->idom();
-            else if (m->idom() != m->inest())
-                m = m->idom();
-            else {
-                // Neither can, go up to parent
-                n = n->inest();
-                m = m->inest();
-            }
+    auto number = 0;
+
+    std::function<void(const Nest::Node*)> visit = [&](const Nest::Node* node) {
+        if (node->postorder_number_.has_value()) return; // already visited
+        node->postorder_number_ = 0;                     // mark in progress
+        for (auto op : node->mut()->deps()) {
+            for (auto mut : op->local_muts())
+                if (auto succ = node->nest()[mut]) visit(succ);
         }
+        node->postorder_number_ = ++number;
+    };
+
+    if (root()->mut()) {
+        // not virtual root, visit
+        visit(root());
+    } else {
+        // virtual root, visit children
+        for (auto [_, node] : root()->children())
+            visit(node);
+        root()->postorder_number_ = ++number;
     }
+}
+
+template<bool bootstrapping>
+const Nest::Node* Nest::lca(const Node* n, const Node* m) {
+    while (n != m) {
+        // Nest::lca is also used within with_dominance and should not call it recursively
+        if constexpr (!bootstrapping) {
+            n->with_dominance();
+            m->with_dominance();
+        }
+        if (n->postorder_number_ < m->postorder_number_)
+            n = n->idom_ ? n->idom_ : n->inest();
+        else if (m->postorder_number_ < n->postorder_number_)
+            m = m->idom_ ? m->idom_ : m->inest();
+    }
+
     return n;
 }
 
@@ -191,75 +198,56 @@ uint32_t Nest::Node::tarjan(uint32_t i, Node* inest, Stack& stack) {
 /// Calculates dominance using Cooper-Harvey-Kennedy algorithm
 /// from Cooper et al, "A Simple, Fast Dominance Algorithm".
 /// https://www.clear.rice.edu/comp512/Lectures/Papers/TR06-33870-Dom.pdf
-const Nest::Node& Nest::Node::with_dominance() const {
-    if (idom_ || is_root() || !inest()->mut()) return *this;
+const Nest::Node* Nest::Node::with_dominance() const {
+    if (idom_ || is_root() || !inest()->mut()) return this;
+    nest().assign_postorder_numbers();
+
+    if (!inest()->mut()) idom_ = inest();
 
     // Holds all siblings in reverse post-order coming from the parent
-    std::vector<const Nest::Node*> nodes;
+    absl::flat_hash_set<const Node*> visited;
+    Vector<const Node*> nodes;
 
     // Initialize entry nodes directly referenced by the parent
     for (auto op : inest()->mut()->deps()) {
-        for (auto mut : op->local_muts()) {
-            if (auto node = nest()[mut]; node && node->inest() == inest()) {
-                node->idom_             = inest();
-                node->postorder_number_ = 0; // mark as visited
-            }
-        }
+        for (auto local_mut : op->local_muts())
+            if (auto node = nest()[local_mut]; node && node->inest() == inest()) node->idom_ = inest();
     }
 
-    std::function<void(const Nest::Node*)> visit = [&](const Nest::Node* node) {
-        if (node->postorder_number_ != size_t(-1)) return; // already visited
-        node->postorder_number_ = 0;                       // mark in progress
+    std::function<void(const Node*)> visit = [&](const Node* node) {
+        if (visited.contains(node)) return; // already visited
+        visited.insert(node);
         for (auto child : node->sibl_deps())
             visit(child);
-        node->postorder_number_ = nodes.size();
         nodes.push_back(node);
     };
 
-    // Assign post-order numbers via DFS from entry nodes
     for (auto op : inest()->mut()->deps()) {
-        for (auto mut : op->local_muts()) {
-            if (auto node = nest()[mut]; node && node->inest() == inest()) {
-                node->postorder_number_ = size_t(-1); // reset so visit processes it
-                visit(node);
-            }
-        }
+        for (auto mut : op->local_muts())
+            if (auto node = nest()[mut]; node && node->inest() == inest()) visit(node);
     }
 
-    // Temporarily give largest post-order number to parent (restored below)
-    auto saved_parent_postorder = inest()->postorder_number_;
-    inest()->postorder_number_  = nodes.size();
-
-    auto intersect = [](const Nest::Node* finger1, const Nest::Node* finger2) {
-        while (finger1 != finger2) {
-            while (finger1->postorder_number_ < finger2->postorder_number_)
-                finger1 = finger1->idom_;
-            while (finger2->postorder_number_ < finger1->postorder_number_)
-                finger2 = finger2->idom_;
-        }
-        return finger1;
-    };
-
     // Actual dominance algorithm
-    bool changed = true;
-    while (changed) {
-        changed = false;
+    for (bool todo = true; todo;) {
+        todo = false;
         for (auto node : nodes | reverse) {
             // skip entry nodes
             if (node->idom_ == inest()) continue;
 
-            const Nest::Node* new_idom = nullptr;
+            const Node* new_idom = nullptr;
             for (auto user : node->sibl_deps<false>())
-                if (user->idom_) new_idom = new_idom ? intersect(new_idom, user) : user;
+                if (user->idom_) new_idom = new_idom ? Nest::lca<true>(new_idom, user) : user;
             if (node->idom_ != new_idom) {
                 node->idom_ = new_idom;
-                changed     = true;
+                todo        = true;
             }
         }
     }
 
-    inest()->postorder_number_ = saved_parent_postorder;
-    return *this;
+    return this;
 }
+
+template const Nest::Node* Nest::lca<true>(const Node*, const Node*);
+template const Nest::Node* Nest::lca<false>(const Node*, const Node*);
 
 } // namespace mim
