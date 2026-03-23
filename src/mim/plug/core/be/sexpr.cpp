@@ -290,11 +290,12 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
 
     // Prints the declaration or header (name dom->codom etc.) of the lambda (as part of a let binding for internal
     // lambdas)
-    if (!lam->is_closed()) {
+    if (lam->is_closed())
+        print(func_impls_, "{}", emit_header(lam));
+    else {
         ++tab;
         print(func_impls_, "\n{}", emit_header(lam, true));
-    } else
-        print(func_impls_, "{}", emit_header(lam));
+    }
 
     // Would print temporary variable let bindings if we were to use those (would have to print let bindings to body()
     // in emit_bb())
@@ -326,8 +327,12 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     print(func_impls_, "{}", close_bindings);
 
     // Closes the current lambda
-    tab.lnprint(func_impls_, ")");
-    if (!lam->is_closed()) --tab;
+    if (lam->is_closed()) {
+        tab.lnprint(func_impls_, ")\n\n");
+    } else {
+        tab.lnprint(func_impls_, ")");
+        --tab;
+    }
 }
 
 void Emitter::finalize() {
