@@ -193,6 +193,10 @@ void Emitter::start() {
 
     ostream() << func_decls_.str() << '\n';
     ostream() << func_impls_.str() << '\n';
+
+    // TODO: use pretty(sexpr, line_len) from the egg FFI
+    // to pretty-print the sexpr either based on a switch from the cli
+    // or as default after the sexpr backend has been completed
 }
 
 // TODO: emit domain and codomain seperately for lam and fun

@@ -7,7 +7,7 @@ lam extern _rulesets(): %eqsat.Ruleset =
         %eqsat.math,
     );
 
-// TODO: some application in main doesn't get converted
+// TODO: pow doesn't get emitted by sexpr backend somehow
 fun pow(a b: I32): I32 =
     con pow_cont(v: I32) =
         return (%core.wrap.mul 0 (a, v));

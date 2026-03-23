@@ -6,7 +6,10 @@ lam extern _rulesets(): %eqsat.Ruleset =
         %eqsat.core,
     );
 
-// TODO: get it to work
+// TODO: getting the below error (not sure why)
+// fun foo(mem: %mem.M, x: I32)@((%core.icmp.e  (x, 23I32))): [%mem.M, I32] = return  (mem, %core.wrap.add  0  (x, 1I32));
+// <unknown location>: error: operand 'Π Nat → ★' must be a Type of some level
+
 lam Ptr(T: *): * = %mem.Ptr (T, 0);
 
 let _ = 23;

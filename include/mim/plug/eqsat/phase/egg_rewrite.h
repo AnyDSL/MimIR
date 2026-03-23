@@ -125,6 +125,7 @@ private:
     std::unordered_map<std::string, const Def*> vars_;
     std::unordered_map<std::string, const Lam*> lams_;
 
+    // TODO: use actual driver.sym() symbols instead of strings
     std::unordered_map<std::string, flags_t> sym2flags_;
     std::unordered_map<std::string, const Def*> sym2type_;
 };

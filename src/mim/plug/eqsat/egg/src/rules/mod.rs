@@ -20,7 +20,7 @@ define_language! {
 
         // (var <name> <type>)
         "var" = Var([Id; 2]),
-        // (var <value> [<type>])
+        // (lit <value> [<type>])
         "lit" = Lit(Box<[Id]>),
 
         // (pack <arity> <body>)
