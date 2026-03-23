@@ -7,6 +7,7 @@ set(MIM_PLUGINS
     demo
     direct
     eqsat
+    gpu
     math
     matrix
     mem

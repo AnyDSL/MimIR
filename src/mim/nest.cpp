@@ -81,9 +81,23 @@ const Nest::Node* Nest::lca(const Node* n, const Node* m) {
     while (m->level() < n->level())
         n = n->inest();
     while (n != m) {
-        // TODO support longer dep chains and the possibility to opt out from this
-        if (n->sibl_deps().contains(m)) return n;
-        if (m->sibl_deps().contains(n)) return m;
+        // Walk back sibling dependencies if there is only one user and it is
+        // not part of a mutually recursive loop.
+        // After [eta expansion](mim:EtaExpPhase), any function is either well-known
+        // or only used once. Functions that are only used once do not have arguments,
+        // as all of them get reduced to the expression passed by the single call site.
+        // Walking up unique users is therefore correct, as any direct call from the
+        // immediate nester must be unknown for siblings to be reachable as well, which
+        // is not possible, meaning that control has to go through that single neighbor.
+        // TODO: support the possibility to opt out from this
+        if (!n->is_recursive() && n->sibl_deps<false>().num() == 1) {
+            n = *n->sibl_deps<false>().begin();
+            continue;
+        }
+        if (!m->is_recursive() && m->sibl_deps<false>().num() == 1) {
+            m = *m->sibl_deps<false>().begin();
+            continue;
+        }
         n = n->inest();
         m = m->inest();
     }

@@ -14,7 +14,6 @@ namespace mim::plug::matrix {
 
 namespace {
 
-
 // clang-format off
 absl::flat_hash_map<flags_t, flags_t> axm_to_impl_map = {
     {flags_t(Annex::Base<prod>),      flags_t(Annex::Base<mapRed_prod>)},
@@ -26,7 +25,7 @@ absl::flat_hash_map<flags_t, flags_t> axm_to_impl_map = {
 std::optional<const Def*> internal_function_of_axm(const Axm* axm, const Def* meta_args, const Def* args) {
     auto& world = axm->world();
     if (auto it = axm_to_impl_map.find(axm->flags()); it != axm_to_impl_map.end()) {
-        const Def* spec_fun = world.implicit_app(world.flags2annex().at(it->second), {meta_args});
+        const Def* spec_fun = world.implicit_app(world.flags2annex().at(it->second), meta_args);
         auto ds_fun         = direct::op_cps2ds_dep(spec_fun);
         return world.app(ds_fun, args);
     }

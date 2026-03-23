@@ -267,6 +267,11 @@ const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg) {
     auto [a, b] = arg->projs<2>();
     if (is_commutative(id) && Def::greater(a, b)) std::swap(a, b);
 
+    if (a == b) {
+        if (id & (icmp::e & 0xff)) return world.lit_tt();
+        if (id == ncmp::ne) return world.lit_ff();
+    }
+
     if (auto la = Lit::isa(a)) {
         if (auto lb = Lit::isa(b)) {
             // clang-format off

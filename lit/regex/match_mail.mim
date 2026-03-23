@@ -15,7 +15,6 @@
 // RUN: %t "a@a.de#a"; test $? -eq 2
 // RUN: %t "a@a.de/a"; test $? -eq 2
 
-
 plugin mem;
 plugin core;
 plugin regex;

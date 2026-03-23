@@ -38,19 +38,6 @@ namespace math = mim::plug::math;
 namespace mem  = mim::plug::mem;
 
 namespace {
-bool is_const(const Def* def) {
-    if (def->isa<Bot>()) return true;
-    if (def->isa<Lit>()) return true;
-    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->arity()) && is_const(pack->body());
-
-    if (auto tuple = def->isa<Tuple>()) {
-        auto ops = tuple->ops();
-        return std::ranges::all_of(ops, [](auto def) { return is_const(def); });
-    }
-
-    return false;
-}
-
 const char* math_suffix(const Def* type) {
     if (auto w = math::isa_f(type)) {
         switch (*w) {
@@ -269,7 +256,9 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 std::string Emitter::prepare() {
-    print(func_impls_, "define {} {}(", convert_ret_pi(root()->type()->ret_pi()), id(root()));
+    auto internal = root()->is_external() ? "" : "internal ";
+    auto ret_t    = convert_ret_pi(root()->type()->ret_pi());
+    print(func_impls_, "define {} {} {}(", internal, ret_t, id(root()));
 
     auto vars = root()->vars();
     for (auto sep = ""; auto var : vars.view().rsubspan(1)) {
@@ -427,18 +416,19 @@ void Emitter::emit_epilogue(Lam* lam) {
             auto t_ret = convert_ret_pi(ret_lam->type());
             bb.tail("{} = call {} {}({, })", name, t_ret, v_callee, args);
 
-            for (size_t i = 0, e = ret_lam->num_vars(); i != e; ++i) {
+            for (size_t i = 0, j = 0, e = ret_lam->num_vars(); i != e; ++i) {
                 auto phi = ret_lam->var(i);
                 if (Axm::isa<mem::M>(phi->type())) continue;
 
-                auto namei = name;
+                auto namej = name;
                 if (e > 2) {
-                    namei += '.' + std::to_string(i - 1);
-                    bb.tail("{} = extractvalue {} {}, {}", namei, t_ret, name, i - 1);
+                    namej += '.' + std::to_string(j);
+                    bb.tail("{} = extractvalue {} {}, {}", namej, t_ret, name, j);
                 }
                 assert(!Axm::isa<mem::M>(phi->type()));
-                lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
+                lam2bb_[ret_lam].phis[phi].emplace_back(namej, id(lam, true));
                 locals_[phi] = id(phi);
+                ++j;
             }
         }
 
@@ -458,7 +448,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             return emit(tuple->proj(2, 1));
         }
 
-        if (is_const(tuple)) {
+        if (tuple->is_closed()) {
             bool is_array = tuple->type()->isa<Arr>();
 
             std::string s;
