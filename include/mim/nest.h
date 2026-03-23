@@ -197,6 +197,9 @@ public:
     Nest(Def* root);
     Nest(View<Def*> muts); ///< Constructs a *virtual root* with @p muts as children.
     Nest(World&);          ///< *Virtual root* with all World::externals as children.
+    Nest(const Nest&)     = delete;
+    Nest(Nest&&)          = delete;
+    Nest& operator=(Nest) = delete;
     ///@}
 
     /// @name Getters
