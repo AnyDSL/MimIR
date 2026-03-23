@@ -221,7 +221,6 @@ public:
     auto end() const { return mut2node_.cend(); }
     ///@}
 
-    void assign_postorder_numbers() const;
     template<bool bootstrapping = false>
     static const Node* lca(const Node* n, const Node* m); ///< Least common ancestor of @p n and @p m.
 
@@ -241,6 +240,7 @@ private:
     Node* make_node(Def*, Node* inest = nullptr);
     void calc_sibl_deps(Node*) const;
     void calc_SCCs(Node*) const;
+    void assign_postorder_numbers() const;
 
     Node* operator[](Def* mut) {
         if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second.get();
