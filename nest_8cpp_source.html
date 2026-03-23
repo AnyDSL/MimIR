@@ -122,215 +122,293 @@ $(function(){initNavTree('nest_8cpp_source.html',''); initResizable(true); });
 <div class="contents">
 <a href="nest_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="nest_8h.html">mim/nest.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="world_8h.html">mim/world.h</a>&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;ranges&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim.html">mim</a> {</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="world_8h.html">mim/world.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="foldopen" id="foldopen00007" data-start="{" data-end="}">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">    7</a></span><a class="code hl_function" href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">Nest::Nest</a>(<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* r)</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    : world_(r-&gt;<a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>())</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    , root_(make_node(r)) {</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    populate();</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>}</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;absl/container/flat_hash_set.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim.html">mim</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">using </span>std::ranges::views::reverse;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="}">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">   12</a></span><a class="code hl_function" href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">Nest::Nest</a>(<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* r)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    : world_(r-&gt;<a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>())</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    , root_(make_node(r)) {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    populate();</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
 </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#aa1a16f9ef090ca5caac178ca6b668d51">   13</a></span><a class="code hl_function" href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">Nest::Nest</a>(<a class="code hl_typedef" href="namespacemim.html#a4d6e32c8985b06c92d46bf1c5fa7491a">View&lt;Def*&gt;</a> <a class="code hl_function" href="classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b">muts</a>)</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    : world_(<a class="code hl_function" href="classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b">muts</a>.front()-&gt;<a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>())</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    , root_(make_node(nullptr)) {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> mut : <a class="code hl_function" href="classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b">muts</a>)</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        make_node(mut, root_);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    populate();</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>}</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#aa1a16f9ef090ca5caac178ca6b668d51">   18</a></span><a class="code hl_function" href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">Nest::Nest</a>(<a class="code hl_typedef" href="namespacemim.html#a4d6e32c8985b06c92d46bf1c5fa7491a">View&lt;Def*&gt;</a> <a class="code hl_function" href="classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b">muts</a>)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    : world_(<a class="code hl_function" href="classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b">muts</a>.front()-&gt;<a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>())</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    , root_(make_node(nullptr)) {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> mut : <a class="code hl_function" href="classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b">muts</a>)</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        make_node(mut, root_);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    populate();</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>}</div>
 </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="foldopen" id="foldopen00021" data-start="{" data-end="}">
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#a08053d4366e8a98131a5f12925333228">   21</a></span><a class="code hl_function" href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">Nest::Nest</a>(<a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; <a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>)</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    : world_(<a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    , root_(make_node(nullptr)) {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>.for_each(<span class="keyword">false</span>, [<span class="keyword">this</span>](<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* mut) { make_node(mut, root_); });</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    populate();</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>}</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#a08053d4366e8a98131a5f12925333228">   26</a></span><a class="code hl_function" href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">Nest::Nest</a>(<a class="code hl_class" href="classmim_1_1World.html">World</a>&amp; <a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    : world_(<a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    , root_(make_node(nullptr)) {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>.for_each(<span class="keyword">false</span>, [<span class="keyword">this</span>](<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* mut) { make_node(mut, root_); });</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    populate();</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}</div>
 </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keywordtype">void</span> Nest::populate() {</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    std::queue&lt;Node*&gt; queue;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">root</a>()-&gt;mut())</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        queue.push(root_);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> child : root_-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a">children</a>().<a class="code hl_function" href="structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d">nodes</a>())</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            queue.push(child);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">while</span> (!queue.empty()) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keyword">auto</span> curr_node = <a class="code hl_function" href="namespacemim.html#a0fa4d8ae744818bd552b43dc4c5fa947">pop</a>(queue);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : curr_node-&gt;mut()-&gt;deps()) {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> local_mut : op-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a>()) {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                <span class="keywordflow">if</span> ((*<span class="keyword">this</span>)[local_mut] || !<a class="code hl_function" href="classmim_1_1Nest.html#afb377e96731d77053f870df87d2f8181">contains</a>(local_mut)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                <span class="keywordflow">if</span> (curr_node-&gt;level() &lt; local_mut-&gt;free_vars().size()) {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node = curr_node;; node = node-&gt;inest_) {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                        <span class="keywordflow">if</span> (<span class="keyword">auto</span> var = node-&gt;mut()-&gt;has_var()) {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                            <span class="keywordflow">if</span> (local_mut-&gt;free_vars().contains(var)) {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                queue.push(make_node(local_mut, node));</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                            }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                        }</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                    }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                    uint32_t max = 0;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                    <span class="keyword">auto</span> inest   = root_;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                    <span class="keywordflow">for</span> (<span class="keyword">auto</span> var : local_mut-&gt;free_vars()) {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                        <span class="keywordflow">if</span> (<span class="keyword">auto</span> node = (*<span class="keyword">this</span>)[var-&gt;mut()]; node &amp;&amp; node-&gt;level() &gt; max) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                            max   = node-&gt;level();</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                            inest = node;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                        }</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                    }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                    queue.push(make_node(local_mut, inest));</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        }</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a>* Nest::make_node(<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* mut, <a class="code hl_enumeration" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>* inest) {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">auto</span> node = std::unique_ptr&lt;Node&gt;(<span class="keyword">new</span> <a class="code hl_enumeration" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>(*<span class="keyword">this</span>, mut, inest)); <span class="comment">// can&#39;t use make_unique - c&#39;tor is private</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">auto</span> res  = node.get();</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    mut2node_.emplace(mut, std::move(node));</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">if</span> (mut) {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> var = mut-&gt;has_var()) vars_ = <a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>().<a class="code hl_function" href="classmim_1_1World.html#adecf8737cfcfe1ca0ff8e0e5716be960">vars</a>().insert(vars_, var);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#aa971059ff841ddd3a4de9c30a8a10401">   78</a></span><span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a>* <a class="code hl_function" href="classmim_1_1Nest.html#aa971059ff841ddd3a4de9c30a8a10401">Nest::lca</a>(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* n, <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* m) {</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">while</span> (n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a5ca8a41842e20f1ccf3a9ecb40630546">level</a>() &lt; m-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a5ca8a41842e20f1ccf3a9ecb40630546">level</a>())</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        m = m-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985">inest</a>();</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordflow">while</span> (m-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a5ca8a41842e20f1ccf3a9ecb40630546">level</a>() &lt; n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a5ca8a41842e20f1ccf3a9ecb40630546">level</a>())</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        n = n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985">inest</a>();</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">while</span> (n != m) {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="comment">// Walk back sibling dependencies if there is only one user and it is</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="comment">// not part of a mutually recursive loop.</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="comment">// After [eta expansion](mim:EtaExpPhase), any function is either well-known</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="comment">// or only used once. Functions that are only used once do not have arguments,</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="comment">// as all of them get reduced to the expression passed by the single call site.</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="comment">// Walking up unique users is therefore correct, as any direct call from the</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="comment">// immediate nester must be unknown for siblings to be reachable as well, which</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="comment">// is not possible, meaning that control has to go through that single neighbor.</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="comment">// TODO: support the possibility to opt out from this</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">if</span> (!n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#aa81c36ca3e5a1b8aa646c841bea42351">is_recursive</a>() &amp;&amp; n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a2a29ed570ed6ad81039fa1ad52a9b784">sibl_deps</a>&lt;<span class="keyword">false</span>&gt;().num() == 1) {</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            n = *n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a2a29ed570ed6ad81039fa1ad52a9b784">sibl_deps</a>&lt;<span class="keyword">false</span>&gt;().<a class="code hl_function" href="classmim_1_1Nest.html#ae96bfa6aa34712fdc4fe2e2d322970b6">begin</a>();</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        }</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keywordflow">if</span> (!m-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#aa81c36ca3e5a1b8aa646c841bea42351">is_recursive</a>() &amp;&amp; m-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a2a29ed570ed6ad81039fa1ad52a9b784">sibl_deps</a>&lt;<span class="keyword">false</span>&gt;().num() == 1) {</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            m = *m-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#a2a29ed570ed6ad81039fa1ad52a9b784">sibl_deps</a>&lt;<span class="keyword">false</span>&gt;().<a class="code hl_function" href="classmim_1_1Nest.html#ae96bfa6aa34712fdc4fe2e2d322970b6">begin</a>();</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        }</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        n = n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985">inest</a>();</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        m = m-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985">inest</a>();</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">return</span> n;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keywordtype">void</span> Nest::populate() {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    std::queue&lt;Node*&gt; queue;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">root</a>()-&gt;mut())</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        queue.push(root_);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> child : root_-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a">children</a>().<a class="code hl_function" href="structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d">nodes</a>())</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            queue.push(child);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">while</span> (!queue.empty()) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keyword">auto</span> curr_node = <a class="code hl_function" href="namespacemim.html#a0fa4d8ae744818bd552b43dc4c5fa947">pop</a>(queue);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : curr_node-&gt;mut()-&gt;deps()) {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> local_mut : op-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a>()) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="keywordflow">if</span> ((*<span class="keyword">this</span>)[local_mut] || !<a class="code hl_function" href="classmim_1_1Nest.html#afb377e96731d77053f870df87d2f8181">contains</a>(local_mut)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                <span class="keywordflow">if</span> (curr_node-&gt;level() &lt; local_mut-&gt;free_vars().size()) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                    <span class="keywordflow">for</span> (<span class="keyword">auto</span> node = curr_node;; node = node-&gt;inest_) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                        <span class="keywordflow">if</span> (<span class="keyword">auto</span> var = node-&gt;mut()-&gt;has_var()) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                            <span class="keywordflow">if</span> (local_mut-&gt;free_vars().contains(var)) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                                queue.push(make_node(local_mut, node));</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                            }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                        }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                    }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                    uint32_t max = 0;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                    <span class="keyword">auto</span> inest   = root_;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                    <span class="keywordflow">for</span> (<span class="keyword">auto</span> var : local_mut-&gt;free_vars()) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                        <span class="keywordflow">if</span> (<span class="keyword">auto</span> node = (*<span class="keyword">this</span>)[var-&gt;mut()]; node &amp;&amp; node-&gt;level() &gt; max) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                            max   = node-&gt;level();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                            inest = node;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                        }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                    }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                    queue.push(make_node(local_mut, inest));</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a>* Nest::make_node(<a class="code hl_class" href="classmim_1_1Def.html">Def</a>* mut, <a class="code hl_enumeration" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>* inest) {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">auto</span> node = std::unique_ptr&lt;Node&gt;(<span class="keyword">new</span> <a class="code hl_enumeration" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>(*<span class="keyword">this</span>, mut, inest)); <span class="comment">// can&#39;t use make_unique - c&#39;tor is private</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keyword">auto</span> res  = node.get();</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    mut2node_.emplace(mut, std::move(node));</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">if</span> (mut) {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> var = mut-&gt;has_var()) vars_ = <a class="code hl_function" href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">world</a>().<a class="code hl_function" href="classmim_1_1World.html#adecf8737cfcfe1ca0ff8e0e5716be960">vars</a>().insert(vars_, var);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>}</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#a98607af2d3c8c04ba6e3e7d03dd329f9">   83</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classmim_1_1Nest.html#a98607af2d3c8c04ba6e3e7d03dd329f9">Nest::assign_postorder_numbers</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">root</a>()-&gt;postorder_number_.has_value()) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keyword">auto</span> number = 0;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    std::function&lt;void(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a>*)&gt; visit = [&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a>* node) {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordflow">if</span> (node-&gt;postorder_number_.has_value()) <span class="keywordflow">return</span>; <span class="comment">// already visited</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        node-&gt;postorder_number_ = 0;                     <span class="comment">// mark in progress</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : node-&gt;mut()-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">deps</a>()) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> mut : op-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a>())</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                <span class="keywordflow">if</span> (<span class="keyword">auto</span> succ = node-&gt;nest()[mut]) visit(succ);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        node-&gt;postorder_number_ = ++number;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    };</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">root</a>()-&gt;mut()) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="comment">// not virtual root, visit</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        visit(<a class="code hl_function" href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">root</a>());</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="comment">// virtual root, visit children</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> [_, node] : <a class="code hl_function" href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">root</a>()-&gt;children())</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            visit(node);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <a class="code hl_function" href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">root</a>()-&gt;postorder_number_ = ++number;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="keywordtype">void</span> Nest::calc_sibl_deps(<a class="code hl_enumeration" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>* curr)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordflow">if</span> (curr-&gt;mut()) {</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : curr-&gt;mut()-&gt;deps()) {</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> local_mut : op-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a>()) {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                <span class="keywordflow">if</span> (<span class="keyword">auto</span> local_node = <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="classmim_1_1Nest.html">Nest</a>&amp;<span class="keyword">&gt;</span>(*<span class="keyword">this</span>)[local_mut]) {</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                    <span class="keywordflow">if</span> (local_node == curr)</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                        local_node-&gt;link(local_node);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<span class="keyword">auto</span> inest = local_node-&gt;inest()) {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                        <span class="keywordflow">if</span> (<span class="keyword">auto</span> curr_child = inest-&gt;curr_child) {</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                            assert(inest-&gt;children().contains(curr_child-&gt;mut()));</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                            curr_child-&gt;link(local_node);</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                        }</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                    }</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                }</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>            }</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        }</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> child : curr-&gt;children().nodes()) {</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        curr-&gt;curr_child = child;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        calc_sibl_deps(child);</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        curr-&gt;curr_child = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>}</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="keywordtype">void</span> Nest::calc_SCCs(<a class="code hl_enumeration" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>* curr)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    curr-&gt;calc_SCCs();</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> [_, child] : curr-&gt;children()) {</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        child-&gt;loop_depth_ = child-&gt;is_recursive() ? curr-&gt;loop_depth() + 1 : curr-&gt;loop_depth();</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        calc_SCCs(child);</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>}</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="keywordtype">void</span> Nest::Node::calc_SCCs() {</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    Stack stack;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <span class="keyword">auto</span>&amp; [_, node] : <a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a">children</a>())</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <span class="keywordflow">if</span> (node-&gt;idx_ == Unvisited) i = node-&gt;tarjan(i, <span class="keyword">this</span>, stack);</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>}</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>uint32_t Nest::Node::tarjan(uint32_t i, <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* inest, Stack&amp; stack) {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    this-&gt;idx_ = this-&gt;low_ = i++;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    this-&gt;on_stack_         = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    stack.emplace(<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> bootstrapping&gt;</div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="classmim_1_1Nest.html#a8b83453dfda47591c4b209e319823164">  110</a></span><span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a>* <a class="code hl_function" href="classmim_1_1Nest.html#a8b83453dfda47591c4b209e319823164">Nest::lca</a>(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* n, <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* m) {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">while</span> (n != m) {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="comment">// Nest::lca is also used within with_dominance and should not call it recursively</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (!bootstrapping) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            n-&gt;calc_dominance();</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            m-&gt;calc_dominance();</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        }</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordflow">if</span> (n-&gt;postorder_number_ &lt; m-&gt;postorder_number_)</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            n = n-&gt;idom_ ? n-&gt;idom_ : n-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985">inest</a>();</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (m-&gt;postorder_number_ &lt; n-&gt;postorder_number_)</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            m = m-&gt;idom_ ? m-&gt;idom_ : m-&gt;<a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985">inest</a>();</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    }</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> n;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keywordtype">void</span> Nest::calc_sibl_deps(<a class="code hl_enumeration" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>* curr)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">if</span> (curr-&gt;mut()) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : curr-&gt;mut()-&gt;deps()) {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> local_mut : op-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a>()) {</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                <span class="keywordflow">if</span> (<span class="keyword">auto</span> local_node = <span class="keyword">const_cast&lt;</span><a class="code hl_class" href="classmim_1_1Nest.html">Nest</a>&amp;<span class="keyword">&gt;</span>(*<span class="keyword">this</span>)[local_mut]) {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                    <span class="keywordflow">if</span> (local_node == curr)</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                        local_node-&gt;link(local_node);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<span class="keyword">auto</span> inest = local_node-&gt;inest()) {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                        <span class="keywordflow">if</span> (<span class="keyword">auto</span> curr_child = inest-&gt;curr_child) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                            assert(inest-&gt;children().contains(curr_child-&gt;mut()));</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                            curr_child-&gt;link(local_node);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                        }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                    }</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                }</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>            }</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        }</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    }</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> child : curr-&gt;children().nodes()) {</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        curr-&gt;curr_child = child;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        calc_sibl_deps(child);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        curr-&gt;curr_child = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    }</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>}</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> dep : this-&gt;sibl_deps_.nodes_) {</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordflow">if</span> (dep-&gt;idx_ == Unvisited) i = dep-&gt;tarjan(i, inest, stack);</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">if</span> (dep-&gt;on_stack_) this-&gt;low_ = std::min(this-&gt;low_, dep-&gt;low_);</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    }</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> (this-&gt;idx_ == this-&gt;low_) {</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        inest_-&gt;topo_.emplace_front(std::make_unique&lt;SCC&gt;());</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        SCC* scc = inest_-&gt;topo_.front().get();</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* node;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="keywordtype">int</span> num = 0;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keywordflow">do</span> {</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            node             = <a class="code hl_function" href="namespacemim.html#a0fa4d8ae744818bd552b43dc4c5fa947">pop</a>(stack);</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            node-&gt;on_stack_  = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            node-&gt;recursive_ = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            node-&gt;low_       = this-&gt;idx_;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>            ++num;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            scc-&gt;emplace(node);</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            <span class="keyword">auto</span> [_, ins] = inest_-&gt;SCCs_.emplace(node, scc);</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            assert_unused(ins);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        } <span class="keywordflow">while</span> (node != <span class="keyword">this</span>);</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="keywordflow">if</span> (num == 1 &amp;&amp; !this-&gt;sibl_deps().<a class="code hl_function" href="classmim_1_1Nest.html#afb377e96731d77053f870df87d2f8181">contains</a>(<span class="keyword">this</span>)) this-&gt;recursive_ = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    }</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordflow">return</span> i;</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>}</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>} <span class="comment">// namespace mim</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="keywordtype">void</span> Nest::calc_SCCs(<a class="code hl_enumeration" href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">Node</a>* curr)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    curr-&gt;calc_SCCs();</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> [_, child] : curr-&gt;children()) {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        child-&gt;loop_depth_ = child-&gt;is_recursive() ? curr-&gt;loop_depth() + 1 : curr-&gt;loop_depth();</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        calc_SCCs(child);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    }</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>}</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="keywordtype">void</span> Nest::Node::calc_SCCs() {</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    Stack stack;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; <span class="keyword">auto</span>&amp; [_, node] : <a class="code hl_function" href="classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a">children</a>())</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="keywordflow">if</span> (node-&gt;idx_ == Unvisited) i = node-&gt;tarjan(i, <span class="keyword">this</span>, stack);</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>uint32_t Nest::Node::tarjan(uint32_t i, <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* inest, Stack&amp; stack) {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    this-&gt;idx_ = this-&gt;low_ = i++;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    this-&gt;on_stack_         = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    stack.emplace(<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> dep : this-&gt;sibl_deps_.nodes_) {</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        <span class="keywordflow">if</span> (dep-&gt;idx_ == Unvisited) i = dep-&gt;tarjan(i, inest, stack);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordflow">if</span> (dep-&gt;on_stack_) this-&gt;low_ = std::min(this-&gt;low_, dep-&gt;low_);</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    }</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">if</span> (this-&gt;idx_ == this-&gt;low_) {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        inest_-&gt;topo_.emplace_front(std::make_unique&lt;SCC&gt;());</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        SCC* scc = inest_-&gt;topo_.front().get();</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* node;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="keywordtype">int</span> num = 0;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        <span class="keywordflow">do</span> {</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            node             = <a class="code hl_function" href="namespacemim.html#a0fa4d8ae744818bd552b43dc4c5fa947">pop</a>(stack);</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>            node-&gt;on_stack_  = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            node-&gt;recursive_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>            node-&gt;low_       = this-&gt;idx_;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>            ++num;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>            scc-&gt;emplace(node);</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            <span class="keyword">auto</span> [_, ins] = inest_-&gt;SCCs_.emplace(node, scc);</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            assert_unused(ins);</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        } <span class="keywordflow">while</span> (node != <span class="keyword">this</span>);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">if</span> (num == 1 &amp;&amp; !this-&gt;sibl_deps().<a class="code hl_function" href="classmim_1_1Nest.html#afb377e96731d77053f870df87d2f8181">contains</a>(<span class="keyword">this</span>)) this-&gt;recursive_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordflow">return</span> i;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>}</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment"></span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">/// Calculates dominance using Cooper-Harvey-Kennedy algorithm</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">/// from Cooper et al, &quot;A Simple, Fast Dominance Algorithm&quot;.</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">/// https://www.clear.rice.edu/comp512/Lectures/Papers/TR06-33870-Dom.pdf</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="keyword">const</span> Nest::Node* Nest::Node::calc_dominance()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">if</span> (idom_ || is_root() || !inest()-&gt;mut()) <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    nest().assign_postorder_numbers();</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">if</span> (!inest()-&gt;mut()) idom_ = inest();</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="comment">// Holds all siblings in reverse post-order coming from the parent</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    absl::flat_hash_set&lt;const Node*&gt; visited;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <a class="code hl_function" href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">Vector&lt;const Node*&gt;</a> <a class="code hl_function" href="classmim_1_1Nest.html#a619bc4de18e21d5d585355f4beaf2769">nodes</a>;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="comment">// Initialize entry nodes directly referenced by the parent</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : inest()-&gt;mut()-&gt;deps()) {</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> local_mut : <a class="code hl_function" href="namespacemim_1_1plug_1_1core.html#a927f40ea1451c951c7e434c881f2f6ee">op</a>-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a>())</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> node = nest()[local_mut]; node &amp;&amp; node-&gt;inest() == inest()) node-&gt;idom_ = inest();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    std::function&lt;void(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>*)&gt; visit = [&amp;](<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* node) {</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="keywordflow">if</span> (visited.contains(node)) <span class="keywordflow">return</span>; <span class="comment">// already visited</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        visited.insert(node);</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> child : node-&gt;sibl_deps())</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>            visit(child);</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <a class="code hl_function" href="classmim_1_1Nest.html#a619bc4de18e21d5d585355f4beaf2769">nodes</a>.push_back(node);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    };</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="comment">// Traverse siblings in postorder</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : inest()-&gt;mut()-&gt;deps()) {</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> mut : <a class="code hl_function" href="namespacemim_1_1plug_1_1core.html#a927f40ea1451c951c7e434c881f2f6ee">op</a>-&gt;<a class="code hl_function" href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">local_muts</a>())</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> node = nest()[mut]; node &amp;&amp; node-&gt;inest() == inest()) visit(node);</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    }</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="comment">// Actual dominance algorithm</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordflow">for</span> (<span class="keywordtype">bool</span> todo = <span class="keyword">true</span>; todo;) {</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        todo = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> node : <a class="code hl_function" href="classmim_1_1Nest.html#a619bc4de18e21d5d585355f4beaf2769">nodes</a> | reverse) {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>            <span class="comment">// skip entry nodes</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            <span class="keywordflow">if</span> (node-&gt;idom_ == inest()) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>            <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>* new_idom = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> user : node-&gt;sibl_deps&lt;<span class="keyword">false</span>&gt;())</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                <span class="keywordflow">if</span> (user-&gt;idom_) new_idom = new_idom ? <a class="code hl_function" href="classmim_1_1Nest.html#a8b83453dfda47591c4b209e319823164">Nest::lca&lt;true&gt;</a>(new_idom, user) : user;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>            <span class="keywordflow">if</span> (node-&gt;idom_ != new_idom) {</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                node-&gt;idom_ = new_idom;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                todo        = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            }</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        }</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keywordflow">return</span> <span class="keyword">this</span>;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>}</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="keyword">template</span> <span class="keyword">const</span> Nest::Node* <a class="code hl_function" href="classmim_1_1Nest.html#a8b83453dfda47591c4b209e319823164">Nest::lca&lt;true&gt;</a>(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>*, <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>*);</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="keyword">template</span> <span class="keyword">const</span> Nest::Node* <a class="code hl_function" href="classmim_1_1Nest.html#a8b83453dfda47591c4b209e319823164">Nest::lca&lt;false&gt;</a>(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>*, <span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Nest_1_1Node.html">Node</a>*);</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>} <span class="comment">// namespace mim</span></div>
 <div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00251">def.h:251</a></div></div>
+<div class="ttc" id="aclassmim_1_1Def_html_a20e9e09e55fc9b46a6f74423f2c5d35d"><div class="ttname"><a href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d">mim::Def::deps</a></div><div class="ttdeci">Defs deps() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00469">def.cpp:469</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_a8a6a0861bea1acfecbf8e2260774b212"><div class="ttname"><a href="classmim_1_1Def.html#a8a6a0861bea1acfecbf8e2260774b212">mim::Def::local_muts</a></div><div class="ttdeci">Muts local_muts() const</div><div class="ttdoc">Mutables reachable by following immutable deps(); mut-&gt;local_muts() is by definition the set { mut }...</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00331">def.cpp:331</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html">mim::Nest::Node</a></div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00013">nest.h:13</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html_a2a29ed570ed6ad81039fa1ad52a9b784"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html#a2a29ed570ed6ad81039fa1ad52a9b784">mim::Nest::Node::sibl_deps</a></div><div class="ttdeci">auto &amp; sibl_deps()</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00108">nest.h:108</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html_a5ca8a41842e20f1ccf3a9ecb40630546"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html#a5ca8a41842e20f1ccf3a9ecb40630546">mim::Nest::Node::level</a></div><div class="ttdeci">uint32_t level() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00026">nest.h:26</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html_aa81c36ca3e5a1b8aa646c841bea42351"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html#aa81c36ca3e5a1b8aa646c841bea42351">mim::Nest::Node::is_recursive</a></div><div class="ttdeci">bool is_recursive() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00131">nest.h:131</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html_aabfd78eeaa88bfaa0ce7f9dbb08b751a"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a">mim::Nest::Node::children</a></div><div class="ttdeci">const Children &amp; children() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00068">nest.h:68</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html_af0dd6fc13e1e752eb7864b6c346fe985"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985">mim::Nest::Node::inest</a></div><div class="ttdeci">const Node * inest() const</div><div class="ttdoc">Immediate nester/parent of this Node.</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00019">nest.h:19</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html"><div class="ttname"><a href="classmim_1_1Nest.html">mim::Nest</a></div><div class="ttdoc">Builds a nesting tree of all mutables‍/binders.</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00011">nest.h:11</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html_a626930a7a336bc076b64819c7fc5209e"><div class="ttname"><a href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">mim::Nest::world</a></div><div class="ttdeci">World &amp; world() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00186">nest.h:186</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html_aa971059ff841ddd3a4de9c30a8a10401"><div class="ttname"><a href="classmim_1_1Nest.html#aa971059ff841ddd3a4de9c30a8a10401">mim::Nest::lca</a></div><div class="ttdeci">static const Node * lca(const Node *n, const Node *m)</div><div class="ttdoc">Least common ancestor of n and m.</div><div class="ttdef"><b>Definition</b> <a href="#l00078">nest.cpp:78</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html_aaf12b333534fe887264a7abb4317a66b"><div class="ttname"><a href="classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b">mim::Nest::muts</a></div><div class="ttdeci">auto muts() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00197">nest.h:197</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html_ac099472ee5301d183779c4c70d2b7ef3"><div class="ttname"><a href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">mim::Nest::root</a></div><div class="ttdeci">const Node * root() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00187">nest.h:187</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html_ad3b42fbd77a9cac91221689797cad7d9"><div class="ttname"><a href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">mim::Nest::Nest</a></div><div class="ttdeci">Nest(Def *root)</div><div class="ttdef"><b>Definition</b> <a href="#l00007">nest.cpp:7</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html_ae96bfa6aa34712fdc4fe2e2d322970b6"><div class="ttname"><a href="classmim_1_1Nest.html#ae96bfa6aa34712fdc4fe2e2d322970b6">mim::Nest::begin</a></div><div class="ttdeci">auto begin() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00205">nest.h:205</a></div></div>
-<div class="ttc" id="aclassmim_1_1Nest_html_afb377e96731d77053f870df87d2f8181"><div class="ttname"><a href="classmim_1_1Nest.html#afb377e96731d77053f870df87d2f8181">mim::Nest::contains</a></div><div class="ttdeci">bool contains(const Def *def) const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00189">nest.h:189</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html">mim::Nest::Node</a></div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00016">nest.h:16</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html_aabfd78eeaa88bfaa0ce7f9dbb08b751a"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a">mim::Nest::Node::children</a></div><div class="ttdeci">const Children &amp; children() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00071">nest.h:71</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_1_1Node_html_af0dd6fc13e1e752eb7864b6c346fe985"><div class="ttname"><a href="classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985">mim::Nest::Node::inest</a></div><div class="ttdeci">const Node * inest() const</div><div class="ttdoc">Immediate nester/parent of this Node.</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00022">nest.h:22</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html"><div class="ttname"><a href="classmim_1_1Nest.html">mim::Nest</a></div><div class="ttdoc">Builds a nesting tree of all mutables‍/binders.</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00014">nest.h:14</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html_a619bc4de18e21d5d585355f4beaf2769"><div class="ttname"><a href="classmim_1_1Nest.html#a619bc4de18e21d5d585355f4beaf2769">mim::Nest::nodes</a></div><div class="ttdeci">auto nodes() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00219">nest.h:219</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html_a626930a7a336bc076b64819c7fc5209e"><div class="ttname"><a href="classmim_1_1Nest.html#a626930a7a336bc076b64819c7fc5209e">mim::Nest::world</a></div><div class="ttdeci">World &amp; world() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00207">nest.h:207</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html_a8b83453dfda47591c4b209e319823164"><div class="ttname"><a href="classmim_1_1Nest.html#a8b83453dfda47591c4b209e319823164">mim::Nest::lca</a></div><div class="ttdeci">static const Node * lca(const Node *n, const Node *m)</div><div class="ttdoc">Least common ancestor of n and m.</div><div class="ttdef"><b>Definition</b> <a href="#l00110">nest.cpp:110</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html_a98607af2d3c8c04ba6e3e7d03dd329f9"><div class="ttname"><a href="classmim_1_1Nest.html#a98607af2d3c8c04ba6e3e7d03dd329f9">mim::Nest::assign_postorder_numbers</a></div><div class="ttdeci">void assign_postorder_numbers() const</div><div class="ttdef"><b>Definition</b> <a href="#l00083">nest.cpp:83</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html_aaf12b333534fe887264a7abb4317a66b"><div class="ttname"><a href="classmim_1_1Nest.html#aaf12b333534fe887264a7abb4317a66b">mim::Nest::muts</a></div><div class="ttdeci">auto muts() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00218">nest.h:218</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html_ac099472ee5301d183779c4c70d2b7ef3"><div class="ttname"><a href="classmim_1_1Nest.html#ac099472ee5301d183779c4c70d2b7ef3">mim::Nest::root</a></div><div class="ttdeci">const Node * root() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00208">nest.h:208</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html_ad3b42fbd77a9cac91221689797cad7d9"><div class="ttname"><a href="classmim_1_1Nest.html#ad3b42fbd77a9cac91221689797cad7d9">mim::Nest::Nest</a></div><div class="ttdeci">Nest(Def *root)</div><div class="ttdef"><b>Definition</b> <a href="#l00012">nest.cpp:12</a></div></div>
+<div class="ttc" id="aclassmim_1_1Nest_html_afb377e96731d77053f870df87d2f8181"><div class="ttname"><a href="classmim_1_1Nest.html#afb377e96731d77053f870df87d2f8181">mim::Nest::contains</a></div><div class="ttdeci">bool contains(const Def *def) const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00210">nest.h:210</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html"><div class="ttname"><a href="classmim_1_1World.html">mim::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of MimIR nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00031">world.h:31</a></div></div>
 <div class="ttc" id="aclassmim_1_1World_html_adecf8737cfcfe1ca0ff8e0e5716be960"><div class="ttname"><a href="classmim_1_1World.html#adecf8737cfcfe1ca0ff8e0e5716be960">mim::World::vars</a></div><div class="ttdeci">auto &amp; vars()</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00583">world.h:583</a></div></div>
+<div class="ttc" id="anamespacemim_1_1plug_1_1core_html_a927f40ea1451c951c7e434c881f2f6ee"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html#a927f40ea1451c951c7e434c881f2f6ee">mim::plug::core::op</a></div><div class="ttdeci">const Def * op(trait o, const Def *type)</div><div class="ttdef"><b>Definition</b> <a href="core_8h_source.html#l00033">core.h:33</a></div></div>
 <div class="ttc" id="anamespacemim_html"><div class="ttname"><a href="namespacemim.html">mim</a></div><div class="ttdef"><b>Definition</b> <a href="ast_8h_source.html#l00014">ast.h:14</a></div></div>
 <div class="ttc" id="anamespacemim_html_a0fa4d8ae744818bd552b43dc4c5fa947"><div class="ttname"><a href="namespacemim.html#a0fa4d8ae744818bd552b43dc4c5fa947">mim::pop</a></div><div class="ttdeci">auto pop(S &amp;s) -&gt; decltype(s.top(), typename S::value_type())</div><div class="ttdef"><b>Definition</b> <a href="util_8h_source.html#l00083">util.h:83</a></div></div>
 <div class="ttc" id="anamespacemim_html_a4d6e32c8985b06c92d46bf1c5fa7491a"><div class="ttname"><a href="namespacemim.html#a4d6e32c8985b06c92d46bf1c5fa7491a">mim::View</a></div><div class="ttdeci">Span&lt; const T, N &gt; View</div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00098">span.h:98</a></div></div>
 <div class="ttc" id="anamespacemim_html_afb12dbffaaa27bca46f171517d96256d"><div class="ttname"><a href="namespacemim.html#afb12dbffaaa27bca46f171517d96256d">mim::Node</a></div><div class="ttdeci">Node</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00112">def.h:112</a></div></div>
+<div class="ttc" id="anamespacemim_html_afca0bb4c47e185182e4fc7ad6bcec3a1"><div class="ttname"><a href="namespacemim.html#afca0bb4c47e185182e4fc7ad6bcec3a1">mim::Vector</a></div><div class="ttdeci">Vector(I, I, A=A()) -&gt; Vector&lt; typename std::iterator_traits&lt; I &gt;::value_type, Default_Inlined_Size&lt; typename std::iterator_traits&lt; I &gt;::value_type &gt;, A &gt;</div></div>
 <div class="ttc" id="anest_8h_html"><div class="ttname"><a href="nest_8h.html">nest.h</a></div></div>
-<div class="ttc" id="astructmim_1_1Nest_1_1Node_1_1Children_html_acfc4c3e6048a588e5a10b0565937796d"><div class="ttname"><a href="structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d">mim::Nest::Node::Children::nodes</a></div><div class="ttdeci">auto nodes() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00038">nest.h:38</a></div></div>
+<div class="ttc" id="astructmim_1_1Nest_1_1Node_1_1Children_html_acfc4c3e6048a588e5a10b0565937796d"><div class="ttname"><a href="structmim_1_1Nest_1_1Node_1_1Children.html#acfc4c3e6048a588e5a10b0565937796d">mim::Nest::Node::Children::nodes</a></div><div class="ttdeci">auto nodes() const</div><div class="ttdef"><b>Definition</b> <a href="nest_8h_source.html#l00041">nest.h:41</a></div></div>
 <div class="ttc" id="aworld_8h_html"><div class="ttname"><a href="world_8h.html">world.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

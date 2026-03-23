@@ -5,6 +5,7 @@ var classmim_1_1Nest_1_1Node =
     [ "SCC", "classmim_1_1Nest_1_1Node.html#acbe7fe8d7710b145f48364b5c0ce7c72", null ],
     [ "children", "classmim_1_1Nest_1_1Node.html#ae93dcb002e841ab5e3660b44c63cfdd9", null ],
     [ "children", "classmim_1_1Nest_1_1Node.html#aabfd78eeaa88bfaa0ce7f9dbb08b751a", null ],
+    [ "idom", "classmim_1_1Nest_1_1Node.html#ac06dfb9e97477a73e34fba4684cdbf02", null ],
     [ "inest", "classmim_1_1Nest_1_1Node.html#af0dd6fc13e1e752eb7864b6c346fe985", null ],
     [ "is_directly_recursive", "classmim_1_1Nest_1_1Node.html#ae2e265b880bc9c14348f8eeb3c38eec1", null ],
     [ "is_mutually_recursive", "classmim_1_1Nest_1_1Node.html#ae7bc3d2bb2a18017ff6a9a18ca529f0c", null ],

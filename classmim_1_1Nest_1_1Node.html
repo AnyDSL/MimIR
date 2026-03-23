@@ -189,6 +189,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae7bc3d2bb2a18017ff6a9a18ca529f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2e265b880bc9c14348f8eeb3c38eec1" id="r_ae2e265b880bc9c14348f8eeb3c38eec1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2e265b880bc9c14348f8eeb3c38eec1">is_directly_recursive</a> () const</td></tr>
 <tr class="separator:ae2e265b880bc9c14348f8eeb3c38eec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Dominance</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a href="https://en.wikipedia.org/wiki/Dominator_(graph_theory)">Dominance</a> relation for children in connected components.</p>
+<p>This is used to transform first order programs into structured form in the [sflow](mim::plug::sflow) plugin and for late code placement in [<a class="el" href="classmim_1_1Nest.html#a8b83453dfda47591c4b209e319823164" title="Least common ancestor of n and m.">Nest::lca</a>]. </p>
+</div></td></tr>
+<tr class="memitem:ac06dfb9e97477a73e34fba4684cdbf02" id="r_ac06dfb9e97477a73e34fba4684cdbf02"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac06dfb9e97477a73e34fba4684cdbf02">idom</a> () const</td></tr>
+<tr class="separator:ac06dfb9e97477a73e34fba4684cdbf02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -197,7 +203,7 @@ Friends</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00013">13</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00016">16</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="acbe7fe8d7710b145f48364b5c0ce7c72" name="acbe7fe8d7710b145f48364b5c0ce7c72"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acbe7fe8d7710b145f48364b5c0ce7c72">&#9670;&#160;</a></span>SCC</h2>
@@ -213,7 +219,7 @@ Friends</h2></td></tr>
 
 <p>Strongly Connected Component. </p>
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00123">123</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00126">126</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
 </div>
 </div>
@@ -241,7 +247,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00069">69</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00072">72</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
 </div>
 </div>
@@ -268,7 +274,34 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00068">68</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00071">71</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+
+</div>
+</div>
+<a id="ac06dfb9e97477a73e34fba4684cdbf02" name="ac06dfb9e97477a73e34fba4684cdbf02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac06dfb9e97477a73e34fba4684cdbf02">&#9670;&#160;</a></span>idom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto mim::Nest::Node::idom </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00144">144</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
 </div>
 </div>
@@ -297,9 +330,9 @@ Friends</h2></td></tr>
 
 <p>Immediate nester/parent of this <a class="el" href="classmim_1_1Nest_1_1Node.html">Node</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00019">19</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00022">22</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8cpp_source.html#l00078">mim::Nest::lca()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8cpp_source.html#l00110">mim::Nest::lca()</a>.</p>
 
 </div>
 </div>
@@ -326,9 +359,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00133">133</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00136">136</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00131">is_recursive()</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00134">is_recursive()</a>.</p>
 
 </div>
 </div>
@@ -355,9 +388,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00132">132</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00135">135</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00131">is_recursive()</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00134">is_recursive()</a>.</p>
 
 </div>
 </div>
@@ -384,9 +417,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00131">131</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00134">134</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00133">is_directly_recursive()</a>, <a class="el" href="nest_8h_source.html#l00132">is_mutually_recursive()</a>, and <a class="el" href="nest_8cpp_source.html#l00078">mim::Nest::lca()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00136">is_directly_recursive()</a>, and <a class="el" href="nest_8h_source.html#l00135">is_mutually_recursive()</a>.</p>
 
 </div>
 </div>
@@ -413,9 +446,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00020">20</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00023">23</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00022">mut()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00025">mut()</a>.</p>
 
 </div>
 </div>
@@ -442,9 +475,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00026">26</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="nest_8cpp_source.html#l00078">mim::Nest::lca()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00029">29</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
 </div>
 </div>
@@ -471,7 +502,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00027">27</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00030">30</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
 </div>
 </div>
@@ -500,11 +531,11 @@ Friends</h2></td></tr>
 
 <p>The mutable capsulated in this <a class="el" href="classmim_1_1Nest_1_1Node.html">Node</a> or <code>nullptr</code>, if it's a <em>virtual root</em> comprising several <a class="el" href="classmim_1_1Nest_1_1Node.html">Node</a>s. </p>
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00022">22</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00025">25</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00020">is_root()</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00023">is_root()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00046">mim::Nest::Node::Children::contains()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00022">mim::plug::clos::free_defs()</a>, <a class="el" href="nest_8h_source.html#l00017">name()</a>, <a class="el" href="nest_8h_source.html#l00045">mim::Nest::Node::Children::operator[]()</a>, and <a class="el" href="schedule_8cpp_source.html#l00105">mim::post_order()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00049">mim::Nest::Node::Children::contains()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00022">mim::plug::clos::free_defs()</a>, <a class="el" href="nest_8h_source.html#l00020">name()</a>, <a class="el" href="nest_8h_source.html#l00048">mim::Nest::Node::Children::operator[]()</a>, and <a class="el" href="schedule_8cpp_source.html#l00105">mim::post_order()</a>.</p>
 
 </div>
 </div>
@@ -531,9 +562,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00017">17</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00020">20</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00022">mut()</a>, and <a class="el" href="def_8cpp_source.html#l00578">mim::Def::unique_name()</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00025">mut()</a>, and <a class="el" href="def_8cpp_source.html#l00578">mim::Def::unique_name()</a>.</p>
 
 </div>
 </div>
@@ -560,11 +591,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00018">18</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00021">21</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00174">Nest</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00192">Nest</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00108">sibl_deps()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00111">sibl_deps()</a>.</p>
 
 </div>
 </div>
@@ -591,7 +622,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00129">129</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00132">132</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
 </div>
 </div>
@@ -620,11 +651,11 @@ template&lt;bool Forward = true&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00108">108</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00111">111</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00018">nest()</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00021">nest()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8cpp_source.html#l00078">mim::Nest::lca()</a>, and <a class="el" href="nest_8h_source.html#l00117">sibl_deps()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00120">sibl_deps()</a>.</p>
 
 </div>
 </div>
@@ -653,9 +684,9 @@ template&lt;bool Forward = true&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00117">117</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00120">120</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00108">sibl_deps()</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00111">sibl_deps()</a>.</p>
 
 </div>
 </div>
@@ -684,7 +715,7 @@ template&lt;bool Forward = true&gt; </div>
 
 <p>Topological sorting of all SCCs. </p>
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00130">130</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00133">133</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
 </div>
 </div>
@@ -709,11 +740,11 @@ template&lt;bool Forward = true&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00174">174</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nest_8h_source.html#l00192">192</a> of file <a class="el" href="nest_8h_source.html">nest.h</a>.</p>
 
-<p class="reference">References <a class="el" href="nest_8h_source.html#l00174">Nest</a>.</p>
+<p class="reference">References <a class="el" href="nest_8h_source.html#l00192">Nest</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00174">Nest</a>, and <a class="el" href="nest_8h_source.html#l00018">nest()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="nest_8h_source.html#l00192">Nest</a>, and <a class="el" href="nest_8h_source.html#l00021">nest()</a>.</p>
 
 </div>
 </div>
