@@ -6,7 +6,6 @@ var classmim_1_1Nest =
     [ "Nest", "classmim_1_1Nest.html#a08053d4366e8a98131a5f12925333228", null ],
     [ "Nest", "classmim_1_1Nest.html#af81c6f1257eac51bf6060a64dba77073", null ],
     [ "Nest", "classmim_1_1Nest.html#a135ef8fe82ebe23761ba300dfb367758", null ],
-    [ "assign_postorder_numbers", "classmim_1_1Nest.html#a98607af2d3c8c04ba6e3e7d03dd329f9", null ],
     [ "begin", "classmim_1_1Nest.html#ae96bfa6aa34712fdc4fe2e2d322970b6", null ],
     [ "contains", "classmim_1_1Nest.html#afb377e96731d77053f870df87d2f8181", null ],
     [ "dot", "classmim_1_1Nest.html#a96196cd341593fd85f653b8b02e60417", null ],
