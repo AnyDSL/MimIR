@@ -307,6 +307,8 @@ std::string Emitter::prepare() {
     auto vars = root()->vars();
     for (auto sep = ""; auto var : vars.view().rsubspan(1)) {
         if (Axm::isa<mem::M>(var->type())) continue;
+        if (auto arr = var->type()->isa<Arr>())
+            if (is_simd(arr->body())) convert(arr->body()); // pre-add input vector to cache
         auto name    = id(var);
         locals_[var] = name;
         print(func_impls_, "{}{} {}", sep, convert(var->type()), name);

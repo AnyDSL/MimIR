@@ -1,5 +1,6 @@
 #pragma once
 
+#include "mim/def.h"
 #include "mim/phase.h"
 #include "mim/schedule.h"
 #include "mim/world.h"
