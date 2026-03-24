@@ -45,7 +45,10 @@ Tok Lexer::lex() {
         if (accept( ')')) return tok(Tag::D_paren_r);
         if (accept( '[')) return tok(Tag::D_brckt_l);
         if (accept( ']')) return tok(Tag::D_brckt_r);
-        if (accept( '{')) return tok(Tag::D_brace_l);
+        if (accept( '{')) {
+            if (accept('|')) return tok(Tag::D_curly_l);
+            return tok(Tag::D_brace_l);
+        }
         if (accept( '}')) return tok(Tag::D_brace_r);
         if (accept(U'⦃')) return tok(Tag::D_curly_l);
         if (accept(U'⦄')) return tok(Tag::D_curly_r);
@@ -79,7 +82,10 @@ Tok Lexer::lex() {
         if (accept( '$')) return tok(Tag::T_dollar);
         if (accept( '#')) return tok(Tag::T_extract);
         if (accept(U'λ')) return tok(Tag::T_lm);
-        if (accept( '|')) return tok(Tag::T_pipe);
+        if (accept( '|')) {
+            if (accept('}')) return tok(Tag::D_curly_r);
+            return tok(Tag::T_pipe);
+        }
         if (accept( ';')) return tok(Tag::T_semicolon);
         if (accept(U'★')) return tok(Tag::T_star);
         if (accept( '*')) return tok(Tag::T_star);
