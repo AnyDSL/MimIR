@@ -41,8 +41,6 @@ private:
         const Def* trace_load(const Def*, const Def*);
 
         Def2Def lattice_;
-
-        DefMap<Def2Def> live_slots_;
     };
 
 public:

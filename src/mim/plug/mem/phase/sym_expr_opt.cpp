@@ -24,6 +24,13 @@ const Def* isa_gvn_proxy(const Def* def) {
     return nullptr;
 }
 
+const Def* isa_slot_proxy(const Def* def) {
+    if (auto mem = def->isa<Proxy>())
+        if (mem->tag() == PROXY_SLOT)
+            return mem;
+    return nullptr;
+}
+
 Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
     map(mut, mut);
 
@@ -58,6 +65,7 @@ const Def* SymExprOpt::Analysis::propagate(const Def* var, const Def* def) {
     todo_ = true;
     DLOG("cannot propagate {}, trying GVN", var);
     if (cur->isa<Bot>()) return i->second = def;
+    if (isa_slot_proxy(var)) return i->second = var; // TODO: gvn for slot proxies
     ELOG("marking {} for gvn", var);
     return i->second = nullptr; // we reached top for propagate; nullptr marks this to bundle for GVN
 }
@@ -135,10 +143,21 @@ const Def* SymExprOpt::Analysis::trace_load(const Def* mem, const Def* ptr) {
         return trace_load(extract->tuple(), ptr);
     } else {
         if (auto var = mem->isa<Var>()) {
-            // todo: introduce new var here
+            ELOG("tracing reached a mem which is a var of {}", var->mut());
+            if (auto i = lattice_.find(var->mut()); i != lattice_.end()) {
+                if (auto slot_proxy = mem_proxy_lookup(i->second, ptr)) {
+                    if (auto i = lattice_.find(slot_proxy); i != lattice_.end()) {
+                        auto val = i->second;
+                        ELOG("at {}, {} is {}", var->mut(), ptr, val);
+                        return val;
+                    }
+                }
+            }
+
+            // introduce new proxy var for this slot
             auto pointee_type = ptr->type()->op(1)->op(0);
             auto [i, ins_lattice] = lattice_.emplace(var->mut(), mem_proxy_empty(var));
-            auto slot_proxy = mem->world().proxy(pointee_type, {}, 0, PROXY_SLOT);
+            auto slot_proxy = mem->world().proxy(pointee_type, {var, ptr}, 0, PROXY_SLOT);
             auto [mem_proxy, ins] = mem_proxy_emplace(i->second, ptr, slot_proxy);
             i->second = mem_proxy;
             if (ins) {
@@ -151,6 +170,7 @@ const Def* SymExprOpt::Analysis::trace_load(const Def* mem, const Def* ptr) {
 }
 
 const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
+    // TODO: this does not cover branches i think?
     if (auto store = Axm::isa<mem::store>(app)) {
         auto [mem, ptr, val] = store->args<3>();
         auto abstr_mem = rewrite(mem);
@@ -168,8 +188,19 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         ELOG("found a load, for {}, value is {}", ptr, trace_load(mem, ptr));
         ELOG("after the trace, lattice:");
         for (auto [k, v] : lattice_)
-            if (k != v)
+            if (k != v) {
                 ELOG("{} -> {v}", k, v);
+                if (auto mem_proxy = isa_mem_proxy(v)) {
+                    ELOG("    with slots:");
+                    for (auto op : mem_proxy->ops() | std::views::drop(1)) {
+                        auto [_, slot] = op->projs<2>();
+                        if (auto i = lattice_.find(slot); i != lattice_.end()) {
+                            ELOG("    {} -> {}", slot, i->second);
+                        }
+                    }
+                }
+            }
+
     } else if (auto slot = Axm::isa<mem::slot>(app)) {
         ELOG("found a slot");
         auto [mem, id] = slot->args<2>();
@@ -177,9 +208,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         auto abstr_mem = rewrite(mem);
         auto abstr_id = rewrite(id);
     } else if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
-        ELOG("live_slots for {}:", lam);
-        for (auto [slot, thing] : live_slots_[lam])
-            ELOG("{} {}", slot, thing);
+        ELOG("found application of {}", lam);
 
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
@@ -201,6 +230,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
                     auto proxy = i_mem->second;
                     for (auto kv : proxy->ops() | std::views::drop(1)) {
                         auto [slot, val] = kv->projs<2>();
+                        ELOG("tracing slot {} for call of {}", slot, lam);
                         auto traced = trace_load(app->targ(i), slot);
                         auto abstr = rewrite(traced ? traced: world().bot(val->type()));
                         slot_vars.push_back(propagate(val, abstr));
