@@ -2,12 +2,31 @@
 
 #include <absl/container/fixed_array.h>
 
+#include "mim/def.h"
+
 #include "mim/plug/mem/mem.h"
 
 namespace mim::plug::mem::phase {
 
+enum {
+    Proxy_GVN,
+    Proxy_Slot,
+};
+
+const Def* isa_gvn_proxy(const Def* def) {
+    if (auto mem = def->isa<Proxy>())
+        if (mem->tag() == Proxy_GVN) return mem;
+    return nullptr;
+}
+
+const Def* isa_slot_proxy(const Def* def) {
+    if (auto mem = def->isa<Proxy>())
+        if (mem->tag() == Proxy_Slot) return mem;
+    return nullptr;
+}
+
 Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
-    current_mut_.push_back(mut);
+    mut_stack_.push_back(mut);
     DLOG("entering {}", mut);
     map(mut, mut);
 
@@ -24,7 +43,7 @@ Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
     for (auto d : mut->deps())
         rewrite(d);
 
-    current_mut_.pop_back();
+    mut_stack_.pop_back();
     DLOG("leaving {}", mut);
     return mut;
 }
@@ -38,7 +57,7 @@ const Def* SymExprOpt::Analysis::propagate(const Def* var, const Def* def) {
     }
 
     auto cur = i->second;
-    if (!cur || def->isa<Bot>() || cur == def || cur == var || cur->isa<Proxy>()) return cur;
+    if (!cur || def->isa<Bot>() || cur == def || cur == var || isa_gvn_proxy(cur)) return cur;
 
     todo_ = true;
     DLOG("cannot propagate {}, trying GVN", var);
@@ -50,22 +69,32 @@ static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->inde
 
 const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
     if (auto store = Axm::isa<mem::store>(app)) {
-        for (auto d : store->deps())
-            rewrite(d);
-        auto [mem, ptr, val] = store->args<3>();
-        DLOG("in {}, found a store: {} <- {}", current_mut_.back(), ptr, val);
+        auto [mem, ptr, val]                               = store->args<3>();
+        auto abstr_mem                                     = rewrite(mem);
+        auto abstr_ptr                                     = rewrite(ptr);
+        auto abstr_val                                     = rewrite(val);
+        current_slot_values_[mut_stack_.back()][abstr_ptr] = abstr_val;
+        DLOG("in {}, found a store: {} <- {}", mut_stack_.back(), ptr, val);
+        return store; // TODO: not sure if we don't need to rewrite something here
     } else if (auto load = Axm::isa<mem::load>(app)) {
-        for (auto d : load->deps())
-            rewrite(d);
-        auto [mem, ptr]  = load->args<2>();
-        auto [_, loaded] = load->projs<2>();
-        DLOG("in {}, found a load from {}", current_mut_.back(), ptr);
+        auto [mem, ptr] = load->args<2>();
+        auto abstr_mem  = rewrite(mem);
+        auto abstr_ptr  = rewrite(ptr);
+        DLOG("in {}, found a load from {}", mut_stack_.back(), abstr_ptr);
+        if (auto known_value = current_slot_values_[mut_stack_.back()][abstr_ptr]) {
+            DLOG("we know that it's {}", known_value);
+            return load; // TODO: not sure if we don't need to rewrite something here
+        }
     } else if (auto slot = Axm::isa<mem::slot>(app)) {
-        for (auto d : slot->deps())
-            rewrite(d);
-        auto [mem, id] = slot->args<2>();
-        auto [_, ptr]  = slot->projs<2>();
-        DLOG("in {}, found declaration for slot {}", current_mut_.back(), ptr);
+        auto [Ta, mi]                      = slot->uncurry_args<2>();
+        auto [pointee_type, address_space] = Ta->projs<2>();
+        auto [mem, id]                     = mi->projs<2>();
+        auto [_, ptr]                      = slot->projs<2>();
+        auto abstr_mem                     = rewrite(mem);
+        auto abstr_id                      = rewrite(id);
+        all_slots_[ptr] = pointee_type;
+        DLOG("in {}, found declaration for slot {}", mut_stack_.back(), ptr);
+        return slot; // TODO: not sure if we don't need to rewrite something here
     } else if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
@@ -76,6 +105,28 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
             auto abstr    = rewrite(app->targ(i));
             abstr_vars[i] = propagate(lam->tvar(i), abstr);
             abstr_args[i] = abstr;
+        }
+
+        DLOG("propagating slot values for call of {}", lam);
+        DLOG("existing slots: ");
+        for (auto [slot, slot_type] : all_slots_)
+            DLOG("{}", slot);
+
+        for (auto [slot, slot_type] : all_slots_) {
+            if (auto local_value = current_slot_values_[mut_stack_.back()][slot]) {
+                DLOG("propagating local value: {} -> {}", slot, local_value);
+                auto proxy = world().proxy(slot_type, {lam, slot}, 0, Proxy_Slot);
+                propagate(proxy, local_value);
+            } else {
+                DLOG("propagating value from parameters");
+                auto lookup_proxy = world().proxy(slot_type, {mut_stack_.back(), slot}, 0, Proxy_Slot);
+                if (auto i = lattice_.find(lookup_proxy); i != lattice_.end()) {
+                    auto lam_proxy = world().proxy(slot_type, {lam, slot}, 0, Proxy_Slot);
+                    propagate(lam_proxy, i->second);
+                } else {
+                    DLOG("no value found for {}", slot);
+                }
+            }
         }
 
         // GVN bundle: All things marked as top (nullptr) by propagate are now treated as one entity by bundling them
@@ -118,7 +169,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         // d -> {b, d}
         // e -> e      (top)
         for (size_t i = 0; i != n; ++i) {
-            if (auto proxy = abstr_vars[i]->isa<Proxy>()) {
+            if (auto proxy = isa_gvn_proxy(abstr_vars[i])) {
                 auto num  = proxy->num_ops();
                 auto vars = DefVec();
                 auto ai   = abstr_args[i];
@@ -159,11 +210,11 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
 
         if (!lookup(lam)) {
             DLOG("entering {}", lam);
-            current_mut_.push_back(lam);
+            mut_stack_.push_back(lam);
             for (auto d : lam->deps())
                 rewrite(d);
             DLOG("leaving {}", lam);
-            current_mut_.pop_back();
+            mut_stack_.pop_back();
         }
 
         return world().app(lam, abstr_args);
@@ -174,7 +225,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
 
 static bool keep(const Def* old_var, const Def* abstr) {
     if (old_var == abstr) return true; // top
-    auto proxy = abstr->isa<Proxy>();
+    auto proxy = isa_gvn_proxy(abstr);
     return proxy && proxy->op(0) == old_var; // first in GVN bundle?
 }
 
