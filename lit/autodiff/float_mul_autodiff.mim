@@ -1,0 +1,30 @@
+// RUN: rm -f %t.ll
+// RUN: %mim -p direct %s --output-ll %t.ll
+// RUN: clang %t.ll -o %t -lm -Wno-override-module
+// RUN: %t; test $? -eq 138
+
+plugin math;
+plugin autodiff;
+
+// f(x) = x * x, f'(x) = 2x
+fun f(a: %math.F64): %math.F64 =
+    return (%math.arith.mul 0 (a, a));
+
+con extern main [mem : %mem.M 0, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M 0, I32]] =
+    let f_diff = %autodiff.ad f;
+    let c = 3.0:(%math.F64);
+    f_diff (c, ret_cont)
+    where
+        con ret_cont [r: %math.F64, pb: Cn[%math.F64, Cn[%math.F64]]] =
+            pb(1.0:(%math.F64), pb_ret_cont)
+            where
+                con pb_ret_cont [pr: %math.F64] =
+                    // f(3) = 9, f'(3) = 6, encode 100*9 + 6 = 906
+                    let grad_i = %math.conv.f2u ⊤:Nat pr;
+                    let res_i  = %math.conv.f2u ⊤:Nat r;
+                    let c = %core.wrap.mul 0 (100I32, %core.bitcast I32 res_i);
+                    let d = %core.wrap.add 0 (c, %core.bitcast I32 grad_i);
+                    return (mem, d);
+            end;
+    end;
+

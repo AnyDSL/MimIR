@@ -1,4 +1,5 @@
 #include <mim/plug/core/core.h>
+#include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
 
 #include "mim/axm.h"
@@ -72,6 +73,9 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg) {
         auto int_add = world.call(core::wrap::add, 0_n, Defs{a, b});
         world.DLOG("int add {} : {}", int_add, Idx::isa(int_add->type()));
         return int_add;
+    } else if (math::isa_f(type)) {
+        world.DLOG("add float");
+        return world.call(math::arith::add, 0_n, Defs{a, b});
     } else if (Axm::isa<mem::M>(type)) {
         // TODO: mem stays here (only resolved after direct simplification)
         return {};
