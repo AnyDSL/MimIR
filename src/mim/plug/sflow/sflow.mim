@@ -29,26 +29,28 @@ import compile;
 /// ## Branching
 /// Represents a structured branch (if-else or switch-case)
 ///
-axm %sflow.MergeCn: {M: ★} → [Cn M] → ★;
-axm %sflow.merge: {M: ★} → {merge: Cn M} → [%sflow.MergeCn merge] → Cn M;
-///
 /// ### Notes:
 /// If the header argument is not an extract then it is
 /// assumed the branch has only a single case and it is
 /// normalized to a simple call to body.
+axm %sflow.Branch: {M: ★} → {merge: Cn M} → ★;
+axm %sflow.merge : {M: ★} → %sflow.Branch M → Cn M;
 axm %sflow.branch: {n: Nat} → {T M: ★}
   → [merge: Cn M]
-  → [tuple: «n; [%sflow.MergeCn merge] → Cn T»]
+  → [tuple: «n; Cn [T, %sflow.Branch merge]»]
   → [index: Idx n]
   → Cn T, normalize_branch;
 
 /// ## Loops
 ///
 /// Represents a structured loop (for or while)
-axm %sflow.loop: {n: Nat} → {C M T: ★}
+axm %sflow.Loop: {C B: ★} → {continue: Cn C} → {break: Cn B} → ★;
+axm %sflow.coontinue : {C B: ★} → %sflow.Loop C B → Cn C;
+axm %sflow.breeak : {C B: ★} → %sflow.Loop C B → Cn B;
+axm %sflow.loop: {n: Nat} → {C B T: ★}
   → [continue: Cn C]
-  → [merge: Cn M]
-  → [tuple: «n; [Cn C] → [Cn M] → Cn T»]
+  → [break: Cn B]
+  → [tuple: «n; Cn [T, %sflow.Loop continue break]»]
   → [index: Idx n]
   → Cn T, normalize_loop;
 
