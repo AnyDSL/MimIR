@@ -196,6 +196,9 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
         tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);
     }
+
+    // Overlay domination between siblings and their parent
+    if (idom()) tab.println(os, "\"{}\" -> \"{}\" [color=red,style=bold,constraint=false]", idom()->name(), name());
 }
 
 } // namespace mim
