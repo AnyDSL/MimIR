@@ -1,0 +1,15 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll
+// RUN: FileCheck %s < %t.ll
+
+plugin aie2p;
+import core;
+import compile;
+import opt;
+import aie2p;
+
+fun extern main(x: I32): I32 =
+    let y = %aie2p.clb (x);
+    return y;
+
+// CHECK: call i32 @llvm.aie2p.clb(i32

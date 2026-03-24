@@ -1,0 +1,16 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll
+// RUN: FileCheck %s < %t.ll
+
+plugin aie2p;
+import core;
+import compile;
+import opt;
+import aie2p;
+
+con extern mac_test(a: «32; I16», b: «32; I16», acc: «16; I64», conf: I32,
+                    return: Cn [«16; I64»]) =
+    let result = %aie2p.mac_i16_i64 (a, b, acc, conf);
+    return (result);
+
+// CHECK: call {{.*}} @llvm.aie2p.I512.I512.ACC1024.mac.conf(

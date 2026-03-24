@@ -1,0 +1,16 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll
+// RUN: FileCheck %s < %t.ll
+
+plugin aie2p;
+import core;
+import compile;
+import opt;
+import aie2p;
+
+con extern srs_test(acc: «16; I64», shift: I32, round: I32,
+                   return: Cn [«16; I32»]) =
+    let result = %aie2p.srs_i32_16 (acc, shift, round);
+    return (result);
+
+// CHECK: call {{.*}} @llvm.aie2p.I512.v16.acc64.srs(

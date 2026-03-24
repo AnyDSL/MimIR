@@ -1,0 +1,21 @@
+import core;
+import compile;
+
+axm %aie2p.get_coreid: [] -> I32;
+/// Count leading bits: (i32) -> i32. Maps to llvm.aie2p.clb.
+axm %aie2p.clb: I32 -> I32;
+/// Shift-round-saturate: (v32i64, i32 shift, i32 round_mode) -> v32i16.
+/// Maps to llvm.aie2p.I512.v32.acc64.srs.
+axm %aie2p.srs_i16_32: [«32; I64», I32, I32] -> «32; I16»;
+/// MAC: (v32i16, v32i16, acc=v16i64, i32 conf) -> v16i64.
+/// Maps to llvm.aie2p.I512.I512.ACC1024.mac.conf.
+axm %aie2p.mac_i16_i64: [«32; I16», «32; I16», «16; I64», I32] -> «16; I64»;
+/// SRS v16: (v16i64, i32 shift, i32 round_mode) -> v16i32.
+/// Maps to llvm.aie2p.I512.v16.acc64.srs.
+axm %aie2p.srs_i32_16: [«16; I64», I32, I32] -> «16; I32»;
+/// MAC 4x4x8 matmul: (v16i32 A_packed, v32i16 B, v32i64 acc, i32 conf) -> v32i64.
+/// Maps to llvm.aie2p.I512.I512.ACC2048.mac.conf.
+/// A is 32 i16 values bitcast to 16 i32; B is 32 i16 values.
+/// conf=26 unsigned, conf=794 signed.
+axm %aie2p.mac_4x4x8: [«16; I32», «32; I16», «32; I64», I32] -> «32; I64»;
+axm %aie2p.lower_aie2p_phase: %compile.Phase;
