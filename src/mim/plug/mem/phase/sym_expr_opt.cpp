@@ -6,27 +6,29 @@
 
 namespace mim::plug::mem::phase {
 
-#define PROXY_GVN 0
-#define PROXY_MEM 1
-#define PROXY_SLOT 2
+enum {
+    Proxy_GVN,
+    Proxy_Mem,
+    Proxy_Slot
+};
 
 const Def* isa_mem_proxy(const Def* def) {
     if (auto mem = def->isa<Proxy>())
-        if (mem->tag() == PROXY_MEM)
+        if (mem->tag() == Proxy_Mem)
             return mem;
     return nullptr;
 }
 
 const Def* isa_gvn_proxy(const Def* def) {
     if (auto mem = def->isa<Proxy>())
-        if (mem->tag() == PROXY_GVN)
+        if (mem->tag() == Proxy_GVN)
             return mem;
     return nullptr;
 }
 
 const Def* isa_slot_proxy(const Def* def) {
     if (auto mem = def->isa<Proxy>())
-        if (mem->tag() == PROXY_SLOT)
+        if (mem->tag() == Proxy_Slot)
             return mem;
     return nullptr;
 }
@@ -83,14 +85,14 @@ const Def* mem_proxy_set(const Def* mem, const Def* key, const Def* value) {
             if (k != key) new_map_entries.push_back(kv);
         }
         new_map_entries.push_back(new_entry);
-        return world.proxy(world.annex<mem::M>(), new_map_entries, 0, PROXY_MEM);
+        return world.proxy(world.annex<mem::M>(), new_map_entries, 0, Proxy_Mem);
     }
-    return world.proxy(world.annex<mem::M>(), {mem, new_entry}, 0, PROXY_MEM);
+    return world.proxy(world.annex<mem::M>(), {mem, new_entry}, 0, Proxy_Mem);
 }
 
 const Def* mem_proxy_empty(const Def* mem) {
     auto& world    = mem->world();
-    return world.proxy(world.annex<mem::M>(), {mem}, 0, PROXY_MEM);
+    return world.proxy(world.annex<mem::M>(), {mem}, 0, Proxy_Mem);
 }
 
 std::pair<const Def*, bool> mem_proxy_emplace(const Def* mem, const Def* key, const Def* value) {
@@ -106,9 +108,9 @@ std::pair<const Def*, bool> mem_proxy_emplace(const Def* mem, const Def* key, co
             new_map_entries.push_back(kv);
         }
         if (!already_contained) new_map_entries.push_back(new_entry);
-        return {world.proxy(world.annex<mem::M>(), new_map_entries, 0, PROXY_MEM), !already_contained};
+        return {world.proxy(world.annex<mem::M>(), new_map_entries, 0, Proxy_Mem), !already_contained};
     }
-    return {world.proxy(world.annex<mem::M>(), {mem, new_entry}, 0, PROXY_MEM), true};
+    return {world.proxy(world.annex<mem::M>(), {mem, new_entry}, 0, Proxy_Mem), true};
 }
 
 const Def* mem_proxy_lookup(const Def* mem, const Def* key) {
@@ -157,7 +159,7 @@ const Def* SymExprOpt::Analysis::trace_load(const Def* mem, const Def* ptr) {
             // introduce new proxy var for this slot
             auto pointee_type = ptr->type()->op(1)->op(0);
             auto [i, ins_lattice] = lattice_.emplace(var->mut(), mem_proxy_empty(var));
-            auto slot_proxy = mem->world().proxy(pointee_type, {var, ptr}, 0, PROXY_SLOT);
+            auto slot_proxy = mem->world().proxy(pointee_type, {var, ptr}, 0, Proxy_Slot);
             auto [mem_proxy, ins] = mem_proxy_emplace(i->second, ptr, slot_proxy);
             i->second = mem_proxy;
             if (ins) {
@@ -261,7 +263,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
             if (vars.size() == 1) {
                 lattice_[vi] = abstr_vars[i] = vi; // top
             } else {
-                auto proxy = world().proxy(vi->type(), vars, 0, PROXY_GVN);
+                auto proxy = world().proxy(vi->type(), vars, 0, Proxy_GVN);
 
                 for (auto p : proxy->ops()) {
                     auto j       = get_index(p);
@@ -306,7 +308,7 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
                 } else if (new_num != num) {
                     ELOG("setting todo due to new gvn slit");
                     todo_          = true;
-                    auto new_proxy = world().proxy(ai->type(), vars, 0, PROXY_GVN);
+                    auto new_proxy = world().proxy(ai->type(), vars, 0, Proxy_GVN);
                     DLOG("split: {}", new_proxy);
 
                     for (auto p : new_proxy->ops()) {
