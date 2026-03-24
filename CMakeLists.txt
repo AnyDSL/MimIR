@@ -11,8 +11,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(Mim)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -37,27 +37,27 @@ cmake_dependent_option(
 )
 
 if(WIN32)
-  add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
+    add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
-  add_compile_options(-Wall -Wextra)
+    add_compile_options(-Wall -Wextra)
 endif()
 
 add_custom_target(mim_all)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  find_program(MEMORYCHECK_COMMAND valgrind)
-  set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
-  option(BUILD_TESTING "Build lit and unit tests." OFF) # needs to be BEFORE "include(CTest)"
-  include(CTest)
-  cmake_dependent_option(MIM_LIT_WITH_VALGRIND "If ON, the Mim CLI in the lit tests will be run under valgrind." OFF "BUILD_TESTING" OFF)
-  set(MIM_LIT_TIMEOUT 20 CACHE STRING "Timout for lit tests.")
-  if(BUILD_TESTING)
-    include(GoogleTest)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    add_subdirectory(external/googletest EXCLUDE_FROM_ALL)
-    add_subdirectory(gtest)
-    add_subdirectory(lit)
-  endif()
+    find_program(MEMORYCHECK_COMMAND valgrind)
+    set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
+    option(BUILD_TESTING "Build lit and unit tests." OFF) # needs to be BEFORE "include(CTest)"
+    include(CTest)
+    cmake_dependent_option(MIM_LIT_WITH_VALGRIND "If ON, the Mim CLI in the lit tests will be run under valgrind." OFF "BUILD_TESTING" OFF)
+    set(MIM_LIT_TIMEOUT 20 CACHE STRING "Timout for lit tests.")
+    if(BUILD_TESTING)
+        include(GoogleTest)
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+        add_subdirectory(external/googletest EXCLUDE_FROM_ALL)
+        add_subdirectory(gtest)
+        add_subdirectory(lit)
+    endif()
 endif()
 
 set(ABSL_PROPAGATE_CXX_STD ON)
@@ -72,14 +72,14 @@ add_subdirectory(external/rang)
 add_subdirectory(src)
 
 if(MIM_BUILD_EXAMPLES)
-  add_subdirectory(examples)
+    add_subdirectory(examples)
 endif()
 
 if(MIM_BUILD_DOCS)
-  find_package(Doxygen REQUIRED dot)
-  if(DOXYGEN_FOUND)
-    add_subdirectory(docs)
-  endif()
+    find_package(Doxygen REQUIRED dot)
+    if(DOXYGEN_FOUND)
+        add_subdirectory(docs)
+    endif()
 endif()
 
 write_basic_package_version_file(
