@@ -39,6 +39,7 @@ private:
         const Def* rewrite_imm_App(const App*) final;
 
         Def2Def lattice_;
+        DefVec current_mut_;
     };
 
 public:

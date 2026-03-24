@@ -2,9 +2,13 @@
 
 #include <absl/container/fixed_array.h>
 
+#include "mim/plug/mem/mem.h"
+
 namespace mim::plug::mem::phase {
 
 Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
+    current_mut_.push_back(mut);
+    DLOG("entering {}", mut);
     map(mut, mut);
 
     if (auto var = mut->has_var()) {
@@ -20,6 +24,8 @@ Def* SymExprOpt::Analysis::rewrite_mut(Def* mut) {
     for (auto d : mut->deps())
         rewrite(d);
 
+    current_mut_.pop_back();
+    DLOG("leaving {}", mut);
     return mut;
 }
 
@@ -43,7 +49,24 @@ const Def* SymExprOpt::Analysis::propagate(const Def* var, const Def* def) {
 static nat_t get_index(const Def* def) { return Lit::as(def->as<Extract>()->index()); }
 
 const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
-    if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
+    if (auto store = Axm::isa<mem::store>(app)) {
+        for (auto d : store->deps())
+            rewrite(d);
+        auto [mem, ptr, val] = store->args<3>();
+        DLOG("in {}, found a store: {} <- {}", current_mut_.back(), ptr, val);
+    } else if (auto load = Axm::isa<mem::load>(app)) {
+        for (auto d : load->deps())
+            rewrite(d);
+        auto [mem, ptr]  = load->args<2>();
+        auto [_, loaded] = load->projs<2>();
+        DLOG("in {}, found a load from {}", current_mut_.back(), ptr);
+    } else if (auto slot = Axm::isa<mem::slot>(app)) {
+        for (auto d : slot->deps())
+            rewrite(d);
+        auto [mem, id] = slot->args<2>();
+        auto [_, ptr]  = slot->projs<2>();
+        DLOG("in {}, found declaration for slot {}", current_mut_.back(), ptr);
+    } else if (auto lam = app->callee()->isa_mut<Lam>(); isa_optimizable(lam)) {
         auto n          = app->num_targs();
         auto abstr_args = absl::FixedArray<const Def*>(n);
         auto abstr_vars = absl::FixedArray<const Def*>(n);
@@ -134,9 +157,14 @@ const Def* SymExprOpt::Analysis::rewrite_imm_App(const App* app) {
         map(lam->var(), abstr_var);
         lattice_[lam->var()] = abstr_var;
 
-        if (!lookup(lam))
+        if (!lookup(lam)) {
+            DLOG("entering {}", lam);
+            current_mut_.push_back(lam);
             for (auto d : lam->deps())
                 rewrite(d);
+            DLOG("leaving {}", lam);
+            current_mut_.pop_back();
+        }
 
         return world().app(lam, abstr_args);
     }
