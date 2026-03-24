@@ -37,6 +37,6 @@ fun extern bar3(A B: «2; Nat»): «2; Bool» =
 
 
 
-// CHECK: define{{.*}} @bar2
-// CHECK: define{{.*}} @bar3
-// CHECK: define{{.*}} @bar
+// CHECK-LABEL: @bar2
+// CHECK-LABEL: @bar3
+// CHECK-LABEL: @bar
