@@ -45,7 +45,7 @@ std::function<bool(const char*)> MimirCodeGen::make_matcher(MimRegex re) {
 
 driver = mim.Driver()
 driver.log().set_stdout().set(mim.Level.Debug)
-driver.add_search_path(Path("../build/lib64/"))
+driver.add_search_path(Path("../build/lib/mim/"))
 
 # world  = driver.world()
 
@@ -210,41 +210,48 @@ class MimRegex:
         ).set("match_func")
 
         self.match_func.externalize()
+        print("print1")
         mem, to_match, exit = self.match_func.var().projs(3)
+        
+        print("print2")
         # this is an error any user could make, calling a function on a def which results in a segfault
         # mem.var()
         #     ^^^^^ this is not allowed, there needs to be error tracing for these cases
-
+        print(self.regex[0])
         regex_mem, matched, pos = self.wrld.implicit_app(
             self.regex[0],
             [mem, to_match, self.wrld.lit(self.wrld.type_idx(self.wrld.top_nat()), 0)],
         ).projs(3)
         last_elem_ptr = self.wrld.call("%mem.lea", [to_match, pos])
+        print("print3")
         (final_mem, last_elem) = self.wrld.call(
             "%mem.load", [regex_mem, last_elem_ptr]
         ).projs(2)
+        print("print4")
         eq_zero = self.wrld.call_by_id(
             core.icmp.xyglEe,[last_elem, self.wrld.lit_i8(0)]
         )
+        print("print5")
         """
         nested arrays dont work rn, need to pass py::obj to the call_ fn and then iteratively destructure it to pass the items to the next call site
         """
         matched_and_end = self.wrld.call(
             f"%core.bit2.and_", self.wrld.lit_nat_0(), [matched, eq_zero]
         )
+        print("print6")
         self.match_func.app(False, exit, [final_mem, matched_and_end])
-
+        print("print7")
         driver.backend("ll", "regex.ll", self.wrld)
-
+        print("print8")
         subprocess.run(["clang", "regex.ll", "-o", "regex.so", "-Wno-override-module", "-shared"])
-
+        print("print9")
         # ctypes.cdll("./regex.so")
 
 
 reg = MimRegex(driver)
 # seg fault
 # reg.any().close()
-reg.literal("a").literal("b").literal("c").literal("d").close().star()
+reg.literal("a")
 reg.wrld.optimize()
 print(reg.regex)
 reg.build(driver)
