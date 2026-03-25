@@ -33,13 +33,21 @@ import compile;
 /// If the header argument is not an extract then it is
 /// assumed the branch has only a single case and it is
 /// normalized to a simple call to body.
-axm %sflow.Branch: {M: ★} → {merge: Cn M} → ★;
-axm %sflow.merge : {M: ★} → %sflow.Branch M → Cn M;
-axm %sflow.branch: {n: Nat} → {T M: ★}
+axm %sflow.Selection: {M: ★} → {merge: Cn M} → ★;
+axm %sflow.merge : {M: ★} → %sflow.Selection M → Cn M;
+axm %sflow.select: {n: Nat} → {T M: ★}
   → [merge: Cn M]
-  → [tuple: «n; Cn [T, %sflow.Branch merge]»]
+  → [tuple: «n; Cn [T, %sflow.Selection merge]»]
   → [index: Idx n]
   → Cn T, normalize_branch;
+
+axm %sflow.Switch: {B: ★} → {break: Cn B} → ★;
+axm %sflow.swiitch: {n: Nat} → {T B: ★}
+  → [break: Cn B]
+  → [targets: «n; [Nat, Cn [T, %sflow.Switch break]]»]
+  → [default: Cn T]
+  → [index: Nat]
+  → Cn T, normalize_switch;
 
 /// ## Loops
 ///
@@ -47,11 +55,11 @@ axm %sflow.branch: {n: Nat} → {T M: ★}
 axm %sflow.Loop: {C B: ★} → {continue: Cn C} → {break: Cn B} → ★;
 axm %sflow.coontinue : {C B: ★} → %sflow.Loop C B → Cn C;
 axm %sflow.breeak : {C B: ★} → %sflow.Loop C B → Cn B;
-axm %sflow.loop: {n: Nat} → {C B T: ★}
+axm %sflow.loop: {C B T: ★}
   → [continue: Cn C]
   → [break: Cn B]
-  → [tuple: «n; Cn [T, %sflow.Loop continue break]»]
-  → [index: Idx n]
+  → [body: Cn [T, %sflow.Loop continue break]]
+  → [condition: Bool]
   → Cn T, normalize_loop;
 
 /// ## Phases
