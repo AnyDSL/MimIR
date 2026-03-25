@@ -1,19 +1,22 @@
-import sys
+import ctypes
 import os
 import subprocess
+import sys
 from pathlib import Path
 from typing import Self
-import ctypes
+
 from regex_plug import regex
+from core_plug import *
 # Add our build dir to the python modules list
-build_dir = os.path.abspath("../build/lib64/")
+build_dir = os.path.abspath("../build/lib/")
 sys.path.insert(0, build_dir)
 
 import mim  # Import from that list
+
 # this is currently very rudimentary, actual test cases will follow
 # mim_h_plugin_path = os.fspath()
 # ---------------------------------------------------------------------
-'''
+"""
 muss das für jeden regex neu compiled werden?
 
 load the .dll and have a pointer to the function
@@ -38,7 +41,7 @@ std::function<bool(const char*)> MimirCodeGen::make_matcher(MimRegex re) {
     std::function<bool(const char*)> fn_handle = (bool (*)(const char*))mim::dl::get(jit_lib_.get(), MATCHER_FUNC_NAME);
     return fn_handle;
 }
-'''
+"""
 
 driver = mim.Driver()
 driver.log().set_stdout().set(mim.Level.Debug)
@@ -48,10 +51,10 @@ driver.add_search_path(Path("../build/lib64/"))
 
 from typing import List
 
-'''
+"""
 the current call fn does not handle self.wrld.call(f"%core.bit2.and_", [self.wrld.lit_nat_0(), [matched, eq_zero]])
 
-my attempt to fix: 
+my attempt to fix:
 
 def call(self):
 
@@ -59,64 +62,94 @@ def call(self):
 
 
 
-'''
-def call(self, callee, *args, by_id=False) -> mim.Def:
-    # print(f'{callee.str()} is the callee')
-    if(isinstance(callee, str)):
-        print(f"callee is string, received string: {callee}")
+"""
+
+# def call(self, callee, *args, by_id=False) -> mim.Def:
+#     # print(f'{callee.str()} is the callee')
+#     if isinstance(callee, str):
+#         print(f"callee is string, received string: {callee}")
+#         callee = self.sym(callee)
+#     callee = self.annex(callee)
+
+#     # if(len(args) == 0 and not by_id):
+#     #     return callee
+#     # elif(len(args) == 0 and by_id):
+#     #     pass
+#     if len(args) == 0:
+#         return callee
+
+#     if len(args) == 1:
+#         if isinstance(args[0], mim.Def):
+#             return self.implicit_app(callee, [args[0]])
+#         # check if the passed arguments are def or a list of def
+#         # next we need to discern if its a mix of defs and def all passed as the arg, or just one of the two
+#         elif isinstance(args[0], list):
+#             # if the list only contains single elements (its a flat array) then we just pass it to the implicit app call
+#             if(all(isinstance(x, mim.Def) for x in args[0])):
+#                 return self.implicit_app(callee, args[0])
+#             # otherwise we have a nested array and need to handle
+#             else:
+#                 return self.implicit_app(callee, args[0])
+
+#         else:
+#             print(f"received: {callee} and len args is 1")
+#             raise TypeError("The given arguments dont match the expected types")
+
+#     if isinstance(args[0], list) and all(isinstance(x, mim.Def) for x in args[0]):
+#         return self.call(self.implicit_app(callee, args[0]), args[1::])
+
+#     if isinstance(args[0], mim.Def):
+#         return self.call(self.implicit_app(callee, [args[0]]), args[1::])
+
+#     print(f"received: {callee}")
+#     raise TypeError("The given arguments dont match the expected types")
+# ----------------------------------------------------------
+
+
+def call(self, *args) -> mim.Def:
+    callee = args[0]
+
+    # for i in args:
+        # print(f"this is in my *args: {i}")
+
+    if isinstance(args[0], regex):
+        callee = self.annex_by_id(args[0].value)
+    if isinstance(callee, str):
         callee = self.sym(callee)
-    callee = self.annex(callee)
+        callee = self.annex(callee)
+    if isinstance(callee, mim.Sym):
+        callee = self.annex(callee)
+        if len(args) == 1:
+            return callee
 
-    # if(len(args) == 0 and not by_id):
-    #     return callee
-    # elif(len(args) == 0 and by_id):
-    #     pass
-    if(len(args) == 0):
-        return callee
-    
-    if(len(args) == 1):
-        if(isinstance(args[0],mim.Def)):
+    if len(args) == 1:
+        return args[0]
 
-            return self.implicit_app(callee, [args[0]])
-        # check if the passed arguments are def or a list of def
-        # next we need to discern if its a mix of defs and def all passed as the arg, or just one of the two
-        elif isinstance(args[0], list) and all(isinstance(x, mim.Def) or is_def_list(x) for x in args[0]):
-            if(all(is_def_list(x) for x in args[0])):
-
-            
-            return self.implicit_app(callee, args[0])
-
+    if len(args) >= 3:
+        if isinstance(args[1], List):
+            return self.call(self.implicit_app(callee, args[1]), args[2::])
         else:
-            print(f"received: {callee} and len args is 1")
-            raise TypeError("The given arguments dont match the expected types")
-        
-    if isinstance(args[0], list) and all(isinstance(x, mim.Def) for x in args[0]):
-        return self.call(self.implicit_app(callee, args[0]), args[1::])
-    
-    if(isinstance(args[0], mim.Def)):
-        return self.call(self.implicit_app(callee, [args[0]]), args[1::])
-    
-    print(f"received: {callee}")
+            return self.call(self.implicit_app(callee, [args[1]]), args[2::])
+    else:
+        if isinstance(args[1], List):
+            return self.implicit_app(callee, args[1])
+        else:
+            # print(f"first argument: {type(args[1])}")
+            if isinstance(args[1], tuple):
+                tmp = list(args[1])
+                return self.implicit_app(callee, tmp[0])
+            return self.implicit_app(callee, [args[1]])
     raise TypeError("The given arguments dont match the expected types")
 
-def call_(self, callee, *args) -> mim.Def:
-    
-    
-    
-    pass
-
-#this seems wrong, should need to go into lists and check them, currently this doesnt work right
-def is_def_list(l:list):
-    return all(isinstance(x, mim.Def) for x in l)
 
 mim.World.call = call
 
-class MimRegex():
 
+class MimRegex:
     def __init__(self, driver: mim.Driver, *args):
         self.wrld = driver.world()
         self.regex = []
-        driver.load_pluins(["core", "compile", "regex"])
+        driver.load_pluins(["core", "compile", "regex", "opt"])
 
         self._star_sym = self.wrld.sym(f"%regex.quant.star")
         self._optional_sym = self.wrld.sym(f"%regex.quant.optional")
@@ -142,7 +175,7 @@ class MimRegex():
         # print("printing")
         # print(self.__char_lit(lit))
         # self.regex.append(self.wrld.call_by_id(int(0x4c62066400000300), [self.__char_lit(lit)]))
-        self.regex.append(self.wrld.call(self._literal_sym, self.__char_lit(lit)))
+        self.regex.append(self.wrld.call(regex.lit, self.__char_lit(lit)))
         return self
 
     def close(self) -> Self:
@@ -151,21 +184,28 @@ class MimRegex():
 
     def __conj(self, expr: list) -> Self:
         self.regex = []
-        self.regex.append(self.wrld.call_by_id(int(0x4c62066400000000), expr))
+        self.regex.append(self.wrld.call(regex.conj,expr))
         return self
 
     def any(self) -> Self:
         self.regex.append(self.wrld.call(self._any_sym))
         return self
 
-
     def build(self, driver):
-        print(f"result of annexing with call: {self.wrld.call("%mem.M")}")
+        # print(f"result of annexing with call: {self.wrld.call('%mem.M')}")
         self.match_func = self.wrld.mut_con(
             [
                 self.wrld.call("%mem.M", self.wrld.lit_nat_0()),
-                self.wrld.call("%mem.Ptr0", [self.wrld.arr(self.wrld.top_nat(), self.wrld.type_i8())]),
-                self.wrld.cn([self.wrld.call("%mem.M", self.wrld.lit_nat_0()), self.wrld.type_bool()])
+                self.wrld.call(
+                    "%mem.Ptr0",
+                    [self.wrld.arr(self.wrld.top_nat(), self.wrld.type_i8())],
+                ),
+                self.wrld.cn(
+                    [
+                        self.wrld.call("%mem.M", self.wrld.lit_nat_0()),
+                        self.wrld.type_bool(),
+                    ]
+                ),
             ]
         ).set("match_func")
 
@@ -176,28 +216,36 @@ class MimRegex():
         #     ^^^^^ this is not allowed, there needs to be error tracing for these cases
 
         regex_mem, matched, pos = self.wrld.implicit_app(
-            self.regex[0], [mem, to_match, self.wrld.lit(self.wrld.type_idx(self.wrld.top_nat()), 0)]
+            self.regex[0],
+            [mem, to_match, self.wrld.lit(self.wrld.type_idx(self.wrld.top_nat()), 0)],
         ).projs(3)
         last_elem_ptr = self.wrld.call("%mem.lea", [to_match, pos])
-        (final_mem, last_elem) = self.wrld.call("%mem.load", [regex_mem, last_elem_ptr]).projs(2)
-        eq_zero = self.wrld.call_by_id(int(0x1104c60000000b01),[last_elem, self.wrld.lit_i8(0)])
-        '''
+        (final_mem, last_elem) = self.wrld.call(
+            "%mem.load", [regex_mem, last_elem_ptr]
+        ).projs(2)
+        eq_zero = self.wrld.call_by_id(
+            core.icmp.xyglEe,[last_elem, self.wrld.lit_i8(0)]
+        )
+        """
         nested arrays dont work rn, need to pass py::obj to the call_ fn and then iteratively destructure it to pass the items to the next call site
-        '''
-        matched_and_end = self.wrld.call(f"%core.bit2.and_", [self.wrld.lit_nat_0(), [matched, eq_zero]])
+        """
+        matched_and_end = self.wrld.call(
+            f"%core.bit2.and_", self.wrld.lit_nat_0(), [matched, eq_zero]
+        )
         self.match_func.app(False, exit, [final_mem, matched_and_end])
 
+        driver.backend("ll", "regex.ll", self.wrld)
 
-        # driver.backend("ll", "regex.ll", self.wrld)
-
-        # subprocess.run(["clang", "regex.ll", "-o", "regex.so", "-Wno-override-module", "-shared"])
+        subprocess.run(["clang", "regex.ll", "-o", "regex.so", "-Wno-override-module", "-shared"])
 
         # ctypes.cdll("./regex.so")
 
+
 reg = MimRegex(driver)
 # seg fault
-#reg.any().close()
+# reg.any().close()
 reg.literal("a").literal("b").literal("c").literal("d").close().star()
+reg.wrld.optimize()
 print(reg.regex)
 reg.build(driver)
-#world.dot("out_no_literals", True, False)
+reg.wrld.dot("out_no_literals", True, False)

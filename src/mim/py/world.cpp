@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <fe/sym.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -94,7 +95,7 @@ void init_world(py::module_& m) {
                 return w.call(id, mim::Defs(args));
             },
             pybind11::arg("sym"),
-            pybind11::arg("args") = pybind11::none()
+            pybind11::arg("args") = std::vector<mim::Def*>() 
         )
         .def("optimize", [](mim::World& w) { 
             std::cout << "printing world externals: " << std::endl;
@@ -106,6 +107,9 @@ void init_world(py::module_& m) {
         .def("dot", static_cast<void (World::*)(const char*, bool, bool) const>(&mim::World::dot))
         .def("mut_con", [](mim::World& w, std::vector<Def*> domains){
             return w.mut_con(Defs(domains));
+        })
+        .def("annex_by_id", [](mim::World& w, uint64_t id){
+            return w.annex(id);
         });
 }
 } // namespace mim

@@ -4,7 +4,6 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 #include "mim/rewrite.h"
-#include "mim/rule.h"
 #include "mim/tuple.h"
 
 #include "mim/util/util.h"

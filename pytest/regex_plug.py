@@ -1,1 +1,1 @@
-/home/kari/Uni/MimIR/build/bin/regex_plug.py
+../build/include/py/regex_plug.py
