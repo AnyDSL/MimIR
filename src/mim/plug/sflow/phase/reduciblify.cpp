@@ -1,29 +1,38 @@
-#include "mim/phase.h"
+#include "mim/plug/sflow/phase/reduciblify.h"
+
+#include <ranges>
 
 namespace mim::plug::sflow::phase {
 
-using namespace mim;
+void Reduciblifier::visit(const Nest& nest) { visit_node(nest.root()); }
 
-class Reduciblifier : public mim::NestPhase<Lam> {
-public:
-    Reduciblifier(World& world, flags_t annex)
-        : NestPhase(world, annex, true) {}
+bool Reduciblifier::is_reducible(const Nest::Node* header) {
+    for (auto node : header->sibl_deps<false>()) {
+        // Ignore forward edges.
+        if (header->postorder_number() > node->postorder_number()) continue;
 
-    void visit(const Nest& nest) override { visit(nest.root()); }
+        // Check if header dominates node with back edge.
+        auto dom = node->idom();
+        while (dom->postorder_number() < header->postorder_number())
+            dom = dom->idom();
 
-private:
-    void visit(const Nest::Node* node) {
-        for (auto& scc : node->topo()) {
-            for (auto child : *scc) {
-                // Make deeper loops reducible first.
-                visit(child);
-            }
+        if (dom != header) return false;
+    }
 
-            if (scc->size() > 1) {
-                // TODO: Check if loop actually has multiple entries
-            }
+    return true;
+}
+
+void Reduciblifier::visit_node(const Nest::Node* node) {
+    for (auto& scc : node->topo()) {
+        for (auto child : *scc) {
+            // Make deeper loops reducible first.
+            visit_node(child);
+        }
+
+        if (scc->size() > 1) {
+            // TODO: Check if loop actually has multiple entries
         }
     }
-};
+}
 
 } // namespace mim::plug::sflow::phase
