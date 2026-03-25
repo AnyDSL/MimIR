@@ -240,6 +240,10 @@ const Nest::Node* Nest::Node::calc_dominance() const {
         }
     }
 
+    // Build idomees sets
+    for (auto node : nodes)
+        if (node->idom_) node->idom_->idomees_.insert(node);
+
     return this;
 }
 

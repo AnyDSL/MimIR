@@ -18,10 +18,6 @@ public:
         std::string name() const { return mut() ? mut()->unique_name() : std::string("<virtual>"); }
         const Nest& nest() const { return nest_; }
         const Node* inest() const { return inest_; } ///< Immediate nester/parent of this Node.
-        /// [Immediate Dominator](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) for children in connected components.
-        /// This is used to transform first order programs into structured form in the [sflow](mim::plug::sflow)
-        /// plugin and for late code placement in [Nest::lca].
-        auto idom() const { return calc_dominance()->idom_; }
         bool is_root() const { return inest_ == nullptr; }
         /// The *mutable* capsulated in this Node or `nullptr`, if it's a *virtual root* comprising several Node%s.
         Def* mut() const {
@@ -138,6 +134,25 @@ public:
         bool is_directly_recursive() const { return is_recursive() && (!inest_ || inest_->SCCs_[this]->size() == 1); }
         ///@}
 
+        /// @name Dominance
+        /// [Dominance](https://en.wikipedia.org/wiki/Dominator_(graph_theory))
+        /// @{
+        /// [Immediate Dominator](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) for children in connected
+        /// components. This is used to transform first order programs into structured form in the
+        /// [sflow](mim::plug::sflow) plugin and for late code placement in [Nest::lca].
+        auto idom() const { return calc_dominance()->idom_; }
+        auto postorder_number() const { return nest().assign_postorder_numbers(), postorder_number_; }
+        const auto& idomees() const {
+            calc_dominance();
+            for (auto child : children().nodes()) {
+                child->calc_dominance();
+                // First call calculates dominance for all siblings
+                break;
+            }
+            return idomees_;
+        }
+        /// @}
+
     private:
         Node(const Nest& nest, Def* mut, Node* inest)
             : nest_(nest)
@@ -172,6 +187,7 @@ public:
         std::deque<std::unique_ptr<SCC>> topo_;
         absl::flat_hash_map<const Node*, const SCC*> SCCs_;
         mutable const Node* idom_ = nullptr;
+        mutable absl::flat_hash_set<const Node*> idomees_;
         // Nodes higher up in dominator tree within same sibling layer have higher postorder numbers.
         // This property is used to efficiently find the correct node for late code placement via [Nest::lca].
         mutable std::optional<size_t> postorder_number_ = std::nullopt;
