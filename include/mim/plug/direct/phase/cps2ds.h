@@ -26,8 +26,8 @@ private:
 
     Lam2Lam lam2lam_;
     Def2Def rewritten_;
-    mim::DefMap<Nest> nests_;
-    mim::DefMap<Scheduler> scheduler_;
+    DefMap<std::unique_ptr<Nest>> nests_;
+    DefMap<Scheduler> scheduler_;
     Lam* current_external_;
 };
 

@@ -94,6 +94,9 @@ public:
     /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.pod.curr_gid; }
     u32 next_gid() { return ++state_.pod.curr_gid; }
+
+    /// Manage run - used to track fixed-point iterations to compute Def::free_vars
+    u32 curr_run() const { return data_.curr_run; }
     u32 next_run() { return ++data_.curr_run; }
 
     /// Retrieve compile Flags.
@@ -186,6 +189,7 @@ public:
 
     /// Get Axm from a plugin.
     /// Can be used to get an Axm without sub-tags.
+    /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axm.
     template<annex_without_subs id>
     const Def* annex() {
         return annex(Annex::base<id>());

@@ -347,7 +347,7 @@ public:
             os << '{';
             auto sep = "";
             for (auto d : *this) {
-                os << sep << d->gid() << '/' << d->tid();
+                os << sep << d->sym() << ": " << d->gid() << '/' << d->tid();
                 sep = ", ";
             }
             return os << '}';

@@ -1,13 +1,14 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 #include <ranges>
 
 #include "mim/def.h"
 
 namespace mim {
 
-/// Builds a nesting tree of all *immutables*/binders.
+/// Builds a nesting tree of all *mutables*/binders.
 class Nest {
 public:
     class Node {
@@ -17,8 +18,12 @@ public:
         std::string name() const { return mut() ? mut()->unique_name() : std::string("<virtual>"); }
         const Nest& nest() const { return nest_; }
         const Node* inest() const { return inest_; } ///< Immediate nester/parent of this Node.
+        /// [Immediate Dominator](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) for children in connected components.
+        /// This is used to transform first order programs into structured form in the [sflow](mim::plug::sflow)
+        /// plugin and for late code placement in [Nest::lca].
+        auto idom() const { return calc_dominance()->idom_; }
         bool is_root() const { return inest_ == nullptr; }
-        /// The mutable capsulated in this Node or `nullptr`, if it's a *virtual root* comprising several Node%s.
+        /// The *mutable* capsulated in this Node or `nullptr`, if it's a *virtual root* comprising several Node%s.
         Def* mut() const {
             assert(mut_ || is_root());
             return mut_;
@@ -152,6 +157,9 @@ public:
         void calc_SCCs();
         uint32_t tarjan(uint32_t, Node*, Stack&);
 
+        /// Dominance
+        const Node* calc_dominance() const;
+
         const Nest& nest_;
         Def* mut_;
         Node* inest_;
@@ -163,6 +171,10 @@ public:
         Children children_;
         std::deque<std::unique_ptr<SCC>> topo_;
         absl::flat_hash_map<const Node*, const SCC*> SCCs_;
+        mutable const Node* idom_ = nullptr;
+        // Nodes higher up in dominator tree within same sibling layer have higher postorder numbers.
+        // This property is used to efficiently find the correct node for late code placement via [Nest::lca].
+        mutable std::optional<size_t> postorder_number_ = std::nullopt;
 
         // implementaiton details
         static constexpr uint32_t Unvisited = uint32_t(-1);
@@ -179,6 +191,9 @@ public:
     Nest(Def* root);
     Nest(View<Def*> muts); ///< Constructs a *virtual root* with @p muts as children.
     Nest(World&);          ///< *Virtual root* with all World::externals as children.
+    Nest(const Nest&)     = delete;
+    Nest(Nest&&)          = delete;
+    Nest& operator=(Nest) = delete;
     ///@}
 
     /// @name Getters
@@ -206,6 +221,7 @@ public:
     auto end() const { return mut2node_.cend(); }
     ///@}
 
+    template<bool bootstrapping = false>
     static const Node* lca(const Node* n, const Node* m); ///< Least common ancestor of @p n and @p m.
 
     /// @name dot
@@ -224,6 +240,7 @@ private:
     Node* make_node(Def*, Node* inest = nullptr);
     void calc_sibl_deps(Node*) const;
     void calc_SCCs(Node*) const;
+    void assign_postorder_numbers() const;
 
     Node* operator[](Def* mut) {
         if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second.get();
