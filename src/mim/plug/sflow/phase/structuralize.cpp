@@ -14,7 +14,14 @@ void Structuralizer::visit(const Nest& nest) {
     visit_node(root);
 }
 
-bool is_merge(const Nest::Node* node) { return node->sibl_deps<false>().num() > 1; }
+/// A node with at least two incoming forward edges is a merge node.
+bool is_merge(const Nest::Node* node) {
+    int count = 0;
+    // Count forward edges towards node
+    for (auto caller : node->sibl_deps<false>())
+        if (caller->postorder_number() < node->postorder_number()) count++;
+    return count > 1;
+}
 
 bool is_loop_header(const Nest::Node* header) {
     // Search for back edges
