@@ -1,9 +1,0 @@
-plugin core;
-plugin eqsat;
-
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
-        %eqsat.core,
-    );
-
-fun extern f(a b:Nat): Nat = return (%core.nat.add (b, 0));
