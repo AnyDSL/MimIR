@@ -101,7 +101,7 @@ const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << "\n";
     auto con_name = get_symbol(node.children[1]);
-    auto domain   = get_node(MimKind::Tuple, node.children[2]);
+    auto domain   = get_node(MimKind::Sigma, node.children[2]);
 
     DefVec var_types;
     std::vector<std::string> var_names;

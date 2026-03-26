@@ -204,7 +204,7 @@ void Emitter::start() {
 void Emitter::emit_imported(Lam* lam) {
     const std::string ext = lam->is_external() ? "extern" : "intern";
 
-    print(func_decls_, "(con {} {} (tuple ", ext, id(lam));
+    print(func_decls_, "(con {} {} (sigma ", ext, id(lam));
 
     auto doms = lam->doms();
     for (auto sep = ""; auto dom : doms.view()) {
@@ -228,7 +228,7 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
         tab.println(os, "({} {} {}", lam_kind, ext, id(lam));
 
     ++tab;
-    tab.println(os, "(tuple");
+    tab.println(os, "(sigma");
     if (lam->has_var()) {
         ++tab;
         auto vars = lam->vars();
