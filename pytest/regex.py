@@ -1,10 +1,10 @@
-import ctypes
+from ctypes import cdll
 import os
+import ctypes
 import subprocess
 import sys
 from pathlib import Path
 from typing import Self
-
 from regex_plug import regex
 from core_plug import *
 # Add our build dir to the python modules list
@@ -107,10 +107,9 @@ def call(self):
 
 
 def call(self, *args) -> mim.Def:
+    
     callee = args[0]
 
-    # for i in args:
-        # print(f"this is in my *args: {i}")
 
     if isinstance(args[0], regex):
         callee = self.annex_by_id(args[0].value)
@@ -162,9 +161,9 @@ class MimRegex:
         return self.wrld.lit_i8(ord(lit))
 
     def star(self) -> Self:
-        self.__conj(self.regex)
+        # self.__conj(self.regex)
         # self.regex.append(self.wrld.call_by_id(int(0x4c62066400000901), [self.regex[0]]))
-        self.regex.append(self.wrld.call(self._star_sym, [self.regex[0]]))
+        self.regex.append(self.wrld.call(self._star_sym, [self.regex[len(self.regex)-1]]))
         return self
 
     # def dot(self) -> Self:
@@ -210,49 +209,56 @@ class MimRegex:
         ).set("match_func")
 
         self.match_func.externalize()
-        print("print1")
         mem, to_match, exit = self.match_func.var().projs(3)
         
-        print("print2")
         # this is an error any user could make, calling a function on a def which results in a segfault
         # mem.var()
         #     ^^^^^ this is not allowed, there needs to be error tracing for these cases
-        print(self.regex[0])
+        print(self.literal("a"))
         regex_mem, matched, pos = self.wrld.implicit_app(
-            self.regex[0],
+           self.regex[0],
             [mem, to_match, self.wrld.lit(self.wrld.type_idx(self.wrld.top_nat()), 0)],
         ).projs(3)
         last_elem_ptr = self.wrld.call("%mem.lea", [to_match, pos])
-        print("print3")
         (final_mem, last_elem) = self.wrld.call(
             "%mem.load", [regex_mem, last_elem_ptr]
         ).projs(2)
-        print("print4")
         eq_zero = self.wrld.call_by_id(
             core.icmp.xyglEe,[last_elem, self.wrld.lit_i8(0)]
         )
-        print("print5")
         """
         nested arrays dont work rn, need to pass py::obj to the call_ fn and then iteratively destructure it to pass the items to the next call site
         """
         matched_and_end = self.wrld.call(
             f"%core.bit2.and_", self.wrld.lit_nat_0(), [matched, eq_zero]
         )
-        print("print6")
         self.match_func.app(False, exit, [final_mem, matched_and_end])
-        print("print7")
+        self.wrld.optimize()
         driver.backend("ll", "regex.ll", self.wrld)
-        print("print8")
-        subprocess.run(["clang", "regex.ll", "-o", "regex.so", "-Wno-override-module", "-shared"])
-        print("print9")
-        # ctypes.cdll("./regex.so")
+        subprocess.run(["clang", "regex.ll", "-o", "regex.so", "-Wno-override-module", "-shared"], check=True)
+        self.exec()
+        
+    def exec(self):
+        so = cdll.LoadLibrary("./regex.so")
+        so.match_func.argtypes = [ctypes.c_char_p]
+        so.match_func.restype = ctypes.c_bool
+        to_match  = "abcdabcdabcd"
+        dont_match = "cbaa"
+        to_match = to_match.encode("utf-8")
+        dont_match = dont_match.encode("utf-8")
+        if(so.match_func(to_match)):
+            print("expression matches the regex")
+        if(not so.match_func(dont_match)):
+            print("expression does not match the regex")
+        
 
 
 reg = MimRegex(driver)
 # seg fault
 # reg.any().close()
-reg.literal("a")
-reg.wrld.optimize()
+reg.literal("a").literal("b").literal("c").literal("d").close().star().close()
 print(reg.regex)
 reg.build(driver)
 reg.wrld.dot("out_no_literals", True, False)
+import platform
+print(platform.platform())

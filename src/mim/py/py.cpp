@@ -4,7 +4,6 @@ namespace py = pybind11;
 
 namespace mim {
 void init_world(py::module_&);
-void init_world_wrapper(py::module_&);
 void init_driver(py::module_&);
 void init_sym(py::module_&);
 void init_flags(py::module_&);
@@ -35,7 +34,6 @@ PYBIND11_MODULE(mim, m) {
     fe::init_sym(m);
     fe::init_sym_pool(m);
     mim::init_driver(m);
-    mim::init_world_wrapper(m);
 
     mim::ast::init_ast(m);
     mim::init_log(m);
