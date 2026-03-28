@@ -93,7 +93,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "add__mem_8cpp.html",
-"classmim_1_1Axm.html#a7cc0b85ada484e331a0af9741ac0b812",
+"classmim_1_1Axm.html#a67bb672c5feae845d6ec8557c3c302df",
 "classmim_1_1Def.html#a66978d46660dbc8222365432fae2568a",
 "classmim_1_1Driver_1_1Imports.html#a419f8de09b60fbe8b2c40c91972dd817",
 "classmim_1_1Hole.html#a1d6405f684572dd5ce1a872f1d7fe401",
@@ -112,11 +112,11 @@ var NAVTREEINDEX =
 "config_8h.html#acf14f602e3976ff8653bb419a1d77a7f",
 "functions_func_k.html",
 "namespacemim.html#a0a7202c211ff85c77fb009119a6b8fcc",
-"namespacemim_1_1ll.html#a7e9fadd25e15c54724c0db2a57cdd16d",
-"namespacemim_1_1plug_1_1core.html#a9a3103f39984e3487e3466d00107eacf",
-"namespacemim_1_1plug_1_1matrix.html#a11b9674b35894ca4f3605791d4783b74",
-"nfa_8cpp_source.html",
-"structmim_1_1Nest_1_1Node_1_1Children.html"
+"namespacemim_1_1ll.html#a2cc504748af4aaca125bef5f9defaa21",
+"namespacemim_1_1plug_1_1core.html#a7a60a2da3c1482d92696ed97b26f1b4caf24c2c15b9d03797c6874986a8d19516",
+"namespacemim_1_1plug_1_1math.html#affdd54f0267ccefcffa518f9a44a0162",
+"nfa2dfa_8h.html",
+"structmim_1_1GIDLt.html#a0e10fe218e277abd24ff8c86940b5b3f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

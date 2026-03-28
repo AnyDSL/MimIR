@@ -451,11 +451,11 @@ Further Casts</h3>
 Matching Axioms</h2>
 <p>You can match <a class="el" href="classmim_1_1Axm.html">Axioms</a> via</p>
 <ul>
-<li><a class="el" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">mim::Axm::isa</a> which is again similar to a <code>dynamic_cast</code> with a runtime check and returns <a class="el" href="classmim_1_1Axm_1_1IsA.html#af7e49b22ba96454bf3d28462e052a437">a wrapped</a> <code>nullptr</code> (see below), if the cast is not possible, or</li>
-<li><a class="el" href="classmim_1_1Axm.html#ae8e87ce6a825b04d1f8ef741392cf353">mim::Axm::as</a> which is again more like a <code>static_cast</code> and <code>assert</code>s via its <a class="el" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">mim::Axm::isa</a> sibling in the <code>Debug</code> build that the cast is correct.</li>
+<li><a class="el" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">mim::Axm::isa</a> which is again similar to a <code>dynamic_cast</code> with a runtime check and returns <a class="el" href="classmim_1_1Axm_1_1IsA.html#af7e49b22ba96454bf3d28462e052a437">a wrapped</a> <code>nullptr</code> (see below), if the cast is not possible, or</li>
+<li><a class="el" href="classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1">mim::Axm::as</a> which is again more like a <code>static_cast</code> and <code>assert</code>s via its <a class="el" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">mim::Axm::isa</a> sibling in the <code>Debug</code> build that the cast is correct.</li>
 </ul>
 <p>This will yield a <a class="el" href="classmim_1_1Axm_1_1IsA.html">mim::Axm::IsA</a><code>&lt;Id, D&gt;</code> which just wraps a <code>const D*</code>. <code>Id</code> is the <code>enum</code> of the corresponding <code>tag</code> of the <a class="el" href="classmim_1_1Axm.html#anatomy">matched Axiom</a>. Usually, <code>D</code> will be an <a class="el" href="classmim_1_1App.html">App</a> because most <a class="el" href="classmim_1_1Axm.html">Axioms</a> inhabit a <a class="el" href="classmim_1_1Pi.html">function type</a>. Otherwise, it may wrap a <a class="el" href="classmim_1_1Def.html">Def</a> or other subclasses of it.</p>
-<p>By default, MimIR assumes that the magic of an <a class="el" href="classmim_1_1Axm.html">Axiom</a> happens when applying the final argument to a curried <a class="el" href="classmim_1_1Axm.html">Axiom</a>. For example, <a class="el" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">matching</a> a <code>%mem.load</code> will only trigger for the final <a class="el" href="classmim_1_1App.html">App</a> of the curried call</p>
+<p>By default, MimIR assumes that the magic of an <a class="el" href="classmim_1_1Axm.html">Axiom</a> happens when applying the final argument to a curried <a class="el" href="classmim_1_1Axm.html">Axiom</a>. For example, <a class="el" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">matching</a> a <code>%mem.load</code> will only trigger for the final <a class="el" href="classmim_1_1App.html">App</a> of the curried call</p>
 <div class="fragment"><div class="line">%mem.load (T, as) (mem, ptr)</div>
 </div><!-- fragment --><p>while</p>
 <div class="fragment"><div class="line">%mem.load (T, as)</div>
@@ -466,26 +466,26 @@ Matching Axioms</h2>
 <p class="startli">Use <a class="el" href="classmim_1_1App.html#a7683660e8ed01ddc495f8859393b720e" title="Returns App::callee again as App.">mim::App::decurry()</a> to directly get the <a class="el" href="classmim_1_1App.html#a9df7e6baae6a143ed3af2bc7ec643641">mim::App::callee()</a> as <a class="el" href="classmim_1_1App.html">mim::App</a>. See below for an example.</p>
 </li>
 </ul>
-<p>If you want to design an <a class="el" href="classmim_1_1Axm.html">Axiom</a> that returns a function, you can <a class="el" href="classmim_1_1Axm.html#normalization">fine-adjust the trigger point</a> of a <a class="el" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">mim::Axm::isa</a> / <a class="el" href="classmim_1_1Axm.html#ae8e87ce6a825b04d1f8ef741392cf353">mim::Axm::as</a>.</p>
+<p>If you want to design an <a class="el" href="classmim_1_1Axm.html">Axiom</a> that returns a function, you can <a class="el" href="classmim_1_1Axm.html#normalization">fine-adjust the trigger point</a> of a <a class="el" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">mim::Axm::isa</a> / <a class="el" href="classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1">mim::Axm::as</a>.</p>
 <h3><a class="anchor" id="autotoc_md24"></a>
 w/o Subtags</h3>
 <p>In order to match an <a class="el" href="classmim_1_1Axm.html">Axiom</a> <b>without</b> any subtags like <code>%mem.load</code>, do this:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> load = <a class="code hl_function" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">Axm::isa&lt;mem::load&gt;</a>(def)) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> load = <a class="code hl_function" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">Axm::isa&lt;mem::load&gt;</a>(def)) {</div>
 <div class="line">        <span class="keyword">auto</span> [<a class="code hl_namespace" href="namespacemim_1_1plug_1_1mem.html">mem</a>, ptr]            = load-&gt;args&lt;2&gt;();</div>
 <div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = load-&gt;decurry()-&gt;args&lt;2&gt;();</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// def must match as a mem::load - otherwise, asserts</span></div>
-<div class="line">    <span class="keyword">auto</span> load = <a class="code hl_function" href="classmim_1_1Axm.html#ae8e87ce6a825b04d1f8ef741392cf353">Axm::as&lt;mem::load&gt;</a>(def);</div>
+<div class="line">    <span class="keyword">auto</span> load = <a class="code hl_function" href="classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1">Axm::as&lt;mem::load&gt;</a>(def);</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassmim_1_1Axm_html_a877535f1d66f92f61585f323b1b986f1"><div class="ttname"><a href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">mim::Axm::isa</a></div><div class="ttdeci">static auto isa(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00107">axm.h:107</a></div></div>
-<div class="ttc" id="aclassmim_1_1Axm_html_ae8e87ce6a825b04d1f8ef741392cf353"><div class="ttname"><a href="classmim_1_1Axm.html#ae8e87ce6a825b04d1f8ef741392cf353">mim::Axm::as</a></div><div class="ttdeci">static auto as(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00129">axm.h:129</a></div></div>
+<div class="ttc" id="aclassmim_1_1Axm_html_a606d1a978089ad57ff1369cb233f6338"><div class="ttname"><a href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">mim::Axm::isa</a></div><div class="ttdeci">static auto isa(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00107">axm.h:107</a></div></div>
+<div class="ttc" id="aclassmim_1_1Axm_html_a9f1fab5798d4606f5de24533ec9310e1"><div class="ttname"><a href="classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1">mim::Axm::as</a></div><div class="ttdeci">static auto as(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00130">axm.h:130</a></div></div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md25"></a>
 w/ Subtags</h3>
 <p>In order to match an <a class="el" href="classmim_1_1Axm.html">Axiom</a> <b>with</b> subtags like <code>%core.wrap</code>, do this:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> wrap = <a class="code hl_function" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">Axm::isa&lt;core::wrap&gt;</a>(def)) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> wrap = <a class="code hl_function" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">Axm::isa&lt;core::wrap&gt;</a>(def)) {</div>
 <div class="line">        <span class="keyword">auto</span> [a, b] = wrap-&gt;args&lt;2&gt;();</div>
 <div class="line">        <span class="keyword">auto</span> mode   = wrap-&gt;decurry()-&gt;arg();</div>
 <div class="line">        <span class="keywordflow">switch</span> (wrap.id()) {</div>
@@ -496,16 +496,16 @@ w/ Subtags</h3>
 <div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> add = <a class="code hl_function" href="classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1">Axm::isa</a>(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa34ec78fcc91ffb1e54cd85e4a0924332">core::wrap::add</a>, def)) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> add = <a class="code hl_function" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">Axm::isa</a>(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa34ec78fcc91ffb1e54cd85e4a0924332">core::wrap::add</a>, def)) {</div>
 <div class="line">        <span class="keyword">auto</span> [<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661">a</a>, b] = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1autodiff.html#adec076a151d709a29626cbe2a3c20337">add</a>-&gt;args&lt;2&gt;();</div>
 <div class="line">        <span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707e">mode</a>   = <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1autodiff.html#adec076a151d709a29626cbe2a3c20337">add</a>-&gt;decurry()-&gt;arg();</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// def must match as a core::wrap - otherwise, asserts</span></div>
-<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">wrap</a> = <a class="code hl_function" href="classmim_1_1Axm.html#ae8e87ce6a825b04d1f8ef741392cf353">Axm::as&lt;core::wrap&gt;</a>(def);</div>
+<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">wrap</a> = <a class="code hl_function" href="classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1">Axm::as&lt;core::wrap&gt;</a>(def);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// def must match as a core::wrap::add - otherwise, asserts</span></div>
-<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1autodiff.html#adec076a151d709a29626cbe2a3c20337">add</a> = <a class="code hl_function" href="classmim_1_1Axm.html#ae8e87ce6a825b04d1f8ef741392cf353">Axm::as</a>(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa34ec78fcc91ffb1e54cd85e4a0924332">core::wrap::add</a>, def);</div>
+<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacemim_1_1plug_1_1autodiff.html#adec076a151d709a29626cbe2a3c20337">add</a> = <a class="code hl_function" href="classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1">Axm::as</a>(<a class="code hl_enumvalue" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa34ec78fcc91ffb1e54cd85e4a0924332">core::wrap::add</a>, def);</div>
 <div class="line">}</div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1autodiff_html_adec076a151d709a29626cbe2a3c20337"><div class="ttname"><a href="namespacemim_1_1plug_1_1autodiff.html#adec076a151d709a29626cbe2a3c20337">mim::plug::autodiff::add</a></div><div class="ttdeci">add</div><div class="ttdef"><b>Definition</b> <a href="autodiff_2autogen_8h_source.html#l00046">autogen.h:46</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1core_html_a0d0bff4d75f3e06365643c56fd4672ef"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef">mim::plug::core::wrap</a></div><div class="ttdeci">wrap</div><div class="ttdef"><b>Definition</b> <a href="core_2autogen_8h_source.html#l00135">autogen.h:135</a></div></div>

@@ -4,14 +4,14 @@ var classmim_1_1Axm =
     [ "IsANode", "classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode", [
       [ "type", "classmim_1_1Axm.html#a7151fc68b556560716e09c5e318d5222", null ]
     ] ],
-    [ "as", "classmim_1_1Axm.html#ae8e87ce6a825b04d1f8ef741392cf353", null ],
-    [ "as", "classmim_1_1Axm.html#a7cc0b85ada484e331a0af9741ac0b812", null ],
+    [ "as", "classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1", null ],
+    [ "as", "classmim_1_1Axm.html#a0797677a8c96feb484429cda0c5f8082", null ],
     [ "base", "classmim_1_1Axm.html#a7f72e924025ab0db142542e4fcc92bf1", null ],
     [ "curry", "classmim_1_1Axm.html#aec7f0dbaadfa263bd4d845a36217deba", null ],
     [ "get", "classmim_1_1Axm.html#aeeaa1986a69f4d11556b9f042fd2688e", null ],
     [ "infer_curry_and_trip", "classmim_1_1Axm.html#a9ceee59d324b06f67049b25c1aa26058", null ],
-    [ "isa", "classmim_1_1Axm.html#a877535f1d66f92f61585f323b1b986f1", null ],
-    [ "isa", "classmim_1_1Axm.html#ab8bf53920525bca48e837591c7f2458f", null ],
+    [ "isa", "classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338", null ],
+    [ "isa", "classmim_1_1Axm.html#a67bb672c5feae845d6ec8557c3c302df", null ],
     [ "normalizer", "classmim_1_1Axm.html#a86709d59d9d1dec24da36a52db1177f4", null ],
     [ "plugin", "classmim_1_1Axm.html#ab2b2aa0913ed4f534e755d9a7954b6e1", null ],
     [ "rebuild_", "classmim_1_1Axm.html#ab034371ccc0a25bb50162501087cc6e6", null ],

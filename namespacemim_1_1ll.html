@@ -141,6 +141,12 @@ Functions</h2></td></tr>
 <tr class="separator:a58f332ff50319041ec5458482d1de347"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a469e9639fe5031433849021ed17047ea" id="r_a469e9639fe5031433849021ed17047ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classint">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a469e9639fe5031433849021ed17047ea">compile_and_run</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, std::string name, std::string args={})</td></tr>
 <tr class="separator:a469e9639fe5031433849021ed17047ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cc504748af4aaca125bef5f9defaa21" id="r_a2cc504748af4aaca125bef5f9defaa21"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; std::pair&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2cc504748af4aaca125bef5f9defaa21">is_simd</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type)</td></tr>
+<tr class="separator:a2cc504748af4aaca125bef5f9defaa21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8c2532cd5cfa3288be089807d72f7d" id="r_a1d8c2532cd5cfa3288be089807d72f7d"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; std::pair&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d8c2532cd5cfa3288be089807d72f7d">is_simd_aggregate</a> (const std::vector&lt; const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; types)</td></tr>
+<tr class="separator:a1d8c2532cd5cfa3288be089807d72f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12deda00b07bcfa0b674e0fb8b84f7ce" id="r_a12deda00b07bcfa0b674e0fb8b84f7ce"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12deda00b07bcfa0b674e0fb8b84f7ce">find_common_simd_src</a> (const <a class="el" href="classmim_1_1App.html">App</a> *app)</td></tr>
+<tr class="separator:a12deda00b07bcfa0b674e0fb8b84f7ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a58f332ff50319041ec5458482d1de347" name="a58f332ff50319041ec5458482d1de347"></a>
@@ -167,9 +173,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l01055">1055</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l01262">1262</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ll_8cpp_source.html#l01041">emit()</a>, <a class="el" href="print_8h_source.html#l00163">mim::fmt()</a>, and <a class="el" href="sys_8cpp_source.html#l00071">mim::sys::system()</a>.</p>
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l01248">emit()</a>, <a class="el" href="print_8h_source.html#l00163">mim::fmt()</a>, and <a class="el" href="sys_8cpp_source.html#l00071">mim::sys::system()</a>.</p>
 
 </div>
 </div>
@@ -192,11 +198,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l01046">1046</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l01253">1253</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ll_8cpp_source.html#l01046">compile()</a>.</p>
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l01253">compile()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01046">compile()</a>, and <a class="el" href="ll_8cpp_source.html#l01063">compile_and_run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01253">compile()</a>, and <a class="el" href="ll_8cpp_source.html#l01270">compile_and_run()</a>.</p>
 
 </div>
 </div>
@@ -224,9 +230,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l01063">1063</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l01270">1270</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ll_8cpp_source.html#l01046">compile()</a>, <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, and <a class="el" href="sys_8cpp_source.html#l00077">mim::sys::run()</a>.</p>
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l01253">compile()</a>, <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, and <a class="el" href="sys_8cpp_source.html#l00077">mim::sys::run()</a>.</p>
 
 </div>
 </div>
@@ -249,11 +255,104 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l01041">1041</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l01248">1248</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="phase_8cpp_source.html#l00013">mim::Phase::run()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01055">compile()</a>, and <a class="el" href="core_8cpp_source.html#l00011">mim_get_plugin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01262">compile()</a>, and <a class="el" href="core_8cpp_source.html#l00011">mim_get_plugin()</a>.</p>
+
+</div>
+</div>
+<a id="a12deda00b07bcfa0b674e0fb8b84f7ce" name="a12deda00b07bcfa0b674e0fb8b84f7ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12deda00b07bcfa0b674e0fb8b84f7ce">&#9670;&#160;</a></span>find_common_simd_src()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static const <a class="el" href="classmim_1_1Def.html">Def</a> * mim::ll::find_common_simd_src </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1App.html">App</a> *</td>          <td class="paramname"><span class="paramname"><em>app</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00166">166</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l00148">is_simd()</a>, and <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00368">mim::ll::Emitter::emit_epilogue()</a>.</p>
+
+</div>
+</div>
+<a id="a2cc504748af4aaca125bef5f9defaa21" name="a2cc504748af4aaca125bef5f9defaa21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cc504748af4aaca125bef5f9defaa21">&#9670;&#160;</a></span>is_simd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::optional&lt; std::pair&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; &gt; mim::ll::is_simd </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>type</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00148">148</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="def_8cpp_source.html#l00610">mim::Idx::isa()</a>, and <a class="el" href="def_8h_source.html#l00826">mim::Lit::isa()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00534">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="ll_8cpp_source.html#l00368">mim::ll::Emitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00166">find_common_simd_src()</a>, and <a class="el" href="ll_8cpp_source.html#l00302">mim::ll::Emitter::prepare()</a>.</p>
+
+</div>
+</div>
+<a id="a1d8c2532cd5cfa3288be089807d72f7d" name="a1d8c2532cd5cfa3288be089807d72f7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8c2532cd5cfa3288be089807d72f7d">&#9670;&#160;</a></span>is_simd_aggregate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::optional&lt; std::pair&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; &gt; mim::ll::is_simd_aggregate </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt;</td>          <td class="paramname"><span class="paramname"><em>types</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00157">157</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, and <a class="el" href="def_8cpp_source.html#l00610">mim::Idx::isa()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00368">mim::ll::Emitter::emit_epilogue()</a>.</p>
 
 </div>
 </div>

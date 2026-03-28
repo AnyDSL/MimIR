@@ -1,5 +1,8 @@
 var NAVTREEINDEX22 =
 {
+"namespacemim_1_1plug_1_1math.html#affdd54f0267ccefcffa518f9a44a0162":[3,0,1,4,8,44],
+"namespacemim_1_1plug_1_1matrix.html":[3,0,1,4,9],
+"namespacemim_1_1plug_1_1matrix.html#a0b41485a06205af808adacf92db6e069":[3,0,1,4,9,21],
 "namespacemim_1_1plug_1_1matrix.html#a11b9674b35894ca4f3605791d4783b74":[3,0,1,4,9,3],
 "namespacemim_1_1plug_1_1matrix.html#a16779fcb9eddd2e937cd68822b511231":[3,0,1,4,9,30],
 "namespacemim_1_1plug_1_1matrix.html#a1a46381ed716136bd172a2ea0fd27614":[3,0,1,4,9,16],
@@ -246,8 +249,5 @@ var NAVTREEINDEX22 =
 "nest_8h.html":[6,0,2,1,13],
 "nest_8h_source.html":[6,0,2,1,13],
 "nfa2dfa_8cpp.html":[6,0,3,0,3],
-"nfa2dfa_8cpp_source.html":[6,0,3,0,3],
-"nfa2dfa_8h.html":[6,0,2,0,4],
-"nfa2dfa_8h_source.html":[6,0,2,0,4],
-"nfa_8cpp.html":[6,0,3,0,2]
+"nfa2dfa_8cpp_source.html":[6,0,3,0,3]
 };

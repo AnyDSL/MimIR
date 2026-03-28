@@ -126,17 +126,23 @@ $(function(){initNavTree('ll_8cpp.html',''); initResizable(true); });
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ll_8h_source.html">mim/plug/core/be/ll.h</a>&quot;</code><br />
 <code>#include &lt;deque&gt;</code><br />
+<code>#include &lt;format&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;iomanip&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;ranges&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;absl/container/btree_set.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="clos_8h_source.html">mim/plug/clos/clos.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="math_8h_source.html">mim/plug/math/math.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mem_8h_source.html">mim/plug/mem/mem.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="vec_8h_source.html">mim/plug/vec/vec.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="emitter_8h_source.html">mim/be/emitter.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="print_8h_source.html">mim/util/print.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sys_8h_source.html">mim/util/sys.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="core_8h_source.html">mim/plug/core/core.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="math_2autogen_8h_source.html">mim/plug/math/autogen.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="refly_2autogen_8h_source.html">mim/plug/refly/autogen.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ll.cpp:</div>
 <div class="dyncontent">
@@ -161,6 +167,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a2cc504748af4aaca125bef5f9defaa21" id="r_a2cc504748af4aaca125bef5f9defaa21"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; std::pair&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1ll.html#a2cc504748af4aaca125bef5f9defaa21">mim::ll::is_simd</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type)</td></tr>
+<tr class="separator:a2cc504748af4aaca125bef5f9defaa21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8c2532cd5cfa3288be089807d72f7d" id="r_a1d8c2532cd5cfa3288be089807d72f7d"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; std::pair&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1ll.html#a1d8c2532cd5cfa3288be089807d72f7d">mim::ll::is_simd_aggregate</a> (const std::vector&lt; const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; types)</td></tr>
+<tr class="separator:a1d8c2532cd5cfa3288be089807d72f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12deda00b07bcfa0b674e0fb8b84f7ce" id="r_a12deda00b07bcfa0b674e0fb8b84f7ce"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1ll.html#a12deda00b07bcfa0b674e0fb8b84f7ce">mim::ll::find_common_simd_src</a> (const <a class="el" href="classmim_1_1App.html">App</a> *app)</td></tr>
+<tr class="separator:a12deda00b07bcfa0b674e0fb8b84f7ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e9fadd25e15c54724c0db2a57cdd16d" id="r_a7e9fadd25e15c54724c0db2a57cdd16d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1ll.html#a7e9fadd25e15c54724c0db2a57cdd16d">mim::ll::emit</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, std::ostream &amp;)</td></tr>
 <tr class="separator:a7e9fadd25e15c54724c0db2a57cdd16d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8853938d8898dc6f8759f6cfe4e7ff95" id="r_a8853938d8898dc6f8759f6cfe4e7ff95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classint">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemim_1_1ll.html#a8853938d8898dc6f8759f6cfe4e7ff95">mim::ll::compile</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, std::string name)</td></tr>
