@@ -54,7 +54,7 @@ public:
 
         if (rebind) {
             top()[dbg.sym()] = std::pair(dbg.loc(), decl);
-        } else if (auto [i, ins] = top().emplace(dbg.sym(), std::pair(dbg.loc(), decl)); !ins) {
+        } else if (auto [i, ins] = top().try_emplace(dbg.sym(), std::pair(dbg.loc(), decl)); !ins) {
             auto [prev_loc, prev_decl] = i->second;
             if (!quiet && !prev_decl->isa<DummyDecl>()) { // if prev_decl stems from an error - don't complain
                 ast().error(dbg.loc(), "redeclaration of '{}'", dbg);
