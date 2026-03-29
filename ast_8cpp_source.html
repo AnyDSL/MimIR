@@ -157,7 +157,7 @@ $(function(){initNavTree('ast_8cpp_source.html',''); initResizable(true); });
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        plugin_id = *<a class="code hl_function" href="structmim_1_1Annex.html#a9899866d4f203e3d28fbe42a1575d44c">Annex::mangle</a>(plugin_s);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    }</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">auto</span> [i, fresh] = sym2annex.emplace(plugin_tag, <a class="code hl_struct" href="structmim_1_1ast_1_1AnnexInfo.html">AnnexInfo</a>{plugin_s, tag_s, plugin_id, (<a class="code hl_typedef" href="namespacemim.html#aec640f0bb1ca994e0f2946fa2f00f288">tag_t</a>)sym2annex.size()});</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">auto</span> [i, fresh] = sym2annex.try_emplace(plugin_tag, <a class="code hl_struct" href="structmim_1_1ast_1_1AnnexInfo.html">AnnexInfo</a>{plugin_s, tag_s, plugin_id, (<a class="code hl_typedef" href="namespacemim.html#aec640f0bb1ca994e0f2946fa2f00f288">tag_t</a>)sym2annex.size()});</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">auto</span> annex      = &amp;i-&gt;second;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">if</span> (sub_s) {</div>
