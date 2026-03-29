@@ -68,7 +68,7 @@ axm %sflow.reduciblify: %compile.Phase;
 ///
 /// Transforms control flow between basic blocks into
 /// explicit structured control flow using the structures defined above.
-axm %sflow.structuralize: %compile.Phase;
+axm %sflow.structurize: %compile.Phase;
 ///
 /// Transforms recursion in top-level returning Lams into basic blocks
 /// with an explicit stack.

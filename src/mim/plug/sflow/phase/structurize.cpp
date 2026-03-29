@@ -1,4 +1,4 @@
-#include "mim/plug/sflow/phase/structuralize.h"
+#include "mim/plug/sflow/phase/structurize.h"
 
 #include "mim/tuple.h"
 
@@ -9,7 +9,7 @@
 
 namespace mim::plug::sflow::phase {
 
-void Structuralizer::visit(const Nest& nest) {
+void Structurizer::visit(const Nest& nest) {
     auto root = nest.root();
     visit_node(root);
 }
@@ -31,7 +31,7 @@ bool is_loop_header(const Nest::Node* header) {
 }
 
 using ExitLabels = absl::flat_hash_set<u32>;
-ExitLabels Structuralizer::visit_node(const Nest::Node* node) {
+ExitLabels Structurizer::visit_node(const Nest::Node* node) {
     auto mut = node->mut()->as_mut<Lam>();
     auto app = mut->body()->as<App>();
 
