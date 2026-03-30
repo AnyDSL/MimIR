@@ -4,7 +4,7 @@
 plugin core;
 plugin vec;
 
-fun smpl_op{n:Nat} (A B:«n; Nat»):  «n; Nat» = 
+fun smpl_op{n:Nat} (A B:«n; Nat»):  «n; Nat» =
     let C = %vec.zip %core.nat.add (A, B);
     let D = %vec.zip %core.nat.sub (C, ‹n; 1›);
     return D;
@@ -21,7 +21,7 @@ fun cmp{n:Nat} (A B: «n; Nat»): «n; Bool» =
 
 fun extern foo(A B: «4; Nat»): «4; Nat» =
     ret C = smpl_op @4 $ (A, B);
-    ret D = smpl_op @4 $ (A, B);  
+    ret D = smpl_op @4 $ (A, B);
     return D;
 
 

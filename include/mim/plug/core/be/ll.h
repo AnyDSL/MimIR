@@ -362,7 +362,7 @@ inline void Emitter::finalize() {
 BB:
           Cn [M, a, A]         →    2 phi
           Cn «2;A»             →    2 phi
-          Cn [M, «2;A»         →    1 phi
+          Cn [M, «2;A»]        →    1 phi
 Ret:
           Cn[M,A,A]            →    1 phi
           Cn «2;A»             →    1 phi
