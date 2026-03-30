@@ -124,10 +124,16 @@ public:
     bool is_valid(std::string_view s) { return !s.empty(); }
     void start() override;
     void emit_imported(Lam*);
-    void emit_epilogue(Lam*);
+    virtual void emit_epilogue(Lam*);
     std::string emit_bb(BB&, const Def*);
-    std::string prepare();
+    virtual std::string prepare();
     void finalize();
+
+    virtual inline std::optional<std::string> isa_targetspecific_intrinsic(BB&, const Def*) { return std::nullopt; }
+    inline std::string as_targetspecific_intrinsic(BB& bb, const Def* def) {
+        if (auto res = isa_targetspecific_intrinsic(bb, def)) return res.value();
+        error("target-specific intrinsic detected but not handled in LLVM backend: {} : {}", def, def->type());
+    }
 
     template<class... Args>
     void declare(const char* s, Args&&... args) {
@@ -1250,6 +1256,8 @@ inline std::string Emitter::emit_bb(BB& bb, const Def* def) {
         prev    = bb.assign(name, "{} {} {}, {}", op, t_in, v1, v2);
         return prev;
         error("unhandled vec.zip operation: {}", f);
+    } else if (auto res = isa_targetspecific_intrinsic(bb, def)) {
+        return res.value();
     }
     error("unhandled def in LLVM backend: {} : {}", def, def->type());
 }
