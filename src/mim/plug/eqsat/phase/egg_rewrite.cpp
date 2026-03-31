@@ -269,7 +269,6 @@ const Def* EggRewrite::convert_pack(uint32_t id, MimNode node) {
 }
 
 // (tuple <node1> <node2> ...)
-// TODO: arg tuples of lambda headers shouldn't be added to the world
 const Def* EggRewrite::convert_tuple(uint32_t id, MimNode node) {
     std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     DefVec ops;
