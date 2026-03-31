@@ -7,12 +7,8 @@ lam extern _rulesets(): %eqsat.Ruleset =
         %eqsat.math,
     );
 
-// TODO: internal pow doesn't get emitted by sexpr emitter but is required 
-// by egg_rewrite to reconstruct the world
-// - maybe there is a way to tranfer the specific internal lambda as a copy 
-//   from the old world to the new world similarly to what we did with annexes
-// - but that would mean that equality saturation would only happen on externals
-//   and not on internals..
+// TODO: pow gets emitted after main, and thus the phase tries to convert
+// main before pow (main refers to pow in its body -> error)
 fun pow(a b: I32): I32 =
     con pow_cont(v: I32) =
         return (%core.wrap.mul 0 (a, v));

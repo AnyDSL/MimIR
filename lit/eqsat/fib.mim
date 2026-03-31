@@ -1,13 +1,11 @@
 plugin core;
-// plugin eqsat;
-// 
-// lam extern _rulesets(): %eqsat.Ruleset =
-//     %eqsat.rulesets (
-//         %eqsat.core,
-//     );
+plugin eqsat;
 
-// TODO: internal seq doesn't get emitted by sexpr emitter but is required 
-// by egg_rewrite to reconstruct the world
+lam extern _rulesets(): %eqsat.Ruleset =
+    %eqsat.rulesets (
+        %eqsat.core,
+    );
+
 con seq {A: *} (n: Nat) (body: [Cn A] → Cn A) (exit: Cn A) (acc: A)@tt =
     head(0, acc)
     where

@@ -1,12 +1,10 @@
 plugin core;
-// plugin eqsat;
-// 
-// lam extern _rulesets(): %eqsat.Ruleset =
-//     %eqsat.rulesets (
-//         %eqsat.core,
-//     );
+plugin eqsat;
 
-// TODO: get this example to work with eqsat
+lam extern _rulesets(): %eqsat.Ruleset =
+    %eqsat.rulesets (
+        %eqsat.core,
+    );
 
 lam Ptr(T: *): * = %mem.Ptr (T, 0);
 
