@@ -420,19 +420,18 @@ fn div_urem1() -> Rewrite<Mim, MimAnalysis> {
 fn idx_size(type_: &Mim) -> i32 {
     if let Symbol(s) = type_ {
         match s.as_str() {
-            "bool" => return 1,
-            "i1" => return 1,
-            "i8" => return 8,
-            "i16" => return 16,
-            "i32" => return 32,
-            "i64" => return 64,
-            _ => panic!("expected idx type"),
+            "Bool" => return 1,
+            "I8" => return 8,
+            "I16" => return 16,
+            "I32" => return 32,
+            "I64" => return 64,
+            _ => panic!("expected Idx type"),
         };
     } else if let Idx(_s) = type_ {
         // TODO:
         return 0;
     }
-    panic!("expected idx type");
+    panic!("expected Idx type");
 }
 
 fn new_const(val: Option<Mim>, type_: Option<Mim>) -> Option<Const> {

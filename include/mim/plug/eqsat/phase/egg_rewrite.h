@@ -37,17 +37,12 @@ private:
             new_world().register_annex(flags, rewrite(annex));
         }
 
-        sym2type_["top"]  = new_world().type_top();
-        sym2type_["bot"]  = new_world().type_bot();
-        sym2type_["bool"] = new_world().type_bool();
-        sym2type_["nat"]  = new_world().type_nat();
-        sym2type_["i1"]   = new_world().type_i1();
-        sym2type_["i2"]   = new_world().type_i2();
-        sym2type_["i4"]   = new_world().type_i4();
-        sym2type_["i8"]   = new_world().type_i8();
-        sym2type_["i16"]  = new_world().type_i16();
-        sym2type_["i32"]  = new_world().type_i32();
-        sym2type_["i64"]  = new_world().type_i64();
+        sym2type_["Bool"] = new_world().type_bool();
+        sym2type_["Nat"]  = new_world().type_nat();
+        sym2type_["I8"]   = new_world().type_i8();
+        sym2type_["I16"]  = new_world().type_i16();
+        sym2type_["I32"]  = new_world().type_i32();
+        sym2type_["I64"]  = new_world().type_i64();
     }
 
     std::pair<rust::Vec<RuleSet>, rust::Vec<int>> import_rules();
