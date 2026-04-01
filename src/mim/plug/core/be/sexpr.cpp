@@ -397,6 +397,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
+        // TODO: if we have an extract from a sigma- or arr-typed variable i.e.
+        // a projection, it would be better just to print the identifier of the projection
+        // - for example in loop.mim we are printing extracts instead of argc and mem
         if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) {
             tab.lnprint(os, id(extract).c_str());
         } else {

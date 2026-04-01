@@ -1,5 +1,7 @@
 #include "mim/plug/eqsat/phase/egg_rewrite.h"
 
+#include <cstdint>
+
 #include "mim/def.h"
 #include "mim/driver.h"
 
@@ -219,16 +221,23 @@ const Def* EggRewrite::convert_app(uint32_t id, MimNode node) {
 // (var <name> <type>)
 const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
     std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto name = get_symbol(node.children[0]);
-    auto var  = get_var(name);
+    auto var      = get_def(node.children[0]);
+    auto var_type = res_[node.children[1]];
 
-    // TODO: set projections of variables (i.e. sigma-typed vars)
-    // if (auto sig = var->type()->isa<Sigma>(); sig) {
-    //    auto projs = var->projs();
-    //    // for (auto proj : projs) {
-    //    // proj->set("foo");
-    //    // }
-    //}
+    // TODO: set projections of arr-typed variables as well
+    if (var && var_type.kind == MimKind::Sigma) {
+        for (nat_t i = 0; uint32_t sigma_child_id : var_type.children) {
+            auto sigma_child = res_[sigma_child_id];
+            if (sigma_child.kind == MimKind::Var) {
+                auto proj_name       = get_symbol(sigma_child.children[0]);
+                auto proj_name_nouid = proj_name.substr(0, proj_name.rfind("_"));
+                auto sigma_proj      = var->proj(i);
+                sigma_proj->set(proj_name_nouid);
+                register_var(proj_name, sigma_proj);
+            }
+            i++;
+        }
+    }
 
     std::cout << var << "\n";
     return var;
