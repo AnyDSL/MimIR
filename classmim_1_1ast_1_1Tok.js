@@ -44,6 +44,7 @@ var classmim_1_1ast_1_1Tok =
       [ "K_rec", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5ac89e310d3d2616d226fe13bec22ea52f", null ],
       [ "K_ret", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5acef4ca47a23be5609889face99466687", null ],
       [ "K_rule", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5afeee51b2d19052818b0ac3f4c387c368", null ],
+      [ "K_Rule", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aff2a75bf90c5a5672c90917fa0464da3", null ],
       [ "K_tt", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a2879fcb4320671691958f7a455aa82bd", null ],
       [ "K_when", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a668acd5cc353c2620be3912fe9e96f18", null ],
       [ "K_where", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a591638235693a00f9ae369606644a290", null ],

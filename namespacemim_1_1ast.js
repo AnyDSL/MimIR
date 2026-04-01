@@ -40,6 +40,7 @@ var namespacemim_1_1ast =
     [ "RecDecl", "classmim_1_1ast_1_1RecDecl.html", "classmim_1_1ast_1_1RecDecl" ],
     [ "RetExpr", "classmim_1_1ast_1_1RetExpr.html", "classmim_1_1ast_1_1RetExpr" ],
     [ "RuleDecl", "classmim_1_1ast_1_1RuleDecl.html", "classmim_1_1ast_1_1RuleDecl" ],
+    [ "RuleExpr", "classmim_1_1ast_1_1RuleExpr.html", "classmim_1_1ast_1_1RuleExpr" ],
     [ "S", "structmim_1_1ast_1_1S.html", "structmim_1_1ast_1_1S" ],
     [ "Scopes", "classmim_1_1ast_1_1Scopes.html", "classmim_1_1ast_1_1Scopes" ],
     [ "SeqExpr", "classmim_1_1ast_1_1SeqExpr.html", "classmim_1_1ast_1_1SeqExpr" ],

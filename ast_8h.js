@@ -19,6 +19,7 @@ var ast_8h =
     [ "mim::ast::LitExpr", "classmim_1_1ast_1_1LitExpr.html", "classmim_1_1ast_1_1LitExpr" ],
     [ "mim::ast::DeclExpr", "classmim_1_1ast_1_1DeclExpr.html", "classmim_1_1ast_1_1DeclExpr" ],
     [ "mim::ast::TypeExpr", "classmim_1_1ast_1_1TypeExpr.html", "classmim_1_1ast_1_1TypeExpr" ],
+    [ "mim::ast::RuleExpr", "classmim_1_1ast_1_1RuleExpr.html", "classmim_1_1ast_1_1RuleExpr" ],
     [ "mim::ast::UnionExpr", "classmim_1_1ast_1_1UnionExpr.html", "classmim_1_1ast_1_1UnionExpr" ],
     [ "mim::ast::InjExpr", "classmim_1_1ast_1_1InjExpr.html", "classmim_1_1ast_1_1InjExpr" ],
     [ "mim::ast::MatchExpr", "classmim_1_1ast_1_1MatchExpr.html", "classmim_1_1ast_1_1MatchExpr" ],

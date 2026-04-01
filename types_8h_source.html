@@ -144,9 +144,9 @@ $(function(){initNavTree('types_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim.html">mim</a> {</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// clang-format off</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="types_8h.html#afd47c6d93599df8b73cfaa484a1a9d95">   25</a></span><span class="preprocessor">#define MIM_1_8_16_32_64(m) m(1) m(8) m(16) m(32) m(64)</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="types_8h.html#a44241752e6b3b48eda20dfcec69dcb96">   26</a></span><span class="preprocessor">#define MIM_8_16_32_64(m)        m(8) m(16) m(32) m(64)</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="types_8h.html#a6d474620d1e856819fb13eeabe6419b8">   27</a></span><span class="preprocessor">#define MIM_16_32_64(m)               m(16) m(32) m(64)</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="types_8h.html#ad0d703ae60249a731135668fd43e0ba7">   25</a></span><span class="preprocessor">#define MIM_1_8_16_32_64(X) X(1) X(8) X(16) X(32) X(64)</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="types_8h.html#ad4749b26abab89b148bb964816ec7534">   26</a></span><span class="preprocessor">#define MIM_8_16_32_64(X)        X(8) X(16) X(32) X(64)</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="types_8h.html#ad78ea63dc218f5f4ae875b45f4f08acd">   27</a></span><span class="preprocessor">#define MIM_16_32_64(X)               X(16) X(32) X(64)</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"></span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">/// @name Aliases for some Base Types</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">// using CODE1, CODE2, ... here as a workaround for Doxygen</span><span class="comment"></span></div>
@@ -156,7 +156,7 @@ $(function(){initNavTree('types_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">    using s ## i =  int ## i ##_t; \</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">    using u ## i = uint ## i ##_t;</span></div>
 </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespacemim.html#a482a4a4a0e8f85c8c3c19f3ea130c314">   35</a></span><a class="code hl_define" href="types_8h.html#a44241752e6b3b48eda20dfcec69dcb96">MIM_8_16_32_64</a>(<a class="code hl_define" href="types_8h.html#a8b51dd85b6e4d60706c8e9e0e2d429d4">CODE1</a>)</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespacemim.html#a482a4a4a0e8f85c8c3c19f3ea130c314">   35</a></span><a class="code hl_define" href="types_8h.html#ad4749b26abab89b148bb964816ec7534">MIM_8_16_32_64</a>(<a class="code hl_define" href="types_8h.html#a8b51dd85b6e4d60706c8e9e0e2d429d4">CODE1</a>)</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#undef CODE1</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">using </span>half_float::half;</div>
@@ -185,14 +185,14 @@ $(function(){initNavTree('types_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">    template&lt;&gt; struct w2u_&lt;i&gt; { using type = u ## i; }; \</span></div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">    template&lt;&gt; struct w2s_&lt;i&gt; { using type = s ## i; };</span></div>
 </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><a class="code hl_define" href="types_8h.html#a44241752e6b3b48eda20dfcec69dcb96">MIM_8_16_32_64</a>(<a class="code hl_define" href="types_8h.html#af92a48651ac55f7fcab83b852481d5ed">CODE2</a>)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><a class="code hl_define" href="types_8h.html#ad4749b26abab89b148bb964816ec7534">MIM_8_16_32_64</a>(<a class="code hl_define" href="types_8h.html#af92a48651ac55f7fcab83b852481d5ed">CODE2</a>)</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#undef CODE2</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="foldopen" id="foldopen00065" data-start="" data-end="">
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="types_8h.html#a9414ba3a2fb815027a872506cc048797">   65</a></span><span class="preprocessor">#define CODE3(i)                                        \</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">    template&lt;&gt; struct w2f_&lt;i&gt; { using type = f ## i; };</span></div>
 </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><a class="code hl_define" href="types_8h.html#a6d474620d1e856819fb13eeabe6419b8">MIM_16_32_64</a>(<a class="code hl_define" href="types_8h.html#a9414ba3a2fb815027a872506cc048797">CODE3</a>)</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><a class="code hl_define" href="types_8h.html#ad78ea63dc218f5f4ae875b45f4f08acd">MIM_16_32_64</a>(<a class="code hl_define" href="types_8h.html#a9414ba3a2fb815027a872506cc048797">CODE3</a>)</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#undef CODE3</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <span class="comment">// namespace detail</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment"></span> </div>
@@ -210,7 +210,7 @@ $(function(){initNavTree('types_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">    constexpr s ## i operator&quot;&quot;_s ## i(unsigned long long int s) { return s ## i(s); } \</span></div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">    constexpr u ## i operator&quot;&quot;_u ## i(unsigned long long int u) { return u ## i(u); }</span></div>
 </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="namespacemim.html#a63d7daa748288edee7a99436759d61ca">   83</a></span><a class="code hl_define" href="types_8h.html#a44241752e6b3b48eda20dfcec69dcb96">MIM_8_16_32_64</a>(<a class="code hl_define" href="types_8h.html#a3753a8fd672ed997199aecbd1955c611">CODE4</a>)</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="namespacemim.html#a63d7daa748288edee7a99436759d61ca">   83</a></span><a class="code hl_define" href="types_8h.html#ad4749b26abab89b148bb964816ec7534">MIM_8_16_32_64</a>(<a class="code hl_define" href="types_8h.html#a3753a8fd672ed997199aecbd1955c611">CODE4</a>)</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#undef CODE4</span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment"></span> </div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">/// A `size_t` literal. Use `0_s` to disambiguate `0` from `nullptr`.</span></div>
@@ -250,10 +250,10 @@ $(function(){initNavTree('types_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="anamespacemim_html_aec640f0bb1ca994e0f2946fa2f00f288"><div class="ttname"><a href="namespacemim.html#aec640f0bb1ca994e0f2946fa2f00f288">mim::tag_t</a></div><div class="ttdeci">u8 tag_t</div><div class="ttdef"><b>Definition</b> <a href="#l00048">types.h:48</a></div></div>
 <div class="ttc" id="anamespacemim_html_aef2afb7040e6345a0b89b209ae7560c7"><div class="ttname"><a href="namespacemim.html#aef2afb7040e6345a0b89b209ae7560c7">mim::u8</a></div><div class="ttdeci">uint8_t u8</div><div class="ttdef"><b>Definition</b> <a href="#l00035">types.h:35</a></div></div>
 <div class="ttc" id="atypes_8h_html_a3753a8fd672ed997199aecbd1955c611"><div class="ttname"><a href="types_8h.html#a3753a8fd672ed997199aecbd1955c611">CODE4</a></div><div class="ttdeci">#define CODE4(i)</div><div class="ttdef"><b>Definition</b> <a href="#l00080">types.h:80</a></div></div>
-<div class="ttc" id="atypes_8h_html_a44241752e6b3b48eda20dfcec69dcb96"><div class="ttname"><a href="types_8h.html#a44241752e6b3b48eda20dfcec69dcb96">MIM_8_16_32_64</a></div><div class="ttdeci">#define MIM_8_16_32_64(m)</div><div class="ttdef"><b>Definition</b> <a href="#l00026">types.h:26</a></div></div>
-<div class="ttc" id="atypes_8h_html_a6d474620d1e856819fb13eeabe6419b8"><div class="ttname"><a href="types_8h.html#a6d474620d1e856819fb13eeabe6419b8">MIM_16_32_64</a></div><div class="ttdeci">#define MIM_16_32_64(m)</div><div class="ttdef"><b>Definition</b> <a href="#l00027">types.h:27</a></div></div>
 <div class="ttc" id="atypes_8h_html_a8b51dd85b6e4d60706c8e9e0e2d429d4"><div class="ttname"><a href="types_8h.html#a8b51dd85b6e4d60706c8e9e0e2d429d4">CODE1</a></div><div class="ttdeci">#define CODE1(i)</div><div class="ttdef"><b>Definition</b> <a href="#l00032">types.h:32</a></div></div>
 <div class="ttc" id="atypes_8h_html_a9414ba3a2fb815027a872506cc048797"><div class="ttname"><a href="types_8h.html#a9414ba3a2fb815027a872506cc048797">CODE3</a></div><div class="ttdeci">#define CODE3(i)</div><div class="ttdef"><b>Definition</b> <a href="#l00065">types.h:65</a></div></div>
+<div class="ttc" id="atypes_8h_html_ad4749b26abab89b148bb964816ec7534"><div class="ttname"><a href="types_8h.html#ad4749b26abab89b148bb964816ec7534">MIM_8_16_32_64</a></div><div class="ttdeci">#define MIM_8_16_32_64(X)</div><div class="ttdef"><b>Definition</b> <a href="#l00026">types.h:26</a></div></div>
+<div class="ttc" id="atypes_8h_html_ad78ea63dc218f5f4ae875b45f4f08acd"><div class="ttname"><a href="types_8h.html#ad78ea63dc218f5f4ae875b45f4f08acd">MIM_16_32_64</a></div><div class="ttdeci">#define MIM_16_32_64(X)</div><div class="ttdef"><b>Definition</b> <a href="#l00027">types.h:27</a></div></div>
 <div class="ttc" id="atypes_8h_html_af92a48651ac55f7fcab83b852481d5ed"><div class="ttname"><a href="types_8h.html#af92a48651ac55f7fcab83b852481d5ed">CODE2</a></div><div class="ttdeci">#define CODE2(i)</div><div class="ttdef"><b>Definition</b> <a href="#l00059">types.h:59</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

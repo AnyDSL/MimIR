@@ -272,6 +272,7 @@ var hierarchy =
           [ "mim::ast::PiExpr", "classmim_1_1ast_1_1PiExpr.html", null ],
           [ "mim::ast::PrimaryExpr", "classmim_1_1ast_1_1PrimaryExpr.html", null ],
           [ "mim::ast::RetExpr", "classmim_1_1ast_1_1RetExpr.html", null ],
+          [ "mim::ast::RuleExpr", "classmim_1_1ast_1_1RuleExpr.html", null ],
           [ "mim::ast::SeqExpr", "classmim_1_1ast_1_1SeqExpr.html", null ],
           [ "mim::ast::SigmaExpr", "classmim_1_1ast_1_1SigmaExpr.html", null ],
           [ "mim::ast::TupleExpr", "classmim_1_1ast_1_1TupleExpr.html", null ],

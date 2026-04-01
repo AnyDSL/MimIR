@@ -2,6 +2,7 @@ var classmim_1_1ast_1_1RuleDecl =
 [
     [ "RuleDecl", "classmim_1_1ast_1_1RuleDecl.html#a31cace7df0461ce8af94e3994c06d503", null ],
     [ "bind", "classmim_1_1ast_1_1RuleDecl.html#a2c0a2805d44f26d0f02c54cb6a3666c0", null ],
+    [ "dbg", "classmim_1_1ast_1_1RuleDecl.html#add6956385b4fad6b9e81ebdc99908d5c", null ],
     [ "emit", "classmim_1_1ast_1_1RuleDecl.html#aeb37623261c0fc42d66379a89fe19f7e", null ],
     [ "guard", "classmim_1_1ast_1_1RuleDecl.html#a413e8521fa4a639fe24af51eb3992251", null ],
     [ "is_normalizer", "classmim_1_1ast_1_1RuleDecl.html#a436fae2a72a0e86c3004fe7a71b9d676", null ],
