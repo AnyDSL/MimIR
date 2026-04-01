@@ -119,6 +119,7 @@ void TuplePtrn::bind(Scopes& s, bool rebind, bool quiet) const {
 // clang-format off
 void IdExpr     ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
 void TypeExpr   ::bind(Scopes& s) const { level()->bind(s); }
+void RuleExpr   ::bind(Scopes& s) const { meta_type()->bind(s); }
 void ErrorExpr  ::bind(Scopes&) const {}
 void HoleExpr   ::bind(Scopes&) const {}
 void PrimaryExpr::bind(Scopes&) const {}
@@ -390,6 +391,7 @@ void RuleDecl::bind(Scopes& s) const {
     rhs()->bind(s);
     guard()->bind(s);
     s.pop();
+    s.bind(dbg(), this);
 }
 
 } // namespace mim::ast

@@ -78,6 +78,7 @@ const Def* Rewriter::rewrite_imm_Match (const Match*  d) { return world().match 
 const Def* Rewriter::rewrite_imm_Merge (const Merge*  d) { return world().merge (rewrite(d->type()),   rewrite(d->ops()));                                         }
 const Def* Rewriter::rewrite_imm_Pi    (const Pi*     d) { return world().pi    (rewrite(d->dom()),    rewrite(d->codom()), d->is_implicit());                     }
 const Def* Rewriter::rewrite_imm_Proxy (const Proxy*  d) { return world().proxy (rewrite(d->type()),   rewrite(d->ops()), d->pass(), d->tag());                    }
+const Def* Rewriter::rewrite_imm_Reform(const Reform* d) { return world().reform(rewrite(d->meta_type()));                                                         }
 const Def* Rewriter::rewrite_imm_Rule  (const Rule*   d) { return world().rule  (rewrite(d->type()),   rewrite(d->lhs()), rewrite(d->rhs()), rewrite(d->guard())); }
 const Def* Rewriter::rewrite_imm_Sigma (const Sigma*  d) { return world().sigma (rewrite(d->ops()));                                                               }
 const Def* Rewriter::rewrite_imm_Split (const Split*  d) { return world().split (rewrite(d->type()),   rewrite(d->value()));                                       }
