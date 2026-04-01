@@ -1,11 +1,11 @@
 plugin core;
-plugin eqsat;
-
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
-        %eqsat.core,
-        %eqsat.math,
-    );
+//plugin eqsat;
+//
+//lam extern _rulesets(): %eqsat.Ruleset =
+//    %eqsat.rulesets (
+//        %eqsat.core,
+//        %eqsat.math,
+//    );
 
 // TODO: pow gets emitted after main, and thus the phase tries to convert
 // main before pow (main refers to pow in its body -> error)

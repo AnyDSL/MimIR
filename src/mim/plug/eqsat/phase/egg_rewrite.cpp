@@ -120,12 +120,12 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
         var_types.push_back(var_type);
     }
 
-    auto new_con = new_world().mut_con(var_types)->set(con_name.c_str());
+    auto new_con = new_world().mut_con(var_types)->set(con_name.substr(0, con_name.rfind("_")));
     register_lam(con_name, new_con);
 
     for (int i = 0; auto var : new_con->vars()) {
         auto var_name = var_names[i];
-        var->set(var_name);
+        var->set(var_name.substr(0, var_name.rfind("_")));
         register_var(var_name, var);
         std::cout << var << " : " << var->type();
         auto projs = var->projs();

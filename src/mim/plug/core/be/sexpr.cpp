@@ -68,7 +68,7 @@ public:
     void finalize_nest(const Nest::Node* node, MutSet& done);
 
 private:
-    std::string id(const Def*, bool force_bb = false) const;
+    std::string id(const Def*) const;
     std::string indent_lines(std::string s, unsigned tabs);
     std::string convert(const Def*, const Def* = nullptr);
 
@@ -76,10 +76,8 @@ private:
     std::ostringstream func_impls_;
 };
 
-std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
+std::string Emitter::id(const Def* def) const {
     if (def->isa<Axm>()) return def->sym().str();
-    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym().str();
-    if (!def->sym().empty()) return def->sym().str();
     return def->unique_name();
 }
 
@@ -334,6 +332,13 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     }
 }
 
+// TODO: if a lambda depends on another closed internal lambda, then this
+// internal lambda should be printed before the current lambda to keep the order
+// of dependency/conversion order in the egg rewrite phase correct. (as in pow.mim)
+// - one call to finalize_nest to emit all internal, closed lambdas followed by another one
+//   emitting all external, closed lambdas?
+// - maybe we can also just loop through the lambdas as in ll.cpp and once we find a lam
+//   that is closed and internal, we just emit it as above
 void Emitter::finalize() {
     if (root()->sym().str() == "_fallback_compile") return;
     MutSet done;
