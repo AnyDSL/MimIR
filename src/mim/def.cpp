@@ -192,7 +192,7 @@ const Pi* Pi::immutabilize() {
     return nullptr;
 }
 
-// TODO should we ever immutablize Rules?
+// TODO should we ever immutabilize Rules?
 const Rule* Rule::immutabilize() { return nullptr; }
 
 const Def* Sigma::immutabilize() {
