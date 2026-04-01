@@ -68,7 +68,7 @@ public:
     void finalize_nest(const Nest::Node* node, MutSet& done);
 
 private:
-    std::string id(const Def*, bool force_bb = false) const;
+    std::string id(const Def*) const;
     std::string indent_lines(std::string s, unsigned tabs);
     std::string convert(const Def*, const Def* = nullptr);
 
@@ -76,10 +76,8 @@ private:
     std::ostringstream func_impls_;
 };
 
-std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
+std::string Emitter::id(const Def* def) const {
     if (def->isa<Axm>()) return def->sym().str();
-    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym().str();
-    if (!def->sym().empty()) return def->sym().str();
     return def->unique_name();
 }
 
