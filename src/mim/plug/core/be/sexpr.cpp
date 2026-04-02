@@ -253,11 +253,10 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     return os.str();
 }
 
-// TODO: emit_unsafe() for Defs that were already
+// NOTE: emit_unsafe() for Defs that were already
 // emitted uses caching which messes up indentation.
-// If we don't need basic blocks just use emit_bb with
+// If we don't need basic blocks we just use emit_bb with
 // some dummy basic blocks instead.
-// - rewrite the whole dummy BB thing
 std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
     ++tab;
@@ -332,6 +331,13 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     }
 }
 
+// TODO: if a lambda depends on another closed internal lambda, then this
+// internal lambda should be printed before the current lambda to keep the order
+// of dependency/conversion order in the egg rewrite phase correct. (as in pow.mim)
+// - one call to finalize_nest to emit all internal, closed lambdas followed by another one
+//   emitting all external, closed lambdas?
+// - maybe we can also just loop through the lambdas as in ll.cpp and once we find a lam
+//   that is closed and internal, we just emit it as above
 void Emitter::finalize() {
     if (root()->sym().str() == "_fallback_compile") return;
     MutSet done;
@@ -358,11 +364,20 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto lam = def->isa<Lam>()) {
         tab.lnprint(os, id(lam).c_str());
     } else if (auto lit = def->isa<Lit>()) {
-        if (lit->type()->isa<Nat>())
-            // TODO: consider printing term aliases like "i32" for 2^32
-            // but that would require upper case printing of types like "I32" to prevent confusion
-            tab.lnprint(os, "(lit {})", lit->get<u64>());
-        else if (auto size = Idx::isa(lit->type()))
+        if (lit->type()->isa<Nat>()) {
+            std::string alias;
+            auto nat_val = lit->get<u64>();
+            switch (nat_val) {
+                case 0x100: alias = "i8";
+                case 0x1000: alias = "i16";
+                case 0x100000000: alias = "i32";
+                default: break;
+            }
+            if (!alias.empty())
+                tab.lnprint(os, "(lit {})", alias);
+            else
+                tab.lnprint(os, "(lit {})", nat_val);
+        } else if (auto size = Idx::isa(lit->type()))
             if (auto lit_size = Idx::size2bitwidth(size); lit_size && *lit_size == 1)
                 tab.lnprint(os, "(lit {})", lit);
             else
@@ -390,7 +405,28 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
-        if (auto lit = Lit::isa(index); lit && tuple->isa<Var>()) {
+        // NOTE: 'tuple' is another extract if we have for example two nested, sigma-typed variables
+        // and we are trying to print a named projection of the inner variable. ('baz' in the example below)
+        // ex.:  (var foo (sigma (var bar (sigma (var baz Nat)))))
+        // In this example, we have an extract where the tuple: 'bar' is another extract from 'foo'.
+        auto is_nested_proj = false;
+        if (auto lit = Lit::isa(index); lit && tuple->isa<Extract>()) {
+            auto curr_tuple = tuple;
+            auto curr_index = index;
+            while (curr_tuple != nullptr && curr_index != nullptr)
+                if (auto lit = Lit::isa(curr_index); lit && curr_tuple->isa<Extract>()) {
+                    curr_tuple = tuple->as<Extract>()->tuple();
+                    curr_index = tuple->as<Extract>()->index();
+                    continue;
+                } else if (auto lit = Lit::isa(curr_index); lit && curr_tuple->isa<Var>()) {
+                    is_nested_proj = true;
+                    break;
+                } else {
+                    break;
+                }
+        }
+
+        if (auto lit = Lit::isa(index); (lit && tuple->isa<Var>()) || is_nested_proj) {
             tab.lnprint(os, id(extract).c_str());
         } else {
             tab.lnprint(os, "(extract");
@@ -429,7 +465,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         else
             tab.lnprint(os, "(top {} {})", id(def), convert(def->type()));
     } else {
-        error("unhandled def in Mim backend: {} : {}", def, def->type());
+        error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
     }
     --tab;
 
