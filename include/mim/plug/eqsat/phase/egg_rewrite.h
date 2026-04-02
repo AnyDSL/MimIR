@@ -37,12 +37,17 @@ private:
             new_world().register_annex(flags, rewrite(annex));
         }
 
-        sym2type_["Bool"] = new_world().type_bool();
-        sym2type_["Nat"]  = new_world().type_nat();
-        sym2type_["I8"]   = new_world().type_i8();
-        sym2type_["I16"]  = new_world().type_i16();
-        sym2type_["I32"]  = new_world().type_i32();
-        sym2type_["I64"]  = new_world().type_i64();
+        sym2def_["Bool"] = new_world().type_bool();
+        sym2def_["Nat"]  = new_world().type_nat();
+        sym2def_["I8"]   = new_world().type_i8();
+        sym2def_["I16"]  = new_world().type_i16();
+        sym2def_["I32"]  = new_world().type_i32();
+        sym2def_["I64"]  = new_world().type_i64();
+        sym2def_["ff"]   = new_world().lit_ff();
+        sym2def_["tt"]   = new_world().lit_tt();
+        sym2def_["i8"]   = new_world().lit_nat(0x100);
+        sym2def_["i16"]  = new_world().lit_nat(0x10000);
+        sym2def_["i32"]  = new_world().lit_nat(0x100000000);
     }
 
     std::pair<rust::Vec<RuleSet>, rust::Vec<int>> import_rules();
@@ -89,8 +94,8 @@ private:
         auto def = added_[id];
         if (def == nullptr) {
             auto sym = get_symbol(id);
-            if (sym2type_.contains(sym))
-                def = sym2type_[sym];
+            if (sym2def_.contains(sym))
+                def = sym2def_[sym];
             else if (sym2flags_.contains(sym))
                 def = new_world().annex(sym2flags_[sym]);
             else if (vars_.contains(sym))
@@ -113,14 +118,12 @@ private:
     rust::Vec<MimNode> res_;
     std::unordered_map<uint32_t, const Def*> added_;
 
-    // TODO: this is going to become problematic if our sexpr
-    // has nested lambdas using the same variable names or multiple lambdas with the same name
     std::unordered_map<std::string, const Def*> vars_;
     std::unordered_map<std::string, const Lam*> lams_;
 
     // TODO: use actual driver.sym() symbols instead of strings
     std::unordered_map<std::string, flags_t> sym2flags_;
-    std::unordered_map<std::string, const Def*> sym2type_;
+    std::unordered_map<std::string, const Def*> sym2def_;
 };
 
 }; // namespace mim::plug::eqsat

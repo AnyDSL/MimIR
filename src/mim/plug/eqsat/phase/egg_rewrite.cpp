@@ -87,13 +87,14 @@ void EggRewrite::process(RewriteResult rewrite) {
 const Def* EggRewrite::init(uint32_t id) {
     auto node = res_[id];
 
+    // std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     const Def* res = nullptr;
     switch (node.kind) {
         case MimKind::Lam: res = init_lam(id, node); break;
         case MimKind::Con: res = init_con(id, node); break;
         default: break;
     }
-
+    // std::cout << res << "\n";
     return added_[id] = res;
 }
 
@@ -101,7 +102,6 @@ const Def* EggRewrite::init(uint32_t id) {
 const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 
 const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
-    std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << "\n";
     DefVec var_types;
     std::vector<std::string> var_names;
     auto domain = get_node(MimKind::Sigma, node.children[2]);
@@ -130,9 +130,15 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
         auto var_name       = var_names[i];
         auto var_name_nouid = var_name.substr(0, var_name.rfind("_"));
         var->set(var_name_nouid);
-        register_var(var_name, var);
+        if (!var_name.empty()) register_var(var_name, var);
         i++;
     }
+
+    // NOTE: We need another recursive call to convert() for each var to ensure (nested) var projections
+    // are set and registered inside of convert_var()
+    for (auto child : domain.children)
+        convert(child, true);
+
     return new_con;
 }
 
@@ -146,6 +152,7 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
         for (uint32_t child : node.children)
             convert(child, recurse);
 
+    // std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     const Def* res = nullptr;
     switch (node.kind) {
         case MimKind::Let: res = convert_let(id, node); break;
@@ -172,14 +179,13 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
         default: break;
     }
 
+    // std::cout << res << "\n";
     return added_[id] = res;
 }
 
 // (let <name> <definition> <expression>)
 const Def* EggRewrite::convert_let(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto expr = get_def(node.children[2]);
-    std::cout << expr << "\n";
     return expr;
 }
 
@@ -188,14 +194,14 @@ const Def* EggRewrite::convert_lam(uint32_t id, MimNode node) { return nullptr; 
 
 // (con <extern> <name> <domain> [<filter>] [<body>])
 const Def* EggRewrite::convert_con(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
+    const int CON_DECL_SIZE = 3;
+    const int CON_DEF_SIZE  = 5;
+
     auto con = get_def(id)->as_mut<Lam>();
 
     auto is_extern = get_symbol(node.children[0]);
     if (is_extern == "extern") con->externalize();
 
-    const int CON_DECL_SIZE = 3;
-    const int CON_DEF_SIZE  = 5;
     if (node.children.size() == CON_DEF_SIZE) {
         auto filter = get_def(node.children[3]);
         auto body   = get_def(node.children[4]);
@@ -204,27 +210,23 @@ const Def* EggRewrite::convert_con(uint32_t id, MimNode node) {
     } else if (node.children.size() == CON_DECL_SIZE)
         con->set_filter(false);
 
-    std::cout << con << "\n";
     return con;
 }
 
 // (app <callee> <arg>)
 const Def* EggRewrite::convert_app(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto callee  = get_def(node.children[0]);
     auto arg     = get_def(node.children[1]);
     auto new_app = new_world().app(callee, arg);
-    std::cout << new_app << "\n";
     return new_app;
 }
 
 // (var <name> <type>)
 const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto var      = get_def(node.children[0]);
     auto var_type = res_[node.children[1]];
 
-    // TODO: set projections of arr-typed variables as well
+    // TODO: do arr-typed variables also need projections set?
     if (var && var_type.kind == MimKind::Sigma) {
         for (nat_t i = 0; uint32_t sigma_child_id : var_type.children) {
             auto sigma_child = res_[sigma_child_id];
@@ -239,115 +241,85 @@ const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
         }
     }
 
-    std::cout << var << "\n";
     return var;
 }
 
 // (lit <val> [<type>])
 const Def* EggRewrite::convert_lit(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto lit_sym = get_symbol(node.children[0]);
-    auto lit_num = get_num(node.children[0]);
-    const Def* new_lit;
+    auto lit_def = get_def(node.children[0]);
+    if (lit_def != nullptr) return lit_def;
 
-    if (lit_sym == "ff") {
-        // Case 1: (lit tt)
-        new_lit = new_world().lit_ff();
-    } else if (lit_sym == "tt") {
-        // Case 1: (lit ff)
-        new_lit = new_world().lit_tt();
-    } else if (node.children.size() > 1) {
-        // Case 2: (lit <val> <type>)
+    const Def* new_lit;
+    auto lit_val = get_num(node.children[0]);
+    if (node.children.size() > 1) {
+        // Case 1: (lit <val> <type>)
         auto lit_type = get_def(node.children[1]);
-        new_lit       = new_world().lit(lit_type, lit_num);
+        new_lit       = new_world().lit(lit_type, lit_val);
     } else {
-        // Case 3: (lit <val>)
-        new_lit = new_world().lit_nat(lit_num);
+        // Case 2: (lit <val>)
+        new_lit = new_world().lit_nat(lit_val);
     }
-    std::cout << new_lit << "\n";
     return new_lit;
 }
 
 // (pack <arity> <body>)
 const Def* EggRewrite::convert_pack(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto arity = get_def(node.children[0]);
-    auto body  = get_def(node.children[1]);
-
+    auto arity    = get_def(node.children[0]);
+    auto body     = get_def(node.children[1]);
     auto new_pack = new_world().pack(arity, body);
-    std::cout << new_pack << "\n";
     return new_pack;
 }
 
 // (tuple <node1> <node2> ...)
 const Def* EggRewrite::convert_tuple(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     DefVec ops;
     for (auto child : node.children) {
         auto op = get_def(child);
         ops.push_back(op);
     }
     auto new_tuple = new_world().tuple(ops);
-    std::cout << new_tuple << "\n";
     return new_tuple;
 }
 
 // (extract <tuple> <index>)
 const Def* EggRewrite::convert_extract(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto tuple = get_def(node.children[0]);
-    auto index = get_def(node.children[1]);
-
+    auto tuple       = get_def(node.children[0]);
+    auto index       = get_def(node.children[1]);
     auto new_extract = new_world().extract(tuple, index);
-    std::cout << new_extract << "\n";
     return new_extract;
 }
 
 // (ins <tuple> <index> <value>)
 const Def* EggRewrite::convert_ins(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto tuple = get_def(node.children[0]);
-    auto index = get_def(node.children[1]);
-    auto value = get_def(node.children[2]);
-
+    auto tuple      = get_def(node.children[0]);
+    auto index      = get_def(node.children[1]);
+    auto value      = get_def(node.children[2]);
     auto new_insert = new_world().insert(tuple, index, value);
-    std::cout << new_insert << "\n";
     return new_insert;
 }
 
 // (bot <name> <type>)
 const Def* EggRewrite::convert_bot(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto name = get_symbol(node.children[0]);
-    auto type = get_def(node.children[1]);
-
+    auto name    = get_symbol(node.children[0]);
+    auto type    = get_def(node.children[1]);
     auto new_bot = new_world().bot(type);
     if (name != "⊥") register_var(name, new_bot);
-
-    std::cout << new_bot << "\n";
     return new_bot;
 }
 // (top <name> <type>)
 const Def* EggRewrite::convert_top(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto name = get_symbol(node.children[0]);
-    auto type = get_def(node.children[1]);
-
+    auto name    = get_symbol(node.children[0]);
+    auto type    = get_def(node.children[1]);
     auto new_top = new_world().top(type);
     if (name != "T") register_var(name, new_top);
-
-    std::cout << new_top << "\n";
     return new_top;
 }
 
 // (arr <arity> <body>)
 const Def* EggRewrite::convert_arr(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    auto arity = get_def(node.children[0]);
-    auto body  = get_def(node.children[1]);
-
+    auto arity   = get_def(node.children[0]);
+    auto body    = get_def(node.children[1]);
     auto new_arr = new_world().arr(arity, body);
-    std::cout << new_arr << "\n";
     return new_arr;
 }
 
@@ -355,7 +327,6 @@ const Def* EggRewrite::convert_arr(uint32_t id, MimNode node) {
 //  or
 // (sigma <type1> <type2> ...)
 const Def* EggRewrite::convert_sigma(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     DefVec ops;
     for (auto child : node.children) {
         auto op = res_[child];
@@ -369,67 +340,51 @@ const Def* EggRewrite::convert_sigma(uint32_t id, MimNode node) {
     }
 
     auto new_sigma = new_world().sigma(ops);
-    std::cout << new_sigma << "\n";
     return new_sigma;
 }
 
 // (cn <domain>)
 const Def* EggRewrite::convert_cn(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto domain = get_def(node.children[0]);
     auto new_cn = new_world().cn(domain);
-    std::cout << new_cn << "\n";
     return new_cn;
 }
 
 // (pi <domain> <codomain>)
 const Def* EggRewrite::convert_pi(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto domain   = get_def(node.children[0]);
     auto codomain = get_def(node.children[1]);
     auto new_pi   = new_world().pi(domain, codomain);
-    std::cout << new_pi << "\n";
     return new_pi;
 }
 
 // (idx <size>)
 const Def* EggRewrite::convert_idx(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto size    = get_def(node.children[0]);
     auto new_idx = new_world().type_idx(size);
-    std::cout << new_idx << "\n";
     return new_idx;
 }
 
 // (hole <type>)
 const Def* EggRewrite::convert_hole(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto type_    = get_def(node.children[0]);
     auto new_hole = new_world().mut_hole(type_);
-    std::cout << new_hole << "\n";
     return new_hole;
 }
 
 // (type <level>)
 const Def* EggRewrite::convert_type(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto level    = get_def(node.children[0]);
     auto new_type = new_world().type(level);
-    std::cout << new_type << "\n";
     return new_type;
 }
 
 // <i64>
-const Def* EggRewrite::convert_num(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << "\n";
-    return nullptr;
-}
+const Def* EggRewrite::convert_num(uint32_t id, MimNode node) { return nullptr; }
 
 // <string>
 const Def* EggRewrite::convert_symbol(uint32_t id, MimNode node) {
-    std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto def = get_def(id);
-    std::cout << def << "\n";
     return def;
 }
 
