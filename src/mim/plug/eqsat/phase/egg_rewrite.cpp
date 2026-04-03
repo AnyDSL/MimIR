@@ -143,17 +143,20 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
 }
 
 const Def* EggRewrite::convert(uint32_t id, bool recurse) {
-    // TODO: skip out on conversion if id already in added_
-    // - don't skip for lambdas because they will be added in init()
-    //   but their bodies will only be set in convert()
     auto node = res_[id];
 
     if (recurse)
         for (uint32_t child : node.children)
             convert(child, recurse);
 
+    // If a Def has been created for a node, we do not need to revisit its convert function.
+    // The only exceptions are lambdas and variables, since their Defs already get created in
+    // the init functions and need to be further modified in their convert functions.
+    const Def* res                  = added_[id];
+    const std::set<MimKind> revisit = {MimKind::Lam, MimKind::Con, MimKind::Var};
+    if (res != nullptr && !revisit.contains(node.kind)) return res;
+
     // std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    const Def* res = nullptr;
     switch (node.kind) {
         case MimKind::Let: res = convert_let(id, node); break;
         case MimKind::Lam: res = convert_lam(id, node); break;
@@ -226,7 +229,6 @@ const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
     auto var      = get_def(node.children[0]);
     auto var_type = res_[node.children[1]];
 
-    // TODO: do arr-typed variables also need projections set?
     if (var && var_type.kind == MimKind::Sigma) {
         for (nat_t i = 0; uint32_t sigma_child_id : var_type.children) {
             auto sigma_child = res_[sigma_child_id];
