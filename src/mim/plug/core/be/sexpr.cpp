@@ -64,8 +64,8 @@ public:
     std::string emit_bb(BB&, const Def*);
     std::string emit_curried_app(const App& app);
     std::string prepare();
+    void emit_lam(Lam* lam, MutSet& done);
     void finalize();
-    void finalize_nest(const Nest::Node* node, MutSet& done);
 
 private:
     std::string id(const Def*) const;
@@ -165,7 +165,7 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
     } else if (auto app = type->isa<App>()) {
         print(s, "(app {} {})", convert(app->callee()), convert(app->arg()));
     } else if (auto ax = type->isa<Axm>()) {
-        print(s, "{}", ax->sym().str());
+        print(s, "{}", id(ax));
     } else if (auto hole = type->isa<Hole>()) {
         print(s, "(hole {})", id(hole));
     } else if (auto extract = type->isa<Extract>()) {
@@ -192,7 +192,7 @@ void Emitter::start() {
     ostream() << func_decls_.str() << '\n';
     ostream() << func_impls_.str() << '\n';
 
-    // TODO: use pretty(sexpr, line_len) from the egg FFI
+    // TODO: Use pretty(sexpr, line_len) from the egg FFI
     // to pretty-print the sexpr either based on a switch from the cli
     // or as default after the sexpr backend has been completed
 }
@@ -213,7 +213,7 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "))\n");
 }
 
-// TODO: should we emit the codomain seperately for lam?
+// TODO: Do we need to emit the codomain seperately for lam?
 std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     std::ostringstream os;
 
@@ -253,9 +253,9 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     return os.str();
 }
 
-// NOTE: emit_unsafe() for Defs that were already
+// emit_unsafe() for Defs that were already
 // emitted uses caching which messes up indentation.
-// If we don't need basic blocks we just use emit_bb with
+// If we don't need basic blocks we just use emit_bb() with
 // some dummy basic blocks instead.
 std::string Emitter::emit_curried_app(const App& app) {
     std::ostringstream os;
@@ -278,9 +278,8 @@ std::string Emitter::emit_curried_app(const App& app) {
 
 std::string Emitter::prepare() { return root()->unique_name(); }
 
-void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
-    done.emplace(node->mut());
-    auto lam = node->mut()->as_mut<Lam>();
+void Emitter::emit_lam(Lam* lam, MutSet& done) {
+    done.emplace(lam);
     assert(lam2bb_.contains(lam));
     auto& bb = lam2bb_[lam];
 
@@ -301,11 +300,12 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     // Prints lambda let bindings based on nesting structure
     // while keeping count of the number of lambda bindings the current lambdas' body depends on
     auto lam_binding_count = 0;
-    for (auto op : node->mut()->deps()) {
+    for (auto op : lam->deps()) {
         for (auto mut : op->local_muts())
             if (auto next = nest()[mut]) {
                 if (next->mut()->isa<Lam>() && !done.contains(next->mut())) {
-                    finalize_nest(next, done);
+                    auto next_lam = next->mut()->as_mut<Lam>();
+                    emit_lam(next_lam, done);
                     lam_binding_count++;
                 }
             }
@@ -331,17 +331,12 @@ void Emitter::finalize_nest(const Nest::Node* node, MutSet& done) {
     }
 }
 
-// TODO: if a lambda depends on another closed internal lambda, then this
-// internal lambda should be printed before the current lambda to keep the order
-// of dependency/conversion order in the egg rewrite phase correct. (as in pow.mim)
-// - one call to finalize_nest to emit all internal, closed lambdas followed by another one
-//   emitting all external, closed lambdas?
-// - maybe we can also just loop through the lambdas as in ll.cpp and once we find a lam
-//   that is closed and internal, we just emit it as above
 void Emitter::finalize() {
     if (root()->sym().str() == "_fallback_compile") return;
+
     MutSet done;
-    finalize_nest(nest().root(), done);
+    auto root_lam = nest().root()->mut()->as_mut<Lam>();
+    emit_lam(root_lam, done);
 }
 
 void Emitter::emit_epilogue(Lam* lam) {
@@ -405,7 +400,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
-        // NOTE: 'tuple' is another extract if we have for example two nested, sigma-typed variables
+        // 'tuple' is another extract if we have for example two nested, sigma-typed variables
         // and we are trying to print a named projection of the inner variable. ('baz' in the example below)
         // ex.:  (var foo (sigma (var bar (sigma (var baz Nat)))))
         // In this example, we have an extract where the tuple: 'bar' is another extract from 'foo'.
