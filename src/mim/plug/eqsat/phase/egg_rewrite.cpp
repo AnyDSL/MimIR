@@ -22,7 +22,9 @@ void EggRewrite::start() {
 
     auto rewrites = equality_saturate(sexpr.str(), rulesets);
 
-    // Initially create lambdas and their variables as Def's in the new world
+    // Initially create lambdas and their variables as Def's in the new world.
+    // This is required so that other terms can later refer to lambdas and variables by name
+    // as in (app foo (lit 0))) where 'foo' could be a lambda created in this inital stage.
     for (auto rewrite : rewrites) {
         added_ = {};
         res_   = rewrite.value;
@@ -30,7 +32,7 @@ void EggRewrite::start() {
             init(id);
     }
 
-    // Convert rewrites to Def's in the new world
+    // Convert remaining nodes to Def's in the new world.
     for (auto rewrite : rewrites) {
         added_ = {};
         res_   = rewrite.value;
@@ -84,7 +86,7 @@ std::pair<rust::Vec<RuleSet>, rust::Vec<int>> EggRewrite::import_rules() {
 }
 
 const Def* EggRewrite::init(uint32_t id) {
-    auto node = res_[id];
+    auto node = get_node_unsafe(id);
 
     // std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     const Def* res = nullptr;
@@ -105,7 +107,7 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     std::vector<std::string> var_names;
     auto domain = get_node(MimKind::Sigma, node.children[2]);
     for (auto child : domain.children) {
-        auto var = res_[child];
+        auto var = get_node_unsafe(child);
         std::string var_name;
         const Def* var_type;
         if (var.kind == MimKind::Var) {
@@ -120,14 +122,14 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     }
 
     auto con_name       = get_symbol(node.children[1]);
-    auto con_name_nouid = con_name.substr(0, con_name.rfind("_"));
+    auto con_name_nouid = remove_uid(con_name);
     auto new_con        = new_world().mut_con(var_types);
     new_con->set(con_name_nouid);
     register_lam(con_name, new_con);
 
     for (int i = 0; auto var : new_con->vars()) {
         auto var_name       = var_names[i];
-        auto var_name_nouid = var_name.substr(0, var_name.rfind("_"));
+        auto var_name_nouid = remove_uid(var_name);
         var->set(var_name_nouid);
         if (!var_name.empty()) register_var(var_name, var);
         i++;
@@ -142,7 +144,7 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
 }
 
 const Def* EggRewrite::convert(uint32_t id, bool recurse) {
-    auto node = res_[id];
+    auto node = get_node_unsafe(id);
 
     if (recurse)
         for (uint32_t child : node.children)
@@ -226,14 +228,14 @@ const Def* EggRewrite::convert_app(uint32_t id, MimNode node) {
 // (var <name> <type>)
 const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
     auto var      = get_def(node.children[0]);
-    auto var_type = res_[node.children[1]];
+    auto var_type = get_node_unsafe(node.children[1]);
 
     if (var && var_type.kind == MimKind::Sigma) {
         for (nat_t i = 0; uint32_t sigma_child_id : var_type.children) {
-            auto sigma_child = res_[sigma_child_id];
+            auto sigma_child = get_node_unsafe(sigma_child_id);
             if (sigma_child.kind == MimKind::Var) {
                 auto proj_name       = get_symbol(sigma_child.children[0]);
-                auto proj_name_nouid = proj_name.substr(0, proj_name.rfind("_"));
+                auto proj_name_nouid = remove_uid(proj_name);
                 auto sigma_proj      = var->proj(i);
                 sigma_proj->set(proj_name_nouid);
                 register_var(proj_name, sigma_proj);
@@ -330,7 +332,7 @@ const Def* EggRewrite::convert_arr(uint32_t id, MimNode node) {
 const Def* EggRewrite::convert_sigma(uint32_t id, MimNode node) {
     DefVec ops;
     for (auto child : node.children) {
-        auto op = res_[child];
+        auto op = get_node_unsafe(child);
         if (op.kind == MimKind::Var) {
             auto var_type = get_def(op.children[1]);
             ops.push_back(var_type);

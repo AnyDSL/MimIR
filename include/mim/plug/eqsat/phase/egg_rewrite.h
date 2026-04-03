@@ -79,13 +79,10 @@ private:
     const Def* convert_num(uint32_t id, MimNode node);
     const Def* convert_symbol(uint32_t id, MimNode node);
 
-    void register_var(std::string name, const Def* converted) { vars_[name] = converted; }
-    void register_lam(std::string name, const Lam* converted) { lams_[name] = converted; }
-
     // A node that is associated with a Def can be:
     // 1) A node representing an arbitrary term
     // 2) A symbol node representing an annex
-    // 3) A symbol node representing a type (maybe later term-aliases as well)
+    // 3) A symbol node representing a type or term alias
     // 4) A symbol node representing a variable
     // 5) A symbol node representing a lambda
     const Def* get_def(uint32_t id) {
@@ -103,6 +100,9 @@ private:
         }
         return def;
     }
+
+    void register_var(std::string name, const Def* converted) { vars_[name] = converted; }
+    void register_lam(std::string name, const Lam* converted) { lams_[name] = converted; }
     const Def* get_var(std::string name) { return vars_[name]; }
     const Lam* get_lam(std::string name) { return lams_[name]; }
 
@@ -110,16 +110,17 @@ private:
         assert(res_[id].kind == expected && "get_node: mismatch between expected and actual node kind");
         return res_[id];
     }
+    MimNode get_node_unsafe(uint32_t id) { return res_[id]; }
     std::string get_symbol(uint32_t id) { return res_[id].symbol.c_str(); }
     int64_t get_num(uint32_t id) { return res_[id].num; }
 
+    std::string remove_uid(std::string name) { return name.substr(0, name.rfind("_")); }
+
     rust::Vec<MimNode> res_;
     std::unordered_map<uint32_t, const Def*> added_;
-
+    // TODO: use actual driver.sym() symbols instead of strings
     std::unordered_map<std::string, const Def*> vars_;
     std::unordered_map<std::string, const Lam*> lams_;
-
-    // TODO: use actual driver.sym() symbols instead of strings
     std::unordered_map<std::string, flags_t> sym2flags_;
     std::unordered_map<std::string, const Def*> sym2def_;
 };
