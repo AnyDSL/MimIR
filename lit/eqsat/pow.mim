@@ -1,14 +1,12 @@
 plugin core;
-//plugin eqsat;
-//
-//lam extern _rulesets(): %eqsat.Ruleset =
-//    %eqsat.rulesets (
-//        %eqsat.core,
-//        %eqsat.math,
-//    );
+plugin eqsat;
 
-// TODO: pow gets emitted after main, and thus the phase tries to convert
-// main before pow (main refers to pow in its body -> error)
+lam extern _rulesets(): %eqsat.Ruleset =
+    %eqsat.rulesets (
+        %eqsat.core,
+        %eqsat.math,
+    );
+
 fun pow(a b: I32): I32 =
     con pow_cont(v: I32) =
         return (%core.wrap.mul 0 (a, v));

@@ -11,7 +11,6 @@ namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
     auto [rulesets, rules] = import_rules();
-    std::cout << "imported rules and rulesets..\n";
 
     std::ostringstream sexpr;
     if (auto sexpr_backend = driver().backend("sexpr"))
@@ -19,13 +18,25 @@ void EggRewrite::start() {
     else
         error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
 
-    std::cout << "got the sexpr:\n\n";
     std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
 
     auto rewrites = equality_saturate(sexpr.str(), rulesets);
-    std::cout << "got the rewrite results (total: " << rewrites.size() << ")..\n";
-    for (auto rewrite : rewrites)
-        process(rewrite);
+
+    // Initially create lambdas and their variables as Def's in the new world
+    for (auto rewrite : rewrites) {
+        added_ = {};
+        res_   = rewrite.value;
+        for (uint32_t id = 0; id < res_.size(); id++)
+            init(id);
+    }
+
+    // Convert rewrites to Def's in the new world
+    for (auto rewrite : rewrites) {
+        added_ = {};
+        res_   = rewrite.value;
+        for (uint32_t id = 0; id < res_.size(); id++)
+            convert(id);
+    }
 
     swap(old_world(), new_world());
 }
@@ -70,18 +81,6 @@ std::pair<rust::Vec<RuleSet>, rust::Vec<int>> EggRewrite::import_rules() {
     }
 
     return {rulesets, rules};
-}
-
-void EggRewrite::process(RewriteResult rewrite) {
-    res_   = rewrite.value;
-    added_ = {};
-    vars_  = {};
-
-    for (uint32_t id = 0; id < res_.size(); ++id)
-        init(id);
-
-    for (uint32_t id = 0; id < res_.size(); ++id)
-        convert(id);
 }
 
 const Def* EggRewrite::init(uint32_t id) {
@@ -134,7 +133,7 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
         i++;
     }
 
-    // NOTE: We need another recursive call to convert() for each var to ensure (nested) var projections
+    // We need another recursive call to convert() for each var to ensure (nested) var projections
     // are set and registered inside of convert_var()
     for (auto child : domain.children)
         convert(child, true);
@@ -200,7 +199,7 @@ const Def* EggRewrite::convert_con(uint32_t id, MimNode node) {
     const int CON_DECL_SIZE = 3;
     const int CON_DEF_SIZE  = 5;
 
-    auto con = get_def(id)->as_mut<Lam>();
+    auto con = get_def(node.children[1])->as_mut<Lam>();
 
     auto is_extern = get_symbol(node.children[0]);
     if (is_extern == "extern") con->externalize();

@@ -52,8 +52,6 @@ private:
 
     std::pair<rust::Vec<RuleSet>, rust::Vec<int>> import_rules();
 
-    void process(RewriteResult rewrite);
-
     const Def* init(uint32_t id);
     const Def* init_lam(uint32_t id, MimNode node);
     const Def* init_con(uint32_t id, MimNode node);
