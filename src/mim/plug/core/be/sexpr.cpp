@@ -43,9 +43,21 @@ struct BB {
     std::string assign(Tab tab, std::string name, const char* s, Args&&... args) {
         if (!assigned.contains(name)) {
             assigned.insert(name);
-            print(tab.lnprint(body().emplace_back(), "(let {} ", name), s, std::forward<Args&&>(args)...);
+            auto& os = body().emplace_back();
+            print(tab.lnprint(os, "(let {} ", name), s, std::forward<Args&&>(args)...);
         }
-        return std::string(name);
+        return name;
+    }
+
+    template<class Fn>
+    std::string assign(Tab tab, std::string name, Fn&& print_term) {
+        if (!assigned.contains(name)) {
+            assigned.insert(name);
+            auto& os = body().emplace_back();
+            tab.lnprint(os, "(let {} ", name);
+            print_term(os);
+        }
+        return name;
     }
 
     friend void swap(BB& a, BB& b) noexcept {
@@ -418,8 +430,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             tab.print(os, emit_bb(bb, body).c_str());
             print(os, ")");
         } else {
-            // TODO: indentation
-            bb.assign(tab, id(seq), "(pack {} {})", emit_bb(bb, shape), emit_bb(bb, body));
+            auto body_val  = emit_bb(bb, body);
+            auto shape_val = emit_bb(bb, shape);
+            bb.assign(tab, id(seq), [&](auto& os) {
+                ++tab;
+                tab.lnprint(os, "(pack");
+                tab.print(os, shape_val.c_str());
+                tab.print(os, body_val.c_str());
+                print(os, ")");
+                --tab;
+            });
             tab.lnprint(os, "{}", id(seq));
         }
 
@@ -456,8 +476,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             tab.print(os, emit_bb(bb, index).c_str());
             print(os, ")");
         } else {
-            // TODO: indentation
-            bb.assign(tab, id(extract), "(extract {} {})", emit_bb(bb, tuple), emit_bb(bb, index));
+            auto tuple_val = emit_bb(bb, tuple);
+            auto index_val = emit_bb(bb, index);
+            bb.assign(tab, id(extract), [&](auto& os) {
+                ++tab;
+                tab.lnprint(os, "(extract");
+                tab.print(os, tuple_val.c_str());
+                tab.print(os, index_val.c_str());
+                print(os, ")");
+                --tab;
+            });
             tab.lnprint(os, "{}", id(extract));
         }
 
@@ -472,8 +500,18 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             tab.print(os, emit_bb(bb, value).c_str());
             print(os, ")");
         } else {
-            // TODO: indentation
-            bb.assign(tab, id(insert), "(ins {} {} {})", emit_bb(bb, tuple), emit_bb(bb, index), emit_bb(bb, value));
+            auto tuple_val = emit_bb(bb, tuple);
+            auto index_val = emit_bb(bb, index);
+            auto value_val = emit_bb(bb, value);
+            bb.assign(tab, id(insert), [&](auto& os) {
+                ++tab;
+                tab.lnprint(os, "(ins");
+                tab.print(os, tuple_val.c_str());
+                tab.print(os, index_val.c_str());
+                tab.print(os, value_val.c_str());
+                print(os, ")");
+                --tab;
+            });
             tab.lnprint(os, "{}", id(insert));
         }
 
