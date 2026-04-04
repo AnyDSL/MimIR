@@ -295,18 +295,18 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
 // some dummy basic blocks instead.
 std::string Emitter::emit_curried_app(BB& bb, const App& app) {
     std::ostringstream os;
-    ++tab;
     tab.lnprint(os, "(app ");
 
-    if (auto app_callee = app.callee()->isa<App>())
+    if (auto app_callee = app.callee()->isa<App>()) {
+        ++tab;
         tab.print(os, "{}", emit_curried_app(bb, *app_callee));
-    else
+        --tab;
+    } else
         tab.print(os, "{}", emit_bb(bb, app.callee()));
 
     tab.print(os, "{}", emit_bb(bb, app.arg()));
 
     print(os, ")");
-    --tab;
     return os.str();
 }
 
@@ -435,8 +435,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             bb.assign(tab, id(seq), [&](auto& os) {
                 ++tab;
                 tab.lnprint(os, "(pack");
-                tab.print(os, shape_val.c_str());
-                tab.print(os, body_val.c_str());
+                ++tab;
+                tab.print(os, indented(tab, shape_val).c_str());
+                tab.print(os, indented(tab, body_val).c_str());
+                --tab;
                 print(os, ")");
                 --tab;
             });
@@ -481,8 +483,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             bb.assign(tab, id(extract), [&](auto& os) {
                 ++tab;
                 tab.lnprint(os, "(extract");
-                tab.print(os, tuple_val.c_str());
-                tab.print(os, index_val.c_str());
+                ++tab;
+                tab.print(os, indented(tab, tuple_val).c_str());
+                tab.print(os, indented(tab, index_val).c_str());
+                --tab;
                 print(os, ")");
                 --tab;
             });
@@ -506,9 +510,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             bb.assign(tab, id(insert), [&](auto& os) {
                 ++tab;
                 tab.lnprint(os, "(ins");
-                tab.print(os, tuple_val.c_str());
-                tab.print(os, index_val.c_str());
-                tab.print(os, value_val.c_str());
+                ++tab;
+                tab.print(os, indented(tab, tuple_val).c_str());
+                tab.print(os, indented(tab, index_val).c_str());
+                tab.print(os, indented(tab, value_val).c_str());
+                --tab;
                 print(os, ")");
                 --tab;
             });
@@ -519,12 +525,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, id(var).c_str());
 
     } else if (auto app = def->isa<App>()) {
+        auto app_val = emit_curried_app(bb, *app);
         if (app->sym().empty()) {
-            --tab;
-            tab.print(os, "{}", emit_curried_app(bb, *app));
-            ++tab;
+            tab.print(os, "{}", app_val);
         } else {
-            bb.assign(tab, id(app), "{}", emit_curried_app(bb, *app));
+            bb.assign(tab, id(app), [&](auto& os) {
+                ++tab;
+                tab.lnprint(os, indented(tab, app_val).c_str());
+                --tab;
+            });
             tab.lnprint(os, "{}", id(app));
         }
 
