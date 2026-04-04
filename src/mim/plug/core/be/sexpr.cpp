@@ -130,8 +130,11 @@ std::string Emitter::indented(Tab tab, std::string s) {
     std::string result;
 
     size_t min_indent = s.find_first_not_of(' ');
-    while (std::getline(ss, line))
+    while (std::getline(ss, line)) {
+        // Skips empty lines
+        if (line.find_first_not_of(" \t\r\n") == std::string::npos) continue;
         result += "\n" + indent + line.substr(min_indent);
+    }
 
     return result;
 }
