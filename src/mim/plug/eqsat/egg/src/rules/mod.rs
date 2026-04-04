@@ -33,10 +33,10 @@ define_language! {
 
         // TYPES
 
-        // (bot <name> <type>)
-        "bot" = Bot([Id; 2]),
-        // (top <name> <type>)
-        "top" = Top([Id; 2]),
+        // (bot <type>)
+        "bot" = Bot(Id),
+        // (top <type>)
+        "top" = Top(Id),
         // (arr <arity> <body>)
         "arr" = Arr([Id; 2]),
         // (sigma <type1> <type2> ...)

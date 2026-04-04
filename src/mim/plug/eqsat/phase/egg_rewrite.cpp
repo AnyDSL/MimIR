@@ -324,20 +324,16 @@ const Def* EggRewrite::convert_ins(uint32_t id, MimNode node) {
     return new_insert;
 }
 
-// (bot <name> <type>)
+// (bot <type>)
 const Def* EggRewrite::convert_bot(uint32_t id, MimNode node) {
-    auto name    = get_symbol(node.children[0]);
-    auto type    = get_def(node.children[1]);
+    auto type    = get_def(node.children[0]);
     auto new_bot = new_world().bot(type);
-    if (name != "⊥") register_var(name, new_bot);
     return new_bot;
 }
-// (top <name> <type>)
+// (top <type>)
 const Def* EggRewrite::convert_top(uint32_t id, MimNode node) {
-    auto name    = get_symbol(node.children[0]);
-    auto type    = get_def(node.children[1]);
+    auto type    = get_def(node.children[0]);
     auto new_top = new_world().top(type);
-    if (name != "T") register_var(name, new_top);
     return new_top;
 }
 

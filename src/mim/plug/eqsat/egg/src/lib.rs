@@ -138,8 +138,8 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
             Extract(children) => nodes.push(new_mim(MimKind::Extract, children, 0, String::new())),
             Ins(children) => nodes.push(new_mim(MimKind::Ins, children, 0, String::new())),
 
-            Bot(children) => nodes.push(new_mim(MimKind::Bot, children, 0, String::new())),
-            Top(children) => nodes.push(new_mim(MimKind::Top, children, 0, String::new())),
+            Bot(child) => nodes.push(new_mim(MimKind::Bot, &[*child], 0, String::new())),
+            Top(child) => nodes.push(new_mim(MimKind::Top, &[*child], 0, String::new())),
             Arr(children) => nodes.push(new_mim(MimKind::Arr, children, 0, String::new())),
             Sigma(children) => nodes.push(new_mim(MimKind::Sigma, children, 0, String::new())),
             Cn(child) => nodes.push(new_mim(MimKind::Cn, &[*child], 0, String::new())),
