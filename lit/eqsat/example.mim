@@ -1,10 +1,10 @@
 plugin core;
-plugin eqsat;
+//plugin eqsat;
 
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
-        %eqsat.core,
-    );
+//lam extern _rulesets(): %eqsat.Ruleset =
+//    %eqsat.rulesets (
+//        %eqsat.core,
+//    );
 
 // TODO: "phi" doesn't exist as variable of "nx" anymore so "ins(phi, i, 23I32)" fails
 // - maybe some problem with how i am emitting the vars in lambda headers?
