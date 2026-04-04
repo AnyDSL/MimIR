@@ -7,10 +7,7 @@ lam extern _rulesets(): %eqsat.Ruleset =
     );
 
 // TODO:
-// - After reconstructions, let bound variables like inc, acc, and cond
-// lose their names because we do not emit let bindings for expressions in the sexpr backend
-// (seems like a lot of work for not much benefit)
-// - Projections like argc and mem also lose their names which doesn't really make sense
+// - Projections like argc and mem lose their names upon use which doesn't really make sense
 // because I am setting their names correctly in convert_var()
 fun extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M 0, I32] =
     loop (mem, 0I32, 0I32)

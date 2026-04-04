@@ -52,9 +52,10 @@ private:
 
     std::pair<rust::Vec<RuleSet>, rust::Vec<int>> import_rules();
 
-    const Def* init(uint32_t id);
+    const Def* init(uint32_t id, bool lambdas = false, bool bindings = false);
     const Def* init_lam(uint32_t id, MimNode node);
     const Def* init_con(uint32_t id, MimNode node);
+    const Def* init_let(uint32_t id, MimNode node);
 
     const Def* convert(uint32_t id, bool recurse = false);
     const Def* convert_let(uint32_t id, MimNode node);

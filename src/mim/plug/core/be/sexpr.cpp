@@ -62,7 +62,7 @@ public:
     void emit_epilogue(Lam*);
     std::string emit_header(Lam*, bool as_binding = false);
     std::string emit_bb(BB&, const Def*);
-    std::string emit_curried_app(const App& app);
+    std::string emit_curried_app(BB&, const App& app);
     std::string prepare();
     void emit_lam(Lam* lam, MutSet& done);
     void finalize();
@@ -76,23 +76,38 @@ private:
     std::ostringstream func_impls_;
 };
 
+// Axioms and declarations(imports) need to be emitted without a uid
 std::string Emitter::id(const Def* def) const {
-    if (def->isa<Axm>()) return def->sym().str();
+    if (def->isa<Axm>())
+        return def->sym().str();
+    else if (def->isa<Lam>() && !def->is_set())
+        return def->sym().str();
+
     return def->unique_name();
 }
 
+// Adjusts the base indentation of a string like
+// "        (app
+//              foo
+//              bar
+//          )"
+// to the number of tabs specified with 'tabs' (i.e. for tabs=1)
+// "    (app
+//          foo
+//          bar
+//      )"
 std::string Emitter::indent_lines(std::string s, unsigned tabs) {
+    while (!s.empty() && (s.front() == '\n' || s.front() == '\r'))
+        s.erase(0, 1);
+
     std::stringstream ss(s);
     std::string indent(tabs * 4, ' ');
     std::string line;
     std::string result;
-    bool first = true;
 
-    while (std::getline(ss, line)) {
-        if (!first) result += "\n";
-        result += indent + line;
-        first = false;
-    }
+    size_t min_indent = s.find_first_not_of(' ');
+    while (std::getline(ss, line))
+        result += "\n" + indent + line.substr(min_indent);
 
     return result;
 }
@@ -257,19 +272,17 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
 // emitted uses caching which messes up indentation.
 // If we don't need basic blocks we just use emit_bb() with
 // some dummy basic blocks instead.
-std::string Emitter::emit_curried_app(const App& app) {
+std::string Emitter::emit_curried_app(BB& bb, const App& app) {
     std::ostringstream os;
     ++tab;
     tab.lnprint(os, "(app ");
 
     if (auto app_callee = app.callee()->isa<App>())
-        tab.print(os, "{}", emit_curried_app(*app_callee));
-    else {
-        auto dummy = BB{};
-        tab.print(os, "{}", emit_bb(dummy, app.callee()));
-    }
-    auto dummy = BB{};
-    tab.print(os, "{}", emit_bb(dummy, app.arg()));
+        tab.print(os, "{}", emit_curried_app(bb, *app_callee));
+    else
+        tab.print(os, "{}", emit_bb(bb, app.callee()));
+
+    tab.print(os, "{}", emit_bb(bb, app.arg()));
 
     tab.lnprint(os, ")");
     --tab;
@@ -283,8 +296,6 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     assert(lam2bb_.contains(lam));
     auto& bb = lam2bb_[lam];
 
-    // Prints the declaration or header (name dom->codom etc.) of the lambda (as part of a let binding for internal
-    // lambdas)
     if (lam->is_closed())
         print(func_impls_, "{}", emit_header(lam));
     else {
@@ -292,37 +303,38 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
         print(func_impls_, "\n{}", emit_header(lam, true));
     }
 
-    // Would print temporary variable let bindings if we were to use those (would have to print let bindings to body()
-    // in emit_bb())
-    for (auto& line : bb.body())
-        print(func_impls_, "{}", line.str());
-
-    // Prints lambda let bindings based on nesting structure
-    // while keeping count of the number of lambda bindings the current lambdas' body depends on
-    auto lam_binding_count = 0;
+    // Keeps count of parentheses opened by let-bindings that need to be closed later on
+    auto unclosed_bindings = 0;
     for (auto op : lam->deps()) {
         for (auto mut : op->local_muts())
             if (auto next = nest()[mut]) {
                 if (next->mut()->isa<Lam>() && !done.contains(next->mut())) {
                     auto next_lam = next->mut()->as_mut<Lam>();
                     emit_lam(next_lam, done);
-                    lam_binding_count++;
+                    unclosed_bindings++;
                 }
             }
     }
 
-    // Prints the actual body of the lambda after dependent bindings have been printed (as defined by prints to tail()
-    // in emit_bb())
+    ++tab;
+    for (auto& line : bb.body()) {
+        auto opened       = std::ranges::count(line.str(), '(');
+        auto closed       = std::ranges::count(line.str(), ')');
+        unclosed_bindings = unclosed_bindings + opened - closed;
+
+        auto indented = indent_lines(line.str(), tab.indent());
+        print(func_impls_, "{}", indented);
+    }
+
     for (auto& line : bb.tail()) {
         auto indented = indent_lines(line.str(), tab.indent());
         print(func_impls_, "{}", indented);
     }
 
-    // Closes every lambda let binding for the current lambdas' body
-    std::string close_bindings(lam_binding_count, ')');
-    print(func_impls_, "{}", close_bindings);
+    std::string closing_parens(unclosed_bindings, ')');
+    print(func_impls_, "{}", closing_parens);
+    --tab;
 
-    // Closes the current lambda
     if (lam->is_closed()) {
         tab.lnprint(func_impls_, ")\n\n");
     } else {
@@ -344,7 +356,7 @@ void Emitter::emit_epilogue(Lam* lam) {
 
     if (lam->isa_cn(lam)) {
         auto app = lam->body()->as<App>();
-        bb.tail("{}", emit_curried_app(*app));
+        bb.tail("{}", emit_curried_app(bb, *app));
     } else {
         bb.tail("{}", emit(lam->body()));
     }
@@ -442,9 +454,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto var = def->isa<Var>()) {
         tab.lnprint(os, id(var).c_str());
     } else if (auto app = def->isa<App>()) {
-        --tab;
-        print(os, emit_curried_app(*app).c_str());
-        ++tab;
+        if (app->sym().str().empty()) {
+            --tab;
+            tab.lnprint(os, "{}", emit_curried_app(bb, *app));
+            ++tab;
+        } else {
+            // TODO: use tab.lnprint instead of \n indent
+            std::string indent(4 * tab.indent(), ' ');
+            bb.body("\n{}(let {} {}", indent, id(app), emit_curried_app(bb, *app));
+            tab.lnprint(os, "{}", id(app));
+        }
     } else if (auto axm = def->isa<Axm>()) {
         tab.lnprint(os, id(axm).c_str());
     } else if (def->isa<Bot>()) {

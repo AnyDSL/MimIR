@@ -22,20 +22,23 @@ void EggRewrite::start() {
 
     auto rewrites = equality_saturate(sexpr.str(), rulesets);
 
-    // Initially create lambdas and their variables as Def's in the new world.
+    // Initially creates lambdas and their variables as Def's in the new world.
     // This is required so that other terms can later refer to lambdas and variables by name
     // as in (app foo (lit 0))) where 'foo' could be a lambda created in this inital stage.
     for (auto rewrite : rewrites) {
         added_ = {};
         res_   = rewrite.value;
         for (uint32_t id = 0; id < res_.size(); id++)
-            init(id);
+            init(id, true, false);
     }
 
-    // Convert remaining nodes to Def's in the new world.
     for (auto rewrite : rewrites) {
         added_ = {};
         res_   = rewrite.value;
+        // Then creates let-bindings that may already refer to lambdas and variables defined earlier.
+        for (uint32_t id = 0; id < res_.size(); id++)
+            init(id, false, true);
+        // Converts remaining nodes to Def's in the new world.
         for (uint32_t id = 0; id < res_.size(); id++)
             convert(id);
     }
@@ -85,14 +88,15 @@ std::pair<rust::Vec<RuleSet>, rust::Vec<int>> EggRewrite::import_rules() {
     return {rulesets, rules};
 }
 
-const Def* EggRewrite::init(uint32_t id) {
+const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings) {
     auto node = get_node_unsafe(id);
 
     // std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     const Def* res = nullptr;
     switch (node.kind) {
-        case MimKind::Lam: res = init_lam(id, node); break;
-        case MimKind::Con: res = init_con(id, node); break;
+        case MimKind::Lam: res = lambdas ? init_lam(id, node) : nullptr; break;
+        case MimKind::Con: res = lambdas ? init_con(id, node) : nullptr; break;
+        case MimKind::Let: res = bindings ? init_let(id, node) : nullptr; break;
         default: break;
     }
     // std::cout << res << "\n";
@@ -141,6 +145,21 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
         convert(child, true);
 
     return new_con;
+}
+
+const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
+    // If the let-binding is for a lambda, this lambda will already have been
+    // created and set via init_lam/con and thus we can skip out on the following conversion steps.
+    auto let_def = get_def(node.children[0]);
+    if (let_def != nullptr) return nullptr;
+
+    auto name       = get_symbol(node.children[0]);
+    auto name_nouid = remove_uid(name);
+    auto def        = convert(node.children[1], true);
+    def->set(name_nouid);
+    register_var(name, def);
+
+    return nullptr;
 }
 
 const Def* EggRewrite::convert(uint32_t id, bool recurse) {
