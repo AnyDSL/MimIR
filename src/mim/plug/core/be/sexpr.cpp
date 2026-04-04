@@ -81,13 +81,13 @@ public:
     bool is_valid(std::string_view s) { return !s.empty(); }
     void start() override;
     void emit_imported(Lam*);
-    void emit_epilogue(Lam*);
-    std::string emit_header(Lam*, bool as_binding = false);
-    std::string emit_bb(BB&, const Def*);
-    std::string emit_curried_app(BB&, const App& app);
     std::string prepare();
-    void emit_lam(Lam* lam, MutSet& done);
+    void emit_epilogue(Lam*);
     void finalize();
+    std::string emit_header(Lam*, bool as_binding = false);
+    void emit_lam(Lam* lam, MutSet& done);
+    std::string emit_curried_app(BB&, const App& app);
+    std::string emit_bb(BB&, const Def*);
 
 private:
     std::string id(const Def*) const;
@@ -249,6 +249,21 @@ void Emitter::emit_imported(Lam* lam) {
     --tab;
 }
 
+std::string Emitter::prepare() { return root()->unique_name(); }
+
+void Emitter::emit_epilogue(Lam* lam) {
+    auto& bb = lam2bb_[lam];
+    bb.tail("{}", emit(lam->body()));
+}
+
+void Emitter::finalize() {
+    if (root()->sym().str() == "_fallback_compile") return;
+
+    MutSet done;
+    auto root_lam = nest().root()->mut()->as_mut<Lam>();
+    emit_lam(root_lam, done);
+}
+
 // TODO: Do we need to emit the codomain seperately for lam?
 std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     std::ostringstream os;
@@ -284,18 +299,62 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     print(os, ")");
     --tab;
 
-    if (as_binding) --tab;
-
+    // emit_unsafe() for Defs that were already
+    // emitted uses caching which messes up indentation.
+    // If we don't need basic blocks we just use emit_bb() with
+    // some dummy basic blocks instead.
     auto dummy = BB{};
     tab.print(os, "{}", emit_bb(dummy, lam->filter()));
 
     return os.str();
 }
 
-// emit_unsafe() for Defs that were already
-// emitted uses caching which messes up indentation.
-// If we don't need basic blocks we just use emit_bb() with
-// some dummy basic blocks instead.
+void Emitter::emit_lam(Lam* lam, MutSet& done) {
+    done.emplace(lam);
+    assert(lam2bb_.contains(lam));
+    auto& bb = lam2bb_[lam];
+
+    if (lam->is_closed())
+        print(func_impls_, "{}", emit_header(lam));
+    else
+        print(func_impls_, "{}", emit_header(lam, true));
+
+    ++tab;
+    // Keeps count of parentheses opened by let-bindings that need to be closed later on
+    auto unclosed_bindings = 0;
+    for (auto op : lam->deps()) {
+        for (auto mut : op->local_muts())
+            if (auto next = nest()[mut]) {
+                if (next->mut()->isa<Lam>() && !done.contains(next->mut())) {
+                    auto next_lam = next->mut()->as_mut<Lam>();
+                    emit_lam(next_lam, done);
+                    unclosed_bindings++;
+                }
+            }
+    }
+
+    for (auto& term : bb.body()) {
+        auto opened       = std::ranges::count(term.str(), '(');
+        auto closed       = std::ranges::count(term.str(), ')');
+        unclosed_bindings = unclosed_bindings + opened - closed;
+        print(func_impls_, "{}", indented(tab, term.str()));
+    }
+
+    for (auto& term : bb.tail())
+        print(func_impls_, "{}", indented(tab, term.str()));
+
+    std::string closing_parens(unclosed_bindings, ')');
+    print(func_impls_, "{}", closing_parens);
+    --tab;
+
+    if (lam->is_closed())
+        print(func_impls_, ")\n");
+    else {
+        --tab;
+        print(func_impls_, ")");
+    }
+}
+
 std::string Emitter::emit_curried_app(BB& bb, const App& app) {
     std::ostringstream os;
     tab.lnprint(os, "(app ");
@@ -312,76 +371,6 @@ std::string Emitter::emit_curried_app(BB& bb, const App& app) {
     print(os, ")");
     return os.str();
 }
-
-std::string Emitter::prepare() { return root()->unique_name(); }
-
-void Emitter::emit_lam(Lam* lam, MutSet& done) {
-    done.emplace(lam);
-    assert(lam2bb_.contains(lam));
-    auto& bb = lam2bb_[lam];
-
-    if (lam->is_closed())
-        print(func_impls_, "{}", emit_header(lam));
-    else {
-        ++tab;
-        print(func_impls_, "{}", emit_header(lam, true));
-    }
-
-    // Keeps count of parentheses opened by let-bindings that need to be closed later on
-    auto unclosed_bindings = 0;
-    for (auto op : lam->deps()) {
-        for (auto mut : op->local_muts())
-            if (auto next = nest()[mut]) {
-                if (next->mut()->isa<Lam>() && !done.contains(next->mut())) {
-                    auto next_lam = next->mut()->as_mut<Lam>();
-                    emit_lam(next_lam, done);
-                    unclosed_bindings++;
-                }
-            }
-    }
-
-    ++tab;
-    for (auto& term : bb.body()) {
-        auto opened       = std::ranges::count(term.str(), '(');
-        auto closed       = std::ranges::count(term.str(), ')');
-        unclosed_bindings = unclosed_bindings + opened - closed;
-        print(func_impls_, "{}", indented(tab, term.str()));
-    }
-
-    for (auto& term : bb.tail())
-        print(func_impls_, "{}", indented(tab, term.str()));
-
-    std::string closing_parens(unclosed_bindings, ')');
-    print(func_impls_, "{}", closing_parens);
-    --tab;
-
-    if (lam->is_closed()) {
-        print(func_impls_, ")\n");
-    } else {
-        print(func_impls_, ")");
-        --tab;
-    }
-}
-
-void Emitter::finalize() {
-    if (root()->sym().str() == "_fallback_compile") return;
-
-    MutSet done;
-    auto root_lam = nest().root()->mut()->as_mut<Lam>();
-    emit_lam(root_lam, done);
-}
-
-void Emitter::emit_epilogue(Lam* lam) {
-    auto& bb = lam2bb_[lam];
-
-    if (lam->isa_cn(lam)) {
-        auto app = lam->body()->as<App>();
-        bb.tail("{}", emit_curried_app(bb, *app));
-    } else {
-        bb.tail("{}", emit(lam->body()));
-    }
-}
-
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     std::ostringstream os;
 
