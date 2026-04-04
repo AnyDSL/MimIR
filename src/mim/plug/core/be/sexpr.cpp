@@ -39,11 +39,12 @@ struct BB {
         print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
     }
 
-    // TODO: sometimes the same variable ends up getting bound multiple times,
-    // we probably don't want that
     template<class... Args>
-    std::string assign(Tab tab, std::string_view name, const char* s, Args&&... args) {
-        print(tab.lnprint(body().emplace_back(), "(let {} ", name), s, std::forward<Args&&>(args)...);
+    std::string assign(Tab tab, std::string name, const char* s, Args&&... args) {
+        if (!assigned.contains(name)) {
+            assigned.insert(name);
+            print(tab.lnprint(body().emplace_back(), "(let {} ", name), s, std::forward<Args&&>(args)...);
+        }
         return std::string(name);
     }
 
@@ -55,6 +56,7 @@ struct BB {
 
     DefMap<std::deque<std::pair<std::string, std::string>>> phis;
     std::array<std::deque<std::ostringstream>, 3> parts;
+    std::set<std::string> assigned;
 };
 
 class Emitter : public mim::Emitter<std::string, std::string, BB, Emitter> {
@@ -219,15 +221,17 @@ void Emitter::start() {
 void Emitter::emit_imported(Lam* lam) {
     const std::string ext = lam->is_external() ? "extern" : "intern";
 
-    print(func_decls_, "(con {} {} (sigma ", ext, id(lam));
+    print(func_decls_, "(con {} {}", ext, id(lam));
 
+    ++tab;
+    tab.lnprint(func_decls_, "(sigma");
+    ++tab;
     auto doms = lam->doms();
-    for (auto sep = ""; auto dom : doms.view()) {
-        print(func_decls_, "{}{}", sep, convert(dom));
-        sep = " ";
-    }
-
+    for (auto dom : doms.view())
+        tab.lnprint(func_decls_, "{}", convert(dom));
     print(func_decls_, "))");
+    --tab;
+    --tab;
 }
 
 // TODO: Do we need to emit the codomain seperately for lam?
@@ -237,9 +241,11 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
     const std::string ext      = lam->is_external() ? "extern" : "intern";
 
-    if (as_binding)
-        tab.lnprint(os, "(let {} ({} {} {}", id(lam), lam_kind, ext, id(lam));
-    else
+    if (as_binding) {
+        tab.lnprint(os, "(let {}", id(lam));
+        ++tab;
+        tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam));
+    } else
         tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam));
 
     ++tab;
@@ -262,6 +268,8 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     }
     print(os, ")");
     --tab;
+
+    if (as_binding) --tab;
 
     auto dummy = BB{};
     tab.print(os, "{}", emit_bb(dummy, lam->filter()));
@@ -333,9 +341,9 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     --tab;
 
     if (lam->is_closed()) {
-        tab.lnprint(func_impls_, ")\n");
+        print(func_impls_, ")\n");
     } else {
-        tab.lnprint(func_impls_, ")");
+        print(func_impls_, ")");
         --tab;
     }
 }
