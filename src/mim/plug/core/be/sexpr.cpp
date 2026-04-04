@@ -39,6 +39,17 @@ struct BB {
         print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
     }
 
+    template<class... Args>
+    std::string assign(Tab tab, std::string_view name, const char* s, Args&&... args) {
+        print(tab.lnprint(body().emplace_back(), "(let {} ", name), s, std::forward<Args&&>(args)...);
+
+        // TODO: use tab.lnprint instead of \n indent
+        // std::string indent(4 * tab.indent(), ' ');
+        // bb.body("\n{}(let {} {}", indent, id(app), emit_curried_app(bb, *app));
+
+        return std::string(name);
+    }
+
     friend void swap(BB& a, BB& b) noexcept {
         using std::swap;
         swap(a.phis, b.phis);
@@ -69,7 +80,7 @@ public:
 
 private:
     std::string id(const Def*) const;
-    std::string indent_lines(std::string s, unsigned tabs);
+    std::string indented(Tab tab, std::string s);
     std::string convert(const Def*, const Def* = nullptr);
 
     std::ostringstream func_decls_;
@@ -96,7 +107,9 @@ std::string Emitter::id(const Def* def) const {
 //          foo
 //          bar
 //      )"
-std::string Emitter::indent_lines(std::string s, unsigned tabs) {
+std::string Emitter::indented(Tab tab, std::string s) {
+    size_t tabs = tab.indent();
+
     while (!s.empty() && (s.front() == '\n' || s.front() == '\r'))
         s.erase(0, 1);
 
@@ -317,19 +330,15 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     }
 
     ++tab;
-    for (auto& line : bb.body()) {
-        auto opened       = std::ranges::count(line.str(), '(');
-        auto closed       = std::ranges::count(line.str(), ')');
+    for (auto& term : bb.body()) {
+        auto opened       = std::ranges::count(term.str(), '(');
+        auto closed       = std::ranges::count(term.str(), ')');
         unclosed_bindings = unclosed_bindings + opened - closed;
-
-        auto indented = indent_lines(line.str(), tab.indent());
-        print(func_impls_, "{}", indented);
+        print(func_impls_, "{}", indented(tab, term.str()));
     }
 
-    for (auto& line : bb.tail()) {
-        auto indented = indent_lines(line.str(), tab.indent());
-        print(func_impls_, "{}", indented);
-    }
+    for (auto& term : bb.tail())
+        print(func_impls_, "{}", indented(tab, term.str()));
 
     std::string closing_parens(unclosed_bindings, ')');
     print(func_impls_, "{}", closing_parens);
@@ -368,8 +377,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     ++tab;
     if (def->type()->isa<Type>() || def->type()->isa<Univ>()) {
         tab.lnprint(os, convert(def).c_str());
+
     } else if (auto lam = def->isa<Lam>()) {
         tab.lnprint(os, id(lam).c_str());
+
     } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
             std::string alias;
@@ -391,6 +402,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 tab.lnprint(os, "(lit {} {})", lit->get(), convert(lit->type()));
         else
             tab.lnprint(os, "(lit {})", lit);
+
     } else if (auto tuple = def->isa<Tuple>()) {
         tab.lnprint(os, "(tuple");
         for (auto sep = ""; auto e : tuple->ops()) {
@@ -400,14 +412,21 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             }
         }
         tab.lnprint(os, ")");
+
     } else if (auto seq = def->isa<Seq>()) {
         auto shape = seq->arity();
         auto body  = seq->body();
+        if (seq->sym().empty()) {
+            tab.lnprint(os, "(pack");
+            tab.print(os, emit_bb(bb, shape).c_str());
+            tab.print(os, emit_bb(bb, body).c_str());
+            tab.lnprint(os, ")");
+        } else {
+            // TODO: indentation
+            bb.assign(tab, id(seq), "(pack {} {})", emit_bb(bb, shape), emit_bb(bb, body));
+            tab.lnprint(os, "{}", id(seq));
+        }
 
-        tab.lnprint(os, "(pack");
-        tab.print(os, emit_bb(bb, shape).c_str());
-        tab.print(os, emit_bb(bb, body).c_str());
-        tab.lnprint(os, ")");
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
@@ -435,49 +454,65 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         if (auto lit = Lit::isa(index); (lit && tuple->isa<Var>()) || is_nested_proj) {
             tab.lnprint(os, id(extract).c_str());
-        } else {
+        } else if (extract->sym().empty()) {
             tab.lnprint(os, "(extract");
             tab.print(os, emit_bb(bb, tuple).c_str());
             tab.print(os, emit_bb(bb, index).c_str());
             tab.lnprint(os, ")");
+        } else {
+            // TODO: indentation
+            bb.assign(tab, id(extract), "(extract {} {})", emit_bb(bb, tuple), emit_bb(bb, index));
+            tab.lnprint(os, "{}", id(extract));
         }
+
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = insert->tuple();
         auto index = insert->index();
         auto value = insert->value();
+        if (insert->sym().empty()) {
+            tab.lnprint(os, "(ins");
+            tab.print(os, emit_bb(bb, tuple).c_str());
+            tab.print(os, emit_bb(bb, index).c_str());
+            tab.print(os, emit_bb(bb, value).c_str());
+            tab.lnprint(os, ")");
+        } else {
+            // TODO: indentation
+            bb.assign(tab, id(insert), "(ins {} {} {})", emit_bb(bb, tuple), emit_bb(bb, index), emit_bb(bb, value));
+            tab.lnprint(os, "{}", id(insert));
+        }
 
-        tab.lnprint(os, "(ins");
-        tab.print(os, emit_bb(bb, tuple).c_str());
-        tab.print(os, emit_bb(bb, index).c_str());
-        tab.print(os, emit_bb(bb, value).c_str());
-        tab.lnprint(os, ")");
     } else if (auto var = def->isa<Var>()) {
         tab.lnprint(os, id(var).c_str());
+
     } else if (auto app = def->isa<App>()) {
-        if (app->sym().str().empty()) {
+        if (app->sym().empty()) {
             --tab;
-            tab.lnprint(os, "{}", emit_curried_app(bb, *app));
+            tab.print(os, "{}", emit_curried_app(bb, *app));
             ++tab;
         } else {
-            // TODO: use tab.lnprint instead of \n indent
-            std::string indent(4 * tab.indent(), ' ');
-            bb.body("\n{}(let {} {}", indent, id(app), emit_curried_app(bb, *app));
+            bb.assign(tab, id(app), "{}", emit_curried_app(bb, *app));
             tab.lnprint(os, "{}", id(app));
         }
+
     } else if (auto axm = def->isa<Axm>()) {
         tab.lnprint(os, id(axm).c_str());
+
     } else if (def->isa<Bot>()) {
+        // TODO: assign in case 2
         std::string symbol = "⊥";
         if (def->sym().empty())
             tab.lnprint(os, "(bot {} {})", symbol, convert(def->type()));
         else
             tab.lnprint(os, "(bot {} {})", id(def), convert(def->type()));
+
     } else if (def->isa<Top>()) {
+        // TODO: assign in case 2
         std::string symbol = "T";
         if (def->sym().empty())
             tab.lnprint(os, "(top {} {})", symbol, convert(def->type()));
         else
             tab.lnprint(os, "(top {} {})", id(def), convert(def->type()));
+
     } else {
         error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
     }

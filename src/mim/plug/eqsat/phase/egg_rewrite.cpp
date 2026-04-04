@@ -22,7 +22,7 @@ void EggRewrite::start() {
 
     auto rewrites = equality_saturate(sexpr.str(), rulesets);
 
-    // Initially creates lambdas and their variables as Def's in the new world.
+    // Initially creates lambdas and their variables as Def's in the new world but doesn't set their bodies yet.
     // This is required so that other terms can later refer to lambdas and variables by name
     // as in (app foo (lit 0))) where 'foo' could be a lambda created in this inital stage.
     for (auto rewrite : rewrites) {
@@ -35,10 +35,14 @@ void EggRewrite::start() {
     for (auto rewrite : rewrites) {
         added_ = {};
         res_   = rewrite.value;
+
         // Then creates let-bindings that may already refer to lambdas and variables defined earlier.
-        for (uint32_t id = 0; id < res_.size(); id++)
+        // For this, we have to iterate over the rewrite in reverse-order to ensure that
+        // let bindings are initalized from outermost to innermost because inner let bindings
+        // may depend on outer let bindings.
+        for (uint32_t id = res_.size() - 1; id > 0; id--)
             init(id, false, true);
-        // Converts remaining nodes to Def's in the new world.
+        // Converts remaining nodes to Def's in the new world and sets the bodies of the previously created lambdas.
         for (uint32_t id = 0; id < res_.size(); id++)
             convert(id);
     }
@@ -149,7 +153,7 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
 
 const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
     // If the let-binding is for a lambda, this lambda will already have been
-    // created and set via init_lam/con and thus we can skip out on the following conversion steps.
+    // created, set and registered via init_lam/con and thus we can skip it.
     auto let_def = get_def(node.children[0]);
     if (let_def != nullptr) return nullptr;
 
