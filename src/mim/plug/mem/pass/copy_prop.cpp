@@ -25,7 +25,7 @@ const Def* CopyProp::rewrite(const Def* def) {
     auto n = app->num_targs();
     if (n == 0) return app;
 
-    auto [it, _]                        = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefVec(n)));
+    auto [it, _]                        = lam2info_.try_emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefVec(n)));
     auto& [lattice, prop_lam, old_args] = it->second;
 
     if (mem::mem_var(var_lam)) lattice[0] = Lattice::Keep;

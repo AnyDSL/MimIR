@@ -40,11 +40,11 @@ jobs:
       - name: Configure Debug
         if: matrix.build-type == 'Debug'
         run: |
-          CC=clang-20 CXX=clang++-20 cmake -B ${{github.workspace}}/build                                                                                  \
-            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}                                                                                                      \
+          CC=clang-20 CXX=clang++-20 cmake -B ${{github.workspace}}/build                                                                              \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}                                                                                                  \
             -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined,leak,bounds -fsanitize-address-use-after-scope -fno-omit-frame-pointer -fno-sanitize=vptr" \
-            -DBUILD_TESTING=ON                                                                                                                           \
-            -DMIM_BUILD_EXAMPLES=ON                                                                                                                        \
+            -DBUILD_TESTING=ON                                                                                                                         \
+            -DMIM_BUILD_EXAMPLES=ON                                                                                                                    \
             -DMIM_LIT_TIMEOUT=300
 
       - name: Configure Release

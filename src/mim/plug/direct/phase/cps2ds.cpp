@@ -24,7 +24,8 @@ void CPS2DSPhase::start() {
     rewritten_.clear();
 
     world().for_each(true, [this](Def* mut) {
-        if (auto lam = mut->isa_mut<Lam>(); lam && !lam->codom()->isa<Type>()) nests_.insert({lam, Nest(lam)});
+        if (auto lam = mut->isa_mut<Lam>(); lam && !lam->codom()->isa<Type>())
+            nests_.try_emplace(lam, std::make_unique<Nest>(lam));
     });
 
     for (auto external : world().externals().muts())
@@ -171,11 +172,11 @@ Scheduler& CPS2DSPhase::scheduler(const Def* def) {
             return it->second;
         }
     };
-    for (auto& [lam, nest] : nests_) {
+    for (const auto& [lam, nest] : nests_) {
 #if DEBUG_CPS2DS
         world().DLOG("looking for scheduler in {} for {}", lam, def);
 #endif
-        if (nest.contains(def)) return get_or_make(lam, nest);
+        if (nest->contains(def)) return get_or_make(lam, *nest);
     }
 #if DEBUG_CPS2DS
     world().DLOG("no scheduler found for {}, using current external {}", def, current_external_);
@@ -186,7 +187,7 @@ Scheduler& CPS2DSPhase::scheduler(const Def* def) {
 const Nest& CPS2DSPhase::curr_external_nest() const {
     auto i = nests_.find(current_external_);
     assert(i != nests_.end());
-    return i->second;
+    return *i->second;
 }
 
 } // namespace mim::plug::direct
