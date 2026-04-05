@@ -1243,7 +1243,6 @@ inline std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v2 = emit(inputs->proj(nat_ni, 1));
         prev    = bb.assign(name, "{} {} {}, {}", op, t_in, v1, v2);
         return prev;
-        error("unhandled vec.zip operation: {}", f);
     } else if (auto res = isa_targetspecific_intrinsic(bb, def)) {
         return res.value();
     }

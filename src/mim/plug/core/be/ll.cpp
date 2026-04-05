@@ -8,6 +8,8 @@
 
 namespace mim::ll {
 
+using namespace std::string_literals;
+
 void emit(World& world, std::ostream& ostream) {
     Emitter emitter(world, ostream);
     emitter.run();
