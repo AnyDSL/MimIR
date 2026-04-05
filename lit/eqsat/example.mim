@@ -1,10 +1,10 @@
 plugin core;
-plugin eqsat;
-
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
-        %eqsat.core,
-    );
+// plugin eqsat;
+//
+// lam extern _rulesets(): %eqsat.Ruleset =
+//     %eqsat.rulesets (
+//         %eqsat.core,
+//     );
 
 // TODO: "phi" doesn't exist as variable of "nx" anymore so "ins(phi, i, 23I32)" fails
 fun extern test(cond: Bool, a: «3; I32», b: «3; I32», i: Idx 3): «3; I32» =

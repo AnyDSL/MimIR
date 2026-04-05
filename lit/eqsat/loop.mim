@@ -6,9 +6,8 @@ lam extern _rulesets(): %eqsat.Ruleset =
         %eqsat.core,
     );
 
-// TODO:
-// - Projections like argc and mem lose their names upon use which doesn't really make sense
-// because I am setting their names correctly in convert_var()
+// - Projections like argc and mem lose their names even though I am setting them correctly in convert_var()
+// - The problem is with dump.cpp where mim is emitted, they don't check for extracts of nested sigmas
 fun extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M 0, I32] =
     loop (mem, 0I32, 0I32)
     where

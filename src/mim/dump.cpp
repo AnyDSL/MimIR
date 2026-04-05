@@ -204,6 +204,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         if (lit->type()->isa<App>()) return print(os, "{}:({})", lit->get(), lit->type()); // HACK prec magic is broken
         return print(os, "{}:{}", lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
+        // TODO: It would be better to also print ex->unique_name() if this is a projection from a nested sigma
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
         return print(os, "{}#{}", ex->tuple(), ex->index());
     } else if (auto var = u->isa<Var>()) {
