@@ -952,16 +952,6 @@ inline std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // auto v_size = emit(mslot->arg(1));
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee, false));
         return name;
-    } else if (auto free = Axm::isa<mem::free>(def)) {
-        declare("void @free(i8*)");
-
-        emit_unsafe(free->arg(0));
-        auto v_ptr = emit(free->arg(1));
-        auto t_ptr = convert(Axm::as<mem::Ptr>(free->arg(1)->type()));
-
-        bb.assign(name + "i8", "bitcast {} {} to i8*", t_ptr, v_ptr);
-        bb.tail("call void @free(i8* {})", name + "i8");
-        return {};
     } else if (auto load = Axm::isa<mem::load>(def)) {
         emit_unsafe(load->arg(0));
         auto v_ptr     = emit(load->arg(1));
