@@ -32,8 +32,6 @@
 //      * LLVM:   {0, -1} = i1
 //   This is a problem when, e.g., using an index of type i1 as LLVM thinks like this:
 //   getelementptr ..., i1 1 == getelementptr .., i1 -1
-using namespace std::string_literals;
-
 namespace mim {
 
 class World;
@@ -198,12 +196,12 @@ inline std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const 
     if (auto lam = def->isa_mut<Lam>(); lam && !force_bb) {
         if (lam->type()->ret_pi()) {
             if (lam->is_external() || !lam->is_set())
-                return "@"s + lam->sym().str(); // TODO or use is_internal or sth like that?
-            return "@"s + lam->unique_name();
+                return std::string("@") + lam->sym().str(); // TODO or use is_internal or sth like that?
+            return std::string("@") + lam->unique_name();
         }
     }
 
-    return "%"s + def->unique_name();
+    return std::string("%") + def->unique_name();
 }
 
 inline std::string Emitter::convert(const Def* type, bool simd) {
@@ -1016,9 +1014,9 @@ inline std::string Emitter::emit_bb(BB& bb, const Def* def) {
         std::string f;
 
         if (tri.id() == math::tri::sin) {
-            f = "llvm.sin"s + llvm_suffix(tri->type());
+            f = std::string("llvm.sin") + llvm_suffix(tri->type());
         } else if (tri.id() == math::tri::cos) {
-            f = "llvm.cos"s + llvm_suffix(tri->type());
+            f = std::string("llvm.cos") + llvm_suffix(tri->type());
         } else {
             if (tri.sub() & sub_t(math::tri::a)) f += "a";
 
@@ -1062,9 +1060,9 @@ inline std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t = convert(rt->type());
         std::string f;
         if (rt.id() == math::rt::sq)
-            f = "llvm.sqrt"s + llvm_suffix(rt->type());
+            f = std::string("llvm.sqrt") + llvm_suffix(rt->type());
         else
-            f = "cbrt"s += math_suffix(rt->type());
+            f = std::string("cbrt") += math_suffix(rt->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto exp = Axm::isa<math::exp>(def)) {
@@ -1080,7 +1078,7 @@ inline std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto er = Axm::isa<math::er>(def)) {
         auto a = emit(er->arg());
         auto t = convert(er->type());
-        auto f = er.id() == math::er::f ? "erf"s : "erfc"s;
+        auto f = er.id() == math::er::f ? std::string("erf") : std::string("erfc");
         f += math_suffix(er->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
