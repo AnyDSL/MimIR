@@ -54,7 +54,7 @@ inline const char* math_suffix(const Def* type) {
             case 64: return "";
         }
     }
-    error("unsupported foating point type '{}'", type);
+    error("unsupported floating point type '{}'", type);
 }
 
 inline const char* llvm_suffix(const Def* type) {
@@ -65,7 +65,7 @@ inline const char* llvm_suffix(const Def* type) {
             case 64: return ".f64";
         }
     }
-    error("unsupported foating point type '{}'", type);
+    error("unsupported floating point type '{}'", type);
 }
 
 // [%mem.M 0, T] => T
