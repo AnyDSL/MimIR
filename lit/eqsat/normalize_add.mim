@@ -1,19 +1,17 @@
 plugin core;
 plugin eqsat;
 
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
+rule foo (a: Nat) : (%core.nat.add (a, a)) => (%core.nat.mul (a, 2));
+rule bar (a: Nat) : (%core.nat.add (a, 0)) => a;
+
+fun extern _rules(): %eqsat.Rules =
+    return (%eqsat.rules (foo, bar));
+
+fun extern _rulesets(): %eqsat.Ruleset =
+    return (%eqsat.rulesets (
         %eqsat.core,
         %eqsat.math,
-    );
-
-// TODO: I want to be able to convert rule declarations into rule expressions
-// so they can be used inside of %eqsat.rules (rule1 , rule2, ...)
-// declexpr syntax in ast.h is supposedly 'expr where decl' but that doesn't quite work
-rule foo (a: Nat) : (%core.nat.add (a, a)) => (%core.nat.mul (a, 2));
-
-lam extern _rules(): %eqsat.Ruleset =
-    %eqsat.rules ();
+    ));
 
 con extern add_lit_nat [return : Cn Nat] =
     return (%core.nat.add (6, 3));

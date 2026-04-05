@@ -20,21 +20,27 @@
 ///
 import compile;
 plugin core;
-/// 
+///
 ///
 /// ## Types
-///
-/// ### %%eqsat.Ruleset
-///
-/// Represents a set of rules to be used during equality saturation.
-///
-axm %eqsat.Ruleset: *;
 ///
 /// ### %%eqsat.Rule
 ///
 /// Represents a rule defined in MimIR
 ///
 axm %eqsat.Rule: *;
+///
+/// ### %%eqsat.Rules
+///
+/// Represents a set of rules defined in MimIR
+///
+axm %eqsat.Rules: *;
+///
+/// ### %%eqsat.Ruleset
+///
+/// Represents a set of rules to be used during equality saturation.
+///
+axm %eqsat.Ruleset: *;
 ///
 ///
 /// ## Rulesets
@@ -44,19 +50,19 @@ axm %eqsat.math: %eqsat.Ruleset;
 ///
 ///
 /// ## Operations
-/// 
+///
 /// ### %%eqsat.rulesets
 ///
 /// Tell the equality saturation engine which of the predefined
 /// rulesets inside of eqsat/egg/src/rules/ it should use.
-/// 
+///
 axm %eqsat.rulesets: {n: Nat} → «n; %eqsat.Ruleset» → %eqsat.Ruleset;
 ///
 /// ### %%eqsat.rules
 ///
 /// Tell the equality saturation engine to use a set of rules during equality saturation.
-/// 
-axm %eqsat.rules: {n: Nat} → «n; %eqsat.Rule» → %eqsat.Ruleset;
+///
+axm %eqsat.rules: {n: Nat, Ts: «n; *»} → «i: n; Ts#i» → %eqsat.Rules;
 ///
 ///
 /// ## Passes and Phases

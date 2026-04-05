@@ -50,7 +50,7 @@ private:
         sym2def_["i32"]  = new_world().lit_nat(0x100000000);
     }
 
-    std::pair<rust::Vec<RuleSet>, rust::Vec<int>> import_rules();
+    rust::Vec<RuleSet> import_rulesets();
 
     const Def* init(uint32_t id, bool lambdas = false, bool bindings = false);
     const Def* init_lam(uint32_t id, MimNode node);

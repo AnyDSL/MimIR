@@ -17,6 +17,14 @@ pub fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResu
             continue;
         }
 
+        // TODO: Some of those sexpr's are going to be rewrite rules so
+        // we need to check for this somehow and then convert them to a proper
+        // Rewrite which we can add to rules before performing equality saturation.
+        // We should probably do that in another preceding loop so all custom rules
+        // are loaded before the first equality saturation gets performed.
+        // And we should also remove any rule we converted from sexprs so they
+        // don't get converted again in the second loop.
+
         let runner = Runner::<Mim, MimAnalysis, ()>::default()
             .with_expr(&sexpr.parse().unwrap())
             .run(rules);
@@ -72,6 +80,7 @@ pub mod ffi {
         Tuple,
         Extract,
         Ins,
+        Rule,
         Bot,
         Top,
         Arr,
@@ -83,6 +92,7 @@ pub mod ffi {
         Type,
         Num,
         Symbol,
+        Reform,
     }
 
     #[derive(Debug)]
@@ -137,6 +147,7 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
             Tuple(children) => nodes.push(new_mim(MimKind::Tuple, children, 0, String::new())),
             Extract(children) => nodes.push(new_mim(MimKind::Extract, children, 0, String::new())),
             Ins(children) => nodes.push(new_mim(MimKind::Ins, children, 0, String::new())),
+            Rule(children) => nodes.push(new_mim(MimKind::Rule, children, 0, String::new())),
 
             Bot(child) => nodes.push(new_mim(MimKind::Bot, &[*child], 0, String::new())),
             Top(child) => nodes.push(new_mim(MimKind::Top, &[*child], 0, String::new())),
@@ -147,6 +158,7 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
             Idx(child) => nodes.push(new_mim(MimKind::Idx, &[*child], 0, String::new())),
             Hole(child) => nodes.push(new_mim(MimKind::Hole, &[*child], 0, String::new())),
             Type(child) => nodes.push(new_mim(MimKind::Type, &[*child], 0, String::new())),
+            Reform(child) => nodes.push(new_mim(MimKind::Type, &[*child], 0, String::new())),
 
             Num(n) => nodes.push(new_mim(MimKind::Num, &[], *n, String::new())),
             Symbol(s) => nodes.push(new_mim(MimKind::Symbol, &[], 0, s.clone())),

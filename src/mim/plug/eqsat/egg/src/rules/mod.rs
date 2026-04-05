@@ -6,6 +6,8 @@ pub mod math;
 
 define_language! {
     pub enum Mim {
+        // TERMS
+
         // (let <name> <definition> <expression>)
         "let" = Let([Id; 3]),
 
@@ -30,6 +32,9 @@ define_language! {
         // (ins <tuple> <index> <value>)
         "ins" = Ins([Id; 3]),
 
+        // (rule <lhs> <rhs> <guard>)
+        "rule" = Rule([Id; 3]),
+
 
         // TYPES
 
@@ -51,6 +56,8 @@ define_language! {
         "hole" = Hole(Id),
         // (type <level>)
         "type" = Type(Id),
+        // (reform <meta_type>)
+        "reform" = Reform(Id),
 
         Num(i64), Symbol(String),
     }

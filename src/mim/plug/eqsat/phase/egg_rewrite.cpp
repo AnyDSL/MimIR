@@ -10,7 +10,7 @@
 namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
-    auto [rulesets, rules] = import_rules();
+    auto rulesets = import_rulesets();
 
     std::ostringstream sexpr;
     if (auto sexpr_backend = driver().backend("sexpr"))
@@ -50,46 +50,34 @@ void EggRewrite::start() {
     swap(old_world(), new_world());
 }
 
-std::pair<rust::Vec<RuleSet>, rust::Vec<int>> EggRewrite::import_rules() {
-    // Internalize eqsat ruleset config functions (lam with signature [] -> %eqsat.Ruleset)
+rust::Vec<RuleSet> EggRewrite::import_rulesets() {
+    // Internalize eqsat ruleset config lambda (lam with signature [] -> %eqsat.Ruleset)
     DefVec lams;
     for (auto def : old_world().externals().mutate()) {
-        if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
-            if (lam->codom()->sym().view() == "%eqsat.Ruleset") {
+        if (auto lam = def->isa<Lam>()) {
+            if (lam->sym().str() == "_rulesets") {
                 lams.push_back(lam);
                 def->internalize();
             }
-        } else if (auto rule = def->isa<mim::Rule>()) {
-            // TODO: rules are internal how do i access them here?
-            std::cout << "Rule found: \n";
-            std::cout << rule << "\n";
-            std::cout << rule->type() << "\n";
         }
     }
 
-    // Import predefined rulesets and custom rules from config functions
+    // Import predefined rulesets from config lambda
     rust::Vec<RuleSet> rulesets;
-    // TODO: int is just a placeholder and should be replaced
-    // with the actual type for rules later on
-    rust::Vec<int> rules;
     for (auto lam : lams) {
         auto body = lam->as<Lam>()->body();
-        if (auto rs = Axm::isa<eqsat::rulesets>(body)) {
-            for (auto ruleset : rs->args())
-                if (auto core = Axm::isa<eqsat::core>(ruleset))
-                    rulesets.push_back(RuleSet::Core);
-                else if (auto math = Axm::isa<eqsat::math>(ruleset))
-                    rulesets.push_back(RuleSet::Math);
-
-        } else if (auto rs = Axm::isa<eqsat::rules>(body)) {
-            // TODO: translate custom rules from %eqsat.rules and pass as another arg
-            // to equality_saturate (rules: Vec<Rule> or something)
-            // - each custom rule might need to be translated into two
-            //   sexpr's for lhs and rhs before passing them on
+        if (auto body_app = body->isa<App>()) {
+            if (auto ruleset_config = Axm::isa<eqsat::rulesets>(body_app->arg())) {
+                for (auto ruleset : ruleset_config->args())
+                    if (auto core = Axm::isa<eqsat::core>(ruleset))
+                        rulesets.push_back(RuleSet::Core);
+                    else if (auto math = Axm::isa<eqsat::math>(ruleset))
+                        rulesets.push_back(RuleSet::Math);
+            }
         }
     }
 
-    return {rulesets, rules};
+    return rulesets;
 }
 
 const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings) {
