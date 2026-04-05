@@ -1,7 +1,7 @@
 plugin core;
 plugin vec;
 
-fun foo{n:Nat} (A B:«n; Nat»):  «n; Nat» = 
+fun foo{n:Nat} (A B:«n; Nat»):  «n; Nat» =
     let C = %vec.zip %core.nat.add (A, B);
     let D = %vec.zip %core.nat.sub (C, ‹n; 1›);
     return D;
@@ -18,7 +18,7 @@ fun cmp{n:Nat} (A B: «n; Nat»): «n; Bool» =
 
 fun extern bar(A B: «4; Nat»): «4; Nat» =
     ret C = foo @4 $ (A, B);
-    ret D = foo @4 $ (A, B);  
+    ret D = foo @4 $ (A, B);
     return D;
 
 
