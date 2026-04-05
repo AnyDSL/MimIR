@@ -208,10 +208,11 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         if (auto level = Lit::isa(mType->level())) {
             if (level == 0) print(s, "(type (lit 0))");
             if (level == 1) print(s, "(type (lit 1))");
+        } else {
+            print(s, "(type {})", convert(mType->level()));
         }
-        print(s, "(type {})", convert(mType->level()));
     } else if (type->isa<Univ>()) {
-        print(s, "univ");
+        print(s, "Univ");
     } else {
         error("unsupported type '{}'", type);
         fe::unreachable();
@@ -264,7 +265,6 @@ void Emitter::finalize() {
     emit_lam(root_lam, done);
 }
 
-// TODO: Do we need to emit the codomain seperately for lam?
 std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     std::ostringstream os;
 
@@ -282,8 +282,7 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     tab.lnprint(os, "(sigma");
     if (lam->has_var()) {
         ++tab;
-        auto vars = lam->vars();
-        for (int i = 0; auto var : vars.view()) {
+        for (int i = 0; auto var : lam->vars()) {
             if (var) {
                 tab.lnprint(os, "(var {}", id(var));
                 ++tab;
@@ -299,10 +298,20 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     print(os, ")");
     --tab;
 
-    // emit_unsafe() for Defs that were already
-    // emitted uses caching which messes up indentation.
-    // If we don't need basic blocks we just use emit_bb() with
-    // some dummy basic blocks instead.
+    // Continuations have codomain .bot but lambdas can have arbitrary codomains
+    if (!lam->isa_cn(lam)) {
+        ++tab;
+        tab.lnprint(os, "(sigma");
+        ++tab;
+        for (auto codom : lam->codoms())
+            tab.lnprint(os, "{}", convert(codom));
+        print(os, ")");
+        --tab;
+        --tab;
+    }
+
+    // emit_unsafe() for Defs that were already emitted uses caching which messes up indentation.
+    // If we don't need basic blocks we just use emit_bb() with some dummy basic block instead.
     auto dummy = BB{};
     tab.print(os, "{}", emit_bb(dummy, lam->filter()));
 
@@ -376,10 +385,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
     ++tab;
     if (def->type()->isa<Type>() || def->type()->isa<Univ>()) {
-        tab.lnprint(os, convert(def).c_str());
+        tab.lnprint(os, "{}", convert(def));
 
     } else if (auto lam = def->isa<Lam>()) {
-        tab.lnprint(os, id(lam).c_str());
+        tab.lnprint(os, "{}", id(lam));
 
     } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
@@ -418,8 +427,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto body  = seq->body();
         if (seq->sym().empty()) {
             tab.lnprint(os, "(pack");
-            tab.print(os, emit_bb(bb, shape).c_str());
-            tab.print(os, emit_bb(bb, body).c_str());
+            tab.print(os, "{}", emit_bb(bb, shape));
+            tab.print(os, "{}", emit_bb(bb, body));
             print(os, ")");
         } else {
             auto body_val  = emit_bb(bb, body);
@@ -428,8 +437,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(pack");
                 ++tab;
-                tab.print(os, indented(tab, shape_val).c_str());
-                tab.print(os, indented(tab, body_val).c_str());
+                tab.print(os, "{}", indented(tab, shape_val));
+                tab.print(os, "{}", indented(tab, body_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -463,11 +472,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         if (auto lit = Lit::isa(index); (lit && tuple->isa<Var>()) || is_nested_proj) {
-            tab.lnprint(os, id(extract).c_str());
+            tab.lnprint(os, "{}", id(extract));
         } else if (extract->sym().empty()) {
             tab.lnprint(os, "(extract");
-            tab.print(os, emit_bb(bb, tuple).c_str());
-            tab.print(os, emit_bb(bb, index).c_str());
+            tab.print(os, "{}", emit_bb(bb, tuple));
+            tab.print(os, "{}", emit_bb(bb, index));
             print(os, ")");
         } else {
             auto tuple_val = emit_bb(bb, tuple);
@@ -476,8 +485,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(extract");
                 ++tab;
-                tab.print(os, indented(tab, tuple_val).c_str());
-                tab.print(os, indented(tab, index_val).c_str());
+                tab.print(os, "{}", indented(tab, tuple_val));
+                tab.print(os, "{}", indented(tab, index_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -491,9 +500,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto value = insert->value();
         if (insert->sym().empty()) {
             tab.lnprint(os, "(ins");
-            tab.print(os, emit_bb(bb, tuple).c_str());
-            tab.print(os, emit_bb(bb, index).c_str());
-            tab.print(os, emit_bb(bb, value).c_str());
+            tab.print(os, "{}", emit_bb(bb, tuple));
+            tab.print(os, "{}", emit_bb(bb, index));
+            tab.print(os, "{}", emit_bb(bb, value));
             print(os, ")");
         } else {
             auto tuple_val = emit_bb(bb, tuple);
@@ -503,9 +512,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(ins");
                 ++tab;
-                tab.print(os, indented(tab, tuple_val).c_str());
-                tab.print(os, indented(tab, index_val).c_str());
-                tab.print(os, indented(tab, value_val).c_str());
+                tab.print(os, "{}", indented(tab, tuple_val));
+                tab.print(os, "{}", indented(tab, index_val));
+                tab.print(os, "{}", indented(tab, value_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -514,7 +523,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
     } else if (auto var = def->isa<Var>()) {
-        tab.lnprint(os, id(var).c_str());
+        tab.lnprint(os, "{}", id(var));
 
     } else if (auto app = def->isa<App>()) {
         auto app_val = emit_curried_app(bb, *app);
@@ -523,14 +532,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             bb.assign(tab, id(app), [&](auto& os) {
                 ++tab;
-                tab.lnprint(os, indented(tab, app_val).c_str());
+                tab.lnprint(os, "{}", indented(tab, app_val));
                 --tab;
             });
             tab.lnprint(os, "{}", id(app));
         }
 
     } else if (auto axm = def->isa<Axm>()) {
-        tab.lnprint(os, id(axm).c_str());
+        tab.lnprint(os, "{}", id(axm));
 
     } else if (def->isa<Bot>()) {
         if (def->sym().empty())
