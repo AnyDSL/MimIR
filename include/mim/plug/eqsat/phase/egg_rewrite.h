@@ -120,7 +120,7 @@ private:
         if (auto pos = name.rfind("_"); pos != std::string::npos) {
             auto maybe_uid = name.substr(pos + 1);
             if (!maybe_uid.empty() && std::all_of(maybe_uid.begin(), maybe_uid.end(), ::isdigit))
-                return name.substr(0, name.rfind("_"));
+                return name.substr(0, pos);
         }
         return name;
     }

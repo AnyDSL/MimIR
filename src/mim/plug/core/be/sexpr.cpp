@@ -228,8 +228,8 @@ void Emitter::start() {
     Super::start();
 
     ostream() << rewrite_rules_.str();
-    ostream() << func_decls_.str() << '\n';
-    ostream() << func_impls_.str() << '\n';
+    ostream() << func_decls_.str();
+    ostream() << func_impls_.str();
 
     // TODO: Use pretty(sexpr, line_len) from the egg FFI
     // to pretty-print the sexpr either based on a switch from the cli
@@ -249,7 +249,7 @@ void Emitter::emit_imported(Lam* lam) {
     auto doms = lam->doms();
     for (auto dom : doms.view())
         tab.lnprint(func_decls_, "{}", convert(dom));
-    print(func_decls_, "))");
+    print(func_decls_, "))\n\n");
     --tab;
     --tab;
 }
@@ -285,7 +285,7 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
         ++tab;
         tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam));
     } else
-        tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam));
+        tab.print(os, "({} {} {}", lam_kind, ext, id(lam));
 
     ++tab;
     tab.lnprint(os, "(sigma");
@@ -366,7 +366,7 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     --tab;
 
     if (lam->is_closed())
-        print(func_impls_, ")\n");
+        print(func_impls_, ")\n\n");
     else {
         --tab;
         print(func_impls_, ")");
@@ -567,15 +567,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
     } else if (auto rule = def->isa<Rule>()) {
-        // TODO: lhs and rhs emit the same thing for some reason
+        // TODO: lhs and rhs are equal for some reason
         auto lhs_val   = emit_bb(bb, rule->lhs());
         auto rhs_val   = emit_bb(bb, rule->rhs());
         auto guard_val = emit_bb(bb, rule->guard());
         tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
 
-        auto sep = rewrite_rules_.str().empty() ? "" : "\n\n";
-        rewrite_rules_ << sep << "(rule" << indented(1, lhs_val) << indented(1, rhs_val) << indented(1, guard_val)
-                       << ")";
+        rewrite_rules_ << "(rule" << indented(1, lhs_val) << indented(1, rhs_val) << indented(1, guard_val) << ")\n\n";
 
     } else {
         error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
