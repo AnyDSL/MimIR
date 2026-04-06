@@ -6,28 +6,81 @@ use ffi::{MimKind, MimNode, RewriteResult, RuleSet};
 mod rules;
 
 pub fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResult> {
-    let rules: &[Rewrite<Mim, MimAnalysis>] = &rules(rulesets);
+    let mut rules = rules(rulesets);
 
-    // TODO: this is a naive split that only works on linux (win: split on \r\n\r\n)
-    let sexprs: Vec<&str> = sexpr.split("\n\n").collect();
+    let normalized = sexpr.replace("\r\n", "\n");
+    let mut sexprs: Vec<&str> = normalized.split("\n\n").collect();
+    sexprs.retain(|s| !s.trim().is_empty());
     let mut rewritten_sexprs: Vec<RewriteResult> = Vec::new();
 
-    for sexpr in sexprs {
-        if sexpr.replace("\r", "").replace("\n", "").is_empty() {
-            continue;
+    // Converts rewrite rules in sexpr form into rewrite rules usable in egg and then
+    // filters them out so we only have proper sexprs remaining to equality saturate in the next loop
+    sexprs.retain(|sexpr| {
+        let parsed: RecExpr<Mim> = sexpr.parse().unwrap();
+        if let Some((_id, Mim::Rule([lhs, rhs, _guard]))) = parsed.items().last() {
+            println!("Got a rule");
+            let rule_node = parsed.items().last().unwrap().1;
+            println!("{:#?}", rule_node);
+
+            let mut lhs_node = rule_node
+                .clone()
+                .build_recexpr(|_id| parsed.items().nth(usize::from(*lhs)).unwrap().1.clone());
+            let mut rhs_node = rule_node
+                .clone()
+                .build_recexpr(|_id| parsed.items().nth(usize::from(*rhs)).unwrap().1.clone());
+
+            println!("{:#?}", lhs_node);
+            println!("{:#?}", rhs_node);
+
+            // TODO: Would it do to iterate over lhs_node and rhs_node and just prefix every symbol that
+            // isn't an axiom, type, or term alias with a '?' to mark it as a pattern variable?
+            // Or are there patterns that introduce new variables where this would break things?
+            // If the current approach isn't sufficient we should try to emit the pattern vars explicitly in the sexpr backend.
+            let aliases = [
+                "Univ", "Bool", "Nat", "I8", "I16", "I32", "I64", "tt", "ff", "i8", "i16", "i32",
+            ];
+            let skip = |s: &mut String| s.starts_with('%') || aliases.contains(&s.as_str());
+            for (_id, node) in lhs_node.items_mut() {
+                if let Mim::Symbol(s) = node
+                    && !skip(s)
+                {
+                    s.insert(0, '?')
+                }
+            }
+            for (_id, node) in rhs_node.items_mut() {
+                if let Mim::Symbol(s) = node
+                    && !skip(s)
+                {
+                    s.insert(0, '?')
+                }
+            }
+            println!("after: {:#?}", lhs_node);
+            println!("after: {:#?}", rhs_node);
+
+            let pat: Pattern<Mim> = lhs_node.pretty(80).parse().unwrap();
+            let outpat: Pattern<Mim> = rhs_node.pretty(80).parse().unwrap();
+            // TODO: do we give it some random name or should we take over the id from the sexpr backend?
+            let rule_name = format!(
+                "rule_{}",
+                std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap()
+                    .as_millis()
+            );
+            let rule: Rewrite<Mim, MimAnalysis> = Rewrite::new(rule_name, pat, outpat).unwrap();
+            println!("{:#?}", rule);
+            rules.push(rule);
+
+            false
+        } else {
+            true
         }
+    });
 
-        // TODO: Some of those sexpr's are going to be rewrite rules so
-        // we need to check for this somehow and then convert them to a proper
-        // Rewrite which we can add to rules before performing equality saturation.
-        // We should probably do that in another preceding loop so all custom rules
-        // are loaded before the first equality saturation gets performed.
-        // And we should also remove any rule we converted from sexprs so they
-        // don't get converted again in the second loop.
-
+    for sexpr in sexprs {
         let runner = Runner::<Mim, MimAnalysis, ()>::default()
             .with_expr(&sexpr.parse().unwrap())
-            .run(rules);
+            .run(&rules);
 
         let extractor = Extractor::new(&runner.egraph, AstSize);
         let (_best_cost, best_expr) = extractor.find_best(runner.roots[0]);
@@ -43,15 +96,12 @@ pub fn mim_node_str(node: MimNode) -> String {
 }
 
 pub fn pretty(sexpr: &str, line_len: usize) -> String {
-    // TODO: this is a naive split that only works on linux (win: split on \r\n\r\n)
-    let sexprs: Vec<&str> = sexpr.split("\n\n").collect();
+    let normalized = sexpr.replace("\r\n", "\n");
+    let mut sexprs: Vec<&str> = normalized.split("\n\n").collect();
+    sexprs.retain(|s| !s.trim().is_empty());
     let mut res = String::new();
 
     for sexpr in sexprs {
-        if sexpr.replace("\r", "").replace("\n", "").is_empty() {
-            continue;
-        }
-
         let parsed: RecExpr<Mim> = sexpr.parse().unwrap();
         res.push_str(parsed.pretty(line_len).as_str());
         res.push_str("\n\n");

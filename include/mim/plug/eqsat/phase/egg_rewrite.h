@@ -37,6 +37,7 @@ private:
             new_world().register_annex(flags, rewrite(annex));
         }
 
+        sym2def_["Univ"] = new_world().univ();
         sym2def_["Bool"] = new_world().type_bool();
         sym2def_["Nat"]  = new_world().type_nat();
         sym2def_["I8"]   = new_world().type_i8();

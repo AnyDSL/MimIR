@@ -55,7 +55,7 @@ rust::Vec<RuleSet> EggRewrite::import_rulesets() {
     DefVec lams;
     for (auto def : old_world().externals().mutate()) {
         if (auto lam = def->isa<Lam>()) {
-            if (lam->sym().str() == "_rulesets") {
+            if (lam->ret_dom()->sym().str() == "%eqsat.Ruleset") {
                 lams.push_back(lam);
                 def->internalize();
             }

@@ -14,10 +14,10 @@ fun extern _rulesets(): %eqsat.Ruleset =
     ));
 
 con extern add_lit_nat [return : Cn Nat] =
-    return (%core.nat.add (6, 3));
+    return (%core.nat.add (6, 6));
 
 con extern add_lit_nat2 [return : Cn Nat] =
-    return (%core.nat.add (8, 2));
+    return (%core.nat.add (8, 0));
 
 con extern add_lit_nat3 [return : Cn Nat] =
     return (%core.nat.add (9, 1));

@@ -262,7 +262,12 @@ void Emitter::emit_epilogue(Lam* lam) {
 }
 
 void Emitter::finalize() {
-    if (root()->sym().str() == "_fallback_compile" || root()->sym().str() == "_rules") return;
+    if (root()->sym().str() == "_fallback_compile") return;
+    // We don't want to emit config lams that define which rules should be emitted.
+    // The rules in the body of such a lambda will be emitted into rewrite_rules_
+    // via emit_bb() but we don't want to emit the lambda itself.
+    else if (root()->ret_dom()->sym().str() == "%eqsat.Rules")
+        return;
 
     MutSet done;
     auto root_lam = nest().root()->mut()->as_mut<Lam>();
@@ -562,6 +567,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
     } else if (auto rule = def->isa<Rule>()) {
+        // TODO: lhs and rhs emit the same thing for some reason
         auto lhs_val   = emit_bb(bb, rule->lhs());
         auto rhs_val   = emit_bb(bb, rule->rhs());
         auto guard_val = emit_bb(bb, rule->guard());

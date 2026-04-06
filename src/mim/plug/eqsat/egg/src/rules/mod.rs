@@ -73,7 +73,7 @@ macro_rules! find_node {
     };
 }
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct MimAnalysis;
 #[derive(Debug)]
 pub struct AnalysisData {
