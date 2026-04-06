@@ -1,11 +1,11 @@
 plugin core;
 plugin eqsat;
 
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
+fun extern _rulesets(): %eqsat.Ruleset =
+    return (%eqsat.rulesets (
         %eqsat.core,
         %eqsat.math,
-    );
+    ));
 
 ccon atoi[%mem.M 0, %mem.Ptr («⊤:Nat; I8», 0), Cn [%mem.M 0, I32]];
 

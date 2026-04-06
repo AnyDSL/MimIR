@@ -1,9 +1,10 @@
 plugin core;
 plugin eqsat;
 
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
+fun extern _rulesets(): %eqsat.Ruleset =
+    return (%eqsat.rulesets (
         %eqsat.core,
-    );
+        %eqsat.math,
+    ));
 
 fun extern f(a b:Nat): Nat = return (%core.nat.add (b, 0));

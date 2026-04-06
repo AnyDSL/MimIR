@@ -1,10 +1,10 @@
 plugin core;
 plugin eqsat;
 
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
+fun extern _rulesets(): %eqsat.Ruleset =
+    return (%eqsat.rulesets (
         %eqsat.core,
-    );
+    ));
 
 // - Projections like argc and mem lose their names even though I am setting them correctly in convert_var()
 // - The problem is with dump.cpp where mim is emitted, they don't check for extracts of nested sigmas

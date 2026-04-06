@@ -1,11 +1,11 @@
 plugin core;
 plugin eqsat;
 
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
+fun extern _rulesets(): %eqsat.Ruleset =
+    return (%eqsat.rulesets (
         %eqsat.core,
         %eqsat.math,
-    );
+    ));
 
 fun extern f(a: I8): «4; I8» =
     return (%core.wrap.sub 0               (a, 1I8),

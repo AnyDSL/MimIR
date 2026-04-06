@@ -1,10 +1,11 @@
 plugin core;
 plugin eqsat;
 
-lam extern _rulesets(): %eqsat.Ruleset =
-    %eqsat.rulesets (
+fun extern _rulesets(): %eqsat.Ruleset =
+    return (%eqsat.rulesets (
         %eqsat.core,
-    );
+        %eqsat.math,
+    ));
 
 con extern and_lit [return : Cn Bool] =
     return
@@ -15,4 +16,3 @@ con extern and_lit [return : Cn Bool] =
          %core.bit2.and_ 0
             (%core.bit2.and_ 0 (ff, tt),
              %core.bit2.and_ 0 (tt, ff))));
-
