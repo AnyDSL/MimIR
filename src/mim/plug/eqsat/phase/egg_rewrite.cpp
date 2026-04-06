@@ -1,11 +1,10 @@
-#include "mim/plug/eqsat/phase/egg_rewrite.h"
-
 #include <cstdint>
+
+#include <mim/plug/eqsat/eqsat.h>
+#include <mim/plug/eqsat/phase/egg_rewrite.h>
 
 #include "mim/def.h"
 #include "mim/driver.h"
-
-#include "mim/plug/eqsat/autogen.h"
 
 namespace mim::plug::eqsat {
 
@@ -55,7 +54,7 @@ rust::Vec<RuleSet> EggRewrite::import_rulesets() {
     DefVec lams;
     for (auto def : old_world().externals().mutate()) {
         if (auto lam = def->isa<Lam>()) {
-            if (lam->ret_dom()->sym().str() == "%eqsat.Ruleset") {
+            if (Axm::isa<eqsat::Ruleset>(lam->ret_dom())) {
                 lams.push_back(lam);
                 def->internalize();
             }

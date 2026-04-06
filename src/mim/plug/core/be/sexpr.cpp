@@ -1,13 +1,11 @@
-#include "mim/plug/core/be/sexpr.h"
-
 #include <iostream>
 #include <sstream>
 
 #include <absl/container/btree_set.h>
 
-#include <mim/plug/clos/clos.h>
+#include <mim/plug/core/be/sexpr.h>
+#include <mim/plug/eqsat/eqsat.h>
 #include <mim/plug/math/math.h>
-#include <mim/plug/mem/mem.h>
 
 #include "mim/def.h"
 
@@ -266,7 +264,7 @@ void Emitter::finalize() {
     // We don't want to emit config lams that define which rules should be emitted.
     // The rules in the body of such a lambda will be emitted into rewrite_rules_
     // via emit_bb() but we don't want to emit the lambda itself.
-    else if (root()->ret_dom()->sym().str() == "%eqsat.Rules")
+    else if (Axm::isa<mim::plug::eqsat::Rules>(root()->ret_dom()))
         return;
 
     MutSet done;
