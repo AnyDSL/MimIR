@@ -116,7 +116,14 @@ private:
     std::string get_symbol(uint32_t id) { return res_[id].symbol.c_str(); }
     int64_t get_num(uint32_t id) { return res_[id].num; }
 
-    std::string remove_uid(std::string name) { return name.substr(0, name.rfind("_")); }
+    std::string remove_uid(std::string name) {
+        if (auto pos = name.rfind("_"); pos != std::string::npos) {
+            auto maybe_uid = name.substr(pos + 1);
+            if (!maybe_uid.empty() && std::all_of(maybe_uid.begin(), maybe_uid.end(), ::isdigit))
+                return name.substr(0, name.rfind("_"));
+        }
+        return name;
+    }
 
     rust::Vec<MimNode> res_;
     std::unordered_map<uint32_t, const Def*> added_;

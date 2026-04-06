@@ -13,69 +13,7 @@ pub fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResu
     sexprs.retain(|s| !s.trim().is_empty());
     let mut rewritten_sexprs: Vec<RewriteResult> = Vec::new();
 
-    // Converts rewrite rules in sexpr form into rewrite rules usable in egg and then
-    // filters them out so we only have proper sexprs remaining to equality saturate in the next loop
-    sexprs.retain(|sexpr| {
-        let parsed: RecExpr<Mim> = sexpr.parse().unwrap();
-        if let Some((_id, Mim::Rule([lhs, rhs, _guard]))) = parsed.items().last() {
-            println!("Got a rule");
-            let rule_node = parsed.items().last().unwrap().1;
-            println!("{:#?}", rule_node);
-
-            let mut lhs_node = rule_node
-                .clone()
-                .build_recexpr(|_id| parsed.items().nth(usize::from(*lhs)).unwrap().1.clone());
-            let mut rhs_node = rule_node
-                .clone()
-                .build_recexpr(|_id| parsed.items().nth(usize::from(*rhs)).unwrap().1.clone());
-
-            println!("{:#?}", lhs_node);
-            println!("{:#?}", rhs_node);
-
-            // TODO: Would it do to iterate over lhs_node and rhs_node and just prefix every symbol that
-            // isn't an axiom, type, or term alias with a '?' to mark it as a pattern variable?
-            // Or are there patterns that introduce new variables where this would break things?
-            // If the current approach isn't sufficient we should try to emit the pattern vars explicitly in the sexpr backend.
-            let aliases = [
-                "Univ", "Bool", "Nat", "I8", "I16", "I32", "I64", "tt", "ff", "i8", "i16", "i32",
-            ];
-            let skip = |s: &mut String| s.starts_with('%') || aliases.contains(&s.as_str());
-            for (_id, node) in lhs_node.items_mut() {
-                if let Mim::Symbol(s) = node
-                    && !skip(s)
-                {
-                    s.insert(0, '?')
-                }
-            }
-            for (_id, node) in rhs_node.items_mut() {
-                if let Mim::Symbol(s) = node
-                    && !skip(s)
-                {
-                    s.insert(0, '?')
-                }
-            }
-            println!("after: {:#?}", lhs_node);
-            println!("after: {:#?}", rhs_node);
-
-            let pat: Pattern<Mim> = lhs_node.pretty(80).parse().unwrap();
-            let outpat: Pattern<Mim> = rhs_node.pretty(80).parse().unwrap();
-            // TODO: do we give it some random name or should we take over the id from the sexpr backend?
-            let rule_name = format!(
-                "rule_{}",
-                std::time::SystemTime::now()
-                    .duration_since(std::time::UNIX_EPOCH)
-                    .unwrap()
-                    .as_millis()
-            );
-            let rule: Rewrite<Mim, MimAnalysis> = Rewrite::new(rule_name, pat, outpat).unwrap();
-            println!("{:#?}", rule);
-            rules.push(rule);
-
-            false
-        } else {
-            true
-        }
-    });
+    convert_rules(&mut sexprs, &mut rules);
 
     for sexpr in sexprs {
         let runner = Runner::<Mim, MimAnalysis, ()>::default()
@@ -89,6 +27,52 @@ pub fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResu
     }
 
     rewritten_sexprs
+}
+
+fn convert_rules(sexprs: &mut Vec<&str>, rules: &mut Vec<Rewrite<Mim, MimAnalysis>>) {
+    // Converts rewrite rules in sexpr form into rewrite rules usable in egg and then
+    // filters them out so we only have proper sexprs remaining to equality saturate in the next loop
+    sexprs.retain(|sexpr| {
+        let parsed: RecExpr<Mim> = sexpr.parse().unwrap();
+        if let Some((_id, Mim::Rule([lhs, rhs, _guard]))) = parsed.items().last() {
+            let nth_node = |id: Id| parsed.items().nth(usize::from(id)).unwrap().1.clone();
+            let mut lhs_rexpr = nth_node(*lhs).build_recexpr(nth_node);
+            let mut rhs_rexpr = nth_node(*rhs).build_recexpr(nth_node);
+
+            // TODO: Would it do to iterate over lhs_node and rhs_node and just prefix every symbol that
+            // isn't an axiom, type, or term alias with a '?' to mark it as a pattern variable?
+            // Or are there patterns that introduce new variables where this would break things?
+            // If the current approach isn't sufficient we should try to emit the pattern vars explicitly in the sexpr backend.
+            let aliases = [
+                "Univ", "Bool", "Nat", "I8", "I16", "I32", "I64", "tt", "ff", "i8", "i16", "i32",
+            ];
+            let skip = |s: &mut String| s.starts_with('%') || aliases.contains(&s.as_str());
+            for (_id, node) in lhs_rexpr.items_mut() {
+                if let Mim::Symbol(s) = node
+                    && !skip(s)
+                {
+                    s.insert(0, '?')
+                }
+            }
+            for (_id, node) in rhs_rexpr.items_mut() {
+                if let Mim::Symbol(s) = node
+                    && !skip(s)
+                {
+                    s.insert(0, '?')
+                }
+            }
+
+            let pat: Pattern<Mim> = lhs_rexpr.pretty(80).parse().unwrap();
+            let outpat: Pattern<Mim> = rhs_rexpr.pretty(80).parse().unwrap();
+            // TODO: Do we give it some random name or should we take over the id from the sexpr backend?
+            let rule_name = format!("rule_{}", rules.len());
+            let rule: Rewrite<Mim, MimAnalysis> = Rewrite::new(rule_name, pat, outpat).unwrap();
+            rules.push(rule);
+            false
+        } else {
+            true
+        }
+    });
 }
 
 pub fn mim_node_str(node: MimNode) -> String {
