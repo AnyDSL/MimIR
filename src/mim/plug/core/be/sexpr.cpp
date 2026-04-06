@@ -1,13 +1,12 @@
-#include "mim/plug/core/be/sexpr.h"
-
 #include <iostream>
 #include <sstream>
 
 #include <absl/container/btree_set.h>
 
-#include <mim/plug/clos/clos.h>
+#include <mim/plug/core/be/sexpr.h>
+// TODO: Uncomment after 'eqsat' plugin is merged.
+// #include <mim/plug/eqsat/eqsat.h>
 #include <mim/plug/math/math.h>
-#include <mim/plug/mem/mem.h>
 
 #include "mim/def.h"
 
@@ -91,18 +90,21 @@ public:
 
 private:
     std::string id(const Def*) const;
-    std::string indented(Tab tab, std::string s);
+    std::string indented(size_t tabs, std::string s);
     std::string convert(const Def*, const Def* = nullptr);
 
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
+    std::ostringstream rewrite_rules_;
 };
 
-// Axioms and declarations(imports) need to be emitted without a uid
+// Axioms, declarations(imports) and externals need to be emitted without a uid
 std::string Emitter::id(const Def* def) const {
     if (def->isa<Axm>())
         return def->sym().str();
     else if (def->isa<Lam>() && !def->is_set())
+        return def->sym().str();
+    else if (def->is_external())
         return def->sym().str();
 
     return def->unique_name();
@@ -118,9 +120,7 @@ std::string Emitter::id(const Def* def) const {
 //          foo
 //          bar
 //      )"
-std::string Emitter::indented(Tab tab, std::string s) {
-    size_t tabs = tab.indent();
-
+std::string Emitter::indented(size_t tabs, std::string s) {
     while (!s.empty() && (s.front() == '\n' || s.front() == '\r'))
         s.erase(0, 1);
 
@@ -213,6 +213,8 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         }
     } else if (type->isa<Univ>()) {
         print(s, "Univ");
+    } else if (auto reform = type->isa<Reform>()) {
+        print(s, "(reform {})", convert(reform->meta_type()));
     } else {
         error("unsupported type '{}'", type);
         fe::unreachable();
@@ -224,8 +226,9 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
 void Emitter::start() {
     Super::start();
 
-    ostream() << func_decls_.str() << '\n';
-    ostream() << func_impls_.str() << '\n';
+    ostream() << rewrite_rules_.str();
+    ostream() << func_decls_.str();
+    ostream() << func_impls_.str();
 
     // TODO: Use pretty(sexpr, line_len) from the egg FFI
     // to pretty-print the sexpr either based on a switch from the cli
@@ -245,7 +248,7 @@ void Emitter::emit_imported(Lam* lam) {
     auto doms = lam->doms();
     for (auto dom : doms.view())
         tab.lnprint(func_decls_, "{}", convert(dom));
-    print(func_decls_, "))");
+    print(func_decls_, "))\n\n");
     --tab;
     --tab;
 }
@@ -259,6 +262,12 @@ void Emitter::emit_epilogue(Lam* lam) {
 
 void Emitter::finalize() {
     if (root()->sym().str() == "_fallback_compile") return;
+    // We don't want to emit config lams that define which rules should be emitted.
+    // The rules in the body of such a lambda will be emitted into rewrite_rules_
+    // via emit_bb() but we don't want to emit the lambda itself.
+    // TODO: Uncomment after 'eqsat' plugin is merged.
+    // else if (Axm::isa<mim::plug::eqsat::Rules>(root()->ret_dom()))
+    //     return;
 
     MutSet done;
     auto root_lam = nest().root()->mut()->as_mut<Lam>();
@@ -276,7 +285,7 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
         ++tab;
         tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam));
     } else
-        tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam));
+        tab.print(os, "({} {} {}", lam_kind, ext, id(lam));
 
     ++tab;
     tab.lnprint(os, "(sigma");
@@ -346,18 +355,18 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
         auto opened       = std::ranges::count(term.str(), '(');
         auto closed       = std::ranges::count(term.str(), ')');
         unclosed_bindings = unclosed_bindings + opened - closed;
-        print(func_impls_, "{}", indented(tab, term.str()));
+        print(func_impls_, "{}", indented(tab.indent(), term.str()));
     }
 
     for (auto& term : bb.tail())
-        print(func_impls_, "{}", indented(tab, term.str()));
+        print(func_impls_, "{}", indented(tab.indent(), term.str()));
 
     std::string closing_parens(unclosed_bindings, ')');
     print(func_impls_, "{}", closing_parens);
     --tab;
 
     if (lam->is_closed())
-        print(func_impls_, ")\n");
+        print(func_impls_, ")\n\n");
     else {
         --tab;
         print(func_impls_, ")");
@@ -437,8 +446,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(pack");
                 ++tab;
-                tab.print(os, "{}", indented(tab, shape_val));
-                tab.print(os, "{}", indented(tab, body_val));
+                tab.print(os, "{}", indented(tab.indent(), shape_val));
+                tab.print(os, "{}", indented(tab.indent(), body_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -485,8 +494,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(extract");
                 ++tab;
-                tab.print(os, "{}", indented(tab, tuple_val));
-                tab.print(os, "{}", indented(tab, index_val));
+                tab.print(os, "{}", indented(tab.indent(), tuple_val));
+                tab.print(os, "{}", indented(tab.indent(), index_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -512,9 +521,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(ins");
                 ++tab;
-                tab.print(os, "{}", indented(tab, tuple_val));
-                tab.print(os, "{}", indented(tab, index_val));
-                tab.print(os, "{}", indented(tab, value_val));
+                tab.print(os, "{}", indented(tab.indent(), tuple_val));
+                tab.print(os, "{}", indented(tab.indent(), index_val));
+                tab.print(os, "{}", indented(tab.indent(), value_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -532,7 +541,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             bb.assign(tab, id(app), [&](auto& os) {
                 ++tab;
-                tab.lnprint(os, "{}", indented(tab, app_val));
+                tab.lnprint(os, "{}", indented(tab.indent(), app_val));
                 --tab;
             });
             tab.lnprint(os, "{}", id(app));
@@ -556,6 +565,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             bb.assign(tab, id(def), "(top {})", convert(def->type()));
             tab.lnprint(os, "{}", id(def));
         }
+
+    } else if (auto rule = def->isa<Rule>()) {
+        // TODO: lhs and rhs are equal for some reason
+        auto lhs_val   = emit_bb(bb, rule->lhs());
+        auto rhs_val   = emit_bb(bb, rule->rhs());
+        auto guard_val = emit_bb(bb, rule->guard());
+        tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
+
+        rewrite_rules_ << "(rule" << indented(1, lhs_val) << indented(1, rhs_val) << indented(1, guard_val) << ")\n\n";
 
     } else {
         error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
