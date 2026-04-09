@@ -97,8 +97,8 @@ private:
     std::ostringstream rewrite_rules_;
 };
 
-// Axioms, declarations(imports) and externals need to be emitted without a uid
 std::string Emitter::id(const Def* def) const {
+    // Axioms, declarations(imports) and externals need to be emitted without a uid
     if (def->isa<Axm>())
         return def->sym().str();
     else if (def->isa<Lam>() && !def->is_set())
@@ -234,11 +234,11 @@ void Emitter::start() {
     // or as default after the sexpr backend has been completed
 }
 
-// We assume that the lambda will be a continuation since imports
-// only exist via cfun and ccon which are both internally modelled as con
 void Emitter::emit_imported(Lam* lam) {
     const std::string ext = lam->is_external() ? "extern" : "intern";
 
+    // We assume that the lambda will be a continuation since imports
+    // only exist via cfun and ccon which are both internally modelled as con
     print(func_decls_, "(con {} {}", ext, id(lam));
 
     ++tab;
@@ -387,6 +387,7 @@ std::string Emitter::emit_curried_app(BB& bb, const App& app) {
     print(os, ")");
     return os.str();
 }
+
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     std::ostringstream os;
 
