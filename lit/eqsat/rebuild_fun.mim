@@ -1,12 +1,6 @@
 plugin core;
 plugin eqsat;
 
-fun extern _rulesets(): %eqsat.Ruleset =
-    return (%eqsat.rulesets (
-        %eqsat.core,
-        %eqsat.math,
-    ));
-
 lam Ptr(T: *): * = %mem.Ptr (T, 0);
 
 let _ = 23;

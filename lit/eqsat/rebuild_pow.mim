@@ -1,12 +1,6 @@
 plugin core;
 plugin eqsat;
 
-fun extern _rulesets(): %eqsat.Ruleset =
-    return (%eqsat.rulesets (
-        %eqsat.core,
-        %eqsat.math,
-    ));
-
 fun pow(a b: I32): I32 =
     con pow_cont(v: I32) =
         return (%core.wrap.mul 0 (a, v));

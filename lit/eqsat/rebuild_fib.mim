@@ -1,12 +1,6 @@
 plugin core;
 plugin eqsat;
 
-fun extern _rulesets(): %eqsat.Ruleset =
-    return (%eqsat.rulesets (
-        %eqsat.core,
-        %eqsat.math,
-    ));
-
 con seq {A: *} (n: Nat) (body: [Cn A] → Cn A) (exit: Cn A) (acc: A)@tt =
     head(0, acc)
     where

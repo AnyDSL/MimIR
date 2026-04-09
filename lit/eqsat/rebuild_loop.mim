@@ -1,11 +1,6 @@
 plugin core;
 plugin eqsat;
 
-fun extern _rulesets(): %eqsat.Ruleset =
-    return (%eqsat.rulesets (
-        %eqsat.core,
-    ));
-
 fun extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M 0, I32] =
     loop (mem, 0I32, 0I32)
     where
