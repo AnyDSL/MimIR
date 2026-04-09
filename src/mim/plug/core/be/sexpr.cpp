@@ -244,8 +244,7 @@ void Emitter::emit_imported(Lam* lam) {
     ++tab;
     tab.lnprint(func_decls_, "(sigma");
     ++tab;
-    auto doms = lam->doms();
-    for (auto dom : doms.view())
+    for (auto dom : lam->doms().view())
         tab.lnprint(func_decls_, "{}", convert(dom));
     print(func_decls_, "))\n\n");
     --tab;
@@ -289,16 +288,23 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
     tab.lnprint(os, "(sigma");
     if (lam->has_var()) {
         ++tab;
-        for (int i = 0; auto var : lam->vars()) {
-            if (var) {
-                tab.lnprint(os, "(var {}", id(var));
-                ++tab;
-                tab.lnprint(os, "{})", convert(var->type(), var));
-                --tab;
-            } else {
-                tab.lnprint(os, "{}", convert(lam->dom(i)));
+        if (lam->vars().size() == 1 || std::ranges::all_of(lam->vars(), [](auto def) { return def->sym().empty(); })) {
+            tab.lnprint(os, "(var {}", id(lam->var()));
+            ++tab;
+            tab.lnprint(os, "{})", convert(lam->type()->dom()));
+            --tab;
+        } else {
+            for (int i = 0; auto var : lam->vars()) {
+                if (var) {
+                    tab.lnprint(os, "(var {}", id(var));
+                    ++tab;
+                    tab.lnprint(os, "{})", convert(var->type(), var));
+                    --tab;
+                } else {
+                    tab.lnprint(os, "{}", convert(lam->dom(i)));
+                }
+                i++;
             }
-            i++;
         }
         --tab;
     }

@@ -17,7 +17,7 @@ void EggRewrite::start() {
     else
         error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
 
-    std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
+    // std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
 
     auto rewrites = equality_saturate(sexpr.str(), rulesets, cost_fn);
 
@@ -128,11 +128,16 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     new_con->set(con_name_nouid);
     register_lam(con_name, new_con);
 
-    for (int i = 0; auto var : new_con->vars()) {
-        auto var_name       = var_names[i];
-        auto var_name_nouid = remove_uid(var_name);
-        var->set(var_name_nouid);
-        if (!var_name.empty()) register_var(var_name, var);
+    for (int i = 0; auto var_name : var_names) {
+        if (!var_name.empty()) {
+            // TODO: Does this cover all cases or do we also need the same check for Sigma?
+            // We needed this check specifically in case the only var of a lambda is an array
+            // because we would otherwise get the i'th projection of the array instead.
+            auto var            = var_types.size() == 1 && var_types[i]->isa<Arr>() ? new_con->var() : new_con->var(i);
+            auto var_name_nouid = remove_uid(var_name);
+            var->set(var_name_nouid);
+            if (!var_name.empty()) register_var(var_name, var);
+        }
         i++;
     }
 
