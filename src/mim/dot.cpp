@@ -2,6 +2,7 @@
 #include <ostream>
 #include <sstream>
 
+#include "mim/cfg.h"
 #include "mim/def.h"
 #include "mim/nest.h"
 #include "mim/world.h"
@@ -199,6 +200,34 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
 
     // Overlay domination between siblings and their parent
     if (idom()) tab.println(os, "\"{}\" -> \"{}\" [color=red,style=bold,constraint=false]", idom()->name(), name());
+}
+
+/*
+ * CFG
+ */
+
+void CFG::dot(const char* file) const {
+    if (!file) {
+        dot(std::cout);
+    } else {
+        auto of = std::ofstream(file);
+        dot(of);
+    }
+}
+
+void CFG::dot(std::ostream& os) const {
+    Tab tab;
+    (tab++).println(os, "digraph {{");
+    tab.println(os, "ordering=out;");
+    tab.println(os, "node [shape=box,style=filled];");
+
+    for (auto node : nodes()) {
+        tab.println(os, "\"{}\" [label=\"{}\"]", node->mut()->unique_name(), node->mut()->unique_name());
+        for (auto succ : node->succs())
+            tab.println(os, "\"{}\" -> \"{}\"", node->mut()->unique_name(), succ->mut()->unique_name());
+    }
+
+    (--tab).println(os, "}}");
 }
 
 } // namespace mim

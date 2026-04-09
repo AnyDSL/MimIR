@@ -12,7 +12,7 @@ class CFG {
 public:
     class Node {
     public:
-        const Lam* mut() { return mut_; }
+        const Lam* mut() const { return mut_; }
         const auto& succs() const { return succs_; }
         const auto& preds() const { return preds_; }
 
@@ -57,7 +57,15 @@ public:
     auto muts()  const { return mut2node_ | std::views::keys; }
     auto nodes() const { return mut2node_ | std::views::transform([](const auto& p) { return (const Node*)p.second.get(); }); }
     // clang-format on
-    const Node* operator[](Def* mut) const { return (mut->isa<Lam>() ? (*this)[mut->as<Lam>()] : nullptr); }
+    const Node* operator[](const Def* def) const { return (def->isa<Lam>() ? (*this)[def->as<Lam>()] : nullptr); }
+    ///@}
+
+    /// @name dot
+    /// GraphViz output.
+    ///@{
+    void dot(std::ostream& os) const;
+    void dot(const char* file = nullptr) const;
+    void dot(std::string s) const { dot(s.c_str()); }
     ///@}
 
 private:
@@ -71,7 +79,7 @@ private:
     }
 
     World& world_;
-    absl::flat_hash_map<Def*, std::unique_ptr<Node>> mut2node_;
+    absl::flat_hash_map<const Lam*, std::unique_ptr<Node>> mut2node_;
     Node* entry_;
     bool include_closed_;
 };
