@@ -11,9 +11,12 @@
 ///
 /// It achieves this in three steps:
 ///
-/// 1) Converts the program into a series of symbolic expressions
-/// 2) Passes these expressions to the equality saturation engine implemented in egg
-/// 3) Rewrites the program based on the rewritten symbolic expressions
+/// 1) Convert the program into a series of symbolic expressions, one for each top-level lambda
+/// 2) Passe these expressions to the 'egg' equality saturation engine for rewriting
+/// 3) Rewrite the program based on the results of step 2)
+///
+/// Rewrite rules, predefined sets of rewrite rules, and a cost function may be provided
+/// via configuration lambdas. See the examples in the lit test suite for specific implementations.
 ///
 ///
 /// ## Dependencies
@@ -24,15 +27,9 @@ plugin core;
 ///
 /// ## Types
 ///
-/// ### %%eqsat.Rule
-///
-/// Represents a rule defined in MimIR
-///
-axm %eqsat.Rule: *;
-///
 /// ### %%eqsat.Rules
 ///
-/// Represents a set of rules defined in MimIR
+/// Represents a set of rules defined in MimIR.
 ///
 axm %eqsat.Rules: *;
 ///
@@ -42,6 +39,12 @@ axm %eqsat.Rules: *;
 ///
 axm %eqsat.Ruleset: *;
 ///
+/// ### %%eqsat.CostFun
+///
+/// Represents a cost function for extracting the most optimal term from an egraph.
+///
+axm %eqsat.CostFun: *;
+///
 ///
 /// ## Rulesets
 ///
@@ -49,18 +52,24 @@ axm %eqsat.core: %eqsat.Ruleset;
 axm %eqsat.math: %eqsat.Ruleset;
 ///
 ///
+/// ## Cost functions
+///
+axm %eqsat.AstSize: %eqsat.CostFun;
+axm %eqsat.AstDepth: %eqsat.CostFun;
+///
+///
 /// ## Operations
 ///
 /// ### %%eqsat.rulesets
 ///
-/// Tell the equality saturation engine which of the predefined
+/// Tells the equality saturation engine which of the predefined
 /// rulesets inside of eqsat/egg/src/rules/ it should use.
 ///
 axm %eqsat.rulesets: {n: Nat} → «n; %eqsat.Ruleset» → %eqsat.Ruleset;
 ///
 /// ### %%eqsat.rules
 ///
-/// Tell the equality saturation engine to use a set of rules during equality saturation.
+/// Tells the equality saturation engine to use a set of rules during equality saturation.
 ///
 axm %eqsat.rules: {n: Nat, Ts: «n; *»} → «i: n; Ts#i» → %eqsat.Rules;
 ///

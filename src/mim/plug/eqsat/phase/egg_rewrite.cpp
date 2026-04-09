@@ -9,7 +9,7 @@
 namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
-    auto rulesets = import_rulesets();
+    auto [rulesets, cost_fn] = import_config();
 
     std::ostringstream sexpr;
     if (auto sexpr_backend = driver().backend("sexpr"))
@@ -19,7 +19,7 @@ void EggRewrite::start() {
 
     std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
 
-    auto rewrites = equality_saturate(sexpr.str(), rulesets);
+    auto rewrites = equality_saturate(sexpr.str(), rulesets, cost_fn);
 
     // Initially creates lambdas and their variables as Def's in the new world but doesn't set their bodies yet.
     // This is required so that other terms can later refer to lambdas and variables by name
@@ -49,34 +49,40 @@ void EggRewrite::start() {
     swap(old_world(), new_world());
 }
 
-rust::Vec<RuleSet> EggRewrite::import_rulesets() {
+std::pair<rust::Vec<RuleSet>, CostFn> EggRewrite::import_config() {
     // Internalize eqsat ruleset config lambda (lam with signature [] -> %eqsat.Ruleset)
     DefVec lams;
     for (auto def : old_world().externals().mutate()) {
         if (auto lam = def->isa<Lam>()) {
-            if (Axm::isa<eqsat::Ruleset>(lam->ret_dom())) {
+            if (Axm::isa<eqsat::Ruleset>(lam->ret_dom()) || Axm::isa<eqsat::CostFun>(lam->ret_dom())) {
                 lams.push_back(lam);
                 def->internalize();
             }
         }
     }
 
-    // Import predefined rulesets from config lambda
+    // Import predefined rulesets and cost function from config lambdas
     rust::Vec<RuleSet> rulesets;
+    CostFn cost_fn = CostFn::AstSize;
     for (auto lam : lams) {
         auto body = lam->as<Lam>()->body();
         if (auto body_app = body->isa<App>()) {
             if (auto ruleset_config = Axm::isa<eqsat::rulesets>(body_app->arg())) {
                 for (auto ruleset : ruleset_config->args())
-                    if (auto core = Axm::isa<eqsat::core>(ruleset))
+                    if (Axm::isa<eqsat::core>(ruleset))
                         rulesets.push_back(RuleSet::Core);
-                    else if (auto math = Axm::isa<eqsat::math>(ruleset))
+                    else if (Axm::isa<eqsat::math>(ruleset))
                         rulesets.push_back(RuleSet::Math);
+
+            } else if (Axm::isa<eqsat::AstSize>(body_app->arg())) {
+                cost_fn = CostFn::AstSize;
+            } else if (Axm::isa<eqsat::AstDepth>(body_app->arg())) {
+                cost_fn = CostFn::AstDepth;
             }
         }
     }
 
-    return rulesets;
+    return {rulesets, cost_fn};
 }
 
 const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings) {

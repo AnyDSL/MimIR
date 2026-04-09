@@ -1,26 +1,46 @@
 use crate::Mim::*;
 use crate::rules::*;
 use egg::*;
-use ffi::{MimKind, MimNode, RewriteResult, RuleSet};
+use ffi::{CostFn, MimKind, MimNode, RewriteResult, RuleSet};
 
 mod rules;
 
-pub fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResult> {
-    let mut rules = rules(rulesets);
-
+pub fn equality_saturate(
+    sexpr: &str,
+    rulesets: Vec<RuleSet>,
+    cost_fn: CostFn,
+) -> Vec<RewriteResult> {
     let normalized = sexpr.replace("\r\n", "\n");
     let mut sexprs: Vec<&str> = normalized.split("\n\n").collect();
     sexprs.retain(|s| !s.trim().is_empty());
-    let mut rewritten_sexprs: Vec<RewriteResult> = Vec::new();
 
+    let mut rules = rules(rulesets);
     convert_rules(&mut sexprs, &mut rules);
+
+    match cost_fn {
+        CostFn::AstSize => rewrite_sexprs(sexprs, rules, || AstSize),
+        CostFn::AstDepth => rewrite_sexprs(sexprs, rules, || AstDepth),
+        _ => panic!("Unknown cost function provided."),
+    }
+}
+
+fn rewrite_sexprs<C, F>(
+    sexprs: Vec<&str>,
+    rules: Vec<Rewrite<Mim, MimAnalysis>>,
+    cost_fn: F,
+) -> Vec<RewriteResult>
+where
+    C: CostFunction<Mim>,
+    F: Fn() -> C,
+{
+    let mut rewritten_sexprs: Vec<RewriteResult> = Vec::new();
 
     for sexpr in sexprs {
         let runner = Runner::<Mim, MimAnalysis, ()>::default()
             .with_expr(&sexpr.parse().unwrap())
             .run(&rules);
 
-        let extractor = Extractor::new(&runner.egraph, AstSize);
+        let extractor = Extractor::new(&runner.egraph, cost_fn());
         let (_best_cost, best_expr) = extractor.find_best(runner.roots[0]);
 
         rewritten_sexprs.push(rexpr_to_res(best_expr));
@@ -107,6 +127,12 @@ pub mod ffi {
     }
 
     #[derive(Debug)]
+    enum CostFn {
+        AstSize,
+        AstDepth,
+    }
+
+    #[derive(Debug)]
     enum MimKind {
         Let,
         Lam,
@@ -147,7 +173,11 @@ pub mod ffi {
     }
 
     extern "Rust" {
-        fn equality_saturate(sexpr: &str, rulesets: Vec<RuleSet>) -> Vec<RewriteResult>;
+        fn equality_saturate(
+            sexpr: &str,
+            rulesets: Vec<RuleSet>,
+            cost_fn: CostFn,
+        ) -> Vec<RewriteResult>;
         fn mim_node_str(node: MimNode) -> String;
         fn pretty(sexpr: &str, line_len: usize) -> String;
     }
