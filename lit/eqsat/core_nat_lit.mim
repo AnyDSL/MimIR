@@ -1,0 +1,21 @@
+plugin core;
+plugin eqsat;
+
+rule foo (a: Nat) : (%core.nat.mul ((%core.nat.mul (a, 4)), 4)) => (%core.nat.mul (a, 16));
+rule bar (a: Nat) : (%core.nat.add ((%core.nat.add (a, 2)), 2)) => (%core.nat.add (a, 4));
+
+fun extern _rules(): %eqsat.Rules =
+    return (%eqsat.rules (foo, bar));
+
+fun extern _rulesets(): %eqsat.Ruleset =
+    return (%eqsat.rulesets (
+        %eqsat.core,
+    ));
+
+// TODO: Maybe another config lam to configure the cost function?
+
+con extern mul_lit_nat [a: Nat, return : Cn Nat] =
+    return (%core.nat.mul ((%core.nat.mul (a, 4)), 4));
+
+con extern add_lit_nat [a: Nat, return : Cn Nat] =
+    return (%core.nat.add ((%core.nat.add (a, 2)), 2));

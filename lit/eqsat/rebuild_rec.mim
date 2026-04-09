@@ -4,7 +4,6 @@ plugin eqsat;
 fun extern _rulesets(): %eqsat.Ruleset =
     return (%eqsat.rulesets (
         %eqsat.core,
-        %eqsat.math,
     ));
 
 lam is_even(i: Nat): Bool = (is_odd (%core.nat.sub (i, 1)), tt)#(%core.ncmp.e (i, 0))
