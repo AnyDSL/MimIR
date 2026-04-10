@@ -7,8 +7,10 @@
 #include <lyra/lyra.hpp>
 #include <rang.hpp>
 
+#include "mim/cfg.h"
 #include "mim/config.h"
 #include "mim/driver.h"
+#include "mim/nest.h"
 #include "mim/phase.h"
 
 #include "mim/ast/parser.h"
@@ -19,7 +21,7 @@ using namespace mim;
 using namespace std::literals;
 
 int main(int argc, char** argv) {
-    enum Backends { AST, Dot, H, LL, SpirV, Md, Mim, Nest, Num_Backends };
+    enum Backends { AST, CFG, Dot, H, LL, SpirV, Md, Mim, Nest, Num_Backends };
 
     try {
         static const auto version = "mim command-line utility version " MIM_VER "\n";
@@ -54,6 +56,7 @@ int main(int argc, char** argv) {
             | lyra::opt(inc_verbose                        )["-V"]["--verbose"              ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 5)
             | lyra::opt(opt,          "level"              )["-O"]["--optimize"             ]("Optimization level (default: 2).")
             | lyra::opt(output[AST],  "file"               )      ["--output-ast"           ]("Directly emits AST representation of input.")
+            | lyra::opt(output[CFG],  "file"               )      ["--output-cfg"           ]("Emits the control flow graph as Dot for each external.")
             | lyra::opt(output[Dot],  "file"               )      ["--output-dot"           ]("Emits the Mim program as a MimIR graph using Graphviz' DOT language.")
             | lyra::opt(output[H  ],  "file"               )      ["--output-h"             ]("Emits a header file to be used to interface with a plugin in C++.")
             | lyra::opt(output[LL ],  "file"               )      ["--output-ll"            ]("Compiles the Mim program to LLVM.")
@@ -180,6 +183,7 @@ int main(int argc, char** argv) {
                     default: error("illegal optimization level '{}'", opt);
                 }
 
+                if (auto s = os[CFG]) mim::Nest(world).cfg_dot(*s);
                 if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
                 if (auto s = os[Mim]) world.dump(*s);
                 if (auto s = os[Nest]) mim::Nest(world).dot(*s);

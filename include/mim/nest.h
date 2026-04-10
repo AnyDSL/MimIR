@@ -1,12 +1,13 @@
 #pragma once
 
 #include <memory>
-#include <optional>
 #include <ranges>
 
 #include "mim/def.h"
 
 namespace mim {
+
+class CFG;
 
 /// Builds a nesting tree of all *mutables*/binders.
 class Nest {
@@ -134,24 +135,19 @@ public:
         bool is_directly_recursive() const { return is_recursive() && (!inest_ || inest_->SCCs_[this]->size() == 1); }
         ///@}
 
-        /// @name Dominance
-        /// [Dominance](https://en.wikipedia.org/wiki/Dominator_(graph_theory))
-        /// @{
-        /// [Immediate Dominator](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) for children in connected
-        /// components. This is used to transform first order programs into structured form in the
-        /// [sflow](mim::plug::sflow) plugin and for late code placement in [Nest::lca].
-        auto idom() const { return calc_dominance()->idom_; }
-        auto postorder_number() const { return nest().assign_postorder_numbers(), postorder_number_; }
-        const auto& idomees() const {
-            calc_dominance();
-            for (auto child : children().nodes()) {
-                child->calc_dominance();
-                // First call calculates dominance for all siblings
-                break;
-            }
-            return idomees_;
+        /// @name CFG
+        ///@{
+        /// Creates a CFG with this Node as the entry. The CFG scope is this Node's
+        /// nest subtree: a Lam is included iff its Nest::Node is a descendant of
+        /// (or equal to) this Node. `mut()` must be a Lam.
+        std::unique_ptr<CFG> cfg() const;
+        /// Whether @p other lies in this Node's nest subtree (including `this`).
+        bool nest_contains(const Node* other) const {
+            for (auto n = other; n; n = n->inest_)
+                if (n == this) return true;
+            return false;
         }
-        /// @}
+        ///@}
 
     private:
         Node(const Nest& nest, Def* mut, Node* inest)
@@ -172,9 +168,6 @@ public:
         void calc_SCCs();
         uint32_t tarjan(uint32_t, Node*, Stack&);
 
-        /// Dominance
-        const Node* calc_dominance() const;
-
         const Nest& nest_;
         Def* mut_;
         Node* inest_;
@@ -186,11 +179,6 @@ public:
         Children children_;
         std::deque<std::unique_ptr<SCC>> topo_;
         absl::flat_hash_map<const Node*, const SCC*> SCCs_;
-        mutable const Node* idom_ = nullptr;
-        mutable absl::flat_hash_set<const Node*> idomees_;
-        // Nodes higher up in dominator tree within same sibling layer have higher postorder numbers.
-        // This property is used to efficiently find the correct node for late code placement via [Nest::lca].
-        mutable std::optional<size_t> postorder_number_ = std::nullopt;
 
         // implementaiton details
         static constexpr uint32_t Unvisited = uint32_t(-1);
@@ -237,8 +225,19 @@ public:
     auto end() const { return mut2node_.cend(); }
     ///@}
 
-    template<bool bootstrapping = false>
     static const Node* lca(const Node* n, const Node* m); ///< Least common ancestor of @p n and @p m.
+
+    /// @name CFG
+    ///@{
+    /// Create a CFG with the Nest's root() as the entry. Requires the root to
+    /// not be virtual (i.e. `root()->mut()` must be a Lam).
+    std::unique_ptr<CFG> cfg() const;
+    /// Emits all top-level Lam children of root() as CFGs into a single dot
+    /// `digraph`, each wrapped in its own `subgraph cluster_*`.
+    void cfg_dot(std::ostream& os) const;
+    void cfg_dot(const char* file = nullptr) const;
+    void cfg_dot(std::string s) const { cfg_dot(s.c_str()); }
+    ///@}
 
     /// @name dot
     /// GraphViz output.
@@ -256,7 +255,6 @@ private:
     Node* make_node(Def*, Node* inest = nullptr);
     void calc_sibl_deps(Node*) const;
     void calc_SCCs(Node*) const;
-    void assign_postorder_numbers() const;
 
     Node* operator[](Def* mut) {
         if (auto i = mut2node_.find(mut); i != mut2node_.end()) return i->second.get();
