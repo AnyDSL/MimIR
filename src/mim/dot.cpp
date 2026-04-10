@@ -216,10 +216,34 @@ void CFG::dot(std::ostream& os) const {
     Tab tab;
     (tab++).println(os, "digraph {{");
     tab.println(os, "ordering=out;");
+    tab.println(os, "compound=true;");
     tab.println(os, "node [shape=box,style=filled];");
 
+    auto emit_node = [&](const Node* n) {
+        tab.println(os, "\"{}\" [label=\"{}\"]", n->mut()->unique_name(), n->mut()->unique_name());
+    };
+
+    size_t cluster_id                          = 0;
+    std::function<void(const Loop*)> emit_loop = [&](const Loop* loop) {
+        (tab++).println(os, "subgraph cluster_{} {{", cluster_id++);
+        tab.println(os, "style=dashed;");
+        tab.println(os, "color=blue;");
+        for (auto& child : loop->children())
+            emit_loop(child.get());
+        for (auto n : loop->nodes())
+            if (n->loop() == loop) emit_node(n);
+        (--tab).println(os, "}}");
+    };
+
+    for (auto& loop : loops())
+        emit_loop(loop.get());
+
+    // Emit nodes that don't belong to any loop.
+    for (auto node : nodes())
+        if (!node->loop()) emit_node(node);
+
+    // Emit all edges at top level.
     for (auto node : nodes()) {
-        tab.println(os, "\"{}\" [label=\"{}\"]", node->mut()->unique_name(), node->mut()->unique_name());
         for (auto succ : node->succs())
             tab.println(os, "\"{}\" -> \"{}\"", node->mut()->unique_name(), succ->mut()->unique_name());
         if (auto idom = node->idom(); idom && idom != node)

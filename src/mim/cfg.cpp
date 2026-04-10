@@ -2,7 +2,10 @@
 
 #include <algorithm>
 #include <functional>
+#include <stack>
 #include <vector>
+
+#include "mim/tuple.h"
 
 namespace mim {
 
@@ -27,6 +30,7 @@ bool CFG::Node::add_edge(const Lam* succ) {
 }
 
 void CFG::Node::init() {
+    if (!mut_->is_set()) return;
     auto app = mut_->body()->as<App>();
     if (auto callee = app->callee()->isa<Lam>()) {
         if (!add_edge(callee)) follow_escaping(app);
@@ -49,6 +53,7 @@ CFG::CFG(Lam* entry, bool include_closed)
 }
 
 CFG::Node* CFG::visit(const Lam* mut) {
+    if (!mut->is_set()) return nullptr;
     if (auto var = entry_->mut_->has_var()) {
         if (mut->free_vars().contains(var) || (include_closed_ && mut->free_vars().empty())) {
             if (auto node = (*this)[mut]) return node;
@@ -104,6 +109,16 @@ void CFG::calc_dominance() {
     }
 }
 
+const CFG::Loop* CFG::Node::loop() const {
+    cfg_.loops();
+    while (loop_) {
+        auto* before = loop_;
+        before->children();
+        if (loop_ == before) break;
+    }
+    return loop_;
+}
+
 const CFG::Node* CFG::lca(const Node* n, const Node* m) {
     while (n != m) {
         while (n->postorder_number_ < m->postorder_number_)
@@ -112,6 +127,129 @@ const CFG::Node* CFG::lca(const Node* n, const Node* m) {
             m = m->idom_;
     }
     return n;
+}
+
+/// Computes SCCs of @p nodes using Tarjan's algorithm. Mirrors
+/// Nest::Node::tarjan in structure. Edges leaving @p nodes are ignored.
+/// Edges into @p blocked are also ignored.
+CFG::SCCs CFG::compute_sccs(const absl::flat_hash_set<const Node*>& nodes,
+                            const absl::flat_hash_set<const Node*>& blocked) const {
+    // Reset scratch state on every node we are about to visit.
+    for (auto n : nodes) {
+        auto* m      = const_cast<Node*>(n);
+        m->idx_      = Node::Unvisited;
+        m->on_stack_ = false;
+    }
+
+    std::stack<Node*> stack;
+    SCCs sccs;
+
+    std::function<uint32_t(Node*, uint32_t)> tarjan = [&](Node* curr, uint32_t i) -> uint32_t {
+        curr->idx_ = curr->low_ = i++;
+        curr->on_stack_         = true;
+        stack.emplace(curr);
+
+        for (auto dep : curr->succs_) {
+            if (!nodes.contains(dep) || blocked.contains(dep)) continue;
+            if (dep->idx_ == Node::Unvisited) i = tarjan(dep, i);
+            if (dep->on_stack_) curr->low_ = std::min(curr->low_, dep->low_);
+        }
+
+        if (curr->idx_ == curr->low_) {
+            sccs.emplace_back(std::make_unique<SCC>());
+            SCC* scc = sccs.back().get();
+            Node* node;
+            do {
+                node            = pop(stack);
+                node->on_stack_ = false;
+                node->low_      = curr->idx_;
+                scc->emplace(node);
+            } while (node != curr);
+        }
+
+        return i;
+    };
+
+    for (uint32_t i = 0; auto cn : nodes) {
+        if (blocked.contains(cn)) continue;
+        auto* n = const_cast<Node*>(cn);
+        if (n->idx_ == Node::Unvisited) i = tarjan(n, i);
+    }
+
+    return sccs;
+}
+
+std::unique_ptr<CFG::Loop> CFG::make_loop(const SCC& scc, const Loop* parent) {
+    auto loop    = std::unique_ptr<Loop>(new Loop(parent));
+    loop->nodes_ = scc;
+
+    // Mark each node with its (currently) deepest containing loop. When nested
+    // loops are computed lazily later, they will overwrite this for nodes
+    // belonging to a more deeply nested loop.
+    for (auto n : scc)
+        const_cast<Node*>(n)->loop_ = loop.get();
+
+    // Entries: nodes in the SCC that have a predecessor outside the SCC
+    // (or are the entry of the CFG itself).
+    for (auto n : scc) {
+        bool is_entry = false;
+        for (auto pred : n->preds_) {
+            if (!scc.contains(pred)) {
+                is_entry = true;
+                break;
+            }
+        }
+        if (is_entry) loop->entries_.emplace(n);
+    }
+
+    // Exits: nodes in the SCC that have a successor outside the SCC.
+    for (auto n : scc) {
+        for (auto succ : n->succs_) {
+            if (!scc.contains(succ)) {
+                loop->exits_.emplace(n);
+                break;
+            }
+        }
+    }
+
+    return loop;
+}
+
+static bool is_loop_scc(const CFG::SCC& scc) {
+    if (scc.size() > 1) return true;
+    // self-loop?
+    auto n = *scc.begin();
+    for (auto succ : n->succs())
+        if (succ == n) return true;
+    return false;
+}
+
+void CFG::find_loops() const {
+    absl::flat_hash_set<const Node*> all;
+    all.reserve(mut2node_.size());
+    for (auto& [_, node] : mut2node_)
+        all.emplace(node.get());
+
+    auto sccs = compute_sccs(all);
+    for (auto& scc : sccs) {
+        if (!is_loop_scc(*scc)) continue;
+        loops_.emplace_back(make_loop(*scc, nullptr));
+    }
+}
+
+void CFG::Loop::find_nested_loops() const {
+    // Recompute SCCs within this loop's nodes, but block edges into this
+    // loop's entries — this breaks back edges and exposes nested loops.
+    // Only the immediate next level is computed; deeper levels are computed
+    // lazily when their children() is accessed.
+    auto& cfg = (*nodes_.begin())->cfg_;
+    auto sccs = cfg.compute_sccs(nodes_, entries_);
+    for (auto& scc : sccs) {
+        if (!is_loop_scc(*scc)) continue;
+        // Skip the trivial case where the nested SCC equals this loop's SCC.
+        if (scc->size() == nodes_.size()) continue;
+        children_.emplace_back(make_loop(*scc, this));
+    }
 }
 
 } // namespace mim
