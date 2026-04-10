@@ -7,6 +7,8 @@
 
 namespace mim {
 
+class CFG;
+
 /// Builds a nesting tree of all *mutables*/binders.
 class Nest {
 public:
@@ -133,6 +135,20 @@ public:
         bool is_directly_recursive() const { return is_recursive() && (!inest_ || inest_->SCCs_[this]->size() == 1); }
         ///@}
 
+        /// @name CFG
+        ///@{
+        /// Creates a CFG with this Node as the entry. The CFG scope is this Node's
+        /// nest subtree: a Lam is included iff its Nest::Node is a descendant of
+        /// (or equal to) this Node. `mut()` must be a Lam.
+        std::unique_ptr<CFG> cfg() const;
+        /// Whether @p other lies in this Node's nest subtree (including `this`).
+        bool nest_contains(const Node* other) const {
+            for (auto n = other; n; n = n->inest_)
+                if (n == this) return true;
+            return false;
+        }
+        ///@}
+
     private:
         Node(const Nest& nest, Def* mut, Node* inest)
             : nest_(nest)
@@ -212,6 +228,13 @@ public:
     ///@}
 
     static const Node* lca(const Node* n, const Node* m); ///< Least common ancestor of @p n and @p m.
+
+    /// @name CFG
+    ///@{
+    /// Create a CFG with the Nest's root() as the entry. Requires the root to
+    /// not be virtual (i.e. `root()->mut()` must be a Lam).
+    std::unique_ptr<CFG> cfg() const;
+    ///@}
 
     /// @name dot
     /// GraphViz output.

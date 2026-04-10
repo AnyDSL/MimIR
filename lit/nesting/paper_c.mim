@@ -1,4 +1,4 @@
-// RUN: %mim %s --output-nest %t.dot
+// RUN: %mim %s --output-cfg %t.dot
 // RUN: FileCheck %s < %t.dot
 
 import core;

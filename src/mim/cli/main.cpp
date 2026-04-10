@@ -10,6 +10,7 @@
 #include "mim/cfg.h"
 #include "mim/config.h"
 #include "mim/driver.h"
+#include "mim/nest.h"
 #include "mim/phase.h"
 
 #include "mim/ast/parser.h"
@@ -181,8 +182,9 @@ int main(int argc, char** argv) {
                 }
 
                 if (auto s = os[CFG]) {
-                    for (auto mut : world.externals().muts())
-                        if (auto lam = mut->isa<Lam>()) mim::CFG(lam, true).dot(*s);
+                    mim::Nest nest(world);
+                    for (auto child : nest.root()->children().nodes())
+                        if (child->mut()->isa<Lam>()) child->cfg()->dot(*s);
                 }
                 if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
                 if (auto s = os[Mim]) world.dump(*s);

@@ -5,9 +5,17 @@
 #include <stack>
 #include <vector>
 
+#include "mim/nest.h"
 #include "mim/tuple.h"
 
 namespace mim {
+
+std::unique_ptr<CFG> Nest::Node::cfg() const { return std::make_unique<CFG>(this); }
+
+std::unique_ptr<CFG> Nest::cfg() const {
+    assert(root()->mut() && "Nest::cfg() requires a non-virtual root");
+    return root()->cfg();
+}
 
 void CFG::Node::follow_escaping(const App* app) {
     for (auto mut : app->arg()->local_muts()) {
@@ -44,25 +52,24 @@ void CFG::Node::init() {
     }
 }
 
-CFG::CFG(Lam* entry, bool include_closed)
-    : world_(entry->world())
-    , entry_(mut2node_.emplace(entry, std::unique_ptr<Node>(new Node(*this, entry))).first->second.get())
-    , include_closed_(include_closed) {
+CFG::CFG(const Nest::Node* entry)
+    : world_(entry->mut()->world())
+    , nest_entry_(entry)
+    , entry_(mut2node_.emplace(entry->mut()->as<Lam>(), std::unique_ptr<Node>(new Node(*this, entry->mut()->as<Lam>())))
+                 .first->second.get()) {
     entry_->init();
     calc_dominance();
 }
 
 CFG::Node* CFG::visit(const Lam* mut) {
     if (!mut->is_set()) return nullptr;
-    if (auto var = entry_->mut_->has_var()) {
-        if (mut->free_vars().contains(var) || (include_closed_ && mut->free_vars().empty())) {
-            if (auto node = (*this)[mut]) return node;
-            mut2node_.emplace(mut, std::unique_ptr<Node>(new Node(*this, mut)));
-            mut2node_[mut]->init();
-            return mut2node_[mut].get();
-        }
-    }
-    return nullptr;
+    auto& nest  = nest_entry_->nest();
+    auto target = nest[const_cast<Lam*>(mut)];
+    if (!target || !nest_entry_->nest_contains(target)) return nullptr;
+    if (auto node = (*this)[mut]) return node;
+    mut2node_.emplace(mut, std::unique_ptr<Node>(new Node(*this, mut)));
+    mut2node_[mut]->init();
+    return mut2node_[mut].get();
 }
 
 void CFG::assign_postorder_numbers() {

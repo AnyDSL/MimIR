@@ -2,6 +2,7 @@
 
 #include "mim/def.h"
 #include "mim/lam.h"
+#include "mim/nest.h"
 
 #include "absl/container/flat_hash_map.h"
 #include "absl/container/flat_hash_set.h"
@@ -99,11 +100,16 @@ public:
         friend class CFG;
     };
 
-    CFG(Lam* entry, bool include_closed = false);
+    /// Construct a CFG rooted at the Lam represented by @p entry.
+    /// @p entry must be a Nest::Node whose `mut()` is a Lam. The CFG includes
+    /// this Lam and every Lam whose Nest::Node is a descendant of @p entry in
+    /// the nesting tree.
+    CFG(const Nest::Node* entry);
 
     void cfa();
 
     const Node* entry() const { return entry_; }
+    const Nest::Node* nest_entry() const { return nest_entry_; }
 
     /// @name Dominance
     ///@{
@@ -165,11 +171,11 @@ private:
     }
 
     World& world_;
+    const Nest::Node* nest_entry_;
     absl::flat_hash_map<const Lam*, std::unique_ptr<Node>> mut2node_;
     Node* entry_;
     mutable std::vector<std::unique_ptr<Loop>> loops_;
     mutable bool loops_computed_ = false;
-    bool include_closed_;
 };
 
 } // namespace mim
