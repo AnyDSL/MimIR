@@ -8,6 +8,8 @@
 #include "absl/container/flat_hash_set.h"
 namespace mim {
 
+class Tab;
+
 class CFG {
 public:
     class Loop;
@@ -149,6 +151,9 @@ public:
     void dot(std::ostream& os) const;
     void dot(const char* file = nullptr) const;
     void dot(std::string s) const { dot(s.c_str()); }
+    /// Emits this CFG as a labelled `subgraph cluster_*` block plus its edges.
+    /// Shares @p cluster_id with the caller so sibling clusters don't collide.
+    void dot_cluster(std::ostream& os, Tab& tab, size_t& cluster_id) const;
     ///@}
 
 private:

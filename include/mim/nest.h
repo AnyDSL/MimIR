@@ -234,6 +234,11 @@ public:
     /// Create a CFG with the Nest's root() as the entry. Requires the root to
     /// not be virtual (i.e. `root()->mut()` must be a Lam).
     std::unique_ptr<CFG> cfg() const;
+    /// Emits all top-level Lam children of root() as CFGs into a single dot
+    /// `digraph`, each wrapped in its own `subgraph cluster_*`.
+    void cfg_dot(std::ostream& os) const;
+    void cfg_dot(const char* file = nullptr) const;
+    void cfg_dot(std::string s) const { cfg_dot(s.c_str()); }
     ///@}
 
     /// @name dot

@@ -181,11 +181,7 @@ int main(int argc, char** argv) {
                     default: error("illegal optimization level '{}'", opt);
                 }
 
-                if (auto s = os[CFG]) {
-                    mim::Nest nest(world);
-                    for (auto child : nest.root()->children().nodes())
-                        if (child->mut()->isa<Lam>()) child->cfg()->dot(*s);
-                }
+                if (auto s = os[CFG]) mim::Nest(world).cfg_dot(*s);
                 if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
                 if (auto s = os[Mim]) world.dump(*s);
                 if (auto s = os[Nest]) mim::Nest(world).dot(*s);

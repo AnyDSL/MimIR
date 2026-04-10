@@ -212,18 +212,16 @@ void CFG::dot(const char* file) const {
     }
 }
 
-void CFG::dot(std::ostream& os) const {
-    Tab tab;
-    (tab++).println(os, "digraph {{");
-    tab.println(os, "ordering=out;");
-    tab.println(os, "compound=true;");
-    tab.println(os, "node [shape=box,style=filled];");
+void CFG::dot_cluster(std::ostream& os, Tab& tab, size_t& cluster_id) const {
+    (tab++).println(os, "subgraph cluster_{} {{", cluster_id++);
+    tab.println(os, "label=\"{}\";", entry_->mut()->unique_name());
+    tab.println(os, "style=solid;");
+    tab.println(os, "color=black;");
 
     auto emit_node = [&](const Node* n) {
         tab.println(os, "\"{}\" [label=\"{}\"]", n->mut()->unique_name(), n->mut()->unique_name());
     };
 
-    size_t cluster_id                          = 0;
     std::function<void(const Loop*)> emit_loop = [&](const Loop* loop) {
         (tab++).println(os, "subgraph cluster_{} {{", cluster_id++);
         tab.println(os, "style=dashed;");
@@ -242,7 +240,9 @@ void CFG::dot(std::ostream& os) const {
     for (auto node : nodes())
         if (!node->loop()) emit_node(node);
 
-    // Emit all edges at top level. Dominance edges drive the layout;
+    (--tab).println(os, "}}");
+
+    // Emit all edges outside the cluster. Dominance edges drive the layout;
     // CFG succ edges are drawn but don't constrain ranks.
     for (auto node : nodes()) {
         for (auto succ : node->succs())
@@ -252,7 +252,41 @@ void CFG::dot(std::ostream& os) const {
             tab.println(os, "\"{}\" -> \"{}\" [color=red,style=bold]", idom->mut()->unique_name(),
                         node->mut()->unique_name());
     }
+}
 
+void CFG::dot(std::ostream& os) const {
+    Tab tab;
+    (tab++).println(os, "digraph {{");
+    tab.println(os, "ordering=out;");
+    tab.println(os, "compound=true;");
+    tab.println(os, "node [shape=box,style=filled];");
+    size_t cluster_id = 0;
+    dot_cluster(os, tab, cluster_id);
+    (--tab).println(os, "}}");
+}
+
+/*
+ * Nest CFG
+ */
+
+void Nest::cfg_dot(const char* file) const {
+    if (!file) {
+        cfg_dot(std::cout);
+    } else {
+        auto of = std::ofstream(file);
+        cfg_dot(of);
+    }
+}
+
+void Nest::cfg_dot(std::ostream& os) const {
+    Tab tab;
+    (tab++).println(os, "digraph {{");
+    tab.println(os, "ordering=out;");
+    tab.println(os, "compound=true;");
+    tab.println(os, "node [shape=box,style=filled];");
+    size_t cluster_id = 0;
+    for (auto child : root()->children().nodes())
+        if (child->mut()->isa<Lam>()) child->cfg()->dot_cluster(os, tab, cluster_id);
     (--tab).println(os, "}}");
 }
 
