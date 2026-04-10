@@ -197,9 +197,6 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
         tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);
     }
-
-    // Overlay domination between siblings and their parent
-    if (idom()) tab.println(os, "\"{}\" -> \"{}\" [color=red,style=bold,constraint=false]", idom()->name(), name());
 }
 
 /*
@@ -225,6 +222,9 @@ void CFG::dot(std::ostream& os) const {
         tab.println(os, "\"{}\" [label=\"{}\"]", node->mut()->unique_name(), node->mut()->unique_name());
         for (auto succ : node->succs())
             tab.println(os, "\"{}\" -> \"{}\"", node->mut()->unique_name(), succ->mut()->unique_name());
+        if (auto idom = node->idom(); idom && idom != node)
+            tab.println(os, "\"{}\" -> \"{}\" [color=red,style=bold,constraint=false]", idom->mut()->unique_name(),
+                        node->mut()->unique_name());
     }
 
     (--tab).println(os, "}}");

@@ -15,6 +15,12 @@ public:
         const Lam* mut() const { return mut_; }
         const auto& succs() const { return succs_; }
         const auto& preds() const { return preds_; }
+        /// [Immediate Dominator](https://en.wikipedia.org/wiki/Dominator_(graph_theory)) of this Node, or itself
+        /// if it is the entry. Computed eagerly when the CFG is constructed.
+        const Node* idom() const { return idom_; }
+        /// Nodes higher up in the dominator tree have higher postorder numbers.
+        /// Used to efficiently find the LCA in the dominator tree via CFG::lca.
+        size_t postorder_number() const { return postorder_number_; }
 
     private:
         Node(CFG& cfg, const Lam* mut)
@@ -28,10 +34,8 @@ public:
 
         CFG& cfg_;
         const Lam* mut_;
-        mutable const Node* idom_ = nullptr;
-        // Nodes higher up in dominator tree within same sibling layer have higher postorder numbers.
-        // This property is used to efficiently find the correct node for late code placement via [Nest::lca].
-        mutable std::optional<size_t> postorder_number_ = std::nullopt;
+        const Node* idom_        = nullptr;
+        size_t postorder_number_ = 0;
 
         absl::flat_hash_set<Node*> succs_;
         absl::flat_hash_set<Node*> preds_;
@@ -49,6 +53,14 @@ public:
     CFG(Lam* entry, bool include_closed = false);
 
     void cfa();
+
+    const Node* entry() const { return entry_; }
+
+    /// @name Dominance
+    ///@{
+    /// Least common ancestor of @p n and @p m in the dominator tree.
+    static const Node* lca(const Node* n, const Node* m);
+    ///@}
 
     /// @name Nodes
     ///@{
@@ -71,6 +83,7 @@ public:
 private:
     Node* visit(const Lam* mut);
 
+    void assign_postorder_numbers();
     void calc_dominance();
 
     Node* operator[](const Lam* mut) {
