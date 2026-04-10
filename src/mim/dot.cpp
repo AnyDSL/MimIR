@@ -242,12 +242,14 @@ void CFG::dot(std::ostream& os) const {
     for (auto node : nodes())
         if (!node->loop()) emit_node(node);
 
-    // Emit all edges at top level.
+    // Emit all edges at top level. Dominance edges drive the layout;
+    // CFG succ edges are drawn but don't constrain ranks.
     for (auto node : nodes()) {
         for (auto succ : node->succs())
-            tab.println(os, "\"{}\" -> \"{}\"", node->mut()->unique_name(), succ->mut()->unique_name());
+            tab.println(os, "\"{}\" -> \"{}\" [constraint=false]", node->mut()->unique_name(),
+                        succ->mut()->unique_name());
         if (auto idom = node->idom(); idom && idom != node)
-            tab.println(os, "\"{}\" -> \"{}\" [color=red,style=bold,constraint=false]", idom->mut()->unique_name(),
+            tab.println(os, "\"{}\" -> \"{}\" [color=red,style=bold]", idom->mut()->unique_name(),
                         node->mut()->unique_name());
     }
 
