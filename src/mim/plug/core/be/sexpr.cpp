@@ -161,8 +161,6 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
             }
         }
         print(s, "(idx (lit {}))", size);
-    } else if (auto w = mim::plug::math::isa_f(type)) {
-        print(s, "(lit {})", type);
     } else if (auto lit = type->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
             print(s, "(lit {})", lit->get());
