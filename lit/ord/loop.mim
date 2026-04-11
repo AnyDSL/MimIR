@@ -55,6 +55,7 @@ fun extern f(mem: %mem.M 0, x: I64): [%mem.M 0, I64] =
                 con exit(mem: %mem.M 0) =
                     let (mem, map) = %mem.load (mem, ptr);
                     let val        = %ord.get (map, 1I32);
+                    let val        = %option.unwrap_unsafe val;
                     return (mem, val);
             end
     end;
