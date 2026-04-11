@@ -1,0 +1,18 @@
+plugin core;
+plugin eqsat;
+
+// This is not a mathematically correct rewrite but it serves to demonstrate extraction by term-depth.
+// With this rewrite:
+// - The term-size increases
+// - The term-depth decreases
+// Therefore we would expect to end up with the rhs when extracting by term-depth.
+rule foo (a: Nat, b: Nat, c: Nat) : %core.nat.add (a, (%core.nat.add (b, %core.nat.add (c, %core.nat.add (a, b))))) => %core.nat.add (%core.nat.add (a, %core.nat.add (b, c)), %core.nat.add(c, %core.nat.add (a, c)));
+
+fun extern _rules(): %eqsat.Rules =
+    return (%eqsat.rules (foo));
+
+fun extern _cost_fn(): %eqsat.CostFun =
+    return %eqsat.AstDepth;
+
+con extern mul_lit_nat [a: Nat, b: Nat, c: Nat, return : Cn Nat] =
+    return (%core.nat.add (a, (%core.nat.add (b, %core.nat.add (c, %core.nat.add (a, b))))));
