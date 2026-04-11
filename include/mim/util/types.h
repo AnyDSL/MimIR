@@ -22,9 +22,9 @@
 namespace mim {
 // clang-format off
 
-#define MIM_1_8_16_32_64(m) m(1) m(8) m(16) m(32) m(64)
-#define MIM_8_16_32_64(m)        m(8) m(16) m(32) m(64)
-#define MIM_16_32_64(m)               m(16) m(32) m(64)
+#define MIM_1_8_16_32_64(X) X(1) X(8) X(16) X(32) X(64)
+#define MIM_8_16_32_64(X)        X(8) X(16) X(32) X(64)
+#define MIM_16_32_64(X)               X(16) X(32) X(64)
 
 /// @name Aliases for some Base Types
 // using CODE1, CODE2, ... here as a workaround for Doxygen
