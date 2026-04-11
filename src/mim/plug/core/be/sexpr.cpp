@@ -572,7 +572,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
     } else if (auto rule = def->isa<Rule>()) {
-        // TODO: lhs and rhs are equal for some reason
         auto lhs_val   = emit_bb(bb, rule->lhs());
         auto rhs_val   = emit_bb(bb, rule->rhs());
         auto guard_val = emit_bb(bb, rule->guard());
