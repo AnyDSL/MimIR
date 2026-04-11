@@ -101,8 +101,10 @@ const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings) {
 }
 
 // TODO: implement
+// (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
 const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 
+// (con <extern> <name> <domain> [<filter>] [<body>])
 const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     DefVec var_types;
     std::vector<std::string> var_names;
@@ -149,6 +151,7 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     return new_con;
 }
 
+// (let <name> <definition> <expression>)
 const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
     // If the let-binding is for a lambda, this lambda will already have been
     // created, set and registered via init_lam/con and thus we can skip it.
@@ -214,6 +217,7 @@ const Def* EggRewrite::convert_let(uint32_t id, MimNode node) {
     return expr;
 }
 
+// TODO: implement
 // (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
 const Def* EggRewrite::convert_lam(uint32_t id, MimNode node) { return nullptr; }
 

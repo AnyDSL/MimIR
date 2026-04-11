@@ -127,7 +127,6 @@ private:
 
     rust::Vec<MimNode> res_;
     std::unordered_map<uint32_t, const Def*> added_;
-    // TODO: use actual driver.sym() symbols instead of strings
     std::unordered_map<std::string, const Def*> vars_;
     std::unordered_map<std::string, const Lam*> lams_;
     std::unordered_map<std::string, flags_t> sym2flags_;
