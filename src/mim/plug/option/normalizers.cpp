@@ -4,9 +4,10 @@
 
 namespace mim::plug::option {
 
-const Def* normalize_const(const Def* type, const Def*, const Def* arg) {
-    auto& world = type->world();
-    return world.lit(world.type_idx(arg), 42);
+const Def* normalize_unwrap_unsafe(const Def*, const Def*, const Def* arg) {
+    if (auto inj = arg->isa<Inj>()) return inj->op(0);
+
+    return nullptr;
 }
 
 MIM_option_NORMALIZER_IMPL
