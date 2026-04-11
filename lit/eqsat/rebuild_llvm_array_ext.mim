@@ -1,0 +1,35 @@
+plugin core;
+plugin vec;
+// plugin eqsat;
+//
+// TODO: getting the following sexpr during rewrite which is not valid because
+//       (app _31939 _31935) is invalid
+//
+// (con
+//   extern
+//   bar
+//   (sigma (var _31945 sigma) (var return_31937 (cn (arr (lit 4) Nat))))
+//   (lit ff)
+//   (let
+//     _31935
+//     (con intern _31935 sigma (lit ff) (app _31939 return_31937))
+//     (app _31939 _31935)))
+//
+// (con
+//   intern
+//   _31939
+//   (sigma (var return_31941 (cn (arr (lit 4) Nat))))
+//   (lit ff)
+//   (let C_31940 (pack (lit 4) (lit 0)) (app return_31941 C_31940)))
+
+fun foo{n:Nat} (A: «n; Nat», B:«n; Nat»):  «n; Nat» =
+    let C = %vec.zip %core.nat.sub (A, B);
+    let D = %vec.zip %core.nat.sub (C, ‹n; 1›);
+    return D;
+
+fun extern bar(): «4; Nat» =
+    let A = (1, 2, 3, 4);
+    let B = (1, 2, 3, 4);
+    ret C = foo @4 $ (A, B);
+    ret D = foo @4 $ (A, B);
+    return D;
