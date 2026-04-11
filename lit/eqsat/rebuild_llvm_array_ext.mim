@@ -2,8 +2,11 @@ plugin core;
 plugin vec;
 // plugin eqsat;
 //
-// TODO: getting the following sexpr during rewrite which is not valid because
-//       (app _31939 _31935) is invalid
+// TODO: - Getting the following sexpr during rewrite which is not valid because
+//         (app _31939 _31935) is invalid
+//       - I get a different sexpr when running the whole opt pipeline with --output-sexpr and skipping
+//         the eqsat phase so maybe there is some eta exp/red phase that is needed before the egg rewrite phase?
+//       - Should I move down the eqsat phase and see if I end up with the right sexpr?
 //
 // (con
 //   extern

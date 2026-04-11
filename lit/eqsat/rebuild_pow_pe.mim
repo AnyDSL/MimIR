@@ -1,7 +1,5 @@
 plugin core;
 // plugin eqsat;
-//
-// TODO: sexpr emit fails somehow
 
 lam pow(a b: Nat)@(%core.pe.is_closed b): Nat =
     (%core.nat.mul (a, pow(a, %core.nat.sub (b, 1))), 1)#(%core.ncmp.e (b, 0));
@@ -10,4 +8,10 @@ fun extern e(a: Nat): Nat = return (pow (a, 3));
 
 lam f(n: Nat, x: <<%core.nat.mul (n, %core.nat.mul (n, n)); Nat>>): [] = ();
 
+// TODO:
+// - sexpr emit fails on arr->arity() because pow (m, 3) results in a term
+//   which we are unable to emit via convert(arr->arity())
+// - also we might run into trouble because 'm' is referenced in the type
+//   of 'y' so init_lam will probably fail to convert the type of 'y' since 'm'
+//   hasn't been registered at that point
 fun extern g(m: Nat, y: <<pow (m, 3); Nat>>): [] = return (f (m, y));

@@ -142,10 +142,10 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     std::ostringstream s;
-    if (type->isa<Bot>()) {
-        print(s, "(bot {})", convert(type->type()));
-    } else if (type->isa<Top>()) {
-        print(s, "(top {})", convert(type->type()));
+    if (auto bot = type->isa<Bot>()) {
+        print(s, "(bot {})", convert(bot->type()));
+    } else if (auto top = type->isa<Top>()) {
+        print(s, "(top {})", convert(top->type()));
     } else if (type->isa<Nat>()) {
         print(s, "Nat");
     } else if (auto size = Idx::isa(type)) {
@@ -170,7 +170,11 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
             u64 size = *arity;
             print(s, "(arr (lit {}) {})", size, convert(arr->body()));
         } else {
-            // TODO: Is there a case where we would need emit_bb for arr->arity()?
+            // TODO:
+            // - apparently arr->arity() can be an arbitrary term for which we need emit_bb
+            //   but we ideally want to remove all indentation or print without indentation in the first place
+            // - after we emit this via emit_bb we also eliminate the need for checking type against Bot and Top
+            //   since that is already taken care of in emit_bb
             print(s, "(arr {} {})", convert(arr->arity()), convert(arr->body()));
         }
     } else if (auto pi = type->isa<Pi>()) {
@@ -553,20 +557,20 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto axm = def->isa<Axm>()) {
         tab.lnprint(os, "{}", id(axm));
 
-    } else if (def->isa<Bot>()) {
-        if (def->sym().empty())
-            tab.lnprint(os, "(bot {})", convert(def->type()));
+    } else if (auto bot = def->isa<Bot>()) {
+        if (bot->sym().empty())
+            tab.lnprint(os, "(bot {})", convert(bot->type()));
         else {
-            bb.assign(tab, id(def), "(bot {})", convert(def->type()));
-            tab.lnprint(os, "{}", id(def));
+            bb.assign(tab, id(bot), "(bot {})", convert(bot->type()));
+            tab.lnprint(os, "{}", id(bot));
         }
 
-    } else if (def->isa<Top>()) {
-        if (def->sym().empty())
-            tab.lnprint(os, "(top {})", convert(def->type()));
+    } else if (auto top = def->isa<Top>()) {
+        if (top->sym().empty())
+            tab.lnprint(os, "(top {})", convert(top->type()));
         else {
-            bb.assign(tab, id(def), "(top {})", convert(def->type()));
-            tab.lnprint(os, "{}", id(def));
+            bb.assign(tab, id(top), "(top {})", convert(top->type()));
+            tab.lnprint(os, "{}", id(top));
         }
 
     } else if (auto rule = def->isa<Rule>()) {
