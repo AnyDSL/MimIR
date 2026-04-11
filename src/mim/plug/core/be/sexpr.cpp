@@ -1,4 +1,5 @@
 #include <iostream>
+#include <regex>
 #include <sstream>
 
 #include <absl/container/btree_set.h>
@@ -82,15 +83,16 @@ public:
     std::string prepare();
     void emit_epilogue(Lam*);
     void finalize();
-    std::string emit_header(Lam*, bool as_binding = false);
     void emit_lam(Lam* lam, MutSet& done);
-    std::string emit_curried_app(BB&, const App& app);
-    std::string emit_bb(BB&, const Def*);
+    std::string emit_header(BB& bb, Lam* lam, bool as_binding = false);
+    std::string emit_curried_app(BB& bb, const App& app);
+    std::string emit_type(BB& bb, const Def* type, const Def* var = nullptr);
+    std::string emit_bb_unindented(BB& bb, const Def* def);
+    std::string emit_bb(BB& bb, const Def* def);
 
 private:
     std::string id(const Def*) const;
     std::string indented(size_t tabs, std::string s);
-    std::string convert(const Def*, const Def* = nullptr);
 
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
@@ -138,15 +140,29 @@ std::string Emitter::indented(size_t tabs, std::string s) {
     return result;
 }
 
-std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
+// Does the same as emit_bb but removes all indentation so a string like
+// "    (app
+//          foo
+//          bar
+//      )"
+// becomes
+// "(app foo bar)"
+std::string Emitter::emit_bb_unindented(BB& bb, const Def* def) {
+    auto indented_term = emit_bb(bb, def);
+    auto dedented_term = std::regex_replace(indented_term, std::regex("( {4})"), "");
+
+    while (!dedented_term.empty() && (dedented_term.front() == '\n' || dedented_term.front() == '\r'))
+        dedented_term.erase(0, 1);
+
+    auto single_line_term = std::regex_replace(dedented_term, std::regex("(\\r|\\n)"), " ");
+    return single_line_term;
+}
+
+std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullptr*/) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     std::ostringstream s;
-    if (auto bot = type->isa<Bot>()) {
-        print(s, "(bot {})", convert(bot->type()));
-    } else if (auto top = type->isa<Top>()) {
-        print(s, "(top {})", convert(top->type()));
-    } else if (type->isa<Nat>()) {
+    if (type->isa<Nat>()) {
         print(s, "Nat");
     } else if (auto size = Idx::isa(type)) {
         if (auto lit_size = Idx::size2bitwidth(size)) {
@@ -164,58 +180,55 @@ std::string Emitter::convert(const Def* type, const Def* var /*= nullptr*/) {
         if (lit->type()->isa<Nat>())
             print(s, "(lit {})", lit->get());
         else
-            print(s, "(lit {} {})", lit->get(), convert(lit->type()));
+            print(s, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
         if (auto arity = Lit::isa(arr->arity())) {
             u64 size = *arity;
-            print(s, "(arr (lit {}) {})", size, convert(arr->body()));
+            print(s, "(arr (lit {}) {})", size, emit_type(bb, arr->body()));
+        } else if (auto top = arr->arity()->isa<Top>()) {
+            print(s, "(arr (top {}) {})", emit_type(bb, top->type()), emit_type(bb, arr->body()));
         } else {
-            // TODO:
-            // - apparently arr->arity() can be an arbitrary term for which we need emit_bb
-            //   but we ideally want to remove all indentation or print without indentation in the first place
-            // - after we emit this via emit_bb we also eliminate the need for checking type against Bot and Top
-            //   since that is already taken care of in emit_bb
-            print(s, "(arr {} {})", convert(arr->arity()), convert(arr->body()));
+            print(s, "(arr {} {})", emit_bb_unindented(bb, arr->arity()), emit_type(bb, arr->body()));
         }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))
-            s << "(cn " << convert(pi->dom()) << ")";
+            s << "(cn " << emit_type(bb, pi->dom()) << ")";
         else
-            s << "(pi " << convert(pi->dom()) << " " << convert(pi->codom()) << ")";
+            s << "(pi " << emit_type(bb, pi->dom()) << " " << emit_type(bb, pi->codom()) << ")";
     } else if (auto sigma = type->isa<Sigma>()) {
         size_t i = 0;
         if (var) {
             assert(var->arity() == sigma->arity());
             print(s, "(sigma { })", Elem(sigma->ops(), [&](auto op) {
                       if (auto v = var->proj(i++))
-                          print(s, "(var {} {})", id(v), convert(op, v));
+                          print(s, "(var {} {})", id(v), emit_type(bb, op, v));
                       else
                           s << op;
                   }));
         } else {
-            print(s, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
+            print(s, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(s, "{}", emit_type(bb, op)); }));
         }
     } else if (auto tuple = type->isa<Tuple>()) {
-        print(s, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", convert(op)); }));
+        print(s, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", emit_type(bb, op)); }));
     } else if (auto app = type->isa<App>()) {
-        print(s, "(app {} {})", convert(app->callee()), convert(app->arg()));
+        print(s, "(app {} {})", emit_type(bb, app->callee()), emit_type(bb, app->arg()));
     } else if (auto ax = type->isa<Axm>()) {
         print(s, "{}", id(ax));
     } else if (auto hole = type->isa<Hole>()) {
         print(s, "(hole {})", id(hole));
     } else if (auto extract = type->isa<Extract>()) {
-        print(s, "(extract {} {})", convert(extract->tuple()), convert(extract->index()));
+        print(s, "(extract {} {})", emit_type(bb, extract->tuple()), emit_type(bb, extract->index()));
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
             if (level == 0) print(s, "(type (lit 0))");
             if (level == 1) print(s, "(type (lit 1))");
         } else {
-            print(s, "(type {})", convert(mType->level()));
+            print(s, "(type {})", emit_type(bb, mType->level()));
         }
     } else if (type->isa<Univ>()) {
         print(s, "Univ");
     } else if (auto reform = type->isa<Reform>()) {
-        print(s, "(reform {})", convert(reform->meta_type()));
+        print(s, "(reform {})", emit_type(bb, reform->meta_type()));
     } else {
         error("unsupported type '{}'", type);
         fe::unreachable();
@@ -237,6 +250,8 @@ void Emitter::start() {
 }
 
 void Emitter::emit_imported(Lam* lam) {
+    auto bb = BB();
+
     const std::string ext = lam->is_external() ? "extern" : "intern";
 
     // We assume that the lambda will be a continuation since imports
@@ -247,7 +262,7 @@ void Emitter::emit_imported(Lam* lam) {
     tab.lnprint(func_decls_, "(sigma");
     ++tab;
     for (auto dom : lam->doms().view())
-        tab.lnprint(func_decls_, "{}", convert(dom));
+        tab.lnprint(func_decls_, "{}", emit_type(bb, dom));
     print(func_decls_, "))\n\n");
     --tab;
     --tab;
@@ -273,7 +288,7 @@ void Emitter::finalize() {
     emit_lam(root_lam, done);
 }
 
-std::string Emitter::emit_header(Lam* lam, bool as_binding) {
+std::string Emitter::emit_header(BB& bb, Lam* lam, bool as_binding) {
     std::ostringstream os;
 
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
@@ -293,17 +308,17 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
         if (lam->vars().size() == 1 || std::ranges::all_of(lam->vars(), [](auto def) { return def->sym().empty(); })) {
             tab.lnprint(os, "(var {}", id(lam->var()));
             ++tab;
-            tab.lnprint(os, "{})", convert(lam->type()->dom()));
+            tab.lnprint(os, "{})", emit_type(bb, lam->type()->dom()));
             --tab;
         } else {
             for (int i = 0; auto var : lam->vars()) {
                 if (var) {
                     tab.lnprint(os, "(var {}", id(var));
                     ++tab;
-                    tab.lnprint(os, "{})", convert(var->type(), var));
+                    tab.lnprint(os, "{})", emit_type(bb, var->type(), var));
                     --tab;
                 } else {
-                    tab.lnprint(os, "{}", convert(lam->dom(i)));
+                    tab.lnprint(os, "{}", emit_type(bb, lam->dom(i)));
                 }
                 i++;
             }
@@ -319,7 +334,7 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
         tab.lnprint(os, "(sigma");
         ++tab;
         for (auto codom : lam->codoms())
-            tab.lnprint(os, "{}", convert(codom));
+            tab.lnprint(os, "{}", emit_type(bb, codom));
         print(os, ")");
         --tab;
         --tab;
@@ -327,8 +342,7 @@ std::string Emitter::emit_header(Lam* lam, bool as_binding) {
 
     // emit_unsafe() for Defs that were already emitted uses caching which messes up indentation.
     // If we don't need basic blocks we just use emit_bb() with some dummy basic block instead.
-    auto dummy = BB{};
-    tab.print(os, "{}", emit_bb(dummy, lam->filter()));
+    tab.print(os, "{}", emit_bb(bb, lam->filter()));
 
     return os.str();
 }
@@ -339,9 +353,9 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     auto& bb = lam2bb_[lam];
 
     if (lam->is_closed())
-        print(func_impls_, "{}", emit_header(lam));
+        print(func_impls_, "{}", emit_header(bb, lam));
     else
-        print(func_impls_, "{}", emit_header(lam, true));
+        print(func_impls_, "{}", emit_header(bb, lam, true));
 
     ++tab;
     // Keeps count of parentheses opened by let-bindings that need to be closed later on
@@ -381,7 +395,7 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
 
 std::string Emitter::emit_curried_app(BB& bb, const App& app) {
     std::ostringstream os;
-    tab.lnprint(os, "(app ");
+    tab.lnprint(os, "(app");
 
     if (auto app_callee = app.callee()->isa<App>()) {
         ++tab;
@@ -401,7 +415,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
     ++tab;
     if (def->type()->isa<Type>() || def->type()->isa<Univ>()) {
-        tab.lnprint(os, "{}", convert(def));
+        tab.lnprint(os, "{}", emit_type(bb, def));
 
     } else if (auto lam = def->isa<Lam>()) {
         tab.lnprint(os, "{}", id(lam));
@@ -424,18 +438,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             if (auto lit_size = Idx::size2bitwidth(size); lit_size && *lit_size == 1)
                 tab.lnprint(os, "(lit {})", lit);
             else
-                tab.lnprint(os, "(lit {} {})", lit->get(), convert(lit->type()));
+                tab.lnprint(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
         else
             tab.lnprint(os, "(lit {})", lit);
 
     } else if (auto tuple = def->isa<Tuple>()) {
         tab.lnprint(os, "(tuple");
-        for (auto sep = ""; auto e : tuple->ops()) {
-            if (auto v_elem = emit_bb(bb, e); !v_elem.empty()) {
-                os << sep << v_elem;
-                sep = " ";
-            }
-        }
+        for (auto e : tuple->ops())
+            if (auto v_elem = emit_bb(bb, e); !v_elem.empty()) os << v_elem;
         print(os, ")");
 
     } else if (auto seq = def->isa<Seq>()) {
@@ -559,17 +569,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
     } else if (auto bot = def->isa<Bot>()) {
         if (bot->sym().empty())
-            tab.lnprint(os, "(bot {})", convert(bot->type()));
+            tab.lnprint(os, "(bot {})", emit_type(bb, bot->type()));
         else {
-            bb.assign(tab, id(bot), "(bot {})", convert(bot->type()));
+            bb.assign(tab, id(bot), "(bot {})", emit_type(bb, bot->type()));
             tab.lnprint(os, "{}", id(bot));
         }
 
     } else if (auto top = def->isa<Top>()) {
         if (top->sym().empty())
-            tab.lnprint(os, "(top {})", convert(top->type()));
+            tab.lnprint(os, "(top {})", emit_type(bb, top->type()));
         else {
-            bb.assign(tab, id(top), "(top {})", convert(top->type()));
+            bb.assign(tab, id(top), "(top {})", emit_type(bb, top->type()));
             tab.lnprint(os, "{}", id(top));
         }
 
