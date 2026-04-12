@@ -12,4 +12,6 @@ lam f(n: Nat, x: <<%core.nat.mul (n, %core.nat.mul (n, n)); Nat>>): [] = ();
 // - we might run into trouble because 'm' is referenced in the type
 //   of 'y' so init_lam will probably fail to convert the type of 'y' since 'm'
 //   hasn't been registered at that point
+// - whats worse is that the first nat variable named 'm' gets emitted without
+//   its name making it even more impossible to be referenced
 fun extern g(m: Nat, y: <<pow (m, 3); Nat>>): [] = return (f (m, y));

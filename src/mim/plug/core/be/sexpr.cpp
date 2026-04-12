@@ -87,12 +87,12 @@ public:
     std::string emit_header(BB& bb, Lam* lam, bool as_binding = false);
     std::string emit_curried_app(BB& bb, const App& app);
     std::string emit_type(BB& bb, const Def* type, const Def* var = nullptr);
-    std::string emit_bb_unindented(BB& bb, const Def* def);
     std::string emit_bb(BB& bb, const Def* def);
 
 private:
     std::string id(const Def*) const;
-    std::string indented(size_t tabs, std::string s);
+    std::string indent(size_t tabs, std::string term);
+    std::string flatten(std::string term);
 
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
@@ -121,17 +121,17 @@ std::string Emitter::id(const Def* def) const {
 //          foo
 //          bar
 //      )"
-std::string Emitter::indented(size_t tabs, std::string s) {
-    while (!s.empty() && (s.front() == '\n' || s.front() == '\r'))
-        s.erase(0, 1);
-
-    std::stringstream ss(s);
+std::string Emitter::indent(size_t tabs, std::string term) {
     std::string indent(tabs * 4, ' ');
-    std::string line;
     std::string result;
+    std::string line;
 
-    size_t min_indent = s.find_first_not_of(' ');
-    while (std::getline(ss, line)) {
+    while (!term.empty() && (term.front() == '\n' || term.front() == '\r'))
+        term.erase(0, 1);
+
+    std::stringstream term_stream(term);
+    size_t min_indent = term.find_first_not_of(' ');
+    while (std::getline(term_stream, line)) {
         // Skips empty lines
         if (line.find_first_not_of(" \t\r\n") == std::string::npos) continue;
         result += "\n" + indent + line.substr(min_indent);
@@ -147,15 +147,14 @@ std::string Emitter::indented(size_t tabs, std::string s) {
 //      )"
 // becomes
 // "(app foo bar)"
-std::string Emitter::emit_bb_unindented(BB& bb, const Def* def) {
-    auto indented_term = emit_bb(bb, def);
-    auto dedented_term = std::regex_replace(indented_term, std::regex("( {4})"), "");
+std::string Emitter::flatten(std::string term) {
+    term = std::regex_replace(term, std::regex("( {4})"), "");
 
-    while (!dedented_term.empty() && (dedented_term.front() == '\n' || dedented_term.front() == '\r'))
-        dedented_term.erase(0, 1);
+    while (!term.empty() && (term.front() == '\n' || term.front() == '\r'))
+        term.erase(0, 1);
 
-    auto single_line_term = std::regex_replace(dedented_term, std::regex("(\\r|\\n)"), " ");
-    return single_line_term;
+    term = std::regex_replace(term, std::regex("(\\r|\\n)"), " ");
+    return term;
 }
 
 std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullptr*/) {
@@ -188,7 +187,7 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         } else if (auto top = arr->arity()->isa<Top>()) {
             print(s, "(arr (top {}) {})", emit_type(bb, top->type()), emit_type(bb, arr->body()));
         } else {
-            print(s, "(arr {} {})", emit_bb_unindented(bb, arr->arity()), emit_type(bb, arr->body()));
+            print(s, "(arr {} {})", flatten(emit_bb(bb, arr->arity())), emit_type(bb, arr->body()));
         }
     } else if (auto pi = type->isa<Pi>()) {
         if (Pi::isa_cn(pi))
@@ -372,14 +371,14 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     }
 
     for (auto& term : bb.body()) {
-        auto opened       = std::ranges::count(term.str(), '(');
-        auto closed       = std::ranges::count(term.str(), ')');
-        unclosed_bindings = unclosed_bindings + opened - closed;
-        print(func_impls_, "{}", indented(tab.indent(), term.str()));
+        auto opened = std::ranges::count(term.str(), '(');
+        auto closed = std::ranges::count(term.str(), ')');
+        unclosed_bindings += opened - closed;
+        print(func_impls_, "{}", indent(tab.indent(), term.str()));
     }
 
     for (auto& term : bb.tail())
-        print(func_impls_, "{}", indented(tab.indent(), term.str()));
+        print(func_impls_, "{}", indent(tab.indent(), term.str()));
 
     std::string closing_parens(unclosed_bindings, ')');
     print(func_impls_, "{}", closing_parens);
@@ -463,8 +462,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(pack");
                 ++tab;
-                tab.print(os, "{}", indented(tab.indent(), shape_val));
-                tab.print(os, "{}", indented(tab.indent(), body_val));
+                tab.print(os, "{}", indent(tab.indent(), shape_val));
+                tab.print(os, "{}", indent(tab.indent(), body_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -511,8 +510,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(extract");
                 ++tab;
-                tab.print(os, "{}", indented(tab.indent(), tuple_val));
-                tab.print(os, "{}", indented(tab.indent(), index_val));
+                tab.print(os, "{}", indent(tab.indent(), tuple_val));
+                tab.print(os, "{}", indent(tab.indent(), index_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -538,9 +537,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 ++tab;
                 tab.lnprint(os, "(ins");
                 ++tab;
-                tab.print(os, "{}", indented(tab.indent(), tuple_val));
-                tab.print(os, "{}", indented(tab.indent(), index_val));
-                tab.print(os, "{}", indented(tab.indent(), value_val));
+                tab.print(os, "{}", indent(tab.indent(), tuple_val));
+                tab.print(os, "{}", indent(tab.indent(), index_val));
+                tab.print(os, "{}", indent(tab.indent(), value_val));
                 --tab;
                 print(os, ")");
                 --tab;
@@ -558,7 +557,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             bb.assign(tab, id(app), [&](auto& os) {
                 ++tab;
-                tab.lnprint(os, "{}", indented(tab.indent(), app_val));
+                tab.lnprint(os, "{}", indent(tab.indent(), app_val));
                 --tab;
             });
             tab.lnprint(os, "{}", id(app));
@@ -589,7 +588,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto guard_val = emit_bb(bb, rule->guard());
         tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
 
-        rewrite_rules_ << "(rule" << indented(1, lhs_val) << indented(1, rhs_val) << indented(1, guard_val) << ")\n\n";
+        rewrite_rules_ << "(rule" << indent(1, lhs_val) << indent(1, rhs_val) << indent(1, guard_val) << ")\n\n";
 
     } else {
         error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
