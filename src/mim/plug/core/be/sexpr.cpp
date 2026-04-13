@@ -337,7 +337,21 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         else
             print(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
-        if (auto arity = Lit::isa(arr->arity())) {
+        // Some variables that are supposed to be tuples and therefore sigma-typed are internally modeled as arr-typed
+        // if for example all of the projs' types are the same as in (t1 t2: *). In this case we don't have a (sigma
+        // * *) but instead an (arr 2 *). We should however emit these as sigmas because we otherwise lose information
+        // about the names of the vars' projections (t1 and t2 in this case).
+        if (var && !std::ranges::all_of(var->projs(), [](auto def) { return def->sym().empty(); })) {
+            assert(var->arity() == arr->arity());
+            size_t i = 0;
+            print(os, "(sigma { })", Elem(arr->ops(), [&](auto op) {
+                      if (auto v = var->proj(i++); !v->sym().empty())
+                          print(os, "(var {} {})", id(v), emit_type(bb, arr->body(), v));
+                      else
+                          print(os, "{}", emit_type(bb, arr->body(), v));
+                  }));
+
+        } else if (auto arity = Lit::isa(arr->arity())) {
             u64 size = *arity;
             print(os, "(arr (lit {}) {})", size, emit_type(bb, arr->body()));
         } else if (auto top = arr->arity()->isa<Top>()) {
@@ -355,7 +369,7 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         if (var) {
             assert(var->arity() == sigma->arity());
             print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) {
-                      if (auto v = var->proj(i++))
+                      if (auto v = var->proj(i++); !v->sym().empty())
                           print(os, "(var {} {})", id(v), emit_type(bb, op, v));
                       else
                           print(os, "{}", emit_type(bb, op, v));
@@ -369,14 +383,38 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         print(os, "(app {} {})", emit_type(bb, app->callee()), emit_type(bb, app->arg()));
     } else if (auto ax = type->isa<Axm>()) {
         print(os, "{}", id(ax));
+    } else if (auto var = type->isa<Var>()) {
+        print(os, "{}", id(var));
     } else if (auto hole = type->isa<Hole>()) {
         print(os, "(hole {})", id(hole));
     } else if (auto extract = type->isa<Extract>()) {
-        print(os, "(extract {} {})", emit_type(bb, extract->tuple()), emit_type(bb, extract->index()));
+        auto tuple = extract->tuple();
+        auto index = extract->index();
+        // See explanation for the same thing in emit_bb
+        auto is_nested_proj = false;
+        if (auto lit = Lit::isa(index); lit && tuple->isa<Extract>()) {
+            auto curr_tuple = tuple;
+            auto curr_index = index;
+            while (curr_tuple != nullptr && curr_index != nullptr)
+                if (auto lit = Lit::isa(curr_index); lit && curr_tuple->isa<Extract>()) {
+                    curr_tuple = tuple->as<Extract>()->tuple();
+                    curr_index = tuple->as<Extract>()->index();
+                    continue;
+                } else if (auto lit = Lit::isa(curr_index); lit && curr_tuple->isa<Var>()) {
+                    is_nested_proj = true;
+                    break;
+                } else {
+                    break;
+                }
+        }
+        if (auto lit = Lit::isa(index); (lit && tuple->isa<Var>()) || is_nested_proj)
+            print(os, "{}", id(extract));
+        else
+            print(os, "(extract {} {})", emit_type(bb, tuple), emit_type(bb, index));
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
-            if (level == 0) print(os, "(type (lit 0))");
-            if (level == 1) print(os, "(type (lit 1))");
+            if (level == 0) print(os, "(type (lit 0 Univ))");
+            if (level == 1) print(os, "(type (lit 1 Univ))");
         } else {
             print(os, "(type {})", emit_type(bb, mType->level()));
         }
@@ -384,6 +422,10 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         print(os, "Univ");
     } else if (auto reform = type->isa<Reform>()) {
         print(os, "(reform {})", emit_type(bb, reform->meta_type()));
+    } else if (auto join = type->isa<Join>()) {
+        print(os, "(join { })", Elem(join->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
+    } else if (auto meet = type->isa<Meet>()) {
+        print(os, "(meet { })", Elem(meet->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else {
         error("unsupported type '{}'", type);
         fe::unreachable();
@@ -505,7 +547,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto index_val = emit_bb(bb, insert->index());
         auto value_val = emit_bb(bb, insert->value());
         if (insert->sym().empty()) {
-            tab.lnprint(os, "(ins");
+            tab.lnprint(os, "(insert");
             tab.print(os, "{}", tuple_val);
             tab.print(os, "{}", index_val);
             tab.print(os, "{}", value_val);
@@ -513,7 +555,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             bb.assign(tab, id(insert), [&](auto& os) {
                 ++tab;
-                tab.lnprint(os, "(ins");
+                tab.lnprint(os, "(insert");
                 ++tab;
                 tab.print(os, "{}", indent(tab.indent(), tuple_val));
                 tab.print(os, "{}", indent(tab.indent(), index_val));
@@ -575,6 +617,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto guard_val = emit_bb(bb, rule->guard());
         tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
         print(rewrite_rules_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
+
+    } else if (auto inj = def->isa<Inj>()) {
+        auto value_val = emit_bb(bb, inj->value());
+        auto type_val  = emit_type(bb, inj->type());
+        tab.lnprint(os, "(inj");
+        tab.print(os, "{}", value_val);
+        tab.print(os, "{}", type_val);
+        print(os, ")");
 
     } else {
         error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
