@@ -2,11 +2,9 @@ plugin core;
 plugin vec;
 // plugin eqsat;
 //
-// TODO: - Getting the following sexpr during rewrite which is not valid because
-//         (app _31939 _31935) is invalid
-//       - I get a different sexpr when running the whole opt pipeline with --output-sexpr and skipping
-//         the eqsat phase so maybe there is some eta exp/red phase that is needed before the egg rewrite phase?
-//       - Should I move down the eqsat phase and see if I end up with the right sexpr?
+// TODO: why am i getting invalid sexprs?
+//
+// Getting the following sexpr during rewrite which is not valid because (app _31939 _31935) is invalid
 //
 // (con
 //   extern
@@ -24,6 +22,39 @@ plugin vec;
 //   (sigma (var return_31941 (cn (arr (lit 4) Nat))))
 //   (lit ff)
 //   (let C_31940 (pack (lit 4) (lit 0)) (app return_31941 C_31940)))
+//
+//
+// Getting the following sexpr if i move the phase below %compile.ret_wrap_phase
+//
+// (con
+//   extern
+//   bar
+//   (sigma (var _31815 sigma) (var return_31806 (cn (arr (lit 4) Nat))))
+//   (lit ff)
+//   (let
+//     _31802
+//     (con
+//       intern
+//       _31802
+//       sigma
+//       (lit ff)
+//       (let
+//         eta_return_31803
+//         (con
+//           intern
+//           eta_return_31803
+//           (sigma (var _31804 (arr (lit 4) Nat)))
+//           (lit tt)
+//           (app return_31806 _31804))
+//         (app _31809 eta_return_31803)))
+//     (app _31809 _31802)))
+//
+// (con
+//   intern
+//   _31809
+//   (sigma (var return_31811 (cn (arr (lit 4) Nat))))
+//   (lit ff)
+//   (let C_31810 (pack (lit 4) (lit 0)) (app return_31811 C_31810)))
 
 fun foo{n:Nat} (A: «n; Nat», B:«n; Nat»):  «n; Nat» =
     let C = %vec.zip %core.nat.sub (A, B);

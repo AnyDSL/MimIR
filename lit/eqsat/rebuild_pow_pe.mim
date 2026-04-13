@@ -9,9 +9,9 @@ fun extern e(a: Nat): Nat = return (pow (a, 3));
 lam f(n: Nat, x: <<%core.nat.mul (n, %core.nat.mul (n, n)); Nat>>): [] = ();
 
 // TODO:
-// - we might run into trouble because 'm' is referenced in the type
-//   of 'y' so init_lam will probably fail to convert the type of 'y' since 'm'
-//   hasn't been registered at that point
+// - we run into trouble because 'm' is referenced in the type of 'y'
+//   so init_lam fails to convert the type of 'y' since 'm' hasn't been registered
+//   as a variable yet at that point (only happens after the lam has been fully created)
 // - whats worse is that the first nat variable named 'm' gets emitted without
-//   its name making it even more impossible to be referenced
+//   its name which makes it even more impossible to be referenced
 fun extern g(m: Nat, y: <<pow (m, 3); Nat>>): [] = return (f (m, y));

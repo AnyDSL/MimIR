@@ -3,7 +3,8 @@ plugin math;
 plugin mem;
 // plugin eqsat;
 //
-// TODO: Reconstruction fails because the definition of %bug.Arr is not emitted
+// TODO: - Reconstruction fails because the definition of %bug.Arr
+//         is not carried over from old_world to new_world
 
 rec Num = [T: *, add: [T, T] → T];
 lam my_add {pe: «2; Nat»} (a b: %math.F pe): %math.F pe = %math.arith.add 0 (a, b);

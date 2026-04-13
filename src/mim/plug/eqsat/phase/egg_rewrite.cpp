@@ -6,6 +6,8 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 
+const bool DEBUG = false;
+
 namespace mim::plug::eqsat {
 
 void EggRewrite::start() {
@@ -17,7 +19,7 @@ void EggRewrite::start() {
     else
         error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
 
-    // std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
+    if (DEBUG) std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
 
     auto rewrites = equality_saturate(sexpr.str(), rulesets, cost_fn);
 
@@ -88,7 +90,7 @@ std::pair<rust::Vec<RuleSet>, CostFn> EggRewrite::import_config() {
 const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings) {
     auto node = get_node_unsafe(id);
 
-    // std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
+    if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     const Def* res = nullptr;
     switch (node.kind) {
         case MimKind::Lam: res = lambdas ? init_lam(id, node) : nullptr; break;
@@ -96,7 +98,7 @@ const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings) {
         case MimKind::Let: res = bindings ? init_let(id, node) : nullptr; break;
         default: break;
     }
-    // std::cout << res << "\n";
+    if (DEBUG) std::cout << res << "\n";
     return added_[id] = res;
 }
 
@@ -181,7 +183,7 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
     const std::set<MimKind> revisit = {MimKind::Lam, MimKind::Con, MimKind::Var};
     if (res != nullptr && !revisit.contains(node.kind)) return res;
 
-    // std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
+    if (DEBUG) std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     switch (node.kind) {
         case MimKind::Let: res = convert_let(id, node); break;
         case MimKind::Lam: res = convert_lam(id, node); break;
@@ -207,7 +209,7 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
         default: break;
     }
 
-    // std::cout << res << "\n";
+    if (DEBUG) std::cout << res << "\n";
     return added_[id] = res;
 }
 

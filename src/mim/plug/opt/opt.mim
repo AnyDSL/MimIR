@@ -62,7 +62,6 @@ lam extern _default_compile (): %compile.Phase =
         ),
         cond_phase "affine" %affine.lower_for_phase,
         %compile.internal_cleanup_phase,
-        cond_phase "eqsat" %eqsat.egg_rewrite_phase,
         cond_phase "direct" direct_phases,
         cond_phase "clos" clos_phases,
         %compile.pass2phase %compile.lam_spec_pass,
@@ -77,4 +76,11 @@ lam extern _default_compile (): %compile.Phase =
                 cond_repl "gpu" %gpu.malloc2gpualloc_repl,
             )
         ),
+        // TODO: ideally the eqsat phase should be run after all other
+        // phases have been completed since it aims to reconstruct the
+        // fully processed mim program and all changes made to the world
+        // after this phase will not show up in the reconstructed world.
+        // However it should also be run before the direct phase because
+        // the direct phase doesn't know what to do with rule expressions.
+        cond_phase "eqsat" %eqsat.egg_rewrite_phase,
     );

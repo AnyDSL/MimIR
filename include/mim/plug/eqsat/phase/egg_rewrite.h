@@ -32,6 +32,10 @@ public:
 
 private:
     void register_symbols() {
+        // TODO: axioms defined in mim but not as part of a plugin will
+        // not be contained in flags2annex and therefore need to be carried
+        // over via the rewrite api or something similar
+
         for (auto [flags, annex] : old_world().flags2annex()) {
             sym2flags_[annex->sym().str()] = flags;
             new_world().register_annex(flags, rewrite(annex));
