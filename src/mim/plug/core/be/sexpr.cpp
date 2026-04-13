@@ -277,8 +277,6 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
             tab.lnprint(os, "{})", emit_type(bb, lam->type()->dom()));
             --tab;
         } else {
-            // TODO: nested arr or sigma var i.e. in rebuild_union.mim we lose t1 and t2 in combine and instead just
-            // emit arr of size 2 and its uid (look into how nested projs are emitted in dump.cpp)
             for (int i = 0; auto var : lam->vars()) {
                 if (var) {
                     tab.lnprint(os, "(var {}", id(var));
@@ -337,7 +335,21 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         else
             print(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
-        if (auto arity = Lit::isa(arr->arity())) {
+        // Some variables that are supposed to be tuples and therefore sigma-typed are internally modeled as arr-typed
+        // if for example all of the projs' types are the same as in (t1 t2: *). In this case we don't have a (sigma
+        // * *) but instead an (arr 2 *). We should however emit these as sigmas because we otherwise lose information
+        // about the names of the vars' projections (t1 and t2 in this case).
+        if (var && !std::ranges::all_of(var->projs(), [](auto def) { return def->sym().empty(); })) {
+            assert(var->arity() == arr->arity());
+            size_t i = 0;
+            print(os, "(sigma { })", Elem(arr->ops(), [&](auto op) {
+                      if (auto v = var->proj(i++); !v->sym().empty())
+                          print(os, "(var {} {})", id(v), emit_type(bb, arr->body(), v));
+                      else
+                          print(os, "{}", emit_type(bb, arr->body(), v));
+                  }));
+
+        } else if (auto arity = Lit::isa(arr->arity())) {
             u64 size = *arity;
             print(os, "(arr (lit {}) {})", size, emit_type(bb, arr->body()));
         } else if (auto top = arr->arity()->isa<Top>()) {
@@ -399,8 +411,8 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
             print(os, "(extract {} {})", emit_type(bb, tuple), emit_type(bb, index));
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
-            if (level == 0) print(os, "(type (lit 0))");
-            if (level == 1) print(os, "(type (lit 1))");
+            if (level == 0) print(os, "(type (lit 0 Univ))");
+            if (level == 1) print(os, "(type (lit 1 Univ))");
         } else {
             print(os, "(type {})", emit_type(bb, mType->level()));
         }
