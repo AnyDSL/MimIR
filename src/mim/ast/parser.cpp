@@ -72,6 +72,7 @@
     case Tag::C_PI:                     \
     case Tag::C_LM:                     \
     case Tag::K_Type:    /*TypeExpr*/   \
+    case Tag::K_Rule:    /*RuleExpr*/   \
     case Tag::K_ins:     /*InsertExpr*/ \
     case Tag::K_ret:     /*RetExpr*/    \
     case Tag::D_angle_l: /*PackExpr*/   \
@@ -345,6 +346,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_brckt_l: return parse_sigma_expr();
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
+        case Tag::K_Rule:    return parse_rule_expr();
         case Tag::K_match:   return parse_match_expr();
         default:
             if (ctxt.empty()) return nullptr;
@@ -424,6 +426,13 @@ Ptr<Expr> Parser::parse_type_expr() {
     eat(Tag::K_Type);
     auto level = parse_expr("type level", Expr::Prec::App);
     return ptr<TypeExpr>(track, std::move(level));
+}
+
+Ptr<Expr> Parser::parse_rule_expr() {
+    auto track = tracker();
+    eat(Tag::K_Rule);
+    auto meta_type = parse_expr("meta type of rule", Expr::Prec::App);
+    return ptr<RuleExpr>(track, std::move(meta_type));
 }
 
 Ptr<Expr> Parser::parse_pi_expr() {

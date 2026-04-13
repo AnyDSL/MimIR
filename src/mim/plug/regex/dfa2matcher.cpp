@@ -44,7 +44,7 @@ DFAMap<Ranges> transitions_to_ranges(World& w, const DFANode* state) {
     DFAMap<Ranges> state2ranges;
     state->for_transitions([&](std::uint16_t transition, const DFANode* next_state) {
         if (!state2ranges.contains(next_state))
-            state2ranges.emplace(next_state, Ranges{
+            state2ranges.try_emplace(next_state, Ranges{
                                                  {transition, transition}
             });
         else
@@ -82,7 +82,7 @@ DFAMap<const Def*> create_check_match_transitions_from(const Def* c, const DFANo
     for (auto& [state, ranges] : state2ranges) {
         for (auto& [lo, hi] : ranges)
             if (!state2check.contains(state))
-                state2check.emplace(state, match_range(c, lo, hi));
+                state2check.try_emplace(state, match_range(c, lo, hi));
             else
                 state2check[state]
                     = w.call(core::bit2::or_, w.lit_nat(2), w.tuple({state2check[state], match_range(c, lo, hi)}));

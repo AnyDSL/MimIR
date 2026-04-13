@@ -52,6 +52,7 @@ namespace ast {
     m(K_rec,    "rec"   )             \
     m(K_ret,    "ret"   )             \
     m(K_rule,   "rule"  )             \
+    m(K_Rule,   "Rule"  )             \
     m(K_tt,     "tt"    )             \
     m(K_when,   "when"  )             \
     m(K_where,  "where" )             \

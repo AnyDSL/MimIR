@@ -1,21 +1,27 @@
 #include "mim/plug/core/be/ll.h"
 
 #include <deque>
+#include <format>
 #include <fstream>
 #include <iomanip>
+#include <optional>
 #include <ranges>
+#include <string>
 
 #include <absl/container/btree_set.h>
 
 #include <mim/plug/clos/clos.h>
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
+#include <mim/plug/vec/vec.h>
 
 #include "mim/be/emitter.h"
 #include "mim/util/print.h"
 #include "mim/util/sys.h"
 
 #include "mim/plug/core/core.h"
+#include "mim/plug/math/autogen.h"
+#include "mim/plug/refly/autogen.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
@@ -36,6 +42,7 @@ namespace clos = mim::plug::clos;
 namespace core = mim::plug::core;
 namespace math = mim::plug::math;
 namespace mem  = mim::plug::mem;
+namespace vec  = mim::plug::vec;
 
 namespace {
 const char* math_suffix(const Def* type) {
@@ -123,7 +130,7 @@ public:
 
 private:
     std::string id(const Def*, bool force_bb = false) const;
-    std::string convert(const Def*);
+    std::string convert(const Def*, bool simd = true);
     std::string convert_ret_pi(const Pi*);
 
     absl::btree_set<std::string> decls_;
@@ -131,11 +138,44 @@ private:
     std::ostringstream vars_decls_;
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
+    LamMap<const Def*> simd_phi_;
 };
 
 /*
  * convert
  */
+
+static std::optional<std::pair<nat_t, const Def*>> is_simd(const Def* type) {
+    if (auto arr = type->isa<Arr>()) {
+        if (auto l = Lit::isa(arr->arity())) {
+            if (arr->body()->isa<Nat>() || Idx::isa(arr->body()) || Axm::isa<math::F>(arr->body()))
+                return std::pair{*l, arr->body()};
+        }
+    }
+    return {};
+}
+static std::optional<std::pair<nat_t, const Def*>> is_simd_aggregate(const std::vector<const Def*> types) {
+    if (std::ranges::all_of(types, [&](auto i) { return i == types[0]; })) {
+        if (types[0]->isa<Nat>() || Idx::isa(types[0]) || Axm::isa<math::F>(types[0]))
+            return std::pair{types.size(), types[0]};
+    }
+
+    return {};
+}
+
+static const Def* find_common_simd_src(const App* app) {
+    const Def* common_src = nullptr;
+    for (auto arg : app->args()) {
+        if (Axm::isa<mem::M>(arg->type())) continue;
+        auto extract = arg->isa<Extract>();
+        if (!extract || !is_simd(extract->tuple()->type())) return nullptr;
+        if (!common_src)
+            common_src = extract->tuple();
+        else if (common_src != extract->tuple())
+            return nullptr;
+    }
+    return common_src;
+}
 
 std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto global = def->isa<Global>()) return "@" + global->unique_name();
@@ -151,7 +191,7 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     return "%"s + def->unique_name();
 }
 
-std::string Emitter::convert(const Def* type) {
+std::string Emitter::convert(const Def* type, bool simd) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     assert(!Axm::isa<mem::M>(type));
@@ -172,12 +212,16 @@ std::string Emitter::convert(const Def* type) {
     } else if (auto ptr = Axm::isa<mem::Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
         // TODO addr_space
-        print(s, "{}*", convert(pointee));
+        print(s, "{}*", convert(pointee, false));
     } else if (auto arr = type->isa<Arr>()) {
-        auto t_elem = convert(arr->body());
-        u64 size    = 0;
-        if (auto arity = Lit::isa(arr->arity())) size = *arity;
-        print(s, "[{} x {}]", size, t_elem);
+        if (auto se = is_simd(arr); se && simd) {
+            auto [size, elem] = *se;
+            print(s, "<{} x {}>", size, convert(elem));
+        } else {
+            u64 size = 0;
+            if (auto arity = Lit::isa(arr->arity())) size = *arity;
+            print(s, "[{} x {}]", size, convert(arr->body(), false));
+        }
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
@@ -256,11 +300,15 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 std::string Emitter::prepare() {
-    print(func_impls_, "define {} {}(", convert_ret_pi(root()->type()->ret_pi()), id(root()));
+    auto internal = root()->is_external() ? "" : "internal ";
+    auto ret_t    = convert_ret_pi(root()->type()->ret_pi());
+    print(func_impls_, "define {} {} {}(", internal, ret_t, id(root()));
 
     auto vars = root()->vars();
     for (auto sep = ""; auto var : vars.view().rsubspan(1)) {
         if (Axm::isa<mem::M>(var->type())) continue;
+        if (auto arr = var->type()->isa<Arr>())
+            if (is_simd(arr->body())) convert(arr->body()); // pre-add input vector to cache
         auto name    = id(var);
         locals_[var] = name;
         print(func_impls_, "{}{} {}", sep, convert(var->type()), name);
@@ -300,14 +348,29 @@ void Emitter::finalize() {
     print(func_impls_, "}}\n\n");
 }
 
+/*
+ Block           type              return
+BB:
+          Cn [M, a, A]         →    2 phi
+          Cn «2;A»             →    2 phi
+          Cn [M, «2;A»         →    1 phi
+Ret:
+          Cn[M,A,A]            →    1 phi
+          Cn «2;A»             →    1 phi
+          Cn[M, «2;A»]         →    1 phi
+
+Fun:
+          Cn[A, A, Cn R]       →    2 args + ret
+          Cn[«2; A», Cn R]     →    1 args + ret
+          Cn[M, A, A, Cn R]    →    2 args + ret
+          Cn[M, «2; A», Cn R]  →    1 args + ret
+*/
 void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
-
     if (app->callee() == root()->ret_var()) { // return
         std::vector<std::string> values;
         std::vector<const Def*> types;
-
         for (auto arg : app->args()) {
             if (auto val = emit_unsafe(arg); !val.empty()) {
                 values.emplace_back(val);
@@ -319,28 +382,59 @@ void Emitter::emit_epilogue(Lam* lam) {
             case 0: return bb.tail("ret void");
             case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
             default: {
-                std::string prev = "undef";
-                auto type        = convert(world().sigma(types));
-                for (size_t i = 0, n = values.size(); i != n; ++i) {
-                    auto v_elem = values[i];
-                    auto t_elem = convert(types[i]);
-                    auto namei  = "%ret_val." + std::to_string(i);
-                    bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, t_elem, v_elem, i);
-                    prev = namei;
-                }
+                std::string type;
+                std::string prev;
 
+                if (auto se = is_simd_aggregate(types)) {
+                    auto common_src = find_common_simd_src(app);
+                    if (common_src) {
+                        auto v_src = emit(common_src);
+                        auto t     = convert(common_src->type());
+                        return bb.tail("ret {} {}", t, v_src);
+                    }
+                    auto [size, elem] = *se;
+                    auto val_t        = convert(elem);
+
+                    type = std::format("<{} x {}>", size, val_t);
+                    for (auto val : values) {
+                        if (prev.empty())
+                            prev = "<";
+                        else
+                            prev += ", ";
+                        prev += std::format("{} {}", val_t, val);
+                    }
+                    prev += ">";
+                } else {
+                    prev = "undef";
+                    type = convert(world().sigma(types));
+                    for (size_t i = 0, n = values.size(); i != n; ++i) {
+                        auto v_elem = values[i];
+                        auto t_elem = convert(types[i]);
+                        auto namei  = "%ret_val." + std::to_string(i);
+                        bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, t_elem, v_elem, i);
+                        prev = namei;
+                    }
+                }
                 bb.tail("ret {} {}", type, prev);
             }
         }
+
     } else if (auto dispatch = Dispatch(app)) {
         for (auto callee : dispatch.tuple()->projs([](const Def* def) { return def->isa_mut<Lam>(); })) {
             size_t n = callee->num_tvars();
-            for (size_t i = 0; i != n; ++i) {
-                if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
-                    auto phi = callee->var(n, i);
-                    assert(!Axm::isa<mem::M>(phi->type()));
-                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
-                    locals_[phi] = id(phi);
+            if (n == 1 && is_simd(callee->var(0)->type())) {
+                auto phi = callee->var(0);
+                auto arg = emit(app->arg(n, 0));
+                lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                locals_[phi] = id(phi);
+            } else {
+                for (size_t i = 0; i != n; ++i) {
+                    if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                        auto phi = callee->var(n, i);
+                        assert(!Axm::isa<mem::M>(phi->type()));
+                        lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                        locals_[phi] = id(phi);
+                    }
                 }
             }
         }
@@ -361,16 +455,31 @@ void Emitter::emit_epilogue(Lam* lam) {
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
-        size_t n = callee->num_tvars();
-        for (size_t i = 0; i != n; ++i) {
-            if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
-                auto phi = callee->var(n, i);
-                assert(!Axm::isa<mem::M>(phi->type()));
-                lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
-                locals_[phi] = id(phi);
+
+        auto common_src = find_common_simd_src(app);
+        if (common_src) {
+            auto v_src      = emit(common_src);
+            auto callee_var = callee->var();
+            if (simd_phi_.find(callee) == simd_phi_.end()) simd_phi_[callee] = callee_var;
+            auto key = simd_phi_[callee];
+            lam2bb_[callee].phis[key].emplace_back(v_src, id(lam, true));
+            locals_[key] = id(key);
+            for (auto var : callee->vars())
+                locals_[var] = id(key);
+            locals_[callee_var] = id(key);
+        } else {
+            size_t n = callee->num_tvars();
+            for (size_t i = 0; i != n; ++i) {
+                if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                    auto phi = callee->var(n, i);
+                    assert(!Axm::isa<mem::M>(phi->type()));
+                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                    locals_[phi] = id(phi);
+                }
             }
         }
         return bb.tail("br label {}", id(callee));
+
     } else if (auto longjmp = Axm::isa<clos::longjmp>(app)) {
         declare("void @longjmp(i8*, i32) noreturn");
 
@@ -413,21 +522,9 @@ void Emitter::emit_epilogue(Lam* lam) {
             auto name  = "%" + app->unique_name() + "ret";
             auto t_ret = convert_ret_pi(ret_lam->type());
             bb.tail("{} = call {} {}({, })", name, t_ret, v_callee, args);
-
-            for (size_t i = 0, j = 0, e = ret_lam->num_vars(); i != e; ++i) {
-                auto phi = ret_lam->var(i);
-                if (Axm::isa<mem::M>(phi->type())) continue;
-
-                auto namej = name;
-                if (e > 2) {
-                    namej += '.' + std::to_string(j);
-                    bb.tail("{} = extractvalue {} {}, {}", namej, t_ret, name, j);
-                }
-                assert(!Axm::isa<mem::M>(phi->type()));
-                lam2bb_[ret_lam].phis[phi].emplace_back(namej, id(lam, true));
-                locals_[phi] = id(phi);
-                ++j;
-            }
+            auto phi = ret_lam->var();
+            lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
+            locals_[phi] = id(phi);
         }
 
         return bb.tail("br label {}", id(ret_lam));
@@ -447,10 +544,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         if (tuple->is_closed()) {
-            bool is_array = tuple->type()->isa<Arr>();
-
+            bool is_array   = tuple->type()->isa<Arr>();
+            auto simd_array = convert(tuple->type()).front() == '<'; // needed to respect pointer context
             std::string s;
-            s += is_array ? "[" : "{";
+            s += simd_array ? "<" : is_array ? "[" : "{";
             auto sep = "";
             for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
                 auto e = tuple->proj(n, i);
@@ -461,7 +558,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 }
             }
 
-            return s += is_array ? "]" : "}";
+            return s += simd_array ? ">" : is_array ? "]" : "}";
         }
 
         std::string prev = "undef";
@@ -472,7 +569,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 auto elem_t = convert(e->type());
                 // TODO: check dst vs src
                 auto namei = name + "." + std::to_string(dst);
-                prev       = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
+                if (t.front() == '<') // not using is_simd to respect the pointer context (Pointer Pointee case)
+                    prev = bb.assign(namei, "insertelement {} {}, {} {}, {} {}", t, prev, elem_t, elem, elem_t, dst);
+                else
+                    prev = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
                 dst++;
             }
         }
@@ -480,6 +580,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     };
 
     if (def->isa<Var>()) {
+        if (is_simd(def->type())) return id(def);
         auto ts = def->type()->projs();
         if (std::ranges::any_of(ts, [](auto t) { return Axm::isa<mem::M>(t); })) return {};
         return emit_tuple(def);
@@ -544,6 +645,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
         auto v_tup = emit_unsafe(tuple);
+        if (is_simd(tuple->type()) && !Axm::isa<mem::M>(tuple->type())) return v_tup;
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
         // before emitting the index, as it might be a weird value for mem vars.
@@ -554,6 +656,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             if (isa_mem_sigma_2(tuple->type())) return v_tup;
             // Adjust index, if mem is present.
             auto v_i = Axm::isa<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
+
             return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
         }
 
@@ -574,8 +677,22 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_val = emit(insert->value());
         if (auto idx = Lit::isa(insert->index())) {
             auto v_idx = emit(insert->index());
-            return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tup, v_tup, t_val, v_val, v_idx);
+            if (is_simd(insert->tuple()->type()))
+
+                return bb.assign(name, "insertelement {} {}, {} {}, i32 {}", t_tup, v_tup, t_val, v_val, v_idx);
+            else
+
+                return bb.assign(name, " insertvalue {} {}, {} {}, {}", t_tup, v_tup, t_val, v_val, v_idx);
         } else {
+            if (is_simd(insert->tuple()->type())) {
+                auto v_i = emit(insert->index());
+                auto t_i = convert(insert->index()->type());
+                if (t_i != "i32") {
+                    auto w_src = *Idx::size2bitwidth(Idx::isa(insert->index()->type()));
+                    v_i        = bb.assign(name + ".idx", "{} {} {} to i32", w_src < 32 ? "zext" : "trunc", t_i, v_i);
+                }
+                return bb.assign(name, "insertelement {} {}, {} {}, i32 {}", t_tup, v_tup, t_val, v_val, v_i);
+            }
             auto t_elem     = convert(insert->value()->type());
             auto [v_i, t_i] = emit_gep_index(insert->index());
             print(lam2bb_[root()].body().emplace_front(),
@@ -818,7 +935,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto v_size = emit(mslot->arg(1));
-        print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
+        print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee, false));
         return name;
     } else if (auto free = Axm::isa<mem::free>(def)) {
         declare("void @free(i8*)");
@@ -834,14 +951,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(load->arg(0));
         auto v_ptr     = emit(load->arg(1));
         auto t_ptr     = convert(load->arg(1)->type());
-        auto t_pointee = convert(Axm::as<mem::Ptr>(load->arg(1)->type())->arg(0));
+        auto t_pointee = convert(Axm::as<mem::Ptr>(load->arg(1)->type())->arg(0), false);
         return bb.assign(name, "load {}, {} {}", t_pointee, t_ptr, v_ptr);
     } else if (auto store = Axm::isa<mem::store>(def)) {
         emit_unsafe(store->arg(0));
         auto v_ptr = emit(store->arg(1));
         auto v_val = emit(store->arg(2));
         auto t_ptr = convert(store->arg(1)->type());
-        auto t_val = convert(store->arg(2)->type());
+        auto t_val = convert(store->arg(2)->type(), false);
         print(bb.body().emplace_back(), "store {} {}, {} {}", t_val, v_val, t_ptr, v_ptr);
         return {};
     } else if (auto q = Axm::isa<clos::alloc_jmpbuf>(def)) {
@@ -1032,6 +1149,98 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         f += llvm_suffix(round->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
+    } else if (auto zip = Axm::isa<vec::zip>(def)) {
+        auto ni_n   = zip->decurry()->decurry()->decurry()->arg();
+        auto nat_ni = *Lit::isa(ni_n->proj(2, 0));
+        auto f      = zip->decurry()->arg();
+        auto inputs = zip->arg();
+        auto t_in   = convert(inputs->proj(nat_ni, 0)->type());
+        auto t_out  = convert(def->type()); // <n x T>
+
+        std::string op;
+        std::string prev;
+
+        if (auto nat_op = Axm::isa<core::nat, 1>(f)) {
+            switch (nat_op.id()) {
+                case core::nat::add: op = "add nuw nsw"; break;
+                case core::nat::sub: op = "sub nuw nsw"; break;
+                case core::nat::mul: op = "mul nuw nsw"; break;
+            }
+        } else if (auto arith_op = Axm::isa<math::arith, 1>(f)) {
+            auto lmode = Lit::as(f->as<App>()->arg());
+            switch (arith_op.id()) {
+                case math::arith::add: op = "fadd"; break;
+                case math::arith::sub: op = "fsub"; break;
+                case math::arith::mul: op = "fmul"; break;
+                case math::arith::div: op = "fdiv"; break;
+                case math::arith::rem: op = "frem"; break;
+            }
+
+            if (lmode == math::Mode::fast)
+                op += " fast";
+            else {
+                if (lmode & math::Mode::nnan) op += " nnan";
+                if (lmode & math::Mode::ninf) op += " ninf";
+                if (lmode & math::Mode::nsz) op += " nsz";
+                if (lmode & math::Mode::arcp) op += " arcp";
+                if (lmode & math::Mode::contract) op += " contract";
+                if (lmode & math::Mode::afn) op += " afn";
+                if (lmode & math::Mode::reassoc) op += " reassoc";
+            }
+        } else if (auto ncmp_op = Axm::isa<core::ncmp, 1>(f)) {
+            op = "icmp ";
+            switch (ncmp_op.id()) {
+                case core::ncmp::e: op += "eq"; break;
+                case core::ncmp::ne: op += "ne"; break;
+                case core::ncmp::g: op += "ugt"; break;
+                case core::ncmp::ge: op += "uge"; break;
+                case core::ncmp::l: op += "ult"; break;
+                case core::ncmp::le: op += "ule"; break;
+                default: fe::unreachable();
+            }
+        } else if (auto icmp_op = Axm::isa<core::icmp, 1>(f)) {
+            op = "icmp ";
+            switch (icmp_op.id()) {
+                case core::icmp::e: op += "eq"; break;
+                case core::icmp::ne: op += "ne"; break;
+                case core::icmp::sg: op += "sgt"; break;
+                case core::icmp::sge: op += "sge"; break;
+                case core::icmp::sl: op += "slt"; break;
+                case core::icmp::sle: op += "sle"; break;
+                case core::icmp::ug: op += "ugt"; break;
+                case core::icmp::uge: op += "uge"; break;
+                case core::icmp::ul: op += "ult"; break;
+                case core::icmp::ule: op += "ule"; break;
+                default: fe::unreachable();
+            }
+        } else if (auto mcmp_op = Axm::isa<math::cmp, 1>(f)) {
+            op = "fcmp ";
+            switch (mcmp_op.id()) {
+                case math::cmp::e: op += "oeq"; break;
+                case math::cmp::l: op += "olt"; break;
+                case math::cmp::le: op += "ole"; break;
+                case math::cmp::g: op += "ogt"; break;
+                case math::cmp::ge: op += "oge"; break;
+                case math::cmp::ne: op += "one"; break;
+                case math::cmp::o: op += "ord"; break;
+                case math::cmp::u: op += "uno"; break;
+                case math::cmp::ue: op += "ueq"; break;
+                case math::cmp::ul: op += "ult"; break;
+                case math::cmp::ule: op += "ule"; break;
+                case math::cmp::ug: op += "ugt"; break;
+                case math::cmp::uge: op += "uge"; break;
+                case math::cmp::une: op += "une"; break;
+                default: fe::unreachable();
+            }
+        } else {
+            error("unhandled vec.zip operation: {}", f);
+        }
+
+        auto v1 = emit(inputs->proj(nat_ni, 0));
+        auto v2 = emit(inputs->proj(nat_ni, 1));
+        prev    = bb.assign(name, "{} {} {}, {}", op, t_in, v1, v2);
+        return prev;
+        error("unhandled vec.zip operation: {}", f);
     }
     error("unhandled def in LLVM backend: {} : {}", def, def->type());
 }

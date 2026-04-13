@@ -75,32 +75,46 @@ Nest::Node* Nest::make_node(Def* mut, Node* inest) {
     return res;
 }
 
-const Nest::Node* Nest::lca(const Node* n, const Node* m) {
-    while (n->level() < m->level())
-        m = m->inest();
-    while (m->level() < n->level())
-        n = n->inest();
-    while (n != m) {
-        // Walk back sibling dependencies if there is only one user and it is
-        // not part of a mutually recursive loop.
-        // After [eta expansion](mim:EtaExpPhase), any function is either well-known
-        // or only used once. Functions that are only used once do not have arguments,
-        // as all of them get reduced to the expression passed by the single call site.
-        // Walking up unique users is therefore correct, as any direct call from the
-        // immediate nester must be unknown for siblings to be reachable as well, which
-        // is not possible, meaning that control has to go through that single neighbor.
-        // TODO: support the possibility to opt out from this
-        if (!n->is_recursive() && n->sibl_deps<false>().num() == 1) {
-            n = *n->sibl_deps<false>().begin();
-            continue;
+void Nest::assign_postorder_numbers() const {
+    if (root()->postorder_number_.has_value()) return;
+
+    auto number = 0;
+
+    std::function<void(const Nest::Node*)> visit = [&](const Nest::Node* node) {
+        if (node->postorder_number_.has_value()) return; // already visited
+        node->postorder_number_ = 0;                     // mark in progress
+        for (auto op : node->mut()->deps()) {
+            for (auto mut : op->local_muts())
+                if (auto succ = node->nest()[mut]) visit(succ);
         }
-        if (!m->is_recursive() && m->sibl_deps<false>().num() == 1) {
-            m = *m->sibl_deps<false>().begin();
-            continue;
-        }
-        n = n->inest();
-        m = m->inest();
+        node->postorder_number_ = ++number;
+    };
+
+    if (root()->mut()) {
+        // not virtual root, visit
+        visit(root());
+    } else {
+        // virtual root, visit children
+        for (auto [_, node] : root()->children())
+            visit(node);
+        root()->postorder_number_ = ++number;
     }
+}
+
+template<bool bootstrapping>
+const Nest::Node* Nest::lca(const Node* n, const Node* m) {
+    while (n != m) {
+        // Nest::lca is also used within with_dominance and should not call it recursively
+        if constexpr (!bootstrapping) {
+            n->calc_dominance();
+            m->calc_dominance();
+        }
+        if (n->postorder_number_ < m->postorder_number_)
+            n = n->idom_ ? n->idom_ : n->inest();
+        else if (m->postorder_number_ < n->postorder_number_)
+            m = m->idom_ ? m->idom_ : m->inest();
+    }
+
     return n;
 }
 
@@ -175,5 +189,61 @@ uint32_t Nest::Node::tarjan(uint32_t i, Node* inest, Stack& stack) {
 
     return i;
 }
+
+/// Calculates dominance using Cooper-Harvey-Kennedy algorithm
+/// from Cooper et al, "A Simple, Fast Dominance Algorithm".
+/// https://www.clear.rice.edu/comp512/Lectures/Papers/TR06-33870-Dom.pdf
+const Nest::Node* Nest::Node::calc_dominance() const {
+    if (idom_ || is_root() || !inest()->mut()) return this;
+    nest().assign_postorder_numbers();
+
+    if (!inest()->mut()) idom_ = inest();
+
+    // Holds all siblings in reverse post-order coming from the parent
+    absl::flat_hash_set<const Node*> visited;
+    Vector<const Node*> nodes;
+
+    // Initialize entry nodes directly referenced by the parent
+    for (auto op : inest()->mut()->deps()) {
+        for (auto local_mut : op->local_muts())
+            if (auto node = nest()[local_mut]; node && node->inest() == inest()) node->idom_ = inest();
+    }
+
+    std::function<void(const Node*)> visit = [&](const Node* node) {
+        if (visited.contains(node)) return; // already visited
+        visited.insert(node);
+        for (auto child : node->sibl_deps())
+            visit(child);
+        nodes.push_back(node);
+    };
+
+    // Traverse siblings in postorder
+    for (auto op : inest()->mut()->deps()) {
+        for (auto mut : op->local_muts())
+            if (auto node = nest()[mut]; node && node->inest() == inest()) visit(node);
+    }
+
+    // Actual dominance algorithm
+    for (bool todo = true; todo;) {
+        todo = false;
+        for (auto node : nodes | std::ranges::views::reverse) {
+            // skip entry nodes
+            if (node->idom_ == inest()) continue;
+
+            const Node* new_idom = nullptr;
+            for (auto user : node->sibl_deps<false>())
+                if (user->idom_) new_idom = new_idom ? Nest::lca<true>(new_idom, user) : user;
+            if (node->idom_ != new_idom) {
+                node->idom_ = new_idom;
+                todo        = true;
+            }
+        }
+    }
+
+    return this;
+}
+
+template const Nest::Node* Nest::lca<true>(const Node*, const Node*);
+template const Nest::Node* Nest::lca<false>(const Node*, const Node*);
 
 } // namespace mim
