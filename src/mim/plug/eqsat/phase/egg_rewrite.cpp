@@ -195,6 +195,8 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
         case MimKind::Tuple: res = convert_tuple(id, node); break;
         case MimKind::Extract: res = convert_extract(id, node); break;
         case MimKind::Ins: res = convert_ins(id, node); break;
+        case MimKind::Join: res = convert_join(id, node); break;
+        case MimKind::Meet: res = convert_meet(id, node); break;
         case MimKind::Bot: res = convert_bot(id, node); break;
         case MimKind::Top: res = convert_top(id, node); break;
         case MimKind::Arr: res = convert_arr(id, node); break;
@@ -328,12 +330,41 @@ const Def* EggRewrite::convert_ins(uint32_t id, MimNode node) {
     return new_insert;
 }
 
+// (join <type1> <type2> ...)
+const Def* EggRewrite::convert_join(uint32_t id, MimNode node) {
+    DefVec types;
+    for (auto child : node.children) {
+        auto type = get_def(child);
+        if (type) types.push_back(type);
+    }
+    if (types.size() > 0) {
+        auto new_join = new_world().join(types);
+        return new_join;
+    }
+    return nullptr;
+}
+
+// (meet <type1> <type2> ...)
+const Def* EggRewrite::convert_meet(uint32_t id, MimNode node) {
+    DefVec types;
+    for (auto child : node.children) {
+        auto type = get_def(child);
+        if (type) types.push_back(type);
+    }
+    if (types.size() > 0) {
+        auto new_meet = new_world().meet(types);
+        return new_meet;
+    }
+    return nullptr;
+}
+
 // (bot <type>)
 const Def* EggRewrite::convert_bot(uint32_t id, MimNode node) {
     auto type    = get_def(node.children[0]);
     auto new_bot = new_world().bot(type);
     return new_bot;
 }
+
 // (top <type>)
 const Def* EggRewrite::convert_top(uint32_t id, MimNode node) {
     auto type    = get_def(node.children[0]);
