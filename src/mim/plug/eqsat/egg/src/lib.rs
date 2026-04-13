@@ -145,6 +145,8 @@ pub mod ffi {
         Extract,
         Ins,
         Rule,
+        Join,
+        Meet,
         Bot,
         Top,
         Arr,
@@ -217,6 +219,8 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
             Ins(children) => nodes.push(new_mim(MimKind::Ins, children, 0, String::new())),
             Rule(children) => nodes.push(new_mim(MimKind::Rule, children, 0, String::new())),
 
+            Join(children) => nodes.push(new_mim(MimKind::Join, children, 0, String::new())),
+            Meet(children) => nodes.push(new_mim(MimKind::Meet, children, 0, String::new())),
             Bot(child) => nodes.push(new_mim(MimKind::Bot, &[*child], 0, String::new())),
             Top(child) => nodes.push(new_mim(MimKind::Top, &[*child], 0, String::new())),
             Arr(children) => nodes.push(new_mim(MimKind::Arr, children, 0, String::new())),

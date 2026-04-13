@@ -38,6 +38,10 @@ define_language! {
 
         // TYPES
 
+        // (join <type1> <type2> ...)
+        "join" = Join(Box<[Id]>),
+        // (meet <type1> <type2> ...)
+        "meet" = Meet(Box<[Id]>),
         // (bot <type>)
         "bot" = Bot(Id),
         // (top <type>)

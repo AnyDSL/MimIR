@@ -62,6 +62,7 @@ private:
     const Def* init_con(uint32_t id, MimNode node);
     const Def* init_let(uint32_t id, MimNode node);
 
+    // TODO: support for join and meet
     const Def* convert(uint32_t id, bool recurse = false);
     const Def* convert_let(uint32_t id, MimNode node);
     const Def* convert_lam(uint32_t id, MimNode node);

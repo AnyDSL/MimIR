@@ -277,6 +277,8 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
             tab.lnprint(os, "{})", emit_type(bb, lam->type()->dom()));
             --tab;
         } else {
+            // TODO: loss of information if nested arr or sigma var i.e. in rebuild_union.mim we lose t1 and t2 in
+            // combine and instead just emit arr of size 2 and its uid
             for (int i = 0; auto var : lam->vars()) {
                 if (var) {
                     tab.lnprint(os, "(var {}", id(var));
@@ -367,10 +369,34 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         print(os, "(app {} {})", emit_type(bb, app->callee()), emit_type(bb, app->arg()));
     } else if (auto ax = type->isa<Axm>()) {
         print(os, "{}", id(ax));
+    } else if (auto var = type->isa<Var>()) {
+        print(os, "{}", id(var));
     } else if (auto hole = type->isa<Hole>()) {
         print(os, "(hole {})", id(hole));
     } else if (auto extract = type->isa<Extract>()) {
-        print(os, "(extract {} {})", emit_type(bb, extract->tuple()), emit_type(bb, extract->index()));
+        auto tuple = extract->tuple();
+        auto index = extract->index();
+        // See explanation for the same thing in emit_bb
+        auto is_nested_proj = false;
+        if (auto lit = Lit::isa(index); lit && tuple->isa<Extract>()) {
+            auto curr_tuple = tuple;
+            auto curr_index = index;
+            while (curr_tuple != nullptr && curr_index != nullptr)
+                if (auto lit = Lit::isa(curr_index); lit && curr_tuple->isa<Extract>()) {
+                    curr_tuple = tuple->as<Extract>()->tuple();
+                    curr_index = tuple->as<Extract>()->index();
+                    continue;
+                } else if (auto lit = Lit::isa(curr_index); lit && curr_tuple->isa<Var>()) {
+                    is_nested_proj = true;
+                    break;
+                } else {
+                    break;
+                }
+        }
+        if (auto lit = Lit::isa(index); (lit && tuple->isa<Var>()) || is_nested_proj)
+            print(os, "{}", id(extract));
+        else
+            print(os, "(extract {} {})", emit_type(bb, tuple), emit_type(bb, index));
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
             if (level == 0) print(os, "(type (lit 0))");
@@ -382,6 +408,10 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         print(os, "Univ");
     } else if (auto reform = type->isa<Reform>()) {
         print(os, "(reform {})", emit_type(bb, reform->meta_type()));
+    } else if (auto join = type->isa<Join>()) {
+        print(os, "(join { })", Elem(join->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
+    } else if (auto meet = type->isa<Meet>()) {
+        print(os, "(meet { })", Elem(meet->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else {
         error("unsupported type '{}'", type);
         fe::unreachable();
