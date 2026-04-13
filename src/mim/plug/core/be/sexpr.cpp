@@ -277,8 +277,8 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
             tab.lnprint(os, "{})", emit_type(bb, lam->type()->dom()));
             --tab;
         } else {
-            // TODO: loss of information if nested arr or sigma var i.e. in rebuild_union.mim we lose t1 and t2 in
-            // combine and instead just emit arr of size 2 and its uid
+            // TODO: nested arr or sigma var i.e. in rebuild_union.mim we lose t1 and t2 in combine and instead just
+            // emit arr of size 2 and its uid (look into how nested projs are emitted in dump.cpp)
             for (int i = 0; auto var : lam->vars()) {
                 if (var) {
                     tab.lnprint(os, "(var {}", id(var));
@@ -355,7 +355,7 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         if (var) {
             assert(var->arity() == sigma->arity());
             print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) {
-                      if (auto v = var->proj(i++))
+                      if (auto v = var->proj(i++); !v->sym().empty())
                           print(os, "(var {} {})", id(v), emit_type(bb, op, v));
                       else
                           print(os, "{}", emit_type(bb, op, v));
@@ -603,6 +603,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto guard_val = emit_bb(bb, rule->guard());
         tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
         print(rewrite_rules_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
+
+    } else if (auto inj = def->isa<Inj>()) {
+        auto value_val = emit_bb(bb, inj->value());
+        auto type_val  = emit_type(bb, inj->type());
+        tab.lnprint(os, "(inj");
+        tab.print(os, "{}", value_val);
+        tab.print(os, "{}", type_val);
+        print(os, ")");
 
     } else {
         error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
