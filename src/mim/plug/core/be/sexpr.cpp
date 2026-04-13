@@ -2,8 +2,6 @@
 #include <regex>
 #include <sstream>
 
-#include <absl/container/btree_set.h>
-
 #include <mim/plug/core/be/sexpr.h>
 #include <mim/plug/eqsat/eqsat.h>
 #include <mim/plug/math/math.h>
@@ -12,9 +10,6 @@
 
 #include "mim/be/emitter.h"
 #include "mim/util/print.h"
-
-using namespace std::string_literals;
-using namespace std::literals;
 
 namespace mim::sexpr {
 
@@ -84,7 +79,6 @@ public:
     void emit_lam(Lam* lam, MutSet& done);
     std::string emit_head(BB& bb, Lam* lam, bool as_binding = false);
     std::string emit_type(BB& bb, const Def* type, const Def* var = nullptr);
-    std::string emit_curried_app(BB& bb, const App& app);
     std::string emit_bb(BB& bb, const Def* def);
 
 private:
@@ -109,16 +103,20 @@ std::string Emitter::id(const Def* def) const {
     return def->unique_name();
 }
 
-// Adjusts the base indentation of a string like
+// Adjusts the base indentation of a term-string like
+//
 // "        (app
 //              foo
 //              bar
 //          )"
+//
 // to the number of tabs specified with 'tabs' (i.e. for tabs=1)
+//
 // "    (app
 //          foo
 //          bar
 //      )"
+//
 std::string Emitter::indent(size_t tabs, std::string term) {
     std::string indent(tabs * 4, ' ');
     std::string result;
@@ -138,13 +136,17 @@ std::string Emitter::indent(size_t tabs, std::string term) {
     return result;
 }
 
-// Removes all indentation so a string like
+// Removes all indentation so a term-string like
+//
 // "    (app
 //          foo
 //          bar
 //      )"
-// becomes
+//
+// becomes flattened like below
+//
 // "(app foo bar)"
+//
 std::string Emitter::flatten(std::string term) {
     term = std::regex_replace(term, std::regex("( {4})"), "");
 
@@ -179,7 +181,7 @@ void Emitter::emit_imported(Lam* lam) {
     ++tab;
     tab.lnprint(func_decls_, "(sigma");
     ++tab;
-    for (auto dom : lam->doms().view())
+    for (auto dom : lam->doms())
         tab.lnprint(func_decls_, "{}", emit_type(bb, dom));
     print(func_decls_, "))\n\n");
     --tab;
@@ -388,23 +390,6 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
     return types_[type] = os.str();
 }
 
-std::string Emitter::emit_curried_app(BB& bb, const App& app) {
-    std::ostringstream os;
-    tab.lnprint(os, "(app");
-
-    if (auto app_callee = app.callee()->isa<App>()) {
-        ++tab;
-        tab.print(os, "{}", emit_curried_app(bb, *app_callee));
-        --tab;
-    } else
-        tab.print(os, "{}", emit_bb(bb, app.callee()));
-
-    tab.print(os, "{}", emit_bb(bb, app.arg()));
-
-    print(os, ")");
-    return os.str();
-}
-
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     std::ostringstream os;
 
@@ -542,13 +527,22 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, "{}", id(var));
 
     } else if (auto app = def->isa<App>()) {
-        auto app_val = emit_curried_app(bb, *app);
+        auto callee_val = emit_bb(bb, app->callee());
+        auto arg_val    = emit_bb(bb, app->arg());
         if (app->sym().empty()) {
-            tab.print(os, "{}", app_val);
+            tab.lnprint(os, "(app");
+            tab.print(os, "{}", callee_val);
+            tab.print(os, "{}", arg_val);
+            print(os, ")");
         } else {
             bb.assign(tab, id(app), [&](auto& os) {
                 ++tab;
-                tab.lnprint(os, "{}", indent(tab.indent(), app_val));
+                tab.lnprint(os, "(app");
+                ++tab;
+                tab.print(os, "{}", indent(tab.indent(), callee_val));
+                tab.print(os, "{}", indent(tab.indent(), arg_val));
+                --tab;
+                print(os, ")");
                 --tab;
             });
             tab.lnprint(os, "{}", id(app));
