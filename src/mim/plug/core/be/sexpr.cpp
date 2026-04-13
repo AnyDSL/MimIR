@@ -61,11 +61,9 @@ struct BB {
 
     friend void swap(BB& a, BB& b) noexcept {
         using std::swap;
-        swap(a.phis, b.phis);
         swap(a.parts, b.parts);
     }
 
-    DefMap<std::deque<std::pair<std::string, std::string>>> phis;
     std::array<std::deque<std::ostringstream>, 3> parts;
     std::set<std::string> assigned;
 };
@@ -84,9 +82,9 @@ public:
     void emit_epilogue(Lam*);
     void finalize();
     void emit_lam(Lam* lam, MutSet& done);
-    std::string emit_header(BB& bb, Lam* lam, bool as_binding = false);
-    std::string emit_curried_app(BB& bb, const App& app);
+    std::string emit_head(BB& bb, Lam* lam, bool as_binding = false);
     std::string emit_type(BB& bb, const Def* type, const Def* var = nullptr);
+    std::string emit_curried_app(BB& bb, const App& app);
     std::string emit_bb(BB& bb, const Def* def);
 
 private:
@@ -140,7 +138,7 @@ std::string Emitter::indent(size_t tabs, std::string term) {
     return result;
 }
 
-// Does the same as emit_bb but removes all indentation so a string like
+// Removes all indentation so a string like
 // "    (app
 //          foo
 //          bar
@@ -155,85 +153,6 @@ std::string Emitter::flatten(std::string term) {
 
     term = std::regex_replace(term, std::regex("(\\r|\\n)"), " ");
     return term;
-}
-
-std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullptr*/) {
-    if (auto i = types_.find(type); i != types_.end()) return i->second;
-
-    std::ostringstream s;
-    if (type->isa<Nat>()) {
-        print(s, "Nat");
-    } else if (auto size = Idx::isa(type)) {
-        if (auto lit_size = Idx::size2bitwidth(size)) {
-            switch (*lit_size) {
-                case 1: return types_[type] = "Bool";
-                case 8: return types_[type] = "I8";
-                case 16: return types_[type] = "I16";
-                case 32: return types_[type] = "I32";
-                case 64: return types_[type] = "I64";
-                default: break;
-            }
-        }
-        print(s, "(idx (lit {}))", size);
-    } else if (auto lit = type->isa<Lit>()) {
-        if (lit->type()->isa<Nat>())
-            print(s, "(lit {})", lit->get());
-        else
-            print(s, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
-    } else if (auto arr = type->isa<Arr>()) {
-        if (auto arity = Lit::isa(arr->arity())) {
-            u64 size = *arity;
-            print(s, "(arr (lit {}) {})", size, emit_type(bb, arr->body()));
-        } else if (auto top = arr->arity()->isa<Top>()) {
-            print(s, "(arr (top {}) {})", emit_type(bb, top->type()), emit_type(bb, arr->body()));
-        } else {
-            print(s, "(arr {} {})", flatten(emit_bb(bb, arr->arity())), emit_type(bb, arr->body()));
-        }
-    } else if (auto pi = type->isa<Pi>()) {
-        if (Pi::isa_cn(pi))
-            s << "(cn " << emit_type(bb, pi->dom()) << ")";
-        else
-            s << "(pi " << emit_type(bb, pi->dom()) << " " << emit_type(bb, pi->codom()) << ")";
-    } else if (auto sigma = type->isa<Sigma>()) {
-        size_t i = 0;
-        if (var) {
-            assert(var->arity() == sigma->arity());
-            print(s, "(sigma { })", Elem(sigma->ops(), [&](auto op) {
-                      if (auto v = var->proj(i++))
-                          print(s, "(var {} {})", id(v), emit_type(bb, op, v));
-                      else
-                          s << op;
-                  }));
-        } else {
-            print(s, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(s, "{}", emit_type(bb, op)); }));
-        }
-    } else if (auto tuple = type->isa<Tuple>()) {
-        print(s, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(s, "{}", emit_type(bb, op)); }));
-    } else if (auto app = type->isa<App>()) {
-        print(s, "(app {} {})", emit_type(bb, app->callee()), emit_type(bb, app->arg()));
-    } else if (auto ax = type->isa<Axm>()) {
-        print(s, "{}", id(ax));
-    } else if (auto hole = type->isa<Hole>()) {
-        print(s, "(hole {})", id(hole));
-    } else if (auto extract = type->isa<Extract>()) {
-        print(s, "(extract {} {})", emit_type(bb, extract->tuple()), emit_type(bb, extract->index()));
-    } else if (auto mType = type->isa<Type>()) {
-        if (auto level = Lit::isa(mType->level())) {
-            if (level == 0) print(s, "(type (lit 0))");
-            if (level == 1) print(s, "(type (lit 1))");
-        } else {
-            print(s, "(type {})", emit_type(bb, mType->level()));
-        }
-    } else if (type->isa<Univ>()) {
-        print(s, "Univ");
-    } else if (auto reform = type->isa<Reform>()) {
-        print(s, "(reform {})", emit_type(bb, reform->meta_type()));
-    } else {
-        error("unsupported type '{}'", type);
-        fe::unreachable();
-    }
-
-    return types_[type] = s.str();
 }
 
 void Emitter::start() {
@@ -287,7 +206,53 @@ void Emitter::finalize() {
     emit_lam(root_lam, done);
 }
 
-std::string Emitter::emit_header(BB& bb, Lam* lam, bool as_binding) {
+void Emitter::emit_lam(Lam* lam, MutSet& done) {
+    done.emplace(lam);
+    assert(lam2bb_.contains(lam));
+    auto& bb = lam2bb_[lam];
+
+    if (lam->is_closed())
+        print(func_impls_, "{}", emit_head(bb, lam));
+    else
+        print(func_impls_, "{}", emit_head(bb, lam, true));
+
+    ++tab;
+    // Keeps count of parentheses opened by let-bindings that need to be closed later on
+    auto unclosed_bindings = 0;
+    for (auto op : lam->deps()) {
+        for (auto mut : op->local_muts())
+            if (auto next = nest()[mut]) {
+                if (next->mut()->isa<Lam>() && !done.contains(next->mut())) {
+                    auto next_lam = next->mut()->as_mut<Lam>();
+                    emit_lam(next_lam, done);
+                    unclosed_bindings++;
+                }
+            }
+    }
+
+    for (auto& term : bb.body()) {
+        auto opened = std::ranges::count(term.str(), '(');
+        auto closed = std::ranges::count(term.str(), ')');
+        unclosed_bindings += opened - closed;
+        print(func_impls_, "{}", indent(tab.indent(), term.str()));
+    }
+
+    for (auto& term : bb.tail())
+        print(func_impls_, "{}", indent(tab.indent(), term.str()));
+
+    std::string closing_parens(unclosed_bindings, ')');
+    print(func_impls_, "{}", closing_parens);
+    --tab;
+
+    if (lam->is_closed())
+        print(func_impls_, ")\n\n");
+    else {
+        --tab;
+        print(func_impls_, ")");
+    }
+}
+
+std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     std::ostringstream os;
 
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
@@ -339,57 +304,88 @@ std::string Emitter::emit_header(BB& bb, Lam* lam, bool as_binding) {
         --tab;
     }
 
-    // emit_unsafe() for Defs that were already emitted uses caching which messes up indentation.
-    // If we don't need basic blocks we just use emit_bb() with some dummy basic block instead.
     tab.print(os, "{}", emit_bb(bb, lam->filter()));
 
     return os.str();
 }
 
-void Emitter::emit_lam(Lam* lam, MutSet& done) {
-    done.emplace(lam);
-    assert(lam2bb_.contains(lam));
-    auto& bb = lam2bb_[lam];
+std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullptr*/) {
+    if (auto i = types_.find(type); i != types_.end()) return i->second;
 
-    if (lam->is_closed())
-        print(func_impls_, "{}", emit_header(bb, lam));
-    else
-        print(func_impls_, "{}", emit_header(bb, lam, true));
-
-    ++tab;
-    // Keeps count of parentheses opened by let-bindings that need to be closed later on
-    auto unclosed_bindings = 0;
-    for (auto op : lam->deps()) {
-        for (auto mut : op->local_muts())
-            if (auto next = nest()[mut]) {
-                if (next->mut()->isa<Lam>() && !done.contains(next->mut())) {
-                    auto next_lam = next->mut()->as_mut<Lam>();
-                    emit_lam(next_lam, done);
-                    unclosed_bindings++;
-                }
+    std::ostringstream os;
+    if (type->isa<Nat>()) {
+        print(os, "Nat");
+    } else if (auto size = Idx::isa(type)) {
+        if (auto lit_size = Idx::size2bitwidth(size)) {
+            switch (*lit_size) {
+                case 1: return types_[type] = "Bool";
+                case 8: return types_[type] = "I8";
+                case 16: return types_[type] = "I16";
+                case 32: return types_[type] = "I32";
+                case 64: return types_[type] = "I64";
+                default: break;
             }
+        }
+        print(os, "(idx (lit {}))", size);
+    } else if (auto lit = type->isa<Lit>()) {
+        if (lit->type()->isa<Nat>())
+            print(os, "(lit {})", lit->get());
+        else
+            print(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
+    } else if (auto arr = type->isa<Arr>()) {
+        if (auto arity = Lit::isa(arr->arity())) {
+            u64 size = *arity;
+            print(os, "(arr (lit {}) {})", size, emit_type(bb, arr->body()));
+        } else if (auto top = arr->arity()->isa<Top>()) {
+            print(os, "(arr (top {}) {})", emit_type(bb, top->type()), emit_type(bb, arr->body()));
+        } else {
+            print(os, "(arr {} {})", flatten(emit_bb(bb, arr->arity())), emit_type(bb, arr->body()));
+        }
+    } else if (auto pi = type->isa<Pi>()) {
+        if (Pi::isa_cn(pi))
+            print(os, "(cn {})", emit_type(bb, pi->dom()));
+        else
+            print(os, "(pi {} {})", emit_type(bb, pi->dom()), emit_type(bb, pi->codom()));
+    } else if (auto sigma = type->isa<Sigma>()) {
+        size_t i = 0;
+        if (var) {
+            assert(var->arity() == sigma->arity());
+            print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) {
+                      if (auto v = var->proj(i++))
+                          print(os, "(var {} {})", id(v), emit_type(bb, op, v));
+                      else
+                          print(os, "{}", emit_type(bb, op, v));
+                  }));
+        } else {
+            print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
+        }
+    } else if (auto tuple = type->isa<Tuple>()) {
+        print(os, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
+    } else if (auto app = type->isa<App>()) {
+        print(os, "(app {} {})", emit_type(bb, app->callee()), emit_type(bb, app->arg()));
+    } else if (auto ax = type->isa<Axm>()) {
+        print(os, "{}", id(ax));
+    } else if (auto hole = type->isa<Hole>()) {
+        print(os, "(hole {})", id(hole));
+    } else if (auto extract = type->isa<Extract>()) {
+        print(os, "(extract {} {})", emit_type(bb, extract->tuple()), emit_type(bb, extract->index()));
+    } else if (auto mType = type->isa<Type>()) {
+        if (auto level = Lit::isa(mType->level())) {
+            if (level == 0) print(os, "(type (lit 0))");
+            if (level == 1) print(os, "(type (lit 1))");
+        } else {
+            print(os, "(type {})", emit_type(bb, mType->level()));
+        }
+    } else if (type->isa<Univ>()) {
+        print(os, "Univ");
+    } else if (auto reform = type->isa<Reform>()) {
+        print(os, "(reform {})", emit_type(bb, reform->meta_type()));
+    } else {
+        error("unsupported type '{}'", type);
+        fe::unreachable();
     }
 
-    for (auto& term : bb.body()) {
-        auto opened = std::ranges::count(term.str(), '(');
-        auto closed = std::ranges::count(term.str(), ')');
-        unclosed_bindings += opened - closed;
-        print(func_impls_, "{}", indent(tab.indent(), term.str()));
-    }
-
-    for (auto& term : bb.tail())
-        print(func_impls_, "{}", indent(tab.indent(), term.str()));
-
-    std::string closing_parens(unclosed_bindings, ')');
-    print(func_impls_, "{}", closing_parens);
-    --tab;
-
-    if (lam->is_closed())
-        print(func_impls_, ")\n\n");
-    else {
-        --tab;
-        print(func_impls_, ")");
-    }
+    return types_[type] = os.str();
 }
 
 std::string Emitter::emit_curried_app(BB& bb, const App& app) {
@@ -443,32 +439,30 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
     } else if (auto tuple = def->isa<Tuple>()) {
         tab.lnprint(os, "(tuple");
-        for (auto e : tuple->ops())
-            if (auto v_elem = emit_bb(bb, e); !v_elem.empty()) os << v_elem;
+        for (auto elem : tuple->ops())
+            if (auto elem_val = emit_bb(bb, elem); !elem_val.empty()) print(os, "{}", elem_val);
         print(os, ")");
 
-    } else if (auto seq = def->isa<Seq>()) {
-        auto shape = seq->arity();
-        auto body  = seq->body();
-        if (seq->sym().empty()) {
+    } else if (auto pack = def->isa<Pack>()) {
+        auto arity_val = emit_bb(bb, pack->arity());
+        auto body_val  = emit_bb(bb, pack->body());
+        if (pack->sym().empty()) {
             tab.lnprint(os, "(pack");
-            tab.print(os, "{}", emit_bb(bb, shape));
-            tab.print(os, "{}", emit_bb(bb, body));
+            tab.print(os, "{}", arity_val);
+            tab.print(os, "{}", body_val);
             print(os, ")");
         } else {
-            auto body_val  = emit_bb(bb, body);
-            auto shape_val = emit_bb(bb, shape);
-            bb.assign(tab, id(seq), [&](auto& os) {
+            bb.assign(tab, id(pack), [&](auto& os) {
                 ++tab;
                 tab.lnprint(os, "(pack");
                 ++tab;
-                tab.print(os, "{}", indent(tab.indent(), shape_val));
+                tab.print(os, "{}", indent(tab.indent(), arity_val));
                 tab.print(os, "{}", indent(tab.indent(), body_val));
                 --tab;
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(seq));
+            tab.lnprint(os, "{}", id(pack));
         }
 
     } else if (auto extract = def->isa<Extract>()) {
@@ -520,19 +514,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
     } else if (auto insert = def->isa<Insert>()) {
-        auto tuple = insert->tuple();
-        auto index = insert->index();
-        auto value = insert->value();
+        auto tuple_val = emit_bb(bb, insert->tuple());
+        auto index_val = emit_bb(bb, insert->index());
+        auto value_val = emit_bb(bb, insert->value());
         if (insert->sym().empty()) {
             tab.lnprint(os, "(ins");
-            tab.print(os, "{}", emit_bb(bb, tuple));
-            tab.print(os, "{}", emit_bb(bb, index));
-            tab.print(os, "{}", emit_bb(bb, value));
+            tab.print(os, "{}", tuple_val);
+            tab.print(os, "{}", index_val);
+            tab.print(os, "{}", value_val);
             print(os, ")");
         } else {
-            auto tuple_val = emit_bb(bb, tuple);
-            auto index_val = emit_bb(bb, index);
-            auto value_val = emit_bb(bb, value);
             bb.assign(tab, id(insert), [&](auto& os) {
                 ++tab;
                 tab.lnprint(os, "(ins");
@@ -587,11 +578,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto rhs_val   = emit_bb(bb, rule->rhs());
         auto guard_val = emit_bb(bb, rule->guard());
         tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
-
-        rewrite_rules_ << "(rule" << indent(1, lhs_val) << indent(1, rhs_val) << indent(1, guard_val) << ")\n\n";
+        print(rewrite_rules_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
 
     } else {
         error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
+        fe::unreachable();
     }
     --tab;
 
