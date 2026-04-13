@@ -3,8 +3,12 @@ plugin eqsat;
 fun extern combine (t1 t2: *) : * =
     return t1 ∪ t2;
 
-fun extern tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 = return tup#i;
+fun extern tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 =
+    return tup#i;
 
+// TODO: - Can't test if inj works correctly because the functions below
+//         are somehow internally modeled as lambdas without a ret_var
+//
 // fun extern inject (t1 t2: *) (x:t1) : t1 ∪ t2 =
 //     return (x inj t1 ∪ t2);
 //
