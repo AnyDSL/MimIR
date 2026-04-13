@@ -143,8 +143,9 @@ pub mod ffi {
         Pack,
         Tuple,
         Extract,
-        Ins,
+        Insert,
         Rule,
+        Inj,
         Join,
         Meet,
         Bot,
@@ -205,19 +206,17 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
     for node in rexpr.as_ref() {
         match node {
             Let(children) => nodes.push(new_mim(MimKind::Let, children, 0, String::new())),
-
             Lam(children) => nodes.push(new_mim(MimKind::Lam, children, 0, String::new())),
             Con(children) => nodes.push(new_mim(MimKind::Con, children, 0, String::new())),
             App(children) => nodes.push(new_mim(MimKind::App, children, 0, String::new())),
-
             Mim::Var(children) => nodes.push(new_mim(MimKind::Var, children, 0, String::new())),
             Lit(children) => nodes.push(new_mim(MimKind::Lit, children, 0, String::new())),
-
             Pack(children) => nodes.push(new_mim(MimKind::Pack, children, 0, String::new())),
             Tuple(children) => nodes.push(new_mim(MimKind::Tuple, children, 0, String::new())),
             Extract(children) => nodes.push(new_mim(MimKind::Extract, children, 0, String::new())),
-            Ins(children) => nodes.push(new_mim(MimKind::Ins, children, 0, String::new())),
+            Insert(children) => nodes.push(new_mim(MimKind::Insert, children, 0, String::new())),
             Rule(children) => nodes.push(new_mim(MimKind::Rule, children, 0, String::new())),
+            Inj(children) => nodes.push(new_mim(MimKind::Inj, children, 0, String::new())),
 
             Join(children) => nodes.push(new_mim(MimKind::Join, children, 0, String::new())),
             Meet(children) => nodes.push(new_mim(MimKind::Meet, children, 0, String::new())),

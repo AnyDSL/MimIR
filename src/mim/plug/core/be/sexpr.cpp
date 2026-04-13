@@ -533,7 +533,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto index_val = emit_bb(bb, insert->index());
         auto value_val = emit_bb(bb, insert->value());
         if (insert->sym().empty()) {
-            tab.lnprint(os, "(ins");
+            tab.lnprint(os, "(insert");
             tab.print(os, "{}", tuple_val);
             tab.print(os, "{}", index_val);
             tab.print(os, "{}", value_val);
@@ -541,7 +541,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         } else {
             bb.assign(tab, id(insert), [&](auto& os) {
                 ++tab;
-                tab.lnprint(os, "(ins");
+                tab.lnprint(os, "(insert");
                 ++tab;
                 tab.print(os, "{}", indent(tab.indent(), tuple_val));
                 tab.print(os, "{}", indent(tab.indent(), index_val));

@@ -10,19 +10,16 @@ define_language! {
 
         // (let <name> <definition> <expression>)
         "let" = Let([Id; 3]),
-
         // (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
         "lam" = Lam(Box<[Id]>),
         // (con <extern> <name> <domain> [<filter>] [<body>])
         "con" = Con(Box<[Id]>),
         // (app <callee> <arg>)
         "app" = App([Id; 2]),
-
         // (var <name> <type>)
         "var" = Var([Id; 2]),
         // (lit <value> [<type>])
         "lit" = Lit(Box<[Id]>),
-
         // (pack <arity> <body>)
         "pack" = Pack([Id; 2]),
         // (tuple <value1> <value2> ...)
@@ -30,10 +27,11 @@ define_language! {
         // (extract <tuple> <index>)
         "extract" = Extract([Id; 2]),
         // (ins <tuple> <index> <value>)
-        "ins" = Ins([Id; 3]),
-
+        "insert" = Insert([Id; 3]),
         // (rule <lhs> <rhs> <guard>)
         "rule" = Rule([Id; 3]),
+        // (inj <value> <type>)
+        "inj" = Inj([Id; 2]),
 
 
         // TYPES

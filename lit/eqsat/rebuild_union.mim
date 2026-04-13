@@ -1,5 +1,9 @@
 // plugin eqsat;
 
+// TODO:
+// - t1 and t2 are emitted as unnamed var of type Arr(2; *) and thus reconstruction fails
+// - also * which is represented as (type (lit 0)) apparently fails to reconstruct because
+//   it expects a parameter of type Univ instead of type Nat
 fun extern combine (t1 t2: *) : * =
     return t1 ∪ t2;
 

@@ -194,7 +194,8 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
         case MimKind::Pack: res = convert_pack(id, node); break;
         case MimKind::Tuple: res = convert_tuple(id, node); break;
         case MimKind::Extract: res = convert_extract(id, node); break;
-        case MimKind::Ins: res = convert_ins(id, node); break;
+        case MimKind::Insert: res = convert_insert(id, node); break;
+        case MimKind::Inj: res = convert_inj(id, node); break;
         case MimKind::Join: res = convert_join(id, node); break;
         case MimKind::Meet: res = convert_meet(id, node); break;
         case MimKind::Bot: res = convert_bot(id, node); break;
@@ -322,12 +323,20 @@ const Def* EggRewrite::convert_extract(uint32_t id, MimNode node) {
 }
 
 // (ins <tuple> <index> <value>)
-const Def* EggRewrite::convert_ins(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_insert(uint32_t id, MimNode node) {
     auto tuple      = get_def(node.children[0]);
     auto index      = get_def(node.children[1]);
     auto value      = get_def(node.children[2]);
     auto new_insert = new_world().insert(tuple, index, value);
     return new_insert;
+}
+
+// (inj <value> <type>)
+const Def* EggRewrite::convert_inj(uint32_t id, MimNode node) {
+    auto value   = get_def(node.children[0]);
+    auto type    = get_def(node.children[1]);
+    auto new_inj = new_world().inj(type, value);
+    return new_inj;
 }
 
 // (join <type1> <type2> ...)

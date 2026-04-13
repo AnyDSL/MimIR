@@ -72,7 +72,8 @@ private:
     const Def* convert_pack(uint32_t id, MimNode node);
     const Def* convert_tuple(uint32_t id, MimNode node);
     const Def* convert_extract(uint32_t id, MimNode node);
-    const Def* convert_ins(uint32_t id, MimNode node);
+    const Def* convert_insert(uint32_t id, MimNode node);
+    const Def* convert_inj(uint32_t id, MimNode node);
     const Def* convert_join(uint32_t id, MimNode node);
     const Def* convert_meet(uint32_t id, MimNode node);
     const Def* convert_bot(uint32_t id, MimNode node);
