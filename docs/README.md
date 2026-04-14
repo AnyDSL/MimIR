@@ -81,24 +81,37 @@ See the full [🛠️ build options](@ref build_options) in the docs.
 Declare new types, operations, and normalizers in a single `.mim` file.
 C++ provides the heavy lifting: optimization, lowering, and code generation.
 
+### 🌊 Sea of Nodes
+
+MimIR uses a [sea-of-nodes-style](https://github.com/SeaOfNodes) program graph and extends it to the Calculus of Constructions with higher-order functions, polymorphism, and dependent types.
+MimIR hits the [**sweet spot**](@ref mut) between a fully mutable IR, which is easy to construct, and a fully immutable IR:
+
+- **Non-binder expressions are immutable**:
+
+  [Hash-consing](https://en.wikipedia.org/wiki/Hash_consing), normalization, type checking, and partial evaluation happen **automatically** during graph construction.
+- **Binders are mutable where needed**:
+
+  They support variables and recursion by “tying the knot” through in-place mutation.
+
+- **Terms and types share one graph**:
+
+  Terms, types, and type-level computations all live in the same program graph as ordinary expressions.
+
 ### 🌲 SSA without Dominance
 
 Forget CFG dominance.
 MimIR uses free-variable nesting:
 
 - **Free variables** replace dominance; the **nesting tree** replaces the dominator tree
-- Data-flow dependencies remain precise, even for higher-order code
+- Free-variable queries “just work”:
+  ```c++
+  if (expr->free_vars().contains(x)) /*...*/
+  if (expr->free_vars().has_intersection(xyz)) /*...*/
+  ```
+  This is always correct, with analysis maintenance handled transparently and efficiently by MimIR.
+- Data dependencies remain precise, even for higher-order code
 - Loop peeling and unrolling reduce to simple β-reduction
 - Mutual recursion and higher-order functions are handled naturally
-
-### 🌊 Sea of Nodes
-
-MimIR hits the [**sweet spot**](@ref mut) between a fully mutable IR, which is easy to construct, and a fully immutable IR:
-
-- Non-binder expressions are immutable:
-  [Hash-consing](https://en.wikipedia.org/wiki/Hash_consing), normalization, type checking, and partial evaluation happen **automatically** during graph construction
-- Binders support variables and recursion by “tying the knot” through in-place mutation
-- Terms, types, and type-level computations all live in the same program graph as ordinary expressions.
 
 ## 🐉 Naming: MimIR vs Mim
 
