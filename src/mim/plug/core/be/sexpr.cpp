@@ -87,9 +87,9 @@ private:
     std::string indent(size_t tabs, std::string term);
     std::string flatten(std::string term);
 
+    std::ostringstream decls_;
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
-    std::ostringstream rewrite_rules_;
 };
 
 std::string Emitter::id(const Def* def) const {
@@ -161,7 +161,7 @@ std::string Emitter::flatten(std::string term) {
 void Emitter::start() {
     Super::start();
 
-    ostream() << rewrite_rules_.str();
+    ostream() << decls_.str();
     ostream() << func_decls_.str();
     ostream() << func_impls_.str();
 
@@ -199,7 +199,7 @@ void Emitter::emit_epilogue(Lam* lam) {
 void Emitter::finalize() {
     if (root()->sym().str() == "_fallback_compile") return;
     // We don't want to emit config lams that define which rules should be emitted.
-    // The rules in the body of such a lambda will be emitted into rewrite_rules_
+    // The rules in the body of such a lambda will be emitted into decls_
     // via emit_bb() but we don't want to emit the lambda itself.
     // TODO: Uncomment after 'eqsat' plugin is merged.
     // else if (Axm::isa<mim::plug::eqsat::Rules>(root()->ret_dom()))
@@ -381,8 +381,10 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         print(os, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else if (auto app = type->isa<App>()) {
         print(os, "(app {} {})", emit_type(bb, app->callee()), emit_type(bb, app->arg()));
-    } else if (auto ax = type->isa<Axm>()) {
-        print(os, "{}", id(ax));
+    } else if (auto axm = type->isa<Axm>()) {
+        print(os, "{}", id(axm));
+        if (!world().flags2annex().contains(axm->flags()))
+            print(decls_, "(axm {} {})\n\n", id(axm), emit_type(bb, axm->type()));
     } else if (auto var = type->isa<Var>()) {
         print(os, "{}", id(var));
     } else if (auto hole = type->isa<Hole>()) {
@@ -594,6 +596,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
     } else if (auto axm = def->isa<Axm>()) {
         tab.lnprint(os, "{}", id(axm));
+        if (!world().flags2annex().contains(axm->flags()))
+            print(decls_, "(axm {} {})\n\n", id(axm), emit_type(bb, axm->type()));
 
     } else if (auto bot = def->isa<Bot>()) {
         if (bot->sym().empty())
@@ -616,7 +620,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto rhs_val   = emit_bb(bb, rule->rhs());
         auto guard_val = emit_bb(bb, rule->guard());
         tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
-        print(rewrite_rules_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
+        print(decls_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
 
     } else if (auto inj = def->isa<Inj>()) {
         auto value_val = emit_bb(bb, inj->value());
