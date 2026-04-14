@@ -100,6 +100,28 @@ In addition to the provided [submodules](https://github.com/AnyDSL/MimIR/tree/ma
   Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
   But technically, you don't need LLVM.
 
+## Publications
+
+<ul>
+    <li>
+        <strong>SSA without Dominance for Higher-Order Programs</strong><br>
+        Roland Leißa, Johannes Griebler.<br>
+        <em>Proceedings of the ACM on Programming Languages (PLDI), 2026</em>, 10(PLDI).<br>
+        <a href="https://arxiv.org/abs/2604.09961">Preprint</a> ·
+        <a href="https://zenodo.org/records/19069679">Artifact</a> ·
+    </li>
+    <li>
+        <strong>MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age</strong><br>
+        Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack.<br>
+        <em>Proceedings of the ACM on Programming Languages (POPL), 2025</em>, 9(POPL), 95–125.<br>
+        <a href="https://dl.acm.org/doi/10.1145/3704840">ACM</a> ·
+        <a href="https://doi.org/10.1145/3704840">DOI</a> ·
+        <a href="https://arxiv.org/abs/2411.07443">Preprint</a> ·
+        <a href="https://zenodo.org/records/13952579">Artifact</a> ·
+        <a href="https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex">BibTeX</a>
+    </li>
+</ul>
+
 ## MimIR vs Mim
 
 MimIR is a recursive acronym for _MimIR is my intermediate Representation_.
