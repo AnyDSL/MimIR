@@ -146,7 +146,7 @@ var searchData=
   ['sq_143',['sq',['../namespacemim_1_1plug_1_1math.html#a57a9fbfdbd3e0df3260236539c3c3598a4bc92a7aeb9478e6bf3f989025232b22',1,'mim::plug::math']]],
   ['srem_144',['srem',['../namespacemim_1_1plug_1_1core.html#a12a963046afc5c121f244b761faad6e9a6dcaf449415765e1fc8503e76318736b',1,'mim::plug::core']]],
   ['ssa_145',['SSA',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html',1,'mim::plug::mem::pass::SSA'],['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#aa8f5502d0d0a935c7615343f9568b5ed',1,'mim::plug::mem::pass::SSA::SSA()']]],
-  ['ssa_20without_20dominance_146',['🌲 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
+  ['ssa_20without_20dominance_146',['🪾 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
   ['ssa_2ecpp_147',['ssa.cpp',['../ssa_8cpp.html',1,'']]],
   ['ssa_2eh_148',['ssa.h',['../ssa_8h.html',1,'']]],
   ['ssa_5fpass_149',['ssa_pass',['../namespacemim_1_1plug_1_1mem.html#a619e2889942b9d13d55e24c6e2da35b5',1,'mim::plug::mem']]],

@@ -16,7 +16,7 @@ var searchData=
   ['disj_13',['%regex.disj',['../regex.html#autotoc_md270',1,'']]],
   ['display_20dot_14',['Display DOT',['../coding.html#autotoc_md7',1,'']]],
   ['div_15',['%core.div',['../core.html#autotoc_md124',1,'']]],
-  ['dominance_16',['🌲 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
+  ['dominance_16',['🪾 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
   ['dot_17',['Display DOT',['../coding.html#autotoc_md7',1,'']]],
   ['dot_5fgeneral_18',['%tensor.dot_general',['../tensor.html#autotoc_md291',1,'']]],
   ['downcast_19',['Downcast',['../dev.html#autotoc_md20',1,'']]],

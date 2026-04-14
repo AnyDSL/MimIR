@@ -17,7 +17,7 @@ var searchData=
   ['slice_14',['%tensor.slice',['../tensor.html#autotoc_md289',1,'']]],
   ['slot_15',['%mem.slot',['../mem.html#autotoc_md219',1,'']]],
   ['spaces_16',['Address Spaces',['../gpu.html#autotoc_md143',1,'']]],
-  ['ssa_20without_20dominance_17',['🌲 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
+  ['ssa_20without_20dominance_17',['🪾 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
   ['stages_18',['Stages',['../autodiff.html#autotoc_md90',1,'Stages'],['../gpu.html#autotoc_md170',1,'Stages'],['../mem.html#autotoc_md225',1,'Stages'],['../refly.html#autotoc_md263',1,'Stages']]],
   ['start_19',['🚀 Quick Start',['../index.html#autotoc_md69',1,'']]],
   ['store_20',['%mem.store',['../mem.html#autotoc_md216',1,'']]],

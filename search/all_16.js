@@ -16,7 +16,7 @@ var searchData=
   ['where_13',['Where',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01cab3c5b21d2cb47cc950fd4667edaf404c',1,'mim::ast::Expr']]],
   ['why_20mimir_14',['💡 Why MimIR?',['../index.html#autotoc_md68',1,'']]],
   ['with_20indices_15',['Working with Indices',['../dev.html#autotoc_md28',1,'']]],
-  ['without_20dominance_16',['🌲 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
+  ['without_20dominance_16',['🪾 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
   ['wlog_17',['WLOG',['../log_8h.html#a32648fc31390d09eaa0cc2ef0afeb02a',1,'log.h']]],
   ['work_20item_20synchronization_18',['Work-Item Synchronization',['../gpu.html#autotoc_md167',1,'']]],
   ['working_20with_20indices_19',['Working with Indices',['../dev.html#autotoc_md28',1,'']]],

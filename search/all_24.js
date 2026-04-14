@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🧩_20plugins_0',['🧩 Plugins',['../index.html#autotoc_md72',1,'']]]
+  ['🪾_20ssa_20without_20dominance_0',['🪾 SSA without Dominance',['../index.html#autotoc_md74',1,'']]]
 ];
