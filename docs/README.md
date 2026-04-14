@@ -139,6 +139,16 @@ MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/m
         <a href="https://zenodo.org/records/19069679">Artifact</a>
     </li>
     <li>
+        <strong>MimIrADe: Automatic Differentiation in MimIR</strong><br>
+        Marcel Ullrich, Sebastian Hack, Roland Leißa.<br>
+        <em>Proceedings of the 34th ACM SIGPLAN International Conference on Compiler Construction (CC), 2025</em>, 70–80.<br>
+        <a href="https://dl.acm.org/doi/abs/10.1145/3708493.3712685">ACM</a> ·
+        <a href="https://doi.org/10.1145/3704840">DOI</a> ·
+        <a href="https://arxiv.org/abs/2411.07443">Preprint</a> ·
+        <a href="https://zenodo.org/records/14681335">Artifact</a> ·
+        <a href="https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex">BibTeX</a>
+    </li>
+    <li>
         <strong>MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age</strong><br>
         Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack.<br>
         <em>Proceedings of the ACM on Programming Languages (POPL), 2025</em>, 9(POPL), 95–125.<br>
