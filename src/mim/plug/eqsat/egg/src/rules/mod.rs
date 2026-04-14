@@ -30,10 +30,16 @@ define_language! {
         "insert" = Insert([Id; 3]),
         // (rule <lhs> <rhs> <guard>)
         "rule" = Rule([Id; 3]),
-        // (inj <value> <type>)
+        // (inj <type> <value>)
         "inj" = Inj([Id; 2]),
+        // (merge <type> <value1> <value2> ...)
+        "merge" = Merge(Box<[Id]>),
         // (axm <name> <type>)
         "axm" = Axm([Id; 2]),
+        // (match <scrutinee> <arm1> <arm2> ...)
+        "match" = Match(Box<[Id]>),
+        // (proxy <type> <pass> <tag> <op1> <op2> ...)
+        "proxy" = Proxy(Box<[Id]>),
 
 
         // TYPES

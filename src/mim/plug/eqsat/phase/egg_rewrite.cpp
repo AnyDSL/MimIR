@@ -205,6 +205,9 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
         case MimKind::Extract: res = convert_extract(id, node); break;
         case MimKind::Insert: res = convert_insert(id, node); break;
         case MimKind::Inj: res = convert_inj(id, node); break;
+        case MimKind::Merge: res = convert_merge(id, node); break;
+        case MimKind::Match: res = convert_match(id, node); break;
+        case MimKind::Proxy: res = convert_proxy(id, node); break;
         case MimKind::Join: res = convert_join(id, node); break;
         case MimKind::Meet: res = convert_meet(id, node); break;
         case MimKind::Bot: res = convert_bot(id, node); break;
@@ -340,12 +343,50 @@ const Def* EggRewrite::convert_insert(uint32_t id, MimNode node) {
     return new_insert;
 }
 
-// (inj <value> <type>)
+// (inj <type> <value>)
 const Def* EggRewrite::convert_inj(uint32_t id, MimNode node) {
-    auto value   = get_def(node.children[0]);
-    auto type    = get_def(node.children[1]);
+    auto type    = get_def(node.children[0]);
+    auto value   = get_def(node.children[1]);
     auto new_inj = new_world().inj(type, value);
     return new_inj;
+}
+
+// (merge <type> <value1> <value2> ...)
+const Def* EggRewrite::convert_merge(uint32_t id, MimNode node) {
+    auto type = get_def(node.children[0]);
+    DefVec values;
+    for (auto child : node.children | std::views::drop(1)) {
+        auto value = get_def(child);
+        values.push_back(value);
+    }
+    auto new_merge = new_world().merge(type, values);
+    return new_merge;
+}
+
+// (match <scrutinee> <arm1> <arm2> ...)
+const Def* EggRewrite::convert_match(uint32_t id, MimNode node) {
+    auto scrutinee = get_def(node.children[0]);
+    DefVec ops     = {scrutinee};
+    for (auto child : node.children | std::views::drop(1)) {
+        auto arm = get_def(child);
+        ops.push_back(arm);
+    }
+    auto new_match = new_world().match(ops);
+    return new_match;
+}
+
+// (proxy <type> <pass> <tag> <op1> <op2> ...)
+const Def* EggRewrite::convert_proxy(uint32_t id, MimNode node) {
+    auto type = get_def(node.children[0]);
+    auto pass = get_num(node.children[1]);
+    auto tag  = get_num(node.children[2]);
+    DefVec ops;
+    for (auto child : node.children | std::views::drop(3)) {
+        auto op = get_def(child);
+        ops.push_back(op);
+    }
+    auto new_proxy = new_world().proxy(type, ops, pass, tag);
+    return new_proxy;
 }
 
 // (join <type1> <type2> ...)
