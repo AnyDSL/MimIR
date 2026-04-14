@@ -2,7 +2,7 @@ var searchData=
 [
   ['o_20side_20effects_0',['Operations w/o Side Effects',['../mem.html#autotoc_md223',1,'']]],
   ['o_20subtags_1',['w/o Subtags',['../dev.html#autotoc_md25',1,'']]],
-  ['of_20nodes_2',['🌊 Sea of Nodes',['../index.html#autotoc_md73',1,'']]],
+  ['of_20nodes_2',['🌊 Sea of Nodes',['../index.html#autotoc_md74',1,'']]],
   ['of_20sigmas_3',['Field Names of Sigmas',['../langref.html#autotoc_md57',1,'']]],
   ['operations_4',['Operations',['../gpu.html#autotoc_md158',1,'Asynchronous Memory Operations'],['../gpu.html#autotoc_md152',1,'Blocking Memory Operations'],['../core.html#autotoc_md117',1,'Integer Operations'],['../core.html#autotoc_md114',1,'Nat Operations'],['../math.html#autotoc_md174',1,'Numerical Operations'],['../affine.html#autotoc_md80',1,'Operations'],['../autodiff.html#autotoc_md86',1,'Operations'],['../demo.html#autotoc_md135',1,'Operations'],['../direct.html#autotoc_md138',1,'Operations'],['../gpu.html#autotoc_md147',1,'Operations'],['../matrix.html#autotoc_md194',1,'Operations'],['../tensor.html#autotoc_md285',1,'Operations'],['../tuple.html#autotoc_md297',1,'Operations'],['../core.html#autotoc_md131',1,'Other Operations'],['../math.html#autotoc_md185',1,'Other Operations']]],
   ['operations_5',['High-level matrix operations',['../matrix.html#autotoc_md203',1,'']]],

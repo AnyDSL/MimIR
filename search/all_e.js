@@ -3,7 +3,7 @@ var searchData=
   ['o_0',['o',['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3ad95679752134a2d9eb61dbd7b91c4bcc',1,'mim::plug::math']]],
   ['o_20side_20effects_1',['Operations w/o Side Effects',['../mem.html#autotoc_md223',1,'']]],
   ['o_20subtags_2',['w/o Subtags',['../dev.html#autotoc_md25',1,'']]],
-  ['of_20nodes_3',['🌊 Sea of Nodes',['../index.html#autotoc_md73',1,'']]],
+  ['of_20nodes_3',['🌊 Sea of Nodes',['../index.html#autotoc_md74',1,'']]],
   ['of_20sigmas_4',['Field Names of Sigmas',['../langref.html#autotoc_md57',1,'']]],
   ['offset_5',['offset',['../structmim_1_1FNV1_3_014_01_4.html#a34ba62076ec244d3db27083451801503',1,'mim::FNV1&lt; 4 &gt;::offset'],['../structmim_1_1FNV1_3_018_01_4.html#a167973001ea74d4798e80d658aece4f0',1,'mim::FNV1&lt; 8 &gt;::offset'],['../classmim_1_1UInc.html#ac09662b71a4e497e4aa65fa6647ba866',1,'mim::UInc::offset()']]],
   ['old_6',['old',['../structmim_1_1World_1_1Freezer.html#ac21d511504dbcff5cc63b43519ab7fa3',1,'mim::World::Freezer']]],

@@ -25,6 +25,19 @@
 var NAVTREE =
 [
   [ "MimIR", "index.html", [
+    [ "💡 Why MimIR?", "index.html#autotoc_md68", null ],
+    [ "🚀 Quick Start", "index.html#autotoc_md69", [
+      [ "📦 Install (optional)", "index.html#autotoc_md70", null ]
+    ] ],
+    [ "🔥 Key Innovations", "index.html#autotoc_md71", [
+      [ "🧩 Plugins", "index.html#autotoc_md72", null ],
+      [ "🌲 SSA without Dominance", "index.html#autotoc_md73", null ],
+      [ "🌊 Sea of Nodes", "index.html#autotoc_md74", null ]
+    ] ],
+    [ "🐉 Naming: MimIR vs Mim", "index.html#autotoc_md75", null ],
+    [ "💬 Community", "index.html#autotoc_md76", null ],
+    [ "⚖️ License", "index.html#autotoc_md77", null ],
+    [ "📖 Publications", "index.html#autotoc_md78", null ],
     [ "📚 Documentation", "usergroup0.html", [
       [ "Mim Command-Line Reference", "cli.html", null ],
       [ "Mim Language Reference", "langref.html", null ],
@@ -110,13 +123,13 @@ var NAVTREEINDEX =
 "classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a1858d81c742e4bbbbf00d7a06614e53a",
 "compile_8h_source.html",
 "functions_enum.html",
-"namespacemembers_v.html",
-"namespacemim_1_1dl.html#a8538f23ca881de5358d0d6838994fcf4",
-"namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673afc6b41d0d392685b651406b87893212d",
-"namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dadada9654756c6302840e41e8089ede29",
-"namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4",
-"structmim_1_1FNV1_3_018_01_4.html#af6cf650a0c98eb9e71c981e07531f07f",
-"vector_8h_source.html"
+"namespacemembers_l.html",
+"namespacemim_1_1ast.html#abae341d79d49646bf8f2c7177be146d0",
+"namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673aa6ee9e715fd30e1b8e95843be4b2a9c8",
+"namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da08a3a0cc3d95f23d42b63d1afdceb16a",
+"namespacemim_1_1plug_1_1vec.html#afd082a7ad8cc8afabbcc2ebf09bc7ba4",
+"structmim_1_1FNV1_3_014_01_4.html",
+"vec_2autogen_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

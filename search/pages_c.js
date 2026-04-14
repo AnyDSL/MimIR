@@ -7,7 +7,7 @@ var searchData=
   ['ncmp_4',['%core.ncmp',['../core.html#autotoc_md116',1,'']]],
   ['neg_5flookahead_5',['%regex.neg_lookahead',['../regex.html#autotoc_md275',1,'']]],
   ['new_20plugins_6',['New Plugins',['../coding.html#autotoc_md15',1,'']]],
-  ['nodes_7',['🌊 Sea of Nodes',['../index.html#autotoc_md73',1,'']]],
+  ['nodes_7',['🌊 Sea of Nodes',['../index.html#autotoc_md74',1,'']]],
   ['normalization_8',['Normalization',['../matrix.html#autotoc_md196',1,'']]],
   ['normalization_3a_9',['Normalization:',['../matrix.html#autotoc_md199',1,'Normalization:'],['../matrix.html#autotoc_md201',1,'Normalization:']]],
   ['not_5f_10',['%regex.not_',['../regex.html#autotoc_md274',1,'']]],
