@@ -379,11 +379,11 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         print(os, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else if (auto app = type->isa<App>()) {
         print(os, "(app {} {})", emit_type(bb, app->callee()), emit_type(bb, app->arg()));
-    } else if (auto ax = type->isa<Axm>()) {
-        if (world().flags2annex().contains(ax->flags()))
-            print(os, "(axm {})", id(ax));
+    } else if (auto axm = type->isa<Axm>()) {
+        if (world().flags2annex().contains(axm->flags()))
+            print(os, "(axm {})", id(axm));
         else
-            print(os, "(axm {} {})", id(ax), emit_type(bb, ax->type()));
+            print(os, "(axm {} {})", id(axm), emit_type(bb, axm->type()));
     } else if (auto var = type->isa<Var>()) {
         print(os, "{}", id(var));
     } else if (auto hole = type->isa<Hole>()) {
