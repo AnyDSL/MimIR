@@ -35,22 +35,25 @@
 
 - **Dependent types**, **polymorphism**, and **higher-order functions** out of the box
 - **Extensible plugins** that add domain-specific axioms, types, normalizers, and codegen
-- **SSA without dominance** – the first IR that cleanly handles higher-order programs via free-variable nesting (PLDI 2026)
+- **SSA without dominance** – the first IR that cleanly handles higher-order programs via free-variable nesting
 - **Sea-of-nodes** style with on-the-fly normalization, type checking, and partial evaluation
 
 Perfect for DSL compilers, tensor compilers, automatic differentiation, regex engines, and anything that needs high-performance code from high-level abstractions.
 
 ## Why MimIR?
 
-| Feature                | Traditional IRs (LLVM/MLIR) | MimIR                                |
-| ---------------------- | --------------------------- | ------------------------------------ |
-| Higher-order functions | ❌ (limited/erased)         | ✅                                   |
-| Polymorphism           | ❌                          | ✅                                   |
-| Polytypism             | ❌                          | ✅                                   |
-| Dependent types        | ❌                          | ✅                                   |
-| Extensibility          | Dialects in C++             | Plugins with Mim + C++               |
-| Control flow           | CFG / dominance             | Free Variables +  Nesting Tree          |
-| DSL-friendly           | Low-level                   | Domain-specific axioms & normalizers |
+| Feature                                                                                                  | LLVM                    | MLIR                                | MimIR                                                                                                              |
+| -------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| [Higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)                            | ❌                      | ⚠️ (regions only)                   | ✅ (first-class functions)                                                                                         |
+| [Parametric polymorphism (System F)](https://en.wikipedia.org/wiki/System_F)                             | ❌                      | ❌                                  | ✅                                                                                                                 |
+| [Type-level abstraction / polytypism (System Fω)](https://en.wikipedia.org/wiki/System_F#System_F%CF%89) | ❌                      | ❌                                  | ✅                                                                                                                 |
+| [Dependent types (Calculus of Constructions)](https://en.wikipedia.org/wiki/Calculus_of_constructions)   | ❌                      | ❌                                  | ✅                                                                                                                 |
+| Semantic extensibility                                                                                   | ❌                      | 🔧 (dialect-specific C++ semantics) | ✅ (typed axioms)                                                                                                  |
+| Program representation                                                                                   | CFG + instruction lists | CFG/regions + instruction lists     | Arbitrary expressions (direct style + [CPS](https://en.wikipedia.org/wiki/Continuation-passing_style))             |
+| Structural foundation                                                                                    | CFG + dominance         | CFG/regions + dominance             | Free variables + nesting                                                                                           |
+| DSL embedding / semantics retention                                                                      | Low                     | High (dialects + lowering)          | High ([partial evaluation](https://en.wikipedia.org/wiki/Partial_evaluation), typed axioms, normalizers, lowering) |
+
+@note The table compares native IR-level support and representation, not what can be simulated via custom IR extensions, closure conversion, lowering, or external analyses.
 
 ## Quick Start
 
@@ -77,7 +80,7 @@ See the full [build options](@ref build_options) in the docs.
 Declare new types, operations, and normalizers in a single `.mim` file.
 The C++ side provides the heavy lifting (optimizations, lowering, codegen).
 
-### SSA without Dominance (PLDI 2026)
+### SSA without Dominance
 
 Forget CFG dominance. MimIR uses free-variable nesting:
 
@@ -88,12 +91,15 @@ Forget CFG dominance. MimIR uses free-variable nesting:
 
 ### Sea-of-Nodes with On-the-Fly Everything
 
-- Normalization, type checking, and partial evaluation happen **automatically** during graph construction
-- Everything is hash-consed and immutable where it matters
+- The [**sweet spot**](@ref mut) between a fully mutable IR (easy construction) and a completely immutable one (safe sharing & hash-consing)
+  - Everything is hash-consed and immutable where it matters
+    - Normalization, type checking, and partial evaluation happen **automatically** during graph construction
+  - “Tie the knot” for variables and recursion through in-place mutation of binders
+- Even types are expressions and part of the program graph
 
 ## Naming: MimIR vs Mim
 
-**MimIR** is a recursive acronym for _**Mim**IR **is** my **I**ntermediate **R**epresentation_.
+**MimIR** is a recursive acronym for _MimIR is my Intermediate Representation_.
 
 In Norse mythology, [Mímir](https://en.wikipedia.org/wiki/M%C3%ADmir) was a being of immense wisdom. After he was beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to recite secret knowledge and counsel.
 
@@ -133,6 +139,7 @@ MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/m
         <strong>MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age</strong><br>
         Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack.<br>
         <em>Proceedings of the ACM on Programming Languages (POPL), 2025</em>, 9(POPL), 95–125.<br>
+        <a href="https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R">Talk</a> ·
         <a href="https://dl.acm.org/doi/10.1145/3704840">ACM</a> ·
         <a href="https://doi.org/10.1145/3704840">DOI</a> ·
         <a href="https://arxiv.org/abs/2411.07443">Preprint</a> ·
