@@ -53,13 +53,12 @@ private:
 
     std::pair<rust::Vec<RuleSet>, CostFn> import_config();
 
-    enum InitKind {
+    enum InitStage {
+        Declarations,
         Lambdas,
         Bindings,
-        Declarations,
     };
-
-    const Def* init(uint32_t id, bool lambdas = false, bool bindings = false, bool declarations = false);
+    void init(rust::Vec<RewriteResult> rewrites, InitStage stage);
     const Def* init_lam(uint32_t id, MimNode node);
     const Def* init_con(uint32_t id, MimNode node);
     const Def* init_let(uint32_t id, MimNode node);

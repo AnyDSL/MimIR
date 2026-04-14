@@ -23,35 +23,14 @@ void EggRewrite::start() {
 
     auto rewrites = equality_saturate(sexpr.str(), rulesets, cost_fn);
 
-    // Creates declarations of axioms etc.
+    init(rewrites, InitStage::Declarations);
+    init(rewrites, InitStage::Lambdas);
+    init(rewrites, InitStage::Bindings);
+
+    // Converts remaining nodes to Def's in the new world and sets the bodies of the previously created lambdas.
     for (auto rewrite : rewrites) {
         added_ = {};
         res_   = rewrite.value;
-        for (uint32_t id = 0; id < res_.size(); id++)
-            init(id, false, false, true);
-    }
-
-    // Creates lambdas and their variables as Def's in the new world but doesn't set their bodies yet.
-    // This is required so that other terms can later refer to lambdas and variables by name
-    // as in (app foo (lit 0))) where 'foo' could be a lambda created in this inital stage.
-    for (auto rewrite : rewrites) {
-        added_ = {};
-        res_   = rewrite.value;
-        for (uint32_t id = 0; id < res_.size(); id++)
-            init(id, true, false);
-    }
-
-    for (auto rewrite : rewrites) {
-        added_ = {};
-        res_   = rewrite.value;
-
-        // Then creates let-bindings that may already refer to lambdas and variables defined earlier.
-        // For this, we have to iterate over the rewrite in reverse-order to ensure that
-        // let bindings are initalized from outermost to innermost because inner let bindings
-        // may depend on outer let bindings.
-        for (uint32_t id = res_.size() - 1; id > 0; id--)
-            init(id, false, true);
-        // Converts remaining nodes to Def's in the new world and sets the bodies of the previously created lambdas.
         for (uint32_t id = 0; id < res_.size(); id++)
             convert(id);
     }
@@ -95,21 +74,23 @@ std::pair<rust::Vec<RuleSet>, CostFn> EggRewrite::import_config() {
     return {rulesets, cost_fn};
 }
 
-// TODO: Maybe some kind of enum instead of these bool args?
-const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings, bool declarations) {
-    auto node = get_node_unsafe(id);
-
-    if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
-    const Def* res = nullptr;
-    switch (node.kind) {
-        case MimKind::Lam: res = lambdas ? init_lam(id, node) : nullptr; break;
-        case MimKind::Con: res = lambdas ? init_con(id, node) : nullptr; break;
-        case MimKind::Let: res = bindings ? init_let(id, node) : nullptr; break;
-        case MimKind::Axm: res = declarations ? init_axm(id, node) : nullptr; break;
-        default: break;
+void EggRewrite::init(rust::Vec<RewriteResult> rewrites, InitStage stage) {
+    for (auto rewrite : rewrites) {
+        added_ = {};
+        res_   = rewrite.value;
+        for (uint32_t id = res_.size() - 1; id > 0; id--) {
+            auto node      = get_node_unsafe(id);
+            const Def* res = nullptr;
+            switch (node.kind) {
+                case MimKind::Axm: res = stage == InitStage::Declarations ? init_axm(id, node) : nullptr; break;
+                case MimKind::Lam: res = stage == InitStage::Lambdas ? init_lam(id, node) : nullptr; break;
+                case MimKind::Con: res = stage == InitStage::Lambdas ? init_con(id, node) : nullptr; break;
+                case MimKind::Let: res = stage == InitStage::Bindings ? init_let(id, node) : nullptr; break;
+                default: break;
+            }
+            added_[id] = res;
+        }
     }
-    if (DEBUG) std::cout << res << "\n";
-    return added_[id] = res;
 }
 
 // TODO: implement
@@ -118,6 +99,7 @@ const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 
 // (con <extern> <name> <domain> [<filter>] [<body>])
 const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
+    if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     DefVec var_types;
     std::vector<std::string> var_names;
     auto domain = get_node(MimKind::Sigma, node.children[2]);
@@ -160,11 +142,13 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     for (auto child : domain.children)
         convert(child, true);
 
+    if (DEBUG) std::cout << new_con << "\n";
     return new_con;
 }
 
 // (let <name> <definition> <expression>)
 const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
+    if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     // If the let-binding is for a lambda, this lambda will already have been
     // created, set and registered via init_lam/con and thus we can skip it.
     auto let_def = get_def(node.children[0]);
@@ -176,11 +160,13 @@ const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
     def->set(name_nouid);
     register_var(name, def);
 
+    if (DEBUG) std::cout << nullptr << "\n";
     return nullptr;
 }
 
 // (axm <name> <type>)
 const Def* EggRewrite::init_axm(uint32_t id, MimNode node) {
+    if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto name = get_symbol(node.children[0]);
     auto type = convert(node.children[1], true);
 
@@ -188,6 +174,7 @@ const Def* EggRewrite::init_axm(uint32_t id, MimNode node) {
     new_axm->set(name);
     register_axm(name, new_axm);
 
+    if (DEBUG) std::cout << new_axm << "\n";
     return new_axm;
 }
 
