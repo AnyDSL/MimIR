@@ -6,11 +6,11 @@ var hierarchy =
     [ "mim::ast::AnnexInfo.sym", "namespacemim_1_1ast.html#structmim_1_1ast_1_1AnnexInfo_8sym", null ],
     [ "mim::plug::regex::app_range", "structmim_1_1plug_1_1regex_1_1app__range.html", null ],
     [ "mim::ast::AST", "classmim_1_1ast_1_1AST.html", null ],
-    [ "automaton::AutomatonBase< NodeType >", "classautomaton_1_1AutomatonBase.html", null ],
-    [ "automaton::AutomatonBase< DFANode >", "classautomaton_1_1AutomatonBase.html", [
+    [ "automaton::AutomatonBase&lt; NodeType &gt;", "classautomaton_1_1AutomatonBase.html", null ],
+    [ "automaton::AutomatonBase&lt; DFANode &gt;", "classautomaton_1_1AutomatonBase.html", [
       [ "automaton::DFA", "classautomaton_1_1DFA.html", null ]
     ] ],
-    [ "automaton::AutomatonBase< NFANode >", "classautomaton_1_1AutomatonBase.html", [
+    [ "automaton::AutomatonBase&lt; NFANode &gt;", "classautomaton_1_1AutomatonBase.html", [
       [ "automaton::NFA", "classautomaton_1_1NFA.html", null ]
     ] ],
     [ "mim::ll::BB", "structmim_1_1ll_1_1BB.html", null ],
@@ -20,21 +20,21 @@ var hierarchy =
     [ "mim::Dbg", "structmim_1_1Dbg.html", null ],
     [ "automaton::DFANode", "classautomaton_1_1DFANode.html", null ],
     [ "mim::Dispatch", "classmim_1_1Dispatch.html", null ],
-    [ "mim::Elem< R, F >", "structmim_1_1Elem.html", null ],
+    [ "mim::Elem&lt; R, F &gt;", "structmim_1_1Elem.html", null ],
     [ "mim::ast::Emitter", "classmim_1_1ast_1_1Emitter.html", null ],
-    [ "mim::Sets< D, N >::Data::Equal", "structmim_1_1Sets_1_1Data_1_1Equal.html", null ],
+    [ "mim::Sets&lt; D, N &gt;::Data::Equal", "structmim_1_1Sets_1_1Data_1_1Equal.html", null ],
     [ "std::exception", null, [
       [ "mim::Error", "classmim_1_1Error.html", null ]
     ] ],
     [ "mim::World::Externals", "classmim_1_1World_1_1Externals.html", null ],
     [ "mim::Flags", "namespacemim.html#structmim_1_1Flags", null ],
-    [ "mim::FNV1< size_t >", "namespacemim.html#structmim_1_1FNV1", null ],
-    [ "mim::FNV1< 4 >", "structmim_1_1FNV1_3_014_01_4.html", null ],
-    [ "mim::FNV1< 8 >", "structmim_1_1FNV1_3_018_01_4.html", null ],
+    [ "mim::FNV1&lt; size_t &gt;", "namespacemim.html#structmim_1_1FNV1", null ],
+    [ "mim::FNV1&lt; 4 &gt;", "structmim_1_1FNV1_3_014_01_4.html", null ],
+    [ "mim::FNV1&lt; 8 &gt;", "structmim_1_1FNV1_3_018_01_4.html", null ],
     [ "mim::plug::clos::FreeDefAna", "classmim_1_1plug_1_1clos_1_1FreeDefAna.html", null ],
     [ "mim::World::Freezer", "structmim_1_1World_1_1Freezer.html", null ],
-    [ "mim::GIDHash< T >", "structmim_1_1GIDHash.html", null ],
-    [ "mim::GIDLt< T >", "structmim_1_1GIDLt.html", null ],
+    [ "mim::GIDHash&lt; T &gt;", "structmim_1_1GIDHash.html", null ],
+    [ "mim::GIDLt&lt; T &gt;", "structmim_1_1GIDLt.html", null ],
     [ "mim::Driver::Imports", "classmim_1_1Driver_1_1Imports.html", null ],
     [ "mim::plug::mem::pass::SSA::Info", "classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html#structmim_1_1plug_1_1mem_1_1pass_1_1SSA_1_1Info", null ],
     [ "absl::InlinedVector", null, [
@@ -49,9 +49,9 @@ var hierarchy =
     [ "std::integral_constant", null, [
       [ "std::tuple_size< mim::Span< T, N > >", "structstd_1_1tuple__size_3_01mim_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
-    [ "mim::Axm::IsA< Id, D >", "classmim_1_1Axm_1_1IsA.html", null ],
-    [ "mim::Axm::IsANode< T >", "classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode", null ],
-    [ "mim::Sets< D, N >::Set::iterator", "classmim_1_1Sets_1_1Set_1_1iterator.html", null ],
+    [ "mim::Axm::IsA&lt; Id, D &gt;", "classmim_1_1Axm_1_1IsA.html", null ],
+    [ "mim::Axm::IsANode&lt; T &gt;", "classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode", null ],
+    [ "mim::Sets&lt; D, N &gt;::Set::iterator", "classmim_1_1Sets_1_1Set_1_1iterator.html", null ],
     [ "fe::Lexer", null, [
       [ "mim::ast::Lexer", "classmim_1_1ast_1_1Lexer.html", null ]
     ] ],
@@ -61,14 +61,14 @@ var hierarchy =
     [ "mim::Error::Msg", "structmim_1_1Error_1_1Msg.html", null ],
     [ "mim::Nest", "classmim_1_1Nest.html", null ],
     [ "automaton::NFANode", "classautomaton_1_1NFANode.html", null ],
-    [ "mim::lct::Node< P, K >", "classmim_1_1lct_1_1Node.html", null ],
+    [ "mim::lct::Node&lt; P, K &gt;", "classmim_1_1lct_1_1Node.html", null ],
     [ "mim::Nest::Node", "classmim_1_1Nest_1_1Node.html", null ],
     [ "fe::Parser", null, [
       [ "mim::ast::Parser", "classmim_1_1ast_1_1Parser.html", null ]
     ] ],
     [ "mim::Plugin", "structmim_1_1Plugin.html", null ],
     [ "mim::World::State::POD", "structmim_1_1World_1_1State.html#structmim_1_1World_1_1State_1_1POD", null ],
-    [ "mim::ast::R< T >", "structmim_1_1ast_1_1R.html", null ],
+    [ "mim::ast::R&lt; T &gt;", "structmim_1_1ast_1_1R.html", null ],
     [ "automaton::RangeCompare", "structautomaton_1_1RangeCompare.html", null ],
     [ "mim::Res", "classmim_1_1Res.html", null ],
     [ "mim::Rewriter", "classmim_1_1Rewriter.html", [
@@ -295,110 +295,110 @@ var hierarchy =
     [ "mim::Select", "classmim_1_1Select.html", [
       [ "mim::Branch", "classmim_1_1Branch.html", null ]
     ] ],
-    [ "mim::Sets< D, N >::Set", "classmim_1_1Sets_1_1Set.html", null ],
-    [ "mim::Sets< D, N >", "classmim_1_1Sets.html", null ],
-    [ "mim::Setters< P, D >", "classmim_1_1Setters.html", null ],
-    [ "mim::Setters< App >", "classmim_1_1Setters.html", [
+    [ "mim::Sets&lt; D, N &gt;::Set", "classmim_1_1Sets_1_1Set.html", null ],
+    [ "mim::Sets&lt; D, N &gt;", "classmim_1_1Sets.html", null ],
+    [ "mim::Setters&lt; P, D &gt;", "classmim_1_1Setters.html", null ],
+    [ "mim::Setters&lt; App &gt;", "classmim_1_1Setters.html", [
       [ "mim::App", "classmim_1_1App.html", null ]
     ] ],
-    [ "mim::Setters< Arr >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Arr &gt;", "classmim_1_1Setters.html", [
       [ "mim::Arr", "classmim_1_1Arr.html", null ]
     ] ],
-    [ "mim::Setters< Axm >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Axm &gt;", "classmim_1_1Setters.html", [
       [ "mim::Axm", "classmim_1_1Axm.html", null ]
     ] ],
-    [ "mim::Setters< Extract >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Extract &gt;", "classmim_1_1Setters.html", [
       [ "mim::Extract", "classmim_1_1Extract.html", null ]
     ] ],
-    [ "mim::Setters< Global >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Global &gt;", "classmim_1_1Setters.html", [
       [ "mim::Global", "classmim_1_1Global.html", null ]
     ] ],
-    [ "mim::Setters< Hole >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Hole &gt;", "classmim_1_1Setters.html", [
       [ "mim::Hole", "classmim_1_1Hole.html", null ]
     ] ],
-    [ "mim::Setters< Idx >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Idx &gt;", "classmim_1_1Setters.html", [
       [ "mim::Idx", "classmim_1_1Idx.html", null ]
     ] ],
-    [ "mim::Setters< Inj >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Inj &gt;", "classmim_1_1Setters.html", [
       [ "mim::Inj", "classmim_1_1Inj.html", null ]
     ] ],
-    [ "mim::Setters< Insert >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Insert &gt;", "classmim_1_1Setters.html", [
       [ "mim::Insert", "classmim_1_1Insert.html", null ]
     ] ],
-    [ "mim::Setters< Lam >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Lam &gt;", "classmim_1_1Setters.html", [
       [ "mim::Lam", "classmim_1_1Lam.html", null ]
     ] ],
-    [ "mim::Setters< Lit >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Lit &gt;", "classmim_1_1Setters.html", [
       [ "mim::Lit", "classmim_1_1Lit.html", null ]
     ] ],
-    [ "mim::Setters< Match >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Match &gt;", "classmim_1_1Setters.html", [
       [ "mim::Match", "classmim_1_1Match.html", null ]
     ] ],
-    [ "mim::Setters< Merge >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Merge &gt;", "classmim_1_1Setters.html", [
       [ "mim::Merge", "classmim_1_1Merge.html", null ]
     ] ],
-    [ "mim::Setters< Nat >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Nat &gt;", "classmim_1_1Setters.html", [
       [ "mim::Nat", "classmim_1_1Nat.html", null ]
     ] ],
-    [ "mim::Setters< Pack >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Pack &gt;", "classmim_1_1Setters.html", [
       [ "mim::Pack", "classmim_1_1Pack.html", null ]
     ] ],
-    [ "mim::Setters< Pi >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Pi &gt;", "classmim_1_1Setters.html", [
       [ "mim::Pi", "classmim_1_1Pi.html", null ]
     ] ],
-    [ "mim::Setters< Prod >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Prod &gt;", "classmim_1_1Setters.html", [
       [ "mim::Prod", "classmim_1_1Prod.html", null ]
     ] ],
-    [ "mim::Setters< Proxy >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Proxy &gt;", "classmim_1_1Setters.html", [
       [ "mim::Proxy", "classmim_1_1Proxy.html", null ]
     ] ],
-    [ "mim::Setters< Reform >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Reform &gt;", "classmim_1_1Setters.html", [
       [ "mim::Reform", "classmim_1_1Reform.html", null ]
     ] ],
-    [ "mim::Setters< Rule >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Rule &gt;", "classmim_1_1Setters.html", [
       [ "mim::Rule", "classmim_1_1Rule.html", null ]
     ] ],
-    [ "mim::Setters< Seq >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Seq &gt;", "classmim_1_1Setters.html", [
       [ "mim::Seq", "classmim_1_1Seq.html", null ]
     ] ],
-    [ "mim::Setters< Sigma >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Sigma &gt;", "classmim_1_1Setters.html", [
       [ "mim::Sigma", "classmim_1_1Sigma.html", null ]
     ] ],
-    [ "mim::Setters< Split >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Split &gt;", "classmim_1_1Setters.html", [
       [ "mim::Split", "classmim_1_1Split.html", null ]
     ] ],
-    [ "mim::Setters< TBound< Up > >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; TBound&lt; Up &gt; &gt;", "classmim_1_1Setters.html", [
       [ "mim::TBound< false >", "classmim_1_1TBound.html", null ],
       [ "mim::TBound< true >", "classmim_1_1TBound.html", null ],
       [ "mim::TBound< Up >", "classmim_1_1TBound.html", null ]
     ] ],
-    [ "mim::Setters< TExt< Up > >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; TExt&lt; Up &gt; &gt;", "classmim_1_1Setters.html", [
       [ "mim::TExt< false >", "classmim_1_1TExt.html", null ],
       [ "mim::TExt< true >", "classmim_1_1TExt.html", null ],
       [ "mim::TExt< Up >", "classmim_1_1TExt.html", null ]
     ] ],
-    [ "mim::Setters< Tuple >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Tuple &gt;", "classmim_1_1Setters.html", [
       [ "mim::Tuple", "classmim_1_1Tuple.html", null ]
     ] ],
-    [ "mim::Setters< Type >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Type &gt;", "classmim_1_1Setters.html", [
       [ "mim::Type", "classmim_1_1Type.html", null ]
     ] ],
-    [ "mim::Setters< UInc >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; UInc &gt;", "classmim_1_1Setters.html", [
       [ "mim::UInc", "classmim_1_1UInc.html", null ]
     ] ],
-    [ "mim::Setters< UMax >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; UMax &gt;", "classmim_1_1Setters.html", [
       [ "mim::UMax", "classmim_1_1UMax.html", null ]
     ] ],
-    [ "mim::Setters< Uniq >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Uniq &gt;", "classmim_1_1Setters.html", [
       [ "mim::Uniq", "classmim_1_1Uniq.html", null ]
     ] ],
-    [ "mim::Setters< Univ >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Univ &gt;", "classmim_1_1Setters.html", [
       [ "mim::Univ", "classmim_1_1Univ.html", null ]
     ] ],
-    [ "mim::Setters< Var >", "classmim_1_1Setters.html", [
+    [ "mim::Setters&lt; Var &gt;", "classmim_1_1Setters.html", [
       [ "mim::Var", "classmim_1_1Var.html", null ]
     ] ],
-    [ "mim::Nest::Node::SiblDeps< Forward >", "structmim_1_1Nest_1_1Node_1_1SiblDeps.html", null ],
+    [ "mim::Nest::Node::SiblDeps&lt; Forward &gt;", "structmim_1_1Nest_1_1Node_1_1SiblDeps.html", null ],
     [ "std::span", null, [
       [ "mim::Span< const T, N >", "classmim_1_1Span.html", null ],
       [ "mim::Span< T, N >", "classmim_1_1Span.html", null ]
@@ -409,31 +409,31 @@ var hierarchy =
     ] ],
     [ "mim::Tab", "classmim_1_1Tab.html", null ],
     [ "mim::ast::Tok", "classmim_1_1ast_1_1Tok.html", null ],
-    [ "std::tuple_element< I, mim::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4", null ],
-    [ "mim::unique_queue< Set >", "classmim_1_1unique__queue.html", null ],
-    [ "mim::unique_stack< Set >", "classmim_1_1unique__stack.html", null ],
+    [ "std::tuple_element&lt; I, mim::Span&lt; T, N &gt; &gt;", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01mim_1_1Span_3_01T_00_01N_01_4_01_4", null ],
+    [ "mim::unique_queue&lt; Set &gt;", "classmim_1_1unique__queue.html", null ],
+    [ "mim::unique_stack&lt; Set &gt;", "classmim_1_1unique__stack.html", null ],
     [ "mim::Use", "classmim_1_1Use.html", null ],
     [ "mim::UseEq", "structmim_1_1UseEq.html", null ],
     [ "mim::UseHash", "structmim_1_1UseHash.html", null ],
-    [ "mim::detail::w2f_< int >", null, null ],
-    [ "mim::detail::w2f_< 16 >", null, null ],
-    [ "mim::detail::w2f_< 32 >", null, null ],
-    [ "mim::detail::w2f_< 64 >", null, null ],
-    [ "mim::detail::w2s_< int >", null, null ],
-    [ "mim::detail::w2s_< 1 >", null, null ],
-    [ "mim::detail::w2s_< 16 >", null, null ],
-    [ "mim::detail::w2s_< 32 >", null, null ],
-    [ "mim::detail::w2s_< 64 >", null, null ],
-    [ "mim::detail::w2s_< 8 >", null, null ],
-    [ "mim::detail::w2u_< int >", null, null ],
-    [ "mim::detail::w2u_< 1 >", null, null ],
-    [ "mim::detail::w2u_< 16 >", null, null ],
-    [ "mim::detail::w2u_< 32 >", null, null ],
-    [ "mim::detail::w2u_< 64 >", null, null ],
-    [ "mim::detail::w2u_< 8 >", null, null ],
+    [ "mim::detail::w2f_&lt; int &gt;", null, null ],
+    [ "mim::detail::w2f_&lt; 16 &gt;", null, null ],
+    [ "mim::detail::w2f_&lt; 32 &gt;", null, null ],
+    [ "mim::detail::w2f_&lt; 64 &gt;", null, null ],
+    [ "mim::detail::w2s_&lt; int &gt;", null, null ],
+    [ "mim::detail::w2s_&lt; 1 &gt;", null, null ],
+    [ "mim::detail::w2s_&lt; 16 &gt;", null, null ],
+    [ "mim::detail::w2s_&lt; 32 &gt;", null, null ],
+    [ "mim::detail::w2s_&lt; 64 &gt;", null, null ],
+    [ "mim::detail::w2s_&lt; 8 &gt;", null, null ],
+    [ "mim::detail::w2u_&lt; int &gt;", null, null ],
+    [ "mim::detail::w2u_&lt; 1 &gt;", null, null ],
+    [ "mim::detail::w2u_&lt; 16 &gt;", null, null ],
+    [ "mim::detail::w2u_&lt; 32 &gt;", null, null ],
+    [ "mim::detail::w2u_&lt; 64 &gt;", null, null ],
+    [ "mim::detail::w2u_&lt; 8 &gt;", null, null ],
     [ "mim::World", "classmim_1_1World.html", null ],
     [ "const bool", "namespace_3globalScope_4.html#classconst_01bool", null ],
     [ "int", "namespace_3globalScope_4.html#classint", null ],
-    [ "list< DFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01DFANode_01_4", null ],
-    [ "list< NFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01NFANode_01_4", null ]
+    [ "list&lt; DFANode &gt;", "namespace_3globalScope_4.html#classstd_1_1list_3_01DFANode_01_4", null ],
+    [ "list&lt; NFANode &gt;", "namespace_3globalScope_4.html#classstd_1_1list_3_01NFANode_01_4", null ]
 ];

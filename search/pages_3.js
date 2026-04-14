@@ -1,5 +1,28 @@
 var searchData=
 [
-  ['gpu_20plugin_0',['The gpu Plugin',['../gpu.html',1,'']]],
-  ['guide_1',['Developer Guide',['../dev.html',1,'']]]
+  ['dbg_0',['%refly.dbg',['../refly.html#autotoc_md257',1,'']]],
+  ['debugging_1',['Debugging',['../coding.html',1,'Coding &amp; Debugging'],['../coding.html#autotoc_md5',1,'Debugging']]],
+  ['debugging_20features_2',['Debugging Features',['../cli.html#clidebug',1,'']]],
+  ['declarations_3',['Declarations',['../langref.html#decl',1,'Declarations'],['../langref.html#autotoc_md50',1,'Declarations']]],
+  ['demo_20const_5fidx_4',['%demo.const_idx',['../demo.html#autotoc_md136',1,'']]],
+  ['demo_20plugin_5',['The demo Plugin',['../demo.html',1,'']]],
+  ['dependencies_6',['Dependencies',['../coding.html#autotoc_md1',1,'Dependencies'],['../affine.html#autotoc_md79',1,'Dependencies'],['../autodiff.html#autotoc_md84',1,'Dependencies'],['../clos.html#autotoc_md97',1,'Dependencies'],['../core.html#autotoc_md113',1,'Dependencies'],['../direct.html#autotoc_md137',1,'Dependencies'],['../gpu.html#autotoc_md141',1,'Dependencies'],['../matrix.html#autotoc_md191',1,'Dependencies'],['../mem.html#autotoc_md211',1,'Dependencies'],['../opt.html#autotoc_md231',1,'Dependencies'],['../ord.html#autotoc_md234',1,'Dependencies'],['../refly.html#autotoc_md249',1,'Dependencies'],['../regex.html#autotoc_md265',1,'Dependencies'],['../tensor.html#autotoc_md283',1,'Dependencies'],['../tuple.html#autotoc_md296',1,'Dependencies'],['../vec.html#autotoc_md302',1,'Dependencies']]],
+  ['deprecated_20list_7',['Deprecated List',['../deprecated.html',1,'']]],
+  ['developer_20guide_8',['Developer Guide',['../dev.html',1,'']]],
+  ['diff_9',['%vec.diff',['../vec.html#autotoc_md312',1,'']]],
+  ['differentiation_20plugin_10',['The automatic differentiation Plugin',['../autodiff.html',1,'']]],
+  ['direct_20cps2ds_11',['%direct.cps2ds',['../direct.html#autotoc_md139',1,'']]],
+  ['direct_20style_20plugin_12',['The direct style Plugin',['../direct.html',1,'']]],
+  ['disj_13',['%regex.disj',['../regex.html#autotoc_md270',1,'']]],
+  ['display_20dot_14',['Display DOT',['../coding.html#autotoc_md7',1,'']]],
+  ['div_15',['%core.div',['../core.html#autotoc_md124',1,'']]],
+  ['dominance_16',['🌲 SSA without Dominance',['../index.html#autotoc_md74',1,'']]],
+  ['dot_17',['Display DOT',['../coding.html#autotoc_md7',1,'']]],
+  ['dot_5fgeneral_18',['%tensor.dot_general',['../tensor.html#autotoc_md291',1,'']]],
+  ['downcast_19',['Downcast',['../dev.html#autotoc_md20',1,'']]],
+  ['downcast_20for_20built_20ins_20',['Downcast for Built-ins',['../dev.html#cast_builtin',1,'']]],
+  ['downcast_20for_20immutables_21',['Downcast for Immutables',['../dev.html#autotoc_md21',1,'']]],
+  ['downcast_20for_20mutables_22',['Downcast for Mutables',['../dev.html#autotoc_md22',1,'']]],
+  ['doxygen_20style_23',['Doxygen Style',['../coding.html#autotoc_md3',1,'']]],
+  ['dumping_24',['Dumping',['../coding.html#autotoc_md6',1,'']]]
 ];

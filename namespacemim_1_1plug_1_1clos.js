@@ -1,13 +1,13 @@
 var namespacemim_1_1plug_1_1clos =
 [
+    [ "ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", "classmim_1_1plug_1_1clos_1_1ClosLit" ],
     [ "BranchClosElim", "classmim_1_1plug_1_1clos_1_1BranchClosElim.html", "classmim_1_1plug_1_1clos_1_1BranchClosElim" ],
     [ "Clos2SJLJ", "classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html", "classmim_1_1plug_1_1clos_1_1Clos2SJLJ" ],
-    [ "ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", "classmim_1_1plug_1_1clos_1_1ClosConv" ],
     [ "ClosConvPrep", "classmim_1_1plug_1_1clos_1_1ClosConvPrep.html", "classmim_1_1plug_1_1clos_1_1ClosConvPrep" ],
-    [ "ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", "classmim_1_1plug_1_1clos_1_1ClosLit" ],
-    [ "FreeDefAna", "classmim_1_1plug_1_1clos_1_1FreeDefAna.html", "classmim_1_1plug_1_1clos_1_1FreeDefAna" ],
-    [ "LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", "classmim_1_1plug_1_1clos_1_1LowerTypedClos" ],
     [ "LowerTypedClosPrep", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html", "classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep" ],
+    [ "FreeDefAna", "classmim_1_1plug_1_1clos_1_1FreeDefAna.html", "classmim_1_1plug_1_1clos_1_1FreeDefAna" ],
+    [ "ClosConv", "classmim_1_1plug_1_1clos_1_1ClosConv.html", "classmim_1_1plug_1_1clos_1_1ClosConv" ],
+    [ "LowerTypedClos", "classmim_1_1plug_1_1clos_1_1LowerTypedClos.html", "classmim_1_1plug_1_1clos_1_1LowerTypedClos" ],
     [ "alloc_jmpbuf", "namespacemim_1_1plug_1_1clos.html#a6df3c001bef9450a90c0a1588c81edf0", null ],
     [ "attr", "namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8c", [
       [ "returning", "namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8ca167a77939d6d79814e846ff5885b63b9", null ],

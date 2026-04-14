@@ -1,6 +1,6 @@
 var print_8h =
 [
-    [ "mim::Elem< R, F >", "structmim_1_1Elem.html", "structmim_1_1Elem" ],
+    [ "mim::Elem&lt; R, F &gt;", "structmim_1_1Elem.html", "structmim_1_1Elem" ],
     [ "mim::Tab", "classmim_1_1Tab.html", "classmim_1_1Tab" ],
     [ "assertf", "print_8h.html#a7bc6143638d489bb640260462bf07777", null ],
     [ "mim::errf", "namespacemim.html#a6f391dd09ef5770be5c92b9b3ebf8513", null ],

@@ -1,5 +1,29 @@
 var searchData=
 [
-  ['opt_20plugin_0',['The opt Plugin',['../opt.html',1,'']]],
-  ['ord_20plugin_1',['The ord Plugin',['../ord.html',1,'']]]
+  ['gamma_0',['%math.gamma',['../math.html#autotoc_md182',1,'']]],
+  ['gdb_1',['Valgrind &amp;amp; GDB',['../coding.html#autotoc_md10',1,'']]],
+  ['get_2',['get',['../ord.html#autotoc_md245',1,'%ord.get'],['../todo.html#_todo000001',1,'%ord.get']]],
+  ['gid_3',['%refly.gid',['../refly.html#autotoc_md256',1,'']]],
+  ['googletest_4',['GoogleTest',['../coding.html#autotoc_md13',1,'']]],
+  ['gpu_20alloc_5',['%gpu.alloc',['../gpu.html#autotoc_md153',1,'']]],
+  ['gpu_20alloc_5fasync_6',['%gpu.alloc_async',['../gpu.html#autotoc_md159',1,'']]],
+  ['gpu_20alloc_5fcopy_7',['%gpu.alloc_copy',['../gpu.html#autotoc_md157',1,'']]],
+  ['gpu_20alloc_5fcopy_5fasync_8',['%gpu.alloc_copy_async',['../gpu.html#autotoc_md163',1,'']]],
+  ['gpu_20copy_5fto_5fdevice_9',['%gpu.copy_to_device',['../gpu.html#autotoc_md155',1,'']]],
+  ['gpu_20copy_5fto_5fdevice_5fasync_10',['%gpu.copy_to_device_async',['../gpu.html#autotoc_md161',1,'']]],
+  ['gpu_20copy_5fto_5fhost_11',['%gpu.copy_to_host',['../gpu.html#autotoc_md156',1,'']]],
+  ['gpu_20copy_5fto_5fhost_5fasync_12',['%gpu.copy_to_host_async',['../gpu.html#autotoc_md162',1,'']]],
+  ['gpu_20free_13',['%gpu.free',['../gpu.html#autotoc_md154',1,'']]],
+  ['gpu_20free_5fasync_14',['%gpu.free_async',['../gpu.html#autotoc_md160',1,'']]],
+  ['gpu_20launch_15',['%gpu.launch',['../gpu.html#autotoc_md165',1,'']]],
+  ['gpu_20launch_5fwith_5fsmem_16',['%gpu.launch_with_smem',['../gpu.html#autotoc_md166',1,'']]],
+  ['gpu_20plugin_17',['The gpu Plugin',['../gpu.html',1,'']]],
+  ['gpu_20stream_5fdeinit_18',['%gpu.stream_deinit',['../gpu.html#autotoc_md150',1,'']]],
+  ['gpu_20stream_5finit_19',['%gpu.stream_init',['../gpu.html#autotoc_md149',1,'']]],
+  ['gpu_20stream_5fsync_20',['%gpu.stream_sync',['../gpu.html#autotoc_md151',1,'']]],
+  ['gpu_20sync_5fwork_5fitems_21',['%gpu.sync_work_items',['../gpu.html#autotoc_md168',1,'']]],
+  ['gpu_20synced_5fscope_22',['%gpu.synced_scope',['../gpu.html#autotoc_md169',1,'']]],
+  ['grammar_23',['Grammar',['../langref.html#grammar',1,'']]],
+  ['groups_24',['Groups',['../langref.html#autotoc_md41',1,'']]],
+  ['guide_25',['Developer Guide',['../dev.html',1,'']]]
 ];

@@ -1,5 +1,31 @@
 var searchData=
 [
-  ['affine_20plugin_0',['The affine Plugin',['../affine.html',1,'']]],
-  ['automatic_20differentiation_20plugin_1',['The automatic differentiation Plugin',['../autodiff.html',1,'']]]
+  ['abs_0',['abs',['../core.html#autotoc_md127',1,'%core.abs'],['../math.html#autotoc_md183',1,'%math.abs']]],
+  ['ad_1',['%autodiff.ad',['../autodiff.html#autotoc_md87',1,'']]],
+  ['add_2',['add',['../autodiff.html#autotoc_md89',1,'%autodiff.add'],['../autodiff.html#autotoc_md95',1,'%core.wrap.add']]],
+  ['add_5fmim_5fplugin_3',['add_mim_plugin',['../coding.html#autotoc_md17',1,'']]],
+  ['address_20spaces_4',['Address Spaces',['../gpu.html#autotoc_md143',1,'']]],
+  ['affine_20for_5',['%affine.For',['../affine.html#autotoc_md81',1,'']]],
+  ['affine_20lower_5ffor_5fpass_6',['%affine.lower_for_pass',['../affine.html#autotoc_md83',1,'']]],
+  ['affine_20plugin_7',['The affine Plugin',['../affine.html',1,'']]],
+  ['alias_20pattern_8',['Alias Pattern',['../langref.html#autotoc_md42',1,'']]],
+  ['alloc_9',['alloc',['../gpu.html#autotoc_md153',1,'%gpu.alloc'],['../mem.html#autotoc_md218',1,'%mem.alloc']]],
+  ['alloc_5fasync_10',['%gpu.alloc_async',['../gpu.html#autotoc_md159',1,'']]],
+  ['alloc_5fcopy_11',['%gpu.alloc_copy',['../gpu.html#autotoc_md157',1,'']]],
+  ['alloc_5fcopy_5fasync_12',['%gpu.alloc_copy_async',['../gpu.html#autotoc_md163',1,'']]],
+  ['analyze_13',['Analyze',['../passes.html#autotoc_md62',1,'']]],
+  ['and_20phases_14',['and Phases',['../affine.html#autotoc_md82',1,'Passes and Phases'],['../clos.html#autotoc_md100',1,'Passes and Phases'],['../matrix.html#autotoc_md208',1,'Passes and Phases'],['../regex.html#autotoc_md281',1,'Passes and Phases']]],
+  ['and_20pipelines_15',['Passes, Phases, and Pipelines',['../opt.html#autotoc_md232',1,'']]],
+  ['annex_16',['Annex',['../langref.html#autotoc_md56',1,'']]],
+  ['any_17',['%regex.any',['../regex.html#autotoc_md277',1,'']]],
+  ['applications_18',['Applications',['../langref.html#autotoc_md52',1,'']]],
+  ['arith_19',['%math.arith',['../math.html#autotoc_md175',1,'']]],
+  ['arity_20',['Arity',['../dev.html#autotoc_md29',1,'']]],
+  ['asynchronous_20memory_20operations_21',['Asynchronous Memory Operations',['../gpu.html#autotoc_md158',1,'']]],
+  ['attribute_22',['Closure Attribute',['../clos.html#autotoc_md99',1,'']]],
+  ['autodiff_20ad_23',['%autodiff.ad',['../autodiff.html#autotoc_md87',1,'']]],
+  ['autodiff_20add_24',['%autodiff.add',['../autodiff.html#autotoc_md89',1,'']]],
+  ['autodiff_20zero_25',['%autodiff.zero',['../autodiff.html#autotoc_md88',1,'']]],
+  ['automatic_20differentiation_20plugin_26',['The automatic differentiation Plugin',['../autodiff.html',1,'']]],
+  ['axioms_27',['Matching Axioms',['../dev.html#cast_axm',1,'']]]
 ];

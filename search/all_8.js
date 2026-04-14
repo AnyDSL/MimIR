@@ -1,7 +1,7 @@
 var searchData=
 [
   ['icmp_0',['icmp',['../core.html#autotoc_md125',1,'%core.icmp'],['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673',1,'mim::plug::core::icmp']]],
-  ['icmp_20xygle_20eq_1',['%%core.icmp.xYgLE (eq)',['../autodiff.html#autotoc_md94',1,'']]],
+  ['icmp_20xygle_20eq_1',['%core.icmp.xYgLE (eq)',['../autodiff.html#autotoc_md94',1,'']]],
   ['id_2',['id',['../structmim_1_1ast_1_1AnnexInfo.html#a4da3f49e54045b50bc1bc35bf43f3793',1,'mim::ast::AnnexInfo::id'],['../classautomaton_1_1DFANode.html#ad5d7a0ee16216a5d4a8babd1b44d69c6',1,'automaton::DFANode::id()'],['../classautomaton_1_1NFANode.html#a91b7085efda299ad32c7b74508264a06',1,'automaton::NFANode::id()'],['../classmim_1_1ast_1_1GrpPtrn.html#addf97b7c47ac8834cd4f7486f9f42396',1,'mim::ast::GrpPtrn::id()'],['../classmim_1_1Axm_1_1IsA.html#a1aeeadf51205078976ea23075a079d9f',1,'mim::Axm::IsA::id()'],['../namespacemim_1_1plug_1_1core.html#a7a60a2da3c1482d92696ed97b26f1b4cab80bb7740288fda1f201890375a60c8f',1,'mim::plug::core::id']]],
   ['id_5fpullback_3',['id_pullback',['../namespacemim_1_1plug_1_1autodiff.html#a968c053d85aa0d5c782ca7bacb51e727',1,'mim::plug::autodiff']]],
   ['idexpr_4',['IdExpr',['../classmim_1_1ast_1_1IdExpr.html',1,'mim::ast::IdExpr'],['../classmim_1_1ast_1_1IdExpr.html#a4a4aa4caaa73cc56b885817098c7a82a',1,'mim::ast::IdExpr::IdExpr()']]],
@@ -70,7 +70,7 @@ var searchData=
   ['is_5fdescendant_5fof_67',['is_descendant_of',['../classmim_1_1lct_1_1Node.html#a6bbe1bbad5c5444ff72c4d1bcb376b73',1,'mim::lct::Node']]],
   ['is_5fdirectly_5frecursive_68',['is_directly_recursive',['../classmim_1_1Nest_1_1Node.html#ae2e265b880bc9c14348f8eeb3c38eec1',1,'mim::Nest::Node']]],
   ['is_5felim_69',['is_elim',['../classmim_1_1Def.html#a24edc8f00822c4b32e141cf5169970ab',1,'mim::Def']]],
-  ['is_5fempty_70',['%%ord.is_empty',['../ord.html#autotoc_md243',1,'']]],
+  ['is_5fempty_70',['%ord.is_empty',['../ord.html#autotoc_md243',1,'']]],
   ['is_5fempty_5fmap_71',['is_empty_map',['../namespacemim_1_1plug_1_1ord.html#a3139291210faabba5130f06c7513a57f',1,'mim::plug::ord']]],
   ['is_5fempty_5fset_72',['is_empty_set',['../namespacemim_1_1plug_1_1ord.html#adf40c77e7d3537a42c2423fb1b4e33c5',1,'mim::plug::ord']]],
   ['is_5ferroring_73',['is_erroring',['../classautomaton_1_1DFANode.html#adae8e83f4bb5815e86e75adbfa5ca46b',1,'automaton::DFANode::is_erroring()'],['../classautomaton_1_1NFANode.html#a3e6c9bd74a2c391c9acff45cc92c9593',1,'automaton::NFANode::is_erroring()']]],

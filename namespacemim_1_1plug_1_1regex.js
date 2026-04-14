@@ -1,7 +1,7 @@
 var namespacemim_1_1plug_1_1regex =
 [
-    [ "app_range", "structmim_1_1plug_1_1regex_1_1app__range.html", "structmim_1_1plug_1_1regex_1_1app__range" ],
     [ "LowerRegex", "classmim_1_1plug_1_1regex_1_1LowerRegex.html", "classmim_1_1plug_1_1regex_1_1LowerRegex" ],
+    [ "app_range", "structmim_1_1plug_1_1regex_1_1app__range.html", "structmim_1_1plug_1_1regex_1_1app__range" ],
     [ "any", "namespacemim_1_1plug_1_1regex.html#a9e88c3311ac4201abeacb94102dcee49", null ],
     [ "cls", "namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938", [
       [ "d", "namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a8277e0910d750195b448797616e091ad", null ],

@@ -1,22 +1,22 @@
 <map id="mim::plug::mem::pass::SSA" name="mim::plug::mem::pass::SSA">
-<area shape="rect" id="Node000001" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="75,555,277,580"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1FPPass.html" title=" " alt="" coords="77,480,275,505"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,520,179,554,173,554,173,520"/>
-<area shape="rect" id="Node000003" href="$classmim_1_1RWPass.html" title=" " alt="" coords="5,317,208,343"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="120,354,174,479,169,481,115,357"/>
-<area shape="rect" id="Node000004" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="173,155,262,180"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="174,188,146,206,122,231,112,253,108,276,108,317,103,317,103,276,107,251,118,228,142,202,172,184"/>
-<area shape="rect" id="Node000007" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="133,229,302,255"/>
-<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="220,194,220,229,215,229,215,194"/>
-<area shape="rect" id="Node000009" href="$classmim_1_1RWPass.html" title=" " alt="" coords="233,317,413,343"/>
-<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="259,184,290,202,317,228,334,258,335,294,329,318,324,316,329,293,329,260,313,231,286,207,257,188"/>
-<area shape="rect" id="Node000005" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="169,80,266,105"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="220,120,220,154,215,154,215,120"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="120,5,315,31"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="220,45,220,80,215,80,215,45"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="173,263,144,281,127,299,115,318,111,316,123,296,141,277,171,258"/>
-<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="235,264,260,291,298,315,296,320,257,295,231,267"/>
-<area shape="rect" id="Node000008" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="216,392,379,417"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="271,428,194,482,191,478,268,423"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="316,357,304,393,299,391,311,355"/>
+<area shape="rect" id="Node000001" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="75,571,277,596"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1FPPass.html" title=" " alt="" coords="77,496,275,521"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,536,179,570,173,570,173,536"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1RWPass.html" title=" " alt="" coords="5,325,208,351"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="119,363,174,495,169,497,114,365"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="177,155,266,180"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="179,188,150,206,126,231,115,255,109,281,108,325,103,325,104,280,110,253,122,228,147,202,176,184"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="137,229,306,255"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="224,194,224,229,219,229,219,194"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1RWPass.html" title=" " alt="" coords="233,325,413,351"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="262,184,293,203,321,228,334,245,343,262,346,280,343,302,333,326,328,324,337,301,340,280,338,263,330,248,317,231,289,207,259,188"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="173,80,270,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="224,120,224,154,219,154,219,120"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="124,5,319,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="224,45,224,80,219,80,219,45"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="168,262,139,281,123,303,113,326,108,324,118,300,136,277,165,258"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="237,265,264,299,299,323,296,327,261,303,233,268"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="216,400,379,425"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="273,436,193,498,189,494,270,432"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="316,365,304,401,299,399,311,363"/>
 </map>

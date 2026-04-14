@@ -1,125 +1,125 @@
 <map id="mim::Pass" name="mim::Pass">
-<area shape="rect" id="Node000001" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="396,824,485,849"/>
-<area shape="rect" id="Node000004" href="$classmim_1_1RWPass.html" title=" " alt="" coords="977,814,1146,840"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="488,851,572,877,681,898,741,904,802,903,863,895,920,878,932,868,944,856,990,837,992,842,947,860,935,872,923,883,864,900,803,908,741,909,681,904,570,882,487,856"/>
-<area shape="rect" id="Node000005" href="$classmim_1_1RWPass.html" title=" " alt="" coords="969,680,1154,720"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="459,811,492,776,533,740,583,703,624,676,668,655,727,638,782,624,827,617,870,620,923,638,931,645,936,652,940,660,947,666,970,678,967,683,944,671,936,663,931,655,927,648,920,643,869,625,827,622,783,629,729,643,670,660,626,680,586,707,536,744,496,780,463,815"/>
-<area shape="rect" id="Node000008" href="$classmim_1_1RWPass.html" title=" " alt="" coords="974,464,1149,504"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="441,810,448,754,463,680,490,600,509,561,533,526,575,476,616,444,664,422,727,402,781,388,825,384,868,389,922,402,935,408,947,417,1026,462,1023,467,944,421,932,413,920,407,867,394,825,389,782,394,729,407,666,427,619,448,579,480,537,529,514,564,495,602,469,681,453,754,446,810"/>
-<area shape="rect" id="Node000011" href="$classmim_1_1RWPass.html" title=" " alt="" coords="973,130,1149,170"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="440,810,447,686,463,507,475,414,491,328,510,256,532,204,573,148,613,110,662,82,727,58,782,40,828,30,850,30,873,34,897,43,923,58,934,72,937,88,939,102,947,116,974,133,972,137,943,120,934,104,932,88,929,74,920,62,895,48,872,39,850,35,829,35,783,45,729,63,664,87,616,114,577,151,537,207,515,258,496,329,481,415,469,507,453,686,446,810"/>
-<area shape="rect" id="Node000014" href="$classmim_1_1RWPass.html" title=" " alt="" coords="971,382,1151,408"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="439,810,442,742,455,648,466,597,483,545,505,495,532,450,573,400,614,362,656,334,701,316,749,306,802,305,859,311,922,323,957,334,990,349,1043,380,1040,385,988,354,955,339,921,328,858,316,802,310,750,311,703,321,659,339,617,366,577,404,537,453,509,498,488,547,472,598,460,649,447,742,444,810"/>
-<area shape="rect" id="Node000024" href="$classmim_1_1RWPass.html" title=" " alt="" coords="967,1267,1156,1307"/>
-<area shape="poly" id="edge26_Node000001_Node000024" title=" " alt="" coords="447,863,456,957,474,1085,500,1208,517,1256,537,1289,566,1313,610,1335,663,1354,722,1369,781,1378,837,1382,885,1378,920,1366,928,1358,932,1347,935,1336,944,1324,975,1305,977,1310,947,1328,940,1338,937,1349,933,1360,923,1371,886,1383,837,1387,780,1384,720,1374,661,1359,607,1340,563,1318,533,1293,512,1259,495,1210,468,1086,451,958,441,863"/>
-<area shape="rect" id="Node000026" href="$classmim_1_1RWPass.html" title=" " alt="" coords="967,870,1156,910"/>
-<area shape="poly" id="edge28_Node000001_Node000026" title=" " alt="" coords="467,857,498,883,536,906,587,928,629,940,728,954,828,972,870,972,894,965,920,954,928,948,931,940,935,931,944,922,971,908,973,912,947,927,940,934,936,942,932,951,923,959,895,970,871,977,828,977,728,959,628,946,585,933,533,911,495,887,463,861"/>
-<area shape="rect" id="Node000028" href="$classmim_1_1RWPass.html" title=" " alt="" coords="959,543,1164,583"/>
-<area shape="poly" id="edge30_Node000001_Node000028" title=" " alt="" coords="444,810,455,767,472,712,498,654,533,601,577,554,618,522,665,500,727,481,782,465,827,457,871,461,923,481,932,489,936,498,940,506,947,514,969,529,994,541,992,546,967,534,944,518,936,509,932,500,928,492,920,485,870,466,827,462,783,470,729,486,667,505,621,527,580,558,537,605,502,657,477,714,460,768,449,811"/>
-<area shape="rect" id="Node000029" href="$classmim_1_1RWPass.html" title=" " alt="" coords="982,1192,1141,1232"/>
-<area shape="poly" id="edge32_Node000001_Node000029" title=" " alt="" coords="444,863,445,931,456,1023,468,1072,484,1121,507,1168,537,1209,566,1233,609,1255,663,1273,721,1288,780,1298,836,1301,884,1298,920,1287,928,1281,932,1272,935,1263,944,1253,984,1230,987,1235,947,1257,940,1266,936,1275,932,1284,923,1292,885,1303,836,1307,780,1303,720,1293,661,1278,607,1260,563,1237,533,1213,502,1170,479,1123,463,1074,451,1023,440,931,438,863"/>
-<area shape="rect" id="Node000031" href="$classmim_1_1RWPass.html" title=" " alt="" coords="945,1107,1177,1147"/>
-<area shape="poly" id="edge34_Node000001_Node000031" title=" " alt="" coords="446,863,452,917,466,987,493,1062,513,1097,537,1128,580,1167,622,1187,669,1198,729,1209,783,1221,827,1229,870,1227,920,1209,928,1203,932,1196,943,1179,972,1160,1002,1145,1004,1150,975,1164,947,1182,936,1198,932,1206,923,1213,871,1232,827,1234,782,1226,727,1214,668,1203,620,1192,577,1171,533,1132,508,1100,488,1064,461,989,446,918,441,863"/>
-<area shape="rect" id="Node000033" href="$classmim_1_1RWPass.html" title=" " alt="" coords="967,1338,1156,1378"/>
-<area shape="poly" id="edge36_Node000001_Node000033" title=" " alt="" coords="446,863,454,972,470,1123,482,1200,497,1271,515,1329,537,1370,578,1415,619,1449,662,1473,707,1487,754,1491,805,1488,860,1477,920,1459,968,1427,1033,1376,1036,1380,971,1431,922,1464,862,1482,806,1493,754,1497,706,1492,660,1478,616,1454,574,1419,532,1373,510,1331,492,1272,477,1201,464,1124,448,972,441,863"/>
-<area shape="rect" id="Node000035" href="$classmim_1_1RWPass.html" title=" " alt="" coords="951,747,1171,787"/>
-<area shape="poly" id="edge38_Node000001_Node000035" title=" " alt="" coords="499,840,583,845,689,845,806,836,864,827,920,814,932,808,944,801,987,785,989,790,946,806,935,813,922,819,865,832,806,842,689,851,583,850,499,845"/>
-<area shape="rect" id="Node000037" href="$classmim_1_1RWPass.html" title=" " alt="" coords="946,66,1177,106"/>
-<area shape="poly" id="edge40_Node000001_Node000037" title=" " alt="" coords="439,810,442,668,453,462,465,355,481,257,503,175,517,143,533,118,574,72,615,39,658,18,703,6,752,3,803,6,922,26,976,42,1024,63,1021,68,974,47,921,31,803,11,752,8,704,11,660,23,618,44,577,76,537,121,522,145,508,177,486,258,470,356,459,463,447,669,445,810"/>
-<area shape="rect" id="Node000038" href="$classmim_1_1RWPass.html" title=" " alt="" coords="958,194,1165,234"/>
-<area shape="poly" id="edge42_Node000001_Node000038" title=" " alt="" coords="441,810,450,699,467,544,479,464,494,390,512,329,532,284,573,231,614,197,663,173,727,151,781,135,826,128,870,132,923,151,931,158,936,166,940,173,947,180,970,191,967,196,944,184,936,176,931,168,927,162,920,156,869,138,826,133,782,141,729,156,665,178,617,201,577,235,537,287,517,330,499,392,484,465,472,544,455,699,446,810"/>
-<area shape="rect" id="Node000040" href="$classmim_1_1RWPass.html" title=" " alt="" coords="958,1459,1165,1499"/>
-<area shape="poly" id="edge44_Node000001_Node000040" title=" " alt="" coords="444,863,444,996,454,1187,465,1285,482,1373,506,1445,520,1471,536,1490,566,1506,608,1516,659,1521,718,1521,843,1511,957,1495,958,1500,843,1516,718,1526,659,1526,607,1522,564,1511,533,1495,516,1474,501,1447,477,1375,460,1286,449,1188,439,996,439,863"/>
-<area shape="rect" id="Node000042" href="$classmim_1_1RWPass.html" title=" " alt="" coords="965,616,1157,656"/>
-<area shape="poly" id="edge46_Node000001_Node000042" title=" " alt="" coords="449,810,481,744,505,707,533,673,579,629,620,599,666,578,727,559,782,544,827,536,871,540,923,560,932,567,936,576,940,585,947,593,985,614,983,619,944,597,935,588,932,579,928,571,920,564,870,545,827,541,783,549,729,564,668,583,623,604,583,633,537,677,509,710,486,747,454,812"/>
-<area shape="rect" id="Node000043" href="$classmim_1_1RWPass.html" title=" " alt="" coords="968,1015,1155,1055"/>
-<area shape="poly" id="edge48_Node000001_Node000043" title=" " alt="" coords="450,862,461,900,479,947,504,995,537,1037,582,1077,623,1100,669,1115,729,1129,783,1142,828,1151,870,1148,920,1129,928,1122,932,1114,936,1104,943,1093,975,1070,1007,1053,1010,1058,977,1075,947,1097,940,1106,937,1116,932,1125,923,1133,872,1154,828,1156,782,1147,727,1134,667,1120,620,1105,578,1081,533,1041,499,997,474,949,456,902,445,863"/>
-<area shape="rect" id="Node000045" href="$classmim_1_1RWPass.html" title=" " alt="" coords="960,258,1163,284"/>
-<area shape="poly" id="edge50_Node000001_Node000045" title=" " alt="" coords="442,810,453,714,471,583,498,454,514,403,532,366,574,312,615,277,663,252,727,230,781,216,824,212,868,217,922,230,935,236,946,243,988,256,987,261,944,248,932,241,920,235,867,222,824,217,782,221,729,235,665,257,618,281,578,316,537,369,519,405,503,456,477,584,458,714,447,810"/>
-<area shape="rect" id="Node000046" href="$classmim_1_1RWPass.html" title=" " alt="" coords="956,936,1167,976"/>
-<area shape="poly" id="edge52_Node000001_Node000046" title=" " alt="" coords="458,860,490,908,512,933,536,956,585,990,626,1010,670,1024,729,1037,784,1049,828,1058,870,1056,920,1037,928,1030,932,1021,935,1011,944,1001,966,986,990,974,993,979,969,991,947,1005,940,1014,937,1023,932,1033,923,1041,872,1061,828,1063,783,1055,727,1042,669,1029,624,1015,582,994,533,960,508,937,486,911,453,862"/>
-<area shape="rect" id="Node000048" href="$classmim_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way." alt="" coords="561,1560,678,1585"/>
-<area shape="poly" id="edge54_Node000001_Node000048" title=" " alt="" coords="445,863,451,1012,464,1227,484,1429,497,1500,504,1524,511,1539,534,1556,562,1566,560,1571,531,1561,507,1542,499,1526,491,1502,478,1430,458,1227,446,1013,440,863"/>
-<area shape="rect" id="Node000049" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="535,753,704,778"/>
-<area shape="poly" id="edge55_Node000001_Node000049" title=" " alt="" coords="486,816,585,776,587,781,488,821"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="249,824,347,849"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="360,834,396,834,396,839,360,839"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,824,200,849"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="214,834,249,834,249,839,214,839"/>
-<area shape="rect" id="Node000006" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1687,660,1866,700"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1168,695,1687,680,1687,686,1168,700"/>
-<area shape="rect" id="Node000007" href="$classmim_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="1985,668,2099,693"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1880,678,1984,678,1984,683,1880,683"/>
-<area shape="rect" id="Node000009" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1692,384,1861,424"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1163,489,1263,491,1383,489,1512,479,1639,457,1663,446,1722,422,1724,427,1665,451,1641,462,1513,484,1384,494,1263,497,1162,494"/>
-<area shape="rect" id="Node000010" href="$classmim_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="1989,392,2095,417"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1875,402,1989,402,1989,407,1875,407"/>
-<area shape="rect" id="Node000012" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1691,204,1862,244"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1163,136,1264,130,1385,130,1514,141,1579,153,1641,169,1654,176,1665,183,1711,202,1709,207,1663,188,1651,180,1639,174,1577,158,1514,147,1385,135,1264,135,1163,141"/>
-<area shape="rect" id="Node000013" href="$classmim_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="1989,212,2095,237"/>
-<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="1876,222,1989,222,1989,227,1876,227"/>
-<area shape="rect" id="Node000015" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="1261,382,1424,408"/>
-<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="1165,392,1261,392,1261,398,1165,398"/>
-<area shape="poly" id="edge15_Node000015_Node000006" title=" " alt="" coords="1363,418,1413,481,1447,516,1484,548,1541,584,1601,614,1712,658,1710,663,1599,619,1538,588,1481,552,1443,520,1409,485,1359,421"/>
-<area shape="poly" id="edge16_Node000015_Node000009" title=" " alt="" coords="1438,394,1692,400,1692,405,1438,400"/>
-<area shape="poly" id="edge17_Node000015_Node000012" title=" " alt="" coords="1387,375,1482,337,1722,242,1724,247,1484,342,1389,380"/>
-<area shape="rect" id="Node000016" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1677,460,1876,500"/>
-<area shape="poly" id="edge18_Node000015_Node000016" title=" " alt="" coords="1422,408,1678,458,1677,464,1421,413"/>
-<area shape="rect" id="Node000018" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1664,134,1889,174"/>
-<area shape="poly" id="edge20_Node000015_Node000018" title=" " alt="" coords="1361,370,1412,315,1445,285,1481,258,1533,230,1588,206,1691,171,1692,176,1589,211,1535,234,1484,263,1448,289,1415,319,1365,373"/>
-<area shape="rect" id="Node000020" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1683,548,1870,588"/>
-<area shape="poly" id="edge22_Node000015_Node000020" title=" " alt="" coords="1376,413,1426,442,1484,471,1596,514,1700,546,1698,551,1594,519,1482,476,1424,447,1374,418"/>
-<area shape="rect" id="Node000022" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1678,329,1875,354"/>
-<area shape="poly" id="edge24_Node000015_Node000022" title=" " alt="" coords="1437,381,1678,351,1678,356,1438,386"/>
-<area shape="rect" id="Node000017" href="$classmim_1_1TailRecElim.html" title=" " alt="" coords="1975,468,2109,493"/>
-<area shape="poly" id="edge19_Node000016_Node000017" title=" " alt="" coords="1890,478,1974,478,1974,483,1890,483"/>
-<area shape="rect" id="Node000019" href="$classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html" title=" " alt="" coords="1939,134,2145,174"/>
-<area shape="poly" id="edge21_Node000018_Node000019" title=" " alt="" coords="1903,151,1938,151,1938,156,1903,156"/>
-<area shape="rect" id="Node000021" href="$classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="1958,548,2126,588"/>
-<area shape="poly" id="edge23_Node000020_Node000021" title=" " alt="" coords="1884,566,1958,566,1958,571,1884,571"/>
-<area shape="rect" id="Node000023" href="$classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="1941,329,2143,354"/>
-<area shape="poly" id="edge25_Node000022_Node000023" title=" " alt="" coords="1889,339,1940,339,1940,344,1889,344"/>
-<area shape="rect" id="Node000025" href="$classmim_1_1LamSpec.html" title=" " alt="" coords="1283,1274,1402,1300"/>
-<area shape="poly" id="edge27_Node000024_Node000025" title=" " alt="" coords="1170,1284,1283,1284,1283,1290,1170,1290"/>
-<area shape="rect" id="Node000027" href="$classmim_1_1Scalarize.html" title="Perform Scalarization (= Argument simplification)." alt="" coords="1283,877,1402,902"/>
-<area shape="poly" id="edge29_Node000026_Node000027" title=" " alt="" coords="1170,887,1283,887,1283,892,1170,892"/>
-<area shape="poly" id="edge31_Node000028_Node000016" title=" " alt="" coords="1178,566,1277,567,1394,563,1518,553,1639,533,1690,517,1735,498,1737,503,1691,522,1641,538,1518,558,1394,569,1277,572,1178,571"/>
-<area shape="rect" id="Node000030" href="$classmim_1_1plug_1_1autodiff_1_1Eval.html" title="This pass is the heart of AD." alt="" coords="1269,1192,1416,1232"/>
-<area shape="poly" id="edge33_Node000029_Node000030" title=" " alt="" coords="1155,1210,1269,1210,1269,1215,1155,1215"/>
-<area shape="rect" id="Node000032" href="$classmim_1_1plug_1_1clos_1_1BranchClosElim.html" title=" " alt="" coords="1227,1114,1459,1140"/>
-<area shape="poly" id="edge35_Node000031_Node000032" title=" " alt="" coords="1191,1124,1227,1124,1227,1130,1191,1130"/>
-<area shape="rect" id="Node000034" href="$classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html" title=" " alt="" coords="1248,1345,1437,1370"/>
-<area shape="poly" id="edge37_Node000033_Node000034" title=" " alt="" coords="1170,1355,1248,1355,1248,1360,1170,1360"/>
-<area shape="rect" id="Node000036" href="$classmim_1_1plug_1_1clos_1_1ClosConvPrep.html" title=" " alt="" coords="1233,754,1453,780"/>
-<area shape="poly" id="edge39_Node000035_Node000036" title=" " alt="" coords="1185,764,1232,764,1232,770,1185,770"/>
-<area shape="poly" id="edge41_Node000037_Node000018" title=" " alt="" coords="1191,91,1402,108,1640,131,1664,134,1664,139,1640,136,1401,113,1190,97"/>
-<area shape="rect" id="Node000039" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html" title="Resolves lowering of high level operations into medium/other high&#45;level operations." alt="" coords="1232,192,1453,232"/>
-<area shape="poly" id="edge43_Node000038_Node000039" title=" " alt="" coords="1178,211,1232,210,1232,216,1178,216"/>
-<area shape="rect" id="Node000041" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html" title="In this step, we lower map_reduce operations into affine for loops making the iteration scheme explic..." alt="" coords="1247,1459,1438,1499"/>
-<area shape="poly" id="edge45_Node000040_Node000041" title=" " alt="" coords="1178,1476,1247,1476,1247,1482,1178,1482"/>
-<area shape="poly" id="edge47_Node000042_Node000020" title=" " alt="" coords="1171,643,1271,647,1389,647,1515,639,1639,621,1690,605,1735,586,1737,591,1692,610,1641,626,1516,644,1389,652,1271,652,1171,648"/>
-<area shape="rect" id="Node000044" href="$classmim_1_1plug_1_1mem_1_1pass_1_1Reshape.html" title="The general idea of this Pass is to change the shape of signatures of functions." alt="" coords="1259,1015,1427,1055"/>
-<area shape="poly" id="edge49_Node000043_Node000044" title=" " alt="" coords="1168,1032,1258,1032,1258,1038,1168,1038"/>
-<area shape="poly" id="edge51_Node000045_Node000022" title=" " alt="" coords="1176,260,1276,257,1393,259,1518,267,1641,286,1701,305,1752,327,1750,332,1700,310,1639,291,1517,273,1393,264,1276,263,1177,266"/>
-<area shape="rect" id="Node000047" href="$classmim_1_1plug_1_1regex_1_1LowerRegex.html" title=" " alt="" coords="1232,944,1453,969"/>
-<area shape="poly" id="edge53_Node000046_Node000047" title=" " alt="" coords="1180,954,1232,954,1232,959,1180,959"/>
-<area shape="poly" id="edge56_Node000049_Node000004" title=" " alt="" coords="699,778,728,783,977,816,976,821,728,788,698,784"/>
-<area shape="poly" id="edge57_Node000049_Node000005" title=" " alt="" coords="699,748,728,743,968,709,969,714,728,748,699,753"/>
-<area shape="poly" id="edge58_Node000049_Node000008" title=" " alt="" coords="623,739,635,697,655,645,685,592,704,568,726,548,755,529,785,514,850,493,914,482,974,479,974,484,915,488,851,499,787,519,757,534,730,552,708,572,689,595,659,647,640,699,628,741"/>
-<area shape="poly" id="edge59_Node000049_Node000011" title=" " alt="" coords="619,739,627,623,644,460,658,376,676,301,698,239,712,215,726,197,752,176,782,160,813,148,846,140,912,133,973,135,973,140,912,139,847,146,815,154,784,165,755,181,730,201,716,218,703,241,681,302,663,377,650,460,632,623,624,740"/>
-<area shape="poly" id="edge60_Node000049_Node000014" title=" " alt="" coords="619,739,626,681,642,607,656,567,674,529,697,493,726,462,753,442,783,426,846,404,911,392,971,388,971,394,912,398,848,409,785,431,756,447,730,466,702,496,679,531,661,569,648,608,631,682,624,740"/>
-<area shape="poly" id="edge61_Node000049_Node000024" title=" " alt="" coords="626,792,636,890,656,1024,670,1091,687,1152,707,1201,730,1233,755,1253,783,1268,844,1288,907,1296,966,1296,966,1301,907,1301,842,1293,780,1273,752,1257,726,1237,703,1203,682,1153,665,1092,651,1025,631,891,620,792"/>
-<area shape="poly" id="edge62_Node000049_Node000026" title=" " alt="" coords="650,784,686,808,729,829,789,848,851,862,967,880,966,885,850,868,788,853,727,834,684,813,647,789"/>
-<area shape="poly" id="edge63_Node000049_Node000028" title=" " alt="" coords="631,740,668,683,695,653,727,629,783,601,843,582,903,570,958,563,959,569,904,575,844,587,785,606,729,633,699,657,673,686,635,743"/>
-<area shape="poly" id="edge64_Node000049_Node000029" title=" " alt="" coords="627,792,641,873,663,979,694,1080,711,1118,730,1144,757,1165,787,1182,853,1204,921,1214,982,1216,982,1221,920,1219,852,1209,785,1186,754,1169,726,1148,707,1121,689,1082,658,981,636,874,622,793"/>
-<area shape="poly" id="edge65_Node000049_Node000031" title=" " alt="" coords="625,792,632,847,650,917,663,954,681,990,703,1023,730,1052,778,1084,833,1106,890,1119,945,1126,945,1131,889,1124,832,1111,776,1089,726,1056,699,1027,676,993,658,956,645,919,627,848,620,792"/>
-<area shape="poly" id="edge66_Node000049_Node000033" title=" " alt="" coords="625,793,632,907,650,1065,664,1146,682,1218,704,1277,716,1300,730,1316,755,1335,783,1350,812,1360,844,1368,907,1373,966,1371,967,1376,907,1379,843,1373,811,1366,780,1355,752,1340,726,1320,712,1303,699,1280,677,1220,659,1147,645,1066,627,907,619,793"/>
-<area shape="poly" id="edge67_Node000049_Node000035" title=" " alt="" coords="718,763,951,764,951,769,718,769"/>
-<area shape="poly" id="edge68_Node000049_Node000037" title=" " alt="" coords="618,739,623,608,638,421,652,325,670,237,695,166,709,139,726,119,749,100,775,86,831,68,889,62,946,63,946,68,890,67,832,74,777,91,752,105,730,122,714,142,700,168,675,239,657,326,643,421,628,608,624,739"/>
-<area shape="poly" id="edge69_Node000049_Node000038" title=" " alt="" coords="620,739,631,640,652,506,666,438,683,376,703,325,726,291,742,279,764,268,822,249,890,234,957,223,958,229,891,240,824,254,766,273,745,283,730,294,708,328,688,378,671,439,657,507,637,641,626,740"/>
-<area shape="poly" id="edge70_Node000049_Node000040" title=" " alt="" coords="624,793,630,923,646,1108,659,1203,678,1290,701,1361,715,1388,730,1408,753,1428,779,1445,838,1468,899,1480,958,1483,958,1489,899,1485,836,1473,777,1450,750,1433,726,1412,710,1391,696,1363,672,1291,654,1204,640,1109,624,923,619,793"/>
-<area shape="poly" id="edge71_Node000049_Node000042" title=" " alt="" coords="646,743,683,718,727,695,787,675,849,660,965,642,965,647,850,665,789,680,729,700,686,722,649,747"/>
-<area shape="poly" id="edge72_Node000049_Node000043" title=" " alt="" coords="629,791,641,832,661,880,690,929,709,950,730,969,757,986,786,1001,848,1021,910,1031,968,1036,968,1041,910,1037,846,1026,784,1005,754,991,726,973,705,954,686,932,656,883,636,833,624,793"/>
-<area shape="poly" id="edge73_Node000049_Node000045" title=" " alt="" coords="617,739,620,667,633,570,647,517,666,465,692,416,726,373,767,353,843,328,1010,281,1011,286,845,333,769,358,730,377,697,419,671,467,652,519,638,571,625,668,623,739"/>
-<area shape="poly" id="edge74_Node000049_Node000046" title=" " alt="" coords="636,789,673,843,699,870,729,893,784,918,843,936,901,947,956,953,955,958,900,952,841,941,782,923,727,897,696,874,669,846,632,792"/>
+<area shape="rect" id="Node000001" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="396,920,485,945"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1RWPass.html" title=" " alt="" coords="981,992,1150,1017"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="496,947,603,975,728,998,861,1007,980,1006,980,1012,861,1012,728,1003,602,980,495,952"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1RWPass.html" title=" " alt="" coords="973,719,1158,759"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="459,907,501,859,563,799,600,770,640,743,683,720,727,702,782,690,826,689,926,702,998,717,997,722,925,707,825,694,782,695,729,707,685,724,643,747,603,774,567,803,505,862,463,910"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1RWPass.html" title=" " alt="" coords="978,486,1153,526"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="440,906,446,844,461,760,488,669,508,625,532,583,574,529,614,492,663,466,727,442,782,428,826,425,870,431,926,442,982,460,1031,484,1028,488,980,465,925,447,870,436,826,431,782,433,729,447,665,471,618,496,578,532,537,586,513,627,493,671,466,761,452,844,446,906"/>
+<area shape="rect" id="Node000011" href="$classmim_1_1RWPass.html" title=" " alt="" coords="977,119,1153,159"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="440,906,447,769,462,570,474,465,490,369,509,287,532,228,572,164,611,119,659,86,727,56,782,36,829,26,852,27,876,32,927,56,938,68,941,81,943,94,951,105,979,122,976,126,948,109,938,96,935,82,933,70,924,60,874,37,852,32,830,32,784,41,729,61,662,90,614,123,576,167,537,230,514,288,495,370,480,466,468,570,452,770,446,906"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1RWPass.html" title=" " alt="" coords="975,396,1155,421"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="439,906,441,831,452,726,464,668,480,609,503,552,532,499,573,444,614,406,662,380,727,356,781,342,826,339,870,345,926,356,987,373,1039,394,1037,398,986,378,925,361,869,350,825,345,782,347,729,361,664,384,617,411,577,447,537,502,508,554,486,611,469,669,457,727,446,831,444,906"/>
+<area shape="rect" id="Node000024" href="$classmim_1_1RWPass.html" title=" " alt="" coords="971,1474,1160,1514"/>
+<area shape="poly" id="edge26_Node000001_Node000024" title=" " alt="" coords="446,959,452,1068,468,1218,480,1294,495,1363,514,1420,537,1459,560,1481,585,1500,642,1526,704,1541,770,1546,835,1543,897,1535,1001,1512,1002,1517,898,1540,835,1548,770,1551,704,1546,640,1531,582,1504,556,1485,533,1462,509,1423,490,1365,474,1295,462,1218,447,1068,440,960"/>
+<area shape="rect" id="Node000026" href="$classmim_1_1RWPass.html" title=" " alt="" coords="971,1065,1160,1105"/>
+<area shape="poly" id="edge28_Node000001_Node000026" title=" " alt="" coords="469,952,536,1000,628,1053,671,1070,729,1085,791,1094,854,1098,970,1093,971,1099,854,1103,790,1099,727,1090,670,1075,626,1058,533,1004,466,957"/>
+<area shape="rect" id="Node000028" href="$classmim_1_1RWPass.html" title=" " alt="" coords="963,573,1168,613"/>
+<area shape="poly" id="edge30_Node000001_Node000028" title=" " alt="" coords="443,906,453,858,470,796,496,729,532,667,576,614,616,578,663,552,727,529,782,515,826,512,870,517,926,529,970,545,1025,570,1023,575,968,550,925,534,870,523,826,517,782,520,729,534,665,557,619,583,579,618,537,670,501,732,475,797,458,859,448,907"/>
+<area shape="rect" id="Node000029" href="$classmim_1_1RWPass.html" title=" " alt="" coords="986,1403,1145,1443"/>
+<area shape="poly" id="edge32_Node000001_Node000029" title=" " alt="" coords="447,959,457,1050,474,1172,501,1290,518,1336,537,1367,559,1389,583,1407,637,1435,697,1452,759,1460,822,1462,882,1458,986,1441,987,1446,883,1463,822,1467,759,1466,696,1457,635,1440,580,1412,555,1393,533,1370,513,1338,496,1291,469,1173,451,1051,442,960"/>
+<area shape="rect" id="Node000031" href="$classmim_1_1RWPass.html" title=" " alt="" coords="949,1335,1181,1375"/>
+<area shape="poly" id="edge34_Node000001_Node000031" title=" " alt="" coords="444,959,448,1021,460,1103,472,1147,488,1191,510,1232,537,1268,578,1306,626,1334,679,1354,735,1367,791,1374,847,1377,949,1372,949,1377,847,1382,791,1380,734,1372,678,1359,624,1339,575,1310,533,1272,505,1234,483,1193,467,1149,455,1104,442,1022,439,960"/>
+<area shape="rect" id="Node000033" href="$classmim_1_1RWPass.html" title=" " alt="" coords="971,1553,1160,1593"/>
+<area shape="poly" id="edge36_Node000001_Node000033" title=" " alt="" coords="445,959,450,1083,464,1258,475,1349,491,1431,512,1499,524,1526,537,1546,578,1589,620,1620,663,1639,707,1648,755,1650,806,1645,925,1625,977,1610,1024,1590,1026,1595,979,1615,926,1630,807,1651,755,1655,707,1654,661,1644,617,1625,575,1593,533,1549,519,1528,507,1501,486,1432,470,1349,458,1259,445,1083,440,960"/>
+<area shape="rect" id="Node000035" href="$classmim_1_1RWPass.html" title=" " alt="" coords="955,865,1175,905"/>
+<area shape="poly" id="edge38_Node000001_Node000035" title=" " alt="" coords="499,931,689,929,807,923,925,911,980,902,981,907,926,917,807,928,689,934,499,936"/>
+<area shape="rect" id="Node000037" href="$classmim_1_1RWPass.html" title=" " alt="" coords="950,55,1181,95"/>
+<area shape="poly" id="edge40_Node000001_Node000037" title=" " alt="" coords="439,906,440,750,451,519,462,399,479,287,502,194,516,157,532,129,572,80,614,45,657,22,702,8,751,3,805,5,926,22,976,35,1022,53,1020,58,975,40,925,27,804,10,752,8,703,14,659,27,617,50,576,84,537,132,521,160,507,196,484,288,467,400,456,520,446,750,444,906"/>
+<area shape="rect" id="Node000038" href="$classmim_1_1RWPass.html" title=" " alt="" coords="962,183,1169,223"/>
+<area shape="poly" id="edge42_Node000001_Node000038" title=" " alt="" coords="441,906,449,785,466,612,478,523,493,440,511,370,532,320,572,260,612,219,661,189,727,162,781,148,825,147,926,162,993,181,991,186,925,167,825,152,782,153,729,167,663,194,615,223,576,263,537,322,516,372,498,441,483,524,471,613,454,785,446,906"/>
+<area shape="rect" id="Node000040" href="$classmim_1_1RWPass.html" title=" " alt="" coords="962,1645,1169,1685"/>
+<area shape="poly" id="edge44_Node000001_Node000040" title=" " alt="" coords="446,959,455,1113,474,1336,486,1447,501,1544,518,1616,527,1640,536,1653,566,1670,609,1681,661,1687,720,1689,846,1685,961,1675,962,1680,846,1691,720,1695,661,1692,608,1686,564,1675,533,1657,522,1643,513,1618,496,1545,481,1448,469,1337,450,1114,441,959"/>
+<area shape="rect" id="Node000042" href="$classmim_1_1RWPass.html" title=" " alt="" coords="969,655,1161,695"/>
+<area shape="poly" id="edge46_Node000001_Node000042" title=" " alt="" coords="448,906,479,832,503,788,533,748,578,699,618,664,664,638,727,616,782,602,826,599,870,605,926,616,969,630,1022,653,1019,658,967,635,925,621,870,610,826,605,782,607,729,621,667,643,621,668,582,703,537,752,508,791,484,834,453,908"/>
+<area shape="rect" id="Node000043" href="$classmim_1_1RWPass.html" title=" " alt="" coords="972,1249,1159,1289"/>
+<area shape="poly" id="edge48_Node000001_Node000043" title=" " alt="" coords="448,959,457,1003,474,1060,499,1119,516,1146,537,1171,582,1210,635,1239,691,1260,751,1273,811,1281,869,1283,972,1279,972,1284,869,1289,810,1286,750,1279,690,1265,632,1244,579,1214,533,1175,512,1149,495,1121,469,1062,452,1005,443,960"/>
+<area shape="rect" id="Node000045" href="$classmim_1_1RWPass.html" title=" " alt="" coords="964,248,1167,273"/>
+<area shape="poly" id="edge50_Node000001_Node000045" title=" " alt="" coords="442,906,452,802,471,657,497,514,514,456,532,414,573,353,612,310,660,278,727,249,764,238,803,231,881,228,954,235,1014,245,1013,251,953,240,881,234,804,237,766,243,729,254,663,282,615,314,577,356,537,417,519,458,503,515,476,658,457,802,447,906"/>
+<area shape="rect" id="Node000046" href="$classmim_1_1RWPass.html" title=" " alt="" coords="960,1151,1171,1191"/>
+<area shape="poly" id="edge52_Node000001_Node000046" title=" " alt="" coords="454,957,485,1020,509,1054,536,1084,583,1121,624,1144,669,1158,729,1171,787,1181,848,1185,960,1181,960,1187,847,1190,787,1186,727,1177,668,1163,622,1149,580,1126,533,1088,504,1057,481,1022,449,959"/>
+<area shape="rect" id="Node000048" href="$classmim_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way." alt="" coords="561,1725,678,1751"/>
+<area shape="poly" id="edge54_Node000001_Node000048" title=" " alt="" coords="445,959,450,1122,462,1359,470,1478,482,1582,495,1662,503,1688,511,1704,534,1722,561,1732,560,1737,531,1727,507,1708,498,1690,490,1663,476,1583,465,1478,456,1359,445,1122,440,959"/>
+<area shape="rect" id="Node000049" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="535,845,704,871"/>
+<area shape="poly" id="edge55_Node000001_Node000049" title=" " alt="" coords="484,912,587,868,589,873,486,917"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="249,920,347,945"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="360,930,396,930,396,935,360,935"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,920,200,945"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="214,930,249,930,249,935,214,935"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1695,666,1874,706"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1172,730,1648,695,1695,691,1695,697,1648,701,1172,735"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="1993,673,2107,699"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1888,683,1992,683,1992,689,1888,689"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1700,393,1869,433"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1167,516,1270,523,1392,522,1457,516,1522,507,1586,492,1647,472,1659,463,1671,452,1717,430,1719,435,1673,456,1662,467,1649,476,1587,497,1523,512,1457,522,1392,527,1269,528,1166,522"/>
+<area shape="rect" id="Node000010" href="$classmim_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="1997,400,2103,425"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1883,410,1997,410,1997,415,1883,415"/>
+<area shape="rect" id="Node000012" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1699,203,1870,243"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1167,122,1270,114,1392,113,1457,118,1522,126,1587,139,1649,158,1662,167,1673,177,1725,201,1722,206,1671,182,1659,171,1647,163,1585,145,1521,131,1456,123,1392,119,1270,119,1167,128"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="1997,211,2103,236"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="1884,221,1997,221,1997,226,1884,226"/>
+<area shape="rect" id="Node000015" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="1265,396,1428,421"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="1169,406,1265,406,1265,411,1169,411"/>
+<area shape="poly" id="edge15_Node000015_Node000006" title=" " alt="" coords="1365,431,1415,498,1450,535,1488,568,1540,600,1596,626,1703,663,1701,668,1594,631,1538,605,1485,572,1446,539,1411,502,1361,434"/>
+<area shape="poly" id="edge16_Node000015_Node000009" title=" " alt="" coords="1442,407,1700,409,1700,415,1442,412"/>
+<area shape="poly" id="edge17_Node000015_Node000012" title=" " alt="" coords="1382,387,1486,336,1614,283,1725,241,1727,246,1616,288,1488,341,1384,392"/>
+<area shape="rect" id="Node000016" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1685,466,1884,506"/>
+<area shape="poly" id="edge18_Node000015_Node000016" title=" " alt="" coords="1413,422,1487,438,1686,470,1685,476,1486,443,1412,427"/>
+<area shape="rect" id="Node000018" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1672,127,1897,167"/>
+<area shape="poly" id="edge20_Node000015_Node000018" title=" " alt="" coords="1361,383,1410,314,1445,276,1485,244,1531,217,1581,195,1678,165,1680,170,1583,200,1534,222,1488,248,1449,280,1414,317,1365,386"/>
+<area shape="rect" id="Node000020" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1691,539,1878,579"/>
+<area shape="poly" id="edge22_Node000015_Node000020" title=" " alt="" coords="1376,428,1426,462,1488,494,1539,512,1592,527,1692,546,1691,551,1591,532,1537,517,1486,499,1424,467,1373,432"/>
+<area shape="rect" id="Node000022" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1686,339,1883,364"/>
+<area shape="poly" id="edge24_Node000015_Node000022" title=" " alt="" coords="1430,391,1486,382,1686,358,1686,364,1487,387,1430,396"/>
+<area shape="rect" id="Node000017" href="$classmim_1_1TailRecElim.html" title=" " alt="" coords="1983,473,2117,499"/>
+<area shape="poly" id="edge19_Node000016_Node000017" title=" " alt="" coords="1898,483,1982,483,1982,489,1898,489"/>
+<area shape="rect" id="Node000019" href="$classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html" title=" " alt="" coords="1947,127,2153,167"/>
+<area shape="poly" id="edge21_Node000018_Node000019" title=" " alt="" coords="1911,145,1946,145,1946,150,1911,150"/>
+<area shape="rect" id="Node000021" href="$classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="1966,539,2134,579"/>
+<area shape="poly" id="edge23_Node000020_Node000021" title=" " alt="" coords="1892,557,1966,557,1966,562,1892,562"/>
+<area shape="rect" id="Node000023" href="$classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="1949,339,2151,364"/>
+<area shape="poly" id="edge25_Node000022_Node000023" title=" " alt="" coords="1897,349,1948,349,1948,354,1897,354"/>
+<area shape="rect" id="Node000025" href="$classmim_1_1LamSpec.html" title=" " alt="" coords="1287,1481,1406,1507"/>
+<area shape="poly" id="edge27_Node000024_Node000025" title=" " alt="" coords="1174,1491,1287,1491,1287,1497,1174,1497"/>
+<area shape="rect" id="Node000027" href="$classmim_1_1Scalarize.html" title="Perform Scalarization (= Argument simplification)." alt="" coords="1287,1072,1406,1097"/>
+<area shape="poly" id="edge29_Node000026_Node000027" title=" " alt="" coords="1174,1082,1287,1082,1287,1087,1174,1087"/>
+<area shape="poly" id="edge31_Node000028_Node000016" title=" " alt="" coords="1182,601,1284,604,1403,599,1465,592,1527,581,1588,565,1647,545,1659,536,1671,525,1717,504,1719,509,1673,530,1662,540,1649,550,1590,571,1528,586,1466,597,1403,604,1284,609,1182,607"/>
+<area shape="rect" id="Node000030" href="$classmim_1_1plug_1_1autodiff_1_1Eval.html" title="This pass is the heart of AD." alt="" coords="1273,1403,1420,1443"/>
+<area shape="poly" id="edge33_Node000029_Node000030" title=" " alt="" coords="1159,1421,1273,1421,1273,1426,1159,1426"/>
+<area shape="rect" id="Node000032" href="$classmim_1_1plug_1_1clos_1_1BranchClosElim.html" title=" " alt="" coords="1231,1343,1463,1368"/>
+<area shape="poly" id="edge35_Node000031_Node000032" title=" " alt="" coords="1195,1353,1231,1353,1231,1358,1195,1358"/>
+<area shape="rect" id="Node000034" href="$classmim_1_1plug_1_1clos_1_1Clos2SJLJ.html" title=" " alt="" coords="1252,1560,1441,1585"/>
+<area shape="poly" id="edge37_Node000033_Node000034" title=" " alt="" coords="1174,1570,1252,1570,1252,1575,1174,1575"/>
+<area shape="rect" id="Node000036" href="$classmim_1_1plug_1_1clos_1_1ClosConvPrep.html" title=" " alt="" coords="1237,872,1457,897"/>
+<area shape="poly" id="edge39_Node000035_Node000036" title=" " alt="" coords="1189,882,1236,882,1236,887,1189,887"/>
+<area shape="poly" id="edge41_Node000037_Node000018" title=" " alt="" coords="1195,80,1407,96,1648,121,1676,125,1675,130,1648,126,1407,101,1194,85"/>
+<area shape="rect" id="Node000039" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html" title="Resolves lowering of high level operations into medium/other high&#45;level operations." alt="" coords="1236,182,1457,222"/>
+<area shape="poly" id="edge43_Node000038_Node000039" title=" " alt="" coords="1182,200,1236,200,1236,205,1182,206"/>
+<area shape="rect" id="Node000041" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html" title="In this step, we lower map_reduce operations into affine for loops making the iteration scheme explic..." alt="" coords="1251,1645,1442,1685"/>
+<area shape="poly" id="edge45_Node000040_Node000041" title=" " alt="" coords="1182,1662,1251,1662,1251,1667,1182,1667"/>
+<area shape="poly" id="edge47_Node000042_Node000020" title=" " alt="" coords="1175,686,1277,692,1397,691,1524,678,1587,666,1647,649,1680,635,1711,616,1760,578,1764,582,1714,621,1683,639,1649,654,1588,671,1525,683,1397,696,1277,697,1175,691"/>
+<area shape="rect" id="Node000044" href="$classmim_1_1plug_1_1mem_1_1pass_1_1Reshape.html" title="The general idea of this Pass is to change the shape of signatures of functions." alt="" coords="1263,1249,1431,1289"/>
+<area shape="poly" id="edge49_Node000043_Node000044" title=" " alt="" coords="1172,1266,1262,1266,1262,1271,1172,1271"/>
+<area shape="poly" id="edge51_Node000045_Node000022" title=" " alt="" coords="1180,246,1281,241,1400,242,1525,252,1588,262,1649,276,1683,288,1716,304,1768,336,1765,341,1714,309,1681,293,1647,281,1587,267,1525,257,1399,247,1281,246,1180,252"/>
+<area shape="rect" id="Node000047" href="$classmim_1_1plug_1_1regex_1_1LowerRegex.html" title=" " alt="" coords="1236,1159,1457,1184"/>
+<area shape="poly" id="edge53_Node000046_Node000047" title=" " alt="" coords="1184,1169,1236,1169,1236,1174,1184,1174"/>
+<area shape="poly" id="edge56_Node000049_Node000004" title=" " alt="" coords="673,873,729,890,828,916,926,945,1037,989,1035,994,924,950,826,921,727,895,671,878"/>
+<area shape="poly" id="edge57_Node000049_Node000005" title=" " alt="" coords="678,839,727,826,925,778,999,757,1000,762,926,783,729,831,680,844"/>
+<area shape="poly" id="edge58_Node000049_Node000008" title=" " alt="" coords="621,831,629,779,647,713,661,678,679,644,700,613,726,585,745,573,769,562,834,543,977,515,978,520,835,548,771,567,747,578,730,589,704,616,683,647,666,680,653,714,634,780,626,832"/>
+<area shape="poly" id="edge59_Node000049_Node000011" title=" " alt="" coords="619,831,625,702,641,518,655,423,673,336,697,265,710,237,726,216,743,203,768,191,832,172,905,157,977,146,978,151,906,162,833,177,770,196,746,208,730,220,715,240,701,267,678,338,660,424,647,518,630,702,624,832"/>
+<area shape="poly" id="edge60_Node000049_Node000014" title=" " alt="" coords="618,831,622,765,636,675,650,628,669,581,694,537,726,499,766,480,840,459,1005,419,1006,424,841,464,768,485,730,503,698,540,674,583,655,629,642,677,627,765,623,832"/>
+<area shape="poly" id="edge61_Node000049_Node000024" title=" " alt="" coords="625,885,634,997,653,1155,667,1235,684,1307,705,1367,730,1407,761,1422,821,1439,971,1473,970,1478,820,1444,759,1427,726,1411,700,1369,679,1309,661,1236,647,1155,628,998,620,885"/>
+<area shape="poly" id="edge62_Node000049_Node000026" title=" " alt="" coords="639,880,677,928,702,952,729,973,780,999,824,1010,869,1017,926,1032,1012,1062,1011,1067,925,1037,868,1022,823,1015,778,1004,727,978,698,956,673,931,634,884"/>
+<area shape="poly" id="edge63_Node000049_Node000028" title=" " alt="" coords="626,831,640,795,661,752,689,708,726,672,767,652,827,634,962,606,963,611,828,639,769,657,730,676,693,712,665,754,645,797,631,833"/>
+<area shape="poly" id="edge64_Node000049_Node000029" title=" " alt="" coords="626,884,638,981,659,1112,673,1178,690,1238,709,1287,730,1320,752,1341,774,1353,796,1360,818,1364,867,1367,926,1378,1000,1401,998,1406,925,1383,866,1372,817,1369,794,1366,772,1358,749,1345,726,1324,704,1289,685,1240,668,1179,654,1113,632,981,621,885"/>
+<area shape="poly" id="edge65_Node000049_Node000031" title=" " alt="" coords="623,884,626,954,640,1047,653,1098,672,1147,697,1193,730,1234,753,1253,775,1265,797,1272,819,1275,868,1278,895,1283,926,1292,1023,1333,1021,1338,924,1297,894,1288,867,1283,818,1280,795,1277,773,1270,750,1258,726,1237,693,1196,667,1149,648,1099,634,1048,620,954,617,884"/>
+<area shape="poly" id="edge66_Node000049_Node000033" title=" " alt="" coords="624,884,630,1013,647,1196,660,1290,679,1375,702,1445,715,1472,730,1492,761,1506,821,1523,971,1554,970,1559,820,1528,759,1511,726,1496,711,1475,697,1447,673,1377,655,1291,641,1196,625,1013,619,885"/>
+<area shape="poly" id="edge67_Node000049_Node000035" title=" " alt="" coords="718,855,818,856,926,862,955,865,955,870,925,867,818,862,718,860"/>
+<area shape="poly" id="edge68_Node000049_Node000037" title=" " alt="" coords="618,832,621,687,634,475,647,366,666,267,692,185,708,153,726,130,749,110,775,94,832,73,892,62,950,60,950,66,892,68,833,78,777,99,752,114,730,133,713,156,697,187,672,268,653,367,639,476,626,687,623,832"/>
+<area shape="poly" id="edge69_Node000049_Node000038" title=" " alt="" coords="620,832,630,722,650,571,664,493,681,422,702,364,726,323,749,302,773,290,796,285,820,283,870,279,896,272,924,259,935,246,948,233,973,221,975,226,951,238,939,250,927,263,898,277,871,284,821,288,797,290,775,295,752,306,730,326,706,366,686,424,669,494,655,571,635,723,625,832"/>
+<area shape="poly" id="edge70_Node000049_Node000040" title=" " alt="" coords="623,885,626,1031,640,1245,653,1355,672,1456,697,1539,713,1570,730,1594,745,1605,767,1615,825,1632,894,1645,962,1654,962,1659,893,1650,824,1638,765,1620,742,1610,726,1597,708,1573,692,1540,667,1457,648,1356,634,1245,621,1031,618,885"/>
+<area shape="poly" id="edge71_Node000049_Node000042" title=" " alt="" coords="638,832,676,793,700,773,727,756,770,738,832,721,969,691,970,696,833,726,772,743,729,760,704,777,680,797,642,836"/>
+<area shape="poly" id="edge72_Node000049_Node000043" title=" " alt="" coords="625,884,633,939,651,1010,664,1047,682,1083,703,1117,730,1147,754,1166,776,1177,820,1187,868,1191,896,1196,926,1205,1023,1246,1021,1251,924,1210,894,1201,867,1196,819,1192,774,1182,751,1170,726,1151,699,1120,677,1086,660,1049,646,1011,628,940,620,885"/>
+<area shape="poly" id="edge73_Node000049_Node000045" title=" " alt="" coords="621,832,634,739,656,615,687,494,705,447,726,414,749,392,772,379,795,372,818,368,868,363,895,356,924,345,992,307,1045,271,1048,276,995,311,926,350,896,362,868,368,819,373,796,377,774,384,753,397,730,417,710,449,692,496,661,616,639,740,626,832"/>
+<area shape="poly" id="edge74_Node000049_Node000046" title=" " alt="" coords="630,883,643,923,663,970,692,1019,730,1060,755,1078,777,1089,821,1100,868,1105,926,1118,1012,1149,1011,1154,925,1123,867,1110,820,1105,776,1094,752,1082,726,1064,687,1022,658,973,638,925,625,885"/>
 </map>

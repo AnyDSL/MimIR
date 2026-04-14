@@ -58,5 +58,5 @@ var searchData=
   ['bufptr_55',['BufPtr',['../namespacemim_1_1plug_1_1clos.html#ac0109814535661c3ccd6d63370f8eec2',1,'mim::plug::clos']]],
   ['build_20options_56',['Build Options',['../coding.html#build_options',1,'']]],
   ['built_20ins_57',['Downcast for Built-ins',['../dev.html#cast_builtin',1,'']]],
-  ['builtin_20types_58',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md44',1,'']]]
+  ['builtin_20types_58',['Kinds &amp;amp; Builtin Types',['../langref.html#autotoc_md44',1,'']]]
 ];

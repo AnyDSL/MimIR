@@ -2,7 +2,6 @@ var classmim_1_1ast_1_1Tok =
 [
     [ "Tag", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5", [
       [ "Nil", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a4da8b7eb2c3f2007cf8238334401ef51", null ],
-      [ "CODE", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a8e8e97f0a5efc333f823cf9417d32d3f", null ],
       [ "K_Bool", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aa2228465e8e618283c7c6beca8b3a4e6", null ],
       [ "K_Cn", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a4aa27e923156d5664fbee502e9e43058", null ],
       [ "K_Fn", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a4178da4b61c8a4dfe7ba0511da085ced", null ],

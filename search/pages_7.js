@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['passes_0',['Passes',['../passes.html',1,'']]],
-  ['plugin_1',['Plugin',['../affine.html',1,'The affine Plugin'],['../autodiff.html',1,'The automatic differentiation Plugin'],['../clos.html',1,'The clos Plugin'],['../compile.html',1,'The compile Plugin'],['../core.html',1,'The core Plugin'],['../demo.html',1,'The demo Plugin'],['../direct.html',1,'The direct style Plugin'],['../gpu.html',1,'The gpu Plugin'],['../math.html',1,'The math Plugin'],['../matrix.html',1,'The matrix Plugin'],['../mem.html',1,'The mem Plugin'],['../opt.html',1,'The opt Plugin'],['../ord.html',1,'The ord Plugin'],['../refly.html',1,'The refly Plugin'],['../regex.html',1,'The regex Plugin'],['../tensor.html',1,'The tensor Plugin'],['../tuple.html',1,'The tuple Plugin'],['../vec.html',1,'The vec Plugin']]]
+  ['high_20level_20matrix_20operations_0',['High-level matrix operations',['../matrix.html#autotoc_md203',1,'']]],
+  ['highlighting_1',['Syntax Highlighting',['../coding.html#autotoc_md14',1,'']]],
+  ['hooks_2',['Other Hooks',['../passes.html#autotoc_md63',1,'']]]
 ];

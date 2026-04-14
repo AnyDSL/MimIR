@@ -1,13 +1,13 @@
 var classmim_1_1World =
 [
-    [ "Externals", "classmim_1_1World_1_1Externals.html", "classmim_1_1World_1_1Externals" ],
+    [ "State", "structmim_1_1World_1_1State.html", "structmim_1_1World_1_1State" ],
+    [ "ScopedLoc", "structmim_1_1World_1_1ScopedLoc.html", "structmim_1_1World_1_1ScopedLoc" ],
     [ "Freezer", "structmim_1_1World_1_1Freezer.html", "structmim_1_1World_1_1Freezer" ],
+    [ "Externals", "classmim_1_1World_1_1Externals.html", "classmim_1_1World_1_1Externals" ],
     [ "Move.arena", "classmim_1_1World.html#structmim_1_1World_1_1Move_8arena", [
       [ "defs", "classmim_1_1World.html#acd8fc2597193b4c938e7ff50062936e3", null ],
       [ "substs", "classmim_1_1World.html#a4b1bfdc913535dc888b1e9547cd85df2", null ]
     ] ],
-    [ "ScopedLoc", "structmim_1_1World_1_1ScopedLoc.html", "structmim_1_1World_1_1ScopedLoc" ],
-    [ "State", "structmim_1_1World_1_1State.html", "structmim_1_1World_1_1State" ],
     [ "World", "classmim_1_1World.html#a38f5d2c7823fe575808ed051db62b095", null ],
     [ "World", "classmim_1_1World.html#a29adf201f52b7026225b705bbedf105d", null ],
     [ "World", "classmim_1_1World.html#aef94e6300d8fc8af845805bdfd02c8b2", null ],

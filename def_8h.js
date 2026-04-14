@@ -1,6 +1,6 @@
 var def_8h =
 [
-    [ "mim::Setters< P, D >", "classmim_1_1Setters.html", "classmim_1_1Setters" ],
+    [ "mim::Setters&lt; P, D &gt;", "classmim_1_1Setters.html", "classmim_1_1Setters" ],
     [ "mim::Def", "classmim_1_1Def.html", "classmim_1_1Def" ],
     [ "mim::Var", "classmim_1_1Var.html", "classmim_1_1Var" ],
     [ "mim::Univ", "classmim_1_1Univ.html", "classmim_1_1Univ" ],
@@ -12,7 +12,7 @@ var def_8h =
     [ "mim::Idx", "classmim_1_1Idx.html", "classmim_1_1Idx" ],
     [ "mim::Proxy", "classmim_1_1Proxy.html", "classmim_1_1Proxy" ],
     [ "mim::Global", "classmim_1_1Global.html", "classmim_1_1Global" ],
-    [ "CODE", "def_8h.html#a87f559632082486a774f25d565c9b958", null ],
+    [ "CODE", "def_8h.html#ae11043c18f943e34ebc2d917fb1fa63a", null ],
     [ "CODE", "def_8h.html#a87f559632082486a774f25d565c9b958", null ],
     [ "MIM_IMM_NODE", "def_8h.html#af0a95e5c9d32690a7eb14da172069d3a", null ],
     [ "MIM_MUT_NODE", "def_8h.html#ac485d4c057e9c957fac25dad4150738a", null ],
@@ -51,7 +51,6 @@ var def_8h =
       [ "mim::Mut::Imm", "namespacemim.html#ad3c9308ec5430fd41d4aab5d38e3e08dada9470e1aa5be1858e667318254dcb4b", null ]
     ] ],
     [ "mim::Node", "namespacemim.html#afb12dbffaaa27bca46f171517d96256d", [
-      [ "mim::Node::CODE", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da2f14a262872a344ea85b24f3a2ecc68a", null ],
       [ "mim::Node::Lit", "namespacemim.html#afb12dbffaaa27bca46f171517d96256dae5e556ecf935270736f5e46e73db06e4", null ],
       [ "mim::Node::Axm", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da772a78ebe7cabb9591df042871a5a849", null ],
       [ "mim::Node::Var", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da5a92344ee95acf10c31901b36418be77", null ],

@@ -1,9 +1,9 @@
 var classmim_1_1Axm =
 [
-    [ "IsA", "classmim_1_1Axm_1_1IsA.html", "classmim_1_1Axm_1_1IsA" ],
     [ "IsANode", "classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode", [
       [ "type", "classmim_1_1Axm.html#a7151fc68b556560716e09c5e318d5222", null ]
     ] ],
+    [ "IsA", "classmim_1_1Axm_1_1IsA.html", "classmim_1_1Axm_1_1IsA" ],
     [ "as", "classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1", null ],
     [ "as", "classmim_1_1Axm.html#a0797677a8c96feb484429cda0c5f8082", null ],
     [ "base", "classmim_1_1Axm.html#a7f72e924025ab0db142542e4fcc92bf1", null ],

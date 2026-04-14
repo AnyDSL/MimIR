@@ -1,42 +1,42 @@
 <map id="mim::FPPass&lt; P, M &gt;" name="mim::FPPass&lt; P, M &gt;">
-<area shape="rect" id="Node000001" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="1055,205,1217,230"/>
-<area shape="rect" id="Node000007" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1446,5,1625,45"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="1149,191,1185,139,1210,111,1240,88,1290,64,1343,46,1396,34,1445,27,1446,33,1397,40,1344,51,1292,69,1243,93,1214,115,1189,142,1153,194"/>
-<area shape="rect" id="Node000009" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1451,69,1620,109"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="1164,194,1200,172,1240,152,1293,134,1348,119,1450,98,1451,103,1350,124,1295,139,1242,157,1202,177,1167,199"/>
-<area shape="rect" id="Node000011" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1450,133,1621,173"/>
-<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="1214,200,1241,195,1450,162,1450,168,1242,200,1215,205"/>
-<area shape="rect" id="Node000013" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1436,197,1635,237"/>
-<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="1231,215,1436,215,1436,220,1231,220"/>
-<area shape="rect" id="Node000015" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1423,261,1648,301"/>
-<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="1183,232,1242,249,1334,265,1423,273,1422,279,1333,270,1241,255,1181,237"/>
-<area shape="rect" id="Node000017" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1442,325,1629,365"/>
-<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="1162,237,1199,266,1242,291,1292,309,1344,322,1442,337,1442,342,1343,327,1291,314,1240,296,1196,270,1159,241"/>
-<area shape="rect" id="Node000019" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1437,390,1634,415"/>
-<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="1151,241,1187,298,1212,327,1243,351,1289,373,1339,388,1389,397,1437,401,1436,407,1389,402,1338,393,1287,378,1240,356,1209,331,1183,301,1147,244"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1RWPass.html" title=" " alt="" coords="825,205,1005,230"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1019,215,1054,215,1054,220,1019,220"/>
-<area shape="rect" id="Node000003" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="396,205,485,230"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="499,209,509,208,655,204,801,208,825,209,825,214,801,213,655,209,509,213,499,214"/>
-<area shape="rect" id="Node000006" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="535,230,704,255"/>
-<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="499,223,535,228,534,233,499,228"/>
-<area shape="rect" id="Node000004" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="249,205,347,230"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="360,215,396,215,396,220,360,220"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="5,205,200,230"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="214,215,249,215,249,220,214,220"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="718,232,825,222,825,228,718,237"/>
-<area shape="rect" id="Node000008" href="$classmim_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="1743,13,1858,38"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="1638,23,1743,23,1743,28,1638,28"/>
-<area shape="rect" id="Node000010" href="$classmim_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="1748,77,1853,102"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="1634,87,1748,87,1748,92,1634,92"/>
-<area shape="rect" id="Node000012" href="$classmim_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="1747,141,1854,166"/>
-<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="1634,151,1747,151,1747,156,1634,156"/>
-<area shape="rect" id="Node000014" href="$classmim_1_1TailRecElim.html" title=" " alt="" coords="1733,205,1868,230"/>
-<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1648,215,1733,215,1733,220,1648,220"/>
-<area shape="rect" id="Node000016" href="$classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html" title=" " alt="" coords="1697,261,1904,301"/>
-<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="1661,279,1697,279,1697,284,1661,284"/>
-<area shape="rect" id="Node000018" href="$classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="1717,325,1885,365"/>
-<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="1642,343,1717,343,1717,348,1642,348"/>
-<area shape="rect" id="Node000020" href="$classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="1699,390,1902,415"/>
-<area shape="poly" id="edge20_Node000019_Node000020" title=" " alt="" coords="1648,400,1699,400,1699,405,1648,405"/>
+<area shape="rect" id="Node000001" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="1059,198,1221,223"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1454,8,1633,48"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="1150,184,1186,126,1212,96,1244,71,1295,48,1349,33,1403,25,1454,22,1454,27,1404,30,1350,38,1297,53,1247,76,1216,100,1190,129,1155,187"/>
+<area shape="rect" id="Node000009" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1459,72,1628,112"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="1165,186,1201,160,1244,136,1298,118,1354,106,1458,93,1458,98,1355,111,1300,124,1246,141,1204,164,1168,191"/>
+<area shape="rect" id="Node000011" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1458,136,1629,176"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="1204,192,1245,184,1356,169,1458,159,1458,165,1356,174,1246,189,1205,197"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1444,200,1643,240"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="1235,210,1444,215,1444,220,1235,216"/>
+<area shape="rect" id="Node000015" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1431,264,1656,304"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="1173,228,1207,247,1246,261,1292,272,1339,279,1430,284,1430,290,1339,284,1291,277,1245,267,1205,251,1170,233"/>
+<area shape="rect" id="Node000017" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1450,328,1637,368"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="1160,233,1196,274,1220,295,1247,311,1296,330,1349,341,1401,348,1450,350,1450,355,1401,353,1348,347,1295,335,1244,316,1217,299,1192,278,1156,236"/>
+<area shape="rect" id="Node000019" href="$classmim_1_1FPPass.html" title=" " alt="" coords="1445,393,1642,418"/>
+<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="1152,235,1165,269,1185,307,1212,345,1247,375,1294,397,1345,409,1396,414,1445,414,1445,420,1396,420,1344,415,1292,402,1244,380,1208,349,1180,310,1160,271,1147,237"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1RWPass.html" title=" " alt="" coords="829,198,1009,223"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1023,208,1058,208,1058,213,1023,213"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="396,198,485,223"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="499,202,509,201,657,197,805,201,829,202,829,208,805,207,657,203,509,207,499,207"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="535,223,704,249"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="499,216,535,221,534,227,499,221"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="249,198,347,223"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="360,208,396,208,396,213,360,213"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,198,200,223"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="214,208,249,208,249,213,214,213"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="718,230,805,224,834,221,835,226,806,229,718,235"/>
+<area shape="rect" id="Node000008" href="$classmim_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="1751,15,1866,41"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="1646,25,1751,25,1751,31,1646,31"/>
+<area shape="rect" id="Node000010" href="$classmim_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="1756,79,1861,105"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="1642,89,1756,89,1756,95,1642,95"/>
+<area shape="rect" id="Node000012" href="$classmim_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="1755,143,1862,169"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="1642,153,1755,153,1755,159,1642,159"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1TailRecElim.html" title=" " alt="" coords="1741,207,1876,233"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1656,217,1741,217,1741,223,1656,223"/>
+<area shape="rect" id="Node000016" href="$classmim_1_1plug_1_1clos_1_1LowerTypedClosPrep.html" title=" " alt="" coords="1705,264,1912,304"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="1669,281,1705,281,1705,287,1669,287"/>
+<area shape="rect" id="Node000018" href="$classmim_1_1plug_1_1mem_1_1pass_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="1725,328,1893,368"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="1650,345,1725,345,1725,351,1650,351"/>
+<area shape="rect" id="Node000020" href="$classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="1707,393,1910,418"/>
+<area shape="poly" id="edge20_Node000019_Node000020" title=" " alt="" coords="1656,403,1707,403,1707,408,1656,408"/>
 </map>
