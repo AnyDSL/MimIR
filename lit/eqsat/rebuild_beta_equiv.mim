@@ -3,9 +3,11 @@ plugin math;
 plugin mem;
 // plugin eqsat;
 
-// TODO: Num is a var with projections 'T' and 'add'
-// but these are not emitted when the type of %bug.Arr
-// gets emitted which makes it impossible to reconstruct
+// TODO: 'Num' is a Sigma type variable with projections 'T' and 'add'
+// but these are not emitted when the type of %bug.Arr (referencing 'Num')
+// gets emitted which makes it impossible to reconstruct the program
+// because the type of 'add' refers to 'T' but if 'T' isn't
+// emitted then the rewriter does not know what 'T' stands for.
 rec Num = [T: *, add: [T, T] → T];
 lam my_add {pe: «2; Nat»} (a b: %math.F pe): %math.F pe = %math.arith.add 0 (a, b);
 

@@ -2,7 +2,7 @@ plugin core;
 plugin vec;
 // plugin eqsat;
 //
-// TODO: why am i getting invalid sexprs?
+// TODO: Why am I getting invalid sexprs?
 //
 // Getting the following sexpr during rewrite which is not valid because (app _31939 _31935) is invalid
 //
@@ -24,7 +24,7 @@ plugin vec;
 //   (let C_31940 (pack (lit 4) (lit 0)) (app return_31941 C_31940)))
 //
 //
-// Getting the following sexpr if i move the phase below %compile.ret_wrap_phase
+// Getting the following sexpr if I move the phase below %compile.ret_wrap_phase
 //
 // (con
 //   extern

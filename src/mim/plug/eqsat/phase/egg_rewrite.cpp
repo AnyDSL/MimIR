@@ -152,7 +152,7 @@ const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
     // If the let-binding is for a lambda, this lambda will already have been
     // created, set and registered via init_lam/con and thus we can skip it.
     auto let_def = get_def(node.children[0]);
-    if (let_def != nullptr) return nullptr;
+    if (let_def) return nullptr;
 
     auto name       = get_symbol(node.children[0]);
     auto name_nouid = remove_uid(name);
@@ -190,7 +190,7 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
     // the init functions and need to be further modified in their convert functions.
     const Def* res                  = added_[id];
     const std::set<MimKind> revisit = {MimKind::Lam, MimKind::Con, MimKind::Var};
-    if (res != nullptr && !revisit.contains(node.kind)) return res;
+    if (res && !revisit.contains(node.kind)) return res;
 
     if (DEBUG) std::cout << "convert - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     switch (node.kind) {
@@ -289,7 +289,7 @@ const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
 // (lit <val> [<type>])
 const Def* EggRewrite::convert_lit(uint32_t id, MimNode node) {
     auto lit_def = get_def(node.children[0]);
-    if (lit_def != nullptr) return lit_def;
+    if (lit_def) return lit_def;
 
     const Def* new_lit;
     auto lit_val = get_num(node.children[0]);
