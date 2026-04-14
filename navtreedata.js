@@ -25,19 +25,19 @@
 var NAVTREE =
 [
   [ "MimIR", "index.html", [
-    [ "Why MimIR?", "index.html#autotoc_md68", null ],
-    [ "Quick Start", "index.html#autotoc_md69", [
-      [ "Install (optional)", "index.html#autotoc_md70", null ]
+    [ "💡 Why MimIR?", "index.html#autotoc_md68", null ],
+    [ "🚀 Quick Start", "index.html#autotoc_md69", [
+      [ "📦 Install (optional)", "index.html#autotoc_md70", null ]
     ] ],
-    [ "Key Innovations", "index.html#autotoc_md71", [
-      [ "Plugins - Your DSL Lives Here", "index.html#autotoc_md72", null ],
-      [ "SSA without Dominance (PLDI 2026)", "index.html#autotoc_md73", null ],
-      [ "Sea-of-Nodes with On-the-Fly Everything", "index.html#autotoc_md74", null ]
+    [ "🔥 Key Innovations", "index.html#autotoc_md71", [
+      [ "🧩 Plugins — Your DSL Lives Here", "index.html#autotoc_md72", null ],
+      [ "🌲 SSA without Dominance", "index.html#autotoc_md73", null ],
+      [ "🌊 Sea-of-Nodes with On-the-Fly Everything", "index.html#autotoc_md74", null ]
     ] ],
-    [ "Naming: MimIR vs Mim", "index.html#autotoc_md75", null ],
-    [ "Community", "index.html#autotoc_md76", null ],
-    [ "License", "index.html#autotoc_md77", null ],
-    [ "Publications", "index.html#autotoc_md78", null ],
+    [ "🐉 Naming: MimIR vs Mim", "index.html#autotoc_md75", null ],
+    [ "💬 Community", "index.html#autotoc_md76", null ],
+    [ "⚖️ License", "index.html#autotoc_md77", null ],
+    [ "📖 Publications", "index.html#autotoc_md78", null ],
     [ "Documentation", "usergroup0.html", [
       [ "Mim Command-Line Reference", "cli.html", null ],
       [ "Mim Language Reference", "langref.html", null ],
