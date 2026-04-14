@@ -97,7 +97,7 @@ MimIR hits the [**sweet spot**](@ref mut) between a fully mutable IR, which is e
 
   Terms, types, and type-level computations all live in the same program graph as ordinary expressions.
 
-### 🌲 SSA without Dominance
+### 🪾 SSA without Dominance
 
 Forget CFG dominance.
 MimIR uses free-variable nesting:
