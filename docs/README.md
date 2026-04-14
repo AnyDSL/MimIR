@@ -89,6 +89,7 @@ MimIR hits the [**sweet spot**](@ref mut) between a fully mutable IR, which is e
 - **Non-binder expressions are immutable**:
 
   [Hash-consing](https://en.wikipedia.org/wiki/Hash_consing), normalization, type checking, and partial evaluation happen **automatically** during graph construction.
+
 - **Binders are mutable where needed**:
 
   They support variables and recursion by “tying the knot” through in-place mutation.
@@ -104,11 +105,14 @@ MimIR uses free-variable nesting:
 
 - **Free variables** replace dominance; the **nesting tree** replaces the dominator tree
 - Free-variable queries “just work”:
+
   ```c++
-  if (expr->free_vars().contains(x)) /*...*/
-  if (expr->free_vars().has_intersection(xyz)) /*...*/
+  if (expr->free_vars().contains(x)) /*x free in expr*/
+  if (expr->free_vars().has_intersection(xyz)) /*x, y, or z free in expr*/
   ```
-  This is always correct, with analysis maintenance handled transparently and efficiently by MimIR.
+
+  This is always correct.
+  MimIR maintains free-variable information **lazily**, **locally**, and **transparently**: results are computed on demand, memoized, and invalidated only where needed.
 - Data dependencies remain precise, even for higher-order code
 - Loop peeling and unrolling reduce to simple β-reduction
 - Mutual recursion and higher-order functions are handled naturally
@@ -143,33 +147,23 @@ MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/m
 
 ## 📖 Publications
 
-<ul>
-    <li>
-        <strong>SSA without Dominance for Higher-Order Programs</strong><br>
-        Roland Leißa, Johannes Griebler.<br>
-        <em>Proceedings of the ACM on Programming Languages (PLDI), 2026</em>, 10(PLDI).<br>
-        <a href="https://arxiv.org/abs/2604.09961">Preprint</a> ·
-        <a href="https://zenodo.org/records/19069679">Artifact</a>
-    </li>
-    <li>
-        <strong>MimIrADe: Automatic Differentiation in MimIR</strong><br>
-        Marcel Ullrich, Sebastian Hack, Roland Leißa.<br>
-        <em>Proceedings of the 34th ACM SIGPLAN International Conference on Compiler Construction (CC), 2025</em>, 70–80.<br>
-        <a href="https://dl.acm.org/doi/abs/10.1145/3708493.3712685">ACM</a> ·
-        <a href="https://doi.org/10.1145/3704840">DOI</a> ·
-        <a href="https://arxiv.org/abs/2411.07443">Preprint</a> ·
-        <a href="https://zenodo.org/records/14681335">Artifact</a> ·
-        <a href="https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex">BibTeX</a>
-    </li>
-    <li>
-        <strong>MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age</strong><br>
-        Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack.<br>
-        <em>Proceedings of the ACM on Programming Languages (POPL), 2025</em>, 9(POPL), 95–125.<br>
-        <a href="https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R">Talk</a> ·
-        <a href="https://dl.acm.org/doi/10.1145/3704840">ACM</a> ·
-        <a href="https://doi.org/10.1145/3704840">DOI</a> ·
-        <a href="https://arxiv.org/abs/2411.07443">Preprint</a> ·
-        <a href="https://zenodo.org/records/13952579">Artifact</a> ·
-        <a href="https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex">BibTeX</a>
-    </li>
-</ul>
+- **SSA without Dominance for Higher-Order Programs**<br>
+  Roland Leißa, Johannes Griebler.<br>
+  _Proceedings of the ACM on Programming Languages (PLDI), 2026_, 10(PLDI).<br>
+  [Preprint](https://arxiv.org/abs/2604.09961) ·
+  [Artifact](https://zenodo.org/records/19069679)
+- **MimIrADe: Automatic Differentiation in MimIR**<br>
+  Marcel Ullrich, Sebastian Hack, Roland Leißa.<br>
+  _Proceedings of the 34th ACM SIGPLAN International Conference on Compiler Construction (CC), 2025_, 70–80.<br>
+  [DOI](https://dl.acm.org/doi/abs/10.1145/3708493.3712685) ·
+  [Preprint](https://arxiv.org/abs/2411.07443) ·
+  [Artifact](https://zenodo.org/records/14681335) ·
+  [BibTeX](https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex)
+- **MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age**<br>
+  Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack.<br>
+  _Proceedings of the ACM on Programming Languages (POPL), 2025_, 9(POPL), 95–125.<br>
+  [Talk](https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R) ·
+  [DOI](https://doi.org/10.1145/3704840) ·
+  [Preprint](https://arxiv.org/abs/2411.07443) ·
+  [Artifact](https://zenodo.org/records/13952579) ·
+  [BibTeX](https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex)
