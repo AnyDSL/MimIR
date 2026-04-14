@@ -74,6 +74,7 @@ var NAVTREEINDEX18 =
 "index.html#autotoc_md69":[0,0,1],
 "index.html#autotoc_md70":[0,1],
 "index.html#autotoc_md71":[0,2],
+"index.html#autotoc_md72":[0,3],
 "lam_8cpp.html":[6,0,3,1,12],
 "lam_8cpp_source.html":[6,0,3,1,12],
 "lam_8h.html":[6,0,2,1,11],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "namespacemembers_j.html":[3,1,0,9],
 "namespacemembers_k.html":[3,1,0,10],
 "namespacemembers_l.html":[3,1,0,11],
-"namespacemembers_m.html":[3,1,0,12],
-"namespacemembers_n.html":[3,1,0,13]
+"namespacemembers_m.html":[3,1,0,12]
 };
