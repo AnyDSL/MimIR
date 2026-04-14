@@ -32,7 +32,6 @@
 </table>
 
 **MimIR** is a pure, graph-based, higher-order intermediate representation rooted in the **Calculus of Constructions**.
-Terms, types, and type-level computations all live in the same program graph as ordinary expressions.
 MimIR provides:
 
 - **Dependent types**, **parametric polymorphism**, and **higher-order functions** out of the box
@@ -44,16 +43,16 @@ Well suited for DSL compilers, tensor compilers, automatic differentiation, rege
 
 ## 💡 Why MimIR?
 
-| Feature                                                                                                  | LLVM                    | MLIR                                | MimIR                                                                                                              |
-| -------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [Higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)                            | ❌                      | ⚠️ (regions only)                   | ✅ (first-class functions)                                                                                         |
-| [Parametric polymorphism (System F)](https://en.wikipedia.org/wiki/System_F)                             | ❌                      | ❌                                  | ✅                                                                                                                 |
-| [Type-level abstraction / polytypism (System Fω)](https://en.wikipedia.org/wiki/System_F#System_F%CF%89) | ❌                      | ❌                                  | ✅                                                                                                                 |
-| [Dependent types (Calculus of Constructions)](https://en.wikipedia.org/wiki/Calculus_of_constructions)   | ❌                      | ❌                                  | ✅                                                                                                                 |
-| Semantic extensibility                                                                                   | ❌                      | 🔧 (dialect-specific C++ semantics) | ✅ (typed axioms)                                                                                                  |
-| Program representation                                                                                   | CFG + instruction lists | CFG/regions + instruction lists     | Arbitrary expressions (direct style + [CPS](https://en.wikipedia.org/wiki/Continuation-passing_style))             |
-| Structural foundation                                                                                    | CFG + dominance         | CFG/regions + dominance             | Free variables + nesting                                                                                           |
-| DSL embedding / semantics retention                                                                      | Low                     | High (dialects + lowering)          | High ([partial evaluation](https://en.wikipedia.org/wiki/Partial_evaluation), typed axioms, normalizers, lowering) |
+| Feature                                                                         | LLVM                         | MLIR                                 | MimIR                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------- | ---------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)   | ❌                           | ⚠️ (regions only)                    | ✅ (first-class functions)                                                                                                                                                                |
+| [Parametric polymorphism](https://en.wikipedia.org/wiki/System_F)               | ❌                           | ❌                                   | ✅                                                                                                                                                                                        |
+| [Type-level abstraction](https://en.wikipedia.org/wiki/System_F#System_F%CF%89) | ❌                           | ❌                                   | ✅                                                                                                                                                                                        |
+| [Dependent types](https://en.wikipedia.org/wiki/Calculus_of_constructions)      | ❌                           | ❌                                   | ✅                                                                                                                                                                                        |
+| Semantic extensibility                                                          | ❌                           | 🔧 (dialect-specific C++ semantics)  | ✅ (typed axioms)                                                                                                                                                                         |
+| Program representation                                                          | CFG + <br> instruction lists | CFG/regions + <br> instruction lists | Arbitrary expressions <br> (direct style + [CPS](https://en.wikipedia.org/wiki/Continuation-passing_style))                                                                               |
+| Structural foundation                                                           | CFG + <br> dominance         | CFG/regions + <br> dominance         | Free variables + nesting                                                                                                                                                                  |
+| DSL embedding / <br> semantics retention                                        | ⬇️ Low                       | ➡️ Medium <br> (dialects, lowering)  | ⬆️ High <br> ([CC](https://en.wikipedia.org/wiki/Calculus_of_constructions), [partial evaluation](https://en.wikipedia.org/wiki/Partial_evaluation), typed axioms, normalizers, lowering) |
 
 @note The table compares native IR-level support and representation, not what can be emulated via custom IR extensions, closure conversion, lowering, or external analyses.
 
@@ -77,7 +76,7 @@ See the full [🛠️ build options](@ref build_options) in the docs.
 
 ## 🔥 Key Innovations
 
-### 🧩 Plugins — Your DSL Lives Here
+### 🧩 Plugins
 
 Declare new types, operations, and normalizers in a single `.mim` file.
 C++ provides the heavy lifting: optimization, lowering, and code generation.
@@ -87,18 +86,19 @@ C++ provides the heavy lifting: optimization, lowering, and code generation.
 Forget CFG dominance.
 MimIR uses free-variable nesting:
 
-- The **nesting tree** replaces the dominator tree
+- **Free variables** replace dominance; the **nesting tree** replaces the dominator tree
 - Data-flow dependencies remain precise, even for higher-order code
 - Loop peeling and unrolling reduce to simple β-reduction
 - Mutual recursion and higher-order functions are handled naturally
 
-### 🌊 Sea-of-Nodes with On-the-Fly Everything
+### 🌊 Sea of Nodes
 
-MimIR hits the [**sweet spot**](@ref mut) between a fully mutable IR, which is easy to construct, and a fully immutable IR, which enables safe sharing and hash-consing:
+MimIR hits the [**sweet spot**](@ref mut) between a fully mutable IR, which is easy to construct, and a fully immutable IR:
 
-- Non-binder expressions are immutable
-  - [Hash-consing](https://en.wikipedia.org/wiki/Hash_consing), normalization, type checking, and partial evaluation happen **automatically** during graph construction
+- Non-binder expressions are immutable:
+  [Hash-consing](https://en.wikipedia.org/wiki/Hash_consing), normalization, type checking, and partial evaluation happen **automatically** during graph construction
 - Binders support variables and recursion by “tying the knot” through in-place mutation
+- Terms, types, and type-level computations all live in the same program graph as ordinary expressions.
 
 ## 🐉 Naming: MimIR vs Mim
 
