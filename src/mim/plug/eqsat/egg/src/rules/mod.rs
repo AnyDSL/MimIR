@@ -32,6 +32,8 @@ define_language! {
         "rule" = Rule([Id; 3]),
         // (inj <value> <type>)
         "inj" = Inj([Id; 2]),
+        // (axm <name> [<type>])
+        "axm" = Axm(Box<[Id]>),
 
 
         // TYPES

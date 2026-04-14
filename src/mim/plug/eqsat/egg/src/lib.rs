@@ -146,6 +146,7 @@ pub mod ffi {
         Insert,
         Rule,
         Inj,
+        Axm,
         Join,
         Meet,
         Bot,
@@ -217,6 +218,7 @@ fn rexpr_to_res(rexpr: RecExpr<Mim>) -> RewriteResult {
             Insert(children) => nodes.push(new_mim(MimKind::Insert, children, 0, String::new())),
             Rule(children) => nodes.push(new_mim(MimKind::Rule, children, 0, String::new())),
             Inj(children) => nodes.push(new_mim(MimKind::Inj, children, 0, String::new())),
+            Axm(children) => nodes.push(new_mim(MimKind::Axm, children, 0, String::new())),
 
             Join(children) => nodes.push(new_mim(MimKind::Join, children, 0, String::new())),
             Meet(children) => nodes.push(new_mim(MimKind::Meet, children, 0, String::new())),

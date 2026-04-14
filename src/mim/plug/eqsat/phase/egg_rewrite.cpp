@@ -196,6 +196,7 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
         case MimKind::Extract: res = convert_extract(id, node); break;
         case MimKind::Insert: res = convert_insert(id, node); break;
         case MimKind::Inj: res = convert_inj(id, node); break;
+        case MimKind::Axm: res = convert_axm(id, node); break;
         case MimKind::Join: res = convert_join(id, node); break;
         case MimKind::Meet: res = convert_meet(id, node); break;
         case MimKind::Bot: res = convert_bot(id, node); break;
@@ -337,6 +338,19 @@ const Def* EggRewrite::convert_inj(uint32_t id, MimNode node) {
     auto type    = get_def(node.children[1]);
     auto new_inj = new_world().inj(type, value);
     return new_inj;
+}
+
+// (axm <name> [<type>])
+const Def* EggRewrite::convert_axm(uint32_t id, MimNode node) {
+    // An axiom emitted without a type is an annex and resides in
+    // sym2def_ while an axiom emitted with a type is just an axiom.
+    auto annex = get_def(node.children[0]);
+    if (!annex && node.children.size() > 1) {
+        auto type    = get_def(node.children[1]);
+        auto new_axm = new_world().axm(type);
+        new_axm->set(get_symbol(node.children[0]));
+    }
+    return annex;
 }
 
 // (join <type1> <type2> ...)
