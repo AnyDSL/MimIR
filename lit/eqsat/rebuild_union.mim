@@ -7,32 +7,13 @@ fun extern combine (t1 t2: *) : * =
 fun extern tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 =
     return tup#i;
 
+// TODO: reconstruction fails because the ret var refers to earlier vars t1 and t2
 fun extern inject (t1 t2: *, x: Nat) : t1 ∪ t2 =
     let foo = (x inj t1 ∪ t2);
     return foo;
 
-// TODO: - Test cases for Match, Proxy
-//
-// fun extern minject (t1 t2 t3: *) (x: t3) : t1 ∪ t2 ∪ t3 =
-//     return (x inj t1 ∪ t2 ∪ t3);
-//
-// fun extern f1 (t1 t2: *) (x:t1) (y:t2): t1 =
-//     return (match x inj t1 ∪ t2 with a: t1 => x | b: t2 => x);
-//
-// fun extern f (t1 t2: *) (x:t1) (y: t2): t2  =
-//     return (
-//     match x inj t1 ∪ t2 with
-//         | a: t1 => y
-//         | b: t2 => b
-//     );
-//
-// fun extern minject2 (t1 t2 t3: *) (x: t3) : t3 =
-//     let u = x inj t1 ∪ t2 ∪ t3 ∪ [I32, t3];
-//     return (
-//     match u with
-//         | a: t1 => x
-//         | b: t2 => x
-//         | c: t3 => c
-//         | (i, x) => x
-//     );
-//
+// I guess we can't really emit this with the sexpr backend based on the Emitter
+// base class because match creates lambdas that don't have the basicblock property.
+// fun extern match_ (x: Nat ∪ Bool, y: Nat, z: Bool): Nat ∪ Bool =
+//     let bar = (match x with a: Nat => y | b: Bool => z);
+//     return bar;

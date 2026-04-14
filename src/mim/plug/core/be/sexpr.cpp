@@ -257,6 +257,8 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
 std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     std::ostringstream os;
 
+    // TODO: Is there ever a case where we would be emitting a lambda instead of a continuation
+    // since the assertions in the Emitter visit() method seem to make this impossible?
     const std::string lam_kind = lam->isa_cn(lam) ? "con" : "lam";
     const std::string ext      = lam->is_external() ? "extern" : "intern";
 
