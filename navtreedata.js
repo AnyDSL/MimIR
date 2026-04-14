@@ -38,14 +38,14 @@ var NAVTREE =
     [ "💬 Community", "index.html#autotoc_md76", null ],
     [ "⚖️ License", "index.html#autotoc_md77", null ],
     [ "📖 Publications", "index.html#autotoc_md78", null ],
-    [ "Documentation", "usergroup0.html", [
+    [ "📚 Documentation", "usergroup0.html", [
       [ "Mim Command-Line Reference", "cli.html", null ],
       [ "Mim Language Reference", "langref.html", null ],
       [ "Coding & Debugging", "coding.html", null ],
       [ "Developer Guide", "dev.html", null ],
       [ "Passes", "passes.html", null ]
     ] ],
-    [ "Plugins", "usergroup1.html", [
+    [ "🧩 Plugins", "usergroup1.html", [
       [ "affine", "affine.html", null ],
       [ "autodiff", "autodiff.html", null ],
       [ "clos", "clos.html", null ],
@@ -65,7 +65,7 @@ var NAVTREE =
       [ "tuple", "tuple.html", null ],
       [ "vec", "vec.html", null ]
     ] ],
-    [ "Namespaces", "namespaces.html", [
+    [ "📦 Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", "namespacemembers_dup" ],
@@ -75,8 +75,8 @@ var NAVTREE =
         [ "Enumerations", "namespacemembers_enum.html", "namespacemembers_enum" ]
       ] ]
     ] ],
-    [ "Concepts", "concepts.html", "concepts" ],
-    [ "Classes", "annotated.html", [
+    [ "🔧 Concepts", "concepts.html", "concepts" ],
+    [ "🔷 Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
@@ -90,7 +90,7 @@ var NAVTREE =
         [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", "files.html", [
+    [ "📁 Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],

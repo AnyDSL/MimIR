@@ -24,13 +24,13 @@
 */
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
-{text:"Documentation",url:"usergroup0.html",children:[
+{text:"📚 Documentation",url:"usergroup0.html",children:[
 {text:"Mim Command-Line Reference",url:"cli.html"},
 {text:"Mim Language Reference",url:"langref.html"},
 {text:"Coding & Debugging",url:"coding.html"},
 {text:"Developer Guide",url:"dev.html"},
 {text:"Passes",url:"passes.html"}]},
-{text:"Plugins",url:"usergroup1.html",children:[
+{text:"🧩 Plugins",url:"usergroup1.html",children:[
 {text:"affine",url:"affine.html"},
 {text:"autodiff",url:"autodiff.html"},
 {text:"clos",url:"clos.html"},
@@ -49,7 +49,7 @@ var menudata={children:[
 {text:"tensor",url:"tensor.html"},
 {text:"tuple",url:"tuple.html"},
 {text:"vec",url:"vec.html"}]},
-{text:"Namespaces",url:"namespaces.html",children:[
+{text:"📦 Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[
 {text:"All",url:"namespacemembers.html",children:[
@@ -137,8 +137,8 @@ var menudata={children:[
 {text:"v",url:"namespacemembers_enum_v.html#index_v"},
 {text:"w",url:"namespacemembers_enum_w.html#index_w"},
 {text:"z",url:"namespacemembers_enum_z.html#index_z"}]}]}]},
-{text:"Concepts",url:"concepts.html"},
-{text:"Classes",url:"annotated.html",children:[
+{text:"🔧 Concepts",url:"concepts.html"},
+{text:"🔷 Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},
 {text:"Class Hierarchy",url:"inherits.html"},
@@ -224,7 +224,7 @@ var menudata={children:[
 {text:"p",url:"functions_rela.html#index_p"},
 {text:"s",url:"functions_rela.html#index_s"},
 {text:"w",url:"functions_rela.html#index_w"}]}]}]},
-{text:"Files",url:"files.html",children:[
+{text:"📁 Files",url:"files.html",children:[
 {text:"File List",url:"files.html"},
 {text:"File Members",url:"globals.html",children:[
 {text:"All",url:"globals.html",children:[
