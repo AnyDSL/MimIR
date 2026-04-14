@@ -1,3 +1,4 @@
+// RUN: %mim %s -o -
 plugin eqsat;
 
 fun extern combine (t1 t2: *) : * =
