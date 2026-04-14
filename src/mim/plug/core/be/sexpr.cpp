@@ -620,40 +620,116 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
         print(decls_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
 
-        // TODO: Assign if !def->sym().empty() for Inj, Merge, Match, Proxy
     } else if (auto inj = def->isa<Inj>()) {
-        auto value_val = emit_bb(bb, inj->value());
         auto type_val  = emit_bb(bb, inj->type());
-        tab.lnprint(os, "(inj");
-        tab.print(os, "{}", type_val);
-        tab.print(os, "{}", value_val);
-        print(os, ")");
+        auto value_val = emit_bb(bb, inj->value());
+        if (inj->sym().empty()) {
+            tab.lnprint(os, "(inj");
+            tab.print(os, "{}", type_val);
+            tab.print(os, "{}", value_val);
+            print(os, ")");
+        } else {
+            bb.assign(tab, id(inj), [&](auto& os) {
+                ++tab;
+                tab.lnprint(os, "(inj");
+                ++tab;
+                tab.print(os, "{}", indent(tab.indent(), type_val));
+                tab.print(os, "{}", indent(tab.indent(), value_val));
+                --tab;
+                print(os, ")");
+                --tab;
+            });
+            tab.lnprint(os, "{}", id(inj));
+        }
 
     } else if (auto merge = def->isa<Merge>()) {
         auto type_val = emit_bb(bb, merge->type());
-        tab.lnprint(os, "(merge");
-        tab.print(os, "{}", type_val);
-        for (auto elem : merge->ops())
-            if (auto elem_val = emit_bb(bb, elem); !elem_val.empty()) print(os, "{}", elem_val);
-        print(os, ")");
+        std::vector<std::string> value_vals;
+        for (auto value : merge->ops())
+            if (auto value_val = emit_bb(bb, value); !value_val.empty()) value_vals.push_back(value_val);
+
+        if (merge->sym().empty()) {
+            tab.lnprint(os, "(merge");
+            tab.print(os, "{}", type_val);
+            for (auto value_val : value_vals)
+                tab.print(os, "{}", value_val);
+            print(os, ")");
+        } else {
+            bb.assign(tab, id(merge), [&](auto& os) {
+                ++tab;
+                tab.lnprint(os, "(merge");
+                ++tab;
+                for (auto value_val : value_vals)
+                    tab.print(os, "{}", indent(tab.indent(), value_val));
+                --tab;
+                print(os, ")");
+                --tab;
+            });
+            tab.lnprint(os, "{}", id(merge));
+        }
 
     } else if (auto match = def->isa<Match>()) {
-        tab.lnprint(os, "(match");
-        for (auto elem : match->ops())
-            if (auto elem_val = emit_bb(bb, elem); !elem_val.empty()) print(os, "{}", elem_val);
-        print(os, ")");
+        std::vector<std::string> op_vals;
+        for (auto op : match->ops())
+            if (auto op_val = emit_bb(bb, op); !op_val.empty()) op_vals.push_back(op_val);
+
+        if (match->sym().empty()) {
+            tab.lnprint(os, "(match");
+            for (auto op_val : op_vals)
+                tab.print(os, "{}", op_val);
+            print(os, ")");
+        } else {
+            bb.assign(tab, id(match), [&](auto& os) {
+                ++tab;
+                tab.lnprint(os, "(match");
+                ++tab;
+                for (auto op_val : op_vals)
+                    tab.print(os, "{}", indent(tab.indent(), op_val));
+                --tab;
+                print(os, ")");
+                --tab;
+            });
+            tab.lnprint(os, "{}", id(match));
+        }
 
     } else if (auto proxy = def->isa<Proxy>()) {
         auto type_val = emit_bb(bb, proxy->type());
         auto pass_val = proxy->pass();
         auto tag_val  = proxy->tag();
-        tab.lnprint(os, "(proxy");
-        tab.print(os, "{}", type_val);
-        tab.print(os, "{}", pass_val);
-        tab.print(os, "{}", tag_val);
-        for (auto elem : proxy->ops())
-            if (auto elem_val = emit_bb(bb, elem); !elem_val.empty()) print(os, "{}", elem_val);
-        print(os, ")");
+        std::vector<std::string> op_vals;
+        for (auto op : proxy->ops())
+            if (auto op_val = emit_bb(bb, op); !op_val.empty()) op_vals.push_back(op_val);
+
+        if (proxy->sym().empty()) {
+            tab.lnprint(os, "(proxy");
+            tab.print(os, "{}", type_val);
+            // pass_val and tag_val are not emitted via emit_bb and therefore have no
+            // leading newlines and indentation levels so we add those here
+            ++tab;
+            tab.lnprint(os, "{}", pass_val);
+            tab.lnprint(os, "{}", tag_val);
+            --tab;
+            for (auto op_val : op_vals)
+                tab.print(os, "{}", op_val);
+            print(os, ")");
+        } else {
+            bb.assign(tab, id(proxy), [&](auto& os) {
+                ++tab;
+                tab.lnprint(os, "(proxy");
+                ++tab;
+                tab.print(os, "{}", type_val);
+                ++tab;
+                tab.lnprint(os, "{}", pass_val);
+                tab.lnprint(os, "{}", tag_val);
+                --tab;
+                for (auto op_val : op_vals)
+                    tab.print(os, "{}", indent(tab.indent(), op_val));
+                --tab;
+                print(os, ")");
+                --tab;
+            });
+            tab.lnprint(os, "{}", id(proxy));
+        }
 
     } else {
         error("Unhandled Def in SExpr backend: {} : {}", def, def->type());
