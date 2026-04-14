@@ -32,13 +32,9 @@ public:
 
 private:
     void register_symbols() {
-        // TODO: axioms defined in mim but not as part of a plugin will
-        // not be contained in flags2annex and therefore need to be carried
-        // over via the rewrite api or something similar
-
         for (auto [flags, annex] : old_world().flags2annex()) {
-            sym2flags_[annex->sym().str()] = flags;
-            new_world().register_annex(flags, rewrite(annex));
+            auto new_annex                   = new_world().register_annex(flags, rewrite(annex));
+            sym2axm_[new_annex->sym().str()] = new_annex;
         }
 
         sym2def_["Univ"] = new_world().univ();
@@ -57,10 +53,17 @@ private:
 
     std::pair<rust::Vec<RuleSet>, CostFn> import_config();
 
-    const Def* init(uint32_t id, bool lambdas = false, bool bindings = false);
+    enum InitKind {
+        Lambdas,
+        Bindings,
+        Declarations,
+    };
+
+    const Def* init(uint32_t id, bool lambdas = false, bool bindings = false, bool declarations = false);
     const Def* init_lam(uint32_t id, MimNode node);
     const Def* init_con(uint32_t id, MimNode node);
     const Def* init_let(uint32_t id, MimNode node);
+    const Def* init_axm(uint32_t id, MimNode node);
 
     const Def* convert(uint32_t id, bool recurse = false);
     const Def* convert_let(uint32_t id, MimNode node);
@@ -74,7 +77,6 @@ private:
     const Def* convert_extract(uint32_t id, MimNode node);
     const Def* convert_insert(uint32_t id, MimNode node);
     const Def* convert_inj(uint32_t id, MimNode node);
-    const Def* convert_axm(uint32_t id, MimNode node);
     const Def* convert_join(uint32_t id, MimNode node);
     const Def* convert_meet(uint32_t id, MimNode node);
     const Def* convert_bot(uint32_t id, MimNode node);
@@ -101,8 +103,8 @@ private:
             auto sym = get_symbol(id);
             if (sym2def_.contains(sym))
                 def = sym2def_[sym];
-            else if (sym2flags_.contains(sym))
-                def = new_world().annex(sym2flags_[sym]);
+            else if (sym2axm_.contains(sym))
+                def = get_axm(sym);
             else if (vars_.contains(sym))
                 def = get_var(sym);
             else if (lams_.contains(sym))
@@ -113,6 +115,8 @@ private:
 
     void register_var(std::string name, const Def* converted) { vars_[name] = converted; }
     void register_lam(std::string name, const Lam* converted) { lams_[name] = converted; }
+    void register_axm(std::string name, const Axm* converted) { sym2axm_[name] = converted; }
+    const Def* get_axm(std::string name) { return sym2axm_[name]; }
     const Def* get_var(std::string name) { return vars_[name]; }
     const Lam* get_lam(std::string name) { return lams_[name]; }
 
@@ -137,7 +141,7 @@ private:
     std::unordered_map<uint32_t, const Def*> added_;
     std::unordered_map<std::string, const Def*> vars_;
     std::unordered_map<std::string, const Lam*> lams_;
-    std::unordered_map<std::string, flags_t> sym2flags_;
+    std::unordered_map<std::string, const Def*> sym2axm_;
     std::unordered_map<std::string, const Def*> sym2def_;
 };
 

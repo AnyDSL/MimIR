@@ -23,7 +23,15 @@ void EggRewrite::start() {
 
     auto rewrites = equality_saturate(sexpr.str(), rulesets, cost_fn);
 
-    // Initially creates lambdas and their variables as Def's in the new world but doesn't set their bodies yet.
+    // Creates declarations of axioms etc.
+    for (auto rewrite : rewrites) {
+        added_ = {};
+        res_   = rewrite.value;
+        for (uint32_t id = 0; id < res_.size(); id++)
+            init(id, false, false, true);
+    }
+
+    // Creates lambdas and their variables as Def's in the new world but doesn't set their bodies yet.
     // This is required so that other terms can later refer to lambdas and variables by name
     // as in (app foo (lit 0))) where 'foo' could be a lambda created in this inital stage.
     for (auto rewrite : rewrites) {
@@ -87,7 +95,8 @@ std::pair<rust::Vec<RuleSet>, CostFn> EggRewrite::import_config() {
     return {rulesets, cost_fn};
 }
 
-const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings) {
+// TODO: Maybe some kind of enum instead of these bool args?
+const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings, bool declarations) {
     auto node = get_node_unsafe(id);
 
     if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
@@ -96,6 +105,7 @@ const Def* EggRewrite::init(uint32_t id, bool lambdas, bool bindings) {
         case MimKind::Lam: res = lambdas ? init_lam(id, node) : nullptr; break;
         case MimKind::Con: res = lambdas ? init_con(id, node) : nullptr; break;
         case MimKind::Let: res = bindings ? init_let(id, node) : nullptr; break;
+        case MimKind::Axm: res = declarations ? init_axm(id, node) : nullptr; break;
         default: break;
     }
     if (DEBUG) std::cout << res << "\n";
@@ -169,6 +179,18 @@ const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
     return nullptr;
 }
 
+// (axm <name> <type>)
+const Def* EggRewrite::init_axm(uint32_t id, MimNode node) {
+    auto name = get_symbol(node.children[0]);
+    auto type = convert(node.children[1], true);
+
+    auto new_axm = new_world().axm(type);
+    new_axm->set(name);
+    register_axm(name, new_axm);
+
+    return new_axm;
+}
+
 const Def* EggRewrite::convert(uint32_t id, bool recurse) {
     auto node = get_node_unsafe(id);
 
@@ -196,7 +218,6 @@ const Def* EggRewrite::convert(uint32_t id, bool recurse) {
         case MimKind::Extract: res = convert_extract(id, node); break;
         case MimKind::Insert: res = convert_insert(id, node); break;
         case MimKind::Inj: res = convert_inj(id, node); break;
-        case MimKind::Axm: res = convert_axm(id, node); break;
         case MimKind::Join: res = convert_join(id, node); break;
         case MimKind::Meet: res = convert_meet(id, node); break;
         case MimKind::Bot: res = convert_bot(id, node); break;
@@ -338,19 +359,6 @@ const Def* EggRewrite::convert_inj(uint32_t id, MimNode node) {
     auto type    = get_def(node.children[1]);
     auto new_inj = new_world().inj(type, value);
     return new_inj;
-}
-
-// (axm <name> [<type>])
-const Def* EggRewrite::convert_axm(uint32_t id, MimNode node) {
-    // An axiom emitted without a type is an annex and resides in
-    // sym2def_ while an axiom emitted with a type is just an axiom.
-    auto annex = get_def(node.children[0]);
-    if (!annex && node.children.size() > 1) {
-        auto type    = get_def(node.children[1]);
-        auto new_axm = new_world().axm(type);
-        new_axm->set(get_symbol(node.children[0]));
-    }
-    return annex;
 }
 
 // (join <type1> <type2> ...)
