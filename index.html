@@ -236,9 +236,11 @@ $(function(){initNavTree('index.html','',''); });
 <p>Forget CFG dominance. MimIR uses free-variable nesting:</p>
 <ul>
 <li><b>Free variables</b> replace dominance; the <b>nesting tree</b> replaces the dominator tree</li>
-<li>Free-variable queries “just work”: <div class="fragment"><div class="line"><span class="keywordflow">if</span> (expr-&gt;free_vars().contains(x)) <span class="comment">/*...*/</span></div>
-<div class="line"><span class="keywordflow">if</span> (expr-&gt;free_vars().has_intersection(xyz)) <span class="comment">/*...*/</span></div>
-</div><!-- fragment --> This is always correct, with analysis maintenance handled transparently and efficiently by MimIR.</li>
+<li><p class="startli">Free-variable queries “just work”:</p>
+<div class="fragment"><div class="line"><span class="keywordflow">if</span> (expr-&gt;free_vars().contains(x)) <span class="comment">/*x free in expr*/</span></div>
+<div class="line"><span class="keywordflow">if</span> (expr-&gt;free_vars().has_intersection(xyz)) <span class="comment">/*x, y, or z free in expr*/</span></div>
+</div><!-- fragment --><p class="startli">This is always correct. MimIR maintains free-variable information <b>lazily</b>, <b>locally</b>, and <b>transparently</b>: results are computed on demand, memoized, and invalidated only where needed.</p>
+</li>
 <li>Data dependencies remain precise, even for higher-order code</li>
 <li>Loop peeling and unrolling reduce to simple β-reduction</li>
 <li>Mutual recursion and higher-order functions are handled naturally</li>
@@ -268,21 +270,18 @@ $(function(){initNavTree('index.html','',''); });
 <h1 class="doxsection"><a class="anchor" id="autotoc_md78"></a>
 📖 Publications</h1>
 <ul>
-<li>
-<b>SSA without Dominance for Higher-Order Programs</b><br  />
+<li><b>SSA without Dominance for Higher-Order Programs</b><br  />
  Roland Leißa, Johannes Griebler.<br  />
  <em>Proceedings of the ACM on Programming Languages (PLDI), 2026</em>, 10(PLDI).<br  />
- <a href="https://arxiv.org/abs/2604.09961">Preprint</a> · <a href="https://zenodo.org/records/19069679">Artifact</a>  </li>
-<li>
-<b>MimIrADe: Automatic Differentiation in MimIR</b><br  />
+ <a href="https://arxiv.org/abs/2604.09961">Preprint</a> · <a href="https://zenodo.org/records/19069679">Artifact</a></li>
+<li><b>MimIrADe: Automatic Differentiation in MimIR</b><br  />
  Marcel Ullrich, Sebastian Hack, Roland Leißa.<br  />
  <em>Proceedings of the 34th ACM SIGPLAN International Conference on Compiler Construction (CC), 2025</em>, 70–80.<br  />
- <a href="https://dl.acm.org/doi/abs/10.1145/3708493.3712685">ACM</a> · <a href="https://doi.org/10.1145/3704840">DOI</a> · <a href="https://arxiv.org/abs/2411.07443">Preprint</a> · <a href="https://zenodo.org/records/14681335">Artifact</a> · <a href="https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex">BibTeX</a>  </li>
-<li>
-<b>MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age</b><br  />
+ <a href="https://dl.acm.org/doi/abs/10.1145/3708493.3712685">DOI</a> · <a href="https://arxiv.org/abs/2411.07443">Preprint</a> · <a href="https://zenodo.org/records/14681335">Artifact</a> · <a href="https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex">BibTeX</a></li>
+<li><b>MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age</b><br  />
  Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack.<br  />
  <em>Proceedings of the ACM on Programming Languages (POPL), 2025</em>, 9(POPL), 95–125.<br  />
- <a href="https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R">Talk</a> · <a href="https://dl.acm.org/doi/10.1145/3704840">ACM</a> · <a href="https://doi.org/10.1145/3704840">DOI</a> · <a href="https://arxiv.org/abs/2411.07443">Preprint</a> · <a href="https://zenodo.org/records/13952579">Artifact</a> · <a href="https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex">BibTeX</a>  </li>
+ <a href="https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R">Talk</a> · <a href="https://doi.org/10.1145/3704840">DOI</a> · <a href="https://arxiv.org/abs/2411.07443">Preprint</a> · <a href="https://zenodo.org/records/13952579">Artifact</a> · <a href="https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex">BibTeX</a> </li>
 </ul>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
