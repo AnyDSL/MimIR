@@ -622,12 +622,39 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
         print(decls_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
 
+        // TODO: Assign if !def->sym().empty() for Inj, Merge, Match, Proxy
     } else if (auto inj = def->isa<Inj>()) {
         auto value_val = emit_bb(bb, inj->value());
-        auto type_val  = emit_type(bb, inj->type());
+        auto type_val  = emit_bb(bb, inj->type());
         tab.lnprint(os, "(inj");
-        tab.print(os, "{}", value_val);
         tab.print(os, "{}", type_val);
+        tab.print(os, "{}", value_val);
+        print(os, ")");
+
+    } else if (auto merge = def->isa<Merge>()) {
+        auto type_val = emit_bb(bb, merge->type());
+        tab.lnprint(os, "(merge");
+        tab.print(os, "{}", type_val);
+        for (auto elem : merge->ops())
+            if (auto elem_val = emit_bb(bb, elem); !elem_val.empty()) print(os, "{}", elem_val);
+        print(os, ")");
+
+    } else if (auto match = def->isa<Match>()) {
+        tab.lnprint(os, "(match");
+        for (auto elem : match->ops())
+            if (auto elem_val = emit_bb(bb, elem); !elem_val.empty()) print(os, "{}", elem_val);
+        print(os, ")");
+
+    } else if (auto proxy = def->isa<Proxy>()) {
+        auto type_val = emit_bb(bb, proxy->type());
+        auto pass_val = proxy->pass();
+        auto tag_val  = proxy->tag();
+        tab.lnprint(os, "(proxy");
+        tab.print(os, "{}", type_val);
+        tab.print(os, "{}", pass_val);
+        tab.print(os, "{}", tag_val);
+        for (auto elem : proxy->ops())
+            if (auto elem_val = emit_bb(bb, elem); !elem_val.empty()) print(os, "{}", elem_val);
         print(os, ")");
 
     } else {
