@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: Introduction</title>
+<title>MimIR: MimIR</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -117,30 +117,47 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Introduction </div></div>
+  <div class="headertitle"><div class="title">MimIR </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md67">Building</a>
+    <a href="#autotoc_md68">Why MimIR?</a>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md69">Quick Start</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md68">Install</a>
-      </li>
-      <li class="level2">
-        <a href="#autotoc_md69">Build Switches</a>
+        <a href="#autotoc_md70">Install (optional)</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md70">Dependencies</a>
+    <a href="#autotoc_md71">Key Innovations</a>
+    <ul>
+      <li class="level2">
+        <a href="#autotoc_md72">Plugins - Your DSL Lives Here</a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md73">SSA without Dominance (PLDI 2026)</a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md74">Sea-of-Nodes with On-the-Fly Everything</a>
+      </li>
+    </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md71">Publications</a>
+    <a href="#autotoc_md75">Naming: MimIR vs Mim</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md72">MimIR vs Mim</a>
+    <a href="#autotoc_md76">Community</a>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md77">License</a>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md78">Publications</a>
   </li>
 </ul>
 </div>
@@ -151,69 +168,90 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">License  </td><td class="markdownTableBodyNone"><a href="https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/MimIR?&amp;color=yellowgreen&amp;logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5gQFFyMP+ejbyAAAAVRJREFUOMuNkk0rhGEUhq+jETaajSxEKdvJShayRUlZWbCYjZr/4N+oyVjLwkdWkoWl2ShSllKmZKGZuiwcenuHyV2nzsd9n+e5ex4YAHVb3R7EqfwhnAM6wFbWZ0A1Iu7L3CiIloEVYAG4BWaBpRxfAY9ADbgBziLisnyDSaAHbEREV60CTznbjYiOOgzsJbfPwhvwEhHdrN+BtUJOLn5Jbp/vQ/W8UFfV54xqoX+uHn7XQ9mcALrAtbqYp3WAC+Aic3J2DXRT87UA2AEOgH2gPuDV6sk5SM3PghXgNCIegCl17BeLY8BUck5Tw5C6CbwCNXUeaAMNdaQgHgEaQDs5NeBV3UQ9sh9ttaK2MirZK+MIdVxtqh9qTz1Rp/PkltrKfDpnveQ21fGix2F1tOT7Z0GhN5ofajDUdbWTsc5/oc6oq+pdwetd9mb+s+DYv3Fc5n8Cd+5Qbrzh2X0AAAAASUVORK5CYII=" alt="License" class="inline"/></a>   </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Tests  </td><td class="markdownTableBodyNone"><a href="https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?logo=linux&amp;label=linux&amp;logoColor=white&amp;branch=master" alt="Linux" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?logo=windows&amp;label=windows&amp;branch=master" alt="Windows" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&amp;label=macos&amp;branch=master" alt="MacOS" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?logo=github&amp;label=doxygen&amp;branch=master" alt="Doxygen" class="inline"/></a>   </td></tr>
+<td class="markdownTableBodyNone">Tests  </td><td class="markdownTableBodyNone"><a href="https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?logo=linux&amp;label=linux&amp;logoColor=white&amp;branch=master" alt="Linux" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?logo=windows&amp;label=windows&amp;branch=master" alt="Windows" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&amp;label=macos&amp;branch=master" alt="macOS" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?logo=github&amp;label=doxygen&amp;branch=master" alt="Doxygen" class="inline"/></a>   </td></tr>
 </table>
-<p><b>MimIR</b> is an extensible compiler intermediate representation that is based upon the <a href="https://en.wikipedia.org/wiki/Calculus_of_constructions">Calculus of Constructions (CoC)</a>. This means:</p>
+<p><b>MimIR</b> is a pure, graph-based, higher-order intermediate representation rooted in the <b>Calculus of Constructions</b>. It gives you:</p>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Pure_type_system">pure type system (PTS)</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Higher-order_function">higher-order functions</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Dependent_type">dependent types</a></li>
+<li><b>Dependent types</b>, <b>polymorphism</b>, and <b>higher-order functions</b> out of the box</li>
+<li><b>Extensible plugins</b> that add domain-specific axioms, types, normalizers, and codegen</li>
+<li><b>SSA without dominance</b> – the first IR that cleanly handles higher-order programs via free-variable nesting (PLDI 2026)</li>
+<li><b>Sea-of-nodes</b> style with on-the-fly normalization, type checking, and partial evaluation</li>
 </ul>
-<p>In contrast to other CoC-based program representations such as <a href="https://coq.inria.fr/">Coq</a> or <a href="https://leanprover.github.io/">Lean</a>, MimIR is <em>not</em> a theorem prover but focuses on generating efficient code. For this reason, MimIR explicitly features mutable state and models imperative control flow with <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style (CPS)</a>.</p>
-<p>You can use MimIR either via it's C++-API or through its frontend language <a class="el" href="langref.html#md_docs_2langref">Mim</a>.</p>
-<h1><a class="anchor" id="autotoc_md67"></a>
-Building</h1>
-<p>If you have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account setup with SSH</a>, just do this:</p>
-<div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:AnyDSL/MimIR.git</div>
-</div><!-- fragment --><p>Otherwise, clone via HTTPS:</p>
-<div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/AnyDSL/MimIR.git</div>
-</div><!-- fragment --><p>Then, build with:</p>
-<div class="fragment"><div class="line">cd mim</div>
-<div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</div>
-<div class="line">cmake --build build -j $(nproc)</div>
-</div><!-- fragment --><p>For a <code>Release</code> build simply use <code>-DCMAKE_BUILD_TYPE=Release</code>.</p>
-<h2><a class="anchor" id="autotoc_md68"></a>
-Install</h2>
-<p>If you want to install MimIR, specify an install prefix and build the target <code>install</code>:</p>
-<div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix</div>
-<div class="line">cmake --build build -j $(nproc) -t install</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md69"></a>
-Build Switches</h2>
+<p>Perfect for DSL compilers, tensor compilers, automatic differentiation, regex engines, and anything that needs high-performance code from high-level abstractions.</p>
+<h1><a class="anchor" id="autotoc_md68"></a>
+Why MimIR?</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">CMake Switch   </th><th class="markdownTableHeadNone">Options   </th><th class="markdownTableHeadNone">Default   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<th class="markdownTableHeadNone">Feature   </th><th class="markdownTableHeadNone">Traditional IRs (LLVM/MLIR)   </th><th class="markdownTableHeadNone">MimIR    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>CMAKE_BUILD_TYPE</code>   </td><td class="markdownTableBodyNone"><code>Debug</code> | <code>Release</code> | <code>RelWithDebInfo</code>   </td><td class="markdownTableBodyNone"><code>Debug</code>   </td><td class="markdownTableBodyNone">Build type.    </td></tr>
+<td class="markdownTableBodyNone">Higher-order functions   </td><td class="markdownTableBodyNone">❌ (limited/erased)   </td><td class="markdownTableBodyNone">✅    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>CMAKE_INSTALL_PREFIX</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"><code>/usr/local</code>   </td><td class="markdownTableBodyNone">Install prefix.    </td></tr>
+<td class="markdownTableBodyNone">Polymorphism   </td><td class="markdownTableBodyNone">❌   </td><td class="markdownTableBodyNone">✅    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>MIM_BUILD_DOCS</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, build the documentation <br  />
- (requires Doxygen).    </td></tr>
+<td class="markdownTableBodyNone">Polytypism   </td><td class="markdownTableBodyNone">❌   </td><td class="markdownTableBodyNone">✅    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>MIM_BUILD_EXAMPLES</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, build the examples.    </td></tr>
+<td class="markdownTableBodyNone">Dependent types   </td><td class="markdownTableBodyNone">❌   </td><td class="markdownTableBodyNone">✅    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>MIM_ENABLE_CHECKS</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>ON</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, enables expensive runtime checks <br  />
- (requires <code>CMAKE_BUILD_TYPE=Debug</code>).    </td></tr>
+<td class="markdownTableBodyNone">Extensibility   </td><td class="markdownTableBodyNone">Dialects in C++   </td><td class="markdownTableBodyNone">Plugins with Mim + C++    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>BUILD_TESTING</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, build all unit and lit tests.    </td></tr>
+<td class="markdownTableBodyNone">Control flow   </td><td class="markdownTableBodyNone">CFG / dominance   </td><td class="markdownTableBodyNone">Free Variables + Nesting Tree    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>MIM_LIT_TIMEOUT</code>   </td><td class="markdownTableBodyNone"><code>&lt;timeout_in_sec&gt;</code>   </td><td class="markdownTableBodyNone"><code>20</code>   </td><td class="markdownTableBodyNone">Timeout for lit tests. <br  />
- (requires <code>BUILD_TESTING=ON</code>).    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>MIM_LIT_WITH_VALGRIND</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, the Mim CLI in the lit tests will be run under valgrind. <br  />
- (requires <code>BUILD_TESTING=ON</code>).   </td></tr>
+<td class="markdownTableBodyNone">DSL-friendly   </td><td class="markdownTableBodyNone">Low-level   </td><td class="markdownTableBodyNone">Domain-specific axioms &amp; normalizers   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md70"></a>
-Dependencies</h1>
-<p>In addition to the provided <a href="https://github.com/AnyDSL/MimIR/tree/master/external">submodules</a>:</p>
-<ul>
-<li>Recent version of <a href="https://cmake.org/">CMake</a></li>
-<li>A C++20-compatible C++ compiler.</li>
-<li><p class="startli">While Mim emits <a href="https://llvm.org/">LLVM</a>, it does <em>not</em> link against LLVM.</p>
-<p class="startli">Simply toss the emitted <code>*.ll</code> file to your system's LLVM toolchain. But technically, you don't need LLVM.</p>
-</li>
-</ul>
+<h1><a class="anchor" id="autotoc_md69"></a>
+Quick Start</h1>
+<div class="fragment"><div class="line">git clone --recursive git@github.com:AnyDSL/MimIR.git</div>
+<div class="line">cd MimIR</div>
+<div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release</div>
+<div class="line">cmake --build build -j$(nproc)</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md70"></a>
+Install (optional)</h2>
+<div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix</div>
+<div class="line">cmake --build build -j $(nproc) -t install</div>
+</div><!-- fragment --><p>See the full <a class="el" href="coding.html#build_options">build options</a> in the docs.</p>
 <h1><a class="anchor" id="autotoc_md71"></a>
+Key Innovations</h1>
+<h2><a class="anchor" id="autotoc_md72"></a>
+Plugins - Your DSL Lives Here</h2>
+<p>Declare new types, operations, and normalizers in a single <code>.mim</code> file. The C++ side provides the heavy lifting (optimizations, lowering, codegen).</p>
+<h2><a class="anchor" id="autotoc_md73"></a>
+SSA without Dominance (PLDI 2026)</h2>
+<p>Forget CFG dominance. MimIR uses free-variable nesting:</p>
+<ul>
+<li>The <b>nesting tree</b> replaces the dominator tree</li>
+<li>Precise data-flow dependencies even for higher-order code</li>
+<li>Loop peeling/unrolling becomes simple β-reduction</li>
+<li>Naturally supports mutual recursion and higher-order functions</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md74"></a>
+Sea-of-Nodes with On-the-Fly Everything</h2>
+<ul>
+<li>Normalization, type checking, and partial evaluation happen <b>automatically</b> during graph construction</li>
+<li>Everything is hash-consed and immutable where it matters</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md75"></a>
+Naming: MimIR vs Mim</h1>
+<p><b>MimIR</b> is a recursive acronym for <em><b>Mim**IR **is</b> my **I**ntermediate **R**epresentation</em>.</p>
+<p>In Norse mythology, <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir</a> was a being of immense wisdom. After he was beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to recite secret knowledge and counsel.</p>
+<p>Today, <b>you</b> have Mímir’s head at your fingertips.</p>
+<ul>
+<li><b>MimIR</b> refers to the core graph-based intermediate representation and its C++ API.</li>
+<li><b>Mim</b> is the friendly, high-level frontend language that compiles down to MimIR.</li>
+</ul>
+<p>In the entire codebase we consistently use <code>mim</code> / <code>MIM</code> for namespaces, macros, CMake variables, etc. If in doubt, just use <b>Mim</b>.</p>
+<h1><a class="anchor" id="autotoc_md76"></a>
+Community</h1>
+<ul>
+<li><b>Discord</b> → <a href="https://discord.gg/FPp7hdj3fQ">Join the chat</a></li>
+<li><b>Documentation</b> → <a href="https://anydsl.github.io/MimIR">https://anydsl.github.io/MimIR</a></li>
+<li><b>Examples</b> → <code>examples/</code> and <code>lit</code> folder</li>
+</ul>
+<p><b>Ready to build the next generation of DSL compilers?</b></p>
+<p>Star the repo, join Discord, and let’s make high-performance DSLs easy.</p>
+<h1><a class="anchor" id="autotoc_md77"></a>
+License</h1>
+<p>MimIR is licensed under the <a href="https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT">MIT License</a>.</p>
+<h1><a class="anchor" id="autotoc_md78"></a>
 Publications</h1>
 <ul>
 <li>
@@ -227,10 +265,6 @@ Publications</h1>
  <em>Proceedings of the ACM on Programming Languages (POPL), 2025</em>, 9(POPL), 95–125.<br  />
  <a href="https://dl.acm.org/doi/10.1145/3704840">ACM</a> · <a href="https://doi.org/10.1145/3704840">DOI</a> · <a href="https://arxiv.org/abs/2411.07443">Preprint</a> · <a href="https://zenodo.org/records/13952579">Artifact</a> · <a href="https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex">BibTeX</a>  </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md72"></a>
-MimIR vs Mim</h1>
-<p>MimIR is a recursive acronym for <em>MimIR is my intermediate Representation</em>. <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir or Mim</a> is also a figure in Norse mythology, renowned for his knowledge and wisdom, who is beheaded during the &AElig;sir–Vanir War. Afterward, the god Odin carries around Mímir's head and it recites secret knowledge and counsel to him. Now, you have Mímir's head at your fingertips.</p>
-<p>We use the term <b>MimIR</b>, if we speak of the internal graph-based representation and its C++-API, and the term <b>Mim</b>, if we mean MimIR's frontend language. To keep things short and simple, all code consistently uses <code>mim</code> or <code>MIM</code> for namespaces, macro prefixes, etc. And if in doubt, just use <b>Mim</b>. </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->

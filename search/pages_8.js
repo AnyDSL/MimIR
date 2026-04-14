@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['passes_0',['Passes',['../passes.html',1,'']]],
-  ['plugin_1',['Plugin',['../affine.html',1,'The affine Plugin'],['../autodiff.html',1,'The automatic differentiation Plugin'],['../clos.html',1,'The clos Plugin'],['../compile.html',1,'The compile Plugin'],['../core.html',1,'The core Plugin'],['../demo.html',1,'The demo Plugin'],['../direct.html',1,'The direct style Plugin'],['../gpu.html',1,'The gpu Plugin'],['../math.html',1,'The math Plugin'],['../matrix.html',1,'The matrix Plugin'],['../mem.html',1,'The mem Plugin'],['../opt.html',1,'The opt Plugin'],['../ord.html',1,'The ord Plugin'],['../refly.html',1,'The refly Plugin'],['../regex.html',1,'The regex Plugin'],['../tensor.html',1,'The tensor Plugin'],['../tuple.html',1,'The tuple Plugin'],['../vec.html',1,'The vec Plugin']]]
+  ['reference_0',['Reference',['../cli.html',1,'Command-Line Reference'],['../langref.html',1,'Mim Language Reference']]],
+  ['refly_20plugin_1',['The refly Plugin',['../refly.html',1,'']]],
+  ['regex_20plugin_2',['The regex Plugin',['../regex.html',1,'']]]
 ];

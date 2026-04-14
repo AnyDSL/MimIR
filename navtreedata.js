@@ -25,7 +25,19 @@
 var NAVTREE =
 [
   [ "MimIR", "index.html", [
-    [ "Introduction", "index.html", "index" ],
+    [ "Why MimIR?", "index.html#autotoc_md68", null ],
+    [ "Quick Start", "index.html#autotoc_md69", [
+      [ "Install (optional)", "index.html#autotoc_md70", null ]
+    ] ],
+    [ "Key Innovations", "index.html#autotoc_md71", [
+      [ "Plugins - Your DSL Lives Here", "index.html#autotoc_md72", null ],
+      [ "SSA without Dominance (PLDI 2026)", "index.html#autotoc_md73", null ],
+      [ "Sea-of-Nodes with On-the-Fly Everything", "index.html#autotoc_md74", null ]
+    ] ],
+    [ "Naming: MimIR vs Mim", "index.html#autotoc_md75", null ],
+    [ "Community", "index.html#autotoc_md76", null ],
+    [ "License", "index.html#autotoc_md77", null ],
+    [ "Publications", "index.html#autotoc_md78", null ],
     [ "Documentation", "usergroup0.html", [
       [ "Mim Command-Line Reference", "cli.html", null ],
       [ "Mim Language Reference", "langref.html", null ],
@@ -111,13 +123,13 @@ var NAVTREEINDEX =
 "classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a0ac8ea3017a419fccc77416400a69a0a",
 "compile_8cpp_source.html",
 "functions_d.html",
-"namespacemembers_n.html",
-"namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed",
-"namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673aaa7c2f8b74458aeae4e388c376197581",
-"namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da1feea25ecb958229287f885aebe7c49b",
-"namespacemim_1_1sys.html",
-"structmim_1_1FNV1_3_014_01_4.html",
-"vec_2autogen_8h.html#a397c9b9a8cd26cfb8927c171dc620410"
+"namespacemembers_j.html",
+"namespacemim_1_1ast.html#aa24bcf2198b1b13ad985304483f7f324",
+"namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673a8fa14cdd754f91cc6554c9e71929cce7",
+"namespacemim_1_1plug_1_1math.html#ae824a279b3d956e6c59d9a09c5f59a78",
+"namespacemim_1_1plug_1_1vec.html#afc4be00d00e10620d57d3d788bec3f03",
+"structmim_1_1Error_1_1Msg.html#aaa0aa4ce4f863fa5b91c557d18d263ac",
+"util_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

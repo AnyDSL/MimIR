@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['introduction_0',['Introduction',['../index.html',1,'']]]
+  ['language_20reference_0',['Mim Language Reference',['../langref.html',1,'']]],
+  ['line_20reference_1',['Command-Line Reference',['../cli.html',1,'']]],
+  ['list_2',['List',['../deprecated.html',1,'Deprecated List'],['../todo.html',1,'Todo List']]]
 ];
