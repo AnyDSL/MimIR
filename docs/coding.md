@@ -4,6 +4,35 @@
 
 This document comprises some information that is related to coding but not directly to the API.
 
+## Build Options {#build_options}
+
+If you don't have a [GitHub account setup with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) you can also clone via HTTPS:
+```sh
+git clone --recursive https://github.com/AnyDSL/MimIR.git
+```
+
+| CMake Switch            | Options                                  | Default      | Comment                                                                                               |
+| ----------------------- | ---------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------- |
+| `CMAKE_BUILD_TYPE`      | `Debug` \| `Release` \| `RelWithDebInfo` | `Debug`      | Build type.                                                                                           |
+| `CMAKE_INSTALL_PREFIX`  |                                          | `/usr/local` | Install prefix.                                                                                       |
+| `MIM_BUILD_DOCS`        | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the documentation <br> (requires Doxygen).                                             |
+| `MIM_BUILD_EXAMPLES`    | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the examples.                                                                          |
+| `MIM_ENABLE_CHECKS`     | `ON` \| `OFF`                            | `ON`         | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`).                   |
+| `BUILD_TESTING`         | `ON` \| `OFF`                            | `OFF`        | If `ON`, build all unit and lit tests.                                                                |
+| `MIM_LIT_TIMEOUT`       | `<timeout_in_sec>`                       | `20`         | Timeout for lit tests. <br> (requires `BUILD_TESTING=ON`).                                            |
+| `MIM_LIT_WITH_VALGRIND` | `ON` \| `OFF`                            | `OFF`        | If `ON`, the Mim CLI in the lit tests will be run under valgrind. <br> (requires `BUILD_TESTING=ON`). |
+
+### Dependencies
+
+In addition to the provided [submodules](https://github.com/AnyDSL/MimIR/tree/master/external):
+
+- Recent version of [CMake](https://cmake.org/)
+- A C++20-compatible C++ compiler.
+- While Mim emits [LLVM](https://llvm.org/), it does _not_ link against LLVM.
+
+  Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
+  But technically, you don't need LLVM.
+
 ## Coding Style
 
 Use the following coding conventions:
@@ -185,11 +214,13 @@ cd lit
 ### Trigger Breakpoints over Command Line
 
 You can directly instruct `mim` to trigger a breakpoint, if certain events happen:
+
 ```sh
 mim test.mim -b 1234            # Trigger a breakpoint if node with gid 1234 is created.
 mim test.mim -w 1234            # Trigger a breakpoint if node with gid 1234 sets one of its operands.
 mim test.mim --break-on-alpha   # Trigger a breakpoint if a check for alpha-equivalence fails.
 ```
+
 See [Command-Line Reference](@ref cli) for all flags.
 
 ### GoogleTest
@@ -284,7 +315,6 @@ The command will create two targets:
 
    This is an internal target to bootstrap the plugin.
    It will generate:
-
    - `<plugin-name>/autogen.h` for the C++ interface in order to identify annexes,
    - `<plugin-name>.md` for the documentation, and
    - `<plugin-name>.d` for the plugin's dependencies.
@@ -294,7 +324,6 @@ The command will create two targets:
 2. `mim_<plugin-name>`
 
    This is the actual `MODULE` [library](https://cmake.org/cmake/help/latest/command/add_library.html).
-
    - `SOURCES`
 
      These are the `<source>` files used to build the loadable plugin containing normalizers, passes, and backends.

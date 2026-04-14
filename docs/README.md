@@ -1,4 +1,4 @@
-# Introduction
+# MimIR
 
 [TOC]
 
@@ -25,80 +25,99 @@
         <td class="markdownTableBodyNone">
             <a href="https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?logo=linux&label=linux&logoColor=white&branch=master" alt="Linux"></a>
             <a href="https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?logo=windows&label=windows&branch=master" alt="Windows"></a>
-            <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&label=macos&branch=master" alt="MacOS"></a>
+            <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&label=macos&branch=master" alt="macOS"></a>
             <a href="https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?logo=github&label=doxygen&branch=master" alt="Doxygen"></a>
         </td>
     </tr>
 </table>
 
-**MimIR** is an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
-This means:
+**MimIR** is a pure, graph-based, higher-order intermediate representation rooted in the **Calculus of Constructions**. It gives you:
 
-- [pure type system (PTS)](https://en.wikipedia.org/wiki/Pure_type_system)
-- [higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)
-- [dependent types](https://en.wikipedia.org/wiki/Dependent_type)
+- **Dependent types**, **polymorphism**, and **higher-order functions** out of the box
+- **Extensible plugins** that add domain-specific axioms, types, normalizers, and codegen
+- **SSA without dominance** – the first IR that cleanly handles higher-order programs via free-variable nesting (PLDI 2026)
+- **Sea-of-nodes** style with on-the-fly normalization, type checking, and partial evaluation
 
-In contrast to other CoC-based program representations such as [Coq](https://coq.inria.fr/) or [Lean](https://leanprover.github.io/), MimIR is _not_ a theorem prover but focuses on generating efficient code.
-For this reason, MimIR explicitly features mutable state and models imperative control flow with [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style).
+Perfect for DSL compilers, tensor compilers, automatic differentiation, regex engines, and anything that needs high-performance code from high-level abstractions.
 
-You can use MimIR either via it's C++-API or through its frontend language [Mim](langref.md).
+## Why MimIR?
 
-## Building
+| Feature                | Traditional IRs (LLVM/MLIR) | MimIR                                |
+| ---------------------- | --------------------------- | ------------------------------------ |
+| Higher-order functions | ❌ (limited/erased)         | ✅                                   |
+| Polymorphism           | ❌                          | ✅                                   |
+| Polytypism             | ❌                          | ✅                                   |
+| Dependent types        | ❌                          | ✅                                   |
+| Extensibility          | Dialects in C++             | Plugins with Mim + C++               |
+| Control flow           | CFG / dominance             | Free Variables +  Nesting Tree          |
+| DSL-friendly           | Low-level                   | Domain-specific axioms & normalizers |
 
-If you have a [GitHub account setup with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh), just do this:
-
-```
-git clone --recurse-submodules git@github.com:AnyDSL/MimIR.git
-```
-
-Otherwise, clone via HTTPS:
-
-```
-git clone --recurse-submodules https://github.com/AnyDSL/MimIR.git
-```
-
-Then, build with:
-
-```
-cd mim
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-cmake --build build -j $(nproc)
-```
-
-For a `Release` build simply use `-DCMAKE_BUILD_TYPE=Release`.
-
-### Install
-
-If you want to install MimIR, specify an install prefix and build the target `install`:
+## Quick Start
 
 ```sh
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix
+git clone --recursive git@github.com:AnyDSL/MimIR.git
+cd MimIR
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j$(nproc)
+```
+
+### Install (optional)
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix
 cmake --build build -j $(nproc) -t install
 ```
 
-### Build Switches
+See the full [build options](@ref build_options) in the docs.
 
-| CMake Switch            | Options                                  | Default      | Comment                                                                                               |
-| ----------------------- | ---------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------- |
-| `CMAKE_BUILD_TYPE`      | `Debug` \| `Release` \| `RelWithDebInfo` | `Debug`      | Build type.                                                                                           |
-| `CMAKE_INSTALL_PREFIX`  |                                          | `/usr/local` | Install prefix.                                                                                       |
-| `MIM_BUILD_DOCS`        | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the documentation <br> (requires Doxygen).                                             |
-| `MIM_BUILD_EXAMPLES`    | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the examples.                                                                          |
-| `MIM_ENABLE_CHECKS`     | `ON` \| `OFF`                            | `ON`         | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`).                   |
-| `BUILD_TESTING`         | `ON` \| `OFF`                            | `OFF`        | If `ON`, build all unit and lit tests.                                                                |
-| `MIM_LIT_TIMEOUT`       | `<timeout_in_sec>`                       | `20`         | Timeout for lit tests. <br> (requires `BUILD_TESTING=ON`).                                            |
-| `MIM_LIT_WITH_VALGRIND` | `ON` \| `OFF`                            | `OFF`        | If `ON`, the Mim CLI in the lit tests will be run under valgrind. <br> (requires `BUILD_TESTING=ON`). |
+## Key Innovations
 
-## Dependencies
+### Plugins - Your DSL Lives Here
 
-In addition to the provided [submodules](https://github.com/AnyDSL/MimIR/tree/master/external):
+Declare new types, operations, and normalizers in a single `.mim` file.
+The C++ side provides the heavy lifting (optimizations, lowering, codegen).
 
-- Recent version of [CMake](https://cmake.org/)
-- A C++20-compatible C++ compiler.
-- While Mim emits [LLVM](https://llvm.org/), it does _not_ link against LLVM.
+### SSA without Dominance (PLDI 2026)
 
-  Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
-  But technically, you don't need LLVM.
+Forget CFG dominance. MimIR uses free-variable nesting:
+
+- The **nesting tree** replaces the dominator tree
+- Precise data-flow dependencies even for higher-order code
+- Loop peeling/unrolling becomes simple β-reduction
+- Naturally supports mutual recursion and higher-order functions
+
+### Sea-of-Nodes with On-the-Fly Everything
+
+- Normalization, type checking, and partial evaluation happen **automatically** during graph construction
+- Everything is hash-consed and immutable where it matters
+
+## Naming: MimIR vs Mim
+
+**MimIR** is a recursive acronym for _**Mim**IR **is** my **I**ntermediate **R**epresentation_.
+
+In Norse mythology, [Mímir](https://en.wikipedia.org/wiki/M%C3%ADmir) was a being of immense wisdom. After he was beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to recite secret knowledge and counsel.
+
+Today, **you** have Mímir’s head at your fingertips.
+
+- **MimIR** refers to the core graph-based intermediate representation and its C++ API.
+- **Mim** is the friendly, high-level frontend language that compiles down to MimIR.
+
+In the entire codebase we consistently use `mim` / `MIM` for namespaces, macros, CMake variables, etc.
+If in doubt, just use **Mim**.
+
+## Community
+
+- **Discord** → [Join the chat](https://discord.gg/FPp7hdj3fQ)
+- **Documentation** → <https://anydsl.github.io/MimIR>
+- **Examples** → `examples/` and `lit` folder
+
+**Ready to build the next generation of DSL compilers?**
+
+Star the repo, join Discord, and let’s make high-performance DSLs easy.
+
+## License
+
+MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT).
 
 ## Publications
 
@@ -121,14 +140,3 @@ In addition to the provided [submodules](https://github.com/AnyDSL/MimIR/tree/ma
         <a href="https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex">BibTeX</a>
     </li>
 </ul>
-
-## MimIR vs Mim
-
-MimIR is a recursive acronym for _MimIR is my intermediate Representation_.
-[Mímir or Mim](https://en.wikipedia.org/wiki/M%C3%ADmir) is also a figure in Norse mythology, renowned for his knowledge and wisdom, who is beheaded during the &AElig;sir–Vanir War.
-Afterward, the god Odin carries around Mímir's head and it recites secret knowledge and counsel to him.
-Now, you have Mímir's head at your fingertips.
-
-We use the term **MimIR**, if we speak of the internal graph-based representation and its C++-API, and the term **Mim**, if we mean MimIR's frontend language.
-To keep things short and simple, all code consistently uses `mim` or `MIM` for namespaces, macro prefixes, etc.
-And if in doubt, just use **Mim**.
