@@ -31,16 +31,18 @@
     </tr>
 </table>
 
-**MimIR** is a pure, graph-based, higher-order intermediate representation rooted in the **Calculus of Constructions**. It gives you:
+**MimIR** is a pure, graph-based, higher-order intermediate representation rooted in the **Calculus of Constructions**.
+Terms, types, and type-level computations all live in the same program graph as ordinary expressions.
+MimIR provides:
 
-- **Dependent types**, **polymorphism**, and **higher-order functions** out of the box
-- **Extensible plugins** that add domain-specific axioms, types, normalizers, and codegen
-- **SSA without dominance** – the first IR that cleanly handles higher-order programs via free-variable nesting
-- **Sea-of-nodes** style with on-the-fly normalization, type checking, and partial evaluation
+- **Dependent types**, **parametric polymorphism**, and **higher-order functions** out of the box
+- **Extensible plugins** for domain-specific axioms, types, normalizers, and code generation
+- **SSA without dominance**: a scopeless IR for higher-order programs based on free-variable nesting
+- A **sea-of-nodes** style IR with on-the-fly normalization, type checking, and partial evaluation
 
-Perfect for DSL compilers, tensor compilers, automatic differentiation, regex engines, and anything that needs high-performance code from high-level abstractions.
+Well suited for DSL compilers, tensor compilers, automatic differentiation, regex engines, and other systems that need high-performance code from high-level abstractions.
 
-## Why MimIR?
+## 💡 Why MimIR?
 
 | Feature                                                                                                  | LLVM                    | MLIR                                | MimIR                                                                                                              |
 | -------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -53,9 +55,9 @@ Perfect for DSL compilers, tensor compilers, automatic differentiation, regex en
 | Structural foundation                                                                                    | CFG + dominance         | CFG/regions + dominance             | Free variables + nesting                                                                                           |
 | DSL embedding / semantics retention                                                                      | Low                     | High (dialects + lowering)          | High ([partial evaluation](https://en.wikipedia.org/wiki/Partial_evaluation), typed axioms, normalizers, lowering) |
 
-@note The table compares native IR-level support and representation, not what can be simulated via custom IR extensions, closure conversion, lowering, or external analyses.
+@note The table compares native IR-level support and representation, not what can be emulated via custom IR extensions, closure conversion, lowering, or external analyses.
 
-## Quick Start
+## 🚀 Quick Start
 
 ```sh
 git clone --recursive git@github.com:AnyDSL/MimIR.git
@@ -64,40 +66,41 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)
 ```
 
-### Install (optional)
+### 📦 Install (optional)
 
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix
-cmake --build build -j $(nproc) -t install
+cmake --build build -j$(nproc) -t install
 ```
 
-See the full [build options](@ref build_options) in the docs.
+See the full [🛠️ build options](@ref build_options) in the docs.
 
-## Key Innovations
+## 🔥 Key Innovations
 
-### Plugins - Your DSL Lives Here
+### 🧩 Plugins — Your DSL Lives Here
 
 Declare new types, operations, and normalizers in a single `.mim` file.
-The C++ side provides the heavy lifting (optimizations, lowering, codegen).
+C++ provides the heavy lifting: optimization, lowering, and code generation.
 
-### SSA without Dominance
+### 🌲 SSA without Dominance
 
-Forget CFG dominance. MimIR uses free-variable nesting:
+Forget CFG dominance.
+MimIR uses free-variable nesting:
 
 - The **nesting tree** replaces the dominator tree
-- Precise data-flow dependencies even for higher-order code
-- Loop peeling/unrolling becomes simple β-reduction
-- Naturally supports mutual recursion and higher-order functions
+- Data-flow dependencies remain precise, even for higher-order code
+- Loop peeling and unrolling reduce to simple β-reduction
+- Mutual recursion and higher-order functions are handled naturally
 
-### Sea-of-Nodes with On-the-Fly Everything
+### 🌊 Sea-of-Nodes with On-the-Fly Everything
 
-- The [**sweet spot**](@ref mut) between a fully mutable IR (easy construction) and a completely immutable one (safe sharing & hash-consing)
-  - Everything is hash-consed and immutable where it matters
-    - Normalization, type checking, and partial evaluation happen **automatically** during graph construction
-  - “Tie the knot” for variables and recursion through in-place mutation of binders
-- Even types are expressions and part of the program graph
+MimIR hits the [**sweet spot**](@ref mut) between a fully mutable IR, which is easy to construct, and a fully immutable IR, which enables safe sharing and hash-consing:
 
-## Naming: MimIR vs Mim
+- Non-binder expressions are immutable
+  - [Hash-consing](https://en.wikipedia.org/wiki/Hash_consing), normalization, type checking, and partial evaluation happen **automatically** during graph construction
+- Binders support variables and recursion by “tying the knot” through in-place mutation
+
+## 🐉 Naming: MimIR vs Mim
 
 **MimIR** is a recursive acronym for _MimIR is my Intermediate Representation_.
 
@@ -111,21 +114,21 @@ Today, **you** have Mímir’s head at your fingertips.
 In the entire codebase we consistently use `mim` / `MIM` for namespaces, macros, CMake variables, etc.
 If in doubt, just use **Mim**.
 
-## Community
+## 💬 Community
 
-- **Discord** → [Join the chat](https://discord.gg/FPp7hdj3fQ)
-- **Documentation** → <https://anydsl.github.io/MimIR>
-- **Examples** → `examples/` and `lit` folder
+- 💬 **Discord** → [Join the chat](https://discord.gg/FPp7hdj3fQ)
+- 📚 **Documentation** → <https://anydsl.github.io/MimIR>
+- 💻 **Examples** → [`examples/`](https://github.com/AnyDSL/MimIR/tree/master/examples) and [`lit/`](https://github.com/AnyDSL/MimIR/tree/master/lit)
 
 **Ready to build the next generation of DSL compilers?**
 
-Star the repo, join Discord, and let’s make high-performance DSLs easy.
+[⭐ Star MimIR on GitHub](https://github.com/AnyDSL/MimIR), join Discord, and let’s make high-performance DSLs easy.
 
-## License
+## ⚖️ License
 
 MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT).
 
-## Publications
+## 📖 Publications
 
 <ul>
     <li>
@@ -133,7 +136,7 @@ MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/m
         Roland Leißa, Johannes Griebler.<br>
         <em>Proceedings of the ACM on Programming Languages (PLDI), 2026</em>, 10(PLDI).<br>
         <a href="https://arxiv.org/abs/2604.09961">Preprint</a> ·
-        <a href="https://zenodo.org/records/19069679">Artifact</a> ·
+        <a href="https://zenodo.org/records/19069679">Artifact</a>
     </li>
     <li>
         <strong>MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age</strong><br>
