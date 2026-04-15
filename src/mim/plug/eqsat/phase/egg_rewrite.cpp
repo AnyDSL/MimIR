@@ -6,7 +6,7 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 
-const bool DEBUG = false;
+const bool DEBUG = true;
 
 namespace mim::plug::eqsat {
 
@@ -110,6 +110,9 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
         if (var.kind == MimKind::Var) {
             var_name = get_symbol(var.children[0]);
             var_type = convert(var.children[1], true);
+            // register_var(var_name, var_type);
+            // Recursively sets and registers sigma projections as vars via convert_var()
+            // if (var_type->isa<Sigma>()) convert(child, true);
         } else {
             var_name = "";
             var_type = convert(child, true);
@@ -124,23 +127,18 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     new_con->set(con_name_nouid);
     register_lam(con_name, new_con);
 
-    for (int i = 0; auto var_name : var_names) {
+    for (size_t i = 0; i < domain.children.size(); i++) {
+        auto var_name = var_names[i];
+        auto var_type = var_types[i];
         if (!var_name.empty()) {
-            // TODO: Does this cover all cases or do we also need the same check for Sigma?
-            // We needed this check specifically in case the only var of a lambda is an array
-            // because we would otherwise get the i'th projection of the array instead.
-            auto var            = var_types.size() == 1 && var_types[i]->isa<Arr>() ? new_con->var() : new_con->var(i);
+            auto var = domain.children.size() == 1 && var_type->isa<Arr>() ? new_con->var() : new_con->var(i);
             auto var_name_nouid = remove_uid(var_name);
             var->set(var_name_nouid);
-            if (!var_name.empty()) register_var(var_name, var);
+            register_var(var_name, var);
+            auto child = domain.children[i];
+            if (var_type->isa<Sigma>()) convert(child, true);
         }
-        i++;
     }
-
-    // We need another recursive call to convert() for each var to ensure (nested) var projections
-    // are set and registered inside of convert_var()
-    for (auto child : domain.children)
-        convert(child, true);
 
     if (DEBUG) std::cout << new_con << "\n";
     return new_con;

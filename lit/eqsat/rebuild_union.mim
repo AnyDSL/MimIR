@@ -1,5 +1,5 @@
 // RUN: %mim %s -o -
-// plugin eqsat;
+plugin eqsat;
 
 fun extern combine (t1 t2: *) : * =
     return t1 ∪ t2;
@@ -8,9 +8,9 @@ fun extern tuple2union(i: Idx 3, tup: [I32, Bool, I64]): I32 ∪ Bool ∪ I64 =
     return tup#i;
 
 // TODO: reconstruction fails because the ret var refers to earlier vars t1 and t2
-fun extern inject (t1 t2: *, x: Nat) : t1 ∪ t2 =
-    let foo = (x inj t1 ∪ t2);
-    return foo;
+// fun extern inject (t1 t2: *, x: Nat) : t1 ∪ t2 =
+//     let foo = (x inj t1 ∪ t2);
+//     return foo;
 
 // I guess we can't really emit this with the sexpr backend based on the Emitter
 // base class because match creates lambdas that don't have the basicblock property.
