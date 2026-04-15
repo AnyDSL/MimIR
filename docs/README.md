@@ -2,34 +2,13 @@
 
 [TOC]
 
-<table  class="markdownTable">
-    <tr class="markdownTableRowOdd">
-        <td>Support</td>
-        <td>
-            <a href=https://anydsl.github.io/MimIR><img src="https://img.shields.io/badge/docs-master-green?logo=gitbook&logoColor=white" alt="Documentation"></a>
-            <a href=https://discord.gg/FPp7hdj3fQ><img src="https://img.shields.io/discord/960975142459179068?color=green&logo=discord&logoColor=white" alt="Discord"></a>
-        </td>
-    </tr>
-    <tr class="markdownTableRowEven">
-        <td class="markdownTableBodyNone">
-            License
-        </td>
-        <td class="markdownTableBodyNone">
-            <a href="https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/MimIR?&color=yellowgreen&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5gQFFyMP+ejbyAAAAVRJREFUOMuNkk0rhGEUhq+jETaajSxEKdvJShayRUlZWbCYjZr/4N+oyVjLwkdWkoWl2ShSllKmZKGZuiwcenuHyV2nzsd9n+e5ex4YAHVb3R7EqfwhnAM6wFbWZ0A1Iu7L3CiIloEVYAG4BWaBpRxfAY9ADbgBziLisnyDSaAHbEREV60CTznbjYiOOgzsJbfPwhvwEhHdrN+BtUJOLn5Jbp/vQ/W8UFfV54xqoX+uHn7XQ9mcALrAtbqYp3WAC+Aic3J2DXRT87UA2AEOgH2gPuDV6sk5SM3PghXgNCIegCl17BeLY8BUck5Tw5C6CbwCNXUeaAMNdaQgHgEaQDs5NeBV3UQ9sh9ttaK2MirZK+MIdVxtqh9qTz1Rp/PkltrKfDpnveQ21fGix2F1tOT7Z0GhN5ofajDUdbWTsc5/oc6oq+pdwetd9mb+s+DYv3Fc5n8Cd+5Qbrzh2X0AAAAASUVORK5CYII=" alt="License"></a>
-        </td>
-    </tr>
-    <tr class="markdownTableRowEven">
-        <td class="markdownTableBodyNone">
-            Tests
-        </td>
-        <td class="markdownTableBodyNone">
-            <a href="https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?logo=linux&label=linux&logoColor=white&branch=master" alt="Linux"></a>
-            <a href="https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?logo=windows&label=windows&branch=master" alt="Windows"></a>
-            <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&label=macos&branch=master" alt="macOS"></a>
-            <a href="https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?logo=github&label=doxygen&branch=master" alt="Doxygen"></a>
-        </td>
-    </tr>
-</table>
+[![Documentation](https://img.shields.io/badge/Docs-master-green?logo=gitbook&logoColor=white)](https://anydsl.github.io/MimIR)
+[![Discord](https://img.shields.io/discord/960975142459179068?color=green&logo=discord&logoColor=white)](https://discord.gg/FPp7hdj3fQ)
+[![License](https://img.shields.io/github/license/anydsl/MimIR?color=yellowgreen&logo=opensourceinitiative&logoColor=white)](https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT)
+[![Linux](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?logo=linux&label=linux&logoColor=white&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml)
+[![Windows](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?label=⊞%20windows&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml)
+[![macOS](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&label=macos&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml)
+[![Doxygen](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?logo=gitbook&logoColor=white&label=doxygen&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml)
 
 **MimIR** is a pure, graph-based, higher-order intermediate representation rooted in the **Calculus of Constructions**.
 MimIR provides:
@@ -43,16 +22,16 @@ Well suited for DSL compilers, tensor compilers, automatic differentiation, rege
 
 ## 💡 Why MimIR?
 
-| Feature                                                                         | LLVM                         | MLIR                                 | MimIR                                                                                                                                                                                     |
-| ------------------------------------------------------------------------------- | ---------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)   | ❌                           | ⚠️ (regions only)                    | ✅ (first-class functions)                                                                                                                                                                |
-| [Parametric polymorphism](https://en.wikipedia.org/wiki/System_F)               | ❌                           | ❌                                   | ✅                                                                                                                                                                                        |
-| [Type-level abstraction](https://en.wikipedia.org/wiki/System_F#System_F%CF%89) | ❌                           | ❌                                   | ✅                                                                                                                                                                                        |
-| [Dependent types](https://en.wikipedia.org/wiki/Calculus_of_constructions)      | ❌                           | ❌                                   | ✅                                                                                                                                                                                        |
-| Semantic extensibility                                                          | ❌                           | 🔧 (dialect-specific C++ semantics)  | ✅ (typed axioms)                                                                                                                                                                         |
-| Program representation                                                          | CFG + <br> instruction lists | CFG/regions + <br> instruction lists | Arbitrary expressions <br> (direct style + [CPS](https://en.wikipedia.org/wiki/Continuation-passing_style))                                                                               |
-| Structural foundation                                                           | CFG + <br> dominance         | CFG/regions + <br> dominance         | Free variables + nesting                                                                                                                                                                  |
-| DSL embedding / <br> semantics retention                                        | ⬇️ Low                       | ➡️ Medium <br> (dialects, lowering)  | ⬆️ High <br> ([CC](https://en.wikipedia.org/wiki/Calculus_of_constructions), [partial evaluation](https://en.wikipedia.org/wiki/Partial_evaluation), typed axioms, normalizers, lowering) |
+| Feature                                                                         | LLVM                         | MLIR                                 | MimIR                                                                                                                                                                                |
+| ------------------------------------------------------------------------------- | ---------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)   | ❌                           | ⚠️ (regions only)                    | ✅ (first-class functions)                                                                                                                                                           |
+| [Parametric polymorphism](https://en.wikipedia.org/wiki/System_F)               | ❌                           | ❌                                   | ✅                                                                                                                                                                                   |
+| [Type-level abstraction](https://en.wikipedia.org/wiki/System_F#System_F%CF%89) | ❌                           | ❌                                   | ✅                                                                                                                                                                                   |
+| [Dependent types](https://en.wikipedia.org/wiki/Calculus_of_constructions)      | ❌                           | ❌                                   | ✅                                                                                                                                                                                   |
+| Semantic extensibility                                                          | ❌                           | 🔧 (dialect-specific C++ semantics)  | ✅ (typed axioms)                                                                                                                                                                    |
+| Program representation                                                          | CFG + <br> instruction lists | CFG/regions + <br> instruction lists | Arbitrary expressions <br> (direct style + [CPS](https://en.wikipedia.org/wiki/Continuation-passing_style))                                                                          |
+| Structural foundation                                                           | CFG + <br> dominance         | CFG/regions + <br> dominance         | Free variables + nesting                                                                                                                                                             |
+| DSL embedding / <br> semantics retention                                        | ⬇️ Low                       | ➡️ Medium <br> (dialects, lowering)  | ⬆️ High ([CC](https://en.wikipedia.org/wiki/Calculus_of_constructions), [partial evaluation](https://en.wikipedia.org/wiki/Partial_evaluation), typed axioms, normalizers, lowering) |
 
 @note The table compares native IR-level support and representation, not what can be emulated via custom IR extensions, closure conversion, lowering, or external analyses.
 
@@ -113,6 +92,7 @@ MimIR uses free-variable nesting:
 
   This is always correct.
   MimIR maintains free-variable information **lazily**, **locally**, and **transparently**: results are computed on demand, memoized, and invalidated only where needed.
+
 - Data dependencies remain precise, even for higher-order code
 - Loop peeling and unrolling reduce to simple β-reduction
 - Mutual recursion and higher-order functions are handled naturally
@@ -150,19 +130,23 @@ MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/m
 - **SSA without Dominance for Higher-Order Programs**<br>
   Roland Leißa, Johannes Griebler.<br>
   _Proceedings of the ACM on Programming Languages (PLDI), 2026_, 10(PLDI).<br>
-[![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2604.09961-blue?logo=arxiv)](https://doi.org/10.48550/arXiv.2604.09961)
-[![zenodo](https://img.shields.io/badge/-10.5281%2Fzenodo.19069678-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.19069678)
+  [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2604.09961-blue?logo=arxiv)](https://doi.org/10.48550/arXiv.2604.09961)
+  [![zenodo](https://img.shields.io/badge/-10.5281%2Fzenodo.19069678-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.19069678)
+  <br><br>
+
 - **MimIrADe: Automatic Differentiation in MimIR**<br>
   Marcel Ullrich, Sebastian Hack, Roland Leißa.<br>
   _Proceedings of the 34th ACM SIGPLAN International Conference on Compiler Construction (CC), 2025_, 70–80.<br>
-[![acm](https://img.shields.io/badge/acm-10.1145/3708493.3712685-blue?logo=acm)](https://dl.acm.org/doi/abs/10.1145/3708493.3712685)
-[![zenodo](https://img.shields.io/badge/-10.5281/zenodo.14681109-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.14681109)
-[![dblp](https://img.shields.io/badge/dblp-grey?logo=dblp)](https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex)
+  [![acm](https://img.shields.io/badge/acm-10.1145/3708493.3712685-blue?logo=acm)](https://dl.acm.org/doi/abs/10.1145/3708493.3712685)
+  [![zenodo](https://img.shields.io/badge/-10.5281/zenodo.14681109-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.14681109)
+  [![dblp](https://img.shields.io/badge/dblp-grey?logo=dblp)](https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex)
+  <br><br>
+
 - **MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age**<br>
   Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack.<br>
   _Proceedings of the ACM on Programming Languages (POPL), 2025_, 9(POPL), 95–125.<br>
-[![YouTube](https://img.shields.io/badge/YouTube-grey?logo=youtube)](https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R)
-[![acm](https://img.shields.io/badge/acm-10.1145/3704840-blue?logo=acm)](https://doi.org/10.1145/3704840)
-[![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2411.07443-blue?logo=arxiv)](https://doi.org/10.48550/arXiv.2411.07443)
-[![zenodo](https://img.shields.io/badge/-10.5281/zenodo.13952579-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.13952579)
-[![dblp](https://img.shields.io/badge/dblp-grey?logo=dblp)](https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex)
+  [![YouTube](https://img.shields.io/badge/YouTube-grey?logo=youtube)](https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R)
+  [![acm](https://img.shields.io/badge/acm-10.1145/3704840-blue?logo=acm)](https://doi.org/10.1145/3704840)
+  [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2411.07443-blue?logo=arxiv)](https://doi.org/10.48550/arXiv.2411.07443)
+  [![zenodo](https://img.shields.io/badge/-10.5281/zenodo.13952579-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.13952579)
+  [![dblp](https://img.shields.io/badge/dblp-grey?logo=dblp)](https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex)
