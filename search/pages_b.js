@@ -59,5 +59,5 @@ var searchData=
   ['module_56',['Module',['../langref.html#module',1,'']]],
   ['mslot_57',['%mem.mslot',['../mem.html#autotoc_md222',1,'']]],
   ['mul_58',['%core.wrap.mul',['../autodiff.html#autotoc_md96',1,'']]],
-  ['mutables_59',['Mutables',['../passes.html#autotoc_md66',1,'Creating Mutables'],['../dev.html#autotoc_md22',1,'Downcast for Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables']]]
+  ['mutables_59',['Mutables',['../passes.html#autotoc_md66',1,'Creating Mutables'],['../dev.html#autotoc_md22',1,'Downcast to Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables']]]
 ];

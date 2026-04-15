@@ -140,13 +140,13 @@ $(function(){initNavTree('coding.html','',''); });
         <a href="#autotoc_md6">Dumping </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md7">Display DOT </a>
+        <a href="#autotoc_md7">Displaying DOT Graphs </a>
       </li>
       <li class="level2">
         <a href="#autotoc_md8">Conditional Breakpoints </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md9">Catching Throw </a>
+        <a href="#autotoc_md9">Catching Exceptions </a>
       </li>
       <li class="level2">
         <a href="#autotoc_md10">Valgrind &amp; GDB </a>
@@ -157,10 +157,10 @@ $(function(){initNavTree('coding.html','',''); });
     <a href="#tests">Tests </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md11">lit Tests </a>
+        <a href="#autotoc_md11"><span class="tt">lit</span> Tests </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md12">Trigger Breakpoints over Command Line </a>
+        <a href="#autotoc_md12">Triggering Breakpoints from the Command Line </a>
       </li>
       <li class="level2">
         <a href="#autotoc_md13">GoogleTest </a>
@@ -177,18 +177,20 @@ $(function(){initNavTree('coding.html','',''); });
         <a href="#autotoc_md16">Third-Party Plugins </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md17">add_mim_plugin </a>
+        <a href="#autotoc_md17"><span class="tt">add_mim_plugin</span> </a>
       </li>
     </ul>
   </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2coding"></a></p>
-<p>This document comprises some information that is related to coding but not directly to the API.</p>
+<p>This page collects information that is useful while working on MimIR itself, but is not directly part of the API.</p>
 <h1 class="doxsection"><a class="anchor" id="build_options"></a>
 Build Options</h1>
-<p>If you don't have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account setup with SSH</a> you can also clone via HTTPS: </p><div class="fragment"><div class="line">git clone --recursive https://github.com/AnyDSL/MimIR.git</div>
-</div><!-- fragment --><table class="markdownTable">
+<p>If you do not have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account set up with SSH</a>, you can clone MimIR via HTTPS instead:</p>
+<div class="fragment"><div class="line">git clone --recursive https://github.com/AnyDSL/MimIR.git</div>
+</div><!-- fragment --><p>The following CMake switches are available:</p>
+<table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">CMake Switch  </th><th class="markdownTableHeadNone">Options  </th><th class="markdownTableHeadNone">Default  </th><th class="markdownTableHeadNone">Comment  </th></tr>
 <tr class="markdownTableRowOdd">
@@ -201,44 +203,43 @@ Build Options</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><span class="tt">MIM_BUILD_EXAMPLES</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">OFF</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, build the examples.  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="config_8h.html#a979b2da1f38b6abc74d13463cdd08a2b">MIM_ENABLE_CHECKS</a></span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, enables expensive runtime checks <br  />
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="config_8h.html#a979b2da1f38b6abc74d13463cdd08a2b">MIM_ENABLE_CHECKS</a></span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, enable expensive runtime checks <br  />
  (requires <span class="tt">CMAKE_BUILD_TYPE=Debug</span>).  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">BUILD_TESTING</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">OFF</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, build all unit and lit tests.  </td></tr>
+<td class="markdownTableBodyNone"><span class="tt">BUILD_TESTING</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">OFF</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, build all unit tests and <span class="tt">lit</span> tests.  </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">MIM_LIT_TIMEOUT</span>  </td><td class="markdownTableBodyNone"><span class="tt">&lt;timeout_in_sec&gt;</span>  </td><td class="markdownTableBodyNone"><span class="tt">20</span>  </td><td class="markdownTableBodyNone">Timeout for lit tests. <br  />
+<td class="markdownTableBodyNone"><span class="tt">MIM_LIT_TIMEOUT</span>  </td><td class="markdownTableBodyNone"><span class="tt">&lt;timeout_in_sec&gt;</span>  </td><td class="markdownTableBodyNone"><span class="tt">20</span>  </td><td class="markdownTableBodyNone">Timeout for <span class="tt">lit</span> tests. <br  />
  (requires <span class="tt">BUILD_TESTING=ON</span>).  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">MIM_LIT_WITH_VALGRIND</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">OFF</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, the Mim CLI in the lit tests will be run under valgrind. <br  />
+<td class="markdownTableBodyNone"><span class="tt">MIM_LIT_WITH_VALGRIND</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">OFF</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, run the Mim CLI in the <span class="tt">lit</span> tests under Valgrind. <br  />
  (requires <span class="tt">BUILD_TESTING=ON</span>).  </td></tr>
 </table>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
 Dependencies</h2>
-<p>In addition to the provided <a href="https://github.com/AnyDSL/MimIR/tree/master/external">submodules</a>:</p>
+<p>In addition to the provided <a href="https://github.com/AnyDSL/MimIR/tree/master/external">submodules</a>, you will need:</p>
 <ul>
-<li>Recent version of <a href="https://cmake.org/">CMake</a></li>
-<li>A C++20-compatible C++ compiler.</li>
-<li><p class="startli">While Mim emits <a href="https://llvm.org/">LLVM</a>, it does <em>not</em> link against LLVM.</p>
-<p class="startli">Simply toss the emitted <span class="tt">*.ll</span> file to your system's LLVM toolchain. But technically, you don't need LLVM.</p>
-</li>
+<li>a recent version of <a href="https://cmake.org/">CMake</a>,</li>
+<li>a C++20-compatible C++ compiler, and</li>
+<li>optionally <a href="https://llvm.org/">LLVM</a>.</li>
 </ul>
+<p>Mim emits LLVM IR, but it does <em>not</em> link against LLVM. So you can simply hand the emitted <span class="tt">*.ll</span> file to your system's LLVM toolchain. Strictly speaking, LLVM is not required unless you want to continue from emitted LLVM IR.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
 Coding Style</h1>
 <p>Use the following coding conventions:</p>
 <ul>
-<li>Class/Type names in <span class="tt">CamelCase</span>.</li>
-<li>Constants as defined in an <span class="tt">enum</span> or via <span class="tt">static const</span> in <span class="tt">Camel_Snake_Case</span>.</li>
-<li>Macro names in <span class="tt">SNAKE_IN_ALL_CAPS</span>.</li>
-<li>Everything else like variables, functions, etc. in <span class="tt">snake_case</span>.</li>
-<li>Use a trailing underscore suffix for a <span class="tt">private_or_protected_member_variable_</span>.</li>
+<li>Class/type names use <span class="tt">CamelCase</span>.</li>
+<li>Constants defined in an <span class="tt">enum</span> or via <span class="tt">static const</span> use <span class="tt">Camel_Snake_Case</span>.</li>
+<li>Macro names use <span class="tt">SNAKE_IN_ALL_CAPS</span>.</li>
+<li>Everything else - variables, functions, etc. - uses <span class="tt">snake_case</span>.</li>
+<li>Use a trailing underscore for <span class="tt">private_or_protected_member_variables_</span>.</li>
 <li>Methods/functions that return a <span class="tt">bool</span> should be prefixed with <span class="tt">is_</span>.</li>
 <li>Methods/functions that return a <span class="tt">std::optional</span> or a pointer that may be <span class="tt">nullptr</span> should be prefixed with <span class="tt">isa_</span>.</li>
-<li>Don't do that for a <span class="tt">public_member_variable</span>.</li>
+<li>Do <b>not</b> do this for a <span class="tt">public_member_variable</span>.</li>
 <li>Use <span class="tt">struct</span> for <a href="https://en.cppreference.com/w/cpp/named_req/PODType">plain old data</a>.</li>
 <li>Use <span class="tt">class</span> for everything else.</li>
 <li>Prefer <span class="tt">// C++-style comments</span> over <span class="tt">/* C-style comments */</span>.</li>
-<li>Use <span class="tt">#pragma once</span> as guard for headers.</li>
-<li>Visibility groups in this order:<ol type="1">
+<li>Use <span class="tt">#pragma once</span> as the include guard for headers.</li>
+<li>Order visibility groups like this:<ol type="1">
 <li><span class="tt">public</span></li>
 <li><span class="tt">protected</span></li>
 <li><span class="tt">private</span></li>
@@ -248,17 +249,18 @@ Coding Style</h1>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 Doxygen Style</h2>
 <ul>
-<li>Use <span class="tt">/// three slashes for Doxygen</span>.</li>
+<li>Use <span class="tt">///</span> for Doxygen comments.</li>
 <li>Use <a href="https://doxygen.nl/manual/markdown.html">Markdown-style</a> Doxygen comments.</li>
-<li>Group your functions etc. via <a href="https://www.doxygen.nl/manual/grouping.html#memgroup">named member groups</a> into logical units.</li>
+<li>Group related functions, methods, etc. via <a href="https://www.doxygen.nl/manual/grouping.html#memgroup">named member groups</a>.</li>
 <li>Capitalize the group name unless it is directly named after a method.</li>
 </ul>
-<p>For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <span class="tt">.clang-format</span> file in the root of the repository. In order to run <span class="tt">clang-format</span> automatically on all changed files, switch to the provided <a href="https://pre-commit.com/">pre-commit</a> hook:</p>
+<p>For all the smaller details such as indentation width, use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <span class="tt">.clang-format</span> file in the repository root.</p>
+<p>To run <span class="tt">clang-format</span> automatically on changed files, install the provided <a href="https://pre-commit.com/">pre-commit</a> hook:</p>
 <div class="fragment"><div class="line">pre-commit install</div>
-</div><!-- fragment --><p>Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
+</div><!-- fragment --><p>You can also <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a> when necessary. Depending on your editor, the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a> and similar plugins may also be useful.</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
 Example</h2>
-<p>Here is an example for a header that follows above conventions:</p>
+<p>Here is a small header that follows the conventions above:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#pragma once</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacemim.html">mim</a> {</div>
@@ -279,47 +281,52 @@ Example</h2>
 <div class="line"><span class="keyword">private</span>:</div>
 <div class="line">    <span class="keywordtype">int</span> foo_;</div>
 <div class="line">    <span class="keywordtype">int</span> bar_;</div>
-<div class="line">}</div>
+<div class="line">};</div>
 <div class="line"> </div>
 <div class="line">} <span class="comment">// namespace mim</span></div>
 <div class="ttc" id="anamespacemim_html"><div class="ttname"><a href="namespacemim.html">mim</a></div><div class="ttdef"><b>Definition</b> <a href="ast_8h_source.html#l00014">ast.h:14</a></div></div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
 Debugging</h1>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="cli.html#clidebug" title="Debugging Features">Command-Line Reference</a> </dd>
-<dd>
-<a href="https://johnnysswlab.com/gdb-a-quick-guide-to-make-your-debugging-easier/">GDB: A quick guide to make your debugging easier</a> </dd>
-<dd>
-<a href="https://interrupt.memfault.com/blog/advanced-gdb">Advanced GDB Usage</a> </dd>
-<dd>
-<a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/">Debugging with GDB</a></dd></dl>
+<p><b>See also:</b></p>
+<ul>
+<li><a class="el" href="cli.html#clidebug" title="Debugging Features">Command-Line Reference</a></li>
+<li><a href="https://johnnysswlab.com/gdb-a-quick-guide-to-make-your-debugging-easier/">GDB: A quick guide to make your debugging easier</a></li>
+<li><a href="https://interrupt.memfault.com/blog/advanced-gdb">Advanced GDB Usage</a></li>
+<li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/">Debugging with GDB</a></li>
+</ul>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
 Dumping</h2>
-<p>Note that you can simply invoke</p>
+<p>You can directly invoke several MimIR dump helpers from within GDB, for example:</p>
 <ul>
-<li><a class="el" href="classmim_1_1Def.html#a19ea1717cc86d4f2f5751f2d57b3f487">mim::Def::dump</a>,</li>
-<li><a class="el" href="classmim_1_1Def.html#abbd73d56c3fb9d78a28ca119ca2583fc">mim::Def::write</a>,</li>
-<li><a class="el" href="classmim_1_1World.html#ae302b97de79c9c2516e265df6fa5104f" title="Dump to os.">mim::World::dump</a>,</li>
-<li><a class="el" href="classmim_1_1World.html#aada6df5fabc3554f7dab128f1f6b3deb" title="Write to a file named file.">mim::World::write</a>, ...</li>
+<li><a class="el" href="classmim_1_1Def.html#a19ea1717cc86d4f2f5751f2d57b3f487" title="mim::Def::dump">mim::Def::dump</a>,</li>
+<li><a class="el" href="classmim_1_1Def.html#abbd73d56c3fb9d78a28ca119ca2583fc" title="mim::Def::write">mim::Def::write</a>,</li>
+<li><a class="el" href="classmim_1_1World.html#ae302b97de79c9c2516e265df6fa5104f" title="mim::World::dump">mim::World::dump</a>,</li>
+<li><a class="el" href="classmim_1_1World.html#aada6df5fabc3554f7dab128f1f6b3deb" title="mim::World::write">mim::World::write</a>, ...</li>
 </ul>
-<p>from within GDB:</p>
 <div class="fragment"><div class="line">(gdb) call def-&gt;dump()</div>
 <div class="line">(gdb) call def-&gt;dump(0)</div>
 <div class="line">(gdb) call def-&gt;dump(3)</div>
 <div class="line">(gdb) call world().write(&quot;out.mim&quot;)</div>
-</div><!-- fragment --><p>In particular, note the different output levels of <a class="el" href="classmim_1_1Def.html#a19ea1717cc86d4f2f5751f2d57b3f487">mim::Def::dump</a>. What is more, you can adjust the output behavior directly from within GDB by modifying <a class="el" href="classmim_1_1World.html#a84dc41b987937f59141de186c5a2975e" title="Retrieve compile Flags.">mim::World::flags</a> or <a class="el" href="classmim_1_1World.html#aed6fcb0dc74ef6d72a12b7441964d890">mim::World::log</a>:</p>
-<div class="fragment"><div class="line">(gdb) call world.flags().dump_gid = 1</div>
-<div class="line">(gdb) call world.flags().dump_recursive = 1</div>
+</div><!-- fragment --><p>In particular, note the different output levels of <a class="el" href="classmim_1_1Def.html#a19ea1717cc86d4f2f5751f2d57b3f487" title="mim::Def::dump">mim::Def::dump</a>.</p>
+<p>You can also tweak the output behavior directly from within GDB by changing <a class="el" href="classmim_1_1World.html#a84dc41b987937f59141de186c5a2975e" title="mim::World::flags">mim::World::flags</a> or <a class="el" href="classmim_1_1World.html#aed6fcb0dc74ef6d72a12b7441964d890" title="mim::World::log">mim::World::log</a>:</p>
+<div class="fragment"><div class="line">(gdb) call world().flags().dump_gid = 1</div>
+<div class="line">(gdb) call world().flags().dump_recursive = 1</div>
 <div class="line">(gdb) call world().log().max_level_ = 4</div>
-</div><!-- fragment --><p>Another useful feature is to retrieve a <span class="tt">Def*</span> from a <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> via <a class="el" href="classmim_1_1World.html#a8166ab5122fb1a299072eac68286b3a8" title="Lookup Def by gid.">mim::World::gid2def</a>:</p>
-<div class="fragment"><div class="line">(gdb) p world.gid2def(123);</div>
+</div><!-- fragment --><p>Another useful trick is to recover a <span class="tt">Def*</span> from a <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="mim::Def::gid">mim::Def::gid</a> via <a class="el" href="classmim_1_1World.html#a8166ab5122fb1a299072eac68286b3a8" title="mim::World::gid2def">mim::World::gid2def</a>:</p>
+<div class="fragment"><div class="line">(gdb) p world().gid2def(123)</div>
 <div class="line">$1 = ...</div>
-<div class="line">(gdb) $1-&gt;dump();</div>
+<div class="line">(gdb) call $1-&gt;dump()</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
-Display DOT</h2>
-<p><span class="tt">scripts/xdot.gdb</span> provides custom GDB commands to create a <a href="https://graphviz.org/">DOT</a> graph and display it through <a href="https://github.com/jrfonseca/xdot.py">xdot</a>. Just source <span class="tt">scripts/xdot.gdb</span> in your <span class="tt">~/.gdbinit</span>:</p>
+Displaying DOT Graphs</h2>
+<p><span class="tt">scripts/xdot.gdb</span> provides custom GDB commands to generate a <a href="https://graphviz.org/">DOT</a> graph and display it with <a href="https://github.com/jrfonseca/xdot.py">xdot</a>.</p>
+<p>To enable it, source <span class="tt">scripts/xdot.gdb</span> from your <span class="tt">~/.gdbinit</span>:</p>
 <div class="fragment"><div class="line">source ~/mim/scripts/xdot.gdb</div>
-</div><!-- fragment --><p>Here is the <span class="tt">xdot</span> GDB command in action: <img src="gdb-xdot.png" alt="" class="inline" title="cgdb session using xdot"/>    </p>
-<div class="fragment"><div class="line">xdot</div>
+</div><!-- fragment --><p>Here is the <span class="tt">xdot</span> GDB command in action:</p>
+<div class="image">
+<img src="gdb-xdot.png" alt=""/>
+<div class="caption">
+cgdb session using xdot</div></div>
+    <div class="fragment"><div class="line">xdot</div>
 <div class="line">Generates DOT output for the given EXP and invokes xdot.</div>
 <div class="line"> </div>
 <div class="line">Usage: xdot EXP [MAX] [TYPES]</div>
@@ -373,59 +380,62 @@ Display DOT</h2>
 <div class="line">xdotw &amp;def-&gt;world() 1 1</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
 Conditional Breakpoints</h2>
-<p>Often, you will want to inspect a certain <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">mim::Def</a> at a particular point within the program. You can use <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">conditional breakpoints</a> for this. For example, the following GDB command will break, if the <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> of variable <span class="tt">def</span> is <span class="tt">42</span> in source code location <span class="tt">foo.cpp:23</span>:</p>
+<p>Often, you will want to inspect a specific <a class="el" href="classmim_1_1Def.html" title="mim::Def">mim::Def</a> at a particular point in the program. <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">Conditional breakpoints</a> are very handy for this.</p>
+<p>For example, the following command breaks if the <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="mim::Def::gid">mim::Def::gid</a> of variable <span class="tt">def</span> is <span class="tt">42</span> at source location <span class="tt">foo.cpp:23</span>:</p>
 <div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 42</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
-Catching Throw</h2>
-<p>For several things like errors in the Mim frontend, MimIR relies on C++ exceptions for error handling. Do this to encounter them within GDB:</p>
+Catching Exceptions</h2>
+<p>For several things, such as errors in the Mim frontend, MimIR uses C++ exceptions for error handling. To stop when an exception is thrown, use:</p>
 <div class="fragment"><div class="line">catch throw</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
 Valgrind &amp; GDB</h2>
-<p>If you encounter memory related problems, you might want to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>. Launch the program like this</p>
+<p>If you run into memory-related problems, it can be useful to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>.</p>
+<p>Launch the program like this:</p>
 <div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 mim-gtest</div>
-</div><!-- fragment --><p>and follow the instructions.</p>
+</div><!-- fragment --><p>and then follow the instructions printed by Valgrind.</p>
 <h1 class="doxsection"><a class="anchor" id="tests"></a>
 Tests</h1>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
-lit Tests</h2>
-<p>Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> testsuite with:</p>
+<span class="tt">lit</span> Tests</h2>
+<p>Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> test suite with:</p>
 <div class="fragment"><div class="line">cmake --build build -t lit</div>
-</div><!-- fragment --><p>You can manually invoke the lit tests like this and maybe filter for a specific test:</p>
+</div><!-- fragment --><p>You can also invoke the <span class="tt">lit</span> tests manually and filter for a specific test:</p>
 <div class="fragment"><div class="line">cd lit</div>
 <div class="line">./lit ../build/lit -a --filter foo.mim</div>
-</div><!-- fragment --><p>If your <em>build</em> directory, is in fact <span class="tt">build</span> you can use the <span class="tt">probe.sh</span> script:</p>
+</div><!-- fragment --><p>If your build directory is actually called <span class="tt">build</span>, you can also use <span class="tt">probe.sh</span>:</p>
 <div class="fragment"><div class="line">cd lit</div>
 <div class="line">../scripts/probe.sh foo.mim</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
-Trigger Breakpoints over Command Line</h2>
-<p>You can directly instruct <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> to trigger a breakpoint, if certain events happen:</p>
-<div class="fragment"><div class="line">mim test.mim -b 1234            # Trigger a breakpoint if node with gid 1234 is created.</div>
-<div class="line">mim test.mim -w 1234            # Trigger a breakpoint if node with gid 1234 sets one of its operands.</div>
-<div class="line">mim test.mim --break-on-alpha   # Trigger a breakpoint if a check for alpha-equivalence fails.</div>
-</div><!-- fragment --><p>See <a class="el" href="cli.html" title="Command-Line Reference">Command-Line Reference</a> for all flags.</p>
+Triggering Breakpoints from the Command Line</h2>
+<p>You can tell <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> to trigger a breakpoint when certain events happen:</p>
+<div class="fragment"><div class="line">mim test.mim -b 1234            # Break if the node with gid 1234 is created.</div>
+<div class="line">mim test.mim -w 1234            # Break if the node with gid 1234 sets one of its operands.</div>
+<div class="line">mim test.mim --break-on-alpha   # Break if a check for alpha-equivalence fails.</div>
+</div><!-- fragment --><p>See the <a class="el" href="cli.html" title="Command-Line Reference">Command-Line Reference</a> for the full list of flags.</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
 GoogleTest</h2>
-<p>Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests within the <span class="tt">build</span> folder with:</p>
+<p>Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests from the <span class="tt">build</span> directory with:</p>
 <div class="fragment"><div class="line">ctest</div>
-</div><!-- fragment --><p>In addition, you can enable <a href="https://valgrind.org/">Valgrind</a> with:</p>
+</div><!-- fragment --><p>You can additionally enable <a href="https://valgrind.org/">Valgrind</a> via:</p>
 <div class="fragment"><div class="line">ctest -T memcheck</div>
-</div><!-- fragment --><p>During debugging you probably only want to run a specifig test case. You can <a href="https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests">filter</a> the test cases like this:</p>
+</div><!-- fragment --><p>During debugging, you will usually want to run only a specific test case. You can <a href="https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests">filter</a> tests like this:</p>
 <div class="fragment"><div class="line">./mim-gtest --gtest_filter=&quot;*Loc*&quot;</div>
 </div><!-- fragment --><p>This command lists all available tests:</p>
 <div class="fragment"><div class="line">./mim-gtest --gtest_list_tests</div>
-</div><!-- fragment --><p>In addition, you may find it helpful to turn assertion failures into debugger breakpoints:</p>
-<div class="fragment"><div class="line">./mim-test --gtest_break_on_failure</div>
+</div><!-- fragment --><p>It can also be useful to turn assertion failures into debugger breakpoints:</p>
+<div class="fragment"><div class="line">./mim-gtest --gtest_break_on_failure</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
 Syntax Highlighting</h1>
 <p><a href="https://github.com/AnyDSL/vim-mim">This</a> Vim plugin provides syntax highlighting for Mim files.</p>
-<p>There is also a <a href="https://gitlab.com/amaeble/tree-sitter-mim">tree-sitter grammar</a> for Mim files and a <a href="https://github.com/amaebel/helix">helix fork</a> with highlight and injection queries.</p>
+<p>There is also a <a href="https://gitlab.com/amaeble/tree-sitter-mim">tree-sitter grammar</a> for Mim files and a <a href="https://github.com/amaebel/helix">Helix fork</a> with highlight and injection queries.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
 New Plugins</h1>
-<p>Check out the <a class="el" href="demo.html" title="The demo Plugin">demo</a> plugin for a minimalistic plugin. You can create a new in-tree plugin <span class="tt">foobar</span> based upon the <a class="el" href="demo.html" title="The demo Plugin">demo</a> plugin like this:</p>
+<p>Check out the <a class="el" href="demo.html" title="The demo Plugin">demo</a> plugin for a minimal example.</p>
+<p>You can create a new in-tree plugin <span class="tt">foobar</span> based on the <a class="el" href="demo.html" title="The demo Plugin">demo</a> plugin like this:</p>
 <div class="fragment"><div class="line">./scripts/new_plugin.sh foobar</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
 Third-Party Plugins</h2>
-<p>After installing MimIR, third-party plugins just need to find the <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> package to use your plugin <span class="tt">foo</span>:</p>
+<p>After installing MimIR, a third-party plugin only needs to find the <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> package. For example, to build a plugin called <span class="tt">foo</span>:</p>
 <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20 FATAL_ERROR)</div>
 <div class="line">project(foo)</div>
 <div class="line"> </div>
@@ -436,43 +446,43 @@ Third-Party Plugins</h2>
 <div class="line">        mim/plug/foo/foo.h</div>
 <div class="line">        mim/plug/foo/foo.cpp</div>
 <div class="line">)</div>
-</div><!-- fragment --><p>Use</p>
+</div><!-- fragment --><p>Configure the project with:</p>
 <div class="fragment"><div class="line">cmake .. -Dmim_DIR=&lt;MIM_INSTALL_PREFIX&gt;/lib/cmake/mim</div>
-</div><!-- fragment --><p>to configure the project.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
-add_mim_plugin</h2>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
+<span class="tt">add_mim_plugin</span></h2>
 <p>Registers a new MimIR plugin.</p>
 <div class="fragment"><div class="line">add_mim_plugin(&lt;plugin-name&gt;</div>
 <div class="line">    [SOURCES &lt;source&gt;...]</div>
 <div class="line">    [PRIVATE &lt;private-item&gt;...]</div>
 <div class="line">    [INSTALL])</div>
-</div><!-- fragment --><p>The <span class="tt">&lt;plugin-name&gt;</span> is the name of the plugin. This means, there should be relative to the plugin's <span class="tt">CMakeLists.txt</span> a file <span class="tt">&lt;plugin-name&gt;.<a class="el" href="namespacemim.html">mim</a></span> containing annexes. The command will create two targets:</p>
+</div><!-- fragment --><p><span class="tt">&lt;plugin-name&gt;</span> is the name of the plugin. Relative to the plugin's <span class="tt">CMakeLists.txt</span>, there should be a file <span class="tt">&lt;plugin-name&gt;.<a class="el" href="namespacemim.html">mim</a></span> containing the plugin's annexes.</p>
+<p>The command creates two targets:</p>
 <ol type="1">
 <li><p class="startli"><span class="tt">mim_internal_&lt;plugin-name&gt;</span></p>
-<p class="startli">This is an internal target to bootstrap the plugin. It will generate:</p><ul>
-<li><span class="tt">&lt;plugin-name&gt;/autogen.h</span> for the C++ interface in order to identify annexes,</li>
+<p class="startli">This is an internal target used to bootstrap the plugin. It generates:</p><ul>
+<li><span class="tt">&lt;plugin-name&gt;/autogen.h</span> for the C++ interface used to identify annexes,</li>
 <li><span class="tt">&lt;plugin-name&gt;.md</span> for the documentation, and</li>
-<li><span class="tt">&lt;plugin-name&gt;.d</span> for the plugin's dependencies. <dl class="section note"><dt>Note</dt><dd>Tracking dependencies via the emitted dependency file is not supported for all CMake generators. See <a href="https://cmake.org/cmake/help/latest/command/add_custom_command.html"><span class="tt">add_custom_command</span>'s <span class="tt">DEPFILE</span> argument</a>.</dd></dl>
-</li>
+<li><span class="tt">&lt;plugin-name&gt;.d</span> for the plugin's dependencies.</li>
 </ul>
+<dl class="section note"><dt>Note</dt><dd>Tracking dependencies via the emitted dependency file is not supported by all CMake generators. See <a href="https://cmake.org/cmake/help/latest/command/add_custom_command.html"><span class="tt">add_custom_command</span>'s <span class="tt">DEPFILE</span> argument</a>.</dd></dl>
 </li>
 <li><p class="startli"><span class="tt">mim_&lt;plugin-name&gt;</span></p>
 <p class="startli">This is the actual <span class="tt">MODULE</span> <a href="https://cmake.org/cmake/help/latest/command/add_library.html">library</a>.</p><ul>
 <li><p class="startli"><span class="tt">SOURCES</span></p>
-<p class="startli">These are the <span class="tt">&lt;source&gt;</span> files used to build the loadable plugin containing normalizers, passes, and backends. One of the source files must export the <a class="el" href="namespacemim.html#a77f34c28f8418e4828b4684cbc025e52" title="mim::mim_get_plugin"><span class="tt">mim_get_plugin</span></a> function.</p>
+<p class="startli">These are the <span class="tt">&lt;source&gt;</span> files used to build the loadable plugin containing normalizers, passes, and backends. One of the source files must export <a class="el" href="namespacemim.html#a77f34c28f8418e4828b4684cbc025e52" title="mim::mim_get_plugin"><span class="tt">mim_get_plugin</span></a>.</p>
 </li>
 <li><p class="startli"><span class="tt">PRIVATE</span></p>
-<p class="startli">Furthermore, you can specify additional <span class="tt">&lt;private-item&gt;</span> build dependencies.</p>
+<p class="startli">These are additional private build dependencies.</p>
 </li>
 </ul>
 </li>
 </ol>
 <ul>
 <li><p class="startli"><span class="tt">INSTALL</span></p>
-<p class="startli">Specify, if the plugin description, plugin and headers shall be installed with <span class="tt">make install</span>. To export the targets, the export name <span class="tt">mim-targets</span> has to be exported accordingly (see <a href="https://cmake.org/cmake/help/latest/command/install.html#export"><span class="tt">install(EXPORT ..)</span></a>)</p>
+<p class="startli">Specify this if the plugin description, plugin, and headers should be installed via <span class="tt">make install</span>. To export the targets, the export name <span class="tt">mim-targets</span> must be exported accordingly; see <a href="https://cmake.org/cmake/help/latest/command/install.html#export"><span class="tt">install(EXPORT ...)</span></a>.</p>
 </li>
 </ul>
-<p>You can specify additional properties in the plugin's <span class="tt">CMakeLists.txt</span>. For example, the following snippet adds additional include paths for the <span class="tt">MODULE</span> <span class="tt">mim_&lt;plugin-name&gt;</span> target:</p>
+<p>You can specify additional target properties in the plugin's <span class="tt">CMakeLists.txt</span>. For example, the following snippet adds additional include paths to the <span class="tt">MODULE</span> target <span class="tt">mim_&lt;plugin-name&gt;</span>:</p>
 <div class="fragment"><div class="line">target_include_directories(mim_&lt;plugin-name&gt; &lt;path&gt;...)</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->

@@ -7,7 +7,8 @@ var searchData=
   ['equiv_4',['%refly.equiv',['../refly.html#autotoc_md259',1,'']]],
   ['er_5',['%math.er',['../math.html#autotoc_md181',1,'']]],
   ['example_6',['Example',['../coding.html#autotoc_md4',1,'']]],
-  ['exp_7',['%math.exp',['../math.html#autotoc_md180',1,'']]],
-  ['expressions_8',['Expressions',['../langref.html#expr',1,'Expressions'],['../langref.html#autotoc_md51',1,'Expressions']]],
-  ['extrema_9',['extrema',['../core.html#autotoc_md126',1,'%core.extrema'],['../math.html#autotoc_md176',1,'%math.extrema']]]
+  ['exceptions_7',['Catching Exceptions',['../coding.html#autotoc_md9',1,'']]],
+  ['exp_8',['%math.exp',['../math.html#autotoc_md180',1,'']]],
+  ['expressions_9',['Expressions',['../langref.html#expr',1,'Expressions'],['../langref.html#autotoc_md51',1,'Expressions']]],
+  ['extrema_10',['extrema',['../core.html#autotoc_md126',1,'%core.extrema'],['../math.html#autotoc_md176',1,'%math.extrema']]]
 ];

@@ -12,7 +12,7 @@ var searchData=
   ['add_5fmem_2ecpp_9',['add_mem.cpp',['../add__mem_8cpp.html',1,'']]],
   ['add_5fmem_2eh_10',['add_mem.h',['../add__mem_8h.html',1,'']]],
   ['add_5fmem_5fphase_11',['add_mem_phase',['../namespacemim_1_1plug_1_1mem.html#a1890f866b3c4a93c26c295f76b7c507b',1,'mim::plug::mem']]],
-  ['add_5fmim_5fplugin_12',['add_mim_plugin',['../coding.html#autotoc_md17',1,'']]],
+  ['add_5fmim_5fplugin_12',['&lt;span class=&quot;tt&quot;&gt;add_mim_plugin&lt;/span&gt;',['../coding.html#autotoc_md17',1,'']]],
   ['add_5fret_13',['add_ret',['../classmim_1_1ast_1_1PiExpr_1_1Dom.html#afb586c305568594703cd48875d8f9b0a',1,'mim::ast::PiExpr::Dom']]],
   ['add_5fsearch_5fpath_14',['add_search_path',['../classmim_1_1Driver.html#a22e91be0c9317382a408550a00200777',1,'mim::Driver']]],
   ['add_5fstate_15',['add_state',['../classautomaton_1_1AutomatonBase.html#a27a58ecd31ac562612a9de83a4d3e92b',1,'automaton::AutomatonBase']]],

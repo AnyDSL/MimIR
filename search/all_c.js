@@ -197,7 +197,7 @@ var searchData=
   ['mut_5frule_194',['mut_rule',['../classmim_1_1World.html#a59458c1ac063a84e25f19fe7e4c46fac',1,'mim::World']]],
   ['mut_5fseq_195',['mut_seq',['../classmim_1_1World.html#a8b9e4db84d00c784e9c574454c9a1cb0',1,'mim::World']]],
   ['mut_5fsigma_196',['mut_sigma',['../classmim_1_1World.html#ae54352dda91fcfd8412ce37e0a3ba624',1,'mim::World::mut_sigma(const Def *type, size_t size)'],['../classmim_1_1World.html#ab98632ddaa3d773e7626b46d673eeb2b',1,'mim::World::mut_sigma(size_t size)']]],
-  ['mutables_197',['Mutables',['../passes.html#autotoc_md66',1,'Creating Mutables'],['../dev.html#autotoc_md22',1,'Downcast for Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables']]],
+  ['mutables_197',['Mutables',['../passes.html#autotoc_md66',1,'Creating Mutables'],['../dev.html#autotoc_md22',1,'Downcast to Mutables'],['../dev.html#mut',1,'Immutables vs. Mutables']]],
   ['mutate_198',['mutate',['../classmim_1_1World_1_1Externals.html#a12a56ab6829109dd40a05457df85eaa7',1,'mim::World::Externals']]],
   ['mutmap_199',['MutMap',['../namespacemim.html#afccd5f832a8d98e22ada5860ea24afd2',1,'mim']]],
   ['muts_200',['Muts',['../namespacemim.html#a808d4cab01734432fc4218de6dae0ef2',1,'mim']]],

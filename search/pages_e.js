@@ -26,7 +26,7 @@ var searchData=
   ['product_23',['product',['../matrix.html#autotoc_md205',1,'']]],
   ['program_24',['Iterating over the Program',['../dev.html#autotoc_md34',1,'']]],
   ['programs_25',['Construct Valid Programs',['../passes.html#autotoc_md65',1,'']]],
-  ['proj_26',['Proj',['../dev.html#autotoc_md30',1,'']]],
+  ['projs_26',['Projs',['../dev.html#autotoc_md30',1,'']]],
   ['proxy_27',['Proxy',['../passes.html#autotoc_md61',1,'']]],
   ['ptr_28',['%mem.Ptr',['../mem.html#autotoc_md213',1,'']]],
   ['publications_29',['📖 Publications',['../index.html#autotoc_md78',1,'']]]
