@@ -6,7 +6,7 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 
-const bool DEBUG = true;
+const bool DEBUG = false;
 
 namespace mim::plug::eqsat {
 
@@ -103,19 +103,28 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     DefVec var_types;
     std::vector<std::string> var_names;
     auto domain = get_node(MimKind::Sigma, node.children[2]);
-    for (auto child : domain.children) {
-        auto var = get_node_unsafe(child);
+    for (auto var_id : domain.children) {
+        auto var = get_node_unsafe(var_id);
         std::string var_name;
         const Def* var_type;
         if (var.kind == MimKind::Var) {
             var_name = get_symbol(var.children[0]);
             var_type = convert(var.children[1], true);
-            // register_var(var_name, var_type);
-            // Recursively sets and registers sigma projections as vars via convert_var()
-            // if (var_type->isa<Sigma>()) convert(child, true);
+            // The reason we already register the type Def of the variable here, is to allow for lambda
+            // signatures that contain recursive definitions. Consider for example:
+            //
+            // fun extern foo (t1 t2: *, x: Nat): t1 ∪ t2 = ...
+            //
+            // As we can see, the return variable of this lambda already depends on the variables t1 and
+            // t2. Therefore, to construct the var_type of the return variable, t1 and t2 need to already
+            // exist and be referenceable which is why we register them here.
+            register_var(var_name, var_type);
+            // We also recursively set and register named sigma projections via convert_var().
+            // Note that certain Sigmas like for ex. [t1: *, t2: *] are internally modeled as Arr <<2; *>>.
+            if (var_type->isa<Sigma>() || var_type->isa<Arr>()) register_projs(var_id);
         } else {
             var_name = "";
-            var_type = convert(child, true);
+            var_type = convert(var_id, true);
         }
         var_names.push_back(var_name);
         var_types.push_back(var_type);
@@ -128,6 +137,7 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     register_lam(con_name, new_con);
 
     for (size_t i = 0; i < domain.children.size(); i++) {
+        auto var_id   = domain.children[i];
         auto var_name = var_names[i];
         auto var_type = var_types[i];
         if (!var_name.empty()) {
@@ -135,8 +145,7 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
             auto var_name_nouid = remove_uid(var_name);
             var->set(var_name_nouid);
             register_var(var_name, var);
-            auto child = domain.children[i];
-            if (var_type->isa<Sigma>()) convert(child, true);
+            if (var_type->isa<Sigma>() || var_type->isa<Arr>()) register_projs(var_id);
         }
     }
 
@@ -233,25 +242,22 @@ const Def* EggRewrite::convert_let(uint32_t id, MimNode node) {
 }
 
 // TODO: implement
-// (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
+// (lam <extern> <name> <domain> <codomain> [<filter> <body>])
 const Def* EggRewrite::convert_lam(uint32_t id, MimNode node) { return nullptr; }
 
-// (con <extern> <name> <domain> [<filter>] [<body>])
+// (con <extern> <name> <domain> [<filter> <body>])
 const Def* EggRewrite::convert_con(uint32_t id, MimNode node) {
-    const int CON_DECL_SIZE = 3;
-    const int CON_DEF_SIZE  = 5;
-
     auto con = get_def(node.children[1])->as_mut<Lam>();
 
     auto is_extern = get_symbol(node.children[0]);
     if (is_extern == "extern") con->externalize();
 
-    if (node.children.size() == CON_DEF_SIZE) {
+    if (node.children.size() == 5) {
         auto filter = get_def(node.children[3]);
         auto body   = get_def(node.children[4]);
         con->set_filter(filter);
         con->set_body(body);
-    } else if (node.children.size() == CON_DECL_SIZE)
+    } else
         con->set_filter(false);
 
     return con;

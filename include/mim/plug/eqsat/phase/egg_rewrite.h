@@ -33,8 +33,8 @@ public:
 private:
     void register_symbols() {
         for (auto [flags, annex] : old_world().flags2annex()) {
-            auto new_annex                   = new_world().register_annex(flags, rewrite(annex));
-            sym2axm_[new_annex->sym().str()] = new_annex;
+            auto new_annex                = new_world().register_annex(flags, rewrite(annex));
+            axms_[new_annex->sym().str()] = new_annex;
         }
 
         sym2def_["Univ"] = new_world().univ();
@@ -105,7 +105,7 @@ private:
             auto sym = get_symbol(id);
             if (sym2def_.contains(sym))
                 def = sym2def_[sym];
-            else if (sym2axm_.contains(sym))
+            else if (axms_.contains(sym))
                 def = get_axm(sym);
             else if (vars_.contains(sym))
                 def = get_var(sym);
@@ -116,10 +116,17 @@ private:
     }
 
     void register_var(std::string name, const Def* converted) { vars_[name] = converted; }
+    void register_axm(std::string name, const Axm* converted) { axms_[name] = converted; }
     void register_lam(std::string name, const Lam* converted) { lams_[name] = converted; }
-    void register_axm(std::string name, const Axm* converted) { sym2axm_[name] = converted; }
-    const Def* get_axm(std::string name) { return sym2axm_[name]; }
+    void register_projs(uint32_t id) {
+        auto node = get_node_unsafe(id);
+        for (uint32_t child : node.children)
+            register_projs(child);
+        if (node.kind == MimKind::Var) convert_var(id, node);
+    }
+
     const Def* get_var(std::string name) { return vars_[name]; }
+    const Def* get_axm(std::string name) { return axms_[name]; }
     const Lam* get_lam(std::string name) { return lams_[name]; }
 
     MimNode get_node(MimKind expected, uint32_t id) {
@@ -143,7 +150,7 @@ private:
     std::unordered_map<uint32_t, const Def*> added_;
     std::unordered_map<std::string, const Def*> vars_;
     std::unordered_map<std::string, const Lam*> lams_;
-    std::unordered_map<std::string, const Def*> sym2axm_;
+    std::unordered_map<std::string, const Def*> axms_;
     std::unordered_map<std::string, const Def*> sym2def_;
 };
 
