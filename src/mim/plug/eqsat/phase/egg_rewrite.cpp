@@ -273,23 +273,7 @@ const Def* EggRewrite::convert_app(uint32_t id, MimNode node) {
 
 // (var <name> <type>)
 const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
-    auto var      = get_def(node.children[0]);
-    auto var_type = get_node_unsafe(node.children[1]);
-
-    if (var && var_type.kind == MimKind::Sigma) {
-        for (nat_t i = 0; uint32_t sigma_child_id : var_type.children) {
-            auto sigma_child = get_node_unsafe(sigma_child_id);
-            if (sigma_child.kind == MimKind::Var) {
-                auto proj_name       = get_symbol(sigma_child.children[0]);
-                auto proj_name_nouid = remove_uid(proj_name);
-                auto sigma_proj      = var->proj(i);
-                sigma_proj->set(proj_name_nouid);
-                register_var(proj_name, sigma_proj);
-            }
-            i++;
-        }
-    }
-
+    auto var = get_def(node.children[0]);
     return var;
 }
 

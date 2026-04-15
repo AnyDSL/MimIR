@@ -122,7 +122,23 @@ private:
         auto node = get_node_unsafe(id);
         for (uint32_t child : node.children)
             register_projs(child);
-        if (node.kind == MimKind::Var) convert_var(id, node);
+        if (node.kind == MimKind::Var) {
+            auto var      = get_def(node.children[0]);
+            auto var_type = get_node_unsafe(node.children[1]);
+            if (var && var_type.kind == MimKind::Sigma) {
+                for (size_t i = 0; i < var_type.children.size(); i++) {
+                    auto sigma_child_id = var_type.children[i];
+                    auto sigma_child    = get_node_unsafe(sigma_child_id);
+                    if (sigma_child.kind == MimKind::Var) {
+                        auto proj_name       = get_symbol(sigma_child.children[0]);
+                        auto proj_name_nouid = remove_uid(proj_name);
+                        auto sigma_proj      = var->proj(i);
+                        sigma_proj->set(proj_name_nouid);
+                        register_var(proj_name, sigma_proj);
+                    }
+                }
+            }
+        }
     }
 
     const Def* get_var(std::string name) { return vars_[name]; }
