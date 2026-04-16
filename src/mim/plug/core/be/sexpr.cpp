@@ -175,19 +175,10 @@ void Emitter::emit_imported(Lam* lam) {
     auto bb = BB();
 
     const std::string ext = lam->is_external() ? "extern" : "intern";
-
     // We assume that the lambda will be a continuation since imports
     // only exist via cfun and ccon which are both internally modelled as con
     print(func_decls_, "(con {} {}", ext, id(lam));
-
-    ++tab;
-    tab.lnprint(func_decls_, "(sigma");
-    ++tab;
-    for (auto dom : lam->doms())
-        tab.lnprint(func_decls_, "{}", emit_type(bb, dom));
-    print(func_decls_, "))\n\n");
-    --tab;
-    --tab;
+    print(func_decls_, "{})\n\n", emit_var(bb, lam->var(), lam->type()->dom()));
 }
 
 std::string Emitter::prepare() { return root()->unique_name(); }
