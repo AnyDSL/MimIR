@@ -271,7 +271,7 @@ const Def* EggRewrite::convert_app(uint32_t id, MimNode node) {
     return new_app;
 }
 
-// (var <name> <type>)
+// (var <name> [<proj1> <proj2> ...] <type>)
 const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
     auto var = get_def(node.children[0]);
     return var;
