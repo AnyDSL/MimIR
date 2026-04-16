@@ -127,26 +127,32 @@ MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/m
 
 ## 📖 Publications
 
-- **SSA without Dominance for Higher-Order Programs**<br>
-  Roland Leißa, Johannes Griebler.<br>
-  _Proceedings of the ACM on Programming Languages (PLDI), 2026_, 10(PLDI).<br>
+- **SSA without Dominance for Higher-Order Programs**
+
+  Roland Leißa, Johannes Griebler
+
+  [![PLDI 2026](https://img.shields.io/badge/PLDI-2026-blue)](https://pldi26.sigplan.org)
   [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2604.09961-blue?logo=arxiv)](https://doi.org/10.48550/arXiv.2604.09961)
   [![zenodo](https://img.shields.io/badge/-10.5281%2Fzenodo.19069678-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.19069678)
   <br><br>
 
-- **MimIrADe: Automatic Differentiation in MimIR**<br>
-  Marcel Ullrich, Sebastian Hack, Roland Leißa.<br>
-  _Proceedings of the 34th ACM SIGPLAN International Conference on Compiler Construction (CC), 2025_, 70–80.<br>
+- **MimIrADe: Automatic Differentiation in MimIR**
+
+  Marcel Ullrich, Sebastian Hack, Roland Leißa
+
+  [![CC 2025](https://img.shields.io/badge/CC-2025-blue)](https://conf.researchr.org/home/CC-2025)
   [![acm](https://img.shields.io/badge/acm-10.1145/3708493.3712685-blue?logo=acm)](https://dl.acm.org/doi/abs/10.1145/3708493.3712685)
   [![zenodo](https://img.shields.io/badge/-10.5281/zenodo.14681109-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.14681109)
-  [![dblp](https://img.shields.io/badge/dblp-grey?logo=dblp)](https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex)
+  [![dblp](https://img.shields.io/badge/-grey?logo=dblp)](https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex)
   <br><br>
 
-- **MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age**<br>
-  Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack.<br>
-  _Proceedings of the ACM on Programming Languages (POPL), 2025_, 9(POPL), 95–125.<br>
-  [![YouTube](https://img.shields.io/badge/YouTube-grey?logo=youtube)](https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R)
+- **MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age**
+
+  Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack
+
+  [![POPL 2025](https://img.shields.io/badge/POPL-2025-blue)](https://conf.researchr.org/home/POPL-2025)
   [![acm](https://img.shields.io/badge/acm-10.1145/3704840-blue?logo=acm)](https://doi.org/10.1145/3704840)
   [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2411.07443-blue?logo=arxiv)](https://doi.org/10.48550/arXiv.2411.07443)
   [![zenodo](https://img.shields.io/badge/-10.5281/zenodo.13952579-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.13952579)
-  [![dblp](https://img.shields.io/badge/dblp-grey?logo=dblp)](https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex)
+  [![YouTube](https://img.shields.io/badge/-grey?logo=youtube)](https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R)
+  [![dblp](https://img.shields.io/badge/-grey?logo=dblp)](https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex)
