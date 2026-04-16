@@ -77,8 +77,9 @@ public:
     void emit_epilogue(Lam*);
     void finalize();
     void emit_lam(Lam* lam, MutSet& done);
+    std::string emit_var(BB& bb, const Def* var, const Def* type);
     std::string emit_head(BB& bb, Lam* lam, bool as_binding = false);
-    std::string emit_type(BB& bb, const Def* type, const Def* var = nullptr);
+    std::string emit_type(BB& bb, const Def* type);
     std::string emit_bb(BB& bb, const Def* def);
 
 private:
@@ -254,6 +255,25 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     }
 }
 
+std::string Emitter::emit_var(BB& bb, const Def* var, const Def* type) {
+    std::ostringstream os;
+    ++tab;
+    auto projs = var->projs();
+    if (projs.size() == 1 || std::ranges::all_of(projs, [](auto proj) { return proj->sym().empty(); }))
+        tab.lnprint(os, "(var {} {})", id(var), emit_type(bb, type));
+    else {
+        tab.lnprint(os, "(var {}", id(var));
+        size_t i = 0;
+        for (auto proj : projs)
+            tab.print(os, " {}", emit_var(bb, proj, type->proj(i++)));
+        ++tab;
+        tab.lnprint(os, "{})", emit_type(bb, type));
+        --tab;
+    }
+    --tab;
+    return os.str();
+}
+
 std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     std::ostringstream os;
 
@@ -269,32 +289,7 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     } else
         tab.print(os, "({} {} {}", lam_kind, ext, id(lam));
 
-    ++tab;
-    tab.lnprint(os, "(sigma");
-    if (lam->has_var()) {
-        ++tab;
-        if (lam->vars().size() == 1 || std::ranges::all_of(lam->vars(), [](auto def) { return def->sym().empty(); })) {
-            tab.lnprint(os, "(var {}", id(lam->var()));
-            ++tab;
-            tab.lnprint(os, "{})", emit_type(bb, lam->type()->dom()));
-            --tab;
-        } else {
-            for (int i = 0; auto var : lam->vars()) {
-                if (var) {
-                    tab.lnprint(os, "(var {}", id(var));
-                    ++tab;
-                    tab.lnprint(os, "{})", emit_type(bb, var->type(), var));
-                    --tab;
-                } else {
-                    tab.lnprint(os, "{}", emit_type(bb, lam->dom(i)));
-                }
-                i++;
-            }
-        }
-        --tab;
-    }
-    print(os, ")");
-    --tab;
+    tab.print(os, "{}", emit_var(bb, lam->var(), lam->type()->dom()));
 
     // Continuations have codomain .bot but lambdas can have arbitrary codomains
     if (!lam->isa_cn(lam)) {
@@ -313,7 +308,7 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     return os.str();
 }
 
-std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullptr*/) {
+std::string Emitter::emit_type(BB& bb, const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     std::ostringstream os;
@@ -337,21 +332,7 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         else
             print(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
-        // Some variables that are supposed to be tuples and therefore sigma-typed are internally modeled as arr-typed
-        // if for example all of the projs' types are the same as in (t1 t2: *). In this case we don't have a (sigma
-        // * *) but instead an (arr 2 *). We should however emit these as sigmas because we otherwise lose information
-        // about the names of the vars' projections (t1 and t2 in this case).
-        if (var && !std::ranges::all_of(var->projs(), [](auto def) { return def->sym().empty(); })) {
-            assert(var->arity() == arr->arity());
-            size_t i = 0;
-            print(os, "(sigma { })", Elem(arr->ops(), [&](auto op) {
-                      if (auto v = var->proj(i++); !v->sym().empty())
-                          print(os, "(var {} {})", id(v), emit_type(bb, arr->body(), v));
-                      else
-                          print(os, "{}", emit_type(bb, arr->body(), v));
-                  }));
-
-        } else if (auto arity = Lit::isa(arr->arity())) {
+        if (auto arity = Lit::isa(arr->arity())) {
             u64 size = *arity;
             print(os, "(arr (lit {}) {})", size, emit_type(bb, arr->body()));
         } else if (auto top = arr->arity()->isa<Top>()) {
@@ -365,18 +346,7 @@ std::string Emitter::emit_type(BB& bb, const Def* type, const Def* var /*= nullp
         else
             print(os, "(pi {} {})", emit_type(bb, pi->dom()), emit_type(bb, pi->codom()));
     } else if (auto sigma = type->isa<Sigma>()) {
-        size_t i = 0;
-        if (var) {
-            assert(var->arity() == sigma->arity());
-            print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) {
-                      if (auto v = var->proj(i++); !v->sym().empty())
-                          print(os, "(var {} {})", id(v), emit_type(bb, op, v));
-                      else
-                          print(os, "{}", emit_type(bb, op, v));
-                  }));
-        } else {
-            print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
-        }
+        print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else if (auto tuple = type->isa<Tuple>()) {
         print(os, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else if (auto app = type->isa<App>()) {

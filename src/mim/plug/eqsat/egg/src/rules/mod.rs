@@ -16,8 +16,8 @@ define_language! {
         "con" = Con(Box<[Id]>),
         // (app <callee> <arg>)
         "app" = App([Id; 2]),
-        // (var <name> <type>)
-        "var" = Var([Id; 2]),
+        // (var <name> [<proj1> <proj2> ...] <type>)
+        "var" = Var(Box<[Id]>),
         // (lit <value> [<type>])
         "lit" = Lit(Box<[Id]>),
         // (pack <arity> <body>)
