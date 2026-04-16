@@ -154,7 +154,7 @@ $(function(){initNavTree('index.html','',''); });
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2README"></a></p>
-<p><a href="https://anydsl.github.io/MimIR"><img src="https://img.shields.io/badge/Docs-master-green?style=flat-square&amp;logo=gitbook&amp;logoColor=white" alt="Documentation" class="inline"/></a> <a href="https://discord.gg/FPp7hdj3fQ"><img src="https://img.shields.io/discord/960975142459179068?style=flat-square&amp;color=green&amp;logo=discord&amp;logoColor=white" alt="Discord" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/MimIR?style=flat-square&amp;color=yellowgreen&amp;logo=opensourceinitiative&amp;logoColor=white" alt="License" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?style=flat-square&amp;logo=linux&amp;label=linux&amp;logoColor=white&amp;branch=master" alt="Linux" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?label=⊞%20windows&amp;branch=master" alt="Windows" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?style=flat-square&amp;logo=apple&amp;label=macos&amp;branch=master" alt="macOS" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?style=flat-square&amp;logo=gitbook&amp;logoColor=white&amp;label=doxygen&amp;branch=master" alt="Doxygen" class="inline"/></a></p>
+<p><a href="https://anydsl.github.io/MimIR"><img src="https://img.shields.io/badge/docs-master-green?style=flat-square&amp;logo=gitbook&amp;logoColor=white" alt="Documentation" class="inline"/></a> <a href="https://discord.gg/FPp7hdj3fQ"><img src="https://img.shields.io/discord/960975142459179068?style=flat-square&amp;color=green&amp;logo=discord&amp;logoColor=white" alt="Discord" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/MimIR?style=flat-square&amp;color=yellowgreen&amp;logo=opensourceinitiative&amp;logoColor=white" alt="License" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?style=flat-square&amp;logo=linux&amp;label=linux&amp;logoColor=white&amp;branch=master" alt="Linux" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?label=⊞%20windows&amp;branch=master" alt="Windows" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?style=flat-square&amp;logo=apple&amp;label=macos&amp;branch=master" alt="macOS" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?style=flat-square&amp;logo=gitbook&amp;logoColor=white&amp;label=doxygen&amp;branch=master" alt="Doxygen" class="inline"/></a></p>
 <p><b>MimIR</b> is a pure, graph-based, higher-order intermediate representation rooted in the <b>Calculus of Constructions</b>. MimIR provides:</p>
 <ul>
 <li><b>Dependent types</b>, <b>parametric polymorphism</b>, and <b>higher-order functions</b> out of the box</li>
@@ -241,12 +241,12 @@ $(function(){initNavTree('index.html','',''); });
 🐉 Naming: MimIR vs Mim</h1>
 <p><b>MimIR</b> is a recursive acronym for <em>MimIR is my Intermediate Representation</em>.</p>
 <p>In Norse mythology, <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir</a> was a being of immense wisdom. After he was beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to recite secret knowledge and counsel.</p>
-<p>Today, <b>you</b> have Mímir’s head at your fingertips.</p>
+<p>Today, <b>you</b> have Mímir's head at your fingertips.</p>
 <ul>
 <li><b>MimIR</b> refers to the core graph-based intermediate representation and its C++ API.</li>
-<li><b>Mim</b> is the friendly, high-level frontend language that compiles down to MimIR.</li>
+<li><b>Mim</b> is a lightweight, textual representation of MimIR.</li>
 </ul>
-<p>In the entire codebase we consistently use <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> / <span class="tt">MIM</span> for namespaces, macros, CMake variables, etc. If in doubt, just use <b>Mim</b>.</p>
+<p>In the entire codebase we consistently use <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> / <span class="tt">MIM</span> for namespaces, macros, CMake variables, etc.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md76"></a>
 💬 Community</h1>
 <ul>
@@ -255,7 +255,7 @@ $(function(){initNavTree('index.html','',''); });
 <li>💻 <b>Examples</b> → <a href="https://github.com/AnyDSL/MimIR/tree/master/examples"><span class="tt">examples/</span></a> and <a href="https://github.com/AnyDSL/MimIR/tree/master/lit"><span class="tt">lit/</span></a></li>
 </ul>
 <p><b>Ready to build the next generation of DSL compilers?</b></p>
-<p><a href="https://github.com/AnyDSL/MimIR">⭐ Star MimIR on GitHub</a>, join Discord, and let’s make high-performance DSLs easy.</p>
+<p><a href="https://github.com/AnyDSL/MimIR">⭐ Star MimIR on GitHub</a>, join Discord, and let's make high-performance DSLs easy.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md77"></a>
 ⚖️ License</h1>
 <p>MimIR is licensed under the <a href="https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT">MIT License</a>.</p>
