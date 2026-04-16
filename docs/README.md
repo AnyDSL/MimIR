@@ -2,13 +2,13 @@
 
 [TOC]
 
-[![Documentation](https://img.shields.io/badge/Docs-master-green?logo=gitbook&logoColor=white)](https://anydsl.github.io/MimIR)
-[![Discord](https://img.shields.io/discord/960975142459179068?color=green&logo=discord&logoColor=white)](https://discord.gg/FPp7hdj3fQ)
-[![License](https://img.shields.io/github/license/anydsl/MimIR?color=yellowgreen&logo=opensourceinitiative&logoColor=white)](https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT)
-[![Linux](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?logo=linux&label=linux&logoColor=white&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml)
+[![Documentation](https://img.shields.io/badge/Docs-master-green?style=flat-square&logo=gitbook&logoColor=white)](https://anydsl.github.io/MimIR)
+[![Discord](https://img.shields.io/discord/960975142459179068?style=flat-square&color=green&logo=discord&logoColor=white)](https://discord.gg/FPp7hdj3fQ)
+[![License](https://img.shields.io/github/license/anydsl/MimIR?style=flat-square&color=yellowgreen&logo=opensourceinitiative&logoColor=white)](https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT)
+[![Linux](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?style=flat-square&logo=linux&label=linux&logoColor=white&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml)
 [![Windows](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?label=⊞%20windows&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml)
-[![macOS](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&label=macos&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml)
-[![Doxygen](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?logo=gitbook&logoColor=white&label=doxygen&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml)
+[![macOS](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?style=flat-square&logo=apple&label=macos&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml)
+[![Doxygen](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?style=flat-square&logo=gitbook&logoColor=white&label=doxygen&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml)
 
 **MimIR** is a pure, graph-based, higher-order intermediate representation rooted in the **Calculus of Constructions**.
 MimIR provides:
@@ -129,26 +129,26 @@ MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/m
 
 * **SSA without Dominance for Higher-Order Programs** <br>
   Roland Leißa, Johannes Griebler <br>
-  [![PLDI 2026](https://img.shields.io/badge/PLDI-2026-blue)](https://pldi26.sigplan.org)
-  [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2604.09961-blue?logo=arxiv)](https://doi.org/10.48550/arXiv.2604.09961)
-  [![zenodo](https://img.shields.io/badge/-10.5281%2Fzenodo.19069678-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.19069678)
+  [![PLDI 2026](https://img.shields.io/badge/PLDI-2026-blue?style=flat-square)](https://pldi26.sigplan.org)
+  [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2604.09961-blue?style=flat-square&logo=arxiv)](https://doi.org/10.48550/arXiv.2604.09961)
+  [![zenodo](https://img.shields.io/badge/-10.5281%2Fzenodo.19069678-blue?style=flat-square&logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.19069678)
   <br><br>
 
 * **MimIrADe: Automatic Differentiation in MimIR** <br>
   Marcel Ullrich, Sebastian Hack, Roland Leißa <br>
-  [![CC 2025](https://img.shields.io/badge/CC-2025-blue)](https://conf.researchr.org/home/CC-2025)
-  [![PDF](https://img.shields.io/badge/PDF-grey?logo=readthedocs)](https://raw.githubusercontent.com/leissa/leissa/main/uhl25.pdf)
-  [![ACM](https://img.shields.io/badge/ACM-10.1145/3708493.3712685-blue?logo=acm)](https://dl.acm.org/doi/abs/10.1145/3708493.3712685)
-  [![zenodo](https://img.shields.io/badge/-10.5281/zenodo.14681109-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.14681109)
-  [![dblp](https://img.shields.io/badge/dblp-grey?logo=dblp)](https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex)
+  [![CC 2025](https://img.shields.io/badge/CC-2025-blue?style=flat-square)](https://conf.researchr.org/home/CC-2025)
+  [![PDF](https://img.shields.io/badge/PDF-grey?style=flat-square&logo=readthedocs)](https://raw.githubusercontent.com/leissa/leissa/main/uhl25.pdf)
+  [![ACM](https://img.shields.io/badge/ACM-10.1145/3708493.3712685-blue?style=flat-square&logo=acm)](https://dl.acm.org/doi/abs/10.1145/3708493.3712685)
+  [![zenodo](https://img.shields.io/badge/-10.5281/zenodo.14681109-blue?style=flat-square&logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.14681109)
+  [![dblp](https://img.shields.io/badge/dblp-grey?style=flat-square&logo=dblp)](https://dblp.uni-trier.de/rec/conf/cc/UllrichHL25.html?view=bibtex)
   <br><br>
 
 * **MimIR: An Extensible and Type-Safe Intermediate Representation for the DSL Age** <br>
   Roland Leißa, Marcel Ullrich, Joachim Meyer, Sebastian Hack <br>
-  [![POPL 2025](https://img.shields.io/badge/POPL-2025-blue)](https://conf.researchr.org/home/POPL-2025)
-  [![PDF](https://img.shields.io/badge/PDF-grey?logo=readthedocs)](https://raw.githubusercontent.com/leissa/leissa/main/lumh25.pdf)
-  [![ACM](https://img.shields.io/badge/ACM-10.1145/3704840-blue?logo=acm)](https://doi.org/10.1145/3704840)
-  [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2411.07443-blue?logo=arxiv)](https://doi.org/10.48550/arXiv.2411.07443)
-  [![zenodo](https://img.shields.io/badge/-10.5281/zenodo.19069678-blue?logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.19069678)
-  [![YouTube](https://img.shields.io/badge/YouTube-grey?logo=youtube)](https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R)
-  [![dblp](https://img.shields.io/badge/dblp-grey?logo=dblp)](https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex)
+  [![POPL 2025](https://img.shields.io/badge/POPL-2025-blue?style=flat-square)](https://conf.researchr.org/home/POPL-2025)
+  [![PDF](https://img.shields.io/badge/PDF-grey?style=flat-square&logo=readthedocs)](https://raw.githubusercontent.com/leissa/leissa/main/lumh25.pdf)
+  [![ACM](https://img.shields.io/badge/ACM-10.1145/3704840-blue?style=flat-square&logo=acm)](https://doi.org/10.1145/3704840)
+  [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2411.07443-blue?style=flat-square&logo=arxiv)](https://doi.org/10.48550/arXiv.2411.07443)
+  [![zenodo](https://img.shields.io/badge/-10.5281/zenodo.19069678-blue?style=flat-square&logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.19069678)
+  [![YouTube](https://img.shields.io/badge/YouTube-grey?style=flat-square&logo=youtube)](https://youtu.be/2zKUa6b9XYc?si=3ZX68gEHarsCsO-R)
+  [![dblp](https://img.shields.io/badge/dblp-grey?style=flat-square&logo=dblp)](https://dblp.uni-trier.de/rec/journals/pacmpl/LeissaUMH25.html?view=bibtex)
