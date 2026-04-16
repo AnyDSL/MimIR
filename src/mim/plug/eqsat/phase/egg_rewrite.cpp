@@ -127,7 +127,7 @@ const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
     // If the let-binding is for a lambda, this lambda will already have been
     // created, set and registered via init_lam/con and thus we can skip it.
     auto let_def = get_def(node.children[0]);
-    if (let_def) return nullptr;
+    if (let_def) return let_def;
 
     auto name       = get_symbol(node.children[0]);
     auto name_nouid = remove_uid(name);
@@ -135,8 +135,8 @@ const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
     def->set(name_nouid);
     register_var(name, def);
 
-    if (DEBUG) std::cout << nullptr << "\n";
-    return nullptr;
+    if (DEBUG) std::cout << def << "\n";
+    return def;
 }
 
 // (axm <name> <type>)
