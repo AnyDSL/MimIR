@@ -13,11 +13,10 @@ namespace mim::plug::eqsat {
 void EggRewrite::start() {
     auto [rulesets, cost_fn] = import_config();
 
+    // We are assuming that the core plugin and its backends have been loaded at this point
+    // because the 'eqsat' plugin declared it as a dependency via 'plugin core;'
     std::ostringstream sexpr;
-    if (auto sexpr_backend = driver().backend("sexpr"))
-        sexpr_backend(old_world(), sexpr);
-    else
-        error("EggRewrite: 'sexpr' emitter not loaded; try loading 'core' plugin");
+    driver().backend("sexpr")(old_world(), sexpr);
 
     if (DEBUG) std::cout << pretty(sexpr.str(), 80).c_str() << "\n";
 
@@ -94,10 +93,10 @@ void EggRewrite::init(rust::Vec<RewriteResult> rewrites, InitStage stage) {
 }
 
 // TODO: implement
-// (lam <extern> <name> <domain> <codomain> [<filter>] [<body>])
+// (lam <extern> <name> <domain> <codomain> [<filter> <body>])
 const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 
-// (con <extern> <name> <domain> [<filter>] [<body>])
+// (con <extern> <name> <domain> [<filter> <body>])
 const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto domain_id      = node.children[2];
@@ -109,8 +108,8 @@ const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     new_con->set(con_name_nouid);
     register_lam(con_name, new_con);
 
-    // 'domain' is a var so index 0 contains its name and back() is its type
-    // (var <name> [<proj1> <proj2>...] <type>)
+    // 'domain' is a var node so index 0 contains its name and back() its type.
+    // For reference: (var <name> [<proj1> <proj2>...] <type>)
     auto var_name       = get_symbol(domain.children[0]);
     auto var_name_nouid = remove_uid(var_name);
     auto var            = new_con->var();
