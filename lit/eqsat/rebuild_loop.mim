@@ -1,6 +1,6 @@
 // RUN: %mim %s -o -
 plugin core;
-// plugin eqsat;
+plugin eqsat;
 
 fun extern main(mem: %mem.M 0, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M 0, I32] =
     loop (mem, 0I32, 0I32)
