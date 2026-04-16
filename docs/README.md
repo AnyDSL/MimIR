@@ -2,7 +2,7 @@
 
 [TOC]
 
-[![Documentation](https://img.shields.io/badge/Docs-master-green?style=flat-square&logo=gitbook&logoColor=white)](https://anydsl.github.io/MimIR)
+[![Documentation](https://img.shields.io/badge/docs-master-green?style=flat-square&logo=gitbook&logoColor=white)](https://anydsl.github.io/MimIR)
 [![Discord](https://img.shields.io/discord/960975142459179068?style=flat-square&color=green&logo=discord&logoColor=white)](https://discord.gg/FPp7hdj3fQ)
 [![License](https://img.shields.io/github/license/anydsl/MimIR?style=flat-square&color=yellowgreen&logo=opensourceinitiative&logoColor=white)](https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT)
 [![Linux](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?style=flat-square&logo=linux&label=linux&logoColor=white&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml)
@@ -103,13 +103,12 @@ MimIR uses free-variable nesting:
 
 In Norse mythology, [Mímir](https://en.wikipedia.org/wiki/M%C3%ADmir) was a being of immense wisdom. After he was beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to recite secret knowledge and counsel.
 
-Today, **you** have Mímir’s head at your fingertips.
+Today, **you** have Mímir's head at your fingertips.
 
 - **MimIR** refers to the core graph-based intermediate representation and its C++ API.
-- **Mim** is the friendly, high-level frontend language that compiles down to MimIR.
+- **Mim** is a lightweight, textual representation of MimIR.
 
 In the entire codebase we consistently use `mim` / `MIM` for namespaces, macros, CMake variables, etc.
-If in doubt, just use **Mim**.
 
 ## 💬 Community
 
@@ -119,7 +118,7 @@ If in doubt, just use **Mim**.
 
 **Ready to build the next generation of DSL compilers?**
 
-[⭐ Star MimIR on GitHub](https://github.com/AnyDSL/MimIR), join Discord, and let’s make high-performance DSLs easy.
+[⭐ Star MimIR on GitHub](https://github.com/AnyDSL/MimIR), join Discord, and let's make high-performance DSLs easy.
 
 ## ⚖️ License
 
