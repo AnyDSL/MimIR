@@ -6,7 +6,7 @@
 #include "mim/def.h"
 #include "mim/driver.h"
 
-const bool DEBUG = false;
+const bool DEBUG = true;
 
 namespace mim::plug::eqsat {
 

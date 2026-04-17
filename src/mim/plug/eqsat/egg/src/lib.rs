@@ -54,15 +54,13 @@ fn convert_rules(sexprs: &mut Vec<&str>, rules: &mut Vec<Rewrite<Mim, MimAnalysi
     // filters them out so we only have proper sexprs remaining to equality saturate in the next loop
     sexprs.retain(|sexpr| {
         let parsed: RecExpr<Mim> = sexpr.parse().unwrap();
-        if let Some((_id, Mim::Rule([lhs, rhs, _guard]))) = parsed.items().last() {
+        if let Some((_id, Mim::Rule([_name, _meta_var, lhs, rhs, _guard]))) = parsed.items().last()
+        {
             let nth_node = |id: Id| parsed.items().nth(usize::from(id)).unwrap().1.clone();
             let mut lhs_rexpr = nth_node(*lhs).build_recexpr(nth_node);
             let mut rhs_rexpr = nth_node(*rhs).build_recexpr(nth_node);
 
-            // TODO: Would it do to iterate over lhs_node and rhs_node and just prefix every symbol that
-            // isn't an axiom, type, or term alias with a '?' to mark it as a pattern variable?
-            // Or are there patterns that introduce new variables where this would break things?
-            // If the current approach isn't sufficient we should try to emit the pattern vars explicitly in the sexpr backend.
+            // TODO: Use meta_vars as pattern vars
             let aliases = [
                 "Univ", "Bool", "Nat", "I8", "I16", "I32", "I64", "tt", "ff", "i8", "i16", "i32",
             ];

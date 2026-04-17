@@ -28,8 +28,8 @@ define_language! {
         "extract" = Extract([Id; 2]),
         // (ins <tuple> <index> <value>)
         "insert" = Insert([Id; 3]),
-        // (rule <lhs> <rhs> <guard>)
-        "rule" = Rule([Id; 3]),
+        // (rule <name> <meta_var> <lhs> <rhs> <guard>)
+        "rule" = Rule([Id; 5]),
         // (inj <type> <value>)
         "inj" = Inj([Id; 2]),
         // (merge <type> <value1> <value2> ...)

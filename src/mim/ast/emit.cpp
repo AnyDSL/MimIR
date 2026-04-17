@@ -532,14 +532,14 @@ void CDecl::emit(Emitter& e) const {
 }
 
 void RuleDecl::emit(Emitter& e) const {
-    auto _      = e.world().push(loc());
-    auto meta_t = e.world().reform(var()->emit_type(e));
-    auto rule   = e.world().mut_rule(meta_t);
-    var()->emit_value(e, rule->var());
-    auto l = lhs()->emit(e);
-    auto r = rhs()->emit(e);
-    auto c = guard()->emit(e);
-    rule->set(l, r, c);
+    auto _        = e.world().push(loc());
+    auto meta_t   = e.world().reform(var()->emit_type(e));
+    auto rule     = e.world().mut_rule(meta_t);
+    auto meta_var = var()->emit_value(e, rule->var());
+    auto l        = lhs()->emit(e);
+    auto r        = rhs()->emit(e);
+    auto c        = guard()->emit(e);
+    rule->set(meta_var, l, r, c);
     def_ = rule;
 }
 

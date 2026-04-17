@@ -600,11 +600,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
     } else if (auto rule = def->isa<Rule>()) {
-        auto lhs_val   = emit_bb(bb, rule->lhs());
-        auto rhs_val   = emit_bb(bb, rule->rhs());
-        auto guard_val = emit_bb(bb, rule->guard());
-        tab.lnprint(os, "(rule {} {} {})", lhs_val, rhs_val, guard_val);
-        print(decls_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
+        auto meta_var_val = emit_var(bb, rule->meta_var(), rule->meta_var()->type());
+        auto lhs_val      = emit_bb(bb, rule->lhs());
+        auto rhs_val      = emit_bb(bb, rule->rhs());
+        auto guard_val    = emit_bb(bb, rule->guard());
+        tab.lnprint(os, "{}", id(rule, true));
+        print(decls_, "(rule {} {} {} {} {})\n\n", indent(1, id(rule)), indent(1, meta_var_val), indent(1, lhs_val),
+              indent(1, rhs_val), indent(1, guard_val));
 
     } else if (auto inj = def->isa<Inj>()) {
         auto type_val  = emit_bb(bb, inj->type());
