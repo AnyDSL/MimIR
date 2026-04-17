@@ -534,7 +534,7 @@ void CDecl::emit(Emitter& e) const {
 void RuleDecl::emit(Emitter& e) const {
     auto _        = e.world().push(loc());
     auto meta_t   = e.world().reform(var()->emit_type(e));
-    auto rule     = e.world().mut_rule(meta_t);
+    auto rule     = e.world().mut_rule(meta_t)->set(dbg());
     auto meta_var = var()->emit_value(e, rule->var());
     auto l        = lhs()->emit(e);
     auto r        = rhs()->emit(e);
