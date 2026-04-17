@@ -54,27 +54,44 @@ fn convert_rules(sexprs: &mut Vec<&str>, rules: &mut Vec<Rewrite<Mim, MimAnalysi
     // filters them out so we only have proper sexprs remaining to equality saturate in the next loop
     sexprs.retain(|sexpr| {
         let parsed: RecExpr<Mim> = sexpr.parse().unwrap();
-        if let Some((_id, Mim::Rule([_name, _meta_var, lhs, rhs, _guard]))) = parsed.items().last()
-        {
+        if let Some((_id, Mim::Rule([name, meta_var, lhs, rhs, _guard]))) = parsed.items().last() {
             let nth_node = |id: Id| parsed.items().nth(usize::from(id)).unwrap().1.clone();
-            let mut lhs_rexpr = nth_node(*lhs).build_recexpr(nth_node);
-            let mut rhs_rexpr = nth_node(*rhs).build_recexpr(nth_node);
 
-            // TODO: Use meta_vars as pattern vars
-            let aliases = [
-                "Univ", "Bool", "Nat", "I8", "I16", "I32", "I64", "tt", "ff", "i8", "i16", "i32",
-            ];
-            let skip = |s: &mut String| s.starts_with('%') || aliases.contains(&s.as_str());
+            let rule_name = if let Symbol(s) = nth_node(*name) {
+                s
+            } else {
+                panic!("Failed to parse rule name.")
+            };
+
+            let mut meta_vars: Vec<String> = Vec::new();
+            let meta_var_rexpr = nth_node(*meta_var).build_recexpr(nth_node);
+            for (_id, node) in meta_var_rexpr.items() {
+                if let Mim::Var(ids) = node
+                    && let [var_name, ..] = &**ids
+                {
+                    if let Some((_id, Symbol(s))) =
+                        meta_var_rexpr.items().nth(usize::from(*var_name))
+                    {
+                        meta_vars.push(s.clone());
+                    } else {
+                        panic!("Failed to parse meta variable name.")
+                    };
+                }
+            }
+
+            let mut lhs_rexpr = nth_node(*lhs).build_recexpr(nth_node);
             for (_id, node) in lhs_rexpr.items_mut() {
                 if let Mim::Symbol(s) = node
-                    && !skip(s)
+                    && meta_vars.contains(s)
                 {
                     s.insert(0, '?')
                 }
             }
+
+            let mut rhs_rexpr = nth_node(*rhs).build_recexpr(nth_node);
             for (_id, node) in rhs_rexpr.items_mut() {
                 if let Mim::Symbol(s) = node
-                    && !skip(s)
+                    && meta_vars.contains(s)
                 {
                     s.insert(0, '?')
                 }
@@ -82,8 +99,6 @@ fn convert_rules(sexprs: &mut Vec<&str>, rules: &mut Vec<Rewrite<Mim, MimAnalysi
 
             let pat: Pattern<Mim> = lhs_rexpr.pretty(80).parse().unwrap();
             let outpat: Pattern<Mim> = rhs_rexpr.pretty(80).parse().unwrap();
-            // TODO: Do we give it some random name or should we take over the id from the sexpr backend?
-            let rule_name = format!("rule_{}", rules.len());
             let rule: Rewrite<Mim, MimAnalysis> = Rewrite::new(rule_name, pat, outpat).unwrap();
             rules.push(rule);
             false

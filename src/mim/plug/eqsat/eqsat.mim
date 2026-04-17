@@ -70,9 +70,16 @@ axm %eqsat.rulesets: {n: Nat} → «n; %eqsat.Ruleset» → %eqsat.Ruleset;
 /// ### %%eqsat.rules
 ///
 /// Tells the equality saturation engine to use a set of rules during equality saturation.
+//
+/// TODO: We should be able to apply this to any and all rewrite rules but that doesn't
+///       quite work yet depending on the types of the meta variables of the rewrite rule.
 ///
 axm %eqsat.rules: {n: Nat, Ts: «n; *»} → «i: n; Ts#i» → %eqsat.Rules;
 ///
+///
+/// TODO: We could add another config function here to configure whether to use regular egg
+///       or slotted-egg to perform equality saturation (since we already have regular egg implemented
+///       we can just add another implementation for slotted-egg without having to delete everything)
 ///
 /// ## Passes and Phases
 ///
