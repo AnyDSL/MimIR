@@ -40,6 +40,7 @@ if(WIN32)
           userenv
           advapi32
           ntdll
+          bcrypt
   )
 endif()
 set_target_properties(eqsat-lib PROPERTIES IMPORTED_LOCATION ${EQSAT_LIB})

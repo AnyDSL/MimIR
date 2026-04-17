@@ -5,6 +5,7 @@ use crate::mim_std::rulesets::get_rules;
 use egg::*;
 use ffi::{CostFn, MimKind, MimNode, RewriteResult, RuleSet};
 
+mod mim_slotted;
 mod mim_std;
 
 pub fn equality_saturate(
