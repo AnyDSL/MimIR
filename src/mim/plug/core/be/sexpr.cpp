@@ -68,8 +68,10 @@ class Emitter : public mim::Emitter<std::string, std::string, BB, Emitter> {
 public:
     using Super = mim::Emitter<std::string, std::string, BB, Emitter>;
 
-    Emitter(World& world, std::ostream& ostream)
-        : Super(world, "sexpr_emitter", ostream) {}
+    Emitter(World& world, std::ostream& ostream, bool slotted = false)
+        : Super(world, "sexpr_emitter", ostream) {
+        slotted_ = slotted;
+    }
 
     bool is_valid(std::string_view s) { return !s.empty(); }
     void start() override;
@@ -84,25 +86,38 @@ public:
     std::string emit_bb(BB& bb, const Def* def);
 
 private:
-    std::string id(const Def*) const;
+    std::string id(const Def*, bool is_var_use = false) const;
     std::string indent(size_t tabs, std::string term);
     std::string flatten(std::string term);
+
+    // Determines whether the symbolic expression should
+    // be emitted in a style that is compatible with slotted-egg.
+    bool slotted() const { return slotted_; }
+    bool slotted_;
 
     std::ostringstream decls_;
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
 };
 
-std::string Emitter::id(const Def* def) const {
+std::string Emitter::id(const Def* def, bool is_var_use) const {
+    std::string prefix = slotted() ? "$" : "";
+    std::string id;
+
+    // In slotted-egg variable-uses need to be explicitly wrapped in a var node i.e. in λx.x (lam $x (var $x))
+    auto var_wrap = [&](std::string id) { return slotted() && is_var_use ? "(var " + id + ")" : id; };
+
     // Axioms, declarations(imports) and externals need to be emitted without a uid
     if (def->isa<Axm>())
-        return def->sym().str();
+        id = def->sym().str();
     else if (def->isa<Lam>() && !def->is_set())
-        return def->sym().str();
+        id = def->sym().str();
     else if (def->is_external())
-        return def->sym().str();
+        id = def->sym().str();
+    else
+        id = def->unique_name();
 
-    return def->unique_name();
+    return var_wrap(prefix + id);
 }
 
 // Adjusts the base indentation of a term-string like
@@ -250,6 +265,14 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
 
 std::string Emitter::emit_var(BB& bb, const Def* var, const Def* type) {
     std::ostringstream os;
+
+    if (slotted()) {
+        ++tab;
+        tab.lnprint(os, "{}", id(var));
+        --tab;
+        return os.str();
+    }
+
     ++tab;
     auto projs = var->projs();
     if (projs.size() == 1 || std::ranges::all_of(projs, [](auto proj) { return proj->sym().empty(); }))
@@ -407,7 +430,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         tab.lnprint(os, "{}", emit_type(bb, def));
 
     } else if (auto lam = def->isa<Lam>()) {
-        tab.lnprint(os, "{}", id(lam));
+        tab.lnprint(os, "{}", id(lam, true));
 
     } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
@@ -456,7 +479,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(pack));
+            tab.lnprint(os, "{}", id(pack, true));
         }
 
     } else if (auto extract = def->isa<Extract>()) {
@@ -484,7 +507,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 }
         }
 
-        if (auto lit = Lit::isa(index); (lit && tuple->isa<Var>()) || is_nested_proj) {
+        if (!slotted() && ((Lit::isa(index) && tuple->isa<Var>()) || is_nested_proj)) {
             tab.lnprint(os, "{}", id(extract));
         } else if (extract->sym().empty()) {
             tab.lnprint(os, "(extract");
@@ -504,7 +527,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(extract));
+            tab.lnprint(os, "{}", id(extract, true));
         }
 
     } else if (auto insert = def->isa<Insert>()) {
@@ -529,11 +552,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(insert));
+            tab.lnprint(os, "{}", id(insert, true));
         }
 
     } else if (auto var = def->isa<Var>()) {
-        tab.lnprint(os, "{}", id(var));
+        tab.lnprint(os, "{}", id(var, true));
 
     } else if (auto app = def->isa<App>()) {
         auto callee_val = emit_bb(bb, app->callee());
@@ -554,7 +577,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(app));
+            tab.lnprint(os, "{}", id(app, true));
         }
 
     } else if (auto axm = def->isa<Axm>()) {
@@ -567,7 +590,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             tab.lnprint(os, "(bot {})", emit_type(bb, bot->type()));
         else {
             bb.assign(tab, id(bot), "(bot {})", emit_type(bb, bot->type()));
-            tab.lnprint(os, "{}", id(bot));
+            tab.lnprint(os, "{}", id(bot, true));
         }
 
     } else if (auto top = def->isa<Top>()) {
@@ -575,7 +598,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             tab.lnprint(os, "(top {})", emit_type(bb, top->type()));
         else {
             bb.assign(tab, id(top), "(top {})", emit_type(bb, top->type()));
-            tab.lnprint(os, "{}", id(top));
+            tab.lnprint(os, "{}", id(top, true));
         }
 
     } else if (auto rule = def->isa<Rule>()) {
@@ -604,7 +627,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(inj));
+            tab.lnprint(os, "{}", id(inj, true));
         }
 
     } else if (auto merge = def->isa<Merge>()) {
@@ -630,7 +653,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(merge));
+            tab.lnprint(os, "{}", id(merge, true));
         }
 
     } else if (auto match = def->isa<Match>()) {
@@ -654,7 +677,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(match));
+            tab.lnprint(os, "{}", id(match, true));
         }
 
     } else if (auto proxy = def->isa<Proxy>()) {
@@ -693,7 +716,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, ")");
                 --tab;
             });
-            tab.lnprint(os, "{}", id(proxy));
+            tab.lnprint(os, "{}", id(proxy, true));
         }
 
     } else {
@@ -707,6 +730,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
 void emit(World& world, std::ostream& ostream) {
     Emitter emitter(world, ostream);
+    emitter.run();
+}
+
+void emit_slotted(World& world, std::ostream& ostream) {
+    Emitter emitter(world, ostream, true);
     emitter.run();
 }
 
