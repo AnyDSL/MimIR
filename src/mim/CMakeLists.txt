@@ -1,40 +1,40 @@
 #---- Cargo integration ----
 
-set(CARGO_WIN_DEBUG_CONFIG ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/.cargo/windbg-config.toml)
-set(CARGO_MANIFEST ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/Cargo.toml)
-set(CARGO_TARGET_DIR ${CMAKE_SOURCE_DIR}/build/include/egg)
+set(CARGO_WIN_DEBUG_CONFIG ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/eqsat-rs/.cargo/windbg-config.toml)
+set(CARGO_MANIFEST ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/eqsat-rs/Cargo.toml)
+set(CARGO_TARGET_DIR ${CMAKE_SOURCE_DIR}/build/include/eqsat-rs)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   set(CARGO_BUILD_TYPE "")
-  set(EGG_LIB_DIR debug)
+  set(EQSAT_LIB_DIR debug)
 else()
   set(CARGO_BUILD_TYPE --release)
-  set(EGG_LIB_DIR release)
+  set(EQSAT_LIB_DIR release)
 endif()
 
 if(WIN32)
   set(CARGO_EXTRA --config ${CARGO_WIN_DEBUG_CONFIG})
 endif()
 
-set(EGG_SOURCE_FILE ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/egg/src/lib.rs)
-set(EGG_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat/src/lib.rs.cc)
-set(EGG_LIB ${CARGO_TARGET_DIR}/${EGG_LIB_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(EQSAT_SOURCE_FILE ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/eqsat-rs/src/lib.rs)
+set(EQSAT_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat-rs/src/lib.rs.cc)
+set(EQSAT_LIB ${CARGO_TARGET_DIR}/${EQSAT_LIB_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
 
 add_custom_command(
-    OUTPUT ${EGG_BRIDGE_CPP} ${EGG_LIB}
+    OUTPUT ${EQSAT_BRIDGE_CPP} ${EQSAT_LIB}
     COMMAND cargo build ${CARGO_BUILD_TYPE} ${CARGO_EXTRA} --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
-    DEPENDS ${EGG_SOURCE_FILE}
+    DEPENDS ${EQSAT_SOURCE_FILE}
     USES_TERMINAL
     COMMENT "Running cargo..."
 )
 
-add_custom_target(egg ALL
-    DEPENDS ${EGG_BRIDGE_CPP} ${EGG_LIB}
+add_custom_target(eqsat ALL
+    DEPENDS ${EQSAT_BRIDGE_CPP} ${EQSAT_LIB}
 )
 
-add_library(eqsat STATIC IMPORTED)
+add_library(eqsat-lib STATIC IMPORTED)
 if(WIN32)
-  target_link_libraries(eqsat
+  target_link_libraries(eqsat-lib
       INTERFACE
           ws2_32
           userenv
@@ -42,8 +42,8 @@ if(WIN32)
           ntdll
   )
 endif()
-set_target_properties(eqsat PROPERTIES IMPORTED_LOCATION ${EGG_LIB})
-add_dependencies(eqsat egg)
+set_target_properties(eqsat-lib PROPERTIES IMPORTED_LOCATION ${EQSAT_LIB})
+add_dependencies(eqsat eqsat-lib)
 
 #---------------------------
 
@@ -99,10 +99,10 @@ set_target_properties(libmim PROPERTIES PREFIX "")
 target_compile_features(libmim PUBLIC cxx_std_20)
 
 if(MSVC)
-    target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
-    if(BUILD_SHARED_LIBS)
-        target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)
-    endif()
+  target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
+  if(BUILD_SHARED_LIBS)
+    target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)
+  endif()
 endif()
 
 configure_file(
@@ -118,7 +118,7 @@ target_include_directories(libmim
 )
 target_link_libraries(libmim
     PUBLIC
-        eqsat
+        eqsat-lib
         absl::btree
         absl::fixed_array
         absl::inlined_vector

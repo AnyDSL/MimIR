@@ -1,9 +1,11 @@
-use crate::Mim::*;
-use crate::rules::*;
+use crate::mim_std::Mim;
+use crate::mim_std::Mim::*;
+use crate::mim_std::analysis::MimAnalysis;
+use crate::mim_std::rulesets::get_rules;
 use egg::*;
 use ffi::{CostFn, MimKind, MimNode, RewriteResult, RuleSet};
 
-mod rules;
+mod mim_std;
 
 pub fn equality_saturate(
     sexpr: &str,
@@ -14,7 +16,7 @@ pub fn equality_saturate(
     let mut sexprs: Vec<&str> = normalized.split("\n\n").collect();
     sexprs.retain(|s| !s.trim().is_empty());
 
-    let mut rules = rules(rulesets);
+    let mut rules = get_rules(rulesets);
     convert_rules(&mut sexprs, &mut rules);
 
     match cost_fn {

@@ -1,4 +1,8 @@
-use crate::rules::*;
+use crate::find_node;
+use crate::mim_std::Mim;
+use crate::mim_std::Mim::*;
+use crate::mim_std::analysis::{Const, MimAnalysis};
+use egg::*;
 use std::cmp::max;
 
 pub fn rules() -> Vec<Rewrite<Mim, MimAnalysis>> {

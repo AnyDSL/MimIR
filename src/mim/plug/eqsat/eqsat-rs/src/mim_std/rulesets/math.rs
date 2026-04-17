@@ -1,4 +1,6 @@
-use crate::rules::*;
+use crate::mim_std::Mim;
+use crate::mim_std::analysis::MimAnalysis;
+use egg::Rewrite;
 
 pub fn rules() -> Vec<Rewrite<Mim, MimAnalysis>> {
     let rules = vec![];
