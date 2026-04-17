@@ -1,6 +1,7 @@
 # MimIR
 
-[TOC]
+[![Forks](https://img.shields.io/github/forks/AnyDSL/MimIR)](https://github.com/AnyDSL/MimIR/fork)
+[![Stars](https://img.shields.io/github/stars/AnyDSL/MimIR)](https://github.com/AnyDSL/MimIR/stargazers)
 
 [![Documentation](https://img.shields.io/badge/docs-master-green?style=flat-square&logo=gitbook&logoColor=white)](https://anydsl.github.io/MimIR)
 [![Discord](https://img.shields.io/discord/960975142459179068?style=flat-square&color=green&logo=discord&logoColor=white)](https://discord.gg/FPp7hdj3fQ)
@@ -9,6 +10,8 @@
 [![Windows](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?label=⊞%20windows&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml)
 [![macOS](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?style=flat-square&logo=apple&label=macos&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml)
 [![Doxygen](https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?style=flat-square&logo=gitbook&logoColor=white&label=doxygen&branch=master)](https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml)
+
+[TOC]
 
 **MimIR** is a pure, graph-based, higher-order intermediate representation rooted in the **Calculus of Constructions**.
 MimIR provides:
@@ -101,14 +104,17 @@ MimIR uses free-variable nesting:
 
 **MimIR** is a recursive acronym for _MimIR is my Intermediate Representation_.
 
-In Norse mythology, [Mímir](https://en.wikipedia.org/wiki/M%C3%ADmir) was a being of immense wisdom. After he was beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to recite secret knowledge and counsel.
+In Norse mythology, [Mímir](https://en.wikipedia.org/wiki/M%C3%ADmir) was a being of immense wisdom.
+After being beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to speak secret knowledge and offer counsel.
 
 Today, **you** have Mímir's head at your fingertips.
 
 - **MimIR** refers to the core graph-based intermediate representation and its C++ API.
-- **Mim** is a lightweight, textual representation of MimIR.
+- **Mim** is a lightweight textual representation of MimIR.
+  It is not a full-featured programming language, but provides enough syntactic sugar to concisely express polymorphic and dependent types (including type-level dependencies introduced by many type variables).
+  Mim is mainly intended for defining plugin interfaces and writing small test cases.
 
-In the entire codebase we consistently use `mim` / `MIM` for namespaces, macros, CMake variables, etc.
+Throughout the codebase, we consistently use `mim` / `MIM` for namespaces, macros, CMake variables, and related identifiers.
 
 ## 💬 Community
 
