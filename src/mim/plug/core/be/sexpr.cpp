@@ -439,9 +439,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             std::string alias;
             auto nat_val = lit->get<u64>();
             switch (nat_val) {
-                case 0x100: alias = "i8";
-                case 0x1000: alias = "i16";
-                case 0x100000000: alias = "i32";
+                case 0x100: alias = "i8"; break;
+                case 0x10000: alias = "i16"; break;
+                case 0x100000000: alias = "i32"; break;
                 default: break;
             }
             if (!alias.empty())
