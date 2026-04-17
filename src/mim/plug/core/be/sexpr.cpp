@@ -83,6 +83,8 @@ public:
     std::string emit_var(BB& bb, const Def* var, const Def* type);
     std::string emit_head(BB& bb, Lam* lam, bool as_binding = false);
     std::string emit_type(BB& bb, const Def* type);
+    std::string emit_cons(std::vector<std::string> op_vals);
+    std::string emit_node(BB& bb, const Def* def, std::string node_name, bool variadic = false, bool with_type = false);
     std::string emit_bb(BB& bb, const Def* def);
 
 private:
@@ -271,6 +273,7 @@ std::string Emitter::emit_var(BB& bb, const Def* var, const Def* type) {
     if (slotted()) {
         ++tab;
         tab.lnprint(os, "{}", id(var));
+        tab.lnprint(os, "{}", emit_type(bb, type));
         --tab;
         return os.str();
     }
@@ -397,21 +400,12 @@ std::string Emitter::emit_type(BB& bb, const Def* type) {
                     break;
                 }
         }
-        if (auto lit = Lit::isa(index); (lit && tuple->isa<Var>()) || is_nested_proj)
+        if (!slotted() && ((Lit::isa(index) && tuple->isa<Var>()) || is_nested_proj))
             print(os, "{}", id(extract));
         else
             print(os, "(extract {} {})", emit_type(bb, tuple), emit_type(bb, index));
     } else if (auto mType = type->isa<Type>()) {
-        if (auto level = Lit::isa(mType->level())) {
-            if (level == 0)
-                print(os, "(type (lit 0 Univ))");
-            else if (level == 1)
-                print(os, "(type (lit 1 Univ))");
-            else
-                print(os, "(type {})", emit_type(bb, mType->level()));
-        } else {
-            print(os, "(type {})", emit_type(bb, mType->level()));
-        }
+        print(os, "(type {})", emit_type(bb, mType->level()));
     } else if (type->isa<Univ>()) {
         print(os, "Univ");
     } else if (auto reform = type->isa<Reform>()) {
@@ -428,6 +422,81 @@ std::string Emitter::emit_type(BB& bb, const Def* type) {
     return types_[type] = os.str();
 }
 
+// This is primarily needed because slotted-egraphs don't support
+// variadic enodes (yet?) so we have to represent those as nested cons lists
+// i.e. for Tuple: (tuple (cons a (cons b nil)))
+std::string Emitter::emit_cons(std::vector<std::string> op_vals) {
+    std::ostringstream os;
+
+    size_t op_idx = 0;
+    for (auto op_val : op_vals) {
+        ++tab;
+        tab.lnprint(os, "(cons");
+        ++tab;
+        tab.print(os, "{}", indent(tab.indent(), op_val));
+        --tab;
+        if (op_idx == op_vals.size() - 1) tab.lnprint(os, "nil");
+        --tab;
+
+        op_idx++;
+    }
+
+    std::string closing_brackets(op_vals.size(), ')');
+    print(os, "{}", closing_brackets);
+
+    return os.str();
+}
+
+std::string Emitter::emit_node(BB& bb, const Def* def, std::string node_name, bool variadic, bool with_type) {
+    std::ostringstream os;
+
+    std::vector<std::string> op_vals;
+
+    if (with_type) {
+        if (auto type_val = emit_bb(bb, def->type()); !type_val.empty()) op_vals.push_back(type_val);
+    }
+
+    // This is a bit of an edge case? because the ops of a pack don't contain its arity
+    if (auto pack = def->isa<Pack>())
+        if (auto arity_val = emit_bb(bb, pack->arity()); !arity_val.empty()) op_vals.push_back(arity_val);
+
+    for (auto op : def->ops())
+        if (auto op_val = emit_bb(bb, op); !op_val.empty()) op_vals.push_back(op_val);
+
+    if (def->sym().empty()) {
+        tab.lnprint(os, "({}", node_name);
+
+        if (slotted() && variadic)
+            tab.print(os, "{}", emit_cons(op_vals));
+        else
+            for (auto op_val : op_vals)
+                tab.print(os, "{}", op_val);
+
+        print(os, ")");
+
+    } else {
+        bb.assign(tab, id(def), [&](auto& os) {
+            ++tab;
+            tab.lnprint(os, "({}", node_name);
+
+            if (slotted() && variadic)
+                tab.print(os, "{}", emit_cons(op_vals));
+            else {
+                ++tab;
+                for (auto op_val : op_vals)
+                    tab.print(os, "{}", indent(tab.indent(), op_val));
+                --tab;
+            }
+
+            print(os, ")");
+            --tab;
+        });
+        tab.lnprint(os, "{}", id(def, true));
+    }
+
+    return os.str();
+}
+
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     std::ostringstream os;
 
@@ -438,6 +507,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto lam = def->isa<Lam>()) {
         tab.lnprint(os, "{}", id(lam, true));
 
+        // TODO: Lit bindings
     } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
             std::string alias;
@@ -461,37 +531,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             tab.lnprint(os, "(lit {})", lit);
 
     } else if (auto tuple = def->isa<Tuple>()) {
-        tab.lnprint(os, "(tuple");
-        for (auto elem : tuple->ops())
-            if (auto elem_val = emit_bb(bb, elem); !elem_val.empty()) print(os, "{}", elem_val);
-        print(os, ")");
+        tab.print(os, "{}", emit_node(bb, tuple, "tuple", true));
 
     } else if (auto pack = def->isa<Pack>()) {
-        auto arity_val = emit_bb(bb, pack->arity());
-        auto body_val  = emit_bb(bb, pack->body());
-        if (pack->sym().empty()) {
-            tab.lnprint(os, "(pack");
-            tab.print(os, "{}", arity_val);
-            tab.print(os, "{}", body_val);
-            print(os, ")");
-        } else {
-            bb.assign(tab, id(pack), [&](auto& os) {
-                ++tab;
-                tab.lnprint(os, "(pack");
-                ++tab;
-                tab.print(os, "{}", indent(tab.indent(), arity_val));
-                tab.print(os, "{}", indent(tab.indent(), body_val));
-                --tab;
-                print(os, ")");
-                --tab;
-            });
-            tab.lnprint(os, "{}", id(pack, true));
-        }
+        tab.print(os, "{}", emit_node(bb, pack, "pack"));
 
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
-
         // 'tuple' is another extract if we have for example two nested, sigma-typed variables
         // and we are trying to print a named projection of the inner variable. ('baz' in the example below)
         // ex.:  (var foo (sigma (var bar (sigma (var baz Nat)))))
@@ -512,79 +559,19 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                     break;
                 }
         }
-
-        if (!slotted() && ((Lit::isa(index) && tuple->isa<Var>()) || is_nested_proj)) {
+        if (!slotted() && ((Lit::isa(index) && tuple->isa<Var>()) || is_nested_proj))
             tab.lnprint(os, "{}", id(extract));
-        } else if (extract->sym().empty()) {
-            tab.lnprint(os, "(extract");
-            tab.print(os, "{}", emit_bb(bb, tuple));
-            tab.print(os, "{}", emit_bb(bb, index));
-            print(os, ")");
-        } else {
-            auto tuple_val = emit_bb(bb, tuple);
-            auto index_val = emit_bb(bb, index);
-            bb.assign(tab, id(extract), [&](auto& os) {
-                ++tab;
-                tab.lnprint(os, "(extract");
-                ++tab;
-                tab.print(os, "{}", indent(tab.indent(), tuple_val));
-                tab.print(os, "{}", indent(tab.indent(), index_val));
-                --tab;
-                print(os, ")");
-                --tab;
-            });
-            tab.lnprint(os, "{}", id(extract, true));
-        }
+        else
+            tab.print(os, "{}", emit_node(bb, extract, "extract"));
 
     } else if (auto insert = def->isa<Insert>()) {
-        auto tuple_val = emit_bb(bb, insert->tuple());
-        auto index_val = emit_bb(bb, insert->index());
-        auto value_val = emit_bb(bb, insert->value());
-        if (insert->sym().empty()) {
-            tab.lnprint(os, "(insert");
-            tab.print(os, "{}", tuple_val);
-            tab.print(os, "{}", index_val);
-            tab.print(os, "{}", value_val);
-            print(os, ")");
-        } else {
-            bb.assign(tab, id(insert), [&](auto& os) {
-                ++tab;
-                tab.lnprint(os, "(insert");
-                ++tab;
-                tab.print(os, "{}", indent(tab.indent(), tuple_val));
-                tab.print(os, "{}", indent(tab.indent(), index_val));
-                tab.print(os, "{}", indent(tab.indent(), value_val));
-                --tab;
-                print(os, ")");
-                --tab;
-            });
-            tab.lnprint(os, "{}", id(insert, true));
-        }
+        tab.print(os, "{}", emit_node(bb, insert, "insert"));
 
     } else if (auto var = def->isa<Var>()) {
         tab.lnprint(os, "{}", id(var, true));
 
     } else if (auto app = def->isa<App>()) {
-        auto callee_val = emit_bb(bb, app->callee());
-        auto arg_val    = emit_bb(bb, app->arg());
-        if (app->sym().empty()) {
-            tab.lnprint(os, "(app");
-            tab.print(os, "{}", callee_val);
-            tab.print(os, "{}", arg_val);
-            print(os, ")");
-        } else {
-            bb.assign(tab, id(app), [&](auto& os) {
-                ++tab;
-                tab.lnprint(os, "(app");
-                ++tab;
-                tab.print(os, "{}", indent(tab.indent(), callee_val));
-                tab.print(os, "{}", indent(tab.indent(), arg_val));
-                --tab;
-                print(os, ")");
-                --tab;
-            });
-            tab.lnprint(os, "{}", id(app, true));
-        }
+        tab.print(os, "{}", emit_node(bb, app, "app"));
 
     } else if (auto axm = def->isa<Axm>()) {
         tab.lnprint(os, "{}", id(axm));
@@ -615,76 +602,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(decls_, "(rule {} {} {})\n\n", indent(1, lhs_val), indent(1, rhs_val), indent(1, guard_val));
 
     } else if (auto inj = def->isa<Inj>()) {
-        auto type_val  = emit_bb(bb, inj->type());
-        auto value_val = emit_bb(bb, inj->value());
-        if (inj->sym().empty()) {
-            tab.lnprint(os, "(inj");
-            tab.print(os, "{}", type_val);
-            tab.print(os, "{}", value_val);
-            print(os, ")");
-        } else {
-            bb.assign(tab, id(inj), [&](auto& os) {
-                ++tab;
-                tab.lnprint(os, "(inj");
-                ++tab;
-                tab.print(os, "{}", indent(tab.indent(), type_val));
-                tab.print(os, "{}", indent(tab.indent(), value_val));
-                --tab;
-                print(os, ")");
-                --tab;
-            });
-            tab.lnprint(os, "{}", id(inj, true));
-        }
+        tab.print(os, "{}", emit_node(bb, inj, "inj", false, true));
 
     } else if (auto merge = def->isa<Merge>()) {
-        auto type_val = emit_bb(bb, merge->type());
-        std::vector<std::string> value_vals;
-        for (auto value : merge->ops())
-            if (auto value_val = emit_bb(bb, value); !value_val.empty()) value_vals.push_back(value_val);
-
-        if (merge->sym().empty()) {
-            tab.lnprint(os, "(merge");
-            tab.print(os, "{}", type_val);
-            for (auto value_val : value_vals)
-                tab.print(os, "{}", value_val);
-            print(os, ")");
-        } else {
-            bb.assign(tab, id(merge), [&](auto& os) {
-                ++tab;
-                tab.lnprint(os, "(merge");
-                ++tab;
-                for (auto value_val : value_vals)
-                    tab.print(os, "{}", indent(tab.indent(), value_val));
-                --tab;
-                print(os, ")");
-                --tab;
-            });
-            tab.lnprint(os, "{}", id(merge, true));
-        }
+        tab.print(os, "{}", emit_node(bb, merge, "merge", true, true));
 
     } else if (auto match = def->isa<Match>()) {
-        std::vector<std::string> op_vals;
-        for (auto op : match->ops())
-            if (auto op_val = emit_bb(bb, op); !op_val.empty()) op_vals.push_back(op_val);
-
-        if (match->sym().empty()) {
-            tab.lnprint(os, "(match");
-            for (auto op_val : op_vals)
-                tab.print(os, "{}", op_val);
-            print(os, ")");
-        } else {
-            bb.assign(tab, id(match), [&](auto& os) {
-                ++tab;
-                tab.lnprint(os, "(match");
-                ++tab;
-                for (auto op_val : op_vals)
-                    tab.print(os, "{}", indent(tab.indent(), op_val));
-                --tab;
-                print(os, ")");
-                --tab;
-            });
-            tab.lnprint(os, "{}", id(match, true));
-        }
+        tab.print(os, "{}", emit_node(bb, match, "match", true));
 
     } else if (auto proxy = def->isa<Proxy>()) {
         auto type_val = emit_bb(bb, proxy->type());
