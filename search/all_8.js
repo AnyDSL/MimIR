@@ -123,12 +123,13 @@ var searchData=
   ['isa_5fproxy_120',['isa_proxy',['../classmim_1_1Pass.html#aecf198ac657f8ef581878741e2282aef',1,'mim::Pass']]],
   ['isa_5freturning_121',['isa_returning',['../classmim_1_1Pi.html#afe493c2ca2eb3e7e1d484eceb5138356',1,'mim::Pi::isa_returning()'],['../classmim_1_1Lam.html#a527fd77ec7597902c4cbe37e6c0ccf79',1,'mim::Lam::isa_returning()']]],
   ['isa_5fset_122',['isa_set',['../classmim_1_1Hole.html#ac67c922abf10e80101a6442adfc06506',1,'mim::Hole']]],
-  ['isa_5funset_123',['isa_unset',['../classmim_1_1Hole.html#a805da1d774ba0d78bcf3a780362fce0a',1,'mim::Hole']]],
-  ['isanode_124',['IsANode',['../classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode',1,'mim::Axm']]],
-  ['item_20synchronization_125',['Work-Item Synchronization',['../gpu.html#autotoc_md167',1,'']]],
-  ['iterating_20over_20the_20program_126',['Iterating over the Program',['../dev.html#autotoc_md34',1,'']]],
-  ['iterator_127',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html',1,'mim::Sets&lt; D, N &gt;::Set::iterator'],['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator::iterator() noexcept=default']]],
-  ['iterator_5fcategory_128',['iterator_category',['../classmim_1_1Sets_1_1Set_1_1iterator.html#ab299636e45522b09b7da7c97ecc78da2',1,'mim::Sets::Set::iterator']]],
-  ['iterators_129',['Iterators',['../vec.html#autotoc_md303',1,'']]],
-  ['its_5fa_5fmatch_130',['its_a_match',['../classmim_1_1Rule.html#a686d82d5d20cf127fb03d1e380a8d612',1,'mim::Rule']]]
+  ['isa_5ftargetspecific_5fintrinsic_123',['isa_targetspecific_intrinsic',['../classmim_1_1ll_1_1Emitter.html#a951124ee2419d3bd6eefdc1dd8b445b0',1,'mim::ll::Emitter']]],
+  ['isa_5funset_124',['isa_unset',['../classmim_1_1Hole.html#a805da1d774ba0d78bcf3a780362fce0a',1,'mim::Hole']]],
+  ['isanode_125',['IsANode',['../classmim_1_1Axm.html#structmim_1_1Axm_1_1IsANode',1,'mim::Axm']]],
+  ['item_20synchronization_126',['Work-Item Synchronization',['../gpu.html#autotoc_md167',1,'']]],
+  ['iterating_20over_20the_20program_127',['Iterating over the Program',['../dev.html#autotoc_md34',1,'']]],
+  ['iterator_128',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html',1,'mim::Sets&lt; D, N &gt;::Set::iterator'],['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator::iterator() noexcept=default']]],
+  ['iterator_5fcategory_129',['iterator_category',['../classmim_1_1Sets_1_1Set_1_1iterator.html#ab299636e45522b09b7da7c97ecc78da2',1,'mim::Sets::Set::iterator']]],
+  ['iterators_130',['Iterators',['../vec.html#autotoc_md303',1,'']]],
+  ['its_5fa_5fmatch_131',['its_a_match',['../classmim_1_1Rule.html#a686d82d5d20cf127fb03d1e380a8d612',1,'mim::Rule']]]
 ];

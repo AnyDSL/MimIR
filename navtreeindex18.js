@@ -1,5 +1,9 @@
 var NAVTREEINDEX18 =
 {
+"functions_b.html":[4,3,0,1],
+"functions_c.html":[4,3,0,2],
+"functions_d.html":[4,3,0,3],
+"functions_e.html":[4,3,0,4],
 "functions_enum.html":[4,3,4],
 "functions_eval.html":[4,3,5],
 "functions_f.html":[4,3,0,5],
@@ -245,9 +249,5 @@ var NAVTREEINDEX18 =
 "namespacemembers_o.html":[2,1,0,14],
 "namespacemembers_p.html":[2,1,0,15],
 "namespacemembers_q.html":[2,1,0,16],
-"namespacemembers_r.html":[2,1,0,17],
-"namespacemembers_s.html":[2,1,0,18],
-"namespacemembers_t.html":[2,1,0,19],
-"namespacemembers_type.html":[2,1,3],
-"namespacemembers_u.html":[2,1,0,20]
+"namespacemembers_r.html":[2,1,0,17]
 };

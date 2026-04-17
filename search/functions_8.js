@@ -89,7 +89,8 @@ var searchData=
   ['isa_5fproxy_86',['isa_proxy',['../classmim_1_1Pass.html#aecf198ac657f8ef581878741e2282aef',1,'mim::Pass']]],
   ['isa_5freturning_87',['isa_returning',['../classmim_1_1Pi.html#afe493c2ca2eb3e7e1d484eceb5138356',1,'mim::Pi::isa_returning()'],['../classmim_1_1Lam.html#a527fd77ec7597902c4cbe37e6c0ccf79',1,'mim::Lam::isa_returning()']]],
   ['isa_5fset_88',['isa_set',['../classmim_1_1Hole.html#ac67c922abf10e80101a6442adfc06506',1,'mim::Hole']]],
-  ['isa_5funset_89',['isa_unset',['../classmim_1_1Hole.html#a805da1d774ba0d78bcf3a780362fce0a',1,'mim::Hole']]],
-  ['iterator_90',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator']]],
-  ['its_5fa_5fmatch_91',['its_a_match',['../classmim_1_1Rule.html#a686d82d5d20cf127fb03d1e380a8d612',1,'mim::Rule']]]
+  ['isa_5ftargetspecific_5fintrinsic_89',['isa_targetspecific_intrinsic',['../classmim_1_1ll_1_1Emitter.html#a951124ee2419d3bd6eefdc1dd8b445b0',1,'mim::ll::Emitter']]],
+  ['isa_5funset_90',['isa_unset',['../classmim_1_1Hole.html#a805da1d774ba0d78bcf3a780362fce0a',1,'mim::Hole']]],
+  ['iterator_91',['iterator',['../classmim_1_1Sets_1_1Set_1_1iterator.html#a6411d871b0f0b7c4815fece26f323708',1,'mim::Sets::Set::iterator']]],
+  ['its_5fa_5fmatch_92',['its_a_match',['../classmim_1_1Rule.html#a686d82d5d20cf127fb03d1e380a8d612',1,'mim::Rule']]]
 ];

@@ -116,6 +116,8 @@ $(function(){initNavTree('classmim_1_1ll_1_1Emitter.html','','classmim_1_1ll_1_1
   <div class="headertitle"><div class="title">mim::ll::Emitter Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="ll_8h_source.html">mim/plug/core/be/ll.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for mim::ll::Emitter:</div>
 <div class="dyncontent">
@@ -133,10 +135,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5aea82862b4a3573857ac4080a01e789" id="r_a5aea82862b4a3573857ac4080a01e789"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5aea82862b4a3573857ac4080a01e789">start</a> () override</td></tr>
 <tr class="memdesc:a5aea82862b4a3573857ac4080a01e789"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual entry.  <br /></td></tr>
 <tr class="memitem:a18166d6e69e33271c9980169eb2912d0" id="r_a18166d6e69e33271c9980169eb2912d0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a18166d6e69e33271c9980169eb2912d0">emit_imported</a> (<a class="el" href="classmim_1_1Lam.html">Lam</a> *)</td></tr>
-<tr class="memitem:adcc93c368ca5bcfd407d1ed764c5e35f" id="r_adcc93c368ca5bcfd407d1ed764c5e35f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#adcc93c368ca5bcfd407d1ed764c5e35f">emit_epilogue</a> (<a class="el" href="classmim_1_1Lam.html">Lam</a> *)</td></tr>
+<tr class="memitem:adcc93c368ca5bcfd407d1ed764c5e35f" id="r_adcc93c368ca5bcfd407d1ed764c5e35f"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#adcc93c368ca5bcfd407d1ed764c5e35f">emit_epilogue</a> (<a class="el" href="classmim_1_1Lam.html">Lam</a> *)</td></tr>
 <tr class="memitem:a5fce8e3e895e559e8a970cab8752cb9b" id="r_a5fce8e3e895e559e8a970cab8752cb9b"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a5fce8e3e895e559e8a970cab8752cb9b">emit_bb</a> (<a class="el" href="structmim_1_1ll_1_1BB.html">BB</a> &amp;, const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
-<tr class="memitem:a3125973a7f9b998d59ab1753d43ce786" id="r_a3125973a7f9b998d59ab1753d43ce786"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a3125973a7f9b998d59ab1753d43ce786">prepare</a> ()</td></tr>
+<tr class="memitem:a3125973a7f9b998d59ab1753d43ce786" id="r_a3125973a7f9b998d59ab1753d43ce786"><td class="memItemLeft">virtual std::string&#160;</td><td class="memItemRight"><a class="el" href="#a3125973a7f9b998d59ab1753d43ce786">prepare</a> ()</td></tr>
 <tr class="memitem:a366e1798c273b916f429f7dd33c1a0e6" id="r_a366e1798c273b916f429f7dd33c1a0e6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a366e1798c273b916f429f7dd33c1a0e6">finalize</a> ()</td></tr>
+<tr class="memitem:a951124ee2419d3bd6eefdc1dd8b445b0" id="r_a951124ee2419d3bd6eefdc1dd8b445b0"><td class="memItemLeft">virtual std::optional&lt; std::string &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a951124ee2419d3bd6eefdc1dd8b445b0">isa_targetspecific_intrinsic</a> (<a class="el" href="structmim_1_1ll_1_1BB.html">BB</a> &amp;, const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
+<tr class="memitem:a403457a5cbd2d6ffa620c3c08111102d" id="r_a403457a5cbd2d6ffa620c3c08111102d"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a403457a5cbd2d6ffa620c3c08111102d">as_targetspecific_intrinsic</a> (<a class="el" href="structmim_1_1ll_1_1BB.html">BB</a> &amp;bb, const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="memitem:af3d0b65f073435071f723f699e8f05ca" id="r_af3d0b65f073435071f723f699e8f05ca"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
 <tr class="memitem:af3d0b65f073435071f723f699e8f05ca template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af3d0b65f073435071f723f699e8f05ca">declare</a> (const char *s, Args &amp;&amp;... args)</td></tr>
 <tr class="inherit_header pub_methods_classmim_1_1NestPhase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classmim_1_1NestPhase')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classmim_1_1NestPhase.html">mim::NestPhase&lt; Lam &gt;</a></td></tr>
@@ -204,7 +208,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00109">109</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00115">115</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 </div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
 <a id="ad5dad6431ffc8fb3d803e7c43fcf0722" name="ad5dad6431ffc8fb3d803e7c43fcf0722"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad5dad6431ffc8fb3d803e7c43fcf0722">&#9670;&#160;</a></span>Super</h2>
@@ -218,7 +222,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00111">111</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00117">117</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
 </div>
 </div>
@@ -250,13 +254,46 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00113">113</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00119">119</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
 <p class="reference">References <a class="el" href="emitter_8h_source.html#l00031">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::ostream()</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a403457a5cbd2d6ffa620c3c08111102d" name="a403457a5cbd2d6ffa620c3c08111102d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a403457a5cbd2d6ffa620c3c08111102d">&#9670;&#160;</a></span>as_targetspecific_intrinsic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string mim::ll::Emitter::as_targetspecific_intrinsic </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmim_1_1ll_1_1BB.html">BB</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>bb</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00131">131</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
+
+<p class="reference">References <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, <a class="el" href="ll_8h_source.html#l00130">isa_targetspecific_intrinsic()</a>, and <a class="el" href="def_8cpp_source.html#l00447">mim::Def::type()</a>.</p>
+
+</div>
+</div>
 <a id="af3d0b65f073435071f723f699e8f05ca" name="af3d0b65f073435071f723f699e8f05ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af3d0b65f073435071f723f699e8f05ca">&#9670;&#160;</a></span>declare()</h2>
 
@@ -286,11 +323,11 @@ template&lt;class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00125">125</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00137">137</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00534">emit_bb()</a>, and <a class="el" href="ll_8cpp_source.html#l00368">emit_epilogue()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8h_source.html#l00547">emit_bb()</a>, and <a class="el" href="ll_8h_source.html#l00381">emit_epilogue()</a>.</p>
 
 </div>
 </div>
@@ -299,6 +336,9 @@ template&lt;class... Args&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::string mim::ll::Emitter::emit_bb </td>
@@ -311,11 +351,16 @@ template&lt;class... Args&gt; </div>
           <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>def</em></span>&#160;)</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00534">534</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00547">547</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00285">mim::App::arg()</a>, <a class="el" href="axm_8h_source.html#l00130">mim::Axm::as()</a>, <a class="el" href="def_8h_source.html#l00832">mim::Lit::as()</a>, <a class="el" href="ll_8cpp_source.html#l00089">mim::ll::BB::assign()</a>, <a class="el" href="plugin_8h_source.html#l00119">mim::Annex::base()</a>, <a class="el" href="util_8h_source.html#l00023">mim::bitcast()</a>, <a class="el" href="ll_8cpp_source.html#l00085">mim::ll::BB::body()</a>, <a class="el" href="ll_8cpp_source.html#l00125">declare()</a>, <a class="el" href="emitter_8h_source.html#l00036">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::emit()</a>, <a class="el" href="emitter_8h_source.html#l00043">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::emit_unsafe()</a>, <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, <a class="el" href="emitter_8h_source.html#l00088">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::globals_</a>, <a class="el" href="ll_8cpp_source.html#l00148">mim::ll::is_simd()</a>, <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="def_8cpp_source.html#l00611">mim::Idx::isa()</a>, <a class="el" href="def_8h_source.html#l00826">mim::Lit::isa()</a>, <a class="el" href="emitter_8h_source.html#l00090">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::lam2bb_</a>, <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="def_8cpp_source.html#l00588">mim::Def::proj()</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, <a class="el" href="phase_8h_source.html#l00304">mim::ClosedMutPhase&lt; Lam &gt;::root()</a>, <a class="el" href="def_8h_source.html#l00893">mim::Idx::size2bitwidth()</a>, <a class="el" href="ll_8cpp_source.html#l00086">mim::ll::BB::tail()</a>, and <a class="el" href="def_8cpp_source.html#l00447">mim::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00285">mim::App::arg()</a>, <a class="el" href="axm_8h_source.html#l00130">mim::Axm::as()</a>, <a class="el" href="def_8h_source.html#l00832">mim::Lit::as()</a>, <a class="el" href="ll_8h_source.html#l00095">mim::ll::BB::assign()</a>, <a class="el" href="plugin_8h_source.html#l00119">mim::Annex::base()</a>, <a class="el" href="util_8h_source.html#l00023">mim::bitcast()</a>, <a class="el" href="ll_8h_source.html#l00091">mim::ll::BB::body()</a>, <a class="el" href="ll_8h_source.html#l00137">declare()</a>, <a class="el" href="emitter_8h_source.html#l00036">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::emit()</a>, <a class="el" href="emitter_8h_source.html#l00043">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::emit_unsafe()</a>, <a class="el" href="dbg_8h_source.html#l00125">mim::error()</a>, <a class="el" href="emitter_8h_source.html#l00088">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::globals_</a>, <a class="el" href="ll_8h_source.html#l00160">mim::ll::is_simd()</a>, <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="def_8cpp_source.html#l00611">mim::Idx::isa()</a>, <a class="el" href="def_8h_source.html#l00826">mim::Lit::isa()</a>, <a class="el" href="ll_8h_source.html#l00130">isa_targetspecific_intrinsic()</a>, <a class="el" href="emitter_8h_source.html#l00090">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::lam2bb_</a>, <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="def_8cpp_source.html#l00588">mim::Def::proj()</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, <a class="el" href="phase_8h_source.html#l00304">mim::ClosedMutPhase&lt; Lam &gt;::root()</a>, <a class="el" href="def_8h_source.html#l00893">mim::Idx::size2bitwidth()</a>, <a class="el" href="ll_8h_source.html#l00092">mim::ll::BB::tail()</a>, and <a class="el" href="def_8cpp_source.html#l00447">mim::Def::type()</a>.</p>
 
 </div>
 </div>
@@ -324,6 +369,9 @@ template&lt;class... Args&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void mim::ll::Emitter::emit_epilogue </td>
@@ -332,11 +380,16 @@ template&lt;class... Args&gt; </div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00368">368</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00381">381</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00123">mim::Lam::body()</a>, <a class="el" href="ll_8cpp_source.html#l00125">declare()</a>, <a class="el" href="emitter_8h_source.html#l00036">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::emit()</a>, <a class="el" href="emitter_8h_source.html#l00043">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::emit_unsafe()</a>, <a class="el" href="ll_8cpp_source.html#l00166">mim::ll::find_common_simd_src()</a>, <a class="el" href="ll_8cpp_source.html#l00148">mim::ll::is_simd()</a>, <a class="el" href="ll_8cpp_source.html#l00157">mim::ll::is_simd_aggregate()</a>, <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="lam_8h_source.html#l00145">mim::Lam::isa_mut_basicblock()</a>, <a class="el" href="lam_8h_source.html#l00049">mim::Pi::isa_returning()</a>, <a class="el" href="emitter_8h_source.html#l00090">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::lam2bb_</a>, <a class="el" href="emitter_8h_source.html#l00087">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::locals_</a>, <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, <a class="el" href="def_8h_source.html#l00429">mim::Def::num_vars()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="phase_8h_source.html#l00304">mim::ClosedMutPhase&lt; Lam &gt;::root()</a>, <a class="el" href="def_8h_source.html#l00429">mim::Def::var()</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00123">mim::Lam::body()</a>, <a class="el" href="ll_8h_source.html#l00137">declare()</a>, <a class="el" href="emitter_8h_source.html#l00036">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::emit()</a>, <a class="el" href="emitter_8h_source.html#l00043">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::emit_unsafe()</a>, <a class="el" href="ll_8h_source.html#l00179">mim::ll::find_common_simd_src()</a>, <a class="el" href="ll_8h_source.html#l00160">mim::ll::is_simd()</a>, <a class="el" href="ll_8h_source.html#l00170">mim::ll::is_simd_aggregate()</a>, <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="lam_8h_source.html#l00145">mim::Lam::isa_mut_basicblock()</a>, <a class="el" href="lam_8h_source.html#l00049">mim::Pi::isa_returning()</a>, <a class="el" href="emitter_8h_source.html#l00090">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::lam2bb_</a>, <a class="el" href="emitter_8h_source.html#l00087">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::locals_</a>, <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, <a class="el" href="def_8h_source.html#l00429">mim::Def::num_vars()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="phase_8h_source.html#l00304">mim::ClosedMutPhase&lt; Lam &gt;::root()</a>, <a class="el" href="def_8h_source.html#l00429">mim::Def::var()</a>, and <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
 
 </div>
 </div>
@@ -345,6 +398,9 @@ template&lt;class... Args&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void mim::ll::Emitter::emit_imported </td>
@@ -353,9 +409,14 @@ template&lt;class... Args&gt; </div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00288">288</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00301">301</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
 <p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="lam_8cpp_source.html#l00013">mim::Pi::ret_pi()</a>, and <a class="el" href="lam_8h_source.html#l00130">mim::Lam::type()</a>.</p>
 
@@ -366,6 +427,9 @@ template&lt;class... Args&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void mim::ll::Emitter::finalize </td>
@@ -374,9 +438,14 @@ template&lt;class... Args&gt; </div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00322">322</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00335">335</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
 <p class="reference">References <a class="el" href="emitter_8h_source.html#l00090">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::lam2bb_</a>, <a class="el" href="phase_8h_source.html#l00320">mim::NestPhase&lt; Lam &gt;::nest()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="schedule_8cpp_source.html#l00118">mim::Scheduler::schedule()</a>, and <a class="el" href="emitter_8h_source.html#l00024">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::tab</a>.</p>
 
@@ -405,7 +474,40 @@ template&lt;class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00116">116</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00122">122</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
+
+</div>
+</div>
+<a id="a951124ee2419d3bd6eefdc1dd8b445b0" name="a951124ee2419d3bd6eefdc1dd8b445b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a951124ee2419d3bd6eefdc1dd8b445b0">&#9670;&#160;</a></span>isa_targetspecific_intrinsic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::optional&lt; std::string &gt; mim::ll::Emitter::isa_targetspecific_intrinsic </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structmim_1_1ll_1_1BB.html">BB</a> &amp;</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00130">130</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8h_source.html#l00131">as_targetspecific_intrinsic()</a>, and <a class="el" href="ll_8h_source.html#l00547">emit_bb()</a>.</p>
 
 </div>
 </div>
@@ -414,6 +516,9 @@ template&lt;class... Args&gt; </div>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::string mim::ll::Emitter::prepare </td>
@@ -422,11 +527,16 @@ template&lt;class... Args&gt; </div>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00302">302</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00315">315</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00467">mim::Def::is_external()</a>, <a class="el" href="ll_8cpp_source.html#l00148">mim::ll::is_simd()</a>, <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="emitter_8h_source.html#l00087">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::locals_</a>, <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="phase_8h_source.html#l00304">mim::ClosedMutPhase&lt; Lam &gt;::root()</a>, <a class="el" href="def_8cpp_source.html#l00579">mim::Def::unique_name()</a>, and <a class="el" href="def_8h_source.html#l00429">mim::Def::vars()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00467">mim::Def::is_external()</a>, <a class="el" href="ll_8h_source.html#l00160">mim::ll::is_simd()</a>, <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="emitter_8h_source.html#l00087">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::locals_</a>, <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, <a class="el" href="print_8cpp_source.html#l00005">mim::print()</a>, <a class="el" href="phase_8h_source.html#l00304">mim::ClosedMutPhase&lt; Lam &gt;::root()</a>, <a class="el" href="def_8cpp_source.html#l00579">mim::Def::unique_name()</a>, and <a class="el" href="def_8h_source.html#l00429">mim::Def::vars()</a>.</p>
 
 </div>
 </div>
@@ -448,7 +558,7 @@ template&lt;class... Args&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -457,14 +567,14 @@ template&lt;class... Args&gt; </div>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1ClosedMutPhase.html#a26a7a4b7283d2218eee8d361fb3b7738">mim::ClosedMutPhase&lt; Lam &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00277">277</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8h_source.html#l00290">290</a> of file <a class="el" href="ll_8h_source.html">ll.h</a>.</p>
 
 <p class="reference">References <a class="el" href="emitter_8h_source.html#l00031">mim::Emitter&lt; std::string, std::string, BB, Emitter &gt;::ostream()</a>, and <a class="el" href="classmim_1_1Phase.html#ac440f59a1682e69dcc4327bda527ce9d">mim::Phase::start()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/mim/plug/core/be/<a class="el" href="ll_8cpp_source.html">ll.cpp</a></li>
+<li>include/mim/plug/core/be/<a class="el" href="ll_8h_source.html">ll.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

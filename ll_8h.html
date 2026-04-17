@@ -110,16 +110,32 @@ $(function(){initNavTree('ll_8h.html','',''); });
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">ll.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;ostream&gt;</code><br />
+<div class="textblock"><code>#include &lt;deque&gt;</code><br />
+<code>#include &lt;format&gt;</code><br />
+<code>#include &lt;iomanip&gt;</code><br />
+<code>#include &lt;optional&gt;</code><br />
+<code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;ranges&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;absl/container/btree_set.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="clos_8h_source.html">mim/plug/clos/clos.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="math_8h_source.html">mim/plug/math/math.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="mem_8h_source.html">mim/plug/mem/mem.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="vec_8h_source.html">mim/plug/vec/vec.h</a>&gt;</code><br />
+<code>#include &quot;<a class="el" href="emitter_8h_source.html">mim/be/emitter.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="print_8h_source.html">mim/util/print.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="core_8h_source.html">mim/plug/core/core.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="math_2autogen_8h_source.html">mim/plug/math/autogen.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ll.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" loading="lazy" frameborder="0" src="ll_8h__incl.svg" width="178" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" loading="lazy" frameborder="0" src="ll_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -129,6 +145,11 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="ll_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:mim_3A_3All_3A_3ABB" id="r_mim_3A_3All_3A_3ABB"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structmim_1_1ll_1_1BB.html">mim::ll::BB</a></td></tr>
+<tr class="memitem:mim_3A_3All_3A_3AEmitter" id="r_mim_3A_3All_3A_3AEmitter"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1ll_1_1Emitter.html">mim::ll::Emitter</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:mim" id="r_mim"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespacemim.html">mim</a></td></tr>
@@ -140,6 +161,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8853938d8898dc6f8759f6cfe4e7ff95" id="r_a8853938d8898dc6f8759f6cfe4e7ff95"><td class="memItemLeft"><a class="el" href="namespace_3globalScope_4.html#classint">int</a>&#160;</td><td class="memItemRight"><a class="el" href="namespacemim_1_1ll.html#a8853938d8898dc6f8759f6cfe4e7ff95">mim::ll::compile</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, std::string name)</td></tr>
 <tr class="memitem:a58f332ff50319041ec5458482d1de347" id="r_a58f332ff50319041ec5458482d1de347"><td class="memItemLeft"><a class="el" href="namespace_3globalScope_4.html#classint">int</a>&#160;</td><td class="memItemRight"><a class="el" href="namespacemim_1_1ll.html#a58f332ff50319041ec5458482d1de347">mim::ll::compile</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, std::string <a class="el" href="namespacemim_1_1ll.html">ll</a>, std::string out)</td></tr>
 <tr class="memitem:a469e9639fe5031433849021ed17047ea" id="r_a469e9639fe5031433849021ed17047ea"><td class="memItemLeft"><a class="el" href="namespace_3globalScope_4.html#classint">int</a>&#160;</td><td class="memItemRight"><a class="el" href="namespacemim_1_1ll.html#a469e9639fe5031433849021ed17047ea">mim::ll::compile_and_run</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, std::string name, std::string args={})</td></tr>
+<tr class="memitem:a2cc504748af4aaca125bef5f9defaa21" id="r_a2cc504748af4aaca125bef5f9defaa21"><td class="memItemLeft">static std::optional&lt; std::pair&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="namespacemim_1_1ll.html#a2cc504748af4aaca125bef5f9defaa21">mim::ll::is_simd</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *type)</td></tr>
+<tr class="memitem:a1d8c2532cd5cfa3288be089807d72f7d" id="r_a1d8c2532cd5cfa3288be089807d72f7d"><td class="memItemLeft">static std::optional&lt; std::pair&lt; <a class="el" href="namespacemim.html#a02aae51c2293663cb7352f21c7fbe490">nat_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="namespacemim_1_1ll.html#a1d8c2532cd5cfa3288be089807d72f7d">mim::ll::is_simd_aggregate</a> (const std::vector&lt; const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt; types)</td></tr>
+<tr class="memitem:a12deda00b07bcfa0b674e0fb8b84f7ce" id="r_a12deda00b07bcfa0b674e0fb8b84f7ce"><td class="memItemLeft">static const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="namespacemim_1_1ll.html#a12deda00b07bcfa0b674e0fb8b84f7ce">mim::ll::find_common_simd_src</a> (const <a class="el" href="classmim_1_1App.html">App</a> *app)</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
