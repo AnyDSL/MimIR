@@ -1,7 +1,7 @@
 use crate::find_node;
 use crate::mim_std::Mim;
 use crate::mim_std::Mim::*;
-use crate::mim_std::analysis::{Const, MimAnalysis};
+use crate::mim_std::analysis::{AnalysisData, MimAnalysis};
 use egg::*;
 use std::cmp::max;
 
@@ -166,10 +166,6 @@ fn ncmp_false() -> Rewrite<Mim, MimAnalysis> {
     Rewrite::new("ncmp_false", pat, outpat).unwrap()
 }
 
-// TODO:
-/* core.bit1 */
-/* core.bit2 */
-
 /* core.shr */
 
 fn shr_arith_val0() -> Rewrite<Mim, MimAnalysis> {
@@ -208,8 +204,6 @@ fn shr_logical_amount0() -> Rewrite<Mim, MimAnalysis> {
     Rewrite::new("shr_logical_amount0", pat, outpat).unwrap()
 }
 
-// TODO: finish today and then look into constant folding some more (math.rs and prop.rs)
-
 /* core.wrap */
 
 fn wrap_add0() -> Rewrite<Mim, MimAnalysis> {
@@ -220,16 +214,6 @@ fn wrap_add0() -> Rewrite<Mim, MimAnalysis> {
 
     Rewrite::new("wrap_add0", pat, outpat).unwrap()
 }
-
-// TODO: how to get the type for (lit 2 ?type)
-// fn wrap_add_equal() -> Rewrite<Mim, MimAnalysis> {
-//     let pat: Pattern<Mim> = "(app (app %core.wrap.add ?mode) (tuple ?a ?a))"
-//         .parse()
-//         .unwrap();
-//     let outpat: Pattern<Mim> = "(app (app %core.wrap.mul ?mode) (tuple ?a (lit 2 ?type))".parse().unwrap();
-//
-//     Rewrite::new("wrap_add_equal", pat, outpat).unwrap()
-// }
 
 fn wrap_commute_add() -> Rewrite<Mim, MimAnalysis> {
     let pat: Pattern<Mim> = "(app (app %core.wrap.add ?mode) (tuple ?a ?b))"
@@ -250,16 +234,6 @@ fn wrap_sub0() -> Rewrite<Mim, MimAnalysis> {
 
     Rewrite::new("wrap_sub0", pat, outpat).unwrap()
 }
-
-// TODO: how to get the type for (lit 0 ?type)
-// fn wrap_sub_equal() -> Rewrite<Mim, MimAnalysis> {
-//     let pat: Pattern<Mim> = "(app (app %core.wrap.sub ?mode) (tuple ?a ?a))"
-//         .parse()
-//         .unwrap();
-//     let outpat: Pattern<Mim> = "(lit 0 ?type)".parse().unwrap();
-//
-//     Rewrite::new("wrap_sub_equal", pat, outpat).unwrap()
-// }
 
 fn wrap_mul0() -> Rewrite<Mim, MimAnalysis> {
     let pat: Pattern<Mim> = "(app (app %core.wrap.mul ?mode) (tuple ?a (lit 0 ?type)))"
@@ -382,43 +356,6 @@ fn div_urem1() -> Rewrite<Mim, MimAnalysis> {
     Rewrite::new("div_urem1", pat, outpat).unwrap()
 }
 
-// TODO: figure out how to get ?type for the output literal
-// fn div_sdiv_equal() -> Rewrite<Mim, MimAnalysis> {
-//     let pat: Pattern<Mim> = "(app %core.div.sdiv (tuple ?mem (lit 0 ?type) ?a))"
-//         .parse()
-//         .unwrap();
-//     let outpat: Pattern<Mim> = "(lit 0 ?type)".parse().unwrap();
-//
-//     Rewrite::new("div_sdiv0", pat, outpat).unwrap()
-// }
-//
-// fn div_udiv_equal() -> Rewrite<Mim, MimAnalysis> {
-//     let pat: Pattern<Mim> = "(app %core.div.udiv (tuple ?mem (lit 0 ?type) ?a))"
-//         .parse()
-//         .unwrap();
-//     let outpat: Pattern<Mim> = "(lit 0 ?type)".parse().unwrap();
-//
-//     Rewrite::new("div_udiv0", pat, outpat).unwrap()
-// }
-//
-// fn div_srem_equal() -> Rewrite<Mim, MimAnalysis> {
-//     let pat: Pattern<Mim> = "(app %core.div.srem (tuple ?mem (lit 0 ?type) ?a))"
-//         .parse()
-//         .unwrap();
-//     let outpat: Pattern<Mim> = "(lit 0 ?type)".parse().unwrap();
-//
-//     Rewrite::new("div_srem0", pat, outpat).unwrap()
-// }
-//
-// fn div_urem_equal() -> Rewrite<Mim, MimAnalysis> {
-//     let pat: Pattern<Mim> = "(app %core.div.urem (tuple ?mem (lit 0 ?type) ?a))"
-//         .parse()
-//         .unwrap();
-//     let outpat: Pattern<Mim> = "(lit 0 ?type)".parse().unwrap();
-//
-//     Rewrite::new("div_urem0", pat, outpat).unwrap()
-// }
-
 /* helpers */
 
 fn idx_size(type_: &Mim) -> i32 {
@@ -438,22 +375,70 @@ fn idx_size(type_: &Mim) -> i32 {
     panic!("expected Idx type");
 }
 
-fn new_const(val: Option<Mim>, type_: Option<Mim>) -> Option<Const> {
-    Some(Const { val, type_ })
+fn new_const(val: Option<Mim>, type_: Option<Mim>) -> Option<CoreConst> {
+    Some(CoreConst { val, type_ })
 }
 
-fn bool_lit(tt: bool) -> Option<Const> {
+fn bool_lit(tt: bool) -> Option<CoreConst> {
     let ret_val = if tt { "tt" } else { "ff" }.to_string();
     new_const(Some(Symbol(ret_val)), None)
 }
 
-fn nat_lit(n: i64) -> Option<Const> {
+fn nat_lit(n: i64) -> Option<CoreConst> {
     new_const(Some(Num(n)), None)
 }
 
 /* constant folding */
 
-pub fn fold_core(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const> {
+pub type CoreData = Option<CoreConst>;
+
+#[derive(Debug, Clone)]
+pub struct CoreConst {
+    val: Option<Mim>,
+    type_: Option<Mim>,
+}
+
+pub fn core_merge(a: &mut AnalysisData, b: AnalysisData) -> DidMerge {
+    if a.core_data.is_none() && b.core_data.is_some() {
+        a.core_data = b.core_data;
+        DidMerge(true, false)
+    } else {
+        DidMerge(false, false)
+    }
+}
+
+pub fn core_make(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim, _id: Id) -> AnalysisData {
+    AnalysisData {
+        core_data: fold_core(egraph, enode),
+    }
+}
+
+pub fn core_modify(egraph: &mut EGraph<Mim, MimAnalysis>, id: Id) {
+    if let Some(CoreConst {
+        val: Some(c),
+        type_,
+    }) = egraph[id].data.core_data.clone()
+    {
+        let const_id = egraph.add(c);
+        if let Some(t) = type_ {
+            // Case 1: (lit <const> <type>)
+            let type_id = egraph.add(t);
+            let lit_id = egraph.add(Lit(Box::new([const_id, type_id])));
+            egraph.union(id, lit_id);
+        } else {
+            // Case 2: (lit <const>)
+            let lit_id = egraph.add(Lit(Box::new([const_id])));
+            egraph.union(id, lit_id);
+        }
+    }
+}
+
+// Can be used to create conditional rewrite rules like (foo ?a) => (bar ?a) if is_const(var("?a"))
+fn _is_const(v: egg::Var) -> impl Fn(&mut EGraph<Mim, MimAnalysis>, Id, &Subst) -> bool {
+    move |eg, _, subst| eg[subst[v]].data.core_data.is_some()
+}
+
+pub fn fold_core(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
     if let Lit(l) = enode
         && let Some(v) = egraph[l[0]].nodes.first()
     {
@@ -484,8 +469,8 @@ pub fn fold_core(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<C
     None
 }
 
-fn fold_nat(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const> {
-    let c = |id: &Id| egraph[*id].data.constant.clone();
+fn fold_nat(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
+    let c = |id: &Id| egraph[*id].data.core_data.clone();
 
     if let App([callee, arg]) = enode
         && let Some(s) = find_node!(egraph, callee, Symbol(s) => s)
@@ -507,8 +492,8 @@ fn fold_nat(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const>
 
 // TODO: gather more info about how idx literals are printed
 // to ensure that the conditional and the plusminus stuff is going to work
-fn fold_icmp(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const> {
-    let c = |id: &Id| egraph[*id].data.constant.clone();
+fn fold_icmp(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
+    let c = |id: &Id| egraph[*id].data.core_data.clone();
 
     if let App([callee, arg]) = enode
         && let Some(s) = find_node!(egraph, callee, Symbol(s) => s)
@@ -544,8 +529,8 @@ fn fold_icmp(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const
     None
 }
 
-fn fold_ncmp(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const> {
-    let c = |id: &Id| egraph[*id].data.constant.clone();
+fn fold_ncmp(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
+    let c = |id: &Id| egraph[*id].data.core_data.clone();
 
     if let App([callee, arg]) = enode
         && let Some(s) = find_node!(egraph, callee, Symbol(s) => s)
@@ -568,8 +553,8 @@ fn fold_ncmp(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const
     None
 }
 
-fn fold_shr(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const> {
-    let c = |id: &Id| egraph[*id].data.constant.clone();
+fn fold_shr(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
+    let c = |id: &Id| egraph[*id].data.core_data.clone();
 
     if let App([callee, arg]) = enode
         && let Some(s) = find_node!(egraph, callee, Symbol(s) => s)
@@ -590,8 +575,8 @@ fn fold_shr(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const>
     None
 }
 
-fn fold_wrap(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const> {
-    let c = |id: &Id| egraph[*id].data.constant.clone();
+fn fold_wrap(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
+    let c = |id: &Id| egraph[*id].data.core_data.clone();
 
     // (app (app %core.wrap.(add,sub,mul,shl) [mode: Nat]) <<2; Idx s>>)
     if let App([callee, arg]) = enode
@@ -616,8 +601,8 @@ fn fold_wrap(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const
     None
 }
 
-fn fold_div(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<Const> {
-    let c = |id: &Id| egraph[*id].data.constant.clone();
+fn fold_div(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
+    let c = |id: &Id| egraph[*id].data.core_data.clone();
 
     // (app %core.div.(udiv,sdiv,urem,srem) [%mem.M 0, <<2; Idx s>>])
     if let App([callee, arg]) = enode
