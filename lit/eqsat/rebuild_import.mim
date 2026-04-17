@@ -1,6 +1,6 @@
 // RUN: %mim %s -o -
 plugin core;
-// plugin eqsat;
+plugin eqsat;
 
 ccon atoi[%mem.M 0, %mem.Ptr («⊤:Nat; I8», 0), Cn [%mem.M 0, I32]];
 

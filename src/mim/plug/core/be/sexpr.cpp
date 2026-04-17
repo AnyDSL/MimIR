@@ -459,6 +459,10 @@ std::string Emitter::emit_node(BB& bb, const Def* def, std::string node_name, bo
         if (auto type_val = emit_bb(bb, def->type()); !type_val.empty()) op_vals.push_back(type_val);
     }
 
+    // This is a bit of an edge case? because the ops of a pack don't contain its arity
+    if (auto pack = def->isa<Pack>())
+        if (auto arity_val = emit_bb(bb, pack->arity()); !arity_val.empty()) op_vals.push_back(arity_val);
+
     for (auto op : def->ops())
         if (auto op_val = emit_bb(bb, op); !op_val.empty()) op_vals.push_back(op_val);
 
@@ -603,7 +607,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
               indent(1, rhs_val), indent(1, guard_val));
 
     } else if (auto inj = def->isa<Inj>()) {
-        tab.print(os, "{}", emit_node(bb, inj, "inj"));
+        tab.print(os, "{}", emit_node(bb, inj, "inj", false, true));
 
     } else if (auto merge = def->isa<Merge>()) {
         tab.print(os, "{}", emit_node(bb, merge, "merge", true, true));
