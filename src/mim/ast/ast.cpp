@@ -154,6 +154,57 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     tab.print(h, "\n#endif\n");
 }
 
+void AST::bootstrap_python(Sym plugin, std::ostream& h){
+    Tab tab;
+    plugin_t plugin_id = *Annex::mangle(plugin);
+
+    tab.print(h, "from enum import IntEnum\n\n");
+    tab.print(h, "class {}(IntEnum):\n", plugin);
+    ++tab;
+    tab.print(h, "ID = 0x{}\n", plugin_id);
+    std::vector<mim::ast::AnnexInfo> annexes_with_subs;
+
+    const auto& unordered = plugin2annexes(plugin);
+    std::deque<std::pair<Sym, AnnexInfo>> infos(unordered.begin(), unordered.end());
+    std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.id.tag < p2.second.id.tag; });
+    for (const auto& [key, annex] : infos) {
+        const auto& sym = annex.sym;
+        if (sym.plugin != plugin) continue;
+
+        flags_t ax_id = plugin_id | (annex.id.tag << 8u);
+
+        if(auto& subs = annex.subs; subs.empty()){
+            tab.print(h,"{} = 0x{x}\n", sym.tag, ax_id);
+        }
+        else{
+            annexes_with_subs.push_back(annex);
+        }
+
+    }
+    tab.print(h, "\n");
+    if(annexes_with_subs.size() != 0){
+        bootstrap_python_subs(annexes_with_subs, plugin, tab, h);
+    }
+}
+
+void AST::bootstrap_python_subs(std::vector<mim::ast::AnnexInfo> annexes_with_subs, Sym plugin, Tab& tab, std::ostream& h){
+    plugin_t plugin_id = *Annex::mangle(plugin);
+    for(const auto& annex : annexes_with_subs){
+
+        flags_t ax_id = plugin_id | (annex.id.tag << 8u);
+        tab.print(h, "class {}(IntEnum):\n", annex.sym.tag);
+        ++tab;
+
+        for (const auto& sub : annex.subs) {
+            tab.print(h, "{} = 0x{x},\n", sub, ax_id++);
+        }
+        
+        --tab;
+        tab.print(h, "\n\n");
+    }
+}
+
+
 /*
  * Other
  */

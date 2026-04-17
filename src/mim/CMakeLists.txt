@@ -90,5 +90,6 @@ install(
 
 add_subdirectory(cli)
 add_subdirectory(plug)
+add_subdirectory(py)
 
 add_dependencies(mim_all libmim)
