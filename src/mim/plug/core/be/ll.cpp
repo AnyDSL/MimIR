@@ -961,6 +961,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_val = convert(store->arg(2)->type(), false);
         print(bb.body().emplace_back(), "store {} {}, {} {}", t_val, v_val, t_ptr, v_ptr);
         return {};
+    } else if (auto merge = Axm::isa<mem::merge>(def)) {
+        for (auto arg : merge->args())
+            emit_unsafe(arg);
+        return {};
+    } else if (auto split = Axm::isa<mem::split>(def)) {
+        emit_unsafe(split->arg(0));
+        return {};
     } else if (auto q = Axm::isa<clos::alloc_jmpbuf>(def)) {
         declare("i64 @jmpbuf_size()");
 
@@ -1112,6 +1119,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto is_finite = Axm::isa<math::is_finite>(def)) {
+        // https://llvm.org/docs/LangRef.html#llvm-is-fpclass-intrinsic
+        // declare i1 @llvm.is.fpclass(<fptype> <op>, i32 <test>)
+        auto a = emit(is_finite->arg());
+        auto at = convert(is_finite->arg()->type());
+        auto t = convert(is_finite->type());
+        
+        auto s = llvm_suffix(is_finite->arg()->type());
+        auto f = "llvm.is.fpclass";
+        declare("{} @{}{}({}, i32)", t, f, s, at);
+        return bb.assign(name, "tail call {} @{}{}({} {}, i32 504)", t, f, s, at, a);
     } else if (auto conv = Axm::isa<math::conv>(def)) {
         auto v_src = emit(conv->arg());
         auto t_src = convert(conv->arg()->type());

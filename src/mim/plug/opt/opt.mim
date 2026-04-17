@@ -12,12 +12,14 @@ plugin core;
 import compile;
 import affine;
 import autodiff;
+import buffrize;
 import clos;
 import direct;
 import gpu;
 import matrix;
 import refly;
 import regex;
+import tensor;
 ///
 /// ## Passes, Phases, and Pipelines
 ///
@@ -57,6 +59,13 @@ lam extern _default_compile (): %compile.Phase =
         cond_phase "matrix" (
             %compile.phases ff (
                 matrix_lower_phase,
+                cond_phase "direct" direct_phases,
+            )
+        ),
+        cond_phase "buffrize" (
+            %compile.phases ff (
+                %mem.add_mem_phase,
+                %buffrize.buffrize_phase,
                 cond_phase "direct" direct_phases,
             )
         ),
