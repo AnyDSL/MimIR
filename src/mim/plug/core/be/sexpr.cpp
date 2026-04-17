@@ -403,8 +403,12 @@ std::string Emitter::emit_type(BB& bb, const Def* type) {
             print(os, "(extract {} {})", emit_type(bb, tuple), emit_type(bb, index));
     } else if (auto mType = type->isa<Type>()) {
         if (auto level = Lit::isa(mType->level())) {
-            if (level == 0) print(os, "(type (lit 0 Univ))");
-            if (level == 1) print(os, "(type (lit 1 Univ))");
+            if (level == 0)
+                print(os, "(type (lit 0 Univ))");
+            else if (level == 1)
+                print(os, "(type (lit 1 Univ))");
+            else
+                print(os, "(type {})", emit_type(bb, mType->level()));
         } else {
             print(os, "(type {})", emit_type(bb, mType->level()));
         }
