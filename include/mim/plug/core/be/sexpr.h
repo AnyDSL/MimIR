@@ -9,6 +9,7 @@ class World;
 namespace sexpr {
 
 void emit(World&, std::ostream&);
+void emit_slotted(World&, std::ostream&);
 
 } // namespace sexpr
 
