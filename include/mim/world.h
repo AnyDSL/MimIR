@@ -652,7 +652,7 @@ private:
         }
 
         auto state = move_.arena.defs.state();
-        auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
+        auto def   = allocate<T>(num_ops, std::forward<Args>(args)...);
         assert(!def->isa_mut());
 
         if (auto loc = get_loc()) def->set(loc);
