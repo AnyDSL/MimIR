@@ -34,5 +34,4 @@ fun extern war(A B: «2; Nat»): «2; Bool» =
     ret C = cmp @2 $ (A, B);
     return C;
 
-
 // CHECK: define
