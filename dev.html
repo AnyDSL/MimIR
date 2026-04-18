@@ -115,34 +115,34 @@ $(function(){initNavTree('dev.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md18">Basics </a>
+    <a href="#autotoc_md17">Basics </a>
   </li>
   <li class="level1">
     <a href="#mut">Immutables vs. Mutables </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md19">Matching IR </a>
+    <a href="#autotoc_md18">Matching IR </a>
     <ul>
       <li class="level2">
         <a href="#cast_builtin">Downcasts for Built-ins </a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md20">General Downcast </a>
+            <a href="#autotoc_md19">General Downcast </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md21">Downcast to Immutables </a>
+            <a href="#autotoc_md20">Downcast to Immutables </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md22">Downcast to Mutables </a>
+            <a href="#autotoc_md21">Downcast to Mutables </a>
           </li>
           <li class="level3">
             <a href="#cast_lit">Matching Literals </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md23">Summary </a>
+            <a href="#autotoc_md22">Summary </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md24">Further Casts </a>
+            <a href="#autotoc_md23">Further Casts </a>
           </li>
         </ul>
       </li>
@@ -150,48 +150,48 @@ $(function(){initNavTree('dev.html','',''); });
         <a href="#cast_axm">Matching Axioms </a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md25">Without Subtags </a>
+            <a href="#autotoc_md24">Without Subtags </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md26">With Subtags </a>
+            <a href="#autotoc_md25">With Subtags </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md27">Summary </a>
+            <a href="#autotoc_md26">Summary </a>
           </li>
         </ul>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md28">Working with Indices </a>
+    <a href="#autotoc_md27">Working with Indices </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md29">Arity </a>
+        <a href="#autotoc_md28">Arity </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md30">Projs </a>
+        <a href="#autotoc_md29">Projs </a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md31">Thresholded Variants </a>
+            <a href="#autotoc_md30">Thresholded Variants </a>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md32">Shape </a>
+        <a href="#autotoc_md31">Shape </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md33">Summary </a>
+        <a href="#autotoc_md32">Summary </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md34">Iterating over the Program </a>
+    <a href="#autotoc_md33">Iterating over the Program </a>
   </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2dev"></a></p>
 <p>This guide summarizes the typical idioms and patterns you will want to use when working with MimIR as a developer.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md18"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
 Basics</h1>
 <p>Let's jump straight into an example.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;fstream&gt;</span></div>
@@ -311,7 +311,7 @@ Immutables vs. Mutables</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Def.html#aa620bd9f4f38559ce1863300acc92ca2" title="mim::Def::rebuild">Def::rebuild</a>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Def.html#af09d5f11c586c2dd9c9c27597540837a" title="mim::Def::stub">Def::stub</a>  </td></tr>
 </table>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md18"></a>
 Matching IR</h1>
 <p>MimIR provides several ways to scrutinize <a class="el" href="classmim_1_1Def.html" title="mim::Def">Defs</a>. Matching built-ins, i.e. subclasses of <a class="el" href="classmim_1_1Def.html" title="mim::Def">Def</a>, works a little differently from matching <a class="el" href="classmim_1_1Axm.html" title="mim::Axm">axioms</a>.</p>
 <h2 class="doxsection"><a class="anchor" id="cast_builtin"></a>
@@ -321,7 +321,7 @@ Downcasts for Built-ins</h2>
 <li><span class="tt">isa</span> behave like <span class="tt">dynamic_cast</span>: they perform a runtime check and return <span class="tt">nullptr</span> if the cast fails;</li>
 <li><span class="tt">as</span> behave more like <span class="tt">static_cast</span>: in <span class="tt">Debug</span> builds they assert, via the corresponding <span class="tt">isa</span>, that the cast is valid.</li>
 </ul>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
 General Downcast</h3>
 <p><span class="tt">Def::isa</span> / <span class="tt">Def::as</span> perform a downcast that matches both <em>mutables</em> and <em>immutables</em>:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
@@ -335,7 +335,7 @@ General Downcast</h3>
 <div class="line">}</div>
 <div class="ttc" id="aclassmim_1_1Def_html"><div class="ttname"><a href="classmim_1_1Def.html">mim::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00251">def.h:251</a></div></div>
 <div class="ttc" id="aclassmim_1_1Sigma_html"><div class="ttname"><a href="classmim_1_1Sigma.html">mim::Sigma</a></div><div class="ttdoc">A dependent tuple type.</div><div class="ttdef"><b>Definition</b> <a href="tuple_8h_source.html#l00020">tuple.h:20</a></div></div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
 Downcast to Immutables</h3>
 <p><a class="el" href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64" title="mim::Def::isa_imm">mim::Def::isa_imm</a> / <a class="el" href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b" title="mim::Def::as_imm">mim::Def::as_imm</a> only match <em>immutables</em>:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
@@ -353,7 +353,7 @@ Downcast to Immutables</h3>
 <div class="line">}</div>
 <div class="ttc" id="aclassmim_1_1Def_html_ac62b72371d95ea3e8774d11336ed640b"><div class="ttname"><a href="classmim_1_1Def.html#ac62b72371d95ea3e8774d11336ed640b">mim::Def::as_imm</a></div><div class="ttdeci">const T * as_imm() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00481">def.h:481</a></div></div>
 <div class="ttc" id="aclassmim_1_1Def_html_ae95966891b117e5f8bf7f4bca7b95c64"><div class="ttname"><a href="classmim_1_1Def.html#ae95966891b117e5f8bf7f4bca7b95c64">mim::Def::isa_imm</a></div><div class="ttdeci">const T * isa_imm() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00480">def.h:480</a></div></div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
 Downcast to Mutables</h3>
 <p><a class="el" href="classmim_1_1Def.html#a53a70702795d9c4bafe6de0d4f4a66f1" title="mim::Def::isa_mut">mim::Def::isa_mut</a> / <a class="el" href="classmim_1_1Def.html#a18c97ca601e090eed9bcbc9369c2c792" title="mim::Def::as_mut">mim::Def::as_mut</a> only match <em>mutables</em>. They also remove the <span class="tt">const</span> qualifier, which gives you access to the non-<span class="tt">const</span> methods that only make sense for mutables:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
@@ -410,7 +410,7 @@ Matching Literals</h3>
 <div class="line">}</div>
 <div class="ttc" id="aclassmim_1_1Lit_html_a429b15b3da51e9b60ffab09a744896b7"><div class="ttname"><a href="classmim_1_1Lit.html#a429b15b3da51e9b60ffab09a744896b7">mim::Lit::isa</a></div><div class="ttdeci">static std::optional&lt; T &gt; isa(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00826">def.h:826</a></div></div>
 <div class="ttc" id="aclassmim_1_1Lit_html_a95a167621043b56d131ebe4481b5d523"><div class="ttname"><a href="classmim_1_1Lit.html#a95a167621043b56d131ebe4481b5d523">mim::Lit::as</a></div><div class="ttdeci">static T as(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00832">def.h:832</a></div></div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
 Summary</h3>
 <p>The following table summarizes the most important casts:</p>
 <table class="markdownTable">
@@ -435,7 +435,7 @@ Summary</h3>
  <span class="tt">Lit::as&lt;f32&gt;(def)</span>  </td><td class="markdownTableBodyNone"><a href="https://en.cppreference.com/w/cpp/utility/optional">std::optional</a><span class="tt">&lt;</span><a class="el" href="namespacemim.html#a82b4995bab86fa95f954caf7b4805764" title="mim::f32">f32</a><span class="tt">&gt;</span> <br  />
  <a class="el" href="namespacemim.html#a82b4995bab86fa95f954caf7b4805764" title="mim::f32">f32</a>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lit.html" title="mim::Lit">Lit</a>  </td></tr>
 </table>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
 Further Casts</h3>
 <p>There are also several specialized checks, usually provided as <span class="tt">static</span> methods. They return either a pointer to the matched entity or <span class="tt">nullptr</span>.</p>
 <p>Here are a few examples:</p>
@@ -475,7 +475,7 @@ Matching Axioms</h2>
 </ul>
 <p>Use <a class="el" href="classmim_1_1App.html#a7683660e8ed01ddc495f8859393b720e" title="mim::App::decurry">mim::App::decurry</a> if you want direct access to the preceding application. See the examples below.</p>
 <p>If you design an <a class="el" href="classmim_1_1Axm.html" title="mim::Axm">axiom</a> that returns a function, you can <a class="el" href="classmim_1_1Axm.html#normalization" title="normalization">fine-tune the trigger point</a> of <a class="el" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338" title="mim::Axm::isa">mim::Axm::isa</a> / <a class="el" href="classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1" title="mim::Axm::as">mim::Axm::as</a>.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
 Without Subtags</h3>
 <p>To match an <a class="el" href="classmim_1_1Axm.html" title="mim::Axm">axiom</a> <b>without</b> subtags, such as <span class="tt">%mem.load</span>, use:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
@@ -489,7 +489,7 @@ Without Subtags</h3>
 <div class="line">}</div>
 <div class="ttc" id="aclassmim_1_1Axm_html_a606d1a978089ad57ff1369cb233f6338"><div class="ttname"><a href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">mim::Axm::isa</a></div><div class="ttdeci">static auto isa(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00107">axm.h:107</a></div></div>
 <div class="ttc" id="aclassmim_1_1Axm_html_a9f1fab5798d4606f5de24533ec9310e1"><div class="ttname"><a href="classmim_1_1Axm.html#a9f1fab5798d4606f5de24533ec9310e1">mim::Axm::as</a></div><div class="ttdeci">static auto as(const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="axm_8h_source.html#l00130">axm.h:130</a></div></div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
 With Subtags</h3>
 <p>To match an <a class="el" href="classmim_1_1Axm.html" title="mim::Axm">axiom</a> <b>with</b> subtags, such as <span class="tt">%core.wrap</span>, use:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> <a class="code hl_class" href="classmim_1_1Def.html">Def</a>* def) {</div>
@@ -523,7 +523,7 @@ With Subtags</h3>
 <div class="ttc" id="anamespacemim_1_1plug_1_1core_html_a0d0bff4d75f3e06365643c56fd4672efabc192716b0e1d5c96a67961dd0d3f9da"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efabc192716b0e1d5c96a67961dd0d3f9da">mim::plug::core::wrap::shl</a></div><div class="ttdeci">@ shl</div><div class="ttdef"><b>Definition</b> <a href="core_2autogen_8h_source.html#l00139">autogen.h:139</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1core_html_a24bcda8cb32531a8a5b3d5ab6d6c707e"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707e">mim::plug::core::mode</a></div><div class="ttdeci">mode</div><div class="ttdef"><b>Definition</b> <a href="core_2autogen_8h_source.html#l00053">autogen.h:53</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1core_html_aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a0cc175b9c0f1b6a831c399e269772661">mim::plug::core::shr::a</a></div><div class="ttdeci">@ a</div><div class="ttdef"><b>Definition</b> <a href="core_2autogen_8h_source.html#l00124">autogen.h:124</a></div></div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md27"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
 Summary</h3>
 <p>The following table summarizes the most important axiom matches:</p>
 <table class="markdownTable">
@@ -540,20 +540,20 @@ Summary</h3>
 <td class="markdownTableBodyNone"><span class="tt">isa(core::wrap::add, def)</span> <br  />
  <span class="tt">as(core::wrap::add, def)</span>  </td><td class="markdownTableBodyNone"><span class="tt"><a class="el" href="classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338">mim::Axm::isa</a>&lt;</span><a class="el" href="namespacemim_1_1plug_1_1mem.html#a029144aa6e194281070cc4406fe2268e" title="mim::plug::mem::load">core::wrap</a><span class="tt">,</span> <a class="el" href="classmim_1_1App.html" title="mim::App">App</a><span class="tt">&gt;</span>  </td><td class="markdownTableBodyNone"><span class="tt">%core.wrap.add s m (a, b)</span>  </td></tr>
 </table>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md28"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md27"></a>
 Working with Indices</h1>
 <p>In MimIR, there are essentially <b>three</b> ways to talk about the number of elements of something.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md29"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md28"></a>
 Arity</h2>
 <p>The <a class="el" href="classmim_1_1Def.html#ae51857d275509b1b70aa8f696cee3a0a" title="mim::Def::arity">arity</a> is the number of elements available to <a class="el" href="classmim_1_1Extract.html" title="mim::Extract">extract</a> / <a class="el" href="classmim_1_1Insert.html" title="mim::Insert">insert</a>. This number may itself be dynamic, for example in <span class="tt">‹n; 0›</span>.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md30"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md29"></a>
 Projs</h2>
 <p><a class="el" href="classmim_1_1Def.html#ad531ece40a890922a7deb83e3d8de8ea" title="mim::Def::num_projs">mim::Def::num_projs</a> equals <a class="el" href="classmim_1_1Def.html#ae51857d275509b1b70aa8f696cee3a0a" title="mim::Def::arity">mim::Def::arity</a> if the arity is a <a class="el" href="classmim_1_1Lit.html" title="mim::Lit">mim::Lit</a>. Otherwise, it yields <span class="tt">1</span>.</p>
 <p>This concept mainly exists in the C++ API to give you the illusion of n-ary structure, e.g.</p>
 <div class="fragment"><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> dom : pi-&gt;doms()) { <span class="comment">/*...*/</span> }</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> var : lam-&gt;vars()) { <span class="comment">/*...*/</span> }</div>
 </div><!-- fragment --><p>Internally, however, all functions still have exactly one domain and one codomain.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md30"></a>
 Thresholded Variants</h3>
 <p>There are also thresholded variants prefixed with <span class="tt">t</span>, which take <a class="el" href="namespacemim.html#a39f92287adf5cb956f0696a740ba3fe7" title="mim::Flags::scalarize_threshold">mim::Flags::scalarize_threshold</a> (<span class="tt">--scalarize-threshold</span>) into account.</p>
 <p><a class="el" href="classmim_1_1Def.html#a26e88f05b40da602dbc2d3cfc02e4799" title="mim::Def::num_tprojs">mim::Def::num_tprojs</a> behaves like <a class="el" href="classmim_1_1Def.html#ad531ece40a890922a7deb83e3d8de8ea" title="mim::Def::num_projs">mim::Def::num_projs</a>, but returns <span class="tt">1</span> if the arity exceeds the threshold. Similarly, <a class="el" href="classmim_1_1Def.html#af6e7198e0e73e05007e24750b1286810" title="mim::Def::tproj">mim::Def::tproj</a>, <a class="el" href="classmim_1_1Def.html#abeef2032ba9550fe86fab107d607a2fb" title="mim::Def::tprojs">mim::Def::tprojs</a>, <a class="el" href="classmim_1_1Def.html#ac95a7f21e315be2ff334356a86a3b97f" title="mim::Lam::tvars">mim::Lam::tvars</a>, and related methods follow the same rule.</p>
@@ -565,10 +565,10 @@ Thresholded Variants</h3>
 <li><a class="el" href="classmim_1_1Lam.html#lam_dom" title="lam_dom">Lam::dom</a></li>
 <li><a class="el" href="classmim_1_1App.html#app_arg" title="app_arg">App::arg</a></li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md32"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
 Shape</h2>
 <p>TODO</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md33"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md32"></a>
 Summary</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -591,7 +591,7 @@ Summary</h2>
 <td class="markdownTableBodyNone"><span class="tt">‹32; 0›</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Pack.html" title="mim::Pack">Pack</a>  </td><td class="markdownTableBodyNone"><span class="tt">32</span>  </td><td class="markdownTableBodyNone"><span class="tt">32</span>  </td><td class="markdownTableBodyNone"><span class="tt">1</span>  </td></tr>
 </table>
 <p>The last line assumes <span class="tt"><a class="el" href="namespacemim.html#a39f92287adf5cb956f0696a740ba3fe7">mim::Flags::scalarize_threshold</a> = 32</span>.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md34"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md33"></a>
 Iterating over the Program</h1>
 <p>There are several ways to iterate over a MimIR program. Which one is best depends on what you want to do and how much structure you need during the traversal.</p>
 <p>The simplest approach is to start from <a class="el" href="classmim_1_1World.html#ac5b0195c62710ec975a71944002a53b5" title="mim::World::externals">World::externals</a> and recursively visit <a class="el" href="classmim_1_1Def.html#a20e9e09e55fc9b46a6f74423f2c5d35d" title="mim::Def::deps">Def::deps</a>:</p>

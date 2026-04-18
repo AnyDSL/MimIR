@@ -114,7 +114,7 @@ var NAVTREEINDEX23 =
 "phase_8h.html#a4b6ee482611c96913829f74c17ee1df4":[5,0,3,1,16,11],
 "phase_8h.html#a5524d37751342ad354f02d31c7fd6a55":[5,0,3,1,16,12],
 "phase_8h_source.html":[5,0,3,1,16],
-"phases.html":[0,5],
+"phases.html":[0,6],
 "plug_2tuple_2tuple_8cpp.html":[5,0,4,1,4,16,1],
 "plug_2tuple_2tuple_8cpp.html#a35bb34350e93d508e52544f4abd50e59":[5,0,4,1,4,16,1,0],
 "plug_2tuple_2tuple_8cpp_source.html":[5,0,4,1,4,16,1],
@@ -124,6 +124,7 @@ var NAVTREEINDEX23 =
 "plugin_8cpp_source.html":[5,0,4,1,17],
 "plugin_8h.html":[5,0,3,1,17],
 "plugin_8h_source.html":[5,0,3,1,17],
+"plugins.html":[0,3],
 "prefix__cleanup_8cpp.html":[5,0,4,1,3,4],
 "prefix__cleanup_8cpp_source.html":[5,0,4,1,3,4],
 "prefix__cleanup_8h.html":[5,0,3,1,3,4],
@@ -182,7 +183,7 @@ var NAVTREEINDEX23 =
 "rewrite_8h.html#a199de7dc7775a7eb7d9cc11702d1da1a":[5,0,3,1,18,4],
 "rewrite_8h.html#abf17bc3bdf547027cc35451498d99653":[5,0,3,1,18,3],
 "rewrite_8h_source.html":[5,0,3,1,18],
-"rewriting.html":[0,4],
+"rewriting.html":[0,5],
 "rule_8cpp.html":[5,0,4,1,19],
 "rule_8cpp_source.html":[5,0,4,1,19],
 "rule_8h.html":[5,0,3,1,19],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "structmim_1_1Annex.html#af6ea3fee925bbaee78b047b70a6104eb":[2,0,2,69,6],
 "structmim_1_1Annex.html#af6ea3fee925bbaee78b047b70a6104eb":[4,0,1,67,6],
 "structmim_1_1Dbg.html":[2,0,2,91],
-"structmim_1_1Dbg.html":[4,0,1,89],
-"structmim_1_1Dbg.html#a10cb536e09fd235d8050967a2b08cc58":[2,0,2,91,8]
+"structmim_1_1Dbg.html":[4,0,1,89]
 };

@@ -28,6 +28,7 @@ var menudata={children:[
 {text:"Mim Command-Line Reference",url:"cli.html"},
 {text:"Mim Language Reference",url:"langref.html"},
 {text:"Coding & Debugging",url:"coding.html"},
+{text:"Plugins",url:"plugins.html"},
 {text:"Developer Guide",url:"dev.html"},
 {text:"Rewriting",url:"rewriting.html"},
 {text:"Phases",url:"phases.html"}]},

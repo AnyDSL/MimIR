@@ -115,13 +115,13 @@ $(function(){initNavTree('phases.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md59">Overview </a>
+    <a href="#autotoc_md58">Overview </a>
   </li>
   <li class="level1">
     <a href="#phases_phase">Phase </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md60">Typical Shape </a>
+        <a href="#autotoc_md59">Typical Shape </a>
       </li>
     </ul>
   </li>
@@ -129,10 +129,10 @@ $(function(){initNavTree('phases.html','',''); });
     <a href="#phases_analysis">Analysis </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md61">Powered by Rewriter </a>
+        <a href="#autotoc_md60">Powered by Rewriter </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md62">Reset between Iterations </a>
+        <a href="#autotoc_md61">Reset between Iterations </a>
       </li>
     </ul>
   </li>
@@ -140,19 +140,19 @@ $(function(){initNavTree('phases.html','',''); });
     <a href="#phases_rwphase">RWPhase </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md63">Execution Model </a>
+        <a href="#autotoc_md62">Execution Model </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md64">Cleanup </a>
+        <a href="#autotoc_md63">Cleanup </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md65">Bootstrapping </a>
+        <a href="#autotoc_md64">Bootstrapping </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md66">Optional Pre-Analysis </a>
+        <a href="#autotoc_md65">Optional Pre-Analysis </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md67">Typical Shape </a>
+        <a href="#autotoc_md66">Typical Shape </a>
       </li>
     </ul>
   </li>
@@ -160,7 +160,7 @@ $(function(){initNavTree('phases.html','',''); });
     <a href="#phases_phase_man">PhaseMan </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md68">Typical Usage </a>
+        <a href="#autotoc_md67">Typical Usage </a>
       </li>
     </ul>
   </li>
@@ -168,7 +168,7 @@ $(function(){initNavTree('phases.html','',''); });
     <a href="#phases_closed_mut_phase">ClosedMutPhase </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md69">Typical Shape </a>
+        <a href="#autotoc_md68">Typical Shape </a>
       </li>
     </ul>
   </li>
@@ -176,43 +176,43 @@ $(function(){initNavTree('phases.html','',''); });
     <a href="#phases_nest_phase">NestPhase </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md70">Example: SCCP </a>
+    <a href="#autotoc_md69">Example: SCCP </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md71"><span class="tt">sccp.h</span> </a>
+        <a href="#autotoc_md70"><span class="tt">sccp.h</span> </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md72"><span class="tt">sccp.cpp</span> </a>
+        <a href="#autotoc_md71"><span class="tt">sccp.cpp</span> </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md73">What the analysis computes </a>
+        <a href="#autotoc_md72">What the analysis computes </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md74">What the rewrite does </a>
+        <a href="#autotoc_md73">What the rewrite does </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md75">Why this split is useful </a>
+        <a href="#autotoc_md74">Why this split is useful </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md76">Choosing the right base class </a>
+    <a href="#autotoc_md75">Choosing the right base class </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md77">Recommended design pattern </a>
+    <a href="#autotoc_md76">Recommended design pattern </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md78">Minimal examples </a>
+    <a href="#autotoc_md77">Minimal examples </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md79">Summary </a>
+    <a href="#autotoc_md78">Summary </a>
   </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2phases"></a></p>
 <p>This note explains the <b>Phase</b> abstraction in MimIR. It focuses on the current phase-based infrastructure and intentionally ignores the deprecated <span class="tt">Pass</span> machinery.</p>
 <p>At a high level, a phase is a compiler transformation or analysis step that runs in isolation. Unlike older pass-style pipelines, phases are meant to do one thing at a time and compose in a straightforward sequence.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md59"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md58"></a>
 Overview</h1>
 <p>A <a class="el" href="classmim_1_1Phase.html" title="mim::Phase"><span class="tt">Phase</span></a> is a <a class="el" href="classmim_1_1Stage.html" title="mim::Stage"><span class="tt">Stage</span></a> with a single entry point, <span class="tt">run()</span>, which wraps the actual implementation in <span class="tt">start()</span>.</p>
 <p>Conceptually, a phase is one of three things:</p>
@@ -237,7 +237,7 @@ Phase</h1>
 <p>A phase sets <span class="tt">todo_ = true</span> if its work discovered that another round is needed. </p>
 </blockquote>
 <p>This is used by <a class="el" href="classmim_1_1PhaseMan.html" title="mim::PhaseMan"><span class="tt">PhaseMan</span></a> to drive fixed-point pipelines.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md60"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md59"></a>
 Typical Shape</h2>
 <p>A custom phase usually derives from <a class="el" href="classmim_1_1Phase.html" title="mim::Phase"><span class="tt">Phase</span></a> and implements <span class="tt">start()</span>:</p>
 <div class="fragment"><div class="line"><span class="keyword">class </span>MyPhase : <span class="keyword">public</span> <a class="code hl_class" href="classmim_1_1Phase.html">mim::Phase</a> {</div>
@@ -284,7 +284,7 @@ Analysis</h1>
 <li>store that information in your own side tables,</li>
 <li>set <span class="tt">todo_ = true</span> if the analysis discovered new information and should be rerun in a fixed-point loop.</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md61"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md60"></a>
 Powered by Rewriter</h2>
 <p>The key idea is:</p>
 <blockquote class="doxtable">
@@ -298,7 +298,7 @@ Powered by Rewriter</h2>
 <li>and a domain that can be expressed in ordinary <a class="el" href="classmim_1_1Def.html" title="mim::Def"><span class="tt">Def</span></a>s.</li>
 </ul>
 <p>That last point is often very convenient for analyses: abstract values can reuse MimIR structure instead of inventing a parallel representation.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md62"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md61"></a>
 Reset between Iterations</h2>
 <p>If an analysis participates in a fixed-point loop, it should be ready to run multiple times. The base <span class="tt">reset()</span> clears the rewriter state and resets <span class="tt">todo_</span> for the next round.</p>
 <h1 class="doxsection"><a class="anchor" id="phases_rwphase"></a>
@@ -312,7 +312,7 @@ RWPhase</h1>
 <li><span class="tt">new_world()</span> to build rewritten IR.</li>
 </ul>
 </dd></dl>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md63"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md62"></a>
 Execution Model</h2>
 <p>An <a class="el" href="classmim_1_1RWPhase.html" title="mim::RWPhase"><span class="tt">RWPhase</span></a> runs in three conceptual steps:</p>
 <ol type="1">
@@ -326,15 +326,15 @@ Execution Model</h2>
 <blockquote class="doxtable">
 <p>analyze the old program, rebuild the transformed program, then replace the old world. </p>
 </blockquote>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md64"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md63"></a>
 Cleanup</h2>
 <p>The <a class="el" href="classmim_1_1Cleanup.html" title="mim::Cleanup"><span class="tt">Cleanup</span></a> phase is simply an <a class="el" href="classmim_1_1RWPhase.html" title="mim::RWPhase"><span class="tt">RWPhase</span></a> that performs no custom rewrites. Since an <a class="el" href="classmim_1_1RWPhase.html" title="mim::RWPhase"><span class="tt">RWPhase</span></a> only reconstructs what is reachable from the world roots, rebuilding the old world into a new one automatically eliminates garbage, i.e. dead and unreachable code.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md65"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md64"></a>
 Bootstrapping</h2>
 <p>Like <a class="el" href="classmim_1_1Analysis.html" title="mim::Analysis"><span class="tt">Analysis</span></a>, <a class="el" href="classmim_1_1RWPhase.html" title="mim::RWPhase"><span class="tt">RWPhase</span></a> first processes annex roots and only afterwards externals.</p>
 <p>While annexes are being rewritten, <span class="tt">is_bootstrapping()</span> is <span class="tt">true</span>.</p>
 <p>This matters because annexes may depend on one another. During bootstrapping, rewrites that require other annexes to already exist in the new world may need to be deferred or skipped.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md66"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md65"></a>
 Optional Pre-Analysis</h2>
 <p>An <a class="el" href="classmim_1_1RWPhase.html" title="mim::RWPhase"><span class="tt">RWPhase</span></a> may be given an associated <a class="el" href="classmim_1_1Analysis.html" title="mim::Analysis"><span class="tt">Analysis</span></a>. If so, <span class="tt">analyze()</span> runs that analysis to a fixed point before the actual rewrite begins.</p>
 <p>This is a common pattern:</p>
@@ -343,7 +343,7 @@ Optional Pre-Analysis</h2>
 <li>rewrite uses those facts to produce a transformed new world.</li>
 </ul>
 <p>If no analysis is needed, <span class="tt">analyze()</span> can just return <span class="tt">false</span>.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md67"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md66"></a>
 Typical Shape</h2>
 <div class="fragment"><div class="line"><span class="keyword">class </span>MyRWPhase : <span class="keyword">public</span> <a class="code hl_class" href="classmim_1_1RWPhase.html">mim::RWPhase</a> {</div>
 <div class="line"><span class="keyword">public</span>:</div>
@@ -373,7 +373,7 @@ PhaseMan</h1>
 <blockquote class="doxtable">
 <p><a class="el" href="classmim_1_1PhaseMan.html" title="mim::PhaseMan"><span class="tt">PhaseMan</span></a> is the orchestration layer for classical phase pipelines. </p>
 </blockquote>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md68"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md67"></a>
 Typical Usage</h2>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> phases = <a class="code hl_typedef" href="namespacemim.html#ace9968a67fd836075490bf9fe9b62457">mim::Phases</a>();</div>
 <div class="line">phases.emplace_back(std::make_unique&lt;PhaseA&gt;(world));</div>
@@ -399,7 +399,7 @@ ClosedMutPhase</h1>
 <p>for every reachable closed mutable, inspect or process it. </p>
 </blockquote>
 <p>You override <span class="tt">visit(M*)</span>, where <span class="tt"><a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a></span> defaults to <a class="el" href="classmim_1_1Def.html" title="mim::Def"><span class="tt">Def</span></a> but may be restricted to a particular mutable subtype.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md69"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md68"></a>
 Typical Shape</h2>
 <div class="fragment"><div class="line"><span class="keyword">class </span>MyClosedPhase : <span class="keyword">public</span> <a class="code hl_class" href="classmim_1_1ClosedMutPhase.html">mim::ClosedMutPhase</a>&lt;Lam&gt; {</div>
 <div class="line"><span class="keyword">public</span>:</div>
@@ -420,14 +420,14 @@ NestPhase</h1>
 <p>Instead of overriding <span class="tt">visit(M*)</span>, you override:</p>
 <div class="fragment"><div class="line">visit(<span class="keyword">const</span> Nest&amp;)</div>
 </div><!-- fragment --><p>This is convenient for analyses that reason about nesting, dominance-like structure, or hierarchical regions.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md70"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md69"></a>
 Example: SCCP</h1>
 <p>The provided <a href="https://en.wikipedia.org/wiki/Sparse_conditional_constant_propagation">Sparse Conditional Constant Propagation (SCCP)</a> implementation is a good example of how phases are intended to be structured. Its overall architecture is:</p><ul>
 <li>an inner <a class="el" href="classmim_1_1Analysis.html" title="mim::Analysis"><span class="tt">Analysis</span></a> computes propagation facts on the old world,</li>
 <li>the outer <a class="el" href="classmim_1_1RWPhase.html" title="mim::RWPhase"><span class="tt">RWPhase</span></a> uses those facts to rebuild a simplified new world.</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>The implementation does not only propagate constants but arbitrary expressions!</dd></dl>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md71"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md70"></a>
 <span class="tt">sccp.h</span></h2>
 <div class="fragment"><div class="line"><span class="preprocessor">#pragma once</span></div>
 <div class="line"> </div>
@@ -482,7 +482,7 @@ Example: SCCP</h1>
 <div class="ttc" id="anamespacemim_html_a06961d2806f7fb3afe05273fb4c112ab"><div class="ttname"><a href="namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab">mim::Def2Def</a></div><div class="ttdeci">DefMap&lt; const Def * &gt; Def2Def</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00075">def.h:75</a></div></div>
 <div class="ttc" id="anamespacemim_html_a8d37dada179be276702eb8680efbc370"><div class="ttname"><a href="namespacemim.html#a8d37dada179be276702eb8680efbc370">mim::Lam2Lam</a></div><div class="ttdeci">LamMap&lt; Lam * &gt; Lam2Lam</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00221">lam.h:221</a></div></div>
 <div class="ttc" id="aphase_8h_html"><div class="ttname"><a href="phase_8h.html">phase.h</a></div></div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md72"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md71"></a>
 <span class="tt">sccp.cpp</span></h2>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;sccp.h&quot;</span></div>
 <div class="line"> </div>
@@ -620,7 +620,7 @@ Example: SCCP</h1>
 <div class="ttc" id="anamespacemim_html_a4c25bbfc1f84134320947fd7980fbacf"><div class="ttname"><a href="namespacemim.html#a4c25bbfc1f84134320947fd7980fbacf">mim::isa_optimizable</a></div><div class="ttdeci">Lam * isa_optimizable(Lam *lam)</div><div class="ttdoc">These are Lams that are.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00352">lam.h:352</a></div></div>
 <div class="ttc" id="anamespacemim_html_ad6a85076174e8ee770ec5ad1f3c06ea4"><div class="ttname"><a href="namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4">mim::Bot</a></div><div class="ttdeci">TExt&lt; false &gt; Bot</div><div class="ttdef"><b>Definition</b> <a href="lattice_8h_source.html#l00171">lattice.h:171</a></div></div>
 <div class="ttc" id="anamespacemim_html_afb12dbffaaa27bca46f171517d96256da36b73508d151b2fc641e0c0265d3d360"><div class="ttname"><a href="namespacemim.html#afb12dbffaaa27bca46f171517d96256da36b73508d151b2fc641e0c0265d3d360">mim::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00114">def.h:114</a></div></div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md73"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md72"></a>
 What the analysis computes</h2>
 <p>The SCCP analysis associates each lambda variable with a lattice value:</p><ul>
 <li>bottom: no useful information yet,</li>
@@ -633,7 +633,7 @@ What the analysis computes</h2>
 <li>collect facts,</li>
 <li>iterate to a fixed point.</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md74"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md73"></a>
 What the rewrite does</h2>
 <p>Once the lattice is stable, the outer SCCP phase starts rewriting. When it sees an application of a lambda whose parameters have propagated values, it rebuilds a specialized lambda:</p><ul>
 <li>parameters with known propagated expressions are removed,</li>
@@ -646,7 +646,7 @@ What the rewrite does</h2>
 <li>rewrite into a new world using the computed facts,</li>
 <li>swap worlds.</li>
 </ol>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md75"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md74"></a>
 Why this split is useful</h2>
 <p>Separating SCCP into analysis and rewrite keeps both parts simple:</p><ul>
 <li>the analysis never mutates or partially rewrites the program,</li>
@@ -655,7 +655,7 @@ Why this split is useful</h2>
 </ul>
 <p>This separation is the main design pattern to follow for nontrivial optimizations.</p>
 <dl class="section note"><dt>Note</dt><dd>The complete SCCP example fits into roughly 150 lines of C++ source code. Most of the usual compiler boilerplate is absorbed by the existing <a class="el" href="classmim_1_1Analysis.html" title="mim::Analysis">Analysis</a>, <a class="el" href="classmim_1_1RWPhase.html" title="mim::RWPhase">RWPhase</a>, and <a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter">Rewriter</a> infrastructure, so the implementation can focus on the optimization itself.</dd></dl>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md76"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md75"></a>
 Choosing the right base class</h1>
 <p>A useful rule of thumb is:</p><ul>
 <li>derive from <a class="el" href="classmim_1_1Phase.html" title="mim::Phase"><span class="tt">Phase</span></a> if you just need a custom one-off action,</li>
@@ -664,14 +664,14 @@ Choosing the right base class</h1>
 <li>derive from <a class="el" href="classmim_1_1ClosedMutPhase.html" title="mim::ClosedMutPhase"><span class="tt">ClosedMutPhase</span></a> if you want to visit all reachable closed mutables,</li>
 <li>derive from <a class="el" href="classmim_1_1NestPhase.html" title="mim::NestPhase"><span class="tt">NestPhase</span></a> if that visit should come with a computed <a class="el" href="classmim_1_1Nest.html" title="mim::Nest"><span class="tt">Nest</span></a>.</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md77"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md76"></a>
 Recommended design pattern</h1>
 <p>For most optimization phases, the preferred structure is:</p><ol type="1">
 <li>write an <a class="el" href="classmim_1_1Analysis.html" title="mim::Analysis"><span class="tt">Analysis</span></a> that computes facts to a fixed point,</li>
 <li>write an <a class="el" href="classmim_1_1RWPhase.html" title="mim::RWPhase"><span class="tt">RWPhase</span></a> that consumes those facts while rebuilding the world.</li>
 </ol>
 <p>This keeps analyses and transformations cleanly separated and fits naturally with MimIR’s rewriting-based infrastructure.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md78"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md77"></a>
 Minimal examples</h1>
 <p>A simple whole-world rewrite phase:</p>
 <div class="fragment"><div class="line"><span class="keyword">class </span>Simplify : <span class="keyword">public</span> <a class="code hl_class" href="classmim_1_1RWPhase.html">mim::RWPhase</a> {</div>
@@ -706,7 +706,7 @@ Minimal examples</h1>
 <div class="line">analysis.run();</div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="classmim_1_1Phase.html#aba635c81bd49841a563dc533e5ae347f">mim::Phase::run&lt;Simplify&gt;</a>(world);</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md79"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md78"></a>
 Summary</h1>
 <p>Phases are MimIR’s main unit of compiler work.</p><ul>
 <li><a class="el" href="classmim_1_1Phase.html" title="mim::Phase"><span class="tt">Phase</span></a> is the minimal base abstraction.</li>

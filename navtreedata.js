@@ -29,6 +29,7 @@ var NAVTREE =
       [ "Mim Command-Line Reference", "cli.html", null ],
       [ "Mim Language Reference", "langref.html", null ],
       [ "Coding & Debugging", "coding.html", null ],
+      [ "Plugins", "plugins.html", null ],
       [ "Developer Guide", "dev.html", null ],
       [ "Rewriting", "rewriting.html", null ],
       [ "Phases", "phases.html", null ]

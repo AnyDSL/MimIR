@@ -115,22 +115,22 @@ $(function(){initNavTree('clos.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md115">Dependencies </a>
+    <a href="#autotoc_md119">Dependencies </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md116">Operations related to longjmp </a>
+    <a href="#autotoc_md120">Operations related to longjmp </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md117">Closure Attribute </a>
+    <a href="#autotoc_md121">Closure Attribute </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md118">Passes and Phases </a>
+    <a href="#autotoc_md122">Passes and Phases </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md119">Passes </a>
+        <a href="#autotoc_md123">Passes </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md120">Phases </a>
+        <a href="#autotoc_md124">Phases </a>
       </li>
     </ul>
   </li>
@@ -138,16 +138,16 @@ $(function(){initNavTree('clos.html','',''); });
 </div>
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2clos"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1clos.html" title="The clos Plugin">mim::plug::clos</a></dd></dl>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md115"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md119"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md116"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md120"></a>
 Operations related to longjmp</h1>
 <div class="fragment"><div class="line">let %clos.BufPtr = %mem.Ptr0 I8;</div>
 <div class="line">axm %clos.alloc_jmpbuf: %mem.M 0 → [%mem.M 0, %clos.BufPtr];</div>
 <div class="line">axm %clos.setjmp: [%mem.M 0, %clos.BufPtr] → [%mem.M 0, I32];</div>
 <div class="line">axm %clos.longjmp: Cn [%mem.M 0, %clos.BufPtr, I32];</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md117"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md121"></a>
 Closure Attribute</h1>
 <p>Used internally to classify the use of differen Lambdas. <a class="el" href="classmim_1_1plug_1_1clos_1_1ClosConvPrep.html">mim::plug::clos::ClosConvPrep</a> places these attributes:</p><ul>
 <li><span class="tt">ret</span>: returning lambda</li>
@@ -157,15 +157,15 @@ Closure Attribute</h1>
 <li><span class="tt">bot</span>: no special use</li>
 </ul>
 <div class="fragment"><div class="line">axm %clos.attr(returning, freeBB, fstclassBB, esc, bottom): {T: *} → T → T, normalize_clos;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md118"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md122"></a>
 Passes and Phases</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md119"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md123"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %clos.clos_conv_prep_pass:        %compile.Pass;</div>
 <div class="line">axm %clos.branch_clos_pass:           %compile.Pass;</div>
 <div class="line">axm %clos.lower_typed_clos_prep_pass: %compile.Pass;</div>
 <div class="line">axm %clos.clos2sjlj_pass:             %compile.Pass;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md120"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md124"></a>
 Phases</h2>
 <div class="fragment"><div class="line">axm %clos.clos_conv_phase:        %compile.Phase;</div>
 <div class="line">axm %clos.lower_typed_clos_phase: %compile.Phase;</div>

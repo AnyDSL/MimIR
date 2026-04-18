@@ -115,41 +115,41 @@ $(function(){initNavTree('index.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md81">💡 Why MimIR? </a>
+    <a href="#autotoc_md85">💡 Why MimIR? </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md82">🚀 Quick Start </a>
+    <a href="#autotoc_md86">🚀 Quick Start </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md83">📦 Install (optional) </a>
+        <a href="#autotoc_md87">📦 Install (optional) </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md84">🔥 Key Innovations </a>
+    <a href="#autotoc_md88">🔥 Key Innovations </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md85">🧩 Plugins </a>
+        <a href="#autotoc_md89">🧩 Plugins </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md86">🌊 Sea of Nodes </a>
+        <a href="#autotoc_md90">🌊 Sea of Nodes </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md87">🪾 SSA without Dominance </a>
+        <a href="#autotoc_md91">🪾 SSA without Dominance </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md88">🐉 Naming: MimIR vs <a class="el" href="namespaceMim.html">Mim</a> </a>
+    <a href="#autotoc_md92">🐉 Naming: MimIR vs <a class="el" href="namespaceMim.html">Mim</a> </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md89">💬 Community </a>
+    <a href="#autotoc_md93">💬 Community </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md90">⚖️ License </a>
+    <a href="#autotoc_md94">⚖️ License </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md91">📖 Publications </a>
+    <a href="#autotoc_md95">📖 Publications </a>
   </li>
 </ul>
 </div>
@@ -164,7 +164,7 @@ $(function(){initNavTree('index.html','',''); });
 <li>A <b>sea-of-nodes</b> style IR with on-the-fly normalization, type checking, and partial evaluation</li>
 </ul>
 <p>Well suited for DSL compilers, tensor compilers, automatic differentiation, regex engines, and other systems that need high-performance code from high-level abstractions.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md81"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md85"></a>
 💡 Why MimIR?</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -194,23 +194,23 @@ $(function(){initNavTree('index.html','',''); });
  (dialects, lowering)  </td><td class="markdownTableBodyNone">⬆️ High (<a href="https://en.wikipedia.org/wiki/Calculus_of_constructions">CC</a>, <a href="https://en.wikipedia.org/wiki/Partial_evaluation">partial evaluation</a>, typed axioms, normalizers, lowering)  </td></tr>
 </table>
 <dl class="section note"><dt>Note</dt><dd>The table compares native IR-level support and representation, not what can be emulated via custom IR extensions, closure conversion, lowering, or external analyses.</dd></dl>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md82"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md86"></a>
 🚀 Quick Start</h1>
 <div class="fragment"><div class="line">git clone --recursive git@github.com:AnyDSL/MimIR.git</div>
 <div class="line">cd MimIR</div>
 <div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">cmake --build build -j$(nproc)</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md83"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md87"></a>
 📦 Install (optional)</h2>
 <div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix</div>
 <div class="line">cmake --build build -j$(nproc) -t install</div>
-</div><!-- fragment --><p>See the full <a class="el" href="coding.html#build_options" title="Build Options">🛠️ build options</a> in the docs.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md84"></a>
+</div><!-- fragment --><p>See the full <a class="el" href="coding.html#building" title="Building">🛠️ build options</a> in the docs.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md88"></a>
 🔥 Key Innovations</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md85"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md89"></a>
 🧩 Plugins</h2>
 <p>Declare new types, operations, and normalizers in a single <span class="tt">.<a class="el" href="namespacemim.html">mim</a></span> file. C++ provides the heavy lifting: optimization, lowering, and code generation.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md86"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md90"></a>
 🌊 Sea of Nodes</h2>
 <p>MimIR uses a <a href="https://github.com/SeaOfNodes">sea-of-nodes-style</a> program graph and extends it to the Calculus of Constructions with higher-order functions, polymorphism, and dependent types. MimIR hits the <a class="el" href="dev.html#mut" title="Immutables vs. Mutables"><b>sweet spot</b></a> between a fully mutable IR, which is easy to construct, and a fully immutable IR:</p>
 <ul>
@@ -224,7 +224,7 @@ $(function(){initNavTree('index.html','',''); });
 <p class="startli">Terms, types, and type-level computations all live in the same program graph as ordinary expressions.</p>
 </li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md87"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md91"></a>
 🪾 SSA without Dominance</h2>
 <p>Forget CFG dominance. MimIR uses free-variable nesting:</p>
 <ul>
@@ -238,7 +238,7 @@ $(function(){initNavTree('index.html','',''); });
 <li>Loop peeling and unrolling reduce to simple β-reduction</li>
 <li>Mutual recursion and higher-order functions are handled naturally</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md88"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md92"></a>
 🐉 Naming: MimIR vs Mim</h1>
 <p><b>MimIR</b> is a recursive acronym for <em>MimIR is my Intermediate Representation</em>.</p>
 <p>In Norse mythology, <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir</a> was a being of immense wisdom. After being beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to speak secret knowledge and offer counsel.</p>
@@ -248,7 +248,7 @@ $(function(){initNavTree('index.html','',''); });
 <li><b><a class="el" href="namespaceMim.html">Mim</a></b> is a lightweight textual representation of MimIR. It is not a full-featured programming language, but provides enough syntactic sugar to concisely express polymorphic and dependent types (including type-level dependencies introduced by many type variables). <a class="el" href="namespaceMim.html">Mim</a> is mainly intended for defining plugin interfaces and writing small test cases.</li>
 </ul>
 <p>Throughout the codebase, we consistently use <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> / <span class="tt">MIM</span> for namespaces, macros, CMake variables, and related identifiers.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md89"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md93"></a>
 💬 Community</h1>
 <ul>
 <li>💬 <b>Discord</b> → <a href="https://discord.gg/FPp7hdj3fQ">Join the chat</a></li>
@@ -257,10 +257,10 @@ $(function(){initNavTree('index.html','',''); });
 </ul>
 <p><b>Ready to build the next generation of DSL compilers?</b></p>
 <p><a href="https://github.com/AnyDSL/MimIR">⭐ Star MimIR on GitHub</a>, join Discord, and let's make high-performance DSLs easy.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md90"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md94"></a>
 ⚖️ License</h1>
 <p>MimIR is licensed under the <a href="https://github.com/AnyDSL/MimIR/blob/master/LICENSE.TXT">MIT License</a>.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md91"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md95"></a>
 📖 Publications</h1>
 <ul>
 <li><b>SSA without Dominance for Higher-Order Programs</b> <br  />

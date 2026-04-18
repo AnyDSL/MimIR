@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.16.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: The opt Plugin</title>
+<title>MimIR: docs/plugins.md File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -83,7 +83,7 @@ $(function() {
   </div>
 </div>
 <script type="text/javascript">
-$(function(){initNavTree('opt.html','',''); });
+$(function(){initNavTree('plugins_8md.html','',''); });
 </script>
 <div id="container">
 <div id="doc-content">
@@ -108,104 +108,17 @@ $(function(){initNavTree('opt.html','',''); });
 </div>
 </div>
 
-<div><div class="header">
-  <div class="headertitle"><div class="title">The opt Plugin </div></div>
+<div class="header">
+  <div class="headertitle"><div class="title">docs/plugins.md File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="toc"><h3>Table of Contents</h3>
-<ul>
-  <li class="level1">
-    <a href="#autotoc_md253">Dependencies </a>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md254">Passes, Phases, and Pipelines </a>
-    <ul>
-      <li class="level2">
-        <a href="#autotoc_md255">Pipelines </a>
-      </li>
-    </ul>
-  </li>
-</ul>
-</div>
-<div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2opt"></a></p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1opt.html" title="The opt Plugin">mim::plug::opt</a></dd></dl>
-<p>Manages the default compilation pipeline of <a class="el" href="namespaceMim.html">Mim</a> programs using plugins.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md253"></a>
-Dependencies</h1>
-<div class="fragment"><div class="line">plugin core;</div>
-<div class="line">import compile;</div>
-<div class="line">import affine;</div>
-<div class="line">import autodiff;</div>
-<div class="line">import clos;</div>
-<div class="line">import direct;</div>
-<div class="line">import gpu;</div>
-<div class="line">import matrix;</div>
-<div class="line">import refly;</div>
-<div class="line">import regex;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md254"></a>
-Passes, Phases, and Pipelines</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md255"></a>
-Pipelines</h2>
-<div class="fragment"><div class="line">lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);</div>
-<div class="line">lam cond_repl  {n: Nat} (name: «n; I8») (repl:  %compile.Repl ): %compile.Repl  = %core.select (%compile.is_loaded name, repl , %compile.null_repl );</div>
-<div class="line">lam cond_pass  {n: Nat} (name: «n; I8») (pass:  %compile.Pass ): %compile.Pass  = %core.select (%compile.is_loaded name, pass , %compile.null_pass );</div>
-<div class="line"> </div>
-<div class="line">lam extern _default_compile (): %compile.Phase =</div>
-<div class="line">    %compile.phases ff (</div>
-<div class="line">        %compile.pass2phase %compile.scalarize_pass,</div>
-<div class="line">        %compile.pass2phase (%compile.eta_red_pass ff),</div>
-<div class="line">        %compile.pass2phase %compile.tail_rec_elim_pass,</div>
-<div class="line">        %compile.pass2phase (cond_pass &quot;regex&quot; %regex.lower_regex),</div>
-<div class="line">        // optimize</div>
-<div class="line">        %compile.phases tt (</div>
-<div class="line">            %compile.beta_red_phase,</div>
-<div class="line">            %compile.eta_red_phase,</div>
-<div class="line">        ),</div>
-<div class="line">        %compile.eta_exp_phase,</div>
-<div class="line">        %compile.sym_expr_opt,</div>
-<div class="line">        cond_phase &quot;affine&quot; %affine.lower_for_phase,</div>
-<div class="line">        %compile.pass2phase (</div>
-<div class="line">            %compile.passes (</div>
-<div class="line">                optimization_passes,</div>
-<div class="line">                mem_opt_passes,</div>
-<div class="line">            )</div>
-<div class="line">        ),</div>
-<div class="line">        cond_phase &quot;autodiff&quot; (</div>
-<div class="line">            %compile.phases ff (</div>
-<div class="line">                %compile.pass2phase %autodiff.eval_pass,</div>
-<div class="line">                %compile.repl2phase %autodiff.zero_repl,</div>
-<div class="line">            )</div>
-<div class="line">        ),</div>
-<div class="line">        cond_phase &quot;direct&quot; direct_phases,</div>
-<div class="line">        cond_phase &quot;matrix&quot; (</div>
-<div class="line">            %compile.phases ff (</div>
-<div class="line">                matrix_lower_phase,</div>
-<div class="line">                cond_phase &quot;direct&quot; direct_phases,</div>
-<div class="line">            )</div>
-<div class="line">        ),</div>
-<div class="line">        cond_phase &quot;affine&quot; %affine.lower_for_phase,</div>
-<div class="line">        %compile.internal_cleanup_phase,</div>
-<div class="line">        cond_phase &quot;clos&quot; clos_phases,</div>
-<div class="line">        %compile.pass2phase %compile.lam_spec_pass,</div>
-<div class="line">        // CodeGenPrep</div>
-<div class="line">        %compile.branch_normalize_phase,</div>
-<div class="line">        %compile.ret_wrap_phase,</div>
-<div class="line">        %compile.repl2phase (</div>
-<div class="line">            %compile.repls (</div>
-<div class="line">                %mem.remem_repl,</div>
-<div class="line">                %mem.alloc2malloc_repl,</div>
-<div class="line">                cond_repl &quot;refly&quot; %refly.remove_dbg_repl,</div>
-<div class="line">                cond_repl &quot;gpu&quot; %gpu.malloc2gpualloc_repl,</div>
-<div class="line">            )</div>
-<div class="line">        ),</div>
-<div class="line">    );</div>
-</div><!-- fragment --> </div></div><!-- contents -->
-</div><!-- PageDoc -->
+</div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a href="plugins_8md.html">plugins.md</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.16.1 </li>
   </ul>
 </div>
