@@ -54,7 +54,7 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/my/local/
 cmake --build build -j$(nproc) -t install
 ```
 
-See the full [🛠️ build options](@ref build_options) in the docs.
+See the full [🛠️ build options](@ref building) in the docs.
 
 ## 🔥 Key Innovations
 
