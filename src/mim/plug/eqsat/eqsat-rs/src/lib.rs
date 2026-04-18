@@ -14,13 +14,12 @@ pub fn equality_saturate(
     mim_egg::equality_saturate(sexpr, rulesets, cost_fn)
 }
 
-// TODO: Implement
 pub fn equality_saturate_slotted(
     sexpr: &str,
     rulesets: Vec<RuleSet>,
     cost_fn: CostFn,
 ) -> Vec<RewriteResult> {
-    vec![]
+    mim_slotted::equality_saturate(sexpr, rulesets, cost_fn)
 }
 
 pub fn mim_node_str(node: MimNode) -> String {
