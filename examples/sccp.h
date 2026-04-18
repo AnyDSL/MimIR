@@ -4,7 +4,7 @@
 
 namespace mim {
 
-/// SCCP - Sparse Conditional Constant Propagation - but propates **arbitrary expressions**.
+/// SCCP - Sparse Conditional Constant Propagation - but propagates **arbitrary expressions**.
 /// @see [Constant propagation with conditional branches](https://dl.acm.org/doi/pdf/10.1145/103135.103136)
 ///
 /// Lattice per Lam::var:
