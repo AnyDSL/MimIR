@@ -108,7 +108,7 @@ protected:
     std::deque<Def2Def> old2news_;
 };
 
-/// Extends Rewriter vor variable substitution.
+/// Extends Rewriter for variable substitution.
 /// @see @ref rewriter
 class VarRewriter : public Rewriter {
 public:
