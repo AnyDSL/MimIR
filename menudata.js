@@ -29,7 +29,8 @@ var menudata={children:[
 {text:"Mim Language Reference",url:"langref.html"},
 {text:"Coding & Debugging",url:"coding.html"},
 {text:"Developer Guide",url:"dev.html"},
-{text:"Passes",url:"passes.html"}]},
+{text:"Rewriting",url:"rewriting.html"},
+{text:"Phases",url:"phases.html"}]},
 {text:"🧩 Plugins",url:"usergroup1.html",children:[
 {text:"affine",url:"affine.html"},
 {text:"autodiff",url:"autodiff.html"},

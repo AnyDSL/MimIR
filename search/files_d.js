@@ -16,6 +16,7 @@ var searchData=
   ['ret_5fwrap_2eh_13',['ret_wrap.h',['../ret__wrap_8h.html',1,'']]],
   ['rewrite_2ecpp_14',['rewrite.cpp',['../rewrite_8cpp.html',1,'']]],
   ['rewrite_2eh_15',['rewrite.h',['../rewrite_8h.html',1,'']]],
-  ['rule_2ecpp_16',['rule.cpp',['../rule_8cpp.html',1,'']]],
-  ['rule_2eh_17',['rule.h',['../rule_8h.html',1,'']]]
+  ['rewriting_2emd_16',['rewriting.md',['../rewriting_8md.html',1,'']]],
+  ['rule_2ecpp_17',['rule.cpp',['../rule_8cpp.html',1,'']]],
+  ['rule_2eh_18',['rule.h',['../rule_8h.html',1,'']]]
 ];

@@ -124,20 +124,23 @@ $(function(){initNavTree('langref.html','',''); });
         <a href="#terminals">Terminals </a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md36">Primary Terminals </a>
+            <a href="#autotoc_md36">Primary terminals </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md37">Keywords </a>
+            <a href="#autotoc_md37">Secondary terminals </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md38">Other Terminals </a>
+            <a href="#autotoc_md38">Keywords </a>
+          </li>
+          <li class="level3">
+            <a href="#autotoc_md39">Pattern terminals </a>
           </li>
         </ul>
       </li>
-      <li class="level2">
-        <a href="#autotoc_md39">Comments </a>
-      </li>
     </ul>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md40">Comments </a>
   </li>
   <li class="level1">
     <a href="#grammar">Grammar </a>
@@ -152,16 +155,16 @@ $(function(){initNavTree('langref.html','',''); });
         <a href="#ptrn">Patterns </a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md40">()-style vs []-style </a>
+            <a href="#autotoc_md41">()-style vs []-style </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md41">Groups </a>
+            <a href="#autotoc_md42">Groups </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md42">Alias Pattern </a>
+            <a href="#autotoc_md43">Alias patterns </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md43">Rebind </a>
+            <a href="#autotoc_md44">Rebinding </a>
           </li>
         </ul>
       </li>
@@ -169,52 +172,52 @@ $(function(){initNavTree('langref.html','',''); });
         <a href="#expr">Expressions </a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md44">Kinds &amp; Builtin Types </a>
+            <a href="#autotoc_md45">Kinds and builtin types </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md45">Literals &amp; Co </a>
+            <a href="#autotoc_md46">Literals and basic forms </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md46">Functions </a>
+            <a href="#autotoc_md47">Functions </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md47">Tuples </a>
+            <a href="#autotoc_md48">Tuples, arrays, and products </a>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md48">Precedence </a>
+        <a href="#autotoc_md49">Precedence </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md49">Summary: Functions &amp; Types </a>
+    <a href="#autotoc_md50">Summary: Functions and types </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md50">Declarations </a>
+        <a href="#autotoc_md51">Declarations </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md51">Expressions </a>
+        <a href="#autotoc_md52">Expressions </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md52">Applications </a>
+        <a href="#autotoc_md53">Applications </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md53">Function Types </a>
+        <a href="#autotoc_md54">Function types </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md54">Scoping </a>
+    <a href="#autotoc_md55">Scoping </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md55">Underscore </a>
+        <a href="#autotoc_md56">Underscore </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md56">Annex </a>
+        <a href="#autotoc_md57">Annex </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md57">Field Names of Sigmas </a>
+        <a href="#autotoc_md58">Field names of sigmas </a>
       </li>
     </ul>
   </li>
@@ -223,491 +226,340 @@ $(function(){initNavTree('langref.html','',''); });
 <div class="textblock"><p><a class="anchor" id="md_docs_2langref"></a></p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md35"></a>
 Notation</h1>
-<p>We use the following notation:</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Notation  </th><th class="markdownTableHeadNone">Meaning  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">a</span>  </td><td class="markdownTableBodyNone">literally the terminal token <span class="tt">a</span>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">[<span class="tt">a``b</span>]  </td><td class="markdownTableBodyNone">matches <span class="tt">a</span> or <span class="tt">b</span>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">[<span class="tt">a</span>-<span class="tt">c</span>]  </td><td class="markdownTableBodyNone">matches <span class="tt">a</span> - <span class="tt">c</span>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">a*  </td><td class="markdownTableBodyNone">zero or more repetitions of "a"  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">a+  </td><td class="markdownTableBodyNone">one or more repetitions of "a"  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">a?  </td><td class="markdownTableBodyNone">"a" is optional  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">a <span class="tt">,</span> ... <span class="tt">,</span> a  </td><td class="markdownTableBodyNone"><span class="tt">,</span>-separated list of zero or more "a" elements; may contain a trailing <span class="tt">,</span> at the end of the list  </td></tr>
-</table>
-<h1 class="doxsection"><a class="anchor" id="lex"></a>
+<p>This document uses a lightweight <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a>-style notation.</p>
+<div class="fragment"><div class="line">&quot;a&quot;        literal terminal token a</div>
+<div class="line">[a b]      one of a or b</div>
+<div class="line">[a-c]      character range from a to c</div>
+<div class="line">x*         zero or more repetitions of x</div>
+<div class="line">x+         one or more repetitions of x</div>
+<div class="line">x?         optional x</div>
+<div class="line">x (&quot;,&quot; x)* &quot;,&quot;?</div>
+<div class="line">           comma-separated list of zero or more x, with optional trailing comma</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lex"></a>
 Lexical Structure</h1>
-<p>Mim files are <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a> encoded and <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexed</a> from left to right.</p>
-<dl class="section note"><dt>Note</dt><dd>The <a href="https://en.wikipedia.org/wiki/Maximal_munch">maximal munch</a> strategy resolves any ambiguities in the lexical rules below. For Example, <span class="tt">&lt;&lt;&lt;</span> is lexed as <span class="tt">&lt;&lt;</span> and <span class="tt">&lt;</span>.</dd></dl>
+<p>Mim source files are <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a> encoded and are <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexed</a> from left to right.</p>
+<dl class="section note"><dt>Note</dt><dd>The lexer uses <a href="https://en.wikipedia.org/wiki/Maximal_munch">maximal munch</a>: ambiguities are resolved by taking the longest matching token. For example, <span class="tt">&lt;&lt;&lt;</span> is tokenized as <span class="tt">&lt;&lt;</span> followed by <span class="tt">&lt;</span>.</dd></dl>
 <h2 class="doxsection"><a class="anchor" id="terminals"></a>
 Terminals</h2>
-<p>The actual <em><a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em> are specified in the following tables.</p>
+<p>The grammar refers to <em>primary terminals</em>. Some of them also have ASCII-only spellings, called <em>secondary terminals</em>, which denote the same lexical token. For example, <span class="tt">λ</span> and <span class="tt">lm</span> are lexically equivalent.</p>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md36"></a>
-Primary Terminals</h3>
-<p>The <a class="el" href="#grammar" title="Grammar">grammatical rules</a> will directly reference these <em>primary <a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em>. <em>Secondary terminals</em> are <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>-only tokens that represent the <b>same</b> lexical element as its corresponding <em>primary token</em>. For example, the lexer doesn't care, if you use <span class="tt">⊥</span> or <span class="tt">.bot</span>. Both tokens are identified as <span class="tt">⊥</span>.</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Primary Terminals  </th><th class="markdownTableHeadNone">Secondary Terminals  </th><th class="markdownTableHeadNone">Comment  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">(</span> <span class="tt">)</span> <span class="tt">[</span> <span class="tt">]</span> <span class="tt">{</span> <span class="tt">}</span>  </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">delimiters  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">‹</span> <span class="tt">›</span> <span class="tt">«</span> <span class="tt">»</span>  </td><td class="markdownTableBodyNone"><span class="tt">&lt;&lt;</span> <span class="tt">&gt;&gt;</span> <span class="tt">&lt;</span> <span class="tt">&gt;</span>  </td><td class="markdownTableBodyNone">UTF-8 delimiters  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">→</span> <span class="tt">⊥</span> <span class="tt">⊤</span> <span class="tt">★</span> <span class="tt">□</span> <span class="tt">λ</span>  </td><td class="markdownTableBodyNone"><span class="tt">-&gt;</span> <span class="tt">.bot</span> <span class="tt">.top</span> <span class="tt">*</span> <span class="tt">lm</span>  </td><td class="markdownTableBodyNone">further UTF-8 tokens  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">=</span> <span class="tt">,</span> <span class="tt">;</span> <span class="tt">.</span> <span class="tt">#</span> <span class="tt">:</span> <span class="tt">%</span> <span class="tt">@</span>  </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">further tokens  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">&lt;eof&gt;</span>  </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">marks the end of the file  </td></tr>
-</table>
-<p>In addition you can use <span class="tt">⟨</span>, <span class="tt">⟩</span>, <span class="tt">⟪</span>, and <span class="tt">⟫</span> as an alternative for <span class="tt">‹</span>, <span class="tt">›</span>, <span class="tt">«</span>, and <span class="tt">»</span>.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
-Keywords</h3>
-<p>In addition the following keywords are <em>terminals</em>:</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Terminal  </th><th class="markdownTableHeadNone">Comment  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">import</span>  </td><td class="markdownTableBodyNone">imports another Mim file  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">plugin</span>  </td><td class="markdownTableBodyNone">like <span class="tt">import</span> and additionally loads the compiler plugin  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">axm</span>  </td><td class="markdownTableBodyNone">axiom  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">let</span>  </td><td class="markdownTableBodyNone">let declaration  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">con</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">continuation</a> declaration  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">fun</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">function</a> declaration  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">lam</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">lambda</a> declaration  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">ret</span>  </td><td class="markdownTableBodyNone">ret expression  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">cn</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">continuation</a> expression  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">fn</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">function</a> expression  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">lm</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">lambda</a> expression  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">Sigma</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Sigma.html" title="mim::Sigma">Sigma</a> declaration  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">extern</span>  </td><td class="markdownTableBodyNone">marks function as external  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">ins</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">mim::Insert</a> expression  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">insert</span>  </td><td class="markdownTableBodyNone">alias for <span class="tt">ins</span>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">Nat</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Nat.html">mim::Nat</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">Idx</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Idx.html" title="A built-in constant of type Nat -&gt; *.">mim::Idx</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">Type</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Type.html">mim::Type</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">Univ</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Univ.html">mim::Univ</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">ff</span>  </td><td class="markdownTableBodyNone">alias for <span class="tt">0₂</span>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">tt</span>  </td><td class="markdownTableBodyNone">alias for <span class="tt">1₂</span>  </td></tr>
-</table>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Terminal  </th><th class="markdownTableHeadNone">Alias  </th><th class="markdownTableHeadNone">Terminal  </th><th class="markdownTableHeadNone">Alias  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">tt</span> <span class="tt">ff</span>  </td><td class="markdownTableBodyNone"><span class="tt">0₂</span> <span class="tt">1₂</span>  </td><td class="markdownTableBodyNone"><span class="tt">Bool</span>  </td><td class="markdownTableBodyNone"><span class="tt">Idx i1</span>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">i1</span>  </td><td class="markdownTableBodyNone"><span class="tt">2</span>  </td><td class="markdownTableBodyNone"><span class="tt">I1</span>  </td><td class="markdownTableBodyNone"><span class="tt">Idx i1</span>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">i8</span>  </td><td class="markdownTableBodyNone"><span class="tt">0x100</span>  </td><td class="markdownTableBodyNone"><span class="tt">I8</span>  </td><td class="markdownTableBodyNone"><span class="tt">Idx i8</span>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">i16</span>  </td><td class="markdownTableBodyNone"><span class="tt">0x1'0000</span>  </td><td class="markdownTableBodyNone"><span class="tt">I16</span>  </td><td class="markdownTableBodyNone"><span class="tt">Idx i16</span>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">i32</span>  </td><td class="markdownTableBodyNone"><span class="tt">0x1'0000'0000</span>  </td><td class="markdownTableBodyNone"><span class="tt">I32</span>  </td><td class="markdownTableBodyNone"><span class="tt">Idx i32</span>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">i64</span>  </td><td class="markdownTableBodyNone"><span class="tt">0</span>  </td><td class="markdownTableBodyNone"><span class="tt">I64</span>  </td><td class="markdownTableBodyNone"><span class="tt">Idx i64</span>  </td></tr>
-</table>
+Primary terminals</h3>
+<div class="fragment"><div class="line">( ) [ ] { }</div>
+<div class="line">‹ › « »</div>
+<div class="line">→ ⊥ ⊤ ★ □ λ</div>
+<div class="line">= , ; . # : % @</div>
+<div class="line">&lt;eof&gt;</div>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
+Secondary terminals</h3>
+<div class="fragment"><div class="line">&lt;&lt; &gt;&gt; &lt; &gt;</div>
+<div class="line">-&gt; .bot .top * lm</div>
+</div><!-- fragment --><p>In addition, <span class="tt">⟨</span>, <span class="tt">⟩</span>, <span class="tt">⟪</span>, and <span class="tt">⟫</span> may be used as alternatives for <span class="tt">‹</span>, <span class="tt">›</span>, <span class="tt">«</span>, and <span class="tt">»</span>.</p>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
-Other Terminals</h3>
-<p>The following <em>terminals</em> comprise more complicated patterns:</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Terminal  </th><th class="markdownTableHeadNone">Regular Expression  </th><th class="markdownTableHeadNone">Comment  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">𝖨  </td><td class="markdownTableBodyNone">sym  </td><td class="markdownTableBodyNone">identifier  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">A  </td><td class="markdownTableBodyNone"><span class="tt">%</span> sym <span class="tt">.</span> sym (<span class="tt">.</span> sym)?  </td><td class="markdownTableBodyNone"><a class="el" href="structmim_1_1Annex.html" title="mim::Annex">Annex</a> name  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">dec+  </td><td class="markdownTableBodyNone">unsigned decimal literal  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">0b bin+  </td><td class="markdownTableBodyNone">unsigned binary literal  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">0o oct+  </td><td class="markdownTableBodyNone">unsigned octal literal  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">0x hex+  </td><td class="markdownTableBodyNone">unsigned hexadecimal literal  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign dec+  </td><td class="markdownTableBodyNone">signed decimal literal  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign 0b bin+  </td><td class="markdownTableBodyNone">signed binary literal  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign 0o oct+  </td><td class="markdownTableBodyNone">signed octal literal  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign 0x hex+  </td><td class="markdownTableBodyNone">signed hexadecimal literal  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign? dec+ eE sign dec+  </td><td class="markdownTableBodyNone">floating-point literal  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign? dec+ <span class="tt">.</span> dec* (eE sign dec+)?  </td><td class="markdownTableBodyNone">floating-point literal  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign? dec* <span class="tt">.</span> dec+ (eE sign dec+)?  </td><td class="markdownTableBodyNone">floating-point literal  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign? 0x hex+ pP sign dec+  </td><td class="markdownTableBodyNone"><a href="https://en.cppreference.com/w/cpp/language/floating_literal">floating-point hexadecimal</a> literal  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign? 0x hex+ <span class="tt">.</span> hex* pP sign dec+  </td><td class="markdownTableBodyNone"><a href="https://en.cppreference.com/w/cpp/language/floating_literal">floating-point hexadecimal</a> literal  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">L  </td><td class="markdownTableBodyNone">sign? 0x hex* <span class="tt">.</span> hex+ pP sign dec+  </td><td class="markdownTableBodyNone"><a href="https://en.cppreference.com/w/cpp/language/floating_literal">floating-point hexadecimal</a> literal  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">X<sub>n</sub>  </td><td class="markdownTableBodyNone">dec+ sub+<sub>n</sub>  </td><td class="markdownTableBodyNone">index literal of type <span class="tt">Idx n</span>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">X<sub>n</sub>  </td><td class="markdownTableBodyNone">dec+ <span class="tt">_</span> dec+<sub>n</sub>  </td><td class="markdownTableBodyNone">index literal of type <span class="tt">Idx n</span>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">C  </td><td class="markdownTableBodyNone"><span class="tt">'</span>(a | esc)<span class="tt">'</span>  </td><td class="markdownTableBodyNone">character literal; a ∊ <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> ∖ {<span class="tt">\</span>, <span class="tt">'</span>}  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">S  </td><td class="markdownTableBodyNone"><span class="tt">"</span>(a | esc)\*<span class="tt">"</span>  </td><td class="markdownTableBodyNone">string literal; a ∊ <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> ∖ {<span class="tt">\</span>, <span class="tt">"</span>}  </td></tr>
-</table>
-<p>The previous table resorts to the following definitions as shorthand:</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Name  </th><th class="markdownTableHeadNone">Definition  </th><th class="markdownTableHeadNone">Comment  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">0b  </td><td class="markdownTableBodyNone"><span class="tt">0</span> [ <span class="tt">b``B</span> ]  </td><td class="markdownTableBodyNone">prefix for binary literals  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">0o  </td><td class="markdownTableBodyNone"><span class="tt">0</span> [ <span class="tt">o``O</span> ]  </td><td class="markdownTableBodyNone">prefix for octal literals  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">0x  </td><td class="markdownTableBodyNone"><span class="tt">0</span> [ <span class="tt">x``X</span> ]  </td><td class="markdownTableBodyNone">prefix for hexadecimal literals  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">bin  </td><td class="markdownTableBodyNone">[ <span class="tt">0``1</span> ]  </td><td class="markdownTableBodyNone">binary digit  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">oct  </td><td class="markdownTableBodyNone">[ <span class="tt">0</span>-<span class="tt">7</span> ]  </td><td class="markdownTableBodyNone">octal digit  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">dec  </td><td class="markdownTableBodyNone">[ <span class="tt">0</span>-<span class="tt">9</span> ]  </td><td class="markdownTableBodyNone">decimal digit  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">sub  </td><td class="markdownTableBodyNone">[ <span class="tt">₀</span>-<span class="tt">₉</span> ]  </td><td class="markdownTableBodyNone">subscript digit (always decimal)  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">hex  </td><td class="markdownTableBodyNone">[ <span class="tt">0</span>-<span class="tt">9``a</span>-<span class="tt">f``A</span>-<span class="tt">F</span> ]  </td><td class="markdownTableBodyNone">hexadecimal digit  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">eE  </td><td class="markdownTableBodyNone">[ <span class="tt">e</span> <span class="tt">E</span> ]  </td><td class="markdownTableBodyNone">exponent in floating point literals  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">pP  </td><td class="markdownTableBodyNone">[ <span class="tt">p</span> <span class="tt">P</span> ]  </td><td class="markdownTableBodyNone">exponent in floating point hexadecimal literals  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">sign  </td><td class="markdownTableBodyNone">[ <span class="tt">+</span> <span class="tt">-</span> ]  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">sym  </td><td class="markdownTableBodyNone">[ <span class="tt">_``a</span>-<span class="tt">z``A</span>-<span class="tt">Z</span> ][ <span class="tt">.``_``0</span>-<span class="tt">9``a</span>-<span class="tt">z``A</span>-<span class="tt">Z</span> ]*  </td><td class="markdownTableBodyNone">symbol  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">esc  </td><td class="markdownTableBodyNone">[ <span class="tt">\'</span><span class="tt">\"``\0``\a</span><span class="tt">\b</span><span class="tt">\f``\n``\r</span><span class="tt">\t</span><span class="tt">\v</span> ]  </td><td class="markdownTableBodyNone">escape sequences  </td></tr>
-</table>
-<p>So, <em>sym</em> refers to the shorthand rule while <em>𝖨</em> refers to the <em>terminal</em> that is identical to <em>sym</em>. However, the terminal <em>A</em> also uses the shorthand rule <em>sym</em>.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
-Comments</h2>
-<p>In addition, the following comments are available:</p>
+Keywords</h3>
+<div class="fragment"><div class="line">import plugin</div>
+<div class="line">axm let</div>
+<div class="line">con fun lam</div>
+<div class="line">ret cn fn lm</div>
+<div class="line">Sigma extern</div>
+<div class="line">ins insert</div>
+<div class="line">Nat Idx Type Univ</div>
+<div class="line">ff tt</div>
+<div class="line">Bool I1 I8 I16 I32 I64</div>
+<div class="line">i1 i8 i16 i32 i64</div>
+</div><!-- fragment --><p>The following names are predefined aliases:</p>
+<div class="fragment"><div class="line">tt   = 1₂</div>
+<div class="line">ff   = 0₂</div>
+<div class="line">Bool = Idx i1</div>
+<div class="line">I1   = Idx i1</div>
+<div class="line">I8   = Idx i8</div>
+<div class="line">I16  = Idx i16</div>
+<div class="line">I32  = Idx i32</div>
+<div class="line">I64  = Idx i64</div>
+<div class="line"> </div>
+<div class="line">i1   = 2</div>
+<div class="line">i8   = 0x100</div>
+<div class="line">i16  = 0x1&#39;0000</div>
+<div class="line">i32  = 0x1&#39;0000&#39;0000</div>
+<div class="line">i64  = 0</div>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
+Pattern terminals</h3>
+<p>The following terminals are defined by lexical patterns.</p>
+<div class="fragment"><div class="line">I      ::= sym</div>
+<div class="line">A      ::= &quot;%&quot; sym &quot;.&quot; sym (&quot;.&quot; sym)?</div>
+<div class="line">L      ::= dec+</div>
+<div class="line">         |  &quot;0&quot; [&quot;bB&quot;] bin+</div>
+<div class="line">         |  &quot;0&quot; [&quot;oO&quot;] oct+</div>
+<div class="line">         |  &quot;0&quot; [&quot;xX&quot;] hex+</div>
+<div class="line">         |  sign dec+</div>
+<div class="line">         |  sign &quot;0&quot; [&quot;bB&quot;] bin+</div>
+<div class="line">         |  sign &quot;0&quot; [&quot;oO&quot;] oct+</div>
+<div class="line">         |  sign &quot;0&quot; [&quot;xX&quot;] hex+</div>
+<div class="line">         |  sign? dec+ eE sign dec+</div>
+<div class="line">         |  sign? dec+ &quot;.&quot; dec* (eE sign dec+)?</div>
+<div class="line">         |  sign? dec* &quot;.&quot; dec+ (eE sign dec+)?</div>
+<div class="line">         |  sign? &quot;0&quot; [&quot;xX&quot;] hex+ pP sign dec+</div>
+<div class="line">         |  sign? &quot;0&quot; [&quot;xX&quot;] hex+ &quot;.&quot; hex* pP sign dec+</div>
+<div class="line">         |  sign? &quot;0&quot; [&quot;xX&quot;] hex* &quot;.&quot; hex+ pP sign dec+</div>
+<div class="line">X_n    ::= dec+ sub_n+</div>
+<div class="line">         |  dec+ &quot;_&quot; dec_n+</div>
+<div class="line">C      ::= &quot;&#39;&quot; (ascii_char | esc) &quot;&#39;&quot;</div>
+<div class="line">S      ::= &quot;\&quot;&quot; (ascii_string_char | esc)* &quot;\&quot;&quot;</div>
+</div><!-- fragment --><p>Here:</p>
 <ul>
-<li><span class="tt">/* ... */</span>: multi-line comment</li>
-<li><span class="tt">//</span>: single-line comment</li>
-<li><span class="tt">///</span>: single-line comment for <a href="https://www.doxygen.nl/manual/markdown.html">Markdown</a> <a class="el" href="cli.html" title="Command-Line Reference">output</a>:<ul>
-<li>Single-line <span class="tt">/// xxx</span> comments will put <span class="tt">xxx</span> directly into the Markdown output. You can put an optional space after the <span class="tt">///</span> that will be elided in the Markdown output.</li>
-<li>Everything else will be put verbatim within a <a href="https://www.doxygen.nl/manual/markdown.html#md_fenced">fenced code block</a>.</li>
+<li><span class="tt">I</span> is an identifier terminal,</li>
+<li><span class="tt">A</span> is an <a class="el" href="structmim_1_1Annex.html" title="mim::Annex">annex</a> name,</li>
+<li><span class="tt">L</span> is a numeric literal,</li>
+<li><span class="tt">X_n</span> is an index literal of type <span class="tt">Idx n</span>,</li>
+<li><span class="tt">C</span> is a character literal,</li>
+<li><span class="tt">S</span> is a string literal.</li>
 </ul>
-</li>
+<p>The shorthand symbols used above are:</p>
+<div class="fragment"><div class="line">bin    ::= [0-1]</div>
+<div class="line">oct    ::= [0-7]</div>
+<div class="line">dec    ::= [0-9]</div>
+<div class="line">sub    ::= [₀-₉]</div>
+<div class="line">hex    ::= [0-9a-fA-F]</div>
+<div class="line">eE     ::= [&quot;eE&quot;]</div>
+<div class="line">pP     ::= [&quot;pP&quot;]</div>
+<div class="line">sign   ::= [&quot;+-&quot;]</div>
+<div class="line">sym    ::= [_a-zA-Z] [._0-9a-zA-Z]*</div>
+<div class="line">esc    ::= one of: \&#39; \&quot; \0 \a \\ \b \f \n \r \t \v</div>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+Comments</h1>
+<p>Mim supports the following comment forms:</p>
+<ul>
+<li><span class="tt">/* ... */</span> for multi-line comments</li>
+<li><span class="tt">// ...</span> for single-line comments</li>
+<li><span class="tt">/// ...</span> for <a href="https://www.doxygen.nl/manual/markdown.html">Markdown</a> <a class="el" href="cli.html" title="Command-Line Reference">output</a></li>
+</ul>
+<p>For <span class="tt">///</span> comments:</p>
+<ul>
+<li>a line of the form <span class="tt">/// text</span> contributes <span class="tt">text</span> directly to the Markdown output,</li>
+<li>other forms are emitted verbatim inside a <a href="https://www.doxygen.nl/manual/markdown.html#md_fenced">fenced code block</a>.</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="grammar"></a>
 Grammar</h1>
-<p>Mim's grammar is defined as a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a> that consists of the <em>terminals</em> defined <a class="el" href="#terminals" title="Terminals">above</a> as well as the <em>nonterminals</em> and <em>productions</em> defined below. The start symbol is "m" (module).</p>
-<p>The follwing tables summarizes the main nonterminals:</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Nonterminal  </th><th class="markdownTableHeadNone">Meaning  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">m  </td><td class="markdownTableBodyNone"><a class="el" href="#module" title="Module">module</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">d  </td><td class="markdownTableBodyNone"><a class="el" href="#decl" title="Declarations">declaration</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">p  </td><td class="markdownTableBodyNone"><span class="tt">()</span>-style <a class="el" href="#ptrn" title="Patterns">pattern</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">b  </td><td class="markdownTableBodyNone"><span class="tt">[]</span>-style <a class="el" href="#ptrn" title="Patterns">pattern</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><a class="el" href="#expr" title="Expressions">expression</a>  </td></tr>
-</table>
-<p>The following tables comprise all production rules:</p>
-<h2 class="doxsection"><a class="anchor" id="module"></a>
+<p>Mim is defined by a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a>. Its terminals are the lexical elements defined above. The start symbol is <span class="tt">m</span> for <em>module</em>.</p>
+<p>The main nonterminals are:</p>
+<div class="fragment"><div class="line">m   module</div>
+<div class="line">d   declaration</div>
+<div class="line">p   ()-style pattern</div>
+<div class="line">b   []-style pattern</div>
+<div class="line">e   expression</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="module"></a>
 Module</h2>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS  </th><th class="markdownTableHeadNone">RHS  </th><th class="markdownTableHeadNone">Comment  </th><th class="markdownTableHeadNone">MimIR Class  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">m  </td><td class="markdownTableBodyNone">dep* d*  </td><td class="markdownTableBodyNone">module  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1World.html" title="mim::World">World</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">dep  </td><td class="markdownTableBodyNone"><span class="tt">import</span> S <span class="tt">;</span>  </td><td class="markdownTableBodyNone">import  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">dep  </td><td class="markdownTableBodyNone"><span class="tt">plugin</span> S <span class="tt">;</span>  </td><td class="markdownTableBodyNone">plugin  </td><td class="markdownTableBodyNone"></td></tr>
-</table>
+<div class="fragment"><div class="line">m   ::= dep* d*</div>
+<div class="line">dep ::= &quot;import&quot; S &quot;;&quot;</div>
+<div class="line">     |  &quot;plugin&quot; S &quot;;&quot;</div>
+</div><!-- fragment --><p>A module consists of zero or more imports/plugins followed by zero or more declarations.</p>
 <h2 class="doxsection"><a class="anchor" id="decl"></a>
 Declarations</h2>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS  </th><th class="markdownTableHeadNone">RHS  </th><th class="markdownTableHeadNone">Comment  </th><th class="markdownTableHeadNone">MimIR Class  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">d  </td><td class="markdownTableBodyNone"><span class="tt">let</span> (p | A) <span class="tt">=</span> e <span class="tt">;</span>  </td><td class="markdownTableBodyNone">let  </td><td class="markdownTableBodyNone">-  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">d  </td><td class="markdownTableBodyNone"><span class="tt">lam</span> n p+ (<span class="tt">:</span> e<sub>codom</sub>)? ( <span class="tt">=</span> e)? <span class="tt">;</span>  </td><td class="markdownTableBodyNone">lambda declaration<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">Lam</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">d  </td><td class="markdownTableBodyNone"><span class="tt">con</span> n p+ ( <span class="tt">=</span> e)? <span class="tt">;</span>  </td><td class="markdownTableBodyNone">continuation declaration<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">Lam</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">d  </td><td class="markdownTableBodyNone"><span class="tt">fun</span> n p+ (<span class="tt">:</span> e<sub>ret</sub>)? ( <span class="tt">=</span> e)? <span class="tt">;</span>  </td><td class="markdownTableBodyNone">function declaration<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">Lam</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">d  </td><td class="markdownTableBodyNone"><span class="tt">Sigma</span> n (<span class="tt">:</span> e<sub>type</sub> )? (<span class="tt">,</span> L<sub>arity</sub>)? (<span class="tt">=</span> b<sub>[ ]</sub>)? <span class="tt">;</span>  </td><td class="markdownTableBodyNone">sigma declaration  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Sigma.html" title="mim::Sigma">Sigma</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">d  </td><td class="markdownTableBodyNone"><span class="tt">axm</span> A (<span class="tt">(</span> sa <span class="tt">,</span> ... <span class="tt">,</span> sa <span class="tt">)</span>)? <span class="tt">:</span> e<sub>type</sub> <br  />
- (<span class="tt">,</span> 𝖨<sub>normalizer</sub>)? (<span class="tt">,</span> L<sub>curry</sub>)? (<span class="tt">,</span> L<sub>trip</sub>)? <span class="tt">;</span>  </td><td class="markdownTableBodyNone">axiom  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Axm.html" title="mim::Axm">Axiom</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">n  </td><td class="markdownTableBodyNone">𝖨 | A  </td><td class="markdownTableBodyNone">identifier or annex name  </td><td class="markdownTableBodyNone"><span class="tt">fe::Sym</span>/<a class="el" href="structmim_1_1Annex.html" title="mim::Annex">Annex</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">sa  </td><td class="markdownTableBodyNone">𝖨 (<span class="tt">=</span> 𝖨 <span class="tt">=</span> ... <span class="tt">=</span> 𝖨)?  </td><td class="markdownTableBodyNone">subtag with aliases  </td><td class="markdownTableBodyNone"></td></tr>
-</table>
-<dl class="section note"><dt>Note</dt><dd>An elided type of a <span class="tt">.Pi</span> or <span class="tt">Sigma</span> declaration defaults to <span class="tt">*</span>.</dd></dl>
+<div class="fragment"><div class="line">d   ::= &quot;let&quot; (p | A) &quot;=&quot; e &quot;;&quot;</div>
+<div class="line">     |  &quot;lam&quot; n p+ (&quot;:&quot; e)? (&quot;=&quot; e)? &quot;;&quot;</div>
+<div class="line">     |  &quot;con&quot; n p+ (&quot;=&quot; e)? &quot;;&quot;</div>
+<div class="line">     |  &quot;fun&quot; n p+ (&quot;:&quot; e)? (&quot;=&quot; e)? &quot;;&quot;</div>
+<div class="line">     |  &quot;Sigma&quot; n (&quot;:&quot; e)? (&quot;,&quot; L)? (&quot;=&quot; b)? &quot;;&quot;</div>
+<div class="line">     |  &quot;axm&quot; A (&quot;(&quot; sa (&quot;,&quot; sa)* &quot;,&quot;? &quot;)&quot;)? &quot;:&quot; e</div>
+<div class="line">           (&quot;,&quot; I)? (&quot;,&quot; L)? (&quot;,&quot; L)? &quot;;&quot;</div>
+<div class="line"> </div>
+<div class="line">n   ::= I | A</div>
+<div class="line">sa  ::= I (&quot;=&quot; I)*</div>
+</div><!-- fragment --><p>Notes:</p>
+<ul>
+<li><span class="tt">let</span> introduces a local binding.</li>
+<li><span class="tt">lam</span>, <span class="tt">con</span>, and <span class="tt">fun</span> declare lambdas, continuations, and functions.</li>
+<li><span class="tt">Sigma</span> declares a sigma type, optionally with an explicit type, arity, and field pattern.</li>
+<li><span class="tt">axm</span> declares an axiom, optionally with subtags, normalizer, curry, and trip metadata.</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>If the type of a <span class="tt">Pi</span>-like or <span class="tt">Sigma</span> declaration is omitted, it defaults to <span class="tt">*</span>.</dd></dl>
 <h2 class="doxsection"><a class="anchor" id="ptrn"></a>
 Patterns</h2>
-<p>Patterns allow you to decompose a value into its components like in <a href="https://en.wikibooks.org/wiki/Standard_ML_Programming/Types#Tuples">Standard ML</a> or other functional languages.</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS  </th><th class="markdownTableHeadNone">RHS  </th><th class="markdownTableHeadNone">Comment  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">p  </td><td class="markdownTableBodyNone">𝖨 (<span class="tt">:</span> e<sub>type</sub> )?  </td><td class="markdownTableBodyNone">identifier <span class="tt">()</span>-pattern  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">p  </td><td class="markdownTableBodyNone"><span class="tt">(</span> (p | g) <span class="tt">,</span> ... <span class="tt">,</span> (p | g) <span class="tt">)</span>  </td><td class="markdownTableBodyNone"><span class="tt">()</span>-<span class="tt">()</span>-tuple pattern<sup>s</sup>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">p  </td><td class="markdownTableBodyNone">b  </td><td class="markdownTableBodyNone"><span class="tt">[]</span>-<span class="tt">()</span>-tuple pattern  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">b  </td><td class="markdownTableBodyNone">𝖨 (<span class="tt">:</span> e<sub>type</sub> )?  </td><td class="markdownTableBodyNone">identifier <span class="tt">[]</span>-pattern  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">g  </td><td class="markdownTableBodyNone">𝖨+ <span class="tt">:</span> e  </td><td class="markdownTableBodyNone">group  </td></tr>
-</table>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+<p>Patterns allow values to be decomposed into components, similar to tuple patterns in functional languages.</p>
+<div class="fragment"><div class="line">p   ::= I (&quot;:&quot; e)?</div>
+<div class="line">     |  &quot;(&quot; (pg (&quot;,&quot; pg)* &quot;,&quot;?)? &quot;)&quot;</div>
+<div class="line">     |  b</div>
+<div class="line"> </div>
+<div class="line">pg  ::= p</div>
+<div class="line">     |  g</div>
+<div class="line"> </div>
+<div class="line">b   ::= I (&quot;:&quot; e)?</div>
+<div class="line">     |  &quot;[&quot; (bg (&quot;,&quot; bg)* &quot;,&quot;?)? &quot;]&quot;</div>
+<div class="line"> </div>
+<div class="line">bg  ::= b</div>
+<div class="line">     |  g</div>
+<div class="line"> </div>
+<div class="line">g   ::= I+ &quot;:&quot; e</div>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
 ()-style vs []-style</h3>
-<p>There are</p>
+<p>There are two pattern families:</p>
 <ul>
-<li>p: <em>parenthesis-style</em> patterns (<span class="tt">()</span>-style), and</li>
-<li>b: <em>bracket-style patterns</em> (<span class="tt">[]</span>-style) .</li>
+<li><span class="tt">p</span>: parenthesis-style patterns</li>
+<li><span class="tt">b</span>: bracket-style patterns</li>
 </ul>
-<p>The main difference is that</p>
+<p>Intuitively:</p>
 <ul>
-<li><span class="tt">(a, b, c)</span> means <span class="tt">(a: ?, b: ?, c: ?)</span> whereas</li>
-<li><span class="tt">[a, b, c]</span> means <span class="tt">[_: a, _: c, _: d]</span> while</li>
-<li><span class="tt">(a: A, b: B, c: C)</span> is the same as <span class="tt">[a: A, b: B, C: C]</span>.</li>
+<li><span class="tt">(a, b, c)</span> means three bindings with inferred component types</li>
+<li><span class="tt">[a, b, c]</span> means three bindings where the listed expressions describe the component types</li>
+<li><span class="tt">(a: A, b: B, c: C)</span> and <span class="tt">[a: A, b: B, c: C]</span> coincide when all types are explicit</li>
 </ul>
-<p>You <b>can</b> switch from a <span class="tt">()</span>-style pattern to a <span class="tt">[]</span>-pattern but not vice versa. For this reason there is no rule for a <span class="tt">()</span>-<span class="tt">[]</span>-pattern.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
-Groups</h3>
-<p>Tuple patterns allow for <em>groups</em>:</p>
-<ul>
-<li><span class="tt">(a b c: Nat, d e: Bool)</span> means <span class="tt">(a: Nat, b: Nat, c: Nat, d: Bool, e: Bool)</span>.</li>
-<li><span class="tt">[a b c: Nat, d e: Bool]</span> means <span class="tt">[a: Nat, b: Nat, c: Nat, d: Bool, e: Bool]</span>.</li>
-</ul>
+<p>You may switch from <span class="tt">()</span>-style into <span class="tt">[]</span>-style, but not the other way around.</p>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
-Alias Pattern</h3>
-<p>You can wrap a pattern into an <em>alias pattern</em>:</p>
+Groups</h3>
+<p>Tuple patterns support grouped bindings:</p>
+<div class="fragment"><div class="line">(a b c: Nat, d e: Bool)</div>
+<div class="line">[a b c: Nat, d e: Bool]</div>
+</div><!-- fragment --><p>Both expand as expected by distributing the annotated type over the listed names.</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
+Alias patterns</h3>
+<p>A pattern may be wrapped in an alias pattern:</p>
 <div class="fragment"><div class="line">let (a, b, c) as abc = (1, 2, 3);</div>
-</div><!-- fragment --><p>This will bind</p>
+</div><!-- fragment --><p>This binds:</p>
 <ul>
 <li><span class="tt">a</span> to <span class="tt">1</span>,</li>
 <li><span class="tt">b</span> to <span class="tt">2</span>,</li>
-<li><span class="tt">c</span> to <span class="tt">3</span>, and</li>
-<li><span class="tt">abc</span> to <span class="tt">(1, 2, 3)</span>.</li>
+<li><span class="tt">c</span> to <span class="tt">3</span>,</li>
+<li><span class="tt">abc</span> to the whole tuple <span class="tt">(1, 2, 3)</span>.</li>
 </ul>
-<p>Here is another example:</p>
+<p>For example:</p>
 <div class="fragment"><div class="line">{T: *, a: Nat} as Ts → [%mem.M a, %mem.Ptr Ts] → [%mem.M a, T]</div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
-Rebind</h3>
-<p>A <span class="tt">let</span> and <span class="tt">ret</span> expression allows you to rebind the same name to a different value. This is particularly useful, when dealing with memory:</p>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
+Rebinding</h3>
+<p><span class="tt">let</span> and <span class="tt">ret</span> expressions allow rebinding of the same name. This is especially useful in state-threading style code:</p>
 <div class="fragment"><div class="line">let (mem, ptr) = %mem.alloc (I32, 0) mem;</div>
 <div class="line">let mem        = %mem.store (mem, ptr, 23:I32);</div>
 <div class="line">let (mem, val) = %mem.load (mem, ptr);</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="expr"></a>
 Expressions</h2>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
-Kinds &amp; Builtin Types</h3>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS  </th><th class="markdownTableHeadNone">RHS  </th><th class="markdownTableHeadNone">Comment  </th><th class="markdownTableHeadNone">MimIR Class  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">Univ</span>  </td><td class="markdownTableBodyNone">universe: type of a type level  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Univ.html" title="mim::Univ">Univ</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">Type</span> e  </td><td class="markdownTableBodyNone">type of level e  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Type.html" title="mim::Type">Type</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">*</span>  </td><td class="markdownTableBodyNone">alias for <span class="tt">Type (0:Univ)</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Type.html" title="mim::Type">Type</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">□</span>  </td><td class="markdownTableBodyNone">alias for <span class="tt">Type (1:Univ)</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Type.html" title="mim::Type">Type</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">Nat</span>  </td><td class="markdownTableBodyNone">natural number  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Nat.html" title="mim::Nat">Nat</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">Idx</span>  </td><td class="markdownTableBodyNone">builtin of type <span class="tt">Nat → *</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Idx.html" title="mim::Idx">Idx</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">Bool</span>  </td><td class="markdownTableBodyNone">alias for <span class="tt">Bool</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Idx.html" title="mim::Idx">Idx</a>  </td></tr>
-</table>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
-Literals &amp; Co</h3>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS  </th><th class="markdownTableHeadNone">RHS  </th><th class="markdownTableHeadNone">Comment  </th><th class="markdownTableHeadNone">MimIR Class  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">L (<span class="tt">:</span> e<sub>type</sub>)?  </td><td class="markdownTableBodyNone">literal  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lit.html" title="mim::Lit">Lit</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">X<sub>n</sub>  </td><td class="markdownTableBodyNone">literal of type <span class="tt">Idx n</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lit.html" title="mim::Lit">Lit</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">ff</span>  </td><td class="markdownTableBodyNone">alias for <span class="tt">0_2</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lit.html" title="mim::Lit">Lit</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">tt</span>  </td><td class="markdownTableBodyNone">alias for <span class="tt">1_2</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lit.html" title="mim::Lit">Lit</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">C  </td><td class="markdownTableBodyNone">character literal of type <span class="tt">I8</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lit.html" title="mim::Lit">Lit</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">S  </td><td class="markdownTableBodyNone">string tuple of type <span class="tt">«n; I8»</span>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Tuple.html" title="mim::Tuple">Tuple</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">⊥</span> (<span class="tt">:</span> e<sub>type</sub>)?  </td><td class="markdownTableBodyNone">bottom  </td><td class="markdownTableBodyNone"><a class="el" href="namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4" title="mim::Bot">Bot</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">⊤</span> (<span class="tt">:</span> e<sub>type</sub>)?  </td><td class="markdownTableBodyNone">top  </td><td class="markdownTableBodyNone"><a class="el" href="namespacemim.html#a8c95db47da2d9514da3e16e015062bf2" title="mim::Top">Top</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">n  </td><td class="markdownTableBodyNone">identifier or annex name  </td><td class="markdownTableBodyNone"><span class="tt">fe::Sym</span>/<a class="el" href="structmim_1_1Annex.html" title="mim::Annex">Annex</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">{</span> d* e <span class="tt">}</span>  </td><td class="markdownTableBodyNone">block<sup>s</sup>  </td><td class="markdownTableBodyNone">-  </td></tr>
-</table>
-<dl class="section note"><dt>Note</dt><dd>An elided type of</dd></dl>
+Kinds and builtin types</h3>
+<div class="fragment"><div class="line">e   ::= &quot;Univ&quot;</div>
+<div class="line">     |  &quot;Type&quot; e</div>
+<div class="line">     |  &quot;*&quot;</div>
+<div class="line">     |  &quot;□&quot;</div>
+<div class="line">     |  &quot;Nat&quot;</div>
+<div class="line">     |  &quot;Idx&quot;</div>
+<div class="line">     |  &quot;Bool&quot;</div>
+</div><!-- fragment --><p>Meaning:</p>
 <ul>
-<li>a literal defaults to <span class="tt">Nat</span>,</li>
-<li>a bottom/top defaults to <span class="tt">*</span>.</li>
+<li><span class="tt">Univ</span> is the universe of type levels,</li>
+<li><span class="tt">Type e</span> is the type at level <span class="tt">e</span>,</li>
+<li><span class="tt">*</span> abbreviates <span class="tt">Type (0:Univ)</span>,</li>
+<li><span class="tt">□</span> abbreviates <span class="tt">Type (1:Univ)</span>,</li>
+<li><span class="tt">Nat</span> is the natural number type,</li>
+<li><span class="tt">Idx</span> is the builtin of type <span class="tt">Nat → *</span>,</li>
+<li><span class="tt">Bool</span> abbreviates <span class="tt">Idx i1</span>.</li>
 </ul>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md46"></a>
-Functions</h3>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS  </th><th class="markdownTableHeadNone">RHS  </th><th class="markdownTableHeadNone">Comment  </th><th class="markdownTableHeadNone">MimIR Class  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">e<sub>dom</sub> <span class="tt">→</span> e<sub>codom</sub>  </td><td class="markdownTableBodyNone">function type  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Pi.html" title="mim::Pi">Pi</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">b<sub>dom</sub> <span class="tt">→</span> e<sub>codom</sub>  </td><td class="markdownTableBodyNone">dependent function type<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Pi.html" title="mim::Pi">Pi</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">Cn</span> b  </td><td class="markdownTableBodyNone">continuation type<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Pi.html" title="mim::Pi">Pi</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">Fn</span> b <span class="tt">→</span> e<sub>ret</sub>  </td><td class="markdownTableBodyNone">returning continuation type<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Pi.html" title="mim::Pi">Pi</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">λ</span> p+ (<span class="tt">:</span> e<sub>codom</sub>)? <span class="tt">=</span> e  </td><td class="markdownTableBodyNone">lambda expression<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">Lam</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">cn</span> p+ <span class="tt">=</span> e  </td><td class="markdownTableBodyNone">continuation expression<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">Lam</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">fn</span> p+ (<span class="tt">:</span> e<sub>codom</sub>)? <span class="tt">=</span> e  </td><td class="markdownTableBodyNone">function expression<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lam.html" title="mim::Lam">Lam</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">e e  </td><td class="markdownTableBodyNone">application  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1App.html" title="mim::App">App</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">e <span class="tt">@</span> e  </td><td class="markdownTableBodyNone">application making implicit arguments explicit  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1App.html" title="mim::App">App</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">ret</span> p <span class="tt">=</span> e <span class="tt">$</span> e <span class="tt">;</span> d* e  </td><td class="markdownTableBodyNone">ret expresison  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1App.html" title="mim::App">App</a>  </td></tr>
-</table>
+Literals and basic forms</h3>
+<div class="fragment"><div class="line">e   ::= L (&quot;:&quot; e)?</div>
+<div class="line">     |  X_n</div>
+<div class="line">     |  &quot;ff&quot;</div>
+<div class="line">     |  &quot;tt&quot;</div>
+<div class="line">     |  C</div>
+<div class="line">     |  S</div>
+<div class="line">     |  &quot;⊥&quot; (&quot;:&quot; e)?</div>
+<div class="line">     |  &quot;⊤&quot; (&quot;:&quot; e)?</div>
+<div class="line">     |  n</div>
+<div class="line">     |  &quot;{&quot; d* e &quot;}&quot;</div>
+</div><!-- fragment --><p>Notes:</p>
+<ul>
+<li>a literal without explicit type defaults to <span class="tt">Nat</span>,</li>
+<li><span class="tt">⊥</span> and <span class="tt">⊤</span> default to type <span class="tt">*</span> when no type is given,</li>
+<li>a block introduces local declarations and yields its final expression.</li>
+</ul>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
-Tuples</h3>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS  </th><th class="markdownTableHeadNone">RHS  </th><th class="markdownTableHeadNone">Comment  </th><th class="markdownTableHeadNone">MimIR Class  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">b<sub>[ ]</sub>  </td><td class="markdownTableBodyNone">sigma  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Sigma.html" title="mim::Sigma">Sigma</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">«</span> s <span class="tt">;</span> e<sub>body</sub><span class="tt">»</span>  </td><td class="markdownTableBodyNone">array<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Arr.html" title="mim::Arr">Arr</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">(</span> e<sub>0</sub> <span class="tt">,</span> ... <span class="tt">,</span> e<sub>n-1</sub><span class="tt">)</span> (<span class="tt">:</span> e<sub>type</sub>)?  </td><td class="markdownTableBodyNone">tuple  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Tuple.html" title="mim::Tuple">Tuple</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">‹</span> s <span class="tt">;</span> e<sub>body</sub><span class="tt">›</span>  </td><td class="markdownTableBodyNone">pack<sup>s</sup>  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Pack.html" title="mim::Pack">Pack</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">e <span class="tt">#</span> e<sub>index</sub>  </td><td class="markdownTableBodyNone">extract  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Extract.html" title="mim::Extract">Extract</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone">e <span class="tt">#</span> 𝖨  </td><td class="markdownTableBodyNone">extract via field "𝖨"  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Extract.html" title="mim::Extract">Extract</a>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e  </td><td class="markdownTableBodyNone"><span class="tt">ins</span> <span class="tt">(</span> e<sub>tuple</sub> <span class="tt">,</span> e<sub>index</sub> <span class="tt">,</span> e<sub>value</sub> <span class="tt">)</span>  </td><td class="markdownTableBodyNone">insert  </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Insert.html" title="mim::Insert">Insert</a>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">s  </td><td class="markdownTableBodyNone">e<sub>shape</sub> | S <span class="tt">:</span> e<sub>shape</sub>  </td><td class="markdownTableBodyNone">shape  </td><td class="markdownTableBodyNone">-  </td></tr>
-</table>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
+Functions</h3>
+<div class="fragment"><div class="line">e   ::= e &quot;→&quot; e</div>
+<div class="line">     |  b &quot;→&quot; e</div>
+<div class="line">     |  &quot;Cn&quot; b</div>
+<div class="line">     |  &quot;Fn&quot; b &quot;→&quot; e</div>
+<div class="line">     |  &quot;λ&quot; p+ (&quot;:&quot; e)? &quot;=&quot; e</div>
+<div class="line">     |  &quot;cn&quot; p+ &quot;=&quot; e</div>
+<div class="line">     |  &quot;fn&quot; p+ (&quot;:&quot; e)? &quot;=&quot; e</div>
+<div class="line">     |  e e</div>
+<div class="line">     |  e &quot;@&quot; e</div>
+<div class="line">     |  &quot;ret&quot; p &quot;=&quot; e &quot;$&quot; e &quot;;&quot; d* e</div>
+</div><!-- fragment --><p>These forms cover:</p>
+<ul>
+<li>function types,</li>
+<li>dependent function types,</li>
+<li>continuation and function sugar,</li>
+<li>lambda/function/continuation expressions,</li>
+<li>application,</li>
+<li>explicit passing of implicit arguments,</li>
+<li><span class="tt">ret</span> expressions.</li>
+</ul>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
+Tuples, arrays, and products</h3>
+<div class="fragment"><div class="line">e   ::= b</div>
+<div class="line">     |  &quot;«&quot; s &quot;;&quot; e &quot;»&quot;</div>
+<div class="line">     |  &quot;(&quot; (e (&quot;,&quot; e)* &quot;,&quot;?)? &quot;)&quot; (&quot;:&quot; e)?</div>
+<div class="line">     |  &quot;‹&quot; s &quot;;&quot; e &quot;›&quot;</div>
+<div class="line">     |  e &quot;#&quot; e</div>
+<div class="line">     |  e &quot;#&quot; I</div>
+<div class="line">     |  &quot;ins&quot; &quot;(&quot; e &quot;,&quot; e &quot;,&quot; e &quot;)&quot;</div>
+<div class="line"> </div>
+<div class="line">s   ::= e</div>
+<div class="line">     |  S &quot;:&quot; e</div>
+</div><!-- fragment --><p>These forms correspond to sigma types, arrays, tuples, packs, extracts, and inserts.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md49"></a>
 Precedence</h2>
-<p>Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Level  </th><th class="markdownTableHeadNone">Operator  </th><th class="markdownTableHeadNone">Description  </th><th class="markdownTableHeadNone">Associativity  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">1  </td><td class="markdownTableBodyNone">L <span class="tt">:</span> e  </td><td class="markdownTableBodyNone">type ascription of a literal  </td><td class="markdownTableBodyNone">-  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2  </td><td class="markdownTableBodyNone">e <span class="tt">#</span> e  </td><td class="markdownTableBodyNone">extract  </td><td class="markdownTableBodyNone">left-to-right  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">3  </td><td class="markdownTableBodyNone">e e  </td><td class="markdownTableBodyNone">application  </td><td class="markdownTableBodyNone">left-to-right  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">3  </td><td class="markdownTableBodyNone">e <span class="tt">@</span> e  </td><td class="markdownTableBodyNone">application making implicit arguments explicit  </td><td class="markdownTableBodyNone">left-to-right  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">4  </td><td class="markdownTableBodyNone">e <span class="tt">→</span> e  </td><td class="markdownTableBodyNone">function type  </td><td class="markdownTableBodyNone">right-to-left  </td></tr>
-</table>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md49"></a>
-Summary: Functions &amp; Types</h1>
-<p>The following table summarizes the different tokens used for functions declarations, expressions, and types:</p>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Declaration  </th><th class="markdownTableHeadNone">Expression  </th><th class="markdownTableHeadNone">Type  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">lam</span>  </td><td class="markdownTableBodyNone"><span class="tt">lm</span> <br  />
- <span class="tt">λ</span>  </td><td class="markdownTableBodyNone"><span class="tt">-&gt;</span>  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">con</span>  </td><td class="markdownTableBodyNone"><span class="tt">cn</span>  </td><td class="markdownTableBodyNone"><span class="tt">Cn</span>  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><span class="tt">fun</span>  </td><td class="markdownTableBodyNone"><span class="tt">fn</span>  </td><td class="markdownTableBodyNone"><span class="tt">Fn</span>  </td></tr>
-</table>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md50"></a>
+<p>Expressions are parsed with the following precedence, from strongest to weakest binding:</p>
+<div class="fragment"><div class="line">1.  L : e        literal type ascription</div>
+<div class="line">2.  e # e        extract</div>
+<div class="line">3.  e e          application</div>
+<div class="line">    e @ e        application with explicit implicit arguments</div>
+<div class="line">4.  e → e        function type</div>
+</div><!-- fragment --><p>Application and extraction associate left-to-right. Function type associates right-to-left.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md50"></a>
+Summary: Functions and types</h1>
+<p>Mim uses different surface syntax for declarations, expressions, and types:</p>
+<div class="fragment"><div class="line">Declaration   Expression   Type</div>
+<div class="line">lam           lm / λ       -&gt;</div>
+<div class="line">con           cn           Cn</div>
+<div class="line">fun           fn           Fn</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md51"></a>
 Declarations</h2>
-<p>The following function <em>declarations</em> are all equivalent:</p>
-<div class="fragment"><div class="line">lam f(T: *)((x y: T), return: T → ⊥)@(ff): ⊥ = return x;</div>
-<div class="line">con f(T: *)((x y: T), return: Cn T)          = return x;</div>
-<div class="line">fun f(T: *) (x y: T): T                       = return x;</div>
-</div><!-- fragment --><p>Note that all partial evaluation filters default to <span class="tt">tt</span> except for <span class="tt">con</span>/<span class="tt">cn</span>/<span class="tt">fun</span>/<span class="tt">fn</span>.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md51"></a>
+<p>The following declarations are equivalent:</p>
+<div class="fragment"><div class="line">lam f(T: *)((x y: T), return: T → ⊥)@ff: ⊥ = return x;</div>
+<div class="line">con f(T: *)((x y: T), return: Cn T)        = return x;</div>
+<div class="line">fun f(T: *) (x y: T): T                    = return x;</div>
+</div><!-- fragment --><p>Partial-evaluation filters default to <span class="tt">tt</span>, except for <span class="tt">con</span>/<span class="tt">cn</span>/<span class="tt">fun</span>/<span class="tt">fn</span>.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md52"></a>
 Expressions</h2>
-<p>The following function <em>expressions</em> are all equivalent. What is more, since they are bound by a <em>let declaration</em>, they have the exact same effect as the function <em>declarations</em> above:</p>
-<div class="fragment"><div class="line">let f =  λ (T: *) ((x y: T), return: T → ⊥)@(ff): ⊥ = return x;</div>
-<div class="line">let f = lm (T: *) ((x y: T), return: T → ⊥)      : ⊥ = return x;</div>
-<div class="line">let f = cn (T: *) ((x y: T), return: Cn T)          = return x;</div>
-<div class="line">let f = fn (T: *)  (x y: T): T                       = return x;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md52"></a>
+<p>The following expressions are equivalent. Because they are bound by <span class="tt">let</span>, they behave like the declarations above:</p>
+<div class="fragment"><div class="line">let f =  λ (T: *) ((x y: T), return: T → ⊥)@ff: ⊥ = return x;</div>
+<div class="line">let f = lm (T: *) ((x y: T), return: T → ⊥)   : ⊥ = return x;</div>
+<div class="line">let f = cn (T: *) ((x y: T), return: Cn T)        = return x;</div>
+<div class="line">let f = fn (T: *)  (x y: T): T                    = return x;</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md53"></a>
 Applications</h2>
-<p>The following expressions for applying <span class="tt">f</span> are also equivalent:</p>
+<p>The following applications of <span class="tt">f</span> are equivalent:</p>
 <div class="fragment"><div class="line">f Nat ((23, 42), cn res: Nat = use(res))</div>
 <div class="line">ret res = f Nat $ (23, 42); use(res)</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md53"></a>
-Function Types</h2>
-<p>Finally, the following function types are all equivalent and denote the type of <span class="tt">f</span> above.</p>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md54"></a>
+Function types</h2>
+<p>The following types are equivalent and describe the type of <span class="tt">f</span> above:</p>
 <div class="fragment"><div class="line">[T: *] →    [[T, T], T → ⊥] → ⊥</div>
 <div class="line">[T: *] → Cn [[T, T], Cn T]</div>
 <div class="line">[T: *] → Fn  [T, T] → T</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md54"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md55"></a>
 Scoping</h1>
-<p>Mim uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope"><em>lexical scoping</em></a> where all names live within the same namespace - with a few exceptions noted below. </p><dl class="section note"><dt>Note</dt><dd>The grammar tables above also indiciate which constructs open new scopes (and close them again) with <b>this<sup>s</sup></b> annotation in the <em>Comments</em> column.</dd></dl>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md55"></a>
-Underscore</h2>
-<p>The symbol <span class="tt">_</span> is special and never binds to an entity. For this reason, <span class="tt">_</span> can be bound over and over again within the same scope (without effect). Hence, using the symbol <span class="tt">_</span> will always result in a scoping error.</p>
+<p>Mim uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope">lexical scoping</a>. Unless noted otherwise, all names live in the same namespace.</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md56"></a>
-Annex</h2>
-<p>Annex names are special and live in a global namespace.</p>
+Underscore</h2>
+<p>The symbol <span class="tt">_</span> is special: it never binds an entity.</p>
+<p>As a consequence, <span class="tt">_</span> may appear repeatedly in the same scope without conflict, but any use of <span class="tt">_</span> as a reference is a scoping error.</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md57"></a>
-Field Names of Sigmas</h2>
-<p>Named elements of mutable sigmas are available for extracts/inserts.</p>
-<dl class="section note"><dt>Note</dt><dd>These names take precedence over the usual scope. In the following example, <span class="tt">i</span> refers to the first element <span class="tt">i</span> of <span class="tt">X</span> and <b>not</b> to the <span class="tt">i</span> introduced via <span class="tt">let</span>:</dd></dl>
+Annex</h2>
+<p>Annex names live in a separate global namespace.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md58"></a>
+Field names of sigmas</h2>
+<p>Named elements of mutable sigma types are available for extracts and inserts.</p>
+<dl class="section note"><dt>Note</dt><dd>These names take precedence over ordinary lexical names. In the example below, <span class="tt">i</span> refers to the field name of <span class="tt">X</span>, not the <span class="tt">let</span>-bound variable:</dd></dl>
 <div class="fragment"><div class="line">let i = 1_2;</div>
 <div class="line">[i: Nat, j: Nat]::X → f X#i;</div>
-</div><!-- fragment --><p>Use parentheses to refer to the <span class="tt">let</span>-bounded <span class="tt">i</span>:</p>
+</div><!-- fragment --><p>Use parentheses to force the variable interpretation:</p>
 <div class="fragment"><div class="line">let i = 1_2;</div>
 <div class="line">[i: Nat, j: Nat]::X → f X#(i);</div>
 </div><!-- fragment --> </div></div><!-- contents -->

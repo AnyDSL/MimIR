@@ -115,38 +115,38 @@ $(function(){initNavTree('compile.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md103">Types </a>
+    <a href="#autotoc_md121">Types </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md104">%compile.Pass / %compile.Phase </a>
+        <a href="#autotoc_md122">%compile.Pass / %compile.Phase </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md105">Utility </a>
+    <a href="#autotoc_md123">Utility </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md106">%compile.is_loaded </a>
+        <a href="#autotoc_md124">%compile.is_loaded </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md107">Constructors </a>
+    <a href="#autotoc_md125">Constructors </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md108">%compile.phases / %compile.passes </a>
+        <a href="#autotoc_md126">%compile.phases / %compile.passes </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md109">Phases </a>
+        <a href="#autotoc_md127">Phases </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md110">Repls </a>
+        <a href="#autotoc_md128">Repls </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md111">Passes </a>
+        <a href="#autotoc_md129">Passes </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md112">Pipelines </a>
+        <a href="#autotoc_md130">Pipelines </a>
       </li>
     </ul>
   </li>
@@ -155,29 +155,29 @@ $(function(){initNavTree('compile.html','',''); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2compile"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1compile.html" title="The compile Plugin">mim::plug::compile</a></dd></dl>
 <p>This plugin handles the optimization pipeline of the compilation of MimIR programs. This plugin's axioms can register <a class="el" href="classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">mim::Pass</a>es and <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">mim::Phase</a>s. Invoke the optimization pipeline by defining a function <span class="tt">_compile: [] → %compile.Phase</span>.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md103"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md121"></a>
 Types</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md104"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md122"></a>
 %compile.Pass / %compile.Phase</h2>
 <p>Types for compilation passes and phases.</p>
 <div class="fragment"><div class="line">axm %compile.Phase: *;</div>
 <div class="line">axm %compile.Pass:  *;</div>
 <div class="line">axm %compile.Repl:  *;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md105"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md123"></a>
 Utility</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md106"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md124"></a>
 %compile.is_loaded</h2>
 <p>Checks whether the given plugin is loaded.</p>
 <div class="fragment"><div class="line">axm %compile.is_loaded: {n: Nat} → «n; I8» → Bool, normalize_is_loaded;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md107"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md125"></a>
 Constructors</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md108"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md126"></a>
 %compile.phases / %compile.passes</h2>
 <p>Sets up <span class="tt">n</span> phases / passes anad bundles them</p>
 <div class="fragment"><div class="line">axm %compile.phases: {n: Nat} → Bool → «n; %compile.Phase» → %compile.Phase;</div>
 <div class="line">axm %compile.passes: {n: Nat} →        «n; %compile.Pass » → %compile.Pass;</div>
 <div class="line">axm %compile.repls:  {n: Nat} →        «n; %compile.Repl » → %compile.Repl;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md109"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md127"></a>
 Phases</h2>
 <div class="fragment"><div class="line">axm %compile.beta_red_phase:                            %compile.Phase;</div>
 <div class="line">axm %compile.branch_normalize_phase:                    %compile.Phase;</div>
@@ -192,10 +192,10 @@ Phases</h2>
 <div class="line">axm %compile.prefix_cleanup_phase: {n: Nat} → «n; I8» → %compile.Phase;</div>
 <div class="line"> </div>
 <div class="line">let %compile.internal_cleanup_phase = %compile.prefix_cleanup_phase &quot;internal_&quot;;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md110"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md128"></a>
 Repls</h2>
 <div class="fragment"><div class="line">axm %compile.null_repl: %compile.Repl;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md111"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md129"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %compile.beta_red_pass:                             %compile.Pass;</div>
 <div class="line">axm %compile.eta_exp_pass:                              %compile.Pass;</div>
@@ -204,7 +204,7 @@ Passes</h2>
 <div class="line">axm %compile.null_pass:                                 %compile.Pass;</div>
 <div class="line">axm %compile.scalarize_pass:                            %compile.Pass;</div>
 <div class="line">axm %compile.tail_rec_elim_pass:                        %compile.Pass;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md112"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md130"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">let optimization_passes = %compile.passes (</div>
 <div class="line">    %compile.beta_red_pass,</div>

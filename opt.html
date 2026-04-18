@@ -115,13 +115,13 @@ $(function(){initNavTree('opt.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md231">Dependencies </a>
+    <a href="#autotoc_md249">Dependencies </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md232">Passes, Phases, and Pipelines </a>
+    <a href="#autotoc_md250">Passes, Phases, and Pipelines </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md233">Pipelines </a>
+        <a href="#autotoc_md251">Pipelines </a>
       </li>
     </ul>
   </li>
@@ -130,7 +130,7 @@ $(function(){initNavTree('opt.html','',''); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2opt"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1opt.html" title="The opt Plugin">mim::plug::opt</a></dd></dl>
 <p>Manages the default compilation pipeline of Mim programs using plugins.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md231"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md249"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
 <div class="line">import compile;</div>
@@ -142,9 +142,9 @@ Dependencies</h1>
 <div class="line">import matrix;</div>
 <div class="line">import refly;</div>
 <div class="line">import regex;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md232"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md250"></a>
 Passes, Phases, and Pipelines</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md233"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md251"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">lam cond_phase {n: Nat} (name: «n; I8») (phase: %compile.Phase): %compile.Phase = %core.select (%compile.is_loaded name, phase, %compile.null_phase);</div>
 <div class="line">lam cond_repl  {n: Nat} (name: «n; I8») (repl:  %compile.Repl ): %compile.Repl  = %core.select (%compile.is_loaded name, repl , %compile.null_repl );</div>

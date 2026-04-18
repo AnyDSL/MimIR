@@ -1,5 +1,11 @@
 var NAVTREEINDEX22 =
 {
+"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a2db95e8e1a9267b7a1188556b2013b33":[2,0,1,1,5,7,5],
+"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a31f644026e4c96dee546c228a1894c68":[2,0,1,1,5,7,19],
+"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a4eb31516a4986c34fa297e5e5f4045a9":[2,0,1,1,5,7,27],
+"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a50ae450ddc870da88fe58ac89bb3ffb9":[2,0,1,1,5,7,14],
+"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a52ce133ec087e9b5abfeee496b3665be":[2,0,1,1,5,7,18],
+"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a5c3449bd452068e13145cd4476d9932b":[2,0,1,1,5,7,2],
 "namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a63cdea917e67639e07e3ce11b1e87a22":[2,0,1,1,5,7,12],
 "namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a72f185f7f2b7c5250f4a7e9a5fc7dc55":[2,0,1,1,5,7,24],
 "namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a738a656e8e8ec272ca17cd51e12f558b":[2,0,1,1,5,7,21],
@@ -243,11 +249,5 @@ var NAVTREEINDEX22 =
 "namespacemim_1_1plug_1_1tensor.html#ad8d4e9b960bda9c68eb671e4e988fb37":[2,0,1,1,13,6],
 "namespacemim_1_1plug_1_1tensor.html#ae6b419dcfc5dd70e2a31b28fd234a3f5":[2,0,1,1,13,7],
 "namespacemim_1_1plug_1_1tuple.html":[2,0,1,1,14],
-"namespacemim_1_1plug_1_1tuple.html#a12e1d6408db489bf216da5d9ec52aaae":[2,0,1,1,14,10],
-"namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2":[2,0,1,1,14,5],
-"namespacemim_1_1plug_1_1tuple.html#a2c3b889c139b975a1735543c8ed40664":[2,0,1,1,14,2],
-"namespacemim_1_1plug_1_1tuple.html#a3e6250caa1e19267b5edccdc28b4428a":[2,0,1,1,14,1],
-"namespacemim_1_1plug_1_1tuple.html#a43eed0d13fc869cc12b19c0eb9f388af":[2,0,1,1,14,6],
-"namespacemim_1_1plug_1_1tuple.html#a4a5ac0ade39e76f6e910b0b5af8284bd":[2,0,1,1,14,9],
-"namespacemim_1_1plug_1_1tuple.html#a5358d84e60e63fbac3a40e24689d9448":[2,0,1,1,14,8]
+"namespacemim_1_1plug_1_1tuple.html#a12e1d6408db489bf216da5d9ec52aaae":[2,0,1,1,14,10]
 };
