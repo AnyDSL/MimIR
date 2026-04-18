@@ -398,4 +398,4 @@ void visit(DefSet& done, const Def* def) {
 }
 ```
 
-In practice, though, you will usually want to use the [pass](passes.md) or phase infrastructure instead.
+In practice, though, you will usually want to use the [phase](phases.md) or phase infrastructure instead.
