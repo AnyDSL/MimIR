@@ -516,7 +516,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto lam = def->isa<Lam>()) {
         tab.lnprint(os, "{}", id(lam, true));
 
-        // TODO: Lit bindings
     } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
             tab.lnprint(os, "(lit {} Nat)", lit);
