@@ -11,6 +11,8 @@ if(NOT TARGET mim::mim)
     add_executable(mim::mim ALIAS mim)
 endif()
 
+set(MIM_PLUGIN_LIST "" CACHE INTERNAL "MIM_PLUGIN_LIST" FORCE)
+set(MIM_PLUGIN_LAYOUT "" CACHE INTERNAL "MIM_PLUGIN_LAYOUT" FORCE)
 set(MIM_TARGET_NAMESPACE "mim::")
 
 if(NOT COMMAND add_mim_plugin)
