@@ -85,4 +85,4 @@ axm %eqsat.rules: {n: Nat, Ts: «n; *»} → «i: n; Ts#i» → %eqsat.Rules;
 ///
 /// ### Phases
 ///
-axm %eqsat.egg_rewrite_phase: %compile.Phase;
+axm %eqsat.eqsat_rewrite_phase: %compile.Phase;
