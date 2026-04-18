@@ -1,4 +1,4 @@
-use eqsat::{equality_saturate, ffi::CostFn, ffi::RuleSet};
+use eqsat::{equality_saturate, ffi::bridge::CostFn, ffi::bridge::RuleSet};
 use std::fs;
 
 fn main() {

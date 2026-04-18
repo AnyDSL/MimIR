@@ -1,7 +1,7 @@
 use crate::find_node;
-use crate::mim_std::Mim;
-use crate::mim_std::Mim::*;
-use crate::mim_std::analysis::{AnalysisData, MimAnalysis};
+use crate::mim_egg::Mim;
+use crate::mim_egg::Mim::*;
+use crate::mim_egg::analysis::{AnalysisData, MimAnalysis};
 use egg::*;
 use std::cmp::max;
 

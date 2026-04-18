@@ -1,7 +1,7 @@
 use slotted_egraphs::*;
 
 define_language! {
-    pub enum Mim {
+    pub enum MimSlotted {
         // TERMS
 
         // (let <name> <definition> <expression>)

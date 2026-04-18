@@ -118,9 +118,9 @@ std::string Emitter::id(const Def* def, bool is_var_use) const {
     else if (def->is_external())
         id = def->sym().str();
     else
-        id = def->unique_name();
+        id = prefix + def->unique_name();
 
-    return var_wrap(prefix + id);
+    return var_wrap(id);
 }
 
 // Adjusts the base indentation of a term-string like

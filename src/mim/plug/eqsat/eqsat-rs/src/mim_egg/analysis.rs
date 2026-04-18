@@ -1,5 +1,5 @@
-use crate::mim_std::Mim;
-use crate::mim_std::rulesets::core::{CoreData, core_make, core_merge, core_modify};
+use crate::mim_egg::Mim;
+use crate::mim_egg::rulesets::core::{CoreData, core_make, core_merge, core_modify};
 use egg::*;
 
 #[macro_export]

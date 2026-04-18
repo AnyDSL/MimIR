@@ -1,6 +1,6 @@
 use crate::RuleSet;
-use crate::mim_std::Mim;
-use crate::mim_std::analysis::MimAnalysis;
+use crate::mim_egg::Mim;
+use crate::mim_egg::analysis::MimAnalysis;
 use egg::Rewrite;
 
 pub mod core;
