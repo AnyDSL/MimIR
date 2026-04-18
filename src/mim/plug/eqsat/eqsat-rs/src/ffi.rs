@@ -1,6 +1,6 @@
-use crate::Mim;
-use crate::Mim::*;
-use crate::equality_saturate;
+use crate::mim_egg::Mim;
+use crate::mim_egg::Mim::*;
+use crate::{equality_saturate, mim_node_str, pretty};
 use bridge::{MimKind, MimNode, RewriteResult};
 use egg::{Id, RecExpr};
 
@@ -74,29 +74,6 @@ pub mod bridge {
         fn mim_node_str(node: MimNode) -> String;
         fn pretty(sexpr: &str, line_len: usize) -> String;
     }
-}
-
-pub fn mim_node_str(node: MimNode) -> String {
-    format!("{:?}", node)
-}
-
-pub fn pretty(sexpr: &str, line_len: usize) -> String {
-    let normalized = sexpr.replace("\r\n", "\n");
-    let mut sexprs: Vec<&str> = normalized.split("\n\n").collect();
-    sexprs.retain(|s| !s.trim().is_empty());
-    let mut res = String::new();
-
-    for (i, sexpr) in sexprs.iter().enumerate() {
-        let parsed: RecExpr<Mim> = sexpr.parse().unwrap();
-        res.push_str(parsed.pretty(line_len).as_str());
-        if i < sexprs.len() - 1 {
-            res.push_str("\n\n");
-        } else {
-            res.push('\n');
-        }
-    }
-
-    res
 }
 
 fn new_mim(kind: MimKind, children: &[Id], num: i64, symbol: String) -> MimNode {

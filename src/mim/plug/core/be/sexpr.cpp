@@ -106,7 +106,8 @@ std::string Emitter::id(const Def* def, bool is_var_use) const {
     std::string id;
 
     // In slotted-egg variable-uses need to be explicitly wrapped in a var node i.e. in λx.x (lam $x (var $x))
-    auto var_wrap = [&](std::string id) { return slotted() && is_var_use ? "(var " + id + ")" : id; };
+    auto var_wrap
+        = [&](std::string id) { return slotted() && is_var_use && id.starts_with('$') ? "(var " + id + ")" : id; };
 
     // Axioms, rules, unset lambdas(imports) and externals need to be emitted without a uid
     if (def->isa<Axm>())
