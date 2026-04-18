@@ -1,6 +1,6 @@
 use crate::mim_egg::Mim;
 use crate::mim_slotted::MimSlotted;
-use crate::{equality_saturate, mim_node_str, pretty};
+use crate::{equality_saturate, equality_saturate_slotted, mim_node_str, pretty, pretty_slotted};
 use bridge::{MimKind, MimNode, RewriteResult};
 use egg::{Id, RecExpr};
 use slotted_egraphs::Id as IdSlotted;
@@ -75,8 +75,16 @@ pub mod bridge {
             rulesets: Vec<RuleSet>,
             cost_fn: CostFn,
         ) -> Vec<RewriteResult>;
-        fn mim_node_str(node: MimNode) -> String;
         fn pretty(sexpr: &str, line_len: usize) -> String;
+
+        fn equality_saturate_slotted(
+            sexpr: &str,
+            rulesets: Vec<RuleSet>,
+            cost_fn: CostFn,
+        ) -> Vec<RewriteResult>;
+        fn pretty_slotted(sexpr: &str, line_len: usize) -> String;
+
+        fn mim_node_str(node: MimNode) -> String;
     }
 }
 
