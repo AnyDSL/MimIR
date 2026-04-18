@@ -11,6 +11,42 @@ if(NOT MIM_TARGET_NAMESPACE)
     set(MIM_TARGET_NAMESPACE "")
 endif()
 
+## \page add_mim_plugin_cmake add_mim_plugin
+## \brief Registers a new MimIR plugin.
+##
+## Relative to the plugin's `CMakeLists.txt`, there should be a file
+## `<plugin-name>.mim` containing the plugin's annexes.
+##
+## \code{.cmake}
+## add_mim_plugin(<plugin-name>
+##     [SOURCES <source>...]
+##     [PRIVATE <private-item>...]
+##     [INSTALL])
+## \endcode
+##
+## `<plugin-name>` may only contain letters, digits, and underscores, and must
+## satisfy MimIR's plugin naming constraints.
+##
+## The command creates two targets:
+## - `mim_internal_<plugin-name>` bootstraps the plugin, generates
+##   `<plugin-name>/autogen.h` for the C++ interface used to identify annexes,
+##   `<plugin-name>.md` for the documentation, and copies `<plugin-name>.mim`
+##   into the build tree.
+## - `mim_<plugin-name>` builds the actual `MODULE` library that contains
+##   normalizers, passes, and backends. One of the listed source files must
+##   export `mim_get_plugin`.
+##
+## `SOURCES` lists the source files that are compiled into the loadable plugin.
+## `PRIVATE` lists additional private link dependencies.
+##
+## `INSTALL` installs the plugin module, its `.mim` file, and the generated
+## `autogen.h`. The export name `mim-targets` must be exported accordingly; see
+## CMake's `install(EXPORT ...)` documentation.
+##
+## Additional target properties can be set afterwards, for example:
+## \code{.cmake}
+## target_include_directories(mim_<plugin-name> <path>...)
+## \endcode
 function(add_mim_plugin)
     set(PLUGIN ${ARGV0})
 

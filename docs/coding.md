@@ -275,9 +275,9 @@ There is also a [tree-sitter grammar](https://gitlab.com/amaeble/tree-sitter-mim
 ## New Plugins
 
 Check out the [demo](@ref demo) plugin for a minimal example.
+It uses our custom [`add_mim_plugin`](@ref add_mim_plugin_cmake) cmake command.
 
 You can create a new in-tree plugin `foobar` based on the [demo](@ref demo) plugin like this:
-
 ```sh
 ./scripts/new_plugin.sh foobar
 ```
@@ -288,12 +288,12 @@ Plugin names may only contain letters, digits, and underscores, and are limited 
 By default, the script creates an in-tree plugin and also updates `src/mim/plug/CMakeLists.txt`.
 The generated files are:
 
-1. `src/mim/plug/<plugin>/<plugin>.mim`
-2. `src/mim/plug/<plugin>/CMakeLists.txt`
-3. `src/mim/plug/<plugin>/<plugin>.cpp`
-4. `src/mim/plug/<plugin>/normalizers.cpp`
-5. `include/mim/plug/<plugin>/<plugin>.h`
-6. `lit/<plugin>/const.mim`
+* `src/mim/plug/<plugin>/<plugin>.mim`
+* `src/mim/plug/<plugin>/CMakeLists.txt`
+* `src/mim/plug/<plugin>/<plugin>.cpp`
+* `src/mim/plug/<plugin>/normalizers.cpp`
+* `include/mim/plug/<plugin>/<plugin>.h`
+* `lit/<plugin>/const.mim`
 
 To create a standalone third-party plugin repository in `extra/`, use:
 
@@ -303,12 +303,12 @@ To create a standalone third-party plugin repository in `extra/`, use:
 
 This creates a self-contained plugin skeleton in `extra/<plugin>/`, including:
 
-1. `<plugin>.mim`
-2. `CMakeLists.txt`
-3. `src/<plugin>.cpp`
-4. `src/normalizers.cpp`
-5. `include/mim/plug/<plugin>/<plugin>.h`
-6. `lit/const.mim`
+* `<plugin>.mim`
+* `CMakeLists.txt`
+* `src/<plugin>.cpp`
+* `src/normalizers.cpp`
+* `include/mim/plug/<plugin>/<plugin>.h`
+* `lit/const.mim`
 
 In `--extra` mode, the script also initializes a new Git repository for the plugin.
 
@@ -338,56 +338,4 @@ Configure the project standalone with:
 
 ```cmake
 cmake .. -Dmim_DIR=<MIM_INSTALL_PREFIX>/lib/cmake/mim
-```
-
-### `add_mim_plugin`
-
-Registers a new MimIR plugin.
-
-```cmake
-add_mim_plugin(<plugin-name>
-    [SOURCES <source>...]
-    [PRIVATE <private-item>...]
-    [INSTALL])
-```
-
-`<plugin-name>` is the name of the plugin.
-Plugin names may only contain letters, digits, and underscores, and are limited to 8 characters.
-Relative to the plugin's `CMakeLists.txt`, there should be a file `<plugin-name>.mim` containing the plugin's annexes.
-
-The command creates two targets:
-
-1. `mim_internal_<plugin-name>`
-
-   This is an internal target used to bootstrap the plugin.
-   It generates:
-   - `<plugin-name>/autogen.h` for the C++ interface used to identify annexes,
-   - `<plugin-name>.md` for the documentation, and
-   - `<plugin-name>.d` for the plugin's dependencies.
-
-   @note Tracking dependencies via the emitted dependency file is not supported by all CMake generators.
-   See [`add_custom_command`'s `DEPFILE` argument](https://cmake.org/cmake/help/latest/command/add_custom_command.html).
-
-2. `mim_<plugin-name>`
-
-   This is the actual `MODULE` [library](https://cmake.org/cmake/help/latest/command/add_library.html).
-   - `SOURCES`
-
-     These are the `<source>` files used to build the loadable plugin containing normalizers, passes, and backends.
-     One of the source files must export [`mim_get_plugin`](@ref mim::mim_get_plugin).
-
-   - `PRIVATE`
-
-     These are additional private build dependencies.
-
-- `INSTALL`
-
-  Specify this if the plugin description, plugin, and headers should be installed via `make install`.
-  To export the targets, the export name `mim-targets` must be exported accordingly; see [`install(EXPORT ...)`](https://cmake.org/cmake/help/latest/command/install.html#export).
-
-You can specify additional target properties in the plugin's `CMakeLists.txt`.
-For example, the following snippet adds additional include paths to the `MODULE` target `mim_<plugin-name>`:
-
-```cmake
-target_include_directories(mim_<plugin-name> <path>...)
 ```
