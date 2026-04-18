@@ -118,10 +118,10 @@ $(function(){initNavTree('rewriting.html','',''); });
     <a href="#rewriter">Rewriter </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md96">Scoping </a>
+        <a href="#autotoc_md93">Scoping </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md97">Typical Usage </a>
+        <a href="#autotoc_md94">Typical Usage </a>
       </li>
     </ul>
   </li>
@@ -129,15 +129,15 @@ $(function(){initNavTree('rewriting.html','',''); });
     <a href="#varrewriter">VarRewriter </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md98">Scoped Substitution </a>
+        <a href="#autotoc_md95">Scoped Substitution </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md99">Typical Usage </a>
+        <a href="#autotoc_md96">Typical Usage </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md100">Relationship between both </a>
+    <a href="#autotoc_md97">Relationship between both </a>
   </li>
 </ul>
 </div>
@@ -163,10 +163,10 @@ Rewriter</h1>
 <li>debug metadata</li>
 <li>recursive structure through mutable stubs</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md96"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md93"></a>
 Scoping</h2>
 <p><a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> uses a stack of mappings rather than a single global map. This allows temporary, scoped rewrites. This matters whenever rewriting enters a context where some old node should mean something different locally than globally. Inner mappings shadow outer ones, and leaving the scope removes the temporary bindings again. This scoped structure is important for binder-sensitive rewrites and for transformations that temporarily substitute certain nodes while rebuilding a larger term.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md97"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md94"></a>
 Typical Usage</h2>
 <p>Rebuild a term into another world:</p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> rw      = <a class="code hl_class" href="classmim_1_1Rewriter.html">mim::Rewriter</a>(new_world);</div>
@@ -180,11 +180,11 @@ VarRewriter</h1>
 <p><a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> performs scoped variable substitution on top of the general rewriting framework. </p>
 </blockquote>
 <p>The main extra idea is that <a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> tracks which variables are currently relevant for substitution and uses free-variable information to decide whether a node needs to be rebuilt at all. If a subgraph cannot contain any of the substituted variables, it can be reused unchanged. This makes substitution much more efficient on large terms: unaffected subgraphs are skipped entirely.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md98"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md95"></a>
 Scoped Substitution</h2>
 <p>Like <a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a>, <a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> is scope-aware. This is essential because substitution interacts with binders. When rewriting enters a mutable binder that introduces a variable, <a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> tracks that variable in the current scope. This allows it to reason correctly about which free variables are relevant in nested terms.</p>
 <p>So <a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> is not just “replace <a class="el" href="classmim_1_1Var.html" title="mim::Var"><span class="tt">Var</span></a> with <a class="el" href="classmim_1_1Def.html" title="mim::Def"><span class="tt">Def</span></a>”. It is substitution that respects binder structure and avoids rebuilding irrelevant parts of the graph.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md99"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md96"></a>
 Typical Usage</h2>
 <p>Substitute one variable with one argument:</p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> rw     = <a class="code hl_class" href="classmim_1_1VarRewriter.html">mim::VarRewriter</a>(var, arg);</div>
@@ -197,7 +197,7 @@ Typical Usage</h2>
 <div class="line"> </div>
 <div class="line"><span class="keyword">auto</span> result = rw.rewrite(def);</div>
 </div><!-- fragment --><p>Conceptually, this rewrites only those parts of <span class="tt">def</span> whose free variables intersect the substituted variables.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md100"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md97"></a>
 Relationship between both</h1>
 <p><a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> is a specialization of <a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a>:</p>
 <ul>
