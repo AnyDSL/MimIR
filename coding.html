@@ -211,7 +211,7 @@ Build Options</h1>
 <td class="markdownTableBodyNone"><span class="tt">MIM_LIT_TIMEOUT</span>  </td><td class="markdownTableBodyNone"><span class="tt">&lt;timeout_in_sec&gt;</span>  </td><td class="markdownTableBodyNone"><span class="tt">20</span>  </td><td class="markdownTableBodyNone">Timeout for <span class="tt">lit</span> tests. <br  />
  (requires <span class="tt">BUILD_TESTING=ON</span>).  </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><span class="tt">MIM_LIT_WITH_VALGRIND</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">OFF</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, run the Mim CLI in the <span class="tt">lit</span> tests under Valgrind. <br  />
+<td class="markdownTableBodyNone"><span class="tt">MIM_LIT_WITH_VALGRIND</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">OFF</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, run the <a class="el" href="namespaceMim.html">Mim</a> CLI in the <span class="tt">lit</span> tests under Valgrind. <br  />
  (requires <span class="tt">BUILD_TESTING=ON</span>).  </td></tr>
 </table>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
@@ -222,7 +222,7 @@ Dependencies</h2>
 <li>a C++20-compatible C++ compiler, and</li>
 <li>optionally <a href="https://llvm.org/">LLVM</a>.</li>
 </ul>
-<p>Mim emits LLVM IR, but it does <em>not</em> link against LLVM. So you can simply hand the emitted <span class="tt">*.ll</span> file to your system's LLVM toolchain. Strictly speaking, LLVM is not required unless you want to continue from emitted LLVM IR.</p>
+<p><a class="el" href="namespaceMim.html">Mim</a> emits LLVM IR, but it does <em>not</em> link against LLVM. So you can simply hand the emitted <span class="tt">*.ll</span> file to your system's LLVM toolchain. Strictly speaking, LLVM is not required unless you want to continue from emitted LLVM IR.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
 Coding Style</h1>
 <p>Use the following coding conventions:</p>
@@ -385,7 +385,7 @@ Conditional Breakpoints</h2>
 <div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 42</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
 Catching Exceptions</h2>
-<p>For several things, such as errors in the Mim frontend, MimIR uses C++ exceptions for error handling. To stop when an exception is thrown, use:</p>
+<p>For several things, such as errors in the <a class="el" href="namespaceMim.html">Mim</a> frontend, MimIR uses C++ exceptions for error handling. To stop when an exception is thrown, use:</p>
 <div class="fragment"><div class="line">catch throw</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
 Valgrind &amp; GDB</h2>
@@ -426,8 +426,8 @@ GoogleTest</h2>
 <div class="fragment"><div class="line">./mim-gtest --gtest_break_on_failure</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
 Syntax Highlighting</h1>
-<p><a href="https://github.com/AnyDSL/vim-mim">This</a> Vim plugin provides syntax highlighting for Mim files.</p>
-<p>There is also a <a href="https://gitlab.com/amaeble/tree-sitter-mim">tree-sitter grammar</a> for Mim files and a <a href="https://github.com/amaebel/helix">Helix fork</a> with highlight and injection queries.</p>
+<p><a href="https://github.com/AnyDSL/vim-mim">This</a> Vim plugin provides syntax highlighting for <a class="el" href="namespaceMim.html">Mim</a> files.</p>
+<p>There is also a <a href="https://gitlab.com/amaeble/tree-sitter-mim">tree-sitter grammar</a> for <a class="el" href="namespaceMim.html">Mim</a> files and a <a href="https://github.com/amaebel/helix">Helix fork</a> with highlight and injection queries.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
 New Plugins</h1>
 <p>Check out the <a class="el" href="demo.html" title="The demo Plugin">demo</a> plugin for a minimal example.</p>
@@ -450,41 +450,8 @@ Third-Party Plugins</h2>
 <div class="fragment"><div class="line">cmake .. -Dmim_DIR=&lt;MIM_INSTALL_PREFIX&gt;/lib/cmake/mim</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
 <span class="tt">add_mim_plugin</span></h2>
-<p>Registers a new MimIR plugin.</p>
-<div class="fragment"><div class="line">add_mim_plugin(&lt;plugin-name&gt;</div>
-<div class="line">    [SOURCES &lt;source&gt;...]</div>
-<div class="line">    [PRIVATE &lt;private-item&gt;...]</div>
-<div class="line">    [INSTALL])</div>
-</div><!-- fragment --><p><span class="tt">&lt;plugin-name&gt;</span> is the name of the plugin. Relative to the plugin's <span class="tt">CMakeLists.txt</span>, there should be a file <span class="tt">&lt;plugin-name&gt;.<a class="el" href="namespacemim.html">mim</a></span> containing the plugin's annexes.</p>
-<p>The command creates two targets:</p>
-<ol type="1">
-<li><p class="startli"><span class="tt">mim_internal_&lt;plugin-name&gt;</span></p>
-<p class="startli">This is an internal target used to bootstrap the plugin. It generates:</p><ul>
-<li><span class="tt">&lt;plugin-name&gt;/autogen.h</span> for the C++ interface used to identify annexes,</li>
-<li><span class="tt">&lt;plugin-name&gt;.md</span> for the documentation, and</li>
-<li><span class="tt">&lt;plugin-name&gt;.d</span> for the plugin's dependencies.</li>
-</ul>
-<dl class="section note"><dt>Note</dt><dd>Tracking dependencies via the emitted dependency file is not supported by all CMake generators. See <a href="https://cmake.org/cmake/help/latest/command/add_custom_command.html"><span class="tt">add_custom_command</span>'s <span class="tt">DEPFILE</span> argument</a>.</dd></dl>
-</li>
-<li><p class="startli"><span class="tt">mim_&lt;plugin-name&gt;</span></p>
-<p class="startli">This is the actual <span class="tt">MODULE</span> <a href="https://cmake.org/cmake/help/latest/command/add_library.html">library</a>.</p><ul>
-<li><p class="startli"><span class="tt">SOURCES</span></p>
-<p class="startli">These are the <span class="tt">&lt;source&gt;</span> files used to build the loadable plugin containing normalizers, passes, and backends. One of the source files must export <a class="el" href="namespacemim.html#a77f34c28f8418e4828b4684cbc025e52" title="mim::mim_get_plugin"><span class="tt">mim_get_plugin</span></a>.</p>
-</li>
-<li><p class="startli"><span class="tt">PRIVATE</span></p>
-<p class="startli">These are additional private build dependencies.</p>
-</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p class="startli"><span class="tt">INSTALL</span></p>
-<p class="startli">Specify this if the plugin description, plugin, and headers should be installed via <span class="tt">make install</span>. To export the targets, the export name <span class="tt">mim-targets</span> must be exported accordingly; see <a href="https://cmake.org/cmake/help/latest/command/install.html#export"><span class="tt">install(EXPORT ...)</span></a>.</p>
-</li>
-</ul>
-<p>You can specify additional target properties in the plugin's <span class="tt">CMakeLists.txt</span>. For example, the following snippet adds additional include paths to the <span class="tt">MODULE</span> target <span class="tt">mim_&lt;plugin-name&gt;</span>:</p>
-<div class="fragment"><div class="line">target_include_directories(mim_&lt;plugin-name&gt; &lt;path&gt;...)</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+<p>The authoritative reference for <span class="tt">add_mim_plugin</span> lives in <span class="tt"><a class="el" href="Mim_8cmake.html">cmake/Mim.cmake</a></span> and is included in the generated Doxygen documentation as <a class="el" href="add_mim_plugin_cmake.html" title="add_mim_plugin"><span class="tt">add_mim_plugin</span></a>. Keep that source comment in sync instead of duplicating the full command reference here. </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 </div><!-- container -->

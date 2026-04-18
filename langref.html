@@ -237,7 +237,7 @@ Notation</h1>
 <div class="line">           comma-separated list of zero or more x, with optional trailing comma</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="lex"></a>
 Lexical Structure</h1>
-<p>Mim source files are <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a> encoded and are <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexed</a> from left to right.</p>
+<p><a class="el" href="namespaceMim.html">Mim</a> source files are <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a> encoded and are <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexed</a> from left to right.</p>
 <dl class="section note"><dt>Note</dt><dd>The lexer uses <a href="https://en.wikipedia.org/wiki/Maximal_munch">maximal munch</a>: ambiguities are resolved by taking the longest matching token. For example, <span class="tt">&lt;&lt;&lt;</span> is tokenized as <span class="tt">&lt;&lt;</span> followed by <span class="tt">&lt;</span>.</dd></dl>
 <h2 class="doxsection"><a class="anchor" id="terminals"></a>
 Terminals</h2>
@@ -326,7 +326,7 @@ Pattern terminals</h3>
 <div class="line">esc    ::= one of: \&#39; \&quot; \0 \a \\ \b \f \n \r \t \v</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
 Comments</h1>
-<p>Mim supports the following comment forms:</p>
+<p><a class="el" href="namespaceMim.html">Mim</a> supports the following comment forms:</p>
 <ul>
 <li><span class="tt">/* ... */</span> for multi-line comments</li>
 <li><span class="tt">// ...</span> for single-line comments</li>
@@ -339,7 +339,7 @@ Comments</h1>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="grammar"></a>
 Grammar</h1>
-<p>Mim is defined by a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a>. Its terminals are the lexical elements defined above. The start symbol is <span class="tt">m</span> for <em>module</em>.</p>
+<p><a class="el" href="namespaceMim.html">Mim</a> is defined by a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a>. Its terminals are the lexical elements defined above. The start symbol is <span class="tt">m</span> for <em>module</em>.</p>
 <p>The main nonterminals are:</p>
 <div class="fragment"><div class="line">m   module</div>
 <div class="line">d   declaration</div>
@@ -513,7 +513,7 @@ Precedence</h2>
 </div><!-- fragment --><p>Application and extraction associate left-to-right. Function type associates right-to-left.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md50"></a>
 Summary: Functions and types</h1>
-<p>Mim uses different surface syntax for declarations, expressions, and types:</p>
+<p><a class="el" href="namespaceMim.html">Mim</a> uses different surface syntax for declarations, expressions, and types:</p>
 <div class="fragment"><div class="line">Declaration   Expression   Type</div>
 <div class="line">lam           lm / λ       -&gt;</div>
 <div class="line">con           cn           Cn</div>
@@ -545,7 +545,7 @@ Function types</h2>
 <div class="line">[T: *] → Fn  [T, T] → T</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md55"></a>
 Scoping</h1>
-<p>Mim uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope">lexical scoping</a>. Unless noted otherwise, all names live in the same namespace.</p>
+<p><a class="el" href="namespaceMim.html">Mim</a> uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope">lexical scoping</a>. Unless noted otherwise, all names live in the same namespace.</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md56"></a>
 Underscore</h2>
 <p>The symbol <span class="tt">_</span> is special: it never binds an entity.</p>

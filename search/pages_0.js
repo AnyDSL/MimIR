@@ -3,7 +3,7 @@ var searchData=
   ['abs_0',['abs',['../core.html#autotoc_md145',1,'%core.abs'],['../math.html#autotoc_md201',1,'%math.abs']]],
   ['ad_1',['%autodiff.ad',['../autodiff.html#autotoc_md105',1,'']]],
   ['add_2',['add',['../autodiff.html#autotoc_md107',1,'%autodiff.add'],['../autodiff.html#autotoc_md113',1,'%core.wrap.add']]],
-  ['add_5fmim_5fplugin_3',['&lt;span class=&quot;tt&quot;&gt;add_mim_plugin&lt;/span&gt;',['../coding.html#autotoc_md17',1,'']]],
+  ['add_5fmim_5fplugin_3',['add_mim_plugin',['../coding.html#autotoc_md17',1,'&lt;span class=&quot;tt&quot;&gt;add_mim_plugin&lt;/span&gt;'],['../add_mim_plugin_cmake.html',1,'add_mim_plugin']]],
   ['address_20spaces_4',['Address Spaces',['../gpu.html#autotoc_md161',1,'']]],
   ['affine_20for_5',['%affine.For',['../affine.html#autotoc_md99',1,'']]],
   ['affine_20lower_5ffor_5fpass_6',['%affine.lower_for_pass',['../affine.html#autotoc_md101',1,'']]],
