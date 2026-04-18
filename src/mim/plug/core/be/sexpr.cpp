@@ -26,12 +26,12 @@ struct BB {
 
     template<class... Args>
     void body(const char* s, Args&&... args) {
-        print(body().emplace_back(), s, std::forward<Args&&>(args)...);
+        print(body().emplace_back(), s, std::forward<Args>(args)...);
     }
 
     template<class... Args>
     void tail(const char* s, Args&&... args) {
-        print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
+        print(tail().emplace_back(), s, std::forward<Args>(args)...);
     }
 
     template<class... Args>
@@ -39,7 +39,7 @@ struct BB {
         if (!assigned.contains(name)) {
             assigned.insert(name);
             auto& os = body().emplace_back();
-            print(tab.lnprint(os, "(let {} ", name), s, std::forward<Args&&>(args)...);
+            print(tab.lnprint(os, "(let {} ", name), s, std::forward<Args>(args)...);
         }
         return name;
     }
