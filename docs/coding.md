@@ -308,51 +308,6 @@ cmake .. -Dmim_DIR=<MIM_INSTALL_PREFIX>/lib/cmake/mim
 
 ### `add_mim_plugin`
 
-Registers a new MimIR plugin.
-
-```cmake
-add_mim_plugin(<plugin-name>
-    [SOURCES <source>...]
-    [PRIVATE <private-item>...]
-    [INSTALL])
-```
-
-`<plugin-name>` is the name of the plugin.
-Relative to the plugin's `CMakeLists.txt`, there should be a file `<plugin-name>.mim` containing the plugin's annexes.
-
-The command creates two targets:
-
-1. `mim_internal_<plugin-name>`
-
-   This is an internal target used to bootstrap the plugin.
-   It generates:
-   - `<plugin-name>/autogen.h` for the C++ interface used to identify annexes,
-   - `<plugin-name>.md` for the documentation, and
-   - `<plugin-name>.d` for the plugin's dependencies.
-
-   @note Tracking dependencies via the emitted dependency file is not supported by all CMake generators.
-   See [`add_custom_command`'s `DEPFILE` argument](https://cmake.org/cmake/help/latest/command/add_custom_command.html).
-
-2. `mim_<plugin-name>`
-
-   This is the actual `MODULE` [library](https://cmake.org/cmake/help/latest/command/add_library.html).
-   - `SOURCES`
-
-     These are the `<source>` files used to build the loadable plugin containing normalizers, passes, and backends.
-     One of the source files must export [`mim_get_plugin`](@ref mim::mim_get_plugin).
-
-   - `PRIVATE`
-
-     These are additional private build dependencies.
-
-- `INSTALL`
-
-  Specify this if the plugin description, plugin, and headers should be installed via `make install`.
-  To export the targets, the export name `mim-targets` must be exported accordingly; see [`install(EXPORT ...)`](https://cmake.org/cmake/help/latest/command/install.html#export).
-
-You can specify additional target properties in the plugin's `CMakeLists.txt`.
-For example, the following snippet adds additional include paths to the `MODULE` target `mim_<plugin-name>`:
-
-```cmake
-target_include_directories(mim_<plugin-name> <path>...)
-```
+The authoritative reference for `add_mim_plugin` lives in `cmake/Mim.cmake` and
+is included in the generated Doxygen documentation as [`add_mim_plugin`](@ref add_mim_plugin_cmake).
+Keep that source comment in sync instead of duplicating the full command reference here.
