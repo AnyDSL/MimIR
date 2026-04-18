@@ -241,21 +241,14 @@ const Def* EqsatRewrite::convert_var(uint32_t id, MimNode node) {
     return var;
 }
 
-// (lit <val> [<type>])
+// (lit <val> <type>)
 const Def* EqsatRewrite::convert_lit(uint32_t id, MimNode node) {
     auto lit_def = get_def(node.children[0]);
     if (lit_def) return lit_def;
 
-    const Def* new_lit;
-    auto lit_val = get_num(node.children[0]);
-    if (node.children.size() > 1) {
-        // Case 1: (lit <val> <type>)
-        auto lit_type = get_def(node.children[1]);
-        new_lit       = new_world().lit(lit_type, lit_val);
-    } else {
-        // Case 2: (lit <val>)
-        new_lit = new_world().lit_nat(lit_val);
-    }
+    auto lit_val  = get_num(node.children[0]);
+    auto lit_type = get_def(node.children[1]);
+    auto new_lit  = new_world().lit(lit_type, lit_val);
     return new_lit;
 }
 

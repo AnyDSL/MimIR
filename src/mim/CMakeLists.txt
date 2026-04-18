@@ -17,7 +17,7 @@ if(WIN32)
 endif()
 
 set(EQSAT_SOURCE_FILE ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/eqsat-rs/src/lib.rs)
-set(EQSAT_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat-rs/src/lib.rs.cc)
+set(EQSAT_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat-rs/src/ffi.rs.cc)
 set(EQSAT_LIB ${CARGO_TARGET_DIR}/${EQSAT_LIB_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
 
 add_custom_command(

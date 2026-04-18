@@ -345,16 +345,21 @@ std::string Emitter::emit_type(BB& bb, const Def* type) {
                 default: break;
             }
         }
-        print(os, "(idx (lit {}))", size);
+        print(os, "(idx (lit {} Nat))", size);
     } else if (auto lit = type->isa<Lit>()) {
         if (lit->type()->isa<Nat>())
-            print(os, "(lit {})", lit->get());
+            print(os, "(lit {} Nat)", lit);
+        else if (auto size = Idx::isa(lit->type()))
+            if (auto lit_size = Idx::size2bitwidth(size); lit_size && *lit_size == 1)
+                print(os, "(lit {} Bool)", lit);
+            else
+                print(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
         else
             print(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
     } else if (auto arr = type->isa<Arr>()) {
         if (auto arity = Lit::isa(arr->arity())) {
             u64 size = *arity;
-            print(os, "(arr (lit {}) {})", size, emit_type(bb, arr->body()));
+            print(os, "(arr (lit {} Nat) {})", size, emit_type(bb, arr->body()));
         } else if (auto top = arr->arity()->isa<Top>()) {
             print(os, "(arr (top {}) {})", emit_type(bb, top->type()), emit_type(bb, arr->body()));
         } else {
@@ -513,26 +518,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         // TODO: Lit bindings
     } else if (auto lit = def->isa<Lit>()) {
-        if (lit->type()->isa<Nat>()) {
-            std::string alias;
-            auto nat_val = lit->get<u64>();
-            switch (nat_val) {
-                case 0x100: alias = "i8";
-                case 0x1000: alias = "i16";
-                case 0x100000000: alias = "i32";
-                default: break;
-            }
-            if (!alias.empty())
-                tab.lnprint(os, "(lit {})", alias);
-            else
-                tab.lnprint(os, "(lit {})", nat_val);
-        } else if (auto size = Idx::isa(lit->type()))
+        if (lit->type()->isa<Nat>())
+            tab.lnprint(os, "(lit {} Nat)", lit);
+        else if (auto size = Idx::isa(lit->type()))
             if (auto lit_size = Idx::size2bitwidth(size); lit_size && *lit_size == 1)
-                tab.lnprint(os, "(lit {})", lit);
+                tab.lnprint(os, "(lit {} Bool)", lit);
             else
                 tab.lnprint(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
         else
-            tab.lnprint(os, "(lit {})", lit);
+            tab.lnprint(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
 
     } else if (auto tuple = def->isa<Tuple>()) {
         tab.print(os, "{}", emit_node(bb, tuple, "tuple", true));

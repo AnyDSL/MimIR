@@ -21,8 +21,8 @@ define_language! {
         "app" = App([Id; 2]),
         // (var <name> [<proj1> <proj2> ...] <type>)
         "var" = Var(Box<[Id]>),
-        // (lit <value> [<type>])
-        "lit" = Lit(Box<[Id]>),
+        // (lit <value> <type>)
+        "lit" = Lit([Id; 2]),
         // (pack <arity> <body>)
         "pack" = Pack([Id; 2]),
         // (tuple <value1> <value2> ...)

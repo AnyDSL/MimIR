@@ -375,17 +375,19 @@ fn idx_size(type_: &Mim) -> i32 {
     panic!("expected Idx type");
 }
 
-fn new_const(val: Option<Mim>, type_: Option<Mim>) -> Option<CoreConst> {
+fn new_const(val: Mim, type_: Mim) -> Option<CoreConst> {
     Some(CoreConst { val, type_ })
 }
 
 fn bool_lit(tt: bool) -> Option<CoreConst> {
     let ret_val = if tt { "tt" } else { "ff" }.to_string();
-    new_const(Some(Symbol(ret_val)), None)
+    let bool = "Bool".to_string();
+    new_const(Symbol(ret_val), Symbol(bool))
 }
 
 fn nat_lit(n: i64) -> Option<CoreConst> {
-    new_const(Some(Num(n)), None)
+    let nat = "Nat".to_string();
+    new_const(Num(n), Symbol(nat))
 }
 
 /* constant folding */
@@ -394,8 +396,8 @@ pub type CoreData = Option<CoreConst>;
 
 #[derive(Debug, Clone)]
 pub struct CoreConst {
-    val: Option<Mim>,
-    type_: Option<Mim>,
+    val: Mim,
+    type_: Mim,
 }
 
 pub fn core_merge(a: &mut AnalysisData, b: AnalysisData) -> DidMerge {
@@ -414,22 +416,11 @@ pub fn core_make(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim, _id: Id) ->
 }
 
 pub fn core_modify(egraph: &mut EGraph<Mim, MimAnalysis>, id: Id) {
-    if let Some(CoreConst {
-        val: Some(c),
-        type_,
-    }) = egraph[id].data.core_data.clone()
-    {
+    if let Some(CoreConst { val: c, type_: t }) = egraph[id].data.core_data.clone() {
         let const_id = egraph.add(c);
-        if let Some(t) = type_ {
-            // Case 1: (lit <const> <type>)
-            let type_id = egraph.add(t);
-            let lit_id = egraph.add(Lit(Box::new([const_id, type_id])));
-            egraph.union(id, lit_id);
-        } else {
-            // Case 2: (lit <const>)
-            let lit_id = egraph.add(Lit(Box::new([const_id])));
-            egraph.union(id, lit_id);
-        }
+        let type_id = egraph.add(t);
+        let lit_id = egraph.add(Lit([const_id, type_id]));
+        egraph.union(id, lit_id);
     }
 }
 
@@ -439,17 +430,11 @@ fn _is_const(v: egg::Var) -> impl Fn(&mut EGraph<Mim, MimAnalysis>, Id, &Subst) 
 }
 
 pub fn fold_core(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
-    if let Lit(l) = enode
-        && let Some(v) = egraph[l[0]].nodes.first()
+    if let Lit([v, t]) = enode
+        && let Some(v) = egraph[*v].nodes.first()
+        && let Some(t) = egraph[*t].nodes.first()
     {
-        // Case 1: typed literal e.g. (lit 4 I8)
-        if l.len() == 2
-            && let Some(t) = egraph[l[1]].nodes.first()
-        {
-            return new_const(Some(v.clone()), Some(t.clone()));
-        }
-        // Case 2: untyped literal e.g. (lit 5)
-        return new_const(Some(v.clone()), None);
+        return new_const(v.clone(), t.clone());
     }
 
     if let Some(folded) = fold_nat(egraph, enode) {
@@ -476,8 +461,8 @@ fn fold_nat(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreCo
         && let Some(s) = find_node!(egraph, callee, Symbol(s) => s)
         && let Some(t) = find_node!(egraph, arg, Tuple(t) => t)
         && let [t1, t2] = &**t
-        && let Some(Num(n1)) = c(t1)?.val
-        && let Some(Num(n2)) = c(t2)?.val
+        && let Num(n1) = c(t1)?.val
+        && let Num(n2) = c(t2)?.val
     {
         match s.as_str() {
             "%core.nat.add" => return nat_lit(n1 + n2),
@@ -490,25 +475,27 @@ fn fold_nat(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreCo
     None
 }
 
-// TODO: gather more info about how idx literals are printed
-// to ensure that the conditional and the plusminus stuff is going to work
 fn fold_icmp(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreConst> {
     let c = |id: &Id| egraph[*id].data.core_data.clone();
 
     if let App([callee, arg]) = enode
         && let Some(s) = find_node!(egraph, callee, Symbol(s) => s)
         && let Some(t) = find_node!(egraph, arg, Tuple(t) => t)
-        && let [t1, t2] = &**t
-        && let Some(Num(n1)) = c(t1)?.val
-        && let Some(i1) = c(t1)?.type_
-        && let Some(Num(n2)) = c(t2)?.val
-        && let Some(i2) = c(t2)?.type_
+        && let [e1, e2] = &**t
+        && let CoreConst {
+            val: Num(n1),
+            type_: t1,
+        } = c(e1)?
+        && let CoreConst {
+            val: Num(n2),
+            type_: t2,
+        } = c(e2)?
     {
         // TODO: the above conditional is true for any application
         // of a symbol to a tuple of two typed literals so we can't
         // just assume that these types will be idx types
-        let size1 = idx_size(&i1);
-        let size2 = idx_size(&i2);
+        let size1 = idx_size(&t1);
+        let size2 = idx_size(&t2);
         if size1 != size2 {
             panic!("icmp: idx size mismatch")
         };
@@ -536,8 +523,8 @@ fn fold_ncmp(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreC
         && let Some(s) = find_node!(egraph, callee, Symbol(s) => s)
         && let Some(t) = find_node!(egraph, arg, Tuple(t) => t)
         && let [t1, t2] = &**t
-        && let Some(Num(n1)) = c(t1)?.val
-        && let Some(Num(n2)) = c(t2)?.val
+        && let Num(n1) = c(t1)?.val
+        && let Num(n2) = c(t2)?.val
     {
         match s.as_str() {
             "%core.ncmp.e" => return bool_lit(n1 == n2),
@@ -560,8 +547,8 @@ fn fold_shr(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreCo
         && let Some(s) = find_node!(egraph, callee, Symbol(s) => s)
         && let Some(t) = find_node!(egraph, arg, Tuple(t) => t)
         && let [t1, t2] = &**t
-        && let Some(Num(n1)) = c(t1)?.val
-        && let Some(Num(n2)) = c(t2)?.val
+        && let Num(n1) = c(t1)?.val
+        && let Num(n2) = c(t2)?.val
     {
         // TODO: check if shift amount exceeds width
         // and differentiate between signed and unsigned
@@ -584,9 +571,9 @@ fn fold_wrap(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreC
         && let Some(s) = find_node!(egraph, name, Symbol(s) => s)
         && let Some(t) = find_node!(egraph, arg, Tuple(t) => t)
         && let [t1, t2] = &**t
-        && let Some(Num(_m)) = c(mode)?.val
-        && let Some(Num(n1)) = c(t1)?.val
-        && let Some(Num(n2)) = c(t2)?.val
+        && let Num(_m) = c(mode)?.val
+        && let Num(n1) = c(t1)?.val
+        && let Num(n2) = c(t2)?.val
     {
         // TODO: utilize mode and implement wrapping
         match s.as_str() {
@@ -611,8 +598,8 @@ fn fold_div(egraph: &mut EGraph<Mim, MimAnalysis>, enode: &Mim) -> Option<CoreCo
         && let [_t1, t2] = &**t
         && let Some(vals) = find_node!(egraph, t2, Tuple(vals) => vals)
         && let [v1, v2] = &**vals
-        && let Some(Num(n1)) = c(v1)?.val
-        && let Some(Num(n2)) = c(v2)?.val
+        && let Num(n1) = c(v1)?.val
+        && let Num(n2) = c(v2)?.val
     {
         // TODO: signed vs unsigned div
         match s.as_str() {
