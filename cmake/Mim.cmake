@@ -1,8 +1,11 @@
 include(GNUInstallDirs)
 
-# clear globals
-SET(MIM_PLUGIN_LIST   "" CACHE INTERNAL "MIM_PLUGIN_LIST")
-SET(MIM_PLUGIN_LAYOUT "" CACHE INTERNAL "MIM_PLUGIN_LAYOUT")
+if(NOT DEFINED MIM_PLUGIN_LIST)
+    set(MIM_PLUGIN_LIST "" CACHE INTERNAL "MIM_PLUGIN_LIST")
+endif()
+if(NOT DEFINED MIM_PLUGIN_LAYOUT)
+    set(MIM_PLUGIN_LAYOUT "" CACHE INTERNAL "MIM_PLUGIN_LAYOUT")
+endif()
 
 if(NOT MIM_TARGET_NAMESPACE)
     set(MIM_TARGET_NAMESPACE "")
@@ -46,6 +49,16 @@ endif()
 ## \endcode
 function(add_mim_plugin)
     set(PLUGIN ${ARGV0})
+
+    if(NOT PLUGIN MATCHES "^[A-Za-z0-9_]+$")
+        message(FATAL_ERROR "Mim plugin names may only contain letters, digits, and underscores")
+    endif()
+
+    string(LENGTH "${PLUGIN}" PLUGIN_LENGTH)
+    if(PLUGIN_LENGTH GREATER 8)
+        message(FATAL_ERROR "Mim plugin '${PLUGIN}' exceeds the maximum supported length of 8 characters")
+    endif()
+
     cmake_parse_arguments(
         PARSE_ARGV 1        # skip first arg
         PARSED              # prefix of output variables
@@ -67,23 +80,6 @@ function(add_mim_plugin)
     # Replace all newlines with semicolons to help with list processing
     string(REPLACE "\n" ";" plugin_lines "${plugin_file_contents}")
 
-    set(PLUGIN_DEPS)
-
-    # Loop over each line
-    foreach(line IN LISTS plugin_lines)
-        string(STRIP "${line}" line) # Strip leading/trailing whitespace
-
-        # Remove C++-style comments (from '//' to end of line)
-        string(REGEX REPLACE "//.*" "" line "${line}")
-
-        # as above
-        string(REGEX MATCH "^plugin[ \t]+[a-zA-Z0-9_]+" match "${line}")
-        if(match)
-            string(REGEX REPLACE "^plugin[ \t]+([a-zA-Z0-9_]+)" "\\1" plugin_name "${line}")
-            list(APPEND PLUGIN_DEPS "mim_${plugin_name}")
-        endif()
-    endforeach()
-
     file(
         MAKE_DIRECTORY
             ${CMAKE_BINARY_DIR}/docs/plug/
@@ -99,7 +95,7 @@ function(add_mim_plugin)
             --output-md ${PLUGIN_MD}
         MAIN_DEPENDENCY ${PLUGIN_MIM}
         DEPENDS ${MIM_TARGET_NAMESPACE}mim
-        COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'; dependencies: ${PLUGIN_DEPS}"
+        COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'"
         VERBATIM
     )
     add_custom_command(
@@ -116,12 +112,16 @@ function(add_mim_plugin)
             ${OUT_PLUGIN_MIM}
     )
 
+    if(PLUGIN IN_LIST MIM_PLUGIN_LIST)
+        message(FATAL_ERROR "Mim plugin '${PLUGIN}' is already registered")
+    endif()
+
     list(APPEND MIM_PLUGIN_LIST "${PLUGIN}")
     string(APPEND MIM_PLUGIN_LAYOUT "<tab type=\"user\" url=\"@ref ${PLUGIN}\" title=\"${PLUGIN}\"/>")
 
     # populate to globals
-    SET(MIM_PLUGIN_LIST   "${MIM_PLUGIN_LIST}"   CACHE INTERNAL "MIM_PLUGIN_LIST")
-    SET(MIM_PLUGIN_LAYOUT "${MIM_PLUGIN_LAYOUT}" CACHE INTERNAL "MIM_PLUGIN_LAYOUT")
+    set(MIM_PLUGIN_LIST   "${MIM_PLUGIN_LIST}"   CACHE INTERNAL "MIM_PLUGIN_LIST")
+    set(MIM_PLUGIN_LAYOUT "${MIM_PLUGIN_LAYOUT}" CACHE INTERNAL "MIM_PLUGIN_LAYOUT")
 
     #
     # mim_plugin
@@ -140,6 +140,12 @@ function(add_mim_plugin)
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for autogen.h
     )
+    if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/include")
+        target_include_directories(mim_${PLUGIN}
+            PRIVATE
+                "${CMAKE_CURRENT_LIST_DIR}/include"
+        )
+    endif()
     target_link_libraries(mim_${PLUGIN}
         PRIVATE
             ${PARSED_PRIVATE}
@@ -175,5 +181,11 @@ function(add_mim_plugin)
             FILES ${AUTOGEN_H}
             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mim/plug/${PLUGIN}
         )
+        if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/include")
+            install(
+                DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/include/"
+                DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            )
+        endif()
     endif()
 endfunction()

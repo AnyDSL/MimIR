@@ -4,7 +4,7 @@
 
 This page collects information that is useful while working on MimIR itself, but is not directly part of the API.
 
-## Build Options {#build_options}
+## Building {#building}
 
 If you do not have a [GitHub account set up with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh), you can clone MimIR via HTTPS instead:
 
@@ -57,6 +57,18 @@ Use the following coding conventions:
   1. `public`
   2. `protected`
   3. `private`
+
+### CMake Style
+
+- Use 4 spaces for one indentation level.
+- Prefer lowercase CMake commands such as `set`, `if`, `foreach`, and `add_subdirectory`.
+- Use uppercase names for project-specific CMake variables and options such as `MIM_BUILD_DOCS` or `MIM_PLUGINS`.
+- For longer CMake calls, put arguments on separate indented lines instead of cramming everything onto one line.
+
+### Markdown Style
+
+- Use one sentence per line in Markdown prose.
+- Do not hard-wrap Markdown text to 80 columns.
 
 ### Doxygen Style
 
@@ -271,43 +283,3 @@ It can also be useful to turn assertion failures into debugger breakpoints:
 [This](https://github.com/AnyDSL/vim-mim) Vim plugin provides syntax highlighting for Mim files.
 
 There is also a [tree-sitter grammar](https://gitlab.com/amaeble/tree-sitter-mim) for Mim files and a [Helix fork](https://github.com/amaebel/helix) with highlight and injection queries.
-
-## New Plugins
-
-Check out the [demo](@ref demo) plugin for a minimal example.
-
-You can create a new in-tree plugin `foobar` based on the [demo](@ref demo) plugin like this:
-
-```sh
-./scripts/new_plugin.sh foobar
-```
-
-### Third-Party Plugins
-
-After installing MimIR, a third-party plugin only needs to find the `mim` package.
-For example, to build a plugin called `foo`:
-
-```cmake
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(foo)
-
-find_package(mim)
-
-add_mim_plugin(foo
-    SOURCES
-        mim/plug/foo/foo.h
-        mim/plug/foo/foo.cpp
-)
-```
-
-Configure the project with:
-
-```cmake
-cmake .. -Dmim_DIR=<MIM_INSTALL_PREFIX>/lib/cmake/mim
-```
-
-### `add_mim_plugin`
-
-The authoritative reference for `add_mim_plugin` lives in `cmake/Mim.cmake` and
-is included in the generated Doxygen documentation as [`add_mim_plugin`](@ref add_mim_plugin_cmake).
-Keep that source comment in sync instead of duplicating the full command reference here.
