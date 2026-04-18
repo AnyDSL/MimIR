@@ -67,7 +67,7 @@ var searchData=
   ['is_5fterm_64',['is_term',['../classmim_1_1Def.html#a648a10d226521d9f30d10973296476b3',1,'mim::Def']]],
   ['is_5funiform_65',['is_uniform',['../classmim_1_1Checker.html#a169a88c923419cfcfb6d15a14d1cfa4b',1,'mim::Checker']]],
   ['is_5funit_66',['is_unit',['../namespacemim.html#a2efd858db7ed2bd9c205337f6129daa8',1,'mim']]],
-  ['is_5fvalid_67',['is_valid',['../classmim_1_1ll_1_1Emitter.html#ad43b49a65f405d25e5e1a6124c2aedb9',1,'mim::ll::Emitter']]],
+  ['is_5fvalid_67',['is_valid',['../classmim_1_1ll_1_1Emitter.html#ad43b49a65f405d25e5e1a6124c2aedb9',1,'mim::ll::Emitter::is_valid()'],['../classmim_1_1sexpr_1_1Emitter.html#ac7b63a51d1de5fec7297e89125e9fb11',1,'mim::sexpr::Emitter::is_valid()']]],
   ['is_5fwhere_68',['is_where',['../classmim_1_1ast_1_1DeclExpr.html#aeb34f62478eb3d88f8d546e41b2249dc',1,'mim::ast::DeclExpr']]],
   ['isa_69',['IsA',['../classmim_1_1Axm_1_1IsA.html#af7e49b22ba96454bf3d28462e052a437',1,'mim::Axm::IsA::IsA()=default'],['../classmim_1_1Axm_1_1IsA.html#a5cce74687e1b939d117b313a8c0424d9',1,'mim::Axm::IsA::IsA(const Axm *axm, const D *def)']]],
   ['isa_70',['isa',['../classmim_1_1ast_1_1Tok.html#aa8e362d15b5edca914970143cbd966f2',1,'mim::ast::Tok::isa()'],['../classmim_1_1Axm.html#a606d1a978089ad57ff1369cb233f6338',1,'mim::Axm::isa(const Def *def)'],['../classmim_1_1Axm.html#a67bb672c5feae845d6ec8557c3c302df',1,'mim::Axm::isa(Id id, const Def *def)'],['../classmim_1_1Lit.html#a429b15b3da51e9b60ffab09a744896b7',1,'mim::Lit::isa()'],['../classmim_1_1Idx.html#a7b4496e71deaa94835f732de364e5d76',1,'mim::Idx::isa()']]],

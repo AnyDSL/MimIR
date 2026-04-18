@@ -110,6 +110,10 @@ var annotated_dup =
         [ "BB", "structmim_1_1ll_1_1BB.html", "structmim_1_1ll_1_1BB" ],
         [ "Emitter", "classmim_1_1ll_1_1Emitter.html", "classmim_1_1ll_1_1Emitter" ]
       ] ],
+      [ "sexpr", "namespacemim_1_1sexpr.html", [
+        [ "BB", "structmim_1_1sexpr_1_1BB.html", "structmim_1_1sexpr_1_1BB" ],
+        [ "Emitter", "classmim_1_1sexpr_1_1Emitter.html", "classmim_1_1sexpr_1_1Emitter" ]
+      ] ],
       [ "lct", "namespacemim_1_1lct.html", [
         [ "Node", "classmim_1_1lct_1_1Node.html", "classmim_1_1lct_1_1Node" ]
       ] ],

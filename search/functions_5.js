@@ -2,7 +2,7 @@ var searchData=
 [
   ['ff_0',['ff',['../classmim_1_1Select.html#aa6c46f08301444ded1c51834a0358c04',1,'mim::Select']]],
   ['filter_1',['filter',['../classmim_1_1ast_1_1LamDecl_1_1Dom.html#a2564ec935a3265b492ac59ed97047809',1,'mim::ast::LamDecl::Dom::filter()'],['../classmim_1_1Lam.html#a077994a2dbd8255456a1b9dbbdde4521',1,'mim::Lam::filter()'],['../classmim_1_1World.html#a38b3113960af0e3a112d107703635330',1,'mim::World::filter()']]],
-  ['finalize_2',['finalize',['../classmim_1_1ll_1_1Emitter.html#a366e1798c273b916f429f7dd33c1a0e6',1,'mim::ll::Emitter']]],
+  ['finalize_2',['finalize',['../classmim_1_1ll_1_1Emitter.html#a366e1798c273b916f429f7dd33c1a0e6',1,'mim::ll::Emitter::finalize()'],['../classmim_1_1sexpr_1_1Emitter.html#ab5afffcf4c4b443137899ce7fbe604d8',1,'mim::sexpr::Emitter::finalize()']]],
   ['find_3',['find',['../classmim_1_1Hole.html#a1010da652535fd68cb5b0f982bc74e12',1,'mim::Hole::find()'],['../classmim_1_1Hole.html#a2ea54798a7d7819d81f94d0f0c5e0669',1,'mim::Hole::find(const Def *def)'],['../classmim_1_1Bound.html#a449abd646077192463aa6ac09e5d21c6',1,'mim::Bound::find()'],['../classmim_1_1PassMan.html#a36a8d12f0c636e8d084266a5209db779',1,'mim::PassMan::find(std::type_index key)'],['../classmim_1_1PassMan.html#a1f2dc987d39d76fc298acf6d23f62a88',1,'mim::PassMan::find()'],['../classmim_1_1lct_1_1Node.html#a95192bfe2aa611ed0e3b08b174e571e8',1,'mim::lct::Node::find()'],['../classmim_1_1ast_1_1Scopes.html#a6c745af337b10780bac0723719281c7c',1,'mim::ast::Scopes::find()']]],
   ['find_5fand_5freplace_4',['find_and_replace',['../namespacemim.html#a8d4798ff41a16cf4a8020359f7679969',1,'mim']]],
   ['find_5fcmd_5',['find_cmd',['../namespacemim_1_1sys.html#aabf9e272ba0bd6b36223a016499591a6',1,'mim::sys']]],

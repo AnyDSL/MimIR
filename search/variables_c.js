@@ -1,7 +1,7 @@
 var searchData=
 [
   ['parent_0',['parent',['../classmim_1_1lct_1_1Node.html#abf5b870123a02874621655b08e29792b',1,'mim::lct::Node']]],
-  ['parts_1',['parts',['../structmim_1_1ll_1_1BB.html#ab0d9a7d9310de2cae91c8c414a3539c6',1,'mim::ll::BB']]],
+  ['parts_1',['parts',['../structmim_1_1ll_1_1BB.html#ab0d9a7d9310de2cae91c8c414a3539c6',1,'mim::ll::BB::parts'],['../structmim_1_1sexpr_1_1BB.html#a1167f8b5349a20c8dd4b7077c8deb756',1,'mim::sexpr::BB::parts']]],
   ['phis_2',['phis',['../structmim_1_1ll_1_1BB.html#a3c27de69a28e3bc1e83ee0892c474bd3',1,'mim::ll::BB']]],
   ['pi_3',['pi',['../structmim_1_1ast_1_1AnnexInfo.html#af41ba625568bc4967b7c36b886305782',1,'mim::ast::AnnexInfo']]],
   ['pi_5f_4',['pi_',['../classmim_1_1ast_1_1PiExpr_1_1Dom.html#a77c0d6489f4ca3fec857a0fea9bf1b4d',1,'mim::ast::PiExpr::Dom']]],

@@ -5,12 +5,14 @@ var searchData=
   ['schedule_2ecpp_2',['schedule.cpp',['../schedule_8cpp.html',1,'']]],
   ['schedule_2eh_3',['schedule.h',['../schedule_8h.html',1,'']]],
   ['sets_2eh_4',['sets.h',['../sets_8h.html',1,'']]],
-  ['span_2eh_5',['span.h',['../span_8h.html',1,'']]],
-  ['ssa_2ecpp_6',['ssa.cpp',['../ssa_8cpp.html',1,'']]],
-  ['ssa_2eh_7',['ssa.h',['../ssa_8h.html',1,'']]],
-  ['stream_2ecpp_8',['stream.cpp',['../stream_8cpp.html',1,'']]],
-  ['sym_5fexpr_5fopt_2ecpp_9',['sym_expr_opt.cpp',['../sym__expr__opt_8cpp.html',1,'']]],
-  ['sym_5fexpr_5fopt_2eh_10',['sym_expr_opt.h',['../sym__expr__opt_8h.html',1,'']]],
-  ['sys_2ecpp_11',['sys.cpp',['../sys_8cpp.html',1,'']]],
-  ['sys_2eh_12',['sys.h',['../sys_8h.html',1,'']]]
+  ['sexpr_2ecpp_5',['sexpr.cpp',['../sexpr_8cpp.html',1,'']]],
+  ['sexpr_2eh_6',['sexpr.h',['../sexpr_8h.html',1,'']]],
+  ['span_2eh_7',['span.h',['../span_8h.html',1,'']]],
+  ['ssa_2ecpp_8',['ssa.cpp',['../ssa_8cpp.html',1,'']]],
+  ['ssa_2eh_9',['ssa.h',['../ssa_8h.html',1,'']]],
+  ['stream_2ecpp_10',['stream.cpp',['../stream_8cpp.html',1,'']]],
+  ['sym_5fexpr_5fopt_2ecpp_11',['sym_expr_opt.cpp',['../sym__expr__opt_8cpp.html',1,'']]],
+  ['sym_5fexpr_5fopt_2eh_12',['sym_expr_opt.h',['../sym__expr__opt_8h.html',1,'']]],
+  ['sys_2ecpp_13',['sys.cpp',['../sys_8cpp.html',1,'']]],
+  ['sys_2eh_14',['sys.h',['../sys_8h.html',1,'']]]
 ];

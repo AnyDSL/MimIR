@@ -3,6 +3,7 @@ var namespacemim =
     [ "ast", "namespacemim_1_1ast.html", "namespacemim_1_1ast" ],
     [ "plug", "namespacemim_1_1plug.html", "namespacemim_1_1plug" ],
     [ "ll", "namespacemim_1_1ll.html", "namespacemim_1_1ll" ],
+    [ "sexpr", "namespacemim_1_1sexpr.html", "namespacemim_1_1sexpr" ],
     [ "dl", "namespacemim_1_1dl.html", [
       [ "close", "namespacemim_1_1dl.html#a8538f23ca881de5358d0d6838994fcf4", null ],
       [ "get", "namespacemim_1_1dl.html#a7f900531d9304c1515a00f136ff01b0f", null ],

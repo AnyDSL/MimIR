@@ -14,6 +14,7 @@ var hierarchy =
       [ "automaton::NFA", "classautomaton_1_1NFA.html", null ]
     ] ],
     [ "mim::ll::BB", "structmim_1_1ll_1_1BB.html", null ],
+    [ "mim::sexpr::BB", "structmim_1_1sexpr_1_1BB.html", null ],
     [ "mim::Checker", "classmim_1_1Checker.html", null ],
     [ "mim::Nest::Node::Children", "structmim_1_1Nest_1_1Node_1_1Children.html", null ],
     [ "mim::plug::clos::ClosLit", "classmim_1_1plug_1_1clos_1_1ClosLit.html", null ],
@@ -213,7 +214,8 @@ var hierarchy =
           [ "mim::ClosedMutPhase< Lam >", "classmim_1_1ClosedMutPhase.html", [
             [ "mim::NestPhase< Lam >", "classmim_1_1NestPhase.html", [
               [ "mim::Emitter< std::string, std::string, BB, Emitter >", "classmim_1_1Emitter.html", [
-                [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ]
+                [ "mim::ll::Emitter", "classmim_1_1ll_1_1Emitter.html", null ],
+                [ "mim::sexpr::Emitter", "classmim_1_1sexpr_1_1Emitter.html", null ]
               ] ],
               [ "mim::Emitter< Value, Type, BB, Child >", "classmim_1_1Emitter.html", null ],
               [ "mim::plug::mem::phase::AddMem", "classmim_1_1plug_1_1mem_1_1phase_1_1AddMem.html", null ]

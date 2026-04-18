@@ -47,7 +47,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 1791;
+var viewWidth = 1812;
 var viewHeight = 581;
 var sectionId = 'dynsection-0';
 </script>
@@ -83,49 +83,31 @@ var sectionId = 'dynsection-0';
 </a>
 </g>
 </g>
-<!-- Node10 -->
-<g id="Node000010" class="node">
-<title>Node10</title>
-<g id="a_Node000010"><a xlink:href="classmim_1_1ClosedMutPhase.html" target="_top" xlink:title=" ">
+<!-- Node11 -->
+<g id="Node000011" class="node">
+<title>Node11</title>
+<g id="a_Node000011"><a xlink:href="classmim_1_1ClosedMutPhase.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="808,-508.5 682,-508.5 682,-478.5 808,-478.5 808,-508.5"/>
 <text text-anchor="start" x="690" y="-496.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ClosedMutPhase</text>
 <text text-anchor="middle" x="745" y="-485.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; Def &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node10 -->
-<g id="edge10_Node000001_Node000010" class="edge">
-<title>Node1&#45;&gt;Node10</title>
-<g id="a_edge10_Node000001_Node000010"><a xlink:title=" ">
+<!-- Node1&#45;&gt;Node11 -->
+<g id="edge11_Node000001_Node000011" class="edge">
+<title>Node1&#45;&gt;Node11</title>
+<g id="a_edge11_Node000001_Node000011"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M355.66,-380.08C369.51,-387.82 387.33,-397.05 404,-403.5 498.24,-439.98 612.73,-466.91 681.9,-481.39"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="357.18,-376.92 346.76,-375.01 353.71,-383 357.18,-376.92"/>
-</a>
-</g>
-</g>
-<!-- Node12 -->
-<g id="Node000012" class="node">
-<title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="This Phase will recursively Rewriter::rewrite.">
-<polygon fill="white" stroke="#666666" points="535,-486 449,-486 449,-467 535,-467 535,-486"/>
-<text text-anchor="middle" x="492" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Analysis</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node12 -->
-<g id="edge13_Node000001_Node000012" class="edge">
-<title>Node1&#45;&gt;Node12</title>
-<g id="a_edge13_Node000001_Node000012"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M337.77,-384.73C345.85,-404.79 361.31,-435.63 385,-452.5 403.52,-465.69 428.09,-471.78 448.91,-474.53"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="340.94,-383.21 334.12,-375.1 334.39,-385.69 340.94,-383.21"/>
 </a>
 </g>
 </g>
 <!-- Node13 -->
 <g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_Node000013"><a xlink:href="classmim_1_1ClosedMutPhase.html" target="_top" xlink:title="Transitively visits all reachable, closed mutables in the World.">
-<polygon fill="white" stroke="#666666" points="571,-523 413,-523 413,-504 571,-504 571,-523"/>
-<text text-anchor="middle" x="492" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ClosedMutPhase&lt; M &gt;</text>
+<g id="a_Node000013"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="This Phase will recursively Rewriter::rewrite.">
+<polygon fill="white" stroke="#666666" points="535,-486 449,-486 449,-467 535,-467 535,-486"/>
+<text text-anchor="middle" x="492" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Analysis</text>
 </a>
 </g>
 </g>
@@ -133,35 +115,35 @@ var sectionId = 'dynsection-0';
 <g id="edge14_Node000001_Node000013" class="edge">
 <title>Node1&#45;&gt;Node13</title>
 <g id="a_edge14_Node000001_Node000013"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M335.92,-384.85C344.44,-414.08 364.91,-468.9 404,-495.5 408.97,-498.88 414.45,-501.65 420.16,-503.92"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="339.24,-383.73 333.22,-375.01 332.49,-385.58 339.24,-383.73"/>
+<path fill="none" stroke="#63b8ff" d="M337.77,-384.73C345.85,-404.79 361.31,-435.63 385,-452.5 403.52,-465.69 428.09,-471.78 448.91,-474.53"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="340.94,-383.21 334.12,-375.1 334.39,-385.69 340.94,-383.21"/>
 </a>
 </g>
 </g>
 <!-- Node14 -->
 <g id="Node000014" class="node">
 <title>Node14</title>
-<g id="a_Node000014"><a xlink:href="classmim_1_1PassManPhase.html" target="_top" xlink:title="Wraps a PassMan pipeline as a Phase.">
-<polygon fill="white" stroke="#666666" points="550.5,-394 433.5,-394 433.5,-375 550.5,-375 550.5,-394"/>
-<text text-anchor="middle" x="492" y="-382" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PassManPhase</text>
+<g id="a_Node000014"><a xlink:href="classmim_1_1ClosedMutPhase.html" target="_top" xlink:title="Transitively visits all reachable, closed mutables in the World.">
+<polygon fill="white" stroke="#666666" points="571,-523 413,-523 413,-504 571,-504 571,-523"/>
+<text text-anchor="middle" x="492" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ClosedMutPhase&lt; M &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node14 -->
-<g id="edge17_Node000001_Node000014" class="edge">
+<g id="edge15_Node000001_Node000014" class="edge">
 <title>Node1&#45;&gt;Node14</title>
-<g id="a_edge17_Node000001_Node000014"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M377.3,-371C394.85,-373.08 415.04,-375.48 433.5,-377.67"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="377.65,-367.52 367.31,-369.81 376.82,-374.47 377.65,-367.52"/>
+<g id="a_edge15_Node000001_Node000014"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M335.92,-384.85C344.44,-414.08 364.91,-468.9 404,-495.5 408.97,-498.88 414.45,-501.65 420.16,-503.92"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="339.24,-383.73 333.22,-375.01 332.49,-385.58 339.24,-383.73"/>
 </a>
 </g>
 </g>
 <!-- Node15 -->
 <g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_Node000015"><a xlink:href="classmim_1_1PhaseMan.html" target="_top" xlink:title="Organizes several Phases in a a pipeline.">
-<polygon fill="white" stroke="#666666" points="539.5,-357 444.5,-357 444.5,-338 539.5,-338 539.5,-357"/>
-<text text-anchor="middle" x="492" y="-345" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PhaseMan</text>
+<g id="a_Node000015"><a xlink:href="classmim_1_1PassManPhase.html" target="_top" xlink:title="Wraps a PassMan pipeline as a Phase.">
+<polygon fill="white" stroke="#666666" points="550.5,-394 433.5,-394 433.5,-375 550.5,-375 550.5,-394"/>
+<text text-anchor="middle" x="492" y="-382" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PassManPhase</text>
 </a>
 </g>
 </g>
@@ -169,17 +151,17 @@ var sectionId = 'dynsection-0';
 <g id="edge18_Node000001_Node000015" class="edge">
 <title>Node1&#45;&gt;Node15</title>
 <g id="a_edge18_Node000001_Node000015"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M377.33,-360.29C398.43,-357.91 423.36,-355.11 444.49,-352.73"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="376.85,-356.82 367.31,-361.42 377.64,-363.78 376.85,-356.82"/>
+<path fill="none" stroke="#63b8ff" d="M377.3,-371C394.85,-373.08 415.04,-375.48 433.5,-377.67"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="377.65,-367.52 367.31,-369.81 376.82,-374.47 377.65,-367.52"/>
 </a>
 </g>
 </g>
 <!-- Node16 -->
 <g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_Node000016"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">
-<polygon fill="white" stroke="#666666" points="537.5,-293 446.5,-293 446.5,-274 537.5,-274 537.5,-293"/>
-<text text-anchor="middle" x="492" y="-281" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
+<g id="a_Node000016"><a xlink:href="classmim_1_1PhaseMan.html" target="_top" xlink:title="Organizes several Phases in a a pipeline.">
+<polygon fill="white" stroke="#666666" points="539.5,-357 444.5,-357 444.5,-338 539.5,-338 539.5,-357"/>
+<text text-anchor="middle" x="492" y="-345" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PhaseMan</text>
 </a>
 </g>
 </g>
@@ -187,35 +169,35 @@ var sectionId = 'dynsection-0';
 <g id="edge19_Node000001_Node000016" class="edge">
 <title>Node1&#45;&gt;Node16</title>
 <g id="a_edge19_Node000001_Node000016"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M377.33,-360.29C398.43,-357.91 423.36,-355.11 444.49,-352.73"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="376.85,-356.82 367.31,-361.42 377.64,-363.78 376.85,-356.82"/>
+</a>
+</g>
+</g>
+<!-- Node17 -->
+<g id="Node000017" class="node">
+<title>Node17</title>
+<g id="a_Node000017"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">
+<polygon fill="white" stroke="#666666" points="537.5,-293 446.5,-293 446.5,-274 537.5,-274 537.5,-293"/>
+<text text-anchor="middle" x="492" y="-281" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node17 -->
+<g id="edge20_Node000001_Node000017" class="edge">
+<title>Node1&#45;&gt;Node17</title>
+<g id="a_edge20_Node000001_Node000017"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M358.67,-351.32C391.25,-334.62 444.46,-307.35 472.45,-293.01"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="356.97,-348.26 349.67,-355.93 360.16,-354.49 356.97,-348.26"/>
-</a>
-</g>
-</g>
-<!-- Node29 -->
-<g id="Node000029" class="node">
-<title>Node29</title>
-<g id="a_Node000029"><a xlink:href="classmim_1_1plug_1_1clos_1_1ClosConv.html" target="_top" xlink:title="Performs typed closure conversion.">
-<polygon fill="white" stroke="#666666" points="563.5,-256 420.5,-256 420.5,-237 563.5,-237 563.5,-256"/>
-<text text-anchor="middle" x="492" y="-244" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::clos::ClosConv</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node29 -->
-<g id="edge32_Node000001_Node000029" class="edge">
-<title>Node1&#45;&gt;Node29</title>
-<g id="a_edge32_Node000001_Node000029"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M339.24,-346.74C350.42,-323.58 372.67,-284.78 404,-264.5 409.18,-261.15 414.86,-258.4 420.77,-256.16"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="336.03,-345.34 335.01,-355.88 342.38,-348.28 336.03,-345.34"/>
 </a>
 </g>
 </g>
 <!-- Node30 -->
 <g id="Node000030" class="node">
 <title>Node30</title>
-<g id="a_Node000030"><a xlink:href="classmim_1_1plug_1_1clos_1_1LowerTypedClos.html" target="_top" xlink:title="This pass lowers typed closures to untyped closures.">
-<polygon fill="white" stroke="#666666" points="580,-219 404,-219 404,-200 580,-200 580,-219"/>
-<text text-anchor="middle" x="492" y="-207" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::clos::LowerTypedClos</text>
+<g id="a_Node000030"><a xlink:href="classmim_1_1plug_1_1clos_1_1ClosConv.html" target="_top" xlink:title="Performs typed closure conversion.">
+<polygon fill="white" stroke="#666666" points="563.5,-256 420.5,-256 420.5,-237 563.5,-237 563.5,-256"/>
+<text text-anchor="middle" x="492" y="-244" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::clos::ClosConv</text>
 </a>
 </g>
 </g>
@@ -223,18 +205,17 @@ var sectionId = 'dynsection-0';
 <g id="edge33_Node000001_Node000030" class="edge">
 <title>Node1&#45;&gt;Node30</title>
 <g id="a_edge33_Node000001_Node000030"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M335.56,-346.18C343.78,-315.86 364.04,-257.51 404,-227.5 408.44,-224.17 413.35,-221.41 418.51,-219.14"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="332.15,-345.42 333.07,-355.97 338.93,-347.14 332.15,-345.42"/>
+<path fill="none" stroke="#63b8ff" d="M339.24,-346.74C350.42,-323.58 372.67,-284.78 404,-264.5 409.18,-261.15 414.86,-258.4 420.77,-256.16"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="336.03,-345.34 335.01,-355.88 342.38,-348.28 336.03,-345.34"/>
 </a>
 </g>
 </g>
 <!-- Node31 -->
 <g id="Node000031" class="node">
 <title>Node31</title>
-<g id="a_Node000031"><a xlink:href="classmim_1_1plug_1_1direct_1_1CPS2DSPhase.html" target="_top" xlink:title="Rewrite direct.cps2ds to cps.">
-<polygon fill="white" stroke="#666666" points="545,-181.5 439,-181.5 439,-151.5 545,-151.5 545,-181.5"/>
-<text text-anchor="start" x="447" y="-169.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::direct::</text>
-<text text-anchor="middle" x="492" y="-158.5" font-family="Helvetica,sans-Serif" font-size="10.00">CPS2DSPhase</text>
+<g id="a_Node000031"><a xlink:href="classmim_1_1plug_1_1clos_1_1LowerTypedClos.html" target="_top" xlink:title="This pass lowers typed closures to untyped closures.">
+<polygon fill="white" stroke="#666666" points="580,-219 404,-219 404,-200 580,-200 580,-219"/>
+<text text-anchor="middle" x="492" y="-207" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::clos::LowerTypedClos</text>
 </a>
 </g>
 </g>
@@ -242,6 +223,25 @@ var sectionId = 'dynsection-0';
 <g id="edge34_Node000001_Node000031" class="edge">
 <title>Node1&#45;&gt;Node31</title>
 <g id="a_edge34_Node000001_Node000031"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M335.56,-346.18C343.78,-315.86 364.04,-257.51 404,-227.5 408.44,-224.17 413.35,-221.41 418.51,-219.14"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="332.15,-345.42 333.07,-355.97 338.93,-347.14 332.15,-345.42"/>
+</a>
+</g>
+</g>
+<!-- Node32 -->
+<g id="Node000032" class="node">
+<title>Node32</title>
+<g id="a_Node000032"><a xlink:href="classmim_1_1plug_1_1direct_1_1CPS2DSPhase.html" target="_top" xlink:title="Rewrite direct.cps2ds to cps.">
+<polygon fill="white" stroke="#666666" points="545,-181.5 439,-181.5 439,-151.5 545,-151.5 545,-181.5"/>
+<text text-anchor="start" x="447" y="-169.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::direct::</text>
+<text text-anchor="middle" x="492" y="-158.5" font-family="Helvetica,sans-Serif" font-size="10.00">CPS2DSPhase</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node32 -->
+<g id="edge35_Node000001_Node000032" class="edge">
+<title>Node1&#45;&gt;Node32</title>
+<g id="a_edge35_Node000001_Node000032"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M333.58,-345.59C339.36,-309.26 356.76,-232.14 404,-190.5 413.76,-181.9 426.33,-176.36 438.87,-172.79"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="330.06,-345.46 332.09,-355.86 336.99,-346.46 330.06,-345.46"/>
 </a>
@@ -321,39 +321,39 @@ var sectionId = 'dynsection-0';
 </a>
 </g>
 </g>
-<!-- Node8 -->
-<g id="Node000008" class="node">
-<title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classmim_1_1Emitter.html" target="_top" xlink:title=" ">
+<!-- Node9 -->
+<g id="Node000009" class="node">
+<title>Node9</title>
+<g id="a_Node000009"><a xlink:href="classmim_1_1Emitter.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="1379.5,-535.5 1257.5,-535.5 1257.5,-505.5 1379.5,-505.5 1379.5,-535.5"/>
 <text text-anchor="start" x="1265.5" y="-523.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Emitter&lt; Value,</text>
 <text text-anchor="middle" x="1318.5" y="-512.5" font-family="Helvetica,sans-Serif" font-size="10.00"> Type, BB, Child &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node5&#45;&gt;Node8 -->
-<g id="edge7_Node000005_Node000008" class="edge">
-<title>Node5&#45;&gt;Node8</title>
-<g id="a_edge7_Node000005_Node000008"><a xlink:title=" ">
+<!-- Node5&#45;&gt;Node9 -->
+<g id="edge8_Node000005_Node000009" class="edge">
+<title>Node5&#45;&gt;Node9</title>
+<g id="a_edge8_Node000005_Node000009"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M1225.48,-520.5C1236.2,-520.5 1247.05,-520.5 1257.36,-520.5"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="1225.26,-517 1215.26,-520.5 1225.26,-524 1225.26,-517"/>
 </a>
 </g>
 </g>
-<!-- Node9 -->
-<g id="Node000009" class="node">
-<title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classmim_1_1plug_1_1mem_1_1phase_1_1AddMem.html" target="_top" xlink:title="This phase adds mems to all lambdas and continuations.">
+<!-- Node10 -->
+<g id="Node000010" class="node">
+<title>Node10</title>
+<g id="a_Node000010"><a xlink:href="classmim_1_1plug_1_1mem_1_1phase_1_1AddMem.html" target="_top" xlink:title="This phase adds mems to all lambdas and continuations.">
 <polygon fill="white" stroke="#666666" points="1385,-487.5 1252,-487.5 1252,-457.5 1385,-457.5 1385,-487.5"/>
 <text text-anchor="start" x="1260" y="-475.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::mem::phase</text>
 <text text-anchor="middle" x="1318.5" y="-464.5" font-family="Helvetica,sans-Serif" font-size="10.00">::AddMem</text>
 </a>
 </g>
 </g>
-<!-- Node5&#45;&gt;Node9 -->
-<g id="edge9_Node000005_Node000009" class="edge">
-<title>Node5&#45;&gt;Node9</title>
-<g id="a_edge9_Node000005_Node000009"><a xlink:title=" ">
+<!-- Node5&#45;&gt;Node10 -->
+<g id="edge10_Node000005_Node000010" class="edge">
+<title>Node5&#45;&gt;Node10</title>
+<g id="a_edge10_Node000005_Node000010"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M1190.21,-508.13C1212.63,-501.85 1240.04,-494.18 1263.68,-487.56"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="1188.98,-504.84 1180.29,-510.9 1190.87,-511.58 1188.98,-504.84"/>
 </a>
@@ -363,8 +363,8 @@ var sectionId = 'dynsection-0';
 <g id="Node000007" class="node">
 <title>Node7</title>
 <g id="a_Node000007"><a xlink:href="classmim_1_1ll_1_1Emitter.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="1783,-551 1690,-551 1690,-532 1783,-532 1783,-551"/>
-<text text-anchor="middle" x="1736.5" y="-539" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ll::Emitter</text>
+<polygon fill="white" stroke="#666666" points="1793.5,-570 1700.5,-570 1700.5,-551 1793.5,-551 1793.5,-570"/>
+<text text-anchor="middle" x="1747" y="-558" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ll::Emitter</text>
 </a>
 </g>
 </g>
@@ -372,15 +372,33 @@ var sectionId = 'dynsection-0';
 <g id="edge6_Node000006_Node000007" class="edge">
 <title>Node6&#45;&gt;Node7</title>
 <g id="a_edge6_Node000006_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M1663.27,-541.5C1672.21,-541.5 1681.23,-541.5 1689.72,-541.5"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="1663.23,-538 1653.23,-541.5 1663.23,-545 1663.23,-538"/>
+<path fill="none" stroke="#63b8ff" d="M1663.51,-549.95C1675.88,-551.53 1688.56,-553.15 1700.15,-554.63"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1663.58,-546.43 1653.22,-548.63 1662.69,-553.37 1663.58,-546.43"/>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node6 -->
-<g id="edge8_Node000008_Node000006" class="edge">
-<title>Node8&#45;&gt;Node6</title>
-<g id="a_edge8_Node000008_Node000006"><a xlink:title=" ">
+<!-- Node8 -->
+<g id="Node000008" class="node">
+<title>Node8</title>
+<g id="a_Node000008"><a xlink:href="classmim_1_1sexpr_1_1Emitter.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="1804,-533 1690,-533 1690,-514 1804,-514 1804,-533"/>
+<text text-anchor="middle" x="1747" y="-521" font-family="Helvetica,sans-Serif" font-size="10.00">mim::sexpr::Emitter</text>
+</a>
+</g>
+</g>
+<!-- Node6&#45;&gt;Node8 -->
+<g id="edge7_Node000006_Node000008" class="edge">
+<title>Node6&#45;&gt;Node8</title>
+<g id="a_edge7_Node000006_Node000008"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M1663.2,-533.54C1672.13,-532.45 1681.23,-531.35 1689.97,-530.29"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="1662.72,-530.07 1653.22,-534.75 1663.57,-537.02 1662.72,-530.07"/>
+</a>
+</g>
+</g>
+<!-- Node9&#45;&gt;Node6 -->
+<g id="edge9_Node000009_Node000006" class="edge">
+<title>Node9&#45;&gt;Node6</title>
+<g id="a_edge9_Node000009_Node000006"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M1389.87,-514.99C1428.98,-513.22 1478.41,-513.12 1522,-519.5 1527.8,-520.35 1533.78,-521.56 1539.7,-522.97"/>
 <polygon fill="orange" stroke="orange" points="1389.45,-511.51 1379.64,-515.5 1389.8,-518.5 1389.45,-511.51"/>
 </a>
@@ -388,268 +406,268 @@ var sectionId = 'dynsection-0';
 <text text-anchor="start" x="1406.5" y="-540.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">&lt; std::string, std</text>
 <text text-anchor="start" x="1406.5" y="-525.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">  ::string, BB, Emitter &gt;</text>
 </g>
-<!-- Node11 -->
-<g id="Node000011" class="node">
-<title>Node11</title>
-<g id="a_Node000011"><a xlink:href="classmim_1_1NestPhase.html" target="_top" xlink:title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit.">
+<!-- Node12 -->
+<g id="Node000012" class="node">
+<title>Node12</title>
+<g id="a_Node000012"><a xlink:href="classmim_1_1NestPhase.html" target="_top" xlink:title="Like ClosedMutPhase but computes a Nest for each NestPhase::visit.">
 <polygon fill="white" stroke="#666666" points="989,-510 861,-510 861,-491 989,-491 989,-510"/>
 <text text-anchor="middle" x="925" y="-498" font-family="Helvetica,sans-Serif" font-size="10.00">mim::NestPhase&lt; M &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node10&#45;&gt;Node11 -->
-<g id="edge11_Node000010_Node000011" class="edge">
-<title>Node10&#45;&gt;Node11</title>
-<g id="a_edge11_Node000010_Node000011"><a xlink:title=" ">
+<!-- Node11&#45;&gt;Node12 -->
+<g id="edge12_Node000011_Node000012" class="edge">
+<title>Node11&#45;&gt;Node12</title>
+<g id="a_edge12_Node000011_Node000012"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M818.39,-496.35C832.47,-496.9 847.12,-497.48 860.88,-498.02"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="818.39,-492.84 808.26,-495.95 818.11,-499.84 818.39,-492.84"/>
 </a>
 </g>
 </g>
-<!-- Node11&#45;&gt;Node5 -->
-<g id="edge12_Node000011_Node000005" class="edge">
-<title>Node11&#45;&gt;Node5</title>
-<g id="a_edge12_Node000011_Node000005"><a xlink:title=" ">
+<!-- Node12&#45;&gt;Node5 -->
+<g id="edge13_Node000012_Node000005" class="edge">
+<title>Node12&#45;&gt;Node5</title>
+<g id="a_edge13_Node000012_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M999.08,-503.98C1017.97,-505.14 1038.26,-506.64 1057,-508.5 1064.13,-509.21 1071.58,-510.06 1078.98,-510.98"/>
 <polygon fill="orange" stroke="orange" points="999.24,-500.48 989.04,-503.38 998.82,-507.47 999.24,-500.48"/>
 </a>
 </g>
 <text text-anchor="start" x="1010" y="-514" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">&lt; Lam &gt;</text>
 </g>
-<!-- Node13&#45;&gt;Node4 -->
-<g id="edge15_Node000013_Node000004" class="edge">
-<title>Node13&#45;&gt;Node4</title>
-<g id="a_edge15_Node000013_Node000004"><a xlink:title=" ">
+<!-- Node14&#45;&gt;Node4 -->
+<g id="edge16_Node000014_Node000004" class="edge">
+<title>Node14&#45;&gt;Node4</title>
+<g id="a_edge16_Node000014_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M581.33,-522.29C603.13,-524.55 626.42,-527.04 648,-529.5 658.93,-530.75 670.55,-532.14 681.8,-533.53"/>
 <polygon fill="orange" stroke="orange" points="581.4,-518.77 571.09,-521.23 580.68,-525.74 581.4,-518.77"/>
 </a>
 </g>
 <text text-anchor="start" x="601" y="-535" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">&lt; Lam &gt;</text>
 </g>
-<!-- Node13&#45;&gt;Node10 -->
-<g id="edge16_Node000013_Node000010" class="edge">
-<title>Node13&#45;&gt;Node10</title>
-<g id="a_edge16_Node000013_Node000010"><a xlink:title=" ">
+<!-- Node14&#45;&gt;Node11 -->
+<g id="edge17_Node000014_Node000011" class="edge">
+<title>Node14&#45;&gt;Node11</title>
+<g id="a_edge17_Node000014_Node000011"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M554.09,-501.81C562.82,-499.86 571.67,-497.74 580,-495.5 588.14,-493.31 589.68,-490.85 598,-489.5 625.28,-485.07 655.8,-485.14 681.85,-486.68"/>
 <polygon fill="orange" stroke="orange" points="553.33,-498.39 544.3,-503.93 554.82,-505.23 553.33,-498.39"/>
 </a>
 </g>
 <text text-anchor="start" x="603" y="-495" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">&lt; Def &gt;</text>
 </g>
-<!-- Node17 -->
-<g id="Node000017" class="node">
-<title>Node17</title>
-<g id="a_Node000017"><a xlink:href="classmim_1_1BetaRedPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
+<!-- Node18 -->
+<g id="Node000018" class="node">
+<title>Node18</title>
+<g id="a_Node000018"><a xlink:href="classmim_1_1BetaRedPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
 <polygon fill="white" stroke="#666666" points="803,-278 687,-278 687,-259 803,-259 803,-278"/>
 <text text-anchor="middle" x="745" y="-266" font-family="Helvetica,sans-Serif" font-size="10.00">mim::BetaRedPhase</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node17 -->
-<g id="edge20_Node000016_Node000017" class="edge">
-<title>Node16&#45;&gt;Node17</title>
-<g id="a_edge20_Node000016_Node000017"><a xlink:title=" ">
+<!-- Node17&#45;&gt;Node18 -->
+<g id="edge21_Node000017_Node000018" class="edge">
+<title>Node17&#45;&gt;Node18</title>
+<g id="a_edge21_Node000017_Node000018"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M547.68,-280.23C588.76,-277.78 644.87,-274.42 686.59,-271.93"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="547.36,-276.75 537.58,-280.84 547.78,-283.73 547.36,-276.75"/>
-</a>
-</g>
-</g>
-<!-- Node18 -->
-<g id="Node000018" class="node">
-<title>Node18</title>
-<g id="a_Node000018"><a xlink:href="classmim_1_1BranchNormalizePhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
-<polygon fill="white" stroke="#666666" points="824,-241 666,-241 666,-222 824,-222 824,-241"/>
-<text text-anchor="middle" x="745" y="-229" font-family="Helvetica,sans-Serif" font-size="10.00">mim::BranchNormalizePhase</text>
-</a>
-</g>
-</g>
-<!-- Node16&#45;&gt;Node18 -->
-<g id="edge21_Node000016_Node000018" class="edge">
-<title>Node16&#45;&gt;Node18</title>
-<g id="a_edge21_Node000016_Node000018"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M547.47,-272.22C592.48,-262.89 655.67,-249.8 698.13,-241"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="546.67,-268.81 537.58,-274.26 548.09,-275.66 546.67,-268.81"/>
 </a>
 </g>
 </g>
 <!-- Node19 -->
 <g id="Node000019" class="node">
 <title>Node19</title>
-<g id="a_Node000019"><a xlink:href="classmim_1_1Cleanup.html" target="_top" xlink:title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping them afte...">
-<polygon fill="white" stroke="#666666" points="787.5,-204 702.5,-204 702.5,-185 787.5,-185 787.5,-204"/>
-<text text-anchor="middle" x="745" y="-192" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Cleanup</text>
+<g id="a_Node000019"><a xlink:href="classmim_1_1BranchNormalizePhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
+<polygon fill="white" stroke="#666666" points="824,-241 666,-241 666,-222 824,-222 824,-241"/>
+<text text-anchor="middle" x="745" y="-229" font-family="Helvetica,sans-Serif" font-size="10.00">mim::BranchNormalizePhase</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node19 -->
-<g id="edge22_Node000016_Node000019" class="edge">
-<title>Node16&#45;&gt;Node19</title>
-<g id="a_edge22_Node000016_Node000019"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M547.74,-275.74C558.75,-273.03 570,-269.39 580,-264.5 589.35,-259.92 589.38,-255.35 598,-249.5 626.46,-230.17 633.83,-224.7 666,-212.5 677.56,-208.11 690.52,-204.6 702.49,-201.89"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="546.74,-272.38 537.74,-277.97 548.26,-279.21 546.74,-272.38"/>
+<!-- Node17&#45;&gt;Node19 -->
+<g id="edge22_Node000017_Node000019" class="edge">
+<title>Node17&#45;&gt;Node19</title>
+<g id="a_edge22_Node000017_Node000019"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M547.47,-272.22C592.48,-262.89 655.67,-249.8 698.13,-241"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="546.67,-268.81 537.58,-274.26 548.09,-275.66 546.67,-268.81"/>
 </a>
 </g>
 </g>
 <!-- Node20 -->
 <g id="Node000020" class="node">
 <title>Node20</title>
-<g id="a_Node000020"><a xlink:href="classmim_1_1EtaExpPhase.html" target="_top" xlink:title="This phase takes care that Lamdas appear either only in callee position (Known) or not (Unknown).">
-<polygon fill="white" stroke="#666666" points="799,-167 691,-167 691,-148 799,-148 799,-167"/>
-<text text-anchor="middle" x="745" y="-155" font-family="Helvetica,sans-Serif" font-size="10.00">mim::EtaExpPhase</text>
+<g id="a_Node000020"><a xlink:href="classmim_1_1Cleanup.html" target="_top" xlink:title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping them afte...">
+<polygon fill="white" stroke="#666666" points="787.5,-204 702.5,-204 702.5,-185 787.5,-185 787.5,-204"/>
+<text text-anchor="middle" x="745" y="-192" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Cleanup</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node20 -->
-<g id="edge23_Node000016_Node000020" class="edge">
-<title>Node16&#45;&gt;Node20</title>
-<g id="a_edge23_Node000016_Node000020"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M547.41,-280.18C559.21,-277.25 570.87,-272.41 580,-264.5 597.23,-249.59 583.44,-234.02 598,-216.5 620.56,-189.36 633.29,-188.74 666,-175.5 674.24,-172.16 683.24,-169.37 692.1,-167.05"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="546.62,-276.77 537.52,-282.2 548.02,-283.63 546.62,-276.77"/>
+<!-- Node17&#45;&gt;Node20 -->
+<g id="edge23_Node000017_Node000020" class="edge">
+<title>Node17&#45;&gt;Node20</title>
+<g id="a_edge23_Node000017_Node000020"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M547.74,-275.74C558.75,-273.03 570,-269.39 580,-264.5 589.35,-259.92 589.38,-255.35 598,-249.5 626.46,-230.17 633.83,-224.7 666,-212.5 677.56,-208.11 690.52,-204.6 702.49,-201.89"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="546.74,-272.38 537.74,-277.97 548.26,-279.21 546.74,-272.38"/>
 </a>
 </g>
 </g>
 <!-- Node21 -->
 <g id="Node000021" class="node">
 <title>Node21</title>
-<g id="a_Node000021"><a xlink:href="classmim_1_1EtaRedPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
-<polygon fill="white" stroke="#666666" points="799.5,-130 690.5,-130 690.5,-111 799.5,-111 799.5,-130"/>
-<text text-anchor="middle" x="745" y="-118" font-family="Helvetica,sans-Serif" font-size="10.00">mim::EtaRedPhase</text>
+<g id="a_Node000021"><a xlink:href="classmim_1_1EtaExpPhase.html" target="_top" xlink:title="This phase takes care that Lamdas appear either only in callee position (Known) or not (Unknown).">
+<polygon fill="white" stroke="#666666" points="799,-167 691,-167 691,-148 799,-148 799,-167"/>
+<text text-anchor="middle" x="745" y="-155" font-family="Helvetica,sans-Serif" font-size="10.00">mim::EtaExpPhase</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node21 -->
-<g id="edge24_Node000016_Node000021" class="edge">
-<title>Node16&#45;&gt;Node21</title>
-<g id="a_edge24_Node000016_Node000021"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M547.6,-281.31C559.61,-278.38 571.32,-273.24 580,-264.5 607.22,-237.11 575.61,-210.96 598,-179.5 619.16,-149.76 657.95,-135 690.24,-127.67"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="546.65,-277.93 537.5,-283.29 547.99,-284.8 546.65,-277.93"/>
+<!-- Node17&#45;&gt;Node21 -->
+<g id="edge24_Node000017_Node000021" class="edge">
+<title>Node17&#45;&gt;Node21</title>
+<g id="a_edge24_Node000017_Node000021"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M547.41,-280.18C559.21,-277.25 570.87,-272.41 580,-264.5 597.23,-249.59 583.44,-234.02 598,-216.5 620.56,-189.36 633.29,-188.74 666,-175.5 674.24,-172.16 683.24,-169.37 692.1,-167.05"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="546.62,-276.77 537.52,-282.2 548.02,-283.63 546.62,-276.77"/>
 </a>
 </g>
 </g>
 <!-- Node22 -->
 <g id="Node000022" class="node">
 <title>Node22</title>
-<g id="a_Node000022"><a xlink:href="classmim_1_1PrefixCleanup.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="801.5,-93 688.5,-93 688.5,-74 801.5,-74 801.5,-93"/>
-<text text-anchor="middle" x="745" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PrefixCleanup</text>
+<g id="a_Node000022"><a xlink:href="classmim_1_1EtaRedPhase.html" target="_top" xlink:title="Inlines in post&#45;order all Lams that occur exactly once in the program.">
+<polygon fill="white" stroke="#666666" points="799.5,-130 690.5,-130 690.5,-111 799.5,-111 799.5,-130"/>
+<text text-anchor="middle" x="745" y="-118" font-family="Helvetica,sans-Serif" font-size="10.00">mim::EtaRedPhase</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node22 -->
-<g id="edge25_Node000016_Node000022" class="edge">
-<title>Node16&#45;&gt;Node22</title>
-<g id="a_edge25_Node000016_Node000022"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M548.02,-281.72C560.02,-278.77 571.61,-273.52 580,-264.5 618.51,-223.06 565.72,-184.96 598,-138.5 618.32,-109.25 656.29,-95.54 688.41,-89.12"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="547.06,-278.34 537.92,-283.69 548.4,-285.21 547.06,-278.34"/>
+<!-- Node17&#45;&gt;Node22 -->
+<g id="edge25_Node000017_Node000022" class="edge">
+<title>Node17&#45;&gt;Node22</title>
+<g id="a_edge25_Node000017_Node000022"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M547.6,-281.31C559.61,-278.38 571.32,-273.24 580,-264.5 607.22,-237.11 575.61,-210.96 598,-179.5 619.16,-149.76 657.95,-135 690.24,-127.67"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="546.65,-277.93 537.5,-283.29 547.99,-284.8 546.65,-277.93"/>
 </a>
 </g>
 </g>
 <!-- Node23 -->
 <g id="Node000023" class="node">
 <title>Node23</title>
-<g id="a_Node000023"><a xlink:href="classmim_1_1ReplManPhase.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="803.5,-56 686.5,-56 686.5,-37 803.5,-37 803.5,-56"/>
-<text text-anchor="middle" x="745" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ReplManPhase</text>
+<g id="a_Node000023"><a xlink:href="classmim_1_1PrefixCleanup.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="801.5,-93 688.5,-93 688.5,-74 801.5,-74 801.5,-93"/>
+<text text-anchor="middle" x="745" y="-81" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PrefixCleanup</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node23 -->
-<g id="edge26_Node000016_Node000023" class="edge">
-<title>Node16&#45;&gt;Node23</title>
-<g id="a_edge26_Node000016_Node000023"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M547.53,-282.09C559.77,-279.17 571.6,-273.85 580,-264.5 629.59,-209.29 555.63,-159.43 598,-98.5 617.82,-70 654.73,-57.02 686.49,-51.15"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="546.86,-278.66 537.68,-283.95 548.15,-285.54 546.86,-278.66"/>
+<!-- Node17&#45;&gt;Node23 -->
+<g id="edge26_Node000017_Node000023" class="edge">
+<title>Node17&#45;&gt;Node23</title>
+<g id="a_edge26_Node000017_Node000023"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M548.02,-281.72C560.02,-278.77 571.61,-273.52 580,-264.5 618.51,-223.06 565.72,-184.96 598,-138.5 618.32,-109.25 656.29,-95.54 688.41,-89.12"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="547.06,-278.34 537.92,-283.69 548.4,-285.21 547.06,-278.34"/>
 </a>
 </g>
 </g>
 <!-- Node24 -->
 <g id="Node000024" class="node">
 <title>Node24</title>
-<g id="a_Node000024"><a xlink:href="classmim_1_1RetWrap.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="788.5,-19 701.5,-19 701.5,0 788.5,0 788.5,-19"/>
-<text text-anchor="middle" x="745" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RetWrap</text>
+<g id="a_Node000024"><a xlink:href="classmim_1_1ReplManPhase.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="803.5,-56 686.5,-56 686.5,-37 803.5,-37 803.5,-56"/>
+<text text-anchor="middle" x="745" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">mim::ReplManPhase</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node24 -->
-<g id="edge27_Node000016_Node000024" class="edge">
-<title>Node16&#45;&gt;Node24</title>
-<g id="a_edge27_Node000016_Node000024"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M547.66,-282.21C559.9,-279.29 571.7,-273.93 580,-264.5 610.35,-230 571.48,-96.03 598,-58.5 621.07,-25.86 666.98,-14.63 701.2,-10.94"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="546.99,-278.78 537.81,-284.06 548.29,-285.66 546.99,-278.78"/>
+<!-- Node17&#45;&gt;Node24 -->
+<g id="edge27_Node000017_Node000024" class="edge">
+<title>Node17&#45;&gt;Node24</title>
+<g id="a_edge27_Node000017_Node000024"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M547.53,-282.09C559.77,-279.17 571.6,-273.85 580,-264.5 629.59,-209.29 555.63,-159.43 598,-98.5 617.82,-70 654.73,-57.02 686.49,-51.15"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="546.86,-278.66 537.68,-283.95 548.15,-285.54 546.86,-278.66"/>
 </a>
 </g>
 </g>
 <!-- Node25 -->
 <g id="Node000025" class="node">
 <title>Node25</title>
-<g id="a_Node000025"><a xlink:href="classmim_1_1SymExprOpt.html" target="_top" xlink:title="Symbolic Expression Optimization.">
-<polygon fill="white" stroke="#666666" points="798,-460 692,-460 692,-441 798,-441 798,-460"/>
-<text text-anchor="middle" x="745" y="-448" font-family="Helvetica,sans-Serif" font-size="10.00">mim::SymExprOpt</text>
+<g id="a_Node000025"><a xlink:href="classmim_1_1RetWrap.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="788.5,-19 701.5,-19 701.5,0 788.5,0 788.5,-19"/>
+<text text-anchor="middle" x="745" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RetWrap</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node25 -->
-<g id="edge28_Node000016_Node000025" class="edge">
-<title>Node16&#45;&gt;Node25</title>
-<g id="a_edge28_Node000016_Node000025"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M532.35,-296.9C548.82,-304.13 567.09,-314.5 580,-328.5 594.05,-343.73 585.93,-354.66 598,-371.5 621.49,-404.25 630.27,-412.85 666,-431.5 674.03,-435.69 683.01,-438.98 691.94,-441.55"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="533.5,-293.59 522.92,-293.01 530.82,-300.06 533.5,-293.59"/>
+<!-- Node17&#45;&gt;Node25 -->
+<g id="edge28_Node000017_Node000025" class="edge">
+<title>Node17&#45;&gt;Node25</title>
+<g id="a_edge28_Node000017_Node000025"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M547.66,-282.21C559.9,-279.29 571.7,-273.93 580,-264.5 610.35,-230 571.48,-96.03 598,-58.5 621.07,-25.86 666.98,-14.63 701.2,-10.94"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="546.99,-278.78 537.81,-284.06 548.29,-285.66 546.99,-278.78"/>
 </a>
 </g>
 </g>
 <!-- Node26 -->
 <g id="Node000026" class="node">
 <title>Node26</title>
-<g id="a_Node000026"><a xlink:href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html" target="_top" xlink:title="Lowers the for axm to actual control flow in CPS.">
-<polygon fill="white" stroke="#666666" points="798,-422.5 692,-422.5 692,-392.5 798,-392.5 798,-422.5"/>
-<text text-anchor="start" x="700" y="-410.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::affine::</text>
-<text text-anchor="middle" x="745" y="-399.5" font-family="Helvetica,sans-Serif" font-size="10.00">phase::LowerFor</text>
+<g id="a_Node000026"><a xlink:href="classmim_1_1SymExprOpt.html" target="_top" xlink:title="Symbolic Expression Optimization.">
+<polygon fill="white" stroke="#666666" points="798,-460 692,-460 692,-441 798,-441 798,-460"/>
+<text text-anchor="middle" x="745" y="-448" font-family="Helvetica,sans-Serif" font-size="10.00">mim::SymExprOpt</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node26 -->
-<g id="edge29_Node000016_Node000026" class="edge">
-<title>Node16&#45;&gt;Node26</title>
-<g id="a_edge29_Node000016_Node000026"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M521.59,-297.46C538.74,-306.03 560.86,-317.46 580,-328.5 619.3,-351.17 624.83,-364.43 666,-383.5 674.1,-387.25 682.94,-390.61 691.66,-393.54"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="523.14,-294.32 512.62,-293.01 520.02,-300.59 523.14,-294.32"/>
+<!-- Node17&#45;&gt;Node26 -->
+<g id="edge29_Node000017_Node000026" class="edge">
+<title>Node17&#45;&gt;Node26</title>
+<g id="a_edge29_Node000017_Node000026"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M532.35,-296.9C548.82,-304.13 567.09,-314.5 580,-328.5 594.05,-343.73 585.93,-354.66 598,-371.5 621.49,-404.25 630.27,-412.85 666,-431.5 674.03,-435.69 683.01,-438.98 691.94,-441.55"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="533.5,-293.59 522.92,-293.01 530.82,-300.06 533.5,-293.59"/>
 </a>
 </g>
 </g>
 <!-- Node27 -->
 <g id="Node000027" class="node">
 <title>Node27</title>
-<g id="a_Node000027"><a xlink:href="classmim_1_1plug_1_1direct_1_1DS2CPS.html" target="_top" xlink:title="Converts direct style function to cps functions.">
-<polygon fill="white" stroke="#666666" points="798,-374.5 692,-374.5 692,-344.5 798,-344.5 798,-374.5"/>
-<text text-anchor="start" x="700" y="-362.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::direct::</text>
-<text text-anchor="middle" x="745" y="-351.5" font-family="Helvetica,sans-Serif" font-size="10.00">DS2CPS</text>
+<g id="a_Node000027"><a xlink:href="classmim_1_1plug_1_1affine_1_1phase_1_1LowerFor.html" target="_top" xlink:title="Lowers the for axm to actual control flow in CPS.">
+<polygon fill="white" stroke="#666666" points="798,-422.5 692,-422.5 692,-392.5 798,-392.5 798,-422.5"/>
+<text text-anchor="start" x="700" y="-410.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::affine::</text>
+<text text-anchor="middle" x="745" y="-399.5" font-family="Helvetica,sans-Serif" font-size="10.00">phase::LowerFor</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node27 -->
-<g id="edge30_Node000016_Node000027" class="edge">
-<title>Node16&#45;&gt;Node27</title>
-<g id="a_edge30_Node000016_Node000027"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M534.29,-296C578.12,-309.27 647.4,-330.25 694.22,-344.43"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="535.12,-292.6 524.54,-293.05 533.09,-299.3 535.12,-292.6"/>
+<!-- Node17&#45;&gt;Node27 -->
+<g id="edge30_Node000017_Node000027" class="edge">
+<title>Node17&#45;&gt;Node27</title>
+<g id="a_edge30_Node000017_Node000027"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M521.59,-297.46C538.74,-306.03 560.86,-317.46 580,-328.5 619.3,-351.17 624.83,-364.43 666,-383.5 674.1,-387.25 682.94,-390.61 691.66,-393.54"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="523.14,-294.32 512.62,-293.01 520.02,-300.59 523.14,-294.32"/>
 </a>
 </g>
 </g>
 <!-- Node28 -->
 <g id="Node000028" class="node">
 <title>Node28</title>
-<g id="a_Node000028"><a xlink:href="classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" target="_top" xlink:title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer...">
+<g id="a_Node000028"><a xlink:href="classmim_1_1plug_1_1direct_1_1DS2CPS.html" target="_top" xlink:title="Converts direct style function to cps functions.">
+<polygon fill="white" stroke="#666666" points="798,-374.5 692,-374.5 692,-344.5 798,-344.5 798,-374.5"/>
+<text text-anchor="start" x="700" y="-362.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::direct::</text>
+<text text-anchor="middle" x="745" y="-351.5" font-family="Helvetica,sans-Serif" font-size="10.00">DS2CPS</text>
+</a>
+</g>
+</g>
+<!-- Node17&#45;&gt;Node28 -->
+<g id="edge31_Node000017_Node000028" class="edge">
+<title>Node17&#45;&gt;Node28</title>
+<g id="a_edge31_Node000017_Node000028"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M534.29,-296C578.12,-309.27 647.4,-330.25 694.22,-344.43"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="535.12,-292.6 524.54,-293.05 533.09,-299.3 535.12,-292.6"/>
+</a>
+</g>
+</g>
+<!-- Node29 -->
+<g id="Node000029" class="node">
+<title>Node29</title>
+<g id="a_Node000029"><a xlink:href="classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" target="_top" xlink:title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer...">
 <polygon fill="white" stroke="#666666" points="806.5,-326.5 683.5,-326.5 683.5,-296.5 806.5,-296.5 806.5,-326.5"/>
 <text text-anchor="start" x="691.5" y="-314.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::plug::matrix::</text>
 <text text-anchor="middle" x="745" y="-303.5" font-family="Helvetica,sans-Serif" font-size="10.00">LowerMatrixLowLevel</text>
 </a>
 </g>
 </g>
-<!-- Node16&#45;&gt;Node28 -->
-<g id="edge31_Node000016_Node000028" class="edge">
-<title>Node16&#45;&gt;Node28</title>
-<g id="a_edge31_Node000016_Node000028"><a xlink:title=" ">
+<!-- Node17&#45;&gt;Node29 -->
+<g id="edge32_Node000017_Node000029" class="edge">
+<title>Node17&#45;&gt;Node29</title>
+<g id="a_edge32_Node000017_Node000029"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M547.69,-289.6C587.71,-294.06 641.99,-300.12 683.34,-304.73"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="547.91,-286.1 537.58,-288.47 547.13,-293.06 547.91,-286.1"/>
 </a>

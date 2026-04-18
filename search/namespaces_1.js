@@ -27,5 +27,6 @@ var searchData=
   ['mim_3a_3aplug_3a_3atensor_24',['tensor',['../namespacemim_1_1plug_1_1tensor.html',1,'mim::plug']]],
   ['mim_3a_3aplug_3a_3atuple_25',['tuple',['../namespacemim_1_1plug_1_1tuple.html',1,'mim::plug']]],
   ['mim_3a_3aplug_3a_3avec_26',['vec',['../namespacemim_1_1plug_1_1vec.html',1,'mim::plug']]],
-  ['mim_3a_3asys_27',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
+  ['mim_3a_3asexpr_27',['sexpr',['../namespacemim_1_1sexpr.html',1,'mim']]],
+  ['mim_3a_3asys_28',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
 ];

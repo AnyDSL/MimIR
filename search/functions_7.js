@@ -7,7 +7,7 @@ var searchData=
   ['hash_4',['hash',['../classmim_1_1Def.html#a7a2188433df55928789a717ab00afc53',1,'mim::Def::hash()'],['../namespacemim.html#abe915a72a4c1481bb851622d9df4d8bd',1,'mim::hash(size_t h) noexcept']]],
   ['hash_5fbegin_5',['hash_begin',['../namespacemim.html#ab2a169d2e23178f0163bc05c774d2ac2',1,'mim::hash_begin() noexcept'],['../namespacemim.html#ac30b5cde9bbd181fac8b2cb7bf27fc62',1,'mim::hash_begin(T val) noexcept']]],
   ['hash_5fcombine_6',['hash_combine',['../namespacemim.html#a4d4c9094e2f043e1eca201f173cf96da',1,'mim']]],
-  ['head_7',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB']]],
+  ['head_7',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB::head()'],['../structmim_1_1sexpr_1_1BB.html#a761f2dbcf68ce4ebb0f1f31bc0c97f3d',1,'mim::sexpr::BB::head()']]],
   ['holeexpr_8',['HoleExpr',['../classmim_1_1ast_1_1HoleExpr.html#af222f6ce623acf0004bf17ca86d59048',1,'mim::ast::HoleExpr']]],
   ['hook_9',['hook',['../classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90',1,'mim::Stage']]]
 ];
