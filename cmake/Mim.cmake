@@ -1,8 +1,11 @@
 include(GNUInstallDirs)
 
-# clear globals
-set(MIM_PLUGIN_LIST   "" CACHE INTERNAL "MIM_PLUGIN_LIST")
-set(MIM_PLUGIN_LAYOUT "" CACHE INTERNAL "MIM_PLUGIN_LAYOUT")
+if(NOT DEFINED MIM_PLUGIN_LIST)
+    set(MIM_PLUGIN_LIST "" CACHE INTERNAL "MIM_PLUGIN_LIST")
+endif()
+if(NOT DEFINED MIM_PLUGIN_LAYOUT)
+    set(MIM_PLUGIN_LAYOUT "" CACHE INTERNAL "MIM_PLUGIN_LAYOUT")
+endif()
 
 if(NOT MIM_TARGET_NAMESPACE)
     set(MIM_TARGET_NAMESPACE "")
@@ -10,6 +13,16 @@ endif()
 
 function(add_mim_plugin)
     set(PLUGIN ${ARGV0})
+
+    if(NOT PLUGIN MATCHES "^[A-Za-z0-9_]+$")
+        message(FATAL_ERROR "Mim plugin names may only contain letters, digits, and underscores")
+    endif()
+
+    string(LENGTH "${PLUGIN}" PLUGIN_LENGTH)
+    if(PLUGIN_LENGTH GREATER 8)
+        message(FATAL_ERROR "Mim plugin '${PLUGIN}' exceeds the maximum supported length of 8 characters")
+    endif()
+
     cmake_parse_arguments(
         PARSE_ARGV 1        # skip first arg
         PARSED              # prefix of output variables
@@ -63,6 +76,10 @@ function(add_mim_plugin)
             ${OUT_PLUGIN_MIM}
     )
 
+    if(PLUGIN IN_LIST MIM_PLUGIN_LIST)
+        message(FATAL_ERROR "Mim plugin '${PLUGIN}' is already registered")
+    endif()
+
     list(APPEND MIM_PLUGIN_LIST "${PLUGIN}")
     string(APPEND MIM_PLUGIN_LAYOUT "<tab type=\"user\" url=\"@ref ${PLUGIN}\" title=\"${PLUGIN}\"/>")
 
@@ -87,6 +104,12 @@ function(add_mim_plugin)
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for autogen.h
     )
+    if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/include")
+        target_include_directories(mim_${PLUGIN}
+            PRIVATE
+                "${CMAKE_CURRENT_LIST_DIR}/include"
+        )
+    endif()
     target_link_libraries(mim_${PLUGIN}
         PRIVATE
             ${PARSED_PRIVATE}
@@ -122,5 +145,11 @@ function(add_mim_plugin)
             FILES ${AUTOGEN_H}
             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mim/plug/${PLUGIN}
         )
+        if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/include")
+            install(
+                DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/include/"
+                DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            )
+        endif()
     endif()
 endfunction()

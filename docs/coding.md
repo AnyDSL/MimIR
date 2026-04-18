@@ -282,25 +282,59 @@ You can create a new in-tree plugin `foobar` based on the [demo](@ref demo) plug
 ./scripts/new_plugin.sh foobar
 ```
 
+The script also supports `-h`/`--help` and prints the same usage text when called incorrectly.
+Plugin names may only contain letters, digits, and underscores, and are limited to 8 characters.
+
+By default, the script creates an in-tree plugin and also updates `src/mim/plug/CMakeLists.txt`.
+The generated files are:
+
+1. `src/mim/plug/<plugin>/<plugin>.mim`
+2. `src/mim/plug/<plugin>/CMakeLists.txt`
+3. `src/mim/plug/<plugin>/<plugin>.cpp`
+4. `src/mim/plug/<plugin>/normalizers.cpp`
+5. `include/mim/plug/<plugin>/<plugin>.h`
+6. `lit/<plugin>/const.mim`
+
+To create a standalone third-party plugin repository in `extra/`, use:
+
+```sh
+./scripts/new_plugin.sh foobar --extra
+```
+
+This creates a self-contained plugin skeleton in `extra/<plugin>/`, including:
+
+1. `<plugin>.mim`
+2. `CMakeLists.txt`
+3. `src/<plugin>.cpp`
+4. `src/normalizers.cpp`
+5. `include/mim/plug/<plugin>/<plugin>.h`
+6. `lit/const.mim`
+
+In `--extra` mode, the script also initializes a new Git repository for the plugin.
+
 ### Third-Party Plugins
 
 After installing MimIR, a third-party plugin only needs to find the `mim` package.
-For example, to build a plugin called `foo`:
+If you clone such a repository into `extra/`, MimIR will pick it up automatically during configuration.
+If the plugin repository also contains `lit/*.mim` tests, they are picked up automatically by the main `lit` target as well.
+For example, a plugin called `foo` can be set up like this:
 
 ```cmake
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 project(foo)
 
-find_package(mim)
+if(NOT COMMAND add_mim_plugin)
+    find_package(mim REQUIRED)
+endif()
 
 add_mim_plugin(foo
     SOURCES
-        mim/plug/foo/foo.h
-        mim/plug/foo/foo.cpp
+        src/foo.cpp
+        src/normalizers.cpp
 )
 ```
 
-Configure the project with:
+Configure the project standalone with:
 
 ```cmake
 cmake .. -Dmim_DIR=<MIM_INSTALL_PREFIX>/lib/cmake/mim
@@ -318,6 +352,7 @@ add_mim_plugin(<plugin-name>
 ```
 
 `<plugin-name>` is the name of the plugin.
+Plugin names may only contain letters, digits, and underscores, and are limited to 8 characters.
 Relative to the plugin's `CMakeLists.txt`, there should be a file `<plugin-name>.mim` containing the plugin's annexes.
 
 The command creates two targets:
