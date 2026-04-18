@@ -109,7 +109,7 @@ protected:
 };
 
 /// Extends Rewriter vor variable substitution.
-/// @see @ref VarRewriter
+/// @see @ref rewriter
 class VarRewriter : public Rewriter {
 public:
     /// @name Construction
