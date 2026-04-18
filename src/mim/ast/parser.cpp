@@ -120,7 +120,7 @@ Ptr<Module> Parser::parse_module() {
     return mod;
 }
 
-Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
+Ptr<Module> Parser::import(Dbg dbg, std::ostream* md, Tok::Tag tag) {
     auto name     = dbg.sym();
     auto filename = fs::path(name.view());
     driver().VLOG("📥 import: {}", name);
@@ -136,7 +136,7 @@ Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
         if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
     }
 
-    if (auto path = driver().imports().add(std::move(rel_path), name)) {
+    if (auto [path, fresh] = driver().imports().add(std::move(rel_path), name, tag); fresh) {
         auto ifs = std::ifstream(*path);
         return import(ifs, dbg.loc(), path, md);
     }
@@ -161,7 +161,7 @@ Ptr<Module> Parser::import(std::istream& is, Loc loc, const fs::path* path, std:
 
 Ptr<Module> Parser::plugin(Dbg dbg) {
     if (!driver().is_loaded(dbg.sym()) && !driver().flags().bootstrap) driver().load(dbg.sym());
-    return import(dbg);
+    return import(dbg, nullptr, Tag::K_plugin);
 }
 
 /*

@@ -36,8 +36,10 @@ public:
 
     AST& ast() { return ast_; }
     Driver& driver() { return ast().driver(); }
-    Ptr<Module> import(std::string_view sv) { return import({Loc(), driver().sym(sv)}); }
-    Ptr<Module> import(Dbg, std::ostream* md = nullptr);
+    Ptr<Module> import(std::string_view sv, Tok::Tag tag = Tok::Tag::K_import) {
+        return import({Loc(), driver().sym(sv)}, nullptr, tag);
+    }
+    Ptr<Module> import(Dbg, std::ostream* md = nullptr, Tok::Tag tag = Tok::Tag::K_import);
     Ptr<Module> import(std::istream&, Loc = {}, const fs::path* = nullptr, std::ostream* md = nullptr);
     Ptr<Module> plugin(Dbg);
     Ptr<Module> plugin(const std::string& s) { return plugin({Loc(), driver().sym(s)}); }
