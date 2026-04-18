@@ -135,6 +135,7 @@ MimIR is licensed under the [MIT License](https://github.com/AnyDSL/MimIR/blob/m
 * **SSA without Dominance for Higher-Order Programs** <br>
   Roland Leißa, Johannes Griebler <br>
   [![PLDI 2026](https://img.shields.io/badge/PLDI-2026-blue?style=flat-square)](https://pldi26.sigplan.org)
+  [![ACM](https://img.shields.io/badge/ACM-10.1145/3808286-blue?style=flat-square&logo=acm)](https://doi.org/10.1145/3808286)
   [![arXiv](https://img.shields.io/badge/arXiv-10.48550/arXiv.2604.09961-blue?style=flat-square&logo=arxiv)](https://doi.org/10.48550/arXiv.2604.09961)
   [![zenodo](https://img.shields.io/badge/-10.5281%2Fzenodo.19069678-blue?style=flat-square&logo=zenodo&logoColor=white&labelColor=555&logoSize=auto)](https://doi.org/10.5281/zenodo.19069678)
   <br><br>
