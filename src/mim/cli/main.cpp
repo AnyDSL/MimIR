@@ -155,7 +155,8 @@ int main(int argc, char** argv) {
                 imports.emplace_back(std::move(import));
             }
 
-            if (auto mod = parser.import(driver.sym(input), os[Md])) {
+            auto ifs = std::ifstream(path);
+            if (auto mod = parser.import(ifs, {}, &path, os[Md])) {
                 mod->add_implicit_imports(std::move(imports));
 
                 if (auto s = os[AST]) {

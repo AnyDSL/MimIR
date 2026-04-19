@@ -1,5 +1,7 @@
 # Plugins {#plugins}
 
+[TOC]
+
 Check out the [demo](@ref demo) plugin for a minimal example.
 It uses our custom [`add_mim_plugin`](@ref add_mim_plugin_cmake) CMake command.
 
