@@ -73,10 +73,13 @@ Use the following coding conventions:
 ### M⁠im Coding Style
 
 - Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing Mim code and tests.
+- Prefer 4 spaces for one indentation level, but aligned layouts may use different spacing when that makes the code clearer.
 - Write callable declarations with parenthesized domain groups, for example `lam foo (x: X) (y: Y): Z = ...`.
 - Separate curried domain groups with a space, and write the return type as `): Z`, with no space before `:` and one space after it.
 - Use spaces after commas in lists and groups: `a, b, c`.
 - Write binder ascriptions as `x: X`, but keep literal and bottom ascriptions tight: `23:T`.
+- Use `snake_case` for value-level names such as functions, lambdas, binders, local lets, and pattern-bound values.
+- Use `CamelCase` for type-level names such as types and type constructors.
 
 ### Doxygen Style
 
