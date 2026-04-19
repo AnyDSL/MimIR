@@ -110,6 +110,7 @@ $(function(){initNavTree('classmim_1_1Driver_1_1Imports.html','','classmim_1_1Dr
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classmim_1_1Driver_1_1Imports-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mim::Driver::Imports Class Reference</div></div>
@@ -118,23 +119,63 @@ $(function(){initNavTree('classmim_1_1Driver_1_1Imports.html','','classmim_1_1Dr
 
 <p><code>#include &lt;<a class="el" href="driver_8h_source.html">mim/driver.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:Entry_5Fstructmim_5F1_5F1Driver_5F1_5F1Imports_5F1_5F1Entry" id="r_Entry_5Fstructmim_5F1_5F1Driver_5F1_5F1Imports_5F1_5F1Entry"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="#structmim_1_1Driver_1_1Imports_1_1Entry">Entry</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3236cfbfdda3be5e8151c06e182891d8" id="r_a3236cfbfdda3be5e8151c06e182891d8"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a3236cfbfdda3be5e8151c06e182891d8">Imports</a> (<a class="el" href="classmim_1_1Driver.html#ae8008e0b5d7a78d738c465d3253aa365">Driver</a> &amp;driver)</td></tr>
-<tr class="memitem:ab391b15c9909866529058fa551148774" id="r_ab391b15c9909866529058fa551148774"><td class="memItemLeft">const fs::path *&#160;</td><td class="memItemRight"><a class="el" href="#ab391b15c9909866529058fa551148774">add</a> (fs::path, Sym)</td></tr>
-<tr class="memdesc:ab391b15c9909866529058fa551148774"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields a <span class="tt">fs::path*</span>, if not already added that you can use in Location; returns <span class="tt">nullptr</span> otherwise.  <br /></td></tr>
+<tr class="memitem:a9f27127a31a914ab1111add44f28d88f" id="r_a9f27127a31a914ab1111add44f28d88f"><td class="memItemLeft">std::pair&lt; const fs::path *, bool &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a9f27127a31a914ab1111add44f28d88f">add</a> (fs::path, Sym, <a class="el" href="classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5">ast::Tok::Tag</a>)</td></tr>
+<tr class="memdesc:a9f27127a31a914ab1111add44f28d88f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remembers an import or plugin directive and reports whether the resolved file is new.  <br /></td></tr>
 <tr id="pub-methods-0" class="groupHeader"><td colspan="2"><div class="groupHeader">Get imports</div></td></tr>
-<tr class="memitem:a45e42ee76cd5e87beb7c46cf817c6e44" id="r_a45e42ee76cd5e87beb7c46cf817c6e44"><td class="memItemLeft">const auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a45e42ee76cd5e87beb7c46cf817c6e44">path2sym</a> ()</td></tr>
-<tr class="memitem:a127fbd140270d0ed6b18b1af4c4e8620" id="r_a127fbd140270d0ed6b18b1af4c4e8620"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a127fbd140270d0ed6b18b1af4c4e8620">paths</a> ()</td></tr>
-<tr class="memitem:a419f8de09b60fbe8b2c40c91972dd817" id="r_a419f8de09b60fbe8b2c40c91972dd817"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a419f8de09b60fbe8b2c40c91972dd817">syms</a> ()</td></tr>
+<tr class="memitem:a9e84e9a123ce7b573f63d61e7e7f806d" id="r_a9e84e9a123ce7b573f63d61e7e7f806d"><td class="memItemLeft">const auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a9e84e9a123ce7b573f63d61e7e7f806d">entries</a> () const</td></tr>
 <tr id="pub-methods-1" class="groupHeader"><td colspan="2"><div class="groupHeader">Iterators</div></td></tr>
 <tr class="memitem:a86934d2d7d702112f3de24a3d3de6d3a" id="r_a86934d2d7d702112f3de24a3d3de6d3a"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a86934d2d7d702112f3de24a3d3de6d3a">begin</a> () const</td></tr>
 <tr class="memitem:a17b62f0042b3d9ba7043ac9ac7ee8151" id="r_a17b62f0042b3d9ba7043ac9ac7ee8151"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a17b62f0042b3d9ba7043ac9ac7ee8151">end</a> () const</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00048">48</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
-</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00050">50</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+</div><hr/><h2 id="header-inline_5Fclasses" class="groupheader">Class Documentation</h2>
+<a name="structmim_1_1Driver_1_1Imports_1_1Entry" id="structmim_1_1Driver_1_1Imports_1_1Entry"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmim_1_1Driver_1_1Imports_1_1Entry">&#9670;&#160;</a></span>mim::Driver::Imports::Entry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct mim::Driver::Imports::Entry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00052">52</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="ab5c6924a9e88de95fb8879957e5492ab" name="ab5c6924a9e88de95fb8879957e5492ab"></a>path</td>
+<td class="fieldname">
+path</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a6beeb2c9520722f067b2697d6de8fa94" name="a6beeb2c9520722f067b2697d6de8fa94"></a>Sym</td>
+<td class="fieldname">
+sym</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a77a6d63d306c0c9891b6d4dab3db83f7" name="a77a6d63d306c0c9891b6d4dab3db83f7"></a>Tag</td>
+<td class="fieldname">
+tag</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3236cfbfdda3be5e8151c06e182891d8" name="a3236cfbfdda3be5e8151c06e182891d8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3236cfbfdda3be5e8151c06e182891d8">&#9670;&#160;</a></span>Imports()</h2>
 
@@ -158,37 +199,40 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00050">50</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00058">58</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
-<p class="reference">References <a class="el" href="driver_8cpp_source.html#l00022">mim::Driver::Driver()</a>.</p>
+<p class="reference">References <a class="el" href="driver_8cpp_source.html#l00043">mim::Driver::Driver()</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="ab391b15c9909866529058fa551148774" name="ab391b15c9909866529058fa551148774"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab391b15c9909866529058fa551148774">&#9670;&#160;</a></span>add()</h2>
+<a id="a9f27127a31a914ab1111add44f28d88f" name="a9f27127a31a914ab1111add44f28d88f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f27127a31a914ab1111add44f28d88f">&#9670;&#160;</a></span>add()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const fs::path * mim::Driver::Imports::add </td>
+          <td class="memname">std::pair&lt; const fs::path *, bool &gt; mim::Driver::Imports::add </td>
           <td>(</td>
           <td class="paramtype">fs::path</td>          <td class="paramname"><span class="paramname"><em>path</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Sym</td>          <td class="paramname"><span class="paramname"><em>sym</em></span>&#160;)</td>
+          <td class="paramtype">Sym</td>          <td class="paramname"><span class="paramname"><em>sym</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5">ast::Tok::Tag</a></td>          <td class="paramname"><span class="paramname"><em>tag</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Yields a <span class="tt">fs::path*</span>, if not already added that you can use in Location; returns <span class="tt">nullptr</span> otherwise. </p>
+<p>Remembers an import or plugin directive and reports whether the resolved file is new. </p>
 
 <p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00010">10</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="driver_8h_source.html#l00056">paths()</a>.</p>
 
 </div>
 </div>
@@ -215,7 +259,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00062">62</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00068">68</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
 </div>
 </div>
@@ -242,90 +286,34 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00069">69</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+
+</div>
+</div>
+<a id="a9e84e9a123ce7b573f63d61e7e7f806d" name="a9e84e9a123ce7b573f63d61e7e7f806d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e84e9a123ce7b573f63d61e7e7f806d">&#9670;&#160;</a></span>entries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const auto &amp; mim::Driver::Imports::entries </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00063">63</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
-
-</div>
-</div>
-<a id="a45e42ee76cd5e87beb7c46cf817c6e44" name="a45e42ee76cd5e87beb7c46cf817c6e44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45e42ee76cd5e87beb7c46cf817c6e44">&#9670;&#160;</a></span>path2sym()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const auto &amp; mim::Driver::Imports::path2sym </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00055">55</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
-
-</div>
-</div>
-<a id="a127fbd140270d0ed6b18b1af4c4e8620" name="a127fbd140270d0ed6b18b1af4c4e8620"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a127fbd140270d0ed6b18b1af4c4e8620">&#9670;&#160;</a></span>paths()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto mim::Driver::Imports::paths </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00056">56</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="driver_8cpp_source.html#l00010">add()</a>.</p>
-
-</div>
-</div>
-<a id="a419f8de09b60fbe8b2c40c91972dd817" name="a419f8de09b60fbe8b2c40c91972dd817"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a419f8de09b60fbe8b2c40c91972dd817">&#9670;&#160;</a></span>syms()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto mim::Driver::Imports::syms </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00057">57</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
 </div>
 </div>

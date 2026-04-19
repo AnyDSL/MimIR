@@ -117,8 +117,10 @@ $(function(){initNavTree('driver_8h.html','',''); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;list&gt;</code><br />
+<code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;absl/container/node_hash_map.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="flags_8h_source.html">mim/flags.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tok_8h_source.html">mim/ast/tok.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="plugin_8h_source.html">mim/plugin.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="world_8h_source.html">mim/world.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="log_8h_source.html">mim/util/log.h</a>&quot;</code><br />
@@ -140,6 +142,7 @@ Classes</h2></td></tr>
 <tr class="memitem:mim_3A_3ADriver" id="r_mim_3A_3ADriver"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Driver.html">mim::Driver</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some "global" variables needed all over the place.  <a href="classmim_1_1Driver.html#details">More...</a><br /></td></tr>
 <tr class="memitem:mim_3A_3ADriver_3A_3AImports" id="r_mim_3A_3ADriver_3A_3AImports"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Driver_1_1Imports.html">mim::Driver::Imports</a></td></tr>
+<tr class="memitem:mim_3A_3ADriver_3A_3AImports_3A_3AEntry_5Fstructmim_5F1_5F1Driver_5F1_5F1Imports_5F1_5F1Entry" id="r_mim_3A_3ADriver_3A_3AImports_3A_3AEntry_5Fstructmim_5F1_5F1Driver_5F1_5F1Imports_5F1_5F1Entry"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Driver_1_1Imports.html#structmim_1_1Driver_1_1Imports_1_1Entry">mim::Driver::Imports::Entry</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -149,6 +152,44 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:ab004995be061e8045533148b21580ed8" id="r_ab004995be061e8045533148b21580ed8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ab004995be061e8045533148b21580ed8">GET_FUN_PTR</a>(plugin,  f)</td></tr>
 </table>
+<hr/><h2 id="header-inline_5Fclasses" class="groupheader">Class Documentation</h2>
+<a name="structmim_1_1Driver_1_1Imports_1_1Entry" id="structmim_1_1Driver_1_1Imports_1_1Entry"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmim_1_1Driver_1_1Imports_1_1Entry">&#9670;&#160;</a></span>mim::Driver::Imports::Entry</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct mim::Driver::Imports::Entry</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00052">52</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="ab5c6924a9e88de95fb8879957e5492ab" name="ab5c6924a9e88de95fb8879957e5492ab"></a>path</td>
+<td class="fieldname">
+path</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a6beeb2c9520722f067b2697d6de8fa94" name="a6beeb2c9520722f067b2697d6de8fa94"></a>Sym</td>
+<td class="fieldname">
+sym</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="a77a6d63d306c0c9891b6d4dab3db83f7" name="a77a6d63d306c0c9891b6d4dab3db83f7"></a>Tag</td>
+<td class="fieldname">
+tag</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
 <a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
 <a id="ab004995be061e8045533148b21580ed8" name="ab004995be061e8045533148b21580ed8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab004995be061e8045533148b21580ed8">&#9670;&#160;</a></span>GET_FUN_PTR</h2>
@@ -170,7 +211,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">get_fun_ptr&lt;decltype(f)&gt;(plugin, #f)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00124">124</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00131">131</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
 </div>
 </div>

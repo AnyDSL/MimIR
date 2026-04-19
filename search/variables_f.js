@@ -1,7 +1,7 @@
 var searchData=
 [
   ['tab_0',['tab',['../classmim_1_1Emitter.html#a8900421e0e65b38133b106e976e290e0',1,'mim::Emitter::tab'],['../structmim_1_1ast_1_1S.html#af1be4c012e04df5c929174bcb994076a',1,'mim::ast::S::tab'],['../structmim_1_1ast_1_1R.html#aa396ebb7e47f95218052ca51b7fd9f8a',1,'mim::ast::R::tab']]],
-  ['tag_1',['tag',['../structmim_1_1Error_1_1Msg.html#a48557b999065c7db3a7f8bddde75f0fc',1,'mim::Error::Msg::tag'],['../namespacemim_1_1ast.html#ae4d23e841d8e8804190027bce3180fa5',1,'mim::ast::AnnexInfo.sym::tag'],['../namespacemim_1_1ast.html#ae4d23e841d8e8804190027bce3180fa5',1,'mim::ast::AnnexInfo.id::tag']]],
+  ['tag_1',['tag',['../classmim_1_1Driver_1_1Imports.html#a77a6d63d306c0c9891b6d4dab3db83f7',1,'mim::Driver::Imports::Entry::tag'],['../structmim_1_1Error_1_1Msg.html#a48557b999065c7db3a7f8bddde75f0fc',1,'mim::Error::Msg::tag'],['../namespacemim_1_1ast.html#ae4d23e841d8e8804190027bce3180fa5',1,'mim::ast::AnnexInfo.sym::tag'],['../namespacemim_1_1ast.html#ae4d23e841d8e8804190027bce3180fa5',1,'mim::ast::AnnexInfo.id::tag']]],
   ['todo_5f_2',['todo_',['../classmim_1_1Phase.html#a0390804e30acc01109b03f04109327a2',1,'mim::Phase']]],
   ['top_3',['top',['../classmim_1_1lct_1_1Node.html#abcb4a31fc88a7e97ea7c07c22a0afbbe',1,'mim::lct::Node']]],
   ['trace_5fgids_4',['trace_gids',['../namespacemim.html#a6751eae1d81d212268261fecba66fa6a',1,'mim::Flags']]],

@@ -68,6 +68,6 @@ var searchData=
   ['sym_5ferror_65',['sym_error',['../classmim_1_1ast_1_1AST.html#addcecc401fa2340d35035a6c8bf23f1e',1,'mim::ast::AST']]],
   ['sym_5freturn_66',['sym_return',['../classmim_1_1ast_1_1AST.html#a85ddb7b560da4ba40d7923a8dc6ccd2d',1,'mim::ast::AST']]],
   ['symexpropt_67',['SymExprOpt',['../classmim_1_1SymExprOpt.html#a629c3483378c67735716dc1965944227',1,'mim::SymExprOpt']]],
-  ['syms_68',['syms',['../classmim_1_1Driver_1_1Imports.html#a419f8de09b60fbe8b2c40c91972dd817',1,'mim::Driver::Imports::syms()'],['../classmim_1_1World_1_1Externals.html#af73e1fc6bb699ac0af55a3339f366e85',1,'mim::World::Externals::syms()']]],
+  ['syms_68',['syms',['../classmim_1_1World_1_1Externals.html#af73e1fc6bb699ac0af55a3339f366e85',1,'mim::World::Externals']]],
   ['system_69',['system',['../namespacemim_1_1sys.html#a45bd42e13e6b59eacaf1bba01adda396',1,'mim::sys']]]
 ];

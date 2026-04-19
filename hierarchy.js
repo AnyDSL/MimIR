@@ -23,6 +23,7 @@ var hierarchy =
     [ "mim::Dispatch", "classmim_1_1Dispatch.html", null ],
     [ "mim::Elem&lt; R, F &gt;", "structmim_1_1Elem.html", null ],
     [ "mim::ast::Emitter", "classmim_1_1ast_1_1Emitter.html", null ],
+    [ "mim::Driver::Imports::Entry", "classmim_1_1Driver_1_1Imports.html#structmim_1_1Driver_1_1Imports_1_1Entry", null ],
     [ "mim::Sets&lt; D, N &gt;::Data::Equal", "structmim_1_1Sets_1_1Data_1_1Equal.html", null ],
     [ "std::exception", null, [
       [ "mim::Error", "classmim_1_1Error.html", null ]
