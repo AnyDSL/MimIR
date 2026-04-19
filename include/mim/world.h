@@ -210,7 +210,7 @@ public:
         const auto& sym2mut() const { return sym2mut_; }
         auto syms() const { return sym2mut_ | std::views::keys; }
         auto muts() const { return sym2mut_ | std::views::values; }
-        /// Returns a copy of @p muts() in a Vector; this allows you modify the Externals while iterating.
+        /// Returns a copy of @p muts() in a Vector; this allows you to modify the Externals while iterating.
         /// @note The iteration will see all old externals, of course.
         Vector<Def*> mutate() const { return {muts().begin(), muts().end()}; }
         Def* operator[](Sym name) const { return mim::lookup(sym2mut_, name); } ///< Lookup by @p name.
