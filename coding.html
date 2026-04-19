@@ -132,30 +132,33 @@ $(function(){initNavTree('coding.html','',''); });
         <a href="#autotoc_md4">Markdown Style </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md5">Doxygen Style </a>
+        <a href="#autotoc_md5"><a class="el" href="namespaceMim.html">Mim</a> Coding Style </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md6">Example </a>
+        <a href="#autotoc_md6">Doxygen Style </a>
+      </li>
+      <li class="level2">
+        <a href="#autotoc_md7">Example </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md7">Debugging </a>
+    <a href="#autotoc_md8">Debugging </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md8">Dumping </a>
+        <a href="#autotoc_md9">Dumping </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md9">Displaying DOT Graphs </a>
+        <a href="#autotoc_md10">Displaying DOT Graphs </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md10">Conditional Breakpoints </a>
+        <a href="#autotoc_md11">Conditional Breakpoints </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md11">Catching Exceptions </a>
+        <a href="#autotoc_md12">Catching Exceptions </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md12">Valgrind &amp; GDB </a>
+        <a href="#autotoc_md13">Valgrind &amp; GDB </a>
       </li>
     </ul>
   </li>
@@ -163,18 +166,18 @@ $(function(){initNavTree('coding.html','',''); });
     <a href="#tests">Tests </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md13"><span class="tt">lit</span> Tests </a>
+        <a href="#autotoc_md14"><span class="tt">lit</span> Tests </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md14">Triggering Breakpoints from the Command Line </a>
+        <a href="#autotoc_md15">Triggering Breakpoints from the Command Line </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md15">GoogleTest </a>
+        <a href="#autotoc_md16">GoogleTest </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md16">Syntax Highlighting </a>
+    <a href="#autotoc_md17">Syntax Highlighting </a>
   </li>
 </ul>
 </div>
@@ -256,6 +259,15 @@ Markdown Style</h2>
 <li>Do not hard-wrap Markdown text to 80 columns.</li>
 </ul>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+Mim Coding Style</h2>
+<ul>
+<li>Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing <a class="el" href="namespaceMim.html">Mim</a> code and tests.</li>
+<li>Write callable declarations with parenthesized domain groups, for example <span class="tt">lam foo (x: X) (y: Y): Z = ...</span>.</li>
+<li>Separate curried domain groups with a space, and write the return type as <span class="tt">): Z</span>, with no space before <span class="tt">:</span> and one space after it.</li>
+<li>Use spaces after commas in lists and groups: <span class="tt">a, b, c</span>.</li>
+<li>Write binder ascriptions as <span class="tt">x: X</span>, but keep literal and bottom ascriptions tight: <span class="tt">23:T</span>.</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
 Doxygen Style</h2>
 <ul>
 <li>Use <span class="tt">///</span> for Doxygen comments.</li>
@@ -267,7 +279,7 @@ Doxygen Style</h2>
 <p>To run <span class="tt">clang-format</span> automatically on changed files, install the provided <a href="https://pre-commit.com/">pre-commit</a> hook:</p>
 <div class="fragment"><div class="line">pre-commit install</div>
 </div><!-- fragment --><p>You can also <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a> when necessary. Depending on your editor, the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a> and similar plugins may also be useful.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
 Example</h2>
 <p>Here is a small header that follows the conventions above:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#pragma once</span></div>
@@ -294,7 +306,7 @@ Example</h2>
 <div class="line"> </div>
 <div class="line">} <span class="comment">// namespace mim</span></div>
 <div class="ttc" id="anamespacemim_html"><div class="ttname"><a href="namespacemim.html">mim</a></div><div class="ttdef"><b>Definition</b> <a href="ast_8h_source.html#l00014">ast.h:14</a></div></div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
 Debugging</h1>
 <p><b>See also:</b></p>
 <ul>
@@ -303,7 +315,7 @@ Debugging</h1>
 <li><a href="https://interrupt.memfault.com/blog/advanced-gdb">Advanced GDB Usage</a></li>
 <li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/">Debugging with GDB</a></li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
 Dumping</h2>
 <p>You can directly invoke several MimIR dump helpers from within GDB, for example:</p>
 <ul>
@@ -325,7 +337,7 @@ Dumping</h2>
 <div class="fragment"><div class="line">(gdb) p world().gid2def(123)</div>
 <div class="line">$1 = ...</div>
 <div class="line">(gdb) call $1-&gt;dump()</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
 Displaying DOT Graphs</h2>
 <p><span class="tt">scripts/xdot.gdb</span> provides custom GDB commands to generate a <a href="https://graphviz.org/">DOT</a> graph and display it with <a href="https://github.com/jrfonseca/xdot.py">xdot</a>.</p>
 <p>To enable it, source <span class="tt">scripts/xdot.gdb</span> from your <span class="tt">~/.gdbinit</span>:</p>
@@ -387,16 +399,16 @@ cgdb session using xdot</div></div>
 <div class="line"> </div>
 <div class="line">Show full DOT graph of &#39;world&#39; including types and all annexes.</div>
 <div class="line">xdotw &amp;def-&gt;world() 1 1</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
 Conditional Breakpoints</h2>
 <p>Often, you will want to inspect a specific <a class="el" href="classmim_1_1Def.html" title="mim::Def">mim::Def</a> at a particular point in the program. <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">Conditional breakpoints</a> are very handy for this.</p>
 <p>For example, the following command breaks if the <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="mim::Def::gid">mim::Def::gid</a> of variable <span class="tt">def</span> is <span class="tt">42</span> at source location <span class="tt">foo.cpp:23</span>:</p>
 <div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 42</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
 Catching Exceptions</h2>
 <p>For several things, such as errors in the <a class="el" href="namespaceMim.html">Mim</a> frontend, MimIR uses C++ exceptions for error handling. To stop when an exception is thrown, use:</p>
 <div class="fragment"><div class="line">catch throw</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
 Valgrind &amp; GDB</h2>
 <p>If you run into memory-related problems, it can be useful to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>.</p>
 <p>Launch the program like this:</p>
@@ -404,7 +416,7 @@ Valgrind &amp; GDB</h2>
 </div><!-- fragment --><p>and then follow the instructions printed by Valgrind.</p>
 <h1 class="doxsection"><a class="anchor" id="tests"></a>
 Tests</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
 <span class="tt">lit</span> Tests</h2>
 <p>Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> test suite with:</p>
 <div class="fragment"><div class="line">cmake --build build -t lit</div>
@@ -414,14 +426,14 @@ Tests</h1>
 </div><!-- fragment --><p>If your build directory is actually called <span class="tt">build</span>, you can also use <span class="tt">probe.sh</span>:</p>
 <div class="fragment"><div class="line">cd lit</div>
 <div class="line">../scripts/probe.sh foo.mim</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
 Triggering Breakpoints from the Command Line</h2>
 <p>You can tell <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> to trigger a breakpoint when certain events happen:</p>
 <div class="fragment"><div class="line">mim test.mim -b 1234            # Break if the node with gid 1234 is created.</div>
 <div class="line">mim test.mim -w 1234            # Break if the node with gid 1234 sets one of its operands.</div>
 <div class="line">mim test.mim --break-on-alpha   # Break if a check for alpha-equivalence fails.</div>
 </div><!-- fragment --><p>See the <a class="el" href="cli.html" title="Command-Line Reference">Command-Line Reference</a> for the full list of flags.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
 GoogleTest</h2>
 <p>Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests from the <span class="tt">build</span> directory with:</p>
 <div class="fragment"><div class="line">ctest</div>
@@ -433,7 +445,7 @@ GoogleTest</h2>
 <div class="fragment"><div class="line">./mim-gtest --gtest_list_tests</div>
 </div><!-- fragment --><p>It can also be useful to turn assertion failures into debugger breakpoints:</p>
 <div class="fragment"><div class="line">./mim-gtest --gtest_break_on_failure</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
 Syntax Highlighting</h1>
 <p><a href="https://github.com/AnyDSL/vim-mim">This</a> Vim plugin provides syntax highlighting for <a class="el" href="namespaceMim.html">Mim</a> files.</p>
 <p>There is also a <a href="https://gitlab.com/amaeble/tree-sitter-mim">tree-sitter grammar</a> for <a class="el" href="namespaceMim.html">Mim</a> files and a <a href="https://github.com/amaebel/helix">Helix fork</a> with highlight and injection queries. </p>

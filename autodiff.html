@@ -115,47 +115,47 @@ $(function(){initNavTree('autodiff.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md103">Dependencies </a>
+    <a href="#autotoc_md104">Dependencies </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md104">Types </a>
+    <a href="#autotoc_md105">Types </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md105">Operations </a>
+    <a href="#autotoc_md106">Operations </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md106">%autodiff.ad </a>
+        <a href="#autotoc_md107">%autodiff.ad </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md107">%autodiff.zero </a>
+        <a href="#autotoc_md108">%autodiff.zero </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md108">%autodiff.add </a>
+        <a href="#autotoc_md109">%autodiff.add </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md109">Stages </a>
+    <a href="#autotoc_md110">Stages </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md110">Repls </a>
+        <a href="#autotoc_md111">Repls </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md111">Passes </a>
+        <a href="#autotoc_md112">Passes </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md112">Registered translations </a>
+    <a href="#autotoc_md113">Registered translations </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md113">%core.icmp.xYgLE (eq) </a>
+        <a href="#autotoc_md114">%core.icmp.xYgLE (eq) </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md114">%core.wrap.add </a>
+        <a href="#autotoc_md115">%core.wrap.add </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md115">%core.wrap.mul </a>
+        <a href="#autotoc_md116">%core.wrap.mul </a>
       </li>
     </ul>
   </li>
@@ -163,39 +163,39 @@ $(function(){initNavTree('autodiff.html','',''); });
 </div>
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2autodiff"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1autodiff.html" title="The automatic differentiation Plugin">mim::plug::autodiff</a></dd></dl>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md103"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md104"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin mem;</div>
 <div class="line">import compile;</div>
 </div><!-- fragment --><p> For derivatives: </p><div class="fragment"><div class="line">plugin core;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md104"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md105"></a>
 Types</h1>
 <div class="fragment"><div class="line">axm %autodiff.Tangent: * → *, normalize_Tangent;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md105"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md106"></a>
 Operations</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md106"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md107"></a>
 %autodiff.ad</h2>
 <p>This axiom operates on functions and types.</p>
 <p>For function types the augmented type is computed: <span class="tt">(T → U) =&gt; (T → U × (U → T))</span> </p><div class="fragment"><div class="line">axm %autodiff.AD: * → *, normalize_AD;</div>
 </div><!-- fragment --><p> On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned. The augmented term <span class="tt">f'</span> returns the result together with the pullback. <span class="tt">autodiff f = f' = λ args. (f args, f*)</span> </p><div class="fragment"><div class="line">axm %autodiff.ad: {T: *} → T → %autodiff.AD T, normalize_ad;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md107"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md108"></a>
 %autodiff.zero</h2>
 <p>Represents universal zero such that <span class="tt">(zero T) +_T t = t</span>.</p>
 <div class="fragment"><div class="line">axm %autodiff.zero: [T: *] → T, normalize_zero;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md108"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md109"></a>
 %autodiff.add</h2>
 <p>A universal addition that consumes zeros and defaults to normal addition for scalar types. It lifts additions over types with structure and performs special casing for types with do not allow for addition. The sum construct performs addition over a list of terms.</p>
 <p>TODO: how do we handle summations that need memory? (grab current memory?) </p><div class="fragment"><div class="line">axm %autodiff.add: {T: *} → [T, T] → T, normalize_add;</div>
 <div class="line">axm %autodiff.sum: [n:Nat, T: *] → «n; T» → T, normalize_sum;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md109"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md110"></a>
 Stages</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md110"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md111"></a>
 Repls</h2>
 <div class="fragment"><div class="line">axm %autodiff.zero_repl: %compile.Repl;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md111"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md112"></a>
 Passes</h2>
 <div class="fragment"><div class="line">axm %autodiff.eval_pass: %compile.Pass;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md112"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md113"></a>
 Registered translations</h1>
 <p>In this section, we define translations for axioms of other plugins. This best would be done using a register mechanism in a third plugin or at least in a separate file.</p>
 <p>The general concept is that a call to an axiom is replaced with a call to the augmented axiom. The augmented axiom needs a wrapper for meta arguments (HO-function). Appropiate cps2ds wrappers are introduced to handle that the augmented axioms are in cps where the original axioms were in ds. Example: </p><div class="fragment"><div class="line">mul&#39; =&gt; args → result*pullback</div>
@@ -208,17 +208,17 @@ Registered translations</h1>
 <div class="line">mul&#39;_cps : [m:Nat,w:Nat] → cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]</div>
 <div class="line">r,r* = (cps2ds (mul&#39;_cps (m,w))) (a,b)</div>
 </div><!-- fragment --><p>The pullback is the derivative with respect to the input (weighted with the out tangent). For arithmetic operations, s is simply multiplied to each input tangent: <span class="tt">∂_i f(x1,...,xn) * s</span> You will also come to the conclusion that the applied partial pullback needs to be: <span class="tt">sum x_i*(∂_i f(x1,...,xn) * s) = sum x_i*(•)</span> with • as the formula from above This is a direct result from the chain composition with the partial pullback of a tuple. The tuple pullback transports the partial pullbacks of the operands and handles the sums. By its nature the pullback of a tuple needs to be a sum.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md113"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md114"></a>
 %core.icmp.xYgLE (eq)</h2>
 <p>The comparison pullback exists formally but is not used.</p>
 <div class="fragment"><div class="line">fun extern internal_diff_core_icmp_xYgLE {s: Nat} (ab: «2; Idx s»)@tt: [Bool, Cn[Bool, Cn«2; Idx s»]] =</div>
 <div class="line">    return (%core.icmp.sle ab, fn [Bool]@tt: «2; Idx s» = return ‹2; 0:(Idx s)›);</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md114"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md115"></a>
 %core.wrap.add</h2>
 <p>s ↦ (s, s)</p>
 <div class="fragment"><div class="line">fun extern internal_diff_core_wrap_add {s: Nat} (m: Nat) (ab: «2; Idx s»)@tt: [Idx s, Cn[Idx s, Cn«2; Idx s»]] =</div>
 <div class="line">    return (%core.wrap.add m ab, fn (i: Idx s)@tt: «2; Idx s» = return ‹2; i›);</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md115"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md116"></a>
 %core.wrap.mul</h2>
 <p>s ↦ (s*b, s*a)</p>
 <div class="fragment"><div class="line">fun extern internal_diff_core_wrap_mul {s: Nat} (m: Nat) (a b: Idx s) as ab@tt: [Idx s, Cn[Idx s, Cn«2; Idx s»]] =</div>

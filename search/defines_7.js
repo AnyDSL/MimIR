@@ -38,6 +38,5 @@ var searchData=
   ['mim_5fver_5fmajor_35',['MIM_VER_MAJOR',['../config_8h.html#aeb0c2d81a9a26003fdbc1b6d37287fc7',1,'config.h']]],
   ['mim_5fver_5fminor_36',['MIM_VER_MINOR',['../config_8h.html#a6b91bd3488a1b181a3e8dad53777db22',1,'config.h']]],
   ['mim_5fver_5fpatch_37',['MIM_VER_PATCH',['../config_8h.html#a82839e2d7d1e1a27a0a675e064bd08bc',1,'config.h']]],
-  ['mim_5fwhich_38',['MIM_WHICH',['../sys_8h.html#ad457af6e616c0224bf4ce333a32a44e4',1,'sys.h']]],
-  ['my_5fprec_39',['MY_PREC',['../dump_8cpp.html#a6bff0ba92b8da6688daba417375c5449',1,'dump.cpp']]]
+  ['mim_5fwhich_38',['MIM_WHICH',['../sys_8h.html#ad457af6e616c0224bf4ce333a32a44e4',1,'sys.h']]]
 ];
