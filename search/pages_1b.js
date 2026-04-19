@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['💡_20why_20mimir_0',['💡 Why MimIR?',['../index.html#autotoc_md86',1,'']]]
+  ['💡_20why_20mimir_0',['💡 Why MimIR?',['../index.html#autotoc_md85',1,'']]]
 ];
