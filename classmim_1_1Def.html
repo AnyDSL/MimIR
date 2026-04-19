@@ -171,7 +171,7 @@ Public Member Functions</h2></td></tr>
       mut-&gt;<a class="el" href="#ae5dedfaf24a0f270bdb0fe58ed62cdc3" title="Unsets all Def::ops; works even, if not set at all or only partially set.">unset()</a>-&gt;<a class="el" href="#a1164a26b23818879edfa4e6b9fe41d97" title="Successively set from left to right.">set</a>({a, b, c});
       </span></li>
 </ul>
-<p>MimIR assumes that a mutable is <em>final</em>, when its last operand is set. Then, <a class="el" href="#a2ec320f7eb49e3c8c9d26f210f4ce71d" title="After all Def::ops have ben Def::set, this method will be invoked to check the type of this mutable.">Def::check()</a> will be invoked. </p>
+<p>MimIR assumes that a mutable is <em>final</em>, when its last operand is set. Then, <a class="el" href="#a2ec320f7eb49e3c8c9d26f210f4ce71d" title="After all Def::ops have been Def::set, this method will be invoked to check the type of this mutable.">Def::check()</a> will be invoked. </p>
 </div></td></tr>
 <tr class="memitem:a075f30462bdc7ae0e435c8e15cb48fff" id="r_a075f30462bdc7ae0e435c8e15cb48fff"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a075f30462bdc7ae0e435c8e15cb48fff">is_set</a> () const</td></tr>
 <tr class="memdesc:a075f30462bdc7ae0e435c8e15cb48fff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <span class="tt">true</span> if empty or the last op is set.  <br /></td></tr>
@@ -363,7 +363,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a17535d230ca604f1b7f153cca756e3b4" id="r_a17535d230ca604f1b7f153cca756e3b4"><td class="memItemLeft">virtual const Def *&#160;</td><td class="memItemRight"><a class="el" href="#a17535d230ca604f1b7f153cca756e3b4">check</a> (size_t i, const Def *def)</td></tr>
 <tr class="memdesc:a17535d230ca604f1b7f153cca756e3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the <span class="tt">i</span>th operand can be set to <span class="tt">def</span>.  <br /></td></tr>
 <tr class="memitem:a2ec320f7eb49e3c8c9d26f210f4ce71d" id="r_a2ec320f7eb49e3c8c9d26f210f4ce71d"><td class="memItemLeft">virtual const Def *&#160;</td><td class="memItemRight"><a class="el" href="#a2ec320f7eb49e3c8c9d26f210f4ce71d">check</a> ()</td></tr>
-<tr class="memdesc:a2ec320f7eb49e3c8c9d26f210f4ce71d"><td class="mdescLeft">&#160;</td><td class="mdescRight">After all <a class="el" href="#a3e96d1f2d3715f3d059a7396366af7eb">Def::ops</a> have ben <a class="el" href="#a1164a26b23818879edfa4e6b9fe41d97" title="Successively set from left to right.">Def::set</a>, this method will be invoked to check the type of this mutable.  <br /></td></tr>
+<tr class="memdesc:a2ec320f7eb49e3c8c9d26f210f4ce71d"><td class="mdescLeft">&#160;</td><td class="mdescRight">After all <a class="el" href="#a3e96d1f2d3715f3d059a7396366af7eb">Def::ops</a> have been <a class="el" href="#a1164a26b23818879edfa4e6b9fe41d97" title="Successively set from left to right.">Def::set</a>, this method will be invoked to check the type of this mutable.  <br /></td></tr>
 <tr class="memitem:ae9f80ca1bccce9842c16092f977fbf79" id="r_ae9f80ca1bccce9842c16092f977fbf79"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ae9f80ca1bccce9842c16092f977fbf79">needs_zonk</a> () const</td></tr>
 <tr class="memdesc:ae9f80ca1bccce9842c16092f977fbf79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <span class="tt">true</span>, if <a class="el" href="#a8a6a0861bea1acfecbf8e2260774b212" title="Mutables reachable by following immutable deps(); mut-&gt;local_muts() is by definition the set { mut }...">Def::local_muts()</a> contain a <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a> that is set.  <br /></td></tr>
 <tr class="memitem:a29019dd6f96db3881b604f0b16cba29a" id="r_a29019dd6f96db3881b604f0b16cba29a"><td class="memItemLeft">const Def *&#160;</td><td class="memItemRight"><a class="el" href="#a29019dd6f96db3881b604f0b16cba29a">zonk</a> () const</td></tr>
@@ -388,7 +388,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad05a164140ecb2c8ce14e3faf9bf38ac" id="r_ad05a164140ecb2c8ce14e3faf9bf38ac"><td class="memItemLeft">static <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad05a164140ecb2c8ce14e3faf9bf38ac">zonk</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> defs)</td></tr>
-<tr class="memdesc:ad05a164140ecb2c8ce14e3faf9bf38ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">zonks all <code class="param">defs</code> and retuns a new <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>.  <br /></td></tr>
+<tr class="memdesc:ad05a164140ecb2c8ce14e3faf9bf38ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">zonks all <code class="param">defs</code> and returns a new <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -828,7 +828,7 @@ template&lt;class T = Def, bool invert = false&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>After all <a class="el" href="#a3e96d1f2d3715f3d059a7396366af7eb">Def::ops</a> have ben <a class="el" href="#a1164a26b23818879edfa4e6b9fe41d97" title="Successively set from left to right.">Def::set</a>, this method will be invoked to check the type of this mutable. </p>
+<p>After all <a class="el" href="#a3e96d1f2d3715f3d059a7396366af7eb">Def::ops</a> have been <a class="el" href="#a1164a26b23818879edfa4e6b9fe41d97" title="Successively set from left to right.">Def::set</a>, this method will be invoked to check the type of this mutable. </p>
 <p>The method returns a possibly updated version of its type (e.g. where <a class="el" href="classmim_1_1Hole.html" title="This node is a hole in the IR that is inferred by its context later on.">Hole</a>s have been resolved). If different from <a class="el" href="#a9ab6cb5c35d630f631fd365cf7fa8f0c" title="Yields the &quot;raw&quot; type of this Def (maybe nullptr).">Def::type</a>, it will update its <a class="el" href="#a9ab6cb5c35d630f631fd365cf7fa8f0c" title="Yields the &quot;raw&quot; type of this Def (maybe nullptr).">Def::type</a> to a <a class="el" href="#a29019dd6f96db3881b604f0b16cba29a" title="If Holes have been filled, reconstruct the program without them.">Def::zonk</a>ed version of that. </p>
 
 <p>Reimplemented in <a class="el" href="classmim_1_1Arr.html#a66c1c14cd2488a2588e47cdb185b26c4">mim::Arr</a>, <a class="el" href="classmim_1_1Pi.html#a1a09e0736bfad41c305c11bcfe0238f8">mim::Pi</a>, <a class="el" href="classmim_1_1Reform.html#a43b00cbf3eef3aadf37bc630a36be3a0">mim::Reform</a>, <a class="el" href="classmim_1_1Rule.html#ade30e45e26f5be1fe141982cc4363273">mim::Rule</a>, and <a class="el" href="classmim_1_1Sigma.html#a9268c73d0fc902431c99e4913ac4fbfe">mim::Sigma</a>.</p>
@@ -4294,7 +4294,7 @@ template&lt;class F&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>zonks all <code class="param">defs</code> and retuns a new <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>. </p>
+<p>zonks all <code class="param">defs</code> and returns a new <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>. </p>
 
 <p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00042">42</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
