@@ -1,15 +1,33 @@
-# Coding & Debugging {#coding}
+# Contributing & Debugging {#coding}
 
 [TOC]
 
-This page collects information that is useful while working on MimIR itself, but is not directly part of the API.
+Start here if you want to work on MimIR itself.
+This page is the contributor entry point for build, test, style, and debugging workflow.
+For API and IR usage patterns, continue with the [Developer Guide](@ref dev).
+For subsystem-specific material, see [Plugins](@ref plugins), [Rewriting](@ref rewriting), and [Phases](@ref phases).
 
-## Building {#building}
+## Contributor Quick Start {#building}
 
 If you do not have a [GitHub account set up with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh), you can clone MimIR via HTTPS instead:
 
 ```sh
 git clone --recursive https://github.com/AnyDSL/MimIR.git
+```
+
+For day-to-day development, a good default is:
+
+```sh
+cmake -S . -B build -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON
+cmake --build build -j$(nproc)
+```
+
+Useful follow-up commands are:
+
+```sh
+cmake --build build --target lit
+ctest --test-dir build --output-on-failure
+pre-commit run --all-files
 ```
 
 The following CMake switches are available:
@@ -25,13 +43,6 @@ The following CMake switches are available:
 | `MIM_LIT_TIMEOUT`       | `<timeout_in_sec>`                       | `20`         | Timeout for `lit` tests. <br> (requires `BUILD_TESTING=ON`).                                    |
 | `MIM_LIT_WITH_VALGRIND` | `ON` \| `OFF`                            | `OFF`        | If `ON`, run the Mim CLI in the `lit` tests under Valgrind. <br> (requires `BUILD_TESTING=ON`). |
 
-A typical contributor build with tests and examples enabled looks like this:
-
-```sh
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON
-cmake --build build -j$(nproc)
-```
-
 ### Dependencies
 
 In addition to the provided [submodules](https://github.com/AnyDSL/MimIR/tree/master/external), you will need:
@@ -45,6 +56,8 @@ So you can simply hand the emitted `*.ll` file to your system's LLVM toolchain.
 Strictly speaking, LLVM is not required unless you want to continue from emitted LLVM IR.
 
 ## Coding Style
+
+### C++ Style
 
 Use the following coding conventions:
 
@@ -65,31 +78,7 @@ Use the following coding conventions:
   2. `protected`
   3. `private`
 
-### CMake Style
-
-- Use 4 spaces for one indentation level.
-- Prefer lowercase CMake commands such as `set`, `if`, `foreach`, and `add_subdirectory`.
-- Use uppercase names for project-specific CMake variables and options such as `MIM_BUILD_DOCS` or `MIM_PLUGINS`.
-- For longer CMake calls, put arguments on separate indented lines instead of cramming everything onto one line.
-
-### Markdown Style
-
-- Use one sentence per line in Markdown prose.
-- Do not hard-wrap Markdown text to 80 columns.
-
-<!-- Keep the invisible separator in `M⁠im` so Doxygen does not link this heading to the `mim` namespace in the TOC. -->
-### M⁠im Coding Style
-
-- Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing Mim code and tests.
-- Prefer 4 spaces for one indentation level, but aligned layouts may use different spacing when that makes the code clearer.
-- Write callable declarations with parenthesized domain groups, for example `lam foo (x: X) (y: Y): Z = ...`.
-- Separate curried domain groups with a space, and write the return type as `): Z`, with no space before `:` and one space after it.
-- Use spaces after commas in lists and groups: `a, b, c`.
-- Write binder ascriptions as `x: X`, but keep literal and bottom ascriptions tight: `23:T`.
-- Use `snake_case` for value-level names such as functions, lambdas, binders, local lets, and pattern-bound values.
-- Use `CamelCase` for type-level names such as types and type constructors.
-
-### Doxygen Style
+#### Doxygen Style
 
 - Use `///` for Doxygen comments.
 - Use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments.
@@ -136,6 +125,31 @@ private:
 
 } // namespace mim
 ```
+
+
+### CMake Style
+
+- Use 4 spaces for one indentation level.
+- Prefer lowercase CMake commands such as `set`, `if`, `foreach`, and `add_subdirectory`.
+- Use uppercase names for project-specific CMake variables and options such as `MIM_BUILD_DOCS` or `MIM_PLUGINS`.
+- For longer CMake calls, put arguments on separate indented lines instead of cramming everything onto one line.
+
+### Markdown Style
+
+- Use one sentence per line in Markdown prose.
+- Do not hard-wrap Markdown text to 80 columns.
+
+<!-- Keep the invisible separator in `M⁠im` so Doxygen does not link this heading to the `mim` namespace in the TOC. -->
+### M⁠im Coding Style
+
+- Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing Mim code and tests.
+- Prefer 4 spaces for one indentation level, but aligned layouts may use different spacing when that makes the code clearer.
+- Write callable declarations with parenthesized domain groups, for example `lam foo (x: X) (y: Y): Z = ...`.
+- Separate curried domain groups with a space, and write the return type as `): Z`, with no space before `:` and one space after it.
+- Use spaces after commas in lists and groups: `a, b, c`.
+- Write binder ascriptions as `x: X`, but keep literal and bottom ascriptions tight: `23:T`.
+- Use `snake_case` for value-level names such as functions, lambdas, binders, local lets, and pattern-bound values.
+- Use `CamelCase` for type-level names such as types and type constructors.
 
 ## Debugging
 
@@ -230,7 +244,7 @@ and then follow the instructions printed by Valgrind.
 
 ## Tests {#tests}
 
-### `lit` Tests
+### lit Tests
 
 Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) test suite with:
 

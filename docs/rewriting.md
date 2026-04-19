@@ -42,7 +42,7 @@ This matters whenever rewriting enters a context where some old node should mean
 Inner mappings shadow outer ones, and leaving the scope removes the temporary bindings again.
 This scoped structure is important for binder-sensitive rewrites and for transformations that temporarily substitute certain nodes while rebuilding a larger term.
 
-### Mutable Rewrites and Scoped Substitutions
+### Mutable Rewrites
 
 In practice, mutable rewrites and scoped substitutions go together.
 When a transformation may encounter recursion, cycles, or binder-introduced variables, the usual pattern is:
@@ -67,7 +67,7 @@ So the practical rule of thumb is:
 
 If a rewrite replaces an external mutable with a fresh one, preserve the root explicitly by calling [mim::Def::transfer_external](@ref mim::Def::transfer_external) or re-externalizing the replacement node.
 
-### Preserving Debug and Naming Metadata
+### Preserving Metadata
 
 Most rebuilds preserve debug metadata explicitly.
 The default [Rewriter](@ref mim::Rewriter) restores the old debug info with `new_def->set(old_def->dbg())`, and hand-written transformations commonly propagate names or add derived names with helpers such as [mim::Def::debug_suffix](@ref mim::Def::debug_suffix).
@@ -128,7 +128,7 @@ auto result = rw.rewrite(def);
 
 Conceptually, this rewrites only those parts of `def` whose free variables intersect the substituted variables.
 
-## Relationship Between Rewriter and VarRewriter
+## Rewriter vs. VarRewriter
 
 [`VarRewriter`](@ref mim::VarRewriter) is a specialization of [`Rewriter`](@ref mim::Rewriter):
 

@@ -267,6 +267,8 @@ This is convenient for analyses that reason about nesting, dominance-like struct
 
 ## Example: SCCP
 
+\include "examples/sccp.h"
+
 The provided [Sparse Conditional Constant Propagation (SCCP)](https://en.wikipedia.org/wiki/Sparse_conditional_constant_propagation) implementation is a good example of how phases are intended to be structured.
 Its overall architecture is:
 - an inner [`Analysis`](@ref mim::Analysis) computes propagation facts on the old world,
@@ -274,15 +276,10 @@ Its overall architecture is:
 
 @note The implementation does not only propagate constants but arbitrary expressions!
 
-### `sccp.h`
-
-\include "examples/sccp.h"
-
-### `sccp.cpp`
-
-\include "examples/sccp.cpp"
 
 ### What the Analysis Computes
+
+\include "examples/sccp.cpp"
 
 The SCCP analysis associates each lambda variable with a lattice value:
 - bottom: no useful information yet,

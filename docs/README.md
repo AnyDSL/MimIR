@@ -43,14 +43,14 @@ MimIR is well suited for DSL compilers, tensor compilers, automatic differentiat
 ```sh
 git clone --recursive git@github.com:AnyDSL/MimIR.git
 cd MimIR
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B build -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON
 cmake --build build -j$(nproc)
 ```
 
 ### 📦 Install (Optional)
 
 ```sh
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix
+cmake -S . -B build -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix
 cmake --build build -j$(nproc) --target install
 ```
 
