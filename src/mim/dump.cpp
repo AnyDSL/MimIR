@@ -102,7 +102,7 @@ bool is_atomic_app(const Def* def) {
     return false;
 }
 
-Prec my_prec(const Def* def) {
+Prec def2prec(const Def* def) {
     if (def->isa<Extract>()) return Prec::Extract;
     if (auto pi = def->isa<Pi>(); pi && !Pi::isa_cn(pi)) return Prec::Arrow;
     if (def->isa<App>() && !is_atomic_app(def)) return Prec::App;
@@ -112,7 +112,7 @@ Prec my_prec(const Def* def) {
 bool needs_parens(Prec parent, const Def* child, bool is_left) {
     if (!Inline(child)) return false;
 
-    auto child_prec = my_prec(child);
+    auto child_prec = def2prec(child);
     if (child_prec < parent) return true;
     if (child_prec > parent) return false;
 
@@ -131,7 +131,7 @@ std::ostream& dump_child(std::ostream& os, Prec parent, const Def* child, bool i
 
 std::ostream& dump_ascribed(std::ostream& os, const auto& value, const Def* type) {
     os << value << ':';
-    if (my_prec(type) == Prec::Lit) return print(os, "{}", type);
+    if (def2prec(type) == Prec::Lit) return print(os, "{}", type);
     return print(os, "({})", type);
 }
 
