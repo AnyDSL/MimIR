@@ -27,7 +27,7 @@ The generated files are:
 * `include/mim/plug/<plugin>/<plugin>.h`
 * `lit/<plugin>/const.mim`
 
-## Create a Standalone Third-Party Plugin
+## Create a Third-Party Plugin
 
 To create a self-contained third-party plugin repository in `extra/`, use:
 
@@ -46,6 +46,12 @@ This creates `extra/<plugin>/` with:
 
 In `--extra` mode, the script also initializes a new Git repository for the plugin.
 
+### Third-Party Plugin Discovery
+
+If you clone a plugin repository into `extra/`, MimIR picks it up automatically during configuration when the repository contains a `CMakeLists.txt` as a direct child of `extra/`.
+
+If the plugin repository also contains `lit/*.mim` tests, they are picked up automatically by the main `lit` target as well.
+
 ## Extract an Existing In-Tree Plugin
 
 To move an existing in-tree plugin into `extra/foobar`, use:
@@ -61,12 +67,6 @@ This moves:
 * `lit/<plugin>/` into `extra/<plugin>/lit/`
 
 It also rewrites the extracted `CMakeLists.txt` for out-of-tree use and removes the plugin from the in-tree plugin list so it is picked up through `extra/` instead.
-
-## Third-Party Plugin Discovery
-
-If you clone a plugin repository into `extra/`, MimIR picks it up automatically during configuration when the repository contains a `CMakeLists.txt` as a direct child of `extra/`.
-
-If the plugin repository also contains `lit/*.mim` tests, they are picked up automatically by the main `lit` target as well.
 
 ## Standalone Third-Party Builds
 
@@ -95,3 +95,18 @@ cmake .. -Dmim_DIR=<MIM_INSTALL_PREFIX>/lib/cmake/mim
 ```
 
 The authoritative reference for `add_mim_plugin` itself lives in [`cmake/Mim.cmake`](@ref add_mim_plugin_cmake).
+
+## Normalizers
+
+Normalizers usually obtain the owning [World](@ref mim::World) from one of their arguments, often `type->world()`, and then build the replacement directly in that world.
+Small normalizers are expected to be direct and side-effect free.
+
+That often leads to tiny functions of the form:
+
+```cpp
+const Def* normalize_const(const Def* type, const Def*, const Def* arg) {
+    auto& world = type->world();
+    return world.lit(world.type_idx(arg), 42);
+}
+```
+

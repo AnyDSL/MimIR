@@ -11,10 +11,11 @@ Let's jump straight into an example.
 \include "examples/hello.cpp"
 
 [Driver](@ref mim::Driver) is usually the first class you create.
-It owns a few global facilities such as [Flags](@ref mim::Flags) and the [Log](@ref mim::Log).
+It owns a few global facilities such as [Flags](@ref mim::Flags), the [Log](@ref mim::Log), and the current [World](@ref mim::World).
 In this example, the log is configured to write debug output to `std::cerr`; see also @ref clidebug.
+We then build an [AST](@ref mim::ast::AST) and a [mim::ast::Parser](@ref mim::ast::Parser) on top of that world.
 
-Next, we load the [compile](@ref compile) and [core](@ref core) plugins, which in turn load the [mem](@ref mem) plugin.
+Next, the parser loads the [compile](@ref compile) and [core](@ref core) plugins, which in turn load the [mem](@ref mem) plugin.
 A plugin consists of two parts:
 
 - a shared object (`.so`/`.dll`), and
@@ -22,10 +23,7 @@ A plugin consists of two parts:
 
 The shared object contains [passes](@ref mim::Pass), [normalizers](@ref mim::Axm::normalizer), and similar runtime components.
 The `.mim` file contains [axiom](@ref mim::Axm) declarations and links normalizers to their corresponding [axioms](@ref mim::Axm).
-
-To load a plugin, we create a [mim::ast::Parser](@ref mim::ast::Parser) and parse the `.mim` file.
-[mim::ast::Parser::plugin](@ref mim::ast::Parser::plugin) also loads the shared object.
-The [Driver](@ref mim::Driver) keeps track of all loaded plugins.
+Calling [mim::ast::Parser::plugin](@ref mim::ast::Parser::plugin) parses the `.mim` file and also loads the shared object, while the [Driver](@ref mim::Driver) keeps track of the resulting plugin state.
 
 Now we can build actual code.
 
@@ -74,6 +72,50 @@ MimIR distinguishes between two kinds of [Defs](@ref mim::Def): _immutables_ and
 | build ops first, then the actual node                                  | build the actual node first, then [set](@ref mim::Def::set) the ops                                                        |
 | [hash-consed](https://en.wikipedia.org/wiki/Hash_consing)              | each new instance is fresh                                                                                                 |
 | [Def::rebuild](@ref mim::Def::rebuild)                                 | [Def::stub](@ref mim::Def::stub)                                                                                           |
+
+### Immutables
+
+Immutables are usually constructed in one step with [World](@ref mim::World) factory methods.
+The usual pattern is: build all operands first, then create the immutable node with `w.app`, `w.tuple`, `w.pi`, `w.sigma`, and similar helpers.
+
+For ordinary applications, [mim::World::app](@ref mim::World::app) is the direct building block:
+
+```cpp
+auto f   = w.annex<mem::alloc>();
+auto app = w.app(w.app(f, {type, as}), mem);
+```
+
+Here, [mim::World::annex](@ref mim::World::annex) yields the raw axiom node itself.
+That is useful when you want to partially apply a curried annex, store it, inspect it, or build the application tree step by step from C++.
+
+If you want the full curried call in one go, prefer [mim::World::call](@ref mim::World::call):
+
+```cpp
+auto mem_t  = w.call<mem::M>(0);
+auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(w.type_i32()));
+```
+
+`w.call<Id>(...)` starts from `w.annex<Id>()` and completes the curried application for you, including implicit arguments.
+So the rule of thumb is:
+
+- use `w.annex<Id>()` when you need the annex itself or want manual staged application;
+- use `w.call<Id>(...)` when you want the fully applied operation directly.
+
+### Mutables
+
+Mutable binders are typically built in two phases.
+First, create the mutable node with a `mut_*` factory or a [stub](@ref mim::Def::stub).
+Then, obtain its variables and fill in the body via [mim::Def::set](@ref mim::Def::set):
+
+```cpp
+auto main = w.mut_fun({mem_t, w.type_i32(), argv_t}, {mem_t, w.type_i32()})->set("main");
+auto [mem, argc, argv, ret] = main->vars<4>();
+main->app(false, ret, {mem, argc});
+main->externalize();
+```
+
+Use [mim::Def::externalize](@ref mim::Def::externalize) for roots that must survive cleanup and whole-world rewrites.
+Top-level entry points, generated wrapper functions, and replacement nodes for former externals all follow this pattern.
 
 ## Matching IR
 
