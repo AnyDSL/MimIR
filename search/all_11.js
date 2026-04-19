@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['r_0',['R',['../structmim_1_1ast_1_1R.html',1,'mim::ast::R&lt; T &gt;'],['../structmim_1_1ast_1_1R.html#a6282a5f73cdf10901b719fc32327e1dc',1,'mim::ast::R::R()']]],
+  ['r_0',['R',['../structmim_1_1ast_1_1R.html',1,'mim::ast::R&lt; T &gt;'],['../structmim_1_1ast_1_1R.html#a6282a5f73cdf10901b719fc32327e1dc',1,'mim::ast::R::R()'],['../namespacemim_1_1ast.html#a40afde9d55a8a99e31dd10f4845b7bf4ae1e1d3d40573127e9ee0480caf1283d6',1,'mim::ast::R']]],
   ['r_1',['r',['../namespacemim_1_1plug_1_1math.html#aaf7502aae7bb9f2d1d1a1b56cc65f87aa4b43b0aee35624cd95b910189b3dc231',1,'mim::plug::math::r'],['../namespacemim_1_1plug_1_1vec.html#a03747184dd4c53d173ec208a448907dca4b43b0aee35624cd95b910189b3dc231',1,'mim::plug::vec::r']]],
   ['range_2',['Range',['../namespaceautomaton.html#aa7f4b5c4276e92cf0d3d5a53ea55d921',1,'automaton::Range'],['../dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017',1,'Range:&#160;dfa2matcher.cpp']]],
   ['range_3',['range',['../regex.html#autotoc_md296',1,'%regex.range'],['../structmim_1_1Elem.html#a58b7a2f6a3629ec7ba23e410a9ece7f9',1,'mim::Elem::range'],['../structmim_1_1ast_1_1R.html#a154b1fdb020d2b86282ac6340b53f41a',1,'mim::ast::R::range'],['../namespacemim_1_1plug_1_1regex.html#a64e05eb3efae975d47944dc127eede75',1,'mim::plug::regex::range']]],

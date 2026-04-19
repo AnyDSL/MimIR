@@ -177,6 +177,7 @@ var namespacemim =
     [ "w2f", "namespacemim.html#a2812faa6603be36aef320b6b3fb90767", null ],
     [ "w2s", "namespacemim.html#a92529c353d14b56a3c8470bdad2d770a", null ],
     [ "w2u", "namespacemim.html#ad0b148caad3b040f944f32bc4fa9a966", null ],
+    [ "Assoc", "namespacemim.html#a40afde9d55a8a99e31dd10f4845b7bf4", null ],
     [ "Dep", "namespacemim.html#a249738da6a953390b70691dd3fe7132b", [
       [ "None", "namespacemim.html#a249738da6a953390b70691dd3fe7132ba6adf97f83acf6453d4a6a4b1070f3754", null ],
       [ "Mut", "namespacemim.html#a249738da6a953390b70691dd3fe7132baebb87a770abac0e394d963d20ed574b7", null ],
@@ -229,6 +230,7 @@ var namespacemim =
       [ "Nat", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da07f2a27c6e5ee8afd08991e64dd5c136", null ],
       [ "Idx", "namespacemim.html#afb12dbffaaa27bca46f171517d96256da3c81cbbd361d97d7021798df6ff50939", null ]
     ] ],
+    [ "Prec", "namespacemim.html#afc6cb12ae859bd6554aebf244d2db28a", null ],
     [ "assert_emplace", "namespacemim.html#a217db174daa31eb9e4001c60c099a96f", null ],
     [ "assert_lookup", "namespacemim.html#af140486d32afbf3b0c29b21703baa0dc", null ],
     [ "binary_find", "namespacemim.html#a490bc82fced6d1222ca1e66d50e573a6", null ],
@@ -310,6 +312,7 @@ var namespacemim =
     [ "pop", "namespacemim.html#a759d95522e9e24e3e6030b51e02489a2", null ],
     [ "pop", "namespacemim.html#a0fa4d8ae744818bd552b43dc4c5fa947", null ],
     [ "post_order", "namespacemim.html#ada5cb760897eaa1e558552b65009fa67", null ],
+    [ "prec_assoc", "namespacemim.html#af537e552f07ed689e1d2df001cd1a35d", null ],
     [ "print", "namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83", null ],
     [ "print", "namespacemim.html#aa40aa81b4928c7e18a7aaaff1fd810fc", null ],
     [ "println", "namespacemim.html#ad059c5ef2a6d008a74c8bfb866acede1", null ],

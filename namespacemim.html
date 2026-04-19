@@ -114,6 +114,7 @@ $(function(){initNavTree('namespacemim.html','',''); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#concepts">Concepts</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">mim Namespace Reference</div></div>
@@ -391,6 +392,13 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ac72c144b58d202d61352e52698a65ebe" id="r_ac72c144b58d202d61352e52698a65ebe"><td class="memTemplParams" colspan="2">template&lt;class K&gt; </td></tr>
 <tr class="memitem:ac72c144b58d202d61352e52698a65ebe template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#ac72c144b58d202d61352e52698a65ebe">GIDNodeSet</a> = absl::node_hash_set&lt;K, <a class="el" href="structmim_1_1GIDHash.html">GIDHash</a>&lt;K&gt;&gt;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a40afde9d55a8a99e31dd10f4845b7bf4" id="r_a40afde9d55a8a99e31dd10f4845b7bf4"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4">Assoc</a> </td></tr>
+<tr class="memdesc:a40afde9d55a8a99e31dd10f4845b7bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associativity of an infix expression.  <a href="#a40afde9d55a8a99e31dd10f4845b7bf4">More...</a><br /></td></tr>
+<tr class="memitem:afc6cb12ae859bd6554aebf244d2db28a" id="r_afc6cb12ae859bd6554aebf244d2db28a"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> </td></tr>
+<tr class="memdesc:afc6cb12ae859bd6554aebf244d2db28a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expression precedences used by the parser and the dumper; ordered low to high.  <a href="#afc6cb12ae859bd6554aebf244d2db28a">More...</a><br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a60ee93398f76269a406c841b2bb2c306" id="r_a60ee93398f76269a406c841b2bb2c306"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a60ee93398f76269a406c841b2bb2c306">optimize</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;)</td></tr>
@@ -404,6 +412,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a31108855e962bd3bf8dbf912eb4349b0" id="r_a31108855e962bd3bf8dbf912eb4349b0"><td class="memItemLeft">std::tuple&lt; const <a class="el" href="classmim_1_1Var.html">Var</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> * &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a31108855e962bd3bf8dbf912eb4349b0">tuple_of_dict</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;world, <a class="el" href="#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a> &amp;v2v)</td></tr>
 <tr class="memitem:ada5cb760897eaa1e558552b65009fa67" id="r_ada5cb760897eaa1e558552b65009fa67"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="#ada5cb760897eaa1e558552b65009fa67">post_order</a> (const <a class="el" href="classmim_1_1Nest.html">Nest</a> &amp;nest, const <a class="el" href="classmim_1_1Nest_1_1Node.html">Nest::Node</a> *node, <a class="el" href="classmim_1_1Scheduler.html#af7c082b610d8b7515f90b6512148f72c">Scheduler::Schedule</a> &amp;res, <a class="el" href="#a9cef35a428a391739d168b05bad8dfb2">MutSet</a> &amp;done)</td></tr>
 <tr class="memitem:acc7b1158f83b80e637de1a63f56d514c" id="r_acc7b1158f83b80e637de1a63f56d514c"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="#acc7b1158f83b80e637de1a63f56d514c">flatten_umax</a> (<a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> &amp;ops, const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="memitem:af537e552f07ed689e1d2df001cd1a35d" id="r_af537e552f07ed689e1d2df001cd1a35d"><td class="memItemLeft">constexpr <a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4">Assoc</a>&#160;</td><td class="memItemRight"><a class="el" href="#af537e552f07ed689e1d2df001cd1a35d">prec_assoc</a> (<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> p)</td></tr>
+<tr class="memdesc:af537e552f07ed689e1d2df001cd1a35d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associativity of precedence level <code class="param">p</code>.  <br /></td></tr>
 <tr id="func-members-0" class="groupHeader"><td colspan="2"><div class="groupHeader">is_commutative/is_associative</div></td></tr>
 <tr class="memitem:a651a2dea89f330efd5ed961191620af8" id="r_a651a2dea89f330efd5ed961191620af8"><td class="memTemplParams" colspan="2">template&lt;class Id&gt; </td></tr>
 <tr class="memitem:a651a2dea89f330efd5ed961191620af8 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#a651a2dea89f330efd5ed961191620af8">is_commutative</a> (Id)</td></tr>
@@ -1760,6 +1770,32 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classint">int</a> 
 </div>
 </div>
 <a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
+<a id="a40afde9d55a8a99e31dd10f4845b7bf4" name="a40afde9d55a8a99e31dd10f4845b7bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40afde9d55a8a99e31dd10f4845b7bf4">&#9670;&#160;</a></span>Assoc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacemim_1_1ast.html#a40afde9d55a8a99e31dd10f4845b7bf4">mim::ast::Assoc</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Associativity of an infix expression. </p>
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00034">34</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
 <a id="a249738da6a953390b70691dd3fe7132b" name="a249738da6a953390b70691dd3fe7132b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a249738da6a953390b70691dd3fe7132b">&#9670;&#160;</a></span>Dep</h2>
 
@@ -1918,6 +1954,32 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classint">int</a> 
 </table>
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00112">112</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+</div>
+</div>
+<a id="afc6cb12ae859bd6554aebf244d2db28a" name="afc6cb12ae859bd6554aebf244d2db28a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc6cb12ae859bd6554aebf244d2db28a">&#9670;&#160;</a></span>Prec</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28a">mim::ast::Prec</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Expression precedences used by the parser and the dumper; ordered low to high. </p>
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00037">37</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -4147,7 +4209,7 @@ template&lt;class C, class K&gt; </div>
 <p>This will stream <code class="param">def</code> as an operand. </p>
 <p>This is usually <span class="tt">id(def)</span> unless it can be displayed Inline. </p>
 
-<p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00512">512</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00506">506</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
 
 </div>
 </div>
@@ -4352,6 +4414,35 @@ template&lt;class S&gt; </div>
 
 </div>
 </div>
+<a id="af537e552f07ed689e1d2df001cd1a35d" name="af537e552f07ed689e1d2df001cd1a35d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af537e552f07ed689e1d2df001cd1a35d">&#9670;&#160;</a></span>prec_assoc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4">Assoc</a> <a class="el" href="namespacemim_1_1ast.html#af537e552f07ed689e1d2df001cd1a35d">mim::ast::prec_assoc</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Associativity of precedence level <code class="param">p</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00044">44</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
 <a id="a299eaedf188f01c3d4634dd51dedcb83" name="a299eaedf188f01c3d4634dd51dedcb83"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a299eaedf188f01c3d4634dd51dedcb83">&#9670;&#160;</a></span>print() <span class="overload">[1/2]</span></h2>
 
@@ -4375,7 +4466,7 @@ template&lt;class S&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="print_8cpp_source.html#l00005">5</a> of file <a class="el" href="print_8cpp_source.html">print.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dbg_8cpp_source.html#l00015">mim::Error::ack()</a>, <a class="el" href="ll_8h_source.html#l00095">mim::ll::BB::assign()</a>, <a class="el" href="sexpr_8cpp_source.html#l00038">mim::sexpr::BB::assign()</a>, <a class="el" href="sexpr_8cpp_source.html#l00028">mim::sexpr::BB::body()</a>, <a class="el" href="ast_8cpp_source.html#l00052">mim::ast::AST::bootstrap()</a>, <a class="el" href="ll_8h_source.html#l00137">mim::ll::Emitter::declare()</a>, <a class="el" href="dump_8cpp_source.html#l00558">mim::World::dump()</a>, <a class="el" href="ll_8h_source.html#l00547">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="sexpr_8cpp_source.html#l00500">mim::sexpr::Emitter::emit_bb()</a>, <a class="el" href="sexpr_8cpp_source.html#l00428">mim::sexpr::Emitter::emit_cons()</a>, <a class="el" href="ll_8h_source.html#l00381">mim::ll::Emitter::emit_epilogue()</a>, <a class="el" href="sexpr_8cpp_source.html#l00298">mim::sexpr::Emitter::emit_head()</a>, <a class="el" href="ll_8h_source.html#l00301">mim::ll::Emitter::emit_imported()</a>, <a class="el" href="sexpr_8cpp_source.html#l00193">mim::sexpr::Emitter::emit_imported()</a>, <a class="el" href="sexpr_8cpp_source.html#l00224">mim::sexpr::Emitter::emit_lam()</a>, <a class="el" href="sexpr_8cpp_source.html#l00450">mim::sexpr::Emitter::emit_node()</a>, <a class="el" href="sexpr_8cpp_source.html#l00332">mim::sexpr::Emitter::emit_type()</a>, <a class="el" href="print_8h_source.html#l00199">errf()</a>, <a class="el" href="print_8h_source.html#l00171">error()</a>, <a class="el" href="ll_8h_source.html#l00335">mim::ll::Emitter::finalize()</a>, <a class="el" href="print_8h_source.html#l00163">fmt()</a>, <a class="el" href="log_8h_source.html#l00052">mim::Log::log()</a>, <a class="el" href="dbg_8h_source.html#l00030">mim::Error::Msg::operator&lt;&lt;</a>, <a class="el" href="print_8h_source.html#l00198">outf()</a>, <a class="el" href="ll_8h_source.html#l00315">mim::ll::Emitter::prepare()</a>, <a class="el" href="print_8h_source.html#l00097">print()</a>, <a class="el" href="print_8h_source.html#l00223">mim::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00157">println()</a>, <a class="el" href="stream_8cpp_source.html#l00057">mim::ast::AliasPtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00152">mim::ast::AppExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00114">mim::ast::ArrowExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00185">mim::ast::AxmDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00236">mim::ast::CDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00096">mim::ast::DeclExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00168">mim::ast::ExtractExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00077">mim::ast::IdExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00060">mim::ast::IdPtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00120">mim::ast::InjExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00173">mim::ast::InsertExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00212">mim::ast::LamDecl::Dom::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00219">mim::ast::LamDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00150">mim::ast::LamExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00202">mim::ast::LetDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00082">mim::ast::LitExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00124">mim::ast::MatchExpr::Arm::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00137">mim::ast::PiExpr::Dom::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00143">mim::ast::PiExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00080">mim::ast::PrimaryExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00206">mim::ast::RecDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00242">mim::ast::RuleDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00112">mim::ast::RuleExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00164">mim::ast::SeqExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00162">mim::ast::TupleExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00069">mim::ast::TuplePtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00111">mim::ast::TypeExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00118">mim::ast::UnionExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00177">mim::ast::UniqExpr::stream()</a>, <a class="el" href="ll_8h_source.html#l00101">mim::ll::BB::tail()</a>, and <a class="el" href="sexpr_8cpp_source.html#l00033">mim::sexpr::BB::tail()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dbg_8cpp_source.html#l00015">mim::Error::ack()</a>, <a class="el" href="ll_8h_source.html#l00095">mim::ll::BB::assign()</a>, <a class="el" href="sexpr_8cpp_source.html#l00038">mim::sexpr::BB::assign()</a>, <a class="el" href="sexpr_8cpp_source.html#l00028">mim::sexpr::BB::body()</a>, <a class="el" href="ast_8cpp_source.html#l00052">mim::ast::AST::bootstrap()</a>, <a class="el" href="ll_8h_source.html#l00137">mim::ll::Emitter::declare()</a>, <a class="el" href="dump_8cpp_source.html#l00552">mim::World::dump()</a>, <a class="el" href="ll_8h_source.html#l00547">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="sexpr_8cpp_source.html#l00500">mim::sexpr::Emitter::emit_bb()</a>, <a class="el" href="sexpr_8cpp_source.html#l00428">mim::sexpr::Emitter::emit_cons()</a>, <a class="el" href="ll_8h_source.html#l00381">mim::ll::Emitter::emit_epilogue()</a>, <a class="el" href="sexpr_8cpp_source.html#l00298">mim::sexpr::Emitter::emit_head()</a>, <a class="el" href="ll_8h_source.html#l00301">mim::ll::Emitter::emit_imported()</a>, <a class="el" href="sexpr_8cpp_source.html#l00193">mim::sexpr::Emitter::emit_imported()</a>, <a class="el" href="sexpr_8cpp_source.html#l00224">mim::sexpr::Emitter::emit_lam()</a>, <a class="el" href="sexpr_8cpp_source.html#l00450">mim::sexpr::Emitter::emit_node()</a>, <a class="el" href="sexpr_8cpp_source.html#l00332">mim::sexpr::Emitter::emit_type()</a>, <a class="el" href="print_8h_source.html#l00199">errf()</a>, <a class="el" href="print_8h_source.html#l00171">error()</a>, <a class="el" href="ll_8h_source.html#l00335">mim::ll::Emitter::finalize()</a>, <a class="el" href="print_8h_source.html#l00163">fmt()</a>, <a class="el" href="log_8h_source.html#l00052">mim::Log::log()</a>, <a class="el" href="dbg_8h_source.html#l00030">mim::Error::Msg::operator&lt;&lt;</a>, <a class="el" href="print_8h_source.html#l00198">outf()</a>, <a class="el" href="ll_8h_source.html#l00315">mim::ll::Emitter::prepare()</a>, <a class="el" href="print_8h_source.html#l00097">print()</a>, <a class="el" href="print_8h_source.html#l00223">mim::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00157">println()</a>, <a class="el" href="stream_8cpp_source.html#l00057">mim::ast::AliasPtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00152">mim::ast::AppExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00114">mim::ast::ArrowExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00185">mim::ast::AxmDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00236">mim::ast::CDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00096">mim::ast::DeclExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00168">mim::ast::ExtractExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00077">mim::ast::IdExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00060">mim::ast::IdPtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00120">mim::ast::InjExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00173">mim::ast::InsertExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00212">mim::ast::LamDecl::Dom::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00219">mim::ast::LamDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00150">mim::ast::LamExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00202">mim::ast::LetDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00082">mim::ast::LitExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00124">mim::ast::MatchExpr::Arm::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00137">mim::ast::PiExpr::Dom::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00143">mim::ast::PiExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00080">mim::ast::PrimaryExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00206">mim::ast::RecDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00242">mim::ast::RuleDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00112">mim::ast::RuleExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00164">mim::ast::SeqExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00162">mim::ast::TupleExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00069">mim::ast::TuplePtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00111">mim::ast::TypeExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00118">mim::ast::UnionExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00177">mim::ast::UniqExpr::stream()</a>, <a class="el" href="ll_8h_source.html#l00101">mim::ll::BB::tail()</a>, and <a class="el" href="sexpr_8cpp_source.html#l00033">mim::sexpr::BB::tail()</a>.</p>
 
 </div>
 </div>

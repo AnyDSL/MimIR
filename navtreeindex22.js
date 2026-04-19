@@ -1,15 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"namespacemim_1_1plug_1_1math.html#acad4db7382e2aa7eb1580c177148e4bbae05fe30750d3ea262a610d17ebc07019":[2,0,2,1,5,9,1],
-"namespacemim_1_1plug_1_1math.html#acb743982258e08d50f82c8b0dda5501a":[2,0,2,1,5,18],
-"namespacemim_1_1plug_1_1math.html#ad0d483b8c713d41e11fa417fd2c513df":[2,0,2,1,5,30],
-"namespacemim_1_1plug_1_1math.html#ad42e4b21a126c8e91af45fc2a790b4ac":[2,0,2,1,5,17],
-"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3":[2,0,2,1,5,7],
-"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a0ba64a0dea00947916dfb6a66866e1ca":[2,0,2,1,5,7,11],
-"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a0f39d0676cdb8854458f78af54c4f48b":[2,0,2,1,5,7,26],
-"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a271dc55f9c9a4c5e867ad093ca6a645a":[2,0,2,1,5,7,28],
-"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a2a0617accf8bb8625c43e2ffeb5b8d5b":[2,0,2,1,5,7,25],
-"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a2db95e8e1a9267b7a1188556b2013b33":[2,0,2,1,5,7,5],
 "namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a31f644026e4c96dee546c228a1894c68":[2,0,2,1,5,7,19],
 "namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a4eb31516a4986c34fa297e5e5f4045a9":[2,0,2,1,5,7,27],
 "namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a50ae450ddc870da88fe58ac89bb3ffb9":[2,0,2,1,5,7,14],
@@ -249,5 +239,15 @@ var NAVTREEINDEX22 =
 "namespacemim_1_1plug_1_1tensor.html#a7245629f6c91cd34c8faded6f401066d":[2,0,2,1,13,1],
 "namespacemim_1_1plug_1_1tensor.html#a7954b221c8c568ad0918b4397d796ad2":[2,0,2,1,13,9],
 "namespacemim_1_1plug_1_1tensor.html#a957e829a68eb9328e7aac6d47f0a4bfb":[2,0,2,1,13,14],
-"namespacemim_1_1plug_1_1tensor.html#a99f9f77a6b5be9770487e1f643c975d3":[2,0,2,1,13,13]
+"namespacemim_1_1plug_1_1tensor.html#a99f9f77a6b5be9770487e1f643c975d3":[2,0,2,1,13,13],
+"namespacemim_1_1plug_1_1tensor.html#a9f32ad37dd66f405ca71286aa92bfe07":[2,0,2,1,13,10],
+"namespacemim_1_1plug_1_1tensor.html#aa65540590ca3cd4db49358f365b8c8ea":[2,0,2,1,13,4],
+"namespacemim_1_1plug_1_1tensor.html#aaa0644a4e639f6682b0e95d95eb32c47":[2,0,2,1,13,11],
+"namespacemim_1_1plug_1_1tensor.html#aaf94ba28bba249a3e4d5c56b937fb97a":[2,0,2,1,13,2],
+"namespacemim_1_1plug_1_1tensor.html#ac1861d459b0ef51886b0d7ac6050ad6e":[2,0,2,1,13,3],
+"namespacemim_1_1plug_1_1tensor.html#ad8d4e9b960bda9c68eb671e4e988fb37":[2,0,2,1,13,6],
+"namespacemim_1_1plug_1_1tensor.html#ae6b419dcfc5dd70e2a31b28fd234a3f5":[2,0,2,1,13,7],
+"namespacemim_1_1plug_1_1tuple.html":[2,0,2,1,14],
+"namespacemim_1_1plug_1_1tuple.html#a12e1d6408db489bf216da5d9ec52aaae":[2,0,2,1,14,10],
+"namespacemim_1_1plug_1_1tuple.html#a135279856795948a173cceb114cb7dc2":[2,0,2,1,14,5]
 };

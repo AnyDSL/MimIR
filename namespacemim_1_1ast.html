@@ -112,6 +112,7 @@ $(function(){initNavTree('namespacemim_1_1ast.html','',''); });
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">mim::ast Namespace Reference</div></div>
@@ -212,12 +213,32 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a09214c0845d7829eb157e8700b238366" id="r_a09214c0845d7829eb157e8700b238366"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a09214c0845d7829eb157e8700b238366">Dbgs</a> = std::deque&lt;<a class="el" href="structmim_1_1Dbg.html">Dbg</a>&gt;</td></tr>
 <tr class="memitem:ac9fa7d53674c22f3b68cf03b08d905b3" id="r_ac9fa7d53674c22f3b68cf03b08d905b3"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#ac9fa7d53674c22f3b68cf03b08d905b3">Tag</a> = <a class="el" href="classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5">Tok::Tag</a></td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a40afde9d55a8a99e31dd10f4845b7bf4" id="r_a40afde9d55a8a99e31dd10f4845b7bf4"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4">Assoc</a> { <br />
+&#160;&#160;<a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4a8d9c307cb7f3c4a32822a51922d1ceaa">N</a>
+, <br />
+&#160;&#160;<a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4ad20caec3b48a1eef164cb4ca81ba2587">L</a>
+, <br />
+&#160;&#160;<a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4ae1e1d3d40573127e9ee0480caf1283d6">R</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a40afde9d55a8a99e31dd10f4845b7bf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associativity of an infix expression.  <a href="#a40afde9d55a8a99e31dd10f4845b7bf4">More...</a><br /></td></tr>
+<tr class="memitem:afc6cb12ae859bd6554aebf244d2db28a" id="r_afc6cb12ae859bd6554aebf244d2db28a"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> </td></tr>
+<tr class="memdesc:afc6cb12ae859bd6554aebf244d2db28a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expression precedences used by the parser and the dumper; ordered low to high.  <a href="#afc6cb12ae859bd6554aebf244d2db28a">More...</a><br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a5fe7be09bffcd1f540353919cc95ee07" id="r_a5fe7be09bffcd1f540353919cc95ee07"><td class="memItemLeft"><a class="el" href="classmim_1_1ast_1_1AST.html">AST</a>&#160;</td><td class="memItemRight"><a class="el" href="#a5fe7be09bffcd1f540353919cc95ee07">load_plugins</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;, <a class="el" href="namespacemim.html#a4d6e32c8985b06c92d46bf1c5fa7491a">View</a>&lt; Sym &gt;)</td></tr>
 <tr class="memitem:a96ed66bd50a2f73331220a2a9c2856b5" id="r_a96ed66bd50a2f73331220a2a9c2856b5"><td class="memItemLeft"><a class="el" href="classmim_1_1ast_1_1AST.html">AST</a>&#160;</td><td class="memItemRight"><a class="el" href="#a96ed66bd50a2f73331220a2a9c2856b5">load_plugins</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;w, <a class="el" href="namespacemim.html#a4d6e32c8985b06c92d46bf1c5fa7491a">View</a>&lt; std::string &gt; plugins)</td></tr>
 <tr class="memitem:af661ed47b30377f25191a96dd6e8b683" id="r_af661ed47b30377f25191a96dd6e8b683"><td class="memItemLeft"><a class="el" href="classmim_1_1ast_1_1AST.html">AST</a>&#160;</td><td class="memItemRight"><a class="el" href="#af661ed47b30377f25191a96dd6e8b683">load_plugins</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;w, Sym sym)</td></tr>
 <tr class="memitem:abae341d79d49646bf8f2c7177be146d0" id="r_abae341d79d49646bf8f2c7177be146d0"><td class="memItemLeft"><a class="el" href="classmim_1_1ast_1_1AST.html">AST</a>&#160;</td><td class="memItemRight"><a class="el" href="#abae341d79d49646bf8f2c7177be146d0">load_plugins</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;w, const std::string &amp;plugin)</td></tr>
+<tr class="memitem:af537e552f07ed689e1d2df001cd1a35d" id="r_af537e552f07ed689e1d2df001cd1a35d"><td class="memItemLeft">constexpr <a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4">Assoc</a>&#160;</td><td class="memItemRight"><a class="el" href="#af537e552f07ed689e1d2df001cd1a35d">prec_assoc</a> (<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> p)</td></tr>
+<tr class="memdesc:af537e552f07ed689e1d2df001cd1a35d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associativity of precedence level <code class="param">p</code>.  <br /></td></tr>
+<tr class="memitem:a50e9195843afe95df3aa715f91e1b32b" id="r_a50e9195843afe95df3aa715f91e1b32b"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#a50e9195843afe95df3aa715f91e1b32b">is_rassoc</a> (<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> p)</td></tr>
+<tr class="memitem:a1eb898857b7ca5ba98b77ffc52ada0b7" id="r_a1eb898857b7ca5ba98b77ffc52ada0b7"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#a1eb898857b7ca5ba98b77ffc52ada0b7">is_lassoc</a> (<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> p)</td></tr>
+<tr class="memitem:a73ea7269ed47d29b3408e6ec172f6890" id="r_a73ea7269ed47d29b3408e6ec172f6890"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#a73ea7269ed47d29b3408e6ec172f6890">should_reduce</a> (<a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> curr, <a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a> op)</td></tr>
+<tr class="memdesc:a73ea7269ed47d29b3408e6ec172f6890"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should a Pratt parser reduce when the current binding power is <code class="param">curr</code> and the infix operator has precedence <code class="param">op</code>?  <br /></td></tr>
 <tr id="func-members-0" class="groupHeader"><td colspan="2"><div class="groupHeader">std::ostream operator</div></td></tr>
 <tr class="memitem:ae8647f142657ffe401f0ca6f29c09b74" id="r_ae8647f142657ffe401f0ca6f29c09b74"><td class="memItemLeft">std::ostream &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ae8647f142657ffe401f0ca6f29c09b74">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="classmim_1_1ast_1_1Tok.html">Tok</a> tok)</td></tr>
 </table><table class="memberdecls">
@@ -370,7 +391,125 @@ template&lt;class T&gt; </div>
 
 </div>
 </div>
+<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
+<a id="a40afde9d55a8a99e31dd10f4845b7bf4" name="a40afde9d55a8a99e31dd10f4845b7bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40afde9d55a8a99e31dd10f4845b7bf4">&#9670;&#160;</a></span>Assoc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4">mim::ast::Assoc</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Associativity of an infix expression. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a40afde9d55a8a99e31dd10f4845b7bf4a8d9c307cb7f3c4a32822a51922d1ceaa" name="a40afde9d55a8a99e31dd10f4845b7bf4a8d9c307cb7f3c4a32822a51922d1ceaa"></a>N&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a40afde9d55a8a99e31dd10f4845b7bf4ad20caec3b48a1eef164cb4ca81ba2587" name="a40afde9d55a8a99e31dd10f4845b7bf4ad20caec3b48a1eef164cb4ca81ba2587"></a>L&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a40afde9d55a8a99e31dd10f4845b7bf4ae1e1d3d40573127e9ee0480caf1283d6" name="a40afde9d55a8a99e31dd10f4845b7bf4ae1e1d3d40573127e9ee0480caf1283d6"></a>R&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00034">34</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
+<a id="afc6cb12ae859bd6554aebf244d2db28a" name="afc6cb12ae859bd6554aebf244d2db28a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc6cb12ae859bd6554aebf244d2db28a">&#9670;&#160;</a></span>Prec</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">mim::ast::Prec</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Expression precedences used by the parser and the dumper; ordered low to high. </p>
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00037">37</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a1eb898857b7ca5ba98b77ffc52ada0b7" name="a1eb898857b7ca5ba98b77ffc52ada0b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1eb898857b7ca5ba98b77ffc52ada0b7">&#9670;&#160;</a></span>is_lassoc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mim::ast::is_lassoc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00054">54</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tok_8h_source.html#l00034">L</a>, and <a class="el" href="tok_8h_source.html#l00044">prec_assoc()</a>.</p>
+
+</div>
+</div>
+<a id="a50e9195843afe95df3aa715f91e1b32b" name="a50e9195843afe95df3aa715f91e1b32b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50e9195843afe95df3aa715f91e1b32b">&#9670;&#160;</a></span>is_rassoc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mim::ast::is_rassoc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00053">53</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tok_8h_source.html#l00044">prec_assoc()</a>, and <a class="el" href="tok_8h_source.html#l00034">R</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tok_8h_source.html#l00058">should_reduce()</a>.</p>
+
+</div>
+</div>
 <a id="a5fe7be09bffcd1f540353919cc95ee07" name="a5fe7be09bffcd1f540353919cc95ee07"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5fe7be09bffcd1f540353919cc95ee07">&#9670;&#160;</a></span>load_plugins() <span class="overload">[1/4]</span></h2>
 
@@ -394,7 +533,7 @@ template&lt;class T&gt; </div>
 
 <p class="reference">References <a class="el" href="flags_8h_source.html#l00016">mim::Flags::bootstrap</a>, <a class="el" href="world_8h_source.html#l00086">mim::World::driver()</a>, <a class="el" href="driver_8h_source.html#l00025">mim::Driver::flags()</a>, and <a class="el" href="driver_8cpp_source.html#l00071">mim::Driver::load()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8h_source.html#l01155">load_plugins()</a>, <a class="el" href="ast_8h_source.html#l01154">load_plugins()</a>, and <a class="el" href="ast_8h_source.html#l01151">load_plugins()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8h_source.html#l01139">load_plugins()</a>, <a class="el" href="ast_8h_source.html#l01138">load_plugins()</a>, and <a class="el" href="ast_8h_source.html#l01135">load_plugins()</a>.</p>
 
 </div>
 </div>
@@ -425,7 +564,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01155">1155</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01139">1139</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00192">load_plugins()</a>.</p>
 
@@ -458,7 +597,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01154">1154</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01138">1138</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00192">load_plugins()</a>.</p>
 
@@ -491,7 +630,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01151">1151</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l01135">1135</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
 <p class="reference">References <a class="el" href="ast_8cpp_source.html#l00192">load_plugins()</a>.</p>
 
@@ -517,6 +656,74 @@ template&lt;class T&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="tok_8cpp_source.html#l00030">30</a> of file <a class="el" href="tok_8cpp_source.html">tok.cpp</a>.</p>
+
+</div>
+</div>
+<a id="af537e552f07ed689e1d2df001cd1a35d" name="af537e552f07ed689e1d2df001cd1a35d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af537e552f07ed689e1d2df001cd1a35d">&#9670;&#160;</a></span>prec_assoc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a40afde9d55a8a99e31dd10f4845b7bf4">Assoc</a> mim::ast::prec_assoc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a></td>          <td class="paramname"><span class="paramname"><em>p</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Associativity of precedence level <code class="param">p</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00044">44</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tok_8h_source.html#l00038">CODE</a>, and <a class="el" href="tok_8h_source.html#l00019">MIM_PREC</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tok_8h_source.html#l00054">is_lassoc()</a>, and <a class="el" href="tok_8h_source.html#l00053">is_rassoc()</a>.</p>
+
+</div>
+</div>
+<a id="a73ea7269ed47d29b3408e6ec172f6890" name="a73ea7269ed47d29b3408e6ec172f6890"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73ea7269ed47d29b3408e6ec172f6890">&#9670;&#160;</a></span>should_reduce()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool mim::ast::should_reduce </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a></td>          <td class="paramname"><span class="paramname"><em>curr</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#afc6cb12ae859bd6554aebf244d2db28a">Prec</a></td>          <td class="paramname"><span class="paramname"><em>op</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Should a Pratt parser reduce when the current binding power is <code class="param">curr</code> and the infix operator has precedence <code class="param">op</code>? </p>
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00058">58</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tok_8h_source.html#l00053">is_rassoc()</a>.</p>
 
 </div>
 </div>
@@ -565,7 +772,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00062">62</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00110">110</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>

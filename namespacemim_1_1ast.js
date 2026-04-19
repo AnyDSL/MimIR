@@ -56,11 +56,21 @@ var namespacemim_1_1ast =
     [ "Ptr", "namespacemim_1_1ast.html#a1aaebd33278034584fdc66d510f4302b", null ],
     [ "Ptrs", "namespacemim_1_1ast.html#ac169bb8395ee9296baedc7c8cf4a5eed", null ],
     [ "Tag", "namespacemim_1_1ast.html#ac9fa7d53674c22f3b68cf03b08d905b3", null ],
+    [ "Assoc", "namespacemim_1_1ast.html#a40afde9d55a8a99e31dd10f4845b7bf4", [
+      [ "N", "namespacemim_1_1ast.html#a40afde9d55a8a99e31dd10f4845b7bf4a8d9c307cb7f3c4a32822a51922d1ceaa", null ],
+      [ "L", "namespacemim_1_1ast.html#a40afde9d55a8a99e31dd10f4845b7bf4ad20caec3b48a1eef164cb4ca81ba2587", null ],
+      [ "R", "namespacemim_1_1ast.html#a40afde9d55a8a99e31dd10f4845b7bf4ae1e1d3d40573127e9ee0480caf1283d6", null ]
+    ] ],
+    [ "Prec", "namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28a", null ],
+    [ "is_lassoc", "namespacemim_1_1ast.html#a1eb898857b7ca5ba98b77ffc52ada0b7", null ],
+    [ "is_rassoc", "namespacemim_1_1ast.html#a50e9195843afe95df3aa715f91e1b32b", null ],
     [ "load_plugins", "namespacemim_1_1ast.html#a5fe7be09bffcd1f540353919cc95ee07", null ],
     [ "load_plugins", "namespacemim_1_1ast.html#abae341d79d49646bf8f2c7177be146d0", null ],
     [ "load_plugins", "namespacemim_1_1ast.html#af661ed47b30377f25191a96dd6e8b683", null ],
     [ "load_plugins", "namespacemim_1_1ast.html#a96ed66bd50a2f73331220a2a9c2856b5", null ],
     [ "operator<<", "namespacemim_1_1ast.html#ae8647f142657ffe401f0ca6f29c09b74", null ],
+    [ "prec_assoc", "namespacemim_1_1ast.html#af537e552f07ed689e1d2df001cd1a35d", null ],
+    [ "should_reduce", "namespacemim_1_1ast.html#a73ea7269ed47d29b3408e6ec172f6890", null ],
     [ "Look_Ahead", "namespacemim_1_1ast.html#a34bc31636965297acb1596eeeb396b29", null ],
     [ "Num_Keys", "namespacemim_1_1ast.html#ab4b52dbb4d1c2d76a66fbdd47af52ea9", null ]
 ];

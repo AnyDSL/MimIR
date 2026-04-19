@@ -8,7 +8,7 @@ var searchData=
   ['phases_5',['phases',['../namespacemim_1_1plug_1_1compile.html#a2ad95a9bc25b51ef2cd839513ac0fc3a',1,'mim::plug::compile']]],
   ['pos_6',['Pos',['../classmim_1_1EtaExp.html#a5a75570e634c37f72097c1110ca23665',1,'mim::EtaExp']]],
   ['pow_7',['pow',['../namespacemim_1_1plug_1_1math.html#a638f19e14b30d84e0a57f808645bc3d7',1,'mim::plug::math']]],
-  ['prec_8',['Prec',['../classmim_1_1ast_1_1Expr.html#a6ee0b3a4cf6a24da00311505b7b1b01c',1,'mim::ast::Expr']]],
+  ['prec_8',['Prec',['../namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28a',1,'mim::ast::Prec'],['../namespacemim.html#afc6cb12ae859bd6554aebf244d2db28a',1,'mim::Prec']]],
   ['prefix_5fcleanup_5fphase_9',['prefix_cleanup_phase',['../namespacemim_1_1plug_1_1compile.html#a59a120a3490b97cdacbae844d3dd2b23',1,'mim::plug::compile']]],
   ['prepend_10',['prepend',['../namespacemim_1_1plug_1_1tuple.html#ac27303d7e38479898972453b4e58f1f2',1,'mim::plug::tuple']]],
   ['prod_11',['prod',['../namespacemim_1_1plug_1_1matrix.html#a83d01fd34deff3e8ddae753c596038fc',1,'mim::plug::matrix']]],

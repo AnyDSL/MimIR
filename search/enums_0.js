@@ -20,5 +20,6 @@ var searchData=
   ['any_17',['any',['../namespacemim_1_1plug_1_1regex.html#a9e88c3311ac4201abeacb94102dcee49',1,'mim::plug::regex']]],
   ['append_18',['append',['../namespacemim_1_1plug_1_1tuple.html#aedc9c99286296674c67cba716067592d',1,'mim::plug::tuple']]],
   ['arith_19',['arith',['../namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686',1,'mim::plug::math']]],
-  ['attr_20',['attr',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8c',1,'mim::plug::clos']]]
+  ['assoc_20',['Assoc',['../namespacemim_1_1ast.html#a40afde9d55a8a99e31dd10f4845b7bf4',1,'mim::ast::Assoc'],['../namespacemim.html#a40afde9d55a8a99e31dd10f4845b7bf4',1,'mim::Assoc']]],
+  ['attr_21',['attr',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8c',1,'mim::plug::clos']]]
 ];
