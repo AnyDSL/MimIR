@@ -35,7 +35,7 @@ public:
         (tab_++).println(os_, "digraph {{");
         tab_.println(os_, "ordering=out;");
         tab_.println(os_, "splines=false;");
-        tab_.println(os_, "node [shape=box,style=filled];");
+        tab_.println(os_, "node [shape=box,style=filled,fontname=\"monospace\"];");
     }
 
     void epilogue() { (--tab_).println(os_, "}}"); }
@@ -53,7 +53,7 @@ public:
             if (def == root_)
                 os_ << "style=\"filled,diagonals,bold\"";
             else
-                os_ << "style=\"filled,diagonals\"";
+                os_ << "style=\"filled,diagonals\",penwidth=2";
         else if (def == root_)
             os_ << "style=\"filled,bold\"";
         label(def) << ',';
@@ -69,7 +69,7 @@ public:
                 if (op->isa<Lit>() || op->isa<Axm>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
                     print(os_, "fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n");
                 else
-                    print(os_, "];\n");
+                    print(os_, "fontcolor=\"#00000000\"];\n");
             }
         }
 
@@ -80,16 +80,23 @@ public:
     }
 
     std::ostream& label(const Def* def) {
-        print(os_, "label=<{}<br/>", def->unique_name());
+        os_ << "label=<";
         if (auto lit = def->isa<Lit>())
             lit->stream(os_, 0);
         else
             os_ << def->node_name();
-        return os_ << '>';
+        print(os_, "<br/><font point-size=\"9\">{}</font>", escape(def->unique_name()));
+        return os_ << ">";
     }
 
     std::ostream& color(const Def* def) {
-        return print(os_, "fillcolor=\"{} 0.5 0.75\"", float(def->node()) / float(Num_Nodes));
+        float hue;
+        if      (def->is_form())  hue = 0.60f; // blue   - type formation
+        else if (def->is_intro()) hue = 0.35f; // green  - introduction
+        else if (def->is_elim())  hue = 0.00f; // red    - elimination
+        else if (def->is_meta())  hue = 0.15f; // yellow - universe/meta
+        else                      hue = 0.80f; // purple - Hole
+        return print(os_, "fillcolor=\"{} 0.5 0.75\"", hue);
     }
 
     std::ostream& tooltip(const Def* def) {
@@ -97,7 +104,6 @@ public:
 
         auto loc  = escape(def->loc());
         auto type = escape(def->type());
-        escape(loc);
         print(os_, "tooltip=\"");
         print(os_, "<b>expr:</b> {}{}", def, NL);
         print(os_, "<b>type:</b> {}{}", type, NL);
@@ -190,8 +196,11 @@ void Nest::Node::dot(Tab tab, std::ostream& os) const {
     for (auto sibl : sibl_deps())
         tab.println(os, "\"{}\":s -> \"{}\":s [style=dashed,constraint=false,splines=true]", name(), sibl->name());
 
-    auto rec = is_mutually_recursive() ? "rec*" : (is_directly_recursive() ? "rec" : "");
-    tab.println(os, "\"{}\" [label=\"{} {} {}\",tooltip=\"{}\"]", name(), rec, name(), loop_depth(), s);
+    auto rec  = is_mutually_recursive() ? "rec*" : (is_directly_recursive() ? "rec" : "");
+    auto html = "<b>" + name() + "</b>";
+    if (*rec) html += "<br/><i>"s + rec + "</i>";
+    html += "<br/><font point-size=\"8\">depth " + std::to_string(loop_depth()) + "</font>";
+    tab.println(os, "\"{}\" [label=<{}>,tooltip=\"{}\"]", name(), html, s);
     for (auto child : children().nodes()) {
         tab.println(os, "\"{}\" -> \"{}\" [splines=false]", name(), child->name());
         child->dot(tab, os);
