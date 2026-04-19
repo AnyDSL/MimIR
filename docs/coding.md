@@ -241,6 +241,12 @@ cd lit
 ../scripts/probe.sh foo.mim
 ```
 
+To generate a one-line reproducer for the current checkout and a specific `lit` failure, use:
+
+```sh
+./scripts/make_lit_error.sh foo.mim
+```
+
 ### Triggering Breakpoints from the Command Line
 
 You can tell `mim` to trigger a breakpoint when certain events happen:
@@ -284,6 +290,12 @@ It can also be useful to turn assertion failures into debugger breakpoints:
 
 ```sh
 ./mim-gtest --gtest_break_on_failure
+```
+
+To generate a one-line reproducer for the current checkout and a specific GoogleTest failure, use:
+
+```sh
+./scripts/make_gtest_error.sh "mim.World.dependent_extract"
 ```
 
 ## Syntax Highlighting
