@@ -34,11 +34,10 @@ public:
     void prologue() {
         (tab_++).println(os_, "digraph {{");
         tab_.println(os_, "ordering=out;");
-        tab_.println(os_, "splines=false;");
+        tab_.println(os_, "splines=ortho;");
         tab_.println(os_, "newrank=true;");
-        tab_.println(os_, "concenrate=true;");
-        tab_.println(os_, "nodesep=0.4;");
-        tab_.println(os_, "ranksep=0.6;");
+        tab_.println(os_, "nodesep=0.6;");
+        tab_.println(os_, "ranksep=1.2;");
         tab_.println(os_, "node [shape=box,style=filled,fontname=\"monospace\"];");
     }
 
