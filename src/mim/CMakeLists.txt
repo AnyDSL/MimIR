@@ -1,53 +1,3 @@
-#---- Cargo integration ----
-
-set(CARGO_WIN_DEBUG_CONFIG ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/eqsat-rs/.cargo/windbg-config.toml)
-set(CARGO_MANIFEST ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/eqsat-rs/Cargo.toml)
-set(CARGO_TARGET_DIR ${CMAKE_SOURCE_DIR}/build/include/eqsat-rs)
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(CARGO_BUILD_TYPE "")
-  set(EQSAT_LIB_DIR debug)
-else()
-  set(CARGO_BUILD_TYPE --release)
-  set(EQSAT_LIB_DIR release)
-endif()
-
-if(WIN32)
-  set(CARGO_EXTRA --config ${CARGO_WIN_DEBUG_CONFIG})
-endif()
-
-set(EQSAT_SOURCE_FILE ${CMAKE_SOURCE_DIR}/src/mim/plug/eqsat/eqsat-rs/src/lib.rs)
-set(EQSAT_BRIDGE_CPP ${CARGO_TARGET_DIR}/cxxbridge/eqsat-rs/src/ffi.rs.cc)
-set(EQSAT_LIB ${CARGO_TARGET_DIR}/${EQSAT_LIB_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}eqsat${CMAKE_STATIC_LIBRARY_SUFFIX})
-
-add_custom_command(
-    OUTPUT ${EQSAT_BRIDGE_CPP} ${EQSAT_LIB}
-    COMMAND cargo build ${CARGO_BUILD_TYPE} ${CARGO_EXTRA} --manifest-path ${CARGO_MANIFEST} --target-dir ${CARGO_TARGET_DIR}
-    DEPENDS ${EQSAT_SOURCE_FILE}
-    USES_TERMINAL
-    COMMENT "Running cargo..."
-)
-
-add_custom_target(eqsat ALL
-    DEPENDS ${EQSAT_BRIDGE_CPP} ${EQSAT_LIB}
-)
-
-add_library(eqsat-lib STATIC IMPORTED)
-if(WIN32)
-  target_link_libraries(eqsat-lib
-      INTERFACE
-          ws2_32
-          userenv
-          advapi32
-          ntdll
-          bcrypt
-  )
-endif()
-set_target_properties(eqsat-lib PROPERTIES IMPORTED_LOCATION ${EQSAT_LIB})
-add_dependencies(eqsat eqsat-lib)
-
-#---------------------------
-
 add_library(libmim SHARED)
 target_sources(libmim
     PRIVATE
@@ -119,7 +69,7 @@ target_include_directories(libmim
 )
 target_link_libraries(libmim
     PUBLIC
-        eqsat-lib
+        mimir-eqsat
         absl::btree
         absl::fixed_array
         absl::inlined_vector
