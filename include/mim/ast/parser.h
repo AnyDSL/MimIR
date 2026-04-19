@@ -80,9 +80,9 @@ private:
 
     /// @name parse exprs
     ///@{
-    Ptr<Expr> parse_expr(std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
+    Ptr<Expr> parse_expr(std::string_view ctxt, Prec = Prec::Bot);
     Ptr<Expr> parse_primary_expr(std::string_view ctxt);
-    Ptr<Expr> parse_infix_expr(Tracker, Ptr<Expr>&& lhs, Expr::Prec = Expr::Prec::Bot);
+    Ptr<Expr> parse_infix_expr(Tracker, Ptr<Expr>&& lhs, Prec = Prec::Bot);
     ///@}
 
     /// @name parse primary exprs
@@ -116,8 +116,8 @@ private:
     static bool is_paren_style(int style) { return (style & Style_Bit) == Paren_Style; }
     static bool is_brket_style(int style) { return (style & Style_Bit) == Brckt_Style; }
     static bool is_implicit(int style) { return (style & Implicit); }
-    Ptr<Ptrn> parse_ptrn(int style, std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
-    Ptr<Ptrn> parse_ptrn_(int style, std::string_view ctxt, Expr::Prec = Expr::Prec::Bot);
+    Ptr<Ptrn> parse_ptrn(int style, std::string_view ctxt, Prec = Prec::Bot);
+    Ptr<Ptrn> parse_ptrn_(int style, std::string_view ctxt, Prec = Prec::Bot);
     Ptr<TuplePtrn> parse_tuple_ptrn(int style);
     ///@}
 

@@ -5,6 +5,7 @@
 #include "mim/driver.h"
 #include "mim/nest.h"
 
+#include "mim/ast/prec.h"
 #include "mim/ast/tok.h"
 #include "mim/util/util.h"
 
@@ -78,13 +79,9 @@ private:
     friend std::ostream& operator<<(std::ostream&, Inline);
 };
 
-enum class MyPrec {
-    Bot,
-    Arrow,
-    App,
-    Extract,
-    Atom,
-};
+using ast::Assoc;
+using ast::Prec;
+using ast::prec_assoc;
 
 bool is_atomic_app(const Def* def) {
     if (auto app = def->isa<App>()) {
@@ -106,38 +103,36 @@ bool is_atomic_app(const Def* def) {
     return false;
 }
 
-MyPrec my_prec(const Def* def) {
-    if (def->isa<Extract>()) return MyPrec::Extract;
-    if (auto pi = def->isa<Pi>(); pi && !Pi::isa_cn(pi)) return MyPrec::Arrow;
-    if (def->isa<App>() && !is_atomic_app(def)) return MyPrec::App;
-    return MyPrec::Atom;
+Prec my_prec(const Def* def) {
+    if (def->isa<Extract>()) return Prec::Extract;
+    if (auto pi = def->isa<Pi>(); pi && !Pi::isa_cn(pi)) return Prec::Arrow;
+    if (def->isa<App>() && !is_atomic_app(def)) return Prec::App;
+    return Prec::Lit;
 }
 
-bool needs_parens(MyPrec parent, const Def* child, bool is_left) {
+bool needs_parens(Prec parent, const Def* child, bool is_left) {
     if (!Inline(child)) return false;
 
     auto child_prec = my_prec(child);
     if (child_prec < parent) return true;
     if (child_prec > parent) return false;
 
-    switch (parent) {
-        case MyPrec::Arrow: return is_left;
-        case MyPrec::App:
-        case MyPrec::Extract: return !is_left;
-        case MyPrec::Atom:
-        case MyPrec::Bot: return false;
+    switch (prec_assoc(parent)) {
+        case Assoc::Right: return is_left;
+        case Assoc::Left:  return !is_left;
+        case Assoc::None:  return false;
     }
     fe::unreachable();
 }
 
-std::ostream& dump_child(std::ostream& os, MyPrec parent, const Def* child, bool is_left) {
+std::ostream& dump_child(std::ostream& os, Prec parent, const Def* child, bool is_left) {
     if (needs_parens(parent, child, is_left)) return print(os, "({})", child);
     return print(os, "{}", child);
 }
 
 std::ostream& dump_ascribed(std::ostream& os, const auto& value, const Def* type) {
     os << value << ':';
-    if (my_prec(type) == MyPrec::Atom) return print(os, "{}", type);
+    if (my_prec(type) == Prec::Lit) return print(os, "{}", type);
     return print(os, "({})", type);
 }
 
@@ -148,11 +143,11 @@ std::ostream& dump_pi_dom(std::ostream& os, const Pi* pi) {
 
     if (mut && mut->var()) {
         os << l << mut->var() << ": ";
-        dump_child(os, MyPrec::Arrow, pi->dom(), true);
+        dump_child(os, Prec::Arrow, pi->dom(), true);
         return os << r;
     }
 
-    return dump_child(os, MyPrec::Arrow, pi->dom(), true);
+    return dump_child(os, Prec::Arrow, pi->dom(), true);
 }
 
 std::ostream& operator<<(std::ostream& os, Inline u) {
@@ -172,7 +167,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
             if (level == 1) return print(os, "□");
         }
         os << "Type ";
-        return dump_child(os, MyPrec::App, type->level(), false);
+        return dump_child(os, Prec::App, type->level(), false);
     } else if (u->isa<Nat>()) {
         return print(os, "Nat");
     } else if (u->isa<Idx>()) {
@@ -226,9 +221,9 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return dump_ascribed(os, lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
-        dump_child(os, MyPrec::Extract, ex->tuple(), true);
+        dump_child(os, Prec::Extract, ex->tuple(), true);
         os << '#';
-        return dump_child(os, MyPrec::Extract, ex->index(), false);
+        return dump_child(os, Prec::Extract, ex->index(), false);
     } else if (auto var = u->isa<Var>()) {
         return print(os, "{}", var->unique_name());
     } else if (auto pi = u->isa<Pi>()) {
@@ -238,7 +233,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         }
         dump_pi_dom(os, pi);
         os << ' ' << arw << ' ';
-        return dump_child(os, MyPrec::Arrow, pi->codom(), false);
+        return dump_child(os, Prec::Arrow, pi->codom(), false);
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
@@ -256,9 +251,9 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
                 // clang-format on
             }
         }
-        dump_child(os, MyPrec::App, app->callee(), true);
+        dump_child(os, Prec::App, app->callee(), true);
         os << ' ';
-        return dump_child(os, MyPrec::App, app->arg(), false);
+        return dump_child(os, Prec::App, app->arg(), false);
     } else if (auto sigma = u->isa<Sigma>()) {
         if (auto mut = sigma->isa_mut<Sigma>(); mut && mut->var()) {
             size_t i = 0;

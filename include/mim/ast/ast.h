@@ -9,6 +9,7 @@
 
 #include "mim/driver.h"
 
+#include "mim/ast/prec.h"
 #include "mim/ast/tok.h"
 
 namespace mim::ast {
@@ -134,23 +135,7 @@ protected:
         : Node(loc) {}
 
 public:
-    /// @name Precedence
-    ///@{
-    enum class Prec {
-        Err,
-        Bot,
-        Where,
-        Arrow,
-        Pi,
-        Inj,
-        App,
-        Union,
-        Extract,
-        Lit,
-    };
-
-    static constexpr bool is_rassoc(Prec p) { return p == Prec::Arrow; }
-    ///@}
+    using Prec = ast::Prec; ///< Backward-compatible alias; prefer the free-standing ast::Prec.
 
     const Def* emit(Emitter&) const;
     virtual void bind(Scopes&) const = 0;
