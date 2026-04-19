@@ -21,7 +21,7 @@ MimIR provides:
 - **SSA without dominance**: a scopeless IR for higher-order programs based on free-variable nesting
 - A **sea-of-nodes** style IR with on-the-fly normalization, type checking, and partial evaluation
 
-Well suited for DSL compilers, tensor compilers, automatic differentiation, regex engines, and other systems that need high-performance code from high-level abstractions.
+MimIR is well suited for DSL compilers, tensor compilers, automatic differentiation, regex engines, and other systems that need high-performance code from high-level abstractions.
 
 ## 💡 Why MimIR?
 
@@ -47,14 +47,15 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j$(nproc)
 ```
 
-### 📦 Install (optional)
+### 📦 Install (Optional)
 
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix
-cmake --build build -j$(nproc) -t install
+cmake --build build -j$(nproc) --target install
 ```
 
-See the full [🛠️ build options](@ref building) in the docs.
+See the full [build options](@ref building) in the docs.
+For the rest of the documentation, start with the [Command-Line Reference](@ref cli), [Developer Guide](@ref dev), [Language Reference](@ref langref), [Plugin Guide](@ref plugins), [Phase Guide](@ref phases), and [Rewriting Guide](@ref rewriting).
 
 ## 🔥 Key Innovations
 
@@ -100,7 +101,7 @@ MimIR uses free-variable nesting:
 - Loop peeling and unrolling reduce to simple β-reduction
 - Mutual recursion and higher-order functions are handled naturally
 
-## 🐉 Naming: MimIR vs Mim
+## 🐉 Naming: MimIR vs. Mim
 
 **MimIR** is a recursive acronym for _MimIR is my Intermediate Representation_.
 

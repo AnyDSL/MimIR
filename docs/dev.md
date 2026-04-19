@@ -35,7 +35,7 @@ In this example, we construct the `main` function.
 In direct style, its type looks like this:
 
 ```mim
-[%mem.M 0, I32, %mem.Ptr (I32, 0)] -> [%mem.M 0, I32]]
+[%mem.M 0, I32, %mem.Ptr (I32, 0)] -> [%mem.M 0, I32]
 ```
 
 In [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style), the same type looks like this:
@@ -47,7 +47,7 @@ Cn [%mem.M 0, I32, %mem.Ptr (I32, 0), Cn [%mem.M 0, I32]]
 The type `%mem.M 0` tracks side effects.
 Since `main` introduces [variables](@ref mim::Var), we must create it as a **mutable** [lambda](@ref mim::Lam); see @ref mut.
 
-The body of `main` is simple: it invokes its `ret`urn continuation with `mem` and `argc`:
+The body of `main` is simple: it invokes the return continuation `ret` with `mem` and `argc`:
 
 ```mim
 ret (mem, argc)
@@ -274,7 +274,6 @@ You can match [axioms](@ref mim::Axm) via
 - [mim::Axm::as](@ref mim::Axm::as), which behaves like a checked `static_cast` and asserts in `Debug` builds if the match fails.
 
 The result is a `mim::Axm::isa<Id, D>`, which wraps a `const D*`.
-`Id` is the `enum` of the corresponding `tag` of the [matched Axiom](@ref anatomy).
 Here, `Id` is the enum corresponding to the [matched axiom tag](@ref anatomy), and `D` is usually an [App](@ref mim::App), because most [axioms](@ref mim::Axm) inhabit a [function type](@ref mim::Pi).
 In other cases, it may wrap a plain [Def](@ref mim::Def) or some other subclass.
 
@@ -293,8 +292,7 @@ whereas
 
 does **not** match.
 
-- mim::App::arg() is `(mem, ptr)` and
-  In this example, the wrapped [App](@ref mim::App) refers to the final application, so:
+In this example, the wrapped [App](@ref mim::App) refers to the final application, so:
 
 - [mim::App::arg](@ref mim::App::arg) is `(mem, ptr)`, and
 - [mim::App::callee](@ref mim::App::callee) is `%%mem.load (T, as)`.
@@ -356,9 +354,9 @@ The following table summarizes the most important axiom matches:
 
 | `dynamic_cast` <br> `static_cast`                           | Returns                                                                            | If `def` is a ...               |
 | ----------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------- |
-| `isa<mem::load>(def)` <br> `as<mem::load>(def)`             | `mim::Axm::isa<`[mem::load](@ref mim::plug::mem.load)`,` [App](@ref mim::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
-| `isa<core::wrap>(def)` <br> `as<core::wrap>(def)`           | `mim::Axm::isa<`[core::wrap](@ref mim::plug::mem.load)`,` [App](@ref mim::App)`>` | `%%core.wrap.??? s m (a, b)`    |
-| `isa(core::wrap::add, def)` <br> `as(core::wrap::add, def)` | `mim::Axm::isa<`[core::wrap](@ref mim::plug::mem.load)`,` [App](@ref mim::App)`>` | `%%core.wrap.add s m (a, b)`    |
+| `isa<mem::load>(def)` <br> `as<mem::load>(def)`             | [`mim::Axm::isa`](@ref mim::Axm::isa) specialized for [`mem::load`](@ref mim::plug::mem::load) and [`App`](@ref mim::App)  | final curried `%%mem.load` application      |
+| `isa<core::wrap>(def)` <br> `as<core::wrap>(def)`           | [`mim::Axm::isa`](@ref mim::Axm::isa) specialized for [`core::wrap`](@ref mim::plug::core::wrap) and [`App`](@ref mim::App) | final curried `%%core.wrap` application     |
+| `isa(core::wrap::add, def)` <br> `as(core::wrap::add, def)` | [`mim::Axm::isa`](@ref mim::Axm::isa) specialized for [`core::wrap`](@ref mim::plug::core::wrap) and [`App`](@ref mim::App) | final curried `%%core.wrap.add` application |
 
 ## Working with Indices
 
@@ -440,4 +438,4 @@ void visit(DefSet& done, const Def* def) {
 }
 ```
 
-In practice, though, you will usually want to use the [phase](phases.md) infrastructure instead.
+In practice, though, you will usually want to use the [phase](@ref phases) infrastructure instead.

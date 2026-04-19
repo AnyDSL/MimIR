@@ -4,6 +4,7 @@
 
 Check out the [demo](@ref demo) plugin for a minimal example.
 It uses our custom [`add_mim_plugin`](@ref add_mim_plugin_cmake) CMake command.
+A plugin generally consists of two halves with the same name: a `<plugin>.mim` file that declares the public annexes and a shared library that registers the runtime behavior.
 
 Plugin names may only contain letters, digits, and underscores, and are limited to 8 characters.
 
@@ -20,12 +21,12 @@ The script also supports `-h`/`--help` and prints the same usage text when calle
 By default, the script creates an in-tree plugin and updates `src/mim/plug/CMakeLists.txt`.
 The generated files are:
 
-* `src/mim/plug/<plugin>/<plugin>.mim`
-* `src/mim/plug/<plugin>/CMakeLists.txt`
-* `src/mim/plug/<plugin>/<plugin>.cpp`
-* `src/mim/plug/<plugin>/normalizers.cpp`
-* `include/mim/plug/<plugin>/<plugin>.h`
-* `lit/<plugin>/const.mim`
+- `src/mim/plug/<plugin>/<plugin>.mim`
+- `src/mim/plug/<plugin>/CMakeLists.txt`
+- `src/mim/plug/<plugin>/<plugin>.cpp`
+- `src/mim/plug/<plugin>/normalizers.cpp`
+- `include/mim/plug/<plugin>/<plugin>.h`
+- `lit/<plugin>/const.mim`
 
 ## Create a Third-Party Plugin
 
@@ -37,12 +38,12 @@ To create a self-contained third-party plugin repository in `extra/`, use:
 
 This creates `extra/<plugin>/` with:
 
-* `<plugin>.mim`
-* `CMakeLists.txt`
-* `src/<plugin>.cpp`
-* `src/normalizers.cpp`
-* `include/mim/plug/<plugin>/<plugin>.h`
-* `lit/const.mim`
+- `<plugin>.mim`
+- `CMakeLists.txt`
+- `src/<plugin>.cpp`
+- `src/normalizers.cpp`
+- `include/mim/plug/<plugin>/<plugin>.h`
+- `lit/const.mim`
 
 In `--extra` mode, the script also initializes a new Git repository for the plugin.
 
@@ -62,9 +63,9 @@ To move an existing in-tree plugin into `extra/foobar`, use:
 
 This moves:
 
-* `src/mim/plug/<plugin>/` into `extra/<plugin>/`
-* `include/mim/plug/<plugin>/` into `extra/<plugin>/include/...`
-* `lit/<plugin>/` into `extra/<plugin>/lit/`
+- `src/mim/plug/<plugin>/` into `extra/<plugin>/`
+- `include/mim/plug/<plugin>/` into `extra/<plugin>/include/...`
+- `lit/<plugin>/` into `extra/<plugin>/lit/`
 
 It also rewrites the extracted `CMakeLists.txt` for out-of-tree use and removes the plugin from the in-tree plugin list so it is picked up through `extra/` instead.
 
@@ -109,4 +110,3 @@ const Def* normalize_const(const Def* type, const Def*, const Def* arg) {
     return world.lit(world.type_idx(arg), 42);
 }
 ```
-

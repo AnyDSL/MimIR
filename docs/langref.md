@@ -29,7 +29,7 @@ The grammar refers to *primary terminals*.
 Some tokens also have ASCII-only spellings, called *secondary terminals*, that denote the same lexical token.
 For example, `λ` and `lm` are lexically equivalent.
 
-#### Primary terminals
+#### Primary Terminals
 
 ```text
 ( ) [ ] { } ⦃ ⦄
@@ -41,7 +41,7 @@ For example, `λ` and `lm` are lexically equivalent.
 
 `%` is only part of annex names and is not a standalone token.
 
-#### Secondary terminals
+#### Secondary Terminals
 
 ```text
 < > << >>
@@ -80,7 +80,7 @@ i32  = 0x1'0000'0000
 i64  = 0
 ```
 
-#### Pattern terminals
+#### Pattern Terminals
 
 The following terminals are defined by lexical patterns.
 
@@ -128,7 +128,7 @@ Character and string literals only admit ASCII payload characters plus the escap
 
 ## Comments
 
-Mim supports `/* ... */` multi-line comments, `// ...` single-line comments, and `/// ...` comments that are forwarded to generated [Markdown](https://www.doxygen.nl/manual/markdown.html) [output](@ref cli).
+Mim supports `/* ... */` multi-line comments, `// ...` single-line comments, and `/// ...` comments that are forwarded to generated [Markdown](https://www.doxygen.nl/manual/markdown.html) output.
 `/* ... */` comments are not nested.
 For `///` comments, a line of the form `/// text` contributes `text` directly to the Markdown output.
 Other `///` forms are emitted verbatim inside a [fenced code block](https://www.doxygen.nl/manual/markdown.html#md_fenced).
@@ -230,7 +230,7 @@ There are two pattern families.
 - Both forms distribute the annotated type over the listed names.
 - Patterns may be wrapped in an alias pattern.
 
-```rust
+```mim
 let (a, b, c) as abc = (1, 2, 3);
 ```
 
@@ -242,7 +242,7 @@ This binds `a`, `b`, and `c` to the tuple elements and `abc` to the whole tuple.
 
 This is especially useful for state-threading style code:
 
-```rust
+```mim
 let (mem, ptr) = %mem.alloc (I32, 0) mem;
 let mem        = %mem.store (mem, ptr, 23:I32);
 let (mem, val) = %mem.load (mem, ptr);
@@ -250,7 +250,7 @@ let (mem, val) = %mem.load (mem, ptr);
 
 ### Expressions {#expr}
 
-#### Kinds and builtin types
+#### Kinds and Builtin Types
 
 ```ebnf
 e   ::= "Univ"
@@ -272,7 +272,7 @@ e   ::= "Univ"
 - `Bool` abbreviates `Idx i1`.
 - `Rule e` is the type of rewrite rules over the meta type `e`.
 
-#### Literals and basic forms
+#### Literals and Basic Forms
 
 ```ebnf
 e   ::= L (":" e)?
@@ -294,7 +294,7 @@ e   ::= L (":" e)?
 - `{ d* e }` is a declaration expression whose result is the final expression `e`.
 - `⦃ e ⦄` is a singleton type.
 
-#### Functions and continuations
+#### Functions and Continuations
 
 ```ebnf
 e   ::= e "→" e
@@ -316,7 +316,7 @@ e   ::= e "→" e
 - `e @ e` passes an explicit implicit argument.
 - `ret p = callee $ arg; body` binds the result of a continuation-style call and continues with `body`.
 
-#### Products, sequences, unions, and matching
+#### Products, Sequences, Unions, and Matching
 
 ```ebnf
 e   ::= "[" ... "]"
@@ -345,7 +345,7 @@ arity ::= e
 - `e inj t` injects a value into a union type.
 - `match e with | p => e | ...` eliminates a union value.
 
-#### Local declaration blocks
+#### Local Declaration Blocks
 
 ```ebnf
 e   ::= e "where" d* "end"
@@ -372,7 +372,7 @@ The current parser uses the following precedence, from strongest to weakest bind
 - `inj` and `→` associate right-to-left.
 - `where` is the loosest surface operator.
 
-## Summary: Functions and types
+## Summary: Functions and Types
 
 Mim uses different surface syntax for declarations, expressions, and types:
 
@@ -387,7 +387,7 @@ fun           fn           Fn
 
 The following declarations are equivalent:
 
-```rust
+```mim
 lam f(T: *)((x y: T), return: T → ⊥)@ff: ⊥ = return x;
 con f(T: *)((x y: T), return: Cn T)        = return x;
 fun f(T: *) (x y: T): T                    = return x;
@@ -400,7 +400,7 @@ Partial-evaluation filters default to `tt`, except for `con`, `cn`, `fun`, and `
 The following expressions are equivalent.
 Because they are bound by `let`, they behave like the declarations above:
 
-```rust
+```mim
 let f =  λ (T: *) ((x y: T), return: T → ⊥)@ff: ⊥ = return x;
 let f = lm (T: *) ((x y: T), return: T → ⊥)   : ⊥ = return x;
 let f = cn (T: *) ((x y: T), return: Cn T)        = return x;
@@ -411,16 +411,16 @@ let f = fn (T: *)  (x y: T): T                    = return x;
 
 The following applications of `f` are equivalent:
 
-```rust
+```mim
 f Nat ((23, 42), cn res: Nat = use(res))
 ret res = f Nat $ (23, 42); use(res)
 ```
 
-### Function types
+### Function Types
 
 The following types are equivalent and describe the type of `f` above:
 
-```rust
+```mim
 [T: *] →    [[T, T], T → ⊥] → ⊥
 [T: *] → Cn [[T, T], Cn T]
 [T: *] → Fn  [T, T] → T
@@ -440,20 +440,20 @@ As a consequence, `_` may appear repeatedly in the same scope without conflict, 
 
 Annex names live in a separate global namespace.
 
-### Field names of sigmas
+### Field Names of Sigmas
 
 Named elements of mutable sigma types are available for extracts and inserts.
 @note These names take precedence over ordinary lexical names.
 In the example below, `i` refers to the field name of `X`, not the `let`-bound variable:
 
-```rust
+```mim
 let i = 1_2;
 [i: Nat, j: Nat]::X → f X#i;
 ```
 
 Use parentheses to force the variable interpretation:
 
-```rust
+```mim
 let i = 1_2;
 [i: Nat, j: Nat]::X → f X#(i);
 ```

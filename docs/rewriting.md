@@ -4,6 +4,7 @@
 
 In MimIR, rewriting means rebuilding an IR graph, usually into a target [`World`](@ref mim::World), while preserving sharing and handling mutable nodes correctly.
 The rewriting infrastructure is used for tasks like copying IR between worlds, rebuilding terms after substitutions, and reconstructing terms after local changes.
+It is also the foundation of several [phase](@ref phases) families.
 
 ## Rewriter {#rewriter}
 
@@ -127,7 +128,7 @@ auto result = rw.rewrite(def);
 
 Conceptually, this rewrites only those parts of `def` whose free variables intersect the substituted variables.
 
-## Relationship between both
+## Relationship Between Rewriter and VarRewriter
 
 [`VarRewriter`](@ref mim::VarRewriter) is a specialization of [`Rewriter`](@ref mim::Rewriter):
 

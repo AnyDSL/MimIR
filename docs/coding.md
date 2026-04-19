@@ -25,6 +25,13 @@ The following CMake switches are available:
 | `MIM_LIT_TIMEOUT`       | `<timeout_in_sec>`                       | `20`         | Timeout for `lit` tests. <br> (requires `BUILD_TESTING=ON`).                                    |
 | `MIM_LIT_WITH_VALGRIND` | `ON` \| `OFF`                            | `OFF`        | If `ON`, run the Mim CLI in the `lit` tests under Valgrind. <br> (requires `BUILD_TESTING=ON`). |
 
+A typical contributor build with tests and examples enabled looks like this:
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON
+cmake --build build -j$(nproc)
+```
+
 ### Dependencies
 
 In addition to the provided [submodules](https://github.com/AnyDSL/MimIR/tree/master/external), you will need:
@@ -70,6 +77,7 @@ Use the following coding conventions:
 - Use one sentence per line in Markdown prose.
 - Do not hard-wrap Markdown text to 80 columns.
 
+<!-- Keep the invisible separator in `M⁠im` so Doxygen does not link this heading to the `mim` namespace in the TOC. -->
 ### M⁠im Coding Style
 
 - Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing Mim code and tests.
@@ -212,10 +220,10 @@ catch throw
 
 If you run into memory-related problems, it can be useful to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
 
-Launch the program like this:
+Launch the test binary like this:
 
 ```sh
-valgrind --vgdb=yes --vgdb-error=0 mim-gtest
+valgrind --vgdb=yes --vgdb-error=0 build/bin/mim-gtest
 ```
 
 and then follow the instructions printed by Valgrind.
@@ -227,7 +235,7 @@ and then follow the instructions printed by Valgrind.
 Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) test suite with:
 
 ```sh
-cmake --build build -t lit
+cmake --build build --target lit
 ```
 
 You can also invoke the `lit` tests manually and filter for a specific test:
@@ -250,7 +258,7 @@ To generate a one-line reproducer for the current checkout and a specific `lit` 
 ./scripts/make_lit_error.sh foo.mim
 ```
 
-### Triggering Breakpoints from the Command Line
+### Triggering Breakpoints
 
 You can tell `mim` to trigger a breakpoint when certain events happen:
 
@@ -264,35 +272,35 @@ See the [Command-Line Reference](@ref cli) for the full list of flags.
 
 ### GoogleTest
 
-Run the [GoogleTest](https://google.github.io/googletest/) unit tests from the `build` directory with:
+Run the [GoogleTest](https://google.github.io/googletest/) unit tests with:
 
 ```sh
-ctest
+ctest --test-dir build --output-on-failure
 ```
 
 You can additionally enable [Valgrind](https://valgrind.org/) via:
 
 ```sh
-ctest -T memcheck
+ctest --test-dir build -T memcheck --output-on-failure
 ```
 
 During debugging, you will usually want to run only a specific test case.
 You can [filter](https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests) tests like this:
 
 ```sh
-./mim-gtest --gtest_filter="*Loc*"
+build/bin/mim-gtest --gtest_filter="*Loc*"
 ```
 
 This command lists all available tests:
 
 ```sh
-./mim-gtest --gtest_list_tests
+build/bin/mim-gtest --gtest_list_tests
 ```
 
 It can also be useful to turn assertion failures into debugger breakpoints:
 
 ```sh
-./mim-gtest --gtest_break_on_failure
+build/bin/mim-gtest --gtest_break_on_failure
 ```
 
 To generate a one-line reproducer for the current checkout and a specific GoogleTest failure, use:
