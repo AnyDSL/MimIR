@@ -115,7 +115,7 @@ $(function(){initNavTree('langref.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md35">Notation </a>
+    <a href="#autotoc_md37">Notation </a>
   </li>
   <li class="level1">
     <a href="#lex">Lexical Structure </a>
@@ -124,23 +124,23 @@ $(function(){initNavTree('langref.html','',''); });
         <a href="#terminals">Terminals </a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md36">Primary terminals </a>
+            <a href="#autotoc_md38">Primary terminals </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md37">Secondary terminals </a>
+            <a href="#autotoc_md39">Secondary terminals </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md38">Keywords </a>
+            <a href="#autotoc_md40">Keywords </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md39">Pattern terminals </a>
+            <a href="#autotoc_md41">Pattern terminals </a>
           </li>
         </ul>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md40">Comments </a>
+    <a href="#autotoc_md42">Comments </a>
   </li>
   <li class="level1">
     <a href="#grammar">Grammar </a>
@@ -158,62 +158,62 @@ $(function(){initNavTree('langref.html','',''); });
         <a href="#expr">Expressions </a>
         <ul>
           <li class="level3">
-            <a href="#autotoc_md41">Kinds and builtin types </a>
+            <a href="#autotoc_md43">Kinds and builtin types </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md42">Literals and basic forms </a>
+            <a href="#autotoc_md44">Literals and basic forms </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md43">Functions and continuations </a>
+            <a href="#autotoc_md45">Functions and continuations </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md44">Products, sequences, unions, and matching </a>
+            <a href="#autotoc_md46">Products, sequences, unions, and matching </a>
           </li>
           <li class="level3">
-            <a href="#autotoc_md45">Local declaration blocks </a>
+            <a href="#autotoc_md47">Local declaration blocks </a>
           </li>
         </ul>
       </li>
       <li class="level2">
-        <a href="#autotoc_md46">Precedence </a>
+        <a href="#autotoc_md48">Precedence </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md47">Summary: Functions and types </a>
+    <a href="#autotoc_md49">Summary: Functions and types </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md48">Declarations </a>
+        <a href="#autotoc_md50">Declarations </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md49">Expressions </a>
+        <a href="#autotoc_md51">Expressions </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md50">Applications </a>
+        <a href="#autotoc_md52">Applications </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md51">Function types </a>
+        <a href="#autotoc_md53">Function types </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md52">Scoping </a>
+    <a href="#autotoc_md54">Scoping </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md53">Underscore </a>
+        <a href="#autotoc_md55">Underscore </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md54">Annex </a>
+        <a href="#autotoc_md56">Annex </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md55">Field names of sigmas </a>
+        <a href="#autotoc_md57">Field names of sigmas </a>
       </li>
     </ul>
   </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2langref"></a></p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md35"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
 Notation</h1>
 <p>This document uses a lightweight <a href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a>-style notation.</p>
 <div class="fragment"><div class="line">&quot;a&quot;        literal terminal token a</div>
@@ -230,7 +230,7 @@ Lexical Structure</h1>
 <h2 class="doxsection"><a class="anchor" id="terminals"></a>
 Terminals</h2>
 <p>The grammar refers to <em>primary terminals</em>. Some tokens also have ASCII-only spellings, called <em>secondary terminals</em>, that denote the same lexical token. For example, <span class="tt">λ</span> and <span class="tt">lm</span> are lexically equivalent.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md36"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
 Primary terminals</h3>
 <div class="fragment"><div class="line">( ) [ ] { } ⦃ ⦄</div>
 <div class="line">‹ › « »</div>
@@ -238,12 +238,12 @@ Primary terminals</h3>
 <div class="line">= , ; . : @ $ # | ∪</div>
 <div class="line">&lt;eof&gt;</div>
 </div><!-- fragment --><p><span class="tt">%</span> is only part of annex names and is not a standalone token.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md37"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
 Secondary terminals</h3>
 <div class="fragment"><div class="line">&lt; &gt; &lt;&lt; &gt;&gt;</div>
 <div class="line">-&gt; bot top lm insert</div>
 </div><!-- fragment --><p><span class="tt">⟨</span>, <span class="tt">⟩</span>, <span class="tt">⟪</span>, and <span class="tt">⟫</span> may be used as alternatives for <span class="tt">‹</span>, <span class="tt">›</span>, <span class="tt">«</span>, and <span class="tt">»</span>.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
 Keywords</h3>
 <div class="fragment"><div class="line">Bool Cn Fn I1 I8 I16 I32 I64 Idx Nat Rule Type Univ</div>
 <div class="line">and as axm ccon cfun cn con end extern ff fn fun</div>
@@ -265,7 +265,7 @@ Keywords</h3>
 <div class="line">i16  = 0x1&#39;0000</div>
 <div class="line">i32  = 0x1&#39;0000&#39;0000</div>
 <div class="line">i64  = 0</div>
-</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
+</div><!-- fragment --><h3 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
 Pattern terminals</h3>
 <p>The following terminals are defined by lexical patterns.</p>
 <div class="fragment"><div class="line">I      ::= sym</div>
@@ -301,7 +301,7 @@ Pattern terminals</h3>
 <div class="line">sym    ::= [_a-zA-Z] [._0-9a-zA-Z]*</div>
 <div class="line">esc    ::= one of: \&#39; \&quot; \0 \a \\ \b \f \n \r \t \v</div>
 </div><!-- fragment --><p>Character and string literals only admit ASCII payload characters plus the escapes listed above.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
 Comments</h1>
 <p><a class="el" href="namespaceMim.html">Mim</a> supports <span class="tt">/* ... */</span> multi-line comments, <span class="tt">// ...</span> single-line comments, and <span class="tt">/// ...</span> comments that are forwarded to generated <a href="https://www.doxygen.nl/manual/markdown.html">Markdown</a> <a class="el" href="cli.html" title="Command-Line Reference">output</a>. <span class="tt">/* ... */</span> comments are not nested. For <span class="tt">///</span> comments, a line of the form <span class="tt">/// text</span> contributes <span class="tt">text</span> directly to the Markdown output. Other <span class="tt">///</span> forms are emitted verbatim inside a <a href="https://www.doxygen.nl/manual/markdown.html#md_fenced">fenced code block</a>.</p>
 <h1 class="doxsection"><a class="anchor" id="grammar"></a>
@@ -396,7 +396,7 @@ Patterns</h2>
 <div class="line">let (mem, val) = %mem.load (mem, ptr);</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="expr"></a>
 Expressions</h2>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
 Kinds and builtin types</h3>
 <div class="fragment"><div class="line">e   ::= &quot;Univ&quot;</div>
 <div class="line">     |  &quot;Type&quot; e</div>
@@ -416,7 +416,7 @@ Kinds and builtin types</h3>
 <li><span class="tt">Bool</span> abbreviates <span class="tt">Idx i1</span>.</li>
 <li><span class="tt">Rule e</span> is the type of rewrite rules over the meta type <span class="tt">e</span>.</li>
 </ul>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
 Literals and basic forms</h3>
 <div class="fragment"><div class="line">e   ::= L (&quot;:&quot; e)?</div>
 <div class="line">     |  X_n</div>
@@ -436,7 +436,7 @@ Literals and basic forms</h3>
 <li><span class="tt">{ d* e }</span> is a declaration expression whose result is the final expression <span class="tt">e</span>.</li>
 <li><span class="tt">⦃ e ⦄</span> is a singleton type.</li>
 </ul>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
 Functions and continuations</h3>
 <div class="fragment"><div class="line">e   ::= e &quot;→&quot; e</div>
 <div class="line">     |  b &quot;→&quot; e</div>
@@ -456,7 +456,7 @@ Functions and continuations</h3>
 <li><span class="tt">e @ e</span> passes an explicit implicit argument.</li>
 <li><span class="tt">ret p = callee $ arg; body</span> binds the result of a continuation-style call and continues with <span class="tt">body</span>.</li>
 </ul>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md46"></a>
 Products, sequences, unions, and matching</h3>
 <div class="fragment"><div class="line">e   ::= &quot;[&quot; ... &quot;]&quot;</div>
 <div class="line">     |  &quot;(&quot; (e (&quot;,&quot; e)* &quot;,&quot;?)? &quot;)&quot;</div>
@@ -483,11 +483,11 @@ Products, sequences, unions, and matching</h3>
 <li><span class="tt">e inj t</span> injects a value into a union type.</li>
 <li><span class="tt">match e with | p =&gt; e | ...</span> eliminates a union value.</li>
 </ul>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
 Local declaration blocks</h3>
 <div class="fragment"><div class="line">e   ::= e &quot;where&quot; d* &quot;end&quot;</div>
 </div><!-- fragment --><p><span class="tt">where</span> attaches a local declaration block to an already parsed expression. <span class="tt">where</span> blocks bind more weakly than the other infix expression forms.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md46"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
 Precedence</h2>
 <p>The current parser uses the following precedence, from strongest to weakest binding:</p>
 <div class="fragment"><div class="line">1.  L : e                  literal and token-local type ascription</div>
@@ -502,48 +502,48 @@ Precedence</h2>
 <li><span class="tt">inj</span> and <span class="tt">→</span> associate right-to-left.</li>
 <li><span class="tt">where</span> is the loosest surface operator.</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md49"></a>
 Summary: Functions and types</h1>
 <p><a class="el" href="namespaceMim.html">Mim</a> uses different surface syntax for declarations, expressions, and types:</p>
 <div class="fragment"><div class="line">Declaration   Expression   Type</div>
 <div class="line">lam           λ / lm       -&gt;</div>
 <div class="line">con           cn           Cn</div>
 <div class="line">fun           fn           Fn</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md50"></a>
 Declarations</h2>
 <p>The following declarations are equivalent:</p>
 <div class="fragment"><div class="line">lam f(T: *)((x y: T), return: T → ⊥)@ff: ⊥ = return x;</div>
 <div class="line">con f(T: *)((x y: T), return: Cn T)        = return x;</div>
 <div class="line">fun f(T: *) (x y: T): T                    = return x;</div>
 </div><!-- fragment --><p>Partial-evaluation filters default to <span class="tt">tt</span>, except for <span class="tt">con</span>, <span class="tt">cn</span>, <span class="tt">fun</span>, and <span class="tt">fn</span>.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md49"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md51"></a>
 Expressions</h2>
 <p>The following expressions are equivalent. Because they are bound by <span class="tt">let</span>, they behave like the declarations above:</p>
 <div class="fragment"><div class="line">let f =  λ (T: *) ((x y: T), return: T → ⊥)@ff: ⊥ = return x;</div>
 <div class="line">let f = lm (T: *) ((x y: T), return: T → ⊥)   : ⊥ = return x;</div>
 <div class="line">let f = cn (T: *) ((x y: T), return: Cn T)        = return x;</div>
 <div class="line">let f = fn (T: *)  (x y: T): T                    = return x;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md50"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md52"></a>
 Applications</h2>
 <p>The following applications of <span class="tt">f</span> are equivalent:</p>
 <div class="fragment"><div class="line">f Nat ((23, 42), cn res: Nat = use(res))</div>
 <div class="line">ret res = f Nat $ (23, 42); use(res)</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md51"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md53"></a>
 Function types</h2>
 <p>The following types are equivalent and describe the type of <span class="tt">f</span> above:</p>
 <div class="fragment"><div class="line">[T: *] →    [[T, T], T → ⊥] → ⊥</div>
 <div class="line">[T: *] → Cn [[T, T], Cn T]</div>
 <div class="line">[T: *] → Fn  [T, T] → T</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md52"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md54"></a>
 Scoping</h1>
 <p><a class="el" href="namespaceMim.html">Mim</a> uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope">lexical scoping</a>. Unless noted otherwise, all names live in the same namespace.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md53"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md55"></a>
 Underscore</h2>
 <p>The symbol <span class="tt">_</span> is special: it never binds an entity. As a consequence, <span class="tt">_</span> may appear repeatedly in the same scope without conflict, but any use of <span class="tt">_</span> as a reference is a scoping error.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md54"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md56"></a>
 Annex</h2>
 <p>Annex names live in a separate global namespace.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md55"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md57"></a>
 Field names of sigmas</h2>
 <p>Named elements of mutable sigma types are available for extracts and inserts. </p><dl class="section note"><dt>Note</dt><dd>These names take precedence over ordinary lexical names. In the example below, <span class="tt">i</span> refers to the field name of <span class="tt">X</span>, not the <span class="tt">let</span>-bound variable:</dd></dl>
 <div class="fragment"><div class="line">let i = 1_2;</div>

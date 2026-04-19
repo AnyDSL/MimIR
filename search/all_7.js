@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['h_0',['h',['../phases.html#autotoc_md68',1,'&lt;span class=&quot;tt&quot;&gt;sccp.h&lt;/span&gt;'],['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a2510c39011c5be704182423e3a695e91',1,'mim::plug::math::h']]],
+  ['h_0',['h',['../phases.html#autotoc_md70',1,'&lt;span class=&quot;tt&quot;&gt;sccp.h&lt;/span&gt;'],['../namespacemim_1_1plug_1_1math.html#a2ed29920a6ee618bffa2224415faaf72a2510c39011c5be704182423e3a695e91',1,'mim::plug::math::h']]],
   ['half_5fround_5fstyle_1',['HALF_ROUND_STYLE',['../types_8h.html#af470ed60568b3e7f4fde6092d22abbde',1,'types.h']]],
   ['half_5fround_5fties_5fto_5feven_2',['HALF_ROUND_TIES_TO_EVEN',['../types_8h.html#ab0c3c06432f0247f22594abe3df0ebfe',1,'types.h']]],
   ['handle_3',['Handle',['../structmim_1_1Plugin.html#aeb76fcde7e35346fbfa6b654345b3bab',1,'mim::Plugin']]],
@@ -13,7 +13,7 @@ var searchData=
   ['hash_5fbegin_10',['hash_begin',['../namespacemim.html#ab2a169d2e23178f0163bc05c774d2ac2',1,'mim::hash_begin() noexcept'],['../namespacemim.html#ac30b5cde9bbd181fac8b2cb7bf27fc62',1,'mim::hash_begin(T val) noexcept']]],
   ['hash_5fcombine_11',['hash_combine',['../namespacemim.html#a4d4c9094e2f043e1eca201f173cf96da',1,'mim']]],
   ['head_12',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB::head()'],['../structmim_1_1sexpr_1_1BB.html#a761f2dbcf68ce4ebb0f1f31bc0c97f3d',1,'mim::sexpr::BB::head()']]],
-  ['high_20level_20matrix_20operations_13',['High-level matrix operations',['../matrix.html#autotoc_md223',1,'']]],
+  ['high_20level_20matrix_20operations_13',['High-level matrix operations',['../matrix.html#autotoc_md228',1,'']]],
   ['highlighting_14',['Syntax Highlighting',['../coding.html#autotoc_md17',1,'']]],
   ['hlt_15',['hlt',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a4f4000d921968b9665f52e88333007da',1,'mim::plug::core']]],
   ['hole_16',['Hole',['../classmim_1_1Hole.html',1,'mim::Hole'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole'],['../namespacemim.html#a249738da6a953390b70691dd3fe7132ba6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole'],['../namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293a6368a5bde7853b2f6c660f010adbb988',1,'mim::Hole']]],
