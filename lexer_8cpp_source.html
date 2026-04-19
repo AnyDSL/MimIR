@@ -151,7 +151,7 @@ $(function(){initNavTree('lexer_8cpp_source.html','',''); });
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">if</span> (accept(utf8::EoF)) <span class="keywordflow">return</span> tok(Tag::EoF);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordflow">if</span> (accept(utf8::isspace)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">if</span> (accept(utf8::Null)) {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">if</span> (accept(utf8::Invalid)) {</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <a class="code hl_function" href="classmim_1_1ast_1_1Lexer.html#a5b4c3a6ecf8e3a0f78bc3d2c1a10e988">ast</a>().<a class="code hl_function" href="classmim_1_1ast_1_1AST.html#a9384b51c42d15ee99414bd77c096f8f9">error</a>(loc_, <span class="stringliteral">&quot;invalid UTF-8 character&quot;</span>);</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keywordflow">continue</span>;</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        }</div>
