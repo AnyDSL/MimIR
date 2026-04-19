@@ -262,10 +262,13 @@ Markdown Style</h2>
 M⁠im Coding Style</h2>
 <ul>
 <li>Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing <a class="el" href="namespaceMim.html">Mim</a> code and tests.</li>
+<li>Prefer 4 spaces for one indentation level, but aligned layouts may use different spacing when that makes the code clearer.</li>
 <li>Write callable declarations with parenthesized domain groups, for example <span class="tt">lam foo (x: X) (y: Y): Z = ...</span>.</li>
 <li>Separate curried domain groups with a space, and write the return type as <span class="tt">): Z</span>, with no space before <span class="tt">:</span> and one space after it.</li>
 <li>Use spaces after commas in lists and groups: <span class="tt">a, b, c</span>.</li>
 <li>Write binder ascriptions as <span class="tt">x: X</span>, but keep literal and bottom ascriptions tight: <span class="tt">23:T</span>.</li>
+<li>Use <span class="tt">snake_case</span> for value-level names such as functions, lambdas, binders, local lets, and pattern-bound values.</li>
+<li>Use <span class="tt">CamelCase</span> for type-level names such as types and type constructors.</li>
 </ul>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
 Doxygen Style</h2>
