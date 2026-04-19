@@ -9,7 +9,6 @@
 
 #include "mim/driver.h"
 
-#include "mim/ast/prec.h"
 #include "mim/ast/tok.h"
 
 namespace mim::ast {

@@ -5,7 +5,6 @@
 #include "mim/driver.h"
 #include "mim/nest.h"
 
-#include "mim/ast/prec.h"
 #include "mim/ast/tok.h"
 #include "mim/util/util.h"
 
