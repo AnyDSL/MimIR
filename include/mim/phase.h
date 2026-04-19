@@ -288,7 +288,7 @@ private:
 
 /// Transitively visits all *reachable*, [*closed*](@ref Def::is_closed) mutables in the World.
 /// * Select with `elide_empty` whether you want to visit trivial mutables without body.
-/// * If you a are only interested in specific mutables, you can pass this to @p M.
+/// * If you are only interested in specific mutables, you can pass this to @p M.
 /// @see @ref phases_closed_mut_phase
 template<class M = Def>
 class ClosedMutPhase : public Phase {

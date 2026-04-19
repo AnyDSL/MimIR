@@ -103,7 +103,7 @@ You get:
 - correct handling of mutables and cycles,
 - node-wise customization hooks,
 - scoped traversal behavior,
-- and a domain that can be expressed in ordinary [`def`](@ref mim::Def)s.
+- and a domain that can be expressed in ordinary [`Def`](@ref mim::Def)s.
 
 That last point is often very convenient for analyses: abstract values can reuse MimIR structure instead of inventing a parallel representation.
 
@@ -131,7 +131,7 @@ Use:
 An [`RWPhase`](@ref mim::RWPhase) runs in three conceptual steps:
 
 1. optionally perform a fixed-point analysis on the old world,
-2. rewrite all old [`def`](@ref mim::Def)s into the new world:
+2. rewrite all old [`Def`](@ref mim::Def)s into the new world:
    1. rewrite all annex roots into the new world,
    2. rewrite all external mutables into the new world;
 3. swap old and new worlds.
