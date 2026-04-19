@@ -117,9 +117,9 @@ bool needs_parens(Prec parent, const Def* child, bool is_left) {
     if (child_prec > parent) return false;
 
     switch (prec_assoc(parent)) {
-        case Assoc::Right: return is_left;
-        case Assoc::Left:  return !is_left;
-        case Assoc::None:  return false;
+        case Assoc::R: return is_left;
+        case Assoc::L: return !is_left;
+        case Assoc::N: return false;
     }
     fe::unreachable();
 }
