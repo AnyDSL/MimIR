@@ -70,7 +70,7 @@ Use the following coding conventions:
 - Use one sentence per line in Markdown prose.
 - Do not hard-wrap Markdown text to 80 columns.
 
-### Mim Coding Style
+### M⁠im Coding Style
 
 - Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing Mim code and tests.
 - Write callable declarations with parenthesized domain groups, for example `lam foo (x: X) (y: Y): Z = ...`.
