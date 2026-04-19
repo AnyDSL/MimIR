@@ -70,6 +70,14 @@ Use the following coding conventions:
 - Use one sentence per line in Markdown prose.
 - Do not hard-wrap Markdown text to 80 columns.
 
+### Mim Coding Style
+
+- Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing Mim code and tests.
+- Write callable declarations with parenthesized domain groups, for example `lam foo (x: X) (y: Y): Z = ...`.
+- Separate curried domain groups with a space, and write the return type as `): Z`, with no space before `:` and one space after it.
+- Use spaces after commas in lists and groups: `a, b, c`.
+- Write binder ascriptions as `x: X`, but keep literal and bottom ascriptions tight: `23:T`.
+
 ### Doxygen Style
 
 - Use `///` for Doxygen comments.

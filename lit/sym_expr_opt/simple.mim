@@ -15,6 +15,6 @@ lam extern _compile(): %compile.Phase =
         %compile.sym_expr_opt,
     );
 
-// CHECK: lam extern lf [[A:[[:alnum:]_]+]]:
-// CHECK: lam f_{{[0-9]+}} [[X:[[:alnum:]_]+]]
-// CHECK: %core.nat.add ([[A]], [[X]])
+// CHECK: lam extern lf ({{[[:alnum:]_]+}}: Nat): Nat =
+// CHECK: lam f_{{[0-9]+}} ({{[[:alnum:]_]+}}: Nat): Nat =
+// CHECK: %core.nat.add ({{[[:alnum:]_]+}}, {{[[:alnum:]_]+}})

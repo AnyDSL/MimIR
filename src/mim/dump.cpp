@@ -312,6 +312,7 @@ public:
     void dump(Lam*);
     void dump_let(const Def*);
     void dump_ptrn(const Def*, const Def*);
+    void dump_group(const Def*, const Def*, bool implicit, bool paren_style, size_t limit, bool alias = true);
     void recurse(const Nest::Node*);
     void recurse(const Def*, bool first = false);
 
@@ -377,23 +378,52 @@ void Dumper::dump(Def* mut) {
 }
 
 void Dumper::dump(Lam* lam) {
-    // TODO filter
-    auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
+    std::vector<Lam*> groups;
+    for (Lam* curr = lam;;) {
+        groups.emplace_back(curr);
+        auto body = curr->body();
+        if (!body) break;
+        auto next = body->isa<Lam>();
+        if (!next) break;
+        curr = const_cast<Lam*>(next);
+    }
 
-    if (Lam::isa_cn(lam))
-        tab.println(os, "con {}{} {}@({}) =", external(lam), id(lam), ptrn, lam->filter());
+    auto last   = groups.back();
+    auto is_fun = Lam::isa_returning(last);
+    auto is_con = Lam::isa_cn(last) && !is_fun;
+
+    tab.print(os, "{} {}{}", is_fun ? "fun" : is_con ? "con" : "lam", external(lam), id(lam));
+    for (auto* group : groups) {
+        os << ' ';
+        auto num_doms = group->var() ? group->var()->num_tprojs() : group->type()->dom()->num_tprojs();
+        auto limit    = is_fun && group == last ? num_doms - 1 : num_doms;
+        dump_group(group->var(),
+                   group->type()->dom(),
+                   group->type()->is_implicit(),
+                   !is_con,
+                   limit,
+                   !is_fun || group != last);
+        if (is_con && group == last) print(os, "@({})", group->filter());
+    }
+
+    if (is_fun)
+        print(os, ": {} =", last->ret_dom());
+    else if (!is_con)
+        print(os, ": {} =", last->type()->codom());
     else
-        tab.println(os, "lam {}{} {}: {} =", external(lam), id(lam), ptrn, lam->type()->codom());
+        print(os, " =");
+    os << '\n';
 
     ++tab;
-    if (lam->is_set()) {
-        if (nest) recurse((*nest)[lam]);
-        recurse(lam->filter());
-        recurse(lam->body(), true);
-        if (lam->body()->isa_mut())
-            tab.print(os, "{};\n", lam->body());
+    if (last->is_set()) {
+        if (nest && groups.size() == 1) recurse((*nest)[lam]);
+        for (auto* group : groups)
+            recurse(group->filter());
+        recurse(last->body(), true);
+        if (last->body()->isa_mut())
+            tab.print(os, "{};\n", last->body());
         else
-            tab.print(os, "{};\n", Inline(lam->body()));
+            tab.print(os, "{};\n", Inline(last->body()));
     } else {
         tab.print(os, "<unset>;\n");
     }
@@ -420,6 +450,36 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
                   def->unique_name());
         }
     }
+}
+
+void Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias) {
+    auto l = implicit ? '{' : paren_style ? '(' : '[';
+    auto r = implicit ? '}' : paren_style ? ')' : ']';
+    auto dump_binder = [&](const Def* binder, const Def* binder_type) {
+        if (binder)
+            dump_ptrn(binder, binder_type);
+        else
+            print(os, "_: {}", binder_type);
+    };
+
+    if (limit == 0) {
+        os << l << r;
+        return;
+    }
+
+    if (limit == 1) {
+        os << l;
+        dump_binder(def ? def->tproj(0) : nullptr, type->tproj(0));
+        os << r;
+        return;
+    }
+
+    os << l;
+    print(os,
+          "{, }",
+          Elem(std::views::iota(size_t(0), limit), [&](auto i) { dump_binder(def ? def->tproj(i) : nullptr, type->tproj(i)); }));
+    os << r;
+    if (alias && def) print(os, " as {}", def->unique_name());
 }
 
 void Dumper::recurse(const Nest::Node* node) {
