@@ -65,11 +65,10 @@ public:
             for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
                 auto op = def->op(i);
                 recurse(op, max - 1);
-                tab_.print(os_, "_{} -> _{}[taillabel=\"{}\",", def->gid(), op->gid(), i);
                 if (op->isa<Lit>() || op->isa<Axm>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
-                    print(os_, "fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n");
+                    tab_.println(os_, "_{}:{} -> _{}[color=\"#00000000\",constraint=false];", def->gid(), i, op->gid());
                 else
-                    print(os_, "fontcolor=\"#00000000\"];\n");
+                    tab_.println(os_, "_{}:{} -> _{};", def->gid(), i, op->gid());
             }
         }
 
@@ -80,13 +79,28 @@ public:
     }
 
     std::ostream& label(const Def* def) {
-        os_ << "label=<";
+        auto n = def->is_set() ? def->num_ops() : size_t(0);
+        if (n > 0) {
+            print(os_, "label=<<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td colspan=\"{}\">", n);
+            emit_name(def);
+            os_ << "</td></tr><tr>";
+            for (size_t i = 0; i < n; ++i)
+                print(os_, "<td port=\"{}\" cellpadding=\"0\" height=\"1\" width=\"8\"></td>", i);
+            os_ << "</tr></table>>";
+        } else {
+            os_ << "label=<";
+            emit_name(def);
+            os_ << ">";
+        }
+        return os_;
+    }
+
+    void emit_name(const Def* def) {
         if (auto lit = def->isa<Lit>())
             lit->stream(os_, 0);
         else
             os_ << def->node_name();
         print(os_, "<br/><font point-size=\"9\">{}</font>", escape(def->unique_name()));
-        return os_ << ">";
     }
 
     std::ostream& color(const Def* def) {
