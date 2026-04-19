@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['names_20of_20sigmas_0',['Field names of sigmas',['../langref.html#autotoc_md57',1,'']]],
+  ['names_20of_20sigmas_0',['Field Names of Sigmas',['../langref.html#autotoc_md57',1,'']]],
   ['naming_20metadata_1',['Preserving Debug and Naming Metadata',['../rewriting.html#autotoc_md99',1,'']]],
-  ['naming_3a_20mimir_20vs_20mim_2',['🐉 Naming: MimIR vs Mim',['../index.html#autotoc_md93',1,'']]],
+  ['naming_3a_20mimir_20vs_20mim_2',['🐉 Naming: MimIR vs. Mim',['../index.html#autotoc_md93',1,'']]],
   ['nat_3',['%core.nat',['../core.html#autotoc_md140',1,'']]],
   ['nat_20operations_4',['Nat Operations',['../core.html#autotoc_md139',1,'']]],
   ['ncmp_5',['%core.ncmp',['../core.html#autotoc_md141',1,'']]],

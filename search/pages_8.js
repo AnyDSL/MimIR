@@ -12,15 +12,15 @@ var searchData=
   ['ins_9',['Downcasts for Built-ins',['../dev.html#cast_builtin',1,'']]],
   ['insert_10',['insert',['../matrix.html#autotoc_md225',1,'%matrix.insert'],['../ord.html#autotoc_md273',1,'%ord.insert']]],
   ['inspect_11',['Inspect',['../refly.html#autotoc_md279',1,'']]],
-  ['install_20optional_12',['📦 Install (optional)',['../index.html#autotoc_md88',1,'']]],
+  ['install_20optional_12',['📦 Install (Optional)',['../index.html#autotoc_md88',1,'']]],
   ['integer_20operations_13',['Integer Operations',['../core.html#autotoc_md142',1,'']]],
   ['ir_14',['Matching IR',['../dev.html#autotoc_md21',1,'']]],
-  ['is_20useful_15',['Why this split is useful',['../phases.html#autotoc_md74',1,'']]],
+  ['is_20useful_15',['Why This Split Is Useful',['../phases.html#autotoc_md74',1,'']]],
   ['is_5fempty_16',['%ord.is_empty',['../ord.html#autotoc_md268',1,'']]],
   ['is_5floaded_17',['%compile.is_loaded',['../compile.html#autotoc_md131',1,'']]],
   ['is_5funique_18',['%vec.is_unique',['../vec.html#autotoc_md335',1,'']]],
   ['item_20synchronization_19',['Work-Item Synchronization',['../gpu.html#autotoc_md192',1,'']]],
   ['iterating_20over_20the_20program_20',['Iterating over the Program',['../dev.html#autotoc_md36',1,'']]],
-  ['iterations_21',['Reset between Iterations',['../phases.html#autotoc_md61',1,'']]],
+  ['iterations_21',['Reset Between Iterations',['../phases.html#autotoc_md61',1,'']]],
   ['iterators_22',['Iterators',['../vec.html#autotoc_md328',1,'']]]
 ];

@@ -8,7 +8,7 @@ var searchData=
   ['er_5',['%math.er',['../math.html#autotoc_md206',1,'']]],
   ['example_6',['Example',['../coding.html#autotoc_md7',1,'']]],
   ['example_3a_20sccp_7',['Example: SCCP',['../phases.html#autotoc_md69',1,'']]],
-  ['examples_8',['Minimal examples',['../phases.html#autotoc_md77',1,'']]],
+  ['examples_8',['Minimal Examples',['../phases.html#autotoc_md77',1,'']]],
   ['exceptions_9',['Catching Exceptions',['../coding.html#autotoc_md12',1,'']]],
   ['execution_20model_10',['Execution Model',['../phases.html#autotoc_md62',1,'']]],
   ['existing_20in_20tree_20plugin_11',['Extract an Existing In-Tree Plugin',['../plugins.html#autotoc_md82',1,'']]],

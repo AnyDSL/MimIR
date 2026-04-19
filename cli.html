@@ -170,10 +170,10 @@ Usage</h1>
 <div class="line"> </div>
 <div class="line">*These are developer options only enabled, if &#39;MIM_ENABLE_CHECKS&#39; is ON.</div>
 <div class="line">Use &quot;-&quot; as &lt;file&gt; to output to stdout.</div>
-</div><!-- fragment --><p>In addition, you can specify more search paths using the environment variable <span class="tt">MIM_PLUGIN_PATH</span>. <a class="el" href="namespaceMim.html">Mim</a> will look for plugins in this priority:</p>
+</div><!-- fragment --><p>In addition, you can specify more search paths with <span class="tt">-P</span> / <span class="tt">--plugin-path</span> and via the environment variable <span class="tt">MIM_PLUGIN_PATH</span>. <a class="el" href="namespaceMim.html">Mim</a> looks for plugins in this order:</p>
 <ol type="1">
 <li>The current working directory.</li>
-<li>All paths specified via <span class="tt">-D</span> (in the given order).</li>
+<li>All paths specified via <span class="tt">-P</span> / <span class="tt">--plugin-path</span> (in the given order).</li>
 <li>All paths specified in the environment variable <span class="tt">MIM_PLUGIN_PATH</span> (in the given order).</li>
 <li><span class="tt">path/to/mim.exe/../../lib/mim</span></li>
 <li><span class="tt">CMAKE_INSTALL_PREFIX/lib/mim</span></li>
@@ -181,6 +181,7 @@ Usage</h1>
 <h1 class="doxsection"><a class="anchor" id="clidebug"></a>
 Debugging Features</h1>
 <ul>
+<li>The breakpoint-oriented flags below are developer options that are only available when MimIR is built with <span class="tt"><a class="el" href="config_8h.html#a979b2da1f38b6abc74d13463cdd08a2b">MIM_ENABLE_CHECKS</a></span>.</li>
 <li>You can increase the log level with <span class="tt">-V</span>.<ul>
 <li>No <span class="tt">-V</span> corresponds to <a class="el" href="classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590a902b0d55fddef6f8d651fe1035b7d4bd">mim::Log::Level::Error</a>.</li>
 <li><span class="tt">-V</span> corresponds to <a class="el" href="classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590a56525ae64d370c0b448ac0d60710ef17">mim::Log::Level::Warn</a>.</li>
@@ -190,11 +191,11 @@ Debugging Features</h1>
 <li><span class="tt">-VVVVV</span> corresponds to <a class="el" href="classmim_1_1Log.html#aab4ab68f72a5d79c8acc1f1cf7c68590add4ec0ac4e58f7c32a01244ae91150b1">mim::Log::Level::Trace</a>. This output only exists in a Debug build of MimIR.</li>
 </ul>
 </li>
-<li><p class="startli">You can trigger a breakpoint upon construction of a <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">mim::Def</a> with a specific global id.</p>
-<p class="startli">For example, this will trigger a breakpoint if the <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">mim::Def</a> with <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="mim::Def::gid">global id</a> <span class="tt">4223</span> is being created:</p>
+<li><p class="startli">You can trigger a breakpoint when constructing a <a class="el" href="classmim_1_1Def.html" title="mim::Def"><span class="tt">mim::Def</span></a> with a specific global id.</p>
+<p class="startli">For example, this triggers a breakpoint when the <a class="el" href="classmim_1_1Def.html" title="mim::Def"><span class="tt">mim::Def</span></a> with <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="mim::Def::gid"><span class="tt">gid</span></a> <span class="tt">4223</span> is created:</p>
 <div class="fragment"><div class="line">mim -b 4223 in.mim</div>
 </div><!-- fragment --></li>
-<li>You can also trigger a breakpoint at some other very specific places like when a check for alpha equivalence fails via <span class="tt">--break-on-alpha</span>. </li>
+<li>You can also trigger breakpoints at other specific events, for example when an alpha-equivalence check fails via <span class="tt">--break-on-alpha</span>. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

@@ -143,12 +143,12 @@ $(function(){initNavTree('rewriting.html','',''); });
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md103">Relationship between both </a>
+    <a href="#autotoc_md103">Relationship Between Rewriter and VarRewriter </a>
   </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2rewriting"></a></p>
-<p>In MimIR, rewriting means rebuilding an IR graph, usually into a target <a class="el" href="classmim_1_1World.html" title="mim::World"><span class="tt">World</span></a>, while preserving sharing and handling mutable nodes correctly. The rewriting infrastructure is used for tasks like copying IR between worlds, rebuilding terms after substitutions, and reconstructing terms after local changes.</p>
+<p>In MimIR, rewriting means rebuilding an IR graph, usually into a target <a class="el" href="classmim_1_1World.html" title="mim::World"><span class="tt">World</span></a>, while preserving sharing and handling mutable nodes correctly. The rewriting infrastructure is used for tasks like copying IR between worlds, rebuilding terms after substitutions, and reconstructing terms after local changes. It is also the foundation of several <a class="el" href="phases.html" title="Phases">phase</a> families.</p>
 <h1 class="doxsection"><a class="anchor" id="rewriter"></a>
 Rewriter</h1>
 <p><a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> is the general mechanism for recursively rebuilding IR.</p>
@@ -226,7 +226,7 @@ Typical Usage</h2>
 <div class="line"><span class="keyword">auto</span> result = rw.rewrite(def);</div>
 </div><!-- fragment --><p>Conceptually, this rewrites only those parts of <span class="tt">def</span> whose free variables intersect the substituted variables.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md103"></a>
-Relationship between both</h1>
+Relationship Between Rewriter and VarRewriter</h1>
 <p><a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> is a specialization of <a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a>:</p>
 <ul>
 <li><p class="startli"><a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> provides the general graph-rebuilding machinery:</p><ul>

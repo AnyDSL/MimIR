@@ -169,7 +169,7 @@ $(function(){initNavTree('coding.html','',''); });
         <a href="#autotoc_md14"><span class="tt">lit</span> Tests </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md15">Triggering Breakpoints from the Command Line </a>
+        <a href="#autotoc_md15">Triggering Breakpoints </a>
       </li>
       <li class="level2">
         <a href="#autotoc_md16">GoogleTest </a>
@@ -212,7 +212,10 @@ Building</h1>
 <td class="markdownTableBodyNone"><span class="tt">MIM_LIT_WITH_VALGRIND</span>  </td><td class="markdownTableBodyNone"><span class="tt">ON</span> | <span class="tt">OFF</span>  </td><td class="markdownTableBodyNone"><span class="tt">OFF</span>  </td><td class="markdownTableBodyNone">If <span class="tt">ON</span>, run the <a class="el" href="namespaceMim.html">Mim</a> CLI in the <span class="tt">lit</span> tests under Valgrind. <br  />
  (requires <span class="tt">BUILD_TESTING=ON</span>).  </td></tr>
 </table>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
+<p>A typical contributor build with tests and examples enabled looks like this:</p>
+<div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DMIM_BUILD_EXAMPLES=ON</div>
+<div class="line">cmake --build build -j$(nproc)</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
 Dependencies</h2>
 <p>In addition to the provided <a href="https://github.com/AnyDSL/MimIR/tree/master/external">submodules</a>, you will need:</p>
 <ul>
@@ -414,15 +417,15 @@ Catching Exceptions</h2>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
 Valgrind &amp; GDB</h2>
 <p>If you run into memory-related problems, it can be useful to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>.</p>
-<p>Launch the program like this:</p>
-<div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 mim-gtest</div>
+<p>Launch the test binary like this:</p>
+<div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 build/bin/mim-gtest</div>
 </div><!-- fragment --><p>and then follow the instructions printed by Valgrind.</p>
 <h1 class="doxsection"><a class="anchor" id="tests"></a>
 Tests</h1>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
 <span class="tt">lit</span> Tests</h2>
 <p>Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> test suite with:</p>
-<div class="fragment"><div class="line">cmake --build build -t lit</div>
+<div class="fragment"><div class="line">cmake --build build --target lit</div>
 </div><!-- fragment --><p>You can also invoke the <span class="tt">lit</span> tests manually and filter for a specific test:</p>
 <div class="fragment"><div class="line">cd lit</div>
 <div class="line">./lit ../build/lit -a --filter foo.mim</div>
@@ -432,7 +435,7 @@ Tests</h1>
 </div><!-- fragment --><p>To generate a one-line reproducer for the current checkout and a specific <span class="tt">lit</span> failure, use:</p>
 <div class="fragment"><div class="line">./scripts/make_lit_error.sh foo.mim</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
-Triggering Breakpoints from the Command Line</h2>
+Triggering Breakpoints</h2>
 <p>You can tell <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> to trigger a breakpoint when certain events happen:</p>
 <div class="fragment"><div class="line">mim test.mim -b 1234            # Break if the node with gid 1234 is created.</div>
 <div class="line">mim test.mim -w 1234            # Break if the node with gid 1234 sets one of its operands.</div>
@@ -440,16 +443,16 @@ Triggering Breakpoints from the Command Line</h2>
 </div><!-- fragment --><p>See the <a class="el" href="cli.html" title="Command-Line Reference">Command-Line Reference</a> for the full list of flags.</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
 GoogleTest</h2>
-<p>Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests from the <span class="tt">build</span> directory with:</p>
-<div class="fragment"><div class="line">ctest</div>
+<p>Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests with:</p>
+<div class="fragment"><div class="line">ctest --test-dir build --output-on-failure</div>
 </div><!-- fragment --><p>You can additionally enable <a href="https://valgrind.org/">Valgrind</a> via:</p>
-<div class="fragment"><div class="line">ctest -T memcheck</div>
+<div class="fragment"><div class="line">ctest --test-dir build -T memcheck --output-on-failure</div>
 </div><!-- fragment --><p>During debugging, you will usually want to run only a specific test case. You can <a href="https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests">filter</a> tests like this:</p>
-<div class="fragment"><div class="line">./mim-gtest --gtest_filter=&quot;*Loc*&quot;</div>
+<div class="fragment"><div class="line">build/bin/mim-gtest --gtest_filter=&quot;*Loc*&quot;</div>
 </div><!-- fragment --><p>This command lists all available tests:</p>
-<div class="fragment"><div class="line">./mim-gtest --gtest_list_tests</div>
+<div class="fragment"><div class="line">build/bin/mim-gtest --gtest_list_tests</div>
 </div><!-- fragment --><p>It can also be useful to turn assertion failures into debugger breakpoints:</p>
-<div class="fragment"><div class="line">./mim-gtest --gtest_break_on_failure</div>
+<div class="fragment"><div class="line">build/bin/mim-gtest --gtest_break_on_failure</div>
 </div><!-- fragment --><p>To generate a one-line reproducer for the current checkout and a specific GoogleTest failure, use:</p>
 <div class="fragment"><div class="line">./scripts/make_gtest_error.sh &quot;mim.World.dependent_extract&quot;</div>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md17"></a>

@@ -11,7 +11,7 @@ var searchData=
   ['var_5ftype_8',['var_type',['../classmim_1_1Def.html#ae27e362495c89965b30a40f16cfd860a',1,'mim::Def']]],
   ['variants_9',['Thresholded Variants',['../dev.html#autotoc_md33',1,'']]],
   ['varmap_10',['VarMap',['../namespacemim.html#a71e90dca4edd9dfdf7b1199a44faf1ab',1,'mim']]],
-  ['varrewriter_11',['VarRewriter',['../classmim_1_1VarRewriter.html',1,'mim::VarRewriter'],['../classmim_1_1VarRewriter.html#ad5fa9305f338f599b3c16c5c7fe0998d',1,'mim::VarRewriter::VarRewriter(World &amp;world)'],['../classmim_1_1VarRewriter.html#aef6de1378cb65a40e441dfad4fa983f2',1,'mim::VarRewriter::VarRewriter(const Var *var, const Def *arg)'],['../rewriting.html#varrewriter',1,'VarRewriter']]],
+  ['varrewriter_11',['VarRewriter',['../rewriting.html#autotoc_md103',1,'Relationship Between Rewriter and VarRewriter'],['../classmim_1_1VarRewriter.html',1,'mim::VarRewriter'],['../classmim_1_1VarRewriter.html#ad5fa9305f338f599b3c16c5c7fe0998d',1,'mim::VarRewriter::VarRewriter(World &amp;world)'],['../classmim_1_1VarRewriter.html#aef6de1378cb65a40e441dfad4fa983f2',1,'mim::VarRewriter::VarRewriter(const Var *var, const Def *arg)'],['../rewriting.html#varrewriter',1,'VarRewriter']]],
   ['vars_12',['Vars',['../namespacemim.html#ac1bc6fc8487a4e7490dcee047b176f7f',1,'mim']]],
   ['vars_13',['vars',['../classmim_1_1Def.html#aa58ecb88f35612838a7d5162e4e98511',1,'mim::Def::vars(F f) noexcept'],['../classmim_1_1Def.html#a5828bc5e8172f12fa472e7e623937e67',1,'mim::Def::vars() noexcept'],['../classmim_1_1Def.html#a2ae9259f54c0daa3746a72735483797c',1,'mim::Def::vars(nat_t a, F f) noexcept'],['../classmim_1_1Def.html#a78ada1c494388d830fcbc7cfa94e9a81',1,'mim::Def::vars(nat_t a) noexcept'],['../classmim_1_1Nest.html#ad6f576feb5d9dc696df45a0d3120c666',1,'mim::Nest::vars()'],['../classmim_1_1World.html#adecf8737cfcfe1ca0ff8e0e5716be960',1,'mim::World::vars()'],['../classmim_1_1World.html#ad7d137044e643c05481b44e90a0dff02',1,'mim::World::vars() const']]],
   ['varset_14',['VarSet',['../namespacemim.html#a69dc278a82313ca3dc770a868a1e57d1',1,'mim']]],
@@ -44,6 +44,6 @@ var searchData=
   ['visit_41',['visit',['../classmim_1_1Emitter.html#aadf52c65867f33786a2359b96806b67c',1,'mim::Emitter::visit()'],['../classmim_1_1ClosedMutPhase.html#ad472ea7c10d353cbd478faa84708322e',1,'mim::ClosedMutPhase::visit()'],['../classmim_1_1NestPhase.html#a101203cdf21e91486513e9cd7e4b0396',1,'mim::NestPhase::visit(const Nest &amp;)=0'],['../classmim_1_1NestPhase.html#a860c4a5255f84d1ace66073ee698c799',1,'mim::NestPhase::visit(M *mut) final'],['../classmim_1_1plug_1_1mem_1_1phase_1_1AddMem.html#af0a9accb45252d683e6ddaf37c2e4e91',1,'mim::plug::mem::phase::AddMem::visit()']]],
   ['vlog_42',['VLOG',['../log_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'log.h']]],
   ['vmode_43',['VMode',['../namespacemim_1_1plug_1_1core.html#a3528f63dbef237c0150d660d51249822',1,'mim::plug::core::VMode'],['../namespacemim_1_1plug_1_1math.html#a940e481c253b52c293f203e453d8057a',1,'mim::plug::math::VMode']]],
-  ['vs_20mim_44',['🐉 Naming: MimIR vs Mim',['../index.html#autotoc_md93',1,'']]],
+  ['vs_20mim_44',['🐉 Naming: MimIR vs. Mim',['../index.html#autotoc_md93',1,'']]],
   ['vs_20mutables_45',['Immutables vs. Mutables',['../dev.html#mut',1,'']]]
 ];

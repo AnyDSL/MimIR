@@ -84,7 +84,7 @@ var searchData=
   ['eval_5fpass_81',['eval_pass',['../namespacemim_1_1plug_1_1autodiff.html#a0ee5e52957243a73fe7f24a089d7a738',1,'mim::plug::autodiff']]],
   ['example_82',['Example',['../coding.html#autotoc_md7',1,'']]],
   ['example_3a_20sccp_83',['Example: SCCP',['../phases.html#autotoc_md69',1,'']]],
-  ['examples_84',['Minimal examples',['../phases.html#autotoc_md77',1,'']]],
+  ['examples_84',['Minimal Examples',['../phases.html#autotoc_md77',1,'']]],
   ['exceptions_85',['Catching Exceptions',['../coding.html#autotoc_md12',1,'']]],
   ['exec_86',['exec',['../namespacemim_1_1sys.html#aeddc00f97e1561955278bfcc831d9db7',1,'mim::sys']]],
   ['execution_20model_87',['Execution Model',['../phases.html#autotoc_md62',1,'']]],

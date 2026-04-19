@@ -52,5 +52,5 @@ var searchData=
   ['key_20innovations_49',['🔥 Key Innovations',['../index.html#autotoc_md89',1,'']]],
   ['keywords_50',['Keywords',['../langref.html#autotoc_md40',1,'']]],
   ['kind_51',['Kind',['../classmim_1_1UMax.html#a098634bb335cad742136e612032ab42fafaa5ce425501a5673f4cd7f55c22f97d',1,'mim::UMax']]],
-  ['kinds_20and_20builtin_20types_52',['Kinds and builtin types',['../langref.html#autotoc_md43',1,'']]]
+  ['kinds_20and_20builtin_20types_52',['Kinds and Builtin Types',['../langref.html#autotoc_md43',1,'']]]
 ];

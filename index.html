@@ -121,7 +121,7 @@ $(function(){initNavTree('index.html','',''); });
     <a href="#autotoc_md87">🚀 Quick Start </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md88">📦 Install (optional) </a>
+        <a href="#autotoc_md88">📦 Install (Optional) </a>
       </li>
     </ul>
   </li>
@@ -140,7 +140,7 @@ $(function(){initNavTree('index.html','',''); });
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md93">🐉 Naming: MimIR vs <a class="el" href="namespaceMim.html">Mim</a> </a>
+    <a href="#autotoc_md93">🐉 Naming: MimIR vs. <a class="el" href="namespaceMim.html">Mim</a> </a>
   </li>
   <li class="level1">
     <a href="#autotoc_md94">💬 Community </a>
@@ -163,7 +163,7 @@ $(function(){initNavTree('index.html','',''); });
 <li><b>SSA without dominance</b>: a scopeless IR for higher-order programs based on free-variable nesting</li>
 <li>A <b>sea-of-nodes</b> style IR with on-the-fly normalization, type checking, and partial evaluation</li>
 </ul>
-<p>Well suited for DSL compilers, tensor compilers, automatic differentiation, regex engines, and other systems that need high-performance code from high-level abstractions.</p>
+<p>MimIR is well suited for DSL compilers, tensor compilers, automatic differentiation, regex engines, and other systems that need high-performance code from high-level abstractions.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md86"></a>
 💡 Why MimIR?</h1>
 <table class="markdownTable">
@@ -201,10 +201,10 @@ $(function(){initNavTree('index.html','',''); });
 <div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">cmake --build build -j$(nproc)</div>
 </div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md88"></a>
-📦 Install (optional)</h2>
+📦 Install (Optional)</h2>
 <div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix</div>
-<div class="line">cmake --build build -j$(nproc) -t install</div>
-</div><!-- fragment --><p>See the full <a class="el" href="coding.html#building" title="Building">🛠️ build options</a> in the docs.</p>
+<div class="line">cmake --build build -j$(nproc) --target install</div>
+</div><!-- fragment --><p>See the full <a class="el" href="coding.html#building" title="Building">build options</a> in the docs. For the rest of the documentation, start with the <a class="el" href="cli.html" title="Command-Line Reference">Command-Line Reference</a>, <a class="el" href="dev.html" title="Developer Guide">Developer Guide</a>, <a class="el" href="langref.html" title="Mim Language Reference">Language Reference</a>, <a class="el" href="plugins.html" title="Plugins">Plugin Guide</a>, <a class="el" href="phases.html" title="Phases">Phase Guide</a>, and <a class="el" href="rewriting.html" title="Rewriting">Rewriting Guide</a>.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md89"></a>
 🔥 Key Innovations</h1>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md90"></a>
@@ -239,7 +239,7 @@ $(function(){initNavTree('index.html','',''); });
 <li>Mutual recursion and higher-order functions are handled naturally</li>
 </ul>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md93"></a>
-🐉 Naming: MimIR vs Mim</h1>
+🐉 Naming: MimIR vs. Mim</h1>
 <p><b>MimIR</b> is a recursive acronym for <em>MimIR is my Intermediate Representation</em>.</p>
 <p>In Norse mythology, <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir</a> was a being of immense wisdom. After being beheaded in the Æsir–Vanir War, Odin preserved his head, which continued to speak secret knowledge and offer counsel.</p>
 <p>Today, <b>you</b> have Mímir's head at your fingertips.</p>
