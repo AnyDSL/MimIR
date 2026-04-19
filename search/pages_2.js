@@ -15,7 +15,7 @@ var searchData=
   ['cmake_20style_12',['CMake Style',['../coding.html#autotoc_md3',1,'']]],
   ['cmp_13',['%math.cmp',['../math.html#autotoc_md206',1,'']]],
   ['coding_20debugging_14',['Coding &amp;amp; Debugging',['../coding.html',1,'']]],
-  ['coding_20style_15',['Coding Style',['../coding.html#autotoc_md2',1,'Coding Style'],['../coding.html#autotoc_md5',1,'Mim Coding Style']]],
+  ['coding_20style_15',['Coding Style',['../coding.html#autotoc_md2',1,'Coding Style'],['../coding.html#autotoc_md5',1,'M⁠im Coding Style']]],
   ['command_20line_16',['Triggering Breakpoints from the Command Line',['../coding.html#autotoc_md15',1,'']]],
   ['command_20line_20reference_17',['Command-Line Reference',['../cli.html',1,'']]],
   ['comments_18',['Comments',['../langref.html#autotoc_md40',1,'']]],

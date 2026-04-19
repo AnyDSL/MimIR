@@ -35,7 +35,7 @@ var searchData=
   ['stream_5fsync_32',['%gpu.stream_sync',['../gpu.html#autotoc_md171',1,'']]],
   ['streams_33',['Streams',['../gpu.html#autotoc_md166',1,'Streams'],['../gpu.html#autotoc_md168',1,'Streams']]],
   ['structure_34',['Lexical Structure',['../langref.html#lex',1,'']]],
-  ['style_35',['Style',['../coding.html#autotoc_md3',1,'CMake Style'],['../coding.html#autotoc_md2',1,'Coding Style'],['../coding.html#autotoc_md6',1,'Doxygen Style'],['../coding.html#autotoc_md4',1,'Markdown Style'],['../coding.html#autotoc_md5',1,'Mim Coding Style']]],
+  ['style_35',['Style',['../coding.html#autotoc_md3',1,'CMake Style'],['../coding.html#autotoc_md2',1,'Coding Style'],['../coding.html#autotoc_md6',1,'Doxygen Style'],['../coding.html#autotoc_md5',1,'M⁠im Coding Style'],['../coding.html#autotoc_md4',1,'Markdown Style']]],
   ['style_20plugin_36',['The direct style Plugin',['../direct.html',1,'']]],
   ['substitution_37',['Scoped Substitution',['../rewriting.html#autotoc_md96',1,'']]],
   ['subtags_38',['Subtags',['../dev.html#autotoc_md26',1,'With Subtags'],['../dev.html#autotoc_md25',1,'Without Subtags']]],

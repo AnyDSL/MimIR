@@ -84,7 +84,7 @@ var searchData=
   ['code_5fimm_81',['CODE_IMM',['../rewrite_8h.html#abf17bc3bdf547027cc35451498d99653',1,'CODE_IMM:&#160;rewrite.h'],['../rewrite_8cpp.html#abf17bc3bdf547027cc35451498d99653',1,'CODE_IMM:&#160;rewrite.cpp']]],
   ['code_5fmut_82',['CODE_MUT',['../rewrite_8h.html#a199de7dc7775a7eb7d9cc11702d1da1a',1,'CODE_MUT:&#160;rewrite.h'],['../rewrite_8cpp.html#a199de7dc7775a7eb7d9cc11702d1da1a',1,'CODE_MUT:&#160;rewrite.cpp']]],
   ['coding_20debugging_83',['Coding &amp;amp; Debugging',['../coding.html',1,'']]],
-  ['coding_20style_84',['Coding Style',['../coding.html#autotoc_md2',1,'Coding Style'],['../coding.html#autotoc_md5',1,'Mim Coding Style']]],
+  ['coding_20style_84',['Coding Style',['../coding.html#autotoc_md2',1,'Coding Style'],['../coding.html#autotoc_md5',1,'M⁠im Coding Style']]],
   ['coding_2emd_85',['coding.md',['../coding_8md.html',1,'']]],
   ['codom_86',['codom',['../classmim_1_1ast_1_1LamDecl.html#a4fbcba316e2f2af7cb8669cd3610ba69',1,'mim::ast::LamDecl::codom()'],['../classmim_1_1ast_1_1CDecl.html#aaee891577413d845dc57977448e72e47',1,'mim::ast::CDecl::codom()'],['../classmim_1_1Pi.html#a826161c3dae157a2aa1c273f71f0a8c2',1,'mim::Pi::codom()'],['../classmim_1_1Lam.html#afe57c9c0e30c3c94239efae40e4dea26',1,'mim::Lam::codom()']]],
   ['command_20line_87',['Triggering Breakpoints from the Command Line',['../coding.html#autotoc_md15',1,'']]],
