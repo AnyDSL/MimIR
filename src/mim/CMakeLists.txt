@@ -67,6 +67,11 @@ target_include_directories(libmim
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for config.h
         $<INSTALL_INTERFACE:include>
 )
+
+include(
+    ${PROJECT_SOURCE_DIR}/external/mimir-eqsat/dist/cmake/mimir-eqsat.cmake
+)
+
 target_link_libraries(libmim
     PUBLIC
         mimir-eqsat
@@ -80,6 +85,10 @@ target_link_libraries(libmim
         ${CMAKE_DL_LIBS}
 )
 
+install(
+    FILES include/mimir-eqsat.h
+    DESTINATION include/mim/plug/eqsat
+)
 install(
     FILES "${CMAKE_BINARY_DIR}/include/mim/config.h"
     DESTINATION include/mim
