@@ -35,6 +35,8 @@ public:
         (tab_++).println(os_, "digraph {{");
         tab_.println(os_, "ordering=out;");
         tab_.println(os_, "splines=false;");
+        tab_.println(os_, "newrank=true;");
+        tab_.println(os_, "concenrate=true;");
         tab_.println(os_, "nodesep=0.4;");
         tab_.println(os_, "ranksep=0.6;");
         tab_.println(os_, "node [shape=box,style=filled,fontname=\"monospace\"];");
@@ -50,7 +52,9 @@ public:
 
     void recurse(const Def* def, uint32_t max) {
         if (max == 0 || !done_.emplace(def).second) return;
+
         tab_.print(os_, "_{}[", def->gid());
+
         if (def->isa_mut())
             if (def == root_)
                 os_ << "style=\"filled,diagonals,bold\"";
@@ -58,9 +62,10 @@ public:
                 os_ << "style=\"filled,diagonals\",penwidth=2";
         else if (def == root_)
             os_ << "style=\"filled,bold\"";
+
         label(def) << ',';
         color(def) << ',';
-        if (def->free_vars().empty()) os_ << "rank=min,";
+        if (def->is_closed()) os_ << "rank=min,";
         tooltip(def) << "];\n";
 
         if (def->is_set()) {
@@ -107,16 +112,18 @@ public:
 
     std::ostream& color(const Def* def) {
         float hue;
+        // clang-format off
         if      (def->is_form())  hue = 0.60f; // blue   - type formation
         else if (def->is_intro()) hue = 0.35f; // green  - introduction
         else if (def->is_elim())  hue = 0.00f; // red    - elimination
         else if (def->is_meta())  hue = 0.15f; // yellow - universe/meta
         else                      hue = 0.80f; // purple - Hole
+        // clang-format on
         return print(os_, "fillcolor=\"{} 0.5 0.75\"", hue);
     }
 
     std::ostream& tooltip(const Def* def) {
-        static constexpr auto NL = "&#13;&#10;";
+        static constexpr auto NL = "&#13;&#10;"; // newline
 
         auto loc  = escape(def->loc());
         auto type = escape(def->type());
