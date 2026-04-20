@@ -10,6 +10,7 @@ plugin mem;
 import compile;
 /// For derivatives:
 plugin core;
+plugin math;
 ///
 ///
 /// ## Types
@@ -111,3 +112,46 @@ fun extern internal_diff_core_wrap_add {s: Nat} (m: Nat) (ab: «2; Idx s»)@tt: 
 ///
 fun extern internal_diff_core_wrap_mul {s: Nat} (m: Nat) (a b: Idx s) as ab@tt: [Idx s, Cn[Idx s, Cn«2; Idx s»]] =
     return (%core.wrap.mul m ab, fn (i: Idx s)@tt: «2; Idx s» = return (%core.wrap.mul m (i, b), %core.wrap.mul m (i, a)));
+///
+/// ### %%math.arith.add (float)
+///
+/// s ↦ (s, s)
+///
+fun extern internal_diff_math_arith_add {pe: «2; Nat»} (m: Nat) (ab: «2; %math.F pe»)@tt:
+    [%math.F pe, Cn[%math.F pe, Cn«2; %math.F pe»]] =
+    return (%math.arith.add m ab,
+            fn (s: %math.F pe)@tt: «2; %math.F pe» = return ‹2; s›);
+///
+/// ### %%math.arith.sub (float)
+///
+/// s ↦ (s, -s)
+///
+fun extern internal_diff_math_arith_sub {pe: «2; Nat»} (m: Nat) (a b: %math.F pe) as ab@tt:
+    [%math.F pe, Cn[%math.F pe, Cn«2; %math.F pe»]] =
+    return (%math.arith.sub m ab,
+            fn (s: %math.F pe)@tt: «2; %math.F pe» =
+                return (s, %math.arith.sub m (0:(%math.F pe), s)));
+///
+/// ### %%math.arith.mul (float)
+///
+/// s ↦ (s*b, s*a)
+///
+fun extern internal_diff_math_arith_mul {pe: «2; Nat»} (m: Nat) (a b: %math.F pe) as ab@tt:
+    [%math.F pe, Cn[%math.F pe, Cn«2; %math.F pe»]] =
+    return (%math.arith.mul m ab,
+            fn (s: %math.F pe)@tt: «2; %math.F pe» =
+                return (%math.arith.mul m (s, b), %math.arith.mul m (s, a)));
+///
+/// ### %%math.arith.div (float)
+///
+/// s ↦ (s/b, -s*a/(b*b))
+///
+fun extern internal_diff_math_arith_div {pe: «2; Nat»} (m: Nat) (a b: %math.F pe) as ab@tt:
+    [%math.F pe, Cn[%math.F pe, Cn«2; %math.F pe»]] =
+    return (%math.arith.div m ab,
+            fn (s: %math.F pe)@tt: «2; %math.F pe» =
+                let da = %math.arith.div m (s, b);
+                let b2 = %math.arith.mul m (b, b);
+                let sa = %math.arith.mul m (s, a);
+                let db = %math.arith.sub m (0:(%math.F pe), %math.arith.div m (sa, b2));
+                return (da, db));

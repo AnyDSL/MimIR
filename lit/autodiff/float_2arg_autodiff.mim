@@ -1,0 +1,34 @@
+// RUN: rm -f %t.ll
+// RUN: %mim -p direct %s --output-ll %t.ll
+// RUN: clang %t.ll -o %t -lm -Wno-override-module
+// RUN: %t; test $? -eq 231
+
+plugin math;
+plugin autodiff;
+
+// f(k1, k2) = k1 * k2, df/dk1 = k2, df/dk2 = k1
+fun f(k1 k2: %math.F64): %math.F64 =
+    return (%math.arith.mul 0 (k1, k2));
+
+con extern main [mem : %mem.M 0, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M 0, I32]] =
+    let f_diff = %autodiff.ad f;
+    let k1 = 3.0:(%math.F64);
+    let k2 = 5.0:(%math.F64);
+    f_diff ((k1, k2), ret_cont)
+    where
+        con ret_cont [r: %math.F64, pb: Cn[%math.F64, Cn[%math.F64, %math.F64]]] =
+            pb(1.0:(%math.F64), pb_ret_cont)
+            where
+                con pb_ret_cont [dk1: %math.F64, dk2: %math.F64] =
+                    // f(3,5) = 15, df/dk1 = 5, df/dk2 = 3
+                    // encode 10000*15 + 100*5 + 3 = 150503
+                    let r_i   = %core.bitcast I32 (%math.conv.f2u ⊤:Nat r);
+                    let dk1_i = %core.bitcast I32 (%math.conv.f2u ⊤:Nat dk1);
+                    let dk2_i = %core.bitcast I32 (%math.conv.f2u ⊤:Nat dk2);
+                    let a = %core.wrap.mul 0 (10000I32, r_i);
+                    let b = %core.wrap.add 0 (a, %core.wrap.mul 0 (100I32, dk1_i));
+                    let d = %core.wrap.add 0 (b, dk2_i);
+                    return (mem, d);
+            end;
+    end;
+

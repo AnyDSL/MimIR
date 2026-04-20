@@ -3,6 +3,7 @@
 #include <mim/config.h>
 #include <mim/phase.h>
 
+#include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
 
 #include "mim/plug/autodiff/pass/eval.h"
@@ -115,6 +116,7 @@ const Def* autodiff_type_fun(const Def* ty) {
     // Also handles autodiff call from axm declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
     if (Idx::isa(ty)) return ty;
+    if (math::isa_f(ty)) return ty;
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->arity();
@@ -149,9 +151,12 @@ const Def* zero_def(const Def* T) {
         world.DLOG("zero_arr: {}", zero_arr);
         return zero_arr;
     } else if (Idx::isa(T)) {
-        // TODO: real
         auto zero = world.lit(T, 0)->set("zero");
         world.DLOG("zero_def for int is {}", zero);
+        return zero;
+    } else if (auto w = math::isa_f(T)) {
+        auto zero = math::lit_f(world, *w, 0.0);
+        world.DLOG("zero_def for float is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
         auto ops = DefVec(sig->ops(), [&](const Def* op) { return world.app(world.annex<zero>(), op); });
