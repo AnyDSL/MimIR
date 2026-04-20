@@ -129,10 +129,10 @@ $(function(){initNavTree('option.html','',''); });
     <a href="#autotoc_md261">Constructors </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md262">option.some </a>
+        <a href="#autotoc_md262">%option.some </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md263">option.none </a>
+        <a href="#autotoc_md263">%option.none </a>
       </li>
     </ul>
   </li>
@@ -140,13 +140,13 @@ $(function(){initNavTree('option.html','',''); });
     <a href="#autotoc_md264">Operations </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md265">option.is_some </a>
+        <a href="#autotoc_md265">%option.is_some </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md266">option.unwrap_unsafe </a>
+        <a href="#autotoc_md266">%option.unwrap_unsafe </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md267">option.unwrap_or </a>
+        <a href="#autotoc_md267">%option.unwrap_or </a>
       </li>
     </ul>
   </li>
@@ -158,36 +158,36 @@ $(function(){initNavTree('option.html','',''); });
 <h1 class="doxsection"><a class="anchor" id="autotoc_md258"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
-</div><!-- fragment --> <h1 class="doxsection"><a class="anchor" id="autotoc_md259"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md259"></a>
 Types</h1>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md260"></a>
 option.Option</h2>
 <div class="fragment"><div class="line">lam %option.Opt (T: *) : * = [] ∪ T;</div>
-</div><!-- fragment --> <h1 class="doxsection"><a class="anchor" id="autotoc_md261"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md261"></a>
 Constructors</h1>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md262"></a>
-option.some</h2>
+%option.some</h2>
 <p>Wrap a value into an Option.</p>
 <div class="fragment"><div class="line">lam %option.some {T: *} (v: T) : %option.Opt T = v inj %option.Opt T;</div>
-</div><!-- fragment --> <h2 class="doxsection"><a class="anchor" id="autotoc_md263"></a>
-option.none</h2>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md263"></a>
+%option.none</h2>
 <p>The empty Option.</p>
 <div class="fragment"><div class="line">lam %option.none {T: *} : %option.Opt T = () inj %option.Opt T;</div>
-</div><!-- fragment --> <h1 class="doxsection"><a class="anchor" id="autotoc_md264"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md264"></a>
 Operations</h1>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md265"></a>
-option.is_some</h2>
+%option.is_some</h2>
 <p>Returns true if the Option contains a value.</p>
 <div class="fragment"><div class="line">lam %option.is_some {T: *} (o: %option.Opt T) : Bool =</div>
 <div class="line">    match o with</div>
 <div class="line">        | _: T  =&gt; tt</div>
 <div class="line">        | _: [] =&gt; ff;</div>
-</div><!-- fragment --> <h2 class="doxsection"><a class="anchor" id="autotoc_md266"></a>
-option.unwrap_unsafe</h2>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md266"></a>
+%option.unwrap_unsafe</h2>
 <p>Extract the value without check. Unsafe if None.</p>
 <div class="fragment"><div class="line">axm %option.unwrap_unsafe: {T: *} → %option.Opt T → T, normalize_unwrap_unsafe;</div>
-</div><!-- fragment --> <h2 class="doxsection"><a class="anchor" id="autotoc_md267"></a>
-option.unwrap_or</h2>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md267"></a>
+%option.unwrap_or</h2>
 <p>Extract the value or return a default.</p>
 <div class="fragment"><div class="line">lam %option.unwrap_or {T: *} (o: %option.Opt T) (default: T) : T =</div>
 <div class="line">    match o with</div>

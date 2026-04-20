@@ -100,7 +100,7 @@ var searchData=
   ['is_5fset_97',['is_set',['../classmim_1_1Def.html#a075f30462bdc7ae0e435c8e15cb48fff',1,'mim::Def']]],
   ['is_5fsimd_98',['is_simd',['../namespacemim_1_1ll.html#a2cc504748af4aaca125bef5f9defaa21',1,'mim::ll']]],
   ['is_5fsimd_5faggregate_99',['is_simd_aggregate',['../namespacemim_1_1ll.html#a1d8c2532cd5cfa3288be089807d72f7d',1,'mim::ll']]],
-  ['is_5fsome_100',['is_some',['../namespacemim_1_1plug_1_1option.html#a0e9176a1f35fa6ac1439fed01f871263',1,'mim::plug::option::is_some'],['../option.html#autotoc_md265',1,'option.is_some']]],
+  ['is_5fsome_100',['is_some',['../option.html#autotoc_md265',1,'%option.is_some'],['../namespacemim_1_1plug_1_1option.html#a0e9176a1f35fa6ac1439fed01f871263',1,'mim::plug::option::is_some']]],
   ['is_5fterm_101',['is_term',['../classmim_1_1Def.html#a648a10d226521d9f30d10973296476b3',1,'mim::Def']]],
   ['is_5funiform_102',['is_uniform',['../classmim_1_1Checker.html#a169a88c923419cfcfb6d15a14d1cfa4b',1,'mim::Checker']]],
   ['is_5funique_103',['is_unique',['../vec.html#autotoc_md344',1,'%vec.is_unique'],['../namespacemim_1_1plug_1_1vec.html#a091d66d323366df2a44ace85c3e624a8',1,'mim::plug::vec::is_unique']]],

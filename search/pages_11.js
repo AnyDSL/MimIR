@@ -20,7 +20,7 @@ var searchData=
   ['slf_17',['%math.slf',['../math.html#autotoc_md212',1,'']]],
   ['slice_18',['%tensor.slice',['../tensor.html#autotoc_md323',1,'']]],
   ['slot_19',['%mem.slot',['../mem.html#autotoc_md243',1,'']]],
-  ['some_20',['option.some',['../option.html#autotoc_md262',1,'']]],
+  ['some_20',['%option.some',['../option.html#autotoc_md262',1,'']]],
   ['spaces_21',['Address Spaces',['../gpu.html#autotoc_md167',1,'']]],
   ['split_20is_20useful_22',['Why This Split Is Useful',['../phases.html#autotoc_md73',1,'']]],
   ['ssa_20without_20dominance_23',['🪾 SSA without Dominance',['../index.html#autotoc_md91',1,'']]],

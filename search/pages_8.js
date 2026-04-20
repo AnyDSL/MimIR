@@ -18,7 +18,7 @@ var searchData=
   ['is_20useful_15',['Why This Split Is Useful',['../phases.html#autotoc_md73',1,'']]],
   ['is_5fempty_16',['%ord.is_empty',['../ord.html#autotoc_md277',1,'']]],
   ['is_5floaded_17',['%compile.is_loaded',['../compile.html#autotoc_md130',1,'']]],
-  ['is_5fsome_18',['option.is_some',['../option.html#autotoc_md265',1,'']]],
+  ['is_5fsome_18',['%option.is_some',['../option.html#autotoc_md265',1,'']]],
   ['is_5funique_19',['%vec.is_unique',['../vec.html#autotoc_md344',1,'']]],
   ['item_20synchronization_20',['Work-Item Synchronization',['../gpu.html#autotoc_md191',1,'']]],
   ['iterating_20over_20the_20program_21',['Iterating over the Program',['../dev.html#autotoc_md37',1,'']]],

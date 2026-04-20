@@ -9,7 +9,7 @@ var searchData=
   ['nestphase_6',['NestPhase',['../phases.html#phases_nest_phase',1,'']]],
   ['new_20in_20tree_20plugin_7',['Create a New In-Tree Plugin',['../plugins.html#autotoc_md78',1,'']]],
   ['nodes_8',['🌊 Sea of Nodes',['../index.html#autotoc_md90',1,'']]],
-  ['none_9',['option.none',['../option.html#autotoc_md263',1,'']]],
+  ['none_9',['%option.none',['../option.html#autotoc_md263',1,'']]],
   ['normalization_10',['Normalization',['../matrix.html#autotoc_md220',1,'']]],
   ['normalization_3a_11',['Normalization:',['../matrix.html#autotoc_md223',1,'Normalization:'],['../matrix.html#autotoc_md225',1,'Normalization:']]],
   ['normalizers_12',['Normalizers',['../plugins.html#autotoc_md83',1,'']]],
