@@ -37,18 +37,18 @@ private:
             axms_[new_annex->sym().str()] = new_annex;
         }
 
-        sym2def_["Univ"] = new_world().univ();
-        sym2def_["Bool"] = new_world().type_bool();
-        sym2def_["Nat"]  = new_world().type_nat();
-        sym2def_["I8"]   = new_world().type_i8();
-        sym2def_["I16"]  = new_world().type_i16();
-        sym2def_["I32"]  = new_world().type_i32();
-        sym2def_["I64"]  = new_world().type_i64();
-        sym2def_["ff"]   = new_world().lit_ff();
-        sym2def_["tt"]   = new_world().lit_tt();
-        sym2def_["i8"]   = new_world().lit_nat(0x100);
-        sym2def_["i16"]  = new_world().lit_nat(0x10000);
-        sym2def_["i32"]  = new_world().lit_nat(0x100000000);
+        aliases_["Univ"] = new_world().univ();
+        aliases_["Bool"] = new_world().type_bool();
+        aliases_["Nat"]  = new_world().type_nat();
+        aliases_["I8"]   = new_world().type_i8();
+        aliases_["I16"]  = new_world().type_i16();
+        aliases_["I32"]  = new_world().type_i32();
+        aliases_["I64"]  = new_world().type_i64();
+        aliases_["ff"]   = new_world().lit_ff();
+        aliases_["tt"]   = new_world().lit_tt();
+        aliases_["i8"]   = new_world().lit_nat(0x100);
+        aliases_["i16"]  = new_world().lit_nat(0x10000);
+        aliases_["i32"]  = new_world().lit_nat(0x100000000);
     }
 
     std::pair<rust::Vec<RuleSet>, CostFn> import_config();
@@ -103,8 +103,8 @@ private:
         auto def = added_[id];
         if (def == nullptr) {
             auto sym = get_symbol(id);
-            if (sym2def_.contains(sym))
-                def = sym2def_[sym];
+            if (aliases_.contains(sym))
+                def = aliases_[sym];
             else if (axms_.contains(sym))
                 def = get_axm(sym);
             else if (vars_.contains(sym))
@@ -165,7 +165,7 @@ private:
     std::unordered_map<std::string, const Def*> vars_;
     std::unordered_map<std::string, const Lam*> lams_;
     std::unordered_map<std::string, const Def*> axms_;
-    std::unordered_map<std::string, const Def*> sym2def_;
+    std::unordered_map<std::string, const Def*> aliases_;
 };
 
 }; // namespace mim::plug::eqsat
