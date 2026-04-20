@@ -22,12 +22,13 @@ var searchData=
   ['mim_3a_3aplug_3a_3amem_3a_3apass_19',['pass',['../namespacemim_1_1plug_1_1mem_1_1pass.html',1,'mim::plug::mem']]],
   ['mim_3a_3aplug_3a_3amem_3a_3aphase_20',['phase',['../namespacemim_1_1plug_1_1mem_1_1phase.html',1,'mim::plug::mem']]],
   ['mim_3a_3aplug_3a_3aopt_21',['opt',['../namespacemim_1_1plug_1_1opt.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3aord_22',['ord',['../namespacemim_1_1plug_1_1ord.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3arefly_23',['refly',['../namespacemim_1_1plug_1_1refly.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3aregex_24',['regex',['../namespacemim_1_1plug_1_1regex.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3atensor_25',['tensor',['../namespacemim_1_1plug_1_1tensor.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3atuple_26',['tuple',['../namespacemim_1_1plug_1_1tuple.html',1,'mim::plug']]],
-  ['mim_3a_3aplug_3a_3avec_27',['vec',['../namespacemim_1_1plug_1_1vec.html',1,'mim::plug']]],
-  ['mim_3a_3asexpr_28',['sexpr',['../namespacemim_1_1sexpr.html',1,'mim']]],
-  ['mim_3a_3asys_29',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
+  ['mim_3a_3aplug_3a_3aoption_22',['option',['../namespacemim_1_1plug_1_1option.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3aord_23',['ord',['../namespacemim_1_1plug_1_1ord.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3arefly_24',['refly',['../namespacemim_1_1plug_1_1refly.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3aregex_25',['regex',['../namespacemim_1_1plug_1_1regex.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3atensor_26',['tensor',['../namespacemim_1_1plug_1_1tensor.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3atuple_27',['tuple',['../namespacemim_1_1plug_1_1tuple.html',1,'mim::plug']]],
+  ['mim_3a_3aplug_3a_3avec_28',['vec',['../namespacemim_1_1plug_1_1vec.html',1,'mim::plug']]],
+  ['mim_3a_3asexpr_29',['sexpr',['../namespacemim_1_1sexpr.html',1,'mim']]],
+  ['mim_3a_3asys_30',['sys',['../namespacemim_1_1sys.html',1,'mim']]]
 ];

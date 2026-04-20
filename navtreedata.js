@@ -47,6 +47,7 @@ var NAVTREE =
       [ "matrix", "matrix.html", null ],
       [ "mem", "mem.html", null ],
       [ "opt", "opt.html", null ],
+      [ "option", "option.html", null ],
       [ "ord", "ord.html", null ],
       [ "refly", "refly.html", null ],
       [ "regex", "regex.html", null ],
@@ -111,14 +112,14 @@ var NAVTREEINDEX =
 "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5ae40c8add55844b7390e7fecc9a05e5f6",
 "classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a411a9e18df4811dc62e6ae127db12698",
 "clos_2autogen_8h.html#a11c51dfad6a0499cc05680ebf19a190f",
-"eta__exp_8cpp_source.html",
-"namespacemembers_func_i.html",
-"namespacemim.html#afb12dbffaaa27bca46f171517d96256daf56ec2ab97d604832d90f6394e3f341f",
-"namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673a138a953595139b0fc6804f15d50f00ce",
-"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a31f644026e4c96dee546c228a1894c68",
-"namespacemim_1_1plug_1_1tuple.html#a2c3b889c139b975a1735543c8ed40664",
-"structmim_1_1Dbg.html#a21a52caa2d0e580de41336e515d6271a",
-"structmim_1_1sexpr_1_1BB.html#a8f65c152cbec0a83fcb0c6fbfab63e79"
+"emitter_8h.html",
+"namespacemembers_func_c.html",
+"namespacemim.html#afb12dbffaaa27bca46f171517d96256daa52035083e0f187cb1b19b131b4ecdd5",
+"namespacemim_1_1plug_1_1core.html#a699face68306eeb01636f32010cc2d9d",
+"namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a0ba64a0dea00947916dfb6a66866e1ca",
+"namespacemim_1_1plug_1_1tensor.html#a6b05dd46a3d8119c30b9e7834ac5cb3b",
+"structmim_1_1Annex.html#a47ac5c63d63beab590bc2d469bb6a29b",
+"structmim_1_1plug_1_1regex_1_1app__range.html#a2761d4060fc6d48c0bb624d69ad06286"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

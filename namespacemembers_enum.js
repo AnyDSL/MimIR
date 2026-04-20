@@ -13,11 +13,13 @@ var namespacemembers_enum =
     [ "l", "namespacemembers_enum_l.html", null ],
     [ "m", "namespacemembers_enum_m.html", null ],
     [ "n", "namespacemembers_enum_n.html", null ],
+    [ "o", "namespacemembers_enum_o.html", null ],
     [ "p", "namespacemembers_enum_p.html", null ],
     [ "q", "namespacemembers_enum_q.html", null ],
     [ "r", "namespacemembers_enum_r.html", null ],
     [ "s", "namespacemembers_enum_s.html", null ],
     [ "t", "namespacemembers_enum_t.html", null ],
+    [ "u", "namespacemembers_enum_u.html", null ],
     [ "v", "namespacemembers_enum_v.html", null ],
     [ "w", "namespacemembers_enum_w.html", null ],
     [ "z", "namespacemembers_enum_z.html", null ]

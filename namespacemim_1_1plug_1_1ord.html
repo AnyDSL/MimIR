@@ -169,7 +169,7 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-member-group" class="groupheader"><a id="member-group" name="member-group"></a>
 %ord.get</h2></td></tr>
 <tr class="memitem:aba44102109a1561a91c6182d20785923" id="r_aba44102109a1561a91c6182d20785923"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#aba44102109a1561a91c6182d20785923">get</a> : flags_t </td></tr>
-<tr class="memitem:aca23be19d49b0a5baa10f74760b2e4ef" id="r_aca23be19d49b0a5baa10f74760b2e4ef"><td class="memItemLeft">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="#aca23be19d49b0a5baa10f74760b2e4ef">normalize_get</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
+<tr class="memitem:a7878654df2e88fdd51ff79ae53d29e50" id="r_a7878654df2e88fdd51ff79ae53d29e50"><td class="memItemLeft">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a7878654df2e88fdd51ff79ae53d29e50">normalize_get</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *, const <a class="el" href="classmim_1_1Def.html">Def</a> *callee, const <a class="el" href="classmim_1_1Def.html">Def</a> *arg)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-member-group" class="groupheader"><a id="member-group" name="member-group"></a>
 %ord.contains</h2></td></tr>
@@ -527,14 +527,14 @@ template&lt;<a class="el" href="#ab41bd48f8eb19704f4036734356f166d">contains</a>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00035">35</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00047">47</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="ord_2autogen_8h_source.html#l00097">map</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00439">mim::Def::world()</a>.</p>
 
 </div>
 </div>
-<a id="aca23be19d49b0a5baa10f74760b2e4ef" name="aca23be19d49b0a5baa10f74760b2e4ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca23be19d49b0a5baa10f74760b2e4ef">&#9670;&#160;</a></span>normalize_get()</h2>
+<a id="a7878654df2e88fdd51ff79ae53d29e50" name="a7878654df2e88fdd51ff79ae53d29e50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7878654df2e88fdd51ff79ae53d29e50">&#9670;&#160;</a></span>normalize_get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -547,7 +547,7 @@ template&lt;<a class="el" href="#ab41bd48f8eb19704f4036734356f166d">contains</a>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em></em></span>, </td>
+          <td class="paramtype">const <a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>callee</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -557,9 +557,9 @@ template&lt;<a class="el" href="#ab41bd48f8eb19704f4036734356f166d">contains</a>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00021">21</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00022">22</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="ord_2autogen_8h_source.html#l00037">map</a>, and <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>.</p>
+<p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="ord_2autogen_8h_source.html#l00037">map</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00439">mim::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -589,7 +589,7 @@ template&lt;<a class="el" href="#af994f9a15f3bed1a74847bf1bc0160d3">init</a> id&
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00010">10</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00011">11</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 </div>
 </div>
@@ -619,7 +619,7 @@ template&lt;<a class="el" href="#ac5fab58f9ff10ed939f498f4418d5a8f">insert</a> i
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00055">55</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00067">67</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>, <a class="el" href="def_8h_source.html#l00826">mim::Lit::isa()</a>, <a class="el" href="ord_2autogen_8h_source.html#l00109">map</a>, <a class="el" href="def_8h_source.html#l00390">mim::Def::projs()</a>, and <a class="el" href="ord_2autogen_8h_source.html#l00036">set</a>.</p>
 
@@ -651,7 +651,7 @@ template&lt;<a class="el" href="#a2f8d1f32c6daa846d3673454db617c38">size</a>&gt;
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00016">16</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ord_2normalizers_8cpp_source.html#l00017">17</a> of file <a class="el" href="ord_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="axm_8h_source.html#l00107">mim::Axm::isa()</a>.</p>
 

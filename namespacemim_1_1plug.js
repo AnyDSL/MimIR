@@ -419,6 +419,17 @@ var namespacemim_1_1plug =
       [ "register_normalizers", "namespacemim_1_1plug_1_1demo.html#ae296affd3e0486ee32cf817d398dc72b", null ],
       [ "Plugin_Id", "namespacemim_1_1plug_1_1demo.html#a8e835071634d3978aea424f632e35d08", null ]
     ] ],
+    [ "option", "namespacemim_1_1plug_1_1option.html", [
+      [ "is_some", "namespacemim_1_1plug_1_1option.html#a0e9176a1f35fa6ac1439fed01f871263", null ],
+      [ "none", "namespacemim_1_1plug_1_1option.html#ad870835f1ef18526c9b33492ac2ded9f", null ],
+      [ "Opt", "namespacemim_1_1plug_1_1option.html#a1b4fe5a188a5e5a070a9a17c8740b798", null ],
+      [ "some", "namespacemim_1_1plug_1_1option.html#ab6c6d898b0c82f9c3c9a52ed3bb5bfd8", null ],
+      [ "unwrap_or", "namespacemim_1_1plug_1_1option.html#a0cf323d12b847d73a3f7072558fcf2ad", null ],
+      [ "unwrap_unsafe", "namespacemim_1_1plug_1_1option.html#a2a034eea369e04135212fd3f8c51ae53", null ],
+      [ "normalize_unwrap_unsafe", "namespacemim_1_1plug_1_1option.html#a742c73a0dc42cd460e1622e93ba3b372", null ],
+      [ "register_normalizers", "namespacemim_1_1plug_1_1option.html#af6203c25caf29713dc1dcf66748919cc", null ],
+      [ "Plugin_Id", "namespacemim_1_1plug_1_1option.html#a0c1c5b5078108c1ab6c88e6f766810e3", null ]
+    ] ],
     [ "ord", "namespacemim_1_1plug_1_1ord.html", [
       [ "contains", "namespacemim_1_1plug_1_1ord.html#ab41bd48f8eb19704f4036734356f166d", [
         [ "set", "namespacemim_1_1plug_1_1ord.html#ab41bd48f8eb19704f4036734356f166dacdaeeeba9b4a4c5ebf042c0215a7bb0e", null ],
@@ -445,7 +456,7 @@ var namespacemim_1_1plug =
         [ "map", "namespacemim_1_1plug_1_1ord.html#a2f8d1f32c6daa846d3673454db617c38a1d78dc8ed51214e518b5114fe24490ae", null ]
       ] ],
       [ "normalize_contains", "namespacemim_1_1plug_1_1ord.html#a8bccaea168c844dbebc2f252cdf37a11", null ],
-      [ "normalize_get", "namespacemim_1_1plug_1_1ord.html#aca23be19d49b0a5baa10f74760b2e4ef", null ],
+      [ "normalize_get", "namespacemim_1_1plug_1_1ord.html#a7878654df2e88fdd51ff79ae53d29e50", null ],
       [ "normalize_init", "namespacemim_1_1plug_1_1ord.html#acfdfd946d58d1ec4b8773d1e87204a17", null ],
       [ "normalize_insert", "namespacemim_1_1plug_1_1ord.html#a0a0cd2de80b19c6442cca3a48c25c376", null ],
       [ "normalize_size", "namespacemim_1_1plug_1_1ord.html#a43293b1d5a0e603e953bfbed048d5a99", null ],

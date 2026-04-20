@@ -1,10 +1,10 @@
 var searchData=
 [
   ['effects_0',['Effects',['../mem.html#autotoc_md238',1,'Operations w/ Side Effects'],['../mem.html#autotoc_md247',1,'Operations w/o Side Effects']]],
-  ['element_5fwise_1',['%tensor.element_wise',['../tensor.html#autotoc_md311',1,'']]],
-  ['empty_2',['%regex.empty',['../regex.html#autotoc_md302',1,'']]],
+  ['element_5fwise_1',['%tensor.element_wise',['../tensor.html#autotoc_md321',1,'']]],
+  ['empty_2',['%regex.empty',['../regex.html#autotoc_md312',1,'']]],
   ['eq_3',['%core.icmp.xYgLE (eq)',['../autodiff.html#autotoc_md118',1,'']]],
-  ['equiv_4',['%refly.equiv',['../refly.html#autotoc_md283',1,'']]],
+  ['equiv_4',['%refly.equiv',['../refly.html#autotoc_md293',1,'']]],
   ['er_5',['%math.er',['../math.html#autotoc_md205',1,'']]],
   ['example_6',['Example',['../coding.html#autotoc_md5',1,'']]],
   ['example_3a_20sccp_7',['Example: SCCP',['../phases.html#autotoc_md70',1,'']]],

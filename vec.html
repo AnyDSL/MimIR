@@ -115,41 +115,41 @@ $(function(){initNavTree('vec.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md326">Dependencies </a>
+    <a href="#autotoc_md336">Dependencies </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md327">Iterators </a>
+    <a href="#autotoc_md337">Iterators </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md328">%vec.fold </a>
+        <a href="#autotoc_md338">%vec.fold </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md329">%vec.zip </a>
+        <a href="#autotoc_md339">%vec.zip </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md330">Scanning </a>
+    <a href="#autotoc_md340">Scanning </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md331">%vec.scan </a>
+        <a href="#autotoc_md341">%vec.scan </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md332">%vec.first / %vec.last </a>
+        <a href="#autotoc_md342">%vec.first / %vec.last </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md333">%vec.len </a>
+        <a href="#autotoc_md343">%vec.len </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md334">%vec.is_unique </a>
+        <a href="#autotoc_md344">%vec.is_unique </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md335">Modifiers </a>
+    <a href="#autotoc_md345">Modifiers </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md336">%vec.diff </a>
+        <a href="#autotoc_md346">%vec.diff </a>
       </li>
     </ul>
   </li>
@@ -158,13 +158,13 @@ $(function(){initNavTree('vec.html','',''); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2vec"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1vec.html" title="The vec Plugin">mim::plug::vec</a></dd></dl>
 <p>Utilitly functions for arrays to behave them like vectors in other languages.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md326"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md336"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
 <div class="line">plugin refly;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md327"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md337"></a>
 Iterators</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md328"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md338"></a>
 %vec.fold</h2>
 <p><a href="https://en.wikipedia.org/wiki/Fold_(higher-order_function)">Fold aka Reduction</a> of the vector with <span class="tt">f</span>:</p><ul>
 <li><span class="tt">%vec.fold.l f (init, (e1, ..., en))</span> is <span class="tt">f (... (f (f (init, e1), e2)) ..., en)</span>.</li>
@@ -178,39 +178,39 @@ Iterators</h1>
 </table>
 <div class="fragment"><div class="line">axm %vec.fold(l): {A E: *} → {n: Nat} → [f: [A, E] → A] → [A, «n; E»] → A, normalize_fold;</div>
 <div class="line">axm %vec.fold(r): {A E: *} → {n: Nat} → [f: [E, A] → A] → [«n; E», A] → A, normalize_fold;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md329"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md339"></a>
 %vec.zip</h2>
 <p><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Combines</a> multiple vectors element-wise using the provided function. Given <span class="tt">ni</span> vectors of length <span class="tt">n</span>, and a function <span class="tt">f</span> that takes one element from each vector, <span class="tt">%vec.zip</span> produces a new vector of length <span class="tt">n</span> where each element is the result of applying <span class="tt">f</span>.</p>
 <div class="fragment"><div class="line">axm %vec.zip: {ni n: Nat} → {Is: «ni; *», R: *} → [f: «i: ni; Is#i» → R] → [«i: ni; «n; Is#i»»] → «n; R», normalize_zip;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md330"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md340"></a>
 Scanning</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md331"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md341"></a>
 %vec.scan</h2>
 <p>Does the given predicate hold for all elements/at least one element?</p>
 <div class="fragment"><div class="line">axm %vec.scan(for_all, exists): {E: *} → {n: Nat} → [p: E → Bool] → «n; E» → Bool, normalize_scan;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md332"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md342"></a>
 %vec.first / %vec.last</h2>
 <p>Is the given element in the vector, and what is the index of its first/last occurence?</p>
 <div class="fragment"><div class="line">lam f_first    {E: *} {n: Nat} (eq: [E, E] → Bool) (x: E) ((b: Bool, i: Idx n), y: E): [Bool, Idx n] = (((ff, %core.wrap.add 0 (i, %core.idx n 0 1)), (tt, i))#(eq (x, y)), (b, i))#b;</div>
 <div class="line">lam f_last     {E: *} {n: Nat} (eq: [E, E] → Bool) (x: E) (y: E, [b: Bool, i: Idx n]): [Bool, Idx n] = f_first eq x ((b, i), y);</div>
 <div class="line">lam %vec.first {E: *} {n: Nat} (eq: [E, E] → Bool) (v: «n; E», x: E):                  [Bool, Idx n] = %vec.fold.l (f_first eq x) ((ff, %core.idx n 0 0), v);</div>
 <div class="line">lam %vec.last  {E: *} {n: Nat} (eq: [E, E] → Bool) (v: «n; E», x: E):                  [Bool, Idx n] = %vec.fold.r (f_last eq x) (v, (ff, %core.idx n 0 0));</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md333"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md343"></a>
 %vec.len</h2>
 <p>Get length of vector.</p>
 <div class="fragment"><div class="line">lam %vec.len {n: Nat} {T: *} [«n; T»]: Nat = n;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md334"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md344"></a>
 %vec.is_unique</h2>
 <p>Checks whether all elements in the given vector are distinct from each other (using structural equivalence).</p>
 <div class="fragment"><div class="line">axm %vec.is_unique: {T: *} → {n: Nat} → «n; T» → Bool, normalize_is_unique;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md335"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md345"></a>
 Modifiers</h1>
 <p>Concatenation of an <span class="tt">n</span>-vector and an <span class="tt">m</span>-vector to an <span class="tt">n + m</span>-vector.</p>
 <div class="fragment"><div class="line">axm %vec.cat: {n m: Nat}</div>
 <div class="line">            → {T: *}</div>
 <div class="line">            → [«n; T», «m; T»]</div>
 <div class="line">            → «%core.nat.add (n, m); T», normalize_cat;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md336"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md346"></a>
 %vec.diff</h2>
 <p>Removes elements from vector.</p>
 <div class="fragment"><div class="line">axm %vec.diff: {T: *}</div>

@@ -1,24 +1,4 @@
 var searchData=
 [
-  ['range_0',['range',['../namespacemim_1_1plug_1_1regex.html#a64e05eb3efae975d47944dc127eede75',1,'mim::plug::regex']]],
-  ['read_1',['read',['../namespacemim_1_1plug_1_1matrix.html#ad88476eb54b27ecc6ea9b6656c378f01',1,'mim::plug::matrix']]],
-  ['reduce_2',['reduce',['../namespacemim_1_1plug_1_1tensor.html#a1f25affd40b6efbe8a3f08c4a9ba9cc3',1,'mim::plug::tensor']]],
-  ['refine_3',['refine',['../namespacemim_1_1plug_1_1refly.html#a6f3aaae5967d2117b76b540b8cd92065',1,'mim::plug::refly']]],
-  ['reflect_4',['reflect',['../namespacemim_1_1plug_1_1refly.html#aee2261b0b7331b07efb5c1cea91421ae',1,'mim::plug::refly']]],
-  ['reify_5',['reify',['../namespacemim_1_1plug_1_1refly.html#a7d9a82248335e8645a9d39bb906f230b',1,'mim::plug::refly']]],
-  ['remem_6',['remem',['../namespacemim_1_1plug_1_1mem.html#a94b7e75543b6cd09a1ff0c3fa3ac1502',1,'mim::plug::mem']]],
-  ['remem_5frepl_7',['remem_repl',['../namespacemim_1_1plug_1_1mem.html#ad9d89e9549e0e2492fa7f2f4ae29a230',1,'mim::plug::mem']]],
-  ['remove_5fdbg_5frepl_8',['remove_dbg_repl',['../namespacemim_1_1plug_1_1refly.html#aaa7635b22e58dbea43a404116ff8a640',1,'mim::plug::refly']]],
-  ['repl_9',['Repl',['../namespacemim_1_1plug_1_1compile.html#a90f4ee78f911dfe14849343d63e87a92',1,'mim::plug::compile']]],
-  ['repl2phase_10',['repl2phase',['../namespacemim_1_1plug_1_1compile.html#a440af91e9ba6858b04b667f06a0e60ee',1,'mim::plug::compile']]],
-  ['repls_11',['repls',['../namespacemim_1_1plug_1_1compile.html#a98382c32be847ac58cfba2794409e926',1,'mim::plug::compile']]],
-  ['reshape_12',['reshape',['../namespacemim_1_1plug_1_1tensor.html#a7954b221c8c568ad0918b4397d796ad2',1,'mim::plug::tensor']]],
-  ['reshape_5farg_13',['reshape_arg',['../namespacemim_1_1plug_1_1mem.html#aeb9697d7f21a6353fec209d17af59b1b',1,'mim::plug::mem']]],
-  ['reshape_5fflat_14',['reshape_flat',['../namespacemim_1_1plug_1_1mem.html#af1ce190e137cdb2ed5ad67076a0c4b24',1,'mim::plug::mem']]],
-  ['reshape_5fmode_15',['reshape_mode',['../namespacemim_1_1plug_1_1mem.html#a710a923b412df8100cf79e67ba3f6601',1,'mim::plug::mem']]],
-  ['reshape_5fpass_16',['reshape_pass',['../namespacemim_1_1plug_1_1mem.html#ae1bcb9cb9ed8bb8acf213d544629b15b',1,'mim::plug::mem']]],
-  ['ret_5fwrap_5fphase_17',['ret_wrap_phase',['../namespacemim_1_1plug_1_1compile.html#a2b6919d5df487ee98ed953de54459789',1,'mim::plug::compile']]],
-  ['round_18',['round',['../namespacemim_1_1plug_1_1math.html#aaf7502aae7bb9f2d1d1a1b56cc65f87a',1,'mim::plug::math']]],
-  ['rrt_19',['rrt',['../namespacemim_1_1plug_1_1math.html#a33b0046022fadb834f2a7afd00da34a0',1,'mim::plug::math']]],
-  ['rt_20',['rt',['../namespacemim_1_1plug_1_1math.html#a57a9fbfdbd3e0df3260236539c3c3598',1,'mim::plug::math']]]
+  ['quant_0',['quant',['../namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55',1,'mim::plug::regex']]]
 ];
