@@ -9,24 +9,30 @@
 /// ## Dependencies
 ///
 plugin core;
+///
 /// ## Types
+///
 /// ### %option.Option
 ///
-///
 lam %option.Opt (T: *) : * = [] ∪ T;
+///
 /// ## Constructors
-/// ### %option.some
+///
+/// ### %%option.some
 ///
 /// Wrap a value into an Option.
 ///
 lam %option.some {T: *} (v: T) : %option.Opt T = v inj %option.Opt T;
-/// ### %option.none
+///
+/// ### %%option.none
 ///
 /// The empty Option.
 ///
 lam %option.none {T: *} : %option.Opt T = () inj %option.Opt T;
+///
 /// ## Operations
-/// ### %option.is_some
+///
+/// ### %%option.is_some
 ///
 /// Returns true if the Option contains a value.
 ///
@@ -34,12 +40,14 @@ lam %option.is_some {T: *} (o: %option.Opt T) : Bool =
     match o with
         | _: T  => tt
         | _: [] => ff;
-/// ### %option.unwrap_unsafe
+///
+/// ### %%option.unwrap_unsafe
 ///
 /// Extract the value without check. Unsafe if None.
 ///
 axm %option.unwrap_unsafe: {T: *} → %option.Opt T → T, normalize_unwrap_unsafe;
-/// ### %option.unwrap_or
+///
+/// ### %%option.unwrap_or
 ///
 /// Extract the value or return a default.
 ///
