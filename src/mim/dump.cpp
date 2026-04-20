@@ -45,11 +45,8 @@ std::string_view external(const Def* def) {
 
 /// This is a wrapper to dump a Def "inline" and print it with all of its operands.
 struct Inline {
-    Inline(const Def* def, int dump_gid)
-        : def_(def)
-        , dump_gid_(dump_gid) {}
     Inline(const Def* def)
-        : Inline(def, def->world().flags().dump_gid) {}
+        : def_(def) {}
 
     const Def* operator->() const { return def_; }
     const Def* operator*() const { return def_; }
@@ -73,7 +70,6 @@ struct Inline {
 
 private:
     const Def* def_;
-    const int dump_gid_;
 
     friend std::ostream& operator<<(std::ostream&, Inline);
 };
@@ -150,7 +146,6 @@ std::ostream& dump_pi_dom(std::ostream& os, const Pi* pi) {
 }
 
 std::ostream& operator<<(std::ostream& os, Inline u) {
-    if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
     if (auto mut = u->isa_mut(); mut && !mut->is_set()) return os << "unset";
 
     bool ascii = u->world().flags().ascii;
@@ -391,11 +386,7 @@ void Dumper::dump(Lam* lam) {
         os << ' ';
         auto num_doms = group->var() ? group->var()->num_tprojs() : group->type()->dom()->num_tprojs();
         auto limit    = is_fun && group == last ? num_doms - 1 : num_doms;
-        dump_group(group->var(),
-                   group->type()->dom(),
-                   group->type()->is_implicit(),
-                   !is_con,
-                   limit,
+        dump_group(group->var(), group->type()->dom(), group->type()->is_implicit(), !is_con, limit,
                    !is_fun || group != last);
         if (is_con && group == last) print(os, "@({})", group->filter());
     }
@@ -426,7 +417,7 @@ void Dumper::dump(Lam* lam) {
 }
 
 void Dumper::dump_let(const Def* def) {
-    tab.print(os, "let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, 0));
+    tab.print(os, "let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def));
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type) {
@@ -438,17 +429,15 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
             print(os, "{}: {}", def->unique_name(), type);
         } else {
             size_t i = 0;
-            print(os,
-                  "({, }) as {}",
-                  Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }),
+            print(os, "({, }) as {}", Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }),
                   def->unique_name());
         }
     }
 }
 
 void Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias) {
-    auto l = implicit ? '{' : paren_style ? '(' : '[';
-    auto r = implicit ? '}' : paren_style ? ')' : ']';
+    auto l           = implicit ? '{' : paren_style ? '(' : '[';
+    auto r           = implicit ? '}' : paren_style ? ')' : ']';
     auto dump_binder = [&](const Def* binder, const Def* binder_type) {
         if (binder)
             dump_ptrn(binder, binder_type);
@@ -469,9 +458,9 @@ void Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool par
     }
 
     os << l;
-    print(os,
-          "{, }",
-          Elem(std::views::iota(size_t(0), limit), [&](auto i) { dump_binder(def ? def->tproj(i) : nullptr, type->tproj(i)); }));
+    print(os, "{, }", Elem(std::views::iota(size_t(0), limit), [&](auto i) {
+              dump_binder(def ? def->tproj(i) : nullptr, type->tproj(i));
+          }));
     os << r;
     if (alias && def) print(os, " as {}", def->unique_name());
 }
@@ -564,10 +553,7 @@ void World::dump(std::ostream& os) {
         auto dumper = Dumper(os, &nest);
 
         for (const auto& import : driver().imports())
-            print(os,
-                  "{} {};\n",
-                  import.tag == ast::Tok::Tag::K_plugin ? "plugin" : "import",
-                  import.sym);
+            print(os, "{} {};\n", import.tag == ast::Tok::Tag::K_plugin ? "plugin" : "import", import.sym);
         dumper.recurse(nest.root());
     }
 
