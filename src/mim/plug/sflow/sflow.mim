@@ -29,41 +29,53 @@ import compile;
 /// ## Branching
 /// Represents a structured branch (if-else or switch-case)
 ///
+/// The header argument to any structure must always point to the lam containing it, otherwise
+/// the normalizer will throw an error.
+///
 /// ### Notes:
 /// If the header argument is not an extract then it is
 /// assumed the branch has only a single case and it is
 /// normalized to a simple call to body.
-axm %sflow.Selection: {M: ★} → {merge: Cn M} → ★;
-axm %sflow.merge : {M: ★} → %sflow.Selection M → Cn M;
-axm %sflow.select: {n: Nat} → {T M: ★}
-  → [merge: Cn M]
+axm %sflow.Selection: {H: ★} → [header: Cn H] → [B: ★] → ★;
+axm %sflow.select(breeak): {H B: ★, header: Cn H} → [%sflow.Selection header B] → Cn B;
+axm %sflow.select(head): {n: Nat} → {T B H: ★}
+  → [header: Cn H]
+  → [break: Cn B]
   → [tuple: «n; Cn [T, %sflow.Selection merge]»]
   → [index: Idx n]
   → Cn T, normalize_branch;
 
-axm %sflow.Switch: {B: ★} → {break: Cn B} → ★;
-axm %sflow.swiitch: {n: Nat} → {T B: ★}
+axm %sflow.Switch: {H: ★} → [header: Cn H] → [C: ★] → [B: ★] → ★;
+axm %sflow.swiitch(coontinue): {H C B: ★, header: Cn H} → %sflow.Switch header C B → Cn C;
+axm %sflow.swiitch(breeak): {H C B: ★, header: Cn H} → %sflow.Switch header C B → Cn B;
+axm %sflow.swiitch(head): {n: Nat} → {T B H: ★}
+  → [header: Cn H]
   → [break: Cn B]
-  → [targets: «n; [Nat, Cn [T, %sflow.Switch break]]»]
-  → [default: Cn T]
+  → [targets: «n; [Nat, Cn [T, %sflow.Switch header T B]]»]
+  → [default: Cn [T, %sflow.Switch header ⊥ B]]
   → [index: Nat]
   → Cn T, normalize_switch;
 
 /// ## Loops
 ///
 /// Represents a structured loop (for or while)
-axm %sflow.Loop: {C B: ★} → {continue: Cn C} → {break: Cn B} → ★;
-axm %sflow.coontinue : {C B: ★} → %sflow.Loop C B → Cn C;
-axm %sflow.breeak : {C B: ★} → %sflow.Loop C B → Cn B;
-axm %sflow.loop: {C B T: ★}
+axm %sflow.Loop: {H: ★} → [header: Cn H] → [C: ★] → [B: ★] → ★;
+axm %sflow.loop(coontinue): {H C B: ★, header: Cn H} → %sflow.Loop header C B → Cn C;
+axm %sflow.loop(breeak): {H C B: ★, header: Cn H} → %sflow.Loop header C B → Cn B;
+axm %sflow.loop(head): {C B T H: ★}
+  → [header: Cn H]
   → [continue: Cn C]
   → [break: Cn B]
-  → [body: Cn [T, %sflow.Loop continue break]]
+  → [body: Cn [T, %sflow.Loop header C B]]
   → [condition: Bool]
   → Cn T, normalize_loop;
 
 /// ## Phases
 ///
+/// Inserts additional lams if multiple structures share the same merge lam.
+axm %sflow.seperate_merge: %compile.Phase;
+///
+/// Performs controlled node splitting to ensure the control flow graph is reducible.
 axm %sflow.reduciblify: %compile.Phase;
 ///
 /// Transforms control flow between basic blocks into
