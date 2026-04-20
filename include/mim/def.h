@@ -578,7 +578,7 @@ public:
     /// This is the actual `def` that will be set as the `i`th operand.
     virtual const Def* check([[maybe_unused]] size_t i, const Def* def) { return def; }
 
-    /// After all Def::ops have ben Def::set, this method will be invoked to check the type of this mutable.
+    /// After all Def::ops have been Def::set, this method will be invoked to check the type of this mutable.
     /// The method returns a possibly updated version of its type (e.g. where Hole%s have been resolved).
     /// If different from Def::type, it will update its Def::type to a Def::zonk%ed version of that.
     virtual const Def* check() { return type(); }
@@ -596,7 +596,7 @@ public:
     const Def* zonk_mut() const;
     ///@}
 
-    /// zonk%s all @p defs and retuns a new DefVec.
+    /// zonk%s all @p defs and returns a new DefVec.
     static DefVec zonk(Defs defs);
 
     /// @name dump

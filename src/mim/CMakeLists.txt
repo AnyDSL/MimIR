@@ -99,6 +99,12 @@ install(
 )
 
 add_subdirectory(cli)
+configure_file(
+    "${PROJECT_SOURCE_DIR}/cmake/mim-build-config.cmake.in"
+    "${CMAKE_BINARY_DIR}/mim-config.cmake"
+    @ONLY
+)
+set(mim_DIR "${CMAKE_BINARY_DIR}")
 add_subdirectory(plug)
 
 add_dependencies(mim_all libmim)

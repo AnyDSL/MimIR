@@ -25,12 +25,33 @@ struct BB {
 
     template<class... Args>
     void body(const char* s, Args&&... args) {
-        print(body().emplace_back(), s, std::forward<Args&&>(args)...);
+        print(body().emplace_back(), s, std::forward<Args>(args)...);
     }
 
     template<class... Args>
     void tail(const char* s, Args&&... args) {
-        print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
+        print(tail().emplace_back(), s, std::forward<Args>(args)...);
+    }
+
+    template<class... Args>
+    std::string assign(Tab tab, std::string name, const char* s, Args&&... args) {
+        if (!assigned.contains(name)) {
+            assigned.insert(name);
+            auto& os = body().emplace_back();
+            print(tab.lnprint(os, "(let {} ", name), s, std::forward<Args>(args)...);
+        }
+        return name;
+    }
+
+    template<class Fn>
+    std::string assign(Tab tab, std::string name, Fn&& print_term) {
+        if (!assigned.contains(name)) {
+            assigned.insert(name);
+            auto& os = body().emplace_back();
+            tab.lnprint(os, "(let {} ", name);
+            print_term(os);
+        }
+        return name;
     }
 
     template<class... Args>
@@ -404,17 +425,12 @@ std::string Emitter::emit_type(BB& bb, const Def* type) {
                     break;
                 }
         }
-        if (auto lit = Lit::isa(index); (lit && tuple->isa<Var>()) || is_nested_proj)
+        if (!slotted() && ((Lit::isa(index) && tuple->isa<Var>()) || is_nested_proj))
             print(os, "{}", id(extract));
         else
             print(os, "(extract {} {})", emit_type(bb, tuple), emit_type(bb, index));
     } else if (auto mType = type->isa<Type>()) {
-        if (auto level = Lit::isa(mType->level())) {
-            if (level == 0) print(os, "(type (lit 0 Univ))");
-            if (level == 1) print(os, "(type (lit 1 Univ))");
-        } else {
-            print(os, "(type {})", emit_type(bb, mType->level()));
-        }
+        print(os, "(type {})", emit_type(bb, mType->level()));
     } else if (type->isa<Univ>()) {
         print(os, "Univ");
     } else if (auto reform = type->isa<Reform>()) {
@@ -526,6 +542,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 tab.lnprint(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
         else
             tab.lnprint(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
+
+    } else if (auto tuple = def->isa<Tuple>()) {
+        tab.print(os, "{}", emit_node(bb, tuple, "tuple", true));
+
+    } else if (auto pack = def->isa<Pack>()) {
+        tab.print(os, "{}", emit_node(bb, pack, "pack"));
 
     } else if (auto tuple = def->isa<Tuple>()) {
         tab.print(os, "{}", emit_node(bb, tuple, "tuple", true));

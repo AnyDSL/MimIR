@@ -8,8 +8,6 @@
 .DS_Store
 .cache
 build*/
-target/
-cargo.lock
 compile_commands.json
 vgcore.*
 assets/*.aux
@@ -18,5 +16,7 @@ assets/*.fls
 assets/logo.log
 assets/logo.pdf
 assets/*.synctex.gz
-Makefile
+extra/*
+!extra/
+!extra/README.md
 .clangd
