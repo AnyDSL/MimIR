@@ -38,27 +38,6 @@ struct BB {
         if (!assigned.contains(name)) {
             assigned.insert(name);
             auto& os = body().emplace_back();
-            print(tab.lnprint(os, "(let {} ", name), s, std::forward<Args>(args)...);
-        }
-        return name;
-    }
-
-    template<class Fn>
-    std::string assign(Tab tab, std::string name, Fn&& print_term) {
-        if (!assigned.contains(name)) {
-            assigned.insert(name);
-            auto& os = body().emplace_back();
-            tab.lnprint(os, "(let {} ", name);
-            print_term(os);
-        }
-        return name;
-    }
-
-    template<class... Args>
-    std::string assign(Tab tab, std::string name, const char* s, Args&&... args) {
-        if (!assigned.contains(name)) {
-            assigned.insert(name);
-            auto& os = body().emplace_back();
             print(tab.lnprint(os, "(let {} ", name), s, std::forward<Args&&>(args)...);
         }
         return name;

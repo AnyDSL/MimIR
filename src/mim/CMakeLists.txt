@@ -73,7 +73,7 @@ include(
 )
 configure_file(
     "${PROJECT_SOURCE_DIR}/external/mimir-eqsat/dist/include/mimir_eqsat.h"
-    "${CMAKE_BINARY_DIR}/include/mim/plug/eqsat/eqsat_rs.h"
+    "${CMAKE_BINARY_DIR}/include/rust/mimir_eqsat.h"
 )
 target_link_libraries(libmim
     PUBLIC

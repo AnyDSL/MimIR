@@ -219,7 +219,6 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         }
         return dump_ascribed(os, lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
-        // TODO: It would be better to also print ex->unique_name() if this is a projection from a nested sigma
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
         dump_child(os, Prec::Extract, ex->tuple(), true);
         os << '#';
