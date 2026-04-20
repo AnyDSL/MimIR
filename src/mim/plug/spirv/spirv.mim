@@ -10,7 +10,8 @@ import core;
 import math;
 import mem;
 import vec;
-import refly;
+
+let M = %mem.M 0;
 
 /// ## Execution Models
 ///
@@ -37,6 +38,7 @@ axm %spirv.entry: %spirv.Model → {n: Nat} → «n; %spirv.Mode» → ★;
 /// ## Decorations
 ///
 axm %spirv.Decoration: ★;
+let Decoration = %spirv.Decoration;
 
 axm %spirv.decorc(block): %spirv.Decoration;
 axm %spirv.decor(builtin): %spirv.Model → Nat → %spirv.Decoration;
@@ -44,51 +46,48 @@ axm %spirv.decor(location): Nat → %spirv.Decoration;
 
 /// ## Storage Classes
 ///
-axm %spirv.storage(Class): ★;
-axm %spirv.storage(INPUT):   %spirv.storage.Class;
-axm %spirv.storage(OUTPUT):  %spirv.storage.Class;
-axm %spirv.storage(UNIFORM): %spirv.storage.Class;
-
-/// ## Globals
+axm %spirv.StorageClass: [local: Bool] → [write: Bool] → ★;
 ///
-axm %spirv.Global: %spirv.storage.Class → {n: Nat} → «n; %spirv.Decoration» → ★ → ★;
+axm %spirv.storage(INPUT):          %spirv.StorageClass ff ff;
+axm %spirv.storage(OUTPUT):         %spirv.StorageClass ff tt;
+axm %spirv.storage(UNIFORM):        %spirv.StorageClass ff ff;
+axm %spirv.storage(WORKGROUP):      %spirv.StorageClass tt tt;
+axm %spirv.storage(PRIVATE):        %spirv.StorageClass tt tt;
+axm %spirv.storage(FUNCTION):       %spirv.StorageClass tt tt;
+axm %spirv.storage(PUSH_CONSTANT):  %spirv.StorageClass ff ff;
+axm %spirv.storage(STORAGE_BUFFER): %spirv.StorageClass ff tt;
+axm %spirv.storage(IMAGE):          %spirv.StorageClass ff tt;
 
-let %spirv.Input = %spirv.Global %spirv.storage.INPUT;
-let %spirv.Output = %spirv.Global %spirv.storage.OUTPUT;
-let %spirv.Uniform = %spirv.Global %spirv.storage.UNIFORM;
+/// ## Variables and Pointers
+///
+axm %spirv.Ptr: {local write: Bool} → (%spirv.StorageClass local write) → {n: Nat} → «n; Decoration» → ★ → ★;
+let Ptr = %spirv.Ptr;
+axm %spirv.variable: M → {write: Bool} → [class: %spirv.StorageClass tt write] → [T: ★] → [M, %spirv.Ptr class () T];
 
-axm %spirv.loadable: %spirv.storage.Class → Bool, normalize_loadable;
-axm %spirv.load: {class: %spirv.storage.Class}
-    → {n: Nat, decs: «n; %spirv.Decoration»}
+axm %spirv.load: {local write: Bool, class: %spirv.StorageClass local write}
+    → {n: Nat, decs: «n; Decoration»}
     → {T: ★}
-    → [%mem.M 0, %spirv.Global
-        // (%refly.check (%spirv.loadable class, class, "storage class not loadable"))
-        class
-        decs T]
-    → [%mem.M 0, T];
+    → [M, Ptr class decs T]
+    → [M, T];
 
-axm %spirv.storable: %spirv.storage.Class → Bool, normalize_storable;
-axm %spirv.store: {class: %spirv.storage.Class}
-    → {n: Nat, decs: «n; %spirv.Decoration»}
+axm %spirv.store: {local write: Bool, class: %spirv.StorageClass local write}
+    → {n: Nat, decs: «n; Decoration»}
     → {T: ★}
-    → [%mem.M 0, %spirv.Global
-        // (%refly.check (%spirv.storable class, class, "storage class not storable"))
-        class
-        decs T, T]
-    → [%mem.M 0];
+    → [M, Ptr class decs T, T]
+    → [M];
 
 /// ## Builtins
 ///
 let %spirv.builtin.frag_coord
-    = %spirv.Input (%spirv.decor.builtin %spirv.model.fragment 15) «2; %math.F32»;
+    = Ptr %spirv.storage.INPUT (%spirv.decor.builtin %spirv.model.fragment 15) «2; %math.F32»;
 
 let %spirv.builtin.vertex_index
-    = %spirv.Input  (%spirv.decor.builtin %spirv.model.vertex 42) (Idx 3);
+    = Ptr %spirv.storage.INPUT  (%spirv.decor.builtin %spirv.model.vertex 42) (Idx 3);
 let %spirv.builtin.instance_index
-    = %spirv.Input  (%spirv.decor.builtin %spirv.model.vertex 43) Nat;
+    = Ptr %spirv.storage.INPUT  (%spirv.decor.builtin %spirv.model.vertex 43) Nat;
 let %spirv.builtin.vertex_id
-    = %spirv.Input  (%spirv.decor.builtin %spirv.model.vertex  5) Nat;
+    = Ptr %spirv.storage.INPUT  (%spirv.decor.builtin %spirv.model.vertex  5) Nat;
 let %spirv.builtin.instance_id
-    = %spirv.Input  (%spirv.decor.builtin %spirv.model.vertex  6) Nat;
+    = Ptr %spirv.storage.INPUT  (%spirv.decor.builtin %spirv.model.vertex  6) Nat;
 let %spirv.builtin.position
-    = %spirv.Output (%spirv.decor.builtin %spirv.model.vertex  0) «4; %math.F32»;
+    = Ptr %spirv.storage.OUTPUT (%spirv.decor.builtin %spirv.model.vertex  0) «4; %math.F32»;
