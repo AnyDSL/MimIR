@@ -25,6 +25,9 @@ import compile;
 /// Each header block must strictly structurally dominate its
 /// merge block.
 ///
+axm %sflow.Struct: {H: ★} → [header: Cn H] → [C: ★] → [B: ★] → ★;
+axm %sflow.continue: {H C B: ★, header: Cn H} → [%sflow.Struct header C B] → Cn C;
+axm %sflow.break: {H C B: ★, header: Cn H} → [%sflow.Struct header C B] → Cn B;
 
 /// ## Branching
 /// Represents a structured branch (if-else or switch-case)
@@ -32,41 +35,29 @@ import compile;
 /// The header argument to any structure must always point to the lam containing it, otherwise
 /// the normalizer will throw an error.
 ///
-/// ### Notes:
-/// If the header argument is not an extract then it is
-/// assumed the branch has only a single case and it is
-/// normalized to a simple call to body.
-axm %sflow.Selection: {H: ★} → [header: Cn H] → [B: ★] → ★;
-axm %sflow.select(breeak): {H B: ★, header: Cn H} → [%sflow.Selection header B] → Cn B;
-axm %sflow.select(head): {n: Nat} → {T B H: ★}
+axm %sflow.select: {n: Nat} → {T B H: ★}
   → [header: Cn H]
   → [break: Cn B]
-  → [tuple: «n; Cn [T, %sflow.Selection merge]»]
+  → [tuple: «n; Cn [T, %sflow.Struct header ⊥ B]»]
   → [index: Idx n]
   → Cn T, normalize_branch;
 
-axm %sflow.Switch: {H: ★} → [header: Cn H] → [C: ★] → [B: ★] → ★;
-axm %sflow.swiitch(coontinue): {H C B: ★, header: Cn H} → %sflow.Switch header C B → Cn C;
-axm %sflow.swiitch(breeak): {H C B: ★, header: Cn H} → %sflow.Switch header C B → Cn B;
-axm %sflow.swiitch(head): {n: Nat} → {T B H: ★}
+axm %sflow.switch: {n: Nat} → {T B H: ★}
   → [header: Cn H]
   → [break: Cn B]
-  → [targets: «n; [Nat, Cn [T, %sflow.Switch header T B]]»]
-  → [default: Cn [T, %sflow.Switch header ⊥ B]]
+  → [targets: «n; [Nat, Cn [T, %sflow.Struct header T B]]»]
+  → [default: Cn [T, %sflow.Struct header ⊥ B]]
   → [index: Nat]
   → Cn T, normalize_switch;
 
 /// ## Loops
 ///
 /// Represents a structured loop (for or while)
-axm %sflow.Loop: {H: ★} → [header: Cn H] → [C: ★] → [B: ★] → ★;
-axm %sflow.loop(coontinue): {H C B: ★, header: Cn H} → %sflow.Loop header C B → Cn C;
-axm %sflow.loop(breeak): {H C B: ★, header: Cn H} → %sflow.Loop header C B → Cn B;
-axm %sflow.loop(head): {C B T H: ★}
+axm %sflow.loop: {C B T H: ★}
   → [header: Cn H]
   → [continue: Cn C]
   → [break: Cn B]
-  → [body: Cn [T, %sflow.Loop header C B]]
+  → [body: Cn [T, %sflow.Struct header C B]]
   → [condition: Bool]
   → Cn T, normalize_loop;
 
