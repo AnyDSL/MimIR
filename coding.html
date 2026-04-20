@@ -317,6 +317,7 @@ M⁠im Coding Style</h2>
 <li>Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing <a class="el" href="namespaceMim.html">Mim</a> code and tests.</li>
 <li>Prefer 4 spaces for one indentation level, but aligned layouts may use different spacing when that makes the code clearer.</li>
 <li>Write callable declarations with parenthesized domain groups, for example <span class="tt">lam foo (x: X) (y: Y): Z = ...</span>.</li>
+<li>Prefer group patterns <span class="tt">lam foo (a b c: T)</span> over <span class="tt">lam foo (a: T, b: T, c: T)</span></li>
 <li>Separate curried domain groups with a space, and write the return type as <span class="tt">): Z</span>, with no space before <span class="tt">:</span> and one space after it.</li>
 <li>Use spaces after commas in lists and groups: <span class="tt">a, b, c</span>.</li>
 <li>Write binder ascriptions as <span class="tt">x: X</span>, but keep literal and bottom ascriptions tight: <span class="tt">23:T</span>.</li>
