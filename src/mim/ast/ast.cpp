@@ -2,9 +2,49 @@
 
 #include "mim/ast/parser.h"
 
+#include "absl/container/flat_hash_set.h"
+
 using namespace std::literals;
 
 namespace mim::ast {
+
+namespace {
+// clang-format off
+bool is_cpp_keyword(std::string_view s) {
+    static const absl::flat_hash_set<std::string_view> keywords = {
+        "alignas", "alignof", "and", "and_eq", "asm", "auto",
+        "bitand", "bitor", "bool", "break",
+        "case", "catch", "char", "char8_t", "char16_t", "char32_t", "class", "compl",
+        "concept", "const", "consteval", "constexpr", "constinit", "const_cast", "continue", "co_await",
+        "co_return", "co_yield",
+        "decltype", "default", "delete", "do", "double", "dynamic_cast",
+        "else", "enum", "explicit", "export", "extern",
+        "false", "float", "for", "friend",
+        "goto",
+        "if", "inline", "int",
+        "long",
+        "mutable",
+        "namespace", "new", "noexcept", "not", "not_eq", "nullptr",
+        "operator", "or", "or_eq",
+        "private", "protected", "public",
+        "register", "reinterpret_cast", "requires", "return",
+        "short", "signed", "sizeof", "static", "static_assert", "static_cast", "struct", "switch",
+        "template", "this", "thread_local", "throw", "true", "try", "typedef", "typeid", "typename",
+        "union", "unsigned", "using",
+        "virtual", "void", "volatile",
+        "wchar_t", "while",
+        "xor", "xor_eq",
+    };
+    return keywords.contains(s);
+}
+// clang-format on
+
+/// Returns a C++-safe identifier: prepends '_' if @p s is a C++ keyword.
+std::string cpp_safe(std::string_view s) {
+    if (is_cpp_keyword(s)) return "_"s + std::string(s);
+    return std::string(s);
+}
+} // namespace
 
 AST::~AST() {
     assert(error().num_errors() == 0 && error().num_warnings() == 0
@@ -73,37 +113,40 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         const auto& sym = annex.sym;
         if (sym.plugin != plugin) continue; // this is from an import
 
+        auto safe_tag = cpp_safe(sym.tag.view());
+
         tab.print(h, "/// @name %%{}.{}\n///@{{\n", plugin, sym.tag);
-        tab.print(h, "enum class {} : flags_t {{\n", sym.tag);
+        tab.print(h, "enum class {} : flags_t {{\n", safe_tag);
         ++tab;
         flags_t ax_id = plugin_id | (annex.id.tag << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, sym.tag, ax_id);
+        print(os, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, safe_tag, ax_id);
 
         if (auto& subs = annex.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
                 const auto& sub = aliases.front();
-                tab.print(h, "{} = 0x{x},\n", sub, ax_id++);
-                for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], sub);
+                auto safe_sub = cpp_safe(sub.view());
+                tab.print(h, "{} = 0x{x},\n", safe_sub, ax_id++);
+                for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", cpp_safe(aliases[i].view()), safe_sub);
 
                 if (auto norm = annex.normalizer) {
                     auto& os = normalizers.emplace_back();
-                    print(os, "normalizers[flags_t({}::{})] = &{}<{}::{}>;", sym.tag, sub, norm, sym.tag, sub);
+                    print(os, "normalizers[flags_t({}::{})] = &{}<{}::{}>;", safe_tag, safe_sub, norm, safe_tag, safe_sub);
                 }
             }
         } else {
             if (auto norm = annex.normalizer)
-                print(normalizers.emplace_back(), "normalizers[flags_t(Annex::Base<{}>)] = &{};", sym.tag, norm);
+                print(normalizers.emplace_back(), "normalizers[flags_t(Annex::Base<{}>)] = &{};", safe_tag, norm);
         }
         --tab;
         tab.print(h, "}};\n\n");
 
-        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, sym.tag, annex.subs.size());
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, safe_tag, annex.subs.size());
 
         if (auto norm = annex.normalizer) {
             if (auto& subs = annex.subs; !subs.empty()) {
-                tab.print(h, "template<{}>\nconst Def* {}(const Def*, const Def*, const Def*);\n\n", sym.tag, norm);
+                tab.print(h, "template<{}>\nconst Def* {}(const Def*, const Def*, const Def*);\n\n", safe_tag, norm);
             } else {
                 tab.print(h, "const Def* {}(const Def*, const Def*, const Def*);\n", norm);
             }
@@ -136,7 +179,8 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     for (const auto& [tag, ax] : infos) {
         auto sym = ax.sym;
         if ((ax.pi && *ax.pi) || sym.plugin != plugin) continue; // from function or other plugin?
-        tab.print(h, "template<> struct Axm::IsANode<plug::{}::{}> {{ using type = Axm; }};\n", sym.plugin, sym.tag);
+        tab.print(h, "template<> struct Axm::IsANode<plug::{}::{}> {{ using type = Axm; }};\n", sym.plugin,
+                  cpp_safe(sym.tag.view()));
     }
 
     tab.print(h, "\n#endif\n");
@@ -147,7 +191,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         if (!annex.subs.empty()) {
             auto sym = annex.sym;
             tab.print(h, "template<> struct fe::is_bit_enum<mim::plug::{}::{}> : std::true_type {{}};\n", sym.plugin,
-                      sym.tag);
+                      cpp_safe(sym.tag.view()));
         }
     }
 
