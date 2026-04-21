@@ -150,7 +150,7 @@ private:
     }
     MimNode get_node_unsafe(uint32_t id) { return res_[id]; }
     std::string get_symbol(uint32_t id) { return res_[id].symbol.c_str(); }
-    int64_t get_num(uint32_t id) { return res_[id].num; }
+    uint64_t get_num(uint32_t id) { return res_[id].num; }
 
     std::string remove_uid(std::string name) {
         if (auto pos = name.rfind("_"); pos != std::string::npos) {
