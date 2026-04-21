@@ -7,7 +7,7 @@
   fun:*symbol_table*Shard*intern*
 }
 {
-  egg_symbol_table_shard__realloc
+  egg_symbol_table_shard_realloc
   Memcheck:Leak
   match-leak-kinds: possible,reachable
   fun:realloc
