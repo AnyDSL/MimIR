@@ -235,7 +235,7 @@ TEST(Automaton, Regex2NFANotwds) {
     std::cout << *dfa;
     auto min_dfa = minimize_dfa(*dfa);
     std::cout << *min_dfa;
-    auto matcher = driver.GET_FUN_PTR("regex", dfa2matcher)(w, *min_dfa, w.lit_nat(200));
+    auto _ = driver.GET_FUN_PTR("regex", dfa2matcher)(w, *min_dfa, w.lit_nat(200));
 }
 
 TEST(Automaton, DFA) {
