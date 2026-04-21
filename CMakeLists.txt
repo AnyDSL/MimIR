@@ -50,6 +50,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     find_program(MEMORYCHECK_COMMAND valgrind)
     set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1 --suppressions=${PROJECT_SOURCE_DIR}/valgrind.supp")
     option(BUILD_TESTING "Build lit and unit tests." OFF) # needs to be BEFORE "include(CTest)"
+    set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1 --suppressions=${PROJECT_SOURCE_DIR}/valgrind.supp")
     include(CTest)
     cmake_dependent_option(MIM_LIT_WITH_VALGRIND "If ON, the Mim CLI in the lit tests will be run under valgrind." OFF "BUILD_TESTING" OFF)
     set(MIM_LIT_TIMEOUT 20 CACHE STRING "Timout for lit tests.")
