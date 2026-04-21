@@ -232,13 +232,15 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
             if (auto var = mut->has_var()) {
                 auto l = pi->is_implicit() ? '{' : '[';
                 auto r = pi->is_implicit() ? '}' : ']';
-                return print(os, "{}{}: {}{} {} {}", l, var, Op(pi->dom()), r, arw, Op(pi->dom(), Prec::Arrow, false));
+                return print(os, "{}{}: {}{} {} {}", l, Op(var), Op(pi->dom()), r, arw,
+                             Op(pi->dom(), Prec::Arrow, false));
             }
         }
 
         return print(os, "{} {} {}", Op(pi->dom(), Prec::Arrow, true), arw, Op(pi->dom(), Prec::Arrow, false));
     } else if (auto lam = d->isa<Lam>()) {
-        return print(os, "{}, {}", lam->filter(), lam->body());
+        // TODO this output is really confuinsg
+        return print(os, "{}, {}", Op(lam->filter()), Op(lam->body()));
     } else if (auto app = d->isa<App>()) {
         if (auto size = Idx::isa(app)) {
             if (auto l = Lit::isa(size)) {
