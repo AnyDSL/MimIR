@@ -141,12 +141,6 @@ bool needs_parens(Prec parent, const Def* child, bool is_left) {
     fe::unreachable();
 }
 
-std::ostream& dump_ascribed(std::ostream& os, const auto& value, const Def* type) {
-    os << value << ':';
-    if (def2prec(type) == Prec::Lit) return print(os, "{}", type);
-    return print(os, "({})", type);
-}
-
 /// This will stream @p def as an operand.
 /// This is usually `id(def)` unless it can be displayed Inline.
 std::ostream& operator<<(std::ostream& os, Op op) {
@@ -184,10 +178,7 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
     } else if (d->isa<Idx>()) {
         return print(os, "Idx");
     } else if (auto ext = d->isa<Ext>()) {
-        auto x = ext->isa<Bot>() ? bot : top;
-        return dump_ascribed(os, x, ext->type());
-    } else if (auto top = d->isa<Top>()) {
-        return dump_ascribed(os, top, top->type());
+        return print(os, "{}:{}", ext->isa<Bot>() ? bot : top, Op(ext->type(), Prec::Lit, false));
     } else if (auto axm = d->isa<Axm>()) {
         const auto name = axm->sym();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
@@ -229,7 +220,7 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
                 // clang-format on
             }
         }
-        return dump_ascribed(os, lit->get(), lit->type());
+        return print(os, "{}:{}", lit->get(), Op(lit->type(), Prec::Lit, false));
     } else if (auto ex = d->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return os << ex->unique_name();
         return print(os, "{}#{}", Op(ex->tuple(), Prec::Extract, true), Dump(ex->index(), Prec::Extract, false));
@@ -264,42 +255,42 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
                 // clang-format on
             }
         }
-        os << Op(app->callee(), Prec::App, true);
-        os << ' ';
-        return os << Op(app->arg(), Prec::App, false);
+
+        return print(os, "{} {}", Op(app->callee(), Prec::App, true), Op(app->arg(), Prec::App, false));
     } else if (auto sigma = d->isa<Sigma>()) {
         if (auto mut = sigma->isa_mut<Sigma>(); mut && mut->var()) {
             size_t i = 0;
             return print(os, "[{, }]", Elem(sigma->ops(), [&](auto op) {
                              if (auto v = mut->var(i++))
-                                 print(os, "{}: {}", v, op);
+                                 print(os, "{}: {}", v, Op(op));
                              else
-                                 os << op;
+                                 os << Op(op);
                          }));
         }
-        return print(os, "[{, }]", sigma->ops());
+        return print(os, "[{, }]", Elem(sigma->ops(), [&os](auto op) { os << Op(op); }));
     } else if (auto tuple = d->isa<Tuple>()) {
-        print(os, "({, })", tuple->ops());
+        // print(os, "({, })", elem<Op>(os, tuple->ops()));
+        print(os, "({, })", Elem(tuple->ops(), [&os](auto op) { os << Op(op); }));
         return tuple->type()->isa_mut() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = d->isa<Arr>()) {
         if (auto mut = arr->isa_mut<Arr>(); mut && mut->var())
-            return print(os, "{}{}: {}; {}{}", al, mut->var(), mut->arity(), mut->body(), ar);
+            return print(os, "{}{}: {}; {}{}", al, mut->var(), Op(mut->arity()), Op(mut->body()), ar);
         return print(os, "{}{}; {}{}", al, arr->arity(), arr->body(), ar);
     } else if (auto pack = d->isa<Pack>()) {
         if (auto mut = pack->isa_mut<Pack>(); mut && mut->var())
-            return print(os, "{}{}: {}; {}{}", pl, mut->var(), mut->arity(), mut->body(), pr);
-        return print(os, "{}{}; {}{}", pl, pack->arity(), pack->body(), pr);
+            return print(os, "{}{}: {}; {}{}", pl, mut->var(), Op(mut->arity()), Op(mut->body()), pr);
+        return print(os, "{}{}; {}{}", pl, Op(pack->arity()), Op(pack->body()), pr);
     } else if (auto proxy = d->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
     } else if (auto bound = d->isa<Bound>()) {
         auto op = bound->isa<Join>() ? "∪" : "∩"; // TODO ascii
-        if (auto mut = d->isa_mut()) print(os, "{}{}: {}", op, mut->unique_name(), mut->type());
+        if (auto mut = d->isa_mut()) print(os, "{}{}: {}", op, mut->unique_name(), Op(mut->type()));
         return print(os, "{}({, })", op, bound->ops());
     }
 
     // other
     if (d->flags() == 0) return print(os, "(.{} {, })", d->node_name(), d->ops());
-    return print(os, "(.{}#{} {, })", d->node_name(), d->flags(), d->ops());
+    return print(os, "(.{}#{} {, })", d->node_name(), d->flags(), Elem(d->ops(), [&os](auto d) { os << Op(d); }));
 }
 
 /*
@@ -407,13 +398,13 @@ void Dumper::dump(Lam* lam) {
         auto limit    = is_fun && group == last ? num_doms - 1 : num_doms;
         dump_group(group->var(), group->type()->dom(), group->type()->is_implicit(), !is_con, limit,
                    !is_fun || group != last);
-        if (is_con && group == last) print(os, "@({})", group->filter());
+        if (is_con && group == last) print(os, "@{}", Op(group->filter()));
     }
 
     if (is_fun)
-        print(os, ": {} =", last->ret_dom());
+        print(os, ": {} =", Op(last->ret_dom()));
     else if (!is_con)
-        print(os, ": {} =", last->type()->codom());
+        print(os, ": {} =", Op(last->type()->codom()));
     else
         print(os, " =");
     os << '\n';
@@ -436,16 +427,16 @@ void Dumper::dump(Lam* lam) {
 }
 
 void Dumper::dump_let(const Def* def) {
-    tab.print(os, "let {}: {} = {};\n", def->unique_name(), def->type(), Dump(def));
+    tab.print(os, "let {}: {} = {};\n", def->unique_name(), Op(def->type()), Dump(def));
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type) {
     if (!def) {
-        os << type;
+        os << Op(type);
     } else {
         auto projs = def->tprojs();
         if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; })) {
-            print(os, "{}: {}", def->unique_name(), type);
+            print(os, "{}: {}", def->unique_name(), Op(type));
         } else {
             size_t i = 0;
             print(os, "({, }) as {}", Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }),
@@ -461,7 +452,7 @@ void Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool par
         if (binder)
             dump_ptrn(binder, binder_type);
         else
-            print(os, "_: {}", binder_type);
+            print(os, "_: {}", Op(binder_type));
     };
 
     if (limit == 0) {
@@ -476,11 +467,11 @@ void Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool par
         return;
     }
 
-    os << l;
-    print(os, "{, }", Elem(std::views::iota(size_t(0), limit), [&](auto i) {
-              dump_binder(def ? def->tproj(i) : nullptr, type->tproj(i));
-          }));
-    os << r;
+    print(os, "{}{, }{}", l,
+          Elem(std::views::iota(size_t(0), limit),
+               [&](auto i) { dump_binder(def ? def->tproj(i) : nullptr, type->tproj(i)); }),
+          r);
+
     if (alias && def) print(os, " as {}", def->unique_name());
 }
 
@@ -512,19 +503,12 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 /// This will stream @p def as an operand.
 /// This is usually `id(def)` unless it can be displayed Inline.
 std::ostream& operator<<(std::ostream& os, const Def* def) {
-    if (def == nullptr) return os << "<nullptr>";
-
-    if (Dump(def)) {
-        auto freezer = World::Freezer(def->world());
-        return os << Dump(def);
-    }
-
-    return os << id(def);
+    return println(os, "let {}: {} = {}", def->unique_name(), Op(def->type()), Dump(def));
 }
 
 std::ostream& Def::stream(std::ostream& os, int max) const {
-    auto freezer = World::Freezer(world());
-    auto dumper  = Dumper(os);
+    auto _      = world().freeze();
+    auto dumper = Dumper(os);
 
     if (max == 0) {
         os << this << std::endl;

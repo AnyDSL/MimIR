@@ -92,6 +92,11 @@ struct Elem {
     const F f;
 };
 
+template<class T, class R>
+auto elem(std::ostream& os, const R& range) {
+    return Elem(range, [&os](const auto& e) { return os << T(e); });
+}
+
 std::ostream& print(std::ostream& os, const char* s); ///< Base case.
 
 template<class T, class... Args>
