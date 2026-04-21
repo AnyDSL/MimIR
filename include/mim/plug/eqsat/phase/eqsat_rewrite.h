@@ -64,6 +64,7 @@ private:
     const Def* init_let(uint32_t id, MimNode node);
     const Def* init_axm(uint32_t id, MimNode node);
 
+    void convert(rust::Vec<RewriteResult> rewrites);
     const Def* convert(uint32_t id, bool recurse = false);
     const Def* convert_let(uint32_t id, MimNode node);
     const Def* convert_lam(uint32_t id, MimNode node);

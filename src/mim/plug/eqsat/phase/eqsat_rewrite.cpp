@@ -25,14 +25,7 @@ void EqsatRewrite::start() {
     init(rewrites, InitStage::Declarations);
     init(rewrites, InitStage::Lambdas);
     init(rewrites, InitStage::Bindings);
-
-    // Converts remaining nodes to Def's in the new world and sets the bodies of the previously created lambdas.
-    for (auto rewrite : rewrites) {
-        added_ = {};
-        res_   = rewrite.value;
-        for (uint32_t id = 0; id < res_.size(); id++)
-            convert(id);
-    }
+    convert(rewrites);
 
     swap(old_world(), new_world());
 }
@@ -73,6 +66,12 @@ std::pair<rust::Vec<RuleSet>, CostFn> EqsatRewrite::import_config() {
     return {rulesets, cost_fn};
 }
 
+// Initially creates Defs in the new world according to the specfied 'InitStage'
+// This is done in a particular order to ensure that dependencies are upheld.
+// Defs are initialized in this order: (Declarations->Lambdas->Let-bindings)
+// The bodies of lambdas can only be created and then set inside of convert(...)
+// after every Def from the init stage has been created, because they
+// can depend on any declaration, lambda, or let-binding.
 void EqsatRewrite::init(rust::Vec<RewriteResult> rewrites, InitStage stage) {
     for (auto rewrite : rewrites) {
         added_ = {};
@@ -151,6 +150,16 @@ const Def* EqsatRewrite::init_axm(uint32_t id, MimNode node) {
 
     if (DEBUG) std::cout << new_axm << "\n";
     return new_axm;
+}
+
+// Converts remaining nodes to Def's in the new world and sets the bodies of the previously created lambdas.
+void EqsatRewrite::convert(rust::Vec<RewriteResult> rewrites) {
+    for (auto rewrite : rewrites) {
+        added_ = {};
+        res_   = rewrite.value;
+        for (uint32_t id = 0; id < res_.size(); id++)
+            convert(id);
+    }
 }
 
 const Def* EqsatRewrite::convert(uint32_t id, bool recurse) {
