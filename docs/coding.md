@@ -166,7 +166,6 @@ private:
 You can directly invoke several MimIR dump helpers from within GDB, for example:
 
 - [mim::Def::dump](@ref mim::Def::dump),
-- [mim::Def::write](@ref mim::Def::write),
 - [mim::World::dump](@ref mim::World::dump),
 - [mim::World::write](@ref mim::World::write), ...
 

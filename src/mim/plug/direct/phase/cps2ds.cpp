@@ -14,10 +14,6 @@
 namespace mim::plug::direct {
 
 void CPS2DSPhase::start() {
-#if DEBUG_CPS2DS
-    world().debug_dump();
-#endif
-
     scheduler_.clear();
     nests_.clear();
     lam2lam_.clear();
@@ -33,10 +29,6 @@ void CPS2DSPhase::start() {
             current_external_ = lam;
             rewrite_lam(lam);
         }
-
-#if DEBUG_CPS2DS
-    world().debug_dump();
-#endif
 }
 
 const Def* CPS2DSPhase::rewrite_lam(Lam* lam) {
@@ -69,7 +61,7 @@ const Def* CPS2DSPhase::rewrite_lam(Lam* lam) {
     world().DLOG("Result of rewrite {} set for {}", lam->unique_name(), new_lam->unique_name());
 #endif
 
-    if (world().log().level() >= mim::Log::Level::Debug) body->dump(1);
+    world().DLOG("body: {}", body);
 
     new_lam->unset()->app(filter, new_callee, new_arg);
 
@@ -83,14 +75,10 @@ const Def* CPS2DSPhase::rewrite(const Def* def) {
 
     if (auto app = def->isa<App>()) {
         if (auto cps2ds = Axm::isa<direct::cps2ds_dep>(app->callee())) {
-            auto cps_lam = rewrite(cps2ds->arg())->as<Lam>();
-
+            auto cps_lam  = rewrite(cps2ds->arg())->as<Lam>();
             auto call_arg = rewrite(app->arg());
 
-            if (world().log().level() >= mim::Log::Level::Debug) {
-                cps2ds->dump(2);
-                cps2ds->arg()->dump(2);
-            }
+            world().DLOG("{} {}", cps2ds, cps2ds->arg());
 
             auto early = scheduler(app).early(app);
             auto late  = scheduler(app).late(current_external_, app);

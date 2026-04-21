@@ -103,7 +103,7 @@ public:
 
     void emit_name(const Def* def) {
         if (auto lit = def->isa<Lit>())
-            lit->stream(os_, 0);
+            os_ << lit;
         else
             os_ << def->node_name();
         print(os_, "<br/><font point-size=\"9\">{}</font>", escape(def->unique_name()));

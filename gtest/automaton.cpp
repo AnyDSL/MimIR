@@ -46,7 +46,8 @@ TEST(Automaton, NFA) {
 TEST(Automaton, NFAAorBplusA) {
     auto nfa = std::make_unique<NFA>();
     std::vector<NFANode*> states;
-    for (int i = 0; i < 14; ++i) states.push_back(nfa->add_state());
+    for (int i = 0; i < 14; ++i)
+        states.push_back(nfa->add_state());
     nfa->set_start(states[0]);
     states[0]->add_transition(states[1], NFA::SpecialTransitons::EPSILON);
     states[1]->add_transition(states[2], 'a');
@@ -77,7 +78,8 @@ TEST(Automaton, NFAAorBplusA) {
     EXPECT_EQ(nfa->get_start(), states[0]);
 
     // Test non-accepting states
-    for (int i = 0; i < 13; ++i) EXPECT_FALSE(states[i]->is_accepting());
+    for (int i = 0; i < 13; ++i)
+        EXPECT_FALSE(states[i]->is_accepting());
 
     // Test accepting state
     EXPECT_TRUE(states[13]->is_accepting());
@@ -160,7 +162,6 @@ TEST(Automaton, Regex2NFA) {
 
     auto pattern
         = w.call<regex::conj>(Defs{w.call<regex::lit>(w.lit_i8('a')), w.call<regex::lit>(w.lit_i8('b'))}); // (a & b)
-    pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
 }
@@ -174,7 +175,6 @@ TEST(Automaton, Regex2NFAAorBplusA) {
         Defs{w.call(regex::quant::plus,
                     w.call<regex::disj>(Defs{w.call<regex::lit>(w.lit_i8('a')), w.call<regex::lit>(w.lit_i8('b'))})),
              w.call<regex::lit>(w.lit_i8('a'))}); // (a & b)
-    pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
 
@@ -194,7 +194,6 @@ TEST(Automaton, Regex2NFA1or5or9) {
     auto pattern = w.call<regex::disj>(
         Defs{w.call<regex::disj>(Defs{w.call<regex::lit>(w.lit_i8('1')), w.call<regex::lit>(w.lit_i8('5'))}),
              w.call<regex::lit>(w.lit_i8('9'))});
-    pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
 
@@ -213,8 +212,7 @@ TEST(Automaton, Regex2NFANot1or5or9) {
     auto pattern = w.call<regex::not_>(w.call<regex::disj>(
         Defs{w.call<regex::disj>(Defs{w.call<regex::lit>(w.lit_i8('1')), w.call<regex::lit>(w.lit_i8('5'))}),
              w.call<regex::lit>(w.lit_i8('9'))}));
-    pattern->dump(10);
-    auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
+    auto nfa     = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
 
     auto dfa = nfa2dfa(*nfa);
@@ -230,7 +228,6 @@ TEST(Automaton, Regex2NFANotwds) {
     // %regex.neg_lookahead (%regex.conj (%regex.cls.w, %regex.cls.d, %regex.cls.s))
     auto pattern = w.call<regex::neg_lookahead>(
         w.call<regex::conj>(Defs{w.annex(regex::cls::w), w.annex(regex::cls::d), w.annex(regex::cls::s)}));
-    pattern->dump(10);
     auto nfa = regex::regex2nfa(driver.GET_FUN_PTR("regex", regex2nfa), pattern);
     std::cout << *nfa;
 
@@ -239,7 +236,6 @@ TEST(Automaton, Regex2NFANotwds) {
     auto min_dfa = minimize_dfa(*dfa);
     std::cout << *min_dfa;
     auto matcher = driver.GET_FUN_PTR("regex", dfa2matcher)(w, *min_dfa, w.lit_nat(200));
-    matcher->dump(100);
 }
 
 TEST(Automaton, DFA) {

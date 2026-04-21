@@ -108,6 +108,8 @@ const Def* normalize_test_curry(const Def* type, const Def* callee, const Def* a
     return w.raw_app(type, callee, w.lit_nat(42));
 }
 
+std::string_view rhs(std::string_view s) { return s.substr(s.find("= ") + 2); }
+
 TEST(Axm, curry) {
     Driver driver;
     World& w = driver.world();
@@ -137,9 +139,8 @@ TEST(Axm, curry) {
         EXPECT_EQ(a2->as<App>()->curry(), 0);
         EXPECT_EQ(a3->as<App>()->curry(), 0);
 
-        std::ostringstream os;
-        a3->stream(os, 0);
-        EXPECT_EQ(os.str(), "%test_5_3 0 1 2 3 42 5 6 42 8 9 42\n");
+        auto s = a3->to_string();
+        EXPECT_EQ(rhs(s), "%test_5_3 0 1 2 3 42 5 6 42 8 9 42\n");
     }
     {
         auto rec = w.mut_pi(w.type())->set_dom(nat);
@@ -158,9 +159,8 @@ TEST(Axm, curry) {
         EXPECT_EQ(a2->as<App>()->curry(), 0);
         EXPECT_EQ(a3->as<App>()->curry(), 0);
 
-        std::ostringstream os;
-        a3->stream(os, 0);
-        EXPECT_EQ(os.str(), "%test_1_1 42 42 42\n");
+        auto s = a3->to_string();
+        EXPECT_EQ(rhs(s), "%test_1_1 42 42 42\n");
     }
     {
         auto pi            = w.pi(nat, w.pi(nat, w.pi(nat, w.pi(nat, nat))));
@@ -175,9 +175,8 @@ TEST(Axm, curry) {
         EXPECT_EQ(a1->as<App>()->curry(), 0);
         EXPECT_EQ(a2->as<App>()->curry(), Axm::Trip_End);
 
-        std::ostringstream os;
-        a2->stream(os, 0);
-        EXPECT_EQ(os.str(), "%test_3_0 0 1 42 3\n");
+        auto s = a2->to_string();
+        EXPECT_EQ(rhs(s), "%test_3_0 0 1 42 3\n");
     }
 }
 

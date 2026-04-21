@@ -602,10 +602,7 @@ public:
     /// @name dump
     ///@{
     void dump() const;
-    void dump(int max) const;
-    void write(int max) const;
-    void write(int max, const char* file) const;
-    std::ostream& stream(std::ostream&, int max) const;
+    std::string to_string() const;
     ///@}
 
     /// @name Syntactic Comparison

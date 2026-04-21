@@ -139,23 +139,25 @@ public:
     ///@{
     bool is_frozen() const { return state_.pod.frozen; }
 
+    /// Use to World::freeze and automatically unfreeze at the end of scope.
+    struct Freezer {
+        Freezer(const World& world)
+            : world(world)
+            , old(world.do_freeze(true)) {}
+        ~Freezer() { world.do_freeze(old); }
+
+        const World& world;
+        bool old;
+    };
+
     /// Yields old frozen state.
-    bool freeze(bool on = true) const {
+    bool do_freeze(bool on = true) const {
         bool old          = state_.pod.frozen;
         state_.pod.frozen = on;
         return old;
     }
 
-    /// Use to World::freeze and automatically unfreeze at the end of scope.
-    struct Freezer {
-        Freezer(const World& world)
-            : world(world)
-            , old(world.freeze(true)) {}
-        ~Freezer() { world.freeze(old); }
-
-        const World& world;
-        bool old;
-    };
+    Freezer freeze() { return Freezer(*this); }
     ///@}
 
     /// @name Debugging Features

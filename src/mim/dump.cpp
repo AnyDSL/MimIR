@@ -99,20 +99,24 @@ public:
     friend std::ostream& operator<<(std::ostream&, Dump);
 };
 
+auto ops(std::ostream& os, Defs defs) {
+    return Elem(defs, [&os](const auto& e) { os << Op(e); });
+}
+
 bool is_atomic_app(const Def* def) {
     if (auto app = def->isa<App>()) {
         if (auto size = Idx::isa(app)) {
             if (auto l = Lit::isa(size)) {
+                // clang-format off
                 switch (*l) {
-                        // clang-format off
                     case 0x0'0000'0002_n:
                     case 0x0'0000'0100_n:
                     case 0x0'0001'0000_n:
                     case 0x1'0000'0000_n:
                     case             0_n: return true;
-                        // clang-format on
                     default: break;
                 }
+                // clang-format on
             }
         }
     }
@@ -142,15 +146,10 @@ bool needs_parens(Prec parent, const Def* child, bool is_left) {
 }
 
 /// This will stream @p def as an operand.
-/// This is usually `id(def)` unless it can be displayed Inline.
+/// This is usually `id(def)` unless it can be inlined.
 std::ostream& operator<<(std::ostream& os, Op op) {
     if (*op == nullptr) return os << "<nullptr>";
-
-    if (auto d = Dump(op)) {
-        auto _ = World::Freezer(d->world());
-        return os << Dump(d);
-    }
-
+    if (auto d = Dump(op)) return os << d;
     return os << id(*op);
 }
 
@@ -267,30 +266,28 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
                                  os << Op(op);
                          }));
         }
-        return print(os, "[{, }]", Elem(sigma->ops(), [&os](auto op) { os << Op(op); }));
+        return print(os, "[{, }]", ops(os, sigma->ops()));
     } else if (auto tuple = d->isa<Tuple>()) {
-        // print(os, "({, })", elem<Op>(os, tuple->ops()));
-        print(os, "({, })", Elem(tuple->ops(), [&os](auto op) { os << Op(op); }));
-        return tuple->type()->isa_mut() ? print(os, ":{}", tuple->type()) : os;
+        return print(os, "({, })", ops(os, tuple->ops()));
     } else if (auto arr = d->isa<Arr>()) {
         if (auto mut = arr->isa_mut<Arr>(); mut && mut->var())
             return print(os, "{}{}: {}; {}{}", al, mut->var(), Op(mut->arity()), Op(mut->body()), ar);
-        return print(os, "{}{}; {}{}", al, arr->arity(), arr->body(), ar);
+        return print(os, "{}{}; {}{}", al, Op(arr->arity()), Op(arr->body()), ar);
     } else if (auto pack = d->isa<Pack>()) {
         if (auto mut = pack->isa_mut<Pack>(); mut && mut->var())
             return print(os, "{}{}: {}; {}{}", pl, mut->var(), Op(mut->arity()), Op(mut->body()), pr);
         return print(os, "{}{}; {}{}", pl, Op(pack->arity()), Op(pack->body()), pr);
     } else if (auto proxy = d->isa<Proxy>()) {
-        return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
+        return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), ops(os, proxy->ops()));
     } else if (auto bound = d->isa<Bound>()) {
         auto op = bound->isa<Join>() ? "∪" : "∩"; // TODO ascii
         if (auto mut = d->isa_mut()) print(os, "{}{}: {}", op, mut->unique_name(), Op(mut->type()));
-        return print(os, "{}({, })", op, bound->ops());
+        return print(os, "{}({, })", op, ops(os, bound->ops()));
     }
 
     // other
     if (d->flags() == 0) return print(os, "(.{} {, })", d->node_name(), d->ops());
-    return print(os, "(.{}#{} {, })", d->node_name(), d->flags(), Elem(d->ops(), [&os](auto d) { os << Op(d); }));
+    return print(os, "(.{}#{} {, })", d->node_name(), d->flags(), ops(os, d->ops()));
 }
 
 /*
@@ -412,9 +409,11 @@ void Dumper::dump(Lam* lam) {
     ++tab;
     if (last->is_set()) {
         if (nest && groups.size() == 1) recurse((*nest)[lam]);
+
         for (auto* group : groups)
             recurse(group->filter());
         recurse(last->body(), true);
+
         if (last->body()->isa_mut())
             tab.print(os, "{};\n", last->body());
         else
@@ -503,40 +502,16 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 /// This will stream @p def as an operand.
 /// This is usually `id(def)` unless it can be displayed Inline.
 std::ostream& operator<<(std::ostream& os, const Def* def) {
+    auto _ = def->world().freeze();
     return println(os, "let {}: {} = {}", def->unique_name(), Op(def->type()), Dump(def));
 }
 
-std::ostream& Def::stream(std::ostream& os, int max) const {
-    auto _      = world().freeze();
-    auto dumper = Dumper(os);
-
-    if (max == 0) {
-        os << this << std::endl;
-    } else if (auto mut = isa_decl(this)) {
-        dumper.muts.push(mut);
-    } else {
-        dumper.recurse(this);
-        dumper.tab.print(os, "{}\n", Dump(this));
-        --max;
-    }
-
-    for (; !dumper.muts.empty() && max > 0; --max)
-        dumper.dump(dumper.muts.pop());
-
-    return os;
-}
-
 void Def::dump() const { std::cout << this << std::endl; }
-void Def::dump(int max) const { stream(std::cout, max) << std::endl; }
 
-void Def::write(int max, const char* file) const {
-    auto ofs = std::ofstream(file);
-    stream(ofs, max);
-}
-
-void Def::write(int max) const {
-    auto file = id(this) + ".mim"s;
-    write(max, file.c_str());
+std::string Def::to_string() const {
+    std::ostringstream os;
+    os << this;
+    return os.str();
 }
 
 /*
@@ -544,7 +519,7 @@ void Def::write(int max) const {
  */
 
 void World::dump(std::ostream& os) {
-    auto freezer = World::Freezer(*this);
+    auto _       = freeze();
     auto old_gid = curr_gid();
     auto nest    = Nest(*this);
     auto dumper  = Dumper(os, &nest);
