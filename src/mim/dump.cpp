@@ -60,24 +60,6 @@ public:
     bool is_left() const { return is_left_; }
     ///@}
 
-    explicit operator bool() const {
-        if (auto mut = def_->isa_mut()) {
-            if (isa_decl(mut)) return false;
-            return true;
-        }
-
-        if (def_->is_closed()) return true;
-
-        if (auto app = def_->isa<App>()) {
-            if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
-            if (app->type()->isa<Type>()) return true;
-            if (app->callee()->isa<Axm>()) return app->callee_type()->num_doms() <= 1;
-            return false;
-        }
-
-        return true;
-    }
-
 private:
     const Def* def_;
     Prec prec_;
@@ -89,33 +71,22 @@ private:
 };
 
 /// This is a wrapper to dump a Def.
-class Dump {
+class Dump : public Op {
 public:
     Dump(const Def* def, Prec prec = Prec::Bot, bool is_left = false)
-        : def_(def)
-        , prec_(prec)
-        , is_left_(is_left) {}
+        : Op(def, prec, is_left) {}
     Dump(Op op)
         : Dump(op.def(), op.prec(), op.is_left()) {}
 
-    /// @name Getters
-    ///@{
-    const Def* def() const { return def_; }
-    const Def* operator->() const { return def_; }
-    const Def* operator*() const { return def_; }
-    Prec prec() const { return prec_; }
-    bool is_left() const { return is_left_; }
-    ///@}
-
     explicit operator bool() const {
-        if (auto mut = def_->isa_mut()) {
+        if (auto mut = def()->isa_mut()) {
             if (isa_decl(mut)) return false;
             return true;
         }
 
-        if (def_->is_closed()) return true;
+        if (def()->is_closed()) return true;
 
-        if (auto app = def_->isa<App>()) {
+        if (auto app = def()->isa<App>()) {
             if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
             if (app->type()->isa<Type>()) return true;
             if (app->callee()->isa<Axm>()) return app->callee_type()->num_doms() <= 1;
@@ -124,11 +95,6 @@ public:
 
         return true;
     }
-
-private:
-    const Def* def_;
-    Prec prec_;
-    bool is_left_;
 
     friend std::ostream& operator<<(std::ostream&, Dump);
 };
