@@ -78,8 +78,7 @@ axm %eqsat.rules: {n: Nat, Ts: «n; *»} → «i: n; Ts#i» → %eqsat.Rules;
 ///
 ///
 /// TODO: We could add another config function here to configure whether to use regular egg
-///       or slotted-egg to perform equality saturation (since we already have regular egg implemented
-///       we can just add another implementation for slotted-egg without having to delete everything)
+///       or slotted-egg to perform equality saturation.
 ///
 /// ## Passes and Phases
 ///
