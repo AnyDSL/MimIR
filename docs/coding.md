@@ -172,19 +172,7 @@ You can directly invoke several MimIR dump helpers from within GDB, for example:
 
 ```gdb
 (gdb) call def->dump()
-(gdb) call def->dump(0)
-(gdb) call def->dump(3)
 (gdb) call world().write("out.mim")
-```
-
-In particular, note the different output levels of [mim::Def::dump](@ref mim::Def::dump).
-
-You can also tweak the output behavior directly from within GDB by changing [mim::World::flags](@ref mim::World::flags) or [mim::World::log](@ref mim::World::log):
-
-```gdb
-(gdb) call world().flags().dump_gid = 1
-(gdb) call world().flags().dump_recursive = 1
-(gdb) call world().log().max_level_ = 4
 ```
 
 Another useful trick is to recover a `Def*` from a [mim::Def::gid](@ref mim::Def::gid) via [mim::World::gid2def](@ref mim::World::gid2def):

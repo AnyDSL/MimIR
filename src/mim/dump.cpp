@@ -39,11 +39,11 @@ std::string_view external(const Def* def) {
     return ""sv;
 }
 
-/*
- * Inline + LRPrec
- */
+using ast::Assoc;
+using ast::Prec;
+using ast::prec_assoc;
 
-/// This is a wrapper to dump a Def "inline" and print it with all of its operands.
+/// This is a wrapper to dump a Def.
 struct Dump {
     Dump(const Def* def)
         : def_(def) {}
@@ -73,10 +73,6 @@ private:
 
     friend std::ostream& operator<<(std::ostream&, Dump);
 };
-
-using ast::Assoc;
-using ast::Prec;
-using ast::prec_assoc;
 
 bool is_atomic_app(const Def* def) {
     if (auto app = def->isa<App>()) {
@@ -545,21 +541,12 @@ void Def::write(int max) const {
 void World::dump(std::ostream& os) {
     auto freezer = World::Freezer(*this);
     auto old_gid = curr_gid();
+    auto nest    = Nest(*this);
+    auto dumper  = Dumper(os, &nest);
 
-    if (flags().dump_recursive) {
-        auto dumper = Dumper(os);
-        for (auto mut : externals().muts())
-            dumper.muts.push(mut);
-        while (!dumper.muts.empty())
-            dumper.dump(dumper.muts.pop());
-    } else {
-        auto nest   = Nest(*this);
-        auto dumper = Dumper(os, &nest);
-
-        for (const auto& import : driver().imports())
-            print(os, "{} {};\n", import.tag == ast::Tok::Tag::K_plugin ? "plugin" : "import", import.sym);
-        dumper.recurse(nest.root());
-    }
+    for (const auto& import : driver().imports())
+        print(os, "{} {};\n", import.tag == ast::Tok::Tag::K_plugin ? "plugin" : "import", import.sym);
+    dumper.recurse(nest.root());
 
     assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
 }
