@@ -197,7 +197,14 @@ void Emitter::emit_imported(Lam* lam) {
     // We assume that the lambda will be a continuation since imports
     // only exist via cfun and ccon which are both internally modelled as con
     print(func_decls_, "(con {} {}", ext, id(lam));
-    print(func_decls_, "{})\n\n", emit_var(bb, lam->var(), lam->type()->dom()));
+    print(func_decls_, "{}", emit_var(bb, lam->var(), lam->type()->dom()));
+    if (slotted()) {
+        ++tab;
+        tab.lnprint(func_decls_, "nil");
+        tab.lnprint(func_decls_, "nil");
+        --tab;
+    }
+    print(func_decls_, ")\n\n");
 }
 
 std::string Emitter::prepare() { return root()->unique_name(); }
