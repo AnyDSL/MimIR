@@ -12,9 +12,11 @@
 namespace mim {
 namespace detail {
 
+/// Does @p T provide an ostream operator?
 template<class T>
-concept Printable = requires(std::ostream& os, T a) { os << a; };
+concept Streamable = requires(std::ostream& os, T a) { os << a; };
 
+/// Does @p has a @p range and a function @p f to invoke?
 template<class T>
 concept Elemable = requires(T elem) {
     elem.range;
@@ -111,7 +113,7 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                     std::invoke(t);
                 } else if constexpr (std::is_invocable_v<decltype(t), std::ostream&>) {
                     std::invoke(t, os);
-                } else if constexpr (detail::Printable<decltype(t)>) {
+                } else if constexpr (detail::Streamable<decltype(t)>) {
                     auto flags = std::ios_base::fmtflags(os.flags());
 
                     if (spec == "b")
