@@ -596,7 +596,7 @@ public:
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
 
-    /// If *mutable, zonk%s all ops and tries to immutabilize it; otherwise just zonk.
+    /// If *mutable*, zonk()%s all ops and tries to immutabilize it; otherwise just zonk.
     const Def* zonk_mut() const;
     ///@}
 
@@ -604,6 +604,8 @@ public:
     static DefVec zonk(Defs defs);
 
     /// @name dump
+    /// @note While this output uses Mim syntax, it does usually **not** produce programs that can be read back.
+    /// It uses an unscheduled visiting algorithm, and is only meant for debugging purposes.
     ///@{
     void dump() const;                 ///< Dumps just this expression.
     void dump_cur() const;             ///< Dumps from the first free_var's binder.
@@ -616,20 +618,21 @@ public:
     void write_top(const char*) const; /// Writes to file. @see dump_top
     ///@}
 
-    /// @name syntactic comparison
-    ///
     enum class Cmp {
         L, ///< Less
         G, ///< Greater
         E, ///< Equal
         U, ///< Unknown
     };
+    /// @name Syntactic Comparison
+    ///@{
     [[nodiscard]] static Cmp cmp(const Def* a, const Def* b);
     [[nodiscard]] static bool less(const Def* a, const Def* b);
     [[nodiscard]] static bool greater(const Def* a, const Def* b);
+    ///@}
 
     /// @name dot
-    /// dumps dot to @p os while obeying maximum recursion depth of @p max.
+    /// Streams dot to @p os while obeying maximum recursion depth of @p max.
     /// if @p types is `true`, def::type() dependencies will be followed as well.
     ///@{
     void dot(std::ostream& os, uint32_t max = 0xffffff, bool types = false) const;
