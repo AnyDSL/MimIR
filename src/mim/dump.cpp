@@ -1,4 +1,5 @@
 #include <fstream>
+#include <ostream>
 
 #include <fe/assert.h>
 
@@ -43,25 +44,38 @@ using ast::Assoc;
 using ast::Prec;
 using ast::prec_assoc;
 
-/// This is a wrapper to dump a Def.
-class Op {
+class Wrap {
 public:
-    Op(const Def* def, Prec prec = Prec::Bot, bool is_left = false)
-        : def_(def)
-        , prec_(prec)
-        , is_left_(is_left) {}
+    Wrap(const Def* def)
+        : def_(def) {}
 
     /// @name Getters
     ///@{
     const Def* def() const { return def_; }
     const Def* operator->() const { return def_; }
     const Def* operator*() const { return def_; }
+    explicit operator bool() const { return def_ != nullptr; }
+    ///@}
+
+private:
+    const Def* def_;
+};
+
+/// This is a wrapper to dump a Def.
+class Op : public Wrap {
+public:
+    Op(const Def* def, Prec prec = Prec::Bot, bool is_left = false)
+        : Wrap(def)
+        , prec_(prec)
+        , is_left_(is_left) {}
+
+    /// @name Getters
+    ///@{
     Prec prec() const { return prec_; }
     bool is_left() const { return is_left_; }
     ///@}
 
 private:
-    const Def* def_;
     Prec prec_;
     bool is_left_;
 
@@ -97,6 +111,20 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream&, Dump);
+};
+
+class Ptrn : public Wrap {
+public:
+    Ptrn(const Def* def, const Def* type)
+        : Wrap(def)
+        , type_(type) {}
+
+    const Def* type() const { return type_; }
+
+private:
+    const Def* type_;
+
+    friend std::ostream& operator<<(std::ostream&, Ptrn);
 };
 
 auto ops(std::ostream& os, Defs defs) {
@@ -309,8 +337,7 @@ public:
     void dump(Def*);
     void dump(Lam*);
     void dump_let(const Def*);
-    void dump_ptrn(const Def*, const Def*);
-    void dump_group(const Def*, const Def*, bool implicit, bool paren_style, size_t limit, bool alias = true);
+    std::ostream& dump_group(const Def*, const Def*, bool implicit, bool paren_style, size_t limit, bool alias = true);
     void recurse(const Nest::Node*);
     void recurse(const Def*, bool first = false);
 
@@ -376,28 +403,30 @@ void Dumper::dump(Def* mut) {
 }
 
 void Dumper::dump(Lam* lam) {
-    std::vector<Lam*> groups;
-    for (Lam* curr = lam;;) {
-        groups.emplace_back(curr);
-        auto body = curr->body();
-        if (!body) break;
-        auto next = body->isa<Lam>();
-        if (!next) break;
-        curr = const_cast<Lam*>(next);
+    std::vector<const Lam*> currys;
+    for (const Lam* curr = lam;;) {
+        currys.emplace_back(curr);
+        if (auto body = curr->body())
+            if (auto next = body->isa<Lam>()) {
+                curr = next;
+                continue;
+            }
+        break;
     }
 
-    auto last   = groups.back();
+    auto last   = currys.back();
     auto is_fun = Lam::isa_returning(last);
     auto is_con = Lam::isa_cn(last) && !is_fun;
 
     tab.print(os, "{} {}{}", is_fun ? "fun" : is_con ? "con" : "lam", external(lam), id(lam));
-    for (auto* group : groups) {
+
+    for (auto curry : currys) {
         os << ' ';
-        auto num_doms = group->var() ? group->var()->num_tprojs() : group->type()->dom()->num_tprojs();
-        auto limit    = is_fun && group == last ? num_doms - 1 : num_doms;
-        dump_group(group->var(), group->type()->dom(), group->type()->is_implicit(), !is_con, limit,
-                   !is_fun || group != last);
-        if (is_con && group == last) print(os, "@{}", Op(group->filter()));
+        auto num_doms = curry->has_var() ? curry->has_var()->num_tprojs() : curry->type()->dom()->num_tprojs();
+        auto limit    = is_fun && curry == last ? num_doms - 1 : num_doms;
+        dump_group(curry->has_var(), curry->type()->dom(), curry->type()->is_implicit(), !is_con, limit,
+                   !is_fun || curry != last);
+        if (is_con && curry == last) print(os, "@{}", Op(curry->filter()));
     }
 
     if (is_fun)
@@ -410,9 +439,9 @@ void Dumper::dump(Lam* lam) {
 
     ++tab;
     if (last->is_set()) {
-        if (nest && groups.size() == 1) recurse((*nest)[lam]);
+        if (nest && currys.size() == 1) recurse((*nest)[lam]);
 
-        for (auto* group : groups)
+        for (auto* group : currys)
             recurse(group->filter());
         recurse(last->body(), true);
 
@@ -431,41 +460,38 @@ void Dumper::dump_let(const Def* def) {
     tab.print(os, "let {}: {} = {};\n", def->unique_name(), Op(def->type()), Dump(def));
 }
 
-void Dumper::dump_ptrn(const Def* def, const Def* type) {
-    if (!def) {
-        os << Op(type);
-    } else {
-        auto projs = def->tprojs();
-        if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; })) {
-            print(os, "{}: {}", def->unique_name(), Op(type));
-        } else {
-            size_t i = 0;
-            print(os, "({, }) as {}", Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }),
-                  def->unique_name());
-        }
-    }
+std::ostream& operator<<(std::ostream& os, Ptrn ptrn) {
+    auto type = ptrn.type();
+
+    if (!ptrn) return os << Op(type);
+
+    auto projs = ptrn->tprojs();
+    if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; }))
+        return print(os, "{}: {}", ptrn->unique_name(), Op(type));
+
+    size_t i = 0;
+    print(os, "({, })", Elem(projs, [&](auto p) { os << Ptrn(p, type->proj(i++)); }));
+    if (ptrn->sym()) print(os, " as {}", ptrn->unique_name());
+    return os;
 }
 
-void Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias) {
+std::ostream&
+Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias) {
     auto l           = implicit ? '{' : paren_style ? '(' : '[';
     auto r           = implicit ? '}' : paren_style ? ')' : ']';
     auto dump_binder = [&](const Def* binder, const Def* binder_type) {
         if (binder)
-            dump_ptrn(binder, binder_type);
+            os << Ptrn(binder, binder_type);
         else
             print(os, "_: {}", Op(binder_type));
     };
 
-    if (limit == 0) {
-        os << l << r;
-        return;
-    }
+    if (limit == 0) return os << l << r;
 
     if (limit == 1) {
         os << l;
         dump_binder(def ? def->tproj(0) : nullptr, type->tproj(0));
-        os << r;
-        return;
+        return os << r;
     }
 
     print(os, "{}{, }{}", l,
@@ -474,6 +500,7 @@ void Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool par
           r);
 
     if (alias && def) print(os, " as {}", def->unique_name());
+    return os;
 }
 
 void Dumper::recurse(const Nest::Node* node) {

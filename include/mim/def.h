@@ -460,6 +460,10 @@ public:
     Muts users() { return muts_; } ///< Set of mutables where this mutable is locally referenced.
     bool is_open() const;          ///< Has free_vars()?
     bool is_closed() const;        ///< Has no free_vars()?
+
+    /// Transitively walks up free_vars() till the outermoust binder has been found.
+    /// @returns `nullptr`, if is_closed() and not a mutable.
+    Def* top_mut() const;
     ///@}
 
     /// @name external
@@ -601,11 +605,18 @@ public:
 
     /// @name dump
     ///@{
-    void dump() const;
-    std::string to_string() const;
+    void dump() const;                 ///< Dumps just this expression.
+    void dump_cur() const;             ///< Dumps from the first free_var's binder.
+    void dump_top() const;             ///< Dumps from the outermost binder. @see top_mut()
+    std::string to_string() const;     /// @see dump
+    std::string to_string_cur() const; /// @see dump_cur
+    std::string to_string_top() const; /// @see dump_top
+    void write(const char*) const;     /// Writes to file. @see dump
+    void write_cur(const char*) const; /// Writes to file. @see dump_cur
+    void write_top(const char*) const; /// Writes to file. @see dump_top
     ///@}
 
-    /// @name Syntactic Comparison
+    /// @name syntactic comparison
     ///
     enum class Cmp {
         L, ///< Less
@@ -618,12 +629,12 @@ public:
     [[nodiscard]] static bool greater(const Def* a, const Def* b);
 
     /// @name dot
-    /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
-    /// If @p types is `true`, Def::type() dependencies will be followed as well.
+    /// dumps dot to @p os while obeying maximum recursion depth of @p max.
+    /// if @p types is `true`, def::type() dependencies will be followed as well.
     ///@{
-    void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
-    /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
-    void dot(const char* file = nullptr, uint32_t max = 0xFFFFFF, bool types = false) const;
+    void dot(std::ostream& os, uint32_t max = 0xffffff, bool types = false) const;
+    /// same as above but write to @p file or `std::cout` if @p file is `nullptr`.
+    void dot(const char* file = nullptr, uint32_t max = 0xffffff, bool types = false) const;
     void dot(const std::string& file, uint32_t max = 0xFFFFFF, bool types = false) const {
         return dot(file.c_str(), max, types);
     }
