@@ -245,9 +245,9 @@ lit Tests</h2>
 </div><!-- fragment --><p>If your build directory is actually called <span class="tt">build</span>, you can also use <span class="tt">probe.sh</span>:</p>
 <div class="fragment"><div class="line">cd lit</div>
 <div class="line">../scripts/probe.sh foo.mim</div>
-</div><!-- fragment --><p>To generate a one-line reproducer for the current checkout and a specific <span class="tt">lit</span> failure, use:</p>
-<div class="fragment"><div class="line">./scripts/make_lit_error.sh foo.mim</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>To generate a one-line reproducer for the current checkout and a specific <span class="tt">lit</span> failure, use: <div class="fragment"><div class="line">./scripts/make_lit_error.sh foo.mim</div>
+</div><!-- fragment --></dd></dl>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 GoogleTest</h2>
 <p>Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests with:</p>
 <div class="fragment"><div class="line">ctest --test-dir build --output-on-failure</div>
@@ -259,9 +259,9 @@ GoogleTest</h2>
 <div class="fragment"><div class="line">build/bin/mim-gtest --gtest_list_tests</div>
 </div><!-- fragment --><p>It can also be useful to turn assertion failures into debugger breakpoints:</p>
 <div class="fragment"><div class="line">build/bin/mim-gtest --gtest_break_on_failure</div>
-</div><!-- fragment --><p>To generate a one-line reproducer for the current checkout and a specific GoogleTest failure, use:</p>
-<div class="fragment"><div class="line">./scripts/make_gtest_error.sh &quot;mim.World.dependent_extract&quot;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>To generate a one-line reproducer for the current checkout and a specific GoogleTest failure, use: <div class="fragment"><div class="line">./scripts/make_gtest_error.sh &quot;mim.World.dependent_extract&quot;</div>
+</div><!-- fragment --></dd></dl>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
 Coding Style</h1>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
 C++ Style</h2>
