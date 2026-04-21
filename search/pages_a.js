@@ -13,7 +13,7 @@ var searchData=
   ['line_20reference_10',['Command-Line Reference',['../cli.html',1,'']]],
   ['list_11',['Deprecated List',['../deprecated.html',1,'']]],
   ['lit_12',['%regex.lit',['../regex.html#autotoc_md307',1,'']]],
-  ['lit_20tests_13',['lit Tests',['../coding.html#autotoc_md15',1,'']]],
+  ['lit_20tests_13',['lit Tests',['../coding.html#autotoc_md2',1,'']]],
   ['literals_14',['Matching Literals',['../dev.html#cast_lit',1,'']]],
   ['literals_20and_20basic_20forms_15',['Literals and Basic Forms',['../langref.html#autotoc_md45',1,'']]],
   ['load_16',['%mem.load',['../mem.html#autotoc_md239',1,'']]],

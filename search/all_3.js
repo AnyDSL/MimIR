@@ -29,7 +29,7 @@ var searchData=
   ['debug_5fdump_26',['debug_dump',['../classmim_1_1World.html#a888c0001cb304f075ddcb69ad0063996',1,'mim::World']]],
   ['debug_5fprefix_27',['debug_prefix',['../classmim_1_1Def.html#a66978d46660dbc8222365432fae2568a',1,'mim::Def']]],
   ['debug_5fsuffix_28',['debug_suffix',['../classmim_1_1Def.html#a8daf14a811af7e64ffc033ea347862f0',1,'mim::Def']]],
-  ['debugging_29',['Debugging',['../coding.html',1,'Contributing &amp; Debugging'],['../coding.html#autotoc_md9',1,'Debugging']]],
+  ['debugging_29',['Debugging',['../coding.html',1,'Contributing &amp; Debugging'],['../coding.html#autotoc_md12',1,'Debugging']]],
   ['debugging_20features_30',['Debugging Features',['../cli.html#clidebug',1,'']]],
   ['dec_31',['dec',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da1feea25ecb958229287f885aebe7c49b',1,'mim::plug::math']]],
   ['decl_32',['Decl',['../classmim_1_1ast_1_1Decl.html',1,'mim::ast::Decl'],['../classmim_1_1ast_1_1Decl.html#a2eae454589077199dbfa14111e0e88f8',1,'mim::ast::Decl::Decl()']]],
@@ -94,7 +94,7 @@ var searchData=
   ['discovery_91',['Third-Party Plugin Discovery',['../plugins.html#autotoc_md80',1,'']]],
   ['disj_92',['disj',['../regex.html#autotoc_md304',1,'%regex.disj'],['../namespacemim_1_1plug_1_1regex.html#ab6f9a5fa4f24669f96d8db67637e8628',1,'mim::plug::regex::disj']]],
   ['dispatch_93',['Dispatch',['../classmim_1_1Dispatch.html',1,'mim::Dispatch'],['../classmim_1_1Dispatch.html#a64ec0fe80990bcdb673d16ea7a64100f',1,'mim::Dispatch::Dispatch()']]],
-  ['displaying_20dot_20graphs_94',['Displaying DOT Graphs',['../coding.html#autotoc_md11',1,'']]],
+  ['displaying_20dot_20graphs_94',['Displaying DOT Graphs',['../coding.html#autotoc_md14',1,'']]],
   ['div_95',['div',['../core.html#autotoc_md148',1,'%core.div'],['../namespacemim_1_1plug_1_1core.html#a12a963046afc5c121f244b761faad6e9',1,'mim::plug::core::div'],['../namespacemim_1_1plug_1_1math.html#a5bde3d09d340051c478b4566bca0f686a38696558dc98494c08d951c052900a2a',1,'mim::plug::math::div']]],
   ['dl_2ecpp_96',['dl.cpp',['../dl_8cpp.html',1,'']]],
   ['dl_2eh_97',['dl.h',['../dl_8h.html',1,'']]],
@@ -105,7 +105,7 @@ var searchData=
   ['dominance_102',['🪾 SSA without Dominance',['../index.html#autotoc_md91',1,'']]],
   ['doms_103',['doms',['../classmim_1_1ast_1_1LamDecl.html#a3bb950d9046a595673ab18e50f1ddca7',1,'mim::ast::LamDecl']]],
   ['dot_104',['dot',['../classmim_1_1Def.html#a1575fa76069a619e90ca2a8eef2bcbbe',1,'mim::Def::dot(std::ostream &amp;os, uint32_t max=0xFFFFFF, bool types=false) const'],['../classmim_1_1Def.html#ac92c3ff3b6a007b6bc29be2a6ce1ab45',1,'mim::Def::dot(const char *file=nullptr, uint32_t max=0xFFFFFF, bool types=false) const'],['../classmim_1_1Def.html#a3564515e778285694ee455137ab41e9b',1,'mim::Def::dot(const std::string &amp;file, uint32_t max=0xFFFFFF, bool types=false) const'],['../classmim_1_1Nest.html#a3e6c25284427f529112afae69b1c8b48',1,'mim::Nest::dot(std::ostream &amp;os) const'],['../classmim_1_1Nest.html#a96196cd341593fd85f653b8b02e60417',1,'mim::Nest::dot(const char *file=nullptr) const'],['../classmim_1_1Nest.html#aacdd8a9cfdd7cc82de507ed36ed88484',1,'mim::Nest::dot(std::string s) const'],['../classmim_1_1Sets.html#a0b45cb5566879539a8b7a11a9f48af0c',1,'mim::Sets::dot()'],['../classmim_1_1Sets.html#a258ff3e0630af409d343a3d936ef43e9',1,'mim::Sets::dot(std::ostream &amp;os) const'],['../classmim_1_1World.html#af475936db6f745b3567fce53a0f4a871',1,'mim::World::dot(std::ostream &amp;os, bool annexes=false, bool types=false) const'],['../classmim_1_1World.html#a722b0c4b3f8511b485bf2232359e64fe',1,'mim::World::dot(const char *file=nullptr, bool annexes=false, bool types=false) const']]],
-  ['dot_20graphs_105',['Displaying DOT Graphs',['../coding.html#autotoc_md11',1,'']]],
+  ['dot_20graphs_105',['Displaying DOT Graphs',['../coding.html#autotoc_md14',1,'']]],
   ['dot_2ecpp_106',['dot.cpp',['../dot_8cpp.html',1,'']]],
   ['dot_5f2d_5f00_107',['dot_2d_00',['../namespacemim_1_1plug_1_1tensor.html#a7245629f6c91cd34c8faded6f401066d',1,'mim::plug::tensor']]],
   ['dot_5f2d_5f01_108',['dot_2d_01',['../namespacemim_1_1plug_1_1tensor.html#aaf94ba28bba249a3e4d5c56b937fb97a',1,'mim::plug::tensor']]],
@@ -116,7 +116,7 @@ var searchData=
   ['downcast_20to_20immutables_113',['Downcast to Immutables',['../dev.html#autotoc_md24',1,'']]],
   ['downcast_20to_20mutables_114',['Downcast to Mutables',['../dev.html#autotoc_md25',1,'']]],
   ['downcasts_20for_20built_20ins_115',['Downcasts for Built-ins',['../dev.html#cast_builtin',1,'']]],
-  ['doxygen_20style_116',['Doxygen Style',['../coding.html#autotoc_md4',1,'']]],
+  ['doxygen_20style_116',['Doxygen Style',['../coding.html#autotoc_md6',1,'']]],
   ['driver_117',['Driver',['../classmim_1_1Driver.html',1,'mim::Driver'],['../classmim_1_1Driver.html#ae8008e0b5d7a78d738c465d3253aa365',1,'mim::Driver::Driver()']]],
   ['driver_118',['driver',['../classmim_1_1ast_1_1AST.html#a1a2b4087b193be1f3a330c44f27e35dc',1,'mim::ast::AST::driver()'],['../classmim_1_1ast_1_1Parser.html#ae57f08577b857b2be1363390044f8d91',1,'mim::ast::Parser::driver()'],['../classmim_1_1Stage.html#ae03185612be794ea360e83be93a1ace8',1,'mim::Stage::driver()'],['../classmim_1_1World.html#a32187bcd87365e3a8d712b373ceaa0d5',1,'mim::World::driver() const'],['../classmim_1_1World.html#a2a0347862f33d964457e4c9b64e75625',1,'mim::World::driver()'],['../classmim_1_1ast_1_1Scopes.html#aa09fa4aa5ea992f96da095bd6f172096',1,'mim::ast::Scopes::driver()'],['../classmim_1_1ast_1_1Emitter.html#af63c0e340a1dbef41a23238343e1da1f',1,'mim::ast::Emitter::driver()']]],
   ['driver_2ecpp_119',['driver.cpp',['../driver_8cpp.html',1,'']]],
@@ -131,5 +131,5 @@ var searchData=
   ['dump_2ecpp_128',['dump.cpp',['../dump_8cpp.html',1,'']]],
   ['dump_5fgid_129',['dump_gid',['../namespacemim.html#a17a6522e1abbe40ec6463cfd669c6f20',1,'mim::Flags']]],
   ['dump_5frecursive_130',['dump_recursive',['../namespacemim.html#afc6c15ed47123ead7dae5a3c7b5e8506',1,'mim::Flags']]],
-  ['dumping_131',['Dumping',['../coding.html#autotoc_md10',1,'']]]
+  ['dumping_131',['Dumping',['../coding.html#autotoc_md13',1,'']]]
 ];

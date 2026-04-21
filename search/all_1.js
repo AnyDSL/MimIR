@@ -56,7 +56,7 @@ var searchData=
   ['break_5fon_5ferror_53',['break_on_error',['../namespacemim.html#a815524784f39e99f0d5929c8ef950552',1,'mim::Flags']]],
   ['break_5fon_5fwarn_54',['break_on_warn',['../namespacemim.html#accee3d68c6800853cbb887679212d540',1,'mim::Flags']]],
   ['breakpoint_55',['breakpoint',['../classmim_1_1World.html#ae2b230faf05210f655cbfd4806fd75fb',1,'mim::World']]],
-  ['breakpoints_56',['Breakpoints',['../coding.html#autotoc_md12',1,'Conditional Breakpoints'],['../coding.html#autotoc_md16',1,'Triggering Breakpoints']]],
+  ['breakpoints_56',['Breakpoints',['../coding.html#autotoc_md15',1,'Conditional Breakpoints'],['../coding.html#autotoc_md18',1,'Triggering Breakpoints']]],
   ['breakpoints_57',['breakpoints',['../structmim_1_1World_1_1State.html#ae8b660ef148e3b7b5c237744a4b2f228',1,'mim::World::State::breakpoints'],['../classmim_1_1World.html#a8e95b756aab85d9cf0adc65cc40f7c4f',1,'mim::World::breakpoints()']]],
   ['broadcast_5fin_5fdim_58',['broadcast_in_dim',['../tensor.html#autotoc_md327',1,'%tensor.broadcast_in_dim'],['../namespacemim_1_1plug_1_1tensor.html#a0281472aa2604344bb475423751dcd77',1,'mim::plug::tensor::broadcast_in_dim']]],
   ['bufptr_59',['BufPtr',['../namespacemim_1_1plug_1_1clos.html#ac0109814535661c3ccd6d63370f8eec2',1,'mim::plug::clos']]],

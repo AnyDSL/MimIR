@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m⁠im_20coding_20style_0',['M⁠im Coding Style',['../coding.html#autotoc_md8',1,'']]],
+  ['m⁠im_20coding_20style_0',['M⁠im Coding Style',['../coding.html#autotoc_md10',1,'']]],
   ['m_1',['M',['../mem.html#memM',1,'%mem.M'],['../core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89',1,'M:&#160;normalizers.cpp'],['../math_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89',1,'M:&#160;normalizers.cpp'],['../namespacemim_1_1plug_1_1mem.html#a44127c99fa94a5143565463d65206ea6',1,'mim::plug::mem::M']]],
   ['m_5fanx_2',['M_anx',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5ab339ffcc416e89da6a893767c5dc3eba',1,'mim::ast::Tok']]],
   ['m_5fid_3',['M_id',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5ad43558618211347eb1e180a76a011d7a',1,'mim::ast::Tok']]],
@@ -26,7 +26,7 @@ var searchData=
   ['mapred_5ftranspose_23',['mapRed_transpose',['../namespacemim_1_1plug_1_1matrix.html#a36565709b5af1a534d625e8c8443da7c',1,'mim::plug::matrix']]],
   ['mark_24',['mark',['../classmim_1_1Def.html#a592578e8733989b79ab6649485eae42b',1,'mim::Def']]],
   ['mark_5firreducible_25',['mark_irreducible',['../classmim_1_1EtaRed.html#a44237a21f938ee390fd9c25306eeeeaa',1,'mim::EtaRed']]],
-  ['markdown_20style_26',['Markdown Style',['../coding.html#autotoc_md7',1,'']]],
+  ['markdown_20style_26',['Markdown Style',['../coding.html#autotoc_md9',1,'']]],
   ['mat_27',['Mat',['../matrix.html#autotoc_md217',1,'%matrix.Mat'],['../namespacemim_1_1plug_1_1matrix.html#af6839dbbb5d2ef291479523aafd649d4',1,'mim::plug::matrix::Mat']]],
   ['match_28',['Match',['../classmim_1_1Match.html',1,'mim::Match'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da6da89265a9a8b0b28eb4946bb2ec0c6d',1,'mim::Match']]],
   ['match_29',['match',['../classmim_1_1World.html#a4647f46eaad8cc510000f88a7f3e543f',1,'mim::World']]],

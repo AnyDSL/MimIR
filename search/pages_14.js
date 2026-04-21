@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['valgrind_20gdb_0',['Valgrind &amp;amp; GDB',['../coding.html#autotoc_md14',1,'']]],
+  ['valgrind_20gdb_0',['Valgrind &amp;amp; GDB',['../coding.html#autotoc_md17',1,'']]],
   ['values_1',['Values',['../regex.html#autotoc_md305',1,'']]],
   ['variants_2',['Thresholded Variants',['../dev.html#autotoc_md34',1,'']]],
   ['varrewriter_3',['VarRewriter',['../rewriting.html#autotoc_md102',1,'Rewriter vs. VarRewriter'],['../rewriting.html#varrewriter',1,'VarRewriter']]],

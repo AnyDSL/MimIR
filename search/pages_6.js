@@ -1,11 +1,11 @@
 var searchData=
 [
   ['gamma_0',['%math.gamma',['../math.html#autotoc_md206',1,'']]],
-  ['gdb_1',['Valgrind &amp;amp; GDB',['../coding.html#autotoc_md14',1,'']]],
+  ['gdb_1',['Valgrind &amp;amp; GDB',['../coding.html#autotoc_md17',1,'']]],
   ['general_20downcast_2',['General Downcast',['../dev.html#autotoc_md23',1,'']]],
   ['get_3',['%ord.get',['../ord.html#autotoc_md279',1,'']]],
   ['gid_4',['%refly.gid',['../refly.html#autotoc_md290',1,'']]],
-  ['googletest_5',['GoogleTest',['../coding.html#autotoc_md17',1,'']]],
+  ['googletest_5',['GoogleTest',['../coding.html#autotoc_md3',1,'']]],
   ['gpu_20alloc_6',['%gpu.alloc',['../gpu.html#autotoc_md177',1,'']]],
   ['gpu_20alloc_5fasync_7',['%gpu.alloc_async',['../gpu.html#autotoc_md183',1,'']]],
   ['gpu_20alloc_5fcopy_8',['%gpu.alloc_copy',['../gpu.html#autotoc_md181',1,'']]],
@@ -25,6 +25,6 @@ var searchData=
   ['gpu_20sync_5fwork_5fitems_22',['%gpu.sync_work_items',['../gpu.html#autotoc_md192',1,'']]],
   ['gpu_20synced_5fscope_23',['%gpu.synced_scope',['../gpu.html#autotoc_md193',1,'']]],
   ['grammar_24',['Grammar',['../langref.html#grammar',1,'']]],
-  ['graphs_25',['Displaying DOT Graphs',['../coding.html#autotoc_md11',1,'']]],
+  ['graphs_25',['Displaying DOT Graphs',['../coding.html#autotoc_md14',1,'']]],
   ['guide_26',['Developer Guide',['../dev.html',1,'']]]
 ];

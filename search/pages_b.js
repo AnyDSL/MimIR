@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['m⁠im_20coding_20style_0',['M⁠im Coding Style',['../coding.html#autotoc_md8',1,'']]],
+  ['m⁠im_20coding_20style_0',['M⁠im Coding Style',['../coding.html#autotoc_md10',1,'']]],
   ['m_1',['%mem.M',['../mem.html#memM',1,'']]],
   ['malloc_2',['%mem.malloc',['../mem.html#autotoc_md244',1,'']]],
   ['manipulate_3',['Manipulate',['../refly.html#autotoc_md295',1,'']]],
   ['map_4',['%ord.Set / %ord.Map',['../ord.html#autotoc_md271',1,'']]],
   ['map_5freduce_5',['%tensor.map_reduce',['../tensor.html#autotoc_md329',1,'']]],
-  ['markdown_20style_6',['Markdown Style',['../coding.html#autotoc_md7',1,'']]],
+  ['markdown_20style_6',['Markdown Style',['../coding.html#autotoc_md9',1,'']]],
   ['mat_7',['%matrix.Mat',['../matrix.html#autotoc_md217',1,'']]],
   ['matching_8',['Products, Sequences, Unions, and Matching',['../langref.html#autotoc_md47',1,'']]],
   ['matching_20axioms_9',['Matching Axioms',['../dev.html#cast_axm',1,'']]],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['dbg_0',['%refly.dbg',['../refly.html#autotoc_md291',1,'']]],
-  ['debugging_1',['Debugging',['../coding.html',1,'Contributing &amp; Debugging'],['../coding.html#autotoc_md9',1,'Debugging']]],
+  ['debugging_1',['Debugging',['../coding.html',1,'Contributing &amp; Debugging'],['../coding.html#autotoc_md12',1,'Debugging']]],
   ['debugging_20features_2',['Debugging Features',['../cli.html#clidebug',1,'']]],
   ['declaration_20blocks_3',['Local Declaration Blocks',['../langref.html#autotoc_md48',1,'']]],
   ['declarations_4',['Declarations',['../langref.html#decl',1,'Declarations'],['../langref.html#autotoc_md51',1,'Declarations']]],
@@ -17,16 +17,16 @@ var searchData=
   ['direct_20style_20plugin_14',['The direct style Plugin',['../direct.html',1,'']]],
   ['discovery_15',['Third-Party Plugin Discovery',['../plugins.html#autotoc_md80',1,'']]],
   ['disj_16',['%regex.disj',['../regex.html#autotoc_md304',1,'']]],
-  ['displaying_20dot_20graphs_17',['Displaying DOT Graphs',['../coding.html#autotoc_md11',1,'']]],
+  ['displaying_20dot_20graphs_17',['Displaying DOT Graphs',['../coding.html#autotoc_md14',1,'']]],
   ['div_18',['%core.div',['../core.html#autotoc_md148',1,'']]],
   ['does_19',['What the Rewrite Does',['../phases.html#autotoc_md72',1,'']]],
   ['dominance_20',['🪾 SSA without Dominance',['../index.html#autotoc_md91',1,'']]],
-  ['dot_20graphs_21',['Displaying DOT Graphs',['../coding.html#autotoc_md11',1,'']]],
+  ['dot_20graphs_21',['Displaying DOT Graphs',['../coding.html#autotoc_md14',1,'']]],
   ['dot_5fgeneral_22',['%tensor.dot_general',['../tensor.html#autotoc_md325',1,'']]],
   ['downcast_23',['General Downcast',['../dev.html#autotoc_md23',1,'']]],
   ['downcast_20to_20immutables_24',['Downcast to Immutables',['../dev.html#autotoc_md24',1,'']]],
   ['downcast_20to_20mutables_25',['Downcast to Mutables',['../dev.html#autotoc_md25',1,'']]],
   ['downcasts_20for_20built_20ins_26',['Downcasts for Built-ins',['../dev.html#cast_builtin',1,'']]],
-  ['doxygen_20style_27',['Doxygen Style',['../coding.html#autotoc_md4',1,'']]],
-  ['dumping_28',['Dumping',['../coding.html#autotoc_md10',1,'']]]
+  ['doxygen_20style_27',['Doxygen Style',['../coding.html#autotoc_md6',1,'']]],
+  ['dumping_28',['Dumping',['../coding.html#autotoc_md13',1,'']]]
 ];

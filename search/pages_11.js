@@ -33,7 +33,7 @@ var searchData=
   ['stream_5fsync_30',['%gpu.stream_sync',['../gpu.html#autotoc_md175',1,'']]],
   ['streams_31',['Streams',['../gpu.html#autotoc_md170',1,'Streams'],['../gpu.html#autotoc_md172',1,'Streams']]],
   ['structure_32',['Lexical Structure',['../langref.html#lex',1,'']]],
-  ['style_33',['Style',['../coding.html#autotoc_md3',1,'C++ Style'],['../coding.html#autotoc_md6',1,'CMake Style'],['../coding.html#autotoc_md2',1,'Coding Style'],['../coding.html#autotoc_md4',1,'Doxygen Style'],['../coding.html#autotoc_md8',1,'M⁠im Coding Style'],['../coding.html#autotoc_md7',1,'Markdown Style']]],
+  ['style_33',['Style',['../coding.html#autotoc_md5',1,'C++ Style'],['../coding.html#autotoc_md8',1,'CMake Style'],['../coding.html#autotoc_md4',1,'Coding Style'],['../coding.html#autotoc_md6',1,'Doxygen Style'],['../coding.html#autotoc_md10',1,'M⁠im Coding Style'],['../coding.html#autotoc_md9',1,'Markdown Style']]],
   ['style_20plugin_34',['The direct style Plugin',['../direct.html',1,'']]],
   ['substitution_35',['Scoped Substitution',['../rewriting.html#autotoc_md100',1,'']]],
   ['subtags_36',['Subtags',['../dev.html#autotoc_md29',1,'With Subtags'],['../dev.html#autotoc_md28',1,'Without Subtags']]],
@@ -43,5 +43,5 @@ var searchData=
   ['sync_5fwork_5fitems_40',['%gpu.sync_work_items',['../gpu.html#autotoc_md192',1,'']]],
   ['synced_5fscope_41',['%gpu.synced_scope',['../gpu.html#autotoc_md193',1,'']]],
   ['synchronization_42',['Work-Item Synchronization',['../gpu.html#autotoc_md191',1,'']]],
-  ['syntax_20highlighting_43',['Syntax Highlighting',['../coding.html#autotoc_md18',1,'']]]
+  ['syntax_20highlighting_43',['Syntax Highlighting',['../coding.html#autotoc_md11',1,'']]]
 ];
