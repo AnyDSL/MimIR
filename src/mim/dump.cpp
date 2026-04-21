@@ -44,12 +44,22 @@ using ast::Prec;
 using ast::prec_assoc;
 
 /// This is a wrapper to dump a Def.
-struct Dump {
-    Dump(const Def* def)
-        : def_(def) {}
+class Op {
+public:
+    Op(const Def* def, Prec prec = Prec::Bot, bool is_left = false)
+        : def_(def)
+        , prec_(prec)
+        , is_left_(is_left) {}
 
+    /// @name Getters
+    ///@{
+    const Def* def() const { return def_; }
     const Def* operator->() const { return def_; }
     const Def* operator*() const { return def_; }
+    Prec prec() const { return prec_; }
+    bool is_left() const { return is_left_; }
+    ///@}
+
     explicit operator bool() const {
         if (auto mut = def_->isa_mut()) {
             if (isa_decl(mut)) return false;
@@ -70,6 +80,55 @@ struct Dump {
 
 private:
     const Def* def_;
+    Prec prec_;
+    bool is_left_;
+
+    /// This will stream @p def as an operand.
+    /// This is usually `id(def)` unless it can be displayed Inline.
+    friend std::ostream& operator<<(std::ostream&, Op);
+};
+
+/// This is a wrapper to dump a Def.
+class Dump {
+public:
+    Dump(const Def* def, Prec prec = Prec::Bot, bool is_left = false)
+        : def_(def)
+        , prec_(prec)
+        , is_left_(is_left) {}
+    Dump(Op op)
+        : Dump(op.def(), op.prec(), op.is_left()) {}
+
+    /// @name Getters
+    ///@{
+    const Def* def() const { return def_; }
+    const Def* operator->() const { return def_; }
+    const Def* operator*() const { return def_; }
+    Prec prec() const { return prec_; }
+    bool is_left() const { return is_left_; }
+    ///@}
+
+    explicit operator bool() const {
+        if (auto mut = def_->isa_mut()) {
+            if (isa_decl(mut)) return false;
+            return true;
+        }
+
+        if (def_->is_closed()) return true;
+
+        if (auto app = def_->isa<App>()) {
+            if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
+            if (app->type()->isa<Type>()) return true;
+            if (app->callee()->isa<Axm>()) return app->callee_type()->num_doms() <= 1;
+            return false;
+        }
+
+        return true;
+    }
+
+private:
+    const Def* def_;
+    Prec prec_;
+    bool is_left_;
 
     friend std::ostream& operator<<(std::ostream&, Dump);
 };
@@ -116,11 +175,6 @@ bool needs_parens(Prec parent, const Def* child, bool is_left) {
     fe::unreachable();
 }
 
-std::ostream& dump_child(std::ostream& os, Prec parent, const Def* child, bool is_left) {
-    if (needs_parens(parent, child, is_left)) return print(os, "({})", child);
-    return print(os, "{}", child);
-}
-
 std::ostream& dump_ascribed(std::ostream& os, const auto& value, const Def* type) {
     os << value << ':';
     if (def2prec(type) == Prec::Lit) return print(os, "{}", type);
@@ -134,15 +188,29 @@ std::ostream& dump_pi_dom(std::ostream& os, const Pi* pi) {
 
     if (mut && mut->var()) {
         os << l << mut->var() << ": ";
-        dump_child(os, Prec::Arrow, pi->dom(), true);
+        os << Dump(pi->dom(), Prec::Arrow, true);
         return os << r;
     }
 
-    return dump_child(os, Prec::Arrow, pi->dom(), true);
+    return os << Dump(pi->dom(), Prec::Arrow, true);
+}
+
+/// This will stream @p def as an operand.
+/// This is usually `id(def)` unless it can be displayed Inline.
+std::ostream& operator<<(std::ostream& os, Op op) {
+    if (*op == nullptr) return os << "<nullptr>";
+
+    if (auto d = Dump(op)) {
+        auto _ = World::Freezer(d->world());
+        return os << Dump(d);
+    }
+
+    return os << id(*op);
 }
 
 std::ostream& operator<<(std::ostream& os, Dump d) {
     if (auto mut = d->isa_mut(); mut && !mut->is_set()) return os << "unset";
+    if (needs_parens(d.prec(), *d, d.is_left())) return print(os, "({})", Dump(*d));
 
     bool ascii = d->world().flags().ascii;
     auto arw   = ascii ? "->" : "→";
@@ -158,8 +226,7 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
             if (level == 0) return print(os, "*");
             if (level == 1) return print(os, "□");
         }
-        os << "Type ";
-        return dump_child(os, Prec::App, type->level(), false);
+        return print(os, "Type {}", Op(type->level(), Prec::App, false));
     } else if (d->isa<Nat>()) {
         return print(os, "Nat");
     } else if (d->isa<Idx>()) {
@@ -212,12 +279,10 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
         }
         return dump_ascribed(os, lit->get(), lit->type());
     } else if (auto ex = d->isa<Extract>()) {
-        if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
-        dump_child(os, Prec::Extract, ex->tuple(), true);
-        os << '#';
-        return dump_child(os, Prec::Extract, ex->index(), false);
+        if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return os << ex->unique_name();
+        return print(os, "{}#{}", Op(ex->tuple(), Prec::Extract, true), Dump(ex->index(), Prec::Extract, false));
     } else if (auto var = d->isa<Var>()) {
-        return print(os, "{}", var->unique_name());
+        return os << var->unique_name();
     } else if (auto pi = d->isa<Pi>()) {
         if (Pi::isa_cn(pi)) {
             os << "Cn ";
@@ -225,7 +290,7 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
         }
         dump_pi_dom(os, pi);
         os << ' ' << arw << ' ';
-        return dump_child(os, Prec::Arrow, pi->codom(), false);
+        return os << Dump(pi->codom(), Prec::Arrow, false);
     } else if (auto lam = d->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = d->isa<App>()) {
@@ -243,9 +308,9 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
                 // clang-format on
             }
         }
-        dump_child(os, Prec::App, app->callee(), true);
+        os << Op(app->callee(), Prec::App, true);
         os << ' ';
-        return dump_child(os, Prec::App, app->arg(), false);
+        return os << Op(app->arg(), Prec::App, false);
     } else if (auto sigma = d->isa<Sigma>()) {
         if (auto mut = sigma->isa_mut<Sigma>(); mut && mut->var()) {
             size_t i = 0;
