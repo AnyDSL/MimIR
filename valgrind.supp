@@ -1,0 +1,32 @@
+{
+  egg_symbol_table_shard_malloc
+  Memcheck:Leak
+  match-leak-kinds: possible,reachable
+  fun:malloc
+  ...
+  fun:*symbol_table*Shard*intern*
+}
+{
+  egg_symbol_table_shard__realloc
+  Memcheck:Leak
+  match-leak-kinds: possible,reachable
+  fun:realloc
+  ...
+  fun:*symbol_table*Shard*intern*
+}
+{
+  egg_symbol_table_symbol_table_malloc
+  Memcheck:Leak
+  match-leak-kinds: possible,reachable
+  fun:malloc
+  ...
+  fun:*symbol_table*SymbolTable*intern*
+}
+{
+  egg_symbol_table_symbol_table_realloc
+  Memcheck:Leak
+  match-leak-kinds: possible,reachable
+  fun:realloc
+  ...
+  fun:*symbol_table*SymbolTable*intern*
+}

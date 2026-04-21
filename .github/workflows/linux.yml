@@ -72,4 +72,9 @@ jobs:
       - name: Test w/ Valgrind
         if: matrix.build-type == 'Release'
         working-directory: ${{github.workspace}}/build
+        env:
+          CTEST_MEMORYCHECK_COMMAND_OPTIONS: >-
+            --leak-check=full
+            --error-exitcode=1
+            --suppressions=${{github.workspace}}/valgrind.supp
         run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure -T memcheck
