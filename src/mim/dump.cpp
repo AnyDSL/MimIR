@@ -181,20 +181,6 @@ std::ostream& dump_ascribed(std::ostream& os, const auto& value, const Def* type
     return print(os, "({})", type);
 }
 
-std::ostream& dump_pi_dom(std::ostream& os, const Pi* pi) {
-    auto mut = pi->isa_mut<Pi>();
-    auto l   = pi->is_implicit() ? '{' : '[';
-    auto r   = pi->is_implicit() ? '}' : ']';
-
-    if (mut && mut->var()) {
-        os << l << mut->var() << ": ";
-        os << Dump(pi->dom(), Prec::Arrow, true);
-        return os << r;
-    }
-
-    return os << Dump(pi->dom(), Prec::Arrow, true);
-}
-
 /// This will stream @p def as an operand.
 /// This is usually `id(def)` unless it can be displayed Inline.
 std::ostream& operator<<(std::ostream& os, Op op) {
@@ -284,13 +270,17 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
     } else if (auto var = d->isa<Var>()) {
         return os << var->unique_name();
     } else if (auto pi = d->isa<Pi>()) {
-        if (Pi::isa_cn(pi)) {
-            os << "Cn ";
-            return dump_pi_dom(os, pi);
+        if (Pi::isa_cn(pi)) return print(os, "Cn {}", Op(pi->dom()));
+
+        if (auto mut = pi->isa_mut<Pi>()) {
+            if (auto var = mut->has_var()) {
+                auto l = pi->is_implicit() ? '{' : '[';
+                auto r = pi->is_implicit() ? '}' : ']';
+                return print(os, "{}{}: {}{} {} {}", l, var, Op(pi->dom()), r, arw, Op(pi->dom(), Prec::Arrow, false));
+            }
         }
-        dump_pi_dom(os, pi);
-        os << ' ' << arw << ' ';
-        return os << Dump(pi->codom(), Prec::Arrow, false);
+
+        return print(os, "{} {} {}", Op(pi->dom(), Prec::Arrow, true), arw, Op(pi->dom(), Prec::Arrow, false));
     } else if (auto lam = d->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = d->isa<App>()) {
