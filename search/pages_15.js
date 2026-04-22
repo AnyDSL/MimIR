@@ -2,10 +2,10 @@ var searchData=
 [
   ['w_20o_20side_20effects_0',['Operations w/o Side Effects',['../mem.html#autotoc_md247',1,'']]],
   ['w_20side_20effects_1',['Operations w/ Side Effects',['../mem.html#autotoc_md238',1,'']]],
-  ['what_20the_20analysis_20computes_2',['What the Analysis Computes',['../phases.html#autotoc_md71',1,'']]],
-  ['what_20the_20rewrite_20does_3',['What the Rewrite Does',['../phases.html#autotoc_md72',1,'']]],
+  ['what_20the_20analysis_20computes_2',['What the Analysis Computes',['../phases.html#autotoc_md70',1,'']]],
+  ['what_20the_20rewrite_20does_3',['What the Rewrite Does',['../phases.html#autotoc_md71',1,'']]],
   ['why_20mimir_4',['💡 Why MimIR?',['../index.html#autotoc_md85',1,'']]],
-  ['why_20this_20split_20is_20useful_5',['Why This Split Is Useful',['../phases.html#autotoc_md73',1,'']]],
+  ['why_20this_20split_20is_20useful_5',['Why This Split Is Useful',['../phases.html#autotoc_md72',1,'']]],
   ['with_20indices_6',['Working with Indices',['../dev.html#autotoc_md31',1,'']]],
   ['with_20subtags_7',['With Subtags',['../dev.html#autotoc_md29',1,'']]],
   ['without_20dominance_8',['🪾 SSA without Dominance',['../index.html#autotoc_md91',1,'']]],

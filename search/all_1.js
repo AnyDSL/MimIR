@@ -5,7 +5,7 @@ var searchData=
   ['backends_2',['Backends',['../namespacemim.html#a6e05089762ab1bde20507ee3d7b37242',1,'mim']]],
   ['base_3',['Base',['../classmim_1_1Span.html#aed4eb3cce1583fc2cfdce38bfd66ac80',1,'mim::Span::Base'],['../classmim_1_1Vector.html#a5879501d9b9a1020849004da0e144e97',1,'mim::Vector::Base'],['../structmim_1_1Annex.html#ac6aa4113e5e94cd7420ced85036ae698',1,'mim::Annex::Base']]],
   ['base_4',['base',['../classmim_1_1Axm.html#a7f72e924025ab0db142542e4fcc92bf1',1,'mim::Axm::base()'],['../classmim_1_1Axm_1_1IsA.html#a0435403d6bd226f0773aee962e52f3a5',1,'mim::Axm::IsA::base()'],['../structmim_1_1Annex.html#abb47b7da8a1e6cc0e8c2754b978b2658',1,'mim::Annex::base()']]],
-  ['base_20class_5',['Choosing the Right Base Class',['../phases.html#autotoc_md74',1,'']]],
+  ['base_20class_5',['Choosing the Right Base Class',['../phases.html#autotoc_md73',1,'']]],
   ['basic_20forms_6',['Literals and Basic Forms',['../langref.html#autotoc_md45',1,'']]],
   ['basics_7',['Basics',['../dev.html#autotoc_md19',1,'']]],
   ['bb_8',['BB',['../structmim_1_1ll_1_1BB.html',1,'mim::ll::BB'],['../structmim_1_1sexpr_1_1BB.html',1,'mim::sexpr::BB'],['../structmim_1_1ll_1_1BB.html#a4a4d9b0d1e775d317b1e7b9cb0fa15f1',1,'mim::ll::BB::BB()=default'],['../structmim_1_1ll_1_1BB.html#a3d1557df2180ac4ebb037bcc0da01b56',1,'mim::ll::BB::BB(const BB &amp;)=delete'],['../structmim_1_1ll_1_1BB.html#a617d59a5fcdf3054999de3a9a2c55ffa',1,'mim::ll::BB::BB(BB &amp;&amp;other) noexcept=default'],['../structmim_1_1sexpr_1_1BB.html#a471b3b742751e6a4b284804307834ebf',1,'mim::sexpr::BB::BB()=default'],['../structmim_1_1sexpr_1_1BB.html#ac31e3f49bfee2c6aa1fd6188c7cc4d96',1,'mim::sexpr::BB::BB(const BB &amp;)=delete'],['../structmim_1_1sexpr_1_1BB.html#a400902f7b1d01417b295153e58c191d3',1,'mim::sexpr::BB::BB(BB &amp;&amp;other) noexcept=default']]],
@@ -19,7 +19,7 @@ var searchData=
   ['beta_5fred_5fphase_2eh_16',['beta_red_phase.h',['../beta__red__phase_8h.html',1,'']]],
   ['betared_17',['BetaRed',['../classmim_1_1BetaRed.html',1,'mim::BetaRed'],['../classmim_1_1BetaRed.html#ad18358e51ced85ae37fabf93dbbac626',1,'mim::BetaRed::BetaRed()']]],
   ['betaredphase_18',['BetaRedPhase',['../classmim_1_1BetaRedPhase.html',1,'mim::BetaRedPhase'],['../classmim_1_1BetaRedPhase.html#a4482cee12284258c8688e79655b31c97',1,'mim::BetaRedPhase::BetaRedPhase(World &amp;world)'],['../classmim_1_1BetaRedPhase.html#a9ae396205354df9d7c096c339679b578',1,'mim::BetaRedPhase::BetaRedPhase(World &amp;world, flags_t annex)']]],
-  ['between_20iterations_19',['Reset Between Iterations',['../phases.html#autotoc_md62',1,'']]],
+  ['between_20iterations_19',['Reset Between Iterations',['../phases.html#autotoc_md61',1,'']]],
   ['bf16_20',['BF16',['../namespacemim_1_1plug_1_1math.html#a167797f4714fecba5390d3259fd512a1',1,'mim::plug::math']]],
   ['bf16_21',['bf16',['../namespacemim_1_1plug_1_1math.html#a9522911240adb53b1f5a7ad5a1c12f52',1,'mim::plug::math']]],
   ['bin_22',['bin',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dac1111bd512b29e821b120b86446026b8',1,'mim::plug::math']]],
@@ -36,7 +36,7 @@ var searchData=
   ['blocks_33',['Local Declaration Blocks',['../langref.html#autotoc_md48',1,'']]],
   ['body_34',['body',['../classmim_1_1ast_1_1MatchExpr_1_1Arm.html#a556fb18b533a40443259a4bec25b82de',1,'mim::ast::MatchExpr::Arm::body()'],['../classmim_1_1ast_1_1RetExpr.html#af18fd145284dfbda2dc6219d2bf63963',1,'mim::ast::RetExpr::body()'],['../classmim_1_1ast_1_1SeqExpr.html#a20f707d7c8892030fb034b0f5bd31f66',1,'mim::ast::SeqExpr::body()'],['../classmim_1_1ast_1_1RecDecl.html#a9bd1bbfc5a5221bfe300cd8e44056c23',1,'mim::ast::RecDecl::body()'],['../classmim_1_1Lam.html#aca3affe9def9af98032c560f4f7a06ec',1,'mim::Lam::body()'],['../structmim_1_1ll_1_1BB.html#a4a5e701a69d4bf34d9ce2be127d143fe',1,'mim::ll::BB::body()'],['../classmim_1_1Seq.html#aa308123fd663ddd571238019a640cbdf',1,'mim::Seq::body()'],['../structmim_1_1sexpr_1_1BB.html#a8f65c152cbec0a83fcb0c6fbfab63e79',1,'mim::sexpr::BB::body()'],['../structmim_1_1sexpr_1_1BB.html#a333cddfd82bcf2439648393895a9921f',1,'mim::sexpr::BB::body(const char *s, Args &amp;&amp;... args)']]],
   ['bootstrap_35',['bootstrap',['../namespacemim.html#aa94eca913fb20d3b0f80e74aa12349fa',1,'mim::Flags::bootstrap'],['../classmim_1_1ast_1_1AST.html#a6b9ce37fadefc4e22c611481193b2db4',1,'mim::ast::AST::bootstrap()']]],
-  ['bootstrapping_36',['Bootstrapping',['../phases.html#autotoc_md65',1,'']]],
+  ['bootstrapping_36',['Bootstrapping',['../phases.html#autotoc_md64',1,'']]],
   ['bot_37',['Bot',['../classmim_1_1EtaRed.html#a3326314112409c514cb209a8a12bbaaea791d8c13ae693cb944d1b0c9234be291',1,'mim::EtaRed::Bot'],['../namespacemim.html#ad6a85076174e8ee770ec5ad1f3c06ea4',1,'mim::Bot'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da1448e86d90e0feb307c2894c24e87767',1,'mim::Bot']]],
   ['bot_38',['bot',['../classmim_1_1lct_1_1Node.html#a446eb5096f3644b5e45e5ce850c72d0e',1,'mim::lct::Node::bot'],['../classmim_1_1World.html#a5c3d27af1c63894979d0a14975d02a53',1,'mim::World::bot()'],['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91afabcaa97871555b68aa095335975e613',1,'mim::plug::math::bot']]],
   ['bottom_39',['bottom',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8ca71f262d796bed1ab30e8a2d5a8ddee6f',1,'mim::plug::clos']]],
@@ -62,6 +62,5 @@ var searchData=
   ['bufptr_59',['BufPtr',['../namespacemim_1_1plug_1_1clos.html#ac0109814535661c3ccd6d63370f8eec2',1,'mim::plug::clos']]],
   ['builds_60',['Standalone Third-Party Builds',['../plugins.html#autotoc_md82',1,'']]],
   ['built_20ins_61',['Downcasts for Built-ins',['../dev.html#cast_builtin',1,'']]],
-  ['builtin_20types_62',['Kinds and Builtin Types',['../langref.html#autotoc_md44',1,'']]],
-  ['by_20rewriter_63',['Powered by Rewriter',['../phases.html#autotoc_md61',1,'']]]
+  ['builtin_20types_62',['Kinds and Builtin Types',['../langref.html#autotoc_md44',1,'']]]
 ];

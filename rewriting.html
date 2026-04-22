@@ -154,9 +154,7 @@ Rewriter</h1>
 <p><a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> is the general mechanism for recursively rebuilding IR.</p>
 <p>Conceptually, it walks a graph of <a class="el" href="classmim_1_1Def.html" title="mim::Def"><span class="tt">Def</span></a>s and constructs corresponding nodes in a target world. While doing so, it maintains a mapping from old nodes to new nodes. This is what makes rewriting graph-aware rather than tree-only: if the same old node is referenced multiple times, the rewritten graph will reuse the same rebuilt node instead of duplicating it.</p>
 <p>A useful way to think about <a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> is:</p>
-<blockquote class="doxtable">
-<p><a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> rebuilds a <a class="el" href="classmim_1_1Def.html" title="mim::Def"><span class="tt">Def</span></a> graph into a target <a class="el" href="classmim_1_1World.html" title="mim::World"><span class="tt">World</span></a> while preserving sharing and handling recursive mutables safely. </p>
-</blockquote>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> rebuilds a <a class="el" href="classmim_1_1Def.html" title="mim::Def"><span class="tt">Def</span></a> graph into a target <a class="el" href="classmim_1_1World.html" title="mim::World"><span class="tt">World</span></a> while preserving sharing and handling recursive mutables safely.</dd></dl>
 <p>The mapping is also the basis for termination on cyclic or recursive structures. For mutable nodes, rewriting typically proceeds by first creating a stub, recording the mapping from old mutable to new mutable, and only then rewriting and filling its operands. This allows recursive references to resolve to the stub instead of recursing forever.</p>
 <p>So the two key ideas behind <a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> are:</p>
 <ul>
@@ -186,9 +184,7 @@ Mutable Rewrites</h2>
 <p>The base <a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter">Rewriter</a> follows this pattern through <a class="el" href="classmim_1_1Rewriter.html#a82d16f0f2d9cc130004428a547920ffd" title="mim::Rewriter::rewrite_stub">mim::Rewriter::rewrite_stub</a>, and custom phases often mirror it manually when they need more control over how a mutable is rebuilt. The crucial point is that recursive self-references must see the already-created replacement mutable instead of triggering another rebuild of the same node.</p>
 <p>The same stack discipline is used for binder-sensitive substitutions. Temporary mappings introduced while rewriting under a binder should stay local to that binder, typically via <a class="el" href="classmim_1_1Rewriter.html#a7fc46133b467d4b2683529aa6c4eea96" title="mim::Rewriter::push">mim::Rewriter::push</a> / <a class="el" href="classmim_1_1Rewriter.html#a87c9821a28ae231d8e9434ff049dce35" title="mim::Rewriter::pop">mim::Rewriter::pop</a>. This is the common pattern when rewriting dependent codomains under fresh variables, substituting a variable with a temporary representative, or rebuilding a body under newly introduced binder variables.</p>
 <p>So the practical rule of thumb is:</p>
-<blockquote class="doxtable">
-<p>map early for recursive mutables, and scope narrowly for binder-local substitutions. </p>
-</blockquote>
+<dl class="section note"><dt>Note</dt><dd>map early for recursive mutables, and scope narrowly for binder-local substitutions.</dd></dl>
 <p>If a rewrite replaces an external mutable with a fresh one, preserve the root explicitly by calling <a class="el" href="classmim_1_1Def.html#a7112131d01128be7d9a1f53248d7ae2b" title="mim::Def::transfer_external">mim::Def::transfer_external</a> or re-externalizing the replacement node.</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md98"></a>
 Preserving Metadata</h2>
@@ -204,9 +200,7 @@ Typical Usage</h2>
 VarRewriter</h1>
 <p><a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> is a specialized form of <a class="el" href="classmim_1_1Rewriter.html" title="mim::Rewriter"><span class="tt">Rewriter</span></a> for variable substitution. It extends the generic rewriting machinery with knowledge about <a class="el" href="classmim_1_1Var.html" title="mim::Var"><span class="tt">Var</span></a>s and binders. Instead of rebuilding everything indiscriminately, it only rewrites parts of the graph that may actually mention substituted variables.</p>
 <p>A good summary is:</p>
-<blockquote class="doxtable">
-<p><a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> performs scoped variable substitution on top of the general rewriting framework. </p>
-</blockquote>
+<dl class="section note"><dt>Note</dt><dd><a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> performs scoped variable substitution on top of the general rewriting framework.</dd></dl>
 <p>The main extra idea is that <a class="el" href="classmim_1_1VarRewriter.html" title="mim::VarRewriter"><span class="tt">VarRewriter</span></a> tracks which variables are currently relevant for substitution and uses free-variable information to decide whether a node needs to be rebuilt at all. If a subgraph cannot contain any of the substituted variables, it can be reused unchanged. This makes substitution much more efficient on large terms: unaffected subgraphs are skipped entirely.</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md100"></a>
 Scoped Substitution</h2>

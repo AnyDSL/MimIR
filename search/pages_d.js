@@ -18,7 +18,7 @@ var searchData=
   ['option_20unwrap_5for_15',['%option.unwrap_or',['../option.html#autotoc_md267',1,'']]],
   ['option_20unwrap_5funsafe_16',['%option.unwrap_unsafe',['../option.html#autotoc_md266',1,'']]],
   ['optional_17',['📦 Install (Optional)',['../index.html#autotoc_md87',1,'']]],
-  ['optional_20pre_20analysis_18',['Optional Pre-Analysis',['../phases.html#autotoc_md66',1,'']]],
+  ['optional_20pre_20analysis_18',['Optional Pre-Analysis',['../phases.html#autotoc_md65',1,'']]],
   ['ord_20contains_19',['%ord.contains',['../ord.html#autotoc_md280',1,'']]],
   ['ord_20create_20',['%ord.create',['../ord.html#autotoc_md274',1,'']]],
   ['ord_20get_21',['%ord.get',['../ord.html#autotoc_md279',1,'']]],
