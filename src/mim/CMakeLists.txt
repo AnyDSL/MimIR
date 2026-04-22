@@ -38,8 +38,7 @@ target_sources(libmim
         phase/branch_normalize.cpp
         phase/prefix_cleanup.cpp
         phase/ret_wrap.cpp
-        phase/sccp.cpp
-        util/bitset.cpp
+        phase/sym_expr_opt.cpp
         util/dbg.cpp
         util/dl.cpp
         util/log.cpp
@@ -90,6 +89,12 @@ install(
 )
 
 add_subdirectory(cli)
+configure_file(
+    "${PROJECT_SOURCE_DIR}/cmake/mim-build-config.cmake.in"
+    "${CMAKE_BINARY_DIR}/mim-config.cmake"
+    @ONLY
+)
+set(mim_DIR "${CMAKE_BINARY_DIR}")
 add_subdirectory(plug)
 
 add_dependencies(mim_all libmim)

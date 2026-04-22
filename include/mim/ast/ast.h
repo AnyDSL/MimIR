@@ -134,23 +134,7 @@ protected:
         : Node(loc) {}
 
 public:
-    /// @name Precedence
-    ///@{
-    enum class Prec {
-        Err,
-        Bot,
-        Where,
-        Arrow,
-        Pi,
-        Inj,
-        App,
-        Union,
-        Extract,
-        Lit,
-    };
-
-    static constexpr bool is_rassoc(Prec p) { return p == Prec::Arrow; }
-    ///@}
+    using Prec = ast::Prec; ///< Backward-compatible alias; prefer the free-standing ast::Prec.
 
     const Def* emit(Emitter&) const;
     virtual void bind(Scopes&) const = 0;
@@ -446,6 +430,24 @@ private:
     const Def* emit_(Emitter&) const override;
 
     Ptr<Expr> level_;
+};
+
+/// Reform (type of a rule) `Rule type`.
+class RuleExpr : public Expr {
+public:
+    RuleExpr(Loc loc, Ptr<Expr>&& meta_type)
+        : Expr(loc)
+        , meta_type_(std::move(meta_type)) {}
+
+    const Expr* meta_type() const { return meta_type_.get(); }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    const Def* emit_(Emitter&) const override;
+
+    Ptr<Expr> meta_type_;
 };
 
 // union
@@ -1049,6 +1051,7 @@ public:
         , guard_(std::move(guard))
         , is_normalizer_(is_normalizer) {}
 
+    Dbg dbg() const { return dbg_; }
     const Ptrn* var() const { return var_.get(); }
     const Expr* lhs() const { return lhs_.get(); }
     const Expr* rhs() const { return rhs_.get(); }

@@ -27,6 +27,7 @@ Def::Def(World* world, Node node, const Def* type, Defs ops, flags_t flags)
     , node_(node)
     , mut_(false)
     , external_(false)
+    , annex_(false)
     , dep_(node == Node::Hole    ? unsigned(Dep::Hole)
            : node == Node::Proxy ? unsigned(Dep::Proxy)
            : node == Node::Var   ? (Dep::Var | Dep::Mut)
@@ -83,6 +84,7 @@ Def::Def(Node node, const Def* type, size_t num_ops, flags_t flags)
     , node_(node)
     , mut_(true)
     , external_(false)
+    , annex_(false)
     , dep_(Dep::Mut | (node == Node::Hole ? Dep::Hole : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
@@ -190,7 +192,8 @@ const Pi* Pi::immutabilize() {
     return nullptr;
 }
 
-const Rule* Rule::immutabilize() { return world().rule(type(), lhs(), rhs(), guard()); }
+// TODO should we ever immutabilize Rules?
+const Rule* Rule::immutabilize() { return nullptr; }
 
 const Def* Sigma::immutabilize() {
     if (is_immutabilizable()) return static_cast<const Sigma*>(world().sigma(ops()));

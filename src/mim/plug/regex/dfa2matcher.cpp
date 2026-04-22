@@ -44,7 +44,7 @@ DFAMap<Ranges> transitions_to_ranges(World& w, const DFANode* state) {
     DFAMap<Ranges> state2ranges;
     state->for_transitions([&](std::uint16_t transition, const DFANode* next_state) {
         if (!state2ranges.contains(next_state))
-            state2ranges.emplace(next_state, Ranges{
+            state2ranges.try_emplace(next_state, Ranges{
                                                  {transition, transition}
             });
         else
@@ -82,7 +82,7 @@ DFAMap<const Def*> create_check_match_transitions_from(const Def* c, const DFANo
     for (auto& [state, ranges] : state2ranges) {
         for (auto& [lo, hi] : ranges)
             if (!state2check.contains(state))
-                state2check.emplace(state, match_range(c, lo, hi));
+                state2check.try_emplace(state, match_range(c, lo, hi));
             else
                 state2check[state]
                     = w.call(core::bit2::or_, w.lit_nat(2), w.tuple({state2check[state], match_range(c, lo, hi)}));
@@ -98,9 +98,9 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, const Def* n) {
     auto states = dfa.get_reachable_states();
     DFAMap<Lam*> state2matcher;
 
-    // ((mem: %mem.M, string: Str n, pos: Idx n), Cn [%mem.M, Bool, Idx n])
-    auto matcher = w.mut_fun({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)},
-                             {w.annex<mem::M>(), w.type_bool(), w.type_idx(n)});
+    // ((mem: %mem.M 0, string: Str n, pos: Idx n), Cn [%mem.M 0, Bool, Idx n])
+    auto matcher = w.mut_fun({w.call<mem::M>(0), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)},
+                             {w.call<mem::M>(0), w.type_bool(), w.type_idx(n)});
     matcher->debug_prefix(std::string("match_regex"));
     auto [args, exit] = matcher->vars<2>();
     exit->debug_prefix(std::string("exit"));

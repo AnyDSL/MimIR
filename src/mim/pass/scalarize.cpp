@@ -15,7 +15,7 @@ void Scalarize::init(PassMan* man) {
 
 // TODO merge with make_scalar
 bool Scalarize::should_expand(Lam* lam) {
-    if (!isa_workable(lam)) return false;
+    if (!isa_optimizable(lam)) return false;
     if (auto i = tup2sca_.find(lam); i != tup2sca_.end() && i->second && i->second == lam) return false;
 
     auto pi = lam->type();

@@ -20,12 +20,12 @@ void CopyProp::init(PassMan* man) {
 
 const Def* CopyProp::rewrite(const Def* def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
-    if (!isa_workable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;
+    if (!isa_optimizable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;
 
     auto n = app->num_targs();
     if (n == 0) return app;
 
-    auto [it, _]                        = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefVec(n)));
+    auto [it, _]                        = lam2info_.try_emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefVec(n)));
     auto& [lattice, prop_lam, old_args] = it->second;
 
     if (mem::mem_var(var_lam)) lattice[0] = Lattice::Keep;

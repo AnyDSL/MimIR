@@ -182,9 +182,9 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         std::sort(out_indices.begin(), out_indices.end());
         std::sort(in_indices.begin(), in_indices.end());
 
-        // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axm call
+        // create function `%mem.M 0 -> [%mem.M 0, %matrix.Mat (n,S,T)]` to replace axm call
 
-        auto mem_type = world().annex<mem::M>();
+        auto mem_type = world().call<mem::M>(0);
         auto fun      = world().mut_fun(mem_type, map_reduce_ax->type())->set("mapRed");
 
         // assert(0);

@@ -114,7 +114,7 @@ static void post_order(const Nest& nest, const Nest::Node* node, Scheduler::Sche
     res.emplace_back(node->mut());
 }
 
-// untill we have sth better ...
+// until we have sth better ...
 Scheduler::Schedule Scheduler::schedule(const Nest& nest) {
     Schedule schedule;
     MutSet done;

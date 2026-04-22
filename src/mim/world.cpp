@@ -95,6 +95,7 @@ const Def* World::register_annex(flags_t f, const Def* def) {
     auto plugin = Annex::demangle(driver(), f);
     if (driver().is_loaded(plugin)) {
         assert_emplace(move_.flags2annex, f, def);
+        def->annex_ = true;
         return def;
     }
     return nullptr;
@@ -182,7 +183,8 @@ const Def* World::var(Def* mut) {
     if (auto var_type = mut->var_type()) { // could be nullptr, if frozen
         if (auto s = Idx::isa(var_type)) {
             if (auto l = Lit::isa(s); l && l == 1) return lit_idx_1_0();
-        }
+        } else if (auto s = var_type->isa<Sigma>(); s && s->num_ops() == 0)
+            return tuple(s, {});
     }
 
     return mut->var_ = unify<Var>(mut);

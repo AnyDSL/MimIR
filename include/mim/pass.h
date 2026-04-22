@@ -288,7 +288,7 @@ private:
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
 /// if your Pass does **not** need state and a fixed-point iteration.
-/// If you a are only interested in specific mutables, you can pass this to @p M.
+/// If you are only interested in specific mutables, you can pass this to @p M.
 template<class P, class M = Def>
 class RWPass : public Pass {
 public:

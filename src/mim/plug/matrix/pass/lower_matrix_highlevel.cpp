@@ -14,17 +14,19 @@ namespace mim::plug::matrix {
 
 namespace {
 
+// clang-format off
+absl::flat_hash_map<flags_t, flags_t> axm_to_impl_map = {
+    {flags_t(Annex::Base<prod>),      flags_t(Annex::Base<mapRed_prod>)},
+    {flags_t(Annex::Base<sum>),       flags_t(Annex::Base<mapRed_sum>)},
+    {flags_t(Annex::Base<transpose>), flags_t(Annex::Base<mapRed_transpose>)},
+};
+// clang-format on
+
 std::optional<const Def*> internal_function_of_axm(const Axm* axm, const Def* meta_args, const Def* args) {
     auto& world = axm->world();
-    auto name   = axm->sym().str();
-    find_and_replace(name, ".", "_");
-    find_and_replace(name, "%", "");
-    name = internal_prefix + name;
-
-    auto replacement = world.externals()[world.sym(name)];
-    if (replacement) {
-        auto spec_fun = world.app(replacement, meta_args);
-        auto ds_fun   = direct::op_cps2ds_dep(spec_fun);
+    if (auto it = axm_to_impl_map.find(axm->flags()); it != axm_to_impl_map.end()) {
+        const Def* spec_fun = world.implicit_app(world.flags2annex().at(it->second), meta_args);
+        auto ds_fun         = direct::op_cps2ds_dep(spec_fun);
         return world.app(ds_fun, args);
     }
     return std::nullopt;

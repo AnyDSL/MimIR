@@ -4,6 +4,8 @@
 
 #include "mim/plug/mem/mem.h"
 
+// TODO make parametric in address space
+
 namespace mim::plug::mem::phase {
 
 namespace {
@@ -100,7 +102,7 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
     auto new_dom = DefVec(dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); });
     if (pi->num_doms() == 0 || !Axm::isa<mem::M>(pi->dom(0_s))) {
         new_dom
-            = DefVec(dom->num_projs() + 1, [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; });
+            = DefVec(dom->num_projs() + 1, [&](size_t i) { return i == 0 ? world().call<mem::M>(0) : new_dom[i - 1]; });
     }
 
     return mem_rewritten_[pi] = world().pi(new_dom, pi->codom());

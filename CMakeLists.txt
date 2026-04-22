@@ -8,6 +8,8 @@ include(CMakePrintHelpers)
 include(GNUInstallDirs)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+set(MIM_PLUGIN_LIST "" CACHE INTERNAL "MIM_PLUGIN_LIST" FORCE)
+set(MIM_PLUGIN_LAYOUT "" CACHE INTERNAL "MIM_PLUGIN_LAYOUT" FORCE)
 include(Mim)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -21,8 +23,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
 
 option(BUILD_SHARED_LIBS    "Build shared libraries." ON)
 option(MIM_BUILD_DOCS       "If ON, build the documentation (requires Doxygen)." OFF)
@@ -89,7 +91,7 @@ write_basic_package_version_file(
 )
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/mim-config.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/mim-config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/mim-install-config.cmake"
     INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/mim"
 )
 install(
@@ -107,10 +109,14 @@ install(
 install(
     FILES
         cmake/Mim.cmake
-        "${CMAKE_CURRENT_BINARY_DIR}/mim-config.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/mim-config-version.cmake"
     DESTINATION
         ${CMAKE_INSTALL_LIBDIR}/cmake/mim
+)
+install(
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/mim-install-config.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mim
+    RENAME mim-config.cmake
 )
 install(
     EXPORT mim-targets

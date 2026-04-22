@@ -32,7 +32,7 @@ AnnexInfo* AST::name2annex(Dbg dbg, sub_t* sub_id) {
         plugin_id = *Annex::mangle(plugin_s);
     }
 
-    auto [i, fresh] = sym2annex.emplace(plugin_tag, AnnexInfo{plugin_s, tag_s, plugin_id, (tag_t)sym2annex.size()});
+    auto [i, fresh] = sym2annex.try_emplace(plugin_tag, AnnexInfo{plugin_s, tag_s, plugin_id, (tag_t)sym2annex.size()});
     auto annex      = &i->second;
 
     if (sub_s) {
@@ -202,7 +202,7 @@ AST load_plugins(World& world, View<Sym> plugins) {
     auto imports = Ptrs<Import>();
 
     for (auto plugin : plugins)
-        if (auto mod = parser.import(plugin, nullptr))
+        if (auto mod = parser.import(plugin.view(), tag))
             imports.emplace_back(ast.ptr<Import>(mod->loc(), tag, Dbg(plugin), std::move(mod)));
 
     if (!plugins.empty()) {

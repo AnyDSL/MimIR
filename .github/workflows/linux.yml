@@ -13,6 +13,9 @@ jobs:
     strategy:
       matrix:
         build-type: [Debug, Release]
+    env:
+      ASAN_OPTIONS: "halt_on_error=1:abort_on_error=1:exitcode=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_leaks=1"
+      UBSAN_OPTIONS: "halt_on_error=1:print_stacktrace=1:report_error_type=1"
 
     steps:
       - name: Clone recursively
@@ -23,7 +26,7 @@ jobs:
       - name: Install valgrind, lit, llvm, and psutil
         run: |
           sudo apt-get update
-          sudo apt-get install g++-14 valgrind llvm-20-tools
+          sudo apt-get install g++-14 valgrind llvm-20-tools clang-20
           sudo pip install lit psutil
           sudo ln -s /usr/bin/FileCheck-20 /usr/local/bin/FileCheck
 
@@ -37,20 +40,21 @@ jobs:
       - name: Configure Debug
         if: matrix.build-type == 'Debug'
         run: |
-          CXX=g++-14 cmake -B ${{github.workspace}}/build \
-            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}     \
-            -DBUILD_TESTING=ON                            \
-            -DMIM_BUILD_EXAMPLES=ON                       \
+          CC=clang-20 CXX=clang++-20 cmake -B ${{github.workspace}}/build                                                                              \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}                                                                                                  \
+            -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined,leak,bounds -fsanitize-address-use-after-scope -fno-omit-frame-pointer -fno-sanitize=vptr" \
+            -DBUILD_TESTING=ON                                                                                                                         \
+            -DMIM_BUILD_EXAMPLES=ON                                                                                                                    \
             -DMIM_LIT_TIMEOUT=300
 
       - name: Configure Release
         if: matrix.build-type == 'Release'
         run: |
-          CXX=g++-14 cmake -B ${{github.workspace}}/build \
-            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}     \
-            -DBUILD_TESTING=ON                            \
-            -DMIM_BUILD_EXAMPLES=ON                       \
-            -DMIM_LIT_WITH_VALGRIND=ON                    \
+          CC=gcc-14 CXX=g++-14 cmake -B ${{github.workspace}}/build \
+            -DCMAKE_BUILD_TYPE=${{matrix.build-type}}               \
+            -DBUILD_TESTING=ON                                      \
+            -DMIM_BUILD_EXAMPLES=ON                                 \
+            -DMIM_LIT_WITH_VALGRIND=ON                              \
             -DMIM_LIT_TIMEOUT=300
 
       - name: Build
@@ -60,6 +64,12 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: cmake --build ${{github.workspace}}/build -v --target lit
 
-      - name: Test with Valgrind
+      - name: Test w/o Valgrind
+        if: matrix.build-type == 'Debug'
+        working-directory: ${{github.workspace}}/build
+        run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure
+
+      - name: Test w/ Valgrind
+        if: matrix.build-type == 'Release'
         working-directory: ${{github.workspace}}/build
         run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure -T memcheck

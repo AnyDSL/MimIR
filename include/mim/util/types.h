@@ -10,6 +10,7 @@
 #ifdef __clang__
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wmismatched-tags"
+#    pragma clang diagnostic ignored "-Wdeprecated-literal-operator"
 #endif
 #define HALF_ROUND_STYLE        1
 #define HALF_ROUND_TIES_TO_EVEN 1
@@ -21,9 +22,9 @@
 namespace mim {
 // clang-format off
 
-#define MIM_1_8_16_32_64(m) m(1) m(8) m(16) m(32) m(64)
-#define MIM_8_16_32_64(m)        m(8) m(16) m(32) m(64)
-#define MIM_16_32_64(m)               m(16) m(32) m(64)
+#define MIM_1_8_16_32_64(X) X(1) X(8) X(16) X(32) X(64)
+#define MIM_8_16_32_64(X)        X(8) X(16) X(32) X(64)
+#define MIM_16_32_64(X)               X(16) X(32) X(64)
 
 /// @name Aliases for some Base Types
 // using CODE1, CODE2, ... here as a workaround for Doxygen
@@ -77,8 +78,8 @@ template<int w> using w2f = typename detail::w2f_<w>::type;
 /// @name User-Defined Literals
 ///@{
 #define CODE4(i)                                                                        \
-    constexpr s ## i operator"" _s ## i(unsigned long long int s) { return s ## i(s); } \
-    constexpr u ## i operator"" _u ## i(unsigned long long int u) { return u ## i(u); }
+    constexpr s ## i operator""_s ## i(unsigned long long int s) { return s ## i(s); } \
+    constexpr u ## i operator""_u ## i(unsigned long long int u) { return u ## i(u); }
 MIM_8_16_32_64(CODE4)
 #undef CODE4
 

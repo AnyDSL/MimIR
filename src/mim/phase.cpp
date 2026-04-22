@@ -17,11 +17,36 @@ void Phase::run() {
 }
 
 /*
+ * Analyzer
+ */
+
+void Analysis::reset() {
+    old2news_.clear();
+    push();
+    todo_ = false;
+}
+
+void Analysis::start() {
+    for (const auto& [f, def] : world().flags2annex())
+        rewrite_annex(f, def);
+
+    bootstrapping_ = false;
+
+    for (auto mut : world().externals().muts())
+        rewrite_external(mut);
+}
+
+void Analysis::rewrite_annex(flags_t, const Def* def) { rewrite(def); }
+void Analysis::rewrite_external(Def* mut) { rewrite(mut); }
+
+/*
  * RWPhase
  */
 
 void RWPhase::start() {
+    int i = 0;
     for (bool todo = true; todo;) {
+        VLOG("iteration: {}", i++);
         todo = false;
         todo |= analyze();
     }
@@ -35,6 +60,16 @@ void RWPhase::start() {
         rewrite_external(mut);
 
     swap(old_world(), new_world());
+}
+
+bool RWPhase::analyze() {
+    if (analysis_) {
+        analysis_->reset();
+        analysis_->run();
+        return analysis_->todo();
+    }
+
+    return false;
 }
 
 void RWPhase::rewrite_annex(flags_t f, const Def* def) { new_world().register_annex(f, rewrite(def)); }
@@ -129,7 +164,10 @@ void PhaseMan::apply(const App* app) {
 
 void PhaseMan::apply(Stage& stage) {
     auto& man = static_cast<PhaseMan&>(stage);
-    apply(man.fixed_point(), std::move(man.phases_));
+    Phases new_phases;
+    for (auto& old_phase : man.phases())
+        new_phases.emplace_back(std::unique_ptr<Phase>(static_cast<Phase*>(old_phase->recreate().release())));
+    apply(man.fixed_point(), std::move(new_phases));
 }
 
 void PhaseMan::start() {
