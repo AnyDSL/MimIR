@@ -152,9 +152,9 @@ auto ptrn(const Def* def, const Def* type) {
         if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; }))
             return print(os, "{}: {}", def->unique_name(), Op(type));
 
-        size_t i = 0;
-        return print(os, "({, }) as {}", Elem(projs, [&](auto proj) { os << ptrn(proj, type->proj(i++)); }),
-                     def->unique_name());
+        size_t i  = 0;
+        auto elem = Elem(projs, [&](auto proj) { os << ptrn(proj, type->proj(i++)); });
+        return print(os, "({, }) as {}", elem, def->unique_name());
     }};
 }
 
