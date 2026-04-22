@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include <optional>
 #include <span>
 
@@ -641,10 +642,10 @@ public:
     /// Streams dot to @p os while obeying maximum recursion depth of @p max.
     /// if @p types is `true`, Def::type() dependencies will be followed as well.
     ///@{
-    void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
+    void dot(std::ostream& os, int max = std::numeric_limits<int>::max(), bool types = false) const;
     /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
-    void dot(const char* file = nullptr, uint32_t max = 0xFFFFFF, bool types = false) const;
-    void dot(const std::string& file, uint32_t max = 0xFFFFFF, bool types = false) const {
+    void dot(const char* file = nullptr, int max = std::numeric_limits<int>::max(), bool types = false) const;
+    void dot(const std::string& file, int max = std::numeric_limits<int>::max(), bool types = false) const {
         return dot(file.c_str(), max, types);
     }
     ///@}

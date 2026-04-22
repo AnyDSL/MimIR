@@ -1,4 +1,5 @@
 #include <fstream>
+#include <limits>
 #include <ostream>
 #include <sstream>
 
@@ -43,13 +44,13 @@ public:
 
     void epilogue() { (--tab_).println(os_, "}}"); }
 
-    void run(const Def* root, uint32_t max) {
+    void run(const Def* root, int max) {
         prologue();
         recurse(root, max);
         epilogue();
     }
 
-    void recurse(const Def* def, uint32_t max) {
+    void recurse(const Def* def, int max) {
         if (max == 0 || !done_.emplace(def).second) return;
 
         tab_.print(os_, "_{}[", def->gid());
@@ -151,9 +152,9 @@ private:
 
 } // namespace
 
-void Def::dot(std::ostream& ostream, uint32_t max, bool types) const { Dot(ostream, types, this).run(this, max); }
+void Def::dot(std::ostream& ostream, int max, bool types) const { Dot(ostream, types, this).run(this, max); }
 
-void Def::dot(const char* file, uint32_t max, bool types) const {
+void Def::dot(const char* file, int max, bool types) const {
     if (!file) {
         dot(std::cout, max, types);
     } else {
@@ -175,10 +176,10 @@ void World::dot(std::ostream& os, bool anx, bool types) const {
     Dot dot(os, types);
     dot.prologue();
     for (auto external : externals().muts())
-        dot.recurse(external, uint32_t(-1));
+        dot.recurse(external, std::numeric_limits<int>::max());
     if (anx)
         for (auto annex : annexes())
-            dot.recurse(annex, uint32_t(-1));
+            dot.recurse(annex, std::numeric_limits<int>::max());
     dot.epilogue();
 }
 
