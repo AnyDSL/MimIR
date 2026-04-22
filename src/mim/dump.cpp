@@ -316,13 +316,15 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
         return print(os, "{} {}", Op::l(app->callee(), Prec::App), Op::r(app->arg(), Prec::App));
     } else if (auto sigma = d->isa<Sigma>()) {
         if (auto mut = sigma->isa_mut<Sigma>(); mut && mut->var()) {
-            size_t i = 0;
-            return print(os, "[{, }]", Elem(sigma->ops(), [&](auto op) {
-                             if (auto v = mut->var(i++))
-                                 print(os, "{}: {}", v, Op(op));
-                             else
-                                 os << Op(op);
-                         }));
+            size_t i  = 0;
+            auto elem = Elem(sigma->ops(), [&os, mut, &i](auto op) {
+                if (auto v = mut->var(i++))
+                    print(os, "{}: {}", v, Op(op));
+                else
+                    os << Op(op);
+            });
+
+            return print(os, "[{, }]", elem);
         }
         return print(os, "[{, }]", elems<Op>(os, sigma->ops()));
     } else if (auto tuple = d->isa<Tuple>()) {
@@ -363,7 +365,7 @@ public:
         , nest(nest) {}
 
     void dump(Def*);
-    void dump(Lam*);
+    void dump_lam(Lam*);
     void dump_let(const Def*);
     void recurse(const Nest::Node*);
     void recurse(const Def*, bool first = false);
@@ -377,7 +379,7 @@ public:
 
 void Dumper::dump(Def* mut) {
     if (auto lam = mut->isa<Lam>()) {
-        dump(lam);
+        dump_lam(lam);
         return;
     }
 
@@ -429,15 +431,16 @@ void Dumper::dump(Def* mut) {
     tab.print(os, "}};\n");
 }
 
-void Dumper::dump(Lam* lam) {
+void Dumper::dump_lam(Lam* lam) {
     std::vector<Lam*> currys;
     for (Lam* curr = lam;;) {
         currys.emplace_back(curr);
-        auto body = curr->body();
-        if (!body) break;
-        auto next = body->isa<Lam>();
-        if (!next) break;
-        curr = const_cast<Lam*>(next);
+        if (auto body = curr->body())
+            if (auto next = body->isa_mut<Lam>()) {
+                curr = next;
+                continue;
+            }
+        break;
     }
 
     auto last   = currys.back();

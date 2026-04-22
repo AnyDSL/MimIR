@@ -524,6 +524,7 @@ const Def* World::seq(bool term, Defs shape, const Def* body) {
 }
 
 const Lit* World::lit(const Def* type, u64 val) {
+    if (!type) return nullptr;
     type = type->zonk();
 
     if (auto size = Idx::isa(type)) {
