@@ -43,6 +43,30 @@ using ast::Assoc;
 using ast::Prec;
 using ast::prec_assoc;
 
+Prec def2prec(const Def* def) {
+    if (def->isa<Extract>()) return Prec::Extract;
+    if (auto pi = def->isa<Pi>(); pi && !Pi::isa_cn(pi)) return Prec::Arrow;
+    if (auto app = def->isa<App>()) {
+        if (auto size = Idx::isa(app)) {
+            if (auto l = Lit::isa(size)) {
+                // clang-format off
+                switch (*l) {
+                    case 0x0'0000'0002_n:
+                    case 0x0'0000'0100_n:
+                    case 0x0'0001'0000_n:
+                    case 0x1'0000'0000_n:
+                    case             0_n: return Prec::Lit;
+                    default: break;
+                }
+                // clang-format on
+            }
+        }
+        return Prec::App;
+    }
+
+    return Prec::Lit;
+}
+
 /// This is a wrapper to dump a Def.
 class Op {
 public:
@@ -50,6 +74,8 @@ public:
         : def_(def)
         , prec_(prec)
         , is_left_(is_left) {}
+    static Op l(const Def* def, Prec prec = Prec::Bot) { return {def, prec, true}; }
+    static Op r(const Def* def, Prec prec = Prec::Bot) { return {def, prec, false}; }
 
     /// @name Getters
     ///@{
@@ -83,7 +109,7 @@ public:
     Dump(Op op)
         : Dump(op.def(), op.prec(), op.is_left()) {}
 
-    explicit operator bool() const {
+    bool dump_inline() const {
         if (auto mut = def()->isa_mut()) {
             if (isa_decl(mut)) return false;
             return true;
@@ -101,50 +127,25 @@ public:
         return true;
     }
 
+    explicit operator bool() const { return dump_inline(); }
+
+    bool needs_parens() const {
+        if (!dump_inline()) return false;
+
+        auto child_prec = def2prec(def());
+        if (child_prec < prec()) return true;
+        if (child_prec > prec()) return false;
+
+        switch (prec_assoc(prec())) {
+            case Assoc::R: return is_left();
+            case Assoc::L: return !is_left();
+            case Assoc::N: return false;
+        }
+        fe::unreachable();
+    }
+
     friend std::ostream& operator<<(std::ostream&, Dump);
 };
-
-bool is_atomic_app(const Def* def) {
-    if (auto app = def->isa<App>()) {
-        if (auto size = Idx::isa(app)) {
-            if (auto l = Lit::isa(size)) {
-                // clang-format off
-                switch (*l) {
-                    case 0x0'0000'0002_n:
-                    case 0x0'0000'0100_n:
-                    case 0x0'0001'0000_n:
-                    case 0x1'0000'0000_n:
-                    case             0_n: return true;
-                    default: break;
-                }
-                // clang-format on
-            }
-        }
-    }
-    return false;
-}
-
-Prec def2prec(const Def* def) {
-    if (def->isa<Extract>()) return Prec::Extract;
-    if (auto pi = def->isa<Pi>(); pi && !Pi::isa_cn(pi)) return Prec::Arrow;
-    if (def->isa<App>() && !is_atomic_app(def)) return Prec::App;
-    return Prec::Lit;
-}
-
-bool needs_parens(Prec parent, const Def* child, bool is_left) {
-    if (!Dump(child)) return false;
-
-    auto child_prec = def2prec(child);
-    if (child_prec < parent) return true;
-    if (child_prec > parent) return false;
-
-    switch (prec_assoc(parent)) {
-        case Assoc::R: return is_left;
-        case Assoc::L: return !is_left;
-        case Assoc::N: return false;
-    }
-    fe::unreachable();
-}
 
 std::ostream& operator<<(std::ostream& os, Op op) {
     if (*op == nullptr) return os << "<nullptr>";
@@ -154,7 +155,7 @@ std::ostream& operator<<(std::ostream& os, Op op) {
 
 std::ostream& operator<<(std::ostream& os, Dump d) {
     if (auto mut = d->isa_mut(); mut && !mut->is_set()) return os << "unset";
-    if (needs_parens(d.prec(), *d, d.is_left())) return print(os, "({})", Dump(*d));
+    if (d.needs_parens()) return print(os, "({})", Dump(*d));
 
     bool ascii = d->world().flags().ascii;
     auto arw   = ascii ? "->" : "→";
@@ -170,13 +171,13 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
             if (level == 0) return print(os, "*");
             if (level == 1) return print(os, "□");
         }
-        return print(os, "Type {}", Op(type->level(), Prec::App, false));
+        return print(os, "Type {}", Op::r(type->level(), Prec::App));
     } else if (d->isa<Nat>()) {
         return print(os, "Nat");
     } else if (d->isa<Idx>()) {
         return print(os, "Idx");
     } else if (auto ext = d->isa<Ext>()) {
-        return print(os, "{}:{}", ext->isa<Bot>() ? bot : top, Op(ext->type(), Prec::Lit, false));
+        return print(os, "{}:{}", ext->isa<Bot>() ? bot : top, Op::r(ext->type(), Prec::Lit));
     } else if (auto axm = d->isa<Axm>()) {
         const auto name = axm->sym();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
@@ -218,19 +219,19 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
                 // clang-format on
             }
         }
-        return print(os, "{}:{}", lit->get(), Op(lit->type(), Prec::Lit, false));
+        return print(os, "{}:{}", lit->get(), Op::r(lit->type(), Prec::Lit));
     } else if (auto ex = d->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return os << ex->unique_name();
-        return print(os, "{}#{}", Op(ex->tuple(), Prec::Extract, true), Dump(ex->index(), Prec::Extract, false));
+        return print(os, "{}#{}", Op::l(ex->tuple(), Prec::Extract), Op::r(ex->index(), Prec::Extract));
     } else if (auto var = d->isa<Var>()) {
         return os << var->unique_name();
     } else if (auto [pi, var] = d->isa_binder<Pi>(); pi) {
         auto l = pi->is_implicit() ? '{' : '[';
         auto r = pi->is_implicit() ? '}' : ']';
-        return print(os, "{}{}: {}{} {} {}", l, Op(var), Op(pi->dom()), r, arw, Op(pi->dom(), Prec::Arrow, false));
+        return print(os, "{}{}: {}{} {} {}", l, Op(var), Op(pi->dom()), r, arw, Op::r(pi->dom(), Prec::Arrow));
     } else if (auto pi = d->isa<Pi>()) {
         if (Pi::isa_cn(pi)) return print(os, "Cn {}", Op(pi->dom()));
-        return print(os, "{} {} {}", Op(pi->dom(), Prec::Arrow, true), arw, Op(pi->dom(), Prec::Arrow, false));
+        return print(os, "{} {} {}", Op::l(pi->dom(), Prec::Arrow), arw, Op::r(pi->dom(), Prec::Arrow));
     } else if (auto lam = d->isa<Lam>()) {
         // TODO this output is really confuinsg
         return print(os, "{}, {}", Op(lam->filter()), Op(lam->body()));
@@ -250,7 +251,7 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
             }
         }
 
-        return print(os, "{} {}", Op(app->callee(), Prec::App, true), Op(app->arg(), Prec::App, false));
+        return print(os, "{} {}", Op::l(app->callee(), Prec::App), Op::r(app->arg(), Prec::App));
     } else if (auto sigma = d->isa<Sigma>()) {
         if (auto mut = sigma->isa_mut<Sigma>(); mut && mut->var()) {
             size_t i = 0;
@@ -281,8 +282,8 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
     }
 
     // other
-    if (d->flags() == 0) return print(os, "(.{} {, })", d->node_name(), d->ops());
-    return print(os, "(.{}#{} {, })", d->node_name(), d->flags(), ops(os, d->ops()));
+    if (d->flags() == 0) return print(os, "({} {, })", d->node_name(), d->ops());
+    return print(os, "({}#{} {, })", d->node_name(), d->flags(), ops(os, d->ops()));
 }
 
 /*
@@ -303,7 +304,7 @@ public:
     void dump(Lam*);
     void dump_let(const Def*);
     void dump_ptrn(const Def*, const Def*);
-    std::ostream& dump_group(const Def*, const Def*, bool implicit, bool paren_style, size_t limit, bool alias = true);
+    std::ostream& dump_curry(const Def*, const Def*, bool implicit, bool paren_style, size_t limit, bool alias = true);
     void recurse(const Nest::Node*);
     void recurse(const Def*, bool first = false);
 
@@ -369,9 +370,9 @@ void Dumper::dump(Def* mut) {
 }
 
 void Dumper::dump(Lam* lam) {
-    std::vector<Lam*> groups;
+    std::vector<Lam*> currys;
     for (Lam* curr = lam;;) {
-        groups.emplace_back(curr);
+        currys.emplace_back(curr);
         auto body = curr->body();
         if (!body) break;
         auto next = body->isa<Lam>();
@@ -379,18 +380,18 @@ void Dumper::dump(Lam* lam) {
         curr = const_cast<Lam*>(next);
     }
 
-    auto last   = groups.back();
+    auto last   = currys.back();
     auto is_fun = Lam::isa_returning(last);
     auto is_con = Lam::isa_cn(last) && !is_fun;
 
     tab.print(os, "{} {}{}", is_fun ? "fun" : is_con ? "con" : "lam", external(lam), id(lam));
-    for (auto* group : groups) {
+    for (auto* curry : currys) {
         os << ' ';
-        auto num_doms = group->var() ? group->var()->num_tprojs() : group->type()->dom()->num_tprojs();
-        auto limit    = is_fun && group == last ? num_doms - 1 : num_doms;
-        dump_group(group->var(), group->type()->dom(), group->type()->is_implicit(), !is_con, limit,
-                   !is_fun || group != last);
-        if (is_con && group == last) print(os, "@({})", group->filter());
+        auto num_doms = curry->var() ? curry->var()->num_tprojs() : curry->type()->dom()->num_tprojs();
+        auto limit    = is_fun && curry == last ? num_doms - 1 : num_doms;
+        dump_curry(curry->var(), curry->type()->dom(), curry->type()->is_implicit(), !is_con, limit,
+                   !is_fun || curry != last);
+        if (is_con && curry == last) print(os, "@({})", curry->filter());
     }
 
     if (is_fun)
@@ -403,9 +404,9 @@ void Dumper::dump(Lam* lam) {
 
     ++tab;
     if (last->is_set()) {
-        if (nest && groups.size() == 1) recurse((*nest)[lam]);
-        for (auto* group : groups)
-            recurse(group->filter());
+        if (nest && currys.size() == 1) recurse((*nest)[lam]);
+        for (auto* curry : currys)
+            recurse(curry->filter());
         recurse(last->body(), true);
         if (last->body()->isa_mut())
             tab.print(os, "{};\n", last->body());
@@ -438,9 +439,10 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
 }
 
 std::ostream&
-Dumper::dump_group(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias) {
-    auto l           = implicit ? '{' : paren_style ? '(' : '[';
-    auto r           = implicit ? '}' : paren_style ? ')' : ']';
+Dumper::dump_curry(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias) {
+    auto l = implicit ? '{' : paren_style ? '(' : '[';
+    auto r = implicit ? '}' : paren_style ? ')' : ']';
+
     auto dump_binder = [&](const Def* binder, const Def* binder_type) {
         if (binder)
             dump_ptrn(binder, binder_type);
