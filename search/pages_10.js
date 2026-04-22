@@ -37,14 +37,13 @@ var searchData=
   ['repls_34',['Repls',['../autodiff.html#autotoc_md115',1,'Repls'],['../compile.html#autotoc_md134',1,'Repls'],['../gpu.html#autotoc_md195',1,'Repls'],['../mem.html#autotoc_md251',1,'Repls'],['../refly.html#autotoc_md298',1,'Repls']]],
   ['reset_20between_20iterations_35',['Reset Between Iterations',['../phases.html#autotoc_md61',1,'']]],
   ['reshape_36',['reshape',['../tensor.html#autotoc_md324',1,'%tensor.reshape'],['../mem.html#autotoc_md253',1,'mem.reshape']]],
-  ['rewrite_20does_37',['What the Rewrite Does',['../phases.html#autotoc_md71',1,'']]],
-  ['rewriter_38',['Rewriter',['../rewriting.html#rewriter',1,'']]],
-  ['rewriter_20vs_20varrewriter_39',['Rewriter vs. VarRewriter',['../rewriting.html#autotoc_md102',1,'']]],
-  ['rewrites_40',['Mutable Rewrites',['../rewriting.html#autotoc_md97',1,'']]],
-  ['rewriting_41',['Rewriting',['../rewriting.html',1,'']]],
-  ['right_20base_20class_42',['Choosing the Right Base Class',['../phases.html#autotoc_md73',1,'']]],
-  ['round_43',['%math.round',['../math.html#autotoc_md208',1,'']]],
-  ['rrt_44',['%math.rrt',['../math.html#autotoc_md214',1,'']]],
-  ['rt_45',['%math.rt',['../math.html#autotoc_md203',1,'']]],
-  ['rwphase_46',['RWPhase',['../phases.html#phases_rwphase',1,'']]]
+  ['rewriter_37',['Rewriter',['../rewriting.html#rewriter',1,'']]],
+  ['rewriter_20vs_20varrewriter_38',['Rewriter vs. VarRewriter',['../rewriting.html#autotoc_md102',1,'']]],
+  ['rewrites_39',['Mutable Rewrites',['../rewriting.html#autotoc_md97',1,'']]],
+  ['rewriting_40',['Rewriting',['../rewriting.html',1,'']]],
+  ['right_20base_20class_41',['Choosing the Right Base Class',['../phases.html#autotoc_md73',1,'']]],
+  ['round_42',['%math.round',['../math.html#autotoc_md208',1,'']]],
+  ['rrt_43',['%math.rrt',['../math.html#autotoc_md214',1,'']]],
+  ['rt_44',['%math.rt',['../math.html#autotoc_md203',1,'']]],
+  ['rwphase_45',['RWPhase',['../phases.html#phases_rwphase',1,'']]]
 ];
