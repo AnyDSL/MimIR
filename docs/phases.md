@@ -3,20 +3,12 @@
 [TOC]
 
 At a high level, a phase is a compiler transformation or analysis step that runs in isolation.
-Unlike older pass-style pipelines, phases are meant to do one thing at a time and compose in a straightforward sequence.
+Phases are meant to do one thing at a time and compose in a straightforward sequence.
 See also the [Rewriting Guide](@ref rewriting), since several phase families are built directly on top of [`Rewriter`](@ref mim::Rewriter).
 
 ## Overview
 
 A [`Phase`](@ref mim::Phase) is a [`Stage`](@ref mim::Stage) with a single entry point, [`run()`](@ref mim::Phase::run), which wraps the actual implementation in [`start()`](@ref mim::Phase::start).
-
-Conceptually, a phase is one of three things:
-
-- a pure analysis over the current [`World`](@ref mim::World)
-- a rewrite from the current [`World`](@ref mim::World) into a new one
-- a traversal over selected reachable mutables
-
-The framework provides dedicated base classes for these common cases.
 
 ## Phase {#phases_phase}
 
@@ -31,7 +23,7 @@ A phase has:
 
 The important design point is the internal `todo_` flag exposed through [`todo()`](@ref mim::Phase::todo):
 
-> A phase sets `todo_ = true` if its work discovered that another round is needed.
+@note A phase sets `todo_ = true` if its work discovered that another round is needed.
 
 This is used by [`PhaseMan`](@ref mim::PhaseMan) to drive fixed-point pipelines.
 
@@ -62,11 +54,11 @@ mim::Phase::run<MyPhase>(world);
 
 [`Analysis`](@ref mim::Analysis) is the base class for phases that **inspect** the current world while reusing the [`Rewriter`](@ref mim::Rewriter) traversal machinery.
 
-It inherits from both [`Phase`](@ref mim::Phase) and [`Rewriter`](@ref mim::Rewriter), but unlike a rewriting phase, it rewrites **into the same world**. In practice, this means it uses [`Rewriter`](@ref mim::Rewriter) as a structured recursive traversal over ordinary MimIR terms.
+It inherits from both [`Phase`](@ref mim::Phase) and [`Rewriter`](@ref mim::Rewriter), but unlike a rewriting phase (inheriting from [`RWPhase`](@ref mim::RWPhase)), it rewrites **into the same world**. In practice, this means it uses [`Rewriter`](@ref mim::Rewriter) as a structured recursive traversal over ordinary MimIR terms.
 
 This point is important:
 
-> An [`Analysis`](@ref mim::Analysis) based on [`Rewriter`](@ref mim::Rewriter) has a domain of ordinary [`Def`](@ref mim::Def)s.
+@note An [`Analysis`](@ref mim::Analysis) based on [`Rewriter`](@ref mim::Rewriter) has a domain of ordinary [`Def`](@ref mim::Def)s.
 
 As a consequence, analysis information can itself be represented as regular MimIR values. This means that all usual IR mechanisms apply automatically, including:
 
@@ -96,7 +88,7 @@ The intended use is:
 
 The key idea is:
 
-> [`Analysis`](@ref mim::Analysis) uses the rewriting infrastructure as a graph-aware traversal engine over real MimIR nodes.
+@note [`Analysis`](@ref mim::Analysis) uses the rewriting infrastructure as a graph-aware traversal engine over real MimIR nodes.
 
 You get:
 - memoization,
@@ -114,14 +106,13 @@ The base [`reset()`](@ref mim::Analysis::reset) clears the rewriter state and re
 
 ## RWPhase {#phases_rwphase}
 
-[`RWPhase`](@ref mim::RWPhase) is the base class for phases that **rebuild the current world into a new one**.
+[`RWPhase`](@ref mim::RWPhase) is the base class for phases that **rebuild the current world into a new one** (thereby eliminating garbage).
 This is the standard base class for optimization phases that structurally transform IR.
 It inherits from both [`Phase`](@ref mim::Phase) and [`Rewriter`](@ref mim::Rewriter), but here the two worlds differ:
 - [`Phase::world`](@ref mim::Stage::world) is the **old** world,
 - [`Rewriter::world`](@ref mim::Rewriter::world) is the **new** world.
 
-@note
-To avoid confusion, direct `world()` access is deleted.
+@note To avoid confusion, direct `world()` access is deleted.
 Use:
 - [`old_world()`](@ref mim::RWPhase::old_world) to inspect existing IR,
 - [`new_world()`](@ref mim::RWPhase::new_world) to build rewritten IR.
@@ -140,7 +131,7 @@ After the swap, the rewritten world becomes the current one.
 
 So an [`RWPhase`](@ref mim::RWPhase) is the standard pattern for whole-world transformations:
 
-> analyze the old program, rebuild the transformed program, then replace the old world.
+@note analyze the old program, rebuild the transformed program, then replace the old world.
 
 ### Cleanup
 
@@ -204,7 +195,7 @@ Between iterations, each phase is recreated from its original configuration. Thi
 
 Conceptually:
 
-> [`PhaseMan`](@ref mim::PhaseMan) is the orchestration layer for classical phase pipelines.
+@note [`PhaseMan`](@ref mim::PhaseMan) is the orchestration layer for classical phase pipelines.
 
 ### Typical Usage
 
@@ -232,7 +223,7 @@ A mutable is considered relevant here if it is:
 
 This is useful for local analyses or transformations that are naturally phrased as:
 
-> for every reachable closed mutable, inspect or process it.
+@note for every reachable closed mutable, inspect or process it.
 
 You override `visit(M*)`, where `M` defaults to [`Def`](@ref mim::Def) but may be restricted to a particular mutable subtype.
 
@@ -385,6 +376,12 @@ analysis.run();
 
 mim::Phase::run<Simplify>(world);
 ```
+
+<!-- Keep the invisible separator in `M⁠im` so Doxygen does not link this heading to the `mim` namespace in the TOC. -->
+### Defining Compilation Pipelines in M⁠im
+
+You can also expose your custom phases as axioms in Mim via the [compile plugin]@ref compile) and build your own compilation pipeline.
+Mim's default compilation pipeline is defined in the [opt plugin](@ref opt].
 
 ## Summary
 

@@ -17,7 +17,7 @@ if the same old node is referenced multiple times, the rewritten graph will reus
 
 A useful way to think about [`Rewriter`](@ref mim::Rewriter) is:
 
-> [`Rewriter`](@ref mim::Rewriter) rebuilds a [`Def`](@ref mim::Def) graph into a target [`World`](@ref mim::World) while preserving sharing and handling recursive mutables safely.
+@note [`Rewriter`](@ref mim::Rewriter) rebuilds a [`Def`](@ref mim::Def) graph into a target [`World`](@ref mim::World) while preserving sharing and handling recursive mutables safely.
 
 The mapping is also the basis for termination on cyclic or recursive structures.
 For mutable nodes, rewriting typically proceeds by first creating a stub, recording the mapping from old mutable to new mutable, and only then rewriting and filling its operands.
@@ -63,7 +63,7 @@ This is the common pattern when rewriting dependent codomains under fresh variab
 
 So the practical rule of thumb is:
 
-> map early for recursive mutables, and scope narrowly for binder-local substitutions.
+@note map early for recursive mutables, and scope narrowly for binder-local substitutions.
 
 If a rewrite replaces an external mutable with a fresh one, preserve the root explicitly by calling [mim::Def::transfer_external](@ref mim::Def::transfer_external) or re-externalizing the replacement node.
 
@@ -91,7 +91,7 @@ Instead of rebuilding everything indiscriminately, it only rewrites parts of the
 
 A good summary is:
 
-> [`VarRewriter`](@ref mim::VarRewriter) performs scoped variable substitution on top of the general rewriting framework.
+@note [`VarRewriter`](@ref mim::VarRewriter) performs scoped variable substitution on top of the general rewriting framework.
 
 The main extra idea is that [`VarRewriter`](@ref mim::VarRewriter) tracks which variables are currently relevant for substitution and uses free-variable information to decide whether a node needs to be rebuilt at all.
 If a subgraph cannot contain any of the substituted variables, it can be reused unchanged.
