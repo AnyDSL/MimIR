@@ -106,7 +106,9 @@ public:
     Dump(Op op)
         : Dump(op.def(), op.prec(), op.is_left()) {}
 
-    bool dump_inline() const {
+    explicit operator bool() const { return is_inline(); }
+
+    bool is_inline() const {
         if (auto mut = def()->isa_mut()) {
             if (isa_decl(mut)) return false;
             return true;
@@ -124,10 +126,8 @@ public:
         return true;
     }
 
-    explicit operator bool() const { return dump_inline(); }
-
     bool needs_parens() const {
-        if (!dump_inline()) return false;
+        if (!is_inline()) return false;
 
         auto child_prec = def2prec(def());
         if (child_prec < prec()) return true;
@@ -314,28 +314,27 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
         }
 
         return print(os, "{} {}", Op::l(app->callee(), Prec::App), Op::r(app->arg(), Prec::App));
-    } else if (auto sigma = d->isa<Sigma>()) {
-        if (auto mut = sigma->isa_mut<Sigma>(); mut && mut->var()) {
-            size_t i  = 0;
-            auto elem = Elem(sigma->ops(), [&os, mut, &i](auto op) {
-                if (auto v = mut->var(i++))
-                    print(os, "{}: {}", v, Op(op));
-                else
-                    os << Op(op);
-            });
+    } else if (auto [sigma, var] = d->isa_binder<Sigma>(); sigma) {
+        size_t i  = 0;
+        auto elem = Elem(sigma->ops(), [&os, sigma, &i](auto op) {
+            if (auto v = sigma->var(i++))
+                print(os, "{}: {}", v, Op(op));
+            else
+                os << Op(op);
+        });
 
-            return print(os, "[{, }]", elem);
-        }
+        return print(os, "[{, }]", elem);
+    } else if (auto sigma = d->isa<Sigma>()) {
         return print(os, "[{, }]", elems<Op>(os, sigma->ops()));
     } else if (auto tuple = d->isa<Tuple>()) {
         return print(os, "({, })", elems<Op>(os, tuple->ops()));
+    } else if (auto [arr, var] = d->isa_binder<Arr>(); arr) {
+        return print(os, "{}{}: {}; {}{}", al, var, Op(arr->arity()), Op(arr->body()), ar);
     } else if (auto arr = d->isa<Arr>()) {
-        if (auto mut = arr->isa_mut<Arr>(); mut && mut->var())
-            return print(os, "{}{}: {}; {}{}", al, mut->var(), Op(mut->arity()), Op(mut->body()), ar);
         return print(os, "{}{}; {}{}", al, Op(arr->arity()), Op(arr->body()), ar);
+    } else if (auto [pack, var] = d->isa_binder<Pack>(); pack) {
+        return print(os, "{}{}: {}; {}{}", pl, pack->var(), Op(pack->arity()), Op(pack->body()), pr);
     } else if (auto pack = d->isa<Pack>()) {
-        if (auto mut = pack->isa_mut<Pack>(); mut && mut->var())
-            return print(os, "{}{}: {}; {}{}", pl, mut->var(), Op(mut->arity()), Op(mut->body()), pr);
         return print(os, "{}{}; {}{}", pl, Op(pack->arity()), Op(pack->body()), pr);
     } else if (auto proxy = d->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), elems<Op>(os, proxy->ops()));
@@ -515,9 +514,9 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 /// This is usually `id(def)` unless it can be displayed Inline.
 std::ostream& operator<<(std::ostream& os, const Def* def) {
     if (def == nullptr) return os << "<nullptr>";
-    if (Dump(def)) {
+    if (auto d = Dump(def)) {
         auto _ = def->world().freeze();
-        return os << Dump(def);
+        return os << d;
     }
     return os << id(def);
 }
