@@ -98,6 +98,16 @@ auto elems(std::ostream& os, const auto& range) {
     return Elem(range, [&os](const auto& elem) { os << T(elem); });
 }
 
+/// Create function-wrapper objects amenable for `opeartor<<`.
+template<class F>
+struct StreamFn {
+    F f;
+    friend std::ostream& operator<<(std::ostream& os, const StreamFn& s) { return s.f(os); }
+};
+
+template<class F>
+StreamFn(F) -> StreamFn<F>;
+
 std::ostream& print(std::ostream& os, const char* s); ///< Base case.
 
 template<class T, class... Args>

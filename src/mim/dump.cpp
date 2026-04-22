@@ -144,70 +144,41 @@ public:
     friend std::ostream& operator<<(std::ostream&, Dump);
 };
 
-struct Ptrn {
-    Ptrn(const Def* def, const Def* type)
-        : def(def)
-        , type(type) {}
+auto ptrn(const Def* def, const Def* type) {
+    return StreamFn{[=](std::ostream& os) -> std::ostream& {
+        if (!def) return os << Op(type);
 
-    const Def* def;
-    const Def* type;
-
-    friend std::ostream& operator<<(std::ostream& os, Ptrn p) {
-        if (!p.def) return os << Op(p.type);
-
-        auto projs = p.def->tprojs();
+        auto projs = def->tprojs();
         if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; }))
-            return print(os, "{}: {}", p.def->unique_name(), Op(p.type));
+            return print(os, "{}: {}", def->unique_name(), Op(type));
 
         size_t i = 0;
-        return print(os, "({, }) as {}", Elem(projs, [&](auto proj) { os << Ptrn(proj, p.type->proj(i++)); }),
-                     p.def->unique_name());
-    }
-};
+        return print(os, "({, }) as {}", Elem(projs, [&](auto proj) { os << ptrn(proj, type->proj(i++)); }),
+                     def->unique_name());
+    }};
+}
 
-struct Bndr {
-    Bndr(const Def* def, const Def* type)
-        : def(def)
-        , type(type) {}
+auto bndr(const Def* def, const Def* type) {
+    return StreamFn{[=](std::ostream& os) -> std::ostream& {
+        if (def) return os << ptrn(def, type);
+        return print(os, "_: {}", Op(type));
+    }};
+}
 
-    const Def* def;
-    const Def* type;
+auto curry(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias) {
+    return StreamFn{[=](std::ostream& os) -> std::ostream& {
+        auto l = implicit ? '{' : paren_style ? '(' : '[';
+        auto r = implicit ? '}' : paren_style ? ')' : ']';
 
-    friend std::ostream& operator<<(std::ostream& os, Bndr b) {
-        if (b.def) return os << Ptrn(b.def, b.type);
-        return print(os, "_: {}", Op(b.type));
-    }
-};
+        if (limit == 0) return os << l << r;
+        if (limit == 1) return print(os, "{}{}{}", l, bndr(def ? def->tproj(0) : nullptr, type->tproj(0)), r);
 
-struct Curry {
-    Curry(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias)
-        : def(def)
-        , type(type)
-        , implicit(implicit)
-        , paren_style(paren_style)
-        , limit(limit)
-        , alias(alias) {}
-
-    const Def* def;
-    const Def* type;
-    bool implicit;
-    bool paren_style;
-    size_t limit;
-    bool alias;
-
-    friend std::ostream& operator<<(std::ostream& os, Curry c) {
-        auto l = c.implicit ? '{' : c.paren_style ? '(' : '[';
-        auto r = c.implicit ? '}' : c.paren_style ? ')' : ']';
-
-        if (c.limit == 0) return os << l << r;
-        if (c.limit == 1) return print(os, "{}{}{}", l, Bndr(c.def ? c.def->tproj(0) : nullptr, c.type->tproj(0)), r);
-
-        auto elem = [&](auto i) { os << Bndr(c.def ? c.def->tproj(i) : nullptr, c.type->tproj(i)); };
-        print(os, "{}{, }{}", l, Elem(std::views::iota(size_t(0), c.limit), elem), r);
-        if (c.alias && c.def) print(os, " as {}", c.def->unique_name());
+        auto elem = [&](auto i) { os << bndr(def ? def->tproj(i) : nullptr, type->tproj(i)); };
+        print(os, "{}{, }{}", l, Elem(std::views::iota(size_t(0), limit), elem), r);
+        if (alias && def) print(os, " as {}", def->unique_name());
         return os;
-    }
-};
+    }};
+}
 
 std::ostream& operator<<(std::ostream& os, Op op) {
     if (*op == nullptr) return os << "<nullptr>";
@@ -447,13 +418,12 @@ void Dumper::dump_lam(Lam* lam) {
     auto is_con = Lam::isa_cn(last) && !is_fun;
 
     tab.print(os, "{} {}{}", is_fun ? "fun" : is_con ? "con" : "lam", external(lam), id(lam));
-    for (auto* curry : currys) {
+    for (auto* c : currys) {
         os << ' ';
-        auto num_doms = curry->var() ? curry->var()->num_tprojs() : curry->type()->dom()->num_tprojs();
-        auto limit    = is_fun && curry == last ? num_doms - 1 : num_doms;
-        os << Curry(curry->var(), curry->type()->dom(), curry->type()->is_implicit(), !is_con, limit,
-                    !is_fun || curry != last);
-        if (is_con && curry == last) print(os, "@({})", curry->filter());
+        auto num_doms = c->var() ? c->var()->num_tprojs() : c->type()->dom()->num_tprojs();
+        auto limit    = is_fun && c == last ? num_doms - 1 : num_doms;
+        os << curry(c->var(), c->type()->dom(), c->type()->is_implicit(), !is_con, limit, !is_fun || c != last);
+        if (is_con && c == last) print(os, "@({})", c->filter());
     }
 
     if (is_fun)
