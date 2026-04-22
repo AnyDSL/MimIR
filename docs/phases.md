@@ -250,9 +250,9 @@ Its architecture is:
 
 @note The implementation propagates not only constants but also arbitrary expressions.
 
-### What the Analysis Computes
+### Analysis
 
-\include "examples/sccp.cpp"
+\include "examples/sccp_analysis.cpp"
 
 The SCCP analysis associates each lambda variable with a lattice value:
 
@@ -271,7 +271,9 @@ This is a textbook use of [`Analysis`](@ref mim::Analysis):
 - collect facts,
 - iterate to a fixed point.
 
-### What the Rewrite Does
+### Transformation
+
+\include "examples/sccp_transform.cpp"
 
 Once the lattice is stable, the outer SCCP phase starts rewriting.
 When it sees an application of a lambda whose parameters have propagated values, it rebuilds a specialized lambda:
