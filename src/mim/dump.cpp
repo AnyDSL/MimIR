@@ -224,18 +224,12 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
         return print(os, "{}#{}", Op(ex->tuple(), Prec::Extract, true), Dump(ex->index(), Prec::Extract, false));
     } else if (auto var = d->isa<Var>()) {
         return os << var->unique_name();
+    } else if (auto [pi, var] = d->isa_binder<Pi>(); pi) {
+        auto l = pi->is_implicit() ? '{' : '[';
+        auto r = pi->is_implicit() ? '}' : ']';
+        return print(os, "{}{}: {}{} {} {}", l, Op(var), Op(pi->dom()), r, arw, Op(pi->dom(), Prec::Arrow, false));
     } else if (auto pi = d->isa<Pi>()) {
         if (Pi::isa_cn(pi)) return print(os, "Cn {}", Op(pi->dom()));
-
-        if (auto mut = pi->isa_mut<Pi>()) {
-            if (auto var = mut->has_var()) {
-                auto l = pi->is_implicit() ? '{' : '[';
-                auto r = pi->is_implicit() ? '}' : ']';
-                return print(os, "{}{}: {}{} {} {}", l, Op(var), Op(pi->dom()), r, arw,
-                             Op(pi->dom(), Prec::Arrow, false));
-            }
-        }
-
         return print(os, "{} {} {}", Op(pi->dom(), Prec::Arrow, true), arw, Op(pi->dom(), Prec::Arrow, false));
     } else if (auto lam = d->isa<Lam>()) {
         // TODO this output is really confuinsg

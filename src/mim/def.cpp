@@ -428,9 +428,9 @@ bool Def::is_open() const {
     return !free_vars().empty();
 }
 
-Def* Def::top_mut() const {
+Def* Def::outermost_binder() const {
     if (is_closed()) return isa_mut();
-    return (*free_vars().begin())->top_mut();
+    return (*free_vars().begin())->outermost_binder();
 }
 
 /*

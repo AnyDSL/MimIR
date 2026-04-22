@@ -427,18 +427,26 @@ public:
     /// @see @ref proj
     ///@{
     MIM_PROJ(var, )
-    /// Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
+    ///< Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
     const Def* var();
-    /// Only returns not `nullptr`, if Var of this mutable has ever been created.
+    ///< Only returns not `nullptr`, if Var of this mutable has ever been created.
     const Var* has_var() { return var_; }
     /// As above if `this` is a *mutable*.
     const Var* has_var() const {
         if (auto mut = isa_mut()) return mut->has_var();
         return nullptr;
     }
+    const Def* var_type(); ///< If `this` is a binder, compute the type of its Var%iable.
 
-    /// If `this` is a binder, compute the type of its Var%iable.
-    const Def* var_type();
+    /// Is `this` a mutable that introduces a Var?
+    /// @returns `{nullptr, nullptr}` otherwise.
+    template<class D = Def>
+    std::pair<D*, const Var*> isa_binder() const {
+        if (auto mut = isa_mut<D>()) {
+            if (auto var = mut->has_var()) return {mut, var};
+        }
+        return {nullptr, nullptr};
+    }
     ///@}
 
     /// @name Free Vars and Muts
@@ -463,7 +471,7 @@ public:
 
     /// Transitively walks up free_vars() till the outermoust binder has been found.
     /// @returns `nullptr`, if is_closed() and not a mutable.
-    Def* top_mut() const;
+    Def* outermost_binder() const;
     ///@}
 
     /// @name external
