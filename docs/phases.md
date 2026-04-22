@@ -3,7 +3,7 @@
 [TOC]
 
 At a high level, a phase is a compiler transformation or analysis step that runs in isolation.
-Phases are meant to do one thing at a time and compose in a straightforward sequence.
+Phases are meant to do one thing at a time and to compose in a straightforward sequence.
 See also the [Rewriting Guide](@ref rewriting), since several phase families are built directly on top of [`Rewriter`](@ref mim::Rewriter).
 
 ## Overview
@@ -21,11 +21,11 @@ A phase has:
 - a [`run()`](@ref mim::Phase::run) wrapper for logging and verification,
 - a [`todo()`](@ref mim::Phase::todo) accessor backed by the internal `todo_` flag for fixed-point iteration.
 
-The important design point is the internal `todo_` flag exposed through [`todo()`](@ref mim::Phase::todo):
+A key design point is the internal `todo_` flag exposed through [`todo()`](@ref mim::Phase::todo):
 
-@note A phase sets `todo_ = true` if its work discovered that another round is needed.
-
-This is used by [`PhaseMan`](@ref mim::PhaseMan) to drive fixed-point pipelines.
+@note
+A phase sets `todo_ = true` if its work discovers that another round is needed.
+[`PhaseMan`](@ref mim::PhaseMan) uses this to drive fixed-point pipelines.
 
 ### Typical Shape
 
@@ -52,52 +52,35 @@ mim::Phase::run<MyPhase>(world);
 
 ## Analysis {#phases_analysis}
 
-[`Analysis`](@ref mim::Analysis) is the base class for phases that **inspect** the current world while reusing the [`Rewriter`](@ref mim::Rewriter) traversal machinery.
-
-It inherits from both [`Phase`](@ref mim::Phase) and [`Rewriter`](@ref mim::Rewriter), but unlike a rewriting phase (inheriting from [`RWPhase`](@ref mim::RWPhase)), it rewrites **into the same world**. In practice, this means it uses [`Rewriter`](@ref mim::Rewriter) as a structured recursive traversal over ordinary MimIR terms.
-
-This point is important:
+[`Analysis`](@ref mim::Analysis) is the base class for phases that **inspect** the current world using the [`Rewriter`](@ref mim::Rewriter) traversal machinery.
+It inherits from both [`Phase`](@ref mim::Phase) and [`Rewriter`](@ref mim::Rewriter), but unlike [`RWPhase`](@ref mim::RWPhase), it rewrites **into the same world**.
+In practice, this means [`Rewriter`](@ref mim::Rewriter) is used as a structured, graph-aware traversal over ordinary MimIR terms.
 
 @note An [`Analysis`](@ref mim::Analysis) based on [`Rewriter`](@ref mim::Rewriter) has a domain of ordinary [`Def`](@ref mim::Def)s.
 
-As a consequence, analysis information can itself be represented as regular MimIR values. This means that all usual IR mechanisms apply automatically, including:
+This is often convenient because analysis information can itself be represented as regular MimIR terms.
+As a result, existing IR machinery applies automatically, including:
 
-- hash-consing,
+- hash-consing / canonical sharing,
 - built-in normalizations,
-- canonical sharing,
-- and any other simplifications already provided by the [`World`](@ref mim::World).
+- and other simplifications already provided by the [`World`](@ref mim::World).
 
-In other words, an analysis does not need a separate abstract value language unless it really wants one. If your abstract domain fits naturally into MimIR, you can often encode it directly as [`Def`](@ref mim::Def), and the existing IR infrastructure will do a lot of work for free.
+So if your abstract domain fits naturally into MimIR, you can often encode it directly as [`Def`](@ref mim::Def) and reuse the existing IR infrastructure.
 
 An [`Analysis`](@ref mim::Analysis) visits:
 
 1. all registered annex roots, then
-2. all external mutables
+2. all external mutables.
 
 During the first part, [`mim::Analysis::is_bootstrapping()`](@ref mim::Analysis::is_bootstrapping) is `true`.
 During the second part, it is `false`.
 
-The intended use is:
+Typical usage:
 
-- override [`rewrite`](@ref mim::Rewriter::rewrite), [`rewrite_imm`](@ref mim::Rewriter::rewrite_imm), [`rewrite_mut`](@ref mim::Rewriter::rewrite_mut), or node-specific rewrite hooks,
+- override [`rewrite()`](@ref mim::Rewriter::rewrite), [`rewrite_imm()`](@ref mim::Rewriter::rewrite_imm), [`rewrite_mut()`](@ref mim::Rewriter::rewrite_mut), or node-specific rewrite hooks,
 - compute analysis information while traversing reachable IR,
-- store that information in your own side tables,
-- set `todo_ = true` if the analysis discovered new information and should be rerun in a fixed-point loop.
-
-### Powered by Rewriter
-
-The key idea is:
-
-@note [`Analysis`](@ref mim::Analysis) uses the rewriting infrastructure as a graph-aware traversal engine over real MimIR nodes.
-
-You get:
-- memoization,
-- correct handling of mutables and cycles,
-- node-wise customization hooks,
-- scoped traversal behavior,
-- and a domain that can be expressed in ordinary [`Def`](@ref mim::Def)s.
-
-That last point is often very convenient for analyses: abstract values can reuse MimIR structure instead of inventing a parallel representation.
+- store that information in side tables,
+- set `todo_ = true` if new information was discovered and another iteration is needed.
 
 ### Reset Between Iterations
 
@@ -106,9 +89,11 @@ The base [`reset()`](@ref mim::Analysis::reset) clears the rewriter state and re
 
 ## RWPhase {#phases_rwphase}
 
-[`RWPhase`](@ref mim::RWPhase) is the base class for phases that **rebuild the current world into a new one** (thereby eliminating garbage).
+[`RWPhase`](@ref mim::RWPhase) is the base class for phases that **rebuild the current world into a new one**, thereby eliminating garbage.
 This is the standard base class for optimization phases that structurally transform IR.
+
 It inherits from both [`Phase`](@ref mim::Phase) and [`Rewriter`](@ref mim::Rewriter), but here the two worlds differ:
+
 - [`Phase::world`](@ref mim::Stage::world) is the **old** world,
 - [`Rewriter::world`](@ref mim::Rewriter::world) is the **new** world.
 
@@ -121,26 +106,25 @@ Use:
 
 An [`RWPhase`](@ref mim::RWPhase) runs in three conceptual steps:
 
-1. optionally perform a fixed-point analysis on the old world,
-2. rewrite all old [`Def`](@ref mim::Def)s into the new world:
-   1. rewrite all annex roots into the new world,
-   2. rewrite all external mutables into the new world;
-3. swap old and new worlds.
+1. optionally perform a fixed-point analysis **on the old world**,
+2. rewrite reachable old [`Def`](@ref mim::Def)s **into the new world**:
+   1. rewrite annex roots,
+   2. rewrite external mutables;
+3. swap the **old** and **new worlds**.
 
 After the swap, the rewritten world becomes the current one.
 
-So an [`RWPhase`](@ref mim::RWPhase) is the standard pattern for whole-world transformations:
-
-@note analyze the old program, rebuild the transformed program, then replace the old world.
+@note An [`RWPhase`](@ref mim::RWPhase) follows the standard whole-world transformation pattern:
+analyze the old program, rebuild the transformed program, then replace the old world.
 
 ### Cleanup
 
-The [`Cleanup`](@ref mim::Cleanup) phase is simply an [`RWPhase`](@ref mim::RWPhase) that performs no custom rewrites.
-Since an [`RWPhase`](@ref mim::RWPhase) only reconstructs what is reachable from the world roots, rebuilding the old world into a new one automatically eliminates garbage, i.e. dead and unreachable code.
+[`Cleanup`](@ref mim::Cleanup) is simply an [`RWPhase`](@ref mim::RWPhase) with no custom rewrites.
+Because an [`RWPhase`](@ref mim::RWPhase) reconstructs only what is reachable from the world roots, rebuilding automatically eliminates dead and unreachable code.
 
 ### Bootstrapping
 
-Like [`Analysis`](@ref mim::Analysis), [`RWPhase`](@ref mim::RWPhase) first processes annex roots and only afterwards externals.
+Like [`Analysis`](@ref mim::Analysis), [`RWPhase`](@ref mim::RWPhase) processes annex roots before externals.
 
 While annexes are being rewritten, [`mim::RWPhase::is_bootstrapping()`](@ref mim::RWPhase::is_bootstrapping) is `true`.
 
@@ -149,14 +133,14 @@ This matters because annexes may depend on one another. During bootstrapping, re
 ### Optional Pre-Analysis
 
 An [`RWPhase`](@ref mim::RWPhase) may be given an associated [`Analysis`](@ref mim::Analysis).
-If so, [`analyze()`](@ref mim::RWPhase::analyze) runs that analysis to a fixed point before the actual rewrite begins.
+If so, [`analyze()`](@ref mim::RWPhase::analyze) runs that analysis to a fixed point before rewriting begins.
 
 This is a common pattern:
 
-- analysis computes facts on the old world,
-- rewrite uses those facts to produce a transformed new world.
+- the analysis computes facts on the old world,
+- the rewrite uses those facts to produce the new world.
 
-If no analysis is needed, [`analyze()`](@ref mim::RWPhase::analyze) can just return `false`.
+If no analysis is needed, [`analyze()`](@ref mim::RWPhase::analyze) can simply return `false`.
 
 ### Typical Shape
 
@@ -187,13 +171,11 @@ mim::Phase::run<MyRWPhase>(world);
 It can run them:
 
 - once, in sequence, or
-- repeatedly to a fixed point
+- repeatedly to a fixed point.
 
 A fixed-point [`PhaseMan`](@ref mim::PhaseMan) reruns the whole pipeline as long as at least one phase sets `todo_ = true`.
 
 Between iterations, each phase is recreated from its original configuration. This keeps phase-local state from leaking across rounds unless the phase explicitly recomputes it.
-
-Conceptually:
 
 @note [`PhaseMan`](@ref mim::PhaseMan) is the orchestration layer for classical phase pipelines.
 
@@ -213,17 +195,17 @@ Use a fixed-point pipeline when phases expose new optimization opportunities for
 
 ## ClosedMutPhase {#phases_closed_mut_phase}
 
-[`ClosedMutPhase`](@ref mim::ClosedMutPhase) is a traversal helper for phases that want to visit all reachable, **closed** mutables in the world.
+[`ClosedMutPhase`](@ref mim::ClosedMutPhase) is a traversal helper for phases that visit all reachable, **closed** mutables in the world.
 
-A mutable is considered relevant here if it is:
+A mutable is relevant here if it is:
 
 - reachable,
-- closed, i.e. has no free variables,
-- optionally non-empty depending on `elide_empty`.
+- closed, i.e. it has no free variables,
+- optionally non-empty, depending on `elide_empty`.
 
 This is useful for local analyses or transformations that are naturally phrased as:
 
-@note for every reachable closed mutable, inspect or process it.
+@note For every reachable closed mutable, inspect or process it.
 
 You override `visit(M*)`, where `M` defaults to [`Def`](@ref mim::Def) but may be restricted to a particular mutable subtype.
 
@@ -244,11 +226,11 @@ private:
 
 ## NestPhase {#phases_nest_phase}
 
-[`NestPhase`](@ref mim::NestPhase) builds on [`ClosedMutPhase`](@ref mim::ClosedMutPhase) and computes a [`Nest`](@ref mim::Nest) object for each visited mutable.
+[`NestPhase`](@ref mim::NestPhase) builds on [`ClosedMutPhase`](@ref mim::ClosedMutPhase) and computes a [`Nest`](@ref mim::Nest) for each visited mutable.
 
 Use it when your phase needs a structured view of nested control or binding structure rather than just the raw mutable.
 
-Instead of overriding `visit(M*)`, you override:
+Instead of overriding `visit(M*)`, override:
 
 ```cpp
 visit(const Nest&)
@@ -260,29 +242,31 @@ This is convenient for analyses that reason about nesting, dominance-like struct
 
 \include "examples/sccp.h"
 
-The provided [Sparse Conditional Constant Propagation (SCCP)](https://en.wikipedia.org/wiki/Sparse_conditional_constant_propagation) implementation is a good example of how phases are intended to be structured.
-Its overall architecture is:
+The provided [Sparse Conditional Constant Propagation (SCCP)](https://en.wikipedia.org/wiki/Sparse_conditional_constant_propagation) implementation is a good example of the intended phase structure.
+Its architecture is:
+
 - an inner [`Analysis`](@ref mim::Analysis) computes propagation facts on the old world,
-- the outer [`RWPhase`](@ref mim::RWPhase) uses those facts to rebuild a simplified new world.
+- an outer [`RWPhase`](@ref mim::RWPhase) uses those facts to rebuild a simplified new world.
 
-@note The implementation does not only propagate constants but arbitrary expressions!
-
+@note The implementation propagates not only constants but also arbitrary expressions.
 
 ### What the Analysis Computes
 
 \include "examples/sccp.cpp"
 
 The SCCP analysis associates each lambda variable with a lattice value:
+
 - bottom: no useful information yet,
 - a concrete expression: this value can be propagated,
-- top: keep the variable as-is.
+- top: keep the variable as-is (a `Def` maps to itself).
 
 In the implementation, this lattice is stored as a `Def2Def` map.
-A particularly nice aspect here is that the propagated value is itself a regular [`Def`](@ref mim::Def).
-This is exactly the benefit of building analysis on top of [`Rewriter`](@ref mim::Rewriter): the abstract domain can live directly inside MimIR, so canonicalization and normalization come for free.
+A nice aspect here is that the propagated value is itself a regular [`Def`](@ref mim::Def).
+This illustrates the benefit of building analysis on top of [`Rewriter`](@ref mim::Rewriter): the abstract domain can live directly inside MimIR, so canonicalization and normalization come for free.
 
 The analysis traverses the old world and updates the lattice when it sees applications of optimizable lambdas. If new information is discovered, it sets `todo_ = true`, causing the analysis to rerun until stable.
 This is a textbook use of [`Analysis`](@ref mim::Analysis):
+
 - walk the old IR,
 - collect facts,
 - iterate to a fixed point.
@@ -291,12 +275,14 @@ This is a textbook use of [`Analysis`](@ref mim::Analysis):
 
 Once the lattice is stable, the outer SCCP phase starts rewriting.
 When it sees an application of a lambda whose parameters have propagated values, it rebuilds a specialized lambda:
+
 - parameters with known propagated expressions are removed,
 - remaining parameters are kept,
 - the lambda body is rewritten with the propagated values substituted,
 - the call site is rebuilt with only the remaining arguments.
 
-So SCCP uses the standard [`RWPhase`](@ref mim::RWPhase) pattern:
+So SCCP follows the standard [`RWPhase`](@ref mim::RWPhase) pattern:
+
 1. analyze the old world,
 2. rewrite into a new world using the computed facts,
 3. swap worlds.
@@ -304,6 +290,7 @@ So SCCP uses the standard [`RWPhase`](@ref mim::RWPhase) pattern:
 ### Why This Split Is Useful
 
 Separating SCCP into analysis and rewrite keeps both parts simple:
+
 - the analysis never mutates or partially rewrites the program,
 - the rewrite does not need to discover facts on the fly,
 - fixed-point logic stays in the analysis stage where it belongs.
@@ -312,11 +299,12 @@ This separation is the main design pattern to follow for nontrivial optimization
 
 @note
 The complete SCCP example fits into roughly 150 lines of C++ source code.
-Most of the usual compiler boilerplate is absorbed by the existing [Analysis](@ref mim::Analysis), [RWPhase](@ref mim::RWPhase), and [Rewriter](@ref mim::Rewriter) infrastructure, so the implementation can focus on the optimization itself.
+Most of the usual compiler boilerplate is absorbed by the existing [`Analysis`](@ref mim::Analysis), [`RWPhase`](@ref mim::RWPhase), and [`Rewriter`](@ref mim::Rewriter) infrastructure, so the implementation can focus on the optimization itself.
 
 ## Choosing the Right Base Class
 
 A useful rule of thumb is:
+
 - derive from [`Phase`](@ref mim::Phase) if you just need a custom one-off action,
 - derive from [`Analysis`](@ref mim::Analysis) if you want a graph-aware traversal that computes facts on the current world,
 - derive from [`RWPhase`](@ref mim::RWPhase) if you want to rebuild the world into a transformed new one,
@@ -326,6 +314,7 @@ A useful rule of thumb is:
 ## Recommended Design Pattern
 
 For most optimization phases, the preferred structure is:
+
 1. write an [`Analysis`](@ref mim::Analysis) that computes facts to a fixed point,
 2. write an [`RWPhase`](@ref mim::RWPhase) that consumes those facts while rebuilding the world.
 
@@ -378,20 +367,23 @@ mim::Phase::run<Simplify>(world);
 ```
 
 <!-- Keep the invisible separator in `M⁠im` so Doxygen does not link this heading to the `mim` namespace in the TOC. -->
-### Defining Compilation Pipelines in M⁠im
+### Compilation Pipelines in M⁠im
 
-You can also expose your custom phases as axioms in Mim via the [compile plugin]@ref compile) and build your own compilation pipeline.
-Mim's default compilation pipeline is defined in the [opt plugin](@ref opt].
+You can also expose your custom phases as axioms in Mim via the [compile plugin](@ref compile) and build your own compilation pipeline.
+Mim's default compilation pipeline is defined in the [opt plugin](@ref opt).
 
 ## Summary
 
 Phases are MimIR’s main unit of compiler work.
+
 - [`Phase`](@ref mim::Phase) is the minimal base abstraction.
 - [`Analysis`](@ref mim::Analysis) is for graph-aware fact collection on the current world.
 - [`RWPhase`](@ref mim::RWPhase) is for rewriting the current world into a transformed new one.
 - [`PhaseMan`](@ref mim::PhaseMan) sequences phases, optionally to a fixed point.
 - [`ClosedMutPhase`](@ref mim::ClosedMutPhase) and [`NestPhase`](@ref mim::NestPhase) are traversal helpers for common whole-world inspections.
 
-The key design idea is that MimIR phases are built around structured world traversal and rewriting. For substantial optimizations, the usual pattern is:
+The key design idea is that MimIR phases are built around structured traversal and rewriting.
+For substantial optimizations, the usual pattern is:
+
 - compute facts with [`Analysis`](@ref mim::Analysis),
 - consume them with [`RWPhase`](@ref mim::RWPhase).
