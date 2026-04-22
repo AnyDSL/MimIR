@@ -348,10 +348,20 @@ const Def* World::tuple(Sym sym) {
     return tuple(defs);
 }
 
+bool isa_indicies(const Def* def) {
+    if (Idx::isa(def)) return true;
+    if (auto sigma = def->isa<Sigma>()) return std::ranges::all_of(sigma->ops(), [](auto op) { return Idx::isa(op); });
+    if (auto arr = def->isa<Arr>()) return Idx::isa(arr->body());
+    return false;
+}
+
 const Def* World::extract(const Def* d, const Def* index) {
     if (!d || !index) return nullptr; // can happen if frozen
     d     = d->zonk();
     index = index->zonk();
+
+    if (!isa_indicies(index->type()))
+        error(index->loc(), "index '{}' is not of Idx type but of type '{}'", index, index->type());
 
     if (auto tuple = index->isa<Tuple>()) {
         for (auto op : tuple->ops())
@@ -385,6 +395,7 @@ const Def* World::extract(const Def* d, const Def* index) {
 
     if (size && !Checker::alpha<Checker::Check>(type->arity(), size))
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
+    // TODO if we have indices we need to check as well that this is compatible with `d`
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
