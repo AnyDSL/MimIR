@@ -12,9 +12,11 @@
 namespace mim {
 namespace detail {
 
+/// Does @p T provide an ostream operator?
 template<class T>
-concept Printable = requires(std::ostream& os, T a) { os << a; };
+concept Streamable = requires(std::ostream& os, T a) { os << a; };
 
+/// Does @p has a @p range and a function @p f to invoke?
 template<class T>
 concept Elemable = requires(T elem) {
     elem.range;
@@ -23,16 +25,15 @@ concept Elemable = requires(T elem) {
 
 template<class R, class F>
 std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
-    const char* cur_sep = "";
-    for (const auto& elem : r) {
-        for (auto i = cur_sep; *i != '\0'; ++i)
+    for (const char* curr_sep = ""; const auto& elem : r) {
+        for (auto i = curr_sep; *i != '\0'; ++i)
             os << *i;
 
         if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>)
             std::invoke(f, os, elem);
         else
             std::invoke(f, elem);
-        cur_sep = sep;
+        curr_sep = sep;
     }
     return os;
 }
@@ -112,7 +113,7 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                     std::invoke(t);
                 } else if constexpr (std::is_invocable_v<decltype(t), std::ostream&>) {
                     std::invoke(t, os);
-                } else if constexpr (detail::Printable<decltype(t)>) {
+                } else if constexpr (detail::Streamable<decltype(t)>) {
                     auto flags = std::ios_base::fmtflags(os.flags());
 
                     if (spec == "b")
@@ -129,11 +130,9 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                 } else if constexpr (detail::Elemable<decltype(t)>) {
                     detail::range(os, t.range, t.f, spec.c_str());
                 } else if constexpr (std::ranges::range<decltype(t)>) {
-                    detail::range(
-                        os, t, [&](const auto& x) { os << x; }, spec.c_str());
+                    detail::range(os, t, [&](const auto& x) { os << x; }, spec.c_str());
                 } else {
-                    []<bool flag = false>() { static_assert(flag, "cannot print T t"); }
-                    ();
+                    []<bool flag = false>() { static_assert(flag, "cannot print T t"); }();
                 }
 
                 ++s; // skip closing brace '}'

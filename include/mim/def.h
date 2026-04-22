@@ -460,6 +460,10 @@ public:
     Muts users() { return muts_; } ///< Set of mutables where this mutable is locally referenced.
     bool is_open() const;          ///< Has free_vars()?
     bool is_closed() const;        ///< Has no free_vars()?
+
+    /// Transitively walks up free_vars() till the outermoust binder has been found.
+    /// @returns `nullptr`, if is_closed() and not a mutable.
+    Def* top_mut() const;
     ///@}
 
     /// @name external
@@ -592,7 +596,7 @@ public:
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
 
-    /// If *mutable, zonk%s all ops and tries to immutabilize it; otherwise just zonk.
+    /// If *mutable*, zonk()%s all ops and tries to immutabilize it; otherwise just zonk.
     const Def* zonk_mut() const;
     ///@}
 
@@ -600,6 +604,8 @@ public:
     static DefVec zonk(Defs defs);
 
     /// @name dump
+    /// @note While this output uses Mim syntax, it does usually **not** produce programs that can be read back.
+    /// It uses an unscheduled visiting algorithm, and is only meant for debugging purposes.
     ///@{
     void dump() const;
     void dump(int max) const;
@@ -616,13 +622,16 @@ public:
         E, ///< Equal
         U, ///< Unknown
     };
+    /// @name Syntactic Comparison
+    ///@{
     [[nodiscard]] static Cmp cmp(const Def* a, const Def* b);
     [[nodiscard]] static bool less(const Def* a, const Def* b);
     [[nodiscard]] static bool greater(const Def* a, const Def* b);
+    ///@}
 
     /// @name dot
-    /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
-    /// If @p types is `true`, Def::type() dependencies will be followed as well.
+    /// Streams dot to @p os while obeying maximum recursion depth of @p max.
+    /// if @p types is `true`, Def::type() dependencies will be followed as well.
     ///@{
     void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
     /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
