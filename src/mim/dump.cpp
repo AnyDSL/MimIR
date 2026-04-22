@@ -1,4 +1,5 @@
 #include <fstream>
+#include <ostream>
 
 #include <fe/assert.h>
 
@@ -97,10 +98,6 @@ private:
     friend std::ostream& operator<<(std::ostream&, Op);
 };
 
-auto ops(std::ostream& os, Defs defs) {
-    return Elem(defs, [&os](const auto& e) { os << Op(e); });
-}
-
 /// This is a wrapper to dump a Def "inline" and print it with all of its operands.
 class Dump : public Op {
 public:
@@ -145,6 +142,71 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream&, Dump);
+};
+
+struct Ptrn {
+    Ptrn(const Def* def, const Def* type)
+        : def(def)
+        , type(type) {}
+
+    const Def* def;
+    const Def* type;
+
+    friend std::ostream& operator<<(std::ostream& os, Ptrn p) {
+        if (!p.def) return os << Op(p.type);
+
+        auto projs = p.def->tprojs();
+        if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; }))
+            return print(os, "{}: {}", p.def->unique_name(), Op(p.type));
+
+        size_t i = 0;
+        return print(os, "({, }) as {}", Elem(projs, [&](auto proj) { os << Ptrn(proj, p.type->proj(i++)); }),
+                     p.def->unique_name());
+    }
+};
+
+struct Bndr {
+    Bndr(const Def* def, const Def* type)
+        : def(def)
+        , type(type) {}
+
+    const Def* def;
+    const Def* type;
+
+    friend std::ostream& operator<<(std::ostream& os, Bndr b) {
+        if (b.def) return os << Ptrn(b.def, b.type);
+        return print(os, "_: {}", Op(b.type));
+    }
+};
+
+struct Curry {
+    Curry(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias)
+        : def(def)
+        , type(type)
+        , implicit(implicit)
+        , paren_style(paren_style)
+        , limit(limit)
+        , alias(alias) {}
+
+    const Def* def;
+    const Def* type;
+    bool implicit;
+    bool paren_style;
+    size_t limit;
+    bool alias;
+
+    friend std::ostream& operator<<(std::ostream& os, Curry c) {
+        auto l = c.implicit ? '{' : c.paren_style ? '(' : '[';
+        auto r = c.implicit ? '}' : c.paren_style ? ')' : ']';
+
+        if (c.limit == 0) return os << l << r;
+        if (c.limit == 1) return print(os, "{}{}{}", l, Bndr(c.def ? c.def->tproj(0) : nullptr, c.type->tproj(0)), r);
+
+        auto elem = [&](auto i) { os << Bndr(c.def ? c.def->tproj(i) : nullptr, c.type->tproj(i)); };
+        print(os, "{}{, }{}", l, Elem(std::views::iota(size_t(0), c.limit), elem), r);
+        if (c.alias && c.def) print(os, " as {}", c.def->unique_name());
+        return os;
+    }
 };
 
 std::ostream& operator<<(std::ostream& os, Op op) {
@@ -262,9 +324,9 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
                                  os << Op(op);
                          }));
         }
-        return print(os, "[{, }]", ops(os, sigma->ops()));
+        return print(os, "[{, }]", elems<Op>(os, sigma->ops()));
     } else if (auto tuple = d->isa<Tuple>()) {
-        return print(os, "({, })", ops(os, tuple->ops()));
+        return print(os, "({, })", elems<Op>(os, tuple->ops()));
     } else if (auto arr = d->isa<Arr>()) {
         if (auto mut = arr->isa_mut<Arr>(); mut && mut->var())
             return print(os, "{}{}: {}; {}{}", al, mut->var(), Op(mut->arity()), Op(mut->body()), ar);
@@ -274,16 +336,16 @@ std::ostream& operator<<(std::ostream& os, Dump d) {
             return print(os, "{}{}: {}; {}{}", pl, mut->var(), Op(mut->arity()), Op(mut->body()), pr);
         return print(os, "{}{}; {}{}", pl, Op(pack->arity()), Op(pack->body()), pr);
     } else if (auto proxy = d->isa<Proxy>()) {
-        return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), ops(os, proxy->ops()));
+        return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), elems<Op>(os, proxy->ops()));
     } else if (auto bound = d->isa<Bound>()) {
         auto op = bound->isa<Join>() ? "∪" : "∩"; // TODO ascii
         if (auto mut = d->isa_mut()) print(os, "{}{}: {}", op, mut->unique_name(), Op(mut->type()));
-        return print(os, "{}({, })", op, ops(os, bound->ops()));
+        return print(os, "{}({, })", op, elems<Op>(os, bound->ops()));
     }
 
     // other
     if (d->flags() == 0) return print(os, "({} {, })", d->node_name(), d->ops());
-    return print(os, "({}#{} {, })", d->node_name(), d->flags(), ops(os, d->ops()));
+    return print(os, "({}#{} {, })", d->node_name(), d->flags(), elems<Op>(os, d->ops()));
 }
 
 /*
@@ -303,8 +365,6 @@ public:
     void dump(Def*);
     void dump(Lam*);
     void dump_let(const Def*);
-    void dump_ptrn(const Def*, const Def*);
-    std::ostream& dump_curry(const Def*, const Def*, bool implicit, bool paren_style, size_t limit, bool alias = true);
     void recurse(const Nest::Node*);
     void recurse(const Def*, bool first = false);
 
@@ -389,8 +449,8 @@ void Dumper::dump(Lam* lam) {
         os << ' ';
         auto num_doms = curry->var() ? curry->var()->num_tprojs() : curry->type()->dom()->num_tprojs();
         auto limit    = is_fun && curry == last ? num_doms - 1 : num_doms;
-        dump_curry(curry->var(), curry->type()->dom(), curry->type()->is_implicit(), !is_con, limit,
-                   !is_fun || curry != last);
+        os << Curry(curry->var(), curry->type()->dom(), curry->type()->is_implicit(), !is_con, limit,
+                    !is_fun || curry != last);
         if (is_con && curry == last) print(os, "@({})", curry->filter());
     }
 
@@ -421,47 +481,6 @@ void Dumper::dump(Lam* lam) {
 
 void Dumper::dump_let(const Def* def) {
     tab.print(os, "let {}: {} = {};\n", def->unique_name(), Op(def->type()), Dump(def));
-}
-
-void Dumper::dump_ptrn(const Def* def, const Def* type) {
-    if (!def) {
-        os << type;
-    } else {
-        auto projs = def->tprojs();
-        if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; })) {
-            print(os, "{}: {}", def->unique_name(), type);
-        } else {
-            size_t i = 0;
-            print(os, "({, }) as {}", Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }),
-                  def->unique_name());
-        }
-    }
-}
-
-std::ostream&
-Dumper::dump_curry(const Def* def, const Def* type, bool implicit, bool paren_style, size_t limit, bool alias) {
-    auto l = implicit ? '{' : paren_style ? '(' : '[';
-    auto r = implicit ? '}' : paren_style ? ')' : ']';
-
-    auto dump_binder = [&](const Def* binder, const Def* binder_type) {
-        if (binder)
-            dump_ptrn(binder, binder_type);
-        else
-            print(os, "_: {}", binder_type);
-    };
-
-    if (limit == 0) return os << l << r;
-
-    if (limit == 1) {
-        os << l;
-        dump_binder(def ? def->tproj(0) : nullptr, type->tproj(0));
-        return os << r;
-    }
-
-    auto elem = [&](auto i) { dump_binder(def ? def->tproj(i) : nullptr, type->tproj(i)); };
-    print(os, "{}{, }{}", l, Elem(std::views::iota(size_t(0), limit), elem), r);
-    if (alias && def) print(os, " as {}", def->unique_name());
-    return os;
 }
 
 void Dumper::recurse(const Nest::Node* node) {

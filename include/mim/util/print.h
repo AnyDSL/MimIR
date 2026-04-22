@@ -92,6 +92,12 @@ struct Elem {
     const F f;
 };
 
+/// Wrap all elements in @p range through `os << T(elem)`.
+template<class T>
+auto elems(std::ostream& os, const auto& range) {
+    return Elem(range, [&os](const auto& elem) { os << T(elem); });
+}
+
 std::ostream& print(std::ostream& os, const char* s); ///< Base case.
 
 template<class T, class... Args>
