@@ -4,5 +4,6 @@ add_mim_plugin(spirv
         normalizers.cpp
         be/emit.cpp
         be/op.cpp
+        be/scheduler.cpp
     INSTALL
 )

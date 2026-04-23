@@ -2,6 +2,7 @@
 // RUN: FileCheck %s < %t.dot
 
 import core;
+import sflow;
 
 lam add (a: Nat) (b: Nat) = %core.nat.add (a, b);
 lam le  (a: Nat) (b: Nat) = %core.ncmp.le (a, b);

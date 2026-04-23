@@ -25,9 +25,11 @@ import compile;
 /// Each header block must strictly structurally dominate its
 /// merge block.
 ///
-axm %sflow.Struct: {H: ★} → [header: Cn H] → [C: ★] → [B: ★] → ★;
-axm %sflow.continue: {H C B: ★, header: Cn H} → [%sflow.Struct header C B] → Cn C;
-axm %sflow.break: {H C B: ★, header: Cn H} → [%sflow.Struct header C B] → Cn B;
+axm %sflow.Struct: {H C B: ★} → [header: Cn H] → [continue: Cn C] → [break: Cn B] → ★;
+axm %sflow.exit(continue): {H C B: ★, header: Cn H, continue: Cn C, break: Cn B}
+  → [%sflow.Struct header continue break] → Cn C;
+axm %sflow.exit(break): {H C B: ★, header: Cn H, continue: Cn C, break: Cn B}
+  → [%sflow.Struct header continue break] → Cn B;
 
 /// ## Branching
 /// Represents a structured branch (if-else or switch-case)
@@ -35,18 +37,34 @@ axm %sflow.break: {H C B: ★, header: Cn H} → [%sflow.Struct header C B] → 
 /// The header argument to any structure must always point to the lam containing it, otherwise
 /// the normalizer will throw an error.
 ///
-axm %sflow.select: {n: Nat} → {T B H: ★}
+axm %sflow.if: {n: Nat} → {T B H: ★}
   → [header: Cn H]
   → [break: Cn B]
-  → [tuple: «n; Cn [T, %sflow.Struct header ⊥ B]»]
-  → [index: Idx n]
+  → [tuple: «2; Cn [T, %sflow.Struct header (⊥: Cn ⊥) break]»]
+  → [index: Idx 2]
   → Cn T, normalize_branch;
 
+/// Computes the type of a switch target list.
+/// Normalizes to a sigma of tuples when n is known:
+///   Targets 0 next = []
+///   Targets n next = [[Nat, Cn [T, Struct header next break]],
+///                     [Nat, Cn [T, Struct header case₀ break]],
+///                     ...]
+/// where each case's continue target is the previous case (fallthrough).
+axm %sflow.Targets: {T B H: ★, header: Cn H, continue: Cn T, break: Cn B}
+  → [n: Nat]
+  → [next: Cn [T, %sflow.Struct header continue break]]
+  → ★, normalize_targets;
+
+/// Represents a structured switch.
+///
+/// Notice that the case functions are given in reverse order, as they
+/// have their fall-through (continue) target in their signature.
 axm %sflow.switch: {n: Nat} → {T B H: ★}
   → [header: Cn H]
   → [break: Cn B]
-  → [targets: «n; [Nat, Cn [T, %sflow.Struct header T B]]»]
-  → [default: Cn [T, %sflow.Struct header ⊥ B]]
+  → [default: Cn [T, %sflow.Struct header (⊥: Cn T) break]]
+  → [targets: %sflow.Targets n default]
   → [index: Nat]
   → Cn T, normalize_switch;
 
@@ -57,7 +75,7 @@ axm %sflow.loop: {C B T H: ★}
   → [header: Cn H]
   → [continue: Cn C]
   → [break: Cn B]
-  → [body: Cn [T, %sflow.Struct header C B]]
+  → [body: Cn [T, %sflow.Struct header continue break]]
   → [condition: Bool]
   → Cn T, normalize_loop;
 
