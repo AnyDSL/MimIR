@@ -311,11 +311,10 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
 std::string Emitter::emit_var(BB& bb, const Def* var, const Def* type) {
     std::ostringstream os;
 
-    // TODO: Slotted lams/cons are now defined as (con extern foo <dom-type> $var (lamdef <filter> <body>))
     if (slotted()) {
         ++tab;
-        tab.lnprint(os, "{}", id(var));
         tab.lnprint(os, "{}", emit_type(bb, type));
+        tab.lnprint(os, "{}", id(var));
         --tab;
         return os.str();
     }
