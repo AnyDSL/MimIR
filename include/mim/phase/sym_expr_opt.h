@@ -25,30 +25,29 @@ namespace mim {
 ///  ⊥
 /// ```
 class SymExprOpt : public RWPhase {
-private:
+public:
     class Analysis : public mim::Analysis {
     public:
-        Analysis(World& world)
-            : mim::Analysis(world, "SEO::Analyzer") {}
+        Analysis(World& world, std::string name = "SEO::Analyzer")
+            : mim::Analysis(world, name) {}
 
         auto& lattice() { return lattice_; }
 
-    private:
+    protected:
         const Def* propagate(const Def*, const Def*);
-        Def* rewrite_mut(Def*) final;
-        const Def* rewrite_imm_App(const App*) final;
+        Def* rewrite_mut(Def*) override;
+        const Def* rewrite_imm_App(const App*) override;
 
         Def2Def lattice_;
     };
 
-public:
-    SymExprOpt(World& world, flags_t annex)
-        : RWPhase(world, annex, &analysis_)
+    SymExprOpt(World& world, flags_t annex, Analysis* analysis = nullptr)
+        : RWPhase(world, annex, analysis ? analysis : &analysis_)
         , analysis_(world) {}
 
-private:
+protected:
+    const Def* rewrite_imm_App(const App*) override;
     const Def* lattice(const Def* def) { return analysis_.lattice()[def]; }
-    const Def* rewrite_imm_App(const App*) final;
 
     Analysis analysis_;
     Lam2Lam lam2lam_;
