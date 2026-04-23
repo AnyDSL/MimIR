@@ -43,7 +43,7 @@
   Annexes and external mutables are the roots that analyses and `RWPhase`-based rewrites traverse, and `Cleanup` removes anything not reachable from those roots.
 - Prefer the phase infrastructure over adding new ad hoc whole-program traversals.
   The current docs explicitly treat `Phase`/`RWPhase` as the active pipeline model and describe the old pass machinery as deprecated.
-- Mim source in docs and tests should use the primary UTF-8 surface syntax and parenthesized domain groups, for example `lam foo (x: X) (y: Y): Z = ...`.
+- Mim source in docs and tests should use the primary UTF-8 surface syntax and parenthesized domain groups, preferring group patterns, for example `lam foo (x: X, a b c: T) (y: Y): Z = ...`.
 - Plugin names are constrained by the runtime encoding and CMake helpers.
   They may use only letters, digits, and underscores, and must be at most 8 characters long.
 - When adding or changing plugins, keep both halves in sync.

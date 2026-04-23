@@ -428,6 +428,11 @@ bool Def::is_open() const {
     return !free_vars().empty();
 }
 
+Def* Def::outermost_binder() const {
+    if (is_closed()) return isa_mut();
+    return (*free_vars().begin())->outermost_binder();
+}
+
 /*
  * Def - misc
  */

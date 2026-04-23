@@ -23,6 +23,7 @@ int f(uint64_t x) { return poly<std::map>(x); }
 
 plugin mem;
 plugin ord;
+plugin option;
 
 cfun dont_know[mem: %mem.M 0]: [%mem.M 0, Bool];
 
@@ -31,7 +32,7 @@ let Key = (I32, %core.icmp.ul @i32);
 let Ord = [
     Map:      %ord.Key → * → *,
     init:     [K: %ord.Key] → {V: *} → {n: Nat} → [«n; [K#T, V]»] → Map K V,
-    get:      {K: %ord.Key} → {V: *} → [Map K V, K#T     ] → V,
+    get:      {K: %ord.Key} → {V: *} → [Map K V, K#T     ] → %option.Opt V,
     insert_:  {K: %ord.Key} → {V: *} → [Map K V, [K#T, V]] → Map K V,
     contains: {K: %ord.Key} → {V: *} → [Map K V, K#T     ] → Bool,
 ];
@@ -63,7 +64,8 @@ fun poly (ord: Ord) (mem: %mem.M 0, x: I64): [%mem.M 0, I64] =
 
                 con exit(mem: %mem.M 0) =
                     let (mem, map) = %mem.load (mem, ptr);
-                    let val            = ord#get (map, 1I32);
+                    let opt_v      = ord#get (map, 1I32);
+                    let val        = %option.unwrap_unsafe opt_v;
                     return (mem, val);
             end
     end;
