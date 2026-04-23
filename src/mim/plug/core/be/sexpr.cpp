@@ -104,9 +104,9 @@ public:
     void emit_lam(Lam* lam, MutSet& done);
     std::string emit_var(BB& bb, const Def* var, const Def* type);
     std::string emit_head(BB& bb, Lam* lam, bool as_binding = false);
-    std::string emit_cons(std::vector<std::string> op_vals);
     std::string emit_cons_type(BB& bb, View<const Def*> ops);
     std::string emit_type(BB& bb, const Def* type);
+    std::string emit_cons(std::vector<std::string> op_vals);
     std::string emit_node(BB& bb, const Def* def, std::string node_name, bool variadic = false, bool with_type = false);
     std::string emit_bb(BB& bb, const Def* def);
 
@@ -378,31 +378,6 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     return os.str();
 }
 
-// This is primarily needed because slotted-egraphs don't support
-// variadic enodes (yet?) so we have to represent those as nested cons lists
-// i.e. for Tuple: (tuple (cons a (cons b nil)))
-std::string Emitter::emit_cons(std::vector<std::string> op_vals) {
-    std::ostringstream os;
-
-    size_t op_idx = 0;
-    for (auto op_val : op_vals) {
-        ++tab;
-        tab.lnprint(os, "(cons");
-        ++tab;
-        print(os, "{}", indent(tab.indent(), op_val));
-        --tab;
-        if (op_idx == op_vals.size() - 1) tab.lnprint(os, "nil");
-        --tab;
-
-        op_idx++;
-    }
-
-    std::string closing_brackets(op_vals.size(), ')');
-    print(os, "{}", closing_brackets);
-
-    return os.str();
-}
-
 std::string Emitter::emit_cons_type(BB& bb, View<const Def*> ops) {
     std::ostringstream os;
 
@@ -527,6 +502,31 @@ std::string Emitter::emit_type(BB& bb, const Def* type) {
     }
 
     return types_[type] = os.str();
+}
+
+// This is primarily needed because slotted-egraphs don't support
+// variadic enodes (yet?) so we have to represent those as nested cons lists
+// i.e. for Tuple: (tuple (cons a (cons b nil)))
+std::string Emitter::emit_cons(std::vector<std::string> op_vals) {
+    std::ostringstream os;
+
+    size_t op_idx = 0;
+    for (auto op_val : op_vals) {
+        ++tab;
+        tab.lnprint(os, "(cons");
+        ++tab;
+        print(os, "{}", indent(tab.indent(), op_val));
+        --tab;
+        if (op_idx == op_vals.size() - 1) tab.lnprint(os, "nil");
+        --tab;
+
+        op_idx++;
+    }
+
+    std::string closing_brackets(op_vals.size(), ')');
+    print(os, "{}", closing_brackets);
+
+    return os.str();
 }
 
 std::string Emitter::emit_node(BB& bb, const Def* def, std::string node_name, bool variadic, bool with_type) {
