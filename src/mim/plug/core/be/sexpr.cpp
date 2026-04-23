@@ -104,8 +104,9 @@ public:
     void emit_lam(Lam* lam, MutSet& done);
     std::string emit_var(BB& bb, const Def* var, const Def* type);
     std::string emit_head(BB& bb, Lam* lam, bool as_binding = false);
-    std::string emit_type(BB& bb, const Def* type);
     std::string emit_cons(std::vector<std::string> op_vals);
+    std::string emit_cons_type(BB& bb, View<const Def*> ops);
+    std::string emit_type(BB& bb, const Def* type);
     std::string emit_node(BB& bb, const Def* def, std::string node_name, bool variadic = false, bool with_type = false);
     std::string emit_bb(BB& bb, const Def* def);
 
@@ -377,6 +378,47 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     return os.str();
 }
 
+// This is primarily needed because slotted-egraphs don't support
+// variadic enodes (yet?) so we have to represent those as nested cons lists
+// i.e. for Tuple: (tuple (cons a (cons b nil)))
+std::string Emitter::emit_cons(std::vector<std::string> op_vals) {
+    std::ostringstream os;
+
+    size_t op_idx = 0;
+    for (auto op_val : op_vals) {
+        ++tab;
+        tab.lnprint(os, "(cons");
+        ++tab;
+        print(os, "{}", indent(tab.indent(), op_val));
+        --tab;
+        if (op_idx == op_vals.size() - 1) tab.lnprint(os, "nil");
+        --tab;
+
+        op_idx++;
+    }
+
+    std::string closing_brackets(op_vals.size(), ')');
+    print(os, "{}", closing_brackets);
+
+    return os.str();
+}
+
+std::string Emitter::emit_cons_type(BB& bb, View<const Def*> ops) {
+    std::ostringstream os;
+
+    size_t op_idx = 0;
+    for (auto op : ops) {
+        print(os, "(cons {} ", emit_type(bb, op));
+        if (op_idx == ops.size() - 1) print(os, "nil");
+        op_idx++;
+    }
+
+    std::string closing_brackets(ops.size(), ')');
+    print(os, "{}", closing_brackets);
+
+    return os.str();
+}
+
 std::string Emitter::emit_type(BB& bb, const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
@@ -420,9 +462,15 @@ std::string Emitter::emit_type(BB& bb, const Def* type) {
         else
             print(os, "(pi {} {})", emit_type(bb, pi->dom()), emit_type(bb, pi->codom()));
     } else if (auto sigma = type->isa<Sigma>()) {
-        print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
+        if (slotted())
+            print(os, "(sigma {})", emit_cons_type(bb, sigma->ops()));
+        else
+            print(os, "(sigma { })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else if (auto tuple = type->isa<Tuple>()) {
-        print(os, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
+        if (slotted())
+            print(os, "(tuple {})", emit_cons_type(bb, tuple->ops()));
+        else
+            print(os, "(tuple { })", Elem(tuple->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else if (auto app = type->isa<App>()) {
         print(os, "(app {} {})", emit_type(bb, app->callee()), emit_type(bb, app->arg()));
     } else if (auto axm = type->isa<Axm>()) {
@@ -464,40 +512,21 @@ std::string Emitter::emit_type(BB& bb, const Def* type) {
     } else if (auto reform = type->isa<Reform>()) {
         print(os, "(reform {})", emit_type(bb, reform->meta_type()));
     } else if (auto join = type->isa<Join>()) {
-        print(os, "(join { })", Elem(join->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
+        if (slotted())
+            print(os, "(join {})", emit_cons_type(bb, join->ops()));
+        else
+            print(os, "(join { })", Elem(join->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else if (auto meet = type->isa<Meet>()) {
-        print(os, "(meet { })", Elem(meet->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
+        if (slotted())
+            print(os, "(meet {})", emit_cons_type(bb, meet->ops()));
+        else
+            print(os, "(meet { })", Elem(meet->ops(), [&](auto op) { print(os, "{}", emit_type(bb, op)); }));
     } else {
         error("unsupported type '{}'", type);
         fe::unreachable();
     }
 
     return types_[type] = os.str();
-}
-
-// This is primarily needed because slotted-egraphs don't support
-// variadic enodes (yet?) so we have to represent those as nested cons lists
-// i.e. for Tuple: (tuple (cons a (cons b nil)))
-std::string Emitter::emit_cons(std::vector<std::string> op_vals) {
-    std::ostringstream os;
-
-    size_t op_idx = 0;
-    for (auto op_val : op_vals) {
-        ++tab;
-        tab.lnprint(os, "(cons");
-        ++tab;
-        print(os, "{}", indent(tab.indent(), op_val));
-        --tab;
-        if (op_idx == op_vals.size() - 1) tab.lnprint(os, "nil");
-        --tab;
-
-        op_idx++;
-    }
-
-    std::string closing_brackets(op_vals.size(), ')');
-    print(os, "{}", closing_brackets);
-
-    return os.str();
 }
 
 std::string Emitter::emit_node(BB& bb, const Def* def, std::string node_name, bool variadic, bool with_type) {
