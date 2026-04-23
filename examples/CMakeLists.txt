@@ -1,5 +1,5 @@
 add_executable(hello hello.cpp)
-add_executable(sccp  sccp_main.cpp sccp.cpp)
+add_executable(sccp  sccp_main.cpp sccp_analysis.cpp sccp_transform.cpp)
 
 target_link_libraries(hello PRIVATE libmim)
 target_link_libraries(sccp  PRIVATE libmim)

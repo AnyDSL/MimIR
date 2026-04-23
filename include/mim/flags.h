@@ -9,7 +9,6 @@ namespace mim {
 /// Compiler switches that must be saved and looked up in later phases of compilation.
 /// @see @ref cli
 struct Flags {
-    uint32_t dump_gid            = 0;
     uint64_t scalarize_threshold = 32;
     bool ascii                   = false;
     bool dump_recursive          = false;
