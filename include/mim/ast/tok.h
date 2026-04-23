@@ -26,6 +26,7 @@ namespace ast {
     m(App,     L)       \
     m(Union,   L)       \
     m(Extract, L)       \
+    m(Filter,  N)       \
     m(Lit,     N)
 // clang-format on
 ///@}
@@ -43,7 +44,8 @@ enum class Prec {
 /// Associativity of precedence level @p p.
 constexpr Assoc prec_assoc(Prec p) {
     switch (p) {
-#define CODE(name, assoc) case Prec::name: return Assoc::assoc;
+#define CODE(name, assoc) \
+    case Prec::name: return Assoc::assoc;
         MIM_PREC(CODE)
 #undef CODE
     }

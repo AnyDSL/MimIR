@@ -450,9 +450,8 @@ Ptr<Expr> Parser::parse_pi_expr() {
     auto ptrn = parse_ptrn(Brckt_Style | Implicit, "domain of a "s + entity, prec);
     auto dom  = ptr<PiExpr::Dom>(domt, std::move(ptrn));
 
-    auto codom = tag != Tag::K_Cn
-                   ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Prec::Arrow))
-                   : nullptr;
+    auto codom = tag != Tag::K_Cn ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Prec::Arrow))
+                                  : nullptr;
 
     if (tag == Tag::K_Fn) dom->add_ret(ast(), codom ? std::move(codom) : ptr<HoleExpr>(curr_));
     return ptr<PiExpr>(track, tag, std::move(dom), std::move(codom));
@@ -741,7 +740,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     while (true) {
         auto track  = tracker();
         auto ptrn   = parse_ptrn(Paren_Style | Implicit, "domain pattern of a "s + entity, prec);
-        auto filter = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
+        auto filter = accept(Tag::T_at) ? parse_expr("filter", Prec::Filter) : nullptr;
         doms.emplace_back(ptr<LamDecl::Dom>(track, std::move(ptrn), std::move(filter)));
 
         switch (ahead().tag()) {
