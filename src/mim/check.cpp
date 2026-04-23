@@ -77,8 +77,7 @@ const Def* Hole::tuplefy(nat_t n) {
 
     auto& w    = world();
     auto holes = absl::FixedArray<const Def*>(n);
-    if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->has_var()) {
-        auto var = sigma->has_var();
+    if (auto [sigma, var] = type()->isa_binder<Sigma>(); sigma && n >= 1) {
         auto rw  = VarRewriter(var, this);
         holes[0] = w.mut_hole(sigma->op(0));
         for (size_t i = 1; i != n; ++i) {

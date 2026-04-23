@@ -12,6 +12,7 @@ set(MIM_PLUGINS
     matrix
     mem
     opt
+    option
     ord
     refly
     regex
