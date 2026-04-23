@@ -348,7 +348,7 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
         tab.lnprint(os, "(let");
         ++tab;
         if (!slotted()) tab.lnprint(os, "{}", id(lam));
-        tab.lnprint(os, "({} {} {}", lam_kind, ext, lam->sym());
+        tab.lnprint(os, "({} {} {}", lam_kind, ext, lam->unique_name());
     } else
         print(os, "({} {} {}", lam_kind, ext, lam->sym());
 
