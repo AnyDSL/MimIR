@@ -428,16 +428,15 @@ public:
     /// @see @ref proj
     ///@{
     MIM_PROJ(var, )
-    ///< Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
-    const Def* var();
-    ///< Only returns not `nullptr`, if Var of this mutable has ever been created.
-    const Var* has_var() { return var_; }
+    const Def* var();      ///< Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
+    const Def* var_type(); ///< If `this` is a binder, compute the type of its Var%iable.
+
+    const Var* has_var() { return var_; } ///< Only returns not `nullptr`, if Var of this mutable has ever been created.
     /// As above if `this` is a *mutable*.
     const Var* has_var() const {
         if (auto mut = isa_mut()) return mut->has_var();
         return nullptr;
     }
-    const Def* var_type(); ///< If `this` is a binder, compute the type of its Var%iable.
 
     /// Is `this` a mutable that introduces a Var?
     /// @returns `{nullptr, nullptr}` otherwise.
