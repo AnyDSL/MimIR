@@ -1,9 +1,14 @@
 #include <mim/plug/affine/affine.h>
 #include <mim/plug/core/core.h>
 #include <mim/plug/direct/direct.h>
+#include <mim/plug/tuple/tuple.h>
+#include <mim/plug/vec/vec.h>
 
 #include "mim/def.h"
+#include "mim/plugin.h"
 #include "mim/world.h"
+
+#include "mim/util/sets.h"
 
 #include "mim/plug/tensor/tensor.h"
 
@@ -23,36 +28,34 @@ const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
     w.DLOG("    r = {} : {}", r, r->type());
     w.DLOG("    s = {} : {}", s, s->type());
 
-    auto size = index->num_projs();
-    w.DLOG("size = {}", size);
-    if (size == 1) {
-        w.DLOG("index of size 1, extract");
-        return w.extract(arr, index);
+    if (Axm::isa<tensor::set>(arr)) {
+        w.DLOG("get after set, try to bypass");
+        auto set                  = arr->as<App>();
+        auto [_, target_index, x] = set->args<3>();
+        if (target_index == index) {
+            w.DLOG("bypass successful");
+            return x;
+        }
+    }
+    if (Axm::isa<tensor::get>(arr)) {
+        w.DLOG("get after get, try to bypass");
+        auto get                      = arr->as<App>();
+        auto [outer_arr, outer_index] = get->args<2>();
+        auto [o_T, o_r, o_s]          = get->callee()->as<App>()->args<3>();
+        w.DLOG("    outer_arr = {} : {}", outer_arr, outer_arr->type());
+        w.DLOG("    outer_index = {} : {}", outer_index, outer_index->type());
+        w.DLOG("    o_T = {} : {}", o_T, o_T->type());
+        w.DLOG("    o_r = {} : {}", o_r, o_r->type());
+        w.DLOG("    o_s = {} : {}", o_s, o_s->type());
+
+        auto new_r     = w.call(core::nat::add, DefVec{r, o_r});
+        auto new_s     = w.call<tuple::cat>(DefVec{o_s, s});
+        auto new_index = w.call<tuple::cat>(DefVec{outer_index, index});
+
+        return op_get(T, new_r, new_s, outer_arr, new_index);
     }
 
-    auto r_lit = r->isa<Lit>();
-    if (!r_lit) return nullptr;
-    auto r_nat     = r_lit->get<u64>();
-    auto new_r_nat = r_nat - 1;
-
-    auto idx = index->proj(r_nat, 0);
-    w.DLOG("idx = {} : {}", idx, idx->type());
-
-    auto new_r     = w.lit_nat(new_r_nat);
-    auto new_s_vec = DefVec(new_r_nat, [&](size_t i) { return s->proj(r_nat, i + 1); });
-    auto new_s     = w.tuple(new_s_vec);
-
-    auto new_index_vec = DefVec(new_r_nat, [&](size_t i) { return index->proj(r_nat, i + 1); });
-    auto new_index     = w.tuple(new_index_vec);
-
-    auto idx_n   = idx->type()->op(1);
-    auto idx_lit = idx_n->isa<Lit>();
-    if (!idx_lit) return nullptr;
-    if (idx_lit->get<u64>() == 1) return op_get(T, new_r, new_s, arr, new_index);
-
-    auto new_arr = w.extract(arr, idx);
-
-    return op_get(T, new_r, new_s, new_arr, new_index);
+    return nullptr;
 }
 
 const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
@@ -64,42 +67,41 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
     w.DLOG("    index = {} : {}", index, index->type());
     w.DLOG("    x = {} : {}", x, x->type());
 
-    auto size = index->num_projs();
-    w.DLOG("    size = {}", size);
-    if (size == 1) {
-        w.DLOG("index of size 1, insert");
-        return w.insert(arr, index, x);
-    }
-
     auto callee    = c->as<App>();
     auto [T, r, s] = callee->args<3>();
-    w.DLOG("    T = {} : {}", T, T->type());
-    w.DLOG("    r = {} : {}", r, r->type());
-    w.DLOG("    s = {} : {}", s, s->type());
+    
+    if (Axm::isa<tensor::get>(x)) {
+        w.DLOG("set after get, try to bypass");
+        auto get                      = x->as<App>();
+        auto [inner_arr, inner_index] = get->args<2>();
+        if (inner_arr == arr && inner_index == index) {
+            w.DLOG("bypass successful");
+            return inner_arr;
+        }
+    }
+    if (Axm::isa<tensor::set>(x)) {
+        w.DLOG("set after set, try to bypass");
+        auto inner_set            = x->as<App>();
+        auto [inner_arr, inner_index, inner_x] = inner_set->args<3>();
+        auto [i_T, i_r, i_s]          = inner_set->callee()->as<App>()->args<3>();
 
-    auto r_lit = r->isa<Lit>();
-    if (!r_lit) return nullptr;
+        w.DLOG("    inner_arr = {} : {}", inner_arr, inner_arr->type());
+        w.DLOG("    inner_index = {} : {}", inner_index, inner_index->type());
+        w.DLOG("    inner_x = {} : {}", inner_x, inner_x->type());
+        w.DLOG("    i_T = {} : {}", i_T, i_T->type());
+        w.DLOG("    i_r = {} : {}", i_r, i_r->type());
+        w.DLOG("    i_s = {} : {}", i_s, i_s->type());
 
-    auto r_nat     = r_lit->get<u64>();
-    auto new_r_nat = r_nat - 1;
+        auto new_r     = w.call(core::nat::add, DefVec{r, i_r});
+        auto new_s     = w.call<tuple::cat>(DefVec{s, i_s});
+        auto new_index = w.call<tuple::cat>(DefVec{index, inner_index});
 
-    auto idx = index->proj(r_nat, 0);
-    w.DLOG("    idx = {} : {}", idx, idx->type());
-    auto new_r     = w.lit_nat(new_r_nat);
-    auto new_s_vec = DefVec(new_r_nat, [&](size_t i) { return s->proj(r_nat, i + 1); });
-    auto new_s     = w.tuple(new_s_vec);
+        return op_set(i_T, new_r, new_s, arr, new_index, inner_x);
 
-    auto target_arr    = w.extract(arr, idx);
-    auto new_index_vec = DefVec(new_r_nat, [&](size_t i) { return index->proj(r_nat, i + 1); });
-    auto new_index     = w.tuple(new_index_vec);
-    auto new_arr       = op_set(T, new_r, new_s, target_arr, new_index, x);
+    }
+    w.DLOG("no normalization applicable");
 
-    auto idx_n   = idx->type()->op(1);
-    auto idx_lit = idx_n->isa<Lit>();
-    if (!idx_lit) return nullptr;
-    if (idx_lit->get<u64>() == 1) return new_arr;
-
-    return w.insert(arr, idx, new_arr);
+    return nullptr;
 }
 
 const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
