@@ -1,10 +1,12 @@
 #pragma once
 
 #include <list>
+#include <utility>
 
 #include <absl/container/node_hash_map.h>
 
 #include "mim/flags.h"
+#include "mim/ast/tok.h"
 #include "mim/plugin.h"
 #include "mim/world.h"
 
@@ -41,34 +43,39 @@ public:
     ///@}
 
     /// @name Manage Imports
-    /// This is a list of pairs where each pair contains:
-    /// 1. The `fs::path` used during import,
-    /// 2. The name as Sym%bol used in the `import` directive or in Parser::import.
+    /// This tracks:
+    /// 1. The distinct files that have already been parsed to avoid reparsing them,
+    /// 2. The distinct import or plugin directives that should be emitted again later.
     ///@{
     class Imports {
     public:
+        struct Entry {
+            fs::path path;
+            Sym sym;
+            ast::Tok::Tag tag;
+        };
+
         Imports(Driver& driver)
             : driver_(driver) {}
 
         /// @name Get imports
         ///@{
-        const auto& path2sym() { return path2sym_; }
-        auto paths() { return path2sym_ | std::views::keys; }
-        auto syms() { return path2sym_ | std::views::values; }
+        const auto& entries() const { return entries_; }
         ///@}
 
         /// @name Iterators
         ///@{
-        auto begin() const { return path2sym_.cbegin(); }
-        auto end() const { return path2sym_.cbegin(); }
+        auto begin() const { return entries_.cbegin(); }
+        auto end() const { return entries_.cend(); }
         ///@}
 
-        /// Yields a `fs::path*`, if not already added that you can use in Loc%ation; returns `nullptr` otherwise.
-        const fs::path* add(fs::path, Sym);
+        /// Remembers an import or plugin directive and reports whether the resolved file is new.
+        std::pair<const fs::path*, bool> add(fs::path, Sym, ast::Tok::Tag);
 
     private:
         Driver& driver_;
-        std::deque<std::pair<fs::path, Sym>> path2sym_;
+        std::deque<Entry> entries_;
+        std::deque<fs::path> parsed_paths_;
     };
 
     const Imports& imports() const { return imports_; }

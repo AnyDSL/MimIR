@@ -246,7 +246,7 @@ AST load_plugins(World& world, View<Sym> plugins) {
     auto imports = Ptrs<Import>();
 
     for (auto plugin : plugins)
-        if (auto mod = parser.import(plugin, nullptr))
+        if (auto mod = parser.import(plugin.view(), tag))
             imports.emplace_back(ast.ptr<Import>(mod->loc(), tag, Dbg(plugin), std::move(mod)));
 
     if (!plugins.empty()) {

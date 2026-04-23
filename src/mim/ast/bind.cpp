@@ -316,7 +316,6 @@ void RecDecl::bind(Scopes& s) const {
         curr->bind_decl(s);
     for (auto curr = this; curr; curr = curr->next())
         curr->bind_body(s);
-    annex_ = s.ast().name2annex(dbg(), &sub_);
 }
 
 void RecDecl::bind_decl(Scopes& s) const {
@@ -328,6 +327,8 @@ void RecDecl::bind_decl(Scopes& s) const {
         s.ast().error(body()->loc(), "unsupported expression for a recursive declaration");
 
     s.bind(dbg(), this);
+    annex_ = s.ast().name2annex(dbg(), &sub_);
+
 }
 
 void RecDecl::bind_body(Scopes& s) const { body()->bind(s); }

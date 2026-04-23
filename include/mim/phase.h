@@ -23,6 +23,7 @@ using Phases = std::deque<std::unique_ptr<Phase>>;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
+/// @see @ref phases_phase
 class Phase : public Stage {
 public:
     /// @name Construction & Destruction
@@ -61,6 +62,7 @@ protected:
 /// 1. all World::annexes() (during which Analysis::is_bootstrapping is `true`), and then
 /// 2. all World::externals() (during which Analysis::is_bootstrapping is `false`).
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
+/// @see @ref phases_analysis
 class Analysis : public Phase, public Rewriter {
 public:
     /// @name Construction & Destruction
@@ -105,6 +107,7 @@ private:
 /// 2. all (old) World::externals() (during which RWPhase::is_bootstrapping is `false`).
 /// All rewrites that refer to another annex have to be skipped during bootstrapping.
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
+/// @see @ref phases_rwphase
 class RWPhase : public Phase, public Rewriter {
 public:
     /// @name Construction
@@ -222,6 +225,7 @@ private:
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping them afterwards.
+/// @see @ref phases_rwphase
 class Cleanup : public RWPhase {
 public:
     Cleanup(World& world)
@@ -255,6 +259,7 @@ private:
 
 /// Organizes several Phase%s in a a pipeline.
 /// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo_ flags yield `false`.
+/// @see @ref phases_phase_man
 class PhaseMan : public Phase {
 public:
     /// @name Construction
@@ -283,7 +288,8 @@ private:
 
 /// Transitively visits all *reachable*, [*closed*](@ref Def::is_closed) mutables in the World.
 /// * Select with `elide_empty` whether you want to visit trivial mutables without body.
-/// * If you a are only interested in specific mutables, you can pass this to @p M.
+/// * If you are only interested in specific mutables, you can pass this to @p M.
+/// @see @ref phases_closed_mut_phase
 template<class M = Def>
 class ClosedMutPhase : public Phase {
 public:
@@ -309,6 +315,7 @@ private:
 };
 
 /// Like ClosedMutPhase but computes a Nest for each NestPhase::visit.
+/// @see @ref phases_nest_phase
 template<class M = Def>
 class NestPhase : public ClosedMutPhase<M> {
 public:
