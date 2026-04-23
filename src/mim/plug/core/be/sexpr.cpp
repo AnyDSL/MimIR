@@ -34,22 +34,45 @@ struct BB {
     }
 
     template<class... Args>
-    std::string assign(Tab tab, std::string name, const char* s, Args&&... args) {
+    std::string assign(Tab tab, bool slotted, std::string name, const char* s, Args&&... args) {
         if (!assigned.contains(name)) {
             assigned.insert(name);
             auto& os = body().emplace_back();
-            print(tab.lnprint(os, "(let {} ", name), s, std::forward<Args&&>(args)...);
+            if (slotted) {
+                tab.lnprint(os, "(let");
+                ++tab;
+                tab.lnprint(os, s, std::forward<Args&&>(args)...);
+                tab.lnprint(os, "{}", name);
+                --tab;
+            } else {
+                tab.lnprint(os, "(let");
+                ++tab;
+                tab.lnprint(os, "{}", name);
+                tab.lnprint(os, s, std::forward<Args&&>(args)...);
+                --tab;
+            }
         }
         return name;
     }
 
     template<class Fn>
-    std::string assign(Tab tab, std::string name, Fn&& print_term) {
+    std::string assign(Tab tab, bool slotted, std::string name, Fn&& print_term) {
         if (!assigned.contains(name)) {
             assigned.insert(name);
             auto& os = body().emplace_back();
-            tab.lnprint(os, "(let {} ", name);
-            print_term(os);
+            if (slotted) {
+                tab.lnprint(os, "(let");
+                print_term(os);
+                ++tab;
+                tab.lnprint(os, "{}", name);
+                --tab;
+            } else {
+                tab.lnprint(os, "(let");
+                ++tab;
+                tab.lnprint(os, "{}", name);
+                --tab;
+                print_term(os);
+            }
         }
         return name;
     }
@@ -232,10 +255,8 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     assert(lam2bb_.contains(lam));
     auto& bb = lam2bb_[lam];
 
-    if (lam->is_closed())
-        print(func_impls_, "{}", emit_head(bb, lam));
-    else
-        print(func_impls_, "{}", emit_head(bb, lam, true));
+    bool as_binding = !lam->is_closed();
+    print(func_impls_, "{}", emit_head(bb, lam, as_binding));
 
     ++tab;
     // Keeps count of parentheses opened by let-bindings that need to be closed later on
@@ -265,17 +286,23 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     print(func_impls_, "{}", closing_parens);
     --tab;
 
-    if (lam->is_closed())
-        print(func_impls_, ")\n\n");
-    else {
+    if (as_binding) {
         --tab;
         print(func_impls_, ")");
+        if (slotted()) {
+            ++tab;
+            tab.lnprint(func_impls_, "{}", id(lam));
+            --tab;
+        }
+    } else {
+        print(func_impls_, ")\n\n");
     }
 }
 
 std::string Emitter::emit_var(BB& bb, const Def* var, const Def* type) {
     std::ostringstream os;
 
+    // TODO: Slotted lams/cons are now defined as (con extern foo <dom-type> $var (lamdef <filter> <body>))
     if (slotted()) {
         ++tab;
         tab.lnprint(os, "{}", id(var));
@@ -310,8 +337,9 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     const std::string ext      = lam->is_external() ? "extern" : "intern";
 
     if (as_binding) {
-        tab.lnprint(os, "(let {}", id(lam));
+        tab.lnprint(os, "(let");
         ++tab;
+        if (!slotted()) tab.lnprint(os, "{}", id(lam));
         tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam));
     } else
         tab.print(os, "({} {} {}", lam_kind, ext, id(lam));
@@ -486,7 +514,7 @@ std::string Emitter::emit_node(BB& bb, const Def* def, std::string node_name, bo
         print(os, ")");
 
     } else {
-        bb.assign(tab, id(def), [&](auto& os) {
+        bb.assign(tab, slotted(), id(def), [&](auto& os) {
             ++tab;
             tab.lnprint(os, "({}", node_name);
 
@@ -587,7 +615,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (bot->sym().empty())
             tab.lnprint(os, "(bot {})", emit_type(bb, bot->type()));
         else {
-            bb.assign(tab, id(bot), "(bot {})", emit_type(bb, bot->type()));
+            bb.assign(tab, slotted(), id(bot), "(bot {})", emit_type(bb, bot->type()));
             tab.lnprint(os, "{}", id(bot, true));
         }
 
@@ -595,7 +623,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (top->sym().empty())
             tab.lnprint(os, "(top {})", emit_type(bb, top->type()));
         else {
-            bb.assign(tab, id(top), "(top {})", emit_type(bb, top->type()));
+            bb.assign(tab, slotted(), id(top), "(top {})", emit_type(bb, top->type()));
             tab.lnprint(os, "{}", id(top, true));
         }
 
@@ -638,7 +666,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 tab.print(os, "{}", op_val);
             print(os, ")");
         } else {
-            bb.assign(tab, id(proxy), [&](auto& os) {
+            bb.assign(tab, slotted(), id(proxy), [&](auto& os) {
                 ++tab;
                 tab.lnprint(os, "(proxy");
                 ++tab;
