@@ -7,7 +7,6 @@
 #include <lyra/lyra.hpp>
 #include <rang.hpp>
 
-#include "mim/cfg.h"
 #include "mim/config.h"
 #include "mim/driver.h"
 #include "mim/nest.h"
@@ -183,7 +182,12 @@ int main(int argc, char** argv) {
                     default: error("illegal optimization level '{}'", opt);
                 }
 
-                if (auto s = os[CFG]) mim::Nest(world).cfg_dot(*s);
+                if (auto s = os[CFG]) {
+                    if (auto backend = driver.backend("cfg"))
+                        backend(world, *s);
+                    else
+                        error("'cfg' emitter not loaded; try loading 'sflow' plugin");
+                }
                 if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
                 if (auto s = os[Mim]) world.dump(*s);
                 if (auto s = os[Nest]) mim::Nest(world).dot(*s);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mim/plug/sflow/cfg.h"
+#include "mim/plug/sflow/reduc_cfg.h"
 
 namespace mim::plug::sflow {
 

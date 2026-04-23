@@ -1,205 +1,368 @@
 #include "mim/plug/sflow/cfg.h"
 
-#include "mim/lam.h"
-#include "mim/rewrite.h"
-#include "mim/world.h"
+#include <algorithm>
+#include <fstream>
+#include <functional>
+#include <stack>
+#include <vector>
+
+#include "mim/nest.h"
+#include "mim/tuple.h"
+
+#include "mim/util/print.h"
 
 namespace mim::plug::sflow {
 
-CFG::CFG(Lam* entry) { entry_ = build(entry); }
+/*
+ * Nest helpers
+ */
 
-CFG::~CFG() {
-    for (auto [node, limit] : node2limit_) {
-        limit->nodes.erase(node);
-        if (limit->nodes.empty()) delete limit;
-        delete node;
-    }
+std::unique_ptr<CFG> nest_cfg(const Nest::Node* node) { return std::make_unique<CFG>(node); }
+
+std::unique_ptr<CFG> nest_cfg(const Nest& nest) {
+    assert(nest.root()->mut() && "nest_cfg() requires a non-virtual root");
+    return nest_cfg(nest.root());
 }
 
-CFG::LimitNode* CFG::limit() {
-    if (limit_) return limit_;
+/*
+ * CFG::Node
+ */
 
-    // Create new graph of LimitNodes
-    for (auto [_, node] : lam2node_)
-        node2limit_[node] = new LimitNode(node);
-    // Copy edges
-    for (auto [node, limit] : node2limit_) {
-        for (auto pred : node->preds)
-            limit->preds.insert(node2limit_[pred]);
-        for (auto pred : node->succs)
-            limit->succs.insert(node2limit_[pred]);
-    }
-
-    limit_ = node2limit_[entry_];
-
-    Set<LimitNode*> visited;
-    bool changed = true;
-    while (changed)
-        changed = reduce(limit_, visited);
-
-    return limit_;
-}
-
-bool CFG::reduce(LimitNode* current, Set<LimitNode*>& visited) {
-    visited.insert(current);
-    bool changed = false;
-    for (auto succ : current->succs) {
-        changed |= reduce(succ, visited);
-        changed |= t1(succ);
-        changed |= t2(succ);
-    }
-    changed |= t1(current);
-    visited.erase(current);
-    return changed;
-}
-
-bool CFG::t2(LimitNode* lnode) {
-    // The entry basically has another invisible predecessor
-    // and should therefore not be merged ever.
-    if (lnode == limit_) return false;
-
-    if (lnode->preds.size() != 1) return false;
-
-    auto pred = *lnode->preds.begin();
-
-    // Merge nodes and update node2limit_
-    for (auto node : lnode->nodes) {
-        pred->nodes.insert(node);
-        node2limit_[node] = pred;
-    }
-
-    // Move successors from node to pred
-    pred->succs.erase(lnode);
-    for (auto succ : lnode->succs) {
-        pred->succs.insert(succ);
-        succ->preds.erase(lnode);
-        succ->preds.insert(pred);
-    }
-
-    delete lnode;
-
-    return true;
-}
-
-/// Rewriter that substitutes mapped Defs but leaves unmapped mutables untouched.
-class SplitRewriter : public Rewriter {
-public:
-    // Constructor taking a DefSet
-    SplitRewriter(World& world, DefSet todo)
-        : Rewriter(world)
-        , todo_(std::move(todo)) {}
-
-    // Constructor taking any number of const Def*
-    template<std::same_as<const Def*>... Defs>
-    SplitRewriter(World& world, Defs... defs)
-        : Rewriter(world)
-        , todo_{defs...} {}
-
-    const Def* rewrite_mut(Def* mut) override {
-        if (auto new_mut = lookup(mut)) return new_mut;
-        if (auto lam = mut->isa<Lam>())
-            if (todo_.contains(mut)) return rewrite_mut_Lam(lam);
-        return mut;
-    }
-
-private:
-    DefSet todo_;
-};
-
-/// Copies a mut Lam
-Lam* split_lam(Lam* lam) {
-    auto& world = lam->world();
-    auto copy   = world.mut_lam(lam->type()->as<Pi>());
-
-    if (auto var = lam->has_var()) {
-        VarRewriter rw(var, copy->var());
-        copy->set_filter(rw.rewrite(lam->filter()));
-        copy->set_body(rw.rewrite(lam->body()));
-    } else {
-        copy->set_filter(lam->filter());
-        copy->set_body(lam->body());
-    }
-
-    return copy;
-}
-
-void CFG::split(LimitNode* lnode) {
-    if (lnode->preds.size() <= 1) return;
-
-    // Keep original node for first predecessor, create copies for the rest
-    auto pred_it = lnode->preds.begin();
-    ++pred_it; // skip first predecessor
-
-    for (; pred_it != lnode->preds.end(); ++pred_it) {
-        LimitNode* pred = *pred_it;
-
-        // Create copy
-        LimitNode* copy = new LimitNode();
-
-        Map<Node*, Node*> node2copy;
-
-        // Duplicate nodes
-        for (auto node : lnode->nodes) {
-            Lam* lam_copy       = split_lam(node->lam);
-            Node* node_copy     = new Node(lam_copy);
-            node2copy[node]     = node_copy;
-            lam2node_[lam_copy] = node_copy;
-            copy->nodes.insert(node_copy);
-        }
-
-        // Rewire internal edges within limit node
-        for (auto node : lnode->nodes) {
-            Node* copy = node2copy[node];
-            for (auto pred : node->preds)
-                if (lnode->nodes.contains(pred)) {
-                    copy->preds.insert(node2copy[pred]);
-                    rewire(pred->lam, node->lam, copy->lam);
-                }
-            for (auto succ : node->succs)
-                if (lnode->nodes.contains(succ)) copy->succs.insert(node2copy[succ]);
-        }
-
-        // Update predecessor's bodies to reference lam_copy instead of lam
-        for (auto pred : pred->nodes) {
-            SplitRewriter rw(pred_lam->world());
-            rw.map(lam, lam_copy);
-            pred_lam->set_body(rw.rewrite(pred_lam->body()));
-        }
-
-        // Link copy to this predecessor only
-        copy->preds.insert(pred);
-        pred->succs.erase(lnode);
-        pred->succs.insert(copy);
-
-        // Copy successor edges
-        for (auto succ : lnode->succs) {
-            copy->succs.insert(succ);
-            succ->preds.insert(copy);
-        }
-    }
-
-    // Original node keeps only the first predecessor
-    Node* first_pred = *lnode->preds.begin();
-    lnode->preds.clear();
-    lnode->preds.insert(first_pred);
-}
-
-CFG::Node* CFG::build(Lam* lam) {
-    // only one node per lam
-    if (lam2node_.contains(lam)) return lam2node_[lam];
-
-    Node* node     = new Node(lam);
-    lam2node_[lam] = node;
-
-    for (auto op : lam->deps())
-        for (auto local_mut : op->local_muts())
-            if (auto local_lam = local_mut->isa<Lam>()) {
-                Node* succ = build(local_lam);
-                node->succs.insert(succ);
-                succ->preds.insert(node);
+void CFG::Node::follow_escaping(const App* app) {
+    for (auto mut : app->arg()->local_muts()) {
+        if (auto lam = mut->isa<Lam>()) {
+            if (auto target = cfg_.visit(lam)) {
+                succs_.insert(target);
+                target->preds_.insert(this);
             }
+        }
+    }
+}
 
-    return node;
+bool CFG::Node::add_edge(const Lam* succ) {
+    if (auto node = cfg_.visit(succ)) {
+        succs_.insert(node);
+        node->preds_.insert(this);
+        return true;
+    }
+    return false;
+}
+
+void CFG::Node::init() {
+    if (!mut_->is_set()) return;
+    auto app = mut_->body()->as<App>();
+    if (auto callee = app->callee()->isa<Lam>()) {
+        if (!add_edge(callee)) follow_escaping(app);
+    } else if (auto dispatch = Dispatch(app)) {
+        bool follow = false;
+        for (auto branch : dispatch.tuple()->ops())
+            if (!add_edge(branch->as<Lam>())) follow = true;
+        if (follow) follow_escaping(app);
+    } else {
+        follow_escaping(app);
+    }
+}
+
+const CFG::Loop* CFG::Node::loop() const {
+    cfg_.loops();
+    while (loop_) {
+        auto* before = loop_;
+        before->children();
+        if (loop_ == before) break;
+    }
+    return loop_;
+}
+
+/*
+ * CFG
+ */
+
+CFG::CFG(const Nest::Node* entry)
+    : world_(entry->mut()->world())
+    , nest_entry_(entry)
+    , entry_(mut2node_.emplace(entry->mut()->as<Lam>(), std::unique_ptr<Node>(new Node(*this, entry->mut()->as<Lam>())))
+                 .first->second.get()) {
+    entry_->init();
+    calc_dominance();
+}
+
+CFG::Node* CFG::visit(const Lam* mut) {
+    if (!mut->is_set()) return nullptr;
+    auto& nest  = nest_entry_->nest();
+    auto target = nest[const_cast<Lam*>(mut)];
+    if (!target || !nest_entry_->nest_contains(target)) return nullptr;
+    if (auto node = (*this)[mut]) return node;
+    mut2node_.emplace(mut, std::unique_ptr<Node>(new Node(*this, mut)));
+    mut2node_[mut]->init();
+    return mut2node_[mut].get();
+}
+
+void CFG::assign_postorder_numbers() {
+    size_t number = 0;
+    absl::flat_hash_set<Node*> visited;
+
+    std::function<void(Node*)> visit = [&](Node* node) {
+        if (!visited.insert(node).second) return;
+        for (auto succ : node->succs_)
+            visit(succ);
+        node->postorder_number_ = ++number;
+    };
+
+    visit(entry_);
+}
+
+/// Calculates dominance using Cooper-Harvey-Kennedy algorithm
+/// from Cooper et al, "A Simple, Fast Dominance Algorithm".
+/// https://www.clear.rice.edu/comp512/Lectures/Papers/TR06-33870-Dom.pdf
+void CFG::calc_dominance() {
+    assign_postorder_numbers();
+
+    // entry dominates itself
+    entry_->idom_ = entry_;
+
+    // collect nodes in reverse postorder (skip entry)
+    std::vector<Node*> nodes;
+    nodes.reserve(mut2node_.size());
+    for (auto& [_, node] : mut2node_)
+        if (node.get() != entry_ && node->postorder_number_ != 0) nodes.push_back(node.get());
+    std::ranges::sort(nodes, [](Node* a, Node* b) { return a->postorder_number_ > b->postorder_number_; });
+
+    for (bool todo = true; todo;) {
+        todo = false;
+        for (auto node : nodes) {
+            const Node* new_idom = nullptr;
+            for (auto pred : node->preds_)
+                if (pred->idom_) new_idom = new_idom ? lca(new_idom, pred) : pred;
+            if (node->idom_ != new_idom) {
+                node->idom_ = new_idom;
+                todo        = true;
+            }
+        }
+    }
+}
+
+const CFG::Node* CFG::lca(const Node* n, const Node* m) {
+    while (n != m) {
+        while (n->postorder_number_ < m->postorder_number_)
+            n = n->idom_;
+        while (m->postorder_number_ < n->postorder_number_)
+            m = m->idom_;
+    }
+    return n;
+}
+
+/*
+ * SCCs / Loops
+ */
+
+/// Computes SCCs of @p nodes using Tarjan's algorithm. Mirrors
+/// Nest::Node::tarjan in structure. Edges leaving @p nodes are ignored.
+/// Edges into @p blocked are also ignored.
+CFG::SCCs CFG::compute_sccs(const absl::flat_hash_set<const Node*>& nodes,
+                            const absl::flat_hash_set<const Node*>& blocked) const {
+    // Reset scratch state on every node we are about to visit.
+    for (auto n : nodes) {
+        auto* m      = const_cast<Node*>(n);
+        m->idx_      = Node::Unvisited;
+        m->on_stack_ = false;
+    }
+
+    std::stack<Node*> stack;
+    SCCs sccs;
+
+    std::function<uint32_t(Node*, uint32_t)> tarjan = [&](Node* curr, uint32_t i) -> uint32_t {
+        curr->idx_ = curr->low_ = i++;
+        curr->on_stack_         = true;
+        stack.emplace(curr);
+
+        for (auto dep : curr->succs_) {
+            if (!nodes.contains(dep) || blocked.contains(dep)) continue;
+            if (dep->idx_ == Node::Unvisited) i = tarjan(dep, i);
+            if (dep->on_stack_) curr->low_ = std::min(curr->low_, dep->low_);
+        }
+
+        if (curr->idx_ == curr->low_) {
+            sccs.emplace_back(std::make_unique<SCC>());
+            SCC* scc = sccs.back().get();
+            Node* node;
+            do {
+                node            = pop(stack);
+                node->on_stack_ = false;
+                node->low_      = curr->idx_;
+                scc->emplace(node);
+            } while (node != curr);
+        }
+
+        return i;
+    };
+
+    for (uint32_t i = 0; auto cn : nodes) {
+        if (blocked.contains(cn)) continue;
+        auto* n = const_cast<Node*>(cn);
+        if (n->idx_ == Node::Unvisited) i = tarjan(n, i);
+    }
+
+    return sccs;
+}
+
+std::unique_ptr<CFG::Loop> CFG::make_loop(const SCC& scc, const Loop* parent) {
+    auto loop    = std::unique_ptr<Loop>(new Loop(parent));
+    loop->nodes_ = scc;
+
+    // Mark each node with its (currently) deepest containing loop. When nested
+    // loops are computed lazily later, they will overwrite this for nodes
+    // belonging to a more deeply nested loop.
+    for (auto n : scc)
+        const_cast<Node*>(n)->loop_ = loop.get();
+
+    // Entries: nodes in the SCC that have a predecessor outside the SCC
+    // (or are the entry of the CFG itself).
+    for (auto n : scc) {
+        bool is_entry = false;
+        for (auto pred : n->preds_) {
+            if (!scc.contains(pred)) {
+                is_entry = true;
+                break;
+            }
+        }
+        if (is_entry) loop->entries_.emplace(n);
+    }
+
+    // Exits: nodes in the SCC that have a successor outside the SCC.
+    for (auto n : scc) {
+        for (auto succ : n->succs_) {
+            if (!scc.contains(succ)) {
+                loop->exits_.emplace(n);
+                break;
+            }
+        }
+    }
+
+    return loop;
+}
+
+static bool is_loop_scc(const CFG::SCC& scc) {
+    if (scc.size() > 1) return true;
+    // self-loop?
+    auto n = *scc.begin();
+    for (auto succ : n->succs())
+        if (succ == n) return true;
+    return false;
+}
+
+void CFG::find_loops() const {
+    absl::flat_hash_set<const Node*> all;
+    all.reserve(mut2node_.size());
+    for (auto& [_, node] : mut2node_)
+        all.emplace(node.get());
+
+    auto sccs = compute_sccs(all);
+    for (auto& scc : sccs) {
+        if (!is_loop_scc(*scc)) continue;
+        loops_.emplace_back(make_loop(*scc, nullptr));
+    }
+}
+
+void CFG::Loop::find_nested_loops() const {
+    // Recompute SCCs within this loop's nodes, but block edges into this
+    // loop's entries — this breaks back edges and exposes nested loops.
+    // Only the immediate next level is computed; deeper levels are computed
+    // lazily when their children() is accessed.
+    auto& cfg = (*nodes_.begin())->cfg_;
+    auto sccs = cfg.compute_sccs(nodes_, entries_);
+    for (auto& scc : sccs) {
+        if (!is_loop_scc(*scc)) continue;
+        // Skip the trivial case where the nested SCC equals this loop's SCC.
+        if (scc->size() == nodes_.size()) continue;
+        children_.emplace_back(make_loop(*scc, this));
+    }
+}
+
+/*
+ * dot
+ */
+
+void CFG::dot(const char* file) const {
+    if (!file) {
+        dot(std::cout);
+    } else {
+        auto of = std::ofstream(file);
+        dot(of);
+    }
+}
+
+void CFG::dot_cluster(std::ostream& os, mim::Tab& tab, size_t& cluster_id) const {
+    (tab++).println(os, "subgraph cluster_{} {{", cluster_id++);
+    tab.println(os, "label=\"{}\";", entry_->mut()->unique_name());
+    tab.println(os, "style=solid;");
+    tab.println(os, "color=black;");
+
+    auto emit_node = [&](const Node* n) {
+        tab.println(os, "\"{}\" [label=\"{}\"]", n->mut()->unique_name(), n->mut()->unique_name());
+    };
+
+    std::function<void(const Loop*)> emit_loop = [&](const Loop* loop) {
+        (tab++).println(os, "subgraph cluster_{} {{", cluster_id++);
+        tab.println(os, "style=dashed;");
+        tab.println(os, "color=blue;");
+        for (auto& child : loop->children())
+            emit_loop(child.get());
+        for (auto n : loop->nodes())
+            if (n->loop() == loop) emit_node(n);
+        (--tab).println(os, "}}");
+    };
+
+    for (auto& loop : loops())
+        emit_loop(loop.get());
+
+    // Emit nodes that don't belong to any loop.
+    for (auto node : nodes())
+        if (!node->loop()) emit_node(node);
+
+    (--tab).println(os, "}}");
+
+    // Emit all edges outside the cluster. Dominance edges drive the layout;
+    // CFG succ edges are drawn but don't constrain ranks.
+    for (auto node : nodes()) {
+        for (auto succ : node->succs())
+            tab.println(os, "\"{}\" -> \"{}\" [constraint=false]", node->mut()->unique_name(),
+                        succ->mut()->unique_name());
+        if (auto idom = node->idom(); idom && idom != node)
+            tab.println(os, "\"{}\" -> \"{}\" [color=red,style=bold]", idom->mut()->unique_name(),
+                        node->mut()->unique_name());
+    }
+}
+
+void CFG::dot(std::ostream& os) const {
+    mim::Tab tab;
+    (tab++).println(os, "digraph {{");
+    tab.println(os, "ordering=out;");
+    tab.println(os, "compound=true;");
+    tab.println(os, "node [shape=box,style=filled];");
+    size_t cluster_id = 0;
+    dot_cluster(os, tab, cluster_id);
+    (--tab).println(os, "}}");
+}
+
+void nest_cfg_dot(const Nest& nest, const char* file) {
+    if (!file) {
+        nest_cfg_dot(nest, std::cout);
+    } else {
+        auto of = std::ofstream(file);
+        nest_cfg_dot(nest, of);
+    }
+}
+
+void nest_cfg_dot(const Nest& nest, std::ostream& os) {
+    mim::Tab tab;
+    (tab++).println(os, "digraph {{");
+    tab.println(os, "ordering=out;");
+    tab.println(os, "compound=true;");
+    tab.println(os, "node [shape=box,style=filled];");
+    size_t cluster_id = 0;
+    for (auto child : nest.root()->children().nodes())
+        if (child->mut()->isa<Lam>()) nest_cfg(child)->dot_cluster(os, tab, cluster_id);
+    (--tab).println(os, "}}");
 }
 
 } // namespace mim::plug::sflow
