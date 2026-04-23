@@ -58,5 +58,6 @@ var searchData=
   ['ssa_55',['SSA',['../classmim_1_1plug_1_1mem_1_1pass_1_1SSA.html',1,'mim::plug::mem::pass']]],
   ['stage_56',['Stage',['../classmim_1_1Stage.html',1,'mim']]],
   ['state_57',['State',['../structmim_1_1World_1_1State.html',1,'mim::World']]],
-  ['symexpropt_58',['SymExprOpt',['../classmim_1_1SymExprOpt.html',1,'mim']]]
+  ['streamfn_58',['StreamFn',['../structmim_1_1StreamFn.html',1,'mim']]],
+  ['symexpropt_59',['SymExprOpt',['../classmim_1_1SymExprOpt.html',1,'mim']]]
 ];

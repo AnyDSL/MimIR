@@ -27,7 +27,7 @@ var searchData=
   ['free_5fdefs_24',['free_defs',['../namespacemim_1_1plug_1_1clos.html#a5485374ab8e8586644bc7537515df475',1,'mim::plug::clos']]],
   ['free_5fvars_25',['free_vars',['../classmim_1_1Def.html#aed49f75ef33a07d498daffbcc3d2d838',1,'mim::Def::free_vars() const'],['../classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9',1,'mim::Def::free_vars()']]],
   ['freedefana_26',['FreeDefAna',['../classmim_1_1plug_1_1clos_1_1FreeDefAna.html#a997eda73047d92577e9f1896536f4fa7',1,'mim::plug::clos::FreeDefAna']]],
-  ['freeze_27',['freeze',['../classmim_1_1World.html#af2630c208c9ef6f6fd9f27bcf825eafa',1,'mim::World']]],
+  ['freeze_27',['freeze',['../classmim_1_1World.html#a8c639e60d776f524a36e032e59885009',1,'mim::World']]],
   ['freezer_28',['Freezer',['../structmim_1_1World_1_1Freezer.html#a818ef9b85c0577003a841560821c188e',1,'mim::World::Freezer']]],
   ['from_5fouter_5fscope_29',['from_outer_scope',['../classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#ac63427ddebefb4857ec67e7379d2cfee',1,'mim::plug::clos::ClosConvPrep::from_outer_scope(Lam *lam)'],['../classmim_1_1plug_1_1clos_1_1ClosConvPrep.html#a5e927a0bfce3031e17477a02ab122ee4',1,'mim::plug::clos::ClosConvPrep::from_outer_scope(const Def *lam)']]],
   ['front_30',['front',['../classmim_1_1unique__queue.html#a706602cdaf314aa94a65a6f0404913c0',1,'mim::unique_queue']]],

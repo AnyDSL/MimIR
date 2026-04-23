@@ -139,6 +139,8 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:mim_3A_3AElem_3C_20R_2C_20F_20_3E" id="r_mim_3A_3AElem_3C_20R_2C_20F_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structmim_1_1Elem.html">mim::Elem&lt; R, F &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Use.html" title="const Def*erences a user.">Use</a> with print to output complicated <span class="tt">std::ranges::range</span>s.  <a href="structmim_1_1Elem.html#details">More...</a><br /></td></tr>
+<tr class="memitem:mim_3A_3AStreamFn_3C_20F_20_3E" id="r_mim_3A_3AStreamFn_3C_20F_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structmim_1_1StreamFn.html">mim::StreamFn&lt; F &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create function-wrapper objects amenable for <span class="tt">opeartor&lt;&lt;</span>.  <a href="structmim_1_1StreamFn.html#details">More...</a><br /></td></tr>
 <tr class="memitem:mim_3A_3ATab" id="r_mim_3A_3ATab"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Tab.html">mim::Tab</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps track of indentation level.  <a href="classmim_1_1Tab.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
@@ -188,6 +190,11 @@ Formatted Output</h2></td></tr>
 </ul>
 </td></tr>
 <tr class="memitem:a7bc6143638d489bb640260462bf07777" id="r_a7bc6143638d489bb640260462bf07777"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a7bc6143638d489bb640260462bf07777">assertf</a>(condition, ...)</td></tr>
+<tr class="memitem:a7765618e37f0a7b092114653f90dc98c" id="r_a7765618e37f0a7b092114653f90dc98c"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
+<tr class="memitem:a7765618e37f0a7b092114653f90dc98c template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="namespacemim.html#a7765618e37f0a7b092114653f90dc98c">mim::elems</a> (std::ostream &amp;os, const auto &amp;range)</td></tr>
+<tr class="memdesc:a7765618e37f0a7b092114653f90dc98c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap all elements in <code class="param">range</code> through <span class="tt">os &lt;&lt; T(elem)</span>.  <br /></td></tr>
+<tr class="memitem:a8f1ef8704eeca05646091481cff24194" id="r_a8f1ef8704eeca05646091481cff24194"><td class="memTemplParams" colspan="2">template&lt;class F&gt; </td></tr>
+<tr class="memitem:a8f1ef8704eeca05646091481cff24194 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="namespacemim.html#a8f1ef8704eeca05646091481cff24194">mim::StreamFn</a> (F) -&gt; StreamFn&lt; F &gt;</td></tr>
 <tr class="memitem:a299eaedf188f01c3d4634dd51dedcb83" id="r_a299eaedf188f01c3d4634dd51dedcb83"><td class="memItemLeft">std::ostream &amp;&#160;</td><td class="memItemRight"><a class="el" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">mim::print</a> (std::ostream &amp;os, const char *s)</td></tr>
 <tr class="memdesc:a299eaedf188f01c3d4634dd51dedcb83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base case.  <br /></td></tr>
 <tr class="memitem:aa40aa81b4928c7e18a7aaaff1fd810fc" id="r_aa40aa81b4928c7e18a7aaaff1fd810fc"><td class="memTemplParams" colspan="2">template&lt;class T, class... Args&gt; </td></tr>
@@ -229,9 +236,9 @@ Formatted Output</h2></td></tr>
 <div class="line">    }                                                        \</div>
 <div class="line">} <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00183">183</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00198">198</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00552">mim::World::dump()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00531">mim::World::dump()</a>.</p>
 
 </div>
 </div>

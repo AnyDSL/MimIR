@@ -407,6 +407,7 @@ var hierarchy =
       [ "mim::Span< T, N >", "classmim_1_1Span.html", null ]
     ] ],
     [ "mim::World::State", "structmim_1_1World_1_1State.html", null ],
+    [ "mim::StreamFn&lt; F &gt;", "structmim_1_1StreamFn.html", null ],
     [ "fe::SymPool", null, [
       [ "mim::Driver", "classmim_1_1Driver.html", null ]
     ] ],

@@ -1,8 +1,10 @@
 var print_8h =
 [
     [ "mim::Elem&lt; R, F &gt;", "structmim_1_1Elem.html", "structmim_1_1Elem" ],
+    [ "mim::StreamFn&lt; F &gt;", "structmim_1_1StreamFn.html", "structmim_1_1StreamFn" ],
     [ "mim::Tab", "classmim_1_1Tab.html", "classmim_1_1Tab" ],
     [ "assertf", "print_8h.html#a7bc6143638d489bb640260462bf07777", null ],
+    [ "mim::elems", "namespacemim.html#a7765618e37f0a7b092114653f90dc98c", null ],
     [ "mim::errf", "namespacemim.html#a6f391dd09ef5770be5c92b9b3ebf8513", null ],
     [ "mim::errln", "namespacemim.html#acd5f271791887591d1b309592374ab49", null ],
     [ "mim::error", "namespacemim.html#a7280c73fe1d622c413efcec2faa67965", null ],
@@ -11,5 +13,6 @@ var print_8h =
     [ "mim::outln", "namespacemim.html#aa419224f30fc609b0b9cbe6aa4a67b8a", null ],
     [ "mim::print", "namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83", null ],
     [ "mim::print", "namespacemim.html#aa40aa81b4928c7e18a7aaaff1fd810fc", null ],
-    [ "mim::println", "namespacemim.html#ad059c5ef2a6d008a74c8bfb866acede1", null ]
+    [ "mim::println", "namespacemim.html#ad059c5ef2a6d008a74c8bfb866acede1", null ],
+    [ "mim::StreamFn", "namespacemim.html#a8f1ef8704eeca05646091481cff24194", null ]
 ];

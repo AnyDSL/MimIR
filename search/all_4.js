@@ -7,7 +7,7 @@ var searchData=
   ['elem_4',['Elem',['../structmim_1_1Elem.html',1,'mim::Elem&lt; R, F &gt;'],['../structmim_1_1Elem.html#ae601b2606ba9463206a391055b1675a0',1,'mim::Elem::Elem()']]],
   ['elem_5',['elem',['../classmim_1_1ast_1_1TupleExpr.html#a49f65d12bc809ef73363148b8d3e98df',1,'mim::ast::TupleExpr']]],
   ['element_5fwise_6',['%tensor.element_wise',['../tensor.html#autotoc_md321',1,'']]],
-  ['elems_7',['elems',['../classmim_1_1ast_1_1TupleExpr.html#aaffce438c1fe47e74786367d51cc1c1a',1,'mim::ast::TupleExpr']]],
+  ['elems_7',['elems',['../classmim_1_1ast_1_1TupleExpr.html#aaffce438c1fe47e74786367d51cc1c1a',1,'mim::ast::TupleExpr::elems()'],['../namespacemim.html#a7765618e37f0a7b092114653f90dc98c',1,'mim::elems()']]],
   ['elide_5fempty_8',['elide_empty',['../classmim_1_1ClosedMutPhase.html#a9405d6627f8ac683802b7c9674a1ed32',1,'mim::ClosedMutPhase']]],
   ['elim_9',['Elim',['../namespacemim.html#adccbc1a0a55e33b72bc7e987075c2293ae46a61588776648a5513d415ba6de279',1,'mim']]],
   ['elog_10',['ELOG',['../log_8h.html#a16e6a53bea50271aa28355f071f7df6b',1,'log.h']]],

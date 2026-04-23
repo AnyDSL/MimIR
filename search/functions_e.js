@@ -49,6 +49,7 @@ var searchData=
   ['ops_46',['ops',['../classmim_1_1Def.html#a3e96d1f2d3715f3d059a7396366af7eb',1,'mim::Def']]],
   ['optimize_47',['optimize',['../namespacemim.html#a60ee93398f76269a406c841b2bb2c306',1,'mim']]],
   ['ostream_48',['ostream',['../classmim_1_1Emitter.html#a614e61750773436c58e728b596c4b19b',1,'mim::Emitter::ostream()'],['../classmim_1_1Log.html#a76fece32622255541b97f9674bf57725',1,'mim::Log::ostream()']]],
-  ['outf_49',['outf',['../namespacemim.html#a93fb24279848e874bb5aa72083a1df19',1,'mim']]],
-  ['outln_50',['outln',['../namespacemim.html#aa419224f30fc609b0b9cbe6aa4a67b8a',1,'mim']]]
+  ['outermost_5fbinder_49',['outermost_binder',['../classmim_1_1Def.html#a9d019e48598f086164307808997b1553',1,'mim::Def']]],
+  ['outf_50',['outf',['../namespacemim.html#a93fb24279848e874bb5aa72083a1df19',1,'mim']]],
+  ['outln_51',['outln',['../namespacemim.html#aa419224f30fc609b0b9cbe6aa4a67b8a',1,'mim']]]
 ];

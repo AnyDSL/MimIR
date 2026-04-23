@@ -207,6 +207,7 @@ var annotated_dup =
       [ "FNV1&lt; 8 &gt;", "structmim_1_1FNV1_3_018_01_4.html", "structmim_1_1FNV1_3_018_01_4" ],
       [ "Log", "classmim_1_1Log.html", "classmim_1_1Log" ],
       [ "Elem", "structmim_1_1Elem.html", "structmim_1_1Elem" ],
+      [ "StreamFn", "structmim_1_1StreamFn.html", "structmim_1_1StreamFn" ],
       [ "Tab", "classmim_1_1Tab.html", "classmim_1_1Tab" ],
       [ "Sets", "classmim_1_1Sets.html", "classmim_1_1Sets" ],
       [ "Span", "classmim_1_1Span.html", "classmim_1_1Span" ],
