@@ -328,7 +328,7 @@ std::string Emitter::emit_var(BB& bb, const Def* var, const Def* type) {
         tab.lnprint(os, "(var {}", id(var));
         size_t i = 0;
         for (auto proj : projs)
-            tab.print(os, " {}", emit_var(bb, proj, type->proj(i++)));
+            print(os, " {}", emit_var(bb, proj, type->proj(i++)));
         ++tab;
         tab.lnprint(os, "{})", emit_type(bb, type));
         --tab;
@@ -351,9 +351,9 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
         if (!slotted()) tab.lnprint(os, "{}", id(lam));
         tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam));
     } else
-        tab.print(os, "({} {} {}", lam_kind, ext, id(lam));
+        print(os, "({} {} {}", lam_kind, ext, id(lam));
 
-    tab.print(os, "{}", emit_var(bb, lam->var(), lam->type()->dom()));
+    print(os, "{}", emit_var(bb, lam->var(), lam->type()->dom()));
 
     // Continuations have codomain .bot but lambdas can have arbitrary codomains
     if (!lam->isa_cn(lam)) {
@@ -370,9 +370,9 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     if (slotted()) {
         ++tab;
         tab.lnprint(os, "(lamdef");
-        tab.print(os, "{}", emit_bb(bb, lam->filter()));
+        print(os, "{}", emit_bb(bb, lam->filter()));
     } else {
-        tab.print(os, "{}", emit_bb(bb, lam->filter()));
+        print(os, "{}", emit_bb(bb, lam->filter()));
     }
 
     return os.str();
@@ -487,7 +487,7 @@ std::string Emitter::emit_cons(std::vector<std::string> op_vals) {
         ++tab;
         tab.lnprint(os, "(cons");
         ++tab;
-        tab.print(os, "{}", indent(tab.indent(), op_val));
+        print(os, "{}", indent(tab.indent(), op_val));
         --tab;
         if (op_idx == op_vals.size() - 1) tab.lnprint(os, "nil");
         --tab;
@@ -521,10 +521,10 @@ std::string Emitter::emit_node(BB& bb, const Def* def, std::string node_name, bo
         tab.lnprint(os, "({}", node_name);
 
         if (slotted() && variadic)
-            tab.print(os, "{}", emit_cons(op_vals));
+            print(os, "{}", emit_cons(op_vals));
         else
             for (auto op_val : op_vals)
-                tab.print(os, "{}", op_val);
+                print(os, "{}", op_val);
 
         print(os, ")");
 
@@ -534,11 +534,11 @@ std::string Emitter::emit_node(BB& bb, const Def* def, std::string node_name, bo
             tab.lnprint(os, "({}", node_name);
 
             if (slotted() && variadic)
-                tab.print(os, "{}", emit_cons(op_vals));
+                print(os, "{}", emit_cons(op_vals));
             else {
                 ++tab;
                 for (auto op_val : op_vals)
-                    tab.print(os, "{}", indent(tab.indent(), op_val));
+                    print(os, "{}", indent(tab.indent(), op_val));
                 --tab;
             }
 
@@ -573,16 +573,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             tab.lnprint(os, "(lit {} {})", lit->get(), emit_type(bb, lit->type()));
 
     } else if (auto tuple = def->isa<Tuple>()) {
-        tab.print(os, "{}", emit_node(bb, tuple, "tuple", true));
+        print(os, "{}", emit_node(bb, tuple, "tuple", true));
 
     } else if (auto pack = def->isa<Pack>()) {
-        tab.print(os, "{}", emit_node(bb, pack, "pack"));
+        print(os, "{}", emit_node(bb, pack, "pack"));
 
     } else if (auto tuple = def->isa<Tuple>()) {
-        tab.print(os, "{}", emit_node(bb, tuple, "tuple", true));
+        print(os, "{}", emit_node(bb, tuple, "tuple", true));
 
     } else if (auto pack = def->isa<Pack>()) {
-        tab.print(os, "{}", emit_node(bb, pack, "pack"));
+        print(os, "{}", emit_node(bb, pack, "pack"));
 
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
@@ -610,16 +610,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (!slotted() && ((Lit::isa(index) && tuple->isa<Var>()) || is_nested_proj))
             tab.lnprint(os, "{}", id(extract));
         else
-            tab.print(os, "{}", emit_node(bb, extract, "extract"));
+            print(os, "{}", emit_node(bb, extract, "extract"));
 
     } else if (auto insert = def->isa<Insert>()) {
-        tab.print(os, "{}", emit_node(bb, insert, "insert"));
+        print(os, "{}", emit_node(bb, insert, "insert"));
 
     } else if (auto var = def->isa<Var>()) {
         tab.lnprint(os, "{}", id(var, true));
 
     } else if (auto app = def->isa<App>()) {
-        tab.print(os, "{}", emit_node(bb, app, "app"));
+        print(os, "{}", emit_node(bb, app, "app"));
 
     } else if (auto axm = def->isa<Axm>()) {
         tab.lnprint(os, "{}", id(axm));
@@ -652,13 +652,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
               indent(1, rhs_val), indent(1, guard_val));
 
     } else if (auto inj = def->isa<Inj>()) {
-        tab.print(os, "{}", emit_node(bb, inj, "inj", false, true));
+        print(os, "{}", emit_node(bb, inj, "inj", false, true));
 
     } else if (auto merge = def->isa<Merge>()) {
-        tab.print(os, "{}", emit_node(bb, merge, "merge", true, true));
+        print(os, "{}", emit_node(bb, merge, "merge", true, true));
 
     } else if (auto match = def->isa<Match>()) {
-        tab.print(os, "{}", emit_node(bb, match, "match", true));
+        print(os, "{}", emit_node(bb, match, "match", true));
 
     } else if (auto proxy = def->isa<Proxy>()) {
         auto type_val = emit_bb(bb, proxy->type());
@@ -670,7 +670,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         if (proxy->sym().empty()) {
             tab.lnprint(os, "(proxy");
-            tab.print(os, "{}", type_val);
+            print(os, "{}", type_val);
             // pass_val and tag_val are not emitted via emit_bb and therefore have no
             // leading newlines and indentation levels so we add those here
             ++tab;
@@ -678,20 +678,20 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             tab.lnprint(os, "{}", tag_val);
             --tab;
             for (auto op_val : op_vals)
-                tab.print(os, "{}", op_val);
+                print(os, "{}", op_val);
             print(os, ")");
         } else {
             bb.assign(tab, slotted(), id(proxy), [&](auto& os) {
                 ++tab;
                 tab.lnprint(os, "(proxy");
                 ++tab;
-                tab.print(os, "{}", type_val);
+                print(os, "{}", type_val);
                 ++tab;
                 tab.lnprint(os, "{}", pass_val);
                 tab.lnprint(os, "{}", tag_val);
                 --tab;
                 for (auto op_val : op_vals)
-                    tab.print(os, "{}", indent(tab.indent(), op_val));
+                    print(os, "{}", indent(tab.indent(), op_val));
                 --tab;
                 print(os, ")");
                 --tab;
