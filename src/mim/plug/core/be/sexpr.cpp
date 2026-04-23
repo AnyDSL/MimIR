@@ -282,13 +282,22 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     for (auto& term : bb.tail())
         print(func_impls_, "{}", indent(tab.indent(), term.str()));
 
+    // Closes the lamdef node containing filter and body which is only emitted for slotted in emit_head
+    if (slotted()) {
+        --tab;
+        print(func_impls_, ")");
+    }
+
     std::string closing_parens(unclosed_bindings, ')');
     print(func_impls_, "{}", closing_parens);
     --tab;
 
+    // Closes the let node which is emitted for lambdas that are let-bound via emit_head(... as_binding=true)
     if (as_binding) {
         --tab;
         print(func_impls_, ")");
+        // Since let-nodes in slotted are defined as (let <def> <name> <expr>) - "let definition equal name in
+        // expression" and we emit <def> above for let-bound lambdas(as_binding), we still have to emit <name> here
         if (slotted()) {
             ++tab;
             tab.lnprint(func_impls_, "{}", id(lam));
@@ -358,7 +367,13 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
         --tab;
     }
 
-    tab.print(os, "{}", emit_bb(bb, lam->filter()));
+    if (slotted()) {
+        ++tab;
+        tab.lnprint(os, "(lamdef");
+        tab.print(os, "{}", emit_bb(bb, lam->filter()));
+    } else {
+        tab.print(os, "{}", emit_bb(bb, lam->filter()));
+    }
 
     return os.str();
 }
