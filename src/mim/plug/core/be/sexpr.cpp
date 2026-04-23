@@ -224,8 +224,7 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "{}", emit_var(bb, lam->var(), lam->type()->dom()));
     if (slotted()) {
         ++tab;
-        tab.lnprint(func_decls_, "nil");
-        tab.lnprint(func_decls_, "nil");
+        tab.lnprint(func_decls_, "(lamdef nil nil)");
         --tab;
     }
     print(func_decls_, ")\n\n");
