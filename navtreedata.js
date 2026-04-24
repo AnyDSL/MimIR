@@ -104,7 +104,7 @@ var NAVTREEINDEX =
 "classmim_1_1Rewriter.html#a509aa94f5f2daf12f190a684001dd58d",
 "classmim_1_1Setters.html",
 "classmim_1_1Uniq.html",
-"classmim_1_1World.html#a62e56daadad31f6488663f08db547f64",
+"classmim_1_1World.html#a62054f4dbd855e2352dfb17aed10274b",
 "classmim_1_1World.html#ae644ffbc67d772ab717fbe02ba1db250",
 "classmim_1_1ast_1_1DummyDecl.html#ad80f1c182fa7ab49a1a8f92a6ac57859",
 "classmim_1_1ast_1_1LetDecl.html#ac8872f1a83511a2852022ff50f9fcd35",

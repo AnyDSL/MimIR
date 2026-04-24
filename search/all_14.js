@@ -54,7 +54,7 @@ var searchData=
   ['unique_5fname_51',['unique_name',['../classmim_1_1Def.html#ae61aa184493aa3f3bf685758d27f982a',1,'mim::Def']]],
   ['unique_5fqueue_52',['unique_queue',['../classmim_1_1unique__queue.html',1,'mim::unique_queue&lt; Set &gt;'],['../classmim_1_1unique__queue.html#a30076792d01b0b1ce9739c1884ba38b0',1,'mim::unique_queue::unique_queue()=default'],['../classmim_1_1unique__queue.html#a5d058cc9034d541b1b3a13ca9535cc11',1,'mim::unique_queue::unique_queue(Set set)']]],
   ['unique_5fstack_53',['unique_stack',['../classmim_1_1unique__stack.html',1,'mim']]],
-  ['unit_54',['unit',['../classmim_1_1World.html#a3f00ec3db05a9c9ddbb4ab834f7e48e4',1,'mim::World']]],
+  ['unit_54',['unit',['../classmim_1_1World.html#a58eee0cb8640bdf9728631d72e3e1055',1,'mim::World']]],
   ['univ_55',['Univ',['../classmim_1_1Univ.html',1,'mim::Univ'],['../classmim_1_1UMax.html#a098634bb335cad742136e612032ab42fa4808c08a6d513f2e89eec9216d7c76f5',1,'mim::UMax::Univ'],['../namespacemim.html#afb12dbffaaa27bca46f171517d96256da143bb06341e537e7143fb33624517946',1,'mim::Univ']]],
   ['univ_56',['univ',['../classmim_1_1World.html#a5355ae94cd13f800273330d30f38ad8d',1,'mim::World']]],
   ['unsafe_57',['unsafe',['../namespacemim_1_1plug_1_1math.html#a7d11839c924639829f2a269bc0b7db91a64c823fad1d87e0df1ef3cdeb8ac684f',1,'mim::plug::math']]],
