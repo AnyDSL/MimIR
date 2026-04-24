@@ -324,6 +324,8 @@ const Def* TupleExpr::emit_(Emitter& e) const {
 
 const Def* SeqExpr::emit_(Emitter& e) const {
     auto s = arity()->emit_type(e);
+    if (auto lit_s = Lit::isa(s); lit_s && *lit_s == 0) return e.world().unit(true);
+
     if (arity()->dbg().is_anon()) { // immutable
         auto b = body()->emit(e);
         return is_arr() ? e.world().arr(s, b) : e.world().pack(s, b);
