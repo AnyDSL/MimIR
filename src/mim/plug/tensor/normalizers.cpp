@@ -14,6 +14,27 @@
 
 namespace mim::plug::tensor {
 
+// There's no good reason keeping 1s around for get/set indices.
+// So this just skips relevant dimensions in the index and shape, and reduces the rank accordingly.
+std::tuple<u64, const Def*, const Def*> fold_shape_and_index(const Def* shape, const Def* index) {
+    auto& w = shape->world();
+
+    DefVec dims;
+    DefVec index_dims;
+    auto r = shape->num_projs();
+    for (size_t i = 0, e = r; i != e; ++i) {
+        auto dim = shape->proj(r, i);
+        if (auto dim_lit = dim->isa<Lit>())
+            if (dim_lit->get<u64>() == 1) continue;
+
+        dims.push_back(dim);
+        index_dims.push_back(index->proj(r, i));
+    }
+
+    assert(dims.size() == index_dims.size());
+    return std::make_tuple(dims.size(), w.tuple(dims), w.tuple(index_dims));
+}
+
 const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
     auto& w = c->world();
 
@@ -27,6 +48,15 @@ const Def* normalize_get(const Def*, const Def* c, const Def* arg) {
     w.DLOG("    T = {} : {}", T, T->type());
     w.DLOG("    r = {} : {}", r, r->type());
     w.DLOG("    s = {} : {}", s, s->type());
+
+    if (r->isa<Lit>()) {
+        auto [new_r, new_s, new_index] = fold_shape_and_index(s, index);
+        w.DLOG("    new_index = {} : {}", new_index, new_index->type());
+        w.DLOG("    new_s = {} : {}", new_s, new_s->type());
+        w.DLOG("    new_r = {} : {}", w.lit_nat(new_r), w.lit_nat(new_r)->type());
+        if (new_r == 0) return arr;
+        if (new_s != s || new_index != index) return op_get(T, w.lit_nat(new_r), new_s, arr, new_index);
+    }
 
     if (Axm::isa<tensor::set>(arr)) {
         w.DLOG("get after set, try to bypass");
@@ -69,7 +99,16 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
 
     auto callee    = c->as<App>();
     auto [T, r, s] = callee->args<3>();
-    
+
+    if (r->isa<Lit>()) {
+        auto [new_r, new_s, new_index] = fold_shape_and_index(s, index);
+        w.DLOG("    new_index = {} : {}", new_index, new_index->type());
+        w.DLOG("    new_s = {} : {}", new_s, new_s->type());
+        w.DLOG("    new_r = {} : {}", w.lit_nat(new_r), w.lit_nat(new_r)->type());
+        if (new_r == 0) return x;
+        if (new_s != s || new_index != index) return op_set(T, w.lit_nat(new_r), new_s, arr, new_index, x);
+    }
+
     if (Axm::isa<tensor::get>(x)) {
         w.DLOG("set after get, try to bypass");
         auto get                      = x->as<App>();
@@ -81,9 +120,9 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
     }
     if (Axm::isa<tensor::set>(x)) {
         w.DLOG("set after set, try to bypass");
-        auto inner_set            = x->as<App>();
+        auto inner_set                         = x->as<App>();
         auto [inner_arr, inner_index, inner_x] = inner_set->args<3>();
-        auto [i_T, i_r, i_s]          = inner_set->callee()->as<App>()->args<3>();
+        auto [i_T, i_r, i_s]                   = inner_set->callee()->as<App>()->args<3>();
 
         w.DLOG("    inner_arr = {} : {}", inner_arr, inner_arr->type());
         w.DLOG("    inner_index = {} : {}", inner_index, inner_index->type());
@@ -97,10 +136,8 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
         auto new_index = w.call<tuple::cat>(DefVec{index, inner_index});
 
         return op_set(i_T, new_r, new_s, arr, new_index, inner_x);
-
     }
     w.DLOG("no normalization applicable");
-
     return nullptr;
 }
 
