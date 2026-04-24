@@ -118,6 +118,7 @@ const Def* normalize_set(const Def*, const Def* c, const Def* arg) {
             return inner_arr;
         }
     }
+
     if (Axm::isa<tensor::set>(x)) {
         w.DLOG("set after set, try to bypass");
         auto inner_set                         = x->as<App>();
@@ -154,47 +155,13 @@ const Def* normalize_broadcast(const Def*, const Def* c, const Def* arg) {
     w.DLOG("    r = {} : {}", r, r->type());
     w.DLOG("    s_in = {} : {}", s_in, s_in->type());
 
+    if (s_in == s_out) return input;
+
     auto r_lit = r->isa<Lit>();
     if (!r_lit) return nullptr;
-    auto r_nat     = r_lit->get<u64>();
-    auto new_r_nat = r_nat - 1;
-
-    if (new_r_nat == 0) {
-        if (s_in == s_out) return input;
-        auto s_in_lit = s_in->isa<Lit>();
-        if (!s_in_lit) return nullptr;
-        auto s_in_nat = s_in_lit->get<u64>();
-        assert(s_in_nat == 1 && "input dimensions must be 1 or equal to the output dimension");
-        return w.pack(s_out, input);
-    }
-
-    auto s_in_0   = s_in->proj(r_nat, 0);
-    auto s_in_lit = s_in_0->isa<Lit>();
-    if (!s_in_lit) return nullptr;
-    auto s_in_nat = s_in_lit->get<u64>();
-
-    auto s_out_0   = s_out->proj(r_nat, 0);
-    auto s_out_lit = s_out_0->isa<Lit>();
-    if (!s_out_lit) return nullptr;
-    auto s_out_nat = s_out_lit->get<u64>();
-
-    auto new_r         = w.lit_nat(new_r_nat);
-    auto new_s_in_vec  = DefVec(new_r_nat, [&](size_t i) { return s_in->proj(r_nat, i + 1); });
-    auto new_s_in      = w.tuple(new_s_in_vec);
-    auto new_s_out_vec = DefVec(new_r_nat, [&](size_t i) { return s_out->proj(r_nat, i + 1); });
-    auto new_s_out     = w.tuple(new_s_out_vec);
-
-    auto bc = w.annex<tensor::broadcast>();
-    bc      = w.app(bc, {T, new_r});
-    if (s_in_0 == s_out_0) {
-        auto out_vec = DefVec(s_out_nat, [&](size_t i) { return w.app(bc, {new_s_in, new_s_out, input->proj(i)}); });
-        return w.tuple(out_vec);
-    }
-    assert(s_in_nat == 1 && "input dimensions must be 1 or equal to the output dimension");
-    if (s_in_nat == 1) {
-        auto out = w.app(bc, {new_s_in, new_s_out, input});
-        return w.pack(s_out_0, out);
-    }
+    auto r_nat = r_lit->get<u64>();
+    if(r_nat == 0) return input;
+    
     return nullptr;
 }
 

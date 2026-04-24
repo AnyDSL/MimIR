@@ -14,6 +14,7 @@ private:
 
     const Def* lower_get(const App*);
     const Def* lower_set(const App*);
+    const Def* lower_broadcast(const App*);
 };
 
 } // namespace mim::plug::tensor
