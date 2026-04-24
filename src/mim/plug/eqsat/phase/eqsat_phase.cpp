@@ -5,7 +5,12 @@
 namespace mim::plug::eqsat {
 
 void EqsatPhase::start() {
-    bool SLOTTED = false;
+    // TODO: Do we get this condition from a compiler flag or
+    //       should we extract it from a config function?
+    // - if we add a compiler flag --slotted, then we should
+    //   also use this to output slotted-sexprs by combining
+    //   '--output-sexpr --slotted' and get rid of '--output-sexpr-slotted'
+    bool SLOTTED = true;
 
     if (SLOTTED) {
         SlottedRewrite slotted_rewrite(world(), "slotted_rewrite");
