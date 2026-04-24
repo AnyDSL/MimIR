@@ -41,8 +41,11 @@ struct BB {
             if (slotted) {
                 tab.lnprint(os, "(let");
                 ++tab;
-                tab.lnprint(os, s, std::forward<Args&&>(args)...);
                 tab.lnprint(os, "{}", name);
+                tab.lnprint(os, "(scope");
+                ++tab;
+                tab.lnprint(os, s, std::forward<Args&&>(args)...);
+                --tab;
                 --tab;
             } else {
                 tab.lnprint(os, "(let");
@@ -62,16 +65,17 @@ struct BB {
             auto& os = body().emplace_back();
             if (slotted) {
                 tab.lnprint(os, "(let");
-                print_term(os);
                 ++tab;
                 tab.lnprint(os, "{}", name);
+                tab.lnprint(os, "(scope");
+                print_term(tab, os);
                 --tab;
             } else {
                 tab.lnprint(os, "(let");
                 ++tab;
                 tab.lnprint(os, "{}", name);
                 --tab;
-                print_term(os);
+                print_term(tab, os);
             }
         }
         return name;
@@ -224,7 +228,7 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "{}", emit_var(bb, lam->var(), lam->type()->dom()));
     if (slotted()) {
         ++tab;
-        tab.lnprint(func_decls_, "(lamdef nil nil)");
+        tab.lnprint(func_decls_, "(scope nil nil)");
         --tab;
     }
     print(func_decls_, ")\n\n");
@@ -282,7 +286,7 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     for (auto& term : bb.tail())
         print(func_impls_, "{}", indent(tab.indent(), term.str()));
 
-    // Closes the lamdef node containing filter and body which is only emitted for slotted in emit_head
+    // Closes the scope-node containing the lambdas' filter and body which gets emitted for slotted in emit_head
     if (slotted()) {
         --tab;
         print(func_impls_, ")");
@@ -296,12 +300,11 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     if (as_binding) {
         --tab;
         print(func_impls_, ")");
-        // Since let-nodes in slotted are defined as (let <def> <name> <expr>) - "let definition equal name in
-        // expression" and we emit <def> above for let-bound lambdas(as_binding), we still have to emit <name> here
+        // Since let-nodes in slotted are defined as (let <name> (scope <def> <expr>))
+        // we have to unindent and close the additional 'scope' node printed in emit_head.
         if (slotted()) {
-            ++tab;
-            tab.lnprint(func_impls_, "{}", id(lam));
             --tab;
+            print(func_impls_, ")");
         }
     } else {
         print(func_impls_, ")\n\n");
@@ -347,7 +350,11 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
     if (as_binding) {
         tab.lnprint(os, "(let");
         ++tab;
-        if (!slotted()) tab.lnprint(os, "{}", id(lam));
+        tab.lnprint(os, "{}", id(lam));
+        if (slotted()) {
+            tab.lnprint(os, "(scope");
+            ++tab;
+        }
         tab.lnprint(os, "({} {} {}", lam_kind, ext, lam->unique_name());
     } else
         print(os, "({} {} {}", lam_kind, ext, lam->sym());
@@ -368,7 +375,7 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
 
     if (slotted()) {
         ++tab;
-        tab.lnprint(os, "(lamdef");
+        tab.lnprint(os, "(scope");
         print(os, "{}", emit_bb(bb, lam->filter()));
     } else {
         print(os, "{}", emit_bb(bb, lam->filter()));
@@ -556,7 +563,7 @@ std::string Emitter::emit_node(BB& bb, const Def* def, std::string node_name, bo
         print(os, ")");
 
     } else {
-        bb.assign(tab, slotted(), id(def), [&](auto& os) {
+        bb.assign(tab, slotted(), id(def), [&](Tab tab, auto& os) {
             ++tab;
             tab.lnprint(os, "({}", node_name);
 
@@ -708,7 +715,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 print(os, "{}", op_val);
             print(os, ")");
         } else {
-            bb.assign(tab, slotted(), id(proxy), [&](auto& os) {
+            bb.assign(tab, slotted(), id(proxy), [&](Tab tab, auto& os) {
                 ++tab;
                 tab.lnprint(os, "(proxy");
                 ++tab;
