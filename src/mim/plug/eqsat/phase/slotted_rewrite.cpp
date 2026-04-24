@@ -16,8 +16,9 @@ void SlottedRewrite::start() {
     // We are assuming that the core plugin and its backends have been loaded at this point
     // because the 'eqsat' plugin declared it as a dependency via 'plugin core;'
     std::ostringstream sexpr;
-    driver().backend("sexpr-slotted")(old_world(), sexpr);
+    driver().backend("sexpr")(old_world(), sexpr);
 
+    // TODO: update external/mimir-eqsat to get latest versions of pretty_slotted and equality_saturate_slotted
     if (DEBUG) std::cout << pretty_slotted(sexpr.str(), 80).c_str() << "\n";
 
     auto rewrites = equality_saturate_slotted(sexpr.str(), rulesets, cost_fn);
