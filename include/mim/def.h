@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include <optional>
 #include <span>
 
@@ -427,18 +428,25 @@ public:
     /// @see @ref proj
     ///@{
     MIM_PROJ(var, )
-    /// Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
-    const Def* var();
-    /// Only returns not `nullptr`, if Var of this mutable has ever been created.
-    const Var* has_var() { return var_; }
+    const Def* var();      ///< Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
+    const Def* var_type(); ///< If `this` is a binder, compute the type of its Var%iable.
+
+    const Var* has_var() { return var_; } ///< Only returns not `nullptr`, if Var of this mutable has ever been created.
     /// As above if `this` is a *mutable*.
     const Var* has_var() const {
         if (auto mut = isa_mut()) return mut->has_var();
         return nullptr;
     }
 
-    /// If `this` is a binder, compute the type of its Var%iable.
-    const Def* var_type();
+    /// Is `this` a mutable that introduces a Var?
+    /// @returns `{nullptr, nullptr}` otherwise.
+    template<class D = Def>
+    std::pair<D*, const Var*> isa_binder() const {
+        if (auto mut = isa_mut<D>()) {
+            if (auto var = mut->has_var()) return {mut, var};
+        }
+        return {nullptr, nullptr};
+    }
     ///@}
 
     /// @name Free Vars and Muts
@@ -460,6 +468,10 @@ public:
     Muts users() { return muts_; } ///< Set of mutables where this mutable is locally referenced.
     bool is_open() const;          ///< Has free_vars()?
     bool is_closed() const;        ///< Has no free_vars()?
+
+    /// Transitively walks up free_vars() till the outermoust binder has been found.
+    /// @returns `nullptr`, if is_closed() and not a mutable.
+    Def* outermost_binder() const;
     ///@}
 
     /// @name external
@@ -592,7 +604,7 @@ public:
     /// @see https://stackoverflow.com/questions/31889048/what-does-the-ghc-source-mean-by-zonk
     const Def* zonk() const;
 
-    /// If *mutable, zonk%s all ops and tries to immutabilize it; otherwise just zonk.
+    /// If *mutable*, zonk()%s all ops and tries to immutabilize it; otherwise just zonk.
     const Def* zonk_mut() const;
     ///@}
 
@@ -600,6 +612,8 @@ public:
     static DefVec zonk(Defs defs);
 
     /// @name dump
+    /// @note While this output uses Mim syntax, it does usually **not** produce programs that can be read back.
+    /// It uses an unscheduled visiting algorithm, and is only meant for debugging purposes.
     ///@{
     void dump() const;
     void dump(int max) const;
@@ -616,18 +630,21 @@ public:
         E, ///< Equal
         U, ///< Unknown
     };
+    /// @name Syntactic Comparison
+    ///@{
     [[nodiscard]] static Cmp cmp(const Def* a, const Def* b);
     [[nodiscard]] static bool less(const Def* a, const Def* b);
     [[nodiscard]] static bool greater(const Def* a, const Def* b);
+    ///@}
 
     /// @name dot
-    /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
-    /// If @p types is `true`, Def::type() dependencies will be followed as well.
+    /// Streams dot to @p os while obeying maximum recursion depth of @p max.
+    /// if @p types is `true`, Def::type() dependencies will be followed as well.
     ///@{
-    void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
+    void dot(std::ostream& os, int max = std::numeric_limits<int>::max(), bool types = false) const;
     /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
-    void dot(const char* file = nullptr, uint32_t max = 0xFFFFFF, bool types = false) const;
-    void dot(const std::string& file, uint32_t max = 0xFFFFFF, bool types = false) const {
+    void dot(const char* file = nullptr, int max = std::numeric_limits<int>::max(), bool types = false) const;
+    void dot(const std::string& file, int max = std::numeric_limits<int>::max(), bool types = false) const {
         return dot(file.c_str(), max, types);
     }
     ///@}

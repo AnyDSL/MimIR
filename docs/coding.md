@@ -55,6 +55,73 @@ Mim emits LLVM IR, but it does _not_ link against LLVM.
 So you can simply hand the emitted `*.ll` file to your system's LLVM toolchain.
 Strictly speaking, LLVM is not required unless you want to continue from emitted LLVM IR.
 
+## Testing {#testing}
+
+### lit Tests
+
+Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) test suite with:
+
+```sh
+cmake --build build --target lit
+```
+
+You can also invoke the `lit` tests manually and filter for a specific test:
+
+```sh
+cd lit
+./lit ../build/lit -a --filter foo.mim
+```
+
+If your build directory is actually called `build`, you can also use `probe.sh`:
+
+```sh
+cd lit
+../scripts/probe.sh foo.mim
+```
+
+@note To generate a one-line reproducer for the current checkout and a specific `lit` failure, use:
+```sh
+./scripts/make_lit_error.sh foo.mim
+```
+
+### GoogleTest
+
+Run the [GoogleTest](https://google.github.io/googletest/) unit tests with:
+
+```sh
+ctest --test-dir build --output-on-failure
+```
+
+You can additionally enable [Valgrind](https://valgrind.org/) via:
+
+```sh
+ctest --test-dir build -T memcheck --output-on-failure
+```
+
+During debugging, you will usually want to run only a specific test case.
+You can [filter](https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests) tests like this:
+
+```sh
+build/bin/mim-gtest --gtest_filter="*Loc*"
+```
+
+This command lists all available tests:
+
+```sh
+build/bin/mim-gtest --gtest_list_tests
+```
+
+It can also be useful to turn assertion failures into debugger breakpoints:
+
+```sh
+build/bin/mim-gtest --gtest_break_on_failure
+```
+
+@note To generate a one-line reproducer for the current checkout and a specific GoogleTest failure, use:
+```sh
+./scripts/make_gtest_error.sh "mim.World.dependent_extract"
+```
+
 ## Coding Style
 
 ### C++ Style
@@ -126,7 +193,6 @@ private:
 } // namespace mim
 ```
 
-
 ### CMake Style
 
 - Use 4 spaces for one indentation level.
@@ -145,13 +211,23 @@ private:
 - Prefer the primary UTF-8 surface syntax over ASCII-only spellings when writing Mim code and tests.
 - Prefer 4 spaces for one indentation level, but aligned layouts may use different spacing when that makes the code clearer.
 - Write callable declarations with parenthesized domain groups, for example `lam foo (x: X) (y: Y): Z = ...`.
+- Prefer group patterns `lam foo (a b c: T)` over `lam foo (a: T, b: T, c: T)`
 - Separate curried domain groups with a space, and write the return type as `): Z`, with no space before `:` and one space after it.
 - Use spaces after commas in lists and groups: `a, b, c`.
 - Write binder ascriptions as `x: X`, but keep literal and bottom ascriptions tight: `23:T`.
 - Use `snake_case` for value-level names such as functions, lambdas, binders, local lets, and pattern-bound values.
 - Use `CamelCase` for type-level names such as types and type constructors.
 
+### Syntax Highlighting
+
+[This](https://github.com/AnyDSL/vim-mim) Vim plugin provides syntax highlighting for Mim files.
+
+There is also a [tree-sitter grammar](https://gitlab.com/amaeble/tree-sitter-mim) for Mim files and a [Helix fork](https://github.com/amaebel/helix) with highlight and injection queries.
+
 ## Debugging
+
+The [Testing](@ref testing) section above already provides some debugging tips.
+This section has more information about this topic.
 
 **See also:**
 
@@ -242,36 +318,6 @@ valgrind --vgdb=yes --vgdb-error=0 build/bin/mim-gtest
 
 and then follow the instructions printed by Valgrind.
 
-## Tests {#tests}
-
-### lit Tests
-
-Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) test suite with:
-
-```sh
-cmake --build build --target lit
-```
-
-You can also invoke the `lit` tests manually and filter for a specific test:
-
-```sh
-cd lit
-./lit ../build/lit -a --filter foo.mim
-```
-
-If your build directory is actually called `build`, you can also use `probe.sh`:
-
-```sh
-cd lit
-../scripts/probe.sh foo.mim
-```
-
-To generate a one-line reproducer for the current checkout and a specific `lit` failure, use:
-
-```sh
-./scripts/make_lit_error.sh foo.mim
-```
-
 ### Triggering Breakpoints
 
 You can tell `mim` to trigger a breakpoint when certain events happen:
@@ -283,48 +329,3 @@ mim test.mim --break-on-alpha   # Break if a check for alpha-equivalence fails.
 ```
 
 See the [Command-Line Reference](@ref cli) for the full list of flags.
-
-### GoogleTest
-
-Run the [GoogleTest](https://google.github.io/googletest/) unit tests with:
-
-```sh
-ctest --test-dir build --output-on-failure
-```
-
-You can additionally enable [Valgrind](https://valgrind.org/) via:
-
-```sh
-ctest --test-dir build -T memcheck --output-on-failure
-```
-
-During debugging, you will usually want to run only a specific test case.
-You can [filter](https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests) tests like this:
-
-```sh
-build/bin/mim-gtest --gtest_filter="*Loc*"
-```
-
-This command lists all available tests:
-
-```sh
-build/bin/mim-gtest --gtest_list_tests
-```
-
-It can also be useful to turn assertion failures into debugger breakpoints:
-
-```sh
-build/bin/mim-gtest --gtest_break_on_failure
-```
-
-To generate a one-line reproducer for the current checkout and a specific GoogleTest failure, use:
-
-```sh
-./scripts/make_gtest_error.sh "mim.World.dependent_extract"
-```
-
-## Syntax Highlighting
-
-[This](https://github.com/AnyDSL/vim-mim) Vim plugin provides syntax highlighting for Mim files.
-
-There is also a [tree-sitter grammar](https://gitlab.com/amaeble/tree-sitter-mim) for Mim files and a [Helix fork](https://github.com/amaebel/helix) with highlight and injection queries.
