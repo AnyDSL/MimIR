@@ -129,6 +129,7 @@ private:
     std::ostringstream func_impls_;
 };
 
+// TODO: slotted use of internal, closed lam
 std::string Emitter::id(const Def* def, bool is_var_use, bool omit_prefix) const {
     std::string prefix = slotted() && !omit_prefix ? "$" : "";
     std::string id;
