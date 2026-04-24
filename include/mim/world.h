@@ -394,23 +394,13 @@ public:
     const Sigma* sigma() { return data_.sigma; } ///< The unit type within Type 0.
     ///@}
 
-    /// @name Arr
+    /// @name Arr & Pack
     ///@{
     // clang-format off
-    const Def* unit(bool term) { return term ? (const Def*)tuple() : sigma(); }
-
-    Seq* mut_seq(bool term, const Def* type) { return term ? (Seq*)insert<Pack>(type) : insert<Arr>(type); }
-    const Def* seq(bool term, const Def* arity, const Def* body);
-    const Def* seq(bool term, Defs shape, const Def* body);
-    const Def* seq(bool term, u64 n, const Def* body) { return seq(term, lit_nat(n), body); }
-    const Def* seq(bool term, View<u64> shape, const Def* body) { return seq(term, DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body); }
-    const Def* seq_unsafe(bool term, const Def* body) { return seq(term, top_nat(), body); }
-
     template<level_t level = 0>
     Arr* mut_arr() {
         return mut_arr(type<level>());
     }
-
     Arr * mut_arr (const Def* type) { return mut_seq(false, type)->as<Arr >(); }
     Pack* mut_pack(const Def* type) { return mut_seq(true , type)->as<Pack>(); }
     const Def* arr (const Def* arity, const Def* body) { return seq(false, arity, body); }
@@ -427,6 +417,21 @@ public:
     const Def* prod(bool term, Defs ops) { return term ? tuple(ops) : sigma(ops); }
     const Def* prod(bool term) { return term ? (const Def*)tuple() : (const Def*)sigma(); }
     // clang-format on
+    ///@}
+
+    /// @name Seq
+    /// These either build a Pack or an Arr depending on the first argument.
+    /// Oftentimes, the logic for Pack%s and Arr%ays can be quite similar; these methods help factoring such code.
+    ///@{
+    const Def* unit(bool is_pack) { return is_pack ? (const Def*)tuple() : sigma(); }
+    Seq* mut_seq(bool is_pack, const Def* type) { return is_pack ? (Seq*)insert<Pack>(type) : insert<Arr>(type); }
+    const Def* seq(bool is_pack, const Def* arity, const Def* body);
+    const Def* seq(bool is_pack, Defs shape, const Def* body);
+    const Def* seq(bool is_pack, u64 n, const Def* body) { return seq(is_pack, lit_nat(n), body); }
+    const Def* seq(bool is_pack, View<u64> shape, const Def* body) {
+        return seq(is_pack, DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
+    }
+    const Def* seq_unsafe(bool is_pack, const Def* body) { return seq(is_pack, top_nat(), body); }
     ///@}
 
     /// @name Tuple
