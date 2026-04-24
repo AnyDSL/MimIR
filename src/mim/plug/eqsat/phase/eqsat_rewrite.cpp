@@ -31,7 +31,7 @@ void EqsatRewrite::start() {
 }
 
 std::pair<rust::Vec<RuleSet>, CostFn> EqsatRewrite::import_config() {
-    // Internalize eqsat ruleset config lambda (lam with signature [] -> %eqsat.Ruleset)
+    // Internalize eqsat config lambdas (lam with signature [] -> %eqsat.Ruleset / %eqsat.CostFun)
     DefVec lams;
     for (auto def : old_world().externals().mutate()) {
         if (auto lam = def->isa<Lam>()) {
