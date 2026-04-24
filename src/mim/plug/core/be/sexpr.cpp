@@ -264,14 +264,15 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
 
     ++tab;
     // Keeps count of parentheses opened by let-bindings that need to be closed later on
-    auto unclosed_bindings = 0;
+    size_t unclosed_parens = 0;
     for (auto op : lam->deps()) {
         for (auto mut : op->local_muts())
             if (auto next = nest()[mut]) {
                 if (next->mut()->isa<Lam>() && !done.contains(next->mut())) {
                     auto next_lam = next->mut()->as_mut<Lam>();
                     emit_lam(next_lam, done);
-                    unclosed_bindings++;
+                    // A lambda-binding in slotted opens two parentheses, one for the let-node and one for its scope
+                    unclosed_parens += slotted() ? 2 : 1;
                 }
             }
     }
@@ -279,7 +280,7 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
     for (auto& term : bb.body()) {
         auto opened = std::ranges::count(term.str(), '(');
         auto closed = std::ranges::count(term.str(), ')');
-        unclosed_bindings += opened - closed;
+        unclosed_parens += opened - closed;
         print(func_impls_, "{}", indent(tab.indent(), term.str()));
     }
 
@@ -292,7 +293,7 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
         print(func_impls_, ")");
     }
 
-    std::string closing_parens(unclosed_bindings, ')');
+    std::string closing_parens(unclosed_parens, ')');
     print(func_impls_, "{}", closing_parens);
     --tab;
 
@@ -301,11 +302,8 @@ void Emitter::emit_lam(Lam* lam, MutSet& done) {
         --tab;
         print(func_impls_, ")");
         // Since let-nodes in slotted are defined as (let <name> (scope <def> <expr>))
-        // we have to unindent and close the additional 'scope' node printed in emit_head.
-        if (slotted()) {
-            --tab;
-            print(func_impls_, ")");
-        }
+        // we have to unindent the additional 'scope' node printed in emit_head.
+        if (slotted()) --tab;
     } else {
         print(func_impls_, ")\n\n");
     }
