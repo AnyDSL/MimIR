@@ -115,7 +115,7 @@ public:
     std::string emit_bb(BB& bb, const Def* def);
 
 private:
-    std::string id(const Def*, bool is_var_use = false) const;
+    std::string id(const Def*, bool is_var_use = false, bool omit_prefix = false) const;
     std::string indent(size_t tabs, std::string term);
     std::string flatten(std::string term);
 
@@ -129,8 +129,8 @@ private:
     std::ostringstream func_impls_;
 };
 
-std::string Emitter::id(const Def* def, bool is_var_use) const {
-    std::string prefix = slotted() ? "$" : "";
+std::string Emitter::id(const Def* def, bool is_var_use, bool omit_prefix) const {
+    std::string prefix = slotted() && !omit_prefix ? "$" : "";
     std::string id;
 
     // In slotted-egg variable-uses need to be explicitly wrapped in a var node i.e. in λx.x (lam $x (var $x))
@@ -353,9 +353,9 @@ std::string Emitter::emit_head(BB& bb, Lam* lam, bool as_binding) {
             tab.lnprint(os, "(scope");
             ++tab;
         }
-        tab.lnprint(os, "({} {} {}", lam_kind, ext, lam->unique_name());
+        tab.lnprint(os, "({} {} {}", lam_kind, ext, id(lam, false, true));
     } else
-        print(os, "({} {} {}", lam_kind, ext, lam->sym());
+        print(os, "({} {} {}", lam_kind, ext, id(lam, false, true));
 
     print(os, "{}", emit_var(bb, lam->var(), lam->type()->dom()));
 
