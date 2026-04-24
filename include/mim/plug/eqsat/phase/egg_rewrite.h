@@ -9,14 +9,14 @@
 
 namespace mim::plug::eqsat {
 
-class EqsatRewrite : public Phase, public Rewriter {
+class EggRewrite : public Phase, public Rewriter {
 public:
-    EqsatRewrite(World& world, std::string name)
+    EggRewrite(World& world, std::string name)
         : Phase(world, std::move(name))
         , Rewriter(world.inherit()) {
         register_symbols();
     }
-    EqsatRewrite(World& world, flags_t annex)
+    EggRewrite(World& world, flags_t annex)
         : Phase(world, annex)
         , Rewriter(world.inherit()) {
         register_symbols();

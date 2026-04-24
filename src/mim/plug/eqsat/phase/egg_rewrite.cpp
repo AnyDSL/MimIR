@@ -1,16 +1,16 @@
 #include <cstdint>
 
 #include <mim/plug/eqsat/eqsat.h>
-#include <mim/plug/eqsat/phase/eqsat_rewrite.h>
+#include <mim/plug/eqsat/phase/egg_rewrite.h>
 
 #include "mim/def.h"
 #include "mim/driver.h"
 
-const bool DEBUG = false;
+const bool DEBUG = true;
 
 namespace mim::plug::eqsat {
 
-void EqsatRewrite::start() {
+void EggRewrite::start() {
     auto [rulesets, cost_fn] = import_config();
 
     // We are assuming that the core plugin and its backends have been loaded at this point
@@ -30,7 +30,7 @@ void EqsatRewrite::start() {
     swap(old_world(), new_world());
 }
 
-std::pair<rust::Vec<RuleSet>, CostFn> EqsatRewrite::import_config() {
+std::pair<rust::Vec<RuleSet>, CostFn> EggRewrite::import_config() {
     // Internalize eqsat config lambdas (lam with signature [] -> %eqsat.Ruleset / %eqsat.CostFun)
     DefVec lams;
     for (auto def : old_world().externals().mutate()) {
@@ -72,7 +72,7 @@ std::pair<rust::Vec<RuleSet>, CostFn> EqsatRewrite::import_config() {
 // The bodies of lambdas can only be created and then set inside of convert(...)
 // after every Def from the init stage has been created, because they
 // can depend on any declaration, lambda, or let-binding.
-void EqsatRewrite::init(rust::Vec<RewriteResult> rewrites, InitStage stage) {
+void EggRewrite::init(rust::Vec<RewriteResult> rewrites, InitStage stage) {
     for (auto rewrite : rewrites) {
         added_ = {};
         res_   = rewrite.value;
@@ -93,10 +93,10 @@ void EqsatRewrite::init(rust::Vec<RewriteResult> rewrites, InitStage stage) {
 
 // TODO: implement
 // (lam <extern> <name> <domain> <codomain> [<filter> <body>])
-const Def* EqsatRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::init_lam(uint32_t id, MimNode node) { return nullptr; }
 
 // (con <extern> <name> <domain> [<filter> <body>])
-const Def* EqsatRewrite::init_con(uint32_t id, MimNode node) {
+const Def* EggRewrite::init_con(uint32_t id, MimNode node) {
     if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto domain_id      = node.children[2];
     auto domain         = get_node(MimKind::Var, domain_id);
@@ -121,7 +121,7 @@ const Def* EqsatRewrite::init_con(uint32_t id, MimNode node) {
 }
 
 // (let <name> <definition> <expression>)
-const Def* EqsatRewrite::init_let(uint32_t id, MimNode node) {
+const Def* EggRewrite::init_let(uint32_t id, MimNode node) {
     if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     // If the let-binding is for a lambda, this lambda will already have been
     // created, set and registered via init_lam/con and thus we can skip it.
@@ -139,7 +139,7 @@ const Def* EqsatRewrite::init_let(uint32_t id, MimNode node) {
 }
 
 // (axm <name> <type>)
-const Def* EqsatRewrite::init_axm(uint32_t id, MimNode node) {
+const Def* EggRewrite::init_axm(uint32_t id, MimNode node) {
     if (DEBUG) std::cout << "init - current node(" << id << "): " << mim_node_str(node).c_str() << " - ";
     auto name = get_symbol(node.children[0]);
     auto type = convert(node.children[1], true);
@@ -153,7 +153,7 @@ const Def* EqsatRewrite::init_axm(uint32_t id, MimNode node) {
 }
 
 // Converts remaining nodes to Def's in the new world and sets the bodies of the previously created lambdas.
-void EqsatRewrite::convert(rust::Vec<RewriteResult> rewrites) {
+void EggRewrite::convert(rust::Vec<RewriteResult> rewrites) {
     for (auto rewrite : rewrites) {
         added_ = {};
         res_   = rewrite.value;
@@ -162,7 +162,7 @@ void EqsatRewrite::convert(rust::Vec<RewriteResult> rewrites) {
     }
 }
 
-const Def* EqsatRewrite::convert(uint32_t id, bool recurse) {
+const Def* EggRewrite::convert(uint32_t id, bool recurse) {
     auto node = get_node_unsafe(id);
 
     if (recurse)
@@ -209,17 +209,17 @@ const Def* EqsatRewrite::convert(uint32_t id, bool recurse) {
 }
 
 // (let <name> <definition> <expression>)
-const Def* EqsatRewrite::convert_let(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_let(uint32_t id, MimNode node) {
     auto expr = get_def(node.children[2]);
     return expr;
 }
 
 // TODO: implement
 // (lam <extern> <name> <domain> <codomain> [<filter> <body>])
-const Def* EqsatRewrite::convert_lam(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::convert_lam(uint32_t id, MimNode node) { return nullptr; }
 
 // (con <extern> <name> <domain> [<filter> <body>])
-const Def* EqsatRewrite::convert_con(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_con(uint32_t id, MimNode node) {
     auto con = get_def(node.children[1])->as_mut<Lam>();
 
     auto is_extern = get_symbol(node.children[0]);
@@ -237,7 +237,7 @@ const Def* EqsatRewrite::convert_con(uint32_t id, MimNode node) {
 }
 
 // (app <callee> <arg>)
-const Def* EqsatRewrite::convert_app(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_app(uint32_t id, MimNode node) {
     auto callee  = get_def(node.children[0]);
     auto arg     = get_def(node.children[1]);
     auto new_app = new_world().app(callee, arg);
@@ -245,13 +245,13 @@ const Def* EqsatRewrite::convert_app(uint32_t id, MimNode node) {
 }
 
 // (var <name> [<proj1> <proj2> ...] <type>)
-const Def* EqsatRewrite::convert_var(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_var(uint32_t id, MimNode node) {
     auto var = get_def(node.children[0]);
     return var;
 }
 
 // (lit <val> <type>)
-const Def* EqsatRewrite::convert_lit(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_lit(uint32_t id, MimNode node) {
     auto lit_def = get_def(node.children[0]);
     if (lit_def) return lit_def;
 
@@ -262,7 +262,7 @@ const Def* EqsatRewrite::convert_lit(uint32_t id, MimNode node) {
 }
 
 // (pack <arity> <body>)
-const Def* EqsatRewrite::convert_pack(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_pack(uint32_t id, MimNode node) {
     auto arity    = get_def(node.children[0]);
     auto body     = get_def(node.children[1]);
     auto new_pack = new_world().pack(arity, body);
@@ -270,7 +270,7 @@ const Def* EqsatRewrite::convert_pack(uint32_t id, MimNode node) {
 }
 
 // (tuple <node1> <node2> ...)
-const Def* EqsatRewrite::convert_tuple(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_tuple(uint32_t id, MimNode node) {
     DefVec ops;
     for (auto child : node.children) {
         auto op = get_def(child);
@@ -281,7 +281,7 @@ const Def* EqsatRewrite::convert_tuple(uint32_t id, MimNode node) {
 }
 
 // (extract <tuple> <index>)
-const Def* EqsatRewrite::convert_extract(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_extract(uint32_t id, MimNode node) {
     auto tuple       = get_def(node.children[0]);
     auto index       = get_def(node.children[1]);
     auto new_extract = new_world().extract(tuple, index);
@@ -289,7 +289,7 @@ const Def* EqsatRewrite::convert_extract(uint32_t id, MimNode node) {
 }
 
 // (ins <tuple> <index> <value>)
-const Def* EqsatRewrite::convert_insert(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_insert(uint32_t id, MimNode node) {
     auto tuple      = get_def(node.children[0]);
     auto index      = get_def(node.children[1]);
     auto value      = get_def(node.children[2]);
@@ -298,7 +298,7 @@ const Def* EqsatRewrite::convert_insert(uint32_t id, MimNode node) {
 }
 
 // (inj <type> <value>)
-const Def* EqsatRewrite::convert_inj(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_inj(uint32_t id, MimNode node) {
     auto type    = get_def(node.children[0]);
     auto value   = get_def(node.children[1]);
     auto new_inj = new_world().inj(type, value);
@@ -306,7 +306,7 @@ const Def* EqsatRewrite::convert_inj(uint32_t id, MimNode node) {
 }
 
 // (merge <type> <value1> <value2> ...)
-const Def* EqsatRewrite::convert_merge(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_merge(uint32_t id, MimNode node) {
     auto type = get_def(node.children[0]);
     DefVec values;
     for (auto child : node.children | std::views::drop(1)) {
@@ -318,7 +318,7 @@ const Def* EqsatRewrite::convert_merge(uint32_t id, MimNode node) {
 }
 
 // (match <scrutinee> <arm1> <arm2> ...)
-const Def* EqsatRewrite::convert_match(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_match(uint32_t id, MimNode node) {
     auto scrutinee = get_def(node.children[0]);
     DefVec ops     = {scrutinee};
     for (auto child : node.children | std::views::drop(1)) {
@@ -330,7 +330,7 @@ const Def* EqsatRewrite::convert_match(uint32_t id, MimNode node) {
 }
 
 // (proxy <type> <pass> <tag> <op1> <op2> ...)
-const Def* EqsatRewrite::convert_proxy(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_proxy(uint32_t id, MimNode node) {
     auto type = get_def(node.children[0]);
     auto pass = get_num(node.children[1]);
     auto tag  = get_num(node.children[2]);
@@ -344,7 +344,7 @@ const Def* EqsatRewrite::convert_proxy(uint32_t id, MimNode node) {
 }
 
 // (join <type1> <type2> ...)
-const Def* EqsatRewrite::convert_join(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_join(uint32_t id, MimNode node) {
     DefVec types;
     for (auto child : node.children) {
         auto type = get_def(child);
@@ -358,7 +358,7 @@ const Def* EqsatRewrite::convert_join(uint32_t id, MimNode node) {
 }
 
 // (meet <type1> <type2> ...)
-const Def* EqsatRewrite::convert_meet(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_meet(uint32_t id, MimNode node) {
     DefVec types;
     for (auto child : node.children) {
         auto type = get_def(child);
@@ -372,21 +372,21 @@ const Def* EqsatRewrite::convert_meet(uint32_t id, MimNode node) {
 }
 
 // (bot <type>)
-const Def* EqsatRewrite::convert_bot(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_bot(uint32_t id, MimNode node) {
     auto type    = get_def(node.children[0]);
     auto new_bot = new_world().bot(type);
     return new_bot;
 }
 
 // (top <type>)
-const Def* EqsatRewrite::convert_top(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_top(uint32_t id, MimNode node) {
     auto type    = get_def(node.children[0]);
     auto new_top = new_world().top(type);
     return new_top;
 }
 
 // (arr <arity> <body>)
-const Def* EqsatRewrite::convert_arr(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_arr(uint32_t id, MimNode node) {
     auto arity   = get_def(node.children[0]);
     auto body    = get_def(node.children[1]);
     auto new_arr = new_world().arr(arity, body);
@@ -396,7 +396,7 @@ const Def* EqsatRewrite::convert_arr(uint32_t id, MimNode node) {
 // (sigma (var <name1> <type1>) (var <name2> <type2>) ...)
 //  or
 // (sigma <type1> <type2> ...)
-const Def* EqsatRewrite::convert_sigma(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_sigma(uint32_t id, MimNode node) {
     DefVec types;
     for (auto child : node.children) {
         auto type = get_def(child);
@@ -408,14 +408,14 @@ const Def* EqsatRewrite::convert_sigma(uint32_t id, MimNode node) {
 }
 
 // (cn <domain>)
-const Def* EqsatRewrite::convert_cn(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_cn(uint32_t id, MimNode node) {
     auto domain = get_def(node.children[0]);
     auto new_cn = new_world().cn(domain);
     return new_cn;
 }
 
 // (pi <domain> <codomain>)
-const Def* EqsatRewrite::convert_pi(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_pi(uint32_t id, MimNode node) {
     auto domain   = get_def(node.children[0]);
     auto codomain = get_def(node.children[1]);
     auto new_pi   = new_world().pi(domain, codomain);
@@ -423,31 +423,31 @@ const Def* EqsatRewrite::convert_pi(uint32_t id, MimNode node) {
 }
 
 // (idx <size>)
-const Def* EqsatRewrite::convert_idx(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_idx(uint32_t id, MimNode node) {
     auto size    = get_def(node.children[0]);
     auto new_idx = new_world().type_idx(size);
     return new_idx;
 }
 
 // (hole <type>)
-const Def* EqsatRewrite::convert_hole(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_hole(uint32_t id, MimNode node) {
     auto type_    = get_def(node.children[0]);
     auto new_hole = new_world().mut_hole(type_);
     return new_hole;
 }
 
 // (type <level>)
-const Def* EqsatRewrite::convert_type(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_type(uint32_t id, MimNode node) {
     auto level    = get_def(node.children[0]);
     auto new_type = new_world().type(level);
     return new_type;
 }
 
 // <i64>
-const Def* EqsatRewrite::convert_num(uint32_t id, MimNode node) { return nullptr; }
+const Def* EggRewrite::convert_num(uint32_t id, MimNode node) { return nullptr; }
 
 // <string>
-const Def* EqsatRewrite::convert_symbol(uint32_t id, MimNode node) {
+const Def* EggRewrite::convert_symbol(uint32_t id, MimNode node) {
     auto def = get_def(id);
     return def;
 }
