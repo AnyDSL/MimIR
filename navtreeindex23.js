@@ -1,5 +1,9 @@
 var NAVTREEINDEX23 =
 {
+"namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55":[2,0,2,1,8,11],
+"namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55a8ff953dd97c4405234a04291dee39e0b":[2,0,2,1,8,11,1],
+"namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55ad57c24f3fe52d16e7169b912dd647f0d":[2,0,2,1,8,11,0],
+"namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55ad7d18cfb3a0d8293e2f5d94ea30e04d2":[2,0,2,1,8,11,2],
 "namespacemim_1_1plug_1_1regex.html#aceec5ccd650757e2d47331a58afeaed1":[2,0,2,1,8,26],
 "namespacemim_1_1plug_1_1regex.html#ad065605ee526d9128e4bc7f4ef505fc9":[2,0,2,1,8,25],
 "namespacemim_1_1plug_1_1regex.html#adf2180c7f13b0b63b87d77fdb41f2e92":[2,0,2,1,8,17],
@@ -245,9 +249,5 @@ var NAVTREEINDEX23 =
 "sexpr_8h_source.html":[5,0,3,1,4,4,0,1],
 "span_8h.html":[5,0,3,1,5,7],
 "span_8h_source.html":[5,0,3,1,5,7],
-"ssa_8cpp.html":[5,0,4,1,4,10,0,2],
-"ssa_8cpp_source.html":[5,0,4,1,4,10,0,2],
-"ssa_8h.html":[5,0,3,1,4,10,0,2],
-"ssa_8h_source.html":[5,0,3,1,4,10,0,2],
-"stream_8cpp.html":[5,0,4,1,0,5]
+"ssa_8cpp.html":[5,0,4,1,4,10,0,2]
 };

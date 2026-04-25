@@ -85,7 +85,7 @@ var sectionId = 'dynsection-0';
 <!-- Node50 -->
 <g id="Node000050" class="node">
 <title>Node50</title>
-<g id="a_Node000050"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
+<g id="a_Node000050"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="Unlike a Pass, a Phase performs one self&#45;contained task and does not interleave with other phases.">
 <polygon fill="white" stroke="#666666" points="367,-263 293,-263 293,-244 367,-244 367,-263"/>
 <text text-anchor="middle" x="330" y="-251" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
 </a>
@@ -1297,7 +1297,7 @@ var sectionId = 'dynsection-0';
 <!-- Node60 -->
 <g id="Node000060" class="node">
 <title>Node60</title>
-<g id="a_Node000060"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="This Phase will recursively Rewriter::rewrite.">
+<g id="a_Node000060"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="Traverses the current World using Rewriter infrastructure while staying in the same world.">
 <polygon fill="white" stroke="#666666" points="535,-56 449,-56 449,-37 535,-37 535,-56"/>
 <text text-anchor="middle" x="492" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Analysis</text>
 </a>
@@ -1351,7 +1351,7 @@ var sectionId = 'dynsection-0';
 <!-- Node63 -->
 <g id="Node000063" class="node">
 <title>Node63</title>
-<g id="a_Node000063"><a xlink:href="classmim_1_1PhaseMan.html" target="_top" xlink:title="Organizes several Phases in a a pipeline.">
+<g id="a_Node000063"><a xlink:href="classmim_1_1PhaseMan.html" target="_top" xlink:title="Organizes several Phases into a pipeline.">
 <polygon fill="white" stroke="#666666" points="539.5,-396 444.5,-396 444.5,-377 539.5,-377 539.5,-396"/>
 <text text-anchor="middle" x="492" y="-384" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PhaseMan</text>
 </a>
@@ -1369,7 +1369,7 @@ var sectionId = 'dynsection-0';
 <!-- Node64 -->
 <g id="Node000064" class="node">
 <title>Node64</title>
-<g id="a_Node000064"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">
+<g id="a_Node000064"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rebuilds old_world() into new_world() and then swaps them.">
 <polygon fill="white" stroke="#666666" points="537.5,-359 446.5,-359 446.5,-340 537.5,-340 537.5,-359"/>
 <text text-anchor="middle" x="492" y="-347" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
 </a>

@@ -1,8 +1,8 @@
 <map id="mim::Rewriter" name="mim::Rewriter">
 <area shape="rect" id="Node000001" title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map." alt="" coords="5,303,120,328"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1Analysis.html" title="This Phase will recursively Rewriter::rewrite." alt="" coords="179,228,293,253"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1Analysis.html" title="Traverses the current World using Rewriter infrastructure while staying in the same world." alt="" coords="179,228,293,253"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,294,167,262,196,251,198,256,169,267,102,299"/>
-<area shape="rect" id="Node000003" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="175,277,297,303"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1RWPhase.html" title="Rebuilds old_world() into new_world() and then swaps them." alt="" coords="175,277,297,303"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="133,302,174,296,175,302,134,308"/>
 <area shape="rect" id="Node000016" href="$classmim_1_1VarRewriter.html" title="Extends Rewriter for variable substitution." alt="" coords="168,327,304,352"/>
 <area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="134,323,168,327,167,333,133,328"/>

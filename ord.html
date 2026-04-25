@@ -115,57 +115,57 @@ $(function(){initNavTree('ord.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md268">Dependencies </a>
+    <a href="#autotoc_md269">Dependencies </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md269">Types </a>
+    <a href="#autotoc_md270">Types </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md270">%ord.Key </a>
+        <a href="#autotoc_md271">%ord.Key </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md271">%ord.Set / %ord.Map </a>
+        <a href="#autotoc_md272">%ord.Set / %ord.Map </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md272">Constructors </a>
+    <a href="#autotoc_md273">Constructors </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md273">%ord.init </a>
+        <a href="#autotoc_md274">%ord.init </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md274">%ord.create </a>
+        <a href="#autotoc_md275">%ord.create </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md275">Capacity </a>
+    <a href="#autotoc_md276">Capacity </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md276">%ord.size </a>
+        <a href="#autotoc_md277">%ord.size </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md277">%ord.is_empty </a>
+        <a href="#autotoc_md278">%ord.is_empty </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md278">Lookup </a>
+    <a href="#autotoc_md279">Lookup </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md279">%ord.get </a>
+        <a href="#autotoc_md280">%ord.get </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md280">%ord.contains </a>
+        <a href="#autotoc_md281">%ord.contains </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md281">Modifiers </a>
+    <a href="#autotoc_md282">Modifiers </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md282">%ord.insert </a>
+        <a href="#autotoc_md283">%ord.insert </a>
       </li>
     </ul>
   </li>
@@ -174,17 +174,17 @@ $(function(){initNavTree('ord.html','',''); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2ord"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1ord.html" title="The ord Plugin">mim::plug::ord</a></dd></dl>
 <p>Ordered Set and Map. </p><dl class="section warning"><dt>Warning</dt><dd>This is still WIP!</dd></dl>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md268"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md269"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">plugin core;</div>
 <div class="line">plugin option;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md269"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md270"></a>
 Types</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md270"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md271"></a>
 %ord.Key</h2>
 <p>This is existential type specifies a type and a less-than function.</p>
 <div class="fragment"><div class="line">let %ord.Key = [T: *, lt: [T, T] → Bool];</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md271"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md272"></a>
 %ord.Set / %ord.Map</h2>
 <p>Type constructors for set / map.</p><ul>
 <li>First argument must be of type <span class="tt">%ord.Key</span>.</li>
@@ -192,44 +192,44 @@ Types</h1>
 </ul>
 <div class="fragment"><div class="line">axm %ord.Set: %ord.Key     → *;</div>
 <div class="line">axm %ord.Map: %ord.Key → * → *;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md272"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md273"></a>
 Constructors</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md273"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md274"></a>
 %ord.init</h2>
 <p>Create set / map from a list of values / key-value-pairs.</p>
 <div class="fragment"><div class="line">axm %ord.init(set): [K: %ord.Key] →          {n: Nat} → «n;  K#T    » → %ord.Set K  , normalize_init;</div>
 <div class="line">axm %ord.init(map): [K: %ord.Key] → {V: *} → {n: Nat} → «n; [K#T, V]» → %ord.Map K V, normalize_init;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md274"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md275"></a>
 %ord.create</h2>
 <p>Create empty set / map.</p>
 <div class="fragment"><div class="line">lam %ord.create_set [K: %ord.Key]        : %ord.Set K   = %ord.init.set K    @0 ();</div>
 <div class="line">lam %ord.create_map [K: %ord.Key] (V: *) : %ord.Map K V = %ord.init.map K @V @0 ();</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md275"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md276"></a>
 Capacity</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md276"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md277"></a>
 %ord.size</h2>
 <p>Get number of elements in container.</p>
 <div class="fragment"><div class="line">axm %ord.size(set): {K: %ord.Key} →          %ord.Set K   → Nat, normalize_size;</div>
 <div class="line">axm %ord.size(map): {K: %ord.Key} → {V: *} → %ord.Map K V → Nat, normalize_size;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md277"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md278"></a>
 %ord.is_empty</h2>
 <p>Is container empty?</p>
 <div class="fragment"><div class="line">lam %ord.is_empty_set {K: %ord.Key}        (set: %ord.Set K  ): Bool = %core.ncmp.e (%ord.size.set set, 0);</div>
 <div class="line">lam %ord.is_empty_map {K: %ord.Key} {V: *} (map: %ord.Map K V): Bool = %core.ncmp.e (%ord.size.map map, 0);</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md278"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md279"></a>
 Lookup</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md279"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md280"></a>
 %ord.get</h2>
 <p>Get value from key in map. Return option of V</p>
 <div class="fragment"><div class="line">axm %ord.get: {K: %ord.Key} → {V: *} → [%ord.Map K V, K#T] → %option.Opt V, normalize_get;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md280"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md281"></a>
 %ord.contains</h2>
 <p>Does the container conain the given key?</p>
 <div class="fragment"><div class="line">axm %ord.contains(set): {K: %ord.Key} →          [%ord.Set K  , K#T] → Bool, normalize_contains;</div>
 <div class="line">axm %ord.contains(map): {K: %ord.Key} → {V: *} → [%ord.Map K V, K#T] → Bool, normalize_contains;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md281"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md282"></a>
 Modifiers</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md282"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md283"></a>
 %ord.insert</h2>
 <p>Insert key / key-value-pair into container.</p>
 <div class="fragment"><div class="line">axm %ord.insert(set): {K: %ord.Key} →          [%ord.Set K  ,  K#T    ] → %ord.Set K  , normalize_insert;</div>

@@ -67,7 +67,7 @@ var sectionId = 'dynsection-0';
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="This Phase will recursively Rewriter::rewrite.">
+<g id="a_Node000002"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="Traverses the current World using Rewriter infrastructure while staying in the same world.">
 <polygon fill="white" stroke="#666666" points="216,-292.5 130,-292.5 130,-273.5 216,-273.5 216,-292.5"/>
 <text text-anchor="middle" x="173" y="-280.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Analysis</text>
 </a>
@@ -85,7 +85,7 @@ var sectionId = 'dynsection-0';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">
+<g id="a_Node000003"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rebuilds old_world() into new_world() and then swaps them.">
 <polygon fill="white" stroke="#666666" points="218.5,-255.5 127.5,-255.5 127.5,-236.5 218.5,-236.5 218.5,-255.5"/>
 <text text-anchor="middle" x="173" y="-243.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
 </a>

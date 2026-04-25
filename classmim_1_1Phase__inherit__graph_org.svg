@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
+<g id="a_Node000001"><a xlink:title="Unlike a Pass, a Phase performs one self&#45;contained task and does not interleave with other phases.">
 <polygon fill="#999999" stroke="#666666" points="367,-375 293,-375 293,-356 367,-356 367,-375"/>
 <text text-anchor="middle" x="330" y="-363" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
 </a>
@@ -58,7 +58,7 @@
 <!-- Node13 -->
 <g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_Node000013"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="This Phase will recursively Rewriter::rewrite.">
+<g id="a_Node000013"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="Traverses the current World using Rewriter infrastructure while staying in the same world.">
 <polygon fill="white" stroke="#666666" points="535,-486 449,-486 449,-467 535,-467 535,-486"/>
 <text text-anchor="middle" x="492" y="-474" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Analysis</text>
 </a>
@@ -112,7 +112,7 @@
 <!-- Node16 -->
 <g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_Node000016"><a xlink:href="classmim_1_1PhaseMan.html" target="_top" xlink:title="Organizes several Phases in a a pipeline.">
+<g id="a_Node000016"><a xlink:href="classmim_1_1PhaseMan.html" target="_top" xlink:title="Organizes several Phases into a pipeline.">
 <polygon fill="white" stroke="#666666" points="539.5,-357 444.5,-357 444.5,-338 539.5,-338 539.5,-357"/>
 <text text-anchor="middle" x="492" y="-345" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PhaseMan</text>
 </a>
@@ -130,7 +130,7 @@
 <!-- Node17 -->
 <g id="Node000017" class="node">
 <title>Node17</title>
-<g id="a_Node000017"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">
+<g id="a_Node000017"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rebuilds old_world() into new_world() and then swaps them.">
 <polygon fill="white" stroke="#666666" points="537.5,-293 446.5,-293 446.5,-274 537.5,-274 537.5,-293"/>
 <text text-anchor="middle" x="492" y="-281" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
 </a>

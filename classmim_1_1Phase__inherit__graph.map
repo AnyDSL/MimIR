@@ -1,18 +1,18 @@
 <map id="mim::Phase" name="mim::Phase">
-<area shape="rect" id="Node000001" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="396,269,495,295"/>
+<area shape="rect" id="Node000001" title="Unlike a Pass, a Phase performs one self&#45;contained task and does not interleave with other phases." alt="" coords="396,269,495,295"/>
 <area shape="rect" id="Node000004" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="915,27,1083,67"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="447,255,455,210,472,155,500,101,519,77,542,57,588,32,638,16,689,7,742,3,842,9,926,25,925,30,841,15,742,9,690,12,639,21,590,37,546,62,523,81,504,104,477,157,460,211,452,256"/>
 <area shape="rect" id="Node000011" href="$classmim_1_1ClosedMutPhase.html" title=" " alt="" coords="915,91,1083,131"/>
 <area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="478,260,543,229,641,195,741,166,914,125,915,130,742,171,643,200,545,234,481,265"/>
-<area shape="rect" id="Node000013" href="$classmim_1_1Analysis.html" title="This Phase will recursively Rewriter::rewrite." alt="" coords="604,121,719,147"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1Analysis.html" title="Traverses the current World using Rewriter infrastructure while staying in the same world." alt="" coords="604,121,719,147"/>
 <area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="453,255,477,208,495,184,517,164,559,144,603,134,604,139,561,149,520,168,499,188,482,211,458,258"/>
 <area shape="rect" id="Node000014" href="$classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable, closed mutables in the World." alt="" coords="556,72,767,97"/>
 <area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="451,255,462,221,481,180,507,139,542,106,564,95,567,100,546,111,511,143,486,182,467,223,456,257"/>
 <area shape="rect" id="Node000015" href="$classmim_1_1PassManPhase.html" title="Wraps a PassMan pipeline as a Phase." alt="" coords="583,244,739,269"/>
 <area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="508,272,583,263,584,268,509,277"/>
-<area shape="rect" id="Node000016" href="$classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline." alt="" coords="598,293,725,319"/>
+<area shape="rect" id="Node000016" href="$classmim_1_1PhaseMan.html" title="Organizes several Phases into a pipeline." alt="" coords="598,293,725,319"/>
 <area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="509,286,598,296,598,302,508,292"/>
-<area shape="rect" id="Node000017" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="601,379,722,404"/>
+<area shape="rect" id="Node000017" href="$classmim_1_1RWPhase.html" title="Rebuilds old_world() into new_world() and then swaps them." alt="" coords="601,379,722,404"/>
 <area shape="poly" id="edge20_Node000001_Node000017" title=" " alt="" coords="485,299,636,376,634,381,482,303"/>
 <area shape="rect" id="Node000030" href="$classmim_1_1plug_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion." alt="" coords="566,428,757,453"/>
 <area shape="poly" id="edge33_Node000001_Node000030" title=" " alt="" coords="460,306,493,362,517,391,545,414,568,425,565,430,543,419,513,394,489,365,455,308"/>

@@ -1,5 +1,9 @@
 var NAVTREEINDEX17 =
 {
+"classmim_1_1unique__queue.html#ad2d075da9d644427c35f019ca2b5bb9e":[4,0,1,100,8],
+"classmim_1_1unique__stack.html":[2,0,2,101],
+"classmim_1_1unique__stack.html":[4,0,1,99],
+"classmim_1_1unique__stack.html#a0e3bc2a308a5fbd291a0380f08c1e1d2":[2,0,2,101,0],
 "classmim_1_1unique__stack.html#a0e3bc2a308a5fbd291a0380f08c1e1d2":[4,0,1,99,0],
 "classmim_1_1unique__stack.html#a1bda10d6d6f03b17a62b91ccb56d00b2":[2,0,2,101,5],
 "classmim_1_1unique__stack.html#a1bda10d6d6f03b17a62b91ccb56d00b2":[4,0,1,99,5],
@@ -245,9 +249,5 @@ var NAVTREEINDEX17 =
 "direct_2normalizers_8cpp_source.html":[5,0,4,1,4,6,2],
 "direct_8cpp.html":[5,0,4,1,4,6,1],
 "direct_8cpp.html#a35bb34350e93d508e52544f4abd50e59":[5,0,4,1,4,6,1,0],
-"direct_8cpp.html#a3886e4c865b2b15eae2cc4c6f84a9176":[5,0,4,1,4,6,1,1],
-"direct_8cpp_source.html":[5,0,4,1,4,6,1],
-"direct_8h.html":[5,0,3,1,4,6,1],
-"direct_8h_source.html":[5,0,3,1,4,6,1],
-"dl_8cpp.html":[5,0,4,1,5,1]
+"direct_8cpp.html#a3886e4c865b2b15eae2cc4c6f84a9176":[5,0,4,1,4,6,1,1]
 };

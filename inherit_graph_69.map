@@ -1,8 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classmim_1_1Rewriter.html" title="Recurseivly rebuilds part of a program into the provided World w.r.t. Rewriter::map." alt="" coords="451,2439,565,2464"/>
-<area shape="rect" id="Node000001" href="$classmim_1_1Analysis.html" title="This Phase will recursively Rewriter::rewrite." alt="" coords="712,1788,827,1813"/>
+<area shape="rect" id="Node000001" href="$classmim_1_1Analysis.html" title="Traverses the current World using Rewriter infrastructure while staying in the same world." alt="" coords="712,1788,827,1813"/>
 <area shape="poly" id="edge13_Node000000_Node000001" title=" " alt="" coords="577,2441,591,2434,602,2424,615,2404,624,2377,633,2311,633,2231,629,2145,624,2058,623,1977,630,1908,638,1880,650,1857,663,1841,680,1828,716,1811,718,1816,683,1833,667,1845,654,1859,643,1882,635,1909,629,1977,630,2058,634,2145,639,2231,638,2311,629,2379,620,2406,606,2428,594,2439,580,2446"/>
-<area shape="rect" id="Node000015" href="$classmim_1_1RWPhase.html" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="709,2345,830,2371"/>
+<area shape="rect" id="Node000015" href="$classmim_1_1RWPhase.html" title="Rebuilds old_world() into new_world() and then swaps them." alt="" coords="709,2345,830,2371"/>
 <area shape="poly" id="edge14_Node000000_Node000015" title=" " alt="" coords="577,2432,603,2424,627,2411,651,2398,728,2368,730,2373,653,2403,629,2416,605,2428,579,2437"/>
 <area shape="rect" id="Node000198" href="$classmim_1_1VarRewriter.html" title="Extends Rewriter for variable substitution." alt="" coords="701,2413,837,2439"/>
 <area shape="poly" id="edge27_Node000000_Node000198" title=" " alt="" coords="579,2442,701,2430,701,2435,579,2447"/>
@@ -117,7 +117,7 @@
 <area shape="poly" id="edge60_Node000133_Node000136" title=" " alt="" coords="564,3163,724,3185,723,3190,563,3168"/>
 <area shape="rect" id="Node000032" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="463,669,553,695"/>
 <area shape="poly" id="edge69_Node000031_Node000032" title=" " alt="" coords="285,1074,497,694,502,696,290,1077"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="459,1485,557,1511"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1Phase.html" title="Unlike a Pass, a Phase performs one self&#45;contained task and does not interleave with other phases." alt="" coords="459,1485,557,1511"/>
 <area shape="poly" id="edge116_Node000031_Node000002" title=" " alt="" coords="290,1124,501,1484,497,1486,286,1127"/>
 <area shape="rect" id="Node000079" href="$classmim_1_1Repl.html" title="Simple Stage that searches for a pattern and replaces it." alt="" coords="463,299,553,324"/>
 <area shape="poly" id="edge134_Node000031_Node000079" title=" " alt="" coords="278,1074,500,323,505,325,284,1076"/>
@@ -223,7 +223,7 @@
 <area shape="poly" id="edge127_Node000002_Node000012" title=" " alt="" coords="543,1476,593,1452,651,1429,693,1417,694,1423,653,1434,596,1457,546,1481"/>
 <area shape="rect" id="Node000013" href="$classmim_1_1PassManPhase.html" title="Wraps a PassMan pipeline as a Phase." alt="" coords="691,1444,847,1469"/>
 <area shape="poly" id="edge128_Node000002_Node000013" title=" " alt="" coords="570,1486,691,1466,692,1472,571,1491"/>
-<area shape="rect" id="Node000014" href="$classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline." alt="" coords="706,1493,833,1519"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1PhaseMan.html" title="Organizes several Phases into a pipeline." alt="" coords="706,1493,833,1519"/>
 <area shape="poly" id="edge129_Node000002_Node000014" title=" " alt="" coords="571,1497,706,1501,705,1507,571,1503"/>
 <area shape="rect" id="Node000028" href="$classmim_1_1plug_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion." alt="" coords="674,1543,865,1568"/>
 <area shape="poly" id="edge131_Node000002_Node000028" title=" " alt="" coords="571,1509,653,1527,710,1540,709,1545,651,1533,570,1514"/>

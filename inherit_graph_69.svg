@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="This Phase will recursively Rewriter::rewrite.">
+<g id="a_Node000001"><a xlink:href="classmim_1_1Analysis.html" target="_top" xlink:title="Traverses the current World using Rewriter infrastructure while staying in the same world.">
 <polygon fill="white" stroke="#666666" points="616,-2147 530,-2147 530,-2128 616,-2128 616,-2147"/>
 <text text-anchor="middle" x="573" y="-2135" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Analysis</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node15 -->
 <g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_Node000015"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">
+<g id="a_Node000015"><a xlink:href="classmim_1_1RWPhase.html" target="_top" xlink:title="Rebuilds old_world() into new_world() and then swaps them.">
 <polygon fill="white" stroke="#666666" points="618.5,-1729 527.5,-1729 527.5,-1710 618.5,-1710 618.5,-1729"/>
 <text text-anchor="middle" x="573" y="-1717" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
 </a>
@@ -1076,7 +1076,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
+<g id="a_Node000002"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="Unlike a Pass, a Phase performs one self&#45;contained task and does not interleave with other phases.">
 <polygon fill="white" stroke="#666666" points="414,-2374 340,-2374 340,-2355 414,-2355 414,-2374"/>
 <text text-anchor="middle" x="377" y="-2362" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
 </a>
@@ -2060,7 +2060,7 @@
 <!-- Node14 -->
 <g id="Node000014" class="node">
 <title>Node14</title>
-<g id="a_Node000014"><a xlink:href="classmim_1_1PhaseMan.html" target="_top" xlink:title="Organizes several Phases in a a pipeline.">
+<g id="a_Node000014"><a xlink:href="classmim_1_1PhaseMan.html" target="_top" xlink:title="Organizes several Phases into a pipeline.">
 <polygon fill="white" stroke="#666666" points="620.5,-2368 525.5,-2368 525.5,-2349 620.5,-2349 620.5,-2368"/>
 <text text-anchor="middle" x="573" y="-2356" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PhaseMan</text>
 </a>

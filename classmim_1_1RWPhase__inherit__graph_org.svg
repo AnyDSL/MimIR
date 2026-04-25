@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards.">
+<g id="a_Node000001"><a xlink:title="Rebuilds old_world() into new_world() and then swaps them.">
 <polygon fill="#999999" stroke="#666666" points="504,-255.5 413,-255.5 413,-236.5 504,-236.5 504,-255.5"/>
 <text text-anchor="middle" x="458.5" y="-243.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::RWPhase</text>
 </a>
@@ -239,7 +239,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
+<g id="a_Node000002"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="Unlike a Pass, a Phase performs one self&#45;contained task and does not interleave with other phases.">
 <polygon fill="white" stroke="#666666" points="371,-274.5 297,-274.5 297,-255.5 371,-255.5 371,-274.5"/>
 <text text-anchor="middle" x="334" y="-262.5" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
 </a>

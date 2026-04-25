@@ -1,5 +1,5 @@
 <map id="mim::RWPhase" name="mim::RWPhase">
-<area shape="rect" id="Node000001" title="Rewrites the RWPhase::old_world into the RWPhase::new_world and swaps them afterwards." alt="" coords="556,277,677,303"/>
+<area shape="rect" id="Node000001" title="Rebuilds old_world() into new_world() and then swaps them." alt="" coords="556,277,677,303"/>
 <area shape="rect" id="Node000006" href="$classmim_1_1BetaRedPhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="753,5,908,31"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="619,263,629,215,648,154,679,93,699,64,724,40,752,24,754,29,727,44,703,68,683,95,653,156,634,216,624,264"/>
 <area shape="rect" id="Node000007" href="$classmim_1_1BranchNormalizePhase.html" title="Inlines in post&#45;order all Lams that occur exactly once in the program." alt="" coords="725,55,936,80"/>
@@ -24,7 +24,7 @@
 <area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="627,315,639,356,659,406,688,457,706,480,727,500,761,519,759,523,724,504,702,483,684,460,654,408,634,358,621,317"/>
 <area shape="rect" id="Node000017" href="$classmim_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer..." alt="" coords="749,578,913,618"/>
 <area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="623,316,632,368,650,435,681,504,702,536,727,564,750,579,747,584,724,568,698,539,676,507,645,437,627,370,618,317"/>
-<area shape="rect" id="Node000002" href="$classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="401,252,500,277"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1Phase.html" title="Unlike a Pass, a Phase performs one self&#45;contained task and does not interleave with other phases." alt="" coords="401,252,500,277"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="514,272,556,278,556,283,513,277"/>
 <area shape="rect" id="Node000003" href="$classmim_1_1Stage.html" title="Common base for Phase and Pass." alt="" coords="248,252,345,277"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="359,262,401,262,401,267,359,267"/>

@@ -22,7 +22,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Organizes several Phases in a a pipeline.">
+<g id="a_Node000001"><a xlink:title="Organizes several Phases into a pipeline.">
 <polygon fill="#999999" stroke="#666666" points="120.5,-19 25.5,-19 25.5,0 120.5,0 120.5,-19"/>
 <text text-anchor="middle" x="73" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">mim::PhaseMan</text>
 </a>
@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
+<g id="a_Node000002"><a xlink:href="classmim_1_1Phase.html" target="_top" xlink:title="Unlike a Pass, a Phase performs one self&#45;contained task and does not interleave with other phases.">
 <polygon fill="white" stroke="#666666" points="110,-74 36,-74 36,-55 110,-55 110,-74"/>
 <text text-anchor="middle" x="73" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">mim::Phase</text>
 </a>
