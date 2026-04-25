@@ -53,11 +53,11 @@ mim::Phase::run<MyPhase>(world);
 
 [`Analysis`](@ref mim::Analysis) is the base class for phases that **inspect** the current world using the [`Rewriter`](@ref mim::Rewriter) traversal machinery.
 It inherits from both [`Phase`](@ref mim::Phase) and [`Rewriter`](@ref mim::Rewriter), but unlike [`RWPhase`](@ref mim::RWPhase), it rewrites **into the same world**.
-In practice, this means [`Rewriter`](@ref mim::Rewriter) is used as a structured, graph-aware traversal over ordinary MimIR terms.
+In practice, this means [`Rewriter`](@ref mim::Rewriter) is used as a structured, graph-aware traversal over ordinary MimIR [`Def`s](@ref mim::Def).
 
-@note An [`Analysis`](@ref mim::Analysis) based on [`Rewriter`](@ref mim::Rewriter) has a domain of ordinary [`Def`](@ref mim::Def)s.
+@note An [`Analysis`](@ref mim::Analysis) based on [`Rewriter`](@ref mim::Rewriter) has an abstract domain of ordinary [`Def`s](@ref mim::Def).
 
-A central feature of [`Analysis`](@ref mim::Analysis) is its internal [`lattice()`](@ref mim::Analysis::lattice), which stores abstract information for old-world [`Def`](@ref mim::Def)s as a `Def2Def` mapping.
+A central feature of [`Analysis`](@ref mim::Analysis) is its internal [`lattice()`](@ref mim::Analysis::lattice), which stores abstract information for old-world [`Def`s](@ref mim::Def) as a `Def2Def` mapping.
 
 This is often convenient because analysis information can itself be represented as ordinary MimIR [`Def`s](@ref mim::Def).
 As a result, existing IR machinery applies automatically, including:
@@ -66,7 +66,7 @@ As a result, existing IR machinery applies automatically, including:
 - built-in normalizations,
 - and other simplifications already provided by the [`World`](@ref mim::World).
 
-So if your abstract domain fits naturally into MimIR, you can often encode it directly as [`Def`](@ref mim::Def) and store it in the analysis lattice.
+So if your abstract domain fits naturally into MimIR, you can often encode it directly as [`Def`s](@ref mim::Def) and store it in the analysis lattice.
 
 An [`Analysis`](@ref mim::Analysis) visits:
 
@@ -103,44 +103,22 @@ Use:
 - [`old_world()`](@ref mim::RWPhase::old_world) to inspect existing IR,
 - [`new_world()`](@ref mim::RWPhase::new_world) to build rewritten IR.
 
-### Execution Model
-
-An [`RWPhase`](@ref mim::RWPhase) runs in three conceptual steps:
-
-1. optionally perform a fixed-point analysis **on the old world**,
-2. rewrite reachable old [`Def`](@ref mim::Def)s **into the new world**:
-   1. rewrite annex roots,
-   2. rewrite external mutables;
-3. swap the **old** and **new** worlds.
-
-After the swap, the rewritten world becomes the current one.
-
-@note An [`RWPhase`](@ref mim::RWPhase) follows the standard whole-world transformation pattern:
-analyze the old program, rebuild the transformed program, then replace the old world.
-
-### Read Access to Analysis Results
-
-An [`RWPhase`](@ref mim::RWPhase) may be associated with an [`Analysis`](@ref mim::Analysis).
-If so, the rewrite can query the analysis result through [`RWPhase::lattice()`](@ref mim::RWPhase::lattice).
-
-This provides read access to the analysis lattice **for old-world [`Def`](@ref mim::Def)s**:
-given an old definition, [`RWPhase::lattice()`](@ref mim::RWPhase::lattice) returns the abstract value computed by the associated [`Analysis`](@ref mim::Analysis), or `nullptr` if no value is available.
-
-This is the standard way to communicate fixed-point analysis results into the subsequent rewrite.
-
 ### Cleanup
 
 [`Cleanup`](@ref mim::Cleanup) is simply an [`RWPhase`](@ref mim::RWPhase) with no custom rewrites.
 Because an [`RWPhase`](@ref mim::RWPhase) reconstructs only what is reachable from the world roots, rebuilding automatically eliminates dead and unreachable code.
 
-### Bootstrapping
+### Execution Model
 
-Like [`Analysis`](@ref mim::Analysis), [`RWPhase`](@ref mim::RWPhase) processes annex roots before externals.
+An [`RWPhase`](@ref mim::RWPhase) runs in three conceptual steps:
 
-While annexes are being rewritten, [`mim::RWPhase::is_bootstrapping()`](@ref mim::RWPhase::is_bootstrapping) is `true`.
+1. optionally perform a fixed-point analysis **on the old world**,
+2. rewrite reachable old [`Def`s](@ref mim::Def) **into the new world**:
+   1. rewrite annex roots,
+   2. rewrite external mutables;
+3. swap the **old** and **new** worlds.
 
-This matters because annexes may depend on one another.
-During bootstrapping, rewrites that refer to other annexes may need to be deferred or skipped, since those annexes might not yet exist in the new world.
+After the swap, the rewritten world becomes the current one.
 
 ### Optional Pre-Analysis
 
@@ -154,6 +132,25 @@ This is a common pattern:
 - the rewrite queries them through [`RWPhase::lattice()`](@ref mim::RWPhase::lattice) and produces the new world.
 
 If no analysis is needed, [`analyze()`](@ref mim::RWPhase::analyze) can simply return `false`.
+
+### Analysis Results
+
+An [`RWPhase`](@ref mim::RWPhase) may be associated with an [`Analysis`](@ref mim::Analysis).
+If so, the rewrite can query the analysis result through [`RWPhase::lattice()`](@ref mim::RWPhase::lattice).
+
+This provides read access to the analysis lattice **for old-world [`Def`s](@ref mim::Def)**:
+given an old definition, [`RWPhase::lattice()`](@ref mim::RWPhase::lattice) returns the abstract value computed by the associated [`Analysis`](@ref mim::Analysis), or `nullptr` if no value is available.
+
+This is the standard way to communicate fixed-point analysis results into the subsequent rewrite.
+
+### Bootstrapping
+
+Like [`Analysis`](@ref mim::Analysis), [`RWPhase`](@ref mim::RWPhase) processes annex roots before externals.
+
+While annexes are being rewritten, [`mim::RWPhase::is_bootstrapping()`](@ref mim::RWPhase::is_bootstrapping) is `true`.
+
+This matters because annexes may depend on one another.
+During bootstrapping, rewrites that refer to other annexes may need to be deferred or skipped, since those annexes might not yet exist in the new world.
 
 ### Typical Shape
 
@@ -193,7 +190,7 @@ This keeps phase-local state from leaking across rounds unless the phase explici
 
 @note [`PhaseMan`](@ref mim::PhaseMan) is the orchestration layer for classical phase pipelines.
 
-### Typical Usage
+### Typical Shape
 
 ```cpp
 auto phases = mim::Phases();
@@ -238,7 +235,7 @@ private:
 };
 ```
 
-## NestPhase {#phases_nest_phase}
+### NestPhase {#phases_nest_phase}
 
 [`NestPhase`](@ref mim::NestPhase) builds on [`ClosedMutPhase`](@ref mim::ClosedMutPhase) and computes a [`Nest`](@ref mim::Nest) for each visited mutable.
 
@@ -307,7 +304,7 @@ So SCCP follows the standard [`RWPhase`](@ref mim::RWPhase) pattern:
 2. rewrite into a new world using the computed facts,
 3. swap worlds.
 
-### Why This Split Is Useful
+### Discussion
 
 Separating SCCP into analysis and rewrite keeps both parts simple:
 
