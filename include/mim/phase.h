@@ -12,7 +12,6 @@
 
 namespace mim {
 
-class Analysis;
 class Nest;
 class Phase;
 class PhaseMan;
@@ -22,8 +21,8 @@ class World;
 using Repls  = std::deque<std::unique_ptr<Repl>>;
 using Phases = std::deque<std::unique_ptr<Phase>>;
 
-/// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
-/// They are supposed to classically run one after another.
+/// Unlike a Pass, a Phase performs one self-contained task and does not
+/// interleave with other phases. Phases are intended to run in a classical sequence, one after another.
 /// @see @ref phases_phase
 class Phase : public Stage {
 public:
@@ -40,11 +39,12 @@ public:
     ///@{
     bool todo() const { return todo_; }
 
-    /// Signals that another round of the fixed-point iteration is required, either as part of
-    /// - a pipeline in a `PhaseMan`, or
-    /// - the analysis of an `RWPhase`.
+    /// Signals that another round of fixed-point iteration is required, either
+    /// as part of
+    /// - a pipeline managed by PhaseMan, or
+    /// - the optional pre-analysis of an RWPhase.
     ///
-    /// Use `invalidate(todo)` to OR `todo` into the internal `todo_` flag.
+    /// Calling `invalidate(todo)` bitwise-ORs @p todo into the internal `todo_` flag.
     void invalidate(bool todo = true) { todo_ |= todo; }
     ///@}
 
@@ -67,10 +67,17 @@ private:
     friend class Analysis;
 };
 
-/// This Phase will recursively Rewriter::rewrite
-/// 1. all World::annexes() (during which Analysis::is_bootstrapping is `true`), and then
-/// 2. all World::externals() (during which Analysis::is_bootstrapping is `false`).
-/// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
+/// Traverses the current World using Rewriter infrastructure while staying in the same world.
+///
+/// It recursively rewrites
+/// 1. all World::annexes() (during which Analysis::is_bootstrapping() is `true`), and then
+/// 2. all World::externals() (during which it is `false`).
+///
+/// Analysis provides a reusable lattice() mapping old Def%s to abstract values, represented as ordinary MimIR Def%s.
+/// @note You can override
+/// - Rewriter::rewrite(),
+/// - Rewriter::rewrite_imm(),
+/// - Rewriter::rewrite_mut(), etc.
 /// @see @ref phases_analysis
 class Analysis : public Phase, public Rewriter {
 public:
@@ -83,8 +90,8 @@ public:
         : Phase(world, annex)
         , Rewriter(world) {}
 
-    /// Clears all members and sets todo() to `false` for next round in a fixed-point iteration.
-    /// @sa RWPhase::analyze
+    /// Clears rewriter state, analysis state, and resets Phase::todo() for the next fixed-point iteration.
+    /// @see RWPhase::analyze
     virtual void reset();
     ///@}
 
@@ -116,14 +123,21 @@ private:
     bool bootstrapping_ = true;
 };
 
-/// Rewrites the RWPhase::old_world into the RWPhase::new_world and `swap`s them afterwards.
-/// This will destroy RWPhase::old_world leaving RWPhase::new_world which will be created here as the *current* World to
-/// work with.
-/// This Phase will recursively Rewriter::rewrite
-/// 1. all (old) World::annexes() (during which RWPhase::is_bootstrapping is `true`), and then
-/// 2. all (old) World::externals() (during which RWPhase::is_bootstrapping is `false`).
-/// All rewrites that refer to another annex have to be skipped during bootstrapping.
-/// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, Rewriter::rewrite_mut, etc.
+/// Rebuilds old_world() into new_world() and then swaps them.
+///
+/// It recursively rewrites
+/// 1. all old World::annexes() (during which RWPhase::is_bootstrapping() is `true`, and then
+/// 2. all old World::externals() (during which it is `false`).
+///
+/// During bootstrapping, rewrites that depend on other annexes may need to be skipped,
+/// since those annexes might not yet exist in the new world.
+///
+/// If an associated Analysis is provided, the rewrite can query its abstract results through lattice().
+///
+/// @note You can override
+/// - Rewriter::rewrite(),
+/// - Rewriter::rewrite_imm(),
+/// - Rewriter::rewrite_mut(), etc.
 /// @see @ref phases_rwphase
 class RWPhase : public Phase, public Rewriter {
 public:
@@ -141,16 +155,23 @@ public:
 
     /// @name Analysis
     ///@{
+    Analysis* analysis() { return analysis_; }
+    const Analysis* analysis() const { return analysis_; }
 
-    /// Returns the abstract value for @p old_def from the old_world().
+    /// Returns the abstract value computed by the associated Analysis for the given old-world Def, or `nullptr` if no
+    /// value is available.
     const Def* lattice(const Def* old_def) {
         if (auto i = analysis_->lattice().find(old_def); i != analysis_->lattice().end()) return i->second;
         return nullptr;
     }
-    /// You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.
-    /// If analysis_ is set, use this for the fixed-point loop.
-    /// @note If you don't need a fixed-point, just return `false` after the first run of analyze.
+
+    /// Runs the optional pre-analysis on RWPhase::old_world(), typically to a fixed point,
+    /// before rewriting begins.
+    ///
+    /// If analysis() is set, this is the natural place to iterate until Phase::todo() becomes `false`.
+    /// If no Analysis is needed, simply return `false`.
     virtual bool analyze();
+    ///@}
 
     /// @name Rewrite
     ///@{
@@ -282,8 +303,8 @@ private:
     std::unique_ptr<PassMan> man_;
 };
 
-/// Organizes several Phase%s in a a pipeline.
-/// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo() flags yield `false`.
+/// Organizes several Phase%s into a pipeline.
+/// If fixed_point() is `true`, rerun the whole pipeline until all Phase::todo()%s flags remain `false`.
 /// @see @ref phases_phase_man
 class PhaseMan : public Phase {
 public:
