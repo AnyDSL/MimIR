@@ -210,7 +210,7 @@ void PhaseMan::start() {
             }
         }
 
-        todo_ |= todo;
+        invalidate(todo);
     }
 }
 

@@ -20,12 +20,10 @@ A phase has:
 - access to the current [`World`](@ref mim::World),
 - a [`run()`](@ref mim::Phase::run) wrapper for logging and verification,
 - a [`todo()`](@ref mim::Phase::todo) accessor backed by the internal `todo_` flag for fixed-point iteration.
-
-A key design point is the internal `todo_` flag exposed through [`todo()`](@ref mim::Phase::todo):
-
-@note
-A phase sets `todo_ = true` if its work discovers that another round is needed.
-[`PhaseMan`](@ref mim::PhaseMan) uses this to drive fixed-point pipelines.
+  @note
+  A phase sets this flag to `true` via [`invalidate`](@ref mim::Phase::invalidate()), if it discovers that another round is needed.
+  - [`PhaseMan`](@ref mim::PhaseMan) uses this to drive fixed-point pipelines.
+  - [`RWPhase`](@ref mim::RWPhase) uses this to drive its fixed-point [`Analysis`](@ref mim::Analysis).
 
 ### Typical Shape
 
@@ -80,12 +78,12 @@ Typical usage:
 - override [`rewrite()`](@ref mim::Rewriter::rewrite), [`rewrite_imm()`](@ref mim::Rewriter::rewrite_imm), [`rewrite_mut()`](@ref mim::Rewriter::rewrite_mut), or node-specific rewrite hooks,
 - compute analysis information while traversing reachable IR,
 - store that information in side tables,
-- set `todo_ = true` if new information was discovered and another iteration is needed.
+- [`invalidate`](@ref mim::Phase::invalidate), if new information was discovered and another iteration is needed.
 
 ### Reset Between Iterations
 
 If an analysis participates in a fixed-point loop, it should be ready to run multiple times.
-The base [`reset()`](@ref mim::Analysis::reset) clears the rewriter state and resets `todo_` for the next round.
+The base [`reset()`](@ref mim::Analysis::reset) clears the rewriter state and resets the internal `todo_` flag for the next round.
 
 ## RWPhase {#phases_rwphase}
 
@@ -173,7 +171,7 @@ It can run them:
 - once, in sequence, or
 - repeatedly to a fixed point.
 
-A fixed-point [`PhaseMan`](@ref mim::PhaseMan) reruns the whole pipeline as long as at least one phase sets `todo_ = true`.
+A fixed-point [`PhaseMan`](@ref mim::PhaseMan) reruns the whole pipeline as long as at least one phase [`invalidate`s](@ref mim::Phase::invalidate).
 
 Between iterations, each phase is recreated from its original configuration. This keeps phase-local state from leaking across rounds unless the phase explicitly recomputes it.
 
@@ -264,7 +262,8 @@ In the implementation, this lattice is stored as a `Def2Def` map.
 A nice aspect here is that the propagated value is itself a regular [`Def`](@ref mim::Def).
 This illustrates the benefit of building analysis on top of [`Rewriter`](@ref mim::Rewriter): the abstract domain can live directly inside MimIR, so canonicalization and normalization come for free.
 
-The analysis traverses the old world and updates the lattice when it sees applications of optimizable lambdas. If new information is discovered, it sets `todo_ = true`, causing the analysis to rerun until stable.
+The analysis traverses the old world and updates the lattice when it sees applications of optimizable lambdas.
+If new information is discovered, it [`invalidate`s](@ref mim::Phase::invalidate), causing the analysis to rerun until stable.
 This is a textbook use of [`Analysis`](@ref mim::Analysis):
 
 - walk the old IR,

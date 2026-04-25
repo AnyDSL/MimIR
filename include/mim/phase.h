@@ -12,6 +12,7 @@
 
 namespace mim {
 
+class Analysis;
 class Nest;
 class Phase;
 class PhaseMan;
@@ -35,9 +36,16 @@ public:
 
     ///@}
 
-    /// @name Getters
+    /// @name Fixed-Point Handling
     ///@{
     bool todo() const { return todo_; }
+
+    /// Signals that another round of the fixed-point iteration is required, either as part of
+    /// - a pipeline in a `PhaseMan`, or
+    /// - the analysis of an `RWPhase`.
+    ///
+    /// Use `invalidate(todo)` to OR `todo` into the internal `todo_` flag.
+    void invalidate(bool todo = true) { todo_ |= todo; }
     ///@}
 
     /// @name run
@@ -53,9 +61,10 @@ public:
     }
     ///@}
 
-protected:
-    /// Set to `true` to indicate that you want to rerun all Phase%es in your current fixed-point PhaseMan.
+private:
     bool todo_ = false;
+
+    friend class Analysis;
 };
 
 /// This Phase will recursively Rewriter::rewrite
@@ -133,9 +142,9 @@ public:
     /// @name Analysis
     ///@{
 
-    /// Returns the abstract value *after* the analysis has run.
-    const Def* lattice(const Def* def) {
-        if (auto i = analysis_->lattice().find(def); i != analysis_->lattice().end()) return i->second;
+    /// Returns the abstract value for @p old_def from the old_world().
+    const Def* lattice(const Def* old_def) {
+        if (auto i = analysis_->lattice().find(old_def); i != analysis_->lattice().end()) return i->second;
         return nullptr;
     }
     /// You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.
@@ -274,7 +283,7 @@ private:
 };
 
 /// Organizes several Phase%s in a a pipeline.
-/// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo_ flags yield `false`.
+/// If @p fixed_point is `true`, run PhaseMan until all Phase%s' Phase::todo() flags yield `false`.
 /// @see @ref phases_phase_man
 class PhaseMan : public Phase {
 public:
