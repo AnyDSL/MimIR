@@ -110,8 +110,8 @@ $(function(){initNavTree('classmim_1_1Analysis.html','','classmim_1_1Analysis-me
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classmim_1_1Analysis-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">mim::Analysis Class Reference</div></div>
 </div><!--header-->
@@ -129,17 +129,21 @@ Inheritance diagram for mim::Analysis:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aec37998476295eb08d93ff605e866ddd" id="r_aec37998476295eb08d93ff605e866ddd"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aec37998476295eb08d93ff605e866ddd">is_bootstrapping</a> () const</td></tr>
 <tr id="pub-methods-0" class="groupHeader"><td colspan="2"><div class="groupHeader">Construction &amp; Destruction</div></td></tr>
 <tr class="memitem:a4515f0f091b7c563a7fec2b5a5127b9a" id="r_a4515f0f091b7c563a7fec2b5a5127b9a"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a4515f0f091b7c563a7fec2b5a5127b9a">Analysis</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="#a8de439bc818291da9a12c82f794a4d65">world</a>, std::string <a class="el" href="classmim_1_1Stage.html#a988e8b306b37bd8f2bc3777582516527">name</a>)</td></tr>
 <tr class="memitem:aee9e19bc9197491f6b62b274fbf2378c" id="r_aee9e19bc9197491f6b62b274fbf2378c"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aee9e19bc9197491f6b62b274fbf2378c">Analysis</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="#a8de439bc818291da9a12c82f794a4d65">world</a>, <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="el" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>)</td></tr>
 <tr class="memitem:ac94bad8fbf28de336d4c2f9046ac0555" id="r_ac94bad8fbf28de336d4c2f9046ac0555"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#ac94bad8fbf28de336d4c2f9046ac0555">reset</a> ()</td></tr>
 <tr class="memdesc:ac94bad8fbf28de336d4c2f9046ac0555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears all members and sets <a class="el" href="classmim_1_1Phase.html#ac2bba54939517aaceb9c371c02db97b8">todo()</a> to <span class="tt">false</span> for next round in a fixed-point iteration.  <br /></td></tr>
-<tr id="pub-methods-1" class="groupHeader"><td colspan="2"><div class="groupHeader">Rewrite</div></td></tr>
+<tr id="pub-methods-1" class="groupHeader"><td colspan="2"><div class="groupHeader">Getters</div></td></tr>
+<tr class="memitem:ab9a6d69d1f878706cd3a27b577f65396" id="r_ab9a6d69d1f878706cd3a27b577f65396"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ab9a6d69d1f878706cd3a27b577f65396">lattice</a> ()</td></tr>
+<tr class="memitem:ad7c0e4db7456e9d3910876ce4db8180a" id="r_ad7c0e4db7456e9d3910876ce4db8180a"><td class="memItemLeft">const auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ad7c0e4db7456e9d3910876ce4db8180a">lattice</a> () const</td></tr>
+<tr class="memitem:aec37998476295eb08d93ff605e866ddd" id="r_aec37998476295eb08d93ff605e866ddd"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aec37998476295eb08d93ff605e866ddd">is_bootstrapping</a> () const</td></tr>
+<tr class="memitem:a8de439bc818291da9a12c82f794a4d65" id="r_a8de439bc818291da9a12c82f794a4d65"><td class="memItemLeft"><a class="el" href="classmim_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a8de439bc818291da9a12c82f794a4d65">world</a> ()</td></tr>
+<tr id="pub-methods-2" class="groupHeader"><td colspan="2"><div class="groupHeader">Rewrite</div></td></tr>
 <tr class="memitem:adc7ffb4a0abc0dc29f4eb8238336760a" id="r_adc7ffb4a0abc0dc29f4eb8238336760a"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#adc7ffb4a0abc0dc29f4eb8238336760a">rewrite_annex</a> (<a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="memitem:aa7d78ed906cc6531fa13d42e18bc398d" id="r_aa7d78ed906cc6531fa13d42e18bc398d"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#aa7d78ed906cc6531fa13d42e18bc398d">rewrite_external</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
-<tr id="pub-methods-2" class="groupHeader"><td colspan="2"><div class="groupHeader">Getters</div></td></tr>
-<tr class="memitem:a8de439bc818291da9a12c82f794a4d65" id="r_a8de439bc818291da9a12c82f794a4d65"><td class="memItemLeft"><a class="el" href="classmim_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a8de439bc818291da9a12c82f794a4d65">world</a> ()</td></tr>
+<tr class="memitem:afa57ec108651407ce0e7fe30452b24c7" id="r_afa57ec108651407ce0e7fe30452b24c7"><td class="memItemLeft"><a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="#afa57ec108651407ce0e7fe30452b24c7">rewrite_mut</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *) override</td></tr>
+<tr class="memdesc:afa57ec108651407ce0e7fe30452b24c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps old muts/vars.  <br /></td></tr>
 <tr class="inherit_header pub_methods_classmim_1_1Phase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classmim_1_1Phase')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classmim_1_1Phase.html">mim::Phase</a></td></tr>
 <tr class="memitem:a5c9e1cb4322b15d946feaaabcc057260 inherit pub_methods_classmim_1_1Phase" id="r_a5c9e1cb4322b15d946feaaabcc057260"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Phase.html#a5c9e1cb4322b15d946feaaabcc057260">Phase</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>, std::string <a class="el" href="classmim_1_1Stage.html#a988e8b306b37bd8f2bc3777582516527">name</a>)</td></tr>
 <tr class="memitem:aa2ac27ba5ea35a77e6d86665ffbb7707 inherit pub_methods_classmim_1_1Phase" id="r_aa2ac27ba5ea35a77e6d86665ffbb7707"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Phase.html#aa2ac27ba5ea35a77e6d86665ffbb7707">Phase</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="classmim_1_1Stage.html#a39ade56bc81b636a7830048ca2b68a42">world</a>, <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="el" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>)</td></tr>
@@ -178,7 +182,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aed2afef37f09545f262d8a8ce5471954 inherit pub_methods_classmim_1_1Rewriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lookup <span class="tt">old_def</span> by searching in reverse through the stack of maps.  <br /></td></tr>
 <tr class="memitem:acd9201feaab8a6d73223308e48ff6652 inherit pub_methods_classmim_1_1Rewriter" id="r_acd9201feaab8a6d73223308e48ff6652"><td class="memItemLeft">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">rewrite</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="memitem:abe4950e5b3e1591ed5a956b5e0cdc0bb inherit pub_methods_classmim_1_1Rewriter" id="r_abe4950e5b3e1591ed5a956b5e0cdc0bb"><td class="memItemLeft">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Rewriter.html#abe4950e5b3e1591ed5a956b5e0cdc0bb">rewrite_imm</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
-<tr class="memitem:a62c1d60439f3bcf82da250acd2098112 inherit pub_methods_classmim_1_1Rewriter" id="r_a62c1d60439f3bcf82da250acd2098112"><td class="memItemLeft">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112">rewrite_mut</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="memitem:a82d16f0f2d9cc130004428a547920ffd inherit pub_methods_classmim_1_1Rewriter" id="r_a82d16f0f2d9cc130004428a547920ffd"><td class="memItemLeft">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Rewriter.html#a82d16f0f2d9cc130004428a547920ffd">rewrite_stub</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *, <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="memitem:a4f5ba9e51337c7981fb93e3c7476d2cf inherit pub_methods_classmim_1_1Rewriter" id="r_a4f5ba9e51337c7981fb93e3c7476d2cf"><td class="memItemLeft">virtual <a class="el" href="namespacemim.html#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Rewriter.html#a4f5ba9e51337c7981fb93e3c7476d2cf">rewrite</a> (<a class="el" href="namespacemim.html#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
 <tr class="memitem:a2a27820f2a968a37e4024cdba81a870c inherit pub_methods_classmim_1_1Rewriter" id="r_a2a27820f2a968a37e4024cdba81a870c"><td class="memItemLeft">virtual const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Rewriter.html#a2a27820f2a968a37e4024cdba81a870c">rewrite_imm_Seq</a> (const <a class="el" href="classmim_1_1Seq.html">Seq</a> *seq)</td></tr>
@@ -189,6 +192,17 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a1c5cd105ce8fad4292146bcb3d98cc04" id="r_a1c5cd105ce8fad4292146bcb3d98cc04"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1c5cd105ce8fad4292146bcb3d98cc04">start</a> () override</td></tr>
 <tr class="memdesc:a1c5cd105ce8fad4292146bcb3d98cc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Actual entry.  <br /></td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a9abe79797e8a50b55655cbf950903282" id="r_a9abe79797e8a50b55655cbf950903282"><td class="memItemLeft"><a class="el" href="namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a>&#160;</td><td class="memItemRight"><a class="el" href="#a9abe79797e8a50b55655cbf950903282">lattice_</a></td></tr>
+<tr class="inherit_header pro_attribs_classmim_1_1Phase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Phase')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classmim_1_1Phase.html">mim::Phase</a></td></tr>
+<tr class="memitem:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase" id="r_a0390804e30acc01109b03f04109327a2"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Phase.html#a0390804e30acc01109b03f04109327a2">todo_</a> = false</td></tr>
+<tr class="memdesc:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to <span class="tt">true</span> to indicate that you want to rerun all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>es in your current fixed-point <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
+<tr class="inherit_header pro_attribs_classmim_1_1Stage"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Stage')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classmim_1_1Stage.html">mim::Stage</a></td></tr>
+<tr class="memitem:a6e49075de2431065ae4e8e804131c28a inherit pro_attribs_classmim_1_1Stage" id="r_a6e49075de2431065ae4e8e804131c28a"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Stage.html#a6e49075de2431065ae4e8e804131c28a">name_</a></td></tr>
+<tr class="inherit_header pro_attribs_classmim_1_1Rewriter"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Rewriter')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classmim_1_1Rewriter.html">mim::Rewriter</a></td></tr>
+<tr class="memitem:abbcbabc35c7bffffb0e01346e248d99f inherit pro_attribs_classmim_1_1Rewriter" id="r_abbcbabc35c7bffffb0e01346e248d99f"><td class="memItemLeft">std::deque&lt; <a class="el" href="namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Rewriter.html#abbcbabc35c7bffffb0e01346e248d99f">old2news_</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a688656a879e35a05d8f41924f1d9df0a" id="r_a688656a879e35a05d8f41924f1d9df0a"><td class="memTemplParams" colspan="2">template&lt;class P, class... Args&gt; </td></tr>
@@ -197,13 +211,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a7d0782be17d913b25c63d782e4214e64" id="r_a7d0782be17d913b25c63d782e4214e64"><td class="memItemLeft">static auto&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Stage.html#a7d0782be17d913b25c63d782e4214e64">create</a> (const <a class="el" href="namespacemim.html#a73c02685bc8b4078797ffde79a9c1ac9">Flags2Stages</a> &amp;stages, const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="memitem:aaf397a927e480d7c69023d39441e7a90" id="r_aaf397a927e480d7c69023d39441e7a90"><td class="memTemplParams" colspan="2">template&lt;class A, class P&gt; </td></tr>
 <tr class="memitem:aaf397a927e480d7c69023d39441e7a90 template"><td class="memItemLeft">static void&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Stage.html#aaf397a927e480d7c69023d39441e7a90">hook</a> (<a class="el" href="namespacemim.html#a73c02685bc8b4078797ffde79a9c1ac9">Flags2Stages</a> &amp;stages)</td></tr>
-<tr class="inherit_header pro_attribs_classmim_1_1Phase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Phase')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classmim_1_1Phase.html">mim::Phase</a></td></tr>
-<tr class="memitem:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase" id="r_a0390804e30acc01109b03f04109327a2"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Phase.html#a0390804e30acc01109b03f04109327a2">todo_</a> = false</td></tr>
-<tr class="memdesc:a0390804e30acc01109b03f04109327a2 inherit pro_attribs_classmim_1_1Phase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to <span class="tt">true</span> to indicate that you want to rerun all <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>es in your current fixed-point <a class="el" href="classmim_1_1PhaseMan.html" title="Organizes several Phases in a a pipeline.">PhaseMan</a>.  <br /></td></tr>
-<tr class="inherit_header pro_attribs_classmim_1_1Stage"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Stage')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classmim_1_1Stage.html">mim::Stage</a></td></tr>
-<tr class="memitem:a6e49075de2431065ae4e8e804131c28a inherit pro_attribs_classmim_1_1Stage" id="r_a6e49075de2431065ae4e8e804131c28a"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Stage.html#a6e49075de2431065ae4e8e804131c28a">name_</a></td></tr>
-<tr class="inherit_header pro_attribs_classmim_1_1Rewriter"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classmim_1_1Rewriter')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Attributes inherited from <a class="el" href="classmim_1_1Rewriter.html">mim::Rewriter</a></td></tr>
-<tr class="memitem:abbcbabc35c7bffffb0e01346e248d99f inherit pro_attribs_classmim_1_1Rewriter" id="r_abbcbabc35c7bffffb0e01346e248d99f"><td class="memItemLeft">std::deque&lt; <a class="el" href="namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1Rewriter.html#abbcbabc35c7bffffb0e01346e248d99f">old2news_</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This <a class="el" href="classmim_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a> will recursively <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">Rewriter::rewrite</a>. </p>
@@ -245,7 +252,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00070">70</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, <a class="el" href="phase_8h_source.html#l00031">mim::Phase::Phase()</a>, <a class="el" href="rewrite_8h_source.html#l00023">mim::Rewriter::Rewriter()</a>, and <a class="el" href="phase_8h_source.html#l00092">world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00067">mim::Stage::name()</a>, <a class="el" href="phase_8h_source.html#l00031">mim::Phase::Phase()</a>, <a class="el" href="rewrite_8h_source.html#l00023">mim::Rewriter::Rewriter()</a>, and <a class="el" href="phase_8h_source.html#l00098">world()</a>.</p>
 
 </div>
 </div>
@@ -278,7 +285,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00073">73</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="phase_8h_source.html#l00031">mim::Phase::Phase()</a>, <a class="el" href="rewrite_8h_source.html#l00023">mim::Rewriter::Rewriter()</a>, and <a class="el" href="phase_8h_source.html#l00092">world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="phase_8h_source.html#l00031">mim::Phase::Phase()</a>, <a class="el" href="rewrite_8h_source.html#l00023">mim::Rewriter::Rewriter()</a>, and <a class="el" href="phase_8h_source.html#l00098">world()</a>.</p>
 
 </div>
 </div>
@@ -306,7 +313,65 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00082">82</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00086">86</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+
+</div>
+</div>
+<a id="ab9a6d69d1f878706cd3a27b577f65396" name="ab9a6d69d1f878706cd3a27b577f65396"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9a6d69d1f878706cd3a27b577f65396">&#9670;&#160;</a></span>lattice() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; mim::Analysis::lattice </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00084">84</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00104">lattice_</a>.</p>
+
+</div>
+</div>
+<a id="ad7c0e4db7456e9d3910876ce4db8180a" name="ad7c0e4db7456e9d3910876ce4db8180a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7c0e4db7456e9d3910876ce4db8180a">&#9670;&#160;</a></span>lattice() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const auto &amp; mim::Analysis::lattice </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00085">85</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00104">lattice_</a>.</p>
 
 </div>
 </div>
@@ -408,6 +473,39 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="afa57ec108651407ce0e7fe30452b24c7" name="afa57ec108651407ce0e7fe30452b24c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa57ec108651407ce0e7fe30452b24c7">&#9670;&#160;</a></span>rewrite_mut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classmim_1_1Def.html">Def</a> * mim::Analysis::rewrite_mut </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Def.html">Def</a> *</td>          <td class="paramname"><span class="paramname"><em>mut</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Keeps old muts/vars. </p>
+
+<p>Reimplemented from <a class="el" href="classmim_1_1Rewriter.html#a62c1d60439f3bcf82da250acd2098112">mim::Rewriter</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00042">42</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00475">mim::Def::deps()</a>, <a class="el" href="def_8h_source.html#l00434">mim::Def::has_var()</a>, <a class="el" href="phase_8h_source.html#l00104">lattice_</a>, <a class="el" href="rewrite_8h_source.html#l00060">mim::Rewriter::map()</a>, <a class="el" href="rewrite_8cpp_source.html#l00027">mim::Rewriter::rewrite()</a>, and <a class="el" href="def_8h_source.html#l00430">mim::Def::tvars()</a>.</p>
+
+</div>
+</div>
 <a id="a1c5cd105ce8fad4292146bcb3d98cc04" name="a1c5cd105ce8fad4292146bcb3d98cc04"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c5cd105ce8fad4292146bcb3d98cc04">&#9670;&#160;</a></span>start()</h2>
 
@@ -437,7 +535,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00029">29</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8cpp_source.html#l00039">rewrite_annex()</a>, <a class="el" href="phase_8cpp_source.html#l00040">rewrite_external()</a>, and <a class="el" href="phase_8h_source.html#l00092">world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8cpp_source.html#l00039">rewrite_annex()</a>, <a class="el" href="phase_8cpp_source.html#l00040">rewrite_external()</a>, and <a class="el" href="phase_8h_source.html#l00098">world()</a>.</p>
 
 </div>
 </div>
@@ -464,11 +562,38 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00092">92</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00098">98</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00064">mim::Stage::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00073">Analysis()</a>, <a class="el" href="phase_8h_source.html#l00070">Analysis()</a>, and <a class="el" href="phase_8cpp_source.html#l00029">start()</a>.</p>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a9abe79797e8a50b55655cbf950903282" name="a9abe79797e8a50b55655cbf950903282"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9abe79797e8a50b55655cbf950903282">&#9670;&#160;</a></span>lattice_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacemim.html#a06961d2806f7fb3afe05273fb4c112ab">Def2Def</a> mim::Analysis::lattice_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00104">104</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00084">lattice()</a>, <a class="el" href="phase_8h_source.html#l00085">lattice()</a>, and <a class="el" href="phase_8cpp_source.html#l00042">rewrite_mut()</a>.</p>
 
 </div>
 </div>

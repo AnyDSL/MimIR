@@ -4,6 +4,7 @@ var classmim_1_1RWPhase =
     [ "RWPhase", "classmim_1_1RWPhase.html#a338b4217843a5a9514433f2c70edeb5c", null ],
     [ "analyze", "classmim_1_1RWPhase.html#a03163daff4b06d1ab84f40886ddab811", null ],
     [ "is_bootstrapping", "classmim_1_1RWPhase.html#a8c1256f93cc63c1d8d0609e2aa474b51", null ],
+    [ "lattice", "classmim_1_1RWPhase.html#ad687ac203a01df56fb8ff04bd1100584", null ],
     [ "new_world", "classmim_1_1RWPhase.html#a0f7249ac3c85d2f2b1d7c72455c61b19", null ],
     [ "old_world", "classmim_1_1RWPhase.html#aef58721bd5f8d89e624eea65ff51f6b3", null ],
     [ "rewrite_annex", "classmim_1_1RWPhase.html#a64aef791fdf4d2b1e46a49254d9be5bd", null ],

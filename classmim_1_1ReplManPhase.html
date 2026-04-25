@@ -135,14 +135,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a25f239fa68f4050e52a423491960d6f3" id="r_a25f239fa68f4050e52a423491960d6f3"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a25f239fa68f4050e52a423491960d6f3">apply</a> (<a class="el" href="classmim_1_1Stage.html">Stage</a> &amp;) final</td></tr>
 <tr class="memdesc:a25f239fa68f4050e52a423491960d6f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dito, but invoked by <a class="el" href="classmim_1_1Stage.html#a538ead58f99be46d42cbd41687ad75fe" title="Creates a new instance; needed by a fixed-point PhaseMan.">Stage::recreate</a>.  <br /></td></tr>
 <tr class="inherit_header pub_methods_classmim_1_1RWPhase"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classmim_1_1RWPhase')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classmim_1_1RWPhase.html">mim::RWPhase</a></td></tr>
-<tr class="memitem:a8c1256f93cc63c1d8d0609e2aa474b51 inherit pub_methods_classmim_1_1RWPhase" id="r_a8c1256f93cc63c1d8d0609e2aa474b51"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#a8c1256f93cc63c1d8d0609e2aa474b51">is_bootstrapping</a> () const</td></tr>
-<tr class="memdesc:a8c1256f93cc63c1d8d0609e2aa474b51 inherit pub_methods_classmim_1_1RWPhase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether we are currently bootstrapping (rewriting annexes).  <br /></td></tr>
-<tr class="memitem:a03163daff4b06d1ab84f40886ddab811 inherit pub_methods_classmim_1_1RWPhase" id="r_a03163daff4b06d1ab84f40886ddab811"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#a03163daff4b06d1ab84f40886ddab811">analyze</a> ()</td></tr>
-<tr class="memdesc:a03163daff4b06d1ab84f40886ddab811 inherit pub_methods_classmim_1_1RWPhase"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can do an optional fixed-point loop on the <a class="el" href="classmim_1_1RWPhase.html#aef58721bd5f8d89e624eea65ff51f6b3" title="Get old Defs from here.">RWPhase::old_world</a> before rewriting.  <br /></td></tr>
 <tr class="memitem:a8ef0c8aebc6eabaa582028156aaf081e inherit pub_methods_classmim_1_1RWPhase" id="r_a8ef0c8aebc6eabaa582028156aaf081e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#a8ef0c8aebc6eabaa582028156aaf081e">RWPhase</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">world</a>, std::string <a class="el" href="classmim_1_1Stage.html#a988e8b306b37bd8f2bc3777582516527">name</a>, <a class="el" href="classmim_1_1Analysis.html">Analysis</a> *analysis=nullptr)</td></tr>
 <tr class="memitem:a338b4217843a5a9514433f2c70edeb5c inherit pub_methods_classmim_1_1RWPhase" id="r_a338b4217843a5a9514433f2c70edeb5c"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#a338b4217843a5a9514433f2c70edeb5c">RWPhase</a> (<a class="el" href="classmim_1_1World.html">World</a> &amp;<a class="el" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">world</a>, <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> <a class="el" href="classmim_1_1Stage.html#af3818779efacabd21b68b1e3d3ec8c15">annex</a>, <a class="el" href="classmim_1_1Analysis.html">Analysis</a> *analysis=nullptr)</td></tr>
+<tr class="memitem:ad687ac203a01df56fb8ff04bd1100584 inherit pub_methods_classmim_1_1RWPhase" id="r_ad687ac203a01df56fb8ff04bd1100584"><td class="memItemLeft">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#ad687ac203a01df56fb8ff04bd1100584">lattice</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="memdesc:ad687ac203a01df56fb8ff04bd1100584 inherit pub_methods_classmim_1_1RWPhase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the abstract value <em>after</em> the analysis has run.  <br /></td></tr>
+<tr class="memitem:a03163daff4b06d1ab84f40886ddab811 inherit pub_methods_classmim_1_1RWPhase" id="r_a03163daff4b06d1ab84f40886ddab811"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#a03163daff4b06d1ab84f40886ddab811">analyze</a> ()</td></tr>
+<tr class="memdesc:a03163daff4b06d1ab84f40886ddab811 inherit pub_methods_classmim_1_1RWPhase"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can do an optional fixed-point loop on the <a class="el" href="classmim_1_1RWPhase.html#aef58721bd5f8d89e624eea65ff51f6b3" title="Get old Defs from here.">RWPhase::old_world</a> before rewriting.  <br /></td></tr>
 <tr class="memitem:a64aef791fdf4d2b1e46a49254d9be5bd inherit pub_methods_classmim_1_1RWPhase" id="r_a64aef791fdf4d2b1e46a49254d9be5bd"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#a64aef791fdf4d2b1e46a49254d9be5bd">rewrite_annex</a> (<a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>, const <a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
 <tr class="memitem:af324f7c09f5b26f88fbf3dad4e059b26 inherit pub_methods_classmim_1_1RWPhase" id="r_af324f7c09f5b26f88fbf3dad4e059b26"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#af324f7c09f5b26f88fbf3dad4e059b26">rewrite_external</a> (<a class="el" href="classmim_1_1Def.html">Def</a> *)</td></tr>
+<tr class="memitem:a8c1256f93cc63c1d8d0609e2aa474b51 inherit pub_methods_classmim_1_1RWPhase" id="r_a8c1256f93cc63c1d8d0609e2aa474b51"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#a8c1256f93cc63c1d8d0609e2aa474b51">is_bootstrapping</a> () const</td></tr>
+<tr class="memdesc:a8c1256f93cc63c1d8d0609e2aa474b51 inherit pub_methods_classmim_1_1RWPhase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether we are currently bootstrapping (rewriting annexes).  <br /></td></tr>
 <tr class="memitem:ab2f627b52ee66162e8dcf2249f67ed3e inherit pub_methods_classmim_1_1RWPhase" id="r_ab2f627b52ee66162e8dcf2249f67ed3e"><td class="memItemLeft"><a class="el" href="classmim_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">world</a> ()=delete</td></tr>
 <tr class="memdesc:ab2f627b52ee66162e8dcf2249f67ed3e inherit pub_methods_classmim_1_1RWPhase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hides both and forbids direct access.  <br /></td></tr>
 <tr class="memitem:aef58721bd5f8d89e624eea65ff51f6b3 inherit pub_methods_classmim_1_1RWPhase" id="r_aef58721bd5f8d89e624eea65ff51f6b3"><td class="memItemLeft"><a class="el" href="classmim_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="classmim_1_1RWPhase.html#aef58721bd5f8d89e624eea65ff51f6b3">old_world</a> ()</td></tr>
@@ -215,7 +217,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00204">204</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00220">220</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad299c9ce51d31d01b2e2f00833231702" name="ad299c9ce51d31d01b2e2f00833231702"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad299c9ce51d31d01b2e2f00833231702">&#9670;&#160;</a></span>ReplManPhase() <span class="overload">[1/2]</span></h2>
@@ -244,11 +246,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00208">208</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00224">224</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00218">man()</a>, <a class="el" href="phase_8h_source.html#l00115">mim::RWPhase::RWPhase()</a>, and <a class="el" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">mim::RWPhase::world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00234">man()</a>, <a class="el" href="phase_8h_source.html#l00123">mim::RWPhase::RWPhase()</a>, and <a class="el" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">mim::RWPhase::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00116">apply()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00135">apply()</a>.</p>
 
 </div>
 </div>
@@ -279,9 +281,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00211">211</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00227">227</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="phase_8h_source.html#l00115">mim::RWPhase::RWPhase()</a>, and <a class="el" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">mim::RWPhase::world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="phase_8h_source.html#l00123">mim::RWPhase::RWPhase()</a>, and <a class="el" href="classmim_1_1RWPhase.html#ab2f627b52ee66162e8dcf2249f67ed3e">mim::RWPhase::world()</a>.</p>
 
 </div>
 </div>
@@ -313,9 +315,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Stage.html#a86d4778398f4afe1a7088dba6361b7e3">mim::Stage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00107">107</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00126">126</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="pass_8h_source.html#l00040">mim::Stage::create()</a>, <a class="el" href="pass_8h_source.html#l00065">mim::Stage::driver()</a>, and <a class="el" href="phase_8h_source.html#l00148">mim::RWPhase::old_world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00068">mim::Stage::annex()</a>, <a class="el" href="pass_8h_source.html#l00040">mim::Stage::create()</a>, <a class="el" href="pass_8h_source.html#l00065">mim::Stage::driver()</a>, and <a class="el" href="phase_8h_source.html#l00164">mim::RWPhase::old_world()</a>.</p>
 
 </div>
 </div>
@@ -346,9 +348,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Stage.html#ab10946657aaf4281daa0af3b2daa50d7">mim::Stage</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00116">116</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00135">135</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00208">ReplManPhase()</a>, and <a class="el" href="rewrite_8h_source.html#l00097">mim::Rewriter::swap</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00224">ReplManPhase()</a>, and <a class="el" href="rewrite_8h_source.html#l00097">mim::Rewriter::swap</a>.</p>
 
 </div>
 </div>
@@ -375,9 +377,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00218">218</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00234">234</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00208">ReplManPhase()</a>, <a class="el" href="phase_8cpp_source.html#l00129">rewrite()</a>, and <a class="el" href="phase_8cpp_source.html#l00121">start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00224">ReplManPhase()</a>, <a class="el" href="phase_8cpp_source.html#l00148">rewrite()</a>, and <a class="el" href="phase_8cpp_source.html#l00140">start()</a>.</p>
 
 </div>
 </div>
@@ -406,9 +408,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Rewriter.html#acd9201feaab8a6d73223308e48ff6652">mim::Rewriter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00129">129</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00148">148</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00218">man()</a>, <a class="el" href="rewrite_8cpp_source.html#l00027">mim::Rewriter::rewrite()</a>, and <a class="el" href="phase_8h_source.html#l00040">mim::Phase::todo()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00234">man()</a>, <a class="el" href="rewrite_8cpp_source.html#l00027">mim::Rewriter::rewrite()</a>, and <a class="el" href="phase_8h_source.html#l00040">mim::Phase::todo()</a>.</p>
 
 </div>
 </div>
@@ -439,9 +441,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classmim_1_1Phase.html#ac440f59a1682e69dcc4327bda527ce9d">mim::Phase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00121">121</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00140">140</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00555">mim::World::debug_dump()</a>, <a class="el" href="log_8h_source.html#l00091">ILOG</a>, <a class="el" href="phase_8h_source.html#l00218">man()</a>, <a class="el" href="phase_8h_source.html#l00148">mim::RWPhase::old_world()</a>, <a class="el" href="phase_8cpp_source.html#l00046">mim::RWPhase::start()</a>, and <a class="el" href="world_8cpp_source.html#l00721">mim::World::verify()</a>.</p>
+<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00555">mim::World::debug_dump()</a>, <a class="el" href="log_8h_source.html#l00091">ILOG</a>, <a class="el" href="phase_8h_source.html#l00234">man()</a>, <a class="el" href="phase_8h_source.html#l00164">mim::RWPhase::old_world()</a>, <a class="el" href="phase_8cpp_source.html#l00065">mim::RWPhase::start()</a>, and <a class="el" href="world_8cpp_source.html#l00721">mim::World::verify()</a>.</p>
 
 </div>
 </div>
