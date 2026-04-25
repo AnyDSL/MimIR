@@ -79,12 +79,18 @@ public:
     virtual void reset();
     ///@}
 
+    /// @name Getters
+    ///@{
+    auto& lattice() { return lattice_; }
+    const auto& lattice() const { return lattice_; }
     bool is_bootstrapping() const { return bootstrapping_; }
+    ///@}
 
     /// @name Rewrite
     ///@{
     virtual void rewrite_annex(flags_t, const Def*);
     virtual void rewrite_external(Def*);
+    Def* rewrite_mut(Def*) override; ///< Keeps old muts/vars.
     ///@}
 
     /// @name Getters
@@ -94,6 +100,8 @@ public:
 
 protected:
     void start() override;
+
+    Def2Def lattice_;
 
 private:
     bool bootstrapping_ = true;
@@ -122,10 +130,14 @@ public:
         , analysis_(analysis) {}
     ///@}
 
-    /// Returns whether we are currently bootstrapping (rewriting annexes).
-    /// While bootstrapping, you have to skip rewrites that refer to other annexes, as they might not yet be available.
-    bool is_bootstrapping() const { return bootstrapping_; }
+    /// @name Analysis
+    ///@{
 
+    /// Returns the abstract value *after* the analysis has run.
+    const Def* lattice(const Def* def) {
+        if (auto i = analysis_->lattice().find(def); i != analysis_->lattice().end()) return i->second;
+        return nullptr;
+    }
     /// You can do an optional fixed-point loop on the RWPhase::old_world before rewriting.
     /// If analysis_ is set, use this for the fixed-point loop.
     /// @note If you don't need a fixed-point, just return `false` after the first run of analyze.
@@ -135,6 +147,10 @@ public:
     ///@{
     virtual void rewrite_annex(flags_t, const Def*);
     virtual void rewrite_external(Def*);
+
+    /// Returns whether we are currently bootstrapping (rewriting annexes).
+    /// While bootstrapping, you have to skip rewrites that refer to other annexes, as they might not yet be available.
+    bool is_bootstrapping() const { return bootstrapping_; }
     ///@}
 
     /// @name World
