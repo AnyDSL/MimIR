@@ -61,7 +61,7 @@ var searchData=
   ['mimir_20vs_20mim_58',['🐉 Naming: MimIR vs. Mim',['../index.html#autotoc_md93',1,'']]],
   ['minimal_20examples_59',['Minimal Examples',['../phases.html#autotoc_md76',1,'']]],
   ['mode_60',['Mode',['../core.html#autotoc_md143',1,'']]],
-  ['model_61',['Execution Model',['../phases.html#autotoc_md62',1,'']]],
+  ['model_61',['Execution Model',['../phases.html#autotoc_md63',1,'']]],
   ['modifiers_62',['Modifiers',['../ord.html#autotoc_md282',1,'Modifiers'],['../vec.html#autotoc_md346',1,'Modifiers']]],
   ['module_63',['Module',['../langref.html#module',1,'']]],
   ['mslot_64',['%mem.mslot',['../mem.html#autotoc_md247',1,'']]],

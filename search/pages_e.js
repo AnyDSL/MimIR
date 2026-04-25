@@ -24,7 +24,7 @@ var searchData=
   ['plugins_21',['Plugins',['../index.html#autotoc_md90',1,'🧩 Plugins'],['../plugins.html',1,'Plugins']]],
   ['pointer_20types_22',['Pointer Types',['../gpu.html#autotoc_md170',1,'']]],
   ['pow_23',['%math.pow',['../math.html#autotoc_md203',1,'']]],
-  ['pre_20analysis_24',['Optional Pre-Analysis',['../phases.html#autotoc_md66',1,'']]],
+  ['pre_20analysis_24',['Optional Pre-Analysis',['../phases.html#autotoc_md64',1,'']]],
   ['precedence_25',['Precedence',['../langref.html#autotoc_md49',1,'']]],
   ['preserving_20metadata_26',['Preserving Metadata',['../rewriting.html#autotoc_md99',1,'']]],
   ['primary_20terminals_27',['Primary Terminals',['../langref.html#autotoc_md39',1,'']]],

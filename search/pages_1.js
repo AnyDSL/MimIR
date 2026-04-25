@@ -9,7 +9,7 @@ var searchData=
   ['bitcast_6',['%core.bitcast',['../core.html#autotoc_md155',1,'']]],
   ['blocking_20memory_20operations_7',['Blocking Memory Operations',['../gpu.html#autotoc_md177',1,'']]],
   ['blocks_8',['Local Declaration Blocks',['../langref.html#autotoc_md48',1,'']]],
-  ['bootstrapping_9',['Bootstrapping',['../phases.html#autotoc_md65',1,'']]],
+  ['bootstrapping_9',['Bootstrapping',['../phases.html#autotoc_md66',1,'']]],
   ['breakpoints_10',['Breakpoints',['../coding.html#autotoc_md15',1,'Conditional Breakpoints'],['../coding.html#autotoc_md18',1,'Triggering Breakpoints']]],
   ['broadcast_5fin_5fdim_11',['%tensor.broadcast_in_dim',['../tensor.html#autotoc_md328',1,'']]],
   ['builds_12',['Standalone Third-Party Builds',['../plugins.html#autotoc_md83',1,'']]],

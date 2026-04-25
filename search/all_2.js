@@ -36,7 +36,7 @@ var searchData=
   ['choosing_20the_20right_20base_20class_33',['Choosing the Right Base Class',['../phases.html#autotoc_md74',1,'']]],
   ['ciff_34',['ciff',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205a870ac2c5fac99933ec00d76e9c6ab759',1,'mim::plug::core']]],
   ['class_35',['Choosing the Right Base Class',['../phases.html#autotoc_md74',1,'']]],
-  ['cleanup_36',['Cleanup',['../classmim_1_1Cleanup.html',1,'mim::Cleanup'],['../classmim_1_1Cleanup.html#af1de642ec25e581a4091c3f1e48beaee',1,'mim::Cleanup::Cleanup(World &amp;world)'],['../classmim_1_1Cleanup.html#ac181084cd594a1b51302b8f4b6a03a10',1,'mim::Cleanup::Cleanup(World &amp;world, flags_t annex)'],['../phases.html#autotoc_md64',1,'Cleanup']]],
+  ['cleanup_36',['Cleanup',['../classmim_1_1Cleanup.html',1,'mim::Cleanup'],['../classmim_1_1Cleanup.html#af1de642ec25e581a4091c3f1e48beaee',1,'mim::Cleanup::Cleanup(World &amp;world)'],['../classmim_1_1Cleanup.html#ac181084cd594a1b51302b8f4b6a03a10',1,'mim::Cleanup::Cleanup(World &amp;world, flags_t annex)'],['../phases.html#autotoc_md62',1,'Cleanup']]],
   ['cleanup_5fphase_37',['cleanup_phase',['../namespacemim_1_1plug_1_1compile.html#a1b62916f46aa4d27565c3691e67677d6',1,'mim::plug::compile']]],
   ['clear_38',['clear',['../classmim_1_1Error.html#a9f2ae1bff9bfd5f973026423470b8bf5',1,'mim::Error::clear()'],['../classmim_1_1Sets_1_1Set_1_1iterator.html#af7d4de5e544ae02db7375fb619b1a99d',1,'mim::Sets::Set::iterator::clear()'],['../classmim_1_1unique__stack.html#abeb91306172fc8093788886e5c719bba',1,'mim::unique_stack::clear()'],['../classmim_1_1unique__queue.html#aaf24a124fbb2b7e8e652e27b22466060',1,'mim::unique_queue::clear()']]],
   ['cli_2emd_39',['cli.md',['../cli_8md.html',1,'']]],

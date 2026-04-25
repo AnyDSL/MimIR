@@ -8,7 +8,7 @@ var searchData=
   ['check_5',['%refly.check',['../refly.html#autotoc_md295',1,'']]],
   ['choosing_20the_20right_20base_20class_6',['Choosing the Right Base Class',['../phases.html#autotoc_md74',1,'']]],
   ['class_7',['Choosing the Right Base Class',['../phases.html#autotoc_md74',1,'']]],
-  ['cleanup_8',['Cleanup',['../phases.html#autotoc_md64',1,'']]],
+  ['cleanup_8',['Cleanup',['../phases.html#autotoc_md62',1,'']]],
   ['clos_20plugin_9',['The clos Plugin',['../clos.html',1,'']]],
   ['closedmutphase_10',['ClosedMutPhase',['../phases.html#phases_closed_mut_phase',1,'']]],
   ['closure_20attribute_11',['Closure Attribute',['../clos.html#autotoc_md124',1,'']]],

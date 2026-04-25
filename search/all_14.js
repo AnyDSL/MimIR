@@ -66,14 +66,13 @@ var searchData=
   ['us_63',['Us',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707ea85e8f233669adc62acf13417cb9649ca',1,'mim::plug::core']]],
   ['us_64',['uS',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707eadb341325cb123eae94a69292a2914972',1,'mim::plug::core']]],
   ['us_65',['us',['../namespacemim_1_1plug_1_1core.html#a24bcda8cb32531a8a5b3d5ab6d6c707ea0b3b97fa66886c5688ee4ae80ec0c3c2',1,'mim::plug::core']]],
-  ['usage_66',['Usage',['../phases.html#autotoc_md68',1,'Typical Usage'],['../rewriting.html#autotoc_md100',1,'Typical Usage'],['../rewriting.html#autotoc_md102',1,'Typical Usage'],['../cli.html#autotoc_md0',1,'Usage']]],
+  ['usage_66',['Usage',['../rewriting.html#autotoc_md100',1,'Typical Usage'],['../rewriting.html#autotoc_md102',1,'Typical Usage'],['../cli.html#autotoc_md0',1,'Usage']]],
   ['use_67',['Use',['../classmim_1_1Use.html',1,'mim::Use'],['../classmim_1_1Use.html#ad1bfa5ee84aa2b6d63b9d8b8767fb7e5',1,'mim::Use::Use()'],['../classmim_1_1Use.html#a5a79f76e19dec42cc52438ae4c77b954',1,'mim::Use::Use(const Def *def, size_t index)']]],
   ['useeq_68',['UseEq',['../structmim_1_1UseEq.html',1,'mim']]],
-  ['useful_69',['Why This Split Is Useful',['../phases.html#autotoc_md73',1,'']]],
-  ['usehash_70',['UseHash',['../structmim_1_1UseHash.html',1,'mim']]],
-  ['users_71',['users',['../classmim_1_1Def.html#aec0c90f905b8d981b9e3580ba89f7d63',1,'mim::Def']]],
-  ['uses_72',['Uses',['../namespacemim.html#aa5a838964832f04e880e1aa8c5789343',1,'mim']]],
-  ['uses_73',['uses',['../classmim_1_1Scheduler.html#a81893f9b1c9c94ba0404306ec20648ee',1,'mim::Scheduler']]],
-  ['util_2eh_74',['util.h',['../util_8h.html',1,'']]],
-  ['utility_75',['Utility',['../compile.html#autotoc_md130',1,'']]]
+  ['usehash_69',['UseHash',['../structmim_1_1UseHash.html',1,'mim']]],
+  ['users_70',['users',['../classmim_1_1Def.html#aec0c90f905b8d981b9e3580ba89f7d63',1,'mim::Def']]],
+  ['uses_71',['Uses',['../namespacemim.html#aa5a838964832f04e880e1aa8c5789343',1,'mim']]],
+  ['uses_72',['uses',['../classmim_1_1Scheduler.html#a81893f9b1c9c94ba0404306ec20648ee',1,'mim::Scheduler']]],
+  ['util_2eh_73',['util.h',['../util_8h.html',1,'']]],
+  ['utility_74',['Utility',['../compile.html#autotoc_md130',1,'']]]
 ];
