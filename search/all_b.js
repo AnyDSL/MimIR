@@ -27,7 +27,7 @@ var searchData=
   ['last_24',['last',['../vec.html#autotoc_md342',1,'%vec.first / %vec.last'],['../namespacemim_1_1plug_1_1vec.html#afd082a7ad8cc8afabbcc2ebf09bc7ba4',1,'mim::plug::vec::last']]],
   ['late_25',['late',['../classmim_1_1Scheduler.html#a7181e660c82f0a354ae42cae8d3008b0',1,'mim::Scheduler']]],
   ['lattice_26',['Lattice',['../classmim_1_1EtaRed.html#a3326314112409c514cb209a8a12bbaae',1,'mim::EtaRed']]],
-  ['lattice_27',['lattice',['../classmim_1_1Analysis.html#ab9a6d69d1f878706cd3a27b577f65396',1,'mim::Analysis::lattice()'],['../classmim_1_1Analysis.html#ad7c0e4db7456e9d3910876ce4db8180a',1,'mim::Analysis::lattice() const'],['../classmim_1_1RWPhase.html#ad687ac203a01df56fb8ff04bd1100584',1,'mim::RWPhase::lattice()']]],
+  ['lattice_27',['lattice',['../classmim_1_1Analysis.html#ab9a6d69d1f878706cd3a27b577f65396',1,'mim::Analysis::lattice()'],['../classmim_1_1Analysis.html#ad7c0e4db7456e9d3910876ce4db8180a',1,'mim::Analysis::lattice() const'],['../classmim_1_1RWPhase.html#aa06ea4e48c087f2eab4a4aa260603987',1,'mim::RWPhase::lattice()']]],
   ['lattice_2ecpp_28',['lattice.cpp',['../lattice_8cpp.html',1,'']]],
   ['lattice_2eh_29',['lattice.h',['../lattice_8h.html',1,'']]],
   ['lattice_5f_30',['lattice_',['../classmim_1_1Analysis.html#a9abe79797e8a50b55655cbf950903282',1,'mim::Analysis']]],

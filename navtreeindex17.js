@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"classmim_1_1unique__stack.html#a0e3bc2a308a5fbd291a0380f08c1e1d2":[4,0,1,99,0],
+"classmim_1_1unique__stack.html#a1bda10d6d6f03b17a62b91ccb56d00b2":[2,0,2,101,5],
 "classmim_1_1unique__stack.html#a1bda10d6d6f03b17a62b91ccb56d00b2":[4,0,1,99,5],
 "classmim_1_1unique__stack.html#a268d2c58775fb5ec64f6005c066cb916":[2,0,2,101,4],
 "classmim_1_1unique__stack.html#a268d2c58775fb5ec64f6005c066cb916":[4,0,1,99,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "direct_8cpp_source.html":[5,0,4,1,4,6,1],
 "direct_8h.html":[5,0,3,1,4,6,1],
 "direct_8h_source.html":[5,0,3,1,4,6,1],
-"dl_8cpp.html":[5,0,4,1,5,1],
-"dl_8cpp_source.html":[5,0,4,1,5,1],
-"dl_8h.html":[5,0,3,1,5,1]
+"dl_8cpp.html":[5,0,4,1,5,1]
 };

@@ -5,7 +5,7 @@ var searchData=
   ['lamexpr_2',['LamExpr',['../classmim_1_1ast_1_1LamExpr.html#a81b9f339ed6a125d70464df5b5ee8ea0',1,'mim::ast::LamExpr']]],
   ['lamspec_3',['LamSpec',['../classmim_1_1LamSpec.html#a67fb40de0a319bdf6af3ebcf1c4f98d2',1,'mim::LamSpec']]],
   ['late_4',['late',['../classmim_1_1Scheduler.html#a7181e660c82f0a354ae42cae8d3008b0',1,'mim::Scheduler']]],
-  ['lattice_5',['lattice',['../classmim_1_1Analysis.html#ab9a6d69d1f878706cd3a27b577f65396',1,'mim::Analysis::lattice()'],['../classmim_1_1Analysis.html#ad7c0e4db7456e9d3910876ce4db8180a',1,'mim::Analysis::lattice() const'],['../classmim_1_1RWPhase.html#ad687ac203a01df56fb8ff04bd1100584',1,'mim::RWPhase::lattice()']]],
+  ['lattice_5',['lattice',['../classmim_1_1Analysis.html#ab9a6d69d1f878706cd3a27b577f65396',1,'mim::Analysis::lattice()'],['../classmim_1_1Analysis.html#ad7c0e4db7456e9d3910876ce4db8180a',1,'mim::Analysis::lattice() const'],['../classmim_1_1RWPhase.html#aa06ea4e48c087f2eab4a4aa260603987',1,'mim::RWPhase::lattice()']]],
   ['lca_6',['lca',['../classmim_1_1Nest.html#a8b83453dfda47591c4b209e319823164',1,'mim::Nest::lca()'],['../classmim_1_1lct_1_1Node.html#a16293eb9b006d9cdc9beb634cb151933',1,'mim::lct::Node::lca()']]],
   ['less_7',['less',['../classmim_1_1Def.html#ab1215de2b56ede04a5df0f3d3628bb4c',1,'mim::Def']]],
   ['letdecl_8',['LetDecl',['../classmim_1_1ast_1_1LetDecl.html#ac8872f1a83511a2852022ff50f9fcd35',1,'mim::ast::LetDecl']]],
